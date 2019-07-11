@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave jutalmak</translation>
 <translation id="7942180974165298215">Brave hirdetés blokkolása</translation>
 <translation id="6406506848690869874">Szinkronizálás</translation>
+<translation id="8488282162676695335">Brave Tárca</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (kiterjesztésazonosító "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nem engedélyezett a Brave-ben.</translation>
 <translation id="7450557937477381864">Chrome bezárása</translation>
 <translation id="7008934821596358692">Az importálás befejezéséhez zárja be az összes Chrome ablakot.</translation>
@@ -28,7 +29,9 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="3218385319396786393">Ezen az oldalon blokkolták az automatikus lejátszást.</translation>
 <translation id="4988333904713528597">Automatikus lejátszás általános engedélyezése itt: <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Automatikus lejátszás további blokkolása</translation>
+<translation id="5883458389055721080">A Brave még nem ellenőrizte ezt a kiterjesztést biztonság szempontjából. Csak akkor telepítsd ezt a kiterjesztést, ha megbízol a fejlesztőben.</translation>
 <translation id="2044383478723007273">Brave színek</translation>
+<translation id="2814998458708016836">Használj széles címsort</translation>
 <translation id="6123134130710658846">Brave jutalmak gomb elrejtése</translation>
 <translation id="7635711399568194460">Elrejti a Brave Jutalmak gombot a helysávban, amikor a Brave Jutalmak nincs engedélyezve.</translation>
 <translation id="7965178729203412357">Új Tor azonosító</translation>
@@ -47,13 +50,25 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4472575034687746823">Kezdő lépések</translation>
 <translation id="3400357268283240774">További beállítások</translation>
 <translation id="6303294677342628402">Pajzsok</translation>
+<translation id="7133511168130368997">Tiltsd le a nyomkövetőket és hirdetéseket, amelyek követnek téged a weben.</translation>
+<translation id="2761825942249694703">Ezek az alapértelmezett Shields beállítások. Minden webhelyre vonatkoznak, hacsak nem változtatsz meg valamit a Shields panelben egy adott oldalon. Ezek változtatása nincs hatással a meglévő oldalankénti beállításokra.</translation>
+<translation id="8754605759692119662">Ez letiltja a weboldalakon a legtöbb reklámot, de a privát hirdetéseket nem — azok kezelési helye a</translation>
+<translation id="6388201778088078932">beállítások.</translation>
 <translation id="9185018653595759199">Közösségi média blokkolása</translation>
+<translation id="5709627087332022422">Webhelyközi nyomkövetők letiltása</translation>
+<translation id="9075744464571452108">Eszközfelismerés</translation>
+<translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
+<translation id="4824468494729001999">Parancsfájlok letiltása</translation>
 <translation id="7498695072878479744">Google bejelentkezési gombok engedélyezése külső felek oldalain</translation>
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
 <translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
+<translation id="4699812599455071925">Csak a webhelyközi cookie-k letiltása</translation>
 <translation id="5657156137487675418">Összes süti engedélyezése</translation>
 <translation id="6883611015375728278">Összes süti blokkolása</translation>
+<translation id="3084022390368021391">Csak webhelyközi eszközfelismerési próbálkozások tiltása</translation>
+<translation id="1847422622180531843">Minden eszközfelismerési próbálkozás engedélyezése</translation>
+<translation id="8375051111011093523">Minden eszközfelismerési próbálkozás letiltása</translation>
 <translation id="8942080017911802454">WebRTC IP kezelési irányelvek</translation>
 <translation id="6165508094623778733">Tudjon meg többet</translation>
 <translation id="8798099450830957504">Alapértelmezett</translation>
@@ -75,4 +90,9 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="9181207987584064303">Megtekintés a Webes Kiterjesztések Áruházában</translation>
 <translation id="4846154056248462491">Kilépéskor</translation>
 <translation id="5057399635433117814">Fordítsuk le ezt az oldalt? Akkor az oldalon lévő minden szöveget el fogunk küldeni a Microsofthoz, fordításra.</translation>
+<translation id="3371343170427636147">Brave böngésző Nightly alkalmazások</translation>
+<translation id="4097979995947147464">Brave böngésző béta alkalmazások</translation>
+<translation id="8303432794159193481">Brave böngésző fejlesztői alkalmazások</translation>
+<translation id="8292967014767479012">Brave bőngésző alkalmazások</translation>
+<translation id="4743468424889072281">Brave böngésző fejlesztési alkalmazások</translation>
 </translationbundle>

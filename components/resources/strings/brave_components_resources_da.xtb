@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Rediger indstillinger</translation>
 <translation id="7606029853066610626">Vis og Styr Bogmærker</translation>
 <translation id="5550994254534676787">Vis din søgehistorik</translation>
+<translation id="1742484101357469636">Dashboard-indstillinger</translation>
+<translation id="8320281346741574991">Vis baggrundsbillede</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="8730621377337864115">Færdig</translation>
 <translation id="6248988683584659830">Søgeindstillinger</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave gør det nemt at indrette omgivelserne, som du kender dem, ved at importere bogmærker og indstillinger fra andre browsere, der er installeret på din computer.</translation>
 <translation id="8275038454117074363">Importér</translation>
 <translation id="5540323067375019678">Administrér dine beskyttelser</translation>
+<translation id="3278033011827237847">Beskyt mod privatlivsinvaderende annoncer og trackere, mens du browser med Brave Shields. Sæt Shields til at være "nede", hvis en side ikke ser ud til at fungere korrekt.</translation>
 <translation id="3366308997091824722">Beskyttelsesindstillinger</translation>
-<translation id="3884404068544758153">Skift søgemaskine</translation>
+<translation id="4764692524839457597">standard</translation>
+<translation id="3108122610701115301">Indstil standard</translation>
+<translation id="2469440407442116729">Vælg en søgemotor</translation>
 <translation id="438216590634144114">Vælg den søgemaskine du ønsker at bruge som standard, når du søger på nettet fra adressebjælken.</translation>
-<translation id="8428213095426709021">Indstillinger</translation>
+<translation id="5804484488647369316">Indstil standard søgemotor</translation>
+<translation id="4428458837269935199">Prøv DuckDuckGo for en mere privat søgeoplevelse.</translation>
 <translation id="513635702954746724">Vælg dit farvetema</translation>
 <translation id="6842850080200126305">Vælg farven til din værktøjslinje ved at vælge den lyse eller mørke valgmulighed i indstillingspanelet.</translation>
 <translation id="2801098717523961746">Vælg dit tema</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Optjen tokens ved at se annoncer i Brave. Annoncer præsenteres på baggrund af dine interesser, udledt af din browseradfærd. Ingen personlige data eller browserhistorik forlader nogensinde din browser.</translation>
 <translation id="6112368337882254910">Auto-Bidrag</translation>
 <translation id="1527222983464337010">En automatisk måde hvorpå du kan støtte udgivere og indholdsskabere. Opret en måndelig betaling og brows normalt. Siderne du besøger modtager dine bidrag automatisk, baseret på din opmærksomhed som den bliver målt af Brave.</translation>
+<translation id="20281847067919078">Anslåede afventende bonusser</translation>
+<translation id="8593551638387217772">Næste betalingsdato</translation>
+<translation id="319209088187794725">Annoncenotifikationer modtaget i denne måned</translation>
 <translation id="4229016885653790965">Beklager! Annoncer er ikke tilgængelige i din region endnu.</translation>
 <translation id="654711254769318398">Annoncesider set</translation>
 <translation id="2532127066761785857">Maksimum antal af annoncer vist</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minut</translation>
 <translation id="9031738692126722094">Slå drikkepenge på indholdsniveau til på disse sider</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Donér på stedet, når du finder perler.</translation>
 <translation id="6135431587052937035">Støt dine yndlingssider med faste månedlige tips.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Beklager, det ser ud til, at dette tilskud allerede er taget.</translation>
 <translation id="282693359045252357">Næste månedlige drikkepengedato</translation>
 <translation id="6231182869178328516">Jeg har lige givet drikkepenge <ph name="NAME">$1<ex>user</ex></ph> ved hjælp af Brave Browser. Se den på https://brave.com/tips.</translation>
+<translation id="8404935570206006581">BelønMedBrave</translation>
 <translation id="7422678632904904341">Beløb:</translation>
 <translation id="5923611424721173182">Nuværende afstemning</translation>
 <translation id="5457113250005438886">Ugyldig</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Fastsæt månedlig donation</translation>
 <translation id="8003573781961874199">Hent som PDF</translation>
 <translation id="298067735430872465">Indtjening fra reklamer</translation>
+<translation id="2266556115441975588">Dine bonusser fra annoncer er kommet!</translation>
 <translation id="8764029012618014430">Aktiver Tips</translation>
 <translation id="3412655388715513818">Ekskluder denne side</translation>
 <translation id="418343137736963579">Totale antal sider du har udeladt fra Automatisk Bidrage</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Gendannelsesnøgle</translation>
 <translation id="6354568176665589146">Tilbagevendende</translation>
 <translation id="7577100371127227294">Månedlige donationer</translation>
+<translation id="2391095793008133394">Beløn {{ user }} for deres indlæg:</translation>
+<translation id="7557413530932469222">Beløn {{ user }} for deres indlæg!</translation>
 <translation id="1110535155349301542">fjern</translation>
 <translation id="8942997470474842562">Du’har angivet {{reservedAmount}} BAT for skabere som endnu ikke’har skrevet sig op til at modtage bidrag. Din browser vil fortsat forsøge at bidrage indtil de godkender, eller indtil 90 dage er gået.</translation>
 <translation id="8759753423332885148">Lær mere.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Se alle {{numItems}} artikler</translation>
 <translation id="7857284676033058221">Se alle {{numSites}} sider</translation>
 <translation id="3536298624341433814">Send mine Drikkepenge</translation>
+<translation id="8428213095426709021">Indstillinger</translation>
 <translation id="1792148354504719133">side</translation>
 <translation id="5944430251223015324">sider</translation>
 <translation id="1834493631938747505">Fortæl os om dine drikkepenge.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Afventer indtil</translation>
 <translation id="7410549756000115387">Ingen afventende bidrag…</translation>
 <translation id="1963227389609234879">Slet alle</translation>
+<translation id="1170315781901539495">Ekskluderede sider</translation>
+<translation id="5119190679543565400">Gendan denne side</translation>
+<translation id="9075700728717335924">Du har ekskluderet</translation>
+<translation id="4862817811647633830">sider fra auto-bidrag.</translation>
 <translation id="923467487918828349">Vis alle</translation>
+<translation id="5471305206221894680">Understøttede sider</translation>
+<translation id="2306169361186864012">Brave Ads-bonusser!</translation>
+<translation id="3757873395477273033">Din bonustildeling fra Brave Ads er på vej</translation>
+<translation id="8101881066646819737">Din Brave Ads token-tildeling</translation>
 <translation id="2151535059686617995">Det’er din heldige dag!</translation>
 <translation id="6255773350565723852">Dit token-tilskud er på vej.</translation>
 <translation id="1181037720776840403">Fjern</translation>

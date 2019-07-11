@@ -33,7 +33,7 @@ source_set("utility") {
   }
 
   if (enable_tor) {
-    deps += [ "tor" ]
+    deps += [ "//brave/components/services/tor" ]
   }
 
   if (brave_ads_enabled) {

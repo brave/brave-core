@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Hariri Mapendeleo</translation>
 <translation id="7606029853066610626">Tazama na Simamia Vialamisho</translation>
 <translation id="5550994254534676787">Tazama historia yako ya kuperuzi</translation>
+<translation id="1742484101357469636">Mipangilio ya Dashibodi</translation>
+<translation id="8320281346741574991">Onyesha picha ya mandharinyuma</translation>
 <translation id="6165508094623778733">Jifunze zaidi</translation>
 <translation id="8730621377337864115">Imekamilika</translation>
 <translation id="6248988683584659830">Mipangilio ya kuvinjari</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave inafanya iwe rahisi kupangilia mazingira yako ya kawaida kwa kuingiza kumbukumbu za kisakuzi na mipangilio kutoka katika visakuzi vingine vilivyosanidiwa katika kompyuta yako.</translation>
 <translation id="8275038454117074363">Ingiza</translation>
 <translation id="5540323067375019678">Dhibiti ngao zako</translation>
+<translation id="3278033011827237847">Linda dhidi ya matangazo na wafuatiliaji wanaoyovamia faragha wakati ukivinjari kwa kutumia Ngao za Brave. Weka Ngao kwenye mpangilio wa "chini" ikiwa tovuti haion’ekani kufanya kazi vizuri.</translation>
 <translation id="3366308997091824722">Mipangilio ya Ngao</translation>
-<translation id="3884404068544758153">Badilisha kisakuzi chako</translation>
+<translation id="4764692524839457597">chaguomsingi</translation>
+<translation id="3108122610701115301">Weka chaguomsingi</translation>
+<translation id="2469440407442116729">Chagua kivinjari</translation>
 <translation id="438216590634144114">Chagua kisakuzi ambacho ungependa kutumia kama chaguo msingi wakati ukivinjari kwenye tovuti kutoka kwenye upao wa anwani.</translation>
-<translation id="8428213095426709021">Mipangilio</translation>
+<translation id="5804484488647369316">Chagua kivinjari chaguomsingi</translation>
+<translation id="4428458837269935199">Kwa uzoefu wa utafutaji wa faragha zaidi, jaribu DuckDuckGo.</translation>
 <translation id="513635702954746724">Chagua rangi ya thimu yako</translation>
 <translation id="6842850080200126305">Pangilia rangi ya upaozana wako kwa kuchagua chaguo la nyeupe au nyeusi kutoka kwenye paneli la mipangilio.</translation>
 <translation id="2801098717523961746">Chagua thimu yako</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Pata vianzio kwa kutazama matangazo kwenye Brave. Matangazo yanayowasilishwa ni kulingana na mapendeleo yako, kutokana na uzoeufu wako wa kuperuzi mtandaoni. Hakuna taarifa binafsi au historia za kuvinjari ambazo zinatoka nje ya kisakuzi chako.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">Njia ya kiotomati ya kuwasaidia wachapishaji na watengenezaji wa maudhui. Weka malipo ya kila mwezi na peruzi kwa kawaida. Tovuti unayoitembelea hupokea michango yako kiotomati, kulingana na umakini wako kama unavyopimwa na Brave.</translation>
+<translation id="20281847067919078">Zawadi zilizokadiriwa zilizowekwa pembeni</translation>
+<translation id="8593551638387217772">Tarehe ya malipo yanayofuata</translation>
+<translation id="319209088187794725">Arifa za matangazo zilizopokelewa mwezi huu</translation>
 <translation id="4229016885653790965">Samahani! Matangazo hayapatikani kwenye eneo lako.</translation>
 <translation id="654711254769318398">Kurasa za tangazo zilizotazamwa</translation>
 <translation id="2532127066761785857">Idadi ya juu ya matangazo yaliyoonyeshwa</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">Dakika 1</translation>
 <translation id="9031738692126722094">Wezesha vidokezi katika kiwango cha maudhui kwenye tovuti hizi</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Changia papo hapo unapoona kito.</translation>
 <translation id="6135431587052937035">Ziwezeshe tovuti zako unazozipenda kwa michango ya kujirudia kila mwezi.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Samahani, inaonekana ruzuku hii imeshadaiwa tayari.</translation>
 <translation id="282693359045252357">Zawadi inayofuata ya kila mwezi.</translation>
 <translation id="6231182869178328516">Nimemzawadia <ph name="NAME">$1<ex>user</ex></ph> kwa kutumia Kisakuzi cha Brave. Angalia kwenye https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Kiasi:</translation>
 <translation id="5923611424721173182">Suluhisho la Sasa</translation>
 <translation id="5457113250005438886">Si sahihi</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Pangilia zawadi ya kila mwezi</translation>
 <translation id="8003573781961874199">Pakua kama PDF</translation>
 <translation id="298067735430872465">Mapato kutokana na Matangazo</translation>
+<translation id="2266556115441975588">Zawadi zako kutoka kwenye Matangazo zipo hapa!</translation>
 <translation id="8764029012618014430">Wezesha Michango</translation>
 <translation id="3412655388715513818">Ondoa tovuti hii</translation>
 <translation id="418343137736963579">Jumla ya idadi ya tovuti ulizoziondoa kwenye Auto-Contribute:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Ufungo wa Urejeshaji</translation>
 <translation id="6354568176665589146">Inayojirudia</translation>
 <translation id="7577100371127227294">Michango ya Kila Mwezi</translation>
+<translation id="2391095793008133394">Mzawadie {{ user }} kwa makala yake:</translation>
+<translation id="7557413530932469222">Mzawadie {{ user }} kwa makala yake!</translation>
 <translation id="1110535155349301542">ondoa</translation>
 <translation id="8942997470474842562">Umepewa#8217; kiwango cha BAT {{reservedAmount}} BAT kwa watengenezaji ambao bado hawajajisajili’ ili kupokea michango. Kisakuzi chako kitaendelea kujaribu kuchangia hadi watakapothibitisha, au hadi siku 90 zitakapokuwa zimepita.</translation>
 <translation id="8759753423332885148">Jifunze zaidi.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Tazama vitu {{numItems}} vyote</translation>
 <translation id="7857284676033058221">Tazama tovuti {{numSites}} zote</translation>
 <translation id="3536298624341433814">Tuma Mchango wangu</translation>
+<translation id="8428213095426709021">Mipangilio</translation>
 <translation id="1792148354504719133">tovuti</translation>
 <translation id="5944430251223015324">tovuti</translation>
 <translation id="1834493631938747505">Waambie wengine kuhusu zawadi yako.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Inasubiri hadi</translation>
 <translation id="7410549756000115387">Hakuna michango ambayo bado haijachangwa…</translation>
 <translation id="1963227389609234879">Ondoa Yote</translation>
+<translation id="1170315781901539495">Tovuti Zilizoondolewa</translation>
+<translation id="5119190679543565400">Rejesha tovuti hii</translation>
+<translation id="9075700728717335924">Umeondoa</translation>
+<translation id="4862817811647633830">tovuti kwenye Auto-Contribute.</translation>
 <translation id="923467487918828349">Onyesha Yote</translation>
+<translation id="5471305206221894680">Tovuti Zinazowezeshwa</translation>
+<translation id="2306169361186864012">Brave Ads Rewards!</translation>
+<translation id="3757873395477273033">Ruzuku yako ya zawadi kutoka Brave Ads ipo njiani.</translation>
+<translation id="8101881066646819737">Ruzuku yako ya Kianzio ya Brave Ads</translation>
 <translation id="2151535059686617995">N’i siku yako ya bahati!</translation>
 <translation id="6255773350565723852">Ruzuku yako ya kianzio ipo njiani.</translation>
 <translation id="1181037720776840403">Ondoa</translation>

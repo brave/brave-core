@@ -20,7 +20,7 @@
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 #endif
 
-#include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"
+#include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"  // NOLINT
 
 #if !defined(OS_MACOSX)
 #undef SpellingOptionsSubMenuObserver
@@ -40,18 +40,13 @@ void RenderViewContextMenu_Chromium::AppendBraveLinkItems() {
 
 void BraveRenderViewContextMenu::AppendBraveLinkItems() {
   if (!params_.link_url.is_empty()) {
-    if (base::FeatureList::IsEnabled(features::kDesktopPWAWindowing)) {
-      const Browser* browser = GetBrowser();
-      const bool is_app = browser && browser->is_app();
+    const Browser* browser = GetBrowser();
+    const bool is_app = browser && browser->is_app();
 
-      menu_model_.AddItemWithStringId(
-          IDC_CONTENT_CONTEXT_OPENLINKTOR,
-          is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
-                 : IDS_CONTENT_CONTEXT_OPENLINKTOR);
-    } else {
-      menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_OPENLINKTOR,
-                                      IDS_CONTENT_CONTEXT_OPENLINKTOR);
-    }
+    menu_model_.AddItemWithStringId(
+        IDC_CONTENT_CONTEXT_OPENLINKTOR,
+        is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
+               : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
 }
 

@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Editar Preferències</translation>
 <translation id="7606029853066610626">Veure i gestionar adreces d'interès</translation>
 <translation id="5550994254534676787">Veure la teva història de navegació</translation>
+<translation id="1742484101357469636">Configuració del tauler</translation>
+<translation id="8320281346741574991">Mostra la imatge de fons</translation>
 <translation id="6165508094623778733">Saber més</translation>
 <translation id="8730621377337864115">Fet</translation>
 <translation id="6248988683584659830">Configuració de la cerca</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave t'ajuda a configurar l'entorn habitual important la configuració i les adreces d'interès d'altres navegadors que tinguis instal·lats a l'ordinador.</translation>
 <translation id="8275038454117074363">Importa</translation>
 <translation id="5540323067375019678">Gestiona els escuts</translation>
+<translation id="3278033011827237847">Protegeix-te contra els anuncis i els rastrejadors que envaeixen la privacitat mentre navegues amb els escuts de Brave. Estableix que "baixin" els escuts si un lloc no sembla que funcioni com pertoca.</translation>
 <translation id="3366308997091824722">Configuració d'Escut</translation>
-<translation id="3884404068544758153">Canvia el motor de cerca</translation>
+<translation id="4764692524839457597">predeterminat</translation>
+<translation id="3108122610701115301">Estableix com a predeterminat</translation>
+<translation id="2469440407442116729">Selecciona un motor de cerca</translation>
 <translation id="438216590634144114">Tria el motor de cerca que vulguis fer servir per defecte quan facis cerques a la web des de la barra d'adreces.</translation>
-<translation id="8428213095426709021">Configuració</translation>
+<translation id="5804484488647369316">Establir el motor de cerca predeterminat</translation>
+<translation id="4428458837269935199">Per obtenir una experiència de cerca més privada, prova DuckDuckGo.</translation>
 <translation id="513635702954746724">Tria el tema de color</translation>
 <translation id="6842850080200126305">Defineix el color de la barra d'eines seleccionant l'opció clara o fosca al tauler de configuració.</translation>
 <translation id="2801098717523961746">Tria el tema de color</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Guanya tokens veient anuncis a Brave. Els anuncis presentats es basen en els vostres interessos, tal com es dedueix del vostre comportament de navegació. Les dades personals o el historial de navegació mai no surt del navegador.</translation>
 <translation id="6112368337882254910">Auto-Contribució</translation>
 <translation id="1527222983464337010">Una manera automàtica de donar suport a editors i creadors de contingut. Estableix un pagament mensual i navega normalment. Els llocs que visitis rebran les teves aportacions de manera automàtica, segons la teva atenció, tal com ho ha mesurat Brave.</translation>
+<translation id="20281847067919078">Càlcul de premis pendents</translation>
+<translation id="8593551638387217772">Pròxima data de pagament</translation>
+<translation id="319209088187794725">Notificacions d'anuncis rebudes aquest mes</translation>
 <translation id="4229016885653790965">Vaja! Els anuncis encara no estan disponibles a la teva regió.</translation>
 <translation id="654711254769318398">Pàgines d'anunci visualitzades</translation>
 <translation id="2532127066761785857">Nombre màxim d'anuncis mostrats</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minut</translation>
 <translation id="9031738692126722094">Activa la possibilitat de donar propines pel contingut a aquests llocs</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Dona propina en el moment que trobis joies</translation>
 <translation id="6135431587052937035">Fes costat als teus llocs webs preferits recompensant-los cada mes amb una propina.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Ens sap greu, sembla que aquesta donació ja ha estat sol·licitada.</translation>
 <translation id="282693359045252357">Propera data de propina mensual</translation>
 <translation id="6231182869178328516">He donat una propina a <ph name="NAME">$1<ex>user</ex></ph> amb el navegador Brave. Comprova-ho a https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Quantitat:</translation>
 <translation id="5923611424721173182">Acceptació actual</translation>
 <translation id="5457113250005438886">No vàlid</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Configura el premi mensual</translation>
 <translation id="8003573781961874199">Baixa-ho com a PDF</translation>
 <translation id="298067735430872465">Guanys dels anuncis</translation>
+<translation id="2266556115441975588">Aquí tens els teus premis per anuncis.</translation>
 <translation id="8764029012618014430">Activa propines</translation>
 <translation id="3412655388715513818">Exclou aquest lloc</translation>
 <translation id="418343137736963579">Nombre total de llocs que has exclòs de Auto-Contribució</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Clau de recuperació</translation>
 <translation id="6354568176665589146">Recurrent</translation>
 <translation id="7577100371127227294">Propines Mensuals</translation>
+<translation id="2391095793008133394">Dona una propina a {{ user }} per la seva publicació:</translation>
+<translation id="7557413530932469222">Dona una propina a {{ user }} per la seva publicació.</translation>
 <translation id="1110535155349301542">treu</translation>
 <translation id="8942997470474842562">Has’ assignat {{reservedAmount}} BAT per creadors que encara no s’han donat d'alta per rebre aportacions. El teu navegador seguirà intentant fer una aportació fins que es verifiqui, o fins que passin 90 dies.</translation>
 <translation id="8759753423332885148">Més informació.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Veure tots els {{numItems}} elements</translation>
 <translation id="7857284676033058221">Veure tots els {{numSites}} llocs</translation>
 <translation id="3536298624341433814">Envia la meva propina</translation>
+<translation id="8428213095426709021">Configuració</translation>
 <translation id="1792148354504719133">lloc</translation>
 <translation id="5944430251223015324">llocs</translation>
 <translation id="1834493631938747505">Informa els altres sobre la teva propina.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Pendent fins a</translation>
 <translation id="7410549756000115387">No hi ha contribucions pendents…</translation>
 <translation id="1963227389609234879">Suprimeix-ho tot</translation>
+<translation id="1170315781901539495">Llocs exclosos</translation>
+<translation id="5119190679543565400">Recuperar aquest lloc</translation>
+<translation id="9075700728717335924">Has estat exclòs</translation>
+<translation id="4862817811647633830">llocs de contribució automàtica</translation>
 <translation id="923467487918828349">Mostra-les totes</translation>
+<translation id="5471305206221894680">Llocs admesos</translation>
+<translation id="2306169361186864012">Premis pels anuncis de Brave</translation>
+<translation id="3757873395477273033">Els teus premis procedents dels anuncis de Brave estan en camí.</translation>
+<translation id="8101881066646819737">Les teves donacions d'anuncis de Brave</translation>
 <translation id="2151535059686617995">És’ el teu dia de sort!</translation>
 <translation id="6255773350565723852">La teva donació està de camí.</translation>
 <translation id="1181037720776840403">Suprimeix</translation>

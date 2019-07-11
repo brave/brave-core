@@ -48,7 +48,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Creator",
+    "message": "Brave verifisert skaper",
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
@@ -290,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Refresh Status",
+    "message": "Oppdater status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -346,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your earnings from ads are available.",
+    "message": "Dine annonsebelønninger er her!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -413,8 +413,16 @@
     "message": "Tips",
     "description": "Icon label for Twitter tips"
   },
+  "redditTipsHoverText": {
+    "message": "Tips dette innlegget",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Tips",
+    "description": "Icon label for Reddit tips"
+  },
   "verifiedPublisherNotification": {
-    "message": "Creator $name$ recently verified",
+    "message": "Skaper $name$ nylig verifisert",
     "description": "Notification text that tells user which publisher just verified",
     "placeholders": {
       "name": {
@@ -424,35 +432,35 @@
     }
   },
   "pendingNotEnoughFundsNotification": {
-    "message": "You have pending tips due to insufficient funds",
+    "message": "Du har ventende tips grunnet utilstrekkelige midler",
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Pending Contribution",
+    "message": "Venter på bidrag",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
-    "message": "It’s your lucky day!",
+    "message": "Det er din lykkedag!",
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Your token grant is on its way.",
+    "message": "Tokenstipendet ditt er på vei.",
     "description": "Cosmetic text indicating grant funds are on the way"
   },
   "grantFinishTokenTitleUGP": {
-    "message": "Free Token Grant",
+    "message": "Gratis tokenstipend",
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "Brave annonsebelønninger!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Your rewards grant from Brave Ads is on its way.",
+    "message": "Belønningen din fra Brave Ads er på vei.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Your Brave Ads Token Grant",
+    "message": "Din token fra Brave Ads",
     "description": "Token title on success screen for ads"
   }
 }

@@ -61,8 +61,7 @@ TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeaders) {
   request->set_top_frame_origin(url::Origin::Create(tab_url));
 
   scoped_refptr<HttpResponseHeaders> headers(
-      new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(
-          kRawHeaders, strnlen(kRawHeaders, sizeof kRawHeaders))));
+      new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(kRawHeaders)));
 
   RemoveTrackableSecurityHeadersForThirdParty(request.get(), nullptr, &headers);
   for (auto header : *TrackableSecurityHeaders()) {
@@ -82,8 +81,7 @@ TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeadersMixedCase) {
   request->set_top_frame_origin(url::Origin::Create(tab_url));
 
   scoped_refptr<HttpResponseHeaders> headers(
-      new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(
-          kRawHeaders, strnlen(kRawHeaders, sizeof kRawHeaders))));
+      new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(kRawHeaders)));
 
   RemoveTrackableSecurityHeadersForThirdParty(request.get(), nullptr, &headers);
   for (auto header : *TrackableSecurityHeaders()) {
@@ -103,8 +101,7 @@ TEST_F(BraveNetworkDelegateBaseTest, RetainTrackableSecurityHeaders) {
   request->set_top_frame_origin(url::Origin::Create(tab_url));
 
   scoped_refptr<HttpResponseHeaders> headers(
-      new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(
-          kRawHeaders, strnlen(kRawHeaders, sizeof kRawHeaders))));
+      new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(kRawHeaders)));
 
   RemoveTrackableSecurityHeadersForThirdParty(request.get(), nullptr, &headers);
   for (auto header : *TrackableSecurityHeaders()) {

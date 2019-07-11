@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/modules/BUILD.gn b/third_party/blink/renderer/modules/BUILD.gn
+index 1196b96ca6d9fc2c1e596f9cbcc2bc9b1ee2b6bc..063c8f0fe271c163d373639875e42be7ea8b047a 100644
+--- a/third_party/blink/renderer/modules/BUILD.gn
++++ b/third_party/blink/renderer/modules/BUILD.gn
+@@ -181,6 +181,7 @@ target("jumbo_" + modules_target_type, "modules") {
+ 
+   public_deps = sub_modules
+   allow_circular_includes_from = sub_modules
++  public_deps += [ "//brave/third_party/blink/renderer" ]
+ 
+   if (!is_android) {
+     deps += [ "//third_party/blink/renderer/modules/serial" ]

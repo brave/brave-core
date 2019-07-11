@@ -68,13 +68,9 @@
 <translation id="5874882355102994015">Brave no puede mostrar la vista previa de impresión si falta el visor de PDF incorporado.</translation>
 <translation id="8880183781256147665">Agregar a Brave...</translation>
 <translation id="3561569806301739367">Brave bloqueó <ph name="FILE_NAME"/> porque es posible que sea un archivo peligroso.</translation>
-<translation id="6205431412329939367">Brave bloqueó <ph name="FILE_NAME"/> porque podría ser un archivo peligroso. La "Protección avanzada" se encarga de tu seguridad.</translation>
 <translation id="9067428552314418522">Brave bloqueó este archivo porque es peligroso.</translation>
-<translation id="2938460345748897177">Brave bloqueó este archivo porque es peligroso. La "Protección avanzada" se encarga de tu seguridad.</translation>
 <translation id="4168372721886011198">Brave bloqueó <ph name="FILE_NAME"/> porque es un archivo peligroso.</translation>
-<translation id="8858456697111532356">Brave bloqueó <ph name="FILE_NAME"/> porque es un archivo peligroso. La "Protección avanzada" se encarga de tu seguridad.</translation>
 <translation id="89367911614620585">Brave bloqueó este archivo porque podría ser peligroso.</translation>
-<translation id="8943391224520748272">Brave bloqueó este archivo porque podría ser peligroso. La "Protección avanzada" se encarga de tu seguridad.</translation>
 <translation id="9183662282810237335">¿Deseas salir de Brave de todos modos?</translation>
 <translation id="3834935463915107022">¿Deseas salir de Brave de todos modos?</translation>
 <translation id="8797356639448065696">Brave está en modo de segundo plano</translation>
@@ -137,8 +133,6 @@ Si accedes de todos modos, se fusionará la información de Brave, como los favo
 <translation id="6746636977031158624">El Sistema operativo Brave no pudo sincronizar los datos porque la información de acceso de la cuenta está desactualizada.</translation>
 <translation id="2999152167963026588">El Sistema operativo Brave no pudo sincronizar los datos porque la sincronización no está disponible para el dominio.</translation>
 <translation id="1459786048951724030">El Sistema operativo Brave no pudo sincronizar los datos porque se produjo un error de acceso.</translation>
-<translation id="2887570477425111999">Guardar los detalles en Brave</translation>
-<translation id="193559141530782783">Brave almacenará de forma segura tus datos personales para que no tengas que volver a escribirlos.</translation>
 <translation id="663059986967017181">Se copió en Brave.</translation>
 <translation id="1457432835062259213">Selector de aplicaciones de Brave</translation>
 <translation id="82609232232243542">Acceder a Brave</translation>
@@ -176,7 +170,7 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="1912973375560256099">Regla de entrada para que Brave permita el tráfico mDNS.</translation>
 <translation id="8207657266087451193">Si una imagen no tiene una descripción útil, Brave intentará proporcionarte una. Para crear descripciones, se envían las imágenes a Brave Software. Puedes desactivar esta opción en la configuración en cualquier momento.</translation>
 <translation id="5499063270485366718">Si una imagen no tiene una descripción útil, Brave intentará proporcionarte una. Para crear descripciones, se envían las imágenes a Brave Software.</translation>
-<translation id="3870835867536344658">Se usará el mismo corrector ortográfico que se emplea en la Búsqueda de Brave Software. El texto que escribas en el navegador se enviará a Brave Software. Puedes modificar este comportamiento en la configuración en cualquier momento.</translation>
+<translation id="215320507915280336">Se usará el mismo corrector ortográfico que se emplea en la Búsqueda de Brave Software. El texto que escribes en el navegador se envía a Brave Software. Puedes modificar este comportamiento en la configuración en cualquier momento.</translation>
 <translation id="1807774211756215222">Abrir vínculo en una pes&amp;taña nueva de Brave</translation>
 <translation id="4624945300945265642">Abrir vínculo en una ventana de navegación de incó&amp;gnito de Brave</translation>
 <translation id="7863882214613921971">Abrir vínculo en una pes&amp;taña nueva de Brave</translation>
@@ -233,23 +227,17 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="8933981935877469796">Selecciona <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Haz clic en <ph name="BEGIN_BOLD"/>Cambiar de todas formas<ph name="END_BOLD"/>, si aparece la opción</translation>
 <translation id="3507835409099344374">Ir a la configuración de notificaciones Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Hay una actualización de Brave disponible}=1{Hay una actualización de Brave disponible}other{Hay una actualización de Brave disponible hace # días}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Hay una actualización de Brave disponible}=1{Hay una actualización de Brave disponible}other{Hay una actualización de Brave disponible hace # días}}</translation>
 <translation id="720532315408041257">Tu administrador te solicita que reinicies Brave para aplicar esta actualización</translation>
-<translation id="6639482638305253477">{0,plural, =1{Reiniciar Brave en el transcurso de un día}other{Reiniciar Brave en el transcurso de # días}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave se reiniciará en una hora}other{Brave se reiniciará en # horas}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave se reiniciará en 1 minuto}other{Brave se reiniciará en # minutos}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave se reiniciará ahora}=1{Brave se reiniciará en 1 segundo}other{Brave se reiniciará en # segundos}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Reinicia Brave en el transcurso de un día}other{Reinicia Brave en el transcurso de # días}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Se reiniciará Brave en una hora}other{Se reiniciará Brave en # horas}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Se reiniciará Brave en 1 minuto}other{Se reiniciará Brave en # minutos}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Se reiniciará Brave ahora}=1{Se reiniciará Brave en 1 segundo}other{Se reiniciará Brave en # segundos}}</translation>
 <translation id="7595187113648413294">Tu administrador necesita que reinicies Brave para aplicar esta actualización</translation>
-<translation id="56801943271475640">{0,plural, =0{Hay una actualización del SO Brave disponible}=1{Hay una actualización del SO Brave disponible}other{Hay una actualización del SO Brave disponible hace # días}}</translation>
-<translation id="5715362474140341294">Tu administrador te solicita que reinicies el SO Brave para aplicar esta actualización</translation>
-<translation id="8094834892392729950">{0,plural, =1{Reiniciar el SO Brave en el transcurso de un día}other{Reiniciar el SO Brave en el transcurso de # días}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{El SO Brave se reiniciará en una hora}other{El SO Brave se reiniciará en # horas}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{El SO Brave se reiniciará en 1 minuto}other{El SO Brave se reiniciará en # minutos}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{El SO Brave se reiniciará ahora}=1{El SO Brave se reiniciará en 1 segundo}other{El SO Brave se reiniciará en # segundos}}</translation>
-<translation id="8559452515617838628">Tu administrador necesita que reinicies el SO Brave para aplicar una actualización</translation>
 <translation id="3052349005266761501">Iniciando Brave…</translation>
 <translation id="1197672524850678392">No se pudo iniciar Brave. Vuelve a intentarlo.</translation>
 <translation id="6040143037577758943">Cerrar</translation>
+<translation id="5147525139567260139">Compartir una pestaña de Brave</translation>
 <translation id="8541922081612557424">Acerca de Brave</translation>
 <translation id="3262506503470845422">Obtener ayuda con Brave</translation>
 <translation id="1864557848095568223">Actualizando Brave</translation>

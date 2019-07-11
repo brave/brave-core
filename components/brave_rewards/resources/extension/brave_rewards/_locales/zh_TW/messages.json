@@ -346,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your rewards from Ads are here!",
+    "message": "您從廣告獲得的獎勵就在這裡！",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -413,8 +413,16 @@
     "message": "小費",
     "description": "Icon label for Twitter tips"
   },
+  "redditTipsHoverText": {
+    "message": "給這篇文章小費",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "小費",
+    "description": "Icon label for Reddit tips"
+  },
   "verifiedPublisherNotification": {
-    "message": "Creator $name$ recently verified",
+    "message": "創作者 $name$ 最近已被驗證",
     "description": "Notification text that tells user which publisher just verified",
     "placeholders": {
       "name": {
@@ -424,11 +432,11 @@
     }
   },
   "pendingNotEnoughFundsNotification": {
-    "message": "You have pending tips due to insufficient funds",
+    "message": "您有因為資金不足而產生的擱置中的小費",
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Pending Contribution",
+    "message": "擱置中的貢獻",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -444,15 +452,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "Brave 廣告獎勵",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Your rewards grant from Brave Ads is on its way.",
+    "message": "您即將獲得從 Brave 廣告而來的獎勵。",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Your Brave Ads Token Grant",
+    "message": "您的 Brave 廣告代幣",
     "description": "Token title on success screen for ads"
   }
 }

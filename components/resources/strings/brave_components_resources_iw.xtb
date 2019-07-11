@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">ערוך עדיפויות</translation>
 <translation id="7606029853066610626">צפייה וניהול של סימניות</translation>
 <translation id="5550994254534676787">הצג היסטוריית גלישה</translation>
+<translation id="1742484101357469636">הגדרות לוח המכשירים</translation>
+<translation id="8320281346741574991">הצג תמונת רקע</translation>
 <translation id="6165508094623778733">למדו עוד</translation>
 <translation id="8730621377337864115">סיום</translation>
 <translation id="6248988683584659830">הגדרות חיפוש</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave מקל על הגדרת הסביבה הרגילה שלכם על ידי יבוא סימניות והגדרות מדפדפנים אחרים המותקנים במחשב שלכם.</translation>
 <translation id="8275038454117074363">יבוא</translation>
 <translation id="5540323067375019678">נהלו את המגן שלכם</translation>
+<translation id="3278033011827237847">הגן מפני מודעות ועוקבים החודרים לפרטיות בזמן הגלישה עם Brave Shields. כבה את Shields אם נראה כי האתר אינו עובד כשורה.</translation>
 <translation id="3366308997091824722">הגדרות מגן:</translation>
-<translation id="3884404068544758153">שנו את מנוע החיפוש שלכם</translation>
+<translation id="4764692524839457597">ברירת מחדל</translation>
+<translation id="3108122610701115301">הגדר ברירת מחדל</translation>
+<translation id="2469440407442116729">בחר מנוע חיפוש</translation>
 <translation id="438216590634144114">בחרו את מנוע החיפוש שבו תרצו להשתמש כברירת מחדל בעת חיפוש באינטרנט מסרגל הכתובות.</translation>
-<translation id="8428213095426709021">הגדרות</translation>
+<translation id="5804484488647369316">הגדר מנוע חיפוש ברירת מחדל</translation>
+<translation id="4428458837269935199">לחוויית חיפוש פרטית יותר, נסו את DuckDuckGo.</translation>
 <translation id="513635702954746724">בחרו את ערכת הצבע שלכם</translation>
 <translation id="6842850080200126305">הגדירו את הצבע של סרגל הכלים שלכם על-ידי בחירה באפשרות בהיר או כהה בפאנל ההגדרות.</translation>
 <translation id="2801098717523961746">בחרו את העיצוב שלכם</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">אגרו Tokens על ידי צפייה בפרסומות ב-Brave. הפרסומות המוצגות לכם מבוססות על תחומי העניין שלכם, כפי שנגזרו מהתנהגות הגלישה שלכם. שום מידע אישי או היסטוריית גלישה לעולם לא יוצאים מהדפדפן.</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
 <translation id="1527222983464337010">דרך אוטומטית לתמוך בבעלי אתרים ויוצרי תוכן. הגדירו תשלום חודשי וגלשו כרגיל. האתרים שבהם אתם מבקרים מקבלים את התרומות שלכם באופן אוטומטי, בהתבסס על תשומת הלב שלכם כפי שהיא נמדדת על ידי Brave.</translation>
+<translation id="20281847067919078">תגמולים מוערכים שממתינים</translation>
+<translation id="8593551638387217772">תאריך התשלום הבא</translation>
+<translation id="319209088187794725">התראות פרסומות שהתקבלו החודש</translation>
 <translation id="4229016885653790965">סליחה! פרסומות אינן זמינות עדיין באזור שלך.</translation>
 <translation id="654711254769318398">דפי מודעות שנצפו</translation>
 <translation id="2532127066761785857">מספר מרבי של מודעות שהוצגו</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">דקה</translation>
 <translation id="9031738692126722094">נא לאפשר טיפים על רמת התוכן באתרים אלה</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">טוויטר</translation>
 <translation id="3920963435109110161">תגמלו מיידית, כשתגלו אוצרות</translation>
 <translation id="6135431587052937035">תמכו באתרים האהובים עליכם במתן טיפים חודשיים</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">מצטערים, נראה שמענק זה כבר נתבע.</translation>
 <translation id="282693359045252357">תאריך הטיפ החודשי הבא</translation>
 <translation id="6231182869178328516">הרגע נתתי טיפ <ph name="NAME">$1<ex>user</ex></ph> באמצעות דפדפן Brave. אפשר לראות את זה ב-https://brave.com/tips.</translation>
+<translation id="8404935570206006581">תנו טיפ עם Brave</translation>
 <translation id="7422678632904904341">סכום:</translation>
 <translation id="5923611424721173182">הסדר נוכחי</translation>
 <translation id="5457113250005438886">לא תקף</translation>
@@ -214,6 +225,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="7277134233385925078">הגדר טיפ חודשי</translation>
 <translation id="8003573781961874199">הורידו כקובץ PDF</translation>
 <translation id="298067735430872465">צבירה מפרסומות</translation>
+<translation id="2266556115441975588">התגמולים שלכם מ-Ads הגיעו!</translation>
 <translation id="8764029012618014430">הפעל טיפים</translation>
 <translation id="3412655388715513818">מלבד אתר זה</translation>
 <translation id="418343137736963579">המספר הכולל של האתרים שאין באפשרותכם "לתרום להם אוטומטית":</translation>
@@ -271,6 +283,8 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="194625454574835815">מפתח שחזור</translation>
 <translation id="6354568176665589146">חוזרים</translation>
 <translation id="7577100371127227294">טיפים חודשיים</translation>
+<translation id="2391095793008133394">תנו טיפ ל-{{ user }} עבור הפוסט שלו/ה:</translation>
+<translation id="7557413530932469222">תנו טיפ ל-{{ user }} עבור הפוסט שלו/ה!</translation>
 <translation id="1110535155349301542">הסר</translation>
 <translation id="8942997470474842562">ביצעתם הקצאה של {{ }} BAT ליוצרים שטרם נרשמו לקבלת תגמולים. הדפדפן ימשיך לנסות לתרום עד אשר יאומתו או עד שיחלפו 90 יום.</translation>
 <translation id="8759753423332885148">למד עוד.</translation>
@@ -307,6 +321,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="259138486959961679">הציגו את כל {{numItems}} הפריטים</translation>
 <translation id="7857284676033058221">ראו את כל {{numSites}} האתרים</translation>
 <translation id="3536298624341433814">שלח את הטיפ שלי</translation>
+<translation id="8428213095426709021">הגדרות</translation>
 <translation id="1792148354504719133">אתר</translation>
 <translation id="5944430251223015324">אתרים</translation>
 <translation id="1834493631938747505">ספר/י לאחרים על הטיפ שלך.</translation>
@@ -356,7 +371,15 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="4346944508027912677">ממתין עד</translation>
 <translation id="7410549756000115387">אין תרומות ממתינות…</translation>
 <translation id="1963227389609234879">הסר הכל</translation>
+<translation id="1170315781901539495">אתרים שלא נכללו</translation>
+<translation id="5119190679543565400">שחזר אתר זה</translation>
+<translation id="9075700728717335924">לא כללתם</translation>
+<translation id="4862817811647633830">חלק מאתרים בתרומה האוטומטית.</translation>
 <translation id="923467487918828349">הצג הכל</translation>
+<translation id="5471305206221894680">אתרים נתמכים</translation>
+<translation id="2306169361186864012">תגמולים של Brave Ads!</translation>
+<translation id="3757873395477273033">מענק התגמולים שלכם מ-Brave Ads בדרך.</translation>
+<translation id="8101881066646819737">מענק הטוקן של Brave Ads שלכם</translation>
 <translation id="2151535059686617995">זהו יום המזל שלכם!</translation>
 <translation id="6255773350565723852">מענק האסימון שלכם בדרכו אליכם.</translation>
 <translation id="1181037720776840403">הסר</translation>

@@ -32,7 +32,7 @@
 namespace {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 void OverridePrefsForPrivateProfileUserPrefs(Profile* profile) {
-  if (profile->GetProfileType() == Profile::REGULAR_PROFILE)
+  if (profile->IsRegularProfile())
     return;
 
   // rewards button should be hidden on guest and tor profile.

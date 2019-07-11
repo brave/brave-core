@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Sustav nagrada u pregledniku Brave</translation>
 <translation id="7942180974165298215">Blokiranje oglasa u pregledniku Brave</translation>
 <translation id="6406506848690869874">Sinkronizacija</translation>
+<translation id="8488282162676695335">Braveov novčanik</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dopušteno u pregledniku Brave.</translation>
 <translation id="7450557937477381864">Zatvori Chrome</translation>
 <translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
@@ -28,7 +29,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="3218385319396786393">Na ovoj je stranici blokirana automatska reprodukcija</translation>
 <translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Nastavi blokirati automatsku reprodukciju</translation>
+<translation id="5883458389055721080">Društvo Brave nije pregledalo razinu sigurnosti i zaštite ovog dodatka. Instalirajte samo ovaj dodatak ako vjerujete programeru.</translation>
 <translation id="2044383478723007273">Boje preglednika Brave</translation>
+<translation id="2814998458708016836">Upotrijebi široku adresnu traku</translation>
 <translation id="6123134130710658846">Sakrij gumbe za nagrade Brave</translation>
 <translation id="7635711399568194460">Sakrivaju se gumbi za nagrade Brave u lokacijskoj traci kada značajka Nagrade Brave nije omogućena</translation>
 <translation id="7965178729203412357">Novi identitet za Tor</translation>
@@ -47,13 +50,25 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="4472575034687746823">Početak korištenja</translation>
 <translation id="3400357268283240774">Dodatne postavke</translation>
 <translation id="6303294677342628402">Štitovi</translation>
+<translation id="7133511168130368997">Blokiraj elemente za praćenje i oglase koji se prikazuju na internetu.</translation>
+<translation id="2761825942249694703">Ovo su zadane postavke značajke Štitovi. Zatim primijenite značajku na sva mrežna mjesta, osim ako ne želite promijeniti nešto u okviru Štitovi na određenom mrežnom mjestu. Mijenjanjem ovih postavki ne mijenjaju se postojeće postavke koje su prethodno postavljene za dotično mjesto.</translation>
+<translation id="8754605759692119662">Ovom se značajkom blokira većina oglasa na mrežnim mjestima, ali ne i Braveovi privatni oglasi kojima se upravlja u</translation>
+<translation id="6388201778088078932">postavkama.</translation>
 <translation id="9185018653595759199">Blokiranje društvenih mreža</translation>
+<translation id="5709627087332022422">Blokiraj elemente za praćenje na više mjesta</translation>
+<translation id="9075744464571452108">Prepoznavanje uređaja</translation>
+<translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
+<translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="7498695072878479744">Dopusti gumbe za prijavu u uslugu Google na mrežnim mjestima trećih strana</translation>
 <translation id="863171915776379000">Dopusti prijave u društvenu mrežu Facebook i ugrađene objave</translation>
 <translation id="5165042248369837294">Dopusti ugrađene objave na društvenoj mreži Twitter</translation>
 <translation id="958971637207126733">Dopusti ugrađene objave na mreži LinkedIn</translation>
+<translation id="4699812599455071925">Blokiraj samo kolačiće za praćenje na više mjesta</translation>
 <translation id="5657156137487675418">Dopusti sve kolačiće</translation>
 <translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
+<translation id="3084022390368021391">Blokiraj samo pokušaje prepoznavanja uređaja na više mjesta</translation>
+<translation id="1847422622180531843">Dopusti sve pokušaje prepoznavanja uređaja</translation>
+<translation id="8375051111011093523">Blokiraj sve pokušaje prepoznavanja uređaja</translation>
 <translation id="8942080017911802454">Pravila obrade IP-a sučelja WebRTC</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="8798099450830957504">Zadano</translation>
@@ -75,4 +90,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="9181207987584064303">Pogledati u Prodavnici mrežnih ekstenzija</translation>
 <translation id="4846154056248462491">Na izlasku</translation>
 <translation id="5057399635433117814">Prevesti ovu stranicu? Ovom se radnjom šalju svi testovi na ovoj stranici poduzeću Microsoft na prevođenje.</translation>
+<translation id="3371343170427636147">Aplikacije preglednika Brave za spavanje</translation>
+<translation id="4097979995947147464">Aplikacije beta preglednika Brave</translation>
+<translation id="8303432794159193481">Razvojne aplikacije preglednika Brave</translation>
+<translation id="8292967014767479012">Aplikacije preglednika Brave</translation>
+<translation id="4743468424889072281">Razvojne aplikacije preglednika Brave</translation>
 </translationbundle>

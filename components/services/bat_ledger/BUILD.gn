@@ -1,5 +1,8 @@
 static_library("lib") {
-  visibility = [ "//brave/utility" ]
+  visibility = [
+    "//brave/utility:*",
+    "//brave/test:*"
+  ]
 
   sources = [
     "bat_ledger_app.cc",
@@ -13,12 +16,11 @@ static_library("lib") {
   ]
 
   public_deps = [
-    "//brave/components/services/bat_ledger/public/interfaces",
+    "public/interfaces",
   ]
 
   deps = [
     "//base",
-    "//brave/vendor/bat-native-ads",
     "//brave/vendor/bat-native-ledger",
     "//services/service_manager/public/cpp",
   ]

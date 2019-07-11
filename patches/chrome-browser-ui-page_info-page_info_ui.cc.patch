@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_info/page_info_ui.cc b/chrome/browser/ui/page_info/page_info_ui.cc
-index 014699118c51880799785b17865d8e1faae7333e..992c9f2cdba713c54e8a4036fd5884bf7fd96211 100644
+index 5acbbbcb97f1ae82dcebfcc7d89b6fc14597367c..c10d7fceb05b963b13dc06b2717af335c6fbb06b 100644
 --- a/chrome/browser/ui/page_info/page_info_ui.cc
 +++ b/chrome/browser/ui/page_info/page_info_ui.cc
-@@ -28,6 +28,7 @@
+@@ -29,6 +29,7 @@
  #if defined(OS_ANDROID)
  #include "chrome/browser/android/android_theme_resources.h"
  #else
@@ -10,13 +10,13 @@ index 014699118c51880799785b17865d8e1faae7333e..992c9f2cdba713c54e8a4036fd5884bf
  #include "chrome/app/vector_icons/vector_icons.h"
  #include "chrome/browser/profiles/profile.h"
  #include "chrome/common/pref_names.h"
-@@ -551,6 +552,9 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
+@@ -558,6 +559,9 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
      case CONTENT_SETTINGS_TYPE_USB_GUARD:
        icon = &vector_icons::kUsbIcon;
        break;
 +    case CONTENT_SETTINGS_TYPE_AUTOPLAY:
 +      icon = &kAutoplayStatusIcon;
 +      break;
-     default:
-       // All other |ContentSettingsType|s do not have icons on desktop or are
-       // not shown in the Page Info bubble.
+ #if !defined(OS_ANDROID)
+     case CONTENT_SETTINGS_TYPE_SERIAL_GUARD:
+       icon = &vector_icons::kSerialPortIcon;

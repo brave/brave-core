@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Upraviť preferencie</translation>
 <translation id="7606029853066610626">Zobraziť a spravovať záložky</translation>
 <translation id="5550994254534676787">Zobraziť históriu prehliadania</translation>
+<translation id="1742484101357469636">Nastavenia ovládacieho panela</translation>
+<translation id="8320281346741574991">Zobraziť obrázok pozadia</translation>
 <translation id="6165508094623778733">Dozvedieť sa viac</translation>
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="6248988683584659830">Nastavenie vyhľadávania</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">S prehliadačom Brave je jednoduché nastaviť si svoje obvyklé prostredie pomocou importovania vašich záložiek a nastavení z iných prehliadačov vo vašom počítači.</translation>
 <translation id="8275038454117074363">Importovať</translation>
 <translation id="5540323067375019678">Spravujte svoje štíty</translation>
+<translation id="3278033011827237847">Pomocou Brave Štíty chráni pred reklamami a trackermi, ktoré útočia na súkromie. Štíty nastavte na hodnotu „nadol“, ak sa zdá, že stránka ne pracuje správne.</translation>
 <translation id="3366308997091824722">Nastavenia ochrany</translation>
-<translation id="3884404068544758153">Zmeňte svoj vyhľadávač</translation>
+<translation id="4764692524839457597">predvolené</translation>
+<translation id="3108122610701115301">Nastaviť predvolené</translation>
+<translation id="2469440407442116729">Vyberte vyhľadávač</translation>
 <translation id="438216590634144114">Ak prehľadávate web z adresného riadku, vyberte vyhľadávací nástroj, ktorý by ste chceli používať predvolene.</translation>
-<translation id="8428213095426709021">Nastavenia</translation>
+<translation id="5804484488647369316">Nastaviť predvolený vyhľadávač</translation>
+<translation id="4428458837269935199">Ak chcete mať väčší zážitok z anonymného vyhľadávania, skúste DuckDuckGo.</translation>
 <translation id="513635702954746724">Vyberte si svoj farebný motív</translation>
 <translation id="6842850080200126305">Nastavte farbu panela s nástrojmi výberom svetlej alebo tmavej možnosti z panela nastavení.</translation>
 <translation id="2801098717523961746">Vyberte si svoj motív</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Získajte žetóny za sledovanie reklám v Brave. Tieto reklamy sú založené na Vašich záujmoch, ktoré vyplývajú z vášho surfovania. Vaše osobné údaje a história prehliadania nikdy neopustia váš prehliadač.</translation>
 <translation id="6112368337882254910">Automaticky prispieť</translation>
 <translation id="1527222983464337010">Automatický spôsob podpory vydavateľov a tvorcov obsahu. Stanovte mesačnú platbu a vyhľadávajte normálne. Stránky, ktoré navštívite, automaticky získajú váš príspevok, čo vychádza z vašej pozornosti zaznamenanej prehliadačom Brave.</translation>
+<translation id="20281847067919078">Odhadované čakajúce odmeny</translation>
+<translation id="8593551638387217772">Dátum ďalšej platby</translation>
+<translation id="319209088187794725">Oznámenia o reklame prijaté tento mesiac</translation>
 <translation id="4229016885653790965">Bohužiaľ! Vo vašej lokalite nie sú reklamy zatiaľ k dispozícii.</translation>
 <translation id="654711254769318398">Zobrazené stránky s reklamami</translation>
 <translation id="2532127066761785857">Maximálny počet zobrazených reklám</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minúta</translation>
 <translation id="9031738692126722094">Povoliť na týchto stránkach príspevky za úroveň obsahu</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Prispejte na mieste keď nájdete drahokamy.</translation>
 <translation id="6135431587052937035">Podporujte svoje obľúbené stránky pravidelnými mesačnými príspevkami.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Ľutujeme, zdá sa, že tento grant už bol nárokovaný.</translation>
 <translation id="282693359045252357">Dátum nasledujúceho mesačného príspevku</translation>
 <translation id="6231182869178328516">Práve som dal príspevok <ph name="NAME">$1<ex>user</ex></ph> pomocou prehliadača Brave. Skontrolujte to na stránke https://brave.com/tips.</translation>
+<translation id="8404935570206006581">Príspevok s Brave</translation>
 <translation id="7422678632904904341">Čiastka:</translation>
 <translation id="5923611424721173182">Súčasné vyrovnanie</translation>
 <translation id="5457113250005438886">Neplatný</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Nastaviť mesačný príspevok</translation>
 <translation id="8003573781961874199">Stiahnuť ako PDF</translation>
 <translation id="298067735430872465">Zárobky z reklám</translation>
+<translation id="2266556115441975588">Vaše odmeny za sledovanie reklám sú tu!</translation>
 <translation id="8764029012618014430">Aktivovať tipy</translation>
 <translation id="3412655388715513818">Vylúčiť túto stránku</translation>
 <translation id="418343137736963579">Celkový počet stránok, ktoré ste vylúčili z automatického prispievania:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Kľúč pre obnovu</translation>
 <translation id="6354568176665589146">Opakujúci sa</translation>
 <translation id="7577100371127227294">Mesačné príspevky</translation>
+<translation id="2391095793008133394">Prispejte  {{ user }} za príspevok!</translation>
+<translation id="7557413530932469222">Prispejte @{{ user }} za jeho príspevok!</translation>
 <translation id="1110535155349301542">odstrániť</translation>
 <translation id="8942997470474842562">Určili ste {{reservedAmount}} BAT pre tvorcov, ktorí sa zatiaľ nezaregistrovali, aby dostávali príspevky. Váš prehliadač sa bude snažiť prispievať, kým nedôjde k overeniu alebo kým neprejde 90 dní.</translation>
 <translation id="8759753423332885148">Dozvedieť sa viac.</translation>
@@ -277,7 +291,7 @@
 <translation id="3626186271103896082">Navýšiť peňaženku</translation>
 <translation id="5717619667204259673">Uchovávajte tento obnovovací kľúč v bezpečí.</translation>
 <translation id="4699702339303280827">Túto klávesu môžete kedykoľvek použiť na vrátenie svojej peňaženky späť, ak sa niečo stane s vaším prehliadačom alebo počítačom. Nezabudnite si ju však chrániť — každý, kto získa tento kľúč, vám môže vašu peňaženku ukradnúť. Bude asi najbezpečnejšie zapísať si ho na kus papiera alebo kdekoľvek inde, kde si uchovávate dôležité informácie.</translation>
-<translation id="7354412786785889047">Tohoto tvorcu obsahu môžete podporiť poslaním príspevku. Je to’ spôsob ako mu poďakovať za vytvorenie skvelého obsahu. Verifikovaní tvorcovia dostanú zaplatené za svoje príspevky v prvom týždni každého kalendárneho mesiaca.</translation>
+<translation id="7354412786785889047">Tohoto tvorcu obsahu môžete podporiť poslaním príspevku. Je to spôsob ako mu poďakovať za vytvorenie skvelého obsahu. Verifikovaní tvorcovia dostanú zaplatené za svoje príspevky v prvom týždni každého kalendárneho mesiaca.</translation>
 <translation id="3475063317678050010">Ak chcete, môžete si naplánovať pravidelné mesačné príspevky na podporu tohto tvorcu.</translation>
 <translation id="3074127054582480056">Pozornosť</translation>
 <translation id="822513417008209372">Práve podporujete</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Pozrieť všetkých {{numItems}} položiek</translation>
 <translation id="7857284676033058221">Pozrieť všetkých {{numSites}} stránok</translation>
 <translation id="3536298624341433814">Poslať príspevok</translation>
+<translation id="8428213095426709021">Nastavenia</translation>
 <translation id="1792148354504719133">stránka</translation>
 <translation id="5944430251223015324">stránky</translation>
 <translation id="1834493631938747505">Povedzte ostatným o svojom príspevku.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Čakajúce do</translation>
 <translation id="7410549756000115387">Žiadne čakajúce dary…</translation>
 <translation id="1963227389609234879">Odstrániť všetko</translation>
+<translation id="1170315781901539495">Vylúčené stránky</translation>
+<translation id="5119190679543565400">Obnoviť túto stránku</translation>
+<translation id="9075700728717335924">Vylúčili ste</translation>
+<translation id="4862817811647633830">stránky z Auto-Contribute.</translation>
 <translation id="923467487918828349">Zobraziť všetko</translation>
+<translation id="5471305206221894680">Podporované stránky</translation>
+<translation id="2306169361186864012">Brave odmeny za sledovanie reklám!</translation>
+<translation id="3757873395477273033">Váš grant od Brave reklám je už na ceste.</translation>
+<translation id="8101881066646819737">Grant vášho tokenu Brave reklamy</translation>
 <translation id="2151535059686617995">Toto je váš šťastný deň!</translation>
 <translation id="6255773350565723852">Váš kupónový grant je na ceste.</translation>
 <translation id="1181037720776840403">Odstrániť</translation>

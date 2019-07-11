@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/optimize_webui.py b/chrome/browser/resources/optimize_webui.py
-index 124f748150d8952575c591eaf7deea0da76c4092..1745b508d58d35f6d03c73fe2dd31b5cc1e0b7ec 100755
+index e7804916b41259968fb33a8499c64cd522a5db05..5723d1a552531f0cc18d9d17657bada27f9ab2ca 100755
 --- a/chrome/browser/resources/optimize_webui.py
 +++ b/chrome/browser/resources/optimize_webui.py
 @@ -45,6 +45,8 @@ _POLYMER_PATH = os.path.join(
@@ -11,7 +11,7 @@ index 124f748150d8952575c591eaf7deea0da76c4092..1745b508d58d35f6d03c73fe2dd31b5c
  _VULCANIZE_BASE_ARGS = [
    # These files are already combined and minified.
    '--exclude', 'chrome://resources/html/polymer.html',
-@@ -58,6 +60,8 @@ _VULCANIZE_BASE_ARGS = [
+@@ -60,6 +62,8 @@ _VULCANIZE_BASE_ARGS = [
    '--exclude', 'chrome://resources/css/text_defaults.css',
    '--exclude', 'chrome://resources/css/text_defaults_md.css',
    '--exclude', 'chrome://resources/js/load_time_data.js',
@@ -20,7 +20,7 @@ index 124f748150d8952575c591eaf7deea0da76c4092..1745b508d58d35f6d03c73fe2dd31b5c
  
    '--inline-css',
    '--inline-scripts',
-@@ -72,7 +76,8 @@ _URL_MAPPINGS = [
+@@ -74,7 +78,8 @@ _URL_MAPPINGS = [
      ('chrome://resources/css/', _CSS_RESOURCES_PATH),
      ('chrome://resources/html/', _HTML_RESOURCES_PATH),
      ('chrome://resources/js/', _JS_RESOURCES_PATH),

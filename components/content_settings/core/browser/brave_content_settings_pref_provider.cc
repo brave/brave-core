@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
+
+#include <memory>
+#include <utility>
 
 #include "base/bind.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
@@ -43,7 +47,7 @@ bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
     const ResourceIdentifier& resource_identifier,
-    base::Value* in_value) {
+    std::unique_ptr<base::Value>&& in_value) {
   // Flash's setting shouldn't be reached here.
   // Its content type is plugin and id is empty string.
   // One excpetion is default setting. It can be persisted.
@@ -53,9 +57,9 @@ bool BravePrefProvider::SetWebsiteSetting(
            secondary_pattern == ContentSettingsPattern::Wildcard());
   }
 
-  return PrefProvider::SetWebsiteSetting(
-      primary_pattern, secondary_pattern,
-      content_type, resource_identifier, in_value);
+  return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
+                                         content_type, resource_identifier,
+                                         std::move(in_value));
 }
 
 }  // namespace content_settings

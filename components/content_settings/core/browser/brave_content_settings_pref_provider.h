@@ -1,9 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_CONTENT_SETTINGS_PREF_PROVIDER_H_
 #define BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_CONTENT_SETTINGS_PREF_PROVIDER_H_
+
+#include <memory>
 
 #include "components/content_settings/core/browser/content_settings_pref_provider.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -31,7 +34,7 @@ class BravePrefProvider : public PrefProvider {
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsType content_type,
       const ResourceIdentifier& resource_identifier,
-      base::Value* value) override;
+      std::unique_ptr<base::Value>&& value) override;
 
   // PrefProvider::pref_change_registrar_ alreay has plugin type.
   PrefChangeRegistrar brave_pref_change_registrar_;

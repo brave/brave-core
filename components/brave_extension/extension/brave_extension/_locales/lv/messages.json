@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "Bloķēti starpvietņu izsekotāji",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "Bloķēti starpvietņu sīkfaili",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Cross-site device recognition blocked",
+    "message": "Bloķēta starpvieņu ierīces atpazīšana",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Device recognition attempts blocked",
+    "message": "Bloķēti ierīces atpazīšanas mēģinājumi",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "All device recognition attempts allowed",
+    "message": "Atļauti visi ierīču atpazīšanas mēģinājumi",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -120,15 +120,15 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "Vienreiz bloķēta",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "Vienreiz atļauta",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "Atļaut skriptus vienreiz",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -146,5 +146,17 @@
   "changeDefaults": {
     "message": "Mainīt globālos aizsarga noklusējuma iestatījumus",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "Bloķēt elementu, izmantojot atlasītāju",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "Dzēst šai vietnei CSS noteikumus",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "Visām vietnēm dzēst CSS noteikumus",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

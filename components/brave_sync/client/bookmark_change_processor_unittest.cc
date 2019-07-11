@@ -283,8 +283,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetClearMeta) {
   model()->AddURL(GetPendingNodeRoot(), 0,
                   base::ASCIIToUTF16("A.com - title"),
                   GURL("https://a.com/"));
-  EXPECT_FALSE(GetDeletedNodeRoot()->empty());
-  EXPECT_FALSE(GetPendingNodeRoot()->empty());
+  EXPECT_FALSE(GetDeletedNodeRoot()->children().empty());
+  EXPECT_FALSE(GetPendingNodeRoot()->children().empty());
 
   change_processor()->Reset(true);
 
@@ -292,8 +292,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetClearMeta) {
   EXPECT_FALSE(HasAnySyncMetaInfo(node_a));
   EXPECT_FALSE(HasAnySyncMetaInfo(node_b));
   EXPECT_FALSE(HasAnySyncMetaInfo(node_c));
-  EXPECT_TRUE(GetDeletedNodeRoot()->empty());
-  EXPECT_TRUE(GetPendingNodeRoot()->empty());
+  EXPECT_TRUE(GetDeletedNodeRoot()->children().empty());
+  EXPECT_TRUE(GetPendingNodeRoot()->children().empty());
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, ResetPreserveMeta) {
@@ -322,8 +322,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetPreserveMeta) {
   model()->AddURL(GetPendingNodeRoot(), 0,
                   base::ASCIIToUTF16("A.com - title"),
                   GURL("https://a.com/"));
-  EXPECT_FALSE(GetDeletedNodeRoot()->empty());
-  EXPECT_FALSE(GetPendingNodeRoot()->empty());
+  EXPECT_FALSE(GetDeletedNodeRoot()->children().empty());
+  EXPECT_FALSE(GetPendingNodeRoot()->children().empty());
 
   change_processor()->Reset(false);
 
@@ -331,8 +331,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetPreserveMeta) {
   EXPECT_TRUE(HasAnySyncMetaInfo(node_a));
   EXPECT_TRUE(HasAnySyncMetaInfo(node_b));
   EXPECT_TRUE(HasAnySyncMetaInfo(node_c));
-  EXPECT_TRUE(GetDeletedNodeRoot()->empty());
-  EXPECT_TRUE(GetPendingNodeRoot()->empty());
+  EXPECT_TRUE(GetDeletedNodeRoot()->children().empty());
+  EXPECT_TRUE(GetPendingNodeRoot()->children().empty());
 }
 
 

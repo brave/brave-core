@@ -1,8 +1,8 @@
 diff --git a/components/network_time/network_time_tracker.cc b/components/network_time/network_time_tracker.cc
-index c4d92f26cf4d2fbc2838de224643de20f7fe07c0..c9f8e7808850bc0568abbdb139bd2cdd030bdddd 100644
+index cf0544d15bcb57a62dc3ddfca259e03a3aa2995b..0b1342ce528b2ae331c39b11319f9fea13903d4b 100644
 --- a/components/network_time/network_time_tracker.cc
 +++ b/components/network_time/network_time_tracker.cc
-@@ -277,7 +277,7 @@ void NetworkTimeTracker::UpdateNetworkTime(base::Time network_time,
+@@ -276,7 +276,7 @@ void NetworkTimeTracker::UpdateNetworkTime(base::Time network_time,
  }
  
  bool NetworkTimeTracker::AreTimeFetchesEnabled() const {
