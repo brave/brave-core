@@ -2,6 +2,8 @@ source_set("browser") {
   sources = [
     "greaselion_download_service.cc",
     "greaselion_download_service.h",
+    "greaselion_extension_converter.cc",
+    "greaselion_extension_converter.h",
     "greaselion_service.h",
     "greaselion_service_impl.cc",
     "greaselion_service_impl.h",

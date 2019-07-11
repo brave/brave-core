@@ -29,8 +29,6 @@ class GreaselionService : public KeyedService {
  public:
   GreaselionService() = default;
 
-  virtual bool ScriptsFor(const GURL& primary_url,
-                          std::vector<std::string>* scripts) = 0;
   virtual void SetFeatureEnabled(GreaselionFeature feature, bool enabled) = 0;
 
  private:

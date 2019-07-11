@@ -6,7 +6,6 @@
 #include "brave/browser/brave_tab_helpers.h"
 
 #include "brave/browser/brave_drm_tab_helper.h"
-#include "brave/browser/greaselion/greaselion_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
@@ -44,7 +43,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
-  greaselion::GreaselionTabHelper::CreateForWebContents(web_contents);
 }
 
 }  // namespace brave
