@@ -32,5 +32,16 @@ ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
   return RespondNow(OneArgument(std::make_unique<base::Value>(theme_type)));
 }
 
+ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
+  std::unique_ptr<brave_theme::SetBraveThemeType::Params> params(
+      brave_theme::SetBraveThemeType::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  BTS::SetBraveThemeType(profile, params->type);
+
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions

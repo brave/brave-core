@@ -56,9 +56,21 @@
               {
                 "name": "type",
                 "type": "string",
-                "description": "current theme type(Dark or Light)"
+                "description": "current theme type (Dark or Light)"
               }
             ]
+          }
+        ]
+      },
+      {
+        "name": "setBraveThemeType",
+        "type": "function",
+        "description": "Set current theme type",
+        "parameters": [
+          {
+            "name": "type",
+            "type": "string",
+            "description": "current theme type (Dark or Light)"
           }
         ]
       }

@@ -61,6 +61,19 @@ std::string BraveThemeService::GetStringFromBraveThemeType(
 }
 
 // static
+void BraveThemeService::SetBraveThemeType(Profile* profile, std::string type) {
+  BraveThemeType parsedType = BraveThemeType::BRAVE_THEME_TYPE_DEFAULT;
+
+  if (type == "Light") {
+    parsedType = BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
+  } else if (type == "Dark") {
+    parsedType = BraveThemeType::BRAVE_THEME_TYPE_DARK;
+  }
+
+  profile->GetPrefs()->SetInteger(kBraveThemeType, parsedType);
+}
+
+// static
 base::Value BraveThemeService::GetBraveThemeList() {
   base::Value list(base::Value::Type::LIST);
 
