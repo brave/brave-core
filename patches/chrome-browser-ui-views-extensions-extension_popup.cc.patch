@@ -1,37 +1,13 @@
 diff --git a/chrome/browser/ui/views/extensions/extension_popup.cc b/chrome/browser/ui/views/extensions/extension_popup.cc
-index a97884aceca0f47d02815a42b50e15b08211715a..48d8dde3c222af3ce2eb1e920a517774d1cbb96a 100644
+index a97884aceca0f47d02815a42b50e15b08211715a..bc4cf1f031f201aeca6d06353782144328c53129 100644
 --- a/chrome/browser/ui/views/extensions/extension_popup.cc
 +++ b/chrome/browser/ui/views/extensions/extension_popup.cc
-@@ -4,6 +4,7 @@
- 
- #include "chrome/browser/ui/views/extensions/extension_popup.h"
- 
-+#include "brave/common/extensions/extension_constants.h"
- #include "chrome/browser/chrome_notification_types.h"
- #include "chrome/browser/devtools/devtools_window.h"
- #include "chrome/browser/extensions/extension_view_host.h"
-@@ -66,7 +67,23 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
+@@ -66,7 +66,7 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
  
  void ExtensionPopup::AddedToWidget() {
    BubbleDialogDelegateView::AddedToWidget();
 -  const int radius = GetBubbleFrameView()->corner_radius();
-+
-+  // HACK: removes border radius for brave extensions
-+  //        as webview does not support radius clipping which results
-+  //        in white strips at top and bottom of popup.
-+  // TODO: add brave extension radius back in when macOS and Windows
-+  //        popups support web dialog window radius clipping.
-+
-+  bool shouldDisableRadiusForPopup = false;
-+  // Clipping issue is not present on linux
-+#if defined(OS_MACOSX) || defined(OS_WIN)
-+  const auto extensionId = host_->extension()->id();
-+  const bool isBraveExtension = (extensionId == brave_extension_id ||
-+      extensionId == brave_rewards_extension_id);
-+  shouldDisableRadiusForPopup = isBraveExtension;
-+#endif
-+  const int radius =
-+      shouldDisableRadiusForPopup ? 0 : GetBubbleFrameView()->corner_radius();
++  BRAVE_ADDED_TO_WIDGET
    const bool contents_has_rounded_corners =
        GetExtensionView()->holder()->SetCornerRadius(radius);
    SetBorder(views::CreateEmptyBorder(
