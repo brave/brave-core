@@ -17,7 +17,7 @@ typedef void (^BATFaviconFetcher)(NSURL *pageURL, void (^completion)(NSURL * _Nu
 /// The error domain for ledger related errors
 extern NSString * const BATBraveLedgerErrorDomain NS_SWIFT_NAME(BraveLedgerErrorDomain);
 
-extern NSNotificationName const BATBraveLedgerNotificationAdded;
+extern NSNotificationName const BATBraveLedgerNotificationAdded NS_SWIFT_NAME(BraveLedger.NotificationAdded);
 
 NS_SWIFT_NAME(BraveLedger)
 @interface BATBraveLedger : NSObject
