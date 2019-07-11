@@ -29,6 +29,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="3218385319396786393">Zablokowano automatyczne odtwarzanie na tej stronie</translation>
 <translation id="4988333904713528597">Zawsze zezwalaj na autoodtwarzanie na <ph name="HOST">$1</ph></translation>
 <translation id="4150684676757176434">Kontynuuj blokowanie automatycznego odtwarzania</translation>
+<translation id="5883458389055721080">Brave nie zweryfikował tego rozszerzenia pod względem bezpieczeństwa i ochrony. Instaluj to rozszerzenie tylko wtedy, gdy ufasz programistom.</translation>
 <translation id="2044383478723007273">Kolory Brave</translation>
 <translation id="2814998458708016836">Korzystaj z szerokiego paska adresu</translation>
 <translation id="6123134130710658846">Ukryj przycisk nagród Brave</translation>
@@ -49,13 +50,25 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="4472575034687746823">Podstawowe</translation>
 <translation id="3400357268283240774">Dodatkowe ustawienia</translation>
 <translation id="6303294677342628402">Tarcze</translation>
+<translation id="7133511168130368997">Blokuj reklamy i skrypty śledzące Cię w internecie.</translation>
+<translation id="2761825942249694703">Są to domyślne ustawienia tarcz. Dotyczą one wszystkich stron internetowych, chyba że coś zmienisz w panelu tarcz na konkretnej stronie. Zmiana tych ustawień nie wpłynie na istniejące ustawienia poszczególnych stron.</translation>
+<translation id="8754605759692119662">Spowoduje to zablokowanie większości reklam w witrynach, ale nie prywatnych reklam Brave — te są kontrolowane w</translation>
+<translation id="6388201778088078932">ustawieniach.</translation>
 <translation id="9185018653595759199">Blokowanie sieci społecznościowych</translation>
+<translation id="5709627087332022422">Blokuj skrypty śledzące</translation>
+<translation id="9075744464571452108">Rozpoznawanie urządzenia</translation>
+<translation id="3570081523466826008">Aktualizacje HTTPS</translation>
+<translation id="4824468494729001999">Blokuj skrypty</translation>
 <translation id="7498695072878479744">Zezwalaj na logowanie za pomocą konta Google na stronach trzecich</translation>
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
 <translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
+<translation id="4699812599455071925">Blokuj pliki cookie stron trzecich</translation>
 <translation id="5657156137487675418">Zezwól na wszystkie pliki cookie</translation>
 <translation id="6883611015375728278">Blokuj wszystkie pliki cookie</translation>
+<translation id="3084022390368021391">Blokuj rozpoznawanie urządzenia przez strony trzecie</translation>
+<translation id="1847422622180531843">Zezwól na rozpoznawanie urządzenia</translation>
+<translation id="8375051111011093523">Blokuj rozpoznawanie urządzenia</translation>
 <translation id="8942080017911802454">Polityka obsługi WebRTC IP</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="8798099450830957504">Domyślne</translation>
@@ -77,4 +90,9 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="9181207987584064303">Zobacz w sklepie z rozszerzeniami sieciowymi</translation>
 <translation id="4846154056248462491">Przy wyjściu</translation>
 <translation id="5057399635433117814">Przetłumaczyć tę stronę? Spowoduje to wysłanie całego tekstu na tej stronie do Microsoft.</translation>
+<translation id="3371343170427636147">Aplikacje Brave Nightly</translation>
+<translation id="4097979995947147464">Aplikacje Brave Beta</translation>
+<translation id="8303432794159193481">Aplikacje Brave Dev</translation>
+<translation id="8292967014767479012">Aplikacje Brave</translation>
+<translation id="4743468424889072281">Aplikacje rozwojowe Brave</translation>
 </translationbundle>

@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
 <translation id="6406506848690869874">Sync</translation>
+<translation id="8488282162676695335">Carteira do Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (a extenção ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") não é permitida na Brave.</translation>
 <translation id="7450557937477381864">Fechar o Chrome</translation>
 <translation id="7008934821596358692">Para concluir a importação, feche todas as janelas do Chrome.</translation>
@@ -28,7 +29,9 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
 <translation id="4988333904713528597">Sempre permitir a reprodução automática em <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continuar bloqueando a reprodução automática</translation>
+<translation id="5883458389055721080">O Brave ainda não analisou a segurança e proteção desta extensão. Apenas instale a extensão caso confie no seu desenvolvedor.</translation>
 <translation id="2044383478723007273">Cores brave</translation>
+<translation id="2814998458708016836">Usar barra de endereços larga</translation>
 <translation id="6123134130710658846">Ocultar botão Recompensas do Brave</translation>
 <translation id="7635711399568194460">Oculta o botão Recompensas do Brave na barra de localização quando as Recompensas do Brave não estiverem habilitadas</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
@@ -47,13 +50,25 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4472575034687746823">Primeiros passos</translation>
 <translation id="3400357268283240774">Configurações adicionais</translation>
 <translation id="6303294677342628402">Proteções</translation>
+<translation id="7133511168130368997">Bloqueia trackers e anúncios que o seguem por toda a internet.</translation>
+<translation id="2761825942249694703">Estas são as configurações padrão do  Shields. Elas aplicam-se a todos os sites, a não ser que você altere algo no painel do Shields em um site específico. Alterar isso não afetará suas atuais configurações por site.</translation>
+<translation id="8754605759692119662">Isto bloqueará a maioria dos anúncios nos sites, mas não os anúncios privados do Brave – esses são controlados em</translation>
+<translation id="6388201778088078932">configurações.</translation>
 <translation id="9185018653595759199">Bloqueio de mídia social</translation>
+<translation id="5709627087332022422">Bloquear trackers intersite</translation>
+<translation id="9075744464571452108">Reconhecimento de dispositivo</translation>
+<translation id="3570081523466826008">Fazer upgrade das conexões para HTTPS</translation>
+<translation id="4824468494729001999">Bloquear scripts</translation>
 <translation id="7498695072878479744">Permitir os botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
 <translation id="5165042248369837294">Permitir tuítes incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir postagens incorporadas no LinkedIn</translation>
+<translation id="4699812599455071925">Apenas bloquear cookies intersite</translation>
 <translation id="5657156137487675418">Permitir todos os cookies</translation>
 <translation id="6883611015375728278">Bloquear todos os cookies</translation>
+<translation id="3084022390368021391">Apenas bloquear tentativas de reconhecimento de dispositivo intersite</translation>
+<translation id="1847422622180531843">Permitir todas as tentativas de reconhecimento de dispositivo</translation>
+<translation id="8375051111011093523">Bloquear todas as tentativas de reconhecimento de dispositivo</translation>
 <translation id="8942080017911802454">Política de Tratamento de IP WebRTC</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="8798099450830957504">Padrão</translation>
@@ -75,4 +90,9 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="9181207987584064303">Visualizar na Loja Virtual de Extensões</translation>
 <translation id="4846154056248462491">Ao sair</translation>
 <translation id="5057399635433117814">Traduza esta página? Isso enviará todo o texto desta página para a Microsoft para tradução.</translation>
+<translation id="3371343170427636147">Aplicativos Nightly  do Navegador Brave</translation>
+<translation id="4097979995947147464">Aplicativos Beta do Navegador Brave</translation>
+<translation id="8303432794159193481">Aplicativos de Desenv do Navegador Brave</translation>
+<translation id="8292967014767479012">Aplicativos do Navegador Brave</translation>
+<translation id="4743468424889072281">Aplicativos de Desenvolvimento do Navegador Brave</translation>
 </translationbundle>

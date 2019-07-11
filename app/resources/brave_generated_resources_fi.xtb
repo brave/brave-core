@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave-mainostenesto</translation>
 <translation id="6406506848690869874">Synkronointi</translation>
+<translation id="8488282162676695335">Brave-lompakko</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ei ole sallittu Bravessa.</translation>
 <translation id="7450557937477381864">Sulje Chrome</translation>
 <translation id="7008934821596358692">Sulje kaikki Chrome-ikkunat lopettaaksesi tuonnin.</translation>
@@ -28,7 +29,9 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="3218385319396786393">Automaattinen toisto on estetty tällä sivulla</translation>
 <translation id="4988333904713528597">Salli aina automaattinen toisto <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Jatka automaattisen toiston estoa</translation>
+<translation id="5883458389055721080">Brave ei ole tarkistanut tämän laajennuksen turvallisuutta. Asenna tämä laajennus vain, jos luotat sen kehittäjään.</translation>
 <translation id="2044383478723007273">Brave -värit</translation>
+<translation id="2814998458708016836">Käytä leveää osoitekenttää</translation>
 <translation id="6123134130710658846">Piilota Brave Rewards -painike</translation>
 <translation id="7635711399568194460">Piilottaa Brave Rewards -painikkeen sijaintipalkissa, kun Brave Rewards ei ole sallittu</translation>
 <translation id="7965178729203412357">Uusi Tor-identiteetti</translation>
@@ -47,13 +50,25 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4472575034687746823">Aloita</translation>
 <translation id="3400357268283240774">Lisäasetukset</translation>
 <translation id="6303294677342628402">Shields</translation>
+<translation id="7133511168130368997">Estää seuraimet ja mainokset, jotka seuraavat sinua verkossa.</translation>
+<translation id="2761825942249694703">Nämä ovat oletusarvoiset Shields-asetukset. Ne pätevät kaikilla verkkosivuilla, ellet tee muutoksia jonkin tietyn sivun Shields-ohjauspaneelissa. Näiden muuttaminen ei vaikuta voimassa oleviin sivukohtaisiin asetuksiin.</translation>
+<translation id="8754605759692119662">Tämä estää useimmat verkkosivujen mainokset, mutta ei Braven yksityismainoksia, sillä niiden hallinnoinnin keskus on</translation>
+<translation id="6388201778088078932">asetukset.</translation>
 <translation id="9185018653595759199">Sosiaalisen median esto</translation>
+<translation id="5709627087332022422">Estä cross-site-seuraimet</translation>
+<translation id="9075744464571452108">Laitteentunnistus</translation>
+<translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
+<translation id="4824468494729001999">Estä komentosarjat</translation>
 <translation id="7498695072878479744">Salli Googlen sisäänkirjautumispainikkeet kolmannen osapuolen sivuilla</translation>
 <translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
 <translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
 <translation id="958971637207126733">Salli LinkedIn-upotuksen sisältävät julkaisut</translation>
+<translation id="4699812599455071925">Estä vain cross-site-evästeet</translation>
 <translation id="5657156137487675418">Salli kaikki evästeet</translation>
 <translation id="6883611015375728278">Estä kaikki evästeet</translation>
+<translation id="3084022390368021391">Estä vain cross-site-laitteentunnistusyritykset</translation>
+<translation id="1847422622180531843">Salli kaikki laitteentunnistusyritykset</translation>
+<translation id="8375051111011093523">Estä kaikki laitteentunnistusyritykset</translation>
 <translation id="8942080017911802454">WebRTC IP käsittelykäytäntö</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="8798099450830957504">Oletus</translation>
@@ -75,4 +90,9 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="9181207987584064303">Näytä verkkolaajennusmyymälässä</translation>
 <translation id="4846154056248462491">Poistuessa</translation>
 <translation id="5057399635433117814">Haluatko kääntää tämän sivun? Tämä komento lähettää kaiken tämän sivun tekstin Microsoftille käännettäväksi.</translation>
+<translation id="3371343170427636147">Brave-selaimen Nightly-sovellukset</translation>
+<translation id="4097979995947147464">Brave-selaimen betasovellukset</translation>
+<translation id="8303432794159193481">Brave-selaimen kehittäjän sovellukset</translation>
+<translation id="8292967014767479012">Brave-selainsovellukset</translation>
+<translation id="4743468424889072281">Brave-selaimen kehityssovellukset</translation>
 </translationbundle>

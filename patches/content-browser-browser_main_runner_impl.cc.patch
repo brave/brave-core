@@ -1,8 +1,8 @@
 diff --git a/content/browser/browser_main_runner_impl.cc b/content/browser/browser_main_runner_impl.cc
-index 11845c22119ca4092eb4db0986d103f86a23860b..5e3adf619dfad8b01af9a2e81aabaddbf77ac026 100644
+index ec00bd53ac2dd7d3e3f59aacb140c4f752393241..8443501f1d82b55dedc517b0dc1ec3e7031a437b 100644
 --- a/content/browser/browser_main_runner_impl.cc
 +++ b/content/browser/browser_main_runner_impl.cc
-@@ -19,6 +19,7 @@
+@@ -17,6 +17,7 @@
  #include "base/time/time.h"
  #include "base/trace_event/heap_profiler_allocation_context_tracker.h"
  #include "base/trace_event/trace_event.h"
@@ -10,7 +10,7 @@ index 11845c22119ca4092eb4db0986d103f86a23860b..5e3adf619dfad8b01af9a2e81aabaddb
  #include "build/build_config.h"
  #include "components/tracing/common/trace_startup_config.h"
  #include "components/tracing/common/tracing_switches.h"
-@@ -109,8 +110,8 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
+@@ -94,8 +95,8 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
      gfx::win::InitializeDirectWrite();
  #endif  // OS_WIN
  

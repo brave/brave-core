@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Beállítások szerkesztése</translation>
 <translation id="7606029853066610626">Könyvjelzők megtekintése és kezelése</translation>
 <translation id="5550994254534676787">Nézze meg a böngészési előzményeit</translation>
+<translation id="1742484101357469636">Vezérlőpult-beállítások</translation>
+<translation id="8320281346741574991">Háttérkép mutatása</translation>
 <translation id="6165508094623778733">Tudjon meg többet</translation>
 <translation id="8730621377337864115">Kész</translation>
 <translation id="6248988683584659830">Keresés a beállításokban</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">A számítógépre telepített más böngészők könyvjelzőinek és beállításainak importálásával a Brave egyszerűvé teszi a megszokott felhasználói környezet létrehozását.</translation>
 <translation id="8275038454117074363">Importálás</translation>
 <translation id="5540323067375019678">Adatvédelmi pajzsok kezelése</translation>
+<translation id="3278033011827237847">Megóv az adatbiztonságot veszélyeztető hirdetésektől és nyomkövetőktől Brave Shields-szel való böngészés közben. Állítsd a Shields-et „le” re, ha úgy tűnik, hogy egy oldal nem működik megfelelően.</translation>
 <translation id="3366308997091824722">Pajzs beállítások</translation>
-<translation id="3884404068544758153">Keresőmotor megváltoztatása</translation>
+<translation id="4764692524839457597">alapértelmezett</translation>
+<translation id="3108122610701115301">Alapértelmezett beállítása</translation>
+<translation id="2469440407442116729">Válassz egy keresőmotort</translation>
 <translation id="438216590634144114">Válaszd ki a címsorból végzett webes keresésekhez használandó alapértelmezett keresőmotort.</translation>
-<translation id="8428213095426709021">Beállítások</translation>
+<translation id="5804484488647369316">Állíts be alapértelmezett keresőmotort</translation>
+<translation id="4428458837269935199">Ha még privátabb keresést szeretnél, próbáld ki a DuckDuckGo-t</translation>
 <translation id="513635702954746724">Színséma kiválasztása</translation>
 <translation id="6842850080200126305">A beállítások panelen a világos vagy sötét opció kiválasztásával beállíthatja eszköztárának színét.</translation>
 <translation id="2801098717523961746">Téma kiválasztása</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Szerezzen tokeneket hirdetéseknek a Brave alatti megtekintésével. A bemutatott hirdetések a böngészési viselkedéséből meghatározott érdeklődési körétől függenek. A böngészőt sosem hagyja el semmilyen személyes adat vagy böngészési előzmény.</translation>
 <translation id="6112368337882254910">Automatikus Támogatás</translation>
 <translation id="1527222983464337010">Egy automatikus módszer a kiadók és tartalomkészítők támogatására. Állíts be egy havi fizetést, és böngéssz a megszokott módon. A felkeresett oldalak a Brave mérése alapján automatikusan megkapják a támogatásodat.</translation>
+<translation id="20281847067919078">Várható függőben lévő jutalmak</translation>
+<translation id="8593551638387217772">Következő fizetés dátuma</translation>
+<translation id="319209088187794725">Ebben a hónapban kapott reklámértesítések</translation>
 <translation id="4229016885653790965">Sajnáljuk, területén még nem állnak rendelkezésre hirdetések.</translation>
 <translation id="654711254769318398">Megtekintett hirdetési oldalak</translation>
 <translation id="2532127066761785857">Megjelenített hirdetések maximális száma</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">Egy perc</translation>
 <translation id="9031738692126722094">Tartalomhoz kapcsolódó támogatás bekapcsolása ezeken az oldalakon</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Adakozz helyben, ha ékszerre bukkansz.</translation>
 <translation id="6135431587052937035">Támogassa kedvenc honlapját ismétlődő havi adományokkal.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Sajnáljuk, úgy tűnik ezt az adományt már igényelték.</translation>
 <translation id="282693359045252357">Következő havi borravaló dátuma</translation>
 <translation id="6231182869178328516">Épp most küldtem jattot neki: <ph name="NAME">$1<ex>user</ex></ph> a Brave böngészőt használva. Nézd meg itt: https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Összeg:</translation>
 <translation id="5923611424721173182">Aktuális egyeztetés</translation>
 <translation id="5457113250005438886">Érvénytelen</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Havi borravaló megadása</translation>
 <translation id="8003573781961874199">Letöltés PDF fájlként</translation>
 <translation id="298067735430872465">Jövedelem hirdetésekből</translation>
+<translation id="2266556115441975588">Ads jutalmaid megérkeztek!</translation>
 <translation id="8764029012618014430">Borravalók engedélyezése</translation>
 <translation id="3412655388715513818">Ennek a honlapnak a kizárása</translation>
 <translation id="418343137736963579">Az Automatikus böngészésből kizárt összes honlap száma:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Helyreállító kód</translation>
 <translation id="6354568176665589146">Ismétlődő</translation>
 <translation id="7577100371127227294">Havi juttatások</translation>
+<translation id="2391095793008133394">Küldj borravalót {{ user }} felhasználónak a bejegyzéséért:</translation>
+<translation id="7557413530932469222">Küldj borravalót {{ user }} felhasználónak a bejegyzéséért:</translation>
 <translation id="1110535155349301542">eltávolítás</translation>
 <translation id="8942997470474842562">Megjelöltél {{reservedAmount}} BAT-ot olyan alkotóknak, akik még nem regisztráltak, hogy fogadhassák a hozzájárulásokat. Böngésződ próbálkozni fog a folyósítással, amíg igazolnak, vagy eltelik 90 nap.</translation>
 <translation id="8759753423332885148">Bővebb információk.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Mind a {{numItems}} elem megtekintése</translation>
 <translation id="7857284676033058221">Összes {{numSites}} honlap megtekintése</translation>
 <translation id="3536298624341433814">Adományom küldése</translation>
+<translation id="8428213095426709021">Beállítások</translation>
 <translation id="1792148354504719133">honlap</translation>
 <translation id="5944430251223015324">honlapok</translation>
 <translation id="1834493631938747505">Beszélj másoknak is a támogatásodról!</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Függőben eddig:</translation>
 <translation id="7410549756000115387">Nincsenek függőben lévő hozzájárulások…</translation>
 <translation id="1963227389609234879">Összes eltávolítása</translation>
+<translation id="1170315781901539495">Kizárt oldalak</translation>
+<translation id="5119190679543565400">Állítsd helyre ezt az oldalt</translation>
+<translation id="9075700728717335924">Kizártad</translation>
+<translation id="4862817811647633830">oldalak az automatikus hozzájárulásból</translation>
 <translation id="923467487918828349">Összes megjelenítése</translation>
+<translation id="5471305206221894680">Támogatott oldalak</translation>
+<translation id="2306169361186864012">Brave Ads jutalmak!</translation>
+<translation id="3757873395477273033">Brave Ads jutalmaid jóváírása úton van.</translation>
+<translation id="8101881066646819737">Brave Ads token jóváírásod</translation>
 <translation id="2151535059686617995">Szerencséd van!</translation>
 <translation id="6255773350565723852">Zseton adományod úton van.</translation>
 <translation id="1181037720776840403">Eltávolítás</translation>

@@ -5,9 +5,9 @@
 #include <algorithm>
 
 #include "base/test/test_reg_util_win.h"
+#include "chrome/chrome_elf/nt_registry/nt_registry.h"
 #include "chrome/install_static/install_details.h"
 #include "chrome/install_static/user_data_dir.h"
-#include "chrome_elf/nt_registry/nt_registry.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace install_static {
@@ -20,12 +20,15 @@ inline bool EndsWith(const std::wstring& value, const std::wstring& ending) {
 }
 
 #if defined(OFFICIAL_BUILD)
-const wchar_t kPolicyRegistryKey[] = L"SOFTWARE\\Policies\\BraveSoftware\\Brave-Browser";
-const wchar_t kUserDataDirNameSuffix[] = L"\\BraveSoftware\\Brave-Browser\\User Data";
+const wchar_t kPolicyRegistryKey[] =
+    L"SOFTWARE\\Policies\\BraveSoftware\\Brave-Browser";
+const wchar_t kUserDataDirNameSuffix[] =
+    L"\\BraveSoftware\\Brave-Browser\\User Data";
 #else
 const wchar_t kPolicyRegistryKey[] =
     L"SOFTWARE\\Policies\\BraveSoftware\\Brave-Browser-Development";
-const wchar_t kUserDataDirNameSuffix[] = L"\\BraveSoftware\\Brave-Browser-Development\\User Data";
+const wchar_t kUserDataDirNameSuffix[] =
+    L"\\BraveSoftware\\Brave-Browser-Development\\User Data";
 #endif
 
 const wchar_t kUserDataDirRegistryKey[] = L"UserDataDir";

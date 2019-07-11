@@ -1,3 +1,4 @@
+import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
@@ -29,42 +30,9 @@ source_set("brave_content_browser_overlay_manifest") {
     ]
   }
 
-  if (!is_android) {
-    deps += [
-      "//brave/utility/tor/public/cpp:manifest",
-    ]
-  }
-}
-
-source_set("brave_content_packaged_service_overlay_manifest") {
-  sources = [
-    "brave_content_packaged_service_overlay_manifest.cc",
-    "brave_content_packaged_service_overlay_manifest.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/browser/tor:buildflags",
-    "//brave/components/brave_ads/browser/buildflags",
-    "//brave/components/brave_rewards/browser/buildflags",
-    "//services/service_manager/public/cpp",
-  ]
-
-  if (brave_ads_enabled) {
-    deps += [
-      "//brave/components/services/bat_ads/public/cpp:manifest",
-    ]
-  }
-
-  if (brave_rewards_enabled) {
-    deps += [
-      "//brave/components/services/bat_ledger/public/cpp:manifest",
-    ]
-  }
-
   if (enable_tor) {
     deps += [
-      "//brave/utility/tor/public/cpp:manifest",
+      "//brave/components/services/tor/public/cpp:manifest",
     ]
   }
 }
@@ -72,6 +40,5 @@ source_set("brave_content_packaged_service_overlay_manifest") {
 group("brave_content_manifest_overlays") {
   deps = [
     ":brave_content_browser_overlay_manifest",
-    ":brave_content_packaged_service_overlay_manifest",
   ]
 }

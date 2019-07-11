@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -31,19 +32,17 @@ ui::NativeTheme* GetNativeThemeForWindow(aura::Window* window) {
   // Use the appropriate native theme for the color mode pref
   BraveThemeType active_builtin_theme =
                             BraveThemeService::GetActiveBraveThemeType(profile);
-  const bool dark_mode = (
-      active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
-      profile->GetProfileType() == Profile::INCOGNITO_PROFILE ||
-      profile->IsTorProfile());
-  if (dark_mode &&
-      BrowserView::GetBrowserViewForNativeWindow(window)) {
+  const bool dark_mode =
+      (active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
+       profile->IsIncognitoProfile() || profile->IsTorProfile());
+  if (dark_mode && BrowserView::GetBrowserViewForNativeWindow(window)) {
     return ui::NativeThemeDarkAura::instance();
   }
 
   return ui::NativeTheme::GetInstanceForNativeUi();
 }
 
-}
+}  // namespace
 
 void BraveBrowserMainExtraPartsViewsLinux::PreEarlyInitialization() {
   views::LinuxUI* gtk_ui = BuildGtkUi();

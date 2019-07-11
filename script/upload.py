@@ -16,7 +16,7 @@ import sys
 import tempfile
 
 from lib.config import (PLATFORM, DIST_URL, get_target_arch,
-                        get_chromedriver_version, get_env_var, s3_config,
+                        get_env_var, s3_config,
                         get_zip_name, product_name, project_name,
                         SOURCE_ROOT, dist_dir, output_dir, get_brave_version,
                         get_raw_version)
@@ -67,10 +67,6 @@ def main():
     #     upload_brave(repo, release, os.path.join(dist_dir(), DSYM_NAME))
     # elif PLATFORM == 'win32':
     #     upload_brave(repo, release, os.path.join(dist_dir(), PDB_NAME))
-
-    # Upload chromedriver and mksnapshot.
-    chromedriver = get_zip_name('chromedriver', get_chromedriver_version())
-    upload_brave(repo, release, os.path.join(dist_dir(), chromedriver), force=args.force)
 
     pkgs = get_brave_packages(output_dir(), release_channel(), get_raw_version())
 

@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../../chrome/browser/profiles/profile.cc"
+#include "../../../../../../chrome/browser/profiles/profile.cc"  // NOLINT
+
+#include "brave/chromium_src/chrome/browser/profiles/profile.h"
 
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/tor/pref_names.h"
@@ -14,4 +16,11 @@ bool Profile::IsTorProfile() const {
 #else
   return false;
 #endif
+}
+
+bool IsGuestProfile(Profile* profile) {
+  DCHECK(profile);
+  return (profile->HasOffTheRecordProfile() &&
+          profile->GetOffTheRecordProfile() == profile &&
+          profile->GetOriginalProfile()->IsGuestSession());
 }

@@ -261,31 +261,31 @@
       Enable tap dragging
     </message>
     <message name="IDS_SETTINGS_CLICK_ON_STOP_LABEL" desc="Label for checkbox which enables automatically do a mouse action when the mouse cursor stops.">
-      Automatically click when the mouse cursor stops
+      Automatically click when the cursor stops
     </message>
     <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_LABEL" desc="Label for dropdown menu which contains various time delays for mouse action.">
-      Delay before click:
+      Delay before click
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_EXTREMELY_SHORT" desc="Description of an extremely short delay before mouse action.">
-      extremely short (0.6s)
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_EXTREMELY_SHORT" desc="Description of an extremely short delay before mouse action, at .6 seconds.">
+      0.6 seconds
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_VERY_SHORT" desc="Description of a very short delay before mouse action.">
-      very short (0.8s)
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_VERY_SHORT" desc="Description of a very short delay before mouse action, at .8 seconds.">
+      0.8 seconds
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_SHORT" desc="Description of a short delay before mouse action.">
-      short (1s)
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_SHORT" desc="Description of a short delay before mouse action, at 1 second.">
+      1 second
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_LONG" desc="Description of a long delay before mouse action.">
-      long (2s)
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_LONG" desc="Description of a long delay before mouse action, at 2 seconds.">
+      2 seconds
     </message>
-    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_VERY_LONG" desc="Description of a very long delay before mouse action.">
-      very long (4s)
+    <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_VERY_LONG" desc="Description of a very long delay before mouse action, at 4 seconds.">
+      4 seconds
     </message>
     <message name="IDS_SETTINGS_AUTOCLICK_REVERT_TO_LEFT_CLICK" desc="Description of a checkbox that gives the option to return to the default left click action after taking another action.">
       Revert to left click after action
     </message>
     <message name="IDS_SETTINGS_AUTOCLICK_STABILIZE_CURSOR_POSITION" desc="Description of a checkbox that gives the option to turn on cursor movmeent stablization.">
-      Click position stabilization
+      Stabilize click location
     </message>
     <message name="IDS_SETTINGS_AUTOCLICK_MOVEMENT_THRESHOLD_LABEL" desc="Label for a dropdown menu which that has options for how much mouse movement can occur before a new autoclick is initiated.">
       Movement threshold
@@ -505,13 +505,13 @@
       Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
     </message>
     <message name="IDS_SETTINGS_CROSTINI_REMOVE" desc="Label for the row to open a dialog confirming removal of Crostini.">
-      Remove Linux Apps for <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+      Remove Linux for <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
     </message>
     <message name="IDS_SETTINGS_CROSTINI_REMOVE_BUTTON" desc="Label for the button to open a dialog confirming removal of Crostini.">
       Remove
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS" desc="Label for managing shared folders in Crostini.">
-      Manage shared files &amp; folders
+      Manage shared folders
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS_LIST_HEADING" desc="Label for list of shared folders.">
       Shared folders
@@ -550,25 +550,39 @@
       Available USB devices will appear here.
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices.">
-      Give Linux permission to access USB devices. Linux won't remember a usb device after it's removed.
+      Give Linux apps permission to access USB devices. Linux won't remember a USB device after it's removed.
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
        Only Android devices are currently supported.
     </message>
 
     <!-- Plugin VM Page -->
-    <!-- TODO(timloh): Remove transleatable flag after strings are finalized. -->
-    <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_TITLE" desc="The title of Plugin VM section." translateable="false">
+    <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_TITLE" desc="The title of Plugin VM section.">
       Plugin VM
     </message>
-    <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_LABEL" desc="The text associated with the primary section setting for Plugin VM." translateable="false">
+    <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_LABEL" desc="The text associated with the primary section setting for Plugin VM.">
       Plugin VM
     </message>
-    <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_SUBTEXT" desc="Description for the section for enabling and managing Crostini." translateable="false">
-      Run Plugin VM apps on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+    <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_SUBTEXT" desc="Description for the section for managing Plugin VM.">
+      Manage settings for running Plugin VM on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
     </message>
-    <message name="IDS_SETTINGS_PLUGIN_VM_PRINTER_ACCESS" desc="The text associated with the primary section setting for Plugin VM." translateable="false">
+    <message name="IDS_SETTINGS_PLUGIN_VM_PRINTER_ACCESS" desc="The text in the settings page for allowing printer access from Plugin VM.">
       Give access to printers
+    </message>
+    <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS" desc="Label for managing shared folders for Plugin VM.">
+      Manage shared folders
+    </message>
+    <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS_LIST_HEADING" desc="Label for list of shared folders.">
+      Shared folders
+    </message>
+    <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Plugin VM.">
+      To share, right-click on a folder in Files app, then select "Share with Plugin VM".
+    </message>
+    <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_REMOVE" desc="Instructions for removing shared folders in Plugin VM.">
+      Removing folders from here will stop sharing but will not delete files.
+    </message>
+    <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS_REMOVE_SHARING" desc="Tooltip to show when hovering on the remove icon for a Plugin VM shared folder.">
+      Remove sharing
     </message>
 
     <!-- Android Apps Page -->
@@ -607,6 +621,14 @@
     <message name="IDS_SETTINGS_ANDROID_APPS_MANAGE_APP_LINKS" desc="Label for accessing app preferrences on ARC side.">
       Manage Play app links
     </message>
+
+    <!-- Apps Section Page -->
+    <message name="IDS_SETTINGS_APPS_TITLE" desc="The title of Apps section.">
+      Apps
+    </message>
+    <message name="IDS_SETTINGS_APPS_LINK_TEXT" desc="The label for the button which links to the App Management page.">
+      Manage your apps
+    </message>
   </if>
 
   <!-- Appearance Page -->
@@ -621,9 +643,6 @@
   </message>
   <message name="IDS_SETTINGS_HOME_BUTTON_DISABLED" desc="Sub label for the Show home button setting when disabled.">
     Disabled
-  </message>
-  <message name="IDS_SETTINGS_SET_WALLPAPER" desc="Name of the control which allows the user to set the wallpaper.">
-    Wallpaper
   </message>
   <if expr="chromeos">
     <message name="IDS_SETTINGS_THEMES" desc="Name of the control which allows the user to get a theme for the browser.">
@@ -654,6 +673,9 @@
       Reset to default
     </message>
   </if>
+  <message name="IDS_SETTINGS_CHROME_COLORS" desc="Text of the label describing 'Brave Colors' theme.">
+    Brave Colors
+  </message>
   <message name="IDS_SETTINGS_SHOW_HOME_BUTTON" desc="Label for the checkbox which enables or disables showing the home button in the toolbar.">
     Show home button
   </message>
@@ -668,9 +690,6 @@
   </message>
   <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Web Store.">
     Open Web Store
-  </message>
-  <message name="IDS_SETTINGS_OPEN_WALLPAPER_APP" desc="Sub-label about opening the wallpaper app.">
-    Open the wallpaper app
   </message>
   <if expr="is_macosx">
     <message name="IDS_SETTINGS_TABS_TO_LINKS_PREF" desc="The documentation string of the 'Tabs to Links' preference">
@@ -1360,7 +1379,7 @@
       Add a printer manually
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_SELECT_MANUFACTURER_AND_MODEL_TITLE" desc="Text for the title of the dialog that is used to select a manufacturer and model from the drop down list.">
-      Select a printer manufacturer and model
+      Advanced printer configuration
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_DETAILS_TITLE" desc="Text for the title of the Printer Details subpage.">
       Printer details
@@ -1429,7 +1448,7 @@
       Manufacturer
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_SELECT_DRIVER" desc="Label for the file selector to manually select a PPD file from the user's file system.">
-      Or specify your own driver:
+      Or specify your printer PPD
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_BUTTON_SELECT_DRIVER" desc="Text for the button which allows user to select a PPD file from the file system.">
       Browse
@@ -1488,6 +1507,12 @@
     <message name="IDS_SETTINGS_PRINTING_CUPS_EDIT_PRINTER_CURRENT_PPD_MESSAGE" desc="Informational text displayed to the user if they have an existing custom PPD.">
       Current PPD file in use: <ph name="PPD_NAME">$1<ex>example.ppd.gz</ex></ph>
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_MANUFACTURER_MODEL_ADDITIONAL_INFORMATION" desc="Informational text displayed to the user when the the user is doing advanced manual printer setup.">
+      <ph name="PRINTER_NAME">$1<ex>Printer</ex></ph> could not be configured automatically. Please specify advanced printer details.
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_EULA_NOTICE" desc="The message shown to users if a printer has a EULA agreement attached to it.">
+      End User License Agreement
+    </message>
   </if>
   <if expr="not chromeos">
     <message name="IDS_SETTINGS_PRINTING_LOCAL_PRINTERS_TITLE" desc="In Printing Settings, the title of local printers setting section on OS other than Brave OS.">
@@ -1518,6 +1543,7 @@
     Open certain file types automatically after downloading
   </message>
 
+  <!-- SMB File Shares -->
   <if expr="chromeos">
     <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES" desc="In Downloads Settings, the title of the SMB shares setting section.">
       Network file shares
@@ -1561,6 +1587,9 @@
     <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_MOUNT_INVALID_URL_MESSAGE" desc="The message shown when mounting a new SMB share fails because the URL is an invalid format.">
       Invalid URL format. Supported formats are \\server\share and smb://server/share.
     </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_MOUNT_INVALID_SSO_URL_MESSAGE" desc="The message shown when mounting a new SMB share fails because the URL is an invalid format when SSO authentication is used.">
+      Invalid URL format. Server must be specified as a host name when SSO authentication is used.
+    </message>
     <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_AUTHENTICATION_METHOD" desc="Title for the input that lets users specify their authentication method for an SMB Share.">
       Authentication Method
     </message>
@@ -1570,8 +1599,74 @@
     <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_KERBEROS_AUTHENTICATION" desc="Authentication method option to use a users Kerberos ticket to authenticate. Only availible for Active Directory users.">
       SSO
     </message>
+  </if>
 
-    <!-- Date/Time Page -->
+  <!-- Kerberos Accounts -->
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SUBMENU_LABEL" desc="Label of Kerberos Accounts submenu in Settings page.">
+      Kerberos Accounts
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_PAGE_TITLE" desc="Title of Kerberos Accounts Settings page.">
+      Kerberos Accounts
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_DESCRIPTION" desc="Description of the Kerberos Accounts Settings page. Shown just below the title of the page.">
+      All Kerberos Accounts for single sign-on into certain apps and websites and file shares can be managed here.
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_LIST_HEADER" desc="List header for the account list on Kerberos Accounts Settings page.">
+      Accounts
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_ADD_ACCOUNT_LABEL" desc="Label of the Add account button on Kerberos Accounts Settings page.">
+      Add account
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_REMOVE_ACCOUNT_LABEL" desc="Label of the Remove account button on Kerberos Accounts Settings page.">
+      Remove account from this device
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SIGNED_IN" desc="Text displayed if a Kerberos account is in signed-in state on Kerberos Accounts Settings page.">
+      Signed in
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SIGNED_OUT" desc="Text displayed if a Kerberos account is in signed-out state on Kerberos Accounts Settings page.">
+      Sign in again
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_REAUTHENTICATION_LABEL" desc="Label of the re-authentication button on Kerberos Accounts Settings page.">
+      Sign in
+    </message>
+    <message name="IDS_SETTINGS_ADD_KERBEROS_ACCOUNT" desc="In Add Kerberos Accounts dialog, the title of the dialog.">
+      Add Kerberos Account
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_USERNAME" desc="Title for the input that lets users specify their username for a Kerberos account.">
+      Username
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_PASSWORD" desc="Title for the input that lets users specify their password for a Kerberos account.">
+      Password
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_NETWORK_PROBLEM" desc="Error message displayed in the Add Kerberos Account dialog when the user has no network connection or enters a bad realm.">
+      Network problem or bad realm
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_USERNAME_INVALID" desc="Error message displayed in the Add Kerberos Account dialog when the user enters a badly formatted username.">
+      Username invalid (should be user@realm.com)
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_USERNAME_UNKNOWN" desc="Error message displayed in the Add Kerberos Account dialog when the user enters a username that is not known to the Kerberos realm.">
+      Username not known to server
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_CONTACTING_SERVER" desc="Error message displayed in the Add Kerberos Account dialog when the OS is not able to contact the server for the given realm.">
+      Contacting server for realm failed
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_PASSWORD_INVALID" desc="Error message displayed in the Add Kerberos Account dialog when the user enters the wrong password.">
+      Password invalid
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_PASSWORD_EXPIRED" desc="Error message displayed in the Add Kerberos Account dialog when the user's password is expired.">
+      Password expired
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_KDC_ENC_TYPE" desc="Error message displayed in the Add Kerberos Account dialog when the KDC does not support the encryption types specified in the Kerberos configuration (KDC = Key Distribution Center, part of Kerberos infrastructure).">
+      KDC does not support encryption type
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_GENERAL" desc="Fallback error message displayed in the Add Kerberos dialog.">
+      Oops! Something went wrong (error code <ph name="ERROR_CODE">$1<ex>123</ex></ph>).
+    </message>
+  </if>
+
+  <!-- Date/Time Page -->
+  <if expr="chromeos">
     <message name="IDS_SETTINGS_DATE_TIME" desc="Name of the settings page which displays date and time preferences.">
       Date and time
     </message>
@@ -1614,8 +1709,10 @@
     <message name="IDS_SETTINGS_SET_DATE_TIME" desc="Label for the button that shows the dialog for setting the system date and time.">
       Set date and time
     </message>
+  </if>
 
-    <!-- Easy Unlock Page -->
+  <!-- Easy Unlock Page -->
+  <if expr="chromeos">
     <message name="IDS_SETTINGS_EASY_UNLOCK_SECTION_TITLE" desc="The title of the Easy Unlock section on the settings page.">
       Smart Lock
     </message>
@@ -1676,8 +1773,10 @@
     <message name="IDS_SETTINGS_EASY_UNLOCK_UNLOCK_DEVICE_AND_ALLOW_SIGNIN" desc="This option lets the user unlock their Bravebook from their phone as well as log into their Bravebook without a password if their phone is nearby and unlocked.">
       Unlock device and sign in to Brave Account
     </message>
+  </if>
 
-    <!-- Strings specific to the Settings Internet Page -->
+  <!-- Strings specific to the Settings Internet Page -->
+  <if expr="chromeos">
     <message name="IDS_SETTINGS_INTERNET" desc="Name of the settings page which displays internet preferences.">
       Network
     </message>
@@ -2077,8 +2176,10 @@
     <message name="IDS_SETTINGS_INTERNET_TOGGLE_WIMAX_ACCESSIBILITY_LABEL" desc="Accessibility only label for WiMAX enable/disable toggle .">
       WiMAX enable
     </message>
+  </if>
 
-     <!-- Network error strings. -->
+  <!-- Network error strings. -->
+  <if expr="chromeos">
     <message name="IDS_NETWORK_ERROR_CANNOT_CHANGE_SHARED_CONFIG" desc="Network error message shown when attempting to change a shared network configuration if the operation is not allowed">
       Changing shared network configurations is not allowed
     </message>
@@ -2094,9 +2195,11 @@
     <message name="IDS_NETWORK_ERROR_UNKNOWN" desc="Network error message shown for an unknown or unexpected network configuration error">
       Error configuring network
     </message>
+  </if>
 
-     <!-- Strings translating ONC (Open Network Configuration) properties -->
-     <!-- and translatable values. See onc_spec.html for more information. -->
+  <!-- Strings translating ONC (Open Network Configuration) properties -->
+  <!-- and translatable values. See onc_spec.html for more information. -->
+  <if expr="chromeos">
     <message name="IDS_ONC_IPV4_ADDRESS" desc="ONC Property label for ipv4-IPAddress">
       IP address
     </message>
@@ -2138,9 +2241,6 @@
     </message>
     <message name="IDS_ONC_CELLULAR_APN_AUTHENTICATION" desc="ONC Property label for APN-Authentication">
       Authentication
-    </message>
-    <message name="IDS_ONC_CELLULAR_CARRIER" desc="ONC Property label for Cellular.Carrier">
-      Carrier
     </message>
     <message name="IDS_ONC_CELLULAR_FAMILY" desc="ONC Property label for Cellular.Family">
       Family
@@ -2493,6 +2593,9 @@
     Uses the same spell checker that’s used in Brave search. Text you type in the browser is sent to Brave.
   </message>
   <if expr="not is_macosx">
+    <message name="IDS_SETTING_LANGUAGES_SPELL_CHECK_DISABLED_REASON" desc="Text that indicates to the user that spell check options are disabled because none of the languages they have added have spell check support.">
+      Spell check isn’t supported for the languages you selected
+    </message>
     <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_TITLE" desc="Title for the list of languages that support spell check, from which users can enable or disable spell check for.">
       Use spell check for
     </message>
@@ -2718,9 +2821,6 @@
   </message>
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_DISABLED" desc="Sub label for the Brave Assistant button when Assistant is disabled.">
     Disabled
-  </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_TURN_ON" desc="Label for the Brave Assistant button when ARC is disabled or value prop is not accepted.">
-    Enable
   </message>
 </if>
 
@@ -3045,6 +3145,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_BLOCK" desc="The 'block' label for Flash in site settings.">
     Block sites from running Flash
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_BLOCK_RECOMMENDED" desc="The 'block' label for Flash in site settings -- the recommended setting due to impending deprecation.">
+    Block sites from running Flash (recommended)
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_PERMISSIONS_ARE_EPHEMERAL" desc="The notice that Flash permissions are ephemeral, at the top of the Flash settings page.">
     Your Flash settings will be kept until you quit Brave.
   </message>
@@ -3313,6 +3416,18 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_NO_SITES_FOUND" desc="Explanation shown when there are no matching search results on All Sites page.">
     No sites found
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING" desc="The label that is used to show the Bluetooth scanning site settings to the user.">
+    Bluetooth scanning
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_ASK" desc="The label that is used to show the Bluetooth scanning setting is set to ask in site settings.">
+    Ask when a site wants to discover nearby Bluetooth devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_ASK_RECOMMENDED" desc="The label that is used to show the Bluetooth scanning setting is set to ask (with the 'recommended' suffix) in site settings.">
+    Ask when a site wants to discover nearby Bluetooth devices (recommended)
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_BLOCK" desc="The label that is used to show the Bluetooth scanning setting is set to block in site settings.">
+    Do not allow any site to discover nearby Bluetooth devices
+  </message>
 
   <message name="IDS_SETTINGS_NO_USB_DEVICES_FOUND" desc="Explanation for not showing USB devices in site settings.">
     No USB devices found
@@ -3533,7 +3648,7 @@
       Add account
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
-      All of your signed in Brave Accounts from apps and websites can be managed here. Apps and websites that have your permission can access the account information they need to work properly.
+      Manage your signed-in Brave Accounts. Websites, apps, and extensions in Brave and Brave Play may use these accounts to customize your experience, depending on permissions.
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_HEADER" desc="List header for Account List in Account Manager Settings page.">
       Accounts
@@ -3547,11 +3662,17 @@
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SIGNED_OUT_ACCOUNT_PLACEHOLDER" desc="Placeholder text for the full name of a signed out account in Account Manager.">
       Sign in again
     </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_UNMIGRATED_ACCOUNT_PLACEHOLDER" desc="Placeholder text for the unmigrated account in Account Manager.">
+      Not updated yet
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MIGRATION_LABEL" desc="Label of the migration button on Account Manager Settings page.">
+      Update account
+    </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REAUTHENTICATION_LABEL" desc="Label of the re-authentication button on Account Manager Settings page.">
       Sign in
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_ACCOUNT_LABEL" desc="Label of the Remove account button in Account Manager.">
-      Remove account from this device
+      Remove this account
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_MANAGED_ACCOUNT" desc="Management status label for managed accounts. This will be e.g. 'Managed by google.com' for Enterprise accounts and 'Managed by Family Link' for child accounts.">
       Managed by <ph name="DOMAIN">$1<ex>google.com</ex></ph>
@@ -3933,6 +4054,42 @@
     </message>
     <message name="IDS_SETTINGS_USERS_ADD_USERS_EMAIL" desc="Label for the email input field for adding users.">
       Email address
+    </message>
+  </if>
+
+  <!-- Parental Controls -->
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_TITLE" desc="Name of the settings page which manages BraveOS's parental controls.">
+      Parental Controls
+    </message>
+    <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_SET_UP_LABEL" desc="Label/description of the settings page which manages BraveOS's parental controls.">
+      Set website restrictions &amp; screen time limits with Family Link
+    </message>
+    <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_CONNECT_TO_INTERNET_LABEL" desc="Label/description shown when the Parental control setup can't be launched because there is no Internet Connection.">
+      Connect to the Internet to set up Parental Controls
+    </message>
+    <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_VIEW_SETTINGS_LABEL" desc="Label/description of the settings page which manages BraveOS's parental controls.">
+      View your Family Link settings
+    </message>
+    <message name="IDS_SETTINGS_PARENTAL_CONTROLS_SET_UP_BUTTON_LABEL" desc="Label/description of the button which launches page which enables BraveOS's parental controls.">
+      Set up
+    </message>
+  </if>
+
+  <!-- Add Supervision Dialog Strings -->
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_CLOSE_ADD_SUPERVISION_DIALOG_TITLE" desc="Title of dialog shown when a user closes the Add Supervision dialog after an account has been converted to use supervision.">
+      Sign out to finish?
+    </message>
+    <message name="IDS_SETTINGS_CLOSE_ADD_SUPERVISION_DIALOG_BODY" desc="Body of dialog shown when a user closes the Add Supervision dialog after an account has been converted to use supervision.">
+      <ph name="BEGIN_PARAGRAPH1">&lt;p&gt;</ph>To finish setting up supervision on this device, you must sign out of <ph name="USER_NAME">$1<ex>John Smith</ex></ph>'s account.<ph name="END_PARAGRAPH1">&lt;/p&gt;</ph>
+      <ph name="BEGIN_PARAGRAPH2">&lt;p&gt;</ph>You can manage your child's parental controls by installing Family Link for parents on your own device.<ph name="END_PARAGRAPH2">&lt;/p&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_CLOSE_ADD_SUPERVISION_DIALOG_SIGN_OUT_BUTTON_LABEL" desc="Text of sign-out button on dialog shown when the Add Supervision flow is closed, which results in a user being signed out.">
+      Sign out
+    </message>
+    <message name="IDS_SETTINGS_CLOSE_ADD_SUPERVISION_DIALOG_CANCEL_BUTTON_LABEL" desc="Text of cancel button on dialog shown when the Add Supervision flow is closed, which results in a return to the Add Supervision flow.">
+      Cancel
     </message>
   </if>
 
@@ -4381,6 +4538,15 @@
     <message name="IDS_SETTINGS_STORAGE_DELETE_ALL_BUTTON_TITLE" desc="In storage manager confirmation dialog, label for the button to delete offline files.">
       Delete files
     </message>
+    <message name="IDS_SETTINGS_STORAGE_EXTERNAL" desc="In Device Settings &gt; Storage, label for the subpage for setting preferences for external storage.">
+      External storage preferences
+    </message>
+    <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES" desc="Label for the control to allow Android apps to access external drives.">
+      Allow Play Store applications to access external drives
+    </message>
+    <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
+      Brave Play Store applications may require access to external storage devices in order to read and write files and folders on them.
+    </message>
 
     <!-- Power -->
     <message name="IDS_SETTINGS_POWER_TITLE" desc="In Device Settings, the title for power management.">
@@ -4710,13 +4876,13 @@
     Reset your security key
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_CONFIRM_TITLE" desc="The title of a dialog for factory-resetting security keys (which are external devices for user authentication). Resetting in this context means erasing a security key and returning it to an initial, blank state.">
-    Confirm reset
+    Touch to confirm reset
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_STEP1" desc="An instruction to a user to physically unplug a security key from their computer, reinsert it, and then touch the activation button that's on the device.">
     Remove your security key from your device, then reinsert and touch it.
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_STEP2" desc="An instruction to a user to press the activation button on their security key a second time to confirm that they wish to reset (i.e. erase) their security key (which is an external device for user authentication).">
-    To confirm you want to reset your security key, touch it again. All credentials stored on the security key and its PIN will be erased.
+    Touch your security key again to confirm reset. All information stored on the security key, including its PIN, will be erased.
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_NO_RESET" desc="A failure message reporting to the user that it is not possible to reset the security key that they selected because the device does not support that operation.">
     Can’t reset this security key

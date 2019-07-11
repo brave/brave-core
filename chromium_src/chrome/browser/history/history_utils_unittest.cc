@@ -26,7 +26,7 @@ TEST(HistoryUtilsTest, VariousURLTest) {
   EXPECT_FALSE(CanAddURLToHistory(GURL("javascript://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("about://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("content://test")));
-  EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-devtools://test")));
+  EXPECT_FALSE(CanAddURLToHistory(GURL("devtools://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("view-source://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-native://test")));

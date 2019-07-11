@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index b56853e5e2649328a81a2de20228de5abda08f11..f468b98a93ad85ed72be8ad82a4ee93c90a38d22 100644
+index ddd5aeef9dafb3e80ad20a7481c4f8ebb418493d..2fda1db466d960856ad397fb8fe97992871fbcec 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
 @@ -42,7 +42,6 @@ def get_parts(config):
@@ -10,7 +10,7 @@ index b56853e5e2649328a81a2de20228de5abda08f11..f468b98a93ad85ed72be8ad82a4ee93c
                  entitlements='app-entitlements.plist',
                  verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT),
          'framework':
-@@ -84,9 +83,17 @@ def get_parts(config):
+@@ -82,9 +81,17 @@ def get_parts(config):
                  options=CodeSignOptions.RESTRICT +
                  CodeSignOptions.LIBRARY_VALIDATION,
                  verify_options=VerifyOptions.IGNORE_RESOURCES),
@@ -28,7 +28,7 @@ index b56853e5e2649328a81a2de20228de5abda08f11..f468b98a93ad85ed72be8ad82a4ee93c
          'libEGL.dylib',
          'libGLESv2.dylib',
          'libswiftshader_libEGL.dylib',
-@@ -143,7 +150,7 @@ def sign_part(paths, config, part):
+@@ -141,7 +148,7 @@ def sign_part(paths, config, part):
          part: The |model.CodeSignedProduct| to sign. The product's |path| must
              be in |paths.work|.
      """
@@ -37,7 +37,7 @@ index b56853e5e2649328a81a2de20228de5abda08f11..f468b98a93ad85ed72be8ad82a4ee93c
      if part.sign_with_identifier:
          command.extend(['--identifier', part.identifier])
      reqs = part.requirements_string(config)
-@@ -233,6 +240,9 @@ def sign_chrome(paths, config):
+@@ -231,6 +238,9 @@ def sign_chrome(paths, config):
  
      # Sign the framework bundle.
      sign_part(paths, config, parts['framework'])

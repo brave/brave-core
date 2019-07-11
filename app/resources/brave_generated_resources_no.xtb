@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave-belønninger</translation>
 <translation id="7942180974165298215">Brave annonsesporing</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
+<translation id="8488282162676695335">Brave Lommebok</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") er ikke tillatt hos Brave.</translation>
 <translation id="7450557937477381864">Lukk Chrome</translation>
 <translation id="7008934821596358692">For å avslutte importering, lukk alle Chrome-vinduer.</translation>
@@ -28,7 +29,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="3218385319396786393">Autospill var blokkert på denne siden</translation>
 <translation id="4988333904713528597">Tillat alltid automatisk visning av <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Fortsett å blokkere autoavspilling</translation>
+<translation id="5883458389055721080">Brave har ikke fornyet denne utvidelsen for sikkerhet. Kun installer denne utvidelsen dersom du stoler på utvikleren.</translation>
 <translation id="2044383478723007273">Brave farger</translation>
+<translation id="2814998458708016836">Bruk vid adresselinje</translation>
 <translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
 <translation id="7635711399568194460">Skjuler "Brave Rewards"-knappen i plasseringslinjen når Brave Reward ikke er aktivert</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
@@ -47,13 +50,25 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4472575034687746823">Kom i gang</translation>
 <translation id="3400357268283240774">Tilleggsinnstillinger</translation>
 <translation id="6303294677342628402">Skjold</translation>
+<translation id="7133511168130368997">Blokker sporere og annonser som følger deg på nettet.</translation>
+<translation id="2761825942249694703">Dette er de standard skjoldinnstillingene. De gjelder for alle nettsider med mindre du gjør endringer i skjoldpanelet på en bestemt side. Endring av disse vil ikke gå utover dine eksisterende per-side-innstillinger.</translation>
+<translation id="8754605759692119662">Dette vil blokkere de fleste annonser på nettsider, ikke private Brave-annonser — disse kontrolleres i</translation>
+<translation id="6388201778088078932">innstillinger.</translation>
 <translation id="9185018653595759199">Blokkering i sosiale medier</translation>
+<translation id="5709627087332022422">Blokker tredjeparts sporere.</translation>
+<translation id="9075744464571452108">Enhetsgjenkjennelse</translation>
+<translation id="3570081523466826008">Oppgrader tilkoblinger til HTTPS</translation>
+<translation id="4824468494729001999">Blokker skript</translation>
 <translation id="7498695072878479744">Tillat innloggingsknapper fra Google på tredjepartssider</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
 <translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
+<translation id="4699812599455071925">Blokker kun tredjeparts informasjonskapsler</translation>
 <translation id="5657156137487675418">Tillatt alle informasjonskapsler</translation>
 <translation id="6883611015375728278">Blokker alle informasjonskapsler</translation>
+<translation id="3084022390368021391">Blokker kun forsøk på enhetsgjenkjennelse fra tredjeparter</translation>
+<translation id="1847422622180531843">Tillat alle forsøk på enhetsgjenkjennelse</translation>
+<translation id="8375051111011093523">Blokker alle forsøk på enhetsgjenkjennelse</translation>
 <translation id="8942080017911802454">Håndteringspolitikk for WebRTC IP</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8798099450830957504">Standard</translation>
@@ -75,4 +90,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="9181207987584064303">Vis i butikken for nettutvidelser</translation>
 <translation id="4846154056248462491">Ved avslutning</translation>
 <translation id="5057399635433117814">Oversette denne siden? Dette vil sende all tekst på denne siden til Microsoft for oversettelse</translation>
+<translation id="3371343170427636147">Brave Browser Nattapper</translation>
+<translation id="4097979995947147464">Brave Browser Betaapper</translation>
+<translation id="8303432794159193481">Brave Browser Utviklerapper</translation>
+<translation id="8292967014767479012">Brave Browser Apper</translation>
+<translation id="4743468424889072281">Brave Browser Utviklingsapper</translation>
 </translationbundle>

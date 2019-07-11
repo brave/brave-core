@@ -26,7 +26,7 @@ class AutoplayPermissionContext : public PermissionContextBase {
   void NotifyPermissionSet(const PermissionRequestID& id,
                            const GURL& requesting_origin,
                            const GURL& embedding_origin,
-                           const BrowserPermissionCallback& callback,
+                           BrowserPermissionCallback callback,
                            bool persist,
                            ContentSetting content_setting) override;
   bool IsRestrictedToSecureOrigins() const override;

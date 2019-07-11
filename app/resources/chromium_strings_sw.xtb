@@ -76,13 +76,9 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="5874882355102994015">Brave haiwezi kuonyesha onyesho la kukagua kwanza chapisho wakati kitazamaji kilichojengewa ndani cha PDF kinakosekana.</translation>
 <translation id="8880183781256147665">Inaongeza kwenye Brave...</translation>
 <translation id="3561569806301739367">Huenda <ph name="FILE_NAME"/> ni hatari, kwa hivyo Brave imeizuia.</translation>
-<translation id="6205431412329939367">Huenda <ph name="FILE_NAME"/> ni hatari, kwa hivyo Brave imeizuia. Unalindwa kupitia mipangilio ya Ulinzi wa Hali ya Juu.</translation>
 <translation id="9067428552314418522">Faili hii ni hatari, kwa hivyo Brave imeizuia.</translation>
-<translation id="2938460345748897177">Faili hii ni hatari, kwa hivyo Brave imeizuia. Unalindwa kupitia mipangilio ya Ulinzi wa Hali ya Juu.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> ni hatari, kwa hivyo Brave imeizuia.</translation>
-<translation id="8858456697111532356">Huenda <ph name="FILE_NAME"/> ni hatari, kwa hivyo Brave imeizuia. Unalindwa kupitia mipangilio ya Ulinzi wa Hali ya Juu.</translation>
 <translation id="89367911614620585">Huenda faili hii ni hatari, kwa hivyo Brave imeizuia.</translation>
-<translation id="8943391224520748272">Huenda faili hii ni hatari, kwa hivyo Brave imeizuia. Unalindwa kupitia mipangilio ya Ulinzi wa Hali ya Juu.</translation>
 <translation id="9183662282810237335">Ungependa kufunga Brave?</translation>
 <translation id="3834935463915107022">Ungependa kufunga Brave?</translation>
 <translation id="8797356639448065696">Brave iko katika hali ya chini chini.</translation>
@@ -145,8 +141,6 @@ Kuingia bila kujali kutaunganisha maelezo ya Brave kama vile alamisho, historia,
 <translation id="6746636977031158624">Mfumo wa Uendeshaji wa Brave haukuweza kusawazisha data yako kwa sababu maelezo yako ya kuingia katika akaunti yanahitaji kusasishwa.</translation>
 <translation id="2999152167963026588">Mfumo wa Uendeshaji wa Brave haukuweza kusawazisha data yako kwa sababu Usawazishaji haupatikani kwa kikoa chako.</translation>
 <translation id="1459786048951724030">Mfumo wa Uendeshaji wa Brave haukuweza kusawazisha data yako kutokana na hitilafu wakati wa kuingia katika akaunti.</translation>
-<translation id="2887570477425111999">Hifadhi maelezo katika Brave</translation>
-<translation id="193559141530782783">Brave itahifadhi salama maelezo yako ya kibinafsi ili usihitaji kuyaandika tena.</translation>
 <translation id="663059986967017181">Imenakiliwa kwenye Brave</translation>
 <translation id="1457432835062259213">Kizinduzi cha Programu ya Brave</translation>
 <translation id="82609232232243542">Ingia katika Brave</translation>
@@ -183,7 +177,7 @@ Tafadhali angalia barua pepe yako katika <ph name="ACCOUNT_EMAIL"/> upate maagiz
 <translation id="1912973375560256099">Sheria ya ndani ya Brave ili kuruhusu trafiki ya mDNS.</translation>
 <translation id="8207657266087451193">Ikiwa picha haina ufafanuzi muhimu, Brave itajaribu kukuwekea. Ili kuweka ufafanuzi, tutatuma picha kwa Brave Software. Unaweza kuzima mipangilio hii wakati wowote.</translation>
 <translation id="5499063270485366718">Ikiwa picha haina ufafanuzi muhimu, Brave itajaribu kukuwekea. Ili kuweka ufafanuzi, tutatuma picha kwa Brave Software.</translation>
-<translation id="3870835867536344658">Huduma hii hutumia kikagua maendelezo sawa na kinachotumika kwenye Huduma ya Tafuta na Brave Software. Maandishi unayoandika kwenye kivinjari yanatumwa kwa Brave Software. Unaweza kubadilisha hali hii katika mipangilio wakati wowote.</translation>
+<translation id="215320507915280336">Huduma hii hutumia kikagua maendelezo sawa na kinachotumika kwenye Huduma ya Tafuta na Brave Software. Maandishi unayoandika kwenye kivinjari yanatumwa kwa Brave Software. Unaweza kubadilisha hali hii katika mipangilio wakati wowote.</translation>
 <translation id="1807774211756215222">Fungua kiungo katika kichupo kipya cha Brave</translation>
 <translation id="4624945300945265642">Fungua kiungo katika dirisha fiche la Brave</translation>
 <translation id="7863882214613921971">Fungua Kiungo katika kichupo kipya cha Brave</translation>
@@ -240,23 +234,17 @@ Tafadhali angalia barua pepe yako katika <ph name="ACCOUNT_EMAIL"/> upate maagiz
 <translation id="8933981935877469796">Chagua <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Bofya kitufe cha <ph name="BEGIN_BOLD"/>Badilisha tu<ph name="END_BOLD"/>, kama kinaonekana</translation>
 <translation id="3507835409099344374">Nenda kwenye mipangilio ya arifa ya Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Sasisho la Brave linapatikana}=1{Sasisho la Brave linapatikana}other{Sasisho la Brave limekuwepo kwa siku #}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Sasisho la Brave linapatikana}=1{Sasisho la Brave linapatikana}other{Sasisho la Brave limekuwepo kwa siku #}}</translation>
 <translation id="720532315408041257">Msimamizi wako anakuomba uwashe Brave upya ili utumie sasisho</translation>
-<translation id="6639482638305253477">{0,plural, =1{Anzisha Brave upya baada ya siku moja}other{Anzisha Brave upya baada ya siku #}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave itafunguka upya baada ya saa moja}other{Brave itafunguka upya baada ya saa #}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave itafunguka upya baada ya dakika 1}other{Brave itafunguka upya baada ya dakika #}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave itafunguka upya hivi sasa}=1{Brave itafunguka upya baada ya sekunde 1}other{Brave itafunguka upya baada ya sekunde #}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Fungua Brave upya ndani ya siku moja}other{Fungua Brave upya ndani ya siku #}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave itafunguka upya ndani ya saa moja}other{Brave itafunguka upya ndani ya saa #}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave itafunguka upya ndani ya dakika 1}other{Brave itafunguka upya ndani ya dakika #}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave itafunguka upya hivi sasa}=1{Brave itafunguka upya ndani ya sekunde 1}other{Brave itafunguka upya ndani ya sekunde #}}</translation>
 <translation id="7595187113648413294">Msimamizi wako anakushauri uwashe Brave upya ili utumie sasisho</translation>
-<translation id="56801943271475640">{0,plural, =0{Sasisho la mfumo wa uendeshaji wa Brave linapatikana}=1{Sasisho la mfumo wa uendeshaji wa Brave linapatikana}other{Sasisho la mfumo wa uendeshaji wa Brave limekuwepo kwa siku #}}</translation>
-<translation id="5715362474140341294">Msimamizi wako anakuomba uzime kisha uwashe mfumo wa uendeshaji wa Brave ili uweke sasisho hili</translation>
-<translation id="8094834892392729950">{0,plural, =1{Zima kisha uwashe mfumo wa uendeshaji wa Brave ndani ya siku moja}other{Zima kisha uwashe mfumo wa uendeshaji wa Brave ndani ya siku #}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Mfumo wa uendeshaji wa Brave utazimwa kisha uwashwe baada ya saa moja}other{Mfumo wa uendeshaji wa Brave utazimwa kisha uwashwe baada ya saa #}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Mfumo wa uendeshaji wa Brave utazimwa kisha uwashwe baada ya dakika 1}other{Mfumo wa uendeshaji wa Brave utazimwa kisha uwashwe baada ya dakika #}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Mfumo wa uendeshaji wa Brave utazimwa kisha uwashwe sasa}=1{Mfumo wa uendeshaji wa Brave utazimwa kisha uwashwe baada ya sekunde 1}other{Mfumo wa uendeshaji wa Brave utazimwa kisha uwashwe baada ya sekunde #}}</translation>
-<translation id="8559452515617838628">Msimamizi wako anakushauri uwashe kisha uzime mfumo wa uendeshaji wa Brave ili uweke sasisho</translation>
 <translation id="3052349005266761501">Inaanzisha Brave...</translation>
 <translation id="1197672524850678392">Imeshindwa kuanzisha Brave. Jaribu tena.</translation>
 <translation id="6040143037577758943">Funga</translation>
+<translation id="5147525139567260139">Shiriki kichupo cha Brave</translation>
 <translation id="8541922081612557424">Kuhusu Brave</translation>
 <translation id="3262506503470845422">Pata usaidizi wa kutumia Brave</translation>
 <translation id="1864557848095568223">Inasasisha Brave</translation>

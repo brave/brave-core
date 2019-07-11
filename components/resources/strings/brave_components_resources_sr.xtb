@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Izmeni željene postavke</translation>
 <translation id="7606029853066610626">Pogledajte i upravljajte obeleživačima</translation>
 <translation id="5550994254534676787">Pregledajte svoju istoriju pregledanja</translation>
+<translation id="1742484101357469636">Podešavanja kontrolne table</translation>
+<translation id="8320281346741574991">Prikaži pozadinsku sliku</translation>
 <translation id="6165508094623778733">Nauči više</translation>
 <translation id="8730621377337864115">Gotovo</translation>
 <translation id="6248988683584659830">Podešavanja pretrage</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave vam omogućava da lako stvorite željeno okruženje tako što ćete uvesti obeleživače i podešavanja iz drugih pregledača koji su instalirani na vašem računaru.</translation>
 <translation id="8275038454117074363">Uvoz</translation>
 <translation id="5540323067375019678">Upravljajte svojim štitovima</translation>
+<translation id="3278033011827237847">Zaštitite se od praćenja i reklama koje ugrožavaju privatnost dok pregledavate sa Brave Shields-om. Podesite Shields na „ugašen“ ako izgleda da veb lokacija ne radi kako treba.</translation>
 <translation id="3366308997091824722">Podešavanja štita</translation>
-<translation id="3884404068544758153">Promenite pretraživač</translation>
+<translation id="4764692524839457597">podrazumevano</translation>
+<translation id="3108122610701115301">Postavi podrazumevano</translation>
+<translation id="2469440407442116729">Izaberite pretraživač</translation>
 <translation id="438216590634144114">Izaberite pretraživač koji želite da podrazumevano koristite kada pretražujete Veb iz trake adresa.</translation>
-<translation id="8428213095426709021">Podešavanja</translation>
+<translation id="5804484488647369316">Postavi podrazumevani pretraživač</translation>
+<translation id="4428458837269935199">Za privatnije iskustvo pretraživanja, probajte DuckDuckGo.</translation>
 <translation id="513635702954746724">Odaberite boju teme</translation>
 <translation id="6842850080200126305">Podesite boju trake sa alatima odabirom svetle ili tamne opcije u tabeli podešavanja.</translation>
 <translation id="2801098717523961746">Odaberite temu</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Zaradite tokene tako što ćete gledati oglase u Brave-u. Oglasi su prikazani na osnovu vaših interesa, kako je zaključeno iz vašeg ponašanja na pregledaču. Nijedna privatna informacija ili istorija pregledanja nikad ne napušta vaš pregledač.</translation>
 <translation id="6112368337882254910">Automatski doprinosi</translation>
 <translation id="1527222983464337010">Automatski način da podržite objavljivače i stvaralace sadržaja. Postavite mesečno plaćanje i surfujte normalno. Veb lokacija koju posetite dobija automatski vašu donaciju, u odnosu na vašu pažnju prema lokaciji, što Brave meri.</translation>
+<translation id="20281847067919078">Procenjene nagrade na čekanju</translation>
+<translation id="8593551638387217772">Sledeći datum za plaćanje</translation>
+<translation id="319209088187794725">Reklamna obaveštenja primljena ovog meseca</translation>
 <translation id="4229016885653790965">Žao nam je! Reklame još uvek nisu dostupne u vašem regionu.</translation>
 <translation id="654711254769318398">Broj pregledanih reklamnih stranica</translation>
 <translation id="2532127066761785857">Maksimalni broj prikazanih reklama</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minut</translation>
 <translation id="9031738692126722094">Omogućite napojnice na nivou sadržaja na ovim sajtovima</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Tviter</translation>
 <translation id="3920963435109110161">Savetujte na licu mesta kako pronalazite dragulje.</translation>
 <translation id="6135431587052937035">Podržavajte svoje omiljene veb lokacije periodičnim mesečnim savetima.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Izvinite, izgleda da je ovo odobrenje već zatraženo.</translation>
 <translation id="282693359045252357">Datum sledeće mesečne napojnice</translation>
 <translation id="6231182869178328516">Upravo sam dao napojnicu <ph name="NAME">$1<ex>user</ex></ph> koji koristi pregledač Brave. Pogledajte na https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Iznos:</translation>
 <translation id="5923611424721173182">Trenutno izmirenje</translation>
 <translation id="5457113250005438886">Nevažeće</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Podesite mesečnu napojnicu</translation>
 <translation id="8003573781961874199">Preuzmite kao PDF</translation>
 <translation id="298067735430872465">Zarade od oglasa</translation>
+<translation id="2266556115441975588">Vaše nagrade od oglasa su ovde!</translation>
 <translation id="8764029012618014430">Omogućite napojnice</translation>
 <translation id="3412655388715513818">Izuzmite ovu lokaciju</translation>
 <translation id="418343137736963579">Ukupan broj lokacija koje ste isključili iz automatskog doprinošenja:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Šifra za oporavak</translation>
 <translation id="6354568176665589146">Ponavljajuće</translation>
 <translation id="7577100371127227294">Mesečne donacije</translation>
+<translation id="2391095793008133394">Daj napojnicu {{ user }} za njegovu objavu:</translation>
+<translation id="7557413530932469222">Daj napojnicu {{ user }} za njegovu objavu!</translation>
 <translation id="1110535155349301542">ukloniti</translation>
 <translation id="8942997470474842562">Odredili ste’ {{reservedAmount}} BAT za kreatore koji se još nisu’ prijavili za primanje doprinosa. Vaš pretraživač će nastaviti da pokušava da doprinese dok ne potvrde ili dok ne prođe 90 dana.</translation>
 <translation id="8759753423332885148">Saznajte više.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Vidi sve {{numItems}} stavke</translation>
 <translation id="7857284676033058221">Vidite sve {{numSites}} lokacije</translation>
 <translation id="3536298624341433814">Pošalji moju donaciju</translation>
+<translation id="8428213095426709021">Podešavanja</translation>
 <translation id="1792148354504719133">lokacija</translation>
 <translation id="5944430251223015324">lokacije</translation>
 <translation id="1834493631938747505">Obavestite druge o svojoj napojnici.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Na čekanju do</translation>
 <translation id="7410549756000115387">Nema doprinosa na čekanju…</translation>
 <translation id="1963227389609234879">Уклони све</translation>
+<translation id="1170315781901539495">Izostavljene lokacije</translation>
+<translation id="5119190679543565400">Vrati u prethodno stanje ovu lokaciju</translation>
+<translation id="9075700728717335924">Isključili ste</translation>
+<translation id="4862817811647633830">lokacije od Auto-doprinosa.</translation>
 <translation id="923467487918828349">Прикажи све</translation>
+<translation id="5471305206221894680">Podržane lokacije</translation>
+<translation id="2306169361186864012">Nagrade od Brave oglasa!</translation>
+<translation id="3757873395477273033">Vaše nagrade dodeljene od Brave reklama su na putu ka vama.</translation>
+<translation id="8101881066646819737">Odobren je vaš token za Brave reklame</translation>
 <translation id="2151535059686617995">Ovo’ je Vaš srećan dan!</translation>
 <translation id="6255773350565723852">Vaš token odobrenja je na putu.</translation>
 <translation id="1181037720776840403">Ukloni</translation>

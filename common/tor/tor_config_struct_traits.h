@@ -1,12 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/ */
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CONFIG_STRUCT_TRAITS_TOR_TOR_CONFIG_STRUCT_TRAITS_H_
-#define BRAVE_CONFIG_STRUCT_TRAITS_TOR_TOR_CONFIG_STRUCT_TRAITS_H_
+#ifndef BRAVE_COMMON_TOR_TOR_CONFIG_STRUCT_TRAITS_H_
+#define BRAVE_COMMON_TOR_TOR_CONFIG_STRUCT_TRAITS_H_
+
+#include <string>
 
 #include "brave/common/tor/tor_common.h"
-#include "brave/common/tor/tor_config.mojom.h"
+#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "ipc/ipc_message_utils.h"
 
 namespace mojo {
@@ -40,9 +43,8 @@ struct StructTraits<tor::mojom::TorConfigDataView,
 
   static bool Read(tor::mojom::TorConfigDataView in,
                    tor::TorConfig* out);
-
 };
 
 }  // namespace mojo
 
-#endif  // BRAVE_CONFIG_STRUCT_TRAITS_TOR_TOR_CONFIG_STRUCT_TRAITS_H_
+#endif  // BRAVE_COMMON_TOR_TOR_CONFIG_STRUCT_TRAITS_H_

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/browser_actions_container.h b/chrome/browser/ui/views/toolbar/browser_actions_container.h
-index ab8740f8a0c39ebac83301c152ae82c4bd3dbe51..856c408effbbbf510fd694e61a1b9eab72381610 100644
+index 02585782bd6e1e14498b5e24040a2765b6d7ba9f..6c5370fed014a328c991fce388396ebb0eb44dd0 100644
 --- a/chrome/browser/ui/views/toolbar/browser_actions_container.h
 +++ b/chrome/browser/ui/views/toolbar/browser_actions_container.h
 @@ -253,6 +253,7 @@ class BrowserActionsContainer : public views::View,

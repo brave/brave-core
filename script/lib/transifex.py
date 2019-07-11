@@ -215,7 +215,9 @@ def get_grd_message_string_tags(grd_file_path):
         grd_base_path = os.path.dirname(grd_file_path)
         grd_part_filename = element.get('file')
         if grd_part_filename in ['chromeos_strings.grdp',
-                                 'media_router_resources.grdp']:
+                                 'media_router_resources.grdp',
+                                 'os_settings_strings.grdp',
+                                 'xr_consent_ui_strings.grdp']:
             continue
         grd_part_path = os.path.join(grd_base_path, grd_part_filename)
         part_output_elements = get_grd_message_string_tags(grd_part_path)
@@ -234,7 +236,7 @@ def get_fingerprint_for_xtb(message_tag):
                 string_ph.tail or ''))
     string_to_hash = (string_to_hash or '').strip().encode('utf-8')
     string_to_hash = clean_triple_quoted_string(string_to_hash)
-    fp = FP.FingerPrint(string_to_hash)
+    fp = FP.FingerPrint(string_to_hash.decode('utf-8'))
     meaning = (message_tag.get('meaning') if 'meaning' in message_tag.attrib
                else None)
     if meaning:

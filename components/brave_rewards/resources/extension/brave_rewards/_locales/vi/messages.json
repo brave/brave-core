@@ -48,7 +48,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Creator",
+    "message": "Người tạo nội dung được Brave Xác minh",
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
@@ -290,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Refresh Status",
+    "message": "Làm mới Trạng thái",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -346,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your rewards from Ads are here!",
+    "message": "Các phần thưởng cho bạn từ Quảng cáo đều có tại đây!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -413,8 +413,16 @@
     "message": "Tiền tip",
     "description": "Icon label for Twitter tips"
   },
+  "redditTipsHoverText": {
+    "message": "Gợi ý cho bài đăng này",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Tiền tip",
+    "description": "Icon label for Reddit tips"
+  },
   "verifiedPublisherNotification": {
-    "message": "Creator $name$ recently verified",
+    "message": "Người tạo nội dung $name$ mới được xác minh",
     "description": "Notification text that tells user which publisher just verified",
     "placeholders": {
       "name": {
@@ -424,11 +432,11 @@
     }
   },
   "pendingNotEnoughFundsNotification": {
-    "message": "You have pending tips due to insufficient funds",
+    "message": "Bạn có các gợi ý đang chờ xử lý do không đủ tiền",
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Pending Contribution",
+    "message": "Đóng góp Đang chờ xử lý",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -444,15 +452,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "Phần thưởng Quảng cáo Brave!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Your rewards grant from Brave Ads is on its way.",
+    "message": "Phần thưởng tặng bạn từ Quảng cáo Brave sắp tới rồi.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Your Brave Ads Token Grant",
+    "message": "Tặng Token cho Bạn từ Quảng cáo Brave",
     "description": "Token title on success screen for ads"
   }
 }

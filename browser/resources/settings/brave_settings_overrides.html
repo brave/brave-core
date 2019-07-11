@@ -43,10 +43,8 @@
         align-items: flex-start;
         background: #F1F3F5; /* neutral100 */
       }
-      @media only screen and  (max-width: 815px) {
-        settings-menu {
-          display: none;
-        }
+      #left, #main, #right {
+        flex: unset !important;
       }
       :host-context([dark]) #container {
         background: #1E2127;

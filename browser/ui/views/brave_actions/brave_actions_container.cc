@@ -69,9 +69,9 @@ void BraveActionsContainer::Init() {
   auto vertical_container_layout = std::make_unique<views::BoxLayout>(
                                                 views::BoxLayout::kHorizontal);
   vertical_container_layout->set_main_axis_alignment(
-                                  views::BoxLayout::MAIN_AXIS_ALIGNMENT_CENTER);
+      views::BoxLayout::MainAxisAlignment::kCenter);
   vertical_container_layout->set_cross_axis_alignment(
-      views::BoxLayout::CROSS_AXIS_ALIGNMENT_CENTER);
+      views::BoxLayout::CrossAxisAlignment::kCenter);
   SetLayoutManager(std::move(vertical_container_layout));
 
   // children

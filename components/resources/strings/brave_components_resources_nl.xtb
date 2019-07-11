@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Voorkeuren Bewerken</translation>
 <translation id="7606029853066610626">Bladwijzers Bekijken en Beheren</translation>
 <translation id="5550994254534676787">Bekijk je browsegeschiedenis.</translation>
+<translation id="1742484101357469636">Dashboard-instellingen</translation>
+<translation id="8320281346741574991">Toon achtergrondafbeelding</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="8730621377337864115">Gereed</translation>
 <translation id="6248988683584659830">Zoekinstellingen</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Je kunt in Brave eenvoudig gebruikmaken van de omgeving waar je al bekend mee bent, door bladwijzers en instellingen te importeren uit andere browsers die op je computer zijn geïnstalleerd.</translation>
 <translation id="8275038454117074363">Importeren</translation>
 <translation id="5540323067375019678">Je schilden beheren</translation>
+<translation id="3278033011827237847">Bescherm tegen privacy schendende advertenties en trackers tijdens het browsen met Brave Shields. Stel Shields in op 'neer' als een website niet naar behoren lijkt te werken.</translation>
 <translation id="3366308997091824722">Shield instellingen</translation>
-<translation id="3884404068544758153">De zoekmachine wijzigen</translation>
+<translation id="4764692524839457597">standaard</translation>
+<translation id="3108122610701115301">Stel standaard in</translation>
+<translation id="2469440407442116729">Selecteer een zoekmachine</translation>
 <translation id="438216590634144114">Kies de zoekmachine die je standaard wilt gebruiken bij het zoeken op het web in de adresbalk.</translation>
-<translation id="8428213095426709021">Instellingen</translation>
+<translation id="5804484488647369316">Stel standaard zoekmachine in</translation>
+<translation id="4428458837269935199">Probeer DuckDuckGo voor een meer private zoekervaring.</translation>
 <translation id="513635702954746724">Kies een kleurthema</translation>
 <translation id="6842850080200126305">Stel de kleur van de werkbalk in door de optie voor licht of donker te kiezen in het deelvenster met instellingen.</translation>
 <translation id="2801098717523961746">Kies een thema</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Verdien tokens door advertenties te bekijken in Brave. Advertenties worden getoond op basis van je interesses, door analyse van je browsing geschiedenis. Geen persoonlijke data van je browsing geschiedenis zal de browser verlaten.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">Een automatische manier om uitgevers en makers van content te steunen. Stel een maandelijkse betaling in en browse zoals gewoonlijk. De websites die je bezoekt ontvangen je bijdragen, op basis van je aandacht gemeten door Brave, automatisch.</translation>
+<translation id="20281847067919078">Geschatte openstaande beloningen</translation>
+<translation id="8593551638387217772">Volgende betaaldatum</translation>
+<translation id="319209088187794725">Aantal meldingen van advertenties deze maand ontvangen</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
 <translation id="654711254769318398">Advertentiepagina's bekeken</translation>
 <translation id="2532127066761785857">Maximum aantal advertenties weergegeven</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minuut</translation>
 <translation id="9031738692126722094">Schakel fooien op contentniveau toe op deze websites</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Geef meteen een tip als je edelstenen vindt.</translation>
 <translation id="6135431587052937035">Ondersteun je favoriete sites met terugkerende maandelijkse fooien.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Sorry, het lijkt erop dat deze gift al is geclaimd.</translation>
 <translation id="282693359045252357">Volgende maandelijkse tipdatum</translation>
 <translation id="6231182869178328516">Ik heb <ph name="NAME">$1<ex>user</ex></ph> zojuist een fooi gegeven via de Brave Browser. Ontdek meer op https://brave.com/tips.</translation>
+<translation id="8404935570206006581">FooiVanBrave</translation>
 <translation id="7422678632904904341">Bedrag:</translation>
 <translation id="5923611424721173182">Huidige Verzoening</translation>
 <translation id="5457113250005438886">Ongeldig</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Stel maandelijks tippen in.</translation>
 <translation id="8003573781961874199">Download als PDF</translation>
 <translation id="298067735430872465">Inkomsten uit Advertenties</translation>
+<translation id="2266556115441975588">Uw beloningen uit Ads zijn binnen!</translation>
 <translation id="8764029012618014430">Sta fooi toe</translation>
 <translation id="3412655388715513818">Sluit deze website uit</translation>
 <translation id="418343137736963579">Totaal aantal websites die je het uitgesloten van Auto-Contribute:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Herstelsleutel</translation>
 <translation id="6354568176665589146">Terugkerend</translation>
 <translation id="7577100371127227294">Maandelijkse Tips</translation>
+<translation id="2391095793008133394">Geef {{ user }} een fooi voor hun post:</translation>
+<translation id="7557413530932469222">Geef {{ user }} een fooi voor hun post!</translation>
 <translation id="1110535155349301542">verwijder</translation>
 <translation id="8942997470474842562">Je hebt BAT {{reservedAmount}} toegewezen aan makers die zich nog niet hebben aangemeld voor het ontvangen van bijdragen. Je browser zal blijven proberen bij te dragen tot ze verifiëren of tot er 90 dagen zijn verstreken.</translation>
 <translation id="8759753423332885148">Meer informatie.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Bekijk alle {{numItems}} artikels</translation>
 <translation id="7857284676033058221">Bekijk alle {{numSites}} websites</translation>
 <translation id="3536298624341433814">Verzend mijn Tip.</translation>
+<translation id="8428213095426709021">Instellingen</translation>
 <translation id="1792148354504719133">website</translation>
 <translation id="5944430251223015324">websites</translation>
 <translation id="1834493631938747505">Vertel anderen over uw fooi.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">In afwachting totdat</translation>
 <translation id="7410549756000115387">Geen openstaande bijdragen …</translation>
 <translation id="1963227389609234879">Alles verwijderen</translation>
+<translation id="1170315781901539495">Uitgesloten sites</translation>
+<translation id="5119190679543565400">Herstel deze pagina</translation>
+<translation id="9075700728717335924">U hebt uitgesloten</translation>
+<translation id="4862817811647633830">websites van Auto-Contribute.</translation>
 <translation id="923467487918828349">Toon alles</translation>
+<translation id="5471305206221894680">Ondersteunde sites</translation>
+<translation id="2306169361186864012">Brave Ads-beloningen!</translation>
+<translation id="3757873395477273033">Uw beloningstoelage van Brave Ads is onderweg.</translation>
+<translation id="8101881066646819737">Uw Brave Ads Token-toelage</translation>
 <translation id="2151535059686617995">Je hebt vandaag geluk!</translation>
 <translation id="6255773350565723852">Je gift komt eraan.</translation>
 <translation id="1181037720776840403">Verwijderen</translation>

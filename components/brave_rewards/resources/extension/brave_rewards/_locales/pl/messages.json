@@ -346,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your rewards from Ads are here!",
+    "message": "Twoje nagrody z reklam są tutaj!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -406,15 +406,23 @@
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
-    "message": "Daj napiwek za ten tweet",
+    "message": "Przekaż napiwek za ten tweet",
     "description": "Hover text for Twitter tips action"
   },
   "twitterTipsIconLabel": {
     "message": "Napiwek",
     "description": "Icon label for Twitter tips"
   },
+  "redditTipsHoverText": {
+    "message": "Przekaż napiwek za ten post",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Napiwek",
+    "description": "Icon label for Reddit tips"
+  },
   "verifiedPublisherNotification": {
-    "message": "Creator $name$ recently verified",
+    "message": "Twórca $name$ został niedawno zweryfikowany",
     "description": "Notification text that tells user which publisher just verified",
     "placeholders": {
       "name": {
@@ -424,11 +432,11 @@
     }
   },
   "pendingNotEnoughFundsNotification": {
-    "message": "You have pending tips due to insufficient funds",
+    "message": "Masz oczekujące napiwki z powodu niewystarczających środków",
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Pending Contribution",
+    "message": "Oczekujące wpłaty",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -444,15 +452,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "Nagrody z reklam Brave!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Your rewards grant from Brave Ads is on its way.",
+    "message": "Twoje nagrody z reklam Brave są już w drodze.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Your Brave Ads Token Grant",
+    "message": "Twoje tokeny z reklam Brave",
     "description": "Token title on success screen for ads"
   }
 }

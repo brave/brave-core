@@ -16,12 +16,15 @@ const service_manager::Manifest& GetManifest() {
       service_manager::ManifestBuilder()
           .WithServiceName(mojom::kServiceName)
           .WithDisplayName("Bat Ads Service")
-          .WithOptions(service_manager::ManifestOptionsBuilder()
-                           .WithInstanceSharingPolicy(
-                               service_manager::Manifest::
-                                   InstanceSharingPolicy::kSharedAcrossGroups)
-                           .WithSandboxType("utility")
-                           .Build())
+          .WithOptions(
+              service_manager::ManifestOptionsBuilder()
+                  .WithInstanceSharingPolicy(
+                      service_manager::Manifest::InstanceSharingPolicy::
+                          kSharedAcrossGroups)
+                  .WithExecutionMode(service_manager::Manifest::ExecutionMode::
+                                         kOutOfProcessBuiltin)
+                  .WithSandboxType("utility")
+                  .Build())
           .ExposeCapability(
               "bat_ads",
               service_manager::Manifest::InterfaceList<mojom::BatAdsService>())

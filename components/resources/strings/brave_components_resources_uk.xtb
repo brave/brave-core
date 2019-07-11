@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Редагувати Преференції</translation>
 <translation id="7606029853066610626">Дивитись та керувати закладками</translation>
 <translation id="5550994254534676787">Переглянути вашу історію переглядів</translation>
+<translation id="1742484101357469636">Налаштування панелі</translation>
+<translation id="8320281346741574991">Показувати фонове зображення</translation>
 <translation id="6165508094623778733">Дізнатись більше</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="6248988683584659830">Налаштування пошуку</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave дозволяє легко налаштувати ваше середовище, до якого ви звикли, шляхом імпорту закладок і налаштувань з інших браузерів, установлених на вашому комп’ютері.</translation>
 <translation id="8275038454117074363">Імпортувати</translation>
 <translation id="5540323067375019678">Керування налаштуваннями безпеки</translation>
+<translation id="3278033011827237847">Захистіть себе від відстеження та реклами, що порушують вашу приватність, завдяки Brave Shields. Відключіть Shields, якщо сайт працює неправильно.</translation>
 <translation id="3366308997091824722">Налаштування щита</translation>
-<translation id="3884404068544758153">Почніть користуватися новою пошуковою системою</translation>
+<translation id="4764692524839457597">за замовчуванням</translation>
+<translation id="3108122610701115301">Встановити за замовчуванням</translation>
+<translation id="2469440407442116729">Обрати пошукову систему</translation>
 <translation id="438216590634144114">Оберіть пошукову систему, якою б ви хотіли користуватись за замовчуванням, здійснюючи пошук в інтернеті з адресного рядка.</translation>
-<translation id="8428213095426709021">Налаштування</translation>
+<translation id="5804484488647369316">Встановити пошукову систему за замовчуванням</translation>
+<translation id="4428458837269935199">Для більш приватного пошуку спробуйте DuckDuckGo.</translation>
 <translation id="513635702954746724">Виберіть колір теми</translation>
 <translation id="6842850080200126305">Виберіть колір панелі інструментів, вибравши на панелі налаштувань темну або світлу кольорову схему.</translation>
 <translation id="2801098717523961746">Вибрати тему</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Заробляйте токени, дивлячись рекламу у Brave. Реклама показується вам відповідно до ваших інтересів, що відстежуються на основі ваших дій у браузері. Особисті дані чи історія перегляду ніколи не вийдуть за межі вашого браузера.</translation>
 <translation id="6112368337882254910">Зробити автоматичний внесок</translation>
 <translation id="1527222983464337010">Автоматичний спосіб підтримати тих, хто публікує та створює контент. Встановіть щомісячний платіж і переглядайте сайти в нормальному режимі. Сайти, які ви відвідуєте, отримують ваші внески автоматично, на основі вашої уваги, яка вимірюється Brave.</translation>
+<translation id="20281847067919078">Приблизні винагороди очікуються</translation>
+<translation id="8593551638387217772">Наступна дата оплати</translation>
+<translation id="319209088187794725">Рекламні сповіщення, отримані цього місяця</translation>
 <translation id="4229016885653790965">Вибачте! Оголошення поки що не доступні у вашому регіоні.</translation>
 <translation id="654711254769318398">Переглянуті сторінки з рекламою</translation>
 <translation id="2532127066761785857">Показано максимальну кількість оголошень</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 хвилина</translation>
 <translation id="9031738692126722094">Увімкнути винагороди за рівнем вмісту на цих сайтах</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Платіть на місці, коли знаходите коштовності.</translation>
 <translation id="6135431587052937035">Підтримуйте свої улюблені сайти щомісячними платежами.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Вибачте, виявляється цей грант вже забрали.</translation>
 <translation id="282693359045252357">Наступна дата щомісячних чайових</translation>
 <translation id="6231182869178328516">Я щойно відправив/відправила винагороду користувачу <ph name="NAME">$1<ex>user</ex></ph> за допомогою Brave Browser. Спробуйте тут: https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Сума:</translation>
 <translation id="5923611424721173182">Поточне узгодження</translation>
 <translation id="5457113250005438886">Недійсний</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Встановити місячне відрахування</translation>
 <translation id="8003573781961874199">Завантажити як PDF</translation>
 <translation id="298067735430872465">Заробітки від реклами</translation>
+<translation id="2266556115441975588">Прийшли ваші винагороди від реклами!</translation>
 <translation id="8764029012618014430">Увімкнути підказки</translation>
 <translation id="3412655388715513818">Виключити цей сайт</translation>
 <translation id="418343137736963579">Усього сайтів, які ви виключили з автоматичного внеску:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Ключ відновлення</translation>
 <translation id="6354568176665589146">Періодично</translation>
 <translation id="7577100371127227294">Щомісячні відрахування</translation>
+<translation id="2391095793008133394">Заплатити {{ user }} за публікацію:</translation>
+<translation id="7557413530932469222">Заплатіть {{ user }} за публікацію!</translation>
 <translation id="1110535155349301542">видалити</translation>
 <translation id="8942997470474842562">Ви ’призначили {{reservedAmount}} BAT для творців, які ще не’ зареєструвались для отримання внесків. Ваш браузер буде продовжувати спроби зробити внесок, доки вони не будуть верифіковані, або доки не пройде 90 днів.</translation>
 <translation id="8759753423332885148">Дізнатись більше.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Бачити всі {{numItems}} одиниць</translation>
 <translation id="7857284676033058221">Дивитись всі {{numSites}} сайти</translation>
 <translation id="3536298624341433814">Надіслати моє відрахування</translation>
+<translation id="8428213095426709021">Налаштування</translation>
 <translation id="1792148354504719133">сайт</translation>
 <translation id="5944430251223015324">сайти</translation>
 <translation id="1834493631938747505">Розкажіть іншим про вашу винагороду.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Очікується до</translation>
 <translation id="7410549756000115387">Немає внесків, що очікуються…</translation>
 <translation id="1963227389609234879">Видалити всі</translation>
+<translation id="1170315781901539495">Виключені сайти</translation>
+<translation id="5119190679543565400">Відновити цей сайт</translation>
+<translation id="9075700728717335924">Вас вилучено</translation>
+<translation id="4862817811647633830">сайти з автопідтримки.</translation>
 <translation id="923467487918828349">Показати всі</translation>
+<translation id="5471305206221894680">Підтримувані сайти</translation>
+<translation id="2306169361186864012">Винагороди Brave Ads!</translation>
+<translation id="3757873395477273033">Ваші винагороди від Brave Ads скоро будуть у вас.</translation>
+<translation id="8101881066646819737">Надані вам токени Brave Ads</translation>
 <translation id="2151535059686617995">Це’ ваш щасливий день!</translation>
 <translation id="6255773350565723852">Ваш грант з токенів у дорозі.</translation>
 <translation id="1181037720776840403">Видалити</translation>

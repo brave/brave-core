@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "ردیاب‌های بین سایتی مسدود شدند",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "کوکی‌های بین سایتی مسدود شدند",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Cross-site device recognition blocked",
+    "message": "تشخیص دستگاه بین سایتی مسدود شد",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Device recognition attempts blocked",
+    "message": "تلاش‌های تشخیص دستگاه مسدود شدند",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "All device recognition attempts allowed",
+    "message": "همه تلاش‌های تشخیص دستگاه مجاز شدند",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -120,15 +120,15 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "یک‌بار مسدود",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "یک‌بار مجاز",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "یک‌بار مجاز کردن اسکریپت‌ها",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -146,5 +146,17 @@
   "changeDefaults": {
     "message": "تغییر پیش‌فرض‌های سپرایمنی جهانی",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "مسدود کردن عناصر به‌وسیله انتخابگر",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "پاک کردن قوانین CSS برای این سایت",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "پاک کردن قوانین CSS برای همه سایت‌ها",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }
