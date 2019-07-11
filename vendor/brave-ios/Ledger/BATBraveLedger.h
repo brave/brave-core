@@ -7,6 +7,7 @@
 #import "ledger.mojom.objc.h"
 #import "BATActivityInfoFilter.h"
 #import "BATRewardsNotification.h"
+#import "BATBraveLedgerObserver.h"
 
 @class BATBraveAds;
 
@@ -30,6 +31,16 @@ NS_SWIFT_NAME(BraveLedger)
 - (instancetype)initWithStateStoragePath:(NSString *)path;
 
 - (instancetype)init NS_UNAVAILABLE;
+
+#pragma mark - Observers
+
+/// Add an interface to the list of observers
+///
+/// Observers are stored weakly and do not necessarily need to be removed
+- (void)addObserver:(BATBraveLedgerObserver *)observer;
+
+/// Removes an interface from the list of observers
+- (void)removeObserver:(BATBraveLedgerObserver *)observer;
 
 #pragma mark - Global
 
