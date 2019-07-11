@@ -15,13 +15,13 @@ import {
 // Helpers
 import {
   getToggleStateViaEventTarget
-} from '../../helpers/shieldsUtils'
+} from '../../../helpers/shieldsUtils'
 
 // Types
 import { 
   SpeedReaderToggled, 
-} from '../../types/actions/shieldsPanelActions'
-import { BlockOptions } from '../../types/other/blockTypes'
+} from '../../../types/actions/shieldsPanelActions'
+import { BlockOptions } from '../../../types/other/blockTypes'
 
 interface CommonProps {
   isBlockedListOpen: boolean

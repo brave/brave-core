@@ -33,7 +33,8 @@ import {
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState,
   SetAdvancedViewFirstAccess,
-  ToggleAdvancedView
+  ToggleAdvancedView,
+  SpeedReaderToggled
 } from '../../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -51,6 +52,7 @@ interface Props {
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
     setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
     toggleAdvancedView: ToggleAdvancedView
+    speedReaderToggled: SpeedReaderToggled
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData
@@ -128,6 +130,9 @@ export default class Shields extends React.PureComponent<Props, State> {
                 httpUpgradableResources={shieldsPanelTabData.httpUpgradableResources}
                 httpsRedirectedResources={shieldsPanelTabData.httpsRedirectedResources}
                 httpsEverywhereToggled={actions.httpsEverywhereToggled}
+                // SpeedReader controls
+                speedreader={shieldsPanelTabData.speedreader}
+                speedReaderToggled={actions.speedReaderToggled}
               />
               <PrivacyControls
                 // Global props
