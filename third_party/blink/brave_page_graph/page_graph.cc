@@ -71,6 +71,8 @@
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/dispatchers.h"
+#include "brave/third_party/blink/brave_page_graph/utilities/request_metadata.h"
+#include "brave/third_party/blink/brave_page_graph/utilities/scripts.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
 
 using ::blink::Document;
@@ -538,21 +540,36 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
 }
 
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
-    const ResourceType type) {
+    const ResourceType type, const RequestMetadata& metadata) {
   Log("RegisterRequestComplete) request id: " + to_string(request_id)
     + ", resource type: " + ResourceTypeToString(type));
 
   const shared_ptr<const TrackedRequestRecord> request_record =
     request_tracker_ .RegisterRequestComplete(request_id, type);
 
+  TrackedRequest* request = request_record->request.get();
+  if (request != nullptr) {
+    request->SetResponseHeaderString(
+        string(metadata.response_header_.Utf8().data()));
+    request->SetResponseBodyLength(metadata.response_body_length_);
+  }
+
   PossiblyWriteRequestsIntoGraph(request_record);
 }
 
-void PageGraph::RegisterRequestError(const InspectorId request_id) {
+void PageGraph::RegisterRequestError(const InspectorId request_id,
+    const RequestMetadata& metadata) {
   Log("RegisterRequestError) request id: " + to_string(request_id));
 
   const shared_ptr<const TrackedRequestRecord> request_record =
     request_tracker_ .RegisterRequestError(request_id);
+
+  TrackedRequest* request = request_record->request.get();
+  if (request != nullptr) {
+    request->SetResponseHeaderString(
+        string(metadata.response_header_.Utf8().data()));
+    request->SetResponseBodyLength(metadata.response_body_length_);
+  }
 
   PossiblyWriteRequestsIntoGraph(request_record);
 }
@@ -853,7 +870,8 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
       resource->AddInEdge(start_edge);
 
       const EdgeRequestComplete* const complete_edge = new EdgeRequestComplete(
-        this, resource, requester, request_id, resource_type);
+        this, resource, requester, request_id, resource_type,
+        request->ResponseHeaderString(), request->ResponseBodyLength());
       AddEdge(complete_edge);
       resource->AddOutEdge(complete_edge);
       requester->AddInEdge(complete_edge);
@@ -870,7 +888,8 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
     resource->AddInEdge(start_edge);
 
     const EdgeRequestError* const error_edge = new EdgeRequestError(
-      this, resource, requester, request_id);
+      this, resource, requester, request_id,
+      request->ResponseHeaderString(), request->ResponseBodyLength());
     AddEdge(error_edge);
     resource->AddOutEdge(error_edge);
     requester->AddInEdge(error_edge);

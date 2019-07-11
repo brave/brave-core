@@ -20,10 +20,14 @@ namespace brave_page_graph {
 
 EdgeRequestComplete::EdgeRequestComplete(PageGraph* const graph,
     NodeResource* const out_node, Node* const in_node,
-    const InspectorId request_id, const blink::ResourceType resource_type) :
-      EdgeRequestResponse(graph, out_node, in_node, request_id,
+    const InspectorId request_id, const blink::ResourceType resource_type,
+    const std::string& response_header_string,
+    const int64_t response_body_length)
+    : EdgeRequestResponse(graph, out_node, in_node, request_id,
           kRequestStatusComplete),
-      resource_type_(resource_type) {}
+      resource_type_(resource_type),
+      response_header_string_(response_header_string),
+      response_body_length_(response_body_length) {}
 
 EdgeRequestComplete::~EdgeRequestComplete() {}
 
@@ -44,6 +48,10 @@ GraphMLXMLList EdgeRequestComplete::GraphMLAttributes() const {
   GraphMLXMLList attrs = EdgeRequest::GraphMLAttributes();
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefResourceType)
     ->ToValue(ResourceTypeToString(resource_type_)));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
+    ->ToValue(response_header_string_));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
+    ->ToValue(to_string(response_body_length_)));
   return attrs;
 }
 

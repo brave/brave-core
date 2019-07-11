@@ -25,8 +25,14 @@ friend class PageGraph;
 
  protected:
   EdgeRequestError(PageGraph* const graph, NodeResource* const out_node,
-    Node* const in_node, const InspectorId request_id);
+    Node* const in_node, const InspectorId request_id,
+    const std::string& response_header_string,
+    const int64_t response_body_length);
   ItemDesc GetDescBody() const override;
+  GraphMLXMLList GraphMLAttributes() const override;
+
+  std::string response_header_string_;
+  int64_t response_body_length_;
 };
 
 }  // namespace brave_page_graph

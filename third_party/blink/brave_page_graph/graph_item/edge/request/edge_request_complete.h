@@ -27,11 +27,16 @@ friend class PageGraph;
  protected:
   EdgeRequestComplete(PageGraph* const graph, NodeResource* const out_node,
     Node* const in_node, const InspectorId request_id,
-    const blink::ResourceType resource_type);
+    const blink::ResourceType resource_type,
+    const std::string& response_header_string,
+    const int64_t response_body_length);
   ItemDesc GetDescBody() const override;
   GraphMLXMLList GraphMLAttributes() const override;
 
   const blink::ResourceType resource_type_;
+
+  std::string response_header_string_;
+  int64_t response_body_length_;
 };
 
 }  // namespace brave_page_graph

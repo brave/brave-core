@@ -44,6 +44,7 @@ class NodeStorageCookieJar;
 class NodeStorageLocalStorage;
 class NodeStorageSessionStorage;
 class NodeWebAPI;
+class RequestMetadata;
 class RequestTracker;
 class ScriptTracker;
 struct TrackedRequestRecord;
@@ -96,8 +97,9 @@ friend EdgeNodeInsert;
   void RegisterRequestStartFromCurrentScript(const InspectorId request_id,
     const blink::KURL& url, const RequestType type);
   void RegisterRequestComplete(const InspectorId request_id,
-    const blink::ResourceType type);
-  void RegisterRequestError(const InspectorId request_id);
+    const blink::ResourceType type, const RequestMetadata& metadata);
+  void RegisterRequestError(const InspectorId request_id,
+    const RequestMetadata& metadata);
 
   void RegisterStorageRead(const WTF::String& key, const WTF::String& value,
     const StorageLocation location);

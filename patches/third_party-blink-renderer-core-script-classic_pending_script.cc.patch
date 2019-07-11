@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/classic_pending_script.cc b/third_party/blink/renderer/core/script/classic_pending_script.cc
-index 8aba929165932a5472e4642b8805b164980e954e..3b8535fd9b261ad76e08de2b236b7b8566607569 100644
+index 8aba929165932a5472e4642b8805b164980e954e..d81be8e88a22b70f2fcc4d577cd7449c0ca122b2 100644
 --- a/third_party/blink/renderer/core/script/classic_pending_script.cc
 +++ b/third_party/blink/renderer/core/script/classic_pending_script.cc
-@@ -30,6 +30,14 @@
+@@ -30,6 +30,15 @@
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/wtf/functional.h"
  
@@ -12,12 +12,13 @@ index 8aba929165932a5472e4642b8805b164980e954e..3b8535fd9b261ad76e08de2b236b7b85
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/request_metadata.h"
 +#endif
 +
  namespace blink {
  
  // <specdef href="https://html.spec.whatwg.org/C/#fetch-a-classic-script">
-@@ -64,8 +72,24 @@ ClassicPendingScript* ClassicPendingScript::Fetch(
+@@ -64,8 +73,24 @@ ClassicPendingScript* ClassicPendingScript::Fetch(
    // We allow streaming, as WatchForLoad() is always called when the script
    // needs to execute and the ScriptResource is not finished, so
    // SetClientIsWaitingForFinished is always set on the resource.
@@ -42,7 +43,7 @@ index 8aba929165932a5472e4642b8805b164980e954e..3b8535fd9b261ad76e08de2b236b7b85
    pending_script->CheckState();
    return pending_script;
  }
-@@ -273,6 +297,20 @@ void ClassicPendingScript::NotifyFinished(Resource* resource) {
+@@ -273,6 +298,34 @@ void ClassicPendingScript::NotifyFinished(Resource* resource) {
                                           GetResource()->Url().GetString()));
  
    bool error_occurred = GetResource()->ErrorOccurred() || integrity_failure_;
@@ -51,11 +52,25 @@ index 8aba929165932a5472e4642b8805b164980e954e..3b8535fd9b261ad76e08de2b236b7b85
 +    ::brave_page_graph::PageGraph* page_graph = element->GetDocument()
 +      .GetPageGraph();
 +    if (page_graph != nullptr) {
++      const ResourceResponse& rep = resource->GetResponse();
++
++      // Convert the response headers into a single string.
++      std::stringstream ss;
++      const HTTPHeaderMap& headers = rep.HttpHeaderFields();
++      for (HTTPHeaderMap::const_iterator it = headers.begin();
++          it != headers.end(); ++it) {
++        ss << it->key << " " << it->value << "\n";
++      }
++
++      const WTF::String& response_header(ss.str().c_str());
++      brave_page_graph::RequestMetadata metadata(
++          response_header, rep.EncodedBodyLength());
++
 +      if (error_occurred) {
-+        page_graph->RegisterRequestError(resource->InspectorId());
++        page_graph->RegisterRequestError(resource->InspectorId(), metadata);
 +      } else {
 +        page_graph->RegisterRequestComplete(resource->InspectorId(),
-+          resource->GetType());
++            resource->GetType(), metadata);
 +      }
 +    }
 +  }
@@ -63,7 +78,7 @@ index 8aba929165932a5472e4642b8805b164980e954e..3b8535fd9b261ad76e08de2b236b7b85
    AdvanceReadyState(error_occurred ? kErrorOccurred : kReady);
  }
  
-@@ -376,6 +414,20 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
+@@ -376,6 +429,20 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
  
    ScriptSourceCode source_code(streamer_ready ? streamer : nullptr, resource,
                                 not_streamed_reason);
