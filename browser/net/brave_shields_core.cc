@@ -51,10 +51,6 @@
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/net/brave_tor_network_delegate_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h"
 #endif
