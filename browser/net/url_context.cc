@@ -20,6 +20,8 @@
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/resource_request_info.h"
 #include "extensions/browser/info_map.h"
+#include "net/base/upload_bytes_element_reader.h"
+#include "net/base/upload_data_stream.h"
 
 namespace brave {
 
@@ -41,6 +43,32 @@ bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
   return !infoMap->extensions().Contains(brave_webtorrent_extension_id) ||
     infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
 }
+
+std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  if (!request->has_upload())
+    return {};
+
+  const net::UploadDataStream* stream = request->get_upload();
+  if (!stream->GetElementReaders())
+    return {};
+
+  const auto* element_readers = stream->GetElementReaders();
+  if (element_readers->empty())
+    return {};
+
+  std::string upload_data;
+  for (const auto& element_reader : *element_readers) {
+    const net::UploadBytesElementReader* reader =
+        element_reader->AsBytesReader();
+    if (!reader) {
+      return {};
+    }
+    upload_data.append(reader->bytes(), reader->length());
+  }
+  return upload_data;
+}
+
 }  // namespace
 
 BraveRequestInfo::BraveRequestInfo() = default;
@@ -101,6 +129,8 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
   ctx->allow_referrers = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers);
+
+  ctx->upload_data = GetUploadDataFromURLRequest(request);
 
   ctx->request = request;
 }

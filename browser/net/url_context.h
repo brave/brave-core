@@ -87,6 +87,8 @@ struct BraveRequestInfo {
       static_cast<content::ResourceType>(-1);
   content::ResourceType resource_type = kInvalidResourceType;
 
+  std::string upload_data;
+
   static void FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
 
