@@ -131,8 +131,6 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
       brave_shields::kReferrers);
 
   ctx->upload_data = GetUploadDataFromURLRequest(request);
-
-  ctx->request = request;
 }
 
 }  // namespace brave

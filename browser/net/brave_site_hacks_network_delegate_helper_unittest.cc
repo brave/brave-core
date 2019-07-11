@@ -47,7 +47,7 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ForbesWithCookieHeader) {
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
       brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
       &headers, callback, brave_request_info);
   std::string cookies;
   headers.GetHeader(kCookieHeader, &cookies);
@@ -68,7 +68,7 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ForbesWithoutCookieHeader) {
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
       brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
       &headers, callback, brave_request_info);
   std::string cookies;
   headers.GetHeader(kCookieHeader, &cookies);
@@ -90,7 +90,7 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NotForbesNoCookieChange) {
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
       brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
       &headers, callback, brave_request_info);
   std::string cookies;
   headers.GetHeader(kCookieHeader, &cookies);
@@ -111,7 +111,7 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NoScriptTwitterMobileRedirect) {
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
       brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
       &headers, callback, brave_request_info);
   EXPECT_EQ(ret, net::ERR_ABORTED);
 }
@@ -130,7 +130,7 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest,
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
       brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
       &headers, callback, brave_request_info);
   EXPECT_EQ(ret, net::OK);
 }
@@ -148,7 +148,7 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, TwitterNoCancelWithReferer) {
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
       brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
       &headers, callback, brave_request_info);
   EXPECT_EQ(ret, net::OK);
 }
@@ -187,7 +187,7 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, UAWhitelistedTest) {
     brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
         brave_request_info);
     brave::ResponseCallback callback;
-    int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+    int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
         &headers, callback, brave_request_info);
     std::string user_agent;
     headers.GetHeader(kUserAgentHeader, &user_agent);
@@ -219,7 +219,7 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NOTUAWhitelistedTest) {
     brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
         brave_request_info);
     brave::ResponseCallback callback;
-    int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+    int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
         &headers, callback, brave_request_info);
     std::string user_agent;
     headers.GetHeader(kUserAgentHeader, &user_agent);
