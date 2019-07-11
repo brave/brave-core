@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Impostazioni predefinite Brave Shield";
 
-/* Brave sync page title */
-"BraveSync" = "Brave Sync (beta)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Per iniziare, avrai bisogno che Brave sia installato su tutti i dispositivi che prevedi di sincronizzare. Per metterli in collegamento, crea una catena di sincronizzazione che userai per collegare in modo sicuro tutti i tuoi dispositivi.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Chiudi tutte e %i le schede";
-
-/* Code words input help */
-"CodeWordInputHelp" = "Digita le parole in codice fornite per la catena di sincronizzazione.";
 
 /* Code words section title */
 "CodeWords" = "Parole in codice";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Copia";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "Trova nella pagina";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Nascondi";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "Assistenza";
 
-/* Sync settings section title */
-"Sync" = "Sync (beta)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Aggiungi un altro dispositivo";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Inserisci il codice di sincronizzazione";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "Sul tuo dispositivo, vai su Brave Sync nel pannello Impostazioni e tocca il pulsante “%@”. Inserisci le parole in codice mostrate qui sotto per la catena di sincronizzazione.";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Aggiungi un tablet o un telefono";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "Sincronizza con il dispositivo";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Usando un dispositivo già sincronizzato, apri le impostazioni di Brave e vai su “Dispositivi e impostazioni”, poi tocca “+” per aggiungere un nuovo dispositivo e rivelare il codice di sincronizzazione.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Impossibile creare un nuovo gruppo di sincronizzazione.";

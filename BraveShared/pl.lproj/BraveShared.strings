@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Domyślne ustawienia Brave Shield";
 
-/* Brave sync page title */
-"BraveSync" = "Synchronizacja Brave (wersja beta)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Aby rozpocząć, należy zainstalować oprogramowanie Brave na wszystkich urządzeniach, które planujesz zsynchronizować. Aby je połączyć, rozpocznij łańcuch synchronizacji, który zostanie użyty do bezpiecznego połączenia ze sobą wszystkich urządzeń.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Zamknij wszystkie karty (%i)";
-
-/* Code words input help */
-"CodeWordInputHelp" = "Wpisz podane słowa kodowe łańcucha synchronizacji.";
 
 /* Code words section title */
 "CodeWords" = "Słowa kodowe";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Kopiuj";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "Znajdź na stronie";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Ukryj";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "Wsparcie";
 
-/* Sync settings section title */
-"Sync" = "Synchronizacja (wersja beta)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Dodaj kolejne urządzenie";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Wpisz kod synchronizacji";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "Przejdź na urządzeniu do pozycji Synchronizacja Brave w panelu Ustawienia i dotknij przycisku „%@”. Wprowadź słowa kodowe łańcucha synchronizacji podane poniżej.";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Dodaj tablet lub telefon";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "Zsynchronizuj z urządzeniem";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Na zsynchronizowanym urządzeniu otwórz Ustawienia Brave i przejdź do sekcji Urządzenia i ustawienia. Następnie naciśnij +, aby dodać nowe urządzenie i wyświetl kod synchronizacji.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Nie można utworzyć nowej grupy synchronizacji.";

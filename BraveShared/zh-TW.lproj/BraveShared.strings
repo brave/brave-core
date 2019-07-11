@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shield 預設";
 
-/* Brave sync page title */
-"BraveSync" = "Brave Sync （測試版）";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "首先，您需要將 Brave 安裝在您計畫同步的所有裝置中。如要將裝置鏈接一起，請啟用一個同步鏈，用於將所有裝置安全鏈接。";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "關閉全部 %i 個分頁";
-
-/* Code words input help */
-"CodeWordInputHelp" = "輸入同步鏈接代碼詞：";
 
 /* Code words section title */
 "CodeWords" = "代碼詞";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "複製";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "在頁面中尋找";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "隱藏";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "支援";
 
-/* Sync settings section title */
-"Sync" = "Sync （測試版）";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "新增其他裝置";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "輸入同步代碼";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "在您的裝置中，在「設定」面板中瀏覽至「Brave Sync」，然後點選「%@」按鈕。輸入下方顯示的同步鏈接代碼。";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "新增平板電腦或電話";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "同步至裝置";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "使用現有的已同步裝置開啟「Brave 設定」並瀏覽至「裝置與設定」，然後輕觸「+」新增裝置並顯示同步代碼。";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "無法建立新的同步群組。";

@@ -10,8 +10,14 @@
 /* Button to add a bookmark */
 "AddBookmark" = "ブックマークを追加";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "新しいフォルダ";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "お気に入りに追加";
+
+/* Title for adding new bookmark menu item */
+"AddToMenuItem" = "追加";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "広告とトラッカー";
@@ -154,32 +160,44 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "ブックマーク情報";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "ブックマーク";
+
 /* title for bookmarks panel */
 "Bookmarks" = "ブックマーク";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "ブックマーク";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "名前";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "住所";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave パネル";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"BraveShieldDefaults" = "Brave 保護機能の既定設定";
+"BraveShieldDefaults" = "Brave Shieldのデフォルト設定";
 
 /* Brave sync page title */
-"BraveSync" = "Brave 同期 (ベータ)";
+"BraveSync" = "Brave Sync";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全につなげます。";
+"BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全にリンクできます。";
 
 /* Browser Lock feature callout enable action. */
 "BrowserLockCalloutEnable" = "有効にする";
 
 /* Browser Lock feature callout message. */
-"BrowserLockCalloutMessage" = "ブラウザロックを有効にすると、Brave へのアクセス時に PIN の入力が必要になります。";
+"BrowserLockCalloutMessage" = "ブラウザロックを有効にすると、Braveへのアクセス時に PIN の入力が必要になります。";
 
 /* Browser Lock feature callout not now action. */
 "BrowserLockCalloutNotNow" = "後で";
 
 /* Browser Lock feature callout title. */
-"BrowserLockCalloutTitle" = "本当のプライベート機能です。";
+"BrowserLockCalloutTitle" = "Braveをよりプライベートに";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "閲覧履歴";
@@ -191,7 +209,7 @@
 "CancelButtonTitle" = "キャンセル";
 
 /* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
-"ClearPrivateData" = "プライベートデータを消去";
+"ClearPrivateData" = "プライベートデータを消去する";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "キャンセル";
@@ -206,7 +224,7 @@
 "ClearSyncedHistoryAlertCancelButtoTitle" = "キャンセル";
 
 /* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
-"ClearSyncedHistoryAlertMessage" = "すべてのプライベートデータが消去されます。これには同期済みデバイスからの履歴も含まれます。";
+"ClearSyncedHistoryAlertMessage" = "すべてのプライベートデータが消去されます。これには同期済みデバイスの履歴も含まれます。";
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "了解";
@@ -215,16 +233,19 @@
 "CloseAllTabsTitle" = "%i 個のタブをすべて閉じる";
 
 /* Code words input help */
-"CodeWordInputHelp" = "入手した同期チェーンのコードワードを入力します。";
+"CodeWordInputHelp" = "同期チェーンコードを以下に入力してください。";
 
 /* Code words section title */
-"CodeWords" = "コードワード";
+"CodeWords" = "コード";
 
 /* No comment provided by engineer. */
 "Confirm" = "確認";
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie コントロール";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "クッキーとサイトのデータ";
 
 /* Copied action complete title */
 "Copied" = "コピーしました！";
@@ -304,14 +325,23 @@
 /* Button to edit a bookmark */
 "EditBookmark" = "ブックマークを編集";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "位置";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "ブックマークを編集";
+
 /* Button to edit a favorite */
 "EditFavorite" = "お気に入りを編集";
 
+/* Title for editing a folder */
+"EditFolderTitle" = "フォルダを編集";
+
 /* Sync enter code words */
-"EnterCodeWords" = "コードワードを入力";
+"EnterCodeWords" = "コードを入力";
 
 /* Enter sync code words below */
-"EnterCodeWordsBelow" = "以下にコードワードを入力";
+"EnterCodeWordsBelow" = "以下にコードを入力";
 
 /* Description for new folder popup */
 "EnterFolderName" = "フォルダ名を入力";
@@ -344,25 +374,37 @@
 "ErrorPagesVisitOnceButton" = "それでもサイトを訪問";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "保存済みの\n推定時間";
+"EstTimerSaved" = "節約できた\n時間(推定)";
+
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "お気に入りはホームスクリーンに表示されます。お気に入りの項目は他の端末と同期されません。";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "お気に入り";
 
 /* Share action title */
-"FindInPage" = "ページ内で見つける";
+"FindInPage" = "ページを検索";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "完了";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "\"%@\"を検索";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
-"FindInPageNextResultButtonAccessibilityLabel" = "次のページ内の結果";
+"FindInPageNextResultButtonAccessibilityLabel" = "次のページ内検索結果";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
-"FindInPagePreviousResultButtonAccessibilityLabel" = "前のページ内の結果";
+"FindInPagePreviousResultButtonAccessibilityLabel" = "前のページ内検索結果";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "このページ内で";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "フィンガープリント";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "フィンガープリント\n対策";
+"FingerprintingnProtection" = "フィンガープリント対策";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "フィンガープリント対策";
@@ -370,11 +412,17 @@
 /* Grand camera access */
 "GrantCameraAccess" = "カメラを有効にする";
 
+/* Title for history menu item */
+"HistortMenuItem" = "履歴";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "履歴";
+
 /* No comment provided by engineer. */
 "Home" = "ホーム";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "どこでも HTTPS";
+"HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
 "HTTPSrUpgrades" = "HTTPS\nアップグレード";
@@ -421,9 +469,6 @@
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "コピー";
 
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "ページ内で見つける";
-
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "非表示";
 
@@ -437,13 +482,25 @@
 "Name" = "名前";
 
 /* tabs bar show/hide option */
-"NeverShow" = "決して表示しない";
+"NeverShow" = "常に非表示";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "新しいブックマーク";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "新しいブックマーク";
 
 /* Title for new folder popup */
 "NewFolder" = "新しいフォルダ";
 
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "新しいフォルダ";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "新しいフォルダ";
+
 /* New sync code button title */
-"NewSyncCode" = "新しい同期チェーンを開始";
+"NewSyncCode" = "新しい同期チェーンを開始する";
 
 /* New Tab title */
 "NewTab" = "新しいタブ";
@@ -503,7 +560,10 @@
 "PrivateBrowsing" = "プライベートブラウジング";
 
 /* Setting to keep app in private mode */
-"PrivateBrowsingOnly" = "プライベートブラウジングのみ";
+"PrivateBrowsingOnly" = "常にプライベートモード";
+
+/* Private tab details */
+"PrivateTabBody" = "プライベートタブは Brave への保存はされませんが、オンライン上で匿名になるわけではありません。プライベートタブで訪問したサイトは履歴には表示されず、サイトを閉じれば Cookie は必ず削除されます。つまりサイトの形跡が Brave に残ることはありません。一方で、プライベートタブを使っても、ご利用の携帯電話会社 (または接続している WiFi ネットワークや VPN の所有者) はあなたが訪問したサイトを確認できるほか、訪問先のサイトもあなたのパブリック IP アドレスを知ることができます。";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "プライベートタブを使うと、Braveのデバイス上での動作は変わりますが、その他の行動は変わりません。\n              \n              あなたのIPアドレスは訪問先のサイトにより追跡され、あなたがいるおよその位置 (都市など) が推測されます。この位置情報の推測は、さらに詳細になる場合もあります。また、サイトはあなたが具体的に伝達したあらゆる内容 (検索語句など) を知ることができます。サイトにログインした場合、サイトにはあなたがそのアカウントの所有者であることが伝わります。プライベートタブを閉じるとことで、Braveはログイン状態を維持するCookieを破棄するため、あなたはログアウトします。\n              \n              あなたをインターネットに接続する者 (ISP) は、あなたのネットワークアクティビティをすべて見ることができます。多くの場合、これはご利用の携帯電話会社になります。WiFiネットワークに接続している場合は、そのネットワークの所有者になります。VPNを使用している場合は、そのVPNの管理者になります。ISPは、あなたがどのサイトを訪問したかを知ることができます。サイトがHTTPSを使っている場合、あなたがそのサイトで何をしたかについてISPの推測能力が限られます。HTTPのみが使用されている場合は、ISPによりあらゆること (検索語句、閲覧したページ、ジャンプしたリンク) がサイトに伝わります。\n              \n              雇用主がデバイスを管理している場合、雇用主もあなたがそのデバイスで行った行動を追跡できる可能性があります。プライベートタブを使ったとしても、訪問先のサイトを隠すことは不可能です。また、そのデバイスにアクセスできる他の人が、あなたのアクティビティをモニタリングするソフトウェアをインストールしている可能性もあります。その場合、プライベートタブを使ってもモニタリングを回避することはできません。";
@@ -519,6 +579,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "クイック検索エンジン";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Braveを評価";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "テキストサイズを大きくする";
@@ -593,7 +656,13 @@
 "RestoreTabOnCrashAlertMessage" = "前回 Brave はクラッシュしたようです。タブを復元しますか？";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "申し訳ありません。";
+"RestoreTabOnCrashAlertTitle" = "申し訳ありません";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "Rewardsパネル";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "保存";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "保存したログイン情報";
@@ -608,7 +677,7 @@
 "Scan" = "スキャン";
 
 /* Scan sync code button title */
-"ScanSyncCode" = "同期コードがあります";
+"ScanSyncCode" = "既に同期コードを持っている";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "ブロック済みのスクリプト";
@@ -624,6 +693,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "候補の検索";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "履歴とブックマーク";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "検索を消去";
@@ -653,10 +725,10 @@
 "Security" = "セキュリティ";
 
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
-"SendCrashReportAlertMessage" = "クラッシュレポートを送信して Brave の問題修正をサポートしますか？";
+"SendCrashReportAlertMessage" = "Braveが問題を解決できるようにクラッシュレポートを送信しますか？";
 
 /* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "失礼！ Brave がクラッシュしました";
+"SendCrashReportAlertTitle" = "申し訳ございません。Brave がクラッシュしました";
 
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "レポートを送信";
@@ -667,11 +739,17 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "ページを読み込めませんでした。";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "設定";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "リンクを共有";
 
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "共有";
+
 /* shields overview message */
-"ShieldsOverview" = "サイトの保護機能では、訪問したサイトで広告とトラッカーをブロックするタイミングをコントロールすることができます。特定のサイトで広告を表示させたい場合、ここで設定することができます。";
+"ShieldsOverview" = "サイトの保護機能では、サイト毎に広告やトラッカーをブロックするか設定することができます。特定のサイトで広告を表示させたい場合、ここで設定することができます。";
 
 /* shields overview footer message */
 "ShieldsOverviewFooter" = "注意: 一部のサイトでは適切な動作にスクリプトが必要なため、この保護機能はデフォルトでオフになっています。";
@@ -692,13 +770,13 @@
 "ShowBookmarks" = "ブックマークを表示";
 
 /* Show code words instead */
-"ShowCodeWords" = "コードワードを表示する";
+"ShowCodeWords" = "コードを表示する";
 
 /* Button to show the history list */
 "ShowHistory" = "履歴を表示";
 
 /* tabs bar show/hide option */
-"ShowInLandscapeOnly" = "横向きのみで表示";
+"ShowInLandscapeOnly" = "画面横向き時のみ表示";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "タブを表示";
@@ -707,7 +785,7 @@
 "ShowTabsBar" = "タブバーを表示";
 
 /* Brave panel topmost title */
-"SiteShieldSettings" = "保護機能";
+"SiteShieldSettings" = "Shield (保護機能)";
 
 /* Open search section of settings */
 "StandardTabSearch" = "標準タブ";
@@ -716,7 +794,7 @@
 "Support" = "サポート";
 
 /* Sync settings section title */
-"Sync" = "同期 (ベータ)";
+"Sync" = "Brave Sync";
 
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "別のデバイスを追加";
@@ -734,7 +812,10 @@
 "SyncAddDeviceWords" = "同期コードを入力";
 
 /* Sync add device description */
-"SyncAddMobileWordsDescription" = "デバイスの「設定」パネルで「Brave 同期」へ移動し、「%@」ボタンをタップします。下記の同期チェーンのコードワードを入力します。";
+"SyncAddDeviceWordsDescription" = "他の端末で設定メニュー内のBrave Syncを選択し、以下の同期チェーンコードを入力してください。このコードはパスワードと同等に扱ってください。万が一、誰かに知られてしまうと同期されているデータを閲覧・編集することが可能になってしまいます。";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "コードを入力";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "タブレットまたは電話を追加";
@@ -755,7 +836,7 @@
 "SyncInitErrorMessage" = "Brave同期エージェントは現在オフラインかアクセスできません。後でもう一度お試しください。";
 
 /* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Brave同期通信エラー";
+"SyncInitErrorTitle" = "Brave Sync通信エラー";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";
@@ -812,10 +893,10 @@
 "SyncThisDevice" = "このデバイス";
 
 /* Sync to existing device */
-"SyncToDevice" = "デバイスに同期";
+"SyncToDevice" = "デバイスと同期";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "既存の同期済みデバイスを使って「Brave設定」を開き、「デバイスと設定」を選択します。「+」をタップして新しいデバイスを追加し、同期コードを表示します。";
+"SyncToDeviceDescription" = "すでに同期されている別の端末上で、Braveの設定 > Syncと選択し、\"デバイスを追加\"を選択してください。そこで以下のコードをスキャンすることで同期設定が可能です。";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "新しい同期グループを作成できません。";
@@ -852,6 +933,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "安全な接続";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "メニュー";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "リーダービュー";

@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Lalai Perisai Brave";
 
-/* Brave sync page title */
-"BraveSync" = "Segerak Brave (beta)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Untuk bermula, anda perlu memasangkan Brave pada semua peranti yang anda ingin segerakkan. Untuk menghubungkan mereka bersama-sama, mulakan rantaian penyegerakan yang anda akan gunakan untuk menghubungkan semua peranti anda dengan selamat.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tutup Semua %i Tab";
-
-/* Code words input help */
-"CodeWordInputHelp" = "Taip perkataan kod rantaian penyegerakan anda yang dibekalkan.";
 
 /* Code words section title */
 "CodeWords" = "Perkataan Kod";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Salin";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "Cari dalam Halaman";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Sembunyikan";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "Sokongan";
 
-/* Sync settings section title */
-"Sync" = "Segerak (beta)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Tambah satu peranti lagi";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Masukkan kod segerak";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "Pada peranti mudah alih anda, navigasi ke Segerak Brave dalam panel Tetapan dan ketik butang \"%@\". Gunakan perkataan kod rantaian penyegerakan di bawah.";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Tambah Tablet atau Telefon";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "Segerakkan kepada peranti";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Dengan menggunakan peranti disegerakkan sedia ada, buka Tetapan Brave dan navigasi ke \"Peranti & Tetapan\", ketik '+' untuk menambah peranti baru dan mendedahkan kod segerak.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Tidak dapat mencipta kumpulan segerak baru.";

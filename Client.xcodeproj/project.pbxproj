@@ -461,6 +461,7 @@
 		59B6913321B695A400E9388E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B6913121B695A400E9388E /* Localizable.strings */; };
 		59B6913621B695A400E9388E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B6913421B695A400E9388E /* Localizable.strings */; };
 		59B6913921B695A400E9388E /* BraveShared.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B6913721B695A400E9388E /* BraveShared.strings */; };
+		59C8119922D754D4005D5BBC /* BraveShared.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59C8119722D754D4005D5BBC /* BraveShared.strings */; };
 		5D1DC51C20AC9AFB00905E5A /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1DC51320AC9AF900905E5A /* Data.framework */; };
 		5D1DC52520AC9AFB00905E5A /* Data.h in Headers */ = {isa = PBXBuildFile; fileRef = 5D1DC51520AC9AFA00905E5A /* Data.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5D1DC52820AC9AFB00905E5A /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1DC51320AC9AF900905E5A /* Data.framework */; };
@@ -1806,6 +1807,7 @@
 		59B691F221B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		59B691F321B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		59B691F421B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		59C8119822D754D4005D5BBC /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		5D1DC51320AC9AF900905E5A /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D1DC51520AC9AFA00905E5A /* Data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
 		5D1DC51620AC9AFA00905E5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -4138,6 +4140,7 @@
 			children = (
 				7B2142FC1E5E055000CDD3FC /* InfoPlist.strings */,
 				F84B22431A09165600AAB793 /* Info.plist */,
+				59C8119722D754D4005D5BBC /* BraveShared.strings */,
 				F84B21EB1A0910F600AAB793 /* Assets */,
 				F84B21E41A0910F600AAB793 /* Application */,
 				E60961841B62B7E100DD640F /* Configuration */,
@@ -5191,6 +5194,7 @@
 				0BA1E00E1B03FB0B007675AF /* NetError.html in Resources */,
 				5DE5250E218CE92C000DFAA6 /* block-images.json in Resources */,
 				E4A961381AC06FA50069AD6F /* ReaderViewLoading.html in Resources */,
+				59C8119922D754D4005D5BBC /* BraveShared.strings in Resources */,
 				E4ECCDAE1AB131770005E717 /* FiraSans-Medium.ttf in Resources */,
 				E4424B3C1AC71FB400F44C38 /* FiraSans-Book.ttf in Resources */,
 				5DE52511218CE92C000DFAA6 /* block-trackers.json in Resources */,
@@ -6417,6 +6421,14 @@
 				59B691E821B6965C00E9388E /* ko-KR */,
 				59B691F421B6966C00E9388E /* fr */,
 				5929A9EE21B6AED7005ECF8D /* en */,
+			);
+			name = BraveShared.strings;
+			sourceTree = "<group>";
+		};
+		59C8119722D754D4005D5BBC /* BraveShared.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				59C8119822D754D4005D5BBC /* ja */,
 			);
 			name = BraveShared.strings;
 			sourceTree = "<group>";

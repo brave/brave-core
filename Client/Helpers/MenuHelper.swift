@@ -32,7 +32,7 @@ open class MenuHelper: NSObject {
         let hidePasswordItem = UIMenuItem(title: Strings.MenuItemHidePasswordTitle, action: MenuHelper.SelectorHide)
         let copyItem = UIMenuItem(title: Strings.MenuItemCopyTitle, action: MenuHelper.SelectorCopy)
         let openAndFillItem = UIMenuItem(title: Strings.MenuItemOpenAndFillTitle, action: MenuHelper.SelectorOpenAndFill)
-        let findInPageItem = UIMenuItem(title: Strings.MenuItemFindInPageTitle, action: MenuHelper.SelectorFindInPage)
+        let findInPageItem = UIMenuItem(title: Strings.Find_in_Page, action: MenuHelper.SelectorFindInPage)
 
         UIMenuController.shared.menuItems = [copyItem, revealPasswordItem, hidePasswordItem, openAndFillItem, findInPageItem]
     }

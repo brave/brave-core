@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Екрани Brave за замовчуванням";
 
-/* Brave sync page title */
-"BraveSync" = "Синхронізація Brave (бета)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Щоб розпочати, потрібно встановити Brave на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати усі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Закрити усі вкладки (%i)";
-
-/* Code words input help */
-"CodeWordInputHelp" = "Уведіть ваші надані кодові слова для ланцюжкової синхронізації.";
 
 /* Code words section title */
 "CodeWords" = "Кодові слова";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Скопіювати";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "Пошук на сторінці";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Приховати";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "Підтримка";
 
-/* Sync settings section title */
-"Sync" = "Синхронізація (бета)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Додати інший пристрій";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Введіть код синхронізації";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "Перейдіть у меню «Синхронізація Brave» на панелі налаштувань і торкніться кнопки «%@». Уведіть наведені нижче кодові слова для ланцюжкової синхронізації.";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Додавання планшета або телефону";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "Синхронізація з пристроєм";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "На іншому синхронізованому пристрої відкрийте Налаштування Brave і перейдіть в розділ Синхронізація, натисніть синхронізувати новий пристрій та отримайте код синхронізації.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Неможливо створити нову групу синхронізації.";

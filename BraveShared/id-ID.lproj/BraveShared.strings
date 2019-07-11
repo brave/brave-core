@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Default Perisai Brave";
 
-/* Brave sync page title */
-"BraveSync" = "Brave Sync (beta)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Untuk memulai, Anda perlu memasang Brave di semua perangkat yang ingin disinkronisasi. Untuk menyinkronkan, mulai rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat dengan aman.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tutup Semua %i Tab";
-
-/* Code words input help */
-"CodeWordInputHelp" = "Ketik kode kata untuk rantai sinkronisasi yang disediakan.";
 
 /* Code words section title */
 "CodeWords" = "Kode Kata";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Salin";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "Temukan di Halaman";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Sembunyikan";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "Dukungan";
 
-/* Sync settings section title */
-"Sync" = "Sinkronisasi (beta)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Tambahkan perangkat lain";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Masukkan kode sinkronisasi";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "Pada perangkat Anda, navigasikan ke Sinkronisasi Brave dalam panel Pengaturan, lalu ketuk tombol \"%@\". Masukkan kode rantai sinkronisasi yang ditampilkan di bawah.";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Tambahkan Tablet atau Ponsel";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "Sinkronisasikan dengan perangkat";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Menggunakan perangkat tersinkronisasi yang ada, buka Pengaturan Brave dan menavigasikannya ke “Perangkat & Pengaturan”, ketuk ‘+’ agar dapat menambahkan perangkat baru dan menampilkan kode sinkronisasi.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Tidak dapat membuat grup sinkronisasi baru.";
