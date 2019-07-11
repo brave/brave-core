@@ -861,11 +861,13 @@ BATLedgerBridge(BOOL,
 - (void)clearNotification:(BATRewardsNotification *)notification
 {
   [self.mNotifications removeObject:notification];
+  [self writeNotificationsToDisk];
 }
 
 - (void)clearAllNotifications
 {
   [self.mNotifications removeAllObjects];
+  [self writeNotificationsToDisk];
 }
 
 - (void)startNotificationTimers
@@ -1019,14 +1021,20 @@ BATLedgerBridge(BOOL,
   self.mNotifications = [NSKeyedUnarchiver unarchivedObjectOfClass:NSArray.self fromData:data error:&error];
   if (!self.mNotifications) {
     self.mNotifications = [[NSMutableArray alloc] init];
-    NSLog(@"Failed to unarchive notifications on disk: %@", error);
+    if (error) {
+      NSLog(@"Failed to unarchive notifications on disk: %@", error);
+    }
   }
 }
 
 - (void)writeNotificationsToDisk
 {
+  const auto path = [self.storagePath stringByAppendingPathComponent:@"notifications"];
   if (self.notifications.count == 0) {
-    // Nothing to write
+    // Nothing to write, delete anything we have stored
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+      [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    }
     return;
   }
 
@@ -1035,11 +1043,12 @@ BATLedgerBridge(BOOL,
                                           requiringSecureCoding:YES
                                                           error:&error];
   if (!data) {
-    NSLog(@"Failed to write notifications to disk: %@", error);
+    if (error) {
+      NSLog(@"Failed to write notifications to disk: %@", error);
+    }
     return;
   }
 
-  const auto path = [self.storagePath stringByAppendingPathComponent:@"notifications"];
   dispatch_async(self.fileWriteThread, ^{
     [data writeToFile:path atomically:YES];
   });
@@ -1113,8 +1122,8 @@ BATLedgerBridge(BOOL,
   self.state[key] = nil;
   callback(ledger::LEDGER_OK);
   // In brave-core, failed callback returns `LEDGER_ERROR`
-  NSDictionary *state = self.state;
-  NSString *path = self.randomStatePath;
+  NSDictionary *state = [self.state copy];
+  NSString *path = [self.randomStatePath copy];
   dispatch_async(self.fileWriteThread, ^{
     [state writeToFile:path atomically:YES];
   });
@@ -1126,8 +1135,8 @@ BATLedgerBridge(BOOL,
   self.state[key] = [NSString stringWithUTF8String:value.c_str()];
   callback(ledger::LEDGER_OK);
   // In brave-core, failed callback returns `LEDGER_ERROR`
-  NSDictionary *state = self.state;
-  NSString *path = self.randomStatePath;
+  NSDictionary *state = [self.state copy];
+  NSString *path = [self.randomStatePath copy];
   dispatch_async(self.fileWriteThread, ^{
     [state writeToFile:path atomically:YES];
   });
