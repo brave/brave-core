@@ -9,22 +9,43 @@
 #include <memory>
 #include <string>
 
+#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/resource_request_info.h"
+#include "extensions/browser/info_map.h"
 
 namespace brave {
 
-BraveRequestInfo::BraveRequestInfo() {
-}
+namespace {
+bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
+  DCHECK(resource_context);
 
-BraveRequestInfo::~BraveRequestInfo() {
+  const ProfileIOData* io_data =
+    ProfileIOData::FromResourceContext(resource_context);
+  if (!io_data) {
+    return false;
+  }
+
+  const extensions::InfoMap* infoMap = io_data->GetExtensionInfoMap();
+  if (!infoMap) {
+    return false;
+  }
+
+  return !infoMap->extensions().Contains(brave_webtorrent_extension_id) ||
+    infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
 }
+}  // namespace
+
+BraveRequestInfo::BraveRequestInfo() = default;
+
+BraveRequestInfo::~BraveRequestInfo() = default;
 
 void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
@@ -40,7 +61,11 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
   auto* request_info = content::ResourceRequestInfo::ForRequest(request);
   if (request_info) {
     ctx->resource_type = request_info->GetResourceType();
+    if (auto* context = request_info->GetContext()) {
+      ctx->is_webtorrent_disabled = IsWebTorrentDisabled(context);
+    }
   }
+
   brave_shields::GetRenderFrameInfo(request,
                                     &ctx->render_frame_id,
                                     &ctx->render_process_id,

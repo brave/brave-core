@@ -5,7 +5,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_NET_BRAVE_TORRENT_REDIRECT_NETWORK_DELEGATE_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_NET_BRAVE_TORRENT_REDIRECT_NETWORK_DELEGATE_HELPER_H_
 
-#include "chrome/browser/net/chrome_network_delegate.h"
 #include "brave/browser/net/url_context.h"
 
 namespace brave {

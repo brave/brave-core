@@ -67,6 +67,7 @@ struct BraveRequestInfo {
   bool allow_3p_cookies = false;
   bool allow_referrers = false;
   bool allow_google_auth = true;
+  bool is_webtorrent_disabled = false;
   int render_process_id = 0;
   int render_frame_id = 0;
   int frame_tree_node_id = 0;

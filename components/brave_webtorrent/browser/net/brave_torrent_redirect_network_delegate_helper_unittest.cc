@@ -99,6 +99,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
@@ -133,6 +135,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
@@ -169,6 +173,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
@@ -210,6 +216,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
@@ -247,6 +255,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
@@ -279,6 +289,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
@@ -314,6 +326,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
