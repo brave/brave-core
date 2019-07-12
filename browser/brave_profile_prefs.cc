@@ -58,6 +58,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Hangouts
   registry->RegisterBooleanPref(kHangoutsEnabled, true);
 
+  // Media Router
+  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
+
   // No sign into Brave functionality
   registry->SetDefaultPrefValue(prefs::kSigninAllowed, base::Value(false));
 
