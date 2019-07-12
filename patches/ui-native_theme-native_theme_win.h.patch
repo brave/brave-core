@@ -1,0 +1,12 @@
+diff --git a/ui/native_theme/native_theme_win.h b/ui/native_theme/native_theme_win.h
+index cabb8bc5afb7831bf4da1558e5f502c8ca531299..ce0a0bc0df1b3969237062fae07361ae0dc8ea57 100644
+--- a/ui/native_theme/native_theme_win.h
++++ b/ui/native_theme/native_theme_win.h
+@@ -83,6 +83,7 @@ class NATIVE_THEME_EXPORT NativeThemeWin : public NativeTheme,
+   bool SystemDarkModeEnabled() const override;
+ 
+  protected:
++  friend void UpdateDarkModeStatus();
+   friend class NativeTheme;
+   friend class base::NoDestructor<NativeThemeWin>;
+   // Gets our singleton instance.

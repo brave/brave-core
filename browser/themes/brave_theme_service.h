@@ -64,9 +64,6 @@ class BraveThemeService : public ThemeService {
 
   void RecoverPrefStates(Profile* profile);
   void OverrideDefaultThemeIfNeeded(Profile* profile);
-#if defined(OS_WIN)
-  void OverrideSystemDarkModeIfNeeded(Profile* profile);
-#endif
 
   static bool SystemThemeModeEnabled();
 

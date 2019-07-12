@@ -36,6 +36,10 @@
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
 
+#if defined(OS_LINUX)
+#include "chrome/browser/ui/ui_features.h"
+#endif
+
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "brave/common/brave_paths.h"
 #endif
@@ -140,6 +144,10 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   const std::unordered_set<const char*> enabled_features = {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       extensions_features::kNewExtensionUpdaterService.name,
+#endif
+#if defined(OS_LINUX)
+      // Enable webui dark on linux.
+      features::kWebUIDarkMode.name,
 #endif
       omnibox::kSimplifyHttpsIndicator.name,
   };
