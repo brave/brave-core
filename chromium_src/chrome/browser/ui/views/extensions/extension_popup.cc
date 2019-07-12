@@ -21,7 +21,7 @@ bool IsBraveExtension(extensions::ExtensionViewHost* host) {
 // HACK: removes border radius for brave extensions
 //       as webview does not support radius clipping which results
 //       in white strips at top and bottom of popup.
-// TODO: add brave extension radius back in when macOS and Windows
+// TODO(mkarolin): add brave extension radius back in when macOS and Windows
 //       popups support web dialog window radius clipping.
 #define BRAVE_ADDED_TO_WIDGET                      \
   const int radius = IsBraveExtension(host_.get()) \
