@@ -19,7 +19,7 @@ Polymer({
   /** @override */
   created: function() {
     this.browserProxy_ = settings.BraveDefaultExtensionsBrowserProxyImpl.getInstance();
-    this.browserProxy_.showRelaunchToast().then(show => {
+    this.browserProxy_.getRestartNeeded().then(show => {
       this.showRestartToast = show;
     });
   },

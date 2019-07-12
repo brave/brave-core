@@ -65,13 +65,13 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(&BraveDefaultExtensionsHandler::HandleRestartBrowser,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "showRelaunchToast",
+      "getRestartNeeded",
       base::BindRepeating(
-        &BraveDefaultExtensionsHandler::ShowRelaunchToast,
+        &BraveDefaultExtensionsHandler::GetRestartNeeded,
         base::Unretained(this)));
 }
 
-void BraveDefaultExtensionsHandler::ShowRelaunchToast(
+void BraveDefaultExtensionsHandler::GetRestartNeeded(
     const base::ListValue* args) {
   bool enabledCurrentPref = profile_->GetPrefs()->GetBoolean(
       prefs::kEnableMediaRouter);
@@ -81,7 +81,8 @@ void BraveDefaultExtensionsHandler::ShowRelaunchToast(
   restartNeeded = (enabledCurrentPref != enabledUpdatedPref);
 
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(restartNeeded));
+  ResolveJavascriptCallback(args->GetList()[0].Clone(),
+      base::Value(restartNeeded));
 }
 
 void BraveDefaultExtensionsHandler::HandleRestartBrowser(

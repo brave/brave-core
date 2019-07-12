@@ -12,7 +12,7 @@ cr.define('settings', function() {
     setHangoutsEnabled(value) {}
     setIPFSCompanionEnabled(value) {}
     restartBrowser() {}
-    showRelaunchToast() {}
+    getRestartNeeded() {}
   }
 
   /**
@@ -35,8 +35,8 @@ cr.define('settings', function() {
     restartBrowser() {
       chrome.send('restartBrowser');
     }
-    showRelaunchToast() {
-      return cr.sendWithPromise('showRelaunchToast');
+    getRestartNeeded() {
+      return cr.sendWithPromise('getRestartNeeded');
     }
   }
 
