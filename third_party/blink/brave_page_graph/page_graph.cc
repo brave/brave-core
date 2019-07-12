@@ -74,7 +74,6 @@
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/dispatchers.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/request_metadata.h"
-#include "brave/third_party/blink/brave_page_graph/utilities/scripts.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
 
 using ::blink::Document;
