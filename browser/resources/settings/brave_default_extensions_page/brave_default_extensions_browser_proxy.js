@@ -11,7 +11,6 @@ cr.define('settings', function() {
     setWebTorrentEnabled(value) {}
     setHangoutsEnabled(value) {}
     setIPFSCompanionEnabled(value) {}
-    setMediaRouterEnabled(value) {}
   }
 
   /**
@@ -27,9 +26,6 @@ cr.define('settings', function() {
     }
     setIPFSCompanionEnabled(value) {
       chrome.send('setIPFSCompanionEnabled', [value]);
-    }
-    setMediaRouterEnabled(value) {
-      chrome.send('setMediaRouterEnabled', [value]);
     }
   }
 

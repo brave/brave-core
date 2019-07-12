@@ -23,6 +23,7 @@ class BraveToolbarView : public ToolbarView {
   void OnThemeChanged() override;
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
+  void OnMediaRouterEnabledChanged();
   void ShowBookmarkBubble(const GURL& url,
                           bool already_bookmarked,
                           bookmarks::BookmarkBubbleObserver* observer) override;
@@ -38,6 +39,7 @@ class BraveToolbarView : public ToolbarView {
   BooleanPrefMember location_bar_is_wide_;
   // Whether this toolbar has been initialized.
   bool brave_initialized_ = false;
+  BooleanPrefMember media_router_enabled_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_

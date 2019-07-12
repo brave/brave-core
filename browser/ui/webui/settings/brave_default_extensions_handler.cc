@@ -16,15 +16,11 @@
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
-#include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
-#include "extensions/common/feature_switch.h"
-
-using extensions::FeatureSwitch;
 
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
   : weak_ptr_factory_(this) {
@@ -47,11 +43,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setIPFSCompanionEnabled",
       base::BindRepeating(
         &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
-        base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setMediaRouterEnabled",
-      base::BindRepeating(
-        &BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
         base::Unretained(this)));
 }
 
@@ -101,20 +92,6 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
     service->DisableExtension(hangouts_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
-}
-
-void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-  CHECK(profile_);
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  bool enabled;
-  args->GetBoolean(0, &enabled);
-  FeatureSwitch::load_media_router_component_extension()->SetOverrideValue(
-      enabled ? FeatureSwitch::OVERRIDE_ENABLED :
-                FeatureSwitch::OVERRIDE_DISABLED);
-  media_router::MediaRouterEnabled(profile_);
-#endif
 }
 
 bool BraveDefaultExtensionsHandler::IsExtensionInstalled(
