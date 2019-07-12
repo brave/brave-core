@@ -183,7 +183,6 @@ void BraveRequestInfo::FillCTX(
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->tab_url = request.top_frame_origin;
   ctx->tab_origin = request.top_frame_origin.value_or(url::Origin()).GetURL();
-  request.
 
   ProfileIOData* io_data =
       ProfileIOData::FromResourceContext(resource_context);
@@ -199,12 +198,6 @@ void BraveRequestInfo::FillCTX(
       brave_shields::IsAllowContentSettingWithIOData(io_data, ctx->tab_origin,
           ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kHTTPUpgradableResources);
-  ctx->allow_1p_cookies = brave_shields::IsAllowContentSettingWithIOData(
-      io_data, ctx->tab_origin, GURL("https://firstParty/"),
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
-  ctx->allow_3p_cookies = brave_shields::IsAllowContentSettingWithIOData(
-      io_data, ctx->tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies);
   ctx->allow_referrers = brave_shields::IsAllowContentSettingWithIOData(
       io_data, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers);

@@ -107,7 +107,7 @@ void MakeStubResponse(const network::ResourceRequest& request,
       "Content-Type: " + response->mime_type + "\r\n";
   response->headers =
       new net::HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(
-          raw_headers.c_str(), raw_headers.size()));
+          raw_headers));
 }
 
 }  // namespace brave_shields

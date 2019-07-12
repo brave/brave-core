@@ -107,7 +107,7 @@ class BraveProxyingURLLoaderFactory
     void OnUploadProgress(int64_t current_position,
                           int64_t total_size,
                           OnUploadProgressCallback callback) override;
-    void OnReceiveCachedMetadata(const std::vector<uint8_t>& data) override;
+    void OnReceiveCachedMetadata(mojo_base::BigBuffer data) override;
     void OnTransferSizeUpdated(int32_t transfer_size_diff) override;
     void OnStartLoadingResponseBody(
         mojo::ScopedDataPipeConsumerHandle body) override;

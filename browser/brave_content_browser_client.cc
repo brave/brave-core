@@ -280,12 +280,12 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     bool* bypass_redirect_checks) {
   bool use_proxy = false;
 
- use_proxy = ChromeContentBrowserClient::WillCreateURLLoaderFactory(
+  use_proxy = ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context,
         frame, render_process_id, is_navigation, is_download, request_initiator,
         factory_request, header_client, bypass_redirect_checks);
 
-  // TODO(iefremov): Skip proxying for certain requests.
+  // TODO(iefremov): Skip proxying for certain requests?
   use_proxy |= true;
   if (bypass_redirect_checks)
     *bypass_redirect_checks = true;

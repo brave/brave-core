@@ -346,9 +346,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnUploadProgress(
                                    std::move(callback));
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveCachedMetadata(
-    const std::vector<uint8_t>& data) {
-  target_client_->OnReceiveCachedMetadata(data);
+void BraveProxyingURLLoaderFactory::InProgressRequest::
+    OnReceiveCachedMetadata(mojo_base::BigBuffer data) {
+  target_client_->OnReceiveCachedMetadata(std::move(data));
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnTransferSizeUpdated(
@@ -483,7 +483,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     }
   }
   head.headers = base::MakeRefCounted<net::HttpResponseHeaders>(
-      net::HttpUtil::AssembleRawHeaders(headers.c_str(), headers.length()));
+      net::HttpUtil::AssembleRawHeaders(headers));
   head.encoded_data_length = 0;
 
   current_response_ = head;
