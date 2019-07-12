@@ -812,7 +812,7 @@
 "SyncAddDeviceWords" = "同期コードを入力";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "他の端末で設定メニュー内のBrave Syncを選択し、以下の同期チェーンコードを入力してください。このコードはパスワードと同等に扱ってください。万が一、誰かに知られてしまうと同期されているデータを閲覧・編集することが可能になってしまいます。";
+"SyncAddDeviceWordsDescription" = "他の端末で設定メニュー内の\"%@\"をタップし、以下の同期チェーンコードを入力してください。このコードはパスワードと同等に扱ってください。万が一、誰かに知られてしまうと同期されているデータを閲覧・編集することが可能になってしまいます。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "コードを入力";
