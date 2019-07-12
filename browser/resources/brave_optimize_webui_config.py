@@ -16,6 +16,13 @@ def vulcanize_base_args():
 def url_mappings(src_path):
   # Provide mappings from URL paths to FS locations
   br_resources_path = os.path.join(src_path, 'brave', 'ui', 'webui', 'resources')
+  br_history_resources_path = os.path.join(src_path, 'brave', 'browser', 'resources', 'history')
   return [
     ('chrome://brave-resources/', br_resources_path),
+    # Chromium's history webui resources are not unpacked to build dir
+    # before building like the settings webui resources are.
+    # Therefore we cannot 'merge' with brave's extra resource files
+    # before the build. Instead, we create a separate path
+    # which points at Brave's resources.
+    ('chrome://history/brave/', br_history_resources_path),
   ]

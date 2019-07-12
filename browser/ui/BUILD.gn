@@ -142,6 +142,7 @@ source_set("ui") {
   if (!is_android) {
     deps += [
       "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/resources/history:resources",
     ]
   }
 

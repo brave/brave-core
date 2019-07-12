@@ -1,8 +1,13 @@
 diff --git a/chrome/browser/resources/history/app.html b/chrome/browser/resources/history/app.html
-index 736edaf8f1d13ca634b95fd474bf53a06bdd20d6..031eeff954ccb6484a03e7af19205ccd3bbebd29 100644
+index 736edaf8f1d13ca634b95fd474bf53a06bdd20d6..620703194954d53ec57b263667771b0b18708238 100644
 --- a/chrome/browser/resources/history/app.html
 +++ b/chrome/browser/resources/history/app.html
-@@ -92,6 +92,7 @@
+@@ -1,3 +1,4 @@
++<link rel="import" href="chrome://history/brave/brave_history_overrides.html">
+ <link rel="import" href="chrome://resources/html/polymer.html">
+ 
+ <link rel="import" href="chrome://resources/cr_elements/shared_vars_css.html">
+@@ -92,6 +93,7 @@
              query-result="[[queryResult_]]"
              path="history">
          </history-list>
@@ -10,7 +15,7 @@ index 736edaf8f1d13ca634b95fd474bf53a06bdd20d6..031eeff954ccb6484a03e7af19205ccd
          <template is="dom-if" if="[[syncedTabsSelected_(selectedPage_)]]">
            <history-synced-device-manager id="synced-devices"
                session-list="[[queryResult_.sessionList]]"
-@@ -100,6 +101,7 @@
+@@ -100,6 +102,7 @@
                path="syncedTabs">
            </history-synced-device-manager>
          </template>
