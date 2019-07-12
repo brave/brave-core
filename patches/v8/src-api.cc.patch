@@ -1,5 +1,5 @@
 diff --git a/src/api.cc b/src/api.cc
-index a52fadc2eef6bcecf73c81463c3665f6313fea72..1eaff80f646c65e5b0bdd04607c42b7cb1f27491 100644
+index a52fadc2eef6bcecf73c81463c3665f6313fea72..d2e096f00e3db81c3c55cf455212175956e3fec3 100644
 --- a/src/api.cc
 +++ b/src/api.cc
 @@ -125,6 +125,8 @@
@@ -11,7 +11,34 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..1eaff80f646c65e5b0bdd04607c42b7c
  namespace v8 {
  
  /*
-@@ -7973,6 +7975,45 @@ void Isolate::CheckMemoryPressure() {
+@@ -5136,6 +5138,26 @@ Local<v8::Value> Function::GetBoundFunction() const {
+   return v8::Undefined(reinterpret_cast<v8::Isolate*>(self->GetIsolate()));
+ }
+ 
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++Local<Function> Function::GetInnermostFunction() const {
++  auto self = Utils::OpenHandle(this);
++
++  Local<Function> function = Utils::Convert<i::Object, Function>(self);
++  while (true) {
++    Local<v8::Value> bound_function = function->GetBoundFunction();
++    if (bound_function->IsFunction()) {
++      function = bound_function.As<Function>();
++    } else {
++      break;
++    }
++  }
++
++  return function;
++}
++#endif
++
++
+ int Name::GetIdentityHash() {
+   auto self = Utils::OpenHandle(this);
+   return static_cast<int>(self->Hash());
+@@ -7973,6 +7995,45 @@ void Isolate::CheckMemoryPressure() {
    heap->CheckMemoryPressure();
  }
  

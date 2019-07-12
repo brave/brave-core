@@ -48,6 +48,7 @@ typedef enum {
   kGraphMLAttrDefBeforeNodeId,
   kGraphMLAttrDefCallArgs,
   kGraphMLAttrDefEdgeType,
+  kGraphMLAttrDefEventListenerId,
   kGraphMLAttrDefIsStyle,
   kGraphMLAttrDefKey,
   kGraphMLAttrDefMethodName,
@@ -129,6 +130,7 @@ std::string StorageLocationToString(const StorageLocation location) noexcept;
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;
 typedef int ScriptId;
+typedef int EventListenerId;
 typedef uint64_t PageGraphId;
 typedef std::string MethodName;
 typedef std::string RequestUrl;
@@ -148,9 +150,6 @@ typedef std::map<SourceCodeHash, ScriptId> HashToScriptIdMap;
 typedef std::map<ScriptId, SourceCodeHash> ScriptIdToHashMap;
 typedef std::map<SourceCodeHash, UrlHash> SourceToUrlMap;
 typedef std::map<UrlHash, SourceCodeHash> UrlToSourceMap;
-
-typedef void (*ScriptStartFunc)(v8::Isolate& isolate, const ScriptId script_id);
-typedef void (*ScriptEndFunc)(v8::Isolate& isolate, const ScriptId script_id);
 
 }  // namespace brave_page_graph
 

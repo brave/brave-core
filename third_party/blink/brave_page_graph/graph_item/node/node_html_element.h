@@ -17,6 +17,8 @@ namespace brave_page_graph {
 class PageGraph;
 class EdgeAttributeDelete;
 class EdgeAttributeSet;
+class EdgeEventListenerAdd;
+class EdgeEventListenerRemove;
 class EdgeNodeCreate;
 class EdgeNodeDelete;
 class EdgeNodeInsert;
@@ -24,6 +26,7 @@ class EdgeNodeRemove;
 class EdgeRequestComplete;
 class EdgeRequestError;
 class EdgeRequestStart;
+class NodeActor;
 class NodeResource;
 
 class NodeHTMLElement : public NodeHTML {
@@ -37,6 +40,8 @@ friend class NodeHTML;
   const std::string& TagName() const;
 
   using Node::AddInEdge;
+  void AddInEdge(const EdgeEventListenerAdd* const edge);
+  void AddInEdge(const EdgeEventListenerRemove* const edge);
   void AddInEdge(const EdgeNodeRemove* const edge);
   void AddInEdge(const EdgeNodeInsert* const edge);
   void AddInEdge(const EdgeNodeDelete* const edge);
@@ -63,6 +68,17 @@ friend class NodeHTML;
   AttributeMap current_attributes_;
   AttributeMap current_inline_styles_;
   HTMLNodeList child_nodes_;
+
+  struct EventListener {
+    EventListener(const std::string& event_type,
+        NodeActor* const listener_node) :
+          event_type(event_type),
+          listener_node(listener_node) {}
+
+    const std::string& event_type;
+    NodeActor* const listener_node;
+  };
+  std::map<EventListenerId, EventListener> event_listeners_;
 };
 
 }  // namespace brave_page_graph

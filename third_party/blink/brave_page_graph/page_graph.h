@@ -16,15 +16,20 @@
 
 namespace blink {
 class Document;
+class ExecutionContext;
 }
 
 namespace v8 {
+class Context;
 class Isolate;
+template <class T>
+class Local;
 }
 
 namespace brave_page_graph {
 
 class Edge;
+class EdgeEventListenerAction;
 class EdgeRequestStart;
 class EdgeNodeInsert;
 class GraphItem;
@@ -52,10 +57,14 @@ struct TrackedRequestRecord;
 class PageGraph {
 // Needed so that graph items can assign themself the next graph id.
 friend GraphItem;
+// Needed so that event listener edges can find their listener scripts.
+friend EdgeEventListenerAction;
 // Needed so that edges between HTML nodes can find their siblings and parents.
 friend EdgeNodeInsert;
  public:
   static PageGraph* GetFromIsolate(v8::Isolate& isolate);
+  static PageGraph* GetFromContext(v8::Local<v8::Context> context);
+  static PageGraph* GetFromExecutionContext(blink::ExecutionContext& exec_context);
 
   PageGraph(blink::Document& document);
   ~PageGraph();
@@ -78,6 +87,13 @@ friend EdgeNodeInsert;
 
   void RegisterContentFrameSet(const blink::DOMNodeId node_id,
     const WTF::String& url);
+
+  void RegisterEventListenerAdd(const blink::DOMNodeId,
+    const WTF::String& event_type, const EventListenerId listener_id,
+    const ScriptId listener_script_id);
+  void RegisterEventListenerRemove(const blink::DOMNodeId,
+    const WTF::String& event_type, const EventListenerId listener_id,
+    const ScriptId listener_script_id);
 
   void RegisterInlineStyleSet(const blink::DOMNodeId node_id,
     const WTF::String& attr_name, const WTF::String& attr_value);
@@ -145,6 +161,7 @@ friend EdgeNodeInsert;
   NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
   NodeExtension* GetExtensionNode();
   NodeActor* GetCurrentActingNode() const;
+  NodeActor* GetNodeActorForScriptId(const ScriptId script_id) const;
 
   void PossiblyWriteRequestsIntoGraph(
     const std::shared_ptr<const TrackedRequestRecord> record);

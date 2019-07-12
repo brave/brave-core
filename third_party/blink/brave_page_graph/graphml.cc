@@ -36,6 +36,8 @@ namespace {
     kGraphMLAttrForTypeEdge, "args");
   const GraphMLAttr* const edge_type_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "edge type");
+  const GraphMLAttr* const event_listener_id_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "event listener id", kGraphMLAttrTypeLong);
   const GraphMLAttr* const is_style_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "is style", kGraphMLAttrTypeBoolean);
   const GraphMLAttr* const key_attr = new GraphMLAttr(
@@ -73,9 +75,9 @@ namespace {
 
   const vector<const GraphMLAttr* const> _all_graphml_attrs = {
     attr_name_attr, attr_value, before_node_attr, call_args, edge_type_attr,
-    is_style_attr, key_attr, method_attr, tag_attr, node_id_attr,
-    node_text, node_type, parent_node_attr, script_id_attr, script_type,
-    status_type, success_attr, url_attr, request_id_attr,
+    event_listener_id_attr, is_style_attr, key_attr, method_attr, tag_attr,
+    node_id_attr, node_text, node_type, parent_node_attr, script_id_attr,
+    script_type, status_type, success_attr, url_attr, request_id_attr,
     request_type_attr, resource_type_attr, value_attr
   };
 }
@@ -150,6 +152,8 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return call_args;
     case kGraphMLAttrDefEdgeType:
       return edge_type_attr;
+    case kGraphMLAttrDefEventListenerId:
+      return event_listener_id_attr;
     case kGraphMLAttrDefIsStyle:
       return is_style_attr;
     case kGraphMLAttrDefKey:

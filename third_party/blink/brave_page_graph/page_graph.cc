@@ -34,6 +34,8 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_set.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_delete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_cross_dom.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_event_listener_add.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_event_listener_remove.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute_attr.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_import.h"
@@ -121,6 +123,11 @@ PageGraph* PageGraph::GetFromIsolate(Isolate& isolate) {
     return nullptr;
   }
 
+  return GetFromContext(context);
+}
+
+/* static */
+PageGraph* PageGraph::GetFromContext(Local<Context> context) {
   if (kV8ContextPerContextDataIndex >=
       context->GetNumberOfEmbedderDataFields()) {
     return nullptr;  // This is not a blink::ExecutionContext.
@@ -131,12 +138,17 @@ PageGraph* PageGraph::GetFromIsolate(Isolate& isolate) {
     return nullptr;
   }
 
-  if (!exec_context->IsDocument()) {
+  return GetFromExecutionContext(*exec_context);
+}
+
+/* static */
+PageGraph* PageGraph::GetFromExecutionContext(ExecutionContext& exec_context) {
+  if (!exec_context.IsDocument()) {
     return nullptr;
   }
-  Document* document = To<Document>(exec_context);
 
-  return document->GetPageGraph();
+  Document& document = To<Document>(exec_context);
+  return document.GetPageGraph();
 }
 
 PageGraph::PageGraph(Document& document) :
@@ -282,11 +294,11 @@ void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
     + ", parent id: " + to_string(inserted_parent_node_id)
     + ", prev sibling id: " + to_string(before_sibling_id));
 
+  NodeActor* const acting_node = GetCurrentActingNode();
+
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
   NodeHTMLElement* const inserted_node = element_nodes_.at(node_id);
-
-  NodeActor* const acting_node = GetCurrentActingNode();
 
   const EdgeNodeInsert* const edge = new EdgeNodeInsert(this,
     acting_node, inserted_node, inserted_parent_node_id, before_sibling_id);
@@ -369,6 +381,52 @@ void PageGraph::RegisterContentFrameSet(const blink::DOMNodeId node_id,
   AddEdge(request_edge);
   frame_node->AddInEdge(request_edge);
   frame_element_node->AddOutEdge(request_edge);
+}
+
+void PageGraph::RegisterEventListenerAdd(const blink::DOMNodeId node_id,
+    const WTF::String& event_type, const EventListenerId listener_id,
+    const ScriptId listener_script_id) {
+  string local_event_type(event_type.Utf8().data());
+  Log("RegisterEventListenerAdd) node id: " + to_string(node_id)
+    + ", event_type: " + local_event_type
+    + ", listener_id: " + to_string(listener_id)
+    + ", listener_script_id: " + to_string(listener_script_id));
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+
+  LOG_ASSERT(element_nodes_.count(node_id) == 1);
+  NodeHTMLElement* const element_node = element_nodes_.at(node_id);
+
+  const EdgeEventListenerAdd* const edge = new EdgeEventListenerAdd(this,
+      acting_node, element_node, local_event_type, listener_id,
+      listener_script_id);
+  AddEdge(edge);
+
+  element_node->AddInEdge(edge);
+  acting_node->AddOutEdge(edge);
+}
+
+void PageGraph::RegisterEventListenerRemove(const blink::DOMNodeId node_id,
+    const WTF::String& event_type, const EventListenerId listener_id,
+    const ScriptId listener_script_id) {
+  string local_event_type(event_type.Utf8().data());
+  Log("RegisterEventListenerRemove) node id: " + to_string(node_id)
+    + ", event_type: " + local_event_type
+    + ", listener_id: " + to_string(listener_id)
+    + ", listener_script_id: " + to_string(listener_script_id));
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+
+  LOG_ASSERT(element_nodes_.count(node_id) == 1);
+  NodeHTMLElement* const element_node = element_nodes_.at(node_id);
+
+  const EdgeEventListenerRemove* const edge = new EdgeEventListenerRemove(this,
+      acting_node, element_node, local_event_type, listener_id,
+      listener_script_id);
+  AddEdge(edge);
+
+  element_node->AddInEdge(edge);
+  acting_node->AddOutEdge(edge);
 }
 
 void PageGraph::RegisterInlineStyleSet(const DOMNodeId node_id,
@@ -790,6 +848,8 @@ void PageGraph::RegisterStorageClear(const StorageLocation location) {
 
 
 GraphMLXML PageGraph::ToGraphML() const {
+  GraphItem::StartGraphMLExport(id_counter_);
+
   stringstream builder;
   builder << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl
     << "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"" << endl
@@ -816,30 +876,31 @@ GraphMLXML PageGraph::ToGraphML() const {
 }
 
 NodeActor* PageGraph::GetCurrentActingNode() const {
-  static ScriptId last_reported_script_id = 0;
   const ScriptId current_script_id = document_.GetIsolate()->GetExecutingScriptId();
+
+  static ScriptId last_reported_script_id = 0;
   const bool should_log = last_reported_script_id != current_script_id;
   last_reported_script_id = current_script_id;
-
   if (should_log) {
     Log("GetCurrentActingNode) script id: " + to_string(current_script_id));
   }
 
-  if (current_script_id == 0) {
-    if (should_log) {
-      Log("GetCurrentActingNode) NodeParser");
-    }
+  return GetNodeActorForScriptId(current_script_id);
+}
+
+NodeActor* PageGraph::GetNodeActorForScriptId(const ScriptId script_id) const {
+  if (script_id == 0) {
     return parser_node_;
   }
 
-  LOG_ASSERT(script_nodes_.count(current_script_id) +
-    remote_script_nodes_.count(current_script_id) == 1);
+  LOG_ASSERT(script_nodes_.count(script_id) +
+    remote_script_nodes_.count(script_id) == 1);
 
-  if (script_nodes_.count(current_script_id) == 1) {
-    return script_nodes_.at(current_script_id);
+  if (script_nodes_.count(script_id) == 1) {
+    return script_nodes_.at(script_id);
   }
 
-  return remote_script_nodes_.at(current_script_id);
+  return remote_script_nodes_.at(script_id);
 }
 
 void PageGraph::PossiblyWriteRequestsIntoGraph(

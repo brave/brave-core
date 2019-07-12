@@ -1,5 +1,5 @@
 diff --git a/include/v8.h b/include/v8.h
-index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..ac7bf1c7e104d9580292c7d05fcc87383258a784 100644
+index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..5f5db866a8673489f952a402a5a7c1b875161479 100644
 --- a/include/v8.h
 +++ b/include/v8.h
 @@ -26,6 +26,8 @@
@@ -11,7 +11,21 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..ac7bf1c7e104d9580292c7d05fcc8738
  // We reserve the V8_* prefix for macros defined in V8 public API and
  // assume there are no name conflicts with the embedder's code.
  
-@@ -8599,6 +8601,10 @@ class V8_EXPORT Isolate {
+@@ -4194,6 +4196,13 @@ class V8_EXPORT Function : public Object {
+    */
+   Local<Value> GetBoundFunction() const;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  /**
++   * Unwrap any bindings to the innermost function, including nested bindings.
++   */
++  Local<Function> GetInnermostFunction() const;
++#endif
++
+   ScriptOrigin GetScriptOrigin() const;
+   V8_INLINE static Function* Cast(Value* obj);
+   static const int kLineOffsetNotFound;
+@@ -8599,6 +8608,10 @@ class V8_EXPORT Isolate {
    void operator delete(void*, size_t) = delete;
    void operator delete[](void*, size_t) = delete;
  
