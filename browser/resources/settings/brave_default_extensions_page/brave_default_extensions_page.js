@@ -14,14 +14,13 @@ Polymer({
 
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
   browserProxy_: null,
-  hideRestartToast: false,
+  showRestartToast: false,
 
   /** @override */
   created: function() {
     this.browserProxy_ = settings.BraveDefaultExtensionsBrowserProxyImpl.getInstance();
     this.browserProxy_.showRelaunchToast().then(show => {
-      this.hideRestartToast = !show;
-      this.$.needsRestart.hidden = this.hideRestartToast;
+      this.showRestartToast = show;
     });
   },
 
@@ -31,6 +30,7 @@ Polymer({
     this.onHangoutsEnabledChange_ = this.onHangoutsEnabledChange_.bind(this)
     this.onIPFSCompanionEnabledChange_ = this.onIPFSCompanionEnabledChange_.bind(this)
     this.openExtensionsPage_ = this.openExtensionsPage_.bind(this)
+    this.restartBrowser_ = this.restartBrowser_.bind(this)
   },
 
   onWebTorrentEnabledChange_: function() {
@@ -50,10 +50,9 @@ Polymer({
   },
 
   onMediaRouterEnabledChange_: function() {
-    this.hideRestartToast = !this.hideRestartToast;
+    this.showRestartToast = !this.showRestartToast;
     this.browserProxy_.setMediaRouterEnabled(this.$.mediaRouterEnabled.checked);
-    this.$.restartButton.onclick = this.browserProxy_.restartBrowser;
-    this.$.needsRestart.hidden = this.hideRestartToast;
+    this.$.needsRestart.hidden = !this.showRestartToast;
   },
 
   openExtensionsPage_: function() {

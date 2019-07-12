@@ -92,17 +92,19 @@
         label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
       </cr-link-row>
     </div>
-  <div id="needsRestart">
-      <div class="flex-container">
-        <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
-        <div class="flex">
-          <button id="restartButton" class="primary" tabindex="9">
-          $i18n{relaunchButtonLabel}
-          </button>
+  <template is="dom-if" if="{{ showRestartToast }}">
+    <div id="needsRestart">
+        <div class="flex-container">
+          <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+          <div class="flex">
+            <button id="restartButton" class="primary" tabindex="9" onclick="restartBrowser_()">
+            $i18n{relaunchButtonLabel}
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </template>
   </template>
   <script src="brave_default_extensions_page.js"></script>
 </dom-module>
