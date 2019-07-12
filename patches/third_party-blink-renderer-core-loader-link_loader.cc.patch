@@ -1,0 +1,104 @@
+diff --git a/third_party/blink/renderer/core/loader/link_loader.cc b/third_party/blink/renderer/core/loader/link_loader.cc
+index 396992603a5b3a64a74a98003225216c52b9308c..23edb43bd6e91df4a9c930823207d1b48de581fd 100644
+--- a/third_party/blink/renderer/core/loader/link_loader.cc
++++ b/third_party/blink/renderer/core/loader/link_loader.cc
+@@ -49,6 +49,15 @@
+ #include "third_party/blink/renderer/platform/prerender.h"
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "third_party/blink/renderer/core/html/html_link_element.h"
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/request_metadata.h"
++#endif
++
+ namespace blink {
+ 
+ class WebPrescientNetworking;
+@@ -136,6 +145,37 @@ void LinkLoader::NotifyFinished() {
+     client_->LinkLoadingErrored();
+   else
+     client_->LinkLoaded();
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (link_element_ != nullptr) {
++      ::brave_page_graph::PageGraph* page_graph =
++          link_element_->GetDocument().GetPageGraph();
++      if (page_graph != nullptr) {
++        const ResourceResponse& rep = resource->GetResponse();
++
++        // Convert the response headers into a single string.
++        std::stringstream ss;
++        const HTTPHeaderMap& headers = rep.HttpHeaderFields();
++        for (HTTPHeaderMap::const_iterator it = headers.begin();
++            it != headers.end(); ++it) {
++          ss << it->key << " " << it->value << "\n";
++        }
++
++        const WTF::String& response_header(ss.str().c_str());
++        brave_page_graph::RequestMetadata metadata(
++            response_header, rep.EncodedBodyLength());
++
++        if (resource->ErrorOccurred()) {
++          page_graph->RegisterRequestError(resource->InspectorId(), metadata);
++        } else {
++          page_graph->RegisterRequestComplete(resource->InspectorId(),
++              ResourceType::kImage, metadata);
++        }
++      }
++    }
++  }
++#endif
+ }
+ 
+ // https://html.spec.whatwg.org/C/#link-type-modulepreload
+@@ -254,8 +294,26 @@ void LinkLoader::LoadStylesheet(const LinkLoadParameters& params,
+         integrity_attr);
+   }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Resource* resource = CSSStyleSheetResource::Fetch(
++        link_fetch_params, document.Fetcher(), link_client);
++    finish_observer_ = MakeGarbageCollected<FinishObserver>(this, resource);
++
++    if (link_element_ != nullptr) {
++      ::brave_page_graph::PageGraph* page_graph = document.GetPageGraph();
++      if (page_graph != nullptr) {
++        auto node_id = DOMNodeIds::IdForNode(link_element_);
++        page_graph->RegisterRequestStartFromElm(
++          node_id, resource->InspectorId(), params.href,
++          ::brave_page_graph::RequestType::kRequestTypeCSS);
++      }
++    }
++  }
++#else
+   CSSStyleSheetResource::Fetch(link_fetch_params, document.Fetcher(),
+-                               link_client);
++      link_client);
++#endif
+ }
+ 
+ void LinkLoader::Abort() {
+@@ -273,8 +331,17 @@ void LinkLoader::Trace(blink::Visitor* visitor) {
+   visitor->Trace(finish_observer_);
+   visitor->Trace(client_);
+   visitor->Trace(prerender_);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  visitor->Trace(link_element_);
++#endif
+   SingleModuleClient::Trace(visitor);
+   PrerenderClient::Trace(visitor);
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void LinkLoader::SetHTMLLinkElementOwner(HTMLLinkElement* link_element) {
++  link_element_ = link_element;
++}
++#endif
++
+ }  // namespace blink
