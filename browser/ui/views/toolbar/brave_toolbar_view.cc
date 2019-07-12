@@ -13,12 +13,9 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/defaults.h"
-#include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/ui/bookmarks/bookmark_bubble_sign_in_delegate.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
-#include "chrome/browser/ui/views/media_router/cast_toolbar_button.h"
-#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 
@@ -106,11 +103,6 @@ void BraveToolbarView::Init() {
       base::Bind(&BraveToolbarView::OnLocationBarIsWideChanged,
                  base::Unretained(this)));
 
-  media_router_enabled_.Init(
-      prefs::kEnableMediaRouter, browser()->profile()->GetPrefs(),
-      base::Bind(&BraveToolbarView::OnMediaRouterEnabledChanged,
-                 base::Unretained(this)));
-
   bookmark_ = new BookmarkButton(this);
   bookmark_->set_triggerable_event_flags(
       ui::EF_LEFT_MOUSE_BUTTON | ui::EF_MIDDLE_MOUSE_BUTTON);
@@ -148,17 +140,6 @@ void BraveToolbarView::LoadImages() {
   ToolbarView::LoadImages();
   if (bookmark_)
     bookmark_->UpdateImage();
-}
-
-void BraveToolbarView::OnMediaRouterEnabledChanged() {
-  // When media router is disabled from enabled, pinned cast button should be
-  // hidden. Once it is disabled, browser should be restarted for working
-  // properly.
-  if (cast_) {
-    auto* profile = browser_->profile();
-    if (!media_router::MediaRouterEnabled(profile))
-      cast_->SetVisible(false);
-  }
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {
