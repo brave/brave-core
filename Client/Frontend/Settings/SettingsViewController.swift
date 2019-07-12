@@ -174,7 +174,7 @@ class SettingsViewController: TableViewController {
         
         return Section(
             // BRAVE TODO: Change it once we finalize our decision how to name the section.(#385)
-            header: .title("Other Settings"),
+            header: .title(Strings.OtherSettingsSection),
             rows: [
                 Row(text: Strings.Sync, selection: { [unowned self] in
                     
