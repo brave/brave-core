@@ -28,7 +28,7 @@ interface BatLedger {
   FetchWalletProperties() =>
       (int32 result, ledger.mojom.WalletProperties properties);
 
-  GetAutoContributeProps() => (string props);
+  GetAutoContributeProps() => (ledger.mojom.AutoContributeProps props);
   GetPublisherMinVisitTime() => (uint64 min_visit_time);
   GetPublisherMinVisits() => (uint32 min_visits);
   GetPublisherAllowNonVerified() => (bool allowed);

@@ -167,55 +167,6 @@ bool BalanceReportInfo::loadFromJson(const std::string& json) {
   return !error;
 }
 
-AutoContributeProps::AutoContributeProps()
-  : enabled_contribute(false),
-    contribution_min_time(0),
-    contribution_min_visits(0),
-    contribution_non_verified(false),
-    contribution_videos(false),
-    reconcile_stamp(0) { }
-
-AutoContributeProps::~AutoContributeProps() { }
-
-const std::string AutoContributeProps::ToJson() const {
-  std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, &json);
-  return json;
-}
-
-bool AutoContributeProps::loadFromJson(const std::string& json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-
-  if (!error) {
-    error = !(d.HasMember("enabled_contribute") &&
-        d["enabled_contribute"].IsBool() &&
-        d.HasMember("contribution_min_time") &&
-        d["contribution_min_time"].IsUint64() &&
-        d.HasMember("contribution_min_visits") &&
-        d["contribution_min_visits"].IsInt() &&
-        d.HasMember("contribution_non_verified") &&
-        d["contribution_non_verified"].IsBool() &&
-        d.HasMember("contribution_videos") &&
-        d["contribution_videos"].IsBool() &&
-        d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64());
-  }
-
-  if (!error) {
-    enabled_contribute = d["enabled_contribute"].GetBool();
-    contribution_min_time = d["contribution_min_time"].GetUint64();
-    contribution_min_visits = d["contribution_min_visits"].GetInt();
-    contribution_non_verified = d["contribution_non_verified"].GetBool();
-    contribution_videos = d["contribution_videos"].GetBool();
-    reconcile_stamp = d["reconcile_stamp"].GetUint64();
-  }
-
-  return !error;
-}
-
 ReconcileInfo::ReconcileInfo()
     : retry_step_(ContributionRetry::STEP_NO), retry_level_(0) {}
 ReconcileInfo::~ReconcileInfo() {}

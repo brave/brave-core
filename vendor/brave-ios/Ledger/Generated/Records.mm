@@ -10,20 +10,6 @@
 #import <map>
 #import <string>
 
-@implementation BATAutoContributeProps
-- (instancetype)initWithAutoContributeProps:(const ledger::AutoContributeProps&)obj {
-  if ((self = [super init])) {
-    self.enabledContribute = obj.enabled_contribute;
-    self.contributionMinTime = obj.contribution_min_time;
-    self.contributionMinVisits = obj.contribution_min_visits;
-    self.contributionNonVerified = obj.contribution_non_verified;
-    self.contributionVideos = obj.contribution_videos;
-    self.reconcileStamp = obj.reconcile_stamp;
-  }
-  return self;
-}
-@end
-
 @implementation BATBalanceReportInfo
 - (instancetype)initWithBalanceReportInfo:(const ledger::BalanceReportInfo&)obj {
   if ((self = [super init])) {

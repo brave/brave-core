@@ -2682,31 +2682,6 @@ void saveToJson(JsonWriter* writer,
   writer->EndObject();
 }
 
-void saveToJson(JsonWriter* writer,
-    const ledger::AutoContributeProps& props) {
-  writer->StartObject();
-
-  writer->String("enabled_contribute");
-  writer->Bool(props.enabled_contribute);
-
-  writer->String("contribution_min_time");
-  writer->Uint64(props.contribution_min_time);
-
-  writer->String("contribution_min_visits");
-  writer->Int(props.contribution_min_visits);
-
-  writer->String("contribution_non_verified");
-  writer->Bool(props.contribution_non_verified);
-
-  writer->String("contribution_videos");
-  writer->Bool(props.contribution_videos);
-
-  writer->String("reconcile_stamp");
-  writer->Uint64(props.reconcile_stamp);
-
-  writer->EndObject();
-}
-
 void saveToJson(JsonWriter* writer, const ledger::ReconcileInfo& data) {
   writer->StartObject();
 

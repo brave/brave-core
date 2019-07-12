@@ -8,23 +8,12 @@
 
 #include <string>
 
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
+
 namespace ledger {
 
-LEDGER_EXPORT struct AutoContributeProps {
-  AutoContributeProps();
-  ~AutoContributeProps();
-  AutoContributeProps(const AutoContributeProps& properties) = default;
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  bool enabled_contribute;
-  uint64_t contribution_min_time;
-  int32_t contribution_min_visits;
-  bool contribution_non_verified;
-  bool contribution_videos;
-  uint64_t reconcile_stamp;
-};
+using AutoContributeProps = ledger::mojom::AutoContributeProps;
+using AutoContributePropsPtr = ledger::mojom::AutoContributePropsPtr;
 
 }  // namespace ledger
 
