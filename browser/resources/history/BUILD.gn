@@ -1,0 +1,19 @@
+import("//chrome/browser/resources/optimize_webui.gni")
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+grit("resources") {
+  source = "history_resources.grd"
+
+  source_is_generated = optimize_webui
+
+  outputs = [
+    "grit/brave_history_resources.h",
+    "grit/brave_history_resources_map.cc",
+    "grit/brave_history_resources_map.h",
+    "brave_history_resources.pak",
+  ]
+
+  output_dir = "$root_gen_dir/brave/browser/resources/history"
+  resource_ids = "//brave/browser/resources/resource_ids"
+}

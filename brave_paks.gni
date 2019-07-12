@@ -58,6 +58,7 @@ template("brave_extra_paks") {
     sources = [
       "$root_gen_dir/brave/brave_generated_resources.pak",
       "$root_gen_dir/brave/brave_unscaled_resources.pak",
+      "$root_gen_dir/brave/browser/resources/history/brave_history_resources.pak",
       "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
       "$root_gen_dir/components/brave_components_resources.pak",
       "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak",
@@ -74,6 +75,7 @@ template("brave_extra_paks") {
       "//brave/components/resources",
       "//brave/components/resources:strings",
       "//brave/browser/resources/settings:resources",
+      "//brave/browser/resources/history:resources",
       "//brave/components/brave_sync:resources",
       "//brave/ui/webui/resources",
     ]

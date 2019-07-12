@@ -21,6 +21,9 @@
   },
   "brave/browser/resources/settings/settings_resources.grd": {
     "structures": [34500],
+    "includes": [34700],
+  },
+  "brave/browser/resources/history/history_resources.grd": {
     "includes": [34900],
   },
   "brave/app/brave_generated_resources.grd": {
