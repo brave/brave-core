@@ -1,32 +1,31 @@
 diff --git a/chrome/browser/resources/optimize_webui.py b/chrome/browser/resources/optimize_webui.py
-index e7804916b41259968fb33a8499c64cd522a5db05..5723d1a552531f0cc18d9d17657bada27f9ab2ca 100755
+index e7804916b41259968fb33a8499c64cd522a5db05..8491c69316036ca8e64772891cdcedc85690b69b 100755
 --- a/chrome/browser/resources/optimize_webui.py
 +++ b/chrome/browser/resources/optimize_webui.py
-@@ -45,6 +45,8 @@ _POLYMER_PATH = os.path.join(
-     _SRC_PATH, 'third_party', 'polymer', 'v1_0', 'components-chromium')
+@@ -22,6 +22,8 @@ sys.path.append(os.path.join(_SRC_PATH, 'third_party', 'node'))
+ import node
+ import node_modules
  
++sys.path.append(os.path.join(_SRC_PATH, 'brave', 'browser', 'resources'))
++import brave_optimize_webui_config as brave_config
  
-+_BR_RESOURCES_PATH = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources')
-+
- _VULCANIZE_BASE_ARGS = [
-   # These files are already combined and minified.
-   '--exclude', 'chrome://resources/html/polymer.html',
-@@ -60,6 +62,8 @@ _VULCANIZE_BASE_ARGS = [
-   '--exclude', 'chrome://resources/css/text_defaults.css',
-   '--exclude', 'chrome://resources/css/text_defaults_md.css',
-   '--exclude', 'chrome://resources/js/load_time_data.js',
-+  '--exclude', 'chrome://brave-resources/fonts/muli.css',
-+  '--exclude', 'chrome://brave-resources/fonts/poppins.css',
+ _RESOURCES_PATH = os.path.join(_SRC_PATH, 'ui', 'webui', 'resources')
  
-   '--inline-css',
+@@ -65,7 +67,7 @@ _VULCANIZE_BASE_ARGS = [
    '--inline-scripts',
-@@ -74,7 +78,8 @@ _URL_MAPPINGS = [
-     ('chrome://resources/css/', _CSS_RESOURCES_PATH),
+   '--rewrite-urls-in-templates',
+   '--strip-comments',
+-]
++] + brave_config.vulcanize_base_args()
+ 
+ 
+ _URL_MAPPINGS = [
+@@ -75,7 +77,7 @@ _URL_MAPPINGS = [
      ('chrome://resources/html/', _HTML_RESOURCES_PATH),
      ('chrome://resources/js/', _JS_RESOURCES_PATH),
--    ('chrome://resources/polymer/v1_0/', _POLYMER_PATH)
-+    ('chrome://resources/polymer/v1_0/', _POLYMER_PATH),
-+    ('chrome://brave-resources/', _BR_RESOURCES_PATH)
- ]
+     ('chrome://resources/polymer/v1_0/', _POLYMER_PATH)
+-]
++] + brave_config.url_mappings(_SRC_PATH)
  
  
+ _VULCANIZE_REDIRECT_ARGS = list(itertools.chain.from_iterable(map(
