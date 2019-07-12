@@ -173,7 +173,7 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   enabled ? feature_name += "@1" : feature_name += "@2";
   flags_ui::PrefServiceFlagsStorage flags_storage(
       g_brave_browser_process->local_state());
-  about_flags::SetFeatureEntryEnabled(&flags_storage, feature_name, true);
+  about_flags::SetFeatureEntryEnabled(&flags_storage, feature_name, enabled);
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
