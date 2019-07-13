@@ -577,9 +577,13 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 - (NSDictionary<NSString *, BATBalanceReportInfo *> *)balanceReports
 {
   const auto reports = ledger->GetAllBalanceReports();
-  return NSDictionaryFromMap(reports, ^BATBalanceReportInfo *(ledger::BalanceReportInfo info){
-    return [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:info];
-  });
+  const auto bridgedReports = [[NSMutableDictionary<NSString *, BATBalanceReportInfo *> alloc] init];
+  for (const auto& r : reports) {
+    if (r.second.get() == nullptr) { continue; }
+    bridgedReports[[NSString stringWithUTF8String:r.first.c_str()]] =
+      [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:*r.second];
+  }
+  return bridgedReports;
 }
 
 - (BATBalanceReportInfo *)balanceReportForMonth:(BATActivityMonth)month year:(int)year
