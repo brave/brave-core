@@ -12,8 +12,8 @@ namespace extensions {
 bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     const WebRequestInfo& request) const {
   const GURL& url = request.url;
-  if (extension_urls::IsBraveProtectedUrl(url::Origin::Create(url),
-                                          url.path_piece())) {
+  if (extension_urls::BraveProtectedUrls::IsHiddenNetworkRequest(
+      url::Origin::Create(url), url.path_piece())) {
     return true;
   }
   return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(request);

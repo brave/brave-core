@@ -10,13 +10,35 @@
 
 namespace extension_urls {
 
-bool IsBraveProtectedUrl(const url::Origin& origin, base::StringPiece path) {
-  return (origin.DomainIs("sandbox.uphold.com") &&
-          base::StartsWith(path, "/authorize/",
-                           base::CompareCase::SENSITIVE)) ||
-      (origin.DomainIs("api.uphold.com") &&
-       base::StartsWith(path, "/oauth2/token",
-                        base::CompareCase::SENSITIVE));
+const char* BraveProtectedUrls::UpholdUrls[][2] = {
+    {"https://sandbox.uphold.com", "/authorize/"},
+    {"https://api.uphold.com", "/oauth2/token"},
+};
+
+bool BraveProtectedUrls::IsHiddenNetworkRequest(const url::Origin& origin,
+                                                base::StringPiece path) {
+  constexpr size_t url_count = base::size(UpholdUrls);
+  for (size_t i=0; i < url_count; i++) {
+    if (origin.DomainIs(UpholdUrls[i][0]) &&
+        base::StartsWith(path, UpholdUrls[i][1],
+                         base::CompareCase::SENSITIVE)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+std::vector<const GURL> BraveProtectedUrls::ContentScriptWithheldUrls() {
+  std::vector<const GURL> urls;
+
+  constexpr size_t url_count = base::size(UpholdUrls);
+  for (size_t i=0; i < url_count; i++) {
+    std::string url(UpholdUrls[i][0]);
+    url += UpholdUrls[i][1];
+    urls.push_back(GURL(url));
+  }
+
+  return urls;
 }
 
 }  // namespace extension_urls

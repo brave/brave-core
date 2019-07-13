@@ -7,11 +7,20 @@
 #define BRAVE_EXTENSIONS_COMMON_EXTENSION_URLS_H_
 
 #include "extensions/common/extension_urls.h"
+#include "url/gurl.h"
 
 namespace extension_urls {
 
-// Returns true if the URL points to a security-critical service.
-bool IsBraveProtectedUrl(const url::Origin& origin, base::StringPiece path);
+class BraveProtectedUrls {
+public:
+  static bool IsHiddenNetworkRequest(const url::Origin& origin,
+                                     base::StringPiece path);
+
+  static std::vector<const GURL> ContentScriptWithheldUrls();
+
+private:
+  static const char* UpholdUrls[][2];
+};
 
 }  // namespace extension_urls
 
