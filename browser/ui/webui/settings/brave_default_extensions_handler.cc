@@ -78,16 +78,15 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
   bool enabledUpdatedPref = profile_->GetPrefs()->GetBoolean(
       kBraveEnabledMediaRouter);
 
-  restartNeeded = (enabledCurrentPref != enabledUpdatedPref);
+  restart_needed_ = (enabledCurrentPref != enabledUpdatedPref);
 
   AllowJavascript();
   ResolveJavascriptCallback(args->GetList()[0].Clone(),
-      base::Value(restartNeeded));
+      base::Value(restart_needed_));
 }
 
 void BraveDefaultExtensionsHandler::HandleRestartBrowser(
     const base::ListValue* args) {
-  restartNeeded = false;
   chrome::AttemptRestart();
 }
 
@@ -164,7 +163,7 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   bool enabled;
   args->GetBoolean(0, &enabled);
 
-  restartNeeded = !restartNeeded;
+  restart_needed_ = !restart_needed_;
   if (enabled) {
     extensions::ExtensionPrefs::Get(profile_)->SetExtensionEnabled(
         extension_misc::kMediaRouterStableExtensionId);

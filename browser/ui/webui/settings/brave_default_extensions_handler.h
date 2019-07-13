@@ -37,7 +37,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
       extensions::webstore_install::Result result);
 
   Profile* profile_ = nullptr;
-  bool restartNeeded = false;
+  bool restart_needed_ = false;
   base::WeakPtrFactory<BraveDefaultExtensionsHandler> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDefaultExtensionsHandler);
