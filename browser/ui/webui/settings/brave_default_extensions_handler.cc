@@ -73,12 +73,22 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
 
 void BraveDefaultExtensionsHandler::GetRestartNeeded(
     const base::ListValue* args) {
-  bool enabledCurrentPref = profile_->GetPrefs()->GetBoolean(
+  bool media_router_current_pref = profile_->GetPrefs()->GetBoolean(
       prefs::kEnableMediaRouter);
-  bool enabledUpdatedPref = profile_->GetPrefs()->GetBoolean(
+  bool media_router_new_pref = profile_->GetPrefs()->GetBoolean(
       kBraveEnabledMediaRouter);
+  bool media_router_enabled = extensions::ExtensionPrefs::Get(profile_)->
+      IsExtensionDisabled(extension_misc::kMediaRouterStableExtensionId);
 
-  restart_needed_ = (enabledCurrentPref != enabledUpdatedPref);
+  // This only happens on upgrade if the user has enabled media router using
+  // brave://flags before. We explicitly require the user to enable the pref
+  // to avoid any surprises about new connections on upgrade.
+  if (media_router_enabled != media_router_current_pref) {
+    restart_needed_ = (media_router_current_pref == media_router_new_pref);
+  } else {
+    restart_needed_ = (media_router_current_pref != media_router_new_pref);
+  }
+
 
   AllowJavascript();
   ResolveJavascriptCallback(args->GetList()[0].Clone(),
@@ -164,6 +174,8 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   args->GetBoolean(0, &enabled);
 
   restart_needed_ = !restart_needed_;
+  // Adding the media router extension on explicit toggle to prevent
+  // any suprise connections on upgrade
   if (enabled) {
     extensions::ExtensionPrefs::Get(profile_)->SetExtensionEnabled(
         extension_misc::kMediaRouterStableExtensionId);
