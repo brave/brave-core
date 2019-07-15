@@ -10,8 +10,14 @@
 /* Button to add a bookmark */
 "AddBookmark" = "Tambah Penanda Buku";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Folder baharu";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "Tambah kepada Kegemaran";
+
+/* Title for adding new bookmark menu item */
+"AddToMenuItem" = "Tambah kepada...";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Iklan dan Penjejak";
@@ -154,8 +160,20 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Maklumat Penanda Buku";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Penanda buku";
+
 /* title for bookmarks panel */
 "Bookmarks" = "Penanda Buku";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Penanda buku";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Nama";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Alamat";
 
 /* Button to show the brave panel */
 "BravePanel" = "Panel Brave";
@@ -211,6 +229,9 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tutup Semua %i Tab";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Taipkan perkataan kod rantaian penyegerakan anda yang diberikan ke dalam borang di bawah.";
+
 /* Code words section title */
 "CodeWords" = "Perkataan Kod";
 
@@ -219,6 +240,9 @@
 
 /* Cookie settings option title */
 "CookieControl" = "Kawalan Kuki";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Kuki dan Data Laman";
 
 /* Copied action complete title */
 "Copied" = "Disalin!";
@@ -298,8 +322,17 @@
 /* Button to edit a bookmark */
 "EditBookmark" = "Edit Penanda Buku";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Lokasi";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Edit penanda buku";
+
 /* Button to edit a favorite */
 "EditFavorite" = "Edit Kegemaran";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Edit folder";
 
 /* Sync enter code words */
 "EnterCodeWords" = "Masukkan perkataan kod";
@@ -340,17 +373,29 @@
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Masa Jangkaan\nDisimpan";
 
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Kegemaran terletak pada skrin halaman utama anda. Penanda buku ini tidak disegerakkan dengan peranti lain.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Kegemaran";
+
 /* Share action title */
 "FindInPage" = "Cari dalam Halaman";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Selesai";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "Cari \"%@\"";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Hasil dalam halaman seterusnya";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "Hasil dalam halaman sebelumnya";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "Pada halaman ini";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Kaedah Pencapjarian";
@@ -363,6 +408,12 @@
 
 /* Grand camera access */
 "GrantCameraAccess" = "Aktifkan Kamera";
+
+/* Title for history menu item */
+"HistortMenuItem" = "Sejarah";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "Sejarah";
 
 /* No comment provided by engineer. */
 "Home" = "Halaman Utama";
@@ -430,8 +481,20 @@
 /* tabs bar show/hide option */
 "NeverShow" = "Jangan pernah tunjukkan";
 
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Penanda Buku Baharu";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Penanda buku baharu";
+
 /* Title for new folder popup */
 "NewFolder" = "Folder Baharu";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Folder Baharu";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Folder baharu";
 
 /* New sync code button title */
 "NewSyncCode" = "Mulakan Rantaian Penyegerakan baru";
@@ -459,6 +522,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Buka Tetapan";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Tetapan Lain";
 
 /* Sync pair device settings section title */
 "Pair" = "Pasangkan";
@@ -496,6 +562,9 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Semakan Lalu Peribadi Sahaja";
 
+/* Private tab details */
+"PrivateTabBody" = "Tab Peribadi tidak disimpan dalam Brave tetapi ia tidak membuat anda tanpa nama dalam talian. Laman yang anda lawati dalam tab peribadi tidak akan ditunjukkan dalam sejarah anda dan kuki laman tersebut sentiasa hilang apabila anda menutupnya — tidak akan ada apa-apa jejak kuki tersebut dalam Brave. Pembawa mudah alih anda (atau pemilik rangkaian Wi-Fi atau VPN yang anda sambungkan) boleh melihat laman yang anda lawati dan laman tersebut akan mengetahui alamat IP awam anda, walaupun dalam Tab Peribadi.";
+
 /* Private tab detail text */
 "PrivateTabDetails" = "Penggunaan Tab Peribadi hanya dapat mengubah apa yang dibuat dengan Brave pada peranti anda, ia tidak mengubah tingkah laku orang lain.\n\nLaman sentiasa belajar alamat IP anda apabila anda melawat laman tersebut. Dengan ini, laman sering boleh meneka lokasi kasar anda - biasanya bandar anda. Kadang-kadang tekaan lokasi boleh menjadi lebih spesifik. Laman juga tahu semua perkara yang anda katakan kepada mereka secara khusus, seperti istilah carian. Jika anda log masuk ke laman, mereka akan mengetahui bahawa anda pemilik akaun itu. Anda masih akan dilog keluar apabila anda menutup Tab Peribadi kerana Brave akan membuang kuki yang mengekalkan log masuk anda.\n\nSesiapa pun yang menghubungkan anda kepada Internet (ISP anda) dapat melihat semua aktiviti rangkaian anda. Biasanya, ini merupakan pembawa mudah alih anda. Jika anda disambungkan ke rangkaian WiFi, ini merupakan pemilik rangkaian itu, dan jika anda menggunakan VPN, maka sesiapa pun yang menguruskan VPN itu. ISP anda boleh melihat laman web yang anda kunjungi semasa anda melawatnya. Sekiranya laman web tersebut menggunakan HTTPS, mereka hanya dapat meneka apa yang anda lakukan di laman web tersebut. Sekiranya laman hanya menggunakan HTTP maka ISP anda dapat melihat segala-galanya: istilah carian anda, laman yang anda baca, dan pautan yang anda ikuti.\n\nSekiranya majikan menguruskan peranti anda, mereka mungkin juga menjejaki apa yang anda lakukan dengannya. Penggunaan Tab Peribadi mungkin tidak dapat menghalang mereka daripada mengetahui laman yang telah anda lawati. Seseorang yang mempunyai akses ke peranti anda juga boleh memasangkan perisian yang memantau aktiviti anda, dan Tab Pribadi tidak akan melindungi anda daripada perbuatan tersebut.";
 
@@ -510,6 +579,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Enjin Carian Pantas";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Berikan penarafan kepada Brave";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Tingkatkan saiz teks";
@@ -586,6 +658,12 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Aduh, ini memalukan.";
 
+/* Button to show the rewards panel */
+"RewardsPanel" = "Panel Ganjaran";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Simpan";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Log Masuk Disimpan";
 
@@ -615,6 +693,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Carian untuk cadangan";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "Sejarah dan penanda buku";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Kosongkan Carian";
@@ -658,8 +739,14 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Tidak dapat memuat halaman.";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "Tetapan";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Kongsi Pautan";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Kongsi dengan...";
 
 /* shields overview message */
 "ShieldsOverview" = "Perisai Tapak membenarkan anda mengawal bila iklan dan penjejak disekat untuk setiap tapak yang anda lawati. Jika anda suka melihat iklan di sesuatu tapak khusus, anda boleh mendayakannya di sini.";
@@ -715,11 +802,11 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Imbas Kod QR Rantai";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Pada peranti mudah alih kedua anda, navigasi ke Segerak Brave dalam panel Tetapan dan ketik butang \"Imbas Kod Segerak\". Gunakan kamera anda untuk mengimbas Kod QR di bawah.";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Masukkan kod segerak";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Masukkan Perkataan Kod";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Tambah Tablet atau Telefon";
@@ -735,12 +822,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Peranti & Tetapan";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Agen Segerak Brave adalah di luar talian atau tidak dapat dihubungi. Sila cuba sebentar lagi.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Ralat Komunikasi Segerak Brave";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Semak sambungan internet anda dan cuba lagi.";
@@ -799,6 +880,9 @@
 /* Sync to existing device */
 "SyncToDevice" = "Segerakkan kepada peranti";
 
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Dengan menggunakan peranti disegerakkan yang sedia ada, buka Tetapan Brave dan navigasi kepada Tetapan -> Penyegerakan. Pilih \"Tambah Peranti\" dan imbas kod yang dipaparkan pada skrin.";
+
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Tidak dapat mencipta kumpulan segerak baru.";
 
@@ -834,6 +918,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Sambungan selamat";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Paparan Pembaca";

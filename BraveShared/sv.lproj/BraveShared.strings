@@ -10,8 +10,14 @@
 /* Button to add a bookmark */
 "AddBookmark" = "Lägg till bokmärke";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Ny mapp";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "Lägg till i favoriter";
+
+/* Title for adding new bookmark menu item */
+"AddToMenuItem" = "Lägg till i …";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annonser och spårare";
@@ -154,8 +160,20 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Bokmärkesinformation";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Bokmärken";
+
 /* title for bookmarks panel */
 "Bookmarks" = "Bokmärken";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Bokmärken";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Namn";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Adress";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave-panelen";
@@ -211,6 +229,9 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Stäng alla %i flikar";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Skriv in kodorden för synkroniseringskedjan i fältet nedan.";
+
 /* Code words section title */
 "CodeWords" = "Kodord";
 
@@ -219,6 +240,9 @@
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie-kontroll";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Cookies och webbplatsdata";
 
 /* Copied action complete title */
 "Copied" = "Kopierat!";
@@ -298,8 +322,17 @@
 /* Button to edit a bookmark */
 "EditBookmark" = "Ändra bokmärke";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Plats";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Redigera bokmärke";
+
 /* Button to edit a favorite */
 "EditFavorite" = "Ändra favorit";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Redigera mapp";
 
 /* Sync enter code words */
 "EnterCodeWords" = "Ange kodord";
@@ -340,17 +373,29 @@
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Uppskattad tid\nsparad";
 
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Favoriter finns på din hemskärm. De här bokmärkena är inte synkroniserade med andra enheter.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Favoriter";
+
 /* Share action title */
 "FindInPage" = "Sök på sidan";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Klar";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "Sök på \"%@\"";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Nästa resultat på sidan";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "Föregående resultat på sidan";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "På den här sidan";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Fingeravtrycksmetoder";
@@ -363,6 +408,12 @@
 
 /* Grand camera access */
 "GrantCameraAccess" = "Aktivera kamera";
+
+/* Title for history menu item */
+"HistortMenuItem" = "Historik";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "Historik";
 
 /* No comment provided by engineer. */
 "Home" = "Hem";
@@ -430,8 +481,20 @@
 /* tabs bar show/hide option */
 "NeverShow" = "Visa aldrig";
 
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Nytt bokmärke";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Nytt bokmärke";
+
 /* Title for new folder popup */
 "NewFolder" = "Ny mapp ";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Ny mapp";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Ny mapp";
 
 /* New sync code button title */
 "NewSyncCode" = "Starta en ny synkroniseringskedja";
@@ -459,6 +522,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Öppna inställningar";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Andra inställningar";
 
 /* Sync pair device settings section title */
 "Pair" = "Parkoppla";
@@ -496,6 +562,9 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Endast privat surfning";
 
+/* Private tab details */
+"PrivateTabBody" = "Privata flikar sparas inte i Brave, men de gör dig inte heller anonym. Webbplatser du besöker i en privat flik kommer inte att visas i din historik och deras cookies försvinner alltid när du stänger dem, så det finns inget spår kvar av dem i Brave. Din mobiloperatör (eller ägaren av det trådlösa nätverk eller den VPN du är ansluten till) kan se vilka webbplatser du besöker och de webbplatserna får därför reda på din offentliga IP-adress, även när du använder privata flikar.";
+
 /* Private tab detail text */
 "PrivateTabDetails" = "När du använder privata flikar ändras Brave bara på din enhet, ingen annans.\n\nWebbplatser får alltid veta din IP-adress när du besöker dem. Utifrån detta kan de oftast räkna ut ungefär var du befinner dig, till exempel din ort. Ibland kan de gissa mer specifikt. Webbplatser vet också allt som du explicit anger, till exempel sökningar. Om du loggar in på en webbplats vet de att du äger kontot. Du loggas ut när du stänger den privata fliken eftersom Brave raderar den cookie som håller dig inloggad.\n\nDin internetleverantör, alltså den som tillhandahåller din internetanslutning, kan se all din nätverksaktivitet. Beroende på anslutningstyp är leverantören din mobilleverantör (för mobildata), wifi-nätets ägare (för wifi) eller den som tillhandahåller din VPN-anslutning (för VPN). Leverantören kan se vilka webbplatser du besöker. Om webbplatserna har HTTPS kan leverantören inte se mer än vilken platsen är, men om webbplatsen bara har HTTP kan leverantören se allt: vad du söker på, vilka sidor du läser och vilka länkar du följer.\n\nOm ditt företag ansvarar för din enhet kan de också se vad du gör med den. Att använda privata flikar kommer förmodligen inte hindra dem från att ta reda på vilka webbplatser du besökt. Någon annan med tillgång till din enhet kan ha installerat ett program som övervakar din aktivitet, och privata flikar skyddar inte mot det heller.";
 
@@ -510,6 +579,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Snabbsökmotorer";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Betygsätt Brave";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Öka textstorleken";
@@ -586,6 +658,12 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Oj, det här var ju pinsamt.";
 
+/* Button to show the rewards panel */
+"RewardsPanel" = "Belöningspanel";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Spara";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Sparade inloggningar";
 
@@ -615,6 +693,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Söker efter förslag";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "Historik och bokmärken";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Rensa sökningar";
@@ -658,8 +739,14 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Kunde inte ladda sidan.";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "Inställningar";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Dela länk";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Dela med …";
 
 /* shields overview message */
 "ShieldsOverview" = "Sköldarna låter dig styra när annonser och spårare blockeras för varje webbplats du besöker. Om du föredrar att se annonser på en viss webbplats kan du aktivera dem här.";
@@ -715,11 +802,11 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Skanna kedje-QR-kod";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "På din andra mobila enhet går du till Brave Synkronisering i inställningspanelen och trycker på knappen \"Skanna synkroniseringskod\". Använd din kamera för att skanna QR-koden nedan.";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Ange synkroniseringskoden";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Ande kodord";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Lägg till en surfplatta eller telefon";
@@ -735,12 +822,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheter och inställningar";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Brave Synkronisering är inte tillgängligt just nu. Försök igen senare.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Anslutningsfel för Brave Synkronisering";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Kontrollera din internetanslutning och försök igen.";
@@ -799,6 +880,9 @@
 /* Sync to existing device */
 "SyncToDevice" = "Synkronisera med enhet";
 
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Använd en synkroniserad enhet för att gå till Inställningar > Synkronisering > Lägg till enhet och skanna koden som visas på skärmen.";
+
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Det gick inte att skapa en ny synkroniseringsgrupp.";
 
@@ -834,6 +918,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Säker anslutning";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Meny";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Läsläge";

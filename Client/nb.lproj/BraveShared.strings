@@ -1,0 +1,9 @@
+/* Suffix for error strings */
+"tryAgain" = ". Prøv igjen.";
+
+/* Error handling U2F authentication. */
+"U2FAuthenticationError" = "Sikkerhetsnøkkelen din kunne ikke godkjennes";
+
+/* Error handling U2F registration. */
+"U2FRegistrationError" = "Sikkerhetsnøkkelen din kunne ikke registreres";
+

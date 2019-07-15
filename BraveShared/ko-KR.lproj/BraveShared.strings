@@ -10,8 +10,14 @@
 /* Button to add a bookmark */
 "AddBookmark" = "북마크 추가";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "새 폴더";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "즐겨찾기에 추가";
+
+/* Title for adding new bookmark menu item */
+"AddToMenuItem" = "다음에 추가...";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "광고 및 개인정보 트래커";
@@ -154,8 +160,20 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "북마크 정보";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "북마크";
+
 /* title for bookmarks panel */
 "Bookmarks" = "북마크";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "북마크";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "이름";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "주소";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave 패널";
@@ -211,6 +229,9 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "모든 %i 탭 닫기";
 
+/* Code words input help */
+"CodeWordInputHelp" = "제공된 동기화 체인 코드 단어를 아래 양식에 입력하십시오.";
+
 /* Code words section title */
 "CodeWords" = "코드 단어";
 
@@ -219,6 +240,9 @@
 
 /* Cookie settings option title */
 "CookieControl" = "쿠키 제어";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "쿠키 및 사이트 데이터";
 
 /* Copied action complete title */
 "Copied" = "복사되었습니다.";
@@ -298,8 +322,17 @@
 /* Button to edit a bookmark */
 "EditBookmark" = "북마크 편집";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "위치";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "북마크 편집";
+
 /* Button to edit a favorite */
 "EditFavorite" = "즐겨찾기 편집";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "폴더 편집";
 
 /* Sync enter code words */
 "EnterCodeWords" = "코드 단어 입력";
@@ -340,17 +373,29 @@
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "절감한 \n시간";
 
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "즐겨찾기는 홈 화면에 있습니다. 이 북마크는 다른 기기와 동기화되지 않습니다.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "즐겨찾기";
+
 /* Share action title */
 "FindInPage" = "페이지에서 찾기";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "완료";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "\"%@\" 찾기";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "다음 페이지 결과";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "이전 페이지 결과";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "이 페이지 내";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "디지털 지문 방식";
@@ -363,6 +408,12 @@
 
 /* Grand camera access */
 "GrantCameraAccess" = "카메라 활성화";
+
+/* Title for history menu item */
+"HistortMenuItem" = "방문기록";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "방문기록";
 
 /* No comment provided by engineer. */
 "Home" = "홈";
@@ -430,8 +481,20 @@
 /* tabs bar show/hide option */
 "NeverShow" = "표시하지 않음";
 
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "새 북마크";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "새 북마크";
+
 /* Title for new folder popup */
 "NewFolder" = "새 폴더";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "새 폴더";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "새 폴더";
 
 /* New sync code button title */
 "NewSyncCode" = "새로운 동기화 체인 시작";
@@ -459,6 +522,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "설정 열기";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "기타 설정";
 
 /* Sync pair device settings section title */
 "Pair" = "페어링";
@@ -496,6 +562,9 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "비공개 브라우징으로만 열기";
 
+/* Private tab details */
+"PrivateTabBody" = "비공개 탭은 Brave에 저장되지 않지만 이를 통해 온라인에서 익명으로 활동할 수 있는 것은 아닙니다. 비공개 탭에서 방문한 사이트는 방문 기록에 표시되지 않으며, 탭을 닫으면 항상 해당 쿠키가 사라집니다. 즉, Brave에는 해당 사이트에 대한 어떤 흔적도 남지 않게 됩니다. 비공개 탭에서 방문했더라도 귀하의 이동통신 사업자(또는 귀하가 접속하고 있는 WiFi 네트워크나 VPN의 소유자)는 귀하가 어느 사이트를 방문했는지 볼 수 있으며, 해당 사이트에서는 귀하의 공용 IP 주소를 확인할 수 있습니다.";
+
 /* Private tab detail text */
 "PrivateTabDetails" = "비공개 탭을 사용할 경우 귀하의 기기에서 수행된 Brave 작업만이 변경되며, 다른 사용자의 동작은 변경되지 않습니다.\n\n사이트를 방문하면 사이트에서 항상 귀하의 IP 주소를 학습합니다. 즉, 사이트에서 귀하의 위치(주로 도시)를 대략적으로 추측할 수 있습니다. 경우에 따라서는 위치가 훨씬 구체적으로 추측되기도 합니다. 또한 귀하가 사이트에서 수행한 모든 작업(검색어 등)이 해당 사이트에 기록됩니다. 귀하가 사이트에 로그인하면 해당 사이트에서 귀하가 해당 계정의 소유자임을 인식합니다. 비공개 탭을 닫으면 Brave에서 로그인 상태를 유지하는 쿠키를 지우기 때문에 로그아웃 상태가 됩니다.\n\n인터넷 연결을 위해 귀하가 이용하는 ISP에서는 귀하의 네트워크 활동을 모두 확인할 수 있습니다. 대부분의 경우 이러한 ISP는 이동통신 사업자입니다. WiFi 네트워크에 연결한 경우 ISP는 해당 네트워크의 소유자이며, VPN을 사용하는 경우에는 해당 VPN의 운영자입니다. 귀하가 이용하는 ISP에서는 귀하가 사이트를 방문하면 귀하가 방문한 사이트를 알 수 있습니다. 해당 사이트에서 HTTPS를 사용하는 경우 ISP에서는 귀하가 해당 사이트에서 수행하는 작업을 기록에 따라 추측만 할 수 있습니다. 그러나 사이트에서 HTTP만을 사용한다면 ISP에서 귀하가 사용한 검색어, 귀하가 읽은 페이지와 따라 간 링크 등 모든 것을 알 수 있습니다.\n\n고용주가 귀하의 기기를 관리하는 경우 고용주는 귀하가 해당 기기로 무엇을 하는지 추적할 수도 있습니다. 비공개 탭을 사용한다고 해도 귀하가 방문한 사이트를 고용주가 알지 못하도록 차단하지는 못할 것입니다. 귀하의 기기에 액세스할 수 있는 권한을 가진 다른 사람도 귀하의 활동을 모니터링하는 소프트웨어를 설치할 수 있으며, 이것 또한 비공개 탭으로는 차단하지 못합니다.";
 
@@ -510,6 +579,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "빠른 검색 엔진";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Brave 평가하기";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "텍스트 크기 확대";
@@ -586,6 +658,12 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "곤란한 문제가 발생했습니다.";
 
+/* Button to show the rewards panel */
+"RewardsPanel" = "리워드 패널";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "저장";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "저장된 로그인 정보";
 
@@ -615,6 +693,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "추천 검색어 검색";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "검색기록 및 북마크";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "검색어 지우기";
@@ -658,8 +739,14 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "페이지를 로드할 수 없습니다.";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "설정";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "링크 공유";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "다음 대상과 공유...";
 
 /* shields overview message */
 "ShieldsOverview" = "사이트 차단을 사용하면 방문하는 사이트별로 광고와 트래커를 차단할지 관리할 수 있습니다. 특정 사이트에서 광고를 표시하려면 여기에서 해당 기능을 활성화할 수 있습니다.";
@@ -715,11 +802,11 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "체인 QR 코드 스캔";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "두 번째 모바일 기기에서 설정 패널의 Brave 동기화로 이동한 후 \"동기화 코드 스캔\" 버튼을 탭하십시오. 카메라를 사용하여 아래에 있는 QR 코드를 스캔하십시오.";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "동기화 코드 입력";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "코드 단어 입력";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "태블릿 또는 전화 추가";
@@ -735,12 +822,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "기기 및 설정";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Brave 동기화 에이전트가 현재 오프라인 상태이거나 연결되지 않고 있습니다. 나중에 다시 시도하십시오.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Brave 동기화 통신 오류";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "인터넷 연결을 확인한 후 다시 시도하십시오.";
@@ -799,6 +880,9 @@
 /* Sync to existing device */
 "SyncToDevice" = "기기에 동기화";
 
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "기존에 동기화된 기기를 사용하여 Brave 설정을 열고 설정 -> 동기화로 이동하여 \"기기 추가\"를 선택한 다음, 화면에 표시되는 코드를 스캔하십시오.";
+
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "새 동기화 그룹을 만들 수 없습니다.";
 
@@ -834,6 +918,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "보안 연결";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "메뉴";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "읽기 전용 뷰";

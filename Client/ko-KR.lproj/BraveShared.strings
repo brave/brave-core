@@ -1,0 +1,9 @@
+/* Suffix for error strings */
+"tryAgain" = ". 다시 시도하십시오.";
+
+/* Error handling U2F authentication. */
+"U2FAuthenticationError" = "보안 키 인증 중 오류 -";
+
+/* Error handling U2F registration. */
+"U2FRegistrationError" = "보안 키 등록 중 오류 -";
+

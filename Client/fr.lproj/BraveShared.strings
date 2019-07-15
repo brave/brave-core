@@ -1,0 +1,9 @@
+/* Suffix for error strings */
+"tryAgain" = ", réessayez.";
+
+/* Error handling U2F authentication. */
+"U2FAuthenticationError" = "Erreur lors de l'authentification de votre clé de sécurité";
+
+/* Error handling U2F registration. */
+"U2FRegistrationError" = "Erreur lors de l'enregistrement de votre clé de sécurité";
+
