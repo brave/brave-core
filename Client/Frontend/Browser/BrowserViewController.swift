@@ -148,6 +148,7 @@ class BrowserViewController: UIViewController {
         #if NO_REWARDS
         rewards = nil
         #else
+        RewardsHelper.configureRewardsLogs()
         rewards = BraveRewards(configuration: .default)
         #endif
 

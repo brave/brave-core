@@ -17,6 +17,14 @@ public extension Logger {
     /// Logger used for recording frontend/browser happenings
     static let browserLogger = RollingFileLogger(filenameRoot: "browser", logDirectoryPath: Logger.logFileDirectoryPath())
     
+    /// Logger used for things recorded on BraveRewards framework.
+    static let rewardsLogger: RollingFileLogger = {
+        let logger = RollingFileLogger(filenameRoot: "rewards", logDirectoryPath: Logger.logFileDirectoryPath())
+        logger.setup(showFunctionName: false, showFileNames: false, showLineNumbers: false)
+        
+        return logger
+    }()
+    
     static let braveSyncLogger = RollingFileLogger(filenameRoot: "bravesync", logDirectoryPath: Logger.logFileDirectoryPath())
 
     /// Logger used for recording interactions with the keychain

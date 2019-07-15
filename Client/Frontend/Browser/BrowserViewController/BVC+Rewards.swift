@@ -6,6 +6,35 @@ import Foundation
 import BraveRewards
 import BraveRewardsUI
 import Data
+import Shared
+
+struct RewardsHelper {
+    static func configureRewardsLogs(showFileName: Bool = true, showLine: Bool = true) {
+        RewardsLogger.configure(logCallback: { logLevel, line, file, data in
+            if data.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return }
+            
+            let logger = Logger.rewardsLogger
+            
+            var extraInfo = ""
+            
+            if showFileName {
+                // Rewards logger gives us full file path, extracting filename from it.
+                let fileName = (file as NSString).lastPathComponent
+                extraInfo = showLine ? "[\(fileName).\(line)]" : "[\(fileName)]"
+            }
+            
+            let logOutput = extraInfo.isEmpty ? data : "\(extraInfo) \(data)"
+            
+            switch logLevel {
+            case .logDebug: logger.debug(logOutput)
+            // Response and request log levels are ledger-specific.
+            case .logInfo, .logResponse, .logRequest: logger.info(logOutput)
+            case .logWarning: logger.warning(logOutput)
+            case .logError: logger.error(logOutput)
+            }
+        }, withFlush: nil)
+    }
+}
 
 // Since BraveRewardsUI is a separate framework, we have to implement Popover conformance here.
 extension RewardsPanelController: PopoverContentComponent {
