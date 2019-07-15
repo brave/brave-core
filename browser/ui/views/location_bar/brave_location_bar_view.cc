@@ -7,6 +7,7 @@
 
 #include "brave/browser/themes/brave_theme_service.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
@@ -72,6 +73,12 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
 }
 
 OmniboxTint BraveLocationBarView::CalculateTint() const {
+#if defined(OS_LINUX)
+  // If gtk theme is selected, respect it.
+  if (ThemeServiceFactory::GetForProfile(profile())->UsingSystemTheme())
+    return LocationBarView::CalculateTint();
+#endif
+
   // Match the user-selectable brave theme, even if there is a theme extension
   // installed, allowing non-extension-themeable elements to fit in better with
   // a theme extension.

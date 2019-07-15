@@ -71,6 +71,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   webtorrent::RegisterProfilePrefs(registry);
 #endif
 
+#if defined(OS_LINUX)
+  // Use brave theme by default instead of gtk theme.
+  registry->SetDefaultPrefValue(prefs::kUsesSystemTheme, base::Value(false));
+#endif
+
   // Hangouts
   registry->RegisterBooleanPref(kHangoutsEnabled, true);
 

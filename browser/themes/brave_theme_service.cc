@@ -173,6 +173,12 @@ void BraveThemeService::Init(Profile* profile) {
 }
 
 SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
+#if defined(OS_LINUX)
+  // IF gtk theme is selected, respect it.
+  if (UsingSystemTheme())
+    return ThemeService::GetDefaultColor(id, incognito);
+#endif
+
   // Brave Tor profiles are always 'incognito' (for now)
   if (!incognito && profile()->IsTorProfile())
     incognito = true;
