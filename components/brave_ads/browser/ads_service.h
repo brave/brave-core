@@ -26,7 +26,6 @@ class AdsService : public KeyedService {
 
   virtual bool IsAdsEnabled() const = 0;
   virtual void SetAdsEnabled(const bool is_enabled) = 0;
-  virtual void MigrateAdsEnabled(const bool is_enabled) = 0;
 
   virtual uint64_t GetAdsPerHour() const = 0;
   virtual void SetAdsPerHour(const uint64_t ads_per_hour) = 0;

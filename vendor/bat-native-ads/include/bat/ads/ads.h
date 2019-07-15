@@ -41,6 +41,9 @@ class ADS_EXPORT Ads {
   // Should be called to determine if Ads are supported for the specified locale
   static bool IsSupportedRegion(const std::string& locale);
 
+  // Should be called to get the region for the specified locale
+  static std::string GetRegion(const std::string& locale);
+
   // Should be called when Ads are enabled or disabled on the Client
   virtual void Initialize() = 0;
 
