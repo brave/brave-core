@@ -1208,7 +1208,7 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
 
   NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
 #endif
-  nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
 #if defined(OS_ANDROID)
   TabModelList::HandlePopupNavigation(&nav_params);
