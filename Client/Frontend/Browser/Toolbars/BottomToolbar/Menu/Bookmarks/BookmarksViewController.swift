@@ -251,6 +251,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
                 style: .default,
                 handler: { [weak self] _ in
                     self?.toolbarUrlActionsDelegate?.batchOpen(urls)
+                    self?.dismiss(animated: true)
                 }
             )
         ]
