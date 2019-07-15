@@ -9,12 +9,13 @@
 
 #include "brave/browser/dapp/dapp_utils.h"
 #include "brave/common/extensions/api/brave_wallet.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_util.h"
-
 
 namespace extensions {
 namespace api {
@@ -41,6 +42,15 @@ BraveWalletPromptToEnableWalletFunction::Run() {
 
   RequestWalletInstallationPermission(contents);
   return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+BraveWalletIsEnabledFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto* registry = extensions::ExtensionRegistry::Get(profile);
+  bool enabled =
+    registry->ready_extensions().GetByID(ethereum_remote_client_extension_id);
+  return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
 }
 
 }  // namespace api

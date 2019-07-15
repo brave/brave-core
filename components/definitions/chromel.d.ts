@@ -137,6 +137,7 @@ declare namespace chrome.braveShields {
 
 declare namespace chrome.braveWallet {
   const promptToEnableWallet: (tabId: number | undefined) => void
+  const isEnabled : () => boolean
 }
 
 declare namespace chrome.braveTheme {
