@@ -15,18 +15,24 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/resource_request_info.h"
-#include "extensions/browser/info_map.h"
 #include "net/base/upload_bytes_element_reader.h"
 #include "net/base/upload_data_stream.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#include "extensions/browser/info_map.h"
+#endif
 
 namespace brave {
 
 namespace {
+
 bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   DCHECK(resource_context);
 
   const ProfileIOData* io_data =
@@ -42,6 +48,9 @@ bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
 
   return !infoMap->extensions().Contains(brave_webtorrent_extension_id) ||
     infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
+#else
+  return true;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 }
 
 std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
