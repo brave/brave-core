@@ -8,7 +8,6 @@
 #include "brave/common/brave_paths.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_api.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_api_constants.h"
@@ -19,20 +18,14 @@
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "brave/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/prefs/pref_service.h"
 #include "extensions/common/extension_builder.h"
 #include "net/dns/mock_host_resolver.h"
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/dapp/dapp_utils.h"
-#endif
 
 namespace extensions {
 
@@ -329,16 +322,5 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
                             std::string());
   EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
 }
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, DappDetectionTest) {
-  EXPECT_TRUE(
-      NavigateToURLUntilLoadStop("a.com", "/dapp.html"));
-
-  base::RunLoop loop;
-  SetQuitClosureForDappDetectionTest(loop.QuitClosure());
-  loop.Run();
-}
-#endif
 
 }  // namespace extensions

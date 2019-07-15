@@ -414,6 +414,12 @@ test("brave_browser_tests") {
     ]
   }
 
+  if (brave_wallet_enabled) {
+    sources += [
+      "//brave/browser/extensions/api/brave_wallet_api_browsertest.cc",
+    ]
+  }
+
   if (brave_rewards_enabled) {
     sources += [
       "//brave/components/brave_rewards/browser/rewards_notification_service_browsertest.cc",

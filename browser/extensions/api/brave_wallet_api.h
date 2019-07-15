@@ -11,7 +11,8 @@
 namespace extensions {
 namespace api {
 
-class BraveWalletPromptToEnableWalletFunction : public UIThreadExtensionFunction {
+class BraveWalletPromptToEnableWalletFunction :
+    public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.promptToEnableWallet", UNKNOWN)
 

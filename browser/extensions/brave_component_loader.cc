@@ -55,9 +55,7 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
         SetAllowFileAccess(extension_id, true);
   }
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (extension_id == ethereum_remote_client_extension_id&&
-      (!profile_prefs_->FindPreference(kWalletHasBeenLoadedOnce) ||
-       !profile_prefs_->GetBoolean(kWalletHasBeenLoadedOnce))) {
+  if (extension_id == ethereum_remote_client_extension_id) {
     profile_prefs_->SetBoolean(kWalletHasBeenLoadedOnce, true);
   }
 #endif

@@ -140,6 +140,10 @@ declare namespace chrome.braveWallet {
   const isEnabled: () => boolean
 }
 
+declare namespace chrome.test {
+  const sendMessage: (message: string) => {}
+}
+
 declare namespace chrome.braveTheme {
   type ThemeType = 'Light' | 'Dark'
   type ThemeTypeCallback = (themeType: ThemeType) => void

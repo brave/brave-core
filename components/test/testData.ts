@@ -271,6 +271,7 @@ export const initialState = deepFreeze({
     windows: {},
     persistentData: { isFirstAccess: true, advancedView: false }
   },
+  dappDetection: {},
   runtime: {},
   shieldsPanel: {
     currentWindowId: -1,

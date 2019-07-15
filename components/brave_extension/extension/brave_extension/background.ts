@@ -38,3 +38,6 @@ promisifyAll(chrome.braveShields, [
 require('./background/api')
 require('./background/events')
 require('./background/store')
+if (chrome.test) {
+  chrome.test.sendMessage('brave-extension-enabled')
+}

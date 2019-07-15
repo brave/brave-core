@@ -44,16 +44,14 @@ const scriptEl = document.createElement('script')
 scriptEl.textContent = code;
 (document.head || document.documentElement).appendChild(scriptEl)
 
-document.addEventListener('DOMContentLoaded', () => {
-  // If a website tries to access window.web3 within the first 2 seconds,
-  // then we prompt to install Brave Crypto Wallets.
-  // If a website does not try to access window.web3, then we will not prompt.
-  window.setTimeout(() => {
-    const isDapp = document.querySelector('meta[name="dapp-detected"]')
-    if (isDapp) {
-      chrome.runtime.sendMessage({
-        type: 'dappAvailable'
-      })
-    }
-  }, 2000)
-})
+// If a website tries to access window.web3 within the first 2 seconds,
+// then we prompt to install Brave Crypto Wallets.
+// If a website does not try to access window.web3, then we will not prompt.
+window.setTimeout(() => {
+  const isDapp = document.querySelector('meta[name="dapp-detected"]')
+  if (isDapp) {
+    chrome.runtime.sendMessage({
+      type: 'dappAvailable'
+    })
+  }
+}, 2000)
