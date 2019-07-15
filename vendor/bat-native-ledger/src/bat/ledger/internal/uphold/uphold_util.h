@@ -52,7 +52,7 @@ ledger::ExternalWalletPtr GetWallet(
 std::vector<std::string> RequestAuthorization(
       const std::string& token = "");
 
-std::string GenerateRandomString();
+std::string GenerateRandomString(bool testing);
 
 std::string GetAccountUrl();
 

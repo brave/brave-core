@@ -1253,6 +1253,7 @@ void RewardsServiceImpl::LoadURL(
     std::map<std::string, std::string> test_headers;
     int response_status_code = net::HTTP_OK;
     test_response_callback_.Run(url,
+                                method,
                                 &response_status_code,
                                 &test_response,
                                 &test_headers);

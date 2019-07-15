@@ -11,6 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -110,6 +111,9 @@ namespace brave_test_resp {
   std::string register_credential_;
   std::string surveyor_voting_;
   std::string surveyor_voting_credential_;
+  std::string uphold_auth_resp_;
+  std::string uphold_transactions_resp_;
+  std::string uphold_commit_resp_;
 }  // namespace brave_test_resp
 
 class BraveRewardsBrowserTest :
@@ -163,7 +167,7 @@ class BraveRewardsBrowserTest :
     "{"
       "\"altcurrency\": \"BAT\","
       "\"probi\": \"0\","
-      "\"balance\": \"" + GetBalance() + ".0000\","
+      "\"balance\": \"" + GetAnonBalance() + ".0000\","
       "\"unconfirmed\": \"0.0000\","
       "\"rates\": {"
         "\"BTC\": 0.00003105,"
@@ -194,7 +198,37 @@ class BraveRewardsBrowserTest :
     "}";
   }
 
+  std::string GetUpholdCard() {
+    return
+    "{"
+      "\"available\": \"" + GetExternalBalance() + "\","
+      "\"balance\": \"" + GetExternalBalance() + "\","
+      "\"currency\": \"BAT\","
+      "\"id\": \"" + external_wallet_address_ + "\","
+      "\"label\": \"Brave Browser\","
+      "\"lastTransactionAt\": null,"
+      "\"settings\": {"
+        "\"position\": 31,"
+        "\"protected\": false,"
+        "\"starred\": false"
+      "}"
+    "}";
+  }
+
+  std::string GetUpholdUser() {
+    const std::string verified = verified_wallet_
+        ? "2018-08-01T09:53:51.258Z"
+        : "null";
+
+    return
+    "{"
+      "\"name\": \"Test User\","
+      "\"memberAt\": " + verified + ""
+    "}";
+  }
+
   void GetTestResponse(const std::string& url,
+                       int32_t method,
                        int* response_status_code,
                        std::string* response,
                        std::map<std::string, std::string>* headers) {
@@ -264,18 +298,46 @@ class BraveRewardsBrowserTest :
       if (alter_publisher_list_) {
         *response =
             "["
-            "[\"bumpsmack.com\",true,false,\"\",{}],"
-            "[\"duckduckgo.com\",true,false,\"\",{}],"
+            "[\"bumpsmack.com\",true,false,\"address1\",{}],"
+            "[\"duckduckgo.com\",true,false,\"address2\",{}],"
             "[\"3zsistemi.si\",false,false,\"\",{}]"
             "]";
       } else {
         *response =
             "["
-            "[\"bumpsmack.com\",true,false,\"\",{}],"
-            "[\"duckduckgo.com\",true,false,\"\",{}],"
-            "[\"3zsistemi.si\",true,false,\"\",{}]"
+            "[\"bumpsmack.com\",true,false,\"address1\",{}],"
+            "[\"duckduckgo.com\",true,false,\"address2\",{}],"
+            "[\"3zsistemi.si\",true,false,\"address3\",{}]"
             "]";
       }
+    } else if (base::StartsWith(
+        url,
+        braveledger_uphold::GetAPIUrl("/oauth2/token"),
+        base::CompareCase::INSENSITIVE_ASCII)) {
+      *response = brave_test_resp::uphold_auth_resp_;
+    } else if (base::StartsWith(
+        url,
+        braveledger_uphold::GetAPIUrl("/v0/me/cards"),
+        base::CompareCase::INSENSITIVE_ASCII)) {
+      if (base::EndsWith(
+          url,
+          "transactions",
+          base::CompareCase::INSENSITIVE_ASCII)) {
+        *response = brave_test_resp::uphold_transactions_resp_;
+        *response_status_code = net::HTTP_ACCEPTED;
+      } else if (base::EndsWith(
+          url,
+          "commit",
+          base::CompareCase::INSENSITIVE_ASCII)) {
+        *response = brave_test_resp::uphold_commit_resp_;
+      } else {
+        *response = GetUpholdCard();
+      }
+    } else if (base::StartsWith(
+        url,
+        braveledger_uphold::GetAPIUrl("/v0/me"),
+        base::CompareCase::INSENSITIVE_ASCII)) {
+      *response = GetUpholdUser();
     }
   }
 
@@ -446,14 +508,33 @@ class BraveRewardsBrowserTest :
     ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("surveyor_voting_credential_resp.json"),
         &brave_test_resp::surveyor_voting_credential_));
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("uphold_auth_resp.json"),
+        &brave_test_resp::uphold_auth_resp_));
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("uphold_transactions_resp.json"),
+        &brave_test_resp::uphold_transactions_resp_));
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("uphold_commit_resp.json"),
+        &brave_test_resp::uphold_commit_resp_));
   }
 
   void UpdateContributionBalance(double amount, bool verified = false) {
     if (verified) {
+      if (balance_ > 0) {
         balance_ -= amount;
-      } else {
-        pending_balance_ += amount;
+        return;
       }
+
+      if (verified_wallet_) {
+        external_balance_ -= amount;
+        return;
+      }
+
+      return;
+    }
+
+    pending_balance_ += amount;
   }
 
   std::string BalanceDoubleToString(double amount) {
@@ -461,16 +542,30 @@ class BraveRewardsBrowserTest :
   }
 
   std::string GetBalance() {
-    return BalanceDoubleToString(balance_);
+    return BalanceDoubleToString(balance_ + external_balance_);
   }
 
   std::string GetPendingBalance() {
     return BalanceDoubleToString(pending_balance_);
   }
 
+  std::string GetExternalBalance() {
+    return BalanceDoubleToString(external_balance_);
+  }
+
+  std::string GetAnonBalance() {
+    return BalanceDoubleToString(balance_);
+  }
+
   GURL rewards_url() {
     GURL rewards_url("brave://rewards");
     return rewards_url;
+  }
+
+  GURL uphold_auth_url() {
+    GURL url("chrome://rewards/uphold/authorization?"
+             "code=0c42b34121f624593ee3b04cbe4cc6ddcd72d&state=123456789");
+    return url;
   }
 
   content::WebContents* contents() {
@@ -801,6 +896,10 @@ class BraveRewardsBrowserTest :
       if (!verified) {
         UpdateContributionBalance(amount, verified);
       }
+    } else if (!monthly && verified) {
+      // Wait for reconciliation to complete
+      WaitForTipReconcileCompleted();
+      ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
     }
 
     if (verified) {
@@ -1089,6 +1188,10 @@ class BraveRewardsBrowserTest :
   bool alter_publisher_list_ = false;
   double balance_ = 0;
   double pending_balance_ = 0;
+  double external_balance_ = 0;
+  double verified_wallet_ = false;
+  const std::string external_wallet_address_ =
+      "abe5f454-fedd-4ea9-9203-470ae7315bb3";
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -2166,4 +2269,86 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       NotVerifedWallet) {
+  EnableRewards();
+
+  // Click on verify button
+  {
+    ASSERT_TRUE(ExecJs(contents(),
+        "  document.getElementById(\"verify-wallet-button\").click();",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END));
+  }
+
+  content::WindowedNotificationObserver auth_obs(
+        content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
+        content::NotificationService::AllSources());
+
+  // Click on verify button in on boarding
+  {
+    ASSERT_TRUE(ExecJs(contents(),
+        "  document.getElementById(\"on-boarding-verify-button\").click();",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END));
+  }
+
+  auth_obs.Wait();
+
+  // Check if we are redirected to uphold
+  {
+    const GURL current_url = contents()->GetURL();
+    ASSERT_TRUE(base::StartsWith(
+        current_url.spec(),
+        braveledger_uphold::GetUrl() + "/authorize/",
+        base::CompareCase::INSENSITIVE_ASCII));
+  }
+
+  // Fake successful authentication
+  ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(
+        browser(),
+        uphold_auth_url(), 2);
+
+  content::WindowedNotificationObserver kyc_obs(
+        content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
+        content::NotificationService::AllSources());
+
+  kyc_obs.Wait();
+
+  // Check if we are redirected to KYC page
+  {
+    const GURL current_url = contents()->GetURL();
+    ASSERT_TRUE(base::StartsWith(
+        current_url.spec(),
+        braveledger_uphold::GetUrl() + "/signup/step2",
+        base::CompareCase::INSENSITIVE_ASCII));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       TipWithVerifiedWallet) {
+  rewards_service()->AddObserver(this);
+  verified_wallet_ = true;
+  external_balance_ = 50.0;
+
+  auto wallet = ledger::ExternalWallet::New();
+  wallet->token = "token";
+  wallet->address = external_wallet_address_;
+  wallet->status = 2;
+  wallet->one_time_string = "";
+  wallet->user_name = "Brave Test";
+  wallet->transferred = true;
+  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+
+  // Enable Rewards
+  EnableRewards();
+
+  // Tip verified publisher
+  const bool verified = true;
+  TipPublisher("duckduckgo.com", verified);
+
+  // Stop observing the Rewards service
+  rewards_service()->RemoveObserver(this);
 }

@@ -50,6 +50,10 @@ std::string GetFeeAddress() {
 }
 
 std::string ConvertToProbi(const std::string& amount) {
+  if (amount.empty()) {
+    return "0";
+  }
+
   auto vec = base::SplitString(
       amount, ".", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
@@ -85,6 +89,10 @@ std::string GetVerifyUrl(const std::string& state) {
 std::string GetAddUrl(const std::string& address) {
   const std::string url = GetUrl();
 
+  if (address.empty()) {
+    return "";
+  }
+
   return base::StringPrintf(
       "%s/dashboard/cards/%s/add",
       url.c_str(),
@@ -93,6 +101,10 @@ std::string GetAddUrl(const std::string& address) {
 
 std::string GetWithdrawUrl(const std::string& address) {
   const std::string url = GetUrl();
+
+  if (address.empty()) {
+    return "";
+  }
 
   return base::StringPrintf(
       "%s/dashboard/cards/%s/use",
@@ -142,7 +154,11 @@ std::vector<std::string> RequestAuthorization(
   return headers;
 }
 
-std::string GenerateRandomString() {
+std::string GenerateRandomString(bool testing) {
+  if (testing) {
+    return "123456789";
+  }
+
   const size_t kLength = 32;
   uint8_t bytes[kLength];
   crypto::RandBytes(bytes, sizeof(bytes));

@@ -74,6 +74,7 @@ using GetReconcileTimeCallback = base::Callback<void(int32_t)>;
 using GetShortRetriesCallback = base::Callback<void(bool)>;
 using GetTestResponseCallback =
     base::Callback<void(const std::string& url,
+                        int32_t method,
                         int* response_status_code,
                         std::string* response,
                         std::map<std::string, std::string>* headers)>;
@@ -267,6 +268,10 @@ class RewardsServiceImpl : public RewardsService,
       ProcessRewardsPageUrlCallback callback) override;
 
   void DisconnectWallet(const std::string& wallet_type) override;
+
+  void SaveExternalWallet(
+      const std::string& wallet_type,
+      ledger::ExternalWalletPtr wallet) override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -589,9 +594,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) override;
-
-  void SaveExternalWallet(const std::string& wallet_type,
-                        ledger::ExternalWalletPtr wallet) override;
 
   void ShowNotification(
       const std::string& type,

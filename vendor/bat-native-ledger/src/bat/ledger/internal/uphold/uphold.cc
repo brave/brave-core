@@ -296,7 +296,7 @@ void Uphold::WalletAuthorization(
 
   const auto current_one_time = wallet->one_time_string;
 
-  wallet->one_time_string = GenerateRandomString();
+  wallet->one_time_string = GenerateRandomString(ledger::is_testing);
   ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
 
   if (args.empty()) {
@@ -380,7 +380,7 @@ void Uphold::GenerateExternalWallet(
   }
 
   if (wallet->one_time_string.empty()) {
-    wallet->one_time_string = GenerateRandomString();
+    wallet->one_time_string = GenerateRandomString(ledger::is_testing);
   }
 
   if (wallet->status == ledger::WalletStatus::CONNECTED) {
