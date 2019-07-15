@@ -10,8 +10,14 @@
 /* Button to add a bookmark */
 "AddBookmark" = "Aggiungi segnalibro";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Nuova cartella";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "Aggiungi ai preferiti";
+
+/* Title for adding new bookmark menu item */
+"AddToMenuItem" = "Aggiungi a...";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annunci e sistemi di tracciamento";
@@ -154,8 +160,20 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Informazioni sui segnalibri";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Segnalibri";
+
 /* title for bookmarks panel */
 "Bookmarks" = "Segnalibri";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Segnalibri";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Nome";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Indirizzo";
 
 /* Button to show the brave panel */
 "BravePanel" = "Pannello Brave";
@@ -211,6 +229,9 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Chiudi tutte e %i le schede";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Digita le parole in codice fornite per la catena di sincronizzazione nel modulo qui sotto.";
+
 /* Code words section title */
 "CodeWords" = "Parole in codice";
 
@@ -219,6 +240,9 @@
 
 /* Cookie settings option title */
 "CookieControl" = "Gestione dei cookie";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Cookie e dati del sito";
 
 /* Copied action complete title */
 "Copied" = "Copia effettuata!";
@@ -298,8 +322,17 @@
 /* Button to edit a bookmark */
 "EditBookmark" = "Modifica segnalibro";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Posizione";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Modifica segnalibro";
+
 /* Button to edit a favorite */
 "EditFavorite" = "Modifica preferito";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Modifica cartella";
 
 /* Sync enter code words */
 "EnterCodeWords" = "Inserisci le parole in codice";
@@ -340,17 +373,29 @@
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Tempo previsto \nper il salvataggio";
 
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "I preferiti si trovano sulla schermata iniziale. Questi segnalibri non sono sincronizzati con altri dispositivi.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Preferiti";
+
 /* Share action title */
 "FindInPage" = "Trova nella pagina";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Fine";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "Trova “%@”";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Risultato successivo nella pagina";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "Risultato precedente nella pagina";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "Su questa pagina";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Metodi di fingerprinting";
@@ -363,6 +408,12 @@
 
 /* Grand camera access */
 "GrantCameraAccess" = "Attiva Fotocamera";
+
+/* Title for history menu item */
+"HistortMenuItem" = "Cronologia";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "Cronologia";
 
 /* No comment provided by engineer. */
 "Home" = "Home";
@@ -430,8 +481,20 @@
 /* tabs bar show/hide option */
 "NeverShow" = "Non mostrare mai";
 
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Nuovo segnalibro";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Nuovo segnalibro";
+
 /* Title for new folder popup */
 "NewFolder" = "Nuova cartella";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Nuova cartella";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Nuova cartella";
 
 /* New sync code button title */
 "NewSyncCode" = "Avvia una nuova catena di sincronizzazione";
@@ -459,6 +522,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Apri impostazioni";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Altre impostazioni";
 
 /* Sync pair device settings section title */
 "Pair" = "Associa";
@@ -496,6 +562,9 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Solo navigazione privata";
 
+/* Private tab details */
+"PrivateTabBody" = "Le schede private non vengono salvate su Brave, ma non garantiscono l’anonimato online. I siti che visiti in una scheda privata non saranno visualizzati nella cronologia, e quando chiudi la scheda i loro cookie scompaiono sempre: non ne resterà traccia su Brave. Il tuo gestore di telefonia mobile (o il proprietario della rete Wi-Fi o VPN con cui ti connetti) può vedere quali siti visiti, e questi siti memorizzeranno il tuo indirizzo IP pubblico, anche nelle schede private.";
+
 /* Private tab detail text */
 "PrivateTabDetails" = "L’uso delle schede private cambia soltanto quello che fa Brave sul tuo dispositivo, e non modifica il comportamento di nessun altro.\n\nI siti che visiti continuano a conoscere il tuo indirizzo IP. Partendo da questa informazione, spesso possono risalire alla tua posizione indicativa, in genere alla città in cui ti trovi; e a volte la conoscenza della posizione può essere molto più particolareggiata. Inoltre i siti sanno tutto quello che dici direttamente a loro, per esempio i termini che usi per le ricerche. Se fai il log‑in per accedere a un sito, questo saprà che sei tu il proprietario dell’account. Chiudendo la scheda privata, si continuerà a rimanere disconnessi perché Brave rimuoverà i cookie che servono a mantenere attivo l’accesso.\n\nIl tuo Internet service provider (ISP), cioè chi ti fornisce il collegamento a internet, chiunque esso sia, può vedere la tua attività di rete. Spesso si tratta del tuo operatore di telefonia mobile. Se ti connetti tramite una rete Wi‑Fi è il proprietario della rete, e se usi una VPN è chiunque gestisca la VPN. Il tuo ISP può vedere quali siti visiti mentre li visiti. Se questi siti usano il protocollo HTTPS, può al massimo ipotizzare quello che stai facendo durante la visita. Se però usano solo l’HTTP, allora il tuo ISP è in grado di vedere tutto: i termini di ricerca, le pagine che leggi e i link che apri.\n\nSe a gestire il tuo dispositivo è un datore di lavoro, potrebbe anche tenere traccia di quello che fai con il dispositivo. Usando le schede private, probabilmente non gli impedirai di sapere quali siti hai visitato. Qualcun altro con accesso al tuo dispositivo potrebbe inoltre avere installato del software che monitora la tua attività, e anche da questo le schede private non ti possono proteggere.";
 
@@ -510,6 +579,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Motori di ricerca rapida";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Valuta Brave";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Aumenta dimensioni testo";
@@ -586,6 +658,12 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Ops, questo è un guaio.";
 
+/* Button to show the rewards panel */
+"RewardsPanel" = "Pannello Premi";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Salva";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Accessi salvati";
 
@@ -615,6 +693,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Ricerca il suggerimento";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "Cronologia e preferiti";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Cancella ricerca";
@@ -658,8 +739,14 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Impossibile caricare la pagina.";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "Impostazioni";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Condividi link";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Condividi con...";
 
 /* shields overview message */
 "ShieldsOverview" = "Con Shields decidi se bloccare gli annunci pubblicitari e i sistemi di tracciamento, per tutti i siti che visiti. Se su un sito specifico vuoi vedere gli annunci, puoi attivarli qui.";
@@ -715,11 +802,11 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Scansiona il codice QR della catena";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Sul tuo secondo dispositivo mobile, vai su Brave Sync nel pannello Impostazioni e tocca il pulsante “Scansiona codice di sincronizzazione”. Usa la fotocamera per scansionare il codice QR qui sotto.";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Inserisci il codice di sincronizzazione";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Inserisci le parole in codice";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Aggiungi un tablet o un telefono";
@@ -735,12 +822,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositivi e impostazioni";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "L’agente di Brave Sync al momento è offline o non è raggiungibile. Riprova più tardi.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Errore di comunicazione di Brave Sync";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Controlla la tua connessione Internet e riprova.";
@@ -799,6 +880,9 @@
 /* Sync to existing device */
 "SyncToDevice" = "Sincronizza con il dispositivo";
 
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Usando un dispositivo già sincronizzato, apri le impostazioni di Brave e vai su Impostazioni -> Sincronizza. Scegli “Aggiungi dispositivo” e scansiona il codice visualizzato sulla schermata.";
+
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Impossibile creare un nuovo gruppo di sincronizzazione.";
 
@@ -834,6 +918,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Connessione sicura";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Modalità di lettura";

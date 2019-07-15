@@ -10,8 +10,14 @@
 /* Button to add a bookmark */
 "AddBookmark" = "Dodaj zakładkę";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Nowy folder";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "Dodaj do ulubionych";
+
+/* Title for adding new bookmark menu item */
+"AddToMenuItem" = "Dodaj do...";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Reklamy i trackery";
@@ -154,8 +160,20 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Informacje o zakładkach";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Zakładki";
+
 /* title for bookmarks panel */
 "Bookmarks" = "Zakładki";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Zakładki";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Nazwa";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Adres";
 
 /* Button to show the brave panel */
 "BravePanel" = "Panel Brave";
@@ -211,6 +229,9 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Zamknij wszystkie karty (%i)";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Wpisz podane słowa kodowe łańcucha synchronizacji w poniższym formularzu.";
+
 /* Code words section title */
 "CodeWords" = "Słowa kodowe";
 
@@ -219,6 +240,9 @@
 
 /* Cookie settings option title */
 "CookieControl" = "Kontrola plików cookie";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Pliki cookie i dane witryny";
 
 /* Copied action complete title */
 "Copied" = "Skopiowano!";
@@ -298,8 +322,17 @@
 /* Button to edit a bookmark */
 "EditBookmark" = "Edytuj zakładkę";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Lokalizacja";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Edytuj zakładkę";
+
 /* Button to edit a favorite */
 "EditFavorite" = "Edytuj ulubione";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Edytuj folder";
 
 /* Sync enter code words */
 "EnterCodeWords" = "Wprowadź słowa kodowe";
@@ -340,17 +373,29 @@
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Szacowany czas\nzapisany";
 
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Ulubione znajdują się na ekranie głównym. Te zakładki nie są synchronizowane z innymi urządzeniami.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Ulubione";
+
 /* Share action title */
 "FindInPage" = "Znajdź na stronie";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Gotowe";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "Znajdź „%@”";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Następny wynik na stronie";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "Poprzedni wynik na stronie";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "Na tej stronie";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Metody pobierania odcisków palców";
@@ -363,6 +408,12 @@
 
 /* Grand camera access */
 "GrantCameraAccess" = "Włącz aparat";
+
+/* Title for history menu item */
+"HistortMenuItem" = "Historia";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "Historia";
 
 /* No comment provided by engineer. */
 "Home" = "Strona domowa";
@@ -430,8 +481,20 @@
 /* tabs bar show/hide option */
 "NeverShow" = "Nigdy nie pokazuj";
 
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Nowa zakładka";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Nowa zakładka";
+
 /* Title for new folder popup */
 "NewFolder" = "Nowy folder";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Nowy folder";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Nowy folder";
 
 /* New sync code button title */
 "NewSyncCode" = "Rozpocznij nowy łańcuch synchronizacji";
@@ -459,6 +522,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Otwórz ustawienia";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Inne ustawienia";
 
 /* Sync pair device settings section title */
 "Pair" = "Paruj";
@@ -496,6 +562,9 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Przeglądanie wyłącznie w trybie prywatnym";
 
+/* Private tab details */
+"PrivateTabBody" = "Karty w trybie prywatnym nie są zapisywane w przeglądarce Brave, ale nie czyni to Ciebie anonimowym użytkownikiem sieci. Strony odwiedzane w trybie prywatnym nie będą wyświetlane w historii, a pliki cookie zostaną usunięte po zamknięciu stron — w przeglądarce Brave nie pozostanie po nich żaden ślad. Twój operator (lub właściciel użytkowanych przez Ciebie sieci Wi-Fi lub VPN) może zobaczyć odwiedzane przez Ciebie witryny, a na tych witrynach będzie znany Twój publiczny adres IP, nawet podczas korzystania z kart w trybie prywatnym.";
+
 /* Private tab detail text */
 "PrivateTabDetails" = "Używanie kart prywatnych zmienia tylko działanie Brave na Twoim urządzeniu, nie zmieniając zachowań innych.\n\nStrony zawsze poznają Twój adres IP, gdy je odwiedzasz. Na tej podstawie są często w stanie z grubsza odgadnąć Twoją lokalizację – zazwyczaj miasto. Czasem określenie lokalizacji może być znacznie bardziej precyzyjne. Strony mają też informację o wszystkim, co przekaże im użytkownik np. o wyszukiwanych hasłach. W przypadku zalogowania się na stronie, wiadomo, kto jest właścicielem konta. Po zamknięciu kart prywatnych nastąpi wylogowanie, ponieważ Brave usuwa pliki cookie odpowiedzialne za zalogowanie.\n\nKażdy, kto podłącza Cię do Internetu (czyli Twój dostawca) widzi całą Twoją aktywność sieciową. Często jest to Twój dostawca usług telefonii komórkowej. W przypadku podłączenia do sieci Wi-Fi jest to właściciel tej sieci, a jeśli korzystasz z VPN, jest to jego operator. Twój dostawca widzi, jakie strony odwiedzasz. W przypadku korzystania z protokołu HTTPS można tyko zgadywać, co robisz na stronie, ale jeśli używany jest zwykły protokół HTTP to dostawca widzi wszystko: wyszukiwane hasła, czytane strony i klikane łącza.\n\nJeśli Twój pracodawca zarządza Twoim urządzeniem to może też monitorować Twoje korzystanie z niego. Korzystanie z kart prywatnych prawdopodobnie nie ukryje odwiedzanych stron. Ktoś, kto ma dostęp do Twojego urządzenia mógł zainstalować oprogramowanie, które monitoruje Twoją aktywność, a karty prywatne nie chronią przed tym.";
 
@@ -510,6 +579,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Szybkie wyszukiwarki";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Oceń Brave";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Powiększ rozmiar tekstu";
@@ -586,6 +658,12 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Cóż, to krępujące.";
 
+/* Button to show the rewards panel */
+"RewardsPanel" = "Panel Rewards";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Zapisz";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Zapisane loginy";
 
@@ -615,6 +693,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Wyszukiwanie sugestii";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "Historia i zakładki";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Wyczyść wyszukiwanie";
@@ -658,8 +739,14 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nie można załadować strony.";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "Ustawienia";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Udostępnij łącze";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Udostępnij...";
 
 /* shields overview message */
 "ShieldsOverview" = "Zabezpieczenia witryn umożliwiają zarządzanie blokadą reklam i trackerów w przypadku każdej odwiedzanej strony. Jeżeli chcesz, aby reklamy  na danej stronie były wyświetlane, możesz je aktywować tutaj.";
@@ -715,11 +802,11 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Skanuj kod QR łańcucha";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Na drugim urządzeniu mobilnym przejdź do pozycji Synchronizacja Brave w panelu Ustawienia i dotknij przycisku „Skanuj kod synchronizacji”. Użyj aparatu, aby zeskanować poniższy kod QR.";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Wpisz kod synchronizacji";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Wprowadź słowa kodowe";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Dodaj tablet lub telefon";
@@ -735,12 +822,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Urządzenia i ustawienia";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Agent synchronizacji Brave działa obecnie w trybie offline lub jest niedostępny. Spróbuj ponownie później.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Błąd komunikacji z synchronizacją Brave";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Sprawdź połączenie internetowe i spróbuj ponownie.";
@@ -799,6 +880,9 @@
 /* Sync to existing device */
 "SyncToDevice" = "Zsynchronizuj z urządzeniem";
 
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Na zsynchronizowanym urządzeniu otwórz Ustawienia Brave i przejdź do sekcji Ustawienia. -> Synchronizacja. Wybierz opcję „Dodaj urządzenie” i zeskanuj kod wyświetlony na ekranie.";
+
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Nie można utworzyć nowej grupy synchronizacji.";
 
@@ -834,6 +918,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Bezpieczne połączenie";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Menu";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Widok odczytu";

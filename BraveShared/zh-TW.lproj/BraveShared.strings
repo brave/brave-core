@@ -715,9 +715,6 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "掃瞄鏈接 QR 碼";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "在您的第二台行動裝置中，在「設定」面板中瀏覽至「Brave Sync」，然後點選「掃瞄同步代碼」按鈕。使用相機掃瞄下方的 QR 碼。";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "輸入同步代碼";
 
@@ -735,12 +732,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "裝置與設定";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Brave Sync 代理目前處於離線狀態或無法連接。 請稍後再試。";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Brave Sync 通信錯誤";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "請檢查您的網絡連接並重試。";

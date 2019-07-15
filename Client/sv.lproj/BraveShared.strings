@@ -1,0 +1,9 @@
+/* Suffix for error strings */
+"tryAgain" = ". Försök igen.";
+
+/* Error handling U2F authentication. */
+"U2FAuthenticationError" = "Det gick inte att autentisera säkerhetskoden";
+
+/* Error handling U2F registration. */
+"U2FRegistrationError" = "Det gick inte att registrera säkerhetskoden";
+

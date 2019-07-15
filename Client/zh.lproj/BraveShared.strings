@@ -1,0 +1,9 @@
+/* Suffix for error strings */
+"tryAgain" = "，请重试。";
+
+/* Error handling U2F authentication. */
+"U2FAuthenticationError" = "对安全密钥进行身份验证时出错";
+
+/* Error handling U2F registration. */
+"U2FRegistrationError" = "注册安全密钥时出错";
+

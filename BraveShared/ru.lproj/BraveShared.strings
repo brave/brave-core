@@ -10,8 +10,14 @@
 /* Button to add a bookmark */
 "AddBookmark" = "Добавить закладку";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Новая папка";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "Добавить в избранное";
+
+/* Title for adding new bookmark menu item */
+"AddToMenuItem" = "Добавить…";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Реклама и трекеры";
@@ -154,8 +160,20 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Сведения";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Закладки";
+
 /* title for bookmarks panel */
 "Bookmarks" = "Закладки";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Закладки";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Название";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Адрес";
 
 /* Button to show the brave panel */
 "BravePanel" = "Панель Brave";
@@ -211,6 +229,9 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Закрыть все вкладки (%i)";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Введите ниже кодовые слова для создания цепочки синхронизации.";
+
 /* Code words section title */
 "CodeWords" = "Кодовые слова";
 
@@ -219,6 +240,9 @@
 
 /* Cookie settings option title */
 "CookieControl" = "Управление файлами cookie";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Файлы cookie и данные сайтов";
 
 /* Copied action complete title */
 "Copied" = "Скопировано";
@@ -298,8 +322,17 @@
 /* Button to edit a bookmark */
 "EditBookmark" = "Изменить закладку";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Расположение";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Изменение закладки";
+
 /* Button to edit a favorite */
 "EditFavorite" = "Изменить избранное";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Изменение папки";
 
 /* Sync enter code words */
 "EnterCodeWords" = "Введите кодовые слова";
@@ -340,17 +373,29 @@
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Сэкономлен-\nное время";
 
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Избранные закладки сохраняются на домашней странице и не синхронизируются с остальными устройствами.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Избранное";
+
 /* Share action title */
 "FindInPage" = "Найти на странице";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Готово";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "Найти: «%@»";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Следующий результат";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "Предыдущий результат";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "На этой странице";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Методы идентификации";
@@ -363,6 +408,12 @@
 
 /* Grand camera access */
 "GrantCameraAccess" = "Включить камеру";
+
+/* Title for history menu item */
+"HistortMenuItem" = "История";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "История";
 
 /* No comment provided by engineer. */
 "Home" = "Домашняя страница";
@@ -430,8 +481,20 @@
 /* tabs bar show/hide option */
 "NeverShow" = "Никогда не показывать";
 
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Новая закладка";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Новая закладка";
+
 /* Title for new folder popup */
 "NewFolder" = "Новая папка";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Новая папка";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Новая папка";
 
 /* New sync code button title */
 "NewSyncCode" = "Запустить новую цепочку синхронизации";
@@ -459,6 +522,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Открыть настройки";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Другие настройки";
 
 /* Sync pair device settings section title */
 "Pair" = "Связать устройства";
@@ -496,6 +562,9 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Только приватный просмотр";
 
+/* Private tab details */
+"PrivateTabBody" = "Использование приватных вкладок не дает вам полной анонимности в Сети. В Brave не остается никаких следов: история браузера в этом режиме не сохраняется, а файлы cookie удаляются после выхода из него. Однако мобильный оператор, владелец сети Wi-Fi или провайдер VPN смогут увидеть, какие сайты вы посещали, а у тех будет доступ к вашему внешнему IP-адресу, даже если вы открывали страницы в приватных вкладках.";
+
 /* Private tab detail text */
 "PrivateTabDetails" = "Используя приватные вкладки, вы влияете только на то, какую информацию Brave сохраняет на вашем устройстве.\n\nСайты получают ваш IP-адрес автоматически, как только вы заходите на них. При этом они могут определить ваше примерное местоположение — как правило, на уровне города. Иногда эти данные могут быть точнее. Кроме того, сайты сохраняют всю вводимую вами информацию, например поисковые запросы. Если вы войдете в систему, им будет известно, что вы являетесь владельцем этой учетной записи. При закрытии приватных вкладок вы автоматически выйдете из аккаунта, так как Brave удалит файлы cookie, необходимые для того, чтобы оставаться в системе.\n\nВаши действия в сети может отслеживать интернет-провайдер. Как правило, это оператор мобильной связи либо владелец сети Wi-Fi или VPN, в зависимости от того, кто предоставляет вам доступ к интернету. Ваш интернет-провайдер видит, какие сайты вы посещаете. Если используется протокол HTTPS, интернет-провайдер сможет лишь догадываться о том, что вы делали на сайте. Если же сайт использует только протокол HTTP, интернет-провайдер сможет узнать всё: какие поисковые запросы вы вводили, какие страницы посещали, по каким ссылкам переходили и т. д.\n\nИспользование приватных вкладок вряд ли помешает работодателю узнать, на какие сайты вы заходили, если он управляет вашим устройством. Кроме того, другие люди, у которых есть доступ к вашему устройству, могут установить программу, отслеживающую ваши действия, — приватные вкладки не помогут и в этом случае.";
 
@@ -510,6 +579,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Быстрый поиск";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Оценить Brave";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Увеличить текст";
@@ -586,6 +658,12 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Приносим извинения";
 
+/* Button to show the rewards panel */
+"RewardsPanel" = "Панель Rewards";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Сохранить";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Сохраненные учетные данные";
 
@@ -615,6 +693,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Поиск по подсказке";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "История и закладки";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Очистить поиск";
@@ -658,8 +739,14 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Не удалось загрузить страницу.";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "Настройки";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Поделиться ссылкой";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Поделиться…";
 
 /* shields overview message */
 "ShieldsOverview" = "Щиты сайтов Shields позволяют контролировать блокировку рекламы и трекеров для каждого сайта, на который вы заходите. Если вы хотите видеть рекламу только на определенных сайтах, включите эту функцию ниже.";
@@ -715,11 +802,11 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Сканируйте QR-код цепочки";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Откройте Brave на втором мобильном устройстве, перейдите в раздел «Синхронизация Brave» в настройках и нажмите кнопку «Сканировать код синхронизации». Отсканируйте QR-код (см. ниже), используя камеру.";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Введите код синхронизации";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Введите кодовые слова";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Добавьте планшет или телефон";
@@ -735,12 +822,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Устройства и настройки";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Сервер синхронизации Brave не подключен к сети или недоступен. Повторите попытку позже.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Ошибка связи";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Проверьте подключение к интернету и повторите попытку.";
@@ -799,6 +880,9 @@
 /* Sync to existing device */
 "SyncToDevice" = "Синхронизация с устройством";
 
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Запустите Brave на уже синхронизированном устройстве, откройте настройки и выберите «Синхронизация». Нажмите «Добавить устройство» и отсканируйте код на экране.";
+
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Не удалось создать группу синхронизации.";
 
@@ -834,6 +918,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Безопасное соединение";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Меню";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Режим чтения";

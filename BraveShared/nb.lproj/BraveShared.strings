@@ -10,8 +10,14 @@
 /* Button to add a bookmark */
 "AddBookmark" = "Legg til bokmerke";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Ny mappe";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "Legg til favoritter";
+
+/* Title for adding new bookmark menu item */
+"AddToMenuItem" = "Legg til i 5...";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annonser og sporingsprogrammer";
@@ -154,8 +160,20 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Bokmerkeinfo";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Bokmerker";
+
 /* title for bookmarks panel */
 "Bookmarks" = "Bokmerker";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Bokmerker";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Navn";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Adresse";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave-panel";
@@ -211,6 +229,9 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Lukk alle %i fanene";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Skriv kodeordene du har mottatt for synkroniseringskjeden, i skjemaet under.";
+
 /* Code words section title */
 "CodeWords" = "Kodeord";
 
@@ -219,6 +240,9 @@
 
 /* Cookie settings option title */
 "CookieControl" = "Informasjonskapsel-kontroll";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Informasjonskapsler og nettsteddata";
 
 /* Copied action complete title */
 "Copied" = "Kopiert!";
@@ -298,8 +322,17 @@
 /* Button to edit a bookmark */
 "EditBookmark" = "Rediger bokmerke";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Sted";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Rediger bokmerke";
+
 /* Button to edit a favorite */
 "EditFavorite" = "Rediger favoritt";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Rediger mappe";
 
 /* Sync enter code words */
 "EnterCodeWords" = "Skriv kodeord";
@@ -340,17 +373,29 @@
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Est. tid\nspart";
 
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Favoritter er plassert på startskjermen. Disse bokmerkene synkroniseres ikke med andre enheter.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Favoritter";
+
 /* Share action title */
 "FindInPage" = "Finn på side";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Ferdig";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "Finn «%@\"";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Neste resultat på side";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "Forrige resultat på side";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "På denne siden";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Fingeravtrykkmetoder";
@@ -363,6 +408,12 @@
 
 /* Grand camera access */
 "GrantCameraAccess" = "Aktiver kamera";
+
+/* Title for history menu item */
+"HistortMenuItem" = "Logg";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "Logg";
 
 /* No comment provided by engineer. */
 "Home" = "Hjem";
@@ -430,8 +481,20 @@
 /* tabs bar show/hide option */
 "NeverShow" = "Aldri vis";
 
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Nytt bokmerke";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Nytt bokmerke";
+
 /* Title for new folder popup */
 "NewFolder" = "Ny mappe";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Ny mappe";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Ny mappe";
 
 /* New sync code button title */
 "NewSyncCode" = "Start en ny synkkjede";
@@ -459,6 +522,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Åpne innstillinger";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Andre innstillinger";
 
 /* Sync pair device settings section title */
 "Pair" = "Par";
@@ -496,6 +562,9 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Kun privat surfing";
 
+/* Private tab details */
+"PrivateTabBody" = "Private faner blir ikke lagret i Brave, men de gjør deg ikke anonym på nett. Sidene du besøker i private faner vises ikke i historikken din, og informasjonskapslene deres forsvinner alltid når du lukker dem – det vil ikke være spor etter dem i Brave. Mobilleverandøren din (eller eieren av WiFi-nettverket eller VPN du er tilkoblet) kan se hvilke sider du besøker, og disse sidene vil ha din offentlige IP-adresse, selv i private faner.";
+
 /* Private tab detail text */
 "PrivateTabDetails" = "Det å bruke private faner påvirker kun det Brave gjør på enheten din, det forandrer ikke andres adferd.\n\nNettsteder får alltid vite IP-adressen din når du besøker dem. Ut ifra dette kan de ofte gjette omtrent hvor du befinner deg, men vanligvis er ikke dette mer nøyaktig enn hvilken by du er i. Noen ganger kan imidlertid posisjonen de anslår, være mer spesifikk. Nettsteder får også vite alt du spesifikt oppgir til dem, som søkeord. Hvis du logger på et nettsted, vet nettstedet at du eier den gjeldende kontoen. Du blir likevel logget ut når du lukker de private fanene, for Brave kaster informasjonskapselen som holder deg pålogget.\n\nDen som kobler deg til internett (vanligvis internettleverandøren din) kan se all aktiviteten på nettverket ditt. Ofte er internettleverandøren mobilleverandøren din. Hvis du er koblet til et WiFi-nettverk, er internettleverandøren eieren av nettverket, og hvis du bruker en VPN, er det den som drifter VPN-en. Internettleverandøren din kan se hvilke nettsteder du besøker, samtidig som du besøker dem. Hvis disse nettstedene bruker HTTPS, kan internettleverandøren gjøre mer enn en kvalifisert gjetning angående hva du foretar deg på slike nettsteder. Hvis et nettsted kun bruker HTTP, kan imidlertid internettleverandøren din se alt: søkeordene dine, hvilke sider du leser, og hvilke lenker du følger.\n\nHvis arbeidsgiveren din administrerer enheten din, kan arbeidsgiveren også se hva du gjør med den. Det å bruke private faner vil sannsynligvis ikke hindre at de finner ut hvilke nettsteder du har besøkt. Andre som har tilgang til enheten din, kan også ha installert programvare som overvåker aktiviteten din, og private faner beskytter deg heller ikke mot dette.";
 
@@ -510,6 +579,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Søkemotorer for raske søk";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Vurder Brave";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Øk tekststørrelse";
@@ -586,6 +658,12 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Dette er litt flaut.";
 
+/* Button to show the rewards panel */
+"RewardsPanel" = "Belønningspanel";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Lagre";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Lagrede innlogginger";
 
@@ -615,6 +693,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Søker etter forslaget";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "Logg og bokmerker";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Fjern søk";
@@ -658,8 +739,14 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Kunne ikke laste inn side.";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "Innstillinger";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Del lenke";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Lagre med ";
 
 /* shields overview message */
 "ShieldsOverview" = "Med Site Shield kan du kontrollere når annonser og sporingsprogrammer blokkeres på hver side du besøker. Hvis du vil se annonser på en bestemt side, kan du aktivere dem her.";
@@ -715,11 +802,11 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Skann kjedens QR-kode";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "På den andre mobilenheten går du til Brave-synkronisering i Innstillinger og trykker på «Skann synkkode». Bruk kameraet til å skanne QR-koden under.";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Angi synkkoden";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Skriv inn kodeord";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Legg til et nettbrett eller en telefon";
@@ -735,12 +822,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheter og innstillinger";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Representanten for Brave-synkronisering er avlogget eller kan ikke nås. Prøv senere.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Kommunikasjonsfeil ved Brave-synkronisering";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Sjekk nettforbindelsen, og prøv igjen.";
@@ -799,6 +880,9 @@
 /* Sync to existing device */
 "SyncToDevice" = "Synkroniser til enhet";
 
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "Bruk en enhet som allerede er synkronisert. Åpne innstillingene for Brave, og naviger til Innstillinger -> Synkronisering. Velg «Legg til enhet», og skann koden som vises på skjermen.";
+
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Kunne ikke opprette ny synkgruppe.";
 
@@ -834,6 +918,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Sikker tilkobling";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Meny";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Lesevisning";

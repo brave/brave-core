@@ -1596,6 +1596,7 @@
 		4F514FD31ACD8F2C0022D7EA /* HistoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTests.swift; sourceTree = "<group>"; };
 		4F9757391AFA6F37006ECC24 /* readerContent.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = readerContent.html; sourceTree = "<group>"; };
 		55A747161DC46FC400CE1B57 /* HomePageUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageUITest.swift; sourceTree = "<group>"; };
+		5902D2FF22DCD681002232FB /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		5929A9E421B6AEB5005ECF8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Storage.strings; sourceTree = "<group>"; };
 		5929A9EC21B6AEBB005ECF8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5929A9ED21B6AED0005ECF8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1611,9 +1612,14 @@
 		595E0EDA21CAD97C00813D49 /* CookieControl.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = CookieControl.js; sourceTree = "<group>"; };
 		595E0EE021CAEF5B00813D49 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		5965CA212215D4A0000B9EC1 /* CustomHeaderDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderDataTests.swift; sourceTree = "<group>"; };
+		5970FF6D22DCD6590095E7B6 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		5984DA2622DCD65E009D52E7 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		59871C1821E4D83900316590 /* block-cookies.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "block-cookies.json"; sourceTree = "<group>"; };
+		598F1EF722DCD66100BB1AEF /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/BraveShared.strings"; sourceTree = "<group>"; };
+		59996F1F22DCD66400049055 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		59A68B1F857A8638598A63A0 /* TwoLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoLineCell.swift; sourceTree = "<group>"; };
 		59A68CCB63E2A565CB03F832 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		59AF179A22DCD66A0066C813 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/BraveShared.strings"; sourceTree = "<group>"; };
 		59B6902821B684A700E9388E /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		59B6911A21B695A400E9388E /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = Localizations/ms.lproj/BraveShareToInfoPlist.strings; sourceTree = "<group>"; };
 		59B6911C21B695A400E9388E /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1807,7 +1813,13 @@
 		59B691F221B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		59B691F321B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		59B691F421B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		59B98D9A22DCD66D001EB2D4 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		59C3280322DCD670009A9F44 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		59C8119822D754D4005D5BBC /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		59CDB05322DCD6730008319C /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		59E3117522DCD678005BD8E5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		59EDBFB122DCD67B007D07C6 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		59F8F8F622DCD67E00EFE0E8 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		5D1DC51320AC9AF900905E5A /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D1DC51520AC9AFA00905E5A /* Data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
 		5D1DC51620AC9AFA00905E5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -6429,6 +6441,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				59C8119822D754D4005D5BBC /* ja */,
+				5970FF6D22DCD6590095E7B6 /* de */,
+				5984DA2622DCD65E009D52E7 /* fr */,
+				598F1EF722DCD66100BB1AEF /* id-ID */,
+				59996F1F22DCD66400049055 /* it */,
+				59AF179A22DCD66A0066C813 /* ko-KR */,
+				59B98D9A22DCD66D001EB2D4 /* ms */,
+				59C3280322DCD670009A9F44 /* nb */,
+				59CDB05322DCD6730008319C /* pl */,
+				59E3117522DCD678005BD8E5 /* ru */,
+				59EDBFB122DCD67B007D07C6 /* sv */,
+				59F8F8F622DCD67E00EFE0E8 /* uk */,
+				5902D2FF22DCD681002232FB /* zh */,
 			);
 			name = BraveShared.strings;
 			sourceTree = "<group>";

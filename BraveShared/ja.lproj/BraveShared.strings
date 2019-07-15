@@ -181,9 +181,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shieldのデフォルト設定";
 
-/* Brave sync page title */
-"BraveSync" = "Brave Sync";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全にリンクできます。";
 
@@ -526,6 +523,9 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "設定を開く";
 
+/* Section name for other settings. */
+"OtherSettingsSection" = "その他の設定";
+
 /* Sync pair device settings section title */
 "Pair" = "ペア";
 
@@ -793,9 +793,6 @@
 /* Support section title */
 "Support" = "サポート";
 
-/* Sync settings section title */
-"Sync" = "Brave Sync";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "別のデバイスを追加";
 
@@ -805,14 +802,8 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "チェーンのQRコードをスキャン";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "2つ目のモバイルデバイスで、「設定」パネルにある「Brave同期」へ移動し、「同期コードをスキャン」ボタンをタップします。カメラを使用して下のQRコードをスキャンしてください。";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "同期コードを入力";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "他の端末で設定メニュー内の\"%@\"をタップし、以下の同期チェーンコードを入力してください。このコードはパスワードと同等に扱ってください。万が一、誰かに知られてしまうと同期されているデータを閲覧・編集することが可能になってしまいます。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "コードを入力";
@@ -831,12 +822,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "デバイスと設定";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Brave同期エージェントは現在オフラインかアクセスできません。後でもう一度お試しください。";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Brave Sync通信エラー";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";

@@ -10,8 +10,14 @@
 /* Button to add a bookmark */
 "AddBookmark" = "Додати закладку";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Нова папка";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "Додати до обраного";
+
+/* Title for adding new bookmark menu item */
+"AddToMenuItem" = "Додати до…";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Реклама і трекери";
@@ -154,8 +160,20 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "Дані закладки";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Закладки";
+
 /* title for bookmarks panel */
 "Bookmarks" = "Закладки";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Закладки";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Назва";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Адреса";
 
 /* Button to show the brave panel */
 "BravePanel" = "Панель Brave";
@@ -211,6 +229,9 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Закрити усі вкладки (%i)";
 
+/* Code words input help */
+"CodeWordInputHelp" = "Уведіть надані вам кодові слова для ланцюжкової синхронізації у формі нижче.";
+
 /* Code words section title */
 "CodeWords" = "Кодові слова";
 
@@ -219,6 +240,9 @@
 
 /* Cookie settings option title */
 "CookieControl" = "Керування файлами cookie";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Файли cookie та дані сайтів";
 
 /* Copied action complete title */
 "Copied" = "Скопійовано!";
@@ -298,8 +322,17 @@
 /* Button to edit a bookmark */
 "EditBookmark" = "Редагування закладки";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Розташування";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Редагування закладки";
+
 /* Button to edit a favorite */
 "EditFavorite" = "Редагування списку обраного";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Редагування папки";
 
 /* Sync enter code words */
 "EnterCodeWords" = "Введіть кодові слова";
@@ -340,17 +373,29 @@
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Заощаджено\nчасу";
 
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Розділ обраного розташовано на головному екрані. Ці закладки не синхронізуються з іншими пристроями.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Обране";
+
 /* Share action title */
 "FindInPage" = "Знайти на сторінці";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Завершено";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "Знайти «%@»";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Наступний результат на сторінці";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "Попередній результат на сторінці";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "На цій сторінці";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "Способи додавання відбитків пальців";
@@ -363,6 +408,12 @@
 
 /* Grand camera access */
 "GrantCameraAccess" = "Увімкнути камеру";
+
+/* Title for history menu item */
+"HistortMenuItem" = "Історія";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "Історія";
 
 /* No comment provided by engineer. */
 "Home" = "Домашня сторінка";
@@ -430,8 +481,20 @@
 /* tabs bar show/hide option */
 "NeverShow" = "Ніколи не показувати";
 
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Нова закладка";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Нова закладка";
+
 /* Title for new folder popup */
 "NewFolder" = "Нова папка";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Нова папка";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Нова папка";
 
 /* New sync code button title */
 "NewSyncCode" = "Створити новий ланцюжок синхронізації";
@@ -459,6 +522,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Відкрити налаштування";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Інші налаштування";
 
 /* Sync pair device settings section title */
 "Pair" = "З'єднати";
@@ -496,6 +562,9 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Перегляд тільки у приватному режимі";
 
+/* Private tab details */
+"PrivateTabBody" = "Приватні вкладки не зберігаються в Brave, але дії, які ви виконуєте на них в Інтернеті, не є анонімними. Сайти, які ви переглядаєте на приватній вкладці, не відображатимуться в історії, а файли cookie буде видалено після закриття вкладки. У Brave не залишиться жодних даних вашого сеансу, проте оператор мобільного зв’язку (або власник мережі Wi-Fi чи VPN, до якої ви підключені) зможе переглянути інформацію про те, які сайти ви відвідали. Сайти отримують інформацію про вашу публічну IP-адресу, навіть коли ви переглядаєте їх у приватних вкладках.";
+
 /* Private tab detail text */
 "PrivateTabDetails" = "Використання приватних вкладок впливає лише на роботу Brave на вашому пристрої та не впливає на дії поза вашим пристроєм.\n              \n              Інформація про вашу IP-адресу завжди передається на веб-сайти, завдяки чому можна визначити ваше розташування. Зазвичай це місто, але інколи результати відстеження розташування можуть бути більш точними. Також веб-сайти мають доступ до всієї інформації, яку ви вводите, наприклад до пошукових запитів. Якщо ви ввійдете до системи на веб-сайті, стане відомо, що ви є власником облікового запису. Коли ви закриєте приватну вкладку, буде виконано вихід з облікового запису, оскільки Brave видалить файл cookie, створений під час входу.\n              \n              Компанія, що надає підключення до Інтернету (зазвичай провайдер мережі або власник мереж Wi-Fi чи VPN), може переглядати всю вашу мережеву діяльність і журнал відвідувань сайтів. Якщо на сайті використовується протокол HTTPS, провайдер може лише здогадуватися про ваші дії на сайті. Якщо ж на сайті використовується протокол HTTP, провайдер має інформацію про всі ваші пошукові запити, відвідувані сторінки та посилання.\n              \n              Якщо ваш роботодавець керує вашим пристроєм, то він також може відстежувати ваші дії. Імовірно, використання приватних вкладок не допоможе приховати інформацію про те, які сайти ви відвідували. Крім того, інші люди, що мають доступ до вашого пристрою, можуть також установити програму, що відстежуватиме вашу діяльність. У цьому разі приватні вкладки також вам не допоможуть.";
 
@@ -510,6 +579,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Системи швидкого пошуку";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Оцінити Brave";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Збільшити розмір шрифту";
@@ -586,6 +658,12 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Нам дуже шкода.";
 
+/* Button to show the rewards panel */
+"RewardsPanel" = "Панель винагород";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Зберегти";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Збережені облікові дані";
 
@@ -615,6 +693,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "Пошук за підказками";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "Історія та закладки";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Видалити дані пошуку";
@@ -658,8 +739,14 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Не вдалося завантажити сторінку.";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "Налаштування";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "Поділитися посиланням";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Поділитися з…";
 
 /* shields overview message */
 "ShieldsOverview" = "Екрани дозволяють керувати блокуванням реклами або трекерів на кожному сайті, який ви переглядаєте. Для перегляду реклами на сайті увімкніть цей параметр тут.";
@@ -715,11 +802,11 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Сканування QR-коду ланцюжка";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "На другому мобільному пристрої перейдіть до меню «Синхронізація Brave» на панелі налаштувань і торкніться кнопки «Сканувати код синхронізації». Щоб провести сканування наведеного нижче QR-коду, використовуйте камеру.";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Введіть код синхронізації";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "Уведіть кодові слова";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Додавання планшета або телефону";
@@ -735,12 +822,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Пристрої та налаштування";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Наразі агент синхронізації Brave офлайн або недоступний. Спробуйте ще раз пізніше.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Помилка зв’язку під час синхронізації Brave";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Перевірте з'єднання з інтернетом і спробуйте знову.";
@@ -799,6 +880,9 @@
 /* Sync to existing device */
 "SyncToDevice" = "Синхронізація з пристроєм";
 
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "На пристрої, який уже синхронізовано, відкрийте меню «Налаштування Brave» і перейдіть до розділу «Налаштування» -> «Синхронізація». Виберіть пункт «Додати пристрій» і відскануйте код, зображений на екрані.";
+
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Неможливо створити нову групу синхронізації.";
 
@@ -834,6 +918,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Захищене з’єднання";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Меню";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Режим читання";

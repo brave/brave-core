@@ -1,0 +1,9 @@
+/* Suffix for error strings */
+"tryAgain" = ". Повторите попытку.";
+
+/* Error handling U2F authentication. */
+"U2FAuthenticationError" = "Во время аутентификации электронного ключа произошла ошибка";
+
+/* Error handling U2F registration. */
+"U2FRegistrationError" = "Во время регистрации электронного ключа произошла ошибка";
+

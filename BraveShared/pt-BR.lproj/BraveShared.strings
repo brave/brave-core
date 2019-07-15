@@ -715,9 +715,6 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Ler código QR da cadeia";
 
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "No seu segundo dispositivo móvel, navegue até a opção \"Sincronizar Brave\" do painel \"Configurações\" e toque no botão \"Ler código de sincronização\". Use sua câmera para ler o código QR abaixo.";
-
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Insira o código de sincronização";
 
@@ -735,12 +732,6 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositivos e configurações";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "O Agente de sincronização do Brave está off-line ou inacessível no momento. Tente novamente mais tarde.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Erro de comunicação na sincronização do Brave";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Verifique sua conexão com a internet e tente novamente.";
