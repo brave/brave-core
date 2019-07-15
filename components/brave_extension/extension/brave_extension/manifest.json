@@ -34,16 +34,6 @@
       "all_frames": true
     }, {
       "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "out/content_dapps.bundle.js"
-      ],
-      "run_at": "document_start",
-      "all_frames": false
-    }, {
-      "matches": [
         "https://chrome.google.com/webstore/detail/*"
       ],
       "js": [

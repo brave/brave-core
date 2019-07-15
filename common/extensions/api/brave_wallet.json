@@ -22,6 +22,12 @@
             "type": "integer"
           }
         ]
+      }, {
+        "name": "isEnabled",
+        "type": "function",
+        "description": "Called to determine if brave wallet is alrady enabled",
+        "parameters": [
+        ]
       }
     ],
     "types": [
