@@ -142,6 +142,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowClock, true);
   registry->RegisterBooleanPref(kNewTabPageShowTopSites, true);
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
+
+  // Whether Brave Wallet has been enabled at least once and should therefore
+  // be loaded on future startups.
+  registry->RegisterBooleanPref(kWalletHasBeenLoadedOnce, false);
 }
 
 }  // namespace brave

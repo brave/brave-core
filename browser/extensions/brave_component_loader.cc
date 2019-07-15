@@ -54,6 +54,13 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
     ExtensionPrefs::Get((content::BrowserContext *)profile_)->
         SetAllowFileAccess(extension_id, true);
   }
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  if (extension_id == ethereum_remote_client_extension_id&&
+      (!profile_prefs_->FindPreference(kWalletHasBeenLoadedOnce) ||
+       !profile_prefs_->GetBoolean(kWalletHasBeenLoadedOnce))) {
+    profile_prefs_->SetBoolean(kWalletHasBeenLoadedOnce, true);
+  }
+#endif
 }
 
 void BraveComponentLoader::AddExtension(const std::string& extension_id,
@@ -108,6 +115,15 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
       brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
   }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  // If brave://wallet has been loaded at least once, then load it again
+  // on future startups.
+  if (profile_prefs_->FindPreference(kWalletHasBeenLoadedOnce) &&
+      profile_prefs_->GetBoolean(kWalletHasBeenLoadedOnce)) {
+    AddEthereumRemoteClientExtension();
+  }
+#endif
 }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

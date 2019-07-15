@@ -47,6 +47,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetBoolean(kHideBraveRewardsButton));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kWalletHasBeenLoadedOnce));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
