@@ -13,9 +13,9 @@
     ],
     "functions": [
       {
-        "name": "dappAvailable",
+        "name": "promptToEnableWallet",
         "type": "function",
-        "description": "Called when website is dapp",
+        "description": "Called when website detects a Dapp",
         "parameters": [
           {
             "name": "tabID",

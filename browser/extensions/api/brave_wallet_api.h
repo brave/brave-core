@@ -11,12 +11,12 @@
 namespace extensions {
 namespace api {
 
-class BraveWalletDappAvailableFunction : public UIThreadExtensionFunction {
+class BraveWalletPromptToEnableWalletFunction : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.dappAvailable", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveWallet.promptToEnableWallet", UNKNOWN)
 
  protected:
-  ~BraveWalletDappAvailableFunction() override {}
+  ~BraveWalletPromptToEnableWalletFunction() override {}
 
   ResponseAction Run() override;
 };

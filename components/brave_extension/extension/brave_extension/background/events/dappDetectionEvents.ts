@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   switch (msg.type) {
     case 'dappAvailable': {
       if (sender.frameId === 0 && sender.tab) {
-        chrome.braveWallet.dappAvailable(sender.tab.id)
+        chrome.braveWallet.promptToEnableWallet(sender.tab.id)
       }
       break
     }

@@ -20,9 +20,9 @@ namespace extensions {
 namespace api {
 
 ExtensionFunction::ResponseAction
-BraveWalletDappAvailableFunction::Run() {
-  std::unique_ptr<brave_wallet::DappAvailable::Params> params(
-      brave_wallet::DappAvailable::Params::Create(*args_));
+BraveWalletPromptToEnableWalletFunction::Run() {
+  std::unique_ptr<brave_wallet::PromptToEnableWallet::Params> params(
+      brave_wallet::PromptToEnableWallet::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   // Get web contents for this tab
