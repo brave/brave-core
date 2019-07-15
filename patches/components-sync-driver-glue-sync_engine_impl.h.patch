@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/glue/sync_engine_impl.h b/components/sync/driver/glue/sync_engine_impl.h
-index 9fce092e22ca630fa3f5efa0bc1e963a86659625..7ca7b912f21558d76eafa9b392fec616b3f4056a 100644
+index fa18e8241e3b7c3ea4e95b764fea19080e626d0d..f8d2e5a704d7f970ffeee0cd228607056cb6a868 100644
 --- a/components/sync/driver/glue/sync_engine_impl.h
 +++ b/components/sync/driver/glue/sync_engine_impl.h
-@@ -220,6 +220,7 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
+@@ -218,6 +218,7 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
  
    base::WeakPtrFactory<SyncEngineImpl> weak_ptr_factory_;
  
