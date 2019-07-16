@@ -21,6 +21,8 @@ friend class PageGraph;
   ~NodeExtension() override;
   ItemName GetItemName() const override;
 
+  bool IsNodeActor() const override { return false; }
+
  protected:
   NodeExtension(PageGraph* const graph);
   ItemDesc GetDescBody() const override;

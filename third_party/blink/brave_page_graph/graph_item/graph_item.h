@@ -23,11 +23,12 @@ class GraphItem {
   virtual GraphMLId GetGraphMLId() const = 0;
   virtual GraphMLXML GetGraphMLTag() const = 0;
 
- protected:
-  GraphItem(PageGraph* const graph);
   virtual ItemDesc GetDescBody() const;
   virtual ItemDesc GetDescPrefix() const = 0;
   virtual ItemDesc GetDescSuffix() const = 0;
+
+ protected:
+  GraphItem(PageGraph* const graph);
   virtual GraphMLXMLList GraphMLAttributes() const;
 
   PageGraph* const graph_;

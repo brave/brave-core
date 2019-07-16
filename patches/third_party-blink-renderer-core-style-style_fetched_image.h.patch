@@ -1,0 +1,27 @@
+diff --git a/third_party/blink/renderer/core/style/style_fetched_image.h b/third_party/blink/renderer/core/style/style_fetched_image.h
+index 637128280c7d8727cc95baaff5872a07953ba993..d3b367721699f449d14852ce6c23930c94dcc41d 100644
+--- a/third_party/blink/renderer/core/style/style_fetched_image.h
++++ b/third_party/blink/renderer/core/style/style_fetched_image.h
+@@ -29,6 +29,11 @@
+ #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+ #include "third_party/blink/renderer/platform/wtf/casting.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#endif
++
+ namespace blink {
+ 
+ class Document;
+@@ -83,6 +88,10 @@ class StyleFetchedImage final : public StyleImage,
+   Member<ImageResourceContent> image_;
+   Member<const Document> document_;
+   const KURL url_;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  brave_page_graph::InspectorId inspector_id_;
++#endif
+ };
+ 
+ template <>

@@ -18,6 +18,8 @@ friend class PageGraph;
   ~NodeActor() override;
   virtual bool IsScript() const;
   virtual bool IsParser() const;
+
+  bool IsNodeActor() const override { return true; }
  
  protected:
   NodeActor(PageGraph* const graph);

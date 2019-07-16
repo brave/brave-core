@@ -43,9 +43,20 @@ ItemName EdgeNodeInsert::GetItemName() const {
 }
 
 ItemDesc EdgeNodeInsert::GetDescBody() const {
-  return GetItemName() +
-    " [parent:" + to_string(parent_id_) +
-    ", sibling:" + to_string(prior_sibling_id_) + "]";
+  LOG_ASSERT(graph_->element_nodes_.count(parent_id_) == 1);
+  LOG_ASSERT(prior_sibling_id_ == 0 ||
+      graph_->element_nodes_.count(prior_sibling_id_) == 1);
+
+  const Node* parent_node = graph_->element_nodes_.at(parent_id_);
+  const Node* sibling_node = prior_sibling_id_ == 0 ? nullptr :
+      graph_->element_nodes_.at(prior_sibling_id_);
+
+  ItemDesc desc = GetItemName();
+  desc += "[parent: " + parent_node->GetDescBody();
+  if (sibling_node != nullptr)
+    desc += ", sibling: " + sibling_node->GetDescBody();
+  desc += "]";
+  return desc;
 }
 
 GraphMLXMLList EdgeNodeInsert::GraphMLAttributes() const {
