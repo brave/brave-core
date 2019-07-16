@@ -92,9 +92,6 @@ struct BraveRequestInfo {
   friend int brave_rewards::OnBeforeURLRequest(
       const brave::ResponseCallback& next_callback,
       std::shared_ptr<brave::BraveRequestInfo> ctx);
-  friend int OnBeforeURLRequest_TorWork(
-      const ResponseCallback& next_callback,
-      std::shared_ptr<BraveRequestInfo> ctx);
   friend class ::BraveNetworkDelegateBase;
 
   // Don't use this directly after any dispatch

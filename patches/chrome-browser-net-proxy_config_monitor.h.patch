@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/net/proxy_config_monitor.h b/chrome/browser/net/proxy_config_monitor.h
+index 0f20947c7819c3be2086a69f5997412652a99915..29f3b0cd58a012ce5656972be8ea3fe8c76fef43 100644
+--- a/chrome/browser/net/proxy_config_monitor.h
++++ b/chrome/browser/net/proxy_config_monitor.h
+@@ -63,7 +63,7 @@ class ProxyConfigMonitor : public net::ProxyConfigService::Observer,
+   // they're received, to allow tests to wait until all pending proxy
+   // configuration changes have been applied.
+   void FlushForTesting();
+-
++  BRAVE_PROXY_CONFIG_MONITOR_H
+  private:
+   // net::ProxyConfigService::Observer implementation:
+   void OnProxyConfigChanged(

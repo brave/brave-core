@@ -223,6 +223,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity
       </message>
+      <message name="IDS_NEW_TOR_CONNECTION_FOR_SITE" desc="The text label of a menu item for requesting new Tor connection for the current site">
+        New Tor Connection For This Site
+      </message>
       <message name="IDS_PROFILES_EXIT_TOR" desc="Button in the avatar menu bubble view for exiting the active Tor session.">
         Exit Tor
       </message>
