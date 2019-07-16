@@ -510,7 +510,7 @@ class RewardsServiceImpl : public RewardsService,
   double GetDoubleState(const std::string& name) const override;
   void SetStringState(const std::string& name,
                       const std::string& value) override;
-  std::string GetStringState(const std::string& name) override;
+  std::string GetStringState(const std::string& name) const override;
   void SetInt64State(const std::string& name, int64_t value) override;
   int64_t GetInt64State(const std::string& name) const override;
   void SetUint64State(const std::string& name, uint64_t value) override;

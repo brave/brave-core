@@ -729,7 +729,8 @@ void BatLedgerClientMojoProxy::SetStringState(const std::string& name,
   bat_ledger_client_->SetStringState(name, value);
 }
 
-std::string BatLedgerClientMojoProxy::GetStringState(const std::string& name) {
+std::string BatLedgerClientMojoProxy::
+GetStringState(const std::string& name) const {
   std::string value;
   bat_ledger_client_->GetStringState(name, &value);
   return value;

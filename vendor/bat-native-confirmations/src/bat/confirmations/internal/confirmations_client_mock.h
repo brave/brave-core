@@ -267,6 +267,51 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name));
+
+  MOCK_METHOD2(SetBooleanState, void(
+      const std::string& name,
+      bool value));
+
+  MOCK_CONST_METHOD1(GetBooleanState, bool(
+      const std::string& name));
+
+  MOCK_METHOD2(SetIntegerState, void(
+      const std::string& name,
+      int value));
+
+  MOCK_CONST_METHOD1(GetIntegerState, int(
+      const std::string& name));
+
+  MOCK_METHOD2(SetDoubleState, void(
+      const std::string& name,
+      double value));
+
+  MOCK_CONST_METHOD1(GetDoubleState, double(
+      const std::string& name));
+
+  MOCK_METHOD2(SetStringState, void(
+      const std::string& name,
+      const std::string& value));
+
+  MOCK_CONST_METHOD1(GetStringState, std::string(
+      const std::string& name));
+
+  MOCK_METHOD2(SetInt64State, void(
+      const std::string& name,
+      int64_t value));
+
+  MOCK_CONST_METHOD1(GetInt64State, int64_t(
+      const std::string& name));
+
+  MOCK_METHOD2(SetUint64State, void(
+      const std::string& name,
+      uint64_t value));
+
+  MOCK_CONST_METHOD1(GetUint64State, uint64_t(
+      const std::string& name));
+
+  MOCK_METHOD1(ClearState, void(
+      const std::string& name));
 };
 
 }  // namespace confirmations

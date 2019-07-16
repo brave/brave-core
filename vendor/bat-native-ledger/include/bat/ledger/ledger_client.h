@@ -227,7 +227,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual double GetDoubleState(const std::string& name) const = 0;
   virtual void SetStringState(const std::string& name,
                               const std::string& value) = 0;
-  virtual std::string GetStringState(const std::string& name) = 0;
+  virtual std::string GetStringState(const std::string& name) const = 0;
   virtual void SetInt64State(const std::string& name, int64_t value) = 0;
   virtual int64_t GetInt64State(const std::string& name) const = 0;
   virtual void SetUint64State(const std::string& name, uint64_t value) = 0;

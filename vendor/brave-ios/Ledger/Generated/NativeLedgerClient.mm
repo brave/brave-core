@@ -185,7 +185,7 @@ double NativeLedgerClient::GetDoubleState(const std::string& name) const {
 void NativeLedgerClient::SetStringState(const std::string& name, const std::string& value) {
   [bridge_ setStringState:name value:value];
 }
-std::string NativeLedgerClient::GetStringState(const std::string& name) {
+std::string NativeLedgerClient::GetStringState(const std::string& name) const {
   return [bridge_ getStringState:name];
 }
 void NativeLedgerClient::SetInt64State(const std::string& name, int64_t value) {

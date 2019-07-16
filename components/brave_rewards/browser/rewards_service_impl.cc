@@ -1672,7 +1672,7 @@ void RewardsServiceImpl::SetStringState(const std::string& name,
   profile_->GetPrefs()->SetString(pref_prefix + name, value);
 }
 
-std::string RewardsServiceImpl::GetStringState(const std::string& name) {
+std::string RewardsServiceImpl::GetStringState(const std::string& name) const {
   return profile_->GetPrefs()->GetString(pref_prefix + name);
 }
 
