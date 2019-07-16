@@ -29,6 +29,8 @@ friend class NodeHTMLText;
   virtual void MarkNodeDeleted();
   GraphMLXMLList GraphMLAttributes() const override;
 
+  bool IsNodeActor() const override { return false; }
+
   const blink::DOMNodeId node_id_;
   bool is_deleted_;
   NodeHTMLElement* parent_node_;
