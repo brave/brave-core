@@ -81,9 +81,8 @@ void BatLedgerImpl::FetchWalletProperties(
 
 void BatLedgerImpl::GetAutoContributeProps(
     GetAutoContributePropsCallback callback) {
-  ledger::AutoContributeProps props;
-  ledger_->GetAutoContributeProps(&props);
-  std::move(callback).Run(ledger::AutoContributeProps::New(props));
+  ledger::AutoContributePropsPtr props = ledger_->GetAutoContributeProps();
+  std::move(callback).Run(std::move(props));
 }
 
 void BatLedgerImpl::GetPublisherMinVisitTime(
