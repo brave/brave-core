@@ -53,12 +53,6 @@ GraphMLXMLList EdgeEventListener::GraphMLAttributes() const {
       ->ToValue(listener_id_));
 
   return attrs;
-  return {
-    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
-      ->ToValue("structure"),
-    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
-      ->ToValue("structure")
-  };
 }
 
 }  // namespace brave_page_graph
