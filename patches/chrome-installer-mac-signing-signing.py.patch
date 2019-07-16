@@ -10,7 +10,7 @@ index ddd5aeef9dafb3e80ad20a7481c4f8ebb418493d..2fda1db466d960856ad397fb8fe97992
                  entitlements='app-entitlements.plist',
                  verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT),
          'framework':
-@@ -82,9 +81,17 @@ def get_parts(config):
+@@ -82,9 +81,16 @@ def get_parts(config):
                  options=CodeSignOptions.RESTRICT +
                  CodeSignOptions.LIBRARY_VALIDATION,
                  verify_options=VerifyOptions.IGNORE_RESOURCES),

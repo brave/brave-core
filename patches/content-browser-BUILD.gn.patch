@@ -1,11 +1,11 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 78e8ed893a2a45eb3ffe7a326caaa13bef1083b5..703c2da5660666db0f1811a95a82666dc6c9979f 100644
+index 65c852319a5790913345874d369650dc02312dbe..ec7c9f69ed14daead13d3cefc7bd95cffce88d21 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -2209,6 +2209,12 @@ jumbo_source_set("browser") {
-       "//ppapi/proxy:ipc",
-       "//ppapi/shared_impl",
-     ]
+@@ -2307,6 +2307,12 @@ jumbo_source_set("browser") {
+     if (use_pangocairo) {
+       sources += [ "renderer_host/pepper/pepper_truetype_font_list_pango.cc" ]
+     }
 +    if (brave_chromium_build) {
 +      sources += [
 +        "//brave/content/browser/renderer_host/brave_plugin_registry_impl.cc",
