@@ -62,7 +62,7 @@ uint64_t GetIndexByCompareOrderStartFrom(
   std::string src_order;
   src->GetMetaInfo("order", &src_order);
   DCHECK(!src_order.empty());
-  DCHECK(index >= 0);
+  DCHECK_GE(index, 0);
   while (index < parent->child_count()) {
     const bookmarks::BookmarkNode* node = parent->GetChild(index);
     std::string node_order;

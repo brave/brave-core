@@ -10,7 +10,8 @@
 
 #define BRAVE_SYNC_CYCLE_DELEGATE_H \
 virtual void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) {} \
-virtual void OnPollSyncCycle(brave_sync::GetRecordsCallback cb, base::WaitableEvent* wevent) {}
+virtual void OnPollSyncCycle(brave_sync::GetRecordsCallback cb, \
+                             base::WaitableEvent* wevent) {}
 
 #include "../../../../../../components/sync/engine_impl/cycle/sync_cycle.h"
 #undef BRAVE_SYNC_CYCLE_DELEGATE_H

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
@@ -42,11 +43,11 @@ class Prefs;
 }   // namespace prefs
 
 class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
-                                //public syncer::ProfileSyncService,
-                                public BraveSyncService,
-                                public SyncMessageHandler {
+                                    public BraveSyncService,
+                                    public SyncMessageHandler {
  public:
-  explicit BraveProfileSyncServiceImpl(Profile* profile, InitParams init_params);
+  explicit BraveProfileSyncServiceImpl(Profile* profile,
+                                       InitParams init_params);
 
   ~BraveProfileSyncServiceImpl() override;
 

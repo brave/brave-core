@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_PUBLIC_BRAVE_PROFILE_SYNC_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_PUBLIC_BRAVE_PROFILE_SYNC_SERVICE_H_
 
+#include <utility>
+
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 #include "components/sync/driver/profile_sync_service.h"
 
@@ -19,16 +21,16 @@ class BraveSyncService;
 
 class BraveProfileSyncService : public syncer::ProfileSyncService {
  public:
-   BraveProfileSyncService(InitParams init_params) :
-      syncer::ProfileSyncService(std::move(init_params)) {}
-   ~BraveProfileSyncService() override {}
+  explicit BraveProfileSyncService(InitParams init_params) :
+    syncer::ProfileSyncService(std::move(init_params)) {}
+  ~BraveProfileSyncService() override {}
 
-   virtual bool IsBraveSyncEnabled() const = 0;
-   virtual void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) = 0;
-   virtual void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
-                        base::WaitableEvent* wevent) = 0;
+  virtual bool IsBraveSyncEnabled() const = 0;
+  virtual void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) = 0;
+  virtual void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
+                               base::WaitableEvent* wevent) = 0;
 
-   virtual BraveSyncService* GetSyncService() const = 0;
+  virtual BraveSyncService* GetSyncService() const = 0;
 };
 
 }  // namespace brave_sync
