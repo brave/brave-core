@@ -133,7 +133,6 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
     >
       <div
         className="c7"
-        id="grant-completed-ok"
         size="call-to-action"
         type="accent"
       >

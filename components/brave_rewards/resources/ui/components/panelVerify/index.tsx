@@ -104,6 +104,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
           size={'call-to-action'}
           type={'accent'}
           onClick={onVerifyClick}
+          id={'on-boarding-verify-button'}
         />
         {this.getFooter(compact)}
       </StyledWrapper>

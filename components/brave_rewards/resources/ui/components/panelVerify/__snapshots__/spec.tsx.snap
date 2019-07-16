@@ -456,6 +456,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
   </div>
   <button
     className="c19 c20 c21"
+    id="on-boarding-verify-button"
     size="call-to-action"
     type="accent"
   >

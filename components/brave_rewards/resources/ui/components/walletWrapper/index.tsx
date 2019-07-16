@@ -365,6 +365,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
             }}
             text={getLocale('walletButtonUnverified')}
             {...buttonProps}
+            id={'verify-wallet-button'}
           />
         )
 
@@ -373,6 +374,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           <StyledVerifiedButton
             onClick={this.toggleVerificationDetails}
             active={this.state.verificationDetails}
+            id={'verified-wallet-button'}
           >
             <StyledVerifiedButtonIcon position={'before'}>
               <UpholdSystemIcon />
@@ -397,6 +399,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               position: 'before'
             }}
             {...buttonProps}
+            id={'disconnected-wallet-button'}
           />
         )
     }
