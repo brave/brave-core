@@ -57,7 +57,7 @@ class BrowserViewController: UIViewController {
     fileprivate let alertStackView = UIStackView() // All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
     fileprivate var findInPageBar: FindInPageBar?
     
-    var loadQueue = DeferredCountable<Void>()
+    var loadQueue = Deferred<Void>()
 
     lazy var mailtoLinkHandler: MailtoLinkHandler = MailtoLinkHandler()
 
@@ -448,23 +448,21 @@ class BrowserViewController: UIViewController {
     
     fileprivate func setupTabs() {
         contentBlockListDeferred?.uponQueue(.main) { _ in
-            if self.loadQueue.isEmpty {
-                let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
-                let noTabsAdded = self.tabManager.tabsForCurrentMode.isEmpty
-                
-                var tabToSelect: Tab?
-                
-                if noTabsAdded {
-                    // Two scenarios if there are no tabs in tabmanager:
-                    // 1. We have not restored tabs yet, attempt to restore or make a new tab if there is nothing.
-                    // 2. We are in private browsing mode and need to add a new private tab.
-                    tabToSelect = isPrivate ? self.tabManager.addTab(isPrivate: true) : self.tabManager.restoreAllTabs()
-                } else {
-                    tabToSelect = self.tabManager.tabsForCurrentMode.last
-                }
-                self.tabManager.selectTab(tabToSelect)
+            let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
+            let noTabsAdded = self.tabManager.tabsForCurrentMode.isEmpty
+            
+            var tabToSelect: Tab?
+            
+            if noTabsAdded {
+                // Two scenarios if there are no tabs in tabmanager:
+                // 1. We have not restored tabs yet, attempt to restore or make a new tab if there is nothing.
+                // 2. We are in private browsing mode and need to add a new private tab.
+                tabToSelect = isPrivate ? self.tabManager.addTab(isPrivate: true) : self.tabManager.restoreAllTabs()
+            } else {
+                tabToSelect = self.tabManager.tabsForCurrentMode.last
             }
-            self.loadQueue.fill(())
+            self.tabManager.selectTab(tabToSelect)
+            self.loadQueue.fillIfUnfilled(())
         }
     }
 
@@ -2991,37 +2989,14 @@ extension BrowserViewController: PreferencesObserver {
 
 extension BrowserViewController {
     func openReferralLink(url: URL) {
-        self.loadQueue.upon {
+        self.loadQueue.uponQueue(.main) {
             self.openURLInNewTab(url, isPrivileged: false)
         }
     }
     
     func handleNavigationPath(path: NavigationPath) {
-        self.loadQueue.upon {
+        self.loadQueue.uponQueue(.main) {
             NavigationPath.handle(nav: path, with: self)
         }
-    }
-}
-
-//Provides a bool to query if tasks are pending on main queue.
-class DeferredCountable<T> {
-    private var count = 0
-    private var await = Deferred<T>()
-    
-    func upon(_ block: @escaping (T) -> Void) {
-        let executionBlock: (T) -> Void = { [unowned self] _ in
-            self.count -= 1
-            block(self.await.value)
-        }
-        count += 1
-        await.uponQueue(.main, block: executionBlock)
-    }
-    
-    func fill(_ value: T) {
-        await.fillIfUnfilled(value)
-    }
-    
-    var isEmpty: Bool {
-        return count == 0
     }
 }
