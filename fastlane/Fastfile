@@ -14,7 +14,7 @@ platform :ios do
     # Verify clean repo by default
     unless options[:ignore_git_status]
       UI.message "Running git status check"
-      ensure_git_status_clean()
+      ensure_git_status_clean(show_uncommitted_changes: true, show_diff: true)
     end
   end
 
