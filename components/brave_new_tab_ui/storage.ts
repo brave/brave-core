@@ -27,7 +27,6 @@ const defaultState: NewTab.State = {
   bookmarks: {},
   stats: {
     adsBlockedStat: 0,
-    trackersBlockedStat: 0,
     javascriptBlockedStat: 0,
     httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
@@ -37,7 +36,7 @@ const defaultState: NewTab.State = {
 export const getLoadTimeData = (state: NewTab.State) => {
   state = { ...state }
   state.stats = defaultState.stats
-  ;['adsBlockedStat', 'trackersBlockedStat', 'javascriptBlockedStat',
+  ;['adsBlockedStat', 'javascriptBlockedStat',
     'httpsUpgradesStat', 'fingerprintingBlockedStat'].forEach((stat) => {
       state.stats[stat] = parseInt(chrome.getVariableValue(stat), 10) || 0
     })
