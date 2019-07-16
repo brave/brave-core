@@ -23,7 +23,6 @@
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
-class CTPParser;
 class HostContentSettingsMap;
 class TrackingProtectionServiceTest;
 
@@ -39,9 +38,6 @@ namespace brave_shields {
 // The brave shields service in charge of tracking protection and init.
 class TrackingProtectionService : public LocalDataFilesObserver {
  public:
-  using GetDATFileDataResult =
-      brave_component_updater::LoadDATFileDataResult<CTPParser>;
-
   explicit TrackingProtectionService(
       LocalDataFilesService* local_data_files_service);
   ~TrackingProtectionService() override;
@@ -111,18 +107,11 @@ class TrackingProtectionService : public LocalDataFilesObserver {
 #endif
 
  private:
-  void OnGetDATFileData(GetDATFileDataResult result);
-  void UpdateTrackingProtectionClient(
-      std::unique_ptr<CTPParser> tracking_protection_client,
-      brave_component_updater::DATFileDataBuffer);
-  std::vector<std::string> GetThirdPartyHosts(const std::string& base_host);
-
 #if BUILDFLAG(BRAVE_STP_ENABLED)
   base::flat_set<std::string> first_party_storage_trackers_;
   std::map<RenderFrameIdKey, GURL> render_frame_key_to_starting_site_url;
 #endif
 
-  std::unique_ptr<CTPParser> tracking_protection_client_;
   std::vector<std::string> third_party_base_hosts_;
   std::map<std::string, std::vector<std::string>> third_party_hosts_cache_;
   base::Lock third_party_hosts_lock_;

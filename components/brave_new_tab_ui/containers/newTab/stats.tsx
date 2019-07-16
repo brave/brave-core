@@ -17,10 +17,6 @@ class Stats extends React.Component<Props, {}> {
     return 50
   }
 
-  get trackedBlockersCount () {
-    return this.props.stats.trackersBlockedStat || 0
-  }
-
   get adblockCount () {
     return this.props.stats.adsBlockedStat || 0
   }
@@ -30,7 +26,7 @@ class Stats extends React.Component<Props, {}> {
   }
 
   get estimatedTimeSaved () {
-    const estimatedMillisecondsSaved = (this.adblockCount + this.trackedBlockersCount) * this.millisecondsPerItem || 0
+    const estimatedMillisecondsSaved = this.adblockCount * this.millisecondsPerItem || 0
     const hours = estimatedMillisecondsSaved < 1000 * 60 * 60 * 24
     const minutes = estimatedMillisecondsSaved < 1000 * 60 * 60
     const seconds = estimatedMillisecondsSaved < 1000 * 60
@@ -62,7 +58,7 @@ class Stats extends React.Component<Props, {}> {
   }
 
   render () {
-    const trackedBlockersCount = (this.trackedBlockersCount + this.adblockCount).toLocaleString()
+    const trackedBlockersCount = this.adblockCount.toLocaleString()
     const httpsUpgradedCount = this.httpsUpgradedCount.toLocaleString()
     const timeSaved = this.estimatedTimeSaved
 

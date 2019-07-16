@@ -55,7 +55,6 @@ export const newTabInitialState: NewTab.ApplicationState = {
     bookmarks: {},
     stats: {
       adsBlockedStat: 0,
-      trackersBlockedStat: 0,
       javascriptBlockedStat: 0,
       httpsUpgradesStat: 0,
       fingerprintingBlockedStat: 0

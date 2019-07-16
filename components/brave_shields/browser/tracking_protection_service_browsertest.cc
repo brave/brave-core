@@ -37,17 +37,6 @@ const char kStoragePage[] = "/storage.html";
 using content::BrowserThread;
 using extensions::ExtensionBrowserTest;
 
-const char kTrackingPage[] = "/tracking.html";
-
-const char kTrackingScript[] =
-    "const url = '%s';"
-    "const img = document.createElement('img');"
-    "img.src = url;"
-    "img.onload = function() { window.domAutomationController.send(img.complete"
-    " &&  (img.naturalHeight !== 1 || img.naturalWidth !== 1)); };"
-    "img.onerror = function() { window.domAutomationController.send(false); };"
-    "document.body.appendChild(img);";
-
 const std::string kTrackingProtectionComponentTestId(
     "eclbkhjphkhalklhipiicaldjbnhdfkc");
 
@@ -139,61 +128,6 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
     ASSERT_TRUE(io_helper->Run());
   }
 };
-
-// Load a page that references a tracker from a trusted domain, and
-// make sure it is not blocked.
-IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest,
-                       TrackerReferencedFromTrustedDomainNotBlocked) {
-  ASSERT_TRUE(InstallTrackingProtectionExtension());
-
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-            0ULL);
-
-  GURL url = embedded_test_server()->GetURL("365media.com", kTrackingPage);
-  ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
-
-  GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
-
-  bool img_loaded;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
-      &img_loaded));
-  EXPECT_TRUE(img_loaded);
-
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-            0ULL);
-}
-
-// Load a page that references a tracker from an untrusted domain, and
-// make sure it is blocked.
-IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest,
-                       TrackerReferencedFromUntrustedDomainGetsBlocked) {
-  ASSERT_TRUE(InstallTrackingProtectionExtension());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-            0ULL);
-
-  GURL url = embedded_test_server()->GetURL("google.com", kTrackingPage);
-  ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
-
-  GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
-
-  bool img_loaded;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
-      &img_loaded));
-  EXPECT_FALSE(img_loaded);
-
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-            1ULL);
-}
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
 IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingBlocked) {
