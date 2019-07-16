@@ -67,7 +67,7 @@ void GetRenderFrameInfo(const net::URLRequest* request,
   }
   if (!content::ResourceRequestInfo::GetRenderFrameForRequest(
           request, render_process_id, render_frame_id)) {
-    const content::WebSocketHandshakeRequestInfo* websocket_info =
+    content::WebSocketHandshakeRequestInfo* websocket_info =
       content::WebSocketHandshakeRequestInfo::ForRequest(request);
     if (websocket_info) {
       *render_frame_id = websocket_info->GetRenderFrameId();
