@@ -24,14 +24,15 @@ friend class PageGraph;
   virtual GraphMLId GetGraphMLId() const = 0;
   virtual GraphMLXML GetGraphMLTag() const = 0;
 
+  virtual ItemDesc GetDescBody() const;
+  virtual ItemDesc GetDescPrefix() const = 0;
+  virtual ItemDesc GetDescSuffix() const = 0;
+
  protected:
   // For use ONLY with items generated ad-hoc during GraphML export.
   GraphItem();
 
   GraphItem(PageGraph* const graph);
-  virtual ItemDesc GetDescBody() const;
-  virtual ItemDesc GetDescPrefix() const = 0;
-  virtual ItemDesc GetDescSuffix() const = 0;
   virtual GraphMLXMLList GraphMLAttributes() const;
 
   PageGraph* const graph_;

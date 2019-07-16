@@ -18,6 +18,8 @@ friend class PageGraph;
  public:
   NodeStorage() = delete;
 
+  bool IsNodeActor() const override { return false; }
+
  protected:
   NodeStorage(PageGraph* const graph);
 };

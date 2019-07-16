@@ -21,6 +21,8 @@ friend class PageGraph;
   ItemName GetItemName() const override;
   const MethodName& GetMethod() const;
 
+  bool IsNodeActor() const override { return false; }
+
  protected:
   NodeWebAPI(PageGraph* const graph, const MethodName method);
   ItemDesc GetDescBody() const override;

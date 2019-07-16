@@ -12,6 +12,7 @@
 namespace brave_page_graph {
 
 class Edge;
+class NodeActor;
 class PageGraph;
 
 class Node : public GraphItem {
@@ -25,6 +26,13 @@ friend class PageGraph;
 
   GraphMLId GetGraphMLId() const override;
   GraphMLXML GetGraphMLTag() const override;
+
+  virtual bool IsNodeActor() const = 0;
+  virtual const NodeActor* AsNodeActor() const {
+    if (IsNodeActor())
+      return reinterpret_cast<const NodeActor*>(this);
+    return nullptr;
+  }
 
  protected:
   Node(PageGraph* const graph);

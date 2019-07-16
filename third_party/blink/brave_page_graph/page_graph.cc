@@ -10,6 +10,7 @@
 #include <fstream>
 #include <map>
 #include <memory>
+#include <set>
 #include <signal.h>
 #include <sstream>
 #include <string>
@@ -550,6 +551,25 @@ void PageGraph::RegisterTextNodeChange(const blink::DOMNodeId node_id,
   text_node->AddInEdge(edge);
 }
 
+void PageGraph::DoRegisterRequestStart(const InspectorId request_id,
+    Node* const requesting_node, const std::string& local_url,
+    const RequestType type) {
+  NodeResource* requested_node;
+  if (resource_nodes_.count(local_url) == 0) {
+    requested_node = new NodeResource(this, local_url);
+    AddNode(requested_node);
+    resource_nodes_.emplace(local_url, requested_node);
+  } else {
+    requested_node = resource_nodes_.at(local_url);
+  }
+
+  const shared_ptr<const TrackedRequestRecord> request_record =
+    request_tracker_ .RegisterRequestStart(
+        request_id, requesting_node, requested_node, type);
+
+  PossiblyWriteRequestsIntoGraph(request_record);
+}
+
 void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
     const InspectorId request_id, const KURL& url,
     const RequestType type) {
@@ -567,20 +587,7 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
 
   NodeHTMLElement* const requesting_node = element_nodes_.at(node_id);
-  NodeResource* requested_node;
-  if (resource_nodes_.count(local_url) == 0) {
-    requested_node = new NodeResource(this, local_url);
-    AddNode(requested_node);
-    resource_nodes_.emplace(local_url, requested_node);
-  } else {
-    requested_node = resource_nodes_.at(local_url);
-  }
-
-  const shared_ptr<const TrackedRequestRecord> request_record =
-    request_tracker_ .RegisterRequestStart(
-        request_id, requesting_node, requested_node, type);
-
-  PossiblyWriteRequestsIntoGraph(request_record);
+  DoRegisterRequestStart(request_id, requesting_node, local_url, type);
 }
 
 void PageGraph::RegisterRequestStartFromCurrentScript(
@@ -600,20 +607,31 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
   }
   LOG_ASSERT(acting_node->IsScript());
 
-  NodeResource* requested_node;
-  if (resource_nodes_.count(local_url) == 0) {
-    requested_node = new NodeResource(this, local_url);
-    AddNode(requested_node);
-    resource_nodes_.emplace(local_url, requested_node);
+  DoRegisterRequestStart(request_id, acting_node, local_url, type);
+}
+
+// This is basically the same as |RegisterRequestStartFromCurrentScript|,
+// except we don't require the acting node to be a script (CSS fetches
+// can be initiated by the parser).
+void PageGraph::RegisterRequestStartFromCSS(const InspectorId request_id,
+    const blink::KURL& url, const RequestType type) {
+  NodeActor* const acting_node = GetCurrentActingNode();
+  const KURL normalized_url = NormalizeUrl(url);
+  const string local_url(normalized_url.GetString().Utf8().data());
+
+  if (acting_node->IsParser()) {
+    Log("RegisterRequestStartFromCSS) request id: " + to_string(request_id)
+        + ", url: " + local_url
+        + ", type: " + to_string(type));
   } else {
-    requested_node = resource_nodes_.at(local_url);
+    Log("RegisterRequestStartFromCSS) script id: "
+        + to_string((static_cast<NodeScript*>(acting_node))->GetScriptId())
+        + ", request id: " + to_string(request_id) +
+        + ", url: " + local_url
+        + ", type: " + to_string(type));
   }
 
-  const shared_ptr<const TrackedRequestRecord> request_record =
-    request_tracker_ .RegisterRequestStart(
-        request_id, acting_node, requested_node, type);
-
-  PossiblyWriteRequestsIntoGraph(request_record);
+  DoRegisterRequestStart(request_id, acting_node, local_url, type);
 }
 
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
@@ -902,6 +920,30 @@ void PageGraph::RegisterStorageClear(const StorageLocation location) {
   storage_node->AddInEdge(edge_storage);
 }
 
+void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id) {
+  LOG_ASSERT(element_nodes_.count(node_id) == 1);
+  const Node* node = element_nodes_.at(node_id);
+
+  std::set<const Node*> predecessors;
+  for (const unique_ptr<const Edge>& elm : Edges()) {
+    if (elm->in_node_ == node)
+      predecessors.insert(elm->out_node_);
+  }
+
+  for (std::set<const Node*>::iterator it = predecessors.begin();
+      it != predecessors.end(); it++) {
+    const Node* pred = *it;
+    if (pred->IsNodeActor()) {
+      std::cout << pred->GetDescBody() << "\n";
+      for (const Edge* edge : pred->out_edges_) {
+        if (edge->in_node_ == node) {
+          std::cout << "  " << edge->GetDescBody() << "\n";
+        }
+      }
+      std::cout << "\n";
+    }
+  }
+}
 
 GraphMLXML PageGraph::ToGraphML() const {
   GraphItem::StartGraphMLExport(id_counter_);

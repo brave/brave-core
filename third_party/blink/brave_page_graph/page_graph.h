@@ -113,6 +113,8 @@ friend NodeHTMLElement;
     const RequestType type);
   void RegisterRequestStartFromCurrentScript(const InspectorId request_id,
     const blink::KURL& url, const RequestType type);
+  void RegisterRequestStartFromCSS(const InspectorId request_id,
+      const blink::KURL& url, const RequestType type);
   void RegisterRequestComplete(const InspectorId request_id,
     const blink::ResourceType type, const RequestMetadata& metadata);
   void RegisterRequestError(const InspectorId request_id,
@@ -148,6 +150,8 @@ friend NodeHTMLElement;
     const ScriptId script_id);
   void RegisterScriptCompilationFromEval(const ScriptId script_id);
 
+  void GenerateReportForNode(const blink::DOMNodeId node_id);
+
   GraphMLXML ToGraphML() const;
 
   void Log(const std::string& str) const;
@@ -169,6 +173,9 @@ friend NodeHTMLElement;
   NodeActor* GetNodeActorForScriptId(const ScriptId script_id) const;
   ScriptId GetExecutingScriptId() const;
 
+  void DoRegisterRequestStart(const InspectorId request_id,
+      Node* const requesting_node, const std::string& local_url,
+      const RequestType type);
   void PossiblyWriteRequestsIntoGraph(
     const std::shared_ptr<const TrackedRequestRecord> record);
 

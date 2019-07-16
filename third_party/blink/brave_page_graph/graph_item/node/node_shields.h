@@ -25,6 +25,8 @@ friend class PageGraph;
   void AddInEdge(const Edge* const in_edge) = delete;
   void AddOutEdge(const Edge* const out_edge) = delete;
 
+  bool IsNodeActor() const override { return false; }
+
  protected:
   NodeShields(PageGraph* const graph);
   GraphMLXMLList GraphMLAttributes() const override;
