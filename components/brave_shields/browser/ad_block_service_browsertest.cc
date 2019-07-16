@@ -547,60 +547,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Load a page that references a tracker from an untrusted domain, but
-// has no specific exception rule in ad-block.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-    TrackerReferencedFromUntrustedDomain) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
-  InitTrackingProtectionService();
-  ASSERT_TRUE(InstallTrackingProtectionExtension());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-      0ULL);
-  GURL url = embedded_test_server()->GetURL("google.com", kAdBlockTestPage);
-  ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-      base::StringPrintf(
-          "setExpectations(0, 1, 0, 0, 0, 0);"
-          "addImage('%s')",
-      test_url.spec().c_str()),
-      &as_expected));
-  EXPECT_TRUE(as_expected);
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-      1ULL);
-}
-
-// Load a page that references a tracker from an untrusted domain, but
-// has a specific exception rule in ad-block.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-    TrackerReferencedFromUntrustedDomainWithException) {
-  InitTrackingProtectionService();
-  UpdateAdBlockInstanceWithRules("||365dm.com\n@@logo.png");
-  ASSERT_TRUE(InstallTrackingProtectionExtension());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-      0ULL);
-  GURL url = embedded_test_server()->GetURL("google.com", kAdBlockTestPage);
-  ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  GURL test_url = embedded_test_server()->GetURL("365dm.com", "/logo.png");
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-      base::StringPrintf(
-          "setExpectations(1, 0, 0, 0, 0, 0);"
-          "addImage('%s')",
-      test_url.spec().c_str()),
-      &as_expected));
-  EXPECT_TRUE(as_expected);
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-      0ULL);
-}
-
 // Make sure the third-party flag is passed into the ad-block library properly
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
   UpdateAdBlockInstanceWithRules("||a.com$third-party");

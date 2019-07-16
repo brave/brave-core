@@ -25,7 +25,6 @@ declare namespace NewTab {
 
   export interface Stats {
     adsBlockedStat: number
-    trackersBlockedStat: number
     javascriptBlockedStat: number
     httpsUpgradesStat: number
     fingerprintingBlockedStat: number

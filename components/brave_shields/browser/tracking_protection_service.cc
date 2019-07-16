@@ -12,7 +12,6 @@
 #include "base/task_runner_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
-#include "brave/vendor/tracking-protection/TPParser.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -29,26 +28,19 @@ using content_settings::BraveCookieSettings;
 
 namespace brave_shields {
 
-const char kDatFileVersion[] = "1";
-const char kNavigationTrackersFile[] = "TrackingProtection.dat";
-
 #if BUILDFLAG(BRAVE_STP_ENABLED)
+const char kDatFileVersion[] = "1";
 const char kStorageTrackersFile[] = "StorageTrackingProtection.dat";
 #endif
-
-const int kThirdPartyHostsCacheSize = 20;
 
 TrackingProtectionService::TrackingProtectionService(
     LocalDataFilesService* local_data_files_service)
     : LocalDataFilesObserver(local_data_files_service),
-      tracking_protection_client_(new CTPParser()),
       weak_factory_(this),
       weak_factory_io_thread_(this) {
 }
 
 TrackingProtectionService::~TrackingProtectionService() {
-  BrowserThread::DeleteSoon(
-      BrowserThread::IO, FROM_HERE, tracking_protection_client_.release());
 }
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
@@ -230,73 +222,13 @@ bool TrackingProtectionService::ShouldStartRequest(
   if (matching_exception_filter) {
     *matching_exception_filter = false;
   }
-  // Intentionally don't set cancel_request_explicitly
-  std::string host = url.host();
-  if (!tracking_protection_client_->matchesTracker(tab_host.c_str(),
-                                                   host.c_str())) {
-    return true;
-  }
-
-  std::vector<std::string> hosts(GetThirdPartyHosts(tab_host));
-  for (size_t i = 0; i < hosts.size(); i++) {
-    if (host == hosts[i] ||
-        host.find((std::string) "." + hosts[i]) != std::string::npos) {
-      return true;
-    }
-    size_t iPos = host.find((std::string) "." + hosts[i]);
-    if (iPos == std::string::npos) {
-      continue;
-    }
-    if (hosts[i].length() + ((std::string) ".").length() + iPos ==
-        host.length()) {
-      return true;
-    }
-  }
   return false;
-}
-
-void TrackingProtectionService::OnGetDATFileData(GetDATFileDataResult result) {
-  if (result.second.empty()) {
-    LOG(ERROR) << "Could not obtain tracking protection data";
-    return;
-  }
-  if (!result.first.get()) {
-    LOG(ERROR) << "Failed to deserialize tracking protection data";
-    return;
-  }
-
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
-      base::BindOnce(&TrackingProtectionService::UpdateTrackingProtectionClient,
-                     weak_factory_io_thread_.GetWeakPtr(),
-                     std::move(result.first),
-                     std::move(result.second)));
-}
-
-void TrackingProtectionService::UpdateTrackingProtectionClient(
-    std::unique_ptr<CTPParser> tracking_protection_client,
-    brave_component_updater::DATFileDataBuffer buffer) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  tracking_protection_client_ = std::move(tracking_protection_client);
-  buffer_ = std::move(buffer);
 }
 
 void TrackingProtectionService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  base::FilePath navigation_tracking_protection_path = install_dir
-      .AppendASCII(kDatFileVersion)
-      .AppendASCII(kNavigationTrackersFile);
-
-  base::PostTaskAndReplyWithResult(
-      local_data_files_service()->GetTaskRunner().get(),
-      FROM_HERE,
-      base::BindOnce(&brave_component_updater::LoadDATFileData<CTPParser>,
-                     navigation_tracking_protection_path),
-      base::BindOnce(&TrackingProtectionService::OnGetDATFileData,
-                     weak_factory_.GetWeakPtr()));
-
 #if BUILDFLAG(BRAVE_STP_ENABLED)
   if (!TrackingProtectionHelper::IsSmartTrackingProtectionEnabled()) {
     return;
@@ -313,63 +245,6 @@ void TrackingProtectionService::OnComponentReady(
       base::BindOnce(&TrackingProtectionService::OnGetSTPDATFileData,
                      weak_factory_.GetWeakPtr()));
 #endif
-}
-
-// Ported from Android: net/blockers/blockers_worker.cc
-std::vector<std::string> TrackingProtectionService::GetThirdPartyHosts(
-    const std::string& base_host) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  {
-    base::AutoLock guard(third_party_hosts_lock_);
-    std::map<std::string, std::vector<std::string>>::const_iterator iter =
-        third_party_hosts_cache_.find(base_host);
-    if (third_party_hosts_cache_.end() != iter) {
-      if (third_party_base_hosts_.size() != 0 &&
-          third_party_base_hosts_[third_party_hosts_cache_.size() - 1] !=
-              base_host) {
-        for (size_t i = 0; i < third_party_base_hosts_.size(); i++) {
-          if (third_party_base_hosts_[i] == base_host) {
-            third_party_base_hosts_.erase(third_party_base_hosts_.begin() + i);
-            third_party_base_hosts_.push_back(base_host);
-            break;
-          }
-        }
-      }
-      return iter->second;
-    }
-  }
-
-  char* thirdPartyHosts =
-      tracking_protection_client_->findFirstPartyHosts(base_host.c_str());
-  std::vector<std::string> hosts;
-  if (nullptr != thirdPartyHosts) {
-    std::string strThirdPartyHosts = thirdPartyHosts;
-    size_t iPos = strThirdPartyHosts.find(",");
-    while (iPos != std::string::npos) {
-      std::string thirdParty = strThirdPartyHosts.substr(0, iPos);
-      strThirdPartyHosts = strThirdPartyHosts.substr(iPos + 1);
-      iPos = strThirdPartyHosts.find(",");
-      hosts.push_back(thirdParty);
-    }
-    if (0 != strThirdPartyHosts.length()) {
-      hosts.push_back(strThirdPartyHosts);
-    }
-    delete []thirdPartyHosts;
-  }
-
-  {
-    base::AutoLock guard(third_party_hosts_lock_);
-    if (third_party_hosts_cache_.size() == kThirdPartyHostsCacheSize &&
-        third_party_base_hosts_.size() == kThirdPartyHostsCacheSize) {
-      third_party_hosts_cache_.erase(third_party_base_hosts_[0]);
-      third_party_base_hosts_.erase(third_party_base_hosts_.begin());
-    }
-    third_party_base_hosts_.push_back(base_host);
-    third_party_hosts_cache_.insert(
-        std::pair<std::string, std::vector<std::string>>(base_host, hosts));
-  }
-
-  return hosts;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

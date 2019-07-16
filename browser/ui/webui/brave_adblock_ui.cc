@@ -130,7 +130,8 @@ void BraveAdblockUI::CustomizeWebUIProperties(
   PrefService* prefs = profile->GetPrefs();
   if (render_view_host) {
     render_view_host->SetWebUIProperty(
-        "adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked)));
+        "adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked) +
+            prefs->GetUint64(kTrackersBlocked)));
   }
 }
 
