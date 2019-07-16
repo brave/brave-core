@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..2b2b8729c94affe1a29317b7a9bf70ee18af46f8 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4b838f51d0e824ee59c81dedd6f1079d17196b30 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -310,6 +310,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
@@ -29,7 +29,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..2b2b8729c94affe1a29317b7a9bf70ee
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        frame_(initializer.GetFrame()),
-@@ -778,7 +791,130 @@ Document::~Document() {
+@@ -778,8 +791,131 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -44,8 +44,8 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..2b2b8729c94affe1a29317b7a9bf70ee
 +    page_graph_ = nullptr;
 +  }
 +#endif
-+}
-+
+ }
+ 
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +static bool IsDocumentLocal(const blink::Document* document) {
 +  // If the current document is in a different security origin than the
@@ -155,57 +155,51 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..2b2b8729c94affe1a29317b7a9bf70ee
 +
 +  page_graph_ = new ::brave_page_graph::PageGraph(*this);
 +  return page_graph_;
- }
++}
 +#endif
- 
++
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
-@@ -5281,6 +5417,27 @@ String Document::cookie(ExceptionState& exception_state) const {
+   DCHECK(position.IsNotNull());
+@@ -5281,6 +5417,22 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (cookie_url.IsEmpty())
      return String();
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
-+    String cookies;
-+    if (!cookie_url.IsEmpty()) {
-+      cookies = Cookies(this, cookie_url);
-+    }
++    ::brave_page_graph::PageGraph* const page_graph =
++        const_cast<Document*>(this)->GetPageGraph();
++    if (page_graph) {
++      String cookies;
++      if (!cookie_url.IsEmpty()) {
++        cookies = Cookies(this, cookie_url);
++      }
 +
-+    brave_page_graph::PageGraph* local_page_graph = page_graph_;
-+    if (local_page_graph == nullptr) {
-+      local_page_graph = page_graph_non_owning_;
++      page_graph->RegisterStorageRead(cookie_url.GetString(), cookies,
++          brave_page_graph::kStorageLocationCookie);
 +    }
-+
-+    if (local_page_graph != nullptr) {
-+      local_page_graph->RegisterStorageRead(cookie_url.GetString(), cookies,
-+        brave_page_graph::kStorageLocationCookie);
-+    }
-+
-+    return cookies;
 +  }
 +#endif
 +
    return Cookies(this, cookie_url);
  }
  
-@@ -5312,6 +5469,23 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5312,6 +5464,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
    if (cookie_url.IsEmpty())
      return;
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
-+    Vector<String> cookie_structure;
-+    value.Split("=", cookie_structure);
-+    String key = *(cookie_structure.begin());
-+    String cookie_value = value.Substring(key.length() + 1, value.length());
++    ::brave_page_graph::PageGraph* const page_graph = GetPageGraph();
++    if (page_graph) {
++      Vector<String> cookie_structure;
++      value.Split("=", cookie_structure);
++      String key = *(cookie_structure.begin());
++      String cookie_value = value.Substring(key.length() + 1, value.length());
 +
-+    brave_page_graph::PageGraph* page_graph = page_graph_;
-+    if (page_graph == nullptr) {
-+      page_graph = page_graph_non_owning_;
++      page_graph->RegisterStorageWrite(key, cookie_value,
++          brave_page_graph::kStorageLocationCookie);
 +    }
-+
-+    page_graph->RegisterStorageWrite(key, cookie_value,
-+      brave_page_graph::kStorageLocationCookie);
 +  }
 +#endif
 +
