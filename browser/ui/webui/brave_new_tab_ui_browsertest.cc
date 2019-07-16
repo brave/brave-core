@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -17,10 +18,10 @@
 #include "content/public/browser/render_process_host_observer.h"
 #include "content/public/test/browser_test_utils.h"
 
-using namespace content;
+using content::RenderProcessHost;
 
 namespace {
-class ObserverLogger : public RenderProcessHostObserver {
+class ObserverLogger : public content::RenderProcessHostObserver {
  public:
   explicit ObserverLogger(RenderProcessHost* observed_host) :
       observed_host_(observed_host) {
@@ -29,8 +30,9 @@ class ObserverLogger : public RenderProcessHostObserver {
 
  protected:
   // Make sure we aren't exiting because of a crash
-  void RenderProcessExited(RenderProcessHost* host,
-                           const ChildProcessTerminationInfo& info) override {
+  void RenderProcessExited(
+      RenderProcessHost* host,
+      const content::ChildProcessTerminationInfo& info) override {
     observed_host_->RemoveObserver(this);
     EXPECT_EQ(info.exit_code, 0);
   }
@@ -41,10 +43,10 @@ class ObserverLogger : public RenderProcessHostObserver {
 
 class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
  public:
-  void GoBack(WebContents* web_contents) {
-    WindowedNotificationObserver load_stop_observer(
-        NOTIFICATION_LOAD_STOP,
-        NotificationService::AllSources());
+  void GoBack(content::WebContents* web_contents) {
+    content::WindowedNotificationObserver load_stop_observer(
+        content::NOTIFICATION_LOAD_STOP,
+        content::NotificationService::AllSources());
     web_contents->GetController().GoBack();
     load_stop_observer.Wait();
   }
@@ -79,7 +81,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
   bool is_brave_new_tab = false;
   ASSERT_TRUE(content::ExecuteScriptAndExtractBool(
       contents,
-      "window.domAutomationController.send(!!document.querySelector(`html[data-test-id='brave-new-tab-page']`))",
+      "window.domAutomationController.send(!!document.querySelector(`html[data-"
+      "test-id='brave-new-tab-page']`))",
       &is_brave_new_tab));
   ASSERT_TRUE(is_brave_new_tab);
 }
