@@ -1,0 +1,35 @@
+diff --git a/src/compiler.cc b/src/compiler.cc
+index d3cebfd58e679b9a2219e9595c1e8a279668710e..0d3413faa4146a69645857e21c5c8938983d25f3 100644
+--- a/src/compiler.cc
++++ b/src/compiler.cc
+@@ -42,6 +42,8 @@
+ #include "src/vm-state-inl.h"
+ #include "src/zone/zone-list-inl.h"  // crbug.com/v8/8816
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -1593,6 +1595,21 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+   }
+   DCHECK(is_compiled_scope.is_compiled());
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    EvalScriptCompiledFunc eval_script_compiled_func =
++        isolate->GetEvalScriptCompiledFunc();
++    if (eval_script_compiled_func) {
++      Object maybe_script = result->shared()->script();
++      if (maybe_script->IsScript()) {
++        Script script = Script::cast(maybe_script);
++        eval_script_compiled_func(*reinterpret_cast<v8::Isolate*>(isolate),
++                                  script->id());
++      }
++    }
++  }
++#endif
++
+   return result;
+ }
+ 

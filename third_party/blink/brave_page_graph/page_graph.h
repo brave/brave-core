@@ -91,10 +91,10 @@ friend NodeHTMLElement;
 
   void RegisterEventListenerAdd(const blink::DOMNodeId,
     const WTF::String& event_type, const EventListenerId listener_id,
-    const ScriptId listener_script_id);
+    ScriptId listener_script_id);
   void RegisterEventListenerRemove(const blink::DOMNodeId,
     const WTF::String& event_type, const EventListenerId listener_id,
-    const ScriptId listener_script_id);
+    ScriptId listener_script_id);
 
   void RegisterInlineStyleSet(const blink::DOMNodeId node_id,
     const WTF::String& attr_name, const WTF::String& attr_value);
@@ -144,6 +144,7 @@ friend NodeHTMLElement;
   void RegisterScriptCompilationFromAttr(const blink::DOMNodeId node_id,
     const WTF::String& attr_name, const WTF::String& attr_value,
     const ScriptId script_id);
+  void RegisterScriptCompilationFromEval(const ScriptId script_id);
 
   GraphMLXML ToGraphML() const;
 
@@ -161,8 +162,10 @@ friend NodeHTMLElement;
   NodeHTMLElement* GetHTMLElementNode(const blink::DOMNodeId node_id) const;
   NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
   NodeExtension* GetExtensionNode();
+
   NodeActor* GetCurrentActingNode() const;
   NodeActor* GetNodeActorForScriptId(const ScriptId script_id) const;
+  ScriptId GetExecutingScriptId() const;
 
   void PossiblyWriteRequestsIntoGraph(
     const std::shared_ptr<const TrackedRequestRecord> record);

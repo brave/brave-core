@@ -1,5 +1,5 @@
 diff --git a/include/v8.h b/include/v8.h
-index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..5f5db866a8673489f952a402a5a7c1b875161479 100644
+index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..29170afe2c350b885457e5ca89292a2f2c7ebb5f 100644
 --- a/include/v8.h
 +++ b/include/v8.h
 @@ -26,6 +26,8 @@
@@ -11,7 +11,19 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..5f5db866a8673489f952a402a5a7c1b8
  // We reserve the V8_* prefix for macros defined in V8 public API and
  // assume there are no name conflicts with the embedder's code.
  
-@@ -4194,6 +4196,13 @@ class V8_EXPORT Function : public Object {
+@@ -34,6 +36,11 @@
+  */
+ namespace v8 {
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++typedef void (*EvalScriptCompiledFunc)(v8::Isolate& isolate,
++                                       const int script_id);
++#endif
++
+ class AccessorSignature;
+ class Array;
+ class ArrayBuffer;
+@@ -4194,6 +4201,13 @@ class V8_EXPORT Function : public Object {
     */
    Local<Value> GetBoundFunction() const;
  
@@ -25,12 +37,14 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..5f5db866a8673489f952a402a5a7c1b8
    ScriptOrigin GetScriptOrigin() const;
    V8_INLINE static Function* Cast(Value* obj);
    static const int kLineOffsetNotFound;
-@@ -8599,6 +8608,10 @@ class V8_EXPORT Isolate {
+@@ -8599,6 +8613,12 @@ class V8_EXPORT Isolate {
    void operator delete(void*, size_t) = delete;
    void operator delete[](void*, size_t) = delete;
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  int GetExecutingScriptId();
++
++  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func);
 +#endif
 +
   private:

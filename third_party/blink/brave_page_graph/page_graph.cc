@@ -150,6 +150,14 @@ PageGraph* PageGraph::GetFromExecutionContext(ExecutionContext& exec_context) {
   return document.GetPageGraph();
 }
 
+static void OnEvalScriptCompiled(v8::Isolate& isolate,
+                                 const ScriptId script_id) {
+  PageGraph* const page_graph = PageGraph::GetFromIsolate(isolate);
+  if (page_graph) {
+    page_graph->RegisterScriptCompilationFromEval(script_id);
+  }
+}
+
 PageGraph::PageGraph(Document& document) :
     parser_node_(new NodeParser(this)),
     shields_node_(new NodeShields(this)),
@@ -172,6 +180,11 @@ PageGraph::PageGraph(Document& document) :
   AddNode(html_root_node_);
   element_nodes_.emplace(root_id, html_root_node_);
   Log("Root document ID: " + to_string(root_id));
+
+  Isolate* const isolate = document.GetIsolate();
+  if (isolate) {
+    isolate->SetEvalScriptCompiledFunc(&OnEvalScriptCompiled);
+  }
 
   yuck = this;
   signal(30, &write_to_disk);
@@ -384,8 +397,10 @@ void PageGraph::RegisterContentFrameSet(const blink::DOMNodeId node_id,
 
 void PageGraph::RegisterEventListenerAdd(const blink::DOMNodeId node_id,
     const WTF::String& event_type, const EventListenerId listener_id,
-    const ScriptId listener_script_id) {
+    ScriptId listener_script_id) {
   string local_event_type(event_type.Utf8().data());
+  listener_script_id = script_tracker_.ResolveScriptId(listener_script_id);
+
   Log("RegisterEventListenerAdd) node id: " + to_string(node_id)
     + ", event_type: " + local_event_type
     + ", listener_id: " + to_string(listener_id)
@@ -407,8 +422,10 @@ void PageGraph::RegisterEventListenerAdd(const blink::DOMNodeId node_id,
 
 void PageGraph::RegisterEventListenerRemove(const blink::DOMNodeId node_id,
     const WTF::String& event_type, const EventListenerId listener_id,
-    const ScriptId listener_script_id) {
+    ScriptId listener_script_id) {
   string local_event_type(event_type.Utf8().data());
+  listener_script_id = script_tracker_.ResolveScriptId(listener_script_id);
+
   Log("RegisterEventListenerRemove) node id: " + to_string(node_id)
     + ", event_type: " + local_event_type
     + ", listener_id: " + to_string(listener_id)
@@ -726,6 +743,18 @@ void PageGraph::RegisterScriptCompilationFromAttr(
   code_node->AddInEdge(execute_edge);
 }
 
+void PageGraph::RegisterScriptCompilationFromEval(const ScriptId script_id) {
+  const ScriptId parent_script_id = GetExecutingScriptId();
+  if (parent_script_id == 0) {
+    return;
+  }
+
+  Log("RegisterScriptCompilationFromEval) script id: " + to_string(script_id)
+    + ", parent script id: " + to_string(script_id));
+
+  script_tracker_.AddScriptIdAlias(script_id, parent_script_id);
+}
+
 // Functions for handling storage read, write, and deletion
 void PageGraph::RegisterStorageRead(const String& key, const String& value,
     const StorageLocation location) {
@@ -875,7 +904,7 @@ GraphMLXML PageGraph::ToGraphML() const {
 }
 
 NodeActor* PageGraph::GetCurrentActingNode() const {
-  const ScriptId current_script_id = document_.GetIsolate()->GetExecutingScriptId();
+  const ScriptId current_script_id = GetExecutingScriptId();
 
   static ScriptId last_reported_script_id = 0;
   const bool should_log = last_reported_script_id != current_script_id;
@@ -900,6 +929,11 @@ NodeActor* PageGraph::GetNodeActorForScriptId(const ScriptId script_id) const {
   }
 
   return remote_script_nodes_.at(script_id);
+}
+
+ScriptId PageGraph::GetExecutingScriptId() const {
+  return script_tracker_.ResolveScriptId(
+      document_.GetIsolate()->GetExecutingScriptId());
 }
 
 void PageGraph::PossiblyWriteRequestsIntoGraph(
