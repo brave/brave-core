@@ -212,11 +212,6 @@ void LedgerClientMojoProxy::CallbackHolder<
   delete this;
 }
 
-void LedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
-    const std::string& hint) {
-  ledger_client_->OnGrantCaptcha(image, hint);
-}
-
 void LedgerClientMojoProxy::OnRecoverWallet(
     int32_t result,
     double balance,

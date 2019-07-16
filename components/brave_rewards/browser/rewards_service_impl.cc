@@ -1426,7 +1426,8 @@ void RewardsServiceImpl::GetGrantCaptcha(
   headers.push_back("brave-product:brave-core");
   headers.push_back("promotion-id:" + promotion_id);
   headers.push_back("promotion-type:" + promotion_type);
-  bat_ledger_->GetGrantCaptcha(headers);
+  bat_ledger_->GetGrantCaptcha(headers,
+      base::BindOnce(&RewardsServiceImpl::OnGrantCaptcha, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::TriggerOnGrantCaptcha(const std::string& image,

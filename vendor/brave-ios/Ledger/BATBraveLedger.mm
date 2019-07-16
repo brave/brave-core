@@ -80,7 +80,6 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
 @property (nonatomic, copy, nullable) void (^walletInitializedBlock)(const ledger::Result result);
 @property (nonatomic, copy, nullable) void (^walletRecoveredBlock)(const ledger::Result result, const double balance, std::vector<ledger::GrantPtr> grants);
-@property (nonatomic, copy, nullable) void (^grantCaptchaBlock)(const std::string& image, const std::string& hint);
 
 @end
 
@@ -222,7 +221,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   if (self.walletInitializedBlock) {
     self.walletInitializedBlock(result);
   }
-  
+
   for (BATBraveLedgerObserver *observer in self.observers) {
     if (observer.walletInitalized) {
       observer.walletInitalized(static_cast<BATResult>(result));
@@ -560,24 +559,17 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)grantCaptchaForPromotionId:(NSString *)promoID promotionType:(NSString *)promotionType completion:(void (^)(NSString * _Nonnull, NSString * _Nonnull))completion
 {
-  const auto __weak weakSelf = self;
-  self.grantCaptchaBlock = ^(const std::string &image, const std::string &hint) {
-    weakSelf.grantCaptchaBlock = nil;
-    completion([NSString stringWithUTF8String:image.c_str()],
-               [NSString stringWithUTF8String:hint.c_str()]);
-  };
   std::vector<std::string> headers;
   headers.push_back("brave-product:brave-core");
   headers.push_back("promotion-id:" + std::string(promoID.UTF8String));
   headers.push_back("promotion-type:" + std::string(promotionType.UTF8String));
-  ledger->GetGrantCaptcha(headers);
-}
-
-- (void)onGrantCaptcha:(const std::string &)image hint:(const std::string &)hint
-{
-  if (self.grantCaptchaBlock) {
-    self.grantCaptchaBlock(image, hint);
-  }
+  ledger->GetGrantCaptcha(headers,
+      ^(const std::string &image, const std::string &hint) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          completion([NSString stringWithUTF8String:image.c_str()],
+                     [NSString stringWithUTF8String:hint.c_str()]);
+        });
+      });
 }
 
 - (void)solveGrantCaptchWithPromotionId:(NSString *)promotionId solution:(NSString *)solution
@@ -817,7 +809,7 @@ BATLedgerReadonlyBridge(BOOL, isEnabled, GetRewardsMainEnabled)
 - (void)setEnabled:(BOOL)enabled
 {
   ledger->SetRewardsMainEnabled(enabled);
-  
+
   for (BATBraveLedgerObserver *observer in self.observers) {
     if (observer.rewardsEnabledStateUpdated) {
       observer.rewardsEnabledStateUpdated(enabled);
@@ -1592,7 +1584,7 @@ BATLedgerBridge(BOOL,
   for (BATPendingContributionInfo *info in pendingContributions) {
     [keys addObject:info.publisherKey];
   }
-  
+
   [BATLedgerDatabase removeAllPendingContributions:^(BOOL success) {
     callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
     if (success) {

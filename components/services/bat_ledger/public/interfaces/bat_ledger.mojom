@@ -64,7 +64,7 @@ interface BatLedger {
 
   FetchGrants(string lang, string payment_id) =>
       (int32 result, array<ledger.mojom.Grant> grants);
-  GetGrantCaptcha(array<string> headers);
+  GetGrantCaptcha(array<string> headers) => (string image, string hint);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase);
   SolveGrantCaptcha(string solution, string promotionId);
@@ -162,7 +162,6 @@ interface BatLedgerClient {
   SavePublishersList(string publishers_list) => (int32 result);
 
   OnWalletProperties(int32 result, ledger.mojom.WalletProperties? properties);
-  OnGrantCaptcha(string image, string hint);
   OnRecoverWallet(int32 result,
                   double balance,
                   array<ledger.mojom.Grant?> grants);

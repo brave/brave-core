@@ -71,9 +71,6 @@ void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std:
 std::unique_ptr<ledger::LogStream> NativeLedgerClient::Log(const char * file, int line, const ledger::LogLevel log_level) const {
   return [bridge_ log:file line:line logLevel:log_level];
 }
-void NativeLedgerClient::OnGrantCaptcha(const std::string & image, const std::string & hint) {
-  [bridge_ onGrantCaptcha:image hint:hint];
-}
 void NativeLedgerClient::OnGrantFinish(ledger::Result result, ledger::GrantPtr grant) {
   [bridge_ onGrantFinish:result grant:std::move(grant)];
 }
@@ -109,9 +106,7 @@ void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCal
 }
 void NativeLedgerClient::SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) {
   [bridge_ saveActivityInfo:std::move(publisher_info) callback:callback];
-}
-void NativeLedgerClient::SaveContributionInfo(const std::string & probi, const int month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::REWARDS_CATEGORY category) {
-  [bridge_ saveContributionInfo:probi month:month year:year date:date publisherKey:publisher_key category:category];
+} void NativeLedgerClient::SaveContributionInfo(const std::string & probi, const int month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::REWARDS_CATEGORY category) { [bridge_ saveContributionInfo:probi month:month year:year date:date publisherKey:publisher_key category:category];
 }
 void NativeLedgerClient::SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) {
   [bridge_ saveLedgerState:ledger_state handler:handler];

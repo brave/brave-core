@@ -190,22 +190,25 @@ void Grants::SetGrantCallback(
   ledger_->SetGrants(updated_grants);
 }
 
-void Grants::GetGrantCaptcha(const std::vector<std::string>& headers) {
-  auto callback = std::bind(&Grants::GetGrantCaptchaCallback,
+void Grants::GetGrantCaptcha(const std::vector<std::string>& headers,
+    ledger::GetGrantCaptchaCallback callback) {
+  auto on_load = std::bind(&Grants::GetGrantCaptchaCallback,
                             this,
                             _1,
                             _2,
-                            _3);
+                            _3,
+                            std::move(callback));
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_PROMOTION_CAPTCHA + ledger_->GetPaymentId(),
         PREFIX_V4),
-      headers, "", "", ledger::URL_METHOD::GET, callback);
+      headers, "", "", ledger::URL_METHOD::GET, std::move(on_load));
 }
 
 void Grants::GetGrantCaptchaCallback(
     int response_status_code,
     const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const std::map<std::string, std::string>& headers,
+    ledger::GetGrantCaptchaCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   auto it = headers.find("captcha-hint");
@@ -214,7 +217,7 @@ void Grants::GetGrantCaptchaCallback(
     return;
   }
 
-  ledger_->OnGrantCaptcha(response, it->second);
+  callback(response, it->second);
 }
 
 }  // namespace braveledger_grant
