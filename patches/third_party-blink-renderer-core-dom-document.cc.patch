@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4b838f51d0e824ee59c81dedd6f1079d17196b30 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..947344dd9d60772933c14ce63e55fe79483f5057 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -310,6 +310,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
@@ -29,23 +29,18 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4b838f51d0e824ee59c81dedd6f1079d
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        frame_(initializer.GetFrame()),
-@@ -778,8 +791,131 @@ Document::~Document() {
+@@ -778,8 +791,126 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
 +
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  page_graph_non_owning_ = nullptr;
-+
-+  if (page_graph_ != nullptr) {
-+    // The page graph should be owned by the top document.
-+    LOG_ASSERT(GetFrame()->IsMainFrame());
-+    delete page_graph_;
-+    page_graph_ = nullptr;
-+  }
++  // These should be cleared in Document::Shutdown().
++  LOG_ASSERT(!page_graph_);
++  LOG_ASSERT(!page_graph_non_owning_);
 +#endif
- }
- 
++}
++
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +static bool IsDocumentLocal(const blink::Document* document) {
 +  // If the current document is in a different security origin than the
@@ -86,8 +81,8 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4b838f51d0e824ee59c81dedd6f1079d
 +  }
 +
 +  return true;
-+}
-+
+ }
+ 
 +brave_page_graph::PageGraph* Document::GetPageGraph() {
 +  if (wasDiscarded() == true) {
 +    return nullptr;
@@ -161,7 +156,25 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4b838f51d0e824ee59c81dedd6f1079d
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
    DCHECK(position.IsNotNull());
-@@ -5281,6 +5417,22 @@ String Document::cookie(ExceptionState& exception_state) const {
+@@ -2711,6 +2842,17 @@ void Document::Shutdown() {
+   if (!IsActive())
+     return;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  page_graph_non_owning_ = nullptr;
++
++  if (page_graph_ != nullptr) {
++    // The page graph should be owned by the top document.
++    LOG_ASSERT(IsInMainFrame());
++    delete page_graph_;
++    page_graph_ = nullptr;
++  }
++#endif
++
+   GetViewportData().Shutdown();
+ 
+   // Frame navigation can cause a new Document to be attached. Don't allow that,
+@@ -5281,6 +5423,22 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (cookie_url.IsEmpty())
      return String();
  
@@ -184,7 +197,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4b838f51d0e824ee59c81dedd6f1079d
    return Cookies(this, cookie_url);
  }
  
-@@ -5312,6 +5464,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5312,6 +5470,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
    if (cookie_url.IsEmpty())
      return;
  
