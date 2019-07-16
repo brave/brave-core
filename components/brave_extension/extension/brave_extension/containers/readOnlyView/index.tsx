@@ -19,7 +19,7 @@ import {
   BlockedInfoRowText,
   BlockedListFooter,
   ShieldsButton
-} from 'brave-ui/features/shields'
+} from '../../components'
 
 // Group components
 import InterfaceControls from './interfaceControls'

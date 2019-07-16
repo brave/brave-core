@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { BlockedListItem } from 'brave-ui/features/shields'
+import { BlockedListItem } from '../../../components'
 
 // Helpers
 import { stripProtocolFromUrl } from '../../../helpers/urlUtils'

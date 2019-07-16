@@ -12,7 +12,7 @@ import {
   BlockedInfoRowStats,
   BlockedInfoRowText,
   Toggle
-} from 'brave-ui/features/shields'
+} from '../../../components'
 
 // Group Components
 import StaticList from '../overlays/staticOverlay'

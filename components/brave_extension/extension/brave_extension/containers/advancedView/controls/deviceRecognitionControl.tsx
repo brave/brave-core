@@ -11,7 +11,7 @@ import {
   ArrowDownIcon,
   BlockedInfoRowStats,
   SelectBox
-} from 'brave-ui/features/shields'
+} from '../../../components'
 
 // Group Components
 import StaticList from '../overlays/staticOverlay'

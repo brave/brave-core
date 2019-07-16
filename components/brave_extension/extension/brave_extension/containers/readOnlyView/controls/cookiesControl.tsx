@@ -8,7 +8,7 @@ import * as React from 'react'
 import {
   BlockedInfoRowSingleText,
   BlockedInfoRowText
-} from 'brave-ui/features/shields'
+} from '../../../components'
 
 // Helpers
 import { getLocale } from '../../../background/api/localeAPI'

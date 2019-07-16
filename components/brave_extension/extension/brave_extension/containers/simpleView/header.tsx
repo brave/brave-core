@@ -23,7 +23,7 @@ import {
   ShieldIcon,
   DisabledContentText,
   Toggle
- } from 'brave-ui/features/shields'
+ } from '../../components'
 
 // Helpers
 import { getLocale } from '../../background/api/localeAPI'

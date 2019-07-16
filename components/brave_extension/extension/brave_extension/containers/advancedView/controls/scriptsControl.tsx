@@ -13,7 +13,7 @@ import {
   BlockedInfoRowText,
   LinkAction,
   Toggle
-} from 'brave-ui/features/shields'
+} from '../../../components'
 
 // Group Components
 import NoScript from '../overlays/noScriptOverlay'

@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { MainFooter, Link } from 'brave-ui/features/shields'
+import { MainFooter, Link } from '../../components'
 
 // API
 import * as tabsAPI from '../../background/api/tabsAPI'

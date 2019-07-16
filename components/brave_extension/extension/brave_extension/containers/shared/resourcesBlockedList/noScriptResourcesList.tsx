@@ -21,7 +21,7 @@ import {
   LinkAction,
   BlockedListItemDetails,
   BlockedListItemSummary
-} from 'brave-ui/features/shields'
+} from '../../../components'
 
 // Helpers
 import { getHostname, stripProtocolFromUrl } from '../../../helpers/urlUtils'

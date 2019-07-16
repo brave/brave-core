@@ -8,7 +8,7 @@ import * as React from 'react'
 import 'emptykit.css'
 
 // Feature-specific components
-import { ShieldsPanel } from 'brave-ui/features/shields'
+import { ShieldsPanel } from '../../components'
 
 // Components group
 import Header from './header'

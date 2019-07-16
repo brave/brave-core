@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as shieldsPanelActions from '../actions/shieldsPanelActions'
 import * as shieldsPanelState from '../state/shieldsPanelState'
-import BraveShields from '../components/braveShields'
+import BraveShields from '../containers/braveShields'
 import { State } from '../types/state/mainState'
 
 const mapStateToProps = (

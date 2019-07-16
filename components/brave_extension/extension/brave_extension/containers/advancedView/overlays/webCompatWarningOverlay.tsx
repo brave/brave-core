@@ -14,7 +14,7 @@ import {
   WarningIcon,
   WarningText,
   ShieldsButton
-} from 'brave-ui/features/shields'
+} from '../../../components'
 
 // Shared components
 import { Card } from 'brave-ui'

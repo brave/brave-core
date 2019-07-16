@@ -17,7 +17,7 @@ import {
   BlockedInfoRowStats,
   BlockedListSummaryText,
   ShieldsButton
-} from 'brave-ui/features/shields'
+} from '../../../components'
 
 // Helpers
 import { blockedResourcesSize } from '../../../helpers/shieldsUtils'
