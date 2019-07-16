@@ -164,3 +164,42 @@ std::unique_ptr<ledger::LogStream> NativeLedgerClient::VerboseLog(const char * f
 void NativeLedgerClient::OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) {
   return [bridge_ onContributeUnverifiedPublishers:result publisherKey:publisher_key publisherName:publisher_name];
 }
+void NativeLedgerClient::SetBooleanState(const std::string& name, bool value) {
+  [bridge_ setBooleanState:name value:value];
+}
+bool NativeLedgerClient::GetBooleanState(const std::string& name) const {
+  return [bridge_ getBooleanState:name];
+}
+void NativeLedgerClient::SetIntegerState(const std::string& name, int value) {
+  [bridge_ setIntegerState:name value:value];
+}
+int NativeLedgerClient::GetIntegerState(const std::string& name) const {
+  return [bridge_ getIntegerState:name];
+}
+void NativeLedgerClient::SetDoubleState(const std::string& name, double value) {
+  [bridge_ setDoubleState:name value:value];
+}
+double NativeLedgerClient::GetDoubleState(const std::string& name) const {
+  return [bridge_ getDoubleState:name];
+}
+void NativeLedgerClient::SetStringState(const std::string& name, const std::string& value) {
+  [bridge_ setStringState:name value:value];
+}
+std::string NativeLedgerClient::GetStringState(const std::string& name) {
+  return [bridge_ getStringState:name];
+}
+void NativeLedgerClient::SetInt64State(const std::string& name, int64_t value) {
+  [bridge_ setInt64State:name value:value];
+}
+int64_t NativeLedgerClient::GetInt64State(const std::string& name) const {
+  return [bridge_ getInt64State:name];
+}
+void NativeLedgerClient::SetUint64State(const std::string& name, uint64_t value) {
+  [bridge_ setUint64State:name value:value];
+}
+uint64_t NativeLedgerClient::GetUint64State(const std::string& name) const {
+  return [bridge_ getUint64State:name];
+}
+void NativeLedgerClient::ClearState(const std::string& name) {
+  [bridge_ clearState:name];
+}

@@ -66,4 +66,17 @@ private:
   std::string URIEncode(const std::string & value) override;
   std::unique_ptr<ledger::LogStream> VerboseLog(const char * file, int line, int vlog_level) const override;
   void OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) override;
+  void SetBooleanState(const std::string& name, bool value) override;
+  bool GetBooleanState(const std::string& name) const override;
+  void SetIntegerState(const std::string& name, int value) override;
+  int GetIntegerState(const std::string& name) const override;
+  void SetDoubleState(const std::string& name, double value) override;
+  double GetDoubleState(const std::string& name) const override;
+  void SetStringState(const std::string& name, const std::string& value) override;
+  std::string GetStringState(const std::string& name) override;
+  void SetInt64State(const std::string& name, int64_t value) override;
+  int64_t GetInt64State(const std::string& name) const override;
+  void SetUint64State(const std::string& name, uint64_t value) override;
+  uint64_t GetUint64State(const std::string& name) const override;
+  void ClearState(const std::string& name) override;
 };

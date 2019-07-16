@@ -59,5 +59,18 @@
 - (std::string)URIEncode:(const std::string &)value;
 - (std::unique_ptr<ledger::LogStream>)verboseLog:(const char *)file line:(int)line vlogLevel:(int)vlog_level;
 - (void)onContributeUnverifiedPublishers:(ledger::Result)result publisherKey:(const std::string&)publisher_key publisherName:(const std::string&)publisher_name;
+- (void)setBooleanState:(const std::string&)name value:(bool)value;
+- (bool)getBooleanState:(const std::string&)name;
+- (void)setIntegerState:(const std::string&)name value:(int)value;
+- (int)getIntegerState:(const std::string&)name;
+- (void)setDoubleState:(const std::string&)name value:(double)value;
+- (double)getDoubleState:(const std::string&)name;
+- (void)setStringState:(const std::string&)name value:(const std::string&)value;
+- (std::string)getStringState:(const std::string&)name;
+- (void)setInt64State:(const std::string&)name value:(int64_t)value;
+- (int64_t)getInt64State:(const std::string&)name;
+- (void)setUint64State:(const std::string&)name value:(uint64_t)value;
+- (uint64_t)getUint64State:(const std::string&)name;
+- (void)clearState:(const std::string&)name;
 
 @end
