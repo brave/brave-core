@@ -8,10 +8,10 @@
 
 #define BRAVE_SYNC_ATTACHABLE_WRITE_TRANSACTION_H \
 public: \
- WriteTransaction(const base::Location& from_here, UserShare* share, \
-     syncable::WriteTransaction* syncable_wr_tr); \
+  WriteTransaction(const base::Location& from_here, UserShare* share, \
+                   syncable::WriteTransaction* syncable_wr_tr); \
 private: \
- bool keep_ = false;
+  bool keep_ = false;
 
 #include "../../../../../components/sync/syncable/write_transaction.h"
 #undef BRAVE_SYNC_ATTACHABLE_WRITE_TRANSACTION_H

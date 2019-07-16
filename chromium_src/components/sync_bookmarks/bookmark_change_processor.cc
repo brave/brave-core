@@ -74,8 +74,8 @@ syncer::SyncError BookmarkChangeProcessor::UpdateChildrenPositions(
                               syncer::SyncError::DATATYPE_ERROR,
                               "Failed to init sync node from chrome node",
                               syncer::BOOKMARKS);
-      //  TODO(AlexeyBarabash): pull unrecoverable_error_handler_
-      //  from BookmarkModelAssociator
+      // TODO(AlexeyBarabash): pull unrecoverable_error_handler_
+      // from BookmarkModelAssociator
       //  unrecoverable_error_handler_->OnUnrecoverableError(error);
       DCHECK(false) << "[BraveSync] " << __func__ <<
           " Failed to init sync node from chrome node";

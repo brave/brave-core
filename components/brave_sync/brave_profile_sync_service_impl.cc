@@ -259,8 +259,8 @@ void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(
 
 BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {}
 
-void BraveProfileSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
-    const std::string& device_name) {
+void BraveProfileSyncServiceImpl::OnSetupSyncHaveCode(
+    const std::string& sync_words, const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (sync_words.empty()) {
     OnSyncSetupError("ERR_SYNC_WRONG_WORDS");
@@ -363,12 +363,14 @@ std::string BraveProfileSyncServiceImpl::GetSeed() {
   return brave_sync_prefs_->GetSeed();
 }
 
-void BraveProfileSyncServiceImpl::OnSetSyncEnabled(const bool sync_this_device) {
+void BraveProfileSyncServiceImpl::OnSetSyncEnabled(
+    const bool sync_this_device) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_prefs_->SetSyncEnabled(sync_this_device);
 }
 
-void BraveProfileSyncServiceImpl::OnSetSyncBookmarks(const bool sync_bookmarks) {
+void BraveProfileSyncServiceImpl::OnSetSyncBookmarks(
+    const bool sync_bookmarks) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   syncer::UserSelectableTypeSet type_set =
     ProfileSyncService::GetUserSettings()->GetSelectedTypes();
@@ -409,7 +411,8 @@ void BraveProfileSyncServiceImpl::OnSyncSetupError(const std::string& error) {
   NotifySyncSetupError(error);
 }
 
-void BraveProfileSyncServiceImpl::OnGetInitData(const std::string& sync_version) {
+void BraveProfileSyncServiceImpl::OnGetInitData(
+    const std::string& sync_version) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   Uint8Array seed;
@@ -517,7 +520,8 @@ void BraveProfileSyncServiceImpl::OnSyncReady() {
   }
 }
 
-syncer::ModelTypeSet BraveProfileSyncServiceImpl::GetPreferredDataTypes() const {
+syncer::ModelTypeSet
+BraveProfileSyncServiceImpl::GetPreferredDataTypes() const {
   // Force DEVICE_INFO type to have nudge cycle each time to fetch
   // Brave sync devices.
   // Will be picked up by ProfileSyncService::ConfigureDataTypeManager
@@ -572,7 +576,7 @@ void BraveProfileSyncServiceImpl::OnDeletedSyncUser() {
   NOTIMPLEMENTED();
 }
 
-void BraveProfileSyncServiceImpl::OnDeleteSyncSiteSettings()  {
+void BraveProfileSyncServiceImpl::OnDeleteSyncSiteSettings() {
   NOTIMPLEMENTED();
 }
 
@@ -584,7 +588,8 @@ void BraveProfileSyncServiceImpl::OnSaveBookmarksBaseOrder(
   OnSyncReady();
 }
 
-void BraveProfileSyncServiceImpl::OnSyncWordsPrepared(const std::string& words) {
+void BraveProfileSyncServiceImpl::OnSyncWordsPrepared(
+    const std::string& words) {
   NotifyHaveSyncWords(words);
 }
 
@@ -596,11 +601,14 @@ int BraveProfileSyncServiceImpl::GetDisableReasons() const {
   if (IsBraveSyncEnabled() &&
       brave_sync_prefs_->GetMigratedBookmarksVersion() >= 2)
     return syncer::SyncService::DISABLE_REASON_NONE;
-  // kSyncManaged is disabled by us
+  // kSyncManaged is set by Brave, so it will return
+  // DISABLE_REASON_ENTERPRISE_POLICY and
+  // SaveCardBubbleControllerImpl::ShouldShowSignInPromo will return false.
   return ProfileSyncService::GetDisableReasons();
 }
 
-CoreAccountInfo BraveProfileSyncServiceImpl::GetAuthenticatedAccountInfo() const {
+CoreAccountInfo
+BraveProfileSyncServiceImpl::GetAuthenticatedAccountInfo() const {
   return GetDummyAccountInfo();
 }
 
@@ -613,7 +621,8 @@ void BraveProfileSyncServiceImpl::Shutdown() {
   syncer::ProfileSyncService::Shutdown();
 }
 
-void BraveProfileSyncServiceImpl::NotifySyncSetupError(const std::string& error) {
+void BraveProfileSyncServiceImpl::NotifySyncSetupError(
+    const std::string& error) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : BraveSyncService::observers_)
     observer.OnSyncSetupError(this, error);
@@ -772,7 +781,8 @@ void BraveProfileSyncServiceImpl::OnResolvedPreferences(
   }
 }
 
-void BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& pref) {
+void BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged(
+    const std::string& pref) {
   if (pref == prefs::kSyncEnabled) {
     brave_sync_client_->OnSyncEnabledChanged();
     if (!brave_sync_prefs_->GetSyncEnabled()) {
