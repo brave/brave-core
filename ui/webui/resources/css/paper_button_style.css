@@ -10,70 +10,56 @@
  *
  * Translation of variants from Paper to Brave:
  * action-button = Primary (solid fill bg, white fg)
- * default = Secondary (outline color bg, white bg, color fg)
+ * default = default (outline color grey, white bg, dark grey fg)
  *
  */
 
+/* Light theme */
+
 paper-button {
-  --brave-hover-color: #e7e7ec;
-  --brave-active-color: white;
-  --paper-button-ink-color: #242536 !important;
+  --brave-text-color: #3b3e4f; /* grey800 */
+  --brave-brand-color: #ff7654; /* orange400 */
+  --brave-primary-hover: #ff977d; /* orange300 */
+  --brave-default-hover: rgba(255, 118, 84, 0.1); /* orange400 */
+  --brave-focus-outline: rgba(255, 118, 84, 0.4); /* orange400 */
+  --brave-default-border: #c2c4cf; /* grey 400 */
+  --paper-button-ink-color: var(--brave-brand-color) !important;
+}
 
-  /* normal button */
-  --text-color: #242536 !important;
-  --border-color: var(--text-color) !important;
-  --hover-bg-color: var(--brave-hover-color) !important;
-  --hover-border-color: var(--text-color) !important;
-  --active-bg: var(--brave-active-color) !important;
+/* Dark theme */
+[dark] paper-button,
+:host-context([dark]) paper-button {
+  --brave-text-color: #ffffff;
+  --brave-default-border: #5e6175; /* grey 700 */
+}
 
-  /* action button */
-  --flat-text-color-action: white !important;
-  --flat-bg-action: var(--text-color) !important;
-  --hover-bg-action: var(--flat-bg-action) !important;
-  font-family: Poppins;
-  /* NOTE(petemill): some pages override default line-height for text,
-     but that shouldn't flow to buttons. It affects text centering. */
-  line-height: 1 !important;
-
+/* Regular styles */
+paper-button {
+  font-family: Muli !important;
   border-radius: 20px !important;
-  border-color: currentColor !important;
-
-  --flat-focus-shadow-color: rgba(255, 69, 48, .4)  !important;
+  border: 1px solid var(--brave-default-border) !important;
+  color: var(--brave-text-color) !important;
+  outline: none;
 }
 
-[dark] paper-button,
-:host-context([dark]) paper-button {
-  /* --text-color: #AEB1C2 !important; */
-  --text-color: var(--cr-primary-text-color) !important;
-  --brave-hover-color: rgb(63, 63, 63) !important;
-  --flat-text-color-action: #242536 !important;
+paper-button:not([raised]).keyboard-focus,
+paper-button:not([raised]).action-button.keyboard-focus {
+  box-shadow: 0 0 0 3px var(--brave-focus-outline) !important;
 }
 
+/* Default button */
 paper-button:not(.action-button):hover {
-  /* background handled in chromium but not foreground */
-  color: var(--hover-fg-color, var(--text-color));
+  background: none !important;
+  border-color: var(--brave-brand-color) !important;
+  color: var(--brave-brand-color) !important;
 }
 
-paper-button:not(.action-button):active {
-  /* background handled in chromium but not foreground */
-  color: var(--active-fg-color, var(--text-color));
+paper-button:not([raised]).action-button {
+  background-color: var(--brave-brand-color) !important;
+  color: #ffffff !important;
+  border: none !important;
 }
 
-paper-button.warn {
-  --text-color: #E2052A !important;
-  /* normal (looks filled in on hover) */
-  --brave-active-color: #99022F;
-  --hover-fg-color: white;
-  --brave-hover-color: #BE032D;
-  --active-fg-color: white;
-  /* action */
-  --hover-bg-action: #BE032D !important;
-  --active-shadow-action-rgb: 153,2,47 !important;
-}
-
-[dark] paper-button,
-:host-context([dark]) paper-button {
-  --text-color: var(--cr-primary-text-color) !important;
-  --brave-hover-color: rgb(63, 63, 63) !important;
-  --flat-text-color-action: #242536 !important;
+paper-button:not([raised]).action-button:hover {
+  background: var(--brave-primary-hover) !important;
 }
