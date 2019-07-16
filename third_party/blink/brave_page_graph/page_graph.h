@@ -47,6 +47,9 @@ class PageGraph {
 friend GraphItem;
 // Needed so that edges between HTML nodes can find their siblings and parents.
 friend EdgeNodeInsert;
+// Needed so that HTML element nodes can find the script nodes for their event
+// listeners during GraphML generation.
+friend NodeHTMLElement;
  public:
   PageGraph(blink::Document& document);
   ~PageGraph();
