@@ -10,7 +10,6 @@
 #include "brave/browser/net/cookie_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
@@ -25,10 +24,6 @@
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/net/brave_tor_network_delegate_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -61,11 +56,6 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   callback = base::Bind(brave_rewards::OnBeforeURLRequest);
-  before_url_request_callbacks_.push_back(callback);
-#endif
-
-#if BUILDFLAG(ENABLE_TOR)
-  callback = base::Bind(brave::OnBeforeURLRequest_TorWork);
   before_url_request_callbacks_.push_back(callback);
 #endif
 
