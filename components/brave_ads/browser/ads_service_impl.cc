@@ -831,7 +831,11 @@ bool AdsServiceImpl::IsSupportedRegion() const {
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
-  return profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
+  auto is_ads_enabled = profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
+  auto is_rewards_enabled = profile_->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kBraveRewardsEnabled);
+
+  return is_ads_enabled && is_rewards_enabled;
 }
 
 void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
