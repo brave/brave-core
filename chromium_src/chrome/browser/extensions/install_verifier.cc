@@ -5,12 +5,13 @@
 
 #include "chrome/common/extensions/extension_constants.h"
 
-bool ShouldSkipSignatureChecking(const std::string& id) {
+bool IsMediaRouterExtension(const std::string& id) {
   return id == extension_misc::kMediaRouterStableExtensionId;
 }
 
-#define ReturnFalseIfExtensionShouldSkipSignatureChecking(id) \
-    if (ShouldSkipSignatureChecking(id)) \
-        return false;
+#define RedoSignatureCheckingForMediaRouter(id) \
+    if (IsMediaRouterExtension(id)) \
+        AddMany(ids, ADD_ALL_BOOTSTRAP); \
+        return;
 #include "../../../../../chrome/browser/extensions/install_verifier.cc"  // NOLINT
-#undef ReturnFalseIfExtensionShouldSkipSignatureChecking
+#undef RedoSignatureCheckingForMediaRouter

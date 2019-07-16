@@ -22,13 +22,11 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/common/chrome_switches.h"
-#include "chrome/common/extensions/extension_constants.h"
 #include "chrome/common/pref_names.h"
 #include "components/flags_ui/flags_ui_constants.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
-#include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/feature_switch.h"
@@ -77,22 +75,13 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
       prefs::kEnableMediaRouter);
   bool media_router_new_pref = profile_->GetPrefs()->GetBoolean(
       kBraveEnabledMediaRouter);
-  bool media_router_enabled = extensions::ExtensionPrefs::Get(profile_)->
-      IsExtensionDisabled(extension_misc::kMediaRouterStableExtensionId);
-
-  // This only happens on upgrade if the user has enabled media router using
-  // brave://flags before. We explicitly require the user to enable the pref
-  // to avoid any surprises about new connections on upgrade.
-  if (media_router_enabled != media_router_current_pref) {
-    restart_needed_ = (media_router_current_pref == media_router_new_pref);
-  } else {
-    restart_needed_ = (media_router_current_pref != media_router_new_pref);
-  }
-
+  restart_needed_ = (media_router_current_pref != media_router_new_pref);
 
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0].Clone(),
-      base::Value(restart_needed_));
+  std::string callback_id;
+  args->GetString(0, &callback_id);
+  ResolveJavascriptCallback(base::Value(callback_id),
+                            base::Value(restart_needed_));
 }
 
 void BraveDefaultExtensionsHandler::HandleRestartBrowser(
@@ -174,12 +163,6 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   args->GetBoolean(0, &enabled);
 
   restart_needed_ = !restart_needed_;
-  // Adding the media router extension on explicit toggle to prevent
-  // any suprise connections on upgrade
-  if (enabled) {
-    extensions::ExtensionPrefs::Get(profile_)->SetExtensionEnabled(
-        extension_misc::kMediaRouterStableExtensionId);
-  }
 
   std::string feature_name(switches::kLoadMediaRouterComponentExtension);
   enabled ? feature_name += "@1" : feature_name += "@2";

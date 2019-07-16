@@ -101,29 +101,6 @@ TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
 }
 
 TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
-    RedirectGoogleAPIs) {
-  net::TestDelegate test_delegate;
-  GURL url(
-      "http://www.googleapis.com/chromewebstore/v1.1/items/verify");
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-
-  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
-      new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-                                              before_url_context);
-  brave::ResponseCallback callback;
-
-  int ret = OnBeforeURLRequest_CommonStaticRedirectWork(callback,
-      before_url_context);
-  GURL redirect = GURL(before_url_context->new_url_spec);
-  EXPECT_EQ(redirect.host(), kBraveGoogleAPIProxy);
-  EXPECT_TRUE(redirect.SchemeIs(url::kHttpsScheme));
-  EXPECT_EQ(redirect.path(), url.path());
-  EXPECT_EQ(ret, net::OK);
-}
-
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
     RedirectGoogleClients4) {
   net::TestDelegate test_delegate;
   GURL url(

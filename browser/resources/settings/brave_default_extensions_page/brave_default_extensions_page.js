@@ -52,7 +52,6 @@ Polymer({
   onMediaRouterEnabledChange_: function() {
     this.showRestartToast = !this.showRestartToast;
     this.browserProxy_.setMediaRouterEnabled(this.$.mediaRouterEnabled.checked);
-    this.$.needsRestart.hidden = !this.showRestartToast;
   },
 
   openExtensionsPage_: function() {

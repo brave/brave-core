@@ -17,7 +17,6 @@ const char kBraveReferralsInitPath[] = "/promo/initialize/nonua";
 const char kBraveReferralsActivityPath[] = "/promo/activity";
 
 const char kBraveSafeBrowsingFileCheckProxy[] = "sb-ssl.brave.com";
-const char kBraveGoogleAPIProxy[] = "apis.brave.com";
 const char kBraveRedirectorProxy[] = "redirector.brave.com";
 const char kBraveClients4Proxy[] = "clients4.brave.com";
 
@@ -44,7 +43,6 @@ const char kCRLSetPrefix4[] =
     "/*crxd";
 const char kGoogleAnalyticsPattern[] =
     "https://www.google-analytics.com/analytics.js";
-const char kGoogleAPIPrefix[] = "*://www.googleapis.com/";
 const char kChromeCastPrefix[] =
     "*://*.gvt1.com/edgedl/chromewebstore/*pkedcjkdefgpdelpbcmbmeomcjbeemfm*";
 const char kGoogleTagManagerPattern[] =

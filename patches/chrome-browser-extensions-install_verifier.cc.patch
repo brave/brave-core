@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/install_verifier.cc b/chrome/browser/extensions/install_verifier.cc
-index 23b122e8627a262388927734317a1582b73542ff..319c9b5b6c76f978c1913cd6472f42139f8cb619 100644
+index 23b122e8627a262388927734317a1582b73542ff..57aedc6e6aa74081e81ce7ae1d67f862897118b1 100644
 --- a/chrome/browser/extensions/install_verifier.cc
 +++ b/chrome/browser/extensions/install_verifier.cc
-@@ -378,6 +378,7 @@ bool InstallVerifier::MustRemainDisabled(const Extension* extension,
-                                          disable_reason::DisableReason* reason,
-                                          base::string16* error) const {
-   CHECK(extension);
-+  ReturnFalseIfExtensionShouldSkipSignatureChecking(extension->id())
-   if (!CanUseExtensionApis(*extension)) {
-     MustRemainDisabledHistogram(NOT_EXTENSION);
-     return false;
+@@ -273,6 +273,7 @@ bool InstallVerifier::IsInvalid(const std::string& id) const {
+ void InstallVerifier::VerifyExtension(const std::string& extension_id) {
+   ExtensionIdSet ids;
+   ids.insert(extension_id);
++  RedoSignatureCheckingForMediaRouter(extension_id);
+   AddMany(ids, ADD_SINGLE);
+ }
+ 
