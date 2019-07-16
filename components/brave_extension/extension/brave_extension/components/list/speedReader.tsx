@@ -36,4 +36,3 @@ export default class SpeedReader extends React.PureComponent<Props, {}> {
     )
   }
 }
-

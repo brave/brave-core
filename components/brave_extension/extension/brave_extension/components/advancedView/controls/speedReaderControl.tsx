@@ -18,9 +18,7 @@ import {
 } from '../../../helpers/shieldsUtils'
 
 // Types
-import { 
-  SpeedReaderToggled, 
-} from '../../../types/actions/shieldsPanelActions'
+import { SpeedReaderToggled } from '../../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../../types/other/blockTypes'
 
 interface CommonProps {
@@ -54,20 +52,14 @@ export default class SpeedReaderControl extends React.PureComponent<Props, State
   }
 
   get maybeDisableResourcesRow (): boolean {
-    // return this.state.speedReaderToggled
-    return false;
+    return false
   }
 
   triggerSpeedReaderEnabled = (
     event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
   ) => {
     event.currentTarget.blur()
-    // this.setState({ speedReaderToggled: !this.state.speedReaderToggled })
   }
-
-  // onSpeedReaderEnabled = (event: React.MouseEvent<HTMLDivElement>) => {
-  //   this.triggerSpeedReaderEnabled(event)
-  // }
 
   onSpeedReaderEnabledViaKeyboard = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === ' ') {
@@ -76,20 +68,12 @@ export default class SpeedReaderControl extends React.PureComponent<Props, State
   }
 
   onChangeSpeedReaderEnabled = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //const shouldEnableSpeedReader = event.target.checked ? 'allow' : 'block'
-    console.log("on change reader enabled!!" + event.target.checked);
     const shouldEnableSpeedReader = getToggleStateViaEventTarget(event)
-    console.log("on change reader enabled!! - should enable " + shouldEnableSpeedReader);
-    this.props.speedReaderToggled(shouldEnableSpeedReader) 
+    this.props.speedReaderToggled(shouldEnableSpeedReader)
   }
 
   render () {
-    // const { isBlockedListOpen } = this.props
-    // const { speedReaderToggled } = this.state
-    console.log("render")
-
     return (
-      // speedReaderToggled &&
       <>
         <BlockedInfoRow id='speedReaderControl'>
           <BlockedInfoRowData

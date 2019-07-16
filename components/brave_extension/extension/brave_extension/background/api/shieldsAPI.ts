@@ -32,7 +32,7 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
     chrome.braveShields.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/*', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING } }),
     chrome.braveShields.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES } }),
     chrome.braveShields.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES } }),
-    chrome.braveShields.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_SPEEDREADER } }),
+    chrome.braveShields.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_SPEEDREADER } })
   ]).then((details) => {
     const fingerprinting = details[5].setting !== details[6].setting ? 'block_third_party' : details[5].setting
     const cookies = details[7].setting !== details[8].setting ? 'block_third_party' : details[7].setting
@@ -161,19 +161,21 @@ export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOp
   })
 }
 
-/** 
-SpeedReader
-**/
+/**
+ * Changes the SpeedReader to be explciitly enabled (allow) or disabled (block) for the origin
+ * @param {string} origin the origin of the site to change the setting for
+ * @param {string} setting 'allow' or 'block'
+ * @return a promise which resolves when the setting is set
+ */
 export const setEnableSpeedReader = (origin: string, setting: BlockOptions) => {
-    const primaryPattern = getPrimaryPatternForOrigin(origin);
-    return chrome.braveShields.plugins.setAsync({
-      primaryPattern: primaryPattern, 
-      resourceIdentifier: {id: resourceIdentifiers.RESOURCE_IDENTIFIER_SPEEDREADER }, 
-      setting,
-      scope: getScope()
-    })
-  }
-
+  const primaryPattern = getPrimaryPatternForOrigin(origin)
+  return chrome.braveShields.plugins.setAsync({
+    primaryPattern: primaryPattern,
+    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_SPEEDREADER },
+    setting,
+    scope: getScope()
+  })
+}
 
 /**
  * Changes the Javascript to be on (allow) or off (block)
@@ -187,7 +189,6 @@ export const setAllowJavaScript = (origin: string, setting: string) =>
     setting,
     scope: getScope()
   })
-
 
 /**
  * Changes the fingerprinting at origin to be allowed or blocked.

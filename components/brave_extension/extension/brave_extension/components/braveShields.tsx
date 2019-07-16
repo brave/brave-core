@@ -28,7 +28,7 @@ import {
   SetFinalScriptsBlockedState,
   SetAdvancedViewFirstAccess,
   ToggleAdvancedView,
-  SpeedReaderToggled,
+  SpeedReaderToggled
 } from '../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -46,7 +46,7 @@ interface Props {
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
     setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
     toggleAdvancedView: ToggleAdvancedView,
-    speedReaderToggled: SpeedReaderToggled,
+    speedReaderToggled: SpeedReaderToggled
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData

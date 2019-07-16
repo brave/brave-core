@@ -9,7 +9,6 @@ import AdsTrackersControl from './controls/adsTrackersControl'
 import HTTPSUpgradesControl from './controls/httpsUpgradesControl'
 import SpeedReaderControl from './controls/SpeedReaderControl'
 
-
 // Types
 import { BlockAdsTrackers, HttpsEverywhereToggled, SpeedReaderToggled } from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'

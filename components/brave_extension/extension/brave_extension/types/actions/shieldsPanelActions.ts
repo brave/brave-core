@@ -95,16 +95,14 @@ export interface HttpsEverywhereToggled {
   (setting: BlockOptions): HttpsEverywhereToggledReturn
 }
 
-// speedreader
 interface SpeedReaderToggledReturn {
   type: types.SPEEDREADER_TOGGLED,
   setting: BlockOptions
 }
 
- export interface SpeedReaderToggled {
-   (setting: BlockOptions): SpeedReaderToggledReturn
- }
-//
+export interface SpeedReaderToggled {
+  (setting: BlockOptions): SpeedReaderToggledReturn
+}
 
 interface BlockJavaScriptReturn {
   type: types.JAVASCRIPT_TOGGLED,

@@ -63,10 +63,6 @@
     "message": "Scripts blocked",
     "description": "Message for the scripts blocked row label"
   },
-  "speedreaderActive": {
-    "message": "SpeedReader active",
-    "description": "Message for the SpeedReader active row label"
-  },
   "thirdPartyCookiesBlocked": {
     "message": "Cross-site cookies blocked",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"

@@ -186,5 +186,9 @@
   "learnMore": {
     "message": "Learn more",
     "description": "Message inviting the user to learn more about Shields"
+  },
+  "speedreaderActive": {
+    "message": "SpeedReader active",
+    "description": "Message for the SpeedReader active row label"
   }
 }
