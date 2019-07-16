@@ -26,7 +26,6 @@ class EdgeNodeRemove;
 class EdgeRequestComplete;
 class EdgeRequestError;
 class EdgeRequestStart;
-class NodeActor;
 class NodeResource;
 
 class NodeHTMLElement : public NodeHTML {
@@ -71,12 +70,12 @@ friend class NodeHTML;
 
   struct EventListener {
     EventListener(const std::string& event_type,
-        NodeActor* const listener_node) :
+        ScriptId const listener_script_id) :
           event_type(event_type),
-          listener_node(listener_node) {}
+          listener_script_id(listener_script_id) {}
 
     const std::string& event_type;
-    NodeActor* const listener_node;
+    const ScriptId listener_script_id;
   };
   std::map<EventListenerId, EventListener> event_listeners_;
 };

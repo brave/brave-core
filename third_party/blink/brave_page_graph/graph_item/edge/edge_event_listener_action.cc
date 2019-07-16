@@ -25,10 +25,6 @@ EdgeEventListenerAction::EdgeEventListenerAction(
       listener_id_(listener_id),
       listener_script_id_(listener_script_id) {}
 
-NodeActor* EdgeEventListenerAction::GetListenerNode() const {
-  return graph_->GetNodeActorForScriptId(listener_script_id_);
-}
-
 ItemDesc EdgeEventListenerAction::GetDescBody() const {
   return GetItemName() +
     " [event_type:" + event_type_ +

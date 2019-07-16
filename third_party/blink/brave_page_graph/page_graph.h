@@ -57,10 +57,11 @@ struct TrackedRequestRecord;
 class PageGraph {
 // Needed so that graph items can assign themself the next graph id.
 friend GraphItem;
-// Needed so that event listener edges can find their listener scripts.
-friend EdgeEventListenerAction;
 // Needed so that edges between HTML nodes can find their siblings and parents.
 friend EdgeNodeInsert;
+// Needed so that HTML element nodes can find the script nodes for their event
+// listeners during GraphML generation.
+friend NodeHTMLElement;
  public:
   static PageGraph* GetFromIsolate(v8::Isolate& isolate);
   static PageGraph* GetFromContext(v8::Local<v8::Context> context);

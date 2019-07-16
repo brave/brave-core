@@ -25,8 +25,6 @@ friend class PageGraph;
   EventListenerId GetListenerId() const { return listener_id_; }
   ScriptId GetListenerScriptId() const { return listener_script_id_; }
 
-  NodeActor* GetListenerNode() const;
-
  protected:
   EdgeEventListenerAction(PageGraph* const graph, NodeActor* const out_node,
     NodeHTMLElement* const in_node, const std::string& event_type,

@@ -54,7 +54,7 @@ const string& NodeHTMLElement::TagName() const {
 
 void NodeHTMLElement::AddInEdge(const EdgeEventListenerAdd* const edge) {
   event_listeners_.emplace(edge->GetListenerId(),
-      EventListener(edge->GetEventType(), edge->GetListenerNode()));
+      EventListener(edge->GetEventType(), edge->GetListenerScriptId()));
   Node::AddInEdge(edge);
 }
 
@@ -128,7 +128,8 @@ GraphMLXML NodeHTMLElement::GetGraphMLTag() const {
   for (auto& event_listener : event_listeners_) {
     const EventListenerId listener_id = event_listener.first;
     const string& event_type = event_listener.second.event_type;
-    NodeActor* const listener_node = event_listener.second.listener_node;
+    NodeActor* const listener_node = graph_->GetNodeActorForScriptId(
+        event_listener.second.listener_script_id);
 
     EdgeEventListener event_listener_edge(this, listener_node, event_type,
                                           listener_id);
