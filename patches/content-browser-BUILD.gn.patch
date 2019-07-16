@@ -1,8 +1,16 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 38b6a3185b14e4b2152cfa9f274c6bf0057c567e..3d6412ed7fc81529dfb2373de62aa8c1079b75cd 100644
+index 38b6a3185b14e4b2152cfa9f274c6bf0057c567e..13a90ca301b956997bc182eccf988e8c253caad5 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -2208,6 +2208,12 @@ jumbo_source_set("browser") {
+@@ -42,6 +42,7 @@ jumbo_source_set("browser") {
+     "//base:base_static",
+     "//base:clang_coverage_buildflags",
+     "//base/third_party/dynamic_annotations",
++    "//brave/third_party/blink/brave_page_graph",
+     "//cc",
+     "//cc/animation",
+     "//cc/mojo_embedder",
+@@ -2208,6 +2209,12 @@ jumbo_source_set("browser") {
        "//ppapi/proxy:ipc",
        "//ppapi/shared_impl",
      ]

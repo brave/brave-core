@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/public/web/web_document.h b/third_party/blink/public/web/web_document.h
+index fe2179d64f4f8af6643db3ddd3ea4d77e71daf14..dc4b92aee27e1046b04f6827827550893892691d 100644
+--- a/third_party/blink/public/web/web_document.h
++++ b/third_party/blink/public/web/web_document.h
+@@ -39,6 +39,8 @@
+ #include "third_party/blink/public/web/web_node.h"
+ #include "third_party/skia/include/core/SkColor.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ class Document;
+@@ -132,6 +134,11 @@ class WebDocument : public WebNode {
+ 
+   BLINK_EXPORT void SetShowBeforeUnloadDialog(bool show_dialog);
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  BLINK_EXPORT void RegisterResourceBlock(const std::string& block_type,
++                                          const GURL& url);
++#endif
++
+ #if INSIDE_BLINK
+   BLINK_EXPORT WebDocument(Document*);
+   BLINK_EXPORT WebDocument& operator=(Document*);

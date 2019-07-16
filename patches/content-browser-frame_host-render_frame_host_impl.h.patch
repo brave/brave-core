@@ -1,0 +1,24 @@
+diff --git a/content/browser/frame_host/render_frame_host_impl.h b/content/browser/frame_host/render_frame_host_impl.h
+index 3186e56cfa21038fa4833511b85b720562cf193a..4693b01f2f12d924f698dd24881f7e152104abdf 100644
+--- a/content/browser/frame_host/render_frame_host_impl.h
++++ b/content/browser/frame_host/render_frame_host_impl.h
+@@ -88,6 +88,8 @@
+ #include "ui/base/page_transition_types.h"
+ #include "ui/gfx/geometry/rect.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if defined(OS_ANDROID)
+ #include "services/device/public/mojom/nfc.mojom.h"
+ #else
+@@ -225,6 +227,10 @@ class CONTENT_EXPORT RenderFrameHostImpl
+   gfx::NativeView GetNativeView() override;
+   void AddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
+                            const std::string& message) override;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void RegisterResourceBlock(const std::string& block_type,
++                             const GURL& url) override;
++#endif
+   void ExecuteJavaScript(const base::string16& javascript,
+                          JavaScriptResultCallback callback) override;
+   void ExecuteJavaScriptInIsolatedWorld(const base::string16& javascript,

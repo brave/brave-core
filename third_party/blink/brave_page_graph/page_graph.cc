@@ -27,6 +27,8 @@
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
+#include "url/gurl.h"
+
 #include "v8/include/v8.h"
 
 #include "brave/third_party/blink/brave_page_graph/logging.h"
@@ -43,6 +45,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_delete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_insert.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_remove.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_resource_block.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_clear.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_delete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_read.h"
@@ -646,6 +649,31 @@ void PageGraph::RegisterRequestError(const InspectorId request_id,
   }
 
   PossiblyWriteRequestsIntoGraph(request_record);
+}
+
+void PageGraph::RegisterResourceBlock(const std::string& block_type,
+    const GURL& url) {
+  const KURL normalized_url = NormalizeUrl(KURL(url));
+  const string local_url(normalized_url.GetString().Utf8().data());
+
+  Log("RegisterResourceBlock) block_type: " + block_type
+    + ", url: " + local_url);
+
+  NodeResource* resource_node;
+  if (resource_nodes_.count(local_url) == 0) {
+    resource_node = new NodeResource(this, local_url);
+    AddNode(resource_node);
+    resource_nodes_.emplace(local_url, resource_node);
+  } else {
+    resource_node = resource_nodes_.at(local_url);
+  }
+
+  const EdgeResourceBlock* const edge = new EdgeResourceBlock(this,
+      shields_node_, resource_node, block_type);
+  AddEdge(edge);
+
+  resource_node->AddInEdge(edge);
+  shields_node_->AddOutEdge(edge);
 }
 
 void PageGraph::RegisterElmForLocalScript(const DOMNodeId node_id,

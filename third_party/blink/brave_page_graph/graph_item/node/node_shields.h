@@ -11,6 +11,7 @@
 
 namespace brave_page_graph {
 
+class EdgeResourceBlock;
 class PageGraph;
 
 class NodeShields final : public Node {
@@ -19,6 +20,10 @@ friend class PageGraph;
   NodeShields() = delete;
   ~NodeShields() override;
   ItemName GetItemName() const override;
+
+  void AddOutEdge(const EdgeResourceBlock* const out_edge);
+  void AddInEdge(const Edge* const in_edge) = delete;
+  void AddOutEdge(const Edge* const out_edge) = delete;
 
  protected:
   NodeShields(PageGraph* const graph);

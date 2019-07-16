@@ -1,8 +1,16 @@
 diff --git a/third_party/blink/public/BUILD.gn b/third_party/blink/public/BUILD.gn
-index 0c0cf1e5a9073bed1c4f1e1eea1ad85ec33a1075..4ead6f81a7d4c340d1c9900f2857d48ddfda1235 100644
+index 0c0cf1e5a9073bed1c4f1e1eea1ad85ec33a1075..8dc2c79255f8e3653587216a06a9583eaa849053 100644
 --- a/third_party/blink/public/BUILD.gn
 +++ b/third_party/blink/public/BUILD.gn
-@@ -673,6 +673,7 @@ mojom("mojo_bindings") {
+@@ -21,6 +21,7 @@ group("blink") {
+     ":blink_headers",
+   ]
+   deps = [
++    "//brave/third_party/blink/brave_page_graph",
+     "//third_party/blink/renderer/controller",
+     "//third_party/blink/renderer/core",
+     "//third_party/blink/renderer/modules",
+@@ -673,6 +674,7 @@ mojom("mojo_bindings") {
    visibility_blink =
        [ "//third_party/blink/renderer/platform:blink_platform_public_deps" ]
    sources = [

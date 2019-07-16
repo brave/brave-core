@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+class GURL;
+
 namespace blink {
 using DOMNodeId = int;
 class KURL;
@@ -46,6 +48,7 @@ typedef std::vector<const GraphMLXML> GraphMLXMLList;
 typedef enum {
   kGraphMLAttrDefAttrName = 0,
   kGraphMLAttrDefBeforeNodeId,
+  kGraphMLAttrDefBlockType,
   kGraphMLAttrDefCallArgs,
   kGraphMLAttrDefEdgeType,
   kGraphMLAttrDefEventListenerId,

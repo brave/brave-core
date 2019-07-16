@@ -12,6 +12,7 @@
 #include "base/bind_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/content/common/frame_messages.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
@@ -23,6 +24,12 @@
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_constants.h"
+
+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+#include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+#endif
 
 BraveContentSettingsObserver::BraveContentSettingsObserver(
     content::RenderFrame* render_frame,
@@ -94,6 +101,17 @@ bool BraveContentSettingsObserver::AllowScript(
 
 void BraveContentSettingsObserver::DidNotAllowScript() {
   if (!blocked_script_url_.is_empty()) {
+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+    blink::WebLocalFrame* const frame = render_frame()->GetWebFrame();
+    ::brave_page_graph::PageGraph* const page_graph =
+        ::brave_page_graph::PageGraph::GetFromContext(
+            frame->MainWorldScriptContext());
+    if (page_graph) {
+      page_graph->RegisterResourceBlock(brave_shields::kJavaScript,
+                                        blocked_script_url_);
+    }
+#endif
+
     BraveSpecificDidBlockJavaScript(
       base::UTF8ToUTF16(blocked_script_url_.spec()));
     blocked_script_url_ = GURL::EmptyGURL();
@@ -222,6 +240,16 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   allow = allow || IsWhitelistedForContentSettings();
 
   if (!allow) {
+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+    ::brave_page_graph::PageGraph* const page_graph =
+        ::brave_page_graph::PageGraph::GetFromContext(
+            frame->MainWorldScriptContext());
+    if (page_graph) {
+      page_graph->RegisterResourceBlock(brave_shields::kFingerprinting,
+                                        secondary_url);
+    }
+#endif
+
     DidBlockFingerprinting(base::UTF8ToUTF16(secondary_url.spec()));
   }
 

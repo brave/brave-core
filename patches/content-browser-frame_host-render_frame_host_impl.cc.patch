@@ -1,0 +1,27 @@
+diff --git a/content/browser/frame_host/render_frame_host_impl.cc b/content/browser/frame_host/render_frame_host_impl.cc
+index 64bd8abb107a09c05824d5e13b9c86f52d2745ea..80693c9b5a2f5162e68d62287ef0a3a9f560fe49 100644
+--- a/content/browser/frame_host/render_frame_host_impl.cc
++++ b/content/browser/frame_host/render_frame_host_impl.cc
+@@ -201,6 +201,8 @@
+ #include "url/origin.h"
+ #include "url/url_constants.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if defined(OS_ANDROID)
+ #include "content/browser/android/content_url_loader_factory.h"
+ #include "content/browser/android/java_interfaces_impl.h"
+@@ -1234,6 +1236,13 @@ void RenderFrameHostImpl::AddMessageToConsole(
+   Send(new FrameMsg_AddMessageToConsole(routing_id_, level, message));
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameHostImpl::RegisterResourceBlock(const std::string& block_type,
++                                                const GURL& url) {
++  Send(new FrameMsg_RegisterResourceBlock(routing_id_, block_type, url));
++}
++#endif
++
+ void RenderFrameHostImpl::ExecuteJavaScript(const base::string16& javascript,
+                                             JavaScriptResultCallback callback) {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);

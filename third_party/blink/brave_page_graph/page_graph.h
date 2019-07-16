@@ -118,6 +118,8 @@ friend NodeHTMLElement;
   void RegisterRequestError(const InspectorId request_id,
     const RequestMetadata& metadata);
 
+  void RegisterResourceBlock(const std::string& block_type, const GURL& url);
+
   void RegisterStorageRead(const WTF::String& key, const WTF::String& value,
     const StorageLocation location);
   void RegisterStorageWrite(const WTF::String& key, const WTF::String& value,

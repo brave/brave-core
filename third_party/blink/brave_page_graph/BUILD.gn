@@ -8,6 +8,7 @@ source_set("brave_page_graph") {
   deps = [
     "//third_party/icu",
     "//third_party/boringssl",
+    "//url",
   ]
 
   public_deps = [
@@ -94,6 +95,8 @@ source_set("brave_page_graph") {
       "graph_item/edge/edge_node_remove.h",
       "graph_item/edge/edge_node.cc",
       "graph_item/edge/edge_node.h",
+      "graph_item/edge/edge_resource_block.cc",
+      "graph_item/edge/edge_resource_block.h",
       "graph_item/edge/request/edge_request.cc",
       "graph_item/edge/request/edge_request.h",
       "graph_item/edge/request/edge_request_complete.cc",

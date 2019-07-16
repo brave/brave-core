@@ -1,5 +1,5 @@
 diff --git a/content/common/BUILD.gn b/content/common/BUILD.gn
-index 080d08c52d851effe4f602dc108e57e0c00d66db..295a65b81edc3adaeec13fbda459adaac4d55bc3 100644
+index 080d08c52d851effe4f602dc108e57e0c00d66db..3b4012d016597c8773a86e82ac717b023dc254a6 100644
 --- a/content/common/BUILD.gn
 +++ b/content/common/BUILD.gn
 @@ -31,7 +31,7 @@ source_set("common") {
@@ -11,3 +11,11 @@ index 080d08c52d851effe4f602dc108e57e0c00d66db..295a65b81edc3adaeec13fbda459adaa
  
    sources = [
      "accessibility_messages.h",
+@@ -276,6 +276,7 @@ source_set("common") {
+     ":buildflags",
+     "//base",
+     "//base/third_party/dynamic_annotations",
++    "//brave/third_party/blink/brave_page_graph",
+     "//build/util:webkit_version",
+     "//components/discardable_memory/common",
+     "//components/services/filesystem/public/interfaces",

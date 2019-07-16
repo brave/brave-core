@@ -38,7 +38,7 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
       content::WebContents* web_contents);
   static void DispatchBlockedEvent(
       std::string block_type,
-      std::string subresource,
+      GURL request_url,
       int render_process_id,
       int render_frame_id, int frame_tree_node_id);
   static GURL GetTabURLFromRenderFrameInfo(int render_process_id,

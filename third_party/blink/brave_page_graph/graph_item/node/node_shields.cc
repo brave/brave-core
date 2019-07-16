@@ -5,6 +5,7 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_shields.h"
 #include <string>
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_resource_block.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -21,6 +22,10 @@ NodeShields::~NodeShields() {}
 
 ItemName NodeShields::GetItemName() const {
   return "NodeShields#" + to_string(id_);
+}
+
+void NodeShields::AddOutEdge(const EdgeResourceBlock* const out_edge) {
+  Node::AddOutEdge(out_edge);
 }
 
 GraphMLXMLList NodeShields::GraphMLAttributes() const {

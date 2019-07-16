@@ -1,0 +1,53 @@
+diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
+index c75b6177f066a1b10e4a5bf5a5d07a7532146f1c..45ca481d70881141eeb22ced5d08672dbc58c57a 100644
+--- a/content/renderer/render_frame_impl.cc
++++ b/content/renderer/render_frame_impl.cc
+@@ -229,6 +229,8 @@
+ #include "url/url_util.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if BUILDFLAG(ENABLE_PLUGINS)
+ #include "content/renderer/pepper/pepper_browser_connection.h"
+ #include "content/renderer/pepper/pepper_plugin_instance_impl.h"
+@@ -2206,6 +2208,9 @@ bool RenderFrameImpl::OnMessageReceived(const IPC::Message& msg) {
+     IPC_MESSAGE_HANDLER(FrameMsg_CopyImageAt, OnCopyImageAt)
+     IPC_MESSAGE_HANDLER(FrameMsg_SaveImageAt, OnSaveImageAt)
+     IPC_MESSAGE_HANDLER(FrameMsg_AddMessageToConsole, OnAddMessageToConsole)
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    IPC_MESSAGE_HANDLER(FrameMsg_RegisterResourceBlock, OnRegisterResourceBlock)
++#endif
+     IPC_MESSAGE_HANDLER(FrameMsg_VisualStateRequest,
+                         OnVisualStateRequest)
+     IPC_MESSAGE_HANDLER(FrameMsg_Reload, OnReload)
+@@ -2506,6 +2511,14 @@ void RenderFrameImpl::OnAddMessageToConsole(
+   AddMessageToConsole(level, message);
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameImpl::OnRegisterResourceBlock(
++    const std::string& block_type,
++    const GURL& url) {
++  RegisterResourceBlock(block_type, url);
++}
++#endif
++
+ void RenderFrameImpl::JavaScriptExecuteRequest(
+     const base::string16& javascript,
+     JavaScriptExecuteRequestCallback callback) {
+@@ -3220,6 +3233,14 @@ void RenderFrameImpl::AddMessageToConsole(
+   frame_->AddMessageToConsole(wcm);
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameImpl::RegisterResourceBlock(
++    const std::string& block_type,
++    const GURL& url) {
++  frame_->GetDocument().RegisterResourceBlock(block_type, url);
++}
++#endif
++
+ void RenderFrameImpl::SetPreviewsState(PreviewsState previews_state) {
+   previews_state_ = previews_state;
+ }

@@ -5,6 +5,7 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 #include <string>
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_resource_block.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_response.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
@@ -36,6 +37,10 @@ void NodeResource::AddInEdge(const EdgeRequestStart* const in_edge) {
 
 void NodeResource::AddOutEdge(const EdgeRequestResponse* const out_edge) {
   Node::AddOutEdge(out_edge);
+}
+
+void NodeResource::AddInEdge(const EdgeResourceBlock* const in_edge) {
+  Node::AddInEdge(in_edge);
 }
 
 ItemDesc NodeResource::GetDescBody() const {

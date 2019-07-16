@@ -1,0 +1,12 @@
+diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
+index dc2f2f24869d4302fb980e577bbf5e67cf6d619b..a76c340bd0c4caff11302100b8835ab0e80e56fb 100644
+--- a/content/public/browser/BUILD.gn
++++ b/content/public/browser/BUILD.gn
+@@ -392,6 +392,7 @@ jumbo_source_set("browser_sources") {
+     "//third_party/blink/public:mojo_bindings",
+   ]
+   deps = [
++    "//brave/third_party/blink/brave_page_graph",
+     "//cc",
+     "//components/viz/host",
+     "//content/browser",  # Must not be public_deps!

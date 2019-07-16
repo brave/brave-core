@@ -11,6 +11,7 @@ source_set("renderer") {
   deps = [
     "//base",
     "//brave/common",
+    "//brave/third_party/blink/brave_page_graph",
     "//components/content_settings/core/common",
     "//content/public/renderer",
     "//services/service_manager/public/cpp",
