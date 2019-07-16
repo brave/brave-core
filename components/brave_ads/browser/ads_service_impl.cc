@@ -223,14 +223,6 @@ std::string URLMethodToRequestType(
   }
 }
 
-void EnsureBaseDirectoryExists(const base::FilePath& path) {
-  if (DirectoryExists(path)) {
-    return;
-  }
-
-  base::CreateDirectory(path);
-}
-
 void PostWriteCallback(
     const base::Callback<void(bool success)>& callback,
     scoped_refptr<base::SequencedTaskRunner> reply_task_runner,
@@ -253,6 +245,15 @@ std::string LoadOnFileTaskRunner(
   return data;
 }
 
+bool EnsureBaseDirectoryExistsOnFileTaskRunner(
+    const base::FilePath& path) {
+  if (base::DirectoryExists(path)) {
+    return true;
+  }
+
+  return base::CreateDirectory(path);
+}
+
 std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
     const std::string category,
     BundleStateDatabase* backend) {
@@ -265,9 +266,17 @@ std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
   return ads;
 }
 
-bool ResetOnFileTaskRunner(
-    const base::FilePath& path) {
-  return base::DeleteFile(path, base::DirectoryExists(path));
+bool ResetOnFileTaskRunner(const base::FilePath& path) {
+  bool recursive;
+
+  base::File::Info file_info;
+  if (base::GetFileInfo(path, &file_info)) {
+    recursive = file_info.is_directory;
+  } else {
+    recursive = false;
+  }
+
+  return base::DeleteFile(path, recursive);
 }
 
 bool SaveBundleStateOnFileTaskRunner(
@@ -314,6 +323,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       retry_viewing_ad_with_id_(""),
       next_timer_id_(0),
       ads_launch_id_(0),
+      bundle_state_backend_(
+          new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
       rewards_service_(
           brave_rewards::RewardsServiceFactory::GetForProfile(profile_)),
@@ -323,8 +334,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
 #endif
       bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(!profile_->IsOffTheRecord());
-
-  EnsureDefaultStateExists();
 
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
 
@@ -405,11 +414,6 @@ void AdsServiceImpl::MaybeStart(bool should_restart) {
     LOG(ERROR) << "Failed to start ads service";
     return;
   }
-
-  MaybeStartFirstLaunchNotificationTimeoutTimer();
-  MaybeShowFirstLaunchNotification();
-
-  MaybeShowMyFirstAdNotification();
 
   if (IsAdsEnabled()) {
     if (should_restart) {
@@ -505,6 +509,21 @@ void AdsServiceImpl::UpdateIsTestingFlag() {
 }
 
 void AdsServiceImpl::Start() {
+  EnsureBaseDirectoryExists();
+}
+
+void AdsServiceImpl::EnsureBaseDirectoryExists() {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
+      base::Bind(&AdsServiceImpl::OnEnsureBaseDirectoryExists, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnEnsureBaseDirectoryExists(bool success) {
+  if (!success) {
+    LOG(ERROR) << "Failed to create base directory";
+    return;
+  }
+
   BackgroundHelper::GetInstance()->AddObserver(this);
 
   bat_ads::mojom::BatAdsClientAssociatedPtrInfo client_ptr_info;
@@ -512,6 +531,11 @@ void AdsServiceImpl::Start() {
 
   bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
+
+  MaybeStartFirstLaunchNotificationTimeoutTimer();
+  MaybeShowFirstLaunchNotification();
+
+  MaybeShowMyFirstAdNotification();
 }
 
 void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
@@ -684,7 +708,6 @@ void AdsServiceImpl::RemoveFirstLaunchNotification() {
 
 void AdsServiceImpl::Stop() {
   if (!connected()) {
-    Shutdown();
     return;
   }
 
@@ -699,12 +722,16 @@ void AdsServiceImpl::ShutdownBatAds() {
 }
 
 void AdsServiceImpl::OnShutdownBatAds(const int32_t result) {
-  Shutdown();
+  DCHECK(is_initialized_);
 
   if (result != ads::Result::SUCCESS) {
     LOG(ERROR) << "Failed to shutdown ads";
     return;
   }
+
+  RemoveFirstLaunchNotification();
+  Shutdown();
+  ResetAllState();
 
   LOG(INFO) << "Successfully shutdown ads";
 }
@@ -750,34 +777,22 @@ void AdsServiceImpl::Shutdown() {
   bat_ads_.reset();
   bat_ads_client_binding_.Close();
 
-  ResetState();
-
   is_initialized_ = false;
 }
 
-void AdsServiceImpl::ResetState() {
+void AdsServiceImpl::ResetAllState() {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&ResetOnFileTaskRunner, base_path_),
-      base::Bind(&AdsServiceImpl::OnResetState, AsWeakPtr()));
+      base::Bind(&AdsServiceImpl::OnResetAllState, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnResetState(bool success) {
+void AdsServiceImpl::OnResetAllState(bool success) {
   if (!success) {
     LOG(ERROR) << "Failed to reset ads state";
     return;
   }
 
-  EnsureDefaultStateExists();
-
   LOG(INFO) << "Successfully reset ads state";
-}
-
-void AdsServiceImpl::EnsureDefaultStateExists() {
-  file_task_runner_->PostTask(FROM_HERE,
-      base::BindOnce(&EnsureBaseDirectoryExists, base_path_));
-
-  auto path = base_path_.AppendASCII("bundle_state");
-  bundle_state_backend_ = std::make_unique<BundleStateDatabase>(path);
 }
 
 void AdsServiceImpl::MigratePrefs() const {
@@ -908,8 +923,6 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == prefs::kEnabled ||
       pref == brave_rewards::prefs::kBraveRewardsEnabled) {
     if (IsAdsEnabled()) {
-      RemoveFirstLaunchNotification();
-
       MaybeStart(false);
     } else {
       Stop();
@@ -1229,10 +1242,6 @@ void AdsServiceImpl::ResetTheWholeState(
 void AdsServiceImpl::OnResetTheWholeState(
     base::Callback<void(bool)> callback,
     bool success) {
-  if (success) {
-    EnsureDefaultStateExists();
-  }
-
   callback.Run(success);
 }
 

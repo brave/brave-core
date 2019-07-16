@@ -212,9 +212,10 @@ class AdsServiceImpl : public AdsService,
   void OnInitialize(const int32_t result);
   void ShutdownBatAds();
   void OnShutdownBatAds(const int32_t result);
-  void ResetState();
-  void OnResetState(bool success);
-  void EnsureDefaultStateExists();
+  void ResetAllState();
+  void OnResetAllState(bool success);
+  void EnsureBaseDirectoryExists();
+  void OnEnsureBaseDirectoryExists(bool success);
   void OnRemoveAllHistory(const int32_t result);
   void MaybeStart(bool should_restart);
   void NotificationTimedOut(
