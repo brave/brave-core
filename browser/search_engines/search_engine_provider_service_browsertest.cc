@@ -5,9 +5,9 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/tor/buildflags.h"
-#include "brave/browser/tor/tor_profile.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
@@ -142,7 +142,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   content::RunAllTasksUntilIdle();
 
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
-  EXPECT_TRUE(tor::IsTorProfile(tor_profile));
+  EXPECT_TRUE(brave::IsTorProfile(tor_profile));
 
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
 
@@ -171,7 +171,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   content::RunAllTasksUntilIdle();
 
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
-  EXPECT_TRUE(tor::IsTorProfile(tor_profile));
+  EXPECT_TRUE(brave::IsTorProfile(tor_profile));
 
   int expected_provider_id =
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING;

@@ -6,8 +6,8 @@
 #include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
 
 #include "base/auto_reset.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/browser/tor/tor_profile.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
@@ -17,8 +17,8 @@
 GuestWindowSearchEngineProviderService::GuestWindowSearchEngineProviderService(
     Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
-  DCHECK(brave::IsOTRGuestProfile(otr_profile));
-  DCHECK(!tor::IsTorProfile(otr_profile));
+  DCHECK(brave::IsGuestProfile(otr_profile));
+  DCHECK(otr_profile->IsOffTheRecord());
   DCHECK(!brave::IsRegionForQwant(otr_profile));
 
   // Monitor otr(off the record) profile's search engine changing to tracking

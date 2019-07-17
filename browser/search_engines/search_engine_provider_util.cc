@@ -35,16 +35,4 @@ bool IsRegionForQwant(Profile* profile) {
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
 }
 
-bool IsOTRGuestProfile(Profile* profile) {
-  // Note, that in search_engine_provider_service_factory.cc and
-  // guest_window_search_engine_provider_service.cc we check if this is an OTR
-  // guest profile before OffTheRecordProfileImpl::Init() had a chance to mark
-  // this profile as guest. Therefore, we go to the regular profile of this OTR
-  // profile to check for guest.
-  DCHECK(profile);
-  return (profile->HasOffTheRecordProfile() &&
-    profile->GetOffTheRecordProfile() == profile &&
-    profile->GetOriginalProfile()->IsGuestSession());
-}
-
 }  // namespace brave

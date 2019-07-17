@@ -5,8 +5,8 @@
 
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
-#include "brave/browser/tor/tor_profile.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -83,7 +83,7 @@ OmniboxTint BraveLocationBarView::CalculateTint() const {
   // Match the user-selectable brave theme, even if there is a theme extension
   // installed, allowing non-extension-themeable elements to fit in better with
   // a theme extension.
-  if (profile()->IsIncognitoProfile() || tor::IsTorProfile(profile())) {
+  if (profile()->IsIncognitoProfile() || brave::IsTorProfile(profile())) {
     return OmniboxTint::PRIVATE;  // special extra enum value
   }
   // TODO(petemill): BraveThemeService can have a simpler get dark / light

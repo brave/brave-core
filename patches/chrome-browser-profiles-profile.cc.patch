@@ -16,7 +16,7 @@ index 71d736c9eaf3503e532d72c410f4d4dadff372cd..f278991246e40b894418cd05f9a5fb6f
    return is_guest_session;
  #else
 -  return is_guest_profile_;
-+  return is_guest_profile_ || tor::IsTorProfile(this);
++  return is_guest_profile_ || brave::IsTorProfile(this);
  #endif
  }
  

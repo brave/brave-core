@@ -8,7 +8,7 @@
 #include <memory>
 #include <string>
 
-#include "brave/browser/tor/tor_profile.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/plugins/plugin_utils.h"
@@ -33,7 +33,7 @@ BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
   set_show_learn_more(true);
 
   // Do not show "Run flash this time" and "Manage" button in Tor profile.
-  if (tor::IsTorProfile(GetProfile())) {
+  if (brave::IsTorProfile(GetProfile())) {
     set_manage_text_style(ContentSettingBubbleModel::ManageTextStyle::kNone);
     return;
   }

@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/tor/tor_profile.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/profiles/brave_profile_menu_view_helper.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profiles_state.h"
@@ -24,7 +24,7 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
     profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
   } else if (sender == users_button_ &&
              browser()->profile()->IsGuestSession()) {
-    if (tor::IsTorProfile(browser()->profile()))
+    if (brave::IsTorProfile(browser()->profile()))
       profiles::CloseTorProfileWindows();
     else
       profiles::CloseGuestProfileWindows();

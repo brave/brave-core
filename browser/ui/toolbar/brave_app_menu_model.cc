@@ -6,7 +6,7 @@
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/tor/tor_profile.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -58,7 +58,7 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
       GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
       IDC_SHOW_BRAVE_ADBLOCK,
       IDS_SHOW_BRAVE_ADBLOCK);
-  if (tor::IsTorProfile(browser_->profile())) {
+  if (brave::IsTorProfile(browser_->profile())) {
     InsertItemWithStringIdAt(
         GetIndexOfCommandId(IDC_NEW_WINDOW),
         IDC_NEW_TOR_CONNECTION_FOR_SITE,
