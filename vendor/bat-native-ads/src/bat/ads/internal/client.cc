@@ -18,7 +18,6 @@ namespace ads {
 
 Client::Client(AdsImpl* ads, AdsClient* ads_client) :
     is_initialized_(false),
-    state_has_loaded_(false),
     ads_(ads),
     ads_client_(ads_client),
     client_state_(new ClientState()) {
@@ -26,19 +25,10 @@ Client::Client(AdsImpl* ads, AdsClient* ads_client) :
 
 Client::~Client() = default;
 
-void Client::SaveState() {
-  if (!state_has_loaded_) {
-    return;
-  }
+void Client::Initialize(InitializeCallback callback) {
+  callback_ = callback;
 
-  auto json = client_state_->ToJson();
-  auto callback = std::bind(&Client::OnStateSaved, this, _1);
-  ads_client_->Save(_client_name, json, callback);
-}
-
-void Client::LoadState() {
-  auto callback = std::bind(&Client::OnStateLoaded, this, _1, _2);
-  ads_client_->Load(_client_name, callback);
+  LoadState();
 }
 
 void Client::AppendCurrentTimeToAdsShownHistory() {
@@ -259,6 +249,16 @@ void Client::RemoveAllHistory() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void Client::SaveState() {
+  if (!is_initialized_) {
+    return;
+  }
+
+  auto json = client_state_->ToJson();
+  auto callback = std::bind(&Client::OnStateSaved, this, _1);
+  ads_client_->Save(_client_name, json, callback);
+}
+
 void Client::OnStateSaved(const Result result) {
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to save client state";
@@ -269,9 +269,13 @@ void Client::OnStateSaved(const Result result) {
   BLOG(INFO) << "Successfully saved client state";
 }
 
+void Client::LoadState() {
+  auto callback = std::bind(&Client::OnStateLoaded, this, _1, _2);
+  ads_client_->Load(_client_name, callback);
+}
+
 void Client::OnStateLoaded(const Result result, const std::string& json) {
   is_initialized_ = true;
-  state_has_loaded_ = true;
 
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to load client state, resetting to default values";
@@ -280,14 +284,14 @@ void Client::OnStateLoaded(const Result result, const std::string& json) {
   } else {
     if (!FromJson(json)) {
       BLOG(ERROR) << "Failed to parse client state: " << json;
-
+      callback_(FAILED);
       return;
     }
 
     BLOG(INFO) << "Successfully loaded client state";
   }
 
-  ads_->InitializeStep2();
+  callback_(SUCCESS);
 }
 
 bool Client::FromJson(const std::string& json) {
