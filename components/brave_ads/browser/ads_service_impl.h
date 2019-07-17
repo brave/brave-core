@@ -70,6 +70,7 @@ class AdsServiceImpl : public AdsService,
   void SetAdsPerHour(const uint64_t ads_per_hour) override;
 
   void SetConfirmationsIsReady(const bool is_ready) override;
+  void ChangeLocale(const std::string& locale) override;
   void ClassifyPage(const std::string& url, const std::string& page) override;
   void OnMediaStart(SessionID tab_id) override;
   void OnMediaStop(SessionID tab_id) override;

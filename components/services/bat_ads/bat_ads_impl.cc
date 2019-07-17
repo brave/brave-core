@@ -37,6 +37,10 @@ void BatAdsImpl::SetConfirmationsIsReady(const bool is_ready) {
   ads_->SetConfirmationsIsReady(is_ready);
 }
 
+void BatAdsImpl::ChangeLocale(const std::string& locale) {
+  ads_->ChangeLocale(locale);
+}
+
 void BatAdsImpl::ClassifyPage(
     const std::string& url,
     const std::string& page) {

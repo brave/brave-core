@@ -914,6 +914,14 @@ void AdsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
   bat_ads_->SetConfirmationsIsReady(is_ready);
 }
 
+void AdsServiceImpl::ChangeLocale(const std::string& locale) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->ChangeLocale(locale);
+}
+
 void AdsServiceImpl::ClassifyPage(const std::string& url,
                                   const std::string& page) {
   if (!connected())

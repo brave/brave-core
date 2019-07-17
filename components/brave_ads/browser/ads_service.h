@@ -32,6 +32,7 @@ class AdsService : public KeyedService {
 
   // ads::Ads proxy
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
+  virtual void ChangeLocale(const std::string& locale) = 0;
   virtual void ClassifyPage(
       const std::string& url,
       const std::string& page) = 0;

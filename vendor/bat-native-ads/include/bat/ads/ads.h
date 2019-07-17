@@ -51,6 +51,9 @@ class ADS_EXPORT Ads {
   // Should be called to inform Ads if Confirmations is ready
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
+  // Should be called when the user changes the operating system's locale, i.e.
+  // en, en_US or en_GB.UTF-8 unless the operating system restarts the app
+  virtual void ChangeLocale(const std::string& locale) = 0;
 
   // Should be called when a page has loaded in the current browser tab, and the
   // HTML is available for analysis
@@ -100,9 +103,6 @@ class ADS_EXPORT Ads {
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;
 
-  // Should be called when the user changes the operating system's locale, i.e.
-  // en, en_US or en_GB.UTF-8 unless the operating system restarts the app
-  virtual void ChangeLocale(const std::string& locale) = 0;
 
   // Should be called when a Notification has been shown
   virtual void GenerateAdReportingNotificationShownEvent(

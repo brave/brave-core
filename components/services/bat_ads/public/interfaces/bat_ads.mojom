@@ -61,6 +61,7 @@ interface BatAdsClient {
 interface BatAds {
   Initialize() => ();
   SetConfirmationsIsReady(bool is_ready);
+  ChangeLocale(string locale);
   ClassifyPage(string url, string page);
   ServeSampleAd();
   OnTimer(uint32 timer_id);
