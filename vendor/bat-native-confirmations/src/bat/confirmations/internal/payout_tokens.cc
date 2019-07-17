@@ -27,12 +27,9 @@ PayoutTokens::PayoutTokens(
     confirmations_(confirmations),
     confirmations_client_(confirmations_client),
     unblinded_payment_tokens_(unblinded_payment_tokens) {
-  BLOG(INFO) << "Initializing payout tokens";
 }
 
-PayoutTokens::~PayoutTokens() {
-  BLOG(INFO) << "Deinitializing payout tokens";
-}
+PayoutTokens::~PayoutTokens() = default;
 
 void PayoutTokens::Payout(const WalletInfo& wallet_info) {
   DCHECK(!wallet_info.payment_id.empty());

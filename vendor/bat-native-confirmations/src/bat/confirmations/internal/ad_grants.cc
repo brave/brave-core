@@ -18,13 +18,11 @@ AdGrants::AdGrants(
     balance_(0.0),
     confirmations_(confirmations),
     confirmations_client_(confirmations_client) {
-  BLOG(INFO) << "Initializing ad grants";
   (void)confirmations_;
+  (void)confirmations_client_;
 }
 
-AdGrants::~AdGrants() {
-  BLOG(INFO) << "Deinitializing ad grants";
-}
+AdGrants::~AdGrants() = default;
 
 bool AdGrants::SetFromJson(const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);

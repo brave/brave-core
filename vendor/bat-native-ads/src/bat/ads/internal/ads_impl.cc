@@ -1067,27 +1067,27 @@ void AdsImpl::NotificationAllowedCheck(const bool serve) {
 
   if (!ok) {
     // TODO(Terry Mancey): Implement Log (#44)
-    // 'Ad not served', { reason: 'notifications not presently allowed' }
+    // 'Notification not made', { reason: 'notifications not presently allowed' }
 
-    BLOG(INFO) << "Ad not served: Notifications not presently allowed";
+    BLOG(INFO) << "Notification not made: Notifications not presently allowed";
 
     return;
   }
 
   if (!ads_client_->IsNetworkConnectionAvailable()) {
     // TODO(Terry Mancey): Implement Log (#44)
-    // 'Ad not served', { reason: 'network connection not availaable' }
+    // 'Notification not made', { reason: 'network connection not available' }
 
-    BLOG(INFO) << "Ad not served: Network connection not available";
+    BLOG(INFO) << "Notification not made: Network connection not available";
 
     return;
   }
 
   if (IsCatalogOlderThanOneDay()) {
     // TODO(Terry Mancey): Implement Log (#44)
-    // 'Ad not served', { reason: 'catalog older than one day' }
+    // 'Notification not made', { reason: 'catalog older than one day' }
 
-    BLOG(INFO) << "Ad not served: Catalog older than one day";
+    BLOG(INFO) << "Notification not made: Catalog older than one day";
 
     return;
   }

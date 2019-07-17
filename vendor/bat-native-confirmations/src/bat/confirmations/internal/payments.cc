@@ -23,13 +23,11 @@ Payments::Payments(
     payments_({}),
     confirmations_(confirmations),
     confirmations_client_(confirmations_client) {
-  BLOG(INFO) << "Initializing payments";
   (void)confirmations_;
+  (void)confirmations_client_;
 }
 
-Payments::~Payments() {
-  BLOG(INFO) << "Deinitializing payments";
-}
+Payments::~Payments() = default;
 
 bool Payments::SetFromJson(const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);

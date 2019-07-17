@@ -36,12 +36,9 @@ RefillTokens::RefillTokens(
     confirmations_(confirmations),
     confirmations_client_(confirmations_client),
     unblinded_tokens_(unblinded_tokens) {
-  BLOG(INFO) << "Initializing refill tokens";
 }
 
-RefillTokens::~RefillTokens() {
-  BLOG(INFO) << "Deinitializing refill tokens";
-}
+RefillTokens::~RefillTokens() = default;
 
 void RefillTokens::Refill(
     const WalletInfo& wallet_info,

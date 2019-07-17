@@ -51,18 +51,16 @@ ConfirmationsImpl::ConfirmationsImpl(
 }
 
 ConfirmationsImpl::~ConfirmationsImpl() {
-  BLOG(INFO) << "Deinitializing Confirmations";
-
   StopRetryingToGetRefillSignedTokens();
   StopRetryingFailedConfirmations();
   StopPayingOutRedeemedTokens();
 }
 
 void ConfirmationsImpl::Initialize() {
-  BLOG(INFO) << "Initializing Confirmations";
+  BLOG(INFO) << "Initializing confirmations";
 
   if (is_initialized_) {
-    BLOG(INFO) << "Already initialized";
+    BLOG(INFO) << "Already initialized confirmations";
 
     return;
   }
@@ -79,7 +77,7 @@ void ConfirmationsImpl::MaybeStart() {
   }
 
   is_initialized_ = true;
-  BLOG(INFO) << "Successfully initialized";
+  BLOG(INFO) << "Successfully initialized confirmations";
 
   auto start_timer_in = CalculateTokenRedemptionTimeInSeconds();
   StartPayingOutRedeemedTokens(start_timer_in);

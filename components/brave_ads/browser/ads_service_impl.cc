@@ -270,7 +270,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "This service is used to communicate with Brave servers "
           "to send and retrieve information for Ads."
         trigger:
-          "Triggered by user viewing Ads or at various intervals."
+          "Triggered by user viewing ads or at various intervals."
         data:
           "Ads catalog and Confirmations."
         destination: WEBSITE
@@ -691,7 +691,7 @@ void AdsServiceImpl::MigratePrefs() const {
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
-    LOG(ERROR) << "Failed to migrate Ads preferences from version "
+    LOG(ERROR) << "Failed to migrate ads preferences from version "
         << source_version << " to " << dest_version;
 
     return;
@@ -742,7 +742,7 @@ bool AdsServiceImpl::MigratePrefs(
     }
 
     if (!is_dry_run) {
-      LOG(INFO) << "Migrating Ads preferences from mapping version "
+      LOG(INFO) << "Migrating ads preferences from mapping version "
           << from_version << " to " << to_version;
 
       (this->*(mapping->second))();
