@@ -62,7 +62,11 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     ads_client_(ads_client) {
 }
 
-AdsImpl::~AdsImpl() = default;
+AdsImpl::~AdsImpl() {
+  StopCollectingActivity();
+  StopDeliveringNotifications();
+  StopSustainingAdInteraction();
+}
 
 void AdsImpl::Initialize() {
   if (!ads_client_->IsAdsEnabled()) {
