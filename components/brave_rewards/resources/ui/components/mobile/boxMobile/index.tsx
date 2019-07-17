@@ -98,13 +98,36 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
     }
   }
 
+  /*
+   * Sets state given the view that should be shown.
+   *
+   * When user is on the index page: (brave://rewards)
+   * (state) { detailView: false, settings: false }
+   *
+   * When user is on a detail view: (brave://rewards/ads)
+   * (state) { detailView: true, settings: false }
+   *
+   * When user is on a settings view: (brave://rewards/ads-settings)
+   * (state) { detailView: true, settings: true }
+   */
   setView = (view: string, updateHistory: boolean = true) => {
-    const isSettingsView = view === 'settings'
-      ? !this.state.settings
-      : this.state.settings
-    const isDetailView = view === 'detailView'
-      ? !this.state.detailView
-      : this.state.detailView
+    let isDetailView
+    let isSettingsView
+
+    switch (view) {
+      case 'detailView':
+        isDetailView = true
+        isSettingsView = false
+        break
+      case 'settings':
+        isDetailView = true
+        isSettingsView = true
+        break
+      default:
+        isDetailView = false
+        isSettingsView = false
+        break
+    }
 
     this.setState({
       detailView: isDetailView,
@@ -158,7 +181,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
         <StyledLeft>
           {
             isDetailView
-              ? <StyledBackArrow onClick={this.setView.bind(this, 'detailView') as any}>
+              ? <StyledBackArrow onClick={this.setView.bind(this, 'index') as any}>
                 <ArrowLeftIcon />
               </StyledBackArrow>
               : null
@@ -230,14 +253,14 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
 
     return (
       <StyledFullSizeWrapper>
-        <StyledSettingsClose onClick={this.setView.bind(this, 'settings') as any}>
+        <StyledSettingsClose onClick={this.setView.bind(this, 'detailView') as any}>
           <CloseStrokeIcon />
         </StyledSettingsClose>
         <StyledSettingsHeader>
           <StyledSettingsTitle>
             {this.getSettingsTitle(title)}
           </StyledSettingsTitle>
-          <StyledSettingsClose onClick={this.setView.bind(this, 'settings') as any}>
+          <StyledSettingsClose onClick={this.setView.bind(this, 'detailView') as any}>
             <CloseStrokeIcon />
           </StyledSettingsClose>
         </StyledSettingsHeader>
