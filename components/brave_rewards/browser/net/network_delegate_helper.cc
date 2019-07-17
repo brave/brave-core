@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
+
+#include <memory>
+#include <string>
 
 #include "base/task/post_task.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -137,11 +141,12 @@ int OnBeforeURLRequest(
       int render_process_id, render_frame_id, frame_tree_node_id;
       GetRenderFrameInfo(ctx->request, &render_frame_id, &render_process_id,
           &frame_tree_node_id);
-      base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
-          base::BindOnce(&DispatchOnUI,
-              post_data,
-              ctx->request_url, ctx->request->site_for_cookies(), ctx->request->referrer(),
-              render_process_id, render_frame_id, frame_tree_node_id));
+      base::PostTaskWithTraits(
+          FROM_HERE, {content::BrowserThread::UI},
+          base::BindOnce(&DispatchOnUI, post_data, ctx->request_url,
+                         ctx->request->site_for_cookies(),
+                         ctx->request->referrer(), render_process_id,
+                         render_frame_id, frame_tree_node_id));
     }
   }
 
@@ -149,6 +154,3 @@ int OnBeforeURLRequest(
 }
 
 }  // namespace brave_rewards
-
-
-
