@@ -10,8 +10,9 @@ bool IsMediaRouterExtension(const std::string& id) {
 }
 
 #define RedoSignatureCheckingForMediaRouter(id) \
-    if (IsMediaRouterExtension(id)) \
+    if (IsMediaRouterExtension(id)) { \
         AddMany(ids, ADD_ALL_BOOTSTRAP); \
-        return;
+        return; \
+    }
 #include "../../../../../chrome/browser/extensions/install_verifier.cc"  // NOLINT
 #undef RedoSignatureCheckingForMediaRouter
