@@ -504,6 +504,30 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(bool success) {
 
   MaybeStartFirstLaunchNotificationTimeoutTimer();
   MaybeShowFirstLaunchNotification();
+
+  MaybeShowMyFirstAdNotification();
+}
+
+void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
+  if (!ShouldShowMyFirstAdNotification()) {
+    return;
+  }
+
+  if (!NotificationHelper::GetInstance()->ShowMyFirstAdNotification()) {
+    return;
+  }
+
+  profile_->GetPrefs()->SetBoolean(
+      prefs::kShouldShowMyFirstAdNotification, false);
+}
+
+bool AdsServiceImpl::ShouldShowMyFirstAdNotification() {
+  auto is_ads_enabled = IsAdsEnabled();
+
+  auto should_show = profile_->GetPrefs()->GetBoolean(
+      prefs::kShouldShowMyFirstAdNotification);
+
+  return is_ads_enabled && should_show;
 }
 
 void AdsServiceImpl::MaybeShowFirstLaunchNotification() {

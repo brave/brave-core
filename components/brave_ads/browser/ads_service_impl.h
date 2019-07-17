@@ -219,6 +219,8 @@ class AdsServiceImpl : public AdsService,
   void NotificationTimedOut(
       uint32_t timer_id,
       const std::string& notification_id);
+  bool ShouldShowMyFirstAdNotification();
+  void MaybeShowMyFirstAdNotification();
   void MaybeShowFirstLaunchNotification();
   bool ShouldShowFirstLaunchNotification();
   void ShowFirstLaunchNotification();

@@ -21,6 +21,8 @@ extern const char kShouldShowFirstLaunchNotification[];
 extern const char kHasRemovedFirstLaunchNotification[];
 extern const char kLastShownFirstLaunchNotificationTimestamp[];
 
+extern const char kShouldShowMyFirstAdNotification[];
+
 extern const int kCurrentVersionNumber;
 extern const char kVersion[];
 
