@@ -999,14 +999,15 @@ void ConfirmationsImpl::AppendTransactionToHistory(
 }
 
 void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
-  BLOG(INFO) << "ConfirmAd:";
-  BLOG(INFO) << "  creative_set_id: " << info->creative_set_id;
-  BLOG(INFO) << "  category: " << info->category;
-  BLOG(INFO) << "  url: " << info->url;
-  BLOG(INFO) << "  text: " << info->text;
-  BLOG(INFO) << "  advertiser: " << info->advertiser;
-  BLOG(INFO) << "  uuid: " << info->uuid;
-  BLOG(INFO) << "  type: " << std::string(info->type);
+  BLOG(INFO) << "Confirm ad:"
+      << std::endl << "  id: " << info->id
+      << std::endl << "  creative_set_id: " << info->creative_set_id
+      << std::endl << "  advertiser: " << info->advertiser
+      << std::endl << "  category: " << info->category
+      << std::endl << "  text: " << info->text
+      << std::endl << "  url: " << info->url
+      << std::endl << "  uuid: " << info->uuid
+      << std::endl << "  type: " << std::string(info->type);
 
   redeem_token_->Redeem(info->uuid, info->type);
 }

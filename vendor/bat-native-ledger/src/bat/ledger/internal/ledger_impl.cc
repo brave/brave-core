@@ -1479,6 +1479,7 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
     return;
 
   auto notification_info = std::make_unique<confirmations::NotificationInfo>();
+  notification_info->id = notification_info_ads.id;
   notification_info->creative_set_id = notification_info_ads.creative_set_id;
   notification_info->category = notification_info_ads.category;
   notification_info->advertiser = notification_info_ads.advertiser;

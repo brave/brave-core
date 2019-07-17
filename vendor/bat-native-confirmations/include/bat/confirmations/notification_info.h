@@ -18,6 +18,7 @@ struct CONFIRMATIONS_EXPORT NotificationInfo {
   explicit NotificationInfo(const NotificationInfo& info);
   ~NotificationInfo();
 
+  std::string id;
   std::string creative_set_id;
   std::string category;
   std::string advertiser;

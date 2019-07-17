@@ -29,6 +29,8 @@
 #include "base/strings/string_util.h"
 #include "base/strings/string_split.h"
 #include "base/time/time.h"
+#include "base/guid.h"
+
 #include "url/gurl.h"
 
 using std::placeholders::_1;
@@ -826,6 +828,7 @@ bool AdsImpl::ShowAd(
   }
 
   auto notification_info = std::make_unique<NotificationInfo>();
+  notification_info->id = base::GenerateGUID();
   notification_info->advertiser = ad_info.advertiser;
   notification_info->category = category;
   notification_info->text = ad_info.notification_text;
@@ -838,12 +841,13 @@ bool AdsImpl::ShowAd(
   // notificationUrl, notificationText, advertiser, uuid, hierarchy}
 
   BLOG(INFO) << "Notification shown:"
+      << std::endl << "  id: " << notification_info->id
       << std::endl << "  campaign_id: " << ad_info.campaign_id
-      << std::endl << "  category: " << category
       << std::endl << "  winnerOverTime: " << GetWinnerOverTimeCategory()
-      << std::endl << "  notificationUrl: " << notification_info->url
-      << std::endl << "  notificationText: " << notification_info->text
       << std::endl << "  advertiser: " << notification_info->advertiser
+      << std::endl << "  category: " << notification_info->category
+      << std::endl << "  text: " << notification_info->text
+      << std::endl << "  url: " << notification_info->url
       << std::endl << "  uuid: " << notification_info->uuid;
 
   ads_client_->ShowNotification(std::move(notification_info));
