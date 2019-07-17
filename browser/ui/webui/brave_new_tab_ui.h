@@ -6,30 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_UI_H_
 
-#include <memory>
 #include <string>
 
-#include "brave/browser/ui/webui/basic_ui.h"
+#include "base/macros.h"
+#include "content/public/browser/web_ui_controller.h"
 
-namespace content {
-class RenderViewHost;
-}
-
-class BraveNewTabUI : public BasicUI {
+class BraveNewTabUI : public content::WebUIController {
  public:
-  BraveNewTabUI(content::WebUI* web_ui, const std::string& host);
+  BraveNewTabUI(content::WebUI* web_ui, const std::string& name);
   ~BraveNewTabUI() override;
-  void OnPreferencesChanged();
-  void OnPrivatePropertiesChanged();
-  void OnStatsChanged();
-
  private:
-  // BasicUI overrides
-  void UpdateWebUIProperties() override;
-  void SetPreferencesWebUIProperties(content::RenderViewHost* render_view_host);
-  void SetStatsWebUIProperties(content::RenderViewHost* render_view_host);
-  void SetPrivateWebUIProperties(content::RenderViewHost* render_view_host);
-
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabUI);
 };
 
