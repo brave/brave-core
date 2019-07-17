@@ -25,6 +25,7 @@
 #include "bat/ads/internal/event_type_load_info.h"
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/bundle.h"
+#include "bat/ads/internal/notifications.h"
 
 #include "bat/usermodel/user_model.h"
 
@@ -33,6 +34,7 @@ namespace ads {
 class Client;
 class Bundle;
 class AdsServe;
+class Notifications;
 
 class AdsImpl : public Ads {
  public:
@@ -41,11 +43,14 @@ class AdsImpl : public Ads {
 
   bool is_first_run_;
 
-  void Initialize() override;
-  void InitializeStep2();
-  void InitializeStep3();
-  void Deinitialize();
+  InitializeCallback initialize_callback_;
+  void Initialize(InitializeCallback callback) override;
+  void InitializeStep2(const Result result);
+  void InitializeStep3(const Result result);
+  void InitializeStep4(const Result result);
   bool IsInitialized();
+
+  void Shutdown(ShutdownCallback callback) override;
 
   void LoadUserModel();
   void OnUserModelLoaded(const Result result, const std::string& json);
@@ -75,11 +80,9 @@ class AdsImpl : public Ads {
       const std::string& url,
       const bool is_active,
       const bool is_incognito) override;
-
-  void RemoveAllHistory() override;
   void OnTabClosed(const int32_t tab_id) override;
 
-  void ConfirmAdUUIDIfAdEnabled();
+  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
   void SetConfirmationsIsReady(const bool is_ready) override;
 
@@ -180,6 +183,7 @@ class AdsImpl : public Ads {
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
+  std::unique_ptr<Notifications> notifications_;
   std::unique_ptr<usermodel::UserModel> user_model_;
 
  private:

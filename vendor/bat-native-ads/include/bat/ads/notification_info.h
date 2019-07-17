@@ -16,7 +16,7 @@ namespace ads {
 
 struct ADS_EXPORT NotificationInfo {
   NotificationInfo();
-  explicit NotificationInfo(const NotificationInfo& info);
+  NotificationInfo(const NotificationInfo& info);
   ~NotificationInfo();
 
   const std::string ToJson() const;

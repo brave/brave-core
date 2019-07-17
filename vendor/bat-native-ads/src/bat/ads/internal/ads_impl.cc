@@ -56,6 +56,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     client_(std::make_unique<Client>(this, ads_client)),
     bundle_(std::make_unique<Bundle>(this, ads_client)),
     ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
+    notifications_(std::make_unique<Notifications>(this, ads_client)),
     user_model_(nullptr),
     is_initialized_(false),
     is_confirmations_ready_(false),
@@ -68,34 +69,56 @@ AdsImpl::~AdsImpl() {
   StopSustainingAdInteraction();
 }
 
-void AdsImpl::Initialize() {
-  if (!ads_client_->IsAdsEnabled()) {
-    BLOG(INFO) << "Deinitializing as Ads are disabled";
+void AdsImpl::Initialize(InitializeCallback callback) {
+  BLOG(INFO) << "Initializing ads";
 
-    Deinitialize();
-    return;
-  }
+  initialize_callback_ = callback;
 
   if (IsInitialized()) {
-    BLOG(INFO) << "Already initialized";
+    BLOG(INFO) << "Already initialized ads";
 
+    initialize_callback_(FAILED);
     return;
   }
 
-  client_->LoadState();
+  auto initialize_step_2_callback =
+      std::bind(&AdsImpl::InitializeStep2, this, _1);
+  client_->Initialize(initialize_step_2_callback);
 }
 
-void AdsImpl::InitializeStep2() {
+void AdsImpl::InitializeStep2(const Result result) {
+  if (result != SUCCESS) {
+    initialize_callback_(FAILED);
+    return;
+  }
+
+  auto callback = std::bind(&AdsImpl::InitializeStep3, this, _1);
+  notifications_->Initialize(callback);
+}
+
+void AdsImpl::InitializeStep3(const Result result) {
+  if (result != SUCCESS) {
+    initialize_callback_(FAILED);
+    return;
+  }
+
   client_->SetLocales(ads_client_->GetLocales());
 
   auto locale = ads_client_->GetAdsLocale();
   ChangeLocale(locale);
 }
 
-void AdsImpl::InitializeStep3() {
+void AdsImpl::InitializeStep4(const Result result) {
+  if (result != SUCCESS) {
+    initialize_callback_(FAILED);
+    return;
+  }
+
   is_initialized_ = true;
 
-  BLOG(INFO) << "Successfully initialized";
+  BLOG(INFO) << "Successfully initialized ads";
+
+  initialize_callback_(SUCCESS);
 
   is_foreground_ = ads_client_->IsForeground();
 
@@ -103,44 +126,19 @@ void AdsImpl::InitializeStep3() {
 
   NotificationAllowedCheck(false);
 
+  client_->UpdateAdUUID();
+
   if (IsMobile()) {
     StartDeliveringNotifications();
   }
 
-  ConfirmAdUUIDIfAdEnabled();
-
-  ads_serve_->DownloadCatalog();
-}
-
-void AdsImpl::Deinitialize() {
-  if (!is_initialized_) {
-    BLOG(WARNING) << "Failed to deinitialize as not initialized";
-
-    return;
+  if (_is_debug) {
+    StartCollectingActivity(kDebugOneHourInSeconds);
+  } else {
+    StartCollectingActivity(base::Time::kSecondsPerHour);
   }
 
-  BLOG(INFO) << "Deinitializing";
-
-  ads_serve_->Reset();
-
-  StopDeliveringNotifications();
-
-  StopSustainingAdInteraction();
-
-  last_sustaining_ad_url_ = "";
-
-  RemoveAllHistory();
-
-  bundle_->Reset();
-  user_model_.reset();
-
-  last_shown_notification_info_ = NotificationInfo();
-
-  page_score_cache_.clear();
-
-  is_first_run_ = true;
-  is_initialized_ = false;
-  is_foreground_ = false;
+  ads_serve_->DownloadCatalog();
 }
 
 bool AdsImpl::IsInitialized() {
@@ -151,6 +149,19 @@ bool AdsImpl::IsInitialized() {
   }
 
   return true;
+}
+
+void AdsImpl::Shutdown(ShutdownCallback callback) {
+  if (!is_initialized_) {
+    BLOG(WARNING) << "Failed to shutdown ads as not initialized";
+
+    callback(FAILED);
+    return;
+  }
+
+  notifications_->CloseAll();
+
+  callback(SUCCESS);
 }
 
 void AdsImpl::LoadUserModel() {
@@ -173,7 +184,7 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   InitializeUserModel(json, locale);
 
   if (!IsInitialized()) {
-    InitializeStep3();
+    InitializeStep4(SUCCESS);
   }
 }
 
@@ -316,25 +327,10 @@ void AdsImpl::OnTabClosed(const int32_t tab_id) {
   GenerateAdReportingDestroyEvent(destroy_info);
 }
 
-void AdsImpl::RemoveAllHistory() {
+void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   client_->RemoveAllHistory();
 
-  ConfirmAdUUIDIfAdEnabled();
-}
-
-void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
-  if (!ads_client_->IsAdsEnabled()) {
-    StopCollectingActivity();
-    return;
-  }
-
-  client_->UpdateAdUUID();
-
-  if (_is_debug) {
-    StartCollectingActivity(kDebugOneHourInSeconds);
-  } else {
-    StartCollectingActivity(base::Time::kSecondsPerHour);
-  }
+  callback(SUCCESS);
 }
 
 void AdsImpl::SetConfirmationsIsReady(const bool is_ready) {

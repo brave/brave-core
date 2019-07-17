@@ -10,6 +10,8 @@
 #include "bat/ads/ads.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
+using std::placeholders::_1;
+
 namespace bat_ads {
 
 namespace {
@@ -17,6 +19,10 @@ namespace {
 ads::NotificationResultInfoResultType ToNotificationResultInfoResultType(
     int32_t result_type) {
   return (ads::NotificationResultInfoResultType)result_type;
+}
+
+ads::Result ToMojomResult(int32_t result) {
+  return (ads::Result)result;
 }
 
 }
@@ -29,9 +35,40 @@ BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info)
 BatAdsImpl::~BatAdsImpl() {}
 
 void BatAdsImpl::Initialize(InitializeCallback callback) {
-  // TODO(Terry Mancey): Initialize needs a real callback
-  ads_->Initialize();
-  std::move(callback).Run();
+  auto* holder = new CallbackHolder<InitializeCallback>(AsWeakPtr(),
+      std::move(callback));
+
+  auto initialize_callback = std::bind(BatAdsImpl::OnInitialize, holder, _1);
+  ads_->Initialize(initialize_callback);
+}
+
+void BatAdsImpl::OnInitialize(
+    CallbackHolder<InitializeCallback>* holder,
+    const int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::Shutdown(ShutdownCallback callback) {
+  auto* holder = new CallbackHolder<ShutdownCallback>(AsWeakPtr(),
+      std::move(callback));
+
+  auto shutdown_callback = std::bind(BatAdsImpl::OnShutdown, holder, _1);
+  ads_->Shutdown(shutdown_callback);
+}
+
+void BatAdsImpl::OnShutdown(
+    CallbackHolder<ShutdownCallback>* holder,
+    const int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
+}
 
 void BatAdsImpl::SetConfirmationsIsReady(const bool is_ready) {
   ads_->SetConfirmationsIsReady(is_ready);
@@ -91,12 +128,6 @@ void BatAdsImpl::OnTabClosed(const int32_t tab_id) {
   ads_->OnTabClosed(tab_id);
 }
 
-void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
-  // TODO(Terry Mancey): RemoveAllHistory needs a real callback
-  ads_->RemoveAllHistory();
-  std::move(callback).Run();
-}
-
 void BatAdsImpl::GenerateAdReportingNotificationShownEvent(
       const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
@@ -110,10 +141,28 @@ void BatAdsImpl::GenerateAdReportingNotificationResultEvent(
       int32_t result_type) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info) == ads::Result::SUCCESS) {
-    ads_->GenerateAdReportingNotificationResultEvent(
-        *info,
+    ads_->GenerateAdReportingNotificationResultEvent(*info,
         ToNotificationResultInfoResultType(result_type));
   }
+}
+
+void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+  auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(AsWeakPtr(),
+      std::move(callback));
+
+  auto remove_all_history_callback =
+      std::bind(BatAdsImpl::OnRemoveAllHistory, holder, _1);
+  ads_->RemoveAllHistory(remove_all_history_callback);
+}
+
+void BatAdsImpl::OnRemoveAllHistory(
+    CallbackHolder<RemoveAllHistoryCallback>* holder,
+    const int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
 }
 
 }  // namespace bat_ads

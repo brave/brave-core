@@ -9,8 +9,11 @@
 #include <memory>
 #include <string>
 
+#include "bat/ads/ads.h"
+
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
+#include "base/memory/weak_ptr.h"
 
 namespace ads {
 class Ads;
@@ -20,13 +23,16 @@ namespace bat_ads {
 
 class BatAdsClientMojoBridge;
 
-class BatAdsImpl : public mojom::BatAds {
+class BatAdsImpl :
+    public mojom::BatAds,
+    public base::SupportsWeakPtr<BatAdsImpl> {
  public:
   explicit BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info);
   ~BatAdsImpl() override;
 
   // Overridden from mojom::BatAds:
   void Initialize(InitializeCallback callback) override;
+  void Shutdown(ShutdownCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
   void ChangeLocale(const std::string& locale) override;
   void ClassifyPage(const std::string& url, const std::string& page) override;
@@ -44,14 +50,48 @@ class BatAdsImpl : public mojom::BatAds {
       const bool is_active,
       const bool is_incognito) override;
   void OnTabClosed(const int32_t tab_id) override;
-  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
   void GenerateAdReportingNotificationShownEvent(
       const std::string& notification_info) override;
   void GenerateAdReportingNotificationResultEvent(
       const std::string& notification_info,
       int32_t event_type) override;
+  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
  private:
+  // Workaround to pass base::OnceCallback into std::bind
+  template <typename Callback>
+    class CallbackHolder {
+     public:
+      CallbackHolder(base::WeakPtr<BatAdsImpl> client, Callback callback) :
+          client_(client),
+          callback_(std::move(callback)) {}
+      ~CallbackHolder() = default;
+
+      bool is_valid() {
+        return !!client_.get();
+      }
+
+      Callback& get() {
+        return callback_;
+      }
+
+     private:
+      base::WeakPtr<BatAdsImpl> client_;
+      Callback callback_;
+    };
+
+  static void OnInitialize(
+      CallbackHolder<InitializeCallback>* holder,
+      const int32_t result);
+
+  static void OnShutdown(
+      CallbackHolder<ShutdownCallback>* holder,
+      const int32_t result);
+
+  static void OnRemoveAllHistory(
+      CallbackHolder<RemoveAllHistoryCallback>* holder,
+      const int32_t result);
+
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
   std::unique_ptr<ads::Ads> ads_;
 

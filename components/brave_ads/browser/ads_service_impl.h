@@ -91,9 +91,6 @@ class AdsServiceImpl : public AdsService,
  private:
   friend class AdsNotificationHandler;
 
-  typedef std::map<std::string, std::unique_ptr<const ads::NotificationInfo>>
-      NotificationInfoMap;
-
   void Start();
   bool StartService();
   void UpdateIsProductionFlag();
@@ -209,15 +206,18 @@ class AdsServiceImpl : public AdsService,
     const std::vector<std::string>& regions) const;
 
   void OnCreate();
-  void OnInitialize();
+  void OnInitialize(const int32_t result);
+  void ShutdownBatAds();
+  void OnShutdownBatAds(const int32_t result);
+  void ResetAllState();
+  void OnResetAllState(bool success);
+  void EnsureBaseDirectoryExists();
+  void OnEnsureBaseDirectoryExists(bool success);
+  void OnRemoveAllHistory(const int32_t result);
   void MaybeStart(bool should_restart);
-  void OnMaybeStartForRegion(
-      bool should_restart,
-      bool is_supported_region);
   void NotificationTimedOut(
       uint32_t timer_id,
       const std::string& notification_id);
-
   void MaybeShowFirstLaunchNotification();
   bool ShouldShowFirstLaunchNotification();
   void ShowFirstLaunchNotification();
@@ -238,9 +238,9 @@ class AdsServiceImpl : public AdsService,
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const base::FilePath base_path_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
+  bool is_initialized_;
   uint32_t next_timer_id_;
   uint32_t ads_launch_id_;
-  bool is_supported_region_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
@@ -258,7 +258,6 @@ class AdsServiceImpl : public AdsService,
   bat_ads::mojom::BatAdsAssociatedPtr bat_ads_;
   bat_ads::mojom::BatAdsServicePtr bat_ads_service_;
 
-  NotificationInfoMap notification_ids_;
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
 
   DISALLOW_COPY_AND_ASSIGN(AdsServiceImpl);

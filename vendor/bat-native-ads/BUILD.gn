@@ -129,6 +129,8 @@ source_set("ads") {
     "src/bat/ads/internal/locale_helper.cc",
     "src/bat/ads/internal/locale_helper.h",
     "src/bat/ads/internal/logging.h",
+    "src/bat/ads/internal/notifications.cc",
+    "src/bat/ads/internal/notifications.h",
     "src/bat/ads/internal/search_provider_info.cc",
     "src/bat/ads/internal/search_provider_info.h",
     "src/bat/ads/internal/search_providers.cc",

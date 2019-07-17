@@ -13,6 +13,8 @@
 
 #include "base/files/file_path.h"
 
+using std::placeholders::_1;
+
 using ::testing::_;
 using ::testing::Return;
 using ::testing::Invoke;
@@ -101,7 +103,12 @@ class AdsTabsTest : public ::testing::Test {
               return value;
             }));
 
-    ads_->Initialize();
+    auto callback = std::bind(&AdsTabsTest::OnInitialize, this, _1);
+    ads_->Initialize(callback);
+  }
+
+  void OnInitialize(const Result result) {
+    EXPECT_EQ(Result::SUCCESS, result);
   }
 
   void TearDown() override {

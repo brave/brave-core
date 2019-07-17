@@ -12,7 +12,6 @@ interface BatAdsService {
   SetProduction(bool is_production) => ();
   SetTesting(bool is_testing) => ();
   SetDebug(bool is_debug) => ();
-  IsSupportedRegion(string locale) => (bool is_supported);
 };
 
 interface BatAdsClient {
@@ -59,7 +58,8 @@ interface BatAdsClient {
 };
 
 interface BatAds {
-  Initialize() => ();
+  Initialize() => (int32 result);
+  Shutdown() => (int32 result);
   SetConfirmationsIsReady(bool is_ready);
   ChangeLocale(string locale);
   ClassifyPage(string url, string page);
@@ -71,10 +71,10 @@ interface BatAds {
   OnBackground();
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
-  RemoveAllHistory() => ();
   GenerateAdReportingNotificationShownEvent(string notification_info);
   GenerateAdReportingNotificationResultEvent(
       string notification_info, int32 result_type);
   OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
+  RemoveAllHistory() => (int32 result);
 };

@@ -31,6 +31,10 @@ extern const char _catalog_schema_name[];
 extern const char _catalog_name[];
 extern const char _client_name[];
 
+using InitializeCallback = std::function<void(const Result)>;
+using ShutdownCallback = std::function<void(const Result)>;
+using RemoveAllHistoryCallback = std::function<void(const Result)>;
+
 class ADS_EXPORT Ads {
  public:
   Ads() = default;
@@ -44,9 +48,11 @@ class ADS_EXPORT Ads {
   // Should be called to get the region for the specified locale
   static std::string GetRegion(const std::string& locale);
 
-  // Should be called when Ads are enabled or disabled on the Client
-  virtual void Initialize() = 0;
+  // Should be called when Ads is enabled on the Client
+  virtual void Initialize(InitializeCallback callback) = 0;
 
+  // Should be called when Ads is disabled on the Client
+  virtual void Shutdown(ShutdownCallback callback) = 0;
 
   // Should be called to inform Ads if Confirmations is ready
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
@@ -100,9 +106,6 @@ class ADS_EXPORT Ads {
   // Should be called to record when a browser tab is closed
   virtual void OnTabClosed(const int32_t tab_id) = 0;
 
-  // Should be called to remove all cached history
-  virtual void RemoveAllHistory() = 0;
-
 
   // Should be called when a Notification has been shown
   virtual void GenerateAdReportingNotificationShownEvent(
@@ -115,6 +118,8 @@ class ADS_EXPORT Ads {
   virtual void GenerateAdReportingNotificationResultEvent(
       const NotificationInfo& info,
       const NotificationResultInfoResultType type) = 0;
+  // Should be called to remove all cached history
+  virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
  private:
   // Not copyable, not assignable

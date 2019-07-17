@@ -208,11 +208,6 @@ std::string URLMethodToRequestType(
   }
 }
 
-void EnsureBaseDirectoryExists(const base::FilePath& path) {
-  if (!DirectoryExists(path))
-    base::CreateDirectory(path);
-}
-
 void PostWriteCallback(
     const base::Callback<void(bool success)>& callback,
     scoped_refptr<base::SequencedTaskRunner> reply_task_runner,
@@ -235,6 +230,15 @@ std::string LoadOnFileTaskRunner(
   return data;
 }
 
+bool EnsureBaseDirectoryExistsOnFileTaskRunner(
+    const base::FilePath& path) {
+  if (base::DirectoryExists(path)) {
+    return true;
+  }
+
+  return base::CreateDirectory(path);
+}
+
 std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
     const std::string category,
     BundleStateDatabase* backend) {
@@ -247,9 +251,17 @@ std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
   return ads;
 }
 
-bool ResetOnFileTaskRunner(
-    const base::FilePath& path) {
-  return base::DeleteFile(path, false);
+bool ResetOnFileTaskRunner(const base::FilePath& path) {
+  bool recursive;
+
+  base::File::Info file_info;
+  if (base::GetFileInfo(path, &file_info)) {
+    recursive = file_info.is_directory;
+  } else {
+    recursive = false;
+  }
+
+  return base::DeleteFile(path, recursive);
 }
 
 bool SaveBundleStateOnFileTaskRunner(
@@ -292,9 +304,9 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       base_path_(profile_->GetPath().AppendASCII("ads_service")),
+      is_initialized_(false),
       next_timer_id_(0),
       ads_launch_id_(0),
-      is_supported_region_(false),
       bundle_state_backend_(
           new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
@@ -306,9 +318,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
 #endif
       bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(!profile_->IsOffTheRecord());
-
-  file_task_runner_->PostTask(FROM_HERE,
-      base::BindOnce(&EnsureBaseDirectoryExists, base_path_));
 
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
 
@@ -337,45 +346,44 @@ AdsServiceImpl::~AdsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, bundle_state_backend_.release());
 }
 
-void AdsServiceImpl::OnInitialize() {
+void AdsServiceImpl::OnCreate() {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->Initialize(base::BindOnce(
+      &AdsServiceImpl::OnInitialize, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnInitialize(const int32_t result) {
+  if (result != ads::Result::SUCCESS) {
+    LOG(ERROR) << "Failed to initialize ads";
+    return;
+  }
+
+  is_initialized_ = true;
+
   ResetTimer();
 }
 
-void AdsServiceImpl::OnCreate() {
-  if (connected()) {
-    bat_ads_->Initialize(
-        base::BindOnce(&AdsServiceImpl::OnInitialize, AsWeakPtr()));
-  }
-}
+
 
 void AdsServiceImpl::MaybeStart(bool should_restart) {
-  if (should_restart)
+  if (!IsSupportedRegion()) {
+    LOG(INFO) << GetAdsLocale() << " locale does not support Ads";
     Shutdown();
+    return;
+  }
+
+  if (should_restart) {
+    LOG(INFO) << "Restarting ads service";
+    Shutdown();
+  }
 
   if (!StartService()) {
-    LOG(ERROR) << "Failed to start Ads service";
+    LOG(ERROR) << "Failed to start ads service";
     return;
   }
-
-  bat_ads_service_->IsSupportedRegion(GetAdsLocale(),
-      base::BindOnce(&AdsServiceImpl::OnMaybeStartForRegion,
-          AsWeakPtr(), should_restart));
-}
-
-void AdsServiceImpl::OnMaybeStartForRegion(
-    bool should_restart,
-    bool is_supported_region) {
-  is_supported_region_ = is_supported_region;
-
-  if (!is_supported_region_) {
-    LOG(WARNING) << GetAdsLocale() << " locale does not support Ads";
-
-    Shutdown();
-    return;
-  }
-
-  MaybeStartFirstLaunchNotificationTimeoutTimer();
-  MaybeShowFirstLaunchNotification();
 
   if (IsAdsEnabled()) {
     if (should_restart) {
@@ -397,8 +405,9 @@ bool AdsServiceImpl::StartService() {
   content::ServiceManagerConnection* connection =
       content::ServiceManagerConnection::GetForProcess();
 
-  if (!connection)
+  if (!connection) {
     return false;
+  }
 
   connection->GetConnector()->BindInterface(
       bat_ads::mojom::kServiceName, &bat_ads_service_);
@@ -470,6 +479,21 @@ void AdsServiceImpl::UpdateIsTestingFlag() {
 }
 
 void AdsServiceImpl::Start() {
+  EnsureBaseDirectoryExists();
+}
+
+void AdsServiceImpl::EnsureBaseDirectoryExists() {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
+      base::Bind(&AdsServiceImpl::OnEnsureBaseDirectoryExists, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnEnsureBaseDirectoryExists(bool success) {
+  if (!success) {
+    LOG(ERROR) << "Failed to create base directory";
+    return;
+  }
+
   BackgroundHelper::GetInstance()->AddObserver(this);
 
   bat_ads::mojom::BatAdsClientAssociatedPtrInfo client_ptr_info;
@@ -477,6 +501,9 @@ void AdsServiceImpl::Start() {
 
   bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
+
+  MaybeStartFirstLaunchNotificationTimeoutTimer();
+  MaybeShowFirstLaunchNotification();
 }
 
 void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
@@ -628,11 +655,33 @@ void AdsServiceImpl::RemoveFirstLaunchNotification() {
 }
 
 void AdsServiceImpl::Stop() {
-  if (connected()) {
-    // this is kind of weird, but we need to call Initialize on disable too
-    bat_ads_->Initialize(base::NullCallback());
+  if (!connected()) {
+    return;
   }
+
+  ShutdownBatAds();
+}
+
+void AdsServiceImpl::ShutdownBatAds() {
+  LOG(INFO) << "Shutting down ads";
+
+  bat_ads_->Shutdown(base::BindOnce(&AdsServiceImpl::OnShutdownBatAds,
+      AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnShutdownBatAds(const int32_t result) {
+  DCHECK(is_initialized_);
+
+  if (result != ads::Result::SUCCESS) {
+    LOG(ERROR) << "Failed to shutdown ads";
+    return;
+  }
+
+  RemoveFirstLaunchNotification();
   Shutdown();
+  ResetAllState();
+
+  LOG(INFO) << "Successfully shutdown ads";
 }
 
 void AdsServiceImpl::ResetTimer() {
@@ -670,18 +719,28 @@ void AdsServiceImpl::Shutdown() {
     delete loader;
   }
   url_loaders_.clear();
+
   idle_poll_timer_.Stop();
 
   bat_ads_.reset();
   bat_ads_client_binding_.Close();
 
-  for (NotificationInfoMap::iterator it = notification_ids_.begin();
-      it != notification_ids_.end(); ++it) {
-    const std::string notification_id = it->first;
-    display_service_->Close(NotificationHandler::Type::BRAVE_ADS,
-                            notification_id);
+  is_initialized_ = false;
+}
+
+void AdsServiceImpl::ResetAllState() {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&ResetOnFileTaskRunner, base_path_),
+      base::Bind(&AdsServiceImpl::OnResetAllState, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnResetAllState(bool success) {
+  if (!success) {
+    LOG(ERROR) << "Failed to reset ads state";
+    return;
   }
-  notification_ids_.clear();
+
+  LOG(INFO) << "Successfully reset ads state";
 }
 
 void AdsServiceImpl::MigratePrefs() const {
@@ -812,8 +871,6 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == prefs::kEnabled ||
       pref == brave_rewards::prefs::kBraveRewardsEnabled) {
     if (IsAdsEnabled()) {
-      RemoveFirstLaunchNotification();
-
       MaybeStart(false);
     } else {
       Stop();
@@ -856,7 +913,8 @@ void AdsServiceImpl::MayBeShowFirstLaunchNotificationForSupportedRegion(
 }
 
 bool AdsServiceImpl::IsSupportedRegion() const {
-  return is_supported_region_;
+  auto locale = LocaleHelper::GetInstance()->GetLocale();
+  return ads::Ads::IsSupportedRegion(locale);
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
@@ -958,12 +1016,24 @@ void AdsServiceImpl::LoadUserModelForLocale(
   callback(ads::Result::SUCCESS, user_model);
 }
 
-void AdsServiceImpl::OnURLsDeleted(history::HistoryService* history_service,
-                                   const history::DeletionInfo& deletion_info) {
-  if (!connected())
+void AdsServiceImpl::OnURLsDeleted(
+    history::HistoryService* history_service,
+    const history::DeletionInfo& deletion_info) {
+  if (!connected()) {
     return;
+  }
 
-  bat_ads_->RemoveAllHistory(base::NullCallback());
+  bat_ads_->RemoveAllHistory(base::BindOnce(
+      &AdsServiceImpl::OnRemoveAllHistory, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnRemoveAllHistory(const int32_t result) {
+  if (result != ads::Result::SUCCESS) {
+    LOG(ERROR) << "Failed to remove all ads history";
+    return;
+  }
+
+  LOG(INFO) << "Successfully removed all ads history";
 }
 
 void AdsServiceImpl::OnMediaStart(SessionID tab_id) {
