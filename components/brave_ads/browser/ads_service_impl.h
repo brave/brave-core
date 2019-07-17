@@ -110,10 +110,9 @@ class AdsServiceImpl : public AdsService,
       const std::string& notification_id,
       bool by_user,
       base::OnceClosure completed_closure);
-  void OpenSettings(
-      Profile* profile,
-      const GURL& origin,
-      bool should_close);
+  void ViewAd(const std::string& id);
+  void OnViewAd(const std::string& json);
+  void OpenNewTabWithUrl(const std::string& url);
 
   // AdsClient implementation
   bool IsForeground() const override;
@@ -219,6 +218,8 @@ class AdsServiceImpl : public AdsService,
   void NotificationTimedOut(
       uint32_t timer_id,
       const std::string& notification_id);
+  void MaybeViewAd();
+  void RetryViewingAdWithId(const std::string& id);
   bool ShouldShowMyFirstAdNotification();
   void MaybeShowMyFirstAdNotification();
   void MaybeShowFirstLaunchNotification();
@@ -242,6 +243,7 @@ class AdsServiceImpl : public AdsService,
   const base::FilePath base_path_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   bool is_initialized_;
+  std::string retry_viewing_ad_with_id_;
   uint32_t next_timer_id_;
   uint32_t ads_launch_id_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;

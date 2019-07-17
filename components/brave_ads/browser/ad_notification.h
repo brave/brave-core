@@ -20,8 +20,7 @@ class Notification;
 namespace brave_ads {
 
 std::unique_ptr<message_center::Notification> CreateAdNotification(
-      const ads::NotificationInfo& notification_info,
-      std::string* notification_id);
+    const ads::NotificationInfo& notification_info);
 
 }  // namespace brave_ads
 

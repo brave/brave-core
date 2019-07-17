@@ -10,7 +10,7 @@
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/export.h"
-#include "bat/ads/notification_result_type.h"
+#include "bat/ads/notification_event_type.h"
 #include "bat/ads/notification_info.h"
 
 namespace ads {
@@ -33,6 +33,8 @@ extern const char _client_name[];
 
 using InitializeCallback = std::function<void(const Result)>;
 using ShutdownCallback = std::function<void(const Result)>;
+using GetNotificationForIdCallback =
+    std::function<void(std::unique_ptr<NotificationInfo>)>;
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
 
 class ADS_EXPORT Ads {
@@ -106,18 +108,17 @@ class ADS_EXPORT Ads {
   // Should be called to record when a browser tab is closed
   virtual void OnTabClosed(const int32_t tab_id) = 0;
 
+  // Should return true and NotificationInfo if the notification for the
+  // specified id exists otherwise returns false
+  virtual bool GetNotificationForId(
+      const std::string& id,
+      NotificationInfo* notification) = 0;
 
-  // Should be called when a Notification has been shown
-  virtual void GenerateAdReportingNotificationShownEvent(
-      const NotificationInfo& info) = 0;
+  // Should be called when a notification event is triggered
+  virtual void OnNotificationEvent(
+      const std::string& id,
+      const NotificationEventType type) = 0;
 
-  // Should be called when a Notification has been clicked, dismissed or times
-  // out on the Client. Dismiss events for local Notifications may not be
-  // available for every version of Android, making the Dismiss notification
-  // capture optional for Android on 100% of devices
-  virtual void GenerateAdReportingNotificationResultEvent(
-      const NotificationInfo& info,
-      const NotificationResultInfoResultType type) = 0;
   // Should be called to remove all cached history
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 

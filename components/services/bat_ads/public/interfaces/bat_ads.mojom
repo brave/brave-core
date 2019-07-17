@@ -72,10 +72,9 @@ interface BatAds {
   OnBackground();
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
-  GenerateAdReportingNotificationShownEvent(string notification_info);
-  GenerateAdReportingNotificationResultEvent(
-      string notification_info, int32 result_type);
   OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
+  GetNotificationForId(string id) => (string notification_info);
+  OnNotificationEvent(string id, int32 type);
   RemoveAllHistory() => (int32 result);
 };

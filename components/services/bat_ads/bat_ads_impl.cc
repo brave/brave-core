@@ -16,15 +16,12 @@ namespace bat_ads {
 
 namespace {
 
-ads::NotificationResultInfoResultType ToNotificationResultInfoResultType(
-    int32_t result_type) {
-  return (ads::NotificationResultInfoResultType)result_type;
-}
-
 ads::Result ToMojomResult(int32_t result) {
   return (ads::Result)result;
 }
 
+ads::NotificationEventType ToMojomNotificationEventType(int32_t event_type) {
+  return (ads::NotificationEventType)event_type;
 }
 
 BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info)
@@ -128,22 +125,18 @@ void BatAdsImpl::OnTabClosed(const int32_t tab_id) {
   ads_->OnTabClosed(tab_id);
 }
 
-void BatAdsImpl::GenerateAdReportingNotificationShownEvent(
-      const std::string& notification_info) {
-  auto info = std::make_unique<ads::NotificationInfo>();
-  if (info->FromJson(notification_info) == ads::Result::SUCCESS) {
-    ads_->GenerateAdReportingNotificationShownEvent(*info);
-  }
+void BatAdsImpl::GetNotificationForId(
+    const std::string& id,
+    GetNotificationForIdCallback callback) {
+  ads::NotificationInfo notification;
+  ads_->GetNotificationForId(id, &notification);
+  std::move(callback).Run(notification.ToJson());
 }
 
-void BatAdsImpl::GenerateAdReportingNotificationResultEvent(
-      const std::string& notification_info,
-      int32_t result_type) {
-  auto info = std::make_unique<ads::NotificationInfo>();
-  if (info->FromJson(notification_info) == ads::Result::SUCCESS) {
-    ads_->GenerateAdReportingNotificationResultEvent(*info,
-        ToNotificationResultInfoResultType(result_type));
-  }
+void BatAdsImpl::OnNotificationEvent(
+    const std::string& id,
+    const int32_t type) {
+  ads_->OnNotificationEvent(id, ToMojomNotificationEventType(type));
 }
 
 void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {

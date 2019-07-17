@@ -233,8 +233,6 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   if (info.get() != nullptr) {
     const auto notification = [[BATAdsNotification alloc] initWithNotificationInfo:*info.get()];
     [self.delegate braveAds:self showNotification:notification];
-
-    ads->GenerateAdReportingNotificationShownEvent(*info.get());
   }
 }
 

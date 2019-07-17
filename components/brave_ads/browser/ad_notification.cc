@@ -13,16 +13,13 @@ namespace brave_ads {
 
 namespace {
 
-const char kNotifierIdPrefix[] = "service.ads_service.";
 const char kNotifierId[] = "service.ads_service";
 
 }  // namespace
 
 // static
 std::unique_ptr<message_center::Notification> CreateAdNotification(
-    const ads::NotificationInfo& notification_info,
-    std::string* notification_id) {
-  *notification_id = kNotifierIdPrefix + notification_info.uuid;
+    const ads::NotificationInfo& notification_info) {
   message_center::RichNotificationData notification_data;
 
   base::string16 advertiser;
@@ -42,16 +39,17 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
   notification_data.context_message = base::ASCIIToUTF16(" ");
   auto notification = std::make_unique<message_center::Notification>(
       message_center::NOTIFICATION_TYPE_SIMPLE,
-      *notification_id,
+      notification_info.id,
       advertiser,
       text,
       gfx::Image(),
       base::string16(),
-      GURL("chrome://brave_ads/?" + *notification_id),
+      GURL("chrome://brave_ads/?" + notification_info.id),
       message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
-                                 kNotifierId),
+          kNotifierId),
       notification_data,
       nullptr);
+
 #if !defined(OS_MACOSX) || defined(OFFICIAL_BUILD)
   // set_never_timeout uses an XPC service which requires signing
   // so for now we don't set this for macos dev builds

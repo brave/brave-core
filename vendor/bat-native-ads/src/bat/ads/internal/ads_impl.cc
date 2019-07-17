@@ -212,6 +212,12 @@ bool AdsImpl::IsMobile() const {
   return true;
 }
 
+bool AdsImpl::GetNotificationForId(
+    const std::string& id,
+    ads::NotificationInfo* notification) {
+  return notifications_->Get(id, notification);
+}
+
 void AdsImpl::OnForeground() {
   is_foreground_ = true;
   GenerateAdReportingForegroundEvent();
@@ -280,6 +286,76 @@ bool AdsImpl::IsMediaPlaying() const {
   }
 
   return true;
+}
+
+void AdsImpl::OnNotificationEvent(
+    const std::string& id,
+    const ads::NotificationEventType type) {
+  NotificationInfo notification;
+  if (!notifications_->Get(id, &notification)) {
+    return;
+  }
+
+  switch (type) {
+    case ads::NotificationEventType::VIEWED: {
+      NotificationEventViewed(id, notification);
+      break;
+    }
+
+    case ads::NotificationEventType::CLICKED: {
+      NotificationEventClicked(id, notification);
+      break;
+    }
+
+    case ads::NotificationEventType::DISMISSED: {
+      NotificationEventDismissed(id, notification);
+      break;
+    }
+
+    case ads::NotificationEventType::TIMEOUT: {
+      NotificationEventTimedOut(id, notification);
+      break;
+    }
+  }
+}
+
+void AdsImpl::NotificationEventViewed(
+    const std::string& id,
+    const NotificationInfo& notification) {
+  GenerateAdReportingNotificationShownEvent(notification);
+
+  ConfirmAd(notification, ConfirmationType::VIEW);
+}
+
+void AdsImpl::NotificationEventClicked(
+    const std::string& id,
+    const NotificationInfo& notification) {
+  notifications_->Remove(id);
+
+  GenerateAdReportingNotificationResultEvent(notification,
+      NotificationResultInfoResultType::CLICKED);
+
+  ConfirmAd(notification, ConfirmationType::CLICK);
+}
+
+void AdsImpl::NotificationEventDismissed(
+    const std::string& id,
+    const NotificationInfo& notification) {
+  notifications_->Remove(id);
+
+  GenerateAdReportingNotificationResultEvent(notification,
+      NotificationResultInfoResultType::DISMISSED);
+
+  ConfirmAd(notification, ConfirmationType::DISMISS);
+}
+
+void AdsImpl::NotificationEventTimedOut(
+    const std::string& id,
+    const NotificationInfo& notification) {
+  notifications_->Remove(id);
+
+  GenerateAdReportingNotificationResultEvent(notification,
+      NotificationResultInfoResultType::TIMEOUT);
 }
 
 void AdsImpl::OnTabUpdated(
@@ -851,6 +927,7 @@ bool AdsImpl::ShowAd(
       << std::endl << "  url: " << notification_info->url
       << std::endl << "  uuid: " << notification_info->uuid;
 
+  notifications_->Add(*notification_info);
   ads_client_->ShowNotification(std::move(notification_info));
 
   client_->AppendCurrentTimeToAdsShownHistory();
@@ -1242,8 +1319,6 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 
   auto* json = buffer.GetString();
   ads_client_->EventLog(json);
-
-  ConfirmAd(info, ConfirmationType::VIEW);
 }
 
 void AdsImpl::GenerateAdReportingNotificationResultEvent(
@@ -1320,22 +1395,6 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   auto* json = buffer.GetString();
   ads_client_->EventLog(json);
-
-  switch (type) {
-    case NotificationResultInfoResultType::CLICKED: {
-      ConfirmAd(info, ConfirmationType::CLICK);
-      break;
-    }
-
-    case NotificationResultInfoResultType::DISMISSED: {
-      ConfirmAd(info, ConfirmationType::DISMISS);
-      break;
-    }
-
-    case NotificationResultInfoResultType::TIMEOUT: {
-      break;
-    }
-  }
 }
 
 void AdsImpl::GenerateAdReportingConfirmationEvent(

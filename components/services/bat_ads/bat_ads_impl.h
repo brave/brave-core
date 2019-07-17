@@ -50,11 +50,10 @@ class BatAdsImpl :
       const bool is_active,
       const bool is_incognito) override;
   void OnTabClosed(const int32_t tab_id) override;
-  void GenerateAdReportingNotificationShownEvent(
-      const std::string& notification_info) override;
-  void GenerateAdReportingNotificationResultEvent(
-      const std::string& notification_info,
-      int32_t event_type) override;
+  void GetNotificationForId(
+      const std::string& id,
+      GetNotificationForIdCallback callback) override;
+  void OnNotificationEvent(const std::string& id, const int32_t type) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
  private:
