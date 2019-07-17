@@ -69,6 +69,9 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(ShowNotification, void(
       std::unique_ptr<NotificationInfo> info));
 
+  MOCK_METHOD1(CloseNotification, void(
+      const std::string& id));
+
   MOCK_METHOD1(SetCatalogIssuers, void(
       std::unique_ptr<IssuersInfo> info));
 

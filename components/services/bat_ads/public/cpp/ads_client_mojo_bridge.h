@@ -71,6 +71,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
                   URLRequestCallback callback) override;
   void LoadSampleBundle(LoadSampleBundleCallback callback) override;
   void ShowNotification(const std::string& notification_info) override;
+  void CloseNotification(const std::string& id) override;
   void SetCatalogIssuers(const std::string& issuers_info) override;
   void ConfirmAd(const std::string& notification_info) override;
   void SaveBundleState(const std::string& bundle_state,

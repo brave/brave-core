@@ -50,6 +50,7 @@ interface BatAdsClient {
              string content_type, int32 method) =>
       (int32 status_code, string content, map<string, string> headers);
   ShowNotification(string notification_info);
+  CloseNotification(string id);
   SetCatalogIssuers(string issuers_info);
   ConfirmAd(string notification_info);
   SaveBundleState(string bundle_state) => (int32 result);

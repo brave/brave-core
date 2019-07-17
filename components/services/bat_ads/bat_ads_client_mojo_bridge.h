@@ -30,6 +30,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   void GetClientInfo(ads::ClientInfo* info) const override;
   const std::vector<std::string> GetLocales() const override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
+  void CloseNotification(const std::string& id) override;
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
   void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
   uint32_t SetTimer(const uint64_t time_offset) override;

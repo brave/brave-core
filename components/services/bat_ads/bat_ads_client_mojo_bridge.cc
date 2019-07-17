@@ -146,6 +146,13 @@ void BatAdsClientMojoBridge::ShowNotification(
   bat_ads_client_->ShowNotification(info->ToJson());
 }
 
+void BatAdsClientMojoBridge::CloseNotification(const std::string& id) {
+  if (!connected())
+    return;
+
+  bat_ads_client_->CloseNotification(id);
+}
+
 void BatAdsClientMojoBridge::SetCatalogIssuers(
     std::unique_ptr<ads::IssuersInfo> info) {
   if (!connected())

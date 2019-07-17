@@ -299,6 +299,10 @@ void AdsClientMojoBridge::ShowNotification(
     ads_client_->ShowNotification(std::move(info));
 }
 
+void AdsClientMojoBridge::CloseNotification(const std::string& id) {
+  ads_client_->CloseNotification(id);
+}
+
 void AdsClientMojoBridge::SetCatalogIssuers(
     const std::string& issuers_info) {
   auto info = std::make_unique<ads::IssuersInfo>();
