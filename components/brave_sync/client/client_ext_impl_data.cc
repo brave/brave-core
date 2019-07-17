@@ -56,7 +56,6 @@ std::unique_ptr<brave_sync::jslib::SiteSetting> FromExtSiteSetting(
   }
   CHECK_AND_ASSIGN(zoomLevel, zoom_level);
   CHECK_AND_ASSIGN(shieldsUp, shields_up);
-  // DCHECK(false);
   // site_setting-> = ext_site_setting.ad_control;
   // site_setting-> = ext_site_setting.cookie_control;
   CHECK_AND_ASSIGN(safeBrowsing, safe_browsing);
@@ -182,7 +181,6 @@ std::unique_ptr<extensions::api::brave_sync::SiteSetting> FromLibSiteSetting(
   ext_site_setting->shields_up.reset(new bool (lib_site_setting.shieldsUp));
   // ext_site_setting->ad_control = lib_site_setting.adControl;
   // ext_site_setting->cookie_control = lib_site_setting.cookieControl;
-  // DCHECK(false);
   ext_site_setting->safe_browsing.reset(
       new bool(lib_site_setting.safeBrowsing));
   ext_site_setting->no_script.reset(new bool(lib_site_setting.noScript));

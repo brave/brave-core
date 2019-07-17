@@ -20,6 +20,22 @@ std::unique_ptr<syncer::ProfileSyncService> BraveBuildServiceInstanceFor(
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "brave/components/brave_sync/brave_profile_sync_service_impl.h"
 using brave_sync::BraveProfileSyncServiceImpl;
+#else
+namespace {
+class BraveProfileSyncService : public syncer::ProfileSyncService {
+ public:
+  explicit BraveProfileSyncService(InitParams init_params) :
+    syncer::ProfileSyncService(std::move(init_params)) {}
+  ~BraveProfileSyncService() override {}
+
+  // syncer::SyncService implementation
+  CoreAccountInfo GetAuthenticatedAccountInfo() const override {
+    AccountInfo account_info;
+    account_info.account_id = "dummy_account_id";
+    return std::move(account_info);
+  }
+};
+}  // namespace
 #endif
 
 namespace {
@@ -31,7 +47,7 @@ std::unique_ptr<syncer::ProfileSyncService> BraveBuildServiceInstanceFor(
   return std::make_unique<BraveProfileSyncServiceImpl>(profile,
                                                    std::move(init_params));
 #else
-  return std::make_unique<syncer::ProfileSyncService>(std::move(init_params));
+  return std::make_unique<BraveProfileSyncService>(std::move(init_params));
 #endif
 }
 
