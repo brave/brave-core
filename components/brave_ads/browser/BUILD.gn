@@ -58,6 +58,8 @@ source_set("browser") {
       "locale_helper_mac.h",
       "locale_helper_win.cc",
       "locale_helper_win.h",
+      "locale_helper_android.cc",
+      "locale_helper_android.h",
       "bundle_state_database.cc",
       "bundle_state_database.h",
     ]
