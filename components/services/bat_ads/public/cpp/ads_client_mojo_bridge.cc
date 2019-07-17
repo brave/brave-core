@@ -102,15 +102,6 @@ void AdsClientMojoBridge::IsNetworkConnectionAvailable(
   std::move(callback).Run(ads_client_->IsNetworkConnectionAvailable());
 }
 
-bool AdsClientMojoBridge::GenerateUUID(std::string* out_uuid) {
-  *out_uuid = ads_client_->GenerateUUID();
-  return true;
-}
-
-void AdsClientMojoBridge::GenerateUUID(GenerateUUIDCallback callback) {
-  std::move(callback).Run(ads_client_->GenerateUUID());
-}
-
 bool AdsClientMojoBridge::IsNotificationsAvailable(bool* out_available) {
   *out_available = ads_client_->IsNotificationsAvailable();
   return true;

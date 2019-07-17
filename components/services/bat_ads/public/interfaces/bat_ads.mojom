@@ -27,8 +27,6 @@ interface BatAdsClient {
   [Sync]
   IsNetworkConnectionAvailable() => (bool available);
   [Sync]
-  GenerateUUID() => (string uuid);
-  [Sync]
   IsNotificationsAvailable() => (bool available);
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);

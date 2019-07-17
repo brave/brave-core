@@ -1237,10 +1237,6 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
 #endif
 }
 
-const std::string AdsServiceImpl::GenerateUUID() const {
-  return base::GenerateGUID();
-}
-
 const std::vector<std::string> AdsServiceImpl::GetLocales() const {
   std::vector<std::string> locales;
 

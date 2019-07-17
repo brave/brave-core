@@ -40,8 +40,6 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   bool IsNetworkConnectionAvailable(bool* out_available) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
-  bool GenerateUUID(std::string* out_uuid) override;
-  void GenerateUUID(GenerateUUIDCallback callback) override;
   bool IsNotificationsAvailable(bool* out_available) override;
   void IsNotificationsAvailable(
       IsNotificationsAvailableCallback callback) override;

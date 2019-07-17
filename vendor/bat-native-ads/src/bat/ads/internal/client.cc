@@ -9,6 +9,8 @@
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/logging.h"
 
+#include "base/guid.h"
+
 using std::placeholders::_1;
 using std::placeholders::_2;
 
@@ -60,7 +62,7 @@ void Client::UpdateAdUUID() {
     return;
   }
 
-  client_state_->ad_uuid = ads_client_->GenerateUUID();
+  client_state_->ad_uuid = base::GenerateGUID();
 
   SaveState();
 }

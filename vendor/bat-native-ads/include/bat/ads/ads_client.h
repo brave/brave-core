@@ -93,9 +93,6 @@ class ADS_EXPORT AdsClient {
       const std::string& locale,
       OnLoadCallback callback) const = 0;
 
-  // Should generate return a v4 UUID
-  virtual const std::string GenerateUUID() const = 0;
-
   // Should return true if the browser is in the foreground otherwise returns
   // false
   virtual bool IsForeground() const = 0;
