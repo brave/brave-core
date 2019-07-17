@@ -81,6 +81,17 @@ void BraveNewTabMessageHandler::RegisterMessages() {
 
 void BraveNewTabMessageHandler::HandleInitialized(const base::ListValue* args) {
   AllowJavascript();
+  // Force all the data to update in order to resolve a timing / singleton
+  // issue where the JS does not have access to the WebUIProperty data set
+  // on render_view_host in the WebUIController (BraveNewTabUI)
+  // (see https://github.com/brave/brave-browser/issues/5249).
+  // TODO(petemill): However, to properly resolve this, we may want to
+  // use loadTimeData directly in this MessageHandler to set the initial
+  // properties for all renders of the WebUI and then send the updated data
+  // in the event fire.
+  OnStatsChanged();
+  OnPrivatePropertiesChanged();
+  OnPreferencesChanged();
 }
 
 void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
@@ -124,15 +135,24 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {
+  // TODO(petemill): This is a bit of a layer violation as we're
+  // calling the controller from the message handler.
+  // Instead, we can send the updated data along with the event.
   new_tab_web_ui_->OnPrivatePropertiesChanged();
 }
 
 void BraveNewTabMessageHandler::OnStatsChanged() {
+  // TODO(petemill): This is a bit of a layer violation as we're
+  // calling the controller from the message handler.
+  // Instead, we can send the updated data along with the event.
   new_tab_web_ui_->OnStatsChanged();
   FireWebUIListener("stats-updated");
 }
 
 void BraveNewTabMessageHandler::OnPreferencesChanged() {
+  // TODO(petemill): This is a bit of a layer violation as we're
+  // calling the controller from the message handler.
+  // Instead, we can send the updated data along with the event.
   new_tab_web_ui_->OnPreferencesChanged();
   FireWebUIListener("preferences-changed");
 }
