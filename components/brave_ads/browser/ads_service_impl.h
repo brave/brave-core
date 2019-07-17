@@ -69,12 +69,12 @@ class AdsServiceImpl : public AdsService,
 
   void SetAdsPerHour(const uint64_t ads_per_hour) override;
 
+  void OnMediaStart(SessionID tab_id) override;
+  void OnMediaStop(SessionID tab_id) override;
   void OnTabUpdated(
       SessionID tab_id,
       const GURL& url,
       const bool is_active) override;
-  void OnMediaStart(SessionID tab_id) override;
-  void OnMediaStop(SessionID tab_id) override;
   void ClassifyPage(const std::string& url, const std::string& page) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
   void OnTabClosed(SessionID tab_id) override;

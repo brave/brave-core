@@ -63,11 +63,11 @@ void BatAdsImpl::OnBackground() {
   ads_->OnBackground();
 }
 
-void BatAdsImpl::OnMediaPlaying(int32_t tab_id) {
+void BatAdsImpl::OnMediaPlaying(const int32_t tab_id) {
   ads_->OnMediaPlaying(tab_id);
 }
 
-void BatAdsImpl::OnMediaStopped(int32_t tab_id) {
+void BatAdsImpl::OnMediaStopped(const int32_t tab_id) {
   ads_->OnMediaStopped(tab_id);
 }
 

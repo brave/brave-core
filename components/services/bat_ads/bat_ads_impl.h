@@ -34,8 +34,8 @@ class BatAdsImpl : public mojom::BatAds {
   void OnIdle() override;
   void OnForeground() override;
   void OnBackground() override;
-  void OnMediaPlaying(int32_t tab_id) override;
-  void OnMediaStopped(int32_t tab_id) override;
+  void OnMediaPlaying(const int32_t tab_id) override;
+  void OnMediaStopped(const int32_t tab_id) override;
   void OnTabUpdated(
       const int32_t tab_id,
       const std::string& url,
