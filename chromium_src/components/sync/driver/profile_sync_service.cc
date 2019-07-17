@@ -72,8 +72,14 @@ void BraveInit(
 // avoid redefining IsSyncFeatureEnabled in header
 #include "components/sync/driver/sync_service.h"
 // For use_transport_only_mode
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #define IsSyncFeatureEnabled() IsBraveSyncEnabled(this)
+#endif
 #define BRAVE_PROFILE_SYNC_SERVICE_START_UP_SLOW_ENGINE_COMPONENTS \
 BraveInit(sync_enabled_weak_factory_.GetWeakPtr(), &sync_prefs_, &params);
 
 #include "../../../../components/sync/driver/profile_sync_service.cc"   // NOLINT
+#undef BRAVE_PROFILE_SYNC_SERVICE_START_UP_SLOW_ENGINE_COMPONENTS
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#undef IsSyncFeatureEnabled
+#endif

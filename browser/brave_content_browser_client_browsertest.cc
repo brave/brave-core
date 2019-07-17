@@ -13,6 +13,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -153,7 +154,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     "rewards",
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
     chrome::kChromeUISyncHost,
+#endif
   };
 
   std::vector<std::string> schemes {
@@ -205,6 +208,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadAboutHost) {
   }
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
     RewriteChromeSyncInternals) {
   std::vector<std::string> schemes {
@@ -230,6 +234,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
                  "chrome://sync/");
   }
 }
+#endif
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
     RewriteWelcomeWin10Host) {

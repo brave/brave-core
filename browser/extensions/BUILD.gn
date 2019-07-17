@@ -18,10 +18,6 @@ source_set("extensions") {
     "api/brave_rewards_api.h",
     "api/brave_shields_api.cc",
     "api/brave_shields_api.h",
-    "api/brave_sync_api.cc",
-    "api/brave_sync_api.h",
-    "api/brave_sync_event_router.cc",
-    "api/brave_sync_event_router.h",
     "api/brave_theme_api.cc",
     "api/brave_theme_api.h",
     "api/settings_private/brave_prefs_util.cc",
@@ -82,6 +78,13 @@ source_set("extensions") {
     ]
   }
   if (enable_brave_sync) {
+    sources += [
+      "api/brave_sync_api.cc",
+      "api/brave_sync_api.h",
+      "api/brave_sync_event_router.cc",
+      "api/brave_sync_event_router.h",
+    ]
+
     deps += [
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:generated_resources",

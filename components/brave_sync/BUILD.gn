@@ -72,11 +72,17 @@ source_set("public") {
   ]
 
   deps = [
-    ":jslib_messages",
-    "buildflags",
-    "//brave/common:switches",
-    "//brave/components/brave_sync:core",
+      "buildflags",
   ]
+
+  if (enable_brave_sync) {
+    deps += [
+      ":core",
+      # For IsBraveSyncAllowedByFlag in
+      # components/sync/driver/sync_driver_switches.cc
+      "//brave/common:switches",
+    ]
+  }
 }
 
 source_set("core") {
@@ -97,6 +103,7 @@ source_set("core") {
     ":jslib_messages",
     ":prefs",
     "//base",
+    "//components/bookmarks/browser",
     "//crypto",
     "//extensions/buildflags",
   ]
@@ -111,11 +118,6 @@ source_set("brave_sync") {
     ":core",
     "buildflags",
     "//base",
-    "//components/bookmarks/browser",
-    "//components/keyed_service/content",
-    "//components/keyed_service/core",
-    "//components/pref_registry",
-    "//content/public/browser",
   ]
 
   if (enable_brave_sync) {
@@ -169,7 +171,7 @@ repack("resources") {
   output = "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak"
 }
 
-if (!is_android) {
+if (enable_brave_sync) {
 source_set("testutil") {
   testonly = true
 
