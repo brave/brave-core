@@ -23,6 +23,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/browser/extension_prefs.h"
+#include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 
 namespace extensions {
@@ -51,14 +52,8 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
     const std::string& manifest) {
   Add(manifest, install_dir);
   if (allow_file_access) {
-    ExtensionPrefs::Get((content::BrowserContext *)profile_)->
-        SetAllowFileAccess(extension_id, true);
+    ExtensionPrefs::Get(profile_)->SetAllowFileAccess(extension_id, true);
   }
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (extension_id == ethereum_remote_client_extension_id) {
-    profile_prefs_->SetBoolean(kWalletHasBeenLoadedOnce, true);
-  }
-#endif
 }
 
 void BraveComponentLoader::AddExtension(const std::string& extension_id,
@@ -115,10 +110,9 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  // If brave://wallet has been loaded at least once, then load it again
-  // on future startups.
-  if (profile_prefs_->FindPreference(kWalletHasBeenLoadedOnce) &&
-      profile_prefs_->GetBoolean(kWalletHasBeenLoadedOnce)) {
+  // If brave://wallet has been loaded at least once, then load it again.
+  if (ExtensionPrefs::Get(profile_)->
+      HasPrefForExtension(ethereum_remote_client_extension_id)) {
     AddEthereumRemoteClientExtension();
   }
 #endif
