@@ -7,7 +7,65 @@ import { getMessage } from '../background/api/locale_api'
 
 let timeout: any = null
 
-const getTweetMetaData = (tweet: Element): RewardsTip.MediaMetaData | null => {
+const getTwitterAPICredentials = () => {
+  const msg = { type: 'getTwitterAPICredentials' }
+  return new Promise(resolve => chrome.runtime.sendMessage(msg, resolve))
+}
+
+const getTweetDetails = async (tweetId: string) => {
+  const credentialHeaders = await getTwitterAPICredentials()
+  const url = new URL('https://api.twitter.com/1.1/statuses/show.json')
+  url.searchParams.append('id', tweetId)
+  const response = await fetch(url.toString(), {
+    credentials: 'include',
+    headers: {
+      ...credentialHeaders
+    },
+    referrerPolicy: 'no-referrer-when-downgrade',
+    method: 'GET',
+    mode: 'cors',
+    redirect: 'follow'
+  })
+  return response.json()
+}
+
+const getTweetMetaData = (tweet: Element): Promise<RewardsTip.MediaMetaData> => {
+  if (!tweet) {
+    return Promise.reject(null)
+  }
+
+  const status = tweet.querySelector("a[href*='/status/']") as HTMLAnchorElement
+  if (!status || !status.href) {
+    return Promise.reject(null)
+  }
+
+  const tweetIdMatches = status.href.match(/status\/(\d+)/)
+  if (!tweetIdMatches || tweetIdMatches.length < 2) {
+    return Promise.reject(null)
+  }
+
+  const tweetId = tweetIdMatches[1]
+
+  return getTweetDetails(tweetId)
+    .then(tweetDetails => {
+      const mediaMetadata: RewardsTip.MediaMetaData = {
+        mediaType: 'twitter',
+        twitterName: tweetDetails.user.name,
+        screenName: tweetDetails.user.screen_name,
+        userId: tweetDetails.user.id_str,
+        tweetId: tweetId,
+        tweetTimestamp: Date.parse(tweetDetails.created_at) / 1000,
+        tweetText: tweetDetails.text
+      }
+      return mediaMetadata
+    })
+    .catch(error => {
+      console.log(`Failed to fetch tweet details for ${tweetId}: ${error.message}`)
+      return Promise.reject(error)
+    })
+}
+
+const getTweetMetaDataForOldTwitter = (tweet: Element): RewardsTip.MediaMetaData | null => {
   if (!tweet) {
     return null
   }
@@ -37,7 +95,12 @@ const getTweetMetaData = (tweet: Element): RewardsTip.MediaMetaData | null => {
   }
 }
 
-const createBraveTipAction = (tweet: Element) => {
+const tipTwitterUser = (mediaMetaData: RewardsTip.MediaMetaData) => {
+  const msg = { type: 'tipInlineMedia', mediaMetaData }
+  chrome.runtime.sendMessage(msg)
+}
+
+const createBraveTipAction = (tweet: Element, newTwitter: boolean) => {
   // Create the tip action
   const braveTipAction = document.createElement('div')
   braveTipAction.className = 'ProfileTweet-action js-tooltip action-brave-tip'
@@ -60,12 +123,27 @@ const createBraveTipAction = (tweet: Element) => {
   braveTipButton.style.position = 'relative'
   braveTipButton.type = 'button'
   braveTipButton.onclick = function (event) {
-    const tweetMetaData = getTweetMetaData(tweet)
-    if (tweetMetaData) {
-      const msg = { type: 'tipInlineMedia', mediaMetaData: tweetMetaData }
-      chrome.runtime.sendMessage(msg)
+    if (newTwitter) {
+      getTweetMetaData(tweet)
+        .then(tweetMetaData => {
+          if (tweetMetaData) {
+            tipTwitterUser(tweetMetaData)
+          }
+        })
+        .catch(error => {
+          console.error(`Failed to fetch tweet metadata for ${tweet}:`, error)
+        })
+    } else {
+      const tweetMetaData = getTweetMetaDataForOldTwitter(tweet)
+      if (tweetMetaData) {
+        tipTwitterUser(tweetMetaData)
+      }
     }
     event.stopPropagation()
+  }
+
+  if (newTwitter && tweet && tweet.getAttribute('data-testid') === 'tweetDetail') {
+    braveTipButton.style.marginTop = '12px'
   }
 
   // Create the tip icon container
@@ -133,14 +211,24 @@ const configureBraveTipAction = () => {
       key: 'twitter'
     }
     chrome.runtime.sendMessage(msg, function (inlineTip) {
-      const tweets = document.getElementsByClassName('tweet')
+      const tippingEnabled = rewards.enabled && inlineTip.enabled
+      let newTwitter = true
+      let tweets = document.querySelectorAll('[data-testid="tweet"], [data-testid="tweetDetail"]')
+      if (tweets.length === 0) {
+        tweets = document.querySelectorAll('.tweet')
+        newTwitter = false
+      }
       for (let i = 0; i < tweets.length; ++i) {
-        const actions = tweets[i].getElementsByClassName('js-actions')[0]
+        let actions
+        if (newTwitter) {
+          actions = tweets[i].querySelector('[role="group"]')
+        } else {
+          actions = tweets[i].querySelector('.js-actions')
+        }
         if (actions) {
           const braveTipActions = actions.getElementsByClassName('action-brave-tip')
-          const tippingEnabled = rewards.enabled && inlineTip.enabled
           if (tippingEnabled && braveTipActions.length === 0) {
-            actions.appendChild(createBraveTipAction(tweets[i]))
+            actions.appendChild(createBraveTipAction(tweets[i], newTwitter))
           } else if (!tippingEnabled && braveTipActions.length === 1) {
             actions.removeChild(braveTipActions[0])
           }
