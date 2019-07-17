@@ -118,6 +118,27 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void ResetState(
       const std::string& name,
       ResetStateCallback callback) override;
+  void SetBooleanState(const std::string& name, bool value) override;
+  void GetBooleanState(const std::string& name,
+                       GetBooleanStateCallback callback) override;
+  void SetIntegerState(const std::string& name, int value) override;
+  void GetIntegerState(const std::string& name,
+                       GetIntegerStateCallback callback) override;
+  void SetDoubleState(const std::string& name, double value) override;
+  void GetDoubleState(const std::string& name,
+                      GetDoubleStateCallback callback) override;
+  void SetStringState(const std::string& name,
+                      const std::string& value) override;
+  void GetStringState(const std::string& name,
+                      GetStringStateCallback callback) override;
+  void SetInt64State(const std::string& name, int64_t value) override;
+  void GetInt64State(const std::string& name,
+                     GetInt64StateCallback callback) override;
+  void SetUint64State(const std::string& name, uint64_t value) override;
+  void GetUint64State(const std::string& name,
+                      GetUint64StateCallback callback) override;
+  void ClearState(const std::string& name) override;
+
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void ConfirmationsTransactionHistoryDidChange() override;

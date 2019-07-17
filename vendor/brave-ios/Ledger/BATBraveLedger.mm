@@ -849,6 +849,91 @@ BATLedgerBridge(BOOL,
                 isAutoContributeEnabled, setAutoContributeEnabled,
                 GetAutoContribute, SetAutoContribute)
 
+- (void)setBooleanState:(const std::string&)name value:(bool)value
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  self.prefs[key] = [NSNumber numberWithBool:value];
+  [self savePrefs];
+}
+
+- (bool)getBooleanState:(const std::string&)name
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  return [self.prefs[key] boolValue];
+}
+
+- (void)setIntegerState:(const std::string&)name value:(int)value
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  self.prefs[key] = [NSNumber numberWithInt:value];
+  [self savePrefs];
+}
+
+- (int)getIntegerState:(const std::string&)name
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  return [self.prefs[key] intValue];
+}
+
+- (void)setDoubleState:(const std::string&)name value:(double)value
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  self.prefs[key] = [NSNumber numberWithDouble:value];
+  [self savePrefs];
+}
+
+- (double)getDoubleState:(const std::string&)name
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  return [self.prefs[key] doubleValue];
+}
+
+- (void)setStringState:(const std::string&)name value:(const std::string&)value
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  self.prefs[key] = [NSString stringWithUTF8String:value.c_str()];
+  [self savePrefs];
+}
+
+- (std::string)getStringState:(const std::string&)name
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  return ((NSString *)self.prefs[key]).UTF8String;
+}
+
+- (void)setInt64State:(const std::string&)name value:(int64_t)value
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  self.prefs[key] = [NSNumber numberWithLongLong:value];
+  [self savePrefs];
+}
+
+- (int64_t)getInt64State:(const std::string&)name
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  return [self.prefs[key] longLongValue];
+}
+
+- (void)setUint64State:(const std::string&)name value:(uint64_t)value
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  self.prefs[key] = [NSNumber numberWithUnsignedLongLong:value];
+  [self savePrefs];
+}
+
+- (uint64_t)getUint64State:(const std::string&)name
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  return [self.prefs[key] unsignedLongLongValue];
+}
+
+- (void)clearState:(const std::string&)name
+{
+  const auto key = [NSString stringWithUTF8String:name.c_str()];
+  [self.prefs removeObjectForKey:key];
+  [self savePrefs];
+}
+
 #pragma mark - Ads & Confirmations
 
 - (void)updateAdsRewards

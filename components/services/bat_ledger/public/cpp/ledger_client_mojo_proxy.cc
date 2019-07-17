@@ -619,6 +619,70 @@ void LedgerClientMojoProxy::ResetState(
       std::bind(LedgerClientMojoProxy::OnResetState, holder, _1));
 }
 
+void LedgerClientMojoProxy::SetBooleanState(const std::string& name,
+                                            bool value) {
+  ledger_client_->SetBooleanState(name, value);
+}
+
+void LedgerClientMojoProxy::GetBooleanState(const std::string& name,
+                                            GetBooleanStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetBooleanState(name));
+}
+
+void LedgerClientMojoProxy::SetIntegerState(const std::string& name,
+                                            int value) {
+  ledger_client_->SetIntegerState(name, value);
+}
+
+void LedgerClientMojoProxy::GetIntegerState(const std::string& name,
+                                            GetIntegerStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetIntegerState(name));
+}
+
+void LedgerClientMojoProxy::SetDoubleState(const std::string& name,
+                                           double value) {
+  ledger_client_->SetDoubleState(name, value);
+}
+
+void LedgerClientMojoProxy::GetDoubleState(const std::string& name,
+                                           GetDoubleStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetDoubleState(name));
+}
+
+void LedgerClientMojoProxy::SetStringState(const std::string& name,
+                                           const std::string& value) {
+  ledger_client_->SetStringState(name, value);
+}
+
+void LedgerClientMojoProxy::GetStringState(const std::string& name,
+                                           GetStringStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetStringState(name));
+}
+
+void LedgerClientMojoProxy::SetInt64State(const std::string& name,
+                                          int64_t value) {
+  ledger_client_->SetInt64State(name, value);
+}
+
+void LedgerClientMojoProxy::GetInt64State(const std::string& name,
+                                          GetInt64StateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetInt64State(name));
+}
+
+void LedgerClientMojoProxy::SetUint64State(const std::string& name,
+                                           uint64_t value) {
+  ledger_client_->SetUint64State(name, value);
+}
+
+void LedgerClientMojoProxy::GetUint64State(const std::string& name,
+                                           GetUint64StateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetUint64State(name));
+}
+
+void LedgerClientMojoProxy::ClearState(const std::string& name) {
+  ledger_client_->ClearState(name);
+}
+
 void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
   ledger_client_->SetConfirmationsIsReady(is_ready);
 }
