@@ -3,9 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/string_piece.h"
 #include "extensions/common/permissions/permissions_data.h"
-#include "url/gurl.h"
 #include "url/origin.h"
+
+namespace extensions {
+
+bool IsBraveProtectedUrl(const GURL& url) {
+  const url::Origin origin = url::Origin::Create(url);
+  const base::StringPiece path = url.path_piece();
+  return ((origin.DomainIs("sandbox.uphold.com") ||
+           origin.DomainIs("uphold.com")) &&
+          base::StartsWith(path, "/authorize/",
+                           base::CompareCase::INSENSITIVE_ASCII)) ||
+      (origin.DomainIs("api.uphold.com") &&
+       base::StartsWith(path, "/oauth2/token",
+                        base::CompareCase::INSENSITIVE_ASCII));
+}
+
+}  // namespace extensions
 
 namespace {
 
@@ -23,11 +39,7 @@ bool IsBraveRestrictedUrl(const GURL& document_url,
     return false;
   }
 
-  url::Origin origin = url::Origin::Create(document_url);
-  if ((origin.DomainIs("sandbox.uphold.com") ||
-       origin.DomainIs("uphold.com")) &&
-      base::StartsWith(document_url.path_piece(), "/authorize/",
-                       base::CompareCase::SENSITIVE)) {
+  if (extensions::IsBraveProtectedUrl(document_url)) {
     if (error) {
       *error = kCannotScriptWalletLinking;
     }
@@ -38,5 +50,11 @@ bool IsBraveRestrictedUrl(const GURL& document_url,
 }
 
 }  // namespace
+
+// Disable some content scripts until users click on the extension icon
+#define BRAVE_CAN_RUN_ON_PAGE \
+if (IsBraveRestrictedUrl(document_url, extension_id_, location_, error)) { \
+  return PageAccess::kWithheld;\
+}
 
 #include "../../../../../extensions/common/permissions/permissions_data.cc"

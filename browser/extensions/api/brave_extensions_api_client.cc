@@ -5,15 +5,13 @@
 
 #include "brave/browser/extensions/api/brave_extensions_api_client.h"
 
-#include "brave/extensions/common/brave_extension_urls.h"
+#include "extensions/common/permissions/permissions_data.h"
 
 namespace extensions {
 
 bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     const WebRequestInfo& request) const {
-  const GURL& url = request.url;
-  if (extension_urls::IsBraveProtectedUrl(url::Origin::Create(url),
-                                          url.path_piece())) {
+  if (IsBraveProtectedUrl(request.url)) {
     return true;
   }
   return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(request);

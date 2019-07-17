@@ -1,16 +1,12 @@
 diff --git a/extensions/common/permissions/permissions_data.cc b/extensions/common/permissions/permissions_data.cc
-index b09be07c0db06ec79044ac2468488ad70fce5118..69ed8bdf0743dcdc8672167f246853546aa3073f 100644
+index b09be07c0db06ec79044ac2468488ad70fce5118..81f9cf71397fee20db30764e92f9be14fb83396e 100644
 --- a/extensions/common/permissions/permissions_data.cc
 +++ b/extensions/common/permissions/permissions_data.cc
-@@ -521,6 +521,11 @@ PermissionsData::PageAccess PermissionsData::CanRunOnPage(
+@@ -521,6 +521,7 @@ PermissionsData::PageAccess PermissionsData::CanRunOnPage(
    if (IsRestrictedUrl(document_url, error))
      return PageAccess::kDenied;
  
-+  if (IsBraveRestrictedUrl(document_url, extension_id_, location_, error)) {
-+    // Disable content scripts until users click on the extension.
-+    return PageAccess::kWithheld;
-+  }
-+
++  BRAVE_CAN_RUN_ON_PAGE
    if (tab_url_patterns && tab_url_patterns->MatchesURL(document_url))
      return PageAccess::kAllowed;
  
