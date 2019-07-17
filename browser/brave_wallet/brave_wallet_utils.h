@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_DAPP_DAPP_UTILS_H_
-#define BRAVE_BROWSER_DAPP_DAPP_UTILS_H_
+#ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_UTILS_H_
+#define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_UTILS_H_
 
 #include "base/callback_forward.h"
 
@@ -17,4 +17,4 @@ void RequestWalletInstallationPermission(content::WebContents* web_contents);
 
 void SetQuitClosureForDappDetectionTest(const base::Closure& quit_closure);
 
-#endif  // BRAVE_BROWSER_DAPP_DAPP_UTILS_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_UTILS_H_

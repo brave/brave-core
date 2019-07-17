@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/dapp/wallet_installation_permission_request.h"
+#include "brave/browser/brave_wallet/wallet_installation_permission_request.h"
 
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/grit/brave_generated_resources.h"

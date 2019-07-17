@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/browser/dapp/dapp_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_utils.h"
 #include "brave/common/extensions/api/brave_wallet.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"

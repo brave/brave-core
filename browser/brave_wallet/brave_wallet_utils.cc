@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/dapp/dapp_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_utils.h"
 
 #include "base/callback.h"
-#include "brave/browser/dapp/wallet_installation_permission_request.h"
+#include "brave/browser/brave_wallet/wallet_installation_permission_request.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/permissions/permission_request_manager.h"
 #include "chrome/browser/profiles/profile.h"

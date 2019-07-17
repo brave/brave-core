@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_DAPP_WALLET_INSTALLATION_PERMISSION_REQUEST_H_
-#define BRAVE_BROWSER_DAPP_WALLET_INSTALLATION_PERMISSION_REQUEST_H_
+#ifndef BRAVE_BROWSER_BRAVE_WALLET_WALLET_INSTALLATION_PERMISSION_REQUEST_H_
+#define BRAVE_BROWSER_BRAVE_WALLET_WALLET_INSTALLATION_PERMISSION_REQUEST_H_
 
 #include "chrome/browser/permissions/permission_request.h"
 
@@ -38,4 +38,4 @@ class WalletInstallationPermissionRequest : public PermissionRequest {
   DISALLOW_COPY_AND_ASSIGN(WalletInstallationPermissionRequest);
 };
 
-#endif  // BRAVE_BROWSER_DAPP_WALLET_INSTALLATION_PERMISSION_REQUEST_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_WALLET_INSTALLATION_PERMISSION_REQUEST_H_

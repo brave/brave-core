@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "brave/browser/dapp/dapp_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_utils.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/ui/browser.h"
