@@ -55,7 +55,7 @@ private:
   void SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) override;
   void SaveMediaPublisherInfo(const std::string & media_key, const std::string & publisher_id) override;
   void SaveNormalizedPublisherList(ledger::PublisherInfoList normalized_list) override;
-  void SavePendingContribution(ledger::PendingContributionList list) override;
+  void SavePendingContribution(ledger::PendingContributionList list, ledger::SavePendingContributionCallback callback) override;
   void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) override;
   void SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;
   void SavePublishersList(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;

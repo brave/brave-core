@@ -207,8 +207,9 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& publisher_key,
       bool exclude));
 
-  MOCK_METHOD1(SavePendingContribution, void(
-      ledger::PendingContributionList list));
+  MOCK_METHOD2(SavePendingContribution, void(
+      ledger::PendingContributionList list,
+      ledger::SavePendingContributionCallback callback));
 
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,

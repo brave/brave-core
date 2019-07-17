@@ -485,9 +485,24 @@ void LedgerClientMojoProxy::LoadURL(const std::string& url,
       std::bind(LedgerClientMojoProxy::OnLoadURL, holder, _1, _2, _3));
 }
 
+// static
+void LedgerClientMojoProxy::OnSavePendingContribution(
+    CallbackHolder<SavePendingContributionCallback>* holder,
+    ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
 void LedgerClientMojoProxy::SavePendingContribution(
-    ledger::PendingContributionList list) {
-  ledger_client_->SavePendingContribution(std::move(list));
+    ledger::PendingContributionList list,
+    SavePendingContributionCallback callback) {
+  // deleted in OnSavePendingContribution
+  auto* holder = new CallbackHolder<SavePendingContributionCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->SavePendingContribution(std::move(list),
+      std::bind(LedgerClientMojoProxy::OnSavePendingContribution, holder, _1));
 }
 
 // static

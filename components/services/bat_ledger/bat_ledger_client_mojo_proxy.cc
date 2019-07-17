@@ -558,12 +558,21 @@ std::string BatLedgerClientMojoProxy::URIEncode(const std::string& value) {
   return encoded_value;
 }
 
+void OnSavePendingContribution(
+    const ledger::SavePendingContributionCallback& callback,
+    int32_t result) {
+  callback(ToLedgerResult(result));
+}
+
 void BatLedgerClientMojoProxy::SavePendingContribution(
-      ledger::PendingContributionList list) {
+    ledger::PendingContributionList list,
+    ledger::SavePendingContributionCallback callback) {
   if (!Connected())
     return;
 
-  bat_ledger_client_->SavePendingContribution(std::move(list));
+  bat_ledger_client_->SavePendingContribution(
+      std::move(list),
+      base::BindOnce(&OnSavePendingContribution, std::move(callback)));
 }
 
 void OnLoadActivityInfo(

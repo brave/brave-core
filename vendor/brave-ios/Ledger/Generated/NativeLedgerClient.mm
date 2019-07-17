@@ -131,8 +131,8 @@ void NativeLedgerClient::SaveMediaPublisherInfo(const std::string & media_key, c
 void NativeLedgerClient::SaveNormalizedPublisherList(ledger::PublisherInfoList normalized_list) {
   [bridge_ saveNormalizedPublisherList:std::move(normalized_list)];
 }
-void NativeLedgerClient::SavePendingContribution(ledger::PendingContributionList list) {
-  [bridge_ savePendingContribution:std::move(list)];
+void NativeLedgerClient::SavePendingContribution(ledger::PendingContributionList list, ledger::SavePendingContributionCallback callback) {
+  [bridge_ savePendingContribution:std::move(list) callback:callback];
 }
 void NativeLedgerClient::SavePublisherInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) {
   [bridge_ savePublisherInfo:std::move(publisher_info) callback:callback];
