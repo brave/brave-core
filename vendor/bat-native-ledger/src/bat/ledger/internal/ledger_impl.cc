@@ -676,21 +676,26 @@ void LedgerImpl::FetchWalletProperties(
 }
 
 void LedgerImpl::FetchGrants(const std::string& lang,
-                             const std::string& payment_id) const {
-  bat_grants_->GetGrants(lang, payment_id);
+                             const std::string& payment_id,
+                             ledger::FetchGrantsCallback callback) const {
+  bat_grants_->FetchGrants(lang, payment_id, callback);
 }
 
-void LedgerImpl::OnGrant(ledger::Result result,
-                         const braveledger_bat_helper::GRANT& properties) {
-  ledger::GrantPtr grant = ledger::Grant::New();
+void LedgerImpl::OnGrants(ledger::Result result,
+                          const braveledger_bat_helper::Grants& grants,
+                          ledger::FetchGrantsCallback callback) {
+  std::vector<ledger::GrantPtr> ledger_grants;
+  for (const braveledger_bat_helper::GRANT& properties : grants) {
+    ledger::GrantPtr grant = ledger::Grant::New();
+    grant->type = properties.type;
+    grant->promotion_id = properties.promotionId;
+    ledger_grants.push_back(std::move(grant));
+  }
 
-  grant->type = properties.type;
-  grant->promotion_id = properties.promotionId;
   last_grant_check_timer_id_ = 0;
-
   RefreshGrant(result != ledger::Result::LEDGER_OK &&
     result != ledger::Result::GRANT_NOT_FOUND);
-  ledger_client_->OnGrant(result, std::move(grant));
+  callback(result, std::move(ledger_grants));
 }
 
 void LedgerImpl::GetGrantCaptcha(
@@ -874,7 +879,8 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
-    FetchGrants(std::string(), std::string());
+    FetchGrants(std::string(), std::string(),
+                [](ledger::Result _, std::vector<ledger::GrantPtr> __){});
   }
 
   bat_contribution_->OnTimer(timer_id);

@@ -1367,13 +1367,24 @@ void RewardsServiceImpl::FetchWalletProperties() {
   }
 }
 
+void RewardsServiceImpl::OnFetchGrants(
+    int result,
+    std::vector<ledger::GrantPtr> grants) {
+  ledger::Result converted_result = static_cast<ledger::Result>(result);
+  for (size_t i = 0; i < grants.size(); i ++) {
+    OnGrant(converted_result, std::move(grants[i]));
+  }
+}
+
 void RewardsServiceImpl::FetchGrants(const std::string& lang,
     const std::string& payment_id) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->FetchGrants(lang, payment_id);
+  bat_ledger_->FetchGrants(lang, payment_id, base::BindOnce(
+      &RewardsServiceImpl::OnFetchGrants,
+      AsWeakPtr()));
 }
 
 void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,

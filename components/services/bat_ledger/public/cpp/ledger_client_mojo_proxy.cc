@@ -212,10 +212,6 @@ void LedgerClientMojoProxy::CallbackHolder<
   delete this;
 }
 
-void LedgerClientMojoProxy::OnGrant(int32_t result, ledger::GrantPtr grant) {
-  ledger_client_->OnGrant(ToLedgerResult(result), std::move(grant));
-}
-
 void LedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
     const std::string& hint) {
   ledger_client_->OnGrantCaptcha(image, hint);
@@ -447,11 +443,6 @@ void LedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
 void LedgerClientMojoProxy::SaveMediaPublisherInfo(
     const std::string& media_key, const std::string& publisher_id) {
   ledger_client_->SaveMediaPublisherInfo(media_key, publisher_id);
-}
-
-void LedgerClientMojoProxy::FetchGrants(const std::string& lang,
-    const std::string& payment_id) {
-  ledger_client_->FetchGrants(lang, payment_id);
 }
 
 void LedgerClientMojoProxy::URIEncode(const std::string& value,

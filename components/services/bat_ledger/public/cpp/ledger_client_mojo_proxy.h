@@ -31,7 +31,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void OnWalletProperties(
       int32_t result,
       ledger::WalletPropertiesPtr properties) override;
-  void OnGrant(int32_t result, ledger::GrantPtr grant) override;
   void OnGrantCaptcha(const std::string& image,
       const std::string& hint) override;
   void OnRecoverWallet(int32_t result, double balance,
@@ -81,8 +80,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       int32_t category) override;
   void SaveMediaPublisherInfo(const std::string& media_key,
       const std::string& publisher_id) override;
-  void FetchGrants(const std::string& lang,
-      const std::string& payment_id) override;
 
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;

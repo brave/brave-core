@@ -178,9 +178,25 @@ void BatLedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
       ToLedgerPublisherMonth(month), year, data);
 }
 
+void BatLedgerImpl::OnFetchGrants(
+    CallbackHolder<FetchGrantsCallback>* holder,
+    ledger::Result result,
+    std::vector<ledger::GrantPtr> grants) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(grants));
+  }
+  delete holder;
+}
+
 void BatLedgerImpl::FetchGrants(const std::string& lang,
-    const std::string& payment_id) {
-  ledger_->FetchGrants(lang, payment_id);
+    const std::string& payment_id,
+    FetchGrantsCallback callback) {
+  // deleted in OnFetchGrants
+  auto* holder = new CallbackHolder<FetchGrantsCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->FetchGrants(lang, payment_id,
+      std::bind(BatLedgerImpl::OnFetchGrants, holder, _1, _2));
 }
 
 void BatLedgerImpl::GetGrantCaptcha(
