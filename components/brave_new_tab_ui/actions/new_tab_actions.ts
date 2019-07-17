@@ -7,10 +7,9 @@ import { action } from 'typesafe-actions'
 // Constants
 import { types } from '../constants/new_tab_types'
 import { Preferences } from '../api/preferences'
-
-export const topSitesDataUpdated = (topSites: NewTab.Site[]) => action(types.NEW_TAB_TOP_SITES_DATA_UPDATED, {
-  topSites
-})
+import { Stats } from '../api/stats'
+import { PrivateTabData } from '../api/privateTabData'
+import { InitialData } from '../api/initialData'
 
 export const bookmarkAdded = (url: string) => action(types.BOOKMARK_ADDED, {
   url
@@ -62,16 +61,19 @@ export const gridSitesUpdated = (gridSites: NewTab.Site[]) => action(types.NEW_T
   gridSites
 })
 
-export const statsUpdated = () => action(types.NEW_TAB_STATS_UPDATED)
+export const statsUpdated = (stats: Stats) =>
+  action(types.NEW_TAB_STATS_UPDATED, {
+    stats
+  })
 
-export const changePrivateSearchEngine = (shouldUse: boolean) => action(types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE, {
-  shouldUse
-})
+export const privateTabDataUpdated = (data: PrivateTabData) =>
+  action(types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED, data)
+export const preferencesUpdated = (preferences: Preferences) =>
+  action(types.NEW_TAB_PREFERENCES_UPDATED, preferences)
 
 export const showSettingsMenu = () => action(types.NEW_TAB_SHOW_SETTINGS_MENU)
 
 export const closeSettingsMenu = () => action(types.NEW_TAB_CLOSE_SETTINGS_MENU)
 
-export const preferencesUpdated = (preferences: Preferences) => action(types.NEW_TAB_PREFERENCES_UPDATED, {
-  preferences
-})
+export const setInitialData = (initialData: InitialData) =>
+  action(types.NEW_TAB_SET_INITIAL_DATA, initialData)

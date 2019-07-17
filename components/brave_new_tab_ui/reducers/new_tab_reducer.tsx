@@ -7,30 +7,49 @@ import { Reducer } from 'redux'
 // Constants
 import { types } from '../constants/new_tab_types'
 import { Preferences } from '../api/preferences'
+import { Stats } from '../api/stats'
+import { PrivateTabData } from '../api/privateTabData'
 
 // API
+import * as backgroundAPI from '../api/background'
 import * as gridAPI from '../api/topSites/grid'
-import * as dataFetchAPI from '../api/dataFetch'
+import { InitialData } from '../api/initialData'
 import * as bookmarksAPI from '../api/topSites/bookmarks'
 import * as dndAPI from '../api/topSites/dnd'
 import * as storage from '../storage'
 
-export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State | undefined, action: any) => {
-  if (state === undefined) {
-    state = storage.load()
+const initialState = storage.load()
 
-    setImmediate(() => {
-      dataFetchAPI.fetchTopSites()
-    })
+export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State | undefined, action: any) => {
+  console.timeStamp('reducer ' + action.type)
+  if (state === undefined) {
+    console.timeStamp('reducer init')
+    state = initialState
   }
 
   const startingState = state
   const payload = action.payload
   switch (action.type) {
+    case types.NEW_TAB_SET_INITIAL_DATA:
+      const initialDataPayload = payload as InitialData
+      state = {
+        ...state,
+        initialDataLoaded: true,
+        ...initialDataPayload.preferences,
+        stats: initialDataPayload.stats,
+        ...initialDataPayload.privateTabData,
+        topSites: initialDataPayload.topSites
+      }
+      if (initialDataPayload.preferences.showBackgroundImage) {
+        state.backgroundImage = backgroundAPI.randomBackgroundImage()
+      }
+      console.timeStamp('reducer initial data received')
+      gridAPI.calculateGridSites(state)
+      break
+
     case types.NEW_TAB_SHOW_SETTINGS_MENU:
       state = { ...state, showSettings: true }
       break
-
     case types.NEW_TAB_CLOSE_SETTINGS_MENU:
       state = { ...state, showSettings: false }
       break
@@ -54,11 +73,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         })
       }
       break
-    case types.NEW_TAB_TOP_SITES_DATA_UPDATED:
-      state = { ...state, topSites: payload.topSites }
-      gridAPI.calculateGridSites(state)
-      break
-
     case types.NEW_TAB_SITE_PINNED: {
       const topSiteIndex: number = state.topSites.findIndex((site) => site.url === payload.url)
       const pinnedTopSite: NewTab.Site = Object.assign({}, state.topSites[topSiteIndex], { pinned: true })
@@ -146,19 +160,31 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
 
     case types.NEW_TAB_STATS_UPDATED:
-      state = storage.getLoadTimeData(state)
+      const stats: Stats = payload.stats
+      state = {
+        ...state,
+        stats
+      }
       break
 
-    case types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE:
-      chrome.send('toggleAlternativePrivateSearchEngine', [])
-      state = { ...state, useAlternativePrivateSearchEngine: payload.shouldUse }
+    case types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED:
+      const privateTabData = payload as PrivateTabData
+      state = {
+        ...state,
+        useAlternativePrivateSearchEngine: privateTabData.useAlternativePrivateSearchEngine
+      }
       break
 
     case types.NEW_TAB_PREFERENCES_UPDATED:
-      const preferences: Preferences = payload.preferences
+      const preferences = payload as Preferences
+      const shouldChangeBackgroundImage =
+        !state.showBackgroundImage && preferences.showBackgroundImage
       state = {
         ...state,
         ...preferences
+      }
+      if (shouldChangeBackgroundImage) {
+        state.backgroundImage = backgroundAPI.randomBackgroundImage()
       }
       break
 
