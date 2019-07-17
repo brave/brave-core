@@ -218,12 +218,12 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 - (void)reportTabUpdated:(NSInteger)tabId url:(NSURL *)url isSelected:(BOOL)isSelected isPrivate:(BOOL)isPrivate
 {
   const auto urlString = std::string(url.absoluteString.UTF8String);
-  ads->TabUpdated((int32_t)tabId, urlString, isSelected, isPrivate);
+  ads->OnTabUpdated((int32_t)tabId, urlString, isSelected, isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId
 {
-  ads->TabClosed((int32_t)tabId);
+  ads->OnTabClosed((int32_t)tabId);
 }
 
 #pragma mark - Ads Bridge

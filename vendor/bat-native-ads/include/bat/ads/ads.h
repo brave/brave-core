@@ -70,14 +70,14 @@ class ADS_EXPORT Ads {
   virtual void OnMediaStopped(const int32_t tab_id) = 0;
 
   // Should be called to record user activity on a browser tab
-  virtual void TabUpdated(
+  virtual void OnTabUpdated(
       const int32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) = 0;
 
   // Should be called to record when a browser tab is closed
-  virtual void TabClosed(const int32_t tab_id) = 0;
+  virtual void OnTabClosed(const int32_t tab_id) = 0;
 
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;

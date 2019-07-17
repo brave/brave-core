@@ -39,8 +39,8 @@ void BatAdsImpl::ClassifyPage(const std::string& url,
   ads_->ClassifyPage(url, page);
 }
 
-void BatAdsImpl::TabClosed(int32_t tab_id) {
-  ads_->TabClosed(tab_id);
+void BatAdsImpl::OnTabClosed(const int32_t tab_id) {
+  ads_->OnTabClosed(tab_id);
 }
 
 void BatAdsImpl::OnTimer(uint32_t timer_id) {
@@ -71,11 +71,12 @@ void BatAdsImpl::OnMediaStopped(int32_t tab_id) {
   ads_->OnMediaStopped(tab_id);
 }
 
-void BatAdsImpl::TabUpdated(int32_t tab_id,
-                const std::string& url,
-                bool is_active,
-                bool is_incognito) {
-  ads_->TabUpdated(tab_id, url, is_active, is_incognito);
+void BatAdsImpl::OnTabUpdated(
+    const int32_t tab_id,
+    const std::string& url,
+    const bool is_active,
+    const bool is_incognito) {
+  ads_->OnTabUpdated(tab_id, url, is_active, is_incognito);
 }
 
 void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {

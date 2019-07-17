@@ -63,7 +63,6 @@ interface BatAdsClient {
 interface BatAds {
   Initialize() => ();
   ClassifyPage(string url, string page);
-  TabClosed(int32 tab_id);
   OnTimer(uint32 timer_id);
   OnUnIdle();
   OnIdle();
@@ -71,11 +70,12 @@ interface BatAds {
   OnBackground();
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
-  TabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
   RemoveAllHistory() => ();
   SetConfirmationsIsReady(bool is_ready);
   ServeSampleAd();
   GenerateAdReportingNotificationShownEvent(string notification_info);
   GenerateAdReportingNotificationResultEvent(
       string notification_info, int32 result_type);
+  OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
+  OnTabClosed(int32 tab_id);
 };

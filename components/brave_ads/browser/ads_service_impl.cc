@@ -888,23 +888,24 @@ bool AdsServiceImpl::IsForeground() const {
   return BackgroundHelper::GetInstance()->IsForeground();
 }
 
-void AdsServiceImpl::TabUpdated(SessionID tab_id,
-                                const GURL& url,
-                                const bool is_active) {
-  if (!connected())
+void AdsServiceImpl::OnTabUpdated(
+    SessionID tab_id,
+    const GURL& url,
+    const bool is_active) {
+  if (!connected()) {
     return;
+  }
 
-  bat_ads_->TabUpdated(tab_id.id(),
-                   url.spec(),
-                   is_active,
-                   profile_->IsOffTheRecord());
+  bat_ads_->OnTabUpdated(tab_id.id(), url.spec(), is_active,
+      profile_->IsOffTheRecord());
 }
 
-void AdsServiceImpl::TabClosed(SessionID tab_id) {
-  if (!connected())
+void AdsServiceImpl::OnTabClosed(SessionID tab_id) {
+  if (!connected()) {
     return;
+  }
 
-  bat_ads_->TabClosed(tab_id.id());
+  bat_ads_->OnTabClosed(tab_id.id());
 }
 
 void AdsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {

@@ -284,7 +284,7 @@ bool AdsImpl::IsDoNotDisturb() const {
   return true;
 }
 
-void AdsImpl::TabUpdated(
+void AdsImpl::OnTabUpdated(
     const int32_t tab_id,
     const std::string& url,
     const bool is_active,
@@ -296,7 +296,7 @@ void AdsImpl::TabUpdated(
   client_->UpdateLastUserActivity();
 
   if (is_active) {
-    BLOG(INFO) << "TabUpdated.IsFocused for tab id: " << tab_id
+    BLOG(INFO) << "OnTabUpdated.IsFocused for tab id: " << tab_id
         << " and url: " << url;
 
     last_shown_tab_id_ = tab_id;
@@ -310,7 +310,7 @@ void AdsImpl::TabUpdated(
     focus_info.tab_id = tab_id;
     GenerateAdReportingFocusEvent(focus_info);
   } else {
-    BLOG(INFO) << "TabUpdated.IsBlurred for tab id: " << tab_id
+    BLOG(INFO) << "OnTabUpdated.IsBlurred for tab id: " << tab_id
         << " and url: " << url;
 
     BlurInfo blur_info;
@@ -319,8 +319,8 @@ void AdsImpl::TabUpdated(
   }
 }
 
-void AdsImpl::TabClosed(const int32_t tab_id) {
-  BLOG(INFO) << "TabClosed for tab id: " << tab_id;
+void AdsImpl::OnTabClosed(const int32_t tab_id) {
+  BLOG(INFO) << "OnTabClosed for tab id: " << tab_id;
 
   OnMediaStopped(tab_id);
 

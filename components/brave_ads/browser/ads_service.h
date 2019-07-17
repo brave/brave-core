@@ -31,17 +31,17 @@ class AdsService : public KeyedService {
   virtual void SetAdsPerHour(const uint64_t ads_per_hour) = 0;
 
   // ads::Ads proxy
-  virtual void TabUpdated(
-      SessionID tab_id,
-      const GURL& url,
-      const bool is_active) = 0;
-  virtual void TabClosed(SessionID tab_id) = 0;
   virtual void OnMediaStart(SessionID tab_id) = 0;
   virtual void OnMediaStop(SessionID tab_id) = 0;
   virtual void ClassifyPage(
       const std::string& url,
       const std::string& page) = 0;
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
+  virtual void OnTabUpdated(
+      SessionID tab_id,
+      const GURL& url,
+      const bool is_active) = 0;
+  virtual void OnTabClosed(SessionID tab_id) = 0;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);

@@ -71,14 +71,14 @@ class AdsImpl : public Ads {
   int32_t last_shown_tab_id_;
   std::string last_shown_tab_url_;
   std::string previous_tab_url_;
-  void TabUpdated(
+  void OnTabUpdated(
       const int32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) override;
-  void TabClosed(const int32_t tab_id) override;
 
   void RemoveAllHistory() override;
+  void OnTabClosed(const int32_t tab_id) override;
 
   void ConfirmAdUUIDIfAdEnabled();
 
