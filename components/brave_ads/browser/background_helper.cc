@@ -23,7 +23,6 @@ void BackgroundHelper::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX)
 void BackgroundHelper::TriggerOnBackground() {
   for (auto& observer : observers_) {
     observer.OnBackground();
@@ -36,6 +35,7 @@ void BackgroundHelper::TriggerOnForeground() {
   }
 }
 
+#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)  // NOLINT
 BackgroundHelper* BackgroundHelper::GetInstance() {
   // just return a dummy background helper for all other platforms
   return base::Singleton<BackgroundHelper>::get();
