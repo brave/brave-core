@@ -149,7 +149,7 @@ copy("theme_files") {
 
 group("create_dist") {
   deps = [
-    ":create_dist_zips"
+#    ":create_dist_zips"
   ]
   if (is_win) {
     deps += [
