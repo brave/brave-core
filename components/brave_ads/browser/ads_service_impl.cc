@@ -49,7 +49,7 @@
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/common/service_manager_connection.h"
-#include "services/network/public/cpp/network_connection_tracker.h"
+#include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/service_manager/public/cpp/connector.h"
@@ -60,7 +60,6 @@
 
 #if defined(OS_ANDROID)
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
-#include "net/android/network_library.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;
@@ -1137,7 +1136,7 @@ void AdsServiceImpl::LoadSampleBundle(
 }
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() {
-  return !content::GetNetworkConnectionTracker()->IsOffline();
+  return !net::NetworkChangeNotifier::IsOffline();
 }
 
 void AdsServiceImpl::OnShow(Profile* profile,
