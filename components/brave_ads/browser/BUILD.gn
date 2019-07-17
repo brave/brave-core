@@ -62,6 +62,16 @@ source_set("browser") {
       "locale_helper_android.h",
       "bundle_state_database.cc",
       "bundle_state_database.h",
+      "notification_helper.cc",
+      "notification_helper.h",
+      "notification_helper_android.cc",
+      "notification_helper_android.h",
+      "notification_helper_linux.cc",
+      "notification_helper_linux.h",
+      "notification_helper_mac.cc",
+      "notification_helper_mac.h",
+      "notification_helper_win.cc",
+      "notification_helper_win.h",
     ]
 
     deps += [
