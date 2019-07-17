@@ -663,6 +663,7 @@ TEST_F(BraveSyncServiceTest, StartSyncNonDeviceRecords) {
 }
 
 TEST_F(BraveSyncServiceTest, OnSyncReadyNewToSync) {
+  sync_prefs()->SetSyncRequested(false);
   EXPECT_CALL(*observer(), OnSyncStateChanged);
   EXPECT_CALL(*sync_client(), SendGetBookmarksBaseOrder).Times(1);
   sync_service()->OnSyncReady();
@@ -763,12 +764,16 @@ TEST_F(BraveSyncServiceTest, GetPreferredDataTypes) {
 }
 
 TEST_F(BraveSyncServiceTest, GetDisableReasons) {
-  EXPECT_NE(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_NONE);
+  sync_prefs()->SetManagedForTest(true);
+  EXPECT_EQ(sync_service()->GetDisableReasons(),
+            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY);
   sync_service()->OnSetSyncEnabled(true);
-  EXPECT_NE(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_NONE);
+  EXPECT_EQ(sync_service()->GetDisableReasons(),
+            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY);
   brave_sync_prefs()->SetMigratedBookmarksVersion(2);
   EXPECT_EQ(sync_service()->GetDisableReasons(),
             syncer::SyncService::DISABLE_REASON_NONE);
+  sync_service()->OnSetSyncEnabled(false);
+  EXPECT_TRUE(sync_service()->HasDisableReason(
+              syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY));
 }
