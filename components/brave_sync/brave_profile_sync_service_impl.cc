@@ -601,8 +601,8 @@ int BraveProfileSyncServiceImpl::GetDisableReasons() const {
   if (IsBraveSyncEnabled() &&
       brave_sync_prefs_->GetMigratedBookmarksVersion() >= 2)
     return syncer::SyncService::DISABLE_REASON_NONE;
-  // kSyncManaged is set by Brave and GetAuthenticatedAccountInfo is not empty,
-  // so it will return DISABLE_REASON_ENTERPRISE_POLICY exclusively and
+  // kSyncManaged is set by Brave so it will contain
+  // DISABLE_REASON_ENTERPRISE_POLICY and
   // SaveCardBubbleControllerImpl::ShouldShowSignInPromo will return false.
   return ProfileSyncService::GetDisableReasons();
 }
