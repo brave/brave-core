@@ -94,6 +94,12 @@ source_set("browser") {
         "//ui/gfx",
       ]
     }
+
+    if (is_android) {
+      deps += [
+        "//chrome/android:jni_headers",
+      ]
+    }
   }
 }
 
@@ -132,4 +138,8 @@ source_set("testutil") {
     "test_util.cc",
     "test_util.h",
   ]
+
+  if (is_android) {
+    deps += [ "//chrome/android:test_support_jni_headers" ]
+  }
 }
