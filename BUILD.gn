@@ -341,7 +341,7 @@ if (target_cpu == "x86") {
 action("create_symbols_dist") {
   output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
 
-  print("create_symbols_dist BEGIN: output=$output")
+  print("BSC create_symbols_dist BEGIN: output=$output")
 
   script = "//brave/script/create-dist.py"
 
@@ -370,11 +370,12 @@ action("create_symbols_dist") {
     ":brave_license_dist_resources",
   ]
 
-  print("create_symbols_dist END")
+  print("BSC create_symbols_dist; rebase_base_dir=$rebase_base_dir; file_inputs=$file_inputs; dir_inputs=$dir_inputs; rebase_output=$rebase_output; END")
 }
 
 action("create_dist_zips") {
   output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch.zip"
+  print("BSC create_dist_zips BEGIN: output=$output")
 
   script = "//brave/script/create-dist.py"
 
@@ -417,6 +418,8 @@ action("create_dist_zips") {
     output
   ]
 
+  print("BSC app/$current_os:dist_resources")
+
   deps = [
     ":create_symbols_dist",
     ":brave_license_dist_resources",
@@ -448,6 +451,8 @@ action("create_dist_zips") {
     "--dir-inputs=$dir_inputs",
     "--output=$rebase_output",
   ]
+
+  print("BSC create_dist_zips; rebase_base_dir=$rebase_base_dir; file_inputs=$file_inputs; dir_inputs=$dir_inputs; rebase_output=$rebase_output; END")
 }
 
 if (is_mac) {

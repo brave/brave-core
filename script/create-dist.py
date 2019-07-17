@@ -14,6 +14,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__),
 
 
 def main():
+    print('BSC]] create-dist.py BEGIN')
     parser = optparse.OptionParser()
 
     parser.add_option('--inputs',
@@ -42,6 +43,8 @@ def main():
 
     with scoped_cwd(base_dir):
         make_zip(output, inputs, dir_inputs)
+
+    print('BSC]] create-dist.py END')
 
 
 if __name__ == '__main__':
