@@ -630,9 +630,8 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (BATAutoContributeProps *)autoContributeProps
 {
-  ledger::AutoContributeProps props;
-  ledger->GetAutoContributeProps(&props);
-  return [[BATAutoContributeProps alloc] initWithAutoContributeProps:props];
+  ledger::AutoContributePropsPtr props = ledger->GetAutoContributeProps();
+  return [[BATAutoContributeProps alloc] initWithAutoContributePropsPtr:std::move(props)];
 }
 
 #pragma mark - Reconcile

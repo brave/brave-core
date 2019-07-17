@@ -166,7 +166,7 @@ class LedgerImpl : public ledger::Ledger,
   std::map<std::string, ledger::BalanceReportInfo>
   GetAllBalanceReports() const override;
 
-  void GetAutoContributeProps(ledger::AutoContributeProps* props) override;
+  ledger::AutoContributePropsPtr GetAutoContributeProps() override;
 
   void SaveLedgerState(const std::string& data);
 
