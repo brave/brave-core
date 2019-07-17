@@ -47,21 +47,39 @@ class ADS_EXPORT Ads {
   // Should be called when Ads are enabled or disabled on the Client
   virtual void Initialize() = 0;
 
-  // Should be called when the browser enters the foreground
-  virtual void OnForeground() = 0;
 
-  // Should be called when the browser enters the background
-  virtual void OnBackground() = 0;
+  // Should be called to inform Ads if Confirmations is ready
+  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
+
+
+  // Should be called when a page has loaded in the current browser tab, and the
+  // HTML is available for analysis
+  virtual void ClassifyPage(
+      const std::string& url,
+      const std::string& html) = 0;
+
+  // Should be called when the user invokes "Show Sample Ad" on the Client; a
+  // Notification is then sent to the Client for processing
+  virtual void ServeSampleAd() = 0;
+
+  // Should be called when a timer is triggered
+  virtual void OnTimer(const uint32_t timer_id) = 0;
+
+  // Should be called periodically on desktop browsers as set by
+  // SetIdleThreshold to record when the browser is no longer idle. This call is
+  // optional for mobile devices
+  virtual void OnUnIdle() = 0;
 
   // Should be called periodically on desktop browsers as set by
   // SetIdleThreshold to record when the browser is idle. This call is optional
   // for mobile devices
   virtual void OnIdle() = 0;
 
-  // Should be called periodically on desktop browsers as set by
-  // SetIdleThreshold to record when the browser is no longer idle. This call is
-  // optional for mobile devices
-  virtual void OnUnIdle() = 0;
+  // Should be called when the browser enters the foreground
+  virtual void OnForeground() = 0;
+
+  // Should be called when the browser enters the background
+  virtual void OnBackground() = 0;
 
   // Should be called to record when a tab has started playing media (A/V)
   virtual void OnMediaPlaying(const int32_t tab_id) = 0;
@@ -82,25 +100,9 @@ class ADS_EXPORT Ads {
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;
 
-  // Should be called to inform Ads if Confirmations is ready
-  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
-
   // Should be called when the user changes the operating system's locale, i.e.
   // en, en_US or en_GB.UTF-8 unless the operating system restarts the app
   virtual void ChangeLocale(const std::string& locale) = 0;
-
-  // Should be called when a page has loaded in the current browser tab, and the
-  // HTML is available for analysis
-  virtual void ClassifyPage(
-      const std::string& url,
-      const std::string& html) = 0;
-
-  // Should be called when the user invokes "Show Sample Ad" on the Client; a
-  // Notification is then sent to the Client for processing
-  virtual void ServeSampleAd() = 0;
-
-  // Should be called when a timer is triggered
-  virtual void OnTimer(const uint32_t timer_id) = 0;
 
   // Should be called when a Notification has been shown
   virtual void GenerateAdReportingNotificationShownEvent(

@@ -27,9 +27,10 @@ class BatAdsImpl : public mojom::BatAds {
 
   // Overridden from mojom::BatAds:
   void Initialize(InitializeCallback callback) override;
-  void ClassifyPage(const std::string& url,
-                    const std::string& page) override;
-  void OnTimer(uint32_t timer_id) override;
+  void SetConfirmationsIsReady(const bool is_ready) override;
+  void ClassifyPage(const std::string& url, const std::string& page) override;
+  void ServeSampleAd() override;
+  void OnTimer(const uint32_t timer_id) override;
   void OnUnIdle() override;
   void OnIdle() override;
   void OnForeground() override;
@@ -43,8 +44,6 @@ class BatAdsImpl : public mojom::BatAds {
       const bool is_incognito) override;
   void OnTabClosed(const int32_t tab_id) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
-  void SetConfirmationsIsReady(const bool is_ready) override;
-  void ServeSampleAd() override;
   void GenerateAdReportingNotificationShownEvent(
       const std::string& notification_info) override;
   void GenerateAdReportingNotificationResultEvent(

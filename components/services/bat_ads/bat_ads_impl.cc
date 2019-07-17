@@ -32,18 +32,22 @@ void BatAdsImpl::Initialize(InitializeCallback callback) {
   // TODO(Terry Mancey): Initialize needs a real callback
   ads_->Initialize();
   std::move(callback).Run();
+
+void BatAdsImpl::SetConfirmationsIsReady(const bool is_ready) {
+  ads_->SetConfirmationsIsReady(is_ready);
 }
 
-void BatAdsImpl::ClassifyPage(const std::string& url,
-                              const std::string& page) {
+void BatAdsImpl::ClassifyPage(
+    const std::string& url,
+    const std::string& page) {
   ads_->ClassifyPage(url, page);
 }
 
-void BatAdsImpl::OnTabClosed(const int32_t tab_id) {
-  ads_->OnTabClosed(tab_id);
+void BatAdsImpl::ServeSampleAd() {
+  ads_->ServeSampleAd();
 }
 
-void BatAdsImpl::OnTimer(uint32_t timer_id) {
+void BatAdsImpl::OnTimer(const uint32_t timer_id) {
   ads_->OnTimer(timer_id);
 }
 
@@ -79,18 +83,14 @@ void BatAdsImpl::OnTabUpdated(
   ads_->OnTabUpdated(tab_id, url, is_active, is_incognito);
 }
 
+void BatAdsImpl::OnTabClosed(const int32_t tab_id) {
+  ads_->OnTabClosed(tab_id);
+}
+
 void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   // TODO(Terry Mancey): RemoveAllHistory needs a real callback
   ads_->RemoveAllHistory();
   std::move(callback).Run();
-}
-
-void BatAdsImpl::SetConfirmationsIsReady(const bool is_ready) {
-  ads_->SetConfirmationsIsReady(is_ready);
-}
-
-void BatAdsImpl::ServeSampleAd() {
-  ads_->ServeSampleAd();
 }
 
 void BatAdsImpl::GenerateAdReportingNotificationShownEvent(

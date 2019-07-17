@@ -60,7 +60,9 @@ interface BatAdsClient {
 
 interface BatAds {
   Initialize() => ();
+  SetConfirmationsIsReady(bool is_ready);
   ClassifyPage(string url, string page);
+  ServeSampleAd();
   OnTimer(uint32 timer_id);
   OnUnIdle();
   OnIdle();
@@ -69,8 +71,6 @@ interface BatAds {
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
   RemoveAllHistory() => ();
-  SetConfirmationsIsReady(bool is_ready);
-  ServeSampleAd();
   GenerateAdReportingNotificationShownEvent(string notification_info);
   GenerateAdReportingNotificationResultEvent(
       string notification_info, int32 result_type);
