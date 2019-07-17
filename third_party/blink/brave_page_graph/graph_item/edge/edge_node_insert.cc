@@ -4,12 +4,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_insert.h"
+#include <iostream>
 #include <string>
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_element.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_text.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_actor.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -43,13 +45,20 @@ ItemName EdgeNodeInsert::GetItemName() const {
 }
 
 ItemDesc EdgeNodeInsert::GetDescBody() const {
-  LOG_ASSERT(graph_->element_nodes_.count(parent_id_) == 1);
-  LOG_ASSERT(prior_sibling_id_ == 0 ||
-      graph_->element_nodes_.count(prior_sibling_id_) == 1);
+  std::cout << "prior_sibling_id_ = " << prior_sibling_id_ << std::endl;
 
+  LOG_ASSERT(graph_->element_nodes_.count(parent_id_) == 1);
   const Node* parent_node = graph_->element_nodes_.at(parent_id_);
-  const Node* sibling_node = prior_sibling_id_ == 0 ? nullptr :
-      graph_->element_nodes_.at(prior_sibling_id_);
+
+  LOG_ASSERT(prior_sibling_id_ == 0 ||
+      (graph_->element_nodes_.count(prior_sibling_id_)
+       + graph_->text_nodes_.count(prior_sibling_id_) == 1));
+  const Node* sibling_node = nullptr;
+  if (graph_->element_nodes_.count(prior_sibling_id_) == 1) {
+    sibling_node = graph_->element_nodes_.at(prior_sibling_id_);
+  } else if (graph_->text_nodes_.count(prior_sibling_id_) == 1) {
+    sibling_node = graph_->text_nodes_.at(prior_sibling_id_);
+  }
 
   ItemDesc desc = GetItemName();
   desc += "[parent: " + parent_node->GetDescBody();
