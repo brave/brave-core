@@ -148,9 +148,8 @@ copy("theme_files") {
 }
 
 group("create_dist") {
-  deps = [
-#    ":create_dist_zips"
-  ]
+  deps = []
+
   if (is_win) {
     deps += [
       "//chrome/installer/mini_installer",
@@ -414,6 +413,7 @@ action("create_dist_zips") {
   ]
 
   deps = [
+    ":create_dist",
     ":create_symbols_dist",
     ":brave_license_dist_resources",
     "app/$current_os:dist_resources",
