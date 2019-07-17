@@ -727,12 +727,12 @@ void AdsImpl::OnGetAds(
     }
   }
 
-  auto ads_unseen = GetUnseenAds(ads);
+  auto available_ads = GetAvailableAds(ads);
 
-  BLOG(INFO) << "Found " << ads_unseen.size() << " out of "
-      << ads.size() << " ads for \"" << category << "\" category";
+  BLOG(INFO) << "Found " << available_ads.size() << " out of " << ads.size()
+      << " availables ads for \"" << category << "\" category";
 
-  if (ads_unseen.empty()) {
+  if (available_ads.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ad (or permitted ad) for
     // winnerOverTime', category, winnerOverTime, arbitraryKey }
@@ -743,59 +743,88 @@ void AdsImpl::OnGetAds(
     return;
   }
 
-  auto rand = base::RandInt(0, ads_unseen.size() - 1);
-  auto ad = ads_unseen.at(rand);
+  auto rand = base::RandInt(0, available_ads.size() - 1);
+  auto ad = available_ads.at(rand);
   ShowAd(ad, category);
 }
 
-std::vector<AdInfo> AdsImpl::GetUnseenAds(
+std::vector<AdInfo> AdsImpl::GetAvailableAds(
     const std::vector<AdInfo>& ads) {
-  std::vector<AdInfo> ads_unseen = {};
+  std::vector<AdInfo> available_ads = {};
 
   for (const auto& ad : ads) {
-    std::deque<uint64_t> creative_set = {};
-    auto creative_set_history = client_->GetCreativeSetHistory();
-    if (creative_set_history.find(ad.creative_set_id)
-        != creative_set_history.end()) {
-      creative_set = creative_set_history.at(ad.creative_set_id);
-    }
-
-    if (creative_set.size() >= ad.total_max) {
-      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
+    if (!AdRespectsTotalMaxFrequencyCapping(ad)) {
+      BLOG(INFO) << "creativeSetId " << ad.creative_set_id
           << " has exceeded the totalMax";
 
       continue;
     }
 
-    auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
-
-    if (!HistoryRespectsRollingTimeConstraint(
-        creative_set, day_window, ad.per_day)) {
-      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
+    if (!AdRespectsPerDayFrequencyCapping(ad)) {
+      BLOG(INFO) << "creativeSetId " << ad.creative_set_id
           << " has exceeded the perDay";
 
       continue;
     }
 
-    std::deque<uint64_t> campaign = {};
-    auto campaign_history = client_->GetCampaignHistory();
-    if (campaign_history.find(ad.campaign_id)
-        != campaign_history.end()) {
-      campaign = campaign_history.at(ad.campaign_id);
-    }
-
-    if (!HistoryRespectsRollingTimeConstraint(
-        campaign, day_window, ad.daily_cap)) {
-      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
+    if (!AdRespectsDailyCapFrequencyCapping(ad)) {
+      BLOG(INFO) << "creativeSetId " << ad.creative_set_id
           << " has exceeded the dailyCap";
 
       continue;
     }
 
-    ads_unseen.push_back(ad);
+    available_ads.push_back(ad);
   }
 
-  return ads_unseen;
+  return available_ads;
+}
+
+bool AdsImpl::AdRespectsTotalMaxFrequencyCapping(const AdInfo& ad) {
+  auto creative_set = GetCreativeSetForId(ad.creative_set_id);
+  if (creative_set.size() >= ad.total_max) {
+    return false;
+  }
+
+  return true;
+}
+
+bool AdsImpl::AdRespectsPerDayFrequencyCapping(const AdInfo& ad) {
+  auto creative_set = GetCreativeSetForId(ad.creative_set_id);
+  auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
+
+  return HistoryRespectsRollingTimeConstraint(
+      creative_set, day_window, ad.per_day);
+}
+
+bool AdsImpl::AdRespectsDailyCapFrequencyCapping(const AdInfo& ad) {
+  auto campaign = GetCampaignForId(ad.campaign_id);
+  auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
+
+  return HistoryRespectsRollingTimeConstraint(
+      campaign, day_window, ad.daily_cap);
+}
+
+std::deque<uint64_t> AdsImpl::GetCreativeSetForId(const std::string& id) {
+  std::deque<uint64_t> creative_set = {};
+
+  auto creative_set_history = client_->GetCreativeSetHistory();
+  if (creative_set_history.find(id) != creative_set_history.end()) {
+    creative_set = creative_set_history.at(id);
+  }
+
+  return creative_set;
+}
+
+std::deque<uint64_t> AdsImpl::GetCampaignForId(const std::string& id) {
+  std::deque<uint64_t> campaign = {};
+
+  auto campaign_history = client_->GetCampaignHistory();
+  if (campaign_history.find(id) != campaign_history.end()) {
+    campaign = campaign_history.at(id);
+  }
+
+  return campaign;
 }
 
 bool AdsImpl::IsAdValid(const AdInfo& ad_info) {

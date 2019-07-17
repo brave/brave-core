@@ -111,7 +111,13 @@ class AdsImpl : public Ads {
       const Result result,
       const std::string& category,
       const std::vector<AdInfo>& ads);
-  std::vector<AdInfo> GetUnseenAds(const std::vector<AdInfo>& ads);
+  std::vector<AdInfo> GetAvailableAds(const std::vector<AdInfo>& ads);
+
+  bool AdRespectsTotalMaxFrequencyCapping(const AdInfo& ad);
+  bool AdRespectsPerDayFrequencyCapping(const AdInfo& ad);
+  bool AdRespectsDailyCapFrequencyCapping(const AdInfo& ad);
+  std::deque<uint64_t> GetCreativeSetForId(const std::string& id);
+  std::deque<uint64_t> GetCampaignForId(const std::string& id);
   bool IsAdValid(const AdInfo& ad_info);
   NotificationInfo last_shown_notification_info_;
   bool ShowAd(const AdInfo& ad_info, const std::string& category);
