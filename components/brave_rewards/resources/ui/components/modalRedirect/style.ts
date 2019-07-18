@@ -5,14 +5,14 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
-  font-family: Poppins, sans-serif;
+  font-family: ${p => p.theme.fontFamily.heading};
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
   font-size: 20px;
   font-weight: 600;
   line-height: 2;
-  color: #4b4c5c;
+  color: ${p => p.theme.palette.grey800};
   margin-bottom: 20px;
   text-align: center;
 `

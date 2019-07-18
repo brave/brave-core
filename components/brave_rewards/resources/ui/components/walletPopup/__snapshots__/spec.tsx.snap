@@ -15,11 +15,11 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 
 .c1 {
   margin: 52px auto;
-  background: #fff;
+  background: #FFFFFF;
   border-radius: 6px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0px 0px 12px 0px rgba(12,13,33,0.44);
+  box-shadow: 0 0 12px 0 rgba(12,13,33,0.44);
 }
 
 .c2 {
@@ -28,7 +28,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 
 .c3 {
   font-weight: bold;
-  border-bottom: 1px solid #d1d1d7;
+  border-bottom: 1px solid #c2c4cf;
   padding-bottom: 5px;
   margin-bottom: 10px;
 }
@@ -36,7 +36,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 .c6 {
   font-weight: normal;
   float: right;
-  color: #1bba6a;
+  color: #39a84c;
 }
 
 .c4 {

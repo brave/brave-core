@@ -83,7 +83,7 @@ export const StyledBalanceTokens = styled<{}, 'div'>('div')`
 export const StyledBalanceUnavailable = styled<{}, 'div'>('div')`
   font-size: 24px;
   opacity: 0.66;
-  color: #fff;
+  color: ${p => p.theme.palette.white};
   margin: 10px 0;
   font-weight: 300;
 `
@@ -344,7 +344,7 @@ export const StyledVerifiedButton = styled<{active: boolean}, 'button'>('button'
   min-width: 88px;
   padding: 7px 10px;
   color: #fff;
-  background: #1bba6a;
+  background: ${palette.green600};
   border: 1px solid ${p => p.theme.color[p.active ? 'brandBatActive' : 'brandBat']};
   :active:enabled {
     border-color: ${p => p.theme.color.brandBatActive};
@@ -372,7 +372,7 @@ export const StyledVerifiedButtonIcon = styled<{position: string}, 'div'>('div')
 
 export const StyledTextIcon = styled<{}, 'div'>('div')`
   line-height: initial;
-  background: #392dd1;
+  background: ${palette.blurple600};
   width: 16px;
   height: 16px;
   border-radius: 8px;

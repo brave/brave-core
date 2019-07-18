@@ -14,10 +14,9 @@ interface StyleProps {
 export const StyledWrapper = styled<{}, 'div'>('div')`
   position: absolute;
   text-align: center;
-  font-family: Poppins, sans-serif;
-  background-image: linear-gradient(180deg, #4C54D2 0%, #563195 100%);
-  padding: 42px;
-  padding-bottom: 30px;
+  font-family: ${p => p.theme.fontFamily.heading};
+  background-image: linear-gradient(180deg, ${p => p.theme.palette.blurple500} 0%, #563195 100%);
+  padding: 42px 42px 30px;
   top: 0;
   left: 0;
   width: 100%;
@@ -33,7 +32,7 @@ export const StyledClose = styled<{}, 'div'>('div')`
   cursor: pointer;
   width: 11px;
   height: 11px;
-  color: #fff;
+  color: ${p => p.theme.palette.white};
 `
 
 export const StyledHeader = styled<StyleProps, 'div'>('div')`
@@ -55,7 +54,7 @@ export const StyledHeaderText = styled<{}, 'div'>('div')`
 `
 
 export const StyledTitle = styled(Heading)`
-  color: #fff;
+  color: ${p => p.theme.palette.white};
   text-align: left;
   font-size: 22px;
   line-height: 24px;
@@ -63,9 +62,9 @@ export const StyledTitle = styled(Heading)`
 `
 
 export const StyledSubtitle = styled(Heading)`
-  color: #fff;
+  color: ${p => p.theme.palette.white};
   text-align: left;
-  font-family: Muli, sans-serif;
+  font-family: ${p => p.theme.fontFamily.body};
   font-size: 14px;
   line-height: 24px;
 `
@@ -76,11 +75,11 @@ export const StyledListTitle = styled(Heading)`
   text-align: left;
   line-height: 25px;
   padding-bottom: 4px;
-  color: #fff;
+  color: ${p => p.theme.palette.white};
 `
 
 export const StyledListItem = styled<StyleProps, 'div'>('div')`
-  color: #fff;
+  color: ${p => p.theme.palette.white};
   margin: ${p => p.compact ? '10px' : '15px'} 0;
 `
 
@@ -94,7 +93,7 @@ export const StyledListIcon = styled<{}, 'div'>('div')`
 export const StyledListItemText = styled<{}, 'div'>('div')`
   vertical-align: middle;
   text-align: left;
-  font-family: Muli, sans-serif;
+  font-family: ${p => p.theme.fontFamily.body};
   font-size: 15px;
   line-height: 20px;
   display: inline-block;
@@ -106,7 +105,7 @@ export const StyledIDNotice = styled<StyleProps, 'div'>('div')`
   font-size: 14px;
   line-height: 20px;
   font-weight: 600;
-  color: #fff;
+  color: ${p => p.theme.palette.white};
   padding: ${p => p.compact ? '20px' : '30px'} 24px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.5433);
   margin: ${p => p.compact ? '25px' : '44px'} 0 0;
@@ -117,9 +116,9 @@ export const StyledButton = styled(Button as ComponentType<ButtonProps>)`
 `
 
 export const StyledFooter = styled<StyleProps, 'div'>('div')`
-  font-family: Muli, sans-serif;
+font-family: ${p => p.theme.fontFamily.body};
   font-size: 12px;
-  color: #fff;
+  color: ${p => p.theme.palette.white};
   margin-top: ${p => p.compact ? '28px' : '32px'};
 `
 

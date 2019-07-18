@@ -9,7 +9,7 @@ exports[`ModalRedirect tests basic tests matches the snapshot 1`] = `
   font-size: 20px;
   font-weight: 600;
   line-height: 2;
-  color: #4b4c5c;
+  color: #3b3e4f;
   margin-bottom: 20px;
   text-align: center;
 }

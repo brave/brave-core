@@ -104,8 +104,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
   text-align: center;
   font-family: Poppins,sans-serif;
   background-image: linear-gradient(180deg,#4C54D2 0%,#563195 100%);
-  padding: 42px;
-  padding-bottom: 30px;
+  padding: 42px 42px 30px;
   top: 0;
   left: 0;
   width: 100%;
@@ -121,7 +120,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
   width: 11px;
   height: 11px;
-  color: #fff;
+  color: #FFFFFF;
 }
 
 .c3 {
@@ -143,7 +142,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
 }
 
 .c7 {
-  color: #fff;
+  color: #FFFFFF;
   text-align: left;
   font-size: 22px;
   line-height: 24px;
@@ -151,7 +150,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
 }
 
 .c10 {
-  color: #fff;
+  color: #FFFFFF;
   text-align: left;
   font-family: Muli,sans-serif;
   font-size: 14px;
@@ -164,11 +163,11 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
   text-align: left;
   line-height: 25px;
   padding-bottom: 4px;
-  color: #fff;
+  color: #FFFFFF;
 }
 
 .c14 {
-  color: #fff;
+  color: #FFFFFF;
   margin: 15px 0;
 }
 
@@ -194,7 +193,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
   font-size: 14px;
   line-height: 20px;
   font-weight: 600;
-  color: #fff;
+  color: #FFFFFF;
   padding: 30px 24px 20px;
   border-top: 1px solid rgba(255,255,255,0.5433);
   margin: 44px 0 0;
@@ -207,7 +206,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
 .c23 {
   font-family: Muli,sans-serif;
   font-size: 12px;
-  color: #fff;
+  color: #FFFFFF;
   margin-top: 32px;
 }
 

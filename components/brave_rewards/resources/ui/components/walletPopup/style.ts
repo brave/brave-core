@@ -18,11 +18,11 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
 
 export const StyledDialog = styled<{}, 'div'>('div')`
   margin: 52px auto;
-  background: #fff;
+  background: ${p => p.theme.palette.white};
   border-radius: 6px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0px 0px 12px 0px rgba(12, 13, 33, 0.44);
+  box-shadow: 0 0 12px 0 rgba(12, 13, 33, 0.44);
 `
 
 export const StyledContent = styled<{}, 'div'>('div')`
@@ -31,7 +31,7 @@ export const StyledContent = styled<{}, 'div'>('div')`
 
 export const StyledHeader = styled<{}, 'div'>('div')`
   font-weight: bold;
-  border-bottom: 1px solid #d1d1d7;
+  border-bottom: 1px solid ${p => p.theme.palette.grey400};
   padding-bottom: 5px;
   margin-bottom: 10px;
 `
@@ -39,7 +39,7 @@ export const StyledHeader = styled<{}, 'div'>('div')`
 export const StyledStatus = styled<{}, 'div'>('div')`
   font-weight: normal;
   float: right;
-  color: #1bba6a;
+  color: ${p => p.theme.palette.green600};
 `
 
 export const StyledIcon = styled<{}, 'span'>('span')`
