@@ -266,8 +266,8 @@ void BatLedgerImpl::FetchGrants(const std::string& lang,
       std::bind(BatLedgerImpl::OnFetchGrants, holder, _1, _2));
 }
 
-void BatLedgerImpl::GetGrantViaSafetynetCheck() {
-  ledger_->GetGrantViaSafetynetCheck();
+void BatLedgerImpl::GetGrantViaSafetynetCheck(const std::string& promotion_id) {
+  ledger_->GetGrantViaSafetynetCheck(promotion_id);
 }
 
 void BatLedgerImpl::ApplySafetynetToken(const std::string& result_string) {

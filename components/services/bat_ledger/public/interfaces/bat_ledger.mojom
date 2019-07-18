@@ -69,7 +69,7 @@ interface BatLedger {
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance, array<ledger.mojom.Grant?> grants);
   SolveGrantCaptcha(string solution, string promotionId);
 
-  GetGrantViaSafetynetCheck();
+  GetGrantViaSafetynetCheck(string promotion_id);
   ApplySafetynetToken(string result_string);
   
   SetRewardsMainEnabled(bool enabled);
@@ -192,7 +192,7 @@ interface BatLedgerClient {
 
   LoadNicewareList() => (ledger.mojom.Result result, string data);
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
-  OnGrantViaSafetynetCheck(string nonce);
+  OnGrantViaSafetynetCheck(string promotion_id, string nonce);
 
   LoadURL(string url, array<string> headers, string content,
       string content_type, int32 method) => (int32 status_code, string response,

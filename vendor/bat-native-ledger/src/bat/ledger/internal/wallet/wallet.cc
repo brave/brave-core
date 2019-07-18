@@ -40,7 +40,8 @@ Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
 Wallet::~Wallet() {
 }
 
-void Wallet::CreateWalletIfNecessary(ledger::CreateWalletCallback callback) {
+void Wallet::CreateWalletIfNecessary(const std::string& safetynet_token,
+    ledger::CreateWalletCallback callback) {
   const auto payment_id = ledger_->GetPaymentId();
   const auto stamp = ledger_->GetBootStamp();
   const auto persona_id = ledger_->GetPersonaId();
@@ -55,7 +56,7 @@ void Wallet::CreateWalletIfNecessary(ledger::CreateWalletCallback callback) {
      "We need to clear persona Id and start again";
   ledger_->SetPersonaId("");
 
-  create_->Start(std::move(callback));
+  create_->Start(safetynet_token, std::move(callback));
 }
 
 void Wallet::GetWalletProperties(
@@ -453,6 +454,39 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
       "application/json; charset=utf-8",
       ledger::URL_METHOD::POST,
       transfer_callback);
+}
+
+void Wallet::GetGrantViaSafetynetCheck(const std::string& promotion_id) {
+  ledger_->LoadURL(braveledger_bat_helper::buildURL(
+      (std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(),
+      PREFIX_V1),
+  std::vector<std::string>(), "", "",
+  ledger::URL_METHOD::GET, std::bind(&Wallet::GetGrantViaSafetynetCheckCallback,
+                                   this,
+                                   promotion_id,
+                                   _1,
+                                   _2,
+                                   _3));
+}
+
+void Wallet::GetGrantViaSafetynetCheckCallback(const std::string& promotion_id,
+                                                  int response_status_code,
+                                                  const std::string& response,
+                                                  const std::map<std::string,
+                                                  std::string>& headers) {
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  if (response_status_code != net::HTTP_OK) {
+    // Attestation failed
+    braveledger_bat_helper::GRANT grant;
+    grant.promotionId = promotion_id;
+    ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
+        grant);
+    return;
+  }
+  std::string nonce;
+  braveledger_bat_helper::getJSONValue("nonce", response, &nonce);
+  ledger_->OnGrantViaSafetynetCheck(promotion_id, nonce);
 }
 
 }  // namespace braveledger_wallet

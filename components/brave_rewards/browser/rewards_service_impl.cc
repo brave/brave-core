@@ -1511,8 +1511,7 @@ void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
       AsWeakPtr()));
   } else {
     LOG(ERROR) << "FetchGrantAttestationResult error: " << result_string;
-    ledger::Grant grant;
-    OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, grant);
+    TriggerOnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, nullptr);
   }
 }
 #endif
@@ -3830,30 +3829,29 @@ bool RewardsServiceImpl::OnlyAnonWallet() {
   return false;
 }
 
-void RewardsServiceImpl::GetGrantViaSafetynetCheck() const {
-  bat_ledger_->GetGrantViaSafetynetCheck();
+void RewardsServiceImpl::GetGrantViaSafetynetCheck(const std::string& promotion_id) const {
+  bat_ledger_->GetGrantViaSafetynetCheck(promotion_id);
 }
 
-void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
+void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& promotion_id, const std::string& nonce) {
 // This is used on Android only
 #if defined(OS_ANDROID)
   safetynet_check::ClientAttestationCallback attest_callback =
       base::BindOnce(&RewardsServiceImpl::GrantAttestationResult,
-          AsWeakPtr());
+          AsWeakPtr(), promotion_id);
   safetynet_check_runner_.performSafetynetCheck(nonce,
       std::move(attest_callback));
 #endif
  }
 
 #if defined(OS_ANDROID)
-void RewardsServiceImpl::GrantAttestationResult(bool result,
+void RewardsServiceImpl::GrantAttestationResult(const std::string& promotion_id, bool result,
     const std::string& result_string) {
   if (result) {
     return bat_ledger_->ApplySafetynetToken(result_string);
   } else {
     LOG(ERROR) << "GrantAttestationResult error: " << result_string;
-    ledger::Grant grant;
-    OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, grant);
+    TriggerOnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, nullptr);
   }
 }
 #endif

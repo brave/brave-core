@@ -44,7 +44,8 @@ class Wallet {
 
   ~Wallet();
 
-  void CreateWalletIfNecessary(ledger::CreateWalletCallback callback);
+  void CreateWalletIfNecessary(const std::string& safetynet_token,
+      ledger::CreateWalletCallback callback);
 
   void RecoverWallet(
       const std::string& pass_phrase,
@@ -75,6 +76,8 @@ class Wallet {
       ledger::ExternalWalletPtr wallet,
       const bool allow_zero_balance,
       ledger::TransferAnonToExternalWalletCallback callback);
+
+  void GetGrantViaSafetynetCheck(const std::string& promotion_id);
 
  private:
   void WalletPropertiesCallback(
@@ -123,6 +126,12 @@ class Wallet {
       const std::string& new_address,
       const std::string& user_funds,
       ledger::TransferAnonToExternalWalletCallback callback);
+
+  void GetGrantViaSafetynetCheckCallback(const std::string& promotion_id,
+                                         int response_status_code,
+                                         const std::string& response,
+                                         const std::map<std::string,
+                                         std::string>& headers);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Create> create_;
