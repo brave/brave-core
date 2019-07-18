@@ -477,6 +477,27 @@ void BatLedgerImpl::GetRewardsInternalsInfo(
 }
 
 // static
+void BatLedgerImpl::OnSaveRecurringTip(
+    CallbackHolder<SaveRecurringTipCallback>* holder,
+    ledger::Result result) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+
+  delete holder;
+}
+
+void BatLedgerImpl::SaveRecurringTip(
+    ledger::ContributionInfoPtr info,
+    SaveRecurringTipCallback callback) {
+  // deleted in OnSaveRecurringTip
+  auto* holder = new CallbackHolder<SaveRecurringTipCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->SaveRecurringTip(std::move(info), std::bind(
+      BatLedgerImpl::OnSaveRecurringTip, holder, _1));
+}
+
+// static
 void BatLedgerImpl::OnGetRecurringTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
     ledger::PublisherInfoList list,

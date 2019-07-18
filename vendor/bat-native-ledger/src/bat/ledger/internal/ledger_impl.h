@@ -295,6 +295,10 @@ class LedgerImpl : public ledger::Ledger,
                                   const int year,
                                   const uint32_t date) override;
 
+  void SaveRecurringTip(
+      ledger::ContributionInfoPtr info,
+      ledger::SaveRecurringTipCallback callback) override;
+
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
 
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;

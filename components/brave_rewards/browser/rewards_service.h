@@ -69,6 +69,7 @@ using GetTransactionHistoryCallback =
     base::OnceCallback<void(double, uint64_t, uint64_t)>;
 using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
+using SaveRecurringTipCallback = base::OnceCallback<void(bool)>;
 using GetRecurringTipsCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::ContentSiteList>)>;
 using GetOneTimeTipsCallback = base::OnceCallback<void(
@@ -220,8 +221,9 @@ class RewardsService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  virtual void SaveRecurringTip(const std::string& publisher_key,
-                                const int amount) = 0;
+  virtual void SaveRecurringTipUI(const std::string& publisher_key,
+                                  const int amount,
+                                  SaveRecurringTipCallback callback) = 0;
 
   virtual const RewardsNotificationService::RewardsNotificationsMap&
   GetAllNotifications() = 0;

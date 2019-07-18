@@ -455,19 +455,20 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)addRecurringTipToPublisherWithId:(NSString *)publisherId amount:(double)amount
 {
-  [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:publisherId
-                                                        amount:amount
-                                                     dateAdded:[[NSDate date] timeIntervalSince1970]
-                                                    completion:^(BOOL success) {
-                                                      if (!success) {
-                                                        return;
-                                                      }
-                                                      for (BATBraveLedgerObserver *observer in self.observers) {
-                                                        if (observer.recurringTipAdded) {
-                                                          observer.recurringTipAdded(publisherId);
-                                                        }
-                                                      }
-                                                    }];
+  ledger::ContributionInfoPtr info = ledger::ContributionInfo::New();
+  info->publisher = publisherId.UTF8String;
+  info->value = amount;
+  info->date = [[NSDate date] timeIntervalSince1970];
+  ledger->SaveRecurringTip(std::move(info), ^(ledger::Result result){
+    if (result != ledger::Result::LEDGER_OK) {
+      return;
+    }
+    for (BATBraveLedgerObserver *observer in self.observers) {
+      if (observer.recurringTipAdded) {
+        observer.recurringTipAdded(publisherId);
+      }
+    }
+  });
 }
 
 - (void)removeRecurringTipForPublisherWithId:(NSString *)publisherId
@@ -1377,6 +1378,20 @@ BATLedgerBridge(BOOL,
                                                         year:BATGetPublisherYear(now)];
 
   [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
+}
+
+- (void)saveRecurringTip:(ledger::ContributionInfoPtr)info callback:(ledger::SaveRecurringTipCallback)callback
+{
+  [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:[NSString stringWithUTF8String:info->publisher.c_str()]
+                                                        amount:info->value
+                                                     dateAdded:info->date
+                                                    completion:^(BOOL success) {
+                                                      if (!success) {
+                                                        callback(ledger::Result::LEDGER_ERROR);
+                                                        return;
+                                                      }
+                                                      callback(ledger::Result::LEDGER_OK);
+                                                    }];
 }
 
 - (void)getRecurringTips:(ledger::PublisherInfoListCallback)callback
