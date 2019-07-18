@@ -42,8 +42,10 @@
 #include "chrome/browser/notifications/notification_display_service_impl.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "chrome/browser/profiles/profile.h"
+#if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#endif
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/common/buildflags.h"
@@ -1627,6 +1629,23 @@ std::string AdsServiceImpl::GetStringPref(
   // If the preference path does exist then a value was serialized, so return
   // the serialized value
   return value;
+}
+
+void AdsServiceImpl::ResetTheWholeState(
+    const base::Callback<void(bool)>& callback) {
+  SetAdsEnabled(false);
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ResetOnFileTaskRunner,
+                     base_path_),
+      base::BindOnce(&AdsServiceImpl::OnResetTheWholeState,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnResetTheWholeState(
+    base::Callback<void(bool)> callback,
+    bool success) {
+  callback.Run(success);
 }
 
 void AdsServiceImpl::SetStringPref(

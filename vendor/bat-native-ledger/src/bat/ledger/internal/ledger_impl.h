@@ -209,8 +209,8 @@ class LedgerImpl : public ledger::Ledger,
   void OnGrantFinish(ledger::Result result,
                      const braveledger_bat_helper::GRANT& grant);
 
-  void GetGrantViaSafetynetCheck() const override;
-  void OnGrantViaSafetynetCheck(const std::string& nonce);
+  void GetGrantViaSafetynetCheck(const std::string& promotion_id) const override;
+  void OnGrantViaSafetynetCheck(const std::string& promotion_id, const std::string& nonce);
 
   std::string GetWalletPassphrase() const override;
 

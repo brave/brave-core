@@ -136,7 +136,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) override;
 
-  void GetGrantViaSafetynetCheck() override;
+  void GetGrantViaSafetynetCheck(const std::string& promotion_id) override;
   void ApplySafetynetToken(const std::string& result_string) override;
 
   void GetTransactionHistory(
