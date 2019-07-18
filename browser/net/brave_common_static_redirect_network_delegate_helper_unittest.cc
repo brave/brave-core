@@ -80,8 +80,7 @@ TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
   net::TestDelegate test_delegate;
   GURL url(
       "http://redirector.gvt1.com/edgedl/chromewebstore/"
-      "L2Nocm9tZV9leHRlbnNpb24vYmxvYnMvOWVmQUFXS041NV9ZVXlJVWwxbGc5TUM4dw/"
-      "7519.422.0.3_pkedcjkdefgpdelpbcmbmeomcjbeemfm.crx");
+      "random_hash/random_version_pkedcjkdefgpdelpbcmbmeomcjbeemfm.crx");
   std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
       url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
 
