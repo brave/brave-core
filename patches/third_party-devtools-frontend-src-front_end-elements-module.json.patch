@@ -1,0 +1,36 @@
+diff --git a/third_party/devtools-frontend/src/front_end/elements/module.json b/third_party/devtools-frontend/src/front_end/elements/module.json
+index 52c482733e9bdd2f0e8af758c4101d6a5ecf4ebe..03191f83f2acf47f4173edb9cd25b69c1a5e048e 100644
+--- a/third_party/devtools-frontend/src/front_end/elements/module.json
++++ b/third_party/devtools-frontend/src/front_end/elements/module.json
+@@ -279,6 +279,15 @@
+             "order": 10,
+             "persistence": "permanent",
+             "className": "Elements.NodeStackTraceWidget"
++        },
++        {
++            "type": "view",
++            "location": "elements-sidebar",
++            "id": "elements.domPageGraphInfo",
++            "title": "Page Graph",
++            "order": 7,
++            "persistence": "permanent",
++            "className": "Elements.PageGraphInfoWidget"
+         }
+     ],
+     "dependencies": [
+@@ -290,6 +299,7 @@
+     ],
+     "scripts": [],
+     "modules": [
++        "PageGraphInfoWidget.js",
+         "elements.js",
+         "InspectElementModeController.js",
+         "ColorSwatchPopoverIcon.js",
+@@ -316,6 +326,7 @@
+         "ElementsTreeElementHighlighter.js"
+     ],
+     "resources": [
++        "../../../../../brave/third_party/devtools-frontend/src/front_end/elements/pageGraphInfoWidget.css",
+         "breadcrumbs.css",
+         "classesPaneWidget.css",
+         "computedStyleSidebarPane.css",
