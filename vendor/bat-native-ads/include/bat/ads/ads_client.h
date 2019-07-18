@@ -55,7 +55,7 @@ using OnLoadSampleBundleCallback = std::function<void(const Result,
     const std::string&)>;
 
 using URLRequestCallback = std::function<void(const int, const std::string&,
-    const std::map<std::string, std::string>& headers)>;
+    const std::map<std::string, std::string>&)>;
 
 class ADS_EXPORT AdsClient {
  public:

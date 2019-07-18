@@ -1,6 +1,8 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at http://mozilla.org/MPL/2.0/.
+
 module bat_ads.mojom;
 
 const string kServiceName = "bat_ads";
@@ -8,7 +10,7 @@ const string kServiceName = "bat_ads";
 // Service which hands out bat ads.
 interface BatAdsService {
   Create(associated BatAdsClient bat_ads_client,
-         associated BatAds& database) => ();
+      associated BatAds& database) => ();
   SetProduction(bool is_production) => ();
   SetTesting(bool is_testing) => ();
   SetDebug(bool is_debug) => ();
@@ -47,8 +49,8 @@ interface BatAdsClient {
   LoadUserModelForLocale(string locale) => (int32 result, string value);
   LoadSampleBundle() => (int32 result, string value);
   URLRequest(string url, array<string> headers, string content,
-             string content_type, int32 method) =>
-      (int32 status_code, string content, map<string, string> headers);
+      string content_type, int32 method) =>
+          (int32 status_code, string content, map<string, string> headers);
   ShowNotification(string notification_info);
   CloseNotification(string id);
   SetCatalogIssuers(string issuers_info);

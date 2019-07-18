@@ -7,6 +7,7 @@
 #define BAT_ADS_ADS_H_
 
 #include <string>
+#include <memory>
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/export.h"

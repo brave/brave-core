@@ -1470,7 +1470,9 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
     issuers_info->issuers.push_back(issuer_info);
   }
 
-  bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
+  if (bat_confirmations_) {
+    bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
+  }
 }
 
 void LedgerImpl::ConfirmAd(const std::string& info) {

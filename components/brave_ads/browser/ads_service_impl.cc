@@ -70,11 +70,11 @@ namespace brave_ads {
 
 namespace {
 
-const char kRewardsNotificationAdsLaunch[] =
-    "rewards_notification_ads_launch";
+const char kRewardsNotificationAdsLaunch[] = "rewards_notification_ads_launch";
+
+const unsigned int kRetriesCountOnNetworkChange = 1;
 
 }
-static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 class LogStreamImpl : public ads::LogStream {
  public:
@@ -1226,8 +1226,7 @@ void AdsServiceImpl::Reset(const std::string& name,
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&ResetOnFileTaskRunner, base_path_.AppendASCII(name)),
       base::BindOnce(&AdsServiceImpl::OnReset,
-                     AsWeakPtr(),
-                     std::move(callback)));
+          AsWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::OnReset(const ads::OnResetCallback& callback,

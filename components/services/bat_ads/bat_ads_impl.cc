@@ -24,10 +24,12 @@ ads::NotificationEventType ToMojomNotificationEventType(int32_t event_type) {
   return (ads::NotificationEventType)event_type;
 }
 
-BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info)
-    : bat_ads_client_mojo_proxy_(
-          new BatAdsClientMojoBridge(std::move(client_info))),
-      ads_(ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {}
+}  // namespace
+
+BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info) :
+    bat_ads_client_mojo_proxy_(new BatAdsClientMojoBridge(
+        std::move(client_info))),
+    ads_(ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {}
 
 BatAdsImpl::~BatAdsImpl() {}
 
