@@ -24,13 +24,7 @@ bundle-schema.json
 
 ### Native
 
-Initialize Ads by calling `Initialize` when Ads are enabled or disabled on the Client as follows:
-
-```
-void Initialize()
-```
-
-`IsSupportedRegion` should be called to determine if Ads are supported for the specified region
+`IsSupportedRegion` should be called to determine if ads are supported for the specified region
 ```
 static bool IsSupportedRegion(
     const std::string& locale)
@@ -42,59 +36,19 @@ static std::string GetRegion(
     const std::string& locale)
 ```
 
-`OnForeground` should be called when the browser enters the foreground
+Initialize ads by calling `Initialize`
 ```
-void OnForeground()
-```
-
-`OnBackground` should be called when the browser enters the background
-```
-void OnBackground()
+void Initialize(
+    InitializeCallback callback)
 ```
 
-`OnIdle` should be called periodically on desktop browsers as set by `SetIdleThreshold` to record when the browser is idle. This call is optional for mobile devices
+Shutdown ads by calling `Shutdown`
 ```
-void OnIdle()
-```
-
-`OnUnidle` should be called periodically on desktop browsers as set by `SetIdleThreshold` to record when the browser is no longer idle. This call is optional for mobile devices
-```
-void OnUnIdle()
+void Shutdown(
+    ShutdownCallback callback)
 ```
 
-`OnMediaPlaying` should be called to record when a tab has started playing media (A/V)
-```
-void OnMediaPlaying(
-    const int32_t tab_id)
-```
-
-`OnMediaStopped` should be called to record when a tab has stopped playing media (A/V)
-```
-void OnMediaStopped(
-    const int32_t tab_id)
-```
-
-`TabUpdated` should be called to record user activity on a browser tab
-```
-void TabUpdated(
-    const int32_t tab_id,
-    const std::string& url,
-    const bool is_active,
-    const bool is_incognito)
-```
-
-`TabClosed` should be called to record when a browser tab is closed
-```
-void TabClosed(
-    const int32_t tab_id)
-```
-
-`RemoveAllHistory` should be called to remove all cached history when the user clears browsing data
-```
-void RemoveAllHistory()
-```
-
-`SetConfirmationsIsReady` should be called to inform Ads if Confirmations is ready
+`SetConfirmationsIsReady` should be called to inform ads if Confirmations is ready
 ```
 void SetConfirmationsIsReady(
     const bool is_ready)
@@ -124,22 +78,76 @@ void OnTimer(
     const uint32_t timer_id)
 ```
 
-`GenerateAdReportingNotificationShownEvent` should be called when a notification has been shown
+`OnUnidle` should be called periodically on desktop browsers as set by `SetIdleThreshold` to record when the browser is no longer idle. This call is optional for mobile devices
 ```
-void GenerateAdReportingNotificationShownEvent(
-    const NotificationInfo& info)
+void OnUnIdle()
 ```
 
-`GenerateAdReportingNotificationResultEvent` should be called when a notification has been clicked, dismissed or times out on the Client. Dismiss events for local Notifications may not be available for every version of Android, making the Dismiss notification capture optional for Android devices
+`OnIdle` should be called periodically on desktop browsers as set by `SetIdleThreshold` to record when the browser is idle. This call is optional for mobile devices
 ```
-void GenerateAdReportingNotificationResultEvent(
-    const NotificationInfo& info,
-    const NotificationResultInfoResultType type)
+void OnIdle()
+```
+
+`OnForeground` should be called when the browser enters the foreground
+```
+void OnForeground()
+```
+
+`OnBackground` should be called when the browser enters the background
+```
+void OnBackground()
+```
+
+`OnMediaPlaying` should be called to record when a tab has started playing media (A/V)
+```
+void OnMediaPlaying(
+    const int32_t tab_id)
+```
+
+`OnMediaStopped` should be called to record when a tab has stopped playing media (A/V)
+```
+void OnMediaStopped(
+    const int32_t tab_id)
+```
+
+`OnTabUpdated` should be called to record user activity on a browser tab
+```
+void OnTabUpdated(
+    const int32_t tab_id,
+    const std::string& url,
+    const bool is_active,
+    const bool is_incognito)
+```
+
+`OnTabClosed` should be called to record when a browser tab is closed
+```
+void OnTabClosed(
+    const int32_t tab_id)
+```
+
+`GetNotificationForId` should return `true` and `NotificationInfo` if the notification for the specified id exists otherwise returns false
+```
+bool GetNotificationForId(
+    const std::string& id,
+    NotificationInfo* notification);
+```
+
+`OnNotificationEvent` should be called when a notifcation event is triggered
+```
+void OnNotificationEvent(
+    const std::string id,
+    const NotificationActionType type)
+```
+
+`RemoveAllHistory` should be called to remove all cached history when the user clears browsing data
+```
+void RemoveAllHistory(
+    RemoveAllHistoryCallback callback)
 ```
 
 ### Client
 
-`IsAdsEnabled` should return `true` if Ads are enabled otherwise returns `false`
+`IsAdsEnabled` should return `true` if ads are enabled otherwise returns `false`
 ```
 bool IsAdsEnabled() const
 ```
@@ -149,12 +157,12 @@ bool IsAdsEnabled() const
 std::string GetAdsLocale() const
 ```
 
-`GetAdsPerHour` should return the number of Ads that can be shown per hour
+`GetAdsPerHour` should return the number of ads that can be shown per hour
 ```
 uint64_t GetAdsPerHour() const
 ```
 
-`GetAdsPerDay` should return the number of Ads that can be shown per day
+`GetAdsPerDay` should return the number of ads that can be shown per day
 ```
 uint64_t GetAdsPerDay() const
 ```
@@ -188,11 +196,6 @@ void LoadUserModelForLocale(
     OnLoadCallback callback) const
 ```
 
-`GenerateUUID` should generate and return a v4 UUID
-```
-const std::string GenerateUUID() const
-```
-
 `IsForeground` should return `true` if the browser is in the foreground otherwise returns `false`
 ```
 bool IsForeground() const
@@ -205,27 +208,38 @@ bool IsNotificationsAvailable() const
 
 `ShowNotification` should show a notification
 ```
-void ShowNotification(std::unique_ptr<NotificationInfo> info)
+void ShowNotification(
+    std::unique_ptr<NotificationInfo> info)
+```
+
+`CloseNotification` should close a notification
+```
+void CloseNotification(
+    const std::string& id)
 ```
 
 `SetCatalogIssuers` should notify that the catalog issuers have changed
 ```
-  void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info)
+  void SetCatalogIssuers(
+      std::unique_ptr<IssuersInfo> info)
 ```
 
 `ConfirmAd` should be called to inform Confirmations that an Ad was clicked, viewed, dismissed or landed
 ```
-void ConfirmAd(std::unique_ptr<NotificationInfo> info)
+void ConfirmAd(
+    std::unique_ptr<NotificationInfo> info)
 ```
 
 `SetTimer` should create a timer to trigger after the time offset specified in seconds. If the timer was created successfully a unique identifier should be returned, otherwise returns `0`
 ```
-uint32_t SetTimer(const uint64_t time_offset)
+uint32_t SetTimer(
+    const uint64_t time_offset)
 ```
 
 `KillTimer` should destroy the timer associated with the specified timer identifier
 ```
-void KillTimer(uint32_t timer_id)
+void KillTimer(
+    uint32_t timer_id)
 ```
 
 `URLRequest` should start a URL request
@@ -256,25 +270,31 @@ void SaveBundleState(
 
 `Load` should load a value from persistent storage
 ```
-void Load(const std::string& name, OnLoadCallback callback)
+void Load(
+    const std::string& name,
+    OnLoadCallback callback)
 ```
 
 `LoadJsonSchema` should load a JSON schema from persistent storage, see [resources](#resources)
 ```
-const std::string LoadJsonSchema(const std::string& name)
+const std::string LoadJsonSchema(
+    const std::string& name)
 ```
 
 `LoadSampleBundle` should load the sample bundle from persistent storage
 ```
-void LoadSampleBundle(OnLoadSampleBundleCallback callback)
+void LoadSampleBundle(
+    OnLoadSampleBundleCallback callback)
 ```
 
 `Reset` should reset a previously saved value, i.e. remove the file from persistent storage
 ```
-void Reset(const std::string& name, OnResetCallback callback)
+void Reset(
+    const std::string& name,
+    OnResetCallback callback)
 ```
 
-`GetAds` should get Ads for the specified category from the previously persisted bundle state
+`GetAds` should get ads for the specified category from the previously persisted bundle state
 ```
 void GetAds(
     const std::string& category,
@@ -283,7 +303,8 @@ void GetAds(
 
 `EventLog` should log an event to persistent storage
 ```
-void EventLog(const std::string& json)
+void EventLog(
+    const std::string& json)
 ```
 
 `Log` should log diagnostic information to the console
