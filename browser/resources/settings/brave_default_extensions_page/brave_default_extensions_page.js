@@ -46,7 +46,7 @@ Polymer({
   },
 
   restartBrowser_: function() {
-    this.browserProxy_.restartBrowser();
+    window.open("chrome://restart", "_self");
   },
 
   onMediaRouterEnabledChange_: function() {

@@ -3,13 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/webui/flags_ui.h"
+#define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
+#include "../../../../chrome/browser/about_flags.cc"  // NOLINT
+#include "../../../../components/flags_ui/flags_state.cc" // NOLINT
+#undef SetFeatureEntryEnabled
 
 #include "base/strings/string_util.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/flags_ui/flags_state.h"
 #include "components/prefs/pref_service.h"
-#include "extensions/common/feature_switch.h"
+
+namespace about_flags {
 
 void UpdateBraveMediaRouterPref(const std::string& internal_name,
                                 Profile* profile) {
@@ -23,7 +29,11 @@ void UpdateBraveMediaRouterPref(const std::string& internal_name,
   }
 }
 
-#define SyncFeatureFlagWithBravePrefs(internal_name, profile) \
-  UpdateBraveMediaRouterPref(internal_name, profile)
-#include "../../../../../../chrome/browser/ui/webui/flags_ui.cc"  // NOLINT
-#undef SyncFeatureFlagWithBravePrefs
+void SetFeatureEntryEnabled(flags_ui::FlagsStorage* flags_storage,
+                            const std::string& internal_name,
+                            bool enable) {
+  UpdateBraveMediaRouterPref(internal_name, ProfileManager::GetActiveUserProfile());
+  SetFeatureEntryEnabled_ChromiumImpl(flags_storage, internal_name, enable);
+}
+
+} // namespace about_flags

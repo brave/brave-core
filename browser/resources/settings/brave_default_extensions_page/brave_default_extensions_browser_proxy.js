@@ -11,7 +11,6 @@ cr.define('settings', function() {
     setWebTorrentEnabled(value) {}
     setHangoutsEnabled(value) {}
     setIPFSCompanionEnabled(value) {}
-    restartBrowser() {}
     getRestartNeeded() {}
   }
 
@@ -31,9 +30,6 @@ cr.define('settings', function() {
     }
     setMediaRouterEnabled(value) {
       chrome.send('setMediaRouterEnabled', [value]);
-    }
-    restartBrowser() {
-      chrome.send('restartBrowser');
     }
     getRestartNeeded() {
       return cr.sendWithPromise('getRestartNeeded');

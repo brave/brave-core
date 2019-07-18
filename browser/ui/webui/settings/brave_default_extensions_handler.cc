@@ -59,10 +59,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
         &BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
         base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      flags_ui::kRestartBrowser,
-      base::BindRepeating(&BraveDefaultExtensionsHandler::HandleRestartBrowser,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "getRestartNeeded",
       base::BindRepeating(
         &BraveDefaultExtensionsHandler::GetRestartNeeded,
@@ -71,6 +67,7 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
 
 void BraveDefaultExtensionsHandler::GetRestartNeeded(
     const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
   bool media_router_current_pref = profile_->GetPrefs()->GetBoolean(
       prefs::kEnableMediaRouter);
   bool media_router_new_pref = profile_->GetPrefs()->GetBoolean(
@@ -78,15 +75,8 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
   restart_needed_ = (media_router_current_pref != media_router_new_pref);
 
   AllowJavascript();
-  std::string callback_id;
-  args->GetString(0, &callback_id);
-  ResolveJavascriptCallback(base::Value(callback_id),
+  ResolveJavascriptCallback(args->GetList()[0],
                             base::Value(restart_needed_));
-}
-
-void BraveDefaultExtensionsHandler::HandleRestartBrowser(
-    const base::ListValue* args) {
-  chrome::AttemptRestart();
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
