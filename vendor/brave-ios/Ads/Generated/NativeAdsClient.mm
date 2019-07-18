@@ -19,9 +19,6 @@ void NativeAdsClient::ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) {
 void NativeAdsClient::EventLog(const std::string & json) {
   [bridge_ eventLog:json];
 }
-const std::string NativeAdsClient::GenerateUUID() const {
-  return [bridge_ generateUUID];
-}
 void NativeAdsClient::GetAds(const std::string & category, ads::OnGetAdsCallback callback) {
   [bridge_ getAds:category callback:callback];
 }
@@ -90,6 +87,9 @@ uint32_t NativeAdsClient::SetTimer(const uint64_t time_offset) {
 }
 void NativeAdsClient::ShowNotification(std::unique_ptr<ads::NotificationInfo> info) {
   [bridge_ showNotification:std::move(info)];
+}
+void NativeAdsClient::CloseNotification(const std::string& id) {
+  [bridge_ closeNotification:id];
 }
 void NativeAdsClient::URLRequest(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & content_type, const ads::URLRequestMethod method, ads::URLRequestCallback callback) {
   [bridge_ URLRequest:url headers:headers content:content contentType:content_type method:method callback:callback];

@@ -49,7 +49,7 @@ NS_SWIFT_NAME(BraveAds)
 @property (nonatomic, readonly) NSArray<NSString *> *supportedLocales;
 
 /// Remove all cached history (should be called when the user clears their browser history)
-- (void)removeAllHistory;
+- (void)removeAllHistory:(void (^)(BOOL))completion;
 
 /// Should be called when the user invokes "Show Sample Ad" on the Client; a Notification is then sent
 /// to the Client for processing

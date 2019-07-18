@@ -7,6 +7,7 @@
 #import <map>
 
 @interface BATAdsNotification ()
+@property (nonatomic, copy) NSString *id;
 @property (nonatomic, copy) NSString *creativeSetID;
 @property (nonatomic, copy) NSString *category;
 @property (nonatomic, copy) NSString *advertiser;
@@ -21,6 +22,7 @@
 - (instancetype)initWithNotificationInfo:(const ads::NotificationInfo&)info
 {
   if ((self = [super init])) {
+    self.id = [NSString stringWithUTF8String:info.id.c_str()];
     self.creativeSetID = [NSString stringWithUTF8String:info.creative_set_id.c_str()];
     self.category = [NSString stringWithUTF8String:info.category.c_str()];
     self.advertiser = [NSString stringWithUTF8String:info.advertiser.c_str()];

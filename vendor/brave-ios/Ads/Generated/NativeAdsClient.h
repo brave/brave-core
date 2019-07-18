@@ -19,7 +19,6 @@ private:
 
   void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
   void EventLog(const std::string & json) override;
-  const std::string GenerateUUID() const override;
   void GetAds(const std::string & category, ads::OnGetAdsCallback callback) override;
   const std::string GetAdsLocale() const override;
   uint64_t GetAdsPerDay() const override;
@@ -43,5 +42,6 @@ private:
   void SetIdleThreshold(const int threshold) override;
   uint32_t SetTimer(const uint64_t time_offset) override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
+  void CloseNotification(const std::string& id) override;
   void URLRequest(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & content_type, const ads::URLRequestMethod method, ads::URLRequestCallback callback) override;
 };

@@ -67,7 +67,7 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
-    ads->Initialize();
+    ads->Initialize(^(bool) { });
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -112,7 +112,11 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   self.prefs[kAdsEnabledPrefKey] = @(enabled);
   [self savePrefs];
   if (ads != nil) {
-    ads->Initialize();
+    if (enabled) {
+      ads->Initialize(^(bool) { });
+    } else {
+      ads->Shutdown(^(bool) { });
+    }
   }
 }
 
@@ -168,9 +172,9 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   return NSArrayFromVector([self getLocales]);
 }
 
-- (void)removeAllHistory
+- (void)removeAllHistory:(void (^)(BOOL))completion
 {
-  ads->RemoveAllHistory();
+  ads->RemoveAllHistory(completion);
 }
 
 - (void)serveSampleAd
@@ -234,6 +238,11 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
     const auto notification = [[BATAdsNotification alloc] initWithNotificationInfo:*info.get()];
     [self.delegate braveAds:self showNotification:notification];
   }
+}
+
+- (void)closeNotification:(const std::string &)id
+{
+  // TODO: Add Implementation
 }
 
 - (void)confirmAd:(std::unique_ptr<ads::NotificationInfo>)info
