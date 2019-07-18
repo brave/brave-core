@@ -80,9 +80,6 @@ void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::Pub
 void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, ledger::REWARDS_CATEGORY category, const std::string & probi) {
   [bridge_ onReconcileComplete:result viewingId:viewing_id category:category probi:probi];
 }
-void NativeLedgerClient::OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GrantPtr> grants) {
-  [bridge_ onRecoverWallet:result balance:balance grants:std::move(grants)];
-}
 void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {
   [bridge_ removeRecurringTip:publisher_key callback:callback];
 }

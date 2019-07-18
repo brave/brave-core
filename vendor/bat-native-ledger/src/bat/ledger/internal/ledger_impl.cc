@@ -38,6 +38,7 @@ using namespace braveledger_wallet; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
+using std::placeholders::_3;
 
 namespace {
 
@@ -651,38 +652,28 @@ std::string LedgerImpl::GetWalletPassphrase() const {
   return bat_wallet_->GetWalletPassphrase();
 }
 
-void LedgerImpl::RecoverWallet(const std::string& passPhrase) const {
-  bat_wallet_->RecoverWallet(passPhrase);
+void LedgerImpl::RecoverWallet(const std::string& passPhrase,
+    ledger::RecoverWalletCallback callback) {
+  auto on_recover = std::bind(&LedgerImpl::OnRecoverWallet,
+                              this,
+                              _1,
+                              _2,
+                              _3,
+                              std::move(callback));
+  bat_wallet_->RecoverWallet(passPhrase, std::move(on_recover));
 }
 
-void LedgerImpl::OnRecoverWallet(
-    const ledger::Result result,
-    double balance,
-    const std::vector<braveledger_bat_helper::GRANT>& grants) {
+void LedgerImpl::OnRecoverWallet(const ledger::Result result,
+                                 const double balance,
+                                 std::vector<ledger::GrantPtr> grants,
+                                 ledger::RecoverWalletCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to recover wallet";
   }
-
-  std::vector<ledger::GrantPtr> ledgerGrants;
-
-  for (size_t i = 0; i < grants.size(); i ++) {
-    ledger::GrantPtr tempGrant = ledger::Grant::New();
-
-    tempGrant->altcurrency = grants[i].altcurrency;
-    tempGrant->probi = grants[i].probi;
-    tempGrant->expiry_time = grants[i].expiryTime;
-    tempGrant->type = grants[i].type;
-
-    ledgerGrants.push_back(std::move(tempGrant));
-  }
-
   if (result == ledger::Result::LEDGER_OK) {
     bat_publisher_->clearAllBalanceReports();
   }
-
-  ledger_client_->OnRecoverWallet(result,
-                                  balance,
-                                  std::move(ledgerGrants));
+  callback(result, balance, std::move(grants));
 }
 
 void LedgerImpl::SolveGrantCaptcha(

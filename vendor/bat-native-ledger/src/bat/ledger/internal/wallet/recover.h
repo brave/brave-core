@@ -28,29 +28,35 @@ class Recover {
 
   ~Recover();
 
-  void Start(const std::string& passPhrase);
+  void Start(const std::string& passPhrase,
+            ledger::RecoverWalletCallback callback);
 
  private:
   void OnNicewareListLoaded(const std::string& pass_phrase,
                             ledger::Result result,
-                            const std::string& data);
+                            const std::string& data,
+                           ledger::RecoverWalletCallback callback);
 
   void ContinueRecover(int result,
                        size_t* written,
-                       const std::vector<uint8_t>& newSeed);
+                       const std::vector<uint8_t>& newSeed,
+                       ledger::RecoverWalletCallback callback);
+
 
   void RecoverWalletPublicKeyCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      const std::vector<uint8_t>& new_seed);
+      const std::vector<uint8_t>& new_seed,
+      ledger::RecoverWalletCallback callback);
 
   void RecoverWalletCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       const std::string& recoveryId,
-      const std::vector<uint8_t>& new_seed);
+      const std::vector<uint8_t>& new_seed,
+      ledger::RecoverWalletCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };

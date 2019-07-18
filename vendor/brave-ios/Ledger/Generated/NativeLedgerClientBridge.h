@@ -31,7 +31,6 @@
 - (void)onGrantFinish:(ledger::Result)result grant:(ledger::GrantPtr)grant;
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id category:(ledger::REWARDS_CATEGORY)category probi:(const std::string &)probi;
-- (void)onRecoverWallet:(ledger::Result)result balance:(double)balance grants:(std::vector<ledger::GrantPtr>)grants;
 - (void)removeRecurringTip:(const std::string &)publisher_key callback:(ledger::RemoveRecurringTipCallback)callback;
 - (void)restorePublishers:(ledger::RestorePublishersCallback)callback;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;

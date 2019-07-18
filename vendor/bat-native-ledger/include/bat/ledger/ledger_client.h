@@ -137,10 +137,6 @@ class LEDGER_EXPORT LedgerClient {
                                    ActivityInfoFilterPtr filter,
                                    PublisherInfoListCallback callback) = 0;
 
-  virtual void OnRecoverWallet(Result result,
-                               double balance,
-                               std::vector<ledger::GrantPtr> grants) = 0;
-
   virtual void OnGrantFinish(Result result,
                              ledger::GrantPtr grant) = 0;
 

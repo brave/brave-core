@@ -31,9 +31,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void OnWalletProperties(
       ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
-  void OnRecoverWallet(ledger::Result result,
-                      double balance,
-                      std::vector<ledger::GrantPtr> grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
                            ledger::REWARDS_CATEGORY category,

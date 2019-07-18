@@ -107,7 +107,7 @@ class RewardsServiceImpl : public RewardsService,
                          const std::string& promotionId) const override;
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
-  void RecoverWallet(const std::string& passPhrase) const override;
+  void RecoverWallet(const std::string& passPhrase) override;
   void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
@@ -476,7 +476,7 @@ class RewardsServiceImpl : public RewardsService,
                       const std::string& hint);
   void OnRecoverWallet(ledger::Result result,
                       double balance,
-                      std::vector<ledger::GrantPtr> grants) override;
+                      std::vector<ledger::GrantPtr> grants);
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
                            ledger::REWARDS_CATEGORY category,

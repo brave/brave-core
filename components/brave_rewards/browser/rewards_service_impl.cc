@@ -941,7 +941,9 @@ void RewardsServiceImpl::OnGrantCaptcha(const std::string& image,
 void RewardsServiceImpl::OnRecoverWallet(ledger::Result result,
                                     double balance,
                                     std::vector<ledger::GrantPtr> grants) {
-  TriggerOnRecoverWallet(result, balance, std::move(grants));
+  TriggerOnRecoverWallet(static_cast<ledger::Result>(result),
+      balance,
+      std::move(grants));
 }
 
 void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
@@ -1466,12 +1468,14 @@ void RewardsServiceImpl::GetWalletPassphrase(
   bat_ledger_->GetWalletPassphrase(callback);
 }
 
-void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) const {
+void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->RecoverWallet(passPhrase);
+  bat_ledger_->RecoverWallet(passPhrase, base::BindOnce(
+      &RewardsServiceImpl::OnRecoverWallet,
+      AsWeakPtr()));
 }
 
 void RewardsServiceImpl::TriggerOnRecoverWallet(

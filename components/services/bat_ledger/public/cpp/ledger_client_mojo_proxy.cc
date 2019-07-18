@@ -144,16 +144,6 @@ void LedgerClientMojoProxy::CallbackHolder<
   delete this;
 }
 
-void LedgerClientMojoProxy::OnRecoverWallet(
-    const ledger::Result result,
-    double balance,
-    std::vector<ledger::GrantPtr> grants) {
-  ledger_client_->OnRecoverWallet(
-      result,
-      balance,
-      std::move(grants));
-}
-
 void LedgerClientMojoProxy::OnReconcileComplete(
     const ledger::Result result,
     const std::string& viewing_id,

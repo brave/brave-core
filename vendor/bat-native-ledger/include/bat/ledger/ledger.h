@@ -67,6 +67,11 @@ using InitializeCallback = std::function<void(ledger::Result)>;
 using GetBalanceReportCallback =
     std::function<void(bool, ledger::BalanceReportInfoPtr)>;
 
+using RecoverWalletCallback = std::function<void(
+    const ledger::Result,
+    const double balance,
+    std::vector<ledger::GrantPtr>)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(const std::string& url,
@@ -192,7 +197,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual ledger::AutoContributePropsPtr GetAutoContributeProps() = 0;
 
-  virtual void RecoverWallet(const std::string& passPhrase) const = 0;
+  virtual void RecoverWallet(const std::string& passPhrase,
+      RecoverWalletCallback callback)  = 0;
 
   virtual void SetPublisherExclude(
       const std::string& publisher_id,

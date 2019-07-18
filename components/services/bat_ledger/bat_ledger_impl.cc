@@ -18,6 +18,7 @@
 
 using std::placeholders::_1;
 using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace bat_ledger {
 
@@ -283,8 +284,28 @@ void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
   std::move(callback).Run(ledger_->GetWalletPassphrase());
 }
 
-void BatLedgerImpl::RecoverWallet(const std::string& passPhrase) {
-  ledger_->RecoverWallet(passPhrase);
+// static
+void BatLedgerImpl::OnRecoverWallet(
+    CallbackHolder<RecoverWalletCallback>* holder,
+    ledger::Result result,
+    double balance,
+    std::vector<ledger::GrantPtr> grants) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, balance, std::move(grants));
+  delete holder;
+}
+
+void BatLedgerImpl::RecoverWallet(const std::string& passPhrase,
+    RecoverWalletCallback callback) {
+  // deleted in OnRecoverWallet
+  auto* holder = new CallbackHolder<RecoverWalletCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->RecoverWallet(passPhrase, std::bind(
+      BatLedgerImpl::OnRecoverWallet,
+      holder,
+      _1,
+      _2,
+      _3));
 }
 
 void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution,
