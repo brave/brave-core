@@ -1,0 +1,36 @@
+diff --git a/third_party/blink/renderer/devtools/front_end/elements/module.json b/third_party/blink/renderer/devtools/front_end/elements/module.json
+index 52c482733e9bdd2f0e8af758c4101d6a5ecf4ebe..03191f83f2acf47f4173edb9cd25b69c1a5e048e 100644
+--- a/third_party/blink/renderer/devtools/front_end/elements/module.json
++++ b/third_party/blink/renderer/devtools/front_end/elements/module.json
+@@ -302,6 +302,15 @@
+             "order": 7,
+             "persistence": "permanent",
+             "className": "Elements.PropertiesWidget"
++        },
++        {
++            "type": "view",
++            "location": "elements-sidebar",
++            "id": "elements.domPageGraphInfo",
++            "title": "Page Graph Info",
++            "order": 7,
++            "persistence": "permanent",
++            "className": "Elements.PageGraphInfoWidget"
+         }
+     ],
+     "dependencies": [
+@@ -324,6 +333,7 @@
+         "EventListenersWidget.js",
+         "MarkerDecorator.js",
+         "MetricsSidebarPane.js",
++        "PageGraphInfoWidget.js",
+         "PlatformFontsWidget.js",
+         "PropertiesWidget.js",
+         "StylePropertyHighlighter.js",
+@@ -345,6 +355,7 @@
+         "elementStatePaneWidget.css",
+         "elementsTreeOutline.css",
+         "metricsSidebarPane.css",
++        "pageGraphInfoWidget.css",
+         "platformFontsWidget.css",
+         "propertiesWidget.css",
+         "stylesSectionTree.css",

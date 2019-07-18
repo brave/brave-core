@@ -1,0 +1,19 @@
+diff --git a/third_party/blink/renderer/devtools/front_end/sdk/DOMModel.js b/third_party/blink/renderer/devtools/front_end/sdk/DOMModel.js
+index 24e43865fd6fcf35ce9e33a71c2c6202a34942d0..83f28f5cb8e666a05a66b886bc4e5ebeeda72f16 100644
+--- a/third_party/blink/renderer/devtools/front_end/sdk/DOMModel.js
++++ b/third_party/blink/renderer/devtools/front_end/sdk/DOMModel.js
+@@ -978,6 +978,14 @@ SDK.DOMNode = class {
+     }
+     return lowerCaseName;
+   }
++
++  /**
++   * @return {!Array.<string>}
++   */
++  async reportPageGraphInfo() {
++    const response = await this._agent.invoke_reportPageGraphInfo({nodeId: this.id});
++    return response[Protocol.Error] ? null : response.report;
++  }
+ };
+ 
+ /**

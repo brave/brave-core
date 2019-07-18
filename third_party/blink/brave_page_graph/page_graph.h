@@ -14,6 +14,7 @@
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
 
 namespace blink {
+
 class Document;
 }
 
@@ -120,7 +121,8 @@ friend NodeHTMLElement;
   // correctly tracking script execution.
   void RegisterScriptExecStop(const ScriptId script_id);
 
-  void GenerateReportForNode(const blink::DOMNodeId node_id);
+  void GenerateReportForNode(const blink::DOMNodeId node_id,
+                             blink::protocol::Array<WTF::String>& report);
 
   GraphMLXML ToGraphML() const;
 

@@ -1,12 +1,23 @@
 diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.h b/third_party/blink/renderer/core/inspector/inspector_page_agent.h
-index cbb6824fa9412a5ea47fc1f5c0f77908edf8be3b..f58a1b3ca458a9a34746c1fd8ccc874b0ec8e22d 100644
+index cbb6824fa9412a5ea47fc1f5c0f77908edf8be3b..61c3c2e79c37581203a7096971a590ecf33ed711 100644
 --- a/third_party/blink/renderer/core/inspector/inspector_page_agent.h
 +++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.h
-@@ -169,6 +169,8 @@ class CORE_EXPORT InspectorPageAgent final
+@@ -42,6 +42,8 @@
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ #include "v8/include/v8-inspector.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ namespace probe {
+@@ -169,6 +171,10 @@ class CORE_EXPORT InspectorPageAgent final
    protocol::Response clearCompilationCache() override;
    protocol::Response waitForDebugger() override;
  
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  protocol::Response generatePageGraph(String* data) override;
++#endif
 +
    // InspectorInstrumentation API
    void DidClearDocumentOfWindowObject(LocalFrame*);
