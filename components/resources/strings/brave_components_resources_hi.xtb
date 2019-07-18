@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">पसन्द सम्पादित करें</translation>
 <translation id="7606029853066610626">बुकमार्क्स देखें और प्रबंधित करें</translation>
 <translation id="5550994254534676787">अपनी ब्राउज़िंग हिस्ट्री को देखें.</translation>
+<translation id="1742484101357469636">डैशबोर्ड सेटिंग</translation>
+<translation id="8320281346741574991">बैकग्राउंड इमेज दिखाएँ</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
 <translation id="8730621377337864115">पूर्ण</translation>
 <translation id="6248988683584659830">खोज सेटिंग्स.</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave से आपके लिए बुकमार्क और आपके कंप्यूटर पर इंस्टॉल किए गए दूसरे ब्राउज़र की सेटिंग आयात करके सामान्य परिवेश सेट करना आसान हो जाता है।</translation>
 <translation id="8275038454117074363">आयात करें</translation>
 <translation id="5540323067375019678">अपने शील्ड प्रबंधित करें</translation>
+<translation id="3278033011827237847">Brave शील्ड के साथ ब्राउज़ करते समय गोपनीयता मे दखल देने वाले विज्ञापनों और ट्रैकर्स से बचाव करें। यदि कोई साइट ठीक से काम नहीं%#8217 कर रही है तो शील्ड को "डाउन" पर सेट करें।</translation>
 <translation id="3366308997091824722">शील्ड सेटिंग्स</translation>
-<translation id="3884404068544758153">अपना सर्च इंजन बदलें</translation>
+<translation id="4764692524839457597">डिफ़ॉल्ट</translation>
+<translation id="3108122610701115301">डिफ़ॉल्ट सेट करें</translation>
+<translation id="2469440407442116729">खोज प्रणाली चुनें</translation>
 <translation id="438216590634144114">एड्रेस बार द्वारा वेब पर सर्च करने के लिए, आपके द्वारा उपयोग किये जाने वाले डिफ़ॉल्ट सर्च इंजन का चयन करें।</translation>
-<translation id="8428213095426709021">सेटिंग</translation>
+<translation id="5804484488647369316">डिफ़ॉल्ट खोज प्रणाली सेट करें</translation>
+<translation id="4428458837269935199">और अधिक निजी अनुभव के लिए DuckDuckGo आज़माएँ।</translation>
 <translation id="513635702954746724">अपने रंग की थीम चुनें</translation>
 <translation id="6842850080200126305">सेटिंग्स पैनल से हल्का या गहरा का विकल्प चुनकर अपने टूलबार का रंग सेट करें।</translation>
 <translation id="2801098717523961746">अपना थीम चुनें</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Brave में विज्ञापन देखकर टोकन कमाएं। पेश किए गए विज्ञापन आपकी पसंद पर आधारित हैं, जो कि आपके ब्राउज़िंग के तरीक़े से अनुमानित है। कोई व्यक्तिगत डेटा या ब्राउज़िंग इतिहास कभी भी आपके ब्राउज़र से बाहर नहीं जायेगा।</translation>
 <translation id="6112368337882254910">स्वतः-योगदान</translation>
 <translation id="1527222983464337010">प्रकाशकों और कंटेंट बनाने वालों को सहयोग करने का एक स्वचालित तरीका। मासिक भुगतान सेट करें और सामान्य रूप से ब्राउज़ करें। ब्रेव द्वारा मापे गए आपके ध्यान देने की प्रक्रिया के आधार पर, आपके द्वारा देखी जाने वाली साइटें स्वचालित रूप से आपके योगदान को प्राप्त करती हैं।</translation>
+<translation id="20281847067919078">अनुमानित लंबित पुरस्कार</translation>
+<translation id="8593551638387217772">अगली भुगतान तिथि</translation>
+<translation id="319209088187794725">इस महीने प्राप्त हुईं  विज्ञापन सूचनाएँ</translation>
 <translation id="4229016885653790965">क्षमा करें! आपके क्षेत्र में विज्ञापन अभी तक उपलब्ध नहीं हैं।</translation>
 <translation id="654711254769318398">विज्ञापन पृष्ठ देखे गए</translation>
 <translation id="2532127066761785857">प्रदर्शित विज्ञापनों की अधिकतम संख्या</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 मिनट</translation>
 <translation id="9031738692126722094">इन साइटों पर सामग्री-स्तर की बख्शीश को सक्षम करें</translation>
 <translation id="995782501881226248">यूट्यूब</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">ट्विटर</translation>
 <translation id="3920963435109110161">जैसे ही आप रत्न ढूंढने में सफल होते है तभी उसी वक़्त टिप अर्जित करें.</translation>
 <translation id="6135431587052937035">आवर्ती मासिक टिप्स के साथ अपनी पसंदीदा साइटों का समर्थन करें।</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">क्षमा करें, ऐसा लगता है कि इस अनुदान पर पहले ही दावा किया जा चुका है।</translation>
 <translation id="282693359045252357">अगली मासिक टिप की तिथि</translation>
 <translation id="6231182869178328516">मैंने अभी Brave ब्राउज़र का उपयोग करते हुए <ph name="NAME">$1<ex>user</ex></ph> को बख्शीश दी। इसे https://brave.com/tips पर देखें।</translation>
+<translation id="8404935570206006581">Braveकेटिप</translation>
 <translation id="7422678632904904341">मात्रा</translation>
 <translation id="5923611424721173182">वर्तमान समाधान</translation>
 <translation id="5457113250005438886">अमान्य</translation>
@@ -213,6 +224,7 @@
 <translation id="7277134233385925078">मासिक टिप सेट करें</translation>
 <translation id="8003573781961874199">PDF की तरह डाउनलोड करें</translation>
 <translation id="298067735430872465">विज्ञापन से कमाई</translation>
+<translation id="2266556115441975588">विज्ञापनों से प्राप्त आपके पुरस्कार यहाँ हैं!</translation>
 <translation id="8764029012618014430">टिप्स सक्षम करें</translation>
 <translation id="3412655388715513818">इस साइट को</translation>
 <translation id="418343137736963579">स्वतः-योगदान से बाहर कुल साइटों की संख्या</translation>
@@ -270,6 +282,8 @@
 <translation id="194625454574835815">रिकवरी कुंजी</translation>
 <translation id="6354568176665589146">आवर्ती</translation>
 <translation id="7577100371127227294">मासिक टिप्स</translation>
+<translation id="2391095793008133394">उनके पोस्ट के लिए टिप {{ उपयोगकर्ता }}:</translation>
+<translation id="7557413530932469222">उनके पोस्ट के लिए टिप {{ उपयोगकर्ता }}!</translation>
 <translation id="1110535155349301542">हटाना</translation>
 <translation id="8942997470474842562">आप#8217;ने {{reservedAmount}} BAT उन निर्माताओं के लिए निर्धारित किये हैं जिन्होंने #8217;अभी तक योगदान पाने के लिए साइन अप नहीं किया है। जब तक कि वो सत्यापित न कर दें, या 90 दिनों के बीतने तक आपका ब्राउज़र निरंतर प्रयास करता रहेगा।</translation>
 <translation id="8759753423332885148">और जानें।</translation>
@@ -306,6 +320,7 @@
 <translation id="259138486959961679">देखें सारे {{numItems}} आइटम्स</translation>
 <translation id="7857284676033058221">देखें सारी {{numSites}} साइट्स</translation>
 <translation id="3536298624341433814">मेरी टिप भेजें</translation>
+<translation id="8428213095426709021">सेटिंग</translation>
 <translation id="1792148354504719133">साइट</translation>
 <translation id="5944430251223015324">साइटों</translation>
 <translation id="1834493631938747505">अपनी बख्शीश के बारे में दूसरों को बताएं।</translation>
@@ -355,7 +370,15 @@
 <translation id="4346944508027912677">तक के लिए लंबित है</translation>
 <translation id="7410549756000115387">कोई लंबित योगदान… नहीं</translation>
 <translation id="1963227389609234879">सभी को निकालें</translation>
+<translation id="1170315781901539495">शामिल नही की गई साइटें</translation>
+<translation id="5119190679543565400">इस साइट को पुन: स्थापित करें</translation>
+<translation id="9075700728717335924">आप शामिल नही किए गए हैं</translation>
+<translation id="4862817811647633830">Auto-Contribute की साइटें</translation>
 <translation id="923467487918828349">सभी दिखाएं</translation>
+<translation id="5471305206221894680">समर्थित साइटें</translation>
+<translation id="2306169361186864012">Brave विज्ञापनों के पुरस्कार!</translation>
+<translation id="3757873395477273033">Brave विज्ञापनों से प्राप्त आपके पुरस्कार अनुदान शीघ्र ही आने वाले है।</translation>
+<translation id="8101881066646819737">आपके Brave विज्ञापन टोकन के अनुदान</translation>
 <translation id="2151535059686617995">आज’ आपका भाग्यशाली दिन है!</translation>
 <translation id="6255773350565723852">आपकी टोकन अनुदान पहुँच रही है।</translation>
 <translation id="1181037720776840403">निकालें</translation>

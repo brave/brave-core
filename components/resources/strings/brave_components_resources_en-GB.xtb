@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Edit Preferences</translation>
 <translation id="7606029853066610626">View and Manage Bookmarks</translation>
 <translation id="5550994254534676787">View your browsing history</translation>
+<translation id="1742484101357469636">Dashboard Settings</translation>
+<translation id="8320281346741574991">Show background image</translation>
 <translation id="6165508094623778733">Learn more</translation>
 <translation id="8730621377337864115">Done</translation>
 <translation id="6248988683584659830">Search settings</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave makes it easy to set up your usual environment by importing bookmarks and settings from other browsers installed on your computer.</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="5540323067375019678">Manage your shields</translation>
+<translation id="3278033011827237847">Protect against privacy-invading ads and trackers while browsing with Brave Shields. Set Shields to "down" if a site doesn’t seem to be working properly.</translation>
 <translation id="3366308997091824722">Shield Settings</translation>
-<translation id="3884404068544758153">Change your search engine</translation>
+<translation id="4764692524839457597">default</translation>
+<translation id="3108122610701115301">Set default</translation>
+<translation id="2469440407442116729">Select a search engine</translation>
 <translation id="438216590634144114">Choose the search engine you would like to use by default when searching the web from the address bar.</translation>
-<translation id="8428213095426709021">Settings</translation>
+<translation id="5804484488647369316">Set default search engine</translation>
+<translation id="4428458837269935199">For a more private search experience, try DuckDuckGo.</translation>
 <translation id="513635702954746724">Choose your color theme</translation>
 <translation id="6842850080200126305">Set the colour of your toolbar by selecting the light or dark option from the settings panel.</translation>
 <translation id="2801098717523961746">Choose your theme</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.</translation>
+<translation id="20281847067919078">Estimated rewards pending</translation>
+<translation id="8593551638387217772">Next payment date</translation>
+<translation id="319209088187794725">Ad notifications received this month</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
 <translation id="654711254769318398">Ad pages viewed</translation>
 <translation id="2532127066761785857">Maximum number of ads displayed</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minute</translation>
 <translation id="9031738692126722094">Enable content-level tips on these sites</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Tip on the spot as you find gems.</translation>
 <translation id="6135431587052937035">Support your favourite sites with recurring monthly tips.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Sorry, it appears that this grant has already been claimed.</translation>
 <translation id="282693359045252357">Next monthly tip date</translation>
 <translation id="6231182869178328516">I just tipped <ph name="NAME">$1<ex>use</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Amount:</translation>
 <translation id="5923611424721173182">Current Reconcile</translation>
 <translation id="5457113250005438886">Invalid</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Set monthly tip</translation>
 <translation id="8003573781961874199">Download as PDF</translation>
 <translation id="298067735430872465">Earnings from Ads</translation>
+<translation id="2266556115441975588">Your rewards from Ads are here!</translation>
 <translation id="8764029012618014430">Enable Tips</translation>
 <translation id="3412655388715513818">Exclude this site</translation>
 <translation id="418343137736963579">Total number of sites you excluded from Auto-Contribute:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Recovery Key</translation>
 <translation id="6354568176665589146">Recurring</translation>
 <translation id="7577100371127227294">Monthly Tips</translation>
+<translation id="2391095793008133394">Tip {{ user }} for their post:</translation>
+<translation id="7557413530932469222">Tip {{ user }} for their post!</translation>
 <translation id="1110535155349301542">remove</translation>
 <translation id="8942997470474842562">You’ve designated {{reservedAmount}} BAT for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</translation>
 <translation id="8759753423332885148">Learn more.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">See all {{numItems}} items</translation>
 <translation id="7857284676033058221">See all {{numSites}} sites</translation>
 <translation id="3536298624341433814">Send my Tip</translation>
+<translation id="8428213095426709021">Settings</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">sites</translation>
 <translation id="1834493631938747505">Tell others about your tip.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Pending until</translation>
 <translation id="7410549756000115387">No pending contributions…</translation>
 <translation id="1963227389609234879">Remove All</translation>
+<translation id="1170315781901539495">Excluded Sites</translation>
+<translation id="5119190679543565400">Restore this site</translation>
+<translation id="9075700728717335924">You've excluded</translation>
+<translation id="4862817811647633830">sites from Auto-Contribute.</translation>
 <translation id="923467487918828349">Show All</translation>
+<translation id="5471305206221894680">Supported Sites</translation>
+<translation id="2306169361186864012">Brave Ads Rewards!</translation>
+<translation id="3757873395477273033">Your rewards grant from Brave Ads is on its way.</translation>
+<translation id="8101881066646819737">Your Brave Ads Token Grant</translation>
 <translation id="2151535059686617995">It’s your lucky day!</translation>
 <translation id="6255773350565723852">Your token grant is on its way.</translation>
 <translation id="1181037720776840403">Remove</translation>

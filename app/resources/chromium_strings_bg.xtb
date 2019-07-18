@@ -68,13 +68,9 @@
 <translation id="5874882355102994015">Brave не може да покаже визуализацията за печат, когато вграденият визуализатор на PDF файлове липсва.</translation>
 <translation id="8880183781256147665">Добавя се към Brave...</translation>
 <translation id="3561569806301739367">Brave блокира „<ph name="FILE_NAME"/>“, тъй като файлът може да е опасен.</translation>
-<translation id="6205431412329939367">Brave блокира „<ph name="FILE_NAME"/>“, тъй като файлът може да е опасен. Функцията за разширена защита се грижи за безопасността ви.</translation>
 <translation id="9067428552314418522">Brave блокира този файл, тъй като е опасен.</translation>
-<translation id="2938460345748897177">Brave блокира този файл, тъй като е опасен. Функцията за разширена защита се грижи за безопасността ви.</translation>
 <translation id="4168372721886011198">Brave блокира „<ph name="FILE_NAME"/>“, тъй като файлът е опасен.</translation>
-<translation id="8858456697111532356">Brave блокира „<ph name="FILE_NAME"/>“, тъй като файлът е опасен. Функцията за разширена защита се грижи за безопасността ви.</translation>
 <translation id="89367911614620585">Brave блокира този файл, тъй като може да е опасен.</translation>
-<translation id="8943391224520748272">Brave блокира този файл, тъй като може да е опасен. Функцията за разширена защита се грижи за безопасността ви.</translation>
 <translation id="9183662282810237335">Искате ли да излезете от Brave въпреки това?</translation>
 <translation id="3834935463915107022">Искате ли да затворите Brave въпреки това?</translation>
 <translation id="8797356639448065696">Brave работи на заден план.</translation>
@@ -137,8 +133,6 @@
 <translation id="6746636977031158624">Brave OS не можа да синхронизира данните ви, защото потребителското име и паролата за вход в профила ви не са актуални.</translation>
 <translation id="2999152167963026588">Brave OS не можа да синхронизира данните ви, защото тази функция не е налице за домейна ви.</translation>
 <translation id="1459786048951724030">Brave OS не можа да синхронизира данните ви поради грешка при влизане в профила.</translation>
-<translation id="2887570477425111999">Подробностите да се запазват в Brave</translation>
-<translation id="193559141530782783">Brave ще съхранява надеждно личните ви данни, за да не се налага да ги въвеждате отново.</translation>
 <translation id="663059986967017181">Копирано в Brave</translation>
 <translation id="1457432835062259213">Стартов панел с приложения за Brave</translation>
 <translation id="82609232232243542">Вход в Brave</translation>
@@ -176,7 +170,7 @@
 <translation id="1912973375560256099">Правило за Brave за допускане на входящия трафик за mDNS.</translation>
 <translation id="8207657266087451193">Ако няма полезно описание за дадено изображение, Brave ще се опита да предостави такова. За да бъдат създадени описания, съответните изображения се изпращат до Brave Software. По всяко време можете да изключите тази функция от настройките.</translation>
 <translation id="5499063270485366718">Ако няма полезно описание за дадено изображение, Brave ще се опита да предостави такова. За да бъдат създадени описания, съответните изображения се изпращат до Brave Software.</translation>
-<translation id="3870835867536344658">Използва се същата програма за проверка на правописа като в Brave Software Търсене. Текстът, който въвеждате в браузъра, се изпраща до Brave Software. Винаги можете да промените това поведение от настройките.</translation>
+<translation id="215320507915280336">Използва се същата услуга за проверка на правописа като в Brave Software Търсене. Текстът, който въвеждате в браузъра, се изпраща до Brave Software. Винаги можете да промените това поведение от настройките.</translation>
 <translation id="1807774211756215222">Отваряне на връзката в нов &amp;раздел на Brave</translation>
 <translation id="4624945300945265642">Отваряне на връзката в прозорец в режим „инко&amp;гнито“ на Brave</translation>
 <translation id="7863882214613921971">Отваряне на връзката в нов &amp;раздел на Brave</translation>
@@ -233,23 +227,17 @@
 <translation id="8933981935877469796">Изберете <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/> <ph name="SMALL_PRODUCT_LOGO"/></translation>
 <translation id="1585657529869845941">Кликнете върху бутона <ph name="BEGIN_BOLD"/>Превключване въпреки това<ph name="END_BOLD"/>, ако се показва</translation>
 <translation id="3507835409099344374">Към настройките за известия в Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Налице е актуализация за Brave}=1{Налице е актуализация за Brave}other{Налице е актуализация за Brave от # дни}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Налице е актуализация за Brave}=1{Налице е актуализация за Brave}other{Налице е актуализация за Brave от # дни}}</translation>
 <translation id="720532315408041257">Администраторът ви моли да рестартирате Brave, за да се приложи тази актуализация</translation>
-<translation id="6639482638305253477">{0,plural, =1{Повторно стартиране на Brave след един ден}other{Повторно стартиране на Brave след # дни}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave ще се стартира отново след един час}other{Brave ще се стартира отново след # часа}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave ще се стартира отново след 1 минута}other{Brave ще се стартира отново след # минути}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave ще се стартира отново сега}=1{Brave ще се стартира отново след 1 секунда}other{Brave ще се стартира отново след # секунди}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Повторно стартиране на Brave до 1 ден}other{Повторно стартиране на Brave до # дни}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave ще се стартира отново след 1 час}other{Brave ще се стартира отново след # часа}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave ще се стартира отново след 1 минута}other{Brave ще се стартира отново след # минути}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave ще се стартира отново сега}=1{Brave ще се стартира отново след 1 секунда}other{Brave ще се стартира отново след # секунди}}</translation>
 <translation id="7595187113648413294">Администраторът ви изисква да рестартирате Brave, за да се приложи актуализация</translation>
-<translation id="56801943271475640">{0,plural, =0{Налице е актуализация за Brave OS}=1{Налице е актуализация за Brave OS}other{Налице е актуализация за Brave OS от # дни}}</translation>
-<translation id="5715362474140341294">Администраторът ви моли да рестартирате Brave OS, за да се приложи тази актуализация</translation>
-<translation id="8094834892392729950">{0,plural, =1{Рестартиране на Brave OS след един ден}other{Рестартиране на Brave OS след # дни}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS ще се рестартира след един час}other{Brave OS ще се рестартира след # часа}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS ще се рестартира след 1 минута}other{Brave OS ще се рестартира след # минути}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS ще се рестартира сега}=1{Brave OS ще се рестартира след 1 секунда}other{Brave OS ще се рестартира след # секунди}}</translation>
-<translation id="8559452515617838628">Администраторът ви изисква да рестартирате Brave OS, за да се приложи актуализация</translation>
 <translation id="3052349005266761501">Brave стартира…</translation>
 <translation id="1197672524850678392">Brave не можа да се стартира. Опитайте отново.</translation>
 <translation id="6040143037577758943">Затваряне</translation>
+<translation id="5147525139567260139">Споделяне на раздел в Brave</translation>
 <translation id="8541922081612557424">Всичко за Brave</translation>
 <translation id="3262506503470845422">Получаване на помощ за Brave</translation>
 <translation id="1864557848095568223">Brave се актуализира</translation>

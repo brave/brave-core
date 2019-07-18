@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Braveリワード</translation>
 <translation id="7942180974165298215">Brave広告ブロック</translation>
 <translation id="6406506848690869874">同期</translation>
+<translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") はブレイブでは許可されていません。</translation>
 <translation id="7450557937477381864">Chromeを閉じる</translation>
 <translation id="7008934821596358692">インポートを終了するには、すべてのChromeウィンドウを閉じてください。</translation>
@@ -28,7 +29,9 @@
 <translation id="3218385319396786393">このページで自動再生がブロックされました</translation>
 <translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> で自動再生を常に許可する。</translation>
 <translation id="4150684676757176434">自動再生のブロックを継続する</translation>
+<translation id="5883458389055721080">Braveはこの拡張のセキュリティと安全性を確認していません。開発元が信頼できる場合のみ、この拡張をインストールしてください。</translation>
 <translation id="2044383478723007273">Braveカラーズ</translation>
+<translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="6123134130710658846">[Brave Rewards]ボタンを非表示にする</translation>
 <translation id="7635711399568194460">[Brave Rewards]が有効になっていない場合は、ロケーションバーの[Brave Rewards]ボタンを非表示にします</translation>
 <translation id="7965178729203412357">新しいTorのID</translation>
@@ -47,13 +50,25 @@
 <translation id="4472575034687746823">利用を開始</translation>
 <translation id="3400357268283240774">その他の設定</translation>
 <translation id="6303294677342628402">シールド</translation>
+<translation id="7133511168130368997">ウェブ全体にわたってあなたを追跡してくるトラッカーや広告をブロックしましょう。</translation>
+<translation id="2761825942249694703">これはシールドのデフォルト設定です。特定のサイト上のシールドパネルで変更しない限り、すべてのウェブサイトにこの設定が適用されます。この設定を変更しても、既存のサイト設定には影響しません。</translation>
+<translation id="8754605759692119662">これでウェブサイト上の大半の広告はブロックされます。ただし、Braveプライベート広告は</translation>
+<translation id="6388201778088078932">設定で管理できます。</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
+<translation id="5709627087332022422">サイト越えのトラッカーをブロックする</translation>
+<translation id="9075744464571452108">デバイス認識</translation>
+<translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
+<translation id="4824468494729001999">スクリプトをブロックする</translation>
 <translation id="7498695072878479744">第三者サイトでGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedIn ポストの埋め込みを許可する</translation>
+<translation id="4699812599455071925">サイト越えのCookieだけをブロックする</translation>
 <translation id="5657156137487675418">すべてのクッキーを許可する</translation>
 <translation id="6883611015375728278">全てのクッキーをブロック</translation>
+<translation id="3084022390368021391">サイト越えのデバイス認識の試みだけをブロックする</translation>
+<translation id="1847422622180531843">デバイスを認識する試みをすべて許可する</translation>
+<translation id="8375051111011093523">デバイス認識の試みをすべてブロックする</translation>
 <translation id="8942080017911802454">WebRTC IPアドレスの取扱方針</translation>
 <translation id="6165508094623778733">詳細情報</translation>
 <translation id="8798099450830957504">既定</translation>
@@ -75,4 +90,9 @@
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
 <translation id="4846154056248462491">終了時に</translation>
 <translation id="5057399635433117814">このページを翻訳しますか？このページのテキストはマイクロソフトに送られて翻訳されます。</translation>
+<translation id="3371343170427636147">Brave Browser Nightlyアプリ</translation>
+<translation id="4097979995947147464">Brave Browser Betaアプリ</translation>
+<translation id="8303432794159193481">Brave Browser Devアプリ</translation>
+<translation id="8292967014767479012">Brave Browserアプリ</translation>
+<translation id="4743468424889072281">Brave Browser Developmentアプリ</translation>
 </translationbundle>

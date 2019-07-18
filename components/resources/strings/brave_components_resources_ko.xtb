@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">즐겨찾기 편집하기</translation>
 <translation id="7606029853066610626">북마크 보기 및 관리하기</translation>
 <translation id="5550994254534676787">검색 내역 보기</translation>
+<translation id="1742484101357469636">대시보드 설정</translation>
+<translation id="8320281346741574991">배경 이미지 표시</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8730621377337864115">완료</translation>
 <translation id="6248988683584659830">검색 설정</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">컴퓨터에 설치된 다른 브라우저에서 북마크 및 설정을 가져와 Brave 브라우저의 기본 설정을 쉽게 할 수 있습니다.</translation>
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="5540323067375019678">차단 관리</translation>
+<translation id="3278033011827237847">Brave Shields로 탐색하는 동안 개인 정보를 침해하는 광고와 추적기로부터 보호를 받으세요. 사이트가 제대로 작동하지 않는 것처럼 보이면 Shields를 "해제"로 설정하세요.</translation>
 <translation id="3366308997091824722">차단 설정</translation>
-<translation id="3884404068544758153">검색엔진 변경</translation>
+<translation id="4764692524839457597">기본</translation>
+<translation id="3108122610701115301">기본값으로 설정</translation>
+<translation id="2469440407442116729">검색 엔진 선택</translation>
 <translation id="438216590634144114">주소창에서 웹을 검색할 때 기본으로 사용하실 검색 엔진을 골라 주세요.</translation>
-<translation id="8428213095426709021">설정</translation>
+<translation id="5804484488647369316">기본 검색 엔진 설정</translation>
+<translation id="4428458837269935199">보다 비공개적인 검색 경험을 원하시면, DuckDuckGo를 사용해 보세요.</translation>
 <translation id="513635702954746724">색상 테마를 선택하세요</translation>
 <translation id="6842850080200126305">설정 패널에서 '밝게' 또는 '어둡게' 옵션을 선택하여 툴바의 색상을 설정하세요.</translation>
 <translation id="2801098717523961746">테마 선택</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Brave에서 광고를 보고 토큰을 받으세요. 광고는 사용자의 검색 행위에서 추론한 관심사를 바탕으로 제공됩니다. 개인 데이터나 검색 기록은 유출되지 않습니다.</translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="1527222983464337010">출판인과 콘텐츠 제작자를 자동으로 후원하는 방법. 월 지불액을 설정하시고 평소처럼 인터넷을 돌아다니십시오. 방문한 사이트들은 Brave에 의해 측정된 여러분의 관심 정도에 따라 자동으로 기부금액을 받게 됩니다.</translation>
+<translation id="20281847067919078">보류 중인 예상 보상금</translation>
+<translation id="8593551638387217772">다음 결제일</translation>
+<translation id="319209088187794725">이번 달에 받은 광고 알림</translation>
 <translation id="4229016885653790965">죄송합니다! 귀하의 지역에서는 아직 광고가 제공되지 않습니다.</translation>
 <translation id="654711254769318398">조회한 광고 페이지</translation>
 <translation id="2532127066761785857">최대 표시 광고 수</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1분</translation>
 <translation id="9031738692126722094">이 사이트에서 콘텐츠 레벨 팁 활성화</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">보석을 찾을 때 바로 팁을 주세요.</translation>
 <translation id="6135431587052937035">매달 정기적인 팁으로 선호하는 사이트를 지원하세요.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">죄송합니다, 이미 승인이 요청된 것 같습니다.</translation>
 <translation id="282693359045252357">다음 월간 팁 날짜</translation>
 <translation id="6231182869178328516">Brave 브라우저를 이용해 <ph name="NAME">$1를 <ex>사용자</ex></ph>에게 팁으로 주었습니다. https://brave.com/tips에서 확인해 보세요.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">금액:</translation>
 <translation id="5923611424721173182">현재 조정</translation>
 <translation id="5457113250005438886">유효하지 않음</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">월간 팁 설정하기</translation>
 <translation id="8003573781961874199">PDF로 다운로드</translation>
 <translation id="298067735430872465">광고 수입</translation>
+<translation id="2266556115441975588">귀하의 광고 보상금이 도착했습니다!</translation>
 <translation id="8764029012618014430">팁 활성화</translation>
 <translation id="3412655388715513818">이 사이트 제외하기</translation>
 <translation id="418343137736963579">자동 기부에서 제외한 전체 사이트 숫자 :</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">복구 키</translation>
 <translation id="6354568176665589146">반복하기</translation>
 <translation id="7577100371127227294">월간 팁</translation>
+<translation id="2391095793008133394">{{user}} 님의 포스팅에 대한 팁:</translation>
+<translation id="7557413530932469222">{{user}} 님의 포스팅에 대한 팁!</translation>
 <translation id="1110535155349301542">제거</translation>
 <translation id="8942997470474842562">귀하께서는’아직 기부를 받기 위해 회원 가입을 하지 않은’ 크리에이터에 대하여 {{reservedAmount}} 의 배트(BAT)를 지정했습니다. 귀하의 브라우저는 그들이 확인 할 때까지 혹은 90일이 지나기까지 계속 기부를 시도하게 됩니다.</translation>
 <translation id="8759753423332885148">더 알아보기.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">{{numItems}}개 아이템 모두 보기</translation>
 <translation id="7857284676033058221">{{numSites}} 사이트 모두 보기</translation>
 <translation id="3536298624341433814">내 팁 보내기</translation>
+<translation id="8428213095426709021">설정</translation>
 <translation id="1792148354504719133">사이트</translation>
 <translation id="5944430251223015324">사이트</translation>
 <translation id="1834493631938747505">본인 팁에 대해 남들에게 알리세요.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">다음까지 보류</translation>
 <translation id="7410549756000115387">보류 중인 기부금이 없습니다…</translation>
 <translation id="1963227389609234879">모두 삭제</translation>
+<translation id="1170315781901539495">제외된 사이트</translation>
+<translation id="5119190679543565400">이 사이트 복원</translation>
+<translation id="9075700728717335924">귀하는 제외되셨습니다</translation>
+<translation id="4862817811647633830">자동 기고 사이트</translation>
 <translation id="923467487918828349">모두 표시</translation>
+<translation id="5471305206221894680">지원되는 사이트</translation>
+<translation id="2306169361186864012">Brave Ads 보상!</translation>
+<translation id="3757873395477273033">Brave Ads의 보상금이 곧 수령됩니다.</translation>
+<translation id="8101881066646819737">귀하의 Brave Ads 토큰 보상금</translation>
 <translation id="2151535059686617995">오늘은’ 당신의 행운의 날입니다!</translation>
 <translation id="6255773350565723852">귀하의 토큰 승인이 진행 중입니다.</translation>
 <translation id="1181037720776840403">삭제</translation>

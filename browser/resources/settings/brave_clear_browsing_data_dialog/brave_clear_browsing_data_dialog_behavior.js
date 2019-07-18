@@ -35,11 +35,7 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
    */
   addOnExitElements_: function() {
     // Append On exit tab to tab selector.
-    let paperTab = document.createElement('paper-tab');
-    paperTab.id = 'onExitTabTitle';
-    paperTab.innerText = this.i18n('onExitPageTitle');
-    Polymer.dom(this.$.clearBrowsingDataDialog).querySelector(
-        'paper-tabs').appendChild(paperTab);
+    this.tabsNames_.push(loadTimeData.getString('onExitPageTitle'));
     // Append On exit tab page.
     let onExitPage = document.createElement(
         'settings-brave-clear-browsing-data-on-exit-page');

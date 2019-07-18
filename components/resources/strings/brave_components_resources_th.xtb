@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">แก้ไขตามความชอบ</translation>
 <translation id="7606029853066610626">ดูและจัดการคั่นหน้า</translation>
 <translation id="5550994254534676787">ดูประวัติการค้นข้อมูลบนเบราเซอร์ของคุณ</translation>
+<translation id="1742484101357469636">การตั้งค่าแดชบอร์ด</translation>
+<translation id="8320281346741574991">แสดงภาพพื้นหลัง</translation>
 <translation id="6165508094623778733">เรียนรู้เพิ่มเติม</translation>
 <translation id="8730621377337864115">เสร็จสิ้น</translation>
 <translation id="6248988683584659830">ตั้งค่าการค้นหา</translation>
@@ -57,10 +59,14 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5633840519079139680">Brave ช่วยให้การตั้งค่าสภาพแวดล้อมที่คุณใช้เป็นประจำเป็นเรื่องง่าย โดยการนำเข้าบุ๊กมาร์กและการตั้งค่าจากบราว์เซอร์อื่นๆ ที่ติดตั้งอยู่บนคอมพิวเตอร์ของคุณ</translation>
 <translation id="8275038454117074363">นำเข้า</translation>
 <translation id="5540323067375019678">จัดการการป้องกันของคุณ</translation>
+<translation id="3278033011827237847">ป้องกันโฆษณาและตัวติดตามที่ลุกล้ำความเป็นส่วนตัวเมื่อท่องเว็บด้วย Brave Shields ตั้งค่า Shields เป็น "ลด" หากไซต์ดูเหมือนจะทำงานได้ไม่ถูกต้อง</translation>
 <translation id="3366308997091824722">การตั้งค่า Shield</translation>
-<translation id="3884404068544758153">เปลี่ยนเครื่องมือค้นหาของคุณ</translation>
+<translation id="4764692524839457597">ค่าเริ่มต้น</translation>
+<translation id="3108122610701115301">ตั้งเป็นค่าเริ่มต้น</translation>
+<translation id="2469440407442116729">เลือกเครื่องมือค้นหา</translation>
 <translation id="438216590634144114">เลือกเสิร์ชเอนจินที่คุณต้องการใช้เป็นค่าเริ่มต้นเมื่อค้นหาเว็บจากแถบที่อยู่</translation>
-<translation id="8428213095426709021">การตั้งค่า</translation>
+<translation id="5804484488647369316">ตั้งเป็นเครื่องมือค้นหาเริ่มต้น</translation>
+<translation id="4428458837269935199">หากต้องการใช้การค้นหาที่เป็นส่วนตัวยิ่งขึ้น ลองใช้ DuckDuckGo</translation>
 <translation id="513635702954746724">เลือกธีมสีของคุณ</translation>
 <translation id="6842850080200126305">ตั้งค่าสีสำหรับแถบเครื่องมือของคุณโดยการเลือกตัวเลือกสว่างหรือมืดจากแผงการตั้งค่า</translation>
 <translation id="2801098717523961746">เลือกธีมของคุณ</translation>
@@ -70,6 +76,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5946611334574299206">รับเหรียญด้วยการชมโฆษณาใน Brave โฆษณาที่นำเสนออิงมาจากความสนใจของคุณซึ่งอนุมานจากพฤติกรรมการท่องเว็บของคุณ ไม่มีข้อมูลส่วนตัวหรือประวัติการท่องเว็บหลุดออกมาจากเบราว์เซอร์ของคุณ</translation>
 <translation id="6112368337882254910">มีส่วนร่วมอัตโนมัติ</translation>
 <translation id="1527222983464337010">วิธีสนับสนุนผู้เผยแพร่และผู้สร้างสรรค์เนื้อหาโดยอัตโนมัติ ให้กำหนดการชำระเงินแบบรายเดือนแล้วเรียกดูตามปกติ ไซต์ที่คุณเยี่ยมชมจะได้รับเงินบริจาคของคุณโดยอัตโนมัติ โดยขึ้นอยู่กับความสนใจของคุณตามที่ Brave วัดได้</translation>
+<translation id="20281847067919078">รางวัลที่รอดำเนินการโดยประมาณ</translation>
+<translation id="8593551638387217772">วันที่ชำระเงินถัดไป</translation>
+<translation id="319209088187794725">การแจ้งเตือนโฆษณาที่ได้รับในเดือนนี้</translation>
 <translation id="4229016885653790965">ขออภัย! ยังไม่มีโฆษณาในพื้นที่ของคุณ</translation>
 <translation id="654711254769318398">เพจโฆษณาที่มีการเข้าชม</translation>
 <translation id="2532127066761785857">จำนวนโฆษณาสูงสุดที่แสดง</translation>
@@ -108,6 +117,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8610523985422563960">1 นาที</translation>
 <translation id="9031738692126722094">เปิดใช้ทิประดับเนื้อหาในเว็บไซต์เหล่านี้</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">ทิปในจุดที่คุณพบอัญมณี</translation>
 <translation id="6135431587052937035">สนับสนุนเว็บไซต์โปรดของคุณด้วยคำแนะนำเวียนซ้ำรายเดือน</translation>
@@ -129,6 +139,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1184075897575325927">ขออภัย ดูเหมือนว่าเงินบริจาคนี้จะได้รับการเบิกไปแล้ว</translation>
 <translation id="282693359045252357">วันที่ให้ทิปประจำเดือนครั้งถัดไป</translation>
 <translation id="6231182869178328516">ฉันเพิ่งให้ทิป <ph name="NAME">$1<ex>user</ex></ph> ผ่านเบราว์เซอร์ Brave ลองเข้าไปดูได้ที่ https://brave.com/tips</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">จำนวน:</translation>
 <translation id="5923611424721173182">งบกระทบยอดปัจจุบัน</translation>
 <translation id="5457113250005438886">ไม่ถูกต้อง</translation>
@@ -213,6 +224,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7277134233385925078">ตั้งเคล็ดลับประจำเดือน</translation>
 <translation id="8003573781961874199">ดาวน์โหลดเป็น PDF</translation>
 <translation id="298067735430872465">ได้รายได้จากโฆษณา</translation>
+<translation id="2266556115441975588">รางวัลของคุณจาก Ads อยู่นี่แล้ว!</translation>
 <translation id="8764029012618014430">เปิดทิป</translation>
 <translation id="3412655388715513818">ยกเว้นเว็บนี้</translation>
 <translation id="418343137736963579">จำนวนเว็บที่คุณนำออกจาก Auto-Contribute:</translation>
@@ -270,6 +282,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="194625454574835815">กุญแจกู้คืน</translation>
 <translation id="6354568176665589146">เกิดขึ้นซ้ำ ๆ</translation>
 <translation id="7577100371127227294">การให้ทิปรายเดือน</translation>
+<translation id="2391095793008133394">ให้ทิป {{ user }} สำหรับโพสต์ของเขา:</translation>
+<translation id="7557413530932469222">ให้ทิป {{ user }} สำหรับโพสต์ของเขา!</translation>
 <translation id="1110535155349301542">นำออก</translation>
 <translation id="8942997470474842562">คุณได้มอบ {{reservedAmount}} BAT ให้กับผู้สร้างที่ยังไม่ได้ลงทะเบียนรับเงินสนับสนุน เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนไปเรื่อย ๆ จนกว่าผู้สร้างจะยืนยัน หรือจนกระทั่งเวลาผ่านไป 90 วัน</translation>
 <translation id="8759753423332885148">เรียนรู้เพิ่มเติม</translation>
@@ -306,6 +320,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="259138486959961679">ดูสิ่งของทั้งหมด {{numItems}} ชิ้น</translation>
 <translation id="7857284676033058221">ดูทั้งหมด {{numSites}} เว็บ</translation>
 <translation id="3536298624341433814">ส่งทิปของฉัน</translation>
+<translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="1792148354504719133">เว็บ</translation>
 <translation id="5944430251223015324">เว็บไซต์</translation>
 <translation id="1834493631938747505">เล่าเรื่องทิปให้คนอื่นๆ ฟัง</translation>
@@ -355,7 +370,15 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4346944508027912677">รอพิจารณาจนถึง</translation>
 <translation id="7410549756000115387">ไม่มีการบริจาคที่รอพิจารณา…</translation>
 <translation id="1963227389609234879">นำออกทั้งหมด</translation>
+<translation id="1170315781901539495">ไซต์ที่ยกเว้น</translation>
+<translation id="5119190679543565400">กู้คืนไซต์นี้</translation>
+<translation id="9075700728717335924">คุณได้ยกเว้น</translation>
+<translation id="4862817811647633830">ไซต์จากการสนับสนุนอัตโนมัติ</translation>
 <translation id="923467487918828349">แสดงทั้งหมด</translation>
+<translation id="5471305206221894680">ไซต์ที่รองรับ</translation>
+<translation id="2306169361186864012">Brave Ads Rewards!</translation>
+<translation id="3757873395477273033">การจัดสรรรางวัลของคุณจาก Brave Ads กำลังมาถึง</translation>
+<translation id="8101881066646819737">การจัดสรรโทเค็น Brave Ads ของคุณ</translation>
 <translation id="2151535059686617995">วันนี้คุณมีโชค!</translation>
 <translation id="6255773350565723852">โทเค็นเงินบริจาคกำลังจะไปถึงคุณแล้ว</translation>
 <translation id="1181037720776840403">ลบออก</translation>

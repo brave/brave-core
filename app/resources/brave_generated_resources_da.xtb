@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave Belønninger</translation>
 <translation id="7942180974165298215">Brave Annonceblokering</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
+<translation id="8488282162676695335">Brave tegnebog</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") er ikke tilladt i Brave.</translation>
 <translation id="7450557937477381864">Luk Chrome</translation>
 <translation id="7008934821596358692">Luk alle Chrome-vinduer for at afslutte importeringen.</translation>
@@ -28,7 +29,9 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="3218385319396786393">Autoplay er blevet blokeret på denne side</translation>
 <translation id="4988333904713528597">Slå altid autoplay til <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Fortsæt med at blokere autoplay</translation>
+<translation id="5883458389055721080">Brave har ikke kontrolleret denne udvidelse for sikkerhed og tryghed. Installer kun denne udvidelse, hvis du har tillid til udvikleren.</translation>
 <translation id="2044383478723007273">Brave farver</translation>
+<translation id="2814998458708016836">Brug bred adresselinje</translation>
 <translation id="6123134130710658846">Skjul Brave Rewards-knappen</translation>
 <translation id="7635711399568194460">Skjul Brave Rewards-knappen i placeringsbjælken, når Brave Rewards ikke er slået til</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
@@ -48,13 +51,25 @@ vindue med Tor</translation>
 <translation id="4472575034687746823">Kom godt i gang</translation>
 <translation id="3400357268283240774">Yderligere indstillinger</translation>
 <translation id="6303294677342628402">Afskærmning</translation>
+<translation id="7133511168130368997">Bloker trackere og annoncer, som følger dig over hele nettet.</translation>
+<translation id="2761825942249694703">Dette er standardindstillingerne for Shields. De gælder for alle websider, medmindre du ændrer noget i Shields-kontrolpanelet på en bestemt side. En ændring af dette vil ikke påvirke dine eksisterende individuelle sideindstillinger.</translation>
+<translation id="8754605759692119662">Dette vil blokere de fleste annoncer på websider, ikke Brave private annoncer — de styres fra</translation>
+<translation id="6388201778088078932">indstillinger.</translation>
 <translation id="9185018653595759199">Blokering af sociale medier</translation>
+<translation id="5709627087332022422">Bloker cross-site-trackere</translation>
+<translation id="9075744464571452108">Enhedsgenkendelse</translation>
+<translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
+<translation id="4824468494729001999">Bloker scripts</translation>
 <translation id="7498695072878479744">Tillad Google-loginknapper på tredjepartshjemmesider</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
+<translation id="4699812599455071925">Bloker kun cross-site-cookies</translation>
 <translation id="5657156137487675418">Tillad alle cookies</translation>
 <translation id="6883611015375728278">Blokér alle cookies</translation>
+<translation id="3084022390368021391">Bloker kun cross-site-forsøg på enhedsgenkendelse</translation>
+<translation id="1847422622180531843">Tillad alle forsøg på enhedsgenkendelse</translation>
+<translation id="8375051111011093523">Bloker alle forsøg på enhedsgenkendelse</translation>
 <translation id="8942080017911802454">WebRTC IP håndteringspolitik</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="8798099450830957504">Standard</translation>
@@ -76,4 +91,9 @@ vindue med Tor</translation>
 <translation id="9181207987584064303">Se i Internetadresse-Butik</translation>
 <translation id="4846154056248462491">Ved udgang</translation>
 <translation id="5057399635433117814">Oversæt denne side? Dette vil sende al tekst på denne side til Microsoft, for at få den oversat.</translation>
+<translation id="3371343170427636147">Brave Browser natlige apps</translation>
+<translation id="4097979995947147464">Brave Browser beta-apps</translation>
+<translation id="8303432794159193481">Brave Browser udvikler-apps</translation>
+<translation id="8292967014767479012">Brave Browser-apps</translation>
+<translation id="4743468424889072281">Brave Browser udviklings-apps</translation>
 </translationbundle>

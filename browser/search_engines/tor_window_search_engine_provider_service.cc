@@ -1,9 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -14,8 +16,8 @@
 TorWindowSearchEngineProviderService::
 TorWindowSearchEngineProviderService(Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
-  DCHECK(otr_profile->IsTorProfile());
-  DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
+  DCHECK(brave::IsTorProfile(otr_profile));
+  DCHECK(otr_profile->IsOffTheRecord());
 
   alternative_search_engine_provider_in_tor_.Init(
       kAlternativeSearchEngineProviderInTor,

@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
 
 #include "base/auto_reset.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
@@ -15,8 +17,8 @@
 GuestWindowSearchEngineProviderService::GuestWindowSearchEngineProviderService(
     Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
-  DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
-  DCHECK(!otr_profile->IsTorProfile());
+  DCHECK(brave::IsGuestProfile(otr_profile));
+  DCHECK(otr_profile->IsOffTheRecord());
   DCHECK(!brave::IsRegionForQwant(otr_profile));
 
   // Monitor otr(off the record) profile's search engine changing to tracking

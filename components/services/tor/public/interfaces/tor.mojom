@@ -1,0 +1,26 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+module tor.mojom;
+
+import "mojo/public/mojom/base/file_path.mojom";
+
+const string kServiceName = "tor_launcher";
+
+struct TorConfig {
+  mojo_base.mojom.FilePath binary_path;
+  string proxy_string;
+  string proxy_host;
+  string proxy_port;
+  mojo_base.mojom.FilePath tor_data_path;
+  mojo_base.mojom.FilePath tor_watch_path;
+};
+
+interface TorLauncher {
+    Launch(tor.mojom.TorConfig config) => (bool result, int64 pid);
+
+    ReLaunch(tor.mojom.TorConfig config) => (bool result, int64 pid);
+
+    SetCrashHandler() => (int64 pid);
+};
+

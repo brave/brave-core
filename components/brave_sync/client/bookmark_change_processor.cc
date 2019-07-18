@@ -569,7 +569,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
             FindParent(bookmark_model_, bookmark_record, GetPendingNodeRoot());
 
         const BookmarkNode* bookmark_bar = bookmark_model_->bookmark_bar_node();
-        bool bookmark_bar_was_empty = bookmark_bar->empty();
+        bool bookmark_bar_was_empty = bookmark_bar->children().empty();
 
         if (bookmark_record.isFolder) {
           node = bookmark_model_->AddFolder(

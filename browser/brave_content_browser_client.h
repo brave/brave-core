@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
@@ -25,7 +26,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   ~BraveContentBrowserClient() override;
 
   // Overridden from ChromeContentBrowserClient:
-  content::BrowserMainParts* CreateBrowserMainParts(
+  std::unique_ptr<content::BrowserMainParts> CreateBrowserMainParts(
       const content::MainFunctionParams& parameters) override;
   void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
   bool AllowGetCookie(const GURL& url,
@@ -49,8 +50,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       bool is_main_frame,
       ui::PageTransition page_transition,
       bool has_user_gesture,
-      const std::string& method,
-      const net::HttpRequestHeaders& headers,
       network::mojom::URLLoaderFactoryRequest* factory_request,
       network::mojom::URLLoaderFactory*& out_factory) override;  // NOLINT
 
@@ -59,11 +58,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const url::Origin& requesting_origin,
       const url::Origin& embedding_origin) override;
 
-  void RegisterOutOfProcessServices(
-      OutOfProcessServiceMap* services) override;
-
   base::Optional<service_manager::Manifest> GetServiceManifestOverlay(
       base::StringPiece name) override;
+  std::vector<service_manager::Manifest> GetExtraServiceManifests() override;
 
   void AdjustUtilityServiceProcessCommandLine(
       const service_manager::Identity& identity,

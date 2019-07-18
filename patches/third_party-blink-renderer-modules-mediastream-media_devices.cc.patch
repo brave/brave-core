@@ -1,17 +1,18 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index a55f9f1e6f805f5f2fb304fc03fa19a235d1dd53..e5c6709be3778b8c36fd2d5f4e63bf9062c4a866 100644
+index 26f2c6b1a3ec28be5ff555c65f485463e84fb14c..65eae6fa1b4a7a7ae58317f863cfb64ad98d2f9d 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -4,6 +4,7 @@
+@@ -6,6 +6,8 @@
  
- #include "third_party/blink/renderer/modules/mediastream/media_devices.h"
+ #include <utility>
  
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
++
  #include "services/service_manager/public/cpp/interface_provider.h"
  #include "third_party/blink/public/platform/platform.h"
  #include "third_party/blink/public/platform/task_type.h"
-@@ -70,6 +71,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state) {
-         script_state, DOMException::Create(DOMExceptionCode::kNotSupportedError,
+@@ -74,6 +76,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state) {
+         MakeGarbageCollected<DOMException>(DOMExceptionCode::kNotSupportedError,
                                             "Current frame is detached."));
    }
 +  if (!AllowFingerprinting(frame)) {

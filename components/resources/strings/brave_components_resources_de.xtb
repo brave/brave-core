@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Einstellungen bearbeiten</translation>
 <translation id="7606029853066610626">Lesezeichen ansehen und verwalten</translation>
 <translation id="5550994254534676787">Browserverlauf ansehen</translation>
+<translation id="1742484101357469636">Dashboard-Einstellungen</translation>
+<translation id="8320281346741574991">Hintergrundbild anzeigen</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
 <translation id="8730621377337864115">Fertig</translation>
 <translation id="6248988683584659830">In Einstellungen suchen</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave macht es Ihnen einfach, Ihre gewohnte Browser-Umgebung einzurichten, indem Sie Ihre Lesezeichen und Einstellungen von anderen installierten Browsern importieren.</translation>
 <translation id="8275038454117074363">Importieren</translation>
 <translation id="5540323067375019678">Verwalten Sie Ihre Shields</translation>
+<translation id="3278033011827237847">Brave Shields schützt Sie beim Browsen vor unerwünschter Werbung und störenden Trackern. Wenn Sie beim Browsen auf einer bestimmten Seite auf ein Problem stoßen, passen Sie einfach Ihr Schutzniveau im Shields-Panel in der Toolbar an.</translation>
 <translation id="3366308997091824722">Brave Shields anpassen</translation>
-<translation id="3884404068544758153">Ändern Sie Ihre Suchmaschine</translation>
+<translation id="4764692524839457597">Standard</translation>
+<translation id="3108122610701115301">Standard festlegen</translation>
+<translation id="2469440407442116729">Suchmaschine auswählen</translation>
 <translation id="438216590634144114">Wählen Sie, welche Suchmaschine Sie standardmäßig verwenden wollen, wenn Sie von der Adresszeile aus das Web durchsuchen.</translation>
-<translation id="8428213095426709021">Einstellungen</translation>
+<translation id="5804484488647369316">Standard-Suchmaschine festlegen</translation>
+<translation id="4428458837269935199">Probieren Sie für eine vertraulichere Sucherfahrung DuckDuckGo aus.</translation>
 <translation id="513635702954746724">Wählen Sie Ihr Farbschema</translation>
 <translation id="6842850080200126305">Legen Sie die Farbe Ihrer Toolbar fest, indem Sie die Option „Hell“ oder „Dunkel“ aus dem Einstellungspanel auswählen.</translation>
 <translation id="2801098717523961746">Wählen Sie Ihr Schema</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Verdienen Sie Tokens, indem Sie Werbung auf Brave anschauen. Werbung wird Ihnen auf Grundlage Ihrer Interessen, die sich aus Ihrem Browsing-Verhalten ergeben, vorgeschlagen. Persönliche Daten oder Browserverläufe verlassen niemals Ihren Browser.</translation>
 <translation id="6112368337882254910">Auto-Beitrag</translation>
 <translation id="1527222983464337010">Eine automatische Möglichkeit, um Herausgeber und Content Creators zu unterstützen. Legen Sie eine monatliche Zahlung fest und surfen Sie wie gewohnt. Die von Ihnen besuchten Seiten erhalten Ihre Beiträge automatisch, basierend darauf, wie viel Aufmerksamkeit Sie ihnen Brave zufolge geschenkt haben.</translation>
+<translation id="20281847067919078">Geschätzte ausstehende Vergütungen</translation>
+<translation id="8593551638387217772">Nächstes Auszahlungsdatum</translation>
+<translation id="319209088187794725">Diesen Monat erhaltene Werbungsmeldungen</translation>
 <translation id="4229016885653790965">Sorry! Werbung ist in Ihrer Region noch nicht verfügbar.</translation>
 <translation id="654711254769318398">Angezeigte Werbeseiten</translation>
 <translation id="2532127066761785857">Maximalanzahl der angezeigten Werbeanzeigen</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 Minute</translation>
 <translation id="9031738692126722094">Trinkgelder nach Inhaltsniveau auf diesen Seiten ermöglichen</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Tippen Sie auf die entsprechende Stelle, wenn Sie Edelsteine finden.</translation>
 <translation id="6135431587052937035">Unterstützen Sie Ihre Lieblings-Websites mit wiederkehrenden monatlichen Spenden.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Leider scheint es, dass diese Zuwendung bereits beansprucht wurde.</translation>
 <translation id="282693359045252357">Nächstes monatliches Datum für Trinkgeld</translation>
 <translation id="6231182869178328516">Ich habe gerade <ph name="NAME">$1<ex>user</ex></ph> mit dem Brave-Browser ein Trinkgeld gegeben. Sehen Sie es sich unter https://brave.com/tips an.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Betrag:</translation>
 <translation id="5923611424721173182">Aktueller Abgleich</translation>
 <translation id="5457113250005438886">Ungültig</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Monatliches Trinkgeld einrichten</translation>
 <translation id="8003573781961874199">Als PDF herunterladen</translation>
 <translation id="298067735430872465">Einnahmen aus Werbung</translation>
+<translation id="2266556115441975588">Ihre Vergütungen aus Werbung sind da!</translation>
 <translation id="8764029012618014430">Trinkgelder Aktivieren</translation>
 <translation id="3412655388715513818">Diese Seite ausschließen</translation>
 <translation id="418343137736963579">Gesamtanzahl der Webseiten, die Sie vom Selbsttätigen-Beitragen ausgeschlossen haben:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Wiederherstellungsschlüssel</translation>
 <translation id="6354568176665589146">Wiederkehrend</translation>
 <translation id="7577100371127227294">Monatliche Trinkgelder</translation>
+<translation id="2391095793008133394">Geben Sie {{ user }} ein Trinkgeld für den Beitrag:</translation>
+<translation id="7557413530932469222">Geben Sie {{ user }} ein Trinkgeld für den Beitrag!</translation>
 <translation id="1110535155349301542">entfernen</translation>
 <translation id="8942997470474842562">Sie haben {{reservedAmount}} BAT für Ersteller bestimmt, die sich noch nicht für den Empfang von Beiträgen angemeldet haben. Ihr Browser wird weiterhin versuchen, ihnen Beiträge zukommen zu lassen, bis sie sich verifiziert haben oder bis 90 Tage verstrichen sind.</translation>
 <translation id="8759753423332885148">Mehr hierzu.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Alle {{numItems}} Artikel ansehen</translation>
 <translation id="7857284676033058221">Alle  {{numSites}} Seiten anschauen</translation>
 <translation id="3536298624341433814">Mein Trinkgeld überweisen</translation>
+<translation id="8428213095426709021">Einstellungen</translation>
 <translation id="1792148354504719133">Seite</translation>
 <translation id="5944430251223015324">Seiten</translation>
 <translation id="1834493631938747505">Erzählen Sie anderen von Ihrem Trinkgeld.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Ausstehend bis</translation>
 <translation id="7410549756000115387">Keine ausstehenden Beiträge…</translation>
 <translation id="1963227389609234879">Alle entfernen</translation>
+<translation id="1170315781901539495">Ausgenommene Websites</translation>
+<translation id="5119190679543565400">Diese Website wiederherstellen</translation>
+<translation id="9075700728717335924">Sie haben ausgenommen</translation>
+<translation id="4862817811647633830">Websites aus automatischer Beitragsleistung.</translation>
 <translation id="923467487918828349">Alle einblenden</translation>
+<translation id="5471305206221894680">Unterstützte Websites</translation>
+<translation id="2306169361186864012">Brave-Ads-Vergütungen!</translation>
+<translation id="3757873395477273033">Ihre Vergütungszuteilung von Brave Ads ist unterwegs.</translation>
+<translation id="8101881066646819737">Ihre Brave-Ads-Tokenzuteilung</translation>
 <translation id="2151535059686617995">Dies ist Ihr Glückstag!</translation>
 <translation id="6255773350565723852">Ihre Token-Zuwendung ist unterwegs.</translation>
 <translation id="1181037720776840403">Entfernen</translation>

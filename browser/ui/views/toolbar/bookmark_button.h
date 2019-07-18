@@ -17,6 +17,7 @@ class BookmarkButton : public ToolbarButton {
     ~BookmarkButton() override;
 
     void SetToggled(bool on);
+    void UpdateImage();
 
     // Invoked when a bubble for this icon is created. The Button
     // changes highlights based on this widget's visibility.
@@ -26,9 +27,6 @@ class BookmarkButton : public ToolbarButton {
     base::string16 GetTooltipText(const gfx::Point& p) const override;
     const char* GetClassName() const override;
     void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
-
-    // View:
-    void OnThemeChanged() override;
 
  private:
     bool active_ = false;

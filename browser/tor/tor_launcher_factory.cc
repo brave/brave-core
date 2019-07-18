@@ -31,7 +31,7 @@ TorLauncherFactory::TorLauncherFactory()
   }
 
   content::ServiceManagerConnection::GetForProcess()->GetConnector()
-    ->BindInterface(tor::mojom::kTorLauncherServiceName,
+    ->BindInterface(tor::mojom::kServiceName,
                     &tor_launcher_);
 
   tor_launcher_.set_connection_error_handler(

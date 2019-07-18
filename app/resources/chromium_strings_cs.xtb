@@ -76,13 +76,9 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="5874882355102994015">Pokud chybí integrovaný program k zobrazení souborů PDF, nemůže prohlížeč Brave zobrazit náhled tisku.</translation>
 <translation id="8880183781256147665">Přidávání do prohlížeče Brave...</translation>
 <translation id="3561569806301739367">Soubor <ph name="FILE_NAME"/> může být nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
-<translation id="6205431412329939367">Soubor <ph name="FILE_NAME"/> může být nebezpečný, proto jej prohlížeč Brave zablokoval. Jste chráněni pokročilou ochranou.</translation>
 <translation id="9067428552314418522">Tento soubor je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
-<translation id="2938460345748897177">Tento soubor je nebezpečný, proto jej prohlížeč Brave zablokoval. Jste chráněni pokročilou ochranou.</translation>
 <translation id="4168372721886011198">Soubor <ph name="FILE_NAME"/> je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
-<translation id="8858456697111532356">Soubor <ph name="FILE_NAME"/> je nebezpečný, proto jej počítač Brave zablokoval. Jste chráněni pokročilou ochranou.</translation>
 <translation id="89367911614620585">Tento soubor může být nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
-<translation id="8943391224520748272">Tento soubor může být nebezpečný, proto jej prohlížeč Brave zablokoval. Jste chráněni pokročilou ochranou.</translation>
 <translation id="9183662282810237335">Přesto Brave ukončit?</translation>
 <translation id="3834935463915107022">Přesto Brave ukončit?</translation>
 <translation id="8797356639448065696">Brave je v režimu na pozadí.</translation>
@@ -145,8 +141,6 @@ Pokud se přesto přihlásíte, budou data prohlížeče Brave (například zál
 <translation id="6746636977031158624">Brave OS nemůže synchronizovat data, protože vaše přihlašovací údaje k účtu jsou zastaralé.</translation>
 <translation id="2999152167963026588">Brave OS nemůže synchronizovat data, protože Synchronizace ve vaší doméně není k dispozici.</translation>
 <translation id="1459786048951724030">Brave OS vaše data nemohl synchronizovat, protože při přihlašování došlo k chybě.</translation>
-<translation id="2887570477425111999">Ukládat údaje do prohlížeče Brave</translation>
-<translation id="193559141530782783">Brave vaše osobní údaje bezpečně uloží, abyste je nemuseli zadávat znovu.</translation>
 <translation id="663059986967017181">Zkopírováno do prohlížeče Brave</translation>
 <translation id="1457432835062259213">Spouštěč aplikací Brave</translation>
 <translation id="82609232232243542">Přihlásit se do Chromu</translation>
@@ -184,7 +178,7 @@ Další pokyny naleznete v e-mailu ve svém účtu <ph name="ACCOUNT_EMAIL"/>.<
 <translation id="1912973375560256099">Pravidlo příchozího provozu pro prohlížeč Brave, které povolí provoz mDNS.</translation>
 <translation id="8207657266087451193">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu. Tuto funkci můžete kdykoliv vypnout v nastavení.</translation>
 <translation id="5499063270485366718">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu.</translation>
-<translation id="3870835867536344658">Tato funkce využívá stejnou službu kontroly pravopisu, jaká se používá ve vyhledávání Brave Software. Text, který v prohlížeči zadáte, se odešle do Googlu. Toto chování můžete kdykoliv změnit v nastavení.</translation>
+<translation id="215320507915280336">Tato funkce využívá stejnou službu kontroly pravopisu, jaká se používá ve vyhledávání Brave Software. Text, který v prohlížeči zadáte, se odešle do Googlu. Toto chování můžete kdykoliv změnit v nastavení.</translation>
 <translation id="1807774211756215222">Otevřít odkaz na nové kar&amp;tě prohlížeče Brave</translation>
 <translation id="4624945300945265642">Otevřít odkaz v &amp;anonymním okně prohlížeče Brave</translation>
 <translation id="7863882214613921971">Otevřít odkaz na nové kar&amp;tě prohlížeče Brave</translation>
@@ -241,23 +235,17 @@ Další pokyny naleznete v e-mailu ve svém účtu <ph name="ACCOUNT_EMAIL"/>.<
 <translation id="8933981935877469796">Vyberte <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/>.</translation>
 <translation id="1585657529869845941">Pokud je zobrazeno tlačítko <ph name="BEGIN_BOLD"/>Přesto přepnout<ph name="END_BOLD"/>, klikněte na něj</translation>
 <translation id="3507835409099344374">Přejít na nastavení oznámení prohlížeče Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Je k dispozici aktualizace prohlížeče Brave}=1{Je k dispozici aktualizace prohlížeče Brave}few{Již # dny je k dispozici aktualizace prohlížeče Brave}many{Již # dne je k dispozici aktualizace prohlížeče Brave}other{Již # dní je k dispozici aktualizace prohlížeče Brave}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Je k dispozici aktualizace prohlížeče Brave}=1{Je k dispozici aktualizace prohlížeče Brave}few{Již # dny je k dispozici aktualizace prohlížeče Brave}many{Již # dne je k dispozici aktualizace prohlížeče Brave}other{Již # dní je k dispozici aktualizace prohlížeče Brave}}</translation>
 <translation id="720532315408041257">Váš administrátor vás žádá, abyste kvůli použití této aktualizace Brave restartovali</translation>
-<translation id="6639482638305253477">{0,plural, =1{Do jednoho dne Brave restartujte}few{Do # dnů Brave restartujte}many{Do # dne Brave restartujte}other{Do # dnů Brave restartujte}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave se za hodinu restartuje}few{Brave se za # hodiny restartuje}many{Brave se za # hodiny restartuje}other{Brave se za # hodin restartuje}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave se za 1 minutu restartuje}few{Brave se za # minuty restartuje}many{Brave se za # minuty restartuje}other{Brave se za # minut restartuje}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave se nyní restartuje}=1{Brave se za 1 sekundu restartuje}few{Brave se za # sekundy restartuje}many{Brave se za # sekundy restartuje}other{Brave se za # sekund restartuje}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Do jednoho dne Brave restartujte}few{Do # dní Brave restartujte}many{Do # dne Brave restartujte}other{Do # dní Brave restartujte}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave se za hodinu restartuje}few{Brave se za # hodiny restartuje}many{Brave se za # hodiny restartuje}other{Brave se za # hodin restartuje}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave se za 1 minutu restartuje}few{Brave se za # minuty restartuje}many{Brave se za # minuty restartuje}other{Brave se za # minut restartuje}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave se nyní restartuje}=1{Brave se za 1 sekundu restartuje}few{Brave se za # sekundy restartuje}many{Brave se za # sekundy restartuje}other{Brave se za # sekund restartuje}}</translation>
 <translation id="7595187113648413294">Váš administrátor vyžaduje, abyste kvůli použití této aktualizace Brave restartovali</translation>
-<translation id="56801943271475640">{0,plural, =0{Je k dispozici aktualizace systému Brave OS}=1{Je k dispozici aktualizace systému Brave OS}few{Již # dny je k dispozici aktualizace systému Brave OS}many{Již # dne je k dispozici aktualizace prohlížeče Brave OS}other{Již # dní je k dispozici aktualizace prohlížeče Brave OS}}</translation>
-<translation id="5715362474140341294">Váš administrátor vás žádá, abyste kvůli použití této aktualizace Brave OS restartovali</translation>
-<translation id="8094834892392729950">{0,plural, =1{Do jednoho dne Brave OS restartujte}few{Do # dní Brave OS restartujte}many{Do # dne Brave OS restartujte}other{Do # dní Brave OS restartujte}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS se za hodinu restartuje}few{Brave OS se za # hodiny restartuje}many{Brave OS se za # hodiny restartuje}other{Brave OS se za # hodin restartuje}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS se za 1 minutu restartuje}few{Brave OS se za # minuty restartuje}many{Brave OS se za # minuty restartuje}other{Brave OS se za # minut restartuje}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS se teď restartuje}=1{Brave OS se za 1 sekundu restartuje}few{Brave OS se za # sekundy restartuje}many{Brave OS se za # sekundy restartuje}other{Brave OS se za # sekund restartuje}}</translation>
-<translation id="8559452515617838628">Váš administrátor vyžaduje, abyste kvůli použití aktualizace restartovali Brave OS</translation>
 <translation id="3052349005266761501">Spouštění prohlížeče Brave...</translation>
 <translation id="1197672524850678392">Brave nelze spustit. Zkuste to znovu.</translation>
 <translation id="6040143037577758943">Zavřít</translation>
+<translation id="5147525139567260139">Sdílet kartu prohlížeče Brave</translation>
 <translation id="8541922081612557424">O prohlížeči Brave</translation>
 <translation id="3262506503470845422">Pomoc s prohlížečem Brave</translation>
 <translation id="1864557848095568223">Aktualizace prohlížeče Brave</translation>

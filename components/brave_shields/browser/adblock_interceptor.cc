@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -138,9 +139,8 @@ void Http200OkJob::GetResponseInfo(net::HttpResponseInfo* info) {
       "HTTP/1.1 200 OK\r\n"
       "Access-Control-Allow-Origin: *\r\n"
       "Content-Type: " + mime_type_ + "\r\n";
-  new_info.headers =
-      new net::HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(
-          raw_headers.c_str(), raw_headers.size()));
+  new_info.headers = new net::HttpResponseHeaders(
+      net::HttpUtil::AssembleRawHeaders(raw_headers));
   *info = new_info;
 }
 

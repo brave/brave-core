@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
 <translation id="7942180974165298215">Blokiranje oglasov Brave</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
+<translation id="8488282162676695335">Denarnica Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="7450557937477381864">Zapri Chrome</translation>
 <translation id="7008934821596358692">Če želite končati uvoz, zaprite vsa okna v brskalniku Chrome.</translation>
@@ -28,7 +29,9 @@
 <translation id="3218385319396786393">Samodejno predvajanje je blokirano na tej strani</translation>
 <translation id="4988333904713528597">Vedno dovoli samodejno predvajanje na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Nadaljuj z blokiranjem samodejnega predvajanja</translation>
+<translation id="5883458389055721080">Brave ni pregledal zaščito in varnost te razširitve. To razširitev namestite samo, če razvijalcu zaupate.</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
+<translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
 <translation id="6123134130710658846">Skrij gumb Brave Rewards</translation>
 <translation id="7635711399568194460">Skrije gumb Brave Rewards v vrstici z lokacijo, kadar storitev Brave Rewards ni omogočena</translation>
 <translation id="7965178729203412357">Nova identiteta Tor</translation>
@@ -47,13 +50,25 @@
 <translation id="4472575034687746823">Kako začeti</translation>
 <translation id="3400357268283240774">Dodatne nastavitve</translation>
 <translation id="6303294677342628402">Ščiti</translation>
+<translation id="7133511168130368997">Blokirajte sledilce in oglase, ki vas spremljajo po spletu.</translation>
+<translation id="2761825942249694703">To so privzete nastavitve Ščita. Uporabljajo se za vsa spletna mesta, razen če nekaj spremenite na plošči Ščit na določenem spletnem mestu. Če jih spremenite, to ne bo vplivalo na vaše obstoječe nastavitve za spletno mesto.</translation>
+<translation id="8754605759692119662">To bo blokiralo večino oglasov na spletnih mestih, ne pa Brave zasebnih oglasov, ki jih nadzorujejo nastavitve</translation>
+<translation id="6388201778088078932">.</translation>
 <translation id="9185018653595759199">Blokiranje družbenih medijev</translation>
+<translation id="5709627087332022422">Blokiraj sledilce med mesti</translation>
+<translation id="9075744464571452108">Prepoznavanje naprave</translation>
+<translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
+<translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="7498695072878479744">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
+<translation id="4699812599455071925">Blokiraj piškotke med mesti</translation>
 <translation id="5657156137487675418">Dovoli vse piškotke</translation>
 <translation id="6883611015375728278">Blokiraj vse piškotke</translation>
+<translation id="3084022390368021391">Blokiraj samo poskuse za prepoznavanje naprave med mesti</translation>
+<translation id="1847422622180531843">Dovoli vse poskuse za prepoznavanje naprave</translation>
+<translation id="8375051111011093523">Blokiraj vse poskuse za prepoznavanje naprave</translation>
 <translation id="8942080017911802454">Pravila za obravnavanje IP-naslova WebRTC</translation>
 <translation id="6165508094623778733">Več o tem</translation>
 <translation id="8798099450830957504">Privzeto</translation>
@@ -75,4 +90,9 @@
 <translation id="9181207987584064303">Ogled v trgovini s spletnimi razširitvami</translation>
 <translation id="4846154056248462491">Ob izhodu</translation>
 <translation id="5057399635433117814">Želite prevod te strani? Celotno besedilo s te strani bo poslano Microsoftu v prevod.</translation>
+<translation id="3371343170427636147">Nočne aplikacije brskalnika Brave</translation>
+<translation id="4097979995947147464">Beta aplikacije brskalnika Brave</translation>
+<translation id="8303432794159193481">Dev aplikacije brskalnika Brave</translation>
+<translation id="8292967014767479012">Aplikacije brskalnika Brave</translation>
+<translation id="4743468424889072281">Razvojne aplikacije brskalnika Brave</translation>
 </translationbundle>

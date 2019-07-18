@@ -6,6 +6,11 @@
 
 #include <stddef.h>
 
+#include <map>
+#include <string>
+#include <unordered_map>
+#include <utility>
+
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -16,6 +21,7 @@
 #include "build/build_config.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/common/content_client.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/url_constants.h"
 #include "ui/base/layout.h"
@@ -30,15 +36,9 @@
 
 namespace brave_content {
 
-using namespace content;
-
 namespace {
 
-struct IdrGzipped {
-  int idr;
-  bool gzipped;
-};
-using ResourcesMap = std::unordered_map<std::string, IdrGzipped>;
+using ResourcesMap = std::unordered_map<std::string, int>;
 
 const std::map<std::string, std::string> CreatePathPrefixAliasesMap() {
   // Map of GRD-relative path prefixes to incoming request path, e.g.
@@ -52,10 +52,8 @@ const std::map<std::string, std::string> CreatePathPrefixAliasesMap() {
 
 void AddResource(const std::string& path,
                  int resource_id,
-                 bool gzipped,
                  ResourcesMap* resources_map) {
-  IdrGzipped idr_gzipped = {resource_id, gzipped};
-  if (!resources_map->insert(std::make_pair(path, idr_gzipped)).second)
+  if (!resources_map->insert(std::make_pair(path, resource_id)).second)
     NOTREACHED() << "Redefinition of '" << path << "'";
 }
 
@@ -66,14 +64,14 @@ void AddResourcesToMap(ResourcesMap* resources_map) {
   for (size_t i = 0; i < kBraveWebuiResourcesSize; ++i) {
     const auto& resource = kBraveWebuiResources[i];
 
-    AddResource(resource.name, resource.value, resource.gzipped, resources_map);
+    AddResource(resource.name, resource.value, resources_map);
 
     for (auto it = aliases.begin(); it != aliases.end(); ++it) {
       if (base::StartsWith(resource.name, it->first,
                            base::CompareCase::SENSITIVE)) {
         std::string resource_name(resource.name);
         AddResource(it->second + resource_name.substr(it->first.length()),
-                    resource.value, resource.gzipped, resources_map);
+                    resource.value, resources_map);
       }
     }
   }
@@ -94,7 +92,7 @@ const ResourcesMap& GetResourcesMap() {
 int GetIdrForPath(const std::string& path) {
   const ResourcesMap& resources_map = GetResourcesMap();
   auto it = resources_map.find(path);
-  return it != resources_map.end() ? it->second.idr : -1;
+  return it != resources_map.end() ? it->second : -1;
 }
 
 }  // namespace
@@ -117,11 +115,10 @@ void BraveSharedResourcesDataSource::StartDataRequest(
   DCHECK_NE(-1, idr) << " path: " << path;
   scoped_refptr<base::RefCountedMemory> bytes;
 
-  // Cannot access GetContentClient() from here as that is //content/public only.
-  // Therefore cannot access ContentClient::GetDataResourceBytes,
-  // so go to the bundle directly.
-  // This will work for all content clients apart from in a test environment,
-  // where this shoudl be mocked.
+  // Cannot access GetContentClient() from here as that is //content/public
+  // only. Therefore, cannot access ContentClient::GetDataResourceBytes,
+  // so go to the bundle directly. This will work for all content clients apart
+  // from in a test environment, where this shoudl be mocked.
   bytes = ui::ResourceBundle::GetSharedInstance().LoadDataResourceBytes(idr);
   callback.Run(bytes.get());
 }
@@ -173,7 +170,8 @@ std::string BraveSharedResourcesDataSource::GetMimeType(
   return "text/plain";
 }
 
-bool BraveSharedResourcesDataSource::ShouldServeMimeTypeAsContentTypeHeader() const {
+bool BraveSharedResourcesDataSource::ShouldServeMimeTypeAsContentTypeHeader()
+    const {
   return true;
 }
 
@@ -190,7 +188,7 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
   // According to CORS spec, Access-Control-Allow-Origin header doesn't support
   // wildcards, so we need to set its value explicitly by passing the |origin|
   // back.
-  std::string allowed_origin_prefix = kChromeUIScheme;
+  std::string allowed_origin_prefix = content::kChromeUIScheme;
   allowed_origin_prefix += "://";
   if (!base::StartsWith(origin, allowed_origin_prefix,
                         base::CompareCase::SENSITIVE)) {
@@ -200,9 +198,10 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
 }
 
 bool BraveSharedResourcesDataSource::IsGzipped(const std::string& path) const {
-  auto it = GetResourcesMap().find(path);
-  DCHECK(it != GetResourcesMap().end()) << "missing shared resource: " << path;
-  return it != GetResourcesMap().end() ? it->second.gzipped : false;
+  // Cannot access GetContentClient() from here as that is //content/public
+  // only. Therefore cannot access ContentClient::IsDataResourceGzipped, so go
+  // to the bundle directly.
+  return ui::ResourceBundle::GetSharedInstance().IsGzipped(GetIdrForPath(path));
 }
 
-}  // namespace content
+}  // namespace brave_content
