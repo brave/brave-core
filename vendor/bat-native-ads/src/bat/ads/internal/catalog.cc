@@ -26,7 +26,7 @@ bool Catalog::FromJson(const std::string& json) {
   auto result = LoadFromJson(catalog_state.get(), json, json_schema,
       &error_description);
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to to load catalog JSON (" << error_description
+    BLOG(ERROR) << "Failed to parse catalog JSON (" << error_description
         << "): " << json;
 
     return false;

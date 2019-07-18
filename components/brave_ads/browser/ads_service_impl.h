@@ -19,6 +19,7 @@
 #include "bat/ads/ads_client.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
+#include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/notifications/notification_handler.h"
@@ -68,15 +69,16 @@ class AdsServiceImpl : public AdsService,
 
   void SetAdsPerHour(const uint64_t ads_per_hour) override;
 
-  void TabUpdated(
+  void SetConfirmationsIsReady(const bool is_ready) override;
+  void ChangeLocale(const std::string& locale) override;
+  void ClassifyPage(const std::string& url, const std::string& page) override;
+  void OnMediaStart(SessionID tab_id) override;
+  void OnMediaStop(SessionID tab_id) override;
+  void OnTabUpdated(
       SessionID tab_id,
       const GURL& url,
       const bool is_active) override;
-  void TabClosed(SessionID tab_id) override;
-  void OnMediaStart(SessionID tab_id) override;
-  void OnMediaStop(SessionID tab_id) override;
-  void ClassifyPage(const std::string& url, const std::string& page) override;
-  void SetConfirmationsIsReady(const bool is_ready) override;
+  void OnTabClosed(SessionID tab_id) override;
 
   void Shutdown() override;
 
@@ -88,9 +90,6 @@ class AdsServiceImpl : public AdsService,
 
  private:
   friend class AdsNotificationHandler;
-
-  typedef std::map<std::string, std::unique_ptr<const ads::NotificationInfo>>
-      NotificationInfoMap;
 
   void Start();
   bool StartService();
@@ -111,18 +110,17 @@ class AdsServiceImpl : public AdsService,
       const std::string& notification_id,
       bool by_user,
       base::OnceClosure completed_closure);
-  void OpenSettings(
-      Profile* profile,
-      const GURL& origin,
-      bool should_close);
+  void ViewAd(const std::string& id);
+  void OnViewAd(const std::string& json);
+  void OpenNewTabWithUrl(const std::string& url);
 
   // AdsClient implementation
   bool IsForeground() const override;
   const std::string GetAdsLocale() const override;
   void GetClientInfo(ads::ClientInfo* info) const override;
   const std::vector<std::string> GetLocales() const override;
-  const std::string GenerateUUID() const override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
+  void CloseNotification(const std::string& id) override;
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
   void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
   uint32_t SetTimer(const uint64_t time_offset) override;
@@ -208,15 +206,22 @@ class AdsServiceImpl : public AdsService,
     const std::vector<std::string>& regions) const;
 
   void OnCreate();
-  void OnInitialize();
+  void OnInitialize(const int32_t result);
+  void ShutdownBatAds();
+  void OnShutdownBatAds(const int32_t result);
+  void ResetAllState();
+  void OnResetAllState(bool success);
+  void EnsureBaseDirectoryExists();
+  void OnEnsureBaseDirectoryExists(bool success);
+  void OnRemoveAllHistory(const int32_t result);
   void MaybeStart(bool should_restart);
-  void OnMaybeStartForRegion(
-      bool should_restart,
-      bool is_supported_region);
   void NotificationTimedOut(
       uint32_t timer_id,
       const std::string& notification_id);
-
+  void MaybeViewAd();
+  void RetryViewingAdWithId(const std::string& id);
+  bool ShouldShowMyFirstAdNotification();
+  void MaybeShowMyFirstAdNotification();
   void MaybeShowFirstLaunchNotification();
   bool ShouldShowFirstLaunchNotification();
   void ShowFirstLaunchNotification();
@@ -237,9 +242,10 @@ class AdsServiceImpl : public AdsService,
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const base::FilePath base_path_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
+  bool is_initialized_;
+  std::string retry_viewing_ad_with_id_;
   uint32_t next_timer_id_;
   uint32_t ads_launch_id_;
-  bool is_supported_region_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
@@ -257,7 +263,6 @@ class AdsServiceImpl : public AdsService,
   bat_ads::mojom::BatAdsAssociatedPtr bat_ads_;
   bat_ads::mojom::BatAdsServicePtr bat_ads_service_;
 
-  NotificationInfoMap notification_ids_;
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
 
   DISALLOW_COPY_AND_ASSIGN(AdsServiceImpl);

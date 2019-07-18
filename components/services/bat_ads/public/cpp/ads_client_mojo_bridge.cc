@@ -102,15 +102,6 @@ void AdsClientMojoBridge::IsNetworkConnectionAvailable(
   std::move(callback).Run(ads_client_->IsNetworkConnectionAvailable());
 }
 
-bool AdsClientMojoBridge::GenerateUUID(std::string* out_uuid) {
-  *out_uuid = ads_client_->GenerateUUID();
-  return true;
-}
-
-void AdsClientMojoBridge::GenerateUUID(GenerateUUIDCallback callback) {
-  std::move(callback).Run(ads_client_->GenerateUUID());
-}
-
 bool AdsClientMojoBridge::IsNotificationsAvailable(bool* out_available) {
   *out_available = ads_client_->IsNotificationsAvailable();
   return true;
@@ -306,6 +297,10 @@ void AdsClientMojoBridge::ShowNotification(
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info) == ads::Result::SUCCESS)
     ads_client_->ShowNotification(std::move(info));
+}
+
+void AdsClientMojoBridge::CloseNotification(const std::string& id) {
+  ads_client_->CloseNotification(id);
 }
 
 void AdsClientMojoBridge::SetCatalogIssuers(

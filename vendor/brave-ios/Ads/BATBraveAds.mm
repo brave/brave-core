@@ -67,7 +67,7 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
-    ads->Initialize();
+    ads->Initialize(^(bool) { });
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -112,7 +112,11 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   self.prefs[kAdsEnabledPrefKey] = @(enabled);
   [self savePrefs];
   if (ads != nil) {
-    ads->Initialize();
+    if (enabled) {
+      ads->Initialize(^(bool) { });
+    } else {
+      ads->Shutdown(^(bool) { });
+    }
   }
 }
 
@@ -168,9 +172,9 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   return NSArrayFromVector([self getLocales]);
 }
 
-- (void)removeAllHistory
+- (void)removeAllHistory:(void (^)(BOOL))completion
 {
-  ads->RemoveAllHistory();
+  ads->RemoveAllHistory(completion);
 }
 
 - (void)serveSampleAd
@@ -218,12 +222,12 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 - (void)reportTabUpdated:(NSInteger)tabId url:(NSURL *)url isSelected:(BOOL)isSelected isPrivate:(BOOL)isPrivate
 {
   const auto urlString = std::string(url.absoluteString.UTF8String);
-  ads->TabUpdated((int32_t)tabId, urlString, isSelected, isPrivate);
+  ads->OnTabUpdated((int32_t)tabId, urlString, isSelected, isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId
 {
-  ads->TabClosed((int32_t)tabId);
+  ads->OnTabClosed((int32_t)tabId);
 }
 
 #pragma mark - Ads Bridge
@@ -233,9 +237,12 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   if (info.get() != nullptr) {
     const auto notification = [[BATAdsNotification alloc] initWithNotificationInfo:*info.get()];
     [self.delegate braveAds:self showNotification:notification];
-
-    ads->GenerateAdReportingNotificationShownEvent(*info.get());
   }
+}
+
+- (void)closeNotification:(const std::string &)id
+{
+  // TODO: Add Implementation
 }
 
 - (void)confirmAd:(std::unique_ptr<ads::NotificationInfo>)info

@@ -138,21 +138,19 @@ const std::vector<std::string> BatAdsClientMojoBridge::GetLocales() const {
   return locales;
 }
 
-const std::string BatAdsClientMojoBridge::GenerateUUID() const {
-  if (!connected())
-    return "";
-
-  std::string uuid;
-  bat_ads_client_->GenerateUUID(&uuid);
-  return uuid;
-}
-
 void BatAdsClientMojoBridge::ShowNotification(
     std::unique_ptr<ads::NotificationInfo> info) {
   if (!connected())
     return;
 
   bat_ads_client_->ShowNotification(info->ToJson());
+}
+
+void BatAdsClientMojoBridge::CloseNotification(const std::string& id) {
+  if (!connected())
+    return;
+
+  bat_ads_client_->CloseNotification(id);
 }
 
 void BatAdsClientMojoBridge::SetCatalogIssuers(

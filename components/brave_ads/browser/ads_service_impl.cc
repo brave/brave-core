@@ -20,7 +20,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/notification_info.h"
-#include "bat/ads/notification_result_type.h"
+#include "bat/ads/notification_event_type.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
@@ -49,7 +49,7 @@
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/common/service_manager_connection.h"
-#include "services/network/public/cpp/network_connection_tracker.h"
+#include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/service_manager/public/cpp/connector.h"
@@ -60,7 +60,8 @@
 
 #if defined(OS_ANDROID)
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
-#include "net/android/network_library.h"
+#include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/android/service_tab_launcher.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;
@@ -69,11 +70,11 @@ namespace brave_ads {
 
 namespace {
 
-const char kRewardsNotificationAdsLaunch[] =
-    "rewards_notification_ads_launch";
+const char kRewardsNotificationAdsLaunch[] = "rewards_notification_ads_launch";
+
+const unsigned int kRetriesCountOnNetworkChange = 1;
 
 }
-static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 class LogStreamImpl : public ads::LogStream {
  public:
@@ -108,22 +109,26 @@ class LogStreamImpl : public ads::LogStream {
 class AdsNotificationHandler : public NotificationHandler {
  public:
   explicit AdsNotificationHandler(AdsServiceImpl* ads_service) :
-      ads_service_(ads_service->AsWeakPtr()) {}
+      ads_service_(ads_service->AsWeakPtr()) {
+  }
 
-  ~AdsNotificationHandler() override {}
+  ~AdsNotificationHandler() override {
+  }
 
   // NotificationHandler implementation.
-  void OnShow(Profile* profile,
-              const std::string& notification_id) override {
+  void OnShow(
+      Profile* profile,
+      const std::string& notification_id) override {
     if (ads_service_)
       ads_service_->OnShow(profile, notification_id);
   }
 
-  void OnClose(Profile* profile,
-               const GURL& origin,
-               const std::string& notification_id,
-               bool by_user,
-               base::OnceClosure completed_closure) override {
+  void OnClose(
+      Profile* profile,
+      const GURL& origin,
+      const std::string& notification_id,
+      bool by_user,
+      base::OnceClosure completed_closure) override {
     if (!ads_service_) {
       std::move(completed_closure).Run();
       return;
@@ -134,24 +139,34 @@ class AdsNotificationHandler : public NotificationHandler {
         std::move(completed_closure));
   }
 
-  void OnClick(Profile* profile,
-               const GURL& origin,
-               const std::string& notification_id,
-               const base::Optional<int>& action_index,
-               const base::Optional<base::string16>& reply,
-               base::OnceClosure completed_closure) override {
-    if (ads_service_ && !action_index.has_value()) {
-      ads_service_->OpenSettings(profile, origin, true);
+  void OnClick(
+      Profile* profile,
+      const GURL& origin,
+      const std::string& notification_id,
+      const base::Optional<int>& action_index,
+      const base::Optional<base::string16>& reply,
+      base::OnceClosure completed_closure) override {
+    if (!ads_service_) {
+      return;
     }
+
+    ads_service_->ViewAd(notification_id);
   }
 
-  void DisableNotifications(Profile* profile,
-                            const GURL& origin) override {}
-
+  void DisableNotifications(
+      Profile* profile,
+      const GURL& origin) override {
+  }
 
   void OpenSettings(Profile* profile, const GURL& origin) override {
-    if (ads_service_)
-      ads_service_->OpenSettings(profile, origin, false);
+    if (!ads_service_) {
+      return;
+    }
+
+    DCHECK(origin.has_query());
+
+    auto id = origin.query();
+    ads_service_->ViewAd(id);
   }
 
  private:
@@ -162,9 +177,8 @@ class AdsNotificationHandler : public NotificationHandler {
 
 namespace {
 
-int32_t ToMojomNotificationResultInfoResultType(
-    ads::NotificationResultInfoResultType result_type) {
-  return (int32_t)result_type;
+int32_t ToMojomNotificationEventType(ads::NotificationEventType type) {
+  return (int32_t)type;
 }
 
 static std::map<std::string, int> g_schema_resource_ids = {
@@ -209,11 +223,6 @@ std::string URLMethodToRequestType(
   }
 }
 
-void EnsureBaseDirectoryExists(const base::FilePath& path) {
-  if (!DirectoryExists(path))
-    base::CreateDirectory(path);
-}
-
 void PostWriteCallback(
     const base::Callback<void(bool success)>& callback,
     scoped_refptr<base::SequencedTaskRunner> reply_task_runner,
@@ -236,6 +245,15 @@ std::string LoadOnFileTaskRunner(
   return data;
 }
 
+bool EnsureBaseDirectoryExistsOnFileTaskRunner(
+    const base::FilePath& path) {
+  if (base::DirectoryExists(path)) {
+    return true;
+  }
+
+  return base::CreateDirectory(path);
+}
+
 std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
     const std::string category,
     BundleStateDatabase* backend) {
@@ -248,9 +266,17 @@ std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
   return ads;
 }
 
-bool ResetOnFileTaskRunner(
-    const base::FilePath& path) {
-  return base::DeleteFile(path, false);
+bool ResetOnFileTaskRunner(const base::FilePath& path) {
+  bool recursive;
+
+  base::File::Info file_info;
+  if (base::GetFileInfo(path, &file_info)) {
+    recursive = file_info.is_directory;
+  } else {
+    recursive = false;
+  }
+
+  return base::DeleteFile(path, recursive);
 }
 
 bool SaveBundleStateOnFileTaskRunner(
@@ -270,7 +296,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "This service is used to communicate with Brave servers "
           "to send and retrieve information for Ads."
         trigger:
-          "Triggered by user viewing Ads or at various intervals."
+          "Triggered by user viewing ads or at various intervals."
         data:
           "Ads catalog and Confirmations."
         destination: WEBSITE
@@ -293,9 +319,10 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       base_path_(profile_->GetPath().AppendASCII("ads_service")),
+      is_initialized_(false),
+      retry_viewing_ad_with_id_(""),
       next_timer_id_(0),
       ads_launch_id_(0),
-      is_supported_region_(false),
       bundle_state_backend_(
           new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
@@ -307,9 +334,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
 #endif
       bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(!profile_->IsOffTheRecord());
-
-  file_task_runner_->PostTask(FROM_HERE,
-      base::BindOnce(&EnsureBaseDirectoryExists, base_path_));
 
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
 
@@ -338,45 +362,58 @@ AdsServiceImpl::~AdsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, bundle_state_backend_.release());
 }
 
-void AdsServiceImpl::OnInitialize() {
+void AdsServiceImpl::OnCreate() {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->Initialize(base::BindOnce(
+      &AdsServiceImpl::OnInitialize, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnInitialize(const int32_t result) {
+  if (result != ads::Result::SUCCESS) {
+    LOG(ERROR) << "Failed to initialize ads";
+    return;
+  }
+
+  is_initialized_ = true;
+
+  MaybeViewAd();
+
   ResetTimer();
 }
 
-void AdsServiceImpl::OnCreate() {
-  if (connected()) {
-    bat_ads_->Initialize(
-        base::BindOnce(&AdsServiceImpl::OnInitialize, AsWeakPtr()));
+void AdsServiceImpl::MaybeViewAd() {
+  if (retry_viewing_ad_with_id_.empty()) {
+    return;
   }
+
+  ViewAd(retry_viewing_ad_with_id_);
+  retry_viewing_ad_with_id_ = "";
+}
+
+void AdsServiceImpl::RetryViewingAdWithId(const std::string& id) {
+  LOG(WARNING) << "Retry viewing ad with id " << id;
+  retry_viewing_ad_with_id_ = id;
 }
 
 void AdsServiceImpl::MaybeStart(bool should_restart) {
-  if (should_restart)
+  if (!IsSupportedRegion()) {
+    LOG(INFO) << GetAdsLocale() << " locale does not support Ads";
     Shutdown();
+    return;
+  }
+
+  if (should_restart) {
+    LOG(INFO) << "Restarting ads service";
+    Shutdown();
+  }
 
   if (!StartService()) {
-    LOG(ERROR) << "Failed to start Ads service";
+    LOG(ERROR) << "Failed to start ads service";
     return;
   }
-
-  bat_ads_service_->IsSupportedRegion(GetAdsLocale(),
-      base::BindOnce(&AdsServiceImpl::OnMaybeStartForRegion,
-          AsWeakPtr(), should_restart));
-}
-
-void AdsServiceImpl::OnMaybeStartForRegion(
-    bool should_restart,
-    bool is_supported_region) {
-  is_supported_region_ = is_supported_region;
-
-  if (!is_supported_region_) {
-    LOG(WARNING) << GetAdsLocale() << " locale does not support Ads";
-
-    Shutdown();
-    return;
-  }
-
-  MaybeStartFirstLaunchNotificationTimeoutTimer();
-  MaybeShowFirstLaunchNotification();
 
   if (IsAdsEnabled()) {
     if (should_restart) {
@@ -398,8 +435,9 @@ bool AdsServiceImpl::StartService() {
   content::ServiceManagerConnection* connection =
       content::ServiceManagerConnection::GetForProcess();
 
-  if (!connection)
+  if (!connection) {
     return false;
+  }
 
   connection->GetConnector()->BindInterface(
       bat_ads::mojom::kServiceName, &bat_ads_service_);
@@ -471,6 +509,21 @@ void AdsServiceImpl::UpdateIsTestingFlag() {
 }
 
 void AdsServiceImpl::Start() {
+  EnsureBaseDirectoryExists();
+}
+
+void AdsServiceImpl::EnsureBaseDirectoryExists() {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
+      base::Bind(&AdsServiceImpl::OnEnsureBaseDirectoryExists, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnEnsureBaseDirectoryExists(bool success) {
+  if (!success) {
+    LOG(ERROR) << "Failed to create base directory";
+    return;
+  }
+
   BackgroundHelper::GetInstance()->AddObserver(this);
 
   bat_ads::mojom::BatAdsClientAssociatedPtrInfo client_ptr_info;
@@ -478,6 +531,33 @@ void AdsServiceImpl::Start() {
 
   bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
+
+  MaybeStartFirstLaunchNotificationTimeoutTimer();
+  MaybeShowFirstLaunchNotification();
+
+  MaybeShowMyFirstAdNotification();
+}
+
+void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
+  if (!ShouldShowMyFirstAdNotification()) {
+    return;
+  }
+
+  if (!NotificationHelper::GetInstance()->ShowMyFirstAdNotification()) {
+    return;
+  }
+
+  profile_->GetPrefs()->SetBoolean(
+      prefs::kShouldShowMyFirstAdNotification, false);
+}
+
+bool AdsServiceImpl::ShouldShowMyFirstAdNotification() {
+  auto is_ads_enabled = IsAdsEnabled();
+
+  auto should_show = profile_->GetPrefs()->GetBoolean(
+      prefs::kShouldShowMyFirstAdNotification);
+
+  return is_ads_enabled && should_show;
 }
 
 void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
@@ -629,11 +709,33 @@ void AdsServiceImpl::RemoveFirstLaunchNotification() {
 }
 
 void AdsServiceImpl::Stop() {
-  if (connected()) {
-    // this is kind of weird, but we need to call Initialize on disable too
-    bat_ads_->Initialize(base::NullCallback());
+  if (!connected()) {
+    return;
   }
+
+  ShutdownBatAds();
+}
+
+void AdsServiceImpl::ShutdownBatAds() {
+  LOG(INFO) << "Shutting down ads";
+
+  bat_ads_->Shutdown(base::BindOnce(&AdsServiceImpl::OnShutdownBatAds,
+      AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnShutdownBatAds(const int32_t result) {
+  DCHECK(is_initialized_);
+
+  if (result != ads::Result::SUCCESS) {
+    LOG(ERROR) << "Failed to shutdown ads";
+    return;
+  }
+
+  RemoveFirstLaunchNotification();
   Shutdown();
+  ResetAllState();
+
+  LOG(INFO) << "Successfully shutdown ads";
 }
 
 void AdsServiceImpl::ResetTimer() {
@@ -671,18 +773,28 @@ void AdsServiceImpl::Shutdown() {
     delete loader;
   }
   url_loaders_.clear();
+
   idle_poll_timer_.Stop();
 
   bat_ads_.reset();
   bat_ads_client_binding_.Close();
 
-  for (NotificationInfoMap::iterator it = notification_ids_.begin();
-      it != notification_ids_.end(); ++it) {
-    const std::string notification_id = it->first;
-    display_service_->Close(NotificationHandler::Type::BRAVE_ADS,
-                            notification_id);
+  is_initialized_ = false;
+}
+
+void AdsServiceImpl::ResetAllState() {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&ResetOnFileTaskRunner, base_path_),
+      base::Bind(&AdsServiceImpl::OnResetAllState, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnResetAllState(bool success) {
+  if (!success) {
+    LOG(ERROR) << "Failed to reset ads state";
+    return;
   }
-  notification_ids_.clear();
+
+  LOG(INFO) << "Successfully reset ads state";
 }
 
 void AdsServiceImpl::MigratePrefs() const {
@@ -691,7 +803,7 @@ void AdsServiceImpl::MigratePrefs() const {
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
-    LOG(ERROR) << "Failed to migrate Ads preferences from version "
+    LOG(ERROR) << "Failed to migrate ads preferences from version "
         << source_version << " to " << dest_version;
 
     return;
@@ -742,7 +854,7 @@ bool AdsServiceImpl::MigratePrefs(
     }
 
     if (!is_dry_run) {
-      LOG(INFO) << "Migrating Ads preferences from mapping version "
+      LOG(INFO) << "Migrating ads preferences from mapping version "
           << from_version << " to " << to_version;
 
       (this->*(mapping->second))();
@@ -813,8 +925,6 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == prefs::kEnabled ||
       pref == brave_rewards::prefs::kBraveRewardsEnabled) {
     if (IsAdsEnabled()) {
-      RemoveFirstLaunchNotification();
-
       MaybeStart(false);
     } else {
       Stop();
@@ -857,7 +967,8 @@ void AdsServiceImpl::MayBeShowFirstLaunchNotificationForSupportedRegion(
 }
 
 bool AdsServiceImpl::IsSupportedRegion() const {
-  return is_supported_region_;
+  auto locale = LocaleHelper::GetInstance()->GetLocale();
+  return ads::Ads::IsSupportedRegion(locale);
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
@@ -888,23 +999,24 @@ bool AdsServiceImpl::IsForeground() const {
   return BackgroundHelper::GetInstance()->IsForeground();
 }
 
-void AdsServiceImpl::TabUpdated(SessionID tab_id,
-                                const GURL& url,
-                                const bool is_active) {
-  if (!connected())
+void AdsServiceImpl::OnTabUpdated(
+    SessionID tab_id,
+    const GURL& url,
+    const bool is_active) {
+  if (!connected()) {
     return;
+  }
 
-  bat_ads_->TabUpdated(tab_id.id(),
-                   url.spec(),
-                   is_active,
-                   profile_->IsOffTheRecord());
+  bat_ads_->OnTabUpdated(tab_id.id(), url.spec(), is_active,
+      profile_->IsOffTheRecord());
 }
 
-void AdsServiceImpl::TabClosed(SessionID tab_id) {
-  if (!connected())
+void AdsServiceImpl::OnTabClosed(SessionID tab_id) {
+  if (!connected()) {
     return;
+  }
 
-  bat_ads_->TabClosed(tab_id.id());
+  bat_ads_->OnTabClosed(tab_id.id());
 }
 
 void AdsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
@@ -912,6 +1024,14 @@ void AdsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
     return;
 
   bat_ads_->SetConfirmationsIsReady(is_ready);
+}
+
+void AdsServiceImpl::ChangeLocale(const std::string& locale) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->ChangeLocale(locale);
 }
 
 void AdsServiceImpl::ClassifyPage(const std::string& url,
@@ -932,7 +1052,7 @@ void AdsServiceImpl::SetIdleThreshold(const int threshold) {
 
 bool AdsServiceImpl::IsNotificationsAvailable() const {
 #if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
-  return true;
+  return NotificationHelper::GetInstance()->IsNotificationsAvailable();
 #else
   return false;
 #endif
@@ -950,12 +1070,24 @@ void AdsServiceImpl::LoadUserModelForLocale(
   callback(ads::Result::SUCCESS, user_model);
 }
 
-void AdsServiceImpl::OnURLsDeleted(history::HistoryService* history_service,
-                                   const history::DeletionInfo& deletion_info) {
-  if (!connected())
+void AdsServiceImpl::OnURLsDeleted(
+    history::HistoryService* history_service,
+    const history::DeletionInfo& deletion_info) {
+  if (!connected()) {
     return;
+  }
 
-  bat_ads_->RemoveAllHistory(base::NullCallback());
+  bat_ads_->RemoveAllHistory(base::BindOnce(
+      &AdsServiceImpl::OnRemoveAllHistory, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnRemoveAllHistory(const int32_t result) {
+  if (result != ads::Result::SUCCESS) {
+    LOG(ERROR) << "Failed to remove all ads history";
+    return;
+  }
+
+  LOG(INFO) << "Successfully removed all ads history";
 }
 
 void AdsServiceImpl::OnMediaStart(SessionID tab_id) {
@@ -974,23 +1106,24 @@ void AdsServiceImpl::OnMediaStop(SessionID tab_id) {
 
 void AdsServiceImpl::ShowNotification(
     std::unique_ptr<ads::NotificationInfo> info) {
-  std::string notification_id;
-  auto notification =
-      CreateAdNotification(*info, &notification_id);
+  auto notification = CreateAdNotification(*info);
 
-  notification_ids_[notification_id] = std::move(info);
+  display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
+      *notification, /*metadata=*/nullptr);
 
-  display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification,
-                            /*metadata=*/nullptr);
-
+#if !defined(OS_ANDROID)
   uint32_t timer_id = next_timer_id();
 
   timers_[timer_id] = std::make_unique<base::OneShotTimer>();
   timers_[timer_id]->Start(FROM_HERE,
       base::TimeDelta::FromSeconds(120),
-      base::BindOnce(
-          &AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
-              timer_id, notification_id));
+      base::BindOnce(&AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
+          timer_id, info->id));
+#endif
+}
+
+void AdsServiceImpl::CloseNotification(const std::string& id) {
+  display_service_->Close(NotificationHandler::Type::BRAVE_ADS, id);
 }
 
 void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
@@ -1001,14 +1134,18 @@ void AdsServiceImpl::ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) {
   rewards_service_->ConfirmAd(info->ToJson());
 }
 
-void AdsServiceImpl::NotificationTimedOut(uint32_t timer_id,
-                                          const std::string& notification_id) {
+void AdsServiceImpl::NotificationTimedOut(
+    uint32_t timer_id,
+    const std::string& notification_id) {
   timers_.erase(timer_id);
-  if (notification_ids_.find(notification_id) != notification_ids_.end()) {
-    display_service_->Close(NotificationHandler::Type::BRAVE_ADS,
-                            notification_id);
-    OnClose(profile_, GURL(), notification_id, false, base::OnceClosure());
+
+  if (!connected()) {
+    return;
   }
+
+  CloseNotification(notification_id);
+
+  OnClose(profile_, GURL(), notification_id, false, base::OnceClosure());
 }
 
 void AdsServiceImpl::Save(const std::string& name,
@@ -1089,8 +1226,7 @@ void AdsServiceImpl::Reset(const std::string& name,
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&ResetOnFileTaskRunner, base_path_.AppendASCII(name)),
       base::BindOnce(&AdsServiceImpl::OnReset,
-                     AsWeakPtr(),
-                     std::move(callback)));
+          AsWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::OnReset(const ads::OnResetCallback& callback,
@@ -1136,87 +1272,88 @@ void AdsServiceImpl::LoadSampleBundle(
 }
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() {
-  return !content::GetNetworkConnectionTracker()->IsOffline();
+  return !net::NetworkChangeNotifier::IsOffline();
 }
 
-void AdsServiceImpl::OnShow(Profile* profile,
-                            const std::string& notification_id) {
-  if (!connected() ||
-      notification_ids_.find(notification_id) == notification_ids_.end())
+void AdsServiceImpl::OnShow(
+    Profile* profile,
+    const std::string& notification_id) {
+  if (!connected()) {
     return;
-
-  bat_ads_->GenerateAdReportingNotificationShownEvent(
-      notification_ids_[notification_id]->ToJson());
-}
-
-void AdsServiceImpl::OnClose(Profile* profile,
-                             const GURL& origin,
-                             const std::string& notification_id,
-                             bool by_user,
-                             base::OnceClosure completed_closure) {
-  if (notification_ids_.find(notification_id) != notification_ids_.end()) {
-    auto notification_info = base::WrapUnique(
-        notification_ids_[notification_id].release());
-    notification_ids_.erase(notification_id);
-
-    if (connected()) {
-      auto result_type = by_user
-          ? ads::NotificationResultInfoResultType::DISMISSED
-          : ads::NotificationResultInfoResultType::TIMEOUT;
-      bat_ads_->GenerateAdReportingNotificationResultEvent(
-          notification_info->ToJson(),
-          ToMojomNotificationResultInfoResultType(result_type));
-    }
   }
 
-  if (completed_closure)
-    std::move(completed_closure).Run();
+  bat_ads_->OnNotificationEvent(notification_id,
+      ToMojomNotificationEventType(ads::NotificationEventType::VIEWED));
 }
 
-void AdsServiceImpl::OpenSettings(Profile* profile,
-                                  const GURL& origin,
-                                  bool should_close) {
-  DCHECK(origin.has_query());
-  auto notification_id = origin.query();
-
-  if (notification_ids_.find(notification_id) == notification_ids_.end())
-    return;
-
-  auto notification_info = base::WrapUnique(
-      notification_ids_[notification_id].release());
-  notification_ids_.erase(notification_id);
-
-  if (should_close)
-    display_service_->Close(NotificationHandler::Type::BRAVE_ADS,
-                            notification_id);
-
+void AdsServiceImpl::OnClose(
+    Profile* profile,
+    const GURL& origin,
+    const std::string& notification_id,
+    bool by_user,
+    base::OnceClosure completed_closure) {
   if (connected()) {
-    bat_ads_->GenerateAdReportingNotificationResultEvent(
-        notification_info->ToJson(),
-        ToMojomNotificationResultInfoResultType(
-            ads::NotificationResultInfoResultType::CLICKED));
+    auto event_type = by_user
+        ? ads::NotificationEventType::DISMISSED
+        : ads::NotificationEventType::TIMEOUT;
+
+    bat_ads_->OnNotificationEvent(notification_id,
+        ToMojomNotificationEventType(event_type));
   }
 
-  GURL url(notification_info->url);
-  if (!url.is_valid()) {
-    LOG(WARNING) << "Invalid notification URL: " << notification_info->url;
+  if (completed_closure) {
+    std::move(completed_closure).Run();
+  }
+}
+
+void AdsServiceImpl::ViewAd(const std::string& id) {
+  if (!connected() || !is_initialized_) {
+    RetryViewingAdWithId(id);
+    return;
+  }
+
+  LOG(INFO) << "View ad with id " << id;
+
+  bat_ads_->GetNotificationForId(
+      id, base::BindOnce(&AdsServiceImpl::OnViewAd, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnViewAd(const std::string& json) {
+  ads::NotificationInfo notification;
+  notification.FromJson(json);
+
+  bat_ads_->OnNotificationEvent(notification.id,
+      ToMojomNotificationEventType(ads::NotificationEventType::CLICKED));
+
+  OpenNewTabWithUrl(notification.url);
+}
+
+void AdsServiceImpl::OpenNewTabWithUrl(const std::string& url) {
+  GURL gurl(url);
+  if (!gurl.is_valid()) {
+    LOG(WARNING) << "Invalid URL: " << url;
     return;
   }
 
 #if defined(OS_ANDROID)
-  NavigateParams nav_params(profile, url, ui::PAGE_TRANSITION_LINK);
-#else
-  Browser* browser = chrome::FindTabbedBrowser(profile, false);
-  if (!browser)
-    browser = new Browser(Browser::CreateParams(profile, true));
+  // ServiceTabLauncher can currently only launch new tabs
+  const content::OpenURLParams params(gurl, content::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
+      true);
 
-  NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
-#endif
+  base::Callback<void(content::WebContents*)> callback =
+      base::Bind([] (content::WebContents*) {});
+
+  ServiceTabLauncher::GetInstance()->LaunchTab(profile_, params, callback);
+#else
+  Browser* browser = chrome::FindTabbedBrowser(profile_, false);
+  if (!browser) {
+    browser = new Browser(Browser::CreateParams(profile_, true));
+  }
+
+  NavigateParams nav_params(browser, gurl, ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
-#if defined(OS_ANDROID)
-  TabModelList::HandlePopupNavigation(&nav_params);
-#else
   Navigate(&nav_params);
 #endif
 }
@@ -1234,10 +1371,6 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
   NOTREACHED();
   client_info->platform = ads::ClientInfoPlatformType::UNKNOWN;
 #endif
-}
-
-const std::string AdsServiceImpl::GenerateUUID() const {
-  return base::GenerateGUID();
 }
 
 const std::vector<std::string> AdsServiceImpl::GetLocales() const {
