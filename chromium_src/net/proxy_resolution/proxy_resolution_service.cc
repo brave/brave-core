@@ -5,8 +5,6 @@
 
 #include "net/proxy_resolution/proxy_resolution_service.h"
 
-#include <utility>
-
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 
 namespace net {
