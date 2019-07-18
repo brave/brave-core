@@ -3,11 +3,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 chrome.test.runTests([
-  function braveShieldsExtensionHasAccess() {
-    if (chrome.braveShields) {
-      chrome.test.fail();
-    } else {
+  function braveWalletExtensionHasAccess() {
+    if (chrome.braveWallet && chrome.braveWallet.isEnabled &&
+        chrome.braveWallet.promptToEnableWallet) {
       chrome.test.succeed();
+    } else {
+      chrome.test.fail();
     }
   },
 ]);
+

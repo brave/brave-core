@@ -135,6 +135,15 @@ declare namespace chrome.braveShields {
   const plugins: any
 }
 
+declare namespace chrome.braveWallet {
+  const promptToEnableWallet: (tabId: number | undefined) => void
+  const isEnabled: () => boolean
+}
+
+declare namespace chrome.test {
+  const sendMessage: (message: string) => {}
+}
+
 declare namespace chrome.braveTheme {
   type ThemeType = 'Light' | 'Dark'
   type ThemeTypeCallback = (themeType: ThemeType) => void

@@ -3,8 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 chrome.test.runTests([
-  function braveShieldsExtensionHasAccess() {
-    if (chrome.braveShields) {
+  function braveWalletExtensionHasAccess() {
+    if (chrome.braveWallet) {
       chrome.test.fail();
     } else {
       chrome.test.succeed();
