@@ -38,8 +38,10 @@
 #include "chrome/browser/notifications/notification_display_service_impl.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "chrome/browser/profiles/profile.h"
+#if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#endif
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_constants.h"
@@ -1233,6 +1235,23 @@ void AdsServiceImpl::OnReset(const ads::OnResetCallback& callback,
                              bool success) {
   if (connected())
     callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
+}
+
+void AdsServiceImpl::ResetTheWholeState(
+    const base::Callback<void(bool)>& callback) {
+  SetAdsEnabled(false);
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ResetOnFileTaskRunner,
+                     base_path_),
+      base::BindOnce(&AdsServiceImpl::OnResetTheWholeState,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnResetTheWholeState(
+    base::Callback<void(bool)> callback,
+    bool success) {
+  callback.Run(success);
 }
 
 void AdsServiceImpl::GetAds(

@@ -28,7 +28,7 @@ class Create {
 
   ~Create();
 
-  void Start();
+  void Start(const std::string& safetynet_token);
 
  private:
   void RequestCredentialsCallback(
@@ -37,6 +37,11 @@ class Create {
       const std::map<std::string, std::string>& headers);
 
   void RegisterPersonaCallback(
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
+  void StartSafetyNetCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);

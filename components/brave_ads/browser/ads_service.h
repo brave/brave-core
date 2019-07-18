@@ -43,6 +43,8 @@ class AdsService : public KeyedService {
       const GURL& url,
       const bool is_active) = 0;
   virtual void OnTabClosed(SessionID tab_id) = 0;
+  virtual void ResetTheWholeState(
+      const base::Callback<void(bool)>& callback) = 0;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);

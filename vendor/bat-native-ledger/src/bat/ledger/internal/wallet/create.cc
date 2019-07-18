@@ -26,7 +26,20 @@ Create::Create(bat_ledger::LedgerImpl* ledger) :
 Create::~Create() {
 }
 
-void Create::Start() {
+void Create::Start(const std::string& safetynet_token) {
+  if (!safetynet_token.empty()) {
+    std::string safetynet_prefix = PREFIX_V5;
+#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
+    safetynet_prefix = PREFIX_V3;
+#endif
+    std::vector<std::string> headers;
+    headers.push_back("safetynet-token:" + safetynet_token);
+    auto callback = std::bind(&Create::StartSafetyNetCallback, this, _1, _2, _3);
+    ledger_->LoadURL(braveledger_bat_helper::buildURL(
+          (std::string)GET_SET_PROMOTION, safetynet_prefix),
+        headers, "", "", ledger::URL_METHOD::GET, callback);
+    return;
+  }
   auto callback = std::bind(&Create::RequestCredentialsCallback,
                             this,
                             _1,
@@ -36,6 +49,29 @@ void Create::Start() {
       braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2),
       std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET, callback);
+}
+
+void Create::StartSafetyNetCallback(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers) {
+
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  unsigned int statusCode;
+  std::string error;
+  bool hasResponseError = braveledger_bat_helper::getJSONResponse(
+    response, &statusCode, &error);
+  std::string message;
+  if (statusCode == SAFETYNET_ERROR_CODE || (hasResponseError &&
+      statusCode == net::HTTP_NOT_FOUND &&
+      braveledger_bat_helper::getJSONMessage(response, message) &&
+      message == SAFETYNET_ERROR_MESSAGE)) {
+    ledger_->OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
+    return;
+  }
+  // We passed safetynet check, so just make regular call
+  Start("");
 }
 
 std::string Create::GetAnonizeProof(const std::string& registrarVK,

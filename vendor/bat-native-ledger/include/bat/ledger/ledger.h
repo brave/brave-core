@@ -175,7 +175,7 @@ class LEDGER_EXPORT Ledger {
       const std::vector<std::string>& headers) const = 0;
   virtual void ApplySafetynetToken(const std::string& token) const = 0;
 
-  virtual void GetGrantViaSafetynetCheck() const = 0;
+  virtual void GetGrantViaSafetynetCheck(const std::string& promotion_id) const = 0;
 
   virtual std::string GetWalletPassphrase() const = 0;
 

@@ -25,10 +25,12 @@ class Grants {
   ~Grants();
 
 
-  void GetGrants(const std::string& lang, const std::string& forPaymentId);
+  void GetGrants(const std::string& lang, const std::string& forPaymentId,
+                 const std::string& safetynet_token);
 
   void SetGrant(const std::string& captchaResponse,
-                const std::string& promotionId);
+                const std::string& promotionId,
+                const std::string& safetynet_token);
 
   void GetGrantCaptcha(const std::vector<std::string>& headers);
 
@@ -39,6 +41,7 @@ class Grants {
       const std::map<std::string, std::string>& headers);
 
   void GetGrantsCallback(
+      std::string safetynet_token,
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
@@ -46,7 +49,8 @@ class Grants {
   void SetGrantCallback(
       int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      bool is_safetynet_check);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };

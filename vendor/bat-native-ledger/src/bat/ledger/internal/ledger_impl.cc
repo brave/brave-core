@@ -806,10 +806,11 @@ void LedgerImpl::OnGrantFinish(ledger::Result result,
   newGrant->expiry_time = grant.expiryTime;
   newGrant->promotion_id = grant.promotionId;
   newGrant->type = grant.type;
-
+#if !defined(OS_ANDROID)
   if (grant.type == "ads") {
     bat_confirmations_->UpdateAdsRewards(true);
   }
+#endif
 
   ledger_client_->OnGrantFinish(result, std::move(newGrant));
 }
@@ -1185,7 +1186,9 @@ void LedgerImpl::LogResponse(
 }
 
 void LedgerImpl::UpdateAdsRewards() {
+#if !defined(OS_ANDROID)
   bat_confirmations_->UpdateAdsRewards(false);
+#endif
 }
 
 void LedgerImpl::ResetReconcileStamp() {
@@ -1669,16 +1672,16 @@ void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
   bat_wallet_->FetchBalance(callback);
 }
 
-void LedgerImpl::GetGrantViaSafetynetCheck() const {
-  bat_client_->getGrantViaSafetynetCheck();
+void LedgerImpl::GetGrantViaSafetynetCheck(const std::string& promotion_id) const {
+  bat_wallet_->GetGrantViaSafetynetCheck(promotion_id);
 }
 
-void LedgerImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
-  ledger_client_->OnGrantViaSafetynetCheck(nonce);
+void LedgerImpl::OnGrantViaSafetynetCheck(const std::string& promotion_id, const std::string& nonce) {
+  ledger_client_->OnGrantViaSafetynetCheck(promotion_id, nonce);
 }
 
 void LedgerImpl::ApplySafetynetToken(const std::string& token) const {
-  bat_client_->setGrant("", "", token);
+  bat_grants_->SetGrant("", "", token);
 }
 
 }  // namespace bat_ledger

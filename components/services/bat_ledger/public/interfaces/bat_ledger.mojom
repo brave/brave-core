@@ -74,7 +74,7 @@ interface BatLedger {
   GetETHAddress() => (string address);
   GetLTCAddress() => (string address);
 
-  GetGrantViaSafetynetCheck();
+  GetGrantViaSafetynetCheck(string promotion_id);
   ApplySafetynetToken(string result_string);
   
   SetRewardsMainEnabled(bool enabled);
@@ -196,7 +196,7 @@ interface BatLedgerClient {
 
   LoadNicewareList() => (int32 result, string data);
   OnRemoveRecurring(string publisher_key) => (int32 result);
-  OnGrantViaSafetynetCheck(string nonce);
+  OnGrantViaSafetynetCheck(string promotion_id, string nonce);
 
   LoadURL(string url, array<string> headers, string content,
       string content_type, int32 method) => (int32 status_code, string response,

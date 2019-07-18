@@ -29,7 +29,8 @@ Grants::~Grants() {
 }
 
 void Grants::GetGrants(const std::string& lang,
-                       const std::string& forPaymentId) {
+                       const std::string& forPaymentId,
+                       const std::string& safetynet_token) {
   // make sure wallet/client state is sane here as this is the first
   // panel call.
   const std::string& wallet_payment_id = ledger_->GetPaymentId();
@@ -57,13 +58,22 @@ void Grants::GetGrants(const std::string& lang,
     }
   }
 
-  auto callback = std::bind(&Grants::GetGrantsCallback, this, _1, _2, _3);
+  std::vector<std::string> headers;
+  if (!safetynet_token.empty()) {
+    headers.push_back("safetynet-token:" + safetynet_token);
+  }
+  std::string safetynet_prefix = PREFIX_V5;
+#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
+    safetynet_prefix = PREFIX_V3;
+#endif
+  auto callback = std::bind(&Grants::GetGrantsCallback, this, safetynet_token, _1, _2, _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
-        (std::string)GET_SET_PROMOTION + arguments, PREFIX_V4),
-      std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, callback);
+        (std::string)GET_SET_PROMOTION + arguments, safetynet_token.empty() ? PREFIX_V4 : safetynet_prefix),
+      headers, "", "", ledger::URL_METHOD::GET, callback);
 }
 
 void Grants::GetGrantsCallback(
+    std::string safetynet_token,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -91,6 +101,16 @@ void Grants::GetGrantsCallback(
 
   bool ok = braveledger_bat_helper::loadFromJson(&grants_properties, response);
 
+  if (!ok && !safetynet_token.empty()) {
+    ok = braveledger_bat_helper::loadFromJson(&properties, response);
+    if (ok) {
+      braveledger_bat_helper::GRANT_RESPONSE grantResponse;
+      grantResponse.promotionId = properties.promotionId;
+      grantResponse.type = properties.type;
+      grants_properties.grants_.push_back(grantResponse);
+    }
+  }
+
   if (!ok) {
      BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
        "Failed to load grant properties state";
@@ -112,8 +132,9 @@ void Grants::GetGrantsCallback(
 }
 
 void Grants::SetGrant(const std::string& captchaResponse,
-                      const std::string& promotionId) {
-  if (promotionId.empty()) {
+                      const std::string& promotionId,
+                      const std::string& safetynet_token) {
+  if (promotionId.empty() && safetynet_token.empty()) {
     braveledger_bat_helper::GRANT properties;
     ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
     return;
@@ -121,20 +142,26 @@ void Grants::SetGrant(const std::string& captchaResponse,
 
   std::string keys[2] = {"promotionId", "captchaResponse"};
   std::string values[2] = {promotionId, captchaResponse};
-  std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
+  std::string payload = braveledger_bat_helper::stringify(keys, values, safetynet_token.empty() ? 2 : 1);
 
-  auto callback = std::bind(&Grants::SetGrantCallback, this, _1, _2, _3);
+  std::vector<std::string> headers;
+  if (!safetynet_token.empty()) {
+    headers.push_back("safetynet-token:" + safetynet_token);
+  }
+
+  auto callback = std::bind(&Grants::SetGrantCallback, this, _1, _2, _3, !safetynet_token.empty());
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
-        PREFIX_V2),
-      std::vector<std::string>(), payload, "application/json; charset=utf-8",
+        safetynet_token.empty() ? PREFIX_V2 : PREFIX_V3),
+      headers, payload, "application/json; charset=utf-8",
       ledger::URL_METHOD::PUT, callback);
 }
 
 void Grants::SetGrantCallback(
     int response_status_code,
     const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const std::map<std::string, std::string>& headers,
+    bool is_safetynet_check) {
   std::string error;
   unsigned int statusCode;
   braveledger_bat_helper::GRANT grant;
@@ -144,7 +171,7 @@ void Grants::SetGrantCallback(
 
   if (!error.empty()) {
     if (statusCode == net::HTTP_FORBIDDEN) {
-      ledger_->OnGrantFinish(ledger::Result::CAPTCHA_FAILED, grant);
+      ledger_->OnGrantFinish(is_safetynet_check ? ledger::Result::SAFETYNET_ATTESTATION_FAILED : ledger::Result::CAPTCHA_FAILED, grant);
     } else if (statusCode == net::HTTP_NOT_FOUND ||
                statusCode == net::HTTP_GONE) {
       ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);

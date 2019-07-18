@@ -519,8 +519,8 @@ void LedgerClientMojoProxy::OnRestorePublishers(
       std::bind(LedgerClientMojoProxy::OnRestorePublishersDone, holder, _1));
 }
 
-void LedgerClientMojoProxy::OnGrantViaSafetynetCheck(const std::string& nonce) {
-  ledger_client_->OnGrantViaSafetynetCheck(nonce);
+void LedgerClientMojoProxy::OnGrantViaSafetynetCheck(const std::string& promotion_id, const std::string& nonce) {
+  ledger_client_->OnGrantViaSafetynetCheck(promotion_id, nonce);
 }
 
 // static
