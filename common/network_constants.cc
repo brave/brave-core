@@ -32,7 +32,7 @@ const char kSafeBrowsingFileCheckPrefix[] = "https://sb-ssl.google.com/";
 const char kCRLSetPrefix1[] =
     "*://dl.google.com/release2/chrome_component/*crl-set*";
 const char kCRLSetPrefix2[] =
-    "*://*.gvt1.com/edgedl/release2/chrome_component/*crl-set*";
+    "*://*.gvt1.com/edgedl/release2/chrome_component/*";
 const char kCRLSetPrefix3[] =
     "*://www.google.com/dl/release2/chrome_component/*crl-set*";
 const char kCRLSetPrefix4[] =
