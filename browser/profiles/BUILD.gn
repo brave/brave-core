@@ -2,6 +2,8 @@ source_set("profiles") {
   sources = [
     "brave_profile_manager.cc",
     "brave_profile_manager.h",
+    "profile_util.cc",
+    "profile_util.h",
   ]
   deps = [
     "//base",
