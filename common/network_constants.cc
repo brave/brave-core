@@ -44,6 +44,8 @@ const char kGoogleTagManagerPattern[] =
     "https://www.googletagmanager.com/gtm.js";
 const char kGoogleTagServicesPattern[] =
     "https://www.googletagservices.com/tag/js/gpt.js";
+const char kDevVisualWebsiteOptimizerPattern[] =
+    "https://dev.visualwebsiteoptimizer.com/j.php?*";
 const char kForbesPattern[] = "https://www.forbes.com/*";
 const char kForbesExtraCookies[] =
     "forbes_ab=true; welcomeAd=true; adblock_session=Off; "

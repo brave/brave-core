@@ -22,6 +22,7 @@ extern const char kGeoLocationsPattern[];
 extern const char kGoogleAnalyticsPattern[];
 extern const char kGoogleTagManagerPattern[];
 extern const char kGoogleTagServicesPattern[];
+extern const char kDevVisualWebsiteOptimizerPattern[];
 extern const char kForbesPattern[];
 extern const char kForbesExtraCookies[];
 extern const char kSafeBrowsingPrefix[];

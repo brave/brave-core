@@ -128,6 +128,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, GetPolyfill) {
   GURL google_analytics_url(kGoogleAnalyticsPattern);
   GURL tag_manager_url(kGoogleTagManagerPattern);
   GURL tag_services_url(kGoogleTagServicesPattern);
+  GURL dev_visual_optimizer_url(kDevVisualWebsiteOptimizerPattern);
   GURL normal_url("https://a.com");
   std::string out_url_spec;
   // Shields up, block ads, google analytics should get polyfill
@@ -139,6 +140,9 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, GetPolyfill) {
   // Shields up, block ads, tag services should get polyfill
   ASSERT_TRUE(GetPolyfillForAdBlock(true, false, tab_origin, tag_services_url,
       &out_url_spec));
+  // Shields up, block ads, dev.visiualoptimizer.com should get polyfill
+  ASSERT_TRUE(GetPolyfillForAdBlock(true, false, tab_origin,
+      dev_visual_optimizer_url, &out_url_spec));
   // Shields up, block ads, normal URL should NOT get polyfill
   ASSERT_FALSE(GetPolyfillForAdBlock(true, false, tab_origin, normal_url,
       &out_url_spec));
@@ -152,6 +156,9 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, GetPolyfill) {
   // Shields up, allow ads, tag services should NOT get polyfill
   ASSERT_FALSE(GetPolyfillForAdBlock(true, true, tab_origin, tag_services_url,
       &out_url_spec));
+  // Shields up, allow ads, dev.visiualoptimizer.com should NOT get polyfill
+  ASSERT_FALSE(GetPolyfillForAdBlock(true, true, tab_origin,
+      dev_visual_optimizer_url, &out_url_spec));
   // Shields up, allow ads, normal URL should NOT get polyfill
   ASSERT_FALSE(GetPolyfillForAdBlock(true, true, tab_origin, normal_url,
       &out_url_spec));
@@ -165,6 +172,9 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, GetPolyfill) {
   // Shields down, allow ads, tag services should NOT get polyfill
   ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin, tag_services_url,
       &out_url_spec));
+  // Shields down, allow ads, dev.visiualoptimizer.com should NOT get polyfill
+  ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin,
+      dev_visual_optimizer_url, &out_url_spec));
   // Shields down, allow ads, normal URL should NOT get polyfill
   ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin, normal_url,
       &out_url_spec));
@@ -178,6 +188,9 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, GetPolyfill) {
   // Shields down, block ads, tag services should NOT get polyfill
   ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin,
       tag_services_url, &out_url_spec));
+  // Shields down, block ads, dev.visiualoptimizer.com should NOT get polyfill
+  ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin,
+      dev_visual_optimizer_url, &out_url_spec));
   // Shields down, block ads, normal URL should NOT get polyfill
   ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin, normal_url,
       &out_url_spec));

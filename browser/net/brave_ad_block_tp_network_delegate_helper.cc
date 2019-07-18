@@ -69,6 +69,19 @@ std::string GetGoogleTagServicesPolyfillJS() {
   return base64_output;
 }
 
+std::string GetDevVisualOptimizerPolyfillJS() {
+  static std::string base64_output;
+  if (base64_output.length() != 0)  {
+    return base64_output;
+  }
+  std::string str = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
+    IDR_BRAVE_DEV_VISUAL_OPTIMIZER_POLYFILL).as_string();
+  Base64UrlEncode(str, base::Base64UrlEncodePolicy::OMIT_PADDING,
+      &base64_output);
+  base64_output = std::string(kJSDataURLPrefix) + base64_output;
+  return base64_output;
+}
+
 bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
     const GURL& tab_origin, const GURL& gurl, std::string* new_url_spec) {
   // Polyfills which are related to adblock should only apply when shields
@@ -83,6 +96,8 @@ bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
       kGoogleTagManagerPattern);
   static URLPattern tag_services(URLPattern::SCHEME_ALL,
       kGoogleTagServicesPattern);
+  static URLPattern visual_optimizer(URLPattern::SCHEME_ALL,
+      kDevVisualWebsiteOptimizerPattern);
   if (analytics.MatchesURL(gurl)) {
     std::string&& data_url = GetGoogleAnalyticsPolyfillJS();
     *new_url_spec = data_url;
@@ -97,6 +112,12 @@ bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
 
   if (tag_services.MatchesURL(gurl)) {
     std::string&& data_url = GetGoogleTagServicesPolyfillJS();
+    *new_url_spec = data_url;
+    return true;
+  }
+
+  if (visual_optimizer.MatchesURL(gurl)) {
+    std::string&& data_url = GetDevVisualOptimizerPolyfillJS();
     *new_url_spec = data_url;
     return true;
   }
