@@ -1,5 +1,11 @@
 [![Build Status](https://travis-ci.org/brave/brave-core.svg?branch=master)](https://travis-ci.org/brave/brave-core)
 
+
+
+
+LOLOL
+
+
 # Brave Core
 
 Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.

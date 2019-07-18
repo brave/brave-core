@@ -34,7 +34,7 @@ export default class TorrentStatus extends React.PureComponent<Props, {}> {
     const renderPercentage = () => {
       const percentage =
         torrent.progress < 1 ? (torrent.progress * 100).toFixed(1) : '100'
-      return <Column size={2}> {percentage} </Column>
+      return <Column size={2}> {percentage}% </Column>
     }
 
     const renderSpeeds = () => {
