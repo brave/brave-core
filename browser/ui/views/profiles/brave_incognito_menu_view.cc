@@ -8,26 +8,13 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/tor/buildflags.h"
-#include "brave/grit/brave_generated_resources.h"
-#include "chrome/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/views/profiles/brave_profile_menu_view_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/hover_button.h"
-#include "ui/base/l10n/l10n_util.h"
-#include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/controls/button/button.h"
-
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/extensions/brave_tor_client_updater.h"
-
-namespace {
-constexpr int kIconSize = 16;
-}  // namespace
-#endif
 
 void BraveIncognitoMenuView::ButtonPressed(views::Button* sender,
                                            const ui::Event& event) {
@@ -39,16 +26,11 @@ void BraveIncognitoMenuView::ButtonPressed(views::Button* sender,
 }
 
 void BraveIncognitoMenuView::AddTorButton() {
-#if BUILDFLAG(ENABLE_TOR)
-  if (!browser()->profile()->IsTorProfile() &&
-      !g_brave_browser_process->tor_client_updater()
-           ->GetExecutablePath()
-           .empty()) {
+  if (brave::ShouldShowTorProfileButton(browser()->profile())) {
     tor_profile_button_ = CreateAndAddButton(
-        gfx::CreateVectorIcon(kLaunchIcon, kIconSize, gfx::kChromeIconGrey),
-        l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON));
+        brave::CreateTorProfileButtonIcon(),
+        brave::CreateTorProfileButtonText());
   }
-#endif
 }
 
 void BraveIncognitoMenuView::Reset() {

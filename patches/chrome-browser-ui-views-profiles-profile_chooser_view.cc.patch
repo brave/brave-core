@@ -1,17 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index ae53f8ba0e0f9d67f3412ebf3b7f06db5f602498..633efddd5dba2b9c5e62a7ad469c91928e75b1e8 100644
+index ae53f8ba0e0f9d67f3412ebf3b7f06db5f602498..9f959f176992ff08120c10e659d51b395fcb4695 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-@@ -715,9 +715,12 @@ void ProfileChooserView::AddOptionsView(bool display_lock,
-           l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON));
-     }
-   }
-+  static_cast<BraveProfileChooserView*>(this)->AddTorButton();
+@@ -718,6 +718,7 @@ void ProfileChooserView::AddOptionsView(bool display_lock,
  
    base::string16 text = l10n_util::GetStringUTF16(
        is_guest ? IDS_PROFILES_EXIT_GUEST : IDS_PROFILES_MANAGE_USERS_BUTTON);
-+  if (browser()->profile()->IsTorProfile())
-+    text = l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR);
++  ADD_TOR_EXIT_BUTTON_
    const gfx::VectorIcon& settings_icon =
        is_guest ? kCloseAllIcon : kSettingsIcon;
    users_button_ = CreateAndAddButton(CreateVectorIcon(settings_icon), text);

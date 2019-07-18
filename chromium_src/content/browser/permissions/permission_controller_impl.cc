@@ -7,5 +7,5 @@
 
 #define BRAVE_PERMISSION_TYPES \
     case PermissionType::AUTOPLAY:
-#include "../../../../../content/browser/permissions/permission_controller_impl.cc"  // NOLINT
-#undef NUM
+#include "../../../../../content/browser/permissions/permission_controller_impl.cc"
+#undef BRAVE_PERMISSION_TYPES

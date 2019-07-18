@@ -1,9 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
@@ -93,7 +95,7 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
         prefs->GetBoolean(kUseAlternativeSearchEngineProvider) ? "true"
                                                                : "false");
     render_view_host->SetWebUIProperty(
-        "isTor", profile->IsTorProfile() ? "true" : "false");
+        "isTor", brave::IsTorProfile(profile) ? "true" : "false");
     render_view_host->SetWebUIProperty(
         "isQwant", brave::IsRegionForQwant(profile) ? "true" : "false");
   }

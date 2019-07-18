@@ -10,6 +10,7 @@
 #include "base/command_line.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/extensions/brave_theme_event_router.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/themes/brave_theme_utils.h"
 #include "brave/common/brave_switches.h"
@@ -179,7 +180,7 @@ void BraveThemeService::Init(Profile* profile) {
 
 SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
   // Brave Tor profiles are always 'incognito' (for now)
-  if (!incognito && profile()->IsTorProfile())
+  if (!incognito && brave::IsTorProfile(profile()))
     incognito = true;
   const BraveThemeType theme = GetActiveBraveThemeType(profile());
   const base::Optional<SkColor> braveColor =
