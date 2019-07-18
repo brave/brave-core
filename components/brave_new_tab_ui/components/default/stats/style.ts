@@ -35,10 +35,7 @@ export const StyledStatsItem = styled<{}, 'li'>('li')`
     color: #FB542B;
   }
   &:nth-child(2) {
-    color: #B02FFB;
-  }
-  &:nth-child(3) {
-    color: #4C54D2;
+    color: #A0A5EB;
   }
   &:last-child {
     color: #FFFFFF;
