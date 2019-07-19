@@ -424,6 +424,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
     }
 
     const onVerifyClick = () => console.log('onVerifyClick')
+    const onDisconnectClick = () => console.log('onDisconnectClick')
 
     const convertProbiToFixed = (probi: string, places: number = 1) => {
       return '0.0'
@@ -484,6 +485,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             'disconnected verified': 'disconnected_verified'
           }, 'unverified') as WalletState}
           onVerifyClick={onVerifyClick}
+          onDisconnectClick={onDisconnectClick}
           userName={text('user name', 'jennrhim')}
         >
           <WalletSummarySlider
