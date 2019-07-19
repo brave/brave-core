@@ -258,6 +258,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
   }
 }
 
+#if !defined(OS_ANDROID)
 // static
 void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
     const std::string& block_type, const std::string& subresource,
@@ -285,6 +286,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
   }
 #endif
 }
+#endif
 
 bool BraveShieldsWebContentsObserver::OnMessageReceived(
     const IPC::Message& message, RenderFrameHost* render_frame_host) {

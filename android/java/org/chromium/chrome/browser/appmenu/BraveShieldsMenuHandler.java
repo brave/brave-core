@@ -32,17 +32,38 @@ import android.text.Html;
 
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
+import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.R;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.AnimationFrameTimeHistogram;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
  */
 public class BraveShieldsMenuHandler {
+
+    private static class BlockersInfo {
+        public BlockersInfo() {
+            mAdsBlocked = 0;
+            mTrackersBlocked = 0;
+            mHTTPSUpgrades = 0;
+            mScriptsBlocked = 0;
+            mFingerprintsBlocked = 0;
+        }
+
+        public int mAdsBlocked;
+        public int mTrackersBlocked;
+        public int mHTTPSUpgrades;
+        public int mScriptsBlocked;
+        public int mFingerprintsBlocked;
+    }
+
     private final static float LAST_ITEM_SHOW_FRACTION = 0.5f;
 
     private final Activity mActivity;
@@ -55,6 +76,8 @@ public class BraveShieldsMenuHandler {
             .getAnimatorRecorder("WrenchMenu.OpeningAnimationFrameTimes");
     private BraveShieldsMenuObserver mMenuObserver;
     private final View mHardwareButtonMenuAnchor;
+    private final Map<Integer, BlockersInfo> mTabsStat =
+            Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
 
     /**
      * Constructs a BraveShieldsMenuHandler object.
@@ -68,12 +91,40 @@ public class BraveShieldsMenuHandler {
         mHardwareButtonMenuAnchor = activity.findViewById(R.id.menu_anchor_stub);
     }
 
+    public void addStat(int tabId, String block_type, String subresource) {
+        if (!mTabsStat.containsKey(tabId)) {
+            mTabsStat.put(tabId, new BlockersInfo());
+        }
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)) {
+            blockersInfo.mAdsBlocked++;
+        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
+            blockersInfo.mTrackersBlocked++;
+        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
+            blockersInfo.mHTTPSUpgrades++;
+        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+            blockersInfo.mScriptsBlocked++;
+        } else if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+            blockersInfo.mFingerprintsBlocked++;
+        }
+    }
+
+    public void removeStat(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return;
+        }
+        mTabsStat.remove(tabId);
+    }
+
+    public void clearBraveShieldsCount(int tabId) {
+        mTabsStat.put(tabId, new BlockersInfo());
+    }
+
     public void addObserver(BraveShieldsMenuObserver menuObserver) {
         mMenuObserver = menuObserver;
     }
 
-    public void show(View anchorView, boolean incognitoTab, String host, String title, int adsAndTrackers
-            , int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {
+    public void show(View anchorView, boolean incognitoTab, String host, String title, int tabId) {
         int rotation = mActivity.getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
         // the keyboard, instead of overlapping the keyboard as it should.
@@ -147,6 +198,17 @@ public class BraveShieldsMenuHandler {
         // Extract visible items from the Menu.
         int numItems = mMenu.size();
         List<MenuItem> menuItems = new ArrayList<MenuItem>();
+        int adsAndTrackers = 0;
+        int httpsUpgrades = 0;
+        int scriptsBlocked = 0;
+        int fingerprintsBlocked = 0;
+        if (mTabsStat.containsKey(tabId)) {
+            BlockersInfo blockersInfo = mTabsStat.get(tabId);
+            adsAndTrackers = blockersInfo.mAdsBlocked + blockersInfo.mTrackersBlocked;
+            httpsUpgrades = blockersInfo.mHTTPSUpgrades;
+            scriptsBlocked = blockersInfo.mScriptsBlocked;
+            fingerprintsBlocked = blockersInfo.mFingerprintsBlocked;
+        }
         for (int i = 0; i < numItems; ++i) {
             MenuItem item = mMenu.getItem(i);
             if (1 == i) {
@@ -206,6 +268,15 @@ public class BraveShieldsMenuHandler {
 
         mMenuItemEnterAnimator.addListener(mAnimationHistogramRecorder);
         mMenuItemEnterAnimator.start();
+    }
+
+    public void updateValues(int tabId) {
+        if (!mTabsStat.containsKey(tabId)) {
+            return;
+        }
+        BlockersInfo blockersInfo = mTabsStat.get(tabId);
+        updateValues(blockersInfo.mAdsBlocked + blockersInfo.mTrackersBlocked,
+            blockersInfo.mHTTPSUpgrades, blockersInfo.mScriptsBlocked, blockersInfo.mFingerprintsBlocked);
     }
 
     public void updateValues(int adsAndTrackers, int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {

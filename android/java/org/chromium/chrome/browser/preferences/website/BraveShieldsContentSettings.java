@@ -5,13 +5,19 @@
 
 package org.chromium.chrome.browser.preferences.website;
 
+import org.chromium.base.annotations.CalledByNative;
+import org.chromium.base.annotations.JCaller;
+import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.ContentSettingsType;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.preferences.website.WebsitePreferenceBridge;
 
 import java.util.List;
 
+@JNINamespace("chrome::android")
 public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_ADS = "ads";
     static public final String RESOURCE_IDENTIFIER_TRACKERS = "trackers";
@@ -22,20 +28,51 @@ public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_REFERRERS = "referrers";
     static public final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
 
+    static private final String blockResource = "block";
+    static private final String allowResource = "allow";
+
+    private long mNativeBraveShieldsContentSettings;
+    private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
+
+    public BraveShieldsContentSettings(BraveShieldsContentSettingsObserver braveShieldsContentSettingsObserver) {
+        mBraveShieldsContentSettingsObserver = braveShieldsContentSettingsObserver;
+        mNativeBraveShieldsContentSettings = 0;
+        init();
+    }
+
+    private void init() {
+        if (mNativeBraveShieldsContentSettings == 0) {
+            BraveShieldsContentSettingsJni.get().init(this);
+        }
+    }
+
+    public void destroy() {
+        if (mNativeBraveShieldsContentSettings == 0) {
+            return;
+        }
+        BraveShieldsContentSettingsJni.get().destroy(mNativeBraveShieldsContentSettings);
+    }
+
     static public void setShields(boolean incognito, String host, String resourceIndentifier, boolean value,
             boolean fromTopShields) {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             BraveShieldsContentSettings.setJavaScriptBlock(incognito, host, value, fromTopShields, resourceIndentifier);
         }
-        BraveShieldsContentSettingsJni.get().setShields(incognito, host, resourceIndentifier, value);
+        String setting_string = (value ? blockResource : allowResource);
+        BraveShieldsContentSettingsJni.get().setShields(incognito, host, resourceIndentifier, setting_string);
     }
 
     public static boolean getShields(boolean incognito, String host, String resourceIndentifier) {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             return !BraveShieldsContentSettings.isJavaScriptEnabled(incognito, host);
         }
+        String settings = BraveShieldsContentSettingsJni.get().getShields(incognito, host, resourceIndentifier);
+        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING) &&
+                !settings.equals(allowResource) && !settings.equals(blockResource)) {
+            return false;
+        }
 
-        return BraveShieldsContentSettingsJni.get().getShields(incognito, host, resourceIndentifier); 
+        return !settings.equals(allowResource); 
     }
 
     private static boolean isJavaScriptEnabled(boolean incognitoTab, String host) {
@@ -90,7 +127,7 @@ public class BraveShieldsContentSettings {
           if (!block) {
             setting = ContentSettingValues.ALLOW;
           } else {
-            setting = BraveShieldsContentSettingsJni.get().getShields(incognitoTab, host, resourceIndentifier) ? 
+            setting = (!BraveShieldsContentSettingsJni.get().getShields(incognitoTab, host, resourceIndentifier).equals(allowResource)) ? 
                 ContentSettingValues.ALLOW : ContentSettingValues.BLOCK;
           }
         }
@@ -112,15 +149,32 @@ public class BraveShieldsContentSettings {
     }
 
     private static String CutWwwPrefix(String host) {
-      if (null != host && host.startsWith("www.")) {
-          host = host.substring("www.".length());
-      }
-      return host;
+        if (null != host && host.startsWith("www.")) {
+            host = host.substring("www.".length());
+        }
+        return host;
+    }
+
+    @CalledByNative
+    private void setNativePtr(long nativePtr) {
+        assert mNativeBraveShieldsContentSettings == 0;
+        mNativeBraveShieldsContentSettings = nativePtr;
+    }
+
+    @CalledByNative
+    private void blockedEvent(int tabId, String block_type, String subresource) {
+        assert mBraveShieldsContentSettingsObserver != null;
+        if (mBraveShieldsContentSettingsObserver == null) {
+            return;
+        }
+        mBraveShieldsContentSettingsObserver.blockEvent(tabId, block_type, subresource);
     }
 
     @NativeMethods
     interface Natives {
-        void setShields(boolean incognito, String host, String resourceIndentifier, boolean value);
-        boolean getShields(boolean incognito, String host, String resourceIndentifier);
+        void init(@JCaller BraveShieldsContentSettings self);
+        void destroy(long nativeBraveShieldsContentSettings);
+        void setShields(boolean incognito, String host, String resourceIndentifier, String value);
+        String getShields(boolean incognito, String host, String resourceIndentifier);
     }
 }

@@ -12,8 +12,8 @@
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "content/public/browser/web_contents.h"
 
-#if !defined(OS_ANDROID)
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#if !defined(OS_ANDROID)
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
@@ -28,9 +28,9 @@ using brave_shields::TrackingProtectionHelper;
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
-#if !defined(OS_ANDROID)
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
+#if !defined(OS_ANDROID)
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 #endif

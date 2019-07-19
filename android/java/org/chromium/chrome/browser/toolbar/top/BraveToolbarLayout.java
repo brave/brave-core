@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuHandler;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
+import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
@@ -43,9 +44,19 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private ChromeActivity mMainActivity;
   private BraveShieldsMenuHandler mBraveShieldsMenuHandler;
   private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
+  private BraveShieldsContentSettings mBraveShieldsContentSettings;
+  private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
 
   public BraveToolbarLayout(Context context, AttributeSet attrs) {
       super(context, attrs);
+  }
+
+  @Override
+  void destroy() {
+      if (mBraveShieldsContentSettings != null) {
+          mBraveShieldsContentSettings.destroy();
+      }
+      super.destroy();
   }
 
   @Override
@@ -87,6 +98,23 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               }
           }
       });
+      mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
+          @Override
+          public void blockEvent(int tabId, String block_type, String subresource) {
+              mBraveShieldsMenuHandler.addStat(tabId, block_type, subresource);
+              Tab currentTab = mMainActivity.getActivityTab();
+              if (currentTab == null || currentTab.getId() != tabId) {
+                  return;
+              }
+              mBraveShieldsMenuHandler.updateValues(tabId);
+          }
+      };
+  }
+
+  @Override
+  void onNativeLibraryReady() {
+      super.onNativeLibraryReady();
+      mBraveShieldsContentSettings = new BraveShieldsContentSettings(mBraveShieldsContentSettingsObserver);
   }
 
   @Override
@@ -94,11 +122,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
             @Override
             public void onPageLoadStarted(Tab tab, String url) {
-                // TODO
-                // ChromeApplication app = (ChromeApplication)ContextUtils.getBaseApplicationContext();
-                // if ((null != app) && (null != app.getShieldsConfig())) {
-                //     app.getShieldsConfig().setTabModelSelectorTabObserver(mTabModelSelectorTabObserver);
-                // }
                 if (mMainActivity.getActivityTab() == tab) {
                     try {
                         URL urlCheck = new URL(url);
@@ -107,14 +130,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                         setBraveShieldsBlackAndWhite();
                     }
                 }
-                // TODO
-                // tab.clearBraveShieldsCount();
+                mBraveShieldsMenuHandler.clearBraveShieldsCount(tab.getId());
             }
 
             @Override
             public void onPageLoadFinished(final Tab tab, String url) {
-                // TODO
-                // mAppIndexingUtil.extractCopylessPasteMetadata(tab);
                 if (mMainActivity.getActivityTab() == tab) {
                     try {
                         URL urlCheck = new URL(url);
@@ -125,56 +145,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                 }
             }
 
-            // TODO
-            // @Override
-            // public void onBraveShieldsCountUpdate(String url, int adsAndTrackers, int httpsUpgrades,
-            //         int scriptsBlocked, int fingerprintsBlocked) {
-            //     List<Tab> tabsList = new ArrayList<>();
-            //     for (int i = 0; i < getCurrentTabModel().getCount(); i++) {
-            //         Tab tab = getCurrentTabModel().getTabAt(i);
-            //         if (null != tab) {
-            //             String tabUrl = tab.getUrl();
-            //             if (tabUrl.equals(url)) {
-            //                 tabsList.add(tab);
-            //             }
-            //         }
-            //     }
-            //     if (0 == tabsList.size()) {
-            //         return;
-            //     }
-
-            //     Tab tabToUpdate = null;
-            //     for (Tab currentTab : tabsList) {
-            //         if (null == tabToUpdate) {
-            //             tabToUpdate = currentTab;
-            //             continue;
-            //         }
-            //         if (0 != adsAndTrackers) {
-            //             if (tabToUpdate.getAdsAndTrackers() > currentTab.getAdsAndTrackers()) {
-            //                 tabToUpdate = currentTab;
-            //             }
-            //         } else if (0 != httpsUpgrades) {
-            //             if (tabToUpdate.getHttpsUpgrades() > currentTab.getHttpsUpgrades()) {
-            //                 tabToUpdate = currentTab;
-            //             }
-            //         } else if (0 != scriptsBlocked) {
-            //           if (tabToUpdate.getScriptsBlocked() > currentTab.getScriptsBlocked()) {
-            //               tabToUpdate = currentTab;
-            //           }
-            //         } else if (0 != fingerprintsBlocked) {
-            //           if (tabToUpdate.getFingerprintsBlocked() > currentTab.getFingerprintsBlocked()) {
-            //               tabToUpdate = currentTab;
-            //           }
-            //         }
-            //     }
-            //     if (null != tabToUpdate) {
-            //         tabToUpdate.braveShieldsCountUpdate(adsAndTrackers, httpsUpgrades, scriptsBlocked, fingerprintsBlocked);
-            //         if (getActivityTab() == tabToUpdate) {
-            //             updateBraveryPanelCounts(tabToUpdate.getAdsAndTrackers(), tabToUpdate.getHttpsUpgrades(),
-            //                     tabToUpdate.getScriptsBlocked(), tabToUpdate.getFingerprintsBlocked());
-            //         }
-            //     }
-            // }
+            @Override
+            public void onDestroyed(Tab tab) {
+                mBraveShieldsMenuHandler.removeStat(tab.getId());
+            }
         };
   }
 
@@ -199,18 +173,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               URL protocolHost = new URL(url.getProtocol(), url.getHost(), "");
 
               setBraveShieldsColor(currentTab.isIncognito(), protocolHost.toString());
-              mBraveShieldsMenuHandler.show(mBraveShieldsButton
-                , currentTab.isIncognito()
-                , protocolHost.toString()
-                , url.getHost()
-                // TODO
-                , 0, 0, 0, 0);
-                //, currentTab.getAdsAndTrackers()
-                //, currentTab.getHttpsUpgrades()
-                //, currentTab.getScriptsBlocked()
-                //, currentTab.getFingerprintsBlocked());
+              mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.isIncognito(), 
+                protocolHost.toString(), url.getHost(), currentTab.getId());
           } catch (Exception e) {
-              // TODO
               setBraveShieldsBlackAndWhite();
           }
       }
