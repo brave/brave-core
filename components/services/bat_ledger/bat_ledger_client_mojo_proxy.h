@@ -45,8 +45,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                            const std::string& probi) override;
   void OnGrantFinish(ledger::Result result,
                      ledger::GrantPtr grant) override;
-  void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
-  void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
+  void LoadLedgerState(ledger::OnLoadCallback callback) override;
+  void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void SaveLedgerState(const std::string& ledger_state,
                        ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherState(const std::string& publisher_state,
@@ -183,9 +183,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   mojom::BatLedgerClientAssociatedPtr bat_ledger_client_;
 
-  void OnLoadLedgerState(ledger::LedgerCallbackHandler* handler,
+  void OnLoadLedgerState(ledger::OnLoadCallback callback,
       int32_t result, const std::string& data);
-  void OnLoadPublisherState(ledger::LedgerCallbackHandler* handler,
+  void OnLoadPublisherState(ledger::OnLoadCallback callback,
       int32_t result, const std::string& data);
   void OnLoadPublisherList(ledger::LedgerCallbackHandler* handler,
       int32_t result, const std::string& data);

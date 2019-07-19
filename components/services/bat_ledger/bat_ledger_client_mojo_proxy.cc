@@ -214,40 +214,40 @@ void BatLedgerClientMojoProxy::OnGrantFinish(ledger::Result result,
 }
 
 void BatLedgerClientMojoProxy::OnLoadLedgerState(
-    ledger::LedgerCallbackHandler* handler,
+    ledger::OnLoadCallback callback,
     int32_t result,
     const std::string& data) {
-  handler->OnLedgerStateLoaded(ToLedgerResult(result), data);
+  callback(ToLedgerResult(result), data);
 }
 
 void BatLedgerClientMojoProxy::LoadLedgerState(
-    ledger::LedgerCallbackHandler* handler) {
+    ledger::OnLoadCallback callback) {
   if (!Connected()) {
-    handler->OnLedgerStateLoaded(ledger::Result::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   bat_ledger_client_->LoadLedgerState(
       base::BindOnce(&BatLedgerClientMojoProxy::OnLoadLedgerState, AsWeakPtr(),
-        base::Unretained(handler)));
+        std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::OnLoadPublisherState(
-    ledger::LedgerCallbackHandler* handler,
+    ledger::OnLoadCallback callback,
     int32_t result, const std::string& data) {
-  handler->OnPublisherStateLoaded(ToLedgerResult(result), data);
+  callback(ToLedgerResult(result), data);
 }
 
 void BatLedgerClientMojoProxy::LoadPublisherState(
-    ledger::LedgerCallbackHandler* handler) {
+    ledger::OnLoadCallback callback) {
   if (!Connected()) {
-    handler->OnPublisherStateLoaded(ledger::Result::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   bat_ledger_client_->LoadPublisherState(
       base::BindOnce(&BatLedgerClientMojoProxy::OnLoadPublisherState,
-        AsWeakPtr(), base::Unretained(handler)));
+        AsWeakPtr(), std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::OnLoadPublisherList(

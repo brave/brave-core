@@ -47,8 +47,8 @@ void NativeLedgerClient::KillTimer(const uint32_t timer_id) {
 void NativeLedgerClient::LoadActivityInfo(ledger::ActivityInfoFilter filter, ledger::PublisherInfoCallback callback) {
   [bridge_ loadActivityInfo:filter callback:callback];
 }
-void NativeLedgerClient::LoadLedgerState(ledger::LedgerCallbackHandler * handler) {
-  [bridge_ loadLedgerState:handler];
+void NativeLedgerClient::LoadLedgerState(ledger::OnLoadCallback callback) {
+  [bridge_ loadLedgerState:callback];
 }
 void NativeLedgerClient::LoadMediaPublisherInfo(const std::string & media_key, ledger::PublisherInfoCallback callback) {
   [bridge_ loadMediaPublisherInfo:media_key callback:callback];
@@ -65,8 +65,8 @@ void NativeLedgerClient::LoadPublisherInfo(const std::string & publisher_key, le
 void NativeLedgerClient::LoadPublisherList(ledger::LedgerCallbackHandler * handler) {
   [bridge_ loadPublisherList:handler];
 }
-void NativeLedgerClient::LoadPublisherState(ledger::LedgerCallbackHandler * handler) {
-  [bridge_ loadPublisherState:handler];
+void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
+  [bridge_ loadPublisherState:callback];
 }
 void NativeLedgerClient::LoadState(const std::string & name, ledger::OnLoadCallback callback) {
   [bridge_ loadState:name callback:callback];

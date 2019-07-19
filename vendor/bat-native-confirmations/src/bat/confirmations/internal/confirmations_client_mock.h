@@ -71,14 +71,14 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& probi));
 
   MOCK_METHOD1(LoadLedgerState, void(
-      ledger::LedgerCallbackHandler* handler));
+      ledger::OnLoadCallback callback));
 
   MOCK_METHOD2(SaveLedgerState, void(
       const std::string& ledger_state,
       ledger::LedgerCallbackHandler* handler));
 
   MOCK_METHOD1(LoadPublisherState, void(
-      ledger::LedgerCallbackHandler* handler));
+      ledger::OnLoadCallback callback));
 
   MOCK_METHOD2(SavePublisherState, void(
       const std::string& publisher_state,

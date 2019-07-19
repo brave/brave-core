@@ -57,10 +57,21 @@ void LedgerClientMojoProxy::CallbackHolder<
   delete this;
 }
 
+// static
+void LedgerClientMojoProxy::OnLoadLedgerState(
+    CallbackHolder<LoadLedgerStateCallback>* holder,
+    ledger::Result result,
+    const std::string& data) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(ToMojomResult(result), data);
+  delete holder;
+}
+
 void LedgerClientMojoProxy::LoadLedgerState(LoadLedgerStateCallback callback) {
   auto* holder = new CallbackHolder<LoadLedgerStateCallback>(AsWeakPtr(),
       std::move(callback));
-  ledger_client_->LoadLedgerState(holder);
+  ledger_client_->LoadLedgerState(
+      std::bind(LedgerClientMojoProxy::OnLoadLedgerState, holder, _1, _2));
 }
 
 void LedgerClientMojoProxy::GenerateGUID(GenerateGUIDCallback callback) {
@@ -78,11 +89,22 @@ void LedgerClientMojoProxy::OnWalletProperties(
                                      std::move(properties));
 }
 
+// static
+void LedgerClientMojoProxy::OnLoadPublisherState(
+    CallbackHolder<LoadLedgerStateCallback>* holder,
+    ledger::Result result,
+    const std::string& data) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(ToMojomResult(result), data);
+  delete holder;
+}
+
 void LedgerClientMojoProxy::LoadPublisherState(
     LoadPublisherStateCallback callback) {
-  auto* holder = new CallbackHolder<LoadPublisherStateCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->LoadPublisherState(holder);
+  auto* holder = new CallbackHolder<LoadPublisherStateCallback>(AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->LoadPublisherState(
+      std::bind(LedgerClientMojoProxy::OnLoadPublisherState, holder, _1, _2));
 }
 
 template <typename Callback>
