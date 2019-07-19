@@ -22,7 +22,7 @@ NodeFrame::NodeFrame(PageGraph* const graph, const RequestUrl url)
 NodeFrame::~NodeFrame() {}
 
 ItemName NodeFrame::GetItemName() const {
-  return "NodeFrame#" + to_string(id_);
+  return "frame #" + to_string(id_);
 }
 
 void NodeFrame::AddInEdge(const EdgeRequestFrame* const edge) {

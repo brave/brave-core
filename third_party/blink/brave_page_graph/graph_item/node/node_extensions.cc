@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extension.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extensions.h"
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
@@ -15,24 +15,24 @@ using ::std::to_string;
 
 namespace brave_page_graph {
 
-NodeExtension::NodeExtension(PageGraph* const graph) :
+NodeExtensions::NodeExtensions(PageGraph* const graph) :
       Node(graph) {}
 
-NodeExtension::~NodeExtension() {}
+NodeExtensions::~NodeExtensions() {}
 
-ItemName NodeExtension::GetItemName() const {
-  return "NodeExtension#" + to_string(id_);
+ItemName NodeExtensions::GetItemName() const {
+  return "extensions";
 }
 
-GraphMLXMLList NodeExtension::GraphMLAttributes() const {
+GraphMLXMLList NodeExtensions::GraphMLAttributes() const {
   GraphMLXMLList attrs;
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
-      ->ToValue("extension"));
+      ->ToValue("extensions"));
   return attrs;
 }
 
-ItemDesc NodeExtension::GetDescBody() const {
-  return GetItemName(); 
+ItemDesc NodeExtensions::GetDescBody() const {
+  return GetItemName();
 }
 
 }  // namespace brave_page_graph

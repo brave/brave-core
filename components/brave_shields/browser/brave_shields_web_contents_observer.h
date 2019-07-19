@@ -17,6 +17,8 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
+#include "brave/components/brave_shields/common/block_decision.h"
+
 namespace content {
 class WebContents;
 }

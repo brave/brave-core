@@ -26,6 +26,8 @@ friend class PageGraph;
  protected:
   EdgeExecuteAttr(PageGraph* const graph, NodeHTMLElement* const out_node,
     NodeScript* const in_node, const std::string& attr);
+
+  ItemDesc GetDescBody() const override;
   GraphMLXMLList GraphMLAttributes() const override;
 
   const std::string attr_;

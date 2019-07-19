@@ -20,7 +20,7 @@ NodeStorageLocalStorage::NodeStorageLocalStorage(PageGraph* const graph) :
 NodeStorageLocalStorage::~NodeStorageLocalStorage() {}
 
 ItemName NodeStorageLocalStorage::GetItemName() const {
-  return "NodeStorageLocalStorage#" + to_string(id_);
+  return "local storage";
 }
 
 GraphMLXMLList NodeStorageLocalStorage::GraphMLAttributes() const {

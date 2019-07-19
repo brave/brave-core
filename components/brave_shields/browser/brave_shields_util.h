@@ -12,6 +12,8 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "services/network/public/mojom/referrer_policy.mojom.h"
 
+#include "brave/components/brave_shields/common/block_decision.h"
+
 namespace net {
 class URLRequest;
 }
@@ -49,7 +51,7 @@ void DispatchBlockedEventFromIO(const GURL& request_url,
                                 int render_frame_id,
                                 int render_process_id,
                                 int frame_tree_node_id,
-                                const std::string& block_type);
+                                const BlockDecision* block_decision);
 
 void GetRenderFrameInfo(const net::URLRequest* request,
                         int* render_frame_id,

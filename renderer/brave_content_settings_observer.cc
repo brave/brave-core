@@ -149,7 +149,8 @@ GURL BraveContentSettingsObserver::GetOriginOrURL(
 ContentSetting BraveContentSettingsObserver::GetFPContentSettingFromRules(
     const ContentSettingsForOneType& rules,
     const blink::WebFrame* frame,
-    const GURL& secondary_url) {
+    const GURL& secondary_url,
+    ContentSettingPatternSource& matched_rule) {
 
   if (rules.size() == 0)
     return CONTENT_SETTING_DEFAULT;
@@ -167,6 +168,7 @@ ContentSetting BraveContentSettingsObserver::GetFPContentSettingFromRules(
     if (rule.primary_pattern.Matches(primary_url) &&
         (secondary_pattern == ContentSettingsPattern::Wildcard() ||
          secondary_pattern.Matches(secondary_url))) {
+      matched_rule = rule;
       return rule.GetContentSetting();
     }
   }
@@ -199,6 +201,7 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
     bool enabled_per_settings) {
   if (!enabled_per_settings)
     return false;
+
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   const GURL secondary_url(
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
@@ -213,6 +216,7 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   if (content_setting_rules_) {
       rules = content_setting_rules_->fingerprinting_rules;
   }
+
   ContentSettingPatternSource default_rule = ContentSettingPatternSource(
       ContentSettingsPattern::Wildcard(),
       ContentSettingsPattern::FromString("https://firstParty/*"),
@@ -220,9 +224,13 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
           content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
       std::string(), false);
   rules.push_back(default_rule);
+
+  ContentSettingPatternSource matched_rule;
   ContentSetting setting =
-      GetFPContentSettingFromRules(rules, frame, secondary_url);
+      GetFPContentSettingFromRules(rules, frame, secondary_url, matched_rule);
+
   rules.pop_back();
+
   bool allow = setting != CONTENT_SETTING_BLOCK;
   allow = allow || IsWhitelistedForContentSettings();
 

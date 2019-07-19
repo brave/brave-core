@@ -115,29 +115,31 @@ void OnBeforeURLRequestAdBlockTP(
   DCHECK_NE(ctx->request_identifier, 0UL);
 
   bool did_match_exception = false;
+  const brave_shields::BlockDecision* block_decision = nullptr;
   std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-          ctx->request_url, ctx->resource_type, tab_host,
-          &did_match_exception, &ctx->cancel_request_explicitly)) {
+          ctx->request_url, ctx->resource_type, tab_host, &did_match_exception,
+          &ctx->cancel_request_explicitly, &block_decision)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
              !g_brave_browser_process->ad_block_regional_service_manager()
                   ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
                                        tab_host, &did_match_exception,
-                                       &ctx->cancel_request_explicitly)) {
+                                       &ctx->cancel_request_explicitly,
+                                       &block_decision)) {
     ctx->blocked_by = kAdBlocked;
   } else if (!did_match_exception &&
              !g_brave_browser_process->ad_block_custom_filters_service()
                   ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
                                        tab_host, &did_match_exception,
-                                       &ctx->cancel_request_explicitly)) {
+                                       &ctx->cancel_request_explicitly,
+                                       &block_decision)) {
     ctx->blocked_by = kAdBlocked;
   }
 
   if (ctx->blocked_by == kAdBlocked) {
     brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
         ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
-        brave_shields::kAds);
   }
 }
 

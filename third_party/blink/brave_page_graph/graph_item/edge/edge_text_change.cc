@@ -24,11 +24,11 @@ EdgeTextChange::EdgeTextChange(PageGraph* const graph,
       new_text_(new_text) {}
 
 ItemName EdgeTextChange::GetItemName() const {
-  return "EdgeTextChange#" + ::std::to_string(id_);
+  return "text change #" + ::std::to_string(id_);
 }
 
 ItemName EdgeTextChange::GetDescBody() const {
-  return GetItemName() + " [key:" + new_text_ + "]";
+  return GetItemName() + " (" + new_text_ + ")";
 }
 
 GraphMLXMLList EdgeTextChange::GraphMLAttributes() const {

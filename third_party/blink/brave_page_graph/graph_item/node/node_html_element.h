@@ -34,7 +34,11 @@ friend class NodeHTML;
   NodeHTMLElement() = delete;
   ~NodeHTMLElement() override;
   ItemName GetItemName() const override;
+
   const std::string& TagName() const;
+
+  bool HasAttribute(const std::string& key) const;
+  const std::string& GetAttribute(const std::string& key) const;
 
   using Node::AddInEdge;
   void AddInEdge(const EdgeNodeRemove* const edge);

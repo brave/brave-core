@@ -20,6 +20,7 @@ friend class PageGraph;
  public:
   EdgeRequestResponse() = delete;
   ~EdgeRequestResponse() override;
+  ItemName GetItemName() const override;
   NodeResource* GetResourceNode() const override;
   Node* GetRequestingNode() const override;
 

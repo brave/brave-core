@@ -30,6 +30,7 @@ source_set("net") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
+    "//brave/components/brave_shields/common",
     "//content/public/browser",
     "//content/public/common",
     "//extensions/common:common_constants",

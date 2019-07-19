@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_EXTENSION_H_
-#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_EXTENSION_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_STORAGE_ROOT_H_
+#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_STORAGE_ROOT_H_
 
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
@@ -14,21 +14,21 @@ namespace brave_page_graph {
 
 class PageGraph;
 
-class NodeExtension final : public Node {
+class NodeStorageRoot final : public Node {
 friend class PageGraph;
  public:
-  NodeExtension() = delete;
-  ~NodeExtension() override;
+  NodeStorageRoot() = delete;
+  ~NodeStorageRoot() override;
   ItemName GetItemName() const override;
 
   bool IsNodeActor() const override { return false; }
 
  protected:
-  NodeExtension(PageGraph* const graph);
+  NodeStorageRoot(PageGraph* const graph);
   ItemDesc GetDescBody() const override;
   GraphMLXMLList GraphMLAttributes() const override;
 };
 
 }  // namespace brave_page_graph
 
-#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_EXTENSION_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_STORAGE_ROOT_H_

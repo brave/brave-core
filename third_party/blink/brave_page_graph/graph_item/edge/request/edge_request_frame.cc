@@ -20,7 +20,7 @@ EdgeRequestFrame::EdgeRequestFrame(PageGraph* const graph,
 EdgeRequestFrame::~EdgeRequestFrame() {}
 
 ItemName EdgeRequestFrame::GetItemName() const {
-  return "EdgeRequestFrame#" + to_string(id_);
+  return "frame request #" + to_string(id_);
 }
 
 RequestUrl EdgeRequestFrame::GetRequestUrl() const {

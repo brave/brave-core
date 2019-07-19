@@ -28,7 +28,7 @@ EdgeRequestComplete::EdgeRequestComplete(PageGraph* const graph,
 EdgeRequestComplete::~EdgeRequestComplete() {}
 
 ItemName EdgeRequestComplete::GetItemName() const {
-  return "EdgeRequestComplete#" + to_string(id_);
+  return "request complete #" + to_string(id_);
 }
 
 blink::ResourceType EdgeRequestComplete::GetResourceType() const {
@@ -37,7 +37,7 @@ blink::ResourceType EdgeRequestComplete::GetResourceType() const {
 
 ItemDesc EdgeRequestComplete::GetDescBody() const {
   return GetItemName()
-    + "[type: " + ResourceTypeToString(resource_type_) + "]";
+    + " (" + ResourceTypeToString(resource_type_) + ")";
 }
 
 GraphMLXMLList EdgeRequestComplete::GraphMLAttributes() const {

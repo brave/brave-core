@@ -26,7 +26,7 @@ EdgeAttributeSet::EdgeAttributeSet(PageGraph* const graph,
 EdgeAttributeSet::~EdgeAttributeSet() {}
 
 ItemName EdgeAttributeSet::GetItemName() const {
-  return "EdgeAttributeSet#" + ::std::to_string(id_);
+  return "set attribute #" + ::std::to_string(id_);
 }
 
 const string& EdgeAttributeSet::AttributeValue() const {
@@ -34,7 +34,7 @@ const string& EdgeAttributeSet::AttributeValue() const {
 }
 
 ItemDesc EdgeAttributeSet::GetDescBody() const {
-  return GetItemName() + " [" + GetAttributeName() + "=" + AttributeValue() + "]";
+  return GetItemName() + " (" + GetAttributeName() + "=" + AttributeValue() + ")";
 }
 
 GraphMLXMLList EdgeAttributeSet::GraphMLAttributes() const {

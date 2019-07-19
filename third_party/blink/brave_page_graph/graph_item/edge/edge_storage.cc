@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage.h"
+#include <sstream>
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
@@ -13,6 +14,7 @@
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
+using ::std::stringstream;
 using ::std::string;
 
 namespace brave_page_graph {
@@ -24,7 +26,14 @@ EdgeStorage::EdgeStorage(PageGraph* const graph,
       key_(key) {}
 
 ItemName EdgeStorage::GetDescBody() const {
-  return GetItemName() + " [key:" + key_ + "]";
+  stringstream builder;
+  builder << GetItemName();
+
+  if (!key_.empty()) {
+    builder << " (" << key_ << ")";
+  }
+
+  return builder.str();
 }
 
 GraphMLXMLList EdgeStorage::GraphMLAttributes() const {

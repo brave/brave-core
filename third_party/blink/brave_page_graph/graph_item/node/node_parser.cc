@@ -22,7 +22,7 @@ NodeParser::NodeParser(PageGraph* const graph) :
 NodeParser::~NodeParser() {}
 
 ItemName NodeParser::GetItemName() const {
-  return "NodeParser#" + to_string(id_);
+  return "parser";
 }
 
 bool NodeParser::IsParser() const {

@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
+#include <sstream>
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
@@ -13,6 +14,7 @@
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 using ::std::string;
+using ::std::stringstream;
 using ::std::to_string;
 
 namespace brave_page_graph {
@@ -36,7 +38,7 @@ NodeScript::NodeScript(PageGraph* const graph, const ScriptId script_id,
 NodeScript::~NodeScript() {}
 
 ItemName NodeScript::GetItemName() const {
-  return "NodeScript#" + to_string(id_);
+  return "script #" + to_string(id_);
 }
 
 ScriptId NodeScript::GetScriptId() const {
@@ -57,6 +59,10 @@ bool NodeScript::IsInline() const {
 
 string NodeScript::GetUrl() const {
   return url_;
+}
+
+void NodeScript::SetUrl(const string& url) {
+  url_ = url;
 }
 
 void NodeScript::AddInEdge(const EdgeExecute* const edge) {
@@ -81,9 +87,14 @@ GraphMLXMLList NodeScript::GraphMLAttributes() const {
 }
 
 ItemDesc NodeScript::GetDescBody() const {
-  return GetItemName() +
-    " [ScriptId:" + to_string(script_id_) +
-    ", Type:"  + ScriptTypeToString(type_) + "]";
+  stringstream builder;
+  builder << GetItemName();
+
+  if (!url_.empty()) {
+    builder << " (" << url_ << ")";
+  }
+
+  return builder.str();
 }
 
 }  // namespace brave_page_graph

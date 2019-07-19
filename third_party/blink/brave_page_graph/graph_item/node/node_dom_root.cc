@@ -21,7 +21,7 @@ NodeDOMRoot::NodeDOMRoot(PageGraph* const graph, const DOMNodeId node_id)
     : NodeHTMLElement(graph, node_id, "document") {}
 
 ItemName NodeDOMRoot::GetItemName() const {
-  return "NodeDOMRoot#" + to_string(id_);
+  return "DOM root #" + to_string(id_);
 }
 
 GraphMLXMLList NodeDOMRoot::GraphMLAttributes() const {

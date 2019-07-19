@@ -27,7 +27,7 @@ NodeScriptRemote::NodeScriptRemote(PageGraph* const graph,
 NodeScriptRemote::~NodeScriptRemote() {}
 
 ItemName NodeScriptRemote::GetItemName() const {
-  return "NodeScriptRemote#" + to_string(id_);
+  return "remote script #" + to_string(id_);
 }
 
 void NodeScriptRemote::AddInEdge(const EdgeImport* const edge) {

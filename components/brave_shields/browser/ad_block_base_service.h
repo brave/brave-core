@@ -16,8 +16,9 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/browser/base_brave_shields_service.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "content/public/common/resource_type.h"
 
 class AdBlockServiceTest;
@@ -41,7 +42,8 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
   bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,
     const std::string& tab_host, bool* did_match_exception,
-    bool* cancel_request_explicitly) override;
+    bool* cancel_request_explicitly,
+    const BlockDecision** block_decision) override;
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 

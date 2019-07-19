@@ -14,6 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
@@ -46,7 +47,8 @@ class AdBlockRegionalServiceManager {
                           content::ResourceType resource_type,
                           const std::string& tab_host,
                           bool* matching_exception_filter,
-                          bool* cancel_request_explicitly);
+                          bool* cancel_request_explicitly,
+                          const BlockDecision** block_decision);
   void EnableTag(const std::string& tag, bool enabled);
   void EnableFilterList(const std::string& uuid, bool enabled);
 

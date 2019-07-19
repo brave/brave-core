@@ -1,13 +1,13 @@
 diff --git a/third_party/blink/renderer/devtools/BUILD.gn b/third_party/blink/renderer/devtools/BUILD.gn
-index 2db8281b9ab233e34c8cc05334ba86a87adf8d7a..8abe8db4222d6915e8de56427525157db742df8b 100644
+index 2db8281b9ab233e34c8cc05334ba86a87adf8d7a..6f8513280be6417b79cd615bb0905a4e4b0e1321 100644
 --- a/third_party/blink/renderer/devtools/BUILD.gn
 +++ b/third_party/blink/renderer/devtools/BUILD.gn
-@@ -245,6 +245,8 @@ all_devtools_files = [
-   "front_end/elements/module.json",
-   "front_end/elements/platformFontsWidget.css",
-   "front_end/elements/PlatformFontsWidget.js",
-+  "front_end/elements/pageGraphInfoWidget.css",
-+  "front_end/elements/PageGraphInfoWidget.js",
-   "front_end/elements/propertiesWidget.css",
-   "front_end/elements/PropertiesWidget.js",
-   "front_end/elements/StylePropertyHighlighter.js",
+@@ -7,6 +7,8 @@ import("//third_party/blink/public/public_features.gni")
+ import("//third_party/blink/renderer/core/core.gni")
+ 
+ all_devtools_files = [
++  "../../../../brave/third_party/blink/renderer/devtools/front_end/elements/pageGraphInfoWidget.css",
++  "../../../../brave/third_party/blink/renderer/devtools/front_end/elements/PageGraphInfoWidget.js",
+   "front_end/accessibility/AccessibilityModel.js",
+   "front_end/accessibility/accessibilityNode.css",
+   "front_end/accessibility/AccessibilityNodeView.js",

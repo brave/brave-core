@@ -31,7 +31,7 @@ EdgeHTML::EdgeHTML(const NodeHTMLElement* const out_node,
 EdgeHTML::~EdgeHTML() {}
 
 ItemName EdgeHTML::GetItemName() const {
-  return "EdgeHTML#" + to_string(id_);
+  return "structure #" + to_string(id_);
 }
 
 GraphMLXML EdgeHTML::GetGraphMLTag() const {

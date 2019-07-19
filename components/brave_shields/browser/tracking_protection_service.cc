@@ -215,7 +215,8 @@ bool TrackingProtectionService::ShouldStartRequest(
     content::ResourceType resource_type,
     const std::string& tab_host,
     bool* matching_exception_filter,
-    bool* cancel_request_explicitly) {
+    bool* cancel_request_explicitly,
+    const BlockDecision** block_decision) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   // There are no exceptions in the TP service, but exceptions are
   // combined with brave/ad-block.

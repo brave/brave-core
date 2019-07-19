@@ -45,7 +45,8 @@ class BraveContentSettingsObserver
   ContentSetting GetFPContentSettingFromRules(
       const ContentSettingsForOneType& rules,
       const blink::WebFrame* frame,
-      const GURL& secondary_url);
+      const GURL& secondary_url,
+      ContentSettingPatternSource& matched_rule);
 
   bool IsBraveShieldsDown(
       const blink::WebFrame* frame,

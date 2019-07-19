@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 
 #include <algorithm>
+#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -122,7 +123,8 @@ void AdBlockBaseService::Cleanup() {
 
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type, const std::string& tab_host,
-    bool* did_match_exception, bool* cancel_request_explicitly) {
+    bool* did_match_exception, bool* cancel_request_explicitly,
+    const BlockDecision** block_decision) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   // Determine third-party here so the library doesn't need to figure it out.

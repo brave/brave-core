@@ -52,11 +52,15 @@ typedef enum {
   kGraphMLAttrDefNodeText,
   kGraphMLAttrDefNodeType,
   kGraphMLAttrDefParentNodeId,
+  kGraphMLAttrDefPrimaryPattern,
   kGraphMLAttrDefRequestId,
   kGraphMLAttrDefRequestType,
   kGraphMLAttrDefResourceType,
+  kGraphMLAttrDefRule,
   kGraphMLAttrDefScriptId,
   kGraphMLAttrDefScriptType,
+  kGraphMLAttrDefSecondaryPattern,
+  kGraphMLAttrDefSource,
   kGraphMLAttrDefStatus,
   kGraphMLAttrDefSuccess,
   kGraphMLAttrDefUrl,
@@ -139,6 +143,23 @@ typedef std::map<SourceCodeHash, ScriptId> HashToScriptIdMap;
 typedef std::map<ScriptId, SourceCodeHash> ScriptIdToHashMap;
 typedef std::map<SourceCodeHash, UrlHash> SourceToUrlMap;
 typedef std::map<UrlHash, SourceCodeHash> UrlToSourceMap;
+
+struct FingerprintingRule {
+  const std::string& primary_pattern;
+  const std::string& secondary_pattern;
+  const std::string& source;
+  const bool incognito;
+
+  FingerprintingRule(const std::string& primary_pattern,
+                     const std::string& secondary_pattern,
+                     const std::string& source, const bool incognito);
+
+  bool operator==(const FingerprintingRule& other) const;
+  bool operator<(const FingerprintingRule& other) const;
+  bool operator>(const FingerprintingRule& other) const;
+
+  std::string ToString() const;
+};
 
 }  // namespace brave_page_graph
 

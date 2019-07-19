@@ -9,7 +9,6 @@
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extension.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_element.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -29,7 +28,11 @@ EdgeExecuteAttr::EdgeExecuteAttr(PageGraph* const graph,
 EdgeExecuteAttr::~EdgeExecuteAttr() {}
 
 ItemName EdgeExecuteAttr::GetItemName() const {
-  return "EdgeExecuteAttr#" + to_string(id_);
+  return "execute from attribute #" + to_string(id_);
+}
+
+ItemDesc EdgeExecuteAttr::GetDescBody() const {
+  return GetItemName() + " (" + attr_ + ")";
 }
 
 GraphMLXMLList EdgeExecuteAttr::GraphMLAttributes() const {

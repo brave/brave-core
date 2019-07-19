@@ -24,7 +24,7 @@ EdgeNodeCreate::EdgeNodeCreate(PageGraph* const graph,
 EdgeNodeCreate::~EdgeNodeCreate() {}
 
 ItemName EdgeNodeCreate::GetItemName() const {
-  return "EdgeNodeCreate#" + to_string(id_);
+  return "create node #" + to_string(id_);
 }
 
 GraphMLXMLList EdgeNodeCreate::GraphMLAttributes() const {

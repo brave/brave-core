@@ -26,7 +26,9 @@ class EdgeNodeInsert;
 class GraphItem;
 class Node;
 class NodeActor;
-class NodeExtension;
+class NodeAdFilter;
+class NodeExtensions;
+class NodeFingerprintingFilter;
 class NodeFrame;
 class NodeHTML;
 class NodeHTMLElement;
@@ -36,6 +38,8 @@ class NodeResource;
 class NodeScript;
 class NodeScriptRemote;
 class NodeShields;
+class NodeShield;
+class NodeStorage;
 class NodeStorageCookieJar;
 class NodeStorageLocalStorage;
 class NodeWebAPI;
@@ -92,7 +96,7 @@ friend NodeHTMLElement;
   void RegisterRequestStartFromCurrentScript(const InspectorId request_id,
     const blink::KURL& url, const RequestType type);
   void RegisterRequestStartFromCSS(const InspectorId request_id,
-      const blink::KURL& url, const RequestType type);
+    const blink::KURL& url, const RequestType type);
   void RegisterRequestComplete(const InspectorId request_id,
     const blink::ResourceType type);
   void RegisterRequestError(const InspectorId request_id);
@@ -136,6 +140,9 @@ friend NodeHTMLElement;
   void AddNode(Node* const node);
   void AddEdge(const Edge* const edge);
 
+  void AddShieldNode(NodeShield* const shield_node);
+  void AddStorageNode(NodeStorage* const storage_node);
+
   const NodeUniquePtrList& Nodes() const;
   const EdgeUniquePtrList& Edges() const;
   const GraphItemList& GraphItems() const;
@@ -146,9 +153,16 @@ friend NodeHTMLElement;
   NodeExtension* GetExtensionNode();
   NodeActor* GetCurrentActingNode() const;
 
+  NodeResource* GetResourceNodeForUrl(const std::string& url);
+
+  NodeAdFilter* GetAdFilterNodeForRule(const std::string& rule);
+  NodeTrackerFilter* GetTrackerFilterNodeForHost(const std::string& host);
+  NodeFingerprintingFilter* GetFingerprintingFilterNodeForRule(
+    const FingerprintingRule& rule);
+
   void DoRegisterRequestStart(const InspectorId request_id,
-      Node* const requesting_node, const std::string& local_url,
-      const RequestType type);
+    Node* const requesting_node, const std::string& local_url,
+    const RequestType type);
   void PossiblyWriteRequestsIntoGraph(
     const std::shared_ptr<const TrackedRequestRecord> record);
 
@@ -167,8 +181,17 @@ friend NodeHTMLElement;
 
   // Non-owning references to singleton items in the graph. (the owning
   // references will be in the above vectors).
+
   NodeParser* const parser_node_;
+  NodeExtensions* const extensions_node_;
+
   NodeShields* const shields_node_;
+  NodeShield* const ad_shield_node_;
+  NodeShield* const tracker_shield_node_;
+  NodeShield* const js_shield_node_;
+  NodeShield* const fingerprinting_shield_node_;
+
+  NodeStorageRoot* const storage_node_;
   NodeStorageCookieJar* const cookie_jar_node_;
   NodeStorageLocalStorage* const local_storage_node_;
   NodeExtension* extension_node_ = nullptr;

@@ -41,12 +41,10 @@ NodeHTML* EdgeNodeInsert::GetPriorSiblingNode() const {
 }
 
 ItemName EdgeNodeInsert::GetItemName() const {
-  return "EdgeNodeInsert#" + to_string(id_);
+  return "insert node #" + to_string(id_);
 }
 
 ItemDesc EdgeNodeInsert::GetDescBody() const {
-  std::cout << "prior_sibling_id_ = " << prior_sibling_id_ << std::endl;
-
   LOG_ASSERT(graph_->element_nodes_.count(parent_id_) == 1);
   const Node* parent_node = graph_->element_nodes_.at(parent_id_);
 
@@ -61,10 +59,11 @@ ItemDesc EdgeNodeInsert::GetDescBody() const {
   }
 
   ItemDesc desc = GetItemName();
-  desc += "[parent: " + parent_node->GetDescBody();
-  if (sibling_node != nullptr)
-    desc += ", sibling: " + sibling_node->GetDescBody();
-  desc += "]";
+  desc += " (parent: " + parent_node->GetDescBody();
+  if (sibling_node != nullptr) {
+    desc += "; sibling: " + sibling_node->GetDescBody();
+  }
+  desc += ")";
   return desc;
 }
 

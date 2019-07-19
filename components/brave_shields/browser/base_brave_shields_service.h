@@ -16,6 +16,7 @@
 #include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
@@ -36,7 +37,8 @@ class BaseBraveShieldsService : public BraveComponent {
       content::ResourceType resource_type,
       const std::string& tab_host,
       bool* did_match_exception,
-      bool* cancel_request_explicitly);
+      bool* cancel_request_explicitly,
+      const BlockDecision** block_decision);
 
  protected:
   virtual bool Init() = 0;

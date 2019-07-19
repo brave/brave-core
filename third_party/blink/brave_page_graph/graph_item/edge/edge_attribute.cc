@@ -35,7 +35,7 @@ GraphMLXMLList EdgeAttribute::GraphMLAttributes() const {
   GraphMLXMLList attrs;
   attrs.push_back(
     GraphMLAttrDefForType(kGraphMLAttrDefKey)->ToValue(GetAttributeName()));
-  
+
   if (is_style_) {
     attrs.push_back(
       GraphMLAttrDefForType(kGraphMLAttrDefIsStyle)->ToValue(true));

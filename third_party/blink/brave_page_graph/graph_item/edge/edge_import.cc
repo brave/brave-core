@@ -24,7 +24,7 @@ EdgeImport::EdgeImport(PageGraph* const graph, NodeFrame* const out_node,
 EdgeImport::~EdgeImport() {}
 
 ItemName EdgeImport::GetItemName() const {
-  return "EdgeImport#" + to_string(id_);
+  return "import #" + to_string(id_);
 }
 
 GraphMLXMLList EdgeImport::GraphMLAttributes() const {

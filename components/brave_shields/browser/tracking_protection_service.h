@@ -20,6 +20,7 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
+#include "brave/components/brave_shields/common/block_decision.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
@@ -46,7 +47,8 @@ class TrackingProtectionService : public LocalDataFilesObserver {
                           content::ResourceType resource_type,
                           const std::string& tab_host,
                           bool* matching_exception_filter,
-                          bool* cancel_request_explicitly);
+                          bool* cancel_request_explicitly,
+                          const BlockDecision** block_decision);
 
   bool ShouldStoreState(content_settings::BraveCookieSettings* settings,
                         HostContentSettingsMap* map,

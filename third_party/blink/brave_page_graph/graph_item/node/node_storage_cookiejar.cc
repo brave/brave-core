@@ -20,7 +20,7 @@ NodeStorageCookieJar::NodeStorageCookieJar(PageGraph* const graph) :
 NodeStorageCookieJar::~NodeStorageCookieJar() {}
 
 ItemName NodeStorageCookieJar::GetItemName() const {
-  return "NodeStorageCookieJar#" + to_string(id_);
+  return "cookie jar";
 }
 
 GraphMLXMLList NodeStorageCookieJar::GraphMLAttributes() const {

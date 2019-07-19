@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/devtools/front_end/elements/module.json b/third_party/blink/renderer/devtools/front_end/elements/module.json
-index 52c482733e9bdd2f0e8af758c4101d6a5ecf4ebe..03191f83f2acf47f4173edb9cd25b69c1a5e048e 100644
+index 52c482733e9bdd2f0e8af758c4101d6a5ecf4ebe..15801dfc128e62ffa2ce5d3a85ea7198b3d35d75 100644
 --- a/third_party/blink/renderer/devtools/front_end/elements/module.json
 +++ b/third_party/blink/renderer/devtools/front_end/elements/module.json
 @@ -302,6 +302,15 @@
@@ -18,19 +18,19 @@ index 52c482733e9bdd2f0e8af758c4101d6a5ecf4ebe..03191f83f2acf47f4173edb9cd25b69c
          }
      ],
      "dependencies": [
-@@ -324,6 +333,7 @@
-         "EventListenersWidget.js",
-         "MarkerDecorator.js",
-         "MetricsSidebarPane.js",
-+        "PageGraphInfoWidget.js",
-         "PlatformFontsWidget.js",
-         "PropertiesWidget.js",
-         "StylePropertyHighlighter.js",
-@@ -345,6 +355,7 @@
-         "elementStatePaneWidget.css",
-         "elementsTreeOutline.css",
-         "metricsSidebarPane.css",
-+        "pageGraphInfoWidget.css",
-         "platformFontsWidget.css",
-         "propertiesWidget.css",
-         "stylesSectionTree.css",
+@@ -312,6 +321,7 @@
+         "event_listeners"
+     ],
+     "scripts": [
++        "../../../../../../brave/third_party/blink/renderer/devtools/front_end/elements/PageGraphInfoWidget.js",
+         "InspectElementModeController.js",
+         "ColorSwatchPopoverIcon.js",
+         "ComputedStyleModel.js",
+@@ -336,6 +346,7 @@
+         "ElementsTreeElementHighlighter.js"
+     ],
+     "resources": [
++        "../../../../../../brave/third_party/blink/renderer/devtools/front_end/elements/pageGraphInfoWidget.css",
+         "breadcrumbs.css",
+         "classesPaneWidget.css",
+         "computedStyleSidebarPane.css",

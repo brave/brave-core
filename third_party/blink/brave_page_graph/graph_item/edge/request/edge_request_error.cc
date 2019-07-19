@@ -26,7 +26,7 @@ EdgeRequestError::EdgeRequestError(PageGraph* const graph,
 EdgeRequestError::~EdgeRequestError() {}
 
 ItemName EdgeRequestError::GetItemName() const {
-  return "EdgeRequestError#" + to_string(id_);
+  return "request error #" + to_string(id_);
 }
 
 ItemDesc EdgeRequestError::GetDescBody() const {

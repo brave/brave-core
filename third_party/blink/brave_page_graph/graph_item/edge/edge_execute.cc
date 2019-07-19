@@ -8,7 +8,7 @@
 #include "base/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extension.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extensions.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_element.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -22,14 +22,14 @@ EdgeExecute::EdgeExecute(PageGraph* const graph,
     NodeHTMLElement* const out_node, NodeScript* const in_node) :
       Edge(graph, out_node, in_node) {}
 
-EdgeExecute::EdgeExecute(PageGraph* const graph, NodeExtension* const out_node,
+EdgeExecute::EdgeExecute(PageGraph* const graph, NodeExtensions* const out_node,
     NodeScript* const in_node) :
       Edge(graph, out_node, in_node) {}
 
 EdgeExecute::~EdgeExecute() {}
 
 ItemName EdgeExecute::GetItemName() const {
-  return "EdgeExecute#" + to_string(id_);
+  return "execute #" + to_string(id_);
 }
 
 GraphMLXMLList EdgeExecute::GraphMLAttributes() const {
