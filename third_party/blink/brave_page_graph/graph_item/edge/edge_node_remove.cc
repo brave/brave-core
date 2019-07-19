@@ -22,7 +22,7 @@ EdgeNodeRemove::EdgeNodeRemove(PageGraph* const graph,
 EdgeNodeRemove::~EdgeNodeRemove() {}
 
 ItemName EdgeNodeRemove::GetItemName() const {
-  return "EdgeNodeRemove#" + ::std::to_string(id_);
+  return "remove node #" + ::std::to_string(id_);
 }
 
 GraphMLXMLList EdgeNodeRemove::GraphMLAttributes() const {

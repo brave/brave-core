@@ -24,7 +24,7 @@ EdgeCrossDOM::EdgeCrossDOM(
     : Edge(graph, out_node, in_node) {}
 
 ItemName EdgeCrossDOM::GetItemName() const {
-  return "EdgeCrossDOM#" + to_string(id_);
+  return "cross DOM #" + to_string(id_);
 }
 
 GraphMLXMLList EdgeCrossDOM::GraphMLAttributes() const {

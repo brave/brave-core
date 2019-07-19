@@ -11,7 +11,7 @@
 
 namespace brave_page_graph {
 
-class NodeExtension;
+class NodeExtensions;
 class NodeHTMLElement;
 class NodeScript;
 class PageGraph;
@@ -26,7 +26,7 @@ friend class PageGraph;
  protected:
   EdgeExecute(PageGraph* const graph, NodeHTMLElement* const out_node,
     NodeScript* const in_node);
-  EdgeExecute(PageGraph* const graph, NodeExtension* const out_node,
+  EdgeExecute(PageGraph* const graph, NodeExtensions* const out_node,
     NodeScript* const in_node);
   GraphMLXMLList GraphMLAttributes() const override;
 };

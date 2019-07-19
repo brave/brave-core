@@ -55,6 +55,7 @@ source_set("net") {
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/extensions:common",
     "//components/prefs",
+    "//brave/components/brave_shields/common",
     "//content/public/browser",
     "//content/public/common",
     "//components/content_settings/core/browser",

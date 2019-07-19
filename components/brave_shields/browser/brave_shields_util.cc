@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/task/post_task.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/shield_exceptions.h"
@@ -19,6 +20,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
@@ -371,14 +373,27 @@ ControlType GetNoScriptControlType(Profile* profile, const GURL& url) {
                                           : ControlType::BLOCK;
 }
 
+void DispatchBlockedEventFromIO(const GURL& request_url,
+                                int render_frame_id,
+                                int render_process_id,
+                                int frame_tree_node_id,
+                                const BlockDecision* block_decision) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&BraveShieldsWebContentsObserver::DispatchBlockedEvent,
+                     block_type, request_url.spec(), render_process_id,
+                     render_frame_id, frame_tree_node_id));
+}
+
 void DispatchBlockedEvent(const GURL& request_url,
                           int render_frame_id,
                           int render_process_id,
                           int frame_tree_node_id,
-                          const std::string& block_type) {
+                          const BlockDecision* block_decision) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   BraveShieldsWebContentsObserver::DispatchBlockedEvent(
-      block_type, request_url.spec(),
+      block_decision, request_url,
       render_process_id, render_frame_id, frame_tree_node_id);
 }
 

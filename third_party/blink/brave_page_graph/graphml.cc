@@ -42,8 +42,6 @@ namespace {
     kGraphMLAttrForTypeEdge, "key");
   const GraphMLAttr* const method_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "method");
-  const GraphMLAttr* const tag_attr = new GraphMLAttr(
-    kGraphMLAttrForTypeNode, "tag name");
   const GraphMLAttr* const node_id_attr = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "node id", kGraphMLAttrTypeLong);
   const GraphMLAttr* const node_text = new GraphMLAttr(
@@ -52,22 +50,32 @@ namespace {
     kGraphMLAttrForTypeNode, "node type");
   const GraphMLAttr* const parent_node_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "parent", kGraphMLAttrTypeLong);
-  const GraphMLAttr* const script_id_attr = new GraphMLAttr(
-    kGraphMLAttrForTypeEdge, "script id", kGraphMLAttrTypeLong);
-  const GraphMLAttr* const script_type = new GraphMLAttr(
-    kGraphMLAttrForTypeNode, "script type");
-  const GraphMLAttr* const status_type = new GraphMLAttr(
-    kGraphMLAttrForTypeEdge, "status");
-  const GraphMLAttr* const success_attr = new GraphMLAttr(
-    kGraphMLAttrForTypeNode, "is success", kGraphMLAttrTypeBoolean);
-  const GraphMLAttr* const url_attr = new GraphMLAttr(
-    kGraphMLAttrForTypeNode, "url");
+  const GraphMLAttr* const primary_pattern_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "primary pattern");
   const GraphMLAttr* const request_id_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "request id", kGraphMLAttrTypeLong);
   const GraphMLAttr* const request_type_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "request type");
   const GraphMLAttr* const resource_type_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "resource type");
+  const GraphMLAttr* const rule_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "rule");
+  const GraphMLAttr* const script_id_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "script id", kGraphMLAttrTypeLong);
+  const GraphMLAttr* const script_type = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "script type");
+  const GraphMLAttr* const secondary_pattern_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "secondary pattern");
+  const GraphMLAttr* const source_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "source");
+  const GraphMLAttr* const status_type = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "status");
+  const GraphMLAttr* const success_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "is success", kGraphMLAttrTypeBoolean);
+  const GraphMLAttr* const tag_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "tag name");
+  const GraphMLAttr* const url_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "url");
   const GraphMLAttr* const value_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "value");
 
@@ -166,16 +174,24 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return node_type;
     case kGraphMLAttrDefParentNodeId:
       return parent_node_attr;
+    case kGraphMLAttrDefPrimaryPattern:
+      return primary_pattern_attr;
     case kGraphMLAttrDefRequestId:
       return request_id_attr;
     case kGraphMLAttrDefRequestType:
       return request_type_attr;
     case kGraphMLAttrDefResourceType:
       return resource_type_attr;
+    case kGraphMLAttrDefRule:
+      return rule_attr;
     case kGraphMLAttrDefScriptId:
       return script_id_attr;
     case kGraphMLAttrDefScriptType:
       return script_type;
+    case kGraphMLAttrDefSecondaryPattern:
+      return secondary_pattern_attr;
+    case kGraphMLAttrDefSource:
+      return source_attr;
     case kGraphMLAttrDefStatus:
       return status_type;
     case kGraphMLAttrDefSuccess:

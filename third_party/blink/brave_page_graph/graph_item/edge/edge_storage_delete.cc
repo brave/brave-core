@@ -14,6 +14,7 @@
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 using ::std::string;
+using ::std::to_string;
 
 namespace brave_page_graph {
 
@@ -25,7 +26,7 @@ EdgeStorageDelete::EdgeStorageDelete(PageGraph* const graph,
 EdgeStorageDelete::~EdgeStorageDelete() {}
 
 ItemName EdgeStorageDelete::GetItemName() const {
-  return "EdgeStorageDelete#" + ::std::to_string(id_);
+  return "delete storage #" + to_string(id_);
 }
 
 GraphMLXMLList EdgeStorageDelete::GraphMLAttributes() const {
