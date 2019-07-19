@@ -1,0 +1,26 @@
+diff --git a/third_party/devtools-frontend/src/front_end/elements/elements.js b/third_party/devtools-frontend/src/front_end/elements/elements.js
+index 52c482733e9bdd2f0e8af758c4101d6a5ecf4ebe..03191f83f2acf47f4173edb9cd25b69c1a5e048e 100644
+--- a/third_party/devtools-frontend/src/front_end/elements/elements.js
++++ b/third_party/devtools-frontend/src/front_end/elements/elements.js
+@@ -25,6 +25,7 @@
+ import './ClassesPaneWidget.js';
+ import './ElementStatePaneWidget.js';
+ import './ElementsTreeElementHighlighter.js';
++import './PageGraphInfoWidget.js';
+ 
+ import * as ClassesPaneWidget from './ClassesPaneWidget.js';
+ import * as ColorSwatchPopoverIcon from './ColorSwatchPopoverIcon.js';
+@@ -49,6 +50,7 @@
+ import * as StylePropertyHighlighter from './StylePropertyHighlighter.js';
+ import * as StylePropertyTreeElement from './StylePropertyTreeElement.js';
+ import * as StylesSidebarPane from './StylesSidebarPane.js';
++import * as PageGraphInfoWidget from './PageGraphInfoWidget.js';
+ 
+ export {
+   ClassesPaneWidget,
+@@ -74,4 +76,5 @@
+   StylePropertyHighlighter,
+   StylePropertyTreeElement,
+   StylesSidebarPane,
++  PageGraphInfoWidget,
+ };

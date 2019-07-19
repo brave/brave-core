@@ -10,6 +10,8 @@
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
+using ::std::to_string;
+
 namespace brave_page_graph {
 
 EdgeRequestResponse::EdgeRequestResponse(PageGraph* const graph,
@@ -18,6 +20,10 @@ EdgeRequestResponse::EdgeRequestResponse(PageGraph* const graph,
       EdgeRequest(graph, out_node, in_node, request_id, status) {}
 
 EdgeRequestResponse::~EdgeRequestResponse() {}
+
+ItemName EdgeRequestResponse::GetItemName() const {
+  return "request response #" + to_string(id_);
+}
 
 NodeResource* EdgeRequestResponse::GetResourceNode() const {
   return static_cast<NodeResource*>(out_node_);

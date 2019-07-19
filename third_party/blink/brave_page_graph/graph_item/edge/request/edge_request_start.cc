@@ -27,7 +27,7 @@ EdgeRequestStart::EdgeRequestStart(PageGraph* const graph,
 EdgeRequestStart::~EdgeRequestStart() {}
 
 ItemName EdgeRequestStart::GetItemName() const {
-  return "EdgeRequestStart#" + to_string(id_);
+  return "request start #" + to_string(id_);
 }
 
 RequestType EdgeRequestStart::GetRequestType() const {
@@ -47,7 +47,7 @@ Node* EdgeRequestStart::GetRequestingNode() const {
 }
 
 ItemDesc EdgeRequestStart::GetDescBody() const {
-  return GetItemName() + " [type:" + RequestTypeToString(type_) + "]";
+  return GetItemName() + " (" + RequestTypeToString(type_) + ")";
 }
 
 GraphMLXMLList EdgeRequestStart::GraphMLAttributes() const {

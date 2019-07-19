@@ -26,11 +26,11 @@ EdgeAttributeDelete::EdgeAttributeDelete(PageGraph* const graph,
 EdgeAttributeDelete::~EdgeAttributeDelete() {}
 
 ItemName EdgeAttributeDelete::GetItemName() const {
-  return "EdgeAttributeDelete#" + ::std::to_string(id_);
+  return "delete attribute #" + ::std::to_string(id_);
 }
 
 ItemDesc EdgeAttributeDelete::GetDescBody() const {
-  return GetItemName() + " [" + GetAttributeName() + "]";
+  return GetItemName() + " (" + GetAttributeName() + ")";
 }
 
 GraphMLXMLList EdgeAttributeDelete::GraphMLAttributes() const {

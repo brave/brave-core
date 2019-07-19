@@ -24,7 +24,7 @@ EdgeNodeDelete::EdgeNodeDelete(PageGraph* const graph,
 EdgeNodeDelete::~EdgeNodeDelete() {}
 
 ItemName EdgeNodeDelete::GetItemName() const {
-  return "EdgeNodeDelete#" + to_string(id_);
+  return "delete node #" + to_string(id_);
 }
 
 GraphMLXMLList EdgeNodeDelete::GraphMLAttributes() const {

@@ -23,7 +23,7 @@ NodeResource::NodeResource(PageGraph* const graph, const RequestUrl url) :
 NodeResource::~NodeResource() {}
 
 ItemName NodeResource::GetItemName() const {
-  return "NodeResource#" + to_string(id_);
+  return "resource #" + to_string(id_);
 }
 
 RequestUrl NodeResource::GetUrl() const {
@@ -39,7 +39,7 @@ void NodeResource::AddOutEdge(const EdgeRequestResponse* const out_edge) {
 }
 
 ItemDesc NodeResource::GetDescBody() const {
-  return GetItemName() + " [url: " + url_ + "]";
+  return GetItemName() + " (" + url_ + ")";
 }
 
 GraphMLXMLList NodeResource::GraphMLAttributes() const {

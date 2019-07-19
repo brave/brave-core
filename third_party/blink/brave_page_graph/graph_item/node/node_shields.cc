@@ -10,8 +10,6 @@
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
-using ::std::to_string;
-
 namespace brave_page_graph {
 
 NodeShields::NodeShields(PageGraph* const graph) :

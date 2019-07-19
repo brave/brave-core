@@ -41,7 +41,7 @@ NodeHTMLElement::NodeHTMLElement(PageGraph* const graph,
 NodeHTMLElement::~NodeHTMLElement() {}
 
 ItemName NodeHTMLElement::GetItemName() const {
-  return "NodeHTMLElement#" + to_string(id_);
+  return "HTML element #" + to_string(id_);
 }
 
 const string& NodeHTMLElement::TagName() const {
@@ -113,31 +113,22 @@ GraphMLXML NodeHTMLElement::GetGraphMLTag() const {
 ItemDesc NodeHTMLElement::GetDescBody() const {
   stringstream string_builder;
   string_builder << GetItemName();
-  string_builder << " [DOMNodeId:";
-  string_builder << to_string(node_id_);
-  string_builder << ", tag:";
+  string_builder << " (";
   string_builder << tag_name_;
-  string_builder << ", attributes=";
   for (const auto& attr : current_attributes_) {
-    string key = attr.first;
-    string value = attr.second;
-    string_builder << "{";
-    string_builder << key;
-    string_builder << "='";
-    string_builder << value;
-    string_builder << "'} ";
+    const auto& key = attr.first;
+    const auto& value = attr.second;
+    if (key == "id") {
+      string_builder << "#" << value;
+    } else if (key == "class") {
+      std::istringstream classNames(value);
+      std::istream_iterator<std::string> className{classNames};
+      for (; className != std::istream_iterator<std::string>(); ++className) {
+        string_builder << "." << *className;
+      }
+    }
   }
-  string_builder << ", style=";
-  for (const auto& attr : current_inline_styles_) {
-    string key = attr.first;
-    string value = attr.second;
-    string_builder << "{";
-    string_builder << key;
-    string_builder << "='";
-    string_builder << value;
-    string_builder << "'} ";
-  }
-  string_builder << "]";
+  string_builder << ")";
   return string_builder.str();
 }
 

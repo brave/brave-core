@@ -28,6 +28,7 @@ friend class PageGraph;
   bool IsScript() const override;
   bool IsInline() const;
   std::string GetUrl() const;
+  void SetUrl(const std::string& url);
 
   void AddInEdge(const EdgeExecute* const edge);
   void AddInEdge(const Edge* const edge) = delete;
@@ -43,7 +44,7 @@ friend class PageGraph;
 
   const ScriptId script_id_;
   const ScriptType type_;
-  const std::string url_;
+  std::string url_;
   const bool is_inline_;
 };
 

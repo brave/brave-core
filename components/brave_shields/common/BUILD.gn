@@ -1,0 +1,7 @@
+source_set("common") {
+  sources = [
+    "block_decision.cc",
+    "block_decision.h",
+    "brave_shield_constants.h",
+  ]
+}

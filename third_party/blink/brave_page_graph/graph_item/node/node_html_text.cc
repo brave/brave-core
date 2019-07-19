@@ -33,7 +33,7 @@ NodeHTMLText::NodeHTMLText(PageGraph* const graph,
 NodeHTMLText::~NodeHTMLText() {}
 
 ItemName NodeHTMLText::GetItemName() const {
-  return "TextNode (length: "  + to_string(text_.size()) + ")";
+  return "text node #" + to_string(id_);
 }
 
 const string& NodeHTMLText::Text() const {
@@ -70,7 +70,7 @@ void NodeHTMLText::AddInEdge(const EdgeTextChange* const edge) {
 }
 
 ItemDesc NodeHTMLText::GetDescBody() const {
-  return "(text)" + text_;
+  return GetItemName() + " (length: " + to_string(text_.size()) + ")";
 }
 
 GraphMLXMLList NodeHTMLText::GraphMLAttributes() const {
