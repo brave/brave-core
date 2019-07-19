@@ -31,15 +31,12 @@ export const getValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserPr
   return result
 }
 
-export const getBrowserProfiles = () => {
-  return (dispatch: Dispatch) => {
-    window.cr.sendWithPromise('initializeImportDialog')
-      .then((response: Array<Welcome.BrowserProfile>) => {
-        const filteredProfiles = getValidBrowserProfiles(response)
-        dispatch(getBrowserProfilesSuccess(filteredProfiles))
-      })
+export const getBrowserProfiles = () =>
+  async (dispatch: Dispatch) => {
+    const response = await window.cr.sendWithPromise<Array<Welcome.BrowserProfile>>('initializeImportDialog')
+    const filteredProfiles = getValidBrowserProfiles(response)
+    dispatch(getBrowserProfilesSuccess(filteredProfiles))
   }
-}
 
 export const getSelectedBrowserProfile = (profileIndex: string, browserProfiles: Array<Welcome.BrowserProfile>) => {
   return browserProfiles.find((profile: Welcome.BrowserProfile) =>
