@@ -68,11 +68,10 @@ NS_SWIFT_NAME(BraveRewards)
 - (void)reset;
 
 /// Create a BraveRewards instance with a given configuration
-- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration
-                             delegate:(id<BATBraveRewardsDelegate>)delegate;
+- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration;
 /// Create a BraveRewards instance with a given configuration and custom ledger classes for mocking
 - (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration
-                             delegate:(id<BATBraveRewardsDelegate>)delegate
+                             delegate:(nullable id<BATBraveRewardsDelegate>)delegate
                           ledgerClass:(nullable Class)ledgerClass
                              adsClass:(nullable Class)adsClass NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;

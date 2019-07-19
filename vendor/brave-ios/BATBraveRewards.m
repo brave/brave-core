@@ -63,12 +63,15 @@
   [self setupLedgerAndAds];
 }
 
-- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration delegate:(id<BATBraveRewardsDelegate>)delegate
+- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration
 {
-  return [self initWithConfiguration:configuration delegate:delegate ledgerClass:nil adsClass:nil];
+  return [self initWithConfiguration:configuration delegate:nil ledgerClass:nil adsClass:nil];
 }
 
-- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration delegate:(id<BATBraveRewardsDelegate>)delegate ledgerClass:(nullable Class)ledgerClass adsClass:(nullable Class)adsClass
+- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration
+                             delegate:(nullable id<BATBraveRewardsDelegate>)delegate
+                          ledgerClass:(nullable Class)ledgerClass
+                             adsClass:(nullable Class)adsClass
 {
   if ((self = [super init])) {
     self.configuration = configuration;
