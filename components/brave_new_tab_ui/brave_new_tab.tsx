@@ -23,6 +23,7 @@ import '../fonts/poppins.css'
 import '../fonts/muli.css'
 
 async function initialize () {
+  getTextDirection()
   render(
     <Provider store={store}>
       <ThemeProvider theme={Theme}>
@@ -40,6 +41,12 @@ async function updatePreferences () {
   const preferences = await preferencesAPI.getPreferences()
   const actions = dataFetchAPI.getActions()
   actions.preferencesUpdated(preferences)
+}
+
+function getTextDirection () {
+  const actions = dataFetchAPI.getActions()
+  const textDirection = window.loadTimeData.getString('textdirection')
+  actions.textDirectionUpdated(textDirection)
 }
 
 function updateStats () {

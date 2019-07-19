@@ -9,7 +9,7 @@ export interface Props {
   testId?: string
   checked?: boolean
   disabled?: boolean
-  onChange?: (e: any) => void
+  onChange?: (event: any) => void
   id?: string
   readOnly?: boolean
   autoFocus?: boolean
@@ -41,17 +41,17 @@ export class Toggle extends React.PureComponent<Props, ToggleState> {
     }
   }
 
-  handleChange (e: any) {
+  handleChange (event: any) {
     const { props } = this
     if (props.disabled) {
       return
     }
     if (!('checked' in props)) {
-      this.setState({ checked: e.target.checked })
+      this.setState({ checked: event.target.checked })
     }
 
     if (props.onChange) {
-      props.onChange({ target: { checked: e.target.checked } })
+      props.onChange({ target: { checked: event.target.checked } })
     }
   }
 

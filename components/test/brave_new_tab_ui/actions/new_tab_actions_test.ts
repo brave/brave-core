@@ -144,14 +144,24 @@ describe('newTabActions', () => {
       payload: { shouldUse }
     })
   })
-  it('showSettingsMenu', () => {
-    expect(actions.showSettingsMenu()).toEqual({
-      type: types.NEW_TAB_SHOW_SETTINGS_MENU
+  it('preferencesUpdated', () => {
+    const preferences = {
+      showBackgroundImage: false,
+      showStats: false,
+      showClock: false,
+      showTopSites: false
+    }
+    expect(actions.preferencesUpdated(preferences)).toEqual({
+      meta: undefined,
+      type: types.NEW_TAB_PREFERENCES_UPDATED,
+      payload: { preferences }
     })
   })
-  it('closeSettingsMenu', () => {
-    expect(actions.showSettingsMenu()).toEqual({
-      type: types.NEW_TAB_SHOW_SETTINGS_MENU
+  it('textDirectionUpdated', () => {
+    expect(actions.textDirectionUpdated('ltr')).toEqual({
+      meta: undefined,
+      type: types.NEW_TAB_TEXT_DIRECTION_UPDATED,
+      payload: 'ltr'
     })
   })
 })

@@ -82,10 +82,6 @@ export const Footer = styled<{}, 'footer'>('footer')`
     grid-template-areas:
       "credits actions";
 
-    > *:first-child {
-      text-align: left;
-    }
-
     > *:nth-child(2) {
       justify-content: flex-end;
     }

@@ -324,32 +324,4 @@ describe('newTabReducer', () => {
       })
     })
   })
-
-  describe('NEW_TAB_SHOW_SETTINGS_MENU', () => {
-    it('should set show settings to true', () => {
-      const mockState = { ...fakeState, showSettings: false }
-      const assertion = newTabReducer(mockState, {
-        type: types.NEW_TAB_SHOW_SETTINGS_MENU
-      })
-      const expected = {
-        ...mockState,
-        showSettings: true
-      }
-      expect(assertion).toEqual(expected)
-    })
-  })
-
-  describe('NEW_TAB_CLOSE_SETTINGS_MENU', () => {
-    it('should set show settings to false', () => {
-      const mockState = { ...fakeState, showSettings: true }
-      const assertion = newTabReducer(mockState, {
-        type: types.NEW_TAB_CLOSE_SETTINGS_MENU
-      })
-      const expected = {
-        ...mockState,
-        showSettings: false
-      }
-      expect(assertion).toEqual(expected)
-    })
-  })
 })

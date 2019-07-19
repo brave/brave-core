@@ -8,46 +8,75 @@ import * as React from 'react'
 import { Link, Navigation, IconLink, PhotoName } from '../../components/default'
 
 // Icons
-import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon, SettingsIcon } from 'brave-ui/components/icons'
+import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from 'brave-ui/components/icons'
 
 // Helpers
 import { getLocale } from '../../../common/locale'
+import Settings from './settings'
 
 interface Props {
-  backgroundImageInfo: NewTab.Image | undefined
+  textDirection: string
+  onClickOutside: () => void
+  backgroundImageInfo: any
   onClickSettings: () => void
-  isSettingsMenuOpen: boolean
+  showSettingsMenu: boolean
   showPhotoInfo: boolean
+  toggleShowBackgroundImage: () => void
+  toggleShowClock: () => void
+  toggleShowStats: () => void
+  toggleShowTopSites: () => void
+  showBackgroundImage: boolean
+  showClock: boolean
+  showStats: boolean
+  showTopSites: boolean
 }
 
-export default class FooterInfo extends React.Component<Props, {}> {
+export default class FooterInfo extends React.PureComponent<Props, {}> {
+
   render () {
     const {
+      textDirection,
       backgroundImageInfo,
       onClickSettings,
-      isSettingsMenuOpen,
-      showPhotoInfo
+      showSettingsMenu,
+      showPhotoInfo,
+      onClickOutside,
+      toggleShowBackgroundImage,
+      toggleShowClock,
+      toggleShowStats,
+      toggleShowTopSites,
+      showBackgroundImage,
+      showClock,
+      showStats,
+      showTopSites
     } = this.props
-
-    if (!backgroundImageInfo) {
-      return null
-    }
 
     return (
       <>
-      <div>
-        {showPhotoInfo &&
-        <PhotoName>
-          {`${getLocale('photoBy')} `}
-          <Link href={backgroundImageInfo.link} rel='noreferrer noopener' target='_blank'>
-          {backgroundImageInfo.author}
-          </Link>
-        </PhotoName>}
-      </div>
+        <div>
+          {showPhotoInfo &&
+          <PhotoName>
+            {`${getLocale('photoBy')} `}
+            <Link href={backgroundImageInfo.link} rel='noreferrer noopener' target='_blank'>
+              {backgroundImageInfo.author}
+            </Link>
+          </PhotoName>}
+        </div>
         <Navigation>
-          <IconLink title={getLocale('dashboardSettingsTitle')} onClick={onClickSettings} disabled={isSettingsMenuOpen}>
-            <SettingsIcon />
-          </IconLink>
+          <Settings
+            textDirection={textDirection}
+            showSettingsMenu={showSettingsMenu}
+            onClickOutside={onClickOutside}
+            onClick={onClickSettings}
+            toggleShowBackgroundImage={toggleShowBackgroundImage}
+            toggleShowClock={toggleShowClock}
+            toggleShowStats={toggleShowStats}
+            toggleShowTopSites={toggleShowTopSites}
+            showBackgroundImage={showBackgroundImage}
+            showClock={showClock}
+            showStats={showStats}
+            showTopSites={showTopSites}
+          />
           <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
             <SettingsAdvancedIcon />
           </IconLink>
