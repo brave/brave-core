@@ -5,9 +5,6 @@
 
 #include "brave/components/brave_ads/browser/notification_helper_win.h"
 
-#include "base/win/core_winrt_util.h"
-#include "base/feature_list.h"
-
 namespace brave_ads {
 
 NotificationHelperWin::NotificationHelperWin() = default;
@@ -15,11 +12,6 @@ NotificationHelperWin::NotificationHelperWin() = default;
 NotificationHelperWin::~NotificationHelperWin() = default;
 
 bool NotificationHelperWin::IsNotificationsAvailable() const {
-  if (base::win::GetVersion() < base::win::VERSION_WIN10_RS4 ||
-      base::FeatureList::IsEnabled(features::kNativeNotifications)) {
-    return true;
-  }
-
   return true;
 }
 
