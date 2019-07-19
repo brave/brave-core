@@ -29,6 +29,7 @@
 <translation id="3218385319396786393">此頁面已禁止自動播放</translation>
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
+<translation id="5883458389055721080">Brave 未驗證過此擴充套件的安全性。只在您信任此開開發者時才安裝此擴充套件。</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
@@ -49,13 +50,25 @@
 <translation id="4472575034687746823">開始使用</translation>
 <translation id="3400357268283240774">額外設定</translation>
 <translation id="6303294677342628402">防護</translation>
+<translation id="7133511168130368997">封鎖在整個網路上追蹤您的追蹤器與廣告。</translation>
+<translation id="2761825942249694703">這些是預設的防護設定。它們會套用到所有的網頁，除非您在特定的網頁上於防護面板中修改了某些東西才會有所不同。變更這些不會影響您既有的每個網站的設定。</translation>
+<translation id="8754605759692119662">這將會封鎖網站上大多數的廣告，但不包含 Brave 的隱私廣告，那些可在後方的頁面中控制</translation>
+<translation id="6388201778088078932">設定。</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
+<translation id="5709627087332022422">封鎖跨站追蹤器</translation>
+<translation id="9075744464571452108">裝置識別</translation>
+<translation id="3570081523466826008">升級連線至 HTTPS</translation>
+<translation id="4824468494729001999">封鎖指令碼</translation>
 <translation id="7498695072878479744">允許在第三方網頁上的 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
+<translation id="4699812599455071925">僅封鎖跨站 cookies</translation>
 <translation id="5657156137487675418">允許所有 cookie</translation>
 <translation id="6883611015375728278">阻擋所有 cookies</translation>
+<translation id="3084022390368021391">僅封鎖跨站裝置識別嘗試</translation>
+<translation id="1847422622180531843">允許所有裝置識別嘗試</translation>
+<translation id="8375051111011093523">封鎖所有裝置識別嘗試</translation>
 <translation id="8942080017911802454">WebRTC IP 處理政策</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8798099450830957504">預設</translation>
@@ -77,4 +90,9 @@
 <translation id="9181207987584064303">在「網路擴充功能商店」檢視</translation>
 <translation id="4846154056248462491">離開</translation>
 <translation id="5057399635433117814">翻譯此頁面？這將會把此頁面上的所有文字傳送給微軟以進行翻譯。</translation>
+<translation id="3371343170427636147">Brave 瀏覽器 Nightly 應用程式</translation>
+<translation id="4097979995947147464">Brave 瀏覽器 Beta 應用程式</translation>
+<translation id="8303432794159193481">Brave 瀏覽器 Dev 應用程式</translation>
+<translation id="8292967014767479012">Brave 瀏覽器應用程式</translation>
+<translation id="4743468424889072281">Brave 瀏覽器 Development 應用程式</translation>
 </translationbundle>

@@ -10,7 +10,7 @@ import os
 import sys
 from lib.github import GitHub
 from lib.config import (PLATFORM, DIST_URL, get_target_arch,
-                        get_chromedriver_version, get_env_var,
+                        get_env_var,
                         s3_config, get_zip_name, product_name,
                         project_name, SOURCE_ROOT, dist_dir,
                         output_dir, get_brave_version,

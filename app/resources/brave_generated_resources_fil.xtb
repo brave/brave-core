@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
 <translation id="7942180974165298215">Pag-block ng Ad ng Brave</translation>
 <translation id="6406506848690869874">Mag-sync</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="120759863357279975">Ang <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ay hindi pinapayagan sa Brave.</translation>
 <translation id="7450557937477381864">Isara ang Chrome</translation>
 <translation id="7008934821596358692">Upang matapos ang pag-import, isara ang lahat ng window ng Chrome.</translation>
@@ -28,7 +29,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="3218385319396786393">Na-block sa page na ito ang pag-autoplay</translation>
 <translation id="4988333904713528597">Palaging payagan ang autoplay sa <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Patuloy na i-block ang pag-autoplay</translation>
+<translation id="5883458389055721080">Hindi na-review ng Brave ang extension na ito para sa seguridad at kaligtasan. I-install lang ang extension na ito kung pinagkakatiwalaan mo ang developer.</translation>
 <translation id="2044383478723007273">Mga kulay ng brave</translation>
+<translation id="2814998458708016836">Gumamit ng malapad na address bar</translation>
 <translation id="6123134130710658846">Itago ang Brave Rewards button</translation>
 <translation id="7635711399568194460">Itinatago ang Brave Rewards button sa location bar kapag hindi naka-enable ang Brave Rewards</translation>
 <translation id="7965178729203412357">Bagong Pagkakakilanlan ng Tor</translation>
@@ -47,13 +50,25 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4472575034687746823">Magsimula</translation>
 <translation id="3400357268283240774">Mga karagdagang setting</translation>
 <translation id="6303294677342628402">Mga Shield</translation>
+<translation id="7133511168130368997">I-block ang mga tracker at ad na sumusunod sa iyo sa web.</translation>
+<translation id="2761825942249694703">Ito ang mga default na setting ng Shields. Nalalapat ang mga ito sa lahat ng website maliban kung may babaguhin ka sa Shields panel sa isang partikular na site. Ang pagbago sa mga ito ay hindi makakaapekto sa kasalukuyan mong mga per-site na setting.</translation>
+<translation id="8754605759692119662">Iba-block nito ang karamihan ng mga ad sa mga website, hindi mga pribadong ad ng Brave — nakokontrol ang mga iyon sa</translation>
+<translation id="6388201778088078932">mga setting.</translation>
 <translation id="9185018653595759199">Pag-block sa social media</translation>
+<translation id="5709627087332022422">I-block ang mga cross-site tracker</translation>
+<translation id="9075744464571452108">Pagkilala ng device</translation>
+<translation id="3570081523466826008">I-upgrade sa HTTPS ang mga koneksyon</translation>
+<translation id="4824468494729001999">I-block ang mga script</translation>
 <translation id="7498695072878479744">Payagan ang mga Google login button sa mga third party na site</translation>
 <translation id="863171915776379000">Payagan ang mga Facebook login at naka-embed na post</translation>
 <translation id="5165042248369837294">Payagan ang mga Twitter embedded tweet</translation>
 <translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
+<translation id="4699812599455071925">I-block lang ang cross-site cookies</translation>
 <translation id="5657156137487675418">Payagan ang lahat ng cookie</translation>
 <translation id="6883611015375728278">I-block ang lahat ng cookie</translation>
+<translation id="3084022390368021391">I-block lang ang mga cross-site na pagtangkang kilalanin ang device</translation>
+<translation id="1847422622180531843">Payagan ang lahat ng pagtangkang kilalanin ang device</translation>
+<translation id="8375051111011093523">I-block ang lahat ng pagtangkang kilalanin ang device</translation>
 <translation id="8942080017911802454">Patakaran sa Pangangasiwa ng IP ng WebRTC</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -75,4 +90,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="9181207987584064303">Tingnan sa Store ng Mga Web Extension</translation>
 <translation id="4846154056248462491">Sa pag-exit</translation>
 <translation id="5057399635433117814">I-translate ang page na ito? Ipapadala nito ang lahat ng teksto sa page na ito sa Microsoft para sa translation.</translation>
+<translation id="3371343170427636147">Brave Browser Nightly Apps</translation>
+<translation id="4097979995947147464">Brave Browser Beta Apps</translation>
+<translation id="8303432794159193481">Brave Browser Dev Apps</translation>
+<translation id="8292967014767479012">Brave Browser Apps</translation>
+<translation id="4743468424889072281">Brave Browser Development Apps</translation>
 </translationbundle>

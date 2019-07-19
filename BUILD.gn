@@ -239,33 +239,6 @@ if (!is_mac && !is_android) {
   }
 }
 
-if (target_cpu == "x86") {
-  target_arch = "ia32"
-} else {
-  target_arch = target_cpu
-}
-
-if (!is_android) {
-  chromedriver = "chromedriver"
-  if (is_win) {
-    chromedriver = "$chromedriver.exe"
-  }
-
-  chromedriver_version = "2.33"
-
-  copy("brave_chromedriver_dist_resources") {
-    sources = [
-      "$root_out_dir/$chromedriver",
-    ]
-
-    outputs = [
-      "$brave_dist_dir/$chromedriver"
-    ]
-
-    deps = [ "//chrome/test/chromedriver:chromedriver" ]
-  }
-}
-
 action("generate_chromium_licenses") {
   license_file = "$root_gen_dir/LICENSES.chromium.html"
 
@@ -350,20 +323,12 @@ if (!is_android) {
       "$brave_dist_dir/{{source_file_part}}"
     ]
   }
+}
 
-  zip("chromedriver_zip") {
-    inputs = get_target_outputs(":brave_chromedriver_dist_resources")
-    inputs += get_target_outputs(":brave_license_dist_resources")
-    output = "$brave_dist_dir/chromedriver-v$chromedriver_version-$brave_platform-$target_arch.zip"
-
-    base_dir = brave_dist_dir
-
-    deps = [
-      "app/$current_os:chromedriver_dist_resources",
-      ":brave_chromedriver_dist_resources",
-      ":brave_license_dist_resources",
-    ]
-  }
+if (target_cpu == "x86") {
+  target_arch = "ia32"
+} else {
+  target_arch = target_cpu
 }
 
 action("create_symbols_dist") {
@@ -371,7 +336,6 @@ action("create_symbols_dist") {
 
   script = "//brave/script/create-dist.py"
 
-  # inputs = get_target_outputs(":brave_chromedriver_dist_resources")
   inputs = get_target_outputs(":brave_license_dist_resources")
   dir_inputs = [ "$brave_project_name.breakpad.syms" ]
 
@@ -447,10 +411,6 @@ action("create_dist_zips") {
     ":brave_license_dist_resources",
     "app/$current_os:dist_resources",
   ]
-
-  if (!is_android) {
-    deps += [ ":chromedriver_zip" ]
-  }
 
   if (!is_mac && !is_android) {
     deps += [

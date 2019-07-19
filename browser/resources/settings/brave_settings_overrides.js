@@ -117,17 +117,6 @@ BravePatching.RegisterPolymerComponentBehaviors({
 
 // Templates
 BravePatching.RegisterPolymerTemplateModifications({
-  'settings-ui': (templateContent) => {
-    // Take settings menu out of drawer and put permanently in DOM
-    // TODO(petemill): If this becomes flakey on chromium rebases, consider
-    // making our own settings-ui module template replacement since it's quite simple.
-    const settingsMenuTemplate = templateContent.querySelector('#drawerTemplate')
-    const container = templateContent.querySelector('#container')
-    if (!settingsMenuTemplate || !container) {
-      console.warn('[Brave Settings Overrides] settings-ui: could not find all the required elements for modification', { settingsMenuTemplate, container })
-    }
-    container.insertAdjacentElement('afterbegin', settingsMenuTemplate.content.querySelector('settings-menu'))
-  },
   'settings-menu': (templateContent) => {
     // Add title
     const titleEl = document.createElement('h1')

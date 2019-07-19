@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave Ödülleri</translation>
 <translation id="7942180974165298215">Brave Reklam Engelleme</translation>
 <translation id="6406506848690869874">Sync</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") Brave'de izin verilmiyor.</translation>
 <translation id="7450557937477381864">Chrome'u Kapat</translation>
 <translation id="7008934821596358692">İçe aktarmayı bitirmek için tüm Chrome pencerelerini kapatın.</translation>
@@ -28,7 +29,9 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="3218385319396786393">Bu sayfada otomatik oynatma engellenmiş</translation>
 <translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> her zaman otomatik oynatmaya izin ver</translation>
 <translation id="4150684676757176434">Oto-Oynatmayı engellemeye devam et</translation>
+<translation id="5883458389055721080">Brave bu eklentiyi, koruma ve güvenlik bakımından henüz değerlendirmedi. Bu eklentiyi yalnızca geliştiricisine güveniyorsanız yükleyin.</translation>
 <translation id="2044383478723007273">Brave renkleri</translation>
+<translation id="2814998458708016836">Geniş adres çubuğu kullan</translation>
 <translation id="6123134130710658846">Brave Ödülleri butonunu gizle</translation>
 <translation id="7635711399568194460">Brave Ödülleri etkin olmadığında konum çubuğundaki Brave Ödülleri butonunu gizler</translation>
 <translation id="7965178729203412357">Yeni Tor Kimliği</translation>
@@ -47,13 +50,25 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="4472575034687746823">Başlayın</translation>
 <translation id="3400357268283240774">Ek ayarlar</translation>
 <translation id="6303294677342628402">Kalkanlar</translation>
+<translation id="7133511168130368997">İnternet üzerinde sizi takip eden iz sürücüleri ve reklamları engelleyin.</translation>
+<translation id="2761825942249694703">Bunlar varsayılan Shields ayarlarıdır. Belirli bir site için Shields panelinden bir şeyi değiştirmediğiniz sürece tüm websitelere uygulanırlar. Bu ayarları değiştirmek, herbir site için ayrı olarak yaptığınız mevcut ayarlarınızı değiştirmez.</translation>
+<translation id="8754605759692119662">Websitelerdeki çoğu reklam engellenecek; Brave özel reklamları engellenmeyecektir — bu reklamlar şuradan kontrol edilebilir:</translation>
+<translation id="6388201778088078932">ayarlar.</translation>
 <translation id="9185018653595759199">Sosyal medya bloke etme</translation>
+<translation id="5709627087332022422">Siteler arası iz sürücüleri engelle</translation>
+<translation id="9075744464571452108">Cihaz tanımlama</translation>
+<translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
+<translation id="4824468494729001999">Script'leri engelle</translation>
 <translation id="7498695072878479744">Üçüncü taraf sitelerinde Google giriş butonlarına izin ver</translation>
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
 <translation id="5165042248369837294">Gömülü Twitter tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
+<translation id="4699812599455071925">Yalnızca siteler arası çerezleri engelle</translation>
 <translation id="5657156137487675418">Tüm çerezlere izin ver</translation>
 <translation id="6883611015375728278">Tüm çerezleri engelle</translation>
+<translation id="3084022390368021391">Yalnızca siteler arası cihaz tanımlama girişimlerini engelle</translation>
+<translation id="1847422622180531843">Tüm cihaz tanımlama girişimlerine izin ver</translation>
+<translation id="8375051111011093523">Tüm cihaz tanımlama girişimlerini engelle</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="8798099450830957504">Varsayılan</translation>
@@ -75,4 +90,9 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="9181207987584064303">Web Uzantıları Mağazası'nda görüntüle</translation>
 <translation id="4846154056248462491">Çıkışta</translation>
 <translation id="5057399635433117814">Bu sayfa çevrilsin mi? Bu, sayfa üzerindeki tüm yazıları çevirmek için Microsoft'a gönderecek.</translation>
+<translation id="3371343170427636147">Brave Browser Gece Uygulamaları</translation>
+<translation id="4097979995947147464">Brave Browser Beta Uygulamaları</translation>
+<translation id="8303432794159193481">Brave Tarayıcı Geliştirme Uygulamaları</translation>
+<translation id="8292967014767479012">Brave Browser Uygulamaları</translation>
+<translation id="4743468424889072281">Brave Browser Geliştirme Uygulamaları</translation>
 </translationbundle>

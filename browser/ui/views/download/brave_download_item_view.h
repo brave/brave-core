@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -17,6 +18,7 @@ class BraveDownloadItemView : public DownloadItemView {
   ~BraveDownloadItemView() override;
 
   // views::View:
+  void Layout() override;
   gfx::Size CalculatePreferredSize() const override;
 
   // download::DownloadItem::Observer:
@@ -33,13 +35,12 @@ class BraveDownloadItemView : public DownloadItemView {
   // Vertical padding between text lines.
   static constexpr int kBraveVerticalTextPadding = 3;
 
-  // These functions calculates the vertical coordinates for each text line.
+  // These functions calculate the vertical coordinates for each text line.
   int GetYForFilenameText() const override;
   int GetYForOriginURLText() const;
   int GetYForStatusText() const;
 
   // Painting of various download item bits.
-  void DrawStatusText(gfx::Canvas* canvas) override;
   void DrawOriginURL(gfx::Canvas* canvas);
   void DrawLockIcon(gfx::Canvas* canvas);
 
@@ -62,4 +63,4 @@ class BraveDownloadItemView : public DownloadItemView {
   DISALLOW_COPY_AND_ASSIGN(BraveDownloadItemView);
 };
 
-#endif
+#endif  // BRAVE_BROWSER_UI_VIEWS_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_VIEW_H_

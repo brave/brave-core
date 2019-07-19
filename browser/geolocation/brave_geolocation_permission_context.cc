@@ -5,7 +5,9 @@
 
 #include "brave/browser/geolocation/brave_geolocation_permission_context.h"
 
-#include "chrome/browser/profiles/profile.h"
+#include <utility>
+
+#include "brave/browser/profiles/profile_util.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/prefs/pref_service.h"
 #include "brave/common/tor/pref_names.h"
@@ -23,16 +25,13 @@ void BraveGeolocationPermissionContext::DecidePermission(
     const GURL& requesting_origin,
     const GURL& embedding_origin,
     bool user_gesture,
-    const BrowserPermissionCallback& callback) {
-  if (profile()->IsTorProfile()) {
-    callback.Run(ContentSetting::CONTENT_SETTING_BLOCK);
+    BrowserPermissionCallback callback) {
+  if (brave::IsTorProfile(profile())) {
+    std::move(callback).Run(ContentSetting::CONTENT_SETTING_BLOCK);
     return;
   }
 
-  return GeolocationPermissionContext::DecidePermission(web_contents,
-                                                        id,
-                                                        requesting_origin,
-                                                        embedding_origin,
-                                                        user_gesture,
-                                                        callback);
+  return GeolocationPermissionContext::DecidePermission(
+      web_contents, id, requesting_origin, embedding_origin, user_gesture,
+      std::move(callback));
 }

@@ -12,7 +12,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
-#include "ui/native_theme/native_theme_dark_aura.h"
 
 using BraveThemeEventRouterBrowserTest = InProcessBrowserTest;
 
@@ -40,7 +39,6 @@ class MockBraveThemeEventRouter : public BraveThemeEventRouter {
 
 }  // namespace extensions
 
-
 IN_PROC_BROWSER_TEST_F(BraveThemeEventRouterBrowserTest,
                        ThemeChangeTest) {
   Profile* profile = browser()->profile();
@@ -54,15 +52,9 @@ IN_PROC_BROWSER_TEST_F(BraveThemeEventRouterBrowserTest,
 
   EXPECT_CALL(*mock_router, Notify()).Times(1);
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-  EXPECT_EQ(
-      ui::NativeTheme::GetInstanceForNativeUi(),
-      mock_router->current_native_theme_for_testing());
 
   EXPECT_CALL(*mock_router, Notify()).Times(1);
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  EXPECT_EQ(
-      ui::NativeThemeDarkAura::instance(),
-      mock_router->current_native_theme_for_testing());
 
   EXPECT_CALL(*mock_router, Notify()).Times(0);
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);

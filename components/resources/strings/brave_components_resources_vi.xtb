@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Chỉnh sửa Tùy chọn</translation>
 <translation id="7606029853066610626">Xem và Quản lý Dấu trang</translation>
 <translation id="5550994254534676787">Xem lịch sử duyệt web của bạn</translation>
+<translation id="1742484101357469636">Cài đặt Bảng điều khiển</translation>
+<translation id="8320281346741574991">Hiển thị ảnh nền</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="8730621377337864115">Đã xong</translation>
 <translation id="6248988683584659830">Cài đặt tìm kiếm</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave khiến việc thiết lập môi trường thông thường của bạn trở nên dễ dàng bằng cách nhập dấu trang và cài đặt từ các trình duyệt khác đã cài đặt trên máy tính của bạn.</translation>
 <translation id="8275038454117074363">Nhập</translation>
 <translation id="5540323067375019678">Quản lý lá chắn của bạn</translation>
+<translation id="3278033011827237847">Bảo vệ chống các bộ theo dõi và quảng cáo xâm nhập quyền riêng tư khi đang duyệt web nhờ Lá chắn Brave. Hãy đặt các Lá chắn vào trạng thái "hạ xuống" nếu một website có vẻ đang không hoạt động đúng cách.</translation>
 <translation id="3366308997091824722">Cài đặt lớp bảo vệ</translation>
-<translation id="3884404068544758153">Thay đổi công cụ tìm kiếm của bạn</translation>
+<translation id="4764692524839457597">mặc định</translation>
+<translation id="3108122610701115301">Đặt làm mặc định</translation>
+<translation id="2469440407442116729">Chọn một công cụ tìm kiếm</translation>
 <translation id="438216590634144114">Chọn công cụ tìm kiếm bạn muốn sử dụng mặc định khi tìm kiếm trên web từ thanh địa chỉ.</translation>
-<translation id="8428213095426709021">Cài đặt</translation>
+<translation id="5804484488647369316">Đặt công cụ tìm kiếm mặc định</translation>
+<translation id="4428458837269935199">Để có trải nghiệm tìm kiếm riêng tư hơn, hãy thử dùng DuckDuckGo.</translation>
 <translation id="513635702954746724">Chọn chủ đề màu của bạn</translation>
 <translation id="6842850080200126305">Đặt màu cho thanh công cụ của bạn bằng cách chọn tùy chọn sáng hoặc tối từ bảng cài đặt.</translation>
 <translation id="2801098717523961746">Chọn chủ đề của bạn</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Kiếm token khi xem quảng cáo trên Brave. Quảng cáo trình bày dựa trên sở thích của bạn, theo như suy ra từ hành vi duyệt web của bạn. Không có bất kỳ dữ liệu cá nhân hay lịch sử duyệt nào rời khỏi trình duyệt của bạn.</translation>
 <translation id="6112368337882254910">Tự động Đóng góp</translation>
 <translation id="1527222983464337010">Một cách tự động để hỗ trợ nhà xuất bản và nhà sáng tạo nội dung. Thiết lập thanh toán hàng tháng và duyệt web bình thường. Các trang web bạn truy cập nhận được khoản đóng góp của bạn tự động, dựa trên sự chú ý của bạn do Brave đo lường.</translation>
+<translation id="20281847067919078">Ước tính phần thưởng chờ xử lý</translation>
+<translation id="8593551638387217772">Ngày thanh toán tiếp theo</translation>
+<translation id="319209088187794725">Thông báo quảng cáo đã nhận được trong tháng này</translation>
 <translation id="4229016885653790965">Rất tiếc! Quảng cáo chưa có sẵn trong khu vực của bạn.</translation>
 <translation id="654711254769318398">Trang quảng cáo đã xem</translation>
 <translation id="2532127066761785857">Số lượng quảng cáo tối đa được hiển thị</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 phút</translation>
 <translation id="9031738692126722094">Bật chế độ thưởng theo cấp độ nội dung trên các trang này</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gửi tiền tip ngay khi bạn tìm thấy điều hay.</translation>
 <translation id="6135431587052937035">Hỗ trợ trang web yêu thích của bạn với những món tiền thưởng định kỳ hàng tháng.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Rất tiếc, có vẻ như khoản thưởng này đã được nhận.</translation>
 <translation id="282693359045252357">Ngày gửi tiền tip hàng tháng tiếp theo</translation>
 <translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME">$1<ex>user</ex></ph> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Số lượng:</translation>
 <translation id="5923611424721173182">Đối chiếu Hiện tại</translation>
 <translation id="5457113250005438886">Không hợp lệ</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Thiết lập tiền tip hàng tháng</translation>
 <translation id="8003573781961874199">Tải về dưới dạng PDF</translation>
 <translation id="298067735430872465">Tiền kiếm được từ Quảng cáo</translation>
+<translation id="2266556115441975588">Phần thưởng cho bạn từ Quảng cáo đều có tại đây!</translation>
 <translation id="8764029012618014430">Kcish hoạt tiền boa</translation>
 <translation id="3412655388715513818">Loại trừ trang web này</translation>
 <translation id="418343137736963579">Tổng số trang bạn đã loại khỏi Tự động-Đóng góp:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Khoá Khôi phục</translation>
 <translation id="6354568176665589146">Tái diễn</translation>
 <translation id="7577100371127227294">Tiền tip Hàng tháng</translation>
+<translation id="2391095793008133394">Gợi ý {{ user }} cho bài đăng của họ:</translation>
+<translation id="7557413530932469222">Gợi ý {{ user }} cho bài đăng của họ!</translation>
 <translation id="1110535155349301542">gỡ bỏ</translation>
 <translation id="8942997470474842562">Bạn đã chỉ định {{reservedAmount}} BAT cho những người sáng tạo vẫn chưa đăng ký để nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.</translation>
 <translation id="8759753423332885148">Tìm hiểu thêm.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Xem tất cả {{numItems}} mục</translation>
 <translation id="7857284676033058221">Xem tất cả {{numSites}} trang</translation>
 <translation id="3536298624341433814">Gửi Tiền tip của tôi</translation>
+<translation id="8428213095426709021">Cài đặt</translation>
 <translation id="1792148354504719133">trang web</translation>
 <translation id="5944430251223015324">trang web</translation>
 <translation id="1834493631938747505">Kể với người khác về tiền thưởng của bạn.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Chờ xử lý đến khi</translation>
 <translation id="7410549756000115387">Không có đóng góp chờ xử lý…</translation>
 <translation id="1963227389609234879">Xóa Tất cả</translation>
+<translation id="1170315781901539495">Website bị Loại trừ</translation>
+<translation id="5119190679543565400">Khôi phục website này</translation>
+<translation id="9075700728717335924">Bạn đã loại ra</translation>
+<translation id="4862817811647633830">các website từ phần Tự động Đóng góp.</translation>
 <translation id="923467487918828349">Hiển thị Tất cả</translation>
+<translation id="5471305206221894680">Website được Hỗ trợ</translation>
+<translation id="2306169361186864012">Phần thưởng Quảng cáo Brave!</translation>
+<translation id="3757873395477273033">Phần thưởng tặng bạn từ Quảng cáo Brave sắp tới rồi.</translation>
+<translation id="8101881066646819737">Tặng Token cho Bạn từ Quảng cáo Brave</translation>
 <translation id="2151535059686617995">Đây là ngày may mắn của bạn!</translation>
 <translation id="6255773350565723852">Khoản thưởng token của bạn đang đến.</translation>
 <translation id="1181037720776840403">Xóa</translation>

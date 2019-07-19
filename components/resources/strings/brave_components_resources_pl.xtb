@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Edytuj ustawienia</translation>
 <translation id="7606029853066610626">Przeglądaj i zarządzaj zakładkami</translation>
 <translation id="5550994254534676787">Wyświetl historię przeglądania</translation>
+<translation id="1742484101357469636">Ustawienia pulpitu</translation>
+<translation id="8320281346741574991">Pokaż zdjęcie w tle</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="8730621377337864115">Zrobione</translation>
 <translation id="6248988683584659830">Przeszukaj ustawienia</translation>
@@ -58,9 +60,12 @@
 <translation id="5540323067375019678">Zarządzaj tarczami</translation>
 <translation id="3278033011827237847">Chroń się z tarczami Brave przed reklamami i skryptami śledzącymi naruszającymi prywatność. Wyłącz tarcze, jeśli strona nie działa poprawnie.</translation>
 <translation id="3366308997091824722">Ustawienia tarczy</translation>
-<translation id="3884404068544758153">Zmień wyszukiwarkę</translation>
+<translation id="4764692524839457597">domyślna</translation>
+<translation id="3108122610701115301">Ustaw jako domyślną</translation>
+<translation id="2469440407442116729">Wybierz wyszukiwarkę</translation>
 <translation id="438216590634144114">Wybierz przeglądarkę, której chcesz używać domyślnie, przeszukując Internet z paska adresowego.</translation>
-<translation id="8428213095426709021">Ustawienia</translation>
+<translation id="5804484488647369316">Ustaw domyślną wyszukiwarkę</translation>
+<translation id="4428458837269935199">Dla bardziej prywatnego wyszukiwania, wypróbuj DuckDuckGo.</translation>
 <translation id="513635702954746724">Wybierz motyw kolorystyczny</translation>
 <translation id="6842850080200126305">Ustaw kolor paska narzędzi, wybierając z panelu ustawień opcję jasną lub ciemną.</translation>
 <translation id="2801098717523961746">Wybierz motyw</translation>
@@ -70,6 +75,9 @@
 <translation id="5946611334574299206">Zarabiaj tokeny, oglądając reklamy w przeglądarce Brave. Reklamy są prezentowane w oparciu o zainteresowania wywnioskowane z zachowania użytkownika przeglądarki. Żadne dane osobowe czy też historia przeglądania nie opuszczają nigdy przeglądarki.</translation>
 <translation id="6112368337882254910">Wspieraj automatycznie</translation>
 <translation id="1527222983464337010">Automatyczny sposób na wspieranie wydawców i twórców treści. Ustaw comiesięczną płatność i przeglądaj strony tak jak zwykle. Strony, które odwiedzasz otrzymują dotacje automatycznie, w zależności od ilości odsłon i spędzonego na nich czasu, które są mierzone przez Brave.</translation>
+<translation id="20281847067919078">Szacowane oczekujące nagrody</translation>
+<translation id="8593551638387217772">Data następnej płatności</translation>
+<translation id="319209088187794725">Powiadomienia o reklamach otrzymane w tym miesiącu</translation>
 <translation id="4229016885653790965">Przepraszamy! Reklamy nie są jeszcze dostępne w Twoim regionie.</translation>
 <translation id="654711254769318398">Dodaj obejrzane strony</translation>
 <translation id="2532127066761785857">Maksymalna liczba wyświetlanych reklam</translation>
@@ -108,6 +116,7 @@
 <translation id="8610523985422563960">1 minuta</translation>
 <translation id="9031738692126722094">Włącz napiwki dotyczące treści w tych witrynach</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Przekazuj napiwek od razu, gdy trafisz na prawdziwą perełkę.</translation>
 <translation id="6135431587052937035">Wspieraj swoje ulubione strony poprzez comiesięczne napiwki</translation>
@@ -128,7 +137,7 @@
 <translation id="7797604753681168055">Odzyskaj teraz!</translation>
 <translation id="1184075897575325927">Przykro nam, wygląda na to, że ten grant został już wykorzystany.</translation>
 <translation id="282693359045252357">Data następnego miesięcznego napiwku</translation>
-<translation id="6231182869178328516">Daję napiwek <ph name="NAME">$1<ex>user</ex></ph>, korzystając z przeglądarki Brave. Sprawdź pod adresem https://brave.com/tips.</translation>
+<translation id="6231182869178328516">Przekaż napiwek <ph name="NAME">$1</ph>, korzystając z przeglądarki Brave. Sprawdź pod adresem https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Kwota:</translation>
 <translation id="5923611424721173182">Obecne uzgodnienie</translation>
@@ -179,7 +188,7 @@
 <translation id="4281844954008187215">Warunki świadczenia usługi</translation>
 <translation id="4405997465645469914">Włączając Nagrody Brave zaznaczasz, że przeczytałeś i zgadzasz się na</translation>
 <translation id="8819542691525488940">Klikając zaznaczasz, że przeczytałeś i zgadzasz się na</translation>
-<translation id="8071424789698327147">Klikając Tak, gotowe!, oświadczasz, że znasz i akceptujesz</translation>
+<translation id="8071424789698327147">Klikając ‘Tak, mogę zaczynać!’, oświadczasz, że znasz i akceptujesz</translation>
 <translation id="7530570094705720669">Tworzenie portfela</translation>
 <translation id="2105596359439030979">Twoja uwaga jest cenna. Zarabiaj, oglądając szanujące prywatność reklamy i przekazuj, to co zarobisz twórcom treści, które lubisz.</translation>
 <translation id="516395624550019162">Tak, wchodzę w to!</translation>
@@ -214,6 +223,7 @@
 <translation id="7277134233385925078">Ustaw miesięczny napiwek</translation>
 <translation id="8003573781961874199">Pobierz jako PDF</translation>
 <translation id="298067735430872465">Zarobki z reklam</translation>
+<translation id="2266556115441975588">Twoje nagrody z reklam są tutaj!</translation>
 <translation id="8764029012618014430">Włącz napiwki</translation>
 <translation id="3412655388715513818">Wyklucz tę stronę</translation>
 <translation id="418343137736963579">Liczba stron wykluczonych z automatycznego wspierania:</translation>
@@ -271,6 +281,8 @@
 <translation id="194625454574835815">Klucz odzyskiwania</translation>
 <translation id="6354568176665589146">Cykliczne</translation>
 <translation id="7577100371127227294">Miesięczne napiwki</translation>
+<translation id="2391095793008133394">Przekaż {{ user }} napiwek za ten post:</translation>
+<translation id="7557413530932469222">Przekaż {{ user }} napiwek za ten post!</translation>
 <translation id="1110535155349301542">usuń</translation>
 <translation id="8942997470474842562">Przeznaczyłeś {{reservedAmount}} BAT dla twórców, którzy nie zarejestrowali się jeszcze, aby otrzymywać wsparcie. Twoja przeglądarka będzie próbowała wnieść wsparcie do czasu, gdy zostaną zweryfikowani, lub gdy minie 90 dni.</translation>
 <translation id="8759753423332885148">Dowiedz się więcej.</translation>
@@ -307,6 +319,7 @@
 <translation id="259138486959961679">Zobacz wszystkie elementy, w liczbie: {{numitems}}</translation>
 <translation id="7857284676033058221">Zobacz wszystkie strony, w liczbie {{numSites}}</translation>
 <translation id="3536298624341433814">Wyślij napiwek</translation>
+<translation id="8428213095426709021">Ustawienia</translation>
 <translation id="1792148354504719133">strona</translation>
 <translation id="5944430251223015324">strony</translation>
 <translation id="1834493631938747505">Powiedz innym o swoim napiwku.</translation>
@@ -324,8 +337,8 @@
 <translation id="8987812599455325915">Włącza to zarówno reklamy jak i wspieranie automatyczne. Możesz je w każdej chwili niezależnie włączyć lub wyłączyć.</translation>
 <translation id="1485484147452131556">Aktywuj Nagrody Brave</translation>
 <translation id="3983104749597726322">Tweet</translation>
-<translation id="5636843789453098076">Daj @{{ user }} napiwek za tweet:</translation>
-<translation id="4242384385082203046">Daj @{{ user }} napiwek za tweet!</translation>
+<translation id="5636843789453098076">Przekaż @{{ user }} napiwek za tweet:</translation>
+<translation id="4242384385082203046">Przekaż @{{ user }} napiwek za tweet!</translation>
 <translation id="2448312741937722512">Rodzaj</translation>
 <translation id="8772672608371898774">Zweryfikowany wydawca Brave</translation>
 <translation id="5050370287908180130">Zobacz szczegóły w zestawieniu miesięcznym</translation>
@@ -362,6 +375,9 @@
 <translation id="4862817811647633830">stron ze wspierania automatycznego.</translation>
 <translation id="923467487918828349">Pokaż wszystko</translation>
 <translation id="5471305206221894680">Wspierane strony</translation>
+<translation id="2306169361186864012">Nagrody z reklam Brave!</translation>
+<translation id="3757873395477273033">Twoje nagrody z reklam Brave są już w drodze.</translation>
+<translation id="8101881066646819737">Twoje tokeny z reklam Brave</translation>
 <translation id="2151535059686617995">To Twój szczęśliwy dzień!</translation>
 <translation id="6255773350565723852">Twoje tokeny są już w drodze.</translation>
 <translation id="1181037720776840403">Usuń</translation>

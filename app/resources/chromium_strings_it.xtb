@@ -79,13 +79,9 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="5874882355102994015">Impossibile visualizzare l'anteprima di stampa in Brave senza il visualizzatore PDF integrato.</translation>
 <translation id="8880183781256147665">Aggiunta a Brave in corso...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> potrebbe essere pericoloso, pertanto è stato bloccato da Brave. La sicurezza è garantita dalla protezione avanzata.</translation>
 <translation id="9067428552314418522">Questo file è pericoloso, pertanto è stato bloccato da Brave.</translation>
-<translation id="2938460345748897177">Questo file è pericoloso, pertanto è stato bloccato da Brave. La sicurezza è garantita dalla protezione avanzata.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> è pericoloso, pertanto è stato bloccato da Brave.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> è pericoloso, pertanto è stato bloccato da Brave. La sicurezza è garantita dalla protezione avanzata.</translation>
 <translation id="89367911614620585">Questo file potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
-<translation id="8943391224520748272">Questo file potrebbe essere pericoloso, pertanto è stato bloccato da Brave. La sicurezza è garantita dalla protezione avanzata.</translation>
 <translation id="9183662282810237335">Vuoi uscire comunque da Brave?</translation>
 <translation id="3834935463915107022">Vuoi chiudere comunque Brave?</translation>
 <translation id="8797356639448065696">Brave è in modalità background.</translation>
@@ -148,8 +144,6 @@ Se esegui comunque l'accesso, le informazioni di Brave come Preferiti, cronologi
 <translation id="6746636977031158624">Impossibile sincronizzare i dati in Brave OS perché i dati di accesso dell'account sono obsoleti.</translation>
 <translation id="2999152167963026588">Impossibile sincronizzare i dati in Brave OS perché la sincronizzazione non è disponibile per il tuo dominio.</translation>
 <translation id="1459786048951724030">Impossibile sincronizzare i dati in Brave OS a causa di un errore durante l'accesso.</translation>
-<translation id="2887570477425111999">Salva dati in Brave</translation>
-<translation id="193559141530782783">Brave memorizzerà in sicurezza i tuoi dati personali affinché tu non debba digitarli di nuovo.</translation>
 <translation id="663059986967017181">Copiata in Brave</translation>
 <translation id="1457432835062259213">Avvio applicazioni di Brave</translation>
 <translation id="82609232232243542">Accedi a Brave</translation>
@@ -193,7 +187,7 @@ Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EM
 <translation id="3856641371299712128">Regola in ingresso per Brave Dev per permettere il traffico mDNS.</translation>
 <translation id="8207657266087451193">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave Software. Puoi disattivare questa funzionalità in qualsiasi momento nelle Impostazioni.</translation>
 <translation id="5499063270485366718">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave Software.</translation>
-<translation id="3870835867536344658">Viene usato lo stesso controllo ortografico utilizzato nella Ricerca Brave Software. Il testo digitato nel browser viene inviato a Brave Software. Puoi modificare questo comportamento in qualsiasi momento nelle impostazioni.</translation>
+<translation id="215320507915280336">Viene usato lo stesso controllo ortografico utilizzato nella Ricerca Brave Software. Il testo che digiti nel browser viene inviato a Brave Software. Puoi modificare questo comportamento in qualsiasi momento nelle impostazioni.</translation>
 <translation id="1807774211756215222">Apri link in una nuova &amp;scheda di Brave</translation>
 <translation id="4624945300945265642">Apri link in una finestra di navigazione in inco&amp;gnito di Brave</translation>
 <translation id="7863882214613921971">Apri link in una nuova &amp;scheda di Brave</translation>
@@ -250,23 +244,17 @@ Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EM
 <translation id="8933981935877469796">Seleziona <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Fai clic su <ph name="BEGIN_BOLD"/>Switch anyway<ph name="END_BOLD"/> (Passa comunque) se viene visualizzato</translation>
 <translation id="3507835409099344374">Vai alle impostazioni di notifica di Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{È disponibile un aggiornamento di Brave}=1{È disponibile un aggiornamento di Brave}other{È disponibile un aggiornamento di Brave da # giorni}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{È disponibile un aggiornamento di Brave}=1{È disponibile un aggiornamento di Brave}other{È disponibile un aggiornamento di Brave da # giorni}}</translation>
 <translation id="720532315408041257">L'amministratore ti chiede di riavviare Brave per installare questo aggiornamento</translation>
-<translation id="6639482638305253477">{0,plural, =1{Riavvia Brave entro un giorno}other{Riavvia Brave entro # giorni}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave verrà riavviato tra un'ora}other{Brave verrà riavviato tra # ore}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave verrà riavviato tra un minuto}other{Brave verrà riavviato tra # minuti}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave verrà riavviato ora}=1{Brave verrà riavviato tra un secondo}other{Brave verrà riavviato tra # secondi}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Riavvia Brave entro un giorno}other{Riavvia Brave entro # giorni}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave verrà riavviato tra un'ora}other{Brave verrà riavviato tra # ore}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave verrà riavviato tra 1 minuto}other{Brave verrà riavviato tra # minuti}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave verrà riavviato ora}=1{Brave verrà riavviato tra 1 secondo}other{Brave verrà riavviato tra # secondi}}</translation>
 <translation id="7595187113648413294">L'amministratore richiede il riavvio di Brave per installare un aggiornamento</translation>
-<translation id="56801943271475640">{0,plural, =0{È disponibile un aggiornamento di Brave OS}=1{È disponibile un aggiornamento di Brave OS}other{È disponibile un aggiornamento di Brave OS da # giorni}}</translation>
-<translation id="5715362474140341294">L'amministratore chiede di riavviare Brave OS per installare questo aggiornamento</translation>
-<translation id="8094834892392729950">{0,plural, =1{Riavvia Brave OS entro un giorno}other{Riavvia Brave OS entro # giorni}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS verrà riavviato tra un'ora}other{Brave OS verrà riavviato tra # ore}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS verrà riavviato tra un minuto}other{Brave OS verrà riavviato tra # minuti}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS verrà riavviato ora}=1{Brave verrà riavviato tra un secondo}other{Brave OS verrà riavviato tra # secondi}}</translation>
-<translation id="8559452515617838628">L'amministratore richiede di riavviare Brave OS per installare un aggiornamento</translation>
 <translation id="3052349005266761501">Avvio di Brave...</translation>
 <translation id="1197672524850678392">Impossibile avviare Brave. Riprova.</translation>
 <translation id="6040143037577758943">Chiudi</translation>
+<translation id="5147525139567260139">Condividi una scheda di Brave</translation>
 <translation id="8541922081612557424">Informazioni su Brave</translation>
 <translation id="3262506503470845422">Ricevi assistenza per Brave</translation>
 <translation id="1864557848095568223">Aggiornamento di Brave in corso</translation>

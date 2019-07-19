@@ -109,22 +109,6 @@ def get_target_arch():
             else 'x64')
 
 
-def get_chromedriver_version():
-    pattern = "^[ ]*chromedriver_version = \"([0-9][.][0-9]+)\""
-    build_gn_path = os.path.join(BRAVE_CORE_ROOT, 'BUILD.gn')
-    with open(build_gn_path, 'r') as build_gn_file:
-        for line in build_gn_file:
-            match = re.search(pattern, line)
-            if match:
-                version = match.group(1)
-    try:
-        version
-    except NameError:
-        raise(NameError("chromedriver_version Not Found"))
-
-    return 'v' + version
-
-
 def get_env_var(name):
     return (os.environ.get('BRAVE_' + name) or
             os.environ.get('npm_config_BRAVE_' + name, ''))
