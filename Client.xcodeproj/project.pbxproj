@@ -1608,6 +1608,7 @@
 		5929A9F321B6AF0F005ECF8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Shared.strings; sourceTree = "<group>"; };
 		5929A9F421B6AF18005ECF8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		592F521D2217327B0078395E /* HttpCookieExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpCookieExtension.swift; sourceTree = "<group>"; };
+		59347A7822E22F2000C38919 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/BraveShared.strings"; sourceTree = "<group>"; };
 		5953AAEE2226E9D800A92DE1 /* HttpCookieExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpCookieExtensionTest.swift; sourceTree = "<group>"; };
 		595E0EDA21CAD97C00813D49 /* CookieControl.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = CookieControl.js; sourceTree = "<group>"; };
 		595E0EE021CAEF5B00813D49 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
@@ -1817,6 +1818,7 @@
 		59C3280322DCD670009A9F44 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		59C8119822D754D4005D5BBC /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		59CDB05322DCD6730008319C /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/BraveShared.strings; sourceTree = "<group>"; };
+		59DAED8522E22F0B0018B858 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		59E3117522DCD678005BD8E5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		59EDBFB122DCD67B007D07C6 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		59F8F8F622DCD67E00EFE0E8 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BraveShared.strings; sourceTree = "<group>"; };
@@ -6453,6 +6455,8 @@
 				59EDBFB122DCD67B007D07C6 /* sv */,
 				59F8F8F622DCD67E00EFE0E8 /* uk */,
 				5902D2FF22DCD681002232FB /* zh */,
+				59DAED8522E22F0B0018B858 /* es */,
+				59347A7822E22F2000C38919 /* pt-BR */,
 			);
 			name = BraveShared.strings;
 			sourceTree = "<group>";
