@@ -27,12 +27,6 @@ class ProfileIOData;
 
 namespace brave_shields {
 
-bool IsAllowContentSetting(HostContentSettingsMap* content_settings,
-                           const GURL& primary_url,
-                           const GURL& secondary_url,
-                           ContentSettingsType setting_type,
-                           const std::string& resource_identifier);
-
 bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
                                      const GURL& primary_url,
                                      const GURL& secondary_url,

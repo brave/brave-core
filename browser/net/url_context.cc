@@ -50,10 +50,13 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
   } else {
     // We can not always use site_for_cookies since it can be empty in certain
     // cases. See the comments in url_request.h
-    ctx->tab_url = brave_shields::BraveShieldsWebContentsObserver::
-        GetTabURLFromRenderFrameInfo(ctx->render_process_id,
-                                     ctx->render_frame_id,
-                                     ctx->frame_tree_node_id).GetOrigin();
+    ctx->tab_url = GURL(request->network_isolation_key().ToString());
+    if (ctx->tab_url.is_empty()) {
+      ctx->tab_url = brave_shields::BraveShieldsWebContentsObserver::
+          GetTabURLFromRenderFrameInfo(ctx->render_process_id,
+                                       ctx->render_frame_id,
+                                       ctx->frame_tree_node_id).GetOrigin();
+    }
   }
   ctx->tab_origin = ctx->tab_url.GetOrigin();
   ctx->allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
@@ -67,17 +70,9 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
       brave_shields::IsAllowContentSettingFromIO(request, ctx->tab_origin,
           ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kHTTPUpgradableResources);
-  ctx->allow_1p_cookies = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, GURL("https://firstParty/"),
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
-  ctx->allow_3p_cookies = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies);
   ctx->allow_referrers = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers);
-
-  ctx->request = request;
 }
 
 }  // namespace brave

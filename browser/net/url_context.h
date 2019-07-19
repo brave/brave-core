@@ -63,8 +63,6 @@ struct BraveRequestInfo {
   bool allow_brave_shields = true;
   bool allow_ads = false;
   bool allow_http_upgradable_resource = false;
-  bool allow_1p_cookies = true;
-  bool allow_3p_cookies = false;
   bool allow_referrers = false;
   bool allow_google_auth = true;
   int render_process_id = 0;
@@ -87,7 +85,7 @@ struct BraveRequestInfo {
   content::ResourceType resource_type = kInvalidResourceType;
 
   static void FillCTXFromRequest(const net::URLRequest* request,
-    std::shared_ptr<brave::BraveRequestInfo> ctx);
+                                 std::shared_ptr<brave::BraveRequestInfo> ctx);
 
  private:
   // Please don't add any more friends here if it can be avoided.

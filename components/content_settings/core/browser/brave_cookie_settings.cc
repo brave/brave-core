@@ -6,18 +6,57 @@
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 
 #include "base/bind.h"
-#include "brave/common/brave_cookie_blocking.h"
 #include "brave/common/pref_names.h"
+#include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "components/content_settings/core/common/cookie_settings_base.h"
+#include "brave/components/content_settings/core/browser/content_settings_util.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
+using namespace net::registry_controlled_domains;  // NOLINT
+
 namespace content_settings {
 
-using namespace net::registry_controlled_domains;  // NOLINT
+namespace {
+
+bool ShouldBlockCookie(bool allow_brave_shields,
+                       bool allow_1p_cookies,
+                       bool allow_3p_cookies,
+                       const GURL& main_frame_url,
+                       const GURL& url,
+                       bool allow_google_auth) {
+  // shields settings only apply to http/https
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return false;
+  }
+
+  if (!allow_brave_shields) {
+    return false;
+  }
+
+  // If 1p cookies are not allowed, then we just want to block everything.
+  if (!allow_1p_cookies) {
+    return true;
+  }
+
+  // If 3p is allowed, we have nothing extra to block
+  if (allow_3p_cookies) {
+    return false;
+  }
+
+  // If it is whitelisted, we shouldn't block
+  if (brave::IsWhitelistedCookieException(main_frame_url,
+                                          url,
+                                          allow_google_auth))
+    return false;
+
+  // Same TLD+1 whouldn't set the referrer
+  return !SameDomainOrHost(url, main_frame_url, INCLUDE_PRIVATE_REGISTRIES);
+}
+
+}  // namespace
 
 BraveCookieSettings::BraveCookieSettings(
     HostContentSettingsMap* host_content_settings_map,
@@ -51,54 +90,42 @@ void BraveCookieSettings::GetCookieSetting(
     ContentSetting* cookie_setting) const {
   DCHECK(cookie_setting);
 
-  // Auto-allow in extensions or for WebUI embedded in a secure origin.
-  // This matches an early return case in CookieSettings::GetCookieSetting
-  if (first_party_url.SchemeIs(kChromeUIScheme) &&
-      url.SchemeIsCryptographic()) {
-    *cookie_setting = CONTENT_SETTING_ALLOW;
-    return;
-  }
-
-  // This matches an early return case in CookieSettings::GetCookieSetting
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (url.SchemeIs(extension_scheme_) &&
-      first_party_url.SchemeIs(extension_scheme_)) {
-    *cookie_setting = CONTENT_SETTING_ALLOW;
-    return;
-  }
-#endif
-
-  CookieSettings::GetCookieSetting(url, first_party_url, source,
-                                   cookie_setting);
-  if (*cookie_setting == CONTENT_SETTING_BLOCK) {
-    return;
-  }
-
-  GURL primary_url =
+  GURL main_frame_url =
       (tab_url == GURL("about:blank") || tab_url.is_empty() ? first_party_url
                                                             : tab_url);
 
-  ContentSetting brave_shields_setting =
-      host_content_settings_map_->GetContentSetting(
-          primary_url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kBraveShields);
-  ContentSetting brave_1p_setting =
-      host_content_settings_map_->GetContentSetting(
-          primary_url, GURL("https://firstParty/"),
-          CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
-  ContentSetting brave_3p_setting =
-      host_content_settings_map_->GetContentSetting(
-          primary_url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kCookies);
+  if (main_frame_url.is_empty())
+    main_frame_url = url;
 
-  bool allow_brave_shields = brave_shields_setting == CONTENT_SETTING_ALLOW ||
-                             brave_shields_setting == CONTENT_SETTING_DEFAULT;
-  bool allow_1p_cookies = brave_1p_setting == CONTENT_SETTING_ALLOW ||
-                          brave_1p_setting == CONTENT_SETTING_DEFAULT;
-  bool allow_3p_cookies = brave_3p_setting == CONTENT_SETTING_ALLOW;
+  bool allow_brave_shields =
+      IsAllowContentSetting(host_content_settings_map_.get(),
+                            main_frame_url,
+                            main_frame_url,
+                            CONTENT_SETTINGS_TYPE_PLUGINS,
+                            brave_shields::kBraveShields);
+
+  bool allow_1p_cookies =
+      IsAllowContentSetting(host_content_settings_map_.get(),
+                            main_frame_url,
+                            GURL("https://firstParty/"),
+                            CONTENT_SETTINGS_TYPE_PLUGINS,
+                            brave_shields::kCookies);
+
+  bool allow_3p_cookies =
+      IsAllowContentSetting(host_content_settings_map_.get(),
+                            main_frame_url,
+                            GURL(),
+                            CONTENT_SETTINGS_TYPE_PLUGINS,
+                            brave_shields::kCookies);
+
   if (ShouldBlockCookie(allow_brave_shields, allow_1p_cookies, allow_3p_cookies,
-                        first_party_url, url, allow_google_auth_)) {
+                        main_frame_url, url, allow_google_auth_)) {
     *cookie_setting = CONTENT_SETTING_BLOCK;
+  } else {
+    return CookieSettings::GetCookieSetting(url,
+                                            first_party_url,
+                                            source,
+                                            cookie_setting);
   }
 }
 
