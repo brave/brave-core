@@ -12,7 +12,8 @@ import {
   Main,
   ListWidget as List,
   Footer,
-  DynamicBackground,
+  App,
+  PosterBackground,
   Gradient
 } from '../../components/default'
 
@@ -33,17 +34,47 @@ interface Props {
 
 interface State {
   showSettingsMenu: boolean
+  backgroundHasLoaded: boolean
 }
 
 class NewTabPage extends React.Component<Props, State> {
-  constructor (props: Props) {
-    super(props)
-    this.state = { showSettingsMenu: false }
+  state = {
+    showSettingsMenu: false,
+    backgroundHasLoaded: false
   }
 
   componentDidMount () {
     // if a notification is open at component mounting time, close it
     this.props.actions.onHideSiteRemovalNotification()
+    this.trackCachedImage()
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (!prevProps.newTabData.showBackgroundImage &&
+          this.props.newTabData.showBackgroundImage) {
+      this.trackCachedImage()
+    }
+    if (prevProps.newTabData.showBackgroundImage &&
+      !this.props.newTabData.showBackgroundImage) {
+      // reset loaded state
+      this.setState({ backgroundHasLoaded: false })
+    }
+  }
+
+  trackCachedImage () {
+    if (this.props.newTabData.showBackgroundImage &&
+        this.props.newTabData.backgroundImage &&
+        this.props.newTabData.backgroundImage.source) {
+      const imgCache = new Image()
+      imgCache.src = this.props.newTabData.backgroundImage.source
+      console.timeStamp('image start loading...')
+      imgCache.onload = () => {
+        console.timeStamp('image loaded')
+        this.setState({
+          backgroundHasLoaded: true
+        })
+      }
+    }
   }
 
   onDraggedSite = (fromUrl: string, toUrl: string, dragRight: boolean) => {
@@ -110,13 +141,25 @@ class NewTabPage extends React.Component<Props, State> {
     const { newTabData, actions } = this.props
     const { showSettingsMenu } = this.state
 
-    if (!newTabData || !newTabData.backgroundImage) {
+    if (!newTabData) {
       return null
     }
 
     return (
-      <DynamicBackground showBackgroundImage={newTabData.showBackgroundImage} background={newTabData.backgroundImage.source}>
-        {newTabData.showBackgroundImage && <Gradient />}
+      <App dataIsReady={newTabData.initialDataLoaded}>
+        <PosterBackground
+          hasImage={newTabData.showBackgroundImage}
+          imageHasLoaded={this.state.backgroundHasLoaded}
+        >
+          {newTabData.showBackgroundImage && newTabData.backgroundImage &&
+            <img src={newTabData.backgroundImage.source} />
+          }
+        </PosterBackground>
+        {newTabData.showBackgroundImage &&
+          <Gradient
+            imageHasLoaded={this.state.backgroundHasLoaded}
+          />
+        }
         <Page>
           <Header>
             <Stats stats={newTabData.stats} showWidget={newTabData.showStats}/>
@@ -169,7 +212,7 @@ class NewTabPage extends React.Component<Props, State> {
             />
           </Footer>
         </Page>
-      </DynamicBackground>
+      </App>
     )
   }
 }
