@@ -18,7 +18,6 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/profiles/profile_io_data.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/resource_request_info.h"
 #include "net/base/upload_bytes_element_reader.h"
@@ -52,31 +51,6 @@ bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
 #else
   return true;
 #endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-}
-
-std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-  if (!request->has_upload())
-    return {};
-
-  const net::UploadDataStream* stream = request->get_upload();
-  if (!stream->GetElementReaders())
-    return {};
-
-  const auto* element_readers = stream->GetElementReaders();
-  if (element_readers->empty())
-    return {};
-
-  std::string upload_data;
-  for (const auto& element_reader : *element_readers) {
-    const net::UploadBytesElementReader* reader =
-        element_reader->AsBytesReader();
-    if (!reader) {
-      return {};
-    }
-    upload_data.append(reader->bytes(), reader->length());
-  }
-  return upload_data;
 }
 
 std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
@@ -209,6 +183,7 @@ void BraveRequestInfo::FillCTX(
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->tab_url = request.top_frame_origin;
   ctx->tab_origin = request.top_frame_origin.value_or(url::Origin()).GetURL();
+  request.
 
   ProfileIOData* io_data =
       ProfileIOData::FromResourceContext(resource_context);

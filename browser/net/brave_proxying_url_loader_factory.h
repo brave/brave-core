@@ -8,38 +8,63 @@
 
 #include <cstdint>
 #include <map>
+#include <memory>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/callback.h"
+#include "base/containers/unique_ptr_adapters.h"
 #include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
 #include "brave/browser/net/url_context.h"
-#include "extensions/browser/api/web_request/web_request_api.h"
-#include "extensions/browser/api/web_request/web_request_info.h"
+#include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/binding_set.h"
 #include "net/base/completion_once_callback.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/resource_response.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "url/gurl.h"
 
 namespace content {
+class BrowserContext;
+class RenderFrameHost;
 class ResourceContext;
 }  // namespace content
 
-class Profile;
+class RequestIDGenerator
+    : public base::RefCountedThreadSafe<RequestIDGenerator> {
+ public:
+  RequestIDGenerator() = default;
+  int64_t Generate() {
+    DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+    return ++id_;
+  }
 
+ private:
+  friend class base::RefCountedThreadSafe<RequestIDGenerator>;
+  ~RequestIDGenerator() {}
+
+  // Although this initialization can be done in a thread other than the IO
+  // thread, we expect at least one memory barrier before actually calling
+  // Generate in the IO thread, so we don't protect the variable with a lock.
+  int64_t id_ = 0;
+  DISALLOW_COPY_AND_ASSIGN(RequestIDGenerator);
+};
 
 // Cargoculted from WebRequestProxyingURLLoaderFactory and
 // signin::ProxyingURLLoaderFactory
-class BraveProxyingURLLoaderFactory :
-    public network::mojom::URLLoaderFactory,
-    public network::mojom::TrustedURLLoaderHeaderClient {
+class BraveProxyingURLLoaderFactory
+    : public network::mojom::URLLoaderFactory,
+      public network::mojom::TrustedURLLoaderHeaderClient {
  public:
   using DisconnectCallback =
       base::OnceCallback<void(BraveProxyingURLLoaderFactory*)>;
@@ -52,12 +77,11 @@ class BraveProxyingURLLoaderFactory :
         BraveProxyingURLLoaderFactory* factory,
         uint64_t request_id,
         int32_t network_service_request_id,
-        int render_process_id_,
-        int frame_tree_node_id_,
+        int render_process_id,
+        int frame_tree_node_id,
         int32_t routing_id,
         uint32_t options,
         const network::ResourceRequest& request,
-        bool is_download,
         content::ResourceContext* resource_context,
         const net::MutableNetworkTrafficAnnotationTag& traffic_annotation,
         network::mojom::URLLoaderRequest loader_request,
@@ -122,8 +146,6 @@ class BraveProxyingURLLoaderFactory :
     BraveProxyingURLLoaderFactory* const factory_;
     network::ResourceRequest request_;
     const base::Optional<url::Origin> original_initiator_;
-    // TODO(iefremov): Restore?
-    // const bool is_download_;
     const uint64_t request_id_;
     const int32_t network_service_request_id_;
 
@@ -151,10 +173,6 @@ class BraveProxyingURLLoaderFactory :
     scoped_refptr<net::HttpResponseHeaders> override_headers_;
     GURL redirect_url_;
 
-    // Holds any provided auth credentials through the extent of the request's
-    // lifetime.
-    base::Optional<net::AuthCredentials> auth_credentials_;
-
     // TODO(https://crbug.com/882661): Remove this once the bug is fixed.
     bool on_receive_response_received_ = false;
     bool on_receive_response_sent_ = false;
@@ -164,10 +182,13 @@ class BraveProxyingURLLoaderFactory :
     // If |has_any_extra_headers_listeners_| is set to true, the request will be
     // sent with the network::mojom::kURLLoadOptionUseHeaderClient option, and
     // we expect events to come through the
-    // network::mojom::TrustedURLLoaderHeaderClient binding on the factory. This
-    // is only set to true if there is a listener that needs to view or modify
-    // headers set in the network process.
-    bool has_any_extra_headers_listeners_ = false;
+    // network::mojom::TrustedURLLoaderHeaderClient binding on the factory.
+    // At the moment we always set it to true when we get a request with
+    // non-zero id. In the future we can optimize by checking if there are any
+    // particular callbacks that want extra headers of this particular request.
+    // Using header client is a must for manipulating with Cookies, Referer and
+    // other headers with Brave site hacks.
+    bool has_any_extra_headers_listeners_ = true;
     bool current_request_uses_header_client_ = false;
     OnBeforeSendHeadersCallback on_before_send_headers_callback_;
     OnHeadersReceivedCallback on_headers_received_callback_;
@@ -196,13 +217,14 @@ class BraveProxyingURLLoaderFactory :
   // Constructor public for testing purposes. New instances should be created
   // by calling MaybeProxyRequest().
   BraveProxyingURLLoaderFactory(
+      BraveRequestHandler* request_handler,
       content::ResourceContext* resource_context,
       int render_process_id,
       int frame_tree_node_id,
-      bool is_download,
       network::mojom::URLLoaderFactoryRequest request,
       network::mojom::URLLoaderFactoryPtrInfo target_factory,
       network::mojom::TrustedURLLoaderHeaderClientRequest header_client_request,
+      scoped_refptr<RequestIDGenerator> request_id_generator,
       DisconnectCallback on_disconnect);
 
   ~BraveProxyingURLLoaderFactory() override;
@@ -211,7 +233,6 @@ class BraveProxyingURLLoaderFactory :
       content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
       int render_process_id,
-      bool is_download,
       const url::Origin& request_initiator,
       network::mojom::URLLoaderFactoryRequest* factory_request,
       network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client);
@@ -240,30 +261,29 @@ class BraveProxyingURLLoaderFactory :
 
   void OnTargetFactoryError();
   void OnProxyBindingError();
-  void RemoveRequest(InProgressRequest* request);
+  void RemoveRequest(int32_t network_service_request_id, uint64_t request_id);
 
   void MaybeRemoveProxy();
 
+  BraveRequestHandler* request_handler_;
   content::ResourceContext* resource_context_;
   const int render_process_id_;
   const int frame_tree_node_id_;
-  const bool is_download_;
 
   mojo::BindingSet<network::mojom::URLLoaderFactory> proxy_bindings_;
   network::mojom::URLLoaderFactoryPtr target_factory_;
   mojo::Binding<network::mojom::TrustedURLLoaderHeaderClient>
       url_loader_header_client_binding_;
 
-  // TODO(iefremov): Restore?
   // Mapping from our own internally generated request ID to an
   // InProgressRequest instance.
-  // std::map<uint64_t, std::unique_ptr<InProgressRequest>> requests_;
+  std::map<uint64_t, std::unique_ptr<InProgressRequest>> requests_;
 
   // A mapping from the network stack's notion of request ID to our own
   // internally generated request ID for the same request.
-  // std::map<int32_t, uint64_t> network_request_id_to_web_request_id_;
-  std::set<std::unique_ptr<InProgressRequest>, base::UniquePtrComparator>
-      requests_;
+  std::map<int32_t, uint64_t> network_request_id_to_web_request_id_;
+  scoped_refptr<RequestIDGenerator> request_id_generator_;
+
   DisconnectCallback disconnect_callback_;
 
   base::WeakPtrFactory<BraveProxyingURLLoaderFactory> weak_factory_;

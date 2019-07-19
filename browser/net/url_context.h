@@ -22,7 +22,7 @@ namespace network {
 struct ResourceRequest;
 }
 class BraveNetworkDelegateBase;
-class BraveShieldsCore;
+class BraveRequestHandler;
 
 namespace brave {
 
@@ -115,7 +115,7 @@ struct BraveRequestInfo {
       const brave::ResponseCallback& next_callback,
       std::shared_ptr<brave::BraveRequestInfo> ctx);
   friend class ::BraveNetworkDelegateBase;
-  friend class ::BraveShieldsCore;
+  friend class ::BraveRequestHandler;
 
   GURL* new_url = nullptr;
 

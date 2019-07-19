@@ -21,6 +21,6 @@ void RemoveTrackableSecurityHeadersForThirdParty(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers);
 
-}  // namespace
+}  // namespace brave
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_STP_UTIL_H_
