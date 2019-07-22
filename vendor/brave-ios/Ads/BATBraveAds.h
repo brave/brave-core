@@ -3,25 +3,45 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import <Foundation/Foundation.h>
+#import <UserNotifications/UserNotifications.h>
+
+typedef NS_ENUM(NSInteger, BATAdsNotificationEventType) {
+  BATAdsNotificationEventTypeViewed,     // = ads::NotificationEventType::VIEWED
+  BATAdsNotificationEventTypeClicked,    // = ads::NotificationEventType::CLICKED
+  BATAdsNotificationEventTypeDismissed,  // = ads::NotificationEventType::DISMISSED
+  BATAdsNotificationEventTypeTimedOut    // = ads::NotificationEventType::TIMEOUT
+} NS_SWIFT_NAME(NotificationEventType);
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class BATAdsNotification, BATBraveAds;
 
-NS_SWIFT_NAME(BraveAdsDelegate)
-@protocol BATBraveAdsDelegate <NSObject>
+NS_SWIFT_NAME(BraveAdsNotificationHandler)
+@protocol BATBraveAdsNotificationHandler
 @required
-
-/// The client should show the notification to the user. Return true if the notification was successfully shown,
-/// otherwise, return false.
-- (BOOL)braveAds:(BATBraveAds *)braveAds showNotification:(BATAdsNotification *)notification;
-
+/// Determine whether or not the client can currently show notifications
+/// to the user.
+///
+/// In the case of system notifications:
+///
+/// This can be a combination of permission checks and notification settings for
+/// lock screen, alert type, etc. If the user hasn't yet decided on notification
+/// authorization status, they should be asked when this is called
+- (void)isNotificationsAvailable:(void (^)(BOOL available))completionHandler;
+/// Show the given notification to the user (or add it to the queue)
+- (void)showNotification:(BATAdsNotification *)notification;
+/// Remove a pending notification from the queue or remove an already shown
+/// notification from view
+- (void)clearNotificationWithIdentifier:(NSString *)identifier;
 @end
 
 NS_SWIFT_NAME(BraveAds)
 @interface BATBraveAds : NSObject
 
-@property (nonatomic, weak, nullable) id<BATBraveAdsDelegate> delegate;
+/// The notifications handler.
+///
+/// @see BATSystemNotificationsHandler
+@property (nonatomic, weak, nullable) id<BATBraveAdsNotificationHandler> notificationsHandler;
 
 #pragma mark - Global
 
@@ -60,6 +80,10 @@ NS_SWIFT_NAME(BraveAds)
 // Should be called to inform Ads if Confirmations is ready
 - (void)setConfirmationsIsReady:(BOOL)isReady;
 
+#pragma mark - Notificiations
+
+- (nullable BATAdsNotification *)adsNotificationForIdentifier:(NSString *)identifier;
+
 #pragma mark - Reporting
 
 /// Report that a page has loaded in the current browser tab, and the HTML is available for analysis
@@ -76,6 +100,10 @@ NS_SWIFT_NAME(BraveAds)
 
 /// Report that a tab with a given id was closed by the user
 - (void)reportTabClosedWithTabId:(NSInteger)tabId NS_SWIFT_NAME(reportTabClosed(tabId:));
+
+/// Report that a notification event type was triggered for a given id
+- (void)reportNotificationEvent:(NSString *)notificationId
+                      eventType:(BATAdsNotificationEventType)eventType;
 
 #pragma mark -
 

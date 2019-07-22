@@ -230,19 +230,10 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   ads->OnTabClosed((int32_t)tabId);
 }
 
-#pragma mark - Ads Bridge
-
-- (void)showNotification:(std::unique_ptr<ads::NotificationInfo>)info
+- (void)reportNotificationEvent:(NSString *)notificationId eventType:(BATAdsNotificationEventType)eventType
 {
-  if (info.get() != nullptr) {
-    const auto notification = [[BATAdsNotification alloc] initWithNotificationInfo:*info.get()];
-    [self.delegate braveAds:self showNotification:notification];
-  }
-}
-
-- (void)closeNotification:(const std::string &)id
-{
-  // TODO: Add Implementation
+  ads->OnNotificationEvent(notificationId.UTF8String,
+                           static_cast<ads::NotificationEventType>(eventType));
 }
 
 - (void)confirmAd:(std::unique_ptr<ads::NotificationInfo>)info
@@ -307,12 +298,6 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 - (bool)isNetworkConnectionAvailable
 {
   return self.networkConnectivityAvailable;
-}
-
-- (bool)isNotificationsAvailable
-{
-  // TODO: Base this on whether or not the user has notifications enabled
-  return YES;
 }
 
 - (void)setIdleThreshold:(const int)threshold
@@ -461,11 +446,39 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   return std::make_unique<RewardsLogStream>(file, line, log_level);
 }
 
-#pragma mark - Misc
+#pragma mark - Notifications
 
-- (const std::string)generateUUID
+- (nullable BATAdsNotification *)adsNotificationForIdentifier:(NSString *)identifier
 {
-  return [self.commonOps generateUUID];
+  ads::NotificationInfo info;
+  if (ads->GetNotificationForId(identifier.UTF8String, &info)) {
+    return [[BATAdsNotification alloc] initWithNotificationInfo:info];
+  }
+  return nil;
+}
+
+- (bool)isNotificationsAvailable
+{
+  [self.notificationsHandler isNotificationsAvailable:^(BOOL available) {
+//    completion(available);
+  }];
+  // TODO: When this API has a completion block, call it inside above block
+  return YES;
+}
+
+- (void)showNotification:(std::unique_ptr<ads::NotificationInfo>)info
+{
+  if (info.get() == nullptr) {
+    return;
+  }
+  const auto notification = [[BATAdsNotification alloc] initWithNotificationInfo:*info];
+  [self.notificationsHandler showNotification:notification];
+}
+
+- (void)closeNotification:(const std::string &)id
+{
+  const auto bridgedId = [NSString stringWithUTF8String:id.c_str()];
+  [self.notificationsHandler clearNotificationWithIdentifier:bridgedId];
 }
 
 @end
