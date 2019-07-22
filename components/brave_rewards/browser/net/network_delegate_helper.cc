@@ -17,43 +17,12 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/resource_request_info.h"
-#include "content/public/browser/websocket_handshake_request_info.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/upload_bytes_element_reader.h"
-#include "net/base/upload_data_stream.h"
-#include "net/url_request/url_request.h"
 #include "url/gurl.h"
 
 namespace brave_rewards {
 
 namespace {
-
-bool GetPostData(const net::URLRequest* request, std::string* post_data) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-  if (!request->has_upload())
-    return false;
-
-  const net::UploadDataStream* stream = request->get_upload();
-  if (!stream->GetElementReaders())
-    return false;
-
-  const auto* element_readers = stream->GetElementReaders();
-
-  if (element_readers->empty())
-    return false;
-
-  post_data->clear();
-  for (const auto& element_reader : *element_readers) {
-    const net::UploadBytesElementReader* reader =
-        element_reader->AsBytesReader();
-    if (!reader) {
-      post_data->clear();
-      return false;
-    }
-    post_data->append(reader->bytes(), reader->length());
-  }
-  return true;
-}
 
 content::WebContents* GetWebContents(
     int render_process_id,
@@ -109,11 +78,10 @@ int OnBeforeURLRequest(
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
 
   if (IsMediaLink(ctx->request_url, ctx->tab_origin, ctx->referrer)) {
-    std::string post_data;
-    if (GetPostData(ctx->request, &post_data)) {
+    if (!ctx->upload_data.empty()) {
       base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
           base::BindOnce(&DispatchOnUI,
-                         post_data,
+                         ctx->upload_data,
                          ctx->request_url,
                          ctx->tab_url,
                          ctx->referrer.spec(),

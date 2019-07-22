@@ -9,41 +9,31 @@
 #include <memory>
 #include <string>
 
+#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/resource_request_info.h"
 #include "chrome/browser/profiles/profile.h"
+#include "net/base/upload_bytes_element_reader.h"
+#include "net/base/upload_data_stream.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#include "extensions/browser/info_map.h"
+#endif
 
 namespace brave {
 
 namespace {
 
-bool IsWebTorrentDisabled(content::BrowserContext* browser_context) {
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(browser_context);
-  auto* extension_registry =
-      extensions::ExtensionRegistry::Get(browser_context);
-
-  if (!extension_registry)
-    return true;
-
-  if (extension_registry->enabled_extensions().Contains(
-          brave_webtorrent_extension_id))
-    return false;
-#endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-
-  return true;
-}
-
 bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
   DCHECK(resource_context);
 
   const ProfileIOData* io_data =
@@ -89,29 +79,11 @@ std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
   return upload_data;
 }
 
-std::string GetUploadData(const network::ResourceRequest& request) {
-  std::string upload_data;
-  if (!request.request_body) {
-    return {};
-  }
-  const auto* elements = request.request_body->elements();
-  for (const network::DataElement& element : *elements) {
-    if (element.type() == network::mojom::DataElementType::kBytes) {
-      upload_data.append(element.bytes(), element.length());
-    }
-  }
-
-  return upload_data;
-}
-
 }  // namespace
 
-BraveRequestInfo::BraveRequestInfo() {
-}
+BraveRequestInfo::BraveRequestInfo() = default;
 
-BraveRequestInfo::~BraveRequestInfo() {
-}
-
+BraveRequestInfo::~BraveRequestInfo() = default;
 
 void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
@@ -128,7 +100,11 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
   auto* request_info = content::ResourceRequestInfo::ForRequest(request);
   if (request_info) {
     ctx->resource_type = request_info->GetResourceType();
+    if (auto* context = request_info->GetContext()) {
+      ctx->is_webtorrent_disabled = IsWebTorrentDisabled(context);
+    }
   }
+
   brave_shields::GetRenderFrameInfo(request,
                                     &ctx->render_frame_id,
                                     &ctx->render_process_id,
@@ -165,7 +141,7 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers);
 
-  ctx->request = request;
+  ctx->upload_data = GetUploadDataFromURLRequest(request);
 }
 
 // static

@@ -74,6 +74,7 @@ struct BraveRequestInfo {
   bool allow_3p_cookies = false;
   bool allow_referrers = false;
   bool allow_google_auth = true;
+  bool is_webtorrent_disabled = false;
   int render_process_id = 0;
   int render_frame_id = 0;
   int frame_tree_node_id = 0;
@@ -101,6 +102,8 @@ struct BraveRequestInfo {
       static_cast<content::ResourceType>(-1);
   content::ResourceType resource_type = kInvalidResourceType;
 
+  std::string upload_data;
+
   static void FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
 
@@ -117,9 +120,6 @@ struct BraveRequestInfo {
   // We should also remove the one below.
   friend class ::BraveRequestHandler;
 
-  // Don't use this directly after any dispatch
-  // request is deprecated, do not use it.
-  const net::URLRequest* request;
   GURL* new_url = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
@@ -130,12 +130,12 @@ using OnBeforeURLRequestCallback =
     base::Callback<int(const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnBeforeStartTransactionCallback =
-    base::Callback<int(net::URLRequest* request,
+    base::Callback<int(
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnHeadersReceivedCallback =
-    base::Callback<int(net::URLRequest* request,
+    base::Callback<int(
         const net::HttpResponseHeaders* original_response_headers,
         scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
         GURL* allowed_unsafe_redirect_url,

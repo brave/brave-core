@@ -16,7 +16,6 @@
 namespace brave {
 
 int OnBeforeStartTransaction_ReferralsWork(
-    net::URLRequest* request,
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
