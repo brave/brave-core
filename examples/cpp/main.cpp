@@ -232,7 +232,7 @@ void TestThirdParty() {
 
 void TestDefaultLists() {
   std::vector<FilterList>& default_lists = FilterList::GetDefaultLists();
-  assert(default_lists.size() == 6);
+  assert(default_lists.size() == 7);
   FilterList& l = default_lists[0];
   assert(l.uuid == "67F880F5-7602-4042-8A3D-01481FD7437A");
   assert(l.url == "https://easylist.to/easylist/easylist.txt");
@@ -242,6 +242,13 @@ void TestDefaultLists() {
   assert(l.support_url == "https://easylist.to/");
   assert(l.component_id.empty());
   assert(l.base64_public_key.empty());
+  num_passed++;
+
+  // Includes Brave Disconnect list
+  FilterList& l2 = default_lists[6];
+  assert(l2.uuid == "9FA0665A-8FC0-4590-A80A-3FF6117A1258");
+  assert(l2.url == "https://raw.githubusercontent.com"
+      "/brave/adblock-lists/master/brave-disconnect.txt");
   num_passed++;
 }
 

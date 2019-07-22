@@ -5,10 +5,11 @@ authors = ["Brian R. Bondy <netzen@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-adblock="0.1.26"
+adblock="~0.1.28"
 libc = "0.2"
 rand_os = "0.1.3"
 tempfile = "~3.0.8"
+memoffset = "~0.5.1"
 
 [lib]
 crate-type = [
