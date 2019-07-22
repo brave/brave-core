@@ -545,12 +545,19 @@ class TabTrayController: UIViewController, Themeable {
     func updatePrivateModeButtonVisibility() {
         toolbar.privateModeButton.isHidden = Preferences.Privacy.privateBrowsingOnly.value
     }
+    
+    private func updateApplicationShortcuts() {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.updateShortcutItems(UIApplication.shared)
+        }
+    }
 }
 
 extension TabTrayController: PreferencesObserver {
     func preferencesDidChange(for key: String) {
         if key == Preferences.Privacy.privateBrowsingOnly.key {
             updatePrivateModeButtonVisibility()
+            updateApplicationShortcuts()
         }
     }
 }
