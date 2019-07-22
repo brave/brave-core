@@ -40,6 +40,13 @@ trap check_exit EXIT
 SCRIPT_DIR=$(dirname ${0})
 cp -f "${SCRIPT_DIR}/sign_brave.py" "${PKG_DIR}"
 
+# Clear output directory. It seems GN auto-creates directory path to the
+# expected outputs. However, the signing script doesn't expect the path to
+# have been created and fails trying to create it again.
+echo "Cleaning $DEST_DIR ..."
+rm -rf $DEST_DIR/*
+
+
 # Invoke python script to do the signing.
 if [[ -z "${DEVELOPMENT}" ]]; then
   # Copy mac_provisioning_profile to the packaging_dir since that's where the
