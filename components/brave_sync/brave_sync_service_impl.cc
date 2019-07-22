@@ -90,7 +90,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
         sync_client_.get(),
         sync_prefs_.get())),
     timer_(std::make_unique<base::RepeatingTimer>()),
-    unsynced_send_interval_(base::TimeDelta::FromMinutes(10)) {
+    unsynced_send_interval_(base::TimeDelta::FromMinutes(60)) {
   // Moniter syncs prefs required in GetSettingsAndDevices
   profile_pref_change_registrar_.Init(profile->GetPrefs());
   profile_pref_change_registrar_.Add(
