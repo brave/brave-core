@@ -16,7 +16,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/buildflags.h"
-#include "brave/common/brave_cookie_blocking.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -140,34 +139,16 @@ bool BraveContentBrowserClient::AllowAccessCookie(
     int render_frame_id) {
   GURL tab_origin =
       BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-          render_process_id, render_frame_id, -1)
-          .GetOrigin();
+          render_process_id, render_frame_id, -1).GetOrigin();
   ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
-  bool allow_brave_shields =
-      brave_shields::IsAllowContentSettingWithIOData(
-          io_data, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kBraveShields) &&
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-      !first_party.SchemeIs(kChromeExtensionScheme);
-#else
-      true;
-#endif
-  bool allow_1p_cookies = brave_shields::IsAllowContentSettingWithIOData(
-      io_data, tab_origin, GURL("https://firstParty/"),
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
-  bool allow_3p_cookies = brave_shields::IsAllowContentSettingWithIOData(
-      io_data, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies);
   content_settings::BraveCookieSettings* cookie_settings =
       (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
-  bool allow =
-      !ShouldBlockCookie(allow_brave_shields, allow_1p_cookies,
-                         allow_3p_cookies, first_party, url,
-                         cookie_settings->GetAllowGoogleAuth()) &&
+
+  return cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin) &&
+      // TODO(bridiver) - handle this in BraveCookieSettings
       g_brave_browser_process->tracking_protection_service()->ShouldStoreState(
           cookie_settings, io_data->GetHostContentSettingsMap(),
           render_process_id, render_frame_id, url, first_party, tab_origin);
-  return allow;
 }
 
 bool BraveContentBrowserClient::AllowGetCookie(

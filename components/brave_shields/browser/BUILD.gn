@@ -2,7 +2,7 @@ import("//brave/components/brave_shields/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//brave/vendor/adblock_rust_ffi/config.gni")
 
-source_set("brave_shields") {
+source_set("browser") {
   public_deps = [
     "buildflags",
     ":adblock_libs"
@@ -49,6 +49,7 @@ source_set("brave_shields") {
 
   deps = [
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/content_settings/core/browser",
     "//brave/content:common",
     "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//brave/vendor/tracking-protection/brave:tracking-protection",
