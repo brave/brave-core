@@ -10,8 +10,10 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/common/extensions/webstore_install_result.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class Profile;
+class PrefChangeRegistrar;
 
 class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
  public:
@@ -21,8 +23,8 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
  private:
   // SettingsPageUIHandler overrides:
   void RegisterMessages() override;
-  void OnJavascriptAllowed() override {}
-  void OnJavascriptDisallowed() override {}
+  void OnJavascriptAllowed() override;
+  void OnJavascriptDisallowed() override;
 
   void GetRestartNeeded(const base::ListValue* args);
   void SetWebTorrentEnabled(const base::ListValue* args);
@@ -35,8 +37,12 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
       bool success, const std::string& error,
       extensions::webstore_install::Result result);
 
+  void OnRestartNeededChanged();
+  void OnMediaRouterEnabledChanged();
+  bool IsRestartNeeded();
+
   Profile* profile_ = nullptr;
-  bool restart_needed_ = false;
+  PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<BraveDefaultExtensionsHandler> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDefaultExtensionsHandler);

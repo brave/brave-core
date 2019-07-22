@@ -12,6 +12,10 @@
 Polymer({
   is: 'settings-brave-default-extensions-page',
 
+  behaviors: [
+    WebUIListenerBehavior,
+  ],
+
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
   browserProxy_: null,
   showRestartToast: false,
@@ -22,6 +26,9 @@ Polymer({
     this.browserProxy_.getRestartNeeded().then(show => {
       this.showRestartToast = show;
     });
+    this.addWebUIListener('brave-needs-restart-changed', (needsRestart) => {
+      this.showRestartToast = needsRestart
+    })
   },
 
   /** @override */
@@ -50,7 +57,6 @@ Polymer({
   },
 
   onMediaRouterEnabledChange_: function() {
-    this.showRestartToast = !this.showRestartToast;
     this.browserProxy_.setMediaRouterEnabled(this.$.mediaRouterEnabled.checked);
   },
 

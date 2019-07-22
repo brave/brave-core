@@ -58,6 +58,9 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(
         &BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
         base::Unretained(this)));
+  // TODO(petemill): If anything outside this handler is responsible for causing
+  // restart-neccessary actions, then this should be moved to a generic handler
+  // and the flag should be moved to somewhere more static / singleton-like.
   web_ui()->RegisterMessageCallback(
       "getRestartNeeded",
       base::BindRepeating(
@@ -65,18 +68,40 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
         base::Unretained(this)));
 }
 
-void BraveDefaultExtensionsHandler::GetRestartNeeded(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+void BraveDefaultExtensionsHandler::OnJavascriptAllowed() {
+  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+  pref_change_registrar_.Init(prefs);
+  pref_change_registrar_.Add(kBraveEnabledMediaRouter,
+    base::Bind(&BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
+    base::Unretained(this)));
+  pref_change_registrar_.Add(prefs::kEnableMediaRouter,
+    base::Bind(&BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
+    base::Unretained(this)));
+}
+
+void BraveDefaultExtensionsHandler::OnJavascriptDisallowed() {
+  pref_change_registrar_.RemoveAll();
+}
+
+void BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged() {
+  OnRestartNeededChanged();
+}
+
+bool BraveDefaultExtensionsHandler::IsRestartNeeded() {
   bool media_router_current_pref = profile_->GetPrefs()->GetBoolean(
       prefs::kEnableMediaRouter);
   bool media_router_new_pref = profile_->GetPrefs()->GetBoolean(
       kBraveEnabledMediaRouter);
-  restart_needed_ = (media_router_current_pref != media_router_new_pref);
+  return (media_router_current_pref != media_router_new_pref);
+}
+
+void BraveDefaultExtensionsHandler::GetRestartNeeded(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
 
   AllowJavascript();
   ResolveJavascriptCallback(args->GetList()[0],
-                            base::Value(restart_needed_));
+                            base::Value(IsRestartNeeded()));
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
@@ -145,14 +170,19 @@ void BraveDefaultExtensionsHandler::OnInstallResult(
   }
 }
 
+void BraveDefaultExtensionsHandler::OnRestartNeededChanged() {
+  if (IsJavascriptAllowed()) {
+    FireWebUIListener(
+      "brave-needs-restart-changed", base::Value(IsRestartNeeded()));
+  }
+}
+
 void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
   bool enabled;
   args->GetBoolean(0, &enabled);
-
-  restart_needed_ = !restart_needed_;
 
   std::string feature_name(switches::kLoadMediaRouterComponentExtension);
   enabled ? feature_name += "@1" : feature_name += "@2";
