@@ -1,9 +1,9 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 02f17d2b4e93d27964fe6663c4feddccc9634619..934bdf202c6da2a917801eccc4d4a04136626b8d 100644
+index 17311184c47823594b49ad07d41bd870efa7af17..8f11dbdaa0491f676a867f5e0ce134d7e32b5a1d 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -38,7 +38,7 @@ if (enable_vr) {
-   import("//chrome/android/features/vr/vr_module_tmpl.gni")
+@@ -42,7 +42,7 @@ if (dfmify_devtools) {
+   import("//chrome/android/features/devtools/devtools_module_tmpl.gni")
  }
  
 -manifest_package = "org.chromium.chrome"
@@ -11,7 +11,7 @@ index 02f17d2b4e93d27964fe6663c4feddccc9634619..934bdf202c6da2a917801eccc4d4a041
  test_manifest_package = "org.chromium.chrome.tests"
  
  chrome_public_jinja_variables = default_chrome_public_jinja_variables +
-@@ -106,6 +106,7 @@ android_resources("chrome_app_java_resources") {
+@@ -110,6 +110,7 @@ android_resources("chrome_app_java_resources") {
    deps = [
      ":chrome_strings_grd",
      ":ui_locale_string_resources",
@@ -19,11 +19,11 @@ index 02f17d2b4e93d27964fe6663c4feddccc9634619..934bdf202c6da2a917801eccc4d4a041
      "//chrome/android/webapk/libs/common:splash_resources",
      "//chrome/app:java_strings_grd",
      "//components/autofill/android:autofill_java_resources",
-@@ -476,6 +477,7 @@ java_group("chrome_all_java") {
+@@ -496,6 +497,7 @@ java_group("chrome_all_java") {
  group("jni_headers") {
    public_deps = [
      ":chrome_jni_headers",
 +    "//brave/build/android:jni_headers",
      "//chrome/android/features/autofill_assistant:jni_headers",
+     "//chrome/android/features/keyboard_accessory:jni_headers",
      "//chrome/android/features/media_router:jni_headers",
-   ]
