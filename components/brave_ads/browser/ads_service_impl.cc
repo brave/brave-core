@@ -181,9 +181,9 @@ int GetSchemaResourceId(const std::string& name) {
 }
 
 static std::map<std::string, int> g_user_model_resource_ids = {
+  {"en", IDR_ADS_USER_MODEL_EN},
   {"de", IDR_ADS_USER_MODEL_DE},
   {"fr", IDR_ADS_USER_MODEL_FR},
-  {"en", IDR_ADS_USER_MODEL_EN},
 };
 
 int GetUserModelResourceId(const std::string& locale) {
@@ -312,18 +312,15 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       base::BindOnce(&EnsureBaseDirectoryExists, base_path_));
 
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
-  profile_pref_change_registrar_.Add(
-      prefs::kBraveAdsEnabled,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged,
-                 base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      brave_rewards::prefs::kBraveRewardsEnabled,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged,
-                 base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kBraveAdsIdleThreshold,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged,
-                 base::Unretained(this)));
+
+  profile_pref_change_registrar_.Add(prefs::kEnabled,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+
+  profile_pref_change_registrar_.Add(brave_rewards::prefs::kBraveRewardsEnabled,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
+
+  profile_pref_change_registrar_.Add(prefs::kIdleThreshold,
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
   MigratePrefs();
 
@@ -378,6 +375,7 @@ void AdsServiceImpl::OnMaybeStartForRegion(
     return;
   }
 
+  MaybeStartFirstLaunchNotificationTimeoutTimer();
   MaybeShowFirstLaunchNotification();
 
   if (IsAdsEnabled()) {
@@ -453,52 +451,23 @@ void AdsServiceImpl::Start() {
 }
 
 void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
-  #if defined(OS_LINUX)
-    auto ads_enabled = true;
-  #else
-    auto ads_enabled =
-        profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
-  #endif
-
-  auto prefs_migrated_from_62 = profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsPrefsMigratedFrom62);
-
-  if (!ads_enabled ||
-      !prefs_migrated_from_62 ||
-      !ShouldShowFirstLaunchNotification() ||
-      !profile_->GetPrefs()->GetBoolean(
-          brave_rewards::prefs::kBraveRewardsEnabled)) {
-    MaybeStartFirstLaunchNotificationTimer();
+  if (!ShouldShowFirstLaunchNotification()) {
     return;
   }
 
   auto now = static_cast<uint64_t>(
       (base::Time::Now() - base::Time()).InSeconds());
   profile_->GetPrefs()->SetUint64(
-      prefs::kBraveAdsLaunchNotificationTimestamp, now);
+      prefs::kLastShownFirstLaunchNotificationTimestamp, now);
 
   ShowFirstLaunchNotification();
-
-  StartFirstLaunchNotificationTimer();
 }
 
 bool AdsServiceImpl::ShouldShowFirstLaunchNotification() {
-  return profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdShouldShowFirstLaunchNotification);
-}
+  auto should_show = profile_->GetPrefs()->GetBoolean(
+      prefs::kShouldShowFirstLaunchNotification);
 
-void AdsServiceImpl::RemoveFirstLaunchNotification() {
-  KillTimer(ads_launch_id_);
-
-  auto* rewards_service =
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
-  auto* rewards_notification_service =
-      rewards_service->GetNotificationService();
-  rewards_notification_service->DeleteNotification(
-      kRewardsNotificationAdsLaunch);
-
-  profile_->GetPrefs()->SetBoolean(
-    prefs::kBraveAdsHasRemovedFirstLaunchNotification, true);
+  return !IsAdsEnabled() && should_show;
 }
 
 void AdsServiceImpl::ShowFirstLaunchNotification() {
@@ -514,28 +483,29 @@ void AdsServiceImpl::ShowFirstLaunchNotification() {
       args, kRewardsNotificationAdsLaunch);
 
   profile_->GetPrefs()->SetBoolean(
-    prefs::kBraveAdShouldShowFirstLaunchNotification, false);
+      prefs::kShouldShowFirstLaunchNotification, false);
+
+  StartFirstLaunchNotificationTimeoutTimer();
 }
 
-void AdsServiceImpl::MaybeStartFirstLaunchNotificationTimer() {
-  bool has_removed_notification =
-      profile_->GetPrefs()->GetBoolean(
-          prefs::kBraveAdsHasRemovedFirstLaunchNotification);
+void AdsServiceImpl::MaybeStartFirstLaunchNotificationTimeoutTimer() {
+  bool has_removed = profile_->GetPrefs()->GetBoolean(
+      prefs::kHasRemovedFirstLaunchNotification);
 
-  if (has_removed_notification) {
+  if (has_removed) {
     return;
   }
 
-  StartFirstLaunchNotificationTimer();
+  StartFirstLaunchNotificationTimeoutTimer();
 }
 
-void AdsServiceImpl::StartFirstLaunchNotificationTimer() {
+void AdsServiceImpl::StartFirstLaunchNotificationTimeoutTimer() {
   uint64_t timer_offset_in_seconds;
 
   if (HasFirstLaunchNotificationExpired()) {
     timer_offset_in_seconds = base::Time::kSecondsPerMinute;
   } else {
-    timer_offset_in_seconds = GetFirstLaunchNotificationTimerOffset();
+    timer_offset_in_seconds = GetFirstLaunchNotificationTimeoutTimerOffset();
   }
 
   auto timer_offset = base::TimeDelta::FromSeconds(timer_offset_in_seconds);
@@ -550,22 +520,16 @@ void AdsServiceImpl::StartFirstLaunchNotificationTimer() {
           timer_id));
 }
 
-uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeout() {
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  auto timeout_in_seconds =
-      command_line.HasSwitch(switches::kDebug)
-      ? (5 * base::Time::kSecondsPerMinute)
-      : (base::Time::kMicrosecondsPerWeek /
-         base::Time::kMicrosecondsPerSecond);
-  return timeout_in_seconds;
+void AdsServiceImpl::OnFirstLaunchNotificationTimedOut(uint32_t timer_id) {
+  timers_.erase(timer_id);
+  RemoveFirstLaunchNotification();
 }
 
-uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimerOffset() {
+uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeoutTimerOffset() {
   auto timeout_in_seconds = GetFirstLaunchNotificationTimeout();
 
   auto timestamp_in_seconds = profile_->GetPrefs()->GetUint64(
-      prefs::kBraveAdsLaunchNotificationTimestamp);
+      prefs::kLastShownFirstLaunchNotificationTimestamp);
 
   auto now_in_seconds = static_cast<uint64_t>(
       (base::Time::Now() - base::Time()).InSeconds());
@@ -580,7 +544,7 @@ bool AdsServiceImpl::HasFirstLaunchNotificationExpired() {
   auto timeout_in_seconds = GetFirstLaunchNotificationTimeout();
 
   auto timestamp_in_seconds = profile_->GetPrefs()->GetUint64(
-      prefs::kBraveAdsLaunchNotificationTimestamp);
+      prefs::kLastShownFirstLaunchNotificationTimestamp);
 
   auto now_in_seconds = static_cast<uint64_t>(
       (base::Time::Now() - base::Time()).InSeconds());
@@ -592,9 +556,46 @@ bool AdsServiceImpl::HasFirstLaunchNotificationExpired() {
   return true;
 }
 
-void AdsServiceImpl::OnFirstLaunchNotificationTimedOut(uint32_t timer_id) {
-  timers_.erase(timer_id);
-  RemoveFirstLaunchNotification();
+uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeout() {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  auto timeout_in_seconds =
+      command_line.HasSwitch(switches::kDebug)
+      ? (5 * base::Time::kSecondsPerMinute)
+      : (base::Time::kMicrosecondsPerWeek /
+         base::Time::kMicrosecondsPerSecond);
+  return timeout_in_seconds;
+}
+
+void AdsServiceImpl::RemoveFirstLaunchNotification() {
+  bool has_removed = profile_->GetPrefs()->GetBoolean(
+      prefs::kHasRemovedFirstLaunchNotification);
+
+  if (has_removed) {
+    return;
+  }
+
+  KillTimer(ads_launch_id_);
+
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
+
+  if (!rewards_service) {
+    return;
+  }
+
+  auto* rewards_notification_service =
+      rewards_service->GetNotificationService();
+
+  if (!rewards_notification_service) {
+    return;
+  }
+
+  rewards_notification_service->DeleteNotification(
+      kRewardsNotificationAdsLaunch);
+
+  profile_->GetPrefs()->SetBoolean(
+      prefs::kHasRemovedFirstLaunchNotification, true);
 }
 
 void AdsServiceImpl::Stop() {
@@ -656,7 +657,7 @@ void AdsServiceImpl::Shutdown() {
 
 void AdsServiceImpl::MigratePrefs() const {
   auto source_version = GetPrefsVersion();
-  auto dest_version = prefs::kBraveAdsPrefsCurrentVersion;
+  auto dest_version = prefs::kCurrentVersionNumber;
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
@@ -692,7 +693,8 @@ bool AdsServiceImpl::MigratePrefs(
   static std::map<std::pair<int, int>, void (AdsServiceImpl::*)() const>
       mappings {
     // {{from version, to version}, function}
-    {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2}
+    {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
+    {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3}
   };
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
@@ -714,9 +716,6 @@ bool AdsServiceImpl::MigratePrefs(
           << from_version << " to " << to_version;
 
       (this->*(mapping->second))();
-
-      profile_->GetPrefs()->SetInteger(prefs::kBraveAdsPrefsVersion,
-          to_version);
     }
 
     from_version++;
@@ -726,6 +725,8 @@ bool AdsServiceImpl::MigratePrefs(
   } while (from_version != to_version);
 
   if (!is_dry_run) {
+    profile_->GetPrefs()->SetInteger(prefs::kVersion, dest_version);
+
     LOG(INFO) << "Successfully migrated Ads preferences from version "
         << source_version << " to " << dest_version;
   }
@@ -736,31 +737,93 @@ bool AdsServiceImpl::MigratePrefs(
 void AdsServiceImpl::MigratePrefsVersion1To2() const {
   DCHECK_EQ(1, GetPrefsVersion()) << "Invalid migration path";
 
-  // Unlike Muon, Ads per day are not configurable in the UI so we can safely
+  // Unlike Muon, ads per day are not configurable in the UI so we can safely
   // migrate to the new value
 
   #if defined(OS_ANDROID)
-    profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerDay, 12);
+    profile_->GetPrefs()->SetUint64(prefs::kAdsPerDay, 12);
   #else
-    profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerDay, 20);
+    profile_->GetPrefs()->SetUint64(prefs::kAdsPerDay, 20);
   #endif
 }
 
+void AdsServiceImpl::MigratePrefsVersion2To3() const {
+  DCHECK_EQ(2, GetPrefsVersion()) << "Invalid migration path";
+
+  auto locale = GetAdsLocale();
+  auto region = ads::Ads::GetRegion(locale);
+
+  // Disable ads for unsupported legacy regions due to a bug where ads were
+  // enabled even if the users region was not supported
+  std::vector<std::string> legacy_regions = {
+    "US",  // United States of America
+    "CA",  // Canada
+    "GB",  // United Kingdom (Great Britain and Northern Ireland)
+    "DE",  // Germany
+    "FR"   // France
+  };
+
+  DisableAdsForUnsupportedRegion(region, legacy_regions);
+
+  // On-board users for newly supported regions
+  std::vector<std::string> new_regions = {
+    "AU",  // Australia
+    "NZ",  // New Zealand
+    "IE"   // Ireland
+  };
+
+  MayBeShowFirstLaunchNotificationForSupportedRegion(region, new_regions);
+}
+
 int AdsServiceImpl::GetPrefsVersion() const {
-  return profile_->GetPrefs()->GetInteger(prefs::kBraveAdsPrefsVersion);
+  return profile_->GetPrefs()->GetInteger(prefs::kVersion);
 }
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
-  if (pref == prefs::kBraveAdsEnabled ||
+  if (pref == prefs::kEnabled ||
       pref == brave_rewards::prefs::kBraveRewardsEnabled) {
     if (IsAdsEnabled()) {
+      RemoveFirstLaunchNotification();
+
       MaybeStart(false);
     } else {
       Stop();
     }
-  } else if (pref == prefs::kBraveAdsIdleThreshold) {
+  } else if (pref == prefs::kIdleThreshold) {
     ResetTimer();
   }
+}
+
+void AdsServiceImpl::DisableAdsForUnsupportedRegion(
+    const std::string& region,
+    const std::vector<std::string>& supported_regions) const {
+  if (std::find(supported_regions.begin(), supported_regions.end(), region)
+      != supported_regions.end()) {
+    return;
+  }
+
+  profile_->GetPrefs()->SetBoolean(prefs::kEnabled, false);
+}
+
+void AdsServiceImpl::MayBeShowFirstLaunchNotificationForSupportedRegion(
+    const std::string& region,
+    const std::vector<std::string>& supported_regions) const {
+  if (IsAdsEnabled()) {
+    return;
+  }
+
+  auto* prefs = profile_->GetPrefs();
+  prefs->SetBoolean(prefs::kHasRemovedFirstLaunchNotification, false);
+  prefs->SetUint64(prefs::kLastShownFirstLaunchNotificationTimestamp, 0);
+
+  if (std::find(supported_regions.begin(), supported_regions.end(), region)
+      == supported_regions.end()) {
+    // Do not show first launch notification for unsupported region
+  prefs->SetBoolean(prefs::kShouldShowFirstLaunchNotification, false);
+    return;
+  }
+
+  prefs->SetBoolean(prefs::kShouldShowFirstLaunchNotification, true);
 }
 
 bool AdsServiceImpl::IsSupportedRegion() const {
@@ -768,61 +831,23 @@ bool AdsServiceImpl::IsSupportedRegion() const {
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
-  auto ads_enabled = profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsEnabled);
-
-  auto prefs_migrated_from_62 = profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsPrefsMigratedFrom62);
-
-  if (ads_enabled && prefs_migrated_from_62) {
-    // Disable Ads by default when upgrading from 0.62.x to 0.63.x
-    ads_enabled = false;
-
-    profile_->GetPrefs()->SetBoolean(
-        prefs::kBraveAdsEnabled, ads_enabled);
-
-    profile_->GetPrefs()->SetBoolean(
-        prefs::kBraveAdsPrefsMigratedFrom62, false);
-  }
-
-  auto rewards_enabled = profile_->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled);
-
-  return IsSupportedRegion() && ads_enabled && rewards_enabled;
+  return profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
 }
 
 void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
-  if (is_enabled) {
-    profile_->GetPrefs()->SetBoolean(
-        prefs::kBraveAdsPrefsMigratedFrom62, false);
-
-    RemoveFirstLaunchNotification();
-  }
-
-  profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, is_enabled);
-}
-
-void AdsServiceImpl::MigrateAdsEnabled(const bool is_enabled) {
-  if (profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsEnabledMigrated)) {
-    return;
-  }
-
-  SetAdsEnabled(is_enabled);
-
-  profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabledMigrated, true);
+  profile_->GetPrefs()->SetBoolean(prefs::kEnabled, is_enabled);
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
-  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerHour);
+  return profile_->GetPrefs()->GetUint64(prefs::kAdsPerHour);
 }
 
 void AdsServiceImpl::SetAdsPerHour(const uint64_t ads_per_hour) {
-  profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerHour, ads_per_hour);
+  profile_->GetPrefs()->SetUint64(prefs::kAdsPerHour, ads_per_hour);
 }
 
 uint64_t AdsServiceImpl::GetAdsPerDay() const {
-  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerDay);
+  return profile_->GetPrefs()->GetUint64(prefs::kAdsPerDay);
 }
 
 bool AdsServiceImpl::IsForeground() const {
@@ -864,11 +889,11 @@ void AdsServiceImpl::ClassifyPage(const std::string& url,
 }
 
 int AdsServiceImpl::GetIdleThreshold() {
-  return profile_->GetPrefs()->GetInteger(prefs::kBraveAdsIdleThreshold);
+  return profile_->GetPrefs()->GetInteger(prefs::kIdleThreshold);
 }
 
 void AdsServiceImpl::SetIdleThreshold(const int threshold) {
-  profile_->GetPrefs()->SetInteger(prefs::kBraveAdsIdleThreshold, threshold);
+  profile_->GetPrefs()->SetInteger(prefs::kIdleThreshold, threshold);
 }
 
 bool AdsServiceImpl::IsNotificationsAvailable() const {

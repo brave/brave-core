@@ -27,13 +27,26 @@ Ads* Ads::CreateInstance(AdsClient* ads_client) {
 bool Ads::IsSupportedRegion(const std::string& locale) {
   auto region = helper::Locale::GetCountryCode(locale);
 
-  auto supported_regions = {"US", "CA", "DE", "FR", "GB"};
-  if (std::find(supported_regions.begin(), supported_regions.end(), region)
-      == supported_regions.end()) {
+  std::vector<std::string> regions = {
+    "US",  // United States of America
+    "CA",  // Canada
+    "GB",  // United Kingdom (Great Britain and Northern Ireland)
+    "DE",  // Germany
+    "FR",  // France
+    "AU",  // Australia
+    "NZ",  // New Zealand
+    "IE"   // Ireland
+  };
+
+  if (std::find(regions.begin(), regions.end(), region) == regions.end()) {
     return false;
   }
 
   return true;
+}
+
+std::string Ads::GetRegion(const std::string& locale) {
+  return helper::Locale::GetCountryCode(locale);
 }
 
 }  // namespace ads

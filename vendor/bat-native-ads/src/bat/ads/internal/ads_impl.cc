@@ -81,7 +81,8 @@ void AdsImpl::Initialize() {
 void AdsImpl::InitializeStep2() {
   client_->SetLocales(ads_client_->GetLocales());
 
-  LoadUserModel();
+  auto locale = ads_client_->GetAdsLocale();
+  ChangeLocale(locale);
 }
 
 void AdsImpl::InitializeStep3() {
@@ -145,35 +146,39 @@ bool AdsImpl::IsInitialized() {
 
 void AdsImpl::LoadUserModel() {
   auto locale = client_->GetLocale();
+
   auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
   ads_client_->LoadUserModelForLocale(locale, callback);
 }
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
-  if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to load user model";
+  auto locale = client_->GetLocale();
 
+  if (result != SUCCESS) {
+    BLOG(ERROR) << "Failed to load user model for " << locale << " locale";
     return;
   }
 
-  BLOG(INFO) << "Successfully loaded user model";
+  BLOG(INFO) << "Successfully loaded user model for " << locale << " locale";
 
-  InitializeUserModel(json);
+  InitializeUserModel(json, locale);
 
   if (!IsInitialized()) {
     InitializeStep3();
   }
 }
 
-void AdsImpl::InitializeUserModel(const std::string& json) {
+void AdsImpl::InitializeUserModel(
+    const std::string& json,
+    const std::string& locale) {
   // TODO(Terry Mancey): Refactor function to use callbacks
 
-  BLOG(INFO) << "Initializing user model";
+  BLOG(INFO) << "Initializing \"" << locale << "\" user model";
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
   user_model_->InitializePageClassifier(json);
 
-  BLOG(INFO) << "Initialized user model";
+  BLOG(INFO) << "Initialized \"" << locale << "\" user model";
 }
 
 bool AdsImpl::IsMobile() const {
@@ -326,29 +331,18 @@ void AdsImpl::SetConfirmationsIsReady(const bool is_ready) {
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
-  if (!IsInitialized()) {
-    BLOG(WARNING) << "Failed to change locale as not initialized";
-    return;
-  }
+  auto language_code = helper::Locale::GetLanguageCode(locale);
 
   auto locales = ads_client_->GetLocales();
-
-  if (std::find(locales.begin(), locales.end(), locale) != locales.end()) {
-    BLOG(INFO) << "Change Localed to " << locale;
-    client_->SetLocale(locale);
+  if (std::find(locales.begin(), locales.end(), language_code)
+      != locales.end()) {
+    BLOG(INFO) << "Changed locale to " << language_code;
+    client_->SetLocale(language_code);
   } else {
-    std::string closest_match_for_locale = "";
-    auto language_code = helper::Locale::GetLanguageCode(locale);
-    if (std::find(locales.begin(), locales.end(),
-        language_code) != locales.end()) {
-      closest_match_for_locale = language_code;
-    } else {
-      closest_match_for_locale = kDefaultLanguageCode;
-    }
+    BLOG(INFO) << language_code << " locale not found, so changed locale to "
+        << kDefaultLanguageCode;
 
-    BLOG(INFO) << "Locale not found, so changed Locale to closest match: "
-        << closest_match_for_locale;
-    client_->SetLocale(closest_match_for_locale);
+    client_->SetLocale(kDefaultLanguageCode);
   }
 
   LoadUserModel();
@@ -655,9 +649,6 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
 
     return;
   }
-
-  auto locale = ads_client_->GetAdsLocale();
-  auto region = helper::Locale::GetCountryCode(locale);
 
   auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3);
   ads_client_->GetAds(category, callback);

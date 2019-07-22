@@ -36,6 +36,12 @@ static bool IsSupportedRegion(
     const std::string& locale)
 ```
 
+`GetRegion` should be called to get the region for the specified locale
+```
+static std::string GetRegion(
+    const std::string& locale)
+```
+
 `OnForeground` should be called when the browser enters the foreground
 ```
 void OnForeground()
