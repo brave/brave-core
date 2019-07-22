@@ -9,6 +9,16 @@ import os
 import subprocess
 import sys
 
+# Construct path to signing modules in chrome/installer/mac/signing
+signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
+signing_path = os.path.realpath(os.path.join(
+    signing_path, os.pardir, os.pardir, "chrome", "installer", "mac"))
+sys.path.append(signing_path)
+
+# Import the entire module to avoid circular dependencies in the functions
+import signing.model    # noqa: E402
+import signing.signing  # noqa: E402
+
 sign_widevine_cert = os.environ.get('SIGN_WIDEVINE_CERT')
 sign_widevine_key = os.environ.get('SIGN_WIDEVINE_KEY')
 sign_widevine_passwd = os.environ.get('SIGN_WIDEVINE_PASSPHRASE')
@@ -27,8 +37,15 @@ def run_command(args, **kwargs):
     subprocess.check_call(args, **kwargs)
 
 
-def GenerateWidevineSigFile(paths, config, part):
+def GenerateBraveWidevineSigFile(paths, config, part):
     if sign_widevine_key and sign_widevine_key and sign_widevine_passwd and file_exists(sig_generator_path):
+        # Framework needs to be signed before generating Widevine signature
+        # file. The calling script will re-sign it after Widevine signature
+        # file has been added (see signing.py from where this function is
+        # called).
+        from signing.signing import sign_part
+        sign_part(paths, config, part)
+        # Generate signature file
         chrome_framework_name = config.app_product + ' Framework'
         chrome_framework_version_path = os.path.join(paths.work, part.path, 'Versions', config.version)
         sig_source_file = os.path.join(chrome_framework_version_path, chrome_framework_name)
@@ -43,3 +60,26 @@ def GenerateWidevineSigFile(paths, config, part):
 
         run_command(command)
         assert file_exists(sig_target_file), 'No sig file'
+
+
+def AddBravePartsForSigning(parts, config):
+    from signing.model import CodeSignedProduct, VerifyOptions
+
+    # Add libs
+    brave_dylibs = (
+        'libchallenge_bypass_ristretto.dylib',
+        'libadblock.dylib',
+    )
+    for library in brave_dylibs:
+        library_basename = os.path.basename(library)
+        parts[library_basename] = CodeSignedProduct(
+            '{.framework_dir}/Libraries/{library}'.format(
+                config, library=library),
+            library_basename.replace('.dylib', ''),
+            verify_options=VerifyOptions.DEEP)
+
+    # Add Sparkle
+    parts['sparkle-framework'] = CodeSignedProduct(
+        '{.framework_dir}/Frameworks/Sparkle.framework'.format(config),
+        'org.sparkle-project.Sparkle',
+        verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
