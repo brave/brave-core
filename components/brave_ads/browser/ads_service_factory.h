@@ -37,8 +37,6 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
   bool ShouldMigratePrefs(user_prefs::PrefRegistrySyncable* registry) const;
-  bool ShouldMigratePrefsFrom62(
-      user_prefs::PrefRegistrySyncable* registry) const;
 
   DISALLOW_COPY_AND_ASSIGN(AdsServiceFactory);
 };
