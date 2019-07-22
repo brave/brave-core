@@ -297,17 +297,17 @@ void BatPublishers::OnPublisherInfoSaved(
   SynopsisNormalizer();
 }
 
-void BatPublishers::setExclude(const std::string& publisher_id,
+void BatPublishers::SetPublisherExclude(const std::string& publisher_id,
                                const ledger::PUBLISHER_EXCLUDE& exclude) {
     ledger_->GetPublisherInfo(publisher_id,
-        std::bind(&BatPublishers::onSetExcludeInternal,
+        std::bind(&BatPublishers::OnSetPublisherExclude,
                   this,
                   exclude,
                   _1,
                   _2));
 }
 
-void BatPublishers::onSetExcludeInternal(
+void BatPublishers::OnSetPublisherExclude(
     ledger::PUBLISHER_EXCLUDE exclude,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info) {

@@ -203,7 +203,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const URLRequestMethod method,
       URLRequestCallback callback));
 
-  MOCK_METHOD2(SetContributionAutoInclude, void(
+  MOCK_METHOD2(SetPublisherExclude, void(
       const std::string& publisher_key,
       bool exclude));
 

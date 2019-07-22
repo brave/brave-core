@@ -264,7 +264,7 @@ ExtensionFunction::ResponseAction
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service) {
-    rewards_service->SetContributionAutoInclude(
+    rewards_service->SetPublisherExclude(
       params->publisher_key,
       params->exclude);
   }

@@ -47,7 +47,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setPublishersLastRefreshTimestamp(uint64_t ts);
 
-  void setExclude(const std::string& publisher_id,
+  void SetPublisherExclude(const std::string& publisher_id,
                   const ledger::PUBLISHER_EXCLUDE& exclude);
 
   void setPanelExclude(const std::string& publisher_id,
@@ -162,7 +162,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                                 const std::string& favicon_url,
                                 uint64_t window_id);
 
-  void onSetExcludeInternal(
+  void OnSetPublisherExclude(
     ledger::PUBLISHER_EXCLUDE exclude,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info);

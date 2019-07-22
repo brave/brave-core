@@ -182,7 +182,7 @@ class RewardsService : public KeyedService {
   virtual void RemoveRecurringTipUI(const std::string& publisher_key) = 0;
   virtual void GetRecurringTipsUI(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) = 0;
-  virtual void SetContributionAutoInclude(
+  virtual void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;

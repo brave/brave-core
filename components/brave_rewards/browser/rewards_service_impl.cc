@@ -2449,7 +2449,7 @@ void RewardsServiceImpl::UpdateAdsRewards() const {
   bat_ledger_->UpdateAdsRewards();
 }
 
-void RewardsServiceImpl::SetContributionAutoInclude(
+void RewardsServiceImpl::SetPublisherExclude(
     const std::string& publisher_key,
     bool exclude) {
   if (!Connected())

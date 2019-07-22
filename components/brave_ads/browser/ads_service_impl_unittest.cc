@@ -114,7 +114,7 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(GetRecurringTipsUI,
       void(brave_rewards::GetRecurringTipsCallback));
   MOCK_METHOD1(GetOneTimeTipsUI, void(brave_rewards::GetOneTimeTipsCallback));
-  MOCK_METHOD2(SetContributionAutoInclude, void(const std::string&, bool));
+  MOCK_METHOD2(SetPublisherExclude, void(const std::string&, bool));
   MOCK_CONST_METHOD0(GetNotificationService,
                      brave_rewards::RewardsNotificationService*());
   MOCK_METHOD0(CheckImported, bool());

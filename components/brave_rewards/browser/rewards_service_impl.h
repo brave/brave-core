@@ -179,7 +179,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetRecurringTipsUI(GetRecurringTipsCallback callback) override;
   void GetOneTimeTips(
       ledger::PublisherInfoListCallback callback) override;
-  void SetContributionAutoInclude(
+  void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) override;
   RewardsNotificationService* GetNotificationService() const override;
