@@ -64,6 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         HttpsEverywhereStats.shared.startLoading()
         
+        updateShortcutItems(application)
+        
         // Passcode checking, must happen on immediate launch
         if !DataController.shared.storeExists() {
             // Since passcode is stored in keychain it persists between installations.
@@ -185,6 +187,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         let p = BrowserProfile(localName: "profile")
         self.profile = p
         return p
+    }
+    
+    func updateShortcutItems(_ application: UIApplication) {
+        let newTabItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").NewTab",
+            localizedTitle: Strings.QuickActionNewTab,
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_tab"),
+            userInfo: [:])
+        
+        let privateTabItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").NewPrivateTab",
+            localizedTitle: Strings.QuickActionNewPrivateTab,
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_private_tab"),
+            userInfo: [:])
+        
+        application.shortcutItems = Preferences.Privacy.privateBrowsingOnly.value ? [privateTabItem] : [newTabItem, privateTabItem]
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
