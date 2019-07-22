@@ -110,7 +110,7 @@ class MockRewardsService : public RewardsService {
                            int,
                            bool,
                            std::unique_ptr<brave_rewards::ContentSite>));
-  MOCK_METHOD1(RemoveRecurringTip, void(const std::string&));
+  MOCK_METHOD1(RemoveRecurringTipUI, void(const std::string&));
   MOCK_METHOD1(GetRecurringTipsUI,
       void(brave_rewards::GetRecurringTipsCallback));
   MOCK_METHOD1(GetOneTimeTipsUI, void(brave_rewards::GetOneTimeTipsCallback));

@@ -886,7 +886,7 @@ void RewardsDOMHandler::RemoveRecurringTip(const base::ListValue *args) {
   CHECK_EQ(1U, args->GetSize());
   if (rewards_service_) {
     const std::string publisherKey = args->GetList()[0].GetString();
-    rewards_service_->RemoveRecurringTip(publisherKey);
+    rewards_service_->RemoveRecurringTipUI(publisherKey);
   }
 }
 

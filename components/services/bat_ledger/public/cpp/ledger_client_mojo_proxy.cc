@@ -411,20 +411,20 @@ void LedgerClientMojoProxy::LoadNicewareList(
 }
 
 // static
-void LedgerClientMojoProxy::OnRecurringRemoved(
-    CallbackHolder<OnRemoveRecurringCallback>* holder, int32_t result) {
+void LedgerClientMojoProxy::OnRemoveRecurringTip(
+    CallbackHolder<RemoveRecurringTipCallback>* holder, int32_t result) {
   if (holder->is_valid())
     std::move(holder->get()).Run(ToLedgerResult(result));
   delete holder;
 }
 
-void LedgerClientMojoProxy::OnRemoveRecurring(const std::string& publisher_key,
-    OnRemoveRecurringCallback callback) {
-  // deleted in OnRecurringRemoved
-  auto* holder = new CallbackHolder<OnRemoveRecurringCallback>(
+void LedgerClientMojoProxy::RemoveRecurringTip(const std::string& publisher_key,
+    RemoveRecurringTipCallback callback) {
+  // deleted in OnRemoveRecurringTip
+  auto* holder = new CallbackHolder<RemoveRecurringTipCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_client_->OnRemoveRecurring(publisher_key,
-      std::bind(LedgerClientMojoProxy::OnRecurringRemoved, holder, _1));
+  ledger_client_->RemoveRecurringTip(publisher_key,
+      std::bind(LedgerClientMojoProxy::OnRemoveRecurringTip, holder, _1));
 }
 
 void LedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,

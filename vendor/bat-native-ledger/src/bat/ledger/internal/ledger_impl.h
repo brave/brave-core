@@ -291,7 +291,9 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
 
-  void RemoveRecurringTip(const std::string& publisher_key) override;
+  void RemoveRecurringTip(
+    const std::string& publisher_key,
+    ledger::RemoveRecurringTipCallback callback) override;
 
   ledger::ActivityInfoFilter CreateActivityFilter(
       const std::string& publisher_id,
@@ -539,7 +541,9 @@ class LedgerImpl : public ledger::Ledger,
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
 
-  void OnRemovedRecurring(ledger::Result result);
+  void OnRemoveRecurringTip(
+      const ledger::Result result,
+      ledger::RemoveRecurringTipCallback callback);
 
   void ModifyPublisherVerified(
     ledger::Result result,

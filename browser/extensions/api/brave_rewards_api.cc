@@ -503,7 +503,7 @@ BraveRewardsRemoveRecurringTipFunction::Run() {
     RewardsServiceFactory::GetForProfile(profile);
 
   if (rewards_service_) {
-    rewards_service_->RemoveRecurringTip(params->publisher_key);
+    rewards_service_->RemoveRecurringTipUI(params->publisher_key);
   }
 
   return RespondNow(NoArguments());

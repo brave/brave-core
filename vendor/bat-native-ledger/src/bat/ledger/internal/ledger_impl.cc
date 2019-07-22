@@ -1062,22 +1062,29 @@ void LedgerImpl::OnReconcileCompleteSuccess(
                                                 date);
 }
 
-void LedgerImpl::RemoveRecurringTip(const std::string& publisher_key) {
-  ledger_client_->OnRemoveRecurring(
+void LedgerImpl::RemoveRecurringTip(
+    const std::string& publisher_key,
+    ledger::RemoveRecurringTipCallback callback) {
+  ledger_client_->RemoveRecurringTip(
       publisher_key,
-      std::bind(&LedgerImpl::OnRemovedRecurring,
+      std::bind(&LedgerImpl::OnRemoveRecurringTip,
                 this,
-                _1));
+                _1,
+                callback));
 }
 
-void LedgerImpl::OnRemovedRecurring(ledger::Result result) {
+void LedgerImpl::OnRemoveRecurringTip(
+    const ledger::Result result,
+    ledger::RemoveRecurringTipCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to remove recurring";
+      "Failed to remove recurring tip";
 
-    // TODO(anyone) add error callback
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
+
+  callback(result);
 }
 
 ledger::ActivityInfoFilter LedgerImpl::CreateActivityFilter(

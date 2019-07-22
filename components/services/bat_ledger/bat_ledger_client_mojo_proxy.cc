@@ -503,21 +503,21 @@ void BatLedgerClientMojoProxy::LoadNicewareList(
       base::BindOnce(&OnLoadNicewareList, std::move(callback)));
 }
 
-void OnRecurringRemoved(const ledger::RecurringRemoveCallback& callback,
+void OnRemoveRecurringTip(const ledger::RemoveRecurringTipCallback& callback,
     int32_t result) {
   callback(ToLedgerResult(result));
 }
 
-void BatLedgerClientMojoProxy::OnRemoveRecurring(
+void BatLedgerClientMojoProxy::RemoveRecurringTip(
     const std::string& publisher_key,
-    ledger::RecurringRemoveCallback callback) {
+    ledger::RemoveRecurringTipCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  bat_ledger_client_->OnRemoveRecurring(publisher_key,
-      base::BindOnce(&OnRecurringRemoved, std::move(callback)));
+  bat_ledger_client_->RemoveRecurringTip(publisher_key,
+      base::BindOnce(&OnRemoveRecurringTip, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,

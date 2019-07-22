@@ -65,8 +65,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
 
   void LoadNicewareList(LoadNicewareListCallback callback) override;
-  void OnRemoveRecurring(const std::string& publisher_key,
-      OnRemoveRecurringCallback callback) override;
+  void RemoveRecurringTip(
+    const std::string& publisher_key,
+    RemoveRecurringTipCallback callback) override;
 
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
@@ -246,8 +247,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<LoadNicewareListCallback>* holder,
       int32_t result, const std::string& data);
 
-  static void OnRecurringRemoved(
-      CallbackHolder<OnRemoveRecurringCallback>* holder,
+  static void OnRemoveRecurringTip(
+      CallbackHolder<RemoveRecurringTipCallback>* holder,
       int32_t result);
 
   static void OnLoadURL(
