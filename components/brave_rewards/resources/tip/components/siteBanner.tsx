@@ -16,8 +16,7 @@ import * as utils from '../utils'
 
 interface Props extends RewardsTip.ComponentProps {
   publisher: RewardsTip.Publisher
-  tweetMetaData?: RewardsTip.TweetMetaData
-  redditMetaData?: RewardsTip.RedditMetaData
+  mediaMetaData?: RewardsTip.MediaMetaData
 }
 
 interface State {
@@ -121,14 +120,14 @@ class Banner extends React.Component<Props, State> {
     return !!recurringDonation
   }
 
-  getScreenName = (tweetMetaData?: RewardsTip.TweetMetaData, redditMetaData?: RewardsTip.RedditMetaData) => {
-    if (!tweetMetaData && !redditMetaData) {
+  getScreenName = (mediaMetaData?: RewardsTip.MediaMetaData) => {
+    if (!mediaMetaData) {
       return ''
     }
-    if (tweetMetaData) {
-      return `@${tweetMetaData.screenName}`
-    } else if (redditMetaData) {
-      return `u/${redditMetaData.userName}`
+    if (mediaMetaData.mediaType === 'twitter') {
+      return `@${mediaMetaData.screenName}`
+    } else if (mediaMetaData.mediaType === 'reddit') {
+      return `u/${mediaMetaData.userName}`
     }
     return ''
   }
@@ -138,33 +137,43 @@ class Banner extends React.Component<Props, State> {
   }
 
   getTweetText () {
-    if (!this.props.tweetMetaData ||
-        !this.props.tweetMetaData.tweetText ||
-        this.props.tweetMetaData.tweetText.length === 0) {
+    const mediaMetaData = this.props.mediaMetaData
+    if (!mediaMetaData) {
+      return
+    }
+
+    if (mediaMetaData.mediaType !== 'twitter' ||
+        !mediaMetaData.tweetText ||
+        mediaMetaData.tweetText.length === 0) {
       return null
     }
 
     return (
       <MediaBox
         mediaType={'twitter'}
-        mediaText={this.props.tweetMetaData.tweetText}
-        mediaTimestamp={this.props.tweetMetaData.tweetTimestamp}
+        mediaText={mediaMetaData.tweetText}
+        mediaTimestamp={mediaMetaData.tweetTimestamp}
       />)
   }
 
   getRedditText () {
-    if (!this.props.redditMetaData ||
-      !this.props.redditMetaData.postText ||
-      this.props.redditMetaData.postText.length === 0) {
+    const mediaMetaData = this.props.mediaMetaData
+    if (!mediaMetaData) {
+      return
+    }
+
+    if (mediaMetaData.mediaType !== 'reddit' ||
+      !mediaMetaData.postText ||
+      mediaMetaData.postText.length === 0) {
       return null
     }
 
     return (
       <MediaBox
         mediaType={'reddit'}
-        mediaText={this.props.redditMetaData.postText}
+        mediaText={mediaMetaData.postText}
         mediaTimestamp={0}
-        mediaTimetext={this.props.redditMetaData.postRelDate}
+        mediaTimetext={mediaMetaData.postRelDate}
       />)
   }
 
@@ -172,8 +181,7 @@ class Banner extends React.Component<Props, State> {
     const { balance } = this.props.rewardsDonateData
     const { total } = balance
 
-    const tweetMetaData = this.props.tweetMetaData
-    const redditMetaData = this.props.redditMetaData
+    const mediaMetaData = this.props.mediaMetaData
     const publisher = this.props.publisher
     const verified = publisher.verified
     let logo = publisher.logo
@@ -192,7 +200,7 @@ class Banner extends React.Component<Props, State> {
         domain={publisher.publisherKey}
         title={publisher.title}
         name={publisher.name}
-        screenName={this.getScreenName(tweetMetaData, redditMetaData)}
+        screenName={this.getScreenName(mediaMetaData)}
         provider={publisher.provider as Provider}
         recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
         balance={total.toString() || '0'}
@@ -210,11 +218,13 @@ class Banner extends React.Component<Props, State> {
         addFundsLink={this.addFundsLink}
       >
       {
-        this.props.tweetMetaData
+        mediaMetaData
+          ? mediaMetaData.mediaType === 'twitter'
           ? this.getTweetText()
-          : this.props.redditMetaData
-            ? this.getRedditText()
-            : publisher.description
+          : mediaMetaData.mediaType === 'reddit'
+          ? this.getRedditText()
+          : publisher.description
+        : null
       }
       </SiteBanner>
     )

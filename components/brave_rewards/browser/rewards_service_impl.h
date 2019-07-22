@@ -216,11 +216,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetContributionAmount(const double amount) const override;
 
-  void SaveTwitterPublisherInfo(
-      const std::map<std::string, std::string>& args,
-      SaveMediaInfoCallback callback) override;
-
-  void SaveRedditPublisherInfo(
+  void SaveInlineMediaInfo(
+      const std::string& media_type,
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
 
@@ -576,10 +573,7 @@ class RewardsServiceImpl : public RewardsService,
       RefreshPublisherCallback callback,
       const std::string& publisher_key,
       bool verified);
-  void OnTwitterPublisherInfoSaved(SaveMediaInfoCallback callback,
-                                   int32_t result,
-                                   ledger::PublisherInfoPtr publisher);
-  void OnRedditPublisherInfoSaved(
+  void OnMediaInlineInfoSaved(
       SaveMediaInfoCallback callback,
       int32_t result,
       ledger::PublisherInfoPtr publisher);

@@ -17,19 +17,29 @@ import { getLocale } from '../../../../common/locale'
 interface Props extends RewardsTip.ComponentProps {
   url: string
   publisher: RewardsTip.Publisher
-  tweetMetaData: RewardsTip.TweetMetaData
+  mediaMetaData: RewardsTip.MediaMetaData
 }
 
-class TipTwitterUser extends React.Component<Props, {}> {
+class TipMediaUser extends React.Component<Props, {}> {
 
   get actions () {
     return this.props.actions
   }
 
   onTweet = () => {
-    this.actions.onTweet(
-      `@${this.props.tweetMetaData.screenName}`,
-      this.props.tweetMetaData.tweetId)
+    const mediaMetaData = this.props.mediaMetaData
+    if (!mediaMetaData) {
+      return
+    }
+
+    if (mediaMetaData.mediaType === 'twitter') {
+      this.actions.onTweet(
+        `@${mediaMetaData.screenName}`,
+        mediaMetaData.tweetId)
+    } else if (mediaMetaData.mediaType === 'reddit') {
+      let name = this.props.publisher.name
+      this.actions.onTweet(name, '')
+    }
     this.actions.onCloseDialog()
   }
 
@@ -37,20 +47,32 @@ class TipTwitterUser extends React.Component<Props, {}> {
     const { finished, error } = this.props.rewardsDonateData
 
     const publisher = this.props.publisher
-    const tweetMetaData = this.props.tweetMetaData
-    const key =
-      tweetMetaData &&
-      tweetMetaData.tweetText &&
-      tweetMetaData.tweetText.length > 0
-      ? 'tweetTipTitle'
-      : 'tweetTipTitleEmpty'
-    publisher.title = getLocale(key, { user: tweetMetaData.screenName })
+    const mediaMetaData = this.props.mediaMetaData
+    if (!mediaMetaData) {
+      return
+    }
+
+    if (mediaMetaData.mediaType === 'twitter') {
+      const key =
+        mediaMetaData.tweetText &&
+        mediaMetaData.tweetText.length > 0
+        ? 'tweetTipTitle'
+        : 'tweetTipTitleEmpty'
+      publisher.title = getLocale(key, { user: mediaMetaData.screenName })
+    } else if (mediaMetaData.mediaType === 'reddit') {
+      const key =
+        mediaMetaData.postText &&
+        mediaMetaData.postText.length > 0
+          ? 'redditTipTitle'
+          : 'redditTipTitleEmpty'
+      publisher.title = getLocale(key, { user: 'u/' + mediaMetaData.userName })
+    }
 
     return (
       <>
         {
           !finished && !error
-          ? <Banner publisher={publisher} tweetMetaData={tweetMetaData} />
+          ? <Banner publisher={publisher} mediaMetaData={mediaMetaData} />
           : null
         }
         {
@@ -78,4 +100,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TipTwitterUser)
+)(TipMediaUser)
