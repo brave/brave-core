@@ -17,7 +17,7 @@ const locale: any = {
   restoreAll: 'Restore All',
   close: 'Close',
   // settings
-  dashboardSettings: 'Dashboard Settings',
+  dashboardSettingsTitle: 'Dashboard Settings',
   showBackgroundImg: 'Show background image',
   showBraveStats: 'Show Brave Stats',
   showClock: 'Show Clock',

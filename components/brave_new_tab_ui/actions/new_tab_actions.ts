@@ -64,13 +64,11 @@ export const gridSitesUpdated = (gridSites: NewTab.Site[]) => action(types.NEW_T
 
 export const statsUpdated = () => action(types.NEW_TAB_STATS_UPDATED)
 
+export const textDirectionUpdated = (textDirection: string) => action(types.NEW_TAB_TEXT_DIRECTION_UPDATED, textDirection)
+
 export const changePrivateSearchEngine = (shouldUse: boolean) => action(types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE, {
   shouldUse
 })
-
-export const showSettingsMenu = () => action(types.NEW_TAB_SHOW_SETTINGS_MENU)
-
-export const closeSettingsMenu = () => action(types.NEW_TAB_CLOSE_SETTINGS_MENU)
 
 export const preferencesUpdated = (preferences: Preferences) => action(types.NEW_TAB_PREFERENCES_UPDATED, {
   preferences

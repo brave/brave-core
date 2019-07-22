@@ -41,6 +41,7 @@ declare namespace NewTab {
   }
 
   export interface State {
+    textDirection: string
     topSites: Site[]
     ignoredTopSites: Site[]
     pinnedTopSites: Site[]
@@ -56,7 +57,6 @@ declare namespace NewTab {
     gridLayoutSize?: 'small'
     showSiteRemovalNotification?: boolean
     showBackgroundImage: boolean
-    showSettings: boolean
     showStats: boolean
     showClock: boolean
     showTopSites: boolean

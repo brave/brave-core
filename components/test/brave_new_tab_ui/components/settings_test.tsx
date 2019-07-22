@@ -5,7 +5,10 @@ import Settings, { Props } from '../../../../components/brave_new_tab_ui/contain
 
 describe('settings component tests', () => {
   const mockProps: Props = {
+    textDirection: 'ltr',
+    onClick: () => null,
     onClickOutside: () => null,
+    showSettingsMenu: false,
     toggleShowBackgroundImage: () => null,
     showBackgroundImage: true,
     toggleShowClock: () => null,
@@ -16,10 +19,33 @@ describe('settings component tests', () => {
     showTopSites: true
   }
 
-  it('should render the component properly', () => {
+  it('should not render the settings menu', () => {
     const wrapper = shallow(
       <Settings
+        textDirection={mockProps.textDirection}
+        onClick={mockProps.onClick}
         onClickOutside={mockProps.onClickOutside}
+        showSettingsMenu={mockProps.showSettingsMenu}
+        toggleShowBackgroundImage={mockProps.toggleShowBackgroundImage}
+        showBackgroundImage={mockProps.showBackgroundImage}
+        toggleShowClock={mockProps.toggleShowClock}
+        toggleShowStats={mockProps.toggleShowStats}
+        toggleShowTopSites={mockProps.toggleShowTopSites}
+        showClock={mockProps.showClock}
+        showStats={mockProps.showStats}
+        showTopSites={mockProps.showTopSites}
+      />)
+    expect(wrapper.find(SettingsMenu)).toHaveLength(0)
+    expect(wrapper.find(SettingsWrapper)).toHaveLength(1)
+  })
+
+  it('should render the setting menu properly', () => {
+    const wrapper = shallow(
+      <Settings
+        textDirection={mockProps.textDirection}
+        onClick={mockProps.onClick}
+        onClickOutside={mockProps.onClickOutside}
+        showSettingsMenu={true}
         toggleShowBackgroundImage={mockProps.toggleShowBackgroundImage}
         showBackgroundImage={mockProps.showBackgroundImage}
         toggleShowClock={mockProps.toggleShowClock}
@@ -31,6 +57,5 @@ describe('settings component tests', () => {
       />)
     expect(wrapper.find(SettingsMenu)).toHaveLength(1)
     expect(wrapper.find(SettingsWrapper)).toHaveLength(1)
-    expect(wrapper).toMatchSnapshot()
   })
 })

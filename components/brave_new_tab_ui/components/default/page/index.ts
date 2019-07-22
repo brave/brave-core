@@ -90,12 +90,11 @@ export const Navigation = styled<{}, 'nav'>('nav')`
   display: flex;
 `
 
-interface IconLinkProps {
-  disabled?: boolean
+interface IconButtonProps {
+  clickDisabled?: boolean
 }
 
-export const IconLink = styled<IconLinkProps, 'a'>('a')`
-  pointer-events: ${p => p.disabled && 'none'};
+export const IconLink = styled<{}, 'a'>('a')`
   display: flex;
   width: 24px;
   height: 24px;
@@ -105,6 +104,24 @@ export const IconLink = styled<IconLinkProps, 'a'>('a')`
   opacity: 0.7;
   transition: opacity 0.15s ease, filter 0.15s ease;
 
+  &:hover {
+    opacity: 0.95;
+  }
+`
+
+export const IconButton = styled<IconButtonProps, 'button'>('button')`
+  pointer-events: ${p => p.clickDisabled && 'none'};
+  display: flex;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  margin: 12px;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  opacity: 0.7;
+  transition: opacity 0.15s ease, filter 0.15s ease;
   &:hover {
     opacity: 0.95;
   }

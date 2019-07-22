@@ -1,6 +1,5 @@
-import { withBackgrounds } from '@storybook/addon-backgrounds'
+import 'emptykit.css'
 import { configure, addDecorator, addParameters } from '@storybook/react'
-import { withOptions } from '@storybook/addon-options'
 import { initLocale } from 'brave-ui/helpers'
 import locale from './locale'
 import { withThemesProvider } from 'storybook-addon-styled-component-theme'

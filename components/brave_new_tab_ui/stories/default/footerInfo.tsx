@@ -8,25 +8,47 @@ import * as React from 'react'
 import { Link, Navigation, IconLink, PhotoName } from '../../components/default'
 
 // Icons
-import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon, SettingsIcon } from 'brave-ui/components/icons'
+import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from 'brave-ui/components/icons'
 
 // Helpers
 import { getLocale } from '../fakeLocale'
+import Settings from './settings'
 
 interface Props {
+  textDirection: string
+  onClickOutside: () => void
   backgroundImageInfo: any
   onClickSettings: () => void
-  isSettingsMenuOpen: boolean
+  showSettingsMenu: boolean
   showPhotoInfo: boolean
+  toggleShowBackgroundImage: () => void
+  toggleShowClock: () => void
+  toggleShowStats: () => void
+  toggleShowTopSites: () => void
+  showBackgroundImage: boolean
+  showClock: boolean
+  showStats: boolean
+  showTopSites: boolean
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
+
   render () {
     const {
+      textDirection,
       backgroundImageInfo,
       onClickSettings,
-      isSettingsMenuOpen,
-      showPhotoInfo
+      showSettingsMenu,
+      showPhotoInfo,
+      onClickOutside,
+      toggleShowBackgroundImage,
+      toggleShowClock,
+      toggleShowStats,
+      toggleShowTopSites,
+      showBackgroundImage,
+      showClock,
+      showStats,
+      showTopSites
     } = this.props
 
     return (
@@ -41,7 +63,20 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
           </PhotoName>}
         </div>
         <Navigation>
-          <IconLink onClick={onClickSettings} disabled={isSettingsMenuOpen}><SettingsIcon /></IconLink>
+          <Settings
+            textDirection={textDirection}
+            showSettingsMenu={showSettingsMenu}
+            onClickOutside={onClickOutside}
+            onClick={onClickSettings}
+            toggleShowBackgroundImage={toggleShowBackgroundImage}
+            toggleShowClock={toggleShowClock}
+            toggleShowStats={toggleShowStats}
+            toggleShowTopSites={toggleShowTopSites}
+            showBackgroundImage={showBackgroundImage}
+            showClock={showClock}
+            showStats={showStats}
+            showTopSites={showTopSites}
+          />
           <IconLink><SettingsAdvancedIcon /></IconLink>
           <IconLink><BookmarkBook /></IconLink>
           <IconLink><HistoryIcon /></IconLink>

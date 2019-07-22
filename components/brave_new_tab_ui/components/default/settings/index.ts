@@ -4,7 +4,15 @@
 
 import styled from 'styled-components'
 
-export const SettingsMenu = styled<{}, 'div'>('div')`
+interface Props {
+  textDirection: string
+}
+
+export const SettingsMenu = styled<Props, 'div'>('div')`
+  bottom: 48px;
+  width: auto;
+  position: absolute;
+  ${p => p.textDirection && (p.textDirection === 'rtl') ? `left: 12px` : `right: 12px`}
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
   border-radius: 8px;
@@ -38,14 +46,7 @@ export const SettingsText = styled<{}, 'span'>('span')`
 `
 
 export const SettingsWrapper = styled<{}, 'div'>('div')`
-  position: absolute;
-  bottom: 118px;
-  padding: 0 222px;
+  position: relative;
   display: flex;
-  width: 100%;
   justify-content: flex-end;
-
-  @media screen and (max-width: 1150px) {
-    padding: 0 192px;
-  }
 `

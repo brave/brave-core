@@ -4,13 +4,17 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
+import { withKnobs, select } from '@storybook/addon-knobs/react'
 
 // Components
 import NewTabPage from './default/index'
 
 storiesOf('New Tab/Default', module)
+  .addDecorator(withKnobs)
   .add('Page', () => {
     return (
-      <NewTabPage />
+      <NewTabPage
+        textDirection={select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr')}
+      />
     )
   })

@@ -17,7 +17,6 @@ import {
 } from '../../components/default'
 
 // Components
-import Settings from './settings'
 import Stats from './stats'
 import Block from './block'
 import FooterInfo from './footerInfo'
@@ -32,7 +31,16 @@ interface Props {
   saveShowStats: (value: boolean) => void
 }
 
-class NewTabPage extends React.Component<Props, {}> {
+interface State {
+  showSettingsMenu: boolean
+}
+
+class NewTabPage extends React.Component<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = { showSettingsMenu: false }
+  }
+
   componentDidMount () {
     // if a notification is open at component mounting time, close it
     this.props.actions.onHideSiteRemovalNotification()
@@ -90,16 +98,17 @@ class NewTabPage extends React.Component<Props, {}> {
     )
   }
 
-  showSettings = () => {
-    this.props.actions.showSettingsMenu()
+  closeSettings = () => {
+    this.setState({ showSettingsMenu: false })
   }
 
-  closeSettings = () => {
-    this.props.actions.closeSettingsMenu()
+  toggleSettings = () => {
+    this.setState({ showSettingsMenu: !this.state.showSettingsMenu })
   }
 
   render () {
     const { newTabData, actions } = this.props
+    const { showSettingsMenu } = this.state
 
     if (!newTabData || !newTabData.backgroundImage) {
       return null
@@ -141,10 +150,14 @@ class NewTabPage extends React.Component<Props, {}> {
               }
             </Main>
           </Header>
-          {
-            newTabData.showSettings &&
-            <Settings
+          <Footer>
+            <FooterInfo
+              textDirection={newTabData.textDirection}
               onClickOutside={this.closeSettings}
+              backgroundImageInfo={newTabData.backgroundImage}
+              onClickSettings={this.toggleSettings}
+              showSettingsMenu={showSettingsMenu}
+              showPhotoInfo={newTabData.showBackgroundImage}
               toggleShowBackgroundImage={this.toggleShowBackgroundImage}
               toggleShowClock={this.toggleShowClock}
               toggleShowStats={this.toggleShowStats}
@@ -153,14 +166,6 @@ class NewTabPage extends React.Component<Props, {}> {
               showClock={newTabData.showClock}
               showStats={newTabData.showStats}
               showTopSites={newTabData.showTopSites}
-            />
-          }
-          <Footer>
-            <FooterInfo
-              backgroundImageInfo={newTabData.backgroundImage}
-              onClickSettings={this.showSettings}
-              isSettingsMenuOpen={newTabData.showSettings}
-              showPhotoInfo={newTabData.showBackgroundImage}
             />
           </Footer>
         </Page>

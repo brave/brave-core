@@ -7,7 +7,6 @@ import * as React from 'react'
 // Feature-specific components
 import { Page, Header, Main, Footer, DynamicBackground, Gradient, ClockWidget as Clock } from '../../components/default'
 
-import Settings from './settings'
 import TopSitesList from './topSites/topSitesList'
 import Stats from './stats'
 import SiteRemovalNotification from './siteRemovalNotification'
@@ -19,18 +18,22 @@ import { images } from './data/background'
 
 const generateRandomBackgroundData = getRandomBackgroundData(images)
 interface State {
-  showSettings: boolean
+  showSettingsMenu: boolean
   showBackgroundImage: boolean
   showStats: boolean
   showClock: boolean
   showTopSites: boolean
 }
 
-export default class NewTabPage extends React.PureComponent<{}, State> {
-  constructor (props: {}) {
+interface Props {
+  textDirection: string
+}
+
+export default class NewTabPage extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
     this.state = {
-      showSettings: false,
+      showSettingsMenu: false,
       showBackgroundImage: true,
       showStats: true,
       showClock: true,
@@ -54,18 +57,19 @@ export default class NewTabPage extends React.PureComponent<{}, State> {
     this.setState({ showTopSites: !this.state.showTopSites })
   }
 
-  showSettings = () => {
-    this.setState({ showSettings: true })
+  closeSettings = () => {
+    this.setState({ showSettingsMenu: false })
   }
 
-  closeSettings = () => {
-    this.setState({ showSettings: false })
+  toggleSettings = () => {
+    this.setState({ showSettingsMenu: !this.state.showSettingsMenu })
   }
 
   render () {
-    const { showSettings, showBackgroundImage, showClock, showStats, showTopSites } = this.state
+    const { showSettingsMenu, showBackgroundImage, showClock, showStats, showTopSites } = this.state
+    const { textDirection } = this.props
     return (
-      <DynamicBackground showBackgroundImage={showBackgroundImage} background={generateRandomBackgroundData.source}>
+      <DynamicBackground showBackgroundImage={showBackgroundImage} background={generateRandomBackgroundData.source} dir={textDirection}>
         {showBackgroundImage && <Gradient />}
         <Page>
           <Header>
@@ -82,26 +86,22 @@ export default class NewTabPage extends React.PureComponent<{}, State> {
               <SiteRemovalNotification />
             </Main>
           </Header>
-          {
-            showSettings &&
-            <Settings
+          <Footer>
+            <FooterInfo
+              textDirection={textDirection}
               onClickOutside={this.closeSettings}
+              backgroundImageInfo={generateRandomBackgroundData}
+              onClickSettings={this.toggleSettings}
+              showSettingsMenu={showSettingsMenu}
+              showPhotoInfo={showBackgroundImage}
               toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-              showBackgroundImage={showBackgroundImage}
               toggleShowClock={this.toggleShowClock}
               toggleShowStats={this.toggleShowStats}
               toggleShowTopSites={this.toggleShowTopSites}
+              showBackgroundImage={showBackgroundImage}
               showClock={showClock}
               showStats={showStats}
               showTopSites={showTopSites}
-            />
-          }
-          <Footer>
-            <FooterInfo
-              backgroundImageInfo={generateRandomBackgroundData}
-              onClickSettings={this.showSettings}
-              isSettingsMenuOpen={showSettings}
-              showPhotoInfo={showBackgroundImage}
             />
           </Footer>
         </Page>
