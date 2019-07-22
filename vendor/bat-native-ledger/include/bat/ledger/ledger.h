@@ -57,6 +57,7 @@ using TransferAnonToExternalWalletCallback =
 using DoDirectTipCallback = std::function<void(ledger::Result)>;
 using FetchGrantsCallback =
     std::function<void(ledger::Result, std::vector<ledger::GrantPtr>)>;
+using SetPublisherExcludeCallback = std::function<void(ledger::Result)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -185,9 +186,11 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherExclude(
       const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude) = 0;
+      const ledger::PUBLISHER_EXCLUDE& exclude,
+      SetPublisherExcludeCallback callback) = 0;
 
-  virtual void RestorePublishers() = 0;
+  virtual void RestorePublishers(
+    ledger::RestorePublishersCallback callback) = 0;
 
   virtual bool IsWalletCreated() const = 0;
 

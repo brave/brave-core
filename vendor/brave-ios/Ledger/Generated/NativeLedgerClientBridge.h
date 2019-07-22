@@ -28,14 +28,13 @@
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback;
 - (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::URL_METHOD)method callback:(ledger::LoadURLCallback)callback;
 - (std::unique_ptr<ledger::LogStream>)log:(const char *)file line:(int)line logLevel:(const ledger::LogLevel)log_level;
-- (void)onExcludedSitesChanged:(const std::string &)publisher_id exclude:(ledger::PUBLISHER_EXCLUDE)exclude;
 - (void)onGrantCaptcha:(const std::string &)image hint:(const std::string &)hint;
 - (void)onGrantFinish:(ledger::Result)result grant:(ledger::GrantPtr)grant;
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id category:(ledger::REWARDS_CATEGORY)category probi:(const std::string &)probi;
 - (void)onRecoverWallet:(ledger::Result)result balance:(double)balance grants:(std::vector<ledger::GrantPtr>)grants;
 - (void)removeRecurringTip:(const std::string &)publisher_key callback:(ledger::RemoveRecurringTipCallback)callback;
-- (void)onRestorePublishers:(ledger::OnRestoreCallback)callback;
+- (void)restorePublishers:(ledger::RestorePublishersCallback)callback;
 - (void)onWalletInitialized:(ledger::Result)result;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
 - (void)removeAllPendingContributions:(const ledger::RemovePendingContributionCallback &)callback;

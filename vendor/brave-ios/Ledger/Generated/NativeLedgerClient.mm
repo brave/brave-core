@@ -71,9 +71,6 @@ void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std:
 std::unique_ptr<ledger::LogStream> NativeLedgerClient::Log(const char * file, int line, const ledger::LogLevel log_level) const {
   return [bridge_ log:file line:line logLevel:log_level];
 }
-void NativeLedgerClient::OnExcludedSitesChanged(const std::string & publisher_id, ledger::PUBLISHER_EXCLUDE exclude) {
-  [bridge_ onExcludedSitesChanged:publisher_id exclude:exclude];
-}
 void NativeLedgerClient::OnGrantCaptcha(const std::string & image, const std::string & hint) {
   [bridge_ onGrantCaptcha:image hint:hint];
 }
@@ -92,8 +89,8 @@ void NativeLedgerClient::OnRecoverWallet(ledger::Result result, double balance, 
 void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {
   [bridge_ removeRecurringTip:publisher_key callback:callback];
 }
-void NativeLedgerClient::OnRestorePublishers(ledger::OnRestoreCallback callback) {
-  [bridge_ onRestorePublishers:callback];
+void NativeLedgerClient::RestorePublishers(ledger::RestorePublishersCallback callback) {
+  [bridge_ restorePublishers:callback];
 }
 void NativeLedgerClient::OnWalletInitialized(ledger::Result result) {
   [bridge_ onWalletInitialized:result];

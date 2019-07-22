@@ -156,7 +156,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoCallback callback) override;
   void SaveMediaPublisherInfo(const std::string& media_key,
                               const std::string& publisher_id) override;
-  void RestorePublishers() override;
+  void RestorePublishersUI() override;
   void GetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback) override;
   void GetCurrentBalanceReport() override;
@@ -320,6 +320,7 @@ class RewardsServiceImpl : public RewardsService,
                              ledger::PublisherInfoPtr info);
   void OnMediaPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
                              ledger::PublisherInfoPtr info);
+  void OnRestorePublishersUI(const int32_t result);
   void OnPublisherInfoListLoaded(uint32_t start,
                                  uint32_t limit,
                                  ledger::PublisherInfoListCallback callback,
@@ -451,6 +452,10 @@ class RewardsServiceImpl : public RewardsService,
     const std::string& wallet_type,
     int32_t result);
 
+  void OnSetPublisherExclude(const std::string& publisher_key,
+                             const bool exclude,
+                             const int32_t result);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;
@@ -508,8 +513,6 @@ class RewardsServiceImpl : public RewardsService,
       GetTransactionHistoryCallback callback) override;
   void ConfirmationsTransactionHistoryDidChange() override;
 
-  void OnExcludedSitesChanged(const std::string& publisher_id,
-                              ledger::PUBLISHER_EXCLUDE exclude) override;
   void OnPanelPublisherInfo(ledger::Result result,
                             ledger::PublisherInfoPtr info,
                             uint64_t window_id) override;
@@ -566,7 +569,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void KillTimer(uint32_t timer_id) override;
 
-  void OnRestorePublishers(ledger::OnRestoreCallback callback) override;
+  void RestorePublishers(ledger::RestorePublishersCallback callback) override;
+
   void OnPanelPublisherInfoLoaded(
       ledger::PublisherInfoCallback callback,
       ledger::PublisherInfoPtr publisher_info);
@@ -579,8 +583,8 @@ class RewardsServiceImpl : public RewardsService,
       ledger::SavePendingContributionCallback callback,
       ledger::Result result);
 
-  void OnRestorePublishersInternal(ledger::OnRestoreCallback callback,
-                                   bool result);
+  void OnRestorePublishers(ledger::RestorePublishersCallback callback,
+                           const bool success);
 
   void SaveNormalizedPublisherList(
       ledger::PublisherInfoList list) override;

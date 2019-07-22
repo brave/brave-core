@@ -73,8 +73,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void OnPanelPublisherInfo(int32_t result,
                             ledger::PublisherInfoPtr info,
                             uint64_t window_id) override;
-  void OnExcludedSitesChanged(const std::string& publisher_id,
-                              int exclude) override;
   void SaveContributionInfo(const std::string& probi, int32_t month,
       int32_t year, uint32_t date, const std::string& publisher_key,
       int32_t category) override;
@@ -101,7 +99,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info,
       SaveActivityInfoCallback callback) override;
 
-  void OnRestorePublishers(OnRestorePublishersCallback callback) override;
+  void RestorePublishers(RestorePublishersCallback callback) override;
 
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
@@ -269,9 +267,13 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       ledger::Result result,
       ledger::PublisherInfoPtr info);
 
-  static void OnRestorePublishersDone(
-    CallbackHolder<OnRestorePublishersCallback>* holder,
+  static void RestorePublishers(
+    CallbackHolder<RestorePublishersCallback>* holder,
     bool result);
+
+  static void OnRestorePublishers(
+      CallbackHolder<RestorePublishersCallback>* holder,
+      ledger::Result result);
 
   static void OnGetActivityInfoList(
       CallbackHolder<GetActivityInfoListCallback>* holder,

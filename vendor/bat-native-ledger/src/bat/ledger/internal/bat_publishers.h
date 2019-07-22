@@ -47,14 +47,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setPublishersLastRefreshTimestamp(uint64_t ts);
 
-  void SetPublisherExclude(const std::string& publisher_id,
-                  const ledger::PUBLISHER_EXCLUDE& exclude);
-
-  void setPanelExclude(const std::string& publisher_id,
-                       const ledger::PUBLISHER_EXCLUDE& exclude,
-                       uint64_t windowId);
-
-  void RestorePublishers();
+  void SetPublisherExclude(
+      const std::string& publisher_id,
+      const ledger::PUBLISHER_EXCLUDE& exclude,
+      ledger::SetPublisherExcludeCallback callback);
 
   void setPublisherAllowNonVerified(const bool& allow);
 
@@ -131,6 +127,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   std::string GetPublisherAddress(const std::string& publisher_key) const;
 
+  void OnRestorePublishers(
+      const ledger::Result result,
+      ledger::RestorePublishersCallback callback);
+
  private:
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,
@@ -165,9 +165,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void OnSetPublisherExclude(
     ledger::PUBLISHER_EXCLUDE exclude,
     ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info);
-
-  void OnRestorePublishersInternal(bool success);
+    ledger::PublisherInfoPtr publisher_info,
+    ledger::SetPublisherExcludeCallback callback);
 
   void calcScoreConsts(const uint64_t& min_duration_seconds);
 
@@ -200,9 +199,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::PublisherInfoPtr publisher_info,
       uint64_t windowId,
       const ledger::VisitData& visit_data);
-
-  void OnExcludedSitesChanged(const std::string& publisher_id,
-                              ledger::PUBLISHER_EXCLUDE exclude);
 
   void OnPublisherBanner(ledger::PublisherBannerCallback callback,
                          const ledger::PublisherBanner& banner,

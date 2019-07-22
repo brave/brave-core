@@ -776,7 +776,7 @@ void RewardsDOMHandler::RestorePublishers(const base::ListValue *args) {
     return;
   }
 
-  rewards_service_->RestorePublishers();
+  rewards_service_->RestorePublishersUI();
 }
 
 void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {

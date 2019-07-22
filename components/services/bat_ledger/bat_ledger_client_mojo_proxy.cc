@@ -406,16 +406,6 @@ void BatLedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
   bat_ledger_client_->KillTimer(timer_id);  // sync
 }
 
-void BatLedgerClientMojoProxy::OnExcludedSitesChanged(
-    const std::string& publisher_id,
-    ledger::PUBLISHER_EXCLUDE exclude) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_client_->OnExcludedSitesChanged(publisher_id, exclude);
-}
-
 void BatLedgerClientMojoProxy::OnPanelPublisherInfo(
     ledger::Result result,
     ledger::PublisherInfoPtr info,
@@ -598,20 +588,21 @@ void BatLedgerClientMojoProxy::SaveActivityInfo(
       base::BindOnce(&OnSaveActivityInfo, std::move(callback)));
 }
 
-void OnRestorePublishersDone(const ledger::OnRestoreCallback& callback,
-    bool result) {
-  callback(result);
+void OnRestorePublishers(
+    const ledger::RestorePublishersCallback& callback,
+    const int32_t result) {
+  callback(ToLedgerResult(result));
 }
 
-void BatLedgerClientMojoProxy::OnRestorePublishers(
-    ledger::OnRestoreCallback callback) {
+void BatLedgerClientMojoProxy::RestorePublishers(
+    ledger::RestorePublishersCallback callback) {
   if (!Connected()) {
-    callback(false);
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  bat_ledger_client_->OnRestorePublishers(
-      base::BindOnce(&OnRestorePublishersDone, std::move(callback)));
+  bat_ledger_client_->RestorePublishers(
+      base::BindOnce(&OnRestorePublishers, std::move(callback)));
 }
 
 void OnGetActivityInfoList(const ledger::PublisherInfoListCallback& callback,

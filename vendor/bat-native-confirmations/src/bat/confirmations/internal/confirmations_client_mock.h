@@ -158,10 +158,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::PublisherInfoPtr,
       uint64_t windowId));
 
-  MOCK_METHOD2(OnExcludedSitesChanged, void(
-      const std::string& publisher_id,
-      ledger::PUBLISHER_EXCLUDE exclude));
-
   MOCK_METHOD3(FetchFavIcon, void(
       const std::string& url,
       const std::string& favicon_key,
@@ -234,8 +230,8 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& name,
       ledger::OnResetCallback callback));
 
-  MOCK_METHOD1(OnRestorePublishers, void(
-      ledger::OnRestoreCallback callback));
+  MOCK_METHOD1(RestorePublishers, void(
+      ledger::RestorePublishersCallback callback));
 
   MOCK_METHOD1(SaveNormalizedPublisherList, void(
       ledger::PublisherInfoList normalized_list));

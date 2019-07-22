@@ -297,54 +297,53 @@ void BatPublishers::OnPublisherInfoSaved(
   SynopsisNormalizer();
 }
 
-void BatPublishers::SetPublisherExclude(const std::string& publisher_id,
-                               const ledger::PUBLISHER_EXCLUDE& exclude) {
-    ledger_->GetPublisherInfo(publisher_id,
-        std::bind(&BatPublishers::OnSetPublisherExclude,
-                  this,
-                  exclude,
-                  _1,
-                  _2));
+void BatPublishers::SetPublisherExclude(
+    const std::string& publisher_id,
+    const ledger::PUBLISHER_EXCLUDE& exclude,
+    ledger::SetPublisherExcludeCallback callback) {
+  ledger_->GetPublisherInfo(
+    publisher_id,
+    std::bind(&BatPublishers::OnSetPublisherExclude,
+              this,
+              exclude,
+              _1,
+              _2,
+              callback));
 }
 
 void BatPublishers::OnSetPublisherExclude(
     ledger::PUBLISHER_EXCLUDE exclude,
     ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
+    ledger::PublisherInfoPtr publisher_info,
+    ledger::SetPublisherExcludeCallback callback) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
+    callback(result);
     return;
   }
 
   if (!publisher_info || publisher_info->excluded == exclude) {
-    // handle error
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   publisher_info->excluded = exclude;
-
-  std::string publisherKey = publisher_info->id;
-
   ledger_->SetPublisherInfo(std::move(publisher_info));
-
-  OnExcludedSitesChanged(publisherKey, exclude);
+  callback(ledger::Result::LEDGER_OK);
 }
 
-void BatPublishers::RestorePublishers() {
-  ledger_->OnRestorePublishers(
-      std::bind(&BatPublishers::OnRestorePublishersInternal,
-                this,
-                _1));
-}
-
-void BatPublishers::OnRestorePublishersInternal(bool success) {
-  if (success) {
-    OnExcludedSitesChanged("-1", ledger::PUBLISHER_EXCLUDE::ALL);
-    SynopsisNormalizer();
-  } else {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Could not restore publishers.";
+void BatPublishers::OnRestorePublishers(
+    const ledger::Result result,
+    ledger::RestorePublishersCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+    << "Could not restore publishers.";
+    callback(result);
+    return;
   }
+
+  SynopsisNormalizer();
+  callback(ledger::Result::LEDGER_OK);
 }
 
 // In seconds
@@ -802,11 +801,6 @@ void BatPublishers::OnPanelPublisherInfo(
                       result,
                       nullptr);
   }
-}
-
-void BatPublishers::OnExcludedSitesChanged(const std::string& publisher_id,
-                                           ledger::PUBLISHER_EXCLUDE exclude) {
-  ledger_->OnExcludedSitesChanged(publisher_id, exclude);
 }
 
 void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,

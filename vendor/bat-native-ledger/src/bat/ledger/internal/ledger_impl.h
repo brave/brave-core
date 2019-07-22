@@ -246,11 +246,14 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetPublisherExclude(
       const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude) override;
+      const ledger::PUBLISHER_EXCLUDE& exclude,
+      ledger::SetPublisherExcludeCallback callback) override;
 
-  void RestorePublishers() override;
+  void RestorePublishers(ledger::RestorePublishersCallback callback) override;
 
-  void OnRestorePublishers(ledger::OnRestoreCallback callback);
+  void OnRestorePublishers(
+    const ledger::Result result,
+    ledger::RestorePublishersCallback callback);
 
   bool IsWalletCreated() const override;
 
@@ -268,9 +271,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnPanelPublisherInfo(ledger::Result result,
                            ledger::PublisherInfoPtr info,
                            uint64_t windowId);
-
-  void OnExcludedSitesChanged(const std::string& publisher_id,
-                              ledger::PUBLISHER_EXCLUDE exclude);
 
   void SetBalanceReportItem(ledger::ACTIVITY_MONTH month,
                             int year,
