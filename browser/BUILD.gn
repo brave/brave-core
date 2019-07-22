@@ -23,6 +23,8 @@ source_set("browser_process") {
     "autocomplete/brave_autocomplete_scheme_classifier.h",
     "bookmarks/brave_bookmark_client.cc",
     "bookmarks/brave_bookmark_client.h",
+    "brave_shields/ad_block_pref_service_factory.cc",
+    "brave_shields/ad_block_pref_service_factory.h",
     "brave_browser_main_extra_parts.cc",
     "brave_browser_main_extra_parts.h",
     "brave_browser_main_parts.cc",
