@@ -1403,3 +1403,66 @@ TEST_F(BraveBookmarkChangeProcessorTest, ApplyOrder) {
   node_a->GetMetaInfo("order", &order);
   EXPECT_EQ(order, new_order);
 }
+
+namespace {
+
+const bookmarks::BookmarkNode* GetSingleNodeByUrl(
+    bookmarks::BookmarkModel* model, const std::string& url) {
+  std::vector<const bookmarks::BookmarkNode*> nodes;
+  model->GetNodesByURL(GURL(url), &nodes);
+  size_t nodes_size = nodes.size();
+  CHECK_EQ(nodes_size, 1u);
+  const bookmarks::BookmarkNode* node = nodes.at(0);
+  return node;
+}
+
+}  // namespace
+
+TEST_F(BraveBookmarkChangeProcessorTest, SyncTimestampMetaUpdateWay) {
+  // Should update "sync_timestamp":
+  // "get-existing-objects" => model => "resolve-sync-records"
+  // (GetAllSyncData)
+  //
+  // Should not update "sync_timestamp":
+  // "resolved-sync-records" => model
+  // (ApplyChangesFromSyncModel)
+
+  change_processor()->Start();
+
+  RecordsList records;
+  const char* record_b_object_id =
+      "222, 222, 37, 61, 199, 11, 166, 234, "
+      "214, 197, 45, 215, 241, 206, 219, 130";
+  records.push_back(SimpleBookmarkSyncRecord(
+      SyncRecord::Action::A_CREATE,
+      record_b_object_id,
+      "https://b.com/",
+      "B.com - title",
+      "1.1.1.2", ""));
+
+  change_processor()->ApplyChangesFromSyncModel(records);
+
+  std::string node_b_sync_timestamp;
+  GetSingleNodeByUrl(model(), "https://b.com/")->GetMetaInfo(
+      "sync_timestamp", &node_b_sync_timestamp);
+  EXPECT_EQ(node_b_sync_timestamp, "");
+
+  RecordsList records_to_resolve;
+  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
+      SyncRecord::Action::A_UPDATE,
+      record_b_object_id,
+      "https://b.com/",
+      "B.com - title - modified",
+      "1.1.1.2", ""));
+  auto timestamp_resolve = base::Time::Now();
+  records_to_resolve.at(0)->syncTimestamp = timestamp_resolve;
+
+  brave_sync::SyncRecordAndExistingList records_and_existing_objects;
+  change_processor()->GetAllSyncData(records_to_resolve,
+                                                &records_and_existing_objects);
+  GetSingleNodeByUrl(model(), "https://b.com/")->GetMetaInfo(
+      "sync_timestamp", &node_b_sync_timestamp);
+
+  EXPECT_EQ(node_b_sync_timestamp,
+      std::to_string(timestamp_resolve.ToJsTime()));
+}
