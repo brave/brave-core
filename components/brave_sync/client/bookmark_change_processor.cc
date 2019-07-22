@@ -193,11 +193,6 @@ void UpdateNode(bookmarks::BookmarkModel* model,
   model->SetNodeMetaInfo(node, "object_id", record->objectId);
   model->SetNodeMetaInfo(node, "order", bookmark.order);
 
-  // updating the sync_timestamp marks this record as synced
-  model->SetNodeMetaInfo(node,
-      "sync_timestamp",
-      std::to_string(record->syncTimestamp.ToJsTime()));
-
   if (pending_node_root && node->parent() == pending_node_root) {
     model->SetNodeMetaInfo(node, "parent_object_id",
         bookmark.parentFolderObjectId);
@@ -782,6 +777,10 @@ void BookmarkChangeProcessor::GetAllSyncData(
     auto* node = FindByObjectId(bookmark_model_, record->objectId);
     if (node) {
       resolved_record->second = BookmarkNodeToSyncBookmark(node);
+      // Update "sync_timestamp"
+      bookmark_model_->SetNodeMetaInfo(node,
+          "sync_timestamp",
+          std::to_string(record->syncTimestamp.ToJsTime()));
     }
 
     records_and_existing_objects->push_back(std::move(resolved_record));
