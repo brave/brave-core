@@ -62,6 +62,7 @@ void LedgerClientMojoProxy::OnLoadLedgerState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
     ledger::Result result,
     const std::string& data) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result), data);
   delete holder;
@@ -94,6 +95,7 @@ void LedgerClientMojoProxy::OnLoadPublisherState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
     ledger::Result result,
     const std::string& data) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result), data);
   delete holder;
@@ -246,6 +248,7 @@ void LedgerClientMojoProxy::OnSavePublisherInfo(
     CallbackHolder<SavePublisherInfoCallback>* holder,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
   delete holder;
@@ -266,6 +269,7 @@ void LedgerClientMojoProxy::OnLoadPublisherInfo(
     CallbackHolder<LoadPublisherInfoCallback>* holder,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
   delete holder;
@@ -286,6 +290,7 @@ void LedgerClientMojoProxy::OnLoadPanelPublisherInfo(
     CallbackHolder<LoadPanelPublisherInfoCallback>* holder,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
   delete holder;
@@ -308,6 +313,7 @@ void LedgerClientMojoProxy::OnLoadMediaPublisherInfo(
     CallbackHolder<LoadMediaPublisherInfoCallback>* holder,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
   delete holder;
@@ -355,6 +361,7 @@ void LedgerClientMojoProxy::OnPanelPublisherInfo(
 void LedgerClientMojoProxy::OnFetchFavIcon(
     CallbackHolder<FetchFavIconCallback>* holder,
     bool success, const std::string& favicon_url) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(success, favicon_url);
   delete holder;
@@ -374,6 +381,7 @@ void LedgerClientMojoProxy::OnGetRecurringTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
     ledger::PublisherInfoList publisher_info_list,
     uint32_t next_record) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(publisher_info_list), next_record);
   delete holder;
@@ -395,6 +403,7 @@ void LedgerClientMojoProxy::GetRecurringTips(
 void LedgerClientMojoProxy::OnLoadNicewareList(
     CallbackHolder<LoadNicewareListCallback>* holder,
     int32_t result, const std::string& data) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToLedgerResult(result), data);
   delete holder;
@@ -413,6 +422,7 @@ void LedgerClientMojoProxy::LoadNicewareList(
 // static
 void LedgerClientMojoProxy::OnRemoveRecurringTip(
     CallbackHolder<RemoveRecurringTipCallback>* holder, int32_t result) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToLedgerResult(result));
   delete holder;
@@ -454,6 +464,7 @@ void LedgerClientMojoProxy::OnLoadURL(
     CallbackHolder<LoadURLCallback>* holder,
     int32_t response_code, const std::string& response,
     const std::map<std::string, std::string>& headers) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get())
         .Run(response_code, response, mojo::MapToFlatMap(headers));
@@ -484,6 +495,7 @@ void LedgerClientMojoProxy::OnLoadActivityInfo(
     CallbackHolder<LoadActivityInfoCallback>* holder,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
   delete holder;
@@ -506,6 +518,7 @@ void LedgerClientMojoProxy::OnSaveActivityInfo(
     CallbackHolder<SaveActivityInfoCallback>* holder,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
   delete holder;
@@ -526,6 +539,7 @@ void LedgerClientMojoProxy::SaveActivityInfo(
 void LedgerClientMojoProxy::OnRestorePublishersDone(
     CallbackHolder<OnRestorePublishersCallback>* holder,
     bool result) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result);
   delete holder;
@@ -546,6 +560,7 @@ void LedgerClientMojoProxy::OnGetActivityInfoList(
     CallbackHolder<GetActivityInfoListCallback>* holder,
     ledger::PublisherInfoList publisher_info_list,
     uint32_t next_record) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(publisher_info_list), next_record);
   delete holder;
@@ -580,6 +595,7 @@ void LedgerClientMojoProxy::SaveNormalizedPublisherList(
 void LedgerClientMojoProxy::OnSaveState(
     CallbackHolder<SaveStateCallback>* holder,
     const ledger::Result result) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result);
   delete holder;
@@ -603,6 +619,7 @@ void LedgerClientMojoProxy::OnLoadState(
     CallbackHolder<LoadStateCallback>* holder,
     const ledger::Result result,
     const std::string& value) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result, value);
   delete holder;
@@ -624,6 +641,7 @@ void LedgerClientMojoProxy::LoadState(
 void LedgerClientMojoProxy::OnResetState(
     CallbackHolder<ResetStateCallback>* holder,
     const ledger::Result result) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result);
   delete holder;
@@ -718,6 +736,7 @@ void LedgerClientMojoProxy::OnGetOneTimeTips(
     CallbackHolder<GetOneTimeTipsCallback>* holder,
     ledger::PublisherInfoList publisher_info_list,
     uint32_t next_record) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(publisher_info_list), next_record);
   delete holder;
@@ -739,6 +758,7 @@ void LedgerClientMojoProxy::GetOneTimeTips(
 void LedgerClientMojoProxy::OnGetPendingContributions(
     CallbackHolder<GetPendingContributionsCallback>* holder,
     ledger::PendingContributionInfoList list) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(list));
   delete holder;
@@ -759,6 +779,7 @@ void LedgerClientMojoProxy::GetPendingContributions(
 void LedgerClientMojoProxy::OnRemovePendingContribution(
     CallbackHolder<RemovePendingContributionCallback>* holder,
     ledger::Result result) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result));
   delete holder;
@@ -785,6 +806,7 @@ void LedgerClientMojoProxy::RemovePendingContribution(
 void LedgerClientMojoProxy::OnRemoveAllPendingContributions(
     CallbackHolder<RemovePendingContributionCallback>* holder,
     ledger::Result result) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(ToMojomResult(result));
   delete holder;
@@ -805,6 +827,7 @@ void LedgerClientMojoProxy::RemoveAllPendingContributions(
 void LedgerClientMojoProxy::OnGetPendingContributionsTotal(
     CallbackHolder<GetPendingContributionsTotalCallback>* holder,
     double amount) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(amount);
   delete holder;
@@ -834,6 +857,7 @@ void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
 void LedgerClientMojoProxy::OnGetExternalWallets(
     CallbackHolder<GetExternalWalletsCallback>* holder,
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+  DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(mojo::MapToFlatMap(std::move(wallets)));
   delete holder;
@@ -859,6 +883,7 @@ void LedgerClientMojoProxy::SaveExternalWallet(
 void LedgerClientMojoProxy::OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     int32_t result) {
+  DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
   }
