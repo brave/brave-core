@@ -10,18 +10,12 @@
 
 #include "bat/ledger/export.h"
 #include "bat/ledger/publisher_info.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
 
-LEDGER_EXPORT struct MediaEventInfo {
-  MediaEventInfo();
-  MediaEventInfo(const MediaEventInfo&);
-  ~MediaEventInfo();
-
-  std::string event_;
-  std::string time_;
-  std::string status_;
-};
+using MediaEventInfo = mojom::MediaEventInfo;
+using MediaEventInfoPtr = mojom::MediaEventInfoPtr;
 
 }  // namespace ledger
 

@@ -198,32 +198,32 @@ TEST(VimeoTest, GetDuration) {
   ASSERT_EQ(result, 0u);
 
   // remove duplicated events
-  old_event.event_ = "video-played";
-  old_event.time_ = "1.0";
-  new_event.event_ = "video-played";
-  new_event.time_ = "1.0";
+  old_event.event = "video-played";
+  old_event.time = "1.0";
+  new_event.event = "video-played";
+  new_event.time = "1.0";
   result = Vimeo::GetDuration(old_event, new_event);
   ASSERT_EQ(result, 0u);
 
   // video started
-  new_event.event_ = "video-start-time";
-  new_event.time_ = "2.0";
+  new_event.event = "video-start-time";
+  new_event.time = "2.0";
   result = Vimeo::GetDuration(old_event, new_event);
   ASSERT_EQ(result, 2u);
 
   // watch event
-  old_event.event_ = "video-start-time";
-  old_event.time_ = "2.0";
-  new_event.event_ = "video-minute-watched";
-  new_event.time_ = "5.1";
+  old_event.event = "video-start-time";
+  old_event.time = "2.0";
+  new_event.event = "video-minute-watched";
+  new_event.time = "5.1";
   result = Vimeo::GetDuration(old_event, new_event);
   ASSERT_EQ(result, 3u);
 
   // video paused / video ended
-  old_event.event_ = "video-minute-watched";
-  old_event.time_ = "5.1";
-  new_event.event_ = "video-paused";
-  new_event.time_ = "20.8";
+  old_event.event = "video-minute-watched";
+  old_event.time = "5.1";
+  new_event.event = "video-paused";
+  new_event.time = "20.8";
   result = Vimeo::GetDuration(old_event, new_event);
   ASSERT_EQ(result, 16u);
 }

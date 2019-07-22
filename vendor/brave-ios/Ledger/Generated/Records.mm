@@ -72,14 +72,3 @@
   return self;
 }
 @end
-
-@implementation BATMediaEventInfo
-- (instancetype)initWithMediaEventInfo:(const ledger::MediaEventInfo&)obj {
-  if ((self = [super init])) {
-    self.event = [NSString stringWithUTF8String:obj.event_.c_str()];
-    self.time = [NSString stringWithUTF8String:obj.time_.c_str()];
-    self.status = [NSString stringWithUTF8String:obj.status_.c_str()];
-  }
-  return self;
-}
-@end
