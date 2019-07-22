@@ -8,10 +8,11 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/command_line.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#include "brave/common/brave_switches.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -24,7 +25,6 @@
 #endif
 
 using content::BrowserThread;
-using content_settings::BraveCookieSettings;
 
 namespace brave_shields {
 
@@ -41,6 +41,16 @@ TrackingProtectionService::TrackingProtectionService(
 }
 
 TrackingProtectionService::~TrackingProtectionService() {
+}
+
+bool TrackingProtectionService::IsSmartTrackingProtectionEnabled() {
+#if BUILDFLAG(BRAVE_STP_ENABLED)
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  return command_line.HasSwitch(switches::kEnableSmartTrackingProtection);
+#else
+  return false;
+#endif
 }
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
@@ -115,7 +125,7 @@ bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
                                                  const GURL& top_origin_url,
                                                  const GURL& origin_url) const {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  if (!TrackingProtectionHelper::IsSmartTrackingProtectionEnabled()) {
+  if (!IsSmartTrackingProtectionEnabled()) {
     return true;
   }
 
@@ -134,27 +144,13 @@ bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
     return true;
   }
 
-  const bool allow_brave_shields =
-      starting_site.is_empty()
-          ? false
-          : IsAllowContentSetting(map, starting_site, GURL(),
-                                  CONTENT_SETTINGS_TYPE_PLUGINS,
-                                  brave_shields::kBraveShields);
-
-  if (!allow_brave_shields) {
+  if (!brave_shields::GetBraveShieldsEnabled(map, starting_site))
     return true;
-  }
 
-  const bool allow_trackers =
-      starting_site.is_empty()
-          ? true
-          : IsAllowContentSetting(map, starting_site, GURL(),
-                                  CONTENT_SETTINGS_TYPE_PLUGINS,
-                                  brave_shields::kTrackers);
 
-  if (allow_trackers) {
+  if (brave_shields::GetCookieControlType(map, starting_site) !=
+      ControlType::BLOCK)
     return true;
-  }
 
   // deny storage if host is found in the tracker list
   return first_party_storage_trackers_.find(host) ==
@@ -190,25 +186,15 @@ void TrackingProtectionService::UpdateFirstPartyStorageTrackers(
       base::flat_set<std::string>(std::move(storage_trackers));
 }
 
-#endif
-
-bool TrackingProtectionService::ShouldStoreState(BraveCookieSettings* settings,
-                                                 HostContentSettingsMap* map,
+#else  // !BUILDFLAG(BRAVE_STP_ENABLED)
+bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
                                                  int render_process_id,
                                                  int render_frame_id,
-                                                 const GURL& url,
-                                                 const GURL& first_party_url,
-                                                 const GURL& tab_url) const {
-#if BUILDFLAG(BRAVE_STP_ENABLED)
-  const bool allow = ShouldStoreState(map, render_process_id, render_frame_id,
-                                      url, first_party_url);
-  if (!allow) {
-    return allow;
-  }
-#endif
-
-  return settings->IsCookieAccessAllowed(url, first_party_url, tab_url);
+                                                 const GURL& top_origin_url,
+                                                 const GURL& origin_url) const {
+  return true;
 }
+#endif  // BUILDFLAG(BRAVE_STP_ENABLED)
 
 bool TrackingProtectionService::ShouldStartRequest(
     const GURL& url,
@@ -230,7 +216,7 @@ void TrackingProtectionService::OnComponentReady(
     const base::FilePath& install_dir,
     const std::string& manifest) {
 #if BUILDFLAG(BRAVE_STP_ENABLED)
-  if (!TrackingProtectionHelper::IsSmartTrackingProtectionEnabled()) {
+  if (!IsSmartTrackingProtectionEnabled()) {
     return;
   }
   base::FilePath storage_tracking_protection_path = install_dir

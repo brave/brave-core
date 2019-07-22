@@ -26,10 +26,6 @@
 class HostContentSettingsMap;
 class TrackingProtectionServiceTest;
 
-namespace content_settings {
-class BraveCookieSettings;
-}
-
 using brave_component_updater::LocalDataFilesObserver;
 using brave_component_updater::LocalDataFilesService;
 
@@ -42,26 +38,19 @@ class TrackingProtectionService : public LocalDataFilesObserver {
       LocalDataFilesService* local_data_files_service);
   ~TrackingProtectionService() override;
 
+  static bool IsSmartTrackingProtectionEnabled();
+
   bool ShouldStartRequest(const GURL& spec,
                           content::ResourceType resource_type,
                           const std::string& tab_host,
                           bool* matching_exception_filter,
                           bool* cancel_request_explicitly);
 
-  bool ShouldStoreState(content_settings::BraveCookieSettings* settings,
-                        HostContentSettingsMap* map,
-                        int render_process_id,
-                        int render_frame_id,
-                        const GURL& url,
-                        const GURL& first_party_url,
-                        const GURL& tab_url) const;
-
   // implementation of LocalDataFilesObserver
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
 
-#if BUILDFLAG(BRAVE_STP_ENABLED)
   // ShouldStoreState returns false if the Storage API is being invoked
   // by a site in the tracker list, and tracking protection is enabled for the
   // site that initiated the redirect tracking
@@ -71,6 +60,7 @@ class TrackingProtectionService : public LocalDataFilesObserver {
                         const GURL& top_origin_url,
                         const GURL& origin_url) const;
 
+#if BUILDFLAG(BRAVE_STP_ENABLED)
   void SetStartingSiteForRenderFrame(GURL starting_site,
                                      int render_process_id,
                                      int render_frame_id);
