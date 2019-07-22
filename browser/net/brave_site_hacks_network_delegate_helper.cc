@@ -72,7 +72,7 @@ void CheckForCookieOverride(const GURL& url, const URLPattern& pattern,
 }
 
 bool IsBlockTwitterSiteHack(std::shared_ptr<BraveRequestInfo> ctx,
-    net::HttpRequestHeaders* headers) {
+                            net::HttpRequestHeaders* headers) {
   URLPattern redirectURLPattern(URLPattern::SCHEME_ALL, kTwitterRedirectURL);
   URLPattern referrerPattern(URLPattern::SCHEME_ALL, kTwitterReferrer);
   if (redirectURLPattern.MatchesURL(ctx->request_url)) {
@@ -85,10 +85,10 @@ bool IsBlockTwitterSiteHack(std::shared_ptr<BraveRequestInfo> ctx,
   return false;
 }
 
-int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
-        net::HttpRequestHeaders* headers,
-        const ResponseCallback& next_callback,
-        std::shared_ptr<BraveRequestInfo> ctx) {
+int OnBeforeStartTransaction_SiteHacksWork(
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx) {
   CheckForCookieOverride(ctx->request_url,
       URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
       kForbesExtraCookies);
