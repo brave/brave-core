@@ -43,6 +43,16 @@ export class BraveWebtorrentPage extends React.Component<Props, {}> {
 
     if (!torrentState) return null
 
+    let name = torrentObj && torrentObj.name
+      ? torrentObj.name
+      : torrentState && torrentState.name
+      ? torrentState.name
+      : undefined
+
+    document.title = name
+      ? name + ' – WebTorrent'
+      : 'WebTorrent'
+
     if (torrentObj && typeof torrentState.ix === 'number') {
       return <MediaViewer torrent={torrentObj} ix={torrentState.ix} />
     }
@@ -50,7 +60,7 @@ export class BraveWebtorrentPage extends React.Component<Props, {}> {
     return (
       <TorrentViewer
         actions={actions}
-        name={torrentState.name}
+        name={name}
         torrentId={torrentState.torrentId}
         errorMsg={torrentState.errorMsg}
         torrent={torrentObj}

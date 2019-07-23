@@ -55,6 +55,7 @@ export interface TorrentState {
 }
 
 export interface TorrentObj {
+  name?: string,
   files?: File[]
   serverURL?: string
   timeRemaining: number

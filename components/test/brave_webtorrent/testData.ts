@@ -13,6 +13,7 @@ export const torrentState: TorrentState = {
 }
 
 export const torrentObj: TorrentObj = {
+  name: 'A Torrent Name',
   timeRemaining: 0,
   downloaded: 0,
   uploaded: 0,
