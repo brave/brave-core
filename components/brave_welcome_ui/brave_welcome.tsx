@@ -20,19 +20,15 @@ import * as welcomeActions from './actions/welcome_actions'
 window.cr.define('brave_welcome', function () {
   'use strict'
 
-  function getSearchEngineProviders () {
+  function loadWelcomeData () {
     const actions = bindActionCreators(welcomeActions, store.dispatch.bind(store))
     actions.getSearchEngineProviders()
-  }
-
-  function getBrowserProfiles () {
-    const actions = bindActionCreators(welcomeActions, store.dispatch.bind(store))
     actions.getBrowserProfiles()
+    actions.getBrowserThemes()
   }
 
   function initialize () {
-    getSearchEngineProviders()
-    getBrowserProfiles()
+    loadWelcomeData()
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>

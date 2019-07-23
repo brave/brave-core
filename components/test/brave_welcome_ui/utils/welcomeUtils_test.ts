@@ -48,7 +48,7 @@ describe('welcome utils tests', () => {
       expect(result).toBeTruthy()
     })
 
-    it('should falsy if invalid data', () => {
+    it('should return falsy if invalid data', () => {
       const mockBrowserProfiles = null
       const result = isValidBrowserProfiles(mockBrowserProfiles)
       expect(result).toBeFalsy()

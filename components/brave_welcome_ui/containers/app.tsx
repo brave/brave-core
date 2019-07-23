@@ -110,7 +110,13 @@ export class WelcomePage extends React.Component<Props, State> {
                 changeDefaultSearchProvider={actions.changeDefaultSearchProvider}
                 searchProviders={welcomeData.searchProviders}
               />
-              <ThemeBox index={4} currentScreen={this.currentScreen} onClick={this.onClickChooseYourTheme} />
+              <ThemeBox
+                index={4}
+                currentScreen={this.currentScreen}
+                onClick={this.onClickChooseYourTheme}
+                onChangeTheme={actions.setTheme}
+                browserThemes={welcomeData.browserThemes}
+              />
               <ShieldsBox index={5} currentScreen={this.currentScreen} />
               <RewardsBox index={6} currentScreen={this.currentScreen} onClick={this.onClickRewardsGetStarted} />
             </SlideContent>

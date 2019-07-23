@@ -153,10 +153,13 @@ declare namespace chrome.test {
 }
 
 declare namespace chrome.braveTheme {
-  type ThemeType = 'Light' | 'Dark'
+  type ThemeType = 'Light' | 'Dark' | 'System'
+  type ThemeList = Array<{name: ThemeType, index: number}>
   type ThemeTypeCallback = (themeType: ThemeType) => void
+  type ThemeListCallback = (themeList: ThemeList) => void
   const getBraveThemeType: (themeType: ThemeTypeCallback) => void
-  const setBraveThemeType: (themeType: ThemeTypeCallback) => {}
+  const getBraveThemeList: (themeList: ThemeListCallback) => void
+  const setBraveThemeType: (themeType: ThemeType) => void
   const onBraveThemeTypeChanged: {
     addListener: (callback: ThemeTypeCallback) => void
   }

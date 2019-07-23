@@ -53,4 +53,19 @@ describe('welcome_actions', () => {
       payload: mockPayload
     })
   })
+
+  it('getBrowserThemesSuccess', () => {
+    const mockPayload = []
+    expect(actions.getBrowserThemesSuccess(mockPayload)).toEqual({
+      type: types.IMPORT_BROWSER_THEMES_SUCCESS,
+      payload: mockPayload
+    })
+  })
+
+  it('setBrowserThemes', () => {
+    expect(actions.setBrowserThemes('Dark')).toEqual({
+      type: types.SET_BROWSER_THEME,
+      payload: 'Dark'
+    })
+  })
 })

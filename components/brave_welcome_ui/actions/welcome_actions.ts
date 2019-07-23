@@ -25,6 +25,14 @@ export const getSearchEngineProvidersSuccess = (searchProviders: Array<Welcome.S
 
 export const getBrowserProfilesSuccess = (browserProfiles: Array<Welcome.BrowserProfile>) => action(types.IMPORT_BROWSER_PROFILES_SUCCESS, browserProfiles)
 
+export const getBrowserThemesSuccess = (browserThemes: Array<Welcome.BrowserTheme>) => action(types.IMPORT_BROWSER_THEMES_SUCCESS, browserThemes)
+
 export const getSearchEngineProviders = () => welcomeUtils.getSearchEngineProviders()
 
 export const getBrowserProfiles = () => welcomeUtils.getBrowserProfiles()
+
+export const getBrowserThemes = () => welcomeUtils.getBrowserThemes()
+
+export const setTheme = (browserTheme: Welcome.BrowserTheme) => action(types.SET_BROWSER_THEME, browserTheme)
+
+export const setBrowserThemes = (browserTheme: Welcome.BrowserTheme) => action(types.SET_BROWSER_THEME, browserTheme)

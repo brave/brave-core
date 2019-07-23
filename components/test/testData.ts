@@ -117,6 +117,11 @@ export const getMockChrome = () => {
     braveRewards: {
       getPublisherData: (id: number, url: string, favicon: string) => undefined
     },
+    braveTheme: {
+      setBraveThemeType: function (theme: string) {
+        return
+      }
+    },
     runtime: {
       onMessage: new ChromeEvent(),
       onConnect: new ChromeEvent(),
@@ -279,6 +284,17 @@ export const initialState = deepFreeze({
     persistentData: { isFirstAccess: true, advancedView: false }
   }
 })
+
+export const mockThemes = [
+  {
+    name: 'Dark',
+    index: '0'
+  },
+  {
+    name: 'Light',
+    index: '1'
+  }
+]
 
 export const mockSearchProviders = [
   {
