@@ -1896,6 +1896,8 @@ extension BrowserViewController: TabDelegate {
         tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name())
         
         tab.addContentScript(U2FExtensions(tab: tab), name: U2FExtensions.name())
+        
+        tab.addContentScript(ResourceDownloadManager(tab: tab), name: ResourceDownloadManager.name())
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
