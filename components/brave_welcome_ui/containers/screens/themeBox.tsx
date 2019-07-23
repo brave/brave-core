@@ -46,7 +46,7 @@ export default class ThemingBox extends React.PureComponent<Props, State> {
     const { index, currentScreen, onClick, browserThemes } = this.props
     const { themeSelected } = this.state
     // Light, Dark, System
-    const showSystemThemeOption = browserThemes.length === 3
+    const showSystemThemeOption = (browserThemes.length === 3)
     return (
       <Content
         zIndex={index}

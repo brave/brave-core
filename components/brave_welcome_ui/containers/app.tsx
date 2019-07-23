@@ -61,10 +61,6 @@ export class WelcomePage extends React.Component<Props, State> {
     this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
-  onClickChooseYourTheme = () => {
-    this.props.actions.goToTabRequested('chrome://settings/appearance', '_blank')
-  }
-
   onClickRewardsGetStarted = () => {
     this.props.actions.goToTabRequested('chrome://rewards', '_blank')
   }
@@ -87,11 +83,10 @@ export class WelcomePage extends React.Component<Props, State> {
 
   render () {
     const { welcomeData, actions } = this.props
-    const { currentScreen } = this.state
     return (
       <>
         <BackgroundContainer>
-          <Background position={`-${currentScreen}0%`} style={{ backfaceVisibility: 'hidden' }} />
+          <Background/>
         </BackgroundContainer>
         <Page id='welcomePage'>
           <Panel>
@@ -113,7 +108,7 @@ export class WelcomePage extends React.Component<Props, State> {
               <ThemeBox
                 index={4}
                 currentScreen={this.currentScreen}
-                onClick={this.onClickChooseYourTheme}
+                onClick={this.onClickNext}
                 onChangeTheme={actions.setTheme}
                 browserThemes={welcomeData.browserThemes}
               />

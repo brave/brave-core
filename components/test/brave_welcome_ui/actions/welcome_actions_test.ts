@@ -62,8 +62,8 @@ describe('welcome_actions', () => {
     })
   })
 
-  it('setBrowserThemes', () => {
-    expect(actions.setBrowserThemes('Dark')).toEqual({
+  it('setTheme', () => {
+    expect(actions.setTheme('Dark')).toEqual({
       type: types.SET_BROWSER_THEME,
       payload: 'Dark'
     })

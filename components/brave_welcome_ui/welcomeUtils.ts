@@ -60,8 +60,8 @@ export const isValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserPro
 export const getBrowserThemes = () => {
   return (dispatch: Dispatch) => {
     new Promise(resolve => chrome.braveTheme.getBraveThemeList(resolve))
-      .then((response: Array<Welcome.BrowserTheme>) => {
-        dispatch(getBrowserThemesSuccess(response))
+      .then((response: string) => {
+        dispatch(getBrowserThemesSuccess(JSON.parse(response)))
       })
       .catch((error: any) => {
         console.error('Could not load browser themes', error)
