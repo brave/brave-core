@@ -5,11 +5,21 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
+
 // Components
 import WelcomePage from './page/index'
 
+const fullPageStoryStyles: object = {
+  width: '-webkit-fill-available',
+  height: '-webkit-fill-available'
+}
+
+export const FullPageStory = (storyFn: any) =>
+  <div style={fullPageStoryStyles}>{storyFn()}</div>
+
 storiesOf('Welcome', module)
   .addDecorator(withKnobs)
+  .addDecorator(FullPageStory)
   .add('Page', () => {
     return (
       <WelcomePage isDefaultSearchGoogle={boolean('Is default search google?', true)}/>
