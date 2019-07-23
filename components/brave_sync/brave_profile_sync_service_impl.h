@@ -151,7 +151,15 @@ class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
 
   void SetPermanentNodesOrder(const std::string& base_order);
 
+  void CreateResolveList(
+    const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
+    SyncRecordAndExistingList* records_and_existing_objects);
+
   void SendAndPurgePendingRecords();
+
+  void SendSyncRecords(const std::string& category_name,
+                       RecordsListPtr records);
+  void ResendSyncRecords(const std::string& category_name);
 
   std::unique_ptr<brave_sync::prefs::Prefs> brave_sync_prefs_;
   // True when is in active sync chain
