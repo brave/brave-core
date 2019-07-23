@@ -28,8 +28,8 @@ NS_SWIFT_NAME(LedgerObserver)
 /// Executed when the wallet is first initialized
 @property (nonatomic, copy, nullable) void (^walletInitalized)(BATResult result);
 
-/// An eligable grant was added to the wallet
-@property (nonatomic, copy, nullable) void (^grantAdded)(BATGrant *grant);
+/// Eligable grants were added to the wallet
+@property (nonatomic, copy, nullable) void (^grantsAdded)(NSArray<BATGrant *> *grants);
 
 /// A grant was claimed
 @property (nonatomic, copy, nullable) void (^grantClaimed)(BATGrant *grant);

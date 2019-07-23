@@ -493,32 +493,36 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId
 {
-  [self.mPendingGrants removeAllObjects];
-  // FetchGrants callbacks:
-  //  - OnWalletProperties (CORRUPTED_WALLET)
-  ledger->FetchGrants(std::string(language.UTF8String),
-                      std::string(paymentId.UTF8String),
-                      ^(ledger::Result result, std::vector<ledger::GrantPtr> grants){
-    if (result == ledger::LEDGER_OK) {
-      for (int i = 0; i < grants.size(); i++) {
-        ledger::GrantPtr grant = std::move(grants[i]);
-        const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
-        [self.mPendingGrants addObject:bridgedGrant];
+  [self fetchAvailableGrantsForLanguage:language paymentId:paymentId completion:nil];
+}
 
-        bool isUGP = [self isGrantUGP:*grant];
-        auto notificationKind = isUGP ? BATRewardsNotificationKindGrant : BATRewardsNotificationKindGrantAds;
+- (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId completion:(nullable void (^)(NSArray<BATGrant *> *grants))completion
+{
+  ledger->FetchGrants(std::string(language.UTF8String), std::string(paymentId.UTF8String), ^(ledger::Result result, std::vector<ledger::GrantPtr> grants) {
+    if (result != ledger::LEDGER_OK) {
+      return;
+    }
+    [self.mPendingGrants removeAllObjects];
+    for (int i = 0; i < grants.size(); i++) {
+      ledger::GrantPtr grant = std::move(grants[i]);
+      const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
+      [self.mPendingGrants addObject:bridgedGrant];
 
-        [self addNotificationOfKind:notificationKind
-                           userInfo:nil
-                     notificationID:[self notificationIDForGrant:std::move(grant)]
-                           onlyOnce:YES];
+      bool isUGP = [self isGrantUGP:*grant];
+      auto notificationKind = isUGP ? BATRewardsNotificationKindGrant : BATRewardsNotificationKindGrantAds;
 
-        for (BATBraveLedgerObserver *observer in self.observers) {
-          if (observer.grantAdded) {
-            observer.grantAdded(bridgedGrant);
-          }
-        }
+      [self addNotificationOfKind:notificationKind
+                         userInfo:nil
+                   notificationID:[self notificationIDForGrant:std::move(grant)]
+                         onlyOnce:YES];
+    }
+    for (BATBraveLedgerObserver *observer in self.observers) {
+      if (observer.grantsAdded) {
+        observer.grantsAdded(self.pendingGrants);
       }
+    }
+    if (completion) {
+      completion(self.pendingGrants);
     }
   });
 }
