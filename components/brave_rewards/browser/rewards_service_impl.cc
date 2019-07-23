@@ -1253,6 +1253,7 @@ void RewardsServiceImpl::LoadURL(
     std::map<std::string, std::string> test_headers;
     int response_status_code = net::HTTP_OK;
     test_response_callback_.Run(url,
+                                method,
                                 &response_status_code,
                                 &test_response,
                                 &test_headers);
@@ -1484,28 +1485,6 @@ void RewardsServiceImpl::GetReconcileStamp(
   }
 
   bat_ledger_->GetReconcileStamp(callback);
-}
-
-void RewardsServiceImpl::OnGetAddresses(const GetAddressesCallback& callback,
-    const base::flat_map<std::string, std::string>& addresses) {
-  callback.Run(mojo::FlatMapToMap(addresses));
-}
-
-void RewardsServiceImpl::GetAddresses(const GetAddressesCallback& callback) {
-  if (!Connected()) {
-    return;
-  }
-  int32_t current_country =
-      country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
-  if (!current_country_for_test_.empty() &&
-      current_country_for_test_.size() > 1) {
-    current_country = country_codes::CountryCharsToCountryID(
-        current_country_for_test_.at(0), current_country_for_test_.at(1));
-  }
-
-  bat_ledger_->GetAddresses(current_country,
-      base::BindOnce(&RewardsServiceImpl::OnGetAddresses,
-              AsWeakPtr(), callback));
 }
 
 void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
@@ -2647,11 +2626,18 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       SetShortRetries(short_retries);
     }
 
-    if (name == "current-country") {
-      const std::string& current_country_(base::ToUpperASCII(value));
-      if (!current_country_.empty() && current_country_.size() == 2) {
-        SetCurrentCountry(current_country_);
-      }
+    if (name == "uphold-token") {
+      std::string token = base::ToLowerASCII(value);
+
+      auto uphold = ledger::ExternalWallet::New();
+      uphold->token = token;
+      uphold->address = "c5fd7219-6586-4fe1-b947-0cbd25040ca8";
+      uphold->status = ledger::WalletStatus::VERIFIED;
+      uphold->one_time_string = "";
+      uphold->user_name = "Brave Test";
+      uphold->transferred = true;
+      SaveExternalWallet(ledger::kWalletUphold, std::move(uphold));
+      continue;
     }
   }
 }
@@ -2766,11 +2752,6 @@ void RewardsServiceImpl::SetReconcileTime(int32_t time) {
 
 void RewardsServiceImpl::SetShortRetries(bool short_retries) {
   bat_ledger_service_->SetShortRetries(short_retries);
-}
-
-void RewardsServiceImpl::SetCurrentCountry(
-    const std::string& current_country) {
-  current_country_for_test_ = current_country;
 }
 
 ledger::Result SavePendingContributionOnFileTaskRunner(
@@ -2909,18 +2890,6 @@ void RewardsServiceImpl::OnPublisherListNormalizedSaved(
   for (auto& observer : observers_) {
     observer.OnPublisherListNormalized(this, site_list);
   }
-}
-
-void RewardsServiceImpl::GetAddressesForPaymentId(
-    const GetAddressesCallback& callback) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->GetAddressesForPaymentId(
-      base::BindOnce(&RewardsServiceImpl::OnGetAddresses,
-                     AsWeakPtr(),
-                     callback));
 }
 
 bool DeleteActivityInfoOnFileTaskRunner(PublisherInfoDatabase* backend,
@@ -3205,17 +3174,6 @@ void RewardsServiceImpl::RemoveAllPendingContributions(
                  callback));
 }
 
-void RewardsServiceImpl::GetCountryCodes(
-    const std::vector<std::string>& countries,
-    ledger::GetCountryCodesCallback callback) {
-  std::vector<std::int32_t> country_codes;
-  for (const auto& country : countries) {
-    country_codes.push_back(country_codes::CountryCharsToCountryID(
-        country.at(0), country.at(1)));
-  }
-  callback(country_codes);
-}
-
 void RewardsServiceImpl::OnContributeUnverifiedPublishers(
       ledger::Result result,
       const std::string& publisher_key,
@@ -3276,6 +3234,216 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
       base::BindOnce(&RewardsServiceImpl::OnFetchBalance,
                      AsWeakPtr(),
                      std::move(callback)));
+}
+
+void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
+                                            ledger::ExternalWalletPtr wallet) {
+  auto* perfs =
+      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+
+  base::Value new_perfs(perfs->Clone());
+
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("token", wallet->token);
+  dict.SetStringKey("address", wallet->address);
+  dict.SetIntKey("status", static_cast<int>(wallet->status));
+  dict.SetStringKey("one_time_string", wallet->one_time_string);
+  dict.SetStringKey("user_name", wallet->user_name);
+  dict.SetBoolKey("transferred", wallet->transferred);
+
+  new_perfs.SetKey(wallet_type, std::move(dict));
+
+  profile_->GetPrefs()->Set(prefs::kRewardsExternalWallets, new_perfs);
+}
+
+void RewardsServiceImpl::GetExternalWallets(
+    ledger::GetExternalWalletsCallback callback) {
+  std::map<std::string, ledger::ExternalWalletPtr> wallets;
+
+  auto* dict =
+      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+
+  for (const auto& it : dict->DictItems()) {
+    ledger::ExternalWalletPtr wallet = ledger::ExternalWallet::New();
+
+    auto* token = it.second.FindKey("token");
+    if (token && token->is_string()) {
+      wallet->token = token->GetString();
+    }
+
+    auto* address = it.second.FindKey("address");
+    if (address && address->is_string()) {
+      wallet->address = address->GetString();
+    }
+
+    auto* one_time_string = it.second.FindKey("one_time_string");
+    if (one_time_string && one_time_string->is_string()) {
+      wallet->one_time_string = one_time_string->GetString();
+    }
+
+    auto* status = it.second.FindKey("status");
+    if (status && status->is_int()) {
+      wallet->status = static_cast<ledger::WalletStatus>(status->GetInt());
+    }
+
+    auto* user_name = it.second.FindKey("user_name");
+    if (user_name && user_name->is_string()) {
+      wallet->user_name = user_name->GetString();
+    }
+
+    auto* transferred = it.second.FindKey("transferred");
+    if (transferred && transferred->is_bool()) {
+      wallet->transferred = transferred->GetBool();
+    }
+
+    wallets.insert(std::make_pair(it.first, std::move(wallet)));
+  }
+
+  callback(std::move(wallets));
+}
+
+void RewardsServiceImpl::OnGetExternalWallet(
+    const std::string& wallet_type,
+    GetExternalWalletCallback callback,
+    int32_t result,
+    ledger::ExternalWalletPtr wallet) {
+  auto external =
+      std::make_unique<brave_rewards::ExternalWallet>();
+
+  if (wallet) {
+    external->token = wallet->token;
+    external->address = wallet->address;
+    external->status = wallet->status;
+    external->type = wallet_type;
+    external->verify_url = wallet->verify_url;
+    external->add_url = wallet->add_url;
+    external->withdraw_url = wallet->withdraw_url;
+    external->user_name = wallet->user_name;
+    external->account_url = wallet->account_url;
+  }
+
+  std::move(callback).Run(result, std::move(external));
+}
+
+void RewardsServiceImpl::GetExternalWallet(const std::string& wallet_type,
+                                           GetExternalWalletCallback callback) {
+  bat_ledger_->GetExternalWallet(wallet_type,
+      base::BindOnce(&RewardsServiceImpl::OnGetExternalWallet,
+                     AsWeakPtr(),
+                     wallet_type,
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnExternalWalletAuthorization(
+    const std::string& wallet_type,
+    ExternalWalletAuthorizationCallback callback,
+    int32_t result,
+    const base::flat_map<std::string, std::string>& args) {
+  std::move(callback).Run(result, mojo::FlatMapToMap(args));
+}
+
+void RewardsServiceImpl::ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ExternalWalletAuthorizationCallback callback) {
+  bat_ledger_->ExternalWalletAuthorization(
+      wallet_type,
+      mojo::MapToFlatMap(args),
+      base::BindOnce(&RewardsServiceImpl::OnExternalWalletAuthorization,
+                     AsWeakPtr(),
+                     wallet_type,
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnProcessExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const std::string& action,
+    ProcessRewardsPageUrlCallback callback,
+    int32_t result,
+    const std::map<std::string, std::string>& args) {
+  std::move(callback).Run(result, wallet_type, action, args);
+}
+
+void RewardsServiceImpl::ProcessRewardsPageUrl(
+    const std::string& path,
+    const std::string& query,
+    ProcessRewardsPageUrlCallback callback) {
+  auto path_items = base::SplitString(
+      path,
+      "/",
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
+
+  if (path_items.size() < 2) {
+    std::move(callback).Run(ledger::Result::LEDGER_ERROR, "", "", {});
+    return;
+  }
+
+  const std::string action = path_items.at(1);
+  const std::string wallet_type = path_items.at(0);
+
+  std::map<std::string, std::string> query_map;
+
+  const auto url = GURL("brave:/" + path + query);
+  for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
+    query_map[it.GetKey()] = it.GetUnescapedValue();
+  }
+
+  if (action == "authorization") {
+    if (wallet_type == ledger::kWalletUphold) {
+      ExternalWalletAuthorization(
+          wallet_type,
+          query_map,
+          base::BindOnce(
+              &RewardsServiceImpl::OnProcessExternalWalletAuthorization,
+              AsWeakPtr(),
+              wallet_type,
+              action,
+              std::move(callback)));
+      return;
+    }
+  }
+
+  std::move(callback).Run(
+      ledger::Result::LEDGER_ERROR,
+      wallet_type,
+      action,
+      {});
+}
+
+void RewardsServiceImpl::OnDisconnectWallet(
+    const std::string& wallet_type,
+    int32_t result) {
+  for (auto& observer : observers_) {
+    observer.OnDisconnectWallet(this, result, wallet_type);
+  }
+}
+
+void RewardsServiceImpl::DisconnectWallet(const std::string& wallet_type) {
+  bat_ledger_->DisconnectWallet(
+      wallet_type,
+      base::BindOnce(&RewardsServiceImpl::OnDisconnectWallet,
+                     AsWeakPtr(),
+                     wallet_type));
+}
+
+void RewardsServiceImpl::ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback) {
+  if (type.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  RewardsNotificationService::RewardsNotificationArgs notification_args;
+  notification_args.push_back(type);
+  notification_args.insert(notification_args.end(), args.begin(), args.end());
+  notification_service_->AddNotification(
+      RewardsNotificationService::REWARDS_NOTIFICATION_GENERAL_LEDGER,
+      notification_args,
+      "rewards_notification_general_ledger_" + type);
+    callback(ledger::Result::LEDGER_OK);
 }
 
 }  // namespace brave_rewards

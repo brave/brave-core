@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/balance.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
@@ -53,8 +54,6 @@ using GetAllBalanceReportsCallback = base::Callback<void(
     const std::map<std::string, brave_rewards::BalanceReport>&)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetContributionAmountCallback = base::Callback<void(double)>;
-using GetAddressesCallback = base::Callback<void(
-    const std::map<std::string, std::string>&)>;
 using GetAutoContributePropsCallback = base::Callback<void(
     std::unique_ptr<brave_rewards::AutoContributeProps>)>;
 using GetPublisherMinVisitTimeCallback = base::Callback<void(uint64_t)>;
@@ -88,6 +87,14 @@ using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 using FetchBalanceCallback = base::OnceCallback<void(
     int32_t,
     std::unique_ptr<brave_rewards::Balance>)>;
+using GetExternalWalletCallback = base::OnceCallback<void(
+    int32_t result,
+    std::unique_ptr<brave_rewards::ExternalWallet> wallet)>;
+using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
+    int32_t result,
+    const std::string&,
+    const std::string&,
+    const std::map<std::string, std::string>&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -134,7 +141,6 @@ class RewardsService : public KeyedService {
 
   virtual void GetReconcileStamp(
       const GetReconcileStampCallback& callback) = 0;
-  virtual void GetAddresses(const GetAddressesCallback& callback) = 0;
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void GetPublisherMinVisitTime(
       const GetPublisherMinVisitTimeCallback& callback) = 0;
@@ -194,9 +200,6 @@ class RewardsService : public KeyedService {
   virtual void ConfirmAd(const std::string& json) = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
-
-  virtual void GetAddressesForPaymentId(
-      const GetAddressesCallback& callback) = 0;
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;
 
@@ -240,6 +243,16 @@ class RewardsService : public KeyedService {
       GetShareURLCallback callback) = 0;
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
+
+  virtual void GetExternalWallet(const std::string& wallet_type,
+                                 GetExternalWalletCallback callback) = 0;
+
+  virtual void ProcessRewardsPageUrl(
+      const std::string& path,
+      const std::string& query,
+      ProcessRewardsPageUrlCallback callback) = 0;
+
+  virtual void DisconnectWallet(const std::string& wallet_type) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

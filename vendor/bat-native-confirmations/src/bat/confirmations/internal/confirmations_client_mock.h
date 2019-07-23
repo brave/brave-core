@@ -259,10 +259,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD1(GetPendingContributionsTotal, void(
     const ledger::PendingContributionsTotalCallback& callback));
 
-  MOCK_METHOD2(GetCountryCodes, void(
-      const std::vector<std::string>& countries,
-      ledger::GetCountryCodesCallback callback));
-
   MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
       ledger::Result result,
       const std::string& publisher_key,
@@ -312,6 +308,18 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD1(ClearState, void(
       const std::string& name));
+
+  MOCK_METHOD1(GetExternalWallets, void(
+      ledger::GetExternalWalletsCallback callback));
+
+  MOCK_METHOD2(SaveExternalWallet, void(
+      const std::string& wallet_type,
+      ledger::ExternalWalletPtr wallet));
+
+  MOCK_METHOD3(ShowNotification, void(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback));
 };
 
 }  // namespace confirmations

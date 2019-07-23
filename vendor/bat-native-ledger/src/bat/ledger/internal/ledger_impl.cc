@@ -637,49 +637,6 @@ bool LedgerImpl::GetAutoContribute() const {
   return bat_state_->GetAutoContribute();
 }
 
-void LedgerImpl::GetAddresses(
-    int32_t current_country_code,
-    ledger::GetAddressesCallback callback) {
-  ledger_client_->GetCountryCodes(
-      braveledger_ledger::_add_funds_limited_countries,
-      std::bind(&LedgerImpl::GetAddressesInternal,
-                             this,
-                             _1,
-                             current_country_code,
-                             callback));
-}
-
-void LedgerImpl::GetAddressesInternal(
-    const std::vector<int32_t>& country_codes,
-    int32_t current_country_code,
-    ledger::GetAddressesCallback callback) {
-  std::map<std::string, std::string> addresses;
-  addresses.emplace("BAT", GetBATAddress());
-  if (std::find(country_codes.begin(), country_codes.end(),
-      current_country_code) == country_codes.end()) {
-    addresses.emplace("BTC", GetBTCAddress());
-    addresses.emplace("ETH", GetETHAddress());
-    addresses.emplace("LTC", GetLTCAddress());
-  }
-  callback(addresses);
-}
-
-const std::string& LedgerImpl::GetBATAddress() const {
-  return bat_state_->GetBATAddress();
-}
-
-const std::string& LedgerImpl::GetBTCAddress() const {
-  return bat_state_->GetBTCAddress();
-}
-
-const std::string& LedgerImpl::GetETHAddress() const {
-  return bat_state_->GetETHAddress();
-}
-
-const std::string& LedgerImpl::GetLTCAddress() const {
-  return bat_state_->GetLTCAddress();
-}
-
 uint64_t LedgerImpl::GetReconcileStamp() const {
   return bat_state_->GetReconcileStamp();
 }
@@ -866,11 +823,9 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_id,
                                                                currency);
   auto direction_list =
       std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
-  braveledger_bat_helper::PublisherList list;
-  bat_contribution_->InitReconcile(GenerateGUID(),
-                         ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
-                         list,
-                         direction_list);
+  bat_contribution_->InitReconcile(ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
+                                   {},
+                                   direction_list);
 }
 
 void LedgerImpl::DownloadPublisherList(
@@ -880,7 +835,7 @@ void LedgerImpl::DownloadPublisherList(
 
   // download the list
   std::string url = braveledger_bat_helper::buildURL(
-      GET_PUBLISHERS_LIST_V1,
+      GET_PUBLISHERS_LIST,
       std::string(), braveledger_bat_helper::SERVER_TYPES::PUBLISHER_DISTRO);
   LoadURL(
       url,
@@ -934,6 +889,7 @@ void LedgerImpl::LoadPublishersListCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
+  LogResponse(__func__, response_status_code, "Publisher list", headers);
   if (response_status_code == net::HTTP_OK && !response.empty()) {
     bat_publishers_->RefreshPublishersList(response);
   } else {
@@ -1449,15 +1405,6 @@ void LedgerImpl::SaveNormalizedPublisherList(
   ledger_client_->SaveNormalizedPublisherList(std::move(list));
 }
 
-void LedgerImpl::GetAddressesForPaymentId(
-    ledger::WalletAddressesCallback callback) {
-  bat_wallet_->GetAddressesForPaymentId(callback);
-}
-
-void LedgerImpl::SetAddresses(std::map<std::string, std::string> addresses) {
-  bat_state_->SetAddress(addresses);
-}
-
 void LedgerImpl::SetCatalogIssuers(const std::string& info) {
   ads::IssuersInfo issuers_info_ads;
   if (issuers_info_ads.FromJson(info) != ads::Result::SUCCESS)
@@ -1649,6 +1596,59 @@ bool LedgerImpl::WasPublisherAlreadyProcessed(
 
 void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
   bat_wallet_->FetchBalance(callback);
+}
+
+void LedgerImpl::GetExternalWallets(
+    ledger::GetExternalWalletsCallback callback) {
+  ledger_client_->GetExternalWallets(callback);
+}
+
+std::string LedgerImpl::GetPublisherAddress(
+    const std::string& publisher_key) const {
+  return bat_publishers_->GetPublisherAddress(publisher_key);
+}
+
+std::string LedgerImpl::GetCardIdAddress() const {
+  return bat_state_->GetCardIdAddress();
+}
+
+void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
+                                   ledger::ExternalWalletCallback callback) {
+  bat_wallet_->GetExternalWallet(wallet_type, callback);
+}
+
+void LedgerImpl::SaveExternalWallet(const std::string& wallet_type,
+                                    ledger::ExternalWalletPtr wallet) {
+  ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
+}
+
+void LedgerImpl::ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback) {
+  bat_wallet_->ExternalWalletAuthorization(
+      wallet_type,
+      args,
+      callback);
+}
+
+void LedgerImpl::DisconnectWallet(
+      const std::string& wallet_type,
+      ledger::DisconnectWalletCallback callback) {
+  bat_wallet_->DisconnectWallet(wallet_type, callback);
+}
+
+void LedgerImpl::TransferAnonToExternalWallet(
+      const std::string& new_address,
+      ledger::TransferAnonToExternalWalletCallback callback) {
+  bat_wallet_->TransferAnonToExternalWallet(new_address, callback);
+}
+
+void LedgerImpl::ShowNotification(
+      const std::string& type,
+      const ledger::ShowNotificationCallback& callback,
+      const std::vector<std::string>& args) {
+  ledger_client_->ShowNotification(type, args, callback);
 }
 
 }  // namespace bat_ledger

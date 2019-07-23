@@ -13,7 +13,6 @@
 - (void)fetchGrants:(const std::string &)lang paymentId:(const std::string &)paymentId;
 - (std::string)generateGUID;
 - (void)getActivityInfoList:(uint32_t)start limit:(uint32_t)limit filter:(ledger::ActivityInfoFilter)filter callback:(ledger::PublisherInfoListCallback)callback;
-- (void)getCountryCodes:(const std::vector<std::string> &)countries callback:(ledger::GetCountryCodesCallback)callback;
 - (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback;
 - (void)getPendingContributions:(const ledger::PendingContributionInfoListCallback &)callback;
 - (void)getPendingContributionsTotal:(const ledger::PendingContributionsTotalCallback &)callback;
@@ -72,5 +71,8 @@
 - (void)setUint64State:(const std::string&)name value:(uint64_t)value;
 - (uint64_t)getUint64State:(const std::string&)name;
 - (void)clearState:(const std::string&)name;
+- (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback;
+- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(const ledger::ShowNotificationCallback&)callback;
 
 @end

@@ -110,3 +110,16 @@ struct MediaEventInfo {
   string time;
   string status;
 };
+
+struct ExternalWallet {
+  string token;
+  string address;
+  uint32 status;
+  string verify_url;
+  string add_url;
+  string withdraw_url;
+  string one_time_string;
+  string user_name;
+  string account_url;
+  bool transferred;
+};

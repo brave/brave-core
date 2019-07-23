@@ -47,7 +47,7 @@ void PhaseTwo::Start(const std::string& viewing_id) {
     }
 
     case ledger::REWARDS_CATEGORY::RECURRING_TIP: {
-      GetTipsWinners(ballots_count, viewing_id, reconcile.list_);
+      GetTipsWinners(ballots_count, viewing_id);
       break;
     }
 
@@ -61,8 +61,7 @@ void PhaseTwo::Start(const std::string& viewing_id) {
       winner.publisher_data_.visits_ = 0;
       winner.publisher_data_.percent_ = 0;
       winner.publisher_data_.weight_ = 0;
-      VotePublishers(braveledger_bat_helper::Winners { winner },
-                     viewing_id);
+      VotePublishers(braveledger_bat_helper::Winners { winner }, viewing_id);
       break;
     }
 
@@ -134,24 +133,22 @@ void PhaseTwo::GetContributeWinners(
 
 void PhaseTwo::GetTipsWinners(
     const unsigned int ballots,
-    const std::string& viewing_id,
-    const braveledger_bat_helper::PublisherList& list) {
+    const std::string& viewing_id) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
   unsigned int total_votes = 0;
-  std::vector<unsigned int> votes;
   braveledger_bat_helper::Winners res;
 
-  for (const auto &item : list) {
-    if (item.weight_ <= 0) {
+  for (const auto &item : reconcile.directions_) {
+    if (item.amount_ <= 0) {
       continue;
     }
 
     braveledger_bat_helper::WINNERS_ST winner;
-    double percent = item.weight_ / reconcile.fee_;
+    double percent = item.amount_ / reconcile.fee_;
     winner.votes_ = static_cast<unsigned int>(std::lround(percent *
         static_cast<double>(ballots)));
     total_votes += winner.votes_;
-    winner.publisher_data_.id_ = item.id_;
+    winner.publisher_data_.id_ = item.publisher_key_;
     winner.publisher_data_.duration_ = 0;
     winner.publisher_data_.score_ = 0;
     winner.publisher_data_.visits_ = 0;

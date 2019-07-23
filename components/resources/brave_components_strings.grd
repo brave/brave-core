@@ -232,7 +232,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total tips this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Have you tipped your favorite content creator today?</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="">Add Funds</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS" desc="">Manage Funds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS" desc="">Withdraw Funds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME" desc="">Minimum page time before logging a visit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS" desc="">Minimum visits for publisher relevancy</message>
@@ -273,6 +273,7 @@
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG" desc="">TipWithBrave</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR" desc="">Sorry there was problem processing your request, please try again.</message>
 
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
@@ -309,14 +310,10 @@
       <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="">add funds</message>
       <message name="IDS_BRAVE_UI_AUTO_TIP_TEXT" desc="">You are automatically sending a tip to:</message>
       <message name="IDS_BRAVE_UI_BAT_TEXT" desc="">BAT</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_FAQ" desc="">the FAQ</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_NOTE" desc="">Reminder: The Brave Wallet is unidirectional and BAT flows to publisher sites. For more information about Brave Rewards, please visit</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_QR" desc="">Show QR Code</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_TEXT" desc="">Be sure to use the address below that matches the type of crypto you own. It will be converted automatically to BAT by Uphold and appear as an increased balance in your Brave Rewards wallet. Please allow up to one hour for your wallet balance to update.</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_TITLE" desc="">Send cryptocurrency from your external account to your Brave Rewards wallet.</message>
       <message name="IDS_BRAVE_UI_ALLOW_TIP" desc="">Allow tips on</message>
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
       <message name="IDS_BRAVE_UI_BACKUP" desc="">Backup</message>
+      <message name="IDS_BRAVE_UI_BALANCE_UNAVAILABLE" desc="">Unavailable</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC" desc="">Get paid to view relevant ads that respect your privacy.</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_MSG" desc="">Now you can earn by viewing ads.</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_TITLE" desc="">Brave Ads has arrived!</message>
@@ -419,9 +416,12 @@
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_FOUR" desc="">You can remove any site receiving monthly tips from inside of the Tips panel.</message>
       <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
       <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
+      <message name="IDS_BRAVE_UI_PROCESSING_REQUEST" desc="">Your request is still being processed, please wait.</message>
+      <message name="IDS_BRAVE_UI_PROCESSING_REQUEST_BUTTON" desc="">Try again</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART" desc="">Ready to get started?</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART_OPT_IN_TEXT" desc="">Yes I'm Ready</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART_START" desc="">You can start with the</message>
+      <message name="IDS_BRAVE_UI_RECONNECT_WALLET" desc="">Reconnect wallet</message>
       <message name="IDS_BRAVE_UI_RECOVERY_KEYS" desc="">Recovery Key</message>
       <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="">Monthly Tips</message>
@@ -455,7 +455,7 @@
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT1" desc="">Get Rewarded for Browsing!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT2" desc="">Earn tokens for your attention to ads and pay it forward to support content creators you value!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT1" desc="">Add, withdraw and manage funds at</message>
-      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT2" desc="">Your Brave wallet is managed by</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT2" desc="">Your Brave wallet is powered by</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT3" desc="">Brave Rewards is built on the Basic Attention Token. Learn more about BAT</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT4" desc="">here</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT1" desc="">Restore your Wallet</message>
@@ -540,6 +540,23 @@
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TITLE_UGP" desc="Title on final grant screen for UGP">It’s your lucky day!</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_UGP" desc="Text on final grant screen for UGP">Your token grant is on its way.</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_UGP" desc="Token text on final grant screen for UGP">Free Token Grant</message>
+
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_VERIFY" desc="">verify</message>
+      <message name="IDS_BRAVE_UI_WALLET_BUTTON_DISCONNECTED" desc="">Disconnected</message>
+      <message name="IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED" desc="">Verify Wallet</message>
+      <message name="IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED" desc="">Verified</message>
+      <message name="IDS_BRAVE_UI_WALLET_GO_TO_UPHOLD" desc="">Go to my Uphold account</message>
+      <message name="IDS_BRAVE_UI_WALLET_DISCONNECT" desc="">Disconnect from Brave Rewards</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_BUTTON" desc="">Verify wallet</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_FOOTER" desc="">Our wallet service is provided by</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_ID" desc="">Please have your government issued ID available.</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST1" desc="">Withdraw and add funds</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST2" desc="">No need to solve captcha to earn ads rewards</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST3" desc="">Rewards received will never expire and be deposited to your wallet instantly</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_HEADER" desc="">A verified wallet allows you to:</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE1" desc="">Verify Your Wallet</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE2" desc="">And manage your funds easily!</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFIED" desc="">Verified</message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->

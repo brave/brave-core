@@ -57,8 +57,7 @@ class PhaseTwo {
                             const braveledger_bat_helper::PublisherList& list);
 
   void GetTipsWinners(const unsigned int ballots,
-                          const std::string& viewing_id,
-                          const braveledger_bat_helper::PublisherList& list);
+                      const std::string& viewing_id);
 
   void VotePublishers(const braveledger_bat_helper::Winners& winners,
                       const std::string& viewing_id);

@@ -2106,35 +2106,41 @@ bool getJSONServerList(const std::string& json,
       item.verified = i[1].GetBool();
       item.excluded = i[2].GetBool();
 
+      if (!i[3].IsString()) {
+        return false;
+      }
+
+      item.address = i[3].GetString();
+
       SERVER_LIST_BANNER banner;
 
-      if (i.Size() > 3 && i[3].IsObject()) {
-        if (i[3].HasMember("title") && i[3]["title"].IsString()) {
-          banner.title_ = i[3]["title"].GetString();
+      if (i.Size() > 4 && i[4].IsObject()) {
+        if (i[4].HasMember("title") && i[4]["title"].IsString()) {
+          banner.title_ = i[4]["title"].GetString();
         }
 
-        if (i[3].HasMember("description") && i[3]["description"].IsString()) {
-          banner.description_ = i[3]["description"].GetString();
+        if (i[4].HasMember("description") && i[4]["description"].IsString()) {
+          banner.description_ = i[4]["description"].GetString();
         }
 
-        if (i[3].HasMember("backgroundUrl") &&
-            i[3]["backgroundUrl"].IsString()) {
-          banner.background_ = i[3]["backgroundUrl"].GetString();
+        if (i[4].HasMember("backgroundUrl") &&
+            i[4]["backgroundUrl"].IsString()) {
+          banner.background_ = i[4]["backgroundUrl"].GetString();
         }
 
-        if (i[3].HasMember("logoUrl") && i[3]["logoUrl"].IsString()) {
-          banner.logo_ = i[3]["logoUrl"].GetString();
+        if (i[4].HasMember("logoUrl") && i[4]["logoUrl"].IsString()) {
+          banner.logo_ = i[4]["logoUrl"].GetString();
         }
 
-        if (i[3].HasMember("donationAmounts") &&
-            i[3]["donationAmounts"].IsArray()) {
-          for (auto &j : i[3]["donationAmounts"].GetArray()) {
+        if (i[4].HasMember("donationAmounts") &&
+            i[4]["donationAmounts"].IsArray()) {
+          for (auto &j : i[4]["donationAmounts"].GetArray()) {
             banner.amounts_.emplace_back(j.GetInt());
           }
         }
 
-        if (i[3].HasMember("socialLinks") && i[3]["socialLinks"].IsObject()) {
-          for (auto & k : i[3]["socialLinks"].GetObject()) {
+        if (i[4].HasMember("socialLinks") && i[4]["socialLinks"].IsObject()) {
+          for (auto & k : i[4]["socialLinks"].GetObject()) {
             banner.social_.insert(
                 std::make_pair(k.name.GetString(), k.value.GetString()));
           }
@@ -2348,8 +2354,10 @@ std::string stringifyReconcilePayloadSt(
   JsonWriter writer(buffer);
   writer.StartObject();  // root
 
-  writer.String("requestType");
-  writer.String(reconcile_payload.requestType_.c_str());
+  if (!reconcile_payload.requestType_.empty()) {
+    writer.String("requestType");
+    writer.String(reconcile_payload.requestType_.c_str());
+  }
 
   writer.String("signedTx");
   writer.StartObject();  // signedTx
@@ -2367,7 +2375,6 @@ std::string stringifyReconcilePayloadSt(
 
   writer.String("body");
   writer.StartObject();  // body
-
 
   writer.String("denomination");
   writer.StartObject();  // denomination
@@ -2390,11 +2397,15 @@ std::string stringifyReconcilePayloadSt(
 
   writer.EndObject();  // signedTx
 
-  writer.String("surveyorId");
-  writer.String(reconcile_payload.request_surveyorId_.c_str());
+  if (!reconcile_payload.request_surveyorId_.empty()) {
+    writer.String("surveyorId");
+    writer.String(reconcile_payload.request_surveyorId_.c_str());
+  }
 
-  writer.String("viewingId");
-  writer.String(reconcile_payload.request_viewingId_.c_str());
+  if (!reconcile_payload.request_viewingId_.empty()) {
+    writer.String("viewingId");
+    writer.String(reconcile_payload.request_viewingId_.c_str());
+  }
 
   writer.EndObject();  // root
   return buffer.GetString();

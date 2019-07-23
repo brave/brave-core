@@ -224,7 +224,6 @@ export class RewardsPanel extends React.Component<Props, State> {
                 gradientTop={'249,251,252'}
                 balance={balance.total.toFixed(1)}
                 showSecActions={false}
-                connectedWallet={false}
                 showCopy={false}
                 grants={utils.getGrants(walletProperties.grants)}
                 converted={utils.formatConverted(converted)}

@@ -32,6 +32,10 @@ namespace braveledger_wallet {
 class Balance;
 }
 
+namespace braveledger_uphold {
+class Uphold;
+}
+
 namespace braveledger_wallet {
 
 class Wallet {
@@ -51,9 +55,23 @@ class Wallet {
   ledger::WalletPropertiesPtr WalletPropertiesToWalletInfo(
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
 
-  void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback);
-
   void FetchBalance(ledger::FetchBalanceCallback callback);
+
+  void GetExternalWallet(const std::string& wallet_type,
+                         ledger::ExternalWalletCallback callback);
+
+  void ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback);
+
+  void DisconnectWallet(
+      const std::string& wallet_type,
+      ledger::DisconnectWalletCallback callback);
+
+  void TransferAnonToExternalWallet(
+      const std::string& new_address,
+      ledger::TransferAnonToExternalWalletCallback callback);
 
  private:
   void WalletPropertiesCallback(
@@ -62,16 +80,39 @@ class Wallet {
       const std::map<std::string, std::string>& headers,
       ledger::OnWalletPropertiesCallback callback);
 
-  void GetAddressesForPaymentIdCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      ledger::WalletAddressesCallback callback);
+  void OnGetExternalWallet(
+    const std::string& wallet_type,
+    ledger::ExternalWalletCallback callback,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  void OnExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const std::map<std::string, std::string>& args,
+    ledger::ExternalWalletAuthorizationCallback callback,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  void OnDisconnectWallet(
+    const std::string& wallet_type,
+    ledger::DisconnectWalletCallback callback,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  void OnTransferAnonToExternalWallet(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    ledger::TransferAnonToExternalWalletCallback callback);
+
+  void OnTransferAnonToExternalWalletBalance(
+    ledger::Result result,
+    ledger::BalancePtr properties,
+    const std::string& new_address,
+    ledger::TransferAnonToExternalWalletCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Create> create_;
   std::unique_ptr<Recover> recover_;
   std::unique_ptr<Balance> balance_;
+  std::unique_ptr<braveledger_uphold::Uphold> uphold_;
 };
 
 }  // namespace braveledger_wallet

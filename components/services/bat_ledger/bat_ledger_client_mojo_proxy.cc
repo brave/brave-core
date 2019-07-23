@@ -90,12 +90,11 @@ void OnResetState(const ledger::OnSaveCallback& callback,
   callback(ToLedgerResult(result));
 }
 
-void OnGetCountryCodes(
-    const ledger::GetCountryCodesCallback& callback,
-    const std::vector<int32_t>& countries) {
-  callback(countries);
+void OnGetExternalWallets(
+    ledger::GetExternalWalletsCallback callback,
+    base::flat_map<std::string, ledger::ExternalWalletPtr> wallets) {
+  callback(mojo::FlatMapToMap(std::move(wallets)));
 }
-
 
 }  // namespace
 
@@ -855,17 +854,6 @@ void BatLedgerClientMojoProxy::GetPendingContributionsTotal(
       base::BindOnce(&OnGetPendingContributionsTotal, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::GetCountryCodes(
-    const std::vector<std::string>& countries,
-    ledger::GetCountryCodesCallback callback) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_client_->GetCountryCodes(countries,
-      base::BindOnce(&OnGetCountryCodes, std::move(callback)));
-}
-
 void BatLedgerClientMojoProxy::OnContributeUnverifiedPublishers(
       ledger::Result result,
       const std::string& publisher_key,
@@ -873,6 +861,44 @@ void BatLedgerClientMojoProxy::OnContributeUnverifiedPublishers(
   bat_ledger_client_->OnContributeUnverifiedPublishers(ToMojomResult(result),
                                                        publisher_key,
                                                        publisher_name);
+}
+
+void BatLedgerClientMojoProxy::GetExternalWallets(
+    ledger::GetExternalWalletsCallback callback) {
+  if (!Connected()) {
+    std::map<std::string, ledger::ExternalWalletPtr> wallets;
+    callback(std::move(wallets));
+    return;
+  }
+
+  bat_ledger_client_->GetExternalWallets(
+      base::BindOnce(&OnGetExternalWallets, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::SaveExternalWallet(
+    const std::string& wallet_type,
+    ledger::ExternalWalletPtr wallet) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
+}
+
+void OnShowNotification(
+    const ledger::ShowNotificationCallback& callback,
+    int32_t result) {
+  callback(ToLedgerResult(result));
+}
+
+void BatLedgerClientMojoProxy::ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback) {
+  bat_ledger_client_->ShowNotification(
+      type,
+      args,
+      base::BindOnce(&OnShowNotification, std::move(callback)));
 }
 
 }  // namespace bat_ledger

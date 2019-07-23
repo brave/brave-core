@@ -165,14 +165,20 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) override;
 
-  void GetCountryCodes(
-      const std::vector<std::string>& countries,
-      ledger::GetCountryCodesCallback callback) override;
-
   void OnContributeUnverifiedPublishers(
       ledger::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
+
+  void GetExternalWallets(ledger::GetExternalWalletsCallback callback) override;
+
+  void SaveExternalWallet(const std::string& wallet_type,
+                           ledger::ExternalWalletPtr wallet) override;
+
+  void ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback) override;
 
  private:
   bool Connected() const;

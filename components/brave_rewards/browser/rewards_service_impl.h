@@ -74,9 +74,15 @@ using GetReconcileTimeCallback = base::Callback<void(int32_t)>;
 using GetShortRetriesCallback = base::Callback<void(bool)>;
 using GetTestResponseCallback =
     base::Callback<void(const std::string& url,
+                        int32_t method,
                         int* response_status_code,
                         std::string* response,
                         std::map<std::string, std::string>* headers)>;
+
+using ExternalWalletAuthorizationCallback =
+    base::OnceCallback<void(
+        int32_t,
+        const std::map<std::string, std::string>&)>;
 
 class RewardsServiceImpl : public RewardsService,
                            public ledger::LedgerClient,
@@ -132,7 +138,6 @@ class RewardsServiceImpl : public RewardsService,
                   const std::string& post_data) override;
   std::string URIEncode(const std::string& value) override;
   void GetReconcileStamp(const GetReconcileStampCallback& callback) override;
-  void GetAddresses(const GetAddressesCallback& callback) override;
   void GetAutoContribute(
       GetAutoContributeCallback callback) override;
   void GetPublisherMinVisitTime(
@@ -192,7 +197,6 @@ class RewardsServiceImpl : public RewardsService,
   void GetReconcileTime(const GetReconcileTimeCallback& callback);
   void SetShortRetries(bool short_retries);
   void GetShortRetries(const GetShortRetriesCallback& callback);
-  void SetCurrentCountry(const std::string& current_country);
 
   void GetAutoContributeProps(
       const GetAutoContributePropsCallback& callback) override;
@@ -200,8 +204,6 @@ class RewardsServiceImpl : public RewardsService,
       const GetPendingContributionsTotalCallback& callback) override;
   void GetRewardsMainEnabled(
       const GetRewardsMainEnabledCallback& callback) const override;
-
-  void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
 
   void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) override;
   void RefreshPublisher(
@@ -248,6 +250,28 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
 
   void FetchBalance(FetchBalanceCallback callback) override;
+
+  void GetExternalWallets(
+      ledger::GetExternalWalletsCallback callback) override;
+
+  void GetExternalWallet(const std::string& wallet_type,
+                         GetExternalWalletCallback callback) override;
+
+  void ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ExternalWalletAuthorizationCallback callback);
+
+  void ProcessRewardsPageUrl(
+      const std::string& path,
+      const std::string& query,
+      ProcessRewardsPageUrlCallback callback) override;
+
+  void DisconnectWallet(const std::string& wallet_type) override;
+
+  void SaveExternalWallet(
+      const std::string& wallet_type,
+      ledger::ExternalWalletPtr wallet) override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -400,6 +424,29 @@ class RewardsServiceImpl : public RewardsService,
                       int32_t result,
                       ledger::BalancePtr balance);
 
+  void OnGetExternalWallet(
+    const std::string& wallet_type,
+    GetExternalWalletCallback callback,
+    int32_t result,
+    ledger::ExternalWalletPtr wallet);
+
+  void OnExternalWalletAuthorization(
+    const std::string& wallet_type,
+    ExternalWalletAuthorizationCallback callback,
+    int32_t result,
+    const base::flat_map<std::string, std::string>& args);
+
+  void OnProcessExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const std::string& action,
+    ProcessRewardsPageUrlCallback callback,
+    int32_t result,
+    const std::map<std::string, std::string>& args);
+
+  void OnDisconnectWallet(
+    const std::string& wallet_type,
+    int32_t result);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;
@@ -548,6 +595,11 @@ class RewardsServiceImpl : public RewardsService,
   void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) override;
 
+  void ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -559,9 +611,6 @@ class RewardsServiceImpl : public RewardsService,
       const base::flat_map<std::string, std::string>& json_reports);
   void OnGetCurrentBalanceReport(
       bool success, const std::string& json_report);
-  void OnGetAddresses(
-      const GetAddressesCallback& callback,
-      const base::flat_map<std::string, std::string>& addresses);
   void OnGetAutoContributeProps(
       const GetAutoContributePropsCallback& callback,
       ledger::AutoContributePropsPtr props);
@@ -577,9 +626,6 @@ class RewardsServiceImpl : public RewardsService,
       SaveMediaInfoCallback callback,
       int32_t result,
       ledger::PublisherInfoPtr publisher);
-  void GetCountryCodes(
-      const std::vector<std::string>& countries,
-      ledger::GetCountryCodesCallback callback) override;
 
   void OnContributeUnverifiedPublishers(
       ledger::Result result,
@@ -623,7 +669,6 @@ class RewardsServiceImpl : public RewardsService,
   uint32_t next_timer_id_;
 
   GetTestResponseCallback test_response_callback_;
-  std::string current_country_for_test_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };

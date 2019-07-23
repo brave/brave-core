@@ -26,15 +26,10 @@ declare namespace Rewards {
     RECURRING_TIP = 16
   }
 
-  export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
-  export type Address = { address: string, qr: string | null }
-
   export interface State {
-    addresses?: Record<AddressesType, Address>
     adsData: AdsData
     autoContributeList: Publisher[]
     balance: Balance
-    connectedWallet: boolean
     contributeLoad: boolean
     contributionMinTime: number
     contributionMinVisits: number
@@ -49,6 +44,7 @@ declare namespace Rewards {
     enabledAdsMigrated: boolean
     enabledContribute: boolean
     enabledMain: boolean
+    externalWallet?: ExternalWallet
     inlineTip: {
       twitter: boolean
       reddit: boolean
@@ -66,14 +62,15 @@ declare namespace Rewards {
     tipsList: Publisher[]
     tipsLoad: boolean
     ui: {
-      addressCheck: boolean
       emptyWallet: boolean
       modalBackup: boolean
+      modalRedirect: 'show' | 'hide' | 'error'
       paymentIdCheck: boolean
       walletRecoverySuccess: boolean | null
       walletServerProblem: boolean
       walletCorrupted: boolean
       walletImported: boolean
+      onBoardingDisplayed?: boolean
     }
     walletCreated: boolean
     walletCreateFailed: boolean
@@ -207,5 +204,34 @@ declare namespace Rewards {
     total: number
     rates: Record<string, number>
     wallets: Record<string, number>
+  }
+
+  export type WalletType = 'anonymous' | 'uphold'
+
+  export enum WalletStatus {
+    NOT_CONNECTED = 0,
+    CONNECTED = 1,
+    VERIFIED = 2,
+    DISCONNECTED_NOT_VERIFIED = 3,
+    DISCONNECTED_VERIFIED = 4
+  }
+
+  export interface ExternalWallet {
+    token: string
+    address: string
+    status: WalletStatus
+    type: WalletType
+    verifyUrl: string
+    addUrl: string
+    withdrawUrl: string
+    userName?: string
+    accountUrl: string
+  }
+
+  export interface ProcessRewardsPageUrl {
+    result: number
+    walletType: string
+    action: string
+    args: Record<string, string>
   }
 }

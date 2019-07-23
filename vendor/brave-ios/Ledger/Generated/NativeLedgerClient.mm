@@ -26,9 +26,6 @@ std::string NativeLedgerClient::GenerateGUID() const {
 void NativeLedgerClient::GetActivityInfoList(uint32_t start, uint32_t limit, ledger::ActivityInfoFilter filter, ledger::PublisherInfoListCallback callback) {
   [bridge_ getActivityInfoList:start limit:limit filter:filter callback:callback];
 }
-void NativeLedgerClient::GetCountryCodes(const std::vector<std::string> & countries, ledger::GetCountryCodesCallback callback) {
-  [bridge_ getCountryCodes:countries callback:callback];
-}
 void NativeLedgerClient::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
   [bridge_ getOneTimeTips:callback];
 }
@@ -202,4 +199,13 @@ uint64_t NativeLedgerClient::GetUint64State(const std::string& name) const {
 }
 void NativeLedgerClient::ClearState(const std::string& name) {
   [bridge_ clearState:name];
+}
+void NativeLedgerClient::GetExternalWallets(ledger::GetExternalWalletsCallback callback) {
+  return [bridge_ getExternalWallets:callback];
+}
+void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) {
+  return [bridge_ saveExternalWallet:wallet_type wallet:std::move(wallet)];
+}
+void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, const ledger::ShowNotificationCallback& callback) {
+  return [bridge_ showNotification:type args:args callback:callback];
 }

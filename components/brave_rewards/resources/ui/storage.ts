@@ -26,18 +26,18 @@ export const defaultState: Rewards.State = {
   walletInfo: {
     choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0]
   },
-  connectedWallet: false,
   recoveryKey: '',
   reconcileStamp: 0,
   ui: {
-    addressCheck: true,
     emptyWallet: true,
     modalBackup: false,
+    modalRedirect: 'hide',
     paymentIdCheck: true,
     walletCorrupted: false,
     walletImported: false,
     walletRecoverySuccess: null,
-    walletServerProblem: false
+    walletServerProblem: false,
+    onBoardingDisplayed: false
   },
   autoContributeList: [],
   reports: {},
@@ -75,6 +75,8 @@ const cleanData = (state: Rewards.State) => {
   if (!state.balance) {
     state.balance = defaultState.balance
   }
+
+  state.ui.modalRedirect = 'hide'
 
   return state
 }

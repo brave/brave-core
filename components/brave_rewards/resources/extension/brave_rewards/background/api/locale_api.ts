@@ -115,7 +115,25 @@ export const getUIMessages = (): Record<string, string> => {
     'disabledPanelOff',
     'disabledPanelSettings',
     'disabledPanelText',
-    'disabledPanelTitle'
+    'disabledPanelTitle',
+    'rewardsPanelTextVerify',
+    'walletButtonDisconnected',
+    'walletButtonUnverified',
+    'walletButtonVerified',
+    'walletGoToUphold',
+    'walletDisconnect',
+    'walletVerificationButton',
+    'walletVerificationFooter',
+    'walletVerificationID',
+    'walletVerificationListCompact1',
+    'walletVerificationListCompact2',
+    'walletVerificationListCompact3',
+    'walletVerificationListHeader',
+    'walletVerificationTitle1',
+    'walletVerificationTitle2',
+    'walletVerified',
+    'balanceUnavailable',
+    'reconnectWallet'
   ]
 
   let translations = {}

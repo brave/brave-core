@@ -735,9 +735,84 @@ void BraveRewardsFetchBalanceFunction::OnBalance(
       wallets.SetDoubleKey(rate.first, rate.second);
     }
     balance_value->SetKey("wallets", std::move(wallets));
+  } else {
+    balance_value->SetDoubleKey("total", 0.0);
+    base::Value rates(base::Value::Type::DICTIONARY);
+    balance_value->SetKey("rates", std::move(rates));
+    base::Value wallets(base::Value::Type::DICTIONARY);
+    balance_value->SetKey("wallets", std::move(wallets));
   }
 
   Respond(OneArgument(std::move(balance_value)));
+}
+
+BraveRewardsGetExternalWalletFunction::
+~BraveRewardsGetExternalWalletFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetExternalWalletFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+  auto data = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+    return RespondNow(OneArgument(std::move(data)));
+  }
+
+  std::unique_ptr<brave_rewards::GetExternalWallet::Params> params(
+    brave_rewards::GetExternalWallet::Params::Create(*args_));
+
+  rewards_service->GetExternalWallet(
+      params->type,
+      base::BindOnce(
+          &BraveRewardsGetExternalWalletFunction::OnExternalWalet,
+          this));
+  return RespondLater();
+}
+
+void BraveRewardsGetExternalWalletFunction::OnExternalWalet(
+    int32_t result,
+    std::unique_ptr<::brave_rewards::ExternalWallet> wallet) {
+  auto data = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+
+  if (wallet) {
+    data->SetStringKey("token", wallet->token);
+    data->SetStringKey("address", wallet->address);
+    data->SetIntKey("status", static_cast<int>(wallet->status));
+    data->SetStringKey("type", wallet->type);
+    data->SetStringKey("verifyUrl", wallet->verify_url);
+    data->SetStringKey("addUrl", wallet->add_url);
+    data->SetStringKey("withdrawUrl", wallet->withdraw_url);
+    data->SetStringKey("userName", wallet->user_name);
+    data->SetStringKey("accountUrl", wallet->account_url);
+  }
+
+  Respond(TwoArguments(
+        std::make_unique<base::Value>(result),
+        std::move(data)));
+}
+
+BraveRewardsDisconnectWalletFunction::
+~BraveRewardsDisconnectWalletFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsDisconnectWalletFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(NoArguments());
+  }
+
+  std::unique_ptr<brave_rewards::DisconnectWallet::Params> params(
+    brave_rewards::DisconnectWallet::Params::Create(*args_));
+
+  rewards_service->DisconnectWallet(params->type);
+  return RespondNow(NoArguments());
 }
 
 }  // namespace api

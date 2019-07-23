@@ -20,7 +20,6 @@ private:
   void FetchGrants(const std::string & lang, const std::string & paymentId) override;
   std::string GenerateGUID() const override;
   void GetActivityInfoList(uint32_t start, uint32_t limit, ledger::ActivityInfoFilter filter, ledger::PublisherInfoListCallback callback) override;
-  void GetCountryCodes(const std::vector<std::string> & countries, ledger::GetCountryCodesCallback callback) override;
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
   void GetPendingContributions(const ledger::PendingContributionInfoListCallback & callback) override;
   void GetPendingContributionsTotal(const ledger::PendingContributionsTotalCallback & callback) override;
@@ -79,4 +78,7 @@ private:
   void SetUint64State(const std::string& name, uint64_t value) override;
   uint64_t GetUint64State(const std::string& name) const override;
   void ClearState(const std::string& name) override;
+  void GetExternalWallets(ledger::GetExternalWalletsCallback callback) override;
+  void SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) override;
+  void ShowNotification(const std::string& type, const std::vector<std::string>& args, const ledger::ShowNotificationCallback& callback) override;
 };

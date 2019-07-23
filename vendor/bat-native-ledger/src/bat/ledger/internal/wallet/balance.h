@@ -18,6 +18,10 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
+namespace braveledger_uphold {
+class Uphold;
+}
+
 namespace braveledger_wallet {
 
 class Balance {
@@ -28,6 +32,10 @@ class Balance {
 
   void Fetch(ledger::FetchBalanceCallback callback);
 
+  static double GetPerWalletBalance(
+      const std::string& type,
+      base::flat_map<std::string, double> wallets);
+
  private:
   void OnWalletProperties(
       int response_status_code,
@@ -35,6 +43,17 @@ class Balance {
       const std::map<std::string, std::string>& headers,
       ledger::FetchBalanceCallback callback);
 
+  void OnExternalWallets(
+    ledger::Balance info,
+    ledger::FetchBalanceCallback callback,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  void OnUpholdFetchBalance(ledger::Balance info,
+                            ledger::FetchBalanceCallback callback,
+                            ledger::Result result,
+                            double balance);
+
+  std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

@@ -201,40 +201,6 @@ void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution,
   ledger_->SolveGrantCaptcha(solution, promotion_id);
 }
 
-void BatLedgerImpl::OnGetAddresses(
-    CallbackHolder<GetAddressesCallback>* holder,
-    std::map<std::string, std::string> addresses) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(mojo::MapToFlatMap(addresses));
-  }
-  delete holder;
-}
-
-void BatLedgerImpl::GetAddresses(
-    int32_t current_country_code,
-    GetAddressesCallback callback) {
-  auto* holder = new CallbackHolder<GetAddressesCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetAddresses(current_country_code,
-      std::bind(BatLedgerImpl::OnGetAddresses, holder, _1));
-}
-
-void BatLedgerImpl::GetBATAddress(GetBATAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetBATAddress());
-}
-
-void BatLedgerImpl::GetBTCAddress(GetBTCAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetBTCAddress());
-}
-
-void BatLedgerImpl::GetETHAddress(GetETHAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetETHAddress());
-}
-
-void BatLedgerImpl::GetLTCAddress(GetLTCAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetLTCAddress());
-}
-
 void BatLedgerImpl::SetRewardsMainEnabled(bool enabled) {
   ledger_->SetRewardsMainEnabled(enabled);
 }
@@ -363,24 +329,6 @@ void BatLedgerImpl::HasSufficientBalanceToReconcile(
       AsWeakPtr(), std::move(callback));
   ledger_->HasSufficientBalanceToReconcile(
       std::bind(BatLedgerImpl::OnHasSufficientBalanceToReconcile, holder, _1));
-}
-
-// static
-void BatLedgerImpl::OnAddressesForPaymentId(
-    CallbackHolder<GetAddressesForPaymentIdCallback>* holder,
-    std::map<std::string, std::string> addresses) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(mojo::MapToFlatMap(addresses));
-  delete holder;
-}
-
-void BatLedgerImpl::GetAddressesForPaymentId(
-    GetAddressesForPaymentIdCallback callback) {
-  // delete in OnAddressesForPaymentId
-  auto* holder = new CallbackHolder<GetAddressesForPaymentIdCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetAddressesForPaymentId(
-      std::bind(BatLedgerImpl::OnAddressesForPaymentId, holder, _1));
 }
 
 void BatLedgerImpl::SetCatalogIssuers(const std::string& info) {
@@ -680,6 +628,78 @@ void BatLedgerImpl::FetchBalance(
                 holder,
                 _1,
                 _2));
+}
+
+// static
+void BatLedgerImpl::OnGetExternalWallet(
+    CallbackHolder<GetExternalWalletCallback>* holder,
+    ledger::Result result,
+    ledger::ExternalWalletPtr wallet) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(wallet));
+  delete holder;
+}
+
+void BatLedgerImpl::GetExternalWallet(const std::string& wallet_type,
+                                      GetExternalWalletCallback callback) {
+  auto* holder = new CallbackHolder<GetExternalWalletCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetExternalWallet(
+      wallet_type,
+      std::bind(BatLedgerImpl::OnGetExternalWallet,
+                holder,
+                _1,
+                _2));
+}
+
+// static
+void BatLedgerImpl::OnExternalWalletAuthorization(
+    CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
+    ledger::Result result,
+    const std::map<std::string, std::string>& args) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, mojo::MapToFlatMap(args));
+  delete holder;
+}
+
+void BatLedgerImpl::ExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const base::flat_map<std::string, std::string>& args,
+    ExternalWalletAuthorizationCallback callback) {
+  auto* holder = new CallbackHolder<ExternalWalletAuthorizationCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->ExternalWalletAuthorization(
+      wallet_type,
+      mojo::FlatMapToMap(args),
+      std::bind(BatLedgerImpl::OnExternalWalletAuthorization,
+                holder,
+                _1,
+                _2));
+}
+
+// static
+void BatLedgerImpl::OnDisconnectWallet(
+    CallbackHolder<DisconnectWalletCallback>* holder,
+    ledger::Result result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::DisconnectWallet(
+    const std::string& wallet_type,
+    DisconnectWalletCallback callback) {
+  auto* holder = new CallbackHolder<DisconnectWalletCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->DisconnectWallet(
+      wallet_type,
+      std::bind(BatLedgerImpl::OnDisconnectWallet,
+                holder,
+                _1));
 }
 
 }  // namespace bat_ledger

@@ -81,14 +81,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       const std::string& solution,
       const std::string& promotionId) override;
 
-  void GetAddresses(
-      int32_t current_country_code,
-      GetAddressesCallback callback) override;
-  void GetBATAddress(GetBATAddressCallback callback) override;
-  void GetBTCAddress(GetBTCAddressCallback callback) override;
-  void GetETHAddress(GetETHAddressCallback callback) override;
-  void GetLTCAddress(GetLTCAddressCallback callback) override;
-
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
   void SetPublisherMinVisits(uint32_t visits) override;
@@ -127,9 +119,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetRewardsMainEnabledCallback callback) override;
   void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) override;
-
-  void GetAddressesForPaymentId(
-      GetAddressesForPaymentIdCallback callback) override;
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;
   void GetRewardsInternalsInfo(
@@ -186,6 +175,18 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
+  void GetExternalWallet(const std::string& wallet_type,
+                         GetExternalWalletCallback callback) override;
+
+  void ExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const base::flat_map<std::string, std::string>& args,
+    ExternalWalletAuthorizationCallback callback) override;
+
+  void DisconnectWallet(
+    const std::string& wallet_type,
+    DisconnectWalletCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -215,10 +216,6 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,
       ledger::PublisherBannerPtr banner);
-
-  static void OnAddressesForPaymentId(
-      CallbackHolder<GetAddressesForPaymentIdCallback>* holder,
-      std::map<std::string, std::string> addresses);
 
   static void OnGetTransactionHistory(
       CallbackHolder<GetTransactionHistoryCallback>* holder,
@@ -268,10 +265,6 @@ class BatLedgerImpl : public mojom::BatLedger,
     CallbackHolder<GetPendingContributionsTotalCallback>* holder,
     double amount);
 
-  static void OnGetAddresses(
-    CallbackHolder<GetAddressesCallback>* holder,
-    std::map<std::string, std::string> addresses);
-
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
     bool sufficient);
@@ -280,6 +273,20 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<FetchBalanceCallback>* holder,
       ledger::Result result,
       ledger::BalancePtr balance);
+
+  static void OnGetExternalWallet(
+    CallbackHolder<GetExternalWalletCallback>* holder,
+    ledger::Result result,
+    ledger::ExternalWalletPtr wallet);
+
+  static void OnExternalWalletAuthorization(
+    CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
+    ledger::Result result,
+    const std::map<std::string, std::string>& args);
+
+  static void OnDisconnectWallet(
+    CallbackHolder<DisconnectWalletCallback>* holder,
+    ledger::Result result);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

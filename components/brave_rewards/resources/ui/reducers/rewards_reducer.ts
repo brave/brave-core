@@ -209,6 +209,81 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       break
     }
+    case types.ON_ON_BOARDING_DISPLAYED: {
+      let ui = state.ui
+
+      ui.onBoardingDisplayed = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.PROCESS_REWARDS_PAGE_URL: {
+      const path = action.payload.path
+      const query = action.payload.query
+      const ui = state.ui
+
+      chrome.send('brave_rewards.processRewardsPageUrl', [path, query])
+      ui.modalRedirect = 'show'
+
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_PROCESS_REWARDS_PAGE_URL: {
+      const data = action.payload.data
+      const ui = state.ui
+
+      chrome.send('brave_rewards.getExternalWallet', [data.walletType])
+
+      // EXPIRED_TOKEN
+      if (data.result === 24) {
+        ui.modalRedirect = 'error'
+        break
+      }
+
+      if (data.result !== 0) {
+        ui.modalRedirect = 'error'
+        break
+      }
+
+      if (data.walletType === 'uphold') {
+        if (data.action === 'authorization') {
+          const url = data.args['redirect_url']
+          if (url && url.length > 0) {
+            window.open(url)
+          }
+          ui.modalRedirect = 'hide'
+          break
+        }
+      }
+
+      ui.modalRedirect = 'error'
+
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.HIDE_REDIRECT_MODAL: {
+      const ui = state.ui
+
+      ui.modalRedirect = 'hide'
+
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.DISCONNECT_WALLET: {
+      chrome.send('brave_rewards.disconnectWallet', [action.payload.walletType])
+      break
+    }
   }
 
   return state

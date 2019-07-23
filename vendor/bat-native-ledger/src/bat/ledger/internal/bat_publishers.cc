@@ -686,6 +686,7 @@ void BatPublishers::OnPublishersListSaved(ledger::Result result) {
 
 bool BatPublishers::loadPublisherList(const std::string& data) {
   std::map<std::string, braveledger_bat_helper::SERVER_LIST> list;
+
   bool success = braveledger_bat_helper::getJSONServerList(data, &list);
 
   if (success) {
@@ -918,6 +919,23 @@ bool BatPublishers::WasPublisherAlreadyProcessed(
     const std::string& publisher_key) const {
   const std::vector<std::string> list = state_->processed_pending_publishers;
   return std::find(list.begin(), list.end(), publisher_key) != list.end();
+}
+
+std::string BatPublishers::GetPublisherAddress(
+    const std::string& publisher_key) const {
+  if (server_list_.empty()) {
+    return "";
+  }
+
+  auto result = server_list_.find(publisher_key);
+
+  if (result == server_list_.end()) {
+    return "";
+  }
+
+  const braveledger_bat_helper::SERVER_LIST values = result->second;
+
+  return values.address;
 }
 
 }  // namespace braveledger_bat_publishers

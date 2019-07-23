@@ -30,6 +30,7 @@ class ContributionTest : public testing::Test {
       publisher_info->id = "example" + std::to_string(ix) + ".com";
       publisher_info->verified = ix < variation;
       publisher_info->percent = (1.0 / iterations) * 100.0;
+      publisher_info->weight = (1.0 / iterations) * 100.0;
       publisher_info_list->push_back(std::move(publisher_info));
     }
   }
@@ -111,7 +112,7 @@ TEST_F(ContributionTest, GetAmountFromVerifiedAuto) {
   GetPublishersForAuto(&publisher_info_list, 100, 80);
   amount =
       Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 1478);
-  EXPECT_EQ(amount, 1182.40);
+  EXPECT_NEAR(amount, 1182.4, 0.001f);
 
   // 100 publishers total with 4 verified and budget of 100 BAT
   publisher_info_list.clear();

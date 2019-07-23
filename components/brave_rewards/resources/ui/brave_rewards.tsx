@@ -85,10 +85,6 @@ window.cr.define('brave_rewards', function () {
     getActions().onReconcileStamp(stamp)
   }
 
-  function addresses (addresses: Record<Rewards.AddressesType, string>) {
-    getActions().onAddresses(addresses)
-  }
-
   function contributeList (list: Rewards.Publisher[]) {
     getActions().onContributeList(list)
   }
@@ -139,10 +135,6 @@ window.cr.define('brave_rewards', function () {
     getActions().onRewardsEnabled(enabled)
   }
 
-  function addressesForPaymentId (addresses: Record<Rewards.AddressesType, string>) {
-    getActions().onAddressesForPaymentId(addresses)
-  }
-
   function transactionHistory (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) {
     getActions().onTransactionHistory(data)
   }
@@ -187,6 +179,25 @@ window.cr.define('brave_rewards', function () {
     getActions().getContributeList()
     getActions().getBalance()
     getActions().getWalletProperties()
+
+    // EXPIRED TOKEN
+    if (properties.result === 24) {
+      getActions().getExternalWallet('uphold')
+    }
+  }
+
+  function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
+    getActions().onExternalWallet(properties.result, properties.wallet)
+  }
+
+  function processRewardsPageUrl (data: Rewards.ProcessRewardsPageUrl) {
+    getActions().onProcessRewardsPageUrl(data)
+  }
+
+  function disconnectWallet (properties: {walletType: string, result: number}) {
+    if (properties.result === 0) {
+      getActions().getExternalWallet(properties.walletType)
+    }
   }
 
   return {
@@ -200,7 +211,6 @@ window.cr.define('brave_rewards', function () {
     recoverWalletData,
     grantFinish,
     reconcileStamp,
-    addresses,
     contributeList,
     excludedList,
     balanceReports,
@@ -214,7 +224,6 @@ window.cr.define('brave_rewards', function () {
     pendingContributions,
     onPendingContributionSaved,
     rewardsEnabled,
-    addressesForPaymentId,
     transactionHistory,
     transactionHistoryChanged,
     recurringTipSaved,
@@ -223,7 +232,10 @@ window.cr.define('brave_rewards', function () {
     onRemovePendingContribution,
     excludedSiteChanged,
     balance,
-    reconcileComplete
+    reconcileComplete,
+    externalWallet,
+    processRewardsPageUrl,
+    disconnectWallet
   }
 })
 

@@ -37,19 +37,23 @@ extern bool short_retries;
 
 using PublisherBannerCallback =
     std::function<void(ledger::PublisherBannerPtr banner)>;
-using WalletAddressesCallback =
-    std::function<void(std::map<std::string, std::string> addresses)>;
 using GetTransactionHistoryCallback =
     std::function<void(std::unique_ptr<ledger::TransactionsInfo> info)>;
 using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
                                   ledger::WalletPropertiesPtr)>;
 using OnRefreshPublisherCallback =
     std::function<void(bool)>;
-using GetAddressesCallback =
-    std::function<void(std::map<std::string, std::string>)>;
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback = std::function<void(ledger::Result,
                                                 ledger::BalancePtr)>;
+using ExternalWalletCallback = std::function<void(
+    ledger::Result,
+    ledger::ExternalWalletPtr)>;
+using ExternalWalletAuthorizationCallback =
+    std::function<void(ledger::Result, std::map<std::string, std::string>)>;
+using DisconnectWalletCallback = std::function<void(ledger::Result)>;
+using TransferAnonToExternalWalletCallback =
+    std::function<void(ledger::Result)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -133,18 +137,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void UpdateAdsRewards() = 0;
 
-  virtual void GetAddresses(
-      int32_t current_country_code,
-      ledger::GetAddressesCallback callback) = 0;
-
-  virtual const std::string& GetBATAddress() const = 0;
-
-  virtual const std::string& GetBTCAddress() const = 0;
-
-  virtual const std::string& GetETHAddress() const = 0;
-
-  virtual const std::string& GetLTCAddress() const = 0;
-
   virtual uint64_t GetReconcileStamp() const = 0;
 
   virtual bool GetRewardsMainEnabled() const = 0;
@@ -225,9 +217,6 @@ class LEDGER_EXPORT Ledger {
   virtual void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) = 0;
 
-  virtual void GetAddressesForPaymentId(
-      ledger::WalletAddressesCallback callback) = 0;
-
   virtual void SetCatalogIssuers(const std::string& info) = 0;
 
   virtual void ConfirmAd(const std::string& info) = 0;
@@ -272,6 +261,18 @@ class LEDGER_EXPORT Ledger {
     const ledger::PendingContributionsTotalCallback& callback) = 0;
 
   virtual void FetchBalance(ledger::FetchBalanceCallback callback) = 0;
+
+  virtual void GetExternalWallet(const std::string& wallet_type,
+                                 ledger::ExternalWalletCallback callback) = 0;
+
+  virtual void ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback) = 0;
+
+  virtual void DisconnectWallet(
+      const std::string& wallet_type,
+      ledger::DisconnectWalletCallback callback) = 0;
 };
 
 }  // namespace ledger

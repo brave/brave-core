@@ -821,26 +821,6 @@ void LedgerClientMojoProxy::GetPendingContributionsTotal(
                 _1));
 }
 
-void LedgerClientMojoProxy::OnGetCountryCodes(
-    CallbackHolder<GetCountryCodesCallback>* holder,
-    const std::vector<int32_t>& countries) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(countries);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetCountryCodes(
-    const std::vector<std::string>& countries,
-    GetCountryCodesCallback callback) {
-  auto* holder = new CallbackHolder<GetCountryCodesCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetCountryCodes(countries,
-      std::bind(LedgerClientMojoProxy::OnGetCountryCodes,
-                holder,
-                _1));
-}
-
 void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
       int32_t result,
       const std::string& publisher_key,
@@ -848,6 +828,55 @@ void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
   ledger_client_->OnContributeUnverifiedPublishers(ToLedgerResult(result),
                                                    publisher_key,
                                                    publisher_name);
+}
+
+// static
+void LedgerClientMojoProxy::OnGetExternalWallets(
+    CallbackHolder<GetExternalWalletsCallback>* holder,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(mojo::MapToFlatMap(std::move(wallets)));
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetExternalWallets(
+    GetExternalWalletsCallback callback) {
+  auto* holder = new CallbackHolder<GetExternalWalletsCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->GetExternalWallets(
+      std::bind(LedgerClientMojoProxy::OnGetExternalWallets,
+                holder,
+                _1));
+}
+
+void LedgerClientMojoProxy::SaveExternalWallet(
+    const std::string& wallet_type,
+    ledger::ExternalWalletPtr wallet) {
+  ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
+}
+
+// static
+void LedgerClientMojoProxy::OnShowNotification(
+    CallbackHolder<ShowNotificationCallback>* holder,
+    int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      ShowNotificationCallback callback) {
+  auto* holder = new CallbackHolder<ShowNotificationCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->ShowNotification(
+      type,
+      args,
+      std::bind(LedgerClientMojoProxy::OnShowNotification,
+                holder,
+                _1));
 }
 
 }  // namespace bat_ledger

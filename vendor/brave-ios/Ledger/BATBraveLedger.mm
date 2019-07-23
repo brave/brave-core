@@ -314,45 +314,6 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   }
 }
 
-- (NSString *)BATAddress
-{
-  if (ledger->IsWalletCreated()) {
-    return [NSString stringWithUTF8String:ledger->GetBATAddress().c_str()];
-  }
-  return nil;
-}
-
-- (NSString *)BTCAddress
-{
-  if (ledger->IsWalletCreated()) {
-    return [NSString stringWithUTF8String:ledger->GetBTCAddress().c_str()];
-  }
-  return nil;
-}
-
-- (NSString *)ETHAddress
-{
-  if (ledger->IsWalletCreated()) {
-    return [NSString stringWithUTF8String:ledger->GetETHAddress().c_str()];
-  }
-  return nil;
-}
-
-- (NSString *)LTCAddress
-{
-  if (ledger->IsWalletCreated()) {
-    return [NSString stringWithUTF8String:ledger->GetLTCAddress().c_str()];
-  }
-  return nil;
-}
-
-- (void)addressesForPaymentId:(void (^)(NSDictionary<NSString *,NSString *> * _Nonnull))completion
-{
-  ledger->GetAddressesForPaymentId(^(std::map<std::string, std::string> addresses){
-    completion(NSDictionaryFromMap(addresses));
-  });
-}
-
 - (double)reservedAmount {
   return [BATLedgerDatabase reservedAmountForPendingContributions];
 }
@@ -1588,17 +1549,6 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)getCountryCodes:(const std::vector<std::string> &)countries callback:(ledger::GetCountryCodesCallback)callback
-{
-  std::vector<std::int32_t> country_codes;
-  for (const auto& country : countries) {
-    // Takes in each of the two characters of a ISO 3166-1 country code, and
-    // converts it into an int value to be used as a reference to that country.
-    country_codes.push_back(country.at(0) << 8 | country.at(1));
-  }
-  callback(country_codes);
-}
-
 - (void)getPendingContributions:(const ledger::PendingContributionInfoListCallback &)callback
 {
   const auto pendingContributions = [BATLedgerDatabase pendingContributions];
@@ -1684,6 +1634,22 @@ BATLedgerBridge(BOOL,
     default:
       break;
   }
+}
+
+- (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback
+{
+  std::map<std::string, ledger::ExternalWalletPtr> wallets;
+  callback(std::move(wallets));
+}
+
+- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet
+{
+
+}
+
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(const ledger::ShowNotificationCallback&)callback
+{
+
 }
 
 @end

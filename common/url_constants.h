@@ -1,6 +1,8 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 
 #ifndef BRAVE_COMMON_URL_CONSTANTS_H_
 #define BRAVE_COMMON_URL_CONSTANTS_H_
@@ -8,6 +10,7 @@
 extern const char kChromeExtensionScheme[];
 extern const char kBraveUIScheme[];
 extern const char kMagnetScheme[];
+extern const char kRewardsScheme[];
 extern const char kWidevineMoreInfoURL[];
 extern const char kWidevineTOS[];
 
