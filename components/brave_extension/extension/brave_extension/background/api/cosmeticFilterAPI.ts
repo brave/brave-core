@@ -31,8 +31,9 @@ export const applySiteFilters = (hostname: string) => {
         if (process.env.NODE_ENV === 'shields_development') {
           console.log('applying rule', rule)
         }
-        chrome.tabs.insertCSS({
-          code: `${rule} {display: none;}`,
+        chrome.tabs.insertCSS({ // https://github.com/brave/brave-browser/wiki/Cosmetic-Filtering
+          code: `${rule} {display: none !important;}`,
+          cssOrigin: 'user',
           runAt: 'document_start'
         })
       })
