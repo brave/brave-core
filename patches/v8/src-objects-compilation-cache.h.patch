@@ -1,0 +1,69 @@
+diff --git a/src/objects/compilation-cache.h b/src/objects/compilation-cache.h
+index d3feb1b233467e8c37cd1e22409a241e034898b6..e31643120d5d719f8719266e190365b41870803a 100644
+--- a/src/objects/compilation-cache.h
++++ b/src/objects/compilation-cache.h
+@@ -14,6 +14,8 @@
+ // Has to be the last include (doesn't have include guards):
+ #include "src/objects/object-macros.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -32,7 +34,11 @@ class CompilationCacheShape : public BaseShape<HashTableKey*> {
+   static inline uint32_t StringSharedHash(String source,
+                                           SharedFunctionInfo shared,
+                                           LanguageMode language_mode,
+-                                          int position);
++                                          int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                          , int parent_script_id
++#endif
++                                          );
+ 
+   static inline uint32_t HashForObject(ReadOnlyRoots roots, Object object);
+ 
+@@ -87,22 +93,38 @@ class CompilationCacheTable
+   NEVER_READ_ONLY_SPACE
+   static MaybeHandle<SharedFunctionInfo> LookupScript(
+       Handle<CompilationCacheTable> table, Handle<String> src,
+-      Handle<Context> native_context, LanguageMode language_mode);
++      Handle<Context> native_context, LanguageMode language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , int parent_script_id
++#endif
++      );
+   static InfoCellPair LookupEval(Handle<CompilationCacheTable> table,
+                                  Handle<String> src,
+                                  Handle<SharedFunctionInfo> shared,
+                                  Handle<Context> native_context,
+-                                 LanguageMode language_mode, int position);
++                                 LanguageMode language_mode, int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                 , int parent_script_id
++#endif
++      );
+   Handle<Object> LookupRegExp(Handle<String> source, JSRegExp::Flags flags);
+   static Handle<CompilationCacheTable> PutScript(
+       Handle<CompilationCacheTable> cache, Handle<String> src,
+       Handle<Context> native_context, LanguageMode language_mode,
+-      Handle<SharedFunctionInfo> value);
++      Handle<SharedFunctionInfo> value
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , int parent_script_id
++#endif
++      );
+   static Handle<CompilationCacheTable> PutEval(
+       Handle<CompilationCacheTable> cache, Handle<String> src,
+       Handle<SharedFunctionInfo> outer_info, Handle<SharedFunctionInfo> value,
+       Handle<Context> native_context, Handle<FeedbackCell> feedback_cell,
+-      int position);
++      int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , int parent_script_id
++#endif
++      );
+   static Handle<CompilationCacheTable> PutRegExp(
+       Isolate* isolate, Handle<CompilationCacheTable> cache, Handle<String> src,
+       JSRegExp::Flags flags, Handle<FixedArray> value);

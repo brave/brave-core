@@ -1,0 +1,52 @@
+diff --git a/test/cctest/heap/test-heap.cc b/test/cctest/heap/test-heap.cc
+index 50ac47a7ab0453f35a68932b63c33c352758302f..8bc249c955be0f5113d7d5977537de3388193410 100644
+--- a/test/cctest/heap/test-heap.cc
++++ b/test/cctest/heap/test-heap.cc
+@@ -64,6 +64,8 @@
+ #include "test/cctest/test-feedback-vector.h"
+ #include "test/cctest/test-transitions.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace v8 {
+ namespace internal {
+ namespace heap {
+@@ -1467,7 +1469,11 @@ TEST(CompilationCacheCachingBehavior) {
+     MaybeHandle<SharedFunctionInfo> cached_script =
+         compilation_cache->LookupScript(source, Handle<Object>(), 0, 0,
+                                         v8::ScriptOriginOptions(true, false),
+-                                        native_context, language_mode);
++                                        native_context, language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                        , 0
++#endif
++                                        );
+     CHECK(!cached_script.is_null());
+   }
+ 
+@@ -1478,7 +1484,11 @@ TEST(CompilationCacheCachingBehavior) {
+     MaybeHandle<SharedFunctionInfo> cached_script =
+         compilation_cache->LookupScript(source, Handle<Object>(), 0, 0,
+                                         v8::ScriptOriginOptions(true, false),
+-                                        native_context, language_mode);
++                                        native_context, language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                        , 0
++#endif
++                                        );
+     CHECK(!cached_script.is_null());
+ 
+     // Progress code age until it's old and ready for GC.
+@@ -1498,7 +1508,11 @@ TEST(CompilationCacheCachingBehavior) {
+     MaybeHandle<SharedFunctionInfo> cached_script =
+         compilation_cache->LookupScript(source, Handle<Object>(), 0, 0,
+                                         v8::ScriptOriginOptions(true, false),
+-                                        native_context, language_mode);
++                                        native_context, language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                        , 0
++#endif
++                                        );
+     CHECK(cached_script.is_null());
+   }
+ }
