@@ -113,6 +113,8 @@ bool Twitter::IsExcludedPath(const std::string& path) {
     "/i/",
     "/account/",
     "/compose/",
+    "/?login",
+    "/?logout",
     "/who_to_follow/",
     "/hashtag/",
     "/settings/"

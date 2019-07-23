@@ -56,7 +56,18 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
         "<html>"
         "  <head></head>"
         "  <body>"
-        "    <div class='tweet'>"
+        "    <div data-testid='tweet' data-tweet-id='123'>"
+        "      <a href='/status/123'></a>"
+        "      <div role='group'>Hello, Twitter!</div>"
+        "    </div>"
+        "  </body>"
+        "</html>");
+  } else if (request.relative_url == "/oldtwitter") {
+    http_response->set_content(
+        "<html>"
+        "  <head></head>"
+        "  <body>"
+        "    <div class='tweet' data-tweet-id='123'>"
         "      <div class='js-actions'>Hello, Twitter!</div>"
         "    </div>"
         "  </body>"
@@ -1811,6 +1822,36 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        TwitterTipsNotInjectedWhenRewardsDisabled) {
   // Navigate to Twitter in a new tab
   GURL url = https_server()->GetURL("twitter.com", "/twitter");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Ensure that Media tips injection is not active
+  EXPECT_FALSE(IsMediaTipsInjected());
+}
+
+// Brave tip icon is injected when visiting old Twitter
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       TwitterTipsInjectedOnOldTwitter) {
+  // Enable Rewards
+  EnableRewards();
+
+  // Navigate to Twitter in a new tab
+  GURL url = https_server()->GetURL("twitter.com", "/oldtwitter");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Ensure that Media tips injection is active
+  EXPECT_TRUE(IsMediaTipsInjected());
+}
+
+// Brave tip icon is not injected when visiting old Twitter while
+// Brave Rewards is disabled
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       TwitterTipsNotInjectedWhenRewardsDisabledOldTwitter) {
+  // Navigate to Twitter in a new tab
+  GURL url = https_server()->GetURL("twitter.com", "/oldtwitter");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
