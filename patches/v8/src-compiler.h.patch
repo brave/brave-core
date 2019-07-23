@@ -1,0 +1,40 @@
+diff --git a/src/compiler.h b/src/compiler.h
+index 2894f565fd449ab8c902f4b91666ebb710c52aa2..a736660d19eec4ea031e477a92267f13245f2d9c 100644
+--- a/src/compiler.h
++++ b/src/compiler.h
+@@ -16,6 +16,8 @@
+ #include "src/isolate.h"
+ #include "src/zone/zone.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -112,12 +114,24 @@ class V8_EXPORT_PRIVATE Compiler : public AllStatic {
+       int eval_scope_position, int eval_position);
+ 
+   struct ScriptDetails {
+-    ScriptDetails() : line_offset(0), column_offset(0) {}
++    ScriptDetails()
++        : line_offset(0), column_offset(0)
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++        , parent_script_id(0)
++#endif
++        {}
+     explicit ScriptDetails(Handle<Object> script_name)
+-        : line_offset(0), column_offset(0), name_obj(script_name) {}
++        : line_offset(0), column_offset(0),
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++        parent_script_id(0),
++#endif
++        name_obj(script_name) {}
+ 
+     int line_offset;
+     int column_offset;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    int parent_script_id;
++#endif
+     i::MaybeHandle<i::Object> name_obj;
+     i::MaybeHandle<i::Object> source_map_url;
+     i::MaybeHandle<i::FixedArray> host_defined_options;

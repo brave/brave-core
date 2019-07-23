@@ -1,0 +1,226 @@
+diff --git a/src/compilation-cache.cc b/src/compilation-cache.cc
+index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d97a2d5b12 100644
+--- a/src/compilation-cache.cc
++++ b/src/compilation-cache.cc
+@@ -13,6 +13,8 @@
+ #include "src/objects/slots.h"
+ #include "src/visitors.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -130,7 +132,11 @@ bool CompilationCacheScript::HasOrigin(Handle<SharedFunctionInfo> function_info,
+ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
+     Handle<String> source, MaybeHandle<Object> name, int line_offset,
+     int column_offset, ScriptOriginOptions resource_options,
+-    Handle<Context> native_context, LanguageMode language_mode) {
++    Handle<Context> native_context, LanguageMode language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    , int parent_script_id
++#endif
++    ) {
+   MaybeHandle<SharedFunctionInfo> result;
+ 
+   // Probe the script generation tables. Make sure not to leak handles
+@@ -140,7 +146,11 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
+     DCHECK_EQ(generations(), 1);
+     Handle<CompilationCacheTable> table = GetTable(generation);
+     MaybeHandle<SharedFunctionInfo> probe = CompilationCacheTable::LookupScript(
+-        table, source, native_context, language_mode);
++        table, source, native_context, language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++        , parent_script_id
++#endif
++        );
+     Handle<SharedFunctionInfo> function_info;
+     if (probe.ToHandle(&function_info)) {
+       // Break when we've found a suitable shared function info that
+@@ -174,18 +184,30 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
+ void CompilationCacheScript::Put(Handle<String> source,
+                                  Handle<Context> native_context,
+                                  LanguageMode language_mode,
+-                                 Handle<SharedFunctionInfo> function_info) {
++                                 Handle<SharedFunctionInfo> function_info
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                 , int parent_script_id
++#endif
++                                 ) {
+   HandleScope scope(isolate());
+   Handle<CompilationCacheTable> table = GetFirstTable();
+   SetFirstTable(CompilationCacheTable::PutScript(table, source, native_context,
+-                                                 language_mode, function_info));
++                                                 language_mode, function_info
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                                 , parent_script_id
++#endif
++                                                 ));
+ }
+ 
+ InfoCellPair CompilationCacheEval::Lookup(Handle<String> source,
+                                           Handle<SharedFunctionInfo> outer_info,
+                                           Handle<Context> native_context,
+                                           LanguageMode language_mode,
+-                                          int position) {
++                                          int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                          , int parent_script_id
++#endif
++                                          ) {
+   HandleScope scope(isolate());
+   // Make sure not to leak the table into the surrounding handle
+   // scope. Otherwise, we risk keeping old tables around even after
+@@ -195,7 +217,11 @@ InfoCellPair CompilationCacheEval::Lookup(Handle<String> source,
+   DCHECK_EQ(generations(), 1);
+   Handle<CompilationCacheTable> table = GetTable(generation);
+   result = CompilationCacheTable::LookupEval(
+-      table, source, outer_info, native_context, language_mode, position);
++      table, source, outer_info, native_context, language_mode, position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , parent_script_id
++#endif
++      );
+   if (result.has_shared()) {
+     isolate()->counters()->compilation_cache_hits()->Increment();
+   } else {
+@@ -209,12 +235,20 @@ void CompilationCacheEval::Put(Handle<String> source,
+                                Handle<SharedFunctionInfo> function_info,
+                                Handle<Context> native_context,
+                                Handle<FeedbackCell> feedback_cell,
+-                               int position) {
++                               int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++           , int parent_script_id
++#endif
++                               ) {
+   HandleScope scope(isolate());
+   Handle<CompilationCacheTable> table = GetFirstTable();
+   table =
+       CompilationCacheTable::PutEval(table, source, outer_info, function_info,
+-                                     native_context, feedback_cell, position);
++                                     native_context, feedback_cell, position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                     , parent_script_id
++#endif
++                                     );
+   SetFirstTable(table);
+ }
+ 
+@@ -265,18 +299,30 @@ void CompilationCache::Remove(Handle<SharedFunctionInfo> function_info) {
+ MaybeHandle<SharedFunctionInfo> CompilationCache::LookupScript(
+     Handle<String> source, MaybeHandle<Object> name, int line_offset,
+     int column_offset, ScriptOriginOptions resource_options,
+-    Handle<Context> native_context, LanguageMode language_mode) {
++    Handle<Context> native_context, LanguageMode language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    , int parent_script_id
++#endif
++    ) {
+   if (!IsEnabled()) return MaybeHandle<SharedFunctionInfo>();
+ 
+   return script_.Lookup(source, name, line_offset, column_offset,
+-                        resource_options, native_context, language_mode);
++                        resource_options, native_context, language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                        , parent_script_id
++#endif
++                        );
+ }
+ 
+ InfoCellPair CompilationCache::LookupEval(Handle<String> source,
+                                           Handle<SharedFunctionInfo> outer_info,
+                                           Handle<Context> context,
+                                           LanguageMode language_mode,
+-                                          int position) {
++                                          int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                          , int parent_script_id
++#endif
++                                          ) {
+   InfoCellPair result;
+   if (!IsEnabled()) return result;
+ 
+@@ -284,14 +330,22 @@ InfoCellPair CompilationCache::LookupEval(Handle<String> source,
+ 
+   if (context->IsNativeContext()) {
+     result = eval_global_.Lookup(source, outer_info, context, language_mode,
+-                                 position);
++                                 position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                 , parent_script_id
++#endif
++                                 );
+     cache_type = "eval-global";
+ 
+   } else {
+     DCHECK_NE(position, kNoSourcePosition);
+     Handle<Context> native_context(context->native_context(), isolate());
+     result = eval_contextual_.Lookup(source, outer_info, native_context,
+-                                     language_mode, position);
++                                     language_mode, position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                     , parent_script_id
++#endif
++                                     );
+     cache_type = "eval-contextual";
+   }
+ 
+@@ -312,11 +366,19 @@ MaybeHandle<FixedArray> CompilationCache::LookupRegExp(Handle<String> source,
+ void CompilationCache::PutScript(Handle<String> source,
+                                  Handle<Context> native_context,
+                                  LanguageMode language_mode,
+-                                 Handle<SharedFunctionInfo> function_info) {
++                                 Handle<SharedFunctionInfo> function_info
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                 , int parent_script_id
++#endif
++                                 ) {
+   if (!IsEnabled()) return;
+   LOG(isolate(), CompilationCacheEvent("put", "script", *function_info));
+ 
+-  script_.Put(source, native_context, language_mode, function_info);
++  script_.Put(source, native_context, language_mode, function_info
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++              , parent_script_id
++#endif
++              );
+ }
+ 
+ void CompilationCache::PutEval(Handle<String> source,
+@@ -324,20 +386,32 @@ void CompilationCache::PutEval(Handle<String> source,
+                                Handle<Context> context,
+                                Handle<SharedFunctionInfo> function_info,
+                                Handle<FeedbackCell> feedback_cell,
+-                               int position) {
++                               int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                               , int parent_script_id
++#endif
++                               ) {
+   if (!IsEnabled()) return;
+ 
+   const char* cache_type;
+   HandleScope scope(isolate());
+   if (context->IsNativeContext()) {
+     eval_global_.Put(source, outer_info, function_info, context, feedback_cell,
+-                     position);
++                     position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                     , parent_script_id
++#endif
++                     );
+     cache_type = "eval-global";
+   } else {
+     DCHECK_NE(position, kNoSourcePosition);
+     Handle<Context> native_context(context->native_context(), isolate());
+     eval_contextual_.Put(source, outer_info, function_info, native_context,
+-                         feedback_cell, position);
++                         feedback_cell, position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                         , parent_script_id
++#endif
++                         );
+     cache_type = "eval-contextual";
+   }
+   LOG(isolate(), CompilationCacheEvent("put", cache_type, *function_info));

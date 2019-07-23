@@ -1,0 +1,68 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
+index de0a0ca6f89d57403a13a24e3821dbb2558a5c68..f1aae20c0f512a3931146a6114fec9bf186fd69e 100644
+--- a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
++++ b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
+@@ -47,6 +47,8 @@
+ #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
+ #include "third_party/blink/renderer/platform/wtf/time.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ namespace {
+@@ -110,7 +112,11 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+     DCHECK(streamer->IsFinished());
+     DCHECK(!streamer->StreamingSuppressed());
+     return v8::ScriptCompiler::Compile(isolate->GetCurrentContext(),
+-                                       streamer->Source(), code, origin);
++                                       streamer->Source(), code, origin
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                       , source_code.ParentScriptId()
++#endif
++                                       );
+   }
+ 
+   // Allow inspector to use its own compilation cache store.
+@@ -118,7 +124,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+   probe::ConsumeCompilationCache(execution_context, source_code,
+                                  &inspector_data);
+   if (inspector_data) {
+-    v8::ScriptCompiler::Source source(code, origin, inspector_data);
++    v8::ScriptCompiler::Source source(code,
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                      v8::Integer::New(isolate,
++                                          source_code.ParentScriptId()),
++#endif
++                                      origin, inspector_data);
+     v8::MaybeLocal<v8::Script> script =
+         v8::ScriptCompiler::Compile(isolate->GetCurrentContext(), &source,
+                                     v8::ScriptCompiler::kConsumeCodeCache);
+@@ -128,7 +139,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+   switch (compile_options) {
+     case v8::ScriptCompiler::kNoCompileOptions:
+     case v8::ScriptCompiler::kEagerCompile: {
+-      v8::ScriptCompiler::Source source(code, origin);
++      v8::ScriptCompiler::Source source(code,
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                        v8::Integer::New(isolate,
++                                            source_code.ParentScriptId()),
++#endif
++                                        origin);
+       return v8::ScriptCompiler::Compile(isolate->GetCurrentContext(), &source,
+                                          compile_options, no_cache_reason);
+     }
+@@ -138,7 +154,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+       SingleCachedMetadataHandler* cache_handler = source_code.CacheHandler();
+       v8::ScriptCompiler::CachedData* cached_data =
+           V8CodeCache::CreateCachedData(cache_handler);
+-      v8::ScriptCompiler::Source source(code, origin, cached_data);
++      v8::ScriptCompiler::Source source(code,
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                        v8::Integer::New(isolate,
++                                            source_code.ParentScriptId()),
++#endif
++                                        origin, cached_data);
+       v8::MaybeLocal<v8::Script> script =
+           v8::ScriptCompiler::Compile(isolate->GetCurrentContext(), &source,
+                                       v8::ScriptCompiler::kConsumeCodeCache);

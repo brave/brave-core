@@ -1,0 +1,109 @@
+diff --git a/src/compilation-cache.h b/src/compilation-cache.h
+index a387c05cb61b43cf26e80602716af4efef954647..3858acbbd2e9d26d1b2e448197654a76db465190 100644
+--- a/src/compilation-cache.h
++++ b/src/compilation-cache.h
+@@ -8,6 +8,8 @@
+ #include "src/allocation.h"
+ #include "src/objects/compilation-cache.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -84,11 +86,19 @@ class CompilationCacheScript : public CompilationSubCache {
+                                          int line_offset, int column_offset,
+                                          ScriptOriginOptions resource_options,
+                                          Handle<Context> native_context,
+-                                         LanguageMode language_mode);
++                                         LanguageMode language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                         , int parent_script_id
++#endif
++                                         );
+ 
+   void Put(Handle<String> source, Handle<Context> context,
+            LanguageMode language_mode,
+-           Handle<SharedFunctionInfo> function_info);
++           Handle<SharedFunctionInfo> function_info
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++           , int parent_script_id
++#endif
++           );
+ 
+  private:
+   bool HasOrigin(Handle<SharedFunctionInfo> function_info,
+@@ -119,12 +129,20 @@ class CompilationCacheEval: public CompilationSubCache {
+   InfoCellPair Lookup(Handle<String> source,
+                       Handle<SharedFunctionInfo> outer_info,
+                       Handle<Context> native_context,
+-                      LanguageMode language_mode, int position);
++                      LanguageMode language_mode, int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                      , int parent_script_id
++#endif
++                      );
+ 
+   void Put(Handle<String> source, Handle<SharedFunctionInfo> outer_info,
+            Handle<SharedFunctionInfo> function_info,
+            Handle<Context> native_context, Handle<FeedbackCell> feedback_cell,
+-           int position);
++           int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++           , int parent_script_id
++#endif
++           );
+ 
+  private:
+   DISALLOW_IMPLICIT_CONSTRUCTORS(CompilationCacheEval);
+@@ -158,7 +176,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
+   MaybeHandle<SharedFunctionInfo> LookupScript(
+       Handle<String> source, MaybeHandle<Object> name, int line_offset,
+       int column_offset, ScriptOriginOptions resource_options,
+-      Handle<Context> native_context, LanguageMode language_mode);
++      Handle<Context> native_context, LanguageMode language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , int parent_script_id
++#endif
++      );
+ 
+   // Finds the shared function info for a source string for eval in a
+   // given context.  Returns an empty handle if the cache doesn't
+@@ -166,7 +188,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
+   InfoCellPair LookupEval(Handle<String> source,
+                           Handle<SharedFunctionInfo> outer_info,
+                           Handle<Context> context, LanguageMode language_mode,
+-                          int position);
++                          int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                          , int parent_script_id
++#endif
++                          );
+ 
+   // Returns the regexp data associated with the given regexp if it
+   // is in cache, otherwise an empty handle.
+@@ -177,14 +203,22 @@ class V8_EXPORT_PRIVATE CompilationCache {
+   // info. This may overwrite an existing mapping.
+   void PutScript(Handle<String> source, Handle<Context> native_context,
+                  LanguageMode language_mode,
+-                 Handle<SharedFunctionInfo> function_info);
++                 Handle<SharedFunctionInfo> function_info
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                 , int parent_script_id
++#endif
++                 );
+ 
+   // Associate the (source, context->closure()->shared(), kind) triple
+   // with the shared function info. This may overwrite an existing mapping.
+   void PutEval(Handle<String> source, Handle<SharedFunctionInfo> outer_info,
+                Handle<Context> context,
+                Handle<SharedFunctionInfo> function_info,
+-               Handle<FeedbackCell> feedback_cell, int position);
++               Handle<FeedbackCell> feedback_cell, int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++               , int parent_script_id
++#endif
++               );
+ 
+   // Associate the (source, flags) pair to the given regexp data.
+   // This may overwrite an existing mapping.

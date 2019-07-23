@@ -1,0 +1,63 @@
+diff --git a/src/objects/compilation-cache-inl.h b/src/objects/compilation-cache-inl.h
+index 18491118ad69e142ea0a32745466455feb564fef..1324ebc96dc7c99cb0ce9e42be3859953aa8e80f 100644
+--- a/src/objects/compilation-cache-inl.h
++++ b/src/objects/compilation-cache-inl.h
+@@ -16,6 +16,8 @@
+ // Has to be the last include (doesn't have include guards):
+ #include "src/objects/object-macros.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -34,7 +36,11 @@ uint32_t CompilationCacheShape::RegExpHash(String string, Smi flags) {
+ uint32_t CompilationCacheShape::StringSharedHash(String source,
+                                                  SharedFunctionInfo shared,
+                                                  LanguageMode language_mode,
+-                                                 int position) {
++                                                 int position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                                 , int parent_script_id
++#endif
++                                                 ) {
+   uint32_t hash = source->Hash();
+   if (shared->HasSourceCode()) {
+     // Instead of using the SharedFunctionInfo pointer in the hash
+@@ -48,6 +54,9 @@ uint32_t CompilationCacheShape::StringSharedHash(String source,
+     if (is_strict(language_mode)) hash ^= 0x8000;
+     hash += position;
+   }
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  hash += parent_script_id;
++#endif
+   return hash;
+ }
+ 
+@@ -57,14 +66,25 @@ uint32_t CompilationCacheShape::HashForObject(ReadOnlyRoots roots,
+ 
+   FixedArray val = FixedArray::cast(object);
+   if (val->map() == roots.fixed_cow_array_map()) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    DCHECK_EQ(5, val->length());
++#else
+     DCHECK_EQ(4, val->length());
++#endif
+     SharedFunctionInfo shared = SharedFunctionInfo::cast(val->get(0));
+     String source = String::cast(val->get(1));
+     int language_unchecked = Smi::ToInt(val->get(2));
+     DCHECK(is_valid_language_mode(language_unchecked));
+     LanguageMode language_mode = static_cast<LanguageMode>(language_unchecked);
+     int position = Smi::ToInt(val->get(3));
+-    return StringSharedHash(source, shared, language_mode, position);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    int parent_script_id = Smi::ToInt(val->get(4));
++#endif
++    return StringSharedHash(source, shared, language_mode, position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                            , parent_script_id
++#endif
++                            );
+   }
+   DCHECK_LT(2, val->length());
+   return RegExpHash(String::cast(val->get(JSRegExp::kSourceIndex)),
