@@ -5,6 +5,7 @@
 import rewardsPanelActions from './background/actions/rewardsPanelActions'
 
 import './background/store'
+import './background/twitterAuth'
 import './background/events/rewardsEvents'
 import './background/events/tabEvents'
 import batIconOn18Url from './img/rewards-on.png'
