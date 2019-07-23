@@ -12,8 +12,10 @@
   "permissions": [
     "storage",
     "tabs",
+    "webRequest",
     "chrome://favicon/*",
-    "https://www.twitch.tv/*"
+    "https://www.twitch.tv/*",
+    "https://*.twitter.com/*"
   ],
   "browser_action": {
     "default_popup": "brave_rewards_panel.html",
