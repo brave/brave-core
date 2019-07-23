@@ -8,6 +8,7 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 #include "base/macros.h"
 
@@ -61,6 +62,8 @@ extern const char kSyncApiVersion[];
 // The version of bookmarks state: 0,1,... .
 // Current to migrate to is 1.
 extern const char kSyncMigrateBookmarksVersion[];
+// Cached object_id list for unconfirmed records
+extern const char kSyncRecordsToResend[];
 
 class Prefs {
  public:
@@ -103,6 +106,10 @@ class Prefs {
 
   int GetMigratedBookmarksVersion();
   void SetMigratedBookmarksVersion(const int);
+
+  std::vector<std::string> GetRecordsToResend() const;
+  void AddToRecordsToResend(const std::string& object_id);
+  void RemoveFromRecordsToResend(const std::string& object_id);
 
   void Clear();
 

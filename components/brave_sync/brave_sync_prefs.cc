@@ -8,6 +8,7 @@
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/sync_devices.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 namespace brave_sync {
@@ -28,6 +29,7 @@ const char kSyncDeviceList[] = "brave_sync.device_list";
 const char kSyncApiVersion[] = "brave_sync.api_version";
 const char kSyncMigrateBookmarksVersion[]
                                        = "brave_sync.migrate_bookmarks_version";
+const char kSyncRecordsToResend[] = "brave_sync_records_to_resend";
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
@@ -50,6 +52,8 @@ void Prefs::RegisterProfilePrefs(
   registry->RegisterStringPref(prefs::kSyncDeviceList, std::string());
   registry->RegisterStringPref(prefs::kSyncApiVersion, std::string("0"));
   registry->RegisterIntegerPref(prefs::kSyncMigrateBookmarksVersion, 0);
+
+  registry->RegisterListPref(prefs::kSyncRecordsToResend);
 }
 
 std::string Prefs::GetSeed() const {
@@ -186,6 +190,24 @@ void Prefs::SetMigratedBookmarksVersion(const int migrate_bookmarks) {
   pref_service_->SetInteger(kSyncMigrateBookmarksVersion, migrate_bookmarks);
 }
 
+std::vector<std::string> Prefs::GetRecordsToResend() const {
+  std::vector<std::string> result;
+  const base::Value* records = pref_service_->GetList(kSyncRecordsToResend);
+  for (const base::Value& record : records->GetList()) {
+    result.push_back(record.GetString());
+  }
+  return result;
+}
+
+void Prefs::AddToRecordsToResend(const std::string& object_id) {
+  ListPrefUpdate update(pref_service_, kSyncRecordsToResend);
+  update->GetList().emplace_back(object_id);
+}
+void Prefs::RemoveFromRecordsToResend(const std::string& object_id) {
+  ListPrefUpdate update(pref_service_, kSyncRecordsToResend);
+  base::Erase(update->GetList(), base::Value(object_id));
+}
+
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncDeviceId);
   pref_service_->ClearPref(kSyncSeed);
@@ -200,6 +222,7 @@ void Prefs::Clear() {
   pref_service_->ClearPref(kSyncDeviceList);
   pref_service_->ClearPref(kSyncApiVersion);
   pref_service_->ClearPref(kSyncMigrateBookmarksVersion);
+  pref_service_->ClearPref(kSyncRecordsToResend);
 }
 
 }  // namespace prefs

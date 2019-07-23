@@ -105,11 +105,24 @@ const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
   return nullptr;
 }
 
+std::unique_ptr<SyncRecord> CreateDeleteBookmarkByObjectId(
+    const prefs::Prefs* brave_sync_prefs,
+    const std::string& object_id) {
+  auto record = std::make_unique<SyncRecord>();
+  record->deviceId = brave_sync_prefs->GetThisDeviceId();
+  record->objectData = jslib_const::SyncObjectData_BOOKMARK;
+  record->objectId = object_id;
+  record->action = jslib::SyncRecord::Action::A_DELETE;
+  record->syncTimestamp = base::Time::Now();
+  auto bookmark = std::make_unique<jslib::Bookmark>();
+  record->SetBookmark(std::move(bookmark));
+  return record;
+}
+
 std::unique_ptr<SyncRecord> BookmarkNodeToSyncBookmark(
     bookmarks::BookmarkModel* model,
-    prefs::Prefs* brave_sync_prefs,
-    const bookmarks::BookmarkNode* node,
-    const SyncRecord::Action& action) {
+    const prefs::Prefs* brave_sync_prefs,
+    const bookmarks::BookmarkNode* node) {
   if (node->is_permanent_node() || !node->parent())
     return std::unique_ptr<SyncRecord>();
 
@@ -155,32 +168,6 @@ std::unique_ptr<SyncRecord> BookmarkNodeToSyncBookmark(
 
   return record;
 }
-
-void CreateResolveList(
-    const std::vector<std::unique_ptr<SyncRecord>>& records,
-    SyncRecordAndExistingList* records_and_existing_objects,
-    bookmarks::BookmarkModel* model,
-    prefs::Prefs* brave_sync_prefs) {
-  const auto& this_device_id = brave_sync_prefs->GetThisDeviceId();
-  for (const auto& record : records) {
-    // Ignore records from ourselves to avoid mess on merge
-    if (record->deviceId == this_device_id) {
-      continue;
-    }
-    auto resolved_record = std::make_unique<SyncRecordAndExisting>();
-    resolved_record->first = SyncRecord::Clone(*record);
-    auto* node = FindByObjectId(model, record->objectId);
-    if (node) {
-      resolved_record->second = BookmarkNodeToSyncBookmark(model,
-                                                           brave_sync_prefs,
-                                                           node,
-                                                           record->action);
-    }
-
-    records_and_existing_objects->push_back(std::move(resolved_record));
-  }
-}
-
 
 void DoDispatchGetRecordsCallback(
     GetRecordsCallback cb,
@@ -252,9 +239,10 @@ void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(
       return;
     }
     SendAndPurgePendingRecords();
-    brave_sync_client_->SendSyncRecords(
-      jslib_const::SyncRecordType_BOOKMARKS, *records);
+    SendSyncRecords(
+      jslib_const::SyncRecordType_BOOKMARKS, std::move(records));
   }
+  ResendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS);
 }
 
 BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {}
@@ -545,9 +533,7 @@ void BraveProfileSyncServiceImpl::OnGetExistingObjects(
     auto records_and_existing_objects =
         std::make_unique<SyncRecordAndExistingList>();
     CreateResolveList(
-        *records.get(), records_and_existing_objects.get(),
-        model_,
-        brave_sync_prefs_.get());
+        *records.get(), records_and_existing_objects.get());
     brave_sync_client_->SendResolveSyncRecords(
         category_name, std::move(records_and_existing_objects));
   }
@@ -670,6 +656,28 @@ void BraveProfileSyncServiceImpl::SetPermanentNodesOrder(
   brave_sync_prefs_->SetMigratedBookmarksVersion(2);
 }
 
+void BraveProfileSyncServiceImpl::CreateResolveList(
+    const std::vector<std::unique_ptr<SyncRecord>>& records,
+    SyncRecordAndExistingList* records_and_existing_objects) {
+  const auto& this_device_id = brave_sync_prefs_->GetThisDeviceId();
+  for (const auto& record : records) {
+    // Ignore records from ourselves to avoid mess on merge
+    if (record->deviceId == this_device_id) {
+      // Remove Acked sent records
+      brave_sync_prefs_->RemoveFromRecordsToResend(record->objectId);
+      continue;
+    }
+    auto resolved_record = std::make_unique<SyncRecordAndExisting>();
+    resolved_record->first = SyncRecord::Clone(*record);
+    auto* node = FindByObjectId(model_, record->objectId);
+    if (node) {
+      resolved_record->second =
+        BookmarkNodeToSyncBookmark(model_, brave_sync_prefs_.get(), node);
+    }
+
+    records_and_existing_objects->push_back(std::move(resolved_record));
+  }
+}
 
 void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
                                           const bool history,
@@ -727,8 +735,8 @@ void BraveProfileSyncServiceImpl::SendDeviceSyncRecord(
       object_id,
       static_cast<SyncRecord::Action>(action),
       device_id);
-  brave_sync_client_->SendSyncRecords(
-      SyncRecordType_PREFERENCES, *records);
+  SendSyncRecords(
+      SyncRecordType_PREFERENCES, std::move(records));
 }
 
 void BraveProfileSyncServiceImpl::OnResolvedPreferences(
@@ -848,11 +856,45 @@ BraveSyncService* BraveProfileSyncServiceImpl::GetSyncService() const {
 }
 
 void BraveProfileSyncServiceImpl::SendAndPurgePendingRecords() {
-  for (const auto& records_to_send : pending_send_records_) {
-    brave_sync_client_->SendSyncRecords(
-        jslib_const::SyncRecordType_BOOKMARKS, *records_to_send);
+  for (auto& records_to_send : pending_send_records_) {
+    SendSyncRecords(
+        jslib_const::SyncRecordType_BOOKMARKS, std::move(records_to_send));
   }
   pending_send_records_.clear();
+}
+
+void BraveProfileSyncServiceImpl::SendSyncRecords(
+    const std::string& category_name,
+    RecordsListPtr records) {
+  brave_sync_client_->SendSyncRecords(category_name, *records);
+  if (category_name == kBookmarks) {
+    for (auto& record : *records) {
+      brave_sync_prefs_->AddToRecordsToResend(record->objectId);
+    }
+  }
+}
+
+void BraveProfileSyncServiceImpl::ResendSyncRecords(
+    const std::string& category_name) {
+  if (category_name == kBookmarks) {
+    RecordsListPtr records = std::make_unique<RecordsList>();
+    std::vector<std::string> records_to_resend =
+      brave_sync_prefs_->GetRecordsToResend();
+    if (records_to_resend.empty())
+      return;
+    for (auto& object_id : records_to_resend) {
+      auto* node = FindByObjectId(model_, object_id);
+      if (node) {
+        records->push_back(
+          BookmarkNodeToSyncBookmark(model_, brave_sync_prefs_.get(), node));
+      } else {
+        records->push_back(
+          CreateDeleteBookmarkByObjectId(brave_sync_prefs_.get(), object_id));
+      }
+    }
+    if (!records->empty())
+      brave_sync_client_->SendSyncRecords(category_name, *records);
+  }
 }
 
 }   // namespace brave_sync
