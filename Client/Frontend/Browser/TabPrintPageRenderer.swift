@@ -11,7 +11,9 @@ private struct PrintedPageUX {
 }
 
 class TabPrintPageRenderer: UIPrintPageRenderer {
-    fileprivate weak var tab: Tab?
+    private weak var tab: Tab?
+    private let displayTitle: String
+    
     let textAttributes = [NSAttributedString.Key.font: PrintedPageUX.PageTextFont]
     let dateString: String
 
@@ -20,6 +22,8 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
+        
+        self.displayTitle = tab.displayTitle
         self.dateString = dateFormatter.string(from: Date())
 
         super.init()
@@ -51,7 +55,7 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
         let headerRect = paperRect.inset(by: headerInsets)
 
         // page title on left
-        self.drawTextAtPoint(tab!.displayTitle, rect: headerRect, onLeft: true)
+        self.drawTextAtPoint(displayTitle, rect: headerRect, onLeft: true)
 
         // date on right
         self.drawTextAtPoint(dateString, rect: headerRect, onLeft: false)

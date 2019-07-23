@@ -268,7 +268,7 @@ extension BrowserViewController: WKNavigationDelegate {
         // shared to external applications later. Otherwise, clear the old temporary document.
         if let tab = tabManager[webView] {
             if response.mimeType?.isKindOfHTML == false, let request = request {
-                tab.temporaryDocument = TemporaryDocument(preflightResponse: response, request: request)
+                tab.temporaryDocument = TemporaryDocument(preflightResponse: response, request: request, tab: tab)
             } else {
                 tab.temporaryDocument = nil
             }
