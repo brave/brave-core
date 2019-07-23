@@ -79,9 +79,10 @@ public class BraveShieldsContentSettings {
         host = CutWwwPrefix(host);
         // TODO JavaScript for incognito profiles. Check that
         // https://github.com/brave/browser-android-tabs/commit/e1dd6f7797398155d640303e05241f9fb2b433f9#diff-e1d5c8c446116e371020d44baa09d09bR189
+        WebsitePreferenceBridge websitePreferenceBridge = new WebsitePreferenceBridge();
         List<ContentSettingException> exceptions = (incognitoTab) ?
-            WebsitePreferenceBridge.getContentSettingsExceptions(ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT) :
-            WebsitePreferenceBridge.getContentSettingsExceptions(ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT);
+            websitePreferenceBridge.getContentSettingsExceptions(ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT) :
+            websitePreferenceBridge.getContentSettingsExceptions(ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT);
 
         for (ContentSettingException exception : exceptions) {
             String pattern = exception.getPattern();
