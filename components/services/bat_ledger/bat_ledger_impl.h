@@ -113,7 +113,9 @@ class BatLedgerImpl : public mojom::BatLedger,
                    int32_t amount,
                    const std::string& currency) override;
 
-  void RemoveRecurringTip(const std::string& publisher_key) override;
+  void RemoveRecurringTip(
+      const std::string& publisher_key,
+      RemoveRecurringTipCallback callback) override;
   void GetBootStamp(GetBootStampCallback callback) override;
   void GetRewardsMainEnabled(
       GetRewardsMainEnabledCallback callback) override;
@@ -216,6 +218,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,
       ledger::PublisherBannerPtr banner);
+
+  static void OnRemoveRecurringTip(
+      CallbackHolder<RemoveRecurringTipCallback>* holder,
+      const ledger::Result result);
 
   static void OnGetTransactionHistory(
       CallbackHolder<GetTransactionHistoryCallback>* holder,

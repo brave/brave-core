@@ -300,10 +300,26 @@ void BatLedgerImpl::DoDirectTip(const std::string& publisher_id,
   ledger_->DoDirectTip(publisher_id, amount, currency);
 }
 
-void BatLedgerImpl::RemoveRecurringTip(const std::string& publisher_key) {
-  ledger_->RemoveRecurringTip(publisher_key);
+// static
+void BatLedgerImpl::OnRemoveRecurringTip(
+    CallbackHolder<RemoveRecurringTipCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
 }
 
+void BatLedgerImpl::RemoveRecurringTip(
+  const std::string& publisher_key,
+  RemoveRecurringTipCallback callback) {
+  auto* holder = new CallbackHolder<RemoveRecurringTipCallback>(
+            AsWeakPtr(), std::move(callback));
+  ledger_->RemoveRecurringTip(
+    publisher_key,
+    std::bind(BatLedgerImpl::OnRemoveRecurringTip, holder, _1));
+}
 
 void BatLedgerImpl::GetBootStamp(GetBootStampCallback callback) {
   std::move(callback).Run(ledger_->GetBootStamp());

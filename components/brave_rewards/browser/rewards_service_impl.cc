@@ -2371,11 +2371,24 @@ void RewardsServiceImpl::OnGetOneTimeTips(
   callback(std::move(list), 0);
 }
 
-void RewardsServiceImpl::RemoveRecurringTip(const std::string& publisher_key) {
-  if (!Connected())
-    return;
+void RewardsServiceImpl::OnRecurringTipUI(const int32_t result) {
+  bool success =
+    static_cast<ledger::Result>(result) == ledger::Result::LEDGER_OK;
+  for (auto& observer : observers_) {
+    observer.OnRecurringTipRemoved(this, success);
+  }
+}
 
-  bat_ledger_->RemoveRecurringTip(publisher_key);
+void RewardsServiceImpl::RemoveRecurringTipUI(
+    const std::string& publisher_key) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->RemoveRecurringTip(
+    publisher_key,
+    base::Bind(&RewardsServiceImpl::OnRecurringTipUI,
+               AsWeakPtr()));
 }
 
 bool RemoveRecurringTipOnFileTaskRunner(
@@ -2387,26 +2400,27 @@ bool RemoveRecurringTipOnFileTaskRunner(
   return backend->RemoveRecurringTip(publisher_key);
 }
 
-void RewardsServiceImpl::OnRemovedRecurringTip(
-    ledger::RecurringRemoveCallback callback, bool success) {
+void RewardsServiceImpl::OnRemoveRecurringTip(
+    ledger::RemoveRecurringTipCallback callback,
+    const bool success) {
   if (!Connected()) {
-    callback(success ?
-        ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+    return;
   }
 
-  for (auto& observer : observers_) {
-    observer.OnRecurringTipRemoved(this, success);
-  }
+  callback(success ?
+           ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
-void RewardsServiceImpl::OnRemoveRecurring(const std::string& publisher_key,
-    ledger::RecurringRemoveCallback callback) {
+void RewardsServiceImpl::RemoveRecurringTip(
+  const std::string& publisher_key,
+  ledger::RemoveRecurringTipCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&RemoveRecurringTipOnFileTaskRunner,
                     publisher_key,
                     publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnRemovedRecurringTip,
-                     AsWeakPtr(), callback));
+      base::Bind(&RewardsServiceImpl::OnRemoveRecurringTip,
+                 AsWeakPtr(),
+                 callback));
 }
 
 void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(

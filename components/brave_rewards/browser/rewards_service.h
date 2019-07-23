@@ -179,7 +179,7 @@ class RewardsService : public KeyedService {
                      bool recurring) = 0;
   virtual void OnTip(const std::string& publisher_key, int amount,
       bool recurring, std::unique_ptr<brave_rewards::ContentSite> site) = 0;
-  virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
+  virtual void RemoveRecurringTipUI(const std::string& publisher_key) = 0;
   virtual void GetRecurringTipsUI(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) = 0;
   virtual void SetContributionAutoInclude(

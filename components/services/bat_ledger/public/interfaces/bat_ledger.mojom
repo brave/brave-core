@@ -96,7 +96,7 @@ interface BatLedger {
               int32 amount,
               string currency);
 
-  RemoveRecurringTip(string publisher_key);
+  RemoveRecurringTip(string publisher_key) => (int32 result);
   GetBootStamp() => (uint64 boot_stamp);
   GetRewardsMainEnabled() => (bool main_enabled);
 
@@ -190,7 +190,7 @@ interface BatLedgerClient {
       uint32 next_record);
 
   LoadNicewareList() => (int32 result, string data);
-  OnRemoveRecurring(string publisher_key) => (int32 result);
+  RemoveRecurringTip(string publisher_key) => (int32 result);
 
   LoadURL(string url, array<string> headers, string content,
       string content_type, int32 method) => (int32 status_code, string response,

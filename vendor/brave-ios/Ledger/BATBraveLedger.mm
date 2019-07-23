@@ -444,7 +444,15 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)removeRecurringTipForPublisherWithId:(NSString *)publisherId
 {
-  ledger->RemoveRecurringTip(std::string(publisherId.UTF8String));
+  ledger->RemoveRecurringTip(std::string(publisherId.UTF8String), ^(ledger::Result result){
+    if (result == ledger::Result::LEDGER_OK) {
+      for (BATBraveLedgerObserver *observer in self.observers) {
+        if (observer.recurringTipRemoved) {
+          observer.recurringTipRemoved(publisherId);
+        }
+      }
+    }
+  });
 }
 
 - (void)listOneTimeTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion
@@ -1436,19 +1444,11 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)onRemoveRecurring:(const std::string &)publisher_key callback:(ledger::RecurringRemoveCallback)callback
+- (void)removeRecurringTip:(const std::string &)publisher_key callback:(ledger::RemoveRecurringTipCallback)callback
 {
   const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
   [BATLedgerDatabase removeRecurringTipWithPublisherID:publisherID completion:^(BOOL success) {
     callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-    
-    if (success) {
-      for (BATBraveLedgerObserver *observer in self.observers) {
-        if (observer.recurringTipRemoved) {
-          observer.recurringTipRemoved(publisherID);
-        }
-      }
-    }
   }];
 }
 

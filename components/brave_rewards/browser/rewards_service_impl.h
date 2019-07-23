@@ -172,7 +172,7 @@ class RewardsServiceImpl : public RewardsService,
                           GetPublisherBannerCallback callback) override;
   void OnPublisherBanner(GetPublisherBannerCallback callback,
                          ledger::PublisherBannerPtr banner);
-  void RemoveRecurringTip(const std::string& publisher_key) override;
+  void RemoveRecurringTipUI(const std::string& publisher_key) override;
   void OnGetRecurringTipsUI(
       GetRecurringTipsCallback callback,
       ledger::PublisherInfoList list);
@@ -346,10 +346,11 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoList list);
   void OnGetOneTimeTips(ledger::PublisherInfoListCallback callback,
                         ledger::PublisherInfoList list);
-  void OnRemovedRecurringTip(ledger::RecurringRemoveCallback callback,
-                          bool success);
-  void OnRemoveRecurring(const std::string& publisher_key,
-                         ledger::RecurringRemoveCallback callback) override;
+  void OnRecurringTipUI(const int32_t result);
+  void OnRemoveRecurringTip(ledger::RemoveRecurringTipCallback callback,
+                            const bool success);
+  void RemoveRecurringTip(const std::string& publisher_key,
+                         ledger::RemoveRecurringTipCallback callback) override;
   void TriggerOnGetCurrentBalanceReport(
       const ledger::BalanceReportInfo& report);
   void MaybeShowBackupNotification(uint64_t boot_stamp);

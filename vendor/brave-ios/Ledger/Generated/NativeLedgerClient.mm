@@ -95,8 +95,8 @@ void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::s
 void NativeLedgerClient::OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GrantPtr> grants) {
   [bridge_ onRecoverWallet:result balance:balance grants:std::move(grants)];
 }
-void NativeLedgerClient::OnRemoveRecurring(const std::string & publisher_key, ledger::RecurringRemoveCallback callback) {
-  [bridge_ onRemoveRecurring:publisher_key callback:callback];
+void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {
+  [bridge_ removeRecurringTip:publisher_key callback:callback];
 }
 void NativeLedgerClient::OnRestorePublishers(ledger::OnRestoreCallback callback) {
   [bridge_ onRestorePublishers:callback];
