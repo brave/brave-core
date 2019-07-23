@@ -19,6 +19,23 @@ window.requestAnimationFrame = function (cb: FrameRequestCallback) {
   return window.setTimeout(cb, 0)
 }
 
+window.loadTimeData = {
+  getString (key) {
+    return key
+  },
+  getBoolean () {
+    return true
+  },
+  getInteger () {
+    return 2
+  },
+  getStringF (key) {
+    return key
+  }
+}
+
+console.timeStamp = function (key: string) { return }
+
 if ((global as any).chrome === undefined) {
   (global as any).chrome = getMockChrome()
 }
