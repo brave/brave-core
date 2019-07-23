@@ -10,6 +10,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/client/bookmark_change_processor.h"
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
@@ -270,7 +271,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetClearMeta) {
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 
   EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
   EXPECT_TRUE(HasAnySyncMetaInfo(node_a));
@@ -309,7 +310,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetPreserveMeta) {
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 
   EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
   EXPECT_TRUE(HasAnySyncMetaInfo(node_a));
@@ -352,7 +353,7 @@ void BraveBookmarkChangeProcessorTest::BookmarkAddedImpl() {
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       ContainsRecord(SyncRecord::Action::A_CREATE, "https://a.com/"))).Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, BookmarkAdded) {
@@ -373,7 +374,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkDeleted) {
       ContainsRecord(SyncRecord::Action::A_DELETE, "https://a.com/"))).Times(1);
   model()->Remove(nodes.at(0));
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
   EXPECT_FALSE(GetDeletedNodeRoot()->IsVisible());
 }
 
@@ -392,7 +393,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkModified) {
           "https://a-m.com/"))).Times(1);
   model()->SetURL(nodes.at(0), GURL("https://a-m.com/"));
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
@@ -413,7 +414,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 
   EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
   EXPECT_TRUE(HasAnySyncMetaInfo(node_a));
@@ -438,7 +439,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
   // ignores order change untill unsynced_send_interval passes,
   // so here below unsynced_send_interval is 0
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(0));
+  change_processor()->SendUnsynced(/*base::TimeDelta::FromMinutes(0)*/);
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_MoveNodesBetweenDirs) {
@@ -469,7 +470,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_MoveNodesBetweenDirs) {
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       RecordsNumber(4))).Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, DeleteFolderWithNodes) {
@@ -492,12 +493,12 @@ TEST_F(BraveBookmarkChangeProcessorTest, DeleteFolderWithNodes) {
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       RecordsNumber(4))).Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 
   model()->Remove(folder1);
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 }
 
 // Another type of tests with `change_processor()->ApplyChangesFromSyncModel`
@@ -1324,7 +1325,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete) {
 
   // Expect there will be no calls, because no any records to send
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(0);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, IgnoreMetadataSet) {
@@ -1335,12 +1336,12 @@ TEST_F(BraveBookmarkChangeProcessorTest, IgnoreMetadataSet) {
                            GURL("https://a.com/"));
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 
   model()->SetNodeMetaInfo(node_a, "last_visited", "2019");
   // Not interested in metadata changes, expecting no calls
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(0);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, MigrateOrdersForPermanentNodes) {
@@ -1376,7 +1377,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, MigrateOrdersForPermanentNodes) {
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  change_processor()->SendUnsynced();
 
   std::string OB_order, BB_order;
   node_OB->GetMetaInfo("order", &OB_order);
@@ -1465,4 +1466,115 @@ TEST_F(BraveBookmarkChangeProcessorTest, SyncTimestampMetaUpdateWay) {
 
   EXPECT_EQ(node_b_sync_timestamp,
       std::to_string(timestamp_resolve.ToJsTime()));
+}
+
+namespace {
+
+size_t g_overridden_minutes = 0;
+std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForMinutes(
+    int overridden_minutes) {
+  g_overridden_minutes = overridden_minutes;
+  return std::make_unique<base::subtle::ScopedTimeClockOverrides>(
+    []() {
+     return base::subtle::TimeNowIgnoringOverride() +
+         base::TimeDelta::FromMinutes(g_overridden_minutes);
+    },
+    nullptr,
+    nullptr);
+}
+
+}  // namespace
+
+TEST_F(BraveBookmarkChangeProcessorTest, ExponentialResend) {
+  change_processor()->Start();
+  bookmarks::AddIfNotBookmarked(model(),
+                                 GURL("https://a.com/"),
+                                 base::ASCIIToUTF16("A.com"));
+
+  std::string send_retry_number;
+  GetSingleNodeByUrl(model(), "https://a.com/")->GetMetaInfo(
+     "send_retry_number", &send_retry_number);
+  EXPECT_TRUE(send_retry_number.empty());
+
+  int expected_send_retry_number = 0;
+
+  std::string record_a_object_id;
+
+  static const std::vector<int> exponential_waits =
+      brave_sync::BookmarkChangeProcessor::GetExponentialWaitsForTests();
+  const int max_send_retries = exponential_waits.size();
+  std::set<int> should_sent_at;
+  size_t current_sum = 0;
+  should_sent_at.insert(0);
+  for (size_t j = 0; j < exponential_waits.size(); ++j) {
+    current_sum += exponential_waits[j];
+    should_sent_at.insert(current_sum);
+  }
+  auto contains = [](const std::set<int>& set, int val) {
+    return set.find(val) != set.end();
+  };
+  // Following statemets are correct only if
+  // BookmarkChangeProcessor::kExponentialWaits is {10, 20, 40, 80}
+  EXPECT_TRUE(contains(should_sent_at, 0));
+  EXPECT_TRUE(contains(should_sent_at, 10));
+  EXPECT_TRUE(contains(should_sent_at, 30));
+  EXPECT_TRUE(contains(should_sent_at, 70));
+  EXPECT_TRUE(contains(should_sent_at, 150));
+  size_t i = 0;
+  for (; i <= 151; ++i) {
+    auto time_override = OverrideForMinutes(i);
+    bool is_send_expected = contains(should_sent_at, i);
+    int expect_call_times = is_send_expected ? 1 : 0;
+    EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(
+        expect_call_times);
+    EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(expect_call_times);
+    change_processor()->SendUnsynced();
+
+    if (is_send_expected) {
+      ++expected_send_retry_number;
+      if (expected_send_retry_number > max_send_retries)
+        expected_send_retry_number = max_send_retries;
+      send_retry_number.clear();
+      GetSingleNodeByUrl(model(), "https://a.com/")->GetMetaInfo(
+         "send_retry_number", &send_retry_number);
+      EXPECT_EQ(send_retry_number,
+          base::NumberToString(expected_send_retry_number));
+    }
+
+    // On first send object_id is assigned
+    if (i == 0) {
+      GetSingleNodeByUrl(model(), "https://a.com/")->GetMetaInfo(
+          "object_id", &record_a_object_id);
+      EXPECT_NE(record_a_object_id.length(), 0u);
+    }
+  }
+
+  // resolve to confirm records
+  RecordsList records_to_resolve;
+  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
+      SyncRecord::Action::A_CREATE,
+      record_a_object_id,
+      "https://a.com/",
+      "A.com",
+      "1.1.1.1", ""));
+  auto timestamp_resolve = base::Time::Now();
+  records_to_resolve.at(0)->syncTimestamp = timestamp_resolve;
+  brave_sync::SyncRecordAndExistingList records_and_existing_objects;
+  change_processor()->GetAllSyncData(records_to_resolve,
+                                                &records_and_existing_objects);
+
+  // Ensure "send_retry_number" metainfo is cleared
+  send_retry_number.clear();
+  GetSingleNodeByUrl(model(), "https://a.com/")->GetMetaInfo(
+      "send_retry_number", &send_retry_number);
+  EXPECT_TRUE(send_retry_number.empty());
+
+  // and now expect to see records never sent, because bookmark was comfirmed
+  // as seen on server and was not changed locally
+  for (; i <= 302; ++i) {
+    auto time_override = OverrideForMinutes(i);
+    EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(0);
+    EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(0);
+    change_processor()->SendUnsynced();
+  }
 }
