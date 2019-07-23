@@ -46,7 +46,7 @@ bool OnAllowAccessCookies(
     GURL url = request.url();
     GURL first_party = request.site_for_cookies();
     GURL tab_origin = GURL(request.network_isolation_key().ToString());
-    if (tab_origin.is_empty())
+    if (tab_origin.is_empty() && request.top_frame_origin().has_value())
       tab_origin = request.top_frame_origin()->GetURL();
     return
         cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin) &&

@@ -90,6 +90,22 @@ void BraveCookieSettings::GetCookieSetting(
     ContentSetting* cookie_setting) const {
   DCHECK(cookie_setting);
 
+  // copied from CookieSettings::GetCookieSetting
+  if (first_party_url.SchemeIs(kChromeUIScheme) &&
+      url.SchemeIsCryptographic()) {
+    *cookie_setting = CONTENT_SETTING_ALLOW;
+    return;
+  }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (url.SchemeIs(extension_scheme_) &&
+      first_party_url.SchemeIs(extension_scheme_)) {
+    *cookie_setting = CONTENT_SETTING_ALLOW;
+    return;
+  }
+#endif
+
+
   GURL main_frame_url =
       (tab_url == GURL("about:blank") || tab_url.is_empty() ? first_party_url
                                                             : tab_url);
