@@ -86,7 +86,8 @@ export function onSelectorReturned (response: any) {
 
   if (rule.selector && rule.selector.length > 0) {
     chrome.tabs.insertCSS({
-      code: `${rule.selector} {display: none;}`
+      code: `${rule.selector} {display: none !important;}`,
+      cssOrigin: 'user'
     })
     cosmeticFilterActions.siteCosmeticFilterAdded(rule.host, rule.selector)
   }

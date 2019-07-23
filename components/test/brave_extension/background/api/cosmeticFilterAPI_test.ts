@@ -208,7 +208,8 @@ describe('cosmeticFilterTestSuite', () => {
       })
       cosmeticFilterAPI.applySiteFilters('brave.com')
       expect(insertCSSStub.getCall(0).args[0]).toEqual({
-        code: `${ filter } {display: none;}`,
+        code: `${ filter } {display: none !important;}`,
+        cssOrigin: 'user',
         runAt: 'document_start'
       })
     })
@@ -220,11 +221,13 @@ describe('cosmeticFilterTestSuite', () => {
       })
       cosmeticFilterAPI.applySiteFilters('brave.com')
       expect(insertCSSStub.getCall(0).args[0]).toEqual({
-        code: `${ filter } {display: none;}`,
+        code: `${filter } {display: none !important;}`,
+        cssOrigin: 'user',
         runAt: 'document_start'
       })
       expect(insertCSSStub.getCall(1).args[0]).toEqual({
-        code: `${ filter2 } {display: none;}`,
+        code: `${ filter2 } {display: none !important;}`,
+        cssOrigin: 'user',
         runAt: 'document_start'
       })
 

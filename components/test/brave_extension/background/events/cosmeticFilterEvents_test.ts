@@ -148,7 +148,8 @@ describe('cosmeticFilterEvents events', () => {
           selectorToReturn = '#test_selector'
           cosmeticFilterEvents.onSelectorReturned(selectorToReturn)
           let returnObj = {
-            'code': '#test_selector {display: none;}'
+            'code': '#test_selector {display: none !important;}',
+            'cssOrigin': 'user'
           }
           expect(insertCssSpy).toBeCalledWith(returnObj)
         })
