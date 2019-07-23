@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
 #include "brave/components/brave_sync/client/bookmark_node.h"
@@ -366,6 +367,8 @@ void BookmarkChangeProcessor::BookmarkNodeChanged(BookmarkModel* model,
   model->DeleteNodeMetaInfo(node, "sync_timestamp");
   // also clear the last send time because this is a new change
   model->DeleteNodeMetaInfo(node, "last_send_time");
+  // restart resend exponential delays
+  model->DeleteNodeMetaInfo(node, "send_retry_number");
 
   model->SetNodeMetaInfo(node,
       "last_updated_time",
@@ -431,6 +434,7 @@ void BookmarkChangeProcessor::Reset(bool clear_meta_info) {
       bookmark_model_->DeleteNodeMetaInfo(node, "sync_timestamp");
       bookmark_model_->DeleteNodeMetaInfo(node, "last_send_time");
       bookmark_model_->DeleteNodeMetaInfo(node, "last_updated_time");
+      bookmark_model_->DeleteNodeMetaInfo(node, "send_retry_number");
     }
   }
 
@@ -781,6 +785,9 @@ void BookmarkChangeProcessor::GetAllSyncData(
       bookmark_model_->SetNodeMetaInfo(node,
           "sync_timestamp",
           std::to_string(record->syncTimestamp.ToJsTime()));
+
+      // got confirmation record had been reached server, no need to retry
+      bookmark_model_->DeleteNodeMetaInfo(node, "send_retry_number");
     }
 
     records_and_existing_objects->push_back(std::move(resolved_record));
@@ -909,8 +916,64 @@ void BookmarkChangeProcessor::MigrateOrders() {
   sync_prefs_->SetMigratedBookmarksVersion(1);
 }
 
-void BookmarkChangeProcessor::SendUnsynced(
-    base::TimeDelta unsynced_send_interval) {
+const std::vector<int>
+    BookmarkChangeProcessor::kExponentialWaits = {10, 20, 40, 80};
+const int BookmarkChangeProcessor::kMaxSendRetries =
+    BookmarkChangeProcessor::kExponentialWaits.size();
+
+namespace {
+
+int GetCurrentRetryNumber(const bookmarks::BookmarkNode* node) {
+  std::string send_retry_number;
+  node->GetMetaInfo("send_retry_number", &send_retry_number);
+  if (send_retry_number.empty()) {
+    return 0;
+  }
+  int retry_number = 0;
+  if (!base::StringToInt(send_retry_number, &retry_number)) {
+    return 0;
+  }
+  return retry_number;
+}
+
+}  // namespace
+
+// static
+std::vector<int> BookmarkChangeProcessor::GetExponentialWaitsForTests() {
+  return kExponentialWaits;
+}
+
+// static
+base::TimeDelta BookmarkChangeProcessor::GetRetryExponentialWaitAmount(
+    int retry_number) {
+  DCHECK_GE(retry_number, 1);
+  DCHECK_LE(retry_number, kMaxSendRetries);
+
+  // failsafe option
+  if (retry_number == 0) {
+    return base::TimeDelta::FromMinutes(0);
+  }
+
+  if (retry_number > kMaxSendRetries) {
+    retry_number = kMaxSendRetries;
+  }
+  return base::TimeDelta::FromMinutes(kExponentialWaits[retry_number - 1]);
+}
+
+// static
+void BookmarkChangeProcessor::SetCurrentRetryNumber(
+    bookmarks::BookmarkModel* model,
+    const bookmarks::BookmarkNode* node, int retry_number) {
+  if (retry_number > kMaxSendRetries) {
+    retry_number = kMaxSendRetries;
+  }
+  DCHECK_GE(retry_number, 1);
+  DCHECK_LE(retry_number, kMaxSendRetries);
+  model->SetNodeMetaInfo(node, "send_retry_number",
+      std::to_string(retry_number));
+}
+
+void BookmarkChangeProcessor::SendUnsynced() {
   MigrateOrders();
 
   std::vector<std::unique_ptr<jslib::SyncRecord>> records;
@@ -936,15 +999,18 @@ void BookmarkChangeProcessor::SendUnsynced(
 
       std::string last_send_time;
       node->GetMetaInfo("last_send_time", &last_send_time);
+      size_t current_retry_number = GetCurrentRetryNumber(node);
       if (!last_send_time.empty() &&
-          // don't send more often than unsynced_send_interval_
+          // don't send more often than |kExponentialWaits| requires
           (base::Time::Now() -
               base::Time::FromJsTime(std::stod(last_send_time))) <
-          unsynced_send_interval)
+          GetRetryExponentialWaitAmount(current_retry_number)) {
         continue;
+      }
 
       bookmark_model_->SetNodeMetaInfo(node,
           "last_send_time", std::to_string(base::Time::Now().ToJsTime()));
+      SetCurrentRetryNumber(bookmark_model_, node, current_retry_number + 1);
 
       auto record = BookmarkNodeToSyncBookmark(node);
       if (record)

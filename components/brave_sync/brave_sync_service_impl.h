@@ -203,9 +203,6 @@ class BraveSyncServiceImpl
 
   std::unique_ptr<base::RepeatingTimer> timer_;
 
-  // send unsynced records in batches
-  base::TimeDelta unsynced_send_interval_;
-
   // Registrar used to monitor the profile prefs.
   PrefChangeRegistrar profile_pref_change_registrar_;
 
