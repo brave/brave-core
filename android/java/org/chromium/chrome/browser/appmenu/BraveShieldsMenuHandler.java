@@ -249,6 +249,14 @@ public class BraveShieldsMenuHandler {
         }
     }
 
+    public void updateHost(String host) {
+        if (mAdapter == null) {
+            return;
+        }
+
+        mAdapter.updateHost(host);
+    }
+
     private void runMenuItemEnterAnimations() {
         mMenuItemEnterAnimator = new AnimatorSet();
         AnimatorSet.Builder builder = null;

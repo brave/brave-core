@@ -146,6 +146,10 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
         mTitle = title;
     }
 
+    public void updateHost(String host) {
+        mHost = host;
+    }
+
     @Override
     public boolean isEnabled(int position) {
         if (position >= 1 &&  position <= 8) {

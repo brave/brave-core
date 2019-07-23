@@ -138,6 +138,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                 if (mMainActivity.getActivityTab() == tab) {
                     try {
                         URL urlCheck = new URL(url);
+                        mBraveShieldsMenuHandler.updateHost(
+                            (new URL(urlCheck.getProtocol(), urlCheck.getHost(), "")).toString());
                         setBraveShieldsColor(tab.isIncognito(), urlCheck.getHost());
                     } catch (Exception e) {
                         setBraveShieldsBlackAndWhite();
@@ -171,7 +173,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           try {
               URL url = new URL(currentTab.getUrl());
               URL protocolHost = new URL(url.getProtocol(), url.getHost(), "");
-
               setBraveShieldsColor(currentTab.isIncognito(), protocolHost.toString());
               mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.isIncognito(), 
                 protocolHost.toString(), url.getHost(), currentTab.getId());
