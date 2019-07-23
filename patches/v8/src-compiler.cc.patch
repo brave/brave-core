@@ -16,3 +16,68 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..85b103cce5958d0bb13473c7d669f2ea
  namespace v8 {
  namespace internal {
  
+@@ -1910,7 +1942,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+     maybe_result = compilation_cache->LookupScript(
+         source, script_details.name_obj, script_details.line_offset,
+         script_details.column_offset, origin_options, isolate->native_context(),
+-        language_mode);
++        language_mode
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++        , script_details.parent_script_id
++#endif
++        );
+     if (!maybe_result.is_null()) {
+       compile_timer.set_hit_isolate_cache();
+     } else if (can_consume_code_cache) {
+@@ -1930,7 +1966,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+         is_compiled_scope = inner_result->is_compiled_scope();
+         DCHECK(is_compiled_scope.is_compiled());
+         compilation_cache->PutScript(source, isolate->native_context(),
+-                                     language_mode, inner_result);
++                                     language_mode, inner_result
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                     , script_details.parent_script_id
++#endif
++                                     );
+         Handle<Script> script(Script::cast(inner_result->script()), isolate);
+         maybe_result = inner_result;
+       } else {
+@@ -1958,7 +1998,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+     if (extension == nullptr && maybe_result.ToHandle(&result)) {
+       DCHECK(is_compiled_scope.is_compiled());
+       compilation_cache->PutScript(source, isolate->native_context(),
+-                                   language_mode, result);
++                                   language_mode, result
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                   , script_details.parent_script_id
++#endif
++                                   );
+     } else if (maybe_result.is_null() && natives != EXTENSION_CODE) {
+       isolate->ReportPendingMessages();
+     }
+@@ -2073,7 +2117,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
+       compilation_cache->LookupScript(
+           source, script_details.name_obj, script_details.line_offset,
+           script_details.column_offset, origin_options,
+-          isolate->native_context(), parse_info->language_mode());
++          isolate->native_context(), parse_info->language_mode()
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++          , script_details.parent_script_id
++#endif
++          );
+   if (!maybe_result.is_null()) {
+     compile_timer.set_hit_isolate_cache();
+   }
+@@ -2107,7 +2155,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
+     Handle<SharedFunctionInfo> result;
+     if (maybe_result.ToHandle(&result)) {
+       compilation_cache->PutScript(source, isolate->native_context(),
+-                                   parse_info->language_mode(), result);
++                                   parse_info->language_mode(), result
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                   , script_details.parent_script_id
++#endif
++                                   );
+     }
+   }
+ 
