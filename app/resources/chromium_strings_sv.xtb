@@ -3,6 +3,9 @@
 <translationbundle lang="sv">
 <translation id="5194812628624740897">Om du kopplar från <ph name="USERNAME"/> rensas din historik, dina bokmärken, dina inställningar och annan Brave-data som du har lagrat på enheten. Data som lagras i Brave Software-kontot rensas inte utan kan hanteras via <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software Översikt<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
+<translation id="2069994121511856876">Brave Nightly</translation>
+<translation id="4947625801334180582">Brave Beta</translation>
+<translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">Brave är en webbläsare som kör webbsidor och appar blixtsnabbt. Den är snabb, stabil och lätt att använda. Surfa säkrare med Braves skydd mot skadliga program och lösenordsfiske.</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave-logotyp</translation>
@@ -21,6 +24,8 @@
 <translation id="4651430425715739110">Upphovsrätt <ph name="YEAR"/> The Brave Authors. Med ensamrätt.</translation>
 <translation id="2310890394934209120">Brave OS fungerar tack vare <ph name="BEGIN_LINK_CROS_OSS"/>program med öppen källkod<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">Brave OS fungerar tack vare <ph name="BEGIN_LINK_CROS_OSS"/>program med öppen källkod<ph name="END_LINK_CROS_OSS"/>, liksom <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="8948097099929452692">Används inte i Brave. Platshållare för att hålla resursmappningar synkade.</translation>
+<translation id="5009217320733452434">Används inte i Brave. Platshållare för att hålla resursmappningar synkade. Förväntar ett argument: &lt;ph name="ARGUMENT"&gt;$1&lt;/ph&gt;.</translation>
 <translation id="6913582816347128893">Brave kanske inte fungerar ordentligt eftersom den inte längre stöds på Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Brave kanske inte fungerar ordentligt eftersom den inte längre stöds på Windows XP och Windows Vista</translation>
 <translation id="189297655255130768">Brave svarar inte. Vill du starta om?</translation>
@@ -76,13 +81,9 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="5874882355102994015">Brave kan inte visa förhandsgranskning av en utskrift när det inbyggda PDF-visningsprogrammet saknas.</translation>
 <translation id="8880183781256147665">Lägger till i Brave ...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> kan vara skadlig och har blockerats av Brave.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> kan vara skadlig och har blockerats av Brave. Du skyddas med Avancerat skydd.</translation>
 <translation id="9067428552314418522">Filen är farlig och har blockerats av Brave.</translation>
-<translation id="2938460345748897177">Filen är farlig och har blockerats av Brave. Du skyddas med Avancerat skydd.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> är skadlig och har blockerats av Brave.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> är skadlig och har blockerats av Brave. Du skyddas med Avancerat skydd.</translation>
 <translation id="89367911614620585">Filen kan vara farlig och har blockerats av Brave.</translation>
-<translation id="8943391224520748272">Filen kan vara farlig och har blockerats av Brave. Du skyddas med Avancerat skydd.</translation>
 <translation id="9183662282810237335">Vill du avsluta Brave ändå?</translation>
 <translation id="3834935463915107022">Vill du avsluta Brave ändå?</translation>
 <translation id="8797356639448065696">Brave körs i bakgrundsläge.</translation>
@@ -145,8 +146,6 @@ Om du loggar in ändå kommer information som bokmärken, historik och andra ins
 <translation id="6746636977031158624">Det gick inte att synkronisera data med Brave eftersom inloggningsuppgifterna för kontot är inaktuella.</translation>
 <translation id="2999152167963026588">Det gick inte att synkronisera data med Brave eftersom synkronisering inte är tillgängligt för domänen.</translation>
 <translation id="1459786048951724030">Det gick inte att synkronisera data med Brave OS på grund av ett inloggningsfel.</translation>
-<translation id="2887570477425111999">Spara information i Brave</translation>
-<translation id="193559141530782783">Brave sparar dina personliga uppgifter på ett säkert sätt så att du inte behöver ange dem på nytt.</translation>
 <translation id="663059986967017181">Kopierat till Brave</translation>
 <translation id="1457432835062259213">Startprogrammet för appar i Brave</translation>
 <translation id="82609232232243542">Logga in i Brave</translation>
@@ -181,10 +180,13 @@ Ytterligare anvisningar har skickats med e-post till dig på <ph name="ACCOUNT_E
 <translation id="2433912322225810055">Det styr också vilken sida som visas när du startar Brave eller söker i adressfältet.</translation>
 <translation id="2871190378186459992">Upptäck fantastiska appar, spel, tillägg och teman för Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="5846303060623790781">Brave Beta (mDNS-In)</translation>
+<translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
+<translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Regel som tillåter inkommande mDNS-trafik för Brave.</translation>
 <translation id="8207657266087451193">Om en bild inte har någon användbar beskrivning görs ett försök att beskriva den åt dig i Brave. Bilderna skickas till Brave Software så att beskrivningen kan genereras. Du kan när som helst inaktivera den här inställningen.</translation>
 <translation id="5499063270485366718">Om en bild inte har någon användbar beskrivning görs ett försök att beskriva den åt dig i Brave. Bilderna skickas till Brave Software så att beskrivningen kan genereras.</translation>
-<translation id="3870835867536344658">Detta använder samma stavningskontroll som Brave Software Sök. Text som du anger i webbläsaren skickas till Brave Software. Du kan när som helst ändra detta i inställningarna.</translation>
+<translation id="215320507915280336">Detta använder samma stavningskontroll som Brave Software Sök. Text som du skriver i webbläsaren skickas till Brave Software. Du kan när som helst ändra detta i inställningarna.</translation>
 <translation id="1807774211756215222">Öppna länken i en ny &amp;flik i Brave</translation>
 <translation id="4624945300945265642">Öppna länken i ett inko&amp;gnitofönster i Brave.</translation>
 <translation id="7863882214613921971">Öppna länken i en ny &amp;flik i Brave</translation>
@@ -195,6 +197,9 @@ Ytterligare anvisningar har skickats med e-post till dig på <ph name="ACCOUNT_E
 <translation id="2522086024276534909">Starta om Brave OS</translation>
 <translation id="8183252473547465084">Brave OS måste startas om för att uppdateringen ska börja gälla.</translation>
 <translation id="5895138241574237353">Starta om</translation>
+<translation id="8887390605192156061">Avsluta alla kopior av Brave.</translation>
+<translation id="1801551749768408825">Andra kopior av Brave körs. Stäng dem om du vill uppdatera.</translation>
+<translation id="2632141563911437138">Brave måste avslutas på datorn före uppdateringen. Detta kan leda till att andra användare som är inloggade på datorn förlorar ändringar som inte har sparats.</translation>
 <translation id="5875673934455379806">Installera om Brave</translation>
 <translation id="2097604701283463988">Den här versionen av Brave är inaktuell</translation>
 <translation id="5173820533850252773">Den här versionen av Brave är inaktuell</translation>
@@ -238,23 +243,17 @@ Ytterligare anvisningar har skickats med e-post till dig på <ph name="ACCOUNT_E
 <translation id="8933981935877469796">Välj <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Klicka på <ph name="BEGIN_BOLD"/>Byt ändå<ph name="END_BOLD"/> om det visas</translation>
 <translation id="3507835409099344374">Öppna aviseringsinställningarna för Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Det finns en uppdatering för Brave}=1{Det finns en uppdatering för Brave}other{Det finns en uppdatering för Brave sedan # dagar}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Det finns en uppdatering för Brave}=1{Det finns en uppdatering för Brave}other{Det finns en uppdatering för Brave sedan # dagar}}</translation>
 <translation id="720532315408041257">Administratören meddelar att du bör starta om Brave så att uppdateringen tillämpas</translation>
-<translation id="6639482638305253477">{0,plural, =1{Starta om Brave inom en dag}other{Starta om Brave inom # dagar}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Om en timme startas Brave om}other{Om # timmar startas Brave om}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Om en minut startas Brave om}other{Om # minuter startas Brave om}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave startas om nu}=1{Om en sekund startas Brave om}other{Om # sekunder startas Brave om}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Starta om Brave inom en dag}other{Starta om Brave inom # dagar}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Om en timme startas Brave om}other{Om # timmar startas Brave om}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Om en minut startas Brave om}other{Om # minuter startas Brave om}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave startas om nu}=1{Om en sekund startas Brave om}other{Om # sekunder startas Brave om}}</translation>
 <translation id="7595187113648413294">Administratören meddelar att du måste starta om Brave så att en uppdatering tillämpas</translation>
-<translation id="56801943271475640">{0,plural, =0{Det finns en uppdatering för Brave OS}=1{Det finns en uppdatering för Brave OS}other{Det finns en uppdatering för Brave OS sedan # dagar}}</translation>
-<translation id="5715362474140341294">Administratören meddelar att du bör starta om Brave OS så att uppdateringen tillämpas</translation>
-<translation id="8094834892392729950">{0,plural, =1{Starta om Brave OS inom en dag}other{Starta om Brave OS inom # dagar}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Om en timme startas Brave OS om}other{Om # timmar startas Brave OS om}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Om en minut startas Brave OS om}other{Om # minuter startas Brave OS om}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS startas om nu}=1{Om en sekund startas Brave OS om}other{Om # sekunder startas Brave OS om}}</translation>
-<translation id="8559452515617838628">Administratören meddelar att du måste starta om Brave OS så att en uppdatering tillämpas</translation>
 <translation id="3052349005266761501">Brave startas …</translation>
 <translation id="1197672524850678392">Det gick inte att starta Brave. Försök igen.</translation>
 <translation id="6040143037577758943">Stäng</translation>
+<translation id="5147525139567260139">Dela en flik i Brave</translation>
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="3262506503470845422">Få hjälp med Brave</translation>
 <translation id="1864557848095568223">Brave uppdateras</translation>

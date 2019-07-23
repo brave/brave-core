@@ -15,7 +15,7 @@
 
 #include "bat/ads/ads.h"
 #include "bat/ads/ad_info.h"
-#include "bat/ads/notification_result_type.h"
+#include "bat/ads/notification_event_type.h"
 #include "bat/ads/notification_info.h"
 
 #include "bat/ads/internal/ads_serve.h"
@@ -23,8 +23,10 @@
 #include "bat/ads/internal/event_type_destroy_info.h"
 #include "bat/ads/internal/event_type_focus_info.h"
 #include "bat/ads/internal/event_type_load_info.h"
+#include "bat/ads/internal/notification_result_type.h"
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/bundle.h"
+#include "bat/ads/internal/notifications.h"
 
 #include "bat/usermodel/user_model.h"
 
@@ -33,6 +35,7 @@ namespace ads {
 class Client;
 class Bundle;
 class AdsServe;
+class Notifications;
 
 class AdsImpl : public Ads {
  public:
@@ -41,15 +44,18 @@ class AdsImpl : public Ads {
 
   bool is_first_run_;
 
-  void Initialize() override;
-  void InitializeStep2();
-  void InitializeStep3();
-  void Deinitialize();
+  InitializeCallback initialize_callback_;
+  void Initialize(InitializeCallback callback) override;
+  void InitializeStep2(const Result result);
+  void InitializeStep3(const Result result);
+  void InitializeStep4(const Result result);
   bool IsInitialized();
+
+  void Shutdown(ShutdownCallback callback) override;
 
   void LoadUserModel();
   void OnUserModelLoaded(const Result result, const std::string& json);
-  void InitializeUserModel(const std::string& json);
+  void InitializeUserModel(const std::string& json, const std::string& region);
 
   bool IsMobile() const;
 
@@ -66,19 +72,37 @@ class AdsImpl : public Ads {
   void OnMediaStopped(const int32_t tab_id) override;
   bool IsMediaPlaying() const;
 
+  bool GetNotificationForId(
+      const std::string& id,
+      ads::NotificationInfo* notification) override;
+
+  void OnNotificationEvent(
+      const std::string& id,
+      const ads::NotificationEventType type) override;
+  void NotificationEventViewed(
+      const std::string& id,
+      const NotificationInfo& notification);
+  void NotificationEventClicked(
+      const std::string& id,
+      const NotificationInfo& notification);
+  void NotificationEventDismissed(
+      const std::string& id,
+      const NotificationInfo& notification);
+  void NotificationEventTimedOut(
+      const std::string& id,
+      const NotificationInfo& notification);
+
   int32_t last_shown_tab_id_;
   std::string last_shown_tab_url_;
   std::string previous_tab_url_;
-  void TabUpdated(
+  void OnTabUpdated(
       const int32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) override;
-  void TabClosed(const int32_t tab_id) override;
+  void OnTabClosed(const int32_t tab_id) override;
 
-  void RemoveAllHistory() override;
-
-  void ConfirmAdUUIDIfAdEnabled();
+  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
   void SetConfirmationsIsReady(const bool is_ready) override;
 
@@ -109,7 +133,13 @@ class AdsImpl : public Ads {
       const Result result,
       const std::string& category,
       const std::vector<AdInfo>& ads);
-  std::vector<AdInfo> GetUnseenAds(const std::vector<AdInfo>& ads);
+  std::vector<AdInfo> GetAvailableAds(const std::vector<AdInfo>& ads);
+
+  bool AdRespectsTotalMaxFrequencyCapping(const AdInfo& ad);
+  bool AdRespectsPerDayFrequencyCapping(const AdInfo& ad);
+  bool AdRespectsDailyCapFrequencyCapping(const AdInfo& ad);
+  std::deque<uint64_t> GetCreativeSetForId(const std::string& id);
+  std::deque<uint64_t> GetCampaignForId(const std::string& id);
   bool IsAdValid(const AdInfo& ad_info);
   NotificationInfo last_shown_notification_info_;
   bool ShowAd(const AdInfo& ad_info, const std::string& category);
@@ -118,6 +148,8 @@ class AdsImpl : public Ads {
       const uint64_t seconds_window,
       const uint64_t allowable_ad_count) const;
   bool IsAllowedToShowAds();
+  bool DoesHistoryRespectMinimumWaitTimeToShowAds();
+  bool DoesHistoryRespectAdsPerDayLimit();
 
   uint32_t collect_activity_timer_id_;
   void StartCollectingActivity(const uint64_t start_timer_in);
@@ -126,7 +158,7 @@ class AdsImpl : public Ads {
   bool IsCollectingActivity() const;
 
   uint32_t delivering_notifications_timer_id_;
-  void StartDeliveringNotifications(const uint64_t start_timer_in);
+  void StartDeliveringNotifications();
   void DeliverNotification();
   void StopDeliveringNotifications();
   bool IsDeliveringNotifications() const;
@@ -136,6 +168,7 @@ class AdsImpl : public Ads {
   void BundleUpdated();
 
   uint32_t sustained_ad_interaction_timer_id_;
+  std::string last_sustaining_ad_url_;
   void StartSustainingAdInteraction(const uint64_t start_timer_in);
   void SustainAdInteractionIfNeeded();
   void SustainAdInteraction();
@@ -147,11 +180,6 @@ class AdsImpl : public Ads {
   void OnTimer(const uint32_t timer_id) override;
 
   uint64_t next_easter_egg_timestamp_in_seconds_;
-  void GenerateAdReportingNotificationShownEvent(
-      const NotificationInfo& info) override;
-  void GenerateAdReportingNotificationResultEvent(
-      const NotificationInfo& info,
-      const NotificationResultInfoResultType type) override;
   void GenerateAdReportingConfirmationEvent(const NotificationInfo& info);
   void GenerateAdReportingLoadEvent(const LoadInfo& info);
   void GenerateAdReportingBackgroundEvent();
@@ -161,6 +189,11 @@ class AdsImpl : public Ads {
   void GenerateAdReportingFocusEvent(const FocusInfo& info);
   void GenerateAdReportingRestartEvent();
   void GenerateAdReportingSettingsEvent();
+  void GenerateAdReportingNotificationShownEvent(
+      const NotificationInfo& info);
+  void GenerateAdReportingNotificationResultEvent(
+      const NotificationInfo& info,
+      const NotificationResultInfoResultType type);
 
   bool IsNotificationFromSampleCatalog(const NotificationInfo& info) const;
 
@@ -170,6 +203,7 @@ class AdsImpl : public Ads {
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
+  std::unique_ptr<Notifications> notifications_;
   std::unique_ptr<usermodel::UserModel> user_model_;
 
  private:

@@ -85,10 +85,6 @@ window.cr.define('brave_rewards', function () {
     getActions().onReconcileStamp(stamp)
   }
 
-  function addresses (addresses: Record<Rewards.AddressesType, string>) {
-    getActions().onAddresses(addresses)
-  }
-
   function contributeList (list: Rewards.Publisher[]) {
     getActions().onContributeList(list)
   }
@@ -139,16 +135,12 @@ window.cr.define('brave_rewards', function () {
     getActions().onRewardsEnabled(enabled)
   }
 
-  function addressesForPaymentId (addresses: Record<Rewards.AddressesType, string>) {
-    getActions().onAddressesForPaymentId(addresses)
+  function transactionHistory (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) {
+    getActions().onTransactionHistory(data)
   }
 
-  function transactionHistoryForThisCycle (totalPages: number, estimatedEarnings: number) {
-    getActions().onTransactionHistoryForThisCycle(totalPages, estimatedEarnings)
-  }
-
-  function transactionHistoryForThisCycleChanged () {
-    getActions().onTransactionHistoryForThisCycleChanged()
+  function transactionHistoryChanged () {
+    getActions().onTransactionHistoryChanged()
   }
 
   function recurringTipSaved (success: boolean) {
@@ -178,6 +170,36 @@ window.cr.define('brave_rewards', function () {
     getActions().getContributeList()
   }
 
+  function balance (properties: {status: number, balance: Rewards.Balance}) {
+    getActions().onBalance(properties.status, properties.balance)
+  }
+
+  function reconcileComplete (properties: {category: number, result: number}) {
+    chrome.send('brave_rewards.getReconcileStamp')
+    getActions().getContributeList()
+    getActions().getBalance()
+    getActions().getWalletProperties()
+
+    // EXPIRED TOKEN
+    if (properties.result === 24) {
+      getActions().getExternalWallet('uphold')
+    }
+  }
+
+  function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
+    getActions().onExternalWallet(properties.result, properties.wallet)
+  }
+
+  function processRewardsPageUrl (data: Rewards.ProcessRewardsPageUrl) {
+    getActions().onProcessRewardsPageUrl(data)
+  }
+
+  function disconnectWallet (properties: {walletType: string, result: number}) {
+    if (properties.result === 0) {
+      getActions().getExternalWallet(properties.walletType)
+    }
+  }
+
   return {
     initialize,
     walletCreated,
@@ -189,7 +211,6 @@ window.cr.define('brave_rewards', function () {
     recoverWalletData,
     grantFinish,
     reconcileStamp,
-    addresses,
     contributeList,
     excludedList,
     balanceReports,
@@ -203,14 +224,18 @@ window.cr.define('brave_rewards', function () {
     pendingContributions,
     onPendingContributionSaved,
     rewardsEnabled,
-    addressesForPaymentId,
-    transactionHistoryForThisCycle,
-    transactionHistoryForThisCycleChanged,
+    transactionHistory,
+    transactionHistoryChanged,
     recurringTipSaved,
     recurringTipRemoved,
     onContributionSaved,
     onRemovePendingContribution,
-    excludedSiteChanged
+    excludedSiteChanged,
+    balance,
+    reconcileComplete,
+    externalWallet,
+    processRewardsPageUrl,
+    disconnectWallet
   }
 })
 

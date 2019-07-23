@@ -20,11 +20,10 @@ class LocaleHelperMac : public LocaleHelper {
   static LocaleHelperMac* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<LocaleHelperMac>;
-
   // LocaleHelper impl
   std::string GetLocale() const override;
 
+  friend struct base::DefaultSingletonTraits<LocaleHelperMac>;
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperMac);
 };
 

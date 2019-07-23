@@ -5,9 +5,9 @@
 chrome.test.runTests([
   function braveShieldsExtensionHasAccess() {
     if (chrome.braveShields) {
-      chrome.test.succeed();
-    } else {
       chrome.test.fail();
+    } else {
+      chrome.test.succeed();
     }
   },
 ]);

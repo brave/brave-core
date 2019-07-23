@@ -76,19 +76,19 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Reconocimiento de dispositivos de terceros bloqueado",
+    "message": "Reconocimiento del dispositivo de terceros bloqueado",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Reconocimiento de dispositivos bloqueado",
+    "message": "Intentos de reconocimiento del dispositivo bloqueados",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Reconocimiento de todos los dispositivos permitido",
+    "message": "Intentos de reconocimiento del dispositivo permitidos.",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Intentos de reconocimiento de dispositivos",
+    "message": "Intentos de reconocimiento del dispositivo",
     "description": "Message for the device recognition attempts blocked panel"
   },
   "scriptsOnThisSite": {
@@ -119,6 +119,18 @@
     "message": "Permitir",
     "description": "Message for the resources blocked *allow* option"
   },
+  "blockedOnce": {
+    "message": "Bloqueados una vez",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Permitidos una vez",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Permitir scripts una vez",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
   "cancel": {
     "message": "Cancelar",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
@@ -134,5 +146,17 @@
   "changeDefaults": {
     "message": "Cambiar los escudos globales por defecto",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "Bloquear elemento vía selector",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "Borra las reglas CSS para esta página",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "Borrar las reglas CSS para todas las páginas",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave Verificeret Udgiver",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Brave verificeret skaber",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "Bemærk",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "Nu kan du tjene ved at se reklamer.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Brave Ads er nu på markedet!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -237,14 +237,6 @@
     "message": "Træk BAT-Ikonet hen til ",
     "description": "Directs the user to drag the BAT icon"
   },
-  "captchaLuckyDay": {
-    "message": "Det er din heldige dag! ",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "captchaOnTheWay": {
-    "message": "Dit token-tilskud er på vej. ",
-    "description": "Cosmetic text indicating grant funds are on the way"
-  },
   "captchaProveHuman": {
     "message": "Bevis at du er et menneske! ",
     "description": "Cosmetic text for captcha prompt"
@@ -298,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Genopfrisk status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Dine annonceindtægter er tilgængelige.",
+    "message": "Dine bonusser fra annoncer er kommet!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +382,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "Dine månedlige drikkepenge er blevet behandlet!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "Bidrag & drikkepenge",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "Ved at klikke på \"Tilmeld Rewards\", erklærer du at du har læst og accepterer",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +398,69 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "Slå reklamer til",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "tjent på reklamer",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Giv drikkepenge til denne Tweet",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Donation",
+    "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "Beløn dette indlæg",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Donation",
+    "description": "Icon label for Reddit tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "Skaber $name$ verificeret for nylig",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "Du har afventende belønninger grundet utilstrækkelige midler",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Afventer bidrag",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "Det er din heldige dag! ",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "Dit token-tilskud er på vej. ",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "Gratis Token-Tilskud ",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Brave Ads-bonusser!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "Din bonustildeling fra Brave Ads er på vej.",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "Din Brave Ads token-tildeling",
+    "description": "Token title on success screen for ads"
   }
 }

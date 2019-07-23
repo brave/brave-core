@@ -1,0 +1,3 @@
+LIBRARY_SEARCH_PATHS = /usr/local/opt/llvm/lib
+HEADER_SEARCH_PATHS = /usr/local/opt/llvm/include
+OTHER_LDFLAGS = -lclang

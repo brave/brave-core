@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Rastreadores de terceros bloqueados",
+    "message": "Bloquear rastreadores entre sitios",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cookies de terceros bloqueadas",
+    "message": "Bloquear cookies entres sitios",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Reconocimiento de dispositivos de terceros bloqueado",
+    "message": "Bloquear reconocimiento de dispositivos entre sitios",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Reconocimiento de dispositivos bloqueado",
+    "message": "Bloquear intentos de reconocimiento de dispositivos",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "El reconocimiento de todos los dispositivos ha sido permitido",
+    "message": "Permitir todos los intentos de reconocimiento de dispositivos",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -119,6 +119,18 @@
     "message": "Permitir",
     "description": "Message for the resources blocked *allow* option"
   },
+  "blockedOnce": {
+    "message": "Bloqueado una vez",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Permitido una vez",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Permitir scripts una vez",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
   "cancel": {
     "message": "Cancelar",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
@@ -134,5 +146,17 @@
   "changeDefaults": {
     "message": "Cambiar valores predeterminados de los escudos globales",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "Bloquear elemento usando el selector",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "Borrar reglas de CSS en este sitio",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "Borrar reglas de CSS en todos los sitios",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

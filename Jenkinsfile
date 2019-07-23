@@ -3,17 +3,17 @@ pipeline {
         node { label "master" }
     }
     options {
-        // TODO: set max. no. of concurrent builds to 2
-        timeout(time: 8, unit: "HOURS")
+        timeout(time: 6, unit: "HOURS")
         timestamps()
     }
     parameters {
-        choice(name: "CHANNEL", choices: ["nightly", "dev", "beta", "release"], description: "")
         choice(name: "BUILD_TYPE", choices: ["Release", "Debug"], description: "")
+        choice(name: "CHANNEL", choices: ["nightly", "dev", "beta", "release"], description: "")
+        booleanParam(name: "OFFICIAL_BUILD", defaultValue: true, description: "")
+        booleanParam(name: "SKIP_SIGNING", defaultValue: false, description: "")
         booleanParam(name: "WIPE_WORKSPACE", defaultValue: false, description: "")
         booleanParam(name: "SKIP_INIT", defaultValue: false, description: "")
         booleanParam(name: "DISABLE_SCCACHE", defaultValue: false, description: "")
-        booleanParam(name: "SKIP_SIGNING", defaultValue: true, description: "")
         booleanParam(name: "DEBUG", defaultValue: false, description: "")
     }
     environment {
@@ -26,12 +26,13 @@ pipeline {
         stage("env") {
             steps {
                 script {
-                    CHANNEL = params.CHANNEL
                     BUILD_TYPE = params.BUILD_TYPE
+                    CHANNEL = params.CHANNEL
+                    OFFICIAL_BUILD = params.OFFICIAL_BUILD
+                    SKIP_SIGNING = params.SKIP_SIGNING
                     WIPE_WORKSPACE = params.WIPE_WORKSPACE
                     SKIP_INIT = params.SKIP_INIT
                     DISABLE_SCCACHE = params.DISABLE_SCCACHE
-                    SKIP_SIGNING = params.SKIP_SIGNING
                     DEBUG = params.DEBUG
                     SKIP = false
                     BRANCH = env.BRANCH_NAME
@@ -41,7 +42,7 @@ pipeline {
                         TARGET_BRANCH = env.CHANGE_TARGET
                         def prNumber = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0].number
                         def prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls/" + prNumber, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)
-                        SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equals("CI/Skip") }.equals(1)
+                        SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip") }.equals(1)
                     }
                     BRANCH_EXISTS_IN_BB = httpRequest(url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).status.equals(200)
                 }
@@ -51,7 +52,7 @@ pipeline {
             steps {
                 script {
                     if (SKIP) {
-                        echo "Aborting build as PR is in draft or has \"CI/Skip\" label"
+                        echo "Aborting build as PR is in draft or has \"CI/skip\" label"
                         stopCurrentBuild()
                     }
                     for (build in getBuilds()) {
@@ -99,7 +100,10 @@ pipeline {
                     cd brave-browser
                     git checkout -b ${BRANCH}
 
-                    echo "Pushing branch"
+                    echo "Creating CI branch"
+                    git commit --allow-empty -m "created CI branch"
+
+                    echo "Pushing"
                     git push ${BB_REPO}
                 """
             }
@@ -182,12 +186,13 @@ def startBraveBrowserBuild() {
     def prNumber = prDetails ? prDetails.number : ""
     def refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode(BRANCH, "UTF-8")
     params = [
-        string(name: "CHANNEL", value: CHANNEL),
         string(name: "BUILD_TYPE", value: BUILD_TYPE),
+        string(name: "CHANNEL", value: CHANNEL),
+        booleanParam(name: "OFFICIAL_BUILD", value: OFFICIAL_BUILD),
+        booleanParam(name: "SKIP_SIGNING", value: SKIP_SIGNING),
         booleanParam(name: "WIPE_WORKSPACE", value: WIPE_WORKSPACE),
         booleanParam(name: "SKIP_INIT", value: SKIP_INIT),
         booleanParam(name: "DISABLE_SCCACHE", value: DISABLE_SCCACHE),
-        booleanParam(name: "SKIP_SIGNING", value: SKIP_SIGNING),
         booleanParam(name: "DEBUG", value: DEBUG)
     ]
     currentBuild.result = build(job: "brave-browser-build-pr/" + refToBuild, parameters: params, propagate: false).result

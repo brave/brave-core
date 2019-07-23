@@ -118,7 +118,7 @@
             <span class="nav-item_text">[[settingsTitle]]</span>
           </a>
         </li>
-        <li class="nav-items_list-item" title="Brave Rewards">
+        <li class="nav-items_list-item" title="[[braveRewardsTitle]]">
           <a class$="nav-item [[getNavItemSelectedClassName('rewards')]]" href="chrome://rewards">
             <span class="nav-item_icon">
               <svg
@@ -126,7 +126,7 @@
                 <path fill-rule="evenodd" d="M13.595 12.065l-2.974-4.73V4.755l5.325 8.877-2.35-1.568zM7.063 13.11h5.846l1.897 1.265H4.85l2.214-1.265zm2.308-5.775l-2.96 4.708-2.15 1.228 5.11-8.515v2.579zm.625 1.355l1.994 3.17H8.002l1.994-3.17zm8.036 5.988l-7.5-12.5c-.02-.032-.046-.058-.071-.086a.616.616 0 0 0-.465-.217.617.617 0 0 0-.465.217c-.025.027-.052.053-.07.086l-7.5 12.5a.641.641 0 0 0-.067.156l-.002.011a.619.619 0 0 0-.008.256.606.606 0 0 0 .068.207l.001.002c.01.018.025.031.037.048.02.028.04.059.064.083.024.024.051.042.078.062.018.012.033.027.051.038.03.017.06.027.092.038.02.008.038.019.059.024a.652.652 0 0 0 .143.02l.019.002h15a.624.624 0 0 0 .536-.947z"/>
               </svg>
             </span>
-            <span class="nav-item_text">Brave Rewards</span>
+            <span class="nav-item_text">[[braveRewardsTitle]]</span>
           </a>
         </li>
         <li class="nav-items_list-item" title="[[historyTitle]]">
@@ -163,6 +163,20 @@
             <span class="nav-item_text">[[downloadsTitle]]</span>
           </a>
         </li>
+        <if expr="not is_official_build">
+          <li class="nav-items_list-item" title="[[walletsTitle]]">
+            <a class="nav-item" href="chrome://wallet">
+              <span class="nav-item_icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20">
+                  <path d="M5.139 5.91H3.403a.344.344 0 0 0-.347.34c0 .256.115.34.694.34h1.458a3.363 3.363 0 0 1-.07-.68zm.289-1.365A3.476 3.476 0 0 1 8.61 2.5c.98 0 1.89.402 2.536 1.08a3.508 3.508 0 0 1 1.63-.398c1.918 0 3.473 1.526 3.473 3.409 1.15 0 2.083.916 2.083 2.045v6.819c0 1.13-.932 2.045-2.083 2.045H3.75c-1.15 0-2.083-.916-2.083-2.045V6.59c0-.042.003-.083.01-.122a2.104 2.104 0 0 1-.01-.219c0-.941.777-1.705 1.736-1.705h2.025zM3.056 7.886v7.569c0 .376.31.681.694.681h12.5a.688.688 0 0 0 .694-.681V8.636a.688.688 0 0 0-.694-.681H3.75c-.25 0-.483-.024-.694-.069zm3.59-1.295h2.66c0-.81.287-1.554.768-2.139a2.098 2.098 0 0 0-1.463-.588c-1.15 0-2.083.915-2.083 2.045 0 .236.04.466.118.682zm8.215 0c0-1.13-.933-2.046-2.083-2.046-1.15 0-2.084.916-2.084 2.046h4.167zm-.694 6.818c-.767 0-1.39-.61-1.39-1.364 0-.753.623-1.363 1.39-1.363.767 0 1.389.61 1.389 1.363 0 .754-.622 1.364-1.39 1.364z"/>
+                </svg>
+              </span>
+              <span class="nav-item_text">[[walletsTitle]]</span>
+            </a>
+          </li>
+        </if>
       </ul>
       <template id="searchIf" is="dom-if" if="[[!noSearch]]">
         <br-toolbar-search-field id="search"

@@ -39,8 +39,17 @@ BundleStateDatabase::~BundleStateDatabase() {
 bool BundleStateDatabase::Init() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (initialized_)
+  auto db_path_exists = base::PathExists(db_path_);
+
+  if (initialized_ && db_path_exists)
     return true;
+
+  initialized_ = false;
+
+  if (db_.is_open()) {
+    db_.Close();
+    meta_table_.Reset();
+  }
 
   if (!db_.Open(db_path_))
     return false;

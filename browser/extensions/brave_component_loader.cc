@@ -17,11 +17,14 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/components_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/browser/extension_prefs.h"
+#include "extensions/browser/extension_registry.h"
+#include "extensions/browser/extension_system.h"
 
 namespace extensions {
 
@@ -49,8 +52,7 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
     const std::string& manifest) {
   Add(manifest, install_dir);
   if (allow_file_access) {
-    ExtensionPrefs::Get((content::BrowserContext *)profile_)->
-        SetAllowFileAccess(extension_id, true);
+    ExtensionPrefs::Get(profile_)->SetAllowFileAccess(extension_id, true);
   }
 }
 
@@ -106,6 +108,22 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
       brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
   }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  // If brave://wallet has been loaded at least once, then load it again.
+  if (ExtensionPrefs::Get(profile_)->
+      HasPrefForExtension(ethereum_remote_client_extension_id)) {
+    AddEthereumRemoteClientExtension();
+  }
+#endif
 }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+void BraveComponentLoader::AddEthereumRemoteClientExtension() {
+  AddExtension(ethereum_remote_client_extension_id,
+      ethereum_remote_client_extension_name,
+      ethereum_remote_client_extension_public_key);
+}
+#endif
 
 }  // namespace extensions

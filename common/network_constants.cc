@@ -32,12 +32,14 @@ const char kSafeBrowsingFileCheckPrefix[] = "https://sb-ssl.google.com/";
 const char kCRLSetPrefix1[] =
     "*://dl.google.com/release2/chrome_component/*crl-set*";
 const char kCRLSetPrefix2[] =
-    "*://*.gvt1.com/edgedl/release2/chrome_component/*crl-set*";
+    "*://*.gvt1.com/edgedl/release2/chrome_component/*";
 const char kCRLSetPrefix3[] =
     "*://www.google.com/dl/release2/chrome_component/*crl-set*";
 const char kCRLSetPrefix4[] =
     "*://storage.googleapis.com/update-delta/hfnkpimlhhgieaddgfemjhofmfblmnib"
     "/*crxd";
+const char kGoogleAnalyticsPattern[] =
+    "https://www.google-analytics.com/analytics.js";
 const char kGoogleTagManagerPattern[] =
     "https://www.googletagmanager.com/gtm.js";
 const char kGoogleTagServicesPattern[] =
@@ -53,6 +55,8 @@ const char kTwitterRedirectURL[] = "https://mobile.twitter.com/i/nojs_router*";
 const char kCookieHeader[] = "Cookie";
 // Intentional misspelling on referrer to match HTTP spec
 const char kRefererHeader[] = "Referer";
+const char kUserAgentHeader[] = "User-Agent";
+const char kBravePartnerHeader[] = "X-Brave-Partner";
 
 const char kBittorrentMimeType[] = "application/x-bittorrent";
 const char kOctetStreamMimeType[] = "application/octet-stream";

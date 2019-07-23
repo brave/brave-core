@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Tercih Ekle</translation>
 <translation id="7606029853066610626">Yer İşaretlerini Görüntüleyin ve Yönetin</translation>
 <translation id="5550994254534676787">Tarayıcı geçmişinizi görüntüleyin</translation>
+<translation id="1742484101357469636">Kontrol Paneli Ayarları</translation>
+<translation id="8320281346741574991">Arkaplan resmini göster</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="8730621377337864115">Bitti</translation>
 <translation id="6248988683584659830">Arama ayarları</translation>
@@ -41,6 +43,8 @@
 <translation id="8958799246752641148">Tor, hedefinize ulaşmadan önce tarayıcınızı birçok Tor sunucuları aracılığıyla yönlendirerek IP adresinizi ziyaret ettiğiniz sitelerden gizler. Bu bağlantılar şifrelenmiştir, bu yüzden İnternet Servis Sağlayıcınız veya işvereniniz de hangi siteyi ziyaret ettiğinizi göremez. Tor görüntülemeyi yavaşlatabilir ve bazı siteler tamamıyla çalışmayabilir.</translation>
 <translation id="520608572871993342">Özel Pencere kullanma Brave'in sadece sizin cihazınızdaki değişikliklerdir; başka birisinin hareketlerini değiştirmez. Tor, IP adresinizi ziyaret ettiğiniz sitelerden gizler ve siteleri İnternet Servis Sağlayıcınızdan ve işvereninizden gizler. {{ anahtar }} ile veya menüden Tor ile Özel Pencere Açın.</translation>
 <translation id="6975708438781948564">Brave'in Tor'u hakkında daha fazla bilgi edin</translation>
+<translation id="4272382368346338917">Ek Filtreler</translation>
+<translation id="8949292968394988358">Uyarı: Çok fazla filtre açmak performansı düşürecektir</translation>
 <translation id="1869685517625607604">Engellenen Toplam Reklam:</translation>
 <translation id="4673764878177947707">Özel Filtreler</translation>
 <translation id="8803682034537762884">Her satırda bir adet, Adblock Plus filtre sözdiziminde bir filtre tanımlanmıştır.</translation>
@@ -54,11 +58,14 @@
 <translation id="5633840519079139680">Brave, bilgisayarınızda yüklü diğer tarayıcılardan yer imleri ve ayarları içe aktararak olağan ortamınızı ayarlamanızı kolaylaştırır.</translation>
 <translation id="8275038454117074363">İçe aktar</translation>
 <translation id="5540323067375019678">Kalkanlarınızı yönetin</translation>
-<translation id="4755560456428781763">Brave kalkanları sizi internette gezinirken karşınıza çıkan istenmeyen reklamlar ve izleyicilerden korur. Belirli bir sitede gezerken sorunla karşılaşırsanız, araç çubuğundaki kalkanlar panelinden koruma seviyenizi ayarlayın.</translation>
+<translation id="3278033011827237847">Brave Shields ile tarama yaparken, gizliliği ihlal eden reklam ve iz sürücülere karşı korunun. Eğer bir site düzgün çalışmıyor gibiyse Shields'i "kapalı" olarak ayarlayın.</translation>
 <translation id="3366308997091824722">Kalkan Ayarları</translation>
-<translation id="3884404068544758153">Arama motorunuzu değiştirin</translation>
+<translation id="4764692524839457597">varsayılan</translation>
+<translation id="3108122610701115301">Varsayılan seç</translation>
+<translation id="2469440407442116729">Bir arama motoru seç</translation>
 <translation id="438216590634144114">Web’de adres çubuğundan arama yaparken varsayılan olarak kullanmak istediğiniz arama motorunu seçin.</translation>
-<translation id="8428213095426709021">Ayarlar</translation>
+<translation id="5804484488647369316">Varsayılan arama moturunu ayarla</translation>
+<translation id="4428458837269935199">Daha kişisel bir arama deneyimi için, DuckDuckGo'yu deneyin.</translation>
 <translation id="513635702954746724">Renk temanızı seçin</translation>
 <translation id="6842850080200126305">Ayarlar panelinden açık veya koyu renk seçeneğini seçerek araç çubuğunuzun rengini ayarlayın.</translation>
 <translation id="2801098717523961746">Temanızı seçin</translation>
@@ -68,8 +75,9 @@
 <translation id="5946611334574299206">Brave'de reklam izleyerek token kazanın. Gösterilen reklamlar, tarama alışkanlığınızdan esinlenilerek ilgi alanlarınıza göre temellendirilir. Hiçbir kişisel veri ya da tarama geçmişi tarayıcınızdan ayrılmaz.</translation>
 <translation id="6112368337882254910">Otomatik-Katkı</translation>
 <translation id="1527222983464337010">Yayıncıları ve içerik oluşturucularını desteklemenin otomatik bir yoludur. Aylık bir ödeme belirleyin ve normal olarak gezinin. Ziyaret ettiğiniz siteler, Brave tarafından ölçülen ilgilenme durumunuza dayanarak, katkılarınızı otomatik olarak alır.</translation>
-<translation id="8157096848242649588">Ödeme tarihi</translation>
-<translation id="5208388044986603165">Alınan reklam bildirimleri</translation>
+<translation id="20281847067919078">Beklemedeki tahmini ödüller</translation>
+<translation id="8593551638387217772">Sonraki ödeme tarihi</translation>
+<translation id="319209088187794725">Bu ay alınan reklam bildirimleri</translation>
 <translation id="4229016885653790965">Üzgünüz! Bölgenizde henüz reklamlar kullanılamıyor.</translation>
 <translation id="654711254769318398">Görüntülenen reklam sayfaları</translation>
 <translation id="2532127066761785857">Görüntülenen maksimum reklam sayısı</translation>
@@ -106,8 +114,9 @@
 <translation id="1199044745726588100">5 saniye</translation>
 <translation id="4045581694057451126">8 saniye</translation>
 <translation id="8610523985422563960">1 dakika</translation>
-<translation id="7521774480426463961">‘Like’ gönderileri üzerinde ipuçları vermeyi etkinleştir</translation>
+<translation id="9031738692126722094">Bu sitelerdeki içerik-seviyesi bahşişleri etkinleştir</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Mücevherleri bulduğunuz noktaya dokunun.</translation>
 <translation id="6135431587052937035">Favori sitelerinizi aylık tekrarlayan bağışlar ile destekleyin</translation>
@@ -128,6 +137,8 @@
 <translation id="7797604753681168055">Hemen kurtarın!</translation>
 <translation id="1184075897575325927">Üzgünüz, bu bağış zaten talep edilmiş görünüyor.</translation>
 <translation id="282693359045252357">Sonraki aylık bahşiş tarihi</translation>
+<translation id="6231182869178328516">Az önce Brave Tarayıcısı'nı kullanarak <ph name="NAME">$1<ex>user</ex></ph>'a bahşiş verdim. https://brave.com/tips 'ten göz at.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Tutar:</translation>
 <translation id="5923611424721173182">Mevcut Mutabakat</translation>
 <translation id="5457113250005438886">Geçersiz</translation>
@@ -150,6 +161,9 @@
 <translation id="4235360514405112390">Geçerli</translation>
 <translation id="2700943637868737038">İzleme Kimliği:</translation>
 <translation id="3576689061489548788">Cüzdan Ödeme Kimliği:</translation>
+<translation id="758790787422117549">Kişilik Kimliği</translation>
+<translation id="2223892939866251845">Kullanıcı kimliği</translation>
+<translation id="1642443162274867084">Cüzdan yaratıldı</translation>
 <translation id="5094577350232361255">hakkında</translation>
 <translation id="4918086044614829423">Kabul et</translation>
 <translation id="6832986780040139899">Brave Yazılım. Brave, Brave Yazılımın tescil edilmiş markasıdır. Site isimleri site sahibinin markası veya tescil edilmiş markası olabilir.</translation>
@@ -165,11 +179,16 @@
 <translation id="3671566813999349838">Miktar</translation>
 <translation id="3819257035322786455">Yedekle</translation>
 <translation id="1312977698678162065">Gizliliğinize saygılı ve alakalı reklamlar görüntüleyerek ödeme alın.</translation>
+<translation id="7655723274266132226">Şimdi reklam izleyerek kazanabilirsin.</translation>
+<translation id="2975780980638932742">Brave Reklamları geldi!</translation>
 <translation id="3361548743396744457">Favori sitelerinize yalnızca görüntüleyerek destek olun; veya istediğiniz zaman bir siteye bahşiş verin.</translation>
 <translation id="3333887201479867589">Brave Ödülleri</translation>
 <translation id="4493850495402472953">ve</translation>
 <translation id="8804164990146287819">Gizlilik Politikası</translation>
 <translation id="4281844954008187215">Kullanım Şartları</translation>
+<translation id="4405997465645469914">Brave Ödüllerini açarak, şunu okuduğunu ve kabul ettiğini belirtiyorsun:</translation>
+<translation id="8819542691525488940">‘Evet, varım!’'a tıklayarak, şunu okuduğunu ve kabul ettiğini belirtiyorsun:</translation>
+<translation id="8071424789698327147">‘Evet, hazırım!’'a tıklayarak, şunu okuduğunu ve kabul ettiğini belirtiyorsun:</translation>
 <translation id="7530570094705720669">Cüzdan oluşturmak</translation>
 <translation id="2105596359439030979">Dikkatiniz değerlidir. Gizliliğe saygılı reklamları görüntüleyerek para kazanın ve bunu yönlendirerek sevdiğiniz içerik oluşturucularını destekleyin.</translation>
 <translation id="516395624550019162">Evet, varım!</translation>
@@ -178,8 +197,6 @@
 <translation id="3825698830825612308">Brave Onaylı Yayıncılar</translation>
 <translation id="7658239707568436148">İptal</translation>
 <translation id="7262285991915892790">BAT İkonunu şunun üzerine sürükleyin:</translation>
-<translation id="2151535059686617995">Bugün senin’ şanslı günün!</translation>
-<translation id="6255773350565723852">Token bağışınız yolda.</translation>
 <translation id="7656781188259414093">hedef.</translation>
 <translation id="1555514580945108302">Hmm… Pek Sayılmaz. Tekrar Deneyin.</translation>
 <translation id="13853865024308201">Talep et</translation>
@@ -206,7 +223,7 @@
 <translation id="7277134233385925078">Aylık Bahşiş Belirle</translation>
 <translation id="8003573781961874199">PDF olarak indir</translation>
 <translation id="298067735430872465">Reklam Kazançları</translation>
-<translation id="3521361150443442734">Reklam kazançlarınız kullanılabilir.</translation>
+<translation id="2266556115441975588">Reklamlardan gelen ödülleriniz burada!</translation>
 <translation id="8764029012618014430">Bahşişlere İzin Ver</translation>
 <translation id="3412655388715513818">Bu siteyi hariç tut</translation>
 <translation id="418343137736963579">Otomatik Bağış'tan hariç tuttuğunuz toplam site sayısı:</translation>
@@ -264,6 +281,8 @@
 <translation id="194625454574835815">Yedekleme Anahtarı</translation>
 <translation id="6354568176665589146">Tekrar eden</translation>
 <translation id="7577100371127227294">Aylık Bahşişler</translation>
+<translation id="2391095793008133394">Gönderileri için {{ user }}'a bahşiş ver:</translation>
+<translation id="7557413530932469222">Gönderileri için {{ user }}'a bahşiş verin!</translation>
 <translation id="1110535155349301542">kaldır</translation>
 <translation id="8942997470474842562">#8217;Henüz katkı almak için kaydolmamış #8217; oluşturucular için {{ayrılmışMiktar}} BAT belirlediniz. Tarayıcınız, onlar doğrulayana veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam edecektir.</translation>
 <translation id="8759753423332885148">Daha fazla bilgi edinin.</translation>
@@ -272,8 +291,8 @@
 <translation id="3626186271103896082">Cüzdanınızın yedeğini alın</translation>
 <translation id="5717619667204259673">Bu kurtarma anahtarını güvenli bir yerde tutun.</translation>
 <translation id="4699702339303280827">Tarayıcınıza veya bilgisayarınıza bir şey olursa, cüzdanınızı geri almak için her zaman bu anahtarı kullanabilirsiniz. Ama onu koruduğunuzdan emin olun — bu anahtarı ele geçiren herhangi biri cüzdanınızı çalabilir. Muhtemelen en güvenilir olanı#8217; bir kağıda ya da önemli bilgileri sakladığınız herhangi bir yere yazmak olacaktır.</translation>
-<translation id="5759071143806884916">Bir bahşiş göndererek bu siteyi destekleyebilirsiniz. Bu’ mükemmel içerikler oluşturdukları için onlara teşekkür etmenin bir yolu. Onaylı içerik oluşturucuları her bir takvim ayının ilk haftasında bahşişleri için ödeme alırlar.</translation>
-<translation id="1704859330137112950">Dilerseniz, bu siteyi sürekli olarak desteklemek için aylık bahşiş planı belirleyebilirsiniz.</translation>
+<translation id="7354412786785889047">Bu içerik üreticisini bir bahşiş göndererek destekleyebilirsin. It’s, harika içerikler yaptıkları için onlara teşekkür etmenin bir yoludur. Doğrulanmış içerik üreticilerine, her takvim ayının ilk haftası içerisinde bahşişleri için ödeme yapılır.</translation>
+<translation id="3475063317678050010">İstersen, bu içerik üreticisini düzenli olarak desteklemek için aylık bahşiş planlayabilirsin.</translation>
 <translation id="3074127054582480056">Dikkat</translation>
 <translation id="822513417008209372">Şu anda destekliyorsunuz</translation>
 <translation id="5010112177773747965">onayınız olmadan.</translation>
@@ -300,8 +319,10 @@
 <translation id="259138486959961679">{{numItems}} birimin hepsini göster</translation>
 <translation id="7857284676033058221">{{numSites}} sitenin hepsini gör</translation>
 <translation id="3536298624341433814">Bahşişimi Gönder</translation>
+<translation id="8428213095426709021">Ayarlar</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">siteler</translation>
+<translation id="1834493631938747505">Bahşişinden başkalarına bahset.</translation>
 <translation id="8826007068782654809">Teşekkürler</translation>
 <translation id="6665366815203065060">Az önce bir ipucu gönderdiniz:</translation>
 <translation id="6432779622695508363">Beğenince bahşiş ver</translation>
@@ -312,8 +333,12 @@
 <translation id="4914597931214386232">Token Bağışları Talep Edildi</translation>
 <translation id="1634828734222219955">Toplam</translation>
 <translation id="3535654229833214438">İşlemler</translation>
+<translation id="3124090095880236567">Reklamları aç</translation>
 <translation id="8987812599455325915">Bu, hem reklamlara hem de otomatik katkılara olanak sağlar. Bunları her zaman ayrı ayrı açabilir veya kapatabilirsiniz.</translation>
 <translation id="1485484147452131556">Ödülleri Etkinleştir</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">\@{{ user }}'a tweeti için bahşiş gönder:</translation>
+<translation id="4242384385082203046">\@{{ user }}'a tweeti için bahşiş ver!</translation>
 <translation id="2448312741937722512">Tür</translation>
 <translation id="8772672608371898774">Brave Onaylı Yayıncı</translation>
 <translation id="5050370287908180130">Ayrıntılar için Aylık Bildirimi Görüntüle</translation>
@@ -336,6 +361,25 @@
 <translation id="6727483290601442544">Detayları Görüntüle</translation>
 <translation id="1988679729106502285">NOT:</translation>
 <translation id="5815103311506128988">Bu içerik oluşturucusu henüz Brave kullanıcılarının katkılarını almak için kaydolmadı. Tarayıcınız, onlar doğrulayana veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam edecektir.</translation>
+<translation id="4292832015778676417">reklamlardan kazanıldı</translation>
+<translation id="3197752845651180812">Bekleyen katkılar</translation>
+<translation id="3164105678355419142">Yinelenen bahşiş</translation>
+<translation id="2927922949538312364">Tek seferlik bahşiş</translation>
+<translation id="6964891561514920613">Tüm bekleyen katkıları göster</translation>
+<translation id="4346944508027912677">Şuna kadar beklemede:</translation>
+<translation id="7410549756000115387">Bekleyen katkı… yok</translation>
+<translation id="1963227389609234879">Tümünü Kaldır</translation>
+<translation id="1170315781901539495">Hariç Tutulan Siteler</translation>
+<translation id="5119190679543565400">Bu siteyi eski haline getir</translation>
+<translation id="9075700728717335924">Hariç tuttunuz</translation>
+<translation id="4862817811647633830">Auto-Contribute'ten siteler.</translation>
+<translation id="923467487918828349">Tümünü Göster</translation>
+<translation id="5471305206221894680">Desteklenen Siteler</translation>
+<translation id="2306169361186864012">Brave Ads Ödülleri!</translation>
+<translation id="3757873395477273033">Brave Ads'ten verilen ödülleriniz yolda.</translation>
+<translation id="8101881066646819737">Brave Ads Token'iniz Verildi</translation>
+<translation id="2151535059686617995">Bugün senin’ şanslı günün!</translation>
+<translation id="6255773350565723852">Token bağışınız yolda.</translation>
 <translation id="1181037720776840403">Kaldır</translation>
 <translation id="7885157704277298658">Kopyalandı!</translation>
 <translation id="5379640681913450928">Kelime Sayısı:</translation>
@@ -353,6 +397,7 @@
 <translation id="1061533051865606843">Yeni Cihaz Ekle</translation>
 <translation id="8780295742023331191">Sync Kodunu Görüntüle</translation>
 <translation id="1755198127524719638">Senkronizasyon Ayarları</translation>
+<translation id="7558480201297099157">Cihazlar arasında hangi bilgileri eşitlemek istediğini yönet. Bu ayarlar yalnızca bu cihazı etkiler.</translation>
 <translation id="8820817407110198400">Yer imleri</translation>
 <translation id="5591129654353352557">Kayıtlı Site Ayarları</translation>
 <translation id="7859704718976024901">Gözatma Geçmişi</translation>
@@ -380,6 +425,7 @@
 <translation id="5086223971958279691">Sync Chain Kodu</translation>
 <translation id="2899261497479389619">Hedef bilgisayarınızda, ayarlardan Brave Sync'e gidin ve düğmeye tıklayın.</translation>
 <translation id="4827439149833241990">“Bir Sync Kodum var”.</translation>
+<translation id="24067401253841795">Aşağıda gösterilen eşitleme zincir kod kelimelerini gir. Bu koda bir parola gibi yaklaş. Eğer biri onu ele geçirirse, eşitlenmiş verini okuyabilir ve değiştirebilir.</translation>
 <translation id="8914601399214979966">Bunun yerine benim kameramı kullan</translation>
 <translation id="3034163433136515805">QR Kodunu Görüntüle</translation>
 <translation id="5093410893656857925">Cihaz Türünü Seçin</translation>
@@ -392,4 +438,6 @@
 <translation id="8349682220522608879">Lütfen bir senkronizasyon kodu ekleyin.</translation>
 <translation id="1468095392829989299">Senkronizasyon sunucularıyla iletişim kurulamadı</translation>
 <translation id="1399673826422570698">Ağ sorunu yaşıyor olabilirsiniz veya Senkronizasyon sunucularında sorun olabilir.</translation>
+<translation id="5286379413446391050">Eşitleme sunucularına bağlanamadı</translation>
+<translation id="2410472020237369473">Bilgisayarının saati, yanlış zamana ya da bölgeye ayarlanmış olabilir. Saat ayarlarını kontrol et.</translation>
 </translationbundle>

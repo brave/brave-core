@@ -78,13 +78,9 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="5874882355102994015">Brave kann ohne den integrierten PDF-Viewer keine Druckvorschau anzeigen.</translation>
 <translation id="8880183781256147665">Wird zu Brave hinzugefügt...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> ist möglicherweise schädlich und wurde daher von Brave blockiert.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> ist eventuell schädlich und wurde von Brave blockiert. Sie werden durch das erweiterte Sicherheitsprogramm geschützt.</translation>
 <translation id="9067428552314418522">Diese Datei ist schädlich und wurde von Brave blockiert.</translation>
-<translation id="2938460345748897177">Diese Datei ist schädlich und wurde von Brave blockiert. Sie werden durch das erweiterte Sicherheitsprogramm geschützt.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> ist schädlich und wurde daher von Brave blockiert.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> ist schädlich und wurde von Brave blockiert. Sie werden durch das erweiterte Sicherheitsprogramm geschützt.</translation>
 <translation id="89367911614620585">Diese Datei ist eventuell schädlich und wurde von Brave blockiert.</translation>
-<translation id="8943391224520748272">Diese Datei ist eventuell schädlich und wurde von Brave blockiert. Sie werden durch das erweiterte Sicherheitsprogramm geschützt.</translation>
 <translation id="9183662282810237335">Brave trotzdem beenden?</translation>
 <translation id="3834935463915107022">Brave trotzdem beenden?</translation>
 <translation id="8797356639448065696">Brave wird im Hintergrundmodus ausgeführt.</translation>
@@ -147,8 +143,6 @@ Sollten Sie sich trotzdem anmelden, werden die Brave-Daten wie Lesezeichen, Verl
 <translation id="6746636977031158624">Brave OS konnte Ihre Daten nicht synchronisieren, da die Anmeldedaten Ihres Kontos veraltet sind.</translation>
 <translation id="2999152167963026588">Brave OS konnte Ihre Daten nicht synchronisieren, da die Synchronisierung für Ihre Domain nicht verfügbar ist.</translation>
 <translation id="1459786048951724030">Brave OS konnte Ihre Daten aufgrund eines Fehlers bei der Anmeldung nicht synchronisieren.</translation>
-<translation id="2887570477425111999">Details in Brave speichern</translation>
-<translation id="193559141530782783">Ihre personenbezogenen Daten werden von Brave sicher gespeichert. Dadurch brauchen Sie sie nicht noch einmal einzugeben.</translation>
 <translation id="663059986967017181">In Brave kopiert</translation>
 <translation id="1457432835062259213">Brave App Launcher</translation>
 <translation id="82609232232243542">In Brave anmelden</translation>
@@ -192,7 +186,7 @@ Weitere Informationen wurden per E-Mail an <ph name="ACCOUNT_EMAIL"/> gesendet.<
 <translation id="3856641371299712128">Eingehende Regel für Brave Dev um mDNS-Verkehr zu erlauben.</translation>
 <translation id="8207657266087451193">Wenn ein Bild keine brauchbare Beschreibung hat, versucht Brave, eine für Sie zu finden. Damit entsprechende Beschreibungen erstellt werden können, werden die Bilder an Brave Software gesendet. Sie können dies jederzeit in den Einstellungen deaktivieren.</translation>
 <translation id="5499063270485366718">Wenn ein Bild keine brauchbare Beschreibung hat, versucht Brave, eine für Sie zu finden. Damit entsprechende Beschreibungen erstellt werden können, werden die Bilder an Brave Software gesendet.</translation>
-<translation id="3870835867536344658">Es wird dieselbe Rechtschreibprüfung wie in der Brave Software-Suche verwendet. Der in den Browser eingegebene Text wird an Brave Software gesendet. Sie können dies jederzeit in den Einstellungen ändern.</translation>
+<translation id="215320507915280336">Es wird dieselbe Rechtschreibprüfung wie in der Brave Software-Suche verwendet. Der in den Browser eingegebene Text wird an Brave Software gesendet. Sie können dies jederzeit in den Einstellungen ändern.</translation>
 <translation id="1807774211756215222">Link in neuem Brave-Tab öffnen</translation>
 <translation id="4624945300945265642">Link in Brave-Inkognito-Fenster öffnen</translation>
 <translation id="7863882214613921971">Link in neuem Brave-Tab öffnen</translation>
@@ -203,6 +197,9 @@ Weitere Informationen wurden per E-Mail an <ph name="ACCOUNT_EMAIL"/> gesendet.<
 <translation id="2522086024276534909">Brave OS neu starten</translation>
 <translation id="8183252473547465084">Brave OS muss neu gestartet werden, um das Update zu übernehmen.</translation>
 <translation id="5895138241574237353">Neu starten</translation>
+<translation id="8887390605192156061">Alle Instanzen von Brave schließen.</translation>
+<translation id="1801551749768408825">Andere Instanzen von Brave sind noch aktiv. Bitte schließen Sie diese, um den Browser zu aktualisieren.</translation>
+<translation id="2632141563911437138">Zum Aktualisieren muss Brave auf diesem Computer geschlossen werden. Nicht gespeicherte Änderungen von anderen Nutzern, die auf diesem Computer angemeldet sind, gehen dann eventuell verloren.</translation>
 <translation id="5875673934455379806">Brave neu installieren</translation>
 <translation id="2097604701283463988">Brave ist veraltet.</translation>
 <translation id="5173820533850252773">Brave ist veraltet.</translation>
@@ -246,23 +243,17 @@ Weitere Informationen wurden per E-Mail an <ph name="ACCOUNT_EMAIL"/> gesendet.<
 <translation id="8933981935877469796">Wählen Sie <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/> aus</translation>
 <translation id="1585657529869845941">Klicken Sie auf <ph name="BEGIN_BOLD"/>Trotzdem wechseln<ph name="END_BOLD"/>, falls die Schaltfläche angezeigt wird</translation>
 <translation id="3507835409099344374">Zu Brave-Benachrichtigungseinstellungen wechseln</translation>
-<translation id="9118654140804842635">{0,plural, =0{Ein Brave-Update ist verfügbar}=1{Ein Brave-Update ist verfügbar}other{Ein Brave-Update steht seit # Tagen zur Verfügung}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Ein Brave-Update ist verfügbar}=1{Ein Brave-Update ist verfügbar}other{Ein Brave-Update ist seit # Tagen verfügbar}}</translation>
 <translation id="720532315408041257">Laut Ihrem Administrator sollten Sie Brave neu starten, um dieses Update durchzuführen</translation>
-<translation id="6639482638305253477">{0,plural, =1{Brave innerhalb eines Tages neu starten}other{Brave innerhalb von # Tagen neu starten}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave wird in einer Stunde neu gestartet}other{Brave wird in # Stunden neu gestartet}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave wird in 1 Minute neu gestartet}other{Brave wird in # Minuten neu gestartet}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave wird jetzt neu gestartet}=1{Brave wird in 1 Sekunde neu gestartet}other{Brave wird in # Sekunden neu gestartet}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Brave innerhalb eines Tages neu starten}other{Brave innerhalb von # Tagen neu starten}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave wird in einer Stunde neu gestartet}other{Brave wird in # Stunden neu gestartet}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave wird in einer Minute neu gestartet}other{Brave wird in # Minuten neu gestartet}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave wird jetzt neu gestartet}=1{Brave wird in einer Sekunde neu gestartet}other{Brave wird in # Sekunden neu gestartet}}</translation>
 <translation id="7595187113648413294">Laut Ihrem Administrator müssen Sie Brave neu starten, um ein Update durchzuführen</translation>
-<translation id="56801943271475640">{0,plural, =0{Ein Brave OS-Update ist verfügbar}=1{Ein Brave OS-Update ist verfügbar}other{Ein Brave OS-Update steht seit # Tagen zur Verfügung}}</translation>
-<translation id="5715362474140341294">Laut Ihrem Administrator müssen Sie Brave OS neu starten, um dieses Update durchzuführen</translation>
-<translation id="8094834892392729950">{0,plural, =1{Brave OS innerhalb eines Tages neu starten}other{Brave OS innerhalb von # Tagen neu starten}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS wird in einer Stunde neu gestartet}other{Brave OS wird in # Stunden neu gestartet}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS wird in 1 Minute neu gestartet}other{Brave OS wird in # Minuten neu gestartet}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS wird jetzt neu gestartet}=1{Brave OS wird in 1 Sekunde neu gestartet}other{Brave OS wird in # Sekunden neu gestartet}}</translation>
-<translation id="8559452515617838628">Laut Ihrem Administrator müssen Sie Brave OS neu starten, um ein Update durchzuführen</translation>
 <translation id="3052349005266761501">Brave wird gestartet…</translation>
 <translation id="1197672524850678392">Brave konnte nicht gestartet werden. Versuchen Sie es noch einmal.</translation>
 <translation id="6040143037577758943">Schließen</translation>
+<translation id="5147525139567260139">Brave-Tab freigeben</translation>
 <translation id="8541922081612557424">Über Brave</translation>
 <translation id="3262506503470845422">Hilfe für Brave aufrufen</translation>
 <translation id="1864557848095568223">Brave wird aktualisiert</translation>

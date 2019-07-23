@@ -1,0 +1,7 @@
+patches/ @bridiver
+chromium_src/ @bridiver
+script/build-bisect.py @bsclifton
+script/uplift.py @bsclifton
+vendor/brave-ios/ @kylehickinson
+/README.md @bsclifton
+Jenkinsfile @mihaiplesa

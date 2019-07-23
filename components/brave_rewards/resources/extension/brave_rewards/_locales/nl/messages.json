@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Uitgever geverifieerd door Brave",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Geverifieerde Brave-ontwikkelaar",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "Opgelet",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "U kunt nu verdienen door advertenties te bekijken.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Brave Ads is gearriveerd!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -237,14 +237,6 @@
     "message": "Sleep het BAT-pictogram naar de",
     "description": "Directs the user to drag the BAT icon"
   },
-  "captchaLuckyDay": {
-    "message": "Je hebt vandaag geluk!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "captchaOnTheWay": {
-    "message": "Je gift komt eraan.",
-    "description": "Cosmetic text indicating grant funds are on the way"
-  },
   "captchaProveHuman": {
     "message": "Bewijs dat je een mens bent!",
     "description": "Cosmetic text for captcha prompt"
@@ -298,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Status vernieuwen",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Je Advertentie inkomsten zijn beschikbaar.",
+    "message": "Uw beloningen uit Ads zijn binnen!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +382,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "Uw maandelijkse fooien zijn verwerkt!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "Bijdragen en fooien",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "Door te klikken op 'Beloningen voor lid worden' geeft u aan dat u het volgende hebt gelezen en ermee akkoord gaat:",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +398,69 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "Schakel advertenties in",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "verdiend ",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Geef deze tweet een fooi",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Tip",
+    "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "Geef deze post een fooi",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Tip",
+    "description": "Icon label for Reddit tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "Ontwikkelaar $name$ is recentelijk geverifieerd",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "U hebt openstaande fooien door ontoereikende fondsen",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Openstaande bijdrage",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "Je hebt vandaag geluk!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "Je gift komt eraan.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "Gratis gift",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Brave Ads-beloningen!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "Uw beloningstoelage van Brave Ads is onderweg.",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "Uw Brave Ads Token-toelage",
+    "description": "Token title on success screen for ads"
   }
 }

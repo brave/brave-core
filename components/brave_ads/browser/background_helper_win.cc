@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -13,9 +14,8 @@
 namespace brave_ads {
 
 BackgroundHelperWin::BackgroundHelperWin() {
-  singleton_hwnd_observer_.reset(
-      new gfx::SingletonHwndObserver(
-          base::Bind(&BackgroundHelperWin::OnWndProc, base::Unretained(this))));
+  singleton_hwnd_observer_.reset(new gfx::SingletonHwndObserver(
+      base::Bind(&BackgroundHelperWin::OnWndProc, base::Unretained(this))));
 }
 
 BackgroundHelperWin::~BackgroundHelperWin() {}
@@ -26,20 +26,24 @@ bool BackgroundHelperWin::IsForeground() const {
     return ::GetForegroundWindow() ==
         views::HWNDForNativeWindow(browser->window()->GetNativeWindow());
   }
+
   return false;
 }
 
-void BackgroundHelperWin::OnWndProc(HWND hwnd,
-                          UINT message,
-                          WPARAM wparam,
-                          LPARAM lparam) {
-  if (message != WM_ACTIVATEAPP)
+void BackgroundHelperWin::OnWndProc(
+    HWND hwnd,
+    UINT message,
+    WPARAM wparam,
+    LPARAM lparam) {
+  if (message != WM_ACTIVATEAPP) {
     return;
+  }
 
-  if((BOOL)wparam)
+  if ((BOOL)wparam) {
     TriggerOnForeground();
-  else
+  } else {
     TriggerOnBackground();
+  }
 }
 
 BackgroundHelperWin* BackgroundHelperWin::GetInstance() {

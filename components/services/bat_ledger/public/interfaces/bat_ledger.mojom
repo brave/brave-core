@@ -25,9 +25,10 @@ interface BatLedgerService {
 interface BatLedger {
   Initialize();
   CreateWallet();
-  FetchWalletProperties() => (int32 result, string wallet_info);
+  FetchWalletProperties() =>
+      (int32 result, ledger.mojom.WalletProperties properties);
 
-  GetAutoContributeProps() => (string props);
+  GetAutoContributeProps() => (ledger.mojom.AutoContributeProps props);
   GetPublisherMinVisitTime() => (uint64 min_visit_time);
   GetPublisherMinVisits() => (uint32 min_visits);
   GetPublisherAllowNonVerified() => (bool allowed);
@@ -35,19 +36,24 @@ interface BatLedger {
   GetAutoContribute() => (bool auto_contribute);
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
-  OnLoad(string visit_data, uint64 current_time);
+  OnLoad(ledger.mojom.VisitData visit_data, uint64 current_time);
   OnUnload(uint32 tab_id, uint64 current_time);
   OnShow(uint32 tab_id, uint64 current_time);
   OnHide(uint32 tab_id, uint64 current_time);
   OnForeground(uint32 tab_id, uint64 current_time);
   OnBackground(uint32 tab_id, uint64 current_time);
-  OnMediaStart(uint32 tab_id, uint64 current_time);
-  OnMediaStop(uint32 tab_id, uint64 current_time);
 
-  OnPostData(string url, string first_party_url, string referrer,
-             string post_data, string visit_data);
-  OnXHRLoad(uint32 tab_id, string url, map<string, string> parts,
-            string first_party_url, string referrer, string visit_data);
+  OnPostData(string url,
+             string first_party_url,
+             string referrer,
+             string post_data,
+             ledger.mojom.VisitData visit_data);
+  OnXHRLoad(uint32 tab_id,
+            string url,
+            map<string, string> parts,
+            string first_party_url,
+            string referrer,
+            ledger.mojom.VisitData visit_data);
 
   SetPublisherExclude(string publisher_key, int32 exclude);
   RestorePublishers();
@@ -57,16 +63,10 @@ interface BatLedger {
       int32 month, int32 year, uint32 data);
 
   FetchGrants(string lang, string payment_id);
-  GetGrantCaptcha(string promotion_id, string promotion_type);
+  GetGrantCaptcha(array<string> headers);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase);
   SolveGrantCaptcha(string solution, string promotionId);
-
-  GetAddresses(int32 current_country_code) => (map<string, string> addresses);
-  GetBATAddress() => (string address);
-  GetBTCAddress() => (string address);
-  GetETHAddress() => (string address);
-  GetLTCAddress() => (string address);
 
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
@@ -76,6 +76,7 @@ interface BatLedger {
   SetUserChangedContribution();
   SetContributionAmount(double amount);
   SetAutoContribute(bool enabled);
+  UpdateAdsRewards();
 
   OnTimer(uint32 timer_id);
 
@@ -84,10 +85,12 @@ interface BatLedger {
 
   IsWalletCreated() => (bool wallet_created);
 
-  GetPublisherActivityFromUrl(uint64 window_id, string visit_data,
+  GetPublisherActivityFromUrl(uint64 window_id,
+      ledger.mojom.VisitData visit_data,
       string publisher_blob);
   GetContributionAmount() => (double contribution_amount);
-  GetPublisherBanner(string publisher_id) => (string banner);
+  GetPublisherBanner(string publisher_id) =>
+      (ledger.mojom.PublisherBanner? banner);
 
   DoDirectTip(string publisher_id,
               int32 amount,
@@ -99,11 +102,9 @@ interface BatLedger {
 
   HasSufficientBalanceToReconcile() => (bool sufficient);
 
-  GetAddressesForPaymentId() => (map<string, string> addresses);
-
   SetCatalogIssuers(string info);
   ConfirmAd(string info);
-  GetTransactionHistoryForThisCycle() => (string transactions);
+  GetTransactionHistory() => (string transactions);
   GetRewardsInternalsInfo() => (string info);
 
   GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);
@@ -116,7 +117,7 @@ interface BatLedger {
       (uint32 result, ledger.mojom.PublisherInfo? info);
   RefreshPublisher(string publisher_key) => (bool verified);
 
-  StartAutoContribute();
+  StartMonthlyContribution();
 
   SaveMediaInfo(string type, map<string, string> args) => (int32 result,
         ledger.mojom.PublisherInfo? publisher_info);
@@ -136,6 +137,14 @@ interface BatLedger {
   RemoveAllPendingContributions() => (int32 result);
 
   GetPendingContributionsTotal() => (double amount);
+
+  FetchBalance() => (int32 result, ledger.mojom.Balance balance);
+
+  GetExternalWallet(string wallet_type) => (int32 result, ledger.mojom.ExternalWallet? wallet);
+
+  ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (int32 result, map<string, string> args);
+
+  DisconnectWallet(string wallet_type) => (int32 result);
 };
 
 interface BatLedgerClient {
@@ -149,13 +158,15 @@ interface BatLedgerClient {
   SavePublisherState(string publisher_state) => (int32 result);
   SavePublishersList(string publishers_list) => (int32 result);
 
-  OnWalletProperties(int32 result, string info);
-  OnGrant(int32 result, string grant);
+  OnWalletProperties(int32 result, ledger.mojom.WalletProperties? properties);
+  OnGrant(int32 result, ledger.mojom.Grant? grant);
   OnGrantCaptcha(string image, string hint);
-  OnRecoverWallet(int32 result, double balance, array<string> grants);
+  OnRecoverWallet(int32 result,
+                  double balance,
+                  array<ledger.mojom.Grant?> grants);
   OnReconcileComplete(int32 result, string viewing_id, int32 category,
       string probi);
-  OnGrantFinish(int32 result, string grant);
+  OnGrantFinish(int32 result, ledger.mojom.Grant? grant);
 
   SavePublisherInfo(ledger.mojom.PublisherInfo publisher_info) =>
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);
@@ -193,7 +204,6 @@ interface BatLedgerClient {
       string publisher_key, int32 category);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
   FetchGrants(string lang, string payment_id);
-  GetGrantCaptcha(string promotion_id, string promotion_type);
 
   [Sync]
   URIEncode(string value) => (string encoded_value);
@@ -216,6 +226,27 @@ interface BatLedgerClient {
   SaveState(string name, string value) => (int32 result);
   LoadState(string name) => (int32 result, string value);
   ResetState(string name) => (int32 result);
+
+  [Sync]
+  GetBooleanState(string name) => (bool value);
+  SetBooleanState(string name, bool value);
+  [Sync]
+  GetIntegerState(string name) => (int32 value);
+  SetIntegerState(string name, int32 value);
+  [Sync]
+  GetDoubleState(string name) => (double value);
+  SetDoubleState(string name, double value);
+  [Sync]
+  GetStringState(string name) => (string value);
+  SetStringState(string name, string value);
+  [Sync]
+  GetInt64State(string name) => (int64 value);
+  SetInt64State(string name, int64 value);
+  [Sync]
+  GetUint64State(string name) => (uint64 value);
+  SetUint64State(string name, uint64 value);
+  ClearState(string name);
+
   SetConfirmationsIsReady(bool is_ready);
   ConfirmationsTransactionHistoryDidChange();
 
@@ -228,6 +259,12 @@ interface BatLedgerClient {
 
   GetPendingContributionsTotal() => (double amount);
 
-  GetCountryCodes(array<string> countries) =>
-        (array<int32> limited_country_codes);
+  OnContributeUnverifiedPublishers(int32 result, string publisher_key,
+      string publisher_name);
+
+  GetExternalWallets() => (map<string, ledger.mojom.ExternalWallet?> wallets);
+
+  SaveExternalWallet(string wallet_type, ledger.mojom.ExternalWallet wallet);
+
+  ShowNotification(string type, array<string> args) => (int32 result);
 };

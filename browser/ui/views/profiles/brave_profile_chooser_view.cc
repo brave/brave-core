@@ -8,10 +8,8 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/grit/brave_generated_resources.h"
-#include "chrome/app/vector_icons/vector_icons.h"
+#include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/views/profiles/brave_profile_menu_view_helper.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profiles_state.h"
 #include "chrome/browser/profiles/profile_window.h"
@@ -19,11 +17,6 @@
 #include "chrome/browser/ui/views/profiles/badged_profile_photo.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/gfx/paint_vector_icon.h"
-
-namespace {
-constexpr int kIconSize = 16;
-}  // namespace
 
 void BraveProfileChooserView::ButtonPressed(views::Button* sender,
                                             const ui::Event& event) {
@@ -31,7 +24,7 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
     profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
   } else if (sender == users_button_ &&
              browser()->profile()->IsGuestSession()) {
-    if (browser()->profile()->IsTorProfile())
+    if (brave::IsTorProfile(browser()->profile()))
       profiles::CloseTorProfileWindows();
     else
       profiles::CloseGuestProfileWindows();
@@ -40,18 +33,11 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
   }
 }
 
-void BraveProfileChooserView::AddTorButton(
-    ProfileMenuViewBase::MenuItems* menu_items) {
-  if (!browser()->profile()->IsTorProfile() &&
-      !g_brave_browser_process->tor_client_updater()
-        ->GetExecutablePath().empty()) {
-    std::unique_ptr<HoverButton> tor_profile_button =
-        std::make_unique<HoverButton>(
-            this,
-            gfx::CreateVectorIcon(kLaunchIcon, kIconSize, gfx::kChromeIconGrey),
-            l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON));
-    tor_profile_button_ = tor_profile_button.get();
-    menu_items->push_back(std::move(tor_profile_button));
+void BraveProfileChooserView::AddTorButton() {
+  if (brave::ShouldShowTorProfileButton(browser()->profile())) {
+    tor_profile_button_ = CreateAndAddButton(
+        brave::CreateTorProfileButtonIcon(),
+        brave::CreateTorProfileButtonText());
   }
 }
 
@@ -74,12 +60,10 @@ void BraveProfileChooserView::AddDiceSyncErrorView(
     profile_name = profiles::GetAvatarNameForProfile(profile->GetPath());
   }
 
-  std::unique_ptr<HoverButton> current_profile = std::make_unique<HoverButton>(
-      this, std::move(current_profile_photo), profile_name, base::string16());
-  current_profile->SetAccessibleName(l10n_util::GetStringFUTF16(
-      IDS_PROFILES_EDIT_PROFILE_ACCESSIBLE_NAME, profile_name));
+  AddMenuGroup();
+  current_profile_card_ = CreateAndAddTitleCard(
+      std::move(current_profile_photo), profile_name, base::string16());
 
-  current_profile_card_ = current_profile.get();
-  menu_items.push_back(std::move(current_profile));
-  AddMenuItems(menu_items, true);
+  current_profile_card_->SetAccessibleName(l10n_util::GetStringFUTF16(
+      IDS_PROFILES_EDIT_PROFILE_ACCESSIBLE_NAME, profile_name));
 }

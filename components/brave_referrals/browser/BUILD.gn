@@ -20,6 +20,7 @@ source_set("browser") {
     deps += [
       "//base",
       "//brave/common",
+      "//brave/vendor/brave_base",
       "//chrome/common",
       "//components/prefs",
       "//content/public/browser",

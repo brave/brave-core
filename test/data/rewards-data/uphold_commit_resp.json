@@ -1,0 +1,87 @@
+{
+  "application": {
+    "name": "Uphold"
+  },
+  "createdAt": "2019-07-16T12:29:59.611Z",
+  "denomination": {
+    "pair": "BATBAT",
+    "rate": "1.00",
+    "amount": "0.05",
+    "currency": "BAT"
+  },
+  "fees": [],
+  "id": "e82795d1-8866-4e6f-8335-2f292ff70765",
+  "message": "3zsistemi.si",
+  "network": "uphold",
+  "normalized": [
+    {
+      "amount": "0.01",
+      "commission": "0.00",
+      "currency": "USD",
+      "fee": "0.00",
+      "rate": "0.23184",
+      "target": "origin"
+    }
+  ],
+  "params": {
+    "currency": "BAT",
+    "margin": "0.00",
+    "pair": "BATBAT",
+    "progress": "1",
+    "rate": "1.00",
+    "ttl": 3599989,
+    "type": "transfer"
+  },
+  "priority": "normal",
+  "reference": null,
+  "status": "completed",
+  "type": "transfer",
+  "origin": {
+    "amount": "0.05",
+    "base": "0.05",
+    "CardId": "c5fd7219-6586-4fe1-b947-0cbd25040ca8",
+    "commission": "0.00",
+    "currency": "BAT",
+    "description": "Brave Software International",
+    "fee": "0.00",
+    "isMember": true,
+    "node": {
+      "id": "c5fd7219-6586-4fe1-b947-0cbd25040ca8",
+      "type": "card",
+      "user": {
+        "id": "f5e37294-68f1-49ae-89e2-b24b64aedd37",
+        "username": "braveintl"
+      }
+    },
+    "rate": "1",
+    "sources": [
+      {
+        "id": "f7a8e0b6-4071-4bf4-a685-58681738d749",
+        "amount": "0.05"
+      }
+    ],
+    "type": "card",
+    "username": "braveintl"
+  },
+  "destination": {
+    "amount": "0.05",
+    "base": "0.05",
+    "CardId": "7ab330ae-b7a6-4845-8f07-baab68848e4e",
+    "commission": "0.00",
+    "currency": "BAT",
+    "description": "Brave Software International",
+    "fee": "0.00",
+    "isMember": true,
+    "node": {
+      "id": "7ab330ae-b7a6-4845-8f07-baab68848e4e",
+      "type": "card",
+      "user": {
+        "id": "f5e37294-68f1-49ae-89e2-b24b64aedd37",
+        "username": "braveintl"
+      }
+    },
+    "rate": "1",
+    "type": "card",
+    "username": "braveintl"
+  }
+}

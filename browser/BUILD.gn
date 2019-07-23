@@ -1,12 +1,21 @@
 import("//brave/build/config.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("browser_process") {
+  visibility = [
+    "//chrome/browser/*",
+    "//brave/browser/*",
+    "//brave:browser_dependencies",
+    "//brave/test:*"
+  ]
+
   sources = [
     "autocomplete/brave_autocomplete_provider_client.cc",
     "autocomplete/brave_autocomplete_provider_client.h",
@@ -54,9 +63,6 @@ source_set("browser_process") {
     "content_settings/brave_cookie_settings_factory.h",
     "geolocation/brave_geolocation_permission_context.cc",
     "geolocation/brave_geolocation_permission_context.h",
-    "mac/sparkle_glue.mm",
-    "mac/sparkle_glue.h",
-    "mac/su_updater.h",
     "metrics/metrics_reporting_util.cc",
     "metrics/metrics_reporting_util.h",
     "search_engines/guest_window_search_engine_provider_service.cc",
@@ -75,10 +81,20 @@ source_set("browser_process") {
     "update_util.h",
   ]
 
+  if (enable_sparkle) {
+    sources += [
+      "mac/sparkle_glue.mm",
+      "mac/sparkle_glue.h",
+      "mac/su_updater.h",
+    ]
+  }
+
   deps = [
+    ":sparkle_buildflags",
     ":version_info",
     "autoplay",
     "download",
+    "greaselion",
     "net",
     "permissions",
     "profiles",
@@ -91,19 +107,21 @@ source_set("browser_process") {
     "//brave/common",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_drm",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/browser",
-    "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/brave_sync",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/greaselion/browser",
     "//brave/components/resources",
     "//brave/components/services:brave_content_manifest_overlays",
     "//chrome/common",
     "//components/autofill/core/common",
     "//components/browsing_data/core",
     "//components/component_updater",
+    "//components/content_settings/core/common",
     "//components/password_manager/core/common",
     "//components/prefs",
     "//components/safe_browsing/common:safe_browsing_prefs",
@@ -124,6 +142,8 @@ source_set("browser_process") {
 
   if (!is_android) {
     sources += [
+      "brave_rewards/rewards_tab_helper.cc",
+      "brave_rewards/rewards_tab_helper.h",
       "brave_rewards/tip_dialog.cc",
       "brave_rewards/tip_dialog.h",
     ]
@@ -134,8 +154,20 @@ source_set("browser_process") {
     ]
   }
 
+  if (brave_wallet_enabled) {
+    sources += [
+      "brave_wallet/brave_wallet_utils.cc",
+      "brave_wallet/brave_wallet_utils.h",
+      "brave_wallet/wallet_installation_permission_request.cc",
+      "brave_wallet/wallet_installation_permission_request.h",
+    ]
+  }
+
   if (enable_tor) {
-    deps += [ "tor" ]
+    deps += [
+      "//brave/components/services/tor/public/cpp:manifest",
+      "tor",
+    ]
   }
 
   if (enable_extensions) {
@@ -144,7 +176,14 @@ source_set("browser_process") {
 
   if (brave_ads_enabled) {
     deps += [
+      "//brave/components/services/bat_ads/public/cpp:manifest",
       "//components/dom_distiller/core",
+    ]
+  }
+
+  if (brave_rewards_enabled) {
+    deps += [
+      "//brave/components/services/bat_ledger/public/cpp:manifest",
     ]
   }
 
@@ -173,6 +212,13 @@ source_set("browser_process") {
   }
 }
 
+buildflag_header("sparkle_buildflags") {
+  header = "sparkle_buildflags.h"
+  flags = [
+    "ENABLE_SPARKLE=$enable_sparkle",
+  ]
+}
+
 source_set("version_info") {
   # these are only for version_info.cc and should not be exposed as public configs
   configs += [ "//brave/build:version" ]
@@ -187,10 +233,17 @@ source_set("version_info") {
 }
 
 source_set("browser") {
+  visibility = [
+    "//chrome/browser/*",
+    "//brave/browser/*",
+    "//brave:browser_dependencies",
+    "//brave/test:*"
+  ]
+
   deps = [
     "//chrome/browser",
   ]
-  if (is_mac) {
+  if (enable_sparkle) {
     deps += [
       "//brave/vendor/sparkle:sparkle_framework_bundle_data"
     ]

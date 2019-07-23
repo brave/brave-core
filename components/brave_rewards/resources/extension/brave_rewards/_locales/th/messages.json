@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "ผู้เผยแพร่ที่ได้รับการยืนยันแล้วของ Brave ",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "ผู้สร้าง Brave ที่ยืนยันแล้ว",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "โปรดระวัง",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "รับรางวัลด้วยการชมโฆษณาได้แล้วตอนนี้",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Brave Ads มาแล้ว!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -237,14 +237,6 @@
     "message": "ลากไอคอน BAT ไปยัง",
     "description": "Directs the user to drag the BAT icon"
   },
-  "captchaLuckyDay": {
-    "message": "วันนี้คุณมีโชค!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "captchaOnTheWay": {
-    "message": "โทเค็นเงินบริจาคกำลังจะไปถึงคุณแล้ว",
-    "description": "Cosmetic text indicating grant funds are on the way"
-  },
   "captchaProveHuman": {
     "message": "พิสูจน์ว่าคุณเป็นมนุษย์!",
     "description": "Cosmetic text for captcha prompt"
@@ -298,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "รีเฟรชสถานะ",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "รายได้จากโฆษณาของคุณพร้อมใช้แล้ว",
+    "message": "รางวัลของคุณจาก Ads อยู่นี่แล้ว!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +382,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "ทิปประจำเดือนได้รับการดำเนินการแล้ว!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "การบริจาคและทิป",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "การคลิก 'ร่วมรับรางวัล' จะถือเป็นการระบุว่าคุณได้อ่านและยอมรับใน",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +398,69 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "เปิดโฆษณา",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "ได้รับจากโฆษณาแล้ว",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "ให้ทิปทวีตนี้",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "ทิป",
+    "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "ให้ทิปโพสต์นี้",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "ทิป",
+    "description": "Icon label for Reddit tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "ผู้สร้าง $name$ ที่ยืนยันเมื่อไม่นานมานี้",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "คุณมีทิปที่รอดำเนินการอยู่เนื่องจากมีเงินในบัญชีไม่พอ",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "รอการสนับสนุน",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "วันนี้คุณมีโชค!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "โทเค็นเงินบริจาคกำลังจะไปถึงคุณแล้ว",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "โทเค็นเงินบริจาคฟรี",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Brave Ads Rewards!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "การจัดสรรรางวัลของคุณจาก Brave Ads กำลังมาถึง",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "การจัดสรรโทเค็น Brave Ads ของคุณ",
+    "description": "Token title on success screen for ads"
   }
 }

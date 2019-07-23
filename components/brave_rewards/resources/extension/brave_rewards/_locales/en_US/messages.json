@@ -237,14 +237,6 @@
     "message": "Drag the BAT Icon on to the",
     "description": "Directs the user to drag the BAT icon"
   },
-  "captchaLuckyDay": {
-    "message": "It’s your lucky day!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "captchaOnTheWay": {
-    "message": "Your token grant is on its way.",
-    "description": "Cosmetic text indicating grant funds are on the way"
-  },
   "captchaProveHuman": {
     "message": "Prove that you are human!",
     "description": "Cosmetic text for captcha prompt"
@@ -354,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your earnings from ads are available.",
+    "message": "Your rewards from Ads are here!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -420,5 +412,149 @@
   "twitterTipsIconLabel": {
     "message": "Tip",
     "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "Tip this post",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Tip",
+    "description": "Icon label for Reddit tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "Creator $name$ recently verified",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "You have pending tips due to insufficient funds",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Pending Contribution",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "It’s your lucky day!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "Your token grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "Free Token Grant",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Brave Ads Rewards!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "Your rewards grant from Brave Ads is on its way.",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "Your Brave Ads Token Grant",
+    "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "verify",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Disconnected",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Verify Wallet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Verified",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Go to my Uphold account",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Disconnect from Brave Rewards",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Verify wallet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Our wallet service is provided by",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Please have your government issued ID available.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Keep your Ad Rewards tokens",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Add tokens using credit card",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Withdraw tokens",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "A verified wallet allows you to:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Verify Your Wallet",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "And manage your funds easily!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Verified",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Unavailable",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Reconnect wallet",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Your wallet is verified!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Congrats! Your $name$ wallet was successfully verified and ready to add and withdraw funds.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Uh oh. Your wallet is unreachable.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "No worries. This can happen from a variety of security reasons. Simply reconnect to it will solve this issue.s",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

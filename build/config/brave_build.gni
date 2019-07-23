@@ -1,0 +1,6 @@
+# Add imports here for things that need to be available in chromium code.
+# This file is included in most gn files either directly or through
+# import("//build/config/chrome_build.gni") in compiler.gni
+import("//brave/brave_repack_locales.gni")
+import("//brave/build/features.gni")
+import("//brave/net/sources.gni")

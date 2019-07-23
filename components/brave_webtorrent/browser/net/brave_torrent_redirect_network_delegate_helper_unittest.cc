@@ -13,10 +13,6 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/browser/profiles/tor_unittest_profile_manager.h"
-#include "brave/browser/renderer_host/brave_navigation_ui_data.h"
-#include "brave/browser/tor/mock_tor_profile_service_factory.h"
 #include "brave/common/network_constants.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -26,13 +22,6 @@
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-namespace {
-
-int kRenderProcessId = 1;
-int kRenderFrameId = 2;
-
-}  // namespace
 
 class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
  public:
@@ -45,10 +34,6 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
   ~BraveTorrentRedirectNetworkDelegateHelperTest() override {}
 
   void SetUp() override {
-    // Create a new temporary directory, and store the path
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    TestingBrowserProcess::GetGlobal()->SetProfileManager(
-        new TorUnittestProfileManager(temp_dir_.GetPath()));
     context_->Init();
 
     torrent_url_ = GURL("https://webtorrent.io/torrents/sintel.torrent");
@@ -88,8 +73,6 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
   }
 
  protected:
-  // The path to temporary directory used to contain the test operations.
-  base::ScopedTempDir temp_dir_;
   ScopedTestingLocalState local_state_;
 
  private:
@@ -116,9 +99,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -150,9 +135,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -186,9 +173,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -227,9 +216,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -264,9 +255,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -296,9 +289,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -331,60 +326,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
-      orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
-
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
-  std::string location;
-  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
-                                                           &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
-  EXPECT_EQ(ret, net::OK);
-}
-
-TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, NoRedirectTorProfile) {
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
-  Profile* profile = profile_manager->GetProfile(tor_path);
-  ASSERT_TRUE(profile);
-
-  net::TestDelegate test_delegate;
-  std::unique_ptr<net::URLRequest> request =
-      context()->CreateRequest(torrent_url(), net::IDLE, &test_delegate,
-                               TRAFFIC_ANNOTATION_FOR_TESTS);
-
-  scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader(
-      base::StrCat({"Content-Type: ", kBittorrentMimeType}));
-  std::string mimeType;
-  ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, kBittorrentMimeType);
-
-  scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  std::shared_ptr<brave::BraveRequestInfo>
-      brave_request_info(new brave::BraveRequestInfo());
-  brave::ResponseCallback callback;
-
-  std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
-    std::make_unique<BraveNavigationUIData>();
-  BraveNavigationUIData* navigation_ui_data_ptr = navigation_ui_data.get();
-
-  content::ResourceRequestInfo::AllocateForTesting(
-      request.get(), content::ResourceType::kMainFrame, resource_context(),
-      kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
-      /*is_main_frame=*/true, content::ResourceInterceptPolicy::kAllowNone,
-      /*is_async=*/true, content::PREVIEWS_OFF, std::move(navigation_ui_data));
-
-  MockTorProfileServiceFactory::SetTorNavigationUIData(profile,
-                                                   navigation_ui_data_ptr);
-
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 

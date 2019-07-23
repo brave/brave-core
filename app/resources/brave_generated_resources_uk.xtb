@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="7942180974165298215">Блокування реклами Brave</translation>
 <translation id="6406506848690869874">Синхронізувати</translation>
+<translation id="8488282162676695335">Гаманець Brave</translation>
 <translation id="120759863357279975">У Brave немає дозволу на <ph name="EXTENSION_NAME">$1</ph> extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>".</translation>
 <translation id="7450557937477381864">Закрийте Chrome</translation>
 <translation id="7008934821596358692">Для завершення імпортування закрийте всі вікна Chrome.</translation>
@@ -27,9 +28,9 @@
 <translation id="3218385319396786393">Автопрогравання заблоковано на цій сторінці</translation>
 <translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Продовжити блокувати автоматичне програвання</translation>
-<translation id="7543906827780734027">Brave ще не переглянув це розширення - воно може бути шкідливим. Додати "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" все одно?</translation>
+<translation id="5883458389055721080">Ця розширення не було перевірене Brave на безпеку й надійність. Вставнолюйте це розширення, лише якщо ви довіряєте його розробнику.</translation>
 <translation id="2044383478723007273">Кольори Brave</translation>
-<translation id="5341901626640816374">Використовуйте широку панель місцезнаходження</translation>
+<translation id="2814998458708016836">Використовувати широкий адресний рядок</translation>
 <translation id="6123134130710658846">Сховати кнопку Brave Rewards</translation>
 <translation id="7635711399568194460">Приховує кнопку Brave Rewards в адресному рядку, коли Brave Rewards вимкнено</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
@@ -46,21 +47,27 @@
 <translation id="2515126961943087659">Сервіс реклами з використанням BAT</translation>
 <translation id="7924918279836988121">Сервіс реєстраційного журналу Bat</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
+<translation id="3400357268283240774">Додаткові налаштування</translation>
 <translation id="6303294677342628402">Щити</translation>
-<translation id="8919235146866304148">Захист відбитком пальця</translation>
-<translation id="520895744850022668">HTTPS всюди</translation>
-<translation id="5259716416204774556">Блокування скриптів</translation>
+<translation id="7133511168130368997">Заблокуйте відстеження та рекламу, які ходять за вами по Інтернету.</translation>
+<translation id="2761825942249694703">Це налаштування Shields за замовчуванням. Вони застосовуються до всіх сайтів, якщо ви не зробите певні зміни в панелі Shields на певному сайті. Ці зміни не вплинуть на ваші наявні налаштування для кожного сайту.</translation>
+<translation id="8754605759692119662">Це заблокує більшість реклами на сайтах, але не приватну рекламу Brave; вона контролюється у</translation>
+<translation id="6388201778088078932">налаштування.</translation>
+<translation id="9185018653595759199">Блокування в соціальних медіа</translation>
+<translation id="5709627087332022422">Заблокуйте міжсайтове відстеження</translation>
+<translation id="9075744464571452108">Визначення пристрою</translation>
+<translation id="3570081523466826008">Оновити зв’язки до HTTPS</translation>
+<translation id="4824468494729001999">Блокувати скрипти</translation>
 <translation id="7498695072878479744">Дозволити кнопки входу Google на сайтах третьої сторони</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
 <translation id="5165042248369837294">Дозволити вбудовані твіти Twitter</translation>
-<translation id="6067014455220527258">Блокувати рекламу</translation>
-<translation id="6985711843506827936">Дозволити рекламу й відстеження</translation>
-<translation id="6132506775968708399">Блокувати сторонні файли cookie</translation>
+<translation id="958971637207126733">Дозволити вбудовані пости LinkedIn</translation>
+<translation id="4699812599455071925">Блокувати лише міжсайтові файли cookies</translation>
 <translation id="5657156137487675418">Дозволити всі файли cookie</translation>
 <translation id="6883611015375728278">Блокувати всі кукіз</translation>
-<translation id="1442559343076146186">Блокувати сторонні цифрові сліди</translation>
-<translation id="8034285923190068220">Дозволити розпізнавання відбитку пальця</translation>
-<translation id="4540198958192073185">Блокувати всі цифрові сліди</translation>
+<translation id="3084022390368021391">Блокувати лише міжсайтові спроби визначення пристрою</translation>
+<translation id="1847422622180531843">Дозволяти всі спроби визначення пристрою</translation>
+<translation id="8375051111011093523">Блокувати всі спроби визначення пристрою</translation>
 <translation id="8942080017911802454">Політика поводження з WebRTC IP</translation>
 <translation id="6165508094623778733">Дізнатись більше</translation>
 <translation id="8798099450830957504">За умовчанням</translation>
@@ -72,11 +79,19 @@
 <translation id="2414886740292270097">Темна</translation>
 <translation id="1360441190790440400">Така ж, як Linux</translation>
 <translation id="1336940801687497203">Такаж як Windows</translation>
+<translation id="8721331068159819483">Як і в macOS</translation>
 <translation id="6786747875388722282">Розширення</translation>
 <translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
 <translation id="6554397389149987360">Використовує компоненти Hangouts, щоб увімкнути поширення екрану та інші функції у браузері.</translation>
+<translation id="4154389611571860454">Використовує супутнє розширення IPFS для підтримки IPFS у браузері.</translation>
 <translation id="8137559199583651773">Керувати розширеннями</translation>
 <translation id="4928988318462976765">Веб Магазин Розширень</translation>
 <translation id="9181207987584064303">Переглянути у Веб Магазині Розширень</translation>
 <translation id="4846154056248462491">На вихід</translation>
+<translation id="5057399635433117814">Перекласти цю сторінку? Увесь текст на цій сторінці буде надіслано до Microsoft для перекладу.</translation>
+<translation id="3371343170427636147">Програми браузера Brave Nightly</translation>
+<translation id="4097979995947147464">Бета-програми браузера Brave</translation>
+<translation id="8303432794159193481">Додатки браузера Brave</translation>
+<translation id="8292967014767479012">Програми браузера Brave</translation>
+<translation id="4743468424889072281">Розробницькі програми браузера Brave</translation>
 </translationbundle>

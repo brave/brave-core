@@ -123,21 +123,24 @@ describe('wallet reducer', () => {
         ...defaultState,
         grants: [],
         walletInfo: {
-          ...defaultState.walletInfo,
-          balance: 5
+          ...defaultState.walletInfo
         },
         ui: {
           ...defaultState.ui,
           emptyWallet: false,
           modalBackup: false,
           walletCorrupted: false
+        },
+        balance: {
+          total: 5,
+          rates: {},
+          wallets: {}
         }
       }
 
-      expect(chromeSpy).toHaveBeenCalledTimes(3)
+      expect(chromeSpy).toHaveBeenCalledTimes(2)
       expect(chromeSpy.mock.calls[0][0]).toEqual('brave_rewards.getWalletPassphrase')
-      expect(chromeSpy.mock.calls[1][0]).toEqual('brave_rewards.getAddresses')
-      expect(chromeSpy.mock.calls[2][0]).toEqual('brave_rewards.getGrants')
+      expect(chromeSpy.mock.calls[1][0]).toEqual('brave_rewards.getGrants')
 
       expect(assertion).toEqual({
         rewardsData: expectedState

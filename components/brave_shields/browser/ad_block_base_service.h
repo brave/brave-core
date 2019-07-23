@@ -20,10 +20,12 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
 
-class AdBlockClient;
 class AdBlockServiceTest;
 
 using brave_component_updater::BraveComponent;
+namespace adblock {
+class Engine;
+}
 
 namespace brave_shields {
 
@@ -32,7 +34,7 @@ namespace brave_shields {
 class AdBlockBaseService : public BaseBraveShieldsService {
  public:
   using GetDATFileDataResult =
-      brave_component_updater::LoadDATFileDataResult<AdBlockClient>;
+      brave_component_updater::LoadDATFileDataResult<adblock::Engine>;
 
   explicit AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;
@@ -41,6 +43,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
     const std::string& tab_host, bool* did_match_exception,
     bool* cancel_request_explicitly) override;
   void EnableTag(const std::string& tag, bool enabled);
+  bool TagExists(const std::string& tag);
 
  protected:
   friend class ::AdBlockServiceTest;
@@ -48,21 +51,22 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   void Cleanup() override;
 
   void GetDATFileData(const base::FilePath& dat_file_path);
-
-  AdBlockClient* GetAdBlockClientForTest();
+  void AddKnownTagsToAdBlockInstance();
+  void ResetForTest(const std::string& rules);
 
   SEQUENCE_CHECKER(sequence_checker_);
-  std::unique_ptr<AdBlockClient> ad_block_client_;
+  std::unique_ptr<adblock::Engine> ad_block_client_;
 
  private:
   void UpdateAdBlockClient(
-      std::unique_ptr<AdBlockClient> ad_block_client,
+      std::unique_ptr<adblock::Engine> ad_block_client,
       brave_component_updater::DATFileDataBuffer buffer);
   void OnGetDATFileData(GetDATFileDataResult result);
   void EnableTagOnIOThread(const std::string& tag, bool enabled);
   void OnPreferenceChanges(const std::string& pref_name);
 
   brave_component_updater::DATFileDataBuffer buffer_;
+  std::vector<std::string> tags_;
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_io_thread_;
   DISALLOW_COPY_AND_ASSIGN(AdBlockBaseService);

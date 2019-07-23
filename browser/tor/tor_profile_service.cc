@@ -7,16 +7,25 @@
 
 #include <string>
 
+#include "brave/browser/brave_browser_process_impl.h"
+// TODO(bridiver) - move this out of extensions
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
 #include "chrome/common/channel_info.h"
-#include "components/prefs/pref_registry_simple.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/version_info/channel.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "url/origin.h"
+#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 
 namespace tor {
+
+namespace {
+
+constexpr char kTorProxyScheme[] = "socks5://";
+constexpr char kTorProxyAddress[] = "127.0.0.1";
+
+}  // namespace
 
 TorProfileService::TorProfileService() {
 }
@@ -27,55 +36,40 @@ TorProfileService::~TorProfileService() {
 // static
 void TorProfileService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(tor::prefs::kProfileUsingTor, false);
-}
-// static
-void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  switch (chrome::GetChannel()) {
-    case version_info::Channel::STABLE:
-      registry->RegisterStringPref(tor::prefs::kTorProxyString,
-                                   "socks5://127.0.0.1:9350");
-      break;
-    case version_info::Channel::BETA:
-      registry->RegisterStringPref(tor::prefs::kTorProxyString,
-                                   "socks5://127.0.0.1:9360");
-      break;
-    case version_info::Channel::DEV:
-      registry->RegisterStringPref(tor::prefs::kTorProxyString,
-                                   "socks5://127.0.0.1:9370");
-      break;
-    case version_info::Channel::CANARY:
-      registry->RegisterStringPref(tor::prefs::kTorProxyString,
-                                   "socks5://127.0.0.1:9380");
-      break;
-    case version_info::Channel::UNKNOWN:
-    default:
-      registry->RegisterStringPref(tor::prefs::kTorProxyString,
-                                   "socks5://127.0.0.1:9390");
-  }
+  registry->RegisterBooleanPref(prefs::kProfileUsingTor, false);
 }
 
 // static
-std::string TorProfileService::CircuitIsolationKey(const GURL& url) {
-  // https://2019.www.torproject.org/projects/torbrowser/design/#privacy
-  //
-  //    For the purposes of the unlinkability requirements of this
-  //    section as well as the descriptions in the implementation
-  //    section, a URL bar origin means at least the second-level DNS
-  //    name.  For example, for mail.google.com, the origin would be
-  //    google.com.  Implementations MAY, at their option, restrict
-  //    the URL bar origin to be the entire fully qualified domain
-  //    name.
-  //
-  // In particular, we need not isolate by the scheme,
-  // username/password, port, path, or query part of the URL.
-  url::Origin origin = url::Origin::Create(url);
-  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      origin.host(),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  if (domain.size() == 0)
-    domain = origin.host();
-  return domain;
+void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  std::string port;
+  switch (chrome::GetChannel()) {
+    case version_info::Channel::STABLE:
+      port = std::string("9350");
+      break;
+    case version_info::Channel::BETA:
+      port = std::string("9360");
+      break;
+    case version_info::Channel::DEV:
+      port = std::string("9370");
+      break;
+    case version_info::Channel::CANARY:
+      port = std::string("9380");
+      break;
+    case version_info::Channel::UNKNOWN:
+    default:
+      port = std::string("9390");
+  }
+  const std::string tor_proxy_uri =
+      std::string(kTorProxyScheme) + std::string(kTorProxyAddress) + ":" + port;
+  registry->RegisterStringPref(prefs::kTorProxyString, tor_proxy_uri);
+}
+
+std::string TorProfileService::GetTorProxyURI() {
+  return g_browser_process->local_state()->GetString(prefs::kTorProxyString);
+}
+
+base::FilePath TorProfileService::GetTorExecutablePath() {
+  return g_brave_browser_process->tor_client_updater()->GetExecutablePath();
 }
 
 void TorProfileService::AddObserver(TorLauncherServiceObserver* observer) {

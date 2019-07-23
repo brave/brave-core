@@ -8,6 +8,7 @@ declare namespace RewardsTip {
     currentTipRecurring?: boolean
     recurringDonations?: RecurringTips[]  // TODO(nejczdovc): migrate to tips
     reconcileStamp: number
+    balance: Balance
   }
 
   interface ApplicationState {
@@ -32,21 +33,30 @@ declare namespace RewardsTip {
     verified: boolean
   }
 
-  interface TweetMetaData {
-    name: string
+  type MediaMetaData = {
+    mediaType: 'twitter',
+    twitterName: string
     screenName: string
     userId: string
     tweetId: string
     tweetTimestamp: number
     tweetText: string
+  } | {
+    mediaType: 'reddit'
+    userName: string
+    postText: string
+    postRelDate: string
+  }
+
+  interface RedditMetaData {
+    userName: string
+    postText: string
+    postRelDate: string
   }
 
   export interface WalletProperties {
-    balance: number
     choices: number[]
-    probi: string
     range?: number[]
-    rates?: Record<string, number>
     grants?: Grant[]
   }
 
@@ -63,5 +73,11 @@ declare namespace RewardsTip {
   export interface RecurringTips {
     publisherKey?: string
     monthlyDate?: number
+  }
+
+  export interface Balance {
+    total: number
+    rates: Record<string, number>
+    wallets: Record<string, number>
   }
 }

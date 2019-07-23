@@ -79,13 +79,9 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="5874882355102994015">Brave ei saa printimise eelvaadet kuvada, kui sisseehitatud PDF-vaatur puudub.</translation>
 <translation id="8880183781256147665">Brave'i lisamine...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> võib olla ohtlik, mistõttu Brave blokeeris selle.</translation>
-<translation id="6205431412329939367">Brave blokeeris faili <ph name="FILE_NAME"/>, kuna see võib olla ohtlik. Teid kaitseb funktsioon Täiustatud kaitse.</translation>
 <translation id="9067428552314418522">Brave blokeeris faili, kuna see on ohtlik.</translation>
-<translation id="2938460345748897177">Brave blokeeris faili, kuna see on ohtlik. Teid kaitseb funktsioon Täiustatud kaitse.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> on ohtlik, mistõttu Brave blokeeris selle.</translation>
-<translation id="8858456697111532356">Brave blokeeris faili <ph name="FILE_NAME"/>, kuna see on ohtlik. Teid kaitseb funktsioon Täiustatud kaitse.</translation>
 <translation id="89367911614620585">Brave blokeeris faili, kuna see võib olla ohtlik.</translation>
-<translation id="8943391224520748272">Brave blokeeris faili, kuna see võib olla ohtlik. Teid kaitseb funktsioon Täiustatud kaitse.</translation>
 <translation id="9183662282810237335">Kas väljuda Braveist ikkagi?</translation>
 <translation id="3834935463915107022">Kas väljuda Braveist ikkagi?</translation>
 <translation id="8797356639448065696">Brave on taustarežiimis.</translation>
@@ -148,8 +144,6 @@ Kui logite siiski sisse, liidetakse Bravei teave, nagu järjehoidjad, ajalugu ja
 <translation id="6746636977031158624">Brave OS ei saanud andmeid sünkroonida, sest teie konto sisselogimisandmed on aegunud.</translation>
 <translation id="2999152167963026588">Brave OS ei saanud teie andmeid sünkroonida, sest teie domeenil pole sünkroonimine saadaval.</translation>
 <translation id="1459786048951724030">Brave OS ei saanud sisselogimisvea tõttu teie andmeid sünkroonida.</translation>
-<translation id="2887570477425111999">Salvesta üksikasjad Brave'i</translation>
-<translation id="193559141530782783">Brave salvestab turvaliselt teie isiklikud andmed, et te ei peaks neid uuesti sisestama.</translation>
 <translation id="663059986967017181">Kopeeritud Brave'i</translation>
 <translation id="1457432835062259213">Bravei rakenduste käiviti</translation>
 <translation id="82609232232243542">Brave'i sisselogimine</translation>
@@ -193,7 +187,7 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="3856641371299712128">Sissetuleku reegel Brave Dev'is mDNS-liikluse lubamiseks.</translation>
 <translation id="8207657266087451193">Kui pildil puudub kasulik kirjeldus, üritab Brave selle ise luua. Kirjelduste loomiseks saadetakse pildid Brave Software'ile. Võite selle seadetes igal ajal välja lülitada.</translation>
 <translation id="5499063270485366718">Kui pildil puudub kasulik kirjeldus, üritab Brave selle ise luua. Kirjelduste loomiseks saadetakse pildid Brave Software'ile.</translation>
-<translation id="3870835867536344658">See kasutab sama õigekirjakontrolli, mida kasutatakse Brave Software'i otsingus. Brauseris sisestatav tekst saadetakse Brave Software'ile. Seda käitumist saab seadetes alati muuta.</translation>
+<translation id="215320507915280336">See kasutab sama õigekirjakontrolli, mida kasutatakse Brave Software'i otsingus. Brauseris sisestatav tekst saadetakse Brave Software'ile. Seda käitumist saab seadetes alati muuta.</translation>
 <translation id="1807774211756215222">Ava link Bravei uuel &amp;vahekaardil</translation>
 <translation id="4624945300945265642">Ava link Bravei inko&amp;gnito aknas</translation>
 <translation id="7863882214613921971">Ava link Bravei uuel &amp;vahekaardil</translation>
@@ -204,6 +198,9 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="2522086024276534909">Brave OS-i taaskäivitamine</translation>
 <translation id="8183252473547465084">Brave OS tuleb värskenduse rakendamiseks taaskäivitada.</translation>
 <translation id="5895138241574237353">Taaskäivitamine</translation>
+<translation id="8887390605192156061">Sulgege kõik Bravei eksemplarid.</translation>
+<translation id="1801551749768408825">Muud Bravei eksemplarid töötavad. Värskendamiseks sulgege need.</translation>
+<translation id="2632141563911437138">Värskendamiseks peab Bravei selles arvutis sulgema. Seetõttu võivad teiste sellesse arvutisse sisselogitud kasutajate salvestamata muudatused kaotsi minna.</translation>
 <translation id="5875673934455379806">Installi Brave uuesti</translation>
 <translation id="2097604701283463988">Brave on aegunud</translation>
 <translation id="5173820533850252773">Brave on aegunud</translation>
@@ -247,23 +244,17 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="8933981935877469796">Valige <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Kui see kuvatakse, klõpsake valikul <ph name="BEGIN_BOLD"/>Vaheta ikkagi<ph name="END_BOLD"/></translation>
 <translation id="3507835409099344374">Ava Bravei märguandeseaded</translation>
-<translation id="9118654140804842635">{0,plural, =0{Bravei värskendus on saadaval}=1{Bravei värskendus on saadaval}other{Bravei värskendus on olnud saadaval # päeva}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Bravei värskendus on saadaval}=1{Bravei värskendus on saadaval}other{Bravei värskendus on # päeva saadaval olnud}}</translation>
 <translation id="720532315408041257">Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada</translation>
-<translation id="6639482638305253477">{0,plural, =1{Käivitage Brave uuesti päeva jooksul}other{Käivitage Brave uuesti # päeva jooksul}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave käivitatakse uuesti tunni aja pärast}other{Brave käivitatakse uuesti # tunni pärast}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave käivitatakse uuesti 1 minuti pärast}other{Brave käivitatakse uuesti # minuti pärast}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave käivitatakse kohe uuesti}=1{Brave käivitatakse uuesti 1 sekundi pärast}other{Brave käivitatakse uuesti # sekundi pärast}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Käivitage Brave uuesti päeva jooksul}other{Käivitage Brave uuesti # päeva jooksul}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave käivitatakse uuesti tunni aja pärast}other{Brave käivitatakse uuesti # tunni pärast}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave käivitatakse uuesti 1 minuti pärast}other{Brave käivitatakse uuesti # minuti pärast}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave käivitatakse kohe uuesti}=1{Brave käivitatakse uuesti 1 sekundi pärast}other{Brave käivitatakse uuesti # sekundi pärast}}</translation>
 <translation id="7595187113648413294">Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti</translation>
-<translation id="56801943271475640">{0,plural, =0{Brave OS-i värskendus on saadaval}=1{Brave OS-i värskendus on saadaval}other{Brave OS-i värskendus on olnud saadaval # päeva}}</translation>
-<translation id="5715362474140341294">Administraator palub teil Brave OS-i selle värskenduse rakendamiseks taaskäivitada</translation>
-<translation id="8094834892392729950">{0,plural, =1{Taaskäivitage Brave OS päeva jooksul}other{Taaskäivitage Brave OS # päeva jooksul}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS taaskäivitatakse tunni pärast}other{Brave OS taaskäivitatakse # tunni pärast}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS taaskäivitub 1 minuti pärast}other{Brave OS taaskäivitub # minuti pärast}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS taaskäivitub kohe}=1{Brave OS taaskäivitub 1 sekundi pärast}other{Brave OS taaskäivitub # sekundi pärast}}</translation>
-<translation id="8559452515617838628">Administraator nõuab, et taaskäivitaksite Brave OS-i värskenduse rakendamiseks</translation>
 <translation id="3052349005266761501">Bravei käivitamine …</translation>
 <translation id="1197672524850678392">Bravei ei õnnestunud käivitada. Proovige uuesti.</translation>
 <translation id="6040143037577758943">Sulge</translation>
+<translation id="5147525139567260139">Bravei vahekaardi jagamine</translation>
 <translation id="8541922081612557424">Teave Bravei kohta</translation>
 <translation id="3262506503470845422">Bravei puhul abi hankimine</translation>
 <translation id="1864557848095568223">Bravei värskendamine</translation>

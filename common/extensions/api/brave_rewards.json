@@ -77,10 +77,10 @@
         "type": "function",
         "description": "Fired when we get publisher data from the DB",
         "parameters": [
-           {
-             "name": "windowId",
-             "type": "integer"
-           },
+          {
+            "name": "windowId",
+            "type": "integer"
+          },
           {
             "name": "publisher",
             "type": "object",
@@ -341,6 +341,49 @@
             "type": "integer"
           }
         ]
+      },
+      {
+        "name": "onReconcileComplete",
+        "type": "function",
+        "description": "Fired when reconcile is complete",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "integer",
+                "description": "result for this contribution"
+              },
+              "category": {
+                "type": "integer",
+                "description": "category of this contribution"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "onDisconnectWallet",
+        "type": "function",
+        "description": "Fired when we disconnect wallet",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "integer",
+                "description": "result for disconnection"
+              },
+              "walletType": {
+                "type": "string",
+                "description": "wallet that was disconnected"
+              }
+
+            }
+          }
+        ]
       }
     ],
     "functions": [
@@ -375,14 +418,18 @@
             "type": "integer"
           },
           {
-            "name": "tweetMetaData",
+            "name": "mediaMetaData",
             "type": "object",
             "properties": {
+              "mediaType": {
+                "type": "string",
+                "description": "description used in UI to identify the media type"
+              },
               "userId": {
                 "type": "string",
                 "description": "User ID of tweet author"
               },
-              "name": {
+              "twitterName": {
                 "type": "string",
                 "description": "Name of tweet author"
               },
@@ -401,6 +448,39 @@
               "tweetText": {
                 "type": "string",
                 "description": "Textual contents of tweet"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "tipRedditUser",
+        "type": "function",
+        "description": "Allow the user to perform a donation to a Reddit user",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "name": "mediaMetaData",
+            "type": "object",
+            "properties": {
+              "mediaType": {
+                "type": "string",
+                "description": "description used in UI to identify the media type"
+              },
+              "userName": {
+                "type": "string",
+                "description": "User name of the Reddit post/comment author"
+              },
+              "postText": {
+                "type": "string",
+                "description": "Textual contents of comment/post"
+              },
+              "postRelDate": {
+                "type": "string",
+                "description": "Date of post relative to current date"
               }
             }
           }
@@ -656,7 +736,7 @@
               },
               {
                 "name": "publisherKey",
-                "value": "string"
+                "type": "string"
               }
             ]
           }
@@ -710,7 +790,7 @@
         "parameters": [
           {
             "name": "key",
-            "value": "string"
+            "type": "string"
           },
           {
             "type": "function",
@@ -721,6 +801,99 @@
                 "type": "boolean"
               }
             ]
+          }
+        ]
+      },
+      {
+        "name": "fetchBalance",
+        "type": "function",
+        "description": "Fetch balance",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "balance",
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "any"
+                  },
+                  "rates": {
+                    "type": "any"
+                  },
+                  "wallets": {
+                    "type": "any"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getExternalWallet",
+        "type": "function",
+        "description": "Get external wallet for provided wallet type",
+        "parameters": [
+          {
+            "name": "type",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "integer"
+              },
+              {
+                "name": "wallet",
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "any"
+                  },
+                  "address": {
+                    "type": "any"
+                  },
+                  "status": {
+                    "type": "any"
+                  },
+                  "type": {
+                    "type": "any"
+                  },
+                  "verifyUrl": {
+                    "type": "any"
+                  },
+                  "addUrl": {
+                    "type": "any"
+                  },
+                  "withdrawUrl": {
+                    "type": "any"
+                  },
+                  "userName": {
+                    "type": "any"
+                  },
+                  "accountUrl": {
+                    "type": "any"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "disconnectWallet",
+        "type": "function",
+        "description": "Disconnect wallet",
+        "parameters": [
+          {
+            "name": "type",
+            "type": "string"
           }
         ]
       }

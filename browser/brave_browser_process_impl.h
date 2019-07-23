@@ -39,6 +39,10 @@ class ReferrerWhitelistService;
 class TrackingProtectionService;
 }  // namespace brave_shields
 
+namespace greaselion {
+class GreaselionDownloadService;
+}  // namespace greaselion
+
 namespace extensions {
 class BraveTorClientUpdater;
 }
@@ -65,6 +69,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::ExtensionWhitelistService* extension_whitelist_service();
 #endif
   brave_shields::ReferrerWhitelistService* referrer_whitelist_service();
+  greaselion::GreaselionDownloadService* greaselion_download_service();
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
   brave_component_updater::LocalDataFilesService* local_data_files_service();
@@ -80,6 +85,10 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 
   BraveComponent::Delegate* brave_component_updater_delegate();
 
+  // local_data_files_service_ should always be first because it needs
+  // to be destroyed last
+  std::unique_ptr<brave_component_updater::LocalDataFilesService>
+      local_data_files_service_;
   std::unique_ptr<BraveComponent::Delegate> brave_component_updater_delegate_;
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<brave_shields::AdBlockCustomFiltersService>
@@ -92,12 +101,12 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       extension_whitelist_service_;
   std::unique_ptr<brave_shields::ReferrerWhitelistService>
       referrer_whitelist_service_;
+  std::unique_ptr<greaselion::GreaselionDownloadService>
+      greaselion_download_service_;
   std::unique_ptr<brave_shields::TrackingProtectionService>
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
-  std::unique_ptr<brave_component_updater::LocalDataFilesService>
-      local_data_files_service_;
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;

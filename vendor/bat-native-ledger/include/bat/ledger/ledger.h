@@ -15,14 +15,19 @@
 
 #include "bat/ledger/export.h"
 #include "bat/ledger/auto_contribute_props.h"
+#include "bat/ledger/balance.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/publisher_info.h"
-#include "bat/ledger/media_publisher_info.h"
+#include "bat/ledger/media_event_info.h"
 #include "bat/ledger/transactions_info.h"
 #include "bat/ledger/rewards_internals_info.h"
 #include "bat/ledger/pending_contribution.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
+
+using VisitData = ledger::mojom::VisitData;
+using VisitDataPtr = ledger::mojom::VisitDataPtr;
 
 extern bool is_production;
 extern bool is_debug;
@@ -30,45 +35,25 @@ extern bool is_testing;
 extern int reconcile_time;  // minutes
 extern bool short_retries;
 
-LEDGER_EXPORT struct VisitData {
-  VisitData();
-  VisitData(const std::string& _tld,
-            const std::string& _domain,
-            const std::string& _path,
-            uint32_t _tab_id,
-            const std::string& name,
-            const std::string& url,
-            const std::string& provider,
-            const std::string& favicon_url);
-  VisitData(const VisitData& data);
-  ~VisitData();
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string tld;
-  std::string domain;
-  std::string path;
-  uint32_t tab_id;
-  std::string name;
-  std::string url;
-  std::string provider;
-  std::string favicon_url;
-};
-
 using PublisherBannerCallback =
-    std::function<void(std::unique_ptr<ledger::PublisherBanner> banner)>;
-using WalletAddressesCallback =
-    std::function<void(std::map<std::string, std::string> addresses)>;
-using GetTransactionHistoryForThisCycleCallback =
+    std::function<void(ledger::PublisherBannerPtr banner)>;
+using GetTransactionHistoryCallback =
     std::function<void(std::unique_ptr<ledger::TransactionsInfo> info)>;
 using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
-                                  std::unique_ptr<ledger::WalletInfo>)>;
+                                  ledger::WalletPropertiesPtr)>;
 using OnRefreshPublisherCallback =
     std::function<void(bool)>;
-using GetAddressesCallback =
-    std::function<void(std::map<std::string, std::string>)>;
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
+using FetchBalanceCallback = std::function<void(ledger::Result,
+                                                ledger::BalancePtr)>;
+using ExternalWalletCallback = std::function<void(
+    ledger::Result,
+    ledger::ExternalWalletPtr)>;
+using ExternalWalletAuthorizationCallback =
+    std::function<void(ledger::Result, std::map<std::string, std::string>)>;
+using DisconnectWalletCallback = std::function<void(ledger::Result)>;
+using TransferAnonToExternalWalletCallback =
+    std::function<void(ledger::Result)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -90,14 +75,11 @@ class LEDGER_EXPORT Ledger {
   // returns false if wallet initialization is already in progress
   virtual bool CreateWallet() = 0;
 
-  virtual void AddRecurringPayment(const std::string& publisher_id,
-                                   const double& value) = 0;
-
   virtual void DoDirectTip(const std::string& publisher_id,
                            int amount,
                            const std::string& currency) = 0;
 
-  virtual void OnLoad(const VisitData& visit_data,
+  virtual void OnLoad(VisitDataPtr visit_data,
                       const uint64_t& current_time) = 0;
 
   virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
@@ -110,17 +92,13 @@ class LEDGER_EXPORT Ledger {
 
   virtual void OnBackground(uint32_t tab_id, const uint64_t& current_time) = 0;
 
-  virtual void OnMediaStart(uint32_t tab_id, const uint64_t& current_time) = 0;
-
-  virtual void OnMediaStop(uint32_t tab_id, const uint64_t& current_time) = 0;
-
   virtual void OnXHRLoad(
       uint32_t tab_id,
       const std::string& url,
       const std::map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
-      const VisitData& visit_data) = 0;
+      VisitDataPtr visit_data) = 0;
 
 
   virtual void OnPostData(
@@ -128,26 +106,13 @@ class LEDGER_EXPORT Ledger {
       const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
-      const VisitData& visit_data) = 0;
+      VisitDataPtr visit_data) = 0;
 
   virtual void OnTimer(uint32_t timer_id) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void SetPublisherInfo(PublisherInfoPtr publisher_info) = 0;
-
-  virtual void SetActivityInfo(PublisherInfoPtr publisher_info) = 0;
-
   virtual void GetPublisherInfo(const std::string& publisher_key,
-                                PublisherInfoCallback callback) = 0;
-
-  virtual void GetActivityInfo(const ledger::ActivityInfoFilter& filter,
-                                PublisherInfoCallback callback) = 0;
-
-  virtual void SetMediaPublisherInfo(const std::string& media_key,
-                                const std::string& publisher_id) = 0;
-
-  virtual void GetMediaPublisherInfo(const std::string& media_key,
                                 PublisherInfoCallback callback) = 0;
 
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
@@ -170,21 +135,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetAutoContribute(bool enabled) = 0;
 
-  virtual void SetBalanceReport(ACTIVITY_MONTH month,
-                              int year,
-                              const ledger::BalanceReportInfo& report_info) = 0;
-
-  virtual void GetAddresses(
-      int32_t current_country_code,
-      ledger::GetAddressesCallback callback) = 0;
-
-  virtual const std::string& GetBATAddress() const = 0;
-
-  virtual const std::string& GetBTCAddress() const = 0;
-
-  virtual const std::string& GetETHAddress() const = 0;
-
-  virtual const std::string& GetLTCAddress() const = 0;
+  virtual void UpdateAdsRewards() = 0;
 
   virtual uint64_t GetReconcileStamp() const = 0;
 
@@ -212,8 +163,7 @@ class LEDGER_EXPORT Ledger {
                                  const std::string& promotionId) const = 0;
 
   virtual void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) const = 0;
+      const std::vector<std::string>& headers) const = 0;
 
   virtual std::string GetWalletPassphrase() const = 0;
 
@@ -224,7 +174,7 @@ class LEDGER_EXPORT Ledger {
   virtual std::map<std::string, ledger::BalanceReportInfo>
   GetAllBalanceReports() const = 0;
 
-  virtual void GetAutoContributeProps(ledger::AutoContributeProps* props) = 0;
+  virtual ledger::AutoContributePropsPtr GetAutoContributeProps() = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 
@@ -238,7 +188,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,
-      const ledger::VisitData& visit_data,
+      ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) = 0;
 
   virtual void SetBalanceReportItem(ACTIVITY_MONTH month,
@@ -267,14 +217,11 @@ class LEDGER_EXPORT Ledger {
   virtual void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) = 0;
 
-  virtual void GetAddressesForPaymentId(
-      ledger::WalletAddressesCallback callback) = 0;
-
   virtual void SetCatalogIssuers(const std::string& info) = 0;
 
   virtual void ConfirmAd(const std::string& info) = 0;
-  virtual void GetTransactionHistoryForThisCycle(
-      GetTransactionHistoryForThisCycleCallback callback) = 0;
+  virtual void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) = 0;
   virtual void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) = 0;
 
   virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
@@ -284,7 +231,7 @@ class LEDGER_EXPORT Ledger {
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback) = 0;
 
-  virtual void StartAutoContribute() = 0;
+  virtual void StartMonthlyContribution() = 0;
 
   virtual void SaveMediaInfo(const std::string& type,
                              const std::map<std::string, std::string>& data,
@@ -312,6 +259,20 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) = 0;
+
+  virtual void FetchBalance(ledger::FetchBalanceCallback callback) = 0;
+
+  virtual void GetExternalWallet(const std::string& wallet_type,
+                                 ledger::ExternalWalletCallback callback) = 0;
+
+  virtual void ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback) = 0;
+
+  virtual void DisconnectWallet(
+      const std::string& wallet_type,
+      ledger::DisconnectWalletCallback callback) = 0;
 };
 
 }  // namespace ledger

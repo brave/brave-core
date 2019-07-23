@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Bloqueador de anuncios Brave</translation>
 <translation id="6406506848690869874">Brave Sync</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="120759863357279975">La extensión <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") no está permitida en Brave.</translation>
 <translation id="7450557937477381864">Cerrar Chrome</translation>
 <translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Brave.</translation>
@@ -28,10 +29,10 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="3218385319396786393">La reproducción automática se ha bloqueado en esta página</translation>
 <translation id="4988333904713528597">Permitir siempre la reproducción automática en <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continuar bloqueando la reproducción automática</translation>
-<translation id="7543906827780734027">Brave aún no ha revisado esta extensión, podría ser maliciosa. ¿Añadir "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" de todas maneras?</translation>
+<translation id="5883458389055721080">Brave no ha revisado esta extensión por razones de seguridad. Instala esta extensión solo si confías en el desarrollador.</translation>
 <translation id="2044383478723007273">Modo Brave</translation>
-<translation id="5341901626640816374">Usar barra de direcciones amplia</translation>
-<translation id="6123134130710658846">Ocultar botón de Brave Rewards</translation>
+<translation id="2814998458708016836">Usar barra de direcciones ancha</translation>
+<translation id="6123134130710658846">Ocultar el botón de Brave Rewards</translation>
 <translation id="7635711399568194460">Oculta el botón de Brave Rewards en la barra de direcciones cuando Brave Rewards está deshabilitado</translation>
 <translation id="7965178729203412357">Nueva identidad Tor</translation>
 <translation id="8784924142044142231">Cerrar Tor</translation>
@@ -49,21 +50,25 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="4472575034687746823">Empezar</translation>
 <translation id="3400357268283240774">Opciones adicionales</translation>
 <translation id="6303294677342628402">Escudos</translation>
-<translation id="5989930075012659993">Tu configuración actual por sitio se mantendrá.</translation>
-<translation id="8919235146866304148">Protección huella digital</translation>
-<translation id="520895744850022668">HTTPS en cualquier sitio</translation>
-<translation id="5259716416204774556">Bloqueo de scripts</translation>
+<translation id="7133511168130368997">Bloqueo de rastreadores y anuncios que te siguen a través de la web.</translation>
+<translation id="2761825942249694703">Estos son los ajustes por defecto de Brave Shields. Se aplican a todos los sitios web a menos que cambies algún parámetro en el panel de Shields para un sitio en concreto. Cambiarlos no afectará a tus ajustes por sitio actuales.</translation>
+<translation id="8754605759692119662">Esto bloqueará la mayoría de los anuncios en los sitios web, no los anuncios privados de Brave — estos son controlados en</translation>
+<translation id="6388201778088078932">ajustes.</translation>
+<translation id="9185018653595759199">Bloqueo de RRSS</translation>
+<translation id="5709627087332022422">Bloquear rastreadores de sitios web</translation>
+<translation id="9075744464571452108">Reconocimiento del dispositivo</translation>
+<translation id="3570081523466826008">Mejorar conexiones a HTTPS</translation>
+<translation id="4824468494729001999">Bloquear scripts</translation>
 <translation id="7498695072878479744">Permitir los botones de acceso de Google en sitios web de terceros</translation>
 <translation id="863171915776379000">Permitir los inicios de sesión de Facebook y los mensajes incrustados</translation>
 <translation id="5165042248369837294">Permitir tweets incrustados de Twitter</translation>
-<translation id="6067014455220527258">Bloquear anuncios</translation>
-<translation id="6985711843506827936">Permitir anuncios y seguimiento</translation>
-<translation id="6132506775968708399">Bloquear cookies de terceros</translation>
+<translation id="958971637207126733">Permitir mensajes incrustados de LinkedIn</translation>
+<translation id="4699812599455071925">Bloquear unicamente cookies de terceros</translation>
 <translation id="5657156137487675418">Permitir cookies</translation>
 <translation id="6883611015375728278">Bloquear cookies</translation>
-<translation id="1442559343076146186">Bloquear toma de huella digital a terceros</translation>
-<translation id="8034285923190068220">Permitir huella digital</translation>
-<translation id="4540198958192073185">Bloquear toma de huella digital</translation>
+<translation id="3084022390368021391">Bloquear únicamente los intentos de reconocimiento del dispositivo de terceros</translation>
+<translation id="1847422622180531843">Permitir todos los intentos de reconocimiento del dispositivo</translation>
+<translation id="8375051111011093523">Bloquear todos los intentos de reconocimiento de dispositivos</translation>
 <translation id="8942080017911802454">Política de gestión de IP de WebRTC</translation>
 <translation id="6165508094623778733">Saber más</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
@@ -75,11 +80,19 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="2414886740292270097">Oscuro</translation>
 <translation id="1360441190790440400">Mismo que en Linux</translation>
 <translation id="1336940801687497203">Mismo que en Windows</translation>
+<translation id="8721331068159819483">Mismo que en MacOS</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="2896916411183256228">Usa WebTorrent para mostrar directamente los torrents en el navegador. Es compatible con archivos torrent y enlaces magnet.</translation>
 <translation id="6554397389149987360">Usa el componente de Hangouts para habilitar la compartición de la pantalla y otras funciones en el navegador.</translation>
+<translation id="4154389611571860454">Utiliza extensiones complementarias IPFS para permitir el uso de IFPS en el navegador.</translation>
 <translation id="8137559199583651773">Administrar extensiones</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Ver en la Web Extensions Store</translation>
 <translation id="4846154056248462491">Al salir</translation>
+<translation id="5057399635433117814">¿Quieres traducir esta página? Se enviará todo el texto de esta página a Microsoft para su traducción.</translation>
+<translation id="3371343170427636147">Brave Apps Nightly</translation>
+<translation id="4097979995947147464">Brave Apps Beta</translation>
+<translation id="8303432794159193481">Brave Apps Dev</translation>
+<translation id="8292967014767479012">Brave Apps</translation>
+<translation id="4743468424889072281">Brave Apps</translation>
 </translationbundle>

@@ -1,5 +1,5 @@
-import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
+import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -10,8 +10,6 @@ source_set("net") {
     "brave_ad_block_tp_network_delegate_helper.h",
     "brave_common_static_redirect_network_delegate_helper.cc",
     "brave_common_static_redirect_network_delegate_helper.h",
-    "cookie_network_delegate_helper.cc",
-    "cookie_network_delegate_helper.h",
     "brave_httpse_network_delegate_helper.cc",
     "brave_httpse_network_delegate_helper.h",
     "brave_network_delegate_base.cc",
@@ -30,6 +28,7 @@ source_set("net") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
     "//content/public/browser",
     "//content/public/common",
@@ -37,16 +36,24 @@ source_set("net") {
     "//net",
   ]
 
-  if (!is_android) {
+  if (is_android) {
     deps += [
-      "//brave/app:brave_generated_resources_grit",
+      "//brave/app/android:common_extensions",
+    ]
+  } else {
+    deps += [
+      "//extensions/common",
     ]
   }
 
-  if (enable_tor) {
+  if (enable_brave_referrals) {
     sources += [
-      "brave_tor_network_delegate_helper.cc",
-      "brave_tor_network_delegate_helper.h",
+      "brave_referrals_network_delegate_helper.cc",
+      "brave_referrals_network_delegate_helper.h",
+    ]
+
+    deps += [
+      "//brave/components/brave_referrals/browser",
     ]
   }
 

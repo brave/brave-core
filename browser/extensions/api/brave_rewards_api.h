@@ -10,7 +10,9 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_rewards/browser/balance.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "extensions/browser/extension_function.h"
 
@@ -51,6 +53,22 @@ class BraveRewardsTipTwitterUserFunction
  private:
   base::WeakPtrFactory<BraveRewardsTipTwitterUserFunction> weak_factory_;
   void OnTwitterPublisherInfoSaved(
+      std::unique_ptr<brave_rewards::ContentSite> publisher_info);
+};
+
+class BraveRewardsTipRedditUserFunction : public UIThreadExtensionFunction {
+ public:
+  BraveRewardsTipRedditUserFunction();
+  DECLARE_EXTENSION_FUNCTION("braveRewards.tipRedditUser", UNKNOWN)
+
+ protected:
+  ~BraveRewardsTipRedditUserFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  base::WeakPtrFactory<BraveRewardsTipRedditUserFunction> weak_factory_;
+  void OnRedditPublisherInfoSaved(
       std::unique_ptr<brave_rewards::ContentSite> publisher_info);
 };
 
@@ -277,6 +295,48 @@ class BraveRewardsGetInlineTipSettingFunction :
 
  private:
   void OnInlineTipSetting(bool value);
+};
+
+class BraveRewardsFetchBalanceFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.fetchBalance", UNKNOWN)
+
+ protected:
+  ~BraveRewardsFetchBalanceFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnBalance(int32_t result,
+                 std::unique_ptr<::brave_rewards::Balance> balance);
+};
+
+class BraveRewardsGetExternalWalletFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getExternalWallet", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetExternalWalletFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnExternalWalet(
+      int32_t result,
+      std::unique_ptr<::brave_rewards::ExternalWallet> wallet);
+};
+
+class BraveRewardsDisconnectWalletFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.disconnectWallet", UNKNOWN)
+
+ protected:
+  ~BraveRewardsDisconnectWalletFunction() override;
+
+  ResponseAction Run() override;
 };
 
 }  // namespace api

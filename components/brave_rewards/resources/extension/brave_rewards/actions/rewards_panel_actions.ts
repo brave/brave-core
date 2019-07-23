@@ -17,10 +17,10 @@ export const onTabId = (tabId: number | undefined) => action(types.ON_TAB_ID, {
   tabId
 })
 
-export const onTabRetrieved = (tab: chrome.tabs.Tab, publisherBlob: string, activeTabIsLoadingTriggered: boolean) => action(types.ON_TAB_RETRIEVED, {
+export const onTabRetrieved = (tab: chrome.tabs.Tab, activeTabIsLoadingTriggered: boolean, publisherBlob: string = 'ignore') => action(types.ON_TAB_RETRIEVED, {
   tab,
-  publisherBlob,
-  activeTabIsLoadingTriggered
+  activeTabIsLoadingTriggered,
+  publisherBlob
 })
 
 export const onPublisherData = (windowId: number, publisher: RewardsExtension.Publisher) => action(types.ON_PUBLISHER_DATA, {
@@ -146,3 +146,13 @@ export const onAllNotifications = (list: RewardsExtension.Notification[]) => act
 export const init = (tabs: chrome.tabs.Tab[]) => action(types.ON_INIT, {
   tabs
 })
+
+export const onBalance = (balance: RewardsExtension.Balance) => action(types.ON_BALANCE, {
+  balance
+})
+
+export const onExternalWallet = (wallet: RewardsExtension.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+  wallet
+})
+
+export const onOnBoardingDisplayed = () => action(types.ON_ON_BOARDING_DISPLAYED)

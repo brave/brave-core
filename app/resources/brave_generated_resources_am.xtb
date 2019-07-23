@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">ናይ Brave ሽልማታት</translation>
 <translation id="7942180974165298215">ብሬቭ ኣድ ብሎክ</translation>
 <translation id="6406506848690869874">አመሳስል</translation>
+<translation id="8488282162676695335">Brave ዋሌት</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") በብሬቭ ውስጥ አይፈቀድም፡፡</translation>
 <translation id="7450557937477381864">ክሮም ዝጋ</translation>
 <translation id="7008934821596358692">ማስተላለፍ ለመጨረስ፣ ሁሉኑም የክሮም ዊንደው ይዝጉ፡፡</translation>
@@ -28,9 +29,9 @@
 <translation id="3218385319396786393">በዚህ ገፅ ላይ አውቶፕለይ ይከላከሉ</translation>
 <translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> ላይ በራስ መጫወቱን ሁልግዜም ፍቀድ;</translation>
 <translation id="4150684676757176434">አውቶለይ መከላከሉን ይቀጥል</translation>
-<translation id="7543906827780734027">ብሬቭ ይህንን ቅጥያ ገና አልገመገመውም - ተንኮል ያዘለ ሊሆን ይችላል፡፡እንደሆነ እንዲሆን "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ልቀጥለው?</translation>
+<translation id="5883458389055721080">Brave የዚህን ቅጥያ ደህንነትና አስተማማኝነት አላጣራም። ይህን ቅጥያ መጫን ያለብህ አዘጋጁን የምታምነው ከሆነ ብቻ ነው።</translation>
 <translation id="2044383478723007273">የብሬቭ ቀለም</translation>
-<translation id="5341901626640816374">ሰፊ የአካባቢ ባር ይጠቀሙ</translation>
+<translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="6123134130710658846">የ Brave Rewards መምረጫ ቁልፍ ደብቅ</translation>
 <translation id="7635711399568194460">Brave Rewards  ካልበራ በአድራሻው አሞሌ ላይ ያለው የ Brave Rewards መጫኛ ይደበቃል።</translation>
 <translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
@@ -47,21 +48,27 @@
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
 <translation id="4472575034687746823">ይጀምሩ</translation>
+<translation id="3400357268283240774">ተጨማሪ ቅንብሮች</translation>
 <translation id="6303294677342628402">መከላከያዎች</translation>
-<translation id="8919235146866304148">የጣት አሻራ ጥበቃ</translation>
-<translation id="520895744850022668">HTTPS በሁሉም ቦተታ</translation>
-<translation id="5259716416204774556">ስክሪፕት መከላከል</translation>
+<translation id="7133511168130368997">በድረ ገጽ ውስጥ የሚከተሉህን ተከታታዮችና ማስታወቂያዎች አግድ።</translation>
+<translation id="2761825942249694703">እነዚህ ነባሪ የጋሻ ቅንብሮች ናቸው። በአንድ የተወሰነ ድረ ገጽ ውስጥ በጋሻዎች ውስን ቦታ ውስጥ የቀየሩት ነገር ከሌለ በስተቀር በሁሉም ድረ ገጾች ላይ ተግባራዊ ይሆናሉ። እነዚህን መቀየር ነባር የድረ ገጽ ቅንብሮችዎ ላይ ተጽእኖ አያሳድርም።</translation>
+<translation id="8754605759692119662">ይህም በድረ ገጾች ላይ ያሉ አብዛኞቹን ማስታወቂያዎች እንጂ Brave የግል ማስታወቂያዎችን — አያግድም፤ እነርሱ ቁጥጥር የሚደረግባቸው</translation>
+<translation id="6388201778088078932">ቅንብሮች።</translation>
+<translation id="9185018653595759199">የማህበራዊ ሚዲያ እገዳ</translation>
+<translation id="5709627087332022422">ድረ ገጽ ተሻጋሪ ተከታታዮችን አግድ።</translation>
+<translation id="9075744464571452108">መሳሪያ ማወቂያ</translation>
+<translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳድግ</translation>
+<translation id="4824468494729001999">ስክሪፕቶችን አግድ</translation>
 <translation id="7498695072878479744">የ Google መግቢያ መጫኛ ቁልፎችን በሶስተኛ ወገን ጣቢያዎች ላይ ይፍቀዱ።</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
-<translation id="6067014455220527258">ማስታወቅያ ይከላከሉ</translation>
-<translation id="6985711843506827936">ማስታወቅያና መከታተል ይፍቀዱ</translation>
-<translation id="6132506775968708399">የ3ኛ ወገን ኩኪ ይከላከሉ</translation>
+<translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
+<translation id="4699812599455071925">ድረ ገጽ ተሻጋሪ ኩኪዎችን ብቻ አግድ</translation>
 <translation id="5657156137487675418">ለሁሉም ኩኪ ይፍቀዱ</translation>
 <translation id="6883611015375728278">ሁሉን ኩኪ ይከላከሉ</translation>
-<translation id="1442559343076146186">3ኛ አካል የእጅ አሻራ ይከላከሉ</translation>
-<translation id="8034285923190068220">የጣት አሻራ ይፍቀዱ</translation>
-<translation id="4540198958192073185">ሁሉንም የጣት አሻራ ይከላከሉ</translation>
+<translation id="3084022390368021391">ድረ ገጽ ተሻጋሪ የመሳሪያ ማወቂያ ሙከራዎችን ብቻ አግድ</translation>
+<translation id="1847422622180531843">ሁሉንም የመሳሪያ ማወቂያ ሙከራዎች ፍቀድ</translation>
+<translation id="8375051111011093523">ሁሉንም የመሳሪያ ማወቅ ሙከራዎች አግድ</translation>
 <translation id="8942080017911802454">WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
 <translation id="6165508094623778733">የበለጠ ይወቁ</translation>
 <translation id="8798099450830957504">እንደወረደ</translation>
@@ -73,11 +80,19 @@
 <translation id="2414886740292270097">ጨለማ</translation>
 <translation id="1360441190790440400">ከ Linux ጋር ተመሳሳይ</translation>
 <translation id="1336940801687497203">ልክ እንደ Windows</translation>
+<translation id="8721331068159819483">ከ macOS ጋር ተመሳሳይ</translation>
 <translation id="6786747875388722282">ቅጥያዎች</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
 <translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
+<translation id="4154389611571860454">በአሳሽ ውስጥ IPFSን ለመደገፍ የ IPFS አጃቢ ቅጥያ ይጠቀማል።</translation>
 <translation id="8137559199583651773">ቅጥያዎችን ያስተዳድሩ</translation>
 <translation id="4928988318462976765">የድረገጽ ተቀጥላ ማከማቻ</translation>
 <translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
 <translation id="4846154056248462491">ሲወጣ</translation>
+<translation id="5057399635433117814">ይህ ገጽ ይተርጎም? ይሄ ሁሉንም ጽሁፎች ለትርጉም ወደ Microsoft እንዲላኩ ያደርጋቸዋል።</translation>
+<translation id="3371343170427636147">Brave የመዳሰሻ የምሽት መተግበሪያዎች</translation>
+<translation id="4097979995947147464">በ Brave የመዳሰሻ ቤታ መተግበሪያዎች ነው</translation>
+<translation id="8303432794159193481">የ Brave መዳሰሻ ማጎልበቻ መተግበሪያዎች</translation>
+<translation id="8292967014767479012">የ Brave መዳሰሻ መተግበሪያዎች</translation>
+<translation id="4743468424889072281">የ Brave መዳሰሻ ማጎልበቻ መተግበሪያዎች</translation>
 </translationbundle>

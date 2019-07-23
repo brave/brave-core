@@ -135,6 +135,35 @@ class Grant extends React.Component<Props, State> {
     )
   }
 
+  grantFinish = (type: string, tokens: string, date: string) => {
+    let title = getLocale('grantFinishTitleUGP')
+    let text = getLocale('grantFinishTextUGP')
+    let tokenTitle = getLocale('grantFinishTokenUGP')
+
+    if (type === 'ads') {
+      title = getLocale('grantFinishTitleAds')
+      text = getLocale('grantFinishTextAds')
+      tokenTitle = getLocale('grantFinishTokenAds')
+    }
+
+    return (
+      <GrantWrapper
+        data-test-id={'grantWrapper'}
+        onClose={this.onFinish}
+        title={title}
+        text={text}
+      >
+        <GrantComplete
+          onClose={this.onFinish}
+          amount={tokens}
+          date={date}
+          testId={'newTokenGrant'}
+          tokenTitle={tokenTitle}
+        />
+      </GrantWrapper>
+    )
+  }
+
   render () {
     const { grant } = this.props
 
@@ -142,7 +171,7 @@ class Grant extends React.Component<Props, State> {
       return null
     }
 
-    let type
+    let type = 'ugp'
     let promoId
     let tokens = '0.0'
     let date = ''
@@ -175,14 +204,7 @@ class Grant extends React.Component<Props, State> {
         }
         {
           grant.expiryTime
-            ? <GrantWrapper
-              data-test-id={'grantWrapper'}
-              onClose={this.onFinish}
-              title={'It’s your lucky day!'}
-              text={'Your token grant is on its way.'}
-            >
-              <GrantComplete onClose={this.onFinish} amount={tokens} date={date} testId={'newTokenGrant'} />
-            </GrantWrapper>
+            ? this.grantFinish(type, tokens, date)
             : null
         }
       </>

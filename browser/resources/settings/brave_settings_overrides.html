@@ -43,10 +43,8 @@
         align-items: flex-start;
         background: #F1F3F5; /* neutral100 */
       }
-      @media only screen and  (max-width: 815px) {
-        settings-menu {
-          display: none;
-        }
+      #left, #main, #right {
+        flex: unset !important;
       }
       :host-context([dark]) #container {
         background: #1E2127;
@@ -122,6 +120,7 @@
         padding: 0 !important;
         margin-top: 30px !important;
         line-height: 1.25 !important;
+        border: none !important;
       }
 
       #advancedButton > iron-icon {

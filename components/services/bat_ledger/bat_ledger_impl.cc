@@ -64,10 +64,9 @@ void BatLedgerImpl::CreateWallet() {
 void BatLedgerImpl::OnFetchWalletProperties(
     CallbackHolder<FetchWalletPropertiesCallback>* holder,
     ledger::Result result,
-    std::unique_ptr<ledger::WalletInfo> wallet_info) {
-  std::string json_wallet = wallet_info.get() ? wallet_info->ToJson() : "";
+    ledger::WalletPropertiesPtr properties) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(result, json_wallet);
+    std::move(holder->get()).Run(result, std::move(properties));
   delete holder;
 }
 
@@ -82,9 +81,8 @@ void BatLedgerImpl::FetchWalletProperties(
 
 void BatLedgerImpl::GetAutoContributeProps(
     GetAutoContributePropsCallback callback) {
-  ledger::AutoContributeProps props;
-  ledger_->GetAutoContributeProps(&props);
-  std::move(callback).Run(props.ToJson());
+  ledger::AutoContributePropsPtr props = ledger_->GetAutoContributeProps();
+  std::move(callback).Run(std::move(props));
 }
 
 void BatLedgerImpl::GetPublisherMinVisitTime(
@@ -116,11 +114,9 @@ void BatLedgerImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
   std::move(callback).Run(ledger_->GetReconcileStamp());
 }
 
-void BatLedgerImpl::OnLoad(const std::string& visit_data,
+void BatLedgerImpl::OnLoad(ledger::VisitDataPtr visit_data,
     uint64_t current_time) {
-  ledger::VisitData visitData;
-  if (visitData.loadFromJson(visit_data))
-    ledger_->OnLoad(visitData, current_time);
+  ledger_->OnLoad(std::move(visit_data), current_time);
 }
 
 void BatLedgerImpl::OnUnload(uint32_t tab_id, uint64_t current_time) {
@@ -143,30 +139,19 @@ void BatLedgerImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
   ledger_->OnBackground(tab_id, current_time);
 }
 
-void BatLedgerImpl::OnMediaStart(uint32_t tab_id, uint64_t current_time) {
-  ledger_->OnMediaStart(tab_id, current_time);
-}
-
-void BatLedgerImpl::OnMediaStop(uint32_t tab_id, uint64_t current_time) {
-  ledger_->OnMediaStop(tab_id, current_time);
-}
-
 void BatLedgerImpl::OnPostData(const std::string& url,
     const std::string& first_party_url, const std::string& referrer,
-    const std::string& post_data, const std::string& visit_data) {
-  ledger::VisitData visitData;
-  if (visitData.loadFromJson(visit_data))
-    ledger_->OnPostData(url, first_party_url, referrer, post_data, visitData);
+    const std::string& post_data, ledger::VisitDataPtr visit_data) {
+  ledger_->OnPostData(
+      url, first_party_url, referrer, post_data, std::move(visit_data));
 }
 
 void BatLedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url,
     const base::flat_map<std::string, std::string>& parts,
     const std::string& first_party_url, const std::string& referrer,
-    const std::string& visit_data) {
-  ledger::VisitData visitData;
-  if (visitData.loadFromJson(visit_data))
+    ledger::VisitDataPtr visit_data) {
     ledger_->OnXHRLoad(tab_id, url, mojo::FlatMapToMap(parts),
-        first_party_url, referrer, visitData);
+        first_party_url, referrer, std::move(visit_data));
 }
 
 void BatLedgerImpl::SetPublisherExclude(const std::string& publisher_key,
@@ -199,9 +184,8 @@ void BatLedgerImpl::FetchGrants(const std::string& lang,
 }
 
 void BatLedgerImpl::GetGrantCaptcha(
-    const std::string& promotion_id,
-    const std::string& promotion_type) {
-  ledger_->GetGrantCaptcha(promotion_id, promotion_type);
+    const std::vector<std::string>& headers) {
+  ledger_->GetGrantCaptcha(headers);
 }
 
 void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
@@ -215,40 +199,6 @@ void BatLedgerImpl::RecoverWallet(const std::string& passPhrase) {
 void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution,
                                       const std::string& promotion_id) {
   ledger_->SolveGrantCaptcha(solution, promotion_id);
-}
-
-void BatLedgerImpl::OnGetAddresses(
-    CallbackHolder<GetAddressesCallback>* holder,
-    std::map<std::string, std::string> addresses) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(mojo::MapToFlatMap(addresses));
-  }
-  delete holder;
-}
-
-void BatLedgerImpl::GetAddresses(
-    int32_t current_country_code,
-    GetAddressesCallback callback) {
-  auto* holder = new CallbackHolder<GetAddressesCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetAddresses(current_country_code,
-      std::bind(BatLedgerImpl::OnGetAddresses, holder, _1));
-}
-
-void BatLedgerImpl::GetBATAddress(GetBATAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetBATAddress());
-}
-
-void BatLedgerImpl::GetBTCAddress(GetBTCAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetBTCAddress());
-}
-
-void BatLedgerImpl::GetETHAddress(GetETHAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetETHAddress());
-}
-
-void BatLedgerImpl::GetLTCAddress(GetLTCAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetLTCAddress());
 }
 
 void BatLedgerImpl::SetRewardsMainEnabled(bool enabled) {
@@ -283,6 +233,10 @@ void BatLedgerImpl::SetAutoContribute(bool enabled) {
   ledger_->SetAutoContribute(enabled);
 }
 
+void BatLedgerImpl::UpdateAdsRewards() {
+  ledger_->UpdateAdsRewards();
+}
+
 void BatLedgerImpl::OnTimer(uint32_t timer_id) {
   ledger_->OnTimer(timer_id);
 }
@@ -311,20 +265,18 @@ void BatLedgerImpl::IsWalletCreated(IsWalletCreatedCallback callback) {
 
 void BatLedgerImpl::GetPublisherActivityFromUrl(
     uint64_t window_id,
-    const std::string& visit_data,
+    ledger::VisitDataPtr visit_data,
     const std::string& publisher_blob) {
-  ledger::VisitData visitData;
-  if (visitData.loadFromJson(visit_data))
-    ledger_->GetPublisherActivityFromUrl(window_id, visitData, publisher_blob);
+  ledger_->GetPublisherActivityFromUrl(
+      window_id, std::move(visit_data), publisher_blob);
 }
 
 // static
 void BatLedgerImpl::OnGetPublisherBanner(
     CallbackHolder<GetPublisherBannerCallback>* holder,
-    std::unique_ptr<ledger::PublisherBanner> banner) {
-  std::string json_banner = banner.get() ? banner->ToJson() : "";
+    ledger::PublisherBannerPtr banner) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(json_banner);
+    std::move(holder->get()).Run(std::move(banner));
   delete holder;
 }
 
@@ -379,24 +331,6 @@ void BatLedgerImpl::HasSufficientBalanceToReconcile(
       std::bind(BatLedgerImpl::OnHasSufficientBalanceToReconcile, holder, _1));
 }
 
-// static
-void BatLedgerImpl::OnAddressesForPaymentId(
-    CallbackHolder<GetAddressesForPaymentIdCallback>* holder,
-    std::map<std::string, std::string> addresses) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(mojo::MapToFlatMap(addresses));
-  delete holder;
-}
-
-void BatLedgerImpl::GetAddressesForPaymentId(
-    GetAddressesForPaymentIdCallback callback) {
-  // delete in OnAddressesForPaymentId
-  auto* holder = new CallbackHolder<GetAddressesForPaymentIdCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetAddressesForPaymentId(
-      std::bind(BatLedgerImpl::OnAddressesForPaymentId, holder, _1));
-}
-
 void BatLedgerImpl::SetCatalogIssuers(const std::string& info) {
   ledger_->SetCatalogIssuers(info);
 }
@@ -406,8 +340,8 @@ void BatLedgerImpl::ConfirmAd(const std::string& info) {
 }
 
 // static
-void BatLedgerImpl::OnGetTransactionHistoryForThisCycle(
-    CallbackHolder<GetTransactionHistoryForThisCycleCallback>* holder,
+void BatLedgerImpl::OnGetTransactionHistory(
+    CallbackHolder<GetTransactionHistoryCallback>* holder,
     std::unique_ptr<ledger::TransactionsInfo> history) {
   std::string json_transactions = history.get() ? history->ToJson() : "";
   if (holder->is_valid())
@@ -415,13 +349,13 @@ void BatLedgerImpl::OnGetTransactionHistoryForThisCycle(
   delete holder;
 }
 
-void BatLedgerImpl::GetTransactionHistoryForThisCycle(
-    GetTransactionHistoryForThisCycleCallback callback) {
-  auto* holder = new CallbackHolder<GetTransactionHistoryForThisCycleCallback>(
+void BatLedgerImpl::GetTransactionHistory(
+    GetTransactionHistoryCallback callback) {
+  auto* holder = new CallbackHolder<GetTransactionHistoryCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_->GetTransactionHistoryForThisCycle(
-      std::bind(BatLedgerImpl::OnGetTransactionHistoryForThisCycle,
+  ledger_->GetTransactionHistory(
+      std::bind(BatLedgerImpl::OnGetTransactionHistory,
           holder, _1));
 }
 
@@ -565,8 +499,8 @@ void BatLedgerImpl::RefreshPublisher(
       std::bind(BatLedgerImpl::OnRefreshPublisher, holder, _1));
 }
 
-void BatLedgerImpl::StartAutoContribute() {
-  ledger_->StartAutoContribute();
+void BatLedgerImpl::StartMonthlyContribution() {
+  ledger_->StartMonthlyContribution();
 }
 
 void BatLedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
@@ -670,6 +604,100 @@ void BatLedgerImpl::GetPendingContributionsTotal(
 
   ledger_->GetPendingContributionsTotal(
       std::bind(BatLedgerImpl::OnGetPendingContributionsTotal,
+                holder,
+                _1));
+}
+
+// static
+void BatLedgerImpl::OnFetchBalance(
+    CallbackHolder<FetchBalanceCallback>* holder,
+    ledger::Result result,
+    ledger::BalancePtr balance) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(balance));
+  delete holder;
+}
+
+void BatLedgerImpl::FetchBalance(
+    FetchBalanceCallback callback) {
+  auto* holder = new CallbackHolder<FetchBalanceCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->FetchBalance(
+      std::bind(BatLedgerImpl::OnFetchBalance,
+                holder,
+                _1,
+                _2));
+}
+
+// static
+void BatLedgerImpl::OnGetExternalWallet(
+    CallbackHolder<GetExternalWalletCallback>* holder,
+    ledger::Result result,
+    ledger::ExternalWalletPtr wallet) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(wallet));
+  delete holder;
+}
+
+void BatLedgerImpl::GetExternalWallet(const std::string& wallet_type,
+                                      GetExternalWalletCallback callback) {
+  auto* holder = new CallbackHolder<GetExternalWalletCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetExternalWallet(
+      wallet_type,
+      std::bind(BatLedgerImpl::OnGetExternalWallet,
+                holder,
+                _1,
+                _2));
+}
+
+// static
+void BatLedgerImpl::OnExternalWalletAuthorization(
+    CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
+    ledger::Result result,
+    const std::map<std::string, std::string>& args) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, mojo::MapToFlatMap(args));
+  delete holder;
+}
+
+void BatLedgerImpl::ExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const base::flat_map<std::string, std::string>& args,
+    ExternalWalletAuthorizationCallback callback) {
+  auto* holder = new CallbackHolder<ExternalWalletAuthorizationCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->ExternalWalletAuthorization(
+      wallet_type,
+      mojo::FlatMapToMap(args),
+      std::bind(BatLedgerImpl::OnExternalWalletAuthorization,
+                holder,
+                _1,
+                _2));
+}
+
+// static
+void BatLedgerImpl::OnDisconnectWallet(
+    CallbackHolder<DisconnectWalletCallback>* holder,
+    ledger::Result result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::DisconnectWallet(
+    const std::string& wallet_type,
+    DisconnectWalletCallback callback) {
+  auto* holder = new CallbackHolder<DisconnectWalletCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->DisconnectWallet(
+      wallet_type,
+      std::bind(BatLedgerImpl::OnDisconnectWallet,
                 holder,
                 _1));
 }

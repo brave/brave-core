@@ -4,13 +4,22 @@
 
 import { types } from '../../../brave_welcome_ui/constants/welcome_types'
 import * as actions from '../../../brave_welcome_ui/actions/welcome_actions'
+import { mockImportSources } from '../../testData'
 
 describe('welcome_actions', () => {
-  it('importNowRequested', () => {
-    expect(actions.importNowRequested()).toEqual({
-      type: types.IMPORT_NOW_REQUESTED,
+  it('getBrowserProfilesSuccess', () => {
+    expect(actions.getBrowserProfilesSuccess(mockImportSources)).toEqual({
+      type: types.IMPORT_BROWSER_PROFILES_SUCCESS,
       meta: undefined,
-      payload: undefined
+      payload: mockImportSources
+    })
+  })
+
+  it('importBrowserProfileRequested', () => {
+    expect(actions.importBrowserProfileRequested(0)).toEqual({
+      type: types.IMPORT_BROWSER_DATA_REQUESTED,
+      meta: undefined,
+      payload: 0
     })
   })
 
@@ -27,6 +36,21 @@ describe('welcome_actions', () => {
       type: types.CLOSE_TAB_REQUESTED,
       meta: undefined,
       payload: undefined
+    })
+  })
+
+  it('changeDefaultSearchProvider', () => {
+    expect(actions.changeDefaultSearchProvider(12345)).toEqual({
+      type: types.CHANGE_DEFAULT_SEARCH_PROVIDER,
+      payload: 12345
+    })
+  })
+
+  it('getSearchEngineProvidersSuccess', () => {
+    const mockPayload = []
+    expect(actions.getSearchEngineProvidersSuccess(mockPayload)).toEqual({
+      type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+      payload: mockPayload
     })
   })
 })

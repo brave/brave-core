@@ -6,6 +6,7 @@ import { Reducer } from 'redux'
 
 // Constants
 import { types } from '../constants/new_tab_types'
+import { Preferences } from '../api/preferences'
 
 // API
 import * as gridAPI from '../api/topSites/grid'
@@ -26,6 +27,9 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
   const startingState = state
   const payload = action.payload
   switch (action.type) {
+    case types.NEW_TAB_TEXT_DIRECTION_UPDATED:
+      state = { ...state, textDirection: payload }
+      break
     case types.BOOKMARK_ADDED:
       const topSite: NewTab.Site | undefined = state.topSites.find((site) => site.url === payload.url)
       if (topSite) {
@@ -143,6 +147,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE:
       chrome.send('toggleAlternativePrivateSearchEngine', [])
       state = { ...state, useAlternativePrivateSearchEngine: payload.shouldUse }
+      break
+
+    case types.NEW_TAB_PREFERENCES_UPDATED:
+      const preferences: Preferences = payload.preferences
+      state = {
+        ...state,
+        ...preferences
+      }
       break
 
     default:

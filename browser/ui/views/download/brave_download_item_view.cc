@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/download/brave_download_item_view.h"
+
+#include <algorithm>
+#include <utility>
 
 #include "base/auto_reset.h"
 #include "base/strings/string16.h"
@@ -19,6 +23,7 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/text_elider.h"
 #include "ui/gfx/text_utils.h"
+#include "ui/views/controls/label.h"
 
 using download::DownloadItem;
 
@@ -36,7 +41,7 @@ constexpr SkColor kDownloadUnlockIconColor = SkColorSetRGB(0xC6, 0x36, 0x26);
 // Decrement of lock icon height from font baseline
 constexpr int kDownloadUnlockIconHeightDecr = 1;
 
-} // namespace
+}  // namespace
 
 BraveDownloadItemView::BraveDownloadItemView(
     DownloadUIModel::DownloadUIModelPtr download,
@@ -55,13 +60,21 @@ BraveDownloadItemView::~BraveDownloadItemView() {}
 
 // View overrides.
 
+void BraveDownloadItemView::Layout() {
+  DownloadItemView::Layout();
+  // Adjust the position of the status text label.
+  if (!IsShowingWarningDialog()) {
+    status_label_->SetY(GetYForStatusText());
+  }
+}
+
 gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
   // Call base class to get the width.
   gfx::Size size = DownloadItemView::CalculatePreferredSize();
   // Calculate the height accounting for the extra line.
   int child_height = font_list_.GetHeight() + kBraveVerticalTextPadding +
-                     origin_url_font_list_.GetHeight() + kBraveVerticalTextPadding +
-                     status_font_list_.GetHeight();
+                     origin_url_font_list_.GetHeight() +
+                     kBraveVerticalTextPadding + status_font_list_.GetHeight();
   if (IsShowingWarningDialog()) {
     child_height =
         std::max({child_height, GetButtonSize().height(), kWarningIconSize});
@@ -96,7 +109,8 @@ void BraveDownloadItemView::OnDownloadUpdated() {
     // as well.
     bool needs_repaint = false;
     bool new_is_secure = false;
-    base::string16 new_origin_url = brave_model_.GetOriginURLText(new_is_secure);
+    base::string16 new_origin_url =
+        brave_model_.GetOriginURLText(new_is_secure);
     if (new_origin_url != origin_url_text_ ||
       new_is_secure != is_origin_url_secure_) {
       origin_url_text_ = new_origin_url;
@@ -113,7 +127,8 @@ void BraveDownloadItemView::OnDownloadUpdated() {
   }
 
   // Update tooltip.
-  base::string16 new_tip = brave_model_.GetTooltipText(font_list_, kTooltipMaxWidth);
+  base::string16 new_tip =
+      brave_model_.GetTooltipText(font_list_, kTooltipMaxWidth);
   if (new_tip != tooltip_text_) {
     tooltip_text_ = new_tip;
     TooltipTextChanged();
@@ -147,19 +162,6 @@ int BraveDownloadItemView::GetYForStatusText() const {
 
 // Drawing routines.
 
-void BraveDownloadItemView::DrawStatusText(gfx::Canvas* canvas) {
-  if (status_text_.empty() || IsShowingWarningDialog())
-    return;
-
-  int mirrored_x = GetMirroredXWithWidthInView(
-      kStartPadding + DownloadShelf::kProgressIndicatorSize +
-          kProgressTextPadding,
-      kTextWidth);
-  canvas->DrawStringRect(status_text_, status_font_list_, GetDimmedTextColor(),
-                         gfx::Rect(mirrored_x, GetYForStatusText(), kTextWidth,
-                                   status_font_list_.GetHeight()));
-}
-
 void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
   if (origin_url_text_.empty() || IsShowingWarningDialog())
     return;
@@ -167,7 +169,7 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
   int x = kStartPadding + DownloadShelf::kProgressIndicatorSize +
           kProgressTextPadding;
   int text_width = kTextWidth;
- 
+
   if (!is_origin_url_secure_) {
     DrawLockIcon(canvas);
     int dx = origin_url_font_list_.GetBaseline() + kOriginURLIconRightPadding;
@@ -179,8 +181,9 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
       origin_url_text_, origin_url_font_list_, text_width, gfx::ELIDE_TAIL);
   int mirrored_x = GetMirroredXWithWidthInView(x, text_width);
 
+  SkColor dimmed_text_color = SkColorSetA(GetTextColor(), 0xC7);
   canvas->DrawStringRect(
-      originURL, origin_url_font_list_, GetDimmedTextColor(),
+      originURL, origin_url_font_list_, dimmed_text_color,
       gfx::Rect(mirrored_x, GetYForOriginURLText(), text_width,
                 origin_url_font_list_.GetHeight()));
 }

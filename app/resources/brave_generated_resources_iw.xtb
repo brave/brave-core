@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="7942180974165298215">Brave חוסם מודעות</translation>
 <translation id="6406506848690869874">סנכרון</translation>
+<translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") לא נתמך ב-Brave.</translation>
 <translation id="7450557937477381864">סגירת Chrome</translation>
 <translation id="7008934821596358692">על מנת לסיים את הייבוא, סגרו את כל חלונות הדפדפן.</translation>
@@ -28,10 +29,9 @@
 <translation id="3218385319396786393">ההפעלה האוטומטית נחסמה בדף זה</translation>
 <translation id="4988333904713528597">הרשו תמיד הפעלה אוטומטית ל-<ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">המשיכו לחסום הפעלה אוטומטית</translation>
-<translation id="7543906827780734027">Brave טרם בדקו את התוסף הזה - ייתכן שזהו תוסף זדוני.
-תרצה להוסיף את "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" בכל אופן?</translation>
+<translation id="5883458389055721080">Brave לא בדקה את האבטחה והבטיחות של תוסף זה. התקינו את התוסף רק אם אתם סומכים על המפתח.</translation>
 <translation id="2044383478723007273">צבעי Brave</translation>
-<translation id="5341901626640816374">שימוש בשורת כתובת רחבה</translation>
+<translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="6123134130710658846">הסתר את כפתור Brave Rewards</translation>
 <translation id="7635711399568194460">מסתיר את כפתור Brave Rewards בסרגל המיקום כש-Brave Rewards אינו זמין</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
@@ -48,21 +48,28 @@
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
+<translation id="3400357268283240774">הגדרות נוספות</translation>
 <translation id="6303294677342628402">הגנות</translation>
-<translation id="8919235146866304148">הגנת טביעת אצבעות</translation>
-<translation id="520895744850022668">HTTPS בכל מקום</translation>
-<translation id="5259716416204774556">חסימת תסריטים</translation>
+<translation id="7133511168130368997">חסמו עוקבים ומודעות אשר עוקבים אחריכם ברחבי האינטרנט.</translation>
+<translation id="2761825942249694703">אלו הן הגדרות ברירת המחדל של Shields. הן חלות על כל אתרי האינטרנט, אלא אם תבצעו שינוי כלשהו בפאנל של Shields באתר מסוים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.</translation>
+<translation id="8754605759692119662">פעולה זו תחסום את רוב המודעות באתרי אינטרנט, ולא מודעות פרטיות של Brave 
+— אלה נשלטים דרך</translation>
+<translation id="6388201778088078932">הגדרות.</translation>
+<translation id="9185018653595759199">חסימת רשתות חברתיות</translation>
+<translation id="5709627087332022422">חסום עוקבים מרובי-אתרים (cross-site)</translation>
+<translation id="9075744464571452108">זיהוי מכשיר</translation>
+<translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
+<translation id="4824468494729001999">חסום סקריפטים</translation>
 <translation id="7498695072878479744">אפשר כפתור התחברות לגוגל באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
-<translation id="6067014455220527258">חסימת פרסומות</translation>
-<translation id="6985711843506827936">אפשר פרסומות ומעקב</translation>
-<translation id="6132506775968708399">חסימת כל קבצי עוגיות צד שלישי</translation>
+<translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
+<translation id="4699812599455071925">חסום קבצי cookies מרובי-אתרים (cross-site) בלבד</translation>
 <translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
 <translation id="6883611015375728278">חסימת כל העוגיות</translation>
-<translation id="1442559343076146186">חוסם צד שלישי לטביעת אצבעות</translation>
-<translation id="8034285923190068220">אפשרו טביעות אצבע</translation>
-<translation id="4540198958192073185">חסימת כל טביעות האצבע</translation>
+<translation id="3084022390368021391">חסום רק ניסיונות מרובי-אתרים (cross-site) לזיהוי המכשיר</translation>
+<translation id="1847422622180531843">התר את כל הניסיונות לזיהוי המכשיר</translation>
+<translation id="8375051111011093523">חסום את כל הניסיונות לזיהוי המכשיר</translation>
 <translation id="8942080017911802454">WebRTC IP מדיניות תפעול</translation>
 <translation id="6165508094623778733">למדו עוד</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
@@ -74,11 +81,19 @@
 <translation id="2414886740292270097">כהה</translation>
 <translation id="1360441190790440400">כמו לינוקס</translation>
 <translation id="1336940801687497203">כמו Windows</translation>
+<translation id="8721331068159819483">כמו macOS</translation>
 <translation id="6786747875388722282">תוספים</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
 <translation id="6554397389149987360">משתמש ברכיב Hangouts כדי לאפשר שיתוף מסך ותכונות אחרות בדפדפן.</translation>
+<translation id="4154389611571860454">משתמש בהרחבה נלווית ל-IPFS לתמיכה ב-IPFS בדפדפן.</translation>
 <translation id="8137559199583651773">נהל תוספים</translation>
 <translation id="4928988318462976765">חנות תוספי רשת</translation>
 <translation id="9181207987584064303">הצג בחנות תוספי רשת</translation>
 <translation id="4846154056248462491">ביציאה</translation>
+<translation id="5057399635433117814">לתרגם דף זה? זה ישלח את כל הטקסט של דף זה למייקרוסופט לתרגום.</translation>
+<translation id="3371343170427636147">יישומי לילה של דפדפן Brave</translation>
+<translation id="4097979995947147464">יישומי ביטא של דפדפן Brave</translation>
+<translation id="8303432794159193481">יישומי פיתוח של דפדפן Brave</translation>
+<translation id="8292967014767479012">יישומי דפדפן Brave</translation>
+<translation id="4743468424889072281">יישומי פיתוח של דפדפן Brave</translation>
 </translationbundle>

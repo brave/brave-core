@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave apstiprināts publicētājs",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Brave apstiprināts izveidotājs",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "Uzmanību",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "Tagad Jūs varat pelnīt, skatoties reklāmas.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Brave reklāmas ir klāt!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -237,14 +237,6 @@
     "message": "Velciet BAT ikonu uz",
     "description": "Directs the user to drag the BAT icon"
   },
-  "captchaLuckyDay": {
-    "message": "Jums šodien veicas!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "captchaOnTheWay": {
-    "message": "Drīzumā saņemsiet savu marķiera piešķīrumu.",
-    "description": "Cosmetic text indicating grant funds are on the way"
-  },
   "captchaProveHuman": {
     "message": "Pierādiet, ka esat cilvēks!",
     "description": "Cosmetic text for captcha prompt"
@@ -298,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Pārlādēt stāvokli",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Jūsu peļņa no reklāmām ir pieejama.",
+    "message": "Ir pieejama jūsu peļņa no reklāmām.",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +382,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "Jūsu ikmēneša dzeramnauda ir apstrādāta!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "Ziedojumi un dzeramnaudas",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "Noklikšķinot uz \"Pievienoties Brave balvām\", Jūs norādāt, ka izlasījāt un piekrītat",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +398,69 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "Ieslēgt reklāmas",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "nopelnīts no reklāmām",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Dot dzeramnaudu šim tvītam",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Dzeramnauda",
+    "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "Piešķirt šim postam dzeramnaudu",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Dzeramnauda",
+    "description": "Icon label for Reddit tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "Izstrādātājs $name$nesen apstiprināja ",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "Jums ir nesamaksātas dzeramnaudas nepietiekamu līdzekļu dēļ",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Gaidāmais ziedojums",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "Jums šodien veicas!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "Drīzumā saņemsiet savu marķiera piešķīrumu.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "Bezmaksas marķiera piešķīrums",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Brave reklāmu peļņa!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "Jūsu peļņas piešķīrumi no Brave reklāmām būs drīzumā pieejami.",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "Jūsu Brave reklāmu marķiera piešķīrums",
+    "description": "Token title on success screen for ads"
   }
 }

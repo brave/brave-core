@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "3ইয়-পক্ষের ট্র্যাকারগুলি ব্লক করা হয়েছে",
+    "message": "ক্রশ-সাইট ট্র্যাকারগুলি ব্লক করা হয়েছে",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "3য়-পক্ষ কুকিগুলি ব্লক করা হয়েছে",
+    "message": "ক্রশ-সাইট কুকিগুলি ব্লক করা হয়েছে",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "3য়-পক্ষ ডিভাইস শনাক্তকরণ ব্লক করা হয়েছে",
+    "message": "ক্রশ-সাইট ডিভাইস শনাক্তকরণ ব্লক করা হয়েছে",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "ডিভাইস শনাক্রকরণ ব্লক করা হয়েছে",
+    "message": "ডিভাইস শনাক্তকরণ প্রচেষ্টাগুলি ব্লক করা হয়েছে",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "সমস্ত ডিভাইস শনাক্তকরণ অনুমোদন করা হয়েছে",
+    "message": "সমস্ত ডিভাইস শনাক্তকরণের প্রচেষ্টাগুলি অনুমোদিত করা হয়েছে",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -119,6 +119,18 @@
     "message": "অনুমতি দিন",
     "description": "Message for the resources blocked *allow* option"
   },
+  "blockedOnce": {
+    "message": "একবার ব্লক করা হয়েছে",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "একবার অনুমোদিত করুন",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "স্ক্রিপ্টগুলিকে একবার অনুমতি দিন",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
   "cancel": {
     "message": "বাতিল করুন",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
@@ -134,5 +146,17 @@
   "changeDefaults": {
     "message": "গ্লোবাল প্রতিরক্ষা ডিফল্টগুলি পরিবর্তন করুন",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "নির্বাচকের মাধ্যমে উপকরণ ব্লক করুন",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "এই সাইটের জন্য CSS নিয়মগুলি পরিস্কার করুন",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "সমস্ত সাইটের জন্য CSS নিয়মগুলি পরিস্কার করুন",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

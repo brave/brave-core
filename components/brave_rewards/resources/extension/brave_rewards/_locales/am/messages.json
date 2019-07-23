@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "ብሬቭ አሳታሚውን አረጋግጧል",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "በ Brave የተረጋገጠ ፈጣሪ ",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "ያስተውሉ",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "አሁን ማስታወቂያዎችን በማየት ገቢ ማግኘት ይችላሉ።",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "የBrave ማስታወቂያዎች ደርሰዋል!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -237,14 +237,6 @@
     "message": "የ BAT ምልክቱን ወደ ፋይሉ ይጎትቱ",
     "description": "Directs the user to drag the BAT icon"
   },
-  "captchaLuckyDay": {
-    "message": "ይህ እድለኛ የሚሆኑበት ቀን ነው!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "captchaOnTheWay": {
-    "message": "የቶክን ግራንትዎ በመንገድ ላይ ነው።",
-    "description": "Cosmetic text indicating grant funds are on the way"
-  },
   "captchaProveHuman": {
     "message": "ሰው መሆንዎን ያረጋግጡ",
     "description": "Cosmetic text for captcha prompt"
@@ -298,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "ኩነትን አድስ",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "የእርስዎ የማስታወቂያዎች ገቢዎች ይገኛሉ።",
+    "message": "ከማስታወቂያ የሚሰጡዎት ሽልማቶች እዚህ ናቸው!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +382,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "የእርስዎ ወርሃዊ ጠቃሚ ምክሮች ተካሂደዋል!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "አስተዋጽዖዎች እና ጠቃሚ ምክሮች",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "'ሽልማቶችን ተቀላቀል' የሚለውን ጠቅ በማድረግ ማንበብዎን እና መስማማትዎን ይገልፃሉ ለ",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +398,69 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "ማስታወቂያዎችን ያብሩ ",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "ከማስታወቂያዎች የተገኘ",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "ለዚህ ትዊት ጠቃሚ ምክር ይለግሱ",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "ምክር",
+    "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "ለዚህ ፖስት ፍንጭ ስጥ",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "ምክር",
+    "description": "Icon label for Reddit tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "ፈጣሪ $name$ በቅርቡ ተረጋግጧል ",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "ያለዎት ገንዘብ አነስተኛ በመሆኑ ምክንያት በሒደት ላይ ያሉ ፍንጮች አሉዎት ",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "በሒደት ላይ ያለ መዋጮ",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "ይህ እድለኛ የሚሆኑበት ቀን ነው!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "የቶክን ግራንትዎ በመንገድ ላይ ነው።",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "ነፃ የቶክን ብድር",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "የ Brave ማስታወቂያ ሽልማቶች!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "ከ Brave ማስታወቂያዎች የተላከልዎ ሽልማት እየመጣ ነው።",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "የ Brave ማስታወቂያዎ የተለዋጭ ስም ግራንት ",
+    "description": "Token title on success screen for ads"
   }
 }

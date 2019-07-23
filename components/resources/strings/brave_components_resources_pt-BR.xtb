@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Editar preferencias</translation>
 <translation id="7606029853066610626">Visualizar e Gerenciar Favoritos</translation>
 <translation id="5550994254534676787">Visualizar seu histórico de navegação</translation>
+<translation id="1742484101357469636">Configurações do Painel</translation>
+<translation id="8320281346741574991">Exibir imagem de fundo</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="8730621377337864115">Concluído</translation>
 <translation id="6248988683584659830">Configurações de pesquisa</translation>
@@ -41,6 +43,8 @@
 <translation id="8958799246752641148">O Tor esconde seu endereço IP dos sites que você visita roteando sua navegação por vários servidores Tor antes de chegar ao seu destino. Essas conexões são criptografadas, então seu ISP ou seu empregador também não’ podem ver quais sites você’está visitando. O Tor pode reduzir a velocidade da navegação e alguns sites podem não funcionar.</translation>
 <translation id="520608572871993342">Usar a Janela Privada apenas altera o que o Brave faz em seu dispositivo — isso não altera o comportamento de mais ninguém. O Tor esconde o seu endereço IP dos sites que você visita, e esconde os sites que você visita do seu ISP ou seu empregador. Abra uma Janela Privada com o Tor a partir do menu, ou com {{ tecla }}.</translation>
 <translation id="6975708438781948564">Saiba mais sobre o Tor no Brave</translation>
+<translation id="4272382368346338917">Filtros Adicionais</translation>
+<translation id="8949292968394988358">Aviso: Ativar muitos filtros pode prejudicar o desempenho</translation>
 <translation id="1869685517625607604">Total de anúncios bloqueados:</translation>
 <translation id="4673764878177947707">Filtros personalizados</translation>
 <translation id="8803682034537762884">Um por linha, o filtro é descrito na sintaxe de filtro do Adblock Plus</translation>
@@ -54,11 +58,14 @@
 <translation id="5633840519079139680">O Brave facilita a configuração do seu ambiente de navegação, importando os favoritos e as configurações de outros navegadores instalados no seu computador.</translation>
 <translation id="8275038454117074363">Importar</translation>
 <translation id="5540323067375019678">Gerenciar suas proteções</translation>
-<translation id="4755560456428781763">Como o próprio nome indica, as proteções do Brave protegem você contra anúncios e rastreadores indesejados durante a navegação. Se ocorrer um problema ao navegar em um site específico, ajuste seu nível de proteção no painel de proteções localizado na barra de ferramentas.</translation>
+<translation id="3278033011827237847">Proteja-se de anúncios e trackers invasivos enquanto navega na internet com o Brave Shields. Desative o Shields caso um site não esteja funcionando adequadamente.</translation>
 <translation id="3366308997091824722">Configurações de Escudo</translation>
-<translation id="3884404068544758153">Alterar seu mecanismo de pesquisa</translation>
+<translation id="4764692524839457597">padrão</translation>
+<translation id="3108122610701115301">Definir padrão</translation>
+<translation id="2469440407442116729">Selecionar um mecanismo de busca</translation>
 <translation id="438216590634144114">Escolha o mecanismo de pesquisa que você deseja usar como padrão ao pesquisar na internet pela barra de endereço.</translation>
-<translation id="8428213095426709021">Configurações</translation>
+<translation id="5804484488647369316">Definir mecanismo de busca padrão</translation>
+<translation id="4428458837269935199">Para uma experiência de pesquisa com maior privacidade, experimente o DuckDuckGo.</translation>
 <translation id="513635702954746724">Escolha seu tema de cores</translation>
 <translation id="6842850080200126305">Para definir a cor da sua barra de ferramentas, selecione a opção clara ou escura no painel de configurações.</translation>
 <translation id="2801098717523961746">Escolha seu tema</translation>
@@ -68,8 +75,9 @@
 <translation id="5946611334574299206">Ganhe tokens exibindo anúncios no Brave. Os anúncios apresentados são baseados nos seus interesses, conforme inferidos pelo seu comportamento de navegação. Nenhum dado pessoal ou histórico de navegação sai do seu navegador.</translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
 <translation id="1527222983464337010">Uma forma automática de apoiar editores e criadores de conteúdo. Defina um pagamento mensal e navegue normalmente. Os sites que você visita recebem suas contribuições automaticamente, com base em sua atenção que é medida pelo Brave.</translation>
-<translation id="8157096848242649588">Data de pagamento</translation>
-<translation id="5208388044986603165">Notificações de anúncios recebidas</translation>
+<translation id="20281847067919078">Recompensas pendentes estimadas</translation>
+<translation id="8593551638387217772">Próxima data de pagamento</translation>
+<translation id="319209088187794725">Notificações de anúncios recebidas este mês</translation>
 <translation id="4229016885653790965">Desculpe! Os anúncios ainda não estão disponíveis em sua região.</translation>
 <translation id="654711254769318398">Páginas de anúncios visualizadas</translation>
 <translation id="2532127066761785857">Número máximo de anúncios exibidos</translation>
@@ -106,8 +114,9 @@
 <translation id="1199044745726588100">5 segundos</translation>
 <translation id="4045581694057451126">8 segundos</translation>
 <translation id="8610523985422563960">1 minuto</translation>
-<translation id="7521774480426463961">Ativar a capacidade de dar dicas em postagens ‘Like’</translation>
+<translation id="9031738692126722094">Ativar gorjetas mínimas nestes sites</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Faça doações no local à medida que encontra preciosidades.</translation>
 <translation id="6135431587052937035">Apoie os seus sites favoritos com dicas mensais recorrentes.</translation>
@@ -128,6 +137,8 @@
 <translation id="7797604753681168055">Recuperar agora!</translation>
 <translation id="1184075897575325927">Sinto muito, parece que esse auxílio já foi reivindicado.</translation>
 <translation id="282693359045252357">Data da próxima gorjeta mensal</translation>
+<translation id="6231182869178328516">Acabei de dar uma gorjeta para <ph name="NAME">$1<ex>user</ex></ph> usando o Brave Browser. Confira em https://brave.com/tips.</translation>
+<translation id="8404935570206006581">DêGorjetasComBrave</translation>
 <translation id="7422678632904904341">Quantia:</translation>
 <translation id="5923611424721173182">Reconciliação Atual</translation>
 <translation id="5457113250005438886">Inválido</translation>
@@ -150,6 +161,9 @@
 <translation id="4235360514405112390">Válido</translation>
 <translation id="2700943637868737038">ID de Visualização:</translation>
 <translation id="3576689061489548788">ID de Pagamento da Carteira:</translation>
+<translation id="758790787422117549">ID da Pessoa</translation>
+<translation id="2223892939866251845">ID do Usuário</translation>
+<translation id="1642443162274867084">Carteira criada</translation>
 <translation id="5094577350232361255">sobre</translation>
 <translation id="4918086044614829423">Aceitar</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. O Brave é uma marca registrada da Brave Software. Os nomes de sites podem ser marcas comerciais ou marcas registradas do proprietário do site.</translation>
@@ -165,11 +179,16 @@
 <translation id="3671566813999349838">Valor</translation>
 <translation id="3819257035322786455">Backup</translation>
 <translation id="1312977698678162065">Receba dinheiro para ver anúncios relevantes que respeitam a sua privacidade.</translation>
+<translation id="7655723274266132226">Agora você pode ganhar visualizando anúncios.</translation>
+<translation id="2975780980638932742">Os anúncios do Brave chegaram!</translation>
 <translation id="3361548743396744457">Apoie seus sites favoritos apenas navegando – ou faça uma doação para um site a qualquer momento que desejar.</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="4493850495402472953">e</translation>
 <translation id="8804164990146287819">Política de Privacidade</translation>
 <translation id="4281844954008187215">Termos de Serviço</translation>
+<translation id="4405997465645469914">Ao ativar o Brave Rewards, você indica que leu e concorda com o</translation>
+<translation id="8819542691525488940">Ao clicar em  ‘Sim, estou dentro!’, Você indica que leu e concorda com o</translation>
+<translation id="8071424789698327147">Ao clicar em ‘Sim, estou pronto!’, você indica que leu e concorda com o</translation>
 <translation id="7530570094705720669">Criando carteira</translation>
 <translation id="2105596359439030979">Sua atenção é valiosa. Ganhe vendo anúncios que respeitam a sua privacidade e pague para apoiar os criadores de conteúdo que você adora.</translation>
 <translation id="516395624550019162">Sim, eu quero!</translation>
@@ -178,8 +197,6 @@
 <translation id="3825698830825612308">Editores Verificados Brave</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="7262285991915892790">Arraste o Ícone BAT para o</translation>
-<translation id="2151535059686617995">É’ o seu dia de sorte!</translation>
-<translation id="6255773350565723852">Seu auxílio token está a caminho.</translation>
 <translation id="7656781188259414093">alvo.</translation>
 <translation id="1555514580945108302">Hmm… Ainda Não. Tente Novamente.</translation>
 <translation id="13853865024308201">Reivindicar</translation>
@@ -206,7 +223,7 @@
 <translation id="7277134233385925078">Definir doação mensal</translation>
 <translation id="8003573781961874199">Fazer download como PDF</translation>
 <translation id="298067735430872465">Ganhos de Anúncios</translation>
-<translation id="3521361150443442734">Seus Ganhos de Anúncios já estão disponíveis.</translation>
+<translation id="2266556115441975588">Suas recompensas do Ads estão aqui!</translation>
 <translation id="8764029012618014430">Habilitar Dicas</translation>
 <translation id="3412655388715513818">Excluir este site</translation>
 <translation id="418343137736963579">Número total de sites que você excluiu do Auto-Contribute:</translation>
@@ -264,6 +281,8 @@
 <translation id="194625454574835815">Redefinir senha</translation>
 <translation id="6354568176665589146">Recorrente</translation>
 <translation id="7577100371127227294">Doações Mensais</translation>
+<translation id="2391095793008133394">Dê uma gorjeta para {{ user }} por sua publicação:</translation>
+<translation id="7557413530932469222">Dar uma gorjeta para {{ user }} por sua publicação!</translation>
 <translation id="1110535155349301542">remover</translation>
 <translation id="8942997470474842562">Você’designou {{reservedAmount}} BAT para criadores de conteúdo que ainda não se inscreveram para receber contribuições. Seu navegador vai tentar realizar a contribuição até que eles sejam verificados ou até que 90 dias tenham se passado.</translation>
 <translation id="8759753423332885148">Saiba mais.</translation>
@@ -272,8 +291,8 @@
 <translation id="3626186271103896082">Faça backup da sua carteira</translation>
 <translation id="5717619667204259673">Armazene esta chave de recuperação com segurança.</translation>
 <translation id="4699702339303280827">Você sempre pode usar essa chave para recuperar sua carteira se algo acontecer com seu navegador ou computador. Mas a mantenha sob absoluta confidencialidade — qualquer pessoa que conseguir essa chave pode roubar sua carteira. ÉIt’ provavelmente mais seguro anotá-la e guardá-la em algum lugar onde você mantenha informações importantes.</translation>
-<translation id="5759071143806884916">Você pode apoiar esse site enviando uma gorjeta. É’ uma forma de agradecê-los por criar um ótimo conteúdo. Criadores de conteúdo verificados recebem suas gorjetas durante a primeira semana de cada mês.</translation>
-<translation id="1704859330137112950">Caso deseje, você pode agendar doações mensais para apoiar esse site regularmente.</translation>
+<translation id="7354412786785889047">Você pode ajudar este criador de conteúdo enviando uma gorjeta. É uma maneira de agradecê-lo por criar um ótimo conteúdo. Os criadores verificados recebem suas gorjetas durante a primeira semana de cada mês.</translation>
+<translation id="3475063317678050010">Se quiser, você pode agendar gorjetas mensais para ajudar este criador de forma contínua.</translation>
 <translation id="3074127054582480056">Atenção</translation>
 <translation id="822513417008209372">Você’ está apoiando no momento</translation>
 <translation id="5010112177773747965">sem o seu consentimento.</translation>
@@ -300,8 +319,10 @@
 <translation id="259138486959961679">Veja todos os {{numItems}} itens</translation>
 <translation id="7857284676033058221">Veja todos os {{numSites}} sites</translation>
 <translation id="3536298624341433814">Enviar minha Doação</translation>
+<translation id="8428213095426709021">Configurações</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">sites</translation>
+<translation id="1834493631938747505">Conte aos outros sobre sua gorjeta.</translation>
 <translation id="8826007068782654809">Obrigado</translation>
 <translation id="6665366815203065060">Você acabou de enviar uma gorjeta para:</translation>
 <translation id="6432779622695508363">Gorjeta ao gostar</translation>
@@ -312,8 +333,12 @@
 <translation id="4914597931214386232">Auxílios Token Reivindicados</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transações</translation>
+<translation id="3124090095880236567">Ativar anúncios</translation>
 <translation id="8987812599455325915">Isso habilita tanto anúncios quanto contribuições automáticas. Você pode ativá-las ou desativá-las separadamente a qualquer momento.</translation>
 <translation id="1485484147452131556">Ativar recompensas</translation>
+<translation id="3983104749597726322">Tuíte</translation>
+<translation id="5636843789453098076">Dar gorjeta para @{{ user }} por seu tuíte:</translation>
+<translation id="4242384385082203046">Dar gorjeta para @{{ user }} por seu tuíte!</translation>
 <translation id="2448312741937722512">Tipo</translation>
 <translation id="8772672608371898774">Autor verificado pelo Brave</translation>
 <translation id="5050370287908180130">Veja Extrato Mensal para Detalhes</translation>
@@ -336,6 +361,25 @@
 <translation id="6727483290601442544">Ver Detalhes</translation>
 <translation id="1988679729106502285">OBSERVAÇÃO:</translation>
 <translation id="5815103311506128988">Esse criador ainda não se inscreveu para receber contribuições dos usuários do Brave. Seu navegador vai tentar realizar a contribuição até que eles sejam verificados ou até que 90 dias tenham se passado.</translation>
+<translation id="4292832015778676417">ganhou de anúncios</translation>
+<translation id="3197752845651180812">Contribuições pendentes</translation>
+<translation id="3164105678355419142">Gorjeta recorrente</translation>
+<translation id="2927922949538312364">Gorjeta única</translation>
+<translation id="6964891561514920613">Mostrar todas as contribuições pendentes</translation>
+<translation id="4346944508027912677">Pendente até</translation>
+<translation id="7410549756000115387">Nenhuma contribuição pendente…</translation>
+<translation id="1963227389609234879">Remover tudo</translation>
+<translation id="1170315781901539495">Sites Excluídos</translation>
+<translation id="5119190679543565400">Restaurar este site</translation>
+<translation id="9075700728717335924">Você excluiu</translation>
+<translation id="4862817811647633830">sites de Auto-Contribuição.</translation>
+<translation id="923467487918828349">Mostrar todas</translation>
+<translation id="5471305206221894680">Sites com Suporte</translation>
+<translation id="2306169361186864012">Recompensas do Brave Ads!</translation>
+<translation id="3757873395477273033">O montante da sua recompensa do Brave Ads está sendo liberado.</translation>
+<translation id="8101881066646819737">Sua Quantia de Tokens do Brave Ads</translation>
+<translation id="2151535059686617995">É’ o seu dia de sorte!</translation>
+<translation id="6255773350565723852">Seu auxílio token está a caminho.</translation>
 <translation id="1181037720776840403">Remover</translation>
 <translation id="7885157704277298658">Copiado!</translation>
 <translation id="5379640681913450928">Contagem de palavras:</translation>
@@ -353,6 +397,7 @@
 <translation id="1061533051865606843">Adicionar um Dispositivo Novo</translation>
 <translation id="8780295742023331191">Visualizar Código Sync</translation>
 <translation id="1755198127524719638">Configurações do Sync</translation>
+<translation id="7558480201297099157">Gerencie quais informações você gostaria de sincronizar entre dispositivos. Essas configurações afetam apenas este dispositivo.</translation>
 <translation id="8820817407110198400">Favoritos</translation>
 <translation id="5591129654353352557">Configurações do site salvas</translation>
 <translation id="7859704718976024901">Histórico de navegação</translation>
@@ -380,6 +425,7 @@
 <translation id="5086223971958279691">Código da Cadeia Sync</translation>
 <translation id="2899261497479389619">No seu computador de destino, vá até Brave Sync nas configurações e clique no botão</translation>
 <translation id="4827439149833241990">“Eu tenho um Código Sync”.</translation>
+<translation id="24067401253841795">Digite as palavras do código da cadeia de sincronização mostradas abaixo. Trate este código como uma senha. Se alguém souber disso, eles poderão ler e modificar seus dados sincronizados.</translation>
 <translation id="8914601399214979966">Use minha câmera como alternativa</translation>
 <translation id="3034163433136515805">Visualizar Código QR</translation>
 <translation id="5093410893656857925">Escolha o Tipo de Dispositivo</translation>
@@ -392,4 +438,6 @@
 <translation id="8349682220522608879">Adicione um código de sincronização.</translation>
 <translation id="1468095392829989299">Não foi possível se comunicar com os servidores de sincronização</translation>
 <translation id="1399673826422570698">Talvez sua rede ou os servidores de sincronização estejam com um problema.</translation>
+<translation id="5286379413446391050">Não foi possível conectar-se aos servidores de sincronização</translation>
+<translation id="2410472020237369473">O relógio do seu computador pode estar definido para a hora errada ou fuso horário. Verifique as configurações do seu relógio.</translation>
 </translationbundle>

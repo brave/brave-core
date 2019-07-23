@@ -41,19 +41,24 @@ declare namespace NewTab {
   }
 
   export interface State {
-    topSites: Site[],
-    ignoredTopSites: Site[],
-    pinnedTopSites: Site[],
-    gridSites: Site[],
-    showEmptyPage: boolean,
-    isIncognito: boolean,
-    useAlternativePrivateSearchEngine: boolean,
-    isTor: boolean,
-    isQwant: boolean,
-    bookmarks: Record<string, Bookmark>,
+    textDirection: string
+    topSites: Site[]
+    ignoredTopSites: Site[]
+    pinnedTopSites: Site[]
+    gridSites: Site[]
+    showEmptyPage: boolean
+    isIncognito: boolean
+    useAlternativePrivateSearchEngine: boolean
+    isTor: boolean
+    isQwant: boolean
+    bookmarks: Record<string, Bookmark>
     stats: Stats
     backgroundImage?: Image
     gridLayoutSize?: 'small'
     showSiteRemovalNotification?: boolean
+    showBackgroundImage: boolean
+    showStats: boolean
+    showClock: boolean
+    showTopSites: boolean
   }
 }

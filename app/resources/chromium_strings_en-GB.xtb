@@ -76,13 +76,9 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="5874882355102994015">Brave cannot show the print preview when the built-in PDF viewer is missing.</translation>
 <translation id="8880183781256147665">Adding to Brave ...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> may be dangerous, so Brave has blocked it.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> may be dangerous, so Brave has blocked it. You're defended by Advanced Protection.</translation>
 <translation id="9067428552314418522">This file is dangerous, so Brave has blocked it.</translation>
-<translation id="2938460345748897177">This file is dangerous, so Brave has blocked it. You're defended by Advanced Protection.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> is dangerous, so Brave has blocked it.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> is dangerous, so Brave has blocked it. You're defended by Advanced Protection.</translation>
 <translation id="89367911614620585">This file may be dangerous, so Brave has blocked it.</translation>
-<translation id="8943391224520748272">This file may be dangerous, so Brave has blocked it. You're defended by Advanced Protection.</translation>
 <translation id="9183662282810237335">Exit Brave anyway?</translation>
 <translation id="3834935463915107022">Quit Brave anyway?</translation>
 <translation id="8797356639448065696">Brave is in background mode.</translation>
@@ -145,8 +141,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
 <translation id="6746636977031158624">Brave OS could not sync your data because your account sign-in details are out of date.</translation>
 <translation id="2999152167963026588">Brave OS could not sync your data because Sync is not available for your domain.</translation>
 <translation id="1459786048951724030">Brave OS could not sync your data due to an error signing in.</translation>
-<translation id="2887570477425111999">Save details in Brave</translation>
-<translation id="193559141530782783">Brave will securely store your personal details so that you don't need to type them in again.</translation>
 <translation id="663059986967017181">Copied to Brave</translation>
 <translation id="1457432835062259213">Brave App Launcher</translation>
 <translation id="82609232232243542">Sign in to Brave</translation>
@@ -184,7 +178,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL"/> for further instructions.<
 <translation id="1912973375560256099">Inbound rule for Brave to allow mDNS traffic.</translation>
 <translation id="8207657266087451193">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave Software. You can turn this off in settings at any time.</translation>
 <translation id="5499063270485366718">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave Software.</translation>
-<translation id="3870835867536344658">This uses the same spellchecker that's used in Brave Software search. Text that you type in the browser is sent to Brave Software. You can always change this behaviour in settings.</translation>
+<translation id="215320507915280336">This uses the same spell checker that's used in Brave Software search. Text that you type in the browser is sent to Brave Software. You can always change this behaviour in settings.</translation>
 <translation id="1807774211756215222">Open link in new Brave &amp;tab</translation>
 <translation id="4624945300945265642">Open link in Brave inco&amp;gnito window</translation>
 <translation id="7863882214613921971">Open Link in New Brave &amp;tab</translation>
@@ -195,6 +189,9 @@ Please check your email at <ph name="ACCOUNT_EMAIL"/> for further instructions.<
 <translation id="2522086024276534909">Restart Brave OS</translation>
 <translation id="8183252473547465084">Brave OS needs to be restarted to apply the update.</translation>
 <translation id="5895138241574237353">Restart</translation>
+<translation id="8887390605192156061">Quit all copies of Brave.</translation>
+<translation id="1801551749768408825">Other copies of Brave are running. To update, close them.</translation>
+<translation id="2632141563911437138">To update, Brave needs to stop running on this computer. This may cause other users logged into this computer to lose unsaved changes.</translation>
 <translation id="5875673934455379806">Reinstall Brave</translation>
 <translation id="2097604701283463988">Brave is Out of Date</translation>
 <translation id="5173820533850252773">Brave is out of date</translation>
@@ -238,23 +235,17 @@ Please check your email at <ph name="ACCOUNT_EMAIL"/> for further instructions.<
 <translation id="8933981935877469796">Select <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Click <ph name="BEGIN_BOLD"/>Switch anyway<ph name="END_BOLD"/>, if it appears</translation>
 <translation id="3507835409099344374">Go to Brave notification settings</translation>
-<translation id="9118654140804842635">{0,plural, =0{A Brave update is available}=1{A Brave update is available}other{A Brave update has been available for # days}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{A Brave update is available}=1{A Brave update is available}other{A Brave update has been available for # days}}</translation>
 <translation id="720532315408041257">Your administrator asks that you relaunch Brave to apply this update</translation>
-<translation id="6639482638305253477">{0,plural, =1{Relaunch Brave within a day}other{Relaunch Brave within # days}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave will relaunch in an hour}other{Brave will relaunch in # hours}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave will relaunch in 1 minute}other{Brave will relaunch in # minutes}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave will relaunch now}=1{Brave will relaunch in 1 second}other{Brave will relaunch in # seconds}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Relaunch Brave within a day}other{Relaunch Brave within # days}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave will relaunch in an hour}other{Brave will relaunch in # hours}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave will relaunch in 1 minute}other{Brave will relaunch in # minutes}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave will relaunch now}=1{Brave will relaunch in 1 second}other{Brave will relaunch in # seconds}}</translation>
 <translation id="7595187113648413294">Your administrator requires that you relaunch Brave to apply an update</translation>
-<translation id="56801943271475640">{0,plural, =0{A Brave OS update is available}=1{A Brave OS update is available}other{A Brave OS update has been available for # days}}</translation>
-<translation id="5715362474140341294">Your administrator asks that you restart Brave OS to apply this update</translation>
-<translation id="8094834892392729950">{0,plural, =1{Restart Brave OS within a day}other{Restart Brave OS within # days}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS will restart in an hour}other{Brave OS will restart in # hours}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS will restart in 1 minute}other{Brave OS will restart in # minutes}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS will restart now}=1{Brave OS will restart in 1 second}other{Brave OS will restart in # seconds}}</translation>
-<translation id="8559452515617838628">Your administrator requires that you restart Brave OS to apply an update</translation>
 <translation id="3052349005266761501">Launching Brave...</translation>
 <translation id="1197672524850678392">Couldn't launch Brave. Try again.</translation>
 <translation id="6040143037577758943">Close</translation>
+<translation id="5147525139567260139">Share a Brave tab</translation>
 <translation id="8541922081612557424">About Brave</translation>
 <translation id="3262506503470845422">Get help with Brave</translation>
 <translation id="1864557848095568223">Updating Brave</translation>

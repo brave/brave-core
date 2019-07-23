@@ -43,7 +43,7 @@
 #define RECOVER_WALLET_PUBLIC_KEY       "/wallet?publicKey="
 #define GET_SET_PROMOTION               "/grants"
 #define GET_PROMOTION_CAPTCHA           "/captchas/"
-#define GET_PUBLISHERS_LIST_V1          "/api/v1/public/channels"
+#define GET_PUBLISHERS_LIST             "/api/v2/public/channels"
 
 #define REGISTRARVK_FIELDNAME           "registrarVK"
 #define VERIFICATION_FIELDNAME          "verification"
@@ -64,12 +64,21 @@
 #define YOUTUBE_MEDIA_TYPE              "youtube"
 #define TWITCH_MEDIA_TYPE               "twitch"
 #define TWITTER_MEDIA_TYPE              "twitter"
+#define REDDIT_MEDIA_TYPE               "reddit"
+#define VIMEO_MEDIA_TYPE                "vimeo"
+#define GITHUB_MEDIA_TYPE               "github"
 #define YOUTUBE_PROVIDER_URL            "https://www.youtube.com/oembed"
 #define TWITCH_PROVIDER_URL             "https://api.twitch.tv/v5/oembed"
+#define VIMEO_PROVIDER_URL              "https://vimeo.com/api/oembed.json"
 #define YOUTUBE_TLD                     "youtube.com"
 #define TWITCH_TLD                      "twitch.tv"
 #define TWITTER_TLD                     "twitter.com"
+#define REDDIT_TLD                      "reddit.com"
+#define VIMEO_TLD                       "vimeo.com"
+#define GITHUB_TLD                      "github.com"
 #define TWITCH_VOD_URL                  "https://www.twitch.tv/videos/"
+#define REDDIT_USER_URL                 "https://www.reddit.com/user/"
+#define OLD_REDDIT_DOMAIN               "old.reddit.com"
 #define MEDIA_DELIMITER                 '_'
 #define WALLET_PASSPHRASE_DELIM         ' '
 #define DICTIONARY_DELIMITER            ','
@@ -97,7 +106,6 @@ static const uint8_t g_hkdfSalt[] = {
 static const double _d = 1.0 / (30.0 * 1000.0);
 
 static const uint64_t _default_min_publisher_duration = 8;  // In seconds
-static const uint64_t _default_min_publisher_duration_test = 1;  // In seconds
 
 static const uint64_t _milliseconds_day = 24 * 60 * 60 * 1000;
 

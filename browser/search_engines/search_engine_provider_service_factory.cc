@@ -1,9 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
@@ -17,22 +19,12 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 
 namespace {
+
 // Factory owns service object.
 KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
-  // In non qwant region, controller is also needed for private profile.
-  // We uses separate TemplateURLService for normal and off the recored profile.
-  // That means changing normal profile's provider doesn't affect otr profile's.
-  // This controller monitor's normal profile's service and apply it's change to
-  // otr profile to use same provider.
-  // Private profile's setting is shared with normal profile's setting.
-  if (profile->GetProfileType() == Profile::INCOGNITO_PROFILE) {
-    return new PrivateWindowSearchEngineProviderService(profile);
-  }
-
   // Regardless of qwant region, tor profile needs controller to store
   // previously set search engine provider.
-  if (profile->IsTorProfile() &&
-      profile->GetProfileType() == Profile::GUEST_PROFILE) {
+  if (brave::IsTorProfile(profile) && profile->IsOffTheRecord()) {
     return new TorWindowSearchEngineProviderService(profile);
   }
 
@@ -41,8 +33,18 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   if (brave::IsRegionForQwant(profile))
     return nullptr;
 
-  if (profile->GetProfileType() == Profile::GUEST_PROFILE) {
+  if (brave::IsGuestProfile(profile) && profile->IsOffTheRecord()) {
     return new GuestWindowSearchEngineProviderService(profile);
+  }
+
+  // In non qwant region, controller is also needed for private profile.
+  // We use separate TemplateURLService for normal and off the recored profile.
+  // That means changing normal profile's provider doesn't affect otr profile's.
+  // This controller monitor's normal profile's service and apply its change to
+  // otr profile to use same provider.
+  // Private profile's setting is shared with normal profile's setting.
+  if (profile->IsIncognitoProfile()) {
+    return new PrivateWindowSearchEngineProviderService(profile);
   }
 
   return nullptr;

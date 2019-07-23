@@ -14,9 +14,17 @@ extern const char widevine_extension_id[];
 extern const char brave_sync_extension_id[];
 extern const char crl_set_extension_id[];
 
+extern const char ethereum_remote_client_extension_id[];
+extern const char ethereum_remote_client_extension_name[];
+extern const char ethereum_remote_client_extension_public_key[];
+extern const char ethereum_remote_client_base_url[];
+extern const char ethereum_remote_client_host[];
+
 extern const char ipfs_companion_extension_id[];
 extern const char ipfs_companion_extension_name[];
 extern const char ipfs_companion_extension_public_key[];
+
+extern const char ipfs_companion_beta_extension_id[];
 
 extern const char privacypass_extension_id[];
 

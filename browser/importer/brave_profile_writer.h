@@ -14,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "net/cookies/canonical_cookie.h"
+#include "brave/components/brave_rewards/browser/balance.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/common/importer/brave_ledger.h"
 
@@ -65,10 +66,10 @@ class BraveProfileWriter : public ProfileWriter,
   BraveInProcessImporterBridge* bridge_ptr_;
   double new_contribution_amount_;
   unsigned int pinned_item_count_;
+  void OnFetchBalance(
+    int32_t result,
+    std::unique_ptr<brave_rewards::Balance> balance);
   BraveLedger ledger_;
-  // Only used when wallet exists and first action is guaranteed
-  // to be FetchWalletProperties(). See notes in brave_profile_writer.cc
-  bool consider_for_backup_;
 };
 
 #endif  // BRAVE_BROWSER_IMPORTER_BRAVE_PROFILE_WRITER_H_

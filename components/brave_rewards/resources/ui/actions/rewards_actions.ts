@@ -18,6 +18,8 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
   value
 })
 
+export const updateAdsRewards = () => action(types.UPDATE_ADS_REWARDS)
+
 export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
 
 export const onWalletProperties = (properties: {status: number, wallet: Rewards.WalletProperties, monthlyAmount: number}) =>
@@ -76,15 +78,6 @@ export const onClearAlert = (property: string) => action(types.ON_CLEAR_ALERT, {
 
 export const onReconcileStamp = (stamp: number) => action(types.ON_RECONCILE_STAMP, {
   stamp
-})
-
-export const onAddresses = (addresses: Record<Rewards.AddressesType, string>) => action(types.ON_ADDRESSES, {
-  addresses
-})
-
-export const onQRGenerated = (type: Rewards.AddressesType, image: string) => action(types.ON_QR_GENERATED, {
-  type,
-  image
 })
 
 export const onContributeList = (list: Rewards.Publisher[]) => action(types.ON_CONTRIBUTE_LIST, {
@@ -154,8 +147,6 @@ export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS
   value
 })
 
-export const getAddresses = () => action(types.GET_ADDRESSES)
-
 export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
 
 export const getPendingContributions = () => action(types.GET_PENDING_CONTRIBUTIONS)
@@ -169,21 +160,14 @@ export const onRewardsEnabled = (enabled: boolean) => action(types.ON_REWARDS_EN
   enabled
 })
 
-export const getAddressesForPaymentId = () => action(types.GET_ADDRESSES_FOR_PAYMENT_ID)
-
-export const onAddressesForPaymentId = (addresses: Record<Rewards.AddressesType, string>) =>
-  action(types.ON_ADDRESSES_FOR_PAYMENT_ID, {
-    addresses
-  })
-
-export const onTransactionHistoryForThisCycle = (data: {adsNotificationsReceived: number, adsEstimatedEarnings: number}) =>
-  action(types.ON_TRANSACTION_HISTORY_FOR_THIS_CYCLE, {
+export const onTransactionHistory = (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) =>
+  action(types.ON_TRANSACTION_HISTORY, {
     data
   })
 
-export const getTransactionHistoryForThisCycle = () => action(types.GET_TRANSACTION_HISTORY_FOR_THIS_CYCLE)
+export const getTransactionHistory = () => action(types.GET_TRANSACTION_HISTORY)
 
-export const onTransactionHistoryForThisCycleChanged = () => action(types.ON_TRANSACTION_HISTORY_FOR_THIS_CYCLE_CHANGED)
+export const onTransactionHistoryChanged = () => action(types.ON_TRANSACTION_HISTORY_CHANGED)
 
 export const getRewardsMainEnabled = () => action(types.GET_REWARDS_MAIN_ENABLED)
 
@@ -219,3 +203,36 @@ export const restorePublisher = (publisherKey: string) => action(types.ON_RESTOR
 })
 
 export const getExcludedSites = () => action(types.GET_EXCLUDED_SITES)
+
+export const getBalance = () => action(types.GET_BALANCE)
+
+export const onBalance = (status: number, balance: Rewards.Balance) => action(types.ON_BALANCE, {
+  status,
+  balance
+})
+
+export const getExternalWallet = (type: Rewards.WalletType) => action(types.GET_EXTERNAL_WALLET, {
+  type
+})
+
+export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+  result,
+  wallet
+})
+
+export const onOnBoardingDisplayed = () => action(types.ON_ON_BOARDING_DISPLAYED)
+
+export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {
+  path,
+  query
+})
+
+export const onProcessRewardsPageUrl = (data: Rewards.ProcessRewardsPageUrl) => action(types.ON_PROCESS_REWARDS_PAGE_URL, {
+  data
+})
+
+export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
+
+export const disconnectWallet = (walletType: string) => action(types.DISCONNECT_WALLET, {
+  walletType
+})

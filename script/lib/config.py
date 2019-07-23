@@ -40,7 +40,7 @@ def dist_dir():
 def output_dir():
     if get_target_arch() == 'x64':
         return os.path.join(CHROMIUM_ROOT, 'out', 'Release')
-    return os.path.join(CHROMIUM_ROOT, 'out_x86', 'Release')
+    return os.path.join(CHROMIUM_ROOT, 'out', 'Release_x86')
 
 
 # Use brave-browser/package.json version for canonical version definition
@@ -107,22 +107,6 @@ def get_platform_key():
 def get_target_arch():
     return (os.environ['TARGET_ARCH'] if 'TARGET_ARCH' in os.environ
             else 'x64')
-
-
-def get_chromedriver_version():
-    pattern = "^[ ]*chromedriver_version = \"([0-9][.][0-9]+)\""
-    build_gn_path = os.path.join(BRAVE_CORE_ROOT, 'BUILD.gn')
-    with open(build_gn_path, 'r') as build_gn_file:
-        for line in build_gn_file:
-            match = re.search(pattern, line)
-            if match:
-                version = match.group(1)
-    try:
-        version
-    except NameError:
-        raise(NameError("chromedriver_version Not Found"))
-
-    return 'v' + version
 
 
 def get_env_var(name):

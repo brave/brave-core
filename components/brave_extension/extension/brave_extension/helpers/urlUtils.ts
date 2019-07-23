@@ -14,3 +14,21 @@ export const isHttpOrHttps = (url?: string) => {
 export const hasPortNumber = (url: string) => {
   return typeof urlParser.parse(url).port === 'string'
 }
+
+/**
+ * Get the URL origin via Web API
+ * @param {string} url - The URL to get the origin from
+ */
+export const getOrigin = (url: string) => new window.URL(url).origin
+
+/**
+ * Get the URL hostname via Web API
+ * @param {string} url - The URL to get the origin from
+ */
+export const getHostname = (url: string) => new window.URL(url).hostname
+
+/**
+ * Strip http/https protocol
+ * @param {string} url - The URL to strip the protocol from
+ */
+export const stripProtocolFromUrl = (url: string) => url.replace(/(^\w+:|^)\/\//, '')

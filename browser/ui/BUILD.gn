@@ -1,5 +1,7 @@
+import("//brave/build/config.gni")
 import("//build/config/features.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//chrome/common/features.gni")
 
 source_set("ui") {
@@ -8,6 +10,8 @@ source_set("ui") {
     "webui/basic_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
+    "webui/brave_new_tab_message_handler.cc",
+    "webui/brave_new_tab_message_handler.h",
     "webui/brave_new_tab_ui.cc",
     "webui/brave_new_tab_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
@@ -24,8 +28,6 @@ source_set("ui") {
       "brave_browser_command_controller.h",
       "brave_browser_content_setting_bubble_model_delegate.cc",
       "brave_browser_content_setting_bubble_model_delegate.h",
-      "brave_dark_mode_observer.cc",
-      "brave_dark_mode_observer.h",
       "brave_layout_constants.cc",
       "brave_layout_constants.h",
       "brave_pages.cc",
@@ -50,11 +52,16 @@ source_set("ui") {
       "webui/navigation_bar_data_provider.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
-      "webui/settings/brave_relaunch_handler_mac.mm",
-      "webui/settings/brave_relaunch_handler_mac.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
     ]
+
+    if (enable_sparkle) {
+      sources += [
+        "webui/settings/brave_relaunch_handler_mac.mm",
+        "webui/settings/brave_relaunch_handler_mac.h",
+      ]
+    }
   }
 
   if (toolkit_views) {
@@ -71,9 +78,14 @@ source_set("ui") {
       "views/rounded_separator.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
-      "views/update_recommended_message_box_mac.mm",
-      "views/update_recommended_message_box_mac.h",
     ]
+
+    if (enable_sparkle) {
+      sources += [
+        "views/update_recommended_message_box_mac.mm",
+        "views/update_recommended_message_box_mac.h",
+      ]
+    }
   }
 
   if (is_win || is_mac || is_desktop_linux) {
@@ -82,15 +94,10 @@ source_set("ui") {
       "views/profiles/brave_incognito_menu_view.h",
       "views/profiles/brave_profile_chooser_view.cc",
       "views/profiles/brave_profile_chooser_view.h",
+      "views/profiles/brave_profile_menu_view_helper.cc",
+      "views/profiles/brave_profile_menu_view_helper.h",
       "webui/brave_welcome_ui.cc",
       "webui/brave_welcome_ui.h",
-    ]
-  }
-
-  if (is_mac || is_win || is_chromeos) {
-    sources += [
-      "views/frame/brave_browser_frame.cc",
-      "views/frame/brave_browser_frame.h",
     ]
   }
 
@@ -118,6 +125,7 @@ source_set("ui") {
     "//brave/components/brave_sync:static_resources",
     "//brave/components/brave_sync:generated_resources",
     "//brave/components/brave_welcome_ui:generated_resources",
+    "//brave/browser:sparkle_buildflags",
     "//brave/browser/devtools",
     "//brave/browser/tor",
     "//brave/browser/resources/settings:resources",
@@ -157,6 +165,8 @@ source_set("ui") {
       "views/location_bar/brave_location_bar_view.h",
       "views/profiles/brave_avatar_toolbar_button.cc",
       "views/profiles/brave_avatar_toolbar_button.h",
+      "views/tabs/brave_alert_indicator.cc",
+      "views/tabs/brave_alert_indicator.h",
       "views/tabs/brave_new_tab_button.cc",
       "views/tabs/brave_new_tab_button.h",
       "views/toolbar/brave_toolbar_view.cc",
@@ -197,6 +207,16 @@ source_set("ui") {
     deps += [
       "//brave/components/brave_rewards/resources:tip_generated_resources",
       "//brave/components/brave_rewards/resources:ui_generated_resources",
+    ]
+  }
+
+  if (brave_wallet_enabled) {
+    sources += [
+      "webui/brave_wallet_ui.cc",
+      "webui/brave_wallet_ui.h",
+    ]
+    deps += [
+      "//brave/components/brave_wallet_ui:generated_resources",
     ]
   }
 }

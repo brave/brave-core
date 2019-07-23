@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "Abbiamo aggiornato le Brave Rewards in modo signoficativo.",
+    "message": "Abbiamo aggiornato le Ricompense Brave in modo significativo.",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -40,7 +40,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Sovvenzioni",
+    "message": "Contributi",
     "description": "Title for grant section in wallet summary"
   },
   "on": {
@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Editore Brave verificato",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Autore verificato Brave",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "Attenzione",
@@ -60,7 +60,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "Includi auto-contributo",
+    "message": "Includi in Auto-contributo",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -68,7 +68,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Attiva le Mance",
+    "message": "Attiva le donazioni",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -76,7 +76,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Riepilogo premi",
+    "message": "Riepilogo Ricompense",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -104,7 +104,7 @@
     "description": "Month"
   },
   "monthJun": {
-    "message": "Giugni",
+    "message": "Giugno",
     "description": "Month"
   },
   "monthMar": {
@@ -128,19 +128,19 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Concessioni Token",
+    "message": "Contributi in token",
     "description": "Title for grant notification"
   },
   "tokenGrantClaimed": {
-    "message": "Contributi di Token Riscossi",
+    "message": "Contributi in token Riscossi",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Guadagni da annunci pubblicitari",
+    "message": "Guadagni da Annunci Pubblicitari",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Contribuisci Automaticamente",
+    "message": "Contribuisci automaticamente",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -164,15 +164,15 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "Ora puoi guadagnare visualizzando gli annunci pubblicitari.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Gli Annunci Brave sono arrivati!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
-    "message": "Annunci pubblicitari di Brave",
+    "message": "Annunci Brave",
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
@@ -194,7 +194,7 @@
     "description": "Description for new grant notification"
   },
   "backupNow": {
-    "message": "Esegui il back up ora",
+    "message": "Esegui il backup ora",
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
@@ -236,14 +236,6 @@
   "captchaDrag": {
     "message": "Trascina l'Icona BAT sul",
     "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaLuckyDay": {
-    "message": "È il tuo giorno fortunato!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "captchaOnTheWay": {
-    "message": "Il tuo contributo di token è in arrivo.",
-    "description": "Cosmetic text indicating grant funds are on the way"
   },
   "captchaProveHuman": {
     "message": "Dimostra di essere umano!",
@@ -298,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Aggiorna status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -338,7 +330,7 @@
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
-    "message": "Creazione wallet fallita",
+    "message": "Creazione portafoglio fallita",
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
@@ -350,11 +342,11 @@
     "description": "Button for adding funds"
   },
   "rewardsSettings": {
-    "message": "Impostazioni Rewards",
+    "message": "Impostazioni Ricompense",
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "I tuoi guadagni pubblicitari sono disponibili.",
+    "message": "Le tue ricompense degli annunci sono qui!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -370,7 +362,7 @@
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
-    "message": "Abilita Ricompense Brave",
+    "message": "Attiva Ricompense Brave",
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
@@ -378,7 +370,7 @@
     "description": "Privacy Policy"
   },
   "serviceText": {
-    "message": "Facendo clic su \"Attiva Brave Rewards\", indichi di aver letto e accettato i",
+    "message": "Facendo clic su \"Attiva Ricompense Brave\", indichi di aver letto e accettato i",
     "description": "Terms of service main text"
   },
   "termsOfService": {
@@ -390,15 +382,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "Le tue donazioni mensili sono state elaborate!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "Contributi e Donazioni",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "Facendo clic su 'Partecipa alle Ricompense', indichi di aver letto e accettato i",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +398,69 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "Attiva gli Annunci Pubblicitari",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "guadagnati dagli annunci pubblicitari",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Dai la mancia per questo tweet",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Donazione",
+    "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "Dai una mancia per questo post",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Donazione",
+    "description": "Icon label for Reddit tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "$name$ autore verificato di recente",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "Hai mance in sospeso a causa di fondi insufficienti",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Contributo in sospeso",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "È il tuo giorno fortunato!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "Il tuo contributo di token è in arrivo.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "Contributo di Token Gratuito",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Ricompense Brave Ads!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "La tua ricompensa da Brave Ads è in arrivo.",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "Il tuo token di Brave Ads",
+    "description": "Token title on success screen for ads"
   }
 }

@@ -1,5 +1,6 @@
 declare namespace RewardsExtension {
   interface State {
+    balance: Balance
     currentGrant?: GrantInfo
     currentNotification?: string
     enabledAC: boolean
@@ -16,6 +17,10 @@ declare namespace RewardsExtension {
     walletProperties: WalletProperties
     recurringTips: Record<string, number>[]
     tipAmounts: Record<string, number[]>
+    externalWallet?: ExternalWallet
+    ui: {
+      onBoardingDisplayed?: boolean
+    }
   }
 
   interface ApplicationState {
@@ -58,6 +63,9 @@ declare namespace RewardsExtension {
     hint?: string
     status?: GrantStatus
     type?: string
+    finishTitle?: string
+    finishText?: string
+    finishTokenTitle?: string
   }
 
   export interface GrantResponse {
@@ -96,9 +104,6 @@ declare namespace RewardsExtension {
   }
 
   export interface WalletProperties {
-    balance: number
-    probi: string
-    rates: Record<string, number>
     grants?: Grant[]
   }
 
@@ -147,5 +152,33 @@ declare namespace RewardsExtension {
     provider: string
     social: Record<string, string>
     verified: boolean
+  }
+
+  export interface Balance {
+    total: number
+    rates: Record<string, number>
+    wallets: Record<string, number>
+  }
+
+  export type WalletType = 'anonymous' | 'uphold'
+
+  export enum WalletStatus {
+    NOT_CONNECTED = 0,
+    CONNECTED = 1,
+    VERIFIED = 2,
+    DISCONNECTED_NOT_VERIFIED = 3,
+    DISCONNECTED_VERIFIED = 4
+  }
+
+  export interface ExternalWallet {
+    token: string
+    address: string
+    status: WalletStatus
+    type: WalletType
+    verifyUrl: string
+    addUrl: string
+    withdrawUrl: string
+    userName: string
+    accountUrl: string
   }
 }

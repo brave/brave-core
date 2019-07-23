@@ -76,13 +76,9 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="5874882355102994015">기본 제공되는 PDF 뷰어가 없으면 Brave에서 인쇄 미리보기를 표시할 수 없습니다.</translation>
 <translation id="8880183781256147665">Brave에 추가하는 중...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/>은(는) 위험할 수 있으므로 Brave에서 차단했습니다.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/>은(는) 위험할 수도 있는 파일이므로 Brave에서 차단했습니다. 사용자를 안전하게 보호하는 고급 보호 기능이 작동 중입니다.</translation>
 <translation id="9067428552314418522">이 파일은 위험하므로 Brave에서 차단했습니다.</translation>
-<translation id="2938460345748897177">위험한 파일이므로 Brave에서 차단했습니다. 사용자를 안전하게 보호하는 고급 보호 기능이 작동 중입니다.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/>은(는) 위험한 파일이므로 Brave에서 차단했습니다.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/>은(는) 위험한 파일이므로 Brave에서 차단했습니다. 사용자를 안전하게 보호하는 고급 보호 기능이 작동 중입니다.</translation>
 <translation id="89367911614620585">이 파일은 위험할 수 있으므로 Brave에서 차단했습니다.</translation>
-<translation id="8943391224520748272">위험할 수도 있는 파일이므로 Brave에서 차단했습니다. 사용자를 안전하게 보호하는 고급 보호 기능이 작동 중입니다.</translation>
 <translation id="9183662282810237335">Brave을 종료하시겠습니까?</translation>
 <translation id="3834935463915107022">Brave을 종료하시겠습니까?</translation>
 <translation id="8797356639448065696">Brave이 백그라운드 모드로 실행 중입니다.</translation>
@@ -145,8 +141,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="6746636977031158624">계정의 로그인 세부정보가 오래되어 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
 <translation id="2999152167963026588">내 도메인에서 동기화를 사용할 수 없으므로 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
 <translation id="1459786048951724030">로그인 중 오류가 발생하여 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
-<translation id="2887570477425111999">Brave에 세부정보 저장</translation>
-<translation id="193559141530782783">Brave은 개인정보를 안전하게 저장하므로 정보를 다시 입력할 필요가 없습니다.</translation>
 <translation id="663059986967017181">Brave에 복사됨</translation>
 <translation id="1457432835062259213">Brave 앱 런처</translation>
 <translation id="82609232232243542">Brave에 로그인</translation>
@@ -184,7 +178,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1912973375560256099">Brave이 mDNS 트래픽을 허용하는 인바운드 규칙입니다.</translation>
 <translation id="8207657266087451193">이미지에 유용한 설명이 없으면 Brave에서 자동으로 설명을 제공하려고 시도합니다. 설명을 생성하기 위해 이미지가 Brave Software로 전송됩니다. 이 기능은 언제든지 설정에서 사용 중지할 수 있습니다.</translation>
 <translation id="5499063270485366718">이미지에 유용한 설명이 없으면 Brave에서 자동으로 설명을 제공하려고 시도합니다. 설명을 생성하기 위해 이미지가 Brave Software로 전송됩니다.</translation>
-<translation id="3870835867536344658">Brave Software 검색과 동일한 맞춤법 검사기가 사용됩니다. 브라우저에 입력되는 텍스트는 Brave Software로 전송됩니다. 설정에서 언제든지 이 동작을 변경할 수 있습니다.</translation>
+<translation id="215320507915280336">Brave Software 검색과 동일한 맞춤법 검사기가 사용됩니다. 브라우저에 입력되는 텍스트는 Brave Software로 전송됩니다. 설정에서 언제든지 이 동작을 변경할 수 있습니다.</translation>
 <translation id="1807774211756215222">새 Brave 탭에서 링크 열기(&amp;T)</translation>
 <translation id="4624945300945265642">Brave 시크릿 창에서 링크 열기(&amp;G)</translation>
 <translation id="7863882214613921971">새 Brave 탭에서 링크 열기(&amp;T)</translation>
@@ -195,6 +189,9 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="2522086024276534909">Brave OS 다시 시작</translation>
 <translation id="8183252473547465084">업데이트를 적용하려면 Brave OS를 다시 시작해야 합니다.</translation>
 <translation id="5895138241574237353">다시 시작</translation>
+<translation id="8887390605192156061">모든 Brave 버전 종료</translation>
+<translation id="1801551749768408825">다른 Brave 버전이 실행 중입니다. 업데이트하려면 실행 중인 버전을 종료하세요.</translation>
+<translation id="2632141563911437138">업데이트하려면 이 컴퓨터에서 Brave 실행을 중단해야 합니다. 중단하면 이 컴퓨터에 로그인한 다른 사용자가 저장하지 않은 변경 사항을 잃을 수 있습니다.</translation>
 <translation id="5875673934455379806">Brave 재설치</translation>
 <translation id="2097604701283463988">Brave이 이전 버전임</translation>
 <translation id="5173820533850252773">Brave이 이전 버전임</translation>
@@ -238,23 +235,17 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8933981935877469796"><ph name="SMALL_PRODUCT_LOGO"/><ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/> 선택</translation>
 <translation id="1585657529869845941"><ph name="BEGIN_BOLD"/>전환하기<ph name="END_BOLD"/> 버튼이 표시되면 클릭하세요</translation>
 <translation id="3507835409099344374">Brave 알림 설정으로 이동</translation>
-<translation id="9118654140804842635">{0,plural, =0{Brave 업데이트 출시}=1{Brave 업데이트 출시}other{#일 이상 Brave 업데이트가 이루어지지 않았음}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Brave 업데이트 출시}=1{Brave 업데이트 출시}other{Brave 업데이트가 출시된 지 #일 지남}}</translation>
 <translation id="720532315408041257">관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다.</translation>
-<translation id="6639482638305253477">{0,plural, =1{하루 안에 Brave 다시 시작}other{#일 안에 Brave 다시 시작}}</translation>
-<translation id="656910845148850955">{0,plural, =1{1시간 후에 Brave 다시 시작}other{#시간 후에 Brave 다시 시작}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{1분 후에 Brave 다시 시작}other{#분 후에 Brave 다시 시작}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{곧 Brave 다시 시작}=1{1초 후에 Brave 다시 시작}other{#초 후에 Brave 다시 시작}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{1일 이내로 Brave을 다시 시작해 주세요}other{#일 이내로 Brave을 다시 시작해 주세요}}</translation>
+<translation id="310518206836658214">{0,plural, =1{1시간 후 Brave이 다시 시작됩니다}other{#시간 후 Brave이 다시 시작됩니다}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{1분 후 Brave이 다시 시작됩니다}other{#분 후 Brave이 다시 시작됩니다}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{곧 Brave이 다시 시작됩니다}=1{1초 후 Brave이 다시 시작됩니다}other{#초 후 Brave이 다시 시작됩니다}}</translation>
 <translation id="7595187113648413294">관리자가 업데이트를 적용하려면 사용자가 반드시 Brave을 다시 시작하도록 설정했습니다.</translation>
-<translation id="56801943271475640">{0,plural, =0{Brave OS 업데이트 출시}=1{Brave OS 업데이트 출시}other{#일 이상 Brave OS 업데이트가 이루어지지 않았음}}</translation>
-<translation id="5715362474140341294">관리자가 이 업데이트를 적용하려면 사용자가 Brave OS를 다시 시작하도록 설정했습니다.</translation>
-<translation id="8094834892392729950">{0,plural, =1{하루 안에 Brave OS 다시 시작}other{#일 안에 Brave OS 다시 시작}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{1시간 후에 Brave OS 다시 시작}other{#시간 후에 Brave OS 다시 시작}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{1분 후에 Brave OS 다시 시작}other{#분 후에 Brave OS 다시 시작}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{곧 Brave OS 다시 시작}=1{1초 후에 Brave OS 다시 시작}other{#초 후에 Brave OS 다시 시작}}</translation>
-<translation id="8559452515617838628">관리자가 업데이트를 적용하려면 사용자가 반드시 Brave OS를 다시 시작하도록 설정했습니다.</translation>
 <translation id="3052349005266761501">Brave 실행 중...</translation>
 <translation id="1197672524850678392">Brave을 실행할 수 없습니다. 다시 시도해 보세요.</translation>
 <translation id="6040143037577758943">닫기</translation>
+<translation id="5147525139567260139">Brave 탭 공유</translation>
 <translation id="8541922081612557424">Brave 정보</translation>
 <translation id="3262506503470845422">Brave 도움말 보기</translation>
 <translation id="1864557848095568223">Brave 업데이트 중</translation>

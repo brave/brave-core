@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "अन्य-पक्ष के ट्रैकर अवरुद्ध किए गए",
+    "message": "क्रॉस-साइट ट्रैकर्स ब्लॉक किए गए",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "3rd- पार्टी कूकीज़ बाधित हैं.",
+    "message": "क्रॉस-साइट कुकीज़ ब्लॉक किए गए",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "3rd- पार्टी डिवाइस की पहचान बाधित हैं ",
+    "message": "क्रॉस-साइट उपकरण की पहचान ब्लॉक की गई",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "डिवाइस की पहचान बाधित हैं ",
+    "message": "उपकरण की पहचान के प्रयासों को ब्लॉक किया गया",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "सभी डिवाइस को पहचानने की अनुमति है",
+    "message": "उपकरण की पहचान के सभी प्रयासों की अनुमति है",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -119,6 +119,18 @@
     "message": "अनुमति दें ",
     "description": "Message for the resources blocked *allow* option"
   },
+  "blockedOnce": {
+    "message": "एक बार ब्लॉक किए गए",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "एक बार अनुमति दी गई",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "एक बार स्क्रिप्ट की अनुमति दें",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
   "cancel": {
     "message": "रद्द करें ",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
@@ -134,5 +146,17 @@
   "changeDefaults": {
     "message": "वैश्विक शील्ड डिफ़ॉल्ट को बदलें",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "चयनकर्ता द्वारा एलिमेंट को ब्लॉक करें",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "इस साइट के लिए CSS नियम हटाएँ",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "सभी साइटों के लिए CSS नियम हटाएँ",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

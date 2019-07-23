@@ -28,15 +28,17 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void GenerateGUID(GenerateGUIDCallback callback) override;
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
   void OnWalletInitialized(int32_t result) override;
-  void OnWalletProperties(int32_t result, const std::string& info) override;
-  void OnGrant(int32_t result, const std::string& grant) override;
+  void OnWalletProperties(
+      int32_t result,
+      ledger::WalletPropertiesPtr properties) override;
+  void OnGrant(int32_t result, ledger::GrantPtr grant) override;
   void OnGrantCaptcha(const std::string& image,
       const std::string& hint) override;
   void OnRecoverWallet(int32_t result, double balance,
-      const std::vector<std::string>& grants) override;
+      std::vector<ledger::GrantPtr> grants) override;
   void OnReconcileComplete(int32_t result, const std::string& viewing_id,
       int32_t category, const std::string& probi) override;
-  void OnGrantFinish(int32_t result, const std::string& grant) override;
+  void OnGrantFinish(int32_t result, ledger::GrantPtr grant) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadPublisherList(LoadPublisherListCallback callback) override;
@@ -80,9 +82,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& publisher_id) override;
   void FetchGrants(const std::string& lang,
       const std::string& payment_id) override;
-  void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) override;
 
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;
@@ -119,6 +118,27 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void ResetState(
       const std::string& name,
       ResetStateCallback callback) override;
+  void SetBooleanState(const std::string& name, bool value) override;
+  void GetBooleanState(const std::string& name,
+                       GetBooleanStateCallback callback) override;
+  void SetIntegerState(const std::string& name, int value) override;
+  void GetIntegerState(const std::string& name,
+                       GetIntegerStateCallback callback) override;
+  void SetDoubleState(const std::string& name, double value) override;
+  void GetDoubleState(const std::string& name,
+                      GetDoubleStateCallback callback) override;
+  void SetStringState(const std::string& name,
+                      const std::string& value) override;
+  void GetStringState(const std::string& name,
+                      GetStringStateCallback callback) override;
+  void SetInt64State(const std::string& name, int64_t value) override;
+  void GetInt64State(const std::string& name,
+                     GetInt64StateCallback callback) override;
+  void SetUint64State(const std::string& name, uint64_t value) override;
+  void GetUint64State(const std::string& name,
+                      GetUint64StateCallback callback) override;
+  void ClearState(const std::string& name) override;
+
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void ConfirmationsTransactionHistoryDidChange() override;
@@ -138,9 +158,20 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void GetPendingContributionsTotal(
       GetPendingContributionsTotalCallback callback) override;
 
-  void GetCountryCodes(
-      const std::vector<std::string>& countries,
-      GetCountryCodesCallback callback) override;
+  void OnContributeUnverifiedPublishers(
+      int32_t result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) override;
+
+  void GetExternalWallets(GetExternalWalletsCallback callback) override;
+
+  void SaveExternalWallet(const std::string& wallet_type,
+                          ledger::ExternalWalletPtr wallet) override;
+
+  void ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      ShowNotificationCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -175,6 +206,16 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<SavePublisherInfoCallback>* holder,
       ledger::Result result,
       ledger::PublisherInfoPtr info);
+
+  static void OnLoadLedgerState(
+    CallbackHolder<LoadLedgerStateCallback>* holder,
+    ledger::Result result,
+    const std::string& data);
+
+  static void OnLoadPublisherState(
+    CallbackHolder<LoadLedgerStateCallback>* holder,
+    ledger::Result result,
+    const std::string& data);
 
   static void OnLoadPublisherInfo(
       CallbackHolder<LoadPublisherInfoCallback>* holder,
@@ -267,9 +308,13 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<GetPendingContributionsTotalCallback>* holder,
       double amount);
 
-  static void OnGetCountryCodes(
-      CallbackHolder<GetCountryCodesCallback>* holder,
-      const std::vector<int32_t>& countries);
+  static void OnGetExternalWallets(
+    CallbackHolder<GetExternalWalletsCallback>* holder,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  static void OnShowNotification(
+    CallbackHolder<ShowNotificationCallback>* holder,
+    int32_t result);
 
   ledger::LedgerClient* ledger_client_;
 

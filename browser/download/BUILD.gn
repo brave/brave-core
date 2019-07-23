@@ -8,6 +8,9 @@ source_set("download") {
 
   deps = [
     "//base",
+    # Need for //chrome/common/safe_browsing/download_file_types.pb.h included
+    # from download_item_model.h.
+    "//chrome/common/safe_browsing:proto",
     "//components/strings:components_strings_grit",
     "//content/public/common",
     "//ui/base",

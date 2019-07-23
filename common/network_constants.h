@@ -19,6 +19,7 @@ extern const char kEmptyDataURI[];
 extern const char kEmptyImageDataURI[];
 extern const char kJSDataURLPrefix[];
 extern const char kGeoLocationsPattern[];
+extern const char kGoogleAnalyticsPattern[];
 extern const char kGoogleTagManagerPattern[];
 extern const char kGoogleTagServicesPattern[];
 extern const char kForbesPattern[];
@@ -35,6 +36,8 @@ extern const char kTwitterRedirectURL[];
 
 extern const char kCookieHeader[];
 extern const char kRefererHeader[];
+extern const char kUserAgentHeader[];
+extern const char kBravePartnerHeader[];
 
 extern const char kBittorrentMimeType[];
 extern const char kOctetStreamMimeType[];

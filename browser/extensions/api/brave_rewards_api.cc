@@ -106,14 +106,53 @@ BraveRewardsTipTwitterUserFunction::Run() {
   if (rewards_service) {
     AddRef();
     std::map<std::string, std::string> args;
-    args["user_id"] = params->tweet_meta_data.user_id;
-    args["name"] = params->tweet_meta_data.name;
-    args["screen_name"] = params->tweet_meta_data.screen_name;
-    rewards_service->SaveTwitterPublisherInfo(
+    args["user_id"] = params->media_meta_data.user_id;
+    args["twitter_name"] = params->media_meta_data.twitter_name;
+    args["screen_name"] = params->media_meta_data.screen_name;
+    rewards_service->SaveInlineMediaInfo(
+        params->media_meta_data.media_type,
         args,
         base::Bind(&BraveRewardsTipTwitterUserFunction::
                    OnTwitterPublisherInfoSaved,
                    weak_factory_.GetWeakPtr()));
+  }
+
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsTipRedditUserFunction::BraveRewardsTipRedditUserFunction()
+    : weak_factory_(this) {
+}
+
+BraveRewardsTipRedditUserFunction::~BraveRewardsTipRedditUserFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsTipRedditUserFunction::Run() {
+  std::unique_ptr<brave_rewards::TipRedditUser::Params> params(
+      brave_rewards::TipRedditUser::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (profile->IsOffTheRecord()) {
+    return RespondNow(
+        Error("Cannot tip Reddit user in a private context"));
+  }
+
+  RewardsService* rewards_service = RewardsServiceFactory::GetForProfile(
+      profile);
+
+  if (rewards_service) {
+    AddRef();
+    std::map<std::string, std::string> args;
+    args["user_name"] = params->media_meta_data.user_name;
+    args["post_text"] = params->media_meta_data.post_text;
+    args["post_rel_date"] = params->media_meta_data.post_rel_date;
+    rewards_service->SaveInlineMediaInfo(
+        params->media_meta_data.media_type,
+        args,
+        base::Bind(
+            &BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved,
+            weak_factory_.GetWeakPtr()));
   }
 
   return RespondNow(NoArguments());
@@ -147,19 +186,65 @@ void BraveRewardsTipTwitterUserFunction::OnTwitterPublisherInfoSaved(
   params_dict->SetString("publisherKey", publisher_info->id);
   params_dict->SetString("url", publisher_info->url);
 
-  auto tweet_meta_data_dict = std::make_unique<base::DictionaryValue>();
-  tweet_meta_data_dict->SetString("name", publisher_info->name);
-  tweet_meta_data_dict->SetString("screenName",
-                                  params->tweet_meta_data.screen_name);
-  tweet_meta_data_dict->SetString("userId", params->tweet_meta_data.user_id);
-  tweet_meta_data_dict->SetString("tweetId", params->tweet_meta_data.tweet_id);
-  tweet_meta_data_dict->SetInteger("tweetTimestamp",
-                                   params->tweet_meta_data.tweet_timestamp);
-  tweet_meta_data_dict->SetString("tweetText",
-                                  params->tweet_meta_data.tweet_text);
-  params_dict->SetDictionary("tweetMetaData", std::move(tweet_meta_data_dict));
+  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
+  media_meta_data_dict.SetStringKey("twitter_name", publisher_info->name);
+  media_meta_data_dict.SetStringKey("mediaType",
+                                  params->media_meta_data.media_type);
+  media_meta_data_dict.SetStringKey("screenName",
+                                  params->media_meta_data.screen_name);
+  media_meta_data_dict.SetStringKey("userId", params->media_meta_data.user_id);
+  media_meta_data_dict.SetStringKey("tweetId",
+                                  params->media_meta_data.tweet_id);
+  media_meta_data_dict.SetDoubleKey("tweetTimestamp",
+                                  params->media_meta_data.tweet_timestamp);
+  media_meta_data_dict.SetStringKey("tweetText",
+                                  params->media_meta_data.tweet_text);
+  params_dict->SetPath("mediaMetaData", std::move(media_meta_data_dict));
 
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
+
+  Release();
+}
+
+void BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved(
+    std::unique_ptr<::brave_rewards::ContentSite> publisher_info) {
+  std::unique_ptr<brave_rewards::TipRedditUser::Params> params(
+      brave_rewards::TipRedditUser::Params::Create(*args_));
+
+  if (!publisher_info) {
+    Release();
+    return;
+  }
+
+  content::WebContents* contents = nullptr;
+  if (!ExtensionTabUtil::GetTabById(
+        params->tab_id,
+        Profile::FromBrowserContext(browser_context()),
+        false,
+        nullptr,
+        nullptr,
+        &contents,
+        nullptr)) {
+    return;
+  }
+
+  auto params_dict = std::make_unique<base::DictionaryValue>();
+  params_dict->SetString("publisherKey", publisher_info->id);
+  params_dict->SetString("url", publisher_info->url);
+
+  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
+  media_meta_data_dict.SetStringKey("mediaType",
+                                  params->media_meta_data.media_type);
+  media_meta_data_dict.SetStringKey("userName",
+                                  params->media_meta_data.user_name);
+  media_meta_data_dict.SetStringKey("postText",
+                                  params->media_meta_data.post_text);
+  media_meta_data_dict.SetStringKey("postRelDate",
+                                  params->media_meta_data.post_rel_date);
+  params_dict->SetPath("mediaMetaData", std::move(media_meta_data_dict));
+
+  ::brave_rewards::OpenTipDialog(
+      contents, std::move(params_dict));
 
   Release();
 }
@@ -608,6 +693,126 @@ BraveRewardsGetInlineTipSettingFunction::Run() {
 
 void BraveRewardsGetInlineTipSettingFunction::OnInlineTipSetting(bool value) {
   Respond(OneArgument(std::make_unique<base::Value>(value)));
+}
+
+BraveRewardsFetchBalanceFunction::
+~BraveRewardsFetchBalanceFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsFetchBalanceFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    auto balance_value = std::make_unique<base::DictionaryValue>();
+    return RespondNow(OneArgument(std::move(balance_value)));
+  }
+
+  rewards_service->FetchBalance(
+      base::BindOnce(
+          &BraveRewardsFetchBalanceFunction::OnBalance,
+          this));
+  return RespondLater();
+}
+
+void BraveRewardsFetchBalanceFunction::OnBalance(
+    int32_t result,
+    std::unique_ptr<::brave_rewards::Balance> balance) {
+  auto balance_value = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+  if (result == 0 && balance) {
+    balance_value->SetDoubleKey("total", balance->total);
+
+    base::Value rates(base::Value::Type::DICTIONARY);
+    for (auto const& rate : balance->rates) {
+      rates.SetDoubleKey(rate.first, rate.second);
+    }
+    balance_value->SetKey("rates", std::move(rates));
+
+    base::Value wallets(base::Value::Type::DICTIONARY);
+    for (auto const& rate : balance->wallets) {
+      wallets.SetDoubleKey(rate.first, rate.second);
+    }
+    balance_value->SetKey("wallets", std::move(wallets));
+  } else {
+    balance_value->SetDoubleKey("total", 0.0);
+    base::Value rates(base::Value::Type::DICTIONARY);
+    balance_value->SetKey("rates", std::move(rates));
+    base::Value wallets(base::Value::Type::DICTIONARY);
+    balance_value->SetKey("wallets", std::move(wallets));
+  }
+
+  Respond(OneArgument(std::move(balance_value)));
+}
+
+BraveRewardsGetExternalWalletFunction::
+~BraveRewardsGetExternalWalletFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetExternalWalletFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+  auto data = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+    return RespondNow(OneArgument(std::move(data)));
+  }
+
+  std::unique_ptr<brave_rewards::GetExternalWallet::Params> params(
+    brave_rewards::GetExternalWallet::Params::Create(*args_));
+
+  rewards_service->GetExternalWallet(
+      params->type,
+      base::BindOnce(
+          &BraveRewardsGetExternalWalletFunction::OnExternalWalet,
+          this));
+  return RespondLater();
+}
+
+void BraveRewardsGetExternalWalletFunction::OnExternalWalet(
+    int32_t result,
+    std::unique_ptr<::brave_rewards::ExternalWallet> wallet) {
+  auto data = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+
+  if (wallet) {
+    data->SetStringKey("token", wallet->token);
+    data->SetStringKey("address", wallet->address);
+    data->SetIntKey("status", static_cast<int>(wallet->status));
+    data->SetStringKey("type", wallet->type);
+    data->SetStringKey("verifyUrl", wallet->verify_url);
+    data->SetStringKey("addUrl", wallet->add_url);
+    data->SetStringKey("withdrawUrl", wallet->withdraw_url);
+    data->SetStringKey("userName", wallet->user_name);
+    data->SetStringKey("accountUrl", wallet->account_url);
+  }
+
+  Respond(TwoArguments(
+        std::make_unique<base::Value>(result),
+        std::move(data)));
+}
+
+BraveRewardsDisconnectWalletFunction::
+~BraveRewardsDisconnectWalletFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsDisconnectWalletFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(NoArguments());
+  }
+
+  std::unique_ptr<brave_rewards::DisconnectWallet::Params> params(
+    brave_rewards::DisconnectWallet::Params::Create(*args_));
+
+  rewards_service->DisconnectWallet(params->type);
+  return RespondNow(NoArguments());
 }
 
 }  // namespace api

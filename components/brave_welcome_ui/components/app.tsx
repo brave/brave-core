@@ -56,14 +56,9 @@ export class WelcomePage extends React.Component<Props, State> {
     this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
-  onClickImport = () => {
-    // clicking this button executes functionality and then auto proceed to next screen
-    this.props.actions.importNowRequested()
+  onClickImport = (sourceBrowserProfileIndex: number) => {
+    this.props.actions.importBrowserProfileRequested(sourceBrowserProfileIndex)
     this.setState({ currentScreen: this.state.currentScreen + 1 })
-  }
-
-  onClickConfirmDefaultSearchEngine = () => {
-    this.props.actions.goToTabRequested('chrome://settings/search', '_blank')
   }
 
   onClickChooseYourTheme = () => {
@@ -91,6 +86,7 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   render () {
+    const { welcomeData, actions } = this.props
     const { currentScreen } = this.state
     return (
       <>
@@ -101,8 +97,19 @@ export class WelcomePage extends React.Component<Props, State> {
           <Panel>
             <SlideContent>
               <WelcomeBox index={1} currentScreen={this.currentScreen} onClick={this.onClickLetsGo} />
-              <ImportBox index={2} currentScreen={this.currentScreen} onClick={this.onClickImport} />
-              <SearchBox index={3} currentScreen={this.currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} />
+              <ImportBox
+                index={2}
+                currentScreen={this.currentScreen}
+                onClick={this.onClickImport}
+                browserProfiles={welcomeData.browserProfiles}
+              />
+              <SearchBox
+                index={3}
+                currentScreen={this.currentScreen}
+                onClick={this.onClickNext}
+                changeDefaultSearchProvider={actions.changeDefaultSearchProvider}
+                searchProviders={welcomeData.searchProviders}
+              />
               <ThemeBox index={4} currentScreen={this.currentScreen} onClick={this.onClickChooseYourTheme} />
               <ShieldsBox index={5} currentScreen={this.currentScreen} />
               <RewardsBox index={6} currentScreen={this.currentScreen} onClick={this.onClickRewardsGetStarted} />

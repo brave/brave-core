@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Užblokuoti trečiųjų šalių sekikliai",
+    "message": "Kelių svetainių sekikliai užblokuoti",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Trečiųjų šalių slapukai užblokuoti ",
+    "message": "Kelių svetainių slapukai užblokuoti",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Trečiosios šalies įrenginio atpažinimas užblokuotas",
+    "message": "Kelių svetainių įrenginio atpažinimo bandymai užblokuoti",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Įrenginio atpažinimas užblokuotas",
+    "message": "Įrenginio atpažinimo bandymai užblokuoti",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Leidžiamas visų įrenginių atpažinimas",
+    "message": "Visi įrenginio atpažinimo bandymai leidžiami",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -119,6 +119,18 @@
     "message": "Leisti",
     "description": "Message for the resources blocked *allow* option"
   },
+  "blockedOnce": {
+    "message": "Blokuojama vieną kartą",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Leidžiama vieną kartą",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Leisti scenarijus vieną kartą",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
   "cancel": {
     "message": "Atšaukti",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
@@ -134,5 +146,17 @@
   "changeDefaults": {
     "message": "Keisti globaliojo skydo numatytąsias nuostatas",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "Blokuoti elementą per išrinkiklį",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "Išvalyti šios svetainės CSS taisykles",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "Išvalyti visų svetainių CSS taisykles",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

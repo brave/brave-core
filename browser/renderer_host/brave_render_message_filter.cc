@@ -7,7 +7,6 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

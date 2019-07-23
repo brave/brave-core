@@ -1,9 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMMON_TOR_TOR_COMMON_H_
 #define BRAVE_COMMON_TOR_TOR_COMMON_H_
+
+#include <string>
 
 #include "base/files/file_path.h"
 
@@ -12,7 +15,8 @@ namespace tor {
 class TorConfig {
  public:
   TorConfig();
-  explicit TorConfig(base::FilePath& binary_path, std::string& proxy_config);
+  explicit TorConfig(const base::FilePath& binary_path,
+                     const std::string& proxy_config);
   TorConfig(const TorConfig& that);
   ~TorConfig();
 

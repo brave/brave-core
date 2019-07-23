@@ -41,6 +41,9 @@ chrome.braveRewards.onGrantCaptcha.addListener((captcha: RewardsExtension.Captch
 
 chrome.braveRewards.onGrantFinish.addListener((properties: RewardsExtension.GrantFinish) => {
   rewardsPanelActions.onGrantFinish(properties)
+  chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
+    rewardsPanelActions.onBalance(balance)
+  })
 })
 
 chrome.rewardsNotifications.onNotificationAdded.addListener((id: string, type: number, timestamp: number, args: string[]) => {
@@ -92,5 +95,21 @@ chrome.braveRewards.onPendingContributionSaved.addListener((result: number) => {
     chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
       rewardsPanelActions.OnPendingContributionsTotal(amount)
     }))
+  }
+})
+
+chrome.braveRewards.onReconcileComplete.addListener((result: number, category: number) => {
+  if (result === 0) {
+    chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
+      rewardsPanelActions.onBalance(balance)
+    })
+  }
+})
+
+chrome.braveRewards.onDisconnectWallet.addListener((properties: {result: number, walletType: string}) => {
+  if (properties.result === 0) {
+    chrome.braveRewards.getExternalWallet(properties.walletType, (result: number, wallet: RewardsExtension.ExternalWallet) => {
+      rewardsPanelActions.onExternalWallet(wallet)
+    })
   }
 })

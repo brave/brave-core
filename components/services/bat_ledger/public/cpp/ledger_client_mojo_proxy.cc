@@ -28,12 +28,6 @@ ledger::REWARDS_CATEGORY ToLedgerPublisherCategory(int32_t category) {
   return (ledger::REWARDS_CATEGORY)category;
 }
 
-ledger::Grant ToLedgerGrant(const std::string& grant_json) {
-  ledger::Grant grant;
-  grant.loadFromJson(grant_json);
-  return grant;
-}
-
 ledger::URL_METHOD ToLedgerURLMethod(int32_t method) {
   return (ledger::URL_METHOD)method;
 }
@@ -63,10 +57,21 @@ void LedgerClientMojoProxy::CallbackHolder<
   delete this;
 }
 
+// static
+void LedgerClientMojoProxy::OnLoadLedgerState(
+    CallbackHolder<LoadLedgerStateCallback>* holder,
+    ledger::Result result,
+    const std::string& data) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(ToMojomResult(result), data);
+  delete holder;
+}
+
 void LedgerClientMojoProxy::LoadLedgerState(LoadLedgerStateCallback callback) {
   auto* holder = new CallbackHolder<LoadLedgerStateCallback>(AsWeakPtr(),
       std::move(callback));
-  ledger_client_->LoadLedgerState(holder);
+  ledger_client_->LoadLedgerState(
+      std::bind(LedgerClientMojoProxy::OnLoadLedgerState, holder, _1, _2));
 }
 
 void LedgerClientMojoProxy::GenerateGUID(GenerateGUIDCallback callback) {
@@ -77,22 +82,29 @@ void LedgerClientMojoProxy::OnWalletInitialized(int32_t result) {
   ledger_client_->OnWalletInitialized(ToLedgerResult(result));
 }
 
-void LedgerClientMojoProxy::OnWalletProperties(int32_t result,
-    const std::string& info) {
-  std::unique_ptr<ledger::WalletInfo> wallet_info;
-  if (!info.empty()) {
-    wallet_info.reset(new ledger::WalletInfo());
-    wallet_info->loadFromJson(info);
-  }
+void LedgerClientMojoProxy::OnWalletProperties(
+    int32_t result,
+    ledger::WalletPropertiesPtr properties) {
   ledger_client_->OnWalletProperties(ToLedgerResult(result),
-      std::move(wallet_info));
+                                     std::move(properties));
+}
+
+// static
+void LedgerClientMojoProxy::OnLoadPublisherState(
+    CallbackHolder<LoadLedgerStateCallback>* holder,
+    ledger::Result result,
+    const std::string& data) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(ToMojomResult(result), data);
+  delete holder;
 }
 
 void LedgerClientMojoProxy::LoadPublisherState(
     LoadPublisherStateCallback callback) {
-  auto* holder = new CallbackHolder<LoadPublisherStateCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->LoadPublisherState(holder);
+  auto* holder = new CallbackHolder<LoadPublisherStateCallback>(AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->LoadPublisherState(
+      std::bind(LedgerClientMojoProxy::OnLoadPublisherState, holder, _1, _2));
 }
 
 template <typename Callback>
@@ -198,8 +210,8 @@ void LedgerClientMojoProxy::CallbackHolder<
   delete this;
 }
 
-void LedgerClientMojoProxy::OnGrant(int32_t result, const std::string& grant) {
-  ledger_client_->OnGrant(ToLedgerResult(result), ToLedgerGrant(grant));
+void LedgerClientMojoProxy::OnGrant(int32_t result, ledger::GrantPtr grant) {
+  ledger_client_->OnGrant(ToLedgerResult(result), std::move(grant));
 }
 
 void LedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
@@ -207,15 +219,13 @@ void LedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
   ledger_client_->OnGrantCaptcha(image, hint);
 }
 
-void LedgerClientMojoProxy::OnRecoverWallet(int32_t result, double balance,
-    const std::vector<std::string>& grants) {
-  std::vector<ledger::Grant> ledger_grants;
-  for (auto const& grant : grants) {
-    ledger_grants.push_back(ToLedgerGrant(grant));
-  }
-
-  ledger_client_->OnRecoverWallet(
-      ToLedgerResult(result), balance, ledger_grants);
+void LedgerClientMojoProxy::OnRecoverWallet(
+    int32_t result,
+    double balance,
+    std::vector<ledger::GrantPtr> grants) {
+  ledger_client_->OnRecoverWallet(ToLedgerResult(result),
+                                  balance,
+                                  std::move(grants));
 }
 
 void LedgerClientMojoProxy::OnReconcileComplete(int32_t result,
@@ -227,8 +237,8 @@ void LedgerClientMojoProxy::OnReconcileComplete(int32_t result,
 }
 
 void LedgerClientMojoProxy::OnGrantFinish(int32_t result,
-    const std::string& grant) {
-  ledger_client_->OnGrantFinish(ToLedgerResult(result), ToLedgerGrant(grant));
+                                          ledger::GrantPtr grant) {
+  ledger_client_->OnGrantFinish(ToLedgerResult(result), std::move(grant));
 }
 
 // static
@@ -434,12 +444,6 @@ void LedgerClientMojoProxy::FetchGrants(const std::string& lang,
   ledger_client_->FetchGrants(lang, payment_id);
 }
 
-void LedgerClientMojoProxy::GetGrantCaptcha(
-    const std::string& promotion_id,
-    const std::string& promotion_type) {
-  ledger_client_->GetGrantCaptcha(promotion_id, promotion_type);
-}
-
 void LedgerClientMojoProxy::URIEncode(const std::string& value,
     URIEncodeCallback callback) {
   std::move(callback).Run(ledger_client_->URIEncode(value));
@@ -637,6 +641,70 @@ void LedgerClientMojoProxy::ResetState(
       std::bind(LedgerClientMojoProxy::OnResetState, holder, _1));
 }
 
+void LedgerClientMojoProxy::SetBooleanState(const std::string& name,
+                                            bool value) {
+  ledger_client_->SetBooleanState(name, value);
+}
+
+void LedgerClientMojoProxy::GetBooleanState(const std::string& name,
+                                            GetBooleanStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetBooleanState(name));
+}
+
+void LedgerClientMojoProxy::SetIntegerState(const std::string& name,
+                                            int value) {
+  ledger_client_->SetIntegerState(name, value);
+}
+
+void LedgerClientMojoProxy::GetIntegerState(const std::string& name,
+                                            GetIntegerStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetIntegerState(name));
+}
+
+void LedgerClientMojoProxy::SetDoubleState(const std::string& name,
+                                           double value) {
+  ledger_client_->SetDoubleState(name, value);
+}
+
+void LedgerClientMojoProxy::GetDoubleState(const std::string& name,
+                                           GetDoubleStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetDoubleState(name));
+}
+
+void LedgerClientMojoProxy::SetStringState(const std::string& name,
+                                           const std::string& value) {
+  ledger_client_->SetStringState(name, value);
+}
+
+void LedgerClientMojoProxy::GetStringState(const std::string& name,
+                                           GetStringStateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetStringState(name));
+}
+
+void LedgerClientMojoProxy::SetInt64State(const std::string& name,
+                                          int64_t value) {
+  ledger_client_->SetInt64State(name, value);
+}
+
+void LedgerClientMojoProxy::GetInt64State(const std::string& name,
+                                          GetInt64StateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetInt64State(name));
+}
+
+void LedgerClientMojoProxy::SetUint64State(const std::string& name,
+                                           uint64_t value) {
+  ledger_client_->SetUint64State(name, value);
+}
+
+void LedgerClientMojoProxy::GetUint64State(const std::string& name,
+                                           GetUint64StateCallback callback) {
+  std::move(callback).Run(ledger_client_->GetUint64State(name));
+}
+
+void LedgerClientMojoProxy::ClearState(const std::string& name) {
+  ledger_client_->ClearState(name);
+}
+
 void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
   ledger_client_->SetConfirmationsIsReady(is_ready);
 }
@@ -753,22 +821,60 @@ void LedgerClientMojoProxy::GetPendingContributionsTotal(
                 _1));
 }
 
-void LedgerClientMojoProxy::OnGetCountryCodes(
-    CallbackHolder<GetCountryCodesCallback>* holder,
-    const std::vector<int32_t>& countries) {
+void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
+      int32_t result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) {
+  ledger_client_->OnContributeUnverifiedPublishers(ToLedgerResult(result),
+                                                   publisher_key,
+                                                   publisher_name);
+}
+
+// static
+void LedgerClientMojoProxy::OnGetExternalWallets(
+    CallbackHolder<GetExternalWalletsCallback>* holder,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(mojo::MapToFlatMap(std::move(wallets)));
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetExternalWallets(
+    GetExternalWalletsCallback callback) {
+  auto* holder = new CallbackHolder<GetExternalWalletsCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->GetExternalWallets(
+      std::bind(LedgerClientMojoProxy::OnGetExternalWallets,
+                holder,
+                _1));
+}
+
+void LedgerClientMojoProxy::SaveExternalWallet(
+    const std::string& wallet_type,
+    ledger::ExternalWalletPtr wallet) {
+  ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
+}
+
+// static
+void LedgerClientMojoProxy::OnShowNotification(
+    CallbackHolder<ShowNotificationCallback>* holder,
+    int32_t result) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(countries);
+    std::move(holder->get()).Run(result);
   }
   delete holder;
 }
 
-void LedgerClientMojoProxy::GetCountryCodes(
-    const std::vector<std::string>& countries,
-    GetCountryCodesCallback callback) {
-  auto* holder = new CallbackHolder<GetCountryCodesCallback>(
+void LedgerClientMojoProxy::ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      ShowNotificationCallback callback) {
+  auto* holder = new CallbackHolder<ShowNotificationCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_client_->GetCountryCodes(countries,
-      std::bind(LedgerClientMojoProxy::OnGetCountryCodes,
+  ledger_client_->ShowNotification(
+      type,
+      args,
+      std::bind(LedgerClientMojoProxy::OnShowNotification,
                 holder,
                 _1));
 }

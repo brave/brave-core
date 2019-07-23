@@ -39,6 +39,12 @@ source_set("browser") {
     "recurring_donation.h",
     "rewards_internals_info.cc",
     "rewards_internals_info.h",
+    "balance.cc",
+    "balance.h",
+    "external_wallet.cc",
+    "external_wallet.h",
+    "rewards_protocol_handler.h",
+    "rewards_protocol_handler.cc",
   ]
 
   deps = [
@@ -85,13 +91,6 @@ source_set("browser") {
         "extension_rewards_notification_service_observer.h",
         "extension_rewards_service_observer.cc",
         "extension_rewards_service_observer.h",
-      ]
-    }
-
-    if (!is_android) {
-      sources += [
-        "rewards_helper.cc",
-        "rewards_helper.h",
       ]
     }
 

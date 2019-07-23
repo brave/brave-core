@@ -8,6 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 #include "base/mac/sdk_forward_declarations.h"
+#include "ui/native_theme/native_theme.h"
 
 bool SystemThemeSupportDarkMode() {
   // Dark mode is supported since Mojave.
@@ -18,6 +19,7 @@ bool SystemThemeSupportDarkMode() {
 
 void SetSystemTheme(BraveThemeType type) {
   if (type == BRAVE_THEME_TYPE_DEFAULT) {
+    DCHECK(SystemThemeSupportDarkMode());
     [NSApp setAppearance:nil];
     return;
   }
@@ -27,5 +29,8 @@ void SetSystemTheme(BraveThemeType type) {
         type == BRAVE_THEME_TYPE_DARK ? NSAppearanceNameDarkAqua
                                       : NSAppearanceNameAqua;
     [NSApp setAppearance:[NSAppearance appearanceNamed:new_appearance_name]];
+  } else {
+    ui::SetDarkMode(type == BraveThemeType::BRAVE_THEME_TYPE_DARK);
+    ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
   }
 }

@@ -7,6 +7,7 @@
 #include <cmath>
 #include <ctime>
 #include <utility>
+#include <vector>
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_publishers.h"
@@ -14,6 +15,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
+#include "mojo/public/cpp/bindings/map.h"
 
 /* foo.bar.example.com
    QLD = 'bar'
@@ -70,18 +72,15 @@ std::string getProviderName(const std::string& publisher_id) {
     return TWITCH_MEDIA_TYPE;
   } else if (publisher_id.find(TWITTER_MEDIA_TYPE) != std::string::npos) {
     return TWITTER_MEDIA_TYPE;
+  } else if (publisher_id.find(VIMEO_MEDIA_TYPE) != std::string::npos) {
+    return VIMEO_MEDIA_TYPE;
   }
+
   return "";
 }
 
 bool ignoreMinTime(const std::string& publisher_id) {
   return !getProviderName(publisher_id).empty();
-}
-
-void BatPublishers::AddRecurringPayment(const std::string& publisher_id,
-                                        const double& value) {
-  state_->recurring_donation_[publisher_id] = value;
-  saveState();
 }
 
 void BatPublishers::saveVisit(const std::string& publisher_id,
@@ -138,7 +137,7 @@ std::string BatPublishers::GetBalanceReportName(
 
 void BatPublishers::saveVisitInternal(
     std::string publisher_id,
-    ledger::VisitData visit_data,
+    const ledger::VisitData& visit_data,
     uint64_t duration,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback,
@@ -174,7 +173,7 @@ void BatPublishers::saveVisitInternal(
         publisher_info->favicon_url = fav_icon;
     }
   } else {
-    publisher_info->favicon_url = ledger::_clear_favicon;
+    publisher_info->favicon_url = ledger::kClearFavicon;
   }
 
   publisher_info->name = visit_data.name;
@@ -227,7 +226,7 @@ void BatPublishers::saveVisitInternal(
   }
 
   if (panel_info) {
-    if (panel_info->favicon_url == ledger::_clear_favicon) {
+    if (panel_info->favicon_url == ledger::kClearFavicon) {
       panel_info->favicon_url = std::string();
     }
 
@@ -380,9 +379,7 @@ void BatPublishers::setPublisherAllowVideos(const bool& allow) {
 }
 
 uint64_t BatPublishers::getPublisherMinVisitTime() const {
-  return ledger::is_testing
-             ? braveledger_ledger::_default_min_publisher_duration_test
-             : state_->min_publisher_duration_;
+  return state_->min_publisher_duration_;
 }
 
 unsigned int BatPublishers::getPublisherMinVisits() const {
@@ -673,7 +670,11 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
 
 void BatPublishers::RefreshPublishersList(const std::string& json) {
   ledger_->SavePublishersList(json);
-  loadPublisherList(json);
+  bool success = loadPublisherList(json);
+
+  if (success) {
+    ledger_->ContributeUnverifiedPublishers();
+  }
 }
 
 void BatPublishers::OnPublishersListSaved(ledger::Result result) {
@@ -685,6 +686,7 @@ void BatPublishers::OnPublishersListSaved(ledger::Result result) {
 
 bool BatPublishers::loadPublisherList(const std::string& data) {
   std::map<std::string, braveledger_bat_helper::SERVER_LIST> list;
+
   bool success = braveledger_bat_helper::getJSONServerList(data, &list);
 
   if (success) {
@@ -704,7 +706,10 @@ void BatPublishers::getPublisherActivityFromUrl(
 
   const bool is_media = visit_data.domain == YOUTUBE_TLD ||
                         visit_data.domain == TWITCH_TLD ||
-                        visit_data.domain == TWITTER_TLD;
+                        visit_data.domain == TWITTER_TLD ||
+                        visit_data.domain == REDDIT_TLD ||
+                        visit_data.domain == VIMEO_TLD ||
+                        visit_data.domain == GITHUB_TLD;
 
   if (is_media &&
       visit_data.path != "" && visit_data.path != "/") {
@@ -713,18 +718,24 @@ void BatPublishers::getPublisherActivityFromUrl(
       type = TWITCH_MEDIA_TYPE;
     } else if (visit_data.domain == TWITTER_TLD) {
       type = TWITTER_MEDIA_TYPE;
+    } else if (visit_data.domain == REDDIT_TLD) {
+      type = REDDIT_MEDIA_TYPE;
+    } else if (visit_data.domain == VIMEO_TLD) {
+      type = VIMEO_MEDIA_TYPE;
+    } else if (visit_data.domain == GITHUB_TLD) {
+      type = GITHUB_MEDIA_TYPE;
     }
 
-    ledger::VisitData new_visit_data(visit_data);
+    ledger::VisitDataPtr new_visit_data = ledger::VisitData::New(visit_data);
 
-    if (!new_visit_data.url.empty()) {
-      new_visit_data.url.pop_back();
+    if (!new_visit_data->url.empty()) {
+      new_visit_data->url.pop_back();
     }
 
-    new_visit_data.url = new_visit_data.url + new_visit_data.path;
+    new_visit_data->url += new_visit_data->path;
 
     ledger_->GetMediaActivityFromUrl(windowId,
-                                     new_visit_data,
+                                     std::move(new_visit_data),
                                      type,
                                      publisher_blob);
     return;
@@ -839,7 +850,7 @@ void BatPublishers::getPublisherBanner(
       banner.title = values.banner.title_;
       banner.description = values.banner.description_;
       banner.amounts = values.banner.amounts_;
-      banner.social = values.banner.social_;
+      banner.social = mojo::MapToFlatMap(values.banner.social_);
 
       // WebUI must not make external network requests, so map
       // external resopurces to chrome://rewards-image and handle them
@@ -856,7 +867,7 @@ void BatPublishers::getPublisherBanner(
   }
 
   ledger::PublisherInfoCallback callbackGetPublisher =
-      std::bind(&BatPublishers::onPublisherBanner,
+      std::bind(&BatPublishers::OnPublisherBanner,
                 this,
                 callback,
                 banner,
@@ -866,13 +877,13 @@ void BatPublishers::getPublisherBanner(
   ledger_->GetPublisherInfo(publisher_id, callbackGetPublisher);
 }
 
-void BatPublishers::onPublisherBanner(
+void BatPublishers::OnPublisherBanner(
     ledger::PublisherBannerCallback callback,
-    ledger::PublisherBanner banner,
+    const ledger::PublisherBanner& banner,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info) {
 
-  auto new_banner = std::make_unique<ledger::PublisherBanner>(banner);
+  auto new_banner = ledger::PublisherBanner::New(banner);
 
   if (!publisher_info || result != ledger::Result::LEDGER_OK) {
     callback(std::move(new_banner));
@@ -894,6 +905,37 @@ void BatPublishers::RefreshPublisherVerifiedStatus(
     const std::string& publisher_key,
     ledger::OnRefreshPublisherCallback callback) {
   callback(isVerified(publisher_key));
+}
+
+void BatPublishers::SavePublisherProcessed(const std::string& publisher_key) {
+  const std::vector<std::string> list = state_->processed_pending_publishers;
+  if (std::find(list.begin(), list.end(), publisher_key) == list.end()) {
+    state_->processed_pending_publishers.push_back(publisher_key);
+  }
+  saveState();
+}
+
+bool BatPublishers::WasPublisherAlreadyProcessed(
+    const std::string& publisher_key) const {
+  const std::vector<std::string> list = state_->processed_pending_publishers;
+  return std::find(list.begin(), list.end(), publisher_key) != list.end();
+}
+
+std::string BatPublishers::GetPublisherAddress(
+    const std::string& publisher_key) const {
+  if (server_list_.empty()) {
+    return "";
+  }
+
+  auto result = server_list_.find(publisher_key);
+
+  if (result == server_list_.end()) {
+    return "";
+  }
+
+  const braveledger_bat_helper::SERVER_LIST values = result->second;
+
+  return values.address;
 }
 
 }  // namespace braveledger_bat_publishers

@@ -34,6 +34,14 @@
       "js": [
         "out/brave_rewards_panel_content_twitter.bundle.js"
       ]
+    },
+    {
+      "matches": [
+        "https://*.reddit.com/*"
+      ],
+      "js": [
+        "out/brave_rewards_panel_content_reddit.bundle.js"
+      ]
     }
   ],
   "icons": {

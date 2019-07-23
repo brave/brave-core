@@ -185,11 +185,7 @@ struct WALLET_PROPERTIES_ST {
   // load from json string
   bool loadFromJson(const std::string & json);
 
-  std::string altcurrency_;
-  std::string probi_;
-  double balance_;
   double fee_amount_;
-  std::map<std::string, double> rates_;
   std::vector<double> parameters_choices_;
   std::vector<double> parameters_range_;
   unsigned int parameters_days_;
@@ -230,8 +226,8 @@ struct PUBLISHER_STATE_ST {
   uint64_t pubs_load_timestamp_ = 0ull;
   bool allow_videos_ = true;
   std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;
-  std::map<std::string, double> recurring_donation_;
   bool migrate_score_2 = false;
+  std::vector<std::string> processed_pending_publishers;
 };
 
 struct PUBLISHER_ST {
@@ -246,8 +242,15 @@ struct PUBLISHER_ST {
   uint64_t duration_ = 0u;
   double score_ = .0;
   unsigned int visits_ = 0;
+
+  // The mathematically rounded publisher voting weight, as described
+  // below.
   unsigned int percent_ = 0;
+
+  // The exact weight to use when calculating the number of votes to
+  // cast for each publisher.
   double weight_ = .0;
+
   bool verified_ = false;
 };
 
@@ -439,6 +442,7 @@ struct SERVER_LIST_BANNER {
 struct SERVER_LIST {
   bool verified;
   bool excluded;
+  std::string address;
   SERVER_LIST_BANNER banner;
 };
 
@@ -475,7 +479,6 @@ bool getJSONBatchSurveyors(const std::string& json,
 
 bool getJSONRecoverWallet(const std::string& json,
                           double* balance,
-                          std::string* probi,
                           std::vector<GRANT>* grants);
 
 bool getJSONResponse(const std::string& json,

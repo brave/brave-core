@@ -17,8 +17,8 @@ template("cargo_build") {
     outputs = [output]
 
     args = [
-      "--rustup_home=" + rebase_path("//brave/build/rustup/", root_build_dir),
-      "--cargo_home=" + rebase_path("//brave/build/rustup/", root_build_dir),
+      "--rustup_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
+      "--cargo_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
       "--manifest_path=" + rebase_path(manifest_path, root_build_dir),
       "--build_path=" + rebase_path(build_path, root_build_dir),
       "--target=" + target,

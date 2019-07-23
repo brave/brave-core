@@ -76,13 +76,9 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="5874882355102994015">Hindi maipapakita ng Brave ang preview ng pag-print kapag nawawala ang built-in na PDF viewer.</translation>
 <translation id="8880183781256147665">Idinaragdag sa Brave...</translation>
 <translation id="3561569806301739367">Maaaring mapanganib ang <ph name="FILE_NAME"/>, kaya na-block ito ng Brave.</translation>
-<translation id="6205431412329939367">Puwedeng mapanganib ang <ph name="FILE_NAME"/> kaya na-block ito ng Brave. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="9067428552314418522">Mapanganib ang file na ito, kaya na-block ito ng Brave.</translation>
-<translation id="2938460345748897177">Maaaring mapanganib ang file na ito kaya na-block ito ng Brave. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="4168372721886011198">Mapanganib ang <ph name="FILE_NAME"/>, kaya na-block ito ng Brave.</translation>
-<translation id="8858456697111532356">Mapanganib ang <ph name="FILE_NAME"/> kaya na-block ito ng Brave. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="89367911614620585">Maaaring mapanganib ang file na ito, kaya na-block ito ng Brave.</translation>
-<translation id="8943391224520748272">Puwedeng mapanganib ang file na ito kaya na-block ito ng Brave. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="9183662282810237335">Lumabas pa rin sa Brave?</translation>
 <translation id="3834935463915107022">Umalis pa rin sa Brave?</translation>
 <translation id="8797356639448065696">Nasa background mode ang Brave.</translation>
@@ -145,8 +141,6 @@ Kapag nag-sign in ka pa rin, isasama sa <ph name="ACCOUNT_EMAIL_NEW"/> ang impor
 <translation id="6746636977031158624">Hindi ma-sync ng Brave OS ang iyong data dahil hindi napapanahon ang mga detalye sa pag-sign in sa iyong account.</translation>
 <translation id="2999152167963026588">Hindi ma-sync ng Brave OS ang iyong data dahil hindi available ang Pag-sync para sa iyong domain.</translation>
 <translation id="1459786048951724030">Hindi ma-sync ng Brave OS ang iyong data dahil sa isang error sa pagsa-sign in.</translation>
-<translation id="2887570477425111999">I-save ang mga detalye sa Brave</translation>
-<translation id="193559141530782783">Secure na iiimbak ng Brave ang iyong mga personal na detalye nang sa gayon ay hindi mo na kailangang i-type muli ang mga ito.</translation>
 <translation id="663059986967017181">Kinopya sa Brave</translation>
 <translation id="1457432835062259213">App Launcher ng Brave</translation>
 <translation id="82609232232243542">Mag-sign in sa Brave</translation>
@@ -184,7 +178,7 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="1912973375560256099">Inbound na panuntunan para sa Brave upang payagan ang trapiko ng mDNS.</translation>
 <translation id="8207657266087451193">Kung hindi sapat ang deskripsyon ng isang larawan, susubukan ng Brave na ayusin ito para sa iyo. Para gumawa ng mga deskripsyon, ipinapadala ang mga larawan sa Brave Software. Puwede mo itong i-off sa mga setting anumang oras.</translation>
 <translation id="5499063270485366718">Kung hindi sapat ang deskripsyon ng isang larawan, susubukan ng Brave na ayusin ito para sa iyo. Para gumawa ng mga deskripsyon, ipinapadala ang mga larawan sa Brave Software.</translation>
-<translation id="3870835867536344658">Ginagamit nito ang parehong spellchecker na ginagamit sa paghahanap sa Brave Software. Ipinapadala sa Brave Software ang text na tina-type mo sa browser. Puwede mong baguhin palagi ang gawi na ito sa mga setting.</translation>
+<translation id="215320507915280336">Ginagamit nito ang parehong spellchecker na ginagamit sa paghahanap sa Brave Software. Ipinapadala sa Brave Software ang text na tina-type mo sa browser. Puwede mong baguhin ang gawing ito sa mga setting sa lahat ng oras.</translation>
 <translation id="1807774211756215222">Buksan ang link sa bagong &amp;tab ng Brave</translation>
 <translation id="4624945300945265642">Buksan ang link sa inco&amp;gnito window ng Brave</translation>
 <translation id="7863882214613921971">Buksan ang Link sa bagong &amp;tab ng Brave</translation>
@@ -195,6 +189,9 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="2522086024276534909">I-restart ang Brave OS</translation>
 <translation id="8183252473547465084">Kailangang ma-restart ang Brave OS upang mailapat ang update.</translation>
 <translation id="5895138241574237353">I-restart</translation>
+<translation id="8887390605192156061">Ihinto ang lahat ng kopya ng Brave.</translation>
+<translation id="1801551749768408825">May tumatakbong iba pang kopya ng Brave. Para i-update, isara ang mga ito.</translation>
+<translation id="2632141563911437138">Para i-update, kailangang huminto sa pagtakbo ng Brave sa computer na ito. Puwedeng magdulot ito sa iba pang user na naka-log in sa computer na ito na mawala ang mga hindi naka-save na pagbabago.</translation>
 <translation id="5875673934455379806">Muling i-install ang Brave</translation>
 <translation id="2097604701283463988">Luma na ang Brave</translation>
 <translation id="5173820533850252773">Luma na ang Brave</translation>
@@ -238,23 +235,17 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="8933981935877469796">Piliin ang <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">I-click ang <ph name="BEGIN_BOLD"/>Lumipat pa rin<ph name="END_BOLD"/>, kung lalabas ito</translation>
 <translation id="3507835409099344374">Pumunta sa mga setting ng notification ng Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{May available na update sa Brave}=1{May available na update sa Brave}one{# araw nang may available na update sa Brave}other{# na araw nang may available na update sa Brave}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{May available na update sa Brave}=1{May available na update sa Brave}one{# araw nang may available na update sa Brave}other{# na araw nang may available na update sa Brave}}</translation>
 <translation id="720532315408041257">Hinihiling sa iyo ng administrator mo na muli mong ilunsad ang Brave para malapat ang update na ito</translation>
-<translation id="6639482638305253477">{0,plural, =1{Muling ilunsad ang Brave sa loob ng isang araw}one{Muling ilunsad ang Brave sa loob ng # araw}other{Muling ilunsad ang Brave sa loob ng # na araw}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Muling ilulunsad ang Brave sa loob ng isang oras}one{Muling ilulunsad ang Brave sa loob ng # oras}other{Muling ilulunsad ang Brave sa loob ng # na oras}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Muling ilulunsad ang Brave sa loob ng 1 minuto}one{Muling ilulunsad ang Brave sa loob ng # minuto}other{Muling ilulunsad ang Brave sa loob ng # na minuto}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Muli nang ilulunsad ang Brave}=1{Muling ilulunsad ang Brave sa loob ng 1 segundo}one{Muling ilulunsad ang Brave sa loob ng # segundo}other{Muling ilulunsad ang Brave sa loob ng # na segundo}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Muling ilunsad ang Brave sa loob ng isang araw}one{Muling ilunsad ang Brave sa loob ng # araw}other{Muling ilunsad ang Brave sa loob ng # na araw}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Muling ilulunsad ang Brave sa loob ng isang oras}one{Muling ilulunsad ang Brave sa loob ng # oras}other{Muling ilulunsad ang Brave sa loob ng # na oras}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Muling ilulunsad ang Brave sa loob ng 1 minuto}one{Muling ilulunsad ang Brave sa loob ng # minuto}other{Muling ilulunsad ang Brave sa loob ng # na minuto}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Muli nang ilulunsad ang Brave ngayon}=1{Muli nang ilulunsad ang Brave sa loob ng 1 segundo}one{Muli nang ilulunsad ang Brave sa loob ng # segundo}other{Muli nang ilulunsad ang Brave sa loob ng # na segundo}}</translation>
 <translation id="7595187113648413294">Inaatasan ka ng iyong administrator na muling ilunsad ang Brave para malapat ang update</translation>
-<translation id="56801943271475640">{0,plural, =0{May available na update sa Brave OS}=1{May available na update sa Brave OS}one{# araw nang may available na update sa Brave OS}other{# na araw nang may available na update sa Brave OS}}</translation>
-<translation id="5715362474140341294">Hinihiling sa iyo ng administrator mo na i-restart ang Brave OS para mailapat ang update na ito</translation>
-<translation id="8094834892392729950">{0,plural, =1{I-restart ang Brave OS sa loob ng isang araw}one{I-restart ang Brave OS sa loob ng # araw}other{I-restart ang Brave OS sa loob ng # na araw}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Magre-restart ang Brave OS sa loob ng isang oras}one{Magre-restart ang Brave OS sa loob ng # oras}other{Magre-restart ang Brave OS sa loob ng # na oras}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Magre-restart ang Brave OS sa loob ng 1 minuto}one{Magre-restart ang Brave OS sa loob ng # minuto}other{Magre-restart ang Brave OS sa loob ng # na minuto}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Magre-restart na ang Brave OS}=1{Magre-restart ang Brave OS sa loob ng 1 segundo}one{Magre-restart ang Brave OS sa loob ng # segundo}other{Magre-restart ang Brave OS sa loob ng # na segundo}}</translation>
-<translation id="8559452515617838628">Inaatasan ka ng iyong administrator na i-restart ang Brave OS para maglapat ng update</translation>
 <translation id="3052349005266761501">Inilulunsad ang Brave...</translation>
 <translation id="1197672524850678392">Hindi mailunsad ang Brave. Subukang muli.</translation>
 <translation id="6040143037577758943">Isara</translation>
+<translation id="5147525139567260139">Magbahagi ng tab ng Brave</translation>
 <translation id="8541922081612557424">Tungkol sa Brave</translation>
 <translation id="3262506503470845422">Humingi ng tulong sa Brave</translation>
 <translation id="1864557848095568223">Ina-update ang Brave</translation>

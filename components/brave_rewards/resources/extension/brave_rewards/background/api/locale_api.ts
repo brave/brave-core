@@ -22,6 +22,7 @@ export const getMessage = (message: string, substitutions?: string[]): string =>
 
 export const getUIMessages = (): Record<string, string> => {
   const strings = [
+    'addFunds',
     'and',
     'backupNow',
     'backupWalletNotification',
@@ -35,8 +36,6 @@ export const getUIMessages = (): Record<string, string> => {
     'braveRewardsCreatingText',
     'braveRewardsSubTitle',
     'captchaDrag',
-    'captchaLuckyDay',
-    'captchaOnTheWay',
     'captchaProveHuman',
     'captchaTarget',
     'captchaMissedTarget',
@@ -79,6 +78,7 @@ export const getUIMessages = (): Record<string, string> => {
     'ok',
     'on',
     'oneTimeDonation',
+    'pendingContributionTitle',
     'privacyPolicy',
     'recurringDonations',
     'reservedAmountText',
@@ -115,7 +115,25 @@ export const getUIMessages = (): Record<string, string> => {
     'disabledPanelOff',
     'disabledPanelSettings',
     'disabledPanelText',
-    'disabledPanelTitle'
+    'disabledPanelTitle',
+    'rewardsPanelTextVerify',
+    'walletButtonDisconnected',
+    'walletButtonUnverified',
+    'walletButtonVerified',
+    'walletGoToUphold',
+    'walletDisconnect',
+    'walletVerificationButton',
+    'walletVerificationFooter',
+    'walletVerificationID',
+    'walletVerificationListCompact1',
+    'walletVerificationListCompact2',
+    'walletVerificationListCompact3',
+    'walletVerificationListHeader',
+    'walletVerificationTitle1',
+    'walletVerificationTitle2',
+    'walletVerified',
+    'balanceUnavailable',
+    'reconnectWallet'
   ]
 
   let translations = {}

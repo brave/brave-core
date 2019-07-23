@@ -1,0 +1,12 @@
+diff --git a/net/BUILD.gn b/net/BUILD.gn
+index b3d97f6a0a6799fd409822645e4a3c1aa508bbc8..a0cf777d6771cef2178e8448d224d5e1f5056808 100644
+--- a/net/BUILD.gn
++++ b/net/BUILD.gn
+@@ -1854,6 +1854,7 @@ component("net") {
+         "reporting/reporting_uploader.h",
+       ]
+     }
++    sources += brave_net_sources
+ 
+     if (!use_kerberos) {
+       sources -= [

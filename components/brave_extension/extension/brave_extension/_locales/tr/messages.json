@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Üçüncü taraf izleyiciler engellendi",
+    "message": "Siteler arası iz sürücüler engellendi",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "3. parti çerezler engellendi.",
+    "message": "Siteler arası çerezler engellendi",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "3. parti cihaz tanıma engellendi",
+    "message": "Siteler arası cihaz tanımlama engellendi",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Cihaz tanıma engellendi",
+    "message": "Cihaz tanımlama girişimleri engellendi",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Tüm cihaz tanımalara izin verildi",
+    "message": "Tüm cihaz tanımlama girişimlerine izin verildi",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -119,6 +119,18 @@
     "message": "İzin Ver",
     "description": "Message for the resources blocked *allow* option"
   },
+  "blockedOnce": {
+    "message": "Bir kereliğine engellendi",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Bir kez izin verildi",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Script'lere bir kereliğine izin ver",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
   "cancel": {
     "message": "İptal",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
@@ -134,5 +146,17 @@
   "changeDefaults": {
     "message": "Genel koruma varsayılanlarını değiştir",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "Seçici aracılığıyla element engelleyin",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "Bu site için CSS kurallarını temizle",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "Bu site için CSS kurallarını temizle",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

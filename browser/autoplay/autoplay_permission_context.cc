@@ -5,6 +5,8 @@
 
 #include "brave/browser/autoplay/autoplay_permission_context.h"
 
+#include <utility>
+
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
@@ -52,12 +54,12 @@ void AutoplayPermissionContext::NotifyPermissionSet(
     const PermissionRequestID& id,
     const GURL& requesting_origin,
     const GURL& embedding_origin,
-    const BrowserPermissionCallback& callback,
+    BrowserPermissionCallback callback,
     bool persist,
     ContentSetting content_setting) {
-  PermissionContextBase::NotifyPermissionSet(id, requesting_origin,
-                                             embedding_origin, callback,
-                                             persist, content_setting);
+  PermissionContextBase::NotifyPermissionSet(
+      id, requesting_origin, embedding_origin, std::move(callback), persist,
+      content_setting);
   // Ask -> Allow
   if (persist && content_setting == CONTENT_SETTING_ALLOW) {
     content::WebContents* web_contents =

@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig",
+  "include": [
+    "./components/definitions/*",
+    "./components/**/storybook/**"
+  ],
+  "exclude": [
+
+  ]
+}

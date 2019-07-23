@@ -20,8 +20,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="4685833011652060085">Pomoc do Brave</translation>
 <translation id="6474707902830053522">Skorzystaj z pomocy dotyczącej używania systemu operacyjnego Brave</translation>
-<translation id="8992261409816268381">Autorzy Brave</translation>
-<translation id="4651430425715739110">Copyright <ph name="YEAR"/> Autorzy Brave. Wszelkie prawa zastrzeżone.</translation>
+<translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="4651430425715739110">Chroniony prawem autorskim <ph name="YEAR"/> Brave Software Inc. Wszelkie prawa zastrzeżone.</translation>
 <translation id="2310890394934209120">Stworzenie systemu operacyjnego Brave było możliwe dzięki dodatkowym <ph name="BEGIN_LINK_CROS_OSS"/>programom o otwartym kodzie źródłowym<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">Opracowanie systemu operacyjnego Brave było możliwe dzięki dodatkowemu <ph name="BEGIN_LINK_CROS_OSS"/>oprogramowaniu open source<ph name="END_LINK_CROS_OSS"/>. To samo dotyczy funkcji <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="8948097099929452692">Nie używany w Brave. Symbol zastępczy umożliwiający synchronizację map zasobów.</translation>
@@ -77,13 +77,9 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="5874882355102994015">Brave nie może pokazać podglądu wydruku, gdy nie ma wbudowanej przeglądarki PDF.</translation>
 <translation id="8880183781256147665">Dodawanie do Brave...</translation>
 <translation id="3561569806301739367">Plik <ph name="FILE_NAME"/> może być niebezpieczny, dlatego został zablokowany przez Brave.</translation>
-<translation id="6205431412329939367">Plik <ph name="FILE_NAME"/> może być niebezpieczny, dlatego został zablokowany przez Brave. O Twoje bezpieczeństwo dba Ochrona zaawansowana.</translation>
 <translation id="9067428552314418522">Ten plik jest niebezpieczny, dlatego został zablokowany przez Brave.</translation>
-<translation id="2938460345748897177">Ten plik jest niebezpieczny, dlatego został zablokowany przez Brave. O Twoje bezpieczeństwo dba Ochrona zaawansowana.</translation>
 <translation id="4168372721886011198">Plik <ph name="FILE_NAME"/> jest niebezpieczny, dlatego został zablokowany przez Brave.</translation>
-<translation id="8858456697111532356">Plik <ph name="FILE_NAME"/> jest niebezpieczny, dlatego został zablokowany przez Brave. O Twoje bezpieczeństwo dba Ochrona zaawansowana.</translation>
 <translation id="89367911614620585">Ten plik może być niebezpieczny, dlatego został zablokowany przez Brave.</translation>
-<translation id="8943391224520748272">Ten plik może być niebezpieczny, dlatego został zablokowany przez Brave. O Twoje bezpieczeństwo dba Ochrona zaawansowana.</translation>
 <translation id="9183662282810237335">Zamknąć Brave mimo to?</translation>
 <translation id="3834935463915107022">Zamknąć Brave mimo to?</translation>
 <translation id="8797356639448065696">Brave jest w trybie działania w tle</translation>
@@ -146,8 +142,6 @@ Jeśli jednak zalogujesz się teraz, informacje Brave, takie jak zakładki, hist
 <translation id="6746636977031158624">System operacyjny Brave nie może zsynchronizować danych, ponieważ dane logowania na Twoje konto są nieaktualne.</translation>
 <translation id="2999152167963026588">System operacyjny Brave nie może zsynchronizować danych, ponieważ synchronizacja jest niedostępna w Twojej domenie.</translation>
 <translation id="1459786048951724030">System operacyjny Brave nie może zsynchronizować danych z powodu błędu logowania.</translation>
-<translation id="2887570477425111999">Zapisz szczegóły w Brave</translation>
-<translation id="193559141530782783">Brave będzie bezpiecznie przechowywać Twoje dane, dzięki czemu nie będzie trzeba wpisywać ich ponownie.</translation>
 <translation id="663059986967017181">Skopiowana do Brave</translation>
 <translation id="1457432835062259213">Menu z aplikacjami Brave</translation>
 <translation id="82609232232243542">Zaloguj się w Brave</translation>
@@ -191,7 +185,7 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="3856641371299712128">Reguła dla ruchu przychodzącego w Brave Dev zezwalająca na ruch mDNS.</translation>
 <translation id="8207657266087451193">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave Software. W każdej chwili możesz wyłączyć tę funkcję w ustawieniach.</translation>
 <translation id="5499063270485366718">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave Software.</translation>
-<translation id="3870835867536344658">Będzie stosowany ten sam mechanizm sprawdzania pisowni, który jest używany w wyszukiwarce Brave Software. Tekst wpisywany w przeglądarce jest wysyłany do Brave Software. Zawsze możesz to zmienić w ustawieniach.</translation>
+<translation id="215320507915280336">Będzie stosowany ten sam mechanizm sprawdzania pisowni, który jest używany w wyszukiwarce Brave Software. Tekst wpisywany w przeglądarce jest wysyłany do Brave Software. Zawsze możesz to zmienić w ustawieniach.</translation>
 <translation id="1807774211756215222">O&amp;twórz link w nowej karcie Brave</translation>
 <translation id="4624945300945265642">Otwórz link w oknie inco&amp;gnito Brave</translation>
 <translation id="7863882214613921971">O&amp;twórz link w nowej karcie Brave</translation>
@@ -202,6 +196,9 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="2522086024276534909">Ponowne uruchomienie Brave OS</translation>
 <translation id="8183252473547465084">Zastosowanie aktualizacji wymaga ponownego uruchomienia systemu operacyjnego Brave.</translation>
 <translation id="5895138241574237353">Uruchom ponownie</translation>
+<translation id="8887390605192156061">Zamknij wszystkie kopie Brave.</translation>
+<translation id="1801551749768408825">Są uruchomione inne kopie Brave. Zamknij je, by przeprowadzić aktualizację.</translation>
+<translation id="2632141563911437138">Aby można było przeprowadzić aktualizację, musisz wyłączyć Brave na tym komputerze. Może to spowodować, że inni zalogowani na nim użytkownicy utracą niezapisane dane.</translation>
 <translation id="5875673934455379806">Ponownie zainstaluj Brave</translation>
 <translation id="2097604701283463988">Brave jest nieaktualny</translation>
 <translation id="5173820533850252773">Brave jest nieaktualny</translation>
@@ -245,23 +242,17 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="8933981935877469796">Wybierz <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Kliknij przycisk <ph name="BEGIN_BOLD"/>Przełącz mimo to<ph name="END_BOLD"/>, jeśli jest widoczny</translation>
 <translation id="3507835409099344374">Otwórz ustawienia powiadomień Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Dostępna jest aktualizacja Brave}=1{Dostępna jest aktualizacja Brave}few{Aktualizacja Brave jest dostępna od # dni}many{Aktualizacja Brave jest dostępna od # dni}other{Aktualizacja Brave jest dostępna od # dnia}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Dostępna jest aktualizacja Brave}=1{Dostępna jest aktualizacja Brave}few{Aktualizacja Brave jest dostępna od # dni}many{Aktualizacja Brave jest dostępna od # dni}other{Aktualizacja Brave jest dostępna od # dnia}}</translation>
 <translation id="720532315408041257">Administrator prosi Cię o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację</translation>
-<translation id="6639482638305253477">{0,plural, =1{Uruchom ponownie Brave w ciągu jednego dnia}few{Uruchom ponownie Brave w ciągu # dni}many{Uruchom ponownie Brave w ciągu # dni}other{Uruchom ponownie Brave w ciągu # dnia}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave uruchomi się ponownie za godzinę}few{Brave uruchomi się ponownie za # godziny}many{Brave uruchomi się ponownie za # godzin}other{Brave uruchomi się ponownie za # godziny}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave uruchomi się ponownie za 1 minutę}few{Brave uruchomi się ponownie za # minuty}many{Brave uruchomi się ponownie za # minut}other{Brave uruchomi się ponownie za # minuty}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave uruchomi się ponownie teraz}=1{Brave uruchomi się ponownie za 1 sekundę}few{Brave uruchomi się ponownie za # sekundy}many{Brave uruchomi się ponownie za # sekund}other{Brave uruchomi się ponownie za # sekundy}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Ponowne uruchomienie Brave nastąpi w ciągu 1 dnia}few{Ponowne uruchomienie Brave nastąpi w ciągu # dni}many{Ponowne uruchomienie Brave nastąpi w ciągu # dni}other{Ponowne uruchomienie Brave nastąpi w ciągu # dnia}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave uruchomi się ponownie za godzinę}few{Brave uruchomi się ponownie za # godziny}many{Brave uruchomi się ponownie za # godzin}other{Brave uruchomi się ponownie za # godziny}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave uruchomi się ponownie za 1 minutę}few{Brave uruchomi się ponownie za # minuty}many{Brave uruchomi się ponownie za # minut}other{Brave uruchomi się ponownie za # minuty}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave uruchomi się ponownie teraz}=1{Brave uruchomi się ponownie za 1 sekundę}few{Brave uruchomi się ponownie za # sekundy}many{Brave uruchomi się ponownie za # sekund}other{Brave uruchomi się ponownie za # sekundy}}</translation>
 <translation id="7595187113648413294">Administrator wymaga od Ciebie ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację</translation>
-<translation id="56801943271475640">{0,plural, =0{Dostępna jest aktualizacja Brave OS}=1{Dostępna jest aktualizacja Brave OS}few{Aktualizacja Brave OS jest dostępna od # dni}many{Aktualizacja Brave OS jest dostępna od # dni}other{Aktualizacja Brave OS jest dostępna od # dnia}}</translation>
-<translation id="5715362474140341294">Administrator prosi Cię o ponowne uruchomienie Brave OS, by można było zainstalować tę aktualizację</translation>
-<translation id="8094834892392729950">{0,plural, =1{Uruchom ponownie Brave OS w ciągu jednego dnia}few{Uruchom ponownie Brave OS w ciągu # dni}many{Uruchom ponownie Brave OS w ciągu # dni}other{Uruchom ponownie Brave OS w ciągu # dnia}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS uruchomi się ponownie za godzinę}few{Brave OS uruchomi się ponownie za # godziny}many{Brave OS uruchomi się ponownie za # godzin}other{Brave OS uruchomi się ponownie za # godziny}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS uruchomi się ponownie za 1 minutę}few{Brave OS uruchomi się ponownie za # minuty}many{Brave OS uruchomi się ponownie za # minut}other{Brave OS uruchomi się ponownie za # minuty}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS uruchomi się ponownie teraz}=1{Brave OS uruchomi się ponownie za 1 sekundę}few{Brave OS uruchomi się ponownie za # sekundy}many{Brave OS uruchomi się ponownie za # sekund}other{Brave OS uruchomi się ponownie za # sekundy}}</translation>
-<translation id="8559452515617838628">Administrator wymaga od Ciebie ponownego uruchomienia Brave OS, by można było zainstalować aktualizację</translation>
 <translation id="3052349005266761501">Uruchamiam Brave…</translation>
 <translation id="1197672524850678392">Nie udało się uruchomić Brave. Spróbuj ponownie.</translation>
 <translation id="6040143037577758943">Zamknij</translation>
+<translation id="5147525139567260139">Udostępnij kartę Brave</translation>
 <translation id="8541922081612557424">Brave – informacje</translation>
 <translation id="3262506503470845422">Pomoc do Brave</translation>
 <translation id="1864557848095568223">Aktualizuję Brave</translation>

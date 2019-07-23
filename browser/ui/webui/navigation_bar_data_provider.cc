@@ -9,6 +9,8 @@
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
 
+#include "components/grit/brave_components_strings.h"
+
 // static
 void NavigationBarDataProvider::Initialize(content::WebUIDataSource* source) {
   source->AddLocalizedString(
@@ -19,5 +21,9 @@ void NavigationBarDataProvider::Initialize(content::WebUIDataSource* source) {
     "brToolbarDownloadsTitle", IDS_DOWNLOAD_TITLE);
   source->AddLocalizedString(
     "brToolbarHistoryTitle", IDS_HISTORY_TITLE);
+  source->AddLocalizedString(
+    "brToolbarRewardsTitle", IDS_BRAVE_UI_BRAVE_REWARDS);
+  source->AddLocalizedString(
+    "brToolbarWalletsTitle", IDS_WALLETS_TITLE);
 }
 

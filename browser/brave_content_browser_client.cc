@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
@@ -14,12 +15,7 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/browser/tor/buildflags.h"
-#include "brave/common/brave_cookie_blocking.h"
-#include "brave/common/brave_switches.h"
-#include "brave/common/tor/switches.h"
-#include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -28,10 +24,10 @@
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
-#include "brave/components/services/brave_content_packaged_service_overlay_manifest.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile.h"
@@ -57,15 +53,18 @@ using content::RenderFrameHost;
 using content::WebContents;
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
+#include "brave/components/services/bat_ads/public/cpp/manifest.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "brave/components/services/bat_ledger/public/cpp/manifest.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
+#include "extensions/browser/extension_registry.h"
 using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
@@ -73,43 +72,34 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #endif
 
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/common/tor/switches.h"
+#include "brave/components/services/tor/public/cpp/manifest.h"
+#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
+#include "brave/components/services/tor/tor_launcher_service.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/extensions/brave_wallet_navigation_throttle.h"
 #endif
 
 namespace {
 
-bool HandleURLOverrideRewrite(GURL* url,
-                              content::BrowserContext* browser_context) {
-  // redirect sync-internals
-  if (url->host() == chrome::kChromeUISyncInternalsHost ||
-      url->host() == chrome::kChromeUISyncHost) {
-    GURL::Replacements replacements;
-    replacements.SetHostStr(chrome::kChromeUISyncHost);
-    *url = url->ReplaceComponents(replacements);
-    return true;
-  }
-
-  // no special win10 welcome page
-  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
-      url->host() == chrome::kChromeUIWelcomeHost) {
-    *url = GURL(chrome::kChromeUIWelcomeURL);
-    return true;
-  }
-
-  return false;
-}
-
 bool HandleURLReverseOverrideRewrite(GURL* url,
                                      content::BrowserContext* browser_context) {
-  if (HandleURLOverrideRewrite(url, browser_context))
+  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url, browser_context))
     return true;
 
   return false;
 }
 
 bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
-  if (HandleURLOverrideRewrite(url, browser_context))
+  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url, browser_context))
     return true;
 
   return false;
@@ -122,11 +112,14 @@ BraveContentBrowserClient::BraveContentBrowserClient(StartupData* startup_data)
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
-content::BrowserMainParts* BraveContentBrowserClient::CreateBrowserMainParts(
+std::unique_ptr<content::BrowserMainParts>
+BraveContentBrowserClient::CreateBrowserMainParts(
     const content::MainFunctionParams& parameters) {
-  ChromeBrowserMainParts* main_parts = static_cast<ChromeBrowserMainParts*>(
-      ChromeContentBrowserClient::CreateBrowserMainParts(parameters));
-  main_parts->AddParts(new BraveBrowserMainExtraParts());
+  std::unique_ptr<content::BrowserMainParts> main_parts =
+      ChromeContentBrowserClient::CreateBrowserMainParts(parameters);
+  ChromeBrowserMainParts* chrome_main_parts =
+      static_cast<ChromeBrowserMainParts*>(main_parts.get());
+  chrome_main_parts->AddParts(new BraveBrowserMainExtraParts());
   return main_parts;
 }
 
@@ -150,34 +143,16 @@ bool BraveContentBrowserClient::AllowAccessCookie(
     int render_frame_id) {
   GURL tab_origin =
       BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-          render_process_id, render_frame_id, -1)
-          .GetOrigin();
+          render_process_id, render_frame_id, -1).GetOrigin();
   ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
-  bool allow_brave_shields =
-      brave_shields::IsAllowContentSettingWithIOData(
-          io_data, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kBraveShields) &&
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-      !first_party.SchemeIs(kChromeExtensionScheme);
-#else
-      true;
-#endif
-  bool allow_1p_cookies = brave_shields::IsAllowContentSettingWithIOData(
-      io_data, tab_origin, GURL("https://firstParty/"),
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
-  bool allow_3p_cookies = brave_shields::IsAllowContentSettingWithIOData(
-      io_data, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies);
   content_settings::BraveCookieSettings* cookie_settings =
       (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
-  bool allow =
-      !ShouldBlockCookie(allow_brave_shields, allow_1p_cookies,
-                         allow_3p_cookies, first_party, url,
-                         cookie_settings->GetAllowGoogleAuth()) &&
+
+  return cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin) &&
+      // TODO(bridiver) - handle this in BraveCookieSettings
       g_brave_browser_process->tracking_protection_service()->ShouldStoreState(
           cookie_settings, io_data->GetHostContentSettingsMap(),
           render_process_id, render_frame_id, url, first_party, tab_origin);
-  return allow;
 }
 
 bool BraveContentBrowserClient::AllowGetCookie(
@@ -227,8 +202,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     bool is_main_frame,
     ui::PageTransition page_transition,
     bool has_user_gesture,
-    const std::string& method,
-    const net::HttpRequestHeaders& headers,
     network::mojom::URLLoaderFactoryRequest* factory_request,
     network::mojom::URLLoaderFactory*& out_factory) {  // NOLINT
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -238,41 +211,16 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   }
 #endif
 
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  if (brave_rewards::HandleRewardsProtocol(
+      url, web_contents_getter, page_transition, has_user_gesture)) {
+    return true;
+  }
+#endif
+
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, method, headers, factory_request,
-      out_factory);
-}
-
-void BraveContentBrowserClient::RegisterOutOfProcessServices(
-    OutOfProcessServiceMap* services) {
-  ChromeContentBrowserClient::RegisterOutOfProcessServices(services);
-#if BUILDFLAG(ENABLE_TOR)
-  (*services)[tor::mojom::kTorLauncherServiceName] = base::BindRepeating(
-      l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME);
-#endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  (*services)[bat_ads::mojom::kServiceName] =
-      base::BindRepeating(l10n_util::GetStringUTF16, IDS_SERVICE_BAT_ADS);
-#endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  (*services)[bat_ledger::mojom::kServiceName] = base::BindRepeating(
-      l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_LEDGER_NAME);
-#endif
-}
-
-std::unique_ptr<content::NavigationUIData>
-BraveContentBrowserClient::GetNavigationUIData(
-    content::NavigationHandle* navigation_handle) {
-  std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
-      std::make_unique<BraveNavigationUIData>(navigation_handle);
-#if BUILDFLAG(ENABLE_TOR)
-  Profile* profile = Profile::FromBrowserContext(
-      navigation_handle->GetWebContents()->GetBrowserContext());
-  TorProfileServiceFactory::SetTorNavigationUIData(profile,
-                                                   navigation_ui_data.get());
-#endif
-  return std::move(navigation_ui_data);
+      page_transition, has_user_gesture, factory_request, out_factory);
 }
 
 base::Optional<service_manager::Manifest>
@@ -280,10 +228,25 @@ BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
   auto manifest = ChromeContentBrowserClient::GetServiceManifestOverlay(name);
   if (name == content::mojom::kBrowserServiceName) {
     manifest->Amend(GetBraveContentBrowserOverlayManifest());
-  } else if (name == content::mojom::kPackagedServicesServiceName) {
-    manifest->Amend(GetBraveContentPackagedServiceOverlayManifest());
   }
   return manifest;
+}
+
+std::vector<service_manager::Manifest>
+BraveContentBrowserClient::GetExtraServiceManifests() {
+  auto manifests = ChromeContentBrowserClient::GetExtraServiceManifests();
+
+#if BUILDFLAG(ENABLE_TOR)
+  manifests.push_back(tor::GetTorLauncherManifest());
+#endif
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+  manifests.push_back(bat_ads::GetManifest());
+#endif
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  manifests.push_back(bat_ledger::GetManifest());
+#endif
+
+  return manifests;
 }
 
 void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
@@ -293,7 +256,7 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
       identity, command_line);
 
 #if BUILDFLAG(ENABLE_TOR)
-  if (identity.name() == tor::mojom::kTorLauncherServiceName) {
+  if (identity.name() == tor::mojom::kServiceName) {
     base::FilePath path =
         g_brave_browser_process->tor_client_updater()->GetExecutablePath();
     DCHECK(!path.empty());
@@ -347,4 +310,52 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
 #else
   return url;
 #endif
+}
+
+// [static]
+bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
+    content::BrowserContext* browser_context) {
+  // redirect sync-internals
+  if (url->host() == chrome::kChromeUISyncInternalsHost ||
+      url->host() == chrome::kChromeUISyncHost) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(chrome::kChromeUISyncHost);
+    *url = url->ReplaceComponents(replacements);
+    return true;
+  }
+
+  // no special win10 welcome page
+  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
+      url->host() == chrome::kChromeUIWelcomeHost) {
+    *url = GURL(chrome::kChromeUIWelcomeURL);
+    return true;
+  }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->host() == ethereum_remote_client_host) {
+    auto* registry = extensions::ExtensionRegistry::Get(browser_context);
+    if (registry->ready_extensions().GetByID(
+        ethereum_remote_client_extension_id)) {
+      *url = GURL(ethereum_remote_client_base_url);
+      return true;
+    }
+  }
+#endif
+
+  return false;
+}
+
+std::vector<std::unique_ptr<content::NavigationThrottle>>
+BraveContentBrowserClient::CreateThrottlesForNavigation(
+    content::NavigationHandle* handle) {
+  std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
+      ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  throttles.push_back(
+      std::make_unique<extensions::BraveWalletNavigationThrottle>(handle));
+#endif
+
+  return throttles;
 }

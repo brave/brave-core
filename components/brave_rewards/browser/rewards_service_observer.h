@@ -59,7 +59,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
       RewardsService* rewards_service,
       unsigned int result,
       const std::string& viewing_id,
-      const std::string& category,
+      int32_t category,
       const std::string& probi) {}
   virtual void OnRewardsMainEnabled(
       brave_rewards::RewardsService* rewards_service,
@@ -70,7 +70,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
       const brave_rewards::ContentSiteList& list) {}
-  virtual void OnTransactionHistoryForThisCycleChanged(
+  virtual void OnTransactionHistoryChanged(
       brave_rewards::RewardsService* rewards_service) {}
   virtual void OnRecurringTipSaved(
       brave_rewards::RewardsService* rewards_service,
@@ -85,6 +85,10 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
       int32_t result) {}
+  virtual void OnDisconnectWallet(
+      brave_rewards::RewardsService* rewards_service,
+      int32_t result,
+      const std::string& wallet_type) {}
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the
   // caller. Method calls on RewardsService should use callbacks to return

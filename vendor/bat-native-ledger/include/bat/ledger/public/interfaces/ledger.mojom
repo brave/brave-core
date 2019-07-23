@@ -28,6 +28,19 @@ struct PublisherInfo {
   array<ContributionInfo> contributions;
 };
 
+struct PublisherBanner {
+  string publisher_key;
+  string title;
+  string name;
+  string description;
+  string background;
+  string logo;
+  array<int32> amounts;
+  string provider;
+  map<string, string> social;
+  bool verified;
+};
+
 struct PendingContribution {
   string publisher_key;
   double amount;
@@ -48,4 +61,65 @@ struct PendingContributionInfo {
   uint64 added_date;
   string viewing_id;
   uint64 expiration_date;
+};
+
+struct VisitData {
+  string tld;
+  string domain;
+  string path;
+  uint32 tab_id;
+  string name;
+  string url;
+  string provider;
+  string favicon_url;
+};
+
+struct Grant {
+  string altcurrency;
+  string probi;
+  string promotion_id;
+  uint64 expiry_time;
+  string type;
+};
+
+struct WalletProperties {
+  double fee_amount;
+  array<double> parameters_choices;
+  array<double> parameters_range;
+  uint32 parameters_days;
+  array<Grant> grants;
+};
+
+struct Balance {
+  double total;
+  map<string, double> rates;
+  map<string, double> wallets;
+};
+
+struct AutoContributeProps {
+  bool enabled_contribute;
+  uint64 contribution_min_time;
+  int32 contribution_min_visits;
+  bool contribution_non_verified;
+  bool contribution_videos;
+  uint64 reconcile_stamp;
+};
+
+struct MediaEventInfo {
+  string event;
+  string time;
+  string status;
+};
+
+struct ExternalWallet {
+  string token;
+  string address;
+  uint32 status;
+  string verify_url;
+  string add_url;
+  string withdraw_url;
+  string one_time_string;
+  string user_name;
+  string account_url;
+  bool transferred;
 };

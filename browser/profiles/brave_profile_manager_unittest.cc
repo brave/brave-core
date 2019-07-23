@@ -12,12 +12,15 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
+#include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profiles_state.h"
+#include "chrome/browser/net/proxy_config_monitor.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
@@ -31,6 +34,8 @@
 #include "content/public/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "net/proxy_resolution/proxy_config_with_annotation.h"
+#include "net/proxy_resolution/proxy_resolution_service.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -193,3 +198,28 @@ TEST_F(BraveProfileManagerTest, CreateProfilesAsync) {
   content::RunAllTasksUntilIdle();
 }
 
+TEST_F(BraveProfileManagerTest, NoWebtorrentInTorProfile) {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
+  Profile* profile = profile_manager->GetProfile(tor_path);
+  ASSERT_TRUE(profile);
+
+  EXPECT_FALSE(webtorrent::IsWebtorrentEnabled(profile));
+}
+
+TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
+  ScopedTorLaunchPreventerForTest prevent_tor_process;
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
+  Profile* profile = profile_manager->GetProfile(tor_path);
+  ASSERT_TRUE(profile);
+
+  std::unique_ptr<ProxyConfigMonitor> monitor(new ProxyConfigMonitor(profile));
+  auto* proxy_config_service = monitor->GetProxyConfigServiceForTesting();
+  net::ProxyConfigWithAnnotation config;
+  proxy_config_service->GetLatestProxyConfig(&config);
+  const std::string& proxy_uri =
+      config.value().proxy_rules().single_proxies.Get().ToURI();
+  EXPECT_EQ(proxy_uri, g_browser_process->local_state()
+            ->GetString(tor::prefs::kTorProxyString));
+}

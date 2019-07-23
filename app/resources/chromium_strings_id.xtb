@@ -77,13 +77,9 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="5874882355102994015">Brave tidak dapat menampilkan pratinjau cetak jika penampil PDF bawaan tidak ada.</translation>
 <translation id="8880183781256147665">Menambahkan Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> mungkin berbahaya, sehingga Brave memblokirnya.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> mungkin berbahaya, sehingga Brave memblokirnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="9067428552314418522">Berkas ini berbahaya, jadi Brave telah memblokirnya.</translation>
-<translation id="2938460345748897177">File ini berbahaya, sehingga Brave memblokirnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, sehingga Brave memblokirnya.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> berbahaya, sehingga Brave memblokirnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="89367911614620585">Berkas ini mungkin berbahaya, jadi Brave telah memblokirnya.</translation>
-<translation id="8943391224520748272">File ini mungkin berbahaya, sehingga Brave memblokirnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="9183662282810237335">Tetap keluar dari Brave?</translation>
 <translation id="3834935463915107022">Tetap tutup Brave?</translation>
 <translation id="8797356639448065696">Brave berjalan di mode latar belakang.</translation>
@@ -146,8 +142,6 @@ Tetap masuk akan menggabungkan informasi Brave seperti bookmark, histori, dan se
 <translation id="6746636977031158624">Brave OS tidak dapat menyinkronkan data karena detail ID masuk Anda belum diperbarui.</translation>
 <translation id="2999152167963026588">Brave OS tidak dapat menyinkronkan data Anda karena Sinkronisasi tidak tersedia untuk domain Anda.</translation>
 <translation id="1459786048951724030">Brave OS tidak dapat menyinkronkan data Anda karena kesalahan saat masuk.</translation>
-<translation id="2887570477425111999">Simpan detail di Brave</translation>
-<translation id="193559141530782783">Brave akan meyimpan informasi pribadi Anda dengan aman sehingga Anda tidak perlu mengetiknya lagi.</translation>
 <translation id="663059986967017181">Disalin ke Brave</translation>
 <translation id="1457432835062259213">Peluncur Aplikasi Brave</translation>
 <translation id="82609232232243542">Masuk ke Brave</translation>
@@ -188,7 +182,7 @@ Lihat email Anda di <ph name="ACCOUNT_EMAIL"/> untuk petunjuk lebih lanjut.</tra
 <translation id="1912973375560256099">Inbound rule untuk Brave guna mengizinkan lalu lintas mDNS.</translation>
 <translation id="8207657266087451193">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave Software. Anda dapat menonaktifkannya kapan saja di setelan.</translation>
 <translation id="5499063270485366718">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave Software.</translation>
-<translation id="3870835867536344658">Tindakan ini akan menggunakan pemeriksa ejaan yang sama dengan yang digunakan di penelusuran Brave Software. Teks yang Anda ketikkan di browser dikirim ke Brave Software. Anda dapat mengubah perilaku ini di setelan.</translation>
+<translation id="215320507915280336">Tindakan ini akan menggunakan pemeriksa ejaan yang sama dengan yang digunakan di penelusuran Brave Software. Teks yang Anda ketikkan di browser dikirim ke Brave Software. Anda dapat mengubah perilaku ini di setelan.</translation>
 <translation id="1807774211756215222">Buka link di &amp;tab Brave baru</translation>
 <translation id="4624945300945265642">Buka link di jendela sa&amp;maran Brave</translation>
 <translation id="7863882214613921971">Buka Link di &amp;tab Brave Baru</translation>
@@ -199,6 +193,9 @@ Lihat email Anda di <ph name="ACCOUNT_EMAIL"/> untuk petunjuk lebih lanjut.</tra
 <translation id="2522086024276534909">Mulai ulang Brave OS</translation>
 <translation id="8183252473547465084">Brave OS harus dimulai ulang untuk menerapkan pembaruan.</translation>
 <translation id="5895138241574237353">Mulai Ulang</translation>
+<translation id="8887390605192156061">Tutup semua salinan Brave.</translation>
+<translation id="1801551749768408825">Salinan Brave lain sedang berjalan. Untuk menjalankan update, tutup salinan tersebut.</translation>
+<translation id="2632141563911437138">Untuk menjalankan update, Brave harus ditutup di komputer ini. Proses ini dapat menyebabkan pengguna lain yang login ke komputer ini kehilangan perubahan yang belum tersimpan.</translation>
 <translation id="5875673934455379806">Instal ulang Brave</translation>
 <translation id="2097604701283463988">Brave Terlalu Lawas</translation>
 <translation id="5173820533850252773">Brave terlalu lawas</translation>
@@ -242,23 +239,17 @@ Lihat email Anda di <ph name="ACCOUNT_EMAIL"/> untuk petunjuk lebih lanjut.</tra
 <translation id="8933981935877469796">Pilih <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Klik <ph name="BEGIN_BOLD"/>Ganti saja<ph name="END_BOLD"/>, jika muncul</translation>
 <translation id="3507835409099344374">Buka setelan notifikasi Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Update Brave tersedia}=1{Update Brave tersedia}other{Update Brave telah tersedia selama # hari}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Update Brave tersedia}=1{Update Brave tersedia}other{Update Brave telah tersedia selama # hari}}</translation>
 <translation id="720532315408041257">Administrator meminta Anda meluncurkan ulang Brave untuk menerapkan update ini</translation>
-<translation id="6639482638305253477">{0,plural, =1{Luncurkan ulang Brave dalam satu hari}other{Luncurkan ulang Brave dalam # hari}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave akan diluncurkan ulang dalam 1 jam}other{Brave akan diluncurkan ulang dalam # jam}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave akan diluncurkan ulang dalam 1 menit}other{Brave akan diluncurkan ulang dalam # menit}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave akan diluncurkan ulang sekarang}=1{Brave akan diluncurkan ulang dalam 1 detik}other{Brave akan diluncurkan ulang dalam # detik}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Luncurkan ulang Brave dalam 1 hari}other{Luncurkan ulang Brave dalam # hari}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave akan diluncurkan ulang dalam 1 jam}other{Brave akan diluncurkan ulang dalam # jam}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave akan diluncurkan ulang dalam 1 menit}other{Brave akan diluncurkan ulang dalam # menit}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave akan diluncurkan ulang sekarang}=1{Brave akan diluncurkan ulang dalam 1 detik}other{Brave akan diluncurkan ulang dalam # detik}}</translation>
 <translation id="7595187113648413294">Administrator mengharuskan Anda meluncurkan ulang Brave untuk menerapkan update</translation>
-<translation id="56801943271475640">{0,plural, =0{Update Brave OS tersedia}=1{Update Brave OS tersedia}other{Update Brave OS telah tersedia selama # hari}}</translation>
-<translation id="5715362474140341294">Administrator meminta Anda memulai ulang Brave OS untuk menerapkan update ini</translation>
-<translation id="8094834892392729950">{0,plural, =1{Mulai ulang Brave OS dalam 1 hari}other{Mulai ulang Brave OS dalam # hari}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS akan dimulai ulang dalam 1 jam}other{Brave OS akan dimulai ulang dalam # jam}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS akan dimulai ulang dalam 1 menit}other{Brave OS akan dimulai ulang dalam # menit}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS akan dimulai ulang sekarang}=1{Brave OS akan dimulai ulang dalam 1 detik}other{Brave OS akan dimulai ulang dalam # detik}}</translation>
-<translation id="8559452515617838628">Administrator mengharuskan Anda memulai ulang Brave OS untuk menerapkan update</translation>
 <translation id="3052349005266761501">Meluncurkan Brave...</translation>
 <translation id="1197672524850678392">Tidak dapat meluncurkan Brave. Harap coba lagi.</translation>
 <translation id="6040143037577758943">Tutup</translation>
+<translation id="5147525139567260139">Bagikan tab Brave</translation>
 <translation id="8541922081612557424">Tentang Brave</translation>
 <translation id="3262506503470845422">Dapatkan bantuan Brave</translation>
 <translation id="1864557848095568223">Memperbarui Brave</translation>

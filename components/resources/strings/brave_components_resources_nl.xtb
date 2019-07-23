@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Voorkeuren Bewerken</translation>
 <translation id="7606029853066610626">Bladwijzers Bekijken en Beheren</translation>
 <translation id="5550994254534676787">Bekijk je browsegeschiedenis.</translation>
+<translation id="1742484101357469636">Dashboard-instellingen</translation>
+<translation id="8320281346741574991">Toon achtergrondafbeelding</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="8730621377337864115">Gereed</translation>
 <translation id="6248988683584659830">Zoekinstellingen</translation>
@@ -41,6 +43,8 @@
 <translation id="8958799246752641148">Tor verbergt je IP-adres voor de websites die je bezoekt, door het browsen via verschillende Tor-servers om te leiden voordat deze zijn bestemming bereikt. Deze verbindingen zijn versleuteld, dus je internetprovider of werkgever kan ’ ook niet zien welke websites je ’ bezoekt. Tor kan echter het browsen vertragen en sommige websites werken mogelijk helemaal niet.</translation>
 <translation id="520608572871993342">Het gebruik van Privévensters verandert alleen wat Brave op je apparaat — doet - het verandert niets aan het gedrag van een ander. Tor verbergt je IP-adres voor de websites die je bezoekt en verbergt de websites die je bezoekt voor je internetprovider of je werkgever. Open vanuit het menu of met {{ key }} een Privévenster met Tor.</translation>
 <translation id="6975708438781948564">Leer meer over Tor in Brave</translation>
+<translation id="4272382368346338917">Extra filters</translation>
+<translation id="8949292968394988358">Waarschuwing: als u teveel filters instelt, heeft dit een negatieve uitwerking op de prestaties</translation>
 <translation id="1869685517625607604">Aantal geblokkeerde advertenties:</translation>
 <translation id="4673764878177947707">Aangepaste filters</translation>
 <translation id="8803682034537762884">Eén per regel, een filter wordt beschreven in Adblock Plus-filtersyntaxis</translation>
@@ -54,11 +58,14 @@
 <translation id="5633840519079139680">Je kunt in Brave eenvoudig gebruikmaken van de omgeving waar je al bekend mee bent, door bladwijzers en instellingen te importeren uit andere browsers die op je computer zijn geïnstalleerd.</translation>
 <translation id="8275038454117074363">Importeren</translation>
 <translation id="5540323067375019678">Je schilden beheren</translation>
-<translation id="4755560456428781763">Brave-schilden beschermen je tijdens het browsen tegen ongewenste advertenties en trackers. Als er een probleem optreedt op een bepaalde site, pas je het beveiligingsniveau aan via het deelvenster Schilden in de werkbalk.</translation>
+<translation id="3278033011827237847">Bescherm tegen privacy schendende advertenties en trackers tijdens het browsen met Brave Shields. Stel Shields in op 'neer' als een website niet naar behoren lijkt te werken.</translation>
 <translation id="3366308997091824722">Shield instellingen</translation>
-<translation id="3884404068544758153">De zoekmachine wijzigen</translation>
+<translation id="4764692524839457597">standaard</translation>
+<translation id="3108122610701115301">Stel standaard in</translation>
+<translation id="2469440407442116729">Selecteer een zoekmachine</translation>
 <translation id="438216590634144114">Kies de zoekmachine die je standaard wilt gebruiken bij het zoeken op het web in de adresbalk.</translation>
-<translation id="8428213095426709021">Instellingen</translation>
+<translation id="5804484488647369316">Stel standaard zoekmachine in</translation>
+<translation id="4428458837269935199">Probeer DuckDuckGo voor een meer private zoekervaring.</translation>
 <translation id="513635702954746724">Kies een kleurthema</translation>
 <translation id="6842850080200126305">Stel de kleur van de werkbalk in door de optie voor licht of donker te kiezen in het deelvenster met instellingen.</translation>
 <translation id="2801098717523961746">Kies een thema</translation>
@@ -68,8 +75,9 @@
 <translation id="5946611334574299206">Verdien tokens door advertenties te bekijken in Brave. Advertenties worden getoond op basis van je interesses, door analyse van je browsing geschiedenis. Geen persoonlijke data van je browsing geschiedenis zal de browser verlaten.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">Een automatische manier om uitgevers en makers van content te steunen. Stel een maandelijkse betaling in en browse zoals gewoonlijk. De websites die je bezoekt ontvangen je bijdragen, op basis van je aandacht gemeten door Brave, automatisch.</translation>
-<translation id="8157096848242649588">Betalingsdatum</translation>
-<translation id="5208388044986603165">Advertentiemeldingen ontvangen</translation>
+<translation id="20281847067919078">Geschatte openstaande beloningen</translation>
+<translation id="8593551638387217772">Volgende betaaldatum</translation>
+<translation id="319209088187794725">Aantal meldingen van advertenties deze maand ontvangen</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
 <translation id="654711254769318398">Advertentiepagina's bekeken</translation>
 <translation id="2532127066761785857">Maximum aantal advertenties weergegeven</translation>
@@ -106,8 +114,9 @@
 <translation id="1199044745726588100">5 seconden</translation>
 <translation id="4045581694057451126">8 seconden</translation>
 <translation id="8610523985422563960">1 minuut</translation>
-<translation id="7521774480426463961">Activeer de mogelijkheid om fooi te geven aan 'Vind-ik-leuk'-posts</translation>
+<translation id="9031738692126722094">Schakel fooien op contentniveau toe op deze websites</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Geef meteen een tip als je edelstenen vindt.</translation>
 <translation id="6135431587052937035">Ondersteun je favoriete sites met terugkerende maandelijkse fooien.</translation>
@@ -128,6 +137,8 @@
 <translation id="7797604753681168055">Nu herstellen</translation>
 <translation id="1184075897575325927">Sorry, het lijkt erop dat deze gift al is geclaimd.</translation>
 <translation id="282693359045252357">Volgende maandelijkse tipdatum</translation>
+<translation id="6231182869178328516">Ik heb <ph name="NAME">$1<ex>user</ex></ph> zojuist een fooi gegeven via de Brave Browser. Ontdek meer op https://brave.com/tips.</translation>
+<translation id="8404935570206006581">FooiVanBrave</translation>
 <translation id="7422678632904904341">Bedrag:</translation>
 <translation id="5923611424721173182">Huidige Verzoening</translation>
 <translation id="5457113250005438886">Ongeldig</translation>
@@ -150,6 +161,9 @@
 <translation id="4235360514405112390">Geldig</translation>
 <translation id="2700943637868737038">Weergave van ID:</translation>
 <translation id="3576689061489548788">Wallet Betalings-ID:</translation>
+<translation id="758790787422117549">Persoonlijk ID</translation>
+<translation id="2223892939866251845">Gebruikers-ID</translation>
+<translation id="1642443162274867084">Wallet aangemaakt</translation>
 <translation id="5094577350232361255">over</translation>
 <translation id="4918086044614829423">Accepteren</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave is een geregistreerd handelsmerk van Brave Software. Namen van websites kunnen handelsmerken of geregistreerde handelsmerken van de eigenaar van de website zijn.</translation>
@@ -165,11 +179,16 @@
 <translation id="3671566813999349838">Bedrag</translation>
 <translation id="3819257035322786455">Back-up maken</translation>
 <translation id="1312977698678162065">Word betaald door het kijken van relevante advertenties die je privacy respecteren</translation>
+<translation id="7655723274266132226">U kunt nu verdienen door advertenties te bekijken.</translation>
+<translation id="2975780980638932742">Brave Ads is gearriveerd!</translation>
 <translation id="3361548743396744457">Steun je favoriete websites door te browsen – of geef een website een tip wanneer je maar wilt.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4493850495402472953">en</translation>
 <translation id="8804164990146287819">Privacybeleid</translation>
 <translation id="4281844954008187215">Servicevoorwaarden</translation>
+<translation id="4405997465645469914">Door Brave Rewards in te schakelen, geeft u aan dat u het volgende hebt gelezen en ermee akkoord gaat:</translation>
+<translation id="8819542691525488940">Door op ‘Ja, ik doe mee!’ te klikken, geeft u aan dat u het volgende hebt gelezen en ermee akkoord gaat:</translation>
+<translation id="8071424789698327147">Door op ‘Ja, ik ben klaar!’ te klikken, geeft u aan dat u het volgende hebt gelezen en ermee akkoord gaat:</translation>
 <translation id="7530570094705720669">Wallet aanmaken</translation>
 <translation id="2105596359439030979">Je aandacht is waardevol. Verdien met het bekijken van advertentie die je privacy respecteren, en betaal content creators waar je van houdt om hen te ondersteunen</translation>
 <translation id="516395624550019162">Ja, ik doe mee!</translation>
@@ -178,8 +197,6 @@
 <translation id="3825698830825612308">Uitgevers geverifieerd door Brave</translation>
 <translation id="7658239707568436148">Annuleren</translation>
 <translation id="7262285991915892790">Sleep het BAT-pictogram naar de</translation>
-<translation id="2151535059686617995">Je hebt vandaag geluk!</translation>
-<translation id="6255773350565723852">Je gift komt eraan.</translation>
 <translation id="7656781188259414093">doel.</translation>
 <translation id="1555514580945108302">Hmm… Niet helemaal. Probeer het opnieuw.</translation>
 <translation id="13853865024308201">Claimen</translation>
@@ -206,7 +223,7 @@
 <translation id="7277134233385925078">Stel maandelijks tippen in.</translation>
 <translation id="8003573781961874199">Download als PDF</translation>
 <translation id="298067735430872465">Inkomsten uit Advertenties</translation>
-<translation id="3521361150443442734">Je advertentie inkomsten zijn beschikbaar.</translation>
+<translation id="2266556115441975588">Uw beloningen uit Ads zijn binnen!</translation>
 <translation id="8764029012618014430">Sta fooi toe</translation>
 <translation id="3412655388715513818">Sluit deze website uit</translation>
 <translation id="418343137736963579">Totaal aantal websites die je het uitgesloten van Auto-Contribute:</translation>
@@ -264,6 +281,8 @@
 <translation id="194625454574835815">Herstelsleutel</translation>
 <translation id="6354568176665589146">Terugkerend</translation>
 <translation id="7577100371127227294">Maandelijkse Tips</translation>
+<translation id="2391095793008133394">Geef {{ user }} een fooi voor hun post:</translation>
+<translation id="7557413530932469222">Geef {{ user }} een fooi voor hun post!</translation>
 <translation id="1110535155349301542">verwijder</translation>
 <translation id="8942997470474842562">Je hebt BAT {{reservedAmount}} toegewezen aan makers die zich nog niet hebben aangemeld voor het ontvangen van bijdragen. Je browser zal blijven proberen bij te dragen tot ze verifiëren of tot er 90 dagen zijn verstreken.</translation>
 <translation id="8759753423332885148">Meer informatie.</translation>
@@ -272,8 +291,8 @@
 <translation id="3626186271103896082">Maak een backup van je wallet</translation>
 <translation id="5717619667204259673">Bewaar deze herstelsleutel op een veilige plek.</translation>
 <translation id="4699702339303280827">Je kunt altijd deze sleutel gebruiken om je wallet terug te krijgen als er iets met je browser of computer gebeurt. Zorg er wel voor dat je je sleutel goed bewaard, want wie je sleutel heeft, kan je wallet stelen. Het is waarschijnlijk het veiligst om de sleutel ergens op te schrijven of te bewaren bij andere belangrijke gegevens.</translation>
-<translation id="5759071143806884916">Je kunt deze site steunen door een fooi te geven. Het is een manier om te bedanken voor het maken van geweldige inhoud. Geverifieerde makers van inhoud krijgen hun fooien uitbetaald tijdens de eerste week van elke maand.</translation>
-<translation id="1704859330137112950">Als je wilt, kun je maandelijks tippen instellen om deze website continue te steunen.</translation>
+<translation id="7354412786785889047">U kunt deze contentmaker steunen door een fooi te sturen. Het is een manier om hen te bedanken voor het maken van geweldige content. Geverifieerde makers worden iedere eerste week van de kalendermaand uitbetaald.</translation>
+<translation id="3475063317678050010">Als u wilt kunt u maandelijkse fooien agenderen om deze maker doorlopend te steunen.</translation>
 <translation id="3074127054582480056">Opgelet</translation>
 <translation id="822513417008209372">Op dit moment steun je</translation>
 <translation id="5010112177773747965">zonder je toestemming.</translation>
@@ -300,8 +319,10 @@
 <translation id="259138486959961679">Bekijk alle {{numItems}} artikels</translation>
 <translation id="7857284676033058221">Bekijk alle {{numSites}} websites</translation>
 <translation id="3536298624341433814">Verzend mijn Tip.</translation>
+<translation id="8428213095426709021">Instellingen</translation>
 <translation id="1792148354504719133">website</translation>
 <translation id="5944430251223015324">websites</translation>
+<translation id="1834493631938747505">Vertel anderen over uw fooi.</translation>
 <translation id="8826007068782654809">Bedankt</translation>
 <translation id="6665366815203065060">Je hebt zojuist een tip verzonden naar:</translation>
 <translation id="6432779622695508363">Klik op like</translation>
@@ -312,8 +333,12 @@
 <translation id="4914597931214386232">Geclaimde giften</translation>
 <translation id="1634828734222219955">Totaal</translation>
 <translation id="3535654229833214438">Transacties</translation>
+<translation id="3124090095880236567">Schakel advertenties in</translation>
 <translation id="8987812599455325915">Dit maakt zowel advertenties als automatische bijdragen mogelijk. Je kunt ze op elk gewenst moment afzonderlijk in- of uitschakelen.</translation>
 <translation id="1485484147452131556">Schakel Rewards in</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">Geef @{{ user }} een fooi voor hun tweet:</translation>
+<translation id="4242384385082203046">Geef @{{ user }} een fooi voor hun tweet!</translation>
 <translation id="2448312741937722512">Type</translation>
 <translation id="8772672608371898774">Uitgever geverifieerd door Brave</translation>
 <translation id="5050370287908180130">Bekijk Maandelijks Afschrift voor Details</translation>
@@ -336,6 +361,25 @@
 <translation id="6727483290601442544">Bekijk de Details</translation>
 <translation id="1988679729106502285">OPMERKING:</translation>
 <translation id="5815103311506128988">Deze maker heeft zich nog niet aangemeld voor het ontvangen van bijdragen van Brave-gebruikers. Je browser blijft proberen bij te dragen tot hij of zij verifieert of tot er 90 dagen zijn verstreken.</translation>
+<translation id="4292832015778676417">verdiend met advertenties</translation>
+<translation id="3197752845651180812">Openstaande bijdragen</translation>
+<translation id="3164105678355419142">Terugkerende fooi</translation>
+<translation id="2927922949538312364">Eenmalige fooi</translation>
+<translation id="6964891561514920613">Toon alle openstaande bijdragen</translation>
+<translation id="4346944508027912677">In afwachting totdat</translation>
+<translation id="7410549756000115387">Geen openstaande bijdragen …</translation>
+<translation id="1963227389609234879">Alles verwijderen</translation>
+<translation id="1170315781901539495">Uitgesloten sites</translation>
+<translation id="5119190679543565400">Herstel deze pagina</translation>
+<translation id="9075700728717335924">U hebt uitgesloten</translation>
+<translation id="4862817811647633830">websites van Auto-Contribute.</translation>
+<translation id="923467487918828349">Toon alles</translation>
+<translation id="5471305206221894680">Ondersteunde sites</translation>
+<translation id="2306169361186864012">Brave Ads-beloningen!</translation>
+<translation id="3757873395477273033">Uw beloningstoelage van Brave Ads is onderweg.</translation>
+<translation id="8101881066646819737">Uw Brave Ads Token-toelage</translation>
+<translation id="2151535059686617995">Je hebt vandaag geluk!</translation>
+<translation id="6255773350565723852">Je gift komt eraan.</translation>
 <translation id="1181037720776840403">Verwijderen</translation>
 <translation id="7885157704277298658">Gekopieerd.</translation>
 <translation id="5379640681913450928">Aantal woorden:</translation>
@@ -353,6 +397,7 @@
 <translation id="1061533051865606843">Nieuw apparaat toevoegen</translation>
 <translation id="8780295742023331191">Synchronisatiecode bekijken</translation>
 <translation id="1755198127524719638">Synchronisatie-instellingen</translation>
+<translation id="7558480201297099157">Beheer welke informatie u wilt synchroniseren met andere apparaten. Deze instellingen zijn alleen van toepassing op dit apparaat.</translation>
 <translation id="8820817407110198400">Bladwijzers</translation>
 <translation id="5591129654353352557">Opgeslagen site-instellingen</translation>
 <translation id="7859704718976024901">Browsegeschiedenis</translation>
@@ -380,6 +425,7 @@
 <translation id="5086223971958279691">Synchronisatieketencode</translation>
 <translation id="2899261497479389619">Ga op je doelcomputer naar Brave Sync in de instellingen en klik op de knop</translation>
 <translation id="4827439149833241990">“Ik heb een synchronisatiecode”.</translation>
+<translation id="24067401253841795">Voer de hieronder weergegeven sync chain-codewoorden in. Behandel deze code als een wachtwoord. Als iemand deze in handen krijgt, kan deze persoon uw gesynchroniseerde gegevens bekijken en aanpassen.</translation>
 <translation id="8914601399214979966">In plaats daarvan mijn camera gebruiken</translation>
 <translation id="3034163433136515805">QR-code bekijken</translation>
 <translation id="5093410893656857925">Apparaattype kiezen</translation>
@@ -392,4 +438,6 @@
 <translation id="8349682220522608879">Voeg een synchronisatiecode toe.</translation>
 <translation id="1468095392829989299">Kan geen contact maken met synchronisatieservers</translation>
 <translation id="1399673826422570698">Mogelijk zijn er problemen met het netwerk of met de synchronisatieservers.</translation>
+<translation id="5286379413446391050">Kon geen verbinding maken met de Sync-servers</translation>
+<translation id="2410472020237369473">Het kan zijn dat de klok van uw computer op de verkeerde tijd of tijdzone staat ingesteld. Controleer de instellingen van uw klok.</translation>
 </translationbundle>

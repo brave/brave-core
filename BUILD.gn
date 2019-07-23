@@ -5,10 +5,14 @@ import("//ui/base/ui_features.gni")
 import("//third_party/icu/config.gni")
 import("//build/config/locales.gni")
 import("//build/util/process_version.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
-import("//brave/brave_paks.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+
+if (!is_ios) {
+  import("//brave/brave_paks.gni")
+}
 
 if (is_mac) {
   import("//build/config/mac/rules.gni")
@@ -19,35 +23,37 @@ if (is_linux) {
   import("//brave/build/linux/channels.gni")
 }
 
-group("child_dependencies") {
-  deps = [
-    "//brave/renderer",
-    "//brave/utility",
-    "common"
-  ]
-}
-
-group("browser_dependencies") {
-  deps = [
-    "//brave/browser",
-    "common",
-    "chromium_src:browser",
-  ]
-
-  data_deps = [
-    ":unpacked_resources",
-  ]
-
-  if (!is_android) {
-    deps += [
-      ":packed_resources",
+if (!is_ios) {
+  group("child_dependencies") {
+    deps = [
+      "//brave/renderer",
+      "//brave/utility",
+      "common"
     ]
+  }
+
+  group("browser_dependencies") {
+    deps = [
+      "//brave/browser",
+      "common",
+      "chromium_src:browser",
+    ]
+
+    data_deps = [
+      ":unpacked_resources",
+    ]
+
+    if (!is_android && !is_ios) {
+      deps += [
+        ":packed_resources",
+      ]
+    }
   }
 }
 
 group("brave") {
   deps = ["build/$target_os:brave"]
-  if (!is_android) {
+  if (!is_android && !is_ios) {
     deps += [
       ":generate_version",
       "//chrome"
@@ -105,7 +111,7 @@ group("unpacked_resources") {
 }
 
 #TODO(bridiver) - what to do
-if (!is_android) {
+if (!is_android && !is_ios) {
 group("brave_tests") {
   testonly = true
 
@@ -116,7 +122,7 @@ group("brave_tests") {
 }
 }
 
-if (!is_android) {
+if (!is_android && !is_ios) {
   brave_paks("packed_resources") {
     if (is_mac) {
       output_dir = "$root_gen_dir/repack"
@@ -159,11 +165,12 @@ group("create_dist") {
   }
   if (is_mac) {
     if (skip_signing) {
-      deps += [ "build/mac:create_unsigned_dmg" ]
+      deps += [
+        "build/mac:unsigned_dmg"
+      ]
     } else {
       deps += [
-        "build/mac:create_dist_mac",
-        "build/mac:create_pkg",
+        "build/mac:sign_dmg",
         "build/mac:sign_pkg"
       ]
     }
@@ -177,7 +184,7 @@ group("create_dist") {
   }
 }
 
-if (!is_mac && !is_android) {
+if (!is_mac && !is_android && !is_ios) {
   copy("brave_locale_dist_resources") {
     deps = [
       "//chrome:packed_resources",
@@ -220,7 +227,6 @@ if (!is_mac && !is_android) {
           deps = [ "//brave/components/brave_rewards/resources/extension:locales_$locale" ]
 
           locale = string_replace(locale, "-", "_")
-          locale = string_replace(locale, "nb", "no")
           sources = [ "$root_out_dir/resources/brave_rewards/_locales/$locale/messages.json" ]
           outputs = [
             "$brave_dist_dir/resources/brave_rewards/_locales/$locale/{{source_file_part}}",
@@ -231,40 +237,12 @@ if (!is_mac && !is_android) {
         deps = [ "//brave/components/brave_extension/extension/brave_extension:locales_$locale" ]
 
         locale = string_replace(locale, "-", "_")
-        locale = string_replace(locale, "nb", "no")
         sources = [ "$root_out_dir/resources/brave_extension/_locales/$locale/messages.json" ]
         outputs = [
           "$brave_dist_dir/resources/brave_extension/_locales/$locale/{{source_file_part}}",
         ]
       }
     }
-  }
-}
-
-if (target_cpu == "x86") {
-  target_arch = "ia32"
-} else {
-  target_arch = target_cpu
-}
-
-if (!is_android) {
-  chromedriver = "chromedriver"
-  if (is_win) {
-    chromedriver = "$chromedriver.exe"
-  }
-
-  chromedriver_version = "2.33"
-
-  copy("brave_chromedriver_dist_resources") {
-    sources = [
-      "$root_out_dir/$chromedriver",
-    ]
-
-    outputs = [
-      "$brave_dist_dir/$chromedriver"
-    ]
-
-    deps = [ "//chrome/test/chromedriver:chromedriver" ]
   }
 }
 
@@ -309,7 +287,7 @@ process_version("generate_version") {
   output = "$root_out_dir/version"
 }
 
-if (!is_android) {
+if (!is_android && !is_ios) {
   copy("brave_dist_resources") {
     sources = [ "$root_out_dir/version" ]
 
@@ -352,20 +330,12 @@ if (!is_android) {
       "$brave_dist_dir/{{source_file_part}}"
     ]
   }
+}
 
-  zip("chromedriver_zip") {
-    inputs = get_target_outputs(":brave_chromedriver_dist_resources")
-    inputs += get_target_outputs(":brave_license_dist_resources")
-    output = "$brave_dist_dir/chromedriver-v$chromedriver_version-$brave_platform-$target_arch.zip"
-
-    base_dir = brave_dist_dir
-
-    deps = [
-      "app/$current_os:chromedriver_dist_resources",
-      ":brave_chromedriver_dist_resources",
-      ":brave_license_dist_resources",
-    ]
-  }
+if (target_cpu == "x86") {
+  target_arch = "ia32"
+} else {
+  target_arch = target_cpu
 }
 
 action("create_symbols_dist") {
@@ -373,7 +343,6 @@ action("create_symbols_dist") {
 
   script = "//brave/script/create-dist.py"
 
-  # inputs = get_target_outputs(":brave_chromedriver_dist_resources")
   inputs = get_target_outputs(":brave_license_dist_resources")
   dir_inputs = [ "$brave_project_name.breakpad.syms" ]
 
@@ -407,7 +376,7 @@ action("create_dist_zips") {
 
   inputs = get_target_outputs(":brave_license_dist_resources")
 
-  if (!is_mac && !is_android) {
+  if (!is_mac && !is_android && !is_ios) {
     inputs += get_target_outputs(":brave_dist_resources")
     inputs += get_target_outputs(":brave_locale_dist_resources")
     if (enable_extensions) {
@@ -450,11 +419,7 @@ action("create_dist_zips") {
     "app/$current_os:dist_resources",
   ]
 
-  if (!is_android) {
-    deps += [ ":chromedriver_zip" ]
-  }
-
-  if (!is_mac && !is_android) {
+  if (!is_mac && !is_android && !is_ios) {
     deps += [
       ":brave_dist_resources",
       ":brave_locale_dist_resources",
@@ -497,16 +462,18 @@ if (is_mac) {
     ]
   }
 
+  # This copies //chrome:chrome_app target to avoid patching.
+  # So, need to sync with it.
   mac_app_bundle("chrome_app") {
     output_name = chrome_product_full_name
 
     info_plist_target = ":brave_app_plist"
 
     extra_substitutions = [
+      "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
       "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
       "CHROMIUM_CREATOR=$chrome_mac_creator_code",
     ]
-    extra_substitutions += ["CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id"]
 
     sources = [
       "//chrome/app/chrome_exe_main_mac.cc",
@@ -515,15 +482,15 @@ if (is_mac) {
     extra_configs = [ "//build/config/compiler:wexit_time_destructors" ]
 
     deps = [
-      "//brave/vendor/sparkle:sparkle_resources_bundle_data",
       "//chrome:chrome_app_strings_bundle_data",
       "//chrome:chrome_resources",
       "//chrome:chrome_versioned_bundle_data",
+      "//chrome/common:buildflags",
       "//chrome/common:version_header",
     ]
 
-    if (is_chrome_branded) {
-      deps += [ "chrome:chrome_helpers" ]
+    if (enable_sparkle) {
+      deps += [ "//brave/vendor/sparkle:sparkle_resources_bundle_data" ]
     }
 
     if (enable_stripping) {

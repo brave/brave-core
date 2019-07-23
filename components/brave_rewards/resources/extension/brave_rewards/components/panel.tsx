@@ -6,9 +6,9 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
-import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
+import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel, PanelVerify } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
-import { NotificationType } from 'brave-ui/features/rewards/walletWrapper'
+import { NotificationType, WalletState } from 'brave-ui/features/rewards/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from 'brave-ui/features/rewards/alert'
 
@@ -28,6 +28,7 @@ interface State {
   refreshingPublisher: boolean
   publisherRefreshed: boolean
   timerPassed: boolean
+  showVerifyOnBoarding: boolean
 }
 
 export class Panel extends React.Component<Props, State> {
@@ -40,7 +41,8 @@ export class Panel extends React.Component<Props, State> {
       publisherKey: null,
       refreshingPublisher: false,
       publisherRefreshed: false,
-      timerPassed: false
+      timerPassed: false,
+      showVerifyOnBoarding: false
     }
     this.defaultTipAmounts = [1, 5, 10]
   }
@@ -62,12 +64,16 @@ export class Panel extends React.Component<Props, State> {
       })
     }
 
+    this.getBalance()
+    this.actions.getGrants()
     this.actions.getWalletProperties()
     this.actions.getCurrentReport()
 
     chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
       this.actions.OnPendingContributionsTotal(amount)
     }))
+
+    this.getExternalWallet()
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -85,6 +91,17 @@ export class Panel extends React.Component<Props, State> {
         publisherKey: null
       })
     }
+
+    if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
+      this.getBalance()
+      this.actions.getGrants()
+    }
+  }
+
+  getBalance () {
+    chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
+      this.actions.onBalance(balance)
+    })
   }
 
   componentWillUnmount () {
@@ -164,8 +181,8 @@ export class Panel extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { walletProperties, report } = this.props.rewardsPanelData
-    const { rates } = walletProperties
+    const { balance, report } = this.props.rewardsPanelData
+    const { rates } = balance
 
     let props = {}
 
@@ -188,20 +205,42 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  openRewardsPage (id?: string) {
+  openRewardsPage (notificationId?: string) {
     chrome.tabs.create({
       url: 'brave://rewards'
     })
 
-    if (id) {
-      this.onCloseNotification(id)
+    if (notificationId) {
+      this.onCloseNotification(notificationId)
     }
   }
 
-  openRewardsAddFundsPage () {
-    chrome.tabs.create({
-      url: 'chrome://rewards/#add-funds'
-    })
+  onAddFunds = (notificationId?: string) => {
+    const status = this.getWalletStatus()
+    const { externalWallet } = this.props.rewardsPanelData
+
+    if (notificationId) {
+      this.actions.deleteNotification(notificationId)
+    }
+
+    if (!externalWallet) {
+      return
+    }
+
+    // WalletStatus::CONNECTED
+    if (status === 'verified' || externalWallet.status === 1) {
+      if (externalWallet.addUrl) {
+        chrome.tabs.create({
+          url: externalWallet.addUrl
+        })
+      }
+      return
+    }
+
+    if (externalWallet.verifyUrl) {
+      this.handleUpholdLink(externalWallet.verifyUrl)
+      return
+    }
   }
 
   showTipSiteDetail = () => {
@@ -255,6 +294,9 @@ export class Panel extends React.Component<Props, State> {
       case 'ads-launch':
         clickEvent = this.openRewardsPage.bind(this, id)
         break
+      case 'insufficientFunds':
+        clickEvent = this.onAddFunds.bind(this, id)
+        break
       default:
         clickEvent = undefined
         break
@@ -277,7 +319,7 @@ export class Panel extends React.Component<Props, State> {
     const notification: RewardsExtension.Notification = notifications[currentNotification]
 
     let type: NotificationType = ''
-    let text = ''
+    let text
     let isAlert = ''
 
     switch (notification.type) {
@@ -336,6 +378,59 @@ export class Panel extends React.Component<Props, State> {
         type = 'ads-launch'
         text = getMessage('braveAdsLaunchMsg')
         break
+      case RewardsNotificationType.REWARDS_NOTIFICATION_VERIFIED_PUBLISHER: {
+        let name = ''
+        if (notification.args &&
+            Array.isArray(notification.args) &&
+            notification.args.length > 0) {
+          name = notification.args[0]
+        }
+
+        type = 'pendingContribution'
+        text = getMessage('verifiedPublisherNotification', [name])
+        break
+      }
+      case RewardsNotificationType.REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS:
+        type = 'insufficientFunds'
+        text = getMessage('pendingNotEnoughFundsNotification')
+        break
+      case RewardsNotificationType.REWARDS_NOTIFICATION_GENERAL_LEDGER: {
+        const args = notification.args
+        if (!args ||
+          !Array.isArray(args) ||
+          args.length === 0) {
+          break
+        }
+
+        const type = args[0]
+
+        switch (type) {
+          case 'wallet_verified': {
+            text = (
+              <>
+                <div><b>{getMessage('walletVerifiedNotification')}</b></div>
+                {getMessage('walletVerifiedTextNotification', [args[1]])}
+              </>
+            )
+            isAlert = 'success'
+            break
+          }
+          case 'wallet_disconnected': {
+            text = (
+              <>
+                <div><b>{getMessage('walletDisconnectedNotification')}</b></div>
+                {getMessage('walletDisconnectedTextNotification')}
+              </>
+            )
+            isAlert = 'error'
+            break
+          }
+          default:
+            break
+        }
+
+        break
+      }
       default:
         type = ''
         break
@@ -381,7 +476,7 @@ export class Panel extends React.Component<Props, State> {
 
   generateAmounts = (publisher?: RewardsExtension.Publisher) => {
     const { tipAmounts } = this.props.rewardsPanelData
-    const { rates } = this.props.rewardsPanelData.walletProperties
+    const { rates } = this.props.rewardsPanelData.balance
 
     const publisherKey = publisher && publisher.publisher_key
     const initialAmounts = (
@@ -459,11 +554,111 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
+  getExternalWallet = (open: boolean = false) => {
+    chrome.braveRewards.getExternalWallet('uphold', (result: number, wallet: RewardsExtension.ExternalWallet) => {
+      // EXPIRED TOKEN
+      if (result === 24) {
+        this.getExternalWallet(open)
+        return
+      }
+
+      this.actions.onExternalWallet(wallet)
+
+      if (open && wallet.verifyUrl) {
+        this.handleUpholdLink(wallet.verifyUrl)
+      }
+    })
+  }
+
+  handleUpholdLink = (link: string) => {
+    const { ui } = this.props.rewardsPanelData
+    if (!this.state.showVerifyOnBoarding && (!ui || !ui.onBoardingDisplayed)) {
+      this.setState({
+        showVerifyOnBoarding: true
+      })
+      return
+    }
+
+    this.setState({
+      showVerifyOnBoarding: false
+    })
+
+    this.actions.onOnBoardingDisplayed()
+
+    chrome.tabs.create({
+      url: link
+    })
+  }
+
+  onVerifyClick = () => {
+    const { externalWallet } = this.props.rewardsPanelData
+
+    if (!externalWallet || externalWallet.verifyUrl) {
+      this.getExternalWallet(true)
+      return
+    }
+
+    this.handleUpholdLink(externalWallet.verifyUrl)
+  }
+
+  toggleVerifyPanel = () => {
+    this.setState({
+      showVerifyOnBoarding: !this.state.showVerifyOnBoarding
+    })
+  }
+
+  getWalletStatus = (): WalletState => {
+    const { externalWallet } = this.props.rewardsPanelData
+
+    if (!externalWallet) {
+      return 'unverified'
+    }
+
+    switch (externalWallet.status) {
+      // ledger::WalletStatus::VERIFIED
+      case 2:
+        return 'verified'
+      // ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED
+      case 3:
+        return 'disconnected_unverified'
+      // ledger::WalletStatus::DISCONNECTED_VERIFIED
+      case 4:
+        return 'disconnected_verified'
+      default:
+        return 'unverified'
+    }
+  }
+
+  goToUphold = () => {
+    const { externalWallet } = this.props.rewardsPanelData
+
+    if (!externalWallet || !externalWallet.accountUrl) {
+      this.actions.getExternalWallet('uphold')
+      return
+    }
+
+    window.open(externalWallet.accountUrl, '_blank')
+  }
+
+  getUserName = () => {
+    const { externalWallet } = this.props.rewardsPanelData
+    if (!externalWallet) {
+      return ''
+    }
+
+    return externalWallet.userName
+  }
+
+  onDisconnectClick = () => {
+    chrome.braveRewards.disconnectWallet('uphold')
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
-    const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
+    const { total, rates } = this.props.rewardsPanelData.balance
+    const { grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    const converted = utils.convertBalance(balance.toString(), rates)
+    const converted = utils.convertBalance(total.toString(), rates)
     const notification = this.getNotification()
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)
@@ -498,12 +693,12 @@ export class Panel extends React.Component<Props, State> {
         compact={true}
         contentPadding={false}
         gradientTop={this.gradientColor}
-        balance={balance.toFixed(1)}
+        balance={total.toFixed(1)}
         converted={utils.formatConverted(converted)}
         actions={[
           {
             name: getMessage('addFunds'),
-            action: this.openRewardsAddFundsPage,
+            action: this.onAddFunds,
             icon: <WalletAddIcon />
           },
           {
@@ -514,7 +709,6 @@ export class Panel extends React.Component<Props, State> {
         ]}
         showCopy={false}
         showSecActions={false}
-        connectedWallet={false}
         grant={currentGrant}
         onGrantHide={this.onGrantHide}
         onNotificationClick={notificationClick}
@@ -522,8 +716,22 @@ export class Panel extends React.Component<Props, State> {
         onFinish={this.onFinish}
         convertProbiToFixed={utils.convertProbiToFixed}
         grants={utils.getGrants(grants)}
+        walletState={this.getWalletStatus()}
+        onVerifyClick={this.onVerifyClick}
+        onDisconnectClick={this.onDisconnectClick}
+        goToUphold={this.goToUphold}
+        userName={this.getUserName()}
         {...notification}
       >
+        {
+          this.state.showVerifyOnBoarding
+          ? <PanelVerify
+            compact={true}
+            onVerifyClick={this.onVerifyClick}
+            onClose={this.toggleVerifyPanel}
+          />
+          : null
+        }
         <WalletSummarySlider
           id={'panel-slider'}
           onToggle={this.onSliderToggle}
@@ -547,7 +755,7 @@ export class Panel extends React.Component<Props, State> {
               showUnVerified={!publisher.verified}
               acEnabled={enabledAC}
               donationAmounts={tipAmounts}
-              moreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
+              moreLink={'https://brave.com/faq/#unclaimed-funds'}
               onRefreshPublisher={this.refreshPublisher}
               refreshingPublisher={this.state.refreshingPublisher}
               publisherRefreshed={this.state.publisherRefreshed}
@@ -557,7 +765,7 @@ export class Panel extends React.Component<Props, State> {
           <WalletSummary
             compact={true}
             reservedAmount={pendingTotal}
-            reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
+            reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
             {...this.getWalletSummary()}
           />
         </WalletSummarySlider>

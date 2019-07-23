@@ -9,7 +9,9 @@
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/redeem_payment_tokens_request.h"
+
 #include "brave_base/random.h"
+#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -21,25 +23,19 @@ PayoutTokens::PayoutTokens(
     ConfirmationsImpl* confirmations,
     ConfirmationsClient* confirmations_client,
     UnblindedTokens* unblinded_payment_tokens) :
-    next_retry_start_timer_in_(0),
-    backoff_count_(0),
+    next_retry_backoff_count_(0),
     confirmations_(confirmations),
     confirmations_client_(confirmations_client),
     unblinded_payment_tokens_(unblinded_payment_tokens) {
-  BLOG(INFO) << "Initializing payout tokens";
 }
 
-PayoutTokens::~PayoutTokens() {
-  BLOG(INFO) << "Deinitializing payout tokens";
-}
+PayoutTokens::~PayoutTokens() = default;
 
 void PayoutTokens::Payout(const WalletInfo& wallet_info) {
   DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.public_key.empty());
+  DCHECK(!wallet_info.private_key.empty());
 
   BLOG(INFO) << "Payout";
-
-  backoff_count_ = 0;           // reset exponential backoff
 
   wallet_info_ = WalletInfo(wallet_info);
 
@@ -106,7 +102,7 @@ void PayoutTokens::OnRedeemPaymentTokens(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     BLOG(ERROR) << "Failed to redeem payment tokens";
     OnPayout(FAILED);
     return;
@@ -120,13 +116,19 @@ void PayoutTokens::OnPayout(const Result result) {
     BLOG(ERROR) << "Failed to payout tokens";
 
     RetryNextPayout();
-  } else {
-    unblinded_payment_tokens_->RemoveAllTokens();
-
-    BLOG(INFO) << "Successfully paid out tokens";
-
-    ScheduleNextPayout();
+    return;
   }
+
+  BLOG(INFO) << "Successfully paid out tokens";
+
+  confirmations_->AddUnredeemedTransactionsToPendingRewards();
+  unblinded_payment_tokens_->RemoveAllTokens();
+
+  confirmations_->UpdateAdsRewards(true);
+
+  next_retry_backoff_count_ = 0;
+
+  ScheduleNextPayout();
 }
 
 void PayoutTokens::ScheduleNextPayout() const {
@@ -139,16 +141,14 @@ void PayoutTokens::ScheduleNextPayout() const {
 void PayoutTokens::RetryNextPayout() {
   BLOG(INFO) << "Retry next payout";
 
-  next_retry_start_timer_in_ = 2 * base::Time::kSecondsPerMinute;
-  // Overflow happens only if we have already backed off so many times
-  // our expected waiting time is longer than the lifetime of the
-  // universe.
-  next_retry_start_timer_in_ <<= backoff_count_++;
+  // Overflow happens only if we have already backed off so many times our
+  // expected waiting time is longer than the lifetime of the universe
+  auto start_timer_in = 1 * base::Time::kSecondsPerMinute;
+  start_timer_in <<= next_retry_backoff_count_++;
 
-  auto rand_delay = brave_base::random::Geometric(next_retry_start_timer_in_);
-  next_retry_start_timer_in_ = rand_delay;
+  auto rand_delay = brave_base::random::Geometric(start_timer_in);
 
-  confirmations_->StartPayingOutRedeemedTokens(next_retry_start_timer_in_);
+  confirmations_->StartPayingOutRedeemedTokens(rand_delay);
 }
 
 }  // namespace confirmations

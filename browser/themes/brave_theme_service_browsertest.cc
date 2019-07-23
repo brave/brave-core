@@ -101,19 +101,13 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NativeThemeObserverTest) {
   // Initially set to light.
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
 
-  // Check native theme and dark theme oberver is called once by changing theme
-  // to dark and light.
+  // Check theme oberver is called twice by changing theme.
+  // One for changing to dark and the other for changing to light.
   TestNativeThemeObserver native_theme_observer;
   EXPECT_CALL(
       native_theme_observer,
-      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi())).Times(1);
-  TestNativeThemeObserver native_dark_theme_observer;
-  EXPECT_CALL(
-      native_dark_theme_observer,
-      OnNativeThemeUpdated(ui::NativeThemeDarkAura::instance())).Times(1);
+      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi())).Times(2);
 
-  ui::NativeThemeDarkAura::instance()->AddObserver(
-      &native_dark_theme_observer);
   ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
       &native_theme_observer);
 
@@ -121,11 +115,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NativeThemeObserverTest) {
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
 }
 
-#if defined(OS_MACOSX) || defined(OS_WIN)
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
-  if (!BraveThemeService::SystemThemeModeEnabled())
-    return;
-
   const bool initial_mode =
       ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled();
   Profile* profile = browser()->profile();
@@ -143,8 +133,10 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
   EXPECT_FALSE(
       ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
 
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
-  EXPECT_EQ(initial_mode,
-            ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+  if (BraveThemeService::SystemThemeModeEnabled()) {
+    SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
+    EXPECT_EQ(
+        initial_mode,
+        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+  }
 }
-#endif

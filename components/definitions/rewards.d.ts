@@ -26,14 +26,10 @@ declare namespace Rewards {
     RECURRING_TIP = 16
   }
 
-  export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
-  export type Address = { address: string, qr: string | null }
-
   export interface State {
-    addresses?: Record<AddressesType, Address>
     adsData: AdsData
     autoContributeList: Publisher[]
-    connectedWallet: boolean
+    balance: Balance
     contributeLoad: boolean
     contributionMinTime: number
     contributionMinVisits: number
@@ -48,8 +44,10 @@ declare namespace Rewards {
     enabledAdsMigrated: boolean
     enabledContribute: boolean
     enabledMain: boolean
+    externalWallet?: ExternalWallet
     inlineTip: {
       twitter: boolean
+      reddit: boolean
     }
     excludedList: ExcludedPublisher[]
     firstLoad: boolean | null
@@ -64,14 +62,15 @@ declare namespace Rewards {
     tipsList: Publisher[]
     tipsLoad: boolean
     ui: {
-      addressCheck: boolean
       emptyWallet: boolean
       modalBackup: boolean
+      modalRedirect: 'show' | 'hide' | 'error'
       paymentIdCheck: boolean
       walletRecoverySuccess: boolean | null
       walletServerProblem: boolean
       walletCorrupted: boolean
       walletImported: boolean
+      onBoardingDisplayed?: boolean
     }
     walletCreated: boolean
     walletCreateFailed: boolean
@@ -103,11 +102,8 @@ declare namespace Rewards {
   }
 
   export interface WalletProperties {
-    balance: number
     choices: number[]
-    probi: string
     range?: number[]
-    rates?: Record<string, number>
     grants?: Grant[]
   }
 
@@ -172,9 +168,10 @@ declare namespace Rewards {
     adsEnabled: boolean
     adsPerHour: number
     adsUIEnabled: boolean
-    adsNotificationsReceived: number
-    adsEstimatedEarnings: number
     adsIsSupported: boolean
+    adsEstimatedPendingRewards: number
+    adsNextPaymentDate: string
+    adsAdNotificationsReceivedThisMonth: number
   }
 
   export enum Category {
@@ -201,5 +198,40 @@ declare namespace Rewards {
     category: RewardsCategory
     viewingId: string
     expirationDate: string
+  }
+
+  export interface Balance {
+    total: number
+    rates: Record<string, number>
+    wallets: Record<string, number>
+  }
+
+  export type WalletType = 'anonymous' | 'uphold'
+
+  export enum WalletStatus {
+    NOT_CONNECTED = 0,
+    CONNECTED = 1,
+    VERIFIED = 2,
+    DISCONNECTED_NOT_VERIFIED = 3,
+    DISCONNECTED_VERIFIED = 4
+  }
+
+  export interface ExternalWallet {
+    token: string
+    address: string
+    status: WalletStatus
+    type: WalletType
+    verifyUrl: string
+    addUrl: string
+    withdrawUrl: string
+    userName?: string
+    accountUrl: string
+  }
+
+  export interface ProcessRewardsPageUrl {
+    result: number
+    walletType: string
+    action: string
+    args: Record<string, string>
   }
 }

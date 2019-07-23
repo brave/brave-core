@@ -41,9 +41,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                  uint64_t window_id,
                  const ledger::PublisherInfoCallback callback);
 
-  void AddRecurringPayment(const std::string& publisher_id,
-                           const double& value);
-
   void setPublisherMinVisitTime(const uint64_t& duration);  // In seconds
 
   void setPublisherMinVisits(const unsigned int visits);
@@ -128,6 +125,12 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
 
+  void SavePublisherProcessed(const std::string& publisher_key);
+
+  bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
+
+  std::string GetPublisherAddress(const std::string& publisher_key) const;
+
  private:
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,
@@ -142,7 +145,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void saveVisitInternal(
       std::string publisher_id,
-      ledger::VisitData visit_data,
+      const ledger::VisitData& visit_data,
       uint64_t duration,
       uint64_t window_id,
       const ledger::PublisherInfoCallback callback,
@@ -201,8 +204,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void OnExcludedSitesChanged(const std::string& publisher_id,
                               ledger::PUBLISHER_EXCLUDE exclude);
 
-  void onPublisherBanner(ledger::PublisherBannerCallback callback,
-                         ledger::PublisherBanner banner,
+  void OnPublisherBanner(ledger::PublisherBannerCallback callback,
+                         const ledger::PublisherBanner& banner,
                          ledger::Result result,
                          ledger::PublisherInfoPtr publisher_info);
 

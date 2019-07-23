@@ -6,28 +6,12 @@
 #ifndef BAT_LEDGER_GRANT_HANDLER_
 #define BAT_LEDGER_GRANT_HANDLER_
 
-#include <string>
-#include <map>
-#include <vector>
-
-#include "bat/ledger/export.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
 
-LEDGER_EXPORT struct Grant {
-  Grant();
-  ~Grant();
-  Grant(const Grant& properties);
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string altcurrency;
-  std::string probi;
-  std::string promotionId;
-  uint64_t expiryTime;
-  std::string type;
-};
+using Grant = ledger::mojom::Grant;
+using GrantPtr = ledger::mojom::GrantPtr;
 
 }  // namespace ledger
 

@@ -17,6 +17,7 @@
 
 #include "base/logging.h"
 #include "base/json/json_reader.h"
+#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -35,18 +36,15 @@ RefillTokens::RefillTokens(
     confirmations_(confirmations),
     confirmations_client_(confirmations_client),
     unblinded_tokens_(unblinded_tokens) {
-  BLOG(INFO) << "Initializing refill tokens";
 }
 
-RefillTokens::~RefillTokens() {
-  BLOG(INFO) << "Deinitializing refill tokens";
-}
+RefillTokens::~RefillTokens() = default;
 
 void RefillTokens::Refill(
     const WalletInfo& wallet_info,
     const std::string& public_key) {
   DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.public_key.empty());
+  DCHECK(!wallet_info.private_key.empty());
   DCHECK(!public_key.empty());
 
   BLOG(INFO) << "Refill";
@@ -125,7 +123,7 @@ void RefillTokens::OnRequestSignedTokens(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 201) {
+  if (response_status_code != net::HTTP_CREATED) {
     BLOG(ERROR) << "Failed to get blinded tokens";
     OnRefill(FAILED);
     return;
@@ -188,10 +186,11 @@ void RefillTokens::OnGetSignedTokens(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     BLOG(ERROR) << "Failed to get signed tokens";
 
-    if (response_status_code == 202) {  // Tokens are not ready yet
+    if (response_status_code == net::HTTP_ACCEPTED) {
+      // Tokens are not ready yet
       confirmations_->StartRetryingToGetRefillSignedTokens(
           kRetryGettingRefillSignedTokensAfterSeconds);
     }

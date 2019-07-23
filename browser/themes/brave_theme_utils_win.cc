@@ -23,6 +23,3 @@ bool SystemThemeSupportDarkMode() {
           KEY_READ | KEY_NOTIFY) == ERROR_SUCCESS;
   return key_open_succeeded;
 }
-
-void SetSystemTheme(BraveThemeType type) {
-}

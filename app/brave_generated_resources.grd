@@ -130,7 +130,7 @@
         Sync
       </message>
       <message name="IDS_SHOW_BRAVE_WALLET" desc="The show Brave Wallet menu item (app menu)">
-        Brave Wallet
+        Crypto Wallets
       </message>
       <message name="IDS_EXTENSION_CANT_INSTALL_ON_BRAVE" desc="Error message when user tries to install an extension that is not allowed in Brave.">
         <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.
@@ -162,6 +162,9 @@
       </message>
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Widevine
+      </message>
+      <message name="IDS_WALLET_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for wallet installation permission request.">
+          Install Crypto Wallets
       </message>
       <if expr="is_linux">
         <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
@@ -207,7 +210,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
-        Brave hasn't reviewed this extension yet - it might be malicious. Add "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" anyway?
+        Brave has not reviewed this extension for security and safety. Only install this extension if you trust the developer.
       </message>
       <!-- Appearance -->
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
@@ -225,6 +228,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <!-- Tor -->
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity
+      </message>
+      <message name="IDS_NEW_TOR_CONNECTION_FOR_SITE" desc="The text label of a menu item for requesting new Tor connection for the current site">
+        New Tor Connection For This Site
       </message>
       <message name="IDS_PROFILES_EXIT_TOR" desc="Button in the avatar menu bubble view for exiting the active Tor session.">
         Exit Tor
@@ -280,28 +286,34 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Shields
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields Defaults sub-section in settings">
-        Defaults
+        Block trackers and ads which follow you across the web.
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION" desc="The description for Brave shields Defaults sub-section in settings">
-        Your current per-site settings will be retained.
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1" desc="The description for Brave shields Defaults sub-section in settings">
+        These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The partial description for Brave shields Defaults sub-section in settings. The sentence is completed with `Brave rewards settings`">
+        This will block most ads on websites, not Brave private ads — those are controlled in the
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_3" desc="The partial description for Brave shields Defaults sub-section in settings. Partial of `This will block most ads on websites, not Brave private ads — those are controlled in the Brave Rewards (settings)`">
+        settings.
       </message>
       <message name="IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE" desc="The title the settings section which has options for blocking third-party embeds, commonly from social media sites">
         Social media blocking
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave ad control setting label">
-        Ad control
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave block cross-site trackers control setting label">
+        Block cross-site trackers
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookie control setting label">
-        Cookie control
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
+        Cookies
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
-        Fingerprinting protection
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave device recognition control setting label">
+        Device recognition
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave HTTPS Everywhere control setting label">
-        HTTPS Everywhere
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave upgrade connections to HTTPS control setting label">
+        Upgrade connections to HTTPS
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
-        Script blocking
+        Block scripts
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_GOOGLE_LOGIN_LABEL" desc="Label for a switch control which allows Google social buttons to be enabled/disabled">
         Allow Google login buttons on third party sites
@@ -315,14 +327,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_LINKEDIN_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows LinkedIn embedded posts">
         Allow LinkedIn embedded posts
       </message>
-      <message name="IDS_SETTINGS_BLOCK_ADS" desc="Select value">
-        Block ads
-      </message>
-      <message name="IDS_SETTINGS_ALLOW_ADS_AND_TRACKING" desc="Select value">
-        Allow ads and tracking
-      </message>
       <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
-        Block 3rd party cookies
+        Only block cross-site cookies
       </message>
       <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
         Allow all cookies
@@ -331,13 +337,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Block all cookies
       </message>
       <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_FINGERPRINTING" desc="Select value">
-        Block 3rd party fingerprinting
+        Only block cross-site device recognition attempts
       </message>
       <message name="IDS_SETTINGS_ALLOW_FINGERPRINTING" desc="Select value">
-        Allow fingerprinting
+        Allow all device recognition attempts
       </message>
       <message name="IDS_SETTINGS_BLOCK_FINGERPRINTING" desc="Select value">
-        Block all fingerprinting
+        Block all device recognition attempts
       </message>
       <!-- WebRTC Policy Setting -->
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
@@ -421,8 +427,27 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE" desc="Title text for the translate bubble when asking to translate a page.">
         Translate this page? This will send all text on this page to Microsoft for translation.
       </message>
+      <!-- App shortcuts -->
+      <if expr="not is_win">
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_NIGHTLY" desc="Name for the Brave Apps Start Menu folder name.">
+          Brave Browser Nightly Apps
+        </message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_BETA" desc="Name for the Brave Apps Start Menu folder name.">
+          Brave Browser Beta Apps
+        </message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_DEV" desc="Name for the Brave Apps Start Menu folder name.">
+          Brave Browser Dev Apps
+        </message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_STABLE" desc="Name for the Brave Apps Start Menu folder name.">
+          Brave Browser Apps
+        </message>
+        <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_DEVELOPMENT" desc="Name for the Brave Apps Start Menu folder name.">
+          Brave Browser Development Apps
+        </message>
+      </if>
     </messages>
     <includes>
+      <include name="IDR_BRAVE_GOOGLE_ANALYTICS_POLYFILL" file="resources/js/google_analytics_polyfill.js" type="BINDATA" />
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
       <include name="IDR_BRAVE_TAG_MANAGER_POLYFILL" file="resources/js/tag_manager_polyfill.js" type="BINDATA" />
     </includes>

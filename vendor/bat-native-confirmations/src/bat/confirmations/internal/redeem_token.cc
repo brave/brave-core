@@ -20,6 +20,7 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave_base/random.h"
+#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -40,12 +41,9 @@ RedeemToken::RedeemToken(
     confirmations_client_(confirmations_client),
     unblinded_tokens_(unblinded_tokens),
     unblinded_payment_tokens_(unblinded_payment_tokens) {
-  BLOG(INFO) << "Initializing redeem token";
 }
 
-RedeemToken::~RedeemToken() {
-  BLOG(INFO) << "Deinitializing redeem token";
-}
+RedeemToken::~RedeemToken() = default;
 
 void RedeemToken::Redeem(
     const std::string& creative_instance_id,
@@ -164,13 +162,14 @@ void RedeemToken::OnCreateConfirmation(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 201 && response_status_code != 400) {
+  if (response_status_code != net::HTTP_CREATED &&
+      response_status_code != net::HTTP_BAD_REQUEST) {
     BLOG(ERROR) << "Failed to create confirmation";
     OnRedeem(FAILED, confirmation_info);
     return;
   }
 
-  if (response_status_code != 400) {
+  if (response_status_code != net::HTTP_BAD_REQUEST) {
     // Parse JSON response
     base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
     if (!dictionary || !dictionary->is_dict()) {
@@ -240,7 +239,7 @@ void RedeemToken::OnFetchPaymentToken(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     BLOG(ERROR) << "Failed to fetch payment token";
     OnRedeem(FAILED, confirmation_info);
     return;
@@ -432,7 +431,9 @@ void RedeemToken::OnRedeem(
         << " unblinded token";
   }
 
-  ScheduleNextRetryForFailedConfirmations();
+  if (!confirmations_->IsRetryingFailedConfirmations()) {
+    ScheduleNextRetryForFailedConfirmations();
+  }
 
   confirmations_->RefillTokensIfNecessary();
 }

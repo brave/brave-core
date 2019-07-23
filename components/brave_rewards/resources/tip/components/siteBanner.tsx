@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import { Provider } from 'brave-ui/features/rewards/profile'
-import { SiteBanner, TweetBox } from 'brave-ui/features/rewards'
+import { SiteBanner, MediaBox } from 'brave-ui/features/rewards'
 
 // Utils
 import * as tipActions from '../actions/tip_actions'
@@ -16,7 +16,7 @@ import * as utils from '../utils'
 
 interface Props extends RewardsTip.ComponentProps {
   publisher: RewardsTip.Publisher
-  tweetMetaData?: RewardsTip.TweetMetaData
+  mediaMetaData?: RewardsTip.MediaMetaData
 }
 
 interface State {
@@ -33,6 +33,7 @@ class Banner extends React.Component<Props, State> {
 
   componentDidMount () {
     this.actions.getWalletProperties()
+    this.actions.getBalance()
     this.actions.getRecurringTips()
     this.actions.getReconcileStamp()
   }
@@ -46,7 +47,7 @@ class Banner extends React.Component<Props, State> {
   }
 
   generateAmounts = () => {
-    const { walletInfo } = this.props.rewardsDonateData
+    const { balance } = this.props.rewardsDonateData
 
     let amounts = [1, 5, 10]
     const amount = this.props.publisher.amounts
@@ -57,7 +58,7 @@ class Banner extends React.Component<Props, State> {
     return amounts.map((value: number) => {
       return {
         tokens: value.toFixed(1),
-        converted: utils.convertBalance(value.toString(), walletInfo.rates),
+        converted: utils.convertBalance(value.toString(), balance.rates),
         selected: false
       }
     })
@@ -70,11 +71,11 @@ class Banner extends React.Component<Props, State> {
   }
 
   onTip = (amount: string, recurring: boolean) => {
-    const { walletInfo } = this.props.rewardsDonateData
-    const { balance } = walletInfo
+    const { balance } = this.props.rewardsDonateData
+    const { total } = balance
     const publisher = this.props.publisher
 
-    if (publisher.publisherKey && balance >= parseInt(amount, 10)) {
+    if (publisher.publisherKey && total >= parseInt(amount, 10)) {
       this.actions.onTip(publisher.publisherKey, amount, recurring)
     } else {
       // TODO return error
@@ -119,12 +120,16 @@ class Banner extends React.Component<Props, State> {
     return !!recurringDonation
   }
 
-  getScreenName = (tweetMetaData?: RewardsTip.TweetMetaData) => {
-    if (!tweetMetaData) {
+  getScreenName = (mediaMetaData?: RewardsTip.MediaMetaData) => {
+    if (!mediaMetaData) {
       return ''
     }
-
-    return `@${tweetMetaData.screenName}`
+    if (mediaMetaData.mediaType === 'twitter') {
+      return `@${mediaMetaData.screenName}`
+    } else if (mediaMetaData.mediaType === 'reddit') {
+      return `u/${mediaMetaData.userName}`
+    }
+    return ''
   }
 
   get addFundsLink () {
@@ -132,24 +137,51 @@ class Banner extends React.Component<Props, State> {
   }
 
   getTweetText () {
-    if (!this.props.tweetMetaData ||
-        !this.props.tweetMetaData.tweetText ||
-        this.props.tweetMetaData.tweetText.length === 0) {
+    const mediaMetaData = this.props.mediaMetaData
+    if (!mediaMetaData) {
+      return
+    }
+
+    if (mediaMetaData.mediaType !== 'twitter' ||
+        !mediaMetaData.tweetText ||
+        mediaMetaData.tweetText.length === 0) {
       return null
     }
 
     return (
-      <TweetBox
-        tweetText={this.props.tweetMetaData.tweetText}
-        tweetTimestamp={this.props.tweetMetaData.tweetTimestamp}
+      <MediaBox
+        mediaType={'twitter'}
+        mediaText={mediaMetaData.tweetText}
+        mediaTimestamp={mediaMetaData.tweetTimestamp}
+      />)
+  }
+
+  getRedditText () {
+    const mediaMetaData = this.props.mediaMetaData
+    if (!mediaMetaData) {
+      return
+    }
+
+    if (mediaMetaData.mediaType !== 'reddit' ||
+      !mediaMetaData.postText ||
+      mediaMetaData.postText.length === 0) {
+      return null
+    }
+
+    return (
+      <MediaBox
+        mediaType={'reddit'}
+        mediaText={mediaMetaData.postText}
+        mediaTimestamp={0}
+        mediaTimetext={mediaMetaData.postRelDate}
       />)
   }
 
   render () {
-    const { walletInfo } = this.props.rewardsDonateData
-    const { balance } = walletInfo
+    const { balance } = this.props.rewardsDonateData
+    const { total } = balance
 
-    const tweetMetaData = this.props.tweetMetaData
+    const mediaMetaData = this.props.mediaMetaData
     const publisher = this.props.publisher
     const verified = publisher.verified
     let logo = publisher.logo
@@ -168,10 +200,10 @@ class Banner extends React.Component<Props, State> {
         domain={publisher.publisherKey}
         title={publisher.title}
         name={publisher.name}
-        screenName={this.getScreenName(tweetMetaData)}
+        screenName={this.getScreenName(mediaMetaData)}
         provider={publisher.provider as Provider}
         recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
-        balance={balance.toString() || '0'}
+        balance={total.toString() || '0'}
         bgImage={publisher.background}
         logo={logo}
         donationAmounts={this.generateAmounts()}
@@ -182,13 +214,17 @@ class Banner extends React.Component<Props, State> {
         onClose={this.onClose}
         social={this.generateSocialLinks()}
         showUnVerifiedNotice={!verified}
-        learnMoreNotice={'https://brave.com/faq-rewards/#unclaimed-funds'}
+        learnMoreNotice={'https://brave.com/faq/#unclaimed-funds'}
         addFundsLink={this.addFundsLink}
       >
       {
-        this.props.tweetMetaData
-        ? this.getTweetText()
-        : publisher.description
+        mediaMetaData
+          ? mediaMetaData.mediaType === 'twitter'
+          ? this.getTweetText()
+          : mediaMetaData.mediaType === 'reddit'
+          ? this.getRedditText()
+          : publisher.description
+        : null
       }
       </SiteBanner>
     )

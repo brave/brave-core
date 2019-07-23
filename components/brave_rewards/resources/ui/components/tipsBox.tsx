@@ -73,7 +73,7 @@ class TipBox extends React.Component<Props, State> {
   }
 
   getTipsRows = () => {
-    const { walletInfo, recurringList, tipsList } = this.props.rewardsData
+    const { balance, recurringList, tipsList } = this.props.rewardsData
 
     // Recurring
     let recurring: DetailRow[] = []
@@ -93,7 +93,7 @@ class TipBox extends React.Component<Props, State> {
           },
           contribute: {
             tokens: item.percentage.toFixed(1),
-            converted: utils.convertBalance(item.percentage.toString(), walletInfo.rates)
+            converted: utils.convertBalance(item.percentage.toString(), balance.rates)
           },
           url: item.url,
           type: 'recurring' as any,
@@ -122,7 +122,7 @@ class TipBox extends React.Component<Props, State> {
           },
           contribute: {
             tokens: token,
-            converted: utils.convertBalance(token, walletInfo.rates)
+            converted: utils.convertBalance(token, balance.rates)
           },
           url: item.url,
           text: item.tipDate ? new Date(item.tipDate * 1000).toLocaleDateString() : undefined,
@@ -171,7 +171,8 @@ class TipBox extends React.Component<Props, State> {
 
     if (!value) {
       value = {
-        twitter: true
+        twitter: true,
+        reddit: true
       }
     }
 
@@ -180,6 +181,13 @@ class TipBox extends React.Component<Props, State> {
         <Grid columns={1}>
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <ControlWrapper text={getLocale('donationAbility')}>
+              <Checkbox
+                value={value}
+                multiple={true}
+                onChange={this.onInlineTipSettingChange}
+              >
+                <div data-key='reddit'>{getLocale('donationAbilityReddit')}</div>
+              </Checkbox>
               <Checkbox
                 value={value}
                 multiple={true}
@@ -196,7 +204,7 @@ class TipBox extends React.Component<Props, State> {
 
   render () {
     const {
-      walletInfo,
+      balance,
       firstLoad,
       enabledMain,
       ui,
@@ -210,7 +218,7 @@ class TipBox extends React.Component<Props, State> {
     const numRows = tipRows && tipRows.length
     const allSites = !(numRows > 5)
     const total = this.getTotal()
-    const converted = utils.convertBalance(total, walletInfo.rates)
+    const converted = utils.convertBalance(total, balance.rates)
 
     return (
       <Box
@@ -238,7 +246,7 @@ class TipBox extends React.Component<Props, State> {
           recurringList && recurringList.length > 0
           ? <List title={getLocale('donationNextDate')}>
             <NextContribution>
-              {new Date(reconcileStamp * 1000).toLocaleDateString()}
+              {new Intl.DateTimeFormat('default', { month: 'short', day: 'numeric' }).format(reconcileStamp * 1000)}
             </NextContribution>
           </List>
           : null

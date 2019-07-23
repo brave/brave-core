@@ -105,30 +105,63 @@ export interface BlockJavaScript {
 }
 
 interface AllowScriptOriginsOnceReturn {
-  type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
-  origins: string[]
+  type: types.ALLOW_SCRIPT_ORIGINS_ONCE
 }
 
 export interface AllowScriptOriginsOnce {
-  (origins: string[]): AllowScriptOriginsOnceReturn
+  (): AllowScriptOriginsOnceReturn
 }
 
-interface ChangeNoScriptSettingsReturn {
-  type: types.CHANGE_NO_SCRIPT_SETTINGS,
-  origin: string
+interface SetScriptBlockedCurrentStateReturn {
+  type: types.SET_SCRIPT_BLOCKED_ONCE_CURRENT_STATE,
+  url: string
 }
 
-export interface ChangeNoScriptSettings {
-  (origin: string): ChangeNoScriptSettingsReturn
+export interface SetScriptBlockedCurrentState {
+  (url: string): SetScriptBlockedCurrentStateReturn
 }
 
-interface ChangeAllNoScriptSettingsReturn {
-  type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
-  shouldBlock: boolean
+interface SetGroupedScriptsBlockedCurrentStateReturn {
+  type: types.SET_GROUPED_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+  origin: string,
+  maybeBlock: boolean
 }
 
-export interface ChangeAllNoScriptSettings {
-  (shouldBlock: boolean): ChangeAllNoScriptSettingsReturn
+export interface SetGroupedScriptsBlockedCurrentState {
+  (origin: string, maybeBlock: boolean): SetGroupedScriptsBlockedCurrentStateReturn
+}
+
+interface SetAllScriptsBlockedCurrentStateReturn {
+  type: types.SET_ALL_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+  maybeBlock: boolean
+}
+
+export interface SetAllScriptsBlockedCurrentState {
+  (maybeBlock: boolean): SetAllScriptsBlockedCurrentStateReturn
+}
+
+interface SetFinalScriptsBlockedStateReturn {
+  type: types.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE
+}
+
+export interface SetFinalScriptsBlockedState {
+  (): SetFinalScriptsBlockedStateReturn
+}
+
+interface SetAdvancedViewFirstAccessReturn {
+  type: types.SET_ADVANCED_VIEW_FIRST_ACCESS
+}
+
+export interface SetAdvancedViewFirstAccess {
+  (): SetAdvancedViewFirstAccessReturn
+}
+
+interface ToggleAdvancedViewReturn {
+  type: types.TOGGLE_ADVANCED_VIEW
+}
+
+export interface ToggleAdvancedView {
+  (): ToggleAdvancedViewReturn
 }
 
 export type shieldPanelActions =
@@ -142,5 +175,9 @@ export type shieldPanelActions =
   BlockFingerprintingReturn |
   BlockCookiesReturn |
   AllowScriptOriginsOnceReturn |
-  ChangeNoScriptSettingsReturn |
-  ChangeAllNoScriptSettingsReturn
+  SetScriptBlockedCurrentStateReturn |
+  SetGroupedScriptsBlockedCurrentStateReturn |
+  SetAllScriptsBlockedCurrentStateReturn |
+  SetFinalScriptsBlockedStateReturn |
+  SetAdvancedViewFirstAccessReturn |
+  ToggleAdvancedViewReturn

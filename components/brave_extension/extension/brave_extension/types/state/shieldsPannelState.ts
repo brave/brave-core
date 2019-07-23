@@ -27,7 +27,6 @@ export interface Tab {
   adsBlockedResources: Array<string>
   trackersBlockedResources: Array<string>
   httpsRedirectedResources: Array<string>
-  javascriptBlockedResources: Array<string>
   fingerprintingBlockedResources: Array<string>
 }
 
@@ -39,7 +38,13 @@ export interface Windows {
   [key: number]: number
 }
 
+export interface PersistentData {
+  isFirstAccess: boolean
+  advancedView: boolean
+}
+
 export interface State {
+  persistentData: PersistentData
   currentWindowId: number
   tabs: Tabs
   windows: Windows
@@ -51,6 +56,14 @@ export interface GetActiveTabId {
 
 export interface GetActiveTabData {
   (state: State): Tab | undefined
+}
+
+export interface GetPersistentData {
+  (state: State): PersistentData
+}
+
+export interface UpdatePersistentData {
+  (state: State, persistentData: Partial<PersistentData>): State
 }
 
 export interface UpdateActiveTab {
@@ -81,16 +94,8 @@ export interface ResetBlockingResources {
   (state: State, tabId: number): State
 }
 
-export interface ChangeNoScriptSettings {
-  (state: State, tabId: number, origin: string): State
-}
-
 export interface ResetNoScriptInfo {
   (state: State, tabId: number, newOrigin: string): State
-}
-
-export interface ChangeAllNoScriptSettings {
-  (state: State, tabId: number, shouldBlock: boolean): State
 }
 
 export interface UpdateShieldsIconBadgeText {
@@ -107,4 +112,8 @@ export interface FocusedWindowChanged {
 }
 export interface RequestDataAndUpdateActiveTab {
   (state: State, windowId: number, tabId: number): State
+}
+
+export interface PersistAllNoScriptSettings {
+  (state: State, tabId: number): State
 }

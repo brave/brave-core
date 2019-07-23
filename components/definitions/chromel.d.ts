@@ -15,7 +15,8 @@ declare namespace chrome.dns {
 declare namespace chrome.braveRewards {
   const createWallet: () => {}
   const tipSite: (tabId: number, publisherKey: string) => {}
-  const tipTwitterUser: (tabId: number, tweetMetaData: RewardsTip.TweetMetaData) => {}
+  const tipTwitterUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
+  const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
   const getWalletProperties: () => {}
   const getCurrentReport: () => {}
@@ -75,6 +76,18 @@ declare namespace chrome.braveRewards {
   const refreshPublisher: (publisherKey: string, callback: (enabled: boolean, publisherKey: string) => void) => {}
   const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
   const getInlineTipSetting: (key: string, callback: (enabled: boolean) => void) => {}
+  const fetchBalance: (callback: (balance: RewardsExtension.Balance) => void) => {}
+  const onReconcileComplete: {
+    addListener: (callback: (result: number, category: number) => void) => void
+  }
+
+  const getExternalWallet: (type: string, callback: (result: number, wallet: RewardsExtension.ExternalWallet) => void) => {}
+
+  const disconnectWallet: (type: string) => {}
+
+  const onDisconnectWallet: {
+    addListener: (callback: (properties: {result: number, walletType: string}) => void) => void
+  }
 }
 
 declare namespace chrome.rewardsNotifications {
@@ -128,6 +141,15 @@ declare namespace chrome.braveShields {
   const allowScriptsOnce: any
   const javascript: any
   const plugins: any
+}
+
+declare namespace chrome.braveWallet {
+  const promptToEnableWallet: (tabId: number | undefined) => void
+  const isEnabled: () => boolean
+}
+
+declare namespace chrome.test {
+  const sendMessage: (message: string) => {}
 }
 
 declare namespace chrome.braveTheme {

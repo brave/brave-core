@@ -24,22 +24,20 @@ export const defaultState: Rewards.State = {
   donationAbilityYT: true,
   donationAbilityTwitter: true,
   walletInfo: {
-    balance: 0,
-    choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0],
-    probi: '0'
+    choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0]
   },
-  connectedWallet: false,
   recoveryKey: '',
   reconcileStamp: 0,
   ui: {
-    addressCheck: true,
     emptyWallet: true,
     modalBackup: false,
+    modalRedirect: 'hide',
     paymentIdCheck: true,
     walletCorrupted: false,
     walletImported: false,
     walletRecoverySuccess: null,
-    walletServerProblem: false
+    walletServerProblem: false,
+    onBoardingDisplayed: false
   },
   autoContributeList: [],
   reports: {},
@@ -52,21 +50,36 @@ export const defaultState: Rewards.State = {
     adsEnabled: false,
     adsPerHour: 0,
     adsUIEnabled: false,
-    adsNotificationsReceived: 0,
-    adsEstimatedEarnings: 0,
-    adsIsSupported: false
+    adsIsSupported: false,
+    adsEstimatedPendingRewards: 0,
+    adsNextPaymentDate: '',
+    adsAdNotificationsReceivedThisMonth: 0
   },
   pendingContributionTotal: 0,
   grants: [],
   currentGrant: undefined,
   inlineTip: {
-    twitter: true
+    twitter: true,
+    reddit: true
   },
   pendingContributions: [],
-  excludedList: []
+  excludedList: [],
+  balance: {
+    total: 0,
+    rates: {},
+    wallets: {}
+  }
 }
 
-const cleanData = (state: Rewards.State) => state
+const cleanData = (state: Rewards.State) => {
+  if (!state.balance) {
+    state.balance = defaultState.balance
+  }
+
+  state.ui.modalRedirect = 'hide'
+
+  return state
+}
 
 export const load = (): Rewards.State => {
   const data = window.localStorage.getItem(keyName)

@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">مكافآت Brave</translation>
 <translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
 <translation id="6406506848690869874">مزامنة</translation>
+<translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") غير مسموح به في Brave.</translation>
 <translation id="7450557937477381864">أغلق Chrome</translation>
 <translation id="7008934821596358692">لإنهاء الاستيراد، أغلق جميع نوافذ كروم.</translation>
@@ -28,9 +29,9 @@
 <translation id="3218385319396786393">تم حظر التشغيل التلقائي في هذه الصفحة</translation>
 <translation id="4988333904713528597">اسمح دائماً بالتشغيل الأوتوماتيكي على <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
-<translation id="7543906827780734027">لم تراجع Brave هذا الامتداد بعد - قد يكون ضاراً. إضافة "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" على أي حال؟</translation>
+<translation id="5883458389055721080">لم يراجع Brave هذا الملحق للأمان والسلامة. قم بتثبيت هذا الملحق فقط إذا كنت تثق في المطور.</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
-<translation id="5341901626640816374">استخدم شريط الموقع الواسع</translation>
+<translation id="2814998458708016836">استخدام شريط عناوين عريض</translation>
 <translation id="6123134130710658846">إخفاء زر Brave Rewards</translation>
 <translation id="7635711399568194460">يخفي زر Brave Rewards في شريط الموقع عند عدم تمكين Brave Rewards</translation>
 <translation id="7965178729203412357">هوية تور الجديدة</translation>
@@ -47,21 +48,27 @@
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
+<translation id="3400357268283240774">إعدادات إضافية</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
-<translation id="8919235146866304148">حماية البصمة</translation>
-<translation id="520895744850022668">HTTPS في كل مكان</translation>
-<translation id="5259716416204774556">حظر البرنامج النصية</translation>
+<translation id="7133511168130368997">حظر برامج التتبع والإعلانات التي تتابعك عبر شبكة الويب.</translation>
+<translation id="2761825942249694703">هذه هي إعدادات Shields الافتراضية. تنطبق على جميع مواقع الويب ما لم تقم بتغيير شيء ما في لوحة Shields على موقع معين. لن يؤثر تغييرها على إعداداتك الحالية لكل موقع.</translation>
+<translation id="8754605759692119662">سيؤدي هذا إلى حظر معظم الإعلانات على مواقع الويب، وليس الإعلانات الخاصة بمتصفح Brave — يتم التحكم في هذه الإعلانات في</translation>
+<translation id="6388201778088078932">الإعدادات.</translation>
+<translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
+<translation id="5709627087332022422">حظر برامج التتبع عبر المواقع</translation>
+<translation id="9075744464571452108">التعرف على الجهاز</translation>
+<translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
+<translation id="4824468494729001999">حظر البرامج النصية</translation>
 <translation id="7498695072878479744">السماح بإضافة أزرار تسجيل الدخول إلى جوجل على صفحات أطراف ثالثة</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
-<translation id="6067014455220527258">حظر الإعلانات</translation>
-<translation id="6985711843506827936">السماح بالإعلانات والتتبع</translation>
-<translation id="6132506775968708399">حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية</translation>
+<translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
+<translation id="4699812599455071925">حظر ملفات تعريف الارتباط عبر المواقع فقط</translation>
 <translation id="5657156137487675418">السماح بجميع ملفات تعريف الارتباط</translation>
 <translation id="6883611015375728278">حظر جميع ملفات تعريف الارتباط</translation>
-<translation id="1442559343076146186">حظر بصمة الجهات الخارجية</translation>
-<translation id="8034285923190068220">السماح بالبصمة</translation>
-<translation id="4540198958192073185">حظر كل البصمات</translation>
+<translation id="3084022390368021391">حظر محاولات التعرف على الجهاز عبر المواقع فقط</translation>
+<translation id="1847422622180531843">السماح لجميع محاولات التعرف على الجهاز</translation>
+<translation id="8375051111011093523">حظر جميع محاولات التعرف على الجهاز</translation>
 <translation id="8942080017911802454">سياسة مناولة WebRTC IP</translation>
 <translation id="6165508094623778733">اكتشف المزيد</translation>
 <translation id="8798099450830957504">التلقائي</translation>
@@ -73,11 +80,19 @@
 <translation id="2414886740292270097">داكن</translation>
 <translation id="1360441190790440400">كنظام تشغيل Linux</translation>
 <translation id="1336940801687497203">كنظام تشغيل Windows</translation>
+<translation id="8721331068159819483">تماماً مثل ماك</translation>
 <translation id="6786747875388722282">الإضافات</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
+<translation id="4154389611571860454">يستخدم ملحق رفيق IPFS لدعم IPFS في المستعرض.</translation>
 <translation id="8137559199583651773">إدارة الإضافات</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>
 <translation id="9181207987584064303">عرض في متجر إضافات الويب</translation>
 <translation id="4846154056248462491">عند الخروج</translation>
+<translation id="5057399635433117814">ترجم هذه الصفحة؟ سوف يرسل هذا كل النص في هذه الصفحة إلى Microsoft للترجمة.</translation>
+<translation id="3371343170427636147">تطبيقات متصفح Brave الليلية</translation>
+<translation id="4097979995947147464">تطبيقات متصفح Brave التجريبية</translation>
+<translation id="8303432794159193481">تطبيقات تطوير متصفح Brave</translation>
+<translation id="8292967014767479012">تطبيقات متصفح Brave</translation>
+<translation id="4743468424889072281">تطبيقات تطوير متصفح Brave</translation>
 </translationbundle>

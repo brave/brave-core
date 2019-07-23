@@ -31,9 +31,11 @@ extern const char kReferralDownloadID[];
 extern const char kReferralTimestamp[];
 extern const char kReferralAttemptTimestamp[];
 extern const char kReferralAttemptCount[];
+extern const char kReferralHeaders[];
 extern const char kReferralCheckedForPromoCodeFile[];
 extern const char kHTTPSEVerywhereControlType[];
 extern const char kNoScriptControlType[];
+extern const char kAdControlType[];
 extern const char kGoogleLoginControlType[];
 extern const char kFBEmbedControlType[];
 extern const char kTwitterEmbedControlType[];
@@ -44,6 +46,10 @@ extern const char kWebTorrentEnabled[];
 extern const char kHangoutsEnabled[];
 extern const char kHideBraveRewardsButton[];
 extern const char kIPFSCompanionEnabled[];
+extern const char kNewTabPageShowBackgroundImage[];
+extern const char kNewTabPageShowClock[];
+extern const char kNewTabPageShowTopSites[];
+extern const char kNewTabPageShowStats[];
 extern const char kPrivacyPassEnabled[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

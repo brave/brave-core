@@ -13,7 +13,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
-#include "bat/ledger/media_publisher_info.h"
+#include "bat/ledger/media_event_info.h"
 #include "bat/ledger/pending_contribution.h"
 #include "build/build_config.h"
 #include "sql/meta_table.h"
@@ -276,7 +276,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
                                  "UPDATE publisher_info SET favIcon = ? "
                                  "WHERE publisher_id = ?"));
 
-    if (favicon == ledger::_clear_favicon) {
+    if (favicon == ledger::kClearFavicon) {
       favicon.clear();
     }
 
@@ -470,8 +470,12 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized || list.size() == 0) {
+  if (!initialized) {
     return false;
+  }
+
+  if (list.size() == 0) {
+    return true;
   }
 
   sql::Transaction transaction(&GetDB());
@@ -744,7 +748,9 @@ bool PublisherInfoDatabase::GetExcludedList(
   }
 
   // We will use every attribute from publisher_info
-  std::string query = "SELECT * FROM publisher_info WHERE excluded = 1";
+  std::string query = "SELECT publisher_id, verified, name,"
+                      "favicon, url, provider "
+                      "FROM publisher_info WHERE excluded = 1";
 
   sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
 
@@ -754,10 +760,10 @@ bool PublisherInfoDatabase::GetExcludedList(
     auto info = ledger::PublisherInfo::New();
     info->id = info_sql.ColumnString(0);
     info->verified = info_sql.ColumnBool(1);
-    info->name = info_sql.ColumnString(3);
-    info->favicon_url = info_sql.ColumnString(4);
-    info->url = info_sql.ColumnString(5);
-    info->provider = info_sql.ColumnString(9);
+    info->name = info_sql.ColumnString(2);
+    info->favicon_url = info_sql.ColumnString(3);
+    info->url = info_sql.ColumnString(4);
+    info->provider = info_sql.ColumnString(5);
 
     list->push_back(std::move(info));
   }

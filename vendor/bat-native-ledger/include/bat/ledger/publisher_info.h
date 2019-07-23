@@ -19,8 +19,11 @@ namespace ledger {
 using PublisherInfo = mojom::PublisherInfo;
 using PublisherInfoPtr = mojom::PublisherInfoPtr;
 using PublisherInfoList = std::vector<PublisherInfoPtr>;
+using PublisherBanner = mojom::PublisherBanner;
+using PublisherBannerPtr = mojom::PublisherBannerPtr;
 
-const char _clear_favicon[] = "clear";
+const char kClearFavicon[] = "clear";
+const char kIgnorePublisherBlob[] = "ignore";
 
 LEDGER_EXPORT enum REWARDS_CATEGORY {
   AUTO_CONTRIBUTE = 1 << 1,  // 2
@@ -78,39 +81,8 @@ LEDGER_EXPORT struct ActivityInfoFilter {
   uint32_t min_visits;
 };
 
-LEDGER_EXPORT struct ContributionInfo {
-  ContributionInfo() {}
-  ContributionInfo(const double &value_, const uint64_t& date_):
-    value(value_),
-    date(date_) {}
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string publisher;  // Filled only for recurrent tips
-  double value;
-  uint64_t date;
-};
-
-LEDGER_EXPORT struct PublisherBanner {
-  PublisherBanner();
-  PublisherBanner(const PublisherBanner& info);
-  ~PublisherBanner();
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string publisher_key;
-  std::string title;
-  std::string name;
-  std::string description;
-  std::string background;
-  std::string logo;
-  std::vector<int> amounts;
-  std::string provider;
-  std::map<std::string, std::string> social;
-  bool verified;
-};
+using ContributionInfo = mojom::ContributionInfo;
+using ContributionInfoPtr = mojom::ContributionInfoPtr;
 
 }  // namespace ledger
 

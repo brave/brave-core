@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import TipSite from './tipSite'
-import TipTwitterUser from './tipTwitterUser'
+import TipMediaUser from './tipMediaUser'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
@@ -16,7 +16,7 @@ import * as rewardsActions from '../actions/tip_actions'
 interface TipDialogArgs {
   url: string
   publisherKey: string
-  tweetMetaData?: RewardsTip.TweetMetaData
+  mediaMetaData?: RewardsTip.MediaMetaData
 }
 
 interface Props extends RewardsTip.ComponentProps {
@@ -28,20 +28,20 @@ export class App extends React.Component<Props, {}> {
     return this.props.actions
   }
 
-  getTipBanner = (url: string, publisher: RewardsTip.Publisher, tweetMetaData?: RewardsTip.TweetMetaData) => {
-    if (tweetMetaData) {
-      return (
-        <TipTwitterUser
-          url={url}
-          publisher={publisher}
-          tweetMetaData={tweetMetaData}
-        />
-      )
-    } else {
+  getTipBanner = (url: string, publisher: RewardsTip.Publisher, mediaMetaData: RewardsTip.MediaMetaData | undefined) => {
+    if (!mediaMetaData) {
       return (
         <TipSite
           url={url}
           publisher={publisher}
+        />
+      )
+    } else {
+      return (
+        <TipMediaUser
+          url={url}
+          publisher={publisher}
+          mediaMetaData={mediaMetaData}
         />
       )
     }
@@ -55,7 +55,7 @@ export class App extends React.Component<Props, {}> {
     }
 
     const url = this.props.dialogArgs.url
-    const tweetMetaData = this.props.dialogArgs.tweetMetaData
+    const mediaMetaData = this.props.dialogArgs.mediaMetaData
     const publisherKey = this.props.dialogArgs.publisherKey
     const publisher = publishers[publisherKey]
 
@@ -65,7 +65,7 @@ export class App extends React.Component<Props, {}> {
 
     return (
       <div>
-        {this.getTipBanner(url, publisher, tweetMetaData)}
+        {this.getTipBanner(url, publisher, mediaMetaData)}
       </div>
     )
   }

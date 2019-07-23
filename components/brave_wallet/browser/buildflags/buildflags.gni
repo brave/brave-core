@@ -1,5 +1,6 @@
 import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 declare_args() {
-  brave_wallet_enabled = !is_official_build
+  brave_wallet_enabled = !is_official_build && enable_extensions
 }

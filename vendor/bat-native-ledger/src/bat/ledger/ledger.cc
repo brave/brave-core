@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/bat_get_media.h"
+#include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/ledger.h"
@@ -18,76 +18,6 @@ bool is_debug = false;
 bool is_testing = false;
 int reconcile_time = 0;  // minutes
 bool short_retries = false;
-
-VisitData::VisitData():
-    tab_id(-1) {}
-
-VisitData::VisitData(const std::string& _tld,
-            const std::string& _domain,
-            const std::string& _path,
-            uint32_t _tab_id,
-            const std::string& _name,
-            const std::string& _url,
-            const std::string& _provider,
-            const std::string& _favicon_url) :
-    tld(_tld),
-    domain(_domain),
-    path(_path),
-    tab_id(_tab_id),
-    name(_name),
-    url(_url),
-    provider(_provider),
-    favicon_url(_favicon_url) {}
-
-VisitData::VisitData(const VisitData& data) :
-    tld(data.tld),
-    domain(data.domain),
-    path(data.path),
-    tab_id(data.tab_id),
-    name(data.name),
-    url(data.url),
-    provider(data.provider),
-    favicon_url(data.favicon_url) {}
-
-VisitData::~VisitData() {}
-
-const std::string VisitData::ToJson() const {
-  std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, &json);
-  return json;
-}
-
-bool VisitData::loadFromJson(const std::string& json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (!error) {
-    error = !(d.HasMember("tld") && d["tld"].IsString() &&
-        d.HasMember("domain") && d["domain"].IsString() &&
-        d.HasMember("path") && d["path"].IsString() &&
-        d.HasMember("tab_id") && d["tab_id"].IsUint() &&
-        d.HasMember("name") && d["name"].IsString() &&
-        d.HasMember("url") && d["url"].IsString() &&
-        d.HasMember("provider") && d["provider"].IsString() &&
-        d.HasMember("favicon_url") && d["favicon_url"].IsString());
-  }
-
-  if (!error) {
-    tld = d["tld"].GetString();
-    domain = d["domain"].GetString();
-    path = d["path"].GetString();
-    tab_id = d["tab_id"].GetUint();
-    name = d["name"].GetString();
-    url = d["url"].GetString();
-    provider = d["provider"].GetString();
-    favicon_url = d["favicon_url"].GetString();
-  }
-
-  return !error;
-}
-
 
 ActivityInfoFilter::ActivityInfoFilter() :
     excluded(EXCLUDE_FILTER::FILTER_DEFAULT),
@@ -154,206 +84,9 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
   return !error;
 }
 
-PublisherBanner::PublisherBanner() {}
-
-PublisherBanner::PublisherBanner(const PublisherBanner& info) :
-    publisher_key(info.publisher_key),
-    title(info.title),
-    name(info.name),
-    description(info.description),
-    background(info.background),
-    logo(info.logo),
-    amounts(info.amounts),
-    provider(info.provider),
-    social(info.social),
-    verified(info.verified) {}
-
-PublisherBanner::~PublisherBanner() {}
-
-const std::string PublisherBanner::ToJson() const {
-  std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, &json);
-  return json;
-}
-
-bool PublisherBanner::loadFromJson(const std::string& json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-
-  if (!error) {
-    error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
-        d.HasMember("title") && d["title"].IsString() &&
-        d.HasMember("name") && d["name"].IsString() &&
-        d.HasMember("description") && d["description"].IsString() &&
-        d.HasMember("background") && d["name"].IsString() &&
-        d.HasMember("logo") && d["logo"].IsString() &&
-        d.HasMember("amounts") && d["amounts"].IsArray() &&
-        d.HasMember("social") && d["social"].IsObject() &&
-        d.HasMember("verified") && d["verified"].IsBool());
-  }
-
-  if (!error) {
-    publisher_key = d["publisher_key"].GetString();
-    title = d["title"].GetString();
-    name = d["name"].GetString();
-    description = d["description"].GetString();
-    background = d["background"].GetString();
-    logo = d["logo"].GetString();
-    verified = d["verified"].GetBool();
-
-    for (const auto& amount : d["amounts"].GetArray()) {
-      amounts.push_back(amount.GetInt());
-    }
-
-    for (const auto& i : d["social"].GetObject()) {
-      social.insert(std::make_pair(i.name.GetString(),
-            i.value.GetString()));
-    }
-
-    if (d.HasMember("provider")) {
-      provider = d["provider"].GetString();
-    }
-  }
-
-  return !error;
-}
-
-TwitchEventInfo::TwitchEventInfo() {}
-
-TwitchEventInfo::TwitchEventInfo(const TwitchEventInfo& info):
-  event_(info.event_),
-  time_(info.time_),
-  status_(info.status_) {}
-
-TwitchEventInfo::~TwitchEventInfo() {}
-
-
 // static
 ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {
   return new bat_ledger::LedgerImpl(client);
-}
-
-WalletInfo::WalletInfo() : balance_(0), fee_amount_(0), parameters_days_(0) {}
-WalletInfo::~WalletInfo() {}
-WalletInfo::WalletInfo(const ledger::WalletInfo &info) {
-  altcurrency_ = info.altcurrency_;
-  probi_ = info.probi_;
-  balance_ = info.balance_;
-  fee_amount_ = info.fee_amount_;
-  rates_ = info.rates_;
-  parameters_choices_ = info.parameters_choices_;
-  parameters_range_ = info.parameters_range_;
-  parameters_days_ = info.parameters_days_;
-  grants_ = info.grants_;
-}
-
-const std::string WalletInfo::ToJson() const {
-  std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, &json);
-  return json;
-}
-
-bool WalletInfo::loadFromJson(const std::string& json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (!error) {
-    error = !(d.HasMember("altcurrency_") && d["altcurrency_"].IsString() &&
-        d.HasMember("probi_") && d["probi_"].IsString() &&
-        d.HasMember("balance_") && d["balance_"].IsDouble() &&
-        d.HasMember("fee_amount_") && d["fee_amount_"].IsDouble() &&
-        d.HasMember("rates_") && d["rates_"].IsObject() &&
-        d.HasMember("parameters_choices_") &&
-        d["parameters_choices_"].IsArray() &&
-        d.HasMember("parameters_range_") && d["parameters_range_"].IsArray() &&
-        d.HasMember("parameters_days_") && d["parameters_days_"].IsUint() &&
-        d.HasMember("grants_") && d["grants_"].IsArray());
-  }
-
-  if (!error) {
-    altcurrency_ = d["altcurrency_"].GetString();
-    probi_ = d["probi_"].GetString();
-    balance_ = d["balance_"].GetDouble();
-    fee_amount_ = d["fee_amount_"].GetDouble();
-    parameters_days_ = d["parameters_days_"].GetUint();
-
-    for (const auto& rate : d["rates_"].GetObject()) {
-      rates_.insert(std::make_pair(rate.name.GetString(),
-            rate.value.GetDouble()));
-    }
-
-    for (const auto& parameters_choice : d["parameters_choices_"].GetArray()) {
-      parameters_choices_.push_back(parameters_choice.GetDouble());
-    }
-
-    for (const auto& parameters_choice : d["parameters_range_"].GetArray()) {
-      parameters_range_.push_back(parameters_choice.GetDouble());
-    }
-
-    for (const auto& g : d["grants_"].GetArray()) {
-      rapidjson::StringBuffer sb;
-      rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-      g.Accept(writer);
-
-      Grant grant;
-      grant.loadFromJson(sb.GetString());
-      grants_.push_back(grant);
-    }
-  }
-
-  return !error;
-}
-
-Grant::Grant() {}
-Grant::~Grant() {}
-Grant::Grant(const ledger::Grant &properties) {
-  promotionId = properties.promotionId;
-  expiryTime = properties.expiryTime;
-  probi = properties.probi;
-  altcurrency = properties.altcurrency;
-  type = properties.type;
-}
-
-const std::string Grant::ToJson() const {
-  std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, &json);
-  return json;
-}
-
-bool Grant::loadFromJson(const std::string& json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-
-  if (!error) {
-    error = !(d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
-        d.HasMember("probi") && d["probi"].IsString() &&
-        d.HasMember("promotionId") && d["promotionId"].IsString() &&
-        d.HasMember("expiryTime") && d["expiryTime"].IsUint64());
-  }
-
-  if (!error) {
-    altcurrency = d["altcurrency"].GetString();
-    probi = d["probi"].GetString();
-    promotionId = d["promotionId"].GetString();
-    expiryTime = d["expiryTime"].GetUint64();
-
-    // Check for type attribute, old grants which
-    // do not have the type attribute should default to ugp
-    if (d.HasMember("type") && d["type"].IsString()) {
-      type = d["type"].GetString();
-    } else {
-      type = "ugp";
-    }
-  }
-
-  return !error;
 }
 
 BalanceReportInfo::BalanceReportInfo():
@@ -419,55 +152,6 @@ bool BalanceReportInfo::loadFromJson(const std::string& json) {
     recurring_donation_ = d["recurring_donation_"].GetString();
     one_time_donation_ = d["one_time_donation_"].GetString();
     total_ = d["total_"].GetString();
-  }
-
-  return !error;
-}
-
-AutoContributeProps::AutoContributeProps()
-  : enabled_contribute(false),
-    contribution_min_time(0),
-    contribution_min_visits(0),
-    contribution_non_verified(false),
-    contribution_videos(false),
-    reconcile_stamp(0) { }
-
-AutoContributeProps::~AutoContributeProps() { }
-
-const std::string AutoContributeProps::ToJson() const {
-  std::string json;
-  braveledger_bat_helper::saveToJsonString(*this, &json);
-  return json;
-}
-
-bool AutoContributeProps::loadFromJson(const std::string& json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-
-  if (!error) {
-    error = !(d.HasMember("enabled_contribute") &&
-        d["enabled_contribute"].IsBool() &&
-        d.HasMember("contribution_min_time") &&
-        d["contribution_min_time"].IsUint64() &&
-        d.HasMember("contribution_min_visits") &&
-        d["contribution_min_visits"].IsInt() &&
-        d.HasMember("contribution_non_verified") &&
-        d["contribution_non_verified"].IsBool() &&
-        d.HasMember("contribution_videos") &&
-        d["contribution_videos"].IsBool() &&
-        d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64());
-  }
-
-  if (!error) {
-    enabled_contribute = d["enabled_contribute"].GetBool();
-    contribution_min_time = d["contribution_min_time"].GetUint64();
-    contribution_min_visits = d["contribution_min_visits"].GetInt();
-    contribution_non_verified = d["contribution_non_verified"].GetBool();
-    contribution_videos = d["contribution_videos"].GetBool();
-    reconcile_stamp = d["reconcile_stamp"].GetUint64();
   }
 
   return !error;
@@ -570,12 +254,12 @@ bool RewardsInternalsInfo::loadFromJson(const std::string& json) {
 bool Ledger::IsMediaLink(const std::string& url,
                          const std::string& first_party_url,
                          const std::string& referrer) {
-  const std::string type = braveledger_bat_get_media::BatGetMedia::GetLinkType(
+  const std::string type = braveledger_media::Media::GetLinkType(
       url,
       first_party_url,
       referrer);
 
-  return type == TWITCH_MEDIA_TYPE;
+  return type == TWITCH_MEDIA_TYPE || type == VIMEO_MEDIA_TYPE;
 }
 
 }  // namespace ledger

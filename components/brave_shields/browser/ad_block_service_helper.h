@@ -9,15 +9,15 @@
 #include <string>
 #include <vector>
 
-#include "brave/vendor/ad-block/filter_list.h"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 
 namespace brave_shields {
 
-std::vector<FilterList>::const_iterator FindAdBlockFilterListByUUID(
-    const std::vector<FilterList>& region_lists,
+std::vector<adblock::FilterList>::const_iterator FindAdBlockFilterListByUUID(
+    const std::vector<adblock::FilterList>& region_lists,
     const std::string& uuid);
-std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
-    const std::vector<FilterList>& region_lists,
+std::vector<adblock::FilterList>::const_iterator FindAdBlockFilterListByLocale(
+    const std::vector<adblock::FilterList>& region_lists,
     const std::string& locale);
 
 }  // namespace brave_shields

@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Επαληθευμένος Εκδότης Brave",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Επικυρωμένος Δημιουργός Brave ",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "Προσοχή",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "Τώρα μπορείτε να κερδίζετε βλέποντας διαφημίσεις.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Έφθασαν οι Διαφημίσεις Brave!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -237,14 +237,6 @@
     "message": "Σύρετε το εικονίδιο BAT στο",
     "description": "Directs the user to drag the BAT icon"
   },
-  "captchaLuckyDay": {
-    "message": "Είναι η τυχερή σας μέρα!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "captchaOnTheWay": {
-    "message": "Σε λίγο θα λάβετε την δική σας χορηγία τόκεν.",
-    "description": "Cosmetic text indicating grant funds are on the way"
-  },
   "captchaProveHuman": {
     "message": "Αποδείξτε ότι είστε άνθρωπος!",
     "description": "Cosmetic text for captcha prompt"
@@ -298,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Ανανέωση Κατάστασης",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Τα κέρδη των Διαφημίσεών σας είναι διαθέσιμα.",
+    "message": "Οι ανταμοιβές σας από τις Διαφημίσεις είναι εδώ!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +382,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "Τα φιλοδωρήματά σας για τον μήνα έχουν διεκπεραιωθεί!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "Συνεισφορές & Φιλοδωρήματα",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "Πατώντας 'Συμμετοχή σε Ανταμοιβές' δηλώνετε ότι έχετε διαβάσει και συμφωνήσει με ",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +398,69 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "Ενεργοποίηση Διαφημίσεων",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "κέρδη από διαφημίσεις",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Δώστε φιλοδώρημα για αυτήν την ανάρτηση Twitter",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Συμβουλή",
+    "description": "Icon label for Twitter tips"
+  },
+  "redditTipsHoverText": {
+    "message": "Βραβεύστε αυτή την δημοσίευση",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Συμβουλή",
+    "description": "Icon label for Reddit tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "Ο δημιουργός $name$ επικυρώθηκε πρόσφατα",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "Έχετε εκκρεμείς βραβεύσεις λόγω ανεπαρκούς υπολοίπου",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Εκκρεμεί Συνεισφορά",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "Είναι η τυχερή σας μέρα!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "Σε λίγο θα λάβετε την τοκέν χορηγία σας.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "Δωρεάν Χορηγία Τόκεν",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Ανταμοιβές Των Διαφημίσεων Brave!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "Το επίδομα επιβράβευσής σας από τις διαφημίσεις Brave είναι σε εξέλιξη.",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "Η Απόδειξη Του Επιδόματος Των Brave Διαφημίσεών Σας",
+    "description": "Token title on success screen for ads"
   }
 }

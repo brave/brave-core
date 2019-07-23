@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -9,9 +10,9 @@
 
 class BravePrompt : public ExtensionInstallPrompt::Prompt {
  public:
-  explicit BravePrompt(ExtensionInstallPrompt::PromptType type);
-  ~BravePrompt() override;
+  using ExtensionInstallPrompt::Prompt::Prompt;
 
+  // ExtensionInstallPrompt::Prompt overrides:
   base::string16 GetDialogTitle() const override;
 
   DISALLOW_COPY_AND_ASSIGN(BravePrompt);

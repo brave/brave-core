@@ -35,10 +35,12 @@ const char kReferralTimestamp[] = "brave.referral.timestamp";
 const char kReferralAttemptTimestamp[] =
     "brave.referral.referral_attempt_timestamp";
 const char kReferralAttemptCount[] = "brave.referral.referral_attempt_count";
+const char kReferralHeaders[] = "brave.referral.headers";
 const char kReferralCheckedForPromoCodeFile[] =
     "brave.referral.checked_for_promo_code_file";
 const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
+const char kAdControlType[] = "brave.ad_default";
 const char kGoogleLoginControlType[] = "brave.google_login_default";
 const char kFBEmbedControlType[] = "brave.fb_embed_default";
 const char kTwitterEmbedControlType[] = "brave.twitter_embed_default";
@@ -50,4 +52,9 @@ const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
 const char kHangoutsEnabled[] = "brave.hangouts_enabled";
 const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
 const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
+const char kNewTabPageShowBackgroundImage[] =
+    "brave.new_tab_page.show_background_image";
+const char kNewTabPageShowClock[] = "brave.new_tab_page.show_clock";
+const char kNewTabPageShowTopSites[] = "brave.new_tab_page.show_top_sites";
+const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
 const char kPrivacyPassEnabled[] = "brave.privacypass_enabled";

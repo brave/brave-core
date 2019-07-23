@@ -10,7 +10,10 @@ describe('welcomePage component', () => {
   describe('mapStateToProps', () => {
     it('should map the default state', () => {
       expect(mapStateToProps(welcomeInitialState)).toEqual({
-        welcomeData: {}
+        welcomeData: {
+          searchProviders: [],
+          browserProfiles: []
+        }
       })
     })
   })

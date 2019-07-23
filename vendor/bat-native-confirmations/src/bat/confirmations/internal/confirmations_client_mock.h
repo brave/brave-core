@@ -62,7 +62,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD2(OnWalletProperties, void(
       ledger::Result result,
-      std::unique_ptr<ledger::WalletInfo>));
+      ledger::WalletPropertiesPtr));
 
   MOCK_METHOD4(OnReconcileComplete, void(
       Result result,
@@ -71,14 +71,14 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& probi));
 
   MOCK_METHOD1(LoadLedgerState, void(
-      ledger::LedgerCallbackHandler* handler));
+      ledger::OnLoadCallback callback));
 
   MOCK_METHOD2(SaveLedgerState, void(
       const std::string& ledger_state,
       ledger::LedgerCallbackHandler* handler));
 
   MOCK_METHOD1(LoadPublisherState, void(
-      ledger::LedgerCallbackHandler* handler));
+      ledger::OnLoadCallback callback));
 
   MOCK_METHOD2(SavePublisherState, void(
       const std::string& publisher_state,
@@ -134,7 +134,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD2(OnGrant, void(
       ledger::Result result,
-      const ledger::Grant& grant));
+      ledger::GrantPtr grant));
 
   MOCK_METHOD2(GetGrantCaptcha, void(
       const std::string& promotion_id,
@@ -147,11 +147,11 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD3(OnRecoverWallet, void(
       ledger::Result result,
       double balance,
-      const std::vector<ledger::Grant>& grants));
+      std::vector<ledger::GrantPtr> grants));
 
   MOCK_METHOD2(OnGrantFinish, void(
       ledger::Result result,
-      const ledger::Grant& grant));
+      ledger::GrantPtr grant));
 
   MOCK_METHOD3(OnPanelPublisherInfo, void(
       ledger::Result result,
@@ -259,9 +259,67 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD1(GetPendingContributionsTotal, void(
     const ledger::PendingContributionsTotalCallback& callback));
 
-  MOCK_METHOD2(GetCountryCodes, void(
-      const std::vector<std::string>& countries,
-      ledger::GetCountryCodesCallback callback));
+  MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
+      ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& publisher_name));
+
+  MOCK_METHOD2(SetBooleanState, void(
+      const std::string& name,
+      bool value));
+
+  MOCK_CONST_METHOD1(GetBooleanState, bool(
+      const std::string& name));
+
+  MOCK_METHOD2(SetIntegerState, void(
+      const std::string& name,
+      int value));
+
+  MOCK_CONST_METHOD1(GetIntegerState, int(
+      const std::string& name));
+
+  MOCK_METHOD2(SetDoubleState, void(
+      const std::string& name,
+      double value));
+
+  MOCK_CONST_METHOD1(GetDoubleState, double(
+      const std::string& name));
+
+  MOCK_METHOD2(SetStringState, void(
+      const std::string& name,
+      const std::string& value));
+
+  MOCK_CONST_METHOD1(GetStringState, std::string(
+      const std::string& name));
+
+  MOCK_METHOD2(SetInt64State, void(
+      const std::string& name,
+      int64_t value));
+
+  MOCK_CONST_METHOD1(GetInt64State, int64_t(
+      const std::string& name));
+
+  MOCK_METHOD2(SetUint64State, void(
+      const std::string& name,
+      uint64_t value));
+
+  MOCK_CONST_METHOD1(GetUint64State, uint64_t(
+      const std::string& name));
+
+  MOCK_METHOD1(ClearState, void(
+      const std::string& name));
+
+  MOCK_METHOD1(GetExternalWallets, void(
+      ledger::GetExternalWalletsCallback callback));
+
+  MOCK_METHOD2(SaveExternalWallet, void(
+      const std::string& wallet_type,
+      ledger::ExternalWalletPtr wallet));
+
+  MOCK_METHOD3(ShowNotification, void(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback));
 };
 
 }  // namespace confirmations

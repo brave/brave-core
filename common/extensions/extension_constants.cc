@@ -13,6 +13,20 @@ const char widevine_extension_id[] = "oimompecagnajdejgnnjijobebaeigek";
 const char brave_sync_extension_id[] = "nomlkjnggnifocmealianaaiobmebgil";
 const char crl_set_extension_id[] = "hfnkpimlhhgieaddgfemjhofmfblmnib";
 
+const char ethereum_remote_client_extension_id[] =
+    "odbfpeeihdkbihmopkbjmoonfanlbfcl";
+const char ethereum_remote_client_extension_name[] = "Crypto Wallets";
+const char ethereum_remote_client_extension_public_key[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl7ZLkqbq8pHRcYANANXmhGKZKHsru"
+    "BqS0ssf8aI5R5E5FBaWui73FPWMj0g4eggrJeSfF/x/nIIq3Z24Joq1ULuWtheQjbOwqj0yL2"
+    "ZaxMA6rc5cW2OmGZ0aNXMFclusXftJmwpb/pztHzw55yv8BfJr873HOxtlW2MP1VvSFQjigsb"
+    "JedlkoS4SKC0U3j8/mjAYR0+lpmBtPitObnYnM5qmtrlg2hgm+sqAon9WKj9nDIjPpXJaCs7k"
+    "pVl7oQOoYpv47ZT1tnu0o03AL3RZbxPU1N04X3JN6nC+g4gaCgiLkZ+dD79yIt7Il0+vSKuJ+"
+    "EGySVmv6czOI5eJYezWXwIDAQAB";
+const char ethereum_remote_client_base_url[] =
+    "chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/home.html";
+const char ethereum_remote_client_host[] = "wallet";
+
 const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
 const char ipfs_companion_extension_name[] = "IPFS Companion";
 const char ipfs_companion_extension_public_key[] =
@@ -22,5 +36,8 @@ const char ipfs_companion_extension_public_key[] =
     "XeG6nbYQnyfDip+UXe663zfBiNmwuVPo8R58zAOmpz7yAlCH+yEmj1YjQYpqbtYHwJwvN4elG"
     "F9wthgFNxoIZiqbe0wTUZiNjC1bZPiAed3+WftK0/P6czFpIP4SzjXszVps93l+yI15OB7Voe"
     "Fu6oQk5G0d1/38W7GotUwIDAQAB";
+
+const char ipfs_companion_beta_extension_id[] =
+    "hjoieblefckbooibpepigmacodalfndh";
 
 const char privacypass_extension_id[] = "ajhmfdgkijocedmfjonnpjfojldioehi";

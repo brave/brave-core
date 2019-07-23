@@ -76,13 +76,9 @@ Brave не може да врати подешавања.</translation>
 <translation id="5874882355102994015">Brave не може да покаже приказ пре штампања када недостаје уграђени PDF приказивач.</translation>
 <translation id="8880183781256147665">Додавање у Brave...</translation>
 <translation id="3561569806301739367">Датотека <ph name="FILE_NAME"/> је можда опасна, па ју је Brave блокирао.</translation>
-<translation id="6205431412329939367">Датотека <ph name="FILE_NAME"/> је можда опасна, па ју је Brave блокирао. Штити вас напредна заштита.</translation>
 <translation id="9067428552314418522">Ова датотека је опасна, па ју је Brave блокирао.</translation>
-<translation id="2938460345748897177">Ова датотека је опасна, па ју је Brave блокирао. Штити вас напредна заштита.</translation>
 <translation id="4168372721886011198">Датотека <ph name="FILE_NAME"/> је опасна, па ју је Brave блокирао.</translation>
-<translation id="8858456697111532356">Датотека <ph name="FILE_NAME"/> је опасна, па ју је Brave блокирао. Штити вас напредна заштита.</translation>
 <translation id="89367911614620585">Ова датотека је можда опасна, па ју је Brave блокирао.</translation>
-<translation id="8943391224520748272">Ова датотека је можда опасна, па ју је Brave блокирао. Штити вас напредна заштита.</translation>
 <translation id="9183662282810237335">Желите ли ипак да затворите Brave?</translation>
 <translation id="3834935463915107022">Желите ли ипак да затворите Brave?</translation>
 <translation id="8797356639448065696">Brave је у позадинском режиму.</translation>
@@ -145,8 +141,6 @@ Brave не може да врати подешавања.</translation>
 <translation id="6746636977031158624">Brave ОС не може да синхронизује податке зато што су подаци за пријављивање на налог застарели.</translation>
 <translation id="2999152167963026588">Brave ОС не може да синхронизује податке јер Синхронизација није доступна за домен.</translation>
 <translation id="1459786048951724030">Brave ОС не може да синхронизује податке због грешке при пријављивању.</translation>
-<translation id="2887570477425111999">Сачувај детаље у Brave-у</translation>
-<translation id="193559141530782783">Brave ће безбедно складиштити личне податке да не бисте морали да их поново уносите.</translation>
 <translation id="663059986967017181">Копирана у Brave</translation>
 <translation id="1457432835062259213">Покретач Brave апликација</translation>
 <translation id="82609232232243542">Пријављивање у Brave</translation>
@@ -184,7 +178,7 @@ Brave не може да врати подешавања.</translation>
 <translation id="1912973375560256099">Правило за долазни саобраћај за Brave да би се омогућио mDNS саобраћај.</translation>
 <translation id="8207657266087451193">Ако слика нема користан опис, Brave ће пробати да вам га пружи. Слике се шаљу Brave Software-у ради прављења описа. То можете да искључите у подешавањима у сваком тренутку.</translation>
 <translation id="5499063270485366718">Ако слика нема користан опис, Brave ће пробати да вам га пружи. Слике се шаљу Brave Software-у ради прављења описа.</translation>
-<translation id="3870835867536344658">Користи исту проверу правописа као Brave Software претрага. Текст који унесете у прегледач се шаље Brave Software-у. То увек можете да промените у подешавањима.</translation>
+<translation id="215320507915280336">Користи исту проверу правописа као Brave Software претрага. Текст који унесете у прегледач се шаље Brave Software-у. То увек можете да промените у подешавањима.</translation>
 <translation id="1807774211756215222">Отвори линк у новој Brave &amp;картици</translation>
 <translation id="4624945300945265642">Отвори линк у Brave прозору без архи&amp;вирања</translation>
 <translation id="7863882214613921971">Отвори линк у новој Brave &amp;картици</translation>
@@ -195,6 +189,9 @@ Brave не може да врати подешавања.</translation>
 <translation id="2522086024276534909">Рестартујте Brave ОС</translation>
 <translation id="8183252473547465084">Треба да рестартујете Brave ОС да бисте применили ажурирање.</translation>
 <translation id="5895138241574237353">Покрени поново</translation>
+<translation id="8887390605192156061">Затворите све копије Brave-а.</translation>
+<translation id="1801551749768408825">Друге копије Brave-а су активне. Да бисте обавили ажурирање, затворите их.</translation>
+<translation id="2632141563911437138">Brave треба да престане са радом на овом рачунару да бисте га ажурирали. Због тога ће други корисници пријављени на овом рачунару можда изгубити несачуване промене.</translation>
 <translation id="5875673934455379806">Поново инсталирај Brave</translation>
 <translation id="2097604701283463988">Brave је застарео</translation>
 <translation id="5173820533850252773">Brave је застарео</translation>
@@ -238,23 +235,17 @@ Brave не може да врати подешавања.</translation>
 <translation id="8933981935877469796">Изаберите <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Кликните на дугме <ph name="BEGIN_BOLD"/>Ипак промени<ph name="END_BOLD"/> ако се појави</translation>
 <translation id="3507835409099344374">Иди на подешавања обавештења за Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Ажурирање за Brave је доступно}=1{Ажурирање за Brave је доступно}one{Ажурирање за Brave је доступно већ # дан}few{Ажурирање за Brave је доступно већ # дана}other{Ажурирање за Brave је доступно већ # дана}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Ажурирање за Brave је доступно}=1{Ажурирање за Brave је доступно}one{Ажурирање за Brave је доступно већ # дан}few{Ажурирање за Brave је доступно већ # дана}other{Ажурирање за Brave је доступно већ # дана}}</translation>
 <translation id="720532315408041257">Администратор тражи да поново покренете Brave да бисте применили ово ажурирање</translation>
-<translation id="6639482638305253477">{0,plural, =1{Поново покрените Brave за један дан}one{Поново покрените Brave за # дан}few{Поново покрените Brave за # дана}other{Поново покрените Brave за # дана}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Поново ћемо покренути Brave за један сат}one{Поново ћемо покренути Brave за # сат}few{Поново ћемо покренути Brave за # сата}other{Поново ћемо покренути Brave за # сати}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Поново ћемо покренути Brave за 1 минут}one{Поново ћемо покренути Brave за # минут}few{Поново ћемо покренути Brave за # минута}other{Поново ћемо покренути Brave за # минута}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Поново ћемо покренути Brave}=1{Поново ћемо покренути Brave за 1 секунду}one{Поново ћемо покренути Brave за # секунду}few{Поново ћемо покренути Brave за # секунде}other{Поново ћемо покренути Brave за # секунди}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Поново покрените Brave за један дан}one{Поново покрените Brave за # дан}few{Поново покрените Brave за # дана}other{Поново покрените Brave за # дана}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Поново ћемо покренути Brave за један сат}one{Поново ћемо покренути Brave за # сат}few{Поново ћемо покренути Brave за # сата}other{Поново ћемо покренути Brave за # сати}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Поново ћемо покренути Brave за 1 минут}one{Поново ћемо покренути Brave # минут}few{Поново ћемо покренути Brave # минута}other{Поново ћемо покренути Brave # минута}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Поново ћемо покренути Brave}=1{Поново ћемо покренути Brave за 1 секунду}one{Поново ћемо покренути Brave за # секунду}few{Поново ћемо покренути Brave за # секунде}other{Поново ћемо покренути Brave за # секунди}}</translation>
 <translation id="7595187113648413294">Администратор захтева да поново покренете Brave да бисте применили ажурирање</translation>
-<translation id="56801943271475640">{0,plural, =0{Ажурирање за Brave ОС је доступно}=1{Ажурирање за Brave ОС је доступно}one{Ажурирање за Brave ОС је доступно већ # дан}few{Ажурирање за Brave ОС је доступно већ # дана}other{Ажурирање за Brave ОС је доступно већ # дана}}</translation>
-<translation id="5715362474140341294">Администратор тражи да рестартујете Brave ОС да бисте применили ово ажурирање</translation>
-<translation id="8094834892392729950">{0,plural, =1{Рестартујте Brave ОС за један дан}one{Рестартујте Brave ОС за # дан}few{Рестартујте Brave ОС за # дана}other{Рестартујте Brave ОС за # дана}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave ОС ће се рестартовати за један сат}one{Brave ОС ће се рестартовати за # сат}few{Brave ОС ће се рестартовати за # сата}other{Brave ОС ће се рестартовати за # сати}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave ОС ће се рестартовати за 1 минут}one{Brave ОС ће се рестартовати за # минут}few{Brave ОС ће се рестартовати за # минута}other{Brave ОС ће се рестартовати за # минута}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave ОС ће се рестартовати}=1{Brave ОС ће се рестартовати за 1 секунду}one{Brave ОС ће се рестартовати за # секунду}few{Brave ОС ће се рестартовати за # секунде}other{Brave ОС ће се рестартовати за # секунди}}</translation>
-<translation id="8559452515617838628">Администратор захтева да рестартујете Brave ОС да бисте применили ажурирање</translation>
 <translation id="3052349005266761501">Покреће се Brave...</translation>
 <translation id="1197672524850678392">Није могуће покренути Brave. Покушајте поново.</translation>
 <translation id="6040143037577758943">Затвори</translation>
+<translation id="5147525139567260139">Делите Brave картицу</translation>
 <translation id="8541922081612557424">О Brave-у</translation>
 <translation id="3262506503470845422">Пронађите помоћ за Brave</translation>
 <translation id="1864557848095568223">Ажурирање Brave-а</translation>

@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/files/file_path.h"
 #include "base/strings/string_piece.h"
 #include "brave/browser/net/url_context.h"
 #include "chrome/browser/net/chrome_network_delegate.h"
@@ -31,7 +32,7 @@ class URLRequest;
 base::flat_set<base::StringPiece>* TrackableSecurityHeaders();
 
 void RemoveTrackableSecurityHeadersForThirdParty(
-    net::URLRequest* request,
+    const GURL& request_url, const url::Origin& top_frame_origin,
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers);
 
@@ -78,21 +79,28 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
  protected:
   void RunNextCallback(net::URLRequest* request,
                        std::shared_ptr<brave::BraveRequestInfo> ctx);
+  void set_allow_google_auth(bool allow);
+  const base::FilePath& profile_path() { return profile_path_; }
+
   std::vector<brave::OnBeforeURLRequestCallback> before_url_request_callbacks_;
   std::vector<brave::OnBeforeStartTransactionCallback>
       before_start_transaction_callbacks_;
   std::vector<brave::OnHeadersReceivedCallback> headers_received_callbacks_;
-  std::vector<brave::OnCanGetCookiesCallback> can_get_cookies_callbacks_;
-  std::vector<brave::OnCanSetCookiesCallback> can_set_cookies_callbacks_;
 
  private:
   void InitPrefChangeRegistrarOnUI();
-  void OnPreferenceChanged(const std::string& pref_name);
-  void UpdateAdBlockFromPref(const std::string& pref_name);
+  void SetReferralHeaders(base::ListValue* referral_headers);
+  void OnReferralHeadersChanged();
 
+  // TODO(iefremov): actually, we don't have to keep the list here, since
+  // it is global for the whole browser and could live a singletonce in the
+  // rewards service. Eliminating this will also help to avoid using
+  // PrefChangeRegistrar and corresponding |base::Unretained| usages, that are
+  // illegal.
+  std::unique_ptr<base::ListValue> referral_headers_list_;
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
-      user_pref_change_registrar_;
+      pref_change_registrar_;
 
   bool allow_google_auth_;
 

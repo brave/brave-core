@@ -41,6 +41,8 @@ export const syncInitialState: Sync.ApplicationState = { syncData }
 
 export const newTabInitialState: NewTab.ApplicationState = {
   newTabData: {
+    showBackgroundImage: false,
+    showSettingsMenu: false,
     topSites: [],
     ignoredTopSites: [],
     pinnedTopSites: [],
@@ -92,7 +94,6 @@ export const tabs: Tabs = {
     adsBlockedResources: [],
     trackersBlockedResources: [],
     httpsRedirectedResources: [],
-    javascriptBlockedResources: [],
     fingerprintingBlockedResources: []
   }
 }
@@ -105,9 +106,14 @@ export const blockedResource: BlockDetails = {
   subresource: 'https://www.brave.com/test'
 }
 
+// see: https://developer.chrome.com/extensions/events
+interface OnMessageEvent extends chrome.events.Event<(message: object, options: any, responseCallback: any) => void> {
+  emit: (message: object) => void
+}
+
 export const getMockChrome = () => {
-  return {
-    send: () => undefined,
+  let mock = {
+    send: (methodName: string, ...args: Array<any>) => undefined,
     getVariableValue: () => undefined,
     braveRewards: {
       getPublisherData: (id: number, url: string, favicon: string) => undefined
@@ -117,7 +123,13 @@ export const getMockChrome = () => {
       onConnect: new ChromeEvent(),
       onStartup: new ChromeEvent(),
       onMessageExternal: new ChromeEvent(),
-      onConnectExternal: new ChromeEvent()
+      onConnectExternal: new ChromeEvent(),
+      // see: https://developer.chrome.com/apps/runtime#method-sendMessage
+      sendMessage: function (message: object, responseCallback: () => void) {
+        const onMessage = chrome.runtime.onMessage as OnMessageEvent
+        onMessage.emit(message)
+        responseCallback()
+      }
     },
     browserAction: {
       setBadgeBackgroundColor: function (properties: object) {
@@ -151,6 +163,12 @@ export const getMockChrome = () => {
       },
       insertCSS: function (details: jest.SpyInstance) {
         return
+      },
+      query: function (queryInfo: chrome.tabs.QueryInfo, callback: (result: chrome.tabs.Tab[]) => void) {
+        return callback
+      },
+      sendMessage: function (tabID: Number, message: any, options: object, responseCallback: any) {
+        return responseCallback
       },
       onActivated: new ChromeEvent(),
       onCreated: new ChromeEvent(),
@@ -197,10 +215,10 @@ export const getMockChrome = () => {
     },
     storage: {
       local: {
-        get: function (url: string) {
+        get: function (callback: (items: { [key: string]: any }) => void): void {
           return
         },
-        set: function (url: string, cssfilter: string) {
+        set: function (items: Object, callback?: () => void): void {
           return
         }
       }
@@ -223,20 +241,102 @@ export const getMockChrome = () => {
       search: function (query: string, callback: (results: chrome.bookmarks.BookmarkTreeNode[]) => void) {
         return
       }
+    },
+    contextMenus: {
+      create: function (data: any) {
+        return Promise.resolve()
+      },
+      onBlocked: new ChromeEvent(),
+      allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
+        setImmediate(cb)
+      },
+      onClicked: new ChromeEvent()
     }
   }
+  return mock
+}
+export const window = () => {
+  let mock = {
+    prompt: function (text: String) {
+      return text
+    }
+  }
+  return mock
 }
 
 export const initialState = deepFreeze({
   cosmeticFilter: {
     currentWindowId: -1,
     tabs: {},
-    windows: {}
+    windows: {},
+    persistentData: { isFirstAccess: true, advancedView: false }
   },
+  dappDetection: {},
   runtime: {},
   shieldsPanel: {
     currentWindowId: -1,
     tabs: {},
-    windows: {}
+    windows: {},
+    persistentData: { isFirstAccess: true, advancedView: false }
   }
 })
+
+export const mockSearchProviders = [
+  {
+    canBeDefault: true,
+    canBeEdited: true,
+    canBeRemoved: true,
+    default: true,
+    displayName: 'DuckDuckGo',
+    iconURL: 'https://duckduckgo.com/favicon.ico',
+    id: 3,
+    isOmniboxExtension: false,
+    keyword: ':d',
+    modelIndex: 1,
+    name: 'DuckDuckGo',
+    url: 'https://duckduckgo.com/?q=%s&t=brave',
+    urlLocked: true
+  }
+]
+
+export const mockImportSources = [
+  {
+    autofillFormData : false,
+    cookies : true,
+    favorites : true,
+    history : true,
+    index : 1,
+    ledger : false,
+    name :  `Chrome Person 1`,
+    passwords : true,
+    search : false,
+    stats : false,
+    windows : false
+  },
+  {
+    autofillFormData : false,
+    cookies : true,
+    favorites : true,
+    history : true,
+    index : 0,
+    ledger : false,
+    name :  `Safari`,
+    passwords : true,
+    search : false,
+    stats : false,
+    windows : false
+  },
+  {
+    autofillFormData : false,
+    cookies : true,
+    favorites : true,
+    history : true,
+    index : 2,
+    ledger : false,
+    name :  `Bookmarks HTML File`,
+    passwords : true,
+    search : false,
+    stats : false,
+    windows : false
+  }
+]

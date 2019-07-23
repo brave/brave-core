@@ -18,11 +18,11 @@
 #include "bat/ledger/export.h"
 #include "bat/ledger/grant.h"
 #include "bat/ledger/ledger_callback_handler.h"
-#include "bat/ledger/media_publisher_info.h"
+#include "bat/ledger/media_event_info.h"
 #include "bat/ledger/pending_contribution.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/reconcile_info.h"
-#include "bat/ledger/wallet_info.h"
+#include "bat/ledger/wallet_properties.h"
 
 namespace confirmations {
 class LogStream;
@@ -71,8 +71,9 @@ using PendingContributionInfoListCallback =
     std::function<void(PendingContributionInfoList)>;
 using RemovePendingContributionCallback = std::function<void(Result)>;
 using PendingContributionsTotalCallback = std::function<void(double)>;
-using GetCountryCodesCallback =
-    std::function<void(const std::vector<int32_t>&)>;
+using GetExternalWalletsCallback =
+    std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
+using ShowNotificationCallback = std::function<void(Result)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -83,20 +84,21 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnWalletInitialized(Result result) = 0;
 
-  virtual void OnWalletProperties(Result result,
-                                  std::unique_ptr<ledger::WalletInfo>) = 0;
+  virtual void OnWalletProperties(
+      Result result,
+      ledger::WalletPropertiesPtr properties) = 0;
 
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id,
                                    ledger::REWARDS_CATEGORY category,
                                    const std::string& probi) = 0;
 
-  virtual void LoadLedgerState(LedgerCallbackHandler* handler) = 0;
+  virtual void LoadLedgerState(OnLoadCallback callback) = 0;
 
   virtual void SaveLedgerState(const std::string& ledger_state,
                                LedgerCallbackHandler* handler) = 0;
 
-  virtual void LoadPublisherState(LedgerCallbackHandler* handler) = 0;
+  virtual void LoadPublisherState(OnLoadCallback callback) = 0;
 
   virtual void SavePublisherState(const std::string& publisher_state,
                                   LedgerCallbackHandler* handler) = 0;
@@ -136,21 +138,17 @@ class LEDGER_EXPORT LedgerClient {
   // TODO(anyone) this can be removed
   virtual void FetchGrants(const std::string& lang,
                            const std::string& paymentId) = 0;
-  virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
-
-  virtual void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) = 0;
+  virtual void OnGrant(ledger::Result result, ledger::GrantPtr grant) = 0;
 
   virtual void OnGrantCaptcha(const std::string& image,
                               const std::string& hint) = 0;
 
   virtual void OnRecoverWallet(Result result,
                                double balance,
-                               const std::vector<ledger::Grant>& grants) = 0;
+                               std::vector<ledger::GrantPtr> grants) = 0;
 
   virtual void OnGrantFinish(ledger::Result result,
-                             const ledger::Grant& grant) = 0;
+                             ledger::GrantPtr grant) = 0;
 
   virtual void OnPanelPublisherInfo(Result result,
                                    ledger::PublisherInfoPtr publisher_info,
@@ -221,6 +219,22 @@ class LEDGER_EXPORT LedgerClient {
                          ledger::OnLoadCallback callback) = 0;
   virtual void ResetState(const std::string& name,
                           ledger::OnResetCallback callback) = 0;
+
+  virtual void SetBooleanState(const std::string& name, bool value) = 0;
+  virtual bool GetBooleanState(const std::string& name) const = 0;
+  virtual void SetIntegerState(const std::string& name, int value) = 0;
+  virtual int GetIntegerState(const std::string& name) const = 0;
+  virtual void SetDoubleState(const std::string& name, double value) = 0;
+  virtual double GetDoubleState(const std::string& name) const = 0;
+  virtual void SetStringState(const std::string& name,
+                              const std::string& value) = 0;
+  virtual std::string GetStringState(const std::string& name) const = 0;
+  virtual void SetInt64State(const std::string& name, int64_t value) = 0;
+  virtual int64_t GetInt64State(const std::string& name) const = 0;
+  virtual void SetUint64State(const std::string& name, uint64_t value) = 0;
+  virtual uint64_t GetUint64State(const std::string& name) const = 0;
+  virtual void ClearState(const std::string& name) = 0;
+
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
   virtual void ConfirmationsTransactionHistoryDidChange() = 0;
@@ -240,9 +254,21 @@ class LEDGER_EXPORT LedgerClient {
   virtual void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) = 0;
 
-  virtual void GetCountryCodes(
-      const std::vector<std::string>& countries,
-      GetCountryCodesCallback callback) = 0;
+  virtual void OnContributeUnverifiedPublishers(
+      ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) = 0;
+
+  virtual void GetExternalWallets(
+      GetExternalWalletsCallback callback) = 0;
+
+  virtual void SaveExternalWallet(const std::string& wallet_type,
+                                  ledger::ExternalWalletPtr wallet) = 0;
+
+  virtual void ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback) = 0;
 };
 
 }  // namespace ledger

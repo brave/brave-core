@@ -1,5 +1,8 @@
 import("//brave/build/config.gni")
 import("//build/config/mac/base_rules.gni")
+import("//build/util/version.gni")
+import("//chrome/common/features.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 declare_args() {
   # find with `security find-identity -v -p codesigning`
@@ -9,179 +12,233 @@ declare_args() {
   mac_signing_output_prefix = "signing"
 }
 
-_packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
-keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
-
-_target_app_path = "$root_out_dir/$mac_signing_output_prefix/$brave_exe"
-
 group("brave") {}
 
-action("sign_app") {
-  brave_app = "$root_build_dir/$brave_exe"
+ds_store_file_name = "DS_Store"
+dmg_icon_file_name = "dmg"
 
-  script = "//build/gn_run_binary.py"
-  shell_script = "//brave/build/mac/sign_app.sh"
+if (brave_channel != "") {
+  ds_store_file_name = "DS_Store.$brave_channel"
+  dmg_icon_file_name = "dmg-$brave_channel"
+}
+dmg_background_image = rebase_path("//brave/build/mac/dmg-background.png")
+ds_store = rebase_path("//brave/build/mac/$ds_store_file_name")
+dmg_icon = rebase_path("//brave/build/mac/$dmg_icon_file_name.icns")
 
-  deps = [
-    "//brave:chrome_app",
-    "//chrome/installer/mac"
-  ]
+if (skip_signing) {
+  action("unsigned_dmg") {
+    brave_app = "$root_build_dir/$brave_exe"
+    output = "$root_out_dir/unsigned_dmg/$brave_dmg"
+    script = "//build/gn_run_binary.py"
+    shell_script = "//chrome/installer/mac/pkg-dmg"
 
-  if (is_official_build) {
-    if (brave_channel == "") {
-      provisioning_profile = "//brave/build/mac/release.provisionprofile"
-    } else {
-      provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
+    inputs = [
+      script,
+      shell_script,
+    ]
+    outputs = [ output ]
+    args = [
+      rebase_path(shell_script, root_build_dir),
+      "--source", "/var/empty",
+      "--target", "unsigned_dmg/$brave_dmg",
+      "--format", "UDBZ",
+      "--verbosity", "0",
+      "--volname", "$chrome_product_full_name",
+      "--copy", rebase_path(brave_app, root_build_dir),
+      "--tempdir", "/tmp",
+      "--mkdir", ".background",
+      "--copy", "$dmg_background_image:/.background/dmg-background.png",
+      "--copy", "$ds_store:/.DS_Store",
+      "--icon", "$dmg_icon",
+      "--symlink", "/Applications",
+    ]
+
+    deps = [
+      "//brave:chrome_app",
+      "//chrome/installer/mac"
+    ]
+
+    if (enable_widevine_cdm_host_verification) {
+      deps += [ ":sign_chrome_framework_for_widevine" ]
     }
-  } else {
-    # an empty dummy file just to simplify things
-    provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
   }
-  inputs = [
-    shell_script,
-    brave_app,
-    provisioning_profile,
-    "$_packaging_dir/sign_app.sh",
-    "$_packaging_dir/sign_versioned_dir.sh",
-    "$_packaging_dir/app-entitlements.plist",
-  ]
-  outputs = [ _target_app_path ]
-  args = [
-    rebase_path(shell_script, root_out_dir),
 
-    # Use absolute paths needed by codesign
-    rebase_path(brave_app),
-    rebase_path(_target_app_path),
-    rebase_path(_packaging_dir),
-    keychain_db,
-    mac_signing_identifier,
-    rebase_path(provisioning_profile, root_out_dir),
-    rebase_path("$_packaging_dir/app-entitlements.plist"),
-  ]
+  if (enable_widevine_cdm_host_verification) {
+    action("sign_chrome_framework_for_widevine") {
+      script = "//third_party/widevine/scripts/signature_generator.py"
 
-  if (!is_official_build) {
-    args += [ "--development" ]
+      chrome_framework_name = chrome_product_full_name + " Framework"
+      target_app_path = "$root_out_dir/$chrome_product_full_name.app"
+
+      brave_version_path = "$target_app_path/Contents/Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full"
+      framework_file = "$brave_version_path/$chrome_framework_name"
+      signature_file = "$brave_version_path/Resources/$chrome_framework_name.sig"
+
+      flags = 1  # blessed binary
+
+      sources = [
+        "$root_out_dir/$brave_exe"
+      ]
+
+      outputs = [
+        signature_file,
+      ]
+
+      args = [
+        "--input_file",
+        rebase_path(framework_file, root_build_dir),
+        "--output_file",
+        rebase_path(signature_file, root_build_dir),
+        "--flags",
+        "$flags",
+        "--certificate",
+        getenv("SIGN_WIDEVINE_CERT"),
+        "--private_key",
+        getenv("SIGN_WIDEVINE_KEY"),
+        "--private_key_passphrase",
+        getenv("SIGN_WIDEVINE_PASSPHRASE"),
+      ]
+
+      deps = [ "//brave:chrome_app" ]
+    }
   }
-}
+} else {
+  packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
+  target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/" + string_replace("$chrome_product_full_name", " ", "") + "-$chrome_version_full/$brave_exe"
+  unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
+  keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
 
-action("create_pkg") {
-  output = "$root_out_dir/unsigned/$brave_pkg"
-  script = "//build/gn_run_binary.py"
-  shell_script = "//brave/build/mac/create_pkg.sh"
-  inputs = [
-    script,
-    shell_script,
-  ]
-  outputs = [ output ]
-  args = [
-    rebase_path(shell_script, root_build_dir),
-    rebase_path(_target_app_path, root_build_dir),
-    rebase_path("//brave/build/mac/pkg-scripts"),
-    rebase_path("$root_out_dir/Brave Browser Component.plist"),
-    "unsigned/$brave_pkg",
-  ]
+  action("sign_app") {
+    script = "//build/gn_run_binary.py"
+    shell_script = "//brave/build/mac/sign_app.sh"
 
-  deps = [":sign_app"]
-}
+    deps = [
+      "//brave:chrome_app",
+      "//chrome/installer/mac"
+    ]
 
-action("sign_pkg") {
-  script = "//build/gn_run_binary.py"
-  shell_script = "sign_pkg.sh"
-  inputs = [
-    script,
-    shell_script,
-    "$root_out_dir/unsigned/$brave_pkg",
-  ]
-  outputs = [ "${root_out_dir}/$mac_signing_output_prefix/$brave_pkg" ]
-  args = [
-    rebase_path(shell_script, root_build_dir),
-    rebase_path("$root_out_dir/unsigned/$brave_pkg"),
-    rebase_path("$root_out_dir/$brave_pkg"),
-    keychain_db,
-    mac_installer_signing_identifier,
-  ]
+    if (is_official_build) {
+      if (brave_channel == "") {
+        provisioning_profile = "//brave/build/mac/release.provisionprofile"
+      } else {
+        provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
+      }
+      is_development = "False"
+    } else {
+      # an empty dummy file just to simplify things
+      provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
+      is_development = "True"
+    }
 
-  deps = [":create_pkg"]
-}
+    inputs = [
+      script,
+      shell_script,
+      "$root_build_dir/$brave_exe",
+      provisioning_profile,
+      "$packaging_dir/app-entitlements.plist",
+    ]
+    outputs = [ target_sign_app_path ]
+    args = [
+      rebase_path(shell_script, root_out_dir),
 
-action("create_dmg") {
-  output = "$root_out_dir/unsigned/$brave_dmg"
-  script = "//build/gn_run_binary.py"
-  shell_script = "//chrome/installer/mac/pkg-dmg"
-  inputs = [
-    script,
-    shell_script,
-  ]
-  outputs = [ output ]
-  args = [
-    rebase_path(shell_script, root_build_dir),
-    "--source", "/var/empty",
-    "--target", "unsigned/$brave_dmg",
-    "--format", "UDBZ",
-    "--verbosity", "0",
-    "--volname", "$chrome_product_full_name",
-    "--copy", rebase_path(_target_app_path, root_build_dir),
-    "--tempdir", "/tmp",
-    "--symlink", "/Applications",
-  ]
+      # Use absolute paths needed by codesign
+      rebase_path(root_build_dir),
+      rebase_path("$root_out_dir/$mac_signing_output_prefix"),
+      rebase_path(packaging_dir),
+      is_development,
+      rebase_path(provisioning_profile, root_out_dir),
+      keychain_db,
+      mac_signing_identifier,
+    ]
+  }
 
-  deps = [":sign_app"]
-}
+  action("create_pkg") {
+    script = "//build/gn_run_binary.py"
+    shell_script = "//brave/build/mac/create_pkg.sh"
+    inputs = [
+      script,
+      target_sign_app_path,
+      shell_script,
+    ]
+    outputs = [ unsigned_pkg_path ]
+    args = [
+      rebase_path(shell_script, root_build_dir),
+      rebase_path(target_sign_app_path, root_build_dir),
+      rebase_path("//brave/build/mac/pkg-scripts"),
+      rebase_path("$root_out_dir/Brave Browser Component.plist"),
+      "unsigned/$brave_pkg",
+    ]
 
-action("create_unsigned_dmg") {
-  brave_app = "$root_build_dir/$brave_exe"
-  output = "$root_out_dir/unsigned_dmg/$brave_dmg"
-  script = "//build/gn_run_binary.py"
-  shell_script = "//chrome/installer/mac/pkg-dmg"
-  inputs = [
-    script,
-    shell_script,
-  ]
-  outputs = [ output ]
-  args = [
-    rebase_path(shell_script, root_build_dir),
-    "--source", "/var/empty",
-    "--target", "unsigned_dmg/$brave_dmg",
-    "--format", "UDBZ",
-    "--verbosity", "0",
-    "--volname", "$chrome_product_full_name",
-    "--copy", rebase_path(brave_app, root_build_dir),
-    "--tempdir", "/tmp",
-    "--symlink", "/Applications",
-  ]
+    deps = [":sign_app"]
+  }
 
-  deps = [
-    "//brave:chrome_app",
-    "//chrome/installer/mac"
-  ]
-}
+  action("sign_pkg") {
+    script = "//build/gn_run_binary.py"
+    shell_script = "sign_pkg.sh"
+    inputs = [
+      script,
+      shell_script,
+      unsigned_pkg_path,
+    ]
+    outputs = [ "${root_out_dir}/$mac_signing_output_prefix/$brave_pkg" ]
+    args = [
+      rebase_path(shell_script, root_build_dir),
+      rebase_path(unsigned_pkg_path),
+      rebase_path("$root_out_dir/$brave_pkg"),
+      keychain_db,
+      mac_installer_signing_identifier,
+    ]
 
-action("sign_dmg") {
-  script = "//build/gn_run_binary.py"
-  shell_script = "sign_dmg.sh"
-  inputs = [
-    script,
-    shell_script,
-    "$root_out_dir/unsigned/$brave_dmg",
-  ]
-  outputs = [ "${root_out_dir}/$mac_signing_output_prefix/$brave_dmg" ]
-  args = [
-    rebase_path(shell_script, root_build_dir),
-    rebase_path("$root_out_dir/unsigned/$brave_dmg"),
-    rebase_path("$root_out_dir/$brave_dmg"),
-    keychain_db,
-    mac_signing_identifier,
-    "-r=designated => identifier \"$chrome_product_full_name\" and certificate leaf = H\"$mac_signing_identifier\"",
-  ]
+    deps = [":create_pkg"]
+  }
 
-  deps = [":create_dmg"]
-}
+  unsigned_dmg = "$root_out_dir/unsigned/$brave_dmg"
+  action("create_dmg") {
+    script = "//build/gn_run_binary.py"
+    shell_script = "//chrome/installer/mac/pkg-dmg"
+    inputs = [
+      script,
+      shell_script,
+      target_sign_app_path,
+    ]
+    outputs = [ unsigned_dmg ]
+    args = [
+      rebase_path(shell_script, root_build_dir),
+      "--source", "/var/empty",
+      "--target", "unsigned/$brave_dmg",
+      "--format", "UDBZ",
+      "--verbosity", "0",
+      "--volname", "$chrome_product_full_name",
+      "--copy", rebase_path(target_sign_app_path, root_build_dir),
+      "--tempdir", "/tmp",
+      "--mkdir", ".background",
+      "--copy", "$dmg_background_image:/.background/dmg-background.png",
+      "--copy", "$ds_store:/.DS_Store",
+      "--icon", "$dmg_icon",
+      "--symlink", "/Applications",
+    ]
 
-group("create_dist_mac") {
-  deps = [ ":create_dmg" ]
+    deps = [":sign_app"]
+  }
 
-  deps += [
-    ":sign_app",
-    ":sign_dmg",
-  ]
+  action("sign_dmg") {
+    script = "//build/gn_run_binary.py"
+    shell_script = "sign_dmg.sh"
+    inputs = [
+      script,
+      shell_script,
+      unsigned_dmg,
+    ]
+    outputs = [ "${root_out_dir}/$mac_signing_output_prefix/$brave_dmg" ]
+    args = [
+      rebase_path(shell_script, root_build_dir),
+      rebase_path(unsigned_dmg),
+      rebase_path("$root_out_dir/$brave_dmg"),
+      keychain_db,
+      mac_signing_identifier,
+      "-r=designated => identifier \"$chrome_product_full_name\" and certificate leaf = H\"$mac_signing_identifier\"",
+    ]
+
+    deps = [":create_dmg"]
+  }
 }

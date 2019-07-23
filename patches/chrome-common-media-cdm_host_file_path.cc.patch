@@ -1,0 +1,16 @@
+diff --git a/chrome/common/media/cdm_host_file_path.cc b/chrome/common/media/cdm_host_file_path.cc
+index 298876ce85e723d3d0fe80d4f6f973cb8a64b975..5291d66d02679e294a8e7657b94638981c57c721 100644
+--- a/chrome/common/media/cdm_host_file_path.cc
++++ b/chrome/common/media/cdm_host_file_path.cc
+@@ -43,7 +43,11 @@ void AddCdmHostFilePaths(
+ #if defined(OS_WIN)
+ 
+   static const base::FilePath::CharType* const kUnversionedFiles[] = {
++#if defined(BRAVE_CHROMIUM_BUILD)
++      FILE_PATH_LITERAL("brave.exe")};
++#else
+       FILE_PATH_LITERAL("chrome.exe")};
++#endif
+   static const base::FilePath::CharType* const kVersionedFiles[] = {
+       FILE_PATH_LITERAL("chrome.dll"), FILE_PATH_LITERAL("chrome_child.dll")};
+ 

@@ -19,8 +19,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      const isEmpty = !ui || ui.emptyWallet
-
       Object.keys(properties).map((property: string) => {
         if (properties[property] !== undefined && properties[property] !== 'ui') {
           state[property] = properties[property]
@@ -28,10 +26,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
           ui = Object.assign(ui, properties[property])
         }
       })
-
-      if (!isEmpty) {
-        ui.emptyWallet = false
-      }
 
       state = {
         ...state,
@@ -49,6 +43,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         chrome.send('brave_rewards.saveSetting', [key, value.toString()])
       }
       break
+    case types.UPDATE_ADS_REWARDS: {
+      state = { ...state }
+      chrome.send('brave_rewards.updateAdsRewards')
+      break
+    }
     case types.ON_MODAL_BACKUP_CLOSE: {
       state = { ...state }
       let ui = state.ui
@@ -149,12 +148,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.enabledMain = action.payload.enabled
       break
     }
-    case types.GET_TRANSACTION_HISTORY_FOR_THIS_CYCLE:
-    case types.ON_TRANSACTION_HISTORY_FOR_THIS_CYCLE_CHANGED: {
-      chrome.send('brave_rewards.getTransactionHistoryForThisCycle', [])
+    case types.GET_TRANSACTION_HISTORY:
+    case types.ON_TRANSACTION_HISTORY_CHANGED: {
+      chrome.send('brave_rewards.getTransactionHistory', [])
       break
     }
-    case types.ON_TRANSACTION_HISTORY_FOR_THIS_CYCLE: {
+    case types.ON_TRANSACTION_HISTORY: {
       if (!action.payload.data) {
         break
       }
@@ -166,8 +165,9 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       const data = action.payload.data
-      state.adsData.adsNotificationsReceived = data.adsNotificationsReceived
-      state.adsData.adsEstimatedEarnings = data.adsEstimatedEarnings
+      state.adsData.adsEstimatedPendingRewards = data.adsEstimatedPendingRewards
+      state.adsData.adsNextPaymentDate = data.adsNextPaymentDate
+      state.adsData.adsAdNotificationsReceivedThisMonth = data.adsAdNotificationsReceivedThisMonth
       break
     }
     case types.GET_REWARDS_MAIN_ENABLED: {
@@ -185,7 +185,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
       if (!state.inlineTip) {
         state.inlineTip = {
-          twitter: true
+          twitter: true,
+          reddit: true
         }
       }
 
@@ -206,6 +207,81 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         inlineTip
       }
 
+      break
+    }
+    case types.ON_ON_BOARDING_DISPLAYED: {
+      let ui = state.ui
+
+      ui.onBoardingDisplayed = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.PROCESS_REWARDS_PAGE_URL: {
+      const path = action.payload.path
+      const query = action.payload.query
+      const ui = state.ui
+
+      chrome.send('brave_rewards.processRewardsPageUrl', [path, query])
+      ui.modalRedirect = 'show'
+
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.ON_PROCESS_REWARDS_PAGE_URL: {
+      const data = action.payload.data
+      const ui = state.ui
+
+      chrome.send('brave_rewards.getExternalWallet', [data.walletType])
+
+      // EXPIRED_TOKEN
+      if (data.result === 24) {
+        ui.modalRedirect = 'error'
+        break
+      }
+
+      if (data.result !== 0) {
+        ui.modalRedirect = 'error'
+        break
+      }
+
+      if (data.walletType === 'uphold') {
+        if (data.action === 'authorization') {
+          const url = data.args['redirect_url']
+          if (url && url.length > 0) {
+            window.open(url)
+          }
+          ui.modalRedirect = 'hide'
+          break
+        }
+      }
+
+      ui.modalRedirect = 'error'
+
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.HIDE_REDIRECT_MODAL: {
+      const ui = state.ui
+
+      ui.modalRedirect = 'hide'
+
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
+    case types.DISCONNECT_WALLET: {
+      chrome.send('brave_rewards.disconnectWallet', [action.payload.walletType])
       break
     }
   }

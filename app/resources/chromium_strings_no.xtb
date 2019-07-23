@@ -74,13 +74,9 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="5874882355102994015">Brave kan ikke vise forhåndsvisningen av utskrift når det innebygde PDF-visningsprogrammet mangler.</translation>
 <translation id="8880183781256147665">Legger til i Brave …</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> kan være farlig, så Brave har blokkert den.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> kan være farlig, så Brave har blokkert den. Du er beskyttet av Avansert beskyttelse.</translation>
 <translation id="9067428552314418522">Denne filen er farlig, så Brave har blokkert den.</translation>
-<translation id="2938460345748897177">Denne filen er farlig, så Brave har blokkert den. Du er beskyttet av Avansert beskyttelse.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> er farlig, så Brave har blokkert den.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> er farlig, så Brave har blokkert den. Du er beskyttet av Avansert beskyttelse.</translation>
 <translation id="89367911614620585">Denne filen kan være farlig, så Brave har blokkert den.</translation>
-<translation id="8943391224520748272">Denne filen kan være farlig, så Brave har blokkert den. Du er beskyttet av Avansert beskyttelse.</translation>
 <translation id="9183662282810237335">Vil du avslutte Brave likevel?</translation>
 <translation id="3834935463915107022">Vil du avslutte Brave likevel?</translation>
 <translation id="8797356639448065696">Brave er i bakgrunnsmodus.</translation>
@@ -143,8 +139,6 @@ Hvis du logger deg på allikevel, blir Brave-informasjon som bokmerker, loggen o
 <translation id="6746636977031158624">Brave kunne ikke synkronisere dataene fordi påloggingsopplysningene dine er foreldede.</translation>
 <translation id="2999152167963026588">Brave OS kunne ikke synkronisere dataene dine fordi synkronisering ikke er tilgjengelig for domenet ditt.</translation>
 <translation id="1459786048951724030">Brave OS kunne ikke synkronisere dataene dine på grunn av en feil under pålogging.</translation>
-<translation id="2887570477425111999">Lagre detaljer i Brave</translation>
-<translation id="193559141530782783">Brave lagrer personopplysningene dine sikkert, slik at du slipper å skrive dem inn på nytt.</translation>
 <translation id="663059986967017181">Kopiert til Brave</translation>
 <translation id="1457432835062259213">Brave-appvelger</translation>
 <translation id="82609232232243542">Logg på Brave</translation>
@@ -182,7 +176,7 @@ Vi har sendt deg (<ph name="ACCOUNT_EMAIL"/>) en e-post med nærmere instruksjon
 <translation id="1912973375560256099">Regel om innkommende trafikk for Brave for å tillate mDNS-trafikk.</translation>
 <translation id="8207657266087451193">Hvis et bilde ikke har noen nyttig beskrivelse, prøver Brave å finne en til deg. For å opprette beskrivelser blir bilder sendt til Brave Software. Du kan slå av dette i innstillingene når som helst.</translation>
 <translation id="5499063270485366718">Hvis et bilde ikke har noen nyttig beskrivelse, prøver Brave å finne en til deg. For å opprette beskrivelser blir bilder sendt til Brave Software.</translation>
-<translation id="3870835867536344658">Da brukes den samme stavekontrollen som i Brave Software Søk. Tekst du skriver inn i nettleseren, sendes til Brave Software. Du kan når som helst endre dette i innstillingene.</translation>
+<translation id="215320507915280336">Denne funksjonen bruker den samme stavekontrollen som Brave Software Søk. Tekst du skriver inn i nettleseren, sendes til Brave Software. Du kan når som helst endre dette i innstillingene.</translation>
 <translation id="1807774211756215222">Åpne linken i en ny fane i Brave</translation>
 <translation id="4624945300945265642">Åpne linken i et inko&amp;gnitovindu i Brave</translation>
 <translation id="7863882214613921971">Åpne linken i en ny &amp;fane i Brave</translation>
@@ -193,6 +187,9 @@ Vi har sendt deg (<ph name="ACCOUNT_EMAIL"/>) en e-post med nærmere instruksjon
 <translation id="2522086024276534909">Start Brave OS på nytt</translation>
 <translation id="8183252473547465084">Brave OS må startes på nytt for at oppdateringen skal tas i bruk.</translation>
 <translation id="5895138241574237353">Start på nytt</translation>
+<translation id="8887390605192156061">Avslutt alle kopier av Brave.</translation>
+<translation id="1801551749768408825">Andre kopier av Brave kjører. For å oppdatere må du lukke dem.</translation>
+<translation id="2632141563911437138">For å oppdateres må Brave slutte å kjøre på denne datamaskinen. Dette kan medføre at andre brukere som er logget på datamaskinen, mister endringer som ikke er lagret.</translation>
 <translation id="5875673934455379806">Installer Brave på nytt</translation>
 <translation id="2097604701283463988">Brave er utdatert</translation>
 <translation id="5173820533850252773">Brave er utdatert</translation>
@@ -236,23 +233,17 @@ Vi har sendt deg (<ph name="ACCOUNT_EMAIL"/>) en e-post med nærmere instruksjon
 <translation id="8933981935877469796">Velg <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Klikk på <ph name="BEGIN_BOLD"/>Bytt likevel<ph name="END_BOLD"/> (hvis knappen vises)</translation>
 <translation id="3507835409099344374">Gå til innstillinger for Brave-varsler</translation>
-<translation id="9118654140804842635">{0,plural, =0{En Brave-oppdatering er tilgjengelig}=1{En Brave-oppdatering er tilgjengelig}other{En Brave-oppdatering har vært tilgjengelig i # dager}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{En Brave-oppdatering er tilgjengelig}=1{En Brave-oppdatering er tilgjengelig}other{En Brave-oppdatering har vært tilgjengelig i # dager}}</translation>
 <translation id="720532315408041257">Administratoren din ber deg om å starte Brave på nytt for at denne oppdateringen skal tas i bruk</translation>
-<translation id="6639482638305253477">{0,plural, =1{Start Brave på nytt innen én dag}other{Start Brave på nytt innen # dager}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave startes på nytt om én time}other{Brave startes på nytt om # timer}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave startes på nytt om 1 minutt}other{Brave startes på nytt om # minutter}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave startes på nytt nå}=1{Brave startes på nytt om 1 sekund}other{Brave startes på nytt om # sekunder}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Start Brave på nytt innen én dag}other{Start Brave på nytt innen # dager}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave startes på nytt om en time}other{Brave startes på nytt om # timer}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave startes på nytt om 1 minutt}other{Brave startes på nytt om # minutter}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave startes på nytt nå}=1{Brave startes på nytt om 1 sekund}other{Brave startes på nytt om # sekunder}}</translation>
 <translation id="7595187113648413294">Administratoren din krever at du starter Brave på nytt for at en oppdatering skal tas i bruk</translation>
-<translation id="56801943271475640">{0,plural, =0{En Brave-OS-oppdatering er tilgjengelig}=1{En Brave-OS-oppdatering er tilgjengelig}other{En Brave-OS-oppdatering har vært tilgjengelig i # dager}}</translation>
-<translation id="5715362474140341294">Administratoren din ber deg om å starte Brave OS på nytt for å ta i bruk denne oppdateringen</translation>
-<translation id="8094834892392729950">{0,plural, =1{Start Brave OS på nytt innen én dag}other{Start Brave OS på nytt innen # dager}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS startes på nytt om én time}other{Brave OS startes på nytt om # timer}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS startes på nytt om 1 minutt}other{Brave OS startes på nytt om # minutter}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS startes på nytt nå}=1{Brave OS startes på nytt om 1 sekund}other{Brave OS startes på nytt om # sekunder}}</translation>
-<translation id="8559452515617838628">Administratoren din krever at du starter Brave OS på nytt for å ta i bruk en oppdatering</translation>
 <translation id="3052349005266761501">Starter Brave ...</translation>
 <translation id="1197672524850678392">Kunne ikke starte Brave. Prøv på nytt.</translation>
 <translation id="6040143037577758943">Lukk</translation>
+<translation id="5147525139567260139">Del en Brave-fane</translation>
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="3262506503470845422">Få hjelp med Brave</translation>
 <translation id="1864557848095568223">Oppdaterer Brave</translation>

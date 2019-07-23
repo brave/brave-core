@@ -52,7 +52,7 @@ class MockInstanceID : public InstanceID {
                     const std::string& scope,
                     const std::map<std::string, std::string>& options,
                     bool is_lazy,
-                    const GetTokenCallback& callback));
+                    const GetTokenCallback callback));
   MOCK_METHOD4(ValidateToken,
                void(const std::string& authorized_entity,
                     const std::string& scope,
@@ -63,8 +63,8 @@ class MockInstanceID : public InstanceID {
   MOCK_METHOD3(DeleteTokenImpl,
                void(const std::string& authorized_entity,
                     const std::string& scope,
-                    const DeleteTokenCallback& callback));
-  MOCK_METHOD1(DeleteIDImpl, void(const DeleteIDCallback& callback));
+                    const DeleteTokenCallback callback));
+  MOCK_METHOD1(DeleteIDImpl, void(const DeleteIDCallback callback));
 
  private:
   DISALLOW_COPY_AND_ASSIGN(MockInstanceID);

@@ -6,6 +6,7 @@ import * as React from 'react'
 import { Table } from 'brave-ui/components'
 import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
 import { LoaderIcon } from 'brave-ui/components/icons'
+import * as prettierBytes from 'prettier-bytes'
 
 // Constants
 import { File, TorrentObj } from '../constants/webtorrentState'
@@ -85,7 +86,7 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
             content: renderFileLink(file, index, true)
           },
           {
-            content: file.length
+            content: prettierBytes(file.length)
           }
         ]
       }

@@ -16,8 +16,10 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "bat/confirmations/confirmations_client.h"
+#include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
@@ -26,12 +28,12 @@ namespace base {
 class SequencedTaskRunner;
 }
 
-namespace braveledger_bat_client {
-class BatClient;
+namespace braveledger_grant {
+class Grants;
 }
 
-namespace braveledger_bat_get_media {
-class BatGetMedia;
+namespace braveledger_media {
+class Media;
 }
 
 namespace braveledger_bat_publishers {
@@ -42,8 +44,12 @@ namespace braveledger_bat_state {
 class BatState;
 }
 
-namespace braveledger_bat_contribution {
-class BatContribution;
+namespace braveledger_contribution {
+class Contribution;
+}
+
+namespace braveledger_wallet {
+class Wallet;
 }
 
 namespace confirmations {
@@ -55,7 +61,8 @@ namespace bat_ledger {
 class LedgerImpl : public ledger::Ledger,
                    public ledger::LedgerCallbackHandler {
  public:
-  typedef std::map<uint32_t, ledger::VisitData>::const_iterator visit_data_iter;
+  typedef std::map<uint32_t,
+      ledger::VisitData>::const_iterator visit_data_iter;
 
   explicit LedgerImpl(ledger::LedgerClient* client);
   ~LedgerImpl() override;
@@ -69,25 +76,25 @@ class LedgerImpl : public ledger::Ledger,
   bool CreateWallet() override;
 
   void SetPublisherInfo(
-      ledger::PublisherInfoPtr publisher_info) override;
+      ledger::PublisherInfoPtr publisher_info);
 
   void SetActivityInfo(
-      ledger::PublisherInfoPtr publisher_info) override;
+      ledger::PublisherInfoPtr publisher_info);
 
   void GetPublisherInfo(const std::string& publisher_key,
                         ledger::PublisherInfoCallback callback) override;
 
   void GetActivityInfo(const ledger::ActivityInfoFilter& filter,
-                       ledger::PublisherInfoCallback callback) override;
+                       ledger::PublisherInfoCallback callback);
 
   void GetPanelPublisherInfo(const ledger::ActivityInfoFilter& filter,
                              ledger::PublisherInfoCallback callback);
 
   void GetMediaPublisherInfo(const std::string& media_key,
-                             ledger::PublisherInfoCallback callback) override;
+                             ledger::PublisherInfoCallback callback);
 
   void SetMediaPublisherInfo(const std::string& media_key,
-                             const std::string& publisher_id) override;
+                             const std::string& publisher_id);
 
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
@@ -116,23 +123,13 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetAutoContribute(bool enabled) override;
 
+  void UpdateAdsRewards() override;
+
   void SetBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
-                        const ledger::BalanceReportInfo& report_info) override;
+                        const ledger::BalanceReportInfo& report_info);
 
   void SaveUnverifiedContribution(ledger::PendingContributionList list);
-
-  void GetAddresses(
-      int32_t current_country_code,
-      ledger::GetAddressesCallback callback) override;
-
-  const std::string& GetBATAddress() const override;
-
-  const std::string& GetBTCAddress() const override;
-
-  const std::string& GetETHAddress() const override;
-
-  const std::string& GetLTCAddress() const override;
 
   uint64_t GetReconcileStamp() const override;
 
@@ -157,7 +154,7 @@ class LedgerImpl : public ledger::Ledger,
   std::map<std::string, ledger::BalanceReportInfo>
   GetAllBalanceReports() const override;
 
-  void GetAutoContributeProps(ledger::AutoContributeProps* props) override;
+  ledger::AutoContributePropsPtr GetAutoContributeProps() override;
 
   void SaveLedgerState(const std::string& data);
 
@@ -171,9 +168,9 @@ class LedgerImpl : public ledger::Ledger,
   void SetConfirmationsWalletInfo(
       const braveledger_bat_helper::WALLET_INFO_ST& wallet_info);
 
-  void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
+  void LoadLedgerState(ledger::OnLoadCallback callback);
 
-  void LoadPublisherState(ledger::LedgerCallbackHandler* handler);
+  void LoadPublisherState(ledger::OnLoadCallback callback);
 
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler);
 
@@ -192,8 +189,7 @@ class LedgerImpl : public ledger::Ledger,
                const braveledger_bat_helper::GRANT& grant);
 
   void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) const override;
+      const std::vector<std::string>& headers) const override;
 
   void OnGrantCaptcha(const std::string& image, const std::string& hint);
 
@@ -228,7 +224,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
-                           const std::string& probi = "0");
+                           const std::string& probi = "0",
+                           int32_t category = 0);
 
   std::string URIEncode(const std::string& value) override;
 
@@ -250,12 +247,12 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetPublisherActivityFromUrl(
       uint64_t windowId,
-      const ledger::VisitData& visit_data,
+      ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) override;
 
   void GetMediaActivityFromUrl(
       uint64_t windowId,
-      const ledger::VisitData& visit_data,
+      ledger::VisitDataPtr visit_data,
       const std::string& providerType,
       const std::string& publisher_blob);
 
@@ -320,8 +317,6 @@ class LedgerImpl : public ledger::Ledger,
       const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
 
   const std::string& GetPaymentId() const;
-
-  void SetPaymentId(const std::string& payment_id);
 
   const braveledger_bat_helper::Grants& GetGrants() const;
 
@@ -418,15 +413,10 @@ class LedgerImpl : public ledger::Ledger,
   void SaveNormalizedPublisherList(
       ledger::PublisherInfoList normalized_list);
 
-  void
-  GetAddressesForPaymentId(ledger::WalletAddressesCallback callback) override;
-
-  void SetAddresses(std::map<std::string, std::string> addresses);
-
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
-  void GetTransactionHistoryForThisCycle(
-      ledger::GetTransactionHistoryForThisCycleCallback callback) override;
+  void GetTransactionHistory(
+      ledger::GetTransactionHistoryCallback callback) override;
 
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,
@@ -435,7 +425,7 @@ class LedgerImpl : public ledger::Ledger,
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
   void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) override;
-  void StartAutoContribute() override;
+  void StartMonthlyContribution() override;
 
   void RefreshPublisher(
       const std::string& publisher_key,
@@ -468,11 +458,52 @@ class LedgerImpl : public ledger::Ledger,
   void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) override;
 
- private:
-  void AddRecurringPayment(const std::string& publisher_id,
-                           const double& value) override;
+  void ContributeUnverifiedPublishers();
 
-  void OnLoad(const ledger::VisitData& visit_data,
+  bool IsPublisherVerified(const std::string& publisher_key);
+
+  void OnContributeUnverifiedPublishers(ledger::Result result,
+                                        const std::string& publisher_key = "",
+                                        const std::string& publisher_name = "");
+
+  void SavePublisherProcessed(const std::string& publisher_key);
+
+  bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
+
+  void FetchBalance(ledger::FetchBalanceCallback callback) override;
+
+  void GetExternalWallets(ledger::GetExternalWalletsCallback callback);
+
+  std::string GetPublisherAddress(const std::string& publisher_key) const;
+
+  std::string GetCardIdAddress() const;
+
+  void GetExternalWallet(const std::string& wallet_type,
+                         ledger::ExternalWalletCallback callback) override;
+
+  void SaveExternalWallet(const std::string& wallet_type,
+                          ledger::ExternalWalletPtr wallet);
+
+  void ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback) override;
+
+  void DisconnectWallet(
+      const std::string& wallet_type,
+      ledger::DisconnectWalletCallback callback) override;
+
+  void TransferAnonToExternalWallet(
+      const std::string& new_address,
+      ledger::TransferAnonToExternalWalletCallback callback);
+
+  void ShowNotification(
+      const std::string& type,
+      const ledger::ShowNotificationCallback& callback,
+      const std::vector<std::string>& args = {});
+
+ private:
+  void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
 
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
@@ -488,24 +519,20 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnBackground(uint32_t tab_id, const uint64_t& current_time) override;
 
-  void OnMediaStart(uint32_t tab_id, const uint64_t& current_time) override;
-
-  void OnMediaStop(uint32_t tab_id, const uint64_t& current_time) override;
-
   void OnXHRLoad(
       uint32_t tab_id,
       const std::string& url,
       const std::map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
-      const ledger::VisitData& visit_data) override;
+      ledger::VisitDataPtr visit_data) override;
 
   void OnPostData(
       const std::string& url,
       const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
-      const ledger::VisitData& visit_data) override;
+      ledger::VisitDataPtr visit_data) override;
 
   void OnTimer(uint32_t timer_id) override;
 
@@ -558,18 +585,13 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
 
-  void GetAddressesInternal(
-      const std::vector<int32_t>& country_codes,
-      int32_t current_country_code,
-      ledger::GetAddressesCallback callback);
-
   ledger::LedgerClient* ledger_client_;
-  std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
+  std::unique_ptr<braveledger_grant::Grants> bat_grants_;
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
-  std::unique_ptr<braveledger_bat_get_media::BatGetMedia> bat_get_media_;
+  std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
-  std::unique_ptr<braveledger_bat_contribution::BatContribution>
-  bat_contribution_;
+  std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
+  std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;

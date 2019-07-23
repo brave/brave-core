@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">즐겨찾기 편집하기</translation>
 <translation id="7606029853066610626">북마크 보기 및 관리하기</translation>
 <translation id="5550994254534676787">검색 내역 보기</translation>
+<translation id="1742484101357469636">대시보드 설정</translation>
+<translation id="8320281346741574991">배경 이미지 표시</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8730621377337864115">완료</translation>
 <translation id="6248988683584659830">검색 설정</translation>
@@ -41,6 +43,8 @@
 <translation id="8958799246752641148">Tor는 여러분을 목적지에 도달시키기 전 여러 Tor 서버를 거쳐 라우팅함으로써, 방문 사이트들로부터 여러분의 IP주소를 숨겨 줍니다. 이러한 연결은 암호화되어 있으므로, 여러분의 인터넷 공급자나 고용주 또한 여러분#8217;께서 어떤 사이트를 방문하시는지 볼 수’없습니다. Tor는 인터넷을 느리게 만들 수 있으며 일부 사이트는 아예 작동하지 않을 수도 있습니다.</translation>
 <translation id="520608572871993342">비공개 윈도우 사용은 당신의 기기상 Brave 작동에만 영향을 미칩니다. — 다른 사람들에게는 영향을 미치지 않습니다. Tor가 당신이 방문한 사이트로부터 IP 주소를 숨기고, ISP 혹은 고용주로부터 방문한 사이트를 숨깁니다. 메뉴에서 혹은 {{ key }}로 Tor 비공개 윈도우를 여세요.</translation>
 <translation id="6975708438781948564">Brave에서 Tor에 대해 더 알아보기</translation>
+<translation id="4272382368346338917">추가 필터</translation>
+<translation id="8949292968394988358">경고: 너무 많은 필터를 켜면 성능이 저하됩니다</translation>
 <translation id="1869685517625607604">총 차단된 광고 수:</translation>
 <translation id="4673764878177947707">커스텀 필터</translation>
 <translation id="8803682034537762884">라인 당 하나씩, 필터가 Adblock Plus 필터 문법으로 기술되어 있습니다</translation>
@@ -54,11 +58,14 @@
 <translation id="5633840519079139680">컴퓨터에 설치된 다른 브라우저에서 북마크 및 설정을 가져와 Brave 브라우저의 기본 설정을 쉽게 할 수 있습니다.</translation>
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="5540323067375019678">차단 관리</translation>
-<translation id="4755560456428781763">Brave 차단은 검색 중 원하지 않는 광고와 추적으로부터 보호해드립니다. 특정 사이트를 브라우징하는 동안 문제가 발생하는 경우, 툴바의 차단 패널에서 보호 수준을 조정하세요.</translation>
+<translation id="3278033011827237847">Brave Shields로 탐색하는 동안 개인 정보를 침해하는 광고와 추적기로부터 보호를 받으세요. 사이트가 제대로 작동하지 않는 것처럼 보이면 Shields를 "해제"로 설정하세요.</translation>
 <translation id="3366308997091824722">차단 설정</translation>
-<translation id="3884404068544758153">검색엔진 변경</translation>
+<translation id="4764692524839457597">기본</translation>
+<translation id="3108122610701115301">기본값으로 설정</translation>
+<translation id="2469440407442116729">검색 엔진 선택</translation>
 <translation id="438216590634144114">주소창에서 웹을 검색할 때 기본으로 사용하실 검색 엔진을 골라 주세요.</translation>
-<translation id="8428213095426709021">설정</translation>
+<translation id="5804484488647369316">기본 검색 엔진 설정</translation>
+<translation id="4428458837269935199">보다 비공개적인 검색 경험을 원하시면, DuckDuckGo를 사용해 보세요.</translation>
 <translation id="513635702954746724">색상 테마를 선택하세요</translation>
 <translation id="6842850080200126305">설정 패널에서 '밝게' 또는 '어둡게' 옵션을 선택하여 툴바의 색상을 설정하세요.</translation>
 <translation id="2801098717523961746">테마 선택</translation>
@@ -68,8 +75,9 @@
 <translation id="5946611334574299206">Brave에서 광고를 보고 토큰을 받으세요. 광고는 사용자의 검색 행위에서 추론한 관심사를 바탕으로 제공됩니다. 개인 데이터나 검색 기록은 유출되지 않습니다.</translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="1527222983464337010">출판인과 콘텐츠 제작자를 자동으로 후원하는 방법. 월 지불액을 설정하시고 평소처럼 인터넷을 돌아다니십시오. 방문한 사이트들은 Brave에 의해 측정된 여러분의 관심 정도에 따라 자동으로 기부금액을 받게 됩니다.</translation>
-<translation id="8157096848242649588">결제 날짜</translation>
-<translation id="5208388044986603165">받은 광고 알림</translation>
+<translation id="20281847067919078">보류 중인 예상 보상금</translation>
+<translation id="8593551638387217772">다음 결제일</translation>
+<translation id="319209088187794725">이번 달에 받은 광고 알림</translation>
 <translation id="4229016885653790965">죄송합니다! 귀하의 지역에서는 아직 광고가 제공되지 않습니다.</translation>
 <translation id="654711254769318398">조회한 광고 페이지</translation>
 <translation id="2532127066761785857">최대 표시 광고 수</translation>
@@ -106,8 +114,9 @@
 <translation id="1199044745726588100">5초</translation>
 <translation id="4045581694057451126">8초</translation>
 <translation id="8610523985422563960">1분</translation>
-<translation id="7521774480426463961">‘좋아요’한 포스트에 팁 주는 기능 활성화</translation>
+<translation id="9031738692126722094">이 사이트에서 콘텐츠 레벨 팁 활성화</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">보석을 찾을 때 바로 팁을 주세요.</translation>
 <translation id="6135431587052937035">매달 정기적인 팁으로 선호하는 사이트를 지원하세요.</translation>
@@ -128,6 +137,8 @@
 <translation id="7797604753681168055">지금 복구!</translation>
 <translation id="1184075897575325927">죄송합니다, 이미 승인이 요청된 것 같습니다.</translation>
 <translation id="282693359045252357">다음 월간 팁 날짜</translation>
+<translation id="6231182869178328516">Brave 브라우저를 이용해 <ph name="NAME">$1를 <ex>사용자</ex></ph>에게 팁으로 주었습니다. https://brave.com/tips에서 확인해 보세요.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">금액:</translation>
 <translation id="5923611424721173182">현재 조정</translation>
 <translation id="5457113250005438886">유효하지 않음</translation>
@@ -150,6 +161,9 @@
 <translation id="4235360514405112390">유효함</translation>
 <translation id="2700943637868737038">시청 ID:</translation>
 <translation id="3576689061489548788">월렛 결제 ID:</translation>
+<translation id="758790787422117549">페르소나 ID</translation>
+<translation id="2223892939866251845">사용자 ID</translation>
+<translation id="1642443162274867084">월렛 생성됨</translation>
 <translation id="5094577350232361255">대하여</translation>
 <translation id="4918086044614829423">수락</translation>
 <translation id="6832986780040139899">©2016–2018 Brave 소프트웨어. Brave는 Brave 소프트웨어의 등록 상표입니다. 사이트 이름은 사이트 소유자의 상표 혹은 등록 상표일 수 있습니다.</translation>
@@ -165,11 +179,16 @@
 <translation id="3671566813999349838">금액</translation>
 <translation id="3819257035322786455">백업</translation>
 <translation id="1312977698678162065">귀하의 개인 정보를 존중하는 관련 광고를 보고 보상을 받으세요.</translation>
+<translation id="7655723274266132226">이제 광고 보기로 돈을 벌 수 있습니다</translation>
+<translation id="2975780980638932742">Brave 광고가 왔습니다!</translation>
 <translation id="3361548743396744457">좋아하는 사이트를 둘러보는 것만으로 후원하시거나 – 언제든 원하시는 때 사이트에 팁을 주세요.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4493850495402472953">및</translation>
 <translation id="8804164990146287819">개인정보 보호 정책</translation>
 <translation id="4281844954008187215">서비스 약관</translation>
+<translation id="4405997465645469914">Brave 보상을 켬으로써, 다음을 읽고 동의했음을 나타냅니다</translation>
+<translation id="8819542691525488940">‘네, 동의합니다!’를 클릭함으로써;, 다음을 읽고 동의했음을 나타냅니다</translation>
+<translation id="8071424789698327147">‘네, 준비되었습니다!’를 클릭함으로써;, 다음을 읽고 동의했음을 나타냅니다</translation>
 <translation id="7530570094705720669">월렛 생성 중</translation>
 <translation id="2105596359439030979">귀하의 관심은 소중합니다. 개인 정보를 존중하는 광고를 시청해서 보상을 받고 선행을 베풀어 귀하가 사랑하는 콘텐츠 제작자를 지원해 보세요.</translation>
 <translation id="516395624550019162">네, 참여합니다!</translation>
@@ -178,8 +197,6 @@
 <translation id="3825698830825612308">Brave 승인 발행처</translation>
 <translation id="7658239707568436148">취소</translation>
 <translation id="7262285991915892790">배트 아이콘을 다음으로 드래그하세요</translation>
-<translation id="2151535059686617995">오늘은’ 당신의 행운의 날입니다!</translation>
-<translation id="6255773350565723852">귀하의 토큰 승인이 진행 중입니다.</translation>
 <translation id="7656781188259414093">타킷.</translation>
 <translation id="1555514580945108302">음… 잘 모르겠네요. 다시 시도하세요.</translation>
 <translation id="13853865024308201">클레임</translation>
@@ -206,7 +223,7 @@
 <translation id="7277134233385925078">월간 팁 설정하기</translation>
 <translation id="8003573781961874199">PDF로 다운로드</translation>
 <translation id="298067735430872465">광고 수입</translation>
-<translation id="3521361150443442734">귀하의 광고 수익을 사용하실 수 있습니다.</translation>
+<translation id="2266556115441975588">귀하의 광고 보상금이 도착했습니다!</translation>
 <translation id="8764029012618014430">팁 활성화</translation>
 <translation id="3412655388715513818">이 사이트 제외하기</translation>
 <translation id="418343137736963579">자동 기부에서 제외한 전체 사이트 숫자 :</translation>
@@ -264,6 +281,8 @@
 <translation id="194625454574835815">복구 키</translation>
 <translation id="6354568176665589146">반복하기</translation>
 <translation id="7577100371127227294">월간 팁</translation>
+<translation id="2391095793008133394">{{user}} 님의 포스팅에 대한 팁:</translation>
+<translation id="7557413530932469222">{{user}} 님의 포스팅에 대한 팁!</translation>
 <translation id="1110535155349301542">제거</translation>
 <translation id="8942997470474842562">귀하께서는’아직 기부를 받기 위해 회원 가입을 하지 않은’ 크리에이터에 대하여 {{reservedAmount}} 의 배트(BAT)를 지정했습니다. 귀하의 브라우저는 그들이 확인 할 때까지 혹은 90일이 지나기까지 계속 기부를 시도하게 됩니다.</translation>
 <translation id="8759753423332885148">더 알아보기.</translation>
@@ -272,8 +291,8 @@
 <translation id="3626186271103896082">지갑 백업</translation>
 <translation id="5717619667204259673">이 복구 키를 안전하게 보관하세요.</translation>
 <translation id="4699702339303280827">귀하께서는 브라우저나 컴퓨터에 이상 발생 시 항상 이 열쇠를 사용하여 귀하의 지갑을 돌려받으실 수 있습니다. 하지만 안전하게 보호하셔서 — 이 키를 가진 사람이 귀하의 지갑을 훔치지 못하도록 주의하세요. 아마도’ 종이에 적어두시거나, 혹은 중요한 정보를 보관하는 곳에 적어 두시는 것이 가장 안전할 것입니다.</translation>
-<translation id="5759071143806884916">귀하께서는 팁을 보내서 이 사이트를 지원하실 수 있습니다. 이것’은 그들이 멋진 콘텐츠를 제작했음에 대한 감사 표시 방법 중 하나입니다. 확인된 콘텐츠 크리에이터는 각 달력월의 첫 번째 주 동안에 그들의 팁을 받게 됩니다.</translation>
-<translation id="1704859330137112950">지속적으로 이 사이트를 지원하고 싶으면, 월간 팁을 설정할 수 있습니다.</translation>
+<translation id="7354412786785889047">팁을 보내서 이 콘텐츠 크리에이터를 지원할 수 있습니다. 이것은 훌륭한 콘텐츠를 만드는 분들에게 감사를 전하는 방법입니다. 인증된 크리에이터는 각 달 첫 주에 자신의 팁에 대한 돈을 받습니다.</translation>
+<translation id="3475063317678050010">원하시면, 월간 팁 일정을 세워 이 크리에이터를 지속적으로 지원할 수 있습니다.</translation>
 <translation id="3074127054582480056">주의</translation>
 <translation id="822513417008209372">귀하는 현재 지원하고 계십니다</translation>
 <translation id="5010112177773747965">당신의 동의 없이요.</translation>
@@ -300,8 +319,10 @@
 <translation id="259138486959961679">{{numItems}}개 아이템 모두 보기</translation>
 <translation id="7857284676033058221">{{numSites}} 사이트 모두 보기</translation>
 <translation id="3536298624341433814">내 팁 보내기</translation>
+<translation id="8428213095426709021">설정</translation>
 <translation id="1792148354504719133">사이트</translation>
 <translation id="5944430251223015324">사이트</translation>
+<translation id="1834493631938747505">본인 팁에 대해 남들에게 알리세요.</translation>
 <translation id="8826007068782654809">감사합니다</translation>
 <translation id="6665366815203065060">팁을 다음 사용자에게 보내셨습니다:</translation>
 <translation id="6432779622695508363">좋아요 팁</translation>
@@ -312,8 +333,12 @@
 <translation id="4914597931214386232">토큰 승인 요청됨</translation>
 <translation id="1634828734222219955">전체</translation>
 <translation id="3535654229833214438">트랜잭션</translation>
+<translation id="3124090095880236567">광고 켜기</translation>
 <translation id="8987812599455325915">이것은 광고와 자동 기부를 모두 활성화합니다. 언제든지 이 기능을 따로 켜거나 끌 수 있습니다.</translation>
 <translation id="1485484147452131556">Rewards 활성화</translation>
+<translation id="3983104749597726322">트윗</translation>
+<translation id="5636843789453098076">트윗에 대해 @{{ user }}에게 팁 주기:</translation>
+<translation id="4242384385082203046">트윗에 대해 @{{ user }}에게 팁을 주세요!</translation>
 <translation id="2448312741937722512">유형</translation>
 <translation id="8772672608371898774">Brave가 인증한 출판자</translation>
 <translation id="5050370287908180130">상세한 월간 내역 보기</translation>
@@ -336,6 +361,25 @@
 <translation id="6727483290601442544">세부 내용 보기</translation>
 <translation id="1988679729106502285">주의:</translation>
 <translation id="5815103311506128988">이 크리에이터가 아직 브레이브 유저들로부터 기부를 받기 위한 회원 가입을 하지 않으셨습니다. 귀하의 브라우저는 그들이 확인 할 때까지 혹은 90일이 지나기까지 계속 기부를 시도하게 됩니다.</translation>
+<translation id="4292832015778676417">광고로부터 수입</translation>
+<translation id="3197752845651180812">기부금 보류</translation>
+<translation id="3164105678355419142">정기 팁</translation>
+<translation id="2927922949538312364">1회용 팁</translation>
+<translation id="6964891561514920613">보류 중인 모든 기부금 보이기</translation>
+<translation id="4346944508027912677">다음까지 보류</translation>
+<translation id="7410549756000115387">보류 중인 기부금이 없습니다…</translation>
+<translation id="1963227389609234879">모두 삭제</translation>
+<translation id="1170315781901539495">제외된 사이트</translation>
+<translation id="5119190679543565400">이 사이트 복원</translation>
+<translation id="9075700728717335924">귀하는 제외되셨습니다</translation>
+<translation id="4862817811647633830">자동 기고 사이트</translation>
+<translation id="923467487918828349">모두 표시</translation>
+<translation id="5471305206221894680">지원되는 사이트</translation>
+<translation id="2306169361186864012">Brave Ads 보상!</translation>
+<translation id="3757873395477273033">Brave Ads의 보상금이 곧 수령됩니다.</translation>
+<translation id="8101881066646819737">귀하의 Brave Ads 토큰 보상금</translation>
+<translation id="2151535059686617995">오늘은’ 당신의 행운의 날입니다!</translation>
+<translation id="6255773350565723852">귀하의 토큰 승인이 진행 중입니다.</translation>
 <translation id="1181037720776840403">삭제</translation>
 <translation id="7885157704277298658">복사되었습니다!</translation>
 <translation id="5379640681913450928">단어수:</translation>
@@ -353,6 +397,7 @@
 <translation id="1061533051865606843">새 장치 추가하기</translation>
 <translation id="8780295742023331191">동기화 코드 보기</translation>
 <translation id="1755198127524719638">동기화 설정</translation>
+<translation id="7558480201297099157">장치 간 동기화하고 싶은 정보를 관리합니다. 이 설정은 이 장치에만 영향을 끼칩니다.</translation>
 <translation id="8820817407110198400">북마크</translation>
 <translation id="5591129654353352557">저장된 사이트 설정</translation>
 <translation id="7859704718976024901">검색 내역</translation>
@@ -380,6 +425,7 @@
 <translation id="5086223971958279691">동기화 체인 코드</translation>
 <translation id="2899261497479389619">귀하의 타깃 컴퓨터에서, 설정의  브레이브 동기화로 가신 후 버튼을 클릭하세요</translation>
 <translation id="4827439149833241990">“저는 동기화 코드가 있습니다”.</translation>
+<translation id="24067401253841795">아래 보이는 동기화 체인 코드 워드를 입력하세요. 이 코드를 비밀번호처럼 다루세요. 누군가 이것을 손에 넣으면, 동기화된 데이터를 읽고 수정할 수 있습니다.</translation>
 <translation id="8914601399214979966">대신 제 카메라를 이용하세요</translation>
 <translation id="3034163433136515805">QR 코드 보기</translation>
 <translation id="5093410893656857925">장치 형태를 고르세요</translation>
@@ -392,4 +438,6 @@
 <translation id="8349682220522608879">동기화 코드를 추가하세요.</translation>
 <translation id="1468095392829989299">동기화 서버에 연결하지 못했습니다.</translation>
 <translation id="1399673826422570698">네트워크나 동기화 서버에 문제가 있는 것 같습니다.</translation>
+<translation id="5286379413446391050">동기화 서버에 연결할 수 없었습니다</translation>
+<translation id="2410472020237369473">컴퓨터 시계의 시간 혹은 시간대가 잘못 설정된 거 같습니다. 시간 설정을 확인하세요.</translation>
 </translationbundle>

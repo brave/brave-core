@@ -13,13 +13,14 @@
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/services/bat_ledger/public/cpp/manifest.h"
+#endif
+
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "brave/components/services/bat_ads/public/cpp/manifest.h"
 #endif
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/utility/tor/public/cpp/manifest.h"
+#include "brave/components/services/tor/public/cpp/manifest.h"
 #endif
 
 const service_manager::Manifest& GetBraveContentBrowserOverlayManifest() {
