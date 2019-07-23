@@ -6,9 +6,11 @@
 #define SetChromeSpecificCommandLineFlags SetChromeSpecificCommandLineFlags_ChromiumImpl
 #include "../../../../../chrome/browser/android/chrome_startup_flags.cc"
 #undef SetChromeSpecificCommandLineFlags
+#include "base/base_switches.h"
+#include "services/network/public/cpp/features.h"
 
 void SetChromeSpecificCommandLineFlags() {
   SetChromeSpecificCommandLineFlags_ChromiumImpl();
-  
+
   SetCommandLineSwitchASCII(switches::kDisableFeatures, network::features::kNetworkService.name);
 }

@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 4f9844f6f8546efe591e679c41c7cd3b43c371a8..89006c99c02315f0c439dbf244d5ae3ce5cb7a0b 100644
+index 4f9844f6f8546efe591e679c41c7cd3b43c371a8..cd2cc33541100296abb266b739254293fd38469c 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2142,6 +2142,7 @@ jumbo_split_static_library("browser") {
+@@ -915,8 +915,6 @@ jumbo_split_static_library("browser") {
+     "notifications/platform_notification_service_impl.h",
+     "notifications/scheduler/notification_background_task_scheduler_impl.cc",
+     "notifications/scheduler/notification_background_task_scheduler_impl.h",
+-    "notifications/scheduler/notification_schedule_service_factory.cc",
+-    "notifications/scheduler/notification_schedule_service_factory.h",
+     "notifications/system_notification_helper.cc",
+     "notifications/system_notification_helper.h",
+     "ntp_snippets/content_suggestions_service_factory.cc",
+@@ -2142,6 +2140,7 @@ jumbo_split_static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
@@ -10,3 +19,12 @@ index 4f9844f6f8546efe591e679c41c7cd3b43c371a8..89006c99c02315f0c439dbf244d5ae3c
    ]
  
    if (is_posix || is_fuchsia) {
+@@ -3088,6 +3087,8 @@ jumbo_split_static_library("browser") {
+       "notifications/notification_system_observer.h",
+       "notifications/profile_notification.cc",
+       "notifications/profile_notification.h",
++      "notifications/scheduler/notification_schedule_service_factory.cc",
++      "notifications/scheduler/notification_schedule_service_factory.h",
+       "obsolete_system/obsolete_system.h",
+       "obsolete_system/obsolete_system_linux.cc",
+       "obsolete_system/obsolete_system_mac.cc",
