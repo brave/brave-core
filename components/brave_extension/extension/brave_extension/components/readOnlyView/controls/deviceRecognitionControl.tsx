@@ -13,48 +13,76 @@ import {
   BlockedInfoRowForSelectSummary,
   BlockedInfoRowDataForSelect,
   BlockedListStatic,
-  BlockedInfoRowText,
-  dummyData
+  BlockedInfoRowText
 } from 'brave-ui/features/shields'
 
 // Group components
 import StaticResourcesList from '../../shared/resourcesBlockedList/staticResourcesList'
 
-// Helpers
+// Locale
 import { getLocale } from '../../../background/api/localeAPI'
 
-interface State {
-  dummyThirdPartyFingerprintingBlockedOpen: boolean
+// Helpers
+import {
+  blockedResourcesSize,
+  maybeDisableResourcesRow
+} from '../../../helpers/shieldsUtils'
+
+// Types
+import { BlockFPOptions } from '../../../types/other/blockTypes'
+
+interface Props {
+  fingerprinting: BlockFPOptions
+  fingerprintingBlocked: number
+  fingerprintingBlockedResources: Array<string>
 }
 
-export default class AdsTrackersControl extends React.PureComponent<{}, State> {
-  constructor (props: {}) {
+interface State {
+  deviceRecognitionOpen: boolean
+}
+
+export default class DeviceRecognitionControl extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
-    this.state = { dummyThirdPartyFingerprintingBlockedOpen: false }
+    this.state = { deviceRecognitionOpen: false }
   }
 
-  onClickFakeThirdPartyFingerprintingBlocked = () => {
-    this.setState({ dummyThirdPartyFingerprintingBlockedOpen: !this.state.dummyThirdPartyFingerprintingBlockedOpen })
+  get totalDeviceRecognitonAttemptsDisplay (): string {
+    const { fingerprintingBlocked } = this.props
+    return blockedResourcesSize(fingerprintingBlocked)
   }
+
+  get maybeDisableResourcesRow (): boolean {
+    const { fingerprintingBlocked } = this.props
+    return maybeDisableResourcesRow(fingerprintingBlocked)
+  }
+
+  triggerOpenDeviceRecognition = () => {
+    if (!this.maybeDisableResourcesRow) {
+      this.setState({ deviceRecognitionOpen: !this.state.deviceRecognitionOpen })
+    }
+  }
+
   render () {
-    const { dummyThirdPartyFingerprintingBlockedOpen } = this.state
+    const { deviceRecognitionOpen } = this.state
+    const { fingerprintingBlockedResources } = this.props
     return (
       <BlockedInfoRowDetails>
-        <BlockedInfoRowForSelectSummary onClick={this.onClickFakeThirdPartyFingerprintingBlocked}>
-          <BlockedInfoRowDataForSelect disabled={false}>
+        <BlockedInfoRowForSelectSummary onClick={this.triggerOpenDeviceRecognition}>
+          <BlockedInfoRowDataForSelect disabled={this.maybeDisableResourcesRow}>
             {
-              dummyThirdPartyFingerprintingBlockedOpen
+              deviceRecognitionOpen
                 ? <ArrowUpIcon />
                 : <ArrowDownIcon />
             }
-            <BlockedInfoRowStats>{2}</BlockedInfoRowStats>
+            <BlockedInfoRowStats>{this.totalDeviceRecognitonAttemptsDisplay}</BlockedInfoRowStats>
             <BlockedInfoRowText>
               <span>{getLocale('thirdPartyFingerprintingBlocked')}</span>
             </BlockedInfoRowText>
           </BlockedInfoRowDataForSelect>
         </BlockedInfoRowForSelectSummary>
         <BlockedListStatic>
-          <StaticResourcesList list={dummyData.otherBlockedResources} />
+          <StaticResourcesList list={fingerprintingBlockedResources} />
         </BlockedListStatic>
       </BlockedInfoRowDetails>
     )

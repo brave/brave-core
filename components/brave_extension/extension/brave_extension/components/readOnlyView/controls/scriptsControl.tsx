@@ -13,51 +13,78 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
   BlockedInfoRowStats,
-  BlockedListStatic,
-  dummyData
+  BlockedListStatic
 } from 'brave-ui/features/shields'
 
 // Group components
 import StaticResourcesList from '../../shared/resourcesBlockedList/staticResourcesList'
 
-// Helpers
+// Locale
 import { getLocale } from '../../../background/api/localeAPI'
-import { generateNoScriptInfoDataStructure } from '../../../helpers/noScriptUtils'
 
-interface State {
-  dummyScriptsBlockedOpen: boolean
+// Helpers
+import {
+  blockedResourcesSize,
+  maybeDisableResourcesRow
+} from '../../../helpers/shieldsUtils'
+
+// Types
+import { BlockJSOptions } from '../../../types/other/blockTypes'
+import { NoScriptInfo } from '../../../types/other/noScriptInfo'
+
+interface Props {
+  javascript: BlockJSOptions
+  javascriptBlocked: number
+  noScriptInfo: NoScriptInfo
 }
 
-export default class AdsTrackersControl extends React.PureComponent<{}, State> {
-  constructor (props: {}) {
+interface State {
+  scriptsBlockedOpen: boolean
+}
+
+export default class AdsTrackersControl extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
-    this.state = { dummyScriptsBlockedOpen: false }
+    this.state = { scriptsBlockedOpen: false }
   }
-  get generateNoScriptInfo () {
-    return generateNoScriptInfoDataStructure(dummyData.noScriptsResouces)
+
+  get maybeDisableResourcesRow (): boolean {
+    const { javascriptBlocked } = this.props
+    return maybeDisableResourcesRow(javascriptBlocked)
   }
-  onClickFakeScriptsBlocked = () => {
-    this.setState({ dummyScriptsBlockedOpen: !this.state.dummyScriptsBlockedOpen })
+
+  get javascriptBlockedDisplay (): string {
+    const { javascriptBlocked } = this.props
+    return blockedResourcesSize(javascriptBlocked)
   }
+
+  triggerOpenScriptsBlocked = () => {
+    if (!this.maybeDisableResourcesRow) {
+      this.setState({ scriptsBlockedOpen: !this.state.scriptsBlockedOpen })
+    }
+  }
+
   render () {
-    const { dummyScriptsBlockedOpen } = this.state
+    const { scriptsBlockedOpen } = this.state
+    const { noScriptInfo } = this.props
+
     return (
       <BlockedInfoRowDetails>
-        <BlockedInfoRowSummary onClick={this.onClickFakeScriptsBlocked}>
-          <BlockedInfoRowData disabled={false}>
+        <BlockedInfoRowSummary onClick={this.triggerOpenScriptsBlocked}>
+          <BlockedInfoRowData disabled={this.maybeDisableResourcesRow}>
             {
-              dummyScriptsBlockedOpen
+              scriptsBlockedOpen
                 ? <ArrowUpIcon />
                 : <ArrowDownIcon />
             }
-            <BlockedInfoRowStats>{2}</BlockedInfoRowStats>
+            <BlockedInfoRowStats>{this.javascriptBlockedDisplay}</BlockedInfoRowStats>
             <BlockedInfoRowText>
               <span>{getLocale('scriptsBlocked')}</span>
             </BlockedInfoRowText>
           </BlockedInfoRowData>
         </BlockedInfoRowSummary>
         <BlockedListStatic>
-          <StaticResourcesList list={dummyData.otherBlockedResources} />
+          <StaticResourcesList list={Object.keys(noScriptInfo)} />
         </BlockedListStatic>
       </BlockedInfoRowDetails>
     )

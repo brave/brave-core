@@ -52,8 +52,29 @@ export default class ShieldsReadOnlyView extends React.PureComponent<Props, {}> 
         </StaticHeader>
         <StaticResourcesControls>
           <StaticResourcesContainer>
-            <InterfaceControls />
-            <PrivacyControls />
+          <InterfaceControls
+            // Ads/Trackers
+            ads={shieldsPanelTabData.ads}
+            adsBlocked={shieldsPanelTabData.adsBlocked}
+            adsBlockedResources={shieldsPanelTabData.adsBlockedResources}
+            trackers={shieldsPanelTabData.trackers}
+            trackersBlocked={shieldsPanelTabData.trackersBlocked}
+            trackersBlockedResources={shieldsPanelTabData.trackersBlockedResources}
+            // HTTPS Upgrades
+            httpsRedirected={shieldsPanelTabData.httpsRedirected}
+            httpUpgradableResources={shieldsPanelTabData.httpUpgradableResources}
+            httpsRedirectedResources={shieldsPanelTabData.httpsRedirectedResources}
+          />
+          <PrivacyControls
+            // JavaScript
+            javascript={shieldsPanelTabData.javascript}
+            javascriptBlocked={shieldsPanelTabData.javascriptBlocked}
+            noScriptInfo={shieldsPanelTabData.noScriptInfo}
+            // Fingerprinting
+            fingerprinting={shieldsPanelTabData.fingerprinting}
+            fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
+            fingerprintingBlockedResources={shieldsPanelTabData.fingerprintingBlockedResources}
+          />
           </StaticResourcesContainer>
         </StaticResourcesControls>
         <BlockedListFooter>

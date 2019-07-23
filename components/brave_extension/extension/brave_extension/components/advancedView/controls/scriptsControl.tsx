@@ -71,9 +71,7 @@ interface State {
 export default class ScriptsControls extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = {
-      scriptsBlockedOpen: false
-    }
+    this.state = { scriptsBlockedOpen: false }
   }
 
   get maybeDisableResourcesRow (): boolean {

@@ -13,47 +13,75 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
   BlockedInfoRowStats,
-  BlockedListStatic,
-  dummyData
+  BlockedListStatic
 } from 'brave-ui/features/shields'
 
 // Group components
 import StaticResourcesList from '../../shared/resourcesBlockedList/staticResourcesList'
 
-// Helpers
+// Locale
 import { getLocale } from '../../../background/api/localeAPI'
 
-interface State {
-  dummyConnectionsUpgradedHTTPSOpen: boolean
+// Helpers
+import {
+  blockedResourcesSize,
+  maybeDisableResourcesRow
+} from '../../../helpers/shieldsUtils'
+
+// Types
+import { BlockOptions } from '../../../types/other/blockTypes'
+
+interface Props {
+  httpsRedirected: number
+  httpUpgradableResources: BlockOptions
+  httpsRedirectedResources: Array<string>
 }
 
-export default class AdsTrackersControl extends React.PureComponent<{}, State> {
-  constructor (props: {}) {
+interface State {
+  connectionsUpgradedOpen: boolean
+}
+
+export default class AdsTrackersControl extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
-    this.state = { dummyConnectionsUpgradedHTTPSOpen: false }
+    this.state = { connectionsUpgradedOpen: false }
   }
 
-  onClickFakeConnectionsUpgradedHTTPS = () => {
-    this.setState({ dummyConnectionsUpgradedHTTPSOpen: !this.state.dummyConnectionsUpgradedHTTPSOpen })
+  get maybeDisableResourcesRow (): boolean {
+    const { httpsRedirected } = this.props
+    return maybeDisableResourcesRow(httpsRedirected)
+  }
+
+  get httpsRedirectedDisplay (): string {
+    const { httpsRedirected } = this.props
+    return blockedResourcesSize(httpsRedirected)
+  }
+
+  triggerConnectionsUpgradedToHTTPS = () => {
+    if (!this.maybeDisableResourcesRow) {
+      this.setState({ connectionsUpgradedOpen: !this.state.connectionsUpgradedOpen })
+    }
   }
 
   render () {
-    const { dummyConnectionsUpgradedHTTPSOpen } = this.state
+    const { connectionsUpgradedOpen } = this.state
+    const { httpsRedirectedResources } = this.props
+
     return (
       <BlockedInfoRowDetails>
-        <BlockedInfoRowSummary onClick={this.onClickFakeConnectionsUpgradedHTTPS}>
-          <BlockedInfoRowData disabled={false}>
+        <BlockedInfoRowSummary onClick={this.triggerConnectionsUpgradedToHTTPS}>
+          <BlockedInfoRowData disabled={this.maybeDisableResourcesRow}>
             {
-              dummyConnectionsUpgradedHTTPSOpen
+              connectionsUpgradedOpen
                 ? <ArrowUpIcon />
                 : <ArrowDownIcon />
             }
-            <BlockedInfoRowStats>{2}</BlockedInfoRowStats>
+            <BlockedInfoRowStats>{this.httpsRedirectedDisplay}</BlockedInfoRowStats>
             <BlockedInfoRowText>{getLocale('connectionsUpgradedHTTPS')}</BlockedInfoRowText>
           </BlockedInfoRowData>
         </BlockedInfoRowSummary>
         <BlockedListStatic>
-          <StaticResourcesList list={dummyData.otherBlockedResources} />
+          <StaticResourcesList list={httpsRedirectedResources} />
         </BlockedListStatic>
       </BlockedInfoRowDetails>
     )

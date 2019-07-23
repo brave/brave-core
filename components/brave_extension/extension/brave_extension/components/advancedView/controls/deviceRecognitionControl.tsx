@@ -36,14 +36,14 @@ interface CommonProps {
   setBlockedListOpen: () => void
 }
 
-interface HTTPSUpgradesProps {
+interface DeviceRecognitionProps {
   fingerprinting: BlockFPOptions
   fingerprintingBlocked: number
   fingerprintingBlockedResources: Array<string>
   blockFingerprinting: (event: string) => void
 }
 
-export type Props = CommonProps & HTTPSUpgradesProps
+export type Props = CommonProps & DeviceRecognitionProps
 
 interface State {
   deviceRecognitionOpen: boolean

@@ -13,45 +13,86 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
   BlockedInfoRowStats,
-  BlockedListStatic,
-  dummyData
+  BlockedListStatic
 } from 'brave-ui/features/shields'
 
 // Group components
 import StaticResourcesList from '../../shared/resourcesBlockedList/staticResourcesList'
 
-// Helpers
+// Locale
 import { getLocale } from '../../../background/api/localeAPI'
 
-interface State {
-  dummyThirdPartyTrackersBlockedOpen: boolean
+// Helpers
+import {
+  sumAdsAndTrackers,
+  blockedResourcesSize,
+  maybeDisableResourcesRow,
+  mergeAdsAndTrackersResources
+} from '../../../helpers/shieldsUtils'
+
+// Types
+import { BlockOptions } from '../../../types/other/blockTypes'
+
+interface Props {
+  ads: BlockOptions
+  adsBlocked: number
+  adsBlockedResources: Array<string>
+  trackers: BlockOptions
+  trackersBlocked: number
+  trackersBlockedResources: Array<string>
 }
 
-export default class AdsTrackersControl extends React.PureComponent<{}, State> {
-  constructor (props: {}) {
+interface State {
+  trackersBlockedOpen: boolean
+}
+
+export default class AdsTrackersControl extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
-    this.state = { dummyThirdPartyTrackersBlockedOpen: false }
+    this.state = { trackersBlockedOpen: false }
   }
-  onClickFakeThirdPartyTrackersBlocked = () => {
-    this.setState({ dummyThirdPartyTrackersBlockedOpen: !this.state.dummyThirdPartyTrackersBlockedOpen })
+
+  get totalAdsTrackersBlocked (): number {
+    const { adsBlocked, trackersBlocked } = this.props
+    return sumAdsAndTrackers(adsBlocked, trackersBlocked)
   }
+
+  get totalAdsTrackersBlockedDisplay (): string {
+    return blockedResourcesSize(this.totalAdsTrackersBlocked)
+  }
+
+  get totalAdsTrackersBlockedList (): Array<string> {
+    const { adsBlockedResources, trackersBlockedResources } = this.props
+    return mergeAdsAndTrackersResources(adsBlockedResources, trackersBlockedResources)
+  }
+
+  get maybeDisableResourcesRow (): boolean {
+    return maybeDisableResourcesRow(this.totalAdsTrackersBlocked)
+  }
+
+  triggerOpen3rdPartyTrackersBlocked = () => {
+    if (!this.maybeDisableResourcesRow) {
+      this.setState({ trackersBlockedOpen: !this.state.trackersBlockedOpen })
+    }
+  }
+
   render () {
-    const { dummyThirdPartyTrackersBlockedOpen } = this.state
+    const { trackersBlockedOpen } = this.state
     return (
       <BlockedInfoRowDetails>
-        <BlockedInfoRowSummary onClick={this.onClickFakeThirdPartyTrackersBlocked}>
-          <BlockedInfoRowData disabled={false}>
+        <BlockedInfoRowSummary onClick={this.triggerOpen3rdPartyTrackersBlocked}>
+          <BlockedInfoRowData disabled={this.maybeDisableResourcesRow}>
             {
-              dummyThirdPartyTrackersBlockedOpen
+              trackersBlockedOpen
                 ? <ArrowUpIcon />
                 : <ArrowDownIcon />
             }
-            <BlockedInfoRowStats>{2}</BlockedInfoRowStats>
+            <BlockedInfoRowStats>{this.totalAdsTrackersBlockedDisplay}</BlockedInfoRowStats>
             <BlockedInfoRowText>{getLocale('thirdPartyTrackersBlocked')}</BlockedInfoRowText>
           </BlockedInfoRowData>
         </BlockedInfoRowSummary>
         <BlockedListStatic>
-          <StaticResourcesList list={dummyData.otherBlockedResources} />
+          <StaticResourcesList list={this.totalAdsTrackersBlockedList} />
         </BlockedListStatic>
       </BlockedInfoRowDetails>
     )
