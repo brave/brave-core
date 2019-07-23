@@ -57,6 +57,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
+  registry->RegisterBooleanPref(kAskWidevineInstall, true);
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   BraveWidevineBundleManager::RegisterProfilePrefs(registry);
 #endif

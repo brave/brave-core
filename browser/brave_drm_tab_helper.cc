@@ -22,8 +22,10 @@ BraveDrmTabHelper::~BraveDrmTabHelper() {}
 
 bool BraveDrmTabHelper::ShouldShowWidevineOptIn() const {
   // If the user already opted in, don't offer it.
-  PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
-  if (prefs->GetBoolean(kWidevineOptedIn)) {
+  PrefService* prefs =
+      static_cast<Profile*>(web_contents()->GetBrowserContext())->GetPrefs();
+  if (prefs->GetBoolean(kWidevineOptedIn) ||
+      !prefs->GetBoolean(kAskWidevineInstall)) {
     return false;
   }
 

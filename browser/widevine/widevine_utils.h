@@ -23,4 +23,6 @@ void InstallBundleOrRestartBrowser();
 void EnableWidevineCdmComponent(content::WebContents* web_contents);
 #endif
 
+void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask);
+
 #endif  // BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_

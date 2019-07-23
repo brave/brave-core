@@ -20,6 +20,9 @@ class WidevinePermissionRequest : public PermissionRequest {
   ~WidevinePermissionRequest() override;
 
   base::string16 GetExplanatoryMessageText() const;
+  void set_dont_ask_widevine_install(bool dont_ask) {
+    dont_ask_widevine_install_ = dont_ask;
+  }
 
  private:
   // PermissionRequest overrides:
@@ -35,6 +38,8 @@ class WidevinePermissionRequest : public PermissionRequest {
   // It's safe to use this raw |web_contents_| because this request is deleted
   // by PermissionManager that is tied with this |web_contents_|.
   content::WebContents* web_contents_;
+
+  bool dont_ask_widevine_install_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(WidevinePermissionRequest);
 };

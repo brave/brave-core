@@ -82,6 +82,11 @@
         sub-label="$i18n{ipfsCompanionEnabledDesc}"
         on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
     </settings-toggle-button>
+    <settings-toggle-button
+        pref="{{prefs.brave.ask_widevine_install}}"
+        label="Widevine"
+        sub-label="$i18n{appearanceSettingsAskWidevineInstallDesc}">
+    </settings-toggle-button>
     <settings-toggle-button id="mediaRouterEnabled"
         pref="{{prefs.brave.enable_media_router}}"
         label="Media Router"
