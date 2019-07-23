@@ -83,3 +83,25 @@ def AddBravePartsForSigning(parts, config):
         '{.framework_dir}/Frameworks/Sparkle.framework'.format(config),
         'org.sparkle-project.Sparkle',
         verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+
+
+def GetBraveSigningConfig(config_class, development):
+    if development:
+        return config_class
+
+    # Retrieve provisioning profile exported by build/mac/sign_app.sh
+    provisioning_profile = os.environ['MAC_PROVISIONING_PROFILE']
+    assert len(provisioning_profile), 'MAC_PROVISIONING_PROFILE is not set'
+
+    class ProvisioningProfileCodeSignConfig(config_class):
+
+        @property
+        def provisioning_profile_basename(self):
+            return os.path.splitext(os.path.basename(
+                provisioning_profile))[0]
+
+        @property
+        def run_spctl_assess(self):
+            return True
+
+    return ProvisioningProfileCodeSignConfig

@@ -11,10 +11,12 @@ SOURCE_DIR="${1}"
 DEST_DIR="${2}"
 PKG_DIR="${3}"
 DEVELOPMENT=
+MAC_PROVISIONING_PROFILE=
 if [[ "${4}" = "True" ]]; then
-  DEVELOPMENT="--development"
+    DEVELOPMENT="--development"
+else
+    MAC_PROVISIONING_PROFILE="${5}"
 fi
-MAC_PROVISIONING_PROFILE="${5}"
 MAC_SIGNING_KEYCHAIN="${6}"
 MAC_SIGNING_IDENTIFIER="${7}"
 
@@ -36,9 +38,9 @@ function check_exit() {
 
 trap check_exit EXIT
 
-# Copy signing script to the packaging directory
-SCRIPT_DIR=$(dirname ${0})
-cp -f "${SCRIPT_DIR}/sign_brave.py" "${PKG_DIR}"
+# brave/scripts/signing_helper.py will retrieve this value when called from
+# sign_chrome.py
+export MAC_PROVISIONING_PROFILE
 
 # Clear output directory. It seems GN auto-creates directory path to the
 # expected outputs. However, the signing script doesn't expect the path to
@@ -46,13 +48,13 @@ cp -f "${SCRIPT_DIR}/sign_brave.py" "${PKG_DIR}"
 echo "Cleaning $DEST_DIR ..."
 rm -rf $DEST_DIR/*
 
-
 # Invoke python script to do the signing.
+PARAMS="--input $SOURCE_DIR --output $DEST_DIR --keychain $MAC_SIGNING_KEYCHAIN --identity $MAC_SIGNING_IDENTIFIER --no-dmg --no-notarize"
 if [[ -z "${DEVELOPMENT}" ]]; then
   # Copy mac_provisioning_profile to the packaging_dir since that's where the
   # signing scripts expects to find it.
   cp -f "$MAC_PROVISIONING_PROFILE" "$PKG_DIR"
-  "${PKG_DIR}/sign_brave.py" --input "$SOURCE_DIR" --output "$DEST_DIR" --keychain "$MAC_SIGNING_KEYCHAIN" --identity "$MAC_SIGNING_IDENTIFIER" --no-dmg --provisioning-profile "$MAC_PROVISIONING_PROFILE"
 else
-  "${PKG_DIR}/sign_brave.py" --input "$SOURCE_DIR" --output "$DEST_DIR" --keychain "$MAC_SIGNING_KEYCHAIN" --identity "$MAC_SIGNING_IDENTIFIER" --no-dmg "$DEVELOPMENT"
+  PARAMS="$PARAMS $DEVELOPMENT"
 fi
+"${PKG_DIR}/sign_chrome.py" $PARAMS

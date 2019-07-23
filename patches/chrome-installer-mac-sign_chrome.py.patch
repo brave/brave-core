@@ -1,0 +1,29 @@
+diff --git a/chrome/installer/mac/sign_chrome.py b/chrome/installer/mac/sign_chrome.py
+index fa3a88200f5156975d0da5bcc52ed6f9896e792e..9068adc58127d24f50f47b3f1f939e2b6feaef69 100755
+--- a/chrome/installer/mac/sign_chrome.py
++++ b/chrome/installer/mac/sign_chrome.py
+@@ -28,6 +28,7 @@ def create_config(config_args, development):
+         An instance of |model.CodeSignConfig|.
+     """
+     config_class = config.CodeSignConfig
++    """
+     try:
+         import signing.internal_config
+         config_class = signing.internal_config.InternalCodeSignConfig
+@@ -36,6 +37,7 @@ def create_config(config_args, development):
+         # internal config has to be available.
+         if config_class(identity, keychain).product == 'Google Chrome':
+             raise e
++    """
+ 
+     if development:
+ 
+@@ -55,6 +57,8 @@ def create_config(config_args, development):
+ 
+         config_class = DevelopmentCodeSignConfig
+ 
++    from signing_helper import GetBraveSigningConfig
++    config_class = GetBraveSigningConfig(config_class, development)
+     return config_class(*config_args)
+ 
+ 
