@@ -17,7 +17,10 @@ const char kBraveReferralsInitPath[] = "/promo/initialize/nonua";
 const char kBraveReferralsActivityPath[] = "/promo/activity";
 
 const char kBraveSafeBrowsingFileCheckProxy[] = "sb-ssl.brave.com";
+const char kBraveRedirectorProxy[] = "redirector.brave.com";
+const char kBraveClients4Proxy[] = "clients4.brave.com";
 
+const char kClients4Prefix[] = "*://clients4.google.com/";
 const char kCRXDownloadPrefix[] =
     "*://clients2.googleusercontent.com/crx/blobs/*crx*";
 const char kEmptyDataURI[] = "data:text/plain,";
@@ -40,6 +43,8 @@ const char kCRLSetPrefix4[] =
     "/*crxd";
 const char kGoogleAnalyticsPattern[] =
     "https://www.google-analytics.com/analytics.js";
+const char kChromeCastPrefix[] =
+    "*://*.gvt1.com/edgedl/chromewebstore/*pkedcjkdefgpdelpbcmbmeomcjbeemfm*";
 const char kGoogleTagManagerPattern[] =
     "https://www.googletagmanager.com/gtm.js";
 const char kGoogleTagServicesPattern[] =

@@ -20,6 +20,8 @@
 #include "components/signin/core/browser/signin_pref_names.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
+#include "extensions/buildflags/buildflags.h"
+#include "extensions/common/feature_switch.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
@@ -33,6 +35,8 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service.h"
 #endif
+
+using extensions::FeatureSwitch;
 
 namespace brave {
 
@@ -81,6 +85,15 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Media Router
   registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
+
+  // 1. We do not want to enable the MediaRouter pref directly, so
+  // using a proxy pref to handle Media Router setting
+  // 2. On upgrade users might have enabled Media Router and the pref should
+  // be set correctly, so we use feature switch to set the initial value
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  registry->RegisterBooleanPref(kBraveEnabledMediaRouter,
+      FeatureSwitch::load_media_router_component_extension()->IsEnabled());
+#endif
 
   // No sign into Brave functionality
   registry->SetDefaultPrefValue(prefs::kSigninAllowed, base::Value(false));

@@ -9,18 +9,27 @@
 
 #include "base/bind.h"
 #include "base/values.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "chrome/browser/about_flags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
+#include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/lifetime/application_lifetime.h"
+#include "chrome/common/chrome_switches.h"
+#include "chrome/common/pref_names.h"
+#include "components/flags_ui/flags_ui_constants.h"
+#include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/common/feature_switch.h"
 
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
   : weak_ptr_factory_(this) {
@@ -44,6 +53,55 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(
         &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
         base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setMediaRouterEnabled",
+      base::BindRepeating(
+        &BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
+        base::Unretained(this)));
+  // TODO(petemill): If anything outside this handler is responsible for causing
+  // restart-neccessary actions, then this should be moved to a generic handler
+  // and the flag should be moved to somewhere more static / singleton-like.
+  web_ui()->RegisterMessageCallback(
+      "getRestartNeeded",
+      base::BindRepeating(
+        &BraveDefaultExtensionsHandler::GetRestartNeeded,
+        base::Unretained(this)));
+}
+
+void BraveDefaultExtensionsHandler::OnJavascriptAllowed() {
+  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+  pref_change_registrar_.Init(prefs);
+  pref_change_registrar_.Add(kBraveEnabledMediaRouter,
+    base::Bind(&BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
+    base::Unretained(this)));
+  pref_change_registrar_.Add(prefs::kEnableMediaRouter,
+    base::Bind(&BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged,
+    base::Unretained(this)));
+}
+
+void BraveDefaultExtensionsHandler::OnJavascriptDisallowed() {
+  pref_change_registrar_.RemoveAll();
+}
+
+void BraveDefaultExtensionsHandler::OnMediaRouterEnabledChanged() {
+  OnRestartNeededChanged();
+}
+
+bool BraveDefaultExtensionsHandler::IsRestartNeeded() {
+  bool media_router_current_pref = profile_->GetPrefs()->GetBoolean(
+      prefs::kEnableMediaRouter);
+  bool media_router_new_pref = profile_->GetPrefs()->GetBoolean(
+      kBraveEnabledMediaRouter);
+  return (media_router_current_pref != media_router_new_pref);
+}
+
+void BraveDefaultExtensionsHandler::GetRestartNeeded(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args->GetList()[0],
+                            base::Value(IsRestartNeeded()));
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
@@ -110,6 +168,27 @@ void BraveDefaultExtensionsHandler::OnInstallResult(
       result != extensions::webstore_install::Result::LAUNCH_IN_PROGRESS) {
     profile_->GetPrefs()->SetBoolean(pref_name, false);
   }
+}
+
+void BraveDefaultExtensionsHandler::OnRestartNeededChanged() {
+  if (IsJavascriptAllowed()) {
+    FireWebUIListener(
+      "brave-needs-restart-changed", base::Value(IsRestartNeeded()));
+  }
+}
+
+void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
+
+  std::string feature_name(switches::kLoadMediaRouterComponentExtension);
+  enabled ? feature_name += "@1" : feature_name += "@2";
+  flags_ui::PrefServiceFlagsStorage flags_storage(
+      g_brave_browser_process->local_state());
+  about_flags::SetFeatureEntryEnabled(&flags_storage, feature_name, true);
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
