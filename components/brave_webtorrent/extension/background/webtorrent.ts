@@ -13,7 +13,7 @@ let servers: { [key: string]: any } = { }
 
 export const getWebTorrent = () => {
   if (!webTorrent) {
-    webTorrent = new WebTorrent({ tracker: { wrtc: false } })
+    webTorrent = new WebTorrent()
     addWebtorrentEvents(webTorrent)
   }
 
