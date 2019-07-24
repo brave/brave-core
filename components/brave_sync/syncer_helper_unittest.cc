@@ -84,7 +84,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoCreateOrUpdate) {
   std::string sync_timestamp;
   const auto* folder1 = model()->AddFolder(model()->bookmark_bar_node(), 0,
                                            base::ASCIIToUTF16("Folder1"));
-  AddBraveMetaInfo(folder1, model(), false);
+  AddBraveMetaInfo(folder1, model());
   folder1->GetMetaInfo("order", &order);
   EXPECT_EQ(order, "1.0.1.1");
   std::string folder1_id;
@@ -101,7 +101,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoCreateOrUpdate) {
                                        GURL("https://a.com/"));
   order.clear();
   sync_timestamp.clear();
-  AddBraveMetaInfo(node_a, model(), false);
+  AddBraveMetaInfo(node_a, model());
   node_a->GetMetaInfo("order", &order);
   EXPECT_EQ(order, "1.0.1.1.1");
   std::string node_a_id;
@@ -118,7 +118,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoCreateOrUpdate) {
   node_a_id.clear();
   node_a_parent_id.clear();
   model()->SetURL(node_a, GURL("https://a-m.com/"));
-  AddBraveMetaInfo(node_a, model(), false);
+  AddBraveMetaInfo(node_a, model());
   node_a->GetMetaInfo("order", &order);
   EXPECT_EQ(order, "1.0.1.1.1");
   node_a->GetMetaInfo("object_id", &node_a_id);
@@ -133,13 +133,13 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoCreateOrUpdate) {
 TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeMoved) {
   const auto* folder1 = model()->AddFolder(model()->bookmark_bar_node(), 0,
                                            base::ASCIIToUTF16("Folder1"));
-  AddBraveMetaInfo(folder1, model(), false);
+  AddBraveMetaInfo(folder1, model());
   const auto *node_a = model()->AddURL(folder1, 0,
                                        base::ASCIIToUTF16("A.com - title"),
                                        GURL("https://a.com/"));
-  AddBraveMetaInfo(node_a, model(), false);
+  AddBraveMetaInfo(node_a, model());
   model()->Move(node_a, model()->bookmark_bar_node(), 1);
-  AddBraveMetaInfo(node_a, model(), true);
+  AddBraveMetaInfo(node_a, model());
 
   std::string order;
   node_a->GetMetaInfo("order", &order);
@@ -159,15 +159,22 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeChildrenReordered) {
   const auto *node_a = model()->AddURL(model()->bookmark_bar_node(), 0,
                                        base::ASCIIToUTF16("A.com - title"),
                                        GURL("https://a.com/"));
-  AddBraveMetaInfo(node_a, model(), false);
+  AddBraveMetaInfo(node_a, model());
   const auto *node_b = model()->AddURL(model()->bookmark_bar_node(), 1,
                                        base::ASCIIToUTF16("B.com - title"),
                                        GURL("https://b.com/"));
-  AddBraveMetaInfo(node_b, model(), false);
+  AddBraveMetaInfo(node_b, model());
   const auto *node_c = model()->AddURL(model()->bookmark_bar_node(), 2,
                                        base::ASCIIToUTF16("C.com - title"),
                                        GURL("https://c.com/"));
-  AddBraveMetaInfo(node_c, model(), false);
+  AddBraveMetaInfo(node_c, model());
+
+  // Expecting to have initially:
+  // 'Bookmarks Bar'   1.0.1
+  //  |-A.com          1.0.1.1
+  //  |-B.com          1.0.1.2
+  //  |-C.com          1.0.1.3
+
   std::string order_a;
   std::string order_b;
   std::string order_c;
@@ -179,38 +186,49 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeChildrenReordered) {
   EXPECT_EQ(order_c, "1.0.1.3");
 
   model()->Move(node_c, model()->bookmark_bar_node(), 0);
-  AddBraveMetaInfo(node_a, model(), false);
-  AddBraveMetaInfo(node_b, model(), false);
-  AddBraveMetaInfo(node_c, model(), false);
+  AddBraveMetaInfo(node_c, model());
+
+  // After move to have:
+  // 'Bookmarks Bar'   1.0.1
+  //  |-C.com          1.0.1.0.1
+  //  |-A.com          1.0.1.1
+  //  |-B.com          1.0.1.2
 
   order_a.clear();
   order_b.clear();
   order_c.clear();
 
   node_a->GetMetaInfo("order", &order_a);
-  EXPECT_EQ(order_a, "1.0.1.2");
+  EXPECT_EQ(order_a, "1.0.1.1");
   node_b->GetMetaInfo("order", &order_b);
-  EXPECT_EQ(order_b, "1.0.1.3");
+  EXPECT_EQ(order_b, "1.0.1.2");
   node_c->GetMetaInfo("order", &order_c);
-  EXPECT_EQ(order_c, "1.0.1.1");
+  EXPECT_EQ(order_c, "1.0.1.0.1");
 }
 
 TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeMovedReordered) {
   const auto *node_a = model()->AddURL(model()->bookmark_bar_node(), 0,
                                        base::ASCIIToUTF16("A.com - title"),
                                        GURL("https://a.com/"));
-  AddBraveMetaInfo(node_a, model(), false);
+  AddBraveMetaInfo(node_a, model());
   const auto* folder1 = model()->AddFolder(model()->bookmark_bar_node(), 1,
                                            base::ASCIIToUTF16("Folder1"));
-  AddBraveMetaInfo(folder1, model(), false);
+  AddBraveMetaInfo(folder1, model());
   const auto *node_b = model()->AddURL(folder1, 0,
                                        base::ASCIIToUTF16("B.com - title"),
                                        GURL("https://b.com/"));
-  AddBraveMetaInfo(node_b, model(), false);
+  AddBraveMetaInfo(node_b, model());
   const auto *node_c = model()->AddURL(folder1, 1,
                                        base::ASCIIToUTF16("C.com - title"),
                                        GURL("https://c.com/"));
-  AddBraveMetaInfo(node_c, model(), false);
+  AddBraveMetaInfo(node_c, model());
+
+  // Expecting here to have:
+  // 'Bookmarks Bar'   1.0.1
+  //  |-A.com          1.0.1.1
+  //  |-Folder1        1.0.1.2
+  //    |-B.com        1.0.1.2.1
+  //    |-C.com        1.0.1.2.2
 
   std::string order_a;
   std::string order_b;
@@ -226,24 +244,28 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeMovedReordered) {
   EXPECT_EQ(order_folder1, "1.0.1.2");
 
   model()->Move(node_a, folder1, 0);
-  AddBraveMetaInfo(node_a, model(), true);
-  AddBraveMetaInfo(folder1, model(), false);
-  AddBraveMetaInfo(node_b, model(), false);
-  AddBraveMetaInfo(node_c, model(), false);
+  AddBraveMetaInfo(node_a, model());
 
   order_a.clear();
   order_b.clear();
   order_c.clear();
   order_folder1.clear();
 
+  // After move expecting have:
+  // 'Bookmarks Bar'   1.0.1       (kept)
+  //  |-Folder1        1.0.1.2     (kept)
+  //    |-A.com        1.0.1.2.0.1 (re-calculated)
+  //    |-B.com        1.0.1.2.1   (kept)
+  //    |-C.com        1.0.1.2.2   (kept)
+
   node_a->GetMetaInfo("order", &order_a);
-  EXPECT_EQ(order_a, "1.0.1.1.1");
+  EXPECT_EQ(order_a, "1.0.1.2.0.1");
   node_b->GetMetaInfo("order", &order_b);
-  EXPECT_EQ(order_b, "1.0.1.1.2");
+  EXPECT_EQ(order_b, "1.0.1.2.1");
   node_c->GetMetaInfo("order", &order_c);
-  EXPECT_EQ(order_c, "1.0.1.1.3");
+  EXPECT_EQ(order_c, "1.0.1.2.2");
   folder1->GetMetaInfo("order", &order_folder1);
-  EXPECT_EQ(order_folder1, "1.0.1.1");
+  EXPECT_EQ(order_folder1, "1.0.1.2");
 }
 
 TEST_F(SyncerHelperTest, GetIndexInPermanentNodes) {
