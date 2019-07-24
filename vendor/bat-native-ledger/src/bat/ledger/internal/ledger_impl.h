@@ -103,7 +103,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void DoDirectTip(const std::string& publisher_id,
                    int amount,
-                   const std::string& currency) override;
+                   const std::string& currency,
+                   ledger::DoDirectTipCallback callback) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
 
@@ -129,7 +130,13 @@ class LedgerImpl : public ledger::Ledger,
                         int year,
                         const ledger::BalanceReportInfo& report_info);
 
-  void SaveUnverifiedContribution(ledger::PendingContributionList list);
+  void SaveUnverifiedContribution(
+      ledger::PendingContributionList list,
+      ledger::SavePendingContributionCallback callback);
+
+  void OnSaveUnverifiedTip(
+      ledger::DoDirectTipCallback callback,
+      ledger::Result result);
 
   uint64_t GetReconcileStamp() const override;
 

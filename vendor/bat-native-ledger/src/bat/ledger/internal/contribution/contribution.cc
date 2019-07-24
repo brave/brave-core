@@ -206,7 +206,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
   }
 
   if (non_verified.size() > 0) {
-    ledger_->SaveUnverifiedContribution(std::move(non_verified));
+    ledger_->SaveUnverifiedContribution(std::move(non_verified), [](bool _){});
   }
 
   return verified;
@@ -238,7 +238,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
   }
 
   if (non_verified.size() > 0) {
-    ledger_->SaveUnverifiedContribution(std::move(non_verified));
+    ledger_->SaveUnverifiedContribution(std::move(non_verified), [](bool _){});
   }
 
   return verified;

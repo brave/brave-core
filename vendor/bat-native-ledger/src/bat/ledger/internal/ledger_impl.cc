@@ -786,18 +786,27 @@ void LedgerImpl::SetBalanceReport(
 }
 
 void LedgerImpl::SaveUnverifiedContribution(
-    ledger::PendingContributionList list) {
-  ledger_client_->SavePendingContribution(std::move(list));
+    ledger::PendingContributionList list,
+    ledger::SavePendingContributionCallback callback) {
+  ledger_client_->SavePendingContribution(std::move(list), callback);
+}
+
+void LedgerImpl::OnSaveUnverifiedTip(
+    ledger::DoDirectTipCallback callback,
+    ledger::Result result) {
+  callback(result);
 }
 
 void LedgerImpl::DoDirectTip(const std::string& publisher_id,
                              int amount,
-                             const std::string& currency) {
+                             const std::string& currency,
+                             ledger::DoDirectTipCallback callback) {
   if (publisher_id.empty()) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
       "Failed direct donation due to missing publisher id";
 
     // TODO(anyone) add error flow
+    callback(ledger::Result::NOT_FOUND);
     return;
   }
 
@@ -813,7 +822,12 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_id,
     ledger::PendingContributionList list;
     list.push_back(std::move(contribution));
 
-    SaveUnverifiedContribution(std::move(list));
+    SaveUnverifiedContribution(
+        std::move(list),
+        std::bind(&LedgerImpl::OnSaveUnverifiedTip,
+                  this,
+                  std::move(callback),
+                  _1));
 
     return;
   }
@@ -826,6 +840,7 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_id,
   bat_contribution_->InitReconcile(ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
                                    {},
                                    direction_list);
+  callback(ledger::Result::LEDGER_OK);
 }
 
 void LedgerImpl::DownloadPublisherList(

@@ -94,7 +94,7 @@ interface BatLedger {
 
   DoDirectTip(string publisher_id,
               int32 amount,
-              string currency);
+              string currency) => (int32 result);
 
   RemoveRecurringTip(string publisher_key) => (int32 result);
   GetBootStamp() => (uint64 boot_stamp);
@@ -208,7 +208,7 @@ interface BatLedgerClient {
   [Sync]
   URIEncode(string value) => (string encoded_value);
 
-  SavePendingContribution(array<ledger.mojom.PendingContribution> list);
+  SavePendingContribution(array<ledger.mojom.PendingContribution> list) => (int32 result);
 
   LoadActivityInfo(string filter) =>
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);

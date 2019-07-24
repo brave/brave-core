@@ -2137,6 +2137,9 @@ void RewardsServiceImpl::OnTipPublisherInfoSaved(ledger::Result result,
     ledger::PublisherInfoPtr info) {
 }
 
+void RewardsServiceImpl::OnDoDirectTip(int result) {
+}
+
 void RewardsServiceImpl::OnTip(const std::string& publisher_key,
                                int amount,
                                bool recurring,
@@ -2157,7 +2160,8 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
   if (!Connected())
     return;
 
-  bat_ledger_->DoDirectTip(publisher_key, amount, "BAT");
+  bat_ledger_->DoDirectTip(publisher_key, amount, "BAT",
+    base::BindOnce(&RewardsServiceImpl::OnDoDirectTip, AsWeakPtr()));
 }
 
 bool SaveContributionInfoOnFileTaskRunner(
@@ -2780,13 +2784,17 @@ ledger::Result SavePendingContributionOnFileTaskRunner(
   return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
 }
 
-void RewardsServiceImpl::OnSavePendingContribution(ledger::Result result) {
+void RewardsServiceImpl::OnSavePendingContribution(
+    ledger::SavePendingContributionCallback callback,
+    ledger::Result result) {
   for (auto& observer : observers_)
     observer.OnPendingContributionSaved(this, result);
+  callback(result);
 }
 
 void RewardsServiceImpl::SavePendingContribution(
-      ledger::PendingContributionList list) {
+      ledger::PendingContributionList list,
+      ledger::SavePendingContributionCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
@@ -2794,7 +2802,8 @@ void RewardsServiceImpl::SavePendingContribution(
                  publisher_info_backend_.get(),
                  std::move(list)),
       base::Bind(&RewardsServiceImpl::OnSavePendingContribution,
-                 AsWeakPtr()));
+                 AsWeakPtr(),
+                 std::move(callback)));
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotalUI(

@@ -74,6 +74,7 @@ using PendingContributionsTotalCallback = std::function<void(double)>;
 using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
 using ShowNotificationCallback = std::function<void(Result)>;
+using SavePendingContributionCallback = std::function<void(ledger::Result)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -195,7 +196,8 @@ class LEDGER_EXPORT LedgerClient {
       ledger::LoadURLCallback callback) = 0;
 
   virtual void SavePendingContribution(
-      ledger::PendingContributionList list) = 0;
+      ledger::PendingContributionList list,
+      ledger::SavePendingContributionCallback callback) = 0;
 
   // Logs debug information
   virtual std::unique_ptr<LogStream> Log(

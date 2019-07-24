@@ -162,7 +162,8 @@ NS_SWIFT_NAME(BraveLedger)
 
 - (void)tipPublisherDirectly:(BATPublisherInfo *)publisher
                       amount:(int)amount
-                    currency:(NSString *)currency;
+                    currency:(NSString *)currency
+                  completion:(void (^)(BATResult result))completion;
 
 
 #pragma mark - Grants

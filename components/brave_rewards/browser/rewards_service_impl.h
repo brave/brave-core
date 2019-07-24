@@ -334,6 +334,7 @@ class RewardsServiceImpl : public RewardsService,
                                  bool success);
   void OnTipPublisherInfoSaved(ledger::Result result,
                                    ledger::PublisherInfoPtr info);
+  void OnDoDirectTip(int result);
   void OnTip(const std::string& publisher_key,
              int amount,
              bool recurring,
@@ -571,9 +572,12 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoPtr publisher_info);
 
   void SavePendingContribution(
-      ledger::PendingContributionList list) override;
+      ledger::PendingContributionList list,
+      ledger::SavePendingContributionCallback callback) override;
 
-  void OnSavePendingContribution(ledger::Result result);
+  void OnSavePendingContribution(
+      ledger::SavePendingContributionCallback callback,
+      ledger::Result result);
 
   void OnRestorePublishersInternal(ledger::OnRestoreCallback callback,
                                    bool result);
