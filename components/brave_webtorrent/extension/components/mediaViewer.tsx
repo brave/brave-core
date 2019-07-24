@@ -26,6 +26,11 @@ interface Props {
 }
 
 export default class MediaViewer extends React.PureComponent<Props, {}> {
+  ref = (elem: HTMLMediaElement | null) => {
+    if (!elem) return
+    elem.play().catch(err => console.error('Autoplay failed', err))
+  }
+
   render () {
     const { torrent, ix } = this.props
 
@@ -45,11 +50,11 @@ export default class MediaViewer extends React.PureComponent<Props, {}> {
       content = <div className='loading'>Loading Media</div>
     } else if (isVideo) {
       content = (
-        <video id='video' src={fileURL} autoPlay={true} controls={true} />
+        <video id='video' src={fileURL} ref={this.ref} controls={true} />
       )
     } else if (isAudio) {
       content = (
-        <audio id='audio' src={fileURL} autoPlay={true} controls={true} />
+        <audio id='audio' src={fileURL} ref={this.ref} controls={true} />
       )
     } else {
       // For security, sandbox and disallow scripts.
