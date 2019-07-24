@@ -107,6 +107,14 @@ typedef enum {
   kScriptTypeClassic = 0,
   kScriptTypeModule,
   kScriptTypeExtension,
+  kExternalFile,
+  kInline,
+  kInlineInsideDocumentWrite,
+  kInlineInsideGeneratedElement,
+  kInternal,
+  kJavascriptUrl,
+  kEvalForScheduledAction,
+  kInspector,
   kScriptTypeUnknown
 } ScriptType;
 std::string ScriptTypeToString(const ScriptType type) noexcept;
