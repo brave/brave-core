@@ -5,13 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from 'brave-ui/features/welcome'
-
-// Images
-import { WelcomeRewardsImage } from 'brave-ui/features/welcome/images'
+import { Content, Title, Paragraph, PrimaryButton } from '../../../components'
 
 // Utils
-import { getLocale } from '../../../common/locale'
+import locale from '../fakeLocale'
+
+// Images
+import { WelcomeThemeImage } from '../../../components/images'
 
 interface Props {
   index: number
@@ -19,7 +19,7 @@ interface Props {
   onClick: () => void
 }
 
-export default class PaymentsBox extends React.PureComponent<Props, {}> {
+export default class ThemingBox extends React.PureComponent<Props, {}> {
   render () {
     const { index, currentScreen, onClick } = this.props
     return (
@@ -29,16 +29,16 @@ export default class PaymentsBox extends React.PureComponent<Props, {}> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <WelcomeRewardsImage />
-        <Title>{getLocale('enableBraveRewards')}</Title>
-        <Paragraph>{getLocale('setupBraveRewards')}</Paragraph>
-        <PrimaryButton
-          level='primary'
-          type='accent'
-          size='large'
-          text={getLocale('enableRewards')}
-          onClick={onClick}
-        />
+        <WelcomeThemeImage />
+        <Title>{locale.chooseYourTheme}</Title>
+        <Paragraph>{locale.findToolbarTheme}</Paragraph>
+          <PrimaryButton
+            level='primary'
+            type='accent'
+            size='large'
+            text={locale.theme}
+            onClick={onClick}
+          />
       </Content>
     )
   }

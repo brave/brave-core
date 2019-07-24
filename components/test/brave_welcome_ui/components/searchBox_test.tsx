@@ -4,9 +4,9 @@
 
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import { Content } from 'brave-ui/features/welcome'
-import { WelcomeSearchImage } from 'brave-ui/features/welcome/images'
-import SearchBox, { Props } from '../../../../components/brave_welcome_ui/components/screens/searchBox'
+import { Content } from '../../../../components/brave_welcome_ui/components'
+import { WelcomeSearchImage } from '../../../../components/brave_welcome_ui/components/images'
+import SearchBox, { Props } from '../../../../components/brave_welcome_ui/containers/screens/searchBox'
 import { mockSearchProviders } from '../../testData'
 
 describe('searchBox component tests', () => {

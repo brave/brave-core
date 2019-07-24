@@ -5,13 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph } from 'brave-ui/features/welcome'
+import { Content, Title, Paragraph } from '../../components'
 
 // Utils
 import { getLocale } from '../../../common/locale'
 
 // Images
-import { WelcomeShieldsImage } from 'brave-ui/features/welcome/images'
+import { WelcomeShieldsImage } from '../../components/images'
 
 interface Props {
   index: number

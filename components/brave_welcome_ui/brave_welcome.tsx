@@ -11,7 +11,7 @@ import Theme from 'brave-ui/theme/brave-default'
 import { ThemeProvider } from 'brave-ui/theme'
 
 // Components
-import App from './components/app'
+import App from './containers/app'
 
 // Utils
 import store from './store'

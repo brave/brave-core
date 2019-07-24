@@ -13,13 +13,13 @@ import {
   SkipButton,
   FooterButton,
   Bullet
-} from 'brave-ui/features/welcome'
+} from '../../../components'
 
 // Shared components
 import { ArrowRightIcon } from 'brave-ui/components/icons'
 
 // Utils
-import { getLocale } from '../../../common/locale'
+import locale from '../fakeLocale'
 
 interface Props {
   currentScreen: number
@@ -32,28 +32,15 @@ interface Props {
 
 export default class FooterBox extends React.PureComponent<Props, {}> {
   render () {
-    const {
-      currentScreen,
-      totalScreensSize,
-      onClickSkip,
-      onClickNext,
-      onClickSlideBullet,
-      onClickDone
-    } = this.props
+    const { currentScreen, totalScreensSize, onClickSkip, onClickNext, onClickSlideBullet, onClickDone } = this.props
     return (
       <Footer>
         <FooterLeftColumn>
-          <SkipButton onClick={onClickSkip}>{getLocale('skipWelcomeTour')}</SkipButton>
+          <SkipButton onClick={onClickSkip}>{locale.skipWelcomeTour}</SkipButton>
         </FooterLeftColumn>
         <FooterMiddleColumn>
           {Array.from({ length: totalScreensSize }, (v: undefined, k: number) => (
-            <Bullet
-              active={currentScreen === k + 1}
-              key={k}
-              onClick={onClickSlideBullet.bind(this, k + 1)}
-            >
-              &bull;
-            </Bullet>
+            <Bullet active={currentScreen === k + 1} key={k} onClick={onClickSlideBullet.bind(this, k + 1)}>&bull;</Bullet>
           ))}
         </FooterMiddleColumn>
         <FooterRightColumn>
@@ -67,7 +54,7 @@ export default class FooterBox extends React.PureComponent<Props, {}> {
                   type='default'
                   size='medium'
                   onClick={onClickNext}
-                  text={getLocale('next')}
+                  text={locale.next}
                   icon={{ position: 'after', image: <ArrowRightIcon /> }}
                 />
               )
@@ -77,7 +64,7 @@ export default class FooterBox extends React.PureComponent<Props, {}> {
                   type='default'
                   size='medium'
                   onClick={onClickDone}
-                  text={getLocale('done')}
+                  text={locale.done}
                 />
             )
           }

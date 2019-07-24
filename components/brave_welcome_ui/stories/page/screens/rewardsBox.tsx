@@ -5,16 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from 'brave-ui/features/welcome'
-
-// Shared components
-import { ArrowRightIcon } from 'brave-ui/components/icons'
-
-// Images
-import { WelcomeLionImage } from 'brave-ui/features/welcome/images'
+import { Content, Title, Paragraph, PrimaryButton } from '../../../components'
 
 // Utils
-import { getLocale } from '../../../common/locale'
+import locale from '../fakeLocale'
+
+// Images
+import { WelcomeRewardsImage } from '../../../components/images'
 
 interface Props {
   index: number
@@ -22,26 +19,25 @@ interface Props {
   onClick: () => void
 }
 
-export default class ThemingBox extends React.PureComponent<Props, {}> {
+export default class PaymentsBox extends React.PureComponent<Props, {}> {
   render () {
     const { index, currentScreen, onClick } = this.props
     return (
       <Content
         zIndex={index}
-        active={currentScreen === index}
+        active={index === currentScreen}
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <WelcomeLionImage />
-        <Title>{getLocale('welcome')}</Title>
-        <Paragraph>{getLocale('whatIsBrave')}</Paragraph>
+        <WelcomeRewardsImage />
+        <Title>{locale.enableBraveRewards}</Title>
+        <Paragraph>{locale.setupBraveRewards}</Paragraph>
         <PrimaryButton
           level='primary'
           type='accent'
           size='large'
-          text={getLocale('letsGo')}
+          text={locale.getStarted}
           onClick={onClick}
-          icon={{ position: 'after', image: <ArrowRightIcon /> }}
         />
       </Content>
     )

@@ -4,7 +4,7 @@
 
 import { Dispatch } from 'redux'
 import { getSearchEngineProvidersSuccess, getBrowserProfilesSuccess } from './actions/welcome_actions'
-import { State as ImportBoxState } from '../brave_welcome_ui/components/screens/importBox'
+import { State as ImportBoxState } from './containers/screens/importBox'
 
 // Search box
 
