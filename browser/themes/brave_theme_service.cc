@@ -164,10 +164,22 @@ BraveThemeService::~BraveThemeService() {
 }
 
 void BraveThemeService::Init(Profile* profile) {
+  ThemeService::Init(profile);
+
   // In test, kBraveThemeType isn't registered.
   if (profile->GetPrefs()->FindPreference(kBraveThemeType)) {
     RecoverPrefStates(profile);
     OverrideDefaultThemeIfNeeded(profile);
+
+    // Prevent to overwrite system theme type by using tor/guest profile's one.
+    // System theme type is global value not the profile specific.
+    // So, SetSystemTheme() should not be called by tor/guest profile.
+    // If not, system theme is changed when tor/guest profile is created.
+    // Also, brave theme type could not be changed by tor/guest window.
+    // So, we don't need to care about pref change of their profile.
+    if (brave::IsTorProfile(profile) || brave::IsGuestProfile(profile))
+      return;
+
     // Start with proper system theme to make brave theme and
     // base ui components theme use same theme.
     SetSystemTheme(static_cast<BraveThemeType>(
@@ -182,8 +194,6 @@ void BraveThemeService::Init(Profile* profile) {
     brave_theme_event_router_.reset(
         new extensions::BraveThemeEventRouter(profile));
   }
-
-  ThemeService::Init(profile);
 }
 
 SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
@@ -194,7 +204,8 @@ SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
 #endif
 
   // Brave Tor profiles are always 'incognito' (for now)
-  if (!incognito && brave::IsTorProfile(profile()))
+  if (!incognito &&
+      (brave::IsTorProfile(profile()) || brave::IsGuestProfile(profile())))
     incognito = true;
   const BraveThemeType theme = GetActiveBraveThemeType(profile());
   const base::Optional<SkColor> braveColor =

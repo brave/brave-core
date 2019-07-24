@@ -101,6 +101,13 @@ source_set("ui") {
     ]
   }
 
+  if (is_win || is_mac) {
+    sources += [
+      "views/frame/brave_browser_frame.cc",
+      "views/frame/brave_browser_frame.h",
+    ]
+  }
+
   if (is_linux) {
     sources += [
       "views/brave_browser_main_extra_parts_views_linux.cc",
