@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/web_applications/components/web_app_shortcut_mac.mm b/chrome/browser/web_applications/components/web_app_shortcut_mac.mm
-index 79f0cdfae88cf89136eefde95fc983b931317189..e18886ddd72040b70da344d97531eefa7e1062cf 100644
+index 31e6cdc6f0cca049b298b6028befe6d272c64a60..70def19fe505275de401e6de0bc18c46de44a731 100644
 --- a/chrome/browser/web_applications/components/web_app_shortcut_mac.mm
 +++ b/chrome/browser/web_applications/components/web_app_shortcut_mac.mm
-@@ -905,6 +905,7 @@ base::FilePath WebAppShortcutCreator::GetApplicationsDirname() const {
+@@ -893,6 +893,7 @@ base::FilePath WebAppShortcutCreator::GetApplicationsDirname() const {
    if (path.empty())
      return path;
  
