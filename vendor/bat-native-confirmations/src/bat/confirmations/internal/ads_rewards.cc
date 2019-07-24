@@ -275,7 +275,7 @@ void AdsRewards::CancelRetry() {
   confirmations_client_->KillTimer(retry_timer_id_);
   retry_timer_id_ = 0;
 
-  next_retry_backoff_count_ = 0;
+  next_retry_start_timer_in_ = 0;
 }
 
 bool AdsRewards::IsRetrying() const {
