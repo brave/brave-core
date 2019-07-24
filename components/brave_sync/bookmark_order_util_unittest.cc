@@ -39,6 +39,13 @@ TEST(BookmarkOrderUtilTest, OrderToIntVect_SemiWrongValue) {
   EXPECT_EQ(result.at(0), 5);
 }
 
+TEST(BookmarkOrderUtilTest, ToOrderString) {
+  EXPECT_EQ(ToOrderString({}), "");
+  EXPECT_EQ(ToOrderString({1}), "1");
+  EXPECT_EQ(ToOrderString({1, 2, 3}), "1.2.3");
+  EXPECT_EQ(ToOrderString({-1, 2, 3}), "");
+}
+
 TEST(BookmarkOrderUtilTest, CompareOrder) {
   EXPECT_FALSE(CompareOrder("", ""));
   EXPECT_TRUE(CompareOrder("1", "2"));
@@ -53,6 +60,55 @@ TEST(BookmarkOrderUtilTest, CompareOrder) {
   EXPECT_TRUE(CompareOrder("1.7.0.1", "1.7.1"));
   EXPECT_TRUE(CompareOrder("1.7.0.1", "1.7.0.2"));
   EXPECT_FALSE(CompareOrder("1.7.0.2", "1.7.0.1"));
+
+  EXPECT_TRUE(CompareOrder("2.0.8", "2.0.8.0.1"));
+  EXPECT_TRUE(CompareOrder("2.0.8.0.1", "2.0.8.1"));
+
+  EXPECT_TRUE(CompareOrder("2.0.8", "2.0.8.0.0.1"));
+  EXPECT_TRUE(CompareOrder("2.0.8.0.0.1", "2.0.8.0.1"));
+
+  EXPECT_TRUE(CompareOrder("2.0.8.10", "2.0.8.10.1"));
+  EXPECT_TRUE(CompareOrder("2.0.8.10.1", "2.0.8.11.1"));
+
+  EXPECT_TRUE(CompareOrder("2.0.0.1", "2.0.1"));
+
+  EXPECT_TRUE(CompareOrder("2.5.6.3", "2.5.7.8.2"));
+  EXPECT_TRUE(CompareOrder("2.5.6.3", "2.5.6.4"));
+  EXPECT_TRUE(CompareOrder("2.5.6.4", "2.5.7.8.2"));
+
+  EXPECT_TRUE(CompareOrder("2.0.8.10", "2.0.8.11"));
+  EXPECT_TRUE(CompareOrder("2.0.8.11", "2.0.8.11.1"));
+}
+
+TEST(BookmarkOrderUtilTest, GetOrder) {
+  // Ported from https://github.com/brave/sync/blob/staging/test/client/bookmarkUtil.js
+  EXPECT_EQ(GetOrder("", "2.0.1", ""), "2.0.0.1");
+
+  EXPECT_EQ(GetOrder("", "2.0.9", ""), "2.0.8");
+  EXPECT_EQ(GetOrder("2.0.8", "", ""), "2.0.9");
+  EXPECT_EQ(GetOrder("2.0.8", "2.0.9", ""), "2.0.8.1");
+
+  EXPECT_EQ(GetOrder("2.0.8", "2.0.8.1", ""), "2.0.8.0.1");
+  EXPECT_EQ(GetOrder("2.0.8", "2.0.8.0.1", ""), "2.0.8.0.0.1");
+  EXPECT_EQ(GetOrder("2.0.8", "2.0.8.0.0.1", ""), "2.0.8.0.0.0.1");
+
+  EXPECT_EQ(GetOrder("2.0.8.1", "2.0.9", ""), "2.0.8.2");
+  EXPECT_EQ(GetOrder("2.0.8.1", "2.0.10", ""), "2.0.8.2");
+  EXPECT_EQ(GetOrder("2.0.8.10", "2.0.8.15", ""), "2.0.8.11");
+
+  EXPECT_EQ(GetOrder("2.0.8.10", "2.0.8.15.1", ""), "2.0.8.11");
+  EXPECT_EQ(GetOrder("2.0.8.10", "2.0.8.11.1", ""), "2.0.8.11");
+
+  EXPECT_EQ(GetOrder("2.0.8.11", "2.0.8.11.1", ""), "2.0.8.11.0.1");
+
+  EXPECT_EQ(GetOrder("2.0.8.10.0.1", "2.0.8.15.1", ""), "2.0.8.10.0.2");
+  EXPECT_EQ(GetOrder("", "", "2.0.9"), "2.0.9.1");
+
+  EXPECT_EQ(GetOrder("2.5.6.3", "2.5.7.8.2", ""), "2.5.6.4");
+  EXPECT_EQ(GetOrder("2.5.6.35", "2.5.7.8.2", ""), "2.5.6.36");
+
+  EXPECT_EQ(GetOrder("1.1.1.2", "1.1.1.2.1", ""), "1.1.1.2.0.1");
+  EXPECT_EQ(GetOrder("1.1.1.2.1", "1.1.1.3", ""), "1.1.1.2.2");
 }
 
 }   // namespace brave_sync
