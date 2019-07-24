@@ -202,7 +202,7 @@ extension Bookmark {
                            syncOrder: String? = nil,
                            save: Bool = true,
                            sendToSync: Bool = true,
-                           context: WriteContext = .new) {
+                           context: WriteContext = .new(inMemory: false)) {
         
         DataController.perform(context: context) { context in
             let site = SyncSite()
@@ -233,7 +233,7 @@ extension Bookmark {
                               save: Bool = true,
                               sendToSync: Bool = true,
                               parentFolder: Bookmark? = nil,
-                              context: WriteContext = .new) {
+                              context: WriteContext = .new(inMemory: false)) {
         
         DataController.perform(context: context, save: save, task: { context in
             let bookmark = root
@@ -344,7 +344,7 @@ extension Bookmark {
     private func updateInternal(customTitle: String?, url: String?, newSyncOrder: String? = nil,
                                 save: Bool = true, sendToSync: Bool = true,
                                 location: SaveLocation = .keep,
-                                context: WriteContext = .new) {
+                                context: WriteContext = .new(inMemory: false)) {
         
         DataController.perform(context: context) { context in
             guard let bookmarkToUpdate = context.object(with: self.objectID) as? Bookmark else { return }
@@ -498,7 +498,7 @@ extension Bookmark {
     
     // MARK: Delete
     
-    private func deleteInternal(save: Bool = true, sendToSync: Bool = true, context: WriteContext = .new) {
+    private func deleteInternal(save: Bool = true, sendToSync: Bool = true, context: WriteContext = .new(inMemory: false)) {
         func deleteFromStore(context: WriteContext) {
             DataController.perform(context: context, save: save) { context in
                 let objectOnContext = context.object(with: self.objectID)
@@ -561,7 +561,7 @@ extension Bookmark {
         // As for now, the return value for adding bookmark is never used.
     }
 
-    func updateResolvedRecord(_ record: SyncRecord?, context: WriteContext = .new) {
+    func updateResolvedRecord(_ record: SyncRecord?, context: WriteContext = .new(inMemory: false)) {
         guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
         title = site.title
         syncParentUUID = bookmark.parentFolderObjectId

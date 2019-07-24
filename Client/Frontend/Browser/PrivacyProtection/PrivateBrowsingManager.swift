@@ -12,7 +12,7 @@ final class PrivateBrowsingManager {
             if oldValue != isPrivateBrowsing {
                 NotificationCenter.default.post(name: .PrivacyModeChanged, object: nil)
                 if !isPrivateBrowsing {
-                    Domain.resetPrivateBrowsingShieldOverrides()
+                    Domain.clearInMemoryDomains()
                 }
             }
         }

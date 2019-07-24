@@ -123,7 +123,7 @@ extension Device {
         }
     }
     
-    func updateResolvedRecord(_ record: SyncRecord?, context: WriteContext = .new) {
+    func updateResolvedRecord(_ record: SyncRecord?, context: WriteContext = .new(inMemory: false)) {
         guard let root = record as? SyncDevice else { return }
         self.name = root.name
         self.deviceId = root.deviceId

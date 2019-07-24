@@ -22,39 +22,39 @@ class DomainTests: CoreDataTestCase {
     }
     
     func testGetOrCreate() {
-        XCTAssertNotNil(Domain.getOrCreate(forUrl: url))
+        XCTAssertNotNil(Domain.getOrCreate(forUrl: url, persistent: true))
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         // Try to add the same domain again, verify no new object is created
-        XCTAssertNotNil(Domain.getOrCreate(forUrl: url))
+        XCTAssertNotNil(Domain.getOrCreate(forUrl: url, persistent: true))
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         // Add another domain, verify that second object is created
-        XCTAssertNotNil(Domain.getOrCreate(forUrl: url2))
+        XCTAssertNotNil(Domain.getOrCreate(forUrl: url2, persistent: true))
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
     }
     
     func testGetOrCreateURLs() {
         // This also validates that the schemes are being correctly saved
-        XCTAssertEqual(url.absoluteString, Domain.getOrCreate(forUrl: url).url)
-        XCTAssertEqual(url2.absoluteString, Domain.getOrCreate(forUrl: url2).url)
+        XCTAssertEqual(url.absoluteString, Domain.getOrCreate(forUrl: url, persistent: true).url)
+        XCTAssertEqual(url2.absoluteString, Domain.getOrCreate(forUrl: url2, persistent: true).url)
         
         let url3 = URL(string: "https://brave.com")!
         let url4 = URL(string: "data://brave.com")!
-        XCTAssertEqual(url3.absoluteString, Domain.getOrCreate(forUrl: url3).url)
-        XCTAssertEqual(url4.absoluteString, Domain.getOrCreate(forUrl: url4).url)
+        XCTAssertEqual(url3.absoluteString, Domain.getOrCreate(forUrl: url3, persistent: true).url)
+        XCTAssertEqual(url4.absoluteString, Domain.getOrCreate(forUrl: url4, persistent: true).url)
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 4)
     }
     
     func testDefaultShieldSettings() {
         
-        let domain = Domain.getOrCreate(forUrl: url)
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, isPrivateBrowsing: true))
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.HTTPSE, isPrivateBrowsing: true))
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, isPrivateBrowsing: true))
-        XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, isPrivateBrowsing: true))
-        XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, isPrivateBrowsing: true))
-        XCTAssertFalse(domain.isShieldExpected(BraveShield.FpProtection, isPrivateBrowsing: true))
+        let domain = Domain.getOrCreate(forUrl: url, persistent: true)
+        XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp))
+        XCTAssertTrue(domain.isShieldExpected(BraveShield.HTTPSE))
+        XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing))
+        XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff))
+        XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript))
+        XCTAssertFalse(domain.isShieldExpected(BraveShield.FpProtection))
         
         XCTAssertEqual(domain.bookmarks?.count, 0)
         XCTAssertEqual(domain.historyItems?.count, 0)
@@ -63,7 +63,7 @@ class DomainTests: CoreDataTestCase {
     
     /// Tests non-HTTPSE shields
     func testNormalShieldSettings() {
-        let domain = Domain.getOrCreate(forUrl: url2HTTPS)
+        
         backgroundSaveAndWaitForExpectation {
             Domain.setBraveShield(forUrl: url2HTTPS, shield: .SafeBrowsing, isOn: true, isPrivateBrowsing: false)
         }
@@ -71,15 +71,11 @@ class DomainTests: CoreDataTestCase {
         backgroundSaveAndWaitForExpectation {
             Domain.setBraveShield(forUrl: url2HTTPS, shield: .AdblockAndTp, isOn: false, isPrivateBrowsing: false)
         }
-        
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, isPrivateBrowsing: false))
-        // Not testing via isSheildExpected, since that adds default checks
-        XCTAssertFalse(domain.shield_adblockAndTp == 0)
+        let domain = Domain.getOrCreate(forUrl: url2HTTPS, persistent: true)
+        XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing))
         
         // These should be the same in this situation
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, isPrivateBrowsing: true))
-        // Not testing via isSheildExpected, since that adds default checks
-        XCTAssertFalse(domain.shield_adblockAndTp == 0)
+        XCTAssertFalse(domain.isShieldExpected(BraveShield.AdblockAndTp))
         
         // Setting to "new" values
         // Setting to same value
@@ -91,12 +87,8 @@ class DomainTests: CoreDataTestCase {
             Domain.setBraveShield(forUrl: url2HTTPS, shield: .AdblockAndTp, isOn: true, isPrivateBrowsing: false)
         }
         
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, isPrivateBrowsing: false))
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, isPrivateBrowsing: false))
-        
-        // These should be the same in this situation
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, isPrivateBrowsing: true))
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, isPrivateBrowsing: true))
+        XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing))
+        XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp))
     }
     
     /// Testing HTTPSE
@@ -109,11 +101,11 @@ class DomainTests: CoreDataTestCase {
         // Should be one for HTTP and one for HTTPS schemes
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
         
-        let domainRefetch1 = Domain.getOrCreate(forUrl: url)
-        XCTAssertEqual(domainRefetch1.isShieldExpected(.HTTPSE, isPrivateBrowsing: false), true)
+        let domainRefetch1 = Domain.getOrCreate(forUrl: url, persistent: true)
+        XCTAssertEqual(domainRefetch1.isShieldExpected(.HTTPSE), true)
         
-        let domainRefetch2 = Domain.getOrCreate(forUrl: urlHTTPS)
-        XCTAssertEqual(domainRefetch2.isShieldExpected(.HTTPSE, isPrivateBrowsing: false), true)
+        let domainRefetch2 = Domain.getOrCreate(forUrl: urlHTTPS, persistent: true)
+        XCTAssertEqual(domainRefetch2.isShieldExpected(.HTTPSE), true)
     }
     
     /// Testing HTTPSE
@@ -126,10 +118,10 @@ class DomainTests: CoreDataTestCase {
         // Should be one for HTTP and one for HTTPS schemes
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
         
-        let domainRefetch1 = Domain.getOrCreate(forUrl: url2)
-        XCTAssertEqual(domainRefetch1.isShieldExpected(.HTTPSE, isPrivateBrowsing: false), true)
+        let domainRefetch1 = Domain.getOrCreate(forUrl: url2, persistent: true)
+        XCTAssertEqual(domainRefetch1.isShieldExpected(.HTTPSE), true)
         
-        let domainRefetch2 = Domain.getOrCreate(forUrl: url2HTTPS)
-        XCTAssertEqual(domainRefetch2.isShieldExpected(.HTTPSE, isPrivateBrowsing: false), true)
+        let domainRefetch2 = Domain.getOrCreate(forUrl: url2HTTPS, persistent: true)
+        XCTAssertEqual(domainRefetch2.isShieldExpected(.HTTPSE), true)
     }
 }

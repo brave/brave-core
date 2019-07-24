@@ -55,17 +55,17 @@ class SafeBrowsingTests: XCTestCase {
         
         // Brave domain will have safe browsing shield turned off.
         // No need to call getOrCreateForUrl here.
-        Domain.setBraveShieldInternal(forUrl: braveUrl, shield: .SafeBrowsing, isOn: false, isPrivateBrowsing: false, context: .existing(context))
+        Domain.setBraveShieldInternal(forUrl: braveUrl, shield: .SafeBrowsing, isOn: false, context: .existing(context))
         
         // example.com will have default value nil which means true
-        _ = Domain.getOrCreate(forUrl: exampleUrl)
+        _ = Domain.getOrCreate(forUrl: exampleUrl, persistent: true)
         
         // Global shield on, local shield should have precedence over global shield
         XCTAssertFalse(sb.shouldBlock(braveUrl))
         XCTAssert(sb.shouldBlock(exampleUrl))
         
         Preferences.Shields.blockPhishingAndMalware.value = false
-        Domain.setBraveShieldInternal(forUrl: exampleUrl, shield: .SafeBrowsing, isOn: true, isPrivateBrowsing: false, context: .existing(context))
+        Domain.setBraveShieldInternal(forUrl: exampleUrl, shield: .SafeBrowsing, isOn: true, context: .existing(context))
         
         XCTAssertFalse(sb.shouldBlock(braveUrl))
         XCTAssert(sb.shouldBlock(exampleUrl))

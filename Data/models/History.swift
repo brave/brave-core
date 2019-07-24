@@ -95,7 +95,7 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
     }
     
     public func delete() {
-        delete(context: .new)
+        delete(context: .new(inMemory: false))
     }
 
     public class func deleteAll(_ completionOnMain: @escaping () -> Void) {
