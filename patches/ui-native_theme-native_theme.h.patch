@@ -1,9 +1,9 @@
 diff --git a/ui/native_theme/native_theme.h b/ui/native_theme/native_theme.h
-index 15f53916e735a8bd4d7b50d5a06b2117b4d3574a..dc0492f685eb29290db09a2bf61ad20f4228c9b3 100644
+index 97ced9d2495c33aad710d8ec5208b8107cd94ed9..c9760db651c897b6dfdaee11dc7ad44d3180c2b1 100644
 --- a/ui/native_theme/native_theme.h
 +++ b/ui/native_theme/native_theme.h
-@@ -428,6 +428,7 @@ class NATIVE_THEME_EXPORT NativeTheme {
-   void SetDarkModeParent(NativeTheme* dark_mode_parent);
+@@ -430,6 +430,7 @@ class NATIVE_THEME_EXPORT NativeTheme {
+   virtual base::Optional<CaptionStyle> GetSystemCaptionStyle() const;
  
   protected:
 +  friend void SetDarkMode(bool dark_mode);

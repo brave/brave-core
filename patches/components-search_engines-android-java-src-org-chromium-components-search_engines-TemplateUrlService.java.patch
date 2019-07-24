@@ -1,0 +1,30 @@
+diff --git a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
+index 04bfbf2719ee28d3a61f02b938ed9de7f16d7aab..0f651e56a92793c5656bef94c65ab7602d9ab2d8 100644
+--- a/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
++++ b/components/search_engines/android/java/src/org/chromium/components/search_engines/TemplateUrlService.java
+@@ -11,6 +11,7 @@ import org.chromium.base.ThreadUtils;
+ import org.chromium.base.VisibleForTesting;
+ import org.chromium.base.annotations.CalledByNative;
+ import org.chromium.base.task.PostTask;
++import org.chromium.chrome.browser.search_engines.BraveTemplateUrlService;
+ import org.chromium.content_public.browser.UiThreadTaskTraits;
+ 
+ import java.util.ArrayList;
+@@ -45,7 +46,7 @@ public class TemplateUrlService {
+     private final ObserverList<TemplateUrlServiceObserver> mObservers = new ObserverList<>();
+     private long mNativeTemplateUrlServiceAndroid;
+ 
+-    private TemplateUrlService(long nativeTemplateUrlServiceAndroid) {
++    protected TemplateUrlService(long nativeTemplateUrlServiceAndroid) {
+         // Note that this technically leaks the native object, however, TemplateUrlService
+         // is a singleton that lives forever and there's no clean shutdown of Chrome on Android.
+         mNativeTemplateUrlServiceAndroid = nativeTemplateUrlServiceAndroid;
+@@ -53,7 +54,7 @@ public class TemplateUrlService {
+ 
+     @CalledByNative
+     private static TemplateUrlService create(long nativeTemplateUrlServiceAndroid) {
+-        return new TemplateUrlService(nativeTemplateUrlServiceAndroid);
++        return new BraveTemplateUrlService(nativeTemplateUrlServiceAndroid);
+     }
+ 
+     @CalledByNative

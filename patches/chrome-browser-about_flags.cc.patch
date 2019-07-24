@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 61bb2977bb7c9711465a6928b45f6a69be7f4080..c8f888c1423d2e53fc94bffc9db0ab51c86e0a4d 100644
+index 381531a0116a75ba2d4d7bfe9d231356b9d7cb0c..ed26730b9ada724d4ce9a702a54c2be44c462410 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -254,14 +254,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
+@@ -265,14 +265,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
  const FeatureEntry::Choice kTraceUploadURL[] = {
      {flags_ui::kGenericExperimentChoiceDisabled, "", ""},
      {flag_descriptions::kTraceUploadUrlChoiceOther, switches::kTraceUploadURL,
