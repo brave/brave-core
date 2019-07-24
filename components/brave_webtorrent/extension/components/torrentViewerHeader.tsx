@@ -64,6 +64,7 @@ export default class TorrentViewerHeader extends React.PureComponent<
         <div className='__column'>
           <Button
             type='accent'
+            level={!torrent ? 'primary' : 'secondary'}
             text={mainButtonText}
             onClick={this.onClick}
             className='__button'

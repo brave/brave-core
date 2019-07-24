@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { Table } from 'brave-ui/components'
+import { Heading, Table } from 'brave-ui/components'
 import { Cell, Row } from 'brave-ui/components/dataTables/table/index'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import * as prettierBytes from 'prettier-bytes'
@@ -22,9 +22,8 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
     if (!torrent || !torrent.files) {
       return (
         <div className='torrentSubhead'>
-          <p>
-            Click "Start Torrent" to begin your download. WebTorrent can be
-            disabled from the extensions panel in Settings.
+          <p className='starterText'>
+            Click "Start Torrent" to begin your download.
           </p>
         </div>
       )
@@ -94,6 +93,7 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
 
     return (
       <div>
+        <Heading children='Files' level={2} className='torrentHeading' />
         <Table header={header} rows={rows}>
           <div className='loadingContainer'>
             <div className='__icon'>
