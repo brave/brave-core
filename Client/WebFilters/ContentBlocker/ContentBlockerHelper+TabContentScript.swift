@@ -28,8 +28,8 @@ extension ContentBlockerHelper: TabContentScript {
             let mainDocumentUrl = tab?.webView?.url else {
             return
         }
-        
-        let domain = Domain.getOrCreate(forUrl: mainDocumentUrl)
+        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+        let domain = Domain.getOrCreate(forUrl: mainDocumentUrl, persistent: !isPrivateBrowsing)
         if let shieldsAllOff = domain.shield_allOff, Bool(truncating: shieldsAllOff) {
             // if domain is "all_off", can just skip
             return
@@ -39,9 +39,7 @@ extension ContentBlockerHelper: TabContentScript {
         
         let resourceType = TPStatsResourceType(rawValue: body["resourceType"] ?? "")
         
-        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-        if resourceType == .script && domain.isShieldExpected(.NoScript,
-                                                              isPrivateBrowsing: isPrivateBrowsing) {
+        if resourceType == .script && domain.isShieldExpected(.NoScript) {
             self.stats = self.stats.addingScriptBlock()
             BraveGlobalShieldStats.shared.scripts += 1
             return

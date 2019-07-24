@@ -164,7 +164,7 @@ public class Sync: JSInjector {
         leaveSyncGroupInternal(sendToSync: sendToSync)
     }
     
-    func leaveSyncGroupInternal(sendToSync: Bool, context: WriteContext = .new) {
+    func leaveSyncGroupInternal(sendToSync: Bool, context: WriteContext = .new(inMemory: false)) {
         syncSeed = nil
         
         DataController.perform(context: context) { context in

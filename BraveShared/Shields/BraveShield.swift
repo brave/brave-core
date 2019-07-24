@@ -30,18 +30,3 @@ public enum BraveShield {
         }
     }
 }
-
-public class PrivateBrowsingShieldOverride {
-    public static var privateModeOverrides: [String: PrivateBrowsingShieldOverride] = [:]
-    
-    public var overrides: [BraveShield: Bool] = [:]
-    
-    public init(shield: BraveShield, isOn: Bool) {
-        overrides[shield] = isOn
-    }
-    
-    public subscript(shield: BraveShield) -> Bool? {
-        get { return overrides[shield] }
-        set { overrides[shield] = newValue }
-    }
-}

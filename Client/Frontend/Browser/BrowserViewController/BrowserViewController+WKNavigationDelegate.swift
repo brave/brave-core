@@ -143,7 +143,7 @@ extension BrowserViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-
+        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
         // This is the normal case, opening a http or https url, which we handle by loading them in this WKWebView. We
         // always allow this. Additionally, data URIs are also handled just like normal web pages.
 
@@ -158,9 +158,8 @@ extension BrowserViewController: WKNavigationDelegate {
             
             if let urlHost = url.normalizedHost {
                 if let mainDocumentURL = navigationAction.request.mainDocumentURL, url.scheme == "http" {
-                    let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL)
-                    let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-                    if domainForShields.isShieldExpected(.HTTPSE, isPrivateBrowsing: isPrivateBrowsing) && HttpsEverywhereStats.shared.shouldUpgrade(url) {
+                    let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
+                    if domainForShields.isShieldExpected(.HTTPSE) && HttpsEverywhereStats.shared.shouldUpgrade(url) {
                         // Check if HTTPSE is on and if it is, whether or not this http url would be upgraded
                         pendingHTTPUpgrades[urlHost] = navigationAction.request
                     }
@@ -183,7 +182,7 @@ extension BrowserViewController: WKNavigationDelegate {
                 navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true {
                 
                 // Identify specific block lists that need to be applied to the requesting domain
-                let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL)
+                let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
                 let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
                 let controller = webView.configuration.userContentController
                 
@@ -191,12 +190,11 @@ extension BrowserViewController: WKNavigationDelegate {
                 on.compactMap { $0.rule }.forEach(controller.add)
                 off.compactMap { $0.rule }.forEach(controller.remove)
               
-                let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
                 if let tab = tabManager[webView] {
-                    tab.userScriptManager?.isFingerprintingProtectionEnabled = domainForShields.isShieldExpected(.FpProtection, isPrivateBrowsing: isPrivateBrowsing)
+                    tab.userScriptManager?.isFingerprintingProtectionEnabled = domainForShields.isShieldExpected(.FpProtection)
                 }
 
-                webView.configuration.preferences.javaScriptEnabled = !domainForShields.isShieldExpected(.NoScript, isPrivateBrowsing: isPrivateBrowsing)
+                webView.configuration.preferences.javaScriptEnabled = !domainForShields.isShieldExpected(.NoScript)
             }
             
             //Cookie Blocking code below
