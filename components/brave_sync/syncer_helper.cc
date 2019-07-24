@@ -13,34 +13,33 @@
 namespace brave_sync {
 namespace {
 
-void ClearOrder(const bookmarks::BookmarkNode* leaf) {
-  bookmarks::BookmarkNode* node = const_cast<bookmarks::BookmarkNode*>(leaf);
-  while (!node->is_permanent_node()) {
-    node->DeleteMetaInfo("order");
-    node = node->parent();
-  }
-}
-
 void SetOrder(bookmarks::BookmarkModel* model,
               const bookmarks::BookmarkNode* node,
               const std::string& parent_order) {
   DCHECK(!parent_order.empty());
   int index = node->parent()->GetIndexOf(node);
-  std::string order = parent_order + "." + base::NumberToString(index + 1);
-  model->SetNodeMetaInfo(node, "order", order);
-}
 
-void ReCalculateOrder(bookmarks::BookmarkModel* model,
-                      const bookmarks::BookmarkNode* node) {
-  DCHECK(!node->is_permanent_node());
-  std::string parent_order;
-  const bookmarks::BookmarkNode* parent = node->parent();
-  parent->GetMetaInfo("order", &parent_order);
-  if (parent_order.empty()) {
-    ReCalculateOrder(model, node->parent());
-    parent->GetMetaInfo("order", &parent_order);
-  }
-  SetOrder(model, node, parent_order);
+  bookmarks::BookmarkNode* parent = const_cast<bookmarks::BookmarkNode*>(
+      node->parent());
+
+  auto* prev_node = index == 0 ?
+    nullptr :
+    parent->GetChild(index - 1);
+  auto* next_node = index == parent->child_count() - 1 ?
+    nullptr :
+    parent->GetChild(index + 1);
+
+  std::string prev_order;
+  std::string next_order;
+  if (prev_node)
+    prev_node->GetMetaInfo("order", &prev_order);
+
+  if (next_node)
+    next_node->GetMetaInfo("order", &next_order);
+
+  std::string order = brave_sync::GetOrder(prev_order,
+      next_order, parent_order);
+  model->SetNodeMetaInfo(node, "order", order);
 }
 
 uint64_t GetIndexByOrder(const std::string& record_order) {
@@ -87,16 +86,11 @@ void RepositionRespectOrder(
 
 void AddBraveMetaInfo(
     const bookmarks::BookmarkNode* node,
-    bookmarks::BookmarkModel* model,
-    bool has_new_parent) {
-  if (has_new_parent) {
-    ClearOrder(node);
-    ReCalculateOrder(model, node);
-  } else {
-    std::string parent_order;
-    node->parent()->GetMetaInfo("order", &parent_order);
-    SetOrder(model, node, parent_order);
-  }
+    bookmarks::BookmarkModel* model) {
+
+  std::string parent_order;
+  node->parent()->GetMetaInfo("order", &parent_order);
+  SetOrder(model, node, parent_order);
 
   std::string object_id;
   node->GetMetaInfo("object_id", &object_id);

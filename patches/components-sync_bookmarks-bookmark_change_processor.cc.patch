@@ -1,12 +1,12 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
-index 35a73a07bbcdd8aeba13acf37c6754aadb039768..f00db7611ccf75b66d8f4bf2db20566d45711f60 100644
+index 35a73a07bbcdd8aeba13acf37c6754aadb039768..52483687b7929da553b10f26423486597b1ed240 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.cc
 +++ b/components/sync_bookmarks/bookmark_change_processor.cc
 @@ -87,6 +87,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
    bookmark_specifics.set_creation_time_us(src->date_added().ToInternalValue());
    dst->SetBookmarkSpecifics(bookmark_specifics);
    SetSyncNodeFavicon(src, model, dst);
-+  brave_sync::AddBraveMetaInfo(src, model, false);
++  brave_sync::AddBraveMetaInfo(src, model);
    SetSyncNodeMetaInfo(src, dst);
  }
  
@@ -43,12 +43,10 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..f00db7611ccf75b66d8f4bf2db20566d
    CreateOrUpdateSyncNode(node);
  }
  
-@@ -489,7 +493,8 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
-       }
+@@ -490,6 +494,7 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
        DCHECK_EQ(sync_child.GetParentId(),
                  model_associator_->GetSyncIdFromChromeId(node->id()));
--
-+ 
+ 
 +      BRAVE_BOOKMARK_CHANGE_PROCESSOR_CHILDREN_REORDERED
        if (!PlaceSyncNode(MOVE, node, i, &trans, &sync_child,
                           model_associator_)) {

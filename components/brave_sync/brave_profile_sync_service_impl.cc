@@ -601,6 +601,7 @@ int BraveProfileSyncServiceImpl::GetDisableReasons() const {
   // kSyncManaged is set by Brave so it will contain
   // DISABLE_REASON_ENTERPRISE_POLICY and
   // SaveCardBubbleControllerImpl::ShouldShowSignInPromo will return false.
+  // kSyncManaged is disabled by us
   return ProfileSyncService::GetDisableReasons();
 }
 

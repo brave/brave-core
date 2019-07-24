@@ -17,9 +17,7 @@ class BookmarkNode;
 namespace brave_sync {
 
 void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
-                      bookmarks::BookmarkModel* bookmark_model,
-                      bool has_new_parent);
-
+                      bookmarks::BookmarkModel* bookmark_model);
 
 // |src| is the node which is about to be inserted into |parent|
 uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
