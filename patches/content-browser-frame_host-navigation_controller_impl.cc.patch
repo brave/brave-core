@@ -1,8 +1,8 @@
 diff --git a/content/browser/frame_host/navigation_controller_impl.cc b/content/browser/frame_host/navigation_controller_impl.cc
-index f50c1283c195a9fdffbf737a0368cf4ffe3940d5..18cb6d0152833040a0aede4145b9c33c7bc86bc2 100644
+index 6a3cca0f846c944f23afe91ca149a0aa28bc18aa..f6a8ddd17e4abe87b5ce608e7aaec6516e0d7ffb 100644
 --- a/content/browser/frame_host/navigation_controller_impl.cc
 +++ b/content/browser/frame_host/navigation_controller_impl.cc
-@@ -2817,16 +2817,17 @@ void NavigationControllerImpl::NavigateWithoutEntry(
+@@ -2783,16 +2783,17 @@ void NavigationControllerImpl::NavigateWithoutEntry(
    // Note: we intentionally leave the pending entry in place for renderer debug
    // URLs, unlike the cases below where we clear it if the navigation doesn't
    // proceed.

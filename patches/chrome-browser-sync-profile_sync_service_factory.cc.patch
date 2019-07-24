@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sync/profile_sync_service_factory.cc b/chrome/browser/sync/profile_sync_service_factory.cc
-index 5059e39e28bb076eb26cd5fda1f61223591023b7..ef2ecbb8b653663fdf5dbd76adca2a87543fd6e7 100644
+index ecb45aa8991c391c2e4caef67b77f59782a8ee53..089e91b16ac54ba7ea0907363f14675570d4b67e 100644
 --- a/chrome/browser/sync/profile_sync_service_factory.cc
 +++ b/chrome/browser/sync/profile_sync_service_factory.cc
-@@ -264,7 +264,7 @@ KeyedService* ProfileSyncServiceFactory::BuildServiceInstanceFor(
+@@ -266,7 +266,7 @@ KeyedService* ProfileSyncServiceFactory::BuildServiceInstanceFor(
    }
  
    auto pss =
