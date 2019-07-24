@@ -111,6 +111,22 @@ string ScriptTypeToString(const ScriptType type) noexcept {
       return "module";
     case kScriptTypeExtension:
       return "extension";
+    case kExternalFile:
+      return "external file";
+    case kInline:
+      return "inline";
+    case kInlineInsideDocumentWrite:
+      return "inline inside document write";
+    case kInlineInsideGeneratedElement:
+      return "inline inside generated element";
+    case kInternal:
+      return "internal";
+    case kJavascriptUrl:
+      return "javascript url";
+    case kEvalForScheduledAction:
+      return "eval for scheduled action";
+    case kInspector:
+      return "inspector";
     case kScriptTypeUnknown:
     default:
       return "unknown";
