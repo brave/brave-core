@@ -20,6 +20,7 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
+  void SetAdvancedViewControlType(const base::ListValue* args);
   void SetAdControlType(const base::ListValue* args);
   void GetAdControlType(const base::ListValue* args);
   void SetCookieControlType(const base::ListValue* args);

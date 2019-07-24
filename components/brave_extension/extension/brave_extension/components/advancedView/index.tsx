@@ -80,6 +80,12 @@ export default class Shields extends React.PureComponent<Props, State> {
     this.setState({ isBlockedListOpen: !this.state.isBlockedListOpen })
   }
 
+  onClickTestEnableAdvancedView = () => {
+    // chrome.send is not exposed to extensions
+    // TODO: find the correct method
+    // chrome.send('setAdvancedViewControlType', [true])
+  }
+
   render () {
     const { shieldsPanelTabData, persistentData, actions } = this.props
     const { isBlockedListOpen } = this.state
@@ -90,6 +96,9 @@ export default class Shields extends React.PureComponent<Props, State> {
 
     return (
       <ShieldsPanel data-test-id='brave-shields-panel' style={{ width: '370px' }}>
+        <button onClick={this.onClickTestEnableAdvancedView}>
+          turn advanced view on
+        </button>
         {
           persistentData.isFirstAccess
             && <WebCompatWarning setAdvancedViewFirstAccess={actions.setAdvancedViewFirstAccess} />

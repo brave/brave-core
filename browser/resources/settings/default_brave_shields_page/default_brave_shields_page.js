@@ -51,6 +51,7 @@ Polymer({
 
   /** @override */
   ready: function() {
+    this.onAdvancedViewControlChange_ = this.onAdvancedViewControlChange_.bind(this)
     this.onAdControlChange_= this.onAdControlChange_.bind(this)
     this.onCookieControlChange_ = this.onCookieControlChange_.bind(this)
     this.onFingerprintingControlChange_ = this.onFingerprintingControlChange_.bind(this)
@@ -75,6 +76,9 @@ Polymer({
     return val1 === val2;
   },
 
+  onAdvancedViewControlChange_: function() {
+    this.browserProxy_.setAdvancedViewControlType(this.$.advancedViewControlType.checked);
+  },
   onAdControlChange_: function() {
     this.browserProxy_.setAdControlType(this.$.adControlType.checked);
   },

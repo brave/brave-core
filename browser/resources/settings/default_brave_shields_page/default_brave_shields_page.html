@@ -18,6 +18,23 @@
       .label.shields-secondary-title {
         padding-bottom: 1em;
       }
+      .shields-views {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 16px;
+      }
+      .shields-view-col {
+        margin: 16px 0 24px;
+        padding: 24px;
+        height: 100px;
+        border-radius: 6px;
+        border: 1px solid rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+      }
+       .shields-view-label {
+         margin: 0 20px;
+       }
     </style>
     <div class="settings-box first">
       <div class="flex">
@@ -28,6 +45,35 @@
         </div>
       </div>
     </div>
+    <settings-toggle-button id="advancedViewControlType"
+        pref="{{prefs.advanced_view_default}}"
+        label="$i18n{advancedView}"
+        on-settings-boolean-control-change="onAdvancedViewControlChange_">
+    </settings-toggle-button>
+<!--    TODO: should be a radio input instead of checkbox
+<settings-radio-group
+      id="advancedViewControlType"
+      class="settings-box"
+      pref="{{prefs.brave.advanced_view_default}}"
+      on-selected-changed="onAdvancedViewControlChange_">
+      <div class="label shields-primary-title">$i18n{defaultView}</div>
+      <div class="shields-views">
+        <div class="shields-view-col">
+          <controlled-radio-button
+              name="true" pref="[[prefs.brave.advanced_view_default]]">
+                <img src="images/stamp-simpleview.webp">
+                <label class="shields-view-label">$i18n{simpleView}</label>
+          </controlled-radio-button>
+        </div>
+        <div class="shields-view-col">
+          <controlled-radio-button
+              name="false" pref="[[prefs.brave.advanced_view_default]]">
+            <img src="images/stamp-simpleview.webp">
+            <label class="shields-view-label">$i18n{advancedView}</label>
+          </controlled-radio-button>
+        </div>
+      </div>
+    </settings-radio-group> -->
     <settings-toggle-button id="adControlType"
         pref="{{prefs.brave.ad_default}}"
         label="$i18n{adControlLabel}"

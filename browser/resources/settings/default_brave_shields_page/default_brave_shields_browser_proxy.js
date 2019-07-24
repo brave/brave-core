@@ -6,6 +6,11 @@ cr.define('settings', function() {
   /** @interface */
   class DefaultBraveShieldsBrowserProxy {
     /**
+     * @param {string} value name.
+     */
+    setAdvancedViewControlType(value) {}
+
+    /**
      * @return {!Promise<string>}
      */
     getAdControlType() {}
@@ -47,6 +52,11 @@ cr.define('settings', function() {
    * @implements {settings.DefaultBraveShieldsBrowserProxy}
    */
   class DefaultBraveShieldsBrowserProxyImpl {
+    /** @override */
+    setAdvancedViewControlType(value) {
+      chrome.send('setAdvancedViewControlType', [value]);
+    }
+
     /** @override */
     getAdControlType() {
       return cr.sendWithPromise('getAdControlType');

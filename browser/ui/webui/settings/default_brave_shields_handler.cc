@@ -20,6 +20,10 @@
 void DefaultBraveShieldsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
   web_ui()->RegisterMessageCallback(
+      "setAdvancedViewControlType",
+      base::BindRepeating(&DefaultBraveShieldsHandler::SetAdvancedViewControlType,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "getAdControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::GetAdControlType,
                           base::Unretained(this)));
@@ -54,6 +58,18 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
                           base::Unretained(this)));
+}
+
+void DefaultBraveShieldsHandler::SetAdvancedViewControlType(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  bool value;
+  args->GetBoolean(0, &value);
+
+  // extensions::ExtensionService* service =
+  //   extensions::ExtensionSystem::Get(profile_)->extension_service();
+  // extensions::ComponentLoader* loader = service->component_loader();
 }
 
 void DefaultBraveShieldsHandler::GetAdControlType(const base::ListValue* args) {
