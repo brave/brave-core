@@ -119,7 +119,7 @@ void BookmarkChangeProcessor::MakeRepositionAndUpdateSyncNodes(
 
 #define BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED_1 \
   ScopedPauseObserver pause(bookmark_model_, this); \
-  brave_sync::AddBraveMetaInfo(child, model, old_parent != new_parent); \
+  brave_sync::AddBraveMetaInfo(child, model); \
   SetSyncNodeMetaInfo(child, &sync_node);
 
 #define BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED_2 \
@@ -129,7 +129,7 @@ void BookmarkChangeProcessor::MakeRepositionAndUpdateSyncNodes(
 
 #define BRAVE_BOOKMARK_CHANGE_PROCESSOR_CHILDREN_REORDERED \
       ScopedPauseObserver pause(bookmark_model_, this); \
-      brave_sync::AddBraveMetaInfo(child, model, false); \
+      brave_sync::AddBraveMetaInfo(child, model); \
       SetSyncNodeMetaInfo(child, &sync_child);
 
 #define BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL \
