@@ -31,7 +31,7 @@ public class UserReferralProgram {
         
         let host = AppConstants.BuildChannel == .developer ? HostUrl.staging : HostUrl.prod
         
-        guard let apiKey = getPlistString(for: UserReferralProgram.apiKeyPlistKey) else {
+        guard let apiKey = getPlistString(for: UserReferralProgram.apiKeyPlistKey)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
                 log.error("Urp init error, failed to get values from Brave.plist.")
                 return nil
         }
