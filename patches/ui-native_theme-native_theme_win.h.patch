@@ -1,9 +1,9 @@
 diff --git a/ui/native_theme/native_theme_win.h b/ui/native_theme/native_theme_win.h
-index cabb8bc5afb7831bf4da1558e5f502c8ca531299..ce0a0bc0df1b3969237062fae07361ae0dc8ea57 100644
+index 03be75f99e3da8c29a8bc856da9e6f6ceea9af20..2b6aa17d081c90eadca6976a1370d32ace3250d7 100644
 --- a/ui/native_theme/native_theme_win.h
 +++ b/ui/native_theme/native_theme_win.h
-@@ -83,6 +83,7 @@ class NATIVE_THEME_EXPORT NativeThemeWin : public NativeTheme,
-   bool SystemDarkModeEnabled() const override;
+@@ -85,6 +85,7 @@ class NATIVE_THEME_EXPORT NativeThemeWin : public NativeTheme,
+   PreferredColorScheme CalculatePreferredColorScheme() const override;
  
   protected:
 +  friend void UpdateDarkModeStatus();

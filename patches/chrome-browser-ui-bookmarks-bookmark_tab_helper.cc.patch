@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/bookmarks/bookmark_tab_helper.cc b/chrome/browser/ui/bookmarks/bookmark_tab_helper.cc
-index f6ef61a0ac86ae55e8f9e80ece0758253af48520..888d656cf7080ebc32e90fc492e70a9b394d7026 100644
+index d73183de7245cca3687ff376eccbecb7bc235c90..9e0f6e61d538d3b7f972d47c9fa6fb1c7172b809 100644
 --- a/chrome/browser/ui/bookmarks/bookmark_tab_helper.cc
 +++ b/chrome/browser/ui/bookmarks/bookmark_tab_helper.cc
 @@ -67,6 +67,7 @@ bool BookmarkTabHelper::ShouldShowBookmarkBar() const {

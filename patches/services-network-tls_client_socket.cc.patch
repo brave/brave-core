@@ -1,5 +1,5 @@
 diff --git a/services/network/tls_client_socket.cc b/services/network/tls_client_socket.cc
-index 8fa33735cf7e80c6e5e6310dc8783be8e4a3bd50..d84f6035238501ac22a1ccbd44a973ebd2385277 100644
+index dd7a936913d6c989e088a580f1726df7bb01239c..5c8eee966bac535514fdd63874dbd5688c2c7aa5 100644
 --- a/services/network/tls_client_socket.cc
 +++ b/services/network/tls_client_socket.cc
 @@ -24,7 +24,14 @@ TLSClientSocket::TLSClientSocket(

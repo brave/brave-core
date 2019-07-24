@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/content_settings/content_setting_bubble_model.cc b/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
-index f6e95a30995f881001a7fad2653252c985cbbeec..41feb839e9bd899a60927dfedd0c0dffc38a6001 100644
+index 794d8a96c33372be21edda5056cf57358904f87a..05197bb80e3111689b09bc293946d13f601d09a5 100644
 --- a/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
 +++ b/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
 @@ -15,6 +15,7 @@
@@ -8,9 +8,9 @@ index f6e95a30995f881001a7fad2653252c985cbbeec..41feb839e9bd899a60927dfedd0c0dff
  #include "base/strings/utf_string_conversions.h"
 +#include "brave/browser/ui/content_settings/brave_content_setting_bubble_model.h"
  #include "chrome/browser/browser_process.h"
- #include "chrome/browser/chrome_notification_types.h"
  #include "chrome/browser/content_settings/chrome_content_settings_utils.h"
-@@ -1524,7 +1525,7 @@ ContentSettingBubbleModel::CreateContentSettingBubbleModel(
+ #include "chrome/browser/content_settings/cookie_settings_factory.h"
+@@ -1520,7 +1521,7 @@ ContentSettingBubbleModel::CreateContentSettingBubbleModel(
          delegate, web_contents, content_type);
    }
    if (content_type == CONTENT_SETTINGS_TYPE_PLUGINS) {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/safe_browsing/client_side_model_loader.cc b/chrome/browser/safe_browsing/client_side_model_loader.cc
-index 6fb89519648ed59105205b3b6956e0df1adf658f..44666009646cedca3fcb992d1b137d09b1eefee1 100644
+index 2646d078e41321283bb91dee4ce8aac7a353cea2..369b9216927cd2bb36b2f38539a69b0c4f5dfe13 100644
 --- a/chrome/browser/safe_browsing/client_side_model_loader.cc
 +++ b/chrome/browser/safe_browsing/client_side_model_loader.cc
 @@ -35,7 +35,7 @@ namespace safe_browsing {

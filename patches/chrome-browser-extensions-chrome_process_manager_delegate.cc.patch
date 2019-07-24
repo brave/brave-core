@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/chrome_process_manager_delegate.cc b/chrome/browser/extensions/chrome_process_manager_delegate.cc
-index 9d7ba9e948e1021f714c396cbc4ccc5689b29505..6df9b85fd926b8dcd0627ac0bfae9a97a340f544 100644
+index e79841d929b54d4d919aaa34188d0c61e024e65e..90a775cb67d156bc6fef6cd2fab07201b5d4cc22 100644
 --- a/chrome/browser/extensions/chrome_process_manager_delegate.cc
 +++ b/chrome/browser/extensions/chrome_process_manager_delegate.cc
-@@ -50,7 +50,7 @@ bool ChromeProcessManagerDelegate::AreBackgroundPagesAllowedForContext(
+@@ -51,7 +51,7 @@ bool ChromeProcessManagerDelegate::AreBackgroundPagesAllowedForContext(
      content::BrowserContext* context) const {
    Profile* profile = Profile::FromBrowserContext(context);
  

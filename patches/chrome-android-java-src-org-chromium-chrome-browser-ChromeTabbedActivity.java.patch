@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 6bdd439f89a68e8b53bf077547ad04bc35414674..366524b92af5979ed4be1bac159cae6da8896a09 100644
+index a168b085348c218c2951964beb37e0a25d754836..ad5cf672b9548a4f9921c4bc3521a0c8111e998d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -182,7 +182,7 @@ import java.util.Locale;
+@@ -174,7 +174,7 @@ import java.util.Locale;
   * are accessible via a chrome specific tab switching UI.
   */
  public class ChromeTabbedActivity

@@ -1,11 +1,11 @@
 diff --git a/content/browser/permissions/permission_controller_impl.cc b/content/browser/permissions/permission_controller_impl.cc
-index 6ab49b2d857846c752630f90503cac9591a4845f..a8944360ede0391f3cca955ea4499033d35279bf 100644
+index e07765308f980564be911451875d388db8a32815..3ce425ce224b834d35d2816bf2a104d66eefe449 100644
 --- a/content/browser/permissions/permission_controller_impl.cc
 +++ b/content/browser/permissions/permission_controller_impl.cc
-@@ -65,6 +65,7 @@ PermissionToSchedulingFeature(PermissionType permission_name) {
-     case PermissionType::CLIPBOARD_WRITE:
-     case PermissionType::PAYMENT_HANDLER:
+@@ -67,6 +67,7 @@ PermissionToSchedulingFeature(PermissionType permission_name) {
      case PermissionType::IDLE_DETECTION:
+     case PermissionType::WAKE_LOCK_SCREEN:
+     case PermissionType::WAKE_LOCK_SYSTEM:
 +    BRAVE_PERMISSION_TYPES
      case PermissionType::NUM:
        return base::nullopt;

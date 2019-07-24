@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
-index 376648243683eddde09505312719ccd40e9a1fb8..36e3fb2844ae55da8728795990b5193e502ad661 100644
+index 2def55dd4b5c24de1bc8995fe1aef18c459633f1..d1078027211c19a7afa900177b9313e14d72aad5 100644
 --- a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
 +++ b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
-@@ -37,6 +37,7 @@ class ChromeLocationBarModelDelegate : public LocationBarModelDelegate {
+@@ -52,6 +52,7 @@ class ChromeLocationBarModelDelegate : public LocationBarModelDelegate {
    content::NavigationEntry* GetNavigationEntry() const;
  
   private:
 +  friend class BraveLocationBarModelDelegate;
-   base::string16 FormattedStringWithEquivalentMeaning(
-       const GURL& url,
-       const base::string16& formatted_url) const override;
+   // Returns the navigation controller used to retrieve the navigation entry
+   // from which the states are retrieved. If this returns null, default values
+   // are used.

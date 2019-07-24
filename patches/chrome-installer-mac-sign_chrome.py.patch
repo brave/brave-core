@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/sign_chrome.py b/chrome/installer/mac/sign_chrome.py
-index fa3a88200f5156975d0da5bcc52ed6f9896e792e..9068adc58127d24f50f47b3f1f939e2b6feaef69 100755
+index 3f0f301021686a5b211057c354b874909cc61672..8457181479a9fe347b476ef5b2f85d034a46af25 100755
 --- a/chrome/installer/mac/sign_chrome.py
 +++ b/chrome/installer/mac/sign_chrome.py
 @@ -28,6 +28,7 @@ def create_config(config_args, development):

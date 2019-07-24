@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
-index e3159144a0b7892e5580bfa910f2db97a81179a9..8ee42d9f6f7ac50c78a03e59aa2ba34e35dae725 100644
+index 7f4dd5ffd15a0ea17fb77d712897a86370da4266..52d8469ae70f38e7a3c714f4761d4172915af138 100644
 --- a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
 +++ b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
 @@ -68,7 +68,12 @@ AutocompleteClassifierFactory::~AutocompleteClassifierFactory() {

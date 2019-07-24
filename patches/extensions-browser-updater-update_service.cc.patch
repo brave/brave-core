@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/updater/update_service.cc b/extensions/browser/updater/update_service.cc
-index b1908b73fa56b1343ab83e08a70646d74abe6900..21f25d55b195fd5c8cafa79bbf5bbd68104a9a42 100644
+index a8483425f60fb2b14e3b2d3fcf6efe8f90e1849f..fb0c655d4c0bb2e15d7ed087e6a4fada1744ceb4 100644
 --- a/extensions/browser/updater/update_service.cc
 +++ b/extensions/browser/updater/update_service.cc
 @@ -32,7 +32,7 @@ namespace extensions {

@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/public/mojom/permissions/permission.mojom b/third_party/blink/public/mojom/permissions/permission.mojom
-index a2fb50cfd3a0c5fe9e5d0557d95c8db2c32a4b79..622113058a3cf3aedef6133b3ac5effa965fc64f 100644
+index dd220391d1e397abf60fd31355dd1f9999627b8b..157a3e4407e5d38e42eae4a8a211d1411225ac26 100644
 --- a/third_party/blink/public/mojom/permissions/permission.mojom
 +++ b/third_party/blink/public/mojom/permissions/permission.mojom
-@@ -23,6 +23,7 @@ enum PermissionName {
-   BACKGROUND_FETCH,
+@@ -24,6 +24,7 @@ enum PermissionName {
    IDLE_DETECTION,
    PERIODIC_BACKGROUND_SYNC,
+   WAKE_LOCK,
 +  AUTOPLAY,
  };
  
- struct MidiPermissionDescriptor {
-@@ -55,6 +56,7 @@ interface PermissionObserver {
+ // This is similar to WakeLockType in modules/wake_lock/wake_lock.idl.
+@@ -69,6 +70,7 @@ interface PermissionObserver {
  // methods to check, request, and revoke permissions. It also allows a client to
  // start listening to permission changes.
  interface PermissionService {
