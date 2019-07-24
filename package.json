@@ -344,6 +344,6 @@
     "throttleit": "^1.0.0",
     "torrent-discovery": "github:brave/torrent-discovery#b565f40278c1cb910722ceb027a739d9173d587a",
     "unique-selector": "^0.4.1",
-    "webtorrent": "github:brave/webtorrent#ed433c35ba6f4e1e15d62c1a9a7a9241a7504e66"
+    "webtorrent": "github:brave/webtorrent#6dae42cba71de26124c78f378a77aec0859b142b"
   }
 }
