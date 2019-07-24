@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/common/pref_names.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -17,6 +18,7 @@
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_util.h"
 
@@ -52,6 +54,42 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
 
   BraveShieldsWebContentsObserver::FromWebContents(contents)->AllowScriptsOnce(
       params->origins, contents);
+  return RespondNow(NoArguments());
+}
+
+BraveShieldsGetViewPreferencesFunction::~BraveShieldsGetViewPreferencesFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveShieldsGetViewPreferencesFunction::Run() {
+  // Combine all the relevant prefs in to a JSON object
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  PrefService* prefs = profile->GetPrefs();
+
+  auto result = std::make_unique<base::DictionaryValue>();
+  result->SetBoolean(
+      "showAdvancedView",
+      prefs->GetBoolean(kAdvancedViewControlType));
+
+  return RespondNow(OneArgument(std::move(result)));
+}
+
+BraveShieldsSetViewPreferencesFunction::~BraveShieldsSetViewPreferencesFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveShieldsSetViewPreferencesFunction::Run() {
+  // Get args
+  std::unique_ptr<brave_shields::SetViewPreferences::Params> params(
+      brave_shields::SetViewPreferences::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  // Set prefs only for properties that are provided in the args
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  PrefService* prefs = profile->GetPrefs();
+  if (params->preferences.show_advanced_view.get()) {
+    bool settingValue = *params->preferences.show_advanced_view;
+    prefs->SetBoolean(kAdvancedViewControlType, settingValue);
+  }
+
   return RespondNow(NoArguments());
 }
 

@@ -151,6 +151,20 @@ declare namespace chrome.braveShields {
   const getHTTPSEverywhereControlTypeAsync: any
   const setNoScriptControlTypeAsync: any
   const getNoScriptControlTypeAsync: any
+
+  type BraveShieldsViewPreferences = {
+    showAdvancedView: boolean
+  }
+  type BraveShieldsSetViewPreferencesData = {
+    showAdvancedView?: boolean
+  }
+  const getViewPreferences: (
+    callback: (preferences: BraveShieldsViewPreferences) => void
+  ) => void
+  const setViewPreferences: (
+    preferences: BraveShieldsSetViewPreferencesData,
+    callback: () => void
+  ) => void
 }
 
 declare namespace chrome.braveWallet {

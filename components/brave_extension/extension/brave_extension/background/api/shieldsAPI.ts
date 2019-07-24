@@ -159,3 +159,17 @@ export const setAllowScriptOriginsOnce = (origins: Array<string>, tabId: number)
       resolve()
     })
   })
+
+export type GetViewPreferencesData = chrome.braveShields.BraveShieldsViewPreferences
+export function getViewPreferences (): Promise<GetViewPreferencesData> {
+  return new Promise<GetViewPreferencesData>(resolve => {
+    chrome.braveShields.getViewPreferences(resolve)
+  })
+}
+
+export type SetViewPreferencesData = chrome.braveShields.BraveShieldsSetViewPreferencesData
+export function setViewPreferences (preferences: SetViewPreferencesData): Promise<void> {
+  return new Promise<void>(resolve => {
+    chrome.braveShields.setViewPreferences(preferences, resolve)
+  })
+}
