@@ -10,16 +10,14 @@
 #include "base/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 
-using base::android;
-
 namespace brave_ads {
 
 BackgroundHelperAndroid::BackgroundHelperAndroid() {
-  app_status_listener_ = ApplicationStatusListener::New(
+  app_status_listener_ = base::android::ApplicationStatusListener::New(
       base::BindRepeating(&BackgroundHelperAndroid::OnApplicationStateChange,
       AsWeakPtr()));
 
-  last_state_ = ApplicationStatusListener::GetState();
+  last_state_ = base::android::ApplicationStatusListener::GetState();
 }
 
 BackgroundHelperAndroid::~BackgroundHelperAndroid() {
@@ -27,19 +25,19 @@ BackgroundHelperAndroid::~BackgroundHelperAndroid() {
 }
 
 bool BackgroundHelperAndroid::IsForeground() const {
-  auto state = ApplicationStatusListener::GetState();
-  if (state != ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
+  auto state = base::android::ApplicationStatusListener::GetState();
+  if (state != base::android::ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     return false;
   }
 
   return true;
 }
 
-void BackgroundHelperAndroid::OnApplicationStateChange(ApplicationState state) {
-  if (state == ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
+void BackgroundHelperAndroid::OnApplicationStateChange(base::android::ApplicationState state) {
+  if (state == base::android::ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     TriggerOnForeground();
   } else if (last_state_ != state && last_state_ ==
-      ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
+      base::android::ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     TriggerOnBackground();
   }
 

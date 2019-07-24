@@ -26,11 +26,11 @@ class BackgroundHelperAndroid :
   static BackgroundHelperAndroid* GetInstance();
 
  private:
-  std::unique_ptr<ApplicationStatusListener> app_status_listener_;
+  std::unique_ptr<base::android::ApplicationStatusListener> app_status_listener_;
 
-  ApplicationState last_state_;
+  base::android::ApplicationState last_state_;
 
-  void OnApplicationStateChange(ApplicationState state);
+  void OnApplicationStateChange(base::android::ApplicationState state);
 
   // BackgroundHelper impl
   bool IsForeground() const override;
