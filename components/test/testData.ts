@@ -289,7 +289,7 @@ export const initialState = deepFreeze({
     currentWindowId: -1,
     tabs: {},
     windows: {},
-    persistentData: { isFirstAccess: true, advancedView: false }
+    persistentData: { isFirstAccess: true }
   },
   dappDetection: {},
   runtime: {},
@@ -297,7 +297,7 @@ export const initialState = deepFreeze({
     currentWindowId: -1,
     tabs: {},
     windows: {},
-    persistentData: { isFirstAccess: true, advancedView: false }
+    persistentData: { isFirstAccess: true }
   }
 })
 

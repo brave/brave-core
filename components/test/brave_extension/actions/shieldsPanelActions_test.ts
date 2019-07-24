@@ -144,10 +144,4 @@ describe('shieldsPanelActions', () => {
       type: types.SET_ADVANCED_VIEW_FIRST_ACCESS
     })
   })
-
-  it('toggleAdvancedView', () => {
-    expect(actions.toggleAdvancedView()).toEqual({
-      type: types.TOGGLE_ADVANCED_VIEW
-    })
-  })
 })

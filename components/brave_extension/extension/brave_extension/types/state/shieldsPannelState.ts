@@ -40,7 +40,6 @@ export interface Windows {
 
 export interface PersistentData {
   isFirstAccess: boolean
-  advancedView: boolean
 }
 
 export interface State {
