@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 4f04b84e4899aac6dd97e1ee1d55e4c9968730e7..7405dc50901775365be1fbbf30f4256a56fa4f5d 100644
+index 42f2b341bd630d63e29d84ef52542c7867fca987..d12cd0c35e9bece83d9b3751bcae44fdb6d23bf9 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -22,6 +22,7 @@
@@ -10,7 +10,7 @@ index 4f04b84e4899aac6dd97e1ee1d55e4c9968730e7..7405dc50901775365be1fbbf30f4256a
  #include "chrome/common/buildflags.h"
  #include "chrome/common/channel_info.h"
  #include "chrome/common/chrome_content_client.h"
-@@ -449,7 +450,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -461,7 +462,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
    bool should_whitelist_for_content_settings =
        base::CommandLine::ForCurrentProcess()->HasSwitch(
            switches::kInstantProcess);

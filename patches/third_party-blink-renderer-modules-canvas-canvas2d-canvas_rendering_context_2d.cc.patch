@@ -1,22 +1,22 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-index 904f5dd231dec422684528e8f8bc2b5e7f6e348e..ea4d3f55e94f0f448605b3a3bb874c2d178621b4 100644
+index bcbf7096179f213b1817544326c21337ef38c1e0..8a0ae872ce2cac397b7c861617ed1f0eb76d355b 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-@@ -33,6 +33,7 @@
- 
+@@ -34,6 +34,7 @@
  #include "third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.h"
  
+ #include "base/metrics/histogram_functions.h"
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/platform.h"
  #include "third_party/blink/public/platform/task_type.h"
-@@ -793,6 +794,9 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
+@@ -794,6 +795,9 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
    if (!canvas()->GetDocument().GetFrame())
      return MakeGarbageCollected<TextMetrics>();
  
 +  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame()))
 +    return MakeGarbageCollected<TextMetrics>();
 +
+   base::TimeTicks start_time = base::TimeTicks::Now();
    canvas()->GetDocument().UpdateStyleAndLayoutTreeForNode(canvas());
  
-   const Font& font = AccessFont();

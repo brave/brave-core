@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 7efe994e23907baac05b6d79485d51694678cff4..bd9e30aed5d3bb8c0ae35002796a61381c1c5b8d 100644
+index 491eff1b6aab66e6d4d5edae4b2d7f198031e905..0ae3fe234a22b5d12e1d675792a04d53f10f2a4f 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -10,6 +10,9 @@

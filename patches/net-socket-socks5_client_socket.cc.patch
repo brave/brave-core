@@ -1,5 +1,5 @@
 diff --git a/net/socket/socks5_client_socket.cc b/net/socket/socks5_client_socket.cc
-index 832afa61c78936bb06f7b9810d59febcb75fce6c..f0eb81657ca6944a0510242d4ec7c960b55a7fe7 100644
+index e22ddb2630bad854c3c0b89a882f8e1447fb3911..13e9f0546ca533372c0e7244e82e0c68dd801d9e 100644
 --- a/net/socket/socks5_client_socket.cc
 +++ b/net/socket/socks5_client_socket.cc
 @@ -238,6 +238,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
@@ -37,13 +37,13 @@ index 832afa61c78936bb06f7b9810d59febcb75fce6c..f0eb81657ca6944a0510242d4ec7c960
    }
  
 @@ -338,14 +343,14 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
-                       NetLog::IntCallback("version", buffer_[0]));
+                                    "version", buffer_[0]);
      return ERR_SOCKS_CONNECTION_FAILED;
    }
 -  if (buffer_[1] != 0x00) {
 +  if (buffer_[1] != auth_method()) {
-     net_log_.AddEvent(NetLogEventType::SOCKS_UNEXPECTED_AUTH,
-                       NetLog::IntCallback("method", buffer_[1]));
+     net_log_.AddEventWithIntParams(NetLogEventType::SOCKS_UNEXPECTED_AUTH,
+                                    "method", buffer_[1]);
      return ERR_SOCKS_CONNECTION_FAILED;
    }
  

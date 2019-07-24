@@ -1,12 +1,12 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index d637b306110b4adfb1f4b85be3491949a98803c5..4f4b52000f56c4b41963df094cac280fc3510802 100644
+index 8b95111f3ea3d4ea2d3c7bbd4a9a5d7250456d2d..be5e21659aad59f26f2b6bd7fbb85a167c613c79 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -591,6 +591,7 @@ if (!is_android) {
+@@ -705,6 +705,7 @@ if (!is_android) {
        "//v8",
      ]
  
 +    deps += [ "//brave/test:brave_browser_tests_deps", ]
      # Runtime dependencies
      data_deps = [
-       "//ppapi:ppapi_tests",
+       "//chrome/browser/resources/media/mei_preload:component",

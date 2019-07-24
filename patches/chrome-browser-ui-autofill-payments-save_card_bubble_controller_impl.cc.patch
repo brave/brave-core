@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc b/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
-index e576d1a0a1f331679c586ef63a17c38063501611..c308f33b68f0f011523798cde65f36f668b187a4 100644
+index aa4d2b780b7f81b9b2442668c2cea96397c53ee0..d5d8adda5a7d9938b5b3df7693b86f388056eaee 100644
 --- a/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
 +++ b/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
-@@ -437,6 +437,7 @@ bool SaveCardBubbleControllerImpl::ShouldRequestExpirationDateFromUser() const {
+@@ -444,6 +444,7 @@ bool SaveCardBubbleControllerImpl::ShouldRequestExpirationDateFromUser() const {
  }
  
  bool SaveCardBubbleControllerImpl::ShouldShowSignInPromo() const {

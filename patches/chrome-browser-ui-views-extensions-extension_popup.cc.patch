@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/extensions/extension_popup.cc b/chrome/browser/ui/views/extensions/extension_popup.cc
-index a97884aceca0f47d02815a42b50e15b08211715a..bc4cf1f031f201aeca6d06353782144328c53129 100644
+index e4c23013189cc0806a6881b89ca845982d2842e5..248c3688e7a0515cbe2d989469d443f693186abd 100644
 --- a/chrome/browser/ui/views/extensions/extension_popup.cc
 +++ b/chrome/browser/ui/views/extensions/extension_popup.cc
 @@ -66,7 +66,7 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
