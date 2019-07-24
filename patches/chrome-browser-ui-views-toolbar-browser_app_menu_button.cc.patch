@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
-index bde927f8ca2195691d2591afc9bd0ba6e1878b4d..da228a38df656e0b55054cb6fc76f5a7a64c07fa 100644
+index a2ec81146ec638dc9ae751a43d277545847a5074..c3a2f3a3c4128b306f5b2ac80879ed48a67d74a0 100644
 --- a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
 +++ b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
-@@ -12,6 +12,7 @@
+@@ -11,6 +11,7 @@
  #include "base/single_thread_task_runner.h"
  #include "base/threading/thread_task_runner_handle.h"
  #include "base/time/time.h"
@@ -10,12 +10,12 @@ index bde927f8ca2195691d2591afc9bd0ba6e1878b4d..da228a38df656e0b55054cb6fc76f5a7
  #include "cc/paint/paint_flags.h"
  #include "chrome/browser/ui/browser.h"
  #include "chrome/browser/ui/browser_otr_state.h"
-@@ -232,7 +233,7 @@ void BrowserAppMenuButton::ShowMenu(int run_types) {
-   base::TimeTicks menu_open_time = base::TimeTicks::Now();
+@@ -225,7 +226,7 @@ void BrowserAppMenuButton::ShowMenu(int run_types) {
+       promo_feature_ == InProductHelpFeature::kReopenTab;
  
    RunMenu(
 -      std::make_unique<AppMenuModel>(toolbar_view_, browser,
 +      std::make_unique<BraveAppMenuModel>(toolbar_view_, browser,
                                       toolbar_view_->app_menu_icon_controller()),
        browser, run_types, alert_reopen_tab_items);
- 
+ }
