@@ -285,6 +285,7 @@ process_version("generate_version") {
   template_file = "version.version"
   extra_args = [ "-e", "BRAVE_BROWSER_VERSION=\"$brave_version\"" ]
   output = "$root_out_dir/version"
+  process_only = true
 }
 
 if (!is_android && !is_ios) {
