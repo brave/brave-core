@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.h b/chrome/browser/ui/extensions/extension_action_view_controller.h
-index be1b8e36e4a28202fed694bfec57a1c296e4ef32..e0e683aa85163eddc9905fa2406ce65673046134 100644
+index 4996c8c62f18975579e6d7e502eb5a3a4f9cd058..58e24a8123f75c6eba652b146661ca61cf311416 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.h
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.h
 @@ -14,6 +14,7 @@

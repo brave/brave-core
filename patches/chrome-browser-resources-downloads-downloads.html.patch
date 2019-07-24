@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/downloads/downloads.html b/chrome/browser/resources/downloads/downloads.html
-index 05a625d0f349264f13bd98fff32984db56aadd2c..1ad650ef5011f79ebf6591ade055338a51a791d1 100644
+index ad88272334d24e2f60327ae30ab1d412a42a6351..43b6993c81b82d814f900d9d06baf6082ba0dd98 100644
 --- a/chrome/browser/resources/downloads/downloads.html
 +++ b/chrome/browser/resources/downloads/downloads.html
-@@ -8,6 +8,7 @@
+@@ -7,6 +7,7 @@
  </if>
    <title>$i18n{title}</title>
    <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
