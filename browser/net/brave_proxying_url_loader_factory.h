@@ -256,9 +256,6 @@ class BraveProxyingURLLoaderFactory
   friend class base::DeleteHelper<BraveProxyingURLLoaderFactory>;
   friend class base::RefCountedDeleteOnSequence<BraveProxyingURLLoaderFactory>;
 
-  class ProxyRequestAdapter;
-  class ProxyResponseAdapter;
-
   void OnTargetFactoryError();
   void OnProxyBindingError();
   void RemoveRequest(int32_t network_service_request_id, uint64_t request_id);
