@@ -73,17 +73,16 @@ platform :ios do
       configuration: "Release",
     )
 
-    gym(
+    defaultParams = gym_params()
+    overrideParams = {
       scheme: "FirefoxBeta",
       output_directory: "./builds/",
       output_name: "#{build_name}.ipa",
-      sdk: "iphoneos",
-      clean: true,
       export_method: "development",
       include_symbols: true,
       include_bitcode: true,
-      xcargs: "-allowProvisioningUpdates",
-    )
+    }
+    gym(defaultParams.merge!(overrideParams))
 
     testflight(
       username: sh("cat", "#{LOCAL_PATH}/AppleId"),
@@ -102,16 +101,24 @@ platform :ios do
       configuration: "Release",
     )
 
-    gym(
+    defaultParams = gym_params()
+    overrideParams = {
       scheme: "Firefox",
-      sdk: "iphoneos",
-      clean: true,
       skip_package_ipa: true,
-      xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{sh("head", "-1", "#{ENV['HOME']}/.brave-api-key")}\"",
-    )
+    }
+    gym(defaultParams.merge!(overrideParams))
   end
 
   # Private helper methods ---------------------------------------
+
+  desc "Returns the parameters that should be used in any fastlane build"
+  lane :gym_params do
+    {
+      sdk: "iphoneos",
+      clean: true,
+      xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{sh("head", "-1", "#{ENV['HOME']}/.brave-api-key")}\""
+    }
+  end
 
   desc "Updates the project's build number to be the next number acceptable by TestFlight. Takes the following arguments:"
   lane :set_build_number do |options|
