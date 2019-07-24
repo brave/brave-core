@@ -102,12 +102,13 @@ extension PasscodeEntryViewController: PasscodeInputViewDelegate {
         } else {
             passcodePane.shakePasscode()
             failIncorrectPasscode(inputView)
-            passcodePane.codeInputView.resetCode()
             
             setUpTimer()
 
             // Store mutations on authentication info object
             KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(authenticationInfo)
         }
+        
+        passcodePane.codeInputView.resetCode()
     }
 }
