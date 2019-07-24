@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/browser/cookie_settings.h b/components/content_settings/core/browser/cookie_settings.h
-index 6d3abef07732cd1c612b6afb8b36dc5145194968..51d62be40dad4ac074ce076d46f61553e0e2b5f2 100644
+index 481987cec25d7c5bd89a0d6c4342cbde02717c92..d62347436cb933c9e3c9af234f70b123aa9e94b7 100644
 --- a/components/content_settings/core/browser/cookie_settings.h
 +++ b/components/content_settings/core/browser/cookie_settings.h
-@@ -86,6 +86,7 @@ class CookieSettings : public CookieSettingsBase,
-   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+@@ -120,6 +120,7 @@ class CookieSettings : public CookieSettingsBase,
+   void RemoveObserver(const Observer* obs) { observers_.RemoveObserver(obs); }
  
   private:
 +  friend class BraveCookieSettings;
    ~CookieSettings() override;
  
-   void OnBlockThirdPartyCookiesChanged();
+   void OnCookiePreferencesChanged();

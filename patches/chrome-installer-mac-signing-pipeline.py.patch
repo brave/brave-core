@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
-index f8318c3b2a940b1ea2bc2b4ffc06550654d8e0c5..4d7926df4fb9b5093768e1823c78bab4d0d24364 100644
+index 2a05fcefd9343daea2ddd611e898779f3fa12185..7bd2c161fb2a26a5d0e6f43b930e9f238938e24f 100644
 --- a/chrome/installer/mac/signing/pipeline.py
 +++ b/chrome/installer/mac/signing/pipeline.py
 @@ -219,7 +219,6 @@ def _package_installer_tools(paths, config):

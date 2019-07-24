@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.h b/chrome/browser/upgrade_detector/upgrade_detector_impl.h
-index b39e21a527ca6647a65deddc177de7bb17a1c43f..e1ae4676d36cc2d3af23cf3c29bb19bc36137485 100644
+index 8b4584a0ebd812030699ddedb15858232fdd095c..8b976257e50ec9b2a7136a5ec95176e7e6140644 100644
 --- a/chrome/browser/upgrade_detector/upgrade_detector_impl.h
 +++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.h
 @@ -88,7 +88,7 @@ class UpgradeDetectorImpl : public UpgradeDetector,

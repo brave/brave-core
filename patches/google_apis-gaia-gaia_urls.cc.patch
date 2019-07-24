@@ -1,5 +1,5 @@
 diff --git a/google_apis/gaia/gaia_urls.cc b/google_apis/gaia/gaia_urls.cc
-index c464febee00f4ce5334a95861c2bd46807dcf4f6..7951c546a97cc14965b3d38e07d28f55a3942034 100644
+index f7796e2ddd26ebc7fb7712eb3ef8bb0b782c68ba..c1afb057c33179352542ae35adff2a7ff17cf340 100644
 --- a/google_apis/gaia/gaia_urls.cc
 +++ b/google_apis/gaia/gaia_urls.cc
 @@ -14,7 +14,7 @@ namespace {
