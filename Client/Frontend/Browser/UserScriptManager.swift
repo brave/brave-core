@@ -135,6 +135,22 @@ class UserScriptManager {
         
         return WKUserScript(source: alteredSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
     }()
+    
+    private let WindowRenderHelperScript: WKUserScript? = {
+        guard let path = Bundle.main.path(forResource: "WindowRenderHelper", ofType: "js"), let source = try? String(contentsOfFile: path) else {
+            log.error("Failed to load WindowRenderHelper.js")
+            return nil
+        }
+        
+        //Verify that the application itself is making a call to the JS script instead of other scripts on the page.
+        //This variable will be unique amongst scripts loaded in the page.
+        //When the script is called, the token is provided in order to access teh script variable.
+        var alteredSource = source
+        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<windowRenderer>", with: "W\(token)", options: .literal)
+        
+        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
 
     private func reloadUserScripts() {
         tab?.webView?.configuration.userContentController.do {
@@ -157,6 +173,10 @@ class UserScriptManager {
             }
             
             if let script = resourceDownloadManagerUserScript {
+                $0.addUserScript(script)
+            }
+            
+            if let script = WindowRenderHelperScript {
                 $0.addUserScript(script)
             }
         }

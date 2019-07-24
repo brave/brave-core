@@ -12,6 +12,10 @@ struct DownloadedResourceResponse: Decodable {
     let data: Data?
     
     static func from(message: WKScriptMessage) throws -> DownloadedResourceResponse? {
+        if !JSONSerialization.isValidJSONObject(message.body) {
+            return nil
+        }
+        
         let data = try JSONSerialization.data(withJSONObject: message.body, options: .prettyPrinted)
         return try JSONDecoder().decode(DownloadedResourceResponse.self, from: data)
     }
