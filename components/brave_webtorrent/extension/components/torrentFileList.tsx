@@ -18,7 +18,7 @@ interface Props {
 
 export default class TorrentFileList extends React.PureComponent<Props, {}> {
   render () {
-    const { torrent } = this.props
+    const { torrent, torrentId } = this.props
     if (!torrent || !torrent.files) {
       return (
         <div className='torrentSubhead'>
@@ -45,8 +45,6 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
     ]
 
     const renderFileLink = (file: File, ix: number, isDownload: boolean) => {
-      const { torrentId, torrent } = this.props
-      if (!torrent) return null
       if (isDownload) {
         if (torrent.serverURL) {
           const url = torrent.serverURL + '/' + ix
