@@ -49,9 +49,53 @@
             "parameters": []
           }
         ]
+      },
+      {
+        "name": "getViewPreferences",
+        "type": "function",
+        "description": "Get all the user selected preferences concerning the display of a shields User Interface",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "preferences",
+                "$ref": "BraveShieldsViewPreferences"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "setViewPreferences",
+        "type": "function",
+        "description": "Set any user selected preferences concerning the display of a shields User Interface",
+        "parameters": [
+          {
+            "name": "preferences",
+            "$ref": "BraveShieldsViewPreferences"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": []
+          }
+        ]
       }
     ],
     "types": [
+      {
+        "id": "BraveShieldsViewPreferences",
+        "type": "object",
+        "properties": {
+          "showAdvancedView": {
+            "type": "boolean",
+            "optional": true,
+            "description": "Whether to show the advanced shields view in the shields UI"
+          }
+        }
+      },
       {
         "id": "ResourceIdentifier",
         "type": "object",
