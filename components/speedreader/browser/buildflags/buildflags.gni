@@ -1,0 +1,6 @@
+import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+declare_args() {
+  speedreader_enabled = !is_official_build && enable_extensions
+}

@@ -1,5 +1,6 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/speedreader/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -45,6 +46,13 @@ source_set("extensions") {
     sources += [
       "brave_wallet_navigation_throttle.cc",
       "brave_wallet_navigation_throttle.h",
+    ]
+  }
+
+  if (speedreader_enabled) {
+    sources += [
+      "api/speedreader_api.cc",
+      "api/speedreader_api.h",
     ]
   }
 

@@ -10,12 +10,16 @@
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
+#include "brave/components/speedreader/browser/buildflags/buildflags.h"
 #include "content/public/browser/web_contents.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#endif
+#if BUILDFLAG(SPEEDREADER_ENABLED)
+#include "brave/components/speedreader/browser/speedreader_web_contents_observer.h"
 #endif
 #if BUILDFLAG(BRAVE_STP_ENABLED)
 #include "brave/components/brave_shields/browser/tracking_protection_helper.h"
@@ -43,6 +47,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 #endif
 
+#if BUILDFLAG(SPEEDREADER_ENABLED)
+  speedreader::SpeedreaderWebContentsObserver::CreateForWebContents(
+      web_contents);
+#endif
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
   greaselion::GreaselionTabHelper::CreateForWebContents(web_contents);
 }

@@ -1,0 +1,20 @@
+import("//brave/build/config.gni")
+
+source_set("browser") {
+    public_deps = [
+        "buildflags"
+    ]
+
+    sources = [
+        "speedreader_web_contents_observer.cc",
+        "speedreader_web_contents_observer.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/content:common",
+      "//chrome/common",
+      "//components/prefs",
+      "//content/public/browser",
+    ]
+}

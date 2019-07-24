@@ -5,6 +5,7 @@
 #include "brave/components/content_settings/core/browser/brave_content_settings_ephemeral_provider.h"
 
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/speedreader/common/speedreader_constants.h"
 
 namespace {
 
@@ -16,7 +17,7 @@ bool IsShieldsResourceID(
       resource_identifier == brave_shields::kJavaScript ||
       resource_identifier == brave_shields::kFingerprinting ||
       resource_identifier == brave_shields::kBraveShields ||
-      resource_identifier == brave_shields::kSpeedreader ||
+      resource_identifier == speedreader::kSpeedreader ||
       resource_identifier == brave_shields::kReferrers ||
       resource_identifier == brave_shields::kCookies) {
     return true;

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
+#ifndef BRAVE_COMPONENTS_SPEEDREADER_BROWSER_SPEEDREADER_WEB_CONTENTS_OBSERVER_H_
+#define BRAVE_COMPONENTS_SPEEDREADER_BROWSER_SPEEDREADER_WEB_CONTENTS_OBSERVER_H_
 
 #include <map>
 #include <set>
@@ -23,31 +23,16 @@ class WebContents;
 
 class PrefRegistrySimple;
 
-namespace brave_shields {
+namespace speedreader {
 
-class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
-    public content::WebContentsUserData<BraveShieldsWebContentsObserver> {
+class SpeedreaderWebContentsObserver : public content::WebContentsObserver,
+    public content::WebContentsUserData<SpeedreaderWebContentsObserver> {
  public:
-  explicit BraveShieldsWebContentsObserver(content::WebContents*);
-  ~BraveShieldsWebContentsObserver() override;
+  explicit SpeedreaderWebContentsObserver(content::WebContents*);
+  ~SpeedreaderWebContentsObserver() override;
 
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-  static void DispatchBlockedEventForWebContents(
-      const std::string& block_type,
-      const std::string& subresource,
-      content::WebContents* web_contents);
-  static void DispatchBlockedEvent(
-      std::string block_type,
-      std::string subresource,
-      int render_process_id,
-      int render_frame_id, int frame_tree_node_id);
-  static GURL GetTabURLFromRenderFrameInfo(int render_process_id,
-                                           int render_frame_id,
-                                           int render_frame_tree_node_id);
-  void AllowScriptsOnce(const std::vector<std::string>& origins,
+  void DisableSpeedreaderOnce(const std::vector<std::string>& origins,
                         content::WebContents* web_contents);
-  bool IsBlockedSubresource(const std::string& subresource);
-  void AddBlockedSubresource(const std::string& subresource);
 
  protected:
     // A set of identifiers that uniquely identifies a RenderFrame.
@@ -78,12 +63,6 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   // Invoked if an IPC message is coming from a specific RenderFrameHost.
   bool OnMessageReceived(const IPC::Message& message,
       content::RenderFrameHost* render_frame_host) override;
-  void OnJavaScriptBlockedWithDetail(
-      content::RenderFrameHost* render_frame_host,
-      const base::string16& details);
-  void OnFingerprintingBlockedWithDetail(
-      content::RenderFrameHost* render_frame_host,
-      const base::string16& details);
 
   // TODO(iefremov): Refactor this away or at least put into base::NoDestructor.
   // Protects global maps below from being concurrently written on the UI thread
@@ -93,16 +72,13 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   static std::map<int, GURL> frame_tree_node_id_to_tab_url_;
 
  private:
-  friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
-  std::vector<std::string> allowed_script_origins_;
-  // We keep a set of the current page's blocked URLs in case the page
-  // continually tries to load the same blocked URLs.
-  std::set<std::string> blocked_url_paths_;
+  friend class content::WebContentsUserData<SpeedreaderWebContentsObserver>;
+  std::vector<std::string> disabled_speedreader_origins_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-  DISALLOW_COPY_AND_ASSIGN(BraveShieldsWebContentsObserver);
+  DISALLOW_COPY_AND_ASSIGN(SpeedreaderWebContentsObserver);
 };
 
-}  // namespace brave_shields
+}  // namespace speedreader
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_SHIELDS_WEB_CONTENTS_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_SPEEDREADER_BROWSER_SPEEDREADER_WEB_CONTENTS_OBSERVER_H_

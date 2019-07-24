@@ -131,9 +131,14 @@ declare namespace chrome.braveShields {
   }
 
   const allowScriptsOnce: any
-  const disableSpeedreaderOnce: any
   const javascript: any
   const plugins: any
+}
+
+declare namespace chrome.speedreader {
+  const disableOnce: any
+  const getAsync: any
+  const setAsync: any
 }
 
 declare namespace chrome.braveTheme {

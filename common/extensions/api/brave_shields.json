@@ -49,28 +49,6 @@
             "parameters": []
           }
         ]
-      },
-      {
-        "name": "disableSpeedreaderOnce",
-        "type": "function",
-        "description": "Disable Speedreader on a list of origins until next reload",
-        "parameters": [
-          {
-            "name": "origins",
-            "type": "array",
-            "items": {"type": "string"}
-          },
-          {
-            "name": "tabID",
-            "type": "integer"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "optional": true,
-            "parameters": []
-          }
-        ]
       }
     ],
     "types": [

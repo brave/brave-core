@@ -187,6 +187,10 @@
     "message": "Learn more",
     "description": "Message inviting the user to learn more about Shields"
   },
+  "disableSpeedreaderOnce": {
+    "message": "Reload without SpeedReader once",
+    "description": "Message for the shortcut in the main interface to disable SpeedReader once"
+  },
   "speedreaderActive": {
     "message": "SpeedReader active",
     "description": "Message for the SpeedReader active row label"

@@ -131,10 +131,6 @@
     "message": "Allow scripts once",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
-  "disableSpeedreaderOnce": {
-    "message": "Reload without SpeedReader once",
-    "description": "Message for the shortcut in the main interface to disable SpeedReader once"
-  },
   "cancel": {
     "message": "Cancel",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"

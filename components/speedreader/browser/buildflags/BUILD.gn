@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/speedreader/browser/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "SPEEDREADER_ENABLED=$speedreader_enabled",
+  ]
+}

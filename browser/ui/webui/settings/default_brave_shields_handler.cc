@@ -11,6 +11,7 @@
 #include "base/values.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/speedreader/common/speedreader_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -248,6 +249,6 @@ void DefaultBraveShieldsHandler::SetSpeedreaderEverywhereControlType(
         ContentSettingsPattern::Wildcard(),
         ContentSettingsPattern::Wildcard(),
         CONTENT_SETTINGS_TYPE_PLUGINS,
-        brave_shields::kSpeedreader,
+        speedreader::kSpeedreader,
         value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }

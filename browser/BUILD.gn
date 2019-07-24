@@ -111,6 +111,7 @@ source_set("browser_process") {
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/brave_sync",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/speedreader/browser",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser",

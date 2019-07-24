@@ -35,6 +35,10 @@ promisifyAll(chrome.braveShields, [
   'plugins'
 ])
 
+promisifyAll(chrome, [
+  'speedreader'
+])
+
 require('./background/api')
 require('./background/events')
 require('./background/store')

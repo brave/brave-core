@@ -32,7 +32,7 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
     chrome.braveShields.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/*', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING } }),
     chrome.braveShields.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES } }),
     chrome.braveShields.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES } }),
-    chrome.braveShields.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_SPEEDREADER } })
+    chrome.speedreader.getAsync({ primaryUrl: origin })
   ]).then((details) => {
     const fingerprinting = details[5].setting !== details[6].setting ? 'block_third_party' : details[5].setting
     const cookies = details[7].setting !== details[8].setting ? 'block_third_party' : details[7].setting
@@ -50,7 +50,7 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       javascript: details[4].setting,
       fingerprinting,
       cookies,
-      speedreader: speedreader
+      speedreader
     }
   }).catch(() => {
     return {
@@ -88,7 +88,6 @@ export const requestShieldPanelData = (tabId: number) =>
   getTabData(tabId)
     .then(getShieldSettingsForTabData)
     .then((details: ShieldDetails) => {
-      // alert("Shield details:" + JSON.stringify(details));
       actions.shieldsPanelDataUpdated(details)
     })
 
@@ -169,9 +168,8 @@ export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOp
  */
 export const setEnableSpeedReader = (origin: string, setting: BlockOptions) => {
   const primaryPattern = getPrimaryPatternForOrigin(origin)
-  return chrome.braveShields.plugins.setAsync({
+  return chrome.speedreader.setAsync({
     primaryPattern: primaryPattern,
-    resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_SPEEDREADER },
     setting,
     scope: getScope()
   })

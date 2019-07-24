@@ -3,22 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/extensions/api/brave_shields_api.h"
+#include "brave/browser/extensions/api/speedreader_api.h"
 
 #include <memory>
-#include <string>
-#include <utility>
 
-#include "base/strings/string_number_conversions.h"
-#include "brave/common/extensions/api/brave_shields.h"
+#include "brave/common/extensions/api/brave_speedreader.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/speedreader/browser/speedreader_web_contents_observer.h"
+#include "brave/components/speedreader/common/speedreader_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_api_constants.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_helpers.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_store.h"
 #include "chrome/browser/extensions/api/preference/preference_api_constants.h"
+#include "brave/components/speedreader/browser/buildflags/buildflags.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -28,39 +27,21 @@
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_util.h"
 
-using brave_shields::BraveShieldsWebContentsObserver;
+using speedreader::SpeedreaderWebContentsObserver;
 
-namespace Get = extensions::api::brave_shields::ContentSetting::Get;
-namespace Set = extensions::api::brave_shields::ContentSetting::Set;
+namespace Get = extensions::api::speedreader::Get;
+namespace Set = extensions::api::speedreader::Set;
 namespace pref_keys = extensions::preference_api_constants;
-
-namespace {
-
-bool RemoveContentType(base::ListValue* args,
-                       ContentSettingsType* content_type) {
-  std::string content_type_str;
-  if (!args->GetString(0, &content_type_str))
-    return false;
-  // We remove the ContentSettingsType parameter since this is added by the
-  // renderer, and is not part of the JSON schema.
-  args->Remove(0, nullptr);
-  *content_type =
-      extensions::content_settings_helpers::StringToContentSettingsType(
-          content_type_str);
-  return *content_type != CONTENT_SETTINGS_TYPE_DEFAULT;
-}
-
-}  // namespace
 
 namespace extensions {
 namespace api {
 
-BraveShieldsAllowScriptsOnceFunction::~BraveShieldsAllowScriptsOnceFunction() {
+SpeedreaderDisableOnceFunction::~SpeedreaderDisableOnceFunction() {
 }
 
-ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
-  std::unique_ptr<brave_shields::AllowScriptsOnce::Params> params(
-      brave_shields::AllowScriptsOnce::Params::Create(*args_));
+ExtensionFunction::ResponseAction SpeedreaderDisableOnceFunction::Run() {
+  std::unique_ptr<speedreader::DisableOnce::Params> params(
+      speedreader::DisableOnce::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   // Get web contents for this tab
@@ -77,15 +58,15 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
                             base::NumberToString(params->tab_id)));
   }
 
-  BraveShieldsWebContentsObserver::FromWebContents(
-      contents)->AllowScriptsOnce(params->origins, contents);
+  SpeedreaderWebContentsObserver::FromWebContents(
+      contents)->DisableSpeedreaderOnce(params->origins, contents);
   return RespondNow(NoArguments());
 }
 
+
 ExtensionFunction::ResponseAction
-BraveShieldsContentSettingGetFunction::Run() {
-  ContentSettingsType content_type;
-  EXTENSION_FUNCTION_VALIDATE(RemoveContentType(args_.get(), &content_type));
+SpeedreaderGetFunction::Run() {
+  ContentSettingsType content_type = CONTENT_SETTINGS_TYPE_PLUGINS;
 
   std::unique_ptr<Get::Params> params(Get::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
@@ -105,9 +86,7 @@ BraveShieldsContentSettingGetFunction::Run() {
     }
   }
 
-  std::string resource_identifier;
-  if (params->details.resource_identifier.get())
-    resource_identifier = params->details.resource_identifier->id;
+  std::string resource_identifier = ::speedreader::kSpeedreader;
 
   bool incognito = false;
   if (params->details.incognito.get())
@@ -143,21 +122,18 @@ BraveShieldsContentSettingGetFunction::Run() {
   return RespondNow(OneArgument(std::move(result)));
 }
 
+
 ExtensionFunction::ResponseAction
-BraveShieldsContentSettingSetFunction::Run() {
-  ContentSettingsType content_type;
-  EXTENSION_FUNCTION_VALIDATE(RemoveContentType(args_.get(), &content_type));
+SpeedreaderSetFunction::Run() {
+  ContentSettingsType content_type = CONTENT_SETTINGS_TYPE_PLUGINS;
 
   std::unique_ptr<Set::Params> params(Set::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  std::string resource_identifier;
-  if (params->details.resource_identifier.get())
-    resource_identifier = params->details.resource_identifier->id;
+  std::string resource_identifier = ::speedreader::kSpeedreader;
 
   std::string setting_str;
-  EXTENSION_FUNCTION_VALIDATE(
-      params->details.setting->GetAsString(&setting_str));
+  EXTENSION_FUNCTION_VALIDATE(params->details.setting->GetAsString(&setting_str));
   ContentSetting setting;
   EXTENSION_FUNCTION_VALIDATE(
       content_settings::ContentSettingFromString(setting_str, &setting));
@@ -186,7 +162,7 @@ BraveShieldsContentSettingSetFunction::Run() {
   ExtensionPrefsScope scope = kExtensionPrefsScopeRegular;
   bool incognito = false;
   if (params->details.scope ==
-      brave_shields::SCOPE_INCOGNITO_SESSION_ONLY) {
+      speedreader::SCOPE_INCOGNITO_SESSION_ONLY) {
     scope = kExtensionPrefsScopeIncognitoSessionOnly;
     incognito = true;
   }
@@ -228,26 +204,9 @@ BraveShieldsContentSettingSetFunction::Run() {
     map = HostContentSettingsMapFactory::GetForProfile(profile);
   }
 
-  if (content_type == CONTENT_SETTINGS_TYPE_JAVASCRIPT) {
-    // TODO(simonhong): Need to check why generating pattern with
-    // content_settings_helpers::ParseExtensionPattern() causes javascript
-    // set fail.
-    // Without this separate handling, shields can't toggle block script setting
-    // anymore after user changes js permission from page info bubble.
-    // page info bubble uses SetNarrowestContentSetting() for setting and it
-    // gets pattern by using GetPatternsForContentSettingsType() same as
-    // SetContentSettingDefaultScope().
-    const GURL primary_url(params->details.primary_pattern);
-    if (!primary_url.is_valid())
-      return RespondNow(Error("Invalid url"));
-
-    map->SetContentSettingDefaultScope(
-        primary_url, primary_url, content_type, resource_identifier, setting);
-  } else {
-    map->SetContentSettingCustomScope(
-        primary_pattern, secondary_pattern,
-        content_type, resource_identifier, setting);
-  }
+  map->SetContentSettingCustomScope(
+      primary_pattern, secondary_pattern,
+      content_type, resource_identifier, setting);
 
   // Delete previous settings set by brave extension in extension's
   // ContentSettingsStore. Setting default means delete.
@@ -261,6 +220,7 @@ BraveShieldsContentSettingSetFunction::Run() {
                                     scope);
   return RespondNow(NoArguments());
 }
+
 
 }  // namespace api
 }  // namespace extensions
