@@ -68,6 +68,7 @@
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/android/service_tab_launcher.h"
+#include "content/public/browser/page_navigator.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;

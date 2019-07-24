@@ -12,8 +12,6 @@
 #include "base/android/jni_string.h"
 #include "base/system/sys_info.h"
 
-using base::Android;
-
 namespace brave_ads {
 
 namespace {
@@ -30,7 +28,7 @@ NotificationHelperAndroid::NotificationHelperAndroid() = default;
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
 bool NotificationHelperAndroid::ShouldShowNotifications() const {
-  JNIEnv* env = AttachCurrentThread();
+  JNIEnv* env = base::android::AttachCurrentThread();
   int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
   bool is_notifications_enabled = (status == kAppNotificationsStatusEnabled ||
       status == kAppNotificationStatusUndeterminable);
@@ -45,7 +43,7 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() const {
     return false;
   }
 
-  JNIEnv* env = AttachCurrentThread();
+  JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveAdsSignupDialog_enqueueOobeNotificationNative(env);
 
   return true;
@@ -56,7 +54,7 @@ bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled() const {
     return true;
   }
 
-  JNIEnv* env = AttachCurrentThread();
+  JNIEnv* env = base::android::AttachCurrentThread();
   auto j_channel_id = Java_BraveAds_getBraveAdsChannelId(env);
   std::string channel_id = ConvertJavaStringToUTF8(env, j_channel_id);
 
