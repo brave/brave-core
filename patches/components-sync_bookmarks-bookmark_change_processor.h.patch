@@ -1,5 +1,5 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.h b/components/sync_bookmarks/bookmark_change_processor.h
-index e11a2ddf641edc7098c06433fd22d86467e2aabf..d29059927ef563fb6e0a365da740d50ba8360bfd 100644
+index ab33d1013d83de38037b84007baa9bb4b5e2f89f..ae55c0db1f50bc3035bfcebf3ab18f4af360b25f 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.h
 +++ b/components/sync_bookmarks/bookmark_change_processor.h
 @@ -172,6 +172,7 @@ class BookmarkChangeProcessor : public bookmarks::BookmarkModelObserver,

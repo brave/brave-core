@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/importer/firefox_importer.h b/chrome/utility/importer/firefox_importer.h
-index e08bf86f692cf7013291a39efb109b218154d8a5..ac7b34ab661ac630dfd92eb514e74c0f01c7ba97 100644
+index e08bf86f692cf7013291a39efb109b218154d8a5..ee5549b80d12baa0f87df36bb1bee7ea4647b44b 100644
 --- a/chrome/utility/importer/firefox_importer.h
 +++ b/chrome/utility/importer/firefox_importer.h
 @@ -41,6 +41,9 @@ class FirefoxImporter : public Importer {
@@ -8,7 +8,7 @@ index e08bf86f692cf7013291a39efb109b218154d8a5..ac7b34ab661ac630dfd92eb514e74c0f
  
 + protected:
 +  ~FirefoxImporter() override;
-+  
++
   private:
    // Location of favicons in Firefox profile. It may vary depending on Firefox
    // version.

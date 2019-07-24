@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index b5898a5f8adb9a3d97464d723a3dbc87fa9b6dbb..2adddbc8cd82430433c7ef42a0a93635d2729d55 100644
+index 665e37e154d3476e12c359383810b566c288a6c5..4d1c0d3f3459195fe6d797c2755e83b406c496a3 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -457,6 +457,20 @@ enum HistogramValue {
-   MIME_HANDLER_PRIVATE_SAVE = 436,
-   RUNTIME_ON_CONNECT_NATIVE = 437,
+@@ -459,6 +459,20 @@ enum HistogramValue {
    ACTION_ON_CLICKED = 438,
+   ACCESSIBILITY_PRIVATE_ON_SWITCH_ACCESS_COMMAND = 439,
+   ACCESSIBILITY_PRIVATE_FIND_SCROLLABLE_BOUNDS_FOR_POINT = 440,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,

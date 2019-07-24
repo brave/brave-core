@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/plugins/plugins_resource_service.cc b/chrome/browser/plugins/plugins_resource_service.cc
-index d7c3801df3e8766b2124b4c73ec3a46631aa5d3b..d6d391d47a4b4540f4177034da6ee475100c78b0 100644
+index 85003dd6cb04d27820e182c75fd76169b269a7e1..f3facf8c650cda32fa59bca6735c897f1aede5ca 100644
 --- a/chrome/browser/plugins/plugins_resource_service.cc
 +++ b/chrome/browser/plugins/plugins_resource_service.cc
 @@ -55,7 +55,7 @@ const int kStartResourceFetchDelayMs = 60 * 1000;

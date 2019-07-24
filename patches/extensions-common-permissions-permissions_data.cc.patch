@@ -1,8 +1,8 @@
 diff --git a/extensions/common/permissions/permissions_data.cc b/extensions/common/permissions/permissions_data.cc
-index b09be07c0db06ec79044ac2468488ad70fce5118..81f9cf71397fee20db30764e92f9be14fb83396e 100644
+index 1c3287bb6f0f0a51e39eaf8c8a77ca54bb36f621..550a417c63017abedbef243a6fdbe901a975422d 100644
 --- a/extensions/common/permissions/permissions_data.cc
 +++ b/extensions/common/permissions/permissions_data.cc
-@@ -521,6 +521,7 @@ PermissionsData::PageAccess PermissionsData::CanRunOnPage(
+@@ -531,6 +531,7 @@ PermissionsData::PageAccess PermissionsData::CanRunOnPage(
    if (IsRestrictedUrl(document_url, error))
      return PageAccess::kDenied;
  
