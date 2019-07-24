@@ -37,10 +37,17 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
     context_->Init();
 
     torrent_url_ = GURL("https://webtorrent.io/torrents/sintel.torrent");
+    torrent_viewer_url_ =
+      GURL("https://webtorrent.io/torrents/sintel.torrent#ix=0");
     non_torrent_url_ = GURL("https://webtorrent.io/torrents/sintel");
-    extension_url_ = GURL(
+
+    torrent_extension_url_ = GURL(
         "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
         "brave_webtorrent.html?https://webtorrent.io/torrents/sintel.torrent");
+    torrent_viewer_extension_url_ = GURL(
+        "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
+        "brave_webtorrent.html?https://webtorrent.io/torrents/sintel.torrent"
+        "#ix=0");
     non_torrent_extension_url_ = GURL(
         "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
         "brave_webtorrent.html?https://webtorrent.io/torrents/sintel");
@@ -60,12 +67,20 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
     return torrent_url_;
   }
 
+  const GURL& torrent_viewer_url() {
+    return torrent_viewer_url_;
+  }
+
   const GURL& non_torrent_url() {
     return non_torrent_url_;
   }
 
-  const GURL& extension_url() {
-    return extension_url_;
+  const GURL& torrent_extension_url() {
+    return torrent_extension_url_;
+  }
+
+  const GURL& torrent_viewer_extension_url() {
+    return torrent_viewer_extension_url_;
   }
 
   const GURL& non_torrent_extension_url() {
@@ -77,9 +92,13 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
 
  private:
   GURL torrent_url_;
+  GURL torrent_viewer_url_;
   GURL non_torrent_url_;
-  GURL extension_url_;
+
+  GURL torrent_extension_url_;
+  GURL torrent_viewer_extension_url_;
   GURL non_torrent_extension_url_;
+
   content::TestBrowserThreadBundle thread_bundle_;
   std::unique_ptr<net::TestURLRequestContext> context_;
   std::unique_ptr<content::MockResourceContext> resource_context_;
@@ -148,8 +167,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   std::string location;
   EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                           &location));
-  EXPECT_EQ(location, extension_url().spec());
-  EXPECT_EQ(allowed_unsafe_redirect_url.spec(), extension_url().spec());
+  EXPECT_EQ(location, torrent_extension_url().spec());
+  EXPECT_EQ(allowed_unsafe_redirect_url.spec(), torrent_extension_url().spec());
   EXPECT_EQ(ret, net::OK);
 }
 
@@ -186,8 +205,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   std::string location;
   EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                           &location));
-  EXPECT_EQ(location, extension_url().spec());
-  EXPECT_EQ(allowed_unsafe_redirect_url.spec(), extension_url().spec());
+  EXPECT_EQ(location, torrent_extension_url().spec());
+  EXPECT_EQ(allowed_unsafe_redirect_url.spec(), torrent_extension_url().spec());
   EXPECT_EQ(ret, net::OK);
 }
 
@@ -312,7 +331,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       context()->CreateRequest(torrent_url(), net::IDLE, &test_delegate,
                                TRAFFIC_ANNOTATION_FOR_TESTS);
 
-  request->set_initiator(url::Origin::Create(extension_url().GetOrigin()));
+  request->set_initiator(url::Origin::Create(
+    torrent_extension_url().GetOrigin()));
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
     new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader(
@@ -339,5 +359,46 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                            &location));
   EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
+       WebtorrentInitiatedViewerURLRedirect) {
+  net::TestDelegate test_delegate;
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(torrent_viewer_url(), net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+
+  request->set_initiator(url::Origin::Create(
+    torrent_extension_url().GetOrigin()));
+  scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
+    new net::HttpResponseHeaders(std::string());
+  orig_response_headers->AddHeader(
+      base::StrCat({"Content-Type: ", kBittorrentMimeType}));
+  std::string mimeType;
+  ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
+  ASSERT_EQ(mimeType, kBittorrentMimeType);
+
+  scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
+    new net::HttpResponseHeaders(std::string());
+  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
+  std::shared_ptr<brave::BraveRequestInfo>
+      brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
+  brave::ResponseCallback callback;
+
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+      orig_response_headers.get(), &overwrite_response_headers,
+      &allowed_unsafe_redirect_url, callback, brave_request_info);
+
+  EXPECT_EQ(overwrite_response_headers->GetStatusLine(),
+            "HTTP/1.1 307 Temporary Redirect");
+  std::string location;
+  EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
+                                                          &location));
+  EXPECT_EQ(location, torrent_viewer_extension_url().spec());
+  EXPECT_EQ(allowed_unsafe_redirect_url.spec(),
+            torrent_viewer_extension_url().spec());
   EXPECT_EQ(ret, net::OK);
 }
