@@ -504,6 +504,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void TransferAnonToExternalWallet(
       const std::string& new_address,
+      const bool allow_zero_balance,
       ledger::TransferAnonToExternalWalletCallback callback);
 
   void ShowNotification(

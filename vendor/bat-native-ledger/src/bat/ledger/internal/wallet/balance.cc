@@ -86,6 +86,13 @@ void Balance::OnWalletProperties(
   }
   balance->total = total_anon;
 
+  auto* funds = dictionary->FindKey("cardBalance");
+  std::string user_funds = "0";
+  if (funds) {
+    user_funds = funds->GetString();
+  }
+  balance->user_funds = user_funds;
+
   auto* local_rates = dictionary->FindKey("rates");
   if (local_rates) {
     base::DictionaryValue* dict_value = nullptr;
