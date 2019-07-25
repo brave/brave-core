@@ -724,6 +724,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ResetPreservesTags) {
   g_brave_browser_process->ad_block_service()->EnableTag(
       brave_shields::kFacebookEmbeds, true);
+  WaitForAdBlockServiceThreads();
   UpdateAdBlockInstanceWithRules("");
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
 }
