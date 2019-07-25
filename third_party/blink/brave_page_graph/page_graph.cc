@@ -566,6 +566,14 @@ void PageGraph::RegisterElmForRemoteScript(const DOMNodeId node_id,
   script_tracker_.AddScriptUrlForElm(normalized_url, node_id);
 }
 
+void PageGraph::RegisterJavaScriptURL(const blink::ScriptSourceCode& code) {
+  Log("RegisterJavaScriptURL) script: " +
+      string(code.Source().ToString().Utf8().data()));
+  // Use the document node as the "owning element" of JavaScript URLs for now.
+  script_tracker_.AddScriptSourceForElm(code,
+      blink::DOMNodeIds::IdForNode(&document_));
+}
+
 void PageGraph::RegisterUrlForScriptSource(const KURL& url,
     const ScriptSourceCode& code) {
   const KURL normalized_url = NormalizeUrl(url);
