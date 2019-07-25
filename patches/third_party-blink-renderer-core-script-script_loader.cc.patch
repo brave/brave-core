@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
-index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..4a60a71c472ea6188d0ce4b545bece45e9540d7e 100644
+index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..1d227058a75b086571299bb6886a6ff9be62cc6d 100644
 --- a/third_party/blink/renderer/core/script/script_loader.cc
 +++ b/third_party/blink/renderer/core/script/script_loader.cc
-@@ -63,6 +63,14 @@
+@@ -63,6 +63,15 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
  
@@ -10,6 +10,7 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..4a60a71c472ea6188d0ce4b545bece45
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/html/html_script_element.h"
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "third_party/blink/renderer/core/svg/svg_script_element.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
@@ -17,17 +18,18 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..4a60a71c472ea6188d0ce4b545bece45
  namespace blink {
  
  ScriptLoader::ScriptLoader(ScriptElementBase* element,
-@@ -101,6 +109,9 @@ void ScriptLoader::Trace(blink::Visitor* visitor) {
+@@ -101,6 +110,10 @@ void ScriptLoader::Trace(blink::Visitor* visitor) {
    visitor->Trace(pending_script_);
    visitor->Trace(prepared_pending_script_);
    visitor->Trace(resource_keep_alive_);
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  visitor->Trace(script_elm_);
++  visitor->Trace(script_elm_html_);
++  visitor->Trace(script_elm_svg_);
 +#endif
    PendingScriptClient::Trace(visitor);
  }
  
-@@ -569,6 +580,20 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -569,6 +582,25 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
        else
          encoding = element_document.Encoding();
  
@@ -36,10 +38,15 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..4a60a71c472ea6188d0ce4b545bece45
 +        ::brave_page_graph::PageGraph* page_graph = context_document->GetFrame()
 +          ->GetDocument()->GetPageGraph();
 +        if (page_graph != nullptr) {
-+          HTMLScriptElement* script_elm = GetHTMLScriptElement();
-+          if (script_elm != nullptr) {
++          HTMLScriptElement* script_elm_html = GetHTMLScriptElement();
++          SVGScriptElement* script_elm_svg = GetSVGScriptElement();
++          if (script_elm_html != nullptr) {
 +            page_graph->RegisterElmForRemoteScript(
-+              DOMNodeIds::IdForNode(script_elm),
++              DOMNodeIds::IdForNode(script_elm_html),
++              url);
++          } else if (script_elm_svg != nullptr) {
++            page_graph->RegisterElmForRemoteScript(
++              DOMNodeIds::IdForNode(script_elm_svg),
 +              url);
 +          }
 +        }
@@ -48,7 +55,7 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..4a60a71c472ea6188d0ce4b545bece45
        // <spec step="24.6.A">"classic"
        //
        // Fetch a classic script given url, settings object, options, classic
-@@ -647,6 +672,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -647,6 +679,30 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // <spec step="25.2.A.3">The script is ready.</spec>
          //
          // Implemented by ClassicPendingScript.
@@ -58,12 +65,19 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..4a60a71c472ea6188d0ce4b545bece45
 +          ::brave_page_graph::PageGraph* const page_graph = context_document
 +            ->GetFrame()->GetDocument()->GetPageGraph();
 +          if (page_graph != nullptr) {
-+            HTMLScriptElement* script_elm = GetHTMLScriptElement();
-+            if (script_elm != nullptr) {
++            HTMLScriptElement* script_elm_html = GetHTMLScriptElement();
++            SVGScriptElement* script_elm_svg = GetSVGScriptElement();
++            if (script_elm_html != nullptr) {
 +              ClassicScript* classic_script = static_cast<ClassicScript*>(
 +                prepared_pending_script_->GetSource(base_url));
 +              page_graph->RegisterElmForLocalScript(
-+                DOMNodeIds::IdForNode(script_elm),
++                DOMNodeIds::IdForNode(script_elm_html),
++                classic_script->GetScriptSourceCode());
++            } else if (script_elm_svg != nullptr) {
++              ClassicScript* classic_script = static_cast<ClassicScript*>(
++                prepared_pending_script_->GetSource(base_url));
++              page_graph->RegisterElmForLocalScript(
++                DOMNodeIds::IdForNode(script_elm_svg),
 +                classic_script->GetScriptSourceCode());
 +            }
 +          }
@@ -72,17 +86,25 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..4a60a71c472ea6188d0ce4b545bece45
          break;
        }
  
-@@ -959,4 +1001,15 @@ ScriptLoader::GetPendingScriptIfControlledByScriptRunnerForCrossDocMove() {
+@@ -959,4 +1015,23 @@ ScriptLoader::GetPendingScriptIfControlledByScriptRunnerForCrossDocMove() {
    return pending_script_;
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void ScriptLoader::SetSVGScriptElement(SVGScriptElement* const elm) {
++  script_elm_svg_ = elm;
++}
++
++SVGScriptElement* ScriptLoader::GetSVGScriptElement() const {
++  return script_elm_svg_;
++}
++
 +void ScriptLoader::SetHTMLScriptElement(HTMLScriptElement* const elm) {
-+  script_elm_ = elm;
++  script_elm_html_ = elm;
 +}
 +
 +HTMLScriptElement* ScriptLoader::GetHTMLScriptElement() const {
-+  return script_elm_;
++  return script_elm_html_;
 +}
 +#endif
 +
