@@ -1,49 +1,37 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index ddd5aeef9dafb3e80ad20a7481c4f8ebb418493d..2fda1db466d960856ad397fb8fe97992871fbcec 100644
+index de69f7ba6cca5729ab83ff076211be36354d0f60..63791734d49a77999e446f1083f137e910fbdd8b 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
-@@ -42,7 +42,6 @@ def get_parts(config):
-                 options=CodeSignOptions.RESTRICT,
-                 requirements=config.codesign_requirements_outer_app,
-                 identifier_requirement=False,
--                resource_rules='app_resource_rules.plist',
-                 entitlements='app-entitlements.plist',
-                 verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT),
-         'framework':
-@@ -82,9 +81,17 @@ def get_parts(config):
-                 options=CodeSignOptions.RESTRICT +
-                 CodeSignOptions.LIBRARY_VALIDATION,
-                 verify_options=VerifyOptions.IGNORE_RESOURCES),
-+        'sparkle-framework':
-+            CodeSignedProduct(
-+                '{.framework_dir}/Frameworks/Sparkle.framework'
-+                .format(config),
-+                'org.sparkle-project.Sparkle',
-+                verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT),
-     }
+@@ -11,6 +11,7 @@ import os.path
  
-     dylibs = (
-+        'libchallenge_bypass_ristretto.dylib',
-+        'libadblock.dylib',
-         'libEGL.dylib',
-         'libGLESv2.dylib',
-         'libswiftshader_libEGL.dylib',
-@@ -141,7 +148,7 @@ def sign_part(paths, config, part):
+ from . import commands
+ from .model import CodeSignOptions, CodeSignedProduct, VerifyOptions
++from signing_helper import AddBravePartsForSigning, GenerateBraveWidevineSigFile
+ 
+ _PROVISIONPROFILE_EXT = '.provisionprofile'
+ _PROVISIONPROFILE_DEST = 'embedded.provisionprofile'
+@@ -124,6 +125,7 @@ def get_parts(config):
+             library_basename.replace('.dylib', ''),
+             verify_options=VerifyOptions.DEEP)
+ 
++    AddBravePartsForSigning(parts, config)
+     return parts
+ 
+ 
+@@ -168,7 +170,7 @@ def sign_part(paths, config, part):
          part: The |model.CodeSignedProduct| to sign. The product's |path| must
              be in |paths.work|.
      """
 -    command = ['codesign', '--sign', config.identity]
 +    command = ['codesign', '--force', '--sign', config.identity]
-     if part.sign_with_identifier:
-         command.extend(['--identifier', part.identifier])
-     reqs = part.requirements_string(config)
-@@ -231,6 +238,9 @@ def sign_chrome(paths, config):
+     if config.notary_user:
+         # Assume if the config has notary authentication information that the
+         # products will be notarized, which requires a secure timestamp.
+@@ -260,6 +262,7 @@ def sign_chrome(paths, config, sign_framework=False):
+                 continue
+             sign_part(paths, config, part)
  
-     # Sign the framework bundle.
-     sign_part(paths, config, parts['framework'])
-+    from signing_helper import GenerateWidevineSigFile
-+    GenerateWidevineSigFile(paths, config, parts['framework'])
-+    sign_part(paths, config, parts['framework'])
++        GenerateBraveWidevineSigFile(paths, config, parts['framework'])
+         # Sign the framework bundle.
+         sign_part(paths, config, parts['framework'])
  
-     provisioning_profile_basename = config.provisioning_profile_basename
-     if provisioning_profile_basename:
