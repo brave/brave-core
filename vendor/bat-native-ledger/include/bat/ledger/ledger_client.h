@@ -120,10 +120,10 @@ class LEDGER_EXPORT LedgerClient {
   virtual void LoadPublisherInfo(const std::string& publisher_key,
                                  PublisherInfoCallback callback) = 0;
 
-  virtual void LoadActivityInfo(ActivityInfoFilter filter,
+  virtual void LoadActivityInfo(ActivityInfoFilterPtr filter,
                                 PublisherInfoCallback callback) = 0;
 
-  virtual void LoadPanelPublisherInfo(ActivityInfoFilter filter,
+  virtual void LoadPanelPublisherInfo(ActivityInfoFilterPtr filter,
                                       PublisherInfoCallback callback) = 0;
 
   virtual void LoadMediaPublisherInfo(const std::string& media_key,
@@ -133,7 +133,7 @@ class LEDGER_EXPORT LedgerClient {
                                 const std::string& publisher_id) = 0;
 
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
-                                   ActivityInfoFilter filter,
+                                   ActivityInfoFilterPtr filter,
                                    PublisherInfoListCallback callback) = 0;
 
   virtual void OnRecoverWallet(Result result,

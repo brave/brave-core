@@ -252,30 +252,31 @@ bool SaveActivityInfoOnFileTaskRunner(
 ledger::PublisherInfoList GetActivityListOnFileTaskRunner(
     uint32_t start,
     uint32_t limit,
-    ledger::ActivityInfoFilter filter,
+    ledger::ActivityInfoFilterPtr filter,
     PublisherInfoDatabase* backend) {
   ledger::PublisherInfoList list;
-  if (!backend)
+  if (!backend || filter.is_null())
     return list;
 
-  if (filter.excluded ==
-    ledger::EXCLUDE_FILTER::FILTER_EXCLUDED) {
+  if (filter->excluded ==
+    ledger::ExcludeFilter::FILTER_EXCLUDED) {
     ignore_result(backend->GetExcludedList(&list));
   } else {
-    ignore_result(backend->GetActivityList(start, limit, filter, &list));
+    ignore_result(backend->GetActivityList(start, limit,
+        std::move(filter), &list));
   }
   return list;
 }
 
 ledger::PublisherInfoPtr GetPanelPublisherInfoOnFileTaskRunner(
-    ledger::ActivityInfoFilter filter,
+    ledger::ActivityInfoFilterPtr filter,
     PublisherInfoDatabase* backend) {
   ledger::PublisherInfoList list;
   if (!backend) {
     return nullptr;
   }
 
-  return backend->GetPanelPublisher(filter);
+  return backend->GetPanelPublisher(std::move(filter));
 }
 
 // `callback` has a WeakPtr so this won't crash if the file finishes
@@ -545,21 +546,22 @@ void RewardsServiceImpl::GetContentSiteList(
     uint32_t min_visits,
     bool fetch_excluded,
     const GetContentSiteListCallback& callback) {
-  ledger::ActivityInfoFilter filter;
-  filter.min_duration = min_visit_time;
-  filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
-  filter.reconcile_stamp = reconcile_stamp;
-  filter.excluded = fetch_excluded
-    ? ledger::EXCLUDE_FILTER::FILTER_EXCLUDED
-    : ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
-  filter.percent = 1;
-  filter.non_verified = allow_non_verified;
-  filter.min_visits = min_visits;
+  auto filter = ledger::ActivityInfoFilter::New();
+  filter->min_duration = min_visit_time;
+  auto pair = ledger::ActivityInfoFilterOrderPair::New("ai.percent", false);
+  filter->order_by.push_back(std::move(pair));
+  filter->reconcile_stamp = reconcile_stamp;
+  filter->excluded = fetch_excluded
+    ? ledger::ExcludeFilter::FILTER_EXCLUDED
+    : ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
+  filter->percent = 1;
+  filter->non_verified = allow_non_verified;
+  filter->min_visits = min_visits;
 
   bat_ledger_->GetActivityInfoList(
       start,
       limit,
-      filter.ToJson(),
+      std::move(filter),
       base::BindOnce(&RewardsServiceImpl::OnGetContentSiteList,
                      AsWeakPtr(),
                      callback));
@@ -1140,17 +1142,18 @@ void RewardsServiceImpl::OnActivityInfoSaved(
 }
 
 void RewardsServiceImpl::LoadActivityInfo(
-    ledger::ActivityInfoFilter filter,
+    ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoCallback callback) {
+  auto id = filter->id;
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetActivityListOnFileTaskRunner,
+      base::BindOnce(&GetActivityListOnFileTaskRunner,
           // set limit to 2 to make sure there is
           // only 1 valid result for the filter
-          0, 2, filter, publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnActivityInfoLoaded,
+          0, 2, std::move(filter), publisher_info_backend_.get()),
+      base::BindOnce(&RewardsServiceImpl::OnActivityInfoLoaded,
                      AsWeakPtr(),
                      callback,
-                     filter.id));
+                     id));
 }
 
 void RewardsServiceImpl::OnPublisherActivityInfoLoaded(
@@ -1188,13 +1191,13 @@ void RewardsServiceImpl::OnActivityInfoLoaded(
 }
 
 void RewardsServiceImpl::LoadPanelPublisherInfo(
-    ledger::ActivityInfoFilter filter,
+    ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetPanelPublisherInfoOnFileTaskRunner,
-                 filter,
+      base::BindOnce(&GetPanelPublisherInfoOnFileTaskRunner,
+                 std::move(filter),
                  publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnPanelPublisherInfoLoaded,
+      base::BindOnce(&RewardsServiceImpl::OnPanelPublisherInfoLoaded,
                      AsWeakPtr(),
                      callback));
 }
@@ -1213,13 +1216,13 @@ void RewardsServiceImpl::OnPanelPublisherInfoLoaded(
 void RewardsServiceImpl::GetActivityInfoList(
     uint32_t start,
     uint32_t limit,
-    ledger::ActivityInfoFilter filter,
+    ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetActivityListOnFileTaskRunner,
-                    start, limit, filter,
+      base::BindOnce(&GetActivityListOnFileTaskRunner,
+                    start, limit, std::move(filter),
                     publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnPublisherInfoListLoaded,
+      base::BindOnce(&RewardsServiceImpl::OnPublisherInfoListLoaded,
                     AsWeakPtr(),
                     start,
                     limit,

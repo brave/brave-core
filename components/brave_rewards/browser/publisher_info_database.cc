@@ -325,13 +325,13 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
 
 ledger::PublisherInfoPtr
 PublisherInfoDatabase::GetPanelPublisher(
-    const ledger::ActivityInfoFilter& filter) {
+    ledger::ActivityInfoFilterPtr filter) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized || filter.id.empty()) {
+  if (!initialized || filter.is_null() || filter->id.empty()) {
     return nullptr;
   }
 
@@ -344,9 +344,9 @@ PublisherInfoDatabase::GetPanelPublisher(
       ") as percent "
       "FROM publisher_info AS pi WHERE pi.publisher_id = ? LIMIT 1"));
 
-  info_sql.BindString(0, filter.id);
-  info_sql.BindInt64(1, filter.reconcile_stamp);
-  info_sql.BindString(2, filter.id);
+  info_sql.BindString(0, filter->id);
+  info_sql.BindInt64(1, filter->reconcile_stamp);
+  info_sql.BindString(2, filter->id);
 
   if (info_sql.Step()) {
     auto info = ledger::PublisherInfo::New();
@@ -496,7 +496,7 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
 bool PublisherInfoDatabase::GetActivityList(
     int start,
     int limit,
-    const ledger::ActivityInfoFilter& filter,
+    ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoList* list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -505,7 +505,7 @@ bool PublisherInfoDatabase::GetActivityList(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized) {
+  if (!initialized || filter.is_null()) {
     return false;
   }
 
@@ -518,44 +518,44 @@ bool PublisherInfoDatabase::GetActivityList(
                       "ON ai.publisher_id = pi.publisher_id "
                       "WHERE 1 = 1";
 
-  if (!filter.id.empty()) {
+  if (!filter->id.empty()) {
     query += " AND ai.publisher_id = ?";
   }
 
-  if (filter.reconcile_stamp > 0) {
+  if (filter->reconcile_stamp > 0) {
     query += " AND ai.reconcile_stamp = ?";
   }
 
-  if (filter.min_duration > 0) {
+  if (filter->min_duration > 0) {
     query += " AND ai.duration >= ?";
   }
 
-  if (filter.excluded != ledger::EXCLUDE_FILTER::FILTER_ALL &&
-      filter.excluded !=
-        ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+  if (filter->excluded != ledger::ExcludeFilter::FILTER_ALL &&
+      filter->excluded !=
+        ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded = ?";
   }
 
-  if (filter.excluded ==
-    ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+  if (filter->excluded ==
+    ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded != ?";
   }
 
-  if (filter.percent > 0) {
+  if (filter->percent > 0) {
     query += " AND ai.percent >= ?";
   }
 
-  if (filter.min_visits > 0) {
+  if (filter->min_visits > 0) {
     query += " AND ai.visits >= ?";
   }
 
-  if (!filter.non_verified) {
+  if (!filter->non_verified) {
     query += " AND pi.verified = 1";
   }
 
-  for (const auto& it : filter.order_by) {
-    query += " ORDER BY " + it.first;
-    query += (it.second ? " ASC" : " DESC");
+  for (const auto& it : filter->order_by) {
+    query += " ORDER BY " + it->property_name;
+    query += (it->ascending ? " ASC" : " DESC");
   }
 
   if (limit > 0) {
@@ -569,35 +569,35 @@ bool PublisherInfoDatabase::GetActivityList(
   sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
 
   int column = 0;
-  if (!filter.id.empty()) {
-    info_sql.BindString(column++, filter.id);
+  if (!filter->id.empty()) {
+    info_sql.BindString(column++, filter->id);
   }
 
-  if (filter.reconcile_stamp > 0) {
-    info_sql.BindInt64(column++, filter.reconcile_stamp);
+  if (filter->reconcile_stamp > 0) {
+    info_sql.BindInt64(column++, filter->reconcile_stamp);
   }
 
-  if (filter.min_duration > 0) {
-    info_sql.BindInt(column++, filter.min_duration);
+  if (filter->min_duration > 0) {
+    info_sql.BindInt(column++, filter->min_duration);
   }
 
-  if (filter.excluded != ledger::EXCLUDE_FILTER::FILTER_ALL &&
-      filter.excluded !=
-      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
-    info_sql.BindInt(column++, filter.excluded);
+  if (filter->excluded != ledger::ExcludeFilter::FILTER_ALL &&
+      filter->excluded !=
+      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+    info_sql.BindInt(column++, static_cast<int32_t>(filter->excluded));
   }
 
-  if (filter.excluded ==
-      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+  if (filter->excluded ==
+      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     info_sql.BindInt(column++, ledger::PUBLISHER_EXCLUDE::EXCLUDED);
   }
 
-  if (filter.percent > 0) {
-    info_sql.BindInt(column++, filter.percent);
+  if (filter->percent > 0) {
+    info_sql.BindInt(column++, filter->percent);
   }
 
-  if (filter.min_visits > 0) {
-    info_sql.BindInt(column++, filter.min_visits);
+  if (filter->min_visits > 0) {
+    info_sql.BindInt(column++, filter->min_visits);
   }
 
   while (info_sql.Step()) {

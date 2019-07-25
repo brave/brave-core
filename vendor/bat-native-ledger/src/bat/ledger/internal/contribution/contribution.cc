@@ -75,9 +75,9 @@ void Contribution::OnSufficientBalanceWallet(
     ledger::BalancePtr properties,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (result == ledger::Result::LEDGER_OK && properties) {
-    ledger::ActivityInfoFilter filter = ledger_->CreateActivityFilter(
+    auto filter = ledger_->CreateActivityFilter(
       std::string(),
-      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
+      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       ledger_->GetReconcileStamp(),
       ledger_->GetPublisherAllowNonVerified(),
@@ -85,7 +85,7 @@ void Contribution::OnSufficientBalanceWallet(
   ledger_->GetActivityInfoList(
       0,
       0,
-      filter,
+      std::move(filter),
       std::bind(&Contribution::GetVerifiedAutoAmount,
                 this,
                 _1,
@@ -330,9 +330,9 @@ void Contribution::StartAutoContribute() {
   }
 
   uint64_t current_reconcile_stamp = ledger_->GetReconcileStamp();
-  ledger::ActivityInfoFilter filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->CreateActivityFilter(
       "",
-      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
+      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       current_reconcile_stamp,
       ledger_->GetPublisherAllowNonVerified(),
@@ -340,7 +340,7 @@ void Contribution::StartAutoContribute() {
   ledger_->GetActivityInfoList(
       0,
       0,
-      filter,
+      std::move(filter),
       std::bind(&Contribution::PrepareACList,
                 this,
                 _1,

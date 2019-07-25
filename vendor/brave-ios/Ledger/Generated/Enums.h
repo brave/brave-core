@@ -34,14 +34,6 @@ typedef NS_ENUM(NSInteger, BATContributionRetry) {
   BATContributionRetryStepFinal = 10
 } NS_SWIFT_NAME(ContributionRetry);
 
-typedef NS_ENUM(NSInteger, BATExcludeFilter) {
-  BATExcludeFilterFilterAll = -1,
-  BATExcludeFilterFilterDefault = 0,
-  BATExcludeFilterFilterExcluded = 1,
-  BATExcludeFilterFilterIncluded = 2,
-  BATExcludeFilterFilterAllExceptExcluded = 3
-} NS_SWIFT_NAME(ExcludeFilter);
-
 typedef NS_ENUM(NSInteger, BATLogLevel) {
   BATLogLevelLogError = 1,
   BATLogLevelLogWarning = 2,

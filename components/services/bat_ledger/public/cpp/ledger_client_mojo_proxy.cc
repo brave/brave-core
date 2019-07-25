@@ -287,14 +287,14 @@ void LedgerClientMojoProxy::OnLoadPanelPublisherInfo(
   delete holder;
 }
 
-void LedgerClientMojoProxy::LoadPanelPublisherInfo(const std::string& filter,
+void LedgerClientMojoProxy::LoadPanelPublisherInfo(
+    ledger::ActivityInfoFilterPtr filter,
     LoadPanelPublisherInfoCallback callback) {
   // deleted in OnLoadPanelPublisherInfo
   auto* holder = new CallbackHolder<LoadPanelPublisherInfoCallback>(
       AsWeakPtr(), std::move(callback));
   ledger::ActivityInfoFilter publisher_info_filter;
-  publisher_info_filter.loadFromJson(filter);
-  ledger_client_->LoadPanelPublisherInfo(publisher_info_filter,
+  ledger_client_->LoadPanelPublisherInfo(std::move(filter),
       std::bind(LedgerClientMojoProxy::OnLoadPanelPublisherInfo,
         holder, _1, _2));
 }
@@ -495,14 +495,12 @@ void LedgerClientMojoProxy::OnLoadActivityInfo(
 }
 
 void LedgerClientMojoProxy::LoadActivityInfo(
-    const std::string& filter,
+    ledger::ActivityInfoFilterPtr filter,
     LoadActivityInfoCallback callback) {
   // deleted in OnLoadActivityInfo
   auto* holder = new CallbackHolder<LoadActivityInfoCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger::ActivityInfoFilter publisher_info_filter;
-  publisher_info_filter.loadFromJson(filter);
-  ledger_client_->LoadActivityInfo(publisher_info_filter,
+  ledger_client_->LoadActivityInfo(std::move(filter),
       std::bind(LedgerClientMojoProxy::OnLoadActivityInfo, holder, _1, _2));
 }
 
@@ -561,18 +559,15 @@ void LedgerClientMojoProxy::OnGetActivityInfoList(
 
 void LedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
     uint32_t limit,
-    const std::string& filter,
+    ledger::ActivityInfoFilterPtr filter,
     GetActivityInfoListCallback callback) {
   // deleted in OnGetActivityInfoList
   auto* holder = new CallbackHolder<GetActivityInfoListCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger::ActivityInfoFilter publisher_info_filter;
-  publisher_info_filter.loadFromJson(filter);
-
   ledger_client_->GetActivityInfoList(start,
       limit,
-      publisher_info_filter,
+      std::move(filter),
       std::bind(LedgerClientMojoProxy::OnGetActivityInfoList,
                 holder,
                 _1,

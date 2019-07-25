@@ -518,10 +518,10 @@ void LedgerImpl::GetPublisherInfo(const std::string& publisher_key,
                 callback));
 }
 
-void LedgerImpl::GetActivityInfo(const ledger::ActivityInfoFilter& filter,
+void LedgerImpl::GetActivityInfo(ledger::ActivityInfoFilterPtr filter,
                                  ledger::PublisherInfoCallback callback) {
   ledger_client_->LoadActivityInfo(
-      filter,
+      std::move(filter),
       std::bind(&LedgerImpl::ModifyPublisherVerified,
                 this,
                 _1,
@@ -530,10 +530,10 @@ void LedgerImpl::GetActivityInfo(const ledger::ActivityInfoFilter& filter,
 }
 
 void LedgerImpl::GetPanelPublisherInfo(
-    const ledger::ActivityInfoFilter& filter,
+    ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoCallback callback) {
   ledger_client_->LoadPanelPublisherInfo(
-      filter,
+      std::move(filter),
       std::bind(&LedgerImpl::ModifyPublisherVerified,
                 this,
                 _1,
@@ -556,12 +556,12 @@ void LedgerImpl::GetMediaPublisherInfo(
 void LedgerImpl::GetActivityInfoList(
     uint32_t start,
     uint32_t limit,
-    const ledger::ActivityInfoFilter& filter,
+    ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoListCallback callback) {
   ledger_client_->GetActivityInfoList(
       start,
       limit,
-      filter,
+      std::move(filter),
       std::bind(&LedgerImpl::ModifyPublisherListVerified,
                 this,
                 _1,
@@ -625,7 +625,7 @@ uint64_t LedgerImpl::GetPublisherMinVisitTime() const {
 }
 
 unsigned int LedgerImpl::GetPublisherMinVisits() const {
-  return bat_publishers_->getPublisherMinVisits();
+  return bat_publishers_->GetPublisherMinVisits();
 }
 
 bool LedgerImpl::GetPublisherAllowNonVerified() const {
@@ -1106,9 +1106,9 @@ void LedgerImpl::OnRemoveRecurringTip(
   callback(result);
 }
 
-ledger::ActivityInfoFilter LedgerImpl::CreateActivityFilter(
+ledger::ActivityInfoFilterPtr LedgerImpl::CreateActivityFilter(
     const std::string& publisher_id,
-    ledger::EXCLUDE_FILTER excluded,
+    ledger::ExcludeFilter excluded,
     bool min_duration,
     const uint64_t& currentReconcileStamp,
     bool non_verified,

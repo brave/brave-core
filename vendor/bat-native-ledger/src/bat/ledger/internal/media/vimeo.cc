@@ -547,14 +547,14 @@ void Vimeo::GetPublisherPanleInfo(
     const std::string& publisher_key,
     const std::string& publisher_name,
     const std::string& user_id) {
-  const auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->CreateActivityFilter(
     publisher_key,
-    ledger::EXCLUDE_FILTER::FILTER_ALL,
+    ledger::ExcludeFilter::FILTER_ALL,
     false,
     ledger_->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(filter,
+  ledger_->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Vimeo::OnPublisherPanleInfo,
               this,
               media_key,

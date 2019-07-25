@@ -84,10 +84,10 @@ class LedgerImpl : public ledger::Ledger,
   void GetPublisherInfo(const std::string& publisher_key,
                         ledger::PublisherInfoCallback callback) override;
 
-  void GetActivityInfo(const ledger::ActivityInfoFilter& filter,
+  void GetActivityInfo(ledger::ActivityInfoFilterPtr filter,
                        ledger::PublisherInfoCallback callback);
 
-  void GetPanelPublisherInfo(const ledger::ActivityInfoFilter& filter,
+  void GetPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter,
                              ledger::PublisherInfoCallback callback);
 
   void GetMediaPublisherInfo(const std::string& media_key,
@@ -98,7 +98,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
-                           const ledger::ActivityInfoFilter& filter,
+                           ledger::ActivityInfoFilterPtr filter,
                            ledger::PublisherInfoListCallback callback) override;
 
   void DoDirectTip(const std::string& publisher_id,
@@ -303,9 +303,9 @@ class LedgerImpl : public ledger::Ledger,
     const std::string& publisher_key,
     ledger::RemoveRecurringTipCallback callback) override;
 
-  ledger::ActivityInfoFilter CreateActivityFilter(
+  ledger::ActivityInfoFilterPtr CreateActivityFilter(
       const std::string& publisher_id,
-      ledger::EXCLUDE_FILTER excluded,
+      ledger::ExcludeFilter excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp,
       bool non_verified,

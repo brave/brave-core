@@ -93,7 +93,7 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
   }
 
   auto filter = CreateActivityFilter(publisher_id,
-      ledger::EXCLUDE_FILTER::FILTER_ALL,
+      ledger::ExcludeFilter::FILTER_ALL,
       false,
       ledger_->GetReconcileStamp(),
       true,
@@ -108,23 +108,24 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
                 callback,
                 _1,
                 _2);
-  ledger_->GetActivityInfo(filter, callbackGetPublishers);
+
+  ledger_->GetActivityInfo(std::move(filter), callbackGetPublishers);
 }
 
-ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
+ledger::ActivityInfoFilterPtr BatPublishers::CreateActivityFilter(
     const std::string& publisher_id,
-    ledger::EXCLUDE_FILTER excluded,
+    ledger::ExcludeFilter excluded,
     bool min_duration,
-    const uint64_t& currentReconcileStamp,
+    const uint64_t& current_reconcile_stamp,
     bool non_verified,
     bool min_visits) {
-  ledger::ActivityInfoFilter filter;
-  filter.id = publisher_id;
-  filter.excluded = excluded;
-  filter.min_duration = min_duration ? getPublisherMinVisitTime() : 0;
-  filter.reconcile_stamp = currentReconcileStamp;
-  filter.non_verified = non_verified;
-  filter.min_visits = min_visits ? getPublisherMinVisits() : 0;
+  auto filter = ledger::ActivityInfoFilter::New();
+  filter->id = publisher_id;
+  filter->excluded = excluded;
+  filter->min_duration = min_duration ? getPublisherMinVisitTime() : 0;
+  filter->reconcile_stamp = current_reconcile_stamp;
+  filter->non_verified = non_verified;
+  filter->min_visits = min_visits ? GetPublisherMinVisits() : 0;
 
   return filter;
 }
@@ -381,7 +382,7 @@ uint64_t BatPublishers::getPublisherMinVisitTime() const {
   return state_->min_publisher_duration_;
 }
 
-unsigned int BatPublishers::getPublisherMinVisits() const {
+unsigned int BatPublishers::GetPublisherMinVisits() const {
   return state_->min_visits_;
 }
 
@@ -495,7 +496,7 @@ void BatPublishers::synopsisNormalizerInternal(
 
 void BatPublishers::SynopsisNormalizer() {
   auto filter = CreateActivityFilter("",
-      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
+      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       ledger_->GetReconcileStamp(),
       ledger_->GetPublisherAllowNonVerified(),
@@ -506,7 +507,7 @@ void BatPublishers::SynopsisNormalizer() {
   ledger_->GetActivityInfoList(
       0,
       0,
-      filter,
+      std::move(filter),
       std::bind(&BatPublishers::SynopsisNormalizerCallback, this, _1, _2));
 }
 
@@ -750,7 +751,7 @@ void BatPublishers::getPublisherActivityFromUrl(
   }
 
   auto filter = CreateActivityFilter(visit_data.domain,
-        ledger::EXCLUDE_FILTER::FILTER_ALL,
+        ledger::ExcludeFilter::FILTER_ALL,
         false,
         ledger_->GetReconcileStamp(),
         true,
@@ -763,7 +764,7 @@ void BatPublishers::getPublisherActivityFromUrl(
   new_data.url = visit_data.url;
   new_data.favicon_url = "";
 
-  ledger_->GetPanelPublisherInfo(filter,
+  ledger_->GetPanelPublisherInfo(std::move(filter),
         std::bind(&BatPublishers::OnPanelPublisherInfo,
                   this,
                   _1,

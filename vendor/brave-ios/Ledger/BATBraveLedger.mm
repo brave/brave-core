@@ -7,7 +7,6 @@
 
 #import "Records+Private.h"
 #import "ledger.mojom.objc+private.h"
-#import "BATActivityInfoFilter+Private.h"
 
 #import "BATBraveLedger.h"
 #import "BATBraveAds.h"
@@ -342,11 +341,11 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                            filter:(BATActivityInfoFilter *)filter
                        completion:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion
 {
-  const auto cppFilter = filter ? filter.cppObj : ledger::ActivityInfoFilter();
+  auto cppFilter = filter ? filter.cppObjPtr : ledger::ActivityInfoFilter::New();
   if (filter.excluded == BATExcludeFilterFilterExcluded) {
     completion([BATLedgerDatabase excludedPublishers]);
   } else {
-    ledger->GetActivityInfoList(start, limit, cppFilter, ^(const ledger::PublisherInfoList& list, uint32_t nextRecord) {
+    ledger->GetActivityInfoList(start, limit, std::move(cppFilter), ^(const ledger::PublisherInfoList& list, uint32_t nextRecord) {
       const auto publishers = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info){
         return [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
       });
@@ -1363,9 +1362,9 @@ BATLedgerBridge(BOOL,
   }), next_record);
 }
 
-- (void)getActivityInfoList:(uint32_t)start limit:(uint32_t)limit filter:(ledger::ActivityInfoFilter)filter callback:(ledger::PublisherInfoListCallback)callback
+- (void)getActivityInfoList:(uint32_t)start limit:(uint32_t)limit filter:(ledger::ActivityInfoFilterPtr)filter callback:(ledger::PublisherInfoListCallback)callback
 {
-  const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:filter];
+  const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:*filter];
   const auto publishers = [BATLedgerDatabase publishersWithActivityFromOffset:start limit:limit filter:filter_];
 
   [self handlePublisherListing:publishers start:start limit:limit callback:callback];
@@ -1387,10 +1386,10 @@ BATLedgerBridge(BOOL,
   [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
 }
 
-- (void)loadActivityInfo:(ledger::ActivityInfoFilter)filter
+- (void)loadActivityInfo:(ledger::ActivityInfoFilterPtr)filter
                 callback:(ledger::PublisherInfoCallback)callback
 {
-  const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:filter];
+  const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:*filter];
   // set limit to 2 to make sure there is only 1 valid result for the filter
   const auto publishers = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:2 filter:filter_];
 
@@ -1399,7 +1398,7 @@ BATLedgerBridge(BOOL,
     if (list.size() == 0) {
       // we need to try to get at least publisher info in this case
       // this way we preserve publisher info
-      const auto publisherID = [NSString stringWithUTF8String:filter.id.c_str()];
+      const auto publisherID = filter_.id;
       const auto info = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
       if (info) {
         callback(ledger::Result::LEDGER_OK, info.cppObjPtr.Clone());
@@ -1429,9 +1428,9 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)loadPanelPublisherInfo:(ledger::ActivityInfoFilter)filter callback:(ledger::PublisherInfoCallback)callback
+- (void)loadPanelPublisherInfo:(ledger::ActivityInfoFilterPtr)filter callback:(ledger::PublisherInfoCallback)callback
 {
-  const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:filter];
+  const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:*filter];
   const auto publisher = [BATLedgerDatabase panelPublisherWithFilter:filter_];
   if (publisher) {
     callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());

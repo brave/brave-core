@@ -123,7 +123,7 @@ class LEDGER_EXPORT Ledger {
                                 PublisherInfoCallback callback) = 0;
 
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
-                                    const ledger::ActivityInfoFilter& filter,
+                                    ledger::ActivityInfoFilterPtr filter,
                                     PublisherInfoListCallback callback) = 0;
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;

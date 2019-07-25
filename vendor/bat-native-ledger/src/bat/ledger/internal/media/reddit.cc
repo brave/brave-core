@@ -168,14 +168,14 @@ void Reddit::GetPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key) {
-  const auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->CreateActivityFilter(
     publisher_key,
-    ledger::EXCLUDE_FILTER::FILTER_ALL,
+    ledger::ExcludeFilter::FILTER_ALL,
     false,
     ledger_->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(filter,
+  ledger_->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Reddit::OnPublisherPanelInfo,
               this,
               window_id,
