@@ -7,10 +7,6 @@
     Press App button to exit
   </message>
 
-  <message name="IDS_ISOLATED_XR_PROCESS_NAME" desc="The name of the utility process used for XR compositing.">
-    XR Isolated Device Service
-  </message>
-
   <!-- Powerful feature use and permission indicators. -->
   <message name="IDS_VR_SHELL_SITE_IS_TRACKING_LOCATION" desc="Text displayed in a transient bubble to inform the user that the page is tracking location.">
     Site is tracking your location
@@ -150,16 +146,10 @@
   <message name="IDS_VR_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new private tab that facilitates pseudononymous browsing. [CHAR-LIMIT=27]">
     New private tab
   </message>
-  <message name="IDS_VR_MENU_NEW_PRIVATE_TAB" desc="Menu item for opening a new private tab that facilitates pseudononymous browsing. [CHAR-LIMIT=27]">
-    New private tab
-  </message>
   <message name="IDS_VR_MENU_PREFERENCES" desc="Menu item for opening browser preferences. [CHAR-LIMIT=27]">
     Settings
   </message>
   <message name="IDS_VR_MENU_CLOSE_INCOGNITO_TABS" desc="Menu item for closing all open private tabs. [CHAR-LIMIT=27]">
-    Close private tabs
-  </message>
-  <message name="IDS_VR_MENU_CLOSE_PRIVATE_TABS" desc="Menu item for closing all open private tabs. [CHAR-LIMIT=27]">
     Close private tabs
   </message>
   <message name="IDS_VR_TABS_BUTTON_REGULAR" desc="Text on button for selecting regular tabs">
