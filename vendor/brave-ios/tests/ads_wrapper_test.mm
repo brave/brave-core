@@ -8,22 +8,32 @@
 #import <XCTest/XCTest.h>
 #import "BATBraveRewards.h"
 
-@interface _MockAdsDelegate : NSObject <BATBraveAdsDelegate>
-@property (nonatomic, copy) void (^showNotification)(BATAdsNotification *);
+@interface _MockNotificationHandler : NSObject <BATBraveAdsNotificationHandler>
+@property (nonatomic, copy, nullable) BOOL (^isAvailable)();
+@property (nonatomic, copy, nullable) void (^showNotification)(BATAdsNotification *);
+@property (nonatomic, copy, nullable) void (^clearNotification)(NSString *);
 @end
 
-@implementation _MockAdsDelegate
-- (instancetype)initWithShowNotification:(void (^)(BATAdsNotification *))showNotification
+@implementation _MockNotificationHandler
+- (void)isNotificationsAvailable:(void (^)(BOOL))completionHandler
 {
-  if ((self = [super init])) {
-    self.showNotification = showNotification;
+  if (self.isAvailable) {
+    completionHandler(self.isAvailable());
+  } else {
+    completionHandler(true);
   }
-  return self;
 }
-- (BOOL)braveAds:(BATBraveAds *)braveAds showNotification:(BATAdsNotification *)notification
+- (void)showNotification:(BATAdsNotification *)notification
 {
-  self.showNotification(notification);
-  return YES;
+  if (self.showNotification) {
+    self.showNotification(notification);
+  }
+}
+- (void)clearNotificationWithIdentifier:(NSString *)identifier
+{
+  if (self.clearNotification) {
+    self.clearNotification(identifier);
+  }
 }
 @end
 
@@ -79,10 +89,11 @@
 - (void)testServeSampleAd
 {
   const auto expect = [self expectationWithDescription:@"Serving Sample Ad"];
-  const auto mockDelegate = [[_MockAdsDelegate alloc] initWithShowNotification:^(BATAdsNotification *) {
+  const auto mockHandler = [[_MockNotificationHandler alloc] init];
+  mockHandler.showNotification = ^(BATAdsNotification *) {
     [expect fulfill];
-  }];
-  self.ads.delegate = mockDelegate;
+  };
+  self.ads.notificationsHandler = mockHandler;
   [self.ads serveSampleAd];
   
   [self waitForExpectations:@[expect] timeout: 4.0];
