@@ -71,6 +71,7 @@ class Wallet {
 
   void TransferAnonToExternalWallet(
       const std::string& new_address,
+      const bool allow_zero_balance,
       ledger::TransferAnonToExternalWalletCallback callback);
 
  private:
@@ -106,6 +107,7 @@ class Wallet {
     ledger::Result result,
     ledger::BalancePtr properties,
     const std::string& new_address,
+    const bool allow_zero_balance,
     ledger::TransferAnonToExternalWalletCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

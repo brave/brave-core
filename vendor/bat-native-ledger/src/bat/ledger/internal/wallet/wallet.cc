@@ -273,23 +273,29 @@ void Wallet::OnTransferAnonToExternalWallet(
 
 void Wallet::TransferAnonToExternalWallet(
       const std::string& new_address,
+      const bool allow_zero_balance,
       ledger::TransferAnonToExternalWalletCallback callback) {
-  ledger_->FetchBalance(
-      std::bind(&Wallet::OnTransferAnonToExternalWalletBalance,
-                this,
-                _1,
-                _2,
-                new_address,
-                callback));
+  FetchBalance(std::bind(&Wallet::OnTransferAnonToExternalWalletBalance,
+               this,
+               _1,
+               _2,
+               new_address,
+               allow_zero_balance,
+               callback));
 }
 
 void Wallet::OnTransferAnonToExternalWalletBalance(
     ledger::Result result,
     ledger::BalancePtr properties,
     const std::string& new_address,
+    const bool allow_zero_balance,
     ledger::TransferAnonToExternalWalletCallback callback) {
   if (result != ledger::Result::LEDGER_OK || !properties) {
     callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  if (!allow_zero_balance && properties->user_funds == "0") {
     return;
   }
 
@@ -311,7 +317,7 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
   braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
 
   braveledger_bat_helper::UNSIGNED_TX unsigned_tx;
-  unsigned_tx.amount_ = properties->total;
+  unsigned_tx.amount_ = properties->user_funds;
   unsigned_tx.currency_ = "BAT";
   unsigned_tx.destination_ = new_address;
   std::string octets = braveledger_bat_helper::stringifyUnsignedTx(unsigned_tx);

@@ -1647,8 +1647,12 @@ void LedgerImpl::DisconnectWallet(
 
 void LedgerImpl::TransferAnonToExternalWallet(
       const std::string& new_address,
+      const bool allow_zero_balance,
       ledger::TransferAnonToExternalWalletCallback callback) {
-  bat_wallet_->TransferAnonToExternalWallet(new_address, callback);
+  bat_wallet_->TransferAnonToExternalWallet(
+    new_address,
+    allow_zero_balance,
+    callback);
 }
 
 void LedgerImpl::ShowNotification(

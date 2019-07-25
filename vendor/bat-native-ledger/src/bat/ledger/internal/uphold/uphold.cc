@@ -472,32 +472,35 @@ void Uphold::OnGetUser(
     verified = !member.empty();
   }
 
+  bool allow_zero_balance = false;
+
   if (new_wallet->status == ledger::WalletStatus::CONNECTED && verified) {
     new_wallet->status = ledger::WalletStatus::VERIFIED;
+    allow_zero_balance = true;
 
     ledger_->ShowNotification(
         "wallet_verified",
         std::bind(&Uphold::OnShowNotification, this, _1), {"Uphold"});
+  } else if (
+    new_wallet->status == ledger::WalletStatus::VERIFIED && !verified) {
+    new_wallet->status = ledger::WalletStatus::CONNECTED;
+    callback(ledger::Result::LEDGER_OK, std::move(new_wallet));
+  }
 
+  if (verified) {
     auto transfer_callback = std::bind(
-        &Uphold::OnTransferAnonToExternalWalletCallback,
-        this,
-        callback,
-        *new_wallet,
-        _1);
+      &Uphold::OnTransferAnonToExternalWalletCallback,
+      this,
+      callback,
+      *new_wallet,
+      _1);
 
     // transfer funds from anon wallet to uphold
     ledger_->TransferAnonToExternalWallet(
-        new_wallet->address,
-        transfer_callback);
-    return;
+      new_wallet->address,
+      allow_zero_balance,
+      transfer_callback);
   }
-
-  if (new_wallet->status == ledger::WalletStatus::VERIFIED && !verified) {
-    new_wallet->status = ledger::WalletStatus::CONNECTED;
-  }
-
-  callback(ledger::Result::LEDGER_OK, std::move(new_wallet));
 }
 
 void Uphold::GetUser(
