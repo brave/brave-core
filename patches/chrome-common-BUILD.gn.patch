@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 81c957087e6adbfe78208035cf52052c93a1e978..445736d844a330a10c9c8da392fe6a10790a2ce0 100644
+index 15dcd3acac69be8ec9ec5f8f2eb9e0f6b68c88fd..944f5f34ebbf89bc5bec61e86cfcf962af1593ca 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -78,6 +78,7 @@ source_set("channel_info") {
@@ -10,7 +10,7 @@ index 81c957087e6adbfe78208035cf52052c93a1e978..445736d844a330a10c9c8da392fe6a10
  }
  
  source_set("ini_parser") {
-@@ -210,6 +211,7 @@ static_library("common") {
+@@ -208,6 +209,7 @@ static_library("common") {
    ]
  
    public_deps = [
@@ -18,7 +18,7 @@ index 81c957087e6adbfe78208035cf52052c93a1e978..445736d844a330a10c9c8da392fe6a10
      ":available_offline_content_mojom",
      ":buildflags",
      ":channel_info",
-@@ -548,6 +550,7 @@ static_library("non_code_constants") {
+@@ -543,6 +545,7 @@ static_library("non_code_constants") {
      "//printing/buildflags",
      "//ui/base:buildflags",
    ]
