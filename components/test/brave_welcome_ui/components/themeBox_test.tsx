@@ -4,10 +4,10 @@
 
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import { Content } from 'brave-ui/features/welcome'
-import { WelcomeThemeImage } from 'brave-ui/features/welcome/images'
-import ThemeBox, { Props } from '../../../../components/brave_welcome_ui/components/screens/themeBox'
+import { Content } from '../../../brave_welcome_ui/components/index'
+import { WelcomeThemeImage } from '../../../brave_welcome_ui/components/images'
 import { mockThemes } from '../../testData'
+import ThemeBox from '../../../../components/brave_welcome_ui/containers/screens/themeBox'
 
 describe('ImportBox component tests', () => {
 
@@ -29,7 +29,6 @@ describe('ImportBox component tests', () => {
           onChangeTheme={mockProps.onChangeTheme}
           browserThemes={mockProps.browserThemes}
         />)
-
       expect(wrapper.find(Content)).toHaveLength(1)
       expect(wrapper.contains(<WelcomeThemeImage />))
     })

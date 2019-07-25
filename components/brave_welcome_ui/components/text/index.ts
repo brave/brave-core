@@ -3,23 +3,25 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import Heading from 'brave-ui/components/text/heading'
 
-export const Title = styled(Heading)`
-  font-size: 28px;
-  color: #212121;
-  margin: 10px 0 0;
+export const Title = styled.h1`
+  font-family: ${p => p.theme.fontFamily.body};
+  color: ${p => p.theme.color.text};
+  font-size: 34px;
+  margin: 24px 0 0;
   text-align: center;
   line-height: 44px;
+  font-weight: 600;
 `
 
-export const Paragraph = styled<{}, 'p'>('p')`
+export const Paragraph = styled.p`
+  color: ${p => p.theme.color.text};
+  font-family: ${p => p.theme.fontFamily.body};
   display: block;
   -webkit-font-smoothing: antialiased;
-  font-size: 17px;
-  color: #76777A;
-  line-height: 32px;
+  font-size: 18px;
+  opacity: 0.65;
+  line-height: 36px;
   text-align: center;
-  margin: 10px 0 20px;
-  font-family: Muli, sans-serif;
+  margin: 12px 0 32px;
 `

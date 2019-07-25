@@ -35,20 +35,16 @@ export const WelcomeSearchImage = styled(BaseImage).attrs({ src: SearchImage })`
 `
 
 export const WelcomeShieldsImage = styled(BaseImage).attrs({ src: ShieldsImage })`
-  height: 190px;
+  height: 210px;
 `
 
 export const WelcomeThemeImage = styled(BaseImage).attrs({ src: ThemeImage })`
   height: 190px;
 `
 
-interface BackgroundProps {
-  position: string
-}
-
 export const topToBottom = keyframes`
   from {
-    transform: translateY(-100%);
+    transform: translateY(100%);
   }
 
   to {
@@ -70,12 +66,14 @@ export const BackgroundContainer = styled<{}, 'div'>('div')`
   overflow: hidden;
 `
 
-export const Background = styled<BackgroundProps, 'div'>('div')`
+export const Background = styled<{}, 'div'>('div')`
   box-sizing: border-box;
-  background: url('${WelcomeImage}') repeat-x;
-  width: 500%;
-  height: inherit;
-  will-change: transform;
-  transform: translateX(${p => p.position});
-  transition: transform ease-in-out 1200ms;
+  background: url('${WelcomeImage}');
+  width: 100%;
+  height: 136px;
+  background-size: cover;
+  background-position-x: center;
+  position: absolute;
+  bottom: 0;
+  overflow: hidden;
 `
