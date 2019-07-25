@@ -106,7 +106,9 @@ void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCal
 }
 void NativeLedgerClient::SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) {
   [bridge_ saveActivityInfo:std::move(publisher_info) callback:callback];
-} void NativeLedgerClient::SaveContributionInfo(const std::string & probi, const int month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::REWARDS_CATEGORY category) { [bridge_ saveContributionInfo:probi month:month year:year date:date publisherKey:publisher_key category:category];
+}
+void NativeLedgerClient::SaveContributionInfo(const std::string & probi, const int month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::REWARDS_CATEGORY category) {
+  [bridge_ saveContributionInfo:probi month:month year:year date:date publisherKey:publisher_key category:category];
 }
 void NativeLedgerClient::SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) {
   [bridge_ saveLedgerState:ledger_state handler:handler];
