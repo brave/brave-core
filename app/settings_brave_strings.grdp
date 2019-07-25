@@ -3,13 +3,13 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <!-- About Page -->
+  <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave page.">
+    About Brave
+  </message>
+  <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave help page.">
+    Get help with Brave
+  </message>
   <if expr="not chromeos">
-    <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave page.">
-      About Brave
-    </message>
-    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave help page.">
-      Get help with Brave
-    </message>
     <message name="IDS_SETTINGS_UPGRADE_UPDATING" desc="Status label: Updating Brave">
       Updating Brave
     </message>
@@ -24,10 +24,10 @@
     </message>
   </if>
   <if expr="chromeos">
-    <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave page.">
+    <message name="IDS_SETTINGS_ABOUT_OS" desc="Menu title for the About Brave OS page.">
       About Brave OS
     </message>
-    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave help page.">
+    <message name="IDS_SETTINGS_GET_HELP_USING_CHROME_OS" desc="Text of the button which takes the user to the Brave help page.">
       Get help with Brave OS
     </message>
   </if>

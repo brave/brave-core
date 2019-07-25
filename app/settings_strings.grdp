@@ -12,6 +12,9 @@
   </if>
 
   <!-- Shared across multiple pages -->
+  <message name="IDS_SETTINGS_CONTINUE" desc="Label for 'Continue' buttons.">
+    Continue
+  </message>
   <message name="IDS_SETTINGS_MORE_ACTIONS" desc="Tooltip text (shows on hover or for screenreaders) for a button that shows a menu with more actions when clicked or tapped">
     More actions
   </message>
@@ -136,9 +139,6 @@
     <message name="IDS_SETTINGS_ABOUT_PAGE_UPDATE_WARNING_TITLE" desc="The title of the warning about update over mobile data.">
       Download update using mobile data
     </message>
-    <message name="IDS_SETTINGS_ABOUT_PAGE_UPDATE_WARNING_CONTINUE_BUTTON" desc="A button that accepts downloading the update over mobile data.">
-      Continue
-    </message>
   </if>
   <if expr="not chromeos">
     <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
@@ -163,6 +163,78 @@
   </if>
 
   <!-- Accessibility Page -->
+  <message name="IDS_SETTINGS_CAPTIONS" desc="Name of the settings page which displays caption preferences.">
+    Captions
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SIZE" desc="Name of the settings page which displays caption text size preferences.">
+    Text size
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_FONT" desc="Name of the settings page which displays caption text font preferences.">
+    Text font
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_COLOR" desc="Name of the settings page which displays caption text color preferences.">
+    Text color
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_OPACITY" desc="Name of the settings page which displays caption text opacity preferences.">
+    Text opacity
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_BACKGROUND_OPACITY" desc="Name of the settings page which displays caption background opacity preferences.">
+    Background opacity
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_MIN" desc="Value of the minimum captions text opacity setting.">
+    0
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_MAX" desc="Value of the maximum captions text opacity setting.">
+    100
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW" desc="Name of the settings page which displays caption text shadow preferences.">
+    Text shadow
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_NONE" desc="Name of the None option for the caption text shadow.">
+    None
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_RAISED" desc="Name of the Raised option for the caption text shadow.">
+    Raised
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_DEPRESSED" desc="Name of the Depressed option for the caption text shadow.">
+    Depressed
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_UNIFORM" desc="Name of the Uniform option for the caption text shadow.">
+    Uniform
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW_DROP_SHADOW" desc="Name of the Drop shadow option for the caption text shadow.">
+    Drop shadow
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_BACKGROUND_COLOR" desc="Name of the settings page which displays caption background color preferences.">
+    Background color
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_BLACK" desc="Name of the Black color for the caption text or background.">
+    Black
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_WHITE" desc="Name of the White color for the caption text or background.">
+    White
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_RED" desc="Name of the Red color for the caption text or background.">
+    Red
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_GREEN" desc="Name of the Green color for the caption text or background.">
+    Green
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_BLUE" desc="Name of the Blue color for the caption text or background.">
+    Blue
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_YELLOW" desc="Name of the Yellow color for the caption text or background.">
+    Yellow
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_CYAN" desc="Name of the Cyan color for the caption text or background.">
+    Cyan
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_COLOR_MAGENTA" desc="Name of the Magenta color for the caption text or background.">
+    Magenta
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_DEFAULT_SETTING" desc="Name of the default setting for the caption text.">
+    Default
+  </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY" desc="Name of the settings page which displays accessibility preferences.">
     Accessibility
   </message>
@@ -190,6 +262,42 @@
     </message>
     <message name="IDS_SETTINGS_TTS_LINK_DESCRIPTION" desc="Description of link to manage text-to-speech settings">
       Select and customize text-to-speech voices
+    </message>
+    <message name="IDS_SETTINGS_MANAGE_SWITCH_ACCESS_SETTINGS" desc="Title of the page to manage Switch Access settings.">
+      Switch Access settings
+    </message>
+    <message name="IDS_SETTINGS_SWITCH_ASSIGNMENT_HEADING" desc="Heading for the settings section for Switch Access to assign switches to actions">
+      Switch action assignment
+    </message>
+    <message name="IDS_SETTINGS_SWITCH_ASSIGN_OPTION_SPACE" desc="Label for the option to assign the spacebar as a switch.">
+      Space
+    </message>
+    <message name="IDS_SETTINGS_SWITCH_ASSIGN_OPTION_ENTER" desc="Label for the option to assign the enter key as a switch.">
+      Enter
+    </message>
+    <message name="IDS_SETTINGS_SWITCH_ASSIGN_OPTION_NONE" desc="Label for the option to have no switch assigned to an action.">
+      None
+    </message>
+    <message name="IDS_SETTINGS_ASSIGN_SELECT_SWITCH_LABEL" desc="Label for the setting to assign a switch to the action 'Select', which selects the currently focused element and begins an interaction (which varies depending on the element/other settings).">
+      Select
+    </message>
+    <message name="IDS_SETTINGS_ASSIGN_NEXT_SWITCH_LABEL" desc="Label for the setting to assign a switch to the action 'Next', which moves focus to the next element.">
+      Next
+    </message>
+    <message name="IDS_SETTINGS_ASSIGN_PREVIOUS_SWITCH_LABEL" desc="Label for the setting to assign a switch to the action 'Previous', which moves focus to the previous element.">
+      Previous
+    </message>
+    <message name="IDS_SETTINGS_SWITCH_ACCESS_AUTO_SCAN_HEADING" desc="Heading for the settings section containing preferences around Switch Access automatically scanning between elements.">
+      Auto-scan
+    </message>
+    <message name="IDS_SETTINGS_SWITCH_ACCESS_AUTO_SCAN_LABEL" desc="Label for the toggle which enables automatic scanning between elements in Switch Access.">
+      Enable auto-scan
+    </message>
+    <message name="IDS_SETTINGS_SWITCH_ACCESS_AUTO_SCAN_SPEED_LABEL" desc="Label for slider which sets the time interval for Switch Access to automatically scan to the next element.">
+      Scanning speed: <ph name="SPEED_WITH_UNITS">$1<ex>1.5s</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_DURATION_IN_SECONDS" desc="A duration in seconds. Should be short.">
+      <ph name="DURATION">$1<ex>1.5</ex></ph>s
     </message>
     <message name="IDS_SETTINGS_LARGE_MOUSE_CURSOR_LABEL" desc="Label for checkbox which enables showing a larger mouse cursor than normal.">
       Show large mouse cursor
@@ -464,36 +572,6 @@
   </if>
 
   <if expr="chromeos">
-    <!-- Kiosk Next Shell page. Note that this experience is currently a prototype and is not shown
-         to end users at this point.
-         TODO(922687): Change these strings to the final ones when our internal repo is ready.-->
-    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_TITLE" desc="The title of Kiosk Next Shell section." translateable="false">
-      Kiosk Next Shell (Dev)
-    </message>
-    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_LABEL" desc="The text associated with the contained shell section setting." translateable="false">
-      Kiosk Next Shell
-    </message>
-    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_SUBTEXT_ENABLE" desc="Text shown when displaying the enable Kiosk Next Shell button." translateable="false">
-      Enables the Kiosk Next Shell for the next sign in.
-    </message>
-    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_SUBTEXT_DISABLE" desc="Text shown when displaying the disable Kiosk Next Shell button." translateable="false">
-      Disable the Kiosk Next Shell and return to the normal Brave OS experience.
-    </message>
-    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_TURN_OFF" desc="Label for the button that disables the Kiosk Next Shell." translateable="false">
-      Turn off
-    </message>
-    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_ENABLED_DIALOG_TITLE" desc="Title for the confirmation dialog when disabling the Kiosk Next Shell." translateable="false">
-      Turn off the Kiosk Next Shell
-    </message>
-    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_DISABLED_DIALOG_TITLE" desc="Title for the confirmation dialog when enabling the Kiosk Next Shell." translateable="false">
-      Turn on the Kiosk Next Shell
-    </message>
-    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_ENABLED_DIALOG_BODY" desc="Body text for the confirmation dialog when disabling the Kiosk Next Shell." translateable="false">
-      This will turn off the Kiosk Next Shell, sign you out and return you to the normal Brave OS experience.
-    </message>
-    <message name="IDS_SETTINGS_KIOSK_NEXT_SHELL_DISABLED_DIALOG_BODY" desc="Body text for the confirmation dialog when enabling the Kiosk Next Shell." translateable="false">
-      This will sign you out and turn on the Kiosk Next Shell.
-    </message>
     <!-- Crostini Page -->
     <message name="IDS_SETTINGS_CROSTINI_TITLE" desc="The title of Crostini section.">
       Linux (Beta)
@@ -543,6 +621,12 @@
     <message name="IDS_SETTINGS_CROSTINI_IMPORT_LABEL" desc="Description shown next to the button to import (restore) Crostini.">
       Replace your Linux apps and files with a previous backup
     </message>
+    <message name="IDS_SETTINGS_CROSTINI_CONFIRM_IMPORT_DIALOG_WINDOW_TITLE" desc="Title of the confirmation dialog displayed before container import begins.">
+      Confirm Restore
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_CONFIRM_IMPORT_DIALOG_WINDOW_MESSAGE" desc="Message of the confirmation dialog displayed before container import begins.">
+      Restoring from a backup will delete existing Linux applications and data in your Linux files folder.
+    </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LABEL" desc="Label for managing shared USB devices.">
       USB preferences
     </message>
@@ -564,7 +648,7 @@
       Plugin VM
     </message>
     <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_SUBTEXT" desc="Description for the section for managing Plugin VM.">
-      Manage settings for running Plugin VM on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+      Set up permissions
     </message>
     <message name="IDS_SETTINGS_PLUGIN_VM_PRINTER_ACCESS" desc="The text in the settings page for allowing printer access from Plugin VM.">
       Give access to printers
@@ -628,6 +712,9 @@
     </message>
     <message name="IDS_SETTINGS_APPS_LINK_TEXT" desc="The label for the button which links to the App Management page.">
       Manage your apps
+    </message>
+    <message name="IDS_SETTINGS_APPS_LINK_SUBLABEL_TEXT" desc="The sublabel for the button which links to the App Management page.">
+      Open App Management
     </message>
   </if>
 
@@ -1027,6 +1114,9 @@
     <message name="IDS_SETTINGS_BLUETOOTH_CONNECTED" desc="In Bluetooth device list, this label is shown below a device which is already connected.">
       Connected
     </message>
+    <message name="IDS_SETTINGS_BLUETOOTH_CONNECTED_WITH_BATTERY" desc="In Bluetooth device list, this label is shown below a device which is already connected and has a known battery percentage.">
+      Connected, <ph name="BATTERY_PERCENTAGE">$1<ex>100</ex></ph>% battery
+    </message>
     <message name="IDS_SETTINGS_BLUETOOTH_NOT_CONNECTED" desc="In Bluetooth device list, this label is shown below a device which is not connected.">
       Not connected
     </message>
@@ -1363,14 +1453,26 @@
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_PRINTER" desc="In CUPS printing settings subpage, text for the link adding a new CUPS printer.">
       Add Printer
     </message>
+     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_DETECTED_OR_NEW_PRINTER" desc="In CUPS printing settings subpage, explanatory text for the nearby printers list.">
+      Saved detected printers to your profile, or add a new printer.
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTERS" desc="In CUPS printing settings subpage, title for the nearby printers list.">
+      Available printers to save
+    </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_EDIT" desc="Text for the drop down menu which allows the user to edit the printer details.">
       Edit
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_REMOVE" desc="Text for the drop down menu which allows the user to remove the selected printer.">
       Remove
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_CONFIGURE_BUTTON" desc="Text for the button which allows the user to manually configure a CUPS printer.">
+      Configure
+    </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_SEARCH_LABEL" desc="The placeholder text in the printer search field.">
       Search printers
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_SAVED_PRINTERS_TITLE" desc="Text for the title of the user's saved printers list.">
+      Your saved printers
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_ADD_PRINTERS_NEARBY_TITLE" desc="Text for the title of the dialog that is used to add nearby printers.">
       Add a nearby printer
@@ -1513,6 +1615,14 @@
     <message name="IDS_SETTINGS_PRINTING_CUPS_EULA_NOTICE" desc="The message shown to users if a printer has a EULA agreement attached to it.">
       End User License Agreement
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_IPP_URI_UNREACHABLE" desc="The message shown on the uri field of the add/edit printer dialogs when attempting to connect to an IPP printer that is not found on the network.">
+      Couldn't detect a printer. Please enter printer address again.
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_DIALOG_GENERAL_ERROR" desc="General message shown on the top of the add/edit printer dialogs when adding/editting a printer fails.">
+      Unable to set up printer. Please check configuration and try again.
+    </message>
+
+
   </if>
   <if expr="not chromeos">
     <message name="IDS_SETTINGS_PRINTING_LOCAL_PRINTERS_TITLE" desc="In Printing Settings, the title of local printers setting section on OS other than Brave OS.">
@@ -1552,7 +1662,7 @@
       Set up or manage network file shares.
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES_ADD_SHARE" desc="In SMB shares settings subpage, text for the link to add a new SMB share.">
-      Add File Share
+      Add file share
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_URL" desc="Title for the input that lets users specify the name of an SMB URL.">
       File share URL
@@ -1565,6 +1675,9 @@
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_PASSWORD" desc="Title for the input that lets users specify their password for an SMB Share.">
       Password (optional)
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_SAVE_CREDENTIALS" desc="Label for the checkbox input that lets users have the username/password for an SMB share saved for the next login.">
+      Remember sign-in info
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_SUCCESS_MESSAGE" desc="The message shown when a new SMB share is successfully mounted.">
       Share mounted successfully.
@@ -1591,7 +1704,7 @@
       Invalid URL format. Server must be specified as a host name when SSO authentication is used.
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_AUTHENTICATION_METHOD" desc="Title for the input that lets users specify their authentication method for an SMB Share.">
-      Authentication Method
+      Authentication method
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_STANDARD_AUTHENTICATION" desc="Authentication method option indicating that fields for username and password should be shown to the user.">
       Standard
@@ -1601,67 +1714,127 @@
     </message>
   </if>
 
-  <!-- Kerberos Accounts -->
+  <!-- Kerberos tickets -->
   <if expr="chromeos">
-    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SUBMENU_LABEL" desc="Label of Kerberos Accounts submenu in Settings page.">
-      Kerberos Accounts
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SUBMENU_LABEL" desc="Label of 'Kerberos tickets' submenu in Settings page.">
+      Kerberos tickets
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_PAGE_TITLE" desc="Title of Kerberos Accounts Settings page.">
-      Kerberos Accounts
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_PAGE_TITLE" desc="Title of 'Kerberos tickets' Settings page.">
+      Kerberos tickets
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_DESCRIPTION" desc="Description of the Kerberos Accounts Settings page. Shown just below the title of the page.">
-      All Kerberos Accounts for single sign-on into certain apps and websites and file shares can be managed here.
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_DESCRIPTION" desc="Description of the 'Kerberos tickets' Settings page. Shown just below the title of the page.">
+      Choose a ticket to use for authentication. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_LIST_HEADER" desc="List header for the account list on Kerberos Accounts Settings page.">
-      Accounts
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_LIST_HEADER" desc="List header for the ticket list on 'Kerberos tickets' Settings page.">
+      Tickets
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_ADD_ACCOUNT_LABEL" desc="Label of the Add account button on Kerberos Accounts Settings page.">
-      Add account
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_ADD_ACCOUNT_LABEL" desc="Label of the 'Add a ticket' button on 'Kerberos tickets' Settings page.">
+      Add a ticket
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_REMOVE_ACCOUNT_LABEL" desc="Label of the Remove account button on Kerberos Accounts Settings page.">
-      Remove account from this device
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_REFRESH_NOW_LABEL" desc="Label of the 'Refresh now' button on 'Kerberos tickets' Settings page.">
+      Refresh now
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SIGNED_IN" desc="Text displayed if a Kerberos account is in signed-in state on Kerberos Accounts Settings page.">
-      Signed in
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SET_AS_ACTIVE_ACCOUNT_LABEL" desc="Label of the 'Set as ticket ticket' button on 'Kerberos tickets' Settings page.">
+      Set as active ticket
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SIGNED_OUT" desc="Text displayed if a Kerberos account is in signed-out state on Kerberos Accounts Settings page.">
-      Sign in again
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_REMOVE_ACCOUNT_LABEL" desc="Label of the 'Remove from this device' button on 'Kerberos tickets' Settings page.">
+      Remove from this device
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_REAUTHENTICATION_LABEL" desc="Label of the re-authentication button on Kerberos Accounts Settings page.">
-      Sign in
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_ACCOUNT_REMOVED_TIP" desc="Tip shown when a Kerberos ticket was removed on 'Kerberos tickets' Settings page.">
+      Ticket removed
     </message>
-    <message name="IDS_SETTINGS_ADD_KERBEROS_ACCOUNT" desc="In Add Kerberos Accounts dialog, the title of the dialog.">
-      Add Kerberos Account
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SIGNED_IN" desc="Text displayed if a Kerberos ticket is in signed-in state on 'Kerberos tickets' Settings page.">
+      Valid for <ph name="TICKET_TIME_LEFT">$1<ex>7 hours 12 minutes</ex></ph>
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_USERNAME" desc="Title for the input that lets users specify their username for a Kerberos account.">
-      Username
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_SIGNED_OUT" desc="Text displayed if a Kerberos ticket is in signed-out state on 'Kerberos tickets' Settings page.">
+      Expired
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_PASSWORD" desc="Title for the input that lets users specify their password for a Kerberos account.">
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_REAUTHENTICATION_LABEL" desc="Label of the re-authentication button on 'Kerberos tickets' Settings page.">
+      Refresh
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_TICKET_ACTIVE" desc="Text displayed if a Kerberos ticket is selected to be the currently active ticket on 'Kerberos tickets' Settings page.">
+      Active
+    </message>
+    <message name="IDS_SETTINGS_ADD_KERBEROS_ACCOUNT" desc="Title of the 'Add a Kerberos ticket' dialog.">
+      Add a Kerberos ticket
+    </message>
+    <message name="IDS_SETTINGS_REFRESH_KERBEROS_ACCOUNT" desc="Title of the 'Refresh a Kerberos ticket' dialog.">
+      Refresh a Kerberos ticket
+    </message>
+    <message name="IDS_SETTINGS_ADD_KERBEROS_ACCOUNT_DESCRIPTION" desc="Description of the 'Add a Kerberos ticket' dialog. Shown just below the title of the dialog.">
+      To automatically refresh a ticket, check “Remember password.” Your password will be stored on your device only.
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_USERNAME" desc="Title for the input that lets users specify their username for a Kerberos ticket.">
+      Kerberos username
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_PASSWORD" desc="Title for the input that lets users specify their password for a Kerberos ticket.">
       Password
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ERROR_NETWORK_PROBLEM" desc="Error message displayed in the Add Kerberos Account dialog when the user has no network connection or enters a bad realm.">
+    <message name="IDS_SETTINGS_ADD_KERBEROS_ACCOUNT_REMEMBER_PASSWORD" desc="Label of the checkbox to remember the password in the 'Add a Kerberos ticket' dialog.">
+      Remember password
+    </message>
+    <message name="IDS_SETTINGS_ADD_KERBEROS_ACCOUNT_REFRESH_BUTTON_LABEL" desc="Label of the action button on the 'Refresh a Kerberos tickets' dialog.">
+      Refresh
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ACCOUNTS_ADVANCED_CONFIG_LABEL" desc="Label of the button in 'Add a Kerberos ticket' dialog to get to the Advanced configuration dialog.">
+      Advanced
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ADVANCED_CONFIG_TITLE" desc="In Kerberos Advanced Configuration dialog, the title of the dialog.">
+      Configure Kerberos
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ADVANCED_CONFIG_DESC" desc="In Kerberos Advanced Configuration dialog, the description of the dialog (below the title).">
+      Edit the configuration file
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_NETWORK_PROBLEM" desc="Error message displayed in the 'Add a Kerberos ticket' dialog when the user has no network connection or enters a bad realm.">
       Network problem or bad realm
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ERROR_USERNAME_INVALID" desc="Error message displayed in the Add Kerberos Account dialog when the user enters a badly formatted username.">
-      Username invalid (should be user@realm.com)
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_USERNAME_INVALID" desc="Error message displayed in the 'Add a Kerberos ticket' dialog when the user enters a badly formatted username.">
+      Username invalid
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ERROR_USERNAME_UNKNOWN" desc="Error message displayed in the Add Kerberos Account dialog when the user enters a username that is not known to the Kerberos realm.">
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_USERNAME_UNKNOWN" desc="Error message displayed in the 'Add a Kerberos ticket' dialog when the user enters a username that is not known to the Kerberos realm.">
       Username not known to server
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ERROR_CONTACTING_SERVER" desc="Error message displayed in the Add Kerberos Account dialog when the OS is not able to contact the server for the given realm.">
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_DUPLICATE_PRINCIPAL_NAME" desc="Error message displayed in the 'Add a Kerberos ticket' dialog when the user enters a username for which there is already a ticket.">
+      A ticket with this username already exists
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_CONTACTING_SERVER" desc="Error message displayed in the 'Add a Kerberos ticket' dialog when the OS is not able to contact the server for the given realm.">
       Contacting server for realm failed
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ERROR_PASSWORD_INVALID" desc="Error message displayed in the Add Kerberos Account dialog when the user enters the wrong password.">
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_PASSWORD_INVALID" desc="Error message displayed in the 'Add a Kerberos ticket' dialog when the user enters the wrong password.">
       Password invalid
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ERROR_PASSWORD_EXPIRED" desc="Error message displayed in the Add Kerberos Account dialog when the user's password is expired.">
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_PASSWORD_EXPIRED" desc="Error message displayed in the 'Add a Kerberos ticket' dialog when the user's password is expired.">
       Password expired
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ERROR_KDC_ENC_TYPE" desc="Error message displayed in the Add Kerberos Account dialog when the KDC does not support the encryption types specified in the Kerberos configuration (KDC = Key Distribution Center, part of Kerberos infrastructure).">
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_KDC_ENC_TYPE" desc="Error message displayed in the 'Add a Kerberos ticket' dialog when the KDC does not support the encryption types specified in the Kerberos configuration (KDC = Key Distribution Center, part of Kerberos infrastructure).">
       KDC does not support encryption type
     </message>
-    <message name="IDS_SETTINGS_KERBEROS_ERROR_GENERAL" desc="Fallback error message displayed in the Add Kerberos dialog.">
-      Oops! Something went wrong (error code <ph name="ERROR_CODE">$1<ex>123</ex></ph>).
+    <message name="IDS_SETTINGS_KERBEROS_ERROR_GENERAL" desc="Fallback error message displayed in the 'Add a Kerberos ticket' dialog.">
+      Couldn't get Kerberos ticket. Try again, or contact your organization's device admin. (Error code <ph name="ERROR_CODE">$1<ex>123</ex></ph>).
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_SECTION_NESTED_IN_GROUP" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that has a section (some text in angular braces) inside a group (some text in curly braces), e.g. 'someOption = { [someSection] }'. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+      Section nested in group: <ph name="ERROR_LINE">$1<ex>[realms] (inside a block of curly braces '{ ... })</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_SECTION_SYNTAX" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that contains a malformed section, e.g. '[someSection'. Sections must have opening and closing angular braces. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+      Section syntax error: <ph name="ERROR_LINE">$1<ex>[realms</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_EXPECTED_OPENING_CURLY_BRACE" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that is missing a curly brace somewhere. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+      Expected opening curly brace: <ph name="ERROR_LINE">$1<ex>ticket_lifetime = 1d (in the line after 'EXAMPLE.COM = )'</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_EXTRA_CURLY_BRACE" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that has a closing curly brace '}' that cannot be matched with an opening curly brace '{'. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+      Extra curly brace: <ph name="ERROR_LINE">$1<ex>} (without having a corresponding opening curly brace '{')</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_RELATION_SYNTAX_ERROR" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that contains a malformed relation. A relation is 'key = value'. A malformed relation would be e.g. 'key : value' instead of 'key = value'. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+      Relation syntax error: <ph name="ERROR_LINE">$1<ex>ticket_lifetime : 1d</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_KEY_NOT_SUPPORTED" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that contains a configuration option that we do not support, e.g. '[libdefaults] ccache_type = 1'. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+      Configuration option not supported: <ph name="ERROR_LINE">$1<ex>ccache_type = 1</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_SECTION_NOT_SUPPORTED" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that contains a section that we do not support, e.g. '[appdefaults]'. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+      Section not supported: <ph name="ERROR_LINE">$1<ex>[appdefaults]</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_KERBEROS_CONFIG_ERROR_KRB5_FAILED_TO_PARSE" desc="Error message displayed in the Kerberos configuration dialog when the user tries to save a configuration that cannot be parsed by the underlying Kerberos library for unknown reasons. See https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html.">
+      Failed to parse configuration
     </message>
   </if>
 
@@ -1828,6 +2001,9 @@
     <message name="IDS_SETTINGS_INTERNET_CONFIG_SHARE" desc="Settings &gt; Internet &gt; Network config: Label for setting allowing other device users to use the network configuration.">
       Allow other users of this device to use this network
     </message>
+    <message name="IDS_SETTINGS_HIDDEN_NETWORK_WARNING" desc="Settings &gt; Internet &gt; Network config: Text shown when auto connect to the WiFi network is enabled, warning about the dangers of auto-connecting to hidden networks.">
+      Automatically connecting to a hidden network allows others to see your device and some network settings, and is not recommended.
+    </message>
     <message name="IDS_SETTINGS_INTERNET_CONFIG_SAVE_CREDENTIALS" desc="Settings &gt; Internet &gt; Network config: Label for the setting to save identity and password.">
       Save identity and password
     </message>
@@ -1896,6 +2072,15 @@
     </message>
     <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING" desc="Settings &gt; Internet &gt; Network details: Toggle label to allow mobile data roaming.">
       Allow mobile data roaming
+    </message>
+    <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING_ENABLED_HOME" desc="Settings &gt; Internet &gt; Network details: Toggle sublabel when roaming is allowed and it's connected to the home network.">
+      On, not roaming
+    </message>
+    <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING_ENABLED_ROAMING" desc="Settings &gt; Internet &gt; Network details: Toggle sublabel when roaming is allowed and it's connected to a roaming network">
+      On, roaming
+    </message>
+    <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING_DISABLED" desc="Settings &gt; Internet &gt; Network details: Toggle sublabel when roaming is not allowed.">
+      Roaming off
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_CHOOSE_MOBILE" desc="Settings &gt; Internet &gt; Network details: Label for control to choose a mobile data network.">
       Mobile data network
@@ -1984,6 +2169,8 @@
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PORT" desc="Settings &gt; Internet &gt; Network details: Label for proxy port input.">
       Port
     </message>
+
+    <!-- Settings > Internet > SIM lock/unlock dialog -->
     <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_CHANGE_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for buton to change the PIN.">
       Change PIN
     </message>
@@ -2032,6 +2219,22 @@
     <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ENTER_PUK" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Label for entering a PUK.">
       Enter PIN Unlock Key
     </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_INCORRECT_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when an incorrect PIN was entered.">
+      Incorrect PIN. Retries left: <ph name="RETRIES">$1<ex>3</ex></ph>.
+    </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_INCORRECT_PUK" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when an incorrect PUK was entered.">
+      Incorrect PUK. Retries left: <ph name="RETRIES">$1<ex>3</ex></ph>.
+    </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_INVALID_PIN" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when an invalid PIN was entered.">
+      Invalid PIN. Retries left: <ph name="RETRIES">$1<ex>3</ex></ph>.
+    </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_INVALID_PUK" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when an invalid PUK was entered.">
+      Invalid PUK. Retries left: <ph name="RETRIES">$1<ex>3</ex></ph>.
+    </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_SIM_ERROR_PIN_MISMATCH" desc="Settings &gt; Internet &gt; Network details &gt; Lock/unlock SIM card: Message when PIN values do not match.">
+      PIN values do not match.
+    </message>
+
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PREFER" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether a network is preferred over other networks.">
       Prefer this network
     </message>
@@ -2499,16 +2702,9 @@
   </message>
 
   <!-- Languages Page -->
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_LANGUAGES_PAGE_TITLE" desc="Name of the settings page which displays language and input method preferences.">
-      Languages and input
-    </message>
-  </if>
-  <if expr="not chromeos">
-    <message name="IDS_SETTINGS_LANGUAGES_PAGE_TITLE" desc="Name of the settings page which displays language preferences.">
-      Languages
-    </message>
-  </if>
+  <message name="IDS_SETTINGS_LANGUAGES_PAGE_TITLE" desc="Name of the settings page which displays language preferences.">
+    Languages
+  </message>
   <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_TITLE" desc="Title for the currently used language in the header for the collapsible list of languages.">
     Language
   </message>
@@ -2876,12 +3072,6 @@
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT" desc="Name of the settings page for Brave Assistant.">
     Brave Assistant
   </message>
-  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_CONTEXT" desc="Title for a toggle that lets the assistant use whats on the screen.">
-    Related info
-  </message>
-  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_CONTEXT_DESCRIPTION" desc="Sub label for context-enable toggle.">
-    Let the Assistant show you info related to what's on your screen
-  </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD" desc="Title for a toggle that lets the assistant detect hotword.">
     "Ok Brave"
   </message>
@@ -2902,9 +3092,6 @@
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_VOICE_SETTINGS" desc="Title for the Assistant voice settings.">
     Voice match
-  </message>
-  <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_VOICE_SETTINGS_DESCRIPTION" desc="Sub label for the Assistant voice settings.">
-    Teach your Assistant to recognize your voice
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_VOICE_SETTINGS_RETRAIN" desc="Button label for retrain voice model.">
     Retrain
@@ -3581,9 +3768,6 @@
     <message name="IDS_SETTINGS_PEOPLE_CONFIGURE_PIN_MISMATCHED" desc="Message shown below the title that tells the user they have entered two different PIN values.">
       PINs do not match
     </message>
-    <message name="IDS_SETTINGS_PEOPLE_CONFIGURE_PIN_CONTINUE_BUTTON" desc="A button that accepts the users initial PIN. The user will have to enter the PIN again after hitting this button to confirm that they entered it correctly.">
-      Continue
-    </message>
     <message name="IDS_SETTINGS_PEOPLE_ENABLE_SCREENLOCK" desc="The text on the checkbox to enable screenlocker for current user.">
       Show lock screen when waking from sleep
     </message>
@@ -3639,10 +3823,13 @@
       Note: Your fingerprint may be less secure than a strong password or PIN.
     </message>
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_DELETE_FINGERPRINT_ARIA_LABEL" desc="Aria label for the button in the fingerprint subpage that deletes a registered fingerprint. Only visible by screen reader software.">
-      delete [<ph name="FINGERPRINT_NAME">$1<ex>Fingerprint 1</ex></ph>], button
+      delete [<ph name="FINGERPRINT_NAME">$1<ex>Fingerprint 1</ex></ph>]
     </message>
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NEW_FINGERPRINT_DEFAULT_NAME" desc="The default name (plus a number for a newly added fingerprint).">
       Finger <ph name="NEW_FINGER_NUMBER">$1<ex>1</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_MEDIA_KEYS" desc="Label for the checkbox which enables or disables media keys on the lock screen.">
+      Enable Brave media playback at lock screen
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_ADD_ACCOUNT_LABEL" desc="Label of the Add account button in Account Manager.">
       Add account
@@ -3665,11 +3852,20 @@
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_UNMIGRATED_ACCOUNT_PLACEHOLDER" desc="Placeholder text for the unmigrated account in Account Manager.">
       Not updated yet
     </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MORE_ACTIONS_TOOLTIP" desc="Tooltip text (shows on hover or for screenreaders) for a button that shows a menu with more actions when clicked or tapped.">
+      More actions, <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph>
+    </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MIGRATION_LABEL" desc="Label of the migration button on Account Manager Settings page.">
       Update account
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REAUTHENTICATION_LABEL" desc="Label of the re-authentication button on Account Manager Settings page.">
       Sign in
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MIGRATION_TOOLTIP" desc="Tooltip text (shows on hover or for screenreaders) for the migration button on Account Manager Settings page.">
+      Update account, <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REAUTHENTICATION_TOOLTIP" desc="Tooltip text (shows on hover or for screenreaders) for the re-authentication button on Account Manager Settings page.">
+      Sign in, <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph>
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_ACCOUNT_LABEL" desc="Label of the Remove account button in Account Manager.">
       Remove this account
@@ -3680,15 +3876,30 @@
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_UNMANAGED_ACCOUNT" desc="Management status label for unmanaged accounts.">
       Primary account
     </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_ACCOUNT_REMOVED_MESSAGE" desc="Notification message after account removal.">
+      <ph name="EMAIL">$1<ex>abcd@google.com</ex></ph> was removed from this device
+    </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_TITLE" desc="Title of the add fingerprint dialog popup.">
       Set up your fingerprint
     </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER" desc="Text in the add fingerprint dialog telling users to place finger on the sensor.">
+
+    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON" desc="Text in the add fingerprint dialog telling users to place finger on the power button which is the sensor.">
       Touch the power button with your finger
     </message>
-     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users where the fingerprint sensor is. Only visible by screen reader software.">
+     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the power button. Only visible by screen reader software.">
       The fingerprint sensor is in the power button. Touch it lightly with any finger.
     </message>
+
+    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD" desc="Text in the add fingerprint dialog telling users to place finger on the sensor on the keyboard.">
+      Touch the fingerprint sensor with your finger
+    </message>
+     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom right corner of the keyboard. Only visible by screen reader software.">
+      The fingerprint sensor is the bottom right-hand key on your keyboard. Touch it lightly with any finger.
+    </message>
+     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_TOP_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the top right corner of the keyboard. Only visible by screen reader software.">
+      The fingerprint sensor is the top right-hand key on your keyboard. Touch it lightly with any finger.
+    </message>
+
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_READY" desc="Text in the add fingerprint dialog that confirms user's fingerprint scan was successful.">
       Fingerprint added.
     </message>
@@ -4610,8 +4821,14 @@
     <message name="IDS_SETTINGS_SYSTEM_HARDWARE_ACCELERATION_LABEL" desc="Label for the checkbox that forces Brave to render via hardware acceleration (GPU) when available.">
       Use hardware acceleration when available
     </message>
-    <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL" desc="Label for the control that opens a user's network proxy settings.">
-      Open proxy settings
+    <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL" desc="Label for the control that opens the system network proxy settings. These settings apply to the entire computer.">
+      Open your computer's proxy settings
+    </message>
+    <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_EXTENSION_LABEL" desc="Non-interactive label that describes when Brave's proxy settings are overwritten by an extension. This is used in place of IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL above.">
+      <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> is using proxy settings from an extension
+    </message>
+    <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_POLICY_LABEL" desc="Non-interactive label that describes when Brave's proxy settings are overwritten by policy. This is used in place of IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL above.">
+      <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> is using proxy settings from your administrator
     </message>
   </if>
 
@@ -4929,6 +5146,9 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_TOO_SHORT" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
     PIN must be at least 4 characters
   </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_TOO_SHORT_SMALL" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people. This message has limited horizontal space.">
+    Too short
+  </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_TOO_LONG" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
     PIN must be at most 63 characters
   </message>
@@ -4952,5 +5172,53 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_SOFT_LOCK" desc="A message shown when the user attempts to change the PIN on a security key that has been locked due to too many incorrect PIN attempts. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
     The security key is locked because the wrong PIN was entered too many times. To unlock it, remove and reinsert it.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_SHOW_PINS" desc="A tool-tip message that is shown to describe the action of an icon in the dialog where users set or enter PINs for security keys. This message indicates to the user that clicking the icon will cause the PINs to be displayed normally. Since PINs are private information they are shown by default like passwords: with the characters replaced by bullet points. (Security keys are external devices used to authenticate people and PINs are short, often numeric, codes that are commonly used with, for example, ATMs.)">
+    Show PINs
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_HIDE_PINS" desc="A tool-tip message that is shown to describe the action of an icon in the dialog where users set or enter PINs for security keys. This message indicates to the user that clicking the icon will cause the PINs to be displayed like passwords: with the characters replaced by bullet points. (Security keys are external devices used to authenticate people and PINs are short, often numeric, codes that are commonly used with, for example, ATMs.)">
+    Hide PINs
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_LABEL" desc="The label for a menu item that when clicked let's the user view and erase credentials on their security key (an authentication hardware device).">
+    Manage sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DESC" desc="The description for a menu item that when clicked let's the user view and erase credentials on their security key (an authentication hardware device).">
+    View and delete the sign-in data stored on your security key
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DIALOG_TITLE" desc="The title of a dialog that lets users view and erase credentials on their security key (an authentication hardware device).">
+    Security key sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_WEBSITE" desc="A column heading of a table that lists credentials stored on a security key (an authentication hardware device). This column contains the domain name (e.g. google.com) for each credential.">
+    Website
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_USERNAME" desc="A column heading of a table that lists credentials stored on a security key (an authentication hardware device). This column contains the user name (e.g. exampleuser@google.com) for each credential.">
+    Username
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_TOUCH" desc="A label instructing the user to physically touch the activation button on their security key (an authentication hardware device).">
+    To view sign-in data, insert and touch your security key
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_PIN_PROMPT" desc="A label instructing the user to enter the PIN (short, often numeric codes that are often used with, for example, ATM cards) for their security key (an authentication hardware device).">
+    To view sign-in data, enter the PIN for your security key. If you don’t know the PIN, you’ll need to reset the security key.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_NO_CREDENTIALS" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device) but no such credentials exist.">
+    This security key does not have any sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_NO_CREDENTIAL_MANAGEMENT" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device) but the security key is not capable of storing credentials.">
+    This security key can't store any sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_REMOVED" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device), but the user removed the security key (by unplugging it from their USB port, for example).">
+    Your security key was removed.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_NO_PIN" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device), but the user has not set up a PIN (short, often numeric codes that are often used with, for example, ATM cards) for that security key.">
+    Your security key is not protected with a PIN. To manage sign-in data, first create a PIN.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_ERROR" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device), but an error with the device was encountered.">
+    Your security key couldn't be read
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_SUCCESS" desc="Label of a button that lets a user delete individual credentials on their security key (an authentication hardware device).">
+    Your sign-in data was deleted
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_FAILED" desc="Label of a button that lets a user delete individual credentials on their security key (an authentication hardware device).">
+    Your sign-in data couldn't be deleted
   </message>
 </grit-part>

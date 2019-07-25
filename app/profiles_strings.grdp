@@ -45,6 +45,12 @@
   <message name="IDS_AVATAR_BUTTON_SYNC_PAUSED_TOOLTIP" desc="Tooltip for the avatar button when sync is paused for the current profile.">
     <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: Sync paused
   </message>
+  <message name="IDS_SYNC_PAUSED_REASON_CLEAR_COOKIES_ON_EXIT" desc="Info text displayed in the user menu when sync is paused due to cookies cleared on exit.">
+    Sync is paused because you clear cookies on start up. Change <ph name="COOKIE_SETTINGS_LINK">$1<ex>your settings</ex></ph> to keep syncing.
+  </message>
+  <message name="IDS_SYNC_PAUSED_REASON_CLEAR_COOKIES_ON_EXIT_LINK_TEXT" desc="Link text part of the sync paused info text when sync is paused due to cookies cleared on exit.">
+    your settings
+  </message>
   <message name="IDS_LEGACY_SUPERVISED_USER_NEW_AVATAR_LABEL" desc="Label shown in the new avatar menu for a supervised user.">
     <ph name="PROFILE_DISPLAY_NAME">$1<ex>Markus</ex></ph> (Supervised)
   </message>
@@ -468,6 +474,9 @@
     <!-- Create Profile Dialog -->
     <message name="IDS_PROFILES_CREATE_TITLE" desc="Title of the create profile dialog">
       Add person
+    </message>
+    <message name="IDS_PROFILES_CREATE_NAME_PLACEHOLDER" desc="Name placeholder in the input field of the create profile dialog.">
+      Name
     </message>
     <message name="IDS_PROFILES_CREATE_LOCAL_ERROR" desc="Message shown when a local error (for example, a disk error) occurs during profile creation.">
       The new user couldn't be created. Please check your hard drive space and permissions and try again.

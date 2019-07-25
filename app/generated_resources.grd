@@ -901,8 +901,8 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_SAVE_PAGE" desc="The text label of the Save Page As menu item">
             Save page &amp;as...
           </message>
-          <message name="IDS_DISTILL_PAGE" desc="The text label of the 'Distill page' menu item">
-            Distill page
+          <message name="IDS_DISTILL_PAGE" desc="The text label of the 'Toggle distilled page contents' menu item">
+            Toggle distilled page contents
           </message>
           <message name="IDS_MORE_TOOLS_MENU" desc="The text label of the Tools submenu for touch">
             More too&amp;ls
@@ -2902,7 +2902,7 @@ are declared in tools/grit/grit_rule.gni.
        Sharing <ph name="TAB_NAME">$1<ex>youtube.com</ex></ph> to <ph name="APP_NAME">$2<ex>meet.google.com</ex></ph>
       </message>
       <message name="IDS_TAB_SHARING_INFOBAR_SHARE_BUTTON" desc="Text displayed on the button to share current tab.">
-       Share this tab
+       Share this tab instead
       </message>
       <message name="IDS_TAB_SHARING_INFOBAR_STOP_BUTTON" desc="Text displayed on the button to stop sharing a tab.">
        Stop
@@ -3196,7 +3196,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_UTILITY_PROCESS_NOOP_SERVICE_NAME" desc="The name of the utility process which does nothing, used for experimentation.">
         No-op Service
       </message>
-
       <!-- Theme preview infobar -->
       <message name="IDS_THEME_INSTALL_INFOBAR_LABEL" desc="Text displayed on an infobar when a theme has been installed.">
         Installed theme "<ph name="THEME_NAME">$1<ex>Snowflake Theme</ex></ph>"
@@ -3512,6 +3511,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_INPUT" desc="Permission string for access to input.">
           Read and change anything you type
         </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_LOGIN" desc="Permission string for access to Login API.">
+          Launch and exit managed guest sessions
+        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_LOGIN_SCREEN_UI" desc="Permission string for access to login screen UI.">
           Display UI on the login screen
         </message>
@@ -3686,6 +3688,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_NEW_TAB_PAGE_OVERRIDE" desc="Permission string for extensions that override the new tab page.">
           Replace the page you see when opening a new tab
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_TRANSIENT_BACKGROUND" desc="Permission string for transient background permission.">
+          Run in the background when requested by a cooperating native application
         </message>
       </if>
 
@@ -4403,20 +4408,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
          Updated just now
       </message>
 
-      <!-- Page Capping InfoBar -->
-      <message name="IDS_PAGE_CAPPING_TITLE" desc="The text of the infobar notifying the user that the page uses a lot of network data.">
-        This page will use a lot of data.
-      </message>
-      <message name="IDS_PAGE_CAPPING_STOPPED_TITLE" desc="The text of the infobar indicating that the user has chosen to pause resource loading on the page. This infobar is shown in response to clicking on a link in a different infobar that informed the user the page used a lot of data.">
-         Page paused.
-      </message>
-      <message name="IDS_PAGE_CAPPING_CONTINUE_MESSAGE" desc="A link on an infobar that allows the resource loading to continue on the page. Clicking the link resumes resource loading on the page. This infobar is shown in response to clicking on a link in a different infobar that informed the user the page used a lot of data.">
-         Continue
-      </message>
-      <message name="IDS_PAGE_CAPPING_STOP_MESSAGE" desc="A link on the of infobar notifying the user that data usage on the page is beyond a certain threshold. Clicking the link pauses the resource loading on the page.">
-         Stop using data on this page
-      </message>
-
       <!-- HTTPS Server Previews InfoBar -->
       <message name="IDS_LITE_PAGE_PREVIEWS_MESSAGE" desc="The text of the infobar notifying the user that Brave's Lite mode will now also apply to HTTPS pages.">
         Lite mode now makes browsing faster on all pages, including HTTPS.
@@ -4830,9 +4821,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CONFIRM_MSG_RESTORE_DEFAULTS" desc="The text label of the restore default shortcuts button when editing a custom link. (On the New Tab Page)">
         Restore default shortcuts
       </message>
-      <message name="IDS_NTP_CUSTOM_BG_CUSTOMIZE_BACKGROUND" desc="The title and aria-label for the tooltip for background customization. (On the New Tab Page)">
-        Customize this page
-      </message>
       <message name="IDS_NTP_CUSTOM_BG_CHROME_WALLPAPERS" desc="The text label of the Brave backgrounds option for background customization.(On the New Tab Page)">
         Brave backgrounds
       </message>
@@ -4932,11 +4920,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_MOST_VISITED_LABEL" desc="The label for the option to show most visited sites in the customization menu on the New Tab Page">
         Most visited sites
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_MY_SHORTCUTS_DESC" desc="The description for the option to show user selected shortcuts in the customization menu on the New Tab Page">
+      <message name="IDS_NTP_CUSTOMIZE_MOST_VISITED_DESC" desc="The description for the option to show user selected shortcuts in the customization menu on the New Tab Page">
         Shortcuts are suggested based on websites you visit often
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_MOST_VISITED_DESC" desc="The description for the option to show most visited sites in the customization menu on the New Tab Page">
+      <message name="IDS_NTP_CUSTOMIZE_MY_SHORTCUTS_DESC" desc="The description for the option to show most visited sites in the customization menu on the New Tab Page">
         Shortcuts are curated by you
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_3PT_THEME_DESC" desc="The description for the installed third-party themes in the customization menu on the New Tab Page">
+        Current theme you have installed
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_3PT_THEME_UNINSTALL" desc="The label for the third-party theme uninstall button in the customization menu on the New Tab Page">
+        Uninstall
       </message>
 
       <if expr="is_android">
@@ -5034,8 +5028,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_REMEMBER_SELECTION" desc="Message contained in a checkbox that must be marked in order for the intent picker to not be shown again for a similar URL.">
           Remember my choice
         </message>
-        <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_USE_APP" desc="Message contained in a button to continue the navigation in an app selected by the user.">
-          Use app
+        <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_OPEN" desc="Message contained in a button to continue the navigation in an app selected by the user.">
+          Open
         </message>
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_STAY_IN_CHROME" desc="Message contained in a button to continue the navigation within Brave.">
           Stay in Brave
@@ -5264,7 +5258,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Password Manager -->
       <message name="IDS_PASSWORD_MANAGER_CANCEL_BUTTON" desc="Label for the 'dismiss' button in the Manage Password bubble/Update Password infobar. These UIs ask the user if they wish to perform some action with saved passwords, e.g. updating or deleting them; the button dismisses the UI without taking the suggested action.">
-        Nope
+        No thanks
       </message>
       <if expr="not is_android">
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Save button text for password manager">
@@ -6253,6 +6247,25 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
+      <!-- Sharing features. -->
+      <if expr="not use_titlecase">
+        <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_MULTIPLE_DEVICES" desc="The label of item for click to call in context menu when multiple devices are available.">
+          Call from your devices
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="The label of item for click to call in context menu for showing device name when multiple devices are available.">
+          Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        </message>
+      </if>
+
+      <if expr="use_titlecase">
+        <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_MULTIPLE_DEVICES" desc="In Title Case: The label of item for click to call in context menu when multiple devices are available.">
+          Call from Your Devices
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="In Title Case: The label of item for click to call in context menu when single device is available.">
+          Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        </message>
+      </if>
+
 
       <!-- Collected cookies window -->
       <message name="IDS_COLLECTED_COOKIES_DIALOG_TITLE" desc="The title of the collect cookies dialog">
@@ -6730,45 +6743,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!--  Sync Confirmation section of the tab modal signin flow -->
-      <message name="IDS_SYNC_CONFIRMATION_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow">
-        You've signed in and turned on Sync
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_DICE_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Dice is enabled">
+      <message name="IDS_SYNC_CONFIRMATION_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Dice is enabled">
         Turn on sync?
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNITY_SYNC_INFO_TITLE" desc="Title in the information about sync on the sync confirmation dialog when Unity is enabled">
+      <message name="IDS_SYNC_CONFIRMATION_SYNC_INFO_TITLE" desc="Title in the information about sync on the sync confirmation dialog when Unity is enabled">
         Sync your bookmarks, passwords, history, and more on all your devices
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNITY_SYNC_INFO_DESC" desc="Description in the information about sync on the sync confirmation dialog when Unity is enabled">
+      <message name="IDS_SYNC_CONFIRMATION_SYNC_INFO_DESC" desc="Description in the information about sync on the sync confirmation dialog when Unity is enabled">
         Brave may use your history to personalize Search, ads, and other Brave services
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNITY_SETTINGS_INFO" desc="Information about customizing Sync settings in the sync confirmation dialog when Unity is enabled">
+      <message name="IDS_SYNC_CONFIRMATION_SETTINGS_INFO" desc="Information about customizing Sync settings in the sync confirmation dialog when Unity is enabled">
         You can always choose what to sync in settings.
       </message>
-
-      <!-- "Brave sync" is the Brave Cloud Based service used for sync. Thus this string resource is set to "Brave sync" even for Brave builds. -->
-      <message name="IDS_SYNC_CONFIRMATION_CHROME_SYNC_TITLE" desc="Title of the chrome sync section of the sync confirmation dialog in the tab modal signin flow" formatter_data="android_java">
-        Brave Sync
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_CHROME_SYNC_MESSAGE" desc="Body of the chrome sync section of the sync confirmation dialog in the tab modal signin flow" formatter_data="android_java">
-        Your bookmarks, history, passwords, and other settings will be synced to your Brave Account so you can use them on all your devices
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_PERSONALIZE_SERVICES_TITLE" desc="Title of the personalize services section of the sync confirmation dialog in the tab modal signin flow" formatter_data="android_java">
-        Personalize Brave services
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_PERSONALIZE_SERVICES_BODY" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow" formatter_data="android_java">
-        Brave may use your browsing history to personalize Search, ads, and other Brave services
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_PERSONALIZE_SERVICES_BODY_CHILD_ACCOUNT" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow for child accounts" formatter_data="android_java">
-        Brave may use your browsing history to personalize Search and other Brave services
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_SYNC_SETTINGS_LINK_BODY" desc="Label of the section containing the link to go to the sync setting page.">
-        Want to manage sync and personalization before they’re turned on? Visit <ph name="BEGIN_LINK">&lt;a id="settingsLink" href="chrome://settings"&gt;</ph>Settings<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_DICE_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
+      <message name="IDS_SYNC_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
         Yes, I'm in
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_DICE_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation dialog of the tab modal signin flow to open settings">
+      <message name="IDS_SYNC_CONFIRMATION_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation dialog of the tab modal signin flow to open settings">
         Settings
       </message>
 
@@ -7137,20 +7127,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_SYNC_START_SYNC_BUTTON_LABEL" desc="The label that appears on the sync button in the options dialog when sync has not been set up by the user.">
           Sign in to <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph>
         </message>
-        <message name="IDS_SIGNED_IN_WITH_SYNC_DISABLED" desc="The message that appears in the settings page indicating that user is signed in, but sync is not enabled.">
+        <message name="IDS_SIGNED_IN_WITH_SYNC_DISABLED_BY_POLICY" desc="The message that appears in the settings page indicating that user is signed in, but sync is disabled by enterprise policy.">
           Sync is disabled by your administrator.
         </message>
-        <message name="IDS_SIGNED_IN_WITH_SYNC_SUPPRESSED" desc="The message that appears in the settings page indicating that user is signed in, but sync has been stopped.">
+        <message name="IDS_SIGNED_IN_WITH_SYNC_STOPPED_VIA_DASHBOARD" desc="The message that appears in the settings page indicating that user is signed in, but sync has been stopped via the Brave dashboard.">
           Sync has been stopped via the Brave Dashboard.
         </message>
         <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED" desc="The message that appears in the settings page indicating that user is signed in, but sync hasn't started because the sync settings haven't been confirmed.">
           Confirm sync settings to start sync.
         </message>
-        <message name="IDS_SYNC_ERROR_SIGNING_IN" desc="An error was encountered while signing the user in.">
-          Error signing in.
-        </message>
-        <message name="IDS_SYNC_UNRECOVERABLE_ERROR" desc="Message shown when sync setup failed due to an unrecoverable error and can't continue.">
-          Oops, Sync has stopped working.
+        <message name="IDS_SYNC_SETUP_IN_PROGRESS" desc="The message to display in the settings page when the sync setup is underway.">
+          Setup in progress...
         </message>
         <message name="IDS_SYNC_STATUS_UNRECOVERABLE_ERROR" desc="Message shown on the personal options page when there is an unrecoverable error.">
           Sync isn’t working. Try signing in again.
@@ -7201,20 +7188,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Advanced settings
         </message>
 
-        <!-- Sync New Tab Page strings -->
-        <message name="IDS_SYNC_NTP_SETUP_IN_PROGRESS" desc="The message to display in the New Tab Page sync section when the sync setup is underway.">
-          Setup in progress...
-        </message>
-
-        <!-- Spinner dialog for waiting sync backend to start up -->
-        <message name="IDS_SYNC_SETUP_SPINNER_TITLE" desc="The title of the sync setup dialog showing spinner.">
-          Please wait...
-        </message>
-
-        <!-- Choose data types dialog strings -->
-        <message name="IDS_SYNC_EVERYTHING" desc="A drop-down menu item for users who want to sync all data types.">
-          Sync everything
-        </message>
+        <if expr="chromeos">
+          <!-- Spinner dialog for waiting sync backend to start up -->
+          <message name="IDS_SYNC_SETUP_SPINNER_TITLE" desc="The title of the sync setup dialog showing spinner.">
+            Please wait...
+          </message>
+        </if>
 
         <!-- Encryption tab of the configure sync dialog -->
         <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_CUSTOM" desc="Text of the radio that when selected enables full encryption.">
@@ -7229,16 +7208,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
         </message>
 
-        <!-- Sync promo page chrome://signin -->
-        <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_HEADER" desc="The first line of the of the message shown in NTP when a user is not signed into sync.">
-          Not signed in to <ph name="SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph>
-        </message>
-        <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_SUB_HEADER" desc="The second line of the of the message shown in NTP when a user is not signed in to sync.">
-          (You're missing out—<ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK">$1<ex>sign in</ex></ph>)
-        </message>
-        <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK" desc="The linkified portion of the sync sign in promo on the NTP. Clicking this text allows the user to sign in to sync.">
-          sign in
-        </message>
+        <!-- Sync promo on chrome://apps -->
+        <if expr="not chromeos">
+          <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_HEADER" desc="The first line of the of the message shown in NTP when a user is not signed into sync.">
+            Not signed in to <ph name="SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph>
+          </message>
+          <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_SUB_HEADER" desc="The second line of the of the message shown in NTP when a user is not signed in to sync.">
+            (You're missing out—<ph name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK">$1<ex>sign in</ex></ph>)
+          </message>
+          <message name="IDS_SYNC_PROMO_NOT_SIGNED_IN_STATUS_LINK" desc="The linkified portion of the sync sign in promo on the NTP. Clicking this text allows the user to sign in to sync.">
+            sign in
+          </message>
+        </if>
       </if>
 
       <!-- Translate Bubble -->
@@ -7258,7 +7239,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_TRANSLATE_BUBBLE_COULD_NOT_TRANSLATE_TITLE" desc="Title text for the translate bubble label when the page could not be translated.">
           This page could not be translated
         </message>
-
         <if expr="not use_titlecase">
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_LINK" desc="Text to show for the translate bubble link label to jump to the advanced panel.">
             Options
@@ -7268,6 +7248,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_MENU_BUTTON" desc="Text to show for the translate bubble menu button to jump to the advanced panel, specifically to change which languages are translated between.">
             Change languages
+          </message>
+          <message name="IDS_TRANSLATE_BUBBLE_CHANGE_TARGET_LANGUAGE" desc="Text for the menu item that lets the user open a dialog to choose another target language for translation, from a list of available languages.">
+            More languages...
+          </message>
+          <message name="IDS_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="Text for the menu item that lets the user open a dialog to choose another source language for translation, from a list of available languages.">
+            Page is not in <ph name="language">$1<ex>French</ex></ph> ?
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ACCEPT" desc="Text to show for the translate bubble button to accept translation.">
             Translate
@@ -7317,6 +7303,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_TRANSLATE_BUBBLE_LANGUAGE_SETTINGS" desc="Text to show for the translate bubble link label next to jump to the language setting page.">
             Language settings
           </message>
+          <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_TARGET" desc="Text to show in the advanced source language view for TAB UI">
+            Language to translate into
+          </message>
+          <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_SOURCE" desc="Text to show in the advanced source language view for TAB UI">
+            Page language to translate
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_LINK" desc="In Title Case: Text to show for the translate bubble link label to jump to the advanced panel.">
@@ -7327,6 +7319,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_MENU_BUTTON" desc="In Title Case: Text to show for the translate bubble menu button to jump to the advanced panel, specifically to change which languages are translated between.">
             Change Languages
+          </message>
+          <message name="IDS_TRANSLATE_BUBBLE_CHANGE_TARGET_LANGUAGE" desc="Text to show for the translate bubble menu button which invokes the target language menu.">
+            More Languages...
+          </message>
+          <message name="IDS_TRANSLATE_BUBBLE_CHANGE_SOURCE_LANGUAGE" desc="Text to show for the translate bubble menu button which invokes the source language menu.">
+            Page Is Not In <ph name="language">$1<ex>French</ex></ph> ?
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_ACCEPT" desc="In Title Case: Text to show for the translate bubble button to accept translation.">
             Translate
@@ -7376,9 +7374,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
           <message name="IDS_TRANSLATE_BUBBLE_LANGUAGE_SETTINGS" desc="In Title Case: Text to show for the translate bubble link label next to jump to the language setting page.">
             Language Settings
           </message>
+          <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_TARGET" desc="Text to show in the advanced source language view for TAB UI">
+            Language To Translate Into
+          </message>
+          <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_SOURCE" desc="Text to show in the advanced source language view for TAB UI">
+            Page Language To Translate
+          </message>
         </if>
         <message name="IDS_TRANSLATE_BUBBLE_UNKNOWN_LANGUAGE" desc="Text to show for the translate bubble link label when the page source language cannot be determined. Used in place of a language name, so should be capitalized as such (e.g. &quot;Unknown&quot; for English, &quot;sconosciuto&quot; for Italian)" meaning="Noun to use in place of a language name in part of a translate bubble message.">
           Unknown
+        </message>
+        <message name="IDS_TRANSLATE_BUBBLE_RESET" desc="Text to show for the language combobox to revert to its original state in the advanced view under TAB UI">
+            Reset
         </message>
       </if>
 
@@ -7597,6 +7604,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_EDIT_CHECK_GRAMMAR_MAC" desc="The Mac menu item for check grammar with spelling in the edit menu.">
           Check Grammar With Spelling
+        </message>
+        <!-- Edit::Substitutions submenu -->
+        <message name="IDS_EDIT_SUBSTITUTIONS_MAC" desc="The Mac menu item for the substitutions submenu in the edit menu.">
+          Substitutions
+        </message>
+        <message name="IDS_EDIT_SHOW_SUBSTITUTIONS_MAC" desc="The Mac menu item for showing the substitutions panel in the edit menu.">
+          Show Substitutions
+        </message>
+        <message name="IDS_EDIT_SMART_QUOTES_MAC" desc="The Mac menu item for toggling smart quotes in the edit menu.">
+          Smart Quotes
+        </message>
+        <message name="IDS_EDIT_SMART_DASHES_MAC" desc="The Mac menu item for toggling smart dashes in the edit menu.">
+          Smart Dashes
+        </message>
+        <message name="IDS_EDIT_TEXT_REPLACEMENT_MAC" desc="The Mac menu item for toggling text replacement in the edit menu.">
+          Text Replacement
         </message>
         <!-- View menu -->
         <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
@@ -8466,38 +8489,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </if>
       </if>
 
-      <!-- Identity internals strings -->
-      <message name="IDS_IDENTITY_INTERNALS_TOKEN_CACHE_TEXT" desc="The title of the token cache of the Identity API.">
-        Identity API Token Cache
-      </message>
-      <message name="IDS_IDENTITY_INTERNALS_ACCESS_TOKEN" desc="Label of the row containing the access token.">
-        Access Token
-      </message>
-      <message name="IDS_IDENTITY_INTERNALS_EXTENSION_NAME" desc="Label of the row containing a name of an extension related to the identity token.">
-        Extension Name
-      </message>
-      <message name="IDS_IDENTITY_INTERNALS_EXTENSION_ID" desc="Label of the row containing an id of an extension related to the identity token.">
-        Extension Id
-      </message>
-      <message name="IDS_IDENTITY_INTERNALS_TOKEN_STATUS" desc="Label of the row containing a status of identity token.">
-        Token Status
-      </message>
-      <message name="IDS_IDENTITY_INTERNALS_TOKEN_NOT_FOUND" desc="Label of the token status when token is not found.">
-        Not Found
-      </message>
-      <message name="IDS_IDENTITY_INTERNALS_TOKEN_PRESENT" desc="Label of the token status when token is present and valid for use.">
-        Token Present
-      </message>
-      <message name="IDS_IDENTITY_INTERNALS_EXPIRATION_TIME" desc="Label of the row containing expiration time of identity token.">
-        Expiration Time
-      </message>
-      <message name="IDS_IDENTITY_INTERNALS_SCOPES" desc="Label of the row listing scopes of identity token.">
-        Scopes
-      </message>
-      <message name="IDS_IDENTITY_INTERNALS_REVOKE" desc="Label on a revoke token button.">
-        Revoke
-      </message>
-
       <!-- Translated apps strings -->
       <message name="IDS_CHROME_SHORTCUT_DESCRIPTION" desc="Description for the Brave app shortcut in the app launcher.">
         A fast, simple, and secure web browser, built for the modern web.
@@ -8789,6 +8780,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEVICE_LOG_REFRESH" desc="Button to refresh device log">
         Refresh
       </message>
+      <message name="IDS_DEVICE_LOG_CLEAR" desc="Button to clear device log">
+        Clear
+      </message>
+      <message name="IDS_DEVICE_LOG_NO_ENTRIES" desc="Text shown when device log is empty">
+        No log entries
+      </message>
       <message name="IDS_DEVICE_LOG_LEVEL_SHOW" desc="'Show' label before logging level checkboxes">
         Show:
       </message>
@@ -8972,16 +8969,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Bluetooth Scanning Prompt -->
-    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no nearby Bluetooth devices were found using the requirements that the application provided.">
+    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no nearby Bluetooth devices were found using the requirements that the application provided." formatter_data="android_java">
       No nearby devices found.
     </message>
     <message name="IDS_BLUETOOTH_SCANNING_PROMPT_ORIGIN" desc="The label that is used to introduce Bluetooth scanning prompt details to the user when it is from a website.">
-      <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to scan for nearby Bluetooth devices, the following devices have been found:
+      <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to scan for nearby Bluetooth devices. The following devices have been found:
     </message>
-    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_ALLOW_BUTTON_TEXT" desc="Label on the button that allows Bluetooth scanning.">
+    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_ALLOW_BUTTON_TEXT" desc="Label on the button that allows Bluetooth scanning." formatter_data="android_java">
       Allow
     </message>
-    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_BLOCK_BUTTON_TEXT" desc="Label on the button that blocks Bluetooth scanning.">
+    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_BLOCK_BUTTON_TEXT" desc="Label on the button that blocks Bluetooth scanning." formatter_data="android_java">
       Block
     </message>
     <message name="IDS_BLUETOOTH_SCANNING_DEVICE_UNKNOWN" desc="Text to identify Bluetooth devices of unknown or unsupported class.">
@@ -9065,6 +9062,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Ads blocked on this site
     </message>
 
+    <!-- Heavy Ad Intervention strings. -->
+    <message name="IDS_HEAVY_AD_INTERVENTION_BUTTON_DETAILS" desc="Label for the button that expands the details on the heavy ad intervention page">
+      Details
+    </message>
+    <message name="IDS_HEAVY_AD_INTERVENTION_HEADING" desc="Heading of the heavy ad intervention page">
+      Ad removed.
+    </message>
+    <message name="IDS_HEAVY_AD_INTERVENTION_SUMMARY" desc="Summary in heavy ad intervention page when ad was removed for using too many system resources.">
+      This ad uses too many resources for your device, so Brave removed it.
+    </message>
+
     <if expr="is_win">
       <message name="IDS_UTILITY_PROCESS_UTILITY_WIN_NAME" desc="The name of the utility process used to handle Windows utility operations.">
         Windows Utilities
@@ -9135,31 +9143,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WIN10_TOAST_NO_THANKS" desc="The label on the button to dismiss the toast without launching Brave.">
         No thanks
-      </message>
-    </if>
-
-    <!-- Windows 10 Welcome page strings -->
-    <if expr="is_win">
-      <message name="IDS_WIN10_WELCOME_OPEN_SETTINGS" desc="A link which, when clicked, will cause a particular page to open in the external Windows Settings dialog.">
-        Open Windows Settings
-      </message>
-      <message name="IDS_WIN10_WELCOME_CLICK_EDGE" desc="An instruction asking the user to find the Web Browser section of the Windows Settings dialog, then click on Microsoft Edge, which is the current default.">
-        Click <ph name="BEGIN_BOLD">&lt;strong&gt;</ph>Microsoft Edge<ph name="END_BOLD">&lt;/strong&gt;</ph> under Web Browser
-      </message>
-      <message name="IDS_WIN10_WELCOME_SWITCH_ANYWAY_LABEL" desc="The text on the button of the &quot;Before you switch&quot; dialog that confirms the user's choice. Used in a mock screenshot illustrating the Windows Settings dialog.">
-        Switch anyway
-      </message>
-      <message name="IDS_WIN10_WELCOME_RIGHT_CLICK_TASKBAR" desc="An instruction asking the user to right click on the Brave/Brave logo appearing in their Windows taskbar.">
-        Right click the <ph name="SMALL_PRODUCT_LOGO">&lt;div class="logo-small"&gt;&lt;/div&gt;</ph> icon in the taskbar
-      </message>
-      <message name="IDS_WIN10_WELCOME_PIN_INSTRUCTION" desc="An instruction asking the user to choose the Pin to Taskbar option from the right-click menu.">
-        Select <ph name="BEGIN_BOLD">&lt;strong&gt;</ph>Pin to taskbar<ph name="END_BOLD">&lt;/strong&gt;</ph>
-      </message>
-      <message name="IDS_WIN10_WELCOME_PIN_LABEL" desc="The name of the option in the Windows right-click menu for pinning an app to the taskbar. Used in a mock screenshot illustrating the Windows Settings dialog.">
-        Pin to taskbar
-      </message>
-      <message name="IDS_WIN10_WELCOME_CONTINUE" desc="The label on a button which navigates away from the Windows 10 Welcome page.">
-        Continue
       </message>
     </if>
 
@@ -9243,6 +9226,101 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_CONFIRM_FILE_UPLOAD_OK_BUTTON" desc="Button title confirming to upload multiple files to the site.">
       Upload
     </message>
+
+    <!-- Native File System permission dialog -->
+    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_FILE_TITLE" desc="Title of dialog for confirming write access to a file using the Native File System API">
+      Save changes to <ph name="FILENAME">$1<ex>README.md</ex></ph>?
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_DIRECTORY_TITLE" desc="Title of dialog for confirming write access to a directory and the files it contains using the Native File System API">
+      Save changes to files?
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_FILE_TEXT" desc="Text of the dialog for confirming write access to files using the Native File System API">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to save your changes directly to <ph name="FILENAME">$2<ex>README.md</ex></ph>. The site can save changes until you close this tab.
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_DIRECTORY_TEXT" desc="Text of the dialog for confirming write access to a directory using the Native File System API">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to save your changes directly to the files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>. The site can save changes until you close this tab.
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to files or directories using the Native File System API">
+      Save changes
+    </message>
+
+    <!-- Native File System usage indicator -->
+    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_USAGE_TOOLTIP" desc="Tooltip for native file system omnibox usage indicator.">
+      This page is allowed to save to files.
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_USAGE_TOOLTIP" desc="Tooltip for native file system omnibox usage indicator.">
+      This page is allowed to view all the files in a folder on your device.
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_WRITABLE_FILE_TEXT" desc="Text of the bubble showing what file an origin can currently write to">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to <ph name="FILENAME">$2<ex>README.md</ex></ph>
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_FILES_TEXT" desc="Text of the bubble showing what files an origin can currently write to">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to the following files
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_WRITABLE_DIRECTORY_TEXT" desc="Text of the bubble showing what file an origin can currently write to">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to the files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_DIRECTORIES_TEXT" desc="Text of the bubble showing what files an origin can currently write to">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to the following folders
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_FILES_AND_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently write to">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to the following files and folders
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_READABLE_DIRECTORY_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view all the files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READABLE_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view all the files in the following folders
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READ_AND_WRITE" desc="Text of the bubble showing what files and directories an origin can currently read and write to">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view and save your changes directly to the following files and folders
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SAVE_CHANGES" desc="">
+      Save changes
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_VIEW_CHANGES" desc="">
+      View changes
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_FILES_TEXT" desc="Text to display a list of files in the native file system usage bubble">
+      {0, plural, offset:2
+        =1 {<ph name="FILE1">{1}<ex>README.md</ex></ph>}
+        =2 {<ph name="FILE1">{1}<ex>README.md</ex></ph>, <ph name="FILE2">{2}<ex>Brave.png</ex></ph>}
+        other {<ph name="FILE1">{1}<ex>README.md</ex></ph>, <ph name="FILE2">{2}<ex>Brave.png</ex></ph>, and # more}
+      }
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_EXPAND" desc="Tooltip for and name of a button that shows (expands) a detailed list of files and directories">
+      Expand...
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_COLLAPSE" desc="Tooltip for and name of a button that hides (collapses) a detailed list of files and directories">
+      Collapse...
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_REMOVE_ACCESS" desc="Text of button in the bubble showing what files and directories an origin can currently access that removes all such access">
+      Remove access
+    </message>
+
+
+    <!-- Native File System restricted directory dialog. -->
+    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_DIRECTORY_TITLE" desc="Title of dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
+      Can't save to this folder
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_DIRECTORY_TEXT" desc="Text of dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can't save your changes to this folder because it contains system files.
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_DIRECTORY_BUTTON" desc="Text of the button in dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
+      Choose a different folder
+    </message>
+
+    <!-- Native File System directory access confirmation dialog. -->
+    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_ACCESS_CONFIRMATION_TITLE" desc="Title of dialog asking user if they intended to share a particular directory">
+      Let site view files?
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_ACCESS_CONFIRMATION_TEXT" desc="Text of dialog asking user if they intended to share a particular directory">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view all files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>. The site can see any changes to the folder until you close this tab.
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_ACCESS_ALLOW_BUTTON" desc="'allow' button in the dialog asking user if they intended to share a particular directory">
+      View files
+    </message>
+
     <!-- Relaunch notification bubble and dialog. -->
     <if expr="not is_android">
       <if expr="not chromeos">
@@ -9505,6 +9583,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_ALLOW_ATTESTATION" desc="Label on button to allow a website to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
         Allow
       </message>
+      <message name="IDS_WEBAUTHN_RETRY" desc="Button text. The user clicks this to retry the authentication flow after an error happened, e.g. to try with a different Security Key.">
+        Try again
+      </message>
    </if>
    <if expr="is_macosx">
      <message name="IDS_WEBAUTHN_TOUCH_ID_INCOGNITO_BUMP_TITLE" desc="Title of the dialog shown when the user attempts to set up sign-in with Touch ID on a website in private mode." meaning="'Touch ID' is the fingerprint recognition feature in macOS. Try to refer Apple support documentation in the target language for the appropriate product name translation.">
@@ -9531,6 +9612,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all private windows.">
       Exit Private
     </message>
+
+    <!-- User happiness tracking survey UI -->
+    <if expr="not is_android">
+      <message name="IDS_HATS_BUBBLE_OK_LABEL" translateable="false" desc="Button label on Happiness Tracking Survey's invitation banner, clicking the button gives the user's consent on taking the survey.">
+        Take Survey
+      </message>
+      <message name="IDS_HATS_BUBBLE_TEXT" translateable="false" desc="The text in Happiness Tracking Survey's invitation banner, it explains why users should take our survey.">
+        Your feedback is important to us.
+      </message>
+    </if>
   </messages>
- </release>
+</release>
 </grit>

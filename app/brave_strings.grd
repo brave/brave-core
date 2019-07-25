@@ -589,7 +589,10 @@ Brave is unable to recover your settings.
         </message>
       </if>
       <if expr="chromeos">
-        <message name="IDS_ABOUT" desc="The text label of the About Brave OS menu item">
+        <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
+          About &amp;Brave
+        </message>
+        <message name="IDS_ABOUT_OS" desc="The text label of the About Brave OS menu item">
           About &amp;Brave OS
         </message>
         <message name="IDS_UPDATE_NOW" desc="The text label of the Update Brave OS Now menu item">
@@ -1163,28 +1166,6 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         </message>
       </if>
 
-      <!-- Windows 10 Welcome page strings -->
-      <if expr="is_win">
-        <message name="IDS_WIN10_WELCOME_HEADER" desc="A header on the Windows 10 Welcome UI if the user has never run Brave before.">
-          Welcome to Brave
-        </message>
-        <message name="IDS_WIN10_WELCOME_HEADER_AFTER_FIRST_RUN" desc="A header on the Windows 10 Welcome UI if the user has run Brave before.">
-          Get to Brave faster
-        </message>
-        <message name="IDS_WIN10_WELCOME_MAKE_DEFAULT_SUBHEADING" desc="A subheading on a section which gives instructions on how to make Brave the default browser.">
-          Make Brave your default browser
-        </message>
-        <message name="IDS_WIN10_WELCOME_PIN_SUBHEADING" desc="A subheading on a section which gives instructions on how to pin Brave to the Windows 10 taskbar.">
-          Pin Brave to your taskbar
-        </message>
-        <message name="IDS_WIN10_WELCOME_SELECT" desc="An instruction asking the user to select Brave from an external list of apps.">
-          Select <ph name="SMALL_PRODUCT_LOGO">&lt;div class="logo-small"&gt;&lt;/div&gt;</ph> <ph name="BEGIN_BOLD">&lt;strong&gt;</ph>Brave<ph name="END_BOLD">&lt;/strong&gt;</ph>
-        </message>
-        <message name="IDS_WIN10_WELCOME_CLICK_SWITCH_ANYWAY" desc="An instruction asking the user to click on the &quot;Switch anyway&quot; button. It's possible that the button doesn't appear for the user, hence the &quot;if it appears&quot;. The bold portion of this message must match IDS_WIN10_WELCOME_SWITCH_ANYWAY_LABEL.">
-          Click <ph name="BEGIN_BOLD">&lt;strong&gt;</ph>Switch anyway<ph name="END_BOLD">&lt;/strong&gt;</ph>, if it appears
-        </message>
-      </if>
-
       <!-- Native notifications for Windows 10 -->
       <if expr="is_win">
         <message name="IDS_WIN_NOTIFICATION_SETTINGS_CONTEXT_MENU_ITEM_NAME" desc="The name of the button in Windows Notification Center which leads to Brave notification settings.">
@@ -1247,6 +1228,12 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
       <message name="IDS_DESKTOP_MEDIA_PICKER_TITLE_WEB_CONTENTS_ONLY" desc="Title for the window picker dialog shown when desktop capture of a tab is requested by an app.">
         Share a Brave tab
       </message>
+      <!-- User happiness tracking survey UI -->
+      <if expr="not is_android">
+        <message name="IDS_HATS_BUBBLE_TITLE" translateable="false" desc="The title of Happiness Tracking Survey's invitation banner, it invites users to take a survey">
+          Help us improve Brave
+        </message>
+      </if>
     </messages>
   </release>
 </grit>
