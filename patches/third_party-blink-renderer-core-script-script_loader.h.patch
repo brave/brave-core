@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.h b/third_party/blink/renderer/core/script/script_loader.h
-index ae9e7b85a7a30d71b025cd0061fdb5f91c47542b..ff4f0c8cbf4b5355b2ddc6c3d93d016866dd8ebe 100644
+index ae9e7b85a7a30d71b025cd0061fdb5f91c47542b..1b362d0f51f2ebf4b81561d7fea27eca67e9811c 100644
 --- a/third_party/blink/renderer/core/script/script_loader.h
 +++ b/third_party/blink/renderer/core/script/script_loader.h
 @@ -38,6 +38,8 @@
@@ -11,36 +11,41 @@ index ae9e7b85a7a30d71b025cd0061fdb5f91c47542b..ff4f0c8cbf4b5355b2ddc6c3d93d0168
  namespace blink {
  
  class Resource;
-@@ -46,6 +48,10 @@ class ScriptElementBase;
+@@ -46,6 +48,11 @@ class ScriptElementBase;
  class Script;
  class ScriptResource;
  class Modulator;
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +class HTMLScriptElement;
++class SVGScriptElement;
 +#endif
 +
  
  class CORE_EXPORT ScriptLoader final
      : public GarbageCollectedFinalized<ScriptLoader>,
-@@ -114,6 +120,11 @@ class CORE_EXPORT ScriptLoader final
+@@ -114,6 +121,14 @@ class CORE_EXPORT ScriptLoader final
    // crbug.com/721914 is fixed.
    PendingScript* GetPendingScriptIfControlledByScriptRunnerForCrossDocMove();
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  void SetHTMLScriptElement(HTMLScriptElement* const elm);
 +  HTMLScriptElement* GetHTMLScriptElement() const;
++
++  void SetSVGScriptElement(SVGScriptElement* const);
++  SVGScriptElement* GetSVGScriptElement() const;
 +#endif
 +
   private:
    bool IgnoresLoadRequest() const;
    bool IsScriptForEventSupported() const;
-@@ -197,6 +208,10 @@ class CORE_EXPORT ScriptLoader final
+@@ -197,6 +212,11 @@ class CORE_EXPORT ScriptLoader final
    // and thus to keep it on MemoryCache, even after script execution, as long
    // as ScriptLoader is alive. crbug.com/778799
    Member<Resource> resource_keep_alive_;
 +
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  Member<HTMLScriptElement> script_elm_;
++  Member<HTMLScriptElement> script_elm_html_;
++  Member<SVGScriptElement> script_elm_svg_;
 +#endif
  };
  

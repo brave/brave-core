@@ -1,0 +1,26 @@
+diff --git a/third_party/blink/renderer/core/svg/svg_script_element.cc b/third_party/blink/renderer/core/svg/svg_script_element.cc
+index b5df678dc502ca30635c760d8fd6cf2d914e03f2..c8297ed04fc57c2ee6caf650bafa7664a3f7660d 100644
+--- a/third_party/blink/renderer/core/svg/svg_script_element.cc
++++ b/third_party/blink/renderer/core/svg/svg_script_element.cc
+@@ -31,6 +31,8 @@
+ #include "third_party/blink/renderer/core/script/script_runner.h"
+ #include "third_party/blink/renderer/core/xlink_names.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ inline SVGScriptElement::SVGScriptElement(Document& document,
+@@ -38,7 +40,11 @@ inline SVGScriptElement::SVGScriptElement(Document& document,
+     : SVGElement(svg_names::kScriptTag, document),
+       SVGURIReference(this),
+       loader_(InitializeScriptLoader(flags.IsCreatedByParser(),
+-                                     flags.WasAlreadyStarted())) {}
++                                     flags.WasAlreadyStarted())) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  loader_->SetSVGScriptElement(this);
++#endif
++}
+ 
+ SVGScriptElement* SVGScriptElement::Create(Document& document,
+                                            const CreateElementFlags flags) {
