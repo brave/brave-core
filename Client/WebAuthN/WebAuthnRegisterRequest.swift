@@ -24,7 +24,6 @@ struct WebAuthnRegisterRequest: Decodable {
         // If present the two keys may or may not be present
         struct AuthenticatorSelection: Decodable {
             var requireResidentKey: Bool?
-            var userVerification: String?
         }
         
         let authenticatorSelection: AuthenticatorSelection?

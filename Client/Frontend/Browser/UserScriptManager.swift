@@ -95,8 +95,8 @@ class UserScriptManager {
         
         var alteredSource = source
         let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
-        alteredSource = alteredSource.replacingOccurrences(of: "$<webauthn>", with: "W\(token)", options: .literal)
-        alteredSource = alteredSource.replacingOccurrences(of: "$<u2f>", with: "U\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<webauthn>", with: "fido2\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<u2f>", with: "fido\(token)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<pkc>", with: "pkp\(token)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<assert>", with: "assert\(token)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<attest>", with: "attest\(token)", options: .literal)

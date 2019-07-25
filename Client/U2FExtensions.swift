@@ -238,10 +238,8 @@ class U2FExtensions: NSObject {
             param.alg = publicKeyCred.alg
             makeCredentialRequest.pubKeyCredParams = [param]
             
-            let userVerification = publicKey.authenticatorSelection?.userVerification ?? ""
             let makeOptions = [
-                YKFKeyFIDO2MakeCredentialRequestOptionRK: publicKey.authenticatorSelection?.requireResidentKey ?? false,
-                YKFKeyFIDO2MakeCredentialRequestOptionUV: userVerification == "required"
+                YKFKeyFIDO2MakeCredentialRequestOptionRK: publicKey.authenticatorSelection?.requireResidentKey ?? false
             ]
             makeCredentialRequest.options = makeOptions
             
@@ -368,14 +366,7 @@ class U2FExtensions: NSObject {
                 return
             }
             getAssertionRequest.clientDataHash = clientDataHash
-            
-            // userPresence is set to the inverse of userVerification
-            // https://www.w3.org/TR/webauthn/#user-verification
-            getAssertionRequest.options = [
-                YKFKeyFIDO2GetAssertionRequestOptionUP: !request.userVerification,
-                YKFKeyFIDO2GetAssertionRequestOptionUV: request.userVerification
-            ]
-            
+
             var allowList = [YKFFIDO2PublicKeyCredentialDescriptor]()
             for credentialId in request.allowCredentials {
                 let credentialDescriptor = YKFFIDO2PublicKeyCredentialDescriptor()
