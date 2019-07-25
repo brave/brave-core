@@ -59,7 +59,13 @@ bool IsWhitelistedCookieException(const GURL& firstPartyOrigin,
   }
 
   // 1st-party-dependent whitelist
-  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns = {};
+  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns = {
+    {
+      GURL("https://www.sliver.tv/"),
+      std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
+            "https://*.thetatoken.org:8700/*")})
+    }
+  };
   std::map<GURL, std::vector<URLPattern> >::iterator i =
       whitelist_patterns.find(firstPartyOrigin);
   if (i == whitelist_patterns.end()) {
