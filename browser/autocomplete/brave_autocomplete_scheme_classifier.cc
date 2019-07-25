@@ -31,7 +31,7 @@ metrics::OmniboxInputType
 BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
     const std::string& scheme) const {
   if (scheme.empty()) {
-    return metrics::OmniboxInputType::INVALID;
+    return metrics::OmniboxInputType::EMPTY;
   }
   if (base::IsStringASCII(scheme) &&
       base::LowerCaseEqualsASCII(scheme, kBraveUIScheme)) {
