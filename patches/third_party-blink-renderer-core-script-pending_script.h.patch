@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/script/pending_script.cc b/third_party/blink/renderer/core/script/pending_script.cc
+index 3bd0f996731b17ea6ac70da395a667eba4ebc874..a95708da564cd1a9b7f568623e2433ec0fcc0979 100644
+--- a/third_party/blink/renderer/core/script/pending_script.cc
++++ b/third_party/blink/renderer/core/script/pending_script.cc
+@@ -111,7 +111,6 @@ class CORE_EXPORT PendingScript : public GarbageCollected<PendingScript>,
+   void Dispose();
+ 
+   ScriptSchedulingType GetSchedulingType() const {
+-    DCHECK_NE(scheduling_type_, ScriptSchedulingType::kNotSet);
+     return scheduling_type_;
+   }
+   bool IsControlledByScriptRunner() const;
