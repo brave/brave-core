@@ -35,9 +35,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& viewing_id,
       const std::string& probi,
       const ledger::RewardsType type) override;
-  void OnGrantFinish(
-    const ledger::Result result,
-    ledger::GrantPtr grant) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void SaveLedgerState(const std::string& ledger_state,

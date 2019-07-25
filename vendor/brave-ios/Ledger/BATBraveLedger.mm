@@ -607,17 +607,13 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
       });
 }
 
-- (void)solveGrantCaptchWithPromotionId:(NSString *)promotionId solution:(NSString *)solution
+- (void)solveGrantCaptchWithPromotionId:(NSString *)promotionId solution:(NSString *)solution completion:(void (^)(BATResult, BATGrant * _Nullable))completion
 {
   ledger->SolveGrantCaptcha(std::string(solution.UTF8String),
-                            std::string(promotionId.UTF8String));
-}
-
-- (void)onGrantFinish:(ledger::Result)result grant:(ledger::GrantPtr)grant
-{
+  std::string(promotionId.UTF8String), ^(ledger::Result result, ledger::GrantPtr grant) {
   ledger::BalanceReportInfo report_info;
   auto now = [NSDate date];
-  const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
+  const auto bridgedGrant = grant.get() != nullptr ? [[BATGrant alloc] initWithGrant:*grant] : nil;
   if (result == ledger::Result::LEDGER_OK) {
     ledger::ReportType report_type = grant->type == "ads" ? ledger::ReportType::ADS : ledger::ReportType::GRANT;
     [self fetchBalance:nil];
@@ -632,10 +628,22 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     if (observer.balanceReportUpdated) {
       observer.balanceReportUpdated();
     }
-    if (observer.grantClaimed) {
-      observer.grantClaimed(bridgedGrant);
+
+    [self clearNotificationWithID:[self notificationIDForGrant:std::move(grant)]];
+
+    if (result == ledger::Result::LEDGER_OK) {
+      for (BATBraveLedgerObserver *observer in self.observers) {
+        if (observer.balanceReportUpdated) {
+          observer.balanceReportUpdated();
+        }
+        if (observer.grantClaimed) {
+          observer.grantClaimed(bridgedGrant);
+        }
+      }
     }
-  }
+
+    completion(static_cast<BATResult>(result), bridgedGrant);
+  }});
 }
 
 #pragma mark - History

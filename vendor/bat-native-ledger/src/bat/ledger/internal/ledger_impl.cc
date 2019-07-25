@@ -674,25 +674,27 @@ void LedgerImpl::OnRecoverWallet(
 
 void LedgerImpl::SolveGrantCaptcha(
     const std::string& solution,
-    const std::string& promotionId) const {
-  bat_grants_->SetGrant(solution, promotionId, "");
+    const std::string& promotionId,
+    ledger::SolveGrantCaptchaCallback callback) {
+  auto callback_internal =
+      std::bind(&LedgerImpl::OnSolveGrantCaptcha, this, _1, _2, callback);
+  bat_grants_->SolveGrantCaptcha(solution, promotionId, "", callback_internal);
 }
 
-void LedgerImpl::OnGrantFinish(ledger::Result result,
-                               const braveledger_bat_helper::GRANT& grant) {
-  ledger::GrantPtr newGrant = ledger::Grant::New();
+void LedgerImpl::OnSolveGrantCaptcha(
+    const ledger::Result result,
+    ledger::GrantPtr grant,
+    ledger::SolveGrantCaptchaCallback callback) {
+  if (!grant) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
 
-  newGrant->altcurrency = grant.altcurrency;
-  newGrant->probi = grant.probi;
-  newGrant->expiry_time = grant.expiryTime;
-  newGrant->promotion_id = grant.promotionId;
-  newGrant->type = grant.type;
-
-  if (grant.type == "ads") {
+  if (grant->type == "ads") {
     bat_confirmations_->UpdateAdsRewards(true);
   }
 
-  ledger_client_->OnGrantFinish(result, std::move(newGrant));
+  callback(result, std::move(grant));
 }
 
 void LedgerImpl::GetBalanceReport(
@@ -1586,7 +1588,7 @@ void LedgerImpl::OnGrantViaSafetynetCheck(
 
 void LedgerImpl::ApplySafetynetToken(
     const std::string& promotion_id, const std::string& token) const {
-  bat_grants_->SetGrant("", promotion_id, token);
+//  bat_grants_->SetGrant("", promotion_id, token);
 }
 
 }  // namespace bat_ledger

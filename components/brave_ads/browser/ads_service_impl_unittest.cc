@@ -48,8 +48,8 @@ class MockRewardsService : public RewardsService {
            const brave_rewards::GetContentSiteListCallback&));
   MOCK_METHOD2(FetchGrants, void(const std::string&, const std::string&));
   MOCK_METHOD2(GetGrantCaptcha, void(const std::string&, const std::string&));
-  MOCK_CONST_METHOD2(SolveGrantCaptcha, void(const std::string&,
-                                             const std::string&));
+  MOCK_METHOD2(SolveGrantCaptchaUI,
+               void(const std::string&, const std::string&));
   MOCK_METHOD1(GetWalletPassphrase,
       void(const brave_rewards::GetWalletPassphraseCallback&));
   MOCK_METHOD1(RecoverWallet, void(const std::string&));

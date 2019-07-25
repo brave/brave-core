@@ -481,8 +481,8 @@ void Wallet::GetGrantViaSafetynetCheckCallback(const std::string& promotion_id,
     // Attestation failed
     braveledger_bat_helper::GRANT grant;
     grant.promotionId = promotion_id;
-    ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
-        grant);
+    // ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
+    //    grant);
     return;
   }
   std::string nonce;

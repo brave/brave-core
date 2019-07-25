@@ -94,7 +94,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       RecoverWalletCallback callback) override;
   void SolveGrantCaptcha(
       const std::string& solution,
-      const std::string& promotionId) override;
+      const std::string& promotionId,
+      SolveGrantCaptchaCallback callback) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
@@ -370,6 +371,11 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnDisconnectWallet(
     CallbackHolder<DisconnectWalletCallback>* holder,
     ledger::Result result);
+
+  static void OnSolveGrantCaptcha(
+    CallbackHolder<SolveGrantCaptchaCallback>* holder,
+    ledger::Result result,
+    ledger::GrantPtr grant);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

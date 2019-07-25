@@ -106,8 +106,8 @@ class RewardsServiceImpl : public RewardsService,
   void GetGrantCaptcha(
       const std::string& promotion_id,
       const std::string& promotion_type) override;
-  void SolveGrantCaptcha(const std::string& solution,
-                         const std::string& promotionId) const override;
+  void SolveGrantCaptchaUI(const std::string& solution,
+                           const std::string& promotionId) override;
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
@@ -316,6 +316,7 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnGrant(const ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
   void TriggerOnGrantFinish(ledger::Result result, ledger::GrantPtr grant);
+  void OnGrantFinish(ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             ledger::PublisherInfoPtr info,
@@ -478,6 +479,14 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnWalletInitialized(ledger::Result result);
 
+  void OnSolveGrantCaptchaUI(ledger::Result result, ledger::GrantPtr grant);
+  void OnSolveGrantCaptcha(ledger::SolveGrantCaptchaCallback callback,
+                           ledger::Result result,
+                           ledger::GrantPtr grant);
+  void SolveGrantCaptcha(const std::string& solution,
+                         const std::string& promotionId,
+                         ledger::SolveGrantCaptchaCallback callback);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnGrantCaptcha(const std::string& image,
@@ -489,8 +498,6 @@ class RewardsServiceImpl : public RewardsService,
                            const std::string& viewing_id,
                            const std::string& probi,
                            const ledger::RewardsType type) override;
-  void OnGrantFinish(ledger::Result result,
-                     ledger::GrantPtr grant) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void OnGrantViaSafetynetCheck(const std::string& promotion_id,

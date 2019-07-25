@@ -37,8 +37,6 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
                                      unsigned int,
                                      double,
                                      std::vector<brave_rewards::Grant>));
-  MOCK_METHOD3(OnGrantFinish,
-      void(RewardsService*, unsigned int, brave_rewards::Grant));
   MOCK_METHOD1(OnContentSiteUpdated, void(RewardsService*));
   MOCK_METHOD5(OnReconcileComplete, void(RewardsService*,
                                          unsigned int,

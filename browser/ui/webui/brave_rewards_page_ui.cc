@@ -670,7 +670,7 @@ void RewardsDOMHandler::SolveGrantCaptcha(const base::ListValue *args) {
   if (rewards_service_) {
     const std::string solution = args->GetList()[0].GetString();
     const std::string promotionId = args->GetList()[1].GetString();
-    rewards_service_->SolveGrantCaptcha(solution, promotionId);
+    rewards_service_->SolveGrantCaptchaUI(solution, promotionId);
   }
 }
 

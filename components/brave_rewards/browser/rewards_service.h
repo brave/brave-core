@@ -120,8 +120,8 @@ class RewardsService : public KeyedService {
   virtual void GetGrantCaptcha(
       const std::string& promotion_id,
       const std::string& promotion_type) = 0;
-  virtual void SolveGrantCaptcha(const std::string& solution,
-                                 const std::string& promotionId) const = 0;
+  virtual void SolveGrantCaptchaUI(const std::string& solution,
+                                   const std::string& promotionId) = 0;
   virtual void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void RecoverWallet(const std::string& passPhrase) = 0;

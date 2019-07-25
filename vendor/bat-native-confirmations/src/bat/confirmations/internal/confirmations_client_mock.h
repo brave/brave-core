@@ -142,10 +142,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
       double balance,
       std::vector<ledger::GrantPtr> grants));
 
-  MOCK_METHOD2(OnGrantFinish, void(
-      ledger::Result result,
-      ledger::GrantPtr grant));
-
   MOCK_METHOD3(OnPanelPublisherInfo, void(
       ledger::Result result,
       ledger::PublisherInfoPtr,

@@ -311,9 +311,26 @@ void BatLedgerImpl::RecoverWallet(
       _3));
 }
 
+// static
+void BatLedgerImpl::OnSolveGrantCaptcha(
+    CallbackHolder<SolveGrantCaptchaCallback>* holder,
+    ledger::Result result,
+    ledger::GrantPtr grant) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(grant));
+  }
+  delete holder;
+}
+
 void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution,
-                                      const std::string& promotion_id) {
-  ledger_->SolveGrantCaptcha(solution, promotion_id);
+                                      const std::string& promotion_id,
+                                      SolveGrantCaptchaCallback callback) {
+  // deleted in OnSolveGrantCaptcha
+  auto* holder = new CallbackHolder<SolveGrantCaptchaCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->SolveGrantCaptcha(solution, promotion_id,
+      std::bind(BatLedgerImpl::OnSolveGrantCaptcha, holder, _1, _2));
 }
 
 void BatLedgerImpl::SetRewardsMainEnabled(bool enabled) {

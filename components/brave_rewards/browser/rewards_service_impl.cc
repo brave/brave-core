@@ -1622,13 +1622,53 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
       AsWeakPtr()));
 }
 
-void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution,
-                                         const std::string& promotionId) const {
+void RewardsServiceImpl::OnSolveGrantCaptchaUI(
+    ledger::Result result,
+    ledger::GrantPtr grant) {
+  OnGrantFinish(result, std::move(grant));
+}
+
+void RewardsServiceImpl::SolveGrantCaptchaUI(
+    const std::string& solution,
+    const std::string& promotionId) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->SolveGrantCaptcha(solution, promotionId);
+  bat_ledger_->SolveGrantCaptcha(
+      solution,
+      promotionId,
+      base::BindOnce(&RewardsServiceImpl::OnSolveGrantCaptchaUI,
+                     AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnSolveGrantCaptcha(
+    ledger::SolveGrantCaptchaCallback callback,
+    ledger::Result result,
+    ledger::GrantPtr grant) {
+  if (!Connected()) {
+    return;
+  }
+
+  OnGrantFinish(result, grant->Clone());
+
+  callback(result, std::move(grant));
+}
+
+void RewardsServiceImpl::SolveGrantCaptcha(
+    const std::string& solution,
+    const std::string& promotionId,
+    ledger::SolveGrantCaptchaCallback callback) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->SolveGrantCaptcha(
+      solution,
+      promotionId,
+      base::BindOnce(&RewardsServiceImpl::OnSolveGrantCaptcha,
+                     AsWeakPtr(),
+                     callback));
 }
 
 void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,

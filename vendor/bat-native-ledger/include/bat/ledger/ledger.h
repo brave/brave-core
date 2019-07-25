@@ -64,6 +64,9 @@ using RecoverWalletCallback = std::function<void(
     const double balance,
     std::vector<ledger::GrantPtr>)>;
 
+using SolveGrantCaptchaCallback =
+    std::function<void(ledger::Result, ledger::GrantPtr)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(const std::string& url,
@@ -172,8 +175,10 @@ class LEDGER_EXPORT Ledger {
                            const std::string& safetynet_token,
                            ledger::FetchGrantsCallback callback) const = 0;
 
-  virtual void SolveGrantCaptcha(const std::string& solution,
-                                 const std::string& promotionId) const = 0;
+  virtual void SolveGrantCaptcha(
+      const std::string& solution,
+      const std::string& promotionId,
+      ledger::SolveGrantCaptchaCallback callback) = 0;
 
   virtual void GetGrantCaptcha(
       const std::vector<std::string>& headers,

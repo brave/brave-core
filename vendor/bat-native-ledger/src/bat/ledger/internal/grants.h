@@ -31,9 +31,11 @@ class Grants {
       const std::string& safetynet_token,
       ledger::FetchGrantsCallback callback);
 
-  void SetGrant(const std::string& captchaResponse,
-                const std::string& promotionId,
-                const std::string& safetynet_token);
+  void SolveGrantCaptcha(
+      const std::string& captchaResponse,
+      const std::string& promotionId,
+      const std::string& safetynet_token,
+      ledger::SolveGrantCaptchaCallback callback);
 
   void GetGrantCaptcha(const std::vector<std::string>& headers,
                        ledger::GetGrantCaptchaCallback callback);
@@ -52,11 +54,12 @@ class Grants {
       const std::map<std::string, std::string>& headers,
       ledger::FetchGrantsCallback callback);
 
-  void SetGrantCallback(
+  void OnSolveGrantCaptcha(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      bool is_safetynet_check);
+      bool is_safetynet_check,
+      ledger::SolveGrantCaptchaCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -41,6 +41,9 @@
 
 // npm run test -- brave_browser_tests --filter=BraveRewardsBrowserTest.*
 
+using std::placeholders::_1;
+using std::placeholders::_2;
+
 using braveledger_bat_helper::SERVER_TYPES;
 
 namespace {
@@ -660,7 +663,9 @@ class BraveRewardsBrowserTest :
     // Solve the CAPTCHA (response is mocked, so the contents of the
     // solution aren't important)
     const std::string promotion_id = "d9033f51-6d83-4d19-a016-1c11f693f147";
-    rewards_service_->SolveGrantCaptcha("{\"x\":1,\"y\":1}", promotion_id);
+    rewards_service_->SolveGrantCaptcha(
+        "{\"x\":1,\"y\":1}", promotion_id,
+        std::bind(&BraveRewardsBrowserTest::OnSolveGrantCaptcha, this, _1, _2));
 
     // Wait for grant to finish
     WaitForGrantFinished();
@@ -1064,6 +1069,11 @@ class BraveRewardsBrowserTest :
     balance_ += 30.0;
     if (wait_for_grant_finished_loop_)
       wait_for_grant_finished_loop_->Quit();
+  }
+
+  void OnSolveGrantCaptcha(ledger::Result result, ledger::GrantPtr grant) {
+    // We'll just rely on the OnGrantFinish observer, since it
+    // predates this callback
   }
 
   void OnPublisherListNormalized(brave_rewards::RewardsService* rewards_service,

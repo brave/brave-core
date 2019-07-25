@@ -156,14 +156,6 @@ std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::VerboseLog(
   return std::make_unique<LogStreamImpl>(file, line, level);
 }
 
-void BatLedgerClientMojoProxy::OnGrantFinish(ledger::Result result,
-                                             ledger::GrantPtr grant) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->OnGrantFinish(result, std::move(grant));
-}
-
 void BatLedgerClientMojoProxy::OnLoadLedgerState(
     ledger::OnLoadCallback callback,
     const ledger::Result result,
