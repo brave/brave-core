@@ -49,10 +49,8 @@ void BraveNewTabUI::SetStatsWebUIProperties(
   if (render_view_host) {
     render_view_host->SetWebUIProperty(
         "adsBlockedStat",
-        std::to_string(prefs->GetUint64(kAdsBlocked)));
-    render_view_host->SetWebUIProperty(
-        "trackersBlockedStat",
-        std::to_string(prefs->GetUint64(kTrackersBlocked)));
+        std::to_string(prefs->GetUint64(kAdsBlocked) +
+            prefs->GetUint64(kTrackersBlocked)));
     render_view_host->SetWebUIProperty(
         "javascriptBlockedStat",
         std::to_string(prefs->GetUint64(kJavascriptBlocked)));

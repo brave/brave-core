@@ -19,7 +19,6 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/browser_thread.h"
@@ -133,22 +132,12 @@ void OnBeforeURLRequestAdBlockTP(
                                        tab_host, &did_match_exception,
                                        &ctx->cancel_request_explicitly)) {
     ctx->blocked_by = kAdBlocked;
-  } else if (!did_match_exception &&
-             !g_brave_browser_process->tracking_protection_service()
-                  ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
-                                       tab_host, &did_match_exception,
-                                       &ctx->cancel_request_explicitly)) {
-    ctx->blocked_by = kTrackerBlocked;
   }
 
   if (ctx->blocked_by == kAdBlocked) {
     brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
         ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
         brave_shields::kAds);
-  } else if (ctx->blocked_by == kTrackerBlocked) {
-    brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
-        ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
-        brave_shields::kTrackers);
   }
 }
 
