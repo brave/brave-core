@@ -17,7 +17,6 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b6288622e5481ebf1476c7eb85f8e65
  // assume there are no name conflicts with the embedder's code.
  
 @@ -8599,6 +8606,11 @@ class V8_EXPORT Isolate {
->>>>>>> With PG on, add parent id to eval script cache key
    void operator delete(void*, size_t) = delete;
    void operator delete[](void*, size_t) = delete;
  
@@ -29,7 +28,7 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b6288622e5481ebf1476c7eb85f8e65
   private:
    template <class K, class V, class Traits>
    friend class PersistentValueMapBase;
-@@ -10259,6 +10292,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
+@@ -10259,6 +10296,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
        host_defined_options(origin.HostDefinedOptions()),
        cached_data(data) {}
  
