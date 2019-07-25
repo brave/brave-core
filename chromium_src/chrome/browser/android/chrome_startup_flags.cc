@@ -3,7 +3,8 @@
  * License, v. 3.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define SetChromeSpecificCommandLineFlags SetChromeSpecificCommandLineFlags_ChromiumImpl
+#define SetChromeSpecificCommandLineFlags \
+  SetChromeSpecificCommandLineFlags_ChromiumImpl
 #include "../../../../../chrome/browser/android/chrome_startup_flags.cc"
 #undef SetChromeSpecificCommandLineFlags
 #include "base/base_switches.h"
@@ -12,5 +13,6 @@
 void SetChromeSpecificCommandLineFlags() {
   SetChromeSpecificCommandLineFlags_ChromiumImpl();
 
-  SetCommandLineSwitchASCII(switches::kDisableFeatures, network::features::kNetworkService.name);
+  SetCommandLineSwitchASCII(switches::kDisableFeatures,
+    network::features::kNetworkService.name);
 }

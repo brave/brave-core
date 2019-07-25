@@ -15,56 +15,65 @@
 
 #include "jni/BraveShieldsContentSettings_jni.h"
 
-static const std::string kAllowResource = "allow";
+#include <string>
+
+static const char kAllowResource[] = "allow";
 
 namespace chrome {
 namespace android {
 
 BraveShieldsContentSettings* _brave_shields_content_settings = nullptr;
 
-static void JNI_BraveShieldsContentSettings_Init(JNIEnv* env, const
-    base::android::JavaParamRef<jobject>& jcaller) {
-  _brave_shields_content_settings = new BraveShieldsContentSettings(env, jcaller);
+static void JNI_BraveShieldsContentSettings_Init(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller) {
+  _brave_shields_content_settings =
+    new BraveShieldsContentSettings(env, jcaller);
 }
 
-BraveShieldsContentSettings::BraveShieldsContentSettings(JNIEnv* env, const base::android::JavaRef<jobject>& obj):
+BraveShieldsContentSettings::BraveShieldsContentSettings(JNIEnv* env,
+    const base::android::JavaRef<jobject>& obj):
     weak_java_native_worker_(env, obj) {
-  Java_BraveShieldsContentSettings_setNativePtr(env, obj, reinterpret_cast<intptr_t>(this));
+  Java_BraveShieldsContentSettings_setNativePtr(env, obj,
+    reinterpret_cast<intptr_t>(this));
 }
 
 BraveShieldsContentSettings::~BraveShieldsContentSettings() {
 }
 
-void BraveShieldsContentSettings::Destroy(JNIEnv* env, const
-        base::android::JavaParamRef<jobject>& jcaller) {
+void BraveShieldsContentSettings::Destroy(JNIEnv* env,
+        const base::android::JavaParamRef<jobject>& jcaller) {
   _brave_shields_content_settings = nullptr;
   delete this;
 }
 
-void BraveShieldsContentSettings::DispatchBlockedEventToJava(int tab_id, 
+void BraveShieldsContentSettings::DispatchBlockedEventToJava(int tab_id,
         const std::string& block_type, const std::string& subresource) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveShieldsContentSettings_blockedEvent(env, weak_java_native_worker_.get(env),
-    tab_id, base::android::ConvertUTF8ToJavaString(env, block_type),
+  Java_BraveShieldsContentSettings_blockedEvent(env,
+    weak_java_native_worker_.get(env), tab_id,
+    base::android::ConvertUTF8ToJavaString(env, block_type),
     base::android::ConvertUTF8ToJavaString(env, subresource));
 }
 
 // static
-void BraveShieldsContentSettings::DispatchBlockedEvent(int tab_id, const std::string& block_type, 
-  const std::string& subresource) {
+void BraveShieldsContentSettings::DispatchBlockedEvent(int tab_id,
+  const std::string& block_type, const std::string& subresource) {
   DCHECK(_brave_shields_content_settings);
   if (!_brave_shields_content_settings) {
     return;
   }
-  _brave_shields_content_settings->DispatchBlockedEventToJava(tab_id, block_type, subresource);
+  _brave_shields_content_settings->DispatchBlockedEventToJava(tab_id,
+    block_type, subresource);
 }
 
-base::android::ScopedJavaLocalRef<jstring> JNI_BraveShieldsContentSettings_GetShields(
+base::android::ScopedJavaLocalRef<jstring>
+  JNI_BraveShieldsContentSettings_GetShields(
     JNIEnv* env, jboolean incognito,
     const base::android::JavaParamRef<jstring>& host,
     const base::android::JavaParamRef<jstring>& resourceIndentifier) {
   HostContentSettingsMap* map;
-  Profile* profile = ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
+  Profile* profile =
+    ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
   if (incognito) {
     if (!profile->HasOffTheRecordProfile()) {
       // Allow shields there
@@ -78,7 +87,7 @@ base::android::ScopedJavaLocalRef<jstring> JNI_BraveShieldsContentSettings_GetSh
 
   ContentSetting setting = map->GetContentSetting(
       GURL(base::android::ConvertJavaStringToUTF8(env, host)), GURL(""), 
-      CONTENT_SETTINGS_TYPE_PLUGINS, 
+      CONTENT_SETTINGS_TYPE_PLUGINS,
       base::android::ConvertJavaStringToUTF8(env, resourceIndentifier));
 
   std::string setting_string =
@@ -88,7 +97,8 @@ base::android::ScopedJavaLocalRef<jstring> JNI_BraveShieldsContentSettings_GetSh
   return base::android::ConvertUTF8ToJavaString(env, setting_string);
 }
 
-void JNI_BraveShieldsContentSettings_SetShields(JNIEnv* env, jboolean incognito,
+void JNI_BraveShieldsContentSettings_SetShields(JNIEnv* env,
+    jboolean incognito,
     const base::android::JavaParamRef<jstring>& host,
     const base::android::JavaParamRef<jstring>& resourceIndentifier,
     const base::android::JavaParamRef<jstring>& value) {
@@ -97,10 +107,12 @@ void JNI_BraveShieldsContentSettings_SetShields(JNIEnv* env, jboolean incognito,
     return;
   }
   ContentSetting setting;
-  content_settings::ContentSettingFromString(base::android::ConvertJavaStringToUTF8(env, value), &setting);
+  content_settings::ContentSettingFromString(
+    base::android::ConvertJavaStringToUTF8(env, value), &setting);
 
   HostContentSettingsMap* map;
-  Profile* profile = ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
+  Profile* profile =
+    ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
   if (incognito) {
     if (!profile->HasOffTheRecordProfile()) {
       // Do nothing here
@@ -113,9 +125,9 @@ void JNI_BraveShieldsContentSettings_SetShields(JNIEnv* env, jboolean incognito,
   }
   map->SetContentSettingDefaultScope(
         GURL(base::android::ConvertJavaStringToUTF8(env, host)), GURL(""),
-        CONTENT_SETTINGS_TYPE_PLUGINS, 
+        CONTENT_SETTINGS_TYPE_PLUGINS,
         base::android::ConvertJavaStringToUTF8(env, resourceIndentifier), setting);
 }
 
-}
-}
+} // namespace android
+} // namespace chrome
