@@ -55,8 +55,8 @@ interface BatLedger {
             string referrer,
             ledger.mojom.VisitData visit_data);
 
-  SetPublisherExclude(string publisher_key, int32 exclude);
-  RestorePublishers();
+  SetPublisherExclude(string publisher_key, int32 exclude) => (int32 result);
+  RestorePublishers() => (int32 result);
 
   SetBalanceReportItem(int32 month, int32 year, int32 type, string probi);
   OnReconcileCompleteSuccess(string viewing_id, int32 category, string probi,
@@ -201,7 +201,6 @@ interface BatLedgerClient {
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   KillTimer(uint32 timer_id);
-  OnExcludedSitesChanged(string publisher_id, int32 exclude);
   SaveContributionInfo(string probi, int32 month, int32 year, uint32 date,
       string publisher_key, int32 category);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
@@ -217,7 +216,7 @@ interface BatLedgerClient {
   SaveActivityInfo(ledger.mojom.PublisherInfo publisher_info) =>
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);
 
-  OnRestorePublishers() => (bool result);
+  RestorePublishers() => (int32 result);
 
   GetActivityInfoList(uint32 start, uint32 limit, string filter) =>
       (array<ledger.mojom.PublisherInfo> publisher_info_list, uint32 next_record);

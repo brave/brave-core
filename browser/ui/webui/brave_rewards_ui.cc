@@ -768,7 +768,7 @@ void RewardsDOMHandler::ExcludePublisher(const base::ListValue *args) {
   }
 
   const std::string publisherKey = args->GetList()[0].GetString();
-  rewards_service_->SetContributionAutoInclude(publisherKey, true);
+  rewards_service_->SetPublisherExclude(publisherKey, true);
 }
 
 void RewardsDOMHandler::RestorePublishers(const base::ListValue *args) {
@@ -776,7 +776,7 @@ void RewardsDOMHandler::RestorePublishers(const base::ListValue *args) {
     return;
   }
 
-  rewards_service_->RestorePublishers();
+  rewards_service_->RestorePublishersUI();
 }
 
 void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {
@@ -786,7 +786,7 @@ void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {
   }
 
   std::string publisherKey = args->GetList()[0].GetString();
-  rewards_service_->SetContributionAutoInclude(publisherKey, false);
+  rewards_service_->SetPublisherExclude(publisherKey, false);
 }
 
 void RewardsDOMHandler::OnContentSiteList(

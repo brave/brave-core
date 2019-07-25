@@ -122,7 +122,7 @@ class RewardsService : public KeyedService {
   virtual void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
-  virtual void RestorePublishers() = 0;
+  virtual void RestorePublishersUI() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
   virtual void OnShow(SessionID tab_id) = 0;
@@ -182,7 +182,7 @@ class RewardsService : public KeyedService {
   virtual void RemoveRecurringTipUI(const std::string& publisher_key) = 0;
   virtual void GetRecurringTipsUI(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) = 0;
-  virtual void SetContributionAutoInclude(
+  virtual void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;

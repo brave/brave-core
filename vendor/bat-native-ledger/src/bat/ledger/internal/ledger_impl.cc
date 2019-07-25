@@ -458,16 +458,23 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
 
 void LedgerImpl::SetPublisherExclude(
     const std::string& publisher_id,
-    const ledger::PUBLISHER_EXCLUDE& exclude) {
-  bat_publishers_->setExclude(publisher_id, exclude);
+    const ledger::PUBLISHER_EXCLUDE& exclude,
+    ledger::SetPublisherExcludeCallback callback) {
+  bat_publishers_->SetPublisherExclude(publisher_id, exclude, callback);
 }
 
-void LedgerImpl::RestorePublishers() {
-  bat_publishers_->RestorePublishers();
+void LedgerImpl::RestorePublishers(ledger::RestorePublishersCallback callback) {
+  ledger_client_->RestorePublishers(
+    std::bind(&LedgerImpl::OnRestorePublishers,
+              this,
+              _1,
+              callback));
 }
 
-void LedgerImpl::OnRestorePublishers(ledger::OnRestoreCallback callback) {
-  ledger_client_->OnRestorePublishers(callback);
+void LedgerImpl::OnRestorePublishers(
+    const ledger::Result result,
+    ledger::RestorePublishersCallback callback) {
+  bat_publishers_->OnRestorePublishers(result, callback);
 }
 
 void LedgerImpl::LoadNicewareList(ledger::GetNicewareListCallback callback) {
@@ -1043,11 +1050,6 @@ void LedgerImpl::OnPanelPublisherInfo(
     ledger::PublisherInfoPtr info,
     uint64_t windowId) {
   ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
-}
-
-void LedgerImpl::OnExcludedSitesChanged(const std::string& publisher_id,
-                                        ledger::PUBLISHER_EXCLUDE exclude) {
-  ledger_client_->OnExcludedSitesChanged(publisher_id, exclude);
 }
 
 void LedgerImpl::SetBalanceReportItem(ledger::ACTIVITY_MONTH month,

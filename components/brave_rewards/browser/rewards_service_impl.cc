@@ -750,11 +750,25 @@ base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
                      AsWeakPtr()));
 }
 
-void RewardsServiceImpl::RestorePublishers() {
-  if (!Connected())
+void RewardsServiceImpl::OnRestorePublishersUI(const int32_t result) {
+  if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
     return;
+  }
 
-  bat_ledger_->RestorePublishers();
+  for (auto& observer : observers_) {
+    observer.OnExcludedSitesChanged(
+      this, "-1", ledger::PUBLISHER_EXCLUDE::ALL);
+  }
+}
+
+void RewardsServiceImpl::RestorePublishersUI() {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->RestorePublishers(
+    base::BindOnce(&RewardsServiceImpl::OnRestorePublishersUI,
+                   AsWeakPtr()));
 }
 
 void RewardsServiceImpl::OnMediaPublisherInfoSaved(bool success) {
@@ -1981,21 +1995,6 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
         publisher_blob);
 }
 
-void RewardsServiceImpl::OnExcludedSitesChanged(
-    const std::string& publisher_id,
-    ledger::PUBLISHER_EXCLUDE exclude) {
-
-  bool excluded = exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-
-  if (excluded) {
-    DeleteActivityInfo(publisher_id);
-  }
-
-  for (auto& observer : observers_) {
-    observer.OnExcludedSitesChanged(this, publisher_id, excluded);
-  }
-}
-
 void RewardsServiceImpl::OnPanelPublisherInfo(
     ledger::Result result,
     ledger::PublisherInfoPtr info,
@@ -2449,7 +2448,24 @@ void RewardsServiceImpl::UpdateAdsRewards() const {
   bat_ledger_->UpdateAdsRewards();
 }
 
-void RewardsServiceImpl::SetContributionAutoInclude(
+void RewardsServiceImpl::OnSetPublisherExclude(
+    const std::string& publisher_key,
+    const bool exclude,
+    const int32_t result) {
+  if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
+    return;
+  }
+
+  if (exclude) {
+    DeleteActivityInfo(publisher_key);
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnExcludedSitesChanged(this, publisher_key, exclude);
+  }
+}
+
+void RewardsServiceImpl::SetPublisherExclude(
     const std::string& publisher_key,
     bool exclude) {
   if (!Connected())
@@ -2460,7 +2476,13 @@ void RewardsServiceImpl::SetContributionAutoInclude(
       ? ledger::PUBLISHER_EXCLUDE::EXCLUDED
       : ledger::PUBLISHER_EXCLUDE::INCLUDED;
 
-  bat_ledger_->SetPublisherExclude(publisher_key, status);
+  bat_ledger_->SetPublisherExclude(
+    publisher_key,
+    status,
+    base::BindOnce(&RewardsServiceImpl::OnSetPublisherExclude,
+                   AsWeakPtr(),
+                   publisher_key,
+                   exclude));
 }
 
 RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
@@ -2850,21 +2872,23 @@ bool RestorePublisherOnFileTaskRunner(PublisherInfoDatabase* backend) {
   return backend->RestorePublishers();
 }
 
-void RewardsServiceImpl::OnRestorePublishers(
-    ledger::OnRestoreCallback callback) {
+void RewardsServiceImpl::RestorePublishers(
+  ledger::RestorePublishersCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
       base::Bind(&RestorePublisherOnFileTaskRunner,
                  publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnRestorePublishersInternal,
+      base::Bind(&RewardsServiceImpl::OnRestorePublishers,
                  AsWeakPtr(),
                  callback));
 }
 
-void RewardsServiceImpl::OnRestorePublishersInternal(
-    ledger::OnRestoreCallback callback,
-    bool result) {
+void RewardsServiceImpl::OnRestorePublishers(
+    ledger::RestorePublishersCallback callback,
+    const bool success) {
+  auto result =
+    success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
   callback(result);
 }
 

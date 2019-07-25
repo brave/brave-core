@@ -218,7 +218,7 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
 
   // Set the excluded sites
   for (const auto& publisher_key : ledger_.excluded_publishers) {
-    rewards_service->SetContributionAutoInclude(publisher_key, true);
+    rewards_service->SetPublisherExclude(publisher_key, true);
   }
 
   // Set the recurring tips (formerly known as pinned sites)

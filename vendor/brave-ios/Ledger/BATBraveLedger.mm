@@ -375,12 +375,43 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state
 {
-  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PUBLISHER_EXCLUDE)state);
+  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PUBLISHER_EXCLUDE)state, ^(const int32_t result) {
+    if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
+      return;
+    }
+
+    bool excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(state) == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+
+    if (excluded) {
+      const auto stamp = ledger->GetReconcileStamp();
+      [BATLedgerDatabase deleteActivityInfoWithPublisherID:publisherId
+                                            reconcileStamp:stamp
+                                                completion:nil];
+    }
+
+    for (BATBraveLedgerObserver *observer in self.observers) {
+      if (observer.excludedSitesChanged) {
+        observer.excludedSitesChanged(publisherId,
+                                      state);
+      }
+    }
+  });
 }
 
 - (void)restoreAllExcludedPublishers
 {
-  ledger->RestorePublishers();
+  ledger->RestorePublishers(^(const int32_t result) {
+    if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
+      return;
+    }
+
+    for (BATBraveLedgerObserver *observer in self.observers) {
+      if (observer.excludedSitesChanged) {
+        observer.excludedSitesChanged(@"-1",
+                                      static_cast<BATPublisherExclude>(ledger::PUBLISHER_EXCLUDE::ALL));
+      }
+    }
+  });
 }
 
 - (NSUInteger)numberOfExcludedPublishers
@@ -1428,26 +1459,6 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)onExcludedSitesChanged:(const std::string &)publisher_id exclude:(ledger::PUBLISHER_EXCLUDE)exclude
-{
-  bool excluded = exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-
-  if (excluded) {
-    const auto stamp = ledger->GetReconcileStamp();
-    const auto publisherID = [NSString stringWithUTF8String:publisher_id.c_str()];
-    [BATLedgerDatabase deleteActivityInfoWithPublisherID:publisherID
-                                          reconcileStamp:stamp
-                                              completion:nil];
-  }
-
-  for (BATBraveLedgerObserver *observer in self.observers) {
-    if (observer.excludedSitesChanged) {
-      observer.excludedSitesChanged([NSString stringWithUTF8String:publisher_id.c_str()],
-                                    static_cast<BATPublisherExclude>(exclude));
-    }
-  }
-}
-
 - (void)removeRecurringTip:(const std::string &)publisher_key callback:(ledger::RemoveRecurringTipCallback)callback
 {
   const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
@@ -1456,10 +1467,11 @@ BATLedgerBridge(BOOL,
   }];
 }
 
-- (void)onRestorePublishers:(ledger::OnRestoreCallback)callback
+- (void)restorePublishers:(ledger::RestorePublishersCallback)callback
 {
   [BATLedgerDatabase restoreExcludedPublishers:^(BOOL success) {
-    callback(success);
+    const auto result = success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+    callback(result);
   }];
 }
 

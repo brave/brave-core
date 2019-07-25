@@ -154,14 +154,48 @@ void BatLedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url,
         first_party_url, referrer, std::move(visit_data));
 }
 
-void BatLedgerImpl::SetPublisherExclude(const std::string& publisher_key,
-    int32_t exclude) {
-  ledger_->SetPublisherExclude(publisher_key,
-      ToLedgerPublisherExclude(exclude));
+// static
+void BatLedgerImpl::OnSetPublisherExclude(
+    CallbackHolder<SetPublisherExcludeCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
 }
 
-void BatLedgerImpl::RestorePublishers() {
-  ledger_->RestorePublishers();
+void BatLedgerImpl::SetPublisherExclude(
+    const std::string& publisher_key,
+    const int32_t exclude,
+    SetPublisherExcludeCallback callback) {
+  // delete in OnSetPublisherExclude
+  auto* holder = new CallbackHolder<SetPublisherExcludeCallback>(
+    AsWeakPtr(), std::move(callback));
+
+  ledger_->SetPublisherExclude(
+    publisher_key,
+    ToLedgerPublisherExclude(exclude),
+    std::bind(BatLedgerImpl::OnSetPublisherExclude, holder, _1));
+}
+
+// static
+void BatLedgerImpl::OnRestorePublishers(
+  CallbackHolder<SetPublisherExcludeCallback>* holder,
+  const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::RestorePublishers(RestorePublishersCallback callback) {
+  // delete in OnRestorePublishers
+  auto* holder = new CallbackHolder<RestorePublishersCallback>(
+    AsWeakPtr(), std::move(callback));
+  ledger_->RestorePublishers(
+    std::bind(BatLedgerImpl::OnRestorePublishers, holder, _1));
 }
 
 void BatLedgerImpl::SetBalanceReportItem(int32_t month,

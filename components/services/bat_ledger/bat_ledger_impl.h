@@ -61,9 +61,11 @@ class BatLedgerImpl : public mojom::BatLedger,
       const std::string& first_party_url, const std::string& referrer,
       ledger::VisitDataPtr visit_data) override;
 
-  void SetPublisherExclude(const std::string& publisher_key,
-      int32_t exclude) override;
-  void RestorePublishers() override;
+  void SetPublisherExclude(
+      const std::string& publisher_key,
+      const int32_t exclude,
+      SetPublisherExcludeCallback callback) override;
+  void RestorePublishers(RestorePublishersCallback callback) override;
 
   void SetBalanceReportItem(
       int32_t month, int32_t year, int32_t type,
@@ -217,6 +219,14 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<FetchWalletPropertiesCallback>* holder,
       ledger::Result result,
       ledger::WalletPropertiesPtr properties);
+
+  static void OnSetPublisherExclude(
+      CallbackHolder<SetPublisherExcludeCallback>* holder,
+      const ledger::Result result);
+
+  static void OnRestorePublishers(
+      CallbackHolder<SetPublisherExcludeCallback>* holder,
+      const ledger::Result result);
 
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,

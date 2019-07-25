@@ -62,7 +62,7 @@ using RemoveRecurringTipCallback = std::function<void(Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
-using OnRestoreCallback = std::function<void(bool)>;
+using RestorePublishersCallback = std::function<void(ledger::Result)>;
 using OnSaveCallback = std::function<void(const ledger::Result)>;
 using OnLoadCallback = std::function<void(const ledger::Result,
                                           const std::string&)>;
@@ -150,9 +150,6 @@ class LEDGER_EXPORT LedgerClient {
                                    ledger::PublisherInfoPtr publisher_info,
                                    uint64_t windowId) = 0;
 
-  virtual void OnExcludedSitesChanged(const std::string& publisher_id,
-                                      ledger::PUBLISHER_EXCLUDE exclude) = 0;
-
   virtual void FetchFavIcon(const std::string& url,
                             const std::string& favicon_key,
                             FetchIconCallback callback) = 0;
@@ -205,7 +202,8 @@ class LEDGER_EXPORT LedgerClient {
       int line,
       int vlog_level) const = 0;
 
-  virtual void OnRestorePublishers(ledger::OnRestoreCallback callback) = 0;
+  virtual void RestorePublishers(
+    ledger::RestorePublishersCallback callback) = 0;
 
   virtual void SaveNormalizedPublisherList(
       ledger::PublisherInfoList normalized_list) = 0;
