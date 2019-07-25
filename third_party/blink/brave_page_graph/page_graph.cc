@@ -596,6 +596,14 @@ void PageGraph::RegisterScriptCompilation(
     const ScriptType type) {
   Log("RegisterScriptCompilation) script id: " + to_string(script_id));
   Log("source: " + string(code.Source().ToString().Utf8().data()));
+
+  if (type == ScriptType::kScriptTypeModule) {
+    NodeScript* const code_node = new NodeScript(this, script_id, type);
+    AddNode(code_node);
+    script_nodes_.emplace(script_id, code_node);
+    return;
+  }
+
   script_tracker_.AddScriptId(script_id,
     code.Source().ToString().Impl()->GetHash());
   script_tracker_.SetScriptIdForCode(script_id, code);
