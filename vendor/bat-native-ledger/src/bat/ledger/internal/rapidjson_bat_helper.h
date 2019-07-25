@@ -15,7 +15,6 @@
 
 namespace ledger {
 
-struct BalanceReportInfo;
 struct ReconcileInfo;
 struct ActivityInfoFilter;
 struct RewardsInternalsInfo;
@@ -55,7 +54,6 @@ void saveToJson(JsonWriter* writer, const TRANSACTION_ST&);
 void saveToJson(JsonWriter* writer, const TWITCH_EVENT_INFO&);
 void saveToJson(JsonWriter* writer, const WALLET_INFO_ST&);
 void saveToJson(JsonWriter* writer, const GRANTS_PROPERTIES_ST&);
-void saveToJson(JsonWriter* writer, const ledger::BalanceReportInfo&);
 void saveToJson(JsonWriter* writer, const ledger::Grant&);
 void saveToJson(JsonWriter* writer, const ledger::ActivityInfoFilter&);
 void saveToJson(JsonWriter* writer, const ledger::ReconcileInfo&);

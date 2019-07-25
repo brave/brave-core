@@ -2624,39 +2624,6 @@ void saveToJson(JsonWriter* writer, const ledger::VisitData& visitData) {
   writer->EndObject();
 }
 
-void saveToJson(JsonWriter* writer, const ledger::BalanceReportInfo& info) {
-  writer->StartObject();
-
-  writer->String("opening_balance_");
-  writer->String(info.opening_balance_.c_str());
-
-  writer->String("closing_balance_");
-  writer->String(info.closing_balance_.c_str());
-
-  writer->String("deposits_");
-  writer->String(info.deposits_.c_str());
-
-  writer->String("grants_");
-  writer->String(info.grants_.c_str());
-
-  writer->String("earning_from_ads_");
-  writer->String(info.earning_from_ads_.c_str());
-
-  writer->String("auto_contribute_");
-  writer->String(info.auto_contribute_.c_str());
-
-  writer->String("recurring_donation_");
-  writer->String(info.recurring_donation_.c_str());
-
-  writer->String("one_time_donation_");
-  writer->String(info.one_time_donation_.c_str());
-
-  writer->String("total_");
-  writer->String(info.total_.c_str());
-
-  writer->EndObject();
-}
-
 void saveToJson(JsonWriter* writer,
     const ledger::ActivityInfoFilter& info) {
   writer->StartObject();

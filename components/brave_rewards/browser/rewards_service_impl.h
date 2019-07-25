@@ -353,7 +353,7 @@ class RewardsServiceImpl : public RewardsService,
   void RemoveRecurringTip(const std::string& publisher_key,
                          ledger::RemoveRecurringTipCallback callback) override;
   void TriggerOnGetCurrentBalanceReport(
-      const ledger::BalanceReportInfo& report);
+      ledger::BalanceReportInfoPtr report);
   void MaybeShowBackupNotification(uint64_t boot_stamp);
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
   void OnPublisherListNormalizedSaved(ContentSiteList site_list,
@@ -613,9 +613,9 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& transactions);
   void OnGetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback,
-      const base::flat_map<std::string, std::string>& json_reports);
+      const base::flat_map<std::string, ledger::BalanceReportInfoPtr> reports);
   void OnGetCurrentBalanceReport(
-      bool success, const std::string& json_report);
+      bool success, ledger::BalanceReportInfoPtr report);
   void OnGetAutoContributeProps(
       const GetAutoContributePropsCallback& callback,
       ledger::AutoContributePropsPtr props);

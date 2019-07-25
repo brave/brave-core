@@ -80,8 +80,10 @@ interface BatLedger {
 
   OnTimer(uint32 timer_id);
 
-  GetAllBalanceReports() => (map<string, string> reports);
-  GetBalanceReport(int32 month, int32 year) => (bool result, string report);
+  GetAllBalanceReports() =>
+      (map<string, ledger.mojom.BalanceReportInfo> reports);
+  GetBalanceReport(int32 month, int32 year) =>
+      (bool result, ledger.mojom.BalanceReportInfo report);
 
   IsWalletCreated() => (bool wallet_created);
 

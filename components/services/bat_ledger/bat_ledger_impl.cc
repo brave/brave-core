@@ -243,12 +243,10 @@ void BatLedgerImpl::OnTimer(uint32_t timer_id) {
 
 void BatLedgerImpl::GetAllBalanceReports(
     GetAllBalanceReportsCallback callback) {
-  auto reports = ledger_->GetAllBalanceReports();
-  base::flat_map<std::string, std::string> out_reports;
-  for (auto const& report : reports) {
-    out_reports[report.first] = report.second.ToJson();
-  }
-  std::move(callback).Run(out_reports);
+  std::map<std::string, ledger::BalanceReportInfoPtr> reports =
+    ledger_->GetAllBalanceReports();
+  auto out_reports = mojo::MapToFlatMap(std::move(reports));
+  std::move(callback).Run(std::move(out_reports));
 }
 
 void BatLedgerImpl::GetBalanceReport(int32_t month, int32_t year,
@@ -256,7 +254,7 @@ void BatLedgerImpl::GetBalanceReport(int32_t month, int32_t year,
   ledger::BalanceReportInfo info;
   bool result =
     ledger_->GetBalanceReport(ToLedgerPublisherMonth(month), year, &info);
-  std::move(callback).Run(result, info.ToJson());
+  std::move(callback).Run(result, ledger::BalanceReportInfo::New(info));
 }
 
 void BatLedgerImpl::IsWalletCreated(IsWalletCreatedCallback callback) {

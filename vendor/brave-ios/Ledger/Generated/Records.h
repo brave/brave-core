@@ -5,22 +5,9 @@
 #import <Foundation/Foundation.h>
 #import "Enums.h"
 
-@class BATBalanceReportInfo, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo;
+@class BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo;
 
 NS_ASSUME_NONNULL_BEGIN
-
-NS_SWIFT_NAME(BalanceReportInfo)
-@interface BATBalanceReportInfo : NSObject
-@property (nonatomic) NSString * openingBalance;
-@property (nonatomic) NSString * closingBalance;
-@property (nonatomic) NSString * deposits;
-@property (nonatomic) NSString * grants;
-@property (nonatomic) NSString * earningFromAds;
-@property (nonatomic) NSString * autoContribute;
-@property (nonatomic) NSString * recurringDonation;
-@property (nonatomic) NSString * oneTimeDonation;
-@property (nonatomic) NSString * total;
-@end
 
 NS_SWIFT_NAME(ReconcileInfo)
 @interface BATReconcileInfo : NSObject
