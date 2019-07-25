@@ -28,7 +28,7 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
                             bool minimal_changes) {
   matches_.clear();
   if (input.from_omnibox_focus() ||
-      (input.type() == metrics::OmniboxInputType::INVALID) ||
+      (input.type() == metrics::OmniboxInputType::EMPTY) ||
       (input.type() == metrics::OmniboxInputType::QUERY))
     return;
 
