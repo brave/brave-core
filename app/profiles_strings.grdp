@@ -469,6 +469,9 @@
     <message name="IDS_PROFILES_CREATE_TITLE" desc="Title of the create profile dialog">
       Add profile
     </message>
+    <message name="IDS_PROFILES_CREATE_NAME_PLACEHOLDER" desc="Name placeholder in the input field of the create profile dialog.">
+      Name
+    </message>
     <message name="IDS_PROFILES_CREATE_LOCAL_ERROR" desc="Message shown when a local error (for example, a disk error) occurs during profile creation.">
       The new user couldn't be created. Please check your hard drive space and permissions and try again.
     </message>
