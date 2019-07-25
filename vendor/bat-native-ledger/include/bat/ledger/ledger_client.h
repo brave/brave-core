@@ -136,9 +136,6 @@ class LEDGER_EXPORT LedgerClient {
                                    ActivityInfoFilter filter,
                                    PublisherInfoListCallback callback) = 0;
 
-  virtual void OnGrantCaptcha(const std::string& image,
-                              const std::string& hint) = 0;
-
   virtual void OnRecoverWallet(Result result,
                                double balance,
                                std::vector<ledger::GrantPtr> grants) = 0;

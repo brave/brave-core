@@ -152,14 +152,6 @@ void BatLedgerClientMojoProxy::OnWalletProperties(
                                          std::move(properties));
 }
 
-void BatLedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
-    const std::string& hint) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->OnGrantCaptcha(image, hint);
-}
-
 void BatLedgerClientMojoProxy::OnRecoverWallet(
     ledger::Result result,
     double balance,

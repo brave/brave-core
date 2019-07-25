@@ -31,8 +31,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void OnWalletProperties(
       int32_t result,
       ledger::WalletPropertiesPtr properties) override;
-  void OnGrantCaptcha(const std::string& image,
-      const std::string& hint) override;
   void OnRecoverWallet(int32_t result, double balance,
       std::vector<ledger::GrantPtr> grants) override;
   void OnReconcileComplete(int32_t result, const std::string& viewing_id,

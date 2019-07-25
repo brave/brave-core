@@ -33,13 +33,15 @@ class Grants {
   void SetGrant(const std::string& captchaResponse,
                 const std::string& promotionId);
 
-  void GetGrantCaptcha(const std::vector<std::string>& headers);
+  void GetGrantCaptcha(const std::vector<std::string>& headers,
+                       ledger::GetGrantCaptchaCallback callback);
 
  private:
   void GetGrantCaptchaCallback(
       int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      ledger::GetGrantCaptchaCallback callback);
 
   void GetGrantsCallback(
       int response_status_code,

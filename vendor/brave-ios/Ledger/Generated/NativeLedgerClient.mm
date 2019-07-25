@@ -71,9 +71,6 @@ void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std:
 std::unique_ptr<ledger::LogStream> NativeLedgerClient::Log(const char * file, int line, const ledger::LogLevel log_level) const {
   return [bridge_ log:file line:line logLevel:log_level];
 }
-void NativeLedgerClient::OnGrantCaptcha(const std::string & image, const std::string & hint) {
-  [bridge_ onGrantCaptcha:image hint:hint];
-}
 void NativeLedgerClient::OnGrantFinish(ledger::Result result, ledger::GrantPtr grant) {
   [bridge_ onGrantFinish:result grant:std::move(grant)];
 }

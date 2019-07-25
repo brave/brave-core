@@ -58,6 +58,8 @@ using DoDirectTipCallback = std::function<void(ledger::Result)>;
 using FetchGrantsCallback =
     std::function<void(ledger::Result, std::vector<ledger::GrantPtr>)>;
 using SetPublisherExcludeCallback = std::function<void(ledger::Result)>;
+using GetGrantCaptchaCallback = std::function<void(const std::string&,
+                                                   const std::string&)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -169,7 +171,8 @@ class LEDGER_EXPORT Ledger {
                                  const std::string& promotionId) const = 0;
 
   virtual void GetGrantCaptcha(
-      const std::vector<std::string>& headers) const = 0;
+      const std::vector<std::string>& headers,
+      GetGrantCaptchaCallback callback) const = 0;
 
   virtual std::string GetWalletPassphrase() const = 0;
 

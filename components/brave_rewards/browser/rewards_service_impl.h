@@ -460,7 +460,7 @@ class RewardsServiceImpl : public RewardsService,
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;
   void OnGrantCaptcha(const std::string& image,
-                      const std::string& hint) override;
+                      const std::string& hint);
   void OnRecoverWallet(ledger::Result result,
                       double balance,
                       std::vector<ledger::GrantPtr> grants) override;

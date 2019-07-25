@@ -32,8 +32,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void OnWalletProperties(
       ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
-  void OnGrantCaptcha(const std::string& image,
-                      const std::string& hint) override;
   void OnRecoverWallet(ledger::Result result,
                       double balance,
                       std::vector<ledger::GrantPtr> grants) override;

@@ -35,7 +35,6 @@ private:
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
   void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::URL_METHOD method, ledger::LoadURLCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(const char * file, int line, const ledger::LogLevel log_level) const override;
-  void OnGrantCaptcha(const std::string & image, const std::string & hint) override;
   void OnGrantFinish(ledger::Result result, ledger::GrantPtr grant) override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, ledger::REWARDS_CATEGORY category, const std::string & probi) override;
