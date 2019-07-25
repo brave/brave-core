@@ -110,6 +110,8 @@ friend NodeHTMLElement;
   // Remote scripts are scripts that reference remote code (eg src=...).
   void RegisterElmForRemoteScript(const blink::DOMNodeId node_id,
     const blink::KURL& url);
+  // JavaScript URLs ("javascript:" schemes).
+  void RegisterJavaScriptURL(const blink::ScriptSourceCode& code);
   void RegisterUrlForScriptSource(const blink::KURL& url,
     const blink::ScriptSourceCode& code);
   void RegisterUrlForExtensionScriptSource(const blink::WebString& url,
