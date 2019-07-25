@@ -859,6 +859,7 @@ void RewardsServiceImpl::OnGetAutoContributeProps(
     ledger::AutoContributePropsPtr props) {
   if (!props) {
     callback.Run(nullptr);
+    return;
   }
 
   auto auto_contri_props =
@@ -879,6 +880,7 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
     ledger::RewardsInternalsInfoPtr info) {
   if (!info) {
     std::move(callback).Run(nullptr);
+    return;
   }
 
   auto rewards_internals_info =
