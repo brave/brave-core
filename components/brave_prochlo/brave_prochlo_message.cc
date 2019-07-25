@@ -40,7 +40,7 @@ bool MakeProchlomation(uint64_t metric,
   DCHECK(data);
   DCHECK(crowd_id);
   DCHECK(shuffler_item);
-  TRACE_EVENT0("brave_p3a", "MakeProchlomation");
+  // TRACE_EVENT0("brave_p3a", "MakeProchlomation");
 
   BraveProchloCrypto crypto;
 
@@ -106,7 +106,7 @@ void GenerateProchloMessage(uint64_t metric_hash,
                             uint64_t metric_value,
                             const MessageMetainfo& meta,
                             brave_pyxis::PyxisMessage* pyxis_message) {
-  TRACE_EVENT0("brave_p3a", "GenerateProchloMessage");
+  // TRACE_EVENT0("brave_p3a", "GenerateProchloMessage");
   ShufflerItem item;
   uint8_t data[kProchlomationDataLength] = {0};
   uint8_t crowd_id[kCrowdIdLength] = {0};
@@ -157,7 +157,7 @@ void GenerateP3AMessage(uint64_t metric_hash,
                         uint64_t metric_value,
                         const MessageMetainfo& meta,
                         brave_pyxis::RawP3AValue* p3a_message) {
-  TRACE_EVENT0("brave_p3a", "GenerateP3AMessage");
+  // TRACE_EVENT0("brave_p3a", "GenerateP3AMessage");
   uint8_t data[kProchlomationDataLength] = {0};
 
   // First byte contains the 4 booleans.

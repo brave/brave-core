@@ -173,7 +173,7 @@ void BraveP3AService::Init() {
 
 std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
                                        uint64_t value) const {
-  TRACE_EVENT0("brave_p3a", "SerializeMessage");
+  // TRACE_EVENT0("brave_p3a", "SerializeMessage");
   // TODO(iefremov): Maybe we should store it in logs and pass here?
   // We cannot directly query |base::StatisticsRecorder::FindHistogram| because
   // the serialized value can be obtained from persisted log storage at the
