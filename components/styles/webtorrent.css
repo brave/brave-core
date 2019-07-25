@@ -1,4 +1,5 @@
-body {
+#root {
+  min-height: 100%;
   padding: 100px;
   font-family: Muli, sans-serif;
 }
@@ -70,4 +71,15 @@ a {
 .loadingContainer .__icon {
   height: 32px;
   margin: 0 0 18px;
+}
+
+#video, #audio {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  max-height: 100%;
+  max-width: 100%;
+  margin: auto;
 }

@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Constants
-import { TorrentObj } from '../constants/webtorrentState'
+import { TorrentObj, File } from '../constants/webtorrentState'
 
 const SUPPORTED_VIDEO_EXTENSIONS = ['m4v', 'mkv', 'mov', 'mp4', 'ogv', 'webm']
 
@@ -20,6 +20,26 @@ const getExtension = (filename: string) => {
   return filename.substring(ix + 1)
 }
 
+const getSelectedFile = (torrent: TorrentObj, ix: number) => {
+  return torrent.files
+    ? torrent.files[ix]
+    : null
+}
+
+const fileIsVideo = (file: File | null) => {
+  if (!file) return false
+  const fileExt = getExtension(file.name)
+  if (!fileExt) return false
+  return SUPPORTED_VIDEO_EXTENSIONS.includes(fileExt)
+}
+
+const fileIsAudio = (file: File | null) => {
+  if (!file) return false
+  const fileExt = getExtension(file.name)
+  if (!fileExt) return false
+  return SUPPORTED_AUDIO_EXTENSIONS.includes(fileExt)
+}
+
 interface Props {
   torrent: TorrentObj
   ix: number
@@ -31,22 +51,32 @@ export default class MediaViewer extends React.PureComponent<Props, {}> {
     elem.play().catch(err => console.error('Autoplay failed', err))
   }
 
+  componentWillReceiveProps () {
+    // Set page background to black when video or audio is being viewed
+    const { torrent, ix } = this.props
+    const file = getSelectedFile(torrent, ix)
+    const isMedia = fileIsAudio(file) || fileIsVideo(file)
+    if (isMedia) {
+      document.body.style.backgroundColor = 'rgb(0, 0, 0)'
+    } else {
+      document.body.style.backgroundColor = null
+    }
+  }
+
+  componentWillUnmount () {
+    document.body.style.backgroundColor = null
+  }
+
   render () {
     const { torrent, ix } = this.props
 
-    const file = torrent.files ? torrent.files[ix] : undefined
+    const file = getSelectedFile(torrent, ix)
+    const isAudio = fileIsAudio(file)
+    const isVideo = fileIsVideo(file)
     const fileURL = torrent.serverURL && torrent.serverURL + '/' + ix
 
-    const fileExt = file && getExtension(file.name)
-    const isVideo = fileExt
-      ? SUPPORTED_VIDEO_EXTENSIONS.includes(fileExt)
-      : false
-    const isAudio = fileExt
-      ? SUPPORTED_AUDIO_EXTENSIONS.includes(fileExt)
-      : false
-
     let content
-    if (!file || !torrent.serverURL) {
+    if (!file || !fileURL) {
       content = <div className='loading'>Loading Media</div>
     } else if (isVideo) {
       content = (
