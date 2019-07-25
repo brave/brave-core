@@ -62,7 +62,8 @@ interface BatLedger {
   OnReconcileCompleteSuccess(string viewing_id, int32 category, string probi,
       int32 month, int32 year, uint32 data);
 
-  FetchGrants(string lang, string payment_id);
+  FetchGrants(string lang, string payment_id) =>
+      (int32 result, array<ledger.mojom.Grant> grants);
   GetGrantCaptcha(array<string> headers);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase);
@@ -161,7 +162,6 @@ interface BatLedgerClient {
   SavePublishersList(string publishers_list) => (int32 result);
 
   OnWalletProperties(int32 result, ledger.mojom.WalletProperties? properties);
-  OnGrant(int32 result, ledger.mojom.Grant? grant);
   OnGrantCaptcha(string image, string hint);
   OnRecoverWallet(int32 result,
                   double balance,
@@ -205,7 +205,6 @@ interface BatLedgerClient {
   SaveContributionInfo(string probi, int32 month, int32 year, uint32 date,
       string publisher_key, int32 category);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
-  FetchGrants(string lang, string payment_id);
 
   [Sync]
   URIEncode(string value) => (string encoded_value);

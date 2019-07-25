@@ -32,8 +32,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void OnWalletProperties(
       ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
-  void OnGrant(ledger::Result result,
-               ledger::GrantPtr grant) override;
   void OnGrantCaptcha(const std::string& image,
                       const std::string& hint) override;
   void OnRecoverWallet(ledger::Result result,
@@ -98,9 +96,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::PublisherInfoCallback callback) override;
   void SaveMediaPublisherInfo(const std::string& media_key,
                               const std::string& publisher_id) override;
-
-  void FetchGrants(const std::string& lang,
-                   const std::string& payment_id) override;
 
   std::string URIEncode(const std::string& value) override;
 

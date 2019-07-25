@@ -25,7 +25,10 @@ class Grants {
   ~Grants();
 
 
-  void GetGrants(const std::string& lang, const std::string& forPaymentId);
+  void FetchGrants(
+      const std::string& lang,
+      const std::string& forPaymentId,
+      ledger::FetchGrantsCallback callback);
 
   void SetGrant(const std::string& captchaResponse,
                 const std::string& promotionId);
@@ -41,7 +44,8 @@ class Grants {
   void GetGrantsCallback(
       int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      ledger::FetchGrantsCallback callback);
 
   void SetGrantCallback(
       int response_status_code,

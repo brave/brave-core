@@ -173,6 +173,10 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)fetchAvailableGrantsForLanguage:(NSString *)language
                               paymentId:(NSString *)paymentId;
 
+- (void)fetchAvailableGrantsForLanguage:(NSString *)language
+                              paymentId:(NSString *)paymentId
+                             completion:(nullable void (^)(NSArray<BATGrant *> *grants))completion;
+
 - (void)grantCaptchaForPromotionId:(NSString *)promoID
                      promotionType:(NSString *)promotionType
                         completion:(void (^)(NSString *image, NSString *hint))completion;

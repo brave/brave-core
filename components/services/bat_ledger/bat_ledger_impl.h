@@ -73,7 +73,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       int32_t year, uint32_t data) override;
 
   void FetchGrants(
-      const std::string& lang, const std::string& payment_id) override;
+      const std::string& lang,
+      const std::string& payment_id,
+      FetchGrantsCallback callback) override;
   void GetGrantCaptcha(const std::vector<std::string>& headers) override;
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
@@ -275,6 +277,11 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetPendingContributionsTotal(
     CallbackHolder<GetPendingContributionsTotalCallback>* holder,
     double amount);
+
+  static void OnFetchGrants(
+    CallbackHolder<FetchGrantsCallback>* holder,
+    ledger::Result result,
+    std::vector<ledger::GrantPtr> grants);
 
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,

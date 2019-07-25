@@ -152,14 +152,6 @@ void BatLedgerClientMojoProxy::OnWalletProperties(
                                          std::move(properties));
 }
 
-void BatLedgerClientMojoProxy::OnGrant(ledger::Result result,
-                                       ledger::GrantPtr grant) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->OnGrant(ToMojomResult(result), std::move(grant));
-}
-
 void BatLedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
     const std::string& hint) {
   if (!Connected())
@@ -539,14 +531,6 @@ void BatLedgerClientMojoProxy::SaveMediaPublisherInfo(
     return;
 
   bat_ledger_client_->SaveMediaPublisherInfo(media_key, publisher_id);
-}
-
-void BatLedgerClientMojoProxy::FetchGrants(const std::string& lang,
-    const std::string& paymentId) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->FetchGrants(lang, paymentId);
 }
 
 std::string BatLedgerClientMojoProxy::URIEncode(const std::string& value) {

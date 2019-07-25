@@ -297,6 +297,8 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnWalletInitialized(ledger::Result result);
   void OnFetchWalletProperties(int result,
                                ledger::WalletPropertiesPtr properties);
+  void OnFetchGrants(int result, std::vector<ledger::GrantPtr> grants);
+  void OnGrant(ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnGrant(ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
   void TriggerOnRecoverWallet(ledger::Result result,
@@ -452,8 +454,6 @@ class RewardsServiceImpl : public RewardsService,
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;
-  void OnGrant(ledger::Result result,
-               ledger::GrantPtr grant) override;
   void OnGrantCaptcha(const std::string& image,
                       const std::string& hint) override;
   void OnRecoverWallet(ledger::Result result,

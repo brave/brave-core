@@ -493,35 +493,38 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId
 {
-  [self.mPendingGrants removeAllObjects];
-  // FetchGrants callbacks:
-  //  - OnWalletProperties (CORRUPTED_WALLET)
-  //  - OnGrant (GRANT_NOT_FOUND, LEDGER_ERROR, LEDGER_OK)
-  // Calls `OnGrant` for each grant found (...)
-  ledger->FetchGrants(std::string(language.UTF8String),
-                      std::string(paymentId.UTF8String));
+  [self fetchAvailableGrantsForLanguage:language paymentId:paymentId completion:nil];
 }
 
-- (void)onGrant:(ledger::Result)result grant:(ledger::GrantPtr)grant
+- (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId completion:(nullable void (^)(NSArray<BATGrant *> *grants))completion
 {
-  if (result == ledger::LEDGER_OK) {
-    const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
-    [self.mPendingGrants addObject:bridgedGrant];
+  ledger->FetchGrants(std::string(language.UTF8String), std::string(paymentId.UTF8String), ^(ledger::Result result, std::vector<ledger::GrantPtr> grants) {
+    if (result != ledger::LEDGER_OK) {
+      return;
+    }
+    [self.mPendingGrants removeAllObjects];
+    for (int i = 0; i < grants.size(); i++) {
+      ledger::GrantPtr grant = std::move(grants[i]);
+      const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
+      [self.mPendingGrants addObject:bridgedGrant];
 
-    bool isUGP = [self isGrantUGP:*grant];
-    auto notificationKind = isUGP ? BATRewardsNotificationKindGrant : BATRewardsNotificationKindGrantAds;
+      bool isUGP = [self isGrantUGP:*grant];
+      auto notificationKind = isUGP ? BATRewardsNotificationKindGrant : BATRewardsNotificationKindGrantAds;
 
-    [self addNotificationOfKind:notificationKind
-                       userInfo:nil
-                 notificationID:[self notificationIDForGrant:std::move(grant)]
-                       onlyOnce:YES];
-    
+      [self addNotificationOfKind:notificationKind
+                         userInfo:nil
+                   notificationID:[self notificationIDForGrant:std::move(grant)]
+                         onlyOnce:YES];
+    }
     for (BATBraveLedgerObserver *observer in self.observers) {
-      if (observer.grantAdded) {
-        observer.grantAdded(bridgedGrant);
+      if (observer.grantsAdded) {
+        observer.grantsAdded(self.pendingGrants);
       }
     }
-  }
+    if (completion) {
+      completion(self.pendingGrants);
+    }
+  });
 }
 
 - (void)grantCaptchaForPromotionId:(NSString *)promoID promotionType:(NSString *)promotionType completion:(void (^)(NSString * _Nonnull, NSString * _Nonnull))completion
@@ -544,11 +547,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   if (self.grantCaptchaBlock) {
     self.grantCaptchaBlock(image, hint);
   }
-}
-
-- (void)fetchGrants:(const std::string &)lang paymentId:(const std::string &)paymentId
-{
-  ledger->FetchGrants(lang, paymentId);
 }
 
 - (void)solveGrantCaptchWithPromotionId:(NSString *)promotionId solution:(NSString *)solution
@@ -1006,7 +1004,7 @@ BATLedgerBridge(BOOL,
 
   [self showBackupNotificationIfNeccessary];
   [self showAddFundsNotificationIfNeccessary];
-  [self fetchGrants:std::string() paymentId:std::string()];
+  [self fetchAvailableGrantsForLanguage:@"" paymentId:@""];
 }
 
 - (void)showBackupNotificationIfNeccessary

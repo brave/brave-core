@@ -190,10 +190,12 @@ class LedgerImpl : public ledger::Ledger,
       ledger::OnWalletPropertiesCallback callback) const override;
 
   void FetchGrants(const std::string& lang,
-                   const std::string& paymentId) const override;
+                   const std::string& paymentId,
+                   ledger::FetchGrantsCallback callback) const override;
 
-  void OnGrant(ledger::Result result,
-               const braveledger_bat_helper::GRANT& grant);
+  void OnGrants(ledger::Result result,
+                const braveledger_bat_helper::Grants& grants,
+                ledger::FetchGrantsCallback callback);
 
   void GetGrantCaptcha(
       const std::vector<std::string>& headers) const override;

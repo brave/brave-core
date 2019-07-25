@@ -17,9 +17,6 @@ void NativeLedgerClient::ConfirmationsTransactionHistoryDidChange() {
 void NativeLedgerClient::FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) {
   [bridge_ fetchFavIcon:url faviconKey:favicon_key callback:callback];
 }
-void NativeLedgerClient::FetchGrants(const std::string & lang, const std::string & paymentId) {
-  [bridge_ fetchGrants:lang paymentId:paymentId];
-}
 std::string NativeLedgerClient::GenerateGUID() const {
   return [bridge_ generateGUID];
 }
@@ -76,9 +73,6 @@ std::unique_ptr<ledger::LogStream> NativeLedgerClient::Log(const char * file, in
 }
 void NativeLedgerClient::OnExcludedSitesChanged(const std::string & publisher_id, ledger::PUBLISHER_EXCLUDE exclude) {
   [bridge_ onExcludedSitesChanged:publisher_id exclude:exclude];
-}
-void NativeLedgerClient::OnGrant(ledger::Result result, ledger::GrantPtr grant) {
-  [bridge_ onGrant:result grant:std::move(grant)];
 }
 void NativeLedgerClient::OnGrantCaptcha(const std::string & image, const std::string & hint) {
   [bridge_ onGrantCaptcha:image hint:hint];
