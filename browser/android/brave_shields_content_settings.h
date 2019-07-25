@@ -31,7 +31,7 @@ class BraveShieldsContentSettings {
     JavaObjectWeakGlobalRef weak_java_native_worker_;
 };
 
-} // namespace android
-} // namespace chrome
+}  // namespace android
+}  // namespace chrome
 
 #endif  // BRAVE_BROWSER_ANDROID_BRAVE_SHIELDS_CONTENT_SETTINGS_H_

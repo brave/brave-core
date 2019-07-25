@@ -5,6 +5,8 @@
 
 #include "brave/browser/android/brave_shields_content_settings.h"
 
+#include <string>
+
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -14,8 +16,6 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
 #include "jni/BraveShieldsContentSettings_jni.h"
-
-#include <string>
 
 static const char kAllowResource[] = "allow";
 
@@ -86,7 +86,7 @@ base::android::ScopedJavaLocalRef<jstring>
   }
 
   ContentSetting setting = map->GetContentSetting(
-      GURL(base::android::ConvertJavaStringToUTF8(env, host)), GURL(""), 
+      GURL(base::android::ConvertJavaStringToUTF8(env, host)), GURL(""),
       CONTENT_SETTINGS_TYPE_PLUGINS,
       base::android::ConvertJavaStringToUTF8(env, resourceIndentifier));
 
@@ -126,8 +126,9 @@ void JNI_BraveShieldsContentSettings_SetShields(JNIEnv* env,
   map->SetContentSettingDefaultScope(
         GURL(base::android::ConvertJavaStringToUTF8(env, host)), GURL(""),
         CONTENT_SETTINGS_TYPE_PLUGINS,
-        base::android::ConvertJavaStringToUTF8(env, resourceIndentifier), setting);
+        base::android::ConvertJavaStringToUTF8(env, resourceIndentifier),
+        setting);
 }
 
-} // namespace android
-} // namespace chrome
+}  // namespace android
+}  // namespace chrome
