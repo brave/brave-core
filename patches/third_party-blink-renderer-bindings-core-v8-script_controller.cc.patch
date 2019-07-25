@@ -39,19 +39,3 @@ index 63d3684c66dd2ca6112637f846421f840e67ee2f..ed2935644496d6b167f5714b5d36c992
      v8::MaybeLocal<v8::Value> maybe_result;
      maybe_result = V8ScriptRunner::RunCompiledScript(GetIsolate(), script,
                                                       GetFrame()->GetDocument());
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+    {
-+      if (source.SourceLocationType() != ScriptSourceLocationType::kInspector) {
-+        ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
-+          ->GetPageGraph();
-+        if (page_graph != nullptr) {
-+          const int script_id = script->GetUnboundScript()->GetId();
-+          page_graph->RegisterScriptExecStop(script_id);
-+        }
-+      }
-+    }
-+#endif
-+
-     probe::ProduceCompilationCache(frame_, source, script);
-     V8CodeCache::ProduceCache(GetIsolate(), script, source,
-                               produce_cache_options);
