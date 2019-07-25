@@ -5,11 +5,25 @@
 
 #include "brave/browser/tor/tor_navigation_throttle.h"
 
+#include "brave/browser/profiles/profile_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
 
 namespace tor {
+
+// static
+std::unique_ptr<TorNavigationThrottle>
+TorNavigationThrottle::MaybeCreateThrottleFor(
+    content::NavigationHandle* navigation_handle) {
+  Profile* profile = Profile::FromBrowserContext(
+      navigation_handle->GetWebContents()->GetBrowserContext());
+  if (!brave::IsTorProfile(profile))
+    return nullptr;
+  return std::make_unique<TorNavigationThrottle>(navigation_handle);
+}
 
 TorNavigationThrottle::TorNavigationThrottle(
     content::NavigationHandle* navigation_handle)

@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_TOR_TOR_NAVIGATION_THROTTLE_H_
 #define BRAVE_BROWSER_TOR_TOR_NAVIGATION_THROTTLE_H_
 
+#include <memory>
+
 #include "content/public/browser/navigation_throttle.h"
 
 namespace content {
@@ -16,6 +18,8 @@ namespace tor {
 
 class TorNavigationThrottle : public content::NavigationThrottle {
  public:
+  static std::unique_ptr<TorNavigationThrottle>
+    MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle);
   explicit TorNavigationThrottle(content::NavigationHandle* navigation_handle);
   ~TorNavigationThrottle() override;
 

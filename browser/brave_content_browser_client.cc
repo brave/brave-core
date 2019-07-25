@@ -15,7 +15,6 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
@@ -358,11 +357,12 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   throttles.push_back(
       std::make_unique<extensions::BraveWalletNavigationThrottle>(handle));
 #endif
+
 #if BUILDFLAG(ENABLE_TOR)
-  Profile* profile = Profile::FromBrowserContext(
-      handle->GetWebContents()->GetBrowserContext());
-  if (brave::IsTorProfile(profile))
-    throttles.push_back(std::make_unique<tor::TorNavigationThrottle>(handle));
+  std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
+    tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle);
+  if (tor_navigation_throttle)
+    throttles.push_back(std::move(tor_navigation_throttle));
 #endif
 
   return throttles;
