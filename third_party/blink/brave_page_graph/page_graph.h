@@ -16,7 +16,6 @@
 
 namespace blink {
 
-class Document;
 class ExecutionContext;
 
 namespace protocol {
@@ -56,7 +55,6 @@ class NodeHTMLText;
 class NodeParser;
 class NodeResource;
 class NodeScript;
-class NodeScriptRemote;
 class NodeShields;
 class NodeShield;
 class NodeStorage;
@@ -84,14 +82,18 @@ friend NodeHTMLElement;
   static PageGraph* GetFromContext(v8::Local<v8::Context> context);
   static PageGraph* GetFromExecutionContext(blink::ExecutionContext& exec_context);
 
-  PageGraph(blink::Document& document);
+  PageGraph(blink::ExecutionContext& execution_context,
+            const blink::DOMNodeId node_id, const WTF::String& tag_name,
+            const blink::KURL& url);
   ~PageGraph();
 
   void RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
-    const blink::DOMNodeId parent_node_id);
+    const blink::DOMNodeId parent_node_id, const WTF::String& tag_name,
+    const blink::KURL& url);
 
   void RegisterHTMLElementNodeCreated(const blink::DOMNodeId node_id,
-    const WTF::String& tag_name);
+    const WTF::String& tag_name,
+    const ElementType element_type = kElementTypeDefault);
   void RegisterHTMLTextNodeCreated(const blink::DOMNodeId node_id,
     const WTF::String& text);
   void RegisterHTMLElementNodeInserted(const blink::DOMNodeId node_id,
@@ -102,9 +104,6 @@ friend NodeHTMLElement;
     const blink::DOMNodeId before_sibling_id);
   void RegisterHTMLElementNodeRemoved(const blink::DOMNodeId node_id);
   void RegisterHTMLTextNodeRemoved(const blink::DOMNodeId node_id);
-
-  void RegisterContentFrameSet(const blink::DOMNodeId node_id,
-    const WTF::String& url);
 
   void RegisterEventListenerAdd(const blink::DOMNodeId,
     const WTF::String& event_type, const EventListenerId listener_id,
@@ -263,7 +262,6 @@ friend NodeHTMLElement;
   // Index structure for looking up script nodes.
   // This map does not own the references.
   std::map<ScriptId, NodeScript* const> script_nodes_;
-  std::map<ScriptId, NodeScriptRemote* const> remote_script_nodes_;
 
   // Index structure for looking up filter nodes.
   // This map does not own the references.
@@ -279,15 +277,15 @@ friend NodeHTMLElement;
   // Makes sure we don't have more than one node in the graph representing
   // a single URL (not required for correctness, but keeps things tidier
   // and makes some kinds of queries nicer).
-  std::map<RequestUrl, NodeResource* const> resource_nodes_;
+  std::map<RequestURL, NodeResource* const> resource_nodes_;
 
   // Data structure for keeping track of all the in-air requests that
   // have been made, but have not completed.
   RequestTracker request_tracker_;
 
-  // Reference to the document that owns page-graph, which if it exists,
-  // will always be the document of the top level frame.
-  blink::Document& document_;
+  // Reference to the execution context associated with the page graph, which if
+  // it exists, will always be for the top level frame.
+  blink::ExecutionContext& execution_context_;
 };
 
 }  // namespace brave_page_graph

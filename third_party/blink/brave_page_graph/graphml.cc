@@ -4,17 +4,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
+
 #include <string>
 #include <vector>
+
 #include "base/logging.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/graph_item.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_element.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html.h"
-#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 using ::std::endl;
@@ -44,6 +40,8 @@ namespace {
     kGraphMLAttrForTypeNode, "host");
   const GraphMLAttr* const incognito_attr = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "incognito");
+  const GraphMLAttr* const is_deleted_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "is deleted", kGraphMLAttrTypeBoolean);
   const GraphMLAttr* const is_style_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "is style", kGraphMLAttrTypeBoolean);
   const GraphMLAttr* const key_attr = new GraphMLAttr(
@@ -90,11 +88,11 @@ namespace {
   const vector<const GraphMLAttr* const> _all_graphml_attrs = {
     attr_name_attr, attr_value, before_node_attr, block_type_attr, call_args,
     edge_type_attr, event_listener_id_attr, host_attr, incognito_attr,
-    is_style_attr, key_attr, method_attr, node_id_attr, node_text, node_type,
-    parent_node_attr, primary_pattern_attr, request_id_attr, request_type_attr,
-    resource_type_attr, rule_attr, script_id_attr, script_type,
-    secondary_pattern_attr, source_attr, status_type, success_attr, tag_attr,
-    url_attr, value_attr
+    is_deleted_attr, is_style_attr, key_attr, method_attr, node_id_attr,
+    node_text, node_type, parent_node_attr, primary_pattern_attr,
+    request_id_attr, request_type_attr, resource_type_attr, rule_attr,
+    script_id_attr, script_type, secondary_pattern_attr, source_attr,
+    status_type, success_attr, tag_attr, url_attr, value_attr
   };
 }
 
@@ -176,6 +174,8 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return host_attr;
     case kGraphMLAttrDefIncognito:
       return incognito_attr;
+    case kGraphMLAttrDefIsDeleted:
+      return is_deleted_attr;
     case kGraphMLAttrDefIsStyle:
       return is_style_attr;
     case kGraphMLAttrDefKey:
@@ -214,7 +214,7 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return status_type;
     case kGraphMLAttrDefSuccess:
       return success_attr;
-    case kGraphMLAttrDefUrl:
+    case kGraphMLAttrDefURL:
       return url_attr;
     case kGraphMLAttrDefValue:
       return value_attr;

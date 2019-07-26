@@ -18,7 +18,7 @@ string URLToString(const KURL& url) {
 
 KURL NormalizeUrl(const KURL& url) {
   KURL url_copy(url);
-  if (url_copy.ProtocolIsInHTTPFamily() == false) {
+  if (!url_copy.ProtocolIsInHTTPFamily()) {
     return url_copy;
   }
 

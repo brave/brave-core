@@ -6,8 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_WEBAPI_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_WEBAPI_H_
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "third_party/blink/renderer/platform/wtf/casting.h"
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
 namespace brave_page_graph {
 
@@ -18,19 +21,37 @@ friend class PageGraph;
  public:
   NodeWebAPI() = delete;
   ~NodeWebAPI() override;
-  ItemName GetItemName() const override;
-  const MethodName& GetMethod() const;
 
-  bool IsNodeActor() const override { return false; }
+  const MethodName& GetMethodName() const { return method_name_; }
+
+  ItemName GetItemName() const override;
+  ItemDesc GetItemDesc() const override;
+
+  GraphMLXMLList GetGraphMLAttributes() const override;
+
+  bool IsNodeWebAPI() const override;
 
  protected:
   NodeWebAPI(PageGraph* const graph, const MethodName method);
-  ItemDesc GetDescBody() const override;
-  GraphMLXMLList GraphMLAttributes() const override;
 
   const MethodName method_name_;
 };
 
 }  // namespace brave_page_graph
+
+namespace blink {
+
+template <>
+struct DowncastTraits<brave_page_graph::NodeWebAPI> {
+  static bool AllowFrom(const brave_page_graph::Node& node) {
+    return node.IsNodeWebAPI();
+  }
+  static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
+    return IsA<brave_page_graph::NodeWebAPI>(
+        DynamicTo<brave_page_graph::Node>(graph_item));
+  }
+};
+
+}  // namespace blink
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_WEBAPI_H_

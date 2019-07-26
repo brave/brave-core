@@ -6,41 +6,51 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_RESOURCE_H_
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "third_party/blink/renderer/platform/wtf/casting.h"
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
-namespace brave_page_graph {
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
-class EdgeRequestStart;
-class EdgeRequestResponse;
-class EdgeResourceBlock;
-class PageGraph;
+namespace brave_page_graph {
 
 class NodeResource : public Node {
 friend class PageGraph;
  public:
   NodeResource() = delete;
   ~NodeResource() override;
+
+  RequestURL GetURL() const { return url_; }
+
   ItemName GetItemName() const override;
-  RequestUrl GetUrl() const;
+  ItemDesc GetItemDesc() const override;
 
-  // Prevent non-sensical edges from ever pointing to a resource node.
-  void AddInEdge(const EdgeRequestStart* const in_edge);
-  void AddOutEdge(const EdgeRequestResponse* const out_edge);
-  void AddInEdge(const EdgeResourceBlock* const in_edge);
-  void AddInEdge(const Edge* const in_edge) = delete;
-  void AddOutEdge(const Edge* const out_edge) = delete;
+  GraphMLXMLList GetGraphMLAttributes() const override;
 
-  bool IsNodeActor() const override { return false; }
+  bool IsNodeResource() const override;
 
  protected:
-  NodeResource(PageGraph* const graph, const RequestUrl url);
-  ItemDesc GetDescBody() const override;
-  GraphMLXMLList GraphMLAttributes() const override;
+  NodeResource(PageGraph* const graph, const RequestURL url);
 
-  const RequestUrl url_;
+ private:
+  const RequestURL url_;
 };
 
 }  // namespace brave_page_graph
+
+namespace blink {
+
+template <>
+struct DowncastTraits<brave_page_graph::NodeResource> {
+  static bool AllowFrom(const brave_page_graph::Node& node) {
+    return node.IsNodeResource();
+  }
+  static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
+    return IsA<brave_page_graph::NodeResource>(
+        DynamicTo<brave_page_graph::Node>(graph_item));
+  }
+};
+
+}  // namespace blink
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_RESOURCE_H_

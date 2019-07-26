@@ -4,42 +4,48 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
+
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 
 namespace brave_page_graph {
 
 EdgeRequest::EdgeRequest(PageGraph* const graph, Node* const out_node,
     Node* const in_node, const InspectorId request_id,
-    const RequestStatus status) :
+    const RequestStatus request_status) :
       Edge(graph, out_node, in_node),
       request_id_(request_id),
-      status_(status) {}
+      request_status_(request_status) {}
 
 EdgeRequest::~EdgeRequest() {}
 
-InspectorId EdgeRequest::GetRequestId() const {
-  return request_id_;
+RequestURL EdgeRequest::GetRequestURL() const {
+  return GetResourceNode()->GetURL();
 }
 
-RequestUrl EdgeRequest::GetRequestUrl() const {
-  return GetResourceNode()->GetUrl();
+GraphMLXMLList EdgeRequest::GetGraphMLAttributes() const {
+  GraphMLXMLList attrs = Edge::GetGraphMLAttributes();
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefRequestId)
+      ->ToValue(request_id_));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefStatus)
+      ->ToValue(RequestStatusToString(request_status_)));
+  return attrs;
 }
 
-GraphMLXMLList EdgeRequest::GraphMLAttributes() const {
-  return GraphMLXMLList({
-    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
-      ->ToValue("request"),
-    GraphMLAttrDefForType(kGraphMLAttrDefRequestId)
-      ->ToValue(request_id_),
-    GraphMLAttrDefForType(kGraphMLAttrDefStatus)
-      ->ToValue(RequestStatusToString(status_))
-  });
+bool EdgeRequest::IsEdgeRequest() const {
+  return true;
+}
+
+bool EdgeRequest::IsEdgeRequestStart() const {
+  return false;
+}
+
+bool EdgeRequest::IsEdgeRequestResponse() const {
+  return false;
 }
 
 }  // namespace brave_page_graph

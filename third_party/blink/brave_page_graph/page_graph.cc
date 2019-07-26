@@ -19,14 +19,22 @@
 #include "gin/public/gin_embedders.h"
 
 #include "third_party/blink/public/platform/web_string.h"
+
 #include "third_party/blink/renderer/bindings/core/v8/script_source_code.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
+
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+#include "third_party/blink/renderer/core/dom/node.h"
+
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+
 #include "third_party/blink/renderer/core/inspector/protocol/Protocol.h"
+
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+
+#include "third_party/blink/renderer/platform/wtf/casting.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 #include "url/gurl.h"
@@ -35,76 +43,81 @@
 
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 
-#include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_set.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_delete.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
+#include "brave/third_party/blink/brave_page_graph/types.h"
+
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_cross_dom.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_event_listener_add.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_event_listener_remove.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute_attr.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_filter.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_import.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_create.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_delete.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_insert.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_remove.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_resource_block.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_shield.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_bucket.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_clear.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_delete.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_read_call.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_read_result.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_set.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_text_change.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_webapi_call.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_webapi_result.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/attribute/edge_attribute_set.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/attribute/edge_attribute_delete.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/event_listener/edge_event_listener_add.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/event_listener/edge_event_listener_remove.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/execute/edge_execute.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/execute/edge_execute_attr.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/node/edge_node_create.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/node/edge_node_delete.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/node/edge_node_insert.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/node/edge_node_remove.h"
+
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_frame.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_error.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_complete.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_actor.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_ad_filter.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_dom_root.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/storage/edge_storage_bucket.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/storage/edge_storage_clear.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/storage/edge_storage_delete.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/storage/edge_storage_read_call.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/storage/edge_storage_read_result.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/storage/edge_storage_set.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/webapi/edge_webapi_call.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/webapi/edge_webapi_result.h"
+
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extensions.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_fingerprinting_filter.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_frame.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_element.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_text.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_parser.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script_remote.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_shields.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_shield.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_root.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_cookiejar.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_localstorage.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_sessionstorage.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_tracker_filter.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_actor.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_parser.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_script.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/filter/node_ad_filter.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/filter/node_fingerprinting_filter.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/filter/node_tracker_filter.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_dom_root.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_frame_owner.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_html.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_html_element.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_html_text.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/shield/node_shields.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/shield/node_shield.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/storage/node_storage_root.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/storage/node_storage_cookiejar.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/storage/node_storage_localstorage.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/storage/node_storage_sessionstorage.h"
+
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_webapi.h"
+
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
+
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
-#include "brave/third_party/blink/brave_page_graph/types.h"
+
 #include "brave/third_party/blink/brave_page_graph/utilities/dispatchers.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/request_metadata.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
 
-using ::blink::Document;
-using ::blink::ExecutionContext;
-using ::blink::DOMNodeId;
-using ::blink::KURL;
-using ::blink::ResourceType;
-using ::blink::ScriptSourceCode;
-using ::blink::To;
-using ::blink::ToExecutionContext;
-using ::blink::protocol::Array;
-using ::WTF::String;
 using ::std::endl;
 using ::std::make_unique;
 using ::std::map;
@@ -114,9 +127,24 @@ using ::std::string;
 using ::std::stringstream;
 using ::std::to_string;
 using ::std::unique_ptr;
+
+using ::blink::Document;
+using ::blink::DynamicTo;
+using ::blink::IsA;
+using ::blink::ExecutionContext;
+using ::blink::DOMNodeId;
+using ::blink::KURL;
+using ::blink::ResourceType;
+using ::blink::ScriptSourceCode;
+using ::blink::To;
+using ::blink::ToExecutionContext;
+using ::blink::protocol::Array;
+
 using ::v8::Context;
 using ::v8::Local;
 using ::v8::Isolate;
+
+using ::WTF::String;
 
 namespace brave_page_graph {
 
@@ -178,23 +206,30 @@ static void OnEvalScriptCompiled(v8::Isolate& isolate,
   }
 }
 
-PageGraph::PageGraph(Document& document) :
-    parser_node_(new NodeParser(this)),
-    extensions_node_(new NodeExtensions(this)),
-    shields_node_(new NodeShields(this)),
-    ad_shield_node_(new NodeShield(this, brave_shields::kAds)),
-    tracker_shield_node_(new NodeShield(this, brave_shields::kTrackers)),
-    js_shield_node_(new NodeShield(this, brave_shields::kJavaScript)),
-    fingerprinting_shield_node_(new NodeShield(this,
-                                               brave_shields::kFingerprinting)),
-    storage_node_(new NodeStorageRoot(this)),
-    cookie_jar_node_(new NodeStorageCookieJar(this)),
-    local_storage_node_(new NodeStorageLocalStorage(this)),
-    session_storage_node_(new NodeStorageSessionStorage(this)),
-    document_(document) {
+PageGraph::PageGraph(blink::ExecutionContext& execution_context,
+    const DOMNodeId node_id, const WTF::String& tag_name,
+    const blink::KURL& url) :
+      parser_node_(new NodeParser(this)),
+      extensions_node_(new NodeExtensions(this)),
+      shields_node_(new NodeShields(this)),
+      ad_shield_node_(new NodeShield(this, brave_shields::kAds)),
+      tracker_shield_node_(new NodeShield(this, brave_shields::kTrackers)),
+      js_shield_node_(new NodeShield(this, brave_shields::kJavaScript)),
+      fingerprinting_shield_node_(new NodeShield(this,
+                                                 brave_shields::kFingerprinting)),
+      storage_node_(new NodeStorageRoot(this)),
+      cookie_jar_node_(new NodeStorageCookieJar(this)),
+      local_storage_node_(new NodeStorageLocalStorage(this)),
+      session_storage_node_(new NodeStorageSessionStorage(this)),
+      execution_context_(execution_context) {
+  const string local_tag_name(tag_name.Utf8().data());
+
+  const KURL normalized_url = NormalizeUrl(url);
+  const string local_url(normalized_url.GetString().Utf8().data());
+
   Log("init");
   Log(" --- ");
-  Log(" - " + URLToString(document_.Url()) + " - ");
+  Log(" - " + local_url + " - ");
   Log(" --- ");
 
   AddNode(parser_node_);
@@ -211,13 +246,12 @@ PageGraph::PageGraph(Document& document) :
   AddStorageNode(local_storage_node_);
   AddStorageNode(session_storage_node_);
 
-  const blink::DOMNodeId root_id = blink::DOMNodeIds::IdForNode(&document);
-  html_root_node_ = new NodeDOMRoot(this, root_id);
+  html_root_node_ = new NodeDOMRoot(this, node_id, local_tag_name, local_url);
   AddNode(html_root_node_);
-  element_nodes_.emplace(root_id, html_root_node_);
-  Log("Root document ID: " + to_string(root_id));
+  element_nodes_.emplace(node_id, html_root_node_);
+  Log("Root document ID: " + to_string(node_id));
 
-  Isolate* const isolate = document.GetIsolate();
+  Isolate* const isolate = execution_context_.GetIsolate();
   if (isolate) {
     isolate->SetEvalScriptCompiledFunc(&OnEvalScriptCompiled);
   }
@@ -248,68 +282,50 @@ NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
 }
 
 void PageGraph::RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
-    const blink::DOMNodeId parent_node_id) {
-  if (element_nodes_.count(node_id) != 0)
+    const blink::DOMNodeId parent_node_id, const String& tag_name,
+    const KURL& url) {
+  if (element_nodes_.count(node_id) != 0) {
     return;  // Already registered.
+  }
+
+  const string local_tag_name(tag_name.Utf8().data());
+
+  const KURL normalized_url = NormalizeUrl(url);
+  const string local_url(normalized_url.GetString().Utf8().data());
 
   Log("RegisterDocumentRootCreated) node id: " + to_string(node_id)
-    + " parent node id: " + to_string(parent_node_id));
+    + ", parent node id: " + to_string(parent_node_id)
+    + ", tag name: " + local_tag_name
+    + ", url: " + local_url);
   NodeActor* const acting_node = GetCurrentActingNode();
 
   LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
 
   // Create the new DOM root node.
-  NodeDOMRoot* const dom_root = new NodeDOMRoot(this, node_id);
+  NodeDOMRoot* const dom_root = new NodeDOMRoot(this, node_id, local_tag_name,
+                                                local_url);
   AddNode(dom_root);
   element_nodes_.emplace(node_id, dom_root);
   Log("Child document ID: " + to_string(node_id));
 
   // Add the node creation edge.
-  const EdgeNodeCreate* const creation_edge = new EdgeNodeCreate(this,
-      acting_node, dom_root);
-  AddEdge(creation_edge);
-  dom_root->AddInEdge(creation_edge);
-  acting_node->AddOutEdge(creation_edge);
+  AddEdge(new EdgeNodeCreate(this, acting_node, dom_root));
 
-  NodeHTMLElement* const parent_node =
-      element_nodes_.at(parent_node_id);
-
-  Node* dom_link_node = nullptr;
-  // TODO: Replace NodeFrame with NodeHTMLFrameElement and move URL to
-  // NodeDOMRoot. Include some way of detecting NodeHTMLFrameElements and
-  // replace this with that.
-  if (parent_node->TagName() == "iframe"
-      || parent_node->TagName() == "object"
-      || parent_node->TagName() == "embed"
-      || parent_node->TagName() == "frame"
-      || parent_node->TagName() == "portal") {
-    if (!parent_node->out_edges_.empty()) {
-      // Add the edge from the (most recently added) frame node of the parent
-      // frame element. The |out_edges_| list could be empty if the frame
-      // element doesn't have an src attribute at first (in case, blink seems to
-      // have an empty document with a URL of "about:blank" created for the
-      // frame).
-      const Edge* const last_edge = parent_node->out_edges_.back();
-      dom_link_node = last_edge->in_node_;
-
-      // Also mark the frame node from above as representing a local frame.
-      reinterpret_cast<NodeFrame*>(dom_link_node)->SetIsLocalFrame();
-    }
+  // Add the cross-DOM edge.
+  NodeHTMLElement* const parent_node = element_nodes_.at(parent_node_id);
+  if (NodeDOMRoot* const dom_root_parent_node =
+          DynamicTo<NodeDOMRoot>(parent_node)) {
+    AddEdge(new EdgeCrossDOM(this, dom_root_parent_node, dom_root));
+  } else if (NodeFrameOwner* const frame_owner_parent_node =
+                 DynamicTo<NodeFrameOwner>(parent_node)) {
+    AddEdge(new EdgeCrossDOM(this, frame_owner_parent_node, dom_root));
   } else {
-    dom_link_node = parent_node;
-  }
-
-  if (dom_link_node) {
-    const EdgeCrossDOM* const structure_edge =
-        new EdgeCrossDOM(this, dom_link_node, dom_root);
-    AddEdge(structure_edge);
-    dom_root->AddInEdge(structure_edge);
-    dom_link_node->AddOutEdge(structure_edge);
+    LOG_ASSERT(false); // Unsupported parent node type.
   }
 }
 
 void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
-    const String& tag_name) {
+    const String& tag_name, const ElementType element_type) {
   string local_tag_name(tag_name.Utf8().data());
 
   Log("RegisterHTMLElementNodeCreated) node id: " + to_string(node_id)
@@ -317,18 +333,25 @@ void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
   NodeActor* const acting_node = GetCurrentActingNode();
 
   LOG_ASSERT(element_nodes_.count(node_id) == 0);
-  NodeHTMLElement* const new_node = new NodeHTMLElement(this,
-    node_id, local_tag_name);
+
+  NodeHTMLElement* new_node = nullptr;
+  switch (element_type) {
+    case kElementTypeDefault: {
+      new_node = new NodeHTMLElement(this, node_id, local_tag_name);
+      break;
+    }
+    case kElementTypeFrameOwner: {
+      new_node = new NodeFrameOwner(this, node_id, local_tag_name);
+      Log("(type = kElementTypeFrameOwner");
+      break;
+    }
+  }
+  LOG_ASSERT(new_node);
 
   AddNode(new_node);
   element_nodes_.emplace(node_id, new_node);
 
-  const EdgeNodeCreate* const edge = new EdgeNodeCreate(this,
-    acting_node, new_node);
-  AddEdge(edge);
-
-  new_node->AddInEdge(edge);
-  acting_node->AddOutEdge(edge);
+  AddEdge(new EdgeNodeCreate(this, acting_node, new_node));
 }
 
 void PageGraph::RegisterHTMLTextNodeCreated(const DOMNodeId node_id,
@@ -344,12 +367,7 @@ void PageGraph::RegisterHTMLTextNodeCreated(const DOMNodeId node_id,
   AddNode(new_node);
   text_nodes_.emplace(node_id, new_node);
 
-  const EdgeNodeCreate* const edge = new EdgeNodeCreate(this,
-    acting_node, new_node);
-  AddEdge(edge);
-
-  new_node->AddInEdge(edge);
-  acting_node->AddOutEdge(edge);
+  AddEdge(new EdgeNodeCreate(this, acting_node, new_node));
 }
 
 void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
@@ -365,12 +383,8 @@ void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
   LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
   NodeHTMLElement* const inserted_node = element_nodes_.at(node_id);
 
-  const EdgeNodeInsert* const edge = new EdgeNodeInsert(this,
-    acting_node, inserted_node, inserted_parent_node_id, before_sibling_id);
-  AddEdge(edge);
-
-  inserted_node->AddInEdge(edge);
-  acting_node->AddOutEdge(edge);
+  AddEdge(new EdgeNodeInsert(this, acting_node, inserted_node,
+                             inserted_parent_node_id, before_sibling_id));
 }
 
 void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
@@ -385,12 +399,8 @@ void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
   NodeHTMLText* const inserted_node = text_nodes_.at(node_id);
 
-  const EdgeNodeInsert* const edge = new EdgeNodeInsert(this,
-    acting_node, inserted_node, inserted_parent_node_id, before_sibling_id);
-  AddEdge(edge);
-
-  inserted_node->AddInEdge(edge);
-  acting_node->AddOutEdge(edge);
+  AddEdge(new EdgeNodeInsert(this, acting_node, inserted_node,
+          inserted_parent_node_id, before_sibling_id));
 }
 
 void PageGraph::RegisterHTMLElementNodeRemoved(const DOMNodeId node_id) {
@@ -400,12 +410,8 @@ void PageGraph::RegisterHTMLElementNodeRemoved(const DOMNodeId node_id) {
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const removed_node = element_nodes_.at(node_id);
 
-  const EdgeNodeRemove* const edge = new EdgeNodeRemove(this,
-    static_cast<NodeScript*>(acting_node), removed_node);
-  AddEdge(edge);
-
-  acting_node->AddOutEdge(edge);
-  removed_node->AddInEdge(edge);
+  AddEdge(new EdgeNodeRemove(this, static_cast<NodeScript*>(acting_node),
+                             removed_node));
 }
 
 void PageGraph::RegisterHTMLTextNodeRemoved(const DOMNodeId node_id) {
@@ -415,35 +421,8 @@ void PageGraph::RegisterHTMLTextNodeRemoved(const DOMNodeId node_id) {
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
   NodeHTMLText* const removed_node = text_nodes_.at(node_id);
 
-  const EdgeNodeRemove* const edge = new EdgeNodeRemove(this,
-    static_cast<NodeScript*>(acting_node), removed_node);
-  AddEdge(edge);
-
-  acting_node->AddOutEdge(edge);
-  removed_node->AddInEdge(edge);
-}
-
-void PageGraph::RegisterContentFrameSet(const blink::DOMNodeId node_id,
-    const WTF::String& url) {
-  string local_url(url.Utf8().data());
-
-  LOG_ASSERT(element_nodes_.count(node_id) == 1);
-
-  NodeHTMLElement* const frame_element_node = element_nodes_.at(node_id);
-
-  // Create the new frame node.
-  NodeFrame* const frame_node = new NodeFrame(this, local_url);
-  AddNode(frame_node);
-  Log("NodeFrame url: " + local_url +
-      ", parent element node id:" + to_string(node_id));
-
-  // Create the new EdgeRequestFrame linking the frame element node
-  // and the frame node.
-  EdgeRequestFrame* const request_edge = new EdgeRequestFrame(this,
-      frame_element_node, frame_node);
-  AddEdge(request_edge);
-  frame_node->AddInEdge(request_edge);
-  frame_element_node->AddOutEdge(request_edge);
+  AddEdge(new EdgeNodeRemove(this, static_cast<NodeScript*>(acting_node),
+                             removed_node));
 }
 
 void PageGraph::RegisterEventListenerAdd(const blink::DOMNodeId node_id,
@@ -461,13 +440,9 @@ void PageGraph::RegisterEventListenerAdd(const blink::DOMNodeId node_id,
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const element_node = element_nodes_.at(node_id);
 
-  const EdgeEventListenerAdd* const edge = new EdgeEventListenerAdd(this,
-      acting_node, element_node, local_event_type, listener_id,
-      listener_script_id);
-  AddEdge(edge);
-
-  element_node->AddInEdge(edge);
-  acting_node->AddOutEdge(edge);
+  AddEdge(new EdgeEventListenerAdd(this, acting_node, element_node,
+                                   local_event_type, listener_id,
+                                   listener_script_id));
 }
 
 void PageGraph::RegisterEventListenerRemove(const blink::DOMNodeId node_id,
@@ -485,13 +460,9 @@ void PageGraph::RegisterEventListenerRemove(const blink::DOMNodeId node_id,
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const element_node = element_nodes_.at(node_id);
 
-  const EdgeEventListenerRemove* const edge = new EdgeEventListenerRemove(this,
-      acting_node, element_node, local_event_type, listener_id,
-      listener_script_id);
-  AddEdge(edge);
-
-  element_node->AddInEdge(edge);
-  acting_node->AddOutEdge(edge);
+  AddEdge(new EdgeEventListenerRemove(this, acting_node, element_node,
+                                      local_event_type, listener_id,
+                                      listener_script_id));
 }
 
 void PageGraph::RegisterInlineStyleSet(const DOMNodeId node_id,
@@ -507,12 +478,8 @@ void PageGraph::RegisterInlineStyleSet(const DOMNodeId node_id,
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const target_node = element_nodes_.at(node_id);
 
-  const EdgeAttributeSet* const edge = new EdgeAttributeSet(this,
-    acting_node, target_node, local_attr_name, local_attr_value, true);
-  AddEdge(edge);
-
-  acting_node->AddOutEdge(edge);
-  target_node->AddInEdge(edge);
+  AddEdge(new EdgeAttributeSet(this, acting_node, target_node, local_attr_name,
+                               local_attr_value, true));
 }
 
 void PageGraph::RegisterInlineStyleDelete(const DOMNodeId node_id,
@@ -526,12 +493,8 @@ void PageGraph::RegisterInlineStyleDelete(const DOMNodeId node_id,
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const target_node = element_nodes_.at(node_id);
 
-  const EdgeAttributeDelete* const edge = new EdgeAttributeDelete(this,
-    acting_node, target_node, local_attr_name, true);
-  AddEdge(edge);
-
-  acting_node->AddOutEdge(edge);
-  target_node->AddInEdge(edge);
+  AddEdge(new EdgeAttributeDelete(this, acting_node, target_node,
+                                  local_attr_name, true));
 }
 
 void PageGraph::RegisterAttributeSet(const DOMNodeId node_id,
@@ -547,12 +510,8 @@ void PageGraph::RegisterAttributeSet(const DOMNodeId node_id,
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const target_node = element_nodes_.at(node_id);
 
-  const EdgeAttributeSet* const edge = new EdgeAttributeSet(this,
-    acting_node, target_node, local_attr_name, local_attr_value);
-  AddEdge(edge);
-
-  acting_node->AddOutEdge(edge);
-  target_node->AddInEdge(edge);
+  AddEdge(new EdgeAttributeSet(this, acting_node, target_node, local_attr_name,
+                               local_attr_value));
 }
 
 void PageGraph::RegisterAttributeDelete(const DOMNodeId node_id,
@@ -566,12 +525,8 @@ void PageGraph::RegisterAttributeDelete(const DOMNodeId node_id,
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const target_node = element_nodes_.at(node_id);
 
-  const EdgeAttributeDelete* const edge = new EdgeAttributeDelete(this,
-    acting_node, target_node, local_attr_name);
-  AddEdge(edge);
-
-  acting_node->AddOutEdge(edge);
-  target_node->AddInEdge(edge);
+  AddEdge(new EdgeAttributeDelete(this, acting_node, target_node,
+                                  local_attr_name));
 }
 
 void PageGraph::RegisterTextNodeChange(const blink::DOMNodeId node_id,
@@ -584,12 +539,8 @@ void PageGraph::RegisterTextNodeChange(const blink::DOMNodeId node_id,
   NodeHTMLText* const text_node = text_nodes_.at(node_id);
 
   string local_new_text(new_text.Utf8().data());
-  const EdgeTextChange* const edge = new EdgeTextChange(this,
-    acting_node, text_node, local_new_text);
-  AddEdge(edge);
 
-  acting_node->AddOutEdge(edge);
-  text_node->AddInEdge(edge);
+  AddEdge(new EdgeTextChange(this, acting_node, text_node, local_new_text));
 }
 
 void PageGraph::DoRegisterRequestStart(const InspectorId request_id,
@@ -634,11 +585,10 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
     + ", type: " + to_string(type));
   NodeActor* const acting_node = GetCurrentActingNode();
 
-  if (!acting_node->IsScript()) {
-    Log("Skipping, i hope this is pre-fetch...");
+  if (!IsA<NodeScript>(acting_node)) {
+    Log("Skipping, I hope this is pre-fetch...");
     return;
   }
-  LOG_ASSERT(acting_node->IsScript());
 
   DoRegisterRequestStart(request_id, acting_node, local_url, type);
 }
@@ -652,7 +602,7 @@ void PageGraph::RegisterRequestStartFromCSS(const InspectorId request_id,
   const KURL normalized_url = NormalizeUrl(url);
   const string local_url(normalized_url.GetString().Utf8().data());
 
-  if (acting_node->IsParser()) {
+  if (IsA<NodeParser>(acting_node)) {
     Log("RegisterRequestStartFromCSS) request id: " + to_string(request_id)
         + ", url: " + local_url
         + ", type: " + to_string(type));
@@ -713,12 +663,7 @@ void PageGraph::RegisterResourceBlockAd(const GURL& url,
   NodeResource* const resource_node = GetResourceNodeForUrl(local_url);
   NodeAdFilter* const filter_node = GetAdFilterNodeForRule(rule);
 
-  const EdgeResourceBlock* const edge = new EdgeResourceBlock(this,
-      filter_node, resource_node);
-  AddEdge(edge);
-
-  resource_node->AddInEdge(edge);
-  filter_node->AddOutEdge(edge);
+  AddEdge(new EdgeResourceBlock(this, filter_node, resource_node));
 }
 
 void PageGraph::RegisterResourceBlockTracker(const GURL& url,
@@ -732,12 +677,7 @@ void PageGraph::RegisterResourceBlockTracker(const GURL& url,
   NodeResource* const resource_node = GetResourceNodeForUrl(local_url);
   NodeTrackerFilter* const filter_node = GetTrackerFilterNodeForHost(host);
 
-  const EdgeResourceBlock* const edge = new EdgeResourceBlock(this,
-      filter_node, resource_node);
-  AddEdge(edge);
-
-  resource_node->AddInEdge(edge);
-  filter_node->AddOutEdge(edge);
+  AddEdge(new EdgeResourceBlock(this, filter_node, resource_node));
 }
 
 void PageGraph::RegisterResourceBlockJavaScript(const GURL& url) {
@@ -748,12 +688,7 @@ void PageGraph::RegisterResourceBlockJavaScript(const GURL& url) {
 
   NodeResource* const resource_node = GetResourceNodeForUrl(local_url);
 
-  const EdgeResourceBlock* const edge = new EdgeResourceBlock(this,
-      js_shield_node_, resource_node);
-  AddEdge(edge);
-
-  resource_node->AddInEdge(edge);
-  js_shield_node_->AddOutEdge(edge);
+  AddEdge(new EdgeResourceBlock(this, js_shield_node_, resource_node));
 }
 
 void PageGraph::RegisterResourceBlockFingerprinting(const GURL& url,
@@ -768,12 +703,7 @@ void PageGraph::RegisterResourceBlockFingerprinting(const GURL& url,
   NodeFingerprintingFilter* const filter_node =
       GetFingerprintingFilterNodeForRule(rule);
 
-  const EdgeResourceBlock* const edge = new EdgeResourceBlock(this,
-      filter_node, resource_node);
-  AddEdge(edge);
-
-  resource_node->AddInEdge(edge);
-  filter_node->AddOutEdge(edge);
+  AddEdge(new EdgeResourceBlock(this, filter_node, resource_node));
 }
 
 void PageGraph::RegisterElmForLocalScript(const DOMNodeId node_id,
@@ -847,22 +777,10 @@ void PageGraph::RegisterScriptCompilation(
 
     for (const DOMNodeId node_id : node_ids) {
       NodeHTMLElement* const script_elm_node = GetHTMLElementNode(node_id);
-      EdgeExecute* const execute_edge = new EdgeExecute(this, script_elm_node,
-        code_node);
-      AddEdge(execute_edge);
-      script_elm_node->AddOutEdge(execute_edge);
-      code_node->AddInEdge(execute_edge);
-
-      if (script_elm_node->HasAttribute("src")) {
-        code_node->SetUrl(script_elm_node->GetAttribute("src"));
-      }
+      AddEdge(new EdgeExecute(this, script_elm_node, code_node));
     }
   } else {
-    EdgeExecute* const execute_edge = new EdgeExecute(this, extensions_node_,
-      code_node);
-    AddEdge(execute_edge);
-    extensions_node_->AddOutEdge(execute_edge);
-    code_node->AddInEdge(execute_edge);
+    AddEdge(new EdgeExecute(this, extensions_node_, code_node));
   }
 }
 
@@ -883,11 +801,7 @@ void PageGraph::RegisterScriptCompilationFromAttr(
   script_nodes_.emplace(script_id, code_node);
 
   NodeHTMLElement* const html_node = GetHTMLElementNode(node_id);
-  EdgeExecute* const execute_edge = new EdgeExecuteAttr(this, html_node,
-      code_node, local_attr_name);
-  AddEdge(execute_edge);
-  html_node->AddOutEdge(execute_edge);
-  code_node->AddInEdge(execute_edge);
+  AddEdge(new EdgeExecuteAttr(this, html_node, code_node, local_attr_name));
 }
 
 void PageGraph::RegisterScriptCompilationFromEval(ScriptId parent_script_id,
@@ -914,7 +828,7 @@ void PageGraph::RegisterStorageRead(const String& key, const String& value,
     + ", location: " + StorageLocationToString(location));
   NodeActor* const acting_node = GetCurrentActingNode();
 
-  LOG_ASSERT(acting_node->IsScript());
+  LOG_ASSERT(IsA<NodeScript>(acting_node));
 
   NodeStorage* storage_node = nullptr;
   switch (location) {
@@ -929,18 +843,11 @@ void PageGraph::RegisterStorageRead(const String& key, const String& value,
       break;
   }
 
-  const EdgeStorageReadCall* const edge_call = new EdgeStorageReadCall(this,
-    static_cast<NodeScript*>(acting_node), storage_node, local_key);
-  AddEdge(edge_call);
-  acting_node->AddOutEdge(edge_call);
-  storage_node->AddInEdge(edge_call);
-
-  const EdgeStorageReadResult* const edge_result = new EdgeStorageReadResult(
-    this, storage_node, static_cast<NodeScript*>(acting_node), local_key,
-    local_value);
-  AddEdge(edge_result);
-  storage_node->AddOutEdge(edge_result);
-  acting_node->AddInEdge(edge_result);
+  AddEdge(new EdgeStorageReadCall(this, static_cast<NodeScript*>(acting_node),
+                                  storage_node, local_key));
+  AddEdge(new EdgeStorageReadResult(this, storage_node,
+                                    static_cast<NodeScript*>(acting_node),
+                                    local_key, local_value));
 }
 
 void PageGraph::RegisterStorageWrite(const String& key, const String& value,
@@ -952,7 +859,7 @@ void PageGraph::RegisterStorageWrite(const String& key, const String& value,
     + ", location: " + StorageLocationToString(location));
   NodeActor* const acting_node = GetCurrentActingNode();
 
-  LOG_ASSERT(acting_node->IsScript());
+  LOG_ASSERT(IsA<NodeScript>(acting_node));
 
   NodeStorage* storage_node = nullptr;
   switch (location) {
@@ -967,12 +874,8 @@ void PageGraph::RegisterStorageWrite(const String& key, const String& value,
       break;
   }
 
-  const EdgeStorageSet* const edge_storage = new EdgeStorageSet(this,
-    static_cast<NodeScript*>(acting_node), storage_node, local_key,
-    local_value);
-  AddEdge(edge_storage);
-  acting_node->AddOutEdge(edge_storage);
-  storage_node->AddInEdge(edge_storage);
+  AddEdge(new EdgeStorageSet(this, static_cast<NodeScript*>(acting_node),
+                             storage_node, local_key, local_value));
 }
 
 void PageGraph::RegisterStorageDelete(const String& key,
@@ -983,7 +886,7 @@ void PageGraph::RegisterStorageDelete(const String& key,
     + StorageLocationToString(location));
   NodeActor* const acting_node = GetCurrentActingNode();
 
-  LOG_ASSERT(acting_node->IsScript());
+  LOG_ASSERT(IsA<NodeScript>(acting_node));
 
   NodeStorage* storage_node = nullptr;
   switch (location) {
@@ -997,18 +900,15 @@ void PageGraph::RegisterStorageDelete(const String& key,
       LOG_ASSERT(location != kStorageLocationCookie);
   }
 
-  const EdgeStorageDelete* const edge_storage = new EdgeStorageDelete(this,
-    static_cast<NodeScript*>(acting_node), storage_node, local_key);
-  AddEdge(edge_storage);
-  acting_node->AddOutEdge(edge_storage);
-  storage_node->AddInEdge(edge_storage);
+  AddEdge(new EdgeStorageDelete(this, static_cast<NodeScript*>(acting_node),
+                                storage_node, local_key));
 }
 
 void PageGraph::RegisterStorageClear(const StorageLocation location) {
   Log("RegisterStorageClear) location: " + StorageLocationToString(location));
   NodeActor* const acting_node = GetCurrentActingNode();
 
-  LOG_ASSERT(acting_node->IsScript());
+  LOG_ASSERT(IsA<NodeScript>(acting_node));
 
   NodeStorage* storage_node = nullptr;
   switch (location) {
@@ -1022,11 +922,8 @@ void PageGraph::RegisterStorageClear(const StorageLocation location) {
       LOG_ASSERT(location != kStorageLocationCookie);
   }
 
-  const EdgeStorageClear* const edge_storage = new EdgeStorageClear(this,
-    static_cast<NodeScript*>(acting_node), storage_node);
-  AddEdge(edge_storage);
-  acting_node->AddOutEdge(edge_storage);
-  storage_node->AddInEdge(edge_storage);
+  AddEdge(new EdgeStorageClear(this, static_cast<NodeScript*>(acting_node),
+                               storage_node));
 }
 
 void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
@@ -1055,11 +952,11 @@ void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
   for (std::set<const Node*>::iterator it = predecessors.begin();
       it != predecessors.end(); it++) {
     const Node* pred = *it;
-    if (pred->IsNodeActor()) {
+    if (IsA<NodeActor>(pred)) {
       for (const Edge* edge : pred->out_edges_) {
         if (edge->in_node_ == node) {
           std::string reportItem(
-              edge->GetDescBody() + "\r\n\r\nby: " + pred->GetDescBody()
+              edge->GetItemDesc() + "\r\n\r\nby: " + pred->GetItemDesc()
           );
           report.addItem(WTF::String::FromUTF8(reportItem.data()));
         }
@@ -1074,7 +971,8 @@ void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
     if (item_name.find("resource #") == 0) {
       for (const Edge* edge : succ->in_edges_) {
         std::string reportItem(
-            edge->GetDescBody() + "\r\n\r\nby: " + edge->out_node_->GetDescBody()
+            edge->GetItemDesc()
+            + "\r\n\r\nby: " + edge->out_node_->GetItemDesc()
         );
         report.addItem(WTF::String::FromUTF8(reportItem.data()));
       }
@@ -1099,7 +997,7 @@ void PageGraph::RegisterWebAPICall(const MethodName& method,
     + buffer.str());
 
   NodeActor* const acting_node = GetCurrentActingNode();
-  LOG_ASSERT(acting_node->IsScript());
+  LOG_ASSERT(IsA<NodeScript>(acting_node));
 
   NodeWebAPI* webapi_node;
   if (webapi_nodes_.count(method) == 0) {
@@ -1110,11 +1008,8 @@ void PageGraph::RegisterWebAPICall(const MethodName& method,
     webapi_node = webapi_nodes_.at(method);
   }
 
-  const EdgeWebAPICall* const edge_call = new EdgeWebAPICall(this,
-    static_cast<NodeScript*>(acting_node), webapi_node, method, local_args);
-  AddEdge(edge_call);
-  acting_node->AddOutEdge(edge_call);
-  webapi_node->AddInEdge(edge_call);
+  AddEdge(new EdgeWebAPICall(this, static_cast<NodeScript*>(acting_node),
+                             webapi_node, method, local_args));
 }
 
 void PageGraph::RegisterWebAPIResult(const MethodName& method,
@@ -1123,17 +1018,14 @@ void PageGraph::RegisterWebAPIResult(const MethodName& method,
   Log("RegisterWebAPIResult) method: " + method + ", result: " + local_result);
 
   NodeActor* const caller_node = GetCurrentActingNode();
-  LOG_ASSERT(caller_node->IsScript());
+  LOG_ASSERT(IsA<NodeScript>(caller_node));
 
   LOG_ASSERT(webapi_nodes_.count(method) != 0);
   NodeWebAPI* webapi_node = webapi_nodes_.at(method);
 
-  const EdgeWebAPIResult* const edge_result = new EdgeWebAPIResult(this,
-    webapi_node, static_cast<NodeScript*>(caller_node), method, local_result);
-
-  AddEdge(edge_result);
-  webapi_node->AddOutEdge(edge_result);
-  caller_node->AddInEdge(edge_result);
+  AddEdge(new EdgeWebAPIResult(this, webapi_node,
+                               static_cast<NodeScript*>(caller_node), method,
+                               local_result));
 }
 
 GraphMLXML PageGraph::ToGraphML() const {
@@ -1182,19 +1074,13 @@ NodeActor* PageGraph::GetNodeActorForScriptId(const ScriptId script_id) const {
     return parser_node_;
   }
 
-  LOG_ASSERT(script_nodes_.count(script_id) +
-    remote_script_nodes_.count(script_id) == 1);
-
-  if (script_nodes_.count(script_id) == 1) {
-    return script_nodes_.at(script_id);
-  }
-
-  return remote_script_nodes_.at(script_id);
+  LOG_ASSERT(script_nodes_.count(script_id) == 1);
+  return script_nodes_.at(script_id);
 }
 
 ScriptId PageGraph::GetExecutingScriptId() const {
   return script_tracker_.ResolveScriptId(
-      document_.GetIsolate()->GetExecutingScriptId());
+      execution_context_.GetIsolate()->GetExecutingScriptId());
 }
 
 NodeResource* PageGraph::GetResourceNodeForUrl(const std::string& url) {
@@ -1214,12 +1100,7 @@ NodeAdFilter* PageGraph::GetAdFilterNodeForRule(const std::string& rule) {
     AddNode(filter_node);
     ad_filter_nodes_.emplace(rule, filter_node);
 
-    const EdgeFilter* const filter_edge = new EdgeFilter(this, ad_shield_node_,
-        filter_node);
-    AddEdge(filter_edge);
-
-    filter_node->AddInEdge(filter_edge);
-    ad_shield_node_->AddOutEdge(filter_edge);
+    AddEdge(new EdgeFilter(this, ad_shield_node_, filter_node));
 
     return filter_node;
   }
@@ -1234,12 +1115,7 @@ NodeTrackerFilter* PageGraph::GetTrackerFilterNodeForHost(
     AddNode(filter_node);
     tracker_filter_nodes_.emplace(host, filter_node);
 
-    const EdgeFilter* const filter_edge = new EdgeFilter(this,
-        tracker_shield_node_, filter_node);
-    AddEdge(filter_edge);
-
-    filter_node->AddInEdge(filter_edge);
-    tracker_shield_node_->AddOutEdge(filter_edge);
+    AddEdge(new EdgeFilter(this, tracker_shield_node_, filter_node));
 
     return filter_node;
   }
@@ -1255,12 +1131,7 @@ NodeFingerprintingFilter* PageGraph::GetFingerprintingFilterNodeForRule(
     AddNode(filter_node);
     fingerprinting_filter_nodes_.emplace(rule, filter_node);
 
-    const EdgeFilter* const filter_edge = new EdgeFilter(this,
-        fingerprinting_shield_node_, filter_node);
-    AddEdge(filter_edge);
-
-    filter_node->AddInEdge(filter_edge);
-    fingerprinting_shield_node_->AddOutEdge(filter_edge);
+    AddEdge(new EdgeFilter(this, fingerprinting_shield_node_, filter_node));
 
     return filter_node;
   }
@@ -1286,39 +1157,26 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
   const RequestType request_type = request->GetRequestType();
   const InspectorId request_id = request->GetRequestId();
 
-  if (was_error == false) {
+  if (was_error) {
+    // Handling the case when the requests returned with errors.
+    for (Node* const requester : request->GetRequesters()) {
+      AddEdge(new EdgeRequestStart(this, requester, resource, request_id,
+                                   request_type));
+      AddEdge(new EdgeRequestError(this, resource, requester, request_id,
+                                   request->ResponseHeaderString(),
+                                   request->ResponseBodyLength()));
+    }
+  } else {
     const ResourceType resource_type = request->GetResourceType();
     for (Node* const requester : request->GetRequesters()) {
-      const EdgeRequestStart* const start_edge = new EdgeRequestStart(this,
-        requester, resource, request_id, request_type);
-      AddEdge(start_edge);
-      requester->AddOutEdge(start_edge);
-      resource->AddInEdge(start_edge);
-
-      const EdgeRequestComplete* const complete_edge = new EdgeRequestComplete(
-        this, resource, requester, request_id, resource_type,
-        request->ResponseHeaderString(), request->ResponseBodyLength());
-      AddEdge(complete_edge);
-      resource->AddOutEdge(complete_edge);
-      requester->AddInEdge(complete_edge);
+      AddEdge(new EdgeRequestStart(this, requester, resource, request_id,
+                                   request_type));
+      AddEdge(new EdgeRequestComplete(this, resource, requester, request_id,
+                                      resource_type,
+                                      request->ResponseHeaderString(),
+                                      request->ResponseBodyLength()));
     }
     return;
-  }
-
-  // Handling the case when the requests returned with errors.
-  for (Node* const requester : request->GetRequesters()) {
-    const EdgeRequestStart* const start_edge = new EdgeRequestStart(this,
-      requester, resource, request_id, request_type);
-    AddEdge(start_edge);
-    requester->AddOutEdge(start_edge);
-    resource->AddInEdge(start_edge);
-
-    const EdgeRequestError* const error_edge = new EdgeRequestError(
-      this, resource, requester, request_id,
-      request->ResponseHeaderString(), request->ResponseBodyLength());
-    AddEdge(error_edge);
-    resource->AddOutEdge(error_edge);
-    requester->AddInEdge(error_edge);
   }
 }
 
@@ -1342,28 +1200,19 @@ void PageGraph::AddNode(Node* const node) {
 void PageGraph::AddEdge(const Edge* const edge) {
   edges_.push_back(unique_ptr<const Edge>(edge));
   graph_items_.push_back(edge);
+
+  edge->GetInNode()->AddInEdge(edge);
+  edge->GetOutNode()->AddOutEdge(edge);
 }
 
 void PageGraph::AddShieldNode(NodeShield* const shield_node) {
   AddNode(shield_node);
-
-  const EdgeShield* const shield_edge =
-      new EdgeShield(this, shields_node_, shield_node);
-  AddEdge(shield_edge);
-
-  shield_node->AddInEdge(shield_edge);
-  shields_node_->AddOutEdge(shield_edge);
+  AddEdge(new EdgeShield(this, shields_node_, shield_node));
 }
 
 void PageGraph::AddStorageNode(NodeStorage* const storage_node) {
   AddNode(storage_node);
-
-  const EdgeStorageBucket* const storage_edge =
-      new EdgeStorageBucket(this, storage_node_, storage_node);
-  AddEdge(storage_edge);
-
-  storage_node->AddInEdge(storage_edge);
-  storage_node_->AddOutEdge(storage_edge);
+  AddEdge(new EdgeStorageBucket(this, storage_node_, storage_node));
 }
 
 void PageGraph::Log(const string& str) const {

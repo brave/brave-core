@@ -17,29 +17,31 @@ class GraphItem {
 friend class PageGraph;
  public:
   virtual ~GraphItem();
-  virtual ItemDesc GetDesc() const;
+
+  PageGraphId GetId() const { return id_; }
+
   virtual ItemName GetItemName() const = 0;
-  PageGraphId Id() const;
+  virtual ItemDesc GetItemDesc() const;
 
   virtual GraphMLId GetGraphMLId() const = 0;
   virtual GraphMLXML GetGraphMLTag() const = 0;
+  virtual GraphMLXMLList GetGraphMLAttributes() const;
 
-  virtual ItemDesc GetDescBody() const;
-  virtual ItemDesc GetDescPrefix() const = 0;
-  virtual ItemDesc GetDescSuffix() const = 0;
+  virtual bool IsEdge() const;
+  virtual bool IsNode() const;
 
  protected:
+  GraphItem(PageGraph* const graph);
   // For use ONLY with items generated ad-hoc during GraphML export.
   GraphItem();
 
-  GraphItem(PageGraph* const graph);
-  virtual GraphMLXMLList GraphMLAttributes() const;
-
-  PageGraph* const graph_;
-  const PageGraphId id_;
+  PageGraph* GetGraph() const { return graph_; }
 
  private:
   static void StartGraphMLExport(PageGraphId id_counter);
+
+  const PageGraphId id_;
+  PageGraph* const graph_;
 };
 
 }  // namespace brave_page_graph

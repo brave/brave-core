@@ -6,9 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_FILTER_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_FILTER_H_
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
 #include <string>
+
+#include "third_party/blink/renderer/platform/wtf/casting.h"
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
 
 namespace brave_page_graph {
 
@@ -24,13 +28,28 @@ friend class PageGraph;
 
   ItemName GetItemName() const override;
 
+  bool IsEdgeFilter() const override;
+
  protected:
   EdgeFilter(PageGraph* const graph, NodeShield* const out_node,
     NodeFilter* const in_node);
-
-  GraphMLXMLList GraphMLAttributes() const override;
 };
 
 }  // namespace brave_page_graph
+
+namespace blink {
+
+template <>
+struct DowncastTraits<brave_page_graph::EdgeFilter> {
+  static bool AllowFrom(const brave_page_graph::Edge& edge) {
+    return edge.IsEdgeFilter();
+  }
+  static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
+    return IsA<brave_page_graph::EdgeFilter>(
+        DynamicTo<brave_page_graph::Edge>(graph_item));
+  }
+};
+
+}  // namespace blink
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_FILTER_H_

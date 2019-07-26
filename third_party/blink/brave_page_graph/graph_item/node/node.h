@@ -6,39 +6,50 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_H_
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/graph_item.h"
+#include "third_party/blink/renderer/platform/wtf/casting.h"
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/graph_item.h"
 
 namespace brave_page_graph {
 
 class Edge;
-class NodeActor;
 class PageGraph;
 
 class Node : public GraphItem {
-friend class Edge;
 friend class PageGraph;
  public:
   Node() = delete;
   ~Node() override;
-  void AddInEdge(const Edge* const in_edge);
-  void AddOutEdge(const Edge* const out_edge);
+
+  const EdgeList& GetInEdges() const { return in_edges_; }
+  const EdgeList& GetOutEdges() const { return out_edges_; }
 
   GraphMLId GetGraphMLId() const override;
   GraphMLXML GetGraphMLTag() const override;
+  GraphMLXMLList GetGraphMLAttributes() const override;
 
-  virtual bool IsNodeActor() const = 0;
-  virtual const NodeActor* AsNodeActor() const {
-    if (IsNodeActor())
-      return reinterpret_cast<const NodeActor*>(this);
-    return nullptr;
-  }
+  bool IsNode() const override;
+
+  virtual bool IsNodeActor() const;
+  virtual bool IsNodeFilter() const;
+  virtual bool IsNodeHTML() const;
+  virtual bool IsNodeExtensions() const;
+  virtual bool IsNodeResource() const;
+  virtual bool IsNodeShield() const;
+  virtual bool IsNodeShields() const;
+  virtual bool IsNodeStorage() const;
+  virtual bool IsNodeStorageRoot() const;
+  virtual bool IsNodeWebAPI() const;
 
  protected:
   Node(PageGraph* const graph);
-  ItemDesc GetDescPrefix() const override;
-  ItemDesc GetDescSuffix() const override;
 
+  virtual void AddInEdge(const Edge* const in_edge);
+  virtual void AddOutEdge(const Edge* const out_edge);
+
+ private:
   // Reminder to self:
   //   out_edge -> node -> in_edge
   // These vectors do not own their references.  All nodes in the entire
@@ -48,5 +59,16 @@ friend class PageGraph;
 };
 
 }  // namespace brave_page_graph
+
+namespace blink {
+
+template <>
+struct DowncastTraits<brave_page_graph::Node> {
+  static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
+    return graph_item.IsNode();
+  }
+};
+
+}  // namespace blink
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_H_
