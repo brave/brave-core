@@ -17,21 +17,10 @@ export type Preferences = {
   showTopSites: boolean
 }
 
-function getWebUIBooleanVal (key: string): boolean {
-  return (chrome.getVariableValue(key).toLowerCase() === 'true')
-}
+type PreferencesUpdatedHandler = (prefData: Preferences) => void
 
 export function getPreferences (): Promise<Preferences> {
-  // Note(petemill): Returning as promise allows this
-  // to be async even though it isn't right now.
-  // Enforces practice of not setting directly
-  // in a redux reducer.
-  return Promise.resolve({
-    showBackgroundImage: getWebUIBooleanVal('showBackgroundImage'),
-    showStats: getWebUIBooleanVal('showStats'),
-    showClock: getWebUIBooleanVal('showClock'),
-    showTopSites: getWebUIBooleanVal('showTopSites')
-  })
+  return window.cr.sendWithPromise<Preferences>('getNewTabPagePreferences')
 }
 
 function sendSavePref (key: string, value: any) {
@@ -54,6 +43,6 @@ export function saveShowStats (value: boolean): void {
   sendSavePref('showStats', value)
 }
 
-export function addChangeListener (listener: () => void): void {
+export function addChangeListener (listener: PreferencesUpdatedHandler): void {
   window.cr.addWebUIListener('preferences-changed', listener)
 }

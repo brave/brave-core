@@ -265,8 +265,8 @@ export const getMockChrome = () => {
       inIncognitoContext: new ChromeEvent()
     },
     topSites: {
-      get: function () {
-        return
+      get: function (cb) {
+        cb([])
       }
     },
     bookmarks: {

@@ -2,22 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { keyframes } from 'brave-ui/theme'
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1
-  }
-`
+import styled from 'brave-ui/theme'
 
 export const Page = styled<{}, 'div'>('div')`
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   position: relative;
-  z-index: 2;
+  z-index: 3;
   top: 0;
   left: 0;
   display: flex;
@@ -28,43 +19,69 @@ export const Page = styled<{}, 'div'>('div')`
   min-height: 100vh;
 `
 
-interface DynamicBackgroundProps {
-  background: string
-  showBackgroundImage: boolean
+interface ImageLoadProps {
+  imageHasLoaded: boolean
 }
 
-export const DynamicBackground = styled<DynamicBackgroundProps, 'div'>('div')`
+interface HasImageProps {
+  hasImage: boolean
+}
+
+interface AppProps {
+  dataIsReady: boolean
+}
+
+export const App = styled<AppProps, 'div'>('div')`
   box-sizing: border-box;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  ${(p) => p.showBackgroundImage
-  ? ` background-image: url(${p.background});`
-  : ` background: linear-gradient(
+  display: flex;
+  flex: 1;
+  transition: opacity .125s ease-out;
+  opacity: ${p => p.dataIsReady ? 1 : 0};
+`
+
+export const PosterBackground = styled<ImageLoadProps & HasImageProps, 'div'>('div')`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  ${p => !p.hasImage && `
+  background: linear-gradient(
         to bottom right,
         #4D54D1,
         #A51C7B 50%,
-        #EE4A37 100%);
-    `
+        #EE4A37 100%);`};
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: ${p => p.imageHasLoaded ? 1 : 0};
+    transition: opacity .5s ease-in-out;
   }
-  display: flex;
-  flex: 1;
-  opacity: 0;
-  animation: ${fadeIn} 300ms;
-  animation-fill-mode: forwards;
 `
 
-export const Gradient = styled<{}, 'div'>('div')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(
+export const Gradient = styled<ImageLoadProps, 'div'>('div')`
+  --gradient-bg: linear-gradient(
     rgba(0, 0, 0, 0.8),
     rgba(0, 0, 0, 0) 35%,
     rgba(0, 0, 0, 0) 80%,
     rgba(0, 0, 0, 0.6) 100%
   );
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--gradient-bg);
+  /* In dark mode, we don't need an overlay
+      unless the image has loaded.
+    This prevents a flash of slightly-darker gradient */
+  @media (prefers-color-scheme: dark) {
+    transition: opacity .4s ease-in-out;
+    opacity: ${p => p.imageHasLoaded ? 1 : 0};
+  }
   height: 100vh;
 `
 
