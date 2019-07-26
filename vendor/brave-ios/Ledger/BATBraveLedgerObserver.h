@@ -6,7 +6,7 @@
 #import "ledger.mojom.objc.h"
 #import "Enums.h"
 
-@class BATBraveLedger;
+@class BATBraveLedger, BATRewardsNotification;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,6 +28,9 @@ NS_SWIFT_NAME(LedgerObserver)
 /// Executed when the wallet is first initialized
 @property (nonatomic, copy, nullable) void (^walletInitalized)(BATResult result);
 
+/// A publisher was fetched by its URL for a specific tab identified by tabId
+@property (nonatomic, copy, nullable) void (^fetchedPanelPublisher)(BATPublisherInfo *info, uint64_t tabId);
+
 /// Eligable grants were added to the wallet
 @property (nonatomic, copy, nullable) void (^grantsAdded)(NSArray<BATGrant *> *grants);
 
@@ -47,6 +50,9 @@ NS_SWIFT_NAME(LedgerObserver)
 /// The exclusion state of a given publisher has been changed
 @property (nonatomic, copy, nullable) void (^excludedSitesChanged)(NSString *publisherKey, BATPublisherExclude excluded);
 
+/// Called when the ledger removes activity info for a given publisher
+@property (nonatomic, copy, nullable) void (^activityRemoved)(NSString *publisherKey);
+
 /// confirmationsTransactionHistoryDidChange
 @property (nonatomic, copy, nullable) void (^confirmationsTransactionHistoryDidChange)();
 
@@ -63,6 +69,12 @@ NS_SWIFT_NAME(LedgerObserver)
 
 // A users contribution was added
 @property (nonatomic, copy, nullable) void (^contributionAdded)(BOOL successful, BATRewardsCategory category);
+
+/// A notification was added to the wallet
+@property (nonatomic, copy, nullable) void (^notificationAdded)(BATRewardsNotification *notification);
+
+/// A notification was removed from the wallet
+@property (nonatomic, copy, nullable) void (^notificationsRemoved)(NSArray<BATRewardsNotification *> *notification);
 
 @end
 

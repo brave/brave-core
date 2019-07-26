@@ -92,15 +92,6 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Publishers
 
-/// Get publisher info based on its publisher key.
-///
-/// This key is _not_ always the URL's host. Use `publisherActivityFromURL`
-/// instead when obtaining a publisher given a URL
-///
-/// @note `completion` callback is called synchronously
-- (void)publisherInfoForId:(NSString *)publisherId
-                completion:(void (NS_NOESCAPE ^)(BATPublisherInfo * _Nullable info))completion;
-
 /// Get publisher info & its activity based on its publisher key
 ///
 /// This key is _not_ always the URL's host. Use `publisherActivityFromURL`
@@ -112,9 +103,13 @@ NS_SWIFT_NAME(BraveLedger)
                            filter:(BATActivityInfoFilter *)filter
                        completion:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
 
-- (void)publisherActivityFromURL:(NSURL *)URL
-                      faviconURL:(nullable NSURL *)faviconURL
-                   publisherBlob:(nullable NSString *)publisherBlob;
+/// Start a fetch to get a publishers activity information given a URL
+///
+/// Use `BATBraveLedgerObserver` to retrieve a panel publisher if one is found
+- (void)fetchPublisherActivityFromURL:(NSURL *)URL
+                           faviconURL:(nullable NSURL *)faviconURL
+                        publisherBlob:(nullable NSString *)publisherBlob
+                                tabId:(uint64_t)tabId;
 
 /// Returns activity info for current reconcile stamp.
 - (nullable BATPublisherInfo *)currentActivityInfoWithPublisherId:(NSString *)publisherId;
@@ -222,8 +217,8 @@ NS_SWIFT_NAME(BraveLedger)
          firstPartyURL:(NSURL *)firstPartyURL
            referrerURL:(nullable NSURL *)referrerURL;
 
-/// Report that a tab with a given id was closed by the user
-- (void)reportTabClosedWithTabId:(UInt32)tabId NS_SWIFT_NAME(reportTabClosed(tabId:));
+/// Report that a tab with a given id navigated or was closed by the user
+- (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId NS_SWIFT_NAME(reportTabNavigationOrClosed(tabId:));
 
 #pragma mark - Preferences
 

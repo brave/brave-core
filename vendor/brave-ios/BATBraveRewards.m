@@ -118,47 +118,35 @@
 
 - (void)reportTabUpdated:(NSInteger)tabId
                      url:(NSURL *)url
+              faviconURL:(nullable NSURL *)faviconURL
               isSelected:(BOOL)isSelected
                isPrivate:(BOOL)isPrivate
-              completion:(void (^)(BOOL verifiedPublisher))completion
 {
   if (isSelected) {
     self.ledger.selectedTabId = (UInt32)tabId;
   }
 
-  [self onTabRetrieved:tabId url:url];
+  [self onTabRetrieved:tabId url:url faviconURL:faviconURL html:nil];
   [self.ads reportTabUpdated:tabId url:url isSelected:isSelected isPrivate:isPrivate];
-  
-  if (tabId == self.ledger.selectedTabId) {
-    [self.ledger publisherInfoForId:url.host completion:^(BATPublisherInfo * _Nullable info) {
-      completion(info.verified);
-    }];
-  } else {
-    completion(NO);
-  }
 }
 
 - (void)reportLoadedPageWithURL:(NSURL *)url
+                     faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
                            html:(NSString *)html
-                     completion:(void (^)(BOOL verifiedPublisher))completion
 {
-  [self onTabRetrieved:tabId url:url];
+  [self onTabRetrieved:tabId url:url faviconURL:faviconURL html:html];
   [self.ads reportLoadedPageWithURL:url html:html];
   [self.ledger reportLoadedPageWithURL:url tabId:tabId];
-  
-  [self.ledger publisherInfoForId:url.host completion:^(BATPublisherInfo * _Nullable info) {
-    completion(info.verified);
-  }];
 }
 
-- (void)onTabRetrieved:(NSInteger)tabId url:(NSURL *)url
+- (void)onTabRetrieved:(NSInteger)tabId url:(NSURL *)url faviconURL:(nullable NSURL *)faviconURL html:(nullable NSString *)html
 {
   // Check for private mode should be done on client side.
   if (!self.ledger.walletCreated || !self.ledger.isEnabled) { return; }
   
   // New publisher database entry will be created if the pub doesn't exist.
-  [self.ledger publisherActivityFromURL:url faviconURL:nil publisherBlob:nil];
+  [self.ledger fetchPublisherActivityFromURL:url faviconURL:faviconURL publisherBlob:html tabId:tabId];
 }
 
 - (void)reportXHRLoad:(NSURL *)url tabId:(UInt32)tabId firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
@@ -171,10 +159,15 @@
   [self.ledger reportPostData:postData url:url tabId:tabId firstPartyURL:firstPartyURL referrerURL:referrerURL];
 }
 
+- (void)reportTabNavigationWithTabId:(UInt32)tabId
+{
+  [self.ledger reportTabNavigationOrClosedWithTabId:tabId];
+}
+
 - (void)reportTabClosedWithTabId:(UInt32)tabId
 {
   [self.ads reportTabClosedWithTabId:tabId];
-  [self.ledger reportTabClosedWithTabId:tabId];
+  [self.ledger reportTabNavigationOrClosedWithTabId:tabId];
 }
 
 - (void)reportMediaStartedWithTabId:(UInt32)tabId

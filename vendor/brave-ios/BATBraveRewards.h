@@ -83,29 +83,31 @@ NS_SWIFT_NAME(BraveRewards)
 /// Report that a tab with a given id was updated
 - (void)reportTabUpdated:(NSInteger)tabId
                      url:(NSURL *)url
+              faviconURL:(nullable NSURL *)faviconURL
               isSelected:(BOOL)isSelected
-               isPrivate:(BOOL)isPrivate
-              completion:(void (^)(BOOL verifiedPublisher))completion;
+               isPrivate:(BOOL)isPrivate;
 /// Report that a page has loaded in the current browser tab, and the HTML is available for analysis
 - (void)reportLoadedPageWithURL:(NSURL *)url
-                          tabId:(UInt32)tabId html:(NSString *)html
-                     completion:(void (^)(BOOL verifiedPublisher))completion
-              NS_SWIFT_NAME(reportLoadedPage(url:tabId:html:completion:));
+                     faviconURL:(nullable NSURL *)faviconURL
+                          tabId:(UInt32)tabId
+                           html:(NSString *)html NS_SWIFT_NAME(reportLoadedPage(url:faviconUrl:tabId:html:));
 /// Report any XHR load happening in the page
 - (void)reportXHRLoad:(NSURL *)url
                 tabId:(UInt32)tabId
-        firstPartyURL:(NSURL *)firstPartyURL
+        firstPartyURL:(nullable NSURL *)firstPartyURL
           referrerURL:(nullable NSURL *)referrerURL NS_SWIFT_NAME(reportXHRLoad(url:tabId:firstPartyURL:referrerURL:));
 /// Report posting data to a form?
 - (void)reportPostData:(NSData *)postData
                    url:(NSURL *)url
                  tabId:(UInt32)tabId
-         firstPartyURL:(NSURL *)firstPartyURL
+         firstPartyURL:(nullable NSURL *)firstPartyURL
            referrerURL:(nullable NSURL *)referrerURL NS_SWIFT_NAME(reportPostData(_:url:tabId:firstPartyURL:referrerURL:));;
 /// Report that media has started on a tab with a given id
 - (void)reportMediaStartedWithTabId:(UInt32)tabId NS_SWIFT_NAME(reportMediaStarted(tabId:));
 /// Report that media has stopped on a tab with a given id
 - (void)reportMediaStoppedWithTabId:(UInt32)tabId NS_SWIFT_NAME(reportMediaStopped(tabId:));
+/// Report that a tab with a given id navigated to a new page in the same tab
+- (void)reportTabNavigationWithTabId:(UInt32)tabId NS_SWIFT_NAME(reportTabNavigation(tabId:));
 /// Report that a tab with a given id was closed by the user
 - (void)reportTabClosedWithTabId:(UInt32)tabId NS_SWIFT_NAME(reportTabClosed(tabId:));
 

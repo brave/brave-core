@@ -58,6 +58,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
   deps = [
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
+    "//url",
     ":resources",
     ":coredata",
     ":mojo_gen_wrappers",
