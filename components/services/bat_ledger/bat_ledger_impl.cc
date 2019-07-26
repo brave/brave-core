@@ -363,10 +363,10 @@ void BatLedgerImpl::GetContributionAmount(
 
 void BatLedgerImpl::OnDoDirectTip(
     CallbackHolder<DoDirectTipCallback>* holder,
-    bool success) {
+    const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(success);
+    std::move(holder->get()).Run(result);
   delete holder;
 }
 

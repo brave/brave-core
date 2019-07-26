@@ -16,14 +16,6 @@ namespace bat_ledger {
 
 namespace {  // TODO(anyone): move into a util class
 
-int32_t ToMojomResult(ledger::Result result) {
-  return (int32_t)result;
-}
-
-ledger::Result ToLedgerResult(int32_t result) {
-  return (ledger::Result)result;
-}
-
 ledger::REWARDS_CATEGORY ToLedgerPublisherCategory(int32_t category) {
   return (ledger::REWARDS_CATEGORY)category;
 }
@@ -53,7 +45,7 @@ void LedgerClientMojoProxy::CallbackHolder<
   LedgerClientMojoProxy::LoadLedgerStateCallback>::OnLedgerStateLoaded(
     ledger::Result result, const std::string& data) {
   if (is_valid())
-    std::move(callback_).Run(ToMojomResult(result), data);
+    std::move(callback_).Run(result, data);
   delete this;
 }
 
@@ -64,7 +56,7 @@ void LedgerClientMojoProxy::OnLoadLedgerState(
     const std::string& data) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result), data);
+    std::move(holder->get()).Run(result, data);
   delete holder;
 }
 
@@ -79,15 +71,16 @@ void LedgerClientMojoProxy::GenerateGUID(GenerateGUIDCallback callback) {
   std::move(callback).Run(ledger_client_->GenerateGUID());
 }
 
-void LedgerClientMojoProxy::OnWalletInitialized(int32_t result) {
-  ledger_client_->OnWalletInitialized(ToLedgerResult(result));
+void LedgerClientMojoProxy::OnWalletInitialized(const ledger::Result result) {
+  ledger_client_->OnWalletInitialized(result);
 }
 
 void LedgerClientMojoProxy::OnWalletProperties(
-    int32_t result,
+    const ledger::Result result,
     ledger::WalletPropertiesPtr properties) {
-  ledger_client_->OnWalletProperties(ToLedgerResult(result),
-                                     std::move(properties));
+  ledger_client_->OnWalletProperties(
+      result,
+      std::move(properties));
 }
 
 // static
@@ -97,7 +90,7 @@ void LedgerClientMojoProxy::OnLoadPublisherState(
     const std::string& data) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result), data);
+    std::move(holder->get()).Run(result, data);
   delete holder;
 }
 
@@ -120,7 +113,7 @@ void LedgerClientMojoProxy::CallbackHolder<
   LedgerClientMojoProxy::LoadPublisherStateCallback>::OnPublisherStateLoaded(
     ledger::Result result, const std::string& data) {
   if (is_valid())
-    std::move(callback_).Run(ToMojomResult(result), data);
+    std::move(callback_).Run(result, data);
   delete this;
 }
 
@@ -142,7 +135,7 @@ void LedgerClientMojoProxy::CallbackHolder<
   LedgerClientMojoProxy::LoadPublisherListCallback>::OnPublisherListLoaded(
     ledger::Result result, const std::string& data) {
   if (is_valid())
-    std::move(callback_).Run(ToMojomResult(result), data);
+    std::move(callback_).Run(result, data);
   delete this;
 }
 
@@ -164,7 +157,7 @@ void LedgerClientMojoProxy::CallbackHolder<
   LedgerClientMojoProxy::SaveLedgerStateCallback>::OnLedgerStateSaved(
     ledger::Result result) {
   if (is_valid())
-    std::move(callback_).Run(ToMojomResult(result));
+    std::move(callback_).Run(result);
   delete this;
 }
 
@@ -186,7 +179,7 @@ void LedgerClientMojoProxy::CallbackHolder<
   LedgerClientMojoProxy::SavePublisherStateCallback>::OnPublisherStateSaved(
     ledger::Result result) {
   if (is_valid())
-    std::move(callback_).Run(ToMojomResult(result));
+    std::move(callback_).Run(result);
   delete this;
 }
 
@@ -208,40 +201,46 @@ void LedgerClientMojoProxy::CallbackHolder<
   LedgerClientMojoProxy::SavePublishersListCallback>::OnPublishersListSaved(
     ledger::Result result) {
   if (is_valid())
-    std::move(callback_).Run(ToMojomResult(result));
+    std::move(callback_).Run(result);
   delete this;
 }
 
 void LedgerClientMojoProxy::OnRecoverWallet(
-    int32_t result,
+    const ledger::Result result,
     double balance,
     std::vector<ledger::GrantPtr> grants) {
-  ledger_client_->OnRecoverWallet(ToLedgerResult(result),
-                                  balance,
-                                  std::move(grants));
+  ledger_client_->OnRecoverWallet(
+      result,
+      balance,
+      std::move(grants));
 }
 
-void LedgerClientMojoProxy::OnReconcileComplete(int32_t result,
+void LedgerClientMojoProxy::OnReconcileComplete(
+    const ledger::Result result,
     const std::string& viewing_id,
     int32_t category,
     const std::string& probi) {
-  ledger_client_->OnReconcileComplete(ToLedgerResult(result), viewing_id,
-      ToLedgerPublisherCategory(category), probi);
+  ledger_client_->OnReconcileComplete(
+      result,
+      viewing_id,
+      ToLedgerPublisherCategory(category),
+      probi);
 }
 
-void LedgerClientMojoProxy::OnGrantFinish(int32_t result,
-                                          ledger::GrantPtr grant) {
-  ledger_client_->OnGrantFinish(ToLedgerResult(result), std::move(grant));
+void LedgerClientMojoProxy::OnGrantFinish(
+    const ledger::Result result,
+    ledger::GrantPtr grant) {
+  ledger_client_->OnGrantFinish(result, std::move(grant));
 }
 
 // static
 void LedgerClientMojoProxy::OnSavePublisherInfo(
     CallbackHolder<SavePublisherInfoCallback>* holder,
-    ledger::Result result,
+    const ledger::Result result,
     ledger::PublisherInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
+    std::move(holder->get()).Run(result, std::move(info));
   delete holder;
 }
 
@@ -258,11 +257,11 @@ void LedgerClientMojoProxy::SavePublisherInfo(
 // static
 void LedgerClientMojoProxy::OnLoadPublisherInfo(
     CallbackHolder<LoadPublisherInfoCallback>* holder,
-    ledger::Result result,
+    const ledger::Result result,
     ledger::PublisherInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
+    std::move(holder->get()).Run(result, std::move(info));
   delete holder;
 }
 
@@ -279,11 +278,11 @@ void LedgerClientMojoProxy::LoadPublisherInfo(
 // static
 void LedgerClientMojoProxy::OnLoadPanelPublisherInfo(
     CallbackHolder<LoadPanelPublisherInfoCallback>* holder,
-    ledger::Result result,
+    const ledger::Result result,
     ledger::PublisherInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
+    std::move(holder->get()).Run(result, std::move(info));
   delete holder;
 }
 
@@ -306,7 +305,7 @@ void LedgerClientMojoProxy::OnLoadMediaPublisherInfo(
     ledger::PublisherInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
+    std::move(holder->get()).Run(result, std::move(info));
   delete holder;
 }
 
@@ -333,11 +332,13 @@ void LedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
 }
 
 void LedgerClientMojoProxy::OnPanelPublisherInfo(
-    int32_t result,
+    const ledger::Result result,
     ledger::PublisherInfoPtr publisher_info,
     uint64_t window_id) {
-  ledger_client_->OnPanelPublisherInfo(ToLedgerResult(result),
-      std::move(publisher_info), window_id);
+  ledger_client_->OnPanelPublisherInfo(
+      result,
+      std::move(publisher_info),
+      window_id);
 }
 
 // static
@@ -385,10 +386,11 @@ void LedgerClientMojoProxy::GetRecurringTips(
 // static
 void LedgerClientMojoProxy::OnLoadNicewareList(
     CallbackHolder<LoadNicewareListCallback>* holder,
-    int32_t result, const std::string& data) {
+    const ledger::Result result,
+    const std::string& data) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToLedgerResult(result), data);
+    std::move(holder->get()).Run(result, data);
   delete holder;
 }
 
@@ -404,10 +406,11 @@ void LedgerClientMojoProxy::LoadNicewareList(
 
 // static
 void LedgerClientMojoProxy::OnRemoveRecurringTip(
-    CallbackHolder<RemoveRecurringTipCallback>* holder, int32_t result) {
+    CallbackHolder<RemoveRecurringTipCallback>* holder,
+    const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToLedgerResult(result));
+    std::move(holder->get()).Run(result);
   delete holder;
 }
 
@@ -466,7 +469,7 @@ void LedgerClientMojoProxy::LoadURL(const std::string& url,
 // static
 void LedgerClientMojoProxy::OnSavePendingContribution(
     CallbackHolder<SavePendingContributionCallback>* holder,
-    ledger::Result result) {
+    const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result);
@@ -490,7 +493,7 @@ void LedgerClientMojoProxy::OnLoadActivityInfo(
     ledger::PublisherInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
+    std::move(holder->get()).Run(result, std::move(info));
   delete holder;
 }
 
@@ -511,7 +514,7 @@ void LedgerClientMojoProxy::OnSaveActivityInfo(
     ledger::PublisherInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result), std::move(info));
+    std::move(holder->get()).Run(result, std::move(info));
   delete holder;
 }
 
@@ -769,7 +772,7 @@ void LedgerClientMojoProxy::OnRemovePendingContribution(
     ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result));
+    std::move(holder->get()).Run(result);
   delete holder;
 }
 
@@ -796,7 +799,7 @@ void LedgerClientMojoProxy::OnRemoveAllPendingContributions(
     ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result));
+    std::move(holder->get()).Run(result);
   delete holder;
 }
 
@@ -833,12 +836,13 @@ void LedgerClientMojoProxy::GetPendingContributionsTotal(
 }
 
 void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
-      int32_t result,
+      const ledger::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) {
-  ledger_client_->OnContributeUnverifiedPublishers(ToLedgerResult(result),
-                                                   publisher_key,
-                                                   publisher_name);
+  ledger_client_->OnContributeUnverifiedPublishers(
+      result,
+      publisher_key,
+      publisher_name);
 }
 
 // static
@@ -870,7 +874,7 @@ void LedgerClientMojoProxy::SaveExternalWallet(
 // static
 void LedgerClientMojoProxy::OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
-    int32_t result) {
+    const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);

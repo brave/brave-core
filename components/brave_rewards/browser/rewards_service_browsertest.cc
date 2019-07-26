@@ -1020,8 +1020,9 @@ class BraveRewardsBrowserTest :
 
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                            uint32_t result) {
-    ASSERT_TRUE(result == ledger::Result::WALLET_CREATED ||
-                result == ledger::Result::NO_LEDGER_STATE);
+    const auto converted_result = static_cast<ledger::Result>(result);
+    ASSERT_TRUE(converted_result == ledger::Result::WALLET_CREATED ||
+                converted_result == ledger::Result::NO_LEDGER_STATE);
     wallet_initialized_ = true;
     if (wait_for_wallet_initialization_loop_)
       wait_for_wallet_initialization_loop_->Quit();
@@ -1030,7 +1031,7 @@ class BraveRewardsBrowserTest :
   void OnGrant(brave_rewards::RewardsService* rewards_service,
                unsigned int result,
                brave_rewards::Grant properties) {
-    ASSERT_EQ(result, ledger::Result::LEDGER_OK);
+    ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
     grant_initialized_ = true;
     if (wait_for_grant_initialization_loop_)
       wait_for_grant_initialization_loop_->Quit();
@@ -1047,7 +1048,7 @@ class BraveRewardsBrowserTest :
   void OnGrantFinish(brave_rewards::RewardsService* rewards_service,
                      unsigned int result,
                      brave_rewards::Grant grant) {
-    ASSERT_EQ(result, ledger::Result::LEDGER_OK);
+    ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
     grant_finished_ = true;
     grant_ = grant;
     balance_ += 30.0;
@@ -1077,9 +1078,11 @@ class BraveRewardsBrowserTest :
 
     UpdateContributionBalance(std::stod(amount), true);
 
+    const auto converted_result = static_cast<ledger::Result>(result);
+
     if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
       ac_reconcile_completed_ = true;
-      ac_reconcile_status_ = result;
+      ac_reconcile_status_ = converted_result;
       if (wait_for_ac_completed_loop_) {
         wait_for_ac_completed_loop_->Quit();
       }
@@ -1089,14 +1092,14 @@ class BraveRewardsBrowserTest :
         category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
       // Single tip tracking
       tip_reconcile_completed_ = true;
-      tip_reconcile_status_ = result;
+      tip_reconcile_status_ = converted_result;
       if (wait_for_tip_completed_loop_) {
         wait_for_tip_completed_loop_->Quit();
       }
 
       // Multiple tips
       multiple_tip_reconcile_count_++;
-      multiple_tip_reconcile_status_ = result;
+      multiple_tip_reconcile_status_ = converted_result;
 
       if (multiple_tip_reconcile_count_ == multiple_tip_reconcile_needed_) {
         multiple_tip_reconcile_completed_ = true;
@@ -1181,15 +1184,15 @@ class BraveRewardsBrowserTest :
 
   std::unique_ptr<base::RunLoop> wait_for_ac_completed_loop_;
   bool ac_reconcile_completed_ = false;
-  unsigned int ac_reconcile_status_ = ledger::LEDGER_ERROR;
+  ledger::Result ac_reconcile_status_ = ledger::Result::LEDGER_ERROR;
   std::unique_ptr<base::RunLoop> wait_for_tip_completed_loop_;
   bool tip_reconcile_completed_ = false;
-  unsigned int tip_reconcile_status_ = ledger::LEDGER_ERROR;
+  ledger::Result tip_reconcile_status_ = ledger::Result::LEDGER_ERROR;
   std::unique_ptr<base::RunLoop> wait_for_multiple_tip_completed_loop_;
   bool multiple_tip_reconcile_completed_ = false;
   int32_t multiple_tip_reconcile_count_ = 0;
   int32_t multiple_tip_reconcile_needed_ = 0;
-  unsigned int multiple_tip_reconcile_status_ = ledger::LEDGER_ERROR;
+  ledger::Result multiple_tip_reconcile_status_ = ledger::Result::LEDGER_ERROR;
 
   std::unique_ptr<base::RunLoop> wait_for_insufficient_notification_loop_;
   bool insufficient_notification_would_have_already_shown_ = false;

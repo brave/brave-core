@@ -27,15 +27,22 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   // bat_ledger::mojom::BatLedgerClient
   void GenerateGUID(GenerateGUIDCallback callback) override;
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
-  void OnWalletInitialized(int32_t result) override;
+  void OnWalletInitialized(const ledger::Result result) override;
   void OnWalletProperties(
-      int32_t result,
+      const ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
-  void OnRecoverWallet(int32_t result, double balance,
+  void OnRecoverWallet(
+      const ledger::Result result,
+      double balance,
       std::vector<ledger::GrantPtr> grants) override;
-  void OnReconcileComplete(int32_t result, const std::string& viewing_id,
-      int32_t category, const std::string& probi) override;
-  void OnGrantFinish(int32_t result, ledger::GrantPtr grant) override;
+  void OnReconcileComplete(
+      const ledger::Result result,
+      const std::string& viewing_id,
+      int32_t category,
+      const std::string& probi) override;
+  void OnGrantFinish(
+    const ledger::Result result,
+    ledger::GrantPtr grant) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadPublisherList(LoadPublisherListCallback callback) override;
@@ -68,9 +75,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
-  void OnPanelPublisherInfo(int32_t result,
-                            ledger::PublisherInfoPtr info,
-                            uint64_t window_id) override;
+  void OnPanelPublisherInfo(
+      const ledger::Result result,
+      ledger::PublisherInfoPtr info,
+      uint64_t window_id) override;
   void SaveContributionInfo(const std::string& probi, int32_t month,
       int32_t year, uint32_t date, const std::string& publisher_key,
       int32_t category) override;
@@ -155,7 +163,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       GetPendingContributionsTotalCallback callback) override;
 
   void OnContributeUnverifiedPublishers(
-      int32_t result,
+      const ledger::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
@@ -240,11 +248,12 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnLoadNicewareList(
       CallbackHolder<LoadNicewareListCallback>* holder,
-      int32_t result, const std::string& data);
+      const ledger::Result result,
+      const std::string& data);
 
   static void OnRemoveRecurringTip(
       CallbackHolder<RemoveRecurringTipCallback>* holder,
-      int32_t result);
+      const ledger::Result result);
 
   static void OnLoadURL(
       CallbackHolder<LoadURLCallback>* holder,
@@ -318,7 +327,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
-    int32_t result);
+    const ledger::Result result);
 
   ledger::LedgerClient* ledger_client_;
 

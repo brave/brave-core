@@ -52,29 +52,6 @@ typedef NS_ENUM(NSInteger, BATReportType) {
   BATReportTypeTip = 5
 } NS_SWIFT_NAME(ReportType);
 
-typedef NS_ENUM(NSInteger, BATResult) {
-  BATResultLedgerOk = 0,
-  BATResultLedgerError = 1,
-  BATResultNoPublisherState = 2,
-  BATResultNoLedgerState = 3,
-  BATResultInvalidPublisherState = 4,
-  BATResultInvalidLedgerState = 5,
-  BATResultCaptchaFailed = 6,
-  BATResultNoPublisherList = 7,
-  BATResultTooManyResults = 8,
-  BATResultNotFound = 9,
-  BATResultRegistrationVerificationFailed = 10,
-  BATResultBadRegistrationResponse = 11,
-  BATResultWalletCreated = 12,
-  BATResultGrantNotFound = 13,
-  BATResultAcTableEmpty = 14,
-  BATResultNotEnoughFunds = 15,
-  BATResultTipError = 16,
-  BATResultCorruptedWallet = 17,
-  BATResultGrantAlreadyClaimed = 18,
-  BATResultContributionAmountTooLow = 19
-} NS_SWIFT_NAME(Result);
-
 typedef NS_ENUM(NSInteger, BATURLMethod) {
   BATURLMethodGet = 0,
   BATURLMethodPut = 1,

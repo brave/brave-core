@@ -22,7 +22,6 @@
 #include "bat/ledger/transactions_info.h"
 #include "bat/ledger/rewards_internals_info.h"
 #include "bat/ledger/pending_contribution.h"
-#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
 

@@ -720,7 +720,7 @@ void LedgerImpl::RecoverWallet(const std::string& passPhrase) const {
 }
 
 void LedgerImpl::OnRecoverWallet(
-    ledger::Result result,
+    const ledger::Result result,
     double balance,
     const std::vector<braveledger_bat_helper::GRANT>& grants) {
   if (result != ledger::Result::LEDGER_OK) {
@@ -744,9 +744,7 @@ void LedgerImpl::OnRecoverWallet(
     bat_publishers_->clearAllBalanceReports();
   }
 
-  ledger_client_->OnRecoverWallet(result
-                                  ? ledger::Result::LEDGER_ERROR
-                                  : ledger::Result::LEDGER_OK,
+  ledger_client_->OnRecoverWallet(result,
                                   balance,
                                   std::move(ledgerGrants));
 }

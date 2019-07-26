@@ -156,8 +156,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       std::unique_ptr<brave_rewards::WalletProperties>
       wallet_properties) override;
   void OnGrant(brave_rewards::RewardsService* rewards_service,
-                   unsigned int error_code,
-                   brave_rewards::Grant result) override;
+                   unsigned int result,
+                   brave_rewards::Grant grant) override;
   void OnGrantCaptcha(brave_rewards::RewardsService* rewards_service,
                           std::string image, std::string hint) override;
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,

@@ -183,17 +183,17 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   mojom::BatLedgerClientAssociatedPtr bat_ledger_client_;
 
   void OnLoadLedgerState(ledger::OnLoadCallback callback,
-      int32_t result, const std::string& data);
+      const ledger::Result result, const std::string& data);
   void OnLoadPublisherState(ledger::OnLoadCallback callback,
-      int32_t result, const std::string& data);
+      const ledger::Result result, const std::string& data);
   void OnLoadPublisherList(ledger::LedgerCallbackHandler* handler,
-      int32_t result, const std::string& data);
+      const ledger::Result result, const std::string& data);
   void OnSaveLedgerState(ledger::LedgerCallbackHandler* handler,
-      int32_t result);
+      const ledger::Result result);
   void OnSavePublisherState(ledger::LedgerCallbackHandler* handler,
-      int32_t result);
+      const ledger::Result result);
   void OnSavePublishersList(ledger::LedgerCallbackHandler* handler,
-      int32_t result);
+      const ledger::Result result);
 
   DISALLOW_COPY_AND_ASSIGN(BatLedgerClientMojoProxy);
 };

@@ -81,7 +81,7 @@ using GetTestResponseCallback =
 
 using ExternalWalletAuthorizationCallback =
     base::OnceCallback<void(
-        int32_t,
+        const ledger::Result,
         const std::map<std::string, std::string>&)>;
 
 class RewardsServiceImpl : public RewardsService,
@@ -294,12 +294,13 @@ class RewardsServiceImpl : public RewardsService,
                              bool success);
   void OnPublisherStateLoaded(ledger::OnLoadCallback callback,
                               const std::string& data);
-  void TriggerOnWalletInitialized(ledger::Result result);
-  void OnFetchWalletProperties(int result,
+  void TriggerOnWalletInitialized(const ledger::Result result);
+  void OnFetchWalletProperties(const ledger::Result result,
                                ledger::WalletPropertiesPtr properties);
-  void OnFetchGrants(int result, std::vector<ledger::GrantPtr> grants);
-  void OnGrant(ledger::Result result, ledger::GrantPtr grant);
-  void TriggerOnGrant(ledger::Result result, ledger::GrantPtr grant);
+  void OnFetchGrants(
+    const ledger::Result result,
+    std::vector<ledger::GrantPtr> grants);
+  void TriggerOnGrant(const ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
   void TriggerOnRecoverWallet(ledger::Result result,
                               double balance,
@@ -320,7 +321,7 @@ class RewardsServiceImpl : public RewardsService,
                              ledger::PublisherInfoPtr info);
   void OnMediaPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
                              ledger::PublisherInfoPtr info);
-  void OnRestorePublishersUI(const int32_t result);
+  void OnRestorePublishersUI(const ledger::Result result);
   void OnPublisherInfoListLoaded(uint32_t start,
                                  uint32_t limit,
                                  ledger::PublisherInfoListCallback callback,
@@ -335,9 +336,8 @@ class RewardsServiceImpl : public RewardsService,
                                   const std::string& value);
   void OnResetState(ledger::OnResetCallback callback,
                                  bool success);
-  void OnTipPublisherInfoSaved(ledger::Result result,
-                                   ledger::PublisherInfoPtr info);
-  void OnDoDirectTip(int result);
+  void OnTipPublisherInfoSaved(const ledger::Result result,
+                               ledger::PublisherInfoPtr info);
   void OnTip(const std::string& publisher_key,
              int amount,
              bool recurring,
@@ -350,7 +350,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoList list);
   void OnGetOneTimeTips(ledger::PublisherInfoListCallback callback,
                         ledger::PublisherInfoList list);
-  void OnRecurringTipUI(const int32_t result);
+  void OnRecurringTipUI(const ledger::Result result);
   void OnRemoveRecurringTip(ledger::RemoveRecurringTipCallback callback,
                             const bool success);
   void RemoveRecurringTip(const std::string& publisher_key,
@@ -362,7 +362,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherListNormalizedSaved(ContentSiteList site_list,
                                       bool success);
   void OnWalletProperties(
-      ledger::Result result,
+      const ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
   void OnTip(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
@@ -379,7 +379,7 @@ class RewardsServiceImpl : public RewardsService,
                           ledger::PublisherInfoList list);
 
   void OnPublisherActivityInfoLoaded(ledger::PublisherInfoCallback callback,
-                                     uint32_t result,
+                                     const ledger::Result result,
                                      ledger::PublisherInfoPtr info);
 
   void OnInlineTipSetting(GetInlineTipSettingCallback callback, bool enabled);
@@ -417,44 +417,44 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationTipsPaid();
   void ShowNotificationTipsPaid(bool ac_enabled);
 
-  void OnPendingContributionRemovedUI(int32_t result);
+  void OnPendingContributionRemovedUI(const ledger::Result result);
 
-  void OnRemoveAllPendingContributionsUI(int32_t result);
+  void OnRemoveAllPendingContributionsUI(const ledger::Result result);
 
   void OnGetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback,
     double amount);
 
   void OnFetchBalance(FetchBalanceCallback callback,
-                      int32_t result,
+                      const ledger::Result result,
                       ledger::BalancePtr balance);
 
   void OnGetExternalWallet(
     const std::string& wallet_type,
     GetExternalWalletCallback callback,
-    int32_t result,
+    const ledger::Result result,
     ledger::ExternalWalletPtr wallet);
 
   void OnExternalWalletAuthorization(
     const std::string& wallet_type,
     ExternalWalletAuthorizationCallback callback,
-    int32_t result,
+    const ledger::Result result,
     const base::flat_map<std::string, std::string>& args);
 
   void OnProcessExternalWalletAuthorization(
     const std::string& wallet_type,
     const std::string& action,
     ProcessRewardsPageUrlCallback callback,
-    int32_t result,
+    const ledger::Result result,
     const std::map<std::string, std::string>& args);
 
   void OnDisconnectWallet(
     const std::string& wallet_type,
-    int32_t result);
+    const ledger::Result result);
 
   void OnSetPublisherExclude(const std::string& publisher_key,
                              const bool exclude,
-                             const int32_t result);
+                             const ledger::Result result);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -513,7 +513,7 @@ class RewardsServiceImpl : public RewardsService,
       GetTransactionHistoryCallback callback) override;
   void ConfirmationsTransactionHistoryDidChange() override;
 
-  void OnPanelPublisherInfo(ledger::Result result,
+  void OnPanelPublisherInfo(const ledger::Result result,
                             ledger::PublisherInfoPtr info,
                             uint64_t window_id) override;
   void FetchFavIcon(const std::string& url,
@@ -633,7 +633,7 @@ class RewardsServiceImpl : public RewardsService,
       bool verified);
   void OnMediaInlineInfoSaved(
       SaveMediaInfoCallback callback,
-      int32_t result,
+      const ledger::Result result,
       ledger::PublisherInfoPtr publisher);
 
   void OnContributeUnverifiedPublishers(

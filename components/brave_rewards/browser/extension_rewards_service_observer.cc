@@ -31,8 +31,10 @@ void ExtensionRewardsServiceObserver::OnWalletInitialized(
     uint32_t result) {
   auto* event_router = extensions::EventRouter::Get(profile_);
 
+  auto converted_result = static_cast<ledger::Result>(result);
+
   // Don't report back if there is no ledger file
-  if (event_router && result != ledger::Result::NO_LEDGER_STATE) {
+  if (event_router && converted_result != ledger::Result::NO_LEDGER_STATE) {
     std::unique_ptr<base::ListValue> args(
         extensions::api::brave_rewards::OnWalletInitialized::Create(
           result).release());
