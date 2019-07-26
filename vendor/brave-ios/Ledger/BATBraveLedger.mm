@@ -183,7 +183,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; }
     NSError *error = nil;
-    if (result != ledger::WALLET_CREATED) {
+    if (result != ledger::Result::WALLET_CREATED) {
       std::map<ledger::Result, std::string> errorDescriptions {
         { ledger::Result::LEDGER_ERROR, "The wallet was already initialized" },
         { ledger::Result::BAD_REGISTRATION_RESPONSE, "Request credentials call failure or malformed data" },
@@ -194,7 +194,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       if (description.length() > 0) {
         userInfo = @{ NSLocalizedDescriptionKey: [NSString stringWithUTF8String:description.c_str()] };
       }
-      error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:result userInfo:userInfo];
+      error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:static_cast<NSInteger>(result) userInfo:userInfo];
     }
     if (completion) {
       strongSelf.enabled = YES;
@@ -243,7 +243,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1
 {
-  if (result == ledger::LEDGER_OK) {
+  if (result == ledger::Result::LEDGER_OK) {
     if (arg1.get() != nullptr) {
       self.walletInfo = [[BATWalletProperties alloc] initWithWalletPropertiesPtr:std::move(arg1)];
     } else {
@@ -283,7 +283,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; }
     NSError *error = nil;
-    if (result != ledger::LEDGER_OK) {
+    if (result != ledger::Result::LEDGER_OK) {
       std::map<ledger::Result, std::string> errorDescriptions {
         { ledger::Result::LEDGER_ERROR, "The recovery failed" },
       };
@@ -292,7 +292,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       if (description.length() > 0) {
         userInfo = @{ NSLocalizedDescriptionKey: [NSString stringWithUTF8String:description.c_str()] };
       }
-      error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:result userInfo:userInfo];
+      error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:static_cast<NSInteger>(result) userInfo:userInfo];
     }
     if (completion) {
       completion(error);
@@ -328,7 +328,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 - (void)publisherInfoForId:(NSString *)publisherId completion:(void (NS_NOESCAPE ^)(BATPublisherInfo * _Nullable))completion
 {
   ledger->GetPublisherInfo(std::string(publisherId.UTF8String), ^(ledger::Result result, ledger::PublisherInfoPtr info) {
-    if (result == ledger::LEDGER_OK && info.get() != nullptr) {
+    if (result == ledger::Result::LEDGER_OK && info.get() != nullptr) {
       completion([[BATPublisherInfo alloc] initWithPublisherInfo:*info]);
     } else {
       completion(nil);
@@ -373,8 +373,8 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state
 {
-  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PUBLISHER_EXCLUDE)state, ^(const int32_t result) {
-    if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
+  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PUBLISHER_EXCLUDE)state, ^(const ledger::Result result) {
+    if (result != ledger::Result::LEDGER_OK) {
       return;
     }
 
@@ -398,8 +398,8 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)restoreAllExcludedPublishers
 {
-  ledger->RestorePublishers(^(const int32_t result) {
-    if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
+  ledger->RestorePublishers(^(const ledger::Result result) {
+    if (result != ledger::Result::LEDGER_OK) {
       return;
     }
 
@@ -528,7 +528,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 - (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId completion:(nullable void (^)(NSArray<BATGrant *> *grants))completion
 {
   ledger->FetchGrants(std::string(language.UTF8String), std::string(paymentId.UTF8String), ^(ledger::Result result, std::vector<ledger::GrantPtr> grants) {
-    if (result != ledger::LEDGER_OK) {
+    if (result != ledger::Result::LEDGER_OK) {
       return;
     }
     [self.mPendingGrants removeAllObjects];
@@ -582,7 +582,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   ledger::BalanceReportInfo report_info;
   auto now = [NSDate date];
   const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
-  if (result == ledger::LEDGER_OK) {
+  if (result == ledger::Result::LEDGER_OK) {
     ledger::ReportType report_type = grant->type == "ads" ? ledger::ADS : ledger::GRANT;
     ledger->SetBalanceReportItem(BATGetPublisherMonth(now),
                                  BATGetPublisherYear(now),
@@ -1193,9 +1193,9 @@ BATLedgerBridge(BOOL,
 {
   const auto contents = [self.commonOps loadContentsFromFileWithName:"ledger_state.json"];
   if (contents.length() > 0) {
-    callback(ledger::LEDGER_OK, contents);
+    callback(ledger::Result::LEDGER_OK, contents);
   } else {
-    callback(ledger::NO_LEDGER_STATE, contents);
+    callback(ledger::Result::NO_LEDGER_STATE, contents);
   }
   [self startNotificationTimers];
 }
@@ -1203,39 +1203,39 @@ BATLedgerBridge(BOOL,
 - (void)saveLedgerState:(const std::string &)ledger_state handler:(ledger::LedgerCallbackHandler *)handler
 {
   const auto result = [self.commonOps saveContents:ledger_state name:"ledger_state.json"];
-  handler->OnLedgerStateSaved(result ? ledger::LEDGER_OK : ledger::NO_LEDGER_STATE);
+  handler->OnLedgerStateSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::NO_LEDGER_STATE);
 }
 
 - (void)loadPublisherState:(ledger::OnLoadCallback)callback
 {
   const auto contents = [self.commonOps loadContentsFromFileWithName:"publisher_state.json"];
   if (contents.length() > 0) {
-    callback(ledger::LEDGER_OK, contents);
+    callback(ledger::Result::LEDGER_OK, contents);
   } else {
-    callback(ledger::NO_PUBLISHER_STATE, contents);
+    callback(ledger::Result::NO_PUBLISHER_STATE, contents);
   }
 }
 
 - (void)savePublisherState:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler
 {
   const auto result = [self.commonOps saveContents:publisher_state name:"publisher_state.json"];
-  handler->OnPublisherStateSaved(result ? ledger::LEDGER_OK : ledger::LEDGER_ERROR);
+  handler->OnPublisherStateSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
 - (void)loadPublisherList:(ledger::LedgerCallbackHandler *)handler
 {
   const auto contents = [self.commonOps loadContentsFromFileWithName:"publisher_list.json"];
   if (contents.length() > 0) {
-    handler->OnPublisherListLoaded(ledger::LEDGER_OK, contents);
+    handler->OnPublisherListLoaded(ledger::Result::LEDGER_OK, contents);
   } else {
-    handler->OnPublisherListLoaded(ledger::NO_PUBLISHER_LIST, contents);
+    handler->OnPublisherListLoaded(ledger::Result::NO_PUBLISHER_LIST, contents);
   }
 }
 
 - (void)savePublishersList:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler
 {
   const auto result = [self.commonOps saveContents:publisher_state name:"publisher_list.json"];
-  handler->OnPublishersListSaved(result ? ledger::LEDGER_OK : ledger::LEDGER_ERROR);
+  handler->OnPublishersListSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback
@@ -1243,9 +1243,9 @@ BATLedgerBridge(BOOL,
   const auto key = [NSString stringWithUTF8String:name.c_str()];
   const auto value = self.state[key];
   if (value) {
-    callback(ledger::LEDGER_OK, std::string(value.UTF8String));
+    callback(ledger::Result::LEDGER_OK, std::string(value.UTF8String));
   } else {
-    callback(ledger::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR, "");
   }
 }
 
@@ -1253,7 +1253,7 @@ BATLedgerBridge(BOOL,
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];
   self.state[key] = nil;
-  callback(ledger::LEDGER_OK);
+  callback(ledger::Result::LEDGER_OK);
   // In brave-core, failed callback returns `LEDGER_ERROR`
   NSDictionary *state = [self.state copy];
   NSString *path = [self.randomStatePath copy];
@@ -1266,7 +1266,7 @@ BATLedgerBridge(BOOL,
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];
   self.state[key] = [NSString stringWithUTF8String:value.c_str()];
-  callback(ledger::LEDGER_OK);
+  callback(ledger::Result::LEDGER_OK);
   // In brave-core, failed callback returns `LEDGER_ERROR`
   NSDictionary *state = [self.state copy];
   NSString *path = [self.randomStatePath copy];
