@@ -37,13 +37,14 @@ export const SelectGrid = styled(BaseGrid)`
 
 export const Footer = styled(BaseGrid.withComponent('footer'))`
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  padding: 0 50px 40px;
+  grid-template-rows: 52px;
+  max-width: 540px;
+  margin: 24px 0 0 0;
 `
 
 export const FooterLeftColumn = styled(BaseColumn)`
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 `
 
 export const FooterMiddleColumn = styled(BaseColumn)`
@@ -53,7 +54,7 @@ export const FooterMiddleColumn = styled(BaseColumn)`
 
 export const FooterRightColumn = styled(BaseColumn)`
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
 `
 
 interface ContentProps {
@@ -67,7 +68,7 @@ export const Content = styled<ContentProps, 'section'>('section')`
   opacity: 0;
   will-change: transform;
   transform: translateX(${p => p.isPrevious ? '-' + p.screenPosition : p.screenPosition}) scale(0.8);
-  transition: opacity 700ms, transform 700ms ease-in-out;
+  transition: opacity 600ms, transform 600ms ease-in-out;
   position: absolute;
   z-index: ${p => p.zIndex};
   display: flex;
@@ -75,7 +76,8 @@ export const Content = styled<ContentProps, 'section'>('section')`
   justify-content: center;
   align-items: center;
   flex: 1;
-  padding: 0 60px;
+  max-width: 580px;
+  padding: 24px;
 
   ${p => p.active && css`
     opacity: 1;
@@ -84,11 +86,13 @@ export const Content = styled<ContentProps, 'section'>('section')`
 `
 
 export const Page = styled<{}, 'div'>('div')`
-  width: inherit%;
+  width: inherit;
   height: inherit;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  background: ${p => p.theme.color.panelBackground};
+  overflow: hidden;
 `
 
 export const Panel = styled('div')`
@@ -104,23 +108,20 @@ export const Panel = styled('div')`
   /* end of animation stuff */
   box-sizing: border-box;
   position: relative;
-  overflow: hidden;
-  margin: 0;
-  background-color: rgba(255,255,255,0.99);
-  border-radius: 20px;
-  box-shadow: 0 6px 12px 0 rgba(39, 46, 64, 0.2);
-  max-width: 600px;
+  overflow: visible;
+  max-width: 800px;
   width: 100%;
-  min-height: 540px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding: 0;
+  margin: 64px 0 0 0;
   font-size: inherit;
+  align-items: center;
 `
 
 export const SlideContent = styled<{}, 'div'>('div')`
   max-width: inherit;
+  width: inherit;
   min-height: 540px;
   display: flex;
   justify-content: center;

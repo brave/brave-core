@@ -120,7 +120,7 @@ export default class WelcomePage extends React.PureComponent<Props, State> {
     return (
       <>
         <BackgroundContainer>
-          <Background position={`-${currentScreen}0%`} />
+          <Background />
         </BackgroundContainer>
         <Page>
           <Panel>

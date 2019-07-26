@@ -25,7 +25,12 @@ const locale = {
   fakeSearchProvider2: 'Google (default)',
   // fourth screen
   chooseYourTheme: 'Choose your color theme',
+  selectTheme: 'Select a theme',
   findToolbarTheme: 'Set the color of your toolbar by selecting the light or dark option from the settings panel.',
+  themeOption1: 'Light',
+  themeOption2: 'Dark',
+  themeOption3: 'System theme (default)',
+
   // fifth screen
   protectYourPrivacy: 'Manage your shields',
   adjustProtectionLevel: 'Protect against privacy-invading ads and trackers while browsing with Brave Shields. Set Shields to "down" if a site doesn’t seem to be working properly.',

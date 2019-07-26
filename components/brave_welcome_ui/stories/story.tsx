@@ -4,10 +4,16 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
+import welcomeDarkTheme from 'brave-ui/theme/welcome-dark'
+import welcomeLightTheme from 'brave-ui/theme/welcome-light'
+import { withThemesProvider } from 'storybook-addon-styled-component-theme'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
 
 // Components
 import WelcomePage from './page/index'
+
+// Themes
+const themes = [welcomeLightTheme, welcomeDarkTheme]
 
 const fullPageStoryStyles: object = {
   width: '-webkit-fill-available',
@@ -18,6 +24,7 @@ export const FullPageStory = (storyFn: any) =>
   <div style={fullPageStoryStyles}>{storyFn()}</div>
 
 storiesOf('Welcome', module)
+  .addDecorator(withThemesProvider(themes))
   .addDecorator(withKnobs)
   .addDecorator(FullPageStory)
   .add('Page', () => {

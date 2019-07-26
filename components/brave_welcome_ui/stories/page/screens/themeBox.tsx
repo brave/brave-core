@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from '../../../components'
+import { Content, Title, Paragraph, PrimaryButton, SelectGrid, SelectBox } from '../../../components'
 
 // Utils
 import locale from '../fakeLocale'
@@ -19,9 +19,30 @@ interface Props {
   onClick: () => void
 }
 
-export default class ThemingBox extends React.PureComponent<Props, {}> {
+interface State {
+  themeSelected: boolean
+}
+
+export default class ThemingBox extends React.PureComponent<Props, State> {
+
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      themeSelected: false
+    }
+  }
+
+  onClickSelectTheme = () => {
+    this.props.onClick()
+  }
+
+  onChangeThemeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ themeSelected: event.target.value !== '' })
+  }
+
   render () {
-    const { index, currentScreen, onClick } = this.props
+    const { index, currentScreen } = this.props
+    const { themeSelected } = this.state
     return (
       <Content
         zIndex={index}
@@ -32,13 +53,22 @@ export default class ThemingBox extends React.PureComponent<Props, {}> {
         <WelcomeThemeImage />
         <Title>{locale.chooseYourTheme}</Title>
         <Paragraph>{locale.findToolbarTheme}</Paragraph>
-          <PrimaryButton
-            level='primary'
-            type='accent'
-            size='large'
-            text={locale.theme}
-            onClick={onClick}
-          />
+        <SelectGrid>
+            <SelectBox onChange={this.onChangeThemeOption}>
+              <option value=''>{locale.selectTheme}</option>
+              <option value='Light'>{locale.themeOption1}</option>
+              <option value='Dark'>{locale.themeOption2}</option>
+              <option value='System'>{locale.themeOption3}</option>
+            </SelectBox>
+            <PrimaryButton
+              level='primary'
+              type='accent'
+              size='large'
+              text={locale.confirm}
+              disabled={!themeSelected}
+              onClick={this.onClickSelectTheme}
+            />
+        </SelectGrid>
       </Content>
     )
   }

@@ -31,6 +31,16 @@ class BraveThemeGetBraveThemeTypeFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveThemeSetBraveThemeTypeFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveTheme.setBraveThemeType", UNKNOWN)
+
+ protected:
+  ~BraveThemeSetBraveThemeTypeFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

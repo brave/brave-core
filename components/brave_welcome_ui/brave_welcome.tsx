@@ -7,8 +7,9 @@ import { render } from 'react-dom'
 import { bindActionCreators } from 'redux'
 import { Provider } from 'react-redux'
 
-import Theme from 'brave-ui/theme/brave-default'
-import { ThemeProvider } from 'brave-ui/theme'
+import welcomeDarkTheme from 'brave-ui/theme/welcome-dark'
+import welcomeLightTheme from 'brave-ui/theme/welcome-light'
+import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
 
 // Components
 import App from './containers/app'
@@ -20,26 +21,32 @@ import * as welcomeActions from './actions/welcome_actions'
 window.cr.define('brave_welcome', function () {
   'use strict'
 
-  function getSearchEngineProviders () {
+  function loadWelcomeData () {
     const actions = bindActionCreators(welcomeActions, store.dispatch.bind(store))
     actions.getSearchEngineProviders()
-  }
-
-  function getBrowserProfiles () {
-    const actions = bindActionCreators(welcomeActions, store.dispatch.bind(store))
     actions.getBrowserProfiles()
+    actions.getBrowserThemes()
   }
 
   function initialize () {
-    getSearchEngineProviders()
-    getBrowserProfiles()
-    render(
-      <Provider store={store}>
-        <ThemeProvider theme={Theme}>
-          <App />
-        </ThemeProvider>
-      </Provider>,
-      document.getElementById('root'))
+    loadWelcomeData()
+    new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
+    .then((themeType: chrome.braveTheme.ThemeType) => {
+      render(
+        <Provider store={store}>
+          <BraveCoreThemeProvider
+            initialThemeType={themeType}
+            dark={welcomeDarkTheme}
+            light={welcomeLightTheme}
+          >
+            <App />
+          </BraveCoreThemeProvider>
+        </Provider>,
+        document.getElementById('root'))
+    })
+    .catch((error) => {
+      console.error('Problem mounting brave welcome', error)
+    })
     window.i18nTemplate.process(window.document, window.loadTimeData)
   }
 
