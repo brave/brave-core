@@ -9,13 +9,13 @@
 
 #include "base/bind.h"
 #include "base/values.h"
-#include "brave/common/pref_names.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
+
+using brave_shields::ControlType;
+using brave_shields::ControlTypeFromString;
+using brave_shields::ControlTypeToString;
 
 void DefaultBraveShieldsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -60,14 +60,12 @@ void DefaultBraveShieldsHandler::GetAdControlType(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
-  ContentSetting setting =
-      HostContentSettingsMapFactory::GetForProfile(profile_)->GetContentSetting(
-          GURL(), GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kAds);
+  ControlType setting = brave_shields::GetAdControlType(profile_, GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(
       args->GetList()[0].Clone(),
-      base::Value(setting == CONTENT_SETTING_ALLOW));
+      base::Value(setting == ControlType::ALLOW));
 }
 
 void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
@@ -76,20 +74,10 @@ void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
   bool value;
   args->GetBoolean(0, &value);
 
-  HostContentSettingsMapFactory::GetForProfile(profile_)->
-      SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS,
-        brave_shields::kAds,
-        value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
-  HostContentSettingsMapFactory::GetForProfile(profile_)->
-      SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS,
-        brave_shields::kTrackers,
-        value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+  brave_shields::SetAdControlType(profile_,
+                                  value ? ControlType::BLOCK
+                                        : ControlType::ALLOW,
+                                  GURL());
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(
@@ -97,26 +85,12 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
-  ContentSetting setting =
-      HostContentSettingsMapFactory::GetForProfile(profile_)->GetContentSetting(
-          GURL(), GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kCookies);
-  ContentSetting fp_setting =
-      HostContentSettingsMapFactory::GetForProfile(profile_)->GetContentSetting(
-          GURL(), GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kCookies);
-
-  std::string value = "block";
-  if (setting == CONTENT_SETTING_ALLOW) {
-    value = "allow";
-  } else if (fp_setting != CONTENT_SETTING_BLOCK) {
-    value = "3p";
-  }
+  ControlType setting = brave_shields::GetCookieControlType(profile_, GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(
       args->GetList()[0].Clone(),
-      base::Value(value));
+      base::Value(ControlTypeToString(setting)));
 }
 
 void DefaultBraveShieldsHandler::SetCookieControlType(
@@ -126,27 +100,9 @@ void DefaultBraveShieldsHandler::SetCookieControlType(
   std::string value;
   args->GetString(0, &value);
 
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_);
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kReferrers,
-      value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
-
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies,
-      value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
-
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies,
-      value == "block" ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+  brave_shields::SetCookieControlType(profile_,
+                                      ControlTypeFromString(value),
+                                      GURL());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingControlType(
@@ -154,26 +110,13 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
-  ContentSetting setting =
-      HostContentSettingsMapFactory::GetForProfile(profile_)->GetContentSetting(
-          GURL(), GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kFingerprinting);
-  ContentSetting fp_setting =
-      HostContentSettingsMapFactory::GetForProfile(profile_)->GetContentSetting(
-          GURL(), GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kFingerprinting);
-
-  std::string value;
-  if (setting != fp_setting || setting == CONTENT_SETTING_DEFAULT) {
-    value = "3p";
-  } else {
-    value = setting == CONTENT_SETTING_ALLOW ? "allow" : "block";
-  }
+  ControlType setting =
+      brave_shields::GetFingerprintingControlType(profile_, GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(
       args->GetList()[0].Clone(),
-      base::Value(value));
+      base::Value(ControlTypeToString(setting)));
 }
 
 void DefaultBraveShieldsHandler::SetFingerprintingControlType(
@@ -183,20 +126,9 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
   std::string value;
   args->GetString(0, &value);
 
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_);
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting,
-      value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
-
-  map->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting,
-      value == "block" ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+  brave_shields::SetFingerprintingControlType(profile_,
+                                              ControlTypeFromString(value),
+                                              GURL());
 }
 
 void DefaultBraveShieldsHandler::SetHTTPSEverywhereControlType(
@@ -206,13 +138,10 @@ void DefaultBraveShieldsHandler::SetHTTPSEverywhereControlType(
   bool value;
   args->GetBoolean(0, &value);
 
-  HostContentSettingsMapFactory::GetForProfile(profile_)->
-      SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS,
-        brave_shields::kHTTPUpgradableResources,
-        value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+  brave_shields::SetHTTPSEverywhereControlType(profile_,
+                                               value ? ControlType::BLOCK
+                                                     : ControlType::ALLOW,
+                                               GURL());
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(
@@ -222,11 +151,8 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
   bool value;
   args->GetBoolean(0, &value);
 
-  HostContentSettingsMapFactory::GetForProfile(profile_)->
-      SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_JAVASCRIPT,
-        "",
-        value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+  brave_shields::SetNoScriptControlType(profile_,
+                                        value ? ControlType::BLOCK
+                                              : ControlType::ALLOW,
+                                        GURL());
 }

@@ -26,14 +26,12 @@ promisifyAll(chrome, [
   'tabs',
   'windows'
 ])
+
 promisifyAll(chrome.storage, [
   'local'
 ])
 
-promisifyAll(chrome.braveShields, [
-  'javascript',
-  'plugins'
-])
+bluebird.promisifyAll(chrome.braveShields, { promisifier })
 
 require('./background/api')
 require('./background/events')
