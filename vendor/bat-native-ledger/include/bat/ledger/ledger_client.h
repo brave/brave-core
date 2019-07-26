@@ -76,6 +76,7 @@ using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
 using ShowNotificationCallback = std::function<void(const Result)>;
 using SavePendingContributionCallback = std::function<void(const Result)>;
+using DeleteActivityInfoCallback = std::function<void(const ledger::Result)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -263,6 +264,10 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& type,
       const std::vector<std::string>& args,
       const ledger::ShowNotificationCallback& callback) = 0;
+
+  virtual void DeleteActivityInfo(
+    const std::string& publisher_key,
+    const ledger::DeleteActivityInfoCallback& callback) = 0;
 };
 
 }  // namespace ledger

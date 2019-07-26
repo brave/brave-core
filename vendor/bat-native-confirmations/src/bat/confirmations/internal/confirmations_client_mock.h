@@ -317,6 +317,10 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& type,
       const std::vector<std::string>& args,
       const ledger::ShowNotificationCallback& callback));
+
+  MOCK_METHOD2(DeleteActivityInfo, void(
+      const std::string& publisher_key,
+      const ledger::DeleteActivityInfoCallback& callback));
 };
 
 }  // namespace confirmations

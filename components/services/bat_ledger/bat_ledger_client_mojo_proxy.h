@@ -172,6 +172,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::vector<std::string>& args,
       const ledger::ShowNotificationCallback& callback) override;
 
+  void DeleteActivityInfo(
+    const std::string& publisher_key,
+    const ledger::DeleteActivityInfoCallback& callback) override;
+
  private:
   bool Connected() const;
 

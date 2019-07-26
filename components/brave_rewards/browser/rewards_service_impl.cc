@@ -2455,10 +2455,6 @@ void RewardsServiceImpl::OnSetPublisherExclude(
     return;
   }
 
-  if (exclude) {
-    DeleteActivityInfo(publisher_key);
-  }
-
   for (auto& observer : observers_) {
     observer.OnExcludedSitesChanged(this, publisher_key, exclude);
   }
@@ -2949,15 +2945,19 @@ bool DeleteActivityInfoOnFileTaskRunner(PublisherInfoDatabase* backend,
   return false;
 }
 
-void RewardsServiceImpl::DeleteActivityInfo(const std::string& publisher_key) {
+void RewardsServiceImpl::DeleteActivityInfo(
+  const std::string& publisher_key,
+  const ledger::DeleteActivityInfoCallback& callback) {
   GetReconcileStamp(
       base::Bind(&RewardsServiceImpl::OnDeleteActivityInfoStamp,
                  AsWeakPtr(),
-                 publisher_key));
+                 publisher_key,
+                 callback));
 }
 
 void RewardsServiceImpl::OnDeleteActivityInfoStamp(
     const std::string& publisher_key,
+    const ledger::DeleteActivityInfoCallback& callback,
     uint64_t reconcile_stamp) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
@@ -2968,16 +2968,20 @@ void RewardsServiceImpl::OnDeleteActivityInfoStamp(
                  reconcile_stamp),
       base::Bind(&RewardsServiceImpl::OnDeleteActivityInfo,
                  AsWeakPtr(),
-                 publisher_key));
+                 publisher_key,
+                 callback));
 }
 
 void RewardsServiceImpl::OnDeleteActivityInfo(
     const std::string& publisher_key,
+    const ledger::DeleteActivityInfoCallback& callback,
     bool result) {
   if (!result) {
     LOG(ERROR) << "Problem deleting activity info for "
                << publisher_key;
   }
+
+  callback(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
 void RewardsServiceImpl::RefreshPublisher(
