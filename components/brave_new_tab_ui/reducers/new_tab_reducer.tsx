@@ -20,6 +20,10 @@ import * as storage from '../storage'
 
 const initialState = storage.load()
 
+function addToDispatchQueue (fn: Function): void {
+  window.setTimeout(fn, 0)
+}
+
 export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State | undefined, action: any) => {
   console.timeStamp('reducer ' + action.type)
   if (state === undefined) {
@@ -44,7 +48,19 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         state.backgroundImage = backgroundAPI.randomBackgroundImage()
       }
       console.timeStamp('reducer initial data received')
-      gridAPI.calculateGridSites(state)
+      // Assume 'top sites' data needs changing, so call 'calculate'.
+      // TODO(petemill): Starting another dispatch (which happens
+      // in `calculateGridSites`) before this reducer is finished
+      // is an anti-pattern and could introduce bugs.
+      // See for example the discussion at:
+      // https://stackoverflow.com/questions/36730793/can-i-dispatch-an-action-in-reducer
+      // This specific calculation would be better as a selector at
+      // UI render time.
+      // We at least schedule to run after the reducer has finished
+      // and the resulting new state is available.
+      addToDispatchQueue(() => {
+        gridAPI.calculateGridSites(state)
+      })
       break
 
     case types.NEW_TAB_SHOW_SETTINGS_MENU:
@@ -85,7 +101,17 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...state,
         pinnedTopSites
       }
-      gridAPI.calculateGridSites(state)
+      // Assume 'top sites' data needs changing, so call 'calculate'.
+      // TODO(petemill): Starting another dispatch (which happens
+      // in `calculateGridSites`) before this reducer is finished
+      // is an anti-pattern and could introduce bugs. This
+      // specific calculation would be better as a selector at
+      // UI render time.
+      // We at least schedule to run after the reducer has finished
+      // and the resulting new state is available.
+      addToDispatchQueue(() => {
+        gridAPI.calculateGridSites(state)
+      })
       break
     }
 
@@ -99,7 +125,17 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
           pinnedTopSites
         }
       }
-      gridAPI.calculateGridSites(state)
+      // Assume 'top sites' data needs changing, so call 'calculate'.
+      // TODO(petemill): Starting another dispatch (which happens
+      // in `calculateGridSites`) before this reducer is finished
+      // is an anti-pattern and could introduce bugs. This
+      // specific calculation would be better as a selector at
+      // UI render time.
+      // We at least schedule to run after the reducer has finished
+      // and the resulting new state is available.
+      addToDispatchQueue(() => {
+        gridAPI.calculateGridSites(state)
+      })
       break
 
     case types.NEW_TAB_SITE_IGNORED: {
@@ -111,7 +147,17 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ignoredTopSites,
         showSiteRemovalNotification: true
       }
-      gridAPI.calculateGridSites(state)
+      // Assume 'top sites' data needs changing, so call 'calculate'.
+      // TODO(petemill): Starting another dispatch (which happens
+      // in `calculateGridSites`) before this reducer is finished
+      // is an anti-pattern and could introduce bugs. This
+      // specific calculation would be better as a selector at
+      // UI render time.
+      // We at least schedule to run after the reducer has finished
+      // and the resulting new state is available.
+      addToDispatchQueue(() => {
+        gridAPI.calculateGridSites(state)
+      })
       break
     }
 
@@ -123,7 +169,17 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ignoredTopSites,
         showSiteRemovalNotification: false
       }
-      gridAPI.calculateGridSites(state)
+      // Assume 'top sites' data needs changing, so call 'calculate'.
+      // TODO(petemill): Starting another dispatch (which happens
+      // in `calculateGridSites`) before this reducer is finished
+      // is an anti-pattern and could introduce bugs. This
+      // specific calculation would be better as a selector at
+      // UI render time.
+      // We at least schedule to run after the reducer has finished
+      // and the resulting new state is available.
+      addToDispatchQueue(() => {
+        gridAPI.calculateGridSites(state)
+      })
       break
     }
 
@@ -133,7 +189,17 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ignoredTopSites: [],
         showSiteRemovalNotification: false
       }
-      gridAPI.calculateGridSites(state)
+      // Assume 'top sites' data needs changing, so call 'calculate'.
+      // TODO(petemill): Starting another dispatch (which happens
+      // in `calculateGridSites`) before this reducer is finished
+      // is an anti-pattern and could introduce bugs. This
+      // specific calculation would be better as a selector at
+      // UI render time.
+      // We at least schedule to run after the reducer has finished
+      // and the resulting new state is available.
+      addToDispatchQueue(() => {
+        gridAPI.calculateGridSites(state)
+      })
       break
 
     case types.NEW_TAB_HIDE_SITE_REMOVAL_NOTIFICATION:

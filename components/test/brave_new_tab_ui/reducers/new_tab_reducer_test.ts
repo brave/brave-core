@@ -98,11 +98,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_PINNED,
         payload: { url }
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
+      jest.useRealTimers()
     })
   })
   describe('NEW_TAB_SITE_UNPINNED', () => {
@@ -114,11 +117,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_UNPINNED,
         payload: { url }
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
+      jest.useRealTimers()
     })
   })
   describe('NEW_TAB_SITE_IGNORED', () => {
@@ -130,11 +136,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_IGNORED,
         payload: { url }
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
+      jest.useRealTimers()
     })
   })
   describe('NEW_TAB_UNDO_SITE_IGNORED', () => {
@@ -146,11 +155,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_UNDO_SITE_IGNORED,
         payload: { url }
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
+      jest.useRealTimers()
     })
   })
   describe('NEW_TAB_UNDO_ALL_SITE_IGNORED', () => {
@@ -162,11 +174,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_UNDO_ALL_SITE_IGNORED
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
     })
+    jest.useRealTimers()
   })
   describe('NEW_TAB_HIDE_SITE_REMOVAL_NOTIFICATION', () => {
     it('set showSiteRemovalNotification to false', () => {
