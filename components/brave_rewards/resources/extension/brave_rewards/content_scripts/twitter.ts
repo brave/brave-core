@@ -283,7 +283,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         getUserDetails(msg.screenName)
           .then(userDetails => {
             const userId = userDetails.id_str
-            const profileUrl = `https://twitter.com/i/user/${userId}`
+            const profileUrl = `https://twitter.com/intent/user?user_id=${userId}`
             sendResponse({ profileUrl })
           })
           .catch(error => {
