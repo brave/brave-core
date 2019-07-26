@@ -17,11 +17,52 @@ export const onTabId = (tabId: number | undefined) => action(types.ON_TAB_ID, {
   tabId
 })
 
-export const onTabRetrieved = (tab: chrome.tabs.Tab, activeTabIsLoadingTriggered: boolean, publisherBlob: string = 'ignore') => action(types.ON_TAB_RETRIEVED, {
-  tab,
-  activeTabIsLoadingTriggered,
-  publisherBlob
-})
+const getProfileUrl = (tabId: number, screenName: string) => {
+  const msg = { type: 'getProfileUrl', screenName }
+  return new Promise(resolve => chrome.tabs.sendMessage(tabId, msg, response => {
+    if (response && response.profileUrl) {
+      resolve(response.profileUrl)
+    }
+  }))
+}
+
+export const onTabRetrieved = (tab: chrome.tabs.Tab, activeTabIsLoadingTriggered: boolean, publisherBlob: string = 'ignore') => {
+  // If this is a Twitter profile URL, extract the screen name from
+  // the url and send it to the content script for processing; the
+  // content script will retrieve the associated user ID and return
+  // to us a valid profile URL using that ID.
+  console.log('In onTabRetrieved...')
+  if (tab.id && tab.active && tab.url) {
+    console.log('Checking for Twitter regex...')
+    const regex = /^https?:\/\/twitter\.com\/(#!\/)?([^\/]+)(\/\w+)*$/
+    const match = regex.exec(tab.url)
+    if (match && match.length > 2) {
+      console.log('Matched Twitter regex...')
+      const screenName = match[2]
+      console.log('Making call to getProfileUrl...')
+      getProfileUrl(tab.id, screenName)
+        .then((profileUrl: string) => {
+          if (profileUrl) {
+            console.log(`Changing url to ${profileUrl}`)
+            tab.url = profileUrl
+          }
+          return action(types.ON_TAB_RETRIEVED, {
+            tab,
+            activeTabIsLoadingTriggered,
+            publisherBlob
+          })
+        })
+    }
+  }
+
+  // For all other cases, just delegate directly to the reducer
+  console.log('Making regular call to onTabRetrieved...')
+  return action(types.ON_TAB_RETRIEVED, {
+    tab,
+    activeTabIsLoadingTriggered,
+    publisherBlob
+  })
+}
 
 export const onPublisherData = (windowId: number, publisher: RewardsExtension.Publisher) => action(types.ON_PUBLISHER_DATA, {
   windowId,
