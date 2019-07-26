@@ -11,24 +11,8 @@
 
 namespace ledger {
 
-struct ReconcileInfo;
-
-LEDGER_EXPORT struct RewardsInternalsInfo {
-  RewardsInternalsInfo();
-  ~RewardsInternalsInfo();
-  RewardsInternalsInfo(const RewardsInternalsInfo& info);
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string payment_id;
-  bool is_key_info_seed_valid;
-  std::string persona_id;
-  std::string user_id;
-  uint64_t boot_stamp;
-
-  std::map<std::string, ReconcileInfo> current_reconciles;
-};
+using RewardsInternalsInfo = mojom::RewardsInternalsInfo;
+using RewardsInternalsInfoPtr = mojom::RewardsInternalsInfoPtr;
 
 }  // namespace ledger
 

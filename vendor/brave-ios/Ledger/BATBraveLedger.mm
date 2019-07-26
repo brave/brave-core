@@ -693,11 +693,12 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return [NSString stringWithUTF8String:encoded.c_str()];
 }
 
-- (BATRewardsInternalsInfo *)rewardsInternalInfo
+- (void)rewardsInternalInfo:(void (NS_NOESCAPE ^)(BATRewardsInternalsInfo * _Nullable info))completion
 {
-  ledger::RewardsInternalsInfo info;
-  ledger->GetRewardsInternalsInfo(&info);
-  return [[BATRewardsInternalsInfo alloc] initWithRewardsInternalsInfo:info];
+  ledger->GetRewardsInternalsInfo(^(ledger::RewardsInternalsInfoPtr info) {
+    auto bridgedInfo = info.get() != nullptr ? [[BATRewardsInternalsInfo alloc] initWithRewardsInternalsInfo:*info.get()] : nil;
+    completion(bridgedInfo);
+  });
 }
 
 - (void)loadNicewareList:(ledger::GetNicewareListCallback)callback

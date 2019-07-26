@@ -250,6 +250,10 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<GetTransactionHistoryCallback>* holder,
       std::unique_ptr<ledger::TransactionsInfo> history);
 
+  static void OnGetRewardsInternalsInfo(
+      CallbackHolder<GetRewardsInternalsInfoCallback>* holder,
+      ledger::RewardsInternalsInfoPtr info);
+
   static void OnGetRecurringTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,
       ledger::PublisherInfoList list,

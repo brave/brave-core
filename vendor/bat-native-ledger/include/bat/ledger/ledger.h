@@ -60,6 +60,8 @@ using FetchGrantsCallback =
 using SetPublisherExcludeCallback = std::function<void(ledger::Result)>;
 using GetGrantCaptchaCallback = std::function<void(const std::string&,
                                                    const std::string&)>;
+using RewardsInternalsInfoCallback =
+    std::function<void(ledger::RewardsInternalsInfoPtr)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -235,7 +237,11 @@ class LEDGER_EXPORT Ledger {
   virtual void ConfirmAd(const std::string& info) = 0;
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;
-  virtual void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) = 0;
+
+  // This uses a callback instead of returning directly so that
+  // GetCurrentReconciles() can be moved to the database later.
+  virtual void GetRewardsInternalsInfo(
+      ledger::RewardsInternalsInfoCallback callback) = 0;
 
   virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
 

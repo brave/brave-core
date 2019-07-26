@@ -1253,7 +1253,10 @@ const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
   return wallet_info;
 }
 
-void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) {
+void LedgerImpl::GetRewardsInternalsInfo(
+    ledger::RewardsInternalsInfoCallback callback) {
+  ledger::RewardsInternalsInfoPtr info = ledger::RewardsInternalsInfo::New();
+
   // Retrieve the payment id.
   info->payment_id = bat_state_->GetPaymentId();
 
@@ -1284,14 +1287,16 @@ void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) {
   const braveledger_bat_helper::CurrentReconciles current_reconciles =
       GetCurrentReconciles();
   for (const auto& reconcile : current_reconciles) {
-    ledger::ReconcileInfo reconcile_info;
-    reconcile_info.viewingId_ = reconcile.second.viewingId_;
-    reconcile_info.amount_ = reconcile.second.amount_;
-    reconcile_info.retry_step_ = reconcile.second.retry_step_;
-    reconcile_info.retry_level_ = reconcile.second.retry_level_;
+    ledger::ReconcileInfoPtr reconcile_info = ledger::ReconcileInfo::New();
+    reconcile_info->viewing_id = reconcile.second.viewingId_;
+    reconcile_info->amount = reconcile.second.amount_;
+    reconcile_info->retry_step = reconcile.second.retry_step_;
+    reconcile_info->retry_level = reconcile.second.retry_level_;
     info->current_reconciles.insert(
-        std::make_pair(reconcile.second.viewingId_, reconcile_info));
+        std::make_pair(reconcile.second.viewingId_, std::move(reconcile_info)));
   }
+
+  callback(std::move(info));
 }
 
 void LedgerImpl::StartMonthlyContribution() {
@@ -1406,7 +1411,7 @@ bool LedgerImpl::AddReconcileStep(
     int level) {
   BLOG(this, ledger::LogLevel::LOG_DEBUG)
     << "Contribution step "
-    << std::to_string(step)
+    << std::to_string(static_cast<int32_t>(step))
     << " for "
     << viewing_id;
   return bat_state_->AddReconcileStep(viewing_id, step, level);

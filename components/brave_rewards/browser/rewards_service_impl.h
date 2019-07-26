@@ -624,7 +624,7 @@ class RewardsServiceImpl : public RewardsService,
       const GetAutoContributePropsCallback& callback,
       ledger::AutoContributePropsPtr props);
   void OnGetRewardsInternalsInfo(GetRewardsInternalsInfoCallback callback,
-                                 const std::string& json_props);
+                                 ledger::RewardsInternalsInfoPtr info);
   void SetRewardsMainEnabledPref(bool enabled);
   void SetRewardsMainEnabledMigratedPref(bool enabled);
   void OnRefreshPublisher(

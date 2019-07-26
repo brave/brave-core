@@ -501,7 +501,7 @@ void Contribution::AddRetry(
     braveledger_bat_helper::CURRENT_RECONCILE reconcile) {
   BLOG(ledger_, ledger::LogLevel::LOG_WARNING)
       << "Re-trying contribution for step"
-      << std::to_string(step)
+      << std::to_string(static_cast<int32_t>(step))
       << "for" << viewing_id;
 
   if (reconcile.viewingId_.empty()) {

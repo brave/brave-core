@@ -10,32 +10,6 @@
 #import <map>
 #import <string>
 
-@implementation BATReconcileInfo
-- (instancetype)initWithReconcileInfo:(const ledger::ReconcileInfo&)obj {
-  if ((self = [super init])) {
-    self.viewingid = [NSString stringWithUTF8String:obj.viewingId_.c_str()];
-    self.amount = [NSString stringWithUTF8String:obj.amount_.c_str()];
-    self.retryStep = (BATContributionRetry)obj.retry_step_;
-    self.retryLevel = obj.retry_level_;
-  }
-  return self;
-}
-@end
-
-@implementation BATRewardsInternalsInfo
-- (instancetype)initWithRewardsInternalsInfo:(const ledger::RewardsInternalsInfo&)obj {
-  if ((self = [super init])) {
-    self.paymentId = [NSString stringWithUTF8String:obj.payment_id.c_str()];
-    self.isKeyInfoSeedValid = obj.is_key_info_seed_valid;
-    self.personaId = [NSString stringWithUTF8String:obj.persona_id.c_str()];
-    self.userId = [NSString stringWithUTF8String:obj.user_id.c_str()];
-    self.bootStamp = obj.boot_stamp;
-    self.currentReconciles = NSDictionaryFromMap(obj.current_reconciles, ^BATReconcileInfo *(ledger::ReconcileInfo o){ return [[BATReconcileInfo alloc] initWithReconcileInfo:o]; });
-  }
-  return self;
-}
-@end
-
 @implementation BATTransactionInfo
 - (instancetype)initWithTransactionInfo:(const ledger::TransactionInfo&)obj {
   if ((self = [super init])) {

@@ -434,7 +434,8 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::LogLevel log_level) const;
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
-  void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) override;
+  void GetRewardsInternalsInfo(
+      ledger::RewardsInternalsInfoCallback callback) override;
   void StartMonthlyContribution() override;
 
   void RefreshPublisher(
