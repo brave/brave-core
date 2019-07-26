@@ -67,8 +67,8 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD4(OnReconcileComplete, void(
       Result result,
       const std::string& viewing_id,
-      ledger::RewardsCategory category,
-      const std::string& probi));
+      const std::string& probi,
+      const ledger::RewardsCategory category));
 
   MOCK_METHOD1(LoadLedgerState, void(
       ledger::OnLoadCallback callback));

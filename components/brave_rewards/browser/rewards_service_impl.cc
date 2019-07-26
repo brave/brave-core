@@ -987,10 +987,11 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
   TriggerOnGrantFinish(result, std::move(grant));
 }
 
-void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
-  const std::string& viewing_id,
-  ledger::RewardsCategory category,
-  const std::string& probi) {
+void RewardsServiceImpl::OnReconcileComplete(
+    ledger::Result result,
+    const std::string& viewing_id,
+    const std::string& probi,
+    const ledger::RewardsCategory category) {
   if (result == ledger::Result::LEDGER_OK) {
     auto now = base::Time::Now();
     if (!Connected())
@@ -1013,8 +1014,8 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
     observer.OnReconcileComplete(this,
                                  static_cast<int>(result),
                                  viewing_id,
-                                 category,
-                                 probi);
+                                 probi,
+                                 static_cast<int>(category));
 }
 
 void RewardsServiceImpl::LoadLedgerState(
@@ -2153,7 +2154,7 @@ void RewardsServiceImpl::OnContributionInfoSaved(
     const ledger::RewardsCategory category,
     bool success) {
   for (auto& observer : observers_) {
-    observer.OnContributionSaved(this, success, category);
+    observer.OnContributionSaved(this, success, static_cast<int>(category));
   }
 }
 
@@ -2169,7 +2170,7 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
   info.year = year;
   info.date = date;
   info.publisher_key = publisher_key;
-  info.category = category;
+  info.category = static_cast<int>(category);
 
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&SaveContributionInfoOnFileTaskRunner,
@@ -3083,7 +3084,7 @@ PendingContributionInfo PendingContributionLedgerToRewards(
     const ledger::PendingContributionInfoPtr contribution) {
   PendingContributionInfo info;
   info.publisher_key = contribution->publisher_key;
-  info.category = contribution->category;
+  info.category = static_cast<int>(contribution->category);
   info.status = static_cast<uint32_t>(contribution->status);
   info.name = contribution->name;
   info.url = contribution->url;

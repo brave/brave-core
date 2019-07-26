@@ -59,7 +59,7 @@ interface BatLedger {
   RestorePublishers() => (ledger.mojom.Result result);
 
   SetBalanceReportItem(int32 month, int32 year, int32 type, string probi);
-  OnReconcileCompleteSuccess(string viewing_id, int32 category, string probi,
+  OnReconcileCompleteSuccess(string viewing_id, ledger.mojom.RewardsCategory category, string probi,
       int32 month, int32 year, uint32 data);
 
   FetchGrants(string lang, string payment_id) =>
@@ -161,8 +161,8 @@ interface BatLedgerClient {
   SavePublisherState(string publisher_state) => (ledger.mojom.Result result);
 
   OnWalletProperties(ledger.mojom.Result result, ledger.mojom.WalletProperties? properties);
-  OnReconcileComplete(ledger.mojom.Result result, string viewing_id, int32 category,
-      string probi);
+  OnReconcileComplete(ledger.mojom.Result result, string viewing_id,
+      string probi, ledger.mojom.RewardsCategory category);
   OnGrantFinish(ledger.mojom.Result result, ledger.mojom.Grant? grant);
 
   SavePublisherInfo(ledger.mojom.PublisherInfo publisher_info) =>
@@ -198,7 +198,7 @@ interface BatLedgerClient {
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   KillTimer(uint32 timer_id);
   SaveContributionInfo(string probi, int32 month, int32 year, uint32 date,
-      string publisher_key, int32 category);
+      string publisher_key, ledger.mojom.RewardsCategory category);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
 
   [Sync]

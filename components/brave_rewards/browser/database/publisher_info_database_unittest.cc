@@ -149,7 +149,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertContributionInfo) {
   info.probi = "12345678901234567890123456789012345678901234";
   info.month = ledger::ACTIVITY_MONTH::JANUARY;
   info.year = 1970;
-  info.category = ledger::RewardsCategory::AUTO_CONTRIBUTE;
+  info.category = static_cast<int>(ledger::RewardsCategory::AUTO_CONTRIBUTE);
   info.date = base::Time::Now().ToJsTime();
   info.publisher_key = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

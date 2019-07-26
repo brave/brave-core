@@ -37,7 +37,7 @@ private:
   std::unique_ptr<ledger::LogStream> Log(const char * file, int line, const ledger::LogLevel log_level) const override;
   void OnGrantFinish(ledger::Result result, ledger::GrantPtr grant) override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
-  void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, ledger::RewardsCategory category, const std::string & probi) override;
+  void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const std::string & probi, const ledger::RewardsCategory category) override;
   void RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) override;
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;

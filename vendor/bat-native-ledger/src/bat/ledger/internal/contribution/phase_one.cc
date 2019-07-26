@@ -497,7 +497,7 @@ void PhaseOne::ViewingCredentialsCallback(
 
 void PhaseOne::Complete(ledger::Result result,
                         const std::string& viewing_id,
-                        int category,
+                        const ledger::RewardsCategory category,
                         const std::string& probi) {
   // Set timer to the next month when AC is complete
   if (category == ledger::RewardsCategory::AUTO_CONTRIBUTE) {

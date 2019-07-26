@@ -446,7 +446,7 @@ void Contribution::SetTimer(uint32_t* timer_id, uint64_t start_timer_in) {
 
 void Contribution::OnReconcileCompleteSuccess(
     const std::string& viewing_id,
-    ledger::RewardsCategory category,
+    const ledger::RewardsCategory category,
     const std::string& probi,
     ledger::ACTIVITY_MONTH month,
     int year,
@@ -695,7 +695,7 @@ void Contribution::DoDirectTip(
 void Contribution::SavePendingContribution(
     const std::string& publisher_key,
     double amount,
-    ledger::RewardsCategory category,
+    const ledger::RewardsCategory category,
     ledger::SavePendingContributionCallback callback) {
   auto contribution = ledger::PendingContribution::New();
   contribution->publisher_key = publisher_key;

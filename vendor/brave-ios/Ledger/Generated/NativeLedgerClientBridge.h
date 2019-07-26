@@ -30,7 +30,7 @@
 - (std::unique_ptr<ledger::LogStream>)log:(const char *)file line:(int)line logLevel:(const ledger::LogLevel)log_level;
 - (void)onGrantFinish:(ledger::Result)result grant:(ledger::GrantPtr)grant;
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
-- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id category:(ledger::RewardsCategory)category probi:(const std::string &)probi;
+- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id category:(const ledger::RewardsCategory)category probi:(const std::string &)probi;
 - (void)removeRecurringTip:(const std::string &)publisher_key callback:(ledger::RemoveRecurringTipCallback)callback;
 - (void)restorePublishers:(ledger::RestorePublishersCallback)callback;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;

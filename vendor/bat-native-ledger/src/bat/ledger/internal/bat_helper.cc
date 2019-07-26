@@ -1177,7 +1177,7 @@ bool CURRENT_RECONCILE::loadFromJson(const std::string & json) {
     amount_ = d["amount"].GetString();
     currency_ = d["currency"].GetString();
     fee_ = d["fee"].GetDouble();
-    category_ = d["category"].GetInt();
+    category_ = static_cast<ledger::RewardsCategory>(d["category"].GetInt());
 
     if (d.HasMember("surveyorInfo") && d["surveyorInfo"].IsObject()) {
       auto obj = d["surveyorInfo"].GetObject();
@@ -1281,7 +1281,7 @@ void saveToJson(JsonWriter* writer, const CURRENT_RECONCILE& data) {
   writer->Double(data.fee_);
 
   writer->String("category");
-  writer->Int(data.category_);
+  writer->Int(static_cast<int>(data.category_));
 
   writer->String("rates");
   writer->StartObject();

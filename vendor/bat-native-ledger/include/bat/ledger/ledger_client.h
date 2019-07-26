@@ -97,8 +97,8 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id,
-                                   ledger::RewardsCategory category,
-                                   const std::string& probi) = 0;
+                                   const std::string& probi,
+                                   const ledger::RewardsCategory category) = 0;
 
   virtual void LoadLedgerState(OnLoadCallback callback) = 0;
 

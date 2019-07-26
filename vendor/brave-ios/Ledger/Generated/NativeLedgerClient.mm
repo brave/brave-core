@@ -77,7 +77,7 @@ void NativeLedgerClient::OnGrantFinish(ledger::Result result, ledger::GrantPtr g
 void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) {
   [bridge_ onPanelPublisherInfo:result publisherInfo:std::move(publisher_info) windowId:windowId];
 }
-void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, ledger::RewardsCategory category, const std::string & probi) {
+void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const std::string & probi, const ledger::RewardsCategory category) {
   [bridge_ onReconcileComplete:result viewingId:viewing_id category:category probi:probi];
 }
 void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {

@@ -148,12 +148,13 @@ class Contribution {
 
   // Does final stage in contribution
   // Sets reports and contribution info
-  void OnReconcileCompleteSuccess(const std::string& viewing_id,
-                                  ledger::RewardsCategory category,
-                                  const std::string& probi,
-                                  ledger::ACTIVITY_MONTH month,
-                                  int year,
-                                  uint32_t date);
+  void OnReconcileCompleteSuccess(
+      const std::string& viewing_id,
+      const ledger::RewardsCategory category,
+      const std::string& probi,
+      ledger::ACTIVITY_MONTH month,
+      int year,
+      uint32_t date);
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);
 
@@ -250,7 +251,7 @@ class Contribution {
   void SavePendingContribution(
       const std::string& publisher_key,
       double amount,
-      ledger::RewardsCategory category,
+      const ledger::RewardsCategory category,
       ledger::SavePendingContributionCallback callback);
 
   void OnDoDirectTipServerPublisher(

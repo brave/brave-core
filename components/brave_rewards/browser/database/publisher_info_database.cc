@@ -195,7 +195,7 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
 
   info_sql.BindInt(0, month);
   info_sql.BindInt(1, year);
-  info_sql.BindInt(2, ledger::RewardsCategory::ONE_TIME_TIP);
+  info_sql.BindInt(2, static_cast<int>(ledger::RewardsCategory::ONE_TIME_TIP));
 
   while (info_sql.Step()) {
     auto publisher = ledger::PublisherInfo::New();
@@ -987,7 +987,7 @@ bool PublisherInfoDatabase::InsertPendingContribution
     statement.BindDouble(1, item->amount);
     statement.BindInt64(2, now_seconds);
     statement.BindString(3, item->viewing_id);
-    statement.BindInt(4, item->category);
+    statement.BindInt(4, static_cast<int>(item->category));
     statement.Run();
   }
 

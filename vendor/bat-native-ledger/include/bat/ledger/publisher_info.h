@@ -25,16 +25,10 @@ using ServerPublisherInfo = mojom::ServerPublisherInfo;
 using ServerPublisherInfoPtr = mojom::ServerPublisherInfoPtr;
 using ServerPublisherInfoList = std::vector<ServerPublisherInfoPtr>;
 using PublisherStatus = mojom::PublisherStatus;
+using RewardsCategory = mojom::RewardsCategory;
 
 const char kClearFavicon[] = "clear";
 const char kIgnorePublisherBlob[] = "ignore";
-
-LEDGER_EXPORT enum RewardsCategory {
-  AUTO_CONTRIBUTE = 1 << 1,  // 2
-  ONE_TIME_TIP = 1 << 3,  // 8
-  RECURRING_TIP = 1 << 4,  // 16
-  ALL_CATEGORIES = (1 << 5) - 1,
-};
 
 LEDGER_EXPORT enum ACTIVITY_MONTH {
   ANY = -1,

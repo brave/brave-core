@@ -584,18 +584,12 @@ uint64_t LedgerImpl::GetReconcileStamp() const {
 void LedgerImpl::OnReconcileComplete(ledger::Result result,
                                      const std::string& viewing_id,
                                      const std::string& probi,
-                                     int32_t category) {
-  auto reconcile = GetReconcileById(viewing_id);
-
-  if (category == 0) {
-    category = reconcile.category_;
-  }
-
+                                     const ledger::RewardsCategory category) {
   ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
-      static_cast<ledger::RewardsCategory>(category),
-      probi);
+      probi,
+      category);
 }
 
 void LedgerImpl::OnWalletProperties(

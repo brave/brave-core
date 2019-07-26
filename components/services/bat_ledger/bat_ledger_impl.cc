@@ -36,10 +36,6 @@ ledger::ReportType ToLedgerReportType(int32_t type) {
   return (ledger::ReportType)type;
 }
 
-ledger::RewardsCategory ToLedgerPublisherCategory(int32_t category) {
-  return (ledger::RewardsCategory)category;
-}
-
 }  // namespace
 
 BatLedgerImpl::BatLedgerImpl(
@@ -231,12 +227,20 @@ void BatLedgerImpl::SetBalanceReportItem(int32_t month,
       ToLedgerPublisherMonth(month), year, ToLedgerReportType(type), probi);
 }
 
-void BatLedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
-    int32_t category, const std::string& probi, int32_t month,
-    int32_t year, uint32_t data) {
-  ledger_->OnReconcileCompleteSuccess(viewing_id,
-      ToLedgerPublisherCategory(category), probi,
-      ToLedgerPublisherMonth(month), year, data);
+void BatLedgerImpl::OnReconcileCompleteSuccess(
+    const std::string& viewing_id,
+    const ledger::RewardsCategory category,
+    const std::string& probi,
+    int32_t month,
+    int32_t year,
+    uint32_t data) {
+  ledger_->OnReconcileCompleteSuccess(
+      viewing_id,
+      category,
+      probi,
+      ToLedgerPublisherMonth(month),
+      year,
+      data);
 }
 
 void BatLedgerImpl::OnFetchGrants(

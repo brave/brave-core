@@ -33,8 +33,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::WalletPropertiesPtr properties) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
-                           ledger::RewardsCategory category,
-                           const std::string& probi) override;
+                           const std::string& probi,
+                           const ledger::RewardsCategory category) override;
   void OnGrantFinish(ledger::Result result,
                      ledger::GrantPtr grant) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;

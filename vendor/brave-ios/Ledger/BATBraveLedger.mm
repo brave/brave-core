@@ -644,7 +644,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Reconcile
 
-- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id category:(ledger::RewardsCategory)category probi:(const std::string &)probi
+- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id category:(const ledger::RewardsCategory)category probi:(const std::string &)probi
 {
   if (result == ledger::Result::LEDGER_OK) {
     const auto now = [NSDate date];
