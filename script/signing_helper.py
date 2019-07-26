@@ -68,7 +68,6 @@ def AddBravePartsForSigning(parts, config):
     # Add libs
     brave_dylibs = (
         'libchallenge_bypass_ristretto.dylib',
-        'libadblock.dylib',
     )
     for library in brave_dylibs:
         library_basename = os.path.basename(library)
