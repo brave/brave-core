@@ -121,6 +121,7 @@ source_set("ui") {
     "//brave/components/brave_new_tab_ui:generated_resources",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
+    "//brave/components/brave_shields/browser",
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:static_resources",
     "//brave/components/brave_sync:generated_resources",

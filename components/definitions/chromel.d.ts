@@ -139,8 +139,18 @@ declare namespace chrome.braveShields {
   }
 
   const allowScriptsOnce: any
-  const javascript: any
-  const plugins: any
+  const setBraveShieldsControlTypeAsync: any
+  const getBraveShieldsControlTypeAsync: any
+  const setAdControlTypeAsync: any
+  const getAdControlTypeAsync: any
+  const setCookieControlTypeAsync: any
+  const getCookieControlTypeAsync: any
+  const setFingerprintingControlTypeAsync: any
+  const getFingerprintingControlTypeAsync: any
+  const setHTTPSEverywhereControlTypeAsync: any
+  const getHTTPSEverywhereControlTypeAsync: any
+  const setNoScriptControlTypeAsync: any
+  const getNoScriptControlTypeAsync: any
 }
 
 declare namespace chrome.braveWallet {

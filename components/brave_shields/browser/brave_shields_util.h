@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <string>
 
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "services/network/public/mojom/referrer_policy.mojom.h"
 
@@ -26,6 +27,39 @@ class Profile;
 class ProfileIOData;
 
 namespace brave_shields {
+
+enum ControlType { ALLOW = 0, BLOCK, BLOCK_THIRD_PARTY, DEFAULT, INVALID };
+
+ContentSettingsPattern GetPatternFromURL(const GURL& url,
+                                         bool scheme_wildcard = false);
+std::string ControlTypeToString(ControlType type);
+ControlType ControlTypeFromString(const std::string& string);
+
+void SetBraveShieldsControlType(Profile* profile,
+                                ControlType type,
+                                const GURL& url);
+ControlType GetBraveShieldsControlType(Profile* profile, const GURL& url);
+
+void SetAdControlType(Profile* profile, ControlType type, const GURL& url);
+ControlType GetAdControlType(Profile* profile, const GURL& url);
+
+void SetCookieControlType(Profile* profile, ControlType type, const GURL& url);
+ControlType GetCookieControlType(Profile* profile, const GURL& url);
+
+void SetFingerprintingControlType(Profile* profile,
+                                  ControlType type,
+                                  const GURL& url);
+ControlType GetFingerprintingControlType(Profile* profile, const GURL& url);
+
+void SetHTTPSEverywhereControlType(Profile* profile,
+                                   ControlType type,
+                                   const GURL& url);
+ControlType GetHTTPSEverywhereControlType(Profile* profile, const GURL& url);
+
+void SetNoScriptControlType(Profile* profile,
+                            ControlType type,
+                            const GURL& url);
+ControlType GetNoScriptControlType(Profile* profile, const GURL& url);
 
 bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
                                      const GURL& primary_url,
