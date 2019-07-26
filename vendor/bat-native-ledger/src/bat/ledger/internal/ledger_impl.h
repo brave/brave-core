@@ -514,6 +514,10 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::ShowNotificationCallback& callback,
       const std::vector<std::string>& args = {});
 
+  void DeleteActivityInfo(
+      const std::string& publisher_key,
+      const ledger::DeleteActivityInfoCallback& callback);
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

@@ -1684,4 +1684,10 @@ void LedgerImpl::ShowNotification(
   ledger_client_->ShowNotification(type, args, callback);
 }
 
+void LedgerImpl::DeleteActivityInfo(
+      const std::string& publisher_key,
+      const ledger::DeleteActivityInfoCallback& callback) {
+  ledger_client_->DeleteActivityInfo(publisher_key, callback);
+}
+
 }  // namespace bat_ledger

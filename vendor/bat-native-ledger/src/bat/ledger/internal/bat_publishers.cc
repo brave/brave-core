@@ -330,6 +330,11 @@ void BatPublishers::OnSetPublisherExclude(
 
   publisher_info->excluded = exclude;
   ledger_->SetPublisherInfo(std::move(publisher_info));
+  if (exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED) {
+    ledger_->DeleteActivityInfo(
+      publisher_info->id,
+      [](ledger::Result _){});
+  }
   callback(ledger::Result::LEDGER_OK);
 }
 

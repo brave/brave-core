@@ -367,13 +367,19 @@ class RewardsServiceImpl : public RewardsService,
   void OnTip(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
 
-  void DeleteActivityInfo(const std::string& publisher_key);
+  void DeleteActivityInfo(
+    const std::string& publisher_key,
+    const ledger::DeleteActivityInfoCallback& callback) override;
 
-  void OnDeleteActivityInfoStamp(const std::string& publisher_key,
-                                 uint64_t reconcile_stamp);
+  void OnDeleteActivityInfoStamp(
+      const std::string& publisher_key,
+      const ledger::DeleteActivityInfoCallback& callback,
+      uint64_t reconcile_stamp);
 
-  void OnDeleteActivityInfo(const std::string& publisher_key,
-                            bool result);
+  void OnDeleteActivityInfo(
+    const std::string& publisher_key,
+    const ledger::DeleteActivityInfoCallback& callback,
+    bool result);
 
   void OnGetOneTimeTipsUI(GetRecurringTipsCallback callback,
                           ledger::PublisherInfoList list);

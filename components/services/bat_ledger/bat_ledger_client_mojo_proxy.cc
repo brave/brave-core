@@ -883,4 +883,18 @@ void BatLedgerClientMojoProxy::ShowNotification(
       base::BindOnce(&OnShowNotification, std::move(callback)));
 }
 
+void OnDeleteActivityInfo(
+  const ledger::DeleteActivityInfoCallback& callback,
+  const ledger::Result result) {
+  callback(result);
+}
+
+void BatLedgerClientMojoProxy::DeleteActivityInfo(
+      const std::string& publisher_key,
+      const ledger::DeleteActivityInfoCallback& callback) {
+  bat_ledger_client_->DeleteActivityInfo(
+      publisher_key,
+      base::BindOnce(&OnDeleteActivityInfo, std::move(callback)));
+}
+
 }  // namespace bat_ledger

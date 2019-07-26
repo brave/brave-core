@@ -896,4 +896,27 @@ void LedgerClientMojoProxy::ShowNotification(
                 _1));
 }
 
+// static
+void LedgerClientMojoProxy::OnDeleteActivityInfo(
+    CallbackHolder<DeleteActivityInfoCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::DeleteActivityInfo(
+      const std::string& publisher_key,
+      DeleteActivityInfoCallback callback) {
+  auto* holder = new CallbackHolder<DeleteActivityInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->DeleteActivityInfo(
+      publisher_key,
+      std::bind(LedgerClientMojoProxy::OnDeleteActivityInfo,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger
