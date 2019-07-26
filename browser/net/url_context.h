@@ -43,7 +43,6 @@ enum BraveNetworkDelegateEventType {
 enum BlockedBy {
   kNotBlocked ,
   kAdBlocked,
-  kTrackerBlocked,
   kOtherBlocked
 };
 

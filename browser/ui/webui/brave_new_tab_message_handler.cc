@@ -29,9 +29,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kAdsBlocked,
     base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
     base::Unretained(this)));
-  pref_change_registrar_.Add(kTrackersBlocked,
-    base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
-    base::Unretained(this)));
   pref_change_registrar_.Add(kHttpsUpgrades,
     base::Bind(&BraveNewTabMessageHandler::OnStatsChanged,
     base::Unretained(this)));

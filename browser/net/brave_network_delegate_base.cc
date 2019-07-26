@@ -379,8 +379,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
         IsRequestIdentifierValid(ctx->request_identifier)) {
       *ctx->new_url = GURL(ctx->new_url_spec);
     }
-    if (ctx->blocked_by == brave::kAdBlocked ||
-        ctx->blocked_by == brave::kTrackerBlocked) {
+    if (ctx->blocked_by == brave::kAdBlocked) {
       // We are going to intercept this request and block it later in the
       // network stack.
       if (ctx->cancel_request_explicitly) {
