@@ -4,8 +4,7 @@
 
 const locale: any = {
   // stats
-  trackersBlocked: 'Trackers Blocked',
-  adsBlocked: 'Ads Blocked',
+  adsTrackersBlocked: 'Ads and Trackers Blocked',
   httpsUpgrades: 'HTTPS Upgrades',
   estimatedTimeSaved: 'Estimated Time Saved',
   minutes: 'minutes',

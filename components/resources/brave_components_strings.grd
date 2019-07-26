@@ -118,8 +118,7 @@
   <release seq="1">
     <messages fallback_to_english="true">
       <!-- WebUI newtab resources -->
-      <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Ads Blocked</message>
-      <message name="IDS_BRAVE_NEW_TAB_TOTAL_TRACKERS_BLOCKED" desc="total number of trackers blocked">Trackers Blocked</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Ads and Trackers Blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED" desc="total time saved from blocking ads and trackers">Estimated Time Saved</message>
       <message name="IDS_BRAVE_NEW_TAB_THUMB_REMOVED" desc="Shown when a thumbnail is removed from the new tab page">Top site removed.</message>
@@ -170,7 +169,7 @@
       <!-- WebUI adblock resources -->
       <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_TITLE" desc="Title for additional filters section">Additional Filters</message>
       <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_WARNING" desc="Warning for additional filters section">Warning: Turning on too many filters will degrade performance</message>
-      <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total Ads Blocked:</message>
+      <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total ads and trackers blocked:</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_TITLE" desc="Title for custom filters section">Custom Filters</message>
       <message name="IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS" desc="Instructions for custom filters section">One per line, a filter is described in Adblock Plus filter syntax</message>
 

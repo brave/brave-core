@@ -245,9 +245,6 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
 
       if (block_type == kAds) {
         prefs->SetUint64(kAdsBlocked, prefs->GetUint64(kAdsBlocked) + 1);
-      } else if (block_type == kTrackers) {
-        prefs->SetUint64(kTrackersBlocked,
-            prefs->GetUint64(kTrackersBlocked) + 1);
       } else if (block_type == kHTTPUpgradableResources) {
         prefs->SetUint64(kHttpsUpgrades, prefs->GetUint64(kHttpsUpgrades) + 1);
       } else if (block_type == kJavaScript) {

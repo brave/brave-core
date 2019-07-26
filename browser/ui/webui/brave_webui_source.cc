@@ -114,8 +114,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
                                                            localized_strings = {
     {
       std::string("newtab"), {
-        { "adsBlocked", IDS_BRAVE_NEW_TAB_TOTAL_ADS_BLOCKED },
-        { "trackersBlocked", IDS_BRAVE_NEW_TAB_TOTAL_TRACKERS_BLOCKED },
+        { "adsTrackersBlocked", IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED },
         { "httpsUpgraded", IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES },
         { "estimatedTimeSaved", IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED },
         { "thumbRemoved", IDS_BRAVE_NEW_TAB_THUMB_REMOVED },

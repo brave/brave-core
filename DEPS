@@ -2,10 +2,9 @@ use_relative_paths = True
 
 deps = {
   "vendor/adblock_rust_ffi": "https://github.com/brave/adblock-rust-ffi.git@0e980ee0a63d837f3ecad666fabe1f50311baa81",
-  "vendor/autoplay-whitelist": "https://github.com/brave/autoplay-whitelist.git@f39d83788cd12b883bfe6561cc7166b176ab9d9d",
-  "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@aa74a1bc29ced176e50db9f54946f28d82dfc795",
-  "vendor/tracking-protection": "https://github.com/brave/tracking-protection.git@3de744d4698b2f8fac1f52579d39f9ad154d1ec2",
-  "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@4b55fe39bb25bb0d8b11a43d547d75f00c6c46fb",
+  "vendor/autoplay-whitelist": "https://github.com/brave/autoplay-whitelist.git@ea527a4d36051daedb34421e129c98eda06cb5d3",
+  "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@7843f62e26a23c51336330e220e9d7992680aae9",
+  "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@6eab0271d014ff09bd9f38abe1e0c117e13e9aa9",
   "vendor/bloom-filter-cpp": "https://github.com/brave/bloom-filter-cpp.git@9be5c63b14e094156e00c8b28f205e7794f0b92c",
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
