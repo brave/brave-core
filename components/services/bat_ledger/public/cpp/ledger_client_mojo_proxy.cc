@@ -363,9 +363,9 @@ void LedgerClientMojoProxy::FetchFavIcon(const std::string& url,
 // static
 void LedgerClientMojoProxy::OnSaveRecurringTip(
     CallbackHolder<SaveRecurringTipCallback>* holder,
-    ledger::Result result) {
+    const ledger::Result result) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(ToMojomResult(result));
+    std::move(holder->get()).Run(result);
   delete holder;
 }
 

@@ -2214,9 +2214,8 @@ bool SaveRecurringTipOnFileTaskRunner(
 
 void RewardsServiceImpl::OnSaveRecurringTipUI(
     SaveRecurringTipCallback callback,
-    const int32_t result) {
-  ledger::Result result_converted = static_cast<ledger::Result>(result);
-  bool success = result_converted == ledger::Result::LEDGER_OK;
+    const ledger::Result result) {
+  bool success = result == ledger::Result::LEDGER_OK;
 
   for (auto& observer : observers_) {
     observer.OnRecurringTipSaved(this, success);

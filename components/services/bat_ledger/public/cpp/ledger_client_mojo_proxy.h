@@ -250,7 +250,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnSaveRecurringTip(
       CallbackHolder<SaveRecurringTipCallback>* holder,
-      ledger::Result result);
+      const ledger::Result result);
 
   static void OnGetRecurringTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,

@@ -430,8 +430,8 @@ void BatLedgerClientMojoProxy::FetchFavIcon(const std::string& url,
 }
 
 void OnSaveRecurringTip(const ledger::SaveRecurringTipCallback& callback,
-                        int32_t result) {
-  callback(ToLedgerResult(result));
+                        const ledger::Result result) {
+  callback(result);
 }
 
 void BatLedgerClientMojoProxy::SaveRecurringTip(

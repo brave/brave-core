@@ -212,7 +212,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnSaveRecurringTipUI(
       SaveRecurringTipCallback callback,
-      const int32_t result);
+      const ledger::Result result);
   void SaveRecurringTipUI(
       const std::string& publisher_key,
       const int amount,
