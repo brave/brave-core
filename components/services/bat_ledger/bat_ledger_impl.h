@@ -244,7 +244,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnDoDirectTip(
       CallbackHolder<DoDirectTipCallback>* holder,
-      bool success);
+      const ledger::Result result);
 
   static void OnGetTransactionHistory(
       CallbackHolder<GetTransactionHistoryCallback>* holder,

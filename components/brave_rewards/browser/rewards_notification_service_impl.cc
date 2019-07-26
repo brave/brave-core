@@ -307,22 +307,24 @@ std::string RewardsNotificationServiceImpl::GetGrantIdPrefix(
 }
 
 void RewardsNotificationServiceImpl::OnGrant(RewardsService* rewards_service,
-                                             unsigned int error_code,
+                                             unsigned int result,
                                              Grant properties) {
-if (error_code == ledger::Result::LEDGER_OK) {
-    std::string grant_type = properties.type;
-    std::string prefix = GetGrantIdPrefix(grant_type);
-    RewardsNotificationService::RewardsNotificationType notification_type
-        = IsUGPGrant(grant_type)
-        ? RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
-        : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS;
-
-    RewardsNotificationService::RewardsNotificationArgs args;
-    AddNotification(notification_type,
-                    args,
-                    prefix + properties.promotionId,
-                    true);
+  if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
+    return;
   }
+
+  std::string grant_type = properties.type;
+  std::string prefix = GetGrantIdPrefix(grant_type);
+  RewardsNotificationService::RewardsNotificationType notification_type
+      = IsUGPGrant(grant_type)
+      ? RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
+      : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS;
+
+  RewardsNotificationService::RewardsNotificationArgs args;
+  AddNotification(notification_type,
+                  args,
+                  prefix + properties.promotionId,
+                  true);
 }
 
 void RewardsNotificationServiceImpl::OnGrantFinish(
@@ -345,11 +347,12 @@ void RewardsNotificationServiceImpl::OnReconcileComplete(
     const std::string& viewing_id,
     int32_t category,
     const std::string& probi) {
-  if ((result == ledger::Result::LEDGER_OK &&
+  auto converted_result = static_cast<ledger::Result>(result);
+  if ((converted_result == ledger::Result::LEDGER_OK &&
        category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) ||
-       result == ledger::Result::LEDGER_ERROR ||
-       result == ledger::Result::NOT_ENOUGH_FUNDS ||
-       result == ledger::Result::TIP_ERROR) {
+       converted_result == ledger::Result::LEDGER_ERROR ||
+       converted_result == ledger::Result::NOT_ENOUGH_FUNDS ||
+       converted_result == ledger::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(viewing_id);
     args.push_back(std::to_string(result));

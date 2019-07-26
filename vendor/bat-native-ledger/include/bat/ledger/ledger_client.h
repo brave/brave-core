@@ -23,6 +23,7 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/reconcile_info.h"
 #include "bat/ledger/wallet_properties.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace confirmations {
 class LogStream;
@@ -52,29 +53,29 @@ class LEDGER_EXPORT LogStream {
 };
 
 using PublisherInfoCallback =
-    std::function<void(Result, PublisherInfoPtr)>;
+    std::function<void(const Result, PublisherInfoPtr)>;
 // TODO(nejczdovc) we should be providing result back as well
 using PublisherInfoListCallback =
     std::function<void(PublisherInfoList, uint32_t /* next_record */)>;
 using GetNicewareListCallback =
-    std::function<void(Result, const std::string&)>;
-using RemoveRecurringTipCallback = std::function<void(Result)>;
+    std::function<void(const Result, const std::string&)>;
+using RemoveRecurringTipCallback = std::function<void(const Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
-using RestorePublishersCallback = std::function<void(ledger::Result)>;
-using OnSaveCallback = std::function<void(const ledger::Result)>;
-using OnLoadCallback = std::function<void(const ledger::Result,
+using RestorePublishersCallback = std::function<void(const Result)>;
+using OnSaveCallback = std::function<void(const Result)>;
+using OnLoadCallback = std::function<void(const Result,
                                           const std::string&)>;
-using OnResetCallback = std::function<void(const ledger::Result)>;
+using OnResetCallback = std::function<void(const Result)>;
 using PendingContributionInfoListCallback =
     std::function<void(PendingContributionInfoList)>;
-using RemovePendingContributionCallback = std::function<void(Result)>;
+using RemovePendingContributionCallback = std::function<void(const Result)>;
 using PendingContributionsTotalCallback = std::function<void(double)>;
 using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
-using ShowNotificationCallback = std::function<void(Result)>;
-using SavePendingContributionCallback = std::function<void(ledger::Result)>;
+using ShowNotificationCallback = std::function<void(const Result)>;
+using SavePendingContributionCallback = std::function<void(const Result)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -140,7 +141,7 @@ class LEDGER_EXPORT LedgerClient {
                                double balance,
                                std::vector<ledger::GrantPtr> grants) = 0;
 
-  virtual void OnGrantFinish(ledger::Result result,
+  virtual void OnGrantFinish(Result result,
                              ledger::GrantPtr grant) = 0;
 
   virtual void OnPanelPublisherInfo(Result result,
@@ -248,7 +249,7 @@ class LEDGER_EXPORT LedgerClient {
     const ledger::PendingContributionsTotalCallback& callback) = 0;
 
   virtual void OnContributeUnverifiedPublishers(
-      ledger::Result result,
+      Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) = 0;
 

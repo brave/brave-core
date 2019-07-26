@@ -212,7 +212,7 @@ class LedgerImpl : public ledger::Ledger,
   void RecoverWallet(const std::string& passPhrase) const override;
 
   void OnRecoverWallet(
-      ledger::Result result,
+      const ledger::Result result,
       double balance,
       const std::vector<braveledger_bat_helper::GRANT>& grants);
 

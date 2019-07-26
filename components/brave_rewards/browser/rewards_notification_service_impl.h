@@ -49,7 +49,7 @@ class RewardsNotificationServiceImpl
 
   // RewardsServiceObserver impl
   void OnGrant(RewardsService* rewards_service,
-               unsigned int error_code,
+               unsigned int result,
                Grant properties) override;
   void OnGrantFinish(RewardsService* rewards_service,
                      unsigned int result,

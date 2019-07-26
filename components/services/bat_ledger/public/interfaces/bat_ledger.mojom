@@ -26,7 +26,7 @@ interface BatLedger {
   Initialize();
   CreateWallet();
   FetchWalletProperties() =>
-      (int32 result, ledger.mojom.WalletProperties properties);
+      (ledger.mojom.Result result, ledger.mojom.WalletProperties properties);
 
   GetAutoContributeProps() => (ledger.mojom.AutoContributeProps props);
   GetPublisherMinVisitTime() => (uint64 min_visit_time);
@@ -55,15 +55,15 @@ interface BatLedger {
             string referrer,
             ledger.mojom.VisitData visit_data);
 
-  SetPublisherExclude(string publisher_key, int32 exclude) => (int32 result);
-  RestorePublishers() => (int32 result);
+  SetPublisherExclude(string publisher_key, int32 exclude) => (ledger.mojom.Result result);
+  RestorePublishers() => (ledger.mojom.Result result);
 
   SetBalanceReportItem(int32 month, int32 year, int32 type, string probi);
   OnReconcileCompleteSuccess(string viewing_id, int32 category, string probi,
       int32 month, int32 year, uint32 data);
 
   FetchGrants(string lang, string payment_id) =>
-      (int32 result, array<ledger.mojom.Grant> grants);
+      (ledger.mojom.Result result, array<ledger.mojom.Grant> grants);
   GetGrantCaptcha(array<string> headers) => (string image, string hint);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase);
@@ -97,9 +97,9 @@ interface BatLedger {
 
   DoDirectTip(string publisher_id,
               int32 amount,
-              string currency) => (int32 result);
+              string currency) => (ledger.mojom.Result result);
 
-  RemoveRecurringTip(string publisher_key) => (int32 result);
+  RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
   GetBootStamp() => (uint64 boot_stamp);
   GetRewardsMainEnabled() => (bool main_enabled);
 
@@ -117,13 +117,13 @@ interface BatLedger {
       (array<ledger.mojom.PublisherInfo> list, uint32 number);
 
   LoadPublisherInfo(string publisher_key) =>
-      (uint32 result, ledger.mojom.PublisherInfo? info);
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
   RefreshPublisher(string publisher_key) => (bool verified);
 
   StartMonthlyContribution();
 
-  SaveMediaInfo(string type, map<string, string> args) => (int32 result,
-        ledger.mojom.PublisherInfo? publisher_info);
+  SaveMediaInfo(string type, map<string, string> args) =>
+    (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
 
   SetInlineTipSetting(string key, bool enabled);
 
@@ -135,50 +135,50 @@ interface BatLedger {
   GetPendingContributions() => (array<ledger.mojom.PendingContributionInfo> list);
 
   RemovePendingContribution(string publisher_key, string viewing_id,
-      uint64 added_date) => (int32 result);
+      uint64 added_date) => (ledger.mojom.Result result);
 
-  RemoveAllPendingContributions() => (int32 result);
+  RemoveAllPendingContributions() => (ledger.mojom.Result result);
 
   GetPendingContributionsTotal() => (double amount);
 
-  FetchBalance() => (int32 result, ledger.mojom.Balance balance);
+  FetchBalance() => (ledger.mojom.Result result, ledger.mojom.Balance balance);
 
-  GetExternalWallet(string wallet_type) => (int32 result, ledger.mojom.ExternalWallet? wallet);
+  GetExternalWallet(string wallet_type) => (ledger.mojom.Result result, ledger.mojom.ExternalWallet? wallet);
 
-  ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (int32 result, map<string, string> args);
+  ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (ledger.mojom.Result result, map<string, string> args);
 
-  DisconnectWallet(string wallet_type) => (int32 result);
+  DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
 };
 
 interface BatLedgerClient {
   [Sync]
   GenerateGUID() => (string guid);
-  LoadLedgerState() => (int32 result, string data);
-  OnWalletInitialized(int32 result);
-  LoadPublisherState() => (int32 result, string data);
-  LoadPublisherList() => (int32 result, string data);
-  SaveLedgerState(string ledger_state) => (int32 result);
-  SavePublisherState(string publisher_state) => (int32 result);
-  SavePublishersList(string publishers_list) => (int32 result);
+  LoadLedgerState() => (ledger.mojom.Result result, string data);
+  OnWalletInitialized(ledger.mojom.Result result);
+  LoadPublisherState() => (ledger.mojom.Result result, string data);
+  LoadPublisherList() => (ledger.mojom.Result result, string data);
+  SaveLedgerState(string ledger_state) => (ledger.mojom.Result result);
+  SavePublisherState(string publisher_state) => (ledger.mojom.Result result);
+  SavePublishersList(string publishers_list) => (ledger.mojom.Result result);
 
-  OnWalletProperties(int32 result, ledger.mojom.WalletProperties? properties);
-  OnRecoverWallet(int32 result,
+  OnWalletProperties(ledger.mojom.Result result, ledger.mojom.WalletProperties? properties);
+  OnRecoverWallet(ledger.mojom.Result result,
                   double balance,
                   array<ledger.mojom.Grant?> grants);
-  OnReconcileComplete(int32 result, string viewing_id, int32 category,
+  OnReconcileComplete(ledger.mojom.Result result, string viewing_id, int32 category,
       string probi);
-  OnGrantFinish(int32 result, ledger.mojom.Grant? grant);
+  OnGrantFinish(ledger.mojom.Result result, ledger.mojom.Grant? grant);
 
   SavePublisherInfo(ledger.mojom.PublisherInfo publisher_info) =>
-      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
   LoadPublisherInfo(string publisher_key) =>
-      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
   LoadPanelPublisherInfo(ledger.mojom.ActivityInfoFilter? filter) =>
-      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
   LoadMediaPublisherInfo(string media_key) =>
-      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
 
-  OnPanelPublisherInfo(int32 result,
+  OnPanelPublisherInfo(ledger.mojom.Result result,
                        ledger.mojom.PublisherInfo publisher_info,
                        uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
@@ -190,8 +190,8 @@ interface BatLedgerClient {
       array<ledger.mojom.PublisherInfo> publisher_info_list,
       uint32 next_record);
 
-  LoadNicewareList() => (int32 result, string data);
-  RemoveRecurringTip(string publisher_key) => (int32 result);
+  LoadNicewareList() => (ledger.mojom.Result result, string data);
+  RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
 
   LoadURL(string url, array<string> headers, string content,
       string content_type, int32 method) => (int32 status_code, string response,
@@ -207,24 +207,24 @@ interface BatLedgerClient {
   [Sync]
   URIEncode(string value) => (string encoded_value);
 
-  SavePendingContribution(array<ledger.mojom.PendingContribution> list) => (int32 result);
+  SavePendingContribution(array<ledger.mojom.PendingContribution> list) => (ledger.mojom.Result result);
 
   LoadActivityInfo(ledger.mojom.ActivityInfoFilter? filter) =>
-      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
 
   SaveActivityInfo(ledger.mojom.PublisherInfo publisher_info) =>
-      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
 
-  RestorePublishers() => (int32 result);
+  RestorePublishers() => (ledger.mojom.Result result);
 
   GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>
       (array<ledger.mojom.PublisherInfo> publisher_info_list, uint32 next_record);
 
   SaveNormalizedPublisherList(array<ledger.mojom.PublisherInfo> list);
 
-  SaveState(string name, string value) => (int32 result);
-  LoadState(string name) => (int32 result, string value);
-  ResetState(string name) => (int32 result);
+  SaveState(string name, string value) => (ledger.mojom.Result result);
+  LoadState(string name) => (ledger.mojom.Result result, string value);
+  ResetState(string name) => (ledger.mojom.Result result);
 
   [Sync]
   GetBooleanState(string name) => (bool value);
@@ -252,18 +252,18 @@ interface BatLedgerClient {
   GetPendingContributions() => (array<ledger.mojom.PendingContributionInfo> list);
 
   RemovePendingContribution(string publisher_key, string viewing_id,
-      uint64 added_date) => (int32 result);
+      uint64 added_date) => (ledger.mojom.Result result);
 
-  RemoveAllPendingContributions() => (int32 result);
+  RemoveAllPendingContributions() => (ledger.mojom.Result result);
 
   GetPendingContributionsTotal() => (double amount);
 
-  OnContributeUnverifiedPublishers(int32 result, string publisher_key,
+  OnContributeUnverifiedPublishers(ledger.mojom.Result result, string publisher_key,
       string publisher_name);
 
   GetExternalWallets() => (map<string, ledger.mojom.ExternalWallet?> wallets);
 
   SaveExternalWallet(string wallet_type, ledger.mojom.ExternalWallet wallet);
 
-  ShowNotification(string type, array<string> args) => (int32 result);
+  ShowNotification(string type, array<string> args) => (ledger.mojom.Result result);
 };

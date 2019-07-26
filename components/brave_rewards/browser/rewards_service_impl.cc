@@ -752,8 +752,8 @@ base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
                      AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnRestorePublishersUI(const int32_t result) {
-  if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
+void RewardsServiceImpl::OnRestorePublishersUI(const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
     return;
   }
 
@@ -824,7 +824,7 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
 }
 
 void RewardsServiceImpl::OnWalletProperties(
-    ledger::Result result,
+    const ledger::Result result,
     ledger::WalletPropertiesPtr properties) {
   std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
   for (auto& observer : observers_) {
@@ -913,11 +913,6 @@ void RewardsServiceImpl::GetAutoContributeProps(
         &RewardsServiceImpl::OnGetAutoContributeProps, AsWeakPtr(), callback));
 }
 
-void RewardsServiceImpl::OnGrant(ledger::Result result,
-                                 ledger::GrantPtr grant) {
-  TriggerOnGrant(result, std::move(grant));
-}
-
 void RewardsServiceImpl::OnGrantCaptcha(const std::string& image,
     const std::string& hint) {
   TriggerOnGrantCaptcha(image, hint);
@@ -974,7 +969,7 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   GetCurrentBalanceReport();
   for (auto& observer : observers_)
     observer.OnReconcileComplete(this,
-                                 result,
+                                 static_cast<int>(result),
                                  viewing_id,
                                  category,
                                  probi);
@@ -1161,9 +1156,9 @@ void RewardsServiceImpl::LoadActivityInfo(
 
 void RewardsServiceImpl::OnPublisherActivityInfoLoaded(
     ledger::PublisherInfoCallback callback,
-    uint32_t result,
+    const ledger::Result result,
     ledger::PublisherInfoPtr publisher) {
-  callback(static_cast<ledger::Result>(result), std::move(publisher));
+  callback(result, std::move(publisher));
 }
 
 void RewardsServiceImpl::OnActivityInfoLoaded(
@@ -1358,16 +1353,16 @@ void RewardsServiceImpl::OnURLLoaderComplete(
   }
 }
 
-void RewardsServiceImpl::TriggerOnWalletInitialized(ledger::Result result) {
+void RewardsServiceImpl::TriggerOnWalletInitialized(
+    const ledger::Result result) {
   for (auto& observer : observers_)
-    observer.OnWalletInitialized(this, result);
+    observer.OnWalletInitialized(this, static_cast<int>(result));
 }
 
 void RewardsServiceImpl::OnFetchWalletProperties(
-    int result,
+    const ledger::Result result,
     ledger::WalletPropertiesPtr properties) {
-  OnWalletProperties(static_cast<ledger::Result>(result),
-                     std::move(properties));
+  OnWalletProperties(result, std::move(properties));
 }
 
 void RewardsServiceImpl::FetchWalletProperties() {
@@ -1387,11 +1382,10 @@ void RewardsServiceImpl::FetchWalletProperties() {
 }
 
 void RewardsServiceImpl::OnFetchGrants(
-    int result,
+    const ledger::Result result,
     std::vector<ledger::GrantPtr> grants) {
-  ledger::Result converted_result = static_cast<ledger::Result>(result);
   for (size_t i = 0; i < grants.size(); i ++) {
-    OnGrant(converted_result, std::move(grants[i]));
+    TriggerOnGrant(result, std::move(grants[i]));
   }
 }
 
@@ -1406,7 +1400,7 @@ void RewardsServiceImpl::FetchGrants(const std::string& lang,
       AsWeakPtr()));
 }
 
-void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
+void RewardsServiceImpl::TriggerOnGrant(const ledger::Result result,
                                         ledger::GrantPtr grant) {
   brave_rewards::Grant properties;
 
@@ -1419,7 +1413,7 @@ void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
   }
 
   for (auto& observer : observers_)
-    observer.OnGrant(this, result, properties);
+    observer.OnGrant(this, static_cast<int>(result), properties);
 }
 
 void RewardsServiceImpl::GetGrantCaptcha(
@@ -1480,7 +1474,11 @@ void RewardsServiceImpl::TriggerOnRecoverWallet(
   }
 
   for (auto& observer : observers_)
-    observer.OnRecoverWallet(this, result, balance, newGrants);
+    observer.OnRecoverWallet(
+      this,
+      static_cast<int>(result),
+      balance,
+      newGrants);
 }
 
 void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution,
@@ -1505,7 +1503,7 @@ void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,
   }
 
   for (auto& observer : observers_) {
-    observer.OnGrantFinish(this, result, properties);
+    observer.OnGrantFinish(this, static_cast<int>(result), properties);
   }
 }
 
@@ -2003,7 +2001,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
 }
 
 void RewardsServiceImpl::OnPanelPublisherInfo(
-    ledger::Result result,
+    const ledger::Result result,
     ledger::PublisherInfoPtr info,
     uint64_t windowId) {
   if (result != ledger::Result::LEDGER_OK &&
@@ -2013,7 +2011,7 @@ void RewardsServiceImpl::OnPanelPublisherInfo(
 
   for (auto& observer : private_observers_)
     observer.OnPanelPublisherInfo(this,
-                                  result,
+                                  static_cast<int>(result),
                                   info.get(),
                                   windowId);
 }
@@ -2138,11 +2136,8 @@ void RewardsServiceImpl::OnPublisherBanner(
   std::move(callback).Run(std::move(new_banner));
 }
 
-void RewardsServiceImpl::OnTipPublisherInfoSaved(ledger::Result result,
+void RewardsServiceImpl::OnTipPublisherInfoSaved(const ledger::Result result,
     ledger::PublisherInfoPtr info) {
-}
-
-void RewardsServiceImpl::OnDoDirectTip(int result) {
 }
 
 void RewardsServiceImpl::OnTip(const std::string& publisher_key,
@@ -2165,8 +2160,7 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
   if (!Connected())
     return;
 
-  bat_ledger_->DoDirectTip(publisher_key, amount, "BAT",
-    base::BindOnce(&RewardsServiceImpl::OnDoDirectTip, AsWeakPtr()));
+  bat_ledger_->DoDirectTip(publisher_key, amount, "BAT", base::DoNothing());
 }
 
 bool SaveContributionInfoOnFileTaskRunner(
@@ -2241,17 +2235,16 @@ void RewardsServiceImpl::SaveRecurringTip(
 
 void RewardsServiceImpl::OnMediaInlineInfoSaved(
     SaveMediaInfoCallback callback,
-    int32_t result,
+    const ledger::Result result,
     ledger::PublisherInfoPtr publisher) {
   if (!Connected()) {
     std::move(callback).Run(nullptr);
     return;
   }
 
-  ledger::Result result_converted = static_cast<ledger::Result>(result);
   std::unique_ptr<brave_rewards::ContentSite> site;
 
-  if (result_converted == ledger::Result::LEDGER_OK) {
+  if (result == ledger::Result::LEDGER_OK) {
     site = std::make_unique<brave_rewards::ContentSite>(
         PublisherInfoToContentSite(*publisher));
   }
@@ -2380,9 +2373,8 @@ void RewardsServiceImpl::OnGetOneTimeTips(
   callback(std::move(list), 0);
 }
 
-void RewardsServiceImpl::OnRecurringTipUI(const int32_t result) {
-  bool success =
-    static_cast<ledger::Result>(result) == ledger::Result::LEDGER_OK;
+void RewardsServiceImpl::OnRecurringTipUI(const ledger::Result result) {
+  bool success = result == ledger::Result::LEDGER_OK;
   for (auto& observer : observers_) {
     observer.OnRecurringTipRemoved(this, success);
   }
@@ -2458,8 +2450,8 @@ void RewardsServiceImpl::UpdateAdsRewards() const {
 void RewardsServiceImpl::OnSetPublisherExclude(
     const std::string& publisher_key,
     const bool exclude,
-    const int32_t result) {
-  if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
+    const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
     return;
   }
 
@@ -2814,9 +2806,10 @@ ledger::Result SavePendingContributionOnFileTaskRunner(
 
 void RewardsServiceImpl::OnSavePendingContribution(
     ledger::SavePendingContributionCallback callback,
-    ledger::Result result) {
-  for (auto& observer : observers_)
-    observer.OnPendingContributionSaved(this, result);
+    const ledger::Result result) {
+  for (auto& observer : observers_) {
+    observer.OnPendingContributionSaved(this, static_cast<int>(result));
+  }
   callback(result);
 }
 
@@ -3124,9 +3117,10 @@ void RewardsServiceImpl::GetPendingContributions(
                  callback));
 }
 
-void RewardsServiceImpl::OnPendingContributionRemovedUI(int32_t result) {
+void RewardsServiceImpl::OnPendingContributionRemovedUI(
+  const ledger::Result result) {
   for (auto& observer : observers_) {
-    observer.OnPendingContributionRemoved(this, result);
+    observer.OnPendingContributionRemoved(this, static_cast<int>(result));
   }
 }
 
@@ -3193,9 +3187,10 @@ bool RemoveAllPendingContributionOnFileTaskRunner(
   return backend->RemoveAllPendingContributions();
 }
 
-void RewardsServiceImpl::OnRemoveAllPendingContributionsUI(int32_t result) {
+void RewardsServiceImpl::OnRemoveAllPendingContributionsUI(
+  const ledger::Result result) {
   for (auto& observer : observers_) {
-    observer.OnPendingContributionRemoved(this, result);
+    observer.OnPendingContributionRemoved(this, static_cast<int>(result));
   }
 }
 
@@ -3244,8 +3239,9 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
     }
     case ledger::Result::PENDING_PUBLISHER_REMOVED:
     {
+      const auto result = static_cast<int>(ledger::Result::LEDGER_OK);
       for (auto& observer : observers_) {
-        observer.OnPendingContributionRemoved(this, ledger::Result::LEDGER_OK);
+        observer.OnPendingContributionRemoved(this, result);
       }
       break;
     }
@@ -3265,7 +3261,7 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
 }
 
 void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
-                                        int32_t result,
+                                        const ledger::Result result,
                                         ledger::BalancePtr balance) {
   auto new_balance = std::make_unique<brave_rewards::Balance>();
 
@@ -3279,7 +3275,7 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
     }
   }
 
-  std::move(callback).Run(result, std::move(new_balance));
+  std::move(callback).Run(static_cast<int>(result), std::move(new_balance));
 }
 
 void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
@@ -3358,7 +3354,7 @@ void RewardsServiceImpl::GetExternalWallets(
 void RewardsServiceImpl::OnGetExternalWallet(
     const std::string& wallet_type,
     GetExternalWalletCallback callback,
-    int32_t result,
+    const ledger::Result result,
     ledger::ExternalWalletPtr wallet) {
   auto external =
       std::make_unique<brave_rewards::ExternalWallet>();
@@ -3375,7 +3371,7 @@ void RewardsServiceImpl::OnGetExternalWallet(
     external->account_url = wallet->account_url;
   }
 
-  std::move(callback).Run(result, std::move(external));
+  std::move(callback).Run(static_cast<int>(result), std::move(external));
 }
 
 void RewardsServiceImpl::GetExternalWallet(const std::string& wallet_type,
@@ -3390,7 +3386,7 @@ void RewardsServiceImpl::GetExternalWallet(const std::string& wallet_type,
 void RewardsServiceImpl::OnExternalWalletAuthorization(
     const std::string& wallet_type,
     ExternalWalletAuthorizationCallback callback,
-    int32_t result,
+    const ledger::Result result,
     const base::flat_map<std::string, std::string>& args) {
   std::move(callback).Run(result, mojo::FlatMapToMap(args));
 }
@@ -3412,9 +3408,9 @@ void RewardsServiceImpl::OnProcessExternalWalletAuthorization(
     const std::string& wallet_type,
     const std::string& action,
     ProcessRewardsPageUrlCallback callback,
-    int32_t result,
+    const ledger::Result result,
     const std::map<std::string, std::string>& args) {
-  std::move(callback).Run(result, wallet_type, action, args);
+  std::move(callback).Run(static_cast<int>(result), wallet_type, action, args);
 }
 
 void RewardsServiceImpl::ProcessRewardsPageUrl(
@@ -3428,7 +3424,8 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
       base::SPLIT_WANT_NONEMPTY);
 
   if (path_items.size() < 2) {
-    std::move(callback).Run(ledger::Result::LEDGER_ERROR, "", "", {});
+    const auto result = static_cast<int>(ledger::Result::LEDGER_ERROR);
+    std::move(callback).Run(result, "", "", {});
     return;
   }
 
@@ -3457,8 +3454,10 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
     }
   }
 
+  const auto result = static_cast<int>(ledger::Result::LEDGER_ERROR);
+
   std::move(callback).Run(
-      ledger::Result::LEDGER_ERROR,
+      result,
       wallet_type,
       action,
       {});
@@ -3466,9 +3465,9 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
 
 void RewardsServiceImpl::OnDisconnectWallet(
     const std::string& wallet_type,
-    int32_t result) {
+    const ledger::Result result) {
   for (auto& observer : observers_) {
-    observer.OnDisconnectWallet(this, result, wallet_type);
+    observer.OnDisconnectWallet(this, static_cast<int>(result), wallet_type);
   }
 }
 

@@ -34,7 +34,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
       std::unique_ptr<brave_rewards::WalletProperties> properties) {}
   virtual void OnGrant(
       RewardsService* rewards_service,
-      unsigned int error_code,
+      unsigned int result,
       brave_rewards::Grant properties) {}
   virtual void OnGrantCaptcha(
       RewardsService* rewards_service,
