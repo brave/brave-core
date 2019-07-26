@@ -22,19 +22,19 @@ static const char kAllowResource[] = "allow";
 namespace chrome {
 namespace android {
 
-BraveShieldsContentSettings* _brave_shields_content_settings = nullptr;
+BraveShieldsContentSettings* g_brave_shields_content_settings = nullptr;
 
 static void JNI_BraveShieldsContentSettings_Init(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
-  _brave_shields_content_settings =
-    new BraveShieldsContentSettings(env, jcaller);
+  g_brave_shields_content_settings =
+      new BraveShieldsContentSettings(env, jcaller);
 }
 
 BraveShieldsContentSettings::BraveShieldsContentSettings(JNIEnv* env,
     const base::android::JavaRef<jobject>& obj):
     weak_java_native_worker_(env, obj) {
   Java_BraveShieldsContentSettings_setNativePtr(env, obj,
-    reinterpret_cast<intptr_t>(this));
+      reinterpret_cast<intptr_t>(this));
 }
 
 BraveShieldsContentSettings::~BraveShieldsContentSettings() {
@@ -42,7 +42,7 @@ BraveShieldsContentSettings::~BraveShieldsContentSettings() {
 
 void BraveShieldsContentSettings::Destroy(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller) {
-  _brave_shields_content_settings = nullptr;
+  g_brave_shields_content_settings = nullptr;
   delete this;
 }
 
@@ -50,20 +50,20 @@ void BraveShieldsContentSettings::DispatchBlockedEventToJava(int tab_id,
         const std::string& block_type, const std::string& subresource) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveShieldsContentSettings_blockedEvent(env,
-    weak_java_native_worker_.get(env), tab_id,
-    base::android::ConvertUTF8ToJavaString(env, block_type),
-    base::android::ConvertUTF8ToJavaString(env, subresource));
+      weak_java_native_worker_.get(env), tab_id,
+      base::android::ConvertUTF8ToJavaString(env, block_type),
+      base::android::ConvertUTF8ToJavaString(env, subresource));
 }
 
 // static
 void BraveShieldsContentSettings::DispatchBlockedEvent(int tab_id,
   const std::string& block_type, const std::string& subresource) {
-  DCHECK(_brave_shields_content_settings);
-  if (!_brave_shields_content_settings) {
+  DCHECK(g_brave_shields_content_settings);
+  if (!g_brave_shields_content_settings) {
     return;
   }
-  _brave_shields_content_settings->DispatchBlockedEventToJava(tab_id,
-    block_type, subresource);
+  g_brave_shields_content_settings->DispatchBlockedEventToJava(tab_id,
+      block_type, subresource);
 }
 
 base::android::ScopedJavaLocalRef<jstring>
@@ -73,7 +73,7 @@ base::android::ScopedJavaLocalRef<jstring>
     const base::android::JavaParamRef<jstring>& resourceIndentifier) {
   HostContentSettingsMap* map;
   Profile* profile =
-    ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
   if (incognito) {
     if (!profile->HasOffTheRecordProfile()) {
       // Allow shields there
@@ -108,11 +108,11 @@ void JNI_BraveShieldsContentSettings_SetShields(JNIEnv* env,
   }
   ContentSetting setting;
   content_settings::ContentSettingFromString(
-    base::android::ConvertJavaStringToUTF8(env, value), &setting);
+      base::android::ConvertJavaStringToUTF8(env, value), &setting);
 
   HostContentSettingsMap* map;
   Profile* profile =
-    ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
   if (incognito) {
     if (!profile->HasOffTheRecordProfile()) {
       // Do nothing here
@@ -124,10 +124,10 @@ void JNI_BraveShieldsContentSettings_SetShields(JNIEnv* env,
     map = HostContentSettingsMapFactory::GetForProfile(profile);
   }
   map->SetContentSettingDefaultScope(
-        GURL(base::android::ConvertJavaStringToUTF8(env, host)), GURL(""),
-        CONTENT_SETTINGS_TYPE_PLUGINS,
-        base::android::ConvertJavaStringToUTF8(env, resourceIndentifier),
-        setting);
+      GURL(base::android::ConvertJavaStringToUTF8(env, host)), GURL(""),
+      CONTENT_SETTINGS_TYPE_PLUGINS,
+      base::android::ConvertJavaStringToUTF8(env, resourceIndentifier),
+      setting);
 }
 
 }  // namespace android

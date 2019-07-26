@@ -5,11 +5,7 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 
-#include <map>
-#include <memory>
 #include <string>
-#include <utility>
-#include <vector>
 
 #include "brave/browser/android/brave_shields_content_settings.h"
 #include "chrome/browser/android/tab_android.h"
@@ -30,7 +26,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
     tabId = tab->GetAndroidId();
   }
   chrome::android::BraveShieldsContentSettings::DispatchBlockedEvent(
-    tabId, block_type, subresource);
+      tabId, block_type, subresource);
 }
 
 }  // namespace brave_shields

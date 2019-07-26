@@ -20,12 +20,12 @@ class BraveShieldsContentSettings {
     ~BraveShieldsContentSettings();
 
     void Destroy(JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& jcaller);
+        const base::android::JavaParamRef<jobject>& jcaller);
     void DispatchBlockedEventToJava(int tab_id, const std::string& block_type,
-     const std::string& subresource);
+        const std::string& subresource);
 
     static void DispatchBlockedEvent(int tab_id,
-     const std::string& block_type, const std::string& subresource);
+        const std::string& block_type, const std::string& subresource);
 
  private:
     JavaObjectWeakGlobalRef weak_java_native_worker_;
