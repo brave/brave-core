@@ -189,11 +189,14 @@ void NativeLedgerClient::ClearState(const std::string& name) {
   [bridge_ clearState:name];
 }
 void NativeLedgerClient::GetExternalWallets(ledger::GetExternalWalletsCallback callback) {
-  return [bridge_ getExternalWallets:callback];
+  [bridge_ getExternalWallets:callback];
 }
 void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) {
-  return [bridge_ saveExternalWallet:wallet_type wallet:std::move(wallet)];
+  [bridge_ saveExternalWallet:wallet_type wallet:std::move(wallet)];
 }
 void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, const ledger::ShowNotificationCallback& callback) {
-  return [bridge_ showNotification:type args:args callback:callback];
+  [bridge_ showNotification:type args:args callback:callback];
+}
+void NativeLedgerClient::DeleteActivityInfo(const std::string& publisher_key, const ledger::DeleteActivityInfoCallback& callback) {
+  [bridge_ deleteActivityInfo:publisher_key callback:callback];
 }

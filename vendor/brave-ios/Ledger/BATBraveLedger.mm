@@ -371,22 +371,21 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   ledger->GetPublisherActivityFromUrl(1, visitData.Clone(), blob);
 }
 
+- (void)deleteActivityInfo:(const std::string &)publisher_key callback:(const ledger::DeleteActivityInfoCallback &)callback
+{
+  const auto bridgedKey = [NSString stringWithUTF8String:publisher_key.c_str()];
+  const auto stamp = ledger->GetReconcileStamp();
+  [BATLedgerDatabase deleteActivityInfoWithPublisherID:bridgedKey reconcileStamp:stamp completion:^(BOOL success) {
+    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  }];
+}
+
 - (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state
 {
   ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PUBLISHER_EXCLUDE)state, ^(const ledger::Result result) {
     if (result != ledger::Result::LEDGER_OK) {
       return;
     }
-
-    bool excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(state) == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-
-    if (excluded) {
-      const auto stamp = ledger->GetReconcileStamp();
-      [BATLedgerDatabase deleteActivityInfoWithPublisherID:publisherId
-                                            reconcileStamp:stamp
-                                                completion:nil];
-    }
-
     for (BATBraveLedgerObserver *observer in self.observers) {
       if (observer.excludedSitesChanged) {
         observer.excludedSitesChanged(publisherId,
