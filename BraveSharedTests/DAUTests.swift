@@ -137,6 +137,25 @@ class DAUTests: XCTestCase {
         XCTAssertNil(params2)
     }
     
+    func testNonDefaultWoiExplicitDate() {
+        let correctWoi = "2018-02-26"
+        
+        XCTAssertNotEqual(correctWoi, DAU.defaultWoiDate, "woi params must be different from each other for this test")
+
+        pingWithDateAndCompare(dateString: "2018-03-04", daily: true, weekly: true, monthly: true,
+                               first: true, woi: correctWoi)
+        pingWithDateAndCompare(dateString: "2018-03-05", daily: true, weekly: true,
+                               monthly: false, woi: correctWoi)
+        pingWithDateAndCompare(dateString: "2018-03-07", daily: true, weekly: false,
+                               monthly: false, woi: correctWoi)
+    }
+    
+    func testNonDefaultWoiDefaultConstructor() {
+        let dauFirstLaunch = DAU()
+        let params = dauFirstLaunch.paramsAndPrefsSetup()
+        XCTAssertFalse(params!.queryParams.contains(URLQueryItem(name: "woi", value: DAU.defaultWoiDate)))
+    }
+    
     func testNotFirstLaunchSetDau() {
         let date = dateFrom(string: "2017-11-20")
         
