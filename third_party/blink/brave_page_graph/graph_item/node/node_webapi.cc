@@ -21,22 +21,22 @@ NodeWebAPI::NodeWebAPI(PageGraph* const graph, const MethodName method) :
 NodeWebAPI::~NodeWebAPI() {}
 
 ItemName NodeWebAPI::GetItemName() const {
-  return "web API #" + to_string(id_);
+  return "web API";
 }
 
-const MethodName& NodeWebAPI::GetMethod() const {
-  return method_name_;
+ItemDesc NodeWebAPI::GetItemDesc() const {
+  return Node::GetItemDesc() + " [" + method_name_ + "]";
 }
 
-ItemDesc NodeWebAPI::GetDescBody() const {
-  return GetItemName() + " (" + method_name_ + ")";
+GraphMLXMLList NodeWebAPI::GetGraphMLAttributes() const {
+  GraphMLXMLList attrs = GraphItem::GetGraphMLAttributes();
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
+      ->ToValue(method_name_));
+  return attrs;
 }
 
-GraphMLXMLList NodeWebAPI::GraphMLAttributes() const {
-  return {
-    GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
-      ->ToValue(method_name_)
-  };
+bool NodeWebAPI::IsNodeWebAPI() const {
+  return true;
 }
 
 }  // namespace brave_page_graph

@@ -6,8 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_HTML_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_HTML_H_
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
+#include "third_party/blink/renderer/platform/wtf/casting.h"
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
 
 namespace brave_page_graph {
 
@@ -22,18 +25,33 @@ friend class PageGraph;
  public:
   EdgeHTML() = delete;
   ~EdgeHTML() override;
+
   ItemName GetItemName() const override;
+
+  bool IsEdgeHTML() const override;
 
  protected:
   EdgeHTML(PageGraph* const graph, NodeHTMLElement* const out_node,
     NodeHTML* const in_node);
-
   // Only used for generating edges during GraphML export.
-  EdgeHTML(const NodeHTMLElement* const out_node,
-    NodeHTML* const in_node);
-  GraphMLXMLList GraphMLAttributes() const override;
+  EdgeHTML(const NodeHTMLElement* const out_node, NodeHTML* const in_node);
 };
 
 }  // namespace brave_page_graph
+
+namespace blink {
+
+template <>
+struct DowncastTraits<brave_page_graph::EdgeHTML> {
+  static bool AllowFrom(const brave_page_graph::Edge& edge) {
+    return edge.IsEdgeHTML();
+  }
+  static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
+    return IsA<brave_page_graph::EdgeHTML>(
+        DynamicTo<brave_page_graph::Edge>(graph_item));
+  }
+};
+
+}  // namespace blink
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_HTML_H_

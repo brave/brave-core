@@ -4,11 +4,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extensions.h"
+
 #include <string>
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
 using ::std::string;
 using ::std::to_string;
@@ -24,15 +27,8 @@ ItemName NodeExtensions::GetItemName() const {
   return "extensions";
 }
 
-GraphMLXMLList NodeExtensions::GraphMLAttributes() const {
-  GraphMLXMLList attrs;
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
-      ->ToValue("extensions"));
-  return attrs;
-}
-
-ItemDesc NodeExtensions::GetDescBody() const {
-  return GetItemName();
+bool NodeExtensions::IsNodeExtensions() const {
+  return true;
 }
 
 }  // namespace brave_page_graph
