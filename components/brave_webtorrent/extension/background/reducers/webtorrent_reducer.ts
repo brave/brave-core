@@ -182,7 +182,7 @@ const updateProgress = (state: TorrentsState, torrent: Torrent) => {
 
 const updateInfo = (state: TorrentsState, torrent: Torrent) => {
   const { torrentStateMap, torrentObjMap } = state
-  const { downloaded, uploaded, downloadSpeed, uploadSpeed, progress, ratio,
+  const { name, downloaded, uploaded, downloadSpeed, uploadSpeed, progress, ratio,
     numPeers, timeRemaining, infoHash } = torrent
   let length: number = 0
   const files: File[] = torrent.files.map((file) => {
@@ -199,7 +199,7 @@ const updateInfo = (state: TorrentsState, torrent: Torrent) => {
     )
 
   torrentObjMap[torrent.infoHash] = { ...torrentObjMap[torrent.infoHash],
-    files, downloaded, uploaded, downloadSpeed, uploadSpeed, progress, ratio,
+    files, name, downloaded, uploaded, downloadSpeed, uploadSpeed, progress, ratio,
     numPeers, timeRemaining, length, tabClients }
 
   return { ...state, torrentStateMap, torrentObjMap }

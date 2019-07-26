@@ -43,5 +43,21 @@ describe('torrentViewerHeader component', () => {
       )
       expect(wrapper.html()).toEqual(expect.stringContaining('Stop Torrent'))
     })
+
+    it('renders the component with torrent title', () => {
+      const wrapper = shallow(
+        <TestThemeProvider>
+          <TorrentViewerHeader
+            tabId={tabId}
+            torrentId={torrentId}
+            torrent={torrentObj}
+            name={torrentObj.name}
+            onStartTorrent={startTorrentMock}
+            onStopDownload={stopDownloadMock}
+          />
+        </TestThemeProvider>
+      )
+      expect(wrapper.html()).toEqual(expect.stringContaining(torrentObj.name))
+    })
   })
 })
