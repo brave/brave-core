@@ -644,13 +644,13 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Reconcile
 
-- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id category:(ledger::REWARDS_CATEGORY)category probi:(const std::string &)probi
+- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id category:(ledger::RewardsCategory)category probi:(const std::string &)probi
 {
   if (result == ledger::Result::LEDGER_OK) {
     const auto now = [NSDate date];
     const auto nowTimestamp = [now timeIntervalSince1970];
 
-    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+    if (category == ledger::RewardsCategory::RECURRING_TIP) {
       [self showTipsProcessedNotificationIfNeccessary];
     }
 
@@ -662,7 +662,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                                        nowTimestamp);
   }
 
-  if ((result == ledger::Result::LEDGER_OK && category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) ||
+  if ((result == ledger::Result::LEDGER_OK && category == ledger::RewardsCategory::AUTO_CONTRIBUTE) ||
       result == ledger::Result::LEDGER_ERROR ||
       result == ledger::Result::NOT_ENOUGH_FUNDS ||
       result == ledger::Result::TIP_ERROR) {
@@ -1539,7 +1539,7 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)saveContributionInfo:(const std::string &)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key category:(const ledger::REWARDS_CATEGORY)category
+- (void)saveContributionInfo:(const std::string &)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key category:(const ledger::RewardsCategory)category
 {
   [BATLedgerDatabase insertContributionInfo:[NSString stringWithUTF8String:probi.c_str()]
                                       month:month

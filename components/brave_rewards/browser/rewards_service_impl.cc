@@ -989,14 +989,14 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   const std::string& viewing_id,
-  ledger::REWARDS_CATEGORY category,
+  ledger::RewardsCategory category,
   const std::string& probi) {
   if (result == ledger::Result::LEDGER_OK) {
     auto now = base::Time::Now();
     if (!Connected())
       return;
 
-    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+    if (category == ledger::RewardsCategory::RECURRING_TIP) {
       MaybeShowNotificationTipsPaid();
     }
 
@@ -2150,7 +2150,7 @@ bool SaveContributionInfoOnFileTaskRunner(
 }
 
 void RewardsServiceImpl::OnContributionInfoSaved(
-    const ledger::REWARDS_CATEGORY category,
+    const ledger::RewardsCategory category,
     bool success) {
   for (auto& observer : observers_) {
     observer.OnContributionSaved(this, success, category);
@@ -2162,7 +2162,7 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
   const int year,
   const uint32_t date,
   const std::string& publisher_key,
-  const ledger::REWARDS_CATEGORY category) {
+  const ledger::RewardsCategory category) {
   brave_rewards::ContributionInfo info;
   info.probi = probi;
   info.month = month;

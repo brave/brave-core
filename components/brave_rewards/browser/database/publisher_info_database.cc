@@ -195,7 +195,7 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
 
   info_sql.BindInt(0, month);
   info_sql.BindInt(1, year);
-  info_sql.BindInt(2, ledger::REWARDS_CATEGORY::ONE_TIME_TIP);
+  info_sql.BindInt(2, ledger::RewardsCategory::ONE_TIME_TIP);
 
   while (info_sql.Step()) {
     auto publisher = ledger::PublisherInfo::New();
@@ -1049,7 +1049,7 @@ void PublisherInfoDatabase::GetPendingContributions(
     info->added_date = info_sql.ColumnInt64(7);
     info->viewing_id = info_sql.ColumnString(8);
     info->category =
-        static_cast<ledger::REWARDS_CATEGORY>(info_sql.ColumnInt(9));
+        static_cast<ledger::RewardsCategory>(info_sql.ColumnInt(9));
 
     list->push_back(std::move(info));
   }

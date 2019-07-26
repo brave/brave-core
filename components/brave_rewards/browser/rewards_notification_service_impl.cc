@@ -358,7 +358,7 @@ void RewardsNotificationServiceImpl::OnReconcileComplete(
     const std::string& probi) {
   auto converted_result = static_cast<ledger::Result>(result);
   if ((converted_result == ledger::Result::LEDGER_OK &&
-       category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) ||
+       category == ledger::RewardsCategory::AUTO_CONTRIBUTE) ||
        converted_result == ledger::Result::LEDGER_ERROR ||
        converted_result == ledger::Result::NOT_ENOUGH_FUNDS ||
        converted_result == ledger::Result::TIP_ERROR) {

@@ -594,7 +594,7 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
   ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
-      static_cast<ledger::REWARDS_CATEGORY>(category),
+      static_cast<ledger::RewardsCategory>(category),
       probi);
 }
 
@@ -846,7 +846,7 @@ void LedgerImpl::GetPublisherBanner(const std::string& publisher_id,
 
 void LedgerImpl::OnReconcileCompleteSuccess(
     const std::string& viewing_id,
-    const ledger::REWARDS_CATEGORY category,
+    const ledger::RewardsCategory category,
     const std::string& probi,
     const ledger::ACTIVITY_MONTH month,
     const int year,
@@ -1163,7 +1163,7 @@ void LedgerImpl::SaveContributionInfo(
     const int year,
     const uint32_t date,
     const std::string& publisher_key,
-    const ledger::REWARDS_CATEGORY category) {
+    const ledger::RewardsCategory category) {
   ledger_client_->SaveContributionInfo(probi,
                                        month,
                                        year,

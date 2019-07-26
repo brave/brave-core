@@ -16,8 +16,8 @@ namespace bat_ledger {
 
 namespace {  // TODO(anyone): move into a util class
 
-ledger::REWARDS_CATEGORY ToLedgerPublisherCategory(int32_t category) {
-  return (ledger::REWARDS_CATEGORY)category;
+ledger::RewardsCategory ToLedgerPublisherCategory(int32_t category) {
+  return (ledger::RewardsCategory)category;
 }
 
 ledger::URL_METHOD ToLedgerURLMethod(int32_t method) {

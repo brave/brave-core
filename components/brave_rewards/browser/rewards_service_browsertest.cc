@@ -1096,7 +1096,7 @@ class BraveRewardsBrowserTest :
 
     const auto converted_result = static_cast<ledger::Result>(result);
 
-    if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
+    if (category == ledger::RewardsCategory::AUTO_CONTRIBUTE) {
       ac_reconcile_completed_ = true;
       ac_reconcile_status_ = converted_result;
       if (wait_for_ac_completed_loop_) {
@@ -1104,8 +1104,8 @@ class BraveRewardsBrowserTest :
       }
     }
 
-    if (category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP ||
-        category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+    if (category == ledger::RewardsCategory::ONE_TIME_TIP ||
+        category == ledger::RewardsCategory::RECURRING_TIP) {
       // Single tip tracking
       tip_reconcile_completed_ = true;
       tip_reconcile_status_ = converted_result;

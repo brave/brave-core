@@ -18,7 +18,7 @@ namespace bat_ledger {
 namespace {
 
 
-int32_t ToMojomPublisherCategory(ledger::REWARDS_CATEGORY category) {
+int32_t ToMojomPublisherCategory(ledger::RewardsCategory category) {
   return (int32_t)category;
 }
 
@@ -140,7 +140,7 @@ void BatLedgerClientMojoProxy::OnWalletProperties(
 
 void BatLedgerClientMojoProxy::OnReconcileComplete(ledger::Result result,
     const std::string& viewing_id,
-    ledger::REWARDS_CATEGORY category,
+    ledger::RewardsCategory category,
     const std::string& probi) {
   if (!Connected())
     return;
@@ -464,7 +464,7 @@ void BatLedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
     const int year,
     const uint32_t date,
     const std::string& publisher_key,
-    const ledger::REWARDS_CATEGORY category) {
+    const ledger::RewardsCategory category) {
   if (!Connected())
     return;
 

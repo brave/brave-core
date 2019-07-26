@@ -97,7 +97,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id,
-                                   ledger::REWARDS_CATEGORY category,
+                                   ledger::RewardsCategory category,
                                    const std::string& probi) = 0;
 
   virtual void LoadLedgerState(OnLoadCallback callback) = 0;
@@ -154,7 +154,7 @@ class LEDGER_EXPORT LedgerClient {
       const int year,
       const uint32_t date,
       const std::string& publisher_key,
-      const ledger::REWARDS_CATEGORY category) = 0;
+      const ledger::RewardsCategory category) = 0;
 
   virtual void SaveRecurringTip(
       ledger::ContributionInfoPtr info,
