@@ -4,14 +4,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_text_change.h"
+
 #include <string>
+
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_text.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_script.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_html_text.h"
 
 using ::std::string;
 
@@ -19,25 +21,27 @@ namespace brave_page_graph {
 
 EdgeTextChange::EdgeTextChange(PageGraph* const graph,
     NodeScript* const out_node, NodeHTMLText* const in_node,
-    const std::string& new_text) :
+    const std::string& text) :
       Edge(graph, out_node, in_node),
-      new_text_(new_text) {}
+      text_(text) {}
 
 ItemName EdgeTextChange::GetItemName() const {
-  return "text change #" + ::std::to_string(id_);
+  return "text change";
 }
 
-ItemName EdgeTextChange::GetDescBody() const {
-  return GetItemName() + " (" + new_text_ + ")";
+ItemName EdgeTextChange::GetItemDesc() const {
+  return Edge::GetItemDesc() + " [" + text_ + "]";
 }
 
-GraphMLXMLList EdgeTextChange::GraphMLAttributes() const {
-  return {
-    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
-      ->ToValue("text change"),
-    GraphMLAttrDefForType(kGraphMLAttrDefValue)
-      ->ToValue(new_text_)
-  };
+GraphMLXMLList EdgeTextChange::GetGraphMLAttributes() const {
+  GraphMLXMLList attrs = Edge::GetGraphMLAttributes();
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
+      ->ToValue(text_));
+  return attrs;
+}
+
+bool EdgeTextChange::IsEdgeTextChange() const {
+  return true;
 }
 
 }  // namespace brave_page_graph

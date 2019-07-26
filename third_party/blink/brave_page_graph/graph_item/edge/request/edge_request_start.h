@@ -7,8 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_START_H_
 
 #include <string>
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
+
+#include "third_party/blink/renderer/platform/wtf/casting.h"
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
 
 namespace brave_page_graph {
 
@@ -21,23 +25,47 @@ friend class PageGraph;
  public:
   EdgeRequestStart() = delete;
   ~EdgeRequestStart() override;
-  ItemName GetItemName() const override;
-  RequestType GetRequestType() const;
+
+  RequestType GetRequestType() const { return request_type_; }
 
   NodeResource* GetResourceNode() const override;
   Node* GetRequestingNode() const override;
-  RequestUrl GetRequestedUrl() const;
+
+  ItemName GetItemName() const override;
+  ItemDesc GetItemDesc() const override;
+
+  GraphMLXMLList GetGraphMLAttributes() const override;
+
+  bool IsEdgeRequestStart() const override;
 
  protected:
   EdgeRequestStart(PageGraph* const graph, Node* const out_node,
     NodeResource* const in_node, const InspectorId request_id,
-    const RequestType type);
-  ItemDesc GetDescBody() const override;
-  GraphMLXMLList GraphMLAttributes() const override;
+    const RequestType request_type);
 
-  const RequestType type_;
+ private:
+  const RequestType request_type_;
 };
 
 }  // namespace brave_page_graph
+
+namespace blink {
+
+template <>
+struct DowncastTraits<brave_page_graph::EdgeRequestStart> {
+  static bool AllowFrom(const brave_page_graph::EdgeRequest& request_edge) {
+    return request_edge.IsEdgeRequestStart();
+  }
+  static bool AllowFrom(const brave_page_graph::Edge& edge) {
+    return IsA<brave_page_graph::EdgeRequestStart>(
+        DynamicTo<brave_page_graph::EdgeRequest>(edge));
+  }
+  static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
+    return IsA<brave_page_graph::EdgeRequestStart>(
+        DynamicTo<brave_page_graph::Edge>(graph_item));
+  }
+};
+
+}  // namespace blink
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_START_H_

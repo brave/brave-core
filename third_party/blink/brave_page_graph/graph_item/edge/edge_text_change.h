@@ -7,8 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_TEXT_CHANGE_H_
 
 #include <string>
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
+
+#include "third_party/blink/renderer/platform/wtf/casting.h"
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
 
 namespace brave_page_graph {
 
@@ -20,17 +24,39 @@ class EdgeTextChange : public Edge {
 friend class PageGraph;
  public:
   EdgeTextChange() = delete;
-  
+
+  const std::string& GetText() const { return text_; }
+
+  ItemName GetItemName() const override;
+  ItemName GetItemDesc() const override;
+
+  GraphMLXMLList GetGraphMLAttributes() const override;
+
+  bool IsEdgeTextChange() const override;
+
  protected:
   EdgeTextChange(PageGraph* const graph, NodeScript* const out_node,
-    NodeHTMLText* const in_node, const std::string& new_text);
-  ItemName GetItemName() const override;
-  ItemName GetDescBody() const override;
-  GraphMLXMLList GraphMLAttributes() const override;
+    NodeHTMLText* const in_node, const std::string& text);
 
-  const std::string new_text_;
+ private:
+  const std::string text_;
 };
 
 }  // namespace brave_page_graph
+
+namespace blink {
+
+template <>
+struct DowncastTraits<brave_page_graph::EdgeTextChange> {
+  static bool AllowFrom(const brave_page_graph::Edge& edge) {
+    return edge.IsEdgeTextChange();
+  }
+  static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
+    return IsA<brave_page_graph::EdgeTextChange>(
+        DynamicTo<brave_page_graph::Edge>(graph_item));
+  }
+};
+
+}  // namespace blink
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_TEXT_CHANGE_H_
