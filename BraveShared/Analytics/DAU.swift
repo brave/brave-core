@@ -21,14 +21,14 @@ public class DAU {
     fileprivate static var calendar: Calendar { return Calendar(identifier: .gregorian) }
     
     private var launchTimer: Timer?
-    private let today: Date?
+    private let today: Date
     /// Whether a current ping attempt is being made
     private var processingPing = false
     private var todayComponents: DateComponents {
-        return DAU.calendar.dateComponents([.day, .month, .year, .weekday], from: today ?? Date())
+        return DAU.calendar.dateComponents([.day, .month, .year, .weekday], from: today)
     }
     
-    public init(date: Date? = nil) {
+    public init(date: Date = Date()) {
         today = date
     }
     
@@ -121,7 +121,7 @@ public class DAU {
         
         // This could lead to an upgraded device having no `woi`, and that's fine
         if firstLaunch {
-            Preferences.DAU.weekOfInstallation.value = today?.mondayOfCurrentWeekFormatted ?? DAU.defaultWoiDate
+            Preferences.DAU.weekOfInstallation.value = today.mondayOfCurrentWeekFormatted
         }
         
         guard let dauStatParams = dauStatParams(firstPing: firstLaunch) else {
@@ -140,7 +140,7 @@ public class DAU {
             UrpLog.log("DAU ping with added ref, params: \(params)")
         }
         
-        let lastPingTimestamp = [Int((today ?? Date()).timeIntervalSince1970)]
+        let lastPingTimestamp = [Int((today).timeIntervalSince1970)]
         
         return ParamsAndPrefs(queryParams: params, lastLaunchInfoPreference: lastPingTimestamp)
     }
@@ -245,7 +245,7 @@ public class DAU {
         
         let lastPingDate = Date(timeIntervalSince1970: TimeInterval(lastPingStat))
         
-        let pings = getPings(forDate: today ?? Date(), lastPingDate: lastPingDate)
+        let pings = getPings(forDate: today, lastPingDate: lastPingDate)
         
         // No changes, no ping
         if pings.isEmpty {
