@@ -33,34 +33,39 @@ a {
 }
 
 .torrentSubhead {
-  padding: 18px 0;
   border-top: solid 1px #c8c8d5;
+  margin: 16px 0;
 }
 
-.torrentSubhead p {
-  font-size: 18px;
-}
-
-.torrentSubhead h3 {
+.starterText {
   font-size: 20px;
-  margin: 24px 0;
+  margin: 32px 0;
+}
+
+.torrentHeading {
+  font-size: 20px;
+  margin: 32px 0 16px 0;
   font-weight: 500;
   color: #fb542b;
 }
 
-.privacyNotice {
+.torrentStatus {
+  font-size: 16px;
+}
+
+.torrentStat, .torrentStatDivider {
+  margin-right: 15px;
+}
+
+.footerNotice {
   padding: 18px 0;
   border-top: solid 1px #c8c8d5;
-  color: #ababbf;
-  line-height: 24px;
+  color: #8b8b9f;
+  line-height: 18px;
 }
 
 #webTorrentCredit {
-  color: #c8c8d5;
-}
-
-.gridFix {
-  grid-template-columns: repeat(auto-fill, 50px);
+  color: #8b8b9f;
 }
 
 .loadingContainer {

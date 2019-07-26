@@ -4,10 +4,14 @@
 
 import * as React from 'react'
 import * as prettierBytes from 'prettier-bytes'
-import { Column, Grid, Heading } from 'brave-ui/components'
+import { Heading } from 'brave-ui/components'
 
 // Constants
 import { TorrentObj } from '../constants/webtorrentState'
+
+const TorrentStatDivider = () => (
+  <span className='torrentStatDivider'>•</span>
+ )
 
 interface Props {
   torrent?: TorrentObj
@@ -27,39 +31,64 @@ export default class TorrentStatus extends React.PureComponent<Props, {}> {
     }
 
     const renderStatus = () => {
-      const status = torrent.progress < 1 ? 'Downloading' : 'Seeding'
-      return <Column size={2}> {status} </Column>
+      const status = torrent.progress < 1
+        ? 'Downloading'
+        : 'Seeding'
+      return <span className='torrentStat'>{status}</span>
     }
 
     const renderPercentage = () => {
-      const percentage =
-        torrent.progress < 1 ? (torrent.progress * 100).toFixed(1) : '100'
-      return <Column size={2}> {percentage}% </Column>
+      const percentage = torrent.progress < 1
+        ? (torrent.progress * 100).toFixed(1)
+        : '100'
+      return (
+        <>
+          <TorrentStatDivider />
+          <span className='torrentStat'>{percentage}%</span>
+        </>
+      )
     }
 
-    const renderSpeeds = () => {
-      let str = ''
-      if (torrent.downloadSpeed > 0) {
-        str += ' ↓ ' + prettierBytes(torrent.downloadSpeed) + '/s'
-      }
-      if (torrent.uploadSpeed > 0) {
-        str += ' ↑ ' + prettierBytes(torrent.uploadSpeed) + '/s'
-      }
-      if (str === '') return
-      return <Column size={2}> {str} </Column>
+    const renderDownloadSpeed = () => {
+      if (torrent.downloadSpeed === 0) return
+      return (
+        <>
+          <TorrentStatDivider />
+          <span className='torrentStat'>
+            ↓ {prettierBytes(torrent.downloadSpeed)}/s
+          </span>
+        </>
+      )
+    }
+
+    const renderUploadSpeed = () => {
+      if (torrent.uploadSpeed === 0) return
+      return (
+        <>
+          <TorrentStatDivider />
+          <span className='torrentStat'>
+            ↑ {prettierBytes(torrent.uploadSpeed)}/s
+          </span>
+        </>
+      )
     }
 
     const renderTotalProgress = () => {
       const downloaded = prettierBytes(torrent.downloaded)
       const total = prettierBytes(torrent.length || 0)
       if (downloaded === total) {
-        return <Column size={2}> {downloaded} </Column>
+        return (
+          <>
+            <TorrentStatDivider />
+            <span className='torrentStat'>{downloaded}</span>
+          </>
+        )
       } else {
         return (
-          <Column size={2}>
-            {' '}
-            {downloaded} / {total}{' '}
-          </Column>
+          <>
+            <TorrentStatDivider />
+            <span className='torrentStat'>{downloaded} / {total}</span>
+          </>
         )
       }
     }
@@ -68,10 +97,12 @@ export default class TorrentStatus extends React.PureComponent<Props, {}> {
       if (torrent.numPeers === 0) return
       const count = torrent.numPeers === 1 ? 'peer' : 'peers'
       return (
-        <Column size={2}>
-          {' '}
-          {torrent.numPeers} {count}{' '}
-        </Column>
+        <>
+          <TorrentStatDivider />
+          <span className='torrentStat'>
+            {torrent.numPeers} {count}
+          </span>
+        </>
       )
     }
 
@@ -93,23 +124,27 @@ export default class TorrentStatus extends React.PureComponent<Props, {}> {
       const secondsStr = seconds + 's'
 
       return (
-        <div className='__column'>
-          {hoursStr} {minutesStr} {secondsStr} remaining
-        </div>
+        <>
+          <TorrentStatDivider />
+          <span className='torrentStat'>
+            {hoursStr} {minutesStr} {secondsStr} remaining
+          </span>
+        </>
       )
     }
 
     return (
       <div className='torrentSubhead'>
-        <Heading children='Torrent Status' level={3} />
-        <Grid className='gridFix'>
+        <Heading children='Torrent Stats' level={2} className='torrentHeading' />
+        <div className='torrentStatus'>
           {renderStatus()}
           {renderPercentage()}
-          {renderSpeeds()}
+          {renderDownloadSpeed()}
+          {renderUploadSpeed()}
           {renderTotalProgress()}
           {renderPeers()}
           {renderEta()}
-        </Grid>
+        </div>
       </div>
     )
   }

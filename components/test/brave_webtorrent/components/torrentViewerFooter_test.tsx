@@ -24,7 +24,7 @@ describe('torrentViewerFooter component', () => {
       const wrapper = shallow(
         <TorrentViewerFooter />
       )
-      const assertion = wrapper.find('.privacyNotice')
+      const assertion = wrapper.find('.footerNotice')
       expect(assertion.length).toBe(1)
     })
   })
