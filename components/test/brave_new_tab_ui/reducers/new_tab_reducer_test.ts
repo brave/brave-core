@@ -8,9 +8,6 @@ import { types } from '../../../brave_new_tab_ui/constants/new_tab_types'
 // Reducer
 import newTabReducer from '../../../brave_new_tab_ui/reducers/new_tab_reducer'
 
-// Actions
-import * as actions from '../../../brave_new_tab_ui/actions/new_tab_actions'
-
 // State
 import { newTabInitialState } from '../../testData'
 
@@ -37,17 +34,10 @@ describe('newTabReducer', () => {
   }
 
   describe('initial state', () => {
-    let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(storage, 'load')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
-    it('calls storage.load() when initial state is undefined', () => {
-      newTabReducer(undefined, actions.statsUpdated())
-      expect(spy).toBeCalled()
-      expect(spy.mock.calls[0][1]).toBe(undefined)
+    it('loads initial data', () => {
+      const expectedState = storage.load()
+      const returnedState = newTabReducer(undefined, {})
+      expect(returnedState).toEqual(expectedState)
     })
   })
   describe('BOOKMARK_ADDED', () => {
@@ -99,23 +89,6 @@ describe('newTabReducer', () => {
       expect(spy).not.toBeCalled()
     })
   })
-  describe('NEW_TAB_TOP_SITES_DATA_UPDATED', () => {
-    let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(gridAPI, 'calculateGridSites')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
-    it('calls gridAPI.calculateGridSites', () => {
-      const url: string = 'https://brave.com'
-      newTabReducer(fakeState, {
-        type: types.NEW_TAB_TOP_SITES_DATA_UPDATED,
-        payload: { url }
-      })
-      expect(spy).toBeCalled()
-    })
-  })
   describe('NEW_TAB_SITE_PINNED', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
@@ -125,11 +98,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_PINNED,
         payload: { url }
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
+      jest.useRealTimers()
     })
   })
   describe('NEW_TAB_SITE_UNPINNED', () => {
@@ -141,11 +117,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_UNPINNED,
         payload: { url }
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
+      jest.useRealTimers()
     })
   })
   describe('NEW_TAB_SITE_IGNORED', () => {
@@ -157,11 +136,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_IGNORED,
         payload: { url }
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
+      jest.useRealTimers()
     })
   })
   describe('NEW_TAB_UNDO_SITE_IGNORED', () => {
@@ -173,11 +155,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_UNDO_SITE_IGNORED,
         payload: { url }
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
+      jest.useRealTimers()
     })
   })
   describe('NEW_TAB_UNDO_ALL_SITE_IGNORED', () => {
@@ -189,11 +174,14 @@ describe('newTabReducer', () => {
       spy.mockRestore()
     })
     it('calls gridAPI.calculateGridSites', () => {
+      jest.useFakeTimers()
       newTabReducer(fakeState, {
         type: types.NEW_TAB_UNDO_ALL_SITE_IGNORED
       })
+      jest.runAllTimers()
       expect(spy).toBeCalled()
     })
+    jest.useRealTimers()
   })
   describe('NEW_TAB_HIDE_SITE_REMOVAL_NOTIFICATION', () => {
     it('set showSiteRemovalNotification to false', () => {
@@ -279,48 +267,6 @@ describe('newTabReducer', () => {
       expect(assertion).toEqual({
         ...fakeState,
         gridSites: [ { url: 'http://brave.com/' } ]
-      })
-    })
-  })
-  describe('NEW_TAB_STATS_UPDATED', () => {
-    let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(storage, 'getLoadTimeData')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
-    it('calls storage.getLoadTimeData', () => {
-      newTabReducer(fakeState, {
-        type: types.NEW_TAB_STATS_UPDATED
-      })
-      expect(spy).toBeCalled()
-    })
-  })
-  describe('NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE', () => {
-    let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome, 'send')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
-    it('calls chrome.send', () => {
-      newTabReducer(fakeState, {
-        type: types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE,
-        payload: { shouldUse: true }
-      })
-      expect(spy).toBeCalled()
-    })
-    it('set useAlternativePrivateSearchEngine value based on shouldUse', () => {
-      const payloadValue = true
-      const assertion = newTabReducer(fakeState, {
-        type: types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE,
-        payload: { shouldUse: payloadValue }
-      })
-      expect(assertion).toEqual({
-        ...fakeState,
-        useAlternativePrivateSearchEngine: payloadValue
       })
     })
   })

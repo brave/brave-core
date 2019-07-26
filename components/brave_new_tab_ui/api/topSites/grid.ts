@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // API
-import * as dataFetchAPI from '../dataFetch'
+import getActions from '../getActions'
 import * as bookmarksAPI from './bookmarks'
 import { getCharForSite } from '../../helpers/newTabUtils'
 
@@ -50,5 +50,10 @@ export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) =
  * Calculates the top sites grid and calls an action with the results
  */
 export const calculateGridSites = debounce((state: NewTab.State) => {
-  dataFetchAPI.getActions().gridSitesUpdated(getGridSites(state, true))
+  // TODO(petemill):
+  // Instead of debouncing at the point of reducing actions to state,
+  // and having the reducer call this, it may be more understandable
+  // (and performant) to have this be a selector so that the calculation
+  // is only performed when the relevant state data is changed.
+  getActions().gridSitesUpdated(getGridSites(state, true))
 }, 10)

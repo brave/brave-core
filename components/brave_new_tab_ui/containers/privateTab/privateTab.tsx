@@ -29,6 +29,9 @@ import TorContent from './torContent'
 // Helpers
 import { getLocale } from '../../../common/locale'
 
+// API
+import { toggleAlternativePrivateSearchEngine } from '../../api/privateTabData'
+
 // Assets
 const privateWindowImg = require('../../../img/newtab/private-window.svg')
 
@@ -45,11 +48,8 @@ export default class PrivateTab extends React.PureComponent<Props, {}> {
     )
   }
 
-  onChangePrivateSearchEngine = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target) {
-      return
-    }
-    this.props.actions.changePrivateSearchEngine(e.target.checked)
+  onChangePrivateSearchEngine = () => {
+    toggleAlternativePrivateSearchEngine()
   }
 
   render () {

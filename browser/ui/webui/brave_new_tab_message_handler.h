@@ -10,13 +10,18 @@
 #include "content/public/browser/web_ui_message_handler.h"
 
 class Profile;
-class BraveNewTabUI;
+namespace content {
+class WebUIDataSource;
+}
 
 // Handles messages to and from the New Tab Page javascript
 class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
  public:
-  explicit BraveNewTabMessageHandler(BraveNewTabUI* web_ui);
+  explicit BraveNewTabMessageHandler(Profile* profile);
   ~BraveNewTabMessageHandler() override;
+
+  static BraveNewTabMessageHandler* Create(
+      content::WebUIDataSource* html_source, Profile* profile);
 
  private:
   // WebUIMessageHandler implementation.
@@ -24,7 +29,9 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
   void OnJavascriptAllowed() override;
   void OnJavascriptDisallowed() override;
 
-  void HandleInitialized(const base::ListValue* args);
+  void HandleGetPreferences(const base::ListValue* args);
+  void HandleGetStats(const base::ListValue* args);
+  void HandleGetPrivateProperties(const base::ListValue* args);
   void HandleSaveNewTabPagePref(const base::ListValue* args);
   void HandleToggleAlternativeSearchEngineProvider(
       const base::ListValue* args);
@@ -34,7 +41,8 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
   void OnPrivatePropertiesChanged();
 
   PrefChangeRegistrar pref_change_registrar_;
-  BraveNewTabUI* new_tab_web_ui_;
+  // Weak pointer.
+  Profile* profile_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabMessageHandler);
 };
