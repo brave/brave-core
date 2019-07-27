@@ -43,6 +43,12 @@ friend class RequestTracker;
   void SetIsError();
   void SetCompletedResourceType(const blink::ResourceType type);
 
+  const std::string& ResponseHeaderString() const;
+  void SetResponseHeaderString(const std::string& response_header_string);
+
+  int64_t ResponseBodyLength() const;
+  void SetResponseBodyLength(const int64_t response_body_length);
+
  protected:
   enum class RequestStatus : uint8_t {
     kError = 0,
@@ -61,6 +67,9 @@ friend class RequestTracker;
   blink::ResourceType resource_type_ = blink::ResourceType::kLast;
 
   mutable bool is_complete_ = false;
+
+  std::string response_header_string_;
+  int64_t response_body_length_;
 };
 
 }  // namsepace brave_page_graph

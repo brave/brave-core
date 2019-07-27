@@ -124,4 +124,24 @@ void TrackedRequest::SetCompletedResourceType(const blink::ResourceType type) {
   resource_type_ = type;
 }
 
+
+const std::string& TrackedRequest::ResponseHeaderString() const {
+  return response_header_string_;
+}
+
+void TrackedRequest::SetResponseHeaderString(
+    const std::string& response_header_string) {
+  response_header_string_ = response_header_string;
+}
+
+int64_t TrackedRequest::ResponseBodyLength() const {
+  return response_body_length_;
+}
+
+void TrackedRequest::SetResponseBodyLength(
+    const int64_t response_body_length) {
+  response_body_length_ = response_body_length;
+}
+
+
 }  // namsepace brave_page_graph

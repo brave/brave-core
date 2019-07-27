@@ -4,11 +4,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
+#include <string>
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 
 using ::blink::KURL;
+using ::std::string;
 
 namespace brave_page_graph {
+
+string URLToString(const KURL& url) {
+  return string(url.GetString().Utf8().data());
+}
 
 KURL NormalizeUrl(const KURL& url) {
   KURL url_copy(url);
