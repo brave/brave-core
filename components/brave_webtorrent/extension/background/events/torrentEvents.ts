@@ -13,11 +13,9 @@ export const addTorrentEvents = (torrent: Torrent) => {
     webtorrentActions.progressUpdated(torrent)
   })
   torrent.on('infoHash', () => {
-    console.log('infoHash event')
     webtorrentActions.infoUpdated(torrent)
   })
   torrent.on('metadata', () => {
-    console.log('metadata event')
     webtorrentActions.infoUpdated(torrent)
   })
   torrent.on('download', throttle((bytes: number) => {
@@ -26,8 +24,13 @@ export const addTorrentEvents = (torrent: Torrent) => {
   torrent.on('upload', throttle((bytes: number) => {
     webtorrentActions.progressUpdated(torrent)
   }, 1000))
+  torrent.on('done', () => {
+    webtorrentActions.progressUpdated(torrent)
+  })
+  torrent.on('wire', () => {
+    webtorrentActions.progressUpdated(torrent)
+  })
   torrent.on('ready', () => {
-    console.log('ready', torrent)
     createServer(torrent, (serverURL: string) => {
       webtorrentActions.serverUpdated(torrent, serverURL)
     })

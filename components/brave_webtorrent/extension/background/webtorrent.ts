@@ -4,7 +4,7 @@
 
 import * as WebTorrent from 'webtorrent'
 import { addTorrentEvents } from './events/torrentEvents'
-import { addWebtorrentEvents } from './events/webtorrentEvents'
+import { addWebtorrentEvents, removeWebTorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
 import { Instance } from 'parse-torrent'
 
@@ -61,6 +61,7 @@ export const findTorrent = (infoHash: string) => {
 
 const maybeDestroyWebTorrent = () => {
   if (!webTorrent || webTorrent.torrents.length !== 0) return
+  removeWebTorrentEvents(webTorrent)
   webTorrent.destroy()
   webTorrent = undefined
 }
