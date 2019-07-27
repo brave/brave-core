@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
-index 6dfea3ee346c010a0eafa268f105e9689bc90dd4..d35b8a62c743e102889f4faa00a6d300538ebc4b 100644
+index 5b28648253bfe6b6b670564e80b9c5455038ce52..4614dac288c2570a30269cb699ec654aad172cf0 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_target.cc
 @@ -62,6 +62,14 @@
@@ -66,7 +66,7 @@ index 6dfea3ee346c010a0eafa268f105e9689bc90dd4..d35b8a62c743e102889f4faa00a6d300
  bool EventTarget::AddEventListenerInternal(
      const AtomicString& event_type,
      EventListener* listener,
-@@ -453,9 +496,42 @@ bool EventTarget::AddEventListenerInternal(
+@@ -466,9 +509,42 @@ bool EventTarget::AddEventListenerInternal(
    }
  
    RegisteredEventListener registered_listener;
@@ -109,7 +109,7 @@ index 6dfea3ee346c010a0eafa268f105e9689bc90dd4..d35b8a62c743e102889f4faa00a6d300
      AddedEventListener(event_type, registered_listener);
      if (IsA<JSBasedEventListener>(listener) &&
          IsInstrumentedForAsyncStack(event_type)) {
-@@ -554,6 +630,31 @@ bool EventTarget::RemoveEventListenerInternal(
+@@ -567,6 +643,31 @@ bool EventTarget::RemoveEventListenerInternal(
                                      &registered_listener))
      return false;
  
@@ -141,7 +141,7 @@ index 6dfea3ee346c010a0eafa268f105e9689bc90dd4..d35b8a62c743e102889f4faa00a6d300
    // Notify firing events planning to invoke the listener at 'index' that
    // they have one less listener to invoke.
    if (d->firing_event_iterators) {
-@@ -610,6 +711,43 @@ bool EventTarget::SetAttributeEventListener(const AtomicString& event_type,
+@@ -623,6 +724,43 @@ bool EventTarget::SetAttributeEventListener(const AtomicString& event_type,
          IsInstrumentedForAsyncStack(event_type)) {
        probe::AsyncTaskScheduled(GetExecutionContext(), event_type, listener);
      }

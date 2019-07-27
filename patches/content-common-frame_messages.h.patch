@@ -1,8 +1,8 @@
 diff --git a/content/common/frame_messages.h b/content/common/frame_messages.h
-index 8673d65844ea1e6f0dd75e833f4a674d68045a04..351b49e0e837c2deca50fb567c3e563c71d58d60 100644
+index e5bcd550ade968e1e38a02014632ec94c16fe8bb..93527d43f1eab6048b07a56302c7476adbeeac39 100644
 --- a/content/common/frame_messages.h
 +++ b/content/common/frame_messages.h
-@@ -82,6 +82,8 @@
+@@ -84,6 +84,8 @@
  #include "url/gurl.h"
  #include "url/origin.h"
  
@@ -11,9 +11,9 @@ index 8673d65844ea1e6f0dd75e833f4a674d68045a04..351b49e0e837c2deca50fb567c3e563c
  #if BUILDFLAG(ENABLE_PLUGINS)
  #include "content/common/pepper_renderer_instance_data.h"
  #endif
-@@ -847,6 +849,18 @@ IPC_MESSAGE_ROUTED2(FrameMsg_AddMessageToConsole,
-                     blink::mojom::ConsoleMessageLevel /* level */,
-                     std::string /* message */)
+@@ -850,6 +852,18 @@ IPC_MESSAGE_ROUTED3(FrameMsg_AddMessageToConsole,
+                     std::string /* message */,
+                     bool /* discard_duplicates */)
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +// Record that a resource was blocked by an ad filter.

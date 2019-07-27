@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc b/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc
-index be1d26e9cdf5f29a7ff16c067b56e7ed77f0802d..e5dd756232f23d799d0ab981cea9587ff45e84b2 100644
+index 35eb165bfdf749f2088f2349a31cd8c30c02bf48..c69eaa4996cb25e616d80e584579f51d238551df 100644
 --- a/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc
 +++ b/third_party/blink/renderer/core/inspector/inspector_dom_agent.cc
-@@ -86,6 +86,8 @@
+@@ -88,6 +88,8 @@
  #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  
@@ -11,7 +11,7 @@ index be1d26e9cdf5f29a7ff16c067b56e7ed77f0802d..e5dd756232f23d799d0ab981cea9587f
  namespace blink {
  
  using protocol::Maybe;
-@@ -2270,6 +2272,27 @@ Response InspectorDOMAgent::getFileInfo(const String& object_id, String* path) {
+@@ -2282,6 +2284,27 @@ Response InspectorDOMAgent::getFileInfo(const String& object_id, String* path) {
    return Response::OK();
  }
  

@@ -1,8 +1,8 @@
 diff --git a/content/browser/frame_host/render_frame_host_impl.h b/content/browser/frame_host/render_frame_host_impl.h
-index 3186e56cfa21038fa4833511b85b720562cf193a..16c42cadf5304ca0de5624463e041aa9dcad614e 100644
+index 30f1fad5253bd23489a52186a3241c57e3c4e7a5..c9383ea2b00af45e49f346625d32eb9fc47312a7 100644
 --- a/content/browser/frame_host/render_frame_host_impl.h
 +++ b/content/browser/frame_host/render_frame_host_impl.h
-@@ -88,6 +88,8 @@
+@@ -94,6 +94,8 @@
  #include "ui/base/page_transition_types.h"
  #include "ui/gfx/geometry/rect.h"
  
@@ -11,7 +11,7 @@ index 3186e56cfa21038fa4833511b85b720562cf193a..16c42cadf5304ca0de5624463e041aa9
  #if defined(OS_ANDROID)
  #include "services/device/public/mojom/nfc.mojom.h"
  #else
-@@ -225,6 +227,12 @@ class CONTENT_EXPORT RenderFrameHostImpl
+@@ -232,6 +234,12 @@ class CONTENT_EXPORT RenderFrameHostImpl
    gfx::NativeView GetNativeView() override;
    void AddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
                             const std::string& message) override;

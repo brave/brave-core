@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/html_frame_owner_element.cc b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
-index bfc6b9530d1d98e70e2e082dc10ea693ddfa2c87..c212985d6fee76d0c71c9a033e0a0874e673664c 100644
+index 1b2e72efde8a0773528c87dcd0379601488621f2..777818fd71a82d12868a06dd7a9b93f9c22fea8d 100644
 --- a/third_party/blink/renderer/core/html/html_frame_owner_element.cc
 +++ b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
-@@ -51,6 +51,12 @@
+@@ -53,6 +53,12 @@
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
  
@@ -15,7 +15,7 @@ index bfc6b9530d1d98e70e2e082dc10ea693ddfa2c87..c212985d6fee76d0c71c9a033e0a0874
  namespace blink {
  
  namespace {
-@@ -157,6 +163,21 @@ LayoutEmbeddedContent* HTMLFrameOwnerElement::GetLayoutEmbeddedContent() const {
+@@ -175,6 +181,21 @@ LayoutEmbeddedContent* HTMLFrameOwnerElement::GetLayoutEmbeddedContent() const {
  }
  
  void HTMLFrameOwnerElement::SetContentFrame(Frame& frame) {

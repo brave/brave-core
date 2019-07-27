@@ -1,9 +1,9 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator_language.cc b/third_party/blink/renderer/core/frame/navigator_language.cc
-index 423c88735c3f54847a748e34f83df8959c252933..cdc9e760d25efe34814ef8a0ad91181b01063f31 100644
+index 174b1a2c0490c2fb8936f242c1048dfa04c02855..b5882f240b005724b1416d83966f9f47e6230e40 100644
 --- a/third_party/blink/renderer/core/frame/navigator_language.cc
 +++ b/third_party/blink/renderer/core/frame/navigator_language.cc
-@@ -8,6 +8,13 @@
- #include "third_party/blink/renderer/platform/language.h"
+@@ -9,6 +9,13 @@
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
@@ -16,7 +16,7 @@ index 423c88735c3f54847a748e34f83df8959c252933..cdc9e760d25efe34814ef8a0ad91181b
  namespace blink {
  
  Vector<String> ParseAndSanitize(const String& accept_languages) {
-@@ -34,11 +41,58 @@ NavigatorLanguage::NavigatorLanguage(ExecutionContext* context)
+@@ -35,6 +42,27 @@ NavigatorLanguage::NavigatorLanguage(ExecutionContext* context)
      : context_(context) {}
  
  AtomicString NavigatorLanguage::language() {
@@ -41,12 +41,13 @@ index 423c88735c3f54847a748e34f83df8959c252933..cdc9e760d25efe34814ef8a0ad91181b
 +    return AtomicString(result);
 +  }
 +#endif
-   return AtomicString(languages().front());
+   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
+       context_->IsSecureContext()) {
+     return AtomicString(languages().front());
+@@ -43,6 +71,31 @@ AtomicString NavigatorLanguage::language() {
  }
  
  const Vector<String>& NavigatorLanguage::languages() {
-   EnsureUpdatedLanguage();
-+
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    if (context_) {
@@ -72,6 +73,6 @@ index 423c88735c3f54847a748e34f83df8959c252933..cdc9e760d25efe34814ef8a0ad91181b
 +  }
 +#endif
 +
-   return languages_;
- }
- 
+   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
+       context_->IsSecureContext()) {
+     EnsureUpdatedLanguage();

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc b/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
-index 8f10c9dfb2f5203c3e000f6522d9a50b73660318..09757c7b3109251b7beee11210b8855373057099 100644
+index 647028a380f95750b3533d2e397cb23d8084488f..3ff17b9c66df41e03fb6df7b0428311ce6e1bc22 100644
 --- a/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
 +++ b/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
 @@ -180,6 +180,15 @@ void LazyLoadFrameObserver::LoadImmediately() {

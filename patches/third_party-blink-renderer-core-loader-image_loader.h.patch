@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/image_loader.h b/third_party/blink/renderer/core/loader/image_loader.h
-index 1cde362805bd4b60be970ffe609a646ca089850b..c5fbec4d122eee61357c20c986851fe70a11ea02 100644
+index 5f4628843111ffca52ee3c77253a03343854a850..2c38e6b4fcc1575b7d553c21a6b8fd10eebd3b80 100644
 --- a/third_party/blink/renderer/core/loader/image_loader.h
 +++ b/third_party/blink/renderer/core/loader/image_loader.h
 @@ -36,6 +36,11 @@
@@ -14,7 +14,7 @@ index 1cde362805bd4b60be970ffe609a646ca089850b..c5fbec4d122eee61357c20c986851fe7
  namespace blink {
  
  class IncrementLoadEventDelayCount;
-@@ -238,6 +243,10 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
+@@ -240,6 +245,10 @@ class CORE_EXPORT ImageLoader : public GarbageCollectedFinalized<ImageLoader>,
  
    LazyImageLoadState lazy_image_load_state_;
  

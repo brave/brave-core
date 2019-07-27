@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/module_record.cc b/third_party/blink/renderer/bindings/core/v8/module_record.cc
-index 5ecdb23a05fb720a78657f90c2140b97349175ed..0d612f8a7b2da0702438f98b28a714645adfad19 100644
+index b13469ab8aa93f53c0940e8cacacb841a8235c5a..4d62855ccae112fe0a3881ec8629482dab3ef78d 100644
 --- a/third_party/blink/renderer/bindings/core/v8/module_record.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/module_record.cc
 @@ -15,6 +15,12 @@

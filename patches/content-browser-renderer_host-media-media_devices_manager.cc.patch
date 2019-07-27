@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/media/media_devices_manager.cc b/content/browser/renderer_host/media/media_devices_manager.cc
-index e24c056e16c1329a0d16319805195e08404e1b79..8dbbf614cdae8f752004ff522554eb1eb43d0956 100644
+index 77c0dab7fe860561dc7cc1068b61ea3ef9734cb0..104601d9dc76a32afa7306190e6fe74091aeb3bf 100644
 --- a/content/browser/renderer_host/media/media_devices_manager.cc
 +++ b/content/browser/renderer_host/media/media_devices_manager.cc
 @@ -429,11 +429,11 @@ void MediaDevicesManager::EnumerateDevices(

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator.cc b/third_party/blink/renderer/core/frame/navigator.cc
-index 71b32975210d5873d66ff9b20906c55ae4062d0e..f8b414aed60f2bd65d81287709977091c6aa0349 100644
+index 45b962336182ec159b30867a019a5c6a0170b4e1..550dedf5c5cad6443e5afe3850656930a9583ff1 100644
 --- a/third_party/blink/renderer/core/frame/navigator.cc
 +++ b/third_party/blink/renderer/core/frame/navigator.cc
 @@ -36,6 +36,11 @@
@@ -37,10 +37,10 @@ index 71b32975210d5873d66ff9b20906c55ae4062d0e..f8b414aed60f2bd65d81287709977091
 +    return result;
 +  }
 +#endif
-   if (GetFrame() &&
-       !GetFrame()->GetSettings()->GetNavigatorPlatformOverride().IsEmpty()) {
-     return GetFrame()->GetSettings()->GetNavigatorPlatformOverride();
-@@ -70,6 +94,20 @@ String Navigator::userAgent() const {
+   // TODO(955620): Consider changing devtools overrides to only allow overriding
+   // the platform with a frozen platform to distinguish between
+   // mobile and desktop when FreezeUserAgent is enabled.
+@@ -74,6 +98,20 @@ String Navigator::userAgent() const {
    if (!GetFrame() || !GetFrame()->GetPage())
      return String();
  
@@ -61,7 +61,7 @@ index 71b32975210d5873d66ff9b20906c55ae4062d0e..f8b414aed60f2bd65d81287709977091
    return GetFrame()->Loader().UserAgent();
  }
  
-@@ -85,6 +123,29 @@ bool Navigator::cookieEnabled() const {
+@@ -89,6 +127,29 @@ bool Navigator::cookieEnabled() const {
    if (!GetFrame())
      return false;
  

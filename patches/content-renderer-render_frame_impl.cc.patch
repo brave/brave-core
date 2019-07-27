@@ -1,8 +1,8 @@
 diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
-index c75b6177f066a1b10e4a5bf5a5d07a7532146f1c..b3d0e0d3935ac1548d297b0a05dd467cc2a82ba8 100644
+index e18fd3c17ddc7403cc076f179563f749f2bd3391..8824a88ea70712bf3383d12d1fddc1151020b398 100644
 --- a/content/renderer/render_frame_impl.cc
 +++ b/content/renderer/render_frame_impl.cc
-@@ -229,6 +229,8 @@
+@@ -227,6 +227,8 @@
  #include "url/url_util.h"
  #include "v8/include/v8.h"
  
@@ -11,7 +11,7 @@ index c75b6177f066a1b10e4a5bf5a5d07a7532146f1c..b3d0e0d3935ac1548d297b0a05dd467c
  #if BUILDFLAG(ENABLE_PLUGINS)
  #include "content/renderer/pepper/pepper_browser_connection.h"
  #include "content/renderer/pepper/pepper_plugin_instance_impl.h"
-@@ -2206,6 +2208,10 @@ bool RenderFrameImpl::OnMessageReceived(const IPC::Message& msg) {
+@@ -2236,6 +2238,10 @@ bool RenderFrameImpl::OnMessageReceived(const IPC::Message& msg) {
      IPC_MESSAGE_HANDLER(FrameMsg_CopyImageAt, OnCopyImageAt)
      IPC_MESSAGE_HANDLER(FrameMsg_SaveImageAt, OnSaveImageAt)
      IPC_MESSAGE_HANDLER(FrameMsg_AddMessageToConsole, OnAddMessageToConsole)
@@ -22,8 +22,8 @@ index c75b6177f066a1b10e4a5bf5a5d07a7532146f1c..b3d0e0d3935ac1548d297b0a05dd467c
      IPC_MESSAGE_HANDLER(FrameMsg_VisualStateRequest,
                          OnVisualStateRequest)
      IPC_MESSAGE_HANDLER(FrameMsg_Reload, OnReload)
-@@ -2506,6 +2512,20 @@ void RenderFrameImpl::OnAddMessageToConsole(
-   AddMessageToConsole(level, message);
+@@ -2573,6 +2579,20 @@ void RenderFrameImpl::OnAddMessageToConsole(
+   AddMessageToConsoleImpl(level, message, discard_duplicates);
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
@@ -42,9 +42,9 @@ index c75b6177f066a1b10e4a5bf5a5d07a7532146f1c..b3d0e0d3935ac1548d297b0a05dd467c
 +
  void RenderFrameImpl::JavaScriptExecuteRequest(
      const base::string16& javascript,
-     JavaScriptExecuteRequestCallback callback) {
-@@ -3220,6 +3240,20 @@ void RenderFrameImpl::AddMessageToConsole(
-   frame_->AddMessageToConsole(wcm);
+     bool wants_result,
+@@ -3241,6 +3261,20 @@ void RenderFrameImpl::AddMessageToConsole(
+   AddMessageToConsoleImpl(level, message, false /* discard_duplicates */);
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)

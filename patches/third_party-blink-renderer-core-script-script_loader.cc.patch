@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
-index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..1d227058a75b086571299bb6886a6ff9be62cc6d 100644
+index 41d5609b5f2c589e49b7a953f5d354059d663148..5903a2bafe51f6f63681769bf39abf7ccd91bd94 100644
 --- a/third_party/blink/renderer/core/script/script_loader.cc
 +++ b/third_party/blink/renderer/core/script/script_loader.cc
-@@ -63,6 +63,15 @@
+@@ -64,6 +64,15 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
  
@@ -18,7 +18,7 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..1d227058a75b086571299bb6886a6ff9
  namespace blink {
  
  ScriptLoader::ScriptLoader(ScriptElementBase* element,
-@@ -101,6 +110,10 @@ void ScriptLoader::Trace(blink::Visitor* visitor) {
+@@ -102,6 +111,10 @@ void ScriptLoader::Trace(blink::Visitor* visitor) {
    visitor->Trace(pending_script_);
    visitor->Trace(prepared_pending_script_);
    visitor->Trace(resource_keep_alive_);

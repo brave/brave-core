@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/html_link_element.cc b/third_party/blink/renderer/core/html/html_link_element.cc
-index 5ef87c2c9138517b989e10f292c9ef3f47f9c8b9..2a69e3909069a560bda37843a53c1363410f9542 100644
+index 52bea7869e4a373a5071d616f19083638d88114a..10fd6b35ddda54c5474d792665f8395b8272398f 100644
 --- a/third_party/blink/renderer/core/html/html_link_element.cc
 +++ b/third_party/blink/renderer/core/html/html_link_element.cc
-@@ -59,7 +59,11 @@ HTMLLinkElement::HTMLLinkElement(Document& document,
+@@ -60,7 +60,11 @@ HTMLLinkElement::HTMLLinkElement(Document& document,
        referrer_policy_(network::mojom::ReferrerPolicy::kDefault),
        sizes_(MakeGarbageCollected<DOMTokenList>(*this, html_names::kSizesAttr)),
        rel_list_(MakeGarbageCollected<RelList>(this)),
@@ -13,5 +13,5 @@ index 5ef87c2c9138517b989e10f292c9ef3f47f9c8b9..2a69e3909069a560bda37843a53c1363
 +#endif
 +}
  
- HTMLLinkElement* HTMLLinkElement::Create(Document& document,
-                                          const CreateElementFlags flags) {
+ HTMLLinkElement::~HTMLLinkElement() = default;
+ 

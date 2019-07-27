@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/public/web/web_document.h b/third_party/blink/public/web/web_document.h
-index fe2179d64f4f8af6643db3ddd3ea4d77e71daf14..111942e5fd27ea4a0237fd525d62fe48028783c2 100644
+index 10a20028df8d3bde08e124cf8c696c1a207ca40e..33e93e481bbacfdc38e1f1fea361acb0f0de9cdd 100644
 --- a/third_party/blink/public/web/web_document.h
 +++ b/third_party/blink/public/web/web_document.h
-@@ -39,6 +39,8 @@
+@@ -40,6 +40,8 @@
  #include "third_party/blink/public/web/web_node.h"
  #include "third_party/skia/include/core/SkColor.h"
  
@@ -11,7 +11,7 @@ index fe2179d64f4f8af6643db3ddd3ea4d77e71daf14..111942e5fd27ea4a0237fd525d62fe48
  namespace blink {
  
  class Document;
-@@ -132,6 +134,14 @@ class WebDocument : public WebNode {
+@@ -131,6 +133,14 @@ class WebDocument : public WebNode {
  
    BLINK_EXPORT void SetShowBeforeUnloadDialog(bool show_dialog);
  

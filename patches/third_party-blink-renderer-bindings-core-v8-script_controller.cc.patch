@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_controller.cc b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-index 5987273c80d97900860b893d561d8466098d23c3..a4c3fe3fd2640cd87b53f42b7faa2ab22814c844 100644
+index 5d891c952e2fdc2ed5e7b7d6234d7d188bf83b20..abbe8851a7f49b572cfb77ec99dafe78d2f1a077 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-@@ -71,6 +71,13 @@
+@@ -70,6 +70,13 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  #include "third_party/blink/renderer/platform/wtf/time.h"
  
@@ -16,7 +16,7 @@ index 5987273c80d97900860b893d561d8466098d23c3..a4c3fe3fd2640cd87b53f42b7faa2ab2
  namespace blink {
  
  void ScriptController::Trace(blink::Visitor* visitor) {
-@@ -130,6 +137,58 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+@@ -129,6 +136,58 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
               .ToLocal(&script))
        return result;
  

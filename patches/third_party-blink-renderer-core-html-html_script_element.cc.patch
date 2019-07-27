@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/html_script_element.cc b/third_party/blink/renderer/core/html/html_script_element.cc
-index d9cb90da2d99510d616211ce104e3da99424f3ea..6b3a3d8cf8e3b31306c9a815cf74bf430618e2cf 100644
+index b667f998234f82ef768c7ccec366707163143182..046776dbe1be0575ecf645ad0c4c9e4a5bef1e96 100644
 --- a/third_party/blink/renderer/core/html/html_script_element.cc
 +++ b/third_party/blink/renderer/core/html/html_script_element.cc
 @@ -41,6 +41,8 @@
@@ -22,5 +22,5 @@ index d9cb90da2d99510d616211ce104e3da99424f3ea..6b3a3d8cf8e3b31306c9a815cf74bf43
 +#endif
 +}
  
- HTMLScriptElement* HTMLScriptElement::Create(Document& document,
-                                              const CreateElementFlags flags) {
+ const AttrNameToTrustedType& HTMLScriptElement::GetCheckedAttributeTypes()
+     const {

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/exported/web_document.cc b/third_party/blink/renderer/core/exported/web_document.cc
-index 640e2004aade8c03d3c4bbacfd331c2a933e8eda..5bf3660afae70dfbeb6b77a7a0922b7ce22d11a1 100644
+index 281fdefc185adfa271d9f165be7ef4c3d2e13303..85aaeb1dcf3bd708a732f6c3e5b3f8853c85081a 100644
 --- a/third_party/blink/renderer/core/exported/web_document.cc
 +++ b/third_party/blink/renderer/core/exported/web_document.cc
-@@ -62,6 +62,12 @@
+@@ -63,6 +63,12 @@
  #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
  #include "third_party/blink/renderer/platform/wtf/casting.h"
  
@@ -15,7 +15,7 @@ index 640e2004aade8c03d3c4bbacfd331c2a933e8eda..5bf3660afae70dfbeb6b77a7a0922b7c
  namespace {
  
  static const blink::WebStyleSheetKey GenerateStyleSheetKey() {
-@@ -294,6 +300,26 @@ void WebDocument::SetShowBeforeUnloadDialog(bool show_dialog) {
+@@ -281,6 +287,26 @@ void WebDocument::SetShowBeforeUnloadDialog(bool show_dialog) {
    doc->SetShowBeforeUnloadDialog(show_dialog);
  }
  

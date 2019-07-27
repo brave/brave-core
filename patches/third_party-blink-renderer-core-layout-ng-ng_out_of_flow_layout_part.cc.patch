@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/layout/ng/ng_out_of_flow_layout_part.cc b/third_party/blink/renderer/core/layout/ng/ng_out_of_flow_layout_part.cc
-index 2da019993517a8bdfa5a252a30342830eaaf29f6..5962bb826dece90a705790eaa56613ad05df146e 100644
+index 57d100f73447234ce59734398a4f6328f64872c5..5736243cbde5bc29711413aeffa438a4e3c18a26 100644
 --- a/third_party/blink/renderer/core/layout/ng/ng_out_of_flow_layout_part.cc
 +++ b/third_party/blink/renderer/core/layout/ng/ng_out_of_flow_layout_part.cc
-@@ -637,10 +637,10 @@ bool NGOutOfFlowLayoutPart::IsContainingBlockForDescendant(
+@@ -693,10 +693,10 @@ bool NGOutOfFlowLayoutPart::IsContainingBlockForDescendant(
    // inside closest parent block flow.
    if (descendant.inline_container) {
      DCHECK(

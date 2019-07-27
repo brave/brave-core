@@ -1,8 +1,8 @@
 diff --git a/content/browser/frame_host/render_frame_host_impl.cc b/content/browser/frame_host/render_frame_host_impl.cc
-index 64bd8abb107a09c05824d5e13b9c86f52d2745ea..8ad80760a752e60a6b7863f2d2ae9d7d864d8cd2 100644
+index bd596fdc462863fe881fb5d467cc4bbde6b87752..82ced9c7c0b63f859048f5fa8dcaee86502ef573 100644
 --- a/content/browser/frame_host/render_frame_host_impl.cc
 +++ b/content/browser/frame_host/render_frame_host_impl.cc
-@@ -201,6 +201,8 @@
+@@ -206,6 +206,8 @@
  #include "url/origin.h"
  #include "url/url_constants.h"
  
@@ -11,8 +11,8 @@ index 64bd8abb107a09c05824d5e13b9c86f52d2745ea..8ad80760a752e60a6b7863f2d2ae9d7d
  #if defined(OS_ANDROID)
  #include "content/browser/android/content_url_loader_factory.h"
  #include "content/browser/android/java_interfaces_impl.h"
-@@ -1234,6 +1236,18 @@ void RenderFrameHostImpl::AddMessageToConsole(
-   Send(new FrameMsg_AddMessageToConsole(routing_id_, level, message));
+@@ -1292,6 +1294,18 @@ void RenderFrameHostImpl::AddMessageToConsole(
+   AddMessageToConsoleImpl(level, message, false /* discard_duplicates */);
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)

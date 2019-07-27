@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-index 481c9b9bdebef21fa7a78698a95be7fa6901673b..071041adf3d6e5b70fc2d9befd7d45c8177748e4 100644
+index 290973c5aea619fbe1ea8c736535b40f5db28e2b..90de9587b22dffeb73cd78bc91571358534f0173 100644
 --- a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 +++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-@@ -263,6 +263,12 @@
+@@ -265,6 +265,12 @@
  #include "third_party/blink/renderer/platform/wtf/hash_map.h"
  #include "third_party/blink/renderer/platform/wtf/time.h"
  
@@ -37,4 +37,4 @@ index 481c9b9bdebef21fa7a78698a95be7fa6901673b..071041adf3d6e5b70fc2d9befd7d45c8
 +
    scoped_refptr<DOMWrapperWorld> isolated_world =
        DOMWrapperWorld::EnsureIsolatedWorld(ToIsolate(GetFrame()), world_id);
-   PausableScriptExecutor* executor = PausableScriptExecutor::Create(
+   auto* executor = MakeGarbageCollected<PausableScriptExecutor>(

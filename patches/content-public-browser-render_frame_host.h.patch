@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/render_frame_host.h b/content/public/browser/render_frame_host.h
-index 056aa14bac7ac817edfd2b117b3e5e2d9016db22..1338c59730172e7148d1282de37586587fe0c341 100644
+index 6e92678d43187b69428e7c312b4f76e45c198644..904855f5438c6ccc01b3abaf14fefcc18eb89cfb 100644
 --- a/content/public/browser/render_frame_host.h
 +++ b/content/public/browser/render_frame_host.h
-@@ -29,6 +29,8 @@
+@@ -31,6 +31,8 @@
  #include "url/gurl.h"
  #include "url/origin.h"
  
@@ -11,7 +11,7 @@ index 056aa14bac7ac817edfd2b117b3e5e2d9016db22..1338c59730172e7148d1282de3758658
  namespace blink {
  class AssociatedInterfaceProvider;
  struct WebMediaPlayerAction;
-@@ -175,6 +177,16 @@ class CONTENT_EXPORT RenderFrameHost : public IPC::Listener,
+@@ -180,6 +182,16 @@ class CONTENT_EXPORT RenderFrameHost : public IPC::Listener,
    virtual void AddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
                                     const std::string& message) = 0;
  

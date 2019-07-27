@@ -1,5 +1,5 @@
 diff --git a/cc/BUILD.gn b/cc/BUILD.gn
-index 0878b2fdfea07a647a85f37e73d5d97401570328..30d5714f875049af0dbe6c13c7c4e4ddcdf271bd 100644
+index b0fde3505e69c56ddfd01da06e17fe01f5ea5447..c487a4a4a9fe2584025e8f773b98a2b45090dba6 100644
 --- a/cc/BUILD.gn
 +++ b/cc/BUILD.gn
 @@ -5,7 +5,24 @@ import("//gpu/vulkan/features.gni")
@@ -27,7 +27,7 @@ index 0878b2fdfea07a647a85f37e73d5d97401570328..30d5714f875049af0dbe6c13c7c4e4dd
    sources = [
      "benchmarks/benchmark_instrumentation.cc",
      "benchmarks/benchmark_instrumentation.h",
-@@ -725,13 +742,6 @@ cc_test("cc_unittests") {
+@@ -730,13 +747,6 @@ cc_test("cc_unittests") {
      ]
    }
  

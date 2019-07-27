@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
-index 97e0828889ab3073958088ef1f0517c8abc50a69..0e6a0538a7121af0717237eaf1f2276c1491e29d 100644
+index 98229c0fc7ff5c86fe0da4d20936cbcfe90c9720..f03b3e4ffa841e21618f80b2235dd527408a7b67 100644
 --- a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
 +++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
-@@ -82,6 +82,8 @@
+@@ -83,6 +83,8 @@
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  #include "v8/include/v8-inspector.h"
  
@@ -11,7 +11,7 @@ index 97e0828889ab3073958088ef1f0517c8abc50a69..0e6a0538a7121af0717237eaf1f2276c
  namespace blink {
  
  using protocol::Response;
-@@ -833,7 +835,7 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
+@@ -835,7 +837,7 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
      const String world_name = worlds_to_evaluate_on_load_.Get(key);
      if (world_name.IsEmpty()) {
        frame->GetScriptController().ExecuteScriptInMainWorld(
@@ -20,7 +20,7 @@ index 97e0828889ab3073958088ef1f0517c8abc50a69..0e6a0538a7121af0717237eaf1f2276c
            ScriptController::kExecuteScriptWhenScriptsDisabled);
        continue;
      }
-@@ -862,12 +864,14 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
+@@ -864,12 +866,14 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
      // a foreign world.
      v8::HandleScope handle_scope(V8PerIsolateData::MainThreadIsolate());
      frame->GetScriptController().ExecuteScriptInIsolatedWorld(
@@ -37,7 +37,7 @@ index 97e0828889ab3073958088ef1f0517c8abc50a69..0e6a0538a7121af0717237eaf1f2276c
          ScriptController::kExecuteScriptWhenScriptsDisabled);
    }
  }
-@@ -1350,6 +1354,24 @@ Response InspectorPageAgent::waitForDebugger() {
+@@ -1352,6 +1356,24 @@ Response InspectorPageAgent::waitForDebugger() {
    return Response::OK();
  }
  

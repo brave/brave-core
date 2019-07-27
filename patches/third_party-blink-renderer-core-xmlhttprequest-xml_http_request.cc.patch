@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-index 6166612476ad3d639a27471f9992dfd0b2a1043a..4613fe560d8cff51d6d64f4ab05df9a696ef8921 100644
+index c474f520f11bce5d73909b00b6689333b451d1a7..55391a3c3c8ae8b69bd5a305c0bf38eadb3b635e 100644
 --- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
 +++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-@@ -93,6 +93,14 @@
+@@ -95,6 +95,14 @@
  #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
@@ -17,7 +17,7 @@ index 6166612476ad3d639a27471f9992dfd0b2a1043a..4613fe560d8cff51d6d64f4ab05df9a6
  namespace blink {
  
  namespace {
-@@ -1165,6 +1173,27 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
+@@ -1161,6 +1169,27 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
                                                     resource_loader_options);
    loader_->SetTimeout(timeout_);
    loader_->Start(request);

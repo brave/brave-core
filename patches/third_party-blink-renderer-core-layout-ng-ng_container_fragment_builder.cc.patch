@@ -1,9 +1,9 @@
 diff --git a/third_party/blink/renderer/core/layout/ng/ng_container_fragment_builder.cc b/third_party/blink/renderer/core/layout/ng/ng_container_fragment_builder.cc
-index 39f44dbe3bb3c53158318cfb5e2c7071db4d0306..3d2bd04a42c745533d63ae01685baf209505450f 100644
+index e62ccbc378e139b7360a55c1e2f8d77f7ee5790d..5b40b775fde0d2a3e982a822fa8ebbb6a2e85ce2 100644
 --- a/third_party/blink/renderer/core/layout/ng/ng_container_fragment_builder.cc
 +++ b/third_party/blink/renderer/core/layout/ng/ng_container_fragment_builder.cc
-@@ -176,7 +176,7 @@ NGContainerFragmentBuilder::AddOutOfFlowChildCandidate(
-     const NGLogicalOffset& child_offset,
+@@ -200,7 +200,7 @@ NGContainerFragmentBuilder::AddOutOfFlowChildCandidate(
+     const LogicalOffset& child_offset,
      base::Optional<TextDirection> container_direction) {
    DCHECK(child);
 -  DCHECK(layout_object_ && !layout_object_->IsLayoutInline() ||

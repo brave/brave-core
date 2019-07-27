@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/element.cc b/third_party/blink/renderer/core/dom/element.cc
-index d86329b115ae842fac8218a9d7f175b888576ae5..6775e2aaf04f5c76c703392f10bcf77084f87dea 100644
+index a1bbda4ac2ee3cfb3198970645a02f2a21f30167..beb9e924d17dc754d543f45e6639afc09c60ee08 100644
 --- a/third_party/blink/renderer/core/dom/element.cc
 +++ b/third_party/blink/renderer/core/dom/element.cc
-@@ -162,6 +162,15 @@
+@@ -163,6 +163,15 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
  
@@ -18,7 +18,7 @@ index d86329b115ae842fac8218a9d7f175b888576ae5..6775e2aaf04f5c76c703392f10bcf770
  namespace blink {
  
  using namespace html_names;
-@@ -329,7 +338,14 @@ Element* Element::Create(const QualifiedName& tag_name, Document* document) {
+@@ -346,7 +355,14 @@ Element* Element::Create(const QualifiedName& tag_name, Document* document) {
  Element::Element(const QualifiedName& tag_name,
                   Document* document,
                   ConstructionType type)
@@ -34,7 +34,7 @@ index d86329b115ae842fac8218a9d7f175b888576ae5..6775e2aaf04f5c76c703392f10bcf770
  
  inline ElementRareData* Element::GetElementRareData() const {
    DCHECK(HasRareData());
-@@ -1729,6 +1745,14 @@ static inline AtomicString MakeIdForStyleResolution(const AtomicString& value,
+@@ -1757,6 +1773,14 @@ static inline AtomicString MakeIdForStyleResolution(const AtomicString& value,
  
  DISABLE_CFI_PERF
  void Element::AttributeChanged(const AttributeModificationParams& params) {

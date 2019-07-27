@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/inspector/browser_protocol.pdl b/third_party/blink/renderer/core/inspector/browser_protocol.pdl
-index 42e6c66369cd2fae575ad7db753638943e91e99e..fadc8ca13c1bb10c27cc215c0cd487dc255f1f83 100644
+index a90396259fd23ea1bfb732d05021fd0fcf5d42bd..6d3edf4e8bd8b3eb4f42e7ec0458ad1262144903 100644
 --- a/third_party/blink/renderer/core/inspector/browser_protocol.pdl
 +++ b/third_party/blink/renderer/core/inspector/browser_protocol.pdl
-@@ -1956,6 +1956,15 @@ domain DOM
+@@ -1967,6 +1967,15 @@ domain DOM
    # Undoes the last performed action.
    experimental command undo
  
@@ -18,7 +18,7 @@ index 42e6c66369cd2fae575ad7db753638943e91e99e..fadc8ca13c1bb10c27cc215c0cd487dc
    # Returns iframe node that owns iframe with the given domain.
    experimental command getFrameOwner
      parameters
-@@ -5165,6 +5174,11 @@ domain Page
+@@ -5189,6 +5198,11 @@ domain Page
    # Enables page domain notifications.
    command enable
  
@@ -30,10 +30,3 @@ index 42e6c66369cd2fae575ad7db753638943e91e99e..fadc8ca13c1bb10c27cc215c0cd487dc
    command getAppManifest
      returns
        # Manifest location.
-@@ -6765,4 +6779,4 @@ experimental domain WebAudio
-   # Notifies that existing BaseAudioContext has changed some properties (id stays the same)..
-   event contextChanged
-     parameters
--      BaseAudioContext context
-\ No newline at end of file
-+      BaseAudioContext context

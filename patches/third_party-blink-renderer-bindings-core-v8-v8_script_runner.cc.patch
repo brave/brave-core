@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
-index de0a0ca6f89d57403a13a24e3821dbb2558a5c68..f1aae20c0f512a3931146a6114fec9bf186fd69e 100644
+index 0d289cb694cdb114c3a903909f289ca88256a5e2..4a39cccca308bcb2c2eaa90b645a121f16b7f1dd 100644
 --- a/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc
-@@ -47,6 +47,8 @@
+@@ -49,6 +49,8 @@
  #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
  #include "third_party/blink/renderer/platform/wtf/time.h"
  
@@ -11,7 +11,7 @@ index de0a0ca6f89d57403a13a24e3821dbb2558a5c68..f1aae20c0f512a3931146a6114fec9bf
  namespace blink {
  
  namespace {
-@@ -110,7 +112,11 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+@@ -113,7 +115,11 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
      DCHECK(streamer->IsFinished());
      DCHECK(!streamer->StreamingSuppressed());
      return v8::ScriptCompiler::Compile(isolate->GetCurrentContext(),
@@ -24,7 +24,7 @@ index de0a0ca6f89d57403a13a24e3821dbb2558a5c68..f1aae20c0f512a3931146a6114fec9bf
    }
  
    // Allow inspector to use its own compilation cache store.
-@@ -118,7 +124,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+@@ -121,7 +127,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
    probe::ConsumeCompilationCache(execution_context, source_code,
                                   &inspector_data);
    if (inspector_data) {
@@ -38,7 +38,7 @@ index de0a0ca6f89d57403a13a24e3821dbb2558a5c68..f1aae20c0f512a3931146a6114fec9bf
      v8::MaybeLocal<v8::Script> script =
          v8::ScriptCompiler::Compile(isolate->GetCurrentContext(), &source,
                                      v8::ScriptCompiler::kConsumeCodeCache);
-@@ -128,7 +139,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+@@ -131,7 +142,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
    switch (compile_options) {
      case v8::ScriptCompiler::kNoCompileOptions:
      case v8::ScriptCompiler::kEagerCompile: {
@@ -52,7 +52,7 @@ index de0a0ca6f89d57403a13a24e3821dbb2558a5c68..f1aae20c0f512a3931146a6114fec9bf
        return v8::ScriptCompiler::Compile(isolate->GetCurrentContext(), &source,
                                           compile_options, no_cache_reason);
      }
-@@ -138,7 +154,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
+@@ -141,7 +157,12 @@ v8::MaybeLocal<v8::Script> CompileScriptInternal(
        SingleCachedMetadataHandler* cache_handler = source_code.CacheHandler();
        v8::ScriptCompiler::CachedData* cached_data =
            V8CodeCache::CreateCachedData(cache_handler);
