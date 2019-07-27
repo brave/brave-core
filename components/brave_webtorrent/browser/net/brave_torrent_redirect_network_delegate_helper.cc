@@ -41,6 +41,16 @@ bool URLMatched(const GURL& url) {
       base::CompareCase::INSENSITIVE_ASCII);
 }
 
+/**
+ * Returns true if the URL contains a URL fragment that starts with "ix=". For
+ * example, https://webtorrent.io/torrents/big-buck-bunny.torrent#ix=1.
+ * Otherwise, returns false.
+ */
+bool IsViewerURL(const GURL& url) {
+  return base::StartsWith(url.ref(), "ix=",
+      base::CompareCase::INSENSITIVE_ASCII);
+}
+
 bool IsTorrentFile(const GURL& url, const net::HttpResponseHeaders* headers) {
   std::string mimeType;
   if (!headers->GetMimeType(&mimeType)) {
@@ -76,7 +86,8 @@ int OnHeadersReceived_TorrentRedirectWork(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   if (!original_response_headers ||
       ctx->is_webtorrent_disabled ||
-      IsWebtorrentInitiated(ctx) ||  // download .torrent, do not redirect
+      // download .torrent, do not redirect
+      (IsWebtorrentInitiated(ctx) && !IsViewerURL(ctx->request_url)) ||
       !IsTorrentFile(ctx->request_url, original_response_headers)) {
     return net::OK;
   }
