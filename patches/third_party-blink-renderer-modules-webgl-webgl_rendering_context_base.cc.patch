@@ -1,16 +1,28 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88e790079d 100644
+index 84cacc380de7c3eb6196c9d94be2d286d6dd4be7..4c94416d847f6ec42f682a5d6d57578a49ee8950 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-@@ -30,6 +30,7 @@
+@@ -29,6 +29,7 @@
  
  #include "base/numerics/checked_math.h"
  #include "base/stl_util.h"
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
  #include "build/build_config.h"
- #include "gpu/GLES2/gl2extchromium.h"
  #include "gpu/command_buffer/client/gles2_interface.h"
-@@ -2802,6 +2803,8 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(
+ #include "gpu/command_buffer/common/capabilities.h"
+@@ -111,6 +112,11 @@
+ #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
+ #include "third_party/blink/renderer/platform/wtf/typed_arrays/array_buffer_contents.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ bool WebGLRenderingContextBase::webgl_context_limits_initialized_ = false;
+@@ -2809,6 +2815,8 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(
      GLuint index) {
    if (!ValidateWebGLProgramOrShader("getActiveAttrib", program))
      return nullptr;
@@ -19,7 +31,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    GLuint program_id = ObjectNonZero(program);
    GLint max_name_length = -1;
    ContextGL()->GetProgramiv(program_id, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
-@@ -2832,6 +2835,8 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveUniform(
+@@ -2839,6 +2847,8 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveUniform(
      GLuint index) {
    if (!ValidateWebGLProgramOrShader("getActiveUniform", program))
      return nullptr;
@@ -28,7 +40,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    GLuint program_id = ObjectNonZero(program);
    GLint max_name_length = -1;
    ContextGL()->GetProgramiv(program_id, GL_ACTIVE_UNIFORM_MAX_LENGTH,
-@@ -2861,6 +2866,8 @@ base::Optional<HeapVector<Member<WebGLShader>>>
+@@ -2868,6 +2878,8 @@ base::Optional<HeapVector<Member<WebGLShader>>>
  WebGLRenderingContextBase::getAttachedShaders(WebGLProgram* program) {
    if (!ValidateWebGLProgramOrShader("getAttachedShaders", program))
      return base::nullopt;
@@ -37,7 +49,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
  
    HeapVector<Member<WebGLShader>> shader_objects;
    const GLenum kShaderType[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER,
-@@ -2877,6 +2884,8 @@ GLint WebGLRenderingContextBase::getAttribLocation(WebGLProgram* program,
+@@ -2884,6 +2896,8 @@ GLint WebGLRenderingContextBase::getAttribLocation(WebGLProgram* program,
                                                     const String& name) {
    if (!ValidateWebGLProgramOrShader("getAttribLocation", program))
      return -1;
@@ -46,7 +58,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    if (!ValidateLocationLength("getAttribLocation", name))
      return -1;
    if (!ValidateString("getAttribLocation", name))
-@@ -2910,6 +2919,8 @@ ScriptValue WebGLRenderingContextBase::getBufferParameter(
+@@ -2917,6 +2931,8 @@ ScriptValue WebGLRenderingContextBase::getBufferParameter(
      GLenum pname) {
    if (isContextLost() || !ValidateBufferTarget("getBufferParameter", target))
      return ScriptValue::CreateNull(script_state);
@@ -55,7 +67,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
  
    switch (pname) {
      case GL_BUFFER_USAGE: {
-@@ -2935,6 +2946,8 @@ WebGLContextAttributes* WebGLRenderingContextBase::getContextAttributes()
+@@ -2942,6 +2958,8 @@ WebGLContextAttributes* WebGLRenderingContextBase::getContextAttributes()
      const {
    if (isContextLost())
      return nullptr;
@@ -64,7 +76,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
  
    WebGLContextAttributes* result =
        ToWebGLContextAttributes(CreationAttributes());
-@@ -3004,6 +3017,13 @@ bool WebGLRenderingContextBase::ExtensionSupportedAndAllowed(
+@@ -3011,6 +3029,13 @@ bool WebGLRenderingContextBase::ExtensionSupportedAndAllowed(
  ScriptValue WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
    WebGLExtension* extension = nullptr;
@@ -78,7 +90,35 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
  
    if (name == WebGLDebugRendererInfo::ExtensionName()) {
      ExecutionContext* context = ExecutionContext::From(script_state);
-@@ -3044,6 +3064,9 @@ ScriptValue WebGLRenderingContextBase::getFramebufferAttachmentParameter(
+@@ -3038,6 +3063,27 @@ ScriptValue WebGLRenderingContextBase::getExtension(ScriptState* script_state,
+       ToV8(extension, script_state->GetContext()->Global(),
+            script_state->GetIsolate());
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    ScriptValue result(script_state, wrapped_extension);
++
++    brave_page_graph::PageGraph* page_graph =
++      canvas()->GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      args.push_back(name);
++      page_graph->RegisterWebAPICall("WebGLRenderingContext.getExtension",
++        args);
++      String page_graph_result;
++      result.ToString(page_graph_result);
++      page_graph->RegisterWebAPIResult("WebGLRenderingContext.getExtension",
++        page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   return ScriptValue(script_state, wrapped_extension);
+ }
+ 
+@@ -3051,6 +3097,9 @@ ScriptValue WebGLRenderingContextBase::getFramebufferAttachmentParameter(
                                           target, attachment))
      return ScriptValue::CreateNull(script_state);
  
@@ -88,7 +128,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    if (!framebuffer_binding_ || !framebuffer_binding_->Object()) {
      SynthesizeGLError(GL_INVALID_OPERATION, "getFramebufferAttachmentParameter",
                        "no framebuffer bound");
-@@ -3125,6 +3148,8 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+@@ -3132,15 +3181,82 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
                                                      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state);
@@ -97,7 +137,688 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    const int kIntZero = 0;
    switch (pname) {
      case GL_ACTIVE_TEXTURE:
-@@ -3424,10 +3449,11 @@ ScriptValue WebGLRenderingContextBase::getProgramParameter(
+       return GetUnsignedIntParameter(script_state, pname);
+     case GL_ALIASED_LINE_WIDTH_RANGE:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetWebGLFloatArrayParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.ALIASED_LINE_WIDTH_RANGE");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetWebGLFloatArrayParameter(script_state, pname);
+     case GL_ALIASED_POINT_SIZE_RANGE:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetWebGLFloatArrayParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.ALIASED_POINT_SIZE_RANGE");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetWebGLFloatArrayParameter(script_state, pname);
+     case GL_ALPHA_BITS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result;
++        if (drawing_buffer_->RequiresAlphaChannelToBePreserved()) {
++          result = WebGLAny(script_state, 0);
++        } else {
++          result = GetIntParameter(script_state, pname);
++        }
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.ALPHA_BITS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       if (drawing_buffer_->RequiresAlphaChannelToBePreserved())
+         return WebGLAny(script_state, 0);
+       return GetIntParameter(script_state, pname);
+@@ -3163,6 +3279,26 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+     case GL_BLEND_SRC_RGB:
+       return GetUnsignedIntParameter(script_state, pname);
+     case GL_BLUE_BITS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.BLUE_BITS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_COLOR_CLEAR_VALUE:
+       return GetWebGLFloatArrayParameter(script_state, pname);
+@@ -3179,6 +3315,31 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+     case GL_CURRENT_PROGRAM:
+       return WebGLAny(script_state, current_program_.Get());
+     case GL_DEPTH_BITS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result;
++        if (!framebuffer_binding_ && !CreationAttributes().depth) {
++          result = WebGLAny(script_state, kIntZero);
++        } else {
++          result = GetIntParameter(script_state, pname);
++        }
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.DEPTH_BITS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       if (!framebuffer_binding_ && !CreationAttributes().depth)
+         return WebGLAny(script_state, kIntZero);
+       return GetIntParameter(script_state, pname);
+@@ -3204,6 +3365,26 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+     case GL_GENERATE_MIPMAP_HINT:
+       return GetUnsignedIntParameter(script_state, pname);
+     case GL_GREEN_BITS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.GREEN_BITS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_IMPLEMENTATION_COLOR_READ_FORMAT:
+       return GetIntParameter(script_state, pname);
+@@ -3212,26 +3393,246 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+     case GL_LINE_WIDTH:
+       return GetFloatParameter(script_state, pname);
+     case GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_CUBE_MAP_TEXTURE_SIZE:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_CUBE_MAP_TEXTURE_SIZE");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_FRAGMENT_UNIFORM_VECTORS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_FRAGMENT_UNIFORM_VECTORS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_RENDERBUFFER_SIZE:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_RENDERBUFFER_SIZE");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_TEXTURE_IMAGE_UNITS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_TEXTURE_IMAGE_UNITS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_TEXTURE_SIZE:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_TEXTURE_SIZE");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_VARYING_VECTORS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_VARYING_VECTORS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_VERTEX_ATTRIBS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_VERTEX_ATTRIBS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_VERTEX_UNIFORM_VECTORS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_VERTEX_UNIFORM_VECTORS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_MAX_VIEWPORT_DIMS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetWebGLIntArrayParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.MAX_VIEWPORT_DIMS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetWebGLIntArrayParameter(script_state, pname);
+     case GL_NUM_SHADER_BINARY_FORMATS:
+       // FIXME: should we always return 0 for this?
+@@ -3245,10 +3646,50 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+     case GL_POLYGON_OFFSET_UNITS:
+       return GetFloatParameter(script_state, pname);
+     case GL_RED_BITS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = GetIntParameter(script_state, pname);
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.RED_BITS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return GetIntParameter(script_state, pname);
+     case GL_RENDERBUFFER_BINDING:
+       return WebGLAny(script_state, renderbuffer_binding_.Get());
+     case GL_RENDERER:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = WebGLAny(script_state, String("WebKit WebGL"));
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.RENDERER");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return WebGLAny(script_state, String("WebKit WebGL"));
+     case GL_SAMPLE_ALPHA_TO_COVERAGE:
+       return GetBooleanParameter(script_state, pname);
+@@ -3267,6 +3708,30 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+     case GL_SCISSOR_TEST:
+       return GetBooleanParameter(script_state, pname);
+     case GL_SHADING_LANGUAGE_VERSION:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = WebGLAny(
++          script_state,
++          "WebGL GLSL ES 1.0 (" +
++              String(ContextGL()->GetString(GL_SHADING_LANGUAGE_VERSION)) +
++              ")");
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.SHADING_LANGUAGE_VERSION");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return WebGLAny(
+           script_state,
+           "WebGL GLSL ES 1.0 (" +
+@@ -3287,6 +3752,32 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+     case GL_STENCIL_BACK_WRITEMASK:
+       return GetUnsignedIntParameter(script_state, pname);
+     case GL_STENCIL_BITS:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result;
++        if (!framebuffer_binding_ && !CreationAttributes().stencil) {
++          result = WebGLAny(script_state, kIntZero);
++        } else {
++          result = GetIntParameter(script_state, pname);
++        }
++
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.STENCIL_BITS");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       if (!framebuffer_binding_ && !CreationAttributes().stencil)
+         return WebGLAny(script_state, kIntZero);
+       return GetIntParameter(script_state, pname);
+@@ -3327,8 +3818,50 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+     case GC3D_UNPACK_COLORSPACE_CONVERSION_WEBGL:
+       return WebGLAny(script_state, unpack_colorspace_conversion_);
+     case GL_VENDOR:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = WebGLAny(script_state, String("WebKit"));
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.VENDOR");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return WebGLAny(script_state, String("WebKit"));
+     case GL_VERSION:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptValue result = WebGLAny(
++          script_state,
++          "WebGL 1.0 (" + String(ContextGL()->GetString(GL_VERSION)) + ")");
++        brave_page_graph::PageGraph* page_graph =
++          canvas()->GetDocument().GetPageGraph();
++        if (page_graph != nullptr) {
++          std::vector<const String> args;
++          args.push_back("gl.VERSION");
++          page_graph->RegisterWebAPICall("WebGLRenderingContext.getParameter",
++            args);
++
++          String res;
++          result.ToString(res);
++          page_graph->RegisterWebAPIResult(
++            "WebGLRenderingContext.getParameter", res);
++        }
++
++        return result;
++      }
++#endif
+       return WebGLAny(
+           script_state,
+           "WebGL 1.0 (" + String(ContextGL()->GetString(GL_VERSION)) + ")");
+@@ -3343,6 +3876,35 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+           "invalid parameter name, OES_standard_derivatives not enabled");
+       return ScriptValue::CreateNull(script_state);
+     case WebGLDebugRendererInfo::kUnmaskedRendererWebgl:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
++          ScriptValue result = WebGLAny(script_state,
++                        String(ContextGL()->GetString(GL_RENDERER)));
++
++          brave_page_graph::PageGraph* page_graph =
++            canvas()->GetDocument().GetPageGraph();
++          if (page_graph != nullptr) {
++            std::vector<const String> args;
++            args.push_back("ext.UNMASKED_RENDERER_WEBGL");
++            page_graph->RegisterWebAPICall(
++              "WebGLRenderingContext.getParameter", args);
++
++            String res;
++            result.ToString(res);
++            page_graph->RegisterWebAPIResult(
++              "WebGLRenderingContext.getParameter", res);
++          }
++
++          return result;
++        } else {
++          SynthesizeGLError(
++              GL_INVALID_ENUM, "getParameter",
++              "invalid parameter name, WEBGL_debug_renderer_info not enabled");
++          return ScriptValue::CreateNull(script_state);
++        }
++      }
++#endif
+       if (ExtensionEnabled(kWebGLDebugRendererInfoName))
+         return WebGLAny(script_state,
+                         String(ContextGL()->GetString(GL_RENDERER)));
+@@ -3351,6 +3913,35 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+           "invalid parameter name, WEBGL_debug_renderer_info not enabled");
+       return ScriptValue::CreateNull(script_state);
+     case WebGLDebugRendererInfo::kUnmaskedVendorWebgl:
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
++          ScriptValue result = WebGLAny(script_state,
++                          String(ContextGL()->GetString(GL_VENDOR)));
++
++          brave_page_graph::PageGraph* page_graph =
++            canvas()->GetDocument().GetPageGraph();
++          if (page_graph != nullptr) {
++            std::vector<const String> args;
++            args.push_back("ext.UNMASKED_VENDOR_WEBGL");
++            page_graph->RegisterWebAPICall(
++              "WebGLRenderingContext.getParameter", args);
++
++            String res;
++            result.ToString(res);
++            page_graph->RegisterWebAPIResult(
++              "WebGLRenderingContext.getParameter", res);
++          }
++
++          return result;
++        } else {
++          SynthesizeGLError(
++            GL_INVALID_ENUM, "getParameter",
++            "invalid parameter name, WEBGL_debug_renderer_info not enabled");
++          return ScriptValue::CreateNull(script_state);
++        }
++      }
++#endif
+       if (ExtensionEnabled(kWebGLDebugRendererInfoName))
+         return WebGLAny(script_state,
+                         String(ContextGL()->GetString(GL_VENDOR)));
+@@ -3369,6 +3960,35 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+           "invalid parameter name, OES_vertex_array_object not enabled");
+       return ScriptValue::CreateNull(script_state);
+     case GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT:  // EXT_texture_filter_anisotropic
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        if (ExtensionEnabled(kEXTTextureFilterAnisotropicName)) {
++          ScriptValue result = GetUnsignedIntParameter(script_state,
++                                       GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
++
++          brave_page_graph::PageGraph* page_graph =
++            canvas()->GetDocument().GetPageGraph();
++          if (page_graph != nullptr) {
++            std::vector<const String> args;
++            args.push_back("ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT");
++            page_graph->RegisterWebAPICall(
++              "WebGLRenderingContext.getParameter", args);
++
++            String res;
++            result.ToString(res);
++            page_graph->RegisterWebAPIResult(
++              "WebGLRenderingContext.getParameter", res);
++          }
++
++          return result;
++        } else {
++          SynthesizeGLError(
++              GL_INVALID_ENUM, "getParameter",
++              "invalid parameter name, EXT_texture_filter_anisotropic not enabled");
++          return ScriptValue::CreateNull(script_state);
++        }
++      }
++#endif
+       if (ExtensionEnabled(kEXTTextureFilterAnisotropicName))
+         return GetUnsignedIntParameter(script_state,
+                                        GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+@@ -3431,10 +4051,11 @@ ScriptValue WebGLRenderingContextBase::getProgramParameter(
      ScriptState* script_state,
      WebGLProgram* program,
      GLenum pname) {
@@ -110,7 +831,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    GLint value = 0;
    switch (pname) {
      case GL_DELETE_STATUS:
-@@ -3485,6 +3511,8 @@ ScriptValue WebGLRenderingContextBase::getProgramParameter(
+@@ -3489,6 +4110,8 @@ ScriptValue WebGLRenderingContextBase::getProgramParameter(
  String WebGLRenderingContextBase::getProgramInfoLog(WebGLProgram* program) {
    if (!ValidateWebGLProgramOrShader("getProgramInfoLog", program))
      return String();
@@ -119,7 +840,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    GLStringQuery query(ContextGL());
    return query.Run<GLStringQuery::ProgramInfoLog>(ObjectNonZero(program));
  }
-@@ -3495,6 +3523,8 @@ ScriptValue WebGLRenderingContextBase::getRenderbufferParameter(
+@@ -3499,6 +4122,8 @@ ScriptValue WebGLRenderingContextBase::getRenderbufferParameter(
      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state);
@@ -128,7 +849,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    if (target != GL_RENDERBUFFER) {
      SynthesizeGLError(GL_INVALID_ENUM, "getRenderbufferParameter",
                        "invalid target");
-@@ -3540,6 +3570,8 @@ ScriptValue WebGLRenderingContextBase::getShaderParameter(
+@@ -3544,6 +4169,8 @@ ScriptValue WebGLRenderingContextBase::getShaderParameter(
      ScriptState* script_state,
      WebGLShader* shader,
      GLenum pname) {
@@ -137,7 +858,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    if (!ValidateWebGLProgramOrShader("getShaderParameter", shader)) {
      return ScriptValue::CreateNull(script_state);
    }
-@@ -3571,6 +3603,8 @@ ScriptValue WebGLRenderingContextBase::getShaderParameter(
+@@ -3575,6 +4202,8 @@ ScriptValue WebGLRenderingContextBase::getShaderParameter(
  String WebGLRenderingContextBase::getShaderInfoLog(WebGLShader* shader) {
    if (!ValidateWebGLProgramOrShader("getShaderInfoLog", shader))
      return String();
@@ -146,16 +867,87 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    GLStringQuery query(ContextGL());
    return query.Run<GLStringQuery::ShaderInfoLog>(ObjectNonZero(shader));
  }
-@@ -3583,6 +3617,8 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
+@@ -3587,6 +4216,79 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
    if (!ValidateShaderType("getShaderPrecisionFormat", shader_type)) {
      return nullptr;
    }
 +  if (canvas() && !AllowFingerprinting(canvas()->GetDocument().GetFrame()))
 +    return nullptr;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    std::string precision_str;
++    switch (precision_type) {
++      case GL_LOW_FLOAT:
++        precision_str = "gl.LOW_FLOAT";
++        break;
++      case GL_MEDIUM_FLOAT:
++        precision_str = "gl.MEDIUM_FLOAT";
++        break;
++      case GL_HIGH_FLOAT:
++        precision_str = "gl.HIGH_FLOAT";
++        break;
++      case GL_LOW_INT:
++        precision_str = "gl.LOW_INT";
++        break;
++      case GL_MEDIUM_INT:
++        precision_str = "gl.MEDIUM_INT";
++        break;
++      case GL_HIGH_INT:
++        precision_str = "gl.HIGH_INT";
++        break;
++      default:
++        SynthesizeGLError(GL_INVALID_ENUM, "getShaderPrecisionFormat",
++                          "invalid precision type");
++        return nullptr;
++    }
++
++    std::string shader;
++    switch (shader_type) {
++      case GL_FRAGMENT_SHADER:
++        shader = "gl.FRAGMENT_SHADER";
++        break;
++      case GL_VERTEX_SHADER:
++        shader = "gl.VERTEX_SHADER";
++        break;
++      default:
++        break;
++    }
++
++    GLint range[2] = {0, 0};
++    GLint precision = 0;
++    ContextGL()->GetShaderPrecisionFormat(shader_type, precision_type, range,
++                                          &precision);
++    WebGLShaderPrecisionFormat* result =
++      WebGLShaderPrecisionFormat::Create(range[0], range[1], precision);
++
++    brave_page_graph::PageGraph* page_graph =
++      canvas()->GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      args.push_back(shader.c_str());
++      args.push_back(precision_str.c_str());
++      page_graph->RegisterWebAPICall(
++        "WebGLRenderingContext.getShaderPrecisionFormat", args);
++
++      std::stringstream buffer;
++      buffer << "rangeMin: " << result->rangeMin()
++        << ", rangeMax: " << result->rangeMax()
++        << ", precision: " << result->precision();
++
++      String res(buffer.str().c_str());
++      page_graph->RegisterWebAPIResult(
++        "WebGLRenderingContext.getShaderPrecisionFormat", res);
++    }
++
++    return result;
++  }
++#endif
++
    switch (precision_type) {
      case GL_LOW_FLOAT:
      case GL_MEDIUM_FLOAT:
-@@ -3607,6 +3643,8 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
+@@ -3611,6 +4313,8 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
  String WebGLRenderingContextBase::getShaderSource(WebGLShader* shader) {
    if (!ValidateWebGLProgramOrShader("getShaderSource", shader))
      return String();
@@ -164,7 +956,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    return EnsureNotNull(shader->Source());
  }
  
-@@ -3614,6 +3652,8 @@ base::Optional<Vector<String>>
+@@ -3618,6 +4322,8 @@ base::Optional<Vector<String>>
  WebGLRenderingContextBase::getSupportedExtensions() {
    if (isContextLost())
      return base::nullopt;
@@ -173,7 +965,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
  
    Vector<String> result;
  
-@@ -3636,6 +3676,8 @@ ScriptValue WebGLRenderingContextBase::getTexParameter(
+@@ -3640,6 +4346,8 @@ ScriptValue WebGLRenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state);
@@ -182,7 +974,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    if (!ValidateTextureBinding("getTexParameter", target))
      return ScriptValue::CreateNull(script_state);
    switch (pname) {
-@@ -3670,6 +3712,8 @@ ScriptValue WebGLRenderingContextBase::getUniform(
+@@ -3674,6 +4382,8 @@ ScriptValue WebGLRenderingContextBase::getUniform(
      const WebGLUniformLocation* uniform_location) {
    if (!ValidateWebGLProgramOrShader("getUniform", program))
      return ScriptValue::CreateNull(script_state);
@@ -191,7 +983,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    DCHECK(uniform_location);
    if (uniform_location->Program() != program) {
      SynthesizeGLError(GL_INVALID_OPERATION, "getUniform",
-@@ -3950,6 +3994,8 @@ WebGLUniformLocation* WebGLRenderingContextBase::getUniformLocation(
+@@ -3954,6 +4664,8 @@ WebGLUniformLocation* WebGLRenderingContextBase::getUniformLocation(
      const String& name) {
    if (!ValidateWebGLProgramOrShader("getUniformLocation", program))
      return nullptr;
@@ -200,7 +992,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    if (!ValidateLocationLength("getUniformLocation", name))
      return nullptr;
    if (!ValidateString("getUniformLocation", name))
-@@ -3974,6 +4020,8 @@ ScriptValue WebGLRenderingContextBase::getVertexAttrib(
+@@ -3978,6 +4690,8 @@ ScriptValue WebGLRenderingContextBase::getVertexAttrib(
      GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state);
@@ -209,7 +1001,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    if (index >= max_vertex_attribs_) {
      SynthesizeGLError(GL_INVALID_VALUE, "getVertexAttrib",
                        "index out of range");
-@@ -4051,6 +4099,8 @@ int64_t WebGLRenderingContextBase::getVertexAttribOffset(GLuint index,
+@@ -4055,6 +4769,8 @@ int64_t WebGLRenderingContextBase::getVertexAttribOffset(GLuint index,
                                                           GLenum pname) {
    if (isContextLost())
      return 0;
@@ -218,7 +1010,7 @@ index b1566fbab51273375a4dcbbb34d5dbecbc99ebe6..b29261488d92bea5a3ea61d7ec6c0f88
    GLvoid* result = nullptr;
    // NOTE: If pname is ever a value that returns more than 1 element
    // this will corrupt memory.
-@@ -4398,6 +4448,8 @@ void WebGLRenderingContextBase::ReadPixelsHelper(GLint x,
+@@ -4387,6 +5103,8 @@ void WebGLRenderingContextBase::ReadPixelsHelper(GLint x,
                                                   int64_t offset) {
    if (isContextLost())
      return;

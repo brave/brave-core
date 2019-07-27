@@ -1,0 +1,40 @@
+diff --git a/third_party/blink/renderer/modules/donottrack/navigator_do_not_track.cc b/third_party/blink/renderer/modules/donottrack/navigator_do_not_track.cc
+index 5885674aee4b412995b5e54cd1c8f1569ee7a9f4..0a47a037157e0bbcf3d140b3d30302fe82a02b70 100644
+--- a/third_party/blink/renderer/modules/donottrack/navigator_do_not_track.cc
++++ b/third_party/blink/renderer/modules/donottrack/navigator_do_not_track.cc
+@@ -34,6 +34,11 @@
+ #include "third_party/blink/renderer/core/frame/local_frame_client.h"
+ #include "third_party/blink/renderer/core/frame/navigator.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ NavigatorDoNotTrack::NavigatorDoNotTrack(Navigator& navigator)
+@@ -63,6 +68,23 @@ String NavigatorDoNotTrack::doNotTrack() {
+   LocalFrame* frame = GetSupplementable()->GetFrame();
+   if (!frame || !frame->Client())
+     return String();
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    String result = frame->Client()->DoNotTrackValue();
++
++    brave_page_graph::PageGraph* page_graph =
++      frame->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Navigator.doNotTrack",
++        std::vector<const String>());
++      page_graph->RegisterWebAPIResult("Navigator.doNotTrack", result);
++    }
++
++    return result;
++  }
++#endif
++
+   return frame->Client()->DoNotTrackValue();
+ }
+ 

@@ -1,0 +1,271 @@
+diff --git a/third_party/blink/renderer/core/frame/screen.cc b/third_party/blink/renderer/core/frame/screen.cc
+index f31ab99b2c40a8b84e8edfd019c410dac9a1360f..9fffc73e5dae879fcc6ea5abe1dd044693d24801 100644
+--- a/third_party/blink/renderer/core/frame/screen.cc
++++ b/third_party/blink/renderer/core/frame/screen.cc
+@@ -36,6 +36,11 @@
+ #include "third_party/blink/renderer/core/page/page.h"
+ #include "third_party/blink/renderer/core/probe/core_probes.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ Screen::Screen(LocalFrame* frame) : DOMWindowClient(frame) {}
+@@ -46,6 +51,32 @@ int Screen::height() const {
+   Page* page = GetFrame()->GetPage();
+   if (!page)
+     return 0;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    int result;
++    if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
++      WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
++      result = static_cast<int>(
++        lroundf(screen_info.rect.height * screen_info.device_scale_factor));
++    } else {
++      result = page->GetChromeClient().GetScreenInfo().rect.height;
++    }
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Screen.height",
++        std::vector<const String>());
++
++      const String page_graph_result(std::to_string(result).c_str());
++      page_graph->RegisterWebAPIResult("Screen.height", page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
+     WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
+     return static_cast<int>(
+@@ -60,6 +91,32 @@ int Screen::width() const {
+   Page* page = GetFrame()->GetPage();
+   if (!page)
+     return 0;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    int result;
++    if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
++      WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
++      result = static_cast<int>(
++        lroundf(screen_info.rect.width * screen_info.device_scale_factor));
++    } else {
++      result = page->GetChromeClient().GetScreenInfo().rect.width;
++    }
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Screen.width",
++        std::vector<const String>());
++
++      const String page_graph_result(std::to_string(result).c_str());
++      page_graph->RegisterWebAPIResult("Screen.width", page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
+     WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
+     return static_cast<int>(
+@@ -71,6 +128,26 @@ int Screen::width() const {
+ unsigned Screen::colorDepth() const {
+   if (!GetFrame() || !GetFrame()->GetPage())
+     return 0;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    int result = static_cast<unsigned>(
++      GetFrame()->GetPage()->GetChromeClient().GetScreenInfo().depth);
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Screen.colorDepth",
++        std::vector<const String>());
++
++      const String page_graph_result(std::to_string(result).c_str());
++      page_graph->RegisterWebAPIResult("Screen.colorDepth", page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   return static_cast<unsigned>(
+       GetFrame()->GetPage()->GetChromeClient().GetScreenInfo().depth);
+ }
+@@ -78,6 +155,26 @@ unsigned Screen::colorDepth() const {
+ unsigned Screen::pixelDepth() const {
+   if (!GetFrame())
+     return 0;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    int result = static_cast<unsigned>(
++      GetFrame()->GetPage()->GetChromeClient().GetScreenInfo().depth);
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Screen.pixelDepth",
++        std::vector<const String>());
++
++      const String page_graph_result(std::to_string(result).c_str());
++      page_graph->RegisterWebAPIResult("Screen.pixelDepth", page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   return static_cast<unsigned>(
+       GetFrame()->GetPage()->GetChromeClient().GetScreenInfo().depth);
+ }
+@@ -88,6 +185,33 @@ int Screen::availLeft() const {
+   Page* page = GetFrame()->GetPage();
+   if (!page)
+     return 0;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    int result;
++    if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
++      WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
++      result = static_cast<int>(lroundf(screen_info.available_rect.x *
++                                        screen_info.device_scale_factor));
++    } else {
++      result = static_cast<int>(
++        page->GetChromeClient().GetScreenInfo().available_rect.x);
++    }
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Screen.availLeft",
++        std::vector<const String>());
++
++      const String page_graph_result(std::to_string(result).c_str());
++      page_graph->RegisterWebAPIResult("Screen.availLeft", page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
+     WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
+     return static_cast<int>(lroundf(screen_info.available_rect.x *
+@@ -103,6 +227,33 @@ int Screen::availTop() const {
+   Page* page = GetFrame()->GetPage();
+   if (!page)
+     return 0;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    int result;
++    if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
++      WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
++      result = static_cast<int>(lroundf(screen_info.available_rect.y *
++                                        screen_info.device_scale_factor));
++    } else {
++      result = static_cast<int>(
++        page->GetChromeClient().GetScreenInfo().available_rect.y);
++    }
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Screen.availTop",
++        std::vector<const String>());
++
++      const String page_graph_result(std::to_string(result).c_str());
++      page_graph->RegisterWebAPIResult("Screen.availTop", page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
+     WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
+     return static_cast<int>(lroundf(screen_info.available_rect.y *
+@@ -118,6 +269,33 @@ int Screen::availHeight() const {
+   Page* page = GetFrame()->GetPage();
+   if (!page)
+     return 0;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    int result;
++    if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
++      WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
++      result = static_cast<int>(lroundf(screen_info.available_rect.height *
++                                        screen_info.device_scale_factor));
++    } else {
++      result = page->GetChromeClient().GetScreenInfo().available_rect.height;
++    }
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Screen.availHeight",
++        std::vector<const String>());
++
++      const String page_graph_result(std::to_string(result).c_str());
++      page_graph->RegisterWebAPIResult("Screen.availHeight",
++        page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
+     WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
+     return static_cast<int>(lroundf(screen_info.available_rect.height *
+@@ -132,6 +310,32 @@ int Screen::availWidth() const {
+   Page* page = GetFrame()->GetPage();
+   if (!page)
+     return 0;
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    int result;
++    if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
++      WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
++      result = static_cast<int>(lroundf(screen_info.available_rect.width *
++                                        screen_info.device_scale_factor));
++    } else {
++      result = page->GetChromeClient().GetScreenInfo().available_rect.width;
++    }
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Screen.availWidth",
++        std::vector<const String>());
++
++      const String page_graph_result(std::to_string(result).c_str());
++      page_graph->RegisterWebAPIResult("Screen.availWidth", page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   if (page->GetSettings().GetReportScreenSizeInPhysicalPixelsQuirk()) {
+     WebScreenInfo screen_info = page->GetChromeClient().GetScreenInfo();
+     return static_cast<int>(lroundf(screen_info.available_rect.width *

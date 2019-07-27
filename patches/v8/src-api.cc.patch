@@ -1,35 +1,153 @@
 diff --git a/src/api.cc b/src/api.cc
-index a52fadc2eef6bcecf73c81463c3665f6313fea72..453a328353e0748125cd40ffb6369aceba2d02cf 100644
+index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6bc792ce8 100644
 --- a/src/api.cc
 +++ b/src/api.cc
-@@ -125,6 +125,11 @@
+@@ -125,6 +125,8 @@
  #endif  // V8_TARGET_ARCH_X64
  #endif  // V8_OS_WIN
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
 +
  namespace v8 {
  
  /*
-@@ -8934,6 +8939,18 @@ void v8::Isolate::LocaleConfigurationChangeNotification() {
- #endif  // V8_INTL_SUPPORT
+@@ -2354,12 +2356,27 @@ MaybeLocal<Value> Module::Evaluate(Local<Context> context) {
+   RETURN_ESCAPED(result);
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+void v8::Isolate::SetPageGraph(::brave_page_graph::PageGraph* page_graph) {
-+  i::Isolate* i_isolate = reinterpret_cast<i::Isolate*>(this);
-+  i_isolate->SetPageGraphInternal(page_graph);
-+}
-+
-+::brave_page_graph::PageGraph* v8::Isolate::GetPageGraph() const {
-+  const i::Isolate* i_isolate = reinterpret_cast<const i::Isolate*>(this);
-+  return i_isolate->GetPageGraphInternal();
++int Module::GetModuleScriptId() const {
++  i::Handle<i::Module> self = Utils::OpenHandle(this);
++  i::Handle<i::SharedFunctionInfo> shared(
++      self->GetSharedFunctionInfo(), self->GetIsolate());
++  if (shared->script().IsScript())
++    return i::Script::cast(shared->script())->id();
++  return 0;
 +}
 +#endif
 +
- // static
- std::unique_ptr<MicrotaskQueue> MicrotaskQueue::New(Isolate* isolate,
-                                                     MicrotasksPolicy policy) {
+ namespace {
+ 
+ i::Compiler::ScriptDetails GetScriptDetails(
+     i::Isolate* isolate, Local<Value> resource_name,
+     Local<Integer> resource_line_offset, Local<Integer> resource_column_offset,
+-    Local<Value> source_map_url, Local<PrimitiveArray> host_defined_options) {
++    Local<Value> source_map_url, Local<PrimitiveArray> host_defined_options
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    , Local<Integer> parent_script_id
++#endif
++    ) {
+   i::Compiler::ScriptDetails script_details;
+   if (!resource_name.IsEmpty()) {
+     script_details.name_obj = Utils::OpenHandle(*(resource_name));
+@@ -2372,6 +2389,12 @@ i::Compiler::ScriptDetails GetScriptDetails(
+     script_details.column_offset =
+         static_cast<int>(resource_column_offset->Value());
+   }
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  if (!parent_script_id.IsEmpty()) {
++    script_details.parent_script_id =
++        static_cast<int>(parent_script_id->Value());
++  }
++#endif
+   script_details.host_defined_options = isolate->factory()->empty_fixed_array();
+   if (!host_defined_options.IsEmpty()) {
+     script_details.host_defined_options =
+@@ -2408,7 +2431,11 @@ MaybeLocal<UnboundScript> ScriptCompiler::CompileUnboundInternal(
+   i::Compiler::ScriptDetails script_details = GetScriptDetails(
+       isolate, source->resource_name, source->resource_line_offset,
+       source->resource_column_offset, source->source_map_url,
+-      source->host_defined_options);
++      source->host_defined_options
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , source->parent_script_id
++#endif
++      );
+   i::MaybeHandle<i::SharedFunctionInfo> maybe_function_info =
+       i::Compiler::GetSharedFunctionInfoForScript(
+           isolate, str, script_details, source->resource_options, nullptr,
+@@ -2535,7 +2562,11 @@ MaybeLocal<Function> ScriptCompiler::CompileFunctionInContext(
+   i::Compiler::ScriptDetails script_details = GetScriptDetails(
+       isolate, source->resource_name, source->resource_line_offset,
+       source->resource_column_offset, source->source_map_url,
+-      source->host_defined_options);
++      source->host_defined_options
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , source->parent_script_id
++#endif
++      );
+ 
+   i::ScriptData* script_data = nullptr;
+   if (options == kConsumeCodeCache) {
+@@ -2581,7 +2612,11 @@ ScriptCompiler::ScriptStreamingTask* ScriptCompiler::StartStreamingScript(
+ MaybeLocal<Script> ScriptCompiler::Compile(Local<Context> context,
+                                            StreamedSource* v8_source,
+                                            Local<String> full_source_string,
+-                                           const ScriptOrigin& origin) {
++                                           const ScriptOrigin& origin
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                           , int parent_script_id
++#endif
++                                           ) {
+   PREPARE_FOR_EXECUTION(context, ScriptCompiler, Compile, Script);
+   TRACE_EVENT_CALL_STATS_SCOPED(isolate, "v8", "V8.ScriptCompiler");
+   TRACE_EVENT0(TRACE_DISABLED_BY_DEFAULT("v8.compile"),
+@@ -2591,7 +2626,11 @@ MaybeLocal<Script> ScriptCompiler::Compile(Local<Context> context,
+   i::Compiler::ScriptDetails script_details = GetScriptDetails(
+       isolate, origin.ResourceName(), origin.ResourceLineOffset(),
+       origin.ResourceColumnOffset(), origin.SourceMapUrl(),
+-      origin.HostDefinedOptions());
++      origin.HostDefinedOptions()
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , v8::Integer::New(reinterpret_cast<v8::Isolate*>(isolate), parent_script_id)
++#endif
++      );
+   i::ScriptStreamingData* data = v8_source->impl();
+ 
+   i::MaybeHandle<i::SharedFunctionInfo> maybe_function_info =
+@@ -5136,6 +5175,26 @@ Local<v8::Value> Function::GetBoundFunction() const {
+   return v8::Undefined(reinterpret_cast<v8::Isolate*>(self->GetIsolate()));
+ }
+ 
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++Local<Function> Function::GetInnermostFunction() const {
++  auto self = Utils::OpenHandle(this);
++
++  Local<Function> function = Utils::Convert<i::Object, Function>(self);
++  while (true) {
++    Local<v8::Value> bound_function = function->GetBoundFunction();
++    if (bound_function->IsFunction()) {
++      function = bound_function.As<Function>();
++    } else {
++      break;
++    }
++  }
++
++  return function;
++}
++#endif
++
++
+ int Name::GetIdentityHash() {
+   auto self = Utils::OpenHandle(this);
+   return static_cast<int>(self->Hash());
+@@ -7973,6 +8032,18 @@ void Isolate::CheckMemoryPressure() {
+   heap->CheckMemoryPressure();
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++int Isolate::GetExecutingScriptId() {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  return internal_isolate->GetExecutingScriptId();
++}
++
++void Isolate::SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  internal_isolate->SetEvalScriptCompiledFunc(func);
++}
++#endif
++
+ HeapProfiler* Isolate::GetHeapProfiler() {
+   i::HeapProfiler* heap_profiler =
+       reinterpret_cast<i::Isolate*>(this)->heap_profiler();

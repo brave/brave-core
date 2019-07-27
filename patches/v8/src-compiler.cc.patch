@@ -1,20 +1,83 @@
 diff --git a/src/compiler.cc b/src/compiler.cc
-index d3cebfd58e679b9a2219e9595c1e8a279668710e..85b103cce5958d0bb13473c7d669f2ea61d227cc 100644
+index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef702ea706 100644
 --- a/src/compiler.cc
 +++ b/src/compiler.cc
-@@ -42,6 +42,13 @@
+@@ -42,6 +42,8 @@
  #include "src/vm-state-inl.h"
  #include "src/zone/zone-list-inl.h"  // crbug.com/v8/8816
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+#include <string>
-+#include "src/string-stream.h"
-+#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
 +
  namespace v8 {
  namespace internal {
+ 
+@@ -1482,6 +1484,9 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+   int source_length = source->length();
+   isolate->counters()->total_eval_size()->Increment(source_length);
+   isolate->counters()->total_compile_size()->Increment(source_length);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  const int parent_script_id = isolate->GetExecutingScriptId();
++#endif
+ 
+   // The cache lookup key needs to be aware of the separation between the
+   // parameters and the body to prevent this valid invocation:
+@@ -1500,7 +1505,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+   }
+   CompilationCache* compilation_cache = isolate->compilation_cache();
+   InfoCellPair eval_result = compilation_cache->LookupEval(
+-      source, outer_info, context, language_mode, eval_scope_position);
++      source, outer_info, context, language_mode, eval_scope_position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , parent_script_id
++#endif
++      );
+   Handle<FeedbackCell> feedback_cell;
+   if (eval_result.has_feedback_cell()) {
+     feedback_cell = handle(eval_result.feedback_cell(), isolate);
+@@ -1575,7 +1584,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+         Handle<FeedbackCell> new_feedback_cell(result->raw_feedback_cell(),
+                                                isolate);
+         compilation_cache->PutEval(source, outer_info, context, shared_info,
+-                                   new_feedback_cell, eval_scope_position);
++                                   new_feedback_cell, eval_scope_position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                   , parent_script_id
++#endif
++                                   );
+       }
+     }
+   } else {
+@@ -1588,11 +1601,30 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+       Handle<FeedbackCell> new_feedback_cell(result->raw_feedback_cell(),
+                                              isolate);
+       compilation_cache->PutEval(source, outer_info, context, shared_info,
+-                                 new_feedback_cell, eval_scope_position);
++                                 new_feedback_cell, eval_scope_position
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++                                 , parent_script_id
++#endif
++                                 );
+     }
+   }
+   DCHECK(is_compiled_scope.is_compiled());
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    EvalScriptCompiledFunc eval_script_compiled_func =
++        isolate->GetEvalScriptCompiledFunc();
++    if (eval_script_compiled_func) {
++      Object maybe_script = result->shared()->script();
++      if (maybe_script->IsScript()) {
++        Script script = Script::cast(maybe_script);
++        eval_script_compiled_func(*reinterpret_cast<v8::Isolate*>(isolate),
++            parent_script_id, script->id());
++      }
++    }
++  }
++#endif
++
+   return result;
+ }
  
 @@ -1910,7 +1942,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
      maybe_result = compilation_cache->LookupScript(

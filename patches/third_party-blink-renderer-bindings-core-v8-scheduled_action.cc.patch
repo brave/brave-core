@@ -1,0 +1,38 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
+index 1e0faaca8f589086af6a5060a9fb78d1748a25be..74278d634d6a9069acbe832e08e7a18158db03d5 100644
+--- a/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
++++ b/third_party/blink/renderer/bindings/core/v8/scheduled_action.cc
+@@ -94,7 +94,11 @@ ScheduledAction::ScheduledAction(ScriptState* script_state,
+ ScheduledAction::ScheduledAction(ScriptState* script_state, const String& code)
+     : script_state_(
+           MakeGarbageCollected<ScriptStateProtectingContext>(script_state)),
+-      code_(code) {}
++      code_(code) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  parent_script_id_ = script_state->GetIsolate()->GetExecutingScriptId();
++#endif
++}
+ 
+ ScheduledAction::ScheduledAction(ScriptState* script_state)
+     : script_state_(
+@@ -174,11 +178,20 @@ void ScheduledAction::Execute(LocalFrame* frame) {
+     // behavior, but this causes failures on
+     // wpt/html/webappapis/scripting/processing-model-2/compile-error-cross-origin-setTimeout.html
+     // and friends.
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    ScriptSourceCode source_code(code_,
++        ScriptSourceLocationType::kEvalForScheduledAction);
++    source_code.SetParentScriptId(parent_script_id_);
++    frame->GetScriptController().ExecuteScriptAndReturnValue(
++        script_state_->GetContext(), source_code,
++        KURL(), SanitizeScriptErrors::kDoNotSanitize);
++#else
+     frame->GetScriptController().ExecuteScriptAndReturnValue(
+         script_state_->GetContext(),
+         ScriptSourceCode(code_,
+                          ScriptSourceLocationType::kEvalForScheduledAction),
+         KURL(), SanitizeScriptErrors::kDoNotSanitize);
++#endif
+   }
+ 
+   // The frame might be invalid at this point because JavaScript could have

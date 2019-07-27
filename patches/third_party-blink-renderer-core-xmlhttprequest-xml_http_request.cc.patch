@@ -1,13 +1,14 @@
 diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-index 6166612476ad3d639a27471f9992dfd0b2a1043a..684238ac26a842fb01134ed0c9a9955d48932b4d 100644
+index 6166612476ad3d639a27471f9992dfd0b2a1043a..4613fe560d8cff51d6d64f4ab05df9a696ef8921 100644
 --- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
 +++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-@@ -93,6 +93,13 @@
+@@ -93,6 +93,14 @@
  #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
 +#include "third_party/blink/renderer/platform/loader/fetch/raw_resource.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -16,7 +17,7 @@ index 6166612476ad3d639a27471f9992dfd0b2a1043a..684238ac26a842fb01134ed0c9a9955d
  namespace blink {
  
  namespace {
-@@ -1165,6 +1172,26 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
+@@ -1165,6 +1173,27 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
                                                     resource_loader_options);
    loader_->SetTimeout(timeout_);
    loader_->Start(request);
@@ -28,7 +29,8 @@ index 6166612476ad3d639a27471f9992dfd0b2a1043a..684238ac26a842fb01134ed0c9a9955d
 +    if (loader_ != nullptr) {
 +      RawResource* const raw_resource = loader_->GetRawResource();
 +      if (raw_resource != nullptr) {
-+        ::brave_page_graph::PageGraph* page_graph = isolate_->GetPageGraph();
++        ::brave_page_graph::PageGraph* page_graph =
++          ::brave_page_graph::PageGraph::GetFromIsolate(*isolate_);
 +        if (page_graph != nullptr) {
 +          page_graph->RegisterRequestStartFromCurrentScript(
 +            raw_resource->InspectorId(), url_,

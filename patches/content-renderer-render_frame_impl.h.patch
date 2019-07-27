@@ -1,0 +1,39 @@
+diff --git a/content/renderer/render_frame_impl.h b/content/renderer/render_frame_impl.h
+index 4613ce47c11c5e62c820bdbd59dc3038124cbee7..dc9bd271c88d149e7294dd55e943d635888dc1c6 100644
+--- a/content/renderer/render_frame_impl.h
++++ b/content/renderer/render_frame_impl.h
+@@ -102,6 +102,8 @@
+ #include "url/gurl.h"
+ #include "url/origin.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if defined(OS_MACOSX)
+ #include "third_party/blink/public/mojom/clipboard/clipboard.mojom.h"
+ #endif
+@@ -505,6 +507,12 @@ class CONTENT_EXPORT RenderFrameImpl
+   double GetZoomLevel() override;
+   void AddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
+                            const std::string& message) override;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void RegisterResourceBlockAd(const GURL& url,
++                               const std::string& rule);
++  void RegisterResourceBlockTracker(const GURL& url,
++                                    const std::string& host);
++#endif
+   void SetPreviewsState(PreviewsState previews_state) override;
+   PreviewsState GetPreviewsState() override;
+   bool IsPasting() override;
+@@ -1125,6 +1133,12 @@ class CONTENT_EXPORT RenderFrameImpl
+   void OnSaveImageAt(int x, int y);
+   void OnAddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
+                              const std::string& message);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void OnRegisterResourceBlockAd(const GURL& url,
++                                 const std::string& rule);
++  void OnRegisterResourceBlockTracker(const GURL& url,
++                                      const std::string& host);
++#endif
+   void OnVisualStateRequest(uint64_t key);
+   void OnReload(bool bypass_cache);
+   void OnReloadLoFiImages();

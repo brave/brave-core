@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
-index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..9a92c6fc87cff9e35ff78ed5b578562dfbebdb4f 100644
+index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..25904b01cef3cfea5a4690814954a573140cfd13 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
 @@ -61,6 +61,13 @@
@@ -16,7 +16,7 @@ index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..9a92c6fc87cff9e35ff78ed5b578562d
  namespace blink {
  
  static void DispatchChildInsertionEvents(Node&);
-@@ -930,6 +937,53 @@ void ContainerNode::NotifyNodeInsertedInternal(
+@@ -930,6 +937,66 @@ void ContainerNode::NotifyNodeInsertedInternal(
    EventDispatchForbiddenScope assert_no_event_dispatch;
    ScriptForbiddenScope forbid_script;
  
@@ -37,15 +37,27 @@ index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..9a92c6fc87cff9e35ff78ed5b578562d
 +
 +        if (parent != nullptr) {
 +          if (parent->IsDocumentNode()) {
-+            Document* dom_root_node = DynamicTo<Document>(parent);
-+            if (dom_root_node != &(dom_root_node->TopDocument())) {
-+              // Child documents must have a local iframe owner.
-+              HTMLFrameOwnerElement* owner = dom_root_node->LocalOwner();
-+              DCHECK(owner != nullptr);
++            Document* const dom_root_node = DynamicTo<Document>(parent);
++            Document* const dom_root_context = dom_root_node->ContextDocument();
++            Document& top_document =
++                (dom_root_context ? dom_root_context : dom_root_node)
++                    ->TopDocument();
++
++            if (dom_root_node != &top_document) {
++              DOMNodeId dom_root_parent = 0;
++              if (HTMLFrameOwnerElement* const local_frame_owner =
++                      dom_root_node->LocalOwner()) {
++                // If the child document represents the contents of an embedded
++                // frame, treat the HTMLFrameOwnerElement as its parent node.
++                dom_root_parent = DOMNodeIds::IdForNode(local_frame_owner);
++              } else if (dom_root_context != dom_root_node) {
++                // Otherwise, treat the context document as the parent node.
++                dom_root_parent = DOMNodeIds::IdForNode(dom_root_context);
++              }
++              DCHECK(dom_root_parent);
 +
 +              page_graph->RegisterDocumentRootCreated(
-+                  DOMNodeIds::IdForNode(dom_root_node),
-+                  DOMNodeIds::IdForNode(owner));
++                  DOMNodeIds::IdForNode(dom_root_node), dom_root_parent);
 +            }
 +          }
 +
@@ -67,26 +79,27 @@ index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..9a92c6fc87cff9e35ff78ed5b578562d
 +    }
 +  }
 +#endif
++
    for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
-@@ -952,6 +1006,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
-     // As an optimization we skip notifying Text nodes and other leaf nodes
-     // of removal when they're not in the Document tree and not in a shadow root
-     // since the virtual call to removedFrom is not needed.
+@@ -948,6 +1015,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+   ScriptForbiddenScope forbid_script;
+   EventDispatchForbiddenScope assert_no_event_dispatch;
+ 
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+    if (GetDocument().GetPageGraph() != nullptr) {
-+      const NodeType node_type = node.getNodeType();
-+      if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
-+        GetDocument().GetPageGraph()->RegisterHTMLElementNodeRemoved(
-+          DOMNodeIds::IdForNode(&node));
-+      } else {
-+        GetDocument().GetPageGraph()->RegisterHTMLTextNodeRemoved(
-+          DOMNodeIds::IdForNode(&node));
-+      }
++  if (GetDocument().GetPageGraph() != nullptr) {
++    const NodeType node_type = root.getNodeType();
++    if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
++      GetDocument().GetPageGraph()->RegisterHTMLElementNodeRemoved(
++        DOMNodeIds::IdForNode(&root));
++    } else {
++      GetDocument().GetPageGraph()->RegisterHTMLTextNodeRemoved(
++        DOMNodeIds::IdForNode(&root));
 +    }
++  }
 +#endif
 +
-     if (!node.IsContainerNode() && !node.IsInTreeScope())
-       continue;
-     node.RemovedFrom(*this);
+   for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
+     // As an optimization we skip notifying Text nodes and other leaf nodes
+     // of removal when they're not in the Document tree and not in a shadow root

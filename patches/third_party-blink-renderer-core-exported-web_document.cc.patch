@@ -1,0 +1,44 @@
+diff --git a/third_party/blink/renderer/core/exported/web_document.cc b/third_party/blink/renderer/core/exported/web_document.cc
+index 640e2004aade8c03d3c4bbacfd331c2a933e8eda..5bf3660afae70dfbeb6b77a7a0922b7ce22d11a1 100644
+--- a/third_party/blink/renderer/core/exported/web_document.cc
++++ b/third_party/blink/renderer/core/exported/web_document.cc
+@@ -62,6 +62,12 @@
+ #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
+ #include "third_party/blink/renderer/platform/wtf/casting.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/types.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace {
+ 
+ static const blink::WebStyleSheetKey GenerateStyleSheetKey() {
+@@ -294,6 +300,26 @@ void WebDocument::SetShowBeforeUnloadDialog(bool show_dialog) {
+   doc->SetShowBeforeUnloadDialog(show_dialog);
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void WebDocument::RegisterResourceBlockAd(const GURL& url,
++                                          const std::string& rule) {
++  Document* doc = Unwrap<Document>();
++  ::brave_page_graph::PageGraph* const page_graph = doc->GetPageGraph();
++  if (page_graph) {
++    page_graph->RegisterResourceBlockAd(url, rule);
++  }
++}
++
++void WebDocument::RegisterResourceBlockTracker(const GURL& url,
++                                               const std::string& host) {
++  Document* doc = Unwrap<Document>();
++  ::brave_page_graph::PageGraph* const page_graph = doc->GetPageGraph();
++  if (page_graph) {
++    page_graph->RegisterResourceBlockTracker(url, host);
++  }
++}
++#endif
++
+ WebDocument::WebDocument(Document* elem) : WebNode(elem) {}
+ 
+ DEFINE_WEB_NODE_TYPE_CASTS(WebDocument, ConstUnwrap<Node>()->IsDocumentNode())

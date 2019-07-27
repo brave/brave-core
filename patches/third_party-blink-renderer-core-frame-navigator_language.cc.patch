@@ -1,0 +1,77 @@
+diff --git a/third_party/blink/renderer/core/frame/navigator_language.cc b/third_party/blink/renderer/core/frame/navigator_language.cc
+index 423c88735c3f54847a748e34f83df8959c252933..cdc9e760d25efe34814ef8a0ad91181b01063f31 100644
+--- a/third_party/blink/renderer/core/frame/navigator_language.cc
++++ b/third_party/blink/renderer/core/frame/navigator_language.cc
+@@ -8,6 +8,13 @@
+ #include "third_party/blink/renderer/platform/language.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include <sstream>
++#include <string>
++#endif
++
+ namespace blink {
+ 
+ Vector<String> ParseAndSanitize(const String& accept_languages) {
+@@ -34,11 +41,58 @@ NavigatorLanguage::NavigatorLanguage(ExecutionContext* context)
+     : context_(context) {}
+ 
+ AtomicString NavigatorLanguage::language() {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    // We need to make sure we don't call languages, since that would yield an
++    // incorrect graph in the end
++    EnsureUpdatedLanguage();
++    String result = languages_.front();
++
++    if (context_) {
++      brave_page_graph::PageGraph* page_graph =
++        brave_page_graph::PageGraph::GetFromIsolate(*context_->GetIsolate());
++      if (page_graph != nullptr) {
++        page_graph->RegisterWebAPICall("NavigatorLanguage.language",
++          std::vector<const String>());
++
++        page_graph->RegisterWebAPIResult("NavigatorLanguage.language", result);
++      }
++    }
++
++    return AtomicString(result);
++  }
++#endif
+   return AtomicString(languages().front());
+ }
+ 
+ const Vector<String>& NavigatorLanguage::languages() {
+   EnsureUpdatedLanguage();
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (context_) {
++      brave_page_graph::PageGraph* page_graph =
++        brave_page_graph::PageGraph::GetFromIsolate(*context_->GetIsolate());
++      if (page_graph != nullptr) {
++        std::stringstream buffer;
++        String* snd_last = std::prev(languages_.end());
++        for (auto* iter = languages_.begin(); iter != snd_last; ++iter) {
++          buffer << iter->Utf8().data() << ", ";
++        }
++        buffer << snd_last->Utf8().data();
++        String result(buffer.str().c_str());
++
++        page_graph->RegisterWebAPICall("NavigatorLanguage.languages",
++          std::vector<const String>());
++
++        page_graph->RegisterWebAPIResult("NavigatorLanguage.languages", result);
++      }
++
++      return languages_;
++    }
++  }
++#endif
++
+   return languages_;
+ }
+ 

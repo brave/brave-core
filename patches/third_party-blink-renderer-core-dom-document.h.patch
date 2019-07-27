@@ -1,21 +1,29 @@
 diff --git a/third_party/blink/renderer/core/dom/document.h b/third_party/blink/renderer/core/dom/document.h
-index c89f9d712e9a061cb4218c2863e058f5a62173ae..96a546c6c6f8558dda95ec530342f18ad5b98af8 100644
+index c89f9d712e9a061cb4218c2863e058f5a62173ae..39876d309adc5a12a275f93def368ebcb64a52c1 100644
 --- a/third_party/blink/renderer/core/dom/document.h
 +++ b/third_party/blink/renderer/core/dom/document.h
-@@ -73,6 +73,12 @@
+@@ -73,6 +73,11 @@
  #include "third_party/blink/renderer/platform/wtf/casting.h"
  #include "third_party/blink/renderer/platform/wtf/hash_set.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#include "brave/third_party/blink/brave_page_graph/types.h"
 +#endif
 +
  namespace base {
  class SingleThreadTaskRunner;
  }
-@@ -1540,6 +1546,10 @@ class CORE_EXPORT Document : public ContainerNode,
+@@ -1258,7 +1263,7 @@ class CORE_EXPORT Document : public ContainerNode,
+   // EnsureTemplateDocument().
+   bool IsTemplateDocument() const { return !!template_document_host_; }
+   Document& EnsureTemplateDocument();
+-  Document* TemplateDocumentHost() { return template_document_host_; }
++  Document* TemplateDocumentHost() const { return template_document_host_; }
+ 
+   // TODO(thestig): Rename these and related functions, since we can call them
+   // for controls outside of forms as well.
+@@ -1540,6 +1545,10 @@ class CORE_EXPORT Document : public ContainerNode,
    // inside a cross-process frame (MimeHandlerView).
    void SetShowBeforeUnloadDialog(bool show_dialog);
  
@@ -26,7 +34,7 @@ index c89f9d712e9a061cb4218c2863e058f5a62173ae..96a546c6c6f8558dda95ec530342f18a
   protected:
    void DidUpdateSecurityOrigin() final;
  
-@@ -1552,6 +1562,11 @@ class CORE_EXPORT Document : public ContainerNode,
+@@ -1552,6 +1561,11 @@ class CORE_EXPORT Document : public ContainerNode,
      return parser_sync_policy_;
    }
  

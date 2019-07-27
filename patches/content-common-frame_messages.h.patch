@@ -1,0 +1,32 @@
+diff --git a/content/common/frame_messages.h b/content/common/frame_messages.h
+index 8673d65844ea1e6f0dd75e833f4a674d68045a04..351b49e0e837c2deca50fb567c3e563c71d58d60 100644
+--- a/content/common/frame_messages.h
++++ b/content/common/frame_messages.h
+@@ -82,6 +82,8 @@
+ #include "url/gurl.h"
+ #include "url/origin.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if BUILDFLAG(ENABLE_PLUGINS)
+ #include "content/common/pepper_renderer_instance_data.h"
+ #endif
+@@ -847,6 +849,18 @@ IPC_MESSAGE_ROUTED2(FrameMsg_AddMessageToConsole,
+                     blink::mojom::ConsoleMessageLevel /* level */,
+                     std::string /* message */)
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// Record that a resource was blocked by an ad filter.
++IPC_MESSAGE_ROUTED2(FrameMsg_RegisterResourceBlockAd,
++                    GURL /* url */,
++                    std::string /* rule */)
++
++// Record that a resource was blocked by a tracker filter.
++IPC_MESSAGE_ROUTED2(FrameMsg_RegisterResourceBlockTracker,
++                    GURL /* url */,
++                    std::string /* host */)
++#endif
++
+ // Tells the renderer to reload the frame, optionally bypassing the cache while
+ // doing so.
+ IPC_MESSAGE_ROUTED1(FrameMsg_Reload,

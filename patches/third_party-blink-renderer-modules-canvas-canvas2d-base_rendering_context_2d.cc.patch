@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index e4eddf347dec605a7a0a50bd4cb97a3e3e754010..1020c3d6a218145724496d09ccaf52cac499c9a2 100644
+index b4576d5fbb90d40d03d7cf2b44fb2ba8ce59b031..65b5225e85add70bd27f85f1e82bf3ad609b396b 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 @@ -10,6 +10,7 @@
@@ -10,7 +10,20 @@ index e4eddf347dec605a7a0a50bd4cb97a3e3e754010..1020c3d6a218145724496d09ccaf52ca
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/renderer/core/css/cssom/css_url_image_value.h"
  #include "third_party/blink/renderer/core/css/parser/css_parser.h"
-@@ -345,7 +346,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
+@@ -24,6 +25,12 @@
+ #include "third_party/blink/renderer/platform/graphics/skia/skia_utils.h"
+ #include "third_party/blink/renderer/platform/graphics/stroke_data.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include <string>
++#endif
++
+ namespace blink {
+ 
+ const char BaseRenderingContext2D::kDefaultFont[] = "10px sans-serif";
+@@ -345,7 +352,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
    ModifiableState().SetShadowColor(color.Rgb());
  }
  
@@ -24,7 +37,7 @@ index e4eddf347dec605a7a0a50bd4cb97a3e3e754010..1020c3d6a218145724496d09ccaf52ca
    return GetState().LineDash();
  }
  
-@@ -781,16 +787,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
+@@ -781,16 +793,76 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
    ClipInternal(dom_path->GetPath(), winding_rule_string);
  }
  
@@ -37,6 +50,30 @@ index e4eddf347dec605a7a0a50bd4cb97a3e3e754010..1020c3d6a218145724496d09ccaf52ca
 +  if (window && !AllowFingerprinting(window->GetFrame())) {
 +    return false;
 +  }
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    bool result = IsPointInPathInternal(path_, x, y, winding_rule_string);
++
++    brave_page_graph::PageGraph* page_graph =
++      window->GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      args.push_back(std::to_string(x).c_str());
++      args.push_back(std::to_string(y).c_str());
++      args.push_back(winding_rule_string);
++
++      page_graph->RegisterWebAPICall("CanvasRenderingContext2D.isPointInPath",
++        args);
++      page_graph->RegisterWebAPIResult(
++        "CanvasRenderingContext2D.isPointInPath",
++        result ? "true" : "false");
++    }
++
++    return result;
++  }
++#endif
++
    return IsPointInPathInternal(path_, x, y, winding_rule_string);
  }
  
@@ -50,10 +87,36 @@ index e4eddf347dec605a7a0a50bd4cb97a3e3e754010..1020c3d6a218145724496d09ccaf52ca
 +  if (window && !AllowFingerprinting(window->GetFrame())) {
 +    return false;
 +  }
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    bool result = IsPointInPathInternal(dom_path->GetPath(), x, y,
++      winding_rule_string);
++
++    brave_page_graph::PageGraph* page_graph =
++      window->GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      args.push_back("Non-default path");
++      args.push_back(std::to_string(x).c_str());
++      args.push_back(std::to_string(y).c_str());
++      args.push_back(winding_rule_string);
++
++      page_graph->RegisterWebAPICall("CanvasRenderingContext2D.isPointInPath",
++        args);
++      page_graph->RegisterWebAPIResult(
++        "CanvasRenderingContext2D.isPointInPath",
++        result ? "true" : "false");
++    }
++
++    return result;
++  }
++#endif
++
    return IsPointInPathInternal(dom_path->GetPath(), x, y, winding_rule_string);
  }
  
-@@ -815,13 +831,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
+@@ -815,13 +887,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
                         SkFillTypeToWindRule(ParseWinding(winding_rule_string)));
  }
  
@@ -79,7 +142,7 @@ index e4eddf347dec605a7a0a50bd4cb97a3e3e754010..1020c3d6a218145724496d09ccaf52ca
    return IsPointInStrokeInternal(dom_path->GetPath(), x, y);
  }
  
-@@ -1573,11 +1599,16 @@ ImageData* BaseRenderingContext2D::createImageData(
+@@ -1573,11 +1655,16 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageData(

@@ -1,28 +1,97 @@
 diff --git a/include/v8.h b/include/v8.h
-index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b6288622e5481ebf1476c7eb85f8e65f82f9365 100644
+index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b06f6ac22b7c7cd4003aa3a15399a8c083f4cf7 100644
 --- a/include/v8.h
 +++ b/include/v8.h
-@@ -26,6 +26,13 @@
+@@ -26,6 +26,8 @@
  #include "v8-version.h"   // NOLINT(build/include)
  #include "v8config.h"     // NOLINT(build/include)
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+namespace brave_page_graph {
-+class PageGraph;
-+}
-+#endif
 +
  // We reserve the V8_* prefix for macros defined in V8 public API and
  // assume there are no name conflicts with the embedder's code.
  
-@@ -8599,6 +8606,11 @@ class V8_EXPORT Isolate {
+@@ -34,6 +36,11 @@
+  */
+ namespace v8 {
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++typedef void (*EvalScriptCompiledFunc)(v8::Isolate& isolate,
++    const int parent_script_id, const int script_id);
++#endif
++
+ class AccessorSignature;
+ class Array;
+ class ArrayBuffer;
+@@ -1359,6 +1366,10 @@ class V8_EXPORT Module {
+    * kEvaluated or kErrored.
+    */
+   Local<UnboundModuleScript> GetUnboundModuleScript();
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  int GetModuleScriptId() const;
++#endif
+ };
+ 
+ /**
+@@ -1439,6 +1450,12 @@ class V8_EXPORT ScriptCompiler {
+     // Source takes ownership of CachedData.
+     V8_INLINE Source(Local<String> source_string, const ScriptOrigin& origin,
+                      CachedData* cached_data = nullptr);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    V8_INLINE Source(Local<String> source_string,
++                     Local<Integer> parent_script_id,
++                     const ScriptOrigin& origin,
++                     CachedData* cached_data = nullptr);
++#endif
+     V8_INLINE Source(Local<String> source_string,
+                      CachedData* cached_data = nullptr);
+     V8_INLINE ~Source();
+@@ -1466,6 +1483,9 @@ class V8_EXPORT ScriptCompiler {
+     ScriptOriginOptions resource_options;
+     Local<Value> source_map_url;
+     Local<PrimitiveArray> host_defined_options;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    Local<Integer> parent_script_id;
++#endif
+ 
+     // Cached data from previous compilation (if a kConsume*Cache flag is
+     // set), or hold newly generated cache data (kProduce*Cache flags) are
+@@ -1652,7 +1672,11 @@ class V8_EXPORT ScriptCompiler {
+    */
+   static V8_WARN_UNUSED_RESULT MaybeLocal<Script> Compile(
+       Local<Context> context, StreamedSource* source,
+-      Local<String> full_source_string, const ScriptOrigin& origin);
++      Local<String> full_source_string, const ScriptOrigin& origin
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      , int parent_script_id = 0
++#endif
++      );
+ 
+   /**
+    * Return a version tag for CachedData for the current V8 version & flags.
+@@ -4194,6 +4218,13 @@ class V8_EXPORT Function : public Object {
+    */
+   Local<Value> GetBoundFunction() const;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  /**
++   * Unwrap any bindings to the innermost function, including nested bindings.
++   */
++  Local<Function> GetInnermostFunction() const;
++#endif
++
+   ScriptOrigin GetScriptOrigin() const;
+   V8_INLINE static Function* Cast(Value* obj);
+   static const int kLineOffsetNotFound;
+@@ -8599,6 +8630,12 @@ class V8_EXPORT Isolate {
    void operator delete(void*, size_t) = delete;
    void operator delete[](void*, size_t) = delete;
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  void SetPageGraph(::brave_page_graph::PageGraph* page_graph);
-+  ::brave_page_graph::PageGraph* GetPageGraph() const;
++  int GetExecutingScriptId();
++
++  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func);
 +#endif
 +
   private:

@@ -1,0 +1,66 @@
+diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
+index c75b6177f066a1b10e4a5bf5a5d07a7532146f1c..b3d0e0d3935ac1548d297b0a05dd467cc2a82ba8 100644
+--- a/content/renderer/render_frame_impl.cc
++++ b/content/renderer/render_frame_impl.cc
+@@ -229,6 +229,8 @@
+ #include "url/url_util.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if BUILDFLAG(ENABLE_PLUGINS)
+ #include "content/renderer/pepper/pepper_browser_connection.h"
+ #include "content/renderer/pepper/pepper_plugin_instance_impl.h"
+@@ -2206,6 +2208,10 @@ bool RenderFrameImpl::OnMessageReceived(const IPC::Message& msg) {
+     IPC_MESSAGE_HANDLER(FrameMsg_CopyImageAt, OnCopyImageAt)
+     IPC_MESSAGE_HANDLER(FrameMsg_SaveImageAt, OnSaveImageAt)
+     IPC_MESSAGE_HANDLER(FrameMsg_AddMessageToConsole, OnAddMessageToConsole)
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    IPC_MESSAGE_HANDLER(FrameMsg_RegisterResourceBlockAd, OnRegisterResourceBlockAd)
++    IPC_MESSAGE_HANDLER(FrameMsg_RegisterResourceBlockTracker, OnRegisterResourceBlockTracker)
++#endif
+     IPC_MESSAGE_HANDLER(FrameMsg_VisualStateRequest,
+                         OnVisualStateRequest)
+     IPC_MESSAGE_HANDLER(FrameMsg_Reload, OnReload)
+@@ -2506,6 +2512,20 @@ void RenderFrameImpl::OnAddMessageToConsole(
+   AddMessageToConsole(level, message);
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameImpl::OnRegisterResourceBlockAd(
++    const GURL& url,
++    const std::string& rule) {
++  RegisterResourceBlockAd(url, rule);
++}
++
++void RenderFrameImpl::OnRegisterResourceBlockTracker(
++    const GURL& url,
++    const std::string& host) {
++  RegisterResourceBlockTracker(url, host);
++}
++#endif
++
+ void RenderFrameImpl::JavaScriptExecuteRequest(
+     const base::string16& javascript,
+     JavaScriptExecuteRequestCallback callback) {
+@@ -3220,6 +3240,20 @@ void RenderFrameImpl::AddMessageToConsole(
+   frame_->AddMessageToConsole(wcm);
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameImpl::RegisterResourceBlockAd(
++    const GURL& url,
++    const std::string& rule) {
++  frame_->GetDocument().RegisterResourceBlockAd(url, rule);
++}
++
++void RenderFrameImpl::RegisterResourceBlockTracker(
++    const GURL& url,
++    const std::string& host) {
++  frame_->GetDocument().RegisterResourceBlockTracker(url, host);
++}
++#endif
++
+ void RenderFrameImpl::SetPreviewsState(PreviewsState previews_state) {
+   previews_state_ = previews_state;
+ }

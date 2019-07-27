@@ -1,0 +1,30 @@
+diff --git a/content/public/browser/render_frame_host.h b/content/public/browser/render_frame_host.h
+index 056aa14bac7ac817edfd2b117b3e5e2d9016db22..1338c59730172e7148d1282de37586587fe0c341 100644
+--- a/content/public/browser/render_frame_host.h
++++ b/content/public/browser/render_frame_host.h
+@@ -29,6 +29,8 @@
+ #include "url/gurl.h"
+ #include "url/origin.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ class AssociatedInterfaceProvider;
+ struct WebMediaPlayerAction;
+@@ -175,6 +177,16 @@ class CONTENT_EXPORT RenderFrameHost : public IPC::Listener,
+   virtual void AddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
+                                    const std::string& message) = 0;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  // Record that a resource wsa blocked by an ad filter.
++  virtual void RegisterResourceBlockAd(const GURL& url,
++                                       const std::string& rule) = 0;
++
++  // Record that a resource wsa blocked by an tracker filter.
++  virtual void RegisterResourceBlockTracker(const GURL& url,
++                                            const std::string& host) = 0;
++#endif
++
+   // Functions to run JavaScript in this frame's context. Pass in a callback to
+   // receive a result when it is available. If there is no need to receive the
+   // result, pass in a default-constructed callback. If provided, the callback
