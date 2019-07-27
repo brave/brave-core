@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc b/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
-index 4718cdaa3758fd59efeed8bed5c139a59f2b18d2..d53997b0ae63007a63ba10c929bf58b8114ebb58 100644
+index f9e910899fb7b49fb1768ca5403298b9210a30fa..12764a6242c46493c5147f43d3fab6638bf9efd8 100644
 --- a/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
 @@ -4,6 +4,8 @@

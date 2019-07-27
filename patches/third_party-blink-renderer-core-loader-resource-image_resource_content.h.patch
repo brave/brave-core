@@ -14,8 +14,8 @@ index bc2551c8049e0bc245a05c32ef3d9944cbf07418..67c6b9654db73445bdaf11a61f696b1c
  namespace blink {
  
  class FetchParameters;
-@@ -57,6 +62,10 @@ class CORE_EXPORT ImageResourceContent final
-   static ImageResourceContent* CreateLoaded(scoped_refptr<blink::Image>);
+@@ -59,6 +64,10 @@ class CORE_EXPORT ImageResourceContent final
+   static ImageResourceContent* CreateLazyImagePlaceholder();
  
    static ImageResourceContent* Fetch(FetchParameters&, ResourceFetcher*);
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)

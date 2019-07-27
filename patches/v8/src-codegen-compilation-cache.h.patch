@@ -1,17 +1,17 @@
-diff --git a/src/compilation-cache.h b/src/compilation-cache.h
-index a387c05cb61b43cf26e80602716af4efef954647..3858acbbd2e9d26d1b2e448197654a76db465190 100644
---- a/src/compilation-cache.h
-+++ b/src/compilation-cache.h
+diff --git a/src/codegen/compilation-cache.h b/src/codegen/compilation-cache.h
+index 35595b198585103d4f1730c6caa794e8f5e390db..8f9d5ca944e9cb3d9f3db039f1197799a0ff4420 100644
+--- a/src/codegen/compilation-cache.h
++++ b/src/codegen/compilation-cache.h
 @@ -8,6 +8,8 @@
- #include "src/allocation.h"
  #include "src/objects/compilation-cache.h"
+ #include "src/utils/allocation.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace v8 {
  namespace internal {
  
-@@ -84,11 +86,19 @@ class CompilationCacheScript : public CompilationSubCache {
+@@ -82,11 +84,19 @@ class CompilationCacheScript : public CompilationSubCache {
                                           int line_offset, int column_offset,
                                           ScriptOriginOptions resource_options,
                                           Handle<Context> native_context,
@@ -33,7 +33,7 @@ index a387c05cb61b43cf26e80602716af4efef954647..3858acbbd2e9d26d1b2e448197654a76
  
   private:
    bool HasOrigin(Handle<SharedFunctionInfo> function_info,
-@@ -119,12 +129,20 @@ class CompilationCacheEval: public CompilationSubCache {
+@@ -116,12 +126,20 @@ class CompilationCacheEval : public CompilationSubCache {
    InfoCellPair Lookup(Handle<String> source,
                        Handle<SharedFunctionInfo> outer_info,
                        Handle<Context> native_context,
@@ -56,7 +56,7 @@ index a387c05cb61b43cf26e80602716af4efef954647..3858acbbd2e9d26d1b2e448197654a76
  
   private:
    DISALLOW_IMPLICIT_CONSTRUCTORS(CompilationCacheEval);
-@@ -158,7 +176,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
+@@ -154,7 +172,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
    MaybeHandle<SharedFunctionInfo> LookupScript(
        Handle<String> source, MaybeHandle<Object> name, int line_offset,
        int column_offset, ScriptOriginOptions resource_options,
@@ -69,7 +69,7 @@ index a387c05cb61b43cf26e80602716af4efef954647..3858acbbd2e9d26d1b2e448197654a76
  
    // Finds the shared function info for a source string for eval in a
    // given context.  Returns an empty handle if the cache doesn't
-@@ -166,7 +188,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
+@@ -162,7 +184,11 @@ class V8_EXPORT_PRIVATE CompilationCache {
    InfoCellPair LookupEval(Handle<String> source,
                            Handle<SharedFunctionInfo> outer_info,
                            Handle<Context> context, LanguageMode language_mode,
@@ -82,7 +82,7 @@ index a387c05cb61b43cf26e80602716af4efef954647..3858acbbd2e9d26d1b2e448197654a76
  
    // Returns the regexp data associated with the given regexp if it
    // is in cache, otherwise an empty handle.
-@@ -177,14 +203,22 @@ class V8_EXPORT_PRIVATE CompilationCache {
+@@ -173,14 +199,22 @@ class V8_EXPORT_PRIVATE CompilationCache {
    // info. This may overwrite an existing mapping.
    void PutScript(Handle<String> source, Handle<Context> native_context,
                   LanguageMode language_mode,

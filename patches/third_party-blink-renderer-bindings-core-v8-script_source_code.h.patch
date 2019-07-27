@@ -1,0 +1,37 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/script_source_code.h b/third_party/blink/renderer/bindings/core/v8/script_source_code.h
+index 8fe2bd4e487ff6a67cbe6a3cfb9e00bd5a85da32..42abc137bd879edd7888a35e81b79c24bb815cc3 100644
+--- a/third_party/blink/renderer/bindings/core/v8/script_source_code.h
++++ b/third_party/blink/renderer/bindings/core/v8/script_source_code.h
+@@ -40,6 +40,8 @@
+ #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ class ScriptResource;
+@@ -95,6 +97,13 @@ class CORE_EXPORT ScriptSourceCode final {
+     return not_streaming_reason_;
+   }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void SetParentScriptId(const int parent_script_id) {
++    parent_script_id_ = parent_script_id;
++  }
++  int ParentScriptId() const { return parent_script_id_; }
++#endif
++
+  private:
+   ScriptSourceCode(
+       const ParkableString& source,
+@@ -118,6 +127,9 @@ class CORE_EXPORT ScriptSourceCode final {
+   const String source_map_url_;
+   const TextPosition start_position_;
+   const ScriptSourceLocationType source_location_type_;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  int parent_script_id_ = 0;
++#endif
+ };
+ 
+ }  // namespace blink

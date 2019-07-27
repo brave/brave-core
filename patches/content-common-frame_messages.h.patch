@@ -1,0 +1,32 @@
+diff --git a/content/common/frame_messages.h b/content/common/frame_messages.h
+index e5bcd550ade968e1e38a02014632ec94c16fe8bb..93527d43f1eab6048b07a56302c7476adbeeac39 100644
+--- a/content/common/frame_messages.h
++++ b/content/common/frame_messages.h
+@@ -84,6 +84,8 @@
+ #include "url/gurl.h"
+ #include "url/origin.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if BUILDFLAG(ENABLE_PLUGINS)
+ #include "content/common/pepper_renderer_instance_data.h"
+ #endif
+@@ -725,6 +727,18 @@ // A message sent to RenderFrameProxy to indicate that its corresponding
+ // RenderFrame has completed loading.
+ IPC_MESSAGE_ROUTED0(FrameMsg_DidStopLoading)
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// Record that a resource was blocked by an ad filter.
++IPC_MESSAGE_ROUTED2(FrameMsg_RegisterResourceBlockAd,
++                    GURL /* url */,
++                    std::string /* rule */)
++
++// Record that a resource was blocked by a tracker filter.
++IPC_MESSAGE_ROUTED2(FrameMsg_RegisterResourceBlockTracker,
++                    GURL /* url */,
++                    std::string /* host */)
++#endif
++
+ // Tells the renderer to reload the frame, optionally bypassing the cache while
+ // doing so.
+ IPC_MESSAGE_ROUTED1(FrameMsg_Reload,

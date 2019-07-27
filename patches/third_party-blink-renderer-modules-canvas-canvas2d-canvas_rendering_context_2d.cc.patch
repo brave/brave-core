@@ -10,7 +10,20 @@ index 41dc3431667b9b799155e993e4900aed20ef335b..1a6a5cf6d3908c829241ba76da9a4978
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/platform.h"
  #include "third_party/blink/public/platform/task_type.h"
-@@ -810,6 +811,9 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
+@@ -76,6 +77,12 @@
+ #include "third_party/blink/renderer/platform/wtf/math_extras.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include <sstream>
++#endif
++
+ namespace blink {
+ 
+ static const base::TimeDelta kTryRestoreContextInterval =
+@@ -810,6 +820,9 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
    if (!canvas()->GetDocument().GetFrame())
      return MakeGarbageCollected<TextMetrics>();
  
@@ -20,3 +33,48 @@ index 41dc3431667b9b799155e993e4900aed20ef335b..1a6a5cf6d3908c829241ba76da9a4978
    canvas()->GetDocument().UpdateStyleAndLayoutTreeForNode(canvas());
  
    const Font& font = AccessFont();
+@@ -811,6 +830,44 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
+   else
+     direction = ToTextDirection(GetState().GetDirection(), canvas());
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    TextMetrics* result = MakeGarbageCollected<TextMetrics>(font, direction,
++        GetState().GetTextBaseline(), GetState().GetTextAlign(), text);
++
++    brave_page_graph::PageGraph* page_graph =
++      canvas()->GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      args.push_back(text);
++      page_graph->RegisterWebAPICall("CanvasRenderingContext2D.measureText",
++        args);
++
++      std::stringstream result_buffer;
++      result_buffer << "width: " << result->width()
++        << ", actualBoundingBoxLeft: " << result->actualBoundingBoxLeft()
++        << ", actualBoundingBoxRight: " << result->actualBoundingBoxRight()
++        << ", fontBoundingBoxAscent: " << result->fontBoundingBoxAscent()
++        << ", fontBoundingBoxDescent: " << result->fontBoundingBoxDescent()
++        << ", actualBoundingBoxAscent: " << result->actualBoundingBoxAscent()
++        << ", actualBoundingBoxDescent: " << result->actualBoundingBoxDescent()
++        << ", emHeightAscent: " << result->emHeightAscent()
++        << ", emHeightDescent: " << result->emHeightDescent();
++
++      Baselines* baselines = result->getBaselines();
++      result_buffer << ", hangingBaseline: " << baselines->hanging()
++        << ", alphabeticBaseline: " << baselines->alphabetic()
++        << ", ideographicBaseline: " << baselines->ideographic();
++
++      String page_graph_result(result_buffer.str().c_str());
++      page_graph->RegisterWebAPIResult("CanvasRenderingContext2D.measureText",
++        page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   return MakeGarbageCollected<TextMetrics>(font, direction,
+                                            GetState().GetTextBaseline(),
+                                            GetState().GetTextAlign(), text);

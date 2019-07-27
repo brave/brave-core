@@ -2,9 +2,9 @@ diff --git a/third_party/blink/renderer/core/style/style_fetched_image.cc b/thir
 index f6586b48641c05dec3e2171ab1c0131c9af0c6f7..e1c37fcba00658533d37bd249d594f3c660289e6 100644
 --- a/third_party/blink/renderer/core/style/style_fetched_image.cc
 +++ b/third_party/blink/renderer/core/style/style_fetched_image.cc
-@@ -36,6 +36,15 @@
- #include "third_party/blink/renderer/platform/geometry/layout_size.h"
+@@ -38,6 +38,15 @@
  #include "third_party/blink/renderer/platform/graphics/placeholder_image.h"
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
@@ -18,7 +18,7 @@ index f6586b48641c05dec3e2171ab1c0131c9af0c6f7..e1c37fcba00658533d37bd249d594f3c
  namespace blink {
  
  StyleFetchedImage::StyleFetchedImage(const Document& document,
-@@ -45,7 +54,21 @@ StyleFetchedImage::StyleFetchedImage(const Document& document,
+@@ -49,7 +58,21 @@ StyleFetchedImage::StyleFetchedImage(const Document& document,
    is_image_resource_ = true;
    is_lazyload_possibly_deferred_ = is_lazyload_possibly_deferred;
  
@@ -40,7 +40,7 @@ index f6586b48641c05dec3e2171ab1c0131c9af0c6f7..e1c37fcba00658533d37bd249d594f3c
    image_->AddObserver(this);
    // ResourceFetcher is not determined from StyleFetchedImage and it is
    // impossible to send a request for refetching.
-@@ -126,7 +149,36 @@ void StyleFetchedImage::RemoveClient(ImageResourceObserver* observer) {
+@@ -132,7 +155,36 @@ void StyleFetchedImage::RemoveClient(ImageResourceObserver* observer) {
    image_->RemoveObserver(observer);
  }
  

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/link_loader.cc b/third_party/blink/renderer/core/loader/link_loader.cc
-index 396992603a5b3a64a74a98003225216c52b9308c..23edb43bd6e91df4a9c930823207d1b48de581fd 100644
+index 7132c27f3c5e33e22664e3fb4aad2dee5fb19eda..fd900d8c3101d0d828e4bd5267cbcb3844c333bb 100644
 --- a/third_party/blink/renderer/core/loader/link_loader.cc
 +++ b/third_party/blink/renderer/core/loader/link_loader.cc
 @@ -52,6 +52,15 @@
@@ -18,10 +18,10 @@ index 396992603a5b3a64a74a98003225216c52b9308c..23edb43bd6e91df4a9c930823207d1b4
  namespace blink {
  
  class WebPrescientNetworking;
-@@ -145,6 +154,37 @@ void LinkLoader::NotifyFinished() {
-     client_->LinkLoadingErrored();
-   else
+@@ -146,6 +155,37 @@ void LinkLoader::NotifyFinished() {
+   } else {
      client_->LinkLoaded();
+   }
 +
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {

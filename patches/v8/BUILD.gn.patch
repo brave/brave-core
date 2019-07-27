@@ -1,8 +1,8 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 10fee264203ae01c7b672c41fdde549cf4206f8d..47cc0faf92045d9ead58a85e707e623632dc9386 100644
+index 8640517ae5c23d3ca162bde999f76c25dfab5a00..881a364c193c4f9577854c9bb17b5ca807664891 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -645,12 +645,10 @@ config("toolchain") {
+@@ -652,12 +652,10 @@ config("toolchain") {
    }
  
    if (is_clang) {
@@ -19,7 +19,7 @@ index 10fee264203ae01c7b672c41fdde549cf4206f8d..47cc0faf92045d9ead58a85e707e6236
  
      if (v8_current_cpu == "x64" || v8_current_cpu == "arm64" ||
          v8_current_cpu == "mips64el") {
-@@ -1916,6 +1914,10 @@ v8_source_set("v8_compiler") {
+@@ -1942,6 +1940,10 @@ v8_source_set("v8_compiler_opt") {
  
    sources = v8_compiler_sources
  
@@ -30,7 +30,7 @@ index 10fee264203ae01c7b672c41fdde549cf4206f8d..47cc0faf92045d9ead58a85e707e6236
    public_deps = [
      ":generate_bytecode_builtins_list",
      ":run_torque",
-@@ -3197,6 +3196,7 @@ v8_source_set("v8_base_without_compiler") {
+@@ -3253,6 +3255,7 @@ v8_source_set("v8_base_without_compiler") {
      ":v8_shared_internal_headers",
      ":v8_version",
      "src/inspector:inspector",
