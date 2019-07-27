@@ -34,7 +34,7 @@ TrackedRequest::TrackedRequest(const InspectorId request_id,
     const blink::ResourceType type) :
       request_id_(request_id),
       resource_type_(type) {
-  LOG_ASSERT(resource_type_ != blink::ResourceType::kLast);
+  LOG_ASSERT(resource_type_ != blink::ResourceType::kMaxValue);
   request_status_ = RequestStatus::kSuccess;
 }
 
@@ -114,7 +114,7 @@ void TrackedRequest::SetIsError() {
 }
 
 void TrackedRequest::SetCompletedResourceType(const blink::ResourceType type) {
-  LOG_ASSERT(type != blink::ResourceType::kLast);
+  LOG_ASSERT(type != blink::ResourceType::kMaxValue);
 
   // Check that we haven't tried to set "successful response" information
   // after we've already set information about an error.

@@ -1,8 +1,8 @@
 diff --git a/components/domain_reliability/BUILD.gn b/components/domain_reliability/BUILD.gn
-index c99843d14cc44da9f969ab3ac48881ad66f59af5..fcf80bdd75896f7814ae5d4d0b9173ce10a378da 100644
+index 280cd663e6e1dbdd6fbe426211adb489a89fde4e..79771ecb3ac78f897f16e35d92499269d3582fc1 100644
 --- a/components/domain_reliability/BUILD.gn
 +++ b/components/domain_reliability/BUILD.gn
-@@ -87,6 +87,11 @@ jumbo_component("domain_reliability") {
+@@ -88,6 +88,11 @@ jumbo_component("domain_reliability") {
      "//net",
      "//url",
    ]

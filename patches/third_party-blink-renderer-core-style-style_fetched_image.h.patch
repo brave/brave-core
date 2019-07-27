@@ -14,10 +14,10 @@ index 637128280c7d8727cc95baaff5872a07953ba993..d3b367721699f449d14852ce6c23930c
  namespace blink {
  
  class Document;
-@@ -83,6 +88,10 @@ class StyleFetchedImage final : public StyleImage,
-   Member<ImageResourceContent> image_;
+@@ -84,6 +89,10 @@ class StyleFetchedImage final : public StyleImage,
    Member<const Document> document_;
    const KURL url_;
+   const bool origin_clean_;
 +
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  brave_page_graph::InspectorId inspector_id_;

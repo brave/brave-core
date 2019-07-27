@@ -10,7 +10,87 @@ index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..10bded40fce479fd2bcc59db59057179
  #include "build/build_config.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/task_type.h"
-@@ -923,6 +924,8 @@ String HTMLCanvasElement::ToDataURLInternal(
+@@ -90,6 +91,12 @@
+ #include "ui/base/resource/scale_factor.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include <string>
++#endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -252,6 +259,66 @@ CanvasRenderingContext* HTMLCanvasElement::GetCanvasRenderingContext(
+   auto* result = GetCanvasRenderingContextInternal(type, attributes);
+   if (ContentsCcLayer() != old_contents_cc_layer)
+     OnContentsCcLayerChanged();
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      args.push_back(type);
++      std::stringstream buffer;
++      buffer << "alpha: " << attributes.alpha
++        << ", antialias: " << attributes.antialias
++        << ", color_space: " << attributes.color_space
++        << ", depth: " << attributes.depth
++        << ", fail_if_major_performance_caveat: "
++          << attributes.fail_if_major_performance_caveat
++        << ", desynchronized: " << attributes.desynchronized
++        << ", pixel_format: " << attributes.pixel_format
++        << ", premultiplied_alpha: " << attributes.premultiplied_alpha
++        << ", preserve_drawing_buffer: " << attributes.preserve_drawing_buffer
++        << ", power_preference: " << attributes.power_preference
++        << ", stencil: " << attributes.stencil
++        << ", xr_compatible: " << attributes.xr_compatible;
++      args.push_back(buffer.str().c_str());
++
++      page_graph->RegisterWebAPICall("HTMLCanvasElement.getContext", args);
++
++      String res = "<null>";
++      if (result != nullptr) {
++        switch (result->GetContextType()) {
++          case CanvasRenderingContext::kContext2D:
++            res = "CanvasRenderingContext: 2d";
++            break;
++          case CanvasRenderingContext::kContextExperimentalWebgl:
++            res = "CanvasRenderingContext: experimental-webgl";
++            break;
++          case CanvasRenderingContext::kContextWebgl:
++            res = "CanvasRenderingContext: webgl";
++            break;
++          case CanvasRenderingContext::kContextWebgl2:
++            res = "CanvasRenderingContext: webgl2";
++            break;
++          case CanvasRenderingContext::kContextWebgl2Compute:
++            res = "CanvasRenderingContext: webgl2-compute";
++            break;
++          case CanvasRenderingContext::kContextImageBitmap:
++            res = "CanvasRenderingContext: bitmaprenderer";
++            break;
++          case CanvasRenderingContext::kContextGPUPresent:
++            res = "CanvasRenderingContext: gpupresent";
++            break;
++          default:
++            res = "CanvasRenderingContext: unknown context type";
++            break;
++        }
++      }
++
++      page_graph->RegisterWebAPIResult("HTMLCanvasElement.getContext", res);
++    }
++  }
++#endif
++
+   return result;
+ }
+ 
+@@ -923,6 +994,8 @@ String HTMLCanvasElement::ToDataURLInternal(
  String HTMLCanvasElement::toDataURL(const String& mime_type,
                                      const ScriptValue& quality_argument,
                                      ExceptionState& exception_state) const {
@@ -19,7 +99,38 @@ index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..10bded40fce479fd2bcc59db59057179
    if (!OriginClean()) {
      exception_state.ThrowSecurityError("Tainted canvases may not be exported.");
      return String();
-@@ -941,6 +944,8 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+@@ -916,6 +985,30 @@ String HTMLCanvasElement::toDataURL(const String& mime_type,
+     if (v8_value->IsNumber())
+       quality = v8_value.As<v8::Number>()->Value();
+   }
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    String result = ToDataURLInternal(mime_type, quality, kBackBuffer);
++    brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      if (!mime_type.IsEmpty()) {
++        args.push_back(mime_type);
++      }
++      if (quality != kUndefinedQualityValue) {
++        String quality_string(std::to_string(quality).c_str());
++        args.push_back(quality_string);
++      }
++
++      page_graph->RegisterWebAPICall("HTMLCanvasElement.toDataURL", args);
++
++      page_graph->RegisterWebAPIResult("HTMLCanvasElement.toDataURL", result);
++    }
++
++    return result;
++  }
++#endif
++
+   return ToDataURLInternal(mime_type, quality, kBackBuffer);
+ }
+ 
+@@ -941,6 +1038,8 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
                                 const String& mime_type,
                                 const ScriptValue& quality_argument,
                                 ExceptionState& exception_state) {
@@ -28,3 +139,23 @@ index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..10bded40fce479fd2bcc59db59057179
    if (!OriginClean()) {
      exception_state.ThrowSecurityError("Tainted canvases may not be exported.");
      return;
+@@ -962,6 +1055,19 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+         &GetDocument());
+   }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      std::vector<const String> args;
++      args.push_back(callback->NameInHeapSnapshot());
++      args.push_back(ImageEncodingMimeTypeName(encoding_mime_type));
++      args.push_back(String(std::to_string(quality).c_str()));
++      page_graph->RegisterWebAPICall("HTMLCanvasElement.toBlob", args);
++    }
++  }
++#endif
++
+   if (async_creator) {
+     async_creator->ScheduleAsyncBlobCreation(quality);
+   } else {

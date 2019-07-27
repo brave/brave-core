@@ -1,9 +1,9 @@
-diff --git a/src/compiler.h b/src/compiler.h
-index 2894f565fd449ab8c902f4b91666ebb710c52aa2..a736660d19eec4ea031e477a92267f13245f2d9c 100644
---- a/src/compiler.h
-+++ b/src/compiler.h
+diff --git a/src/codegen/compiler.h b/src/codegen/compiler.h
+index a5987063737c9ebeeab77f47e3d5f57ffb75a353..d2224c5100f1314daee8a52ef4a9c306e6838856 100644
+--- a/src/codegen/compiler.h
++++ b/src/codegen/compiler.h
 @@ -16,6 +16,8 @@
- #include "src/isolate.h"
+ #include "src/objects/contexts.h"
  #include "src/zone/zone.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"

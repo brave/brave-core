@@ -1,0 +1,66 @@
+diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
+index e18fd3c17ddc7403cc076f179563f749f2bd3391..8824a88ea70712bf3383d12d1fddc1151020b398 100644
+--- a/content/renderer/render_frame_impl.cc
++++ b/content/renderer/render_frame_impl.cc
+@@ -233,6 +233,8 @@
+ #include "url/url_util.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if BUILDFLAG(ENABLE_PLUGINS)
+ #include "content/renderer/pepper/pepper_browser_connection.h"
+ #include "content/renderer/pepper/pepper_plugin_instance_impl.h"
+@@ -2263,6 +2265,10 @@ bool RenderFrameImpl::OnMessageReceived(const IPC::Message& msg) {
+ #endif
+     IPC_MESSAGE_HANDLER(FrameMsg_CopyImageAt, OnCopyImageAt)
+     IPC_MESSAGE_HANDLER(FrameMsg_SaveImageAt, OnSaveImageAt)
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    IPC_MESSAGE_HANDLER(FrameMsg_RegisterResourceBlockAd, OnRegisterResourceBlockAd)
++    IPC_MESSAGE_HANDLER(FrameMsg_RegisterResourceBlockTracker, OnRegisterResourceBlockTracker)
++#endif
+     IPC_MESSAGE_HANDLER(FrameMsg_VisualStateRequest,
+                         OnVisualStateRequest)
+     IPC_MESSAGE_HANDLER(FrameMsg_Reload, OnReload)
+@@ -2595,6 +2601,20 @@ void RenderFrameImpl::OnAddMessageToConsole(
+   frame_->SaveImageAt(WebPoint(viewport_position.x, viewport_position.y));
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameImpl::OnRegisterResourceBlockAd(
++    const GURL& url,
++    const std::string& rule) {
++  RegisterResourceBlockAd(url, rule);
++}
++
++void RenderFrameImpl::OnRegisterResourceBlockTracker(
++    const GURL& url,
++    const std::string& host) {
++  RegisterResourceBlockTracker(url, host);
++}
++#endif
++
+ void RenderFrameImpl::JavaScriptExecuteRequest(
+     const base::string16& javascript,
+     bool wants_result,
+@@ -3212,6 +3232,20 @@ void RenderFrameImpl::AddMessageToConsole(
+   AddMessageToConsoleImpl(level, message, false /* discard_duplicates */);
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameImpl::RegisterResourceBlockAd(
++    const GURL& url,
++    const std::string& rule) {
++  frame_->GetDocument().RegisterResourceBlockAd(url, rule);
++}
++
++void RenderFrameImpl::RegisterResourceBlockTracker(
++    const GURL& url,
++    const std::string& host) {
++  frame_->GetDocument().RegisterResourceBlockTracker(url, host);
++}
++#endif
++
+ PreviewsState RenderFrameImpl::GetPreviewsState() {
+   WebDocumentLoader* document_loader = frame_->GetDocumentLoader();
+   return document_loader ? document_loader->GetPreviewsState()
