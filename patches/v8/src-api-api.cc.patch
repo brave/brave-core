@@ -1,8 +1,8 @@
-diff --git a/src/api.cc b/src/api.cc
-index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6bc792ce8 100644
---- a/src/api.cc
-+++ b/src/api.cc
-@@ -125,6 +125,8 @@
+diff --git a/src/api/api.cc b/src/api/api.cc
+index 399aca7eb61dff4c67ad1fbe0620af3a3bf94254..1ca0131592b77fd6d31d3238afd44434b103adc2 100644
+--- a/src/api/api.cc
++++ b/src/api/api.cc
+@@ -126,6 +126,8 @@
  #endif  // V8_TARGET_ARCH_X64
  #endif  // V8_OS_WIN
  
@@ -11,7 +11,7 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6
  namespace v8 {
  
  /*
-@@ -2354,12 +2356,27 @@ MaybeLocal<Value> Module::Evaluate(Local<Context> context) {
+@@ -2301,12 +2303,27 @@ MaybeLocal<Value> Module::Evaluate(Local<Context> context) {
    RETURN_ESCAPED(result);
  }
  
@@ -40,7 +40,7 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6
    i::Compiler::ScriptDetails script_details;
    if (!resource_name.IsEmpty()) {
      script_details.name_obj = Utils::OpenHandle(*(resource_name));
-@@ -2372,6 +2389,12 @@ i::Compiler::ScriptDetails GetScriptDetails(
+@@ -2319,6 +2336,12 @@ i::Compiler::ScriptDetails GetScriptDetails(
      script_details.column_offset =
          static_cast<int>(resource_column_offset->Value());
    }
@@ -53,7 +53,7 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6
    script_details.host_defined_options = isolate->factory()->empty_fixed_array();
    if (!host_defined_options.IsEmpty()) {
      script_details.host_defined_options =
-@@ -2408,7 +2431,11 @@ MaybeLocal<UnboundScript> ScriptCompiler::CompileUnboundInternal(
+@@ -2355,7 +2378,11 @@ MaybeLocal<UnboundScript> ScriptCompiler::CompileUnboundInternal(
    i::Compiler::ScriptDetails script_details = GetScriptDetails(
        isolate, source->resource_name, source->resource_line_offset,
        source->resource_column_offset, source->source_map_url,
@@ -66,7 +66,7 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6
    i::MaybeHandle<i::SharedFunctionInfo> maybe_function_info =
        i::Compiler::GetSharedFunctionInfoForScript(
            isolate, str, script_details, source->resource_options, nullptr,
-@@ -2535,7 +2562,11 @@ MaybeLocal<Function> ScriptCompiler::CompileFunctionInContext(
+@@ -2482,7 +2509,11 @@ MaybeLocal<Function> ScriptCompiler::CompileFunctionInContext(
    i::Compiler::ScriptDetails script_details = GetScriptDetails(
        isolate, source->resource_name, source->resource_line_offset,
        source->resource_column_offset, source->source_map_url,
@@ -79,7 +79,7 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6
  
    i::ScriptData* script_data = nullptr;
    if (options == kConsumeCodeCache) {
-@@ -2581,7 +2612,11 @@ ScriptCompiler::ScriptStreamingTask* ScriptCompiler::StartStreamingScript(
+@@ -2528,7 +2559,11 @@ ScriptCompiler::ScriptStreamingTask* ScriptCompiler::StartStreamingScript(
  MaybeLocal<Script> ScriptCompiler::Compile(Local<Context> context,
                                             StreamedSource* v8_source,
                                             Local<String> full_source_string,
@@ -92,7 +92,7 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6
    PREPARE_FOR_EXECUTION(context, ScriptCompiler, Compile, Script);
    TRACE_EVENT_CALL_STATS_SCOPED(isolate, "v8", "V8.ScriptCompiler");
    TRACE_EVENT0(TRACE_DISABLED_BY_DEFAULT("v8.compile"),
-@@ -2591,7 +2626,11 @@ MaybeLocal<Script> ScriptCompiler::Compile(Local<Context> context,
+@@ -2538,7 +2573,11 @@ MaybeLocal<Script> ScriptCompiler::Compile(Local<Context> context,
    i::Compiler::ScriptDetails script_details = GetScriptDetails(
        isolate, origin.ResourceName(), origin.ResourceLineOffset(),
        origin.ResourceColumnOffset(), origin.SourceMapUrl(),
@@ -105,7 +105,7 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6
    i::ScriptStreamingData* data = v8_source->impl();
  
    i::MaybeHandle<i::SharedFunctionInfo> maybe_function_info =
-@@ -5136,6 +5175,26 @@ Local<v8::Value> Function::GetBoundFunction() const {
+@@ -4899,6 +4938,26 @@ Local<v8::Value> Function::GetBoundFunction() const {
    return v8::Undefined(reinterpret_cast<v8::Isolate*>(self->GetIsolate()));
  }
  
@@ -132,7 +132,7 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..9e6206867a1c425f814a2ee8c25161e6
  int Name::GetIdentityHash() {
    auto self = Utils::OpenHandle(this);
    return static_cast<int>(self->Hash());
-@@ -7973,6 +8032,18 @@ void Isolate::CheckMemoryPressure() {
+@@ -7611,6 +7670,18 @@ void Isolate::CheckMemoryPressure() {
    heap->CheckMemoryPressure();
  }
  

@@ -1,17 +1,17 @@
-diff --git a/src/isolate.h b/src/isolate.h
-index 2b1612a957237d280d8d2bf88b47cdcf28f71c88..290c1caa43343f77719af4aba721c597ef1c97a8 100644
---- a/src/isolate.h
-+++ b/src/isolate.h
-@@ -34,6 +34,8 @@
- #include "src/runtime/runtime.h"
- #include "src/unicode.h"
+diff --git a/src/execution/isolate.h b/src/execution/isolate.h
+index 4b4bf9cd7c61687b0f36da1eaa672979c59dab67..8c3da2b5b241add142b7a7359bf47ea15fac567a 100644
+--- a/src/execution/isolate.h
++++ b/src/execution/isolate.h
+@@ -35,6 +35,8 @@
+ #include "src/strings/unicode.h"
+ #include "src/utils/allocation.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  #ifdef V8_INTL_SUPPORT
  #include "unicode/uversion.h"  // Define U_ICU_NAMESPACE.
  namespace U_ICU_NAMESPACE {
-@@ -1503,6 +1505,18 @@ class Isolate final : private HiddenFactory {
+@@ -1545,6 +1547,18 @@ class Isolate final : private HiddenFactory {
  
    V8_EXPORT_PRIVATE void SetIdle(bool is_idle);
  
@@ -30,7 +30,7 @@ index 2b1612a957237d280d8d2bf88b47cdcf28f71c88..290c1caa43343f77719af4aba721c597
   private:
    explicit Isolate(std::unique_ptr<IsolateAllocator> isolate_allocator);
    ~Isolate();
-@@ -1824,6 +1838,10 @@ class Isolate final : private HiddenFactory {
+@@ -1863,6 +1877,10 @@ class Isolate final : private HiddenFactory {
    base::Mutex thread_data_table_mutex_;
    ThreadDataTable thread_data_table_;
  

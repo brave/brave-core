@@ -1,5 +1,5 @@
 diff --git a/include/v8.h b/include/v8.h
-index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b06f6ac22b7c7cd4003aa3a15399a8c083f4cf7 100644
+index c54b088404229dccf015e20b6a5bab19d3d94e69..25b25ca08b9f6c220d6db3d22fea22eeda5fa257 100644
 --- a/include/v8.h
 +++ b/include/v8.h
 @@ -26,6 +26,8 @@
@@ -23,7 +23,7 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b06f6ac22b7c7cd4003aa3a15399a8c
  class AccessorSignature;
  class Array;
  class ArrayBuffer;
-@@ -1359,6 +1366,10 @@ class V8_EXPORT Module {
+@@ -1326,6 +1333,10 @@ class V8_EXPORT Module {
     * kEvaluated or kErrored.
     */
    Local<UnboundModuleScript> GetUnboundModuleScript();
@@ -34,7 +34,7 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b06f6ac22b7c7cd4003aa3a15399a8c
  };
  
  /**
-@@ -1439,6 +1450,12 @@ class V8_EXPORT ScriptCompiler {
+@@ -1406,6 +1417,12 @@ class V8_EXPORT ScriptCompiler {
      // Source takes ownership of CachedData.
      V8_INLINE Source(Local<String> source_string, const ScriptOrigin& origin,
                       CachedData* cached_data = nullptr);
@@ -47,7 +47,7 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b06f6ac22b7c7cd4003aa3a15399a8c
      V8_INLINE Source(Local<String> source_string,
                       CachedData* cached_data = nullptr);
      V8_INLINE ~Source();
-@@ -1466,6 +1483,9 @@ class V8_EXPORT ScriptCompiler {
+@@ -1433,6 +1450,9 @@ class V8_EXPORT ScriptCompiler {
      ScriptOriginOptions resource_options;
      Local<Value> source_map_url;
      Local<PrimitiveArray> host_defined_options;
@@ -57,7 +57,7 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b06f6ac22b7c7cd4003aa3a15399a8c
  
      // Cached data from previous compilation (if a kConsume*Cache flag is
      // set), or hold newly generated cache data (kProduce*Cache flags) are
-@@ -1652,7 +1672,11 @@ class V8_EXPORT ScriptCompiler {
+@@ -1619,7 +1639,11 @@ class V8_EXPORT ScriptCompiler {
     */
    static V8_WARN_UNUSED_RESULT MaybeLocal<Script> Compile(
        Local<Context> context, StreamedSource* source,
@@ -70,7 +70,7 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b06f6ac22b7c7cd4003aa3a15399a8c
  
    /**
     * Return a version tag for CachedData for the current V8 version & flags.
-@@ -4194,6 +4218,13 @@ class V8_EXPORT Function : public Object {
+@@ -4124,6 +4148,13 @@ class V8_EXPORT Function : public Object {
     */
    Local<Value> GetBoundFunction() const;
  
@@ -84,7 +84,7 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b06f6ac22b7c7cd4003aa3a15399a8c
    ScriptOrigin GetScriptOrigin() const;
    V8_INLINE static Function* Cast(Value* obj);
    static const int kLineOffsetNotFound;
-@@ -8599,6 +8630,12 @@ class V8_EXPORT Isolate {
+@@ -8518,6 +8549,12 @@ class V8_EXPORT Isolate {
    void operator delete(void*, size_t) = delete;
    void operator delete[](void*, size_t) = delete;
  
@@ -97,7 +97,7 @@ index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b06f6ac22b7c7cd4003aa3a15399a8c
   private:
    template <class K, class V, class Traits>
    friend class PersistentValueMapBase;
-@@ -10259,6 +10296,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
+@@ -10141,6 +10178,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
        host_defined_options(origin.HostDefinedOptions()),
        cached_data(data) {}
  

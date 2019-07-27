@@ -1,5 +1,5 @@
 diff --git a/test/cctest/test-serialize.cc b/test/cctest/test-serialize.cc
-index 972b1ca7727263abee1881201816693a5dbfb3ea..f253f8d7fe68cd052b6c3430b439146880636827 100644
+index 3c8b38898de0f38c7aa2922da66a542bd202beef..614f27cab2fe0365c4f4686d05c715ee8b3aaca7 100644
 --- a/test/cctest/test-serialize.cc
 +++ b/test/cctest/test-serialize.cc
 @@ -61,6 +61,8 @@
@@ -11,7 +11,7 @@ index 972b1ca7727263abee1881201816693a5dbfb3ea..f253f8d7fe68cd052b6c3430b4391468
  namespace v8 {
  namespace internal {
  
-@@ -1710,7 +1712,11 @@ TEST(CodeSerializerPromotedToCompilationCache) {
+@@ -1662,7 +1664,11 @@ TEST(CodeSerializerPromotedToCompilationCache) {
    MaybeHandle<SharedFunctionInfo> shared =
        isolate->compilation_cache()->LookupScript(
            src, src, 0, 0, v8::ScriptOriginOptions(), isolate->native_context(),

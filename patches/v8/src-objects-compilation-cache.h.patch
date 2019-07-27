@@ -1,5 +1,5 @@
 diff --git a/src/objects/compilation-cache.h b/src/objects/compilation-cache.h
-index d3feb1b233467e8c37cd1e22409a241e034898b6..e31643120d5d719f8719266e190365b41870803a 100644
+index 2072339c5ef0889d505deb75ebd8a3758f11088c..28c8ed021ec33d151ecb98e662a176f7c6fa3171 100644
 --- a/src/objects/compilation-cache.h
 +++ b/src/objects/compilation-cache.h
 @@ -14,6 +14,8 @@

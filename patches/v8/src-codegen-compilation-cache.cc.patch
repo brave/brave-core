@@ -1,10 +1,10 @@
-diff --git a/src/compilation-cache.cc b/src/compilation-cache.cc
-index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d97a2d5b12 100644
---- a/src/compilation-cache.cc
-+++ b/src/compilation-cache.cc
+diff --git a/src/codegen/compilation-cache.cc b/src/codegen/compilation-cache.cc
+index 6e9613005e71a5f8b6c0795efb0c31bb29f23501..8814bcbd8594d1ea2178012f8f70ec2be9f62265 100644
+--- a/src/codegen/compilation-cache.cc
++++ b/src/codegen/compilation-cache.cc
 @@ -13,6 +13,8 @@
  #include "src/objects/slots.h"
- #include "src/visitors.h"
+ #include "src/objects/visitors.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
@@ -24,7 +24,7 @@ index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d9
    MaybeHandle<SharedFunctionInfo> result;
  
    // Probe the script generation tables. Make sure not to leak handles
-@@ -140,7 +146,11 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
+@@ -141,7 +147,11 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
      DCHECK_EQ(generations(), 1);
      Handle<CompilationCacheTable> table = GetTable(generation);
      MaybeHandle<SharedFunctionInfo> probe = CompilationCacheTable::LookupScript(
@@ -37,7 +37,7 @@ index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d9
      Handle<SharedFunctionInfo> function_info;
      if (probe.ToHandle(&function_info)) {
        // Break when we've found a suitable shared function info that
-@@ -174,18 +184,30 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
+@@ -175,18 +185,30 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheScript::Lookup(
  void CompilationCacheScript::Put(Handle<String> source,
                                   Handle<Context> native_context,
                                   LanguageMode language_mode,
@@ -71,7 +71,7 @@ index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d9
    HandleScope scope(isolate());
    // Make sure not to leak the table into the surrounding handle
    // scope. Otherwise, we risk keeping old tables around even after
-@@ -195,7 +217,11 @@ InfoCellPair CompilationCacheEval::Lookup(Handle<String> source,
+@@ -196,7 +218,11 @@ InfoCellPair CompilationCacheEval::Lookup(Handle<String> source,
    DCHECK_EQ(generations(), 1);
    Handle<CompilationCacheTable> table = GetTable(generation);
    result = CompilationCacheTable::LookupEval(
@@ -84,7 +84,7 @@ index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d9
    if (result.has_shared()) {
      isolate()->counters()->compilation_cache_hits()->Increment();
    } else {
-@@ -209,12 +235,20 @@ void CompilationCacheEval::Put(Handle<String> source,
+@@ -210,12 +236,20 @@ void CompilationCacheEval::Put(Handle<String> source,
                                 Handle<SharedFunctionInfo> function_info,
                                 Handle<Context> native_context,
                                 Handle<FeedbackCell> feedback_cell,
@@ -107,7 +107,7 @@ index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d9
    SetFirstTable(table);
  }
  
-@@ -265,18 +299,30 @@ void CompilationCache::Remove(Handle<SharedFunctionInfo> function_info) {
+@@ -264,18 +298,30 @@ void CompilationCache::Remove(Handle<SharedFunctionInfo> function_info) {
  MaybeHandle<SharedFunctionInfo> CompilationCache::LookupScript(
      Handle<String> source, MaybeHandle<Object> name, int line_offset,
      int column_offset, ScriptOriginOptions resource_options,
@@ -141,7 +141,7 @@ index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d9
    InfoCellPair result;
    if (!IsEnabled()) return result;
  
-@@ -284,14 +330,22 @@ InfoCellPair CompilationCache::LookupEval(Handle<String> source,
+@@ -283,14 +329,22 @@ InfoCellPair CompilationCache::LookupEval(Handle<String> source,
  
    if (context->IsNativeContext()) {
      result = eval_global_.Lookup(source, outer_info, context, language_mode,
@@ -166,7 +166,7 @@ index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d9
      cache_type = "eval-contextual";
    }
  
-@@ -312,11 +366,19 @@ MaybeHandle<FixedArray> CompilationCache::LookupRegExp(Handle<String> source,
+@@ -311,11 +365,19 @@ MaybeHandle<FixedArray> CompilationCache::LookupRegExp(Handle<String> source,
  void CompilationCache::PutScript(Handle<String> source,
                                   Handle<Context> native_context,
                                   LanguageMode language_mode,
@@ -188,7 +188,7 @@ index e210dd40253a04074ecc86bd38e5f08b557016dc..4435a4a406526158e706aa12a3b9a0d9
  }
  
  void CompilationCache::PutEval(Handle<String> source,
-@@ -324,20 +386,32 @@ void CompilationCache::PutEval(Handle<String> source,
+@@ -323,20 +385,32 @@ void CompilationCache::PutEval(Handle<String> source,
                                 Handle<Context> context,
                                 Handle<SharedFunctionInfo> function_info,
                                 Handle<FeedbackCell> feedback_cell,

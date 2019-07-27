@@ -1,9 +1,9 @@
-diff --git a/src/compiler.cc b/src/compiler.cc
-index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef702ea706 100644
---- a/src/compiler.cc
-+++ b/src/compiler.cc
+diff --git a/src/codegen/compiler.cc b/src/codegen/compiler.cc
+index 5197dd3a2fc7522baf8b40d502accce939668d7a..04d13a7f7756e79ffdec578853856c7ba104ccaf 100644
+--- a/src/codegen/compiler.cc
++++ b/src/codegen/compiler.cc
 @@ -42,6 +42,8 @@
- #include "src/vm-state-inl.h"
+ #include "src/utils/ostreams.h"
  #include "src/zone/zone-list-inl.h"  // crbug.com/v8/8816
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
@@ -11,7 +11,7 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef
  namespace v8 {
  namespace internal {
  
-@@ -1482,6 +1484,9 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+@@ -1485,6 +1487,9 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
    int source_length = source->length();
    isolate->counters()->total_eval_size()->Increment(source_length);
    isolate->counters()->total_compile_size()->Increment(source_length);
@@ -21,7 +21,7 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef
  
    // The cache lookup key needs to be aware of the separation between the
    // parameters and the body to prevent this valid invocation:
-@@ -1500,7 +1505,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+@@ -1503,7 +1508,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
    }
    CompilationCache* compilation_cache = isolate->compilation_cache();
    InfoCellPair eval_result = compilation_cache->LookupEval(
@@ -34,7 +34,7 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef
    Handle<FeedbackCell> feedback_cell;
    if (eval_result.has_feedback_cell()) {
      feedback_cell = handle(eval_result.feedback_cell(), isolate);
-@@ -1575,7 +1584,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+@@ -1578,7 +1587,11 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
          Handle<FeedbackCell> new_feedback_cell(result->raw_feedback_cell(),
                                                 isolate);
          compilation_cache->PutEval(source, outer_info, context, shared_info,
@@ -47,7 +47,7 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef
        }
      }
    } else {
-@@ -1588,11 +1601,30 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
+@@ -1591,11 +1604,30 @@ MaybeHandle<JSFunction> Compiler::GetFunctionFromEval(
        Handle<FeedbackCell> new_feedback_cell(result->raw_feedback_cell(),
                                               isolate);
        compilation_cache->PutEval(source, outer_info, context, shared_info,
@@ -79,7 +79,7 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef
    return result;
  }
  
-@@ -1910,7 +1942,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+@@ -1913,7 +1945,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
      maybe_result = compilation_cache->LookupScript(
          source, script_details.name_obj, script_details.line_offset,
          script_details.column_offset, origin_options, isolate->native_context(),
@@ -92,7 +92,7 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef
      if (!maybe_result.is_null()) {
        compile_timer.set_hit_isolate_cache();
      } else if (can_consume_code_cache) {
-@@ -1930,7 +1966,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+@@ -1933,7 +1969,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
          is_compiled_scope = inner_result->is_compiled_scope();
          DCHECK(is_compiled_scope.is_compiled());
          compilation_cache->PutScript(source, isolate->native_context(),
@@ -105,7 +105,7 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef
          Handle<Script> script(Script::cast(inner_result->script()), isolate);
          maybe_result = inner_result;
        } else {
-@@ -1958,7 +1998,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
+@@ -1961,7 +2001,11 @@ MaybeHandle<SharedFunctionInfo> Compiler::GetSharedFunctionInfoForScript(
      if (extension == nullptr && maybe_result.ToHandle(&result)) {
        DCHECK(is_compiled_scope.is_compiled());
        compilation_cache->PutScript(source, isolate->native_context(),
@@ -118,7 +118,7 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef
      } else if (maybe_result.is_null() && natives != EXTENSION_CODE) {
        isolate->ReportPendingMessages();
      }
-@@ -2073,7 +2117,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
+@@ -2076,7 +2120,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
        compilation_cache->LookupScript(
            source, script_details.name_obj, script_details.line_offset,
            script_details.column_offset, origin_options,
@@ -131,7 +131,7 @@ index d3cebfd58e679b9a2219e9595c1e8a279668710e..a0a21a35eb39b8d99de72ca3f484eeef
    if (!maybe_result.is_null()) {
      compile_timer.set_hit_isolate_cache();
    }
-@@ -2107,7 +2155,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
+@@ -2110,7 +2158,11 @@ Compiler::GetSharedFunctionInfoForStreamedScript(
      Handle<SharedFunctionInfo> result;
      if (maybe_result.ToHandle(&result)) {
        compilation_cache->PutScript(source, isolate->native_context(),

@@ -1,8 +1,8 @@
-diff --git a/src/objects.cc b/src/objects.cc
-index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6ceef5bf7a6d 100644
---- a/src/objects.cc
-+++ b/src/objects.cc
-@@ -114,6 +114,8 @@
+diff --git a/src/objects/objects.cc b/src/objects/objects.cc
+index 8cc22fa0e5cfb193d6aafcea861b7a346dc0d4b6..20f12f4eb674f783dad41b3cf2055acc67362e37 100644
+--- a/src/objects/objects.cc
++++ b/src/objects/objects.cc
+@@ -116,6 +116,8 @@
  #include "src/wasm/wasm-objects.h"
  #include "src/zone/zone.h"
  
@@ -11,7 +11,7 @@ index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6cee
  namespace v8 {
  namespace internal {
  
-@@ -5935,14 +5937,30 @@ class StringSharedKey : public HashTableKey {
+@@ -5819,14 +5821,30 @@ class StringSharedKey : public HashTableKey {
    // * When positive, position is the position in the source where eval is
    //   called. When negative, position is the negation of the position in the
    //   dynamic function's effective source where the ')' ends the parameters.
@@ -45,16 +45,16 @@ index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6cee
  
    bool IsMatch(Object other) override {
      DisallowHeapAllocation no_allocation;
-@@ -5960,16 +5978,29 @@ class StringSharedKey : public HashTableKey {
+@@ -5844,16 +5862,29 @@ class StringSharedKey : public HashTableKey {
      if (language_mode != language_mode_) return false;
-     int position = Smi::ToInt(other_array->get(3));
+     int position = Smi::ToInt(other_array.get(3));
      if (position != position_) return false;
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    int parent_script_id = Smi::ToInt(other_array->get(4));
 +    if (parent_script_id != parent_script_id_) return false;
 +#endif
-     String source = String::cast(other_array->get(1));
-     return source->Equals(*source_);
+     String source = String::cast(other_array.get(1));
+     return source.Equals(*source_);
    }
  
    Handle<Object> AsHandle(Isolate* isolate) {
@@ -76,7 +76,7 @@ index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6cee
      array->set_map(ReadOnlyRoots(isolate).fixed_cow_array_map());
      return array;
    }
-@@ -5979,6 +6010,9 @@ class StringSharedKey : public HashTableKey {
+@@ -5863,6 +5894,9 @@ class StringSharedKey : public HashTableKey {
    Handle<SharedFunctionInfo> shared_;
    LanguageMode language_mode_;
    int position_;
@@ -86,7 +86,7 @@ index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6cee
  };
  
  v8::Promise::PromiseState JSPromise::status() const {
-@@ -7380,7 +7414,11 @@ FeedbackCell SearchLiteralsMap(CompilationCacheTable cache, int cache_entry,
+@@ -7020,7 +7054,11 @@ FeedbackCell SearchLiteralsMap(CompilationCacheTable cache, int cache_entry,
  
  MaybeHandle<SharedFunctionInfo> CompilationCacheTable::LookupScript(
      Handle<CompilationCacheTable> table, Handle<String> src,
@@ -99,7 +99,7 @@ index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6cee
    // We use the empty function SFI as part of the key. Although the
    // empty_function is native context dependent, the SFI is de-duped on
    // snapshot builds by the PartialSnapshotCache, and so this does not prevent
-@@ -7389,7 +7427,11 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheTable::LookupScript(
+@@ -7029,7 +7067,11 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheTable::LookupScript(
                                      native_context->GetIsolate());
    Isolate* isolate = native_context->GetIsolate();
    src = String::Flatten(isolate, src);
@@ -112,7 +112,7 @@ index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6cee
    int entry = table->FindEntry(isolate, &key);
    if (entry == kNotFound) return MaybeHandle<SharedFunctionInfo>();
    int index = EntryToIndex(entry);
-@@ -7406,11 +7448,19 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheTable::LookupScript(
+@@ -7046,11 +7088,19 @@ MaybeHandle<SharedFunctionInfo> CompilationCacheTable::LookupScript(
  InfoCellPair CompilationCacheTable::LookupEval(
      Handle<CompilationCacheTable> table, Handle<String> src,
      Handle<SharedFunctionInfo> outer_info, Handle<Context> native_context,
@@ -134,7 +134,7 @@ index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6cee
    int entry = table->FindEntry(isolate, &key);
    if (entry == kNotFound) return empty_result;
    int index = EntryToIndex(entry);
-@@ -7437,7 +7487,11 @@ Handle<Object> CompilationCacheTable::LookupRegExp(Handle<String> src,
+@@ -7077,7 +7127,11 @@ Handle<Object> CompilationCacheTable::LookupRegExp(Handle<String> src,
  Handle<CompilationCacheTable> CompilationCacheTable::PutScript(
      Handle<CompilationCacheTable> cache, Handle<String> src,
      Handle<Context> native_context, LanguageMode language_mode,
@@ -147,8 +147,8 @@ index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6cee
    Isolate* isolate = native_context->GetIsolate();
    // We use the empty function SFI as part of the key. Although the
    // empty_function is native context dependent, the SFI is de-duped on
-@@ -7446,7 +7500,11 @@ Handle<CompilationCacheTable> CompilationCacheTable::PutScript(
-   Handle<SharedFunctionInfo> shared(native_context->empty_function()->shared(),
+@@ -7086,7 +7140,11 @@ Handle<CompilationCacheTable> CompilationCacheTable::PutScript(
+   Handle<SharedFunctionInfo> shared(native_context->empty_function().shared(),
                                      isolate);
    src = String::Flatten(isolate, src);
 -  StringSharedKey key(src, shared, language_mode, kNoSourcePosition);
@@ -160,7 +160,7 @@ index 7786073ba762f9acbd6f38417e044b327384de7c..805d3474f6899e511bcca7a04fef6cee
    Handle<Object> k = key.AsHandle(isolate);
    cache = EnsureCapacity(isolate, cache, 1);
    int entry = cache->FindInsertionEntry(key.Hash());
-@@ -7460,10 +7518,18 @@ Handle<CompilationCacheTable> CompilationCacheTable::PutEval(
+@@ -7100,10 +7158,18 @@ Handle<CompilationCacheTable> CompilationCacheTable::PutEval(
      Handle<CompilationCacheTable> cache, Handle<String> src,
      Handle<SharedFunctionInfo> outer_info, Handle<SharedFunctionInfo> value,
      Handle<Context> native_context, Handle<FeedbackCell> feedback_cell,
