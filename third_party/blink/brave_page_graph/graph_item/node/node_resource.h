@@ -13,6 +13,7 @@ namespace brave_page_graph {
 
 class EdgeRequestStart;
 class EdgeRequestResponse;
+class EdgeResourceBlock;
 class PageGraph;
 
 class NodeResource : public Node {
@@ -26,6 +27,7 @@ friend class PageGraph;
   // Prevent non-sensical edges from ever pointing to a resource node.
   void AddInEdge(const EdgeRequestStart* const in_edge);
   void AddOutEdge(const EdgeRequestResponse* const out_edge);
+  void AddInEdge(const EdgeResourceBlock* const in_edge);
   void AddInEdge(const Edge* const in_edge) = delete;
   void AddOutEdge(const Edge* const out_edge) = delete;
 

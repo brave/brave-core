@@ -3,34 +3,37 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_DELETE_H_
-#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_DELETE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_RESOURCE_BLOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_RESOURCE_BLOCK_H_
 
-#include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage.h"
+#include <string>
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
 
-class Node;
-class NodeActor;
-class NodeStorage;
+class NodeFilter;
+class NodeShield;
+class NodeResource;
 class PageGraph;
 
-class EdgeStorageDelete final : public EdgeStorage {
+class EdgeResourceBlock : public Edge {
 friend class PageGraph;
  public:
-  EdgeStorageDelete() = delete;
-  ~EdgeStorageDelete() override;
+  EdgeResourceBlock() = delete;
+  ~EdgeResourceBlock() override;
+
   ItemName GetItemName() const override;
 
  protected:
-  EdgeStorageDelete(PageGraph* const graph, NodeScript* const out_node,
-    NodeStorage* const in_node, const std::string& key);
+  EdgeResourceBlock(PageGraph* const graph, NodeFilter* const out_node,
+    NodeResource* const in_node);
+  EdgeResourceBlock(PageGraph* const graph, NodeShield* const out_node,
+    NodeResource* const in_node);
+
   GraphMLXMLList GraphMLAttributes() const override;
 };
 
 }  // namespace brave_page_graph
 
-#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_DELETE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_RESOURCE_BLOCK_H_

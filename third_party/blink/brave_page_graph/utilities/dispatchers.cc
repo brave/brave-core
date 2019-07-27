@@ -7,13 +7,17 @@
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "v8/include/v8.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
+
+using ::blink::DOMNodeId;
+using ::WTF::String;
 
 namespace brave_page_graph {
 
 void DispatchAttributeChanged(PageGraph* const page_graph,
-    const blink::DOMNodeId node_id, const WTF::String& attr_name,
-    const WTF::String& old_value, const WTF::String& new_value) {
+    const DOMNodeId node_id, const String& attr_name,
+    const String& old_value, const String& new_value) {
   if (new_value == WTF::g_null_atom) {
     // Attribute delete.
     page_graph->RegisterAttributeDelete(node_id, attr_name);

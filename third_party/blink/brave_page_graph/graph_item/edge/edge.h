@@ -23,6 +23,9 @@ friend class PageGraph;
   GraphMLXML GetGraphMLTag() const override;
 
  protected:
+  // For use ONLY with edges generated ad-hoc during GraphML export.
+  Edge(Node* const out_node, Node* const in_node);
+
   Edge(PageGraph* const graph, Node* const out_node, Node* const in_node);
 
   // This constructor is used by the GraphML generation pipeline, where

@@ -26,6 +26,7 @@ friend class PageGraph;
  protected:
   NodeWebAPI(PageGraph* const graph, const MethodName method);
   ItemDesc GetDescBody() const override;
+  GraphMLXMLList GraphMLAttributes() const override;
 
   const MethodName method_name_;
 };

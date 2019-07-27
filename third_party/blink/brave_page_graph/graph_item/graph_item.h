@@ -13,8 +13,9 @@ namespace brave_page_graph {
 class PageGraph;
 
 class GraphItem {
+// Needed for ad-hoc id generation during GraphML export.
+friend class PageGraph;
  public:
-  GraphItem() = delete;
   virtual ~GraphItem();
   virtual ItemDesc GetDesc() const;
   virtual ItemName GetItemName() const = 0;
@@ -28,11 +29,17 @@ class GraphItem {
   virtual ItemDesc GetDescSuffix() const = 0;
 
  protected:
+  // For use ONLY with items generated ad-hoc during GraphML export.
+  GraphItem();
+
   GraphItem(PageGraph* const graph);
   virtual GraphMLXMLList GraphMLAttributes() const;
 
   PageGraph* const graph_;
-  const PageGraphId id_; 
+  const PageGraphId id_;
+
+ private:
+  static void StartGraphMLExport(PageGraphId id_counter);
 };
 
 }  // namespace brave_page_graph
