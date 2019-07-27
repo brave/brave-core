@@ -10,8 +10,9 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/common/network_constants.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/common/network_constants.h"
+#include "content/public/common/resource_type.h"
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
 #include "net/http/http_response_headers.h"
@@ -74,6 +75,16 @@ bool IsWebtorrentInitiated(std::shared_ptr<brave::BraveRequestInfo> ctx) {
       ctx->initiator_url.host() == brave_webtorrent_extension_id;
 }
 
+/*
+ * Returns true if the resource type is a frame (i.e. a top level page) or a
+ * subframe (i.e. a frame or iframe). For all other resource types (stylesheet,
+ * script, XHR request, etc.), returns false.
+ */
+
+bool IsFrameResource(std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  return content::IsResourceTypeFrame(ctx->resource_type);
+}
+
 }  // namespace
 
 namespace webtorrent {
@@ -85,6 +96,7 @@ int OnHeadersReceived_TorrentRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   if (!original_response_headers ||
+      !IsFrameResource(ctx) ||
       ctx->is_webtorrent_disabled ||
       // download .torrent, do not redirect
       (IsWebtorrentInitiated(ctx) && !IsViewerURL(ctx->request_url)) ||

@@ -17,6 +17,7 @@
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "content/public/browser/resource_request_info.h"
+#include "content/public/common/resource_type.h"
 #include "content/public/test/mock_resource_context.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
@@ -120,6 +121,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       brave_request_info(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
                                               brave_request_info);
+  brave_request_info->resource_type = content::ResourceType::kMainFrame;
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -156,6 +158,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       brave_request_info(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
                                               brave_request_info);
+  brave_request_info->resource_type = content::ResourceType::kMainFrame;
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -194,6 +197,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       brave_request_info(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
                                               brave_request_info);
+  brave_request_info->resource_type = content::ResourceType::kMainFrame;
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -237,6 +241,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       brave_request_info(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
                                               brave_request_info);
+  brave_request_info->resource_type = content::ResourceType::kMainFrame;
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -276,6 +281,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       brave_request_info(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
                                               brave_request_info);
+  brave_request_info->resource_type = content::ResourceType::kMainFrame;
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -310,6 +316,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
       brave_request_info(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
                                               brave_request_info);
+  brave_request_info->resource_type = content::ResourceType::kMainFrame;
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -348,6 +355,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       brave_request_info(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
                                               brave_request_info);
+  brave_request_info->resource_type = content::ResourceType::kMainFrame;
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -386,6 +394,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
       brave_request_info(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
                                               brave_request_info);
+  brave_request_info->resource_type = content::ResourceType::kMainFrame;
   brave::ResponseCallback callback;
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -400,5 +409,42 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(location, torrent_viewer_extension_url().spec());
   EXPECT_EQ(allowed_unsafe_redirect_url.spec(),
             torrent_viewer_extension_url().spec());
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
+       BittorrentNonFrameResourceNoRedirect) {
+  net::TestDelegate test_delegate;
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(torrent_url(), net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+
+  scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
+    new net::HttpResponseHeaders(std::string());
+  orig_response_headers->AddHeader(
+      base::StrCat({"Content-Type: ", kBittorrentMimeType}));
+  std::string mimeType;
+  ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
+  ASSERT_EQ(mimeType, kBittorrentMimeType);
+
+  scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
+    new net::HttpResponseHeaders(std::string());
+  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
+  std::shared_ptr<brave::BraveRequestInfo>
+      brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
+  brave_request_info->resource_type = content::ResourceType::kXhr;
+  brave::ResponseCallback callback;
+
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+      orig_response_headers.get(), &overwrite_response_headers,
+      &allowed_unsafe_redirect_url, callback, brave_request_info);
+
+  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
+  std::string location;
+  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
+                                                           &location));
+  EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
   EXPECT_EQ(ret, net::OK);
 }
