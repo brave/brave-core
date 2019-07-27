@@ -8,8 +8,8 @@ index 84cacc380de7c3eb6196c9d94be2d286d6dd4be7..4c94416d847f6ec42f682a5d6d57578a
  #include "base/stl_util.h"
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
  #include "build/build_config.h"
+ #include "gpu/GLES2/gl2extchromium.h"
  #include "gpu/command_buffer/client/gles2_interface.h"
- #include "gpu/command_buffer/common/capabilities.h"
 @@ -111,6 +112,11 @@
  #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
  #include "third_party/blink/renderer/platform/wtf/typed_arrays/array_buffer_contents.h"

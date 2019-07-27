@@ -25,10 +25,10 @@ index 00f8e5b4d06a6a26f4f05e8a7b54c05ce1c39c83..9b147ba8f4d76db84bacdb8f08daec0e
  static const TimeDelta kTryRestoreContextInterval =
 @@ -782,6 +789,9 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
    if (!canvas()->GetDocument().GetFrame())
-     return TextMetrics::Create();
+     return MakeGarbageCollected<TextMetrics>();
  
 +  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame()))
-+    return TextMetrics::Create();
++    return MakeGarbageCollected<TextMetrics>();
 +
    canvas()->GetDocument().UpdateStyleAndLayoutTreeForNode(canvas());
  
