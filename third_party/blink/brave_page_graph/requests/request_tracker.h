@@ -25,6 +25,7 @@ typedef struct TrackedRequestRecord {
 } TrackedRequestRecord;
 
 class RequestTracker {
+friend class PageGraph;
  public:
   typedef std::pair<InspectorId, const NodeResource*> RequestKey;
 

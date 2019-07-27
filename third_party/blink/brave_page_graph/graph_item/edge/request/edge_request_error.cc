@@ -19,9 +19,13 @@ namespace brave_page_graph {
 
 EdgeRequestError::EdgeRequestError(PageGraph* const graph,
     NodeResource* const out_node, Node* const in_node,
-    const InspectorId request_id) :
-      EdgeRequestResponse(graph, out_node, in_node, request_id,
-          kRequestStatusError) {}
+    const InspectorId request_id,
+    const std::string& response_header_string,
+    const int64_t response_body_length)
+    : EdgeRequestResponse(graph, out_node, in_node, request_id,
+        kRequestStatusError),
+      response_header_string_(response_header_string),
+      response_body_length_(response_body_length) {}
 
 EdgeRequestError::~EdgeRequestError() {}
 
@@ -31,6 +35,15 @@ ItemName EdgeRequestError::GetItemName() const {
 
 ItemDesc EdgeRequestError::GetDescBody() const {
   return GetItemName();
+}
+
+GraphMLXMLList EdgeRequestError::GraphMLAttributes() const {
+  GraphMLXMLList attrs = EdgeRequest::GraphMLAttributes();
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
+    ->ToValue(response_header_string_));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
+    ->ToValue(to_string(response_body_length_)));
+  return attrs;
 }
 
 }  // namespace brave_page_graph

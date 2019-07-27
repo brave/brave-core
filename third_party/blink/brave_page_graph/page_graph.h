@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
@@ -16,11 +17,30 @@
 namespace blink {
 
 class Document;
+class ExecutionContext;
+
+namespace protocol {
+
+template<typename T>
+class Array;
+
+}
+
+}
+
+namespace v8 {
+
+class Context;
+class Isolate;
+template <class T>
+class Local;
+
 }
 
 namespace brave_page_graph {
 
 class Edge;
+class EdgeEventListenerAction;
 class EdgeRequestStart;
 class EdgeNodeInsert;
 class GraphItem;
@@ -42,7 +62,11 @@ class NodeShield;
 class NodeStorage;
 class NodeStorageCookieJar;
 class NodeStorageLocalStorage;
+class NodeStorageRoot;
+class NodeStorageSessionStorage;
+class NodeTrackerFilter;
 class NodeWebAPI;
+class RequestMetadata;
 class RequestTracker;
 class ScriptTracker;
 struct TrackedRequestRecord;
@@ -56,6 +80,10 @@ friend EdgeNodeInsert;
 // listeners during GraphML generation.
 friend NodeHTMLElement;
  public:
+  static PageGraph* GetFromIsolate(v8::Isolate& isolate);
+  static PageGraph* GetFromContext(v8::Local<v8::Context> context);
+  static PageGraph* GetFromExecutionContext(blink::ExecutionContext& exec_context);
+
   PageGraph(blink::Document& document);
   ~PageGraph();
 
@@ -78,6 +106,13 @@ friend NodeHTMLElement;
   void RegisterContentFrameSet(const blink::DOMNodeId node_id,
     const WTF::String& url);
 
+  void RegisterEventListenerAdd(const blink::DOMNodeId,
+    const WTF::String& event_type, const EventListenerId listener_id,
+    ScriptId listener_script_id);
+  void RegisterEventListenerRemove(const blink::DOMNodeId,
+    const WTF::String& event_type, const EventListenerId listener_id,
+    ScriptId listener_script_id);
+
   void RegisterInlineStyleSet(const blink::DOMNodeId node_id,
     const WTF::String& attr_name, const WTF::String& attr_value);
   void RegisterInlineStyleDelete(const blink::DOMNodeId node_id,
@@ -98,8 +133,28 @@ friend NodeHTMLElement;
   void RegisterRequestStartFromCSS(const InspectorId request_id,
     const blink::KURL& url, const RequestType type);
   void RegisterRequestComplete(const InspectorId request_id,
-    const blink::ResourceType type);
-  void RegisterRequestError(const InspectorId request_id);
+    const blink::ResourceType type, const RequestMetadata& metadata);
+  void RegisterRequestError(const InspectorId request_id,
+    const RequestMetadata& metadata);
+
+  void RegisterResourceBlockAd(const GURL& url, const std::string& rule);
+  void RegisterResourceBlockTracker(const GURL& url, const std::string& host);
+  void RegisterResourceBlockJavaScript(const GURL& url);
+  void RegisterResourceBlockFingerprinting(const GURL& url,
+    const FingerprintingRule& rule);
+
+  void RegisterStorageRead(const WTF::String& key, const WTF::String& value,
+    const StorageLocation location);
+  void RegisterStorageWrite(const WTF::String& key, const WTF::String& value,
+    const StorageLocation location);
+  void RegisterStorageDelete(const WTF::String& key,
+    const StorageLocation location);
+  void RegisterStorageClear(const StorageLocation location);
+
+  void RegisterWebAPICall(const MethodName& method,
+    const std::vector<const WTF::String>& arguments);
+  void RegisterWebAPIResult(const MethodName& method,
+    const WTF::String& result);
 
   // Methods for handling the registration of script units in the document,
   // and v8 script executing.
@@ -121,20 +176,13 @@ friend NodeHTMLElement;
   void RegisterScriptCompilationFromAttr(const blink::DOMNodeId node_id,
     const WTF::String& attr_name, const WTF::String& attr_value,
     const ScriptId script_id);
-
-  void RegisterScriptExecStart(const ScriptId script_id);
-  // The Script ID is only used here as a sanity check to make sure we're
-  // correctly tracking script execution.
-  void RegisterScriptExecStop(const ScriptId script_id);
+  void RegisterScriptCompilationFromEval(ScriptId parent_script_id,
+      const ScriptId script_id);
 
   void GenerateReportForNode(const blink::DOMNodeId node_id,
                              blink::protocol::Array<WTF::String>& report);
 
   GraphMLXML ToGraphML() const;
-
-  void PushActiveScript(const ScriptId script_id);
-  ScriptId PopActiveScript();
-  ScriptId PeekActiveScript() const;
 
   void Log(const std::string& str) const;
 
@@ -152,8 +200,10 @@ friend NodeHTMLElement;
   NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
   NodeHTMLElement* GetHTMLElementNode(const blink::DOMNodeId node_id) const;
   NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
-  NodeExtension* GetExtensionNode();
+
   NodeActor* GetCurrentActingNode() const;
+  NodeActor* GetNodeActorForScriptId(const ScriptId script_id) const;
+  ScriptId GetExecutingScriptId() const;
 
   NodeResource* GetResourceNodeForUrl(const std::string& url);
 
@@ -196,7 +246,7 @@ friend NodeHTMLElement;
   NodeStorageRoot* const storage_node_;
   NodeStorageCookieJar* const cookie_jar_node_;
   NodeStorageLocalStorage* const local_storage_node_;
-  NodeExtension* extension_node_ = nullptr;
+  NodeStorageSessionStorage* const session_storage_node_;
 
   // Non-owning reference to the HTML root of the document (i.e. <html>).
   NodeHTMLElement* html_root_node_;
@@ -215,9 +265,12 @@ friend NodeHTMLElement;
   std::map<ScriptId, NodeScript* const> script_nodes_;
   std::map<ScriptId, NodeScriptRemote* const> remote_script_nodes_;
 
-  // Keeps track of which scripts are running, and conceptually mirrors the
-  // JS stack.
-  ScriptIdList active_script_stack_;
+  // Index structure for looking up filter nodes.
+  // This map does not own the references.
+  std::map<std::string, NodeAdFilter* const> ad_filter_nodes_;
+  std::map<std::string, NodeTrackerFilter* const> tracker_filter_nodes_;
+  std::map<FingerprintingRule, NodeFingerprintingFilter* const>
+    fingerprinting_filter_nodes_;
 
   // Data structure used for mapping HTML script elements (and other
   // sources of script in a document) to v8 script units.

@@ -65,6 +65,10 @@ class ScriptTracker {
   ScriptIdList GetScriptIdsForElm(const blink::DOMNodeId node_id) const;
 
   void AddScriptId(const ScriptId script_id, const SourceCodeHash hash);
+  void AddScriptIdAlias(const ScriptId script_id,
+                        const ScriptId parent_script_id);
+
+  ScriptId ResolveScriptId(const ScriptId script_id) const;
 
  private:
 
@@ -95,6 +99,8 @@ class ScriptTracker {
   // Map used for sanity checking that, if we see the same script id twice,
   // it refers to the same source code.
   ScriptIdToHashMap script_id_hashes_;
+
+  std::map<ScriptId, ScriptId> script_id_aliases_;
 };
 
 }  // namespace brave_page_graph

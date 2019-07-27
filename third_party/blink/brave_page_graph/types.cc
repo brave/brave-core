@@ -146,4 +146,52 @@ string RequestStatusToString(const RequestStatus status) noexcept {
   }
 }
 
+string StorageLocationToString(const StorageLocation location) noexcept {
+  switch (location) {
+    case kStorageLocationCookie:
+      return "cookie";
+    case kStorageLocationLocalStorage:
+      return "localStorage";
+    case kStorageLocationSessionStorage:
+      return "sessionStorage";
+  }
+}
+
+FingerprintingRule::FingerprintingRule(const std::string& primary_pattern,
+                                       const std::string& secondary_pattern,
+                                       const std::string& source,
+                                       const bool incognito) :
+  primary_pattern(primary_pattern),
+  secondary_pattern(secondary_pattern),
+  source(source),
+  incognito(incognito) {}
+
+bool FingerprintingRule::operator==(const FingerprintingRule& other) const {
+  return primary_pattern == other.primary_pattern
+    && secondary_pattern == other.secondary_pattern
+    && source == other.source
+    && incognito == other.incognito;
+}
+
+bool FingerprintingRule::operator<(const FingerprintingRule& other) const {
+  return primary_pattern < other.primary_pattern
+    && secondary_pattern < other.secondary_pattern
+    && source < other.source
+    && incognito < other.incognito;
+}
+
+bool FingerprintingRule::operator>(const FingerprintingRule& other) const {
+  return primary_pattern > other.primary_pattern
+    && secondary_pattern > other.secondary_pattern
+    && source > other.source
+    && incognito > other.incognito;
+}
+
+std::string FingerprintingRule::ToString() const {
+  return "primary pattern: " + primary_pattern
+    + ", secondary pattern: " + secondary_pattern
+    + ", source: " + source
+    + ", incognito: " + std::to_string(incognito);
+}
+
 }  // namespace brave_page_graph

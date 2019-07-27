@@ -32,10 +32,18 @@ namespace {
     kGraphMLAttrForTypeEdge, "attr value");
   const GraphMLAttr* const before_node_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "before", kGraphMLAttrTypeLong);
+  const GraphMLAttr* const block_type_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "block type");
   const GraphMLAttr* const call_args = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "args");
   const GraphMLAttr* const edge_type_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "edge type");
+  const GraphMLAttr* const event_listener_id_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "event listener id", kGraphMLAttrTypeLong);
+  const GraphMLAttr* const host_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "host");
+  const GraphMLAttr* const incognito_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "incognito");
   const GraphMLAttr* const is_style_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "is style", kGraphMLAttrTypeBoolean);
   const GraphMLAttr* const key_attr = new GraphMLAttr(
@@ -80,11 +88,13 @@ namespace {
     kGraphMLAttrForTypeEdge, "value");
 
   const vector<const GraphMLAttr* const> _all_graphml_attrs = {
-    attr_name_attr, attr_value, before_node_attr, call_args, edge_type_attr,
-    is_style_attr, key_attr, method_attr, tag_attr, node_id_attr,
-    node_text, node_type, parent_node_attr, script_id_attr, script_type,
-    status_type, success_attr, url_attr, request_id_attr,
-    request_type_attr, resource_type_attr, value_attr
+    attr_name_attr, attr_value, before_node_attr, block_type_attr, call_args,
+    edge_type_attr, event_listener_id_attr, host_attr, incognito_attr,
+    is_style_attr, key_attr, method_attr, node_id_attr, node_text, node_type,
+    parent_node_attr, primary_pattern_attr, request_id_attr, request_type_attr,
+    resource_type_attr, rule_attr, script_id_attr, script_type,
+    secondary_pattern_attr, source_attr, status_type, success_attr, tag_attr,
+    url_attr, value_attr
   };
 }
 
@@ -154,10 +164,18 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return attr_name_attr;
     case kGraphMLAttrDefBeforeNodeId:
       return before_node_attr;
+    case kGraphMLAttrDefBlockType:
+      return block_type_attr;
     case kGraphMLAttrDefCallArgs:
       return call_args;
     case kGraphMLAttrDefEdgeType:
       return edge_type_attr;
+    case kGraphMLAttrDefEventListenerId:
+      return event_listener_id_attr;
+    case kGraphMLAttrDefHost:
+      return host_attr;
+    case kGraphMLAttrDefIncognito:
+      return incognito_attr;
     case kGraphMLAttrDefIsStyle:
       return is_style_attr;
     case kGraphMLAttrDefKey:

@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_webapi.h"
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
@@ -29,6 +30,13 @@ const MethodName& NodeWebAPI::GetMethod() const {
 
 ItemDesc NodeWebAPI::GetDescBody() const {
   return GetItemName() + " (" + method_name_ + ")";
+}
+
+GraphMLXMLList NodeWebAPI::GraphMLAttributes() const {
+  return {
+    GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
+      ->ToValue(method_name_)
+  };
 }
 
 }  // namespace brave_page_graph

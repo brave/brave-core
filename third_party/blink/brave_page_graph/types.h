@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+class GURL;
+
 namespace blink {
 using DOMNodeId = int;
 class KURL;
@@ -18,6 +20,10 @@ enum class ResourceType : uint8_t;
 class ScriptSourceCode;
 class WebString;
 }  // namespace blink
+
+namespace v8 {
+class Isolate;
+}
 
 namespace WTF {
 class String;
@@ -42,8 +48,12 @@ typedef std::vector<const GraphMLXML> GraphMLXMLList;
 typedef enum {
   kGraphMLAttrDefAttrName = 0,
   kGraphMLAttrDefBeforeNodeId,
+  kGraphMLAttrDefBlockType,
   kGraphMLAttrDefCallArgs,
   kGraphMLAttrDefEdgeType,
+  kGraphMLAttrDefEventListenerId,
+  kGraphMLAttrDefHost,
+  kGraphMLAttrDefIncognito,
   kGraphMLAttrDefIsStyle,
   kGraphMLAttrDefKey,
   kGraphMLAttrDefMethodName,
@@ -127,15 +137,21 @@ typedef enum {
 } RequestStatus;
 std::string RequestStatusToString(const RequestStatus status) noexcept;
 
+typedef enum {
+  kStorageLocationCookie = 0,
+  kStorageLocationLocalStorage,
+  kStorageLocationSessionStorage
+} StorageLocation;
+std::string StorageLocationToString(const StorageLocation location) noexcept;
+
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;
 typedef int ScriptId;
+typedef int EventListenerId;
 typedef uint64_t PageGraphId;
 typedef std::string MethodName;
 typedef std::string RequestUrl;
 typedef uint64_t InspectorId;
-
-const blink::DOMNodeId kRootNodeId = INT_MAX;
 
 typedef std::vector<const Edge*> EdgeList;
 typedef std::vector<Node*> NodeList;

@@ -11,6 +11,9 @@
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_delete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_set.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_event_listener.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_event_listener_add.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_event_listener_remove.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_html.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_create.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_delete.h"
@@ -20,6 +23,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_error.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_actor.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -46,6 +50,25 @@ ItemName NodeHTMLElement::GetItemName() const {
 
 const string& NodeHTMLElement::TagName() const {
   return tag_name_;
+}
+
+bool NodeHTMLElement::HasAttribute(const std::string& key) const {
+  return current_attributes_.count(key) == 1;
+}
+
+const std::string& NodeHTMLElement::GetAttribute(const std::string& key) const {
+  return current_attributes_.at(key);
+}
+
+void NodeHTMLElement::AddInEdge(const EdgeEventListenerAdd* const edge) {
+  event_listeners_.emplace(edge->GetListenerId(),
+      EventListener(edge->GetEventType(), edge->GetListenerScriptId()));
+  Node::AddInEdge(edge);
+}
+
+void NodeHTMLElement::AddInEdge(const EdgeEventListenerRemove* const edge) {
+  event_listeners_.erase(edge->GetListenerId());
+  Node::AddInEdge(edge);
 }
 
 // Special case for when something (script) is removing an HTML element
@@ -107,6 +130,20 @@ GraphMLXML NodeHTMLElement::GetGraphMLTag() const {
     EdgeHTML html_edge(this, child_node);
     builder << html_edge.GetGraphMLTag();
   }
+
+  // For each event listener, draw an edge from the listener script to the DOM
+  // node to which it's attached.
+  for (auto& event_listener : event_listeners_) {
+    const EventListenerId listener_id = event_listener.first;
+    const string& event_type = event_listener.second.event_type;
+    NodeActor* const listener_node = graph_->GetNodeActorForScriptId(
+        event_listener.second.listener_script_id);
+
+    EdgeEventListener event_listener_edge(this, listener_node, event_type,
+                                          listener_id);
+    builder << event_listener_edge.GetGraphMLTag();
+  }
+
   return builder.str();
 }
 

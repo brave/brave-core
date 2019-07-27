@@ -3,28 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_shields.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_sessionstorage.h"
 #include <string>
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
+using ::std::to_string;
+
 namespace brave_page_graph {
 
-NodeShields::NodeShields(PageGraph* const graph) :
-      Node(graph) {}
+NodeStorageSessionStorage::NodeStorageSessionStorage(PageGraph* const graph) :
+      NodeStorage(graph) {}
 
-NodeShields::~NodeShields() {}
+NodeStorageSessionStorage::~NodeStorageSessionStorage() {}
 
-ItemName NodeShields::GetItemName() const {
-  return "Brave Shields";
+ItemName NodeStorageSessionStorage::GetItemName() const {
+  return "session storage";
 }
 
-GraphMLXMLList NodeShields::GraphMLAttributes() const {
+GraphMLXMLList NodeStorageSessionStorage::GraphMLAttributes() const {
   return {
     GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
-      ->ToValue("shields")
+      ->ToValue("session storage")
   };
 }
 

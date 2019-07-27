@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_DELETE_H_
-#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_DELETE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_CLEAR_H_
+#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_CLEAR_H_
 
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
@@ -18,19 +18,19 @@ class NodeActor;
 class NodeStorage;
 class PageGraph;
 
-class EdgeStorageRead final : public EdgeStorage {
+class EdgeStorageClear final : public EdgeStorage {
 friend class PageGraph;
  public:
-  EdgeStorageRead() = delete;
-  ~EdgeStorageRead() override;
+  EdgeStorageClear() = delete;
+  ~EdgeStorageClear() override;
   ItemName GetItemName() const override;
 
  protected:
-  EdgeStorageRead(PageGraph* const graph, NodeActor* const out_node,
-    NodeStorage* const in_node, const std::string& key);
+  EdgeStorageClear(PageGraph* const graph, NodeScript* const out_node,
+    NodeStorage* const in_node);
   GraphMLXMLList GraphMLAttributes() const override;
 };
 
 }  // namespace brave_page_graph
 
-#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_DELETE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_CLEAR_H_
