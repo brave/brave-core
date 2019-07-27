@@ -80,7 +80,7 @@ const getTweetMetaData = (tweet: Element, tweetId: string): Promise<RewardsTip.M
       return mediaMetadata
     })
     .catch(error => {
-      console.log(`Failed to fetch tweet details for ${tweetId}: ${error.message}`)
+      console.error(`Failed to fetch tweet details for ${tweetId}: ${error.message}`)
       return Promise.reject(error)
     })
 }
@@ -279,15 +279,16 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'getProfileUrl': {
-      if (msg.screenName) {
-        getUserDetails(msg.screenName)
+      const screenName = msg.screenName
+      if (screenName) {
+        getUserDetails(screenName)
           .then(userDetails => {
             const userId = userDetails.id_str
-            const profileUrl = `https://twitter.com/intent/user?user_id=${userId}`
+            const profileUrl = `https://twitter.com/intent/user?user_id=${userId}&screen_name=${screenName}`
             sendResponse({ profileUrl })
           })
           .catch(error => {
-            console.log(`Failed to fetch user details for ${msg.screenName}: ${error.message}`)
+            console.error(`Failed to fetch user details for ${screenName}: ${error.message}`)
             return Promise.reject(error)
           })
         // Must return true for asynchronous calls to sendResponse

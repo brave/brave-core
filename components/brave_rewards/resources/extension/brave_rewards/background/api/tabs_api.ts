@@ -2,32 +2,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const getTabData = (tabId: number) =>
-  chrome.tabs.get(tabId, (tab: chrome.tabs.Tab) => {
-    onTabData(tab)
-  })
-
 export const onTabData = (tab: chrome.tabs.Tab, activeTabIsLoadingTriggered?: boolean) => {
   const rewardsPanelActions = require('../actions/rewardsPanelActions').default
 
-  console.log('In onTabRetrieved...')
   if (tab.id && tab.active && tab.url) {
-    console.log('Checking for Twitter regex...')
-    const regex = /^https?:\/\/mobile.twitter\.com\/(#!\/)?([^\/]+)(\/\w+)*$/
-    const match = regex.exec(tab.url)
-    if (match && match.length > 2) {
-      console.log('Matched Twitter regex...')
-      const screenName = match[2]
-      console.log('Making call to getProfileUrl...')
+    const url = new URL(tab.url)
+    if (url.hostname.endsWith('twitter.com')) {
+      let screenName = url.pathname
+      const screenNameParts = screenName.split('/')
+      if (screenNameParts && screenNameParts.length > 1) {
+        screenName = screenNameParts[1]
+      }
 
       const msg = { type: 'getProfileUrl', screenName }
 
       chrome.tabs.sendMessage(tab.id, msg, response => {
-        console.log('sendMessage', response)
         const profileUrl = response.profileUrl
 
         if (profileUrl) {
-          console.log(`Changing url to ${profileUrl}`)
           tab.url = profileUrl
         }
 
@@ -39,3 +31,8 @@ export const onTabData = (tab: chrome.tabs.Tab, activeTabIsLoadingTriggered?: bo
 
   rewardsPanelActions.onTabRetrieved(tab, activeTabIsLoadingTriggered)
 }
+
+export const getTabData = (tabId: number) =>
+  chrome.tabs.get(tabId, (tab: chrome.tabs.Tab) => {
+    onTabData(tab)
+  })
