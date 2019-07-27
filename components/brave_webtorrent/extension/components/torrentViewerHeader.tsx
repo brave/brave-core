@@ -54,7 +54,7 @@ export default class TorrentViewerHeader extends React.PureComponent<
     const mainButtonText = torrent ? 'Stop Torrent' : 'Start Torrent'
     const copyButtonText = this.props.torrentId.startsWith('magnet:')
       ? 'Copy Magnet Link'
-      : 'Save File'
+      : 'Save .torrent File'
 
     return (
       <div className='headerContainer'>
