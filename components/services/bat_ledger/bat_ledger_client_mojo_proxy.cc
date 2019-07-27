@@ -429,6 +429,24 @@ void BatLedgerClientMojoProxy::FetchFavIcon(const std::string& url,
       base::BindOnce(&OnFetchFavIcon, std::move(callback)));
 }
 
+void OnSaveRecurringTip(const ledger::SaveRecurringTipCallback& callback,
+                        const ledger::Result result) {
+  callback(result);
+}
+
+void BatLedgerClientMojoProxy::SaveRecurringTip(
+    ledger::ContributionInfoPtr info,
+    ledger::SaveRecurringTipCallback callback) {
+  if (!Connected()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  bat_ledger_client_->SaveRecurringTip(
+      std::move(info),
+      base::BindOnce(&OnSaveRecurringTip, std::move(callback)));
+}
+
 void OnGetRecurringTips(const ledger::PublisherInfoListCallback& callback,
                         ledger::PublisherInfoList publisher_info_list,
                         uint32_t next_record) {

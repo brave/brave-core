@@ -361,6 +361,28 @@ void LedgerClientMojoProxy::FetchFavIcon(const std::string& url,
 }
 
 // static
+void LedgerClientMojoProxy::OnSaveRecurringTip(
+    CallbackHolder<SaveRecurringTipCallback>* holder,
+    const ledger::Result result) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::SaveRecurringTip(
+    ledger::ContributionInfoPtr info,
+    SaveRecurringTipCallback callback) {
+  // deleted in OnSaveRecurringTip
+  auto* holder = new CallbackHolder<SaveRecurringTipCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->SaveRecurringTip(
+      std::move(info),
+      std::bind(LedgerClientMojoProxy::OnSaveRecurringTip,
+                holder,
+                _1));
+}
+
+// static
 void LedgerClientMojoProxy::OnGetRecurringTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
     ledger::PublisherInfoList publisher_info_list,

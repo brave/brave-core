@@ -215,6 +215,9 @@ class BraveRewardsSaveRecurringTipFunction :
   ~BraveRewardsSaveRecurringTipFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnSaveRecurringTip(bool success);
 };
 
 class BraveRewardsRemoveRecurringTipFunction :

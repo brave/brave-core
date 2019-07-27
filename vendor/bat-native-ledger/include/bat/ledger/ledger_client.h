@@ -77,6 +77,7 @@ using GetExternalWalletsCallback =
 using ShowNotificationCallback = std::function<void(const Result)>;
 using SavePendingContributionCallback = std::function<void(const Result)>;
 using DeleteActivityInfoCallback = std::function<void(const ledger::Result)>;
+using SaveRecurringTipCallback = std::function<void(const Result)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -160,6 +161,10 @@ class LEDGER_EXPORT LedgerClient {
       const uint32_t date,
       const std::string& publisher_key,
       const ledger::REWARDS_CATEGORY category) = 0;
+
+  virtual void SaveRecurringTip(
+      ledger::ContributionInfoPtr info,
+      ledger::SaveRecurringTipCallback callback) = 0;
 
   virtual void GetRecurringTips(
       ledger::PublisherInfoListCallback callback) = 0;

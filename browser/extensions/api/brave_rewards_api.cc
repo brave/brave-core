@@ -481,12 +481,26 @@ BraveRewardsSaveRecurringTipFunction::Run() {
   RewardsService* rewards_service_ =
     RewardsServiceFactory::GetForProfile(profile);
 
-  if (rewards_service_) {
-    rewards_service_->SaveRecurringTip(params->publisher_key,
-                                       params->new_amount);
+  if (!rewards_service_) {
+    return RespondNow(NoArguments());
   }
 
-  return RespondNow(NoArguments());
+  rewards_service_->SaveRecurringTipUI(
+      params->publisher_key,
+      params->new_amount,
+      base::Bind(
+          &BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip,
+          this));
+
+  return RespondLater();
+}
+
+void BraveRewardsSaveRecurringTipFunction::OnSaveRecurringTip(bool success) {
+  if (!success) {
+    Respond(Error("Failed to save"));
+    return;
+  }
+  Respond(NoArguments());
 }
 
 BraveRewardsRemoveRecurringTipFunction::

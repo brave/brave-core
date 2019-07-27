@@ -150,7 +150,8 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)listRecurringTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
 
 - (void)addRecurringTipToPublisherWithId:(NSString *)publisherId
-                                  amount:(double)amount NS_SWIFT_NAME(addRecurringTip(publisherId:amount:));
+                                  amount:(double)amount
+                              completion:(void (^)(BOOL success))completion NS_SWIFT_NAME(addRecurringTip(publisherId:amount:completion:));
 
 - (void)removeRecurringTipForPublisherWithId:(NSString *)publisherId NS_SWIFT_NAME(removeRecurringTip(publisherId:));
 

@@ -136,6 +136,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       RefreshPublisherCallback callback) override;
   void StartMonthlyContribution() override;
 
+  void SaveRecurringTip(
+      ledger::ContributionInfoPtr info,
+      SaveRecurringTipCallback callback) override;
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
 
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
@@ -253,6 +256,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetRewardsInternalsInfo(
       CallbackHolder<GetRewardsInternalsInfoCallback>* holder,
       ledger::RewardsInternalsInfoPtr info);
+
+  static void OnSaveRecurringTip(
+      CallbackHolder<SaveRecurringTipCallback>* holder,
+      ledger::Result result);
 
   static void OnGetRecurringTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,

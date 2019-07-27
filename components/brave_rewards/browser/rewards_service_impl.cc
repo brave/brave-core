@@ -2153,7 +2153,7 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
             this, _1, _2));
     }
 
-    SaveRecurringTip(publisher_key, amount);
+    SaveRecurringTipUI(publisher_key, amount, base::DoNothing());
     return;
   }
 
@@ -2212,25 +2212,65 @@ bool SaveRecurringTipOnFileTaskRunner(
   return false;
 }
 
-void RewardsServiceImpl::OnRecurringTipSaved(bool success) {
+void RewardsServiceImpl::OnSaveRecurringTipUI(
+    SaveRecurringTipCallback callback,
+    const ledger::Result result) {
+  bool success = result == ledger::Result::LEDGER_OK;
+
   for (auto& observer : observers_) {
     observer.OnRecurringTipSaved(this, success);
   }
+
+  std::move(callback).Run(success);
+}
+
+void RewardsServiceImpl::SaveRecurringTipUI(
+    const std::string& publisher_key,
+    const int amount,
+    SaveRecurringTipCallback callback) {
+  ledger::ContributionInfoPtr info = ledger::ContributionInfo::New();
+  info->publisher = publisher_key;
+  info->value = amount;
+  info->date = GetCurrentTimestamp();
+
+  bat_ledger_->SaveRecurringTip(
+      std::move(info),
+      base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTipUI,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnRecurringTipSaved(
+    ledger::SaveRecurringTipCallback callback,
+    const bool success) {
+  if (!Connected()) {
+    return;
+  }
+
+  callback(success ? ledger::Result::LEDGER_OK
+                   : ledger::Result::LEDGER_ERROR);
 }
 
 void RewardsServiceImpl::SaveRecurringTip(
-    const std::string& publisher_key, const int amount) {
-  brave_rewards::RecurringDonation info;
-  info.publisher_key = publisher_key;
-  info.amount = amount;
-  info.added_date = GetCurrentTimestamp();
+    ledger::ContributionInfoPtr info,
+    ledger::SaveRecurringTipCallback callback) {
+  if (!info) {
+    callback(ledger::Result::NOT_FOUND);
+    return;
+  }
+
+  brave_rewards::RecurringDonation new_info;
+  new_info.publisher_key = info->publisher;
+  new_info.amount = info->value;
+  new_info.added_date = info->date;
 
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&SaveRecurringTipOnFileTaskRunner,
-                    info,
+                    new_info,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnRecurringTipSaved,
-                     AsWeakPtr()));
+                     AsWeakPtr(),
+                     callback));
 }
 
 void RewardsServiceImpl::OnMediaInlineInfoSaved(
