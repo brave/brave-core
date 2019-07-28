@@ -43,7 +43,7 @@ std::string GetUserIdFromUrl(const std::string& path) {
   return std::string();
 }
 
-}
+}  // namespace
 
 namespace braveledger_media {
 
