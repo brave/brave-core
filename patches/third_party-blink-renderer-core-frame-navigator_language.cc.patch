@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator_language.cc b/third_party/blink/renderer/core/frame/navigator_language.cc
-index 174b1a2c0490c2fb8936f242c1048dfa04c02855..b5882f240b005724b1416d83966f9f47e6230e40 100644
+index 174b1a2c0490c2fb8936f242c1048dfa04c02855..b7245ddbedf7a35e4f21c0720a3d0a0162f5dc0a 100644
 --- a/third_party/blink/renderer/core/frame/navigator_language.cc
 +++ b/third_party/blink/renderer/core/frame/navigator_language.cc
 @@ -9,6 +9,13 @@
@@ -16,63 +16,31 @@ index 174b1a2c0490c2fb8936f242c1048dfa04c02855..b5882f240b005724b1416d83966f9f47
  namespace blink {
  
  Vector<String> ParseAndSanitize(const String& accept_languages) {
-@@ -35,6 +42,27 @@ NavigatorLanguage::NavigatorLanguage(ExecutionContext* context)
-     : context_(context) {}
- 
+@@ -37,6 +44,27 @@ NavigatorLanguage::NavigatorLanguage(ExecutionContext* context)
  AtomicString NavigatorLanguage::language() {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  {
-+    // We need to make sure we don't call languages, since that would yield an
-+    // incorrect graph in the end
-+    EnsureUpdatedLanguage();
-+    String result = languages_.front();
-+
-+    if (context_) {
-+      brave_page_graph::PageGraph* page_graph =
-+        brave_page_graph::PageGraph::GetFromIsolate(*context_->GetIsolate());
-+      if (page_graph != nullptr) {
-+        page_graph->RegisterWebAPICall("NavigatorLanguage.language",
-+          std::vector<const String>());
-+
-+        page_graph->RegisterWebAPIResult("NavigatorLanguage.language", result);
-+      }
-+    }
-+
-+    return AtomicString(result);
-+  }
-+#endif
    if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
        context_->IsSecureContext()) {
-     return AtomicString(languages().front());
-@@ -43,6 +71,31 @@ AtomicString NavigatorLanguage::language() {
- }
- 
- const Vector<String>& NavigatorLanguage::languages() {
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  {
-+    if (context_) {
-+      brave_page_graph::PageGraph* page_graph =
-+        brave_page_graph::PageGraph::GetFromIsolate(*context_->GetIsolate());
-+      if (page_graph != nullptr) {
-+        std::stringstream buffer;
-+        String* snd_last = std::prev(languages_.end());
-+        for (auto* iter = languages_.begin(); iter != snd_last; ++iter) {
-+          buffer << iter->Utf8().data() << ", ";
++    {
++      // We need to make sure we don't call languages, since that would yield
++      // an incorrect graph in the end
++      EnsureUpdatedLanguage();
++      String result = languages_.front();
++
++      if (context_) {
++        brave_page_graph::PageGraph* page_graph =
++          brave_page_graph::PageGraph::GetFromIsolate(*context_->GetIsolate());
++        if (page_graph != nullptr) {
++          page_graph->RegisterWebAPICall("NavigatorLanguage.language",
++            std::vector<const String>());
++
++          page_graph->RegisterWebAPIResult("NavigatorLanguage.language", result);
 +        }
-+        buffer << snd_last->Utf8().data();
-+        String result(buffer.str().c_str());
-+
-+        page_graph->RegisterWebAPICall("NavigatorLanguage.languages",
-+          std::vector<const String>());
-+
-+        page_graph->RegisterWebAPIResult("NavigatorLanguage.languages", result);
 +      }
 +
-+      return languages_;
++      return AtomicString(result);
 +    }
-+  }
 +#endif
-+
-   if (RuntimeEnabledFeatures::NavigatorLanguageInInsecureContextEnabled() ||
-       context_->IsSecureContext()) {
-     EnsureUpdatedLanguage();
+     return AtomicString(languages().front());
+   }
+   return AtomicString();

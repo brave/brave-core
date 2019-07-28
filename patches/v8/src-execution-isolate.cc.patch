@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
-index 8a8db12ca3f59577436d148bb2693c836720af2d..9c848a9cc496e6abc620c6f30d77d9a1526bd858 100644
+index 8a8db12ca3f59577436d148bb2693c836720af2d..7ba00ed47ebb03d154a3dbb5415994baca7b7d40 100644
 --- a/src/execution/isolate.cc
 +++ b/src/execution/isolate.cc
 @@ -89,6 +89,8 @@
@@ -27,15 +27,15 @@ index 8a8db12ca3f59577436d148bb2693c836720af2d..9c848a9cc496e6abc620c6f30d77d9a1
 +    JavaScriptFrame* frame = it.javascript_frame();
 +    Handle<JSFunction> function(frame->function(), this);
 +
-+    Object maybe_script = function->shared()->script();
-+    if (!maybe_script->IsScript()) {
++    Object maybe_script = function->shared().script();
++    if (!maybe_script.IsScript()) {
 +      it.Advance();
 +      continue;
 +    }
 +
 +    Script script = Script::cast(maybe_script);
-+    if (script->id() > 0) {
-+      return script->id();
++    if (script.id() > 0) {
++      return script.id();
 +    }
 +  }
 +

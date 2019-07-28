@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-index 904f5dd231dec422684528e8f8bc2b5e7f6e348e..c5438770346d380c4c59bb1f48a3d8c4cd5daef5 100644
+index 904f5dd231dec422684528e8f8bc2b5e7f6e348e..fe7dbb546c35e80a1f8d0409dbcd70901e45d4d1 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 @@ -33,6 +33,7 @@
@@ -39,8 +39,8 @@ index 904f5dd231dec422684528e8f8bc2b5e7f6e348e..c5438770346d380c4c59bb1f48a3d8c4
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
-+    TextMetrics* result = TextMetrics::Create(font, direction,
-+      GetState().GetTextBaseline(), GetState().GetTextAlign(), text);
++    TextMetrics* result = MakeGarbageCollected<TextMetrics>(font, direction,
++        GetState().GetTextBaseline(), GetState().GetTextAlign(), text);
 +
 +    brave_page_graph::PageGraph* page_graph =
 +      canvas()->GetDocument().GetPageGraph();

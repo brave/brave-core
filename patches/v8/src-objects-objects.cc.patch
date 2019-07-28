@@ -1,5 +1,5 @@
 diff --git a/src/objects/objects.cc b/src/objects/objects.cc
-index 8cc22fa0e5cfb193d6aafcea861b7a346dc0d4b6..20f12f4eb674f783dad41b3cf2055acc67362e37 100644
+index 8cc22fa0e5cfb193d6aafcea861b7a346dc0d4b6..96f89245bb09e7b89a3f9dbd012fe7bfc794809f 100644
 --- a/src/objects/objects.cc
 +++ b/src/objects/objects.cc
 @@ -116,6 +116,8 @@
@@ -50,7 +50,7 @@ index 8cc22fa0e5cfb193d6aafcea861b7a346dc0d4b6..20f12f4eb674f783dad41b3cf2055acc
      int position = Smi::ToInt(other_array.get(3));
      if (position != position_) return false;
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+    int parent_script_id = Smi::ToInt(other_array->get(4));
++    int parent_script_id = Smi::ToInt(other_array.get(4));
 +    if (parent_script_id != parent_script_id_) return false;
 +#endif
      String source = String::cast(other_array.get(1));

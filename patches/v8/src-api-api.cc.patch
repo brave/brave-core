@@ -1,5 +1,5 @@
 diff --git a/src/api/api.cc b/src/api/api.cc
-index 399aca7eb61dff4c67ad1fbe0620af3a3bf94254..1ca0131592b77fd6d31d3238afd44434b103adc2 100644
+index 399aca7eb61dff4c67ad1fbe0620af3a3bf94254..2bd4177938e54ce95473f5c6147a015c57f38571 100644
 --- a/src/api/api.cc
 +++ b/src/api/api.cc
 @@ -126,6 +126,8 @@
@@ -21,7 +21,7 @@ index 399aca7eb61dff4c67ad1fbe0620af3a3bf94254..1ca0131592b77fd6d31d3238afd44434
 +  i::Handle<i::SharedFunctionInfo> shared(
 +      self->GetSharedFunctionInfo(), self->GetIsolate());
 +  if (shared->script().IsScript())
-+    return i::Script::cast(shared->script())->id();
++    return i::Script::cast(shared->script()).id();
 +  return 0;
 +}
 +#endif

@@ -1,5 +1,5 @@
 diff --git a/src/codegen/compiler.cc b/src/codegen/compiler.cc
-index 5197dd3a2fc7522baf8b40d502accce939668d7a..04d13a7f7756e79ffdec578853856c7ba104ccaf 100644
+index 5197dd3a2fc7522baf8b40d502accce939668d7a..5eaffecde2b1eeb8b983370b11f95c72793288c5 100644
 --- a/src/codegen/compiler.cc
 +++ b/src/codegen/compiler.cc
 @@ -42,6 +42,8 @@
@@ -66,11 +66,11 @@ index 5197dd3a2fc7522baf8b40d502accce939668d7a..04d13a7f7756e79ffdec578853856c7b
 +    EvalScriptCompiledFunc eval_script_compiled_func =
 +        isolate->GetEvalScriptCompiledFunc();
 +    if (eval_script_compiled_func) {
-+      Object maybe_script = result->shared()->script();
-+      if (maybe_script->IsScript()) {
++      Object maybe_script = result->shared().script();
++      if (maybe_script.IsScript()) {
 +        Script script = Script::cast(maybe_script);
 +        eval_script_compiled_func(*reinterpret_cast<v8::Isolate*>(isolate),
-+            parent_script_id, script->id());
++            parent_script_id, script.id());
 +      }
 +    }
 +  }

@@ -64,7 +64,7 @@ friend class RequestTracker;
   NodeResource* resource_ = nullptr;
 
   RequestStatus request_status_ = RequestStatus::kUnknown;
-  blink::ResourceType resource_type_ = blink::ResourceType::kLast;
+  blink::ResourceType resource_type_ = blink::ResourceType::kMaxValue;
 
   mutable bool is_complete_ = false;
 
