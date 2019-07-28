@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/plugins/navigator_plugins.cc b/third_party/blink/renderer/modules/plugins/navigator_plugins.cc
-index 6cb12a8577e151345a33c3de8f1dc9039aea452e..19f79a19dab18b95858e58c336be6460910245da 100644
+index 6cb12a8577e151345a33c3de8f1dc9039aea452e..91179a686ff404d0f85a62d3979fce69cb5a2ccb 100644
 --- a/third_party/blink/renderer/modules/plugins/navigator_plugins.cc
 +++ b/third_party/blink/renderer/modules/plugins/navigator_plugins.cc
 @@ -10,6 +10,14 @@
@@ -17,7 +17,7 @@ index 6cb12a8577e151345a33c3de8f1dc9039aea452e..19f79a19dab18b95858e58c336be6460
  namespace blink {
  
  NavigatorPlugins::NavigatorPlugins(Navigator& navigator)
-@@ -35,6 +43,44 @@ const char NavigatorPlugins::kSupplementName[] = "NavigatorPlugins";
+@@ -35,6 +43,46 @@ const char NavigatorPlugins::kSupplementName[] = "NavigatorPlugins";
  
  // static
  DOMPluginArray* NavigatorPlugins::plugins(Navigator& navigator) {
@@ -42,11 +42,13 @@ index 6cb12a8577e151345a33c3de8f1dc9039aea452e..19f79a19dab18b95858e58c336be6460
 +        result_builder << "plugin description: "
 +          << plugins->item(i)->description().Utf8().data() << ", ";
 +        DOMMimeType* mime_type = plugins->item(i)->item(i);
-+        result_builder << "mimetype type: " << mime_type->type() << ", ";
-+        result_builder << "mimetype suffixes: " << mime_type->suffixes()
-+          << ", ";
-+        result_builder << "mimetype description: " << mime_type->description()
-+          << ";";
++        if (mime_type != nullptr) {
++          result_builder << "mimetype type: " << mime_type->type() << ", ";
++          result_builder << "mimetype suffixes: " << mime_type->suffixes()
++            << ", ";
++          result_builder << "mimetype description: "
++            << mime_type->description() << ";";
++        }
 +      }
 +
 +      const std::string str_result = result_builder.str();
