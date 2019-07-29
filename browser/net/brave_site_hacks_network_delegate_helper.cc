@@ -75,6 +75,7 @@ int OnBeforeStartTransaction_SiteHacksWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
+  // TODO(bridiver): Fix the Forbes cookie override with enabled NetworkService.
   CheckForCookieOverride(ctx->request_url,
       URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
       kForbesExtraCookies);

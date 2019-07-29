@@ -41,9 +41,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
       int render_process_id,
       int frame_tree_node_id,
       network::mojom::URLLoaderFactoryRequest request,
-      network::mojom::URLLoaderFactoryPtrInfo target_factory,
-      network::mojom::TrustedURLLoaderHeaderClientRequest
-          header_client_request) {
+      network::mojom::URLLoaderFactoryPtrInfo target_factory) {
     DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
 
     auto* self = static_cast<ResourceContextData*>(
@@ -61,7 +59,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
     auto proxy = std::make_unique<BraveProxyingURLLoaderFactory>(
         self->request_handler_.get(), resource_context, render_process_id,
         frame_tree_node_id, std::move(request), std::move(target_factory),
-        std::move(header_client_request), self->request_id_generator_,
+        self->request_id_generator_,
         base::BindOnce(&ResourceContextData::RemoveProxy,
                        self->weak_factory_.GetWeakPtr()));
 
@@ -147,8 +145,6 @@ BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
       proxied_loader_binding_(this, std::move(loader_request)),
       target_client_(std::move(client)),
       proxied_client_binding_(this),
-      has_any_extra_headers_listeners_(network_service_request_id_ != 0),
-      header_client_binding_(this),
       weak_factory_(this) {
   // If there is a client error, clean up the request.
   target_client_.set_connection_error_handler(base::BindOnce(
@@ -158,14 +154,6 @@ BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
 }
 
 BraveProxyingURLLoaderFactory::InProgressRequest::~InProgressRequest() {
-  if (on_before_send_headers_callback_) {
-    std::move(on_before_send_headers_callback_)
-        .Run(net::ERR_ABORTED, base::nullopt);
-  }
-  if (on_headers_received_callback_) {
-    std::move(on_headers_received_callback_)
-        .Run(net::ERR_ABORTED, base::nullopt, GURL());
-  }
   if (ctx_) {
     factory_->request_handler_->OnURLRequestDestroyed(ctx_);
   }
@@ -179,26 +167,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::Restart() {
 void BraveProxyingURLLoaderFactory::InProgressRequest::UpdateRequestInfo() {
   // TODO(iefremov): Update |ctx_| here and get rid of multiple spots where
   // it is refilled.
-  current_request_uses_header_client_ =
-      factory_->url_loader_header_client_binding_ &&
-      request_.url.SchemeIsHTTPOrHTTPS() && network_service_request_id_ != 0;
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
   request_completed_ = false;
 
-  // If the header client will be used, we start the request immediately, and
-  // OnBeforeSendHeaders and OnSendHeaders will be handled there. Otherwise,
-  // send these events before the request starts.
-  base::RepeatingCallback<void(int)> continuation;
-  if (current_request_uses_header_client_) {
-    continuation = base::BindRepeating(
-        &InProgressRequest::ContinueToStartRequest, weak_factory_.GetWeakPtr());
-  } else {
-    continuation =
-        base::BindRepeating(&InProgressRequest::ContinueToBeforeSendHeaders,
+  base::RepeatingCallback<void(int)> continuation =
+      base::BindRepeating(&InProgressRequest::ContinueToBeforeSendHeaders,
                             weak_factory_.GetWeakPtr());
-  }
   redirect_url_ = GURL();
   ctx_ = std::make_shared<brave::BraveRequestInfo>();
   brave::BraveRequestInfo::FillCTX(request_, render_process_id_,
@@ -224,10 +200,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
     if (proxied_client_binding_.is_bound())
       proxied_client_binding_.PauseIncomingMethodCallProcessing();
 
-    // Pause the header client, since we want to wait until OnBeforeRequest has
-    // finished before processing any future events.
-    if (header_client_binding_)
-      header_client_binding_.PauseIncomingMethodCallProcessing();
     return;
   }
   DCHECK_EQ(net::OK, result);
@@ -246,26 +218,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect(
     request_.headers.RemoveHeader(header);
   request_.headers.MergeFrom(modified_headers);
 
-  // Call this before checking |current_request_uses_header_client_| as it
-  // calculates it.
   UpdateRequestInfo();
 
   if (target_loader_.is_bound()) {
-    // If header_client_ is used, then we have to call FollowRedirect now as
-    // that's what triggers the network service calling back to
-    // OnBeforeSendHeaders(). Otherwise, don't call FollowRedirect now. Wait for
-    // the onBeforeSendHeaders callback(s) to run as these may modify request
-    // headers and if so we'll pass these modifications to FollowRedirect.
-    if (current_request_uses_header_client_) {
-      target_loader_->FollowRedirect(removed_headers, modified_headers,
-                                     new_url);
-    } else {
-      auto params = std::make_unique<FollowRedirectParams>();
-      params->removed_headers = removed_headers;
-      params->modified_headers = modified_headers;
-      params->new_url = new_url;
-      pending_follow_redirect_params_ = std::move(params);
-    }
+    auto params = std::make_unique<FollowRedirectParams>();
+    params->removed_headers = removed_headers;
+    params->modified_headers = modified_headers;
+    params->new_url = new_url;
+    pending_follow_redirect_params_ = std::move(params);
   }
 
   RestartInternal();
@@ -298,19 +258,10 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
     const network::ResourceResponseHead& head) {
   on_receive_response_received_ = true;
-  if (current_request_uses_header_client_) {
-    // Use the headers we got from OnHeadersReceived as that'll contain
-    // Set-Cookie if it existed.
-    auto saved_headers = current_response_.headers;
-    current_response_ = head;
-    current_response_.headers = saved_headers;
-    ContinueToResponseStarted(net::OK);
-  } else {
-    current_response_ = head;
-    HandleResponseOrRedirectHeaders(
-        base::BindRepeating(&InProgressRequest::ContinueToResponseStarted,
-                            weak_factory_.GetWeakPtr()));
-  }
+  current_response_ = head;
+  HandleResponseOrRedirectHeaders(
+      base::BindRepeating(&InProgressRequest::ContinueToResponseStarted,
+                          weak_factory_.GetWeakPtr()));
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveRedirect(
@@ -323,19 +274,10 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveRedirect(
     return;
   }
 
-  if (current_request_uses_header_client_) {
-    // Use the headers we got from OnHeadersReceived as that'll contain
-    // Set-Cookie if it existed.
-    auto saved_headers = current_response_.headers;
-    current_response_ = head;
-    current_response_.headers = saved_headers;
-    ContinueToBeforeRedirect(redirect_info, net::OK);
-  } else {
-    current_response_ = head;
-    HandleResponseOrRedirectHeaders(
-        base::BindRepeating(&InProgressRequest::ContinueToBeforeRedirect,
-                            weak_factory_.GetWeakPtr(), redirect_info));
-  }
+  current_response_ = head;
+  HandleResponseOrRedirectHeaders(
+      base::BindRepeating(&InProgressRequest::ContinueToBeforeRedirect,
+                          weak_factory_.GetWeakPtr(), redirect_info));
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnUploadProgress(
@@ -377,55 +319,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnComplete(
   target_client_->OnComplete(status);
 
   // Deletes |this|.
-  factory_->RemoveRequest(network_service_request_id_, request_id_);
-}
-
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnLoaderCreated(
-    network::mojom::TrustedHeaderClientRequest request) {
-  header_client_binding_.Bind(std::move(request));
-}
-
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnBeforeSendHeaders(
-    const net::HttpRequestHeaders& headers,
-    OnBeforeSendHeadersCallback callback) {
-  if (!current_request_uses_header_client_) {
-    std::move(callback).Run(net::OK, base::nullopt);
-    return;
-  }
-
-  request_.headers = headers;
-
-  // Small hack to preserve the referer string, crafted by us.
-  // TODO(iefremov): Get rid of it.
-  if (!ctx_->new_referrer.is_empty()) {
-    request_.headers.SetHeader("Referer", ctx_->new_referrer.spec());
-  }
-
-  on_before_send_headers_callback_ = std::move(callback);
-  ContinueToBeforeSendHeaders(net::OK);
-}
-
-void BraveProxyingURLLoaderFactory::InProgressRequest::OnHeadersReceived(
-    const std::string& headers,
-    OnHeadersReceivedCallback callback) {
-  if (!current_request_uses_header_client_) {
-    std::move(callback).Run(net::OK, base::nullopt, GURL());
-    return;
-  }
-
-  on_headers_received_callback_ = std::move(callback);
-  current_response_.headers =
-      base::MakeRefCounted<net::HttpResponseHeaders>(headers);
-  HandleResponseOrRedirectHeaders(
-      base::BindRepeating(&InProgressRequest::ContinueToHandleOverrideHeaders,
-                          weak_factory_.GetWeakPtr()));
+  factory_->RemoveRequest(this);
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::
     HandleBeforeRequestRedirect() {
-  // The extension requested a redirect. Close the connection with the current
-  // URLLoader and inform the URLLoaderClient the WebRequest API generated a
-  // redirect. To load |redirect_url_|, a new URLLoader will be recreated
+  // The listener requested a redirect. Close the connection with the current
+  // URLLoader and inform the URLLoaderClient redirect was generated.
+  // To load |redirect_url_|, a new URLLoader will be recreated
   // after receiving FollowRedirect().
 
   // Forgetting to close the connection with the current URLLoader caused
@@ -433,7 +334,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   // the load with it gives unexpected results. See
   // https://crbug.com/882661#c72.
   proxied_client_binding_.Close();
-  header_client_binding_.Close();
   target_loader_.reset();
 
   constexpr int kInternalRedirectStatusCode = 307;
@@ -497,10 +397,11 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     return;
   }
 
-  if (!current_request_uses_header_client_ && !redirect_url_.is_empty()) {
+  if (!redirect_url_.is_empty()) {
     HandleBeforeRequestRedirect();
     return;
   }
+
   DCHECK(ctx_);
   if (!ctx_->new_referrer.is_empty()) {
     request_.referrer = ctx_->new_referrer;
@@ -598,16 +499,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToStartRequest(
     return;
   }
 
-  if (current_request_uses_header_client_ && !redirect_url_.is_empty()) {
-    HandleBeforeRequestRedirect();
-    return;
-  }
-
   if (proxied_client_binding_.is_bound())
     proxied_client_binding_.ResumeIncomingMethodCallProcessing();
-
-  if (header_client_binding_)
-    header_client_binding_.ResumeIncomingMethodCallProcessing();
 
   if (!target_loader_.is_bound() && factory_->target_factory_.is_bound()) {
     // Nothing has cancelled us up to this point, so it's now OK to
@@ -615,10 +508,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToStartRequest(
     network::mojom::URLLoaderClientPtr proxied_client;
     proxied_client_binding_.Bind(mojo::MakeRequest(&proxied_client));
     uint32_t options = options_;
-    // Even if this request does not use the header client, future redirects
-    // might, so we need to set the option on the loader.
-    if (has_any_extra_headers_listeners_)
-      options |= network::mojom::kURLLoadOptionUseHeaderClient;
     factory_->target_factory_->CreateLoaderAndStart(
         mojo::MakeRequest(&target_loader_), routing_id_,
         network_service_request_id_, options, request_,
@@ -626,8 +515,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToStartRequest(
   }
 
   // From here the lifecycle of this request is driven by subsequent events on
-  // either |proxy_loader_binding_|, |proxy_client_binding_|, or
-  // |header_client_binding_|.
+  // either |proxy_loader_binding_|, |proxy_client_binding_|.
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
@@ -639,11 +527,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
     return;
   }
 
-  if (current_request_uses_header_client_) {
-    DCHECK(on_before_send_headers_callback_);
-    std::move(on_before_send_headers_callback_)
-        .Run(error_code, request_.headers);
-  } else if (pending_follow_redirect_params_) {
+  if (pending_follow_redirect_params_) {
     pending_follow_redirect_params_->removed_headers.insert(
         pending_follow_redirect_params_->removed_headers.end(),
         removed_headers.begin(), removed_headers.end());
@@ -670,34 +554,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
 
   if (proxied_client_binding_.is_bound())
     proxied_client_binding_.ResumeIncomingMethodCallProcessing();
-
-  if (!current_request_uses_header_client_)
-    ContinueToStartRequest(net::OK);
-}
-
-void BraveProxyingURLLoaderFactory::InProgressRequest::
-    ContinueToHandleOverrideHeaders(int error_code) {
-  if (error_code != net::OK) {
-    OnRequestError(network::URLLoaderCompletionStatus(error_code));
-    return;
-  }
-
-  DCHECK(on_headers_received_callback_);
-  base::Optional<std::string> headers;
-  if (override_headers_) {
-    headers = override_headers_->raw_headers();
-    if (current_request_uses_header_client_) {
-      // Make sure to update current_response_,  since when OnReceiveResponse
-      // is called we will not use its headers as it might be missing the
-      // Set-Cookie line (as that gets stripped over IPC).
-      current_response_.headers = override_headers_;
-    }
-  }
-  std::move(on_headers_received_callback_).Run(net::OK, headers, redirect_url_);
-  override_headers_ = nullptr;
-
-  if (proxied_client_binding_)
-    proxied_client_binding_.ResumeIncomingMethodCallProcessing();
+  ContinueToStartRequest(net::OK);
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::
@@ -707,7 +564,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     return;
   }
 
-  DCHECK(!current_request_uses_header_client_ || !override_headers_);
   if (override_headers_)
     current_response_.headers = override_headers_;
 
@@ -732,7 +588,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     // These will get re-bound if a new request is initiated by
     // |FollowRedirect()|.
     proxied_client_binding_.Close();
-    header_client_binding_.Close();
     target_loader_.reset();
     on_receive_response_received_ = false;
 
@@ -783,7 +638,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     brave::BraveRequestInfo::FillCTX(request_, render_process_id_,
                                      frame_tree_node_id_, request_id_,
                                      resource_context_, ctx_);
-    DCHECK(current_response_.headers.get());
     int result = factory_->request_handler_->OnHeadersReceived(
         ctx_, copyable_callback, current_response_.headers.get(),
         &override_headers_, &redirect_url_);
@@ -815,7 +669,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(
   }
 
   // Deletes |this|.
-  factory_->RemoveRequest(network_service_request_id_, request_id_);
+  factory_->RemoveRequest(this);
 }
 
 // Determines whether it is safe to redirect from |from_url| to |to_url|.
@@ -832,14 +686,12 @@ BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
     int frame_tree_node_id,
     network::mojom::URLLoaderFactoryRequest loader_request,
     network::mojom::URLLoaderFactoryPtrInfo target_factory,
-    network::mojom::TrustedURLLoaderHeaderClientRequest header_client_request,
     scoped_refptr<RequestIDGenerator> request_id_generator,
     DisconnectCallback on_disconnect)
     : request_handler_(request_handler),
       resource_context_(resource_context),
       render_process_id_(render_process_id),
       frame_tree_node_id_(frame_tree_node_id),
-      url_loader_header_client_binding_(this),
       request_id_generator_(request_id_generator),
       disconnect_callback_(std::move(on_disconnect)),
       weak_factory_(this) {
@@ -856,9 +708,6 @@ BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
   proxy_bindings_.set_connection_error_handler(
       base::BindRepeating(&BraveProxyingURLLoaderFactory::OnProxyBindingError,
                           base::Unretained(this)));
-
-  if (header_client_request)
-    url_loader_header_client_binding_.Bind(std::move(header_client_request));
 }
 
 BraveProxyingURLLoaderFactory::~BraveProxyingURLLoaderFactory() = default;
@@ -868,25 +717,19 @@ bool BraveProxyingURLLoaderFactory::MaybeProxyRequest(
     content::BrowserContext* browser_context,
     content::RenderFrameHost* render_frame_host,
     int render_process_id,
-    const url::Origin& request_initiator,
-    network::mojom::URLLoaderFactoryRequest* factory_request,
-    network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client) {
+    network::mojom::URLLoaderFactoryRequest* factory_request) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto proxied_request = std::move(*factory_request);
   network::mojom::URLLoaderFactoryPtrInfo target_factory_info;
   *factory_request = mojo::MakeRequest(&target_factory_info);
 
-  network::mojom::TrustedURLLoaderHeaderClientRequest header_client_request;
-  if (header_client)
-    header_client_request = mojo::MakeRequest(header_client);
   base::PostTaskWithTraits(
       FROM_HERE, {content::BrowserThread::IO},
       base::BindOnce(
           &ResourceContextData::StartProxying,
           browser_context->GetResourceContext(), render_process_id,
           render_frame_host ? render_frame_host->GetFrameTreeNodeId() : 0,
-          std::move(proxied_request), std::move(target_factory_info),
-          std::move(header_client_request)));
+          std::move(proxied_request), std::move(target_factory_info)));
   return true;
 }
 
@@ -901,33 +744,17 @@ void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
 
   // The request ID doesn't really matter in the Network Service path. It just
-  // needs to be unique per-BrowserContext so extensions can make sense of it.
-  // Note that |network_service_request_id_| by contrast is not necessarily
+  // needs to be unique per-BrowserContext so request handlers can make sense of
+  // it. Note that |network_service_request_id_| by contrast is not necessarily
   // unique, so we don't use it for identity here.
   const uint64_t web_request_id = request_id_generator_->Generate();
-  if (request_id) {
-    network_request_id_to_web_request_id_.emplace(request_id, web_request_id);
-  }
 
   auto result = requests_.emplace(
-      web_request_id,
       std::make_unique<InProgressRequest>(
           this, web_request_id, request_id, routing_id, render_process_id_,
           frame_tree_node_id_, options, request, resource_context_,
           traffic_annotation, std::move(loader_request), std::move(client)));
-  result.first->second->Restart();
-}
-
-void BraveProxyingURLLoaderFactory::OnLoaderCreated(
-    int32_t request_id,
-    network::mojom::TrustedHeaderClientRequest request) {
-  auto it = network_request_id_to_web_request_id_.find(request_id);
-  if (it == network_request_id_to_web_request_id_.end())
-    return;
-
-  auto request_it = requests_.find(it->second);
-  DCHECK(request_it != requests_.end());
-  request_it->second->OnLoaderCreated(std::move(request));
+  (*result.first)->Restart();
 }
 
 void BraveProxyingURLLoaderFactory::Clone(
@@ -949,11 +776,10 @@ void BraveProxyingURLLoaderFactory::OnProxyBindingError() {
   MaybeRemoveProxy();
 }
 
-void BraveProxyingURLLoaderFactory::RemoveRequest(
-    int32_t network_service_request_id,
-    uint64_t request_id) {
-  network_request_id_to_web_request_id_.erase(network_service_request_id);
-  requests_.erase(request_id);
+void BraveProxyingURLLoaderFactory::RemoveRequest(InProgressRequest* request) {
+  auto it = requests_.find(request);
+  DCHECK(it != requests_.end());
+  requests_.erase(it);
 
   MaybeRemoveProxy();
 }

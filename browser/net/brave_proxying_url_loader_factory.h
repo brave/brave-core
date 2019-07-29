@@ -63,15 +63,13 @@ class RequestIDGenerator
 // Cargoculted from WebRequestProxyingURLLoaderFactory and
 // signin::ProxyingURLLoaderFactory
 class BraveProxyingURLLoaderFactory
-    : public network::mojom::URLLoaderFactory,
-      public network::mojom::TrustedURLLoaderHeaderClient {
+    : public network::mojom::URLLoaderFactory {
  public:
   using DisconnectCallback =
       base::OnceCallback<void(BraveProxyingURLLoaderFactory*)>;
 
   class InProgressRequest : public network::mojom::URLLoader,
-                            public network::mojom::URLLoaderClient,
-                            public network::mojom::TrustedHeaderClient {
+                            public network::mojom::URLLoaderClient {
    public:
     InProgressRequest(
         BraveProxyingURLLoaderFactory* factory,
@@ -113,14 +111,6 @@ class BraveProxyingURLLoaderFactory
         mojo::ScopedDataPipeConsumerHandle body) override;
     void OnComplete(const network::URLLoaderCompletionStatus& status) override;
 
-    void OnLoaderCreated(network::mojom::TrustedHeaderClientRequest request);
-
-    // network::mojom::TrustedHeaderClient:
-    void OnBeforeSendHeaders(const net::HttpRequestHeaders& headers,
-                             OnBeforeSendHeadersCallback callback) override;
-    void OnHeadersReceived(const std::string& headers,
-                           OnHeadersReceivedCallback callback) override;
-
    private:
     // These two methods combined form the implementation of Restart().
     void UpdateRequestInfo();
@@ -131,7 +121,6 @@ class BraveProxyingURLLoaderFactory
                                const std::set<std::string>& set_headers,
                                int error_code);
     void ContinueToStartRequest(int error_code);
-    void ContinueToHandleOverrideHeaders(int error_code);
     void ContinueToResponseStarted(int error_code);
     void ContinueToBeforeRedirect(const net::RedirectInfo& redirect_info,
                                   int error_code);
@@ -179,23 +168,7 @@ class BraveProxyingURLLoaderFactory
 
     bool request_completed_ = false;
 
-    // If |has_any_extra_headers_listeners_| is set to true, the request will be
-    // sent with the network::mojom::kURLLoadOptionUseHeaderClient option, and
-    // we expect events to come through the
-    // network::mojom::TrustedURLLoaderHeaderClient binding on the factory.
-    // At the moment we always set it to true when we get a request with
-    // non-zero id. In the future we can optimize by checking if there are any
-    // particular callbacks that want extra headers of this particular request.
-    // Using header client is a must for manipulating with Cookies, Referer and
-    // other headers with Brave site hacks.
-    bool has_any_extra_headers_listeners_ = true;
-    bool current_request_uses_header_client_ = false;
-    OnBeforeSendHeadersCallback on_before_send_headers_callback_;
-    OnHeadersReceivedCallback on_headers_received_callback_;
-    mojo::Binding<network::mojom::TrustedHeaderClient> header_client_binding_;
-
-    // If |has_any_extra_headers_listeners_| is set to false and a redirect is
-    // in progress, this stores the parameters to FollowRedirect that came from
+    // This stores the parameters to FollowRedirect that came from
     // the client. That way we can combine it with any other changes that
     // extensions made to headers in their callbacks.
     struct FollowRedirectParams {
@@ -223,7 +196,6 @@ class BraveProxyingURLLoaderFactory
       int frame_tree_node_id,
       network::mojom::URLLoaderFactoryRequest request,
       network::mojom::URLLoaderFactoryPtrInfo target_factory,
-      network::mojom::TrustedURLLoaderHeaderClientRequest header_client_request,
       scoped_refptr<RequestIDGenerator> request_id_generator,
       DisconnectCallback on_disconnect);
 
@@ -233,13 +205,7 @@ class BraveProxyingURLLoaderFactory
       content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
       int render_process_id,
-      const url::Origin& request_initiator,
-      network::mojom::URLLoaderFactoryRequest* factory_request,
-      network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client);
-
-  void OnLoaderCreated(
-      int32_t request_id,
-      network::mojom::TrustedHeaderClientRequest request) override;
+      network::mojom::URLLoaderFactoryRequest* factory_request);
 
   // network::mojom::URLLoaderFactory:
   void CreateLoaderAndStart(network::mojom::URLLoaderRequest loader_request,
@@ -258,7 +224,7 @@ class BraveProxyingURLLoaderFactory
 
   void OnTargetFactoryError();
   void OnProxyBindingError();
-  void RemoveRequest(int32_t network_service_request_id, uint64_t request_id);
+  void RemoveRequest(InProgressRequest* request);
 
   void MaybeRemoveProxy();
 
@@ -269,16 +235,10 @@ class BraveProxyingURLLoaderFactory
 
   mojo::BindingSet<network::mojom::URLLoaderFactory> proxy_bindings_;
   network::mojom::URLLoaderFactoryPtr target_factory_;
-  mojo::Binding<network::mojom::TrustedURLLoaderHeaderClient>
-      url_loader_header_client_binding_;
 
-  // Mapping from our own internally generated request ID to an
-  // InProgressRequest instance.
-  std::map<uint64_t, std::unique_ptr<InProgressRequest>> requests_;
+  std::set<std::unique_ptr<InProgressRequest>, base::UniquePtrComparator>
+      requests_;
 
-  // A mapping from the network stack's notion of request ID to our own
-  // internally generated request ID for the same request.
-  std::map<int32_t, uint64_t> network_request_id_to_web_request_id_;
   scoped_refptr<RequestIDGenerator> request_id_generator_;
 
   DisconnectCallback disconnect_callback_;

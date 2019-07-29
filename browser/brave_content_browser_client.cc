@@ -293,8 +293,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
   use_proxy |= BraveProxyingURLLoaderFactory::MaybeProxyRequest(
       browser_context,
       frame, is_navigation ? -1 : render_process_id,
-      request_initiator, factory_request,
-      header_client);
+      factory_request);
   return use_proxy;
 }
 
