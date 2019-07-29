@@ -723,7 +723,8 @@ void BatPublishers::getPublisherActivityFromUrl(
                         visit_data.domain == TWITTER_TLD ||
                         visit_data.domain == REDDIT_TLD ||
                         visit_data.domain == VIMEO_TLD ||
-                        visit_data.domain == GITHUB_TLD;
+                        visit_data.domain == GITHUB_TLD ||
+                        visit_data.domain == SOUNDCLOUD_TLD;
 
   if (is_media &&
       visit_data.path != "" && visit_data.path != "/") {
@@ -738,6 +739,8 @@ void BatPublishers::getPublisherActivityFromUrl(
       type = VIMEO_MEDIA_TYPE;
     } else if (visit_data.domain == GITHUB_TLD) {
       type = GITHUB_MEDIA_TYPE;
+    } else if (visit_data.domain == SOUNDCLOUD_TLD) {
+      type = SOUNDCLOUD_MEDIA_TYPE;
     }
 
     ledger::VisitDataPtr new_visit_data = ledger::VisitData::New(visit_data);
