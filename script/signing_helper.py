@@ -100,6 +100,11 @@ def GetBraveSigningConfig(config_class, development):
                 provisioning_profile))[0]
 
         @property
+        def optional_parts(self):
+            return set(('libwidevinecdm.dylib',
+                        'sparkle-framework',))
+
+        @property
         def run_spctl_assess(self):
             return True
 
