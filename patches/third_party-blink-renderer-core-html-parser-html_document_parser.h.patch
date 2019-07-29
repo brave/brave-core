@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/html/parser/html_document_parser.h b/third_party/blink/renderer/core/html/parser/html_document_parser.h
+index 2384523dcdf939c69bf93930e59643f3446c9a45..fd5900709826bdc432604da9974f50d406d9a392 100644
+--- a/third_party/blink/renderer/core/html/parser/html_document_parser.h
++++ b/third_party/blink/renderer/core/html/parser/html_document_parser.h
+@@ -139,6 +139,7 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
+   void AppendBytes(const char* bytes, size_t length) override;
+   void Flush() final;
+   void SetDecoder(std::unique_ptr<TextResourceDecoder>) final;
++  void DidTransformSpeedreader();
+ 
+  protected:
+   void insert(const String&) final;

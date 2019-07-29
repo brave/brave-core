@@ -1,32 +1,24 @@
 diff --git a/third_party/blink/renderer/core/html/parser/background_html_parser.cc b/third_party/blink/renderer/core/html/parser/background_html_parser.cc
-index 7ebc9c1e33cd789cc363f38d5553ade27fdcf3ce..db89f34f57787e9c151b8b7657ec7f75cd6a0291 100644
+index 7ebc9c1e33cd789cc363f38d5553ade27fdcf3ce..c3f02c2ddbb24b34f903dcd6766305a9db220966 100644
 --- a/third_party/blink/renderer/core/html/parser/background_html_parser.cc
 +++ b/third_party/blink/renderer/core/html/parser/background_html_parser.cc
-@@ -29,6 +29,8 @@
+@@ -29,6 +29,9 @@
  #include <utility>
  
  #include "base/single_thread_task_runner.h"
 +#include "base/logging.h"
++#include "base/debug/stack_trace.h"
 +#include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/platform.h"
  #include "third_party/blink/renderer/core/html/parser/html_document_parser.h"
  #include "third_party/blink/renderer/core/html/parser/text_resource_decoder.h"
-@@ -68,6 +70,7 @@ static_assert(kOutstandingTokenLimit > kPendingTokenLimit,
- base::WeakPtr<BackgroundHTMLParser> BackgroundHTMLParser::Create(
-     std::unique_ptr<Configuration> config,
-     scoped_refptr<base::SingleThreadTaskRunner> loading_task_runner) {
-+  // LOG(ERROR) << "Create background parser";
-   auto* background_parser = new BackgroundHTMLParser(
-       std::move(config), std::move(loading_task_runner));
-   return background_parser->weak_factory_.GetWeakPtr();
-@@ -77,7 +80,13 @@ void BackgroundHTMLParser::Init(
+@@ -77,7 +80,12 @@ void BackgroundHTMLParser::Init(
      const KURL& document_url,
      std::unique_ptr<CachedDocumentParameters> cached_document_parameters,
      const MediaValuesCached::MediaValuesCachedData& media_values_cached_data,
 -    bool priority_hints_origin_trial_enabled) {
 +    bool priority_hints_origin_trial_enabled,
 +    bool speedreader_enabled) {
-+  LOG(ERROR) << "Init background parser for " << document_url;
 +  speedreader_enabled_ = speedreader_enabled;
 +  if (speedreader_enabled) {
 +    speedreader_.reset(document_url.GetString().Utf8().data());
@@ -34,21 +26,12 @@ index 7ebc9c1e33cd789cc363f38d5553ade27fdcf3ce..db89f34f57787e9c151b8b7657ec7f75
    preload_scanner_.reset(new TokenPreloadScanner(
        document_url, std::move(cached_document_parameters),
        media_values_cached_data, TokenPreloadScanner::ScannerType::kMainDocument,
-@@ -100,6 +109,7 @@ BackgroundHTMLParser::BackgroundHTMLParser(
-       pending_csp_meta_token_index_(
-           HTMLDocumentParser::TokenizedChunk::kNoPendingToken),
-       starting_script_(false),
-+      speedreader_(),
-       weak_factory_(this) {}
- 
- BackgroundHTMLParser::~BackgroundHTMLParser() = default;
-@@ -113,7 +123,12 @@ void BackgroundHTMLParser::AppendRawBytesFromMainThread(
+@@ -113,7 +121,11 @@ void BackgroundHTMLParser::AppendRawBytesFromMainThread(
  void BackgroundHTMLParser::AppendDecodedBytes(const String& input) {
    DCHECK(!input_.Current().IsClosed());
    input_.Append(input);
 -  PumpTokenizer();
 +  if (speedreader_enabled_) {
-+    // LOG(ERROR) << "Appending " << input.length() << " bytes";
 +    speedreader_.pumpContent(input.Utf8().data());
 +  } else {
 +    PumpTokenizer();
@@ -56,23 +39,22 @@ index 7ebc9c1e33cd789cc363f38d5553ade27fdcf3ce..db89f34f57787e9c151b8b7657ec7f75
  }
  
  void BackgroundHTMLParser::SetDecoder(
-@@ -165,6 +180,19 @@ void BackgroundHTMLParser::StartedChunkWithCheckpoint(
- 
- void BackgroundHTMLParser::Finish() {
-   MarkEndOfFile();
-+  // TODO: SpeedReader
-+  if (speedreader_enabled_) {
-+    std::string transformed;
-+    bool spedread = speedreader_.finalize(&transformed);
-+    // LOG(ERROR) << "SpeedReader finalized? " << spedread;
-+    if (spedread) {
-+
-+      tokenizer_->Reset();
-+      input_.ResetTo(decoder_->Decode(transformed.c_str(), transformed.length()));
-+      // UpdateDocument(decoder_->Decode(transformed.c_str(), transformed.length()));
-+
-+    }
-+  }
-   PumpTokenizer();
+@@ -164,6 +176,18 @@ void BackgroundHTMLParser::StartedChunkWithCheckpoint(
  }
  
+ void BackgroundHTMLParser::Finish() {
++  if (speedreader_enabled_) {
++    std::string transformed;
++    bool readable = speedreader_.finalize(&transformed);
++    if (readable) {
++      if (parser_) {
++        parser_->DidTransformSpeedreader();
++      }
++      DCHECK(!input_.Current().IsClosed());
++      input_.Current().Clear();
++      input_.Append(decoder_->Decode(transformed.c_str(), transformed.length()));
++    }
++  }
+   MarkEndOfFile();
+   PumpTokenizer();
+ }
