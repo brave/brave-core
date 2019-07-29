@@ -132,7 +132,11 @@ BraveSyncClient* BraveSyncServiceImpl::GetSyncClient() {
 }
 
 bool BraveSyncServiceImpl::IsSyncConfigured() {
-  return sync_configured_;
+  return sync_configured_ &&
+      // When there is 0 or 1 device, it means chain is not completely created,
+      // so we should give a chance to make force reset in |OnSetupSyncHaveCode|
+      // or in |OnSetupSyncNewToSync|
+      (sync_prefs_->GetSyncDevices()->size() >= 2);
 }
 
 bool BraveSyncServiceImpl::IsSyncInitialized() {
@@ -165,6 +169,8 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
     return;
   }
 
+  ForceCompleteReset();
+  DCHECK(!sync_prefs_->GetSyncEnabled());
   SetDeviceName(device_name);
   initializing_ = true;
 
@@ -185,6 +191,10 @@ void BraveSyncServiceImpl::OnSetupSyncNewToSync(
     NotifyLogMessage("already configured");
     return;
   }
+
+  ForceCompleteReset();
+
+  DCHECK(!sync_prefs_->GetSyncEnabled());
 
   sync_words_.clear();  // If the previous attempt was connect to sync chain
                         // and failed to receive save-init-data
@@ -222,6 +232,7 @@ void BraveSyncServiceImpl::OnResetSync() {
     // we can reset it by ResetInternal()
     const std::string device_id = sync_prefs_->GetThisDeviceId();
     OnDeleteDevice(device_id);
+    reseting_ = true;
   }
 }
 
@@ -690,6 +701,14 @@ void BraveSyncServiceImpl::ResetSyncInternal() {
   sync_initialized_ = false;
 
   sync_prefs_->SetSyncEnabled(false);
+
+  reseting_ = false;
+}
+
+void BraveSyncServiceImpl::ForceCompleteReset() {
+  if (reseting_) {
+    ResetSyncInternal();
+  }
 }
 
 void BraveSyncServiceImpl::SetDeviceName(const std::string& name) {

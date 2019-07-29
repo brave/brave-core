@@ -173,6 +173,10 @@ class BraveSyncServiceImpl
   void NotifyHaveSyncWords(const std::string& sync_words);
 
   void ResetSyncInternal();
+  void ForceCompleteReset();
+  bool GetResettingForTest() const {
+    return reseting_;
+  }
 
   void SetDeviceName(const std::string& name);
 
