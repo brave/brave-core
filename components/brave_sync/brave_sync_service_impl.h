@@ -35,6 +35,8 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyNewToSync);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetExistingObjects);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BackgroundSyncStarted);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BackgroundSyncStopped);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest,
+                                          OnSetupSyncHaveCode_Reset_SetupAgain);
 
 class BraveSyncServiceTest;
 
@@ -108,6 +110,9 @@ class BraveSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetExistingObjects);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BackgroundSyncStarted);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BackgroundSyncStopped);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
+                           OnSetupSyncHaveCode_Reset_SetupAgain);
+
   friend class ::BraveSyncServiceTest;
 
   // SyncMessageHandler overrides

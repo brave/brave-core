@@ -705,3 +705,70 @@ TEST_F(BraveSyncServiceTest, BackgroundSyncStopped) {
   sync_service()->BackgroundSyncStopped(false);
   EXPECT_FALSE(sync_service()->timer_->IsRunning());
 }
+
+TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
+  EXPECT_FALSE(sync_service()->GetResettingForTest());
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  // Expecting sync state changed twice: for enabled state and for device name
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
+  sync_service()->OnSetupSyncHaveCode("word1 word2 word3", "test_device");
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+
+  brave_sync::Uint8Array seed
+                      = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+  brave_sync::Uint8Array device_id = {0};
+  // These settings are changed:
+  //    bookmarks_enabled, site_settings_enabled, history_enabled
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
+  sync_service()->OnSaveInitData(seed, device_id);
+
+  RecordsList records;
+  records.push_back(SimpleDeviceRecord(
+      SyncRecord::Action::A_CREATE,
+      "0", "this_device"));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+  sync_service()->OnResolvedPreferences(records);
+
+  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+
+  ASSERT_EQ(devices->size(), 1u);
+  EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
+  EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
+      ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
+      "this_device"))).Times(1);
+  sync_service()->OnResetSync();
+  // Here we have marked service as in resetting state
+  // Actual kSyncEnabled will go to false after receiving confirmation of
+  // this_device DELETE
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+
+  EXPECT_TRUE(sync_service()->GetResettingForTest());
+
+  // OnSyncStateChanged actually is invoked 9 times:
+  // ForceCompleteReset
+  //    ResetSyncInternal
+  //        brave_sync::Prefs::Clear()
+  //            device_name
+  //            enabled => false
+  //            bookmarks_enabled
+  //            site_settings_enabled
+  //            history_enabled
+  //            device_list
+  //       enabled => false
+  // OnSetupSyncHaveCode()
+  //     device_name
+  //     enabled => true
+
+  // OnSyncEnabledChanged is actually invoked 3 times:
+  // see preference enabled in abobe list
+  EXPECT_CALL(*observer(),
+      OnSyncStateChanged(sync_service())).Times(AtLeast(1));
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(AtLeast(1));
+  sync_service()->OnSetupSyncHaveCode("word1 word2 word5", "test_device");
+  EXPECT_FALSE(sync_service()->GetResettingForTest());
+
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+}
