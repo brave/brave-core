@@ -40,7 +40,8 @@ bool BraveContentSettingsObserver::OnMessageReceived(
   bool handled = true;
   IPC_BEGIN_MESSAGE_MAP(BraveContentSettingsObserver, message)
     IPC_MESSAGE_HANDLER(BraveFrameMsg_AllowScriptsOnce, OnAllowScriptsOnce)
-    IPC_MESSAGE_HANDLER(BraveFrameMsg_DisableSpeedreaderOnce, OnDisableSpeedreaderOnce)
+    IPC_MESSAGE_HANDLER(BraveFrameMsg_DisableSpeedreaderOnce,
+      OnDisableSpeedreaderOnce)
     IPC_MESSAGE_UNHANDLED(handled = false)
   IPC_END_MESSAGE_MAP()
 
@@ -225,19 +226,15 @@ bool BraveContentSettingsObserver::RunSpeedreader(
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
 
   if (IsBraveShieldsDown(frame, secondary_url)) {
-    LOG(ERROR) << "Run Speedreader: Shields Down";
     return false;
   }
 
   const GURL& primary_url = GetOriginOrURL(frame);
   if (IsWhitelistedForContentSettings()) {
-    LOG(ERROR) << "Run Speedreader: whitelisted";
     return false;
-    
   }
 
   if (IsSpeedreaderTemporarilyDisabled(primary_url)) {
-    LOG(ERROR) << "Run Speedreader: temporarily disabled";
     return false;
   }
 
@@ -254,16 +251,13 @@ bool BraveContentSettingsObserver::RunSpeedreader(
       }
 
       if (rule.primary_pattern.Matches(secondary_url) &&
-          (rule.secondary_pattern == ContentSettingsPattern::Wildcard() || 
+          (rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
           rule.secondary_pattern.Matches(secondary_url))) {
-
         setting = rule.GetContentSetting();
         break;
       }
     }
   }
-
-  LOG(ERROR) << "Run Speedreader: content setting " << (setting == CONTENT_SETTING_BLOCK);
 
   return setting == CONTENT_SETTING_BLOCK;  
 }

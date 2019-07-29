@@ -11,7 +11,10 @@
 #include "base/values.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/speedreader/browser/buildflags/buildflags.h"
+#if BUILDFLAG(SPEEDREADER_ENABLED)
 #include "brave/components/speedreader/common/speedreader_constants.h"
+#endif
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -55,11 +58,13 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
                           base::Unretained(this)));
+#if BUILDFLAG(SPEEDREADER_ENABLED)
   web_ui()->RegisterMessageCallback(
       "setSpeedreaderEverywhereControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetSpeedreaderEverywhereControlType,
           base::Unretained(this)));
+#endif
 }
 
 void DefaultBraveShieldsHandler::GetAdControlType(const base::ListValue* args) {
@@ -237,6 +242,7 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
         value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }
 
+#if BUILDFLAG(SPEEDREADER_ENABLED)
 void DefaultBraveShieldsHandler::SetSpeedreaderEverywhereControlType(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
@@ -252,3 +258,4 @@ void DefaultBraveShieldsHandler::SetSpeedreaderEverywhereControlType(
         speedreader::kSpeedreader,
         value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }
+#endif

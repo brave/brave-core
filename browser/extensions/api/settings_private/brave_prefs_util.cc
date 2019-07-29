@@ -10,6 +10,7 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "components/browsing_data/core/pref_names.h"
+#include "brave/components/speedreader/browser/buildflags/buildflags.h"
 
 namespace extensions {
 
@@ -49,8 +50,10 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kLinkedInEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#if BUILDFLAG(SPEEDREADER_ENABLED)
   (*s_brave_whitelist)[kSpeedreaderEverywhereControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+#endif
 
   // appearance prefs
   (*s_brave_whitelist)[kLocationBarIsWide] =

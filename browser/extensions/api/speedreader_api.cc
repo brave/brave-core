@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -6,6 +6,8 @@
 #include "brave/browser/extensions/api/speedreader_api.h"
 
 #include <memory>
+#include <utility>
+#include <string>
 
 #include "brave/common/extensions/api/brave_speedreader.h"
 #include "brave/common/extensions/extension_constants.h"
@@ -133,7 +135,8 @@ SpeedreaderSetFunction::Run() {
   std::string resource_identifier = ::speedreader::kSpeedreader;
 
   std::string setting_str;
-  EXTENSION_FUNCTION_VALIDATE(params->details.setting->GetAsString(&setting_str));
+  EXTENSION_FUNCTION_VALIDATE(
+    params->details.setting->GetAsString(&setting_str));
   ContentSetting setting;
   EXTENSION_FUNCTION_VALIDATE(
       content_settings::ContentSettingFromString(setting_str, &setting));

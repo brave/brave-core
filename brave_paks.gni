@@ -4,6 +4,7 @@
 
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/speedreader/browser/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -64,7 +65,6 @@ template("brave_extra_paks") {
       "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
       "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak",
       "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
-      "$root_gen_dir/brave/components/speedreader/resources/speedreader_resources.pak",
     ]
 
     deps = [
@@ -77,7 +77,6 @@ template("brave_extra_paks") {
       "//brave/browser/resources/settings:resources",
       "//brave/components/brave_sync:resources",
       "//brave/ui/webui/resources",
-      "//brave/components/speedreader/resources",
     ]
 
     if (enable_brave_webtorrent) {
@@ -113,6 +112,16 @@ template("brave_extra_paks") {
           "//brave/components/brave_rewards/resources/extension:resources",
         ]
       }
+    }
+
+    if (speedreader_enabled) {
+      sources += [
+        "$root_gen_dir/brave/components/speedreader/resources/speedreader_resources.pak",
+      ]
+
+      deps += [
+        "//brave/components/speedreader/resources",
+      ]
     }
 
     if (defined(invoker.deps)) {

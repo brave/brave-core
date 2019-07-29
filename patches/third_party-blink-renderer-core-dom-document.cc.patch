@@ -1,0 +1,32 @@
+diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
+index ee0703bed193cfe7df02a97586753dd044d499be..34a6017422fa823e4f464380192720d42222e4fd 100644
+--- a/third_party/blink/renderer/core/dom/document.cc
++++ b/third_party/blink/renderer/core/dom/document.cc
+@@ -198,7 +198,12 @@
+ #include "third_party/blink/renderer/core/html/imports/html_import_loader.h"
+ #include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
+ #include "third_party/blink/renderer/core/html/lazy_load_image_observer.h"
++#include "brave/components/speedreader/browser/buildflags/buildflags.h"
++#if BUILDFLAG(SPEEDREADER_ENABLED)
++#include "brave/components/speedreader/browser/speedreader_html_document_parser.h"
++#else
+ #include "third_party/blink/renderer/core/html/parser/html_document_parser.h"
++#endif
+ #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
+ #include "third_party/blink/renderer/core/html/parser/nesting_level_incrementer.h"
+ #include "third_party/blink/renderer/core/html/parser/text_resource_decoder.h"
+@@ -2958,8 +2963,13 @@ CanvasFontCache* Document::GetCanvasFontCache() {
+ 
+ DocumentParser* Document::CreateParser() {
+   if (IsHTMLDocument())
+-    return HTMLDocumentParser::Create(ToHTMLDocument(*this),
++#if BUILDFLAG(SPEEDREADER_ENABLED)
++	return SpeedreaderHTMLDocumentParser::Create(ToHTMLDocument(*this),
+                                       parser_sync_policy_);
++#else
++    return HTMLDocumentParser::Create(ToHTMLDocument(*this),
++                                       parser_sync_policy_);
++#endif
+   // FIXME: this should probably pass the frame instead
+   return MakeGarbageCollected<XMLDocumentParser>(*this, View());
+ }

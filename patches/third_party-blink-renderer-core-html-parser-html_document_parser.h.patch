@@ -1,12 +1,34 @@
 diff --git a/third_party/blink/renderer/core/html/parser/html_document_parser.h b/third_party/blink/renderer/core/html/parser/html_document_parser.h
-index 2384523dcdf939c69bf93930e59643f3446c9a45..fd5900709826bdc432604da9974f50d406d9a392 100644
+index 2384523dcdf939c69bf93930e59643f3446c9a45..fdb3ce49c57152d0fa25297b06bcf568e3d7ddf5 100644
 --- a/third_party/blink/renderer/core/html/parser/html_document_parser.h
 +++ b/third_party/blink/renderer/core/html/parser/html_document_parser.h
 @@ -139,6 +139,7 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
    void AppendBytes(const char* bytes, size_t length) override;
    void Flush() final;
    void SetDecoder(std::unique_ptr<TextResourceDecoder>) final;
-+  void DidTransformSpeedreader();
++  virtual void HTMLInterventionActive() {}
  
   protected:
    void insert(const String&) final;
+@@ -150,6 +151,7 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
+   void ForcePlaintextForTextDocument();
+ 
+  private:
++  friend class SpeedreaderHTMLDocumentParser;
+   static HTMLDocumentParser* Create(DocumentFragment* fragment,
+                                     Element* context_element,
+                                     ParserContentPolicy parser_content_policy) {
+@@ -184,10 +186,10 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
+   }
+   void AppendCurrentInputStreamToPreloadScannerAndScan() final;
+ 
+-  void StartBackgroundParser();
+-  void StopBackgroundParser();
++  virtual void StartBackgroundParser();
++  virtual void StopBackgroundParser();
+   void ValidateSpeculations(std::unique_ptr<TokenizedChunk> last_chunk);
+-  void DiscardSpeculationsAndResumeFrom(
++  virtual void DiscardSpeculationsAndResumeFrom(
+       std::unique_ptr<TokenizedChunk> last_chunk,
+       std::unique_ptr<HTMLToken>,
+       std::unique_ptr<HTMLTokenizer>);

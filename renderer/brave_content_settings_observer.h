@@ -75,8 +75,8 @@ class BraveContentSettingsObserver
   void OnDisableSpeedreaderOnce(const std::vector<std::string>& origins);
   bool IsSpeedreaderTemporarilyDisabled(const GURL& page_url);
 
-  // Origins of pages for which speedreader is temporarily disabled for this frame in the
-  // current load
+  // Origins of pages for which speedreader is temporarily disabled for
+  // this frame in the current load
   base::flat_set<std::string> temporarily_disabled_speedreader_;
 
   // temporary allowed pages we preloaded for the next load

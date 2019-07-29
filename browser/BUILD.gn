@@ -2,6 +2,7 @@ import("//brave/build/config.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/speedreader/browser/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -111,7 +112,6 @@ source_set("browser_process") {
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/brave_sync",
     "//brave/components/brave_wallet/browser",
-    "//brave/components/speedreader/browser",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser",
@@ -165,6 +165,12 @@ source_set("browser_process") {
   if (brave_ads_enabled) {
     deps += [
       "//components/dom_distiller/core",
+    ]
+  }
+
+  if (speedreader_enabled) {
+    deps += [
+      "//brave/components/speedreader/browser"
     ]
   }
 
