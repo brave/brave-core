@@ -17,6 +17,7 @@
 #include "bat/ledger/internal/media/vimeo.h"
 #include "bat/ledger/internal/media/youtube.h"
 #include "bat/ledger/internal/media/github.h"
+#include "bat/ledger/internal/media/soundcloud.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -64,6 +65,7 @@ class Media {
   std::unique_ptr<braveledger_media::Reddit> media_reddit_;
   std::unique_ptr<braveledger_media::Vimeo> media_vimeo_;
   std::unique_ptr<braveledger_media::GitHub> media_github_;
+  std::unique_ptr<braveledger_media::SoundCloud> media_soundcloud_;
 };
 
 }  // namespace braveledger_media

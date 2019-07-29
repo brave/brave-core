@@ -153,6 +153,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/wallet/wallet_util.cc",
     "src/bat/ledger/internal/media/github.h",
     "src/bat/ledger/internal/media/github.cc",
+    "src/bat/ledger/internal/media/soundcloud.h",
+    "src/bat/ledger/internal/media/soundcloud.cc",
     "src/bat/ledger/ledger.cc",
     "src/bat/ledger/transaction_info.cc",
     "src/bat/ledger/transactions_info.cc",
