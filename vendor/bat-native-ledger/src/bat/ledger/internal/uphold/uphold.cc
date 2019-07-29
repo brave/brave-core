@@ -23,6 +23,7 @@ namespace braveledger_uphold {
 Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
     transfer_(std::make_unique<UpholdTransfer>(ledger, this)),
     card_(std::make_unique<UpholdCard>(ledger, this)),
+    user_(std::make_unique<UpholdUser>(ledger)),
     ledger_(ledger) {
 }
 
@@ -353,11 +354,54 @@ void Uphold::WalletAuthorization(
 }
 
 void Uphold::OnGenerateExternalWallet(
-    ledger::Result result,
-    ledger::ExternalWalletPtr wallet,
+    const ledger::Result result,
+    const User user,
+    const ledger::ExternalWallet& wallet,
     ledger::ExternalWalletCallback callback) {
-  ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
-  callback(result, std::move(wallet));
+  auto wallet_new = ledger::ExternalWallet::New(wallet);
+  if (result == ledger::Result::EXPIRED_TOKEN) {
+    DisconectWallet();
+    callback(result, std::move(wallet_new));
+    return;
+  }
+
+  if (!wallet_new || result != ledger::Result::LEDGER_OK) {
+    callback(result, std::move(wallet_new));
+    return;
+  }
+
+  wallet_new->user_name = user.name;
+
+  bool allow_zero_balance = false;
+  if (wallet_new->status == ledger::WalletStatus::CONNECTED && user.verified) {
+    wallet_new->status = ledger::WalletStatus::VERIFIED;
+    allow_zero_balance = true;
+
+    ledger_->ShowNotification(
+        "wallet_new_verified",
+        std::bind(&Uphold::OnShowNotification, this, _1), {"Uphold"});
+  } else if (
+    wallet_new->status == ledger::WalletStatus::VERIFIED && !user.verified) {
+    wallet_new->status = ledger::WalletStatus::CONNECTED;
+    callback(ledger::Result::LEDGER_OK, std::move(wallet_new));
+  }
+
+  ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet_new->Clone());
+
+  if (user.verified) {
+    auto transfer_callback = std::bind(
+      &Uphold::OnTransferAnonToExternalWalletCallback,
+      this,
+      callback,
+      *wallet_new,
+      _1);
+
+    // transfer funds from anon wallet to uphold
+    ledger_->TransferAnonToExternalWallet(
+      wallet_new->address,
+      allow_zero_balance,
+      transfer_callback);
+  }
 }
 
 void Uphold::GenerateExternalWallet(
@@ -393,12 +437,13 @@ void Uphold::GenerateExternalWallet(
 
   if (wallet->status == ledger::WalletStatus::CONNECTED ||
       wallet->status == ledger::WalletStatus::VERIFIED) {
-    auto user_callback = std::bind(&Uphold::OnGenerateExternalWallet,
-                                   this,
-                                   _1,
-                                   _2,
-                                   callback);
-    GetUser(std::move(wallet), user_callback);
+    const auto user_callback = std::bind(&Uphold::OnGenerateExternalWallet,
+                                         this,
+                                         _1,
+                                         _2,
+                                         *wallet,
+                                         callback);
+    user_->Get(std::move(wallet), user_callback);
     return;
   }
 
@@ -413,7 +458,7 @@ void Uphold::CreateCard(
 }
 
 void Uphold::OnTransferAnonToExternalWalletCallback(
-    GetUserCallback callback,
+    ledger::ExternalWalletCallback callback,
     const ledger::ExternalWallet& wallet,
     ledger::Result result) {
 
@@ -426,103 +471,6 @@ void Uphold::OnTransferAnonToExternalWalletCallback(
 }
 
 void Uphold::OnShowNotification(ledger::Result result) {
-}
-
-void Uphold::OnGetUser(
-    GetUserCallback callback,
-    const ledger::ExternalWallet& wallet,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
-  auto new_wallet = ledger::ExternalWallet::New(wallet);
-
-  if (response_status_code == net::HTTP_UNAUTHORIZED) {
-    DisconectWallet();
-    callback(ledger::Result::EXPIRED_TOKEN, std::move(new_wallet));
-    return;
-  }
-
-  if (response_status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR, std::move(new_wallet));
-    return;
-  }
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
-  if (!value || !value->is_dict()) {
-    callback(ledger::Result::LEDGER_ERROR, std::move(new_wallet));
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    callback(ledger::Result::LEDGER_ERROR, std::move(new_wallet));
-    return;
-  }
-
-  auto* name = dictionary->FindKey("name");
-  if (name && name->is_string()) {
-    new_wallet->user_name = name->GetString();
-  }
-
-  bool verified = false;
-  auto* member_at = dictionary->FindKey("memberAt");
-  if (member_at && member_at->is_string()) {
-    const auto member = member_at->GetString();
-    verified = !member.empty();
-  }
-
-  bool allow_zero_balance = false;
-
-  if (new_wallet->status == ledger::WalletStatus::CONNECTED && verified) {
-    new_wallet->status = ledger::WalletStatus::VERIFIED;
-    allow_zero_balance = true;
-
-    ledger_->ShowNotification(
-        "wallet_verified",
-        std::bind(&Uphold::OnShowNotification, this, _1), {"Uphold"});
-  } else if (
-    new_wallet->status == ledger::WalletStatus::VERIFIED && !verified) {
-    new_wallet->status = ledger::WalletStatus::CONNECTED;
-    callback(ledger::Result::LEDGER_OK, std::move(new_wallet));
-  }
-
-  if (verified) {
-    auto transfer_callback = std::bind(
-      &Uphold::OnTransferAnonToExternalWalletCallback,
-      this,
-      callback,
-      *new_wallet,
-      _1);
-
-    // transfer funds from anon wallet to uphold
-    ledger_->TransferAnonToExternalWallet(
-      new_wallet->address,
-      allow_zero_balance,
-      transfer_callback);
-  }
-}
-
-void Uphold::GetUser(
-    ledger::ExternalWalletPtr wallet,
-    GetUserCallback callback) {
-  const auto headers = RequestAuthorization(wallet->token);
-  const std::string url = GetAPIUrl("/v0/me");
-
-  auto user_callback = std::bind(&Uphold::OnGetUser,
-                                 this,
-                                 callback,
-                                 *wallet,
-                                 _1,
-                                 _2,
-                                 _3);
-  ledger_->LoadURL(
-      url,
-      headers,
-      "",
-      "",
-      ledger::URL_METHOD::GET,
-      user_callback);
 }
 
 void Uphold::OnDisconectWallet(
