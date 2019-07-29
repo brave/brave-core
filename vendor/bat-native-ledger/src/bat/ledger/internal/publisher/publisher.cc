@@ -656,7 +656,17 @@ void Publisher::setBalanceReport(ledger::ACTIVITY_MONTH month,
   saveState();
 }
 
-bool Publisher::getBalanceReport(ledger::ACTIVITY_MONTH month,
+void BatPublisher::getBalanceReport(
+    ledger::ACTIVITY_MONTH month,
+    int year,
+    ledger::GetBalanceReportCallback callback) {
+  ledger::BalanceReportInfo info;
+  bool result =
+    getBalanceReportInternal(month, year, &info);
+  callback(result, info.Clone());
+}
+
+bool BatPublishers::getBalanceReportInternal(ledger::ACTIVITY_MONTH month,
                                      int year,
                                      ledger::BalanceReportInfo* report_info) {
   std::string name = GetBalanceReportName(month, year);
@@ -677,7 +687,7 @@ bool Publisher::getBalanceReport(ledger::ACTIVITY_MONTH month,
     new_report_info.total = "0";
 
     setBalanceReport(month, year, new_report_info);
-    bool successGet = getBalanceReport(month, year, report_info);
+    bool successGet = getBalanceReportInternal(month, year, report_info);
     if (successGet) {
       iter = state_->monthly_balances_.find(name);
     } else {
@@ -839,7 +849,7 @@ void Publisher::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
                                          ledger::ReportType type,
                                          const std::string& probi) {
   ledger::BalanceReportInfo report_info;
-  getBalanceReport(month, year, &report_info);
+  getBalanceReportInternal(month, year, &report_info);
 
   switch (type) {
     case ledger::ReportType::GRANT:

@@ -632,11 +632,12 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return bridgedReports;
 }
 
-- (BATBalanceReportInfo *)balanceReportForMonth:(BATActivityMonth)month year:(int)year
+- (void)balanceReportForMonth:(BATActivityMonth)month year:(int)year completion:(void (NS_NOESCAPE ^)(BATBalanceReportInfo * _Nullable info))completion
 {
-  ledger::BalanceReportInfo info;
-  ledger->GetBalanceReport((ledger::ACTIVITY_MONTH)month, year, &info);
-  return [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:info];
+  ledger->GetBalanceReport((ledger::ACTIVITY_MONTH)month, year, ^(bool result, ledger::BalanceReportInfoPtr info) {
+    auto bridgedInfo = info.get() != nullptr ? [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:*info.get()] : nil;
+    completion(result ? bridgedInfo : nil);
+  });
 }
 
 - (BATAutoContributeProps *)autoContributeProps
