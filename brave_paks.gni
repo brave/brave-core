@@ -64,6 +64,7 @@ template("brave_extra_paks") {
       "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
       "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak",
       "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
+      "$root_gen_dir/brave/components/speedreader/resources/speedreader_resources.pak",
     ]
 
     deps = [
@@ -76,6 +77,7 @@ template("brave_extra_paks") {
       "//brave/browser/resources/settings:resources",
       "//brave/components/brave_sync:resources",
       "//brave/ui/webui/resources",
+      "//brave/components/speedreader/resources",
     ]
 
     if (enable_brave_webtorrent) {

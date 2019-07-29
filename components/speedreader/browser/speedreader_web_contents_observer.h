@@ -35,41 +35,17 @@ class SpeedreaderWebContentsObserver : public content::WebContentsObserver,
                         content::WebContents* web_contents);
 
  protected:
-    // A set of identifiers that uniquely identifies a RenderFrame.
-  struct RenderFrameIdKey {
-    RenderFrameIdKey();
-    RenderFrameIdKey(int render_process_id, int frame_routing_id);
-
-    // The process ID of the renderer that contains the RenderFrame.
-    int render_process_id;
-
-    // The routing ID of the RenderFrame.
-    int frame_routing_id;
-
-    bool operator<(const RenderFrameIdKey& other) const;
-    bool operator==(const RenderFrameIdKey& other) const;
-  };
-
   // content::WebContentsObserver overrides.
   void RenderFrameCreated(content::RenderFrameHost* host) override;
-  void RenderFrameDeleted(content::RenderFrameHost* render_frame_host) override;
-  void RenderFrameHostChanged(content::RenderFrameHost* old_host,
-                              content::RenderFrameHost* new_host) override;
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DidFinishNavigation(
-      content::NavigationHandle* navigation_handle) override;
 
-  // Invoked if an IPC message is coming from a specific RenderFrameHost.
+  //Invoked if an IPC message is coming from a specific RenderFrameHost.
   bool OnMessageReceived(const IPC::Message& message,
       content::RenderFrameHost* render_frame_host) override;
 
-  // TODO(iefremov): Refactor this away or at least put into base::NoDestructor.
-  // Protects global maps below from being concurrently written on the UI thread
-  // and read on the IO thread.
-  static base::Lock frame_data_map_lock_;
-  static std::map<RenderFrameIdKey, GURL> frame_key_to_tab_url_;
-  static std::map<int, GURL> frame_tree_node_id_to_tab_url_;
+  void OnSpeedreaderTransformed(
+      content::RenderFrameHost* render_frame_host);
 
  private:
   friend class content::WebContentsUserData<SpeedreaderWebContentsObserver>;

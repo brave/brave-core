@@ -32,6 +32,7 @@ class BraveContentSettingsObserver
   bool AllowFingerprinting(bool enabled_per_settings) override;
 
   bool RunSpeedreader(bool enabled_per_settings) override;
+  void DidTransformSpeedreader() override;
 
   bool AllowAutoplay(bool default_value) override;
 
@@ -56,7 +57,6 @@ class BraveContentSettingsObserver
   // RenderFrameObserver
   bool OnMessageReceived(const IPC::Message& message) override;
   void OnAllowScriptsOnce(const std::vector<std::string>& origins);
-  void OnDisableSpeedreaderOnce(const std::vector<std::string>& origins);
   void DidCommitProvisionalLoad(bool is_same_document_navigation,
                                 ui::PageTransition transition) override;
 
@@ -72,6 +72,7 @@ class BraveContentSettingsObserver
   // temporary allowed script origins we preloaded for the next load
   base::flat_set<std::string> preloaded_temporarily_allowed_scripts_;
 
+  void OnDisableSpeedreaderOnce(const std::vector<std::string>& origins);
   bool IsSpeedreaderTemporarilyDisabled(const GURL& page_url);
 
   // Origins of pages for which speedreader is temporarily disabled for this frame in the

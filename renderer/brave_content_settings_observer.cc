@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/logging.h"
 #include "base/bind_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
@@ -116,6 +115,10 @@ void BraveContentSettingsObserver::DidNotAllowScript() {
     blocked_script_url_ = GURL::EmptyGURL();
   }
   ContentSettingsObserver::DidNotAllowScript();
+}
+
+void BraveContentSettingsObserver::DidTransformSpeedreader() {
+  Send(new BraveViewHostMsg_SpeedreaderTransformed(routing_id()));
 }
 
 bool BraveContentSettingsObserver::AllowScriptFromSource(

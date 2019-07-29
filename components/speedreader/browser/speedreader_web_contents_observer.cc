@@ -11,10 +11,16 @@
 #include <utility>
 #include <vector>
 
+#include "base/logging.h"
+#include "base/debug/stack_trace.h"
+#include "url/gurl.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/brave_isolated_worlds.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/render_messages.h"
 #include "brave/components/speedreader/common/speedreader_constants.h"
+#include "brave/components/speedreader/resources/grit/speedreader_resources.h"
+#include "components/grit/brave_components_resources.h"
 #include "brave/content/common/frame_messages.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -34,6 +40,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_message_macros.h"
+#include "ui/base/resource/resource_bundle.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/api/brave_shields.h"
@@ -85,55 +92,9 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
   }
 }
 
-// WebContents* GetWebContents(
-//     int render_process_id,
-//     int render_frame_id,
-//     int frame_tree_node_id) {
-//   WebContents* web_contents =
-//       WebContents::FromFrameTreeNodeId(frame_tree_node_id);
-//   if (!web_contents) {
-//     RenderFrameHost* rfh =
-//         RenderFrameHost::FromID(render_process_id, render_frame_id);
-//     if (!rfh) {
-//       return nullptr;
-//     }
-//     web_contents =
-//         WebContents::FromRenderFrameHost(rfh);
-//   }
-//   return web_contents;
-// }
-
 }  // namespace
 
 namespace speedreader {
-
-base::Lock SpeedreaderWebContentsObserver::frame_data_map_lock_;
-std::map<SpeedreaderWebContentsObserver::RenderFrameIdKey, GURL>
-    SpeedreaderWebContentsObserver::frame_key_to_tab_url_;
-std::map<int, GURL>
-    SpeedreaderWebContentsObserver::frame_tree_node_id_to_tab_url_;
-
-SpeedreaderWebContentsObserver::RenderFrameIdKey::RenderFrameIdKey()
-    : render_process_id(content::ChildProcessHost::kInvalidUniqueID),
-      frame_routing_id(MSG_ROUTING_NONE) {}
-
-SpeedreaderWebContentsObserver::RenderFrameIdKey::RenderFrameIdKey(
-    int render_process_id,
-    int frame_routing_id)
-    : render_process_id(render_process_id),
-      frame_routing_id(frame_routing_id) {}
-
-bool SpeedreaderWebContentsObserver::RenderFrameIdKey::operator<(
-    const RenderFrameIdKey& other) const {
-  return std::tie(render_process_id, frame_routing_id) <
-         std::tie(other.render_process_id, other.frame_routing_id);
-}
-
-bool SpeedreaderWebContentsObserver::RenderFrameIdKey::operator==(
-    const RenderFrameIdKey& other) const {
-  return render_process_id == other.render_process_id &&
-         frame_routing_id == other.frame_routing_id;
-}
 
 SpeedreaderWebContentsObserver::~SpeedreaderWebContentsObserver() {
 }
@@ -153,56 +114,42 @@ void SpeedreaderWebContentsObserver::RenderFrameCreated(
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {
     UpdateContentSettingsToRendererFrames(web_contents);
-
-    base::AutoLock lock(frame_data_map_lock_);
-    const RenderFrameIdKey key(rfh->GetProcess()->GetID(), rfh->GetRoutingID());
-    frame_key_to_tab_url_[key] = web_contents->GetURL();
-    frame_tree_node_id_to_tab_url_[rfh->GetFrameTreeNodeId()] =
-        web_contents->GetURL();
   }
-}
-
-void SpeedreaderWebContentsObserver::RenderFrameDeleted(
-    RenderFrameHost* rfh) {
-  base::AutoLock lock(frame_data_map_lock_);
-  const RenderFrameIdKey key(rfh->GetProcess()->GetID(), rfh->GetRoutingID());
-  frame_key_to_tab_url_.erase(key);
-  frame_tree_node_id_to_tab_url_.erase(rfh->GetFrameTreeNodeId());
-}
-
-void SpeedreaderWebContentsObserver::RenderFrameHostChanged(
-    RenderFrameHost* old_host, RenderFrameHost* new_host) {
-  if (old_host) {
-    RenderFrameDeleted(old_host);
-  }
-  if (new_host) {
-    RenderFrameCreated(new_host);
-  }
-}
-
-void SpeedreaderWebContentsObserver::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  RenderFrameHost* main_frame = web_contents()->GetMainFrame();
-  if (!web_contents() || !main_frame) {
-    return;
-  }
-  int process_id = main_frame->GetProcess()->GetID();
-  int routing_id = main_frame->GetRoutingID();
-  int tree_node_id = main_frame->GetFrameTreeNodeId();
-
-  base::AutoLock lock(frame_data_map_lock_);
-  frame_key_to_tab_url_[{process_id, routing_id}] = web_contents()->GetURL();
-  frame_tree_node_id_to_tab_url_[tree_node_id] = web_contents()->GetURL();
 }
 
 bool SpeedreaderWebContentsObserver::OnMessageReceived(
     const IPC::Message& message, RenderFrameHost* render_frame_host) {
   bool handled = true;
-  // IPC_BEGIN_MESSAGE_MAP_WITH_PARAM(SpeedreaderWebContentsObserver,
-  //       message, render_frame_host)
-  //   IPC_MESSAGE_UNHANDLED(handled = false)
-  // IPC_END_MESSAGE_MAP()
+  IPC_BEGIN_MESSAGE_MAP_WITH_PARAM(SpeedreaderWebContentsObserver,
+        message, render_frame_host)
+    IPC_MESSAGE_HANDLER(BraveViewHostMsg_SpeedreaderTransformed,
+        OnSpeedreaderTransformed)
+    IPC_MESSAGE_UNHANDLED(handled = false)
+  IPC_END_MESSAGE_MAP()
   return handled;
+}
+
+void SpeedreaderWebContentsObserver::OnSpeedreaderTransformed(
+    RenderFrameHost* render_frame_host) {
+  WebContents* web_contents =
+      WebContents::FromRenderFrameHost(render_frame_host);
+  if (!web_contents) {
+    return;
+  }
+  {
+    std::string data = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
+        IDR_SPEEDREADER_JS_STYLESHEET_INJECT).as_string();
+    render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+          base::UTF8ToUTF16(data), base::DoNothing(),
+          ISOLATED_WORLD_ID_SPEEDREADER);
+  }
+  {
+    std::string data = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
+        IDR_SPEEDREADER_STYLE_DESKTOP).as_string();
+    render_frame_host->ExecuteJavaScriptInIsolatedWorld(
+          base::UTF8ToUTF16("var style = `" + data + "`; addStyleString(style);"), base::DoNothing(),
+          ISOLATED_WORLD_ID_SPEEDREADER);
+  }
 }
 
 void SpeedreaderWebContentsObserver::ReadyToCommitNavigation(

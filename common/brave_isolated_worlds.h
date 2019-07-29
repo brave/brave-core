@@ -11,6 +11,7 @@
 enum BraveIsolatedWorldIDs {
     // Isolated world ID for Greaselion (Google Translate reserves END + 1)
     ISOLATED_WORLD_ID_GREASELION = content::ISOLATED_WORLD_ID_CONTENT_END + 2,
+    ISOLATED_WORLD_ID_SPEEDREADER = content::ISOLATED_WORLD_ID_CONTENT_END + 3,
 };
 
 #endif  // BRAVE_COMMON_BRAVE_ISOLATED_WORLDS_H_

@@ -20,3 +20,5 @@ IPC_MESSAGE_ROUTED1(BraveViewHostMsg_JavaScriptBlocked,
 
 IPC_MESSAGE_ROUTED1(BraveViewHostMsg_FingerprintingBlocked,
                     base::string16 /* details on blocked content */)
+
+IPC_MESSAGE_ROUTED0(BraveViewHostMsg_SpeedreaderTransformed)

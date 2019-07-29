@@ -88,4 +88,7 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet/brave_wallet.grd": {
     "includes": [43600],
   },
+  "brave/components/speedreader/resources/speedreader_static_resources.grd": {
+    "includes": [44000]
+  },
 }
