@@ -4,7 +4,6 @@
 
 import {
   isHttpOrHttps,
-  hasPortNumber,
   getOrigin,
   getHostname,
   stripProtocolFromUrl
@@ -42,17 +41,6 @@ describe('urlUtils test', () => {
     })
     it('matches uppercase https', () => {
       const url = 'HTTP://SCREAMING-UNSAFE-WEBSITE.COM'
-      expect(isHttpOrHttps(url)).toBe(true)
-    })
-  })
-  describe('hasPortNumber', () => {
-    it('not a port number if # is located in front of :XXXX', () => {
-      const url = 'http://brianbondy.com#:8080'
-      expect(hasPortNumber(url)).toBe(false)
-    })
-    it('port number if # is not existed in front of :XXXX', () => {
-      const url = 'http://brianbondy.com:8080'
-      expect(hasPortNumber(url)).toBe(true)
       expect(isHttpOrHttps(url)).toBe(true)
     })
   })

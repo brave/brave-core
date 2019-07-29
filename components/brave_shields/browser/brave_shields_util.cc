@@ -12,6 +12,7 @@
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/content_settings/core/browser/content_settings_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_io_data.h"
@@ -33,6 +34,262 @@ using content::ResourceRequestInfo;
 using net::URLRequest;
 
 namespace brave_shields {
+
+namespace {
+
+ContentSetting GetDefaultAllowFromControlType(ControlType type) {
+  if (type == ControlType::DEFAULT)
+    return CONTENT_SETTING_DEFAULT;
+
+  return type == ControlType::BLOCK ? CONTENT_SETTING_BLOCK
+                                    : CONTENT_SETTING_ALLOW;
+}
+
+ContentSetting GetDefaultBlockFromControlType(ControlType type) {
+  if (type == ControlType::DEFAULT)
+    return CONTENT_SETTING_DEFAULT;
+
+  return type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
+                                    : CONTENT_SETTING_BLOCK;
+}
+
+}  // namespace
+
+ContentSettingsPattern GetPatternFromURL(const GURL& url,
+                                         bool scheme_wildcard) {
+  DCHECK(url.is_empty() ? url.possibly_invalid_spec() == "" : url.is_valid());
+  if (url.is_empty() && url.possibly_invalid_spec() == "")
+    return ContentSettingsPattern::Wildcard();
+
+  return scheme_wildcard && !url.has_port()
+      ? ContentSettingsPattern::FromString("*://" + url.host() + "/*")
+      : ContentSettingsPattern::FromString(url.GetOrigin().spec() + "/*");
+}
+
+std::string ControlTypeToString(ControlType type) {
+  switch (type) {
+    case ControlType::ALLOW:
+      return "allow";
+    case ControlType::BLOCK:
+      return "block";
+    case ControlType::BLOCK_THIRD_PARTY:
+      return "block_third_party";
+    case ControlType::DEFAULT:
+      return "default";
+    default:
+      NOTREACHED();
+      return "invalid";
+  }
+}
+
+ControlType ControlTypeFromString(const std::string& string) {
+  if (string == "allow") {
+    return ControlType::ALLOW;
+  } else if (string == "block") {
+    return ControlType::BLOCK;
+  } else if (string == "block_third_party") {
+    return ControlType::BLOCK_THIRD_PARTY;
+  } else if (string == "default") {
+    return ControlType::DEFAULT;
+  } else {
+    NOTREACHED();
+    return ControlType::INVALID;
+  }
+}
+
+void SetBraveShieldsControlType(Profile* profile,
+                                ControlType type,
+                                const GURL& url) {
+  DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
+
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
+    return;
+
+  auto primary_pattern = GetPatternFromURL(url, true);
+
+  if (!primary_pattern.IsValid())
+    return;
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS, kBraveShields,
+          GetDefaultAllowFromControlType(type));
+}
+
+ControlType GetBraveShieldsControlType(Profile* profile, const GURL& url) {
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
+    return ControlType::BLOCK;
+
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
+          url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kBraveShields);
+
+  return setting == CONTENT_SETTING_BLOCK ? ControlType::BLOCK
+                                          : ControlType::ALLOW;
+}
+
+void SetAdControlType(Profile* profile, ControlType type, const GURL& url) {
+  DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
+  auto primary_pattern = GetPatternFromURL(url);
+
+  if (!primary_pattern.IsValid())
+    return;
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(primary_pattern,
+                                     ContentSettingsPattern::Wildcard(),
+                                     CONTENT_SETTINGS_TYPE_PLUGINS, kAds,
+                                     GetDefaultBlockFromControlType(type));
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(primary_pattern,
+                                     ContentSettingsPattern::Wildcard(),
+                                     CONTENT_SETTINGS_TYPE_PLUGINS, kTrackers,
+                                     GetDefaultBlockFromControlType(type));
+}
+
+ControlType GetAdControlType(Profile* profile, const GURL& url) {
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
+          url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kAds);
+
+  return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
+                                          : ControlType::BLOCK;
+}
+
+void SetCookieControlType(Profile* profile, ControlType type, const GURL& url) {
+  auto primary_pattern = GetPatternFromURL(url);
+
+  if (!primary_pattern.IsValid())
+    return;
+
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  map->SetContentSettingCustomScope(primary_pattern,
+                                    ContentSettingsPattern::Wildcard(),
+                                    CONTENT_SETTINGS_TYPE_PLUGINS, kReferrers,
+                                    GetDefaultBlockFromControlType(type));
+
+  map->SetContentSettingCustomScope(primary_pattern,
+                                    ContentSettingsPattern::Wildcard(),
+                                    CONTENT_SETTINGS_TYPE_PLUGINS, kCookies,
+                                    GetDefaultBlockFromControlType(type));
+
+  map->SetContentSettingCustomScope(
+      primary_pattern,
+      ContentSettingsPattern::FromString("https://firstParty/*"),
+      CONTENT_SETTINGS_TYPE_PLUGINS, kCookies,
+      GetDefaultAllowFromControlType(type));
+}
+
+ControlType GetCookieControlType(Profile* profile, const GURL& url) {
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
+          url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kCookies);
+
+  ContentSetting fp_setting =
+      HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
+          url, GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS,
+          kCookies);
+
+  if (setting == CONTENT_SETTING_ALLOW) {
+    return ControlType::ALLOW;
+  } else if (fp_setting != CONTENT_SETTING_BLOCK) {
+    return ControlType::BLOCK_THIRD_PARTY;
+  } else {
+    return ControlType::BLOCK;
+  }
+}
+
+void SetFingerprintingControlType(Profile* profile,
+                                  ControlType type,
+                                  const GURL& url) {
+  auto primary_pattern = GetPatternFromURL(url);
+
+  if (!primary_pattern.IsValid())
+    return;
+
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  map->SetContentSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      CONTENT_SETTINGS_TYPE_PLUGINS, kFingerprinting,
+      GetDefaultBlockFromControlType(type));
+
+  map->SetContentSettingCustomScope(
+      primary_pattern,
+      ContentSettingsPattern::FromString("https://firstParty/*"),
+      CONTENT_SETTINGS_TYPE_PLUGINS, kFingerprinting,
+      GetDefaultAllowFromControlType(type));
+}
+
+ControlType GetFingerprintingControlType(Profile* profile, const GURL& url) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kFingerprinting);
+  ContentSetting fp_setting =
+      map->GetContentSetting(url, GURL("https://firstParty/"),
+                             CONTENT_SETTINGS_TYPE_PLUGINS, kFingerprinting);
+
+  if (setting != fp_setting || setting == CONTENT_SETTING_DEFAULT) {
+    return ControlType::BLOCK_THIRD_PARTY;
+  } else {
+    return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
+                                            : ControlType::BLOCK;
+  }
+}
+
+void SetHTTPSEverywhereControlType(Profile* profile,
+                                   ControlType type,
+                                   const GURL& url) {
+  DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
+  auto primary_pattern = GetPatternFromURL(url, true);
+
+  if (!primary_pattern.IsValid())
+    return;
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS, kHTTPUpgradableResources,
+          type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
+                                     : CONTENT_SETTING_BLOCK);
+}
+
+ControlType GetHTTPSEverywhereControlType(Profile* profile, const GURL& url) {
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
+          url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kHTTPUpgradableResources);
+
+  return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
+                                          : ControlType::BLOCK;
+}
+
+void SetNoScriptControlType(Profile* profile,
+                            ControlType type,
+                            const GURL& url) {
+  DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
+  auto primary_pattern = GetPatternFromURL(url);
+
+  if (!primary_pattern.IsValid())
+    return;
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_JAVASCRIPT, "",
+          type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
+                                     : CONTENT_SETTING_BLOCK);
+}
+
+ControlType GetNoScriptControlType(Profile* profile, const GURL& url) {
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
+          url, GURL(), CONTENT_SETTINGS_TYPE_JAVASCRIPT, "");
+
+  return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
+                                          : ControlType::BLOCK;
+}
 
 bool IsAllowContentSettingFromIO(const net::URLRequest* request,
                                  const GURL& primary_url,
@@ -61,11 +318,8 @@ bool IsAllowContentSettingsForProfile(Profile* profile,
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   DCHECK(profile);
   return content_settings::IsAllowContentSetting(
-      HostContentSettingsMapFactory::GetForProfile(profile),
-      primary_url,
-      secondary_url,
-      setting_type,
-      resource_identifier);
+      HostContentSettingsMapFactory::GetForProfile(profile), primary_url,
+      secondary_url, setting_type, resource_identifier);
 }
 
 bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
@@ -78,11 +332,8 @@ bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
         resource_identifier, primary_url, secondary_url);
   }
   return content_settings::IsAllowContentSetting(
-      io_data->GetHostContentSettingsMap(),
-      primary_url,
-      secondary_url,
-      setting_type,
-      resource_identifier);
+      io_data->GetHostContentSettingsMap(), primary_url, secondary_url,
+      setting_type, resource_identifier);
 }
 
 void GetRenderFrameInfo(const URLRequest* request,
@@ -140,7 +391,7 @@ bool ShouldSetReferrer(bool allow_referrers,
       // Whitelisted referrers shoud never set the referrer
       (g_brave_browser_process &&
        g_brave_browser_process->referrer_whitelist_service()->IsWhitelisted(
-         tab_origin, target_url.GetOrigin()))) {
+           tab_origin, target_url.GetOrigin()))) {
     return false;
   }
   *output_referrer = Referrer::SanitizeForRequest(
