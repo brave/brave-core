@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..5af9b6f435dc97874145bd8f232646c00ff574ad 100644
+index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..7aebef7c2e0248765eb90cf4e816927242913261 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -315,6 +315,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
@@ -29,7 +29,7 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..5af9b6f435dc97874145bd8f232646c0
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        frame_(initializer.GetFrame()),
-@@ -777,7 +790,129 @@ Document::~Document() {
+@@ -777,7 +790,131 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -152,14 +152,16 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..5af9b6f435dc97874145bd8f232646c0
 +    return nullptr;
 +  }
 +
-+  page_graph_ = new ::brave_page_graph::PageGraph(*this);
++  page_graph_ = new ::brave_page_graph::PageGraph(*this,
++                                                  DOMNodeIds::IdForNode(this),
++                                                  nodeName(), Url());
 +  return page_graph_;
  }
 +#endif
  
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
-@@ -5300,6 +5435,22 @@ String Document::cookie(ExceptionState& exception_state) const {
+@@ -5300,6 +5437,22 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (cookie_url.IsEmpty())
      return String();
  
@@ -182,7 +184,7 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..5af9b6f435dc97874145bd8f232646c0
    return Cookies(this, cookie_url);
  }
  
-@@ -5331,6 +5482,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5331,6 +5484,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
    if (cookie_url.IsEmpty())
      return;
  
