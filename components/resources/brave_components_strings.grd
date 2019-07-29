@@ -213,6 +213,8 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next payment date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED" desc="">Ad notifications received this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED" desc="">Sorry! Ads are not yet available in your region.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION" desc="">Sorry! Ads are not yet available in your region.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE" desc="">Brave Rewards and Ads are not available on your device at this time.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAGES_VIEWED" desc="">Ad pages viewed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR" desc="">Maximum number of ads displayed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1" desc="">1 ad per hour</message>
@@ -417,6 +419,14 @@
       <message name="IDS_BRAVE_UI_MONTH_SEP" desc="">September</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Tips!</message>
       <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">A free token grant is available.</message>
+      <message name="IDS_BRAVE_UI_GRANT_TITLE_UGP" desc="Title for a reward grant when it has been claimed">It's your lucky day!</message>
+      <message name="IDS_BRAVE_UI_GRANT_SUBTITLE_UGP" desc="Subtitle for a reward grant when it has been claimed">Your token grant is on its way.</message>
+      <message name="IDS_BRAVE_UI_GRANT_AMOUNT_TITLE_UGP" desc="">Free Token Grant</message>
+      <message name="IDS_BRAVE_UI_GRANT_DATE_TITLE_UGP" desc="">Grant Expiration Date</message>
+      <message name="IDS_BRAVE_UI_GRANT_TITLE_ADS" desc="Title for an ads reward when it has been claimed">Congrats!</message>
+      <message name="IDS_BRAVE_UI_GRANT_SUBTITLE_ADS" desc="Subtitle for an ads reward when it has been claimed">You've successfully claimed ads rewards.</message>
+      <message name="IDS_BRAVE_UI_GRANT_AMOUNT_TITLE_ADS" desc="">Ads Rewards</message>
+      <message name="IDS_BRAVE_UI_GRANT_DATE_TITLE_ADS" desc="">Rewards Period</message>
       <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">Free Token Grant</message>
       <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
       <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="">No activities yet…</message>
