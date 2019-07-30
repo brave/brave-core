@@ -914,6 +914,7 @@ void BookmarkChangeProcessor::SendUnsynced(
   MigrateOrders();
 
   std::vector<std::unique_ptr<jslib::SyncRecord>> records;
+  bool sent_at_least_once = false;
 
   auto* deleted_node = GetDeletedNodeRoot();
   CHECK(deleted_node);
@@ -952,6 +953,7 @@ void BookmarkChangeProcessor::SendUnsynced(
       if (records.size() == 1000) {
         sync_client_->SendSyncRecords(
             jslib_const::SyncRecordType_BOOKMARKS, records);
+        sent_at_least_once = true;
         records.clear();
       }
     }
@@ -959,9 +961,13 @@ void BookmarkChangeProcessor::SendUnsynced(
   if (!records.empty()) {
     sync_client_->SendSyncRecords(
       jslib_const::SyncRecordType_BOOKMARKS, records);
+    sent_at_least_once = true;
     records.clear();
   }
-  sync_client_->ClearOrderMap();
+
+  if (sent_at_least_once) {
+    sync_client_->ClearOrderMap();
+  }
 }
 
 void BookmarkChangeProcessor::InitialSync() {}
