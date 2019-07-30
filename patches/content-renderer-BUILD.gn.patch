@@ -1,0 +1,12 @@
+diff --git a/content/renderer/BUILD.gn b/content/renderer/BUILD.gn
+index b266299e86fe15b86326397338587c21af049046..7baafadf9d79c093b816b37ad45c5eeffdfcd779 100644
+--- a/content/renderer/BUILD.gn
++++ b/content/renderer/BUILD.gn
+@@ -542,6 +542,7 @@ target(link_target_type, "renderer") {
+   deps = [
+     "//base",
+     "//base:i18n",
++    "//brave/third_party/blink/brave_page_graph",
+     "//cc",
+     "//cc/animation",
+     "//cc/mojo_embedder",

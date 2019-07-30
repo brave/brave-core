@@ -83,6 +83,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/webapi/edge_webapi_result.h"
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extensions.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_remote_frame.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_actor.h"
@@ -323,6 +324,27 @@ void PageGraph::RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
     LOG_ASSERT(false); // Unsupported parent node type.
   }
 }
+
+void PageGraph::RegisterRemoteFrameCreated(
+    const blink::DOMNodeId parent_node_id, const GURL& url) {
+  const KURL normalized_url = NormalizeUrl(KURL(url));
+  const string local_url(normalized_url.GetString().Utf8().data());
+
+  Log("RegisterRemoteFrameCreated) parent node id: " + to_string(parent_node_id)
+    + ", url: " + local_url);
+
+  LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
+
+  // Create the new remote frame node.
+  NodeRemoteFrame* const remote_frame = new NodeRemoteFrame(this, local_url);
+  AddNode(remote_frame);
+
+  // Add the cross-DOM edge.
+  NodeFrameOwner* const parent_node =
+      To<NodeFrameOwner>(element_nodes_.at(parent_node_id));
+  AddEdge(new EdgeCrossDOM(this, parent_node, remote_frame));
+}
+
 
 void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
     const String& tag_name, const ElementType element_type) {

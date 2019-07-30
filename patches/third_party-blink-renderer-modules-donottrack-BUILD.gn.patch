@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/modules/donottrack/BUILD.gn b/third_party/blink/renderer/modules/donottrack/BUILD.gn
+index 31ef8099f1016da1f7e05d35f63532cac0327522..553e5d65efb09cab32d410a174baf8b52d473cc3 100644
+--- a/third_party/blink/renderer/modules/donottrack/BUILD.gn
++++ b/third_party/blink/renderer/modules/donottrack/BUILD.gn
+@@ -9,4 +9,8 @@ blink_modules_sources("donottrack") {
+     "navigator_do_not_track.cc",
+     "navigator_do_not_track.h",
+   ]
++
++  deps = [
++    "//brave/third_party/blink/brave_page_graph"
++  ]
+ }
