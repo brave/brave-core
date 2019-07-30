@@ -29,22 +29,28 @@
     ],
     "functions": [
       {
-        "name": "setBraveShieldsControlType",
+        "name": "setBraveShieldsEnabled",
         "type": "function",
         "description": "Set brave shields control type for a url",
         "parameters": [
           {
-            "name": "controlType",
-            "type": "string"
+            "name": "enabled",
+            "type": "boolean"
           },
           {
             "name": "url",
             "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": []
           }
         ]
       },
       {
-        "name": "getBraveShieldsControlType",
+        "name": "getBraveShieldsEnabled",
         "type": "function",
         "description": "Get brave shields control type for a url",
         "parameters": [
@@ -57,8 +63,8 @@
             "name": "callback",
             "parameters": [
               {
-                "name": "controlType",
-                "type": "string"
+                "name": "enabled",
+                "type": "boolean"
               }
             ]
           }
@@ -76,6 +82,12 @@
           {
             "name": "url",
             "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": []
           }
         ]
       },
@@ -112,6 +124,12 @@
           {
             "name": "url",
             "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": []
           }
         ]
       },
@@ -148,6 +166,12 @@
           {
             "name": "url",
             "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": []
           }
         ]
       },
@@ -173,22 +197,28 @@
         ]
       },
       {
-        "name": "setHTTPSEverywhereControlType",
+        "name": "setHTTPSEverywhereEnabled",
         "type": "function",
         "description": "Set httpse control type for a url",
         "parameters": [
           {
-            "name": "controlType",
-            "type": "string"
+            "name": "enabled",
+            "type": "boolean"
           },
           {
             "name": "url",
             "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": []
           }
         ]
       },
       {
-        "name": "getHTTPSEverywhereControlType",
+        "name": "getHTTPSEverywhereEnabled",
         "type": "function",
         "description": "Get httpse control type for a url",
         "parameters": [
@@ -201,8 +231,8 @@
             "name": "callback",
             "parameters": [
               {
-                "name": "controlType",
-                "type": "string"
+                "name": "enabled",
+                "type": "boolean"
               }
             ]
           }
@@ -220,6 +250,12 @@
           {
             "name": "url",
             "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": []
           }
         ]
       },

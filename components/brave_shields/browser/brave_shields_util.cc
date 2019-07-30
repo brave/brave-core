@@ -97,11 +97,9 @@ ControlType ControlTypeFromString(const std::string& string) {
   }
 }
 
-void SetBraveShieldsControlType(Profile* profile,
-                                ControlType type,
-                                const GURL& url) {
-  DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
-
+void SetBraveShieldsEnabled(Profile* profile,
+                        bool enable,
+                        const GURL& url) {
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return;
 
@@ -114,27 +112,46 @@ void SetBraveShieldsControlType(Profile* profile,
       ->SetContentSettingCustomScope(
           primary_pattern, ContentSettingsPattern::Wildcard(),
           CONTENT_SETTINGS_TYPE_PLUGINS, kBraveShields,
-          GetDefaultAllowFromControlType(type));
+          // this is 'allow_brave_shields' so 'enable' == 'allow'
+          enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
 }
 
-ControlType GetBraveShieldsControlType(Profile* profile, const GURL& url) {
+void ResetBraveShieldsEnabled(Profile* profile,
+                              const GURL& url) {
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
-    return ControlType::BLOCK;
+    return;
+
+  auto primary_pattern = GetPatternFromURL(url, true);
+
+  if (!primary_pattern.IsValid())
+    return;
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS, kBraveShields,
+          CONTENT_SETTING_DEFAULT);
+}
+
+bool GetBraveShieldsEnabled(Profile* profile, const GURL& url) {
+  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
+    return false;
 
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
           url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kBraveShields);
 
-  return setting == CONTENT_SETTING_BLOCK ? ControlType::BLOCK
-                                          : ControlType::ALLOW;
+  // see EnableBraveShields - allow and default == true
+  return setting == CONTENT_SETTING_BLOCK ? false : true;
 }
 
 void SetAdControlType(Profile* profile, ControlType type, const GURL& url) {
   DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
   auto primary_pattern = GetPatternFromURL(url);
 
-  if (!primary_pattern.IsValid())
+  if (!primary_pattern.IsValid()) {
     return;
+  }
 
   HostContentSettingsMapFactory::GetForProfile(profile)
       ->SetContentSettingCustomScope(primary_pattern,
@@ -239,10 +256,9 @@ ControlType GetFingerprintingControlType(Profile* profile, const GURL& url) {
   }
 }
 
-void SetHTTPSEverywhereControlType(Profile* profile,
-                                   ControlType type,
-                                   const GURL& url) {
-  DCHECK(type != ControlType::BLOCK_THIRD_PARTY);
+void SetHTTPSEverywhereEnabled(Profile* profile,
+                               bool enable,
+                               const GURL& url) {
   auto primary_pattern = GetPatternFromURL(url, true);
 
   if (!primary_pattern.IsValid())
@@ -252,17 +268,32 @@ void SetHTTPSEverywhereControlType(Profile* profile,
       ->SetContentSettingCustomScope(
           primary_pattern, ContentSettingsPattern::Wildcard(),
           CONTENT_SETTINGS_TYPE_PLUGINS, kHTTPUpgradableResources,
-          type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
-                                     : CONTENT_SETTING_BLOCK);
+          // this is 'allow_http_upgradeable_resources' so enabling
+          // httpse will set the value to 'BLOCK'
+          enable ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }
 
-ControlType GetHTTPSEverywhereControlType(Profile* profile, const GURL& url) {
+void ResetHTTPSEverywhereEnabled(Profile* profile,
+                               bool enable,
+                               const GURL& url) {
+  auto primary_pattern = GetPatternFromURL(url, true);
+
+  if (!primary_pattern.IsValid())
+    return;
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS, kHTTPUpgradableResources,
+          CONTENT_SETTING_DEFAULT);
+}
+
+bool GetHTTPSEverywhereEnabled(Profile* profile, const GURL& url) {
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
           url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kHTTPUpgradableResources);
 
-  return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
-                                          : ControlType::BLOCK;
+  return setting == CONTENT_SETTING_ALLOW ? false : true;
 }
 
 void SetNoScriptControlType(Profile* profile,

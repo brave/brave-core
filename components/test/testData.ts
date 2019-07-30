@@ -191,8 +191,8 @@ export const getMockChrome = () => {
       allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
         setImmediate(cb)
       },
-      getBraveShieldsControlTypeAsync: function (url: string) {
-        return Promise.resolve('block')
+      getBraveShieldsEnabledAsync: function (url: string) {
+        return Promise.resolve(false)
       },
       getAdControlTypeAsync: function (url: string) {
         return Promise.resolve('block')
@@ -203,13 +203,13 @@ export const getMockChrome = () => {
       getFingerprintingControlTypeAsync: function (url: string) {
         return Promise.resolve('block')
       },
-      getHTTPSEverywhereControlTypeAsync: function (url: string) {
-        return Promise.resolve('block')
+      getHTTPSEverywhereEnabledAsync: function (url: string) {
+        return Promise.resolve(true)
       },
       getNoScriptControlTypeAsync: function (url: string) {
         return Promise.resolve('block')
       },
-      setBraveShieldsControlTypeAsync: function (url: string, controlType: string) {
+      setBraveShieldsEnabledAsync: function (url: string, enabled: boolean) {
         return new Promise(() => [])
       },
       setAdControlTypeAsync: function (url: string, controlType: string) {
@@ -221,7 +221,7 @@ export const getMockChrome = () => {
       setFingerprintingControlTypeAsync: function (url: string, controlType: string) {
         return new Promise(() => [])
       },
-      setHTTPSEverywhereControlTypeAsync: function (url: string, controlType: string) {
+      setHTTPSEverywhereEnabledAsync: function (url: string, enabled: boolean) {
         return new Promise(() => [])
       },
       setNoScriptControlTypeAsync: function (url: string, controlType: string) {
