@@ -75,7 +75,7 @@ bool IsWebtorrentInitiated(std::shared_ptr<brave::BraveRequestInfo> ctx) {
       ctx->initiator_url.host() == brave_webtorrent_extension_id;
 }
 
-/*
+/**
  * Returns true if the resource type is a frame (i.e. a top level page) or a
  * subframe (i.e. a frame or iframe). For all other resource types (stylesheet,
  * script, XHR request, etc.), returns false.
