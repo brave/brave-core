@@ -39,7 +39,7 @@ ItemName EdgeStorage::GetItemDesc() const {
 }
 
 GraphMLXMLList EdgeStorage::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = GraphItem::GetGraphMLAttributes();
+  GraphMLXMLList attrs = Edge::GetGraphMLAttributes();
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefKey)
       ->ToValue(key_));
   return attrs;

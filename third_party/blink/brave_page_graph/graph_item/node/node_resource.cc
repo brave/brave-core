@@ -36,7 +36,7 @@ ItemDesc NodeResource::GetItemDesc() const {
 }
 
 GraphMLXMLList NodeResource::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = GraphItem::GetGraphMLAttributes();
+  GraphMLXMLList attrs = Node::GetGraphMLAttributes();
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefURL)
       ->ToValue(url_));
   return attrs;
