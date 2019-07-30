@@ -42,7 +42,8 @@ public class DataController: NSObject {
             // called at higher level when a `.new` WriteContext is passed.
             task(existingContext)
         case .new(let inMemory):
-            let queue = DataController.shared.operationQueue
+            // Though keeping same queue does not make a difference but kept them diff for independent processing.
+            let queue = inMemory ? DataController.sharedInMemory.operationQueue :  DataController.shared.operationQueue
             
             queue.addOperation({
                 let backgroundContext = inMemory ? DataController.newBackgroundContextInMemory() : DataController.newBackgroundContext()
@@ -79,7 +80,7 @@ public class DataController: NSObject {
             return
         }
         
-        if context == DataController.viewContext {
+        if context.concurrencyType == .mainQueueConcurrencyType {
             log.warning("Writing to view context, this should be avoided.")
         }
         

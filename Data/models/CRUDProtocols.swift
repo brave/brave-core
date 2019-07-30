@@ -44,9 +44,14 @@ extension Deletable where Self: NSManagedObject {
             request.includesPropertyValues = includesPropertyValues
             
             do {
-                // NSBatchDeleteRequest can't be used for in-memory store we use in tests.
+                // NSBatchDeleteRequest can't be used for in-memory store we use in tests and PBM.
                 // Have to delete objects one by one.
-                if AppConstants.IsRunningTest {
+                var isInMemoryContext: Bool = false
+                if let currentCoordinator = context.persistentStoreCoordinator,
+                    let inMemoryCoordinator = DataController.viewContextInMemory.persistentStoreCoordinator {
+                    isInMemoryContext = currentCoordinator == inMemoryCoordinator
+                }
+                if AppConstants.IsRunningTest || isInMemoryContext {
                     let results = try context.fetch(request) as? [NSManagedObject]
                     results?.forEach {
                         context.delete($0)
