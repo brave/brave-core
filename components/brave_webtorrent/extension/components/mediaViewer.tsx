@@ -7,9 +7,47 @@ import * as React from 'react'
 // Constants
 import { TorrentObj, File } from '../constants/webtorrentState'
 
-const SUPPORTED_VIDEO_EXTENSIONS = ['m4v', 'mkv', 'mov', 'mp4', 'ogv', 'webm']
+const SUPPORTED_VIDEO_EXTENSIONS = [
+  'm4v',
+  'mkv',
+  'mov',
+  'mp4',
+  'ogv',
+  'webm'
+]
 
-const SUPPORTED_AUDIO_EXTENSIONS = ['aac', 'mp3', 'ogg', 'wav', 'm4a']
+const SUPPORTED_AUDIO_EXTENSIONS = [
+  'aac',
+  'flac',
+  'm4a',
+  'm4b',
+  'm4p',
+  'mp3',
+  'oga',
+  'ogg',
+  'wav'
+]
+
+const SUPPORTED_IMAGE_EXTENSIONS = [
+  'bmp',
+  'gif',
+  'jpeg',
+  'jpg',
+  'png',
+  'svg'
+]
+
+const SUPPORTED_PDF_EXTENSIONS = [
+  'pdf'
+]
+
+const SUPPORTED_IFRAME_EXTENSIONS = [
+  'css',
+  'html',
+  'js',
+  'md',
+  'txt'
+]
 
 // Given 'foo.txt', returns 'txt'
 // Given eg. null, undefined, '', or 'README', returns null
@@ -26,18 +64,21 @@ const getSelectedFile = (torrent: TorrentObj, ix: number) => {
     : null
 }
 
-const fileIsVideo = (file: File | null) => {
-  if (!file) return false
-  const fileExt = getExtension(file.name)
-  if (!fileExt) return false
-  return SUPPORTED_VIDEO_EXTENSIONS.includes(fileExt)
-}
+const fileIsType = (file: File | null, type: String) => {
+  const supportedExtensions = type === 'video'
+    ? SUPPORTED_VIDEO_EXTENSIONS
+    : type === 'audio'
+    ? SUPPORTED_AUDIO_EXTENSIONS
+    : type === 'image'
+    ? SUPPORTED_IMAGE_EXTENSIONS
+    : type === 'pdf'
+    ? SUPPORTED_PDF_EXTENSIONS
+    : SUPPORTED_IFRAME_EXTENSIONS
 
-const fileIsAudio = (file: File | null) => {
   if (!file) return false
   const fileExt = getExtension(file.name)
   if (!fileExt) return false
-  return SUPPORTED_AUDIO_EXTENSIONS.includes(fileExt)
+  return supportedExtensions.includes(fileExt)
 }
 
 interface Props {
@@ -55,7 +96,8 @@ export default class MediaViewer extends React.PureComponent<Props, {}> {
     // Set page background to black when video or audio is being viewed
     const { torrent, ix } = this.props
     const file = getSelectedFile(torrent, ix)
-    const isMedia = fileIsAudio(file) || fileIsVideo(file)
+    const isMedia = fileIsType(file, 'video') || fileIsType(file, 'audio') ||
+      fileIsType(file, 'image')
     if (isMedia) {
       document.body.style.backgroundColor = 'rgb(0, 0, 0)'
     } else {
@@ -71,26 +113,38 @@ export default class MediaViewer extends React.PureComponent<Props, {}> {
     const { torrent, ix } = this.props
 
     const file = getSelectedFile(torrent, ix)
-    const isAudio = fileIsAudio(file)
-    const isVideo = fileIsVideo(file)
     const fileURL = torrent.serverURL && torrent.serverURL + '/' + ix
 
     let content
     if (!file || !fileURL) {
       content = <div className='loading'>Loading Media</div>
-    } else if (isVideo) {
+    } else if (fileIsType(file, 'video')) {
       content = (
         <video id='video' src={fileURL} ref={this.ref} controls={true} />
       )
-    } else if (isAudio) {
+    } else if (fileIsType(file, 'audio')) {
       content = (
         <audio id='audio' src={fileURL} ref={this.ref} controls={true} />
       )
-    } else {
+    } else if (fileIsType(file, 'image')) {
+      content = (
+        <img id='image' src={fileURL} />
+       )
+    } else if (fileIsType(file, 'pdf')) {
+      content = (
+        <object id='object' type='application/pdf' data={fileURL} />
+      )
+    } else if (fileIsType(file, 'iframe')) {
       // For security, sandbox and disallow scripts.
       // We need allow-same-origin so that the iframe can load from
-      // http://localhost:...
-      content = <iframe id='other' src={fileURL} sandbox='allow-same-origin' />
+      // http://127.0.0.1:port...
+      content = (
+        <iframe id='iframe' src={fileURL} sandbox='allow-same-origin' />
+      )
+    } else {
+      content = (
+        <div>Unsupported file type</div>
+      )
     }
 
     return <div className='mediaViewer'>{content}</div>
