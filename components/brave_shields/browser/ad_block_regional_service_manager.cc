@@ -123,7 +123,7 @@ void AdBlockRegionalServiceManager::Stop() {
   }
 }
 
-bool AdBlockRegionalServiceManager::ShouldStartRequest(
+bool AdBlockRegionalServiceManager::NetworkFilterMatches(
     const GURL& url,
     content::ResourceType resource_type,
     const std::string& tab_host,
@@ -132,17 +132,17 @@ bool AdBlockRegionalServiceManager::ShouldStartRequest(
     bool* cancel_request_explicitly) {
   base::AutoLock lock(regional_services_lock_);
   for (const auto& regional_service : regional_services_) {
-    if (!regional_service.second->ShouldStartRequest(
+    if (regional_service.second->NetworkFilterMatches(
             url, resource_type, tab_host, matching_exception_filter,
             matching_important_filter, cancel_request_explicitly)) {
-      return false;
+      return true;
     }
     if (matching_exception_filter && *matching_exception_filter) {
-      return true;
+      return false;
     }
   }
 
-  return true;
+  return false;
 }
 
 void AdBlockRegionalServiceManager::EnableTag(const std::string& tag,

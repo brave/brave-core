@@ -120,7 +120,7 @@ void AdBlockBaseService::Cleanup() {
       BrowserThread::IO, FROM_HERE, ad_block_client_.release());
 }
 
-bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
+bool AdBlockBaseService::NetworkFilterMatches(const GURL& url,
     content::ResourceType resource_type, const std::string& tab_host,
     bool* did_match_exception, bool* did_match_important,
     bool* cancel_request_explicitly) {
@@ -150,14 +150,14 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     if (cancel_request_explicitly) {
       *cancel_request_explicitly = explicit_cancel;
     }
-    // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
+    // LOG(ERROR) << "AdBlockBaseService::NetworkFilterMatches(), host: "
     //  << tab_host
     //  << ", resource type: " << resource_type
     //  << ", url.spec(): " << url.spec();
-    return false;
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {

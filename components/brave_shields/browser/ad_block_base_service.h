@@ -39,7 +39,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   explicit AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;
 
-  bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,
+  bool NetworkFilterMatches(const GURL &url, content::ResourceType resource_type,
     const std::string& tab_host, bool* did_match_exception,
     bool* did_match_important, bool* cancel_request_explicitly);
   void EnableTag(const std::string& tag, bool enabled);

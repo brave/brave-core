@@ -118,21 +118,21 @@ void OnBeforeURLRequestAdBlockTP(
   bool did_match_exception = false;
   bool did_match_important = false;
   std::string tab_host = ctx->tab_origin.host();
-  was_blocked |= (!g_brave_browser_process->ad_block_service()
-          ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
-                               tab_host, &did_match_exception,
-                               &did_match_important,
-                               &ctx->cancel_request_explicitly));
-  was_blocked |= (!g_brave_browser_process->ad_block_regional_service_manager()
-          ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
-                               tab_host, &did_match_exception,
-                               &did_match_important,
-                               &ctx->cancel_request_explicitly));
-  was_blocked |= (!g_brave_browser_process->ad_block_custom_filters_service()
-          ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
-                               tab_host, &did_match_exception,
-                               &did_match_important,
-                               &ctx->cancel_request_explicitly));
+  was_blocked |= g_brave_browser_process->ad_block_service()
+          ->NetworkFilterMatches(ctx->request_url, ctx->resource_type,
+                                 tab_host, &did_match_exception,
+                                 &did_match_important,
+                                 &ctx->cancel_request_explicitly);
+  was_blocked |= g_brave_browser_process->ad_block_regional_service_manager()
+          ->NetworkFilterMatches(ctx->request_url, ctx->resource_type,
+                                 tab_host, &did_match_exception,
+                                 &did_match_important,
+                                 &ctx->cancel_request_explicitly);
+  was_blocked |= g_brave_browser_process->ad_block_custom_filters_service()
+          ->NetworkFilterMatches(ctx->request_url, ctx->resource_type,
+                                 tab_host, &did_match_exception,
+                                 &did_match_important,
+                                 &ctx->cancel_request_explicitly);
 
   if (was_blocked && (did_match_important || !did_match_exception)) {
     ctx->blocked_by = kAdBlocked;
