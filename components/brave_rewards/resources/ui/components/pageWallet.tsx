@@ -321,8 +321,11 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   handleUpholdLink = (link: string) => {
-    const { ui } = this.props.rewardsData
-    if (!this.state.showVerifyOnBoarding && !ui.onBoardingDisplayed) {
+    const { ui, externalWallet } = this.props.rewardsData
+    if (
+      !this.state.showVerifyOnBoarding &&
+      !ui.onBoardingDisplayed &&
+      (!externalWallet || (externalWallet && externalWallet.status === 0))) {
       this.setState({
         showVerifyOnBoarding: true
       })
@@ -378,37 +381,27 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onFundsAction = (action: string) => {
-    const status = this.getWalletStatus()
     const { externalWallet } = this.props.rewardsData
 
     if (!externalWallet) {
       return
     }
 
-    if (status === 'verified') {
-      switch (action) {
-        case 'add': {
-          if (externalWallet.addUrl) {
-            window.open(externalWallet.addUrl, '_blank')
-          }
-          break
+    switch (action) {
+      case 'add': {
+        if (externalWallet.addUrl) {
+          window.open(externalWallet.addUrl, '_blank')
+          return
         }
-        case 'withdraw': {
-          if (externalWallet.withdrawUrl) {
-            window.open(externalWallet.withdrawUrl, '_blank')
-          }
-          break
+        break
+      }
+      case 'withdraw': {
+        if (externalWallet.withdrawUrl) {
+          window.open(externalWallet.withdrawUrl, '_blank')
+          return
         }
+        break
       }
-      return
-    }
-
-    // WalletStatus::CONNECTED
-    if (externalWallet.status === 1 && action === 'add') {
-      if (externalWallet.addUrl) {
-        window.open(externalWallet.addUrl, '_blank')
-      }
-      return
     }
 
     if (externalWallet.verifyUrl) {

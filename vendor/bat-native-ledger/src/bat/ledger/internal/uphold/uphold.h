@@ -80,6 +80,12 @@ class Uphold {
     ledger::ExternalWalletAuthorizationCallback callback,
     const ledger::ExternalWallet& wallet);
 
+  void OnWalletAuthorizationUser(
+    const ledger::Result result,
+    const User& user,
+    ledger::ExternalWalletAuthorizationCallback callback,
+    const ledger::ExternalWallet& wallet);
+
   void OnWalletAuthorization(
     ledger::ExternalWalletAuthorizationCallback callback,
     const ledger::ExternalWallet& wallet,
@@ -87,10 +93,22 @@ class Uphold {
     const std::string& response,
     const std::map<std::string, std::string>& headers);
 
+  void OnGenerateExternalWalletCard(
+      const bool allow_zero_balance,
+      const ledger::ExternalWallet& wallet,
+      ledger::ExternalWalletCallback callback,
+      const ledger::Result result,
+      const std::string& address);
+
   void OnGenerateExternalWallet(
       const ledger::Result result,
-      const User user,
+      const User& user,
       const ledger::ExternalWallet& wallet,
+      ledger::ExternalWalletCallback callback);
+
+  void TransferAnonToExternalWallet(
+      ledger::ExternalWalletPtr wallet,
+      const bool allow_zero_balance,
       ledger::ExternalWalletCallback callback);
 
   void OnTransferAnonToExternalWalletCallback(

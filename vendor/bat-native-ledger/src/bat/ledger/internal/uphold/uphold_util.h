@@ -46,6 +46,8 @@ std::string GetWithdrawUrl(const std::string& address);
 
 std::string GetSecondStepVerify();
 
+std::string GetSecondStepRegistration();
+
 ledger::ExternalWalletPtr GetWallet(
       std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
@@ -55,6 +57,10 @@ std::vector<std::string> RequestAuthorization(
 std::string GenerateRandomString(bool testing);
 
 std::string GetAccountUrl();
+
+ledger::ExternalWalletPtr GenerateLinks(ledger::ExternalWalletPtr wallet);
+
+std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet);
 
 }  // namespace braveledger_uphold
 
