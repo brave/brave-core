@@ -75,7 +75,9 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
   triggerOpenDeviceRecognition = (
     event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
   ) => {
-    event.currentTarget.blur()
+    if (event) {
+      event.currentTarget.blur()
+    }
     this.props.setBlockedListOpen()
     this.setState({ deviceRecognitionOpen: !this.state.deviceRecognitionOpen })
   }
