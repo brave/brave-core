@@ -122,7 +122,8 @@ void AdBlockBaseService::Cleanup() {
 
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type, const std::string& tab_host,
-    bool* did_match_exception, bool* cancel_request_explicitly) {
+    bool* did_match_exception, bool* did_match_important,
+    bool* cancel_request_explicitly) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   // Determine third-party here so the library doesn't need to figure it out.
@@ -132,28 +133,28 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
       url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
       INCLUDE_PRIVATE_REGISTRIES);
   bool explicit_cancel;
-  bool saved_from_exception;
   // TODO(bbondy): Use redirect if it is provided.
   std::string redirect;
-  if (ad_block_client_->matches(url.spec(), url.host(),
+
+  bool exception;
+  bool important;
+
+  bool matched = ad_block_client_->matches(url.spec(), url.host(),
         tab_host, is_third_party, ResourceTypeToString(resource_type),
-        &explicit_cancel, &saved_from_exception, &redirect)) {
+        &explicit_cancel, &exception, &important, &redirect);
+
+  *did_match_exception |= exception;
+  *did_match_important |= important;
+
+  if (matched) {
     if (cancel_request_explicitly) {
       *cancel_request_explicitly = explicit_cancel;
-    }
-    // We'd only possibly match an exception filter if we're returning true.
-    if (did_match_exception) {
-      *did_match_exception = false;
     }
     // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
     //  << tab_host
     //  << ", resource type: " << resource_type
     //  << ", url.spec(): " << url.spec();
     return false;
-  }
-
-  if (did_match_exception) {
-    *did_match_exception = saved_from_exception;
   }
 
   return true;

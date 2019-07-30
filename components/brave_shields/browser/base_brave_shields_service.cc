@@ -59,11 +59,8 @@ bool BaseBraveShieldsService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string& tab_host,
     bool* did_match_exception,
+    bool* did_match_important,
     bool* cancel_request_explicitly) {
-  if (did_match_exception) {
-    *did_match_exception = false;
-  }
-  // Intentionally don't set cancel_request_explicitly
   return true;
 }
 
