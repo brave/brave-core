@@ -571,6 +571,32 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
+// Attempt to request from a hostname that is blocked by a rule in the base
+// adblocking engine and is excepted by another rule in the base adblocking
+// engine, but has an important blocking rule in the custom adblock rules
+// engine.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+    CustomImportantRulesOverrideDefaultClientExceptions) {
+
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  UpdateAdBlockInstanceWithRules("*o.png\n@@*go.png");
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                ->UpdateCustomFilters("*logo.png$important"));
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          "setExpectations(0, 1, 0, 0, 0, 0);"
+                                          "addImage('logo.png');",
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
 // Make sure the third-party flag is passed into the ad-block library properly
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
   UpdateAdBlockInstanceWithRules("||a.com$third-party");
