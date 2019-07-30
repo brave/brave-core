@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.h b/third_party/blink/renderer/core/dom/document.h
-index 46208455b19db9656a10e2969d3bbaad03958cba..fbcf896a0965df44ac8fe507a858f7e95f70caf8 100644
+index 46208455b19db9656a10e2969d3bbaad03958cba..f29b83cc5adcc8ced7d5e67d5fcfedb12a7b9948 100644
 --- a/third_party/blink/renderer/core/dom/document.h
 +++ b/third_party/blink/renderer/core/dom/document.h
 @@ -78,6 +78,11 @@
@@ -34,13 +34,14 @@ index 46208455b19db9656a10e2969d3bbaad03958cba..fbcf896a0965df44ac8fe507a858f7e9
   protected:
    void DidUpdateSecurityOrigin() final;
  
-@@ -1597,6 +1606,11 @@ class CORE_EXPORT Document : public ContainerNode,
+@@ -1597,6 +1606,12 @@ class CORE_EXPORT Document : public ContainerNode,
      return parser_sync_policy_;
    }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  brave_page_graph::PageGraph* page_graph_;
 +  brave_page_graph::PageGraph* page_graph_non_owning_;
++  bool registered_remote_frame_creation_;
 +#endif
 +
   private:

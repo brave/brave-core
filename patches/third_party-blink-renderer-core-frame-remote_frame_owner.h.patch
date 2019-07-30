@@ -1,0 +1,23 @@
+diff --git a/third_party/blink/renderer/core/frame/remote_frame_owner.h b/third_party/blink/renderer/core/frame/remote_frame_owner.h
+index 31afc440ffce22858b614417ccc3b4428cf711dd..56c607d4bfc61acd4764239ad7821a19726be939 100644
+--- a/third_party/blink/renderer/core/frame/remote_frame_owner.h
++++ b/third_party/blink/renderer/core/frame/remote_frame_owner.h
+@@ -13,6 +13,8 @@
+ #include "third_party/blink/renderer/core/scroll/scroll_types.h"
+ #include "third_party/blink/renderer/platform/wtf/casting.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ // Helper class to bridge communication for a frame with a remote parent.
+@@ -37,6 +39,9 @@ class CORE_EXPORT RemoteFrameOwner final
+   const FramePolicy& GetFramePolicy() const override { return frame_policy_; }
+   void AddResourceTiming(const ResourceTimingInfo&) override;
+   void DispatchLoad() override;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void RegisterRemoteFrameCreated(const GURL& url) override;
++#endif
+   bool CanRenderFallbackContent() const override {
+     return frame_owner_element_type_ == FrameOwnerElementType::kObject;
+   }

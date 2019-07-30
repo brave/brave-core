@@ -1,5 +1,5 @@
 diff --git a/content/renderer/render_frame_impl.h b/content/renderer/render_frame_impl.h
-index b1241cfbe4c2fb15bd00f742fa81e2d3afcdc9bc..b274e42062b9fa7c7d8a0e6f0c4aa44ad0e9a769 100644
+index b1241cfbe4c2fb15bd00f742fa81e2d3afcdc9bc..e0aa6b8dd86e2dd5c99476fa8e891758a53321a4 100644
 --- a/content/renderer/render_frame_impl.h
 +++ b/content/renderer/render_frame_impl.h
 @@ -102,6 +102,8 @@
@@ -24,7 +24,17 @@ index b1241cfbe4c2fb15bd00f742fa81e2d3afcdc9bc..b274e42062b9fa7c7d8a0e6f0c4aa44a
    void SetPreviewsState(PreviewsState previews_state) override;
    PreviewsState GetPreviewsState() override;
    bool IsPasting() override;
-@@ -1130,6 +1138,12 @@ class CONTENT_EXPORT RenderFrameImpl
+@@ -778,6 +786,9 @@ class CONTENT_EXPORT RenderFrameImpl
+   void ForwardResourceTimingToParent(
+       const blink::WebResourceTimingInfo& info) override;
+   void DispatchLoad() override;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void RegisterRemoteFrameCreated(const GURL& url) override;
++#endif
+   blink::WebEffectiveConnectionType GetEffectiveConnectionType() override;
+   void SetEffectiveConnectionTypeForTesting(
+       blink::WebEffectiveConnectionType) override;
+@@ -1130,6 +1141,12 @@ class CONTENT_EXPORT RenderFrameImpl
    void OnAddMessageToConsole(blink::mojom::ConsoleMessageLevel level,
                               const std::string& message,
                               bool discard_duplicates);

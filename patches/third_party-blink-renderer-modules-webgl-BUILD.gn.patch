@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/modules/webgl/BUILD.gn b/third_party/blink/renderer/modules/webgl/BUILD.gn
+index 36169add94b4d5929a0113b3bfb7577ba5f9524d..7c28c25ac20ec946a0cdcb47002cfe89d3262edd 100644
+--- a/third_party/blink/renderer/modules/webgl/BUILD.gn
++++ b/third_party/blink/renderer/modules/webgl/BUILD.gn
+@@ -157,4 +157,8 @@ blink_modules_sources("webgl") {
+   # the implementation depends on a fair chunk of core/ --
+   # include the core pch for faster Windows compilation times.
+   configs += [ "//third_party/blink/renderer/core:blink_core_pch" ]
++
++  deps = [
++    "//brave/third_party/blink/brave_page_graph"
++  ]
+ }

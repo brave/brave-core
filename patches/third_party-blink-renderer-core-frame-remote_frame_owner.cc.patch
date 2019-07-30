@@ -1,0 +1,28 @@
+diff --git a/third_party/blink/renderer/core/frame/remote_frame_owner.cc b/third_party/blink/renderer/core/frame/remote_frame_owner.cc
+index e3adcd172dd0d0835bbdf10a7864eb3c4d26bea0..8f55238009eb5b65f61e5329e98ed530fd645e97 100644
+--- a/third_party/blink/renderer/core/frame/remote_frame_owner.cc
++++ b/third_party/blink/renderer/core/frame/remote_frame_owner.cc
+@@ -14,6 +14,8 @@
+ #include "third_party/blink/renderer/core/layout/intrinsic_sizing_info.h"
+ #include "third_party/blink/renderer/core/timing/performance.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ RemoteFrameOwner::RemoteFrameOwner(
+@@ -67,6 +69,14 @@ void RemoteFrameOwner::DispatchLoad() {
+   web_frame->Client()->DispatchLoad();
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RemoteFrameOwner::RegisterRemoteFrameCreated(const GURL& url) {
++  WebLocalFrameImpl* web_frame =
++      WebLocalFrameImpl::FromFrame(To<LocalFrame>(*frame_));
++  web_frame->Client()->RegisterRemoteFrameCreated(url);
++}
++#endif
++
+ void RemoteFrameOwner::RenderFallbackContent(Frame* failed_frame) {
+   if (frame_owner_element_type_ != FrameOwnerElementType::kObject)
+     return;

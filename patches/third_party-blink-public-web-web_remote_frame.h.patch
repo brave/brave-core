@@ -1,0 +1,23 @@
+diff --git a/third_party/blink/public/web/web_remote_frame.h b/third_party/blink/public/web/web_remote_frame.h
+index 9659f676d4b4e7dd9cf047669807bfd42b241008..526856c125b4989c52c589ff434c1800b8f574e6 100644
+--- a/third_party/blink/public/web/web_remote_frame.h
++++ b/third_party/blink/public/web/web_remote_frame.h
+@@ -17,6 +17,8 @@
+ #include "ui/events/types/scroll_types.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace cc {
+ class Layer;
+ }
+@@ -112,6 +114,9 @@ class WebRemoteFrame : public WebFrame {
+   virtual void ForwardResourceTimingToParent(const WebResourceTimingInfo&) = 0;
+ 
+   virtual void DispatchLoadEventForFrameOwner() = 0;
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  virtual void RegisterRemoteFrameCreatedForFrameOwner(const GURL& url) = 0;
++#endif
+ 
+   virtual void SetNeedsOcclusionTracking(bool) = 0;
+ 

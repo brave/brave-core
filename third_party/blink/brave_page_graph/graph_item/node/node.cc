@@ -79,6 +79,10 @@ bool Node::IsNodeExtensions() const {
   return false;
 }
 
+bool Node::IsNodeRemoteFrame() const {
+  return false;
+}
+
 bool Node::IsNodeResource() const {
   return false;
 }

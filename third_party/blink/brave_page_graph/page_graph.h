@@ -90,6 +90,8 @@ friend NodeHTMLElement;
   void RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
     const blink::DOMNodeId parent_node_id, const WTF::String& tag_name,
     const blink::KURL& url);
+  void RegisterRemoteFrameCreated(const blink::DOMNodeId parent_node_id,
+    const GURL& url);
 
   void RegisterHTMLElementNodeCreated(const blink::DOMNodeId node_id,
     const WTF::String& tag_name,

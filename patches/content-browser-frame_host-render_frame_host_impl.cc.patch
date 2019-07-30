@@ -1,5 +1,5 @@
 diff --git a/content/browser/frame_host/render_frame_host_impl.cc b/content/browser/frame_host/render_frame_host_impl.cc
-index bd596fdc462863fe881fb5d467cc4bbde6b87752..82ced9c7c0b63f859048f5fa8dcaee86502ef573 100644
+index bd596fdc462863fe881fb5d467cc4bbde6b87752..b00c9a446787109cd2bc6d0e80e54e1cc4d588da 100644
 --- a/content/browser/frame_host/render_frame_host_impl.cc
 +++ b/content/browser/frame_host/render_frame_host_impl.cc
 @@ -206,6 +206,8 @@
@@ -30,3 +30,38 @@ index bd596fdc462863fe881fb5d467cc4bbde6b87752..82ced9c7c0b63f859048f5fa8dcaee86
  void RenderFrameHostImpl::ExecuteJavaScript(const base::string16& javascript,
                                              JavaScriptResultCallback callback) {
    DCHECK_CURRENTLY_ON(BrowserThread::UI);
+@@ -1458,6 +1472,10 @@ bool RenderFrameHostImpl::OnMessageReceived(const IPC::Message &msg) {
+     IPC_MESSAGE_HANDLER(FrameHostMsg_DidBlockFramebust, OnDidBlockFramebust)
+     IPC_MESSAGE_HANDLER(FrameHostMsg_AbortNavigation, OnAbortNavigation)
+     IPC_MESSAGE_HANDLER(FrameHostMsg_DispatchLoad, OnDispatchLoad)
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    IPC_MESSAGE_HANDLER(FrameHostMsg_RegisterRemoteFrameCreated,
++                        OnRegisterRemoteFrameCreated)
++#endif
+     IPC_MESSAGE_HANDLER(FrameHostMsg_ForwardResourceTimingToParent,
+                         OnForwardResourceTimingToParent)
+     IPC_MESSAGE_HANDLER(FrameHostMsg_TextSurroundingSelectionResponse,
+@@ -3230,6 +3248,23 @@ void RenderFrameHostImpl::OnDispatchLoad() {
+   proxy->Send(new FrameMsg_DispatchLoad(proxy->GetRoutingID()));
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameHostImpl::OnRegisterRemoteFrameCreated(const GURL& url) {
++  // Only frames with an out-of-process parent frame should be sending this
++  // message.
++  RenderFrameProxyHost* proxy =
++      frame_tree_node()->render_manager()->GetProxyToParent();
++  if (!proxy) {
++    bad_message::ReceivedBadMessage(GetProcess(),
++                                    bad_message::RFH_NO_PROXY_TO_PARENT);
++    return;
++  }
++
++  proxy->Send(new FrameMsg_RegisterRemoteFrameCreated(proxy->GetRoutingID(),
++                                                      url));
++}
++#endif
++
+ RenderWidgetHostViewBase* RenderFrameHostImpl::GetViewForAccessibility() {
+   return static_cast<RenderWidgetHostViewBase*>(
+       frame_tree_node_->IsMainFrame()

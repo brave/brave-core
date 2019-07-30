@@ -1,0 +1,28 @@
+diff --git a/third_party/blink/renderer/core/exported/web_remote_frame_impl.cc b/third_party/blink/renderer/core/exported/web_remote_frame_impl.cc
+index e98696f7d6e25b5ce93d065baaccc590ac5afabb..3d53949e962a30a3fe03032aabc7f42a3ae74d5d 100644
+--- a/third_party/blink/renderer/core/exported/web_remote_frame_impl.cc
++++ b/third_party/blink/renderer/core/exported/web_remote_frame_impl.cc
+@@ -43,6 +43,8 @@
+ #include "third_party/blink/renderer/platform/heap/heap.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ 
+ namespace {
+@@ -318,6 +320,14 @@ void WebRemoteFrameImpl::DispatchLoadEventForFrameOwner() {
+   GetFrame()->Owner()->DispatchLoad();
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void WebRemoteFrameImpl::RegisterRemoteFrameCreatedForFrameOwner(
++    const GURL& url) {
++  DCHECK(GetFrame()->Owner()->IsLocal());
++  GetFrame()->Owner()->RegisterRemoteFrameCreated(url);
++}
++#endif
++
+ void WebRemoteFrameImpl::SetNeedsOcclusionTracking(bool needs_tracking) {
+   GetFrame()->View()->SetNeedsOcclusionTracking(needs_tracking);
+ }

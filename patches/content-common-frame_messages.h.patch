@@ -1,5 +1,5 @@
 diff --git a/content/common/frame_messages.h b/content/common/frame_messages.h
-index e5bcd550ade968e1e38a02014632ec94c16fe8bb..93527d43f1eab6048b07a56302c7476adbeeac39 100644
+index e5bcd550ade968e1e38a02014632ec94c16fe8bb..b6be3d552560274f23edff808b649792c8a9bdfa 100644
 --- a/content/common/frame_messages.h
 +++ b/content/common/frame_messages.h
 @@ -84,6 +84,8 @@
@@ -30,3 +30,29 @@ index e5bcd550ade968e1e38a02014632ec94c16fe8bb..93527d43f1eab6048b07a56302c7476a
  // Tells the renderer to reload the frame, optionally bypassing the cache while
  // doing so.
  IPC_MESSAGE_ROUTED1(FrameMsg_Reload,
+@@ -876,6 +890,12 @@ IPC_MESSAGE_ROUTED1(FrameMsg_ForwardResourceTimingToParent,
+ // this frame.
+ IPC_MESSAGE_ROUTED0(FrameMsg_DispatchLoad)
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// Sent to a proxy to register a remote frame creation event for the
++// FrameOwner of an out-of-process frame.
++IPC_MESSAGE_ROUTED1(FrameMsg_RegisterRemoteFrameCreated, GURL /* url */)
++#endif
++
+ // Sent to a subframe to control whether to collapse its the frame owner element
+ // in the embedder document, that is, to remove it from the layout as if it did
+ // not exist.
+@@ -1527,6 +1547,12 @@ IPC_MESSAGE_ROUTED1(FrameHostMsg_ForwardResourceTimingToParent,
+ // out-of-process parent frame.
+ IPC_MESSAGE_ROUTED0(FrameHostMsg_DispatchLoad)
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// Register a remote frame creation event for the FrameOwner of an
++// out-of-process frame.
++IPC_MESSAGE_ROUTED1(FrameHostMsg_RegisterRemoteFrameCreated, GURL /* url */)
++#endif
++
+ // Sent by a frame proxy to the browser when a child frame finishes loading, so
+ // that the corresponding RenderFrame can check whether its load has completed.
+ IPC_MESSAGE_ROUTED0(FrameHostMsg_CheckCompleted)

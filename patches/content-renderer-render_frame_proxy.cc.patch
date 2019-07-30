@@ -1,0 +1,37 @@
+diff --git a/content/renderer/render_frame_proxy.cc b/content/renderer/render_frame_proxy.cc
+index 9dbcd82b72c093426aa5e750ac27d39aaf1a0e5e..41cd0d306773eff7347c08177d8c26d38dd13ad5 100644
+--- a/content/renderer/render_frame_proxy.cc
++++ b/content/renderer/render_frame_proxy.cc
+@@ -48,6 +48,8 @@
+ #include "third_party/blink/public/web/web_view.h"
+ #include "ui/gfx/geometry/size_conversions.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ #if BUILDFLAG(ENABLE_PRINTING)
+ // nogncheck because dependency on //printing is conditional upon
+ // enable_basic_printing flags.
+@@ -412,6 +414,10 @@ bool RenderFrameProxy::OnMessageReceived(const IPC::Message& msg) {
+     IPC_MESSAGE_HANDLER(FrameMsg_ForwardResourceTimingToParent,
+                         OnForwardResourceTimingToParent)
+     IPC_MESSAGE_HANDLER(FrameMsg_DispatchLoad, OnDispatchLoad)
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    IPC_MESSAGE_HANDLER(FrameMsg_RegisterRemoteFrameCreated,
++                        OnRegisterRemoteFrameCreated)
++#endif
+     IPC_MESSAGE_HANDLER(FrameMsg_SetNeedsOcclusionTracking,
+                         OnSetNeedsOcclusionTracking)
+     IPC_MESSAGE_HANDLER(FrameMsg_Collapse, OnCollapse)
+@@ -524,6 +530,12 @@ void RenderFrameProxy::OnDispatchLoad() {
+   web_frame_->DispatchLoadEventForFrameOwner();
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderFrameProxy::OnRegisterRemoteFrameCreated(const GURL& url) {
++  web_frame_->RegisterRemoteFrameCreatedForFrameOwner(url);
++}
++#endif
++
+ void RenderFrameProxy::OnSetNeedsOcclusionTracking(bool needs_tracking) {
+   web_frame_->SetNeedsOcclusionTracking(needs_tracking);
+ }

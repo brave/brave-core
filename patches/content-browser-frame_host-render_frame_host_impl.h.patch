@@ -1,5 +1,5 @@
 diff --git a/content/browser/frame_host/render_frame_host_impl.h b/content/browser/frame_host/render_frame_host_impl.h
-index 30f1fad5253bd23489a52186a3241c57e3c4e7a5..c9383ea2b00af45e49f346625d32eb9fc47312a7 100644
+index 30f1fad5253bd23489a52186a3241c57e3c4e7a5..e38373f51a91d82945829530dddf925a0048ccea 100644
 --- a/content/browser/frame_host/render_frame_host_impl.h
 +++ b/content/browser/frame_host/render_frame_host_impl.h
 @@ -94,6 +94,8 @@
@@ -24,3 +24,13 @@ index 30f1fad5253bd23489a52186a3241c57e3c4e7a5..c9383ea2b00af45e49f346625d32eb9f
    void ExecuteJavaScript(const base::string16& javascript,
                           JavaScriptResultCallback callback) override;
    void ExecuteJavaScriptInIsolatedWorld(const base::string16& javascript,
+@@ -1132,6 +1140,9 @@ class CONTENT_EXPORT RenderFrameHostImpl
+   void OnForwardResourceTimingToParent(
+       const ResourceTimingInfo& resource_timing);
+   void OnDispatchLoad();
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void OnRegisterRemoteFrameCreated(const GURL& url);
++#endif
+   void OnAccessibilityEvents(
+       const AccessibilityHostMsg_EventBundleParams& params,
+       int reset_token,

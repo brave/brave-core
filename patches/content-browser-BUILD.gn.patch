@@ -1,0 +1,12 @@
+diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
+index 65c852319a5790913345874d369650dc02312dbe..3830aa96b9b1573154d76c0986e1f9febdb86f42 100644
+--- a/content/browser/BUILD.gn
++++ b/content/browser/BUILD.gn
+@@ -43,6 +43,7 @@ jumbo_source_set("browser") {
+     "//base:base_static",
+     "//base:clang_coverage_buildflags",
+     "//base/third_party/dynamic_annotations",
++    "//brave/third_party/blink/brave_page_graph",
+     "//cc",
+     "//cc/animation",
+     "//cc/mojo_embedder",

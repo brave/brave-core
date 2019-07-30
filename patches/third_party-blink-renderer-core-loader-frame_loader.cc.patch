@@ -1,0 +1,42 @@
+diff --git a/third_party/blink/renderer/core/loader/frame_loader.cc b/third_party/blink/renderer/core/loader/frame_loader.cc
+index 1c1bd65c5f7ac55bf9d1f33ae7d7bcd2a5bc9d24..a4d38630fd7c0f4c7b4cd2c34add21227e7b8c52 100644
+--- a/third_party/blink/renderer/core/loader/frame_loader.cc
++++ b/third_party/blink/renderer/core/loader/frame_loader.cc
+@@ -114,6 +114,13 @@
+ #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++// #include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #include "third_party/blink/renderer/core/dom/document.h"
++// #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++// #include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ 
+ using namespace html_names;
+@@ -790,6 +797,23 @@ void FrameLoader::StartNavigation(const FrameLoadRequest& passed_request,
+                                     request.ClientRedirectReason());
+   }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  // First see if there is a parent
++  // {
++  //   Frame* parent_frame = frame_->Tree().Parent();
++  //   if (parent_frame != nullptr &&
++  //       parent_frame->IsLocalFrame() &&
++  //       parent_frame->GetDocument()->GetPageGraph() != nullptr) {
++  //     LocalFrame* local_parent_frame = static_cast<LocalFrame*>(parent_frame);
++  //     const DOMNodeId node_id = frame_->GetPageGraphNodeIdInParentDocument();
++  //     current_request_id_ = local_parent_frame->GetDocument()->GetPageGraph()->GetNewRequestId();
++  //     local_parent_frame->GetDocument()->GetPageGraph()->RegisterRequestStartFromElm(
++  //       node_id, current_request_id_, ::brave_page_graph::kRequestTypeDocument
++  //     );
++  //   }
++  // }
++// #endif
++
+   Client()->BeginNavigation(
+       resource_request, request.GetFrameType(), origin_document,
+       nullptr /* document_loader */, navigation_type,

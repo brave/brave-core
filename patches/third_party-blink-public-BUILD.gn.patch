@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/public/BUILD.gn b/third_party/blink/public/BUILD.gn
+index 4b3cbec874a288c49116340e33f7cef78797e320..112a2b06d9cc6db8ec8f54ab2e467d85c40ff557 100644
+--- a/third_party/blink/public/BUILD.gn
++++ b/third_party/blink/public/BUILD.gn
+@@ -21,6 +21,7 @@ group("blink") {
+     ":blink_headers",
+   ]
+   deps = [
++    "//brave/third_party/blink/brave_page_graph",
+     "//third_party/blink/renderer/controller",
+     "//third_party/blink/renderer/core",
+     "//third_party/blink/renderer/modules",

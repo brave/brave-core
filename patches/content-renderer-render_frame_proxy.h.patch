@@ -1,0 +1,23 @@
+diff --git a/content/renderer/render_frame_proxy.h b/content/renderer/render_frame_proxy.h
+index 04a8e0fcb065986efa5df55475e7ceb6df234df3..3ed4c75f27beee824503f1e315693dcb41c4f5c5 100644
+--- a/content/renderer/render_frame_proxy.h
++++ b/content/renderer/render_frame_proxy.h
+@@ -24,6 +24,8 @@
+ #include "third_party/blink/public/web/web_remote_frame_client.h"
+ #include "url/origin.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace blink {
+ struct FramePolicy;
+ struct WebRect;
+@@ -247,6 +249,9 @@ class CONTENT_EXPORT RenderFrameProxy : public IPC::Listener,
+   void OnForwardResourceTimingToParent(
+       const ResourceTimingInfo& resource_timing);
+   void OnDispatchLoad();
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void OnRegisterRemoteFrameCreated(const GURL& url);
++#endif
+   void OnSetNeedsOcclusionTracking(bool);
+   void OnCollapse(bool collapsed);
+   void OnDidUpdateName(const std::string& name, const std::string& unique_name);
