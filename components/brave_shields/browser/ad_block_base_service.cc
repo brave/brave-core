@@ -135,11 +135,12 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
       INCLUDE_PRIVATE_REGISTRIES);
   bool explicit_cancel;
   bool saved_from_exception;
+  std::string filter;
   // TODO(bbondy): Use redirect if it is provided.
   std::string redirect;
   if (ad_block_client_->matches(url.spec(), url.host(),
         tab_host, is_third_party, ResourceTypeToString(resource_type),
-        &explicit_cancel, &saved_from_exception, &redirect)) {
+        &explicit_cancel, &saved_from_exception, &filter, &redirect)) {
     if (cancel_request_explicitly) {
       *cancel_request_explicitly = explicit_cancel;
     }
@@ -147,14 +148,9 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     if (did_match_exception) {
       *did_match_exception = false;
     }
-    // TODO(asjosten): This must be re-written
-    /*if (block_decision && matching_filter) {
-      std::string rule;
-      if (matching_filter->ruleDefinition) {
-        rule = matching_filter->ruleDefinition;
-      }
-      *block_decision = new AdBlockDecision(rule);
-    } */
+    if (block_decision) {
+      *block_decision = new AdBlockDecision(filter);
+    }
     // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
     //  << tab_host
     //  << ", resource type: " << resource_type
