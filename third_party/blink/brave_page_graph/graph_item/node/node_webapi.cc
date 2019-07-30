@@ -29,7 +29,7 @@ ItemDesc NodeWebAPI::GetItemDesc() const {
 }
 
 GraphMLXMLList NodeWebAPI::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = GraphItem::GetGraphMLAttributes();
+  GraphMLXMLList attrs = Node::GetGraphMLAttributes();
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
       ->ToValue(method_name_));
   return attrs;
