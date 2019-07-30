@@ -56,9 +56,9 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BraveShieldsSetBraveShieldsControlTypeFunction::Run() {
-  std::unique_ptr<brave_shields::SetBraveShieldsControlType::Params> params(
-      brave_shields::SetBraveShieldsControlType::Params::Create(*args_));
+BraveShieldsSetBraveShieldsEnabledFunction::Run() {
+  std::unique_ptr<brave_shields::SetBraveShieldsEnabled::Params> params(
+      brave_shields::SetBraveShieldsEnabled::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -67,21 +67,16 @@ BraveShieldsSetBraveShieldsControlTypeFunction::Run() {
     return RespondNow(Error(kInvalidUrlError, params->url));
   }
 
-  auto control_type = ControlTypeFromString(params->control_type);
-  if (control_type == ControlType::INVALID) {
-    return RespondNow(Error(kInvalidControlTypeError, params->control_type));
-  }
-
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  ::brave_shields::SetBraveShieldsControlType(profile, control_type, url);
+  ::brave_shields::SetBraveShieldsEnabled(profile, params->enabled, url);
 
   return RespondNow(NoArguments());
 }
 
 ExtensionFunction::ResponseAction
-BraveShieldsGetBraveShieldsControlTypeFunction::Run() {
-  std::unique_ptr<brave_shields::GetBraveShieldsControlType::Params> params(
-      brave_shields::GetBraveShieldsControlType::Params::Create(*args_));
+BraveShieldsGetBraveShieldsEnabledFunction::Run() {
+  std::unique_ptr<brave_shields::GetBraveShieldsEnabled::Params> params(
+      brave_shields::GetBraveShieldsEnabled::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -91,8 +86,8 @@ BraveShieldsGetBraveShieldsControlTypeFunction::Run() {
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto type = ::brave_shields::GetBraveShieldsControlType(profile, url);
-  auto result = std::make_unique<base::Value>(ControlTypeToString(type));
+  auto enabled = ::brave_shields::GetBraveShieldsEnabled(profile, url);
+  auto result = std::make_unique<base::Value>(enabled);
 
   return RespondNow(OneArgument(std::move(result)));
 }
@@ -222,9 +217,9 @@ BraveShieldsGetFingerprintingControlTypeFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BraveShieldsSetHTTPSEverywhereControlTypeFunction::Run() {
-  std::unique_ptr<brave_shields::SetHTTPSEverywhereControlType::Params> params(
-      brave_shields::SetHTTPSEverywhereControlType::Params::Create(*args_));
+BraveShieldsSetHTTPSEverywhereEnabledFunction::Run() {
+  std::unique_ptr<brave_shields::SetHTTPSEverywhereEnabled::Params> params(
+      brave_shields::SetHTTPSEverywhereEnabled::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -233,21 +228,16 @@ BraveShieldsSetHTTPSEverywhereControlTypeFunction::Run() {
     return RespondNow(Error(kInvalidUrlError, params->url));
   }
 
-  auto control_type = ControlTypeFromString(params->control_type);
-  if (control_type == ControlType::INVALID) {
-    return RespondNow(Error(kInvalidControlTypeError, params->control_type));
-  }
-
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  ::brave_shields::SetHTTPSEverywhereControlType(profile, control_type, url);
+  ::brave_shields::SetHTTPSEverywhereEnabled(profile, params->enabled, url);
 
   return RespondNow(NoArguments());
 }
 
 ExtensionFunction::ResponseAction
-BraveShieldsGetHTTPSEverywhereControlTypeFunction::Run() {
-  std::unique_ptr<brave_shields::GetHTTPSEverywhereControlType::Params> params(
-      brave_shields::GetHTTPSEverywhereControlType::Params::Create(*args_));
+BraveShieldsGetHTTPSEverywhereEnabledFunction::Run() {
+  std::unique_ptr<brave_shields::GetHTTPSEverywhereEnabled::Params> params(
+      brave_shields::GetHTTPSEverywhereEnabled::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -257,8 +247,8 @@ BraveShieldsGetHTTPSEverywhereControlTypeFunction::Run() {
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto type = ::brave_shields::GetHTTPSEverywhereControlType(profile, url);
-  auto result = std::make_unique<base::Value>(ControlTypeToString(type));
+  auto type = ::brave_shields::GetHTTPSEverywhereEnabled(profile, url);
+  auto result = std::make_unique<base::Value>(type);
 
   return RespondNow(OneArgument(std::move(result)));
 }

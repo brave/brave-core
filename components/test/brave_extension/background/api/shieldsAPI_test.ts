@@ -142,12 +142,12 @@ describe('Shields API', () => {
   describe('setAllowHTTPUpgradableResource', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields, 'setHTTPSEverywhereControlTypeAsync')
+      spy = jest.spyOn(chrome.braveShields, 'setHTTPSEverywhereEnabledAsync')
     })
     afterEach(() => {
       spy.mockRestore()
     })
-    it('calls chrome.braveShields.setHTTPSEverywhereControlTypeAsync with the correct args', () => {
+    it('calls chrome.braveShields.setHTTPSEverywhereEnabledAsync with the correct args', () => {
       shieldsAPI.setAllowHTTPUpgradableResources('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
@@ -155,7 +155,7 @@ describe('Shields API', () => {
       const arg0 = spy.mock.calls[0][0]
       const arg1 = spy.mock.calls[0][1]
       expect.assertions(2)
-      expect(arg0).toEqual('block')
+      expect(arg0).toEqual(true)
       expect(arg1).toEqual('https://www.brave.com')
     })
   })

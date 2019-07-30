@@ -21,24 +21,24 @@ class BraveShieldsAllowScriptsOnceFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveShieldsSetBraveShieldsControlTypeFunction
+class BraveShieldsSetBraveShieldsEnabledFunction
     : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.setBraveShieldsControlType", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveShields.setBraveShieldsEnabled", UNKNOWN)
 
  protected:
-  ~BraveShieldsSetBraveShieldsControlTypeFunction() override {}
+  ~BraveShieldsSetBraveShieldsEnabledFunction() override {}
 
   ResponseAction Run() override;
 };
 
-class BraveShieldsGetBraveShieldsControlTypeFunction
+class BraveShieldsGetBraveShieldsEnabledFunction
     : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.getBraveShieldsControlType", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveShields.getBraveShieldsEnabled", UNKNOWN)
 
  protected:
-  ~BraveShieldsGetBraveShieldsControlTypeFunction() override {}
+  ~BraveShieldsGetBraveShieldsEnabledFunction() override {}
 
   ResponseAction Run() override;
 };
@@ -109,26 +109,26 @@ class BraveShieldsGetFingerprintingControlTypeFunction
   ResponseAction Run() override;
 };
 
-class BraveShieldsSetHTTPSEverywhereControlTypeFunction
+class BraveShieldsSetHTTPSEverywhereEnabledFunction
     : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.setHTTPSEverywhereControlType",
+  DECLARE_EXTENSION_FUNCTION("braveShields.setHTTPSEverywhereEnabled",
                              UNKNOWN)
 
  protected:
-  ~BraveShieldsSetHTTPSEverywhereControlTypeFunction() override {}
+  ~BraveShieldsSetHTTPSEverywhereEnabledFunction() override {}
 
   ResponseAction Run() override;
 };
 
-class BraveShieldsGetHTTPSEverywhereControlTypeFunction
+class BraveShieldsGetHTTPSEverywhereEnabledFunction
     : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.getHTTPSEverywhereControlType",
+  DECLARE_EXTENSION_FUNCTION("braveShields.getHTTPSEverywhereEnabled",
                              UNKNOWN)
 
  protected:
-  ~BraveShieldsGetHTTPSEverywhereControlTypeFunction() override {}
+  ~BraveShieldsGetHTTPSEverywhereEnabledFunction() override {}
 
   ResponseAction Run() override;
 };

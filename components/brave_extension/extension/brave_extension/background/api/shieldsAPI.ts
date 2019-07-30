@@ -22,9 +22,9 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
   const hostname = url.hostname
 
   return Promise.all([
-    chrome.braveShields.getBraveShieldsControlTypeAsync(tabData.url),
+    chrome.braveShields.getBraveShieldsEnabledAsync(tabData.url),
     chrome.braveShields.getAdControlTypeAsync(tabData.url),
-    chrome.braveShields.getHTTPSEverywhereControlTypeAsync(tabData.url),
+    chrome.braveShields.getHTTPSEverywhereEnabledAsync(tabData.url),
     chrome.braveShields.getNoScriptControlTypeAsync(tabData.url),
     chrome.braveShields.getFingerprintingControlTypeAsync(tabData.url),
     chrome.braveShields.getCookieControlTypeAsync(tabData.url)
@@ -34,10 +34,10 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       origin,
       hostname,
       id: tabData.id,
-      braveShields: details[0],
+      braveShields: details[0] ? 'allow' : 'block',
       ads: details[1],
       trackers: details[1],
-      httpUpgradableResources: details[2],
+      httpUpgradableResources: details[2] ? 'block' : 'allow',
       javascript: details[3],
       fingerprinting: details[4],
       cookies: details[5]
@@ -84,7 +84,7 @@ export const requestShieldPanelData = (tabId: number) =>
  * @return a promise which resolves when the setting is set
  */
 export const setAllowBraveShields = (origin: string, setting: string) =>
-  chrome.braveShields.setBraveShieldsControlTypeAsync(setting, origin)
+  chrome.braveShields.setBraveShieldsEnabledAsync(setting === 'allow' ? true : false, origin)
 
 /**
  * Changes the ads at origin to be allowed or blocked.
@@ -103,8 +103,9 @@ export const setAllowAds = (origin: string, setting: string) =>
  * @param {string} setting 'allow' or 'block'
  * @return a promise which resolves with the setting is set
  */
-export const setAllowTrackers = (origin: string, setting: string) =>
-  chrome.braveShields.setAdControlTypeAsync(setting, origin)
+export const setAllowTrackers = (origin: string, setting: string) => {
+  return chrome.braveShields.setAdControlTypeAsync(setting, origin)
+}
 
 /**
  * Changes the http upgrdabable resources to be allows as is or blocked.
@@ -113,7 +114,7 @@ export const setAllowTrackers = (origin: string, setting: string) =>
  * @return a promise which resolves when the setting is set
  */
 export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOptions) =>
-  chrome.braveShields.setHTTPSEverywhereControlTypeAsync(setting, origin)
+  chrome.braveShields.setHTTPSEverywhereEnabledAsync(setting === 'allow' ? false : true, origin)
 
 /**
  * Changes the Javascript to be on (allow) or off (block)

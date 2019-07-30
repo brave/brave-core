@@ -85,7 +85,7 @@ Polymer({
     this.browserProxy_.setFingerprintingControlType(this.$.fingerprintingControlType.value);
   },
   onHTTPSEverywhereControlChange_: function() {
-    this.browserProxy_.setHTTPSEverywhereControlType(this.$.httpsEverywhereControlType.checked);
+    this.browserProxy_.setHTTPSEverywhereEnabled(this.$.httpsEverywhereControlType.checked);
   },
   onNoScriptControlChange_: function() {
     this.browserProxy_.setNoScriptControlType(this.$.noScriptControlType.checked);
