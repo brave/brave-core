@@ -9,25 +9,38 @@ namespace brave_ads {
 
 namespace prefs {
 
+// Stores whether Brave ads is enabled or disabled
 const char kEnabled[] = "brave.brave_ads.enabled";
 
+// Stores the maximum amount of ads per hour
 const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
+
+// Stores the maximum amount of ads per day
 const char kAdsPerDay[] = "brave.brave_ads.ads_per_day";
 
+// Stores the idle threshold before checking if an ad can be served
 const char kIdleThreshold[] = "brave.brave_ads.idle_threshold";
 
+// Stores whether onboarding should be shown
 const char kShouldShowFirstLaunchNotification[] =
     "brave.brave_ads.should_show_first_launch_notification";
+
+// Stores whether onboarding was completed
 const char kHasRemovedFirstLaunchNotification[] =
     "brave.brave_ads.has_removed_first_launch_notification";
+
+// Stores the timestamp of when onboarding was first shown
 const char kLastShownFirstLaunchNotificationTimestamp[] =
     "brave.brave_ads.launch_notification_timestamp";
 
+// Stores whether we should show the My First Ad notification
 const char kShouldShowMyFirstAdNotification[] =
     "brave.brave_ads.should_show_my_first_ad_notification";
 
-const int kCurrentVersionNumber = 3;
+// Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
+
+const int kCurrentVersionNumber = 3;
 
 }  // namespace prefs
 
