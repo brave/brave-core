@@ -10,6 +10,8 @@
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_remote_frame.h"
+
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_dom_root.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_frame_owner.h"
 
@@ -28,6 +30,10 @@ EdgeCrossDOM::EdgeCrossDOM(PageGraph* const graph, NodeDOMRoot* const out_node,
 
 EdgeCrossDOM::EdgeCrossDOM(PageGraph* const graph,
     NodeFrameOwner* const out_node, NodeDOMRoot* const in_node) :
+      Edge(graph, out_node, in_node) {}
+
+EdgeCrossDOM::EdgeCrossDOM(PageGraph* const graph,
+    NodeFrameOwner* const out_node, NodeRemoteFrame* const in_node) :
       Edge(graph, out_node, in_node) {}
 
 EdgeCrossDOM::~EdgeCrossDOM() {}

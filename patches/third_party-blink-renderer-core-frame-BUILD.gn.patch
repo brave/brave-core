@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/frame/BUILD.gn b/third_party/blink/renderer/core/frame/BUILD.gn
+index 03647d38e3f8441731e409489234babbc3bd9d20..da38e6b5556c05bbf8e5591fd84d45b7afce8c9e 100644
+--- a/third_party/blink/renderer/core/frame/BUILD.gn
++++ b/third_party/blink/renderer/core/frame/BUILD.gn
+@@ -195,4 +195,8 @@ blink_core_sources("frame") {
+     "window_or_worker_global_scope.cc",
+     "window_or_worker_global_scope.h",
+   ]
++
++  deps = [
++    "//brave/third_party/blink/brave_page_graph",
++  ]
+ }

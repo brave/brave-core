@@ -1,0 +1,34 @@
+diff --git a/third_party/blink/renderer/core/html/html_frame_owner_element.cc b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
+index 1b2e72efde8a0773528c87dcd0379601488621f2..ab74d35b0d754717099b700ae417e2375e8530c9 100644
+--- a/third_party/blink/renderer/core/html/html_frame_owner_element.cc
++++ b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
+@@ -53,6 +53,12 @@
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+ #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -325,6 +331,16 @@ void HTMLFrameOwnerElement::DispatchLoad() {
+   DispatchScopedEvent(*Event::Create(event_type_names::kLoad));
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void HTMLFrameOwnerElement::RegisterRemoteFrameCreated(const GURL& url) {
++  ::brave_page_graph::PageGraph* const page_graph =
++      GetDocument().GetPageGraph();
++  if (page_graph) {
++    page_graph->RegisterRemoteFrameCreated(DOMNodeIds::IdForNode(this), url);
++  }
++}
++#endif
++
+ Document* HTMLFrameOwnerElement::getSVGDocument(
+     ExceptionState& exception_state) const {
+   Document* doc = contentDocument();

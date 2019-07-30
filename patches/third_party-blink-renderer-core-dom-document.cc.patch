@@ -18,18 +18,19 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
  namespace blink {
  
  namespace {
-@@ -1037,6 +1046,10 @@ Document::Document(const DocumentInit& initializer,
+@@ -1037,6 +1046,11 @@ Document::Document(const DocumentInit& initializer,
        ExecutionContext(V8PerIsolateData::MainThreadIsolate(),
                         security_initializer.GetAgent(),
                         security_initializer.GetOriginTrialContext()),
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +      page_graph_(nullptr),
 +      page_graph_non_owning_(nullptr),
++      registered_remote_frame_creation_(false),
 +#endif
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        window_agent_factory_(security_initializer.GetWindowAgentFactory()),
-@@ -1218,7 +1232,131 @@ Document::~Document() {
+@@ -1218,8 +1232,141 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -42,8 +43,8 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
 +    page_graph_ = nullptr;
 +  }
 +#endif
-+}
-+
+ }
+ 
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +static bool IsDocumentLocal(const blink::Document* document) {
 +  // If the current document is in a different security origin than the
@@ -99,6 +100,15 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
 +  }
 +
 +  if (!IsDocumentLocal(context_document)) {
++    // Report remote frame creation to owner.
++    if (!context_document->registered_remote_frame_creation_) {
++      if (Frame* const frame = context_document->GetFrame()) {
++        if (FrameOwner* const frame_owner = frame->Owner()) {
++          frame_owner->RegisterRemoteFrameCreated(context_document->Url());
++          registered_remote_frame_creation_ = true;
++        }
++      }
++    }
 +    return nullptr;
 +  }
 +
@@ -156,11 +166,12 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
 +                                                  DOMNodeIds::IdForNode(this),
 +                                                  nodeName(), Url());
 +  return page_graph_;
- }
++}
 +#endif
- 
++
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
+   DCHECK(position.IsNotNull());
 @@ -5856,6 +5999,22 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (!cookie_jar_)
      return String();

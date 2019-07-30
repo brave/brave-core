@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/modules/canvas/BUILD.gn b/third_party/blink/renderer/modules/canvas/BUILD.gn
+index 4841cf9a16cc1a8e4153ca52a41f34c3c82a3dfb..6e92d7e3e021ff6d82237057de2a64a57493a61e 100644
+--- a/third_party/blink/renderer/modules/canvas/BUILD.gn
++++ b/third_party/blink/renderer/modules/canvas/BUILD.gn
+@@ -38,4 +38,8 @@ blink_modules_sources("canvas") {
+     "offscreencanvas2d/offscreen_canvas_rendering_context_2d.cc",
+     "offscreencanvas2d/offscreen_canvas_rendering_context_2d.h",
+   ]
++
++  deps = [
++    "//brave/third_party/blink/brave_page_graph",
++  ]
+ }

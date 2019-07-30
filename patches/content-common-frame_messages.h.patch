@@ -27,6 +27,32 @@ index e5bcd550ade968e1e38a02014632ec94c16fe8bb..93527d43f1eab6048b07a56302c7476a
 +                    std::string /* host */)
 +#endif
 +
- // Tells the renderer to reload the frame, optionally bypassing the cache while
- // doing so.
- IPC_MESSAGE_ROUTED1(FrameMsg_Reload,
+ // TODO(https://crbug.com/995428): Deprecated.
+ // Tells the renderer to reload the frame.
+ IPC_MESSAGE_ROUTED0(FrameMsg_Reload)
+@@ -738,6 +758,12 @@ IPC_MESSAGE_ROUTED1(FrameMsg_SetAccessibilityMode, ui::AXMode)
+ IPC_MESSAGE_ROUTED1(FrameMsg_ForwardResourceTimingToParent,
+                     content::ResourceTimingInfo)
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// Sent to a proxy to register a remote frame creation event for the
++// FrameOwner of an out-of-process frame.
++IPC_MESSAGE_ROUTED1(FrameMsg_RegisterRemoteFrameCreated, GURL /* url */)
++#endif
++
+ // Notifies the frame that its parent has changed the frame's sandbox flags or
+ // container policy.
+ IPC_MESSAGE_ROUTED1(FrameMsg_DidUpdateFramePolicy, blink::FramePolicy)
+@@ -1376,6 +1376,12 @@ IPC_MESSAGE_ROUTED1(FrameHostMsg_ForwardResourceTimingToParent,
+ // out-of-process parent frame.
+ IPC_MESSAGE_ROUTED0(FrameHostMsg_DispatchLoad)
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// Register a remote frame creation event for the FrameOwner of an
++// out-of-process frame.
++IPC_MESSAGE_ROUTED1(FrameHostMsg_RegisterRemoteFrameCreated, GURL /* url */)
++#endif
++
+ // Sent by a frame proxy to the browser when a child frame finishes loading, so
+ // that the corresponding RenderFrame can check whether its load has completed.
+ IPC_MESSAGE_ROUTED0(FrameHostMsg_CheckCompleted)

@@ -38,6 +38,8 @@ source_set("brave_page_graph") {
       "graph_item/node/shield/node_shield.h",
       "graph_item/node/node_extensions.h",
       "graph_item/node/node_extensions.cc",
+      "graph_item/node/node_remote_frame.h",
+      "graph_item/node/node_remote_frame.cc",
       "graph_item/node/node_resource.h",
       "graph_item/node/node_resource.cc",
       "graph_item/node/node.h",

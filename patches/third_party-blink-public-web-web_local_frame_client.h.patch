@@ -1,0 +1,26 @@
+diff --git a/third_party/blink/public/web/web_local_frame_client.h b/third_party/blink/public/web/web_local_frame_client.h
+index 750d82cc5df6fc94bbc883360c2f2b0463b6f753..c539b43c1c0fd88e9b1ed2696bf67e5c847f7fa8 100644
+--- a/third_party/blink/public/web/web_local_frame_client.h
++++ b/third_party/blink/public/web/web_local_frame_client.h
+@@ -79,6 +79,8 @@
+ #include "ui/events/types/scroll_types.h"
+ #include "v8/include/v8.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++
+ namespace service_manager {
+ class InterfaceProvider;
+ }
+@@ -496,6 +498,12 @@ class BLINK_EXPORT WebLocalFrameClient {
+   // out-of-process parent frame.
+   virtual void DispatchLoad() {}
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  // Called to register a remote frame creation event for the FrameOwner of an
++  // out-of-process frame.
++  virtual void RegisterRemoteFrameCreated(const GURL& url) {}
++#endif
++
+   // Returns the effective connection type when the frame was fetched.
+   virtual WebEffectiveConnectionType GetEffectiveConnectionType() {
+     return WebEffectiveConnectionType::kTypeUnknown;
