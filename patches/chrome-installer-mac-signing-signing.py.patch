@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index de69f7ba6cca5729ab83ff076211be36354d0f60..7f6722a48b2ee9ade75d4e366ece1bdf6accabac 100644
+index de69f7ba6cca5729ab83ff076211be36354d0f60..19a47e9997ad7bf48429085f4eb9b45850f79ef9 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
 @@ -11,6 +11,7 @@ import os.path
@@ -19,15 +19,6 @@ index de69f7ba6cca5729ab83ff076211be36354d0f60..7f6722a48b2ee9ade75d4e366ece1bdf
                  requirements=config.codesign_requirements_outer_app,
                  identifier_requirement=False,
                  entitlements='app-entitlements.plist',
-@@ -76,7 +77,7 @@ def get_parts(config):
-                 '{0.framework_dir}/Helpers/{0.product} Helper.app'.format(
-                     config),
-                 '{}.helper'.format(uncustomized_bundle_id),
--                options=full_hardened_runtime_options,
-+                options=CodeSignOptions.RESTRICT,
-                 verify_options=VerifyOptions.DEEP),
-         'helper-renderer-app':
-             CodeSignedProduct(
 @@ -124,6 +125,7 @@ def get_parts(config):
              library_basename.replace('.dylib', ''),
              verify_options=VerifyOptions.DEEP)
