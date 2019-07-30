@@ -465,13 +465,13 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_key,
       const std::string& viewing_id,
       uint64_t added_date,
-      const ledger::RemovePendingContributionCallback& callback) override;
+      ledger::RemovePendingContributionCallback callback) override;
 
   void RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) override;
+      ledger::RemovePendingContributionCallback callback) override;
 
   void GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) override;
+      ledger::PendingContributionsTotalCallback callback) override;
 
   void ContributeUnverifiedPublishers();
 
@@ -515,12 +515,12 @@ class LedgerImpl : public ledger::Ledger,
 
   void ShowNotification(
       const std::string& type,
-      const ledger::ShowNotificationCallback& callback,
+      ledger::ShowNotificationCallback callback,
       const std::vector<std::string>& args = {});
 
   void DeleteActivityInfo(
       const std::string& publisher_key,
-      const ledger::DeleteActivityInfoCallback& callback);
+      ledger::DeleteActivityInfoCallback callback);
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,

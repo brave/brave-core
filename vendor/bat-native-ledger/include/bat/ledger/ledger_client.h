@@ -240,19 +240,19 @@ class LEDGER_EXPORT LedgerClient {
   virtual void ConfirmationsTransactionHistoryDidChange() = 0;
 
   virtual void GetPendingContributions(
-      const ledger::PendingContributionInfoListCallback& callback) = 0;
+      ledger::PendingContributionInfoListCallback callback) = 0;
 
   virtual void RemovePendingContribution(
       const std::string& publisher_key,
       const std::string& viewing_id,
       uint64_t added_date,
-      const ledger::RemovePendingContributionCallback& callback) = 0;
+      ledger::RemovePendingContributionCallback callback) = 0;
 
   virtual void RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) = 0;
+      ledger::RemovePendingContributionCallback callback) = 0;
 
   virtual void GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) = 0;
+      ledger::PendingContributionsTotalCallback callback) = 0;
 
   virtual void OnContributeUnverifiedPublishers(
       Result result,
@@ -268,11 +268,11 @@ class LEDGER_EXPORT LedgerClient {
   virtual void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      const ledger::ShowNotificationCallback& callback) = 0;
+      ledger::ShowNotificationCallback callback) = 0;
 
   virtual void DeleteActivityInfo(
-    const std::string& publisher_key,
-    const ledger::DeleteActivityInfoCallback& callback) = 0;
+      const std::string& publisher_key,
+      ledger::DeleteActivityInfoCallback callback) = 0;
 };
 
 }  // namespace ledger

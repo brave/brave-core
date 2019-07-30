@@ -2878,7 +2878,7 @@ double PendingContributionsTotalOnFileTaskRunner(
 }
 
 void RewardsServiceImpl::OnGetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback,
+    ledger::PendingContributionsTotalCallback callback,
     double amount) {
   if (!Connected()) {
     callback(0.0);
@@ -2889,7 +2889,7 @@ void RewardsServiceImpl::OnGetPendingContributionsTotal(
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) {
+    ledger::PendingContributionsTotalCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
@@ -2987,7 +2987,7 @@ bool DeleteActivityInfoOnFileTaskRunner(PublisherInfoDatabase* backend,
 
 void RewardsServiceImpl::DeleteActivityInfo(
   const std::string& publisher_key,
-  const ledger::DeleteActivityInfoCallback& callback) {
+  ledger::DeleteActivityInfoCallback callback) {
   GetReconcileStamp(
       base::Bind(&RewardsServiceImpl::OnDeleteActivityInfoStamp,
                  AsWeakPtr(),
@@ -3140,7 +3140,7 @@ void RewardsServiceImpl::GetPendingContributionsUI(
 }
 
 void RewardsServiceImpl::OnGetPendingContributions(
-    const ledger::PendingContributionInfoListCallback& callback,
+    ledger::PendingContributionInfoListCallback callback,
     ledger::PendingContributionInfoList list) {
   if (!Connected()) {
     return;
@@ -3150,7 +3150,7 @@ void RewardsServiceImpl::OnGetPendingContributions(
 }
 
 void RewardsServiceImpl::GetPendingContributions(
-    const ledger::PendingContributionInfoListCallback& callback) {
+    ledger::PendingContributionInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
@@ -3198,7 +3198,7 @@ void RewardsServiceImpl::RemovePendingContribution(
     const std::string& publisher_key,
     const std::string& viewing_id,
     uint64_t added_date,
-    const ledger::RemovePendingContributionCallback& callback) {
+    ledger::RemovePendingContributionCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
@@ -3255,7 +3255,7 @@ void RewardsServiceImpl::OnRemoveAllPendingContribution(
 }
 
 void RewardsServiceImpl::RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) {
+    ledger::RemovePendingContributionCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
@@ -3526,7 +3526,7 @@ void RewardsServiceImpl::DisconnectWallet(const std::string& wallet_type) {
 void RewardsServiceImpl::ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      const ledger::ShowNotificationCallback& callback) {
+      ledger::ShowNotificationCallback callback) {
   if (type.empty()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;

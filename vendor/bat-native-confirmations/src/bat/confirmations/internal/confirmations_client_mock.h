@@ -246,19 +246,19 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD0(ConfirmationsTransactionHistoryDidChange, void());
 
   MOCK_METHOD1(GetPendingContributions, void(
-      const ledger::PendingContributionInfoListCallback& callback));
+      ledger::PendingContributionInfoListCallback callback));
 
   MOCK_METHOD4(RemovePendingContribution, void(
       const std::string& publisher_key,
       const std::string& viewing_id,
       uint64_t added_date,
-      const ledger::RemovePendingContributionCallback& callback));
+      ledger::RemovePendingContributionCallback callback));
 
   MOCK_METHOD1(RemoveAllPendingContributions, void(
-    const ledger::RemovePendingContributionCallback& callback));
+    ledger::RemovePendingContributionCallback callback));
 
   MOCK_METHOD1(GetPendingContributionsTotal, void(
-    const ledger::PendingContributionsTotalCallback& callback));
+    ledger::PendingContributionsTotalCallback callback));
 
   MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
       ledger::Result result,
@@ -320,11 +320,11 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD3(ShowNotification, void(
       const std::string& type,
       const std::vector<std::string>& args,
-      const ledger::ShowNotificationCallback& callback));
+      ledger::ShowNotificationCallback callback));
 
   MOCK_METHOD2(DeleteActivityInfo, void(
       const std::string& publisher_key,
-      const ledger::DeleteActivityInfoCallback& callback));
+      ledger::DeleteActivityInfoCallback callback));
 };
 
 }  // namespace confirmations

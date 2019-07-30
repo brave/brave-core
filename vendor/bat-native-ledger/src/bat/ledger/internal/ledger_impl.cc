@@ -1587,7 +1587,7 @@ void LedgerImpl::RemovePendingContribution(
     const std::string& publisher_key,
     const std::string& viewing_id,
     uint64_t added_date,
-    const ledger::RemovePendingContributionCallback& callback) {
+    ledger::RemovePendingContributionCallback callback) {
   ledger_client_->RemovePendingContribution(publisher_key,
                                             viewing_id,
                                             added_date,
@@ -1595,12 +1595,12 @@ void LedgerImpl::RemovePendingContribution(
 }
 
 void LedgerImpl::RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) {
+    ledger::RemovePendingContributionCallback callback) {
   ledger_client_->RemoveAllPendingContributions(callback);
 }
 
 void LedgerImpl::GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) {
+    ledger::PendingContributionsTotalCallback callback) {
   ledger_client_->GetPendingContributionsTotal(callback);
 }
 
@@ -1686,14 +1686,14 @@ void LedgerImpl::TransferAnonToExternalWallet(
 
 void LedgerImpl::ShowNotification(
       const std::string& type,
-      const ledger::ShowNotificationCallback& callback,
+      ledger::ShowNotificationCallback callback,
       const std::vector<std::string>& args) {
   ledger_client_->ShowNotification(type, args, callback);
 }
 
 void LedgerImpl::DeleteActivityInfo(
       const std::string& publisher_key,
-      const ledger::DeleteActivityInfoCallback& callback) {
+      ledger::DeleteActivityInfoCallback callback) {
   ledger_client_->DeleteActivityInfo(publisher_key, callback);
 }
 

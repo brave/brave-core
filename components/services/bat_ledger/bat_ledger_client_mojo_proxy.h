@@ -146,19 +146,19 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void ConfirmationsTransactionHistoryDidChange() override;
 
   void GetPendingContributions(
-      const ledger::PendingContributionInfoListCallback& callback) override;
+      ledger::PendingContributionInfoListCallback callback) override;
 
   void RemovePendingContribution(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date,
-    const ledger::RemovePendingContributionCallback& callback) override;
+      const std::string& publisher_key,
+      const std::string& viewing_id,
+      uint64_t added_date,
+      ledger::RemovePendingContributionCallback callback) override;
 
   void RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) override;
+      ledger::RemovePendingContributionCallback callback) override;
 
   void GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) override;
+      ledger::PendingContributionsTotalCallback callback) override;
 
   void OnContributeUnverifiedPublishers(
       ledger::Result result,
@@ -173,11 +173,11 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      const ledger::ShowNotificationCallback& callback) override;
+      ledger::ShowNotificationCallback callback) override;
 
   void DeleteActivityInfo(
-    const std::string& publisher_key,
-    const ledger::DeleteActivityInfoCallback& callback) override;
+      const std::string& publisher_key,
+      ledger::DeleteActivityInfoCallback callback) override;
 
  private:
   bool Connected() const;
