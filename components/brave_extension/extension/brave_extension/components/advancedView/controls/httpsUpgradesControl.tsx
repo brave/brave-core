@@ -82,7 +82,9 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
   triggerConnectionsUpgradedToHTTPS = (
     event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
   ) => {
-    event.currentTarget.blur()
+    if (event) {
+      event.currentTarget.blur()
+    }
     this.props.setBlockedListOpen()
     this.setState({ connectionsUpgradedOpen: !this.state.connectionsUpgradedOpen })
   }
