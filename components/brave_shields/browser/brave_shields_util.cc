@@ -382,7 +382,7 @@ void DispatchBlockedEventFromIO(const GURL& request_url,
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&BraveShieldsWebContentsObserver::DispatchBlockedEvent,
-                     block_type, request_url.spec(), render_process_id,
+                     block_decision, request_url, render_process_id,
                      render_frame_id, frame_tree_node_id));
 }
 
