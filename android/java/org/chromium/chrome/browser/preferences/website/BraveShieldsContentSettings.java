@@ -21,6 +21,7 @@ import java.util.List;
 public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_ADS = "ads";
     static public final String RESOURCE_IDENTIFIER_TRACKERS = "trackers";
+    static public final String RESOURCE_IDENTIFIER_ADS_TRACKERS = "ads_trackers";
     static public final String RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES = "httpUpgradableResources";
     static public final String RESOURCE_IDENTIFIER_BRAVE_SHIELDS = "braveShields";
     static public final String RESOURCE_IDENTIFIER_FINGERPRINTING = "fingerprinting";
@@ -55,105 +56,42 @@ public class BraveShieldsContentSettings {
 
     static public void setShields(boolean incognito, String host, String resourceIndentifier, boolean value,
             boolean fromTopShields) {
-        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
-            BraveShieldsContentSettings.setJavaScriptBlock(incognito, host, value, fromTopShields, resourceIndentifier);
-        }
         String setting_string = (value ? blockResource : allowResource);
-        BraveShieldsContentSettingsJni.get().setShields(incognito, host, resourceIndentifier, setting_string);
+        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+            BraveShieldsContentSettingsJni.get().setBraveShieldsControlType(setting_string, host);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
+            BraveShieldsContentSettingsJni.get().setAdControlType(setting_string, host);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
+            BraveShieldsContentSettingsJni.get().setHTTPSEverywhereControlType(setting_string, host);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
+            BraveShieldsContentSettingsJni.get().setCookieControlType(setting_string, host);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+            BraveShieldsContentSettingsJni.get().setFingerprintingControlType(setting_string, host);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+            BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host);
+        }
     }
 
     public static boolean getShields(boolean incognito, String host, String resourceIndentifier) {
-        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
-            return !BraveShieldsContentSettings.isJavaScriptEnabled(incognito, host);
-        }
-        String settings = BraveShieldsContentSettingsJni.get().getShields(incognito, host, resourceIndentifier);
-        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING) &&
-                !settings.equals(allowResource) && !settings.equals(blockResource)) {
-            return false;
+        String settings = blockResource;
+        if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+            settings = BraveShieldsContentSettingsJni.get().getBraveShieldsControlType(host);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
+            settings = BraveShieldsContentSettingsJni.get().getAdControlType(host);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
+            settings = BraveShieldsContentSettingsJni.get().getHTTPSEverywhereControlType(host);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
+            settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+            settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(host);
+            if (!settings.equals(allowResource) && !settings.equals(blockResource)) {
+                return false;
+            }
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+            settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host);
         }
 
         return !settings.equals(allowResource); 
-    }
-
-    private static boolean isJavaScriptEnabled(boolean incognitoTab, String host) {
-        host = CutWwwPrefix(host);
-        // TODO JavaScript for incognito profiles. Check that
-        // https://github.com/brave/browser-android-tabs/commit/e1dd6f7797398155d640303e05241f9fb2b433f9#diff-e1d5c8c446116e371020d44baa09d09bR189
-        WebsitePreferenceBridge websitePreferenceBridge = new WebsitePreferenceBridge();
-        List<ContentSettingException> exceptions = (incognitoTab) ?
-            websitePreferenceBridge.getContentSettingsExceptions(ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT) :
-            websitePreferenceBridge.getContentSettingsExceptions(ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT);
-
-        for (ContentSettingException exception : exceptions) {
-            String pattern = exception.getPattern();
-
-            pattern = CutWwwPrefix(pattern);
-            if (!pattern.equals(host)) {
-                continue;
-            }
-
-            if (ContentSettingValues.ALLOW == exception.getContentSetting()) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        if (incognitoTab) {
-          //for incognito tab inherit settings from normal tab
-          return isJavaScriptEnabled(false, host);
-        }
-
-        if (!PrefServiceBridge.getInstance().isCategoryEnabled(ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private static void setJavaScriptBlock(boolean incognitoTab, String host, boolean block, 
-            boolean fromTopShields, String resourceIndentifier) {
-        String hostForAccessMap = CutWwwPrefix(host);
-
-        int setting = ContentSettingValues.ALLOW;
-        if (block && !fromTopShields) {
-            setting = ContentSettingValues.BLOCK;
-        }
-
-        if (fromTopShields) {
-          // when change comes from Top Shields:
-          // in anyway do not touch hostSettings string
-          // block is false => we should allow js
-          // block is true => we should switch js back according to hostSettings string
-          if (!block) {
-            setting = ContentSettingValues.ALLOW;
-          } else {
-            setting = (!BraveShieldsContentSettingsJni.get().getShields(incognitoTab, host, resourceIndentifier).equals(allowResource)) ? 
-                ContentSettingValues.ALLOW : ContentSettingValues.BLOCK;
-          }
-        }
-
-        if (incognitoTab) {
-            // TODO JavaScript for incognito profiles. Check that
-            // https://github.com/brave/browser-android-tabs/commit/e1dd6f7797398155d640303e05241f9fb2b433f9#diff-e1d5c8c446116e371020d44baa09d09bR189
-            // PrefServiceBridge.getInstance().nativeSetContentSettingForPatternIncognito(
-            //           ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT, host,
-            //           setting);
-            PrefServiceBridge.getInstance().nativeSetContentSettingForPattern(
-                        ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT, host,
-                        setting);
-        } else {
-            PrefServiceBridge.getInstance().nativeSetContentSettingForPattern(
-                      ContentSettingsType.CONTENT_SETTINGS_TYPE_JAVASCRIPT, host,
-                      setting);
-        }
-    }
-
-    private static String CutWwwPrefix(String host) {
-        if (null != host && host.startsWith("www.")) {
-            host = host.substring("www.".length());
-        }
-        return host;
     }
 
     @CalledByNative
@@ -175,7 +113,18 @@ public class BraveShieldsContentSettings {
     interface Natives {
         void init(@JCaller BraveShieldsContentSettings self);
         void destroy(long nativeBraveShieldsContentSettings);
-        void setShields(boolean incognito, String host, String resourceIndentifier, String value);
-        String getShields(boolean incognito, String host, String resourceIndentifier);
+
+        void setBraveShieldsControlType(String type, String url);
+        String getBraveShieldsControlType(String url);
+        void setAdControlType(String type, String url);
+        String getAdControlType(String url);
+        void setCookieControlType(String type, String url);
+        String getCookieControlType(String url);
+        void setFingerprintingControlType(String type, String url);
+        String getFingerprintingControlType(String url);
+        void setHTTPSEverywhereControlType(String type, String url);
+        String getHTTPSEverywhereControlType(String url);
+        void setNoScriptControlType(String type, String url);
+        String getNoScriptControlType(String url);
     }
 }

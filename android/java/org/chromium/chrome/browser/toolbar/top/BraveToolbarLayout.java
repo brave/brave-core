@@ -125,7 +125,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                 if (mMainActivity.getActivityTab() == tab) {
                     try {
                         URL urlCheck = new URL(url);
-                        setBraveShieldsColor(tab.isIncognito(), urlCheck.getHost());
+                        setBraveShieldsColor(tab.isIncognito(), urlCheck.toString());
                     } catch (Exception e) {
                         setBraveShieldsBlackAndWhite();
                     }
@@ -138,9 +138,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                 if (mMainActivity.getActivityTab() == tab) {
                     try {
                         URL urlCheck = new URL(url);
-                        mBraveShieldsMenuHandler.updateHost(
-                            (new URL(urlCheck.getProtocol(), urlCheck.getHost(), "")).toString());
-                        setBraveShieldsColor(tab.isIncognito(), urlCheck.getHost());
+                        mBraveShieldsMenuHandler.updateHost(urlCheck.toString());
+                        setBraveShieldsColor(tab.isIncognito(), urlCheck.toString());
                     } catch (Exception e) {
                         setBraveShieldsBlackAndWhite();
                     }
@@ -172,10 +171,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           }
           try {
               URL url = new URL(currentTab.getUrl());
-              URL protocolHost = new URL(url.getProtocol(), url.getHost(), "");
-              setBraveShieldsColor(currentTab.isIncognito(), protocolHost.toString());
+              setBraveShieldsColor(currentTab.isIncognito(), url.toString());
               mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.isIncognito(), 
-                protocolHost.toString(), url.getHost(), currentTab.getId());
+                url.toString(), url.getHost(), currentTab.getId());
           } catch (Exception e) {
               setBraveShieldsBlackAndWhite();
           }
