@@ -1,0 +1,295 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+[
+  {
+    "namespace": "bravePlaylists",
+    "description": "Use the <code>chrome.bravePlaylists</code> API to get/set playlist",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/brave_playlists_api.h"
+    },
+    "events": [
+      {
+        "name": "onPlaylistsChanged",
+        "type": "function",
+        "description": "Fired when a playlist is changed",
+        "parameters": [
+          {
+            "name": "changeType",
+            "type": "string",
+            "description": "Playlists change status(add, deleted, aborted, thumbnail_ready, thumbnail_failed, play_ready, play_ready_partial)"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "description": "playlist id of added or deleted playlist"
+          }
+        ]
+      },
+      {
+        "name": "onInitialized",
+        "type": "function",
+        "description": "Fired when playlists backend is initialized",
+        "parameters": [
+          {
+            "name": "initialized",
+            "type": "boolean",
+            "description": "If initialization failed, false is set"
+          }
+        ]
+      },
+      {
+        "name": "onDownloadRequested",
+        "type": "function",
+        "description": "Fired when someone requests the playlists backend to download a URL and use information within the URL to create a playlist",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "URL to download"
+          }
+        ]
+      }
+    ],
+    "types": [
+      {
+        "id": "PlaylistInfo",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "id for each playlist"
+          },
+          "playlistName": {
+            "type": "string",
+            "description": "Name for playlist"
+          },
+          "thumbnailPath": {
+            "type": "string",
+            "description": "thumbnail path for playlist. if this is empty, thumbnail is not fetched yet."
+          },
+          "videoMediaFilePath": {
+            "type": "string",
+            "description": "video media file path for playlist. if this is empty, unified media file is not ready from local media files."
+          },
+          "audioMediaFilePath": {
+            "type": "string",
+            "description": "audio media file path for playlist. may be empty if video is already muxed."
+          },
+          "partialReady": {
+            "type": "boolean",
+            "description": "true if some of media sources are not handled properly"
+          },
+          "titles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Title for each song on this list in media file order"
+            }
+          }
+        }
+      }
+    ],
+    "functions": [
+      {
+        "name": "initialize",
+        "type": "function",
+        "description": "initialze playlists",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "description": "If an error occurs, runtime.lastError is set to the error message."
+          }
+        ]
+      },
+      {
+        "name": "isInitialized",
+        "type": "function",
+        "description": "For checking whether playlists backend are initialized",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "description": "If an error occurs, runtime.lastError is set to the error message.",
+            "parameters": [
+              {
+                "name": "initialized",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "createPlaylist",
+        "type": "function",
+        "description": "create new playlist",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "createParams",
+            "properties": {
+              "videoMediaFiles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "Data for each video media file in this playlist",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "description": "Url for this media file"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Title for this media file"
+                    }
+                  }
+                }
+               },
+              "audioMediaFiles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "Data for each audio media file in this playlist",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "description": "Url for this media file"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Title for this media file"
+                    }
+                  }
+                }
+               },
+              "thumbnailUrl": {
+                "type": "string",
+                "description": "the Url for the thumbnail image for this playlist"
+              },
+              "playlistName": {
+                "type": "string",
+                "description": "Playlist name"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "description": "If an error occurs, runtime.lastError is set to the error message."
+          }
+        ]
+      },
+      {
+        "name": "getAllPlaylists",
+        "type": "function",
+        "description": "Get all playlists",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when all playlists are fetched",
+            "parameters": [
+              {
+                "type": "array",
+                "name": "playlists",
+                "items": {
+                  "$ref": "PlaylistInfo",
+                  "description": "The list of playlist"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getPlaylist",
+        "type": "function",
+        "description": "Get specific playlist",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id for fetching a playlist"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "playlist",
+                "$ref": "PlaylistInfo"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "recoverPlaylist",
+        "type": "function",
+        "description": "Try to recover incomplete playlist that failed to fetch thumbnail or generate media file",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id for recovering an already added playlist"
+          }
+        ]
+      },
+      {
+        "name": "deletePlaylist",
+        "type": "function",
+        "description": "Delete specific playlist and free all its data",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id for deleting playlist"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "description": "If an error occurs, runtime.lastError is set to the error message."
+          }
+        ]
+      },
+      {
+        "name": "deleteAllPlaylists",
+        "type": "function",
+        "description": "Delete all playlists",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "deleted",
+                "type": "boolean",
+                "description": "Whether delete all is completed or not"
+              }
+            ],
+            "description": "If an error occurs, runtime.lastError is set to the error message."
+          }
+        ]
+      },
+      {
+        "name": "requestDownload",
+        "type": "function",
+        "description": "requests the playlists backend to download a URL and use information within the URL to create a playlist",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "URL to download"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -2,7 +2,7 @@ diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/b
 index 0d56ccd20eb53d8b6f552964e10338617f9a5f1d..b5c2ee197b0da03f9814cfc89b5dbdfeb92f0aba 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -467,6 +467,20 @@ enum HistogramValue {
+@@ -467,6 +467,23 @@ enum HistogramValue {
    PRINTING_ON_JOB_STATUS_CHANGED = 445,
    DECLARATIVE_NET_REQUEST_ON_RULE_MATCHED_DEBUG = 446,
    TERMINAL_PRIVATE_ON_SETTINGS_CHANGED = 447,
@@ -20,6 +20,9 @@ index 0d56ccd20eb53d8b6f552964e10338617f9a5f1d..b5c2ee197b0da03f9814cfc89b5dbdfe
 +  BRAVE_REWARDS_GET_NOTIFICATION,
 +  BRAVE_REWARDS_GET_ALL_NOTIFICATIONS,
 +  BRAVE_WALLET_FAILED,
++  BRAVE_PLAYLISTS_ON_INITIALIZED,
++  BRAVE_PLAYLISTS_ON_PLAYLISTS_CHANGED,
++  BRAVE_PLAYLISTS_ON_DOWNLOAD_REQUESTED,
    // Last entry: Add new entries above, then run:
    // python tools/metrics/histograms/update_extension_histograms.py
    ENUM_BOUNDARY

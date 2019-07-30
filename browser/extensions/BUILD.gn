@@ -4,6 +4,7 @@ import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/playlists/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
 
@@ -107,6 +108,15 @@ source_set("extensions") {
       "//brave/components/brave_sync:static_resources",
     ]
   }
+
+  if (playlists_enabled) {
+    sources += [
+      "api/brave_playlists_api.cc",
+      "api/brave_playlists_api.h",
+    ]
+    deps += [ "//brave/components/playlists/browser" ]
+  }
+
   if (enable_brave_webtorrent) {
     deps += [
       "//brave/components/brave_webtorrent/browser",

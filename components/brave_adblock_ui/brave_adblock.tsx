@@ -10,6 +10,10 @@ import { bindActionCreators } from 'redux'
 // Components
 import App from './components/app'
 
+// Theme
+import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
+import Theme from 'brave-ui/theme/brave-default'
+import DarkTheme from 'brave-ui/theme/brave-dark'
 // Utils
 import store from './store'
 import * as adblockActions from './actions/adblock_actions'
@@ -30,11 +34,23 @@ window.cr.define('brave_adblock', function () {
   function initialize () {
     getCustomFilters()
     getRegionalLists()
-    render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
-      document.getElementById('root'))
+    new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
+      .then((themeType: chrome.braveTheme.ThemeType) => {
+        render(
+          <Provider store={store}>
+            <BraveCoreThemeProvider
+              initialThemeType={themeType}
+              dark={DarkTheme}
+              light={Theme}
+            >
+              <App />
+            </BraveCoreThemeProvider>
+          </Provider>,
+          document.getElementById('root'))
+      })
+      .catch((error) => {
+        console.error('Problem mounting brave new tab', error)
+      })
     window.i18nTemplate.process(window.document, window.loadTimeData)
   }
 

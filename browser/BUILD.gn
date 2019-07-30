@@ -6,6 +6,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//brave/components/playlists/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -243,6 +244,15 @@ source_set("browser_process") {
       "//brave/build/android:jni_headers",
       "//chrome/android:jni_headers",
     ]
+  }
+
+  if (playlists_enabled) {
+    sources += [
+      "playlists/playlists_service_factory.cc",
+      "playlists/playlists_service_factory.h",
+    ]
+
+    deps += [ "//brave/components/playlists/browser" ]
   }
 
   if (enable_tor) {

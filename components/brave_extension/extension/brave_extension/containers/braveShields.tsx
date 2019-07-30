@@ -57,64 +57,49 @@ interface Props {
 }
 
 interface State {
-  showReadOnlyView: boolean
-  showAdvancedView: boolean
+  url: string
 }
 
 export default class Shields extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      showReadOnlyView: false,
-      showAdvancedView: props.settings.showAdvancedView
+      url: ''
     }
-  }
-
-  toggleReadOnlyView = () => {
-    this.setState({ showReadOnlyView: !this.state.showReadOnlyView })
-  }
-
-  toggleAdvancedView = () => {
-    const { showAdvancedView } = this.state
-    shieldsAPI.setViewPreferences({ showAdvancedView: !showAdvancedView })
-      // change local state so the component can trigger an update
-      // otherwise change will be visible only after shields closes
-      .then(() => this.setState({ showAdvancedView: !showAdvancedView }))
-      .catch((err) => console.log('[Shields] Unable to toggle advanced view interface:', err))
   }
 
   componentDidMount () {
-    this.props.actions.shieldsReady()
+    this.getActiveTabUrl()
+  }
+
+  get pageHasDownloadableVideo () {
+    return this.state.url.startsWith('https://www.youtube.com/watch')
+  }
+
+  getActiveTabUrl = () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      const activeTab = tabs[0]
+      if (activeTab.url) {
+        this.setState({ url: activeTab.url })
+      }
+    })
+  }
+
+  onClickDownloadVideo = (url: string) => {
+    chrome.bravePlaylists.requestDownload(url)
   }
 
   render () {
-    const { shieldsPanelTabData, persistentData, actions } = this.props
-    const { showAdvancedView, showReadOnlyView } = this.state
-    if (!shieldsPanelTabData) {
-      return null
-    }
-    return showAdvancedView
+    const { url } = this.state
+
+    return this.pageHasDownloadableVideo
       ? (
-        <AdvancedView
-          shieldsPanelTabData={shieldsPanelTabData}
-          persistentData={persistentData}
-          toggleAdvancedView={this.toggleAdvancedView}
-          actions={actions}
-        />
-      ) : showReadOnlyView
-      ? (
-        <ReadOnlyView
-          shieldsPanelTabData={shieldsPanelTabData}
-          toggleReadOnlyView={this.toggleReadOnlyView}
-        />
+        <div>
+          <h1>This page has a video you can download</h1>
+          <button onClick={this.onClickDownloadVideo.bind(this, url)}>Click here to download</button>
+        </div>
       ) : (
-        <SimpleView
-          shieldsPanelTabData={shieldsPanelTabData}
-          persistentData={persistentData}
-          actions={actions}
-          toggleAdvancedView={this.toggleAdvancedView}
-          toggleReadOnlyView={this.toggleReadOnlyView}
-        />
+        <h1>Nothing to see here. Go to a YT video to see the magic</h1>
       )
   }
 }

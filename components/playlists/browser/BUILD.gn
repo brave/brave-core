@@ -1,0 +1,28 @@
+source_set("browser") {
+  sources = [
+    "playlists_constants.cc",
+    "playlists_constants.h",
+    "playlists_controller.cc",
+    "playlists_controller.h",
+    "playlists_controller_observer.h",
+    "playlists_db_controller.cc",
+    "playlists_db_controller.h",
+    "playlists_media_file_controller.cc",
+    "playlists_media_file_controller.h",
+    "playlists_service.cc",
+    "playlists_service.h",
+    "playlists_types.cc",
+    "playlists_types.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//extensions/browser",
+    "//services/network/public/cpp",
+    "//third_party/leveldatabase",
+    "//url",
+  ]
+}
