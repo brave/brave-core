@@ -32,12 +32,6 @@ class BaseBraveShieldsService : public BraveComponent {
   bool Start();
   void Stop();
   bool IsInitialized() const;
-  virtual bool ShouldStartRequest(const GURL& url,
-      content::ResourceType resource_type,
-      const std::string& tab_host,
-      bool* did_match_exception,
-      bool* did_match_important,
-      bool* cancel_request_explicitly);
 
  protected:
   virtual bool Init() = 0;
