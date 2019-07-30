@@ -147,6 +147,14 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     if (did_match_exception) {
       *did_match_exception = false;
     }
+    // TODO(asjosten): This must be re-written
+    /*if (block_decision && matching_filter) {
+      std::string rule;
+      if (matching_filter->ruleDefinition) {
+        rule = matching_filter->ruleDefinition;
+      }
+      *block_decision = new AdBlockDecision(rule);
+    } */
     // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
     //  << tab_host
     //  << ", resource type: " << resource_type

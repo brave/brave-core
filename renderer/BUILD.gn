@@ -18,6 +18,7 @@ source_set("renderer") {
   deps = [
     "//base",
     "//brave/common",
+    "//brave/third_party/blink/brave_page_graph",
     "//chrome/common",
     "//components/content_settings/core/common",
     "//content/public/renderer",

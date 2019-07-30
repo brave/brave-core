@@ -223,6 +223,10 @@ bool TrackingProtectionService::ShouldStartRequest(
   if (matching_exception_filter) {
     *matching_exception_filter = false;
   }
+
+  if (block_decision) {
+    *block_decision = new TrackerBlockDecision(url.host());
+  }
   return false;
 }
 

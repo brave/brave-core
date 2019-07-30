@@ -49,8 +49,10 @@ source_set("browser") {
 
   deps = [
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/common",
     "//brave/components/content_settings/core/browser",
     "//brave/content:common",
+    "//brave/third_party/blink/brave_page_graph",
     "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//brave/vendor/autoplay-whitelist/brave:autoplay-whitelist",
     "//chrome/common",

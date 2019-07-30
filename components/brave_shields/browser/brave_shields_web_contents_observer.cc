@@ -36,6 +36,8 @@
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_message_macros.h"
 
+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/api/brave_shields.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -46,6 +48,7 @@ using extensions::Event;
 using extensions::EventRouter;
 #endif
 
+using content::FrameTreeNode;
 using content::Referrer;
 using content::RenderFrameHost;
 using content::WebContents;
@@ -221,12 +224,51 @@ void BraveShieldsWebContentsObserver::AddBlockedSubresource(
 
 // static
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
-    std::string block_type,
-    std::string subresource,
+    const BlockDecision* block_decision,
+    GURL request_url,
     int render_process_id,
     int render_frame_id,
     int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+  {
+    if (block_decision->IsAdBlockDecision() ||
+        block_decision->IsTrackerBlockDecision()) {
+      RenderFrameHost* rfh = nullptr;
+
+      FrameTreeNode* frame_tree_node =
+          FrameTreeNode::GloballyFindByID(frame_tree_node_id);
+      if (frame_tree_node) {
+        rfh = frame_tree_node->current_frame_host();
+      }
+
+      if (!rfh) {
+        rfh = RenderFrameHost::FromID(render_process_id, render_frame_id);
+      }
+
+      if (rfh) {
+        const AdBlockDecision* const ad_block_decision =
+            block_decision->AsAdBlockDecision();
+        if (ad_block_decision) {
+          rfh->RegisterResourceBlockAd(request_url, ad_block_decision->Rule());
+        }
+
+        const TrackerBlockDecision* const tracker_block_decision =
+            block_decision->AsTrackerBlockDecision();
+        if (tracker_block_decision) {
+          rfh->RegisterResourceBlockTracker(request_url,
+                                            tracker_block_decision->Host());
+        }
+      }
+    }
+  }
+#endif
+
+  const char* block_type = block_decision->BlockType();
+  delete block_decision;
+
+  std::string subresource(request_url.spec());
 
   WebContents* web_contents = GetWebContents(render_process_id,
     render_frame_id, frame_tree_node_id);

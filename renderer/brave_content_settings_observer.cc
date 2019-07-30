@@ -25,6 +25,12 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_constants.h"
 
+#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+#include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+#endif
+
 BraveContentSettingsObserver::BraveContentSettingsObserver(
     content::RenderFrame* render_frame,
     bool should_whitelist,
@@ -95,6 +101,16 @@ bool BraveContentSettingsObserver::AllowScript(
 
 void BraveContentSettingsObserver::DidNotAllowScript() {
   if (!blocked_script_url_.is_empty()) {
+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+    blink::WebLocalFrame* const frame = render_frame()->GetWebFrame();
+    ::brave_page_graph::PageGraph* const page_graph =
+        ::brave_page_graph::PageGraph::GetFromContext(
+            frame->MainWorldScriptContext());
+    if (page_graph) {
+      page_graph->RegisterResourceBlockJavaScript(blocked_script_url_);
+    }
+#endif
+
     BraveSpecificDidBlockJavaScript(
       base::UTF8ToUTF16(blocked_script_url_.spec()));
     blocked_script_url_ = GURL::EmptyGURL();
@@ -208,10 +224,12 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   if (IsBraveShieldsDown(frame, secondary_url)) {
     return true;
   }
+
   const GURL& primary_url = GetOriginOrURL(frame);
   if (brave::IsWhitelistedFingerprintingException(primary_url, secondary_url)) {
     return true;
   }
+
   ContentSettingsForOneType rules;
   if (content_setting_rules_) {
       rules = content_setting_rules_->fingerprinting_rules;
@@ -235,6 +253,21 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   allow = allow || IsWhitelistedForContentSettings();
 
   if (!allow) {
+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+    ::brave_page_graph::PageGraph* const page_graph =
+        ::brave_page_graph::PageGraph::GetFromContext(
+            frame->MainWorldScriptContext());
+    if (page_graph) {
+      page_graph->RegisterResourceBlockFingerprinting(
+          secondary_url,
+          ::brave_page_graph::FingerprintingRule(
+              matched_rule.primary_pattern.ToString(),
+              matched_rule.secondary_pattern.ToString(),
+              matched_rule.source,
+              matched_rule.incognito));
+    }
+#endif
+
     DidBlockFingerprinting(base::UTF8ToUTF16(secondary_url.spec()));
   }
 
