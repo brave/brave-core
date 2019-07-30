@@ -26,10 +26,10 @@ void NativeLedgerClient::GetActivityInfoList(uint32_t start, uint32_t limit, led
 void NativeLedgerClient::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
   [bridge_ getOneTimeTips:callback];
 }
-void NativeLedgerClient::GetPendingContributions(const ledger::PendingContributionInfoListCallback & callback) {
+void NativeLedgerClient::GetPendingContributions(ledger::PendingContributionInfoListCallback callback) {
   [bridge_ getPendingContributions:callback];
 }
-void NativeLedgerClient::GetPendingContributionsTotal(const ledger::PendingContributionsTotalCallback & callback) {
+void NativeLedgerClient::GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) {
   [bridge_ getPendingContributionsTotal:callback];
 }
 void NativeLedgerClient::SaveRecurringTip(ledger::ContributionInfoPtr info, ledger::SaveRecurringTipCallback callback) {
@@ -98,10 +98,10 @@ void NativeLedgerClient::OnWalletInitialized(ledger::Result result) {
 void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) {
   [bridge_ onWalletProperties:result arg1:std::move(arg1)];
 }
-void NativeLedgerClient::RemoveAllPendingContributions(const ledger::RemovePendingContributionCallback & callback) {
+void NativeLedgerClient::RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) {
   [bridge_ removeAllPendingContributions:callback];
 }
-void NativeLedgerClient::RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, const ledger::RemovePendingContributionCallback & callback) {
+void NativeLedgerClient::RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, ledger::RemovePendingContributionCallback callback) {
   [bridge_ removePendingContribution:publisher_key viewingId:viewing_id addedDate:added_date callback:callback];
 }
 void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCallback callback) {
@@ -197,9 +197,9 @@ void NativeLedgerClient::GetExternalWallets(ledger::GetExternalWalletsCallback c
 void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) {
   [bridge_ saveExternalWallet:wallet_type wallet:std::move(wallet)];
 }
-void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, const ledger::ShowNotificationCallback& callback) {
+void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, ledger::ShowNotificationCallback callback) {
   [bridge_ showNotification:type args:args callback:callback];
 }
-void NativeLedgerClient::DeleteActivityInfo(const std::string& publisher_key, const ledger::DeleteActivityInfoCallback& callback) {
+void NativeLedgerClient::DeleteActivityInfo(const std::string& publisher_key, ledger::DeleteActivityInfoCallback callback) {
   [bridge_ deleteActivityInfo:publisher_key callback:callback];
 }

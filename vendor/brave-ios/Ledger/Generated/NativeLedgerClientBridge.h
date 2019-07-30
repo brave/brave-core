@@ -13,8 +13,8 @@
 - (std::string)generateGUID;
 - (void)getActivityInfoList:(uint32_t)start limit:(uint32_t)limit filter:(ledger::ActivityInfoFilterPtr)filter callback:(ledger::PublisherInfoListCallback)callback;
 - (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback;
-- (void)getPendingContributions:(const ledger::PendingContributionInfoListCallback &)callback;
-- (void)getPendingContributionsTotal:(const ledger::PendingContributionsTotalCallback &)callback;
+- (void)getPendingContributions:(ledger::PendingContributionInfoListCallback)callback;
+- (void)getPendingContributionsTotal:(ledger::PendingContributionsTotalCallback)callback;
 - (void)saveRecurringTip:(ledger::ContributionInfoPtr)info callback:(ledger::SaveRecurringTipCallback)callback;
 - (void)getRecurringTips:(ledger::PublisherInfoListCallback)callback;
 - (void)killTimer:(const uint32_t)timer_id;
@@ -37,8 +37,8 @@
 - (void)restorePublishers:(ledger::RestorePublishersCallback)callback;
 - (void)onWalletInitialized:(ledger::Result)result;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
-- (void)removeAllPendingContributions:(const ledger::RemovePendingContributionCallback &)callback;
-- (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(const ledger::RemovePendingContributionCallback &)callback;
+- (void)removeAllPendingContributions:(ledger::RemovePendingContributionCallback)callback;
+- (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(ledger::RemovePendingContributionCallback )callback;
 - (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback;
 - (void)saveActivityInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback;
 - (void)saveContributionInfo:(const std::string &)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key category:(const ledger::REWARDS_CATEGORY)category;
@@ -70,7 +70,7 @@
 - (void)clearState:(const std::string&)name;
 - (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback;
 - (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
-- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(const ledger::ShowNotificationCallback&)callback;
-- (void)deleteActivityInfo:(const std::string&)publisher_key callback:(const ledger::DeleteActivityInfoCallback&)callback;
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ShowNotificationCallback)callback;
+- (void)deleteActivityInfo:(const std::string&)publisher_key callback:(ledger::DeleteActivityInfoCallback)callback;
 
 @end
