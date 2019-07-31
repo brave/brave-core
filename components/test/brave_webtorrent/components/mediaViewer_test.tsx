@@ -48,7 +48,7 @@ describe('mediaViewer component', () => {
       expect(assertion.length).toBe(1)
     })
 
-    it('renders iframe for other ext', () => {
+    it('renders img for image', () => {
       const files = [ { name: 'file.jpg', length: 500 } ]
       const torrentWithJpgFile = { ...torrentObj, files, serverURL }
       const wrapper = shallow(
@@ -57,7 +57,33 @@ describe('mediaViewer component', () => {
           ix={ix}
         />
       )
-      const assertion = wrapper.find('#other')
+      const assertion = wrapper.find('#image')
+      expect(assertion.length).toBe(1)
+    })
+
+    it('renders object for PDF file', () => {
+      const files = [ { name: 'file.pdf', length: 500 } ]
+      const torrentWithPdfFile = { ...torrentObj, files, serverURL }
+      const wrapper = shallow(
+        <MediaViewer
+          torrent={torrentWithPdfFile}
+          ix={ix}
+        />
+      )
+      const assertion = wrapper.find('#object')
+      expect(assertion.length).toBe(1)
+    })
+
+    it('renders iframe for text file', () => {
+      const files = [ { name: 'file.txt', length: 500 } ]
+      const torrentWithTxtFile = { ...torrentObj, files, serverURL }
+      const wrapper = shallow(
+        <MediaViewer
+          torrent={torrentWithTxtFile}
+          ix={ix}
+        />
+      )
+      const assertion = wrapper.find('#iframe')
       expect(assertion.length).toBe(1)
     })
   })

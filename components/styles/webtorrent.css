@@ -78,7 +78,7 @@ a {
   margin: 0 0 18px;
 }
 
-#video, #audio {
+#video, #audio, #image, #object, #iframe {
   position: absolute;
   top: 0px;
   right: 0px;
@@ -87,4 +87,13 @@ a {
   max-height: 100%;
   max-width: 100%;
   margin: auto;
+}
+
+#object, #iframe {
+  width: 100%;
+  height: 100%;
+}
+
+#iframe {
+  border: 0;
 }
