@@ -10,11 +10,13 @@
 namespace extensions {
 
 bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
+    content::BrowserContext* context,
     const WebRequestInfo& request) const {
   if (IsBraveProtectedUrl(request.url)) {
     return true;
   }
-  return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(request);
+  return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(context,
+                                                                    request);
 }
 
 }  // namespace extensions
