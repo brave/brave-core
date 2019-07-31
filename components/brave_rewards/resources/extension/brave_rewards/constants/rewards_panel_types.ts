@@ -5,7 +5,6 @@
 export const enum types {
   CREATE_WALLET = '@@rewards_panel/CREATE_WALLET',
   ON_WALLET_INITIALIZED = '@@rewards_panel/ON_WALLET_INITIALIZED',
-  ON_TAB_ID = '@@rewards_panel/ON_TAB_ID',
   ON_TAB_RETRIEVED = '@@rewards_panel/ON_TAB_RETRIEVED',
   ON_PUBLISHER_DATA = '@@rewards_panel/ON_PUBLISHER_DATA',
   GET_WALLET_PROPERTIES = '@@rewards_panel/GET_WALLET_PROPERTIES',
