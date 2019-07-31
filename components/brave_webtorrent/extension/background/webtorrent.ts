@@ -3,8 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as WebTorrent from 'webtorrent'
-import { addTorrentEvents } from './events/torrentEvents'
-import { addWebtorrentEvents, removeWebTorrentEvents } from './events/webtorrentEvents'
+import { addTorrentEvents, removeTorrentEvents } from './events/torrentEvents'
+import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
 import { Instance } from 'parse-torrent'
 
@@ -51,8 +51,8 @@ export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string
 }
 
 export const addTorrent = (torrentId: string | Instance) => {
-  const torrentObj = getWebTorrent().add(torrentId)
-  addTorrentEvents(torrentObj)
+  const torrent = getWebTorrent().add(torrentId)
+  addTorrentEvents(torrent)
 }
 
 export const findTorrent = (infoHash: string) => {
@@ -61,14 +61,17 @@ export const findTorrent = (infoHash: string) => {
 
 const maybeDestroyWebTorrent = () => {
   if (!webTorrent || webTorrent.torrents.length !== 0) return
-  removeWebTorrentEvents(webTorrent)
   webTorrent.destroy()
   webTorrent = undefined
 }
 
 export const delTorrent = (infoHash: string) => {
   const torrent = findTorrent(infoHash)
-  if (torrent) torrent.destroy()
+  if (torrent) {
+    removeTorrentEvents(torrent)
+    torrent.destroy()
+  }
+
   if (servers[infoHash]) {
     servers[infoHash].close()
     delete servers[infoHash]
