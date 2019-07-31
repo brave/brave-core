@@ -690,6 +690,27 @@ TEST_F(BraveSyncServiceTest, OnGetExistingObjects) {
       false);
 }
 
+TEST_F(BraveSyncServiceTest, GetPreferredDataTypes) {
+  // Make sure GetPreferredDataTypes contains DEVICE_INFO which is needed for
+  // brave device record polling
+  EXPECT_TRUE(sync_service()->GetPreferredDataTypes().Has(syncer::DEVICE_INFO));
+}
+
+TEST_F(BraveSyncServiceTest, GetDisableReasons) {
+  sync_prefs()->SetManagedForTest(true);
+  EXPECT_EQ(sync_service()->GetDisableReasons(),
+            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY);
+  sync_service()->OnSetSyncEnabled(true);
+  EXPECT_EQ(sync_service()->GetDisableReasons(),
+            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY);
+  brave_sync_prefs()->SetMigratedBookmarksVersion(2);
+  EXPECT_EQ(sync_service()->GetDisableReasons(),
+            syncer::SyncService::DISABLE_REASON_NONE);
+  sync_service()->OnSetSyncEnabled(false);
+  EXPECT_TRUE(sync_service()->HasDisableReason(
+              syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY));
+}
+
 TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
   EXPECT_FALSE(sync_service()->GetResettingForTest());
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
@@ -702,9 +723,6 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
   brave_sync::Uint8Array seed
                       = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
   brave_sync::Uint8Array device_id = {0};
-  // These settings are changed:
-  //    bookmarks_enabled, site_settings_enabled, history_enabled
-  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
   sync_service()->OnSaveInitData(seed, device_id);
 
   RecordsList records;
@@ -714,7 +732,7 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
-  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices = brave_sync_prefs()->GetSyncDevices();
 
   ASSERT_EQ(devices->size(), 1u);
   EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
@@ -755,25 +773,4 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
 
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncEnabled));
-}
-
-TEST_F(BraveSyncServiceTest, GetPreferredDataTypes) {
-  // Make sure GetPreferredDataTypes contains DEVICE_INFO which is needed for
-  // brave device record polling
-  EXPECT_TRUE(sync_service()->GetPreferredDataTypes().Has(syncer::DEVICE_INFO));
-}
-
-TEST_F(BraveSyncServiceTest, GetDisableReasons) {
-  sync_prefs()->SetManagedForTest(true);
-  EXPECT_EQ(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY);
-  sync_service()->OnSetSyncEnabled(true);
-  EXPECT_EQ(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY);
-  brave_sync_prefs()->SetMigratedBookmarksVersion(2);
-  EXPECT_EQ(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_NONE);
-  sync_service()->OnSetSyncEnabled(false);
-  EXPECT_TRUE(sync_service()->HasDisableReason(
-              syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY));
 }

@@ -34,6 +34,8 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncDebug);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, StartSyncNonDeviceRecords);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyNewToSync);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetExistingObjects);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest,
+                     OnSetupSyncHaveCode_Reset_SetupAgain);
 
 class BraveSyncServiceTest;
 
@@ -131,6 +133,8 @@ class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, StartSyncNonDeviceRecords);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncReadyNewToSync);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetExistingObjects);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
+                           OnSetupSyncHaveCode_Reset_SetupAgain);
   friend class ::BraveSyncServiceTest;
 
   void SignalWaitableEvent();
@@ -148,6 +152,10 @@ class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
   void NotifyHaveSyncWords(const std::string& sync_words);
 
   void ResetSyncInternal();
+  void ForceCompleteReset();
+  bool GetResettingForTest() const {
+    return reseting_;
+  }
 
   void SetPermanentNodesOrder(const std::string& base_order);
 
@@ -171,6 +179,8 @@ class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
   // Prevent two sequential calls OnSetupSyncHaveCode or OnSetupSyncNewToSync
   // while being initializing
   bool brave_sync_initializing_ = false;
+
+  bool reseting_ = false;
 
   std::string brave_sync_words_;
 

@@ -260,10 +260,13 @@ void BraveProfileSyncServiceImpl::OnSetupSyncHaveCode(
     return;
   }
 
-  if (brave_sync_configured_) {
+  if (IsBraveSyncConfigured()) {
     NotifyLogMessage("already configured");
     return;
   }
+
+  ForceCompleteReset();
+  DCHECK(!brave_sync_prefs_->GetSyncEnabled());
 
   if (device_name.empty())
     brave_sync_prefs_->SetThisDeviceName(GetDeviceName());
@@ -284,10 +287,13 @@ void BraveProfileSyncServiceImpl::OnSetupSyncNewToSync(
     return;
   }
 
-  if (brave_sync_configured_) {
+  if (IsBraveSyncConfigured()) {
     NotifyLogMessage("already configured");
     return;
   }
+
+  ForceCompleteReset();
+  DCHECK(!brave_sync_prefs_->GetSyncEnabled());
 
   // If the previous attempt was connect to sync chain
   // and failed to receive save-init-data
@@ -329,6 +335,7 @@ void BraveProfileSyncServiceImpl::OnResetSync() {
     // we can reset it by ResetInternal()
     const std::string device_id = brave_sync_prefs_->GetThisDeviceId();
     OnDeleteDevice(device_id);
+    reseting_ = true;
   }
 }
 
@@ -636,6 +643,14 @@ void BraveProfileSyncServiceImpl::ResetSyncInternal() {
   brave_sync_initialized_ = false;
 
   brave_sync_prefs_->SetSyncEnabled(false);
+
+  reseting_ = false;
+}
+
+void BraveProfileSyncServiceImpl::ForceCompleteReset() {
+  if (reseting_) {
+    ResetSyncInternal();
+  }
 }
 
 void BraveProfileSyncServiceImpl::SetPermanentNodesOrder(
@@ -817,7 +832,11 @@ bool BraveProfileSyncServiceImpl::IsBraveSyncInitialized() const {
 }
 
 bool BraveProfileSyncServiceImpl::IsBraveSyncConfigured() const {
-  return brave_sync_configured_;
+  return brave_sync_configured_ &&
+      // When there is 0 or 1 device, it means chain is not completely created,
+      // so we should give a chance to make force reset in |OnSetupSyncHaveCode|
+      // or in |OnSetupSyncNewToSync|
+      (brave_sync_prefs_->GetSyncDevices()->size() >= 2);
 }
 
 void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
