@@ -5,6 +5,7 @@
 import { ShieldDetails } from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 import actions from '../actions/shieldsPanelActions'
+import * as SettingsPrivate from '../../../../../common/settingsPrivate'
 
 /**
  * Obtains the shields panel data for the specified tab data
@@ -160,16 +161,32 @@ export const setAllowScriptOriginsOnce = (origins: Array<string>, tabId: number)
     })
   })
 
-export type GetViewPreferencesData = chrome.braveShields.BraveShieldsViewPreferences
-export function getViewPreferences (): Promise<GetViewPreferencesData> {
-  return new Promise<GetViewPreferencesData>(resolve => {
-    chrome.braveShields.getViewPreferences(resolve)
-  })
+export type GetViewPreferencesData = {
+  showAdvancedView: boolean
 }
 
-export type SetViewPreferencesData = chrome.braveShields.BraveShieldsSetViewPreferencesData
-export function setViewPreferences (preferences: SetViewPreferencesData): Promise<void> {
-  return new Promise<void>(resolve => {
-    chrome.braveShields.setViewPreferences(preferences, resolve)
-  })
+const settingsKeys = {
+  showAdvancedView: { key: 'brave.advanced_view_default', type: chrome.settingsPrivate.PrefType.BOOLEAN }
+}
+export async function getViewPreferences (): Promise<GetViewPreferencesData> {
+  const showAdvancedViewPref = await SettingsPrivate.getPreference(settingsKeys.showAdvancedView.key)
+  if (showAdvancedViewPref.type !== settingsKeys.showAdvancedView.type) {
+    throw new Error(`Unexpected settings type received for "${settingsKeys.showAdvancedView.key}". Expected: ${settingsKeys.showAdvancedView.type}, Received: ${showAdvancedViewPref.type}`)
+  }
+  return {
+    showAdvancedView: showAdvancedViewPref.value
+  }
+}
+
+export type SetViewPreferencesData = {
+  showAdvancedView?: boolean
+}
+export async function setViewPreferences (preferences: SetViewPreferencesData): Promise<void> {
+  const setOps = []
+  if (preferences.showAdvancedView !== undefined) {
+    setOps.push(
+      SettingsPrivate.setPreference(settingsKeys.showAdvancedView.key, preferences.showAdvancedView)
+    )
+  }
+  await Promise.all(setOps)
 }

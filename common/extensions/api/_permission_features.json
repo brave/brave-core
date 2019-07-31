@@ -1,0 +1,24 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+// TODO: Instead of duplicating chromium's entire properties from upstream
+//   _permissions_features.json, it would be better to merge additions here.
+
+{
+  "settingsPrivate": [{
+    "channel": "trunk",
+    "extension_types": ["extension", "platform_app"],
+    "location": "component"
+  },
+  {
+    "channel": "stable",
+    "extension_types": ["extension"],
+    "whitelist": [
+      "63ED55E43214C211F82122ED56407FF1A807F2A3",  // Media Router Dev
+      "226CF815E39A363090A1E547D53063472B8279FA",  // Media Router Release
+      "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"   // Brave Shields
+    ]
+  }]
+}

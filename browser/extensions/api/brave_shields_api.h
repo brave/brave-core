@@ -21,26 +21,6 @@ class BraveShieldsAllowScriptsOnceFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveShieldsGetViewPreferencesFunction : public UIThreadExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.getViewPreferences", UNKNOWN)
-
- protected:
-  ~BraveShieldsGetViewPreferencesFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveShieldsSetViewPreferencesFunction : public UIThreadExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.setViewPreferences", UNKNOWN)
-
- protected:
-  ~BraveShieldsSetViewPreferencesFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveShieldsSetBraveShieldsControlTypeFunction
     : public UIThreadExtensionFunction {
  public:
