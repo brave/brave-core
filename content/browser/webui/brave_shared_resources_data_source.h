@@ -17,19 +17,19 @@ class BraveSharedResourcesDataSource : public URLDataSource {
   ~BraveSharedResourcesDataSource() override;
 
   // URLDataSource implementation.
-  std::string GetSource() const override;
+  std::string GetSource() override;
   void StartDataRequest(
       const std::string& path,
       const ResourceRequestInfo::WebContentsGetter& wc_getter,
       const URLDataSource::GotDataCallback& callback) override;
-  bool AllowCaching() const override;
-  std::string GetMimeType(const std::string& path) const override;
-  bool ShouldServeMimeTypeAsContentTypeHeader() const override;
+  bool AllowCaching() override;
+  std::string GetMimeType(const std::string& path) override;
+  bool ShouldServeMimeTypeAsContentTypeHeader() override;
   scoped_refptr<base::SingleThreadTaskRunner> TaskRunnerForRequestPath(
-      const std::string& path) const override;
+      const std::string& path) override;
   std::string GetAccessControlAllowOriginForOrigin(
-      const std::string& origin) const override;
-  bool IsGzipped(const std::string& path) const override;
+      const std::string& origin) override;
+  bool IsGzipped(const std::string& path) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveSharedResourcesDataSource);
