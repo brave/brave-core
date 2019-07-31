@@ -1265,7 +1265,14 @@ void RewardsServiceImpl::LoadURL(
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(url);
   request->method = request_method;
-  request->allow_credentials = false;
+
+  // Loading Twitter requires credentials
+  if (request->url.DomainIs("twitter.com")) {
+    request->allow_credentials = true;
+  } else {
+    request->allow_credentials = false;
+  }
+
   for (size_t i = 0; i < headers.size(); i++)
     request->headers.AddHeaderFromString(headers[i]);
   network::SimpleURLLoader* loader = network::SimpleURLLoader::Create(
