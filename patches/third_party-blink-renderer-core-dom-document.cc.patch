@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index f55c90df9969ace76a0813d02237edcb406e079c..d88e5e685878736a9caba1dc9873561035d4229f 100644
+index f55c90df9969ace76a0813d02237edcb406e079c..71f0c8ea1c2794afc98a3867ae0cf275034fbe50 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -335,6 +335,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
@@ -8,10 +8,10 @@ index f55c90df9969ace76a0813d02237edcb406e079c..d88e5e685878736a9caba1dc98735610
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+#include <iostream>
 +#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
 +#include "third_party/blink/renderer/modules/storage/dom_window_storage_controller.h"
 +
++#include "brave/third_party/blink/brave_page_graph/logging.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +
@@ -30,7 +30,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..d88e5e685878736a9caba1dc98735610
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        window_agent_factory_(initializer.GetWindowAgentFactory()),
-@@ -865,7 +879,140 @@ Document::~Document() {
+@@ -865,7 +879,139 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -134,9 +134,8 @@ index f55c90df9969ace76a0813d02237edcb406e079c..d88e5e685878736a9caba1dc98735610
 +  }
 +
 +  if (!is_ordinary_document) {
-+    std::cout << "(skipping PageGraph instrumentation on document "
-+              << context_document->Url().GetString() << ")"
-+              << std::endl;
++    PG_LOG("(skipping PageGraph instrumentation on document "
++               << context_document->Url().GetString() << ")");
 +    return nullptr;
 +  }
 +
@@ -171,7 +170,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..d88e5e685878736a9caba1dc98735610
  
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
-@@ -5911,6 +6058,22 @@ String Document::cookie(ExceptionState& exception_state) const {
+@@ -5911,6 +6057,22 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (!cookie_jar_)
      return String();
  
@@ -194,7 +193,7 @@ index f55c90df9969ace76a0813d02237edcb406e079c..d88e5e685878736a9caba1dc98735610
    return cookie_jar_->Cookies();
  }
  
-@@ -5937,6 +6100,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5937,6 +6099,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
    if (!cookie_jar_)
      return;
  
