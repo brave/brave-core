@@ -13,11 +13,12 @@ const getTwitterAPICredentials = () => {
   return new Promise(resolve => chrome.runtime.sendMessage(msg, resolve))
 }
 
-const getTweetDetails = async (tweetId: string) => {
+const makeTwitterRequest = async (url: string) => {
   const credentialHeaders = await getTwitterAPICredentials()
-  const url = new URL('https://api.twitter.com/1.1/statuses/show.json')
-  url.searchParams.append('id', tweetId)
-  const response = await fetch(url.toString(), {
+  if (Object.keys(credentialHeaders).length === 0) {
+    throw new Error(`Unable to make Twitter API request: no credential headers`)
+  }
+  const response = await fetch(url, {
     credentials: 'include',
     headers: {
       ...credentialHeaders
@@ -27,7 +28,22 @@ const getTweetDetails = async (tweetId: string) => {
     mode: 'cors',
     redirect: 'follow'
   })
+  if (!response.ok) {
+    throw new Error(`Twitter API request failed: ${response.statusText} (${response.status})`)
+  }
   return response.json()
+}
+
+const getTweetDetails = async (tweetId: string) => {
+  const url = new URL('https://api.twitter.com/1.1/statuses/show.json')
+  url.searchParams.append('id', tweetId)
+  return makeTwitterRequest(url.toString())
+}
+
+const getUserDetails = async (screenName: string) => {
+  const url = new URL('https://api.twitter.com/1.1/users/show.json')
+  url.searchParams.append('screen_name', screenName)
+  return makeTwitterRequest(url.toString())
 }
 
 function getTweetId (tweet: Element) {
@@ -63,7 +79,7 @@ const getTweetMetaData = (tweet: Element, tweetId: string): Promise<RewardsTip.T
       return tweetMetadata
     })
     .catch(error => {
-      console.log(`Failed to fetch tweet details for ${tweetId}: ${error.message}`)
+      console.error(`Failed to fetch tweet details for ${tweetId}: ${error.message}`)
       return Promise.reject(error)
     })
 }
@@ -254,6 +270,41 @@ document.addEventListener('visibilitychange', function () {
   clearTimeout(timeout)
   if (!document.hidden) {
     timeout = setTimeout(configureBraveTipAction, 3000)
+  }
+})
+
+// Our backend parses the DOM to determine the user ID for a Twitter
+// profile page. In old Twitter, the profile page includes the
+// associated user ID. However, in new Twitter, the profile page
+// doesn't include the user ID. In order to work around this limitation,
+// we call the Twitter API to retrieve the user ID and then pass it
+// to our backend using an alternate profile page URL. This allows us
+// to pass the user ID to our backend without the need to make additional
+// API changes to accomodate a user ID.
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  const action = typeof msg === 'string' ? msg : msg.type
+  switch (action) {
+    case 'getProfileUrl': {
+      const screenName = msg.screenName
+      if (newTwitter) {
+        getUserDetails(screenName)
+          .then(userDetails => {
+            const userId = userDetails.id_str
+            const profileUrl = `https://twitter.com/intent/user?user_id=${userId}&screen_name=${screenName}`
+            sendResponse({ profileUrl })
+          }).catch(error => {
+            console.error(`Failed to fetch user details for ${screenName}: ${error.message}`)
+            return Promise.reject(error)
+          })
+        // Must return true for asynchronous calls to sendResponse
+        return true
+      } else {
+        sendResponse({ profileUrl: `https://twitter.com/${screenName}` })
+      }
+      return false
+    }
+    default:
+      return false
   }
 })
 

@@ -4,7 +4,6 @@
 
 import { types } from '../../constants/rewards_panel_types'
 import * as storage from '../storage'
-import { getTabData } from '../api/tabs_api'
 import { setBadgeText } from '../browserAction'
 
 const getWindowId = (id: number) => {
@@ -53,11 +52,6 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
       break
     }
-    case types.ON_TAB_ID:
-      if (payload.tabId) {
-        getTabData(payload.tabId)
-      }
-      break
     case types.ON_TAB_RETRIEVED: {
       const tab: chrome.tabs.Tab = payload.tab
       if (

@@ -38,7 +38,8 @@ class Twitter : public ledger::LedgerCallbackHandler {
                               const ledger::VisitData& visit_data);
 
  private:
-  static std::string GetProfileURL(const std::string& screen_name);
+  static std::string GetProfileURL(const std::string& screen_name,
+                                   const std::string& user_id);
 
   static std::string GetProfileImageURL(const std::string& screen_name);
 
