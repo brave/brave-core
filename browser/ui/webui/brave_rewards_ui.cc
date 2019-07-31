@@ -1017,6 +1017,8 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
     ads_service_->SetAdsEnabled(value == "true");
   } else if (key == "adsPerHour") {
     ads_service_->SetAdsPerHour(std::stoull(value));
+  } else if (key == "adsEnabledMigrated") {
+    ads_service_->MigrateAdsEnabled(value == "true");
   }
 
   base::ListValue* emptyArgs = nullptr;

@@ -83,42 +83,69 @@ bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
 
 void AdsServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
+  auto should_migrate_prefs_from_62 = ShouldMigratePrefsFrom62(registry);
+
   if (ShouldMigratePrefs(registry)) {
-    // prefs::kVersion should default to 1 for legacy installations so that
-    // preferences are migrated from version 1 to the current version
-    registry->RegisterIntegerPref(prefs::kVersion, 1);
+    // prefs::kBraveAdsPrefsVersion should default to 1 for legacy installations
+    // so that preferences are migrated from version 1 to the current version
+    registry->RegisterIntegerPref(prefs::kBraveAdsPrefsVersion,
+        prefs::kBraveAdsPrefsDefaultVersion);
   } else {
-    registry->RegisterIntegerPref(prefs::kVersion, 2);
+    registry->RegisterIntegerPref(prefs::kBraveAdsPrefsVersion,
+        prefs::kBraveAdsPrefsCurrentVersion);
   }
 
-  registry->RegisterBooleanPref(prefs::kEnabled, false);
+  registry->RegisterBooleanPref(prefs::kBraveAdsEnabled, false);
+  registry->RegisterBooleanPref(prefs::kBraveAdsEnabledMigrated, false);
 
-  registry->RegisterUint64Pref(prefs::kAdsPerHour, 2);
+  registry->RegisterUint64Pref(prefs::kBraveAdsPerHour, 2);
 
   #if defined(OS_ANDROID)
-    registry->RegisterUint64Pref(prefs::kAdsPerDay, 12);
+    registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 12);
   #else
-    registry->RegisterUint64Pref(prefs::kAdsPerDay, 20);
+    registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 20);
   #endif
 
-  registry->RegisterIntegerPref(prefs::kIdleThreshold, 15);
+  registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
+  registry->RegisterBooleanPref(
+      prefs::kBraveAdShouldShowFirstLaunchNotification,
+      true);
+  registry->RegisterBooleanPref(
+      prefs::kBraveAdsHasRemovedFirstLaunchNotification,
+      false);
 
-  registry->RegisterBooleanPref(
-      prefs::kShouldShowFirstLaunchNotification, true);
-  registry->RegisterBooleanPref(
-      prefs::kHasRemovedFirstLaunchNotification, false);
+  auto now = static_cast<uint64_t>(
+      (base::Time::Now() - base::Time()).InSeconds());
   registry->RegisterUint64Pref(
-      prefs::kLastShownFirstLaunchNotificationTimestamp, 0);
+      prefs::kBraveAdsLaunchNotificationTimestamp, now);
+
+  if (should_migrate_prefs_from_62) {
+    registry->RegisterBooleanPref(prefs::kBraveAdsPrefsMigratedFrom62, true);
+  }
 }
 
 bool AdsServiceFactory::ShouldMigratePrefs(
     user_prefs::PrefRegistrySyncable* registry) const {
-  // If prefs::kEnabled does not exist then this must be a fresh installion so
-  // we do not need to migrate
+  // If prefs::kBraveAdsEnabled does not exist then this must be a fresh
+  // installion so we do not need to migrate
   auto pref_store = registry->defaults();
 
   const base::Value* value = nullptr;
-  if (!pref_store->GetValue(prefs::kEnabled, &value)) {
+  if (!pref_store->GetValue(prefs::kBraveAdsEnabled, &value)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool AdsServiceFactory::ShouldMigratePrefsFrom62(
+    user_prefs::PrefRegistrySyncable* registry) const {
+  // prefs::kBraveAdsPrefsVersion has existed since 0.63.45 so if this key does
+  // not exist then this must be an upgrade from 0.62.x so we should migrate
+  auto pref_store = registry->defaults();
+
+  const base::Value* value = nullptr;
+  if (pref_store->GetValue(prefs::kBraveAdsPrefsVersion, &value)) {
     return false;
   }
 

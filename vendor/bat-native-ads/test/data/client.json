@@ -1,30 +1,27 @@
 {
-  "lastUserIdleStopTime": 0,
-  "creativeSetHistory": {
+  "adsShownHistory": [
+  ],
+  "adUUID": "",
+  "adsUUIDSeen": {
   },
+  "available": false,
+  "lastSearchTime": 0,
   "lastShopTime": 0,
-  "campaignHistory": {
-  },
-  "last_page_classification": "",
+  "lastUserActivity": 0,
+  "lastUserIdleStopTime": 0,
+  "locale": "en",
   "locales": [
-    "en",
-    "de",
-    "fr"
   ],
   "pageScoreHistory": [
   ],
-  "adsUUIDSeen": {
+  "creativeSetHistory": {
   },
-  "adUUID": "",
-  "locale": "en",
-  "lastUserActivity": 0,
+  "campaignHistory": {
+  },
+  "score": 0,
   "searchActivity": false,
   "searchUrl": "",
-  "lastSearchTime": 0,
   "shopActivity": false,
-  "available": true,
   "shopUrl": "",
-  "adsShownHistory": [
-  ],
-  "score": 0
+  "status": ""
 }
