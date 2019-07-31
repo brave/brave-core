@@ -1,9 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_MODEL_CHANGE_PROCESSOR_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_MODEL_CHANGE_PROCESSOR_H_
+
+#include <memory>
+#include <vector>
 
 #include "base/macros.h"
 #include "base/time/time.h"
@@ -37,9 +41,8 @@ class ChangeProcessor {
   // update local data from `records`
   virtual void ApplyChangesFromSyncModel(const RecordsList& records) = 0;
   // send any new records that have not yet been synced to the server
-  // for each record, if the last synced time is less than
-  // `unsynced_send_interval` then skip sending it this time
-  virtual void SendUnsynced(base::TimeDelta unsynced_send_interval) = 0;
+  // for each record, with respect to an exponential resend periods
+  virtual void SendUnsynced() = 0;
 };
 
 }  // namespace brave_sync

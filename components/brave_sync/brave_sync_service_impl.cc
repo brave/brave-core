@@ -89,8 +89,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
         profile,
         sync_client_.get(),
         sync_prefs_.get())),
-    timer_(std::make_unique<base::RepeatingTimer>()),
-    unsynced_send_interval_(base::TimeDelta::FromMinutes(60)) {
+    timer_(std::make_unique<base::RepeatingTimer>()) {
   // Moniter syncs prefs required in GetSettingsAndDevices
   profile_pref_change_registrar_.Init(profile->GetPrefs());
   profile_pref_change_registrar_.Add(
@@ -430,7 +429,7 @@ void BraveSyncServiceImpl::OnResolvedSyncRecords(
     OnResolvedPreferences(*records.get());
   } else if (category_name == brave_sync::jslib_const::kBookmarks) {
     bookmark_change_processor_->ApplyChangesFromSyncModel(*records.get());
-    bookmark_change_processor_->SendUnsynced(unsynced_send_interval_);
+    bookmark_change_processor_->SendUnsynced();
   } else if (category_name == brave_sync::jslib_const::kHistorySites) {
     NOTIMPLEMENTED();
   }

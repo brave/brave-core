@@ -24,6 +24,7 @@
 FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete);
 FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest,
     MigrateOrdersForPermanentNodes);
+FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest, ExponentialResend);
 
 class BraveBookmarkChangeProcessorTest;
 
@@ -46,7 +47,7 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   void GetAllSyncData(
       const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
       SyncRecordAndExistingList* records_and_existing_objects) override;
-  void SendUnsynced(base::TimeDelta unsynced_send_interval) override;
+  void SendUnsynced() override;
   void InitialSync() override;
 
   void ApplyOrder(const std::string& object_id, const std::string& order);
@@ -54,9 +55,11 @@ class BookmarkChangeProcessor : public ChangeProcessor,
  private:
   friend class ::BraveBookmarkChangeProcessorTest;
   FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
-                                                       IgnoreRapidCreateDelete);
+                                                IgnoreRapidCreateDelete);
   FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
                                                 MigrateOrdersForPermanentNodes);
+  FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
+                                                ExponentialResend);
 
   BookmarkChangeProcessor(Profile* profile,
                           BraveSyncClient* sync_client,
@@ -119,6 +122,14 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   void MigrateOrdersForPermanentNode(bookmarks::BookmarkNode* perm_node);
   int GetPermanentNodeIndex(const bookmarks::BookmarkNode* node) const;
   static int FindMigrateSubOrderLength(const std::string& order);
+
+  static base::TimeDelta GetRetryExponentialWaitAmount(int retry_number);
+  static void SetCurrentRetryNumber(bookmarks::BookmarkModel* model,
+      const bookmarks::BookmarkNode* node, int retry_number);
+  static std::vector<int> GetExponentialWaitsForTests();
+
+  static const std::vector<int> kExponentialWaits;
+  static const int kMaxSendRetries;
 
   BraveSyncClient* sync_client_;  // not owned
   prefs::Prefs* sync_prefs_;  // not owned
