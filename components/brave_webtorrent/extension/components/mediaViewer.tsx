@@ -48,6 +48,14 @@ interface Props {
 export default class MediaViewer extends React.PureComponent<Props, {}> {
   ref = (elem: HTMLMediaElement | null) => {
     if (!elem) return
+    if (elem.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      this.play(elem)
+    } else {
+      elem.addEventListener('loadeddata', () => this.play(elem), { once: true })
+    }
+  }
+
+  play (elem: HTMLMediaElement) {
     elem.play().catch(err => console.error('Autoplay failed', err))
   }
 
