@@ -93,10 +93,11 @@ SRCDIR=$PWD
 rm -rf $YUBIKIT_DIR
 rm -rf $YUBIKIT_OUT
 
-git clone -b simulator_release --single-branch --depth 1 https://github.com/jumde/yubikit-ios/ $YUBIKIT_DIR
+git clone -b master --single-branch https://github.com/YubicoLabs/yubikit-ios/ $YUBIKIT_DIR
 
 mkdir -p $SRCDIR/$YUBIKIT_OUT/include
 pushd $YUBIKIT_DIR/YubiKit
 sh build.sh > yubikit.log 2>&1
-cp -r build/release_universal/  $SRCDIR/$YUBIKIT_OUT/
+cp -r releases/YubiKit/YubiKit/release_universal/  $SRCDIR/$YUBIKIT_OUT/
+cp -r releases/YubiKit/YubiKit/include/  $SRCDIR/$YUBIKIT_OUT/include/
 popd
