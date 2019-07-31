@@ -57,7 +57,7 @@ BraveRewardsSource::BraveRewardsSource(Profile* profile)
 BraveRewardsSource::~BraveRewardsSource() {
 }
 
-std::string BraveRewardsSource::GetSource() const {
+std::string BraveRewardsSource::GetSource() {
   return "rewards-image";
 }
 
@@ -112,17 +112,17 @@ void BraveRewardsSource::StartDataRequest(
   }
 }
 
-std::string BraveRewardsSource::GetMimeType(const std::string&) const {
+std::string BraveRewardsSource::GetMimeType(const std::string&) {
   // We need to explicitly return a mime type, otherwise if the user tries to
   // drag the image they get no extension.
   return "image/png";
 }
 
-bool BraveRewardsSource::AllowCaching() const {
+bool BraveRewardsSource::AllowCaching() {
   return false;
 }
 
-bool BraveRewardsSource::ShouldReplaceExistingSource() const {
+bool BraveRewardsSource::ShouldReplaceExistingSource() {
   // Leave the existing DataSource in place, otherwise we'll drop any pending
   // requests on the floor.
   return false;
@@ -131,7 +131,7 @@ bool BraveRewardsSource::ShouldReplaceExistingSource() const {
 bool BraveRewardsSource::ShouldServiceRequest(
     const GURL& url,
     content::ResourceContext* resource_context,
-    int render_process_id) const {
+    int render_process_id) {
   return URLDataSource::ShouldServiceRequest(url, resource_context,
                                              render_process_id);
 }
