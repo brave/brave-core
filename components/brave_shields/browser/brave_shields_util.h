@@ -35,10 +35,10 @@ ContentSettingsPattern GetPatternFromURL(const GURL& url,
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
 
-void SetBraveShieldsControlType(Profile* profile,
-                                ControlType type,
-                                const GURL& url);
-ControlType GetBraveShieldsControlType(Profile* profile, const GURL& url);
+void SetBraveShieldsEnabled(Profile* profile, bool enable, const GURL& url);
+// reset to the default value
+void ResetBraveShieldsEnabled(Profile* profile, const GURL& url);
+bool GetBraveShieldsEnabled(Profile* profile, const GURL& url);
 
 void SetAdControlType(Profile* profile, ControlType type, const GURL& url);
 ControlType GetAdControlType(Profile* profile, const GURL& url);
@@ -51,10 +51,11 @@ void SetFingerprintingControlType(Profile* profile,
                                   const GURL& url);
 ControlType GetFingerprintingControlType(Profile* profile, const GURL& url);
 
-void SetHTTPSEverywhereControlType(Profile* profile,
-                                   ControlType type,
-                                   const GURL& url);
-ControlType GetHTTPSEverywhereControlType(Profile* profile, const GURL& url);
+void SetHTTPSEverywhereEnabled(Profile* profile, bool enable, const GURL& url);
+// reset to the default value
+void SetHTTPSEverywhereEnabled(Profile* profile, bool enable, const GURL& url);
+void ResetHTTPSEverywhereEnabled(Profile* profile, const GURL& url);
+bool GetHTTPSEverywhereEnabled(Profile* profile, const GURL& url);
 
 void SetNoScriptControlType(Profile* profile,
                             ControlType type,
