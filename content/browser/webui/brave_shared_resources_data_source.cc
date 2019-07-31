@@ -103,7 +103,7 @@ BraveSharedResourcesDataSource::BraveSharedResourcesDataSource() {
 BraveSharedResourcesDataSource::~BraveSharedResourcesDataSource() {
 }
 
-std::string BraveSharedResourcesDataSource::GetSource() const {
+std::string BraveSharedResourcesDataSource::GetSource() {
   return "brave-resources";
 }
 
@@ -123,14 +123,14 @@ void BraveSharedResourcesDataSource::StartDataRequest(
   callback.Run(bytes.get());
 }
 
-bool BraveSharedResourcesDataSource::AllowCaching() const {
+bool BraveSharedResourcesDataSource::AllowCaching() {
   // Should not be cached to reflect dynamically-generated contents that may
   // depend on the current locale.
   return true;
 }
 
 std::string BraveSharedResourcesDataSource::GetMimeType(
-    const std::string& path) const {
+    const std::string& path) {
   if (path.empty())
     return "text/html";
 
@@ -170,20 +170,19 @@ std::string BraveSharedResourcesDataSource::GetMimeType(
   return "text/plain";
 }
 
-bool BraveSharedResourcesDataSource::ShouldServeMimeTypeAsContentTypeHeader()
-    const {
+bool BraveSharedResourcesDataSource::ShouldServeMimeTypeAsContentTypeHeader() {
   return true;
 }
 
 scoped_refptr<base::SingleThreadTaskRunner>
 BraveSharedResourcesDataSource::TaskRunnerForRequestPath(
-    const std::string& path) const {
+    const std::string& path) {
   return nullptr;
 }
 
 std::string
 BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
-    const std::string& origin) const {
+    const std::string& origin) {
   // For now we give access only for "chrome://*" origins.
   // According to CORS spec, Access-Control-Allow-Origin header doesn't support
   // wildcards, so we need to set its value explicitly by passing the |origin|
@@ -197,7 +196,7 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
   return origin;
 }
 
-bool BraveSharedResourcesDataSource::IsGzipped(const std::string& path) const {
+bool BraveSharedResourcesDataSource::IsGzipped(const std::string& path) {
   // Cannot access GetContentClient() from here as that is //content/public
   // only. Therefore cannot access ContentClient::IsDataResourceGzipped, so go
   // to the bundle directly.
