@@ -7,18 +7,43 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/string_util.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/media/twitter.h"
+#include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
+#include "url/gurl.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
+
+namespace {
+
+std::string GetUserIdFromUrl(const std::string& path) {
+  if (path.empty()) {
+    return std::string();
+  }
+
+  GURL url("https://twitter.com" + path);
+  if (!url.is_valid()) {
+    return std::string();
+  }
+
+  for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
+    if (it.GetKey() == "user_id") {
+      return it.GetUnescapedValue();
+    }
+  }
+
+  return std::string();
+}
+
+}  // namespace
 
 namespace braveledger_media {
 
@@ -30,12 +55,18 @@ Twitter::~Twitter() {
 }
 
 // static
-std::string Twitter::GetProfileURL(const std::string& screen_name) {
-  if (screen_name.empty()) {
-    return std::string();
+std::string Twitter::GetProfileURL(const std::string& screen_name,
+                                   const std::string& user_id) {
+  if (!user_id.empty()) {
+    return base::StringPrintf("https://twitter.com/intent/user?user_id=%s",
+                              user_id.c_str());
   }
 
-  return base::StringPrintf("https://twitter.com/%s/", screen_name.c_str());
+  if (!screen_name.empty()) {
+    return base::StringPrintf("https://twitter.com/%s/", screen_name.c_str());
+  }
+
+  return "";
 }
 
 // static
@@ -71,6 +102,17 @@ std::string Twitter::GetMediaKey(const std::string& screen_name) {
 std::string Twitter::GetUserNameFromUrl(const std::string& path) {
   if (path.empty()) {
     return std::string();
+  }
+
+  GURL url("https://twitter.com" + path);
+  if (!url.is_valid()) {
+    return std::string();
+  }
+
+  for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
+    if (it.GetKey() == "screen_name") {
+      return it.GetUnescapedValue();
+    }
   }
 
   std::vector<std::string> parts = base::SplitString(
@@ -140,12 +182,17 @@ std::string Twitter::GetUserId(const std::string& response) {
 
   std::string id = braveledger_media::ExtractData(
       response,
-      "<div class=\"ProfileNav\" role=\"navigation\" data-user-id=\"", "\">");
+      "<a href=\"/intent/user?user_id=\"", "\">");
 
   if (id.empty()) {
     id = braveledger_media::ExtractData(
-      response,
-      "https://pbs.twimg.com/profile_banners/", "/");
+        response,
+        "<div class=\"ProfileNav\" role=\"navigation\" data-user-id=\"", "\">");
+  }
+
+  if (id.empty()) {
+    id = braveledger_media::ExtractData(
+        response, "https://pbs.twimg.com/profile_banners/", "/");
   }
 
   return id;
@@ -272,7 +319,7 @@ void Twitter::SavePublisherInfo(
     const uint64_t window_id,
     ledger::PublisherInfoCallback callback) {
   const std::string publisher_key = GetPublisherKey(user_id);
-  const std::string url = GetProfileURL(screen_name);
+  const std::string url = GetProfileURL(screen_name, user_id);
   const std::string favicon_url = GetProfileImageURL(screen_name);
   const std::string media_key = GetMediaKey(screen_name);
 
@@ -375,7 +422,8 @@ void Twitter::OnMediaPublisherActivity(
 
   if (!info || result == ledger::Result::NOT_FOUND) {
     const std::string user_name = GetUserNameFromUrl(visit_data.path);
-    const std::string url = GetProfileURL(user_name);
+    const std::string user_id = GetUserIdFromUrl(visit_data.path);
+    const std::string url = GetProfileURL(user_name, user_id);
 
     FetchDataFromUrl(url,
                      std::bind(&Twitter::OnUserPage,

@@ -13,10 +13,6 @@ export const onWalletInitialized = (result: RewardsExtension.Result) => action(t
   result
 })
 
-export const onTabId = (tabId: number | undefined) => action(types.ON_TAB_ID, {
-  tabId
-})
-
 export const onTabRetrieved = (tab: chrome.tabs.Tab, activeTabIsLoadingTriggered: boolean, publisherBlob: string = 'ignore') => action(types.ON_TAB_RETRIEVED, {
   tab,
   activeTabIsLoadingTriggered,
