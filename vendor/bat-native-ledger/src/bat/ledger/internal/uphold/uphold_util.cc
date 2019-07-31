@@ -122,6 +122,14 @@ std::string GetSecondStepVerify() {
       id.c_str());
 }
 
+std::string GetSecondStepRegistration() {
+  const std::string url = GetUrl();
+
+  return base::StringPrintf(
+      "%s/signup/step2",
+      url.c_str());
+}
+
 ledger::ExternalWalletPtr GetWallet(
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   for (auto& wallet : wallets) {
@@ -171,6 +179,71 @@ std::string GetAccountUrl() {
   return base::StringPrintf(
       "%s/dashboard",
       url.c_str());
+}
+
+ledger::ExternalWalletPtr GenerateLinks(ledger::ExternalWalletPtr wallet) {
+  if (!wallet) {
+    return nullptr;
+  }
+
+  switch (wallet->status) {
+    case ledger::WalletStatus::PENDING: {
+      wallet->add_url = GetSecondStepRegistration();
+      wallet->withdraw_url = GetSecondStepRegistration();
+      break;
+    }
+    case ledger::WalletStatus::CONNECTED: {
+      wallet->add_url = GetAddUrl(wallet->address);
+      wallet->withdraw_url = GetSecondStepVerify();
+      break;
+    }
+    case ledger::WalletStatus::VERIFIED: {
+      wallet->add_url = GetAddUrl(wallet->address);
+      wallet->withdraw_url = GetWithdrawUrl(wallet->address);
+      break;
+    }
+    case ledger::WalletStatus::NOT_CONNECTED:
+    case ledger::WalletStatus::DISCONNECTED_VERIFIED:
+    case ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
+      wallet->add_url = "";
+      wallet->withdraw_url = "";
+      break;
+    }
+  }
+
+  wallet->verify_url = GenerateVerifyLink(wallet->Clone());
+  wallet->account_url = GetAccountUrl();
+
+  return wallet;
+}
+
+std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet) {
+  std::string url;
+  if (!wallet) {
+    return url;
+  }
+
+  switch (wallet->status) {
+    case ledger::WalletStatus::PENDING: {
+      url = GetSecondStepRegistration();
+      break;
+    }
+    case ledger::WalletStatus::CONNECTED: {
+      url = GetSecondStepVerify();
+      break;
+    }
+    case ledger::WalletStatus::VERIFIED: {
+      break;
+    }
+    case ledger::WalletStatus::NOT_CONNECTED:
+    case ledger::WalletStatus::DISCONNECTED_VERIFIED:
+    case ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
+      url = GetVerifyUrl(wallet->one_time_string);
+      break;
+    }
+  }
+
+  return url;
 }
 
 }  // namespace braveledger_uphold

@@ -216,7 +216,6 @@ export class Panel extends React.Component<Props, State> {
   }
 
   onAddFunds = (notificationId?: string) => {
-    const status = this.getWalletStatus()
     const { externalWallet } = this.props.rewardsPanelData
 
     if (notificationId) {
@@ -227,13 +226,10 @@ export class Panel extends React.Component<Props, State> {
       return
     }
 
-    // WalletStatus::CONNECTED
-    if (status === 'verified' || externalWallet.status === 1) {
-      if (externalWallet.addUrl) {
-        chrome.tabs.create({
-          url: externalWallet.addUrl
-        })
-      }
+    if (externalWallet.addUrl) {
+      chrome.tabs.create({
+        url: externalWallet.addUrl
+      })
       return
     }
 
@@ -571,8 +567,12 @@ export class Panel extends React.Component<Props, State> {
   }
 
   handleUpholdLink = (link: string) => {
-    const { ui } = this.props.rewardsPanelData
-    if (!this.state.showVerifyOnBoarding && (!ui || !ui.onBoardingDisplayed)) {
+    const { ui, externalWallet } = this.props.rewardsPanelData
+
+    if (
+      !this.state.showVerifyOnBoarding &&
+      (!ui || !ui.onBoardingDisplayed) &&
+      (!externalWallet || (externalWallet && externalWallet.status === 0))) {
       this.setState({
         showVerifyOnBoarding: true
       })

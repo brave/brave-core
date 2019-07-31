@@ -296,6 +296,7 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
   }
 
   if (!allow_zero_balance && properties->user_funds == "0") {
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
