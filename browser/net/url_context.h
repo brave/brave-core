@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_NET_URL_CONTEXT_H_
 
 #include <memory>
+#include <set>
 #include <string>
 
 #include "chrome/browser/net/chrome_network_delegate.h"
@@ -78,9 +79,15 @@ struct BraveRequestInfo {
   int frame_tree_node_id = 0;
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
+
   net::HttpRequestHeaders* headers = nullptr;
+  // The following two sets are populated by |OnBeforeStartTransactionCallback|.
+  // |set_headers| contains headers which values were added or modified.
+  std::set<std::string> set_headers;
+  std::set<std::string> removed_headers;
   const net::HttpResponseHeaders* original_response_headers = nullptr;
   scoped_refptr<net::HttpResponseHeaders>* override_response_headers = nullptr;
+
   GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
   const base::ListValue* referral_headers_list = nullptr;

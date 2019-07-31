@@ -117,9 +117,7 @@ class BraveProxyingURLLoaderFactory
     void RestartInternal();
 
     void ContinueToBeforeSendHeaders(int error_code);
-    void ContinueToSendHeaders(const std::set<std::string>& removed_headers,
-                               const std::set<std::string>& set_headers,
-                               int error_code);
+    void ContinueToSendHeaders(int error_code);
     void ContinueToStartRequest(int error_code);
     void ContinueToResponseStarted(int error_code);
     void ContinueToBeforeRedirect(const net::RedirectInfo& redirect_info,

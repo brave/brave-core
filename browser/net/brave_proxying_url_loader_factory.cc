@@ -458,8 +458,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     // callbacks do meaningful work only for real requests that should go
     // though header client.
     auto continuation = base::BindRepeating(
-        &InProgressRequest::ContinueToSendHeaders, weak_factory_.GetWeakPtr(),
-        std::set<std::string>(), std::set<std::string>());
+        &InProgressRequest::ContinueToSendHeaders, weak_factory_.GetWeakPtr());
 
     ctx_ = std::make_shared<brave::BraveRequestInfo>();
     brave::BraveRequestInfo::FillCTX(request_, render_process_id_,
@@ -488,8 +487,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     DCHECK_EQ(net::OK, result);
   }
 
-  ContinueToSendHeaders(std::set<std::string>(), std::set<std::string>(),
-                        net::OK);
+  ContinueToSendHeaders(net::OK);
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToStartRequest(
@@ -519,13 +517,13 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToStartRequest(
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
-    const std::set<std::string>& removed_headers,
-    const std::set<std::string>& set_headers,
     int error_code) {
   if (error_code != net::OK) {
     OnRequestError(network::URLLoaderCompletionStatus(error_code));
     return;
   }
+  const std::set<std::string>& removed_headers = ctx_->removed_headers;
+  const std::set<std::string>& set_headers = ctx_->set_headers;
 
   if (pending_follow_redirect_params_) {
     pending_follow_redirect_params_->removed_headers.insert(

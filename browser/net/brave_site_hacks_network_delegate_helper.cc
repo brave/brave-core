@@ -85,6 +85,7 @@ int OnBeforeStartTransaction_SiteHacksWork(
       base::ReplaceFirstSubstringAfterOffset(&user_agent, 0,
         "Chrome", "Brave Chrome");
       headers->SetHeader(kUserAgentHeader, user_agent);
+      ctx->set_headers.insert(kUserAgentHeader);
     }
   }
   return net::OK;
