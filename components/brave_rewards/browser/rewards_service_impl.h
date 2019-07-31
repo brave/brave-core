@@ -376,7 +376,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void DeleteActivityInfo(
     const std::string& publisher_key,
-    const ledger::DeleteActivityInfoCallback& callback) override;
+    ledger::DeleteActivityInfoCallback callback) override;
 
   void OnDeleteActivityInfoStamp(
       const std::string& publisher_key,
@@ -412,7 +412,7 @@ class RewardsServiceImpl : public RewardsService,
     ledger::PendingContributionInfoList list);
 
   void OnGetPendingContributions(
-    const ledger::PendingContributionInfoListCallback& callback,
+    ledger::PendingContributionInfoListCallback callback,
     ledger::PendingContributionInfoList list);
 
   void OnURLLoaderComplete(network::SimpleURLLoader* loader,
@@ -435,7 +435,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnRemoveAllPendingContributionsUI(const ledger::Result result);
 
   void OnGetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback,
+    ledger::PendingContributionsTotalCallback callback,
     double amount);
 
   void OnFetchBalance(FetchBalanceCallback callback,
@@ -606,24 +606,24 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoList list) override;
 
   void GetPendingContributions(
-    const ledger::PendingContributionInfoListCallback& callback) override;
+    ledger::PendingContributionInfoListCallback callback) override;
 
   void RemovePendingContribution(
     const std::string& publisher_key,
     const std::string& viewing_id,
     uint64_t added_date,
-    const ledger::RemovePendingContributionCallback& callback) override;
+    ledger::RemovePendingContributionCallback callback) override;
 
   void RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) override;
+      ledger::RemovePendingContributionCallback callback) override;
 
   void GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) override;
+      ledger::PendingContributionsTotalCallback callback) override;
 
   void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      const ledger::ShowNotificationCallback& callback) override;
+      ledger::ShowNotificationCallback callback) override;
 
   // end ledger::LedgerClient
 

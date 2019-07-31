@@ -273,13 +273,13 @@ class LEDGER_EXPORT Ledger {
       const std::string& publisher_key,
       const std::string& viewing_id,
       uint64_t added_date,
-      const ledger::RemovePendingContributionCallback& callback) = 0;
+      ledger::RemovePendingContributionCallback callback) = 0;
 
   virtual void RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) = 0;
+      ledger::RemovePendingContributionCallback callback) = 0;
 
   virtual void GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) = 0;
+      ledger::PendingContributionsTotalCallback callback) = 0;
 
   virtual void FetchBalance(ledger::FetchBalanceCallback callback) = 0;
 

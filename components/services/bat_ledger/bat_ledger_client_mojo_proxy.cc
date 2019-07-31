@@ -786,7 +786,7 @@ void OnGetPendingContributions(
 }
 
 void BatLedgerClientMojoProxy::GetPendingContributions(
-    const ledger::PendingContributionInfoListCallback& callback) {
+    ledger::PendingContributionInfoListCallback callback) {
   if (!Connected()) {
     callback(ledger::PendingContributionInfoList());
     return;
@@ -806,7 +806,7 @@ void BatLedgerClientMojoProxy::RemovePendingContribution(
     const std::string& publisher_key,
     const std::string& viewing_id,
     uint64_t added_date,
-    const ledger::RemovePendingContributionCallback& callback) {
+    ledger::RemovePendingContributionCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
@@ -826,7 +826,7 @@ void OnRemoveAllPendingContributions(
 }
 
 void BatLedgerClientMojoProxy::RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) {
+    ledger::RemovePendingContributionCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
@@ -843,7 +843,7 @@ void OnGetPendingContributionsTotal(
 }
 
 void BatLedgerClientMojoProxy::GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) {
+    ledger::PendingContributionsTotalCallback callback) {
   if (!Connected()) {
     callback(0.0);
     return;
@@ -892,9 +892,9 @@ void OnShowNotification(
 }
 
 void BatLedgerClientMojoProxy::ShowNotification(
-      const std::string& type,
-      const std::vector<std::string>& args,
-      const ledger::ShowNotificationCallback& callback) {
+    const std::string& type,
+    const std::vector<std::string>& args,
+    ledger::ShowNotificationCallback callback) {
   bat_ledger_client_->ShowNotification(
       type,
       args,
@@ -908,8 +908,8 @@ void OnDeleteActivityInfo(
 }
 
 void BatLedgerClientMojoProxy::DeleteActivityInfo(
-      const std::string& publisher_key,
-      const ledger::DeleteActivityInfoCallback& callback) {
+    const std::string& publisher_key,
+    ledger::DeleteActivityInfoCallback callback) {
   bat_ledger_client_->DeleteActivityInfo(
       publisher_key,
       base::BindOnce(&OnDeleteActivityInfo, std::move(callback)));
