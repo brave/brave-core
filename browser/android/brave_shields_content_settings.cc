@@ -70,7 +70,7 @@ void JNI_BraveShieldsContentSettings_SetBraveShieldsControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type,
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::SetBraveShieldsControlType(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+      ProfileManager::GetActiveUserProfile(),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
@@ -81,7 +81,7 @@ base::android::ScopedJavaLocalRef<jstring>
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::ControlType control_type =
       brave_shields::GetBraveShieldsControlType(
-          ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+          ProfileManager::GetActiveUserProfile(),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 
   return base::android::ConvertUTF8ToJavaString(env,
@@ -92,7 +92,7 @@ void JNI_BraveShieldsContentSettings_SetAdControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type,
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::SetAdControlType(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+      ProfileManager::GetActiveUserProfile(),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
@@ -103,7 +103,7 @@ base::android::ScopedJavaLocalRef<jstring>
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::ControlType control_type =
       brave_shields::GetAdControlType(
-          ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+          ProfileManager::GetActiveUserProfile(),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 
   return base::android::ConvertUTF8ToJavaString(env,
@@ -114,7 +114,7 @@ void JNI_BraveShieldsContentSettings_SetCookieControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type,
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::SetCookieControlType(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+      ProfileManager::GetActiveUserProfile(),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
@@ -125,7 +125,7 @@ base::android::ScopedJavaLocalRef<jstring>
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::ControlType control_type =
       brave_shields::GetCookieControlType(
-          ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+          ProfileManager::GetActiveUserProfile(),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 
   return base::android::ConvertUTF8ToJavaString(env,
@@ -136,7 +136,7 @@ void JNI_BraveShieldsContentSettings_SetFingerprintingControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type,
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::SetFingerprintingControlType(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+      ProfileManager::GetActiveUserProfile(),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
@@ -147,7 +147,7 @@ base::android::ScopedJavaLocalRef<jstring>
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::ControlType control_type =
       brave_shields::GetFingerprintingControlType(
-          ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+          ProfileManager::GetActiveUserProfile(),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 
   return base::android::ConvertUTF8ToJavaString(env,
@@ -158,7 +158,7 @@ void JNI_BraveShieldsContentSettings_SetHTTPSEverywhereControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type,
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::SetHTTPSEverywhereControlType(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+      ProfileManager::GetActiveUserProfile(),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
@@ -169,7 +169,7 @@ base::android::ScopedJavaLocalRef<jstring>
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::ControlType control_type =
       brave_shields::GetHTTPSEverywhereControlType(
-          ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+          ProfileManager::GetActiveUserProfile(),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 
   return base::android::ConvertUTF8ToJavaString(env,
@@ -180,7 +180,7 @@ void JNI_BraveShieldsContentSettings_SetNoScriptControlType(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& type,
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::SetNoScriptControlType(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+      ProfileManager::GetActiveUserProfile(),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
@@ -191,7 +191,7 @@ base::android::ScopedJavaLocalRef<jstring>
     const base::android::JavaParamRef<jstring>& url) {
   brave_shields::ControlType control_type =
       brave_shields::GetNoScriptControlType(
-          ProfileManager::GetActiveUserProfile()->GetOriginalProfile(),
+          ProfileManager::GetActiveUserProfile(),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 
   return base::android::ConvertUTF8ToJavaString(env,
