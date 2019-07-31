@@ -40,7 +40,7 @@ class SpeedreaderWebContentsObserver : public content::WebContentsObserver,
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  //Invoked if an IPC message is coming from a specific RenderFrameHost.
+  // Invoked if an IPC message is coming from a specific RenderFrameHost.
   bool OnMessageReceived(const IPC::Message& message,
       content::RenderFrameHost* render_frame_host) override;
 

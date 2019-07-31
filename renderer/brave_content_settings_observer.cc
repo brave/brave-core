@@ -241,8 +241,8 @@ bool BraveContentSettingsObserver::RunSpeedreader(
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
     for (const auto& rule : content_setting_rules_->speedreader_rules) {
-      // If encountered matching wildcard rule, will fallback to default setting, unless
-      // a more specific pattern says otherwise
+      // If encountered matching wildcard rule, will fallback to default
+      // setting, unless a more specific pattern says otherwise
       if (rule.primary_pattern == ContentSettingsPattern::Wildcard()) {
         if (setting == CONTENT_SETTING_DEFAULT) {
           setting = rule.GetContentSetting();
@@ -259,7 +259,7 @@ bool BraveContentSettingsObserver::RunSpeedreader(
     }
   }
 
-  return setting == CONTENT_SETTING_BLOCK;  
+  return setting == CONTENT_SETTING_BLOCK;
 }
 
 bool BraveContentSettingsObserver::AllowFingerprinting(

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/speedreader/browser/speedreader_background_html_parser.h"
+#include "brave/components/speedreader/browser/blink/speedreader_background_html_parser.h"
 
 #include <memory>
 #include <utility>
@@ -27,7 +27,7 @@
 
 namespace blink {
 
-base::WeakPtr<SpeedreaderBackgroundHTMLParser> 
+base::WeakPtr<SpeedreaderBackgroundHTMLParser>
   SpeedreaderBackgroundHTMLParser::Create(
     std::unique_ptr<Configuration> config,
     scoped_refptr<base::SingleThreadTaskRunner> loading_task_runner) {

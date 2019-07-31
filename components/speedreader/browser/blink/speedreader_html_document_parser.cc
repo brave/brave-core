@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/speedreader/browser/speedreader_html_document_parser.h"
+#include "brave/components/speedreader/browser/blink/speedreader_html_document_parser.h"
 
 #include <memory>
 #include <utility>
@@ -47,7 +47,7 @@
 
 namespace blink {
 
-using namespace html_names;
+using namespace html_names; // NOLINT
 
 // This is a direct transcription of step 4 from:
 // http://www.whatwg.org/specs/web-apps/current-work/multipage/the-end.html#fragment-case
@@ -189,4 +189,4 @@ void SpeedreaderHTMLDocumentParser::HTMLInterventionActive() {
   }
 }
 
-} // namespace blink
+}  // namespace blink

@@ -4,6 +4,7 @@ import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/speedreader/browser/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
@@ -18,6 +19,13 @@ group("fix_brave_test_install_name_adblock") {
   testonly = true
   deps = [
     "//brave/vendor/adblock_rust_ffi:test_adblock_install_name"
+  ]
+}
+
+group("fix_brave_test_speedreader_install_name") {
+  testonly = true
+  deps = [
+    "//brave/vendor/speedreader_rust_ffi:test_speedreader_install_name"
   ]
 }
 

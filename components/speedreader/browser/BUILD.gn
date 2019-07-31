@@ -1,19 +1,13 @@
 import("//brave/build/config.gni")
-import("//brave/vendor/speedreader_rust_ffi/config.gni")
 
 source_set("browser") {
     public_deps = [
         "buildflags",
-        ":speedreader_libs",
     ]
 
     sources = [
         "speedreader_web_contents_observer.cc",
         "speedreader_web_contents_observer.h",
-        "speedreader_background_html_parser.cc",
-        "speedreader_background_html_parser.h",
-        "speedreader_html_document_parser.cc",
-        "speedreader_html_document_parser.h",
     ]
 
     deps = [
@@ -22,23 +16,5 @@ source_set("browser") {
       "//chrome/common",
       "//components/prefs",
       "//content/public/browser",
-      "//brave/vendor/speedreader_rust_ffi:speedreadder_ffi",
     ]
-}
-
-if (is_mac) {
-  bundle_data("speedreader_libs") {
-    print(speedreader_lib_path)
-    sources = [
-      speedreader_lib_path,
-    ]
-    outputs = [
-      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
-    ]
-    public_deps = [
-      "//brave/vendor/speedreader_rust_ffi:speedreader",
-    ]
-  }
-} else {
-  group("speedreader_libs") {}
 }

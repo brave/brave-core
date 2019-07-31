@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index ee0703bed193cfe7df02a97586753dd044d499be..34a6017422fa823e4f464380192720d42222e4fd 100644
+index ee0703bed193cfe7df02a97586753dd044d499be..4645bc51011eca1b6174b2213e0b97acc2874a09 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -198,7 +198,12 @@
@@ -8,7 +8,7 @@ index ee0703bed193cfe7df02a97586753dd044d499be..34a6017422fa823e4f464380192720d4
  #include "third_party/blink/renderer/core/html/lazy_load_image_observer.h"
 +#include "brave/components/speedreader/browser/buildflags/buildflags.h"
 +#if BUILDFLAG(SPEEDREADER_ENABLED)
-+#include "brave/components/speedreader/browser/speedreader_html_document_parser.h"
++#include "brave/components/speedreader/browser/blink/speedreader_html_document_parser.h"
 +#else
  #include "third_party/blink/renderer/core/html/parser/html_document_parser.h"
 +#endif

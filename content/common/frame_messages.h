@@ -20,7 +20,8 @@ IPC_MESSAGE_ROUTED1(
     BraveFrameMsg_AllowScriptsOnce,
     std::vector<std::string> /* origins to allow scripts once */)
 
-// Tell RenderFrame(s) to temporary disable SpeedReader on a list of origins once.
+// Tell RenderFrame(s) to temporary disable SpeedReader on
+// a list of origins once.
 IPC_MESSAGE_ROUTED1(
     BraveFrameMsg_DisableSpeedreaderOnce,
     std::vector<std::string> /* origins to allow scripts once */)

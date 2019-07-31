@@ -75,7 +75,8 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
     RendererContentSettingRules rules;
     GetRendererContentSettingRules(map, &rules);
 
-    // Add `speedreader` resource identifier rules to the map here, avoiding to `GetRendererContentSettingRules`
+    // Add `speedreader` resource identifier rules to the map here, avoiding to
+    // `GetRendererContentSettingRules`
     map->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS,
       "speedreader",
@@ -137,17 +138,19 @@ void SpeedreaderWebContentsObserver::OnSpeedreaderTransformed(
     return;
   }
   {
-    std::string data = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
-        IDR_SPEEDREADER_JS_STYLESHEET_INJECT).as_string();
+    std::string data = ui::ResourceBundle::GetSharedInstance()
+        .GetRawDataResource(IDR_SPEEDREADER_JS_STYLESHEET_INJECT).as_string();
     render_frame_host->ExecuteJavaScriptInIsolatedWorld(
           base::UTF8ToUTF16(data), base::DoNothing(),
           ISOLATED_WORLD_ID_SPEEDREADER);
   }
   {
-    std::string data = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
-        IDR_SPEEDREADER_STYLE_DESKTOP).as_string();
+    std::string data = ui::ResourceBundle::GetSharedInstance()
+        .GetRawDataResource(IDR_SPEEDREADER_STYLE_DESKTOP).as_string();
     render_frame_host->ExecuteJavaScriptInIsolatedWorld(
-          base::UTF8ToUTF16("var style = `" + data + "`; addStyleString(style);"), base::DoNothing(),
+          base::UTF8ToUTF16("var style = `" +
+            data +
+            "`; addStyleString(style);"), base::DoNothing(),
           ISOLATED_WORLD_ID_SPEEDREADER);
   }
 }
