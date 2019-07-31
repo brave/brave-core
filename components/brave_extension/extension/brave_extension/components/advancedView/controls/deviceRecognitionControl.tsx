@@ -21,7 +21,7 @@ import { getLocale } from '../../../background/api/localeAPI'
 
 // Helpers
 import {
-  maybeDisableResourcesRow,
+  shouldDisableResourcesRow,
   getTabIndexValueBasedOnProps,
   blockedResourcesSize
 } from '../../../helpers/shieldsUtils'
@@ -62,9 +62,9 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
     return blockedResourcesSize(fingerprintingBlocked)
   }
 
-  get maybeDisableResourcesRow (): boolean {
+  get shouldDisableResourcesRow (): boolean {
     const { fingerprintingBlocked } = this.props
-    return maybeDisableResourcesRow(fingerprintingBlocked)
+    return shouldDisableResourcesRow(fingerprintingBlocked)
   }
 
   get tabIndex (): number {
@@ -110,7 +110,7 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
       <>
         <BlockedInfoRowForSelect id='deviceRecognitionControl'>
           <BlockedInfoRowDataForSelect
-            disabled={this.maybeDisableResourcesRow}
+            disabled={this.shouldDisableResourcesRow}
             tabIndex={this.tabIndex}
             onClick={this.onOpenDeviceRecognition}
             onKeyDown={this.onOpenDeviceRecognitionViaKeyboard}

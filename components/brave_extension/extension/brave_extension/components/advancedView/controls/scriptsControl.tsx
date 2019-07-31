@@ -23,7 +23,7 @@ import { getLocale } from '../../../background/api/localeAPI'
 
 // Helpers
 import {
-  maybeDisableResourcesRow,
+  shouldDisableResourcesRow,
   blockedResourcesSize,
   maybeBlockResource,
   getTabIndexValueBasedOnProps,
@@ -74,9 +74,9 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
     this.state = { scriptsBlockedOpen: false }
   }
 
-  get maybeDisableResourcesRow (): boolean {
+  get shouldDisableResourcesRow (): boolean {
     const { javascriptBlocked } = this.props
-    return maybeDisableResourcesRow(javascriptBlocked)
+    return shouldDisableResourcesRow(javascriptBlocked)
   }
 
   get javascriptBlockedDisplay (): string {
@@ -142,7 +142,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
       <>
         <BlockedInfoRow id='scriptsControl' extraColumn={true}>
           <BlockedInfoRowData
-            disabled={this.maybeDisableResourcesRow}
+            disabled={this.shouldDisableResourcesRow}
             tabIndex={this.tabIndex}
             onClick={this.onOpenScriptsBlocked}
             onKeyDown={this.onOpenScriptsBlockedViaKeyboard}
@@ -152,7 +152,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
             <BlockedInfoRowText>{getLocale('scriptsBlocked')}</BlockedInfoRowText>
           </BlockedInfoRowData>
           {
-            this.maybeDisableResourcesRow === false
+            this.shouldDisableResourcesRow === false
               && (
                 <LinkAction
                   size='small'

@@ -25,7 +25,7 @@ import { getLocale } from '../../../background/api/localeAPI'
 // Helpers
 import {
   blockedResourcesSize,
-  maybeDisableResourcesRow
+  shouldDisableResourcesRow
 } from '../../../helpers/shieldsUtils'
 
 // Types
@@ -52,13 +52,13 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
     return blockedResourcesSize(fingerprintingBlocked)
   }
 
-  get maybeDisableResourcesRow (): boolean {
+  get shouldDisableResourcesRow (): boolean {
     const { fingerprintingBlocked } = this.props
-    return maybeDisableResourcesRow(fingerprintingBlocked)
+    return shouldDisableResourcesRow(fingerprintingBlocked)
   }
 
   triggerOpenDeviceRecognition = () => {
-    if (!this.maybeDisableResourcesRow) {
+    if (!this.shouldDisableResourcesRow) {
       this.setState({ deviceRecognitionOpen: !this.state.deviceRecognitionOpen })
     }
   }
@@ -69,7 +69,7 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
     return (
       <BlockedInfoRowDetails>
         <BlockedInfoRowForSelectSummary onClick={this.triggerOpenDeviceRecognition}>
-          <BlockedInfoRowDataForSelect disabled={this.maybeDisableResourcesRow}>
+          <BlockedInfoRowDataForSelect disabled={this.shouldDisableResourcesRow}>
             {
               deviceRecognitionOpen
                 ? <ArrowUpIcon />

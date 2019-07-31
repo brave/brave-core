@@ -26,7 +26,7 @@ import { getLocale } from '../../../background/api/localeAPI'
 import {
   sumAdsAndTrackers,
   blockedResourcesSize,
-  maybeDisableResourcesRow,
+  shouldDisableResourcesRow,
   mergeAdsAndTrackersResources
 } from '../../../helpers/shieldsUtils'
 
@@ -66,12 +66,12 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     return mergeAdsAndTrackersResources(adsBlockedResources, trackersBlockedResources)
   }
 
-  get maybeDisableResourcesRow (): boolean {
-    return maybeDisableResourcesRow(this.totalAdsTrackersBlocked)
+  get shouldDisableResourcesRow (): boolean {
+    return shouldDisableResourcesRow(this.totalAdsTrackersBlocked)
   }
 
   triggerOpen3rdPartyTrackersBlocked = () => {
-    if (!this.maybeDisableResourcesRow) {
+    if (!this.shouldDisableResourcesRow) {
       this.setState({ trackersBlockedOpen: !this.state.trackersBlockedOpen })
     }
   }
@@ -81,7 +81,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     return (
       <BlockedInfoRowDetails>
         <BlockedInfoRowSummary onClick={this.triggerOpen3rdPartyTrackersBlocked}>
-          <BlockedInfoRowData disabled={this.maybeDisableResourcesRow}>
+          <BlockedInfoRowData disabled={this.shouldDisableResourcesRow}>
             {
               trackersBlockedOpen
                 ? <ArrowUpIcon />

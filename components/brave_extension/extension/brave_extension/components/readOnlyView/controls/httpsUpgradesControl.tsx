@@ -25,7 +25,7 @@ import { getLocale } from '../../../background/api/localeAPI'
 // Helpers
 import {
   blockedResourcesSize,
-  maybeDisableResourcesRow
+  shouldDisableResourcesRow
 } from '../../../helpers/shieldsUtils'
 
 // Types
@@ -47,9 +47,9 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     this.state = { connectionsUpgradedOpen: false }
   }
 
-  get maybeDisableResourcesRow (): boolean {
+  get shouldDisableResourcesRow (): boolean {
     const { httpsRedirected } = this.props
-    return maybeDisableResourcesRow(httpsRedirected)
+    return shouldDisableResourcesRow(httpsRedirected)
   }
 
   get httpsRedirectedDisplay (): string {
@@ -58,7 +58,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
   }
 
   triggerConnectionsUpgradedToHTTPS = () => {
-    if (!this.maybeDisableResourcesRow) {
+    if (!this.shouldDisableResourcesRow) {
       this.setState({ connectionsUpgradedOpen: !this.state.connectionsUpgradedOpen })
     }
   }
@@ -70,7 +70,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     return (
       <BlockedInfoRowDetails>
         <BlockedInfoRowSummary onClick={this.triggerConnectionsUpgradedToHTTPS}>
-          <BlockedInfoRowData disabled={this.maybeDisableResourcesRow}>
+          <BlockedInfoRowData disabled={this.shouldDisableResourcesRow}>
             {
               connectionsUpgradedOpen
                 ? <ArrowUpIcon />

@@ -25,7 +25,7 @@ import { getLocale } from '../../../background/api/localeAPI'
 // Helpers
 import {
   blockedResourcesSize,
-  maybeDisableResourcesRow
+  shouldDisableResourcesRow
 } from '../../../helpers/shieldsUtils'
 
 // Types
@@ -48,9 +48,9 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     this.state = { scriptsBlockedOpen: false }
   }
 
-  get maybeDisableResourcesRow (): boolean {
+  get shouldDisableResourcesRow (): boolean {
     const { javascriptBlocked } = this.props
-    return maybeDisableResourcesRow(javascriptBlocked)
+    return shouldDisableResourcesRow(javascriptBlocked)
   }
 
   get javascriptBlockedDisplay (): string {
@@ -59,7 +59,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
   }
 
   triggerOpenScriptsBlocked = () => {
-    if (!this.maybeDisableResourcesRow) {
+    if (!this.shouldDisableResourcesRow) {
       this.setState({ scriptsBlockedOpen: !this.state.scriptsBlockedOpen })
     }
   }
@@ -71,7 +71,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     return (
       <BlockedInfoRowDetails>
         <BlockedInfoRowSummary onClick={this.triggerOpenScriptsBlocked}>
-          <BlockedInfoRowData disabled={this.maybeDisableResourcesRow}>
+          <BlockedInfoRowData disabled={this.shouldDisableResourcesRow}>
             {
               scriptsBlockedOpen
                 ? <ArrowUpIcon />
