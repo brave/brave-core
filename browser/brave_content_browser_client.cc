@@ -203,8 +203,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     bool is_main_frame,
     ui::PageTransition page_transition,
     bool has_user_gesture,
-    network::mojom::URLLoaderFactoryRequest* factory_request,
-    network::mojom::URLLoaderFactory*& out_factory) {  // NOLINT
+    network::mojom::URLLoaderFactoryPtr* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
                                        page_transition, has_user_gesture)) {
@@ -221,7 +220,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, factory_request, out_factory);
+      page_transition, has_user_gesture, out_factory);
 }
 
 base::Optional<service_manager::Manifest>
