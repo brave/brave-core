@@ -10,6 +10,10 @@ declare_args() {
   mac_installer_signing_identifier = ""
   mac_signing_keychain = "login"
   mac_signing_output_prefix = "signing"
+  notary_user = ""
+  notary_password = ""
+  notarize = false
+  notarize_argument = "False"
 }
 
 group("brave") {}
@@ -130,6 +134,9 @@ if (skip_signing) {
       provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
       is_development = "True"
     }
+    if (notarize) {
+      notarize_argument = "True"
+    }
 
     inputs = [
       script,
@@ -150,6 +157,9 @@ if (skip_signing) {
       rebase_path(provisioning_profile, root_out_dir),
       keychain_db,
       mac_signing_identifier,
+      notarize_argument,
+      notary_user,
+      notary_password
     ]
   }
 

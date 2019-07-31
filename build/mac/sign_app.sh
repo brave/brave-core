@@ -2,8 +2,12 @@
 
 set -euo pipefail
 
+usage() {
+  echo "usage: $0 <input_dir> <output_dir> <packaging_dir> <is_development> <mac_provisioning_profile> <mac_signing_keychain> <mac_signing_identifier> <notarize> <notary_user> <notary_password>"
+}
+
 if [[ ${#} -lt "7" ]]; then
-  echo "usage: $0 <input_dir> <output_dir> <packaging_dir> <is_development> <mac_provisioning_profile> <mac_signing_keychain> <mac_signing_identifier>"
+  usage
   exit 1
 fi
 
@@ -23,6 +27,24 @@ MAC_SIGNING_IDENTIFIER="${7}"
 if [[ -z ${7} ]]; then
   echo "Error: mac_signing_identifier is empty. Cannot sign."
   exit 1
+fi
+
+if [[ ${#} -gt "7" ]]; then
+  NOTARIZE="${8}"
+  if [[ "${NOTARIZE}" = "True" ]]; then
+    NOTARIZE="--notarize"
+  else
+    unset NOTARIZE
+  fi
+  NOTARY_USER="${9}"
+  NOTARY_PASSWORD="${10}"
+  if [[ -n "${NOTARIZE}" ]]; then
+      if [[ ( -z "${NOTARY_USER}" ) || ( -z "${NOTARY_PASSWORD}" ) ]]; then
+          echo "Error: when <notarize> is True, both <notary_user> and <notary_password> must be provided. Cannot perform notarization."
+          usage
+          exit 1
+      fi
+  fi
 fi
 
 function check_exit() {
@@ -49,7 +71,7 @@ echo "Cleaning $DEST_DIR ..."
 rm -rf $DEST_DIR/*
 
 # Invoke python script to do the signing.
-PARAMS="--input $SOURCE_DIR --output $DEST_DIR --keychain $MAC_SIGNING_KEYCHAIN --identity $MAC_SIGNING_IDENTIFIER --no-dmg --no-notarize"
+PARAMS="--input $SOURCE_DIR --output $DEST_DIR --keychain $MAC_SIGNING_KEYCHAIN --identity $MAC_SIGNING_IDENTIFIER --no-dmg"
 if [[ -z "${DEVELOPMENT}" ]]; then
   # Copy mac_provisioning_profile to the packaging_dir since that's where the
   # signing scripts expects to find it.
@@ -57,4 +79,11 @@ if [[ -z "${DEVELOPMENT}" ]]; then
 else
   PARAMS="$PARAMS $DEVELOPMENT"
 fi
+
+if [[ -z "${NOTARIZE}" ]]; then
+  PARAMS="$PARAMS --no-notarize"
+else
+  PARAMS="$PARAMS ${NOTARIZE} --notary-user $NOTARY_USER --notary-password $NOTARY_PASSWORD"
+fi
+
 "${PKG_DIR}/sign_chrome.py" $PARAMS
