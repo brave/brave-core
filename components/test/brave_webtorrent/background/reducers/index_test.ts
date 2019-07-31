@@ -5,9 +5,8 @@
 import reducers from '../../../../brave_webtorrent/extension/background/reducers/index'
 import { applicationState } from '../../testData'
 
-// these imports seems to trigger createStore and get an undefined reducer
+// this import seems to trigger createStore and get an undefined reducer
 jest.mock('../../../../brave_webtorrent/extension/background/events/torrentEvents')
-jest.mock('../../../../brave_webtorrent/extension/background/events/webtorrentEvents')
 
 describe('webtorrent reducers test', () => {
   it('reducers are a combined reducer function', () => {
