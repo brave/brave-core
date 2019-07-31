@@ -32,6 +32,7 @@ import android.text.Html;
 
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.R;
 import org.chromium.base.ApiCompatibilityUtils;
@@ -124,7 +125,8 @@ public class BraveShieldsMenuHandler {
         mMenuObserver = menuObserver;
     }
 
-    public void show(View anchorView, boolean incognitoTab, String host, String title, int tabId) {
+    public void show(View anchorView, String host, String title, int tabId,
+            Profile profile) {
         int rotation = mActivity.getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
         // the keyboard, instead of overlapping the keyboard as it should.
@@ -229,8 +231,7 @@ public class BraveShieldsMenuHandler {
 
         mAdapter = new BraveShieldsMenuAdapter(host, title, menuItems,
             LayoutInflater.from(wrapper), mMenuObserver, mPopup,
-            currentDisplayWidth);
-        mAdapter.setIncognitoTab(incognitoTab);
+            currentDisplayWidth, profile);
         mPopup.setAdapter(mAdapter);
 
         mPopup.show();

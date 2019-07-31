@@ -11,6 +11,7 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.ContentSettingsType;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.preferences.website.WebsitePreferenceBridge;
@@ -54,41 +55,41 @@ public class BraveShieldsContentSettings {
         BraveShieldsContentSettingsJni.get().destroy(mNativeBraveShieldsContentSettings);
     }
 
-    static public void setShields(boolean incognito, String host, String resourceIndentifier, boolean value,
+    static public void setShields(Profile profile, String host, String resourceIndentifier, boolean value,
             boolean fromTopShields) {
         String setting_string = (value ? blockResource : allowResource);
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-            BraveShieldsContentSettingsJni.get().setBraveShieldsControlType(setting_string, host);
+            BraveShieldsContentSettingsJni.get().setBraveShieldsControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
-            BraveShieldsContentSettingsJni.get().setAdControlType(setting_string, host);
+            BraveShieldsContentSettingsJni.get().setAdControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-            BraveShieldsContentSettingsJni.get().setHTTPSEverywhereControlType(setting_string, host);
+            BraveShieldsContentSettingsJni.get().setHTTPSEverywhereControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
-            BraveShieldsContentSettingsJni.get().setCookieControlType(setting_string, host);
+            BraveShieldsContentSettingsJni.get().setCookieControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
-            BraveShieldsContentSettingsJni.get().setFingerprintingControlType(setting_string, host);
+            BraveShieldsContentSettingsJni.get().setFingerprintingControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
-            BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host);
+            BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host, profile);
         }
     }
 
-    public static boolean getShields(boolean incognito, String host, String resourceIndentifier) {
+    public static boolean getShields(Profile profile, String host, String resourceIndentifier) {
         String settings = blockResource;
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-            settings = BraveShieldsContentSettingsJni.get().getBraveShieldsControlType(host);
+            settings = BraveShieldsContentSettingsJni.get().getBraveShieldsControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
-            settings = BraveShieldsContentSettingsJni.get().getAdControlType(host);
+            settings = BraveShieldsContentSettingsJni.get().getAdControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-            settings = BraveShieldsContentSettingsJni.get().getHTTPSEverywhereControlType(host);
+            settings = BraveShieldsContentSettingsJni.get().getHTTPSEverywhereControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
-            settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host);
+            settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
-            settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(host);
+            settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(host, profile);
             if (!settings.equals(allowResource) && !settings.equals(blockResource)) {
                 return false;
             }
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
-            settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host);
+            settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
         }
 
         return !settings.equals(allowResource); 
@@ -114,17 +115,17 @@ public class BraveShieldsContentSettings {
         void init(@JCaller BraveShieldsContentSettings self);
         void destroy(long nativeBraveShieldsContentSettings);
 
-        void setBraveShieldsControlType(String type, String url);
-        String getBraveShieldsControlType(String url);
-        void setAdControlType(String type, String url);
-        String getAdControlType(String url);
-        void setCookieControlType(String type, String url);
-        String getCookieControlType(String url);
-        void setFingerprintingControlType(String type, String url);
-        String getFingerprintingControlType(String url);
-        void setHTTPSEverywhereControlType(String type, String url);
-        String getHTTPSEverywhereControlType(String url);
-        void setNoScriptControlType(String type, String url);
-        String getNoScriptControlType(String url);
+        void setBraveShieldsControlType(String type, String url, Profile profile);
+        String getBraveShieldsControlType(String url, Profile profile);
+        void setAdControlType(String type, String url, Profile profile);
+        String getAdControlType(String url, Profile profile);
+        void setCookieControlType(String type, String url, Profile profile);
+        String getCookieControlType(String url, Profile profile);
+        void setFingerprintingControlType(String type, String url, Profile profile);
+        String getFingerprintingControlType(String url, Profile profile);
+        void setHTTPSEverywhereControlType(String type, String url, Profile profile);
+        String getHTTPSEverywhereControlType(String url, Profile profile);
+        void setNoScriptControlType(String type, String url, Profile profile);
+        String getNoScriptControlType(String url, Profile profile);
     }
 }

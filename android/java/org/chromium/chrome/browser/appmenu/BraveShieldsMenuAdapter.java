@@ -36,8 +36,8 @@ import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeApplication;
-//import org.chromium.chrome.browser.init.ShieldsConfig;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 //import org.chromium.chrome.browser.MixPanelWorker;
 import org.chromium.ui.base.LocalizationUtils;
@@ -121,11 +121,8 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
     private OnCheckedChangeListener mBraveShieldsBlockingScriptsChangeListener;
     private Switch mBraveShieldsFingerprintsSwitch;
     private OnCheckedChangeListener mBraveShieldsFingerprintsChangeListener;
+    private Profile mProfile;
 
-    private boolean mIncognitoTab;
-    public void setIncognitoTab(final boolean incognitoTab) {
-        mIncognitoTab = incognitoTab;
-    }
 
     public BraveShieldsMenuAdapter(String host,
             String title,
@@ -133,8 +130,8 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             LayoutInflater inflater,
             BraveShieldsMenuObserver menuObserver,
             ListPopupWindow popup,
-            int currentDisplayWidth) {
-        mIncognitoTab = false;
+            int currentDisplayWidth,
+            Profile profile) {
         mMenuItems = menuItems;
         mInflater = inflater;
         mDpToPx = inflater.getContext().getResources().getDisplayMetrics().density;
@@ -144,6 +141,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
         mCurrentDisplayWidth = currentDisplayWidth;
         mHost = host;
         mTitle = title;
+        mProfile = profile;
     }
 
     public void updateHost(String host) {
@@ -370,8 +368,8 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             braveShieldsAdsTrackingSwitch.setOnCheckedChangeListener(null);
         }
         if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+                if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
                     braveShieldsAdsTrackingSwitch.setChecked(true);
                 } else {
                     braveShieldsAdsTrackingSwitch.setChecked(false);
@@ -398,7 +396,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS, isChecked, false);
+                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS, isChecked, false);
                     if (null != mMenuObserver) {
                         mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
                     }
@@ -418,8 +416,8 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             braveShieldsHTTPSEverywhereSwitch.setOnCheckedChangeListener(null);
         }
         if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+                if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
                     braveShieldsHTTPSEverywhereSwitch.setChecked(true);
                 } else {
                     braveShieldsHTTPSEverywhereSwitch.setChecked(false);
@@ -446,7 +444,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, isChecked, false);
+                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, isChecked, false);
                     if (null != mMenuObserver) {
                         mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
                     }
@@ -466,8 +464,8 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             braveShieldsFingerprintsSwitch.setOnCheckedChangeListener(null);
         }
         if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+                if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING)) {
                     braveShieldsFingerprintsSwitch.setChecked(true);
                 } else {
                     braveShieldsFingerprintsSwitch.setChecked(false);
@@ -494,7 +492,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, isChecked, false);
+                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, isChecked, false);
                     if (null != mMenuObserver) {
                         mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
                     }
@@ -514,8 +512,8 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             braveShieldsBlocking3rdPartyCookiesSwitch.setOnCheckedChangeListener(null);
         }
         if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES)) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+                if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES)) {
                     braveShieldsBlocking3rdPartyCookiesSwitch.setChecked(true);
                 } else {
                     braveShieldsBlocking3rdPartyCookiesSwitch.setChecked(false);
@@ -542,7 +540,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, isChecked, false);
+                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, isChecked, false);
                     if (null != mMenuObserver) {
                         mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
                     }
@@ -562,8 +560,8 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             braveShieldsBlockingScriptsSwitch.setOnCheckedChangeListener(null);
         }
         if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-                if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+                if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
                     braveShieldsBlockingScriptsSwitch.setChecked(true);
                 } else {
                     braveShieldsBlockingScriptsSwitch.setChecked(false);
@@ -590,7 +588,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES, isChecked, false);
+                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES, isChecked, false);
                     if (null != mMenuObserver) {
                         mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
                     }
@@ -606,7 +604,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             return;
         }
         if (0 != mHost.length()) {
-            if (BraveShieldsContentSettings.getShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+            if (BraveShieldsContentSettings.getShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
                 braveShieldsSwitch.setChecked(true);
             } else {
                 braveShieldsSwitch.setChecked(false);
@@ -617,8 +615,8 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, isChecked, false);
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, isChecked, true);
+                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, isChecked, false);
+                    BraveShieldsContentSettings.setShields(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, isChecked, true);
                     setupAdsTrackingSwitch(mBraveShieldsAdsTrackingSwitch, true);
                     setupHTTPSEverywhereSwitch(mBraveShieldsHTTPSEverywhereSwitch, true);
                     setupBlockingScriptsSwitch(mBraveShieldsBlockingScriptsSwitch, true);

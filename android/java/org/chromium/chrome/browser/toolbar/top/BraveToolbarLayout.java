@@ -24,6 +24,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuHandler;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.tab.Tab;
@@ -125,7 +126,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                 if (mMainActivity.getActivityTab() == tab) {
                     try {
                         URL urlCheck = new URL(url);
-                        setBraveShieldsColor(tab.isIncognito(), urlCheck.toString());
+                        setBraveShieldsColor(tab.getProfile(), urlCheck.toString());
                     } catch (Exception e) {
                         setBraveShieldsBlackAndWhite();
                     }
@@ -139,7 +140,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                     try {
                         URL urlCheck = new URL(url);
                         mBraveShieldsMenuHandler.updateHost(urlCheck.toString());
-                        setBraveShieldsColor(tab.isIncognito(), urlCheck.toString());
+                        setBraveShieldsColor(tab.getProfile(), urlCheck.toString());
                     } catch (Exception e) {
                         setBraveShieldsBlackAndWhite();
                     }
@@ -171,9 +172,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           }
           try {
               URL url = new URL(currentTab.getUrl());
-              setBraveShieldsColor(currentTab.isIncognito(), url.toString());
-              mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.isIncognito(), 
-                url.toString(), url.getHost(), currentTab.getId());
+              setBraveShieldsColor(currentTab.getProfile(), url.toString());
+              mBraveShieldsMenuHandler.show(mBraveShieldsButton, url.toString(),
+                  url.getHost(), currentTab.getId(), currentTab.getProfile());
           } catch (Exception e) {
               setBraveShieldsBlackAndWhite();
           }
@@ -262,8 +263,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
             params.getMarginEnd();
   }
 
-  private void setBraveShieldsColor(boolean incognitoTab, String url) {
-      if (BraveShieldsContentSettings.getShields(incognitoTab, url, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+  private void setBraveShieldsColor(Profile profile, String url) {
+      if (BraveShieldsContentSettings.getShields(profile, url, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
           // Set Brave Shields button in color if we have a valid URL
           setBraveShieldsColored();
       } else {
