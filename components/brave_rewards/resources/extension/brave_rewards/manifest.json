@@ -52,6 +52,14 @@
       "js": [
         "out/brave_rewards_panel_content_reddit.bundle.js"
       ]
+    },
+    {
+      "matches": [
+        "https://*.soundcloud.com/*"
+      ],
+      "js": [
+        "out/brave_rewards_panel_content_soundcloud.bundle.js"
+      ]
     }
   ],
   "icons": {

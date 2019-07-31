@@ -64,6 +64,7 @@ declare namespace chrome.braveRewards {
   const tipTwitterUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipGitHubUser: (tabId: number, githubMetaData: RewardsTip.MediaMetaData) => {}
+  const tipSoundCloudUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
   const getWalletProperties: () => {}
   const getCurrentReport: () => {}

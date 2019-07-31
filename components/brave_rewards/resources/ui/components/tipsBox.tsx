@@ -173,7 +173,8 @@ class TipBox extends React.Component<Props, State> {
       value = {
         twitter: true,
         reddit: true,
-        github: true
+        github: true,
+        soundcloud: true
       }
     }
 
@@ -196,13 +197,19 @@ class TipBox extends React.Component<Props, State> {
               >
                 <div data-key='twitter'>{getLocale('donationAbilityTwitter')}</div>
               </Checkbox>
-
               <Checkbox
                 value={value}
                 multiple={true}
                 onChange={this.onInlineTipSettingChange}
               >
                 <div data-key='github'>{getLocale('donationAbilityGitHub')}</div>
+              </Checkbox>
+              <Checkbox
+                value={value}
+                multiple={true}
+                onChange={this.onInlineTipSettingChange}
+              >
+                <div data-key='soundcloud'>{getLocale('donationAbilitySC')}</div>
               </Checkbox>
             </ControlWrapper>
           </Column>

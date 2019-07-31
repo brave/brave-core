@@ -35,30 +35,33 @@ std::string SoundCloud::GetUserJSON(const std::string& response) {
   std::string script_body = braveledger_media::ExtractData(
       response,
       "<script>webpackJsonp", "</script>");
-  if(script_body.empty()) {
+  if (script_body.empty()) {
     return "";
   }
   std::string array_str = braveledger_media::ExtractData(
     script_body, "var c=", ",o=Date.now()");
-
   base::Optional<base::Value> value = base::JSONReader::Read(array_str);
 
-  if(!value || !value->is_list()) {
+  if (!value || !value->is_list()) {
     return "";
   }
   base::ListValue list = base::ListValue(value->GetList());
   base::DictionaryValue* dictionary = nullptr;
   std::string ret;
-  for(auto it = list.begin(); it != list.end(); ++it) {
+  for (auto it = list.begin(); it != list.end(); ++it) {
     it->GetAsDictionary(&dictionary);
-    if(!dictionary || !dictionary->is_dict()) {
+    if (!dictionary || !dictionary->is_dict()) {
       continue;
     }
-    auto* cur = dictionary->FindKey("id");
-    if (cur && cur->is_int() && cur->GetInt() == 64) {
-      auto* data = dictionary->FindKey("data");
-      if(data && data->is_list()) {
-        base::JSONWriter::Write(data->GetList()[0], &ret);
+    auto* data = dictionary->FindKey("data");
+    if (data && data->is_list()) {
+      if (data->GetList().size()) {
+        auto& body = data->GetList()[0];
+        if (body.FindKey("kind") &&
+           body.FindKey("kind")->GetString() == "user") {
+          base::JSONWriter::Write(data->GetList()[0], &ret);
+          return ret;
+        }
       }
     }
   }
@@ -355,7 +358,7 @@ void SoundCloud::OnUserPage(
 
   std::string data_str = GetUserJSON(response);
 
-  if(data_str.empty()) {
+  if (data_str.empty()) {
     OnMediaActivityError(window_id);
     return;
   }
@@ -417,6 +420,87 @@ void SoundCloud::SavePublisherInfo(
   if (!media_key.empty()) {
     ledger_->SetMediaPublisherInfo(media_key, publisher_key);
   }
+}
+
+void SoundCloud::OnMediaPublisherInfo(
+    uint64_t window_id,
+    const std::string& user_id,
+    const std::string& screen_name,
+    const std::string& publisher_name,
+    const std::string& profile_picture,
+    ledger::PublisherInfoCallback callback,
+    ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  if (result != ledger::Result::LEDGER_OK  &&
+    result != ledger::Result::NOT_FOUND) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+
+  if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+    SavePublisherInfo(user_id,
+                      screen_name,
+                      publisher_name,
+                      profile_picture,
+                      window_id,
+                      callback);
+  } else {
+    // TODO(nejczdovc): we need to check if user is verified,
+    //  but his image was not saved yet, so that we can fix it
+    callback(result, std::move(publisher_info));
+  }
+}
+
+void SoundCloud::OnMetaDataGet(
+      const std::string user_url,
+      ledger::PublisherInfoCallback callback,
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers) {
+  if (response_status_code != net::HTTP_OK) {
+    callback(ledger::Result::TIP_ERROR, nullptr);
+    return;
+  }
+
+  const std::string data_str = GetUserJSON(response);
+
+  const std::string user_id = GetUserId(data_str);
+  const std::string user_name = GetUserName(data_str);
+  const std::string media_key = GetMediaKey(user_url);
+  const std::string publisher_name = GetPublisherName(data_str);
+  const std::string profile_picture = GetProfileImageURL(data_str);
+
+  ledger_->GetMediaPublisherInfo(
+          media_key,
+          std::bind(&SoundCloud::OnMediaPublisherInfo,
+                    this,
+                    0,
+                    user_id,
+                    user_name,
+                    publisher_name,
+                    profile_picture,
+                    callback,
+                    _1,
+                    _2));
+}
+
+void SoundCloud::SaveMediaInfo(
+    const std::map<std::string, std::string>& data,
+    ledger::PublisherInfoCallback callback) {
+  auto user_url = data.find("user_url");
+  std::string url = GetProfileURL(user_url->second);
+  ledger_->LoadURL(url,
+                   std::vector<std::string>(),
+                   std::string(),
+                   std::string(),
+                   ledger::URL_METHOD::GET,
+                   std::bind(&SoundCloud::OnMetaDataGet,
+                              this,
+                              user_url->second,
+                              std::move(callback),
+                              _1,
+                              _2,
+                              _3));
 }
 
 }  // namespace braveledger_media

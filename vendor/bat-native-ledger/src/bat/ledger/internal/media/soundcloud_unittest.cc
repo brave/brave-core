@@ -31,6 +31,7 @@ std::string MediaSoundCloudTest::CreateTestResponse() {
           "id": 64,
           "data": [{
             "avatar_url": "soundcloud.com/test.jpg",
+            "kind": "user",
             "id": 1234,
             "url": "https://soundcloud.com/jdkuki",
             "full_name": "Jakob Kuki",
@@ -45,6 +46,7 @@ std::string MediaSoundCloudTest::CreateTestResponse() {
 TEST(MediaSoundCloudTest, GetUserJSON) {
   std::string ref_json = R"({
     "avatar_url": "soundcloud.com/test.jpg",
+    "kind": "user",
     "id": 1234,
     "url": "https://soundcloud.com/jdkuki",
     "full_name": "Jakob Kuki",
@@ -59,7 +61,7 @@ TEST(MediaSoundCloudTest, GetUserJSON) {
 
 
 TEST(MediaSoundCloudTest, GetUserName) {
-  //empty
+  // empty
   std::string user_name = SoundCloud::GetUserName("");
   ASSERT_EQ(user_name, "");
 
@@ -166,7 +168,10 @@ TEST(MediaSoundCloudTest, GetJSONStringValue) {
 
   // empty
   bool success =
-      braveledger_media::SoundCloud::GetJSONStringValue("full_name", "", &result);
+      braveledger_media::SoundCloud::GetJSONStringValue(
+        "full_name",
+        "",
+        &result);
   ASSERT_FALSE(success);
   ASSERT_TRUE(result.empty());
 

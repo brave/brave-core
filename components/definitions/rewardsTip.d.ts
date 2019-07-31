@@ -49,6 +49,9 @@ declare namespace RewardsTip {
   } | {
     mediaType: 'github'
     userName: string
+  } | {
+    mediaType: 'soundcloud'
+    userUrl: string
   }
 
   interface GitHubMetaData {

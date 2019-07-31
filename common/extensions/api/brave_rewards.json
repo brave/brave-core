@@ -512,6 +512,31 @@
         ]
       },
       {
+        "name": "tipSoundCloudUser",
+        "type": "function",
+        "description": "Allow the user to perform a donation to a SoundCloud user",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "name": "mediaMetaData",
+            "type": "object",
+            "properties": {
+              "mediaType": {
+                "type": "string",
+                "description": "description used in UI to identify the media type"
+              },
+              "userUrl": {
+                "type": "string",
+                "description": "Username of the SoundCloud author"
+              }
+            }
+          }
+        ]
+      },
+      {
         "name": "getPublisherData",
         "type": "function",
         "description": "Get publisher data",
