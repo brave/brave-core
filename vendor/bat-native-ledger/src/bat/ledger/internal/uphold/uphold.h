@@ -11,27 +11,21 @@
 #include <memory>
 
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/uphold/uphold_user.h"
 
 namespace bat_ledger {
 class LedgerImpl;
 }
 
 namespace braveledger_uphold {
+
 class UpholdTransfer;
-}
-
-namespace braveledger_uphold {
 class UpholdCard;
-}
-
-namespace braveledger_uphold {
 
 using TransactionCallback = std::function<void(ledger::Result, bool created)>;
 using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
 using CreateCardCallback =
     std::function<void(ledger::Result, const std::string&)>;
-using GetUserCallback =
-    std::function<void(ledger::Result, ledger::ExternalWalletPtr)>;
 
 class Uphold {
  public:
@@ -86,6 +80,12 @@ class Uphold {
     ledger::ExternalWalletAuthorizationCallback callback,
     const ledger::ExternalWallet& wallet);
 
+  void OnWalletAuthorizationUser(
+    const ledger::Result result,
+    const User& user,
+    ledger::ExternalWalletAuthorizationCallback callback,
+    const ledger::ExternalWallet& wallet);
+
   void OnWalletAuthorization(
     ledger::ExternalWalletAuthorizationCallback callback,
     const ledger::ExternalWallet& wallet,
@@ -93,28 +93,30 @@ class Uphold {
     const std::string& response,
     const std::map<std::string, std::string>& headers);
 
+  void OnGenerateExternalWalletCard(
+      const bool allow_zero_balance,
+      const ledger::ExternalWallet& wallet,
+      ledger::ExternalWalletCallback callback,
+      const ledger::Result result,
+      const std::string& address);
+
   void OnGenerateExternalWallet(
-    ledger::Result result,
-    ledger::ExternalWalletPtr wallet,
-    ledger::ExternalWalletCallback callback);
+      const ledger::Result result,
+      const User& user,
+      const ledger::ExternalWallet& wallet,
+      ledger::ExternalWalletCallback callback);
+
+  void TransferAnonToExternalWallet(
+      ledger::ExternalWalletPtr wallet,
+      const bool allow_zero_balance,
+      ledger::ExternalWalletCallback callback);
 
   void OnTransferAnonToExternalWalletCallback(
-    GetUserCallback callback,
+    ledger::ExternalWalletCallback callback,
     const ledger::ExternalWallet& wallet,
     ledger::Result result);
 
   void OnShowNotification(ledger::Result result);
-
-  void OnGetUser(
-    GetUserCallback callback,
-    const ledger::ExternalWallet& wallet,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
-
-  void GetUser(
-    ledger::ExternalWalletPtr wallet,
-    GetUserCallback callback);
 
   void OnDisconectWallet(
     ledger::Result result,
@@ -122,6 +124,7 @@ class Uphold {
 
   std::unique_ptr<UpholdTransfer> transfer_;
   std::unique_ptr<UpholdCard> card_;
+  std::unique_ptr<UpholdUser> user_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
