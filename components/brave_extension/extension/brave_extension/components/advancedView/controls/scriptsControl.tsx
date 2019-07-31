@@ -159,6 +159,12 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
                 <LinkAction
                   size='small'
                   onClick={this.onClickAllowScriptsOnce}
+                  style={{
+                    // TODO: cezaraugusto re-visit shields components.
+                    // this should be defined in the component itself and not inlined,
+                    // and ideally in a logic that is not bounded to a reusable component such as this one.
+                    zIndex: 1
+                  }}
                 >
                   {getLocale('allowScriptsOnce')}
                 </LinkAction>
