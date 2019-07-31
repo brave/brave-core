@@ -108,12 +108,6 @@ struct BraveRequestInfo {
  private:
   // Please don't add any more friends here if it can be avoided.
   // We should also remove the ones below.
-  friend int OnBeforeURLRequest_SiteHacksWork(
-      const ResponseCallback& next_callback,
-      std::shared_ptr<BraveRequestInfo> ctx);
-  friend int brave_rewards::OnBeforeURLRequest(
-      const brave::ResponseCallback& next_callback,
-      std::shared_ptr<brave::BraveRequestInfo> ctx);
   friend class ::BraveNetworkDelegateBase;
   friend class ::BraveRequestHandler;
 

@@ -275,10 +275,6 @@ void BraveRequestHandler::RunNextCallback(
     return;
   }
 
-  net::CompletionOnceCallback wrapped_callback =
-      base::BindOnce(&BraveRequestHandler::RunCallbackForRequestIdentifier,
-                     base::Unretained(this), ctx->request_identifier);
-
   if (ctx->event_type == brave::kOnBeforeRequest) {
     if (!ctx->new_url_spec.empty() &&
         (ctx->new_url_spec != ctx->request_url.spec()) &&
