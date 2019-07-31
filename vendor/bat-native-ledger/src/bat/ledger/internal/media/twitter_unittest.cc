@@ -14,13 +14,21 @@ class MediaTwitterTest : public testing::Test {
 };
 
 TEST(MediaTwitterTest, GetProfileURL) {
-  // screen_name is empty
-  std::string result = braveledger_media::MediaTwitter::GetProfileURL("");
+  // screen name and user id are both empty
+  std::string result = braveledger_media::MediaTwitter::GetProfileURL("", "");
   ASSERT_EQ(result, "");
 
-  // all good
-  result = braveledger_media::MediaTwitter::GetProfileURL("emerick");
+  // screen name - all good
+  result = braveledger_media::MediaTwitter::GetProfileURL("emerick", "");
   ASSERT_EQ(result, "https://twitter.com/emerick/");
+
+  // user id - all good
+  result = braveledger_media::MediaTwitter::GetProfileURL("", "123");
+  ASSERT_EQ(result, "https://twitter.com/intent/user?user_id=123");
+
+  // will default to user id - all good
+  result = braveledger_media::MediaTwitter::GetProfileURL("emerick", "123");
+  ASSERT_EQ(result, "https://twitter.com/intent/user?user_id=123");
 }
 
 TEST(MediaTwitterTest, GetProfileImageURL) {
@@ -101,6 +109,11 @@ TEST(MediaTwitterTest, GetUserNameFromUrl) {
   // long path
   result = braveledger_media::MediaTwitter::
       GetUserNameFromUrl("/emerick/news");
+  ASSERT_EQ(result, "emerick");
+
+  // web intent path
+  result = braveledger_media::MediaTwitter::GetUserNameFromUrl(
+      "https://twitter.com/intent/emerick?screen_name=emerick");
   ASSERT_EQ(result, "emerick");
 }
 
