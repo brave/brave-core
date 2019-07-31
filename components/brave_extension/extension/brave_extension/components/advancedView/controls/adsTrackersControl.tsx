@@ -28,7 +28,7 @@ import {
   getToggleStateViaEventTarget,
   getTabIndexValueBasedOnProps,
   blockedResourcesSize,
-  maybeDisableResourcesRow
+  shouldDisableResourcesRow
 } from '../../../helpers/shieldsUtils'
 
 // Types
@@ -83,8 +83,8 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     return maybeBlockResource(ads) && maybeBlockResource(trackers)
   }
 
-  get maybeDisableResourcesRow (): boolean {
-    return maybeDisableResourcesRow(this.totalAdsTrackersBlocked)
+  get shouldDisableResourcesRow (): boolean {
+    return shouldDisableResourcesRow(this.totalAdsTrackersBlocked)
   }
 
   get tabIndex (): number {
@@ -122,7 +122,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
       <>
         <BlockedInfoRow id='adsTrackersControl'>
           <BlockedInfoRowData
-            disabled={this.maybeDisableResourcesRow}
+            disabled={this.shouldDisableResourcesRow}
             tabIndex={this.tabIndex}
             onClick={this.onOpen3rdPartyTrackersBlocked}
             onKeyDown={this.onOpen3rdPartyTrackersBlockedViaKeyboard}

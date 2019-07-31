@@ -23,7 +23,7 @@ import { getLocale } from '../../../background/api/localeAPI'
 // Helpers
 import {
   maybeBlockResource,
-  maybeDisableResourcesRow,
+  shouldDisableResourcesRow,
   getTabIndexValueBasedOnProps,
   blockedResourcesSize,
   getToggleStateViaEventTarget
@@ -59,9 +59,9 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
     this.state = { connectionsUpgradedOpen: false }
   }
 
-  get maybeDisableResourcesRow (): boolean {
+  get shouldDisableResourcesRow (): boolean {
     const { httpsRedirected } = this.props
-    return maybeDisableResourcesRow(httpsRedirected)
+    return shouldDisableResourcesRow(httpsRedirected)
   }
 
   get httpsRedirectedDisplay (): string {
@@ -109,7 +109,7 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
       <>
         <BlockedInfoRow id='httpsUpgradesControl'>
           <BlockedInfoRowData
-            disabled={this.maybeDisableResourcesRow}
+            disabled={this.shouldDisableResourcesRow}
             tabIndex={this.tabIndex}
             onClick={this.onOpenConnectionsUpgradedToHTTPS}
             onKeyDown={this.onOpenConnectionsUpgradedToHTTPSViaKeyboard}
