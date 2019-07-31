@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..0e3226a8264262da193b9b8a830e6148c6b0c2d5 100644
+index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..20c2f139b8461ff4d5b3e113cc6adabb6edb297f 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -315,6 +315,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
@@ -8,10 +8,10 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..0e3226a8264262da193b9b8a830e6148
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+#include <iostream>
 +#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
 +#include "third_party/blink/renderer/modules/storage/dom_window_storage_controller.h"
 +
++#include "brave/third_party/blink/brave_page_graph/logging.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +
@@ -30,7 +30,7 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..0e3226a8264262da193b9b8a830e6148
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        frame_(initializer.GetFrame()),
-@@ -777,8 +791,141 @@ Document::~Document() {
+@@ -777,8 +791,140 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -134,9 +134,8 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..0e3226a8264262da193b9b8a830e6148
 +  }
 +
 +  if (!is_ordinary_document) {
-+    std::cout << "(skipping PageGraph instrumentation on document "
-+              << context_document->Url().GetString() << ")"
-+              << std::endl;
++    PG_LOG("(skipping PageGraph instrumentation on document "
++               << context_document->Url().GetString() << ")");
 +    return nullptr;
 +  }
 +
@@ -172,7 +171,7 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..0e3226a8264262da193b9b8a830e6148
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
    DCHECK(position.IsNotNull());
-@@ -5300,6 +5447,22 @@ String Document::cookie(ExceptionState& exception_state) const {
+@@ -5300,6 +5446,22 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (cookie_url.IsEmpty())
      return String();
  
@@ -195,7 +194,7 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..0e3226a8264262da193b9b8a830e6148
    return Cookies(this, cookie_url);
  }
  
-@@ -5331,6 +5494,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5331,6 +5493,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
    if (cookie_url.IsEmpty())
      return;
  
