@@ -131,6 +131,23 @@ const tipRedditMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
   })
 }
 
+const tipSoundCloudMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
+  mediaMetaData.mediaType = 'soundcloud'
+  chrome.tabs.query({
+    active: true,
+    windowId: chrome.windows.WINDOW_ID_CURRENT
+  }, (tabs) => {
+    if (!tabs || tabs.length === 0) {
+      return
+    }
+    const tabId = tabs[0].id
+    if (tabId === undefined) {
+      return
+    }
+    chrome.braveRewards.tipSoundCloudUser(tabId, mediaMetaData)
+  })
+}
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
@@ -144,6 +161,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           break
         case 'github':
           tipGitHubMedia(msg.mediaMetaData)
+          break
+        case 'soundcloud':
+          tipSoundCloudMedia(msg.mediaMetaData)
           break
       }
       return false

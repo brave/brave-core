@@ -30,6 +30,10 @@ class SoundCloud : public ledger::LedgerCallbackHandler {
 
   void ProcessActivityFromUrl(uint64_t window_id,
                               const ledger::VisitData& visit_data);
+  void SaveMediaInfo(
+      const std::map<std::string, std::string>& data,
+      ledger::PublisherInfoCallback callback);
+
   ~SoundCloud() override;
 
  private:
@@ -77,6 +81,23 @@ class SoundCloud : public ledger::LedgerCallbackHandler {
 
   void OnMediaActivityError(
       uint64_t window_id);
+
+  void OnMetaDataGet(
+        const std::string user_url,
+        ledger::PublisherInfoCallback callback,
+        int response_status_code,
+        const std::string& response,
+        const std::map<std::string, std::string>& headers);
+
+  void OnMediaPublisherInfo(
+      uint64_t window_id,
+      const std::string& user_id,
+      const std::string& screen_name,
+      const std::string& publisher_name,
+      const std::string& profile_picture,
+      ledger::PublisherInfoCallback callback,
+      ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
 
   static std::string GetUserJSON(const std::string& response);
 

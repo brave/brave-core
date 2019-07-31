@@ -142,6 +142,8 @@ void Media::SaveMediaInfo(const std::string& type,
   } else if (type == REDDIT_MEDIA_TYPE) {
     media_reddit_->SaveMediaInfo(data, callback);
     return;
+  } else if (type == SOUNDCLOUD_MEDIA_TYPE) {
+    media_soundcloud_->SaveMediaInfo(data, callback);
   }
   if (type == GITHUB_MEDIA_TYPE) {
     media_github_->SaveMediaInfo(data, callback);

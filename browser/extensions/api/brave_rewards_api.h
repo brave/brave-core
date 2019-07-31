@@ -87,6 +87,22 @@ class BraveRewardsTipRedditUserFunction : public UIThreadExtensionFunction {
       std::unique_ptr<brave_rewards::ContentSite> publisher_info);
 };
 
+class BraveRewardsTipSoundCloudUserFunction
+    : public UIThreadExtensionFunction {
+ public:
+  BraveRewardsTipSoundCloudUserFunction();
+  DECLARE_EXTENSION_FUNCTION("braveRewards.tipSoundCloudUser", UNKNOWN)
+
+ protected:
+  ~BraveRewardsTipSoundCloudUserFunction() override;
+
+  ResponseAction Run() override;
+ private:
+  base::WeakPtrFactory<BraveRewardsTipSoundCloudUserFunction> weak_factory_;
+  void OnSoundCloudPublisherInfoSaved(
+      std::unique_ptr<brave_rewards::ContentSite> publisher_info);
+};
+
 class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherData", UNKNOWN)
