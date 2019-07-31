@@ -25,6 +25,7 @@
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 
 #include "base/files/file_util.h"
+#include "base/optional.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/task/post_task.h"
@@ -404,11 +405,10 @@ void OpenImportedBrowserTabs(Browser* browser,
     entry.set_is_restored(true);
     e.push_back(entry);
 
-    chrome::AddRestoredTab(
-        browser, e, browser->tab_strip_model()->count(), 0,
-        "", false, pinned, true,
-        base::TimeTicks::UnixEpoch(), nullptr,
-        "", true /* from_session_restore */);
+    chrome::AddRestoredTab(browser, e, browser->tab_strip_model()->count(), 0,
+                           "", base::nullopt, false, pinned, true,
+                           base::TimeTicks::UnixEpoch(), nullptr, "",
+                           true /* from_session_restore */);
   }
 }
 
