@@ -166,7 +166,7 @@ export type GetViewPreferencesData = {
 }
 
 const settingsKeys = {
-  showAdvancedView: { key: 'brave.advanced_view_default', type: chrome.settingsPrivate.PrefType.BOOLEAN }
+  showAdvancedView: { key: 'brave.shields.advanced_view_enabled', type: chrome.settingsPrivate.PrefType.BOOLEAN }
 }
 export async function getViewPreferences (): Promise<GetViewPreferencesData> {
   const showAdvancedViewPref = await SettingsPrivate.getPreference(settingsKeys.showAdvancedView.key)

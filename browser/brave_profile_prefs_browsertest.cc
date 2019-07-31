@@ -30,7 +30,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kNoScriptControlType));
   EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(kAdvancedViewControlType));
+      browser()->profile()->GetPrefs()->GetBoolean(
+        kShieldsAdvancedViewEnabled));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kAdControlType));
   EXPECT_TRUE(
