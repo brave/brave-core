@@ -371,7 +371,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   ledger->GetPublisherActivityFromUrl(1, visitData.Clone(), blob);
 }
 
-- (void)deleteActivityInfo:(const std::string &)publisher_key callback:(const ledger::DeleteActivityInfoCallback &)callback
+- (void)deleteActivityInfo:(const std::string &)publisher_key callback:(ledger::DeleteActivityInfoCallback )callback
 {
   const auto bridgedKey = [NSString stringWithUTF8String:publisher_key.c_str()];
   const auto stamp = ledger->GetReconcileStamp();
@@ -1574,7 +1574,7 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)getPendingContributions:(const ledger::PendingContributionInfoListCallback &)callback
+- (void)getPendingContributions:(ledger::PendingContributionInfoListCallback)callback
 {
   const auto pendingContributions = [BATLedgerDatabase pendingContributions];
   callback(VectorFromNSArray(pendingContributions, ^ledger::PendingContributionInfoPtr(BATPendingContributionInfo *info){
@@ -1582,7 +1582,7 @@ BATLedgerBridge(BOOL,
   }));
 }
 
-- (void)getPendingContributionsTotal:(const ledger::PendingContributionsTotalCallback &)callback
+- (void)getPendingContributionsTotal:(ledger::PendingContributionsTotalCallback)callback
 {
   callback([BATLedgerDatabase reservedAmountForPendingContributions]);
 }
@@ -1592,7 +1592,7 @@ BATLedgerBridge(BOOL,
   // Likely to be removed when `GetPublisherActivityFromUrl` gets a callback
 }
 
-- (void)removeAllPendingContributions:(const ledger::RemovePendingContributionCallback &)callback
+- (void)removeAllPendingContributions:(ledger::RemovePendingContributionCallback)callback
 {
   const auto pendingContributions = [BATLedgerDatabase pendingContributions];
   const auto keys = [[NSMutableArray alloc] init];
@@ -1612,7 +1612,7 @@ BATLedgerBridge(BOOL,
   }];
 }
 
-- (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(const ledger::RemovePendingContributionCallback &)callback
+- (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(ledger::RemovePendingContributionCallback)callback
 {
   const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
   const auto viewingID = [NSString stringWithUTF8String:viewing_id.c_str()];
@@ -1672,7 +1672,7 @@ BATLedgerBridge(BOOL,
 
 }
 
-- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(const ledger::ShowNotificationCallback&)callback
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ShowNotificationCallback)callback
 {
 
 }

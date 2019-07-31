@@ -20,8 +20,8 @@ private:
   std::string GenerateGUID() const override;
   void GetActivityInfoList(uint32_t start, uint32_t limit, ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoListCallback callback) override;
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
-  void GetPendingContributions(const ledger::PendingContributionInfoListCallback & callback) override;
-  void GetPendingContributionsTotal(const ledger::PendingContributionsTotalCallback & callback) override;
+  void GetPendingContributions(ledger::PendingContributionInfoListCallback callback) override;
+  void GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) override;
   void SaveRecurringTip(ledger::ContributionInfoPtr info, ledger::SaveRecurringTipCallback callback) override;
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
@@ -44,8 +44,8 @@ private:
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
   void OnWalletInitialized(ledger::Result result) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
-  void RemoveAllPendingContributions(const ledger::RemovePendingContributionCallback & callback) override;
-  void RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, const ledger::RemovePendingContributionCallback & callback) override;
+  void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;
+  void RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, ledger::RemovePendingContributionCallback callback) override;
   void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
   void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) override;
   void SaveContributionInfo(const std::string & probi, const int month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::REWARDS_CATEGORY category) override;
@@ -77,6 +77,6 @@ private:
   void ClearState(const std::string& name) override;
   void GetExternalWallets(ledger::GetExternalWalletsCallback callback) override;
   void SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) override;
-  void ShowNotification(const std::string& type, const std::vector<std::string>& args, const ledger::ShowNotificationCallback& callback) override;
-  void DeleteActivityInfo(const std::string& publisher_key, const ledger::DeleteActivityInfoCallback& callback) override;
+  void ShowNotification(const std::string& type, const std::vector<std::string>& args,  ledger::ShowNotificationCallback callback) override;
+  void DeleteActivityInfo(const std::string& publisher_key, ledger::DeleteActivityInfoCallback callback) override;
 };
