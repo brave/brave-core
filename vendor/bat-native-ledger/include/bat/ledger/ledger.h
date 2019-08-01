@@ -173,7 +173,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetGrantCaptcha(
       const std::vector<std::string>& headers) const = 0;
-  virtual void ApplySafetynetToken(const std::string& token) const = 0;
+  virtual void ApplySafetynetToken(const std::string& promotion_id, const std::string& token) const = 0;
 
   virtual void GetGrantViaSafetynetCheck(const std::string& promotion_id) const = 0;
 
