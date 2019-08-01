@@ -338,7 +338,7 @@ class PageWallet extends React.Component<Props, State> {
 
     this.actions.onOnBoardingDisplayed()
 
-    window.open(link, '_blank')
+    window.open(link, '_self')
   }
 
   onVerifyClick = () => {
@@ -390,14 +390,14 @@ class PageWallet extends React.Component<Props, State> {
     switch (action) {
       case 'add': {
         if (externalWallet.addUrl) {
-          window.open(externalWallet.addUrl, '_blank')
+          window.open(externalWallet.addUrl, '_self')
           return
         }
         break
       }
       case 'withdraw': {
         if (externalWallet.withdrawUrl) {
-          window.open(externalWallet.withdrawUrl, '_blank')
+          window.open(externalWallet.withdrawUrl, '_self')
           return
         }
         break
@@ -418,7 +418,7 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    window.open(externalWallet.accountUrl, '_blank')
+    window.open(externalWallet.accountUrl, '_self')
   }
 
   getUserName = () => {
