@@ -939,15 +939,11 @@ GRANT::GRANT(const GRANT &properties) {
   type = properties.type;
 }
 
-bool GRANT::loadFromJsonSafetyNet(const std::string& json) {
-  return loadFromJsonInternal(json, true);
-}
-
 bool GRANT::loadFromJson(const std::string & json) {
-  return loadFromJsonInternal(json, false);
+  return loadFromJsonInternal(json);
 }
 
-bool GRANT::loadFromJsonInternal(const std::string& json, bool is_safetynet_check) {
+bool GRANT::loadFromJsonInternal(const std::string& json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -963,6 +959,10 @@ bool GRANT::loadFromJsonInternal(const std::string& json, bool is_safetynet_chec
 
   if (!error) {
     promotionId = d["promotionId"].GetString();
+
+    if (d.HasMember("type") && d["type"].IsString()){
+      type = d["type"].GetString();
+    }
     return !error;
   }
 
@@ -970,17 +970,20 @@ bool GRANT::loadFromJsonInternal(const std::string& json, bool is_safetynet_chec
   error = !(
       d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
       d.HasMember("expiryTime") && d["expiryTime"].IsNumber() &&
-      d.HasMember("probi") && d["probi"].IsString() && 
-      (is_safetynet_check || (d.HasMember("type") && d["type"].IsString())));
+      d.HasMember("probi") && d["probi"].IsString());
 
   if (!error) {
     altcurrency = d["altcurrency"].GetString();
     expiryTime = d["expiryTime"].GetUint64();
     probi = d["probi"].GetString();
-    if (!is_safetynet_check) {
+    if (d.HasMember("type") && d["type"].IsString()) {
       type = d["type"].GetString();
     } else {
+#if defined(OS_ANDROID)
+      type = "android";
+#else
       type = "ugp";
+#endif
     }
   }
 

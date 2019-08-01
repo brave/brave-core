@@ -308,7 +308,11 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
 }
 
 bool RewardsNotificationServiceImpl::IsUGPGrant(const std::string& grant_type) {
-  return (grant_type == "ugp");
+#if defined(OS_ANDROID)
+      return (grant_type == "android");
+#else
+      return (grant_type == "ugp");
+#endif
 }
 
 std::string RewardsNotificationServiceImpl::GetGrantIdPrefix(

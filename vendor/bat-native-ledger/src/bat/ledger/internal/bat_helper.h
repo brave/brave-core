@@ -136,14 +136,13 @@ struct GRANT {
 
   // load from json string
   bool loadFromJson(const std::string & json);
-  bool loadFromJsonSafetyNet(const std::string& json);
   std::string altcurrency;
   std::string probi;
   uint64_t expiryTime;
   std::string promotionId;
   std::string type;
 private:
-  bool loadFromJsonInternal(const std::string& json, bool is_safetynet_check);
+  bool loadFromJsonInternal(const std::string& json);
 };
 
 struct GRANT_RESPONSE {

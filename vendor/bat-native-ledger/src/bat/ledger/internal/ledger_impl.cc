@@ -1579,8 +1579,8 @@ void LedgerImpl::OnGrantViaSafetynetCheck(const std::string& promotion_id, const
   ledger_client_->OnGrantViaSafetynetCheck(promotion_id, nonce);
 }
 
-void LedgerImpl::ApplySafetynetToken(const std::string& token) const {
-  bat_grants_->SetGrant("", "", token);
+void LedgerImpl::ApplySafetynetToken(const std::string& promotion_id, const std::string& token) const {
+  bat_grants_->SetGrant("", promotion_id, token);
 }
 
 }  // namespace bat_ledger
