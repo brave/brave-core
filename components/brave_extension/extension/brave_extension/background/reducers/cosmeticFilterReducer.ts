@@ -27,7 +27,7 @@ import {
 // State helpers
 import * as shieldsPanelState from '../../state/shieldsPanelState'
 import * as noScriptState from '../../state/noScriptState'
-import { getOrigin } from '../../helpers/urlUtils'
+import { getOrigin, getHostname } from '../../helpers/urlUtils'
 import { areObjectsEqual } from '../../helpers/objectUtils'
 
 const focusedWindowChanged = (state: State, windowId: number): State => {
@@ -70,7 +70,7 @@ export default function cosmeticFilterReducer (
         state = shieldsPanelState.resetBlockingResources(state, action.tabId)
         state = noScriptState.resetNoScriptInfo(state, action.tabId, getOrigin(action.url))
       }
-      applySiteFilters(tabData.hostname)
+      applySiteFilters(action.tabId, getHostname(action.url))
       break
     }
     case windowTypes.WINDOW_REMOVED: {

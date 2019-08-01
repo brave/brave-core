@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 export const addSiteCosmeticFilter = async (origin: string, cssfilter: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     let storeList = Object.assign({}, storeData.cosmeticFilterList)
@@ -18,7 +22,7 @@ export const removeSiteFilter = (origin: string) => {
   })
 }
 
-export const applySiteFilters = (hostname: string) => {
+export const applySiteFilters = (tabId: number, hostname: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     if (!storeData.cosmeticFilterList) {
       if (process.env.NODE_ENV === 'shields_development') {
@@ -31,7 +35,7 @@ export const applySiteFilters = (hostname: string) => {
         if (process.env.NODE_ENV === 'shields_development') {
           console.log('applying rule', rule)
         }
-        chrome.tabs.insertCSS({ // https://github.com/brave/brave-browser/wiki/Cosmetic-Filtering
+        chrome.tabs.insertCSS(tabId, { // https://github.com/brave/brave-browser/wiki/Cosmetic-Filtering
           code: `${rule} {display: none !important;}`,
           cssOrigin: 'user',
           runAt: 'document_start'

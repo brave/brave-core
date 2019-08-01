@@ -206,9 +206,10 @@ describe('cosmeticFilterTestSuite', () => {
           'brave.com': [filter]
         }
       })
-      cosmeticFilterAPI.applySiteFilters('brave.com')
-      expect(insertCSSStub.getCall(0).args[0]).toEqual({
-        code: `${ filter } {display: none !important;}`,
+      cosmeticFilterAPI.applySiteFilters(1, 'brave.com')
+      expect(insertCSSStub.getCall(0).args[0]).toEqual(1)
+      expect(insertCSSStub.getCall(0).args[1]).toEqual({
+        code: `${filter} {display: none !important;}`,
         cssOrigin: 'user',
         runAt: 'document_start'
       })
@@ -219,13 +220,15 @@ describe('cosmeticFilterTestSuite', () => {
           'brave.com': [filter, filter2]
         }
       })
-      cosmeticFilterAPI.applySiteFilters('brave.com')
-      expect(insertCSSStub.getCall(0).args[0]).toEqual({
+      cosmeticFilterAPI.applySiteFilters(1, 'brave.com')
+      expect(insertCSSStub.getCall(0).args[0]).toEqual(1)
+      expect(insertCSSStub.getCall(0).args[1]).toEqual({
         code: `${filter } {display: none !important;}`,
         cssOrigin: 'user',
         runAt: 'document_start'
       })
-      expect(insertCSSStub.getCall(1).args[0]).toEqual({
+      expect(insertCSSStub.getCall(1).args[0]).toEqual(1)
+      expect(insertCSSStub.getCall(1).args[1]).toEqual({
         code: `${ filter2 } {display: none !important;}`,
         cssOrigin: 'user',
         runAt: 'document_start'
@@ -237,7 +240,7 @@ describe('cosmeticFilterTestSuite', () => {
       getStorageStub.yields({
         cosmeticFilterList: {}
       })
-      cosmeticFilterAPI.applySiteFilters('brave.com')
+      cosmeticFilterAPI.applySiteFilters(1, 'brave.com')
       expect(insertCSSStub.called).toBe(false)
     })
     it('doesn\'t apply filters if storage is explicitly undefined', () => {
@@ -246,7 +249,7 @@ describe('cosmeticFilterTestSuite', () => {
           'brave.com': undefined
         }
       })
-      cosmeticFilterAPI.applySiteFilters('brave.com')
+      cosmeticFilterAPI.applySiteFilters(1, 'brave.com')
       expect(insertCSSStub.called).toBe(false)
     })
   })
