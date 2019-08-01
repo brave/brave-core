@@ -1,0 +1,10 @@
+diff --git a/chrome/android/java/res/values-v17/styles.xml b/chrome/android/java/res/values-v17/styles.xml
+index 9ed5215c71585875e33a359fe0ef43aae3c51139..eb8fe23b007d795ce079a31b6c2f7ae8725e37f1 100644
+--- a/chrome/android/java/res/values-v17/styles.xml
++++ b/chrome/android/java/res/values-v17/styles.xml
+@@ -919,4 +919,5 @@
+         <item name="android:layout_height">@dimen/omnibox_suggestion_edit_url_min_height</item>
+         <item name="tint">@color/default_icon_color</item>
+     </style>
++    <style name="BraveSwitchTheme"> <item name="colorControlActivated">#fb542b</item> </style>
+ </resources>

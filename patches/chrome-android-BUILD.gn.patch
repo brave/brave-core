@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 17311184c47823594b49ad07d41bd870efa7af17..611376d4d7c3bac30ecfbab8a786dc2fffd52fce 100644
+index 17311184c47823594b49ad07d41bd870efa7af17..8f11dbdaa0491f676a867f5e0ce134d7e32b5a1d 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -42,7 +42,7 @@ if (dfmify_devtools) {
@@ -11,3 +11,19 @@ index 17311184c47823594b49ad07d41bd870efa7af17..611376d4d7c3bac30ecfbab8a786dc2f
  test_manifest_package = "org.chromium.chrome.tests"
  
  chrome_public_jinja_variables = default_chrome_public_jinja_variables +
+@@ -110,6 +110,7 @@ android_resources("chrome_app_java_resources") {
+   deps = [
+     ":chrome_strings_grd",
+     ":ui_locale_string_resources",
++    "//brave/build/android:android_brave_strings_grd",
+     "//chrome/android/webapk/libs/common:splash_resources",
+     "//chrome/app:java_strings_grd",
+     "//components/autofill/android:autofill_java_resources",
+@@ -496,6 +497,7 @@ java_group("chrome_all_java") {
+ group("jni_headers") {
+   public_deps = [
+     ":chrome_jni_headers",
++    "//brave/build/android:jni_headers",
+     "//chrome/android/features/autofill_assistant:jni_headers",
+     "//chrome/android/features/keyboard_accessory:jni_headers",
+     "//chrome/android/features/media_router:jni_headers",
