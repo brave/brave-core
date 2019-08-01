@@ -201,141 +201,138 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final MenuItem item = getItem(position);
         StandardMenuItemViewHolder holder = null;
-        switch (getItemViewType(position)) {
-            case STANDARD_MENU_ITEM: {
-                View mapView = mPositionViews.get(position);
-                if (mapView == null
-                        || mapView != convertView
-                        || !(convertView.getTag() instanceof StandardMenuItemViewHolder)) {
-                    holder = new StandardMenuItemViewHolder();
-                    if (0 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_switcher, parent, false);
-                        setupSwitchClick((Switch)convertView.findViewById(R.id.brave_shields_switch));
-                        convertView.setBackgroundColor(Color.parseColor(BRAVE_SHIELDS_GREY));
-                    // We should set layouts for switch rows
-                    } else if (1 == position || 2 == position || 8 == position || 14 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_text_item, parent, false);
-                        TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
-                        if (text != null) {
-                            if (2 == position) {
-                                text.setText(R.string.brave_shields_first_group_title);
-                            } else if (8 == position) {
-                                text.setText(R.string.brave_shields_second_group_title);
-                            } else if (1 == position) {
-                                text.setTextColor(Color.parseColor(BRAVE_SHIELDS_BLACK));
-                                text.setTextSize(20);
-                                text.setText(mTitle);
-                            } else {
-                                // We need this item only for more space at the bottom of the menu
-                                text.setTextSize(1);
-                            }
+        if (getItemViewType(position) == STANDARD_MENU_ITEM) {
+            View mapView = mPositionViews.get(position);
+            if (mapView == null
+                    || mapView != convertView
+                    || !(convertView.getTag() instanceof StandardMenuItemViewHolder)) {
+                holder = new StandardMenuItemViewHolder();
+                if (0 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_switcher, parent, false);
+                    setupSwitchClick((Switch)convertView.findViewById(R.id.brave_shields_switch));
+                    convertView.setBackgroundColor(Color.parseColor(BRAVE_SHIELDS_GREY));
+                // We should set layouts for switch rows
+                } else if (1 == position || 2 == position || 8 == position || 14 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_text_item, parent, false);
+                    TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
+                    if (text != null) {
+                        if (2 == position) {
+                            text.setText(R.string.brave_shields_first_group_title);
+                        } else if (8 == position) {
+                            text.setText(R.string.brave_shields_second_group_title);
+                        } else if (1 == position) {
+                            text.setTextColor(Color.parseColor(BRAVE_SHIELDS_BLACK));
+                            text.setTextSize(20);
+                            text.setText(mTitle);
+                        } else {
+                            // We need this item only for more space at the bottom of the menu
+                            text.setTextSize(1);
                         }
-                    } else if (3 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
-                        TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
-                        if (text != null) {
-                            text.setText(R.string.brave_shields_ads_and_trackers);
-                        }
-                        TextView number = (TextView) convertView.findViewById(R.id.brave_shields_number);
-                        if (number != null) {
-                            number.setTextColor(Color.parseColor(ADS_AND_TRACKERS_COLOR));
-                            number.setText(item.getTitle());
-                            number.setTag(R.string.brave_shields_ads_and_trackers);
-                        }
-                    } else if (4 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
-                        TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
-                        if (text != null) {
-                            text.setText(R.string.brave_shields_https_upgrades);
-                        }
-                        TextView number = (TextView) convertView.findViewById(R.id.brave_shields_number);
-                        if (number != null) {
-                            number.setTextColor(Color.parseColor(HTTPS_UPDATES_COLOR));
-                            number.setText(item.getTitle());
-                            number.setTag(R.string.brave_shields_https_upgrades);
-                        }
-                    } else if (5 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
-                        TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
-                        if (text != null) {
-                            text.setText(R.string.brave_shields_scripts_blocked);
-                        }
-                        TextView number = (TextView) convertView.findViewById(R.id.brave_shields_number);
-                        if (number != null) {
-                            number.setTextColor(Color.parseColor(SCRIPTS_BLOCKED_COLOR));
-                            number.setText(item.getTitle());
-                            number.setTag(R.string.brave_shields_scripts_blocked);
-                        }
-                    } else if (6 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
-                        TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
-                        if (text != null) {
-                            text.setText(R.string.brave_shields_fingerprint_methods);
-                        }
-                        TextView number = (TextView) convertView.findViewById(R.id.brave_shields_number);
-                        if (number != null) {
-                            number.setTextColor(Color.parseColor(FINGERPRINTS_BLOCKED_COLOR));
-                            number.setText(item.getTitle());
-                            number.setTag(R.string.brave_shields_fingerprint_methods);
-                        }
-                    } else if (7 == position) {
-                        convertView = mInflater.inflate(R.layout.menu_separator, parent, false);
-                    } else if (9 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_ads_tracking_switcher, parent, false);
-                        mBraveShieldsAdsTrackingSwitch = (Switch)convertView.findViewById(R.id.brave_shields_ads_tracking_switch);
-                        setupAdsTrackingSwitchClick(mBraveShieldsAdsTrackingSwitch);
-                        // To make it more nice looking
-                        /*TextView text = (TextView) convertView.findViewById(R.id.brave_shields_ads_tracking_text);
-                        if (text != null && text.getText().toString().indexOf("and") != -1) {
-                            String value = text.getText().toString().replaceFirst("and", "&");
-                            text.setText(value);
-                        }*/
-                    } else if (10 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_https_upgrade_switcher, parent, false);
-                        mBraveShieldsHTTPSEverywhereSwitch = (Switch)convertView.findViewById(R.id.brave_shields_https_upgrade_switch);
-                        setupHTTPSEverywhereSwitchClick(mBraveShieldsHTTPSEverywhereSwitch);
-                    } else if (11 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_3rd_party_cookies_blocked_switcher, parent, false);
-                        mBraveShieldsBlocking3rdPartyCookiesSwitch = (Switch)convertView.findViewById(R.id.brave_shields_3rd_party_cookies_blocked_switch);
-                        setup3rdPartyCookiesSwitchClick(mBraveShieldsBlocking3rdPartyCookiesSwitch);
-                    } else if (12 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_scripts_blocked_switcher, parent, false);
-                        mBraveShieldsBlockingScriptsSwitch = (Switch)convertView.findViewById(R.id.brave_shields_scripts_blocked_switch);
-                        setupBlockingScriptsSwitchClick(mBraveShieldsBlockingScriptsSwitch);
-                    } else if (13 == position) {
-                        convertView = mInflater.inflate(R.layout.brave_shields_fingerprints_blocked_switcher, parent, false);
-                        mBraveShieldsFingerprintsSwitch = (Switch)convertView.findViewById(R.id.brave_shields_fingerprints_blocked_switch);
-                        setupFingerprintsSwitchClick(mBraveShieldsFingerprintsSwitch);
-                        // To make it more nice looking
-                        /*TextView text = (TextView) convertView.findViewById(R.id.brave_shields_fingerprinting_blocked_text);
-                        if (text != null && text.getText().toString().indexOf(" ") != -1) {
-                            String value = text.getText().toString().replaceFirst(" ", "\n");
-                            text.setText(value);
-                        }*/
-                    } else {
-                        convertView = mInflater.inflate(R.layout.menu_item, parent, false);
-                        holder.text = (TextView) convertView.findViewById(R.id.menu_item_text);
-                        holder.image = (AppMenuItemIcon) convertView.findViewById(R.id.menu_item_icon);
-                        convertView.setTag(holder);
                     }
-                    convertView.setTag(R.id.menu_item_enter_anim_id,
-                            buildStandardItemEnterAnimator(convertView, position));
-
-                    mPositionViews.append(position, convertView);
+                } else if (3 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
+                    TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
+                    if (text != null) {
+                        text.setText(R.string.brave_shields_ads_and_trackers);
+                    }
+                    TextView number = (TextView) convertView.findViewById(R.id.brave_shields_number);
+                    if (number != null) {
+                        number.setTextColor(Color.parseColor(ADS_AND_TRACKERS_COLOR));
+                        number.setText(item.getTitle());
+                        number.setTag(R.string.brave_shields_ads_and_trackers);
+                    }
+                } else if (4 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
+                    TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
+                    if (text != null) {
+                        text.setText(R.string.brave_shields_https_upgrades);
+                    }
+                    TextView number = (TextView) convertView.findViewById(R.id.brave_shields_number);
+                    if (number != null) {
+                        number.setTextColor(Color.parseColor(HTTPS_UPDATES_COLOR));
+                        number.setText(item.getTitle());
+                        number.setTag(R.string.brave_shields_https_upgrades);
+                    }
+                } else if (5 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
+                    TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
+                    if (text != null) {
+                        text.setText(R.string.brave_shields_scripts_blocked);
+                    }
+                    TextView number = (TextView) convertView.findViewById(R.id.brave_shields_number);
+                    if (number != null) {
+                        number.setTextColor(Color.parseColor(SCRIPTS_BLOCKED_COLOR));
+                        number.setText(item.getTitle());
+                        number.setTag(R.string.brave_shields_scripts_blocked);
+                    }
+                } else if (6 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
+                    TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
+                    if (text != null) {
+                        text.setText(R.string.brave_shields_fingerprint_methods);
+                    }
+                    TextView number = (TextView) convertView.findViewById(R.id.brave_shields_number);
+                    if (number != null) {
+                        number.setTextColor(Color.parseColor(FINGERPRINTS_BLOCKED_COLOR));
+                        number.setText(item.getTitle());
+                        number.setTag(R.string.brave_shields_fingerprint_methods);
+                    }
+                } else if (7 == position) {
+                    convertView = mInflater.inflate(R.layout.menu_separator, parent, false);
+                } else if (9 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_ads_tracking_switcher, parent, false);
+                    mBraveShieldsAdsTrackingSwitch = (Switch)convertView.findViewById(R.id.brave_shields_ads_tracking_switch);
+                    setupAdsTrackingSwitchClick(mBraveShieldsAdsTrackingSwitch);
+                    // To make it more nice looking
+                    /*TextView text = (TextView) convertView.findViewById(R.id.brave_shields_ads_tracking_text);
+                    if (text != null && text.getText().toString().indexOf("and") != -1) {
+                        String value = text.getText().toString().replaceFirst("and", "&");
+                        text.setText(value);
+                    }*/
+                } else if (10 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_https_upgrade_switcher, parent, false);
+                    mBraveShieldsHTTPSEverywhereSwitch = (Switch)convertView.findViewById(R.id.brave_shields_https_upgrade_switch);
+                    setupHTTPSEverywhereSwitchClick(mBraveShieldsHTTPSEverywhereSwitch);
+                } else if (11 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_3rd_party_cookies_blocked_switcher, parent, false);
+                    mBraveShieldsBlocking3rdPartyCookiesSwitch = (Switch)convertView.findViewById(R.id.brave_shields_3rd_party_cookies_blocked_switch);
+                    setup3rdPartyCookiesSwitchClick(mBraveShieldsBlocking3rdPartyCookiesSwitch);
+                } else if (12 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_scripts_blocked_switcher, parent, false);
+                    mBraveShieldsBlockingScriptsSwitch = (Switch)convertView.findViewById(R.id.brave_shields_scripts_blocked_switch);
+                    setupBlockingScriptsSwitchClick(mBraveShieldsBlockingScriptsSwitch);
+                } else if (13 == position) {
+                    convertView = mInflater.inflate(R.layout.brave_shields_fingerprints_blocked_switcher, parent, false);
+                    mBraveShieldsFingerprintsSwitch = (Switch)convertView.findViewById(R.id.brave_shields_fingerprints_blocked_switch);
+                    setupFingerprintsSwitchClick(mBraveShieldsFingerprintsSwitch);
+                    // To make it more nice looking
+                    /*TextView text = (TextView) convertView.findViewById(R.id.brave_shields_fingerprinting_blocked_text);
+                    if (text != null && text.getText().toString().indexOf(" ") != -1) {
+                        String value = text.getText().toString().replaceFirst(" ", "\n");
+                        text.setText(value);
+                    }*/
                 } else {
-                    holder = (StandardMenuItemViewHolder) convertView.getTag();
-                    if (convertView != mapView) {
-                        convertView = mapView;
-                    }
+                    convertView = mInflater.inflate(R.layout.menu_item, parent, false);
+                    holder.text = (TextView) convertView.findViewById(R.id.menu_item_text);
+                    holder.image = (AppMenuItemIcon) convertView.findViewById(R.id.menu_item_icon);
+                    convertView.setTag(holder);
                 }
+                convertView.setTag(R.id.menu_item_enter_anim_id,
+                        buildStandardItemEnterAnimator(convertView, position));
 
-                if (null != holder.text && null != holder.image) {
-                    setupStandardMenuItemViewHolder(holder, convertView, item);
+                mPositionViews.append(position, convertView);
+            } else {
+                holder = (StandardMenuItemViewHolder) convertView.getTag();
+                if (convertView != mapView) {
+                    convertView = mapView;
                 }
-                break;
             }
-            default:
-                assert false : "Unexpected MenuItem type";
+
+            if (null != holder.text && null != holder.image) {
+                setupStandardMenuItemViewHolder(holder, convertView, item);
+            }
+        } else {
+            assert false : "Unexpected MenuItem type";
         }
         if (null != holder) {
             setPopupWidth(holder.text);
