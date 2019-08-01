@@ -87,12 +87,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-.c6 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
 .c38 {
   width: 100%;
   height: 100%;
@@ -100,6 +94,12 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 }
 
 .c42 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c6 {
   width: 100%;
   height: 100%;
   fill: currentColor;
