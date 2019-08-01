@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Votre allocaton de jetons Brave Ads",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "vérifier",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Déconnecté",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Vérifier le portefeuille",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Vérifié",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Accéder à mon compte Uphold",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Déconnexion des primes Brave",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Vérifier le portefeuille",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Notre service de portefeuille est fourni par",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Veuillez vous munir de votre carte d'identité nationale.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Conservez vos tokens de primes publicitaires",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Ajouter des tokens par carte bancaire",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Retirer des tokens",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Un portefeuille vérifié vous permet de :",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Vérifiez votre portefeuille",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Et gérez facilement vos fonds !",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Vérifié",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Indisponible",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Reconnecter le portefeuille",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Votre portefeuille est vérifié !",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Félicitations ! Votre portefeuille $name$ a bien été vérifié et vous pouvez y verser et retirer des fonds.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Oups. Votre portefeuille est inaccessible.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Aucun problème. Cela peut se produire pour diverses raisons de sécurité. Il suffit de s'y reconnecter pour résoudre ce problème.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Ruzuku yako ya Kianzio ya Brave Ads",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "thibitisha",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Imeondolewa",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Thibitisha Pochi",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Imethibitishwa",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Nenda kwenye akaunti yangu ya Uphold",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Ondoa kwenye Brave Rewards",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Thibitisha pochi",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Huduma yetu ya pochi inatolewa na",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Tafadhali kuwa na kitambulisho chako kinachotolewa na serikali.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Hifadhi tokeni zako za Zawadi za Matangazo",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Ongeza tokeni ukitumia kadi ya mikopo",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Toka tokeni",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Pochi iliyothibitishwa hukuruhusu:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Thibitisha Pochi Yako",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Na udhibiti pesa zako kwa urahisi!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Imethibitishwa",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Haipatikani",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Unganisha tena pochi",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Pochi yako imethibitishwa!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Hongera! Pochi yako ya $name$ ilithibitishwa vizuri na tayari kuongeza na kutoa pesa.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Lo! Pochi yako haiwezi kufikiwa.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Usijali. Hii inaweza kutendeka kutokana na sababu mbalimbali za usalama. Unganisha  tena kwayo ili kutatua matatizo.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

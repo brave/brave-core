@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "I-clear ang CSS rules para sa lahat ng siteI",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Advanced na View",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Simpleng View",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Ang mga site ay kadalasang may kasamang cookies at mga script na susubukang tukuyin ka at ang iyong device (kadalasang naka-embed sa mga ad). Gusto ng mga itong makilala at masundan ka sa buong web — kung saan sinusubaybayan ng mga ito kung ano ang ginagawa mo sa bawat site. Bina-block ng Brave ang mga bagay na ito nang sa gayon ay makapag-browse ka nang hindi nasusundan sa kahit saan.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Naka-block ang mga cross-site na tracker at iba pang hindi kanais-nais na bagay",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Kapag binago ang mga setting ng Shield sa view na ito, maaaring maapektuhan ang compatibility sa web sa site na ito.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Nakuha ko",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Matuto pa",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

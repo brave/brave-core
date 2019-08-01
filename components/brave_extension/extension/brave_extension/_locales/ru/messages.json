@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Очистить правила CSS для всех сайтов",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Расширенный вид",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Простой вид",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Сайты используют куки-файлы и скрипты, чтобы идентифицировать вас и ваше устройство (часто они встраиваются в рекламу). Они хотят выяснить, кто вы, а также отслеживать вас и ваши действия на других сайтах по всему интернету. Brave блокирует подобное поведение, чтобы вы могли посещать веб-страницы без постоянной слежки.\n",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Заблокировано глобальных трекеров и других нежелательных элементов",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Изменение параметров Shield на этой странице может повлиять на совместимость сайта.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Готово",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Узнать больше",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Jūsu Brave reklāmu marķiera piešķīrums",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "pārbaudīt",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Atvienots",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Verificēt maku",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Pārbaudīts",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Doties uz manu Uphold kontu",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Atspējot Brave balvas",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Pārbaudīt maku",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Mūsu maka pakalpojumu sniedz",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Lūdzu, sagatavojiet savu valdības izdoto personu apliecinošo dokumentu.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Paturiet savus Ad Rewards marķierus",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Pievienot marķierus, izmantojot kredītkarti",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Izņemt marķierus",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Pārbaudīts maks jums ļauj:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Verificējiet savu maku",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Un viegli pārvaldiet savus līdzekļus!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Pārbaudīts",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Nav pieejams",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Atkārtoti pievienot maku",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Jūsu maks ir verificēts!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Apsveicam! Jūsu $name$ maks tika veiksmīgi verificēts un ir gatavs līdzekļu pievienošanai un izņemšanai.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Ak, vai! Jūsu maks nav sasniedzams.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Tas nekas. Tā var notikt dažādu drošības apsvērumu dēļ. Vienkārši izveidojot savienojumu ar to no jauna, un šis jautājums tiks atrisināts.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

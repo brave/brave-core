@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Kosongkan aturan CSS untuk semua situs",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Tampilan Lanjutan",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Tampilan Simpel",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Situs kerap memiliki cookie dan script yang mencoba mengidentifikasi Anda dan perangkat (kerap disematkan ke dalam iklan). Mereka ingin menyelidiki siapa Anda dan mengikuti Anda ke seluruh web — melacak apa yang Anda lakukan di setiap situs. Brave memblokir ini agar Anda dapat meramban tanpa diikuti.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Pelacak cross-site dan hal berbahaya lainnya diblokir",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Mengubah pengaturan Shield dalam tampilan ini dapat memengaruhi kompatibilitas web pada situs ini.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Mengerti",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Pelajari lebih lanjut",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

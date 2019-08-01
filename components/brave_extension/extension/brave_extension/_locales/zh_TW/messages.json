@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "清除所有網站的 CSS 規則",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "進階檢視",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "簡易檢視",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "網站經常包含試圖辨識您與您的裝置的 cookies 與指令碼（通常會嵌入到廣告中）。他們希望了解您的身份，並在網路上追蹤您，每個網站上都是。Brave 會阻擋這些事情，這樣您就可以不被追蹤地瀏覽網頁。",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "已封鎖跨頁面追蹤器與其他令人毛骨悚然的事物",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "在此檢視中變更 Shield 設定可能會影響此網站的網路相容性。",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "我瞭解了",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "更多資訊",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave annonsblockerare</translation>
 <translation id="6406506848690869874">Synka</translation>
-<translation id="8488282162676695335">Brave-plånbok</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") är inte tillåtet i Brave.</translation>
+<translation id="5655621391922317800">Kryptoplånböcker</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") är inte tillåtet i Brave.</translation>
 <translation id="7450557937477381864">Stäng Brave</translation>
 <translation id="7008934821596358692">Stäng alla Brave fönster för att göra klart importen.</translation>
 <translation id="5735465527556462863">Stäng Brave (gammal)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave-betalningar</translation>
 <translation id="3489524616427966890">Öppna fönster och flikar</translation>
 <translation id="3699882589215410581">Installera och kör Wildwine</translation>
+<translation id="3696083746357487900">Installera kryptoplånböcker</translation>
 <translation id="8053096063396012732">Installera Widevine</translation>
 <translation id="4840334696217618631">Starta om webbläsaren för att aktivera Widevine</translation>
 <translation id="8410111618231938546">Google Widevine är ett stycke kod för Digital Rights Management (DRM) som vi på Brave Software varken äger eller kan inspektera. Koden för Google Wideline laddas från Googles servrar, inte från våra servrar. Den laddas endast när du aktiverar det här valet. Vi avråder från användning av DRM, men vi respekterar användarens val och tillstår att vissa Brave-användare vill använda tjänster som kräver detta.
@@ -27,7 +28,7 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="2240268017737062801">Fråga när en sida vill autospela media</translation>
 <translation id="3371702087847741961">Fråga när en webbplats vill autospela media (rekommenderas)</translation>
 <translation id="3218385319396786393">Autouppspelning blockerades på denna sida</translation>
-<translation id="4988333904713528597">Autospela alltid på <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Autospela alltid på <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
 <translation id="5883458389055721080">Brave har inte granskat detta tillägg gällande säkerhet. Installera bara tillägget om du litar på utvecklaren.</translation>
 <translation id="2044383478723007273">Bravefärger</translation>
@@ -35,6 +36,7 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="6123134130710658846">Dölj Brave Rewards-knappen</translation>
 <translation id="7635711399568194460">Döljer knappen Brave Rewards i adressfältet när Brave Rewards inte är aktiverat</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
+<translation id="8511502469534942133">Ny Tor-anslutning för den här webbplatsen</translation>
 <translation id="8784924142044142231">Lämna Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Öppna Tor-fönster</translation>
@@ -84,6 +86,9 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="6786747875388722282">Tillägg</translation>
 <translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
+<translation id="1765684547504191670">Använder komponenten Media Router för att aktivera Chromecast i webbläsaren.</translation>
+<translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
+<translation id="7179921470347911571">Starta om nu</translation>
 <translation id="4154389611571860454">Använder IPFS-tillägget för att stödja IPFS i webbläsaren.</translation>
 <translation id="8137559199583651773">Hantera tillägg</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>

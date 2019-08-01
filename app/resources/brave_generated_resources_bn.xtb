@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
 <translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
 <translation id="6406506848690869874">সিঙ্ক করুন</translation>
-<translation id="8488282162676695335">Brave ওয়ালেট</translation>
-<translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>")এর অনুমতি দেওয়া হয় না।</translation>
+<translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
+<translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="7450557937477381864">Chrome বন্ধ করুন</translation>
 <translation id="7008934821596358692">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Chrome উইন্ডোগুলি বন্ধ করুন</translation>
 <translation id="5735465527556462863">Brave (পুরনো) বন্ধ করুন</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave পেমেন্ট</translation>
 <translation id="3489524616427966890">উইন্ডো এবং ট্যাবগুলি খুলুন</translation>
 <translation id="3699882589215410581">Widevine ইনস্টল করুন এবং চালান</translation>
+<translation id="3696083746357487900">Crypto ওয়ালেটগুলি ইনস্টল করুন</translation>
 <translation id="8053096063396012732">Widevine ইনস্টল করুন</translation>
 <translation id="4840334696217618631">Widevine সক্রিয় করতে ব্রাউজার রিস্টার্ট করুন</translation>
 <translation id="8410111618231938546">Google Widevine একটি ডিজিটাল রাইটস ম্যানেজমেন্ট (DRM) কোড যা Brave সফ্টওয়ের মালিকানাধীন নয় এবং আমরা তা পরীক্ষাও করতে পারি না| Google Widevine Google সার্ভার থেকে লোড করা হয়, আমাদের সার্ভার থেকে নয়| এটি শুধু তখনি লোড করা হয় যখন আপনি এই বিকল্পটি সক্ষম করেন| আমরা DRM ব্যবহার করতে বারণ করি, কিন্তু আমরা ব্যবহারকারীদের পছন্দের সম্মান করি এবং স্বীকার করি যে কিছু Brave ব্যবহারকারী কিছু পরিষেবা ব্যবহার করতে চাইবেন যার জন্য এর প্রয়োজন হবে|
@@ -27,7 +28,7 @@
 <translation id="2240268017737062801">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন</translation>
 <translation id="3371702087847741961">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন (সুপারিশকৃত)</translation>
 <translation id="3218385319396786393">এই পৃষ্ঠাতে স্বয়ংক্রিয়ভাবে চালানো  ব্লক করা হয়েছে</translation>
-<translation id="4988333904713528597">সর্বদা <ph name="HOST">$1<ex>mail.google.com</ex></ph> এ স্বতঃ চলার অনুমতি দিন</translation>
+<translation id="4988333904713528597">সর্বদা <ph name="HOST"/> এ স্বতঃ চলার অনুমতি দিন</translation>
 <translation id="4150684676757176434">অটোপ্লে ব্লক করা চালিয়ে যান</translation>
 <translation id="5883458389055721080">Brave সুরক্ষা এবং নিরাপত্তার জন্য এই সম্প্রসারণটি পর্যালোচনা করেনি। আপনি ডেভেলপারকে বিশ্বাস করলেই শুধুমাত্র এই সম্প্রসারণটি ইনস্টল করুন।</translation>
 <translation id="2044383478723007273">Brave রঙ</translation>
@@ -35,6 +36,7 @@
 <translation id="6123134130710658846">Brave পুরস্কারের বোতাম লুকান</translation>
 <translation id="7635711399568194460">Brave পুরস্কারগুলি সক্রিয় করা না থাকলে লোকেশন বারে Brave পুরস্কারের বোতামটি লুকায়</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
+<translation id="8511502469534942133">এই সাইটের জন্য নতুন Tor Connection</translation>
 <translation id="8784924142044142231">টর থেকে প্রস্থান করুন</translation>
 <translation id="5410152065859052603">টর</translation>
 <translation id="3696187925156352769">টর উইন্ডো খোলা</translation>
@@ -84,6 +86,9 @@
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
+<translation id="1765684547504191670">ব্রাউজারে Chromecast সক্ষম করতে মিডিয়া রাউটার উপাদান ব্যবহার করে।</translation>
+<translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
+<translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="4154389611571860454">ব্রাউজারে IPFS সমর্থন করার জন্য IPFS সহযোগী এক্সটেনশন ব্যবহার করে।</translation>
 <translation id="8137559199583651773">এক্সটেনশনগুলি পরিচালনা করুন</translation>
 <translation id="4928988318462976765">ওয়েব এক্সটেনশন স্টোর</translation>

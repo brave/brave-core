@@ -1630,7 +1630,9 @@
 <translation id="473546211690256853">Цим обліковим записом керує домен <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Профіль буде видалено</translation>
 <translation id="5632566673632479864">Обліковий запис <ph name="EMAIL"/> більше не можна використовувати як основний. Оскільки цей обліковий запис зареєстровано в домені <ph name="DOMAIN"/>, з цього пристрою буде видалено ваші закладки, історію, паролі й інші налаштування.</translation>
+<translation id="3797739167230984533">Пристроєм <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> керує<ph name="END_LINK"/> адміністратор вашої організації</translation>
 <translation id="1722460139690167654">Вашим пристроєм <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/><ph name="END_LINK"/> керує домен <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Ваша організація <ph name="BEGIN_LINK"/>керує веб-переглядачем<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382">Вашим <ph name="BEGIN_LINK"/>веб-переглядачем керує<ph name="END_LINK"/> домен <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Вміст</translation>
 <translation id="7702907602086592255">Домен</translation>

@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Odobren je vaš token za Brave reklame",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "verifikuj",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Veza je prekinuta",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Verifikuj novčanik",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Verifikovano",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Idi na moj Uphold nalog",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Prekinite vezu sa Brave Nagradama",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Verifikuj novčanik",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Našu uslugu novčanika pruža",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Molimo Vas da Vam Vaša legitimacija izdata od strane vlade bude na raspolaganju.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Zadržite svoje tokene oglasa za nagrade\n",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Dodajte tokene koristeći kreditnu karticu",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Povuci tokene",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Verifikovani novčanik Vam omogućava da:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Verifikujte svoj novčanik",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "I lako upravljajte sredstvima!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Verifikovano",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Nedostupno",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Ponovo poveži novčanik",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Vaš novčanik je verifikovan!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Čestitamo! Vaš $name$ novčanik je uspešno verifikovan i spreman za dodavanje i povlačenje sredstava.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Uh uh. Novčanik Vam je nedostupan.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Bez brige. To se može dogoditi iz različitih sigurnosnih razloga. Jednostavno se ponovo povežite da biste rešili ovaj problem.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

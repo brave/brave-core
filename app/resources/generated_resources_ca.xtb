@@ -1630,7 +1630,9 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="473546211690256853"><ph name="DOMAIN"/> gestiona aquest compte.</translation>
 <translation id="622537739776246443">El perfil se suprimirà</translation>
 <translation id="5632566673632479864">Ja no es permet que <ph name="EMAIL"/> sigui el compte principal. Com que <ph name="DOMAIN"/> gestiona aquest compte, s'esborraran d'aquest dispositiu les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració.</translation>
+<translation id="3797739167230984533">La teva organització <ph name="BEGIN_LINK"/>gestiona <ph name="DEVICE_TYPE"/><ph name="END_LINK"/></translation>
 <translation id="1722460139690167654">El dispositiu <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> està gestionat<ph name="END_LINK"/> per <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">La teva organització <ph name="BEGIN_LINK"/>gestiona el navegador<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382">El <ph name="BEGIN_LINK"/>navegador està gestionat<ph name="END_LINK"/> per <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Contingut</translation>
 <translation id="7702907602086592255">Domini</translation>

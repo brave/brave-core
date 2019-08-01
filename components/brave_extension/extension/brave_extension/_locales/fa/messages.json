@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "پاک کردن قوانین CSS برای همه سایت‌ها",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "نمای پیشرفته",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "نمای ساده",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "سایت‌ها اغلب شامل کوکی‌ها و اسکریپت‌هایی می‌شوند که درتلاش هستند شما و دستگاهتان را شناسایی کنند (اغلب در آگهی‌های جاسازی شده‌اند). آن‌ها می‌خواهند با ردیابی آنچه در سایت‌ها انجام می‌دهید، شما را شناسایی و در سراسر وب دنبال کنند. Brave این موارد را مسدود می‌کند تا بتوانید بدون اینکه در همه جا دنبال شوید مرور انجام دهید.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "ردیاب‌های بین سایتی و سایر موارد غیرعادی مسدود شدند",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "ممکن است تغییر تنظیمات «سپرایمنی» در این نما، بر سازگاری وب در این سایت تأثیر بگذارد.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "متوجه شدم",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "بیشتر بدانید",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Skrypty śledzące zablokowane",
+    "message": "Zablokowane skrypty śledzące",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -76,11 +76,11 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Próby rozpoznania urządzenia przez strony trzecie zablokowane",
+    "message": "Rozpoznawanie urządzenia przez strony trzecie zablokowane",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Próby rozpoznania urządzenia zablokowane",
+    "message": "Rozpoznawanie urządzenia zablokowane",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Wyczyść reguły CSS dla wszystkich stron",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Widok zaawansowany",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Widok podstawowy",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Strony często zawierają pliki cookie i skrypty, które próbują zidentyfikować Ciebie i Twoje urządzenie (często wbudowane w reklamy). Chcą ustalić kim jesteś i śledzić Cię w Internecie - śledzić co robisz na każdej stronie. Brave blokuje te rzeczy, dzięki czemu możesz przeglądać witryny bez obserwowania Ciebie.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Skrypty śledzące i inne przerażające rzeczy zostały zablokowane",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Zmiana ustawień tarczy w tym widoku, może wpłynąć na poprawność wyświetlania tej strony.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Rozumiem",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Dowiedz się więcej",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

@@ -230,7 +230,7 @@
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
-    "message": "Ingen aktiviteter enda …",
+    "message": "Ingen aktiviteter enda",
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   },
   "captchaDrag": {
@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Din token fra Brave Ads",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "verifiser",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Koblet fra",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Verifiser lommebok",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Verifisert",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Gå til Uphold-kontoen min",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Koble fra Brave Rewards",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Verifiser lommeboken",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Lommeboktjenesten vår leveres av",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Ha legitimasjon utstedt av offentlig myndighet tilgjengelig.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Behold Ad Rewards-tokenene dine",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Legg til tokener med kredittkort",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Ta ut tokener",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Med en verifisert lommebok kan du:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Verifiser lommeboken din",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Og administrer midlene dine enkelt!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Verifisert",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Utilgjengelig",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Koble til lommeboken på nytt",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Lommeboken din er verifisert!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Gratulerer! $name$-lommeboken ble verifisert og er klar for innskudd og uttak av penger.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Oi da. Lommeboken din kan ikke nås.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Ikke vær redd. Det kan være en rekke sikkerhetsårsaker til at dette skjer. Bare koble til på nytt for å løse dette problemet.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Xóa các quy tắc CSS cho mọi website",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Dạng xem Nâng cao",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Dạng xem Đơn giản",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Các trang thường có cookie và tập lệnh tìm cách xác định danh tính của bạn và thiết bị của bạn (thường được nhúng trong quảng cáo). Họ muốn tìm hiểu xem bạn là ai và theo dõi bạn trên mạng - theo dõi hoạt động của bạn trên mọi trang. Brave chặn những thứ này để bạn có thể lướt web mà không bị theo dõi.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Trình theo dõi chéo và những thứ nguy hiểm khác đã bị chặn",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Thay đổi cài đặt Shield trong chế độ xem này có thể ảnh hưởng đến tính tương thích web trên trang này.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Bỏ qua",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }
