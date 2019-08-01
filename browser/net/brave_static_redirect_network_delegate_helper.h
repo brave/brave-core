@@ -15,6 +15,10 @@ int OnBeforeURLRequest_StaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
 
+int OnBeforeURLRequest_StaticRedirectWorkForGURL(
+    const GURL& request_url,
+    GURL* new_url);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_STATIC_REDIRECT_NETWORK_DELEGATE_H_

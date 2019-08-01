@@ -7,11 +7,17 @@
 
 #include "brave/browser/net/url_context.h"
 
+class GURL;
+
 namespace brave {
 
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
+
+int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
+    const GURL& url,
+    GURL* new_url);
 
 }  // namespace brave
 
