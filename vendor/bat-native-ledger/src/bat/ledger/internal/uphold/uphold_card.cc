@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
@@ -36,15 +39,87 @@ UpholdCard::UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
 UpholdCard::~UpholdCard() {
 }
 
+void UpholdCard::CreateIfNecessary(
+    ledger::ExternalWalletPtr wallet,
+    CreateCardCallback callback) {
+  auto headers = RequestAuthorization(wallet->token);
+  auto check_callback = std::bind(&UpholdCard::OnCreateIfNecessary,
+                            this,
+                            _1,
+                            _2,
+                            _3,
+                            *wallet,
+                            callback);
+  ledger_->LoadURL(
+      GetAPIUrl("/v0/me/cards?q=currency:BAT"),
+      headers,
+      "",
+      "application/json",
+      ledger::URL_METHOD::GET,
+      check_callback);
+}
+
+void UpholdCard::OnCreateIfNecessary(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    const ledger::ExternalWallet& wallet,
+    CreateCardCallback callback) {
+  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+    callback(ledger::Result::EXPIRED_TOKEN, "");
+    uphold_->DisconnectWallet();
+    return;
+  }
+
+  if (response_status_code != net::HTTP_OK) {
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  if (!value || !value->is_list()) {
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  base::ListValue* list = nullptr;
+  if (!value->GetAsList(&list)) {
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  for (const auto& it : list->GetList()) {
+    auto* label = it.FindKey("label");
+    if (!label || !label->is_string()) {
+      continue;
+    }
+
+    if (label->GetString() == kCardName) {
+      auto* id = it.FindKey("id");
+      if (!id || !id->is_string()) {
+        continue;
+      }
+
+      callback(ledger::Result::LEDGER_OK, id->GetString());
+      return;
+    }
+  }
+
+  auto wallet_ptr = ledger::ExternalWallet::New(wallet);
+  Create(std::move(wallet_ptr), callback);
+}
+
 void UpholdCard::Create(
     ledger::ExternalWalletPtr wallet,
     CreateCardCallback callback) {
   auto headers = RequestAuthorization(wallet->token);
   const std::string payload =
-      "{ "
-      "  \"label\": \"Brave Browser\", "
-      "  \"currency\": \"BAT\" "
-      "}";
+      base::StringPrintf(
+          "{ "
+          "  \"label\": \"%s\", "
+          "  \"currency\": \"BAT\" "
+          "}",
+          kCardName);
 
   auto create_callback = std::bind(&UpholdCard::OnCreate,
                             this,
@@ -176,6 +251,12 @@ void UpholdCard::OnUpdate(
     const std::map<std::string, std::string>& headers,
     UpdateCardCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+    callback(ledger::Result::EXPIRED_TOKEN);
+    uphold_->DisconnectWallet();
+    return;
+  }
 
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR);

@@ -18,6 +18,8 @@ class LedgerImpl;
 
 namespace braveledger_uphold {
 
+const char kCardName[] = "Brave Browser";
+
 struct UpdateCard {
   std::string label;
   int32_t position;
@@ -35,11 +37,22 @@ class UpholdCard {
 
   ~UpholdCard();
 
-  void Create(
+  void CreateIfNecessary(
     ledger::ExternalWalletPtr wallet,
     CreateCardCallback callback);
 
  private:
+  void OnCreateIfNecessary(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    const ledger::ExternalWallet& wallet,
+    CreateCardCallback callback);
+
+  void Create(
+    ledger::ExternalWalletPtr wallet,
+    CreateCardCallback callback);
+
   void OnCreate(
     int response_status_code,
     const std::string& response,

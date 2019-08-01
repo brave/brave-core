@@ -214,7 +214,7 @@ void Uphold::GenerateExternalWallet(
 void Uphold::CreateCard(
     ledger::ExternalWalletPtr wallet,
     CreateCardCallback callback) {
-  card_->Create(std::move(wallet), callback);
+  card_->CreateIfNecessary(std::move(wallet), callback);
 }
 
 void Uphold::OnTransferAnonToExternalWalletCallback(
