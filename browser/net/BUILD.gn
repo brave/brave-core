@@ -28,6 +28,8 @@ source_set("net") {
     "brave_stp_util.h",
     "brave_system_network_delegate.cc",
     "brave_system_network_delegate.h",
+    "brave_system_request_handler.cc",
+    "brave_system_request_handler.h",
     "url_context.cc",
     "url_context.h",
   ]
