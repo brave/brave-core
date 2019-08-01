@@ -42,7 +42,9 @@ std::string Media::GetLinkType(const std::string& url,
   if (type.empty()) {
     type = braveledger_media::Vimeo::GetLinkType(url);
   }
-
+  if (type.empty()) {
+    type = braveledger_media::SoundCloud::GetLinkType(url);
+  }
   return type;
 }
 
@@ -64,8 +66,7 @@ void Media::ProcessMedia(const std::map<std::string, std::string>& parts,
   }
 
   if (type == VIMEO_MEDIA_TYPE) {
-    media_vimeo_->ProcessMedia(parts);
-    return;
+    media_vimeo_->ProcessMedia(parts); return;
   }
 }
 
@@ -148,6 +149,13 @@ void Media::SaveMediaInfo(const std::string& type,
   if (type == GITHUB_MEDIA_TYPE) {
     media_github_->SaveMediaInfo(data, callback);
     return;
+  }
+}
+void Media::RespondClientMediaMessage(
+    const std::string& type,
+    const std::string& response) {
+  if (type == SOUNDCLOUD_MEDIA_TYPE) {
+    media_soundcloud_->ProcessMedia(response);
   }
 }
 

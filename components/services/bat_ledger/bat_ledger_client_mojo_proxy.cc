@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/bind_helpers.h"
 #include "mojo/public/cpp/bindings/map.h"
 
 namespace bat_ledger {
@@ -131,8 +132,7 @@ void BatLedgerClientMojoProxy::LoadURL(
 void BatLedgerClientMojoProxy::OnWalletInitialized(ledger::Result result) {
   if (!Connected())
     return;
-
-  bat_ledger_client_->OnWalletInitialized(result);
+bat_ledger_client_->OnWalletInitialized(result);
 }
 
 void BatLedgerClientMojoProxy::OnWalletProperties(
@@ -914,5 +914,14 @@ void BatLedgerClientMojoProxy::DeleteActivityInfo(
       publisher_key,
       base::BindOnce(&OnDeleteActivityInfo, std::move(callback)));
 }
+
+
+void BatLedgerClientMojoProxy::SendClientMediaMessage(
+    const int32_t tab_id,
+    const std::string& payload,
+    ledger::SendClientMediaMessageCallback callback) {
+  bat_ledger_client_->SendClientMediaMessage(tab_id, payload, base::DoNothing());
+}
+
 
 }  // namespace bat_ledger

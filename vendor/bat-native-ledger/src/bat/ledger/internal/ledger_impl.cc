@@ -217,6 +217,7 @@ void LedgerImpl::OnPostData(
   std::string type = bat_media_->GetLinkType(url,
                                                  first_party_url,
                                                  referrer);
+  LOG(INFO) << "Posting...";
   if (type.empty()) {
      // It is not a media supported type
     return;
@@ -239,6 +240,14 @@ void LedgerImpl::OnPostData(
       bat_media_->ProcessMedia(*part, type, std::move(visit_data));
     }
     return;
+  }
+
+  if (type == SOUNDCLOUD_MEDIA_TYPE) {
+    LOG(INFO) << "Sending soundcloud message";
+    ledger_client_->SendClientMediaMessage(
+      visit_data->tab_id,
+      post_data,
+      std::function<void()>());
   }
 }
 
@@ -1719,6 +1728,19 @@ void LedgerImpl::DeleteActivityInfo(
       const std::string& publisher_key,
       ledger::DeleteActivityInfoCallback callback) {
   ledger_client_->DeleteActivityInfo(publisher_key, callback);
+}
+
+void LedgerImpl::SendClientMediaMessage(
+      const int32_t tab_id,
+      const std::string& payload,
+      ledger::SendClientMediaMessageCallback callback) {
+  ledger_client_->SendClientMediaMessage(tab_id, payload, callback);
+}
+
+void LedgerImpl::RespondClientMediaMessage(
+     const std::string& type,
+     const std::string& response) {
+  bat_media_->RespondClientMediaMessage(type, response);
 }
 
 }  // namespace bat_ledger

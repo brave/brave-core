@@ -525,6 +525,15 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_key,
       ledger::DeleteActivityInfoCallback callback);
 
+  void SendClientMediaMessage(
+      const int32_t tab_id,
+      const std::string& payload,
+      ledger::SendClientMediaMessageCallback callback) override;
+
+  void RespondClientMediaMessage(
+      const std::string& type,
+      const std::string& response) override;
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

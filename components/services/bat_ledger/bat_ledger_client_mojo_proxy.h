@@ -179,6 +179,11 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::string& publisher_key,
       ledger::DeleteActivityInfoCallback callback) override;
 
+  void SendClientMediaMessage(
+      const int32_t tab_id,
+      const std::string& payload,
+      ledger::SendClientMediaMessageCallback callback) override;
+
  private:
   bool Connected() const;
 

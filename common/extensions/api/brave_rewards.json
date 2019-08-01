@@ -384,6 +384,21 @@
             }
           }
         ]
+      },
+      {
+        "name": "onSendClientMediaMessage",
+        "type": "function",
+        "description": "Fired when we recieve a message from the client for media",
+        "parameters": [
+          {
+            "name": "tabId",
+            "type": "number"
+          },
+          {
+            "name": "payload",
+            "type": "string"
+          }
+        ]
       }
     ],
     "functions": [
@@ -944,6 +959,21 @@
           {
             "name": "type",
             "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "respondClientMediaMessage",
+        "type": "function",
+        "description": "Send response to media message",
+        "parameters": [
+          {
+             "name": "type",
+             "type": "string"
+          },
+          {
+             "name": "response",
+             "type": "string"
           }
         ]
       }

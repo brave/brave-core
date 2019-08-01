@@ -223,6 +223,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       int32_t result,
       const std::string& wallet_type) override;
 
+  //void OnSendClientMediaMessage(
+  //  brave_rewards::RewardsService* rewards_service,
+  //  const std::string& payload) override;
+
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -391,6 +395,9 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.disconnectWallet",
       base::BindRepeating(&RewardsDOMHandler::DisconnectWallet,
       base::Unretained(this)));
+  //web_ui()->RegisterMessageCallback("brave_rewards.sendRewardsMediaMessage",
+  //    base::BindRepeating(&RewardsDOMHandler::SendRewardsMediaMessage,
+  //    base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
@@ -1595,6 +1602,19 @@ void RewardsDOMHandler::OnDisconnectWallet(
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.disconnectWallet",
                                          data);
 }
+
+//void RewardsDOMHandler::OnSendClientMediaMessage(
+//    brave_rewards::RewardsService* rewards_service,
+//    const std::string& payload) {
+//  LOG(INFO) << "OnSendClient";
+//  if (!web_ui()->CanCallJavascript()) {
+//    return;
+//  }
+//  LOG(INFO) << "CanCall()";
+//  web_ui()->CallJavascriptFunctionUnsafe(
+//      "brave_rewards.OnSendClientMediaMessage",
+//      base::Value(payload));
+//}
 
 }  // namespace
 

@@ -259,6 +259,10 @@ class RewardsService : public KeyedService {
 
   virtual void DisconnectWallet(const std::string& wallet_type) = 0;
 
+  virtual void RespondClientMediaMessage(
+      const std::string& type,
+      const std::string& response) = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 

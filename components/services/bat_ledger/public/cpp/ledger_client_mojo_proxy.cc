@@ -941,4 +941,28 @@ void LedgerClientMojoProxy::DeleteActivityInfo(
                 _1));
 }
 
+// static
+void LedgerClientMojoProxy::OnSendClientMediaMessage(
+    CallbackHolder<SendClientMediaMessageCallback>* holder) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run();
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::SendClientMediaMessage(
+    const int32_t tab_id,
+    const std::string& payload,
+    SendClientMediaMessageCallback callback) {
+  auto* holder = new CallbackHolder<SendClientMediaMessageCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->SendClientMediaMessage(
+      tab_id,
+      payload,
+      std::bind(
+          &LedgerClientMojoProxy::OnSendClientMediaMessage,
+          holder));
+}
+
 }  // namespace bat_ledger

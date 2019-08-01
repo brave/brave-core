@@ -6,6 +6,7 @@ import rewardsPanelActions from './background/actions/rewardsPanelActions'
 
 import './background/store'
 import './background/twitterAuth'
+import './background/soundcloudAuth'
 import './background/events/rewardsEvents'
 import './background/events/tabEvents'
 import batIconOn18Url from './img/rewards-on.png'
@@ -151,6 +152,19 @@ const tipSoundCloudMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
+    case 'respondClientMediaMessage': {
+        const body = msg.body
+        chrome.braveRewards.respondClientMediaMessage(body.type, body.response)
+      break
+    }
+    default:
+      break
+  }
+})
+
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  const action = typeof msg === 'string' ? msg : msg.type
+  switch (action) {
     case 'tipInlineMedia': {
       switch (msg.mediaMetaData.mediaType) {
         case 'twitter':
@@ -177,6 +191,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       return true
     }
     case 'inlineTipSetting': {
+
+
       // Check if inline tip is enabled
       chrome.braveRewards.getInlineTipSetting(msg.key, function (enabled: boolean) {
         sendResponse({ enabled })

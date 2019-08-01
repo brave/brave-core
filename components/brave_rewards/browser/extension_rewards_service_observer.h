@@ -60,6 +60,11 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
       int32_t result,
       const std::string& wallet_type) override;
 
+  void OnSendClientMediaMessage(
+      brave_rewards::RewardsService* rewards_service,
+      const int32_t tab_id,
+      const std::string& payload) override;
+
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                  const BalanceReport& balance_report) override;

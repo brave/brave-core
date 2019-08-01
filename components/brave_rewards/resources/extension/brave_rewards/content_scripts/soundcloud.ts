@@ -11,6 +11,11 @@ const tipActionCountClass = 'SoundCloudTip-actionCount'
 const tipIconContainerClass = 'IconContainer'
 const actionTipClass = 'action-brave-tip'
 
+type soundcloudEvent = {
+  action: string
+  id: string
+} | null
+
 const createBraveTipAction = (elem: Element, getMetaData: (elem: Element) => RewardsTip.MediaMetaData | null) => {
   const hoverClasses = ' tooltipped tooltipped-sw tooltipped-align-right-1'
 
@@ -39,7 +44,6 @@ const createBraveTipAction = (elem: Element, getMetaData: (elem: Element) => Rew
     const soundcloudMetaData = getMetaData(elem)
     if (soundcloudMetaData) {
       const msg = { type: 'tipInlineMedia', mediaMetaData: soundcloudMetaData }
-      console.log(JSON.stringify(soundcloudMetaData, null, ' '))
       chrome.runtime.sendMessage(msg)
     }
     event.stopPropagation()
@@ -263,6 +267,74 @@ document.addEventListener('visibilitychange', function () {
   clearTimeout(timeout)
   if (!document.hidden) {
     timeout = setTimeout(configureBraveTipAction, 3000)
+  }
+})
+
+const getEventData = async (event: any, clientId: string): Promise<any | null>  => {
+  if(event.event == 'audio') {
+    const id = event.payload.track_owner.split(':').slice(-1)[0]
+    const url = `https://api.soundcloud.com/users/${id}?client_id=${clientId}`
+    const response = await fetch(url)
+    console.log(`Get to :${url}`)
+    console.log(`Response code: ${response.status}`)
+    const eventUserData =  await response.json()
+    event.payload.owner_data = eventUserData
+    return event
+  }
+  return null
+}
+
+const getSoundCloudClientId = (): Promise<string> => {
+  const msg = { type: 'getSoundCloudClientId' }
+  return new Promise(resolve => chrome.runtime.sendMessage(msg, resolve))
+}
+
+const getSoundCloudEventsData = async (payload: string) => {
+  let body = JSON.parse(payload)
+  let events = body.events
+  const clientId = await getSoundCloudClientId()
+
+  if(!Array.isArray(events)) {
+    return
+  }
+
+  var info: Array<soundcloudEvent> = []
+  for (let e of events) {
+    let event = await getEventData(e, clientId)
+    if (event) {
+      info.push(event)
+    }
+  }
+  if (info.length) {
+    const msg = {
+      type: 'respondClientMediaMessage',
+      body: {
+        type: 'soundcloud',
+        response: JSON.stringify({
+          action: 'autoContributionEvent',
+          message: info
+        })
+      }
+    }
+    chrome.runtime.sendMessage(msg)
+  }
+}
+
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  const type = msg.type
+  switch (type) {
+    case 'soundcloud' : {
+      let request = msg.body
+      switch (request.action) {
+        case 'getEventData' :
+          getSoundCloudEventsData(request.payload)
+          break
+        default:
+          break
+      }
+    }
+    default:
+      break
   }
 })
 

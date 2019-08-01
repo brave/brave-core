@@ -79,6 +79,7 @@ using ShowNotificationCallback = std::function<void(const Result)>;
 using SavePendingContributionCallback = std::function<void(const Result)>;
 using DeleteActivityInfoCallback = std::function<void(const ledger::Result)>;
 using SaveRecurringTipCallback = std::function<void(const Result)>;
+using SendClientMediaMessageCallback = std::function<void()>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -274,6 +275,11 @@ class LEDGER_EXPORT LedgerClient {
   virtual void DeleteActivityInfo(
       const std::string& publisher_key,
       ledger::DeleteActivityInfoCallback callback) = 0;
+
+  virtual void SendClientMediaMessage(
+      const int32_t tab_id,
+      const std::string& payload,
+      ledger::SendClientMediaMessageCallback callback) = 0;
 };
 
 }  // namespace ledger

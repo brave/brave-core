@@ -49,6 +49,10 @@ class Media {
                      const std::map<std::string, std::string>& data,
                      ledger::PublisherInfoCallback callback);
 
+  void RespondClientMediaMessage(
+      const std::string& type,
+      const std::string& response);
+
   static std::string GetShareURL(
       const std::string& type,
       const std::map<std::string, std::string>& args);

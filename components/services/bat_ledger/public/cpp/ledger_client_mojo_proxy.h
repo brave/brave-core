@@ -20,8 +20,7 @@ namespace bat_ledger {
 
 class LedgerClientMojoProxy : public mojom::BatLedgerClient,
                           public base::SupportsWeakPtr<LedgerClientMojoProxy> {
- public:
-  explicit LedgerClientMojoProxy(ledger::LedgerClient* ledger_client);
+ public: explicit LedgerClientMojoProxy(ledger::LedgerClient* ledger_client);
   ~LedgerClientMojoProxy() override;
 
   // bat_ledger::mojom::BatLedgerClient
@@ -181,8 +180,13 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       ShowNotificationCallback callback) override;
 
   void DeleteActivityInfo(
-    const std::string& publisher_key,
-    DeleteActivityInfoCallback callback) override;
+      const std::string& publisher_key,
+      DeleteActivityInfoCallback callback) override;
+
+  void SendClientMediaMessage(
+      const int32_t tab_id,
+      const std::string& payload,
+      SendClientMediaMessageCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -343,6 +347,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnDeleteActivityInfo(
       CallbackHolder<DeleteActivityInfoCallback>* holder,
       const ledger::Result result);
+
+  static void OnSendClientMediaMessage(
+    CallbackHolder<SendClientMediaMessageCallback>* holder);
 
   ledger::LedgerClient* ledger_client_;
 

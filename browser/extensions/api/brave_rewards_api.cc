@@ -416,6 +416,35 @@ void BraveRewardsTipSoundCloudUserFunction::OnSoundCloudPublisherInfoSaved(
   Release();
 }
 
+BraveRewardsRespondClientMediaMessageFunction::BraveRewardsRespondClientMediaMessageFunction()
+    : weak_factory_(this) {
+}
+
+BraveRewardsRespondClientMediaMessageFunction::
+    ~BraveRewardsRespondClientMediaMessageFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsRespondClientMediaMessageFunction::Run() {
+  std::unique_ptr<brave_rewards::RespondClientMediaMessage::Params> params(
+      brave_rewards::RespondClientMediaMessage::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  // Sanity check: don't allow tips in private / tor contexts,
+  // although the command should not have been enabled in the first place.
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (profile->IsOffTheRecord()) {
+    return RespondNow(
+        Error("Cannot tip SoundCloud user in a private context"));
+  }
+
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service) {
+    AddRef();
+    rewards_service->RespondClientMediaMessage(params->type, params->response);
+  }
+  return RespondNow(NoArguments());
+}
 BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() {
 }
 

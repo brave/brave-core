@@ -421,4 +421,24 @@ void ExtensionRewardsServiceObserver::OnDisconnectWallet(
   event_router->BroadcastEvent(std::move(event));
 }
 
+
+void ExtensionRewardsServiceObserver::OnSendClientMediaMessage(
+      brave_rewards::RewardsService* rewards_service,
+      const int32_t tab_id,
+      const std::string& payload) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnSendClientMediaMessage::Create(tab_id, payload)
+          .release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnSendClientMediaMessage::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
 }  // namespace brave_rewards

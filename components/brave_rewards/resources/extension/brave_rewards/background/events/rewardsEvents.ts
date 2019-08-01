@@ -113,3 +113,15 @@ chrome.braveRewards.onDisconnectWallet.addListener((properties: {result: number,
     })
   }
 })
+
+
+chrome.braveRewards.onSendClientMediaMessage.addListener((tabId: number, payload: string) => {
+  const msg = {
+    type: 'soundcloud',
+    body: {
+      action: 'getEventData',
+      payload
+    }
+  }
+  chrome.tabs.sendMessage(tabId, msg)
+})

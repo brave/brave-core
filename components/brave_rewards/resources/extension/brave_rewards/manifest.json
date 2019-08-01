@@ -15,7 +15,8 @@
     "webRequest",
     "chrome://favicon/*",
     "https://www.twitch.tv/*",
-    "https://*.twitter.com/*"
+    "https://*.twitter.com/*",
+    "https://*.soundcloud.com/*"
   ],
   "browser_action": {
     "default_popup": "brave_rewards_panel.html",

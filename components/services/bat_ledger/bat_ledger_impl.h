@@ -198,6 +198,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     const std::string& wallet_type,
     DisconnectWalletCallback callback) override;
 
+  void RespondClientMediaMessage(
+    const std::string& type,
+    const std::string& response) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;

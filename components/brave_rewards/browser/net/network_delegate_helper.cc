@@ -76,7 +76,6 @@ int OnBeforeURLRequest(
   const brave::ResponseCallback& next_callback,
   std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-
   if (IsMediaLink(ctx->request_url, ctx->tab_origin, ctx->referrer)) {
     if (!ctx->upload_data.empty()) {
       base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},

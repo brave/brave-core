@@ -103,6 +103,20 @@ class BraveRewardsTipSoundCloudUserFunction
       std::unique_ptr<brave_rewards::ContentSite> publisher_info);
 };
 
+class BraveRewardsRespondClientMediaMessageFunction
+    : public UIThreadExtensionFunction {
+ public:
+  BraveRewardsRespondClientMediaMessageFunction();
+  DECLARE_EXTENSION_FUNCTION("braveRewards.respondClientMediaMessage", UNKNOWN)
+
+ protected:
+  ~BraveRewardsRespondClientMediaMessageFunction() override;
+
+  ResponseAction Run() override;
+ private:
+  base::WeakPtrFactory<BraveRewardsRespondClientMediaMessageFunction> weak_factory_;
+};
+
 class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherData", UNKNOWN)

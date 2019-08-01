@@ -34,9 +34,14 @@ class SoundCloud : public ledger::LedgerCallbackHandler {
       const std::map<std::string, std::string>& data,
       ledger::PublisherInfoCallback callback);
 
+  void ProcessMedia(const std::string& response);
+
+  static std::string GetLinkType(const std::string& url);
+
   ~SoundCloud() override;
 
  private:
+  std::map<std::string, uint32_t> now_playing;
   void OnMediaPublisherActivity(
       ledger::Result result,
       ledger::PublisherInfoPtr info,
@@ -99,6 +104,13 @@ class SoundCloud : public ledger::LedgerCallbackHandler {
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
 
+  void ProcessAudioEvent (base::Value* value);
+
+  void ProcessDuration(
+    const std::string& publisher_key,
+    base::Value* event);
+
+
   static std::string GetUserJSON(const std::string& response);
 
   static std::string GetUserName(const std::string& json_string);
@@ -126,6 +138,13 @@ class SoundCloud : public ledger::LedgerCallbackHandler {
   static bool GetJSONIntValue(const std::string& key,
       const std::string& json_string,
       int64_t* result);
+
+  static bool IsAudioEvent (base::Value& value);
+
+  static std::string GetStringValue(base::Value* value);
+
+  static int32_t GetIntValue(base::Value* value);
+
 
   // For testing purposes
   friend class MediaSoundCloudTest;

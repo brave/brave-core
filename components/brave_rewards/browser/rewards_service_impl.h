@@ -278,6 +278,15 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& wallet_type,
       ledger::ExternalWalletPtr wallet) override;
 
+  void SendClientMediaMessage(
+      const int32_t tab_id,
+      const std::string& payload,
+      ledger::SendClientMediaMessageCallback callback) override;
+
+  void RespondClientMediaMessage(
+      const std::string& type,
+      const std::string& response) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();

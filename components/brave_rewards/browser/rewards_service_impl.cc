@@ -2360,8 +2360,7 @@ void RewardsServiceImpl::GetRecurringTipsUI(
 void RewardsServiceImpl::OnGetRecurringTips(
     const ledger::PublisherInfoListCallback callback,
     ledger::PublisherInfoList list) {
-  if (!Connected()) {
-    return;
+  if (!Connected()) { return;
   }
 
   callback(std::move(list), 0);
@@ -3559,6 +3558,25 @@ void RewardsServiceImpl::ShowNotification(
       notification_args,
       "rewards_notification_general_ledger_" + type);
     callback(ledger::Result::LEDGER_OK);
+}
+
+
+void RewardsServiceImpl::SendClientMediaMessage(
+    const int32_t tab_id,
+    const std::string& payload,
+    ledger::SendClientMediaMessageCallback callback) {
+  bool sent = false;
+  for (auto& observer : observers_) {
+    observer.OnSendClientMediaMessage(this, tab_id, payload);
+    sent = true;
+  }
+  callback();
+}
+
+void RewardsServiceImpl::RespondClientMediaMessage(
+    const std::string& type,
+    const std::string& response) {
+  bat_ledger_->RespondClientMediaMessage(type, response);
 }
 
 }  // namespace brave_rewards

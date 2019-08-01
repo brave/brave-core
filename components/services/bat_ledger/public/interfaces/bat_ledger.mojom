@@ -150,6 +150,8 @@ interface BatLedger {
   ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (ledger.mojom.Result result, map<string, string> args);
 
   DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
+
+  RespondClientMediaMessage(string type, string response);
 };
 
 interface BatLedgerClient {
@@ -199,6 +201,8 @@ interface BatLedgerClient {
   LoadURL(string url, array<string> headers, string content,
       string content_type, int32 method) => (int32 status_code, string response,
         map<string, string> headers);
+
+  SendClientMediaMessage(int32 tab_id, string payload) => ();
 
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);

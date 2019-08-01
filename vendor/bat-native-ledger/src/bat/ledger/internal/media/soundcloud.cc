@@ -31,6 +31,14 @@ SoundCloud::~SoundCloud() {
 }
 
 // static
+std::string SoundCloud::GetLinkType(const std::string& url) {
+  if (url.find("soundcloud.com/v1/events") != std::string::npos) {
+    return SOUNDCLOUD_MEDIA_TYPE;
+  }
+  return "";
+}
+
+// static
 std::string SoundCloud::GetUserJSON(const std::string& response) {
   std::string script_body = braveledger_media::ExtractData(
       response,
@@ -501,6 +509,92 @@ void SoundCloud::SaveMediaInfo(
                               _1,
                               _2,
                               _3));
+
+}
+
+std::string SoundCloud::GetStringValue(base::Value* value) {
+  if (value) {
+    return value->is_string() ?
+        value->GetString() :
+            value->is_int() ?  std::to_string(value->GetInt()) : "";
+  }
+  return "";
+}
+
+int32_t SoundCloud::GetIntValue(base::Value* value) {
+  return value && value->is_int() ? value->GetInt() : -1;
+}
+
+void SoundCloud::ProcessDuration(
+    const std::string& publisher_key,
+    base::Value* event) {
+  auto* action = event->FindKey("action");
+  auto* pos = event->FindKey("playhead_position");
+  // TODO: Should also probably key on tab_id to avoid conflicting tabs
+  if (action && action->GetString() == "play") {
+    now_playing[publisher_key] = pos->GetInt();
+  } else if (action && action->GetString() == "pause") {
+    auto last_start = now_playing.find(publisher_key);
+    if (last_start == now_playing.end()) {
+      //weird non synchronous error....
+      return;
+    }
+    int64_t duration = pos->GetInt() - last_start->second;
+    if (duration < 0) {
+      //missed an event... error
+      return;
+    }
+    // TODO: plug calculated duration into Ledger
+  }
+}
+
+void SoundCloud::ProcessAudioEvent(base::Value* event) {
+  if (!event || !event->is_dict()) {
+    return;
+  }
+  auto* owner_data = event->FindKey("owner_data");
+  if (!owner_data || !owner_data->is_dict()) {
+    return;
+  }
+  std::string user_id = GetStringValue(owner_data->FindKey("id"));
+  std::string publisher_key = GetPublisherKey(user_id);
+  // TODO: GetPublisherInfo on publisher_key to check if found then
+  // Then pass block as callback
+
+  // Should be callback to GetPublisherInfo
+  ProcessDuration(publisher_key, event);
+}
+
+bool SoundCloud::IsAudioEvent(base::Value& value) {
+  auto* event = value.FindKey("event");
+  if (event->is_string() && "audio" == event->GetString()) {
+    return true;
+  }
+  return false;
+}
+
+void SoundCloud::ProcessMedia(const std::string& response) {
+  LOG(INFO) << response;
+  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  if (!value || !value->is_dict()) {
+    return;
+  }
+  auto* action_val = value->FindKey("action");
+  if (action_val || !value->is_string()) {
+    std::string action = action_val->GetString();
+    if (action == "autoContributionEvent") {
+      auto* message_val = value->FindKey("message");
+      if (!message_val || !message_val->is_list()) {
+        return;
+      }
+      auto& message = message_val->GetList();
+      for(auto iter = message.begin(); iter != message.end(); ++iter) {
+        if (IsAudioEvent(*iter)) {
+          ProcessAudioEvent(iter->FindKey("payload"));
+        }
+      }
+    }
+  }
 }
 
 }  // namespace braveledger_media

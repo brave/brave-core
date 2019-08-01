@@ -847,4 +847,10 @@ void BatLedgerImpl::DisconnectWallet(
                 _1));
 }
 
+void BatLedgerImpl::RespondClientMediaMessage(
+    const std::string& type,
+    const std::string& response) {
+  ledger_->RespondClientMediaMessage(type, response);
+}
+
 }  // namespace bat_ledger
