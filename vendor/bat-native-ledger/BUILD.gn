@@ -139,6 +139,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/uphold/uphold_user.cc",
     "src/bat/ledger/internal/uphold/uphold_util.h",
     "src/bat/ledger/internal/uphold/uphold_util.cc",
+    "src/bat/ledger/internal/uphold/uphold_wallet.h",
+    "src/bat/ledger/internal/uphold/uphold_wallet.cc",
     "src/bat/ledger/internal/wallet/balance.h",
     "src/bat/ledger/internal/wallet/balance.cc",
     "src/bat/ledger/internal/wallet/create.h",

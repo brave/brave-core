@@ -22,6 +22,7 @@ namespace braveledger_uphold {
 class UpholdTransfer;
 class UpholdCard;
 class UpholdAuthorization;
+class UpholdWallet;
 
 using TransactionCallback = std::function<void(ledger::Result, bool created)>;
 using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
@@ -49,6 +50,11 @@ class Uphold {
     const std::map<std::string, std::string>& args,
     std::map<std::string, ledger::ExternalWalletPtr> wallets,
     ledger::ExternalWalletAuthorizationCallback callback);
+
+  void TransferAnonToExternalWallet(
+      ledger::ExternalWalletPtr wallet,
+      const bool allow_zero_balance,
+      ledger::ExternalWalletCallback callback);
 
   void GenerateExternalWallet(
     std::map<std::string, ledger::ExternalWalletPtr> wallets,
@@ -79,30 +85,10 @@ class Uphold {
     const std::string& response,
     const std::map<std::string, std::string>& headers);
 
-  void OnGenerateExternalWalletCard(
-      const bool allow_zero_balance,
-      const ledger::ExternalWallet& wallet,
-      ledger::ExternalWalletCallback callback,
-      const ledger::Result result,
-      const std::string& address);
-
-  void OnGenerateExternalWallet(
-      const ledger::Result result,
-      const User& user,
-      const ledger::ExternalWallet& wallet,
-      ledger::ExternalWalletCallback callback);
-
-  void TransferAnonToExternalWallet(
-      ledger::ExternalWalletPtr wallet,
-      const bool allow_zero_balance,
-      ledger::ExternalWalletCallback callback);
-
   void OnTransferAnonToExternalWalletCallback(
     ledger::ExternalWalletCallback callback,
     const ledger::ExternalWallet& wallet,
     ledger::Result result);
-
-  void OnShowNotification(ledger::Result result);
 
   void OnDisconectWallet(
     ledger::Result result,
@@ -112,6 +98,7 @@ class Uphold {
   std::unique_ptr<UpholdCard> card_;
   std::unique_ptr<UpholdUser> user_;
   std::unique_ptr<UpholdAuthorization> authorization_;
+  std::unique_ptr<UpholdWallet> wallet_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
