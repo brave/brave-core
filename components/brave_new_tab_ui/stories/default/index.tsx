@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Page, Header, Main, Footer, DynamicBackground, Gradient, ClockWidget as Clock } from '../../components/default'
+import { Page, Header, Main, Footer, App, PosterBackground, Gradient, ClockWidget as Clock } from '../../components/default'
 
 import TopSitesList from './topSites/topSitesList'
 import Stats from './stats'
@@ -69,8 +69,11 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
     const { showSettingsMenu, showBackgroundImage, showClock, showStats, showTopSites } = this.state
     const { textDirection } = this.props
     return (
-      <DynamicBackground showBackgroundImage={showBackgroundImage} background={generateRandomBackgroundData.source} dir={textDirection}>
-        {showBackgroundImage && <Gradient />}
+      <App dataIsReady={true} dir={textDirection}>
+      <PosterBackground hasImage={showBackgroundImage} imageHasLoaded={true}>
+        {showBackgroundImage && <img src={generateRandomBackgroundData.source} />}
+      </PosterBackground>
+        {showBackgroundImage && <Gradient imageHasLoaded={true} />}
         <Page>
           <Header>
             <Stats
@@ -105,7 +108,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
             />
           </Footer>
         </Page>
-      </DynamicBackground>
+      </App>
     )
   }
 }
