@@ -15,7 +15,6 @@ import {
 import {
   AlertCircleIcon,
   CheckCircleIcon,
-  CloseCircleOIcon,
   CloseStrokeIcon
 } from '../../../components/icons'
 
@@ -36,7 +35,7 @@ export default class Alert extends React.PureComponent<Props, {}> {
       case 'error':
         return (
           <StyledError>
-            <CloseCircleOIcon />
+            <AlertCircleIcon />
           </StyledError>
         )
       case 'success':
