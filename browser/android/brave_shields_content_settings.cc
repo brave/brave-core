@@ -67,28 +67,22 @@ void BraveShieldsContentSettings::DispatchBlockedEvent(int tab_id,
       block_type, subresource);
 }
 
-void JNI_BraveShieldsContentSettings_SetBraveShieldsControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& type,
+void JNI_BraveShieldsContentSettings_SetBraveShieldsEnabled(JNIEnv* env,
+    jboolean enabled,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  brave_shields::SetBraveShieldsControlType(
+  brave_shields::SetBraveShieldsEnabled(
       ProfileAndroid::FromProfileAndroid(j_profile),
-      brave_shields::ControlTypeFromString(
-          base::android::ConvertJavaStringToUTF8(env, type)),
+      enabled,
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 }
 
-base::android::ScopedJavaLocalRef<jstring>
-    JNI_BraveShieldsContentSettings_GetBraveShieldsControlType(JNIEnv* env,
+jboolean JNI_BraveShieldsContentSettings_GetBraveShieldsEnabled(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  brave_shields::ControlType control_type =
-      brave_shields::GetBraveShieldsControlType(
-          ProfileAndroid::FromProfileAndroid(j_profile),
+  return brave_shields::GetBraveShieldsEnabled(
+      ProfileAndroid::FromProfileAndroid(j_profile),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
-
-  return base::android::ConvertUTF8ToJavaString(env,
-      brave_shields::ControlTypeToString(control_type));
 }
 
 void JNI_BraveShieldsContentSettings_SetAdControlType(JNIEnv* env,
@@ -163,28 +157,22 @@ base::android::ScopedJavaLocalRef<jstring>
       brave_shields::ControlTypeToString(control_type));
 }
 
-void JNI_BraveShieldsContentSettings_SetHTTPSEverywhereControlType(JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& type,
+void JNI_BraveShieldsContentSettings_SetHTTPSEverywhereEnabled(JNIEnv* env,
+    jboolean enabled,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  brave_shields::SetHTTPSEverywhereControlType(
+  brave_shields::SetHTTPSEverywhereEnabled(
       ProfileAndroid::FromProfileAndroid(j_profile),
-      brave_shields::ControlTypeFromString(
-          base::android::ConvertJavaStringToUTF8(env, type)),
+      enabled,
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 }
 
-base::android::ScopedJavaLocalRef<jstring>
-    JNI_BraveShieldsContentSettings_GetHTTPSEverywhereControlType(JNIEnv* env,
+jboolean JNI_BraveShieldsContentSettings_GetHTTPSEverywhereEnabled(JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  brave_shields::ControlType control_type =
-      brave_shields::GetHTTPSEverywhereControlType(
-          ProfileAndroid::FromProfileAndroid(j_profile),
+  return brave_shields::GetHTTPSEverywhereEnabled(
+      ProfileAndroid::FromProfileAndroid(j_profile),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
-
-  return base::android::ConvertUTF8ToJavaString(env,
-      brave_shields::ControlTypeToString(control_type));
 }
 
 void JNI_BraveShieldsContentSettings_SetNoScriptControlType(JNIEnv* env,

@@ -59,11 +59,11 @@ public class BraveShieldsContentSettings {
             boolean fromTopShields) {
         String setting_string = (value ? blockResource : allowResource);
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-            BraveShieldsContentSettingsJni.get().setBraveShieldsControlType(setting_string, host, profile);
+            BraveShieldsContentSettingsJni.get().setBraveShieldsEnabled(value, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
             BraveShieldsContentSettingsJni.get().setAdControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-            BraveShieldsContentSettingsJni.get().setHTTPSEverywhereControlType(setting_string, host, profile);
+            BraveShieldsContentSettingsJni.get().setHTTPSEverywhereEnabled(value, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
@@ -76,18 +76,15 @@ public class BraveShieldsContentSettings {
     public static boolean getShields(Profile profile, String host, String resourceIndentifier) {
         String settings = blockResource;
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-            settings = BraveShieldsContentSettingsJni.get().getBraveShieldsControlType(host, profile);
+            return BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_ADS_TRACKERS)) {
             settings = BraveShieldsContentSettingsJni.get().getAdControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
-            settings = BraveShieldsContentSettingsJni.get().getHTTPSEverywhereControlType(host, profile);
+            return BraveShieldsContentSettingsJni.get().getHTTPSEverywhereEnabled(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(host, profile);
-            if (!settings.equals(allowResource) && !settings.equals(blockResource)) {
-                return false;
-            }
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
         }
@@ -115,16 +112,16 @@ public class BraveShieldsContentSettings {
         void init(@JCaller BraveShieldsContentSettings self);
         void destroy(long nativeBraveShieldsContentSettings);
 
-        void setBraveShieldsControlType(String type, String url, Profile profile);
-        String getBraveShieldsControlType(String url, Profile profile);
+        void setBraveShieldsEnabled(boolean enabled, String url, Profile profile);
+        boolean getBraveShieldsEnabled(String url, Profile profile);
         void setAdControlType(String type, String url, Profile profile);
         String getAdControlType(String url, Profile profile);
         void setCookieControlType(String type, String url, Profile profile);
         String getCookieControlType(String url, Profile profile);
         void setFingerprintingControlType(String type, String url, Profile profile);
         String getFingerprintingControlType(String url, Profile profile);
-        void setHTTPSEverywhereControlType(String type, String url, Profile profile);
-        String getHTTPSEverywhereControlType(String url, Profile profile);
+        void setHTTPSEverywhereEnabled(boolean enabled, String url, Profile profile);
+        boolean getHTTPSEverywhereEnabled(String url, Profile profile);
         void setNoScriptControlType(String type, String url, Profile profile);
         String getNoScriptControlType(String url, Profile profile);
     }
