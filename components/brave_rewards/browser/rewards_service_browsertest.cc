@@ -2327,10 +2327,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
         content::ISOLATED_WORLD_ID_CONTENT_END));
   }
 
-  content::WindowedNotificationObserver auth_obs(
-        content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
-        content::NotificationService::AllSources());
-
   // Click on verify button in on boarding
   {
     ASSERT_TRUE(ExecJs(contents(),
@@ -2338,8 +2334,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END));
   }
-
-  auth_obs.Wait();
 
   // Check if we are redirected to uphold
   {
@@ -2353,13 +2347,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Fake successful authentication
   ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(
         browser(),
-        uphold_auth_url(), 2);
-
-  content::WindowedNotificationObserver kyc_obs(
-        content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
-        content::NotificationService::AllSources());
-
-  kyc_obs.Wait();
+        uphold_auth_url(), 1);
 
   // Check if we are redirected to KYC page
   {
