@@ -18,6 +18,18 @@ namespace brave {
 int OnBeforeURLRequest_StaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
+  GURL new_url;
+  int rc = OnBeforeURLRequest_StaticRedirectWorkForGURL(ctx->request_url,
+                                                        &new_url);
+  if (!new_url.is_empty()) {
+    ctx->new_url_spec = new_url.spec();
+  }
+  return rc;
+}
+
+int OnBeforeURLRequest_StaticRedirectWorkForGURL(
+    const GURL& request_url,
+    GURL* new_url) {
   GURL::Replacements replacements;
   static URLPattern geo_pattern(URLPattern::SCHEME_HTTPS, kGeoLocationsPattern);
   static URLPattern safeBrowsing_pattern(URLPattern::SCHEME_HTTPS,
@@ -40,74 +52,74 @@ int OnBeforeURLRequest_StaticRedirectWork(
   static URLPattern translate_language_pattern(URLPattern::SCHEME_HTTPS,
       kTranslateLanguagePattern);
 #endif
-  if (geo_pattern.MatchesURL(ctx->request_url)) {
-    ctx->new_url_spec = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY).spec();
+  if (geo_pattern.MatchesURL(request_url)) {
+    *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
     return net::OK;
   }
 
-  if (safeBrowsing_pattern.MatchesHost(ctx->request_url)) {
+  if (safeBrowsing_pattern.MatchesHost(request_url)) {
     replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (safebrowsingfilecheck_pattern.MatchesHost(ctx->request_url)) {
+  if (safebrowsingfilecheck_pattern.MatchesHost(request_url)) {
     replacements.SetHostStr(kBraveSafeBrowsingFileCheckProxy);
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (crxDownload_pattern.MatchesURL(ctx->request_url)) {
+  if (crxDownload_pattern.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crxdownload.brave.com");
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (crlSet_pattern1.MatchesURL(ctx->request_url)) {
+  if (crlSet_pattern1.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crlsets.brave.com");
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (crlSet_pattern2.MatchesURL(ctx->request_url)) {
+  if (crlSet_pattern2.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crlsets.brave.com");
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (crlSet_pattern3.MatchesURL(ctx->request_url)) {
+  if (crlSet_pattern3.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crlsets.brave.com");
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (crlSet_pattern4.MatchesURL(ctx->request_url)) {
+  if (crlSet_pattern4.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crlsets.brave.com");
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
-  if (translate_pattern.MatchesURL(ctx->request_url)) {
-    replacements.SetQueryStr(ctx->request_url.query_piece());
-    replacements.SetPathStr(ctx->request_url.path_piece());
-    ctx->new_url_spec =
-      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
+  if (translate_pattern.MatchesURL(request_url)) {
+    replacements.SetQueryStr(request_url.query_piece());
+    replacements.SetPathStr(request_url.path_piece());
+    *new_url =
+      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (translate_language_pattern.MatchesURL(ctx->request_url)) {
-    ctx->new_url_spec = GURL(kBraveTranslateLanguageEndpoint).spec();
+  if (translate_language_pattern.MatchesURL(request_url)) {
+    *new_url = GURL(kBraveTranslateLanguageEndpoint);
     return net::OK;
   }
 #endif
 
 #if !defined(NDEBUG)
-  GURL gurl = ctx->request_url;
+  GURL gurl = request_url;
   static std::vector<URLPattern> allowed_patterns({
       // Brave updates
       URLPattern(URLPattern::SCHEME_HTTPS, "https://go-updater.brave.com/*"),
@@ -182,5 +194,6 @@ int OnBeforeURLRequest_StaticRedirectWork(
 
   return net::OK;
 }
+
 
 }  // namespace brave

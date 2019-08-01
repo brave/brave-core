@@ -44,35 +44,49 @@ bool IsUpdaterURL(const GURL& gurl) {
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
+  GURL new_url;
+  int rc = OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(ctx->request_url,
+                                                              &new_url);
+  if (!new_url.is_empty()) {
+    ctx->new_url_spec = new_url.spec();
+  }
+  return rc;
+}
+
+int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
+    const GURL& request_url,
+    GURL* new_url) {
+  DCHECK(new_url);
+
   GURL::Replacements replacements;
   static URLPattern chromecast_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kChromeCastPrefix);
   static URLPattern clients4_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kClients4Prefix);
 
-  if (IsUpdaterURL(ctx->request_url)) {
-    replacements.SetQueryStr(ctx->request_url.query_piece());
-    ctx->new_url_spec = GURL(kBraveUpdatesExtensionsEndpoint)
-                            .ReplaceComponents(replacements)
-                            .spec();
+  if (IsUpdaterURL(request_url)) {
+    replacements.SetQueryStr(request_url.query_piece());
+    *new_url = GURL(kBraveUpdatesExtensionsEndpoint)
+                            .ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (chromecast_pattern.MatchesURL(ctx->request_url)) {
+  if (chromecast_pattern.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveRedirectorProxy);
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (clients4_pattern.MatchesHost(ctx->request_url)) {
+  if (clients4_pattern.MatchesHost(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveClients4Proxy);
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
   return net::OK;
 }
+
 
 }  // namespace brave
