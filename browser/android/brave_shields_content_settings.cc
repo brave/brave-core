@@ -23,6 +23,8 @@
 namespace chrome {
 namespace android {
 
+
+// That class is linked to a global toolbar. It's a one instance on Android
 BraveShieldsContentSettings* g_brave_shields_content_settings = nullptr;
 
 static void JNI_BraveShieldsContentSettings_Init(JNIEnv* env,
