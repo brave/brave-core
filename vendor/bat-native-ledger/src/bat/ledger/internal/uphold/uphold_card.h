@@ -18,6 +18,17 @@ class LedgerImpl;
 
 namespace braveledger_uphold {
 
+struct UpdateCard {
+  std::string label;
+  int32_t position;
+  bool starred;
+
+  UpdateCard();
+  ~UpdateCard();
+};
+
+using UpdateCardCallback = std::function<void(const ledger::Result)>;
+
 class UpholdCard {
  public:
   explicit UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold);
@@ -30,10 +41,27 @@ class UpholdCard {
 
  private:
   void OnCreate(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      CreateCardCallback callback);
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    const ledger::ExternalWallet& wallet,
+    CreateCardCallback callback);
+
+  void OnCreateUpdate(
+    const ledger::Result result,
+    const std::string& address,
+    CreateCardCallback callback);
+
+  void Update(
+    ledger::ExternalWalletPtr wallet,
+    const UpdateCard& card,
+    UpdateCardCallback callback);
+
+  void OnUpdate(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    UpdateCardCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED

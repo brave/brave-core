@@ -178,6 +178,8 @@ std::string URLMethodToRequestType(ledger::URL_METHOD method) {
       return "POST";
     case ledger::URL_METHOD::PUT:
       return "PUT";
+    case ledger::URL_METHOD::PATCH:
+      return "PATCH";
     default:
       NOTREACHED();
       return "GET";
