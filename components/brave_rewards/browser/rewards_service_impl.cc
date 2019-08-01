@@ -3848,7 +3848,7 @@ void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& promotion_i
 void RewardsServiceImpl::GrantAttestationResult(const std::string& promotion_id, bool result,
     const std::string& result_string) {
   if (result) {
-    return bat_ledger_->ApplySafetynetToken(result_string);
+    return bat_ledger_->ApplySafetynetToken(promotion_id, result_string);
   } else {
     LOG(ERROR) << "GrantAttestationResult error: " << result_string;
     TriggerOnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, nullptr);

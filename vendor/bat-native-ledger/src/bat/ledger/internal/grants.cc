@@ -43,6 +43,7 @@ void Grants::FetchGrants(const std::string& lang,
     ledger_->OnWalletProperties(ledger::Result::CORRUPTED_WALLET, properties);
     return;
   }
+
   std::string paymentId = forPaymentId;
   if (paymentId.empty()) {
     paymentId = ledger_->GetPaymentId();
@@ -139,7 +140,6 @@ void Grants::GetGrantsCallback(
     braveledger_bat_helper::GRANT grant_;
     grant_.promotionId = grant.promotionId;
     grant_.type = grant.type;
-
     grants.push_back(grant_);
   }
 
