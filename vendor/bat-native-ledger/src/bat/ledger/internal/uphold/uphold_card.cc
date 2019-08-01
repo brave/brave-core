@@ -57,7 +57,7 @@ void UpholdCard::OnCreate(
 
   if (response_status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
-    uphold_->DisconectWallet();
+    uphold_->DisconnectWallet();
     return;
   }
 

@@ -21,6 +21,7 @@ namespace braveledger_uphold {
 
 class UpholdTransfer;
 class UpholdCard;
+class UpholdAuthorization;
 
 using TransactionCallback = std::function<void(ledger::Result, bool created)>;
 using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
@@ -57,7 +58,11 @@ class Uphold {
       ledger::ExternalWalletPtr wallet,
       CreateCardCallback callback);
 
-  void DisconectWallet();
+  void DisconnectWallet();
+
+  void GetUser(
+    ledger::ExternalWalletPtr wallet,
+    GetUserCallback callback);
 
  private:
   void ContributionCompleted(ledger::Result result,
@@ -70,25 +75,6 @@ class Uphold {
 
   void OnFetchBalance(
     FetchBalanceCallback callback,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
-
-  void OnWalletAuthorizationCreate(
-    ledger::Result result,
-    const std::string& address,
-    ledger::ExternalWalletAuthorizationCallback callback,
-    const ledger::ExternalWallet& wallet);
-
-  void OnWalletAuthorizationUser(
-    const ledger::Result result,
-    const User& user,
-    ledger::ExternalWalletAuthorizationCallback callback,
-    const ledger::ExternalWallet& wallet);
-
-  void OnWalletAuthorization(
-    ledger::ExternalWalletAuthorizationCallback callback,
-    const ledger::ExternalWallet& wallet,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
@@ -125,6 +111,7 @@ class Uphold {
   std::unique_ptr<UpholdTransfer> transfer_;
   std::unique_ptr<UpholdCard> card_;
   std::unique_ptr<UpholdUser> user_;
+  std::unique_ptr<UpholdAuthorization> authorization_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
