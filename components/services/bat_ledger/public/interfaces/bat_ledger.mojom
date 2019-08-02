@@ -75,7 +75,7 @@ interface BatLedger {
   GetLTCAddress() => (string address);
 
   GetGrantViaSafetynetCheck(string promotion_id);
-  ApplySafetynetToken(string result_string);
+  ApplySafetynetToken(string promotion_id, string result_string);
   
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
