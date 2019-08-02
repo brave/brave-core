@@ -14,6 +14,7 @@ ClientState::ClientState() :
     ads_shown_history({}),
     ad_uuid(""),
     ads_uuid_seen({}),
+    next_check_serve_ad_timestamp_in_seconds(0),
     available(false),
     last_search_time(0),
     last_shop_time(0),
@@ -35,6 +36,8 @@ ClientState::ClientState(const ClientState& state) :
   ads_shown_history(state.ads_shown_history),
   ad_uuid(state.ad_uuid),
   ads_uuid_seen(state.ads_uuid_seen),
+  next_check_serve_ad_timestamp_in_seconds(
+      state.next_check_serve_ad_timestamp_in_seconds),
   available(state.available),
   last_search_time(state.last_search_time),
   last_shop_time(state.last_shop_time),
@@ -92,6 +95,11 @@ Result ClientState::FromJson(
       ads_uuid_seen.insert({ad_uuid_seen.name.GetString(),
           ad_uuid_seen.value.GetInt64()});
     }
+  }
+
+  if (client.HasMember("nextCheckServeAd")) {
+    next_check_serve_ad_timestamp_in_seconds =
+        client["nextCheckServeAd"].GetUint64();
   }
 
   if (client.HasMember("available")) {
@@ -221,6 +229,9 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
     writer->Uint64(ad_uuid_seen.second);
   }
   writer->EndObject();
+
+  writer->String("nextCheckServeAd");
+  writer->Uint64(state.next_check_serve_ad_timestamp_in_seconds);
 
   writer->String("available");
   writer->Bool(state.available);

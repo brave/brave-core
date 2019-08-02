@@ -83,6 +83,21 @@ void Client::ResetAdsUUIDSeen(
   SaveState();
 }
 
+void Client::UpdateNextCheckServeAdTimestampInSeconds() {
+  auto timestamp_in_seconds = Time::NowInSeconds();
+  timestamp_in_seconds += base::Time::kSecondsPerHour /
+      ads_client_->GetAdsPerHour();
+
+  client_state_->next_check_serve_ad_timestamp_in_seconds
+      = timestamp_in_seconds;
+
+  SaveState();
+}
+
+uint64_t Client::GetNextCheckServeAdTimestampInSeconds() {
+  return client_state_->next_check_serve_ad_timestamp_in_seconds;
+}
+
 void Client::SetAvailable(const bool available) {
   client_state_->available = available;
 

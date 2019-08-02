@@ -128,10 +128,6 @@ void AdsImpl::InitializeStep4(const Result result) {
 
   client_->UpdateAdUUID();
 
-  if (IsMobile()) {
-    StartDeliveringNotifications();
-  }
-
   if (_is_debug) {
     StartCollectingActivity(kDebugOneHourInSeconds);
   } else {
@@ -221,11 +217,19 @@ bool AdsImpl::GetNotificationForId(
 void AdsImpl::OnForeground() {
   is_foreground_ = true;
   GenerateAdReportingForegroundEvent();
+
+  if (IsMobile()) {
+    StartDeliveringNotifications();
+  }
 }
 
 void AdsImpl::OnBackground() {
   is_foreground_ = false;
   GenerateAdReportingBackgroundEvent();
+
+  if (IsMobile()) {
+    StopDeliveringNotifications();
+  }
 }
 
 bool AdsImpl::IsForeground() const {
@@ -1064,8 +1068,21 @@ bool AdsImpl::IsCollectingActivity() const {
 void AdsImpl::StartDeliveringNotifications() {
   StopDeliveringNotifications();
 
-  const uint64_t start_timer_in =
-      base::Time::kSecondsPerHour / ads_client_->GetAdsPerHour();
+  if (client_->GetNextCheckServeAdTimestampInSeconds() == 0) {
+    client_->UpdateNextCheckServeAdTimestampInSeconds();
+  }
+
+  auto now_in_seconds = Time::NowInSeconds();
+  auto next_check_serve_ad_timestamp_in_seconds =
+      client_->GetNextCheckServeAdTimestampInSeconds();
+
+  uint64_t start_timer_in;
+  if (now_in_seconds >= next_check_serve_ad_timestamp_in_seconds) {
+    // Browser was launched after the next check to serve an ad
+    start_timer_in = 1 * base::Time::kSecondsPerMinute;
+  } else {
+    start_timer_in = next_check_serve_ad_timestamp_in_seconds - now_in_seconds;
+  }
 
   delivering_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (delivering_notifications_timer_id_ == 0) {
@@ -1081,6 +1098,8 @@ void AdsImpl::StartDeliveringNotifications() {
 
 void AdsImpl::DeliverNotification() {
   NotificationAllowedCheck(true);
+
+  client_->UpdateNextCheckServeAdTimestampInSeconds();
 
   StartDeliveringNotifications();
 }
