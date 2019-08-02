@@ -419,6 +419,7 @@ void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
   NodeActor* const acting_node = GetCurrentActingNode();
 
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
+  LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
   NodeHTMLText* const inserted_node = text_nodes_.at(node_id);
 
   AddEdge(new EdgeNodeInsert(this, acting_node, inserted_node,
