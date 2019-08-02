@@ -160,10 +160,6 @@ class BraveProxyingURLLoaderFactory
     scoped_refptr<net::HttpResponseHeaders> override_headers_;
     GURL redirect_url_;
 
-    // TODO(https://crbug.com/882661): Remove this once the bug is fixed.
-    bool on_receive_response_received_ = false;
-    bool on_receive_response_sent_ = false;
-
     bool request_completed_ = false;
 
     // This stores the parameters to FollowRedirect that came from

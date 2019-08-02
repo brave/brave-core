@@ -8,8 +8,6 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/debug/alias.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
@@ -257,7 +255,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
     const network::ResourceResponseHead& head) {
-  on_receive_response_received_ = true;
   current_response_ = head;
   HandleResponseOrRedirectHeaders(
       base::BindRepeating(&InProgressRequest::ContinueToResponseStarted,
@@ -300,13 +297,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnTransferSizeUpdated(
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::
     OnStartLoadingResponseBody(mojo::ScopedDataPipeConsumerHandle body) {
-  // TODO(https://crbug.com/882661): Remove this once the bug is fixed.
-  if (!on_receive_response_sent_) {
-    bool on_receive_response_received = on_receive_response_received_;
-    base::debug::Alias(&on_receive_response_received);
-    DEBUG_ALIAS_FOR_GURL(request_url, request_.url)
-    base::debug::DumpWithoutCrashing();
-  }
   target_client_->OnStartLoadingResponseBody(std::move(body));
 }
 
@@ -449,14 +439,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   if (request_.url.SchemeIsHTTPOrHTTPS()) {
-    // NOTE: While it does not appear to be documented (and in fact it may be
-    // intuitive), |onBeforeSendHeaders| is only dispatched for HTTP and HTTPS
-    // requests.
-    // TODO(iefremov): Bind real variables and modify the corresponding API of
-    // callbacks. For now it is safe to leave it as is, since these headers are
-    // only needed in non |header_client_binding_| codepath, but currently
-    // callbacks do meaningful work only for real requests that should go
-    // though header client.
     auto continuation = base::BindRepeating(
         &InProgressRequest::ContinueToSendHeaders, weak_factory_.GetWeakPtr());
 
@@ -587,14 +569,12 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     // |FollowRedirect()|.
     proxied_client_binding_.Close();
     target_loader_.reset();
-    on_receive_response_received_ = false;
 
     ContinueToBeforeRedirect(redirect_info, net::OK);
     return;
   }
 
   proxied_client_binding_.ResumeIncomingMethodCallProcessing();
-  on_receive_response_sent_ = true;
   target_client_->OnReceiveResponse(current_response_);
 }
 
