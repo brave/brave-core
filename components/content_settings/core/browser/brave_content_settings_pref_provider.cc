@@ -15,9 +15,9 @@
 namespace content_settings {
 
 BravePrefProvider::BravePrefProvider(PrefService* prefs,
-                                     bool incognito,
+                                     bool off_the_record,
                                      bool store_last_modified)
-    : PrefProvider(prefs, incognito, store_last_modified) {
+    : PrefProvider(prefs, off_the_record, store_last_modified) {
   brave_pref_change_registrar_.Init(prefs_);
 
   WebsiteSettingsRegistry* website_settings =
@@ -29,8 +29,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
           info->type(),
           std::make_unique<ContentSettingsPref>(
               info->type(), prefs_, &brave_pref_change_registrar_,
-              info->pref_name(),
-              is_incognito_,
+              info->pref_name(), off_the_record_,
               base::Bind(&PrefProvider::Notify, base::Unretained(this)))));
       return;
     }
