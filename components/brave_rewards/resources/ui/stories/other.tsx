@@ -20,7 +20,6 @@ import {
   Profile,
   Amount,
   PanelWelcome,
-  PanelVerify,
   ToggleTips,
   Tooltip,
   DonationOverlay,
@@ -221,25 +220,6 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
           optInErrorAction={dummyClick}
           variant={select<any>('Variant', { one: 'One', two: 'Two' }, 'one')}
           moreLink={dummyClick}
-        />
-      </div>
-    )
-  })
-  .add('Panel Verification', () => {
-    const onVerifyClick = () =>
-      console.log('onVerifyClick')
-
-    const onClose = () =>
-      console.log('onClose')
-
-    const compact = boolean('compact panel', false)
-
-    return (
-      <div style={{ width: '373px', minHeight: compact ? '475px' : '580px', position: 'relative', borderRadius: '5px', overflow: 'hidden' }}>
-        <PanelVerify
-          onVerifyClick={onVerifyClick}
-          onClose={onClose}
-          compact={compact}
         />
       </div>
     )

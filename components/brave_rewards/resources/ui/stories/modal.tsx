@@ -18,7 +18,8 @@ import {
   ModalActivity,
   ModalDonation,
   ModalPending,
-  ModalRedirect
+  ModalRedirect,
+  ModalVerify
 } from '../../../src/features/rewards'
 import ModalAddFunds, { Address } from '../../../src/features/rewards/modalAddFunds'
 
@@ -536,5 +537,15 @@ storiesOf('Feature Components/Rewards/Modal', module)
         errorText={text('Error text', 'Sorry there was problem processing your request, please try again.')}
         onClick={doNothing}
       />
+    )
+  })
+  .add('Verify', () => {
+    return (
+      <div style={{ width: '373px', minHeight: '580px', position: 'relative', borderRadius: '5px', overflow: 'hidden' }}>
+        <ModalVerify
+          onVerifyClick={doNothing}
+          onClose={doNothing}
+        />
+      </div>
     )
   })

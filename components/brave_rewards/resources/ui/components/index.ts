@@ -28,9 +28,9 @@ import ModalContribute from './modalContribute'
 import ModalDonation from './modalDonation'
 import ModalPending from './modalPending'
 import ModalRedirect from './modalRedirect'
+import ModalVerify from './modalVerify'
 import NextContribution from './nextContribution'
 import PanelWelcome from './panelWelcome'
-import PanelVerify from './panelVerify'
 import Profile from './profile'
 import RestoreSites from './restoreSites'
 import RewardsButton from './rewardsButton'
@@ -82,9 +82,9 @@ export {
   ModalDonation,
   ModalPending,
   ModalRedirect,
+  ModalVerify,
   NextContribution,
   PanelWelcome,
-  PanelVerify,
   Profile,
   RestoreSites,
   RewardsButton,
