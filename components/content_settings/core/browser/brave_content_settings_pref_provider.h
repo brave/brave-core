@@ -29,7 +29,7 @@ class BravePrefProvider : public PrefProvider,
                           public Observer {
  public:
   BravePrefProvider(PrefService* prefs,
-                    bool incognito,
+                    bool off_the_record,
                     bool store_last_modified);
   ~BravePrefProvider() override;
 
