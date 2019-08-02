@@ -281,8 +281,7 @@ void BraveRequestHandler::RunNextCallback(
         IsRequestIdentifierValid(ctx->request_identifier)) {
       *ctx->new_url = GURL(ctx->new_url_spec);
     }
-    if (ctx->blocked_by == brave::kAdBlocked ||
-        ctx->blocked_by == brave::kTrackerBlocked) {
+    if (ctx->blocked_by == brave::kAdBlocked) {
       if (ctx->cancel_request_explicitly) {
         RunCallbackForRequestIdentifier(ctx->request_identifier,
                                         net::ERR_ABORTED);
