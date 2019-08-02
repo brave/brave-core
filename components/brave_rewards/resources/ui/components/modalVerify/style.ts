@@ -12,17 +12,11 @@ interface StyleProps {
 }
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
-  position: absolute;
-  text-align: center;
   font-family: ${p => p.theme.fontFamily.heading};
   background-image: linear-gradient(180deg, ${p => p.theme.palette.blurple500} 0%, #563195 100%);
   padding: 42px 42px 30px;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  height: 100%;
-  overflow-y: auto;
+  margin: -48px;
+  position: relative;
 `
 
 export const StyledClose = styled<{}, 'div'>('div')`
@@ -30,16 +24,17 @@ export const StyledClose = styled<{}, 'div'>('div')`
   top: 20px;
   right: 20px;
   cursor: pointer;
-  width: 11px;
-  height: 11px;
+  width: 15px;
+  height: 15px;
   color: ${p => p.theme.palette.white};
 `
 
 export const StyledHeader = styled<StyleProps, 'div'>('div')`
-  margin-bottom: ${p => p.compact ? '15px' : '42px'};
+  margin-bottom: 40px;
+  padding-left: 26px;
 `
 
-export const StyledBatIcon = styled<{}, 'div'>('div')`
+export const StyledWalletIcon = styled<{}, 'div'>('div')`
   display: inline-block;
   vertical-align: middle;
   width: 50px;
@@ -47,7 +42,6 @@ export const StyledBatIcon = styled<{}, 'div'>('div')`
 `
 
 export const StyledHeaderText = styled<{}, 'div'>('div')`
-  width: calc(100% - 50px);
   vertical-align: middle;
   display: inline-block;
   padding-left: 22px;
@@ -55,7 +49,6 @@ export const StyledHeaderText = styled<{}, 'div'>('div')`
 
 export const StyledTitle = styled(Heading)`
   color: ${p => p.theme.palette.white};
-  text-align: left;
   font-size: 22px;
   line-height: 24px;
   font-weight: 600;
@@ -63,7 +56,6 @@ export const StyledTitle = styled(Heading)`
 
 export const StyledSubtitle = styled(Heading)`
   color: ${p => p.theme.palette.white};
-  text-align: left;
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 14px;
   line-height: 24px;
@@ -71,28 +63,27 @@ export const StyledSubtitle = styled(Heading)`
 
 export const StyledListTitle = styled(Heading)`
   font-weight: 600;
-  font-size: 14px;
-  text-align: left;
+  font-size: 17px;
   line-height: 25px;
-  padding-bottom: 4px;
+  padding: 0 0 0 36px;
   color: ${p => p.theme.palette.white};
+  margin-bottom: -7px;
 `
 
 export const StyledListItem = styled<StyleProps, 'div'>('div')`
   color: ${p => p.theme.palette.white};
-  margin: ${p => p.compact ? '10px' : '15px'} 0;
+  margin: 17px 0;
 `
 
 export const StyledListIcon = styled<{}, 'div'>('div')`
   display: inline-block;
   width: 24px;
   height: 24px;
-  vertical-align: middle;
+  vertical-align: top;
 `
 
 export const StyledListItemText = styled<{}, 'div'>('div')`
   vertical-align: middle;
-  text-align: left;
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 15px;
   line-height: 20px;
@@ -101,25 +92,18 @@ export const StyledListItemText = styled<{}, 'div'>('div')`
   padding-left: 12px;
 `
 
-export const StyledIDNotice = styled<StyleProps, 'div'>('div')`
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
-  color: ${p => p.theme.palette.white};
-  padding: ${p => p.compact ? '20px' : '30px'} 24px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.5433);
-  margin: ${p => p.compact ? '25px' : '44px'} 0 0;
-`
-
 export const StyledButton = styled(Button as ComponentType<ButtonProps>)`
-  padding: 11px 15px;
+  padding: 11px 40px;
+  width: auto;
+  min-height: auto;
+  margin-top: 17px;
 `
 
 export const StyledFooter = styled<StyleProps, 'div'>('div')`
-font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.theme.fontFamily.body};
   font-size: 12px;
-  color: ${p => p.theme.palette.white};
-  margin-top: ${p => p.compact ? '28px' : '32px'};
+  color: ${p => p.theme.palette.whiteFade30};
+  margin-top: 32px;
 `
 
 export const StyledFooterIcon = styled<{}, 'div'>('div')`
@@ -127,4 +111,26 @@ export const StyledFooterIcon = styled<{}, 'div'>('div')`
   vertical-align: middle;
   width: 20px;
   height: 20px;
+`
+
+export const StyledContent = styled<{}, 'div'>('div')`
+  display: flex;
+  margin-bottom: 10px;
+`
+
+export const StyledLeftSide = styled<{}, 'div'>('div')`
+  width: 50%;
+`
+
+export const StyledRightSide = styled<{}, 'div'>('div')`
+  width: 50%;
+  padding-left: 40px;
+`
+
+export const StyledNote = styled<{}, 'div'>('div')`
+  font-family: ${p => p.theme.fontFamily.body};
+  font-size: 12px;
+  line-height: 20px;
+  color: ${p => p.theme.palette.whiteFade30};
+  margin-top: 20px;
 `

@@ -9,7 +9,7 @@ import {
   StyledWrapper,
   StyledClose,
   StyledHeader,
-  StyledBatIcon,
+  StyledWalletIcon,
   StyledHeaderText,
   StyledTitle,
   StyledSubtitle,
@@ -17,10 +17,13 @@ import {
   StyledListItem,
   StyledListIcon,
   StyledListItemText,
-  StyledIDNotice,
   StyledButton,
   StyledFooter,
-  StyledFooterIcon
+  StyledFooterIcon,
+  StyledLeftSide,
+  StyledRightSide,
+  StyledContent,
+  StyledNote
 } from './style'
 
 import {
@@ -29,6 +32,7 @@ import {
   RewardsWalletCheck,
   RewardsCheckIcon
 } from '../../../components/icons'
+import { Modal } from '../../../components'
 
 export interface Props {
   onVerifyClick: () => void
@@ -54,9 +58,9 @@ export default class ModalVerify extends React.PureComponent<Props, {}> {
         <CloseStrokeIcon />
       </StyledClose>
       <StyledHeader>
-        <StyledBatIcon>
+        <StyledWalletIcon>
           <RewardsWalletCheck />
-        </StyledBatIcon>
+        </StyledWalletIcon>
         <StyledHeaderText>
           <StyledTitle level={1}>
             {getLocale('walletVerificationTitle1')}
@@ -86,26 +90,34 @@ export default class ModalVerify extends React.PureComponent<Props, {}> {
     } = this.props
 
     return (
-      <StyledWrapper id={id}>
-        {this.getHeader(onClose)}
-        <StyledListTitle>
-          {getLocale('walletVerificationListHeader')}
-        </StyledListTitle>
-        {this.getListItem(getLocale('walletVerificationList1'))}
-        {this.getListItem(getLocale('walletVerificationList2'))}
-        {this.getListItem(getLocale('walletVerificationList3'))}
-        <StyledIDNotice>
-          {getLocale('walletVerificationID')}
-        </StyledIDNotice>
-        <StyledButton
-          text={getLocale('walletVerificationButton')}
-          size={'call-to-action'}
-          type={'accent'}
-          onClick={onVerifyClick}
-          id={'on-boarding-verify-button'}
-        />
-        {this.getFooter()}
-      </StyledWrapper>
+      <Modal id={id} displayCloseButton={false} size={'small'}>
+        <StyledWrapper id={id}>
+          {this.getHeader(onClose)}
+          <StyledListTitle>
+            {getLocale('walletVerificationListHeader')}
+          </StyledListTitle>
+          <StyledContent>
+            <StyledLeftSide>
+              {this.getListItem(getLocale('walletVerificationList1'))}
+              {this.getListItem(getLocale('walletVerificationList2'))}
+              {this.getListItem(getLocale('walletVerificationList3'))}
+            </StyledLeftSide>
+            <StyledRightSide>
+              <StyledButton
+                text={getLocale('walletVerificationButton')}
+                size={'call-to-action'}
+                type={'accent'}
+                onClick={onVerifyClick}
+                id={'on-boarding-verify-button'}
+              />
+              {this.getFooter()}
+              <StyledNote>
+                {getLocale('walletVerificationNote')}
+              </StyledNote>
+            </StyledRightSide>
+          </StyledContent>
+        </StyledWrapper>
+      </Modal>
     )
   }
 }
