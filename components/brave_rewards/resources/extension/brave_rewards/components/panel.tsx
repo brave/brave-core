@@ -6,7 +6,7 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
-import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel, PanelVerify } from 'brave-ui/features/rewards'
+import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
 import { NotificationType, WalletState } from 'brave-ui/features/rewards/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
@@ -28,11 +28,10 @@ interface State {
   refreshingPublisher: boolean
   publisherRefreshed: boolean
   timerPassed: boolean
-  showVerifyOnBoarding: boolean
 }
 
 export class Panel extends React.Component<Props, State> {
-  private defaultTipAmounts: number[]
+  readonly defaultTipAmounts = [1, 5, 10]
   private delayTimer: ReturnType<typeof setTimeout>
   constructor (props: Props) {
     super(props)
@@ -41,10 +40,8 @@ export class Panel extends React.Component<Props, State> {
       publisherKey: null,
       refreshingPublisher: false,
       publisherRefreshed: false,
-      timerPassed: false,
-      showVerifyOnBoarding: false
+      timerPassed: false
     }
-    this.defaultTipAmounts = [1, 5, 10]
   }
 
   get actions () {
@@ -567,23 +564,11 @@ export class Panel extends React.Component<Props, State> {
   }
 
   handleUpholdLink = (link: string) => {
-    const { ui, externalWallet } = this.props.rewardsPanelData
+    const { externalWallet } = this.props.rewardsPanelData
 
-    if (
-      !this.state.showVerifyOnBoarding &&
-      (!ui || !ui.onBoardingDisplayed) &&
-      (!externalWallet || (externalWallet && externalWallet.status === 0))) {
-      this.setState({
-        showVerifyOnBoarding: true
-      })
-      return
+    if (!externalWallet || (externalWallet && externalWallet.status === 0)) {
+      link = 'brave://rewards/#verify'
     }
-
-    this.setState({
-      showVerifyOnBoarding: false
-    })
-
-    this.actions.onOnBoardingDisplayed()
 
     chrome.tabs.create({
       url: link
@@ -599,12 +584,6 @@ export class Panel extends React.Component<Props, State> {
     }
 
     this.handleUpholdLink(externalWallet.verifyUrl)
-  }
-
-  toggleVerifyPanel = () => {
-    this.setState({
-      showVerifyOnBoarding: !this.state.showVerifyOnBoarding
-    })
   }
 
   getWalletStatus = (): WalletState => {
@@ -723,15 +702,6 @@ export class Panel extends React.Component<Props, State> {
         userName={this.getUserName()}
         {...notification}
       >
-        {
-          this.state.showVerifyOnBoarding
-          ? <PanelVerify
-            compact={true}
-            onVerifyClick={this.onVerifyClick}
-            onClose={this.toggleVerifyPanel}
-          />
-          : null
-        }
         <WalletSummarySlider
           id={'panel-slider'}
           onToggle={this.onSliderToggle}

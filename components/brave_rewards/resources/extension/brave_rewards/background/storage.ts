@@ -40,9 +40,6 @@ export const defaultState: RewardsExtension.State = {
     total: 0,
     rates: {},
     wallets: {}
-  },
-  ui: {
-    onBoardingDisplayed: false
   }
 }
 
