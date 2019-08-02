@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Werbeblocker</translation>
 <translation id="6406506848690869874">Sync</translation>
-<translation id="8488282162676695335">Brave-Wallet</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ist in Brave nicht erlaubt.</translation>
+<translation id="5655621391922317800">Krypto-Wallets</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ist in Brave nicht erlaubt.</translation>
 <translation id="7450557937477381864">Schließen Sie Chrome</translation>
 <translation id="7008934821596358692">Um Ihre Daten vollständig zu importieren, muss Chrome komplett geschlossen werden.</translation>
 <translation id="5735465527556462863">Brave schließen (alt)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave Payments</translation>
 <translation id="3489524616427966890">Fenster und Tabs öffnen</translation>
 <translation id="3699882589215410581">Widevine installieren und ausführen</translation>
+<translation id="3696083746357487900">Krypto-Wallets installieren</translation>
 <translation id="8053096063396012732">Widevine installieren</translation>
 <translation id="4840334696217618631">Browser neu starten, um Widevine zu aktivieren</translation>
 <translation id="8410111618231938546">Google Widevine ist ein Stück Digital Rights Management (DRM)-Code, den wir bei Brave Software nicht besitzen und nicht überprüfen können. Der Google Widevine Code wird von Google Servern geladen, nicht von unseren Servern. Er wird nur geladen, wenn Sie diese Option aktivieren. Wir raten von der Verwendung von DRM ab, aber wir respektieren die Wahl der Benutzer und erkennen an, dass einige mutige Benutzer Dienste nutzen möchten, die dies erfordern.
@@ -27,7 +28,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="2240268017737062801">Fragen, wenn eine Webseite Medien von selbst abspielen möchte</translation>
 <translation id="3371702087847741961">Fragen, wenn eine Webseite Medien automatisch abspielen will (empfohlen)</translation>
 <translation id="3218385319396786393">Automatisches Abspielen wurde auf dieser Seite blockiert</translation>
-<translation id="4988333904713528597">Autoplay auf <ph name="HOST">$1<ex>mail.google.com</ex></ph> immer erlauben?</translation>
+<translation id="4988333904713528597">Autoplay auf <ph name="HOST"/> immer erlauben?</translation>
 <translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
 <translation id="5883458389055721080">Brave hat diese Erweiterung nicht auf Sicherheit und Ungefährlichkeit hin begutachtet. Installieren Sie diese Erweiterung nur, wenn Sie dem Entwickler vertrauen.</translation>
 <translation id="2044383478723007273">Brave Farben</translation>
@@ -35,6 +36,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6123134130710658846">Brave-Rewards-Button ausblenden</translation>
 <translation id="7635711399568194460">Blendet den Brave-Rewards-Button im Standortbalken aus, wenn Brave Rewards deaktiviert ist</translation>
 <translation id="7965178729203412357">Neue Tor-Identität</translation>
+<translation id="8511502469534942133">Neue Tor-Verbindung für diese Seite</translation>
 <translation id="8784924142044142231">Tor verlassen</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Tor-Fenster Öffnen</translation>
@@ -84,6 +86,9 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6786747875388722282">Erweiterungen</translation>
 <translation id="2896916411183256228">Nutzt WebTorrent, um Torrents direkt im Browser anzuzeigen. Unterstützt Torrent-Dateien und Magnet-Links.</translation>
 <translation id="6554397389149987360">Nutzt Hangouts-Komponente, um das Teilen des Bildschirms und andere Funktionen im Browser zu ermöglichen.</translation>
+<translation id="1765684547504191670">Eine Media-Router-Komponente wird verwendet, um Chromecast in dem Browser zu aktivieren.</translation>
+<translation id="9156965752763025780">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
+<translation id="7179921470347911571">Jetzt neustarten</translation>
 <translation id="4154389611571860454">Verwendet die IPFS-Erweiterung, um IPFS im Browser zu unterstützen.</translation>
 <translation id="8137559199583651773">Erweiterungen verwalten</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>

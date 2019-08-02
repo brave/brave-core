@@ -25,7 +25,7 @@
 <translation id="2310890394934209120">Brave 作業系統的開發有賴其他<ph name="BEGIN_LINK_CROS_OSS"/>開放原始碼軟體<ph name="END_LINK_CROS_OSS"/>。</translation>
 <translation id="8160794320557846790">Brave 作業系統藉助了其他<ph name="BEGIN_LINK_CROS_OSS"/>開放原始碼軟體<ph name="END_LINK_CROS_OSS"/>的相關技術才得以問世，<ph name="BEGIN_LINK_LINUX_OSS"/>Linux (測試版)<ph name="END_LINK_LINUX_OSS"/> 也是如此。</translation>
 <translation id="8948097099929452692">不在 Brave 中使用。佔位標誌可使資源圖保持同步。</translation>
-<translation id="5009217320733452434">不在 Brave 中使用。佔位標誌可使資源圖保持同步。其預期有一個參數：<ph name="ARGUMENT">$1</ph>.</translation>
+<translation id="5009217320733452434">不在 Brave 中使用。佔位標誌可使資源圖保持同步。其預期有一個參數：<ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">Brave 已不再支援 Mac OS X 10.9，因此部分功能可能無法正常運作。</translation>
 <translation id="7977787072794666032">Brave 已不適用於 Windows XP 或 Windows Vista，因此可能無法正常運作</translation>
 <translation id="189297655255130768">Brave 沒有回應，要立即重新啟動嗎？</translation>
@@ -131,7 +131,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="1853997773668795891">要將你的 Brave 資料連結至這個帳戶嗎？</translation>
 <translation id="1326766910007115955">你已登入管理化環境下的帳戶，並將管理控制權授予你的 Brave 設定檔。你的 Brave 資料 (例如應用程式、書籤、記錄、密碼和其他設定) 均將永久與 <ph name="USER_NAME"/> 建立關聯。你可以透過 Brave Software 帳戶資訊主頁刪除這些資料，但你無法將這些資料與其他帳戶建立關聯。<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">你已登入管理化環境下的帳戶，並將管理控制權授予你的 Brave 設定檔。你的 Brave 資料 (例如應用程式、書籤、記錄、密碼和其他設定) 均將永久與 <ph name="USER_NAME"/> 建立關聯。你可以透過 Brave Software 帳戶資訊主頁刪除這些資料，但你無法將這些資料與其他帳戶建立關聯。如要另行保留現有的 Brave 資料，你可以選擇建立新的設定檔。<ph name="LEARN_MORE"/></translation>
-<translation id="2444257125841652328">您的系統管理員設定了 Brave 開啟替代瀏覽器以存取 <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>。</translation>
+<translation id="2444257125841652328">您的系統管理員設定了 Brave 開啟替代瀏覽器以存取 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
 <translation id="5380963249588143069">你的系統管理員已設定由 Brave 開啟 <ph name="ALTERNATIVE_BROWSER_NAME"/> 以存取 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 先前使用的是 Brave</translation>
 <translation id="1384923383737428730">你的電腦安裝了有害軟體。Brave 可以移除該軟體、復原設定及停用擴充功能，讓你的瀏覽器恢復正常運作。</translation>

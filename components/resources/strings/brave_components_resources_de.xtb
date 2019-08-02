@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
-<translation id="689261804992965033">Blockierte Werbung</translation>
-<translation id="1663506596135222606">Blockierte Tracker</translation>
+<translation id="4339730410920731698">Werbeanzeigen und Tracker blockiert</translation>
 <translation id="2313532038420432247">HTTPS Aufwertungen</translation>
 <translation id="7679428712334662192">Geschätzte Zeitersparnis</translation>
 <translation id="5206618227023752085">Führende Website entfernt.</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">Browserverlauf ansehen</translation>
 <translation id="1742484101357469636">Dashboard-Einstellungen</translation>
 <translation id="8320281346741574991">Hintergrundbild anzeigen</translation>
+<translation id="7275773481201277457">Brave-Statistiken anzeigen</translation>
+<translation id="6836061097810262923">Uhrzeit anzeigen</translation>
+<translation id="8643377320501056697">Die führenden Seiten anzeigen</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
 <translation id="8730621377337864115">Fertig</translation>
 <translation id="6248988683584659830">In Einstellungen suchen</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">Mehr erfahren über Tor in Brave</translation>
 <translation id="4272382368346338917">Zusätzliche Filter</translation>
 <translation id="8949292968394988358">Achtung: Wenn Sie zu viele Filter anschalten, wird die Leistung vermindert</translation>
-<translation id="1869685517625607604">Blockierte Werbung insgesamt:</translation>
+<translation id="8686201964111147748">Gesamtanzahl an blockierten Werbeanzeigen und Trackern:</translation>
 <translation id="4673764878177947707">Benutzerdefinierte Filter</translation>
 <translation id="8803682034537762884">Einmal pro Zeile, ein Filter ist in der Adblock-Plus-Filtersyntax beschrieben.</translation>
 <translation id="2974339193389078578">Brave, das neue Internet</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">Ihre Aufmerksamkeit ist wertvoll. Verdienen Sie beim Browsen durch das Anschauen von Werbung, die Ihre Privatsphäre respektiert, und zahlen Sie diese weiter, um die von Ihnen geliebten Inhaltsersteller zu unterstützen.</translation>
 <translation id="4942016616604700968">Rewards aktivieren</translation>
 <translation id="3958088479270651626">Lesezeichen und Einstellungen importieren</translation>
-<translation id="5633840519079139680">Brave macht es Ihnen einfach, Ihre gewohnte Browser-Umgebung einzurichten, indem Sie Ihre Lesezeichen und Einstellungen von anderen installierten Browsern importieren.</translation>
+<translation id="2609701960545338618">Richten Sie Ihre übliche Browserumgebung ein, indem Sie Lesezeichen und Einstellungen aus Ihrem alten Browser importieren. In den Einstellungen stehen erweiterte Import-Optionen zur Verfügung.</translation>
 <translation id="8275038454117074363">Importieren</translation>
+<translation id="2088479175984386785">Import aus ...</translation>
 <translation id="5540323067375019678">Verwalten Sie Ihre Shields</translation>
 <translation id="3278033011827237847">Brave Shields schützt Sie beim Browsen vor unerwünschter Werbung und störenden Trackern. Wenn Sie beim Browsen auf einer bestimmten Seite auf ein Problem stoßen, passen Sie einfach Ihr Schutzniveau im Shields-Panel in der Toolbar an.</translation>
 <translation id="3366308997091824722">Brave Shields anpassen</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">Probieren Sie für eine vertraulichere Sucherfahrung DuckDuckGo aus.</translation>
 <translation id="513635702954746724">Wählen Sie Ihr Farbschema</translation>
 <translation id="6842850080200126305">Legen Sie die Farbe Ihrer Toolbar fest, indem Sie die Option „Hell“ oder „Dunkel“ aus dem Einstellungspanel auswählen.</translation>
-<translation id="2801098717523961746">Wählen Sie Ihr Schema</translation>
+<translation id="5805868144901917207">Ein Theme auswählen</translation>
+<translation id="8131740175452115882">Bestätigen</translation>
+<translation id="713206503018076063">System-Theme (Standard)</translation>
+<translation id="1807246157184219062">Hell</translation>
+<translation id="2414886740292270097">Dunkel</translation>
 <translation id="3829010735958850433">Die Einführung überspringen</translation>
 <translation id="1201402288615127009">Weiter</translation>
 <translation id="1919345977826869612">Werbung</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">Gesamte Trinkgelder diesen Monat</translation>
 <translation id="4153752809523809915">Haben Sie Ihrem Lieblings-Content-Creator heute schon ein Trinkgeld spendiert?</translation>
 <translation id="1165667598801520610">Geld Hinzufügen</translation>
-<translation id="5314648471460409933">Finanzen verwalten</translation>
+<translation id="6239274080752256452">Geldmittel abheben</translation>
 <translation id="2726674968268546964">Tokens</translation>
 <translation id="7286722244752781970">Minimale Seitenzeit vor der Anmeldung eines Besuchs</translation>
 <translation id="4424486208397124985">Mindestbesuche für Herausgeberrelevanz</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">Jetzt wiederherstellen!</translation>
 <translation id="1184075897575325927">Leider scheint es, dass diese Zuwendung bereits beansprucht wurde.</translation>
 <translation id="282693359045252357">Nächstes monatliches Datum für Trinkgeld</translation>
-<translation id="6231182869178328516">Ich habe gerade <ph name="NAME">$1<ex>user</ex></ph> mit dem Brave-Browser ein Trinkgeld gegeben. Sehen Sie es sich unter https://brave.com/tips an.</translation>
+<translation id="6231182869178328516">Ich habe gerade <ph name="NAME"/> mit dem Brave-Browser ein Trinkgeld gegeben. Sehen Sie es sich unter https://brave.com/tips an.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
+<translation id="2876191400747549936">Entschuldigung, bei der Bearbeitung Ihrer Anfrage ist ein Problem aufgetreten. Versuchen Sie es bitte erneut.</translation>
 <translation id="7422678632904904341">Betrag:</translation>
 <translation id="5923611424721173182">Aktueller Abgleich</translation>
 <translation id="5457113250005438886">Ungültig</translation>
@@ -170,14 +178,10 @@
 <translation id="9026369588205476247">Um Ihre Privatsphäre zu schützen, wird diese Brave Rewards-Erklärung an keinem anderen Ort als auf Ihrem Gerät (diesem Computer) gespeichert, aufgezeichnet oder protokolliert. Im Falle eines Datenverlustes auf Ihrem Gerät kann es nicht von Brave abgerufen werden.</translation>
 <translation id="1036277985068412734">Geldmittel hinzufügen</translation>
 <translation id="5441565662498481293">Sie senden automatisch Trinkgeld an:</translation>
-<translation id="4496990471549986619">die Häufig Gestellten Fragen</translation>
-<translation id="1688876543043079268">Zur Erinnerung: Die Brave Wallet ist unidirektional und BAT fließen nur in Richtung der Seitenbetreiber. Weitere Informationen über Brave Payments finden Sie unter</translation>
-<translation id="2790014973538267577">QR-Code anzeigen</translation>
-<translation id="5690154556705187369">Gewährleisten Sie, dass Sie unten die für Ihre Kryptowährung passende Adresse verwenden. Der Betrag wird von Uphold automatisch in BAT umgewandelt und erscheint dann als erhöhtes Guthaben in Ihrer Brave-Rewards-Geldbörse. Die Aktualisierung Ihres Geldbörsen-Guthabens kann bis zu eine Stunde dauern.</translation>
-<translation id="8874657527115501951">Überweisen Sie Kryptowährungsbeträge von Ihrem externen Konto in Ihre Brave-Rewards-Wallet.</translation>
 <translation id="2827387977307390755">Trinkgelder erlauben auf</translation>
 <translation id="3671566813999349838">Betrag</translation>
 <translation id="3819257035322786455">Sicherung</translation>
+<translation id="4989542687859782284">Nicht verfügbar</translation>
 <translation id="1312977698678162065">Werden Sie bezahlt, relevante Werbung zu sehen, die Ihre Privatsphäre respektieren.</translation>
 <translation id="7655723274266132226">Jetzt können Sie verdienen, indem Sie Werbeanzeigen anschauen.</translation>
 <translation id="2975780980638932742">Brave Werbung ist da!</translation>
@@ -275,9 +279,12 @@
 <translation id="1135093233619227159">Sie können jede Seite im Trinkgeld-Panel entfernen, die monatliche Trinkgelder erhält.</translation>
 <translation id="5082474983463379713">Bitte beachten:</translation>
 <translation id="1430915738399379752">Drucken</translation>
+<translation id="135956957367307069">Ihre Anfrage wird noch immer bearbeitet, haben Sie bitte Geduld.</translation>
+<translation id="8725066075913043281">Erneut versuchen</translation>
 <translation id="3173528272490482456">Bereit für den Anfang?</translation>
 <translation id="913775524828049259">Ja, ich bin bereit</translation>
 <translation id="108052542935515756">Sie können beginnen mit der</translation>
+<translation id="2678666039642976470">Wallet erneut verbinden</translation>
 <translation id="194625454574835815">Wiederherstellungsschlüssel</translation>
 <translation id="6354568176665589146">Wiederkehrend</translation>
 <translation id="7577100371127227294">Monatliche Trinkgelder</translation>
@@ -306,7 +313,7 @@
 <translation id="8014425282125849700">Hin und wieder bietet Ihnen Brave kostenlose Förderbeträge an. Achten Sie darauf, dass Sie die Alerts nicht verpassen!</translation>
 <translation id="1370034647041840967">Verdienen Sie Token für Ihre Aufmerksamkeit für Werbung und zahlen Sie sie weiter, um Inhaltsersteller zu unterstützen, die Sie schätzen!</translation>
 <translation id="3905359437915971466">Geld hinzufügen, abheben und verwalten auf</translation>
-<translation id="5866139915213160210">Die Verwaltung Ihrer Brave-Wallet erfolgt durch</translation>
+<translation id="1401808324297710517">Ihr Brave-Wallet wird betrieben von</translation>
 <translation id="6401272292123354754">Brave Rewards basiert auf dem Basic Attention Token. Erfahren Sie mehr über BAT</translation>
 <translation id="7823359893981882407">hier</translation>
 <translation id="4483635855837696643">Ihr Wallet wiederherstellen</translation>
@@ -345,7 +352,6 @@
 <translation id="8615803647903750175">Aktivität der Digitalen Geldbörse</translation>
 <translation id="2620624773940447728">Geldbörse-Adresse</translation>
 <translation id="4989277977420164514">Kontostand Wallet</translation>
-<translation id="8725066075913043281">Erneut versuchen</translation>
 <translation id="1083771727630442739">Walleterstellung fehlgeschlagen</translation>
 <translation id="9146039192200831719">Bitte überprüfen Sie Ihre Internetverbindung.</translation>
 <translation id="1910721550319506122">Willkommen!</translation>
@@ -380,6 +386,21 @@
 <translation id="8101881066646819737">Ihre Brave-Ads-Tokenzuteilung</translation>
 <translation id="2151535059686617995">Dies ist Ihr Glückstag!</translation>
 <translation id="6255773350565723852">Ihre Token-Zuwendung ist unterwegs.</translation>
+<translation id="7512440811010447157">verifiziert</translation>
+<translation id="8030169304546394654">Verbindung getrennt</translation>
+<translation id="8267327690882073581">Wallet verifizieren</translation>
+<translation id="4569155249847375786">Verifiziert</translation>
+<translation id="7591798679868259510">Zu meinem Uphold-Account gehen</translation>
+<translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
+<translation id="46988480989545156">Wallet verifizieren</translation>
+<translation id="1554282356558968486">Unser Wallet-Service wird bereitgestellt von</translation>
+<translation id="6771734945114850124">Stellen Sie bitte sicher, dass Ihre amtlichen Ausweisdokumente verfügbar sind.</translation>
+<translation id="4483114863312340607">Geldmittel abheben und hinzufügen</translation>
+<translation id="6600381840029958159">Es ist nicht notwendig, Captcha zu lösen, um Werbeprämien zu verdienen.</translation>
+<translation id="4332021186346461319">Die Prämien, die Sie erhalten, haben kein Ablaufdatum und werden sofort Ihrem Wallet gutgeschrieben.</translation>
+<translation id="2610007079772760276">Ein verifiziertes Wallet ermöglicht es Ihnen:</translation>
+<translation id="7565794512491053578">Verifizieren Sie Ihr Wallet</translation>
+<translation id="698531289520577961">Und verwalten Sie mühelos Ihre Geldmittel!</translation>
 <translation id="1181037720776840403">Entfernen</translation>
 <translation id="7885157704277298658">Kopiert!</translation>
 <translation id="5379640681913450928">Wortanzahl:</translation>
@@ -440,4 +461,5 @@
 <translation id="1399673826422570698">Du hast ggf. Verbindungsstörungen, oder es besteht ein Problem mit den Sync-Servern.</translation>
 <translation id="5286379413446391050">Konnte nicht verbinden, um Server zu synchronisieren</translation>
 <translation id="2410472020237369473">Die Uhr Ihres Computers ist möglicherweise auf die falsche Zeit oder Zeitzone eingestellt. Ändern Sie die Einstellungen Ihrer Uhr.</translation>
+<translation id="5655621391922317800">Krypto-Wallets</translation>
 </translationbundle>

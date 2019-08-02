@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fil">
-<translation id="689261804992965033">Mga Na-block na Ad</translation>
-<translation id="1663506596135222606">Mga Na-block na Tracker</translation>
+<translation id="4339730410920731698">Mga Ad at Tracker na Na-block</translation>
 <translation id="2313532038420432247">Mga Pag-upgrade sa HTTPS</translation>
 <translation id="7679428712334662192">Tinatantyang Oras na Natipid</translation>
 <translation id="5206618227023752085">Naalis ang nangungunang site.</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">Tingnan ang iyong history ng pagba-browse</translation>
 <translation id="1742484101357469636">Mga Setting sa Dashboard</translation>
 <translation id="8320281346741574991">Ipakita ang imahe sa background</translation>
+<translation id="7275773481201277457">Ipakita ang Mga Istatistika ng Brave</translation>
+<translation id="6836061097810262923">Ipakita ang Orasan</translation>
+<translation id="8643377320501056697">Ipakita ang Mga Nangungunang Site</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
 <translation id="8730621377337864115">Tapos na</translation>
 <translation id="6248988683584659830">Mga setting ng paghahanap</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">Matuto pa tungkol sa Tor sa Brave</translation>
 <translation id="4272382368346338917">Mga Karagdagang Filter</translation>
 <translation id="8949292968394988358">Babala: Ang pag-on sa masyadong maraming filter ay makakabawas sa performance</translation>
-<translation id="1869685517625607604">Kabuuang Na-block na Mga Ad:</translation>
+<translation id="8686201964111147748">Kabuuang mga ad at tracker na na-block:</translation>
 <translation id="4673764878177947707">Mga Custom na Filter</translation>
 <translation id="8803682034537762884">Isa kada linya, inilalarawan ang isang filter gamit ang Adblock Plus filter syntax</translation>
 <translation id="2974339193389078578">Brave, ang bagong Internet</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">Mahalaga ang iyong atensyon. Kumita sa pamamagitan ng panonood ng mga ad na nagpapahalaga sa privacy habang nagba-browse ka, magbigay ng tip upang suportahan ang mga creator ng content na gusto mo.</translation>
 <translation id="4942016616604700968">I-enable ang Mga Reward</translation>
 <translation id="3958088479270651626">I-import ang mga bookmark at setting</translation>
-<translation id="5633840519079139680">Pinapadali ng Brave ang pag-set up ng iyong karaniwang environment sa pamamagitan ng pag-import ng mga bookmark at setting mula sa iba pang browser na naka-install sa iyong computer.</translation>
+<translation id="2609701960545338618">I-set up ang iyong nakasanayang environment sa pamamagitan ng pag-import ng mga bookmark at setting mula sa iyong dating browser. Makikita ang mga advanced na opsyon sa pag-import sa Mga Setting.</translation>
 <translation id="8275038454117074363">I-import</translation>
+<translation id="2088479175984386785">Mag-import mula sa...</translation>
 <translation id="5540323067375019678">Pamahalaan ang iyong mga shield</translation>
 <translation id="3278033011827237847">Protektahan laban sa mga ad at tracker na lumalabag sa privacy habang nagba-browse gamit ang Brave Shields. I-set ang Shields sa "down" kung hindi mukhang gumagana nang tama ang isang site.</translation>
 <translation id="3366308997091824722">Mga Setting ng Shield</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">Para sa mas pribadong karanasan sa search, subukan ang DuckDuckGo.</translation>
 <translation id="513635702954746724">Piliin ang iyong tema ng kulay</translation>
 <translation id="6842850080200126305">Itakda ang kulay ng iyong toolbar sa pamamagitan ng pagpili sa opsyong maliwanag o madilim mula sa panel ng mga setting.</translation>
-<translation id="2801098717523961746">Piliin ang iyong tema</translation>
+<translation id="5805868144901917207">Pumili ng tema</translation>
+<translation id="8131740175452115882">Kumpirmahin</translation>
+<translation id="713206503018076063">Tema ng system (default)</translation>
+<translation id="1807246157184219062">Light</translation>
+<translation id="2414886740292270097">Dark</translation>
 <translation id="3829010735958850433">Laktawan ang welcome tour</translation>
 <translation id="1201402288615127009">Susunod</translation>
 <translation id="1919345977826869612">Mga Ad</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">Kabuuang halaga ng mga tip ngayong buwan</translation>
 <translation id="4153752809523809915">Nabigyan mo na ba ng tip ngayong araw ang paborito mong content creator?</translation>
 <translation id="1165667598801520610">Magdagdag ng Mga Pondo</translation>
-<translation id="5314648471460409933">Pamahalaan ang Mga Pondo</translation>
+<translation id="6239274080752256452">Mag-withdraw ng Mga Pondo</translation>
 <translation id="2726674968268546964">mga token</translation>
 <translation id="7286722244752781970">Minimum na oras sa page bago mag-log ng pagbisita</translation>
 <translation id="4424486208397124985">Minimum na bilang ng mga pagbisita para sa kaugnayan ng publisher</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">I-recover ngayon!</translation>
 <translation id="1184075897575325927">Paumanhin, mukhang na-claim na ang grant na ito.</translation>
 <translation id="282693359045252357">Petsa ng susunod na buwanang tip</translation>
-<translation id="6231182869178328516">Nag-tip ako kay <ph name="NAME">$1<ex>user</ex></ph> gamit ang Brave Browser. Subukan ito sa https://brave.com/tips.</translation>
+<translation id="6231182869178328516">Nag-tip ako kay <ph name="NAME"/> gamit ang Brave Browser. Subukan ito sa https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
+<translation id="2876191400747549936">Paumanhin, nagkaproblema sa pagproseso ng iyong kahilingan, pakisubukan ulit.</translation>
 <translation id="7422678632904904341">Halaga:</translation>
 <translation id="5923611424721173182">Kasalukuyang Pag-reconcile</translation>
 <translation id="5457113250005438886">Hindi wasto</translation>
@@ -170,14 +178,10 @@
 <translation id="9026369588205476247">Upang maprotektahan ang iyong privacy, ang statement ay hindi sine-save, itinatala, o nila-log saanman maliban sa iyong device (ang computer na ito). Hindi ito makukuha mula sa Brave kung sakaling mawala ang data sa iyong device.</translation>
 <translation id="1036277985068412734">magdagdag ng mga pondo</translation>
 <translation id="5441565662498481293">Awtomatiko kang nagpapadala ng tip kay:</translation>
-<translation id="4496990471549986619">ang FAQ</translation>
-<translation id="1688876543043079268">Paalala: Ang Brave Wallet ay unidirectional at dumadaloy ang BAT patungo sa mga site ng publisher. Para sa higit pang impormasyon tungkol sa Brave Rewards, pakibisita ang</translation>
-<translation id="2790014973538267577">Ipakita ang QR Code</translation>
-<translation id="5690154556705187369">Tiyaking gamitin ang address sa ibaba na tumutugma sa uri ng crypto na pagmamay-ari mo. Awtomatiko itong iko-convert ng Uphold sa BAT at lalabas ito bilang dagdag na balanse sa iyong Brave Rewards wallet. Maghintay ng hanggang isang oras para ma-update ang balanse ng iyong wallet.</translation>
-<translation id="8874657527115501951">Magpadala ng cryptocurrency mula sa iyong external account patungo sa iyong Brave Rewards wallet.</translation>
 <translation id="2827387977307390755">Payagan ang mga tip sa</translation>
 <translation id="3671566813999349838">Halaga</translation>
 <translation id="3819257035322786455">Backup</translation>
+<translation id="4989542687859782284">Hindi available</translation>
 <translation id="1312977698678162065">Mabayaran para manood ng mga kaugnay na ad na nagpapahalaga sa iyong privacy.</translation>
 <translation id="7655723274266132226">Maaari ka nang kumita ngayon sa pamamagitan ng panonood ng mga ad.</translation>
 <translation id="2975780980638932742">Dumating na ang Brave Ads!</translation>
@@ -275,9 +279,12 @@
 <translation id="1135093233619227159">Sa loob ng panel ng Mga Tip, maaari kang mag-alis ng anumang site na nakakatanggap ng mga buwanang tip.</translation>
 <translation id="5082474983463379713">Pakitandaan:</translation>
 <translation id="1430915738399379752">I-print</translation>
+<translation id="135956957367307069">Pinoproseso pa ang iyong kahilingan, pakihintay.</translation>
+<translation id="8725066075913043281">Subukang muli</translation>
 <translation id="3173528272490482456">Handa ka na bang magsimula?</translation>
 <translation id="913775524828049259">Oo, Handa na Ako</translation>
 <translation id="108052542935515756">Maaari kang magsimula sa</translation>
+<translation id="2678666039642976470">Muling ikonekta ang wallet</translation>
 <translation id="194625454574835815">Recovery Key</translation>
 <translation id="6354568176665589146">Umuulit</translation>
 <translation id="7577100371127227294">Mga Buwanang Tip</translation>
@@ -306,7 +313,7 @@
 <translation id="8014425282125849700">Paminsan-minsan, aalukin ka ng mga libreng grant para sa token mula sa Brave. Tiyaking abangan ang mga alerto!</translation>
 <translation id="1370034647041840967">Makakakuha ka ng mga token para sa pagpansin mo sa mga ad at pagbibigay ng tip upang suportahan ang mga creator ng content na pinapahalagahan mo!</translation>
 <translation id="3905359437915971466">Magdagdag, mag-withdraw, at mamahala ng mga pondo sa</translation>
-<translation id="5866139915213160210">Ang iyong Brave wallet ay pinapamahalaan ng</translation>
+<translation id="1401808324297710517">Ang iyong Brave wallet ay pinapagana ng</translation>
 <translation id="6401272292123354754">Binuo ang Mga Reward sa Brave batay sa Basic Attention Token. Matuto pa tungkol sa BAT</translation>
 <translation id="7823359893981882407">dito</translation>
 <translation id="4483635855837696643">I-restore ang iyong Wallet</translation>
@@ -345,7 +352,6 @@
 <translation id="8615803647903750175">Aktibidad sa Wallet</translation>
 <translation id="2620624773940447728">Address ng Wallet</translation>
 <translation id="4989277977420164514">balanse sa wallet</translation>
-<translation id="8725066075913043281">Subukang muli</translation>
 <translation id="1083771727630442739">Hindi nagawa ang wallet</translation>
 <translation id="9146039192200831719">Pakisuri ang iyong koneksyon sa Internet.</translation>
 <translation id="1910721550319506122">Welcome!</translation>
@@ -380,6 +386,21 @@
 <translation id="8101881066646819737">Iyong Token Grant sa Brave Ads</translation>
 <translation id="2151535059686617995">Maswerte ka ngayon!</translation>
 <translation id="6255773350565723852">Paparating na ang iyong grant para sa token.</translation>
+<translation id="7512440811010447157">i-verify</translation>
+<translation id="8030169304546394654">Nadiskonekta</translation>
+<translation id="8267327690882073581">I-verify ang Wallet</translation>
+<translation id="4569155249847375786">Na-verify</translation>
+<translation id="7591798679868259510">Pumunta sa aking Uphold account</translation>
+<translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
+<translation id="46988480989545156">I-verify ang wallet</translation>
+<translation id="1554282356558968486">Ang aming serbisyo ng wallet ay mula sa</translation>
+<translation id="6771734945114850124">Pakihanda ang iyong ID na bigay ng gobyerno.</translation>
+<translation id="4483114863312340607">Mag-withdraw at magdagdag ng mga pondo</translation>
+<translation id="6600381840029958159">Hindi kailangang sagutin ang captcha para makakuha ng mga reward sa mga ad</translation>
+<translation id="4332021186346461319">Hindi mae-expire ang mga natanggap na reward at madedeposito kaagad ito sa iyong wallet</translation>
+<translation id="2610007079772760276">Ang na-verify na wallet ay nagbibigay-daan sa iyo na:</translation>
+<translation id="7565794512491053578">I-verify ang Iyong Wallet</translation>
+<translation id="698531289520577961">At madaling mapamahalaan ang iyong mga pondo!</translation>
 <translation id="1181037720776840403">Alisin</translation>
 <translation id="7885157704277298658">Nakopya!</translation>
 <translation id="5379640681913450928">Bilang ng Salita:</translation>
@@ -440,4 +461,5 @@
 <translation id="1399673826422570698">Maaaring nagkakaproblema ka sa network, o maaaring may problema sa mga server ng Pag-sync.</translation>
 <translation id="5286379413446391050">Hindi nakakonekta sa mga Sync server</translation>
 <translation id="2410472020237369473">Maaaring naka-set ang orasan ng iyong computer sa maling oras o time zone. Tingnan ang mga setting ng iyong orasan.</translation>
+<translation id="5655621391922317800">Mga Crypto Wallet</translation>
 </translationbundle>

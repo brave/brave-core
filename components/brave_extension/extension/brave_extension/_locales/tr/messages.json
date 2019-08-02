@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Bu site için CSS kurallarını temizle",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Gelişmiş Görünüm",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Basit Görünüm",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Siteler sıklıkla sizi ve cihazınızı tanımayı deneyen çerezler ve kodlar içerir (sıklıkla reklamlara gömülü olarak). Kim olduğunuzu çözmek ve sizi web boyunca takip etmek isterler — her sitede ne yaptığınızı izleyerek. Brave bu şeyleri engeller, böylece takip edilmeden webde gezinebilirsiniz.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Engellenen siteler arası izleyici ve diğer tekinsiz şeyler",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Bu görünümde Koruma ayarlarını değiştirmek bu sitede web uyumluluğunu etkileyebilir.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Anlaşıldı",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Daha fazla bilgi edin",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "您的 Brave 廣告代幣",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "驗證",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "已取消連結",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "驗證錢包",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "已驗證",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "到我的 Uphold 帳號",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "從 Brave Rewards 取消連結",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "驗證錢包",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "我的錢包服務提供由",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "請提供您的政府核發的身份證明文件。",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "保留您的廣告獎勵代幣",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "使用信用卡新增代幣",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "提出代幣",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "驗證過的錢包讓您可以：",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "驗證您的錢包",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "並且很容易地管理您的資金",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "已驗證",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "不可用",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "重新連結錢包",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "您的錢包已驗證！",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "恭喜！您的 $name$ 錢包已被成功驗證，並已準備好新增與提出資金。",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "啊喔。無法連線到您的錢包。",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "別擔心。這可能是因為各種安全性原因而發生。通常只要重新連線就可以解決。",
+    "description": "Title for notification when wallet is disconnected"
   }
 }
