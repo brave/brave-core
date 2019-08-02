@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11](https://github.com/brave/brave-ios/releases/tag/v1.11)
+ 
+ - Added quick action for New Private Tab from home screen. ([#1258](https://github.com/brave/brave-ios/issues/1258))  
+ - Improved video orientation on Youtube. ([#1189](https://github.com/brave/brave-ios/issues/1189))
+ - Fixed passcode not being reset when resuming from background. ([#1203](https://github.com/brave/brave-ios/issues/1203))
+ - Fixed browser becoming unresponsive when using print preview in certain conditions. ([#1144](https://github.com/brave/brave-ios/issues/1144))
+
 ## [1.10](https://github.com/brave/brave-ios/releases/tag/v1.10)
 
  - Implemented new address bar layout. ([#1134](https://github.com/brave/brave-ios/issues/1134))
