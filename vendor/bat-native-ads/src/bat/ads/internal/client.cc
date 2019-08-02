@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/time_helper.h"
+#include "bat/ads/internal/time.h"
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/logging.h"
 
@@ -32,7 +32,7 @@ void Client::Initialize(InitializeCallback callback) {
 }
 
 void Client::AppendCurrentTimeToAdsShownHistory() {
-  auto now_in_seconds = helper::Time::NowInSeconds();
+  auto now_in_seconds = Time::NowInSeconds();
   client_state_->ads_shown_history.push_front(now_in_seconds);
 
   if (client_state_->ads_shown_history.size() >
@@ -99,7 +99,7 @@ void Client::FlagShoppingState(
   client_state_->shop_activity = true;
   client_state_->shop_url = url;
   client_state_->score = score;
-  client_state_->last_shop_time = helper::Time::NowInSeconds();
+  client_state_->last_shop_time = Time::NowInSeconds();
 
   SaveState();
 }
@@ -120,7 +120,7 @@ void Client::FlagSearchState(
   client_state_->search_activity = true;
   client_state_->search_url = url;
   client_state_->score = score;
-  client_state_->last_search_time = helper::Time::NowInSeconds();
+  client_state_->last_search_time = Time::NowInSeconds();
 
   SaveState();
 }
@@ -131,7 +131,7 @@ void Client::UnflagSearchState(const std::string& url) {
   }
 
   client_state_->search_activity = false;
-  client_state_->last_search_time = helper::Time::NowInSeconds();
+  client_state_->last_search_time = Time::NowInSeconds();
 
   SaveState();
 }
@@ -141,7 +141,7 @@ bool Client::GetSearchState() {
 }
 
 void Client::UpdateLastUserActivity() {
-  client_state_->last_user_activity = helper::Time::NowInSeconds();
+  client_state_->last_user_activity = Time::NowInSeconds();
 
   SaveState();
 }
@@ -151,7 +151,7 @@ uint64_t Client::GetLastUserActivity() {
 }
 
 void Client::UpdateLastUserIdleStopTime() {
-  client_state_->last_user_idle_stop_time = helper::Time::NowInSeconds();
+  client_state_->last_user_idle_stop_time = Time::NowInSeconds();
 
   SaveState();
 }
@@ -209,7 +209,7 @@ void Client::AppendCurrentTimeToCreativeSetHistory(
     client_state_->creative_set_history.insert({creative_set_id, {}});
   }
 
-  auto now_in_seconds = helper::Time::NowInSeconds();
+  auto now_in_seconds = Time::NowInSeconds();
   client_state_->creative_set_history.at(
       creative_set_id).push_back(now_in_seconds);
 
@@ -228,7 +228,7 @@ void Client::AppendCurrentTimeToCampaignHistory(
     client_state_->campaign_history.insert({campaign_id, {}});
   }
 
-  auto now_in_seconds = helper::Time::NowInSeconds();
+  auto now_in_seconds = Time::NowInSeconds();
   client_state_->campaign_history.at(campaign_id).push_back(now_in_seconds);
 
   SaveState();

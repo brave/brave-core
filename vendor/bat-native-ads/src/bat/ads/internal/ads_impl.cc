@@ -17,7 +17,7 @@
 #include "bat/ads/internal/search_providers.h"
 #include "bat/ads/internal/locale_helper.h"
 #include "bat/ads/internal/uri_helper.h"
-#include "bat/ads/internal/time_helper.h"
+#include "bat/ads/internal/time.h"
 #include "bat/ads/internal/static_values.h"
 
 #include "rapidjson/document.h"
@@ -656,7 +656,7 @@ void AdsImpl::CheckEasterEgg(const std::string& url) {
     return;
   }
 
-  auto now_in_seconds = helper::Time::NowInSeconds();
+  auto now_in_seconds = Time::NowInSeconds();
 
   if (UrlHostsMatch(url, kEasterEggUrl) &&
       next_easter_egg_timestamp_in_seconds_ < now_in_seconds) {
@@ -943,7 +943,7 @@ bool AdsImpl::HistoryRespectsRollingTimeConstraint(
     const uint64_t allowable_ad_count) const {
   uint64_t recent_count = 0;
 
-  auto now_in_seconds = helper::Time::NowInSeconds();
+  auto now_in_seconds = Time::NowInSeconds();
 
   for (const auto& timestamp_in_seconds : history) {
     if (now_in_seconds - timestamp_in_seconds < seconds_window) {
@@ -1108,7 +1108,7 @@ bool AdsImpl::IsCatalogOlderThanOneDay() {
   auto catalog_last_updated_timestamp_in_seconds =
     bundle_->GetCatalogLastUpdatedTimestampInSeconds();
 
-  auto now_in_seconds = helper::Time::NowInSeconds();
+  auto now_in_seconds = Time::NowInSeconds();
 
   if (catalog_last_updated_timestamp_in_seconds != 0 &&
       now_in_seconds > catalog_last_updated_timestamp_in_seconds
@@ -1288,7 +1288,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
   writer.String("notify");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.String("notificationType");
@@ -1342,7 +1342,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
   writer.String("notify");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.String("notificationType");
@@ -1411,7 +1411,7 @@ void AdsImpl::GenerateAdReportingConfirmationEvent(
   writer.String("confirmation");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.String("notificationId");
@@ -1447,7 +1447,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   writer.String("load");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1504,7 +1504,7 @@ void AdsImpl::GenerateAdReportingBackgroundEvent() {
   writer.String("background");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.EndObject();
@@ -1528,7 +1528,7 @@ void AdsImpl::GenerateAdReportingForegroundEvent() {
   writer.String("foreground");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.EndObject();
@@ -1553,7 +1553,7 @@ void AdsImpl::GenerateAdReportingBlurEvent(
   writer.String("blur");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1581,7 +1581,7 @@ void AdsImpl::GenerateAdReportingDestroyEvent(
   writer.String("destroy");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1609,7 +1609,7 @@ void AdsImpl::GenerateAdReportingFocusEvent(
   writer.String("focus");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1636,7 +1636,7 @@ void AdsImpl::GenerateAdReportingRestartEvent() {
   writer.String("restart");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.EndObject();
@@ -1660,7 +1660,7 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.String("settings");
 
   writer.String("stamp");
-  auto time_stamp = helper::Time::TimeStamp();
+  auto time_stamp = Time::Timestamp();
   writer.String(time_stamp.c_str());
 
   writer.String("settings");
