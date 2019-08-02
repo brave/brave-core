@@ -70,6 +70,7 @@ class BraveRequestHandler {
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
 
+  base::WeakPtrFactory<BraveRequestHandler> weak_factory_{this};
   DISALLOW_COPY_AND_ASSIGN(BraveRequestHandler);
 };
 

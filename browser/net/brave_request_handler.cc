@@ -44,6 +44,7 @@
 #endif
 
 BraveRequestHandler::BraveRequestHandler() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
   SetupCallbacks();
   // Initialize the preference change registrar.
   base::PostTaskWithTraits(
@@ -187,7 +188,8 @@ int BraveRequestHandler::OnHeadersReceived(
 
   base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::IO},
                            base::Bind(&BraveRequestHandler::RunNextCallback,
-                                      base::Unretained(this), ctx));
+                                      weak_factory_.GetWeakPtr(),
+                                      ctx));
   return net::ERR_IO_PENDING;
 }
 
