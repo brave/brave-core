@@ -321,12 +321,6 @@ export default function shieldsPanelReducer (
       state = shieldsPanelState.updatePersistentData(state, { isFirstAccess: false })
       break
     }
-    case shieldsPanelTypes.TOGGLE_ADVANCED_VIEW: {
-      state = shieldsPanelState.updatePersistentData(state, {
-        advancedView: !state.persistentData.advancedView
-      })
-      break
-    }
   }
 
   if (!areObjectsEqual(state.persistentData, initialPersistentData)) {

@@ -23,8 +23,7 @@ import {
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess,
-  ToggleAdvancedView
+  SetAdvancedViewFirstAccess
 } from '../../types/actions/shieldsPanelActions'
 
 // Helpers
@@ -45,10 +44,10 @@ interface Props {
     setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
     setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
-    toggleAdvancedView: ToggleAdvancedView
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData
+  toggleAdvancedView: () => void
   toggleReadOnlyView: () => void
 }
 
@@ -64,7 +63,7 @@ export default class ShieldsSimpleView extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { shieldsPanelTabData, actions, toggleReadOnlyView } = this.props
+    const { shieldsPanelTabData, actions, toggleAdvancedView, toggleReadOnlyView } = this.props
     return (
       <ShieldsPanel style={{ width: '370px' }}>
         <Header
@@ -80,7 +79,7 @@ export default class ShieldsSimpleView extends React.PureComponent<Props, {}> {
           toggleReadOnlyView={toggleReadOnlyView}
         />
         <Footer
-          toggleAdvancedView={actions.toggleAdvancedView}
+          toggleAdvancedView={toggleAdvancedView}
         />
       </ShieldsPanel>
     )

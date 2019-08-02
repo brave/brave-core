@@ -5,6 +5,7 @@
 import { ShieldDetails } from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 import actions from '../actions/shieldsPanelActions'
+import * as SettingsPrivate from '../../../../../common/settingsPrivate'
 
 /**
  * Obtains the shields panel data for the specified tab data
@@ -160,3 +161,33 @@ export const setAllowScriptOriginsOnce = (origins: Array<string>, tabId: number)
       resolve()
     })
   })
+
+export type GetViewPreferencesData = {
+  showAdvancedView: boolean
+}
+
+const settingsKeys = {
+  showAdvancedView: { key: 'brave.shields.advanced_view_enabled', type: chrome.settingsPrivate.PrefType.BOOLEAN }
+}
+export async function getViewPreferences (): Promise<GetViewPreferencesData> {
+  const showAdvancedViewPref = await SettingsPrivate.getPreference(settingsKeys.showAdvancedView.key)
+  if (showAdvancedViewPref.type !== settingsKeys.showAdvancedView.type) {
+    throw new Error(`Unexpected settings type received for "${settingsKeys.showAdvancedView.key}". Expected: ${settingsKeys.showAdvancedView.type}, Received: ${showAdvancedViewPref.type}`)
+  }
+  return {
+    showAdvancedView: showAdvancedViewPref.value
+  }
+}
+
+export type SetViewPreferencesData = {
+  showAdvancedView?: boolean
+}
+export async function setViewPreferences (preferences: SetViewPreferencesData): Promise<void> {
+  const setOps = []
+  if (preferences.showAdvancedView !== undefined) {
+    setOps.push(
+      SettingsPrivate.setPreference(settingsKeys.showAdvancedView.key, preferences.showAdvancedView)
+    )
+  }
+  await Promise.all(setOps)
+}

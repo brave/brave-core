@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import BraveShields from './containers/braveShields'
+import { getViewPreferences } from './background/api/shieldsAPI'
 require('../../../fonts/muli.css')
 require('../../../fonts/poppins.css')
 
@@ -19,9 +20,17 @@ const store: any = new Store({
 
 Promise.all([
   store.ready(),
-  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
+  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve)),
+  getViewPreferences()
 ])
-.then(([ , themeType ]: [ undefined, chrome.braveTheme.ThemeType ]) => {
+.then((
+  [ , themeType, settings ]:
+  [
+    undefined,
+    chrome.braveTheme.ThemeType,
+    chrome.braveShields.BraveShieldsViewPreferences
+  ]
+) => {
   const mountNode: HTMLElement | null = document.querySelector('#root')
   ReactDOM.render(
     <Provider store={store}>
@@ -30,7 +39,7 @@ Promise.all([
         dark={shieldsDarkTheme}
         light={shieldsLightTheme}
       >
-        <BraveShields />
+        <BraveShields settings={settings} />
       </BraveCoreThemeProvider>
     </Provider>,
     mountNode

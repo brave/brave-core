@@ -18,6 +18,26 @@
       .label.shields-secondary-title {
         padding-bottom: 1em;
       }
+      .flex-center {
+        display: flex;
+        align-items: center;
+      }
+      .shields-view-col {
+        margin: 16px 0 24px;
+        padding: 0 24px;
+        height: 98px;
+        border-radius: 6px;
+        border: var(--cr-section_-_border-top);
+        width: calc(50% - 58px);
+        float: left;
+      }
+      .shields-view-col:last-of-type {
+        margin: 16px 0 24px 16px;
+      }
+       .shields-view-label {
+         margin: 0 20px;
+         cursor: pointer;
+       }
     </style>
     <div class="settings-box first">
       <div class="flex">
@@ -26,6 +46,46 @@
           <p>$i18n{braveShieldsDefaultsSectionDescription1}</p>
           <p>$i18n{braveShieldsDefaultsSectionDescription2} <a href="chrome://rewards" target="_blank">Brave Rewards</a> $i18n{braveShieldsDefaultsSectionDescription3}</p>
         </div>
+      </div>
+    </div>
+    <div class="settings-box">
+      <div class="flex">
+        <div class="label shields-primary-title">$i18n{defaultView}</div>
+        <settings-radio-group
+          pref="{{prefs.brave.shields.advanced_view_enabled}}">
+          <controlled-radio-button class="shields-view-col" name="false">
+            <div class="flex-center">
+              <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" fill-rule="evenodd">
+                  <path stroke="#CED0DB" d="M2 .5A1.5 1.5 0 0 0 .5 2v46A1.5 1.5 0 0 0 2 49.5h46a1.5 1.5 0 0 0 1.5-1.5V2A1.5 1.5 0 0 0 48 .5H2z"/>
+                  <ellipse fill="#CED0DB" mask="url(#b)" cx="25" cy="7.5" rx="49" ry="21.5"/>
+                </g>
+              </svg>
+              <label class="shields-view-label">$i18n{simpleView}</label>
+            </div>
+          </controlled-radio-button>
+          <div class="vertical-separator"></div>
+          <controlled-radio-button class="shields-view-col" name="true">
+            <div class="flex-center">
+              <svg width="50" height="80" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" fill-rule="evenodd">
+                  <path stroke="#CED0DB" d="M2 .5A1.5 1.5 0 0 0 .5 2v76A1.5 1.5 0 0 0 2 79.5h46a1.5 1.5 0 0 0 1.5-1.5V2A1.5 1.5 0 0 0 48 .5H2z"/>
+                  <ellipse fill="#CED0DB" mask="url(#b)" cx="25" cy="7.5" rx="49" ry="21.5"/>
+                  <path d="M36 38h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2z" fill="#CED0DB" fill-rule="nonzero"/>
+                  <rect fill="#CED0DB" x="6" y="38" width="18" height="2" rx="1"/>
+                  <circle fill="#CED0DB" fill-rule="nonzero" cx="42" cy="39" r="3"/>
+                  <path d="M36 52h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2z" fill="#CED0DB" fill-rule="nonzero"/>
+                  <rect fill="#CED0DB" x="6" y="52" width="22" height="2" rx="1"/>
+                  <circle fill="#CED0DB" fill-rule="nonzero" cx="42" cy="53" r="3"/>
+                  <path d="M36 66h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2z" fill="#CED0DB" fill-rule="nonzero"/>
+                  <rect fill="#CED0DB" x="6" y="66" width="12" height="2" rx="1"/>
+                  <circle fill="#CED0DB" fill-rule="nonzero" cx="42" cy="67" r="3"/>
+                </g>
+              </svg>
+              <label class="shields-view-label">$i18n{advancedView}</label>
+            </div>
+          </controlled-radio-button>
+        </settings-radio-group>
       </div>
     </div>
     <settings-toggle-button id="adControlType"

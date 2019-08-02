@@ -125,9 +125,3 @@ export const setAdvancedViewFirstAccess: actions.SetAdvancedViewFirstAccess = ()
     type: types.SET_ADVANCED_VIEW_FIRST_ACCESS
   }
 }
-
-export const toggleAdvancedView: actions.ToggleAdvancedView = () => {
-  return {
-    type: types.TOGGLE_ADVANCED_VIEW
-  }
-}
