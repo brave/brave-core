@@ -1,17 +1,12 @@
 diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
-index f8d5c526f2f7074130823267d6615a6bd6298112..3be1a1a13b3ded4d54ac7699b56e8e8f904f8afb 100644
+index 76fc18877213d04152a54589b3499e3df54bf3ea..aea99767ab5994f72f56979ada02b44594f60b67 100644
 --- a/content/browser/frame_host/navigation_request.cc
 +++ b/content/browser/frame_host/navigation_request.cc
-@@ -1747,6 +1747,12 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -1743,6 +1743,7 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(navigation_handle_->TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  
-+  GetContentClient()->browser()->MaybeHideReferrer(browser_context,
-+                                                   common_params_.url,
-+                                                   top_document_url,
-+                                                   frame_tree_node_->IsMainFrame(),
-+                                                   &common_params_.referrer);
-+
++  BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER
    std::vector<std::unique_ptr<NavigationLoaderInterceptor>> interceptor;
    if (bundled_exchanges_factory_)
      interceptor.push_back(bundled_exchanges_factory_->CreateInterceptor());
