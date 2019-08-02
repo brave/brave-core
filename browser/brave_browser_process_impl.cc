@@ -115,8 +115,14 @@ BraveBrowserProcessImpl::component_updater() {
   return component_updater_.get();
 }
 
-void BraveBrowserProcessImpl::ResourceDispatcherHostCreated() {
-  BrowserProcessImpl::ResourceDispatcherHostCreated();
+ProfileManager* BraveBrowserProcessImpl::profile_manager() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!created_profile_manager_)
+    CreateProfileManager();
+  return profile_manager_.get();
+}
+
+void BraveBrowserProcessImpl::StartBraveServices() {
   ad_block_service()->Start();
   ad_block_custom_filters_service()->Start();
   ad_block_regional_service_manager()->Start();
@@ -130,13 +136,6 @@ void BraveBrowserProcessImpl::ResourceDispatcherHostCreated() {
   tracking_protection_service();
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
-}
-
-ProfileManager* BraveBrowserProcessImpl::profile_manager() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!created_profile_manager_)
-    CreateProfileManager();
-  return profile_manager_.get();
 }
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
