@@ -144,8 +144,9 @@ using ::blink::ToExecutionContext;
 using ::blink::protocol::Array;
 
 using ::v8::Context;
-using ::v8::Local;
+using ::v8::HandleScope;
 using ::v8::Isolate;
+using ::v8::Local;
 
 using ::WTF::String;
 
@@ -168,6 +169,8 @@ static constexpr int kV8ContextPerContextDataIndex = static_cast<int>(
 
 /* static */
 PageGraph* PageGraph::GetFromIsolate(Isolate& isolate) {
+  HandleScope handle_scope(&isolate);
+
   Local<Context> context = isolate.GetCurrentContext();
   if (context.IsEmpty() == true) {
     return nullptr;
