@@ -32,8 +32,7 @@ import {
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess,
-  ToggleAdvancedView
+  SetAdvancedViewFirstAccess
 } from '../../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -50,10 +49,10 @@ interface Props {
     setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
     setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
-    toggleAdvancedView: ToggleAdvancedView
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData
+  toggleAdvancedView: () => void
 }
 
 interface State {
@@ -81,7 +80,7 @@ export default class Shields extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { shieldsPanelTabData, persistentData, actions } = this.props
+    const { shieldsPanelTabData, persistentData, toggleAdvancedView, actions } = this.props
     const { isBlockedListOpen } = this.state
 
     if (!shieldsPanelTabData) {
@@ -159,7 +158,7 @@ export default class Shields extends React.PureComponent<Props, State> {
         }
         <Footer
           isBlockedListOpen={isBlockedListOpen}
-          toggleAdvancedView={actions.toggleAdvancedView}
+          toggleAdvancedView={toggleAdvancedView}
         />
       </ShieldsPanel>
     )

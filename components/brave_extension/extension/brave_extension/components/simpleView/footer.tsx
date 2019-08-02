@@ -12,10 +12,9 @@ import * as tabsAPI from '../../background/api/tabsAPI'
 
 // Locale
 import { getLocale } from '../../background/api/localeAPI'
-import { ToggleAdvancedView } from '../../types/actions/shieldsPanelActions'
 
 export interface Props {
-  toggleAdvancedView: ToggleAdvancedView
+  toggleAdvancedView: () => void
 }
 
 export default class Footer extends React.PureComponent<Props, {}> {
