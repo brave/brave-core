@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "CSS szabályok törlése minden oldal esetén",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Speciális nézet",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Egyszerű nézet",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Az oldalak gyakran cookie-kat és parancsfájlokat tartalmaznak, amelyekkel megpróbálnak azonosítani téged és készülékedet (gyakran reklámokba ágyazva). Igyekeznek megtudni, hogy ki vagy, és mindenhova követnek az interneten - megfigyelve tevékenységedet minden oldalon. A Brave letiltja ezeket a dolgokat, így kíváncsi tekintetek nélkül böngészhetsz.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Letiltott webhelyközi követők és egyéb ijesztő dolgok",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "A pajzs beállítások változtatása ebben a nézetben, hatással lehet az oldal webkompatibilitására.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Sikerült",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Tudjon meg többet",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

@@ -1647,7 +1647,9 @@
 <translation id="473546211690256853">यह खाता <ph name="DOMAIN"/> द्वारा प्रबंधित किया जाता है</translation>
 <translation id="622537739776246443">प्रोफ़ाइल मिटा दी जाएगी</translation>
 <translation id="5632566673632479864">आपका खाता <ph name="EMAIL"/> अब प्राथमिक खाते के रूप में काम नहीं कर सकता. इस खाते का प्रबंधन <ph name="DOMAIN"/> करता है. इसलिए, आपके बुकमार्क, इतिहास, पासवर्ड, और दूसरी सेटिंग को इस डिवाइस से हटा दिया जाएगा.</translation>
+<translation id="3797739167230984533">आपका संगठन, आपके <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> को प्रबंधित करता<ph name="END_LINK"/> है</translation>
 <translation id="1722460139690167654">आपके <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> का प्रबंधन<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> करता है</translation>
+<translation id="8118488170956489476">आपका संगठन आपके <ph name="BEGIN_LINK"/>ब्राउज़र को प्रबंधित करता<ph name="END_LINK"/> है</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> आपके <ph name="BEGIN_LINK"/>ब्राउज़र को प्रबंधित करता है<ph name="END_LINK"/></translation>
 <translation id="8168435359814927499">सामग्री</translation>
 <translation id="7702907602086592255">डोमेन</translation>
@@ -2413,7 +2415,7 @@
 <translation id="399179161741278232">आयातित</translation>
 <translation id="5225324770654022472">ऐप्स  शॉर्टकट दिखाएं</translation>
 <translation id="5072836811783999860">प्रबंधित बुकमार्क दिखाएं</translation>
-<translation id="3613134908380545408"><ph name="FOLDER_NAME">$1<ex>प्रबंधित बुकमार्क</ex></ph> दिखाएं</translation>
+<translation id="3613134908380545408"><ph name="FOLDER_NAME"/> दिखाएं</translation>
 <translation id="3785308913036335955">ऐप्स  शॉर्टकट दिखाएं</translation>
 <translation id="711840821796638741">प्रबंधित बुकमार्क दिखाएं</translation>
 <translation id="2367972762794486313">ऐप्स  दिखाएं</translation>

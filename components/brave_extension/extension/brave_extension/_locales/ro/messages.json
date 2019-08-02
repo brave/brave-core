@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Ștergeți regulile CSS pentru toate site-urile",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Vizualizare avansată",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Vizualizare simplă",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Site-urile includ deseori fișiere cookie și scripturi care încearcă să vă identifice pe dumneavoastră și pe dispozitivul dumneavoastră (care sunt de obicei încorporate în reclame). Acestea vor să afle cine sunteți și să vă urmărească pe tot Internetul, urmărind ce faceți pe fiecare site. Brave blochează aceste fișiere și scripturi pentru ca dvs. să navigați fără a fi urmărit.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Urmăritori trans-site și alte lucruri sinistre blocate",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Modificarea setărilor Shield în această vizualizare poate afecta compatibilitatea cu Internetul pe acest site.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Am înțeles",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Aflați mai multe",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

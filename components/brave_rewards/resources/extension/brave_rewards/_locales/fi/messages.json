@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Brave-mainostesi tunnuksen palkkio",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "vahvista",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Yhteys katkaistu",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Vahvista kukkaro",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Vahvistettu",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Siirry Uphold-tiliini",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Katkaise yhteys Brave-palkintoihin",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Vahvista kukkaro",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Verkkokukkaropalvelumme tarjoaa",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Ole hyvä ja pidä virallinen henkilötodistuksesi valmiina.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Pidä mainospalkintorahakkeesi",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Lisää rahakkeita käyttämällä luottokorttia",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Nosta rahakkeita",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Vahvistetun kukkaron avulla voit:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Vahvista kukkarosi",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Ja hallitse rahojasi helposti!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Vahvistettu",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Ei saatavilla",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Yhdistä kukkaro uudestaan",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Kukkarosi on vahvistettu!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Onneksi olkoon! $name$-kukkarosi vahvistaminen onnistui, ja olet valmis lisäämään ja nostamaan rahaa.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Oi voi. Kukkaroasi ei voi tavoittaa.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Ei huolta. Näin voi käydä lukuisista eri tietoturvasyistä. Ongelman ratkaisemiseksi sinun tarvitsee vain yhdistää siihen uudestaan.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

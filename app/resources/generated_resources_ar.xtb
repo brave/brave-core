@@ -1627,7 +1627,9 @@
 <translation id="473546211690256853">تتم إدارة هذا الحساب من خلال <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">سيتم حذف الملف الشخصي</translation>
 <translation id="5632566673632479864">لم يعد حسابك <ph name="EMAIL"/> مسموحًا به كحساب أساسي. بما أنّ النطاق <ph name="DOMAIN"/> يدير هذا الحساب، سيتم محو الإشارات المرجعية والسِجلّ وكلمات المرور والإعدادات الأخرى من هذا الجهاز.</translation>
+<translation id="3797739167230984533">تتم <ph name="BEGIN_LINK"/>إدارة <ph name="DEVICE_TYPE"/> <ph name="END_LINK"/> من خلال مؤسستك</translation>
 <translation id="1722460139690167654">تتم <ph name="BEGIN_LINK"/>إدارة <ph name="DEVICE_TYPE"/><ph name="END_LINK"/> من خلال <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">تعمل مؤسستك على <ph name="BEGIN_LINK"/>إدارة متصفِّحك<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>تتم إدارة متصفّحك<ph name="END_LINK"/> من خلال <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">المحتوى</translation>
 <translation id="7702907602086592255">النطاق</translation>

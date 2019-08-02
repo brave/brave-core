@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Iyong Token Grant sa Brave Ads",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "i-verify",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Nakadiskonekta",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "I-verify ang Wallet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Na-verify",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Pumunta sa aking Uphold account",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Idiskonekta mula sa Mga Reward ng Brave",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "I-verify ang wallet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Ang aming serbisyo ng wallet ay mula sa",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Pakihanda ang iyong ID na bigay ng gobyerno.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Mapanatili ang iyong mga token ng Mga Reward sa Ad",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Magdagdag ng mga token gamit ang credit card",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Mag-withdraw ng mga token",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Ang na-verify na wallet ay nagbibigay-daan sa iyo na:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "I-verify ang Iyong Wallet",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "At madaling mapamahalaan ang iyong mga pondo!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Na-verify",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Hindi available",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Muling ikonekta ang wallet",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Na-verify ang iyong wallet!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Binabati ka namin! Ang iyong $name$ wallet ay matagumpay na na-verify at handa nang magdagdag at mag-withdraw ng mga pondo.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Naku. Hindi makakonekta sa iyong wallet.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Walang dapat ipag-alala. May iba't ibang dahilang panseguridad kung bakit puwede itong mangyari. Malulutas ang isyung ito sa simpleng pagkonektang muli.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

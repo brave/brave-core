@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "מענק הטוקן של Brave Ads שלכם",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "אימות",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "מנותק",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "אימות ארנק",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "מאומת",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "עבור לחשבון Uphold שלי",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "התנתקות מתגמולי Brave",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "אימות ארנק",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "שירות הארנקים שלנו מסופק על ידי",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "נא להכין את תעודת הזהות שלך שהונפקה על ידי הממשלה בהישג יד.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "שמירת טוקני ה-Ad Rewards שלך ",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "הוספת טוקנים באמצעות כרטיס אשראי",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "משיכת טוקנים",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "ארנק מאומת מאפשר לך:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "אימות הארנק שלך",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "ונהל/י את הכספים שלך בקלות!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "מאומת",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "לא זמין",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "התחברות מחדש לארנק",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "הארנק שלך מאומת!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "ברכותינו! הארנק $name$ שלך אומת בהצלחה ומוכן להוספת ומשיכת כספים.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "הו לא. הארנק שלך אינו זמין.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "אל דאגה. זה יכול לקרות ממגוון סיבות אבטחה. פשוט התחבר/י אליו מחדש על מנת לפתור בעיה זו.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

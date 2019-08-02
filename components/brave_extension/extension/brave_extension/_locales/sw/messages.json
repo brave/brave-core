@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Futa kanuni za CSS kwa tovuti zote",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Mwonekano Mahiri",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Mwonekano Rahisi",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Mara nyingi tovuti inajumuisha vidakuzi na hati ambazo hujaribu kukutambua wewe na kifaa chako (mara nyingi hupachikwa katika matangazo). Zinataka kujua wewe ni  nani na kukufuata kwenye wavuti — kufuatilia unachokifanya kwenye kila tovuti. Brave huzuia mambo haya ili uweze kuvinjari bila kufuatiliwa.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Vishambulizi vya tovuti nzima na mambo mengine ya ajabu yaliyozuiwa.",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Kubadilisha mipangilio ya Shield katika mwonekano huu kunaweza kuathiri uoanaji wa wavuti kwenye tovuti hii.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Nimeelewa",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Jifunze zaidi",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

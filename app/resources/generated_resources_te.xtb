@@ -1626,7 +1626,9 @@
 <translation id="473546211690256853">ఈ ఖాతా <ph name="DOMAIN"/> ద్వారా నిర్వహించబడుతోంది</translation>
 <translation id="622537739776246443">ప్రొఫైల్ తొలగించబడుతుంది</translation>
 <translation id="5632566673632479864">మీ ఖాతా <ph name="EMAIL"/> ఇకపై ప్రాథమిక ఖాతాగా అనుమతించబడదు. ఈ ఖాతా <ph name="DOMAIN"/> ద్వారా నిర్వహించబడుతోంది కాబట్టి, మీ బుక్‌మార్క్‌లు, చరిత్ర, పాస్‌వర్డ్‌లు మరియు ఇతర సెట్టింగ్‌లు ఈ పరికరం నుండి తొలగించబడతాయి.</translation>
+<translation id="3797739167230984533">మీ సంస్థ మీ <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/>ను నిర్వహిస్తోంది<ph name="END_LINK"/></translation>
 <translation id="1722460139690167654">మీ <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> నిర్వహణ<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> ద్వారా చేయబడుతోంది</translation>
+<translation id="8118488170956489476">మీ సంస్థ మీ <ph name="BEGIN_LINK"/>బ్రౌజర్‌ని నిర్వహిస్తోంది<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382">మీ <ph name="BEGIN_LINK"/>బ్రౌజర్ నిర్వహణ<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> ద్వారా చేయబడుతోంది</translation>
 <translation id="8168435359814927499">కంటెంట్</translation>
 <translation id="7702907602086592255">డొమైన్</translation>

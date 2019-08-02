@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Sustav nagrada u pregledniku Brave</translation>
 <translation id="7942180974165298215">Blokiranje oglasa u pregledniku Brave</translation>
 <translation id="6406506848690869874">Sinkronizacija</translation>
-<translation id="8488282162676695335">Braveov novčanik</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dopušteno u pregledniku Brave.</translation>
+<translation id="5655621391922317800">Kripto novčanici</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dopušteno u pregledniku Brave.</translation>
 <translation id="7450557937477381864">Zatvori Chrome</translation>
 <translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
 <translation id="5735465527556462863">Zatvori Brave (staro)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Braveova plaćanja</translation>
 <translation id="3489524616427966890">Otvori prozore i kartice</translation>
 <translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
+<translation id="3696083746357487900">Instaliraj kripto novčanike</translation>
 <translation id="8053096063396012732">Instaliraj aplikaciju Widevine</translation>
 <translation id="4840334696217618631">Poništi preglednik za omogućavanje aplikacije Widevine</translation>
 <translation id="8410111618231938546">Widevine tvrtke Google dio je koda za upravljanje digitalnim pravima (DRM) koji tvrtka Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja tvrtke Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
@@ -27,7 +28,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="2240268017737062801">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije</translation>
 <translation id="3371702087847741961">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije (preporučeno)</translation>
 <translation id="3218385319396786393">Na ovoj je stranici blokirana automatska reprodukcija</translation>
-<translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nastavi blokirati automatsku reprodukciju</translation>
 <translation id="5883458389055721080">Društvo Brave nije pregledalo razinu sigurnosti i zaštite ovog dodatka. Instalirajte samo ovaj dodatak ako vjerujete programeru.</translation>
 <translation id="2044383478723007273">Boje preglednika Brave</translation>
@@ -35,6 +36,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="6123134130710658846">Sakrij gumbe za nagrade Brave</translation>
 <translation id="7635711399568194460">Sakrivaju se gumbi za nagrade Brave u lokacijskoj traci kada značajka Nagrade Brave nije omogućena</translation>
 <translation id="7965178729203412357">Novi identitet za Tor</translation>
+<translation id="8511502469534942133">Nova veza tor za ovo mrežno mjesto</translation>
 <translation id="8784924142044142231">Izađi iz funkcije Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Otvori prozor funkcije Tor</translation>
@@ -84,6 +86,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="2896916411183256228">Rabi WebTorrent za prikazivanje torenta izravno u pregledniku. Podržava datoteke i magnetne poveznice za torente.</translation>
 <translation id="6554397389149987360">Rabi komponentu Hangouts za omogućavanje dijeljenja zaslona i drugih značajki u pregledniku.</translation>
+<translation id="1765684547504191670">Upotrebljava se komponenta Medijski usmjerivač kako bi se omogućila značajka Chromecast u pregledniku.</translation>
+<translation id="9156965752763025780">Promjene će početi vrijediti sljedeći put kad ponovo pokrenete Brave.</translation>
+<translation id="7179921470347911571">Ponovno pokreni sad</translation>
 <translation id="4154389611571860454">Upotrebljava se dodatni programski nastavak IPFS za podržavanje IPFS-a u pregledniku.</translation>
 <translation id="8137559199583651773">Upravljanje proširenjima</translation>
 <translation id="4928988318462976765">Prodavniza mrežnih ekstenzija</translation>

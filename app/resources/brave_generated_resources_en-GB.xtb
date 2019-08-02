@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Ad Block</translation>
 <translation id="6406506848690869874">Sync</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is not allowed in Brave.</translation>
+<translation id="5655621391922317800">Crypto Wallets</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is not allowed in Brave.</translation>
 <translation id="7450557937477381864">Close Chrome</translation>
 <translation id="7008934821596358692">To finish importing, close all Chrome windows.</translation>
 <translation id="5735465527556462863">Close Brave (old)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave Payments</translation>
 <translation id="3489524616427966890">Open windows and tabs</translation>
 <translation id="3699882589215410581">Install and run Widevine</translation>
+<translation id="3696083746357487900">Install Crypto Wallets</translation>
 <translation id="8053096063396012732">Install Widevine</translation>
 <translation id="4840334696217618631">Restart browser to enable Widevine</translation>
 <translation id="8410111618231938546">Google Widevine is a piece of Digital Rights Management (DRM) code that we at Brave Software do not own and cannot inspect. The Google Widevine code is loaded from Google servers, not from our servers. It is loaded only when you enable this option. We discourage the use of DRM, but we respect user choice and acknowledge that some Brave users would like to use services that require it.
@@ -27,7 +28,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="2240268017737062801">Ask when a site wants to autoplay media</translation>
 <translation id="3371702087847741961">Ask when a site wants to autoplay media (recommended)</translation>
 <translation id="3218385319396786393">Autoplay was blocked on this page</translation>
-<translation id="4988333904713528597">Always allow autoplay on <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Always allow autoplay on <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continue blocking autoplay</translation>
 <translation id="5883458389055721080">Brave has not reviewed this extension for security and safety. Only install this extension if you trust the developer.</translation>
 <translation id="2044383478723007273">Brave colours</translation>
@@ -35,6 +36,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="6123134130710658846">Hide Brave Rewards button</translation>
 <translation id="7635711399568194460">Hides the Brave Rewards button in the location bar when Brave Rewards is not enabled</translation>
 <translation id="7965178729203412357">New Tor Identity</translation>
+<translation id="8511502469534942133">New Tor Connection For This Site</translation>
 <translation id="8784924142044142231">Exit Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Open Tor Window</translation>
@@ -84,6 +86,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.</translation>
 <translation id="6554397389149987360">Uses Hangouts component to enable screen sharing and other features in the browser.</translation>
+<translation id="1765684547504191670">Uses Media Router component to enable Chromecast in the browser.</translation>
+<translation id="9156965752763025780">Your changes will take effect the next time you relaunch Brave.</translation>
+<translation id="7179921470347911571">Relaunch Now</translation>
 <translation id="4154389611571860454">Uses IPFS companion extension to support IPFS in the browser.</translation>
 <translation id="8137559199583651773">Manage extensions</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>

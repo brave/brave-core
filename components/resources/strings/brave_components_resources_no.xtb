@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
-<translation id="689261804992965033">Reklamer blokkert</translation>
-<translation id="1663506596135222606">Sporere blokkert</translation>
+<translation id="4339730410920731698">Annonser og sporing blokkert</translation>
 <translation id="2313532038420432247">HTTPS-oppgraderinger</translation>
 <translation id="7679428712334662192">Estimert tid spart</translation>
 <translation id="5206618227023752085">Det øverste nettstedet er fjernet.</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">Vis nettlesingshistorikken din</translation>
 <translation id="1742484101357469636">Innstillinger for instrumentpanel</translation>
 <translation id="8320281346741574991">Vis bakgrunnsbilde</translation>
+<translation id="7275773481201277457">Vis Brave-statistikk</translation>
+<translation id="6836061097810262923">Vis klokke</translation>
+<translation id="8643377320501056697">Vis toppnettsteder</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8730621377337864115">Ferdig</translation>
 <translation id="6248988683584659830">Søkeinnstillinger</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">Lær mer om Tor i Brave</translation>
 <translation id="4272382368346338917">Tilleggsfiltre</translation>
 <translation id="8949292968394988358">Advarsel: For mange filtre vil redusere ytelsen</translation>
-<translation id="1869685517625607604">Totale annonser blokkert:</translation>
+<translation id="8686201964111147748">Totalt antall blokkerte annonser og sporingskapsler:</translation>
 <translation id="4673764878177947707">Tilpass filtre</translation>
 <translation id="8803682034537762884">Én per linje, et filter er beskrevet i Adblock Plus' filtersyntaks</translation>
 <translation id="2974339193389078578">Brave – velkommen til det nye Internett</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">Din oppmerksomhet er verdifull. Tjen ved å se annonser som støtter personvern mens du surfer, og send den videre for å støtte skaperene du elsker.</translation>
 <translation id="4942016616604700968">Aktiver belønninger</translation>
 <translation id="3958088479270651626">Importér bokmerker og innstillinger</translation>
-<translation id="5633840519079139680">Brave gjør det enkelt å sette opp det vante nettleser-miljøet ditt ved å importere bokmerker og innstillinger fra andre nettlesere som er installert på datamaskinen.</translation>
+<translation id="2609701960545338618">Sett opp ditt vante surfemiljø ved å importere bokmerker og innstillinger fra den gamle nettleseren. Avanserte importeringsalternativer finner du i innstillingene.</translation>
 <translation id="8275038454117074363">Importer</translation>
+<translation id="2088479175984386785">Importer fra …</translation>
 <translation id="5540323067375019678">Administrer dine skjold</translation>
 <translation id="3278033011827237847">Beskytt deg mot annonser og sporere som innvaderer personvernet ditt når du surfer med Brave Shields. Sett skjoldene til å være "nede" dersom en side’ ikke ser ut til å fungere skikkelig.</translation>
 <translation id="3366308997091824722">Shield-instillinger</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">For en mer privat søkeopplevelse, prøv DuckDuckGo.</translation>
 <translation id="513635702954746724">Bytt fargetema</translation>
 <translation id="6842850080200126305">Bytt farge på verktøylinjen ved å velge innstillingen for lyst eller mørkt i innstillinger-vinduet.</translation>
-<translation id="2801098717523961746">Velg tema</translation>
+<translation id="5805868144901917207">Velg et tema</translation>
+<translation id="8131740175452115882">Bekreft</translation>
+<translation id="713206503018076063">Systemtema (standard)</translation>
+<translation id="1807246157184219062">Lyst</translation>
+<translation id="2414886740292270097">Mørkt</translation>
 <translation id="3829010735958850433">Hopp over velkomstturen</translation>
 <translation id="1201402288615127009">Neste</translation>
 <translation id="1919345977826869612">Reklamer</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">Totalt beløp i tips denne måneden</translation>
 <translation id="4153752809523809915">Har du tipset favoritt-tekstforfatteren din i dag?</translation>
 <translation id="1165667598801520610">Legg til midler</translation>
-<translation id="5314648471460409933">Behandle midlene</translation>
+<translation id="6239274080752256452">Ta ut penger</translation>
 <translation id="2726674968268546964">sjetonger</translation>
 <translation id="7286722244752781970">Minste sidetid før du registrering av et besøk</translation>
 <translation id="4424486208397124985">Minimumsbesøk for utgivers relevans</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">Gjenopprett nå!</translation>
 <translation id="1184075897575325927">Beklager, men det ser ut til at dette stipendet allerede er gjort krav på.</translation>
 <translation id="282693359045252357">Neste månedlige tipsdato</translation>
-<translation id="6231182869178328516">Jeg tipset akkurat <ph name="NAME">$1<ex>user</ex></ph> som bruker Brave-nettleseren. Sjekk det ut på https://brave.com/tips.</translation>
+<translation id="6231182869178328516">Jeg tipset akkurat <ph name="NAME"/> som bruker Brave-nettleseren. Sjekk det ut på https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
+<translation id="2876191400747549936">Beklager, det var problemer med å behandle forespørselen. Prøv på nytt.</translation>
 <translation id="7422678632904904341">Beløp:</translation>
 <translation id="5923611424721173182">Gjeldende forsoning</translation>
 <translation id="5457113250005438886">Ugyldig</translation>
@@ -170,14 +178,10 @@
 <translation id="9026369588205476247">For å beskytte ditt personvern, blir ikke denne Brave Rewards-utskriften lagret eller logget noen andre steder enn på din enhet (denne datamaskinen). Den kan ikke hentes opp igjen fra Brave i tilfelle datatap på din enhet.</translation>
 <translation id="1036277985068412734">legg til midler</translation>
 <translation id="5441565662498481293">Du sender automatisk et tips til:</translation>
-<translation id="4496990471549986619">FAQ-en</translation>
-<translation id="1688876543043079268">Påminnelse: Brave-lommeboken er enveis og BAT går til utgivernettsider. For mer informasjon om Brave Rewards, vennligst besøk</translation>
-<translation id="2790014973538267577">Vis QR-kode</translation>
-<translation id="5690154556705187369">Pass på å bruke adressen nedenfor som stemmer overens med typen kryptovaluta du eier. Uphold vil automatisk veksle det om til BAT, og det vil vises som en økt saldo i Brave Rewards-lommeboken din. Lommeboksaldoen din skal være oppdatert i løpet av en time.</translation>
-<translation id="8874657527115501951">Send kryptvaluta fra din eksterne konto til Brave Rewards-lommeboken din.</translation>
 <translation id="2827387977307390755">Tillat tips på</translation>
 <translation id="3671566813999349838">Sum</translation>
 <translation id="3819257035322786455">Sikkerhetskopi</translation>
+<translation id="4989542687859782284">Utilgjengelig</translation>
 <translation id="1312977698678162065">Få betalt for å se relevante annonser som respekterer ditt privatliv.</translation>
 <translation id="7655723274266132226">Nå kan du tjene på å se annonser.</translation>
 <translation id="2975780980638932742">Brave-annonser er her!</translation>
@@ -276,9 +280,12 @@ dag i hver måned.</translation>
 <translation id="1135093233619227159">Du kan fjerne en side som mottar månedlige tips i Tips-panelet.</translation>
 <translation id="5082474983463379713">Vennligst merk:</translation>
 <translation id="1430915738399379752">Skriv ut</translation>
+<translation id="135956957367307069">Forespørselen din behandles fremdeles. Vennligst vent.</translation>
+<translation id="8725066075913043281">Prøv igjen</translation>
 <translation id="3173528272490482456">Klar til å begynne?</translation>
 <translation id="913775524828049259">Ja, jeg er klar</translation>
 <translation id="108052542935515756">Du kan starte med</translation>
+<translation id="2678666039642976470">Koble til lommebok på nytt</translation>
 <translation id="194625454574835815">Gjenopprettingsnøkkel</translation>
 <translation id="6354568176665589146">Gjentakende</translation>
 <translation id="7577100371127227294">Månedlige tips</translation>
@@ -307,7 +314,7 @@ dag i hver måned.</translation>
 <translation id="8014425282125849700">Nå og da vil du få tilbud om tildeling av gratis tokens fra Brave. Pass på at du får med deg beskjeden!</translation>
 <translation id="1370034647041840967">Tjen tokens for din oppmerksomhet til annonser og bruk det til å støtte skapere som du setter pris på!</translation>
 <translation id="3905359437915971466">Legg til, ta ut og administrer penger</translation>
-<translation id="5866139915213160210">Brave-lommeboken din er styrt av</translation>
+<translation id="1401808324297710517">Brave-lommeboken din driftes av</translation>
 <translation id="6401272292123354754">Brave Rewards er bygget på Basic Attention Token. Lær mer om BAT</translation>
 <translation id="7823359893981882407">her</translation>
 <translation id="4483635855837696643">Restaurere din lommebok</translation>
@@ -346,7 +353,6 @@ dag i hver måned.</translation>
 <translation id="8615803647903750175">Lommebokaktivitet</translation>
 <translation id="2620624773940447728">Lommebokaddresse</translation>
 <translation id="4989277977420164514">saldo i lommebok</translation>
-<translation id="8725066075913043281">Prøv igjen</translation>
 <translation id="1083771727630442739">Opprettelse av lommebok var mislykket</translation>
 <translation id="9146039192200831719">Vennligst sjekk internettforbindelsen din.</translation>
 <translation id="1910721550319506122">Velkommen!</translation>
@@ -381,6 +387,21 @@ dag i hver måned.</translation>
 <translation id="8101881066646819737">Din token fra Brave Ads</translation>
 <translation id="2151535059686617995">Det er din lykkedag!</translation>
 <translation id="6255773350565723852">Tokenstipendet ditt er på vei.</translation>
+<translation id="7512440811010447157">verifiser</translation>
+<translation id="8030169304546394654">Koblet fra</translation>
+<translation id="8267327690882073581">Verifiser lommeboken</translation>
+<translation id="4569155249847375786">Verifisert</translation>
+<translation id="7591798679868259510">Gå til Uphold-kontoen min</translation>
+<translation id="9200453331904391567">Koble fra Brave Rewards</translation>
+<translation id="46988480989545156">Verifiser lommeboken</translation>
+<translation id="1554282356558968486">Lommeboktjenesten vår leveres av</translation>
+<translation id="6771734945114850124">Ha legitimasjon utstedt av offentlig myndighet tilgjengelig.</translation>
+<translation id="4483114863312340607">Ta ut og sett inn penger</translation>
+<translation id="6600381840029958159">Du trenger ikke løse captcha for å tjene annonsebelønninger</translation>
+<translation id="4332021186346461319">Belønninger du mottar, utløper aldri og settes inn i lommeboken din umiddelbart</translation>
+<translation id="2610007079772760276">Med en verifisert lommebok kan du:</translation>
+<translation id="7565794512491053578">Verifiser lommeboken din</translation>
+<translation id="698531289520577961">Og administrer midlene dine enkelt!</translation>
 <translation id="1181037720776840403">Fjern</translation>
 <translation id="7885157704277298658">Kopiert!</translation>
 <translation id="5379640681913450928">Antall ord:</translation>
@@ -441,4 +462,5 @@ dag i hver måned.</translation>
 <translation id="1399673826422570698">Det kan hende du har nettverksproblemer, eller det kan være et problem med Sync-serverne.</translation>
 <translation id="5286379413446391050">Kunne ikke koble til Synkroniser servere</translation>
 <translation id="2410472020237369473">Klokken på din datamaskin kan være satt til feil tidssone. Sjekk klokkeinnstillingene.</translation>
+<translation id="5655621391922317800">Kryptolommebøker</translation>
 </translationbundle>

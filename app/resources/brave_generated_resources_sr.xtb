@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brejv blokiranje oglasa</translation>
 <translation id="6406506848690869874">Sinhronizuj</translation>
-<translation id="8488282162676695335">Brave novčanik</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dozvoljeno u Brejvu</translation>
+<translation id="5655621391922317800">Crypto novčanici</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dozvoljeno u Brejvu</translation>
 <translation id="7450557937477381864">Zatvorite Hrom pregledač</translation>
 <translation id="7008934821596358692">Da biste završili uvoz, zatvorite sve prozore u Chrome-u.</translation>
 <translation id="5735465527556462863">Zatvorite Brave (staro)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave uplate</translation>
 <translation id="3489524616427966890">Otvoreni prozori i kartice</translation>
 <translation id="3699882589215410581">Instaliraj i pokreni Vajdvajn</translation>
+<translation id="3696083746357487900">Instalirajte Crypto novčanike</translation>
 <translation id="8053096063396012732">Instalirajte Widevine</translation>
 <translation id="4840334696217618631">Ponovo pokrenite pregledač da omogućite Widevine</translation>
 <translation id="8410111618231938546">Google Widevine je deo Digital Rights Management (DRM) koda koji mi u Brave softveru ne posedujemo i ne možemo da ispitujemo. Google Widevine kod se učitava sa Google servera, a ne sa naših servera. Učitava se samo kada omogućite ovu opciju. Mi odvraćamo od upotrebe DRM-a, ali poštujemo izbor korisnika i razumemo da neki Brave korisnici žele da koriste usluge koje to zahtevaju.
@@ -27,7 +28,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2240268017737062801">Pitaj kada veb lokacija želi automatsko puštanje medija</translation>
 <translation id="3371702087847741961">Pitajte kada sajt želi da automatski pušta medije (preporučeno)</translation>
 <translation id="3218385319396786393">Automatska reprodukcija je blokirana na ovoj strani</translation>
-<translation id="4988333904713528597">Uvek dozvoli automatsko puštanje na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Uvek dozvoli automatsko puštanje na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nastavite da blokirate automatsku reprodukciju</translation>
 <translation id="5883458389055721080">Brave nije pregledao ovu ekstenziju zbog bezbednosti i sigurnosti. Instalirajte ovu ekstenziju samo ako verujete razvojnom programeru.</translation>
 <translation id="2044383478723007273">Boje Brave-a</translation>
@@ -35,6 +36,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="6123134130710658846">Sakrij taster za Brave nagrade</translation>
 <translation id="7635711399568194460">Sakriva taster za Brave nagrade u traci onda kada Brave nagrade nisu omogućene</translation>
 <translation id="7965178729203412357">Novi Tor identitet</translation>
+<translation id="8511502469534942133">Nova Tor veza za ovaj sajt</translation>
 <translation id="8784924142044142231">Izađite iz Tor-a</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Otvori Tor prozor</translation>
@@ -84,6 +86,9 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="2896916411183256228">Koristi WebTorrent da prikazuje torrente direktno u pretraživaču. Podržava torrent fajlove i magnetne veze.</translation>
 <translation id="6554397389149987360">Koristi komponentu Hangouts da biste omogućili deljenje ekrana i druge funkcije u pregledaču.</translation>
+<translation id="1765684547504191670">Koristi komponentu Media Router-a da bi omogućio Chromecast u pregledaču.</translation>
+<translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
+<translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="4154389611571860454">Koristi IPFS propratno proširenje da podrži IPFS u pregledaču.</translation>
 <translation id="8137559199583651773">Управљај додацима</translation>
 <translation id="4928988318462976765">Prodavnica Veb proširenja</translation>

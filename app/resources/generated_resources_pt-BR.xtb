@@ -1638,7 +1638,9 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="473546211690256853">Esta conta é gerenciada por <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">O perfil será excluído</translation>
 <translation id="5632566673632479864">Não é mais permitido usar sua conta <ph name="EMAIL"/> como a principal. Como essa conta é gerenciada por <ph name="DOMAIN"/>, seus favoritos, histórico, senhas e outras configurações serão excluídos deste dispositivo.</translation>
+<translation id="3797739167230984533">Seu <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> é gerenciado<ph name="END_LINK"/> pela sua organização</translation>
 <translation id="1722460139690167654">Seu <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> é gerenciado<ph name="END_LINK"/> por <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Seu <ph name="BEGIN_LINK"/>navegador é gerenciado<ph name="END_LINK"/> pela sua organização</translation>
 <translation id="1365180424462182382">Seu <ph name="BEGIN_LINK"/>navegador é gerenciado<ph name="END_LINK"/> por <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Conteúdo</translation>
 <translation id="7702907602086592255">Domínio</translation>
