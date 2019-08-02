@@ -1164,7 +1164,8 @@ void AdsImpl::NotificationAllowedCheck(const bool serve) {
 
   if (!ok) {
     // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'notifications not presently allowed' }
+    // 'Notification not made', { reason: 'notifications not presently allowed'
+    // }
 
     BLOG(INFO) << "Notification not made: Notifications not presently allowed";
 
