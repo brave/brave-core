@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Tokenul dvs. acordat pentru reclame Brave",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "verifică",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Deconectat",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Verificare portofel",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Verificat",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Mergi la contul meu Uphold",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Deconectare de la Brave Rewards",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Verificare portofel",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Serviciul nostru de portofel este furnizat de",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Vă rugăm să aveți la îndemână actul de identitate emis de autoritățile naționale.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Păstrați-vă simbolurile Ad Rewards",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Adăugați simboluri folosind cardul de credit",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Retragere simboluri",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Un portofel verificat vă permite să:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Verificați-vă portofelul",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Și administrați-vă fondurile cu ușurință!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Verificat",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Indisponibil",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Reconectare portofel",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Portofelul dvs. este verificat!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Felicitări! Portofelul dvs. $name$ a fost verificat cu succes și este gata pentru depunerea și retragerea de fonduri.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Vai, portofelul dvs. nu poate fi accesat.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Nu vă faceți griji. Acest lucru se poate întâmpla din diverse motive de securitate. Este de ajuns să vă reconectați pentru a rezolva problema.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -417,7 +417,7 @@
 <translation id="2316129865977710310">不，謝謝</translation>
 <translation id="9169931577761441333">將 <ph name="APP_NAME"/> 新增至主畫面</translation>
 <translation id="6349101878882523185">安裝 <ph name="APP_NAME"/></translation>
-<translation id="4918221908152712722">安裝 <ph name="APP_NAME">$1<ex>Brave 地圖</ex></ph> （不需要下載）</translation>
+<translation id="4918221908152712722">安裝 <ph name="APP_NAME"/> （不需要下載）</translation>
 <translation id="3789841737615482174">安裝</translation>
 <translation id="5280426389926346830">要建立捷徑嗎？</translation>
 <translation id="7525067979554623046">建立</translation>
@@ -1363,7 +1363,7 @@
 <translation id="3071624960923923138">按一下這裡即可開啟新分頁</translation>
 <translation id="4908811072292128752">開啟新分頁即可一次瀏覽兩個網站</translation>
 <translation id="8966870118594285808">你可以重新開啟不小心關閉的分頁</translation>
-<translation id="8806680466228877631"><ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> 可以重新開啟意外關閉的分頁</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> 可以重新開啟意外關閉的分頁</translation>
 <translation id="2963151496262057773">下列外掛程式無回應：<ph name="PLUGIN_NAME"/> 您要停止執行嗎？</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{一個網頁無回應}other{多個網頁無回應}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{你可以等待回應，也可以離開這個網頁。}other{你可以等待回應，也可以離開這些網頁。}}</translation>
@@ -1647,7 +1647,7 @@
 <translation id="473546211690256853">這個帳戶是由 <ph name="DOMAIN"/> 負責管理。</translation>
 <translation id="622537739776246443">系統將會刪除設定檔</translation>
 <translation id="5632566673632479864">你已不能再將 <ph name="EMAIL"/> 設為主要帳戶。這個帳戶是由 <ph name="DOMAIN"/> 所管理，因此系統會將您的書籤、歷史記錄、密碼和其他設定從這個裝置上清除。</translation>
-<translation id="3797739167230984533">您的 <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> 是由<ph name="END_LINK">&lt;/a&gt;</ph> 您的組織管理</translation>
+<translation id="3797739167230984533">您的 <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph><ph name="DEVICE_TYPE"/> 是由<ph name="END_LINK">&lt;/a&gt;</ph> 您的組織管理</translation>
 <translation id="1722460139690167654">你的 <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> 是由 <ph name="ENROLLMENT_DOMAIN"/> 管理<ph name="END_LINK"/></translation>
 <translation id="8118488170956489476">您的 <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>瀏覽器是由<ph name="END_LINK">&lt;/a&gt;</ph> 您的組織所管理</translation>
 <translation id="1365180424462182382">你的<ph name="BEGIN_LINK"/>瀏覽器是由 <ph name="ENROLLMENT_DOMAIN"/> 管理<ph name="END_LINK"/></translation>
@@ -2281,7 +2281,7 @@
 <translation id="8750155211039279868"><ph name="ORIGIN"/> 要求與序列埠連線</translation>
 <translation id="4943691134276646401">「<ph name="CHROME_EXTENSION_NAME"/>」要求與序列埠連線</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
-<translation id="1587562069597918292"><ph name="DEVICE_PATH">$1<ex>COM1</ex></ph></translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> 要求與 HID 裝置連線</translation>
 <translation id="6078769373519310690">「<ph name="CHROME_EXTENSION_NAME"/>」要求與 HID 裝置連線</translation>
 <translation id="4419610272958564173">不明的裝置 (製造商：<ph name="VENDOR_ID"/>，產品：<ph name="PRODUCT_ID"/>)</translation>
@@ -2414,7 +2414,7 @@
 <translation id="399179161741278232">已匯入</translation>
 <translation id="5225324770654022472">顯示應用程式捷徑</translation>
 <translation id="5072836811783999860">顯示受管理書籤</translation>
-<translation id="3613134908380545408">顯示 <ph name="FOLDER_NAME">$1<ex>管制書籤</ex></ph></translation>
+<translation id="3613134908380545408">顯示 <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">顯示應用程式捷徑</translation>
 <translation id="711840821796638741">顯示受管理書籤</translation>
 <translation id="2367972762794486313">顯示應用程式</translation>
@@ -2899,7 +2899,7 @@
 <translation id="6352773953037195952">最高</translation>
 <translation id="3677657024345889897">最小</translation>
 <translation id="167160931442925455">最大</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE">$1<ex>120</ex></ph>%</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (預設)</translation>
 <translation id="3602290021589620013">預覽</translation>
 <translation id="7037509989619051237">要預覽的文字</translation>
@@ -3677,7 +3677,7 @@
 <translation id="8339059274628563283"><ph name="SITE"/> 儲存在本機的資料</translation>
 <translation id="4090947011087001172">要重設 <ph name="SITE"/> 的網站權限嗎？</translation>
 <translation id="1688867105868176567">要清除網站資料嗎？</translation>
-<translation id="4665446389743427678">所有 <ph name="SITE">$1<ex>www.example.com</ex></ph> 儲存的資料都將會被刪除。</translation>
+<translation id="4665446389743427678">所有 <ph name="SITE"/> 儲存的資料都將會被刪除。</translation>
 <translation id="5300287940468717207">要重設網站權限嗎？</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> 之下的網站也會進行重設。</translation>
 <translation id="3255355328033513170">這樣做會刪除 <ph name="SITE_GROUP_NAME"/> 所儲存的所有資料，和這個群組中的所有網站。Cookie 也包括在內。系統會將你登出這些網站，包括在開啟的分頁中也一樣。</translation>
@@ -3748,7 +3748,7 @@
 <translation id="5021750053540820849">尚未更新</translation>
 <translation id="3448492834076427715">更新帳戶</translation>
 <translation id="2923234477033317484">移除這個帳戶</translation>
-<translation id="8995603266996330174">由 <ph name="DOMAIN">$1<ex>google.com</ex></ph> 管理</translation>
+<translation id="8995603266996330174">由 <ph name="DOMAIN"/> 管理</translation>
 <translation id="4659077111144409915">主要帳戶</translation>
 <translation id="3158033540161634471">設定指紋</translation>
 <translation id="1587907146729660231">用手指輕觸電源按鈕</translation>
@@ -3943,7 +3943,7 @@
 <translation id="1709106626015023981"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (原生)</translation>
 <translation id="5420438158931847627">決定文字和圖片的銳利度</translation>
 <translation id="3954469006674843813"><ph name="WIDTH"/>x<ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> 赫茲)</translation>
-<translation id="3400390787768057815"><ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (<ph name="REFRESH_RATE">$3<ex>60</ex></ph> 赫茲) - 隔行</translation>
+<translation id="3400390787768057815"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> 赫茲) - 隔行</translation>
 <translation id="7889565820482017512">顯示大小</translation>
 <translation id="8448729345478502352">縮小或放大畫面上的項目</translation>
 <translation id="3385092118218578224"><ph name="DISPLAY_ZOOM"/>%</translation>
@@ -4110,7 +4110,7 @@
 <translation id="3729506734996624908">允許的網站</translation>
 <translation id="3732078975418297900">第 <ph name="ERROR_LINE"/> 行有錯誤</translation>
 <translation id="9063208415146866933">第 <ph name="ERROR_LINE_START"/> 至第 <ph name="ERROR_LINE_END"/> 行有錯誤</translation>
-<translation id="6997642619627518301"><ph name="NAME_PH">$1</ph> - 活動紀錄</translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> - 活動紀錄</translation>
 <translation id="8287902281644548111">依 API 呼叫/網址搜尋</translation>
 <translation id="5008936837313706385">活動名稱</translation>
 <translation id="7583948862126372804">計數</translation>

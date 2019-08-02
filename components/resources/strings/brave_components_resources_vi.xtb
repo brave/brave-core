@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="vi">
-<translation id="689261804992965033">Quảng cáo Đã chặn</translation>
-<translation id="1663506596135222606">Bộ theo dõi Đã chặn</translation>
+<translation id="4339730410920731698">Đã chặn Quảng cáo và Chương trình theo dõi</translation>
 <translation id="2313532038420432247">HTTPS Upgrades</translation>
 <translation id="7679428712334662192">Dự tính Thời gian Tiết kiệm được</translation>
 <translation id="5206618227023752085">Đã xóa trang hàng đầu.</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">Xem lịch sử duyệt web của bạn</translation>
 <translation id="1742484101357469636">Cài đặt Bảng điều khiển</translation>
 <translation id="8320281346741574991">Hiển thị ảnh nền</translation>
+<translation id="7275773481201277457">Hiển thị Số liệu thống kê Brave</translation>
+<translation id="6836061097810262923">Hiển thị Đồng hồ</translation>
+<translation id="8643377320501056697">Hiển thị Các trang Hàng đầu</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="8730621377337864115">Đã xong</translation>
 <translation id="6248988683584659830">Cài đặt tìm kiếm</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">Tìm hiểu thêm về Tor trong Brave</translation>
 <translation id="4272382368346338917">Bộ lọc thêm</translation>
 <translation id="8949292968394988358">Lưu ý: Bật quá nhiều bộ lọc sẽ làm giảm hiệu năng</translation>
-<translation id="1869685517625607604">Tổng số quảng cáo đã chặn:</translation>
+<translation id="8686201964111147748">Tổng số quảng cáo và trình theo dõi đã chặn:</translation>
 <translation id="4673764878177947707">Bộ lọc Tùy chỉnh</translation>
 <translation id="8803682034537762884">Một cái mỗi dòng, bộ lọc được mô tả trong cú pháp bộ lọc của Adblock Plus</translation>
 <translation id="2974339193389078578">Brave - một trải nghiệm Internet mới</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">Sự chú ý của bạn rất đáng giá. Kiếm tiền bằng cách xem các quảng cáo tôn trọng quyền riêng tư khi bạn duyệt web và sau đó trả tiền đi để hỗ trợ các nhà sáng tạo nội dung mà bạn yêu thích.</translation>
 <translation id="4942016616604700968">Kích hoạt Phần thưởng</translation>
 <translation id="3958088479270651626">Nhập dấu trang và các mục cài đặt</translation>
-<translation id="5633840519079139680">Brave khiến việc thiết lập môi trường thông thường của bạn trở nên dễ dàng bằng cách nhập dấu trang và cài đặt từ các trình duyệt khác đã cài đặt trên máy tính của bạn.</translation>
+<translation id="2609701960545338618">Thiết lập môi trường duyệt web thông thường của bạn bằng cách nhập dấu trang và các cài đặt từ trình duyệt cũ của bạn. Các tùy chọn nhập nâng cao có thể được tìm thấy trong mục Cài đặt.</translation>
 <translation id="8275038454117074363">Nhập</translation>
+<translation id="2088479175984386785">Nhập từ...</translation>
 <translation id="5540323067375019678">Quản lý lá chắn của bạn</translation>
 <translation id="3278033011827237847">Bảo vệ chống các bộ theo dõi và quảng cáo xâm nhập quyền riêng tư khi đang duyệt web nhờ Lá chắn Brave. Hãy đặt các Lá chắn vào trạng thái "hạ xuống" nếu một website có vẻ đang không hoạt động đúng cách.</translation>
 <translation id="3366308997091824722">Cài đặt lớp bảo vệ</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">Để có trải nghiệm tìm kiếm riêng tư hơn, hãy thử dùng DuckDuckGo.</translation>
 <translation id="513635702954746724">Chọn chủ đề màu của bạn</translation>
 <translation id="6842850080200126305">Đặt màu cho thanh công cụ của bạn bằng cách chọn tùy chọn sáng hoặc tối từ bảng cài đặt.</translation>
-<translation id="2801098717523961746">Chọn chủ đề của bạn</translation>
+<translation id="5805868144901917207">Chọn chủ đề</translation>
+<translation id="8131740175452115882">Xác nhận</translation>
+<translation id="713206503018076063">Chủ đề hệ thống (mặc định)</translation>
+<translation id="1807246157184219062">Sáng</translation>
+<translation id="2414886740292270097">Tối</translation>
 <translation id="3829010735958850433">Bỏ qua tour chào mừng</translation>
 <translation id="1201402288615127009">Tiếp theo</translation>
 <translation id="1919345977826869612">Quảng cáo</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">Tổng tiền tip tháng này</translation>
 <translation id="4153752809523809915">Hôm nay bạn đã gửi tiền tip cho nhà sáng tạo nội dung mà bạn ưa thích chưa?</translation>
 <translation id="1165667598801520610">Thêm Nguồn tiền</translation>
-<translation id="5314648471460409933">Quản lý Quỹ</translation>
+<translation id="6239274080752256452">Rút Tiền</translation>
 <translation id="2726674968268546964">mã thông báo</translation>
 <translation id="7286722244752781970">Thời gian xem trang tối thiểu trước khi lưu lại lượt truy cập</translation>
 <translation id="4424486208397124985">Số lượt truy cập tối thiểu đối với nhà xuất bản liên quan</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">Khôi phục ngay!</translation>
 <translation id="1184075897575325927">Rất tiếc, có vẻ như khoản thưởng này đã được nhận.</translation>
 <translation id="282693359045252357">Ngày gửi tiền tip hàng tháng tiếp theo</translation>
-<translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME">$1<ex>user</ex></ph> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
+<translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME"/> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
+<translation id="2876191400747549936">Rất tiếc, đã xảy ra trục trặc khi xử lý yêu cầu của bạn, vui lòng thử lại.</translation>
 <translation id="7422678632904904341">Số lượng:</translation>
 <translation id="5923611424721173182">Đối chiếu Hiện tại</translation>
 <translation id="5457113250005438886">Không hợp lệ</translation>
@@ -170,14 +178,10 @@
 <translation id="9026369588205476247">Để bảo vệ sự riêng tư của bạn, bản kê Phần thưởng Brave này không được lưu trữ hay ghi chép lại bất kỳ đâu ngoài thiết bị của bạn (máy tính này). Nó không thể được truy xuất từ Brave trong trường hợp thiết bị của bạn bị mất dữ liệu.</translation>
 <translation id="1036277985068412734">thêm tiền</translation>
 <translation id="5441565662498481293">Bạn đang tự động gửi tiền tip đến:</translation>
-<translation id="4496990471549986619">Câu hỏi Thường gặp</translation>
-<translation id="1688876543043079268">Nhắc nhở: Ví Brave chỉ có một chiều và BAT chảy vào các trang web nhà xuất bản. Để biết thêm thông tin về Phần Thưởng Brave, vui lòng truy cập</translation>
-<translation id="2790014973538267577">Hiển thị mã QR</translation>
-<translation id="5690154556705187369">Hãy chắc chắn sử dụng địa chỉ dưới đây phù hợp với loại tiền ảo mà bạn sở hữu. Nó sẽ được Uphold tự động chuyển đổi sang BAT và xuất hiện dưới dạng số dư đã tăng lên trong ví Phần thưởng Brave của bạn. Vui lòng chờ lên đến một giờ để số dư trong ví của bạn được cập nhật.</translation>
-<translation id="8874657527115501951">Gửi tiền mã hóa từ tài khoản bên ngoài của bạn đến Ví Tiền thưởng Brave của bạn.</translation>
 <translation id="2827387977307390755">Cho phép tiền boa</translation>
 <translation id="3671566813999349838">Số tiền</translation>
 <translation id="3819257035322786455">Sao lưu</translation>
+<translation id="4989542687859782284">Không khả dụng</translation>
 <translation id="1312977698678162065">Được trả tiền khi xem các quảng cáo liên quan và tôn trọng sự riêng tư của bạn.</translation>
 <translation id="7655723274266132226">Giờ đây bạn có thể kiếm tiền bằng cách xem quảng cáo.</translation>
 <translation id="2975780980638932742">Brave Ads đã xuất hiện!</translation>
@@ -275,9 +279,12 @@
 <translation id="1135093233619227159">Bạn có thể xóa bất cứ trang nhận tiền boa hàng tháng nào từ bên trong bảng Tiền boa.</translation>
 <translation id="5082474983463379713">Xin lưu ý:</translation>
 <translation id="1430915738399379752">In</translation>
+<translation id="135956957367307069">Yêu cầu của bạn đang được xử lý, vui lòng chờ.</translation>
+<translation id="8725066075913043281">Thử lại</translation>
 <translation id="3173528272490482456">Sẵn sàng bắt đầu chưa?</translation>
 <translation id="913775524828049259">Vâng tôi đã sẵn sàng</translation>
 <translation id="108052542935515756">Bạn có thể bắt đầu với</translation>
+<translation id="2678666039642976470">Kết nối lại ví</translation>
 <translation id="194625454574835815">Khoá Khôi phục</translation>
 <translation id="6354568176665589146">Tái diễn</translation>
 <translation id="7577100371127227294">Tiền tip Hàng tháng</translation>
@@ -306,7 +313,7 @@
 <translation id="8014425282125849700">Thỉnh thoảng, Brave sẽ cho bạn các khoản thưởng token miễn phí. Bạn hãy chú ý các thông báo nhé!</translation>
 <translation id="1370034647041840967">Nhận token cho sự chú ý của bạn đến quảng cáo và thanh toán để ủng hộ những nhà chế tác nội dung có giá trị với bạn!</translation>
 <translation id="3905359437915971466">Thêm, rút và quản lý nguồn tiền tại</translation>
-<translation id="5866139915213160210">Ví Brave của bạn được quản lý bởi</translation>
+<translation id="1401808324297710517">Ví Brave của bạn được cung cấp bởi</translation>
 <translation id="6401272292123354754">Phần thưởng Brave được dựng trên Basic Attention Token. Tìm hiểu thêm về BAT</translation>
 <translation id="7823359893981882407">ở đây</translation>
 <translation id="4483635855837696643">Phục hồi Ví của bạn</translation>
@@ -345,7 +352,6 @@
 <translation id="8615803647903750175">Hoạt động của Ví</translation>
 <translation id="2620624773940447728">Địa chỉ ví</translation>
 <translation id="4989277977420164514">số dư ví</translation>
-<translation id="8725066075913043281">Thử lại</translation>
 <translation id="1083771727630442739">Tạo ví thất bại</translation>
 <translation id="9146039192200831719">Vui lòng kiểm tra kết nối internet của bạn.</translation>
 <translation id="1910721550319506122">Chào mừng!</translation>
@@ -380,6 +386,21 @@
 <translation id="8101881066646819737">Tặng Token cho Bạn từ Quảng cáo Brave</translation>
 <translation id="2151535059686617995">Đây là ngày may mắn của bạn!</translation>
 <translation id="6255773350565723852">Khoản thưởng token của bạn đang đến.</translation>
+<translation id="7512440811010447157">xác thực</translation>
+<translation id="8030169304546394654">Đã ngắt kết nối</translation>
+<translation id="8267327690882073581">Xác thực Ví</translation>
+<translation id="4569155249847375786">Đã xác thực</translation>
+<translation id="7591798679868259510">Truy cập tài khoản Uphold của tôi</translation>
+<translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
+<translation id="46988480989545156">Xác thực ví</translation>
+<translation id="1554282356558968486">Dịch vụ ví của chúng tôi được cung cấp bởi</translation>
+<translation id="6771734945114850124">Vui lòng chuẩn bị sẵn sàng căn cước công dân của bạn.</translation>
+<translation id="4483114863312340607">Rút và gửi tiền</translation>
+<translation id="6600381840029958159">Không cần phải giải captcha để nhận phần thưởng quảng cáo</translation>
+<translation id="4332021186346461319">Phần thưởng nhận được sẽ không bao giờ hết hạn và được gửi vào ví của bạn ngay lập tức</translation>
+<translation id="2610007079772760276">Ví đã xác thực sẽ cho phép bạn:</translation>
+<translation id="7565794512491053578">Xác thực Ví Của bạn</translation>
+<translation id="698531289520577961">Và quản lý tiền của bạn dễ dàng!</translation>
 <translation id="1181037720776840403">Xóa</translation>
 <translation id="7885157704277298658">Đã sao chép!</translation>
 <translation id="5379640681913450928">Số lượng chữ:</translation>
@@ -440,4 +461,5 @@
 <translation id="1399673826422570698">Có thể bạn gặp phải sự cố về mạng hoặc có thể có vấn đề với máy chủ Đồng bộ.</translation>
 <translation id="5286379413446391050">Không kết nối được với máy chủ Đồng bộ</translation>
 <translation id="2410472020237369473">Thời gian hoặc múi giờ trên đồng hồ máy tính của bạn có thể không chính xác. Hãy kiểm tra cài đặt đồng hồ của bạn.</translation>
+<translation id="5655621391922317800">Ví Điện tử</translation>
 </translationbundle>

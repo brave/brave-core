@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Počisti pravila CSS za vsa spletna mesta",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Napredni pogled",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Preprost pogled",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Spletna mesta pogosto vključujejo piškotke in skripte, ki poskušajo prepoznati vas in vašo napravo (pogosto vdelani v oglase). Želijo ugotoviti, kdo ste in vas spremljati po spletu - spremljati, kaj počnete na vsakem spletnem mestu. Brave blokira te stvari, tako da lahko brskate, ne da bi vas spremljali naokoli.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Sledilniki med mesti in druge grozljive stvari so blokirani",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Spreminjanje nastavitev Shield v tem pogledu lahko vpliva na združljivost spletnih strani na tem spletnem mestu.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Razumem",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Več o tem",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

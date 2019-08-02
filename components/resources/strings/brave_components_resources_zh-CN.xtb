@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
-<translation id="689261804992965033">已阻挡广告</translation>
-<translation id="1663506596135222606">已阻挡追踪器</translation>
+<translation id="4339730410920731698">广告和追踪器已拦截</translation>
 <translation id="2313532038420432247">HTTPS 升级</translation>
 <translation id="7679428712334662192">预计节省时间</translation>
 <translation id="5206618227023752085">已移除常用网站。</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">查看您的浏览历史记录</translation>
 <translation id="1742484101357469636">仪表板设置</translation>
 <translation id="8320281346741574991">显示背景图片</translation>
+<translation id="7275773481201277457">显示 Brave 统计信息</translation>
+<translation id="6836061097810262923">显示时钟</translation>
+<translation id="8643377320501056697">显示热门网站</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="8730621377337864115">已完成</translation>
 <translation id="6248988683584659830">搜索设置</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">了解有关Brave中Tor的更多信息</translation>
 <translation id="4272382368346338917">附加过滤器</translation>
 <translation id="8949292968394988358">警告：开启太多过滤器会降低性能</translation>
-<translation id="1869685517625607604">已拦截的广告总数：</translation>
+<translation id="8686201964111147748">已拦截的广告和追踪器总数：</translation>
 <translation id="4673764878177947707">自定义筛选器</translation>
 <translation id="8803682034537762884">每行一个筛选器且使用 Adblock Plus 筛选器语法描述筛选器</translation>
 <translation id="2974339193389078578">使用 Brave 浏览新的互联网</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">您的注意力很有价值。在浏览期间通过观看尊重隐私的广告来赚取收入，并支付给您喜爱的内容创作者。</translation>
 <translation id="4942016616604700968">启用奖励</translation>
 <translation id="3958088479270651626">导入书签和设置</translation>
-<translation id="5633840519079139680">通过从计算机上安装的其他浏览器导入书签和设置，Brave 可以轻松设置您的常用环境。</translation>
+<translation id="2609701960545338618">通过导入旧浏览器的书签和设置来设置常用浏览环境。“设置”中还提供了高级导入选项。</translation>
 <translation id="8275038454117074363">导入</translation>
+<translation id="2088479175984386785">导入自...</translation>
 <translation id="5540323067375019678">管理 Shield</translation>
 <translation id="3278033011827237847">让您在用 Brave Shields 浏览期间受到保护，免受侵犯隐私的广告和追踪器之害。如果站点没有正常工作，请将“Set Shields”设置为“down”。</translation>
 <translation id="3366308997091824722">Shield 设置</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">要获得更私密的搜索体验，请尝试 DuckDuckGo。</translation>
 <translation id="513635702954746724">选择颜色主题</translation>
 <translation id="6842850080200126305">通过在设置面板上选择亮或暗选项设置工具栏的颜色。</translation>
-<translation id="2801098717523961746">选择主题</translation>
+<translation id="5805868144901917207">选择主题</translation>
+<translation id="8131740175452115882">确认</translation>
+<translation id="713206503018076063">系统主题（默认）</translation>
+<translation id="1807246157184219062">亮</translation>
+<translation id="2414886740292270097">暗</translation>
 <translation id="3829010735958850433">跳过欢迎导览</translation>
 <translation id="1201402288615127009">下一步</translation>
 <translation id="1919345977826869612">广告</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">本月总打赏金额</translation>
 <translation id="4153752809523809915">您今天给喜爱的内容作者打赏了吗？</translation>
 <translation id="1165667598801520610">添加资金</translation>
-<translation id="5314648471460409933">管理资金</translation>
+<translation id="6239274080752256452">资金提现</translation>
 <translation id="2726674968268546964">令牌</translation>
 <translation id="7286722244752781970">登录访问前最短页面时间</translation>
 <translation id="4424486208397124985">发布者相关性的最低访问量</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">立即还原！</translation>
 <translation id="1184075897575325927">抱歉，此补助似乎已被领取。</translation>
 <translation id="282693359045252357">下月每月打赏日期</translation>
-<translation id="6231182869178328516">我最近使用 Brave 浏览器打赏了 <ph name="NAME">$1<ex>user</ex></ph>。快来 https://brave.com/tips 看看吧。</translation>
+<translation id="6231182869178328516">我最近使用 Brave 浏览器打赏了 <ph name="NAME"/>。快来 https://brave.com/tips 看看吧。</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
+<translation id="2876191400747549936">抱歉，处理您的请求时出错，请重试。</translation>
 <translation id="7422678632904904341">金额：</translation>
 <translation id="5923611424721173182">当前协调</translation>
 <translation id="5457113250005438886">无效</translation>
@@ -170,14 +178,10 @@
 <translation id="9026369588205476247">为保护您的隐私，Brave Rewards 声明不会在您设备（此计算机）以外的地方保存、记录或计入日志。如果您设备上的数据丢失，则无法从 Brave 中进行检索。</translation>
 <translation id="1036277985068412734">添加资金</translation>
 <translation id="5441565662498481293">您正在自动发送打赏至：</translation>
-<translation id="4496990471549986619">FAQ</translation>
-<translation id="1688876543043079268">提醒： Brave Wallet 是单向的，且BAT 会流入发布者网站。如欲了解更多有关 Brave Rewards的信息，请访问</translation>
-<translation id="2790014973538267577">显示二维码</translation>
-<translation id="5690154556705187369">请务必使用下面与您所有的加密类型相匹配的地址。它将通过 Uphold 自动转换为 BAT，并在您的 Brave Rewards 钱包中显示为余额增加。请允许您的钱包余额在一个小时内更新。</translation>
-<translation id="8874657527115501951">将您的外部帐户中的加密货币转入到您的Brave Rewards钱包。</translation>
 <translation id="2827387977307390755">允许打赏</translation>
 <translation id="3671566813999349838">金额</translation>
 <translation id="3819257035322786455">备份</translation>
+<translation id="4989542687859782284">不可用</translation>
 <translation id="1312977698678162065">付费浏览尊重您隐私的相关广告。</translation>
 <translation id="7655723274266132226">现在您可以通过看广告来赚钱。</translation>
 <translation id="2975780980638932742">Brave 广告来啦！</translation>
@@ -275,9 +279,12 @@
 <translation id="1135093233619227159">您可以从打赏面板内删除接受每月打赏的任何网站。</translation>
 <translation id="5082474983463379713">请注意：</translation>
 <translation id="1430915738399379752">打印</translation>
+<translation id="135956957367307069">您的请求正在处理中，请稍候。</translation>
+<translation id="8725066075913043281">重试</translation>
 <translation id="3173528272490482456">准备好开始了吗？</translation>
 <translation id="913775524828049259">准备就绪</translation>
 <translation id="108052542935515756">您可以开始</translation>
+<translation id="2678666039642976470">重新连接钱包</translation>
 <translation id="194625454574835815">恢复密钥</translation>
 <translation id="6354568176665589146">再次发生</translation>
 <translation id="7577100371127227294">每月赏金</translation>
@@ -306,7 +313,7 @@
 <translation id="8014425282125849700">偶尔，您将获得 Brave 的免费代币补助金。请务必注意提醒！</translation>
 <translation id="1370034647041840967">通过观看广告赚取代币并付费以支持您喜爱的内容创作者！</translation>
 <translation id="3905359437915971466">添加、提取和管理资金</translation>
-<translation id="5866139915213160210">您 Brave 钱包的管理者</translation>
+<translation id="1401808324297710517">您 Brave 钱包的技术支持：</translation>
 <translation id="6401272292123354754">Brave 奖励建立在注意力币基础上。了解更多有关BAT的信息</translation>
 <translation id="7823359893981882407">此处</translation>
 <translation id="4483635855837696643">恢复您的钱包</translation>
@@ -345,7 +352,6 @@
 <translation id="8615803647903750175">钱包活动</translation>
 <translation id="2620624773940447728">钱包地址</translation>
 <translation id="4989277977420164514">钱包余额</translation>
-<translation id="8725066075913043281">重试</translation>
 <translation id="1083771727630442739">Wallet创建失败</translation>
 <translation id="9146039192200831719">请检查您的互联网连接。</translation>
 <translation id="1910721550319506122">欢迎！</translation>
@@ -380,6 +386,21 @@
 <translation id="8101881066646819737">您的 Brave Ads 令牌授权</translation>
 <translation id="2151535059686617995">今天真是福星高照！</translation>
 <translation id="6255773350565723852">您即将收到代币补助。</translation>
+<translation id="7512440811010447157">验证</translation>
+<translation id="8030169304546394654">已断开连接</translation>
+<translation id="8267327690882073581">验证钱包</translation>
+<translation id="4569155249847375786">已验证</translation>
+<translation id="7591798679868259510">转至我的 Uphold 账户</translation>
+<translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
+<translation id="46988480989545156">验证钱包</translation>
+<translation id="1554282356558968486">我们的钱包服务提供商：</translation>
+<translation id="6771734945114850124">请准备好政府发放的 ID 证件。</translation>
+<translation id="4483114863312340607">提取和增加资金</translation>
+<translation id="6600381840029958159">无需解决验证码以获得广告奖励</translation>
+<translation id="4332021186346461319">收到的奖励绝不会过期，可立即存储到您的钱包</translation>
+<translation id="2610007079772760276">您可使用已验证的钱包进行如下活动：</translation>
+<translation id="7565794512491053578">验证钱包</translation>
+<translation id="698531289520577961">轻松管理资金！</translation>
 <translation id="1181037720776840403">删除</translation>
 <translation id="7885157704277298658">已复制！</translation>
 <translation id="5379640681913450928">字数：</translation>
@@ -440,4 +461,5 @@
 <translation id="1399673826422570698">可能存在网络问题，或者同步服务器有问题。</translation>
 <translation id="5286379413446391050">无法连接至 Sync 服务器</translation>
 <translation id="2410472020237369473">计算机的时钟时间或时区设置可能出错。请检查时钟设置。</translation>
+<translation id="5655621391922317800">Crypto Wallets</translation>
 </translationbundle>

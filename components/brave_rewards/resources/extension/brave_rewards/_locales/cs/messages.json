@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Vaše odměna z Reklam Brave",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "Ověřit",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Odpojeno",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Ověřit peněženku",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Ověřeno",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Přejít na můj Uphold účet",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Odpojit od Brave Rewards",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Ověřit peněženku",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Správa peněženky je zajišťována",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Prosím připravte si vaší vládou vydané identifikační číslo.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Ponechte si své Ad Rewards tokeny",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Přidat tokeny pomocí kreditní karty",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Vybrat tokeny",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Ověřená peněženka vám umožní:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Ověřit vaši peněženku",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "A spravujte své prostředky s lehkostí!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Ověřeno",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Nedostupné",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Znovu připojit peněženku",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Vaše peněženka je ověřená!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Gratulujeme! Vaše peněženka $name$ byla úspěšně ověřena a je připravena k ukládání i vybírání prostředků.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Jejda. Nelze se spojit s vaší peněženkou.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Nebojte se. Mohlo k tomu dojít z nejrůznějších bezpečnostních důvodů. Opětovné připojení tento problém vyřeší.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

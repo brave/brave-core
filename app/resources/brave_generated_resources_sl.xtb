@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
 <translation id="7942180974165298215">Blokiranje oglasov Brave</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
-<translation id="8488282162676695335">Denarnica Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ni dovoljena v brskalniku Brave.</translation>
+<translation id="5655621391922317800">Kripto denarnice</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="7450557937477381864">Zapri Chrome</translation>
 <translation id="7008934821596358692">Če želite končati uvoz, zaprite vsa okna v brskalniku Chrome.</translation>
 <translation id="5735465527556462863">Zapri Brave (staro)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Plačila Brave Payments</translation>
 <translation id="3489524616427966890">Odpri okna in zavihke</translation>
 <translation id="3699882589215410581">Namesti in zaženi Widevine</translation>
+<translation id="3696083746357487900">Namestite kripto denarnice</translation>
 <translation id="8053096063396012732">Namesti Widevine</translation>
 <translation id="4840334696217618631">Znova zaženite brskalnik, da omogočite Widevine</translation>
 <translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ni v lasti družbe Brave Software in ga ne moremo pregledati. Koda Google Widevine je naložena iz strežnikov Google, ne iz naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in se zavedamo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
@@ -27,7 +28,7 @@
 <translation id="2240268017737062801">Vprašaj, če želi spletno mesto samodejno predvajati posnetek</translation>
 <translation id="3371702087847741961">Vprašaj, če želi spletno mesto samodejno predvajati posnetek (priporočljivo).</translation>
 <translation id="3218385319396786393">Samodejno predvajanje je blokirano na tej strani</translation>
-<translation id="4988333904713528597">Vedno dovoli samodejno predvajanje na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Vedno dovoli samodejno predvajanje na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nadaljuj z blokiranjem samodejnega predvajanja</translation>
 <translation id="5883458389055721080">Brave ni pregledal zaščito in varnost te razširitve. To razširitev namestite samo, če razvijalcu zaupate.</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
@@ -35,6 +36,7 @@
 <translation id="6123134130710658846">Skrij gumb Brave Rewards</translation>
 <translation id="7635711399568194460">Skrije gumb Brave Rewards v vrstici z lokacijo, kadar storitev Brave Rewards ni omogočena</translation>
 <translation id="7965178729203412357">Nova identiteta Tor</translation>
+<translation id="8511502469534942133">Nova Tor povezava za to spletno mesto</translation>
 <translation id="8784924142044142231">Izhod iz brskalnika Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Odpri okno Tor</translation>
@@ -84,6 +86,9 @@
 <translation id="6786747875388722282">Razširitve</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
+<translation id="1765684547504191670">Uporablja komponento Media Router, da omogoči Chromecast v brskalniku.</translation>
+<translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
+<translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="4154389611571860454">Uporablja razširitev IPFS za podporo IPFS-ja v brskalniku.</translation>
 <translation id="8137559199583651773">Upravljanje razširitev</translation>
 <translation id="4928988318462976765">Trgovina s spletnimi razširitvami</translation>

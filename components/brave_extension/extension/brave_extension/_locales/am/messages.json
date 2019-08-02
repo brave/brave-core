@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "ለሁሉም ድረ ገጾች የ CSS ደንቦችን አጥራ ",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "የላቀ እይታ",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "ቀላል እይታ",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "ድረ ገጾች አብዛኛውን ጊዜ ኩኪዎችና ስክሪፕቶች የሚጠቀሙ ሲሆን እንርሱ ደግሞ የእርስዎንና የመሳሪያዎን ማንነት ለማወቅ ይሞክራሉ (አብዛኛውን ጊዜ ከማስታወቂያ ጋር የተጣመሩ ናቸው)። እርስዎ ማን እንደሆኑ ለማወቅና በድረ ገጹ ባጠቃላይ የእርስዎን እንቅስቃሴ ይከታተላሉ። Brave እነዚህን ነገሮች በማገድ ማንም ሳይከተልዎት ማሰስ አንዲችሉ ያደርግዎታል።",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "ድረ ገጽ ተሻጋሪ ዱካ ተከታታዮችና ሌሎች አዋኪ ነገሮች ታግደዋል",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "በዚህ እይታ ውስጥ የጋሻ ቅንብሮችን መቀየር በዚህ ድረ ገጽ ላይ የድር ተስማሚነትን ሊጎዳ ይችላል።",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "ገባኝ",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "የበለጠ ይወቁ",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

@@ -1628,7 +1628,9 @@
 <translation id="473546211690256853">이 계정은 <ph name="DOMAIN"/>에서 관리합니다.</translation>
 <translation id="622537739776246443">프로필이 삭제됩니다</translation>
 <translation id="5632566673632479864"><ph name="EMAIL"/> 계정이 더 이상 기본 계정으로 허용되지 않습니다. 이 계정은 <ph name="DOMAIN"/>에 의해 관리되므로 북마크, 방문 기록, 비밀번호 및 기타 설정이 기기에서 삭제됩니다.</translation>
+<translation id="3797739167230984533">조직에서 <ph name="BEGIN_LINK"/>관리하는 <ph name="DEVICE_TYPE"/><ph name="END_LINK"/>입니다.</translation>
 <translation id="1722460139690167654"><ph name="ENROLLMENT_DOMAIN"/>에서 <ph name="BEGIN_LINK"/>관리하는 <ph name="DEVICE_TYPE"/><ph name="END_LINK"/>입니다.</translation>
+<translation id="8118488170956489476">조직에서 <ph name="BEGIN_LINK"/>관리하는 브라우저<ph name="END_LINK"/>입니다.</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/>에서 <ph name="BEGIN_LINK"/>관리하는 브라우저<ph name="END_LINK"/>입니다.</translation>
 <translation id="8168435359814927499">콘텐츠</translation>
 <translation id="7702907602086592255">도메인</translation>

@@ -1630,7 +1630,9 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="473546211690256853">Ovim računom upravlja domena <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Profil će se izbrisati</translation>
 <translation id="5632566673632479864">Vaš račun <ph name="EMAIL"/> više nije dopušten kao primarni račun. Budući da tim računom upravlja <ph name="DOMAIN"/>, vaše oznake, povijest, zaporke i druge postavke izbrisat će se s ovog uređaja.</translation>
+<translation id="3797739167230984533">Vašim <ph name="BEGIN_LINK"/>uređajem <ph name="DEVICE_TYPE"/> upravlja<ph name="END_LINK"/> vaša organizacija</translation>
 <translation id="1722460139690167654">Vašim uređajem <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> upravlja<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Vašim <ph name="BEGIN_LINK"/>preglednikom upravlja<ph name="END_LINK"/> vaša organizacija</translation>
 <translation id="1365180424462182382">Vašim <ph name="BEGIN_LINK"/>preglednikom upravlja<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Sadržaj</translation>
 <translation id="7702907602086592255">Domena</translation>

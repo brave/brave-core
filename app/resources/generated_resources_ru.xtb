@@ -1630,7 +1630,9 @@
 <translation id="473546211690256853">Этот аккаунт находится в домене <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Профиль будет удален</translation>
 <translation id="5632566673632479864">Ваш аккаунт (<ph name="EMAIL"/>) больше нельзя использовать в качестве основного. Поскольку этот аккаунт находится под управлением администраторов домена <ph name="DOMAIN"/>, все закладки, пароли и настройки, а также история будут удалены с устройства.</translation>
+<translation id="3797739167230984533">Этим устройством <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> управляет<ph name="END_LINK"/> ваша организация.</translation>
 <translation id="1722460139690167654">Ваше <ph name="BEGIN_LINK"/>устройство <ph name="DEVICE_TYPE"/> находится под управлением<ph name="END_LINK"/> домена <ph name="ENROLLMENT_DOMAIN"/>.</translation>
+<translation id="8118488170956489476">Этим браузером <ph name="BEGIN_LINK"/>управляет<ph name="END_LINK"/> ваша организация.</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Браузер находится под управлением<ph name="END_LINK"/> домена <ph name="ENROLLMENT_DOMAIN"/>.</translation>
 <translation id="8168435359814927499">Контент</translation>
 <translation id="7702907602086592255">Домен</translation>

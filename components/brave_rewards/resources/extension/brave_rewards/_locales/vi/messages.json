@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Tặng Token cho Bạn từ Quảng cáo Brave",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "xác thực",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Đã ngắt kết nối",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Xác thực Ví",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Đã xác thực",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Truy cập tài khoản Uphold của tôi",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Ngắt kết nối với Brave Rewards",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Xác thực ví",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Dịch vụ ví của chúng tôi được cung cấp bởi",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Vui lòng chuẩn bị sẵn sàng căn cước công dân của bạn.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Giữ mã thông báo Phần thưởng Quảng cáo của bạn",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Thêm mã thông báo bằng cách sử dụng thẻ tín dụng",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Rút lại mã thông báo",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Ví đã xác thực sẽ cho phép bạn:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Xác thực Ví Của bạn",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Và quản lý tiền của bạn thật dễ dàng!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Đã xác thực",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Không khả dụng",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Kết nối lại ví",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Ví của bạn đã được xác thực!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Xin chúc mừng! Ví $name$ của bạn đã được xác thực thành công và sẵn sàng để gửi và rút tiền.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Ồ, không thể truy cập ví của bạn.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Đừng lo. Điều này có thể xảy ra vì rất nhiều lý do về bảo mật. Chỉ cần đơn giản ngắt kết nối là sẽ giải quyết vấn đề này.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

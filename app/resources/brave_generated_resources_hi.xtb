@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="7942180974165298215">Brave विज्ञापन बाधा</translation>
 <translation id="6406506848690869874">सिंक</translation>
-<translation id="8488282162676695335">Brave वॉलेट</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") की Brave में अनुमति नहीं है।</translation>
+<translation id="5655621391922317800">क्रिप्टो वॉलेट</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
 <translation id="7450557937477381864">क्रोम को बंद करें</translation>
 <translation id="7008934821596358692">आयात समाप्त करने के लिए, सभी क्रोम विंडोज़ बंद करें।</translation>
 <translation id="5735465527556462863">Brave (पुराना) बंद करें</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave भुगतान</translation>
 <translation id="3489524616427966890">एक से अधिक विंडो और टैब खोलें</translation>
 <translation id="3699882589215410581">Widevine को इंस्टॉल करें और चलाएँ</translation>
+<translation id="3696083746357487900">क्रिप्टो वॉलेट इनस्टॉल करें</translation>
 <translation id="8053096063396012732">Widevine इनस्टॉल करें</translation>
 <translation id="4840334696217618631">Widevine को सक्रिय करने के लिए ब्राउज़र को पुनः आरम्भ करें</translation>
 <translation id="8410111618231938546">Google Widevine डिजिटल अधिकार प्रबंधन (DRM) कोड का हिस्सा है जिसका हम Brave Software न तो मालिकत्व रखते हैं और न ही जांच कर सकते हैं| Google Widevine के कोड Google के सर्वर से संचालित होते हैं, हमारे सर्वर से नहीं| ये तभी काम करते हैं जब आप इस विकल्प को चुनते हैं| हम DRM के प्रयोग को हतोत्साहित करते हैं, पर हम यूजर के चयन का सम्मान करते हैं और समझते हैं कि  कुछ Brave यूजर्स ऐसी सेवाओं जहाँ इसकी ज़रूरत है का प्रयोग करते हैं| 
@@ -28,7 +29,7 @@
 <translation id="2240268017737062801">पूछें जब कोई साइट मीडिया को स्वतः चलाना चाहती है</translation>
 <translation id="3371702087847741961">तब पूछें कि जब कोई साइट मीडिया को ऑटोप्ले करना चाहती है(अनुग्रह)</translation>
 <translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
-<translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> पर हमेश स्वतः चालू का अनुमति दें</translation>
+<translation id="4988333904713528597"><ph name="HOST"/> पर हमेश स्वतः चालू का अनुमति दें</translation>
 <translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
 <translation id="5883458389055721080">Brave ने बचाव और सुरक्षा के लिए इस एक्सटेंशन की समीक्षा नही की है। यदि आप डेवलपर पर भरोसा करते हैं तो ही इस एक्सटेंशन को इंस्टॉल करें।</translation>
 <translation id="2044383478723007273">Brave रंग</translation>
@@ -36,6 +37,7 @@
 <translation id="6123134130710658846">Brave Rewards बटन छिपाएँ</translation>
 <translation id="7635711399568194460">Brave Rewards सक्रिय न हो तो स्थान बार में Brave Rewards बटन छिपाएँ</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
+<translation id="8511502469534942133">इस साइट के लिए नया टो कनेक्शन</translation>
 <translation id="8784924142044142231">टॉर से बहार निकलें</translation>
 <translation id="5410152065859052603">टोर</translation>
 <translation id="3696187925156352769">टॉर विंडोज खोलें</translation>
@@ -85,6 +87,9 @@
 <translation id="6786747875388722282">एक्सटेंशन</translation>
 <translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
 <translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
+<translation id="1765684547504191670">ब्राउज़र में क्रोमकास्ट को सक्रीय करने के लिए मीडिया राउटर घटक का उपयोग करता है।</translation>
+<translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
+<translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
 <translation id="4154389611571860454">ब्राउज़र में IPFS की सहायता करने के लिए IPFS सहयोगी एक्सटेंशन का उपयोग करता है।</translation>
 <translation id="8137559199583651773">एक्सटेंशन प्रबंधित करें</translation>
 <translation id="4928988318462976765">वेब एक्सटेंशन स्टोर</translation>

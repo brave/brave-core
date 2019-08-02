@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
 <translation id="7942180974165298215">Chặn Quảng cáo Brave</translation>
 <translation id="6406506848690869874">Đồng bộ</translation>
-<translation id="8488282162676695335">Ví tiền Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID phần mở rộng "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") không được phép trong Brave.</translation>
+<translation id="5655621391922317800">Ví Điện tử</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID phần mở rộng "<ph name="EXTENSION_ID"/>") không được phép trong Brave.</translation>
 <translation id="7450557937477381864">Đóng Chrome</translation>
 <translation id="7008934821596358692">Để hoàn tất nhập, hãy đóng mọi cửa sổ Chrome.</translation>
 <translation id="5735465527556462863">Đóng Brave (cũ)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Thanh toán Brave</translation>
 <translation id="3489524616427966890">Cửa sổ và tab đang mở</translation>
 <translation id="3699882589215410581">Cài và chạy Widevine</translation>
+<translation id="3696083746357487900">Cài đặt Ví Điện tử</translation>
 <translation id="8053096063396012732">Cài đặt Widevine</translation>
 <translation id="4840334696217618631">Khởi động lại trình duyệt để bật Widevine</translation>
 <translation id="8410111618231938546">Google Widevine là một phần của mã Quản lý Quyền Kỹ thuật số (Digital Rights Management hay DRM) mà chúng tôi tại Brave Software không sở hữu và không thể kiểm tra. Mã Google Widevine được tải từ các máy chủ của Google chứ không phải từ các máy chủ của chúng tôi. Mã này chỉ được tải khi bạn bật tùy chọn này. Chúng tôi không khuyến khích sử dụng DRM, nhưng chúng tôi tôn trọng lựa chọn của người dùng và thừa nhận rằng một số người dùng Brave muốn sử dụng các dịch vụ cần tới mã đó.
@@ -27,7 +28,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="2240268017737062801">Hỏi khi nào trang muốn tự động phát phương tiện</translation>
 <translation id="3371702087847741961">Hỏi khi nào trang muốn tự động phát phương tiện (khuyên dùng)</translation>
 <translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
-<translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
 <translation id="5883458389055721080">Brave chưa rà soát tính bảo mật và an toàn của phần mở rộng này. Hãy chỉ cài đặt phần mở rộng này nếu bạn tin tưởng nhà phát triển đó.</translation>
 <translation id="2044383478723007273">Màu sắc của brave</translation>
@@ -35,6 +36,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6123134130710658846">Ẩn nút Tiền thưởng Brave</translation>
 <translation id="7635711399568194460">Ẩn nút Tiền thưởng Brave trên thanh địa chỉ khi Tiền thưởng Brave không được bật</translation>
 <translation id="7965178729203412357">Danh tính Tor mới</translation>
+<translation id="8511502469534942133">Kết nối Tor mới cho Trang này</translation>
 <translation id="8784924142044142231">Thoát khỏi Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Mở Cửa sổ Tor</translation>
@@ -84,6 +86,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6786747875388722282">Tiện ích mở rộng</translation>
 <translation id="2896916411183256228">Sử dụng WebTorrent để hiển thị torrent trực tiếp trong trình duyệt. Hỗ trợ các tập tin torrent và liên kết nam châm (magnet).</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
+<translation id="1765684547504191670">Sử dụng cấu phần Bộ định tuyến Phương tiện để bật Chromecast trong trình duyệt.</translation>
+<translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
+<translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="4154389611571860454">Sử dụng tiện ích mở rộng đi kèm IPFS để hỗ trợ IPFS trong trình duyệt.</translation>
 <translation id="8137559199583651773">Quản lý tiện ích</translation>
 <translation id="4928988318462976765">Cửa hàng Tiện ích mở rộng Web</translation>

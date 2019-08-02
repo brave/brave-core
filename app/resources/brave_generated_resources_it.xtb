@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Ricompense Brave</translation>
 <translation id="7942180974165298215">Ad Block Brave</translation>
 <translation id="6406506848690869874">Sincronizzazione</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") non è permessa in Brave.</translation>
+<translation id="5655621391922317800">Portafogli di Criptovalute</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") non è permessa in Brave.</translation>
 <translation id="7450557937477381864">Chiudi Chrome</translation>
 <translation id="7008934821596358692">Per completare l'importazione, chiudi tutte le finestre di Chrome.</translation>
 <translation id="5735465527556462863">Chiudi Brave (obsoleto)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Pagamenti Brave</translation>
 <translation id="3489524616427966890">Apri finestre e schede</translation>
 <translation id="3699882589215410581">Installa ed esegui Widevine</translation>
+<translation id="3696083746357487900">Installa Portafogli di Criptovaluta</translation>
 <translation id="8053096063396012732">Installa Widevine</translation>
 <translation id="4840334696217618631">Riavvia il browser per abilitare Widevine</translation>
 <translation id="8410111618231938546">Google Widevine è un codice DRM (Digital Rights Management) che noi di Brave Software non possediamo e non possiamo ispezionare. Il codice di Google Widevine è caricato dai server di Google, non dai nostri server. Viene caricato solo quando si attiva questa opzione. Scoraggiamo l'uso del DRM, ma rispettiamo la scelta dell'utente e riconosciamo che alcuni utenti di Brave vorrebbero utilizzare i servizi per cui è obbligatorio.
@@ -27,7 +28,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="2240268017737062801">Chiedi quando un sito vuole riprodurre automaticamente i contenuti multimediali</translation>
 <translation id="3371702087847741961">Chiedi quando un sito vuole riprodurre automaticamente un contenuto multimediale (raccomandato)</translation>
 <translation id="3218385319396786393">La riproduzione automatica è stata bloccata su questa pagina</translation>
-<translation id="4988333904713528597">Permetti la riproduzione automatica su <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Permetti la riproduzione automatica su <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continua a bloccare la riproduzione automatica</translation>
 <translation id="5883458389055721080">Brave non ha esaminato questa estensione ai fini della sicurezza. Installa questa estensione solo se ti fidi dello sviluppatore.</translation>
 <translation id="2044383478723007273">Colori di Brave</translation>
@@ -35,6 +36,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="6123134130710658846">Nascondi pulsante Brave Rewards</translation>
 <translation id="7635711399568194460">Nascondi il pulsante Brave Rewards nella barra degli indirizzi quando Brave Rewards non è abilitato</translation>
 <translation id="7965178729203412357">Nuova Identità Tor</translation>
+<translation id="8511502469534942133">Nuova Connessione Tor per questo Sito</translation>
 <translation id="8784924142044142231">Esci da Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Apri la finestra Tor</translation>
@@ -84,6 +86,9 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="6786747875388722282">Estensioni</translation>
 <translation id="2896916411183256228">Utilizza WebTorrent per visualizzare i torrent direttamente nel browser. Supporta i file torrent e i magnet link.</translation>
 <translation id="6554397389149987360">Utilizza il componente Hangouts per abilitare la condivisione dello schermo e altre funzioni nel browser.</translation>
+<translation id="1765684547504191670">Utilizza il componente Media Router per abilitare Chromecast nel browser.</translation>
+<translation id="9156965752763025780">Le modifiche verranno applicate al prossimo riavvio di Brave.</translation>
+<translation id="7179921470347911571">Rilancia Ora</translation>
 <translation id="4154389611571860454">Usa l'estensione compagna IPFS per supportare IPFS nel browser.</translation>
 <translation id="8137559199583651773">Gestisci estensioni</translation>
 <translation id="4928988318462976765">Negozio Estensioni Web</translation>

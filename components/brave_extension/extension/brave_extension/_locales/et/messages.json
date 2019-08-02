@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Kustuta CSS-i reeglid kõigi saitide jaoks",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Täpsem vaade",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Lihtne vaade",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Saidid sisaldavad tihti küpsiseid ja skripte, mis üritavad teid ja teie seadet tuvastada (tihti on need manustatud reklaamidesse). Need soovivad teada saada, kes te olete ja teid veebis jälitada, ehk jälgida, mida igal saidil teete. Brave blokeerib need asjad, et saaksite sirvida ilma, et keegi teid jälitaks.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Saitidevahelised jälitajad ja muud kahtlased asjad on blokeeritud",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Selles vaates kaitse seadete muutmine võib mõjutada veebi ühilduvust sellel saidil.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Selge",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Lisateave",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }
