@@ -150,5 +150,3 @@ export const onBalance = (balance: RewardsExtension.Balance) => action(types.ON_
 export const onExternalWallet = (wallet: RewardsExtension.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
   wallet
 })
-
-export const onOnBoardingDisplayed = () => action(types.ON_ON_BOARDING_DISPLAYED)
