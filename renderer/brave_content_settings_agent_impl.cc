@@ -31,6 +31,10 @@
 
 #include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
+#include "third_party/blink/public/web/blink.h"
+
+#include "v8/include/v8.h"
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #endif
@@ -109,12 +113,18 @@ bool BraveContentSettingsAgentImpl::AllowScript(
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   if (!blocked_script_url_.is_empty()) {
 #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-    blink::WebLocalFrame* const frame = render_frame()->GetWebFrame();
-    ::brave_page_graph::PageGraph* const page_graph =
-        ::brave_page_graph::PageGraph::GetFromContext(
-            frame->MainWorldScriptContext());
-    if (page_graph) {
-      page_graph->RegisterResourceBlockJavaScript(blocked_script_url_);
+    {
+      v8::Isolate* isolate = blink::MainThreadIsolate();
+      v8::HandleScope handle_scope(isolate);
+      v8::Local<v8::Context> context =
+          render_frame()->GetWebFrame()->MainWorldScriptContext();
+      if (!context.IsEmpty()) {
+        ::brave_page_graph::PageGraph* const page_graph =
+            ::brave_page_graph::PageGraph::GetFromContext(context);
+        if (page_graph) {
+          page_graph->RegisterResourceBlockJavaScript(blocked_script_url_);
+        }
+      }
     }
 #endif
 
@@ -261,17 +271,23 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
 
   if (!allow) {
 #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-    ::brave_page_graph::PageGraph* const page_graph =
-        ::brave_page_graph::PageGraph::GetFromContext(
-            frame->MainWorldScriptContext());
-    if (page_graph) {
-      page_graph->RegisterResourceBlockFingerprinting(
-          secondary_url,
-          ::brave_page_graph::FingerprintingRule(
-              matched_rule.primary_pattern.ToString(),
-              matched_rule.secondary_pattern.ToString(),
-              matched_rule.source,
-              matched_rule.incognito));
+    {
+      v8::Isolate* isolate = blink::MainThreadIsolate();
+      v8::HandleScope handle_scope(isolate);
+      v8::Local<v8::Context> context = frame->MainWorldScriptContext();
+      if (!context.IsEmpty()) {
+        ::brave_page_graph::PageGraph* const page_graph =
+            ::brave_page_graph::PageGraph::GetFromContext(context);
+        if (page_graph) {
+          page_graph->RegisterResourceBlockFingerprinting(
+              secondary_url,
+              ::brave_page_graph::FingerprintingRule(
+                  matched_rule.primary_pattern.ToString(),
+                  matched_rule.secondary_pattern.ToString(),
+                  matched_rule.source,
+                  matched_rule.incognito));
+        }
+      }
     }
 #endif
 
