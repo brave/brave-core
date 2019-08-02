@@ -85,10 +85,10 @@ export class WelcomePage extends React.Component<Props, State> {
     const { welcomeData, actions } = this.props
     return (
       <>
-        <BackgroundContainer>
-          <Background/>
-        </BackgroundContainer>
         <Page id='welcomePage'>
+          <BackgroundContainer>
+            <Background/>
+          </BackgroundContainer>
           <Panel>
             <SlideContent>
               <WelcomeBox index={1} currentScreen={this.currentScreen} onClick={this.onClickLetsGo} />
