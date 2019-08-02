@@ -137,8 +137,8 @@ source_set("ads") {
     "src/bat/ads/internal/search_providers.cc",
     "src/bat/ads/internal/search_providers.h",
     "src/bat/ads/internal/static_values.h",
-    "src/bat/ads/internal/time_helper.cc",
-    "src/bat/ads/internal/time_helper.h",
+    "src/bat/ads/internal/time.cc",
+    "src/bat/ads/internal/time.h",
     "src/bat/ads/internal/uri_helper.cc",
     "src/bat/ads/internal/uri_helper.h",
   ]

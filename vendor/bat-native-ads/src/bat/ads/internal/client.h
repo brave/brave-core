@@ -35,6 +35,8 @@ class Client {
   void UpdateAdsUUIDSeen(const std::string& uuid, uint64_t value);
   const std::map<std::string, uint64_t> GetAdsUUIDSeen();
   void ResetAdsUUIDSeen(const std::vector<AdInfo>& ads);
+  void UpdateNextCheckServeAdTimestampInSeconds();
+  uint64_t GetNextCheckServeAdTimestampInSeconds();
   void SetAvailable(const bool available);
   bool GetAvailable() const;
   void FlagShoppingState(const std::string& url, const uint64_t score);
