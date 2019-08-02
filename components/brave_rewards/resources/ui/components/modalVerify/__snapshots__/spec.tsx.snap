@@ -159,7 +159,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
 }
 
 .c19 {
-  color: #FFFFFF;
+  color: hsla(0,0%,100%,0.85);
   margin: 17px 0;
 }
 
@@ -184,7 +184,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
   padding: 11px 40px;
   width: auto;
   min-height: auto;
-  margin-top: 17px;
+  margin-top: -20px;
 }
 
 .c28 {
@@ -211,6 +211,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
 
 .c18 {
   width: 50%;
+  padding-right: 10px;
 }
 
 .c23 {
@@ -223,7 +224,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
   font-size: 12px;
   line-height: 20px;
   color: hsla(0,0%,100%,0.7);
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .c5 {
@@ -616,7 +617,10 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
             <div
               className="c31"
             >
-              MISSING: walletVerificationNote
+              MISSING: walletVerificationNote1
+              <br />
+              <br />
+              MISSING: walletVerificationNote2
             </div>
           </div>
         </div>

@@ -37,11 +37,9 @@ import {
   StyledButton,
   StyledNotificationMessage,
   StyledPipe,
-  StyledWalletButton,
   StyledVerifiedButton,
   StyledVerifiedButtonIcon,
   StyledVerifiedButtonText,
-  StyledTextIcon,
   StyledDialogList,
   StyledLink
 } from './style'
@@ -55,7 +53,8 @@ import {
   CloseCircleOIcon,
   SettingsAdvancedIcon,
   UpholdColorIcon,
-  UpholdSystemIcon
+  UpholdSystemIcon,
+  CaratCircleRightIcon
 } from '../../../components/icons'
 
 import giftIconUrl from './assets/gift.svg'
@@ -357,10 +356,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     switch (walletState) {
       case 'unverified':
         return (
-          <StyledWalletButton
+          <Button
             type={'accent'}
             icon={{
-              image: <StyledTextIcon>!</StyledTextIcon>,
+              image: <CaratCircleRightIcon />,
               position: 'after'
             }}
             text={getLocale('walletButtonUnverified')}

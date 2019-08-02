@@ -325,10 +325,6 @@ export const StyledPipe = styled<StyledProps, 'span'>('span')`
   font-weight: 300;
 `
 
-export const StyledWalletButton = styled(Button as ComponentType<ButtonProps>)`
-  padding-right: 23px;
-`
-
 export const StyledVerifiedButton = styled<{active: boolean}, 'button'>('button')`
   box-sizing: border-box;
   outline-color: transparent;

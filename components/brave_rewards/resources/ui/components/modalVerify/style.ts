@@ -71,7 +71,7 @@ export const StyledListTitle = styled(Heading)`
 `
 
 export const StyledListItem = styled<StyleProps, 'div'>('div')`
-  color: ${p => p.theme.palette.white};
+  color: ${p => p.theme.palette.whiteFade15};
   margin: 17px 0;
 `
 
@@ -96,7 +96,7 @@ export const StyledButton = styled(Button as ComponentType<ButtonProps>)`
   padding: 11px 40px;
   width: auto;
   min-height: auto;
-  margin-top: 17px;
+  margin-top: -20px;
 `
 
 export const StyledFooter = styled<StyleProps, 'div'>('div')`
@@ -120,6 +120,7 @@ export const StyledContent = styled<{}, 'div'>('div')`
 
 export const StyledLeftSide = styled<{}, 'div'>('div')`
   width: 50%;
+  padding-right: 10px;
 `
 
 export const StyledRightSide = styled<{}, 'div'>('div')`
@@ -132,5 +133,5 @@ export const StyledNote = styled<{}, 'div'>('div')`
   font-size: 12px;
   line-height: 20px;
   color: ${p => p.theme.palette.whiteFade30};
-  margin-top: 20px;
+  margin-top: 15px;
 `

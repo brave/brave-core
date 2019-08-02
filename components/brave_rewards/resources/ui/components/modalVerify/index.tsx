@@ -112,7 +112,8 @@ export default class ModalVerify extends React.PureComponent<Props, {}> {
               />
               {this.getFooter()}
               <StyledNote>
-                {getLocale('walletVerificationNote')}
+                {getLocale('walletVerificationNote1')}<br/><br/>
+                {getLocale('walletVerificationNote2')}
               </StyledNote>
             </StyledRightSide>
           </StyledContent>
