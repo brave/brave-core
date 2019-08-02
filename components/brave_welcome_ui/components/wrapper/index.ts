@@ -26,13 +26,11 @@ const BaseColumn = styled<{}, 'div'>('div')`
 `
 
 export const SelectGrid = styled(BaseGrid)`
-  display: grid;
+  display: flex;
   height: 100%;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 1fr;
   padding: 0 30px;
-  grid-gap: 30px;
   align-items: center;
+  width: 80%;
 `
 
 export const Footer = styled(BaseGrid.withComponent('footer'))`

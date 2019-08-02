@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton, SelectGrid, SelectBox } from '../../components'
+import { Content, Title, Paragraph, SelectGrid, SelectBox } from '../../components'
 
 // Images
 import { WelcomeThemeImage } from '../../components/images'
@@ -16,7 +16,6 @@ import { getLocale } from '../../../common/locale'
 export interface Props {
   index: number
   currentScreen: number
-  onClick: () => void
   onChangeTheme: (theme: string) => void
   browserThemes: Array<Welcome.BrowserTheme>
 }
@@ -43,8 +42,7 @@ export default class ThemingBox extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { index, currentScreen, onClick, browserThemes } = this.props
-    const { themeSelected } = this.state
+    const { index, currentScreen, browserThemes } = this.props
     // Light, Dark, System
     const showSystemThemeOption = (browserThemes.length === 3)
     return (
@@ -66,14 +64,6 @@ export default class ThemingBox extends React.PureComponent<Props, State> {
               <option value='Dark'>{getLocale('dark')}</option>
               {showSystemThemeOption && <option value='System'>{getLocale('systemTheme')}</option>}
             </SelectBox>
-          <PrimaryButton
-            level='primary'
-            type='accent'
-            size='large'
-            text={getLocale('confirmTheme')}
-            disabled={!themeSelected}
-            onClick={onClick}
-          />
         </SelectGrid>
       </Content>
     )
