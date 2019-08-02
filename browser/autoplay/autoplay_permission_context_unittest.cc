@@ -77,8 +77,6 @@ class AutoplayPermissionContextTests : public ChromeRenderViewHostTestHarness {
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
     RegisterUserProfilePrefs(prefs->registry());
-    prefs->registry()->
-      RegisterBooleanPref(kGoogleLoginControlType, true);
     builder.SetPrefService(std::move(prefs));
     return builder.Build().release();
   }
