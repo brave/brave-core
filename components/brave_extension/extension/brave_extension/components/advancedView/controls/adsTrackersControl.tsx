@@ -95,7 +95,9 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
   triggerOpen3rdPartyTrackersBlocked = (
     event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
   ) => {
-    event.currentTarget.blur()
+    if (event) {
+      event.currentTarget.blur()
+    }
     this.props.setBlockedListOpen()
     this.setState({ trackersBlockedOpen: !this.state.trackersBlockedOpen })
   }

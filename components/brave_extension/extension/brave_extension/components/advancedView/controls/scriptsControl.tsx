@@ -99,7 +99,9 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
   triggerOpenScriptsBlocked = (
     event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
   ) => {
-    event.currentTarget.blur()
+    if (event) {
+      event.currentTarget.blur()
+    }
     this.props.setBlockedListOpen()
     this.setState({ scriptsBlockedOpen: !this.state.scriptsBlockedOpen })
   }
