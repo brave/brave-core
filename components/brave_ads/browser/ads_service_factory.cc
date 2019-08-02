@@ -83,13 +83,7 @@ bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
 
 void AdsServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  if (ShouldMigratePrefs(registry)) {
-    // prefs::kVersion should default to 1 for legacy installations so that
-    // preferences are migrated from version 1 to the current version
-    registry->RegisterIntegerPref(prefs::kVersion, 1);
-  } else {
-    registry->RegisterIntegerPref(prefs::kVersion, 2);
-  }
+  registry->RegisterIntegerPref(prefs::kVersion, prefs::kCurrentVersionNumber);
 
   registry->RegisterBooleanPref(prefs::kEnabled, false);
 
@@ -111,20 +105,6 @@ void AdsServiceFactory::RegisterProfilePrefs(
       prefs::kHasRemovedFirstLaunchNotification, false);
   registry->RegisterUint64Pref(
       prefs::kLastShownFirstLaunchNotificationTimestamp, 0);
-}
-
-bool AdsServiceFactory::ShouldMigratePrefs(
-    user_prefs::PrefRegistrySyncable* registry) const {
-  // If prefs::kEnabled does not exist then this must be a fresh installion so
-  // we do not need to migrate
-  auto pref_store = registry->defaults();
-
-  const base::Value* value = nullptr;
-  if (!pref_store->GetValue(prefs::kEnabled, &value)) {
-    return false;
-  }
-
-  return true;
 }
 
 }  // namespace brave_ads

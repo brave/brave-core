@@ -41,6 +41,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_constants.h"
 #include "components/prefs/pref_service.h"
@@ -335,6 +336,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(!profile_->IsOffTheRecord());
 
+  MigratePrefs();
+
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
 
   profile_pref_change_registrar_.Add(prefs::kEnabled,
@@ -345,8 +348,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
 
   profile_pref_change_registrar_.Add(prefs::kIdleThreshold,
       base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
-
-  MigratePrefs();
 
   auto* display_service_impl =
       static_cast<NotificationDisplayServiceImpl*>(display_service_);
@@ -455,8 +456,8 @@ bool AdsServiceImpl::StartService() {
 #if defined(OS_ANDROID)
 void AdsServiceImpl::UpdateIsProductionFlag() {
 #if defined(OFFICIAL_BUILD)
-  auto is_production = !profile_->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kUseRewardsStagingServer);
+  auto is_production =
+      !GetBooleanPref(brave_rewards::prefs::kUseRewardsStagingServer);
 #else
   auto is_production = false;
 #endif
@@ -547,36 +548,29 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
     return;
   }
 
-  profile_->GetPrefs()->SetBoolean(
-      prefs::kShouldShowMyFirstAdNotification, false);
+  SetBooleanPref(prefs::kShouldShowMyFirstAdNotification, false);
 }
 
 bool AdsServiceImpl::ShouldShowMyFirstAdNotification() {
-  auto is_ads_enabled = IsAdsEnabled();
-
-  auto should_show = profile_->GetPrefs()->GetBoolean(
-      prefs::kShouldShowMyFirstAdNotification);
-
-  return is_ads_enabled && should_show;
+  auto should_show = GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
+  return IsAdsEnabled() && should_show;
 }
 
 void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
   if (!ShouldShowFirstLaunchNotification()) {
+    RemoveFirstLaunchNotification();
     return;
   }
 
   auto now = static_cast<uint64_t>(
       (base::Time::Now() - base::Time()).InSeconds());
-  profile_->GetPrefs()->SetUint64(
-      prefs::kLastShownFirstLaunchNotificationTimestamp, now);
+  SetUint64Pref(prefs::kLastShownFirstLaunchNotificationTimestamp, now);
 
   ShowFirstLaunchNotification();
 }
 
 bool AdsServiceImpl::ShouldShowFirstLaunchNotification() {
-  auto should_show = profile_->GetPrefs()->GetBoolean(
-      prefs::kShouldShowFirstLaunchNotification);
-
+  auto should_show = GetBooleanPref(prefs::kShouldShowFirstLaunchNotification);
   return !IsAdsEnabled() && should_show;
 }
 
@@ -592,16 +586,13 @@ void AdsServiceImpl::ShowFirstLaunchNotification() {
       RewardsNotificationService::REWARDS_NOTIFICATION_ADS_LAUNCH,
       args, kRewardsNotificationAdsLaunch);
 
-  profile_->GetPrefs()->SetBoolean(
-      prefs::kShouldShowFirstLaunchNotification, false);
+  SetBooleanPref(prefs::kShouldShowFirstLaunchNotification, false);
 
   StartFirstLaunchNotificationTimeoutTimer();
 }
 
 void AdsServiceImpl::MaybeStartFirstLaunchNotificationTimeoutTimer() {
-  bool has_removed = profile_->GetPrefs()->GetBoolean(
-      prefs::kHasRemovedFirstLaunchNotification);
-
+  bool has_removed = GetBooleanPref(prefs::kHasRemovedFirstLaunchNotification);
   if (has_removed) {
     return;
   }
@@ -638,8 +629,8 @@ void AdsServiceImpl::OnFirstLaunchNotificationTimedOut(uint32_t timer_id) {
 uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeoutTimerOffset() {
   auto timeout_in_seconds = GetFirstLaunchNotificationTimeout();
 
-  auto timestamp_in_seconds = profile_->GetPrefs()->GetUint64(
-      prefs::kLastShownFirstLaunchNotificationTimestamp);
+  auto timestamp_in_seconds =
+      GetUint64Pref(prefs::kLastShownFirstLaunchNotificationTimestamp);
 
   auto now_in_seconds = static_cast<uint64_t>(
       (base::Time::Now() - base::Time()).InSeconds());
@@ -653,8 +644,8 @@ uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeoutTimerOffset() {
 bool AdsServiceImpl::HasFirstLaunchNotificationExpired() {
   auto timeout_in_seconds = GetFirstLaunchNotificationTimeout();
 
-  auto timestamp_in_seconds = profile_->GetPrefs()->GetUint64(
-      prefs::kLastShownFirstLaunchNotificationTimestamp);
+  auto timestamp_in_seconds =
+      GetUint64Pref(prefs::kLastShownFirstLaunchNotificationTimestamp);
 
   auto now_in_seconds = static_cast<uint64_t>(
       (base::Time::Now() - base::Time()).InSeconds());
@@ -678,9 +669,7 @@ uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeout() {
 }
 
 void AdsServiceImpl::RemoveFirstLaunchNotification() {
-  bool has_removed = profile_->GetPrefs()->GetBoolean(
-      prefs::kHasRemovedFirstLaunchNotification);
-
+  bool has_removed = GetBooleanPref(prefs::kHasRemovedFirstLaunchNotification);
   if (has_removed) {
     return;
   }
@@ -704,8 +693,7 @@ void AdsServiceImpl::RemoveFirstLaunchNotification() {
   rewards_notification_service->DeleteNotification(
       kRewardsNotificationAdsLaunch);
 
-  profile_->GetPrefs()->SetBoolean(
-      prefs::kHasRemovedFirstLaunchNotification, true);
+  SetBooleanPref(prefs::kHasRemovedFirstLaunchNotification, true);
 }
 
 void AdsServiceImpl::Stop() {
@@ -797,7 +785,16 @@ void AdsServiceImpl::OnResetAllState(bool success) {
   LOG(INFO) << "Successfully reset ads state";
 }
 
-void AdsServiceImpl::MigratePrefs() const {
+void AdsServiceImpl::MigratePrefs() {
+  is_upgrading_from_pre_brave_ads_build_ = IsUpgradingFromPreBraveAdsBuild();
+  if (is_upgrading_from_pre_brave_ads_build_) {
+    // Force migration of preferences from version 1 if
+    // |is_upgrading_from_pre_brave_ads_build_| is set to |true| to fix
+    // "https://github.com/brave/brave-browser/issues/5434"
+
+    SetIntegerPref(prefs::kVersion, 1);
+  }
+
   auto source_version = GetPrefsVersion();
   auto dest_version = prefs::kCurrentVersionNumber;
 
@@ -815,7 +812,8 @@ void AdsServiceImpl::MigratePrefs() const {
 bool AdsServiceImpl::MigratePrefs(
     const int source_version,
     const int dest_version,
-    const bool is_dry_run) const {
+    const bool is_dry_run) {
+  DCHECK(source_version >= 1) << "Invalid migration path";
   DCHECK(source_version <= dest_version) << "Invalid migration path";
 
   if (source_version == dest_version) {
@@ -832,7 +830,7 @@ bool AdsServiceImpl::MigratePrefs(
   //   {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
   //   {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
 
-  static std::map<std::pair<int, int>, void (AdsServiceImpl::*)() const>
+  static std::map<std::pair<int, int>, void (AdsServiceImpl::*)()>
       mappings {
     // {{from version, to version}, function}
     {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
@@ -867,7 +865,7 @@ bool AdsServiceImpl::MigratePrefs(
   } while (from_version != to_version);
 
   if (!is_dry_run) {
-    profile_->GetPrefs()->SetInteger(prefs::kVersion, dest_version);
+    SetIntegerPref(prefs::kVersion, dest_version);
 
     LOG(INFO) << "Successfully migrated Ads preferences from version "
         << source_version << " to " << dest_version;
@@ -876,24 +874,24 @@ bool AdsServiceImpl::MigratePrefs(
   return true;
 }
 
-void AdsServiceImpl::MigratePrefsVersion1To2() const {
-  DCHECK_EQ(1, GetPrefsVersion()) << "Invalid migration path";
-
+void AdsServiceImpl::MigratePrefsVersion1To2() {
   // Unlike Muon, ads per day are not configurable in the UI so we can safely
   // migrate to the new value
 
   #if defined(OS_ANDROID)
-    profile_->GetPrefs()->SetUint64(prefs::kAdsPerDay, 12);
+    SetUint64Pref(prefs::kAdsPerDay, 12);
   #else
-    profile_->GetPrefs()->SetUint64(prefs::kAdsPerDay, 20);
+    SetUint64Pref(prefs::kAdsPerDay, 20);
   #endif
 }
 
-void AdsServiceImpl::MigratePrefsVersion2To3() const {
-  DCHECK_EQ(2, GetPrefsVersion()) << "Invalid migration path";
-
+void AdsServiceImpl::MigratePrefsVersion2To3() {
   auto locale = GetAdsLocale();
   auto region = ads::Ads::GetRegion(locale);
+
+  // Disable ads if upgrading from a pre brave ads build due to a bug where ads
+  // were always enabled
+  DisableAdsIfUpgradingFromPreBraveAdsBuild();
 
   // Disable ads for unsupported legacy regions due to a bug where ads were
   // enabled even if the users region was not supported
@@ -905,7 +903,7 @@ void AdsServiceImpl::MigratePrefsVersion2To3() const {
     "FR"   // France
   };
 
-  DisableAdsForUnsupportedRegion(region, legacy_regions);
+  DisableAdsForUnsupportedRegions(region, legacy_regions);
 
   // On-board users for newly supported regions
   std::vector<std::string> new_regions = {
@@ -918,7 +916,206 @@ void AdsServiceImpl::MigratePrefsVersion2To3() const {
 }
 
 int AdsServiceImpl::GetPrefsVersion() const {
-  return profile_->GetPrefs()->GetInteger(prefs::kVersion);
+  return GetIntegerPref(prefs::kVersion);
+}
+
+bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
+  // Brave ads was hidden in 0.62.x however due to a bug |prefs::kEnabled| was
+  // set to |true| causing "https://github.com/brave/brave-browser/issues/5434"
+
+  // |prefs::kAdsPerDay| was not serialized in 0.62.x
+
+  // |prefs::kVersion| was introduced in 0.63.x
+
+  // We can detect if we are upgrading from a pre Brave ads build by checking
+  // |prefs::kEnabled| is set to |true|, |prefs::kAdsPerDay| does not exist,
+  // |prefs::kVersion| does not exist and it is not the first time the browser
+  // has run for this user
+
+  return GetBooleanPref(prefs::kEnabled) && !PrefExists(prefs::kAdsPerDay) &&
+      !PrefExists(prefs::kVersion) && !first_run::IsChromeFirstRun();
+}
+
+void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
+  if (!is_upgrading_from_pre_brave_ads_build_) {
+    return;
+  }
+
+  SetAdsEnabled(false);
+}
+
+void AdsServiceImpl::DisableAdsForUnsupportedRegions(
+    const std::string& region,
+    const std::vector<std::string>& supported_regions) {
+  if (std::find(supported_regions.begin(), supported_regions.end(), region)
+      != supported_regions.end()) {
+    return;
+  }
+
+  SetAdsEnabled(false);
+}
+
+void AdsServiceImpl::MayBeShowFirstLaunchNotificationForSupportedRegion(
+    const std::string& region,
+    const std::vector<std::string>& supported_regions) {
+  if (IsAdsEnabled()) {
+    return;
+  }
+
+  SetBooleanPref(prefs::kHasRemovedFirstLaunchNotification, false);
+  SetUint64Pref(prefs::kLastShownFirstLaunchNotificationTimestamp, 0);
+
+  if (std::find(supported_regions.begin(), supported_regions.end(), region)
+      == supported_regions.end()) {
+    // Do not show first launch notification for unsupported region
+    SetBooleanPref(prefs::kShouldShowFirstLaunchNotification, false);
+    return;
+  }
+
+  SetBooleanPref(prefs::kShouldShowFirstLaunchNotification, true);
+}
+
+bool AdsServiceImpl::GetBooleanPref(
+    const std::string& path) const {
+  auto* prefs = profile_->GetPrefs();
+  auto const value = prefs->GetBoolean(path);
+
+  if (!prefs->HasPrefPath(path)) {
+    // If the preference path does not exist then the default value set with
+    // RegisterBooleanPref has not been serialized, so we need to serialize the
+    // default value
+    prefs->SetBoolean(path, value);
+  }
+
+  // If the preference path does exist then a value was serialized, so return
+  // the serialized value
+  return value;
+}
+
+void AdsServiceImpl::SetBooleanPref(
+    const std::string& path,
+    const bool value) {
+  profile_->GetPrefs()->SetBoolean(path, value);
+}
+
+int AdsServiceImpl::GetIntegerPref(
+    const std::string& path) const {
+  auto* prefs = profile_->GetPrefs();
+  auto const value = prefs->GetInteger(path);
+
+  if (!prefs->HasPrefPath(path)) {
+    // If the preference path does not exist then the default value set with
+    // RegisterIntegerPref has not been serialized, so we need to serialize the
+    // default value
+    prefs->SetInteger(path, value);
+  }
+
+  // If the preference path does exist then a value was serialized, so return
+  // the serialized value
+  return value;
+}
+
+void AdsServiceImpl::SetIntegerPref(
+    const std::string& path,
+    const int value) {
+  profile_->GetPrefs()->SetInteger(path, value);
+}
+
+double AdsServiceImpl::GetDoublePref(
+    const std::string& path) const {
+  auto* prefs = profile_->GetPrefs();
+  auto const value = prefs->GetDouble(path);
+
+  if (!prefs->HasPrefPath(path)) {
+    // If the preference path does not exist then the default value set with
+    // RegisterDoublePref has not been serialized, so we need to serialize the
+    // default value
+    prefs->SetDouble(path, value);
+  }
+
+  // If the preference path does exist then a value was serialized, so return
+  // the serialized value
+  return value;
+}
+
+void AdsServiceImpl::SetDoublePref(
+    const std::string& path,
+    const double value) {
+  profile_->GetPrefs()->SetDouble(path, value);
+}
+
+std::string AdsServiceImpl::GetStringPref(
+    const std::string& path) const {
+  auto* prefs = profile_->GetPrefs();
+  auto const value = prefs->GetString(path);
+
+  if (!prefs->HasPrefPath(path)) {
+    // If the preference path does not exist then the default value set with
+    // RegisterStringPref has not been serialized, so we need to serialize the
+    // default value
+    prefs->SetString(path, value);
+  }
+
+  // If the preference path does exist then a value was serialized, so return
+  // the serialized value
+  return value;
+}
+
+void AdsServiceImpl::SetStringPref(
+    const std::string& path,
+    const std::string& value) {
+  profile_->GetPrefs()->SetString(path, value);
+}
+
+int64_t AdsServiceImpl::GetInt64Pref(
+    const std::string& path) const {
+  auto* prefs = profile_->GetPrefs();
+  auto const value = prefs->GetInt64(path);
+
+  if (!prefs->HasPrefPath(path)) {
+    // If the preference path does not exist then the default value set with
+    // RegisterInt64Pref has not been serialized, so we need to serialize the
+    // default value
+    prefs->SetInt64(path, value);
+  }
+
+  // If the preference path does exist then a value was serialized, so return
+  // the serialized value
+  return value;
+}
+
+void AdsServiceImpl::SetInt64Pref(
+    const std::string& path,
+    const int64_t value) {
+  profile_->GetPrefs()->SetInt64(path, value);
+}
+
+uint64_t AdsServiceImpl::GetUint64Pref(
+    const std::string& path) const {
+  auto* prefs = profile_->GetPrefs();
+  auto const value = prefs->GetUint64(path);
+
+  if (!prefs->HasPrefPath(path)) {
+    // If the preference path does not exist then the default value set with
+    // RegisterUint64Pref has not been serialized, so we need to serialize the
+    // default value
+    prefs->SetUint64(path, value);
+  }
+
+  // If the preference path does exist then a value was serialized, so return
+  // the serialized value
+  return value;
+}
+
+void AdsServiceImpl::SetUint64Pref(
+    const std::string& path,
+    const uint64_t value) {
+  profile_->GetPrefs()->SetUint64(path, value);
+}
+
+bool AdsServiceImpl::PrefExists(
+    const std::string& path) const {
+  return profile_->GetPrefs()->HasPrefPath(path);
 }
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
@@ -934,65 +1131,34 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   }
 }
 
-void AdsServiceImpl::DisableAdsForUnsupportedRegion(
-    const std::string& region,
-    const std::vector<std::string>& supported_regions) const {
-  if (std::find(supported_regions.begin(), supported_regions.end(), region)
-      != supported_regions.end()) {
-    return;
-  }
-
-  profile_->GetPrefs()->SetBoolean(prefs::kEnabled, false);
-}
-
-void AdsServiceImpl::MayBeShowFirstLaunchNotificationForSupportedRegion(
-    const std::string& region,
-    const std::vector<std::string>& supported_regions) const {
-  if (IsAdsEnabled()) {
-    return;
-  }
-
-  auto* prefs = profile_->GetPrefs();
-  prefs->SetBoolean(prefs::kHasRemovedFirstLaunchNotification, false);
-  prefs->SetUint64(prefs::kLastShownFirstLaunchNotificationTimestamp, 0);
-
-  if (std::find(supported_regions.begin(), supported_regions.end(), region)
-      == supported_regions.end()) {
-    // Do not show first launch notification for unsupported region
-  prefs->SetBoolean(prefs::kShouldShowFirstLaunchNotification, false);
-    return;
-  }
-
-  prefs->SetBoolean(prefs::kShouldShowFirstLaunchNotification, true);
-}
-
 bool AdsServiceImpl::IsSupportedRegion() const {
   auto locale = LocaleHelper::GetInstance()->GetLocale();
   return ads::Ads::IsSupportedRegion(locale);
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
-  auto is_ads_enabled = profile_->GetPrefs()->GetBoolean(prefs::kEnabled);
-  auto is_rewards_enabled = profile_->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled);
+  auto is_ads_enabled = GetBooleanPref(prefs::kEnabled);
+
+  auto is_rewards_enabled =
+      GetBooleanPref(brave_rewards::prefs::kBraveRewardsEnabled);
 
   return is_ads_enabled && is_rewards_enabled;
 }
 
 void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
-  profile_->GetPrefs()->SetBoolean(prefs::kEnabled, is_enabled);
+  SetBooleanPref(prefs::kEnabled, is_enabled);
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
-  return profile_->GetPrefs()->GetUint64(prefs::kAdsPerHour);
+  return GetUint64Pref(prefs::kAdsPerHour);
 }
 
 void AdsServiceImpl::SetAdsPerHour(const uint64_t ads_per_hour) {
-  profile_->GetPrefs()->SetUint64(prefs::kAdsPerHour, ads_per_hour);
+  SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
 }
 
 uint64_t AdsServiceImpl::GetAdsPerDay() const {
-  return profile_->GetPrefs()->GetUint64(prefs::kAdsPerDay);
+  return GetUint64Pref(prefs::kAdsPerDay);
 }
 
 bool AdsServiceImpl::IsForeground() const {
@@ -1043,11 +1209,11 @@ void AdsServiceImpl::ClassifyPage(const std::string& url,
 }
 
 int AdsServiceImpl::GetIdleThreshold() {
-  return profile_->GetPrefs()->GetInteger(prefs::kIdleThreshold);
+  return GetIntegerPref(prefs::kIdleThreshold);
 }
 
 void AdsServiceImpl::SetIdleThreshold(const int threshold) {
-  profile_->GetPrefs()->SetInteger(prefs::kIdleThreshold, threshold);
+  SetIntegerPref(prefs::kIdleThreshold, threshold);
 }
 
 bool AdsServiceImpl::IsNotificationsAvailable() const {

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
 
+#include <stdint.h>
 #include <map>
 #include <memory>
 #include <sstream>
@@ -188,22 +189,40 @@ class AdsServiceImpl : public AdsService,
   void OnReset(const ads::OnResetCallback& callback, bool success);
   void OnTimer(uint32_t timer_id);
 
-  void MigratePrefs() const;
+  void MigratePrefs();
   bool MigratePrefs(
       const int source_version,
       const int dest_version,
-      const bool is_dry_run = false) const;
-  void MigratePrefsVersion1To2() const;
-  void MigratePrefsVersion2To3() const;
+      const bool is_dry_run = false);
+  void MigratePrefsVersion1To2();
+  void MigratePrefsVersion2To3();
   int GetPrefsVersion() const;
-  void OnPrefsChanged(const std::string& pref);
 
-  void DisableAdsForUnsupportedRegion(
-    const std::string& region,
-    const std::vector<std::string>& regions) const;
+  bool IsUpgradingFromPreBraveAdsBuild();
+
+  void DisableAdsIfUpgradingFromPreBraveAdsBuild();
+  void DisableAdsForUnsupportedRegions(
+      const std::string& region,
+      const std::vector<std::string>& regions);
   void MayBeShowFirstLaunchNotificationForSupportedRegion(
-    const std::string& region,
-    const std::vector<std::string>& regions) const;
+      const std::string& region,
+      const std::vector<std::string>& regions);
+
+  bool GetBooleanPref(const std::string& path) const;
+  void SetBooleanPref(const std::string& path, const bool value);
+  int GetIntegerPref(const std::string& path) const;
+  void SetIntegerPref(const std::string& path, const int value);
+  double GetDoublePref(const std::string& path) const;
+  void SetDoublePref(const std::string& path, const double value);
+  std::string GetStringPref(const std::string& path) const;
+  void SetStringPref(const std::string& path, const std::string& value);
+  int64_t GetInt64Pref(const std::string& path) const;
+  void SetInt64Pref(const std::string& path, const int64_t value);
+  uint64_t GetUint64Pref(const std::string& path) const;
+  void SetUint64Pref(const std::string& path, const uint64_t value);
+  bool PrefExists(const std::string& path) const;
+
+  void OnPrefsChanged(const std::string& pref);
 
   void OnCreate();
   void OnInitialize(const int32_t result);
@@ -243,6 +262,7 @@ class AdsServiceImpl : public AdsService,
   const base::FilePath base_path_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   bool is_initialized_;
+  bool is_upgrading_from_pre_brave_ads_build_;
   std::string retry_viewing_ad_with_id_;
   uint32_t next_timer_id_;
   uint32_t ads_launch_id_;

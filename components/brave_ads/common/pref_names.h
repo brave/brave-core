@@ -23,8 +23,8 @@ extern const char kLastShownFirstLaunchNotificationTimestamp[];
 
 extern const char kShouldShowMyFirstAdNotification[];
 
-extern const int kCurrentVersionNumber;
 extern const char kVersion[];
+extern const int kCurrentVersionNumber;
 
 }  // namespace prefs
 
