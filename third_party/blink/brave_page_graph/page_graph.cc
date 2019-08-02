@@ -403,6 +403,7 @@ void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
 
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
+  LOG_ASSERT(element_nodes_.count(before_sibling_id) + text_nodes_.count(before_sibling_id) == 1);
   NodeHTMLElement* const inserted_node = element_nodes_.at(node_id);
 
   AddEdge(new EdgeNodeInsert(this, acting_node, inserted_node,
@@ -420,6 +421,7 @@ void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
 
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
   LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
+  LOG_ASSERT(element_nodes_.count(before_sibling_id) + text_nodes_.count(before_sibling_id) == 1);
   NodeHTMLText* const inserted_node = text_nodes_.at(node_id);
 
   AddEdge(new EdgeNodeInsert(this, acting_node, inserted_node,
