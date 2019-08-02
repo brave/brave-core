@@ -30,4 +30,5 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   // So, call it after browser threads are created.
   g_brave_browser_process->brave_widevine_bundle_manager()->StartupCheck();
 #endif
+  g_brave_browser_process->StartBraveServices();
 }
