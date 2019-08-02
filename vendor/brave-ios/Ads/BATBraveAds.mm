@@ -241,6 +241,11 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   // TODO: Add Implementation
 }
 
+- (void)confirmAction:(const std::string &)uuid creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)type
+{
+  // TODO: Add Implementation
+}
+
 - (void)getAds:(const std::string &)category callback:(ads::OnGetAdsCallback)callback
 {
   auto categories = bundleState->categories.find(category);

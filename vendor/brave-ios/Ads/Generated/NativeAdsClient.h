@@ -18,6 +18,7 @@ private:
   __unsafe_unretained id<NativeAdsClientBridge> bridge_;
 
   void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
+  void ConfirmAction(const std::string& uuid, const std::string& creative_set_id, const ads::ConfirmationType& type) override;
   void EventLog(const std::string & json) override;
   void GetAds(const std::string & category, ads::OnGetAdsCallback callback) override;
   const std::string GetAdsLocale() const override;
