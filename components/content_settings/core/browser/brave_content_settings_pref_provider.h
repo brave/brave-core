@@ -22,8 +22,9 @@ namespace content_settings {
 // EphemeralProvider ignore shields type and this class handles.
 class BravePrefProvider : public PrefProvider {
  public:
-  BravePrefProvider(
-      PrefService* prefs, bool incognito, bool store_last_modified);
+  BravePrefProvider(PrefService* prefs,
+                    bool off_the_record,
+                    bool store_last_modified);
   ~BravePrefProvider() override {}
 
  private:
