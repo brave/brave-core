@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "귀하의 Brave Ads 토큰 보상금",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "검증하기",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "연결 해제됨",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "월렛 검증",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "검증 완료됨",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "내 Uphold 계정으로 이동",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Brave Rewards에서 연결 해제됨",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "월렛 검증하기",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "월렛 서비스 기능 제공사:",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "정부에서 발급한 유효한 신분증을 준비해 주세요.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "광고 리워드 토큰을 보관하세요",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "신용카드로 토큰 추가",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "토큰 인출",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "검증 완료된 월렛으로 할 수 있는 기능:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "월렛을 검증하세요",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "그리고 손쉽게 자금을 관리하세요!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "검증 완료됨",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "이용불가",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "월렛 다시 접속",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "귀하의 월렛이 검증 완료되었습니다!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "축하합니다! 귀하의 $name$ 월렛이 성공적으로 검증되었으며, 자금을 추가 및 인출할 준비가 되었습니다.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "이런. 귀하의 월렛에 접근할 수 없습니다.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "걱정마세요. 본 에러는 다양한 보안 상의 이유 때문에 발생할 수 있습니다. 간단히 다시 접속하시면 문제가 해결될 것입니다.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

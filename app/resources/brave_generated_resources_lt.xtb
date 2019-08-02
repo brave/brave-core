@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">„Brave Rewards“</translation>
 <translation id="7942180974165298215">„Brave Ad Block“</translation>
 <translation id="6406506848690869874">Sinchronizavimas</translation>
-<translation id="8488282162676695335">„Brave“ piniginė</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (plėtinio ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nėra leidžiamas naršyklėje „Brave“.</translation>
+<translation id="5655621391922317800">Kriptovaliutų piniginės</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (plėtinio ID "<ph name="EXTENSION_ID"/>") nėra leidžiamas naršyklėje „Brave“.</translation>
 <translation id="7450557937477381864">Užverti „Chrome“</translation>
 <translation id="7008934821596358692">Kad užbaigtumėte importuoti, užverkite visus „Chrome“ langus.</translation>
 <translation id="5735465527556462863">Užverti „Brave“ (senąją)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">„Brave“ mokėjimai</translation>
 <translation id="3489524616427966890">Atidaryti langai ir skirtukai</translation>
 <translation id="3699882589215410581">Įdiekite ir paleiskite „Widevine“</translation>
+<translation id="3696083746357487900">Įdiegti kriptovaliutų pinigines</translation>
 <translation id="8053096063396012732">Diegti „Widevine“</translation>
 <translation id="4840334696217618631">Paleiskite naršyklę iš naujo, kad „Widevine“ pradėtų veikti</translation>
 <translation id="8410111618231938546">„Google Widevine“ yra skaitmeninio teisių valdymo (DRM) kodo elementas, kuris nepriklauso „Brave Software“ ir todėl negalime jo patikrinti. „Google Widevine“ kodas įkeliamas iš „Google“ serverių, o ne iš mūsų serverių. Jis įkeliamas tik tada, kai aktyvinate šią parinktį. Mes neskatiname naudoti DRM, bet gerbiame naudotojų pasirinkimą ir pripažįstame, kad kai kurie „Brave“ naudotojai nori naudotis paslaugomis, kurioms DRM yra reikalingas.
@@ -27,7 +28,7 @@
 <translation id="2240268017737062801">Paklausti, kai svetainė nori automatiškai leisti mediją</translation>
 <translation id="3371702087847741961">Paklausti, kai svetainė nori automatiškai leisti mediją (rekomenduojama)</translation>
 <translation id="3218385319396786393">Šiame puslapyje automatinio leidimo funkcija buvo užblokuota</translation>
-<translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Toliau blokuoti automatinį leidimą</translation>
 <translation id="5883458389055721080">„Brave“ nepatikrino šio plėtinio saugumo. Šį plėtinį įdiekite, tik jei pasitikite jo kūrėju.</translation>
 <translation id="2044383478723007273">„Brave“ spalvos</translation>
@@ -35,6 +36,7 @@
 <translation id="6123134130710658846">Slėpti mygtuką „Brave Rewards“</translation>
 <translation id="7635711399568194460">Jei funkcija „Brave Rewards“ neįjungta, buvimo vietos juostoje esantį mygtuką „Brave Rewards“ paslėpti</translation>
 <translation id="7965178729203412357">Nauja „Tor“ tapatybė</translation>
+<translation id="8511502469534942133">Nauja „Tor“ jungtis šioje svetainėje</translation>
 <translation id="8784924142044142231">Išeiti iš „Tor“</translation>
 <translation id="5410152065859052603">„Tor“</translation>
 <translation id="3696187925156352769">Atverti „Tor“ langą</translation>
@@ -84,6 +86,9 @@
 <translation id="6786747875388722282">Plėtiniai</translation>
 <translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
 <translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
+<translation id="1765684547504191670">Naudojamas medijos maršruto parinktuvo komponentas, kad naršyklėje būtų įgalintas „Chromecast“</translation>
+<translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
+<translation id="7179921470347911571">Paleisti iš naujo dabar</translation>
 <translation id="4154389611571860454">Siekiant naršyklėje palaikyti IPFS naudojamas IPFS partnerio plėtinys.</translation>
 <translation id="8137559199583651773">Tvarkyti plėtinius</translation>
 <translation id="4928988318462976765">Plėtinių parduotuvė</translation>

@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave'i reklaamiblokeerija</translation>
 <translation id="6406506848690869874">Sünkroonimine</translation>
-<translation id="8488282162676695335">Brave’i rahakott</translation>
-<translation id="120759863357279975">Laiendus <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ei ole Brave''is lubatud.</translation>
+<translation id="5655621391922317800">Krüptorahakotid</translation>
+<translation id="120759863357279975">Laiendus <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ei ole Brave''is lubatud.</translation>
 <translation id="7450557937477381864">Sulge Chrome</translation>
 <translation id="7008934821596358692">Importimise lõpetamiseks sulgege kõik Chrome'i vahelehed.</translation>
 <translation id="5735465527556462863">Sulge Brave (vana)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave'i maksed</translation>
 <translation id="3489524616427966890">Ava aknad ja vahekaardid</translation>
 <translation id="3699882589215410581">Installi ja käivita Widevine</translation>
+<translation id="3696083746357487900">Installi krüptirahakotid</translation>
 <translation id="8053096063396012732">Installi Widevine</translation>
 <translation id="4840334696217618631">Taaskäivita Widevine lubamiseks brauser</translation>
 <translation id="8410111618231938546">Google Widevine on osa digitaalõiguste haldamise (DRM) süsteemist, mida Brave Software ei oma ega saa kontrollida. Google Widevine laaditakse alla Google'i serveritest, mitte meie omadest. See laaditakse alla ainult siis, kui annate selleks oma loa. Me ei soovita DRMi süsteemi kasutamist, kuid austame oma kasutajate valikut ja mõistame, et mõned Brave'i kasutajad soovivad kasutada teenuseid, kus seda vaja on.
@@ -27,14 +28,15 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="2240268017737062801">Küsi, kui veebisait tahab meediat automaatesitada</translation>
 <translation id="3371702087847741961">Küsi, kui veebisait tahab meediat automaatesitada (soovituslik)</translation>
 <translation id="3218385319396786393">Automaatesitaja blokeeriti sellel lehel</translation>
-<translation id="4988333904713528597">Luba alati automaatesitust saidil <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Luba alati automaatesitust saidil <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Jätka automaatesitamise blokeerimist</translation>
 <translation id="5883458389055721080">Brave pole veel selle laienduse turvalisust ja ohutust kontrollinud. Installige see laiendus ainult juhul, kui usaldate arendajat.</translation>
 <translation id="2044383478723007273">Brave'i värvid</translation>
 <translation id="2814998458708016836">Kasuta laia aadressiriba</translation>
 <translation id="6123134130710658846">Peida Brave Rewards nupp</translation>
-<translation id="7635711399568194460">Peidab omniribalt Brave Rewards nupu, kui Brave Rewards pole lubatud</translation>
+<translation id="7635711399568194460">Peidab aadressiribalt Brave Rewards nupu, kui Brave Rewards pole lubatud</translation>
 <translation id="7965178729203412357">Uus Tor'i identiteet</translation>
+<translation id="8511502469534942133">Uus Tori ühendus sellel saidil</translation>
 <translation id="8784924142044142231">Sulge Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Ava Tor'i aken</translation>
@@ -61,7 +63,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4824468494729001999">Blokeeri skriptid</translation>
 <translation id="7498695072878479744">Luba Google'i sisselogimisnupud kolmanda osapoole saitidel</translation>
 <translation id="863171915776379000">Luba Facebooki sisselogimised ja manustatud postitused</translation>
-<translation id="5165042248369837294">Luba Twitteri manustatud tweet'id</translation>
+<translation id="5165042248369837294">Luba Twitteri manustatud säutsud</translation>
 <translation id="958971637207126733">Luba LinkedIni manustatud postitused</translation>
 <translation id="4699812599455071925">Blokeeri ainult saitidevahelised küpsised</translation>
 <translation id="5657156137487675418">Luba kõik küpsised</translation>
@@ -84,6 +86,9 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="6786747875388722282">Laiendused</translation>
 <translation id="2896916411183256228">Kasutab rakendust WebTorrent torrentite kuvamiseks otse brauseris. Toetab torrent-faile ja magnetlinke.</translation>
 <translation id="6554397389149987360">Kasutab Hangouts-komponenti kuva jagamise ja muude funktsioonide aktiveerimiseks brauseris.</translation>
+<translation id="1765684547504191670">Kasutab meedia marsruuteri komponenti, et lubada brauseris Chromecast.</translation>
+<translation id="9156965752763025780">Teie muudatused jõustuvad järgmine kord, kui Bravei taaskäivitate.</translation>
+<translation id="7179921470347911571">Taaskäivita kohe</translation>
 <translation id="4154389611571860454">Veebilehitseja ühildamiseks planeetidevahelise failisüsteemiga (IPFS) kasutab IPFS kaaslaiendit.</translation>
 <translation id="8137559199583651773">Laienduste haldamine</translation>
 <translation id="4928988318462976765">Veebilaienduste pood</translation>

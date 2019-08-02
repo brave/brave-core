@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Ad Block</translation>
 <translation id="6406506848690869874">ซิงค์</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
+<translation id="5655621391922317800">คริปโตวอลเล็ท</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID"/>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
 <translation id="7450557937477381864">ปิด Chrome</translation>
 <translation id="7008934821596358692">เพื่อเสร็จสิ้นการนำเข้า ปิดหน้าต่าง Chrome ทั้งหมด</translation>
 <translation id="5735465527556462863">ปิด Brave (เก่า)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">การชำระเงิน Brave</translation>
 <translation id="3489524616427966890">เปิดหน้าต่างและแท็บ</translation>
 <translation id="3699882589215410581">ติดตั้งและเปิดใช้งาน Widevine</translation>
+<translation id="3696083746357487900">ติดตั้งคริปโตวอลเล็ท</translation>
 <translation id="8053096063396012732">ติดตั้ง Widevine</translation>
 <translation id="4840334696217618631">รีสตาร์ทเบราว์เซอร์เพื่อเปิดใช้ Widevine</translation>
 <translation id="8410111618231938546">Google Widevine คือชิ้นส่วนรหัส Digital Rights Management (DRM) ที่พวกเราที่ Brave Software ไม่ได้เป็นเจ้าของและไม่สามารถทำการตรวจได้ รหัส Google Widevine ได้ถูกโหลดจากเซิร์ฟเวอร์ Google ไม่ได้โหลดจากเซิร์ฟเวอร์ของเรา DRM จะถูกโหลดเมื่อคุณเปิดตัวเลือกนี้  เราไม่สนับสนุนการใช้ DRM แต่เราเคารพการตัดสินใจของผู้ใช้และเข้าใจว่าผู้ใช้ Brave บางท่านอาจต้องการใช้บริการที่ต้องการมัน
@@ -27,7 +28,7 @@
 <translation id="2240268017737062801">ถามเมื่อเว็บต้องการเล่นสื่ออัตโนมัติ</translation>
 <translation id="3371702087847741961">ถามเมื่อเว็บต้องการเล่นสื่ออัตโนมัติ(แนะนำ)</translation>
 <translation id="3218385319396786393">การเล่นอัตโนมัติถูกบล็อกในหน้านี้</translation>
-<translation id="4988333904713528597">ยินยอมให้ทำการเล่นแบบอัตโนมัติบน <ph name="HOST">$1<ex>mail.google.com</ex></ph> เสมอ</translation>
+<translation id="4988333904713528597">ยินยอมให้ทำการเล่นแบบอัตโนมัติบน <ph name="HOST"/> เสมอ</translation>
 <translation id="4150684676757176434">ทำการบล็อกการเล่นอัตโนมัติต่อ</translation>
 <translation id="5883458389055721080">Brave ยังไม่ได้ตรวจสอบความมั่นคงและความปลอดภัยของส่วนขยายนี้ ติดตั้งส่วนขยายนี้ถ้าคุณไว้ใจผู้พัฒนาได้เท่านั้น</translation>
 <translation id="2044383478723007273">สี Brave</translation>
@@ -35,6 +36,7 @@
 <translation id="6123134130710658846">ซ่อนปุ่ม Brave Rewards</translation>
 <translation id="7635711399568194460">ซ่อนปุ่ม Brave Rewards ในแถบสถานที่ตั้งเมื่อไม่ได้เปิดใช้ Brave Rewards</translation>
 <translation id="7965178729203412357">ตัวตน Tor ใหม่</translation>
+<translation id="8511502469534942133">การเชื่อมต่อ Tor ใหม่สำหรับเว็บไซต์นี้</translation>
 <translation id="8784924142044142231">ออกจาก Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">เปิดหน้าต่าง Tor</translation>
@@ -84,6 +86,9 @@
 <translation id="6786747875388722282">ส่วนขยาย</translation>
 <translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
 <translation id="6554397389149987360">ใช้ส่วนประกอบ Hangouts เพื่อเปิดใช้งานการแชร์หน้าจอและฟีเจอร์อื่น ๆ ในเบราว์เซอร์</translation>
+<translation id="1765684547504191670">ใช้คอมโพเนนต์ Media Router เพื่อเปิดใช้งาน Chromecast ในเบราว์เซอร์</translation>
+<translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
+<translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="4154389611571860454">ใช้ส่วนขยาย IPFS Companion เพื่อรองรับ IPFS ในเบราว์เซอร์</translation>
 <translation id="8137559199583651773">จัดการส่วนขยาย</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>

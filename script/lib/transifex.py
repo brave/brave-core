@@ -120,6 +120,17 @@ def get_transifex_translation_file_content(source_file_path, filename,
     return content
 
 
+def trim_ph_tags_in_xtb_file_content(xml_content):
+    """Removes all children of <ph> tags including $X text inside ph tag"""
+    xml = lxml.etree.fromstring(xml_content)
+    phs = xml.findall('.//ph')
+    for ph in phs:
+        lxml.etree.strip_elements(ph, '*', with_tail=False)
+        if ph.text is not None and ph.text.startswith('$'):
+            ph.text = ''
+    return lxml.etree.tostring(xml)
+
+
 def get_strings_dict_from_xml_content(xml_content):
     """Obtains a dictionary mapping the string name to text from Android xml
     content"""
@@ -589,6 +600,7 @@ def pull_source_files_from_transifex(source_file_path, filename):
             print 'Updating: ', xtb_file_path, lang_code
             xml_content = get_transifex_translation_file_content(
                 source_file_path, filename, lang_code)
+            xml_content = trim_ph_tags_in_xtb_file_content(xml_content)
             translations = get_strings_dict_from_xml_content(xml_content)
             xtb_content = generate_xtb_content(lang_code, grd_strings,
                                                translations)

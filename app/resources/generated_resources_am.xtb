@@ -1633,7 +1633,9 @@ nil</translation>
 <translation id="473546211690256853">ይህ መለያ በ<ph name="DOMAIN"/> ነው የሚተዳደረው</translation>
 <translation id="622537739776246443">መገለጫ ይሰረዛል</translation>
 <translation id="5632566673632479864">የእርስዎ <ph name="EMAIL"/> ከእንግዲህ እንደ ተቀዳሚ መለያ አይፈቀድም። ይህ መለያ በ<ph name="DOMAIN"/> የሚተዳደር ስለሆነ የእርስዎ ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት፣እና ሌላ ቅንብሮች ከዚህ መሣሪያ ላይ ይጸዳሉ።</translation>
+<translation id="3797739167230984533">የእርስዎ <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> የሚተዳደረው<ph name="END_LINK"/> በእርስዎ ድርጅት ነው</translation>
 <translation id="1722460139690167654">የእርስዎ <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> የሚተዳደረው<ph name="END_LINK"/> በ<ph name="ENROLLMENT_DOMAIN"/> ነው</translation>
+<translation id="8118488170956489476">የእርስዎ <ph name="BEGIN_LINK"/>አሳሽ በእርስዎ ድርጅት<ph name="END_LINK"/> የሚተዳደር ነው</translation>
 <translation id="1365180424462182382">የእርስዎ <ph name="BEGIN_LINK"/>አሳሽ የሚተዳደረው<ph name="END_LINK"/> በ<ph name="ENROLLMENT_DOMAIN"/> ነው</translation>
 <translation id="8168435359814927499">ይዘት</translation>
 <translation id="7702907602086592255">ጎራ</translation>

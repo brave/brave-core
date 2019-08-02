@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave balvas</translation>
 <translation id="7942180974165298215">Brave reklāmu bloķētājs</translation>
 <translation id="6406506848690869874">Sinhronizācija</translation>
-<translation id="8488282162676695335">Brave maks</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nav atļauts Brave.</translation>
+<translation id="5655621391922317800">Kripto maki</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nav atļauts Brave.</translation>
 <translation id="7450557937477381864">Aizvērt Chrome</translation>
 <translation id="7008934821596358692">Lai pabeigtu importēšanu, aizveriet visus Chrome logus.</translation>
 <translation id="5735465527556462863">Aizvērt Brave (vecais)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave maksājumi</translation>
 <translation id="3489524616427966890">Atvērts logus un cilnes</translation>
 <translation id="3699882589215410581">Instalēt un palaist Widevine</translation>
+<translation id="3696083746357487900">Instalēt kripto makus</translation>
 <translation id="8053096063396012732">Instalējiet Widevine</translation>
 <translation id="4840334696217618631">Restartējiet pārlūku, lai iespējotu Widevine</translation>
 <translation id="8410111618231938546">Google Widevine ir Digitālā satura tiesību pārvaldības (DRM) koda daļa, kas mums, Brave Software, nepieder un ko mēs nevaram pārbaudīt. Google Widevine kods tiek ielādēts no Google serveriem, nevis no mūsu serveriem. Tas tiek ielādēts tikai tad, ja Jūs iespējojat šo opciju. Mēs atturam no DRM izmantošanas, bet mēs cienām lietotāju izvēli un pieņemam, ka daži Brave lietotāji vēlas izmantot pakalpojumus, kuriem tas ir nepieciešams.
@@ -27,7 +28,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="2240268017737062801">Vaicāt, ja vietne vēlas automātiski atskaņot medijus</translation>
 <translation id="3371702087847741961">Vaicāt, ja vietne vēlas automātiski atskaņot medijus (ieteicams)</translation>
 <translation id="3218385319396786393">Automātiskā atskaņošana šajā lapā tika bloķēta</translation>
-<translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Turpināt bloķēt automātisko atskaņošanu</translation>
 <translation id="5883458389055721080">Brave vēl nav pārskatījis šo paplašinājumu attiecībā uz tā aizsardzību un drošumu. Instalējiet šo paplašinājumu tikai tad, ja uzticaties izstrādātājam.</translation>
 <translation id="2044383478723007273">Brave krāsas</translation>
@@ -35,6 +36,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
 <translation id="7635711399568194460">Slēpj Brave balvu pogu atrašanās vietas joslā, kad Brave balvas nav iespējotas</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
+<translation id="8511502469534942133">Jauns Tor savienojums šai vietnei</translation>
 <translation id="8784924142044142231">Iziet no Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Atvērt Tor logu</translation>
@@ -84,6 +86,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6786747875388722282">Paplašinājumi</translation>
 <translation id="2896916411183256228">Izmanto programmu WebTorrent, lai torentus parādītu uzreiz pārlūkprogrammā. Atbalsta torentu failus un magnētiskās saites.</translation>
 <translation id="6554397389149987360">Izmanto funkcijas Hangouts elementu, lai pārlūkprogrammā iespējotu ekrāna kopīgošanu un citas funkcijas.</translation>
+<translation id="1765684547504191670">Izmanto funkcijas Media Router elementu, lai pārlūkā iespējotu Chromecast.</translation>
+<translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
+<translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="4154389611571860454">Izmanto IPFS kompanjona paplašinājumu, lai atbalstītu IPFS lietošanu pārlūkprogrammā.</translation>
 <translation id="8137559199583651773">Pārvaldīt paplašinājumus</translation>
 <translation id="4928988318462976765">Paplašinājumu interneta veikals</translation>

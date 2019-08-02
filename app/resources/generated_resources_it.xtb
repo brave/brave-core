@@ -1648,7 +1648,9 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="473546211690256853">Questo account è gestito da <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Il profilo verrà eliminato</translation>
 <translation id="5632566673632479864">Il tuo account <ph name="EMAIL"/> non è più consentito come account principale. Siccome l'account è gestito da <ph name="DOMAIN"/>, i preferiti, la cronologia, le password e altre impostazioni verranno cancellati da questo dispositivo.</translation>
+<translation id="3797739167230984533">Il tuo <ph name="BEGIN_LINK"/>dispositivo <ph name="DEVICE_TYPE"/> è gestito<ph name="END_LINK"/> dalla tua organizzazione</translation>
 <translation id="1722460139690167654">Il tuo dispositivo <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> è gestito<ph name="END_LINK"/> da <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Il tuo <ph name="BEGIN_LINK"/>browser è gestito<ph name="END_LINK"/> dalla tua organizzazione</translation>
 <translation id="1365180424462182382">Il tuo <ph name="BEGIN_LINK"/>browser è gestito<ph name="END_LINK"/> da <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Contenuti</translation>
 <translation id="7702907602086592255">Dominio</translation>
@@ -2280,7 +2282,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8750155211039279868"><ph name="ORIGIN"/> vuole collegarsi a una porta seriale</translation>
 <translation id="4943691134276646401">"<ph name="CHROME_EXTENSION_NAME"/>" vuole collegarsi a una porta seriale</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
-<translation id="1587562069597918292"><ph name="DEVICE_PATH">$1<ex>COM1</ex></ph></translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> vuole collegarsi a un dispositivo HID</translation>
 <translation id="6078769373519310690">"<ph name="CHROME_EXTENSION_NAME"/>" vuole collegarsi a un dispositivo HID</translation>
 <translation id="4419610272958564173">Dispositivo sconosciuto (fornitore: <ph name="VENDOR_ID"/>, prodotto: <ph name="PRODUCT_ID"/>)</translation>
@@ -2413,7 +2415,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="399179161741278232">Importati</translation>
 <translation id="5225324770654022472">Mostra scorciatoia app</translation>
 <translation id="5072836811783999860">Mostra Preferiti gestiti</translation>
-<translation id="3613134908380545408">Mostra <ph name="FOLDER_NAME">$1<ex>managed bookmarks</ex></ph></translation>
+<translation id="3613134908380545408">Mostra <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Mostra scorciatoia app</translation>
 <translation id="711840821796638741">Mostra Preferiti gestiti</translation>
 <translation id="2367972762794486313">Mostra app</translation>
@@ -2898,7 +2900,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6352773953037195952">Massimo</translation>
 <translation id="3677657024345889897">Al minimo</translation>
 <translation id="167160931442925455">Al massimo</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE">$1<ex>120</ex></ph>%</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (valore predefinito)</translation>
 <translation id="3602290021589620013">Anteprima</translation>
 <translation id="7037509989619051237">Anteprima del testo</translation>
@@ -3747,7 +3749,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5021750053540820849">Non ancora aggiornato</translation>
 <translation id="3448492834076427715">Aggiorna account</translation>
 <translation id="2923234477033317484">Rimuovi questo account</translation>
-<translation id="8995603266996330174">Gestito da <ph name="DOMAIN">$1<ex>google.com</ex></ph></translation>
+<translation id="8995603266996330174">Gestito da <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Account principale</translation>
 <translation id="3158033540161634471">Imposta la tua impronta</translation>
 <translation id="1587907146729660231">Tocca il tasto di accensione con un dito</translation>

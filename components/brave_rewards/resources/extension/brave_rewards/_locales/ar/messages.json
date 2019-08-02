@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "المنحة الرمزية الخاصة بك من إعلانات Brave",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "تحقق",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "قُطع الاتصال",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "تحقق من المحفظة",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "محقَّق",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "الانتقال إلى حساب Uphold الخاص بي",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "قطع الاتصال بـ Brave Rewards",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "التحقق من المحفظة",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "تتوفر خدمتنا للمحافظ من قبل",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "يرجى أن تكون هويتك الصادرة من الحكومة متاحة.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "الاحتفاظ برموز Ad Rewards الخاصة بك",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "إضافة الرموز باستخدام بطاقة الائتمان",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "سحب الرموز",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "تتيح لك المحفظة التي تم التحقق منها:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "تحقق من محفظتك",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "وتولى إدارة رصيدك بسهولة!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "محقَّق",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "غير متاح",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "إعادة وصل المحفظة",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "تم التحقق من محفظتك!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "تهانينًا! تم التحقق من محفظة $name$ الخاصة بك بنجاح وتجهيزها لإضافة وسحب الرصيد.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "يا للأسف. لا يمكن الوصول إلى بمحفظتك.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "لا داعٍ للقلق. يمكن أن يحدث هذا لمختلف الأسباب الأمنية. سوف تحل إعادة الاتصال بها هذه المشكلة ببساطة.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }
