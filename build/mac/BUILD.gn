@@ -114,7 +114,8 @@ if (skip_signing) {
 
     deps = [
       "//brave:chrome_app",
-      "//chrome/installer/mac"
+      "//chrome/installer/mac",
+      ":copies",
     ]
 
     if (is_official_build) {
@@ -149,6 +150,18 @@ if (skip_signing) {
       rebase_path(provisioning_profile, root_out_dir),
       keychain_db,
       mac_signing_identifier,
+    ]
+  }
+
+  copy("copies") {
+    visibility = [ ":sign_app" ]
+
+    sources = [
+      "//brave/app/helper-entitlements.plist",
+    ]
+
+    outputs = [
+      "$packaging_dir/{{source_file_part}}"
     ]
   }
 
