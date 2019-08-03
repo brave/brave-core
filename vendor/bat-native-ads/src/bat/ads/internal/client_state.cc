@@ -6,6 +6,7 @@
 #include "bat/ads/internal/client_state.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/static_values.h"
+#include "bat/ads/internal/time.h"
 
 namespace ads {
 
@@ -13,6 +14,7 @@ ClientState::ClientState() :
     ads_shown_history({}),
     ad_uuid(""),
     ads_uuid_seen({}),
+    next_check_serve_ad_timestamp_in_seconds(0),
     available(false),
     last_search_time(0),
     last_shop_time(0),
@@ -34,6 +36,8 @@ ClientState::ClientState(const ClientState& state) :
   ads_shown_history(state.ads_shown_history),
   ad_uuid(state.ad_uuid),
   ads_uuid_seen(state.ads_uuid_seen),
+  next_check_serve_ad_timestamp_in_seconds(
+      state.next_check_serve_ad_timestamp_in_seconds),
   available(state.available),
   last_search_time(state.last_search_time),
   last_shop_time(state.last_shop_time),
@@ -74,8 +78,11 @@ Result ClientState::FromJson(
   }
 
   if (client.HasMember("adsShownHistory")) {
-    for (const auto& ad_shown : client["adsShownHistory"].GetArray()) {
-      ads_shown_history.push_back(ad_shown.GetUint64());
+    for (const auto& timestamp_in_seconds :
+        client["adsShownHistory"].GetArray()) {
+      auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
+          timestamp_in_seconds.GetUint64());
+      ads_shown_history.push_back(migrated_timestamp_in_seconds);
     }
   }
 
@@ -90,24 +97,37 @@ Result ClientState::FromJson(
     }
   }
 
+  if (client.HasMember("nextCheckServeAd")) {
+    next_check_serve_ad_timestamp_in_seconds =
+        client["nextCheckServeAd"].GetUint64();
+  }
+
   if (client.HasMember("available")) {
     available = client["available"].GetBool();
   }
 
   if (client.HasMember("lastSearchTime")) {
-    last_search_time = client["lastSearchTime"].GetUint64();
+    auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
+        client["lastSearchTime"].GetUint64());
+    last_search_time = migrated_timestamp_in_seconds;
   }
 
   if (client.HasMember("lastShopTime")) {
-    last_shop_time = client["lastShopTime"].GetUint64();
+    auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
+        client["lastShopTime"].GetUint64());
+    last_shop_time = migrated_timestamp_in_seconds;
   }
 
   if (client.HasMember("lastUserActivity")) {
-    last_user_activity = client["lastUserActivity"].GetUint64();
+    auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
+        client["lastUserActivity"].GetUint64());
+    last_user_activity = migrated_timestamp_in_seconds;
   }
 
   if (client.HasMember("lastUserIdleStopTime")) {
-    last_user_idle_stop_time = client["lastUserIdleStopTime"].GetUint64();
+    auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
+        client["lastUserIdleStopTime"].GetUint64());
+    last_user_idle_stop_time = migrated_timestamp_in_seconds;
   }
 
   if (client.HasMember("locale")) {
@@ -137,25 +157,31 @@ Result ClientState::FromJson(
   }
 
   if (client.HasMember("creativeSetHistory")) {
-    for (const auto& history : client["creativeSetHistory"].GetObject()) {
+    for (const auto& creative_set : client["creativeSetHistory"].GetObject()) {
       std::deque<uint64_t> timestamps_in_seconds = {};
-      for (const auto& timestamp_in_seconds : history.value.GetArray()) {
-        timestamps_in_seconds.push_back(timestamp_in_seconds.GetUint64());
+
+      for (const auto& timestamp_in_seconds : creative_set.value.GetArray()) {
+        auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
+            timestamp_in_seconds.GetUint64());
+        timestamps_in_seconds.push_back(migrated_timestamp_in_seconds);
       }
 
-      std::string creative_set_id = history.name.GetString();
+      std::string creative_set_id = creative_set.name.GetString();
       creative_set_history.insert({creative_set_id, timestamps_in_seconds});
     }
   }
 
   if (client.HasMember("campaignHistory")) {
-    for (const auto& history : client["campaignHistory"].GetObject()) {
+    for (const auto& campaign : client["campaignHistory"].GetObject()) {
       std::deque<uint64_t> timestamps_in_seconds = {};
-      for (const auto& timestamp_in_seconds : history.value.GetArray()) {
-        timestamps_in_seconds.push_back(timestamp_in_seconds.GetUint64());
+
+      for (const auto& timestamp_in_seconds : campaign.value.GetArray()) {
+        auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
+            timestamp_in_seconds.GetUint64());
+        timestamps_in_seconds.push_back(migrated_timestamp_in_seconds);
       }
 
-      std::string campaign_id = history.name.GetString();
+      std::string campaign_id = campaign.name.GetString();
       campaign_history.insert({campaign_id, timestamps_in_seconds});
     }
   }
@@ -203,6 +229,9 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
     writer->Uint64(ad_uuid_seen.second);
   }
   writer->EndObject();
+
+  writer->String("nextCheckServeAd");
+  writer->Uint64(state.next_check_serve_ad_timestamp_in_seconds);
 
   writer->String("available");
   writer->Bool(state.available);
