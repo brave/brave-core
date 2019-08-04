@@ -58,15 +58,15 @@ export default class Stats extends React.Component<Props, {}> {
   }
 
   render () {
-    const adblockCount = this.adblockCount.toLocaleString()
+    const trackedBlockersCount = this.adblockCount.toLocaleString()
     const httpsUpgradedCount = this.httpsUpgradedCount.toLocaleString()
     const timeSaved = this.estimatedTimeSaved
 
     return (
       <StatsContainer>
         <StatsItem
-          description={getLocale('adsBlocked')}
-          counter={adblockCount}
+          description={getLocale('adsTrackersBlocked')}
+          counter={trackedBlockersCount}
         />
         <StatsItem
           description={getLocale('httpsUpgraded')}
