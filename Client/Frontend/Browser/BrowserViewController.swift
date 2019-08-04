@@ -2541,7 +2541,8 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             let imageText = imageTitle.map { "\n\n\($0)" } ?? ""
             // If the image is a link, show the link's URL. Otherwise, show the image's source URL.
             let urlText = elements.link?.absoluteString ?? url.absoluteString
-            dialogTitle = "\(urlText)\(imageText)"
+            // Too long text can make the action sheet to cover whole screen, therefore it needs to be truncated.
+            dialogTitle = "\(urlText)\(imageText)".truncate(length: 200)
             
             let openInNewTabAction = UIAlertAction(title: Strings.OpenImageInNewTabActionTitle, style: .default) { _ in
                 let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
