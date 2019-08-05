@@ -66,7 +66,7 @@ export const maybeBlockResource = (resouce: BlockOptions) => {
   return resouce !== 'allow'
 }
 
-export const maybeDisableResourcesRow = (resource: number) => {
+export const shouldDisableResourcesRow = (resource: number) => {
   return resource === 0
 }
 
