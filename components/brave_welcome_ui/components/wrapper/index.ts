@@ -91,6 +91,7 @@ export const Page = styled<{}, 'div'>('div')`
   justify-content: center;
   background: ${p => p.theme.color.panelBackground};
   overflow: hidden;
+  transition: background 0.3s linear;
 `
 
 export const Panel = styled('div')`
