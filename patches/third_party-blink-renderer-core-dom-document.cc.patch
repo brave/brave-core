@@ -30,7 +30,7 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        window_agent_factory_(security_initializer.GetWindowAgentFactory()),
-@@ -1218,8 +1232,140 @@ Document::~Document() {
+@@ -1218,7 +1232,149 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -43,8 +43,8 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
 +    page_graph_ = nullptr;
 +  }
 +#endif
- }
- 
++}
++
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +static bool IsDocumentLocal(const blink::Document* document) {
 +  // If the current document is in a different security origin than the
@@ -77,11 +77,21 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
 +  const blink::Document* const top_doc = &document->TopDocument();
 +  const blink::Document* current_doc = document;
 +  while (current_doc != top_doc) {
-+    blink::SecurityOrigin::AccessResultDomainDetail detail;
-+    if (!current_doc->GetSecurityOrigin()->CanAccess(
-+        top_doc->GetSecurityOrigin(), detail)) {
++    // Check whether the current document is origin-compatible with the top
++    // document, *excluding* document.domain changes.
++    using AccessResultDomainDetail =
++        blink::SecurityOrigin::AccessResultDomainDetail;
++    AccessResultDomainDetail detail;
++    const bool canAccess = current_doc->GetSecurityOrigin()->CanAccess(
++        top_doc->GetSecurityOrigin(), detail);
++    if ((!canAccess
++          && (detail == AccessResultDomainDetail::kDomainNotRelevant
++              || detail == AccessResultDomainDetail::kDomainNotSet))
++        || (canAccess
++            && detail == AccessResultDomainDetail::kDomainMatchNecessary)) {
 +      return false;
 +    }
++
 +    LOG_ASSERT(current_doc->LocalOwner());
 +    current_doc = &current_doc->LocalOwner()->GetDocument();
 +  }
@@ -165,12 +175,11 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
 +                                                  DOMNodeIds::IdForNode(this),
 +                                                  nodeName(), Url());
 +  return page_graph_;
-+}
+ }
 +#endif
-+
+ 
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
-   DCHECK(position.IsNotNull());
 @@ -5856,6 +5999,22 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (!cookie_jar_)
      return String();
