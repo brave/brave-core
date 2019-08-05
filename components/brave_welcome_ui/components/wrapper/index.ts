@@ -86,6 +86,7 @@ export const Content = styled<ContentProps, 'section'>('section')`
 `
 
 export const Page = styled<{}, 'div'>('div')`
+  position: absolute;
   width: inherit;
   height: inherit;
   display: flex;

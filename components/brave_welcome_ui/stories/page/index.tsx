@@ -119,10 +119,10 @@ export default class WelcomePage extends React.PureComponent<Props, State> {
     const { isDefaultSearchGoogle } = this.props
     return (
       <>
-        <BackgroundContainer>
-          <Background />
-        </BackgroundContainer>
         <Page>
+          <BackgroundContainer>
+            <Background />
+          </BackgroundContainer>
           <Panel>
             <SlideContent>
               <WelcomeBox index={1} currentScreen={currentScreen} onClick={this.onClickLetsGo} />
