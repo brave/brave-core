@@ -227,3 +227,34 @@ pub unsafe extern "C" fn filter_list_get(category: *const c_char, i: size_t) -> 
     }
     new_list
 }
+
+/// Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
+///
+/// The leading '.' or '#' character should not be provided
+#[no_mangle]
+pub unsafe extern "C" fn engine_class_id_stylesheet(
+    engine: *mut Engine,
+    classes: *const *const c_char,
+    classes_size: size_t,
+    ids: *const *const c_char,
+    ids_size: size_t,
+    exceptions: *const *const c_char,
+    exceptions_size: size_t,
+) -> *const c_char {
+    let classes = std::slice::from_raw_parts(classes, classes_size);
+    let classes: Vec<String> = (0..classes_size)
+        .map(|index| CStr::from_ptr(classes[index]).to_str().unwrap().to_owned())
+        .collect();
+    let ids = std::slice::from_raw_parts(ids, ids_size);
+    let ids: Vec<String> = (0..ids_size)
+        .map(|index| CStr::from_ptr(ids[index]).to_str().unwrap().to_owned())
+        .collect();
+    let exceptions = std::slice::from_raw_parts(exceptions, exceptions_size);
+    let exceptions: std::collections::HashSet<String> = (0..exceptions_size)
+        .map(|index| CStr::from_ptr(exceptions[index]).to_str().unwrap().to_owned())
+        .collect();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    let stylesheet = engine.class_id_stylesheet(&classes, &ids, exceptions);
+    CString::new(stylesheet.unwrap_or_else(|| String::new())).expect("Error: CString::new()").into_raw()
+}

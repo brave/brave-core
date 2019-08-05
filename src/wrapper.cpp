@@ -122,6 +122,33 @@ void Engine::addResources(const std::string& resources) {
   engine_add_resources(raw, resources.c_str());
 }
 
+const std::string Engine::classIdStylesheet(const std::vector<std::string>& classes, const std::vector<std::string>& ids, const std::vector<std::string>& exceptions) {
+  std::vector<const char*> classes_raw;
+  classes_raw.reserve(classes.size());
+  for(size_t i = 0; i < classes.size(); i++) {
+    classes_raw.push_back(classes[i].c_str());
+  }
+
+  std::vector<const char*> ids_raw;
+  ids_raw.reserve(ids.size());
+  for(size_t i = 0; i < ids.size(); i++) {
+    ids_raw.push_back(ids[i].c_str());
+  }
+
+  std::vector<const char*> exceptions_raw;
+  exceptions_raw.reserve(exceptions.size());
+  for(size_t i = 0; i < exceptions.size(); i++) {
+    exceptions_raw.push_back(exceptions[i].c_str());
+  }
+
+  return engine_class_id_stylesheet(
+    raw,
+    classes_raw.data(), classes.size(),
+    ids_raw.data(), ids.size(),
+    exceptions_raw.data(), exceptions.size()
+  );
+}
+
 Engine::~Engine() {
   engine_destroy(raw);
 }

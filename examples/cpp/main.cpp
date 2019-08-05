@@ -231,6 +231,35 @@ void TestThirdParty() {
       false, "image");
 }
 
+void TestClassId() {
+  Engine engine(
+      "###element\n"
+      "##.ads\n"
+      "##.element\n"
+      "###ads > #element\n"
+      "##a[href^=\"test.com\"]\n"
+      "###block\n"
+      "###block + .child\n"
+  );
+  std::vector<std::string> classes = std::vector<std::string>();
+  std::vector<std::string> ids = std::vector<std::string>();
+  std::vector<std::string> exceptions = std::vector<std::string>();
+  std::string stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
+  assert(stylesheet == "");
+
+  classes = std::vector<std::string>({"ads", "no-ads"});
+  ids = std::vector<std::string>({"element"});
+  exceptions = std::vector<std::string>();
+  stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
+  assert(stylesheet == ".ads,#element{display:none !important;}");
+
+  classes = std::vector<std::string>({"element", "a"});
+  ids = std::vector<std::string>({"block", "ads", "a"});
+  exceptions = std::vector<std::string>({"#block"});
+  stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
+  assert(stylesheet == ".element,#block + .child,#ads > #element{display:none !important;}");
+}
+
 void TestDefaultLists() {
   std::vector<FilterList>& default_lists = FilterList::GetDefaultLists();
   assert(default_lists.size() == 8);
@@ -280,6 +309,7 @@ int main() {
   TestThirdParty();
   TestDefaultLists();
   TestRegionalLists();
+  TestClassId();
   cout << num_passed << " passed, " <<
       num_failed << " failed" << endl;
   cout << "Success!";
