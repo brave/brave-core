@@ -95,8 +95,11 @@ class AdsServiceImpl : public AdsService,
   void Start();
   bool StartService();
   void UpdateIsProductionFlag();
+  bool IsProduction();
   void UpdateIsDebugFlag();
+  bool IsDebug();
   void UpdateIsTestingFlag();
+  bool IsTesting();
   void Stop();
   void ResetTimer();
   void CheckIdleState();

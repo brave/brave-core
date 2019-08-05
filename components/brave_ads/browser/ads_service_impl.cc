@@ -453,60 +453,55 @@ bool AdsServiceImpl::StartService() {
   return true;
 }
 
-#if defined(OS_ANDROID)
 void AdsServiceImpl::UpdateIsProductionFlag() {
-#if defined(OFFICIAL_BUILD)
-  auto is_production =
-      !GetBooleanPref(brave_rewards::prefs::kUseRewardsStagingServer);
-#else
-  auto is_production = false;
-#endif
-
+  auto is_production = IsProduction();
   bat_ads_service_->SetProduction(is_production, base::NullCallback());
 }
-#else
-void AdsServiceImpl::UpdateIsProductionFlag() {
+
+bool AdsServiceImpl::IsProduction() {
+#if defined(OS_ANDROID)
+
 #if defined(OFFICIAL_BUILD)
-  auto is_production = true;
+  return !GetBooleanPref(brave_rewards::prefs::kUseRewardsStagingServer);
 #else
-  auto is_production = false;
+  return false;
 #endif
+
+#else
 
   const auto& command_line = *base::CommandLine::ForCurrentProcess();
-  if (command_line.HasSwitch(switches::kStaging)) {
-    is_production = false;
-  } else if (command_line.HasSwitch(switches::kProduction)) {
-    is_production = true;
-  }
 
-  bat_ads_service_->SetProduction(is_production, base::NullCallback());
-}
+#if defined(OFFICIAL_BUILD)
+  return !command_line.HasSwitch(switches::kStaging);
+#else
+  return command_line.HasSwitch(switches::kProduction);
 #endif
+
+#endif
+}
 
 void AdsServiceImpl::UpdateIsDebugFlag() {
-#if defined(NDEBUG)
-  auto is_debug = false;
-#else
-  auto is_debug = true;
-#endif
-
-  const auto& command_line = *base::CommandLine::ForCurrentProcess();
-  if (command_line.HasSwitch(switches::kDebug)) {
-    is_debug = true;
-  }
-
+  auto is_debug = IsDebug();
   bat_ads_service_->SetDebug(is_debug, base::NullCallback());
 }
 
+bool AdsServiceImpl::IsDebug() {
+  #if defined(NDEBUG)
+    const auto& command_line = *base::CommandLine::ForCurrentProcess();
+    return command_line.HasSwitch(switches::kDebug);
+  #else
+    return true;
+  #endif
+}
+
 void AdsServiceImpl::UpdateIsTestingFlag() {
-  auto is_testing = false;
-
-  const auto& command_line = *base::CommandLine::ForCurrentProcess();
-  if (command_line.HasSwitch(switches::kTesting)) {
-    is_testing = true;
-  }
-
+  auto is_testing = IsTesting();
   bat_ads_service_->SetTesting(is_testing, base::NullCallback());
+}
+
+bool AdsServiceImpl::IsTesting() {
+  const auto& command_line = *base::CommandLine::ForCurrentProcess();
+  return command_line.HasSwitch(switches::kTesting);
 }
 
 void AdsServiceImpl::Start() {
