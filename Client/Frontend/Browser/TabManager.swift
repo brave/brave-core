@@ -283,6 +283,11 @@ class TabManager: NSObject {
         }
     }
 
+    ///Called to turn selectedIndex back to -1
+    func resetSelectedIndex() {
+        _selectedIndex = -1
+    }
+    
     func expireSnackbars() {
         assert(Thread.isMainThread)
 
@@ -569,6 +574,7 @@ class TabManager: NSObject {
             // It might have changed index, so we look it up again.
             _selectedIndex = allTabs.index(of: oldTab) ?? -1
         } else if let parentTab = tab.parent,
+            currentTabs.count > 1,
             let newTab = currentTabs.reduce(currentTabs.first, { currentBestTab, tab2 in
             if let tab1 = currentBestTab, let time1 = tab1.lastExecutedTime {
                 if let time2 = tab2.lastExecutedTime {
