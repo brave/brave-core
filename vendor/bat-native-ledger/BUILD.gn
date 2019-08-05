@@ -129,6 +129,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/media/youtube.cc",
     "src/bat/ledger/internal/uphold/uphold.h",
     "src/bat/ledger/internal/uphold/uphold.cc",
+    "src/bat/ledger/internal/uphold/uphold_authorization.h",
+    "src/bat/ledger/internal/uphold/uphold_authorization.cc",
     "src/bat/ledger/internal/uphold/uphold_card.h",
     "src/bat/ledger/internal/uphold/uphold_card.cc",
     "src/bat/ledger/internal/uphold/uphold_transfer.h",
