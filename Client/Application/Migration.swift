@@ -19,6 +19,11 @@ class Migration {
             Preferences.Migration.syncOrderCompleted.value = true
         }
     }
+    
+    static func moveDatabaseToApplicationDirectory() {
+        //Moves Coredata sqlite file from Documents dir to application support dir.
+        DataController.shared.migrateToNewPathIfNeeded()
+    }
 }
 
 fileprivate extension Preferences {
