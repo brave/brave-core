@@ -280,6 +280,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         self.browserViewController.handleNavigationPath(path: routerpath)
         return true
     }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        if let presentedViewController = rootViewController.presentedViewController {
+            return presentedViewController.supportedInterfaceOrientations
+        } else {
+            return rootViewController.supportedInterfaceOrientations
+        }
+    }
 
     // We sync in the foreground only, to avoid the possibility of runaway resource usage.
     // Eventually we'll sync in response to notifications.
