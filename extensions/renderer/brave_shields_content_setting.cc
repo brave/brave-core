@@ -120,15 +120,12 @@ void BraveShieldsContentSetting::HandleFunction(const std::string& method_name,
   if (!access_checker_->HasAccessOrThrowError(context, full_name))
     return;
 
-  std::unique_ptr<base::ListValue> converted_arguments;
-  v8::Local<v8::Function> callback;
-  std::string error;
   const APISignature* signature = type_refs_->GetTypeMethodSignature(full_name);
-  if (!signature->ParseArgumentsToJSON(context, argument_list, *type_refs_,
-                                       &converted_arguments, &callback,
-                                       &error)) {
+  APISignature::JSONParseResult parse_result =
+      signature->ParseArgumentsToJSON(context, argument_list, *type_refs_);
+  if (!parse_result.succeeded()) {
     arguments->ThrowTypeError(api_errors::InvocationError(
-        full_name, signature->GetExpectedSignature(), error));
+        full_name, signature->GetExpectedSignature(), *parse_result.error));
     return;
   }
 
@@ -148,10 +145,11 @@ void BraveShieldsContentSetting::HandleFunction(const std::string& method_name,
     }
   }
 
-  converted_arguments->Insert(0u, std::make_unique<base::Value>(pref_name_));
+  parse_result.arguments->Insert(0u, std::make_unique<base::Value>(pref_name_));
   request_handler_->StartRequest(
-      context, "braveShields." + method_name, std::move(converted_arguments),
-      callback, v8::Local<v8::Function>(), binding::RequestThread::UI);
+      context, "braveShields." + method_name, std::move(parse_result.arguments),
+      parse_result.callback, v8::Local<v8::Function>(),
+      binding::RequestThread::UI); 
 }
 
 }  // namespace extensions
