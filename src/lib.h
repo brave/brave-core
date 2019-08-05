@@ -8,6 +8,18 @@
 
 typedef struct C_Engine C_Engine;
 
+/**
+ * A set of cosmetic filtering resources specific to a particular hostname, including a base
+ * stylesheet to inject, a set of script injections to add to the page, and a set of exceptions
+ * that can be provided when incrementally querying later selectors by class or id.
+ */
+typedef struct {
+  const char *stylesheet;
+  char *const *exceptions;
+  size_t exceptions_len;
+  const char *injected_script;
+} C_HostnameResources;
+
 typedef struct {
   const char *uuid;
   const char *url;
@@ -71,6 +83,11 @@ bool engine_deserialize(C_Engine *engine, const char *data, size_t data_size);
  * Destroy a `Engine` once you are done with it.
  */
 void engine_destroy(C_Engine *engine);
+
+/**
+ * Returns a set of cosmetic filtering resources specific to the given hostname.
+ */
+C_HostnameResources engine_hostname_cosmetic_resources(C_Engine *engine, const char *hostname);
 
 /**
  * Checks if a `url` matches for the specified `Engine` within the context.

@@ -260,6 +260,29 @@ void TestClassId() {
   assert(stylesheet == ".element,#block + .child,#ads > #element{display:none !important;}");
 }
 
+void TestHostnameCosmetics() {
+  Engine engine(
+      "a.com###element\n"
+      "b.com##.ads\n"
+      "##.block\n"
+      "a.com#@#.block\n"
+      "##a[href=\"b.com\"]\n"
+  );
+
+  HostnameResources a_resources = engine.hostnameCosmeticResources("a.com");
+  assert(a_resources.stylesheet ==
+      "a[href=\"b.com\"]{display:none !important;}#element{display:none !important;}\n");
+  assert(a_resources.exceptions.size() == 1);
+  assert(a_resources.exceptions[0] == ".block");
+  assert(a_resources.injected_script == "");
+
+  HostnameResources b_resources = engine.hostnameCosmeticResources("b.com");
+  assert(b_resources.stylesheet ==
+      "a[href=\"b.com\"]{display:none !important;}.ads{display:none !important;}\n");
+  assert(b_resources.exceptions.size() == 0);
+  assert(b_resources.injected_script == "");
+}
+
 void TestDefaultLists() {
   std::vector<FilterList>& default_lists = FilterList::GetDefaultLists();
   assert(default_lists.size() == 8);
@@ -310,6 +333,7 @@ int main() {
   TestDefaultLists();
   TestRegionalLists();
   TestClassId();
+  TestHostnameCosmetics();
   cout << num_passed << " passed, " <<
       num_failed << " failed" << endl;
   cout << "Success!";
