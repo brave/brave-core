@@ -66,7 +66,17 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     tableView.allowsSelectionDuringEditing = true
     
     setUpToolbar()
+    updateEditBookmarksButtonStatus()
   }
+    
+    private func updateEditBookmarksButtonStatus() {
+        guard let count = bookmarksFRC?.fetchedObjects?.count else { return }
+        
+        editBookmarksButton.isEnabled = count != 0
+        if tableView.isEditing && count == 0 {
+            disableTableEditingMode()
+        }
+    }
     
     private func setUpToolbar() {
         var padding: UIBarButtonItem { return UIBarButtonItem.fixedSpace(5) }
@@ -101,8 +111,8 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.setToolbarHidden(false, animated: true)
-    switchTableEditingMode(true)
     reloadData()
+    switchTableEditingMode(true)
   }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -124,6 +134,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     updateEditBookmarksButton(editMode)
     resetCellLongpressGesture(tableView.isEditing)
     
+    editBookmarksButton.isEnabled = bookmarksFRC?.fetchedObjects?.count != 0
     addFolderButton.isEnabled = !editMode
   }
   
@@ -378,6 +389,7 @@ extension BookmarksViewController: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     tableView.endUpdates()
     bookmarksDidChange?()
+    updateEditBookmarksButtonStatus()
   }
   
   func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
