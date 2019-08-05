@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "امتیاز توکن آگهی‌های Brave شما",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "تأیید",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "ارتباط قطع شد",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "تأیید کیف پول",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "تأیید شد",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "رفتن به حساب Uphold من",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "قطع ارتباط از پاداش‌های Brave",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "تأیید کیف پول",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "سرویس کیف پول ما ارائه‌شده است توسط",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "لطفاً شناسه صادرشده دولتی خود را در اختیار داشته باشید.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "کدهای «پاداش‌های آگهی» خود را حفظ کنید",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "کدها را با استفاده از کارت اعتباری اضافه کنید",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "برداشتن کدها",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "کیف پول تأییدشده به شما امکان می‌دهد:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "تأیید کیف پول",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "و سرمایه‌هایتان را به آسانی مدیریت کنید!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "تأیید شد",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "ناموجود",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "اتصال مجدد کیف پول",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "کیف پول شما تأیید شد!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "تبریک! کیف پول $name$ باموفقیت تأیید شد و برای افزودن و برداشتن سرمایه آماده است. ",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "واای. کیف پول شما غیرقابل دسترسی است.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "نگران نباشید. این مورد ممکن است به دلایل امنیتی مختلف روی دهد. کافی است آن را دوباره متصل کنید تا این مشکلات برطرف شوند.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

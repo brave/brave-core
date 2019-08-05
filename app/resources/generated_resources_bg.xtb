@@ -1631,7 +1631,9 @@
 <translation id="473546211690256853">Този профил се управлява от <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Потребителският профил ще бъде изтрит</translation>
 <translation id="5632566673632479864">Профилът ви <ph name="EMAIL"/> вече не може да се използва като основен. Тъй като този профил се управлява от <ph name="DOMAIN"/>, вашите отметки, история, пароли и други настройки ще бъдат изчистени от устройството.</translation>
+<translation id="3797739167230984533">Устройството ви <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> се управлява<ph name="END_LINK"/> от организацията ви</translation>
 <translation id="1722460139690167654">Вашият <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> се управлява<ph name="END_LINK"/> от <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Браузърът се управлява<ph name="END_LINK"/> от организацията ви</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Браузърът ви се управлява<ph name="END_LINK"/> от <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Съдържание</translation>
 <translation id="7702907602086592255">Домейн</translation>

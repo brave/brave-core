@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "আপনার Brave বিজ্ঞাপনগুলির টোকেন অনুদান",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "যাচাই করুন",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "সংযোগবিচ্ছিন্ন",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "ওয়ালেট যাচাই করুন",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "যাচাইকৃত",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "আমার আপহোল্ড অ্যাকাউন্টে যান",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "ওয়ালেট যাচাই করুন",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "আমাদের ওয়ালেট পরিষেবাটির সরবরাহকারী হল",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "অনুগ্রহ করে আপনার সরকারের ইস্যু করা IDটি হাতের কাছে রাখুন।",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "আপনার বিজ্ঞাপন পুরষ্কারগুলির টোকেন রাখুন",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "ক্রেডিট কার্ড ব্যবহার করে টোকেনগুলি যোগ করুন",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "টোকেনগুলি তুলে নিন",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "একটি যাচাইকৃত ওয়ালেট আপনাকে নিম্নলিখিত ক্ষেত্রে অনুমতি দেয়:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "আপনার ওয়ালেট যাচাই করুন",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "এবং সহজেই আপনার ফান্ড পরিচালনা করুন!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "যাচাইকৃত",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "লভ্য নেই",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "ওয়ালেট পুনরায় সংযোগ করুন",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "আপনার ওয়লেট যাচাইকরণ করা হয়েছে!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "অভিনন্দন! আপনার $name$ ওয়ালেট সফলভাবে যাচাই করা হয়েছে এবং এটি ফান্ড যোগ ও তুলে নিতে প্রস্তুত।",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "ওহো। আপনার ওয়ালেটে পৌঁছানো যাচ্ছে না।",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "চিন্তা করবেন না। এটি বিবিধ সুরক্ষার কারণ থেকে ঘটতে পারে। এটি খালি পুনরায় সংযোগ করা এই সমস্যাগুলির সমাধান করবে।",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Wis CSS-regels van alle sites",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Geavanceerde Weergave",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Eenvoudige Weergave",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Sites bevatten vaak cookies en scripts die jouw en je apparaat proberen te identificeren (vaak ingesloten in advertenties). Ze willen weten wie je bent, je volgen op het web en bijhouden wat je op elke site doet. Brave blokkeert deze dingen zodat je zonder te worden gevolgd kunt browsen.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Cross-site trackers en andere enge dingen zijn geblokkeerd",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Het wijzigen van Shield-instellingen in deze weergave kan de webcompatibiliteit op deze site beïnvloeden.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Begrepen",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Meer informatie",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

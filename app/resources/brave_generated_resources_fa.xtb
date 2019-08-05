@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">پاداش‌های Brave</translation>
 <translation id="7942180974165298215">مسدود کردن آگهی با Brave</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
-<translation id="8488282162676695335">کیف پول Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (شناسه افزونه "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") در Brave مجاز نیست.</translation>
+<translation id="5655621391922317800">کیف پول‌های رمزنگاری</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (شناسه افزونه "<ph name="EXTENSION_ID"/>") در Brave مجاز نیست.</translation>
 <translation id="7450557937477381864">بستن Chrome</translation>
 <translation id="7008934821596358692">برای تکمیل وارد کردن، همه پنجره‌های Chrome را ببندید.</translation>
 <translation id="5735465527556462863">بستن Brave (قدیمی)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">پرداخت‌های Brave</translation>
 <translation id="3489524616427966890">باز کردن پنجره‌ها و برگه‌ها</translation>
 <translation id="3699882589215410581">Widevine را نصب و اجرا کنید</translation>
+<translation id="3696083746357487900">نصب کیف پول‌های رمزنگاری</translation>
 <translation id="8053096063396012732">نصب Widevine</translation>
 <translation id="4840334696217618631">برای فعال کردن Widevine، مرورگر را دوباره راه‌اندازی کنید</translation>
 <translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
@@ -27,7 +28,7 @@
 <translation id="2240268017737062801">‏وقتی سایتی می‌خواهد رسانه را پخش خودکار کند سؤال شود</translation>
 <translation id="3371702087847741961">‏وقتی سایتی می‌خواهد رسانه را پخش خودکار کند سؤال شود (توصیه می‌شود)</translation>
 <translation id="3218385319396786393">پخش خودکار در این صفحه مسدود شد</translation>
-<translation id="4988333904713528597">همیشه در <ph name="HOST">$1<ex>mail.google.com</ex></ph> به پخش خودکار اجازه داده شود</translation>
+<translation id="4988333904713528597">همیشه در <ph name="HOST"/> به پخش خودکار اجازه داده شود</translation>
 <translation id="4150684676757176434">پخش خودکار همچنان مسدود شود</translation>
 <translation id="5883458389055721080">Brave ایمنی و امنیت این افزونه را بررسی نکرده است. فقط درصورتی که به برنامه‌نویس اعتماد دارید، این افزونه را نصب کنید.</translation>
 <translation id="2044383478723007273">رنگ‌های Brave</translation>
@@ -35,6 +36,7 @@
 <translation id="6123134130710658846">پنهان کردن دکمه «پاداش‌های Brave»</translation>
 <translation id="7635711399568194460">وقتی «پاداش‌های Brave» فعال نباشد، دکمه «پاداش‌های Brave» را در نوار مکان پنهان می‌کند</translation>
 <translation id="7965178729203412357">هویت تور جدید</translation>
+<translation id="8511502469534942133">اتصال Tor جدید برای این سایت</translation>
 <translation id="8784924142044142231">خروج از تور</translation>
 <translation id="5410152065859052603">تور</translation>
 <translation id="3696187925156352769">باز کردن پنجره تور</translation>
@@ -84,6 +86,9 @@
 <translation id="6786747875388722282">افزونه‌ها</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
 <translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
+<translation id="1765684547504191670">از مؤلفه «رهیاب رسانه» برای فعال کردن Chromecast در مرورگر استفاده می‌کند.</translation>
+<translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
+<translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="4154389611571860454">برای پشتیبانی از IPFS در مرورگر، از افزونه همراه IPFS استفاده می‌کند.</translation>
 <translation id="8137559199583651773">مدیریت افزونه‌ها</translation>
 <translation id="4928988318462976765">فروشگاه افزونه‌های وب</translation>

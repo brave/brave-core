@@ -4,7 +4,7 @@
 <translation id="1215411991991485844">En ny bakgrundsapp har lagts till</translation>
 <translation id="7396845648024431313"><ph name="APP_NAME"/> startas när systemet startas och fortsätter att köras i bakgrunden även när du har stängt alla andra fönster i <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="5246282308050205996"><ph name="APP_NAME"/> har kraschat. Klicka på ballongen för att starta om appen.</translation>
-<translation id="2025632980034333559"><ph name="APP_NAME"/> har kraschat. Klicka på ballongen för att ladda om tillägget.</translation>
+<translation id="2025632980034333559"><ph name="APP_NAME"/> har kraschat. Klicka på ballongen för att läsa in tillägget på nytt.</translation>
 <translation id="1090126737595388931">Inga bakgrundsprogram körs</translation>
 <translation id="5723508132121499792">Inga bakgrundsprogram körs</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> vill</translation>
@@ -1307,7 +1307,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="480990236307250886">Öppna startsidan</translation>
 <translation id="7221869452894271364">Hämta sidan igen</translation>
 <translation id="5639549361331209298">Uppdatera sidan och vänta om du vill se fler alternativ</translation>
-<translation id="2814489978934728345">Sluta ladda den här sidan</translation>
+<translation id="2814489978934728345">Avbryt inläsning av den här sidan</translation>
 <translation id="813082847718468539">Visa information om webbplatsen</translation>
 <translation id="5233638681132016545">Ny flik</translation>
 <translation id="3915280005470252504">Röstsökning</translation>
@@ -1648,7 +1648,9 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="473546211690256853">Detta konto hanteras av <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Profilen raderas</translation>
 <translation id="5632566673632479864">Kontot <ph name="EMAIL"/> får inte längre användas som primärt konto. Eftersom kontot hanteras av <ph name="DOMAIN"/> raderas bokmärken, historik, lösenord och andra inställningar från enheten.</translation>
+<translation id="3797739167230984533">Din <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> hanteras<ph name="END_LINK"/> av organisationen</translation>
 <translation id="1722460139690167654">Din <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> hanteras<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Webbläsaren hanteras<ph name="END_LINK"/> av din organisation</translation>
 <translation id="1365180424462182382">Din <ph name="BEGIN_LINK"/>webbläsare hanteras<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Innehåll</translation>
 <translation id="7702907602086592255">Domän</translation>
@@ -2282,7 +2284,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8750155211039279868"><ph name="ORIGIN"/> vill ansluta till en serieport</translation>
 <translation id="4943691134276646401"><ph name="CHROME_EXTENSION_NAME"/> vill ansluta till en serieport</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
-<translation id="1587562069597918292"><ph name="DEVICE_PATH">$1<ex>COM1</ex></ph></translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> försöker ansluta till en HID-enhet</translation>
 <translation id="6078769373519310690"><ph name="CHROME_EXTENSION_NAME"/> försöker ansluta till en HID-enhet</translation>
 <translation id="4419610272958564173">Okänd enhet (leverantör: <ph name="VENDOR_ID"/>, produkt: <ph name="PRODUCT_ID"/>)</translation>
@@ -2329,7 +2331,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2379232090534544565">En webbplats tar emot ljud- och videoindata</translation>
 <translation id="6483485061007832714">Öppna nedladdning</translation>
 <translation id="2550596535588364872">Tillåter du att <ph name="FILE_NAME"/> öppnas med <ph name="EXTENSION_NAME"/>?</translation>
-<translation id="874689135111202667">{0,plural, =1{Vill du ladda upp en fil på webbplatsen?}other{Vill du ladda upp # filer på webbplatsen?}}</translation>
+<translation id="874689135111202667">{0,plural, =1{Vill du ladda upp en fil till webbplatsen?}other{Vill du ladda upp # filer till webbplatsen?}}</translation>
 <translation id="1956390763342388273">Alla filer från <ph name="FOLDER_PATH"/> laddas upp. Gör bara detta om du litar på webbplatsen.</translation>
 <translation id="1243314992276662751">Ladda upp</translation>
 <translation id="3015639418649705390">Starta om nu</translation>
@@ -2415,7 +2417,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="399179161741278232">Importerade</translation>
 <translation id="5225324770654022472">Visa genväg för appar</translation>
 <translation id="5072836811783999860">Visa hanterade bokmärken</translation>
-<translation id="3613134908380545408">Visa <ph name="FOLDER_NAME">$1<ex>managed bookmarks</ex></ph></translation>
+<translation id="3613134908380545408">Visa <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Visa genväg för appar</translation>
 <translation id="711840821796638741">Visa hanterade bokmärken</translation>
 <translation id="2367972762794486313">Visa appar</translation>
@@ -2900,6 +2902,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6352773953037195952">Högsta</translation>
 <translation id="3677657024345889897">Lägst</translation>
 <translation id="167160931442925455">Högst</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/> % (standard)</translation>
 <translation id="3602290021589620013">Förhandsgranskning</translation>
 <translation id="7037509989619051237">Text för förhandsgranskning</translation>
@@ -3740,6 +3743,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5021750053540820849">Har inte uppdaterats ännu</translation>
 <translation id="3448492834076427715">Uppdatera kontot</translation>
 <translation id="2923234477033317484">Ta bort det här kontot</translation>
+<translation id="8995603266996330174">Hanteras av <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Primärt konto</translation>
 <translation id="3158033540161634471">Konfigurera fingeravtryck</translation>
 <translation id="1587907146729660231">Sätt fingret på strömbrytaren</translation>
@@ -3768,7 +3772,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3608576286259426129">Förhandsgranskning av användarens bild</translation>
 <translation id="2114896190328250491">Foto taget av <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Befintligt foto från kamera eller fil</translation>
-<translation id="8995603266996330174">Hanteras av <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Få Brave Software-teknik i Brave</translation>
 <translation id="5244474230056479698">Synkroniseras med <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Eftersom kontot hanteras av <ph name="DOMAIN"/> raderas bokmärken, historik, lösenord och andra inställningar från enheten. Däremot finns uppgifterna kvar i Brave Software-kontot och kan hanteras via <ph name="BEGIN_LINK"/>Brave Software Översikt<ph name="END_LINK"/>.</translation>
@@ -3973,7 +3976,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8157382355099335113">Appar från Brave Software Play Butik kan behöva åtkomst till externa lagringsenheter för att kunna läsa och skriva filer och mappar på dem.</translation>
 <translation id="1529891865407786369">Strömkälla</translation>
 <translation id="354060433403403521">Laddare</translation>
-<translation id="2127372758936585790">Laddning med låg effekt</translation>
+<translation id="2127372758936585790">Laddare med låg effekt</translation>
 <translation id="4964673849688379040">Kontrollerar …</translation>
 <translation id="4569747168316751899">När enheten är inaktiv</translation>
 <translation id="2610157865375787051">Viloläge</translation>
@@ -3985,7 +3988,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8781980678064919987">Stäng av när locket stängs</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/> % – <ph name="TIME"/> kvar</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/> % – <ph name="TIME"/> tills batteriet är fulladdat</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/> %</translation>
 <translation id="2620436844016719705">System</translation>
 <translation id="2077129598763517140">Använd maskinvaruacceleration när det är tillgängligt</translation>
 <translation id="1889984860246851556">Öppna proxyinställningarna</translation>

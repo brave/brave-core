@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Η Απόδειξη Του Επιδόματος Των Brave Διαφημίσεών Σας",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "επαλήθευση",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Αποσυνδέθηκε",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Επαλήθευση Πορτοφολιού",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Επαληθεύτηκε",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Μετάβαση στον λογαριασμό μου Uphold",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Αποσύνδεση από τις Ανταμοιβές Brave",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Επαλήθευση πορτοφολιού",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Η υπηρεσία πορτοφολιού μας παρέχεται από",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Παρακαλούμε να έχετε διαθέσιμη την αστυνομική σας ταυτότητα.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Διατηρήστε τα νομίσματά σας από Ανταμοιβές Διαφημίσεων",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Προσθέστε νομίσματα με τη χρήση πιστωτικής κάρτας",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Ανάληψη νομισμάτων",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Ένα επαληθευμένο πορτοφόλι σας επιτρέπει να:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Επαληθεύστε το Πορτοφόλι Σας",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Και διαχειριστείτε εύκολα τα κεφάλαιά σας!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Επαληθεύτηκε",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Μη διαθέσιμο",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Επανασύνδεση πορτοφολιού",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Το πορτοφόλι σας επαληθεύτηκε!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Συγχαρητήρια! Το πορτοφόλι σας $name$ επαληθεύτηκε με επιτυχία και είναι έτοιμο για να προσθέτετε και να αποσύρετε χρήματα.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Ωχ! Το πορτοφόλι σας δεν είναι προσβάσιμο.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Μην ανησυχείτε. Αυτό μπορεί να συμβαίνει για διάφορους λόγους ασφαλείας. Μια απλή επανασύνδεση μ' αυτό θα επιλύσει το πρόβλημα/προβλήματα",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

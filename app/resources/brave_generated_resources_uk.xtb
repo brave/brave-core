@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="7942180974165298215">Блокування реклами Brave</translation>
 <translation id="6406506848690869874">Синхронізувати</translation>
-<translation id="8488282162676695335">Гаманець Brave</translation>
-<translation id="120759863357279975">У Brave немає дозволу на <ph name="EXTENSION_NAME">$1</ph> extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>".</translation>
+<translation id="5655621391922317800">Криптогаманці</translation>
+<translation id="120759863357279975">У Brave немає дозволу на <ph name="EXTENSION_NAME"/> extension ID "<ph name="EXTENSION_ID"/>".</translation>
 <translation id="7450557937477381864">Закрийте Chrome</translation>
 <translation id="7008934821596358692">Для завершення імпортування закрийте всі вікна Chrome.</translation>
 <translation id="5735465527556462863">Закрити Brave (стара версія)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Платежі Brave</translation>
 <translation id="3489524616427966890">Відкриті вікна та вкладки</translation>
 <translation id="3699882589215410581">Встановіть та запустіть Widevine</translation>
+<translation id="3696083746357487900">Встановити Криптогаманці</translation>
 <translation id="8053096063396012732">Встановити Widevine</translation>
 <translation id="4840334696217618631">Перезапустіть браузер, щоб увімкнути Widevine</translation>
 <translation id="8410111618231938546">Google Widevineє частиною коду Digital Rights Management (DRM), яким ми у Brave Software не володіємо і не можемо перевіряти. Код Google Widevine завантажується з серверів Google, не з наших серверів. Він завантажується тільки якщо ви увімкнете таку опцію. Ми не заохочуємо використання DRM, але ми поважаємо вибір користувача і беремо до уваги те, що деякі з користувачів Brave захочуть використовувати сервіси, які його вимагають. 
@@ -26,7 +27,7 @@
 <translation id="2240268017737062801">Запитувати, коли сайт хоче автоматично програвати медіа</translation>
 <translation id="3371702087847741961">Запитувати, коли сайт хоче автоматично програвати медіа (рекомендовано)</translation>
 <translation id="3218385319396786393">Автопрогравання заблоковано на цій сторінці</translation>
-<translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продовжити блокувати автоматичне програвання</translation>
 <translation id="5883458389055721080">Ця розширення не було перевірене Brave на безпеку й надійність. Вставнолюйте це розширення, лише якщо ви довіряєте його розробнику.</translation>
 <translation id="2044383478723007273">Кольори Brave</translation>
@@ -34,6 +35,7 @@
 <translation id="6123134130710658846">Сховати кнопку Brave Rewards</translation>
 <translation id="7635711399568194460">Приховує кнопку Brave Rewards в адресному рядку, коли Brave Rewards вимкнено</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
+<translation id="8511502469534942133">Нове з'єднання Tor для цього сайту</translation>
 <translation id="8784924142044142231">Вийти з Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Відкрийте вікно Tor</translation>
@@ -83,6 +85,9 @@
 <translation id="6786747875388722282">Розширення</translation>
 <translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
 <translation id="6554397389149987360">Використовує компоненти Hangouts, щоб увімкнути поширення екрану та інші функції у браузері.</translation>
+<translation id="1765684547504191670">Використовує компонент Media Router для увімкнення Chromecast у браузері.</translation>
+<translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
+<translation id="7179921470347911571">Перезапустити зараз</translation>
 <translation id="4154389611571860454">Використовує супутнє розширення IPFS для підтримки IPFS у браузері.</translation>
 <translation id="8137559199583651773">Керувати розширеннями</translation>
 <translation id="4928988318462976765">Веб Магазин Розширень</translation>

@@ -1630,7 +1630,9 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="473546211690256853">Esta cuenta está administrada por <ph name="DOMAIN"/>.</translation>
 <translation id="622537739776246443">Se borrará el perfil</translation>
 <translation id="5632566673632479864">Ya no es posible usar tu cuenta <ph name="EMAIL"/> como la principal. Como <ph name="DOMAIN"/> administra esta cuenta, se borrarán tus favoritos, historial, contraseñas y otras opciones de configuración de este dispositivo.</translation>
+<translation id="3797739167230984533">Tu organización <ph name="BEGIN_LINK"/>administra tu <ph name="DEVICE_TYPE"/><ph name="END_LINK"/></translation>
 <translation id="1722460139690167654"><ph name="ENROLLMENT_DOMAIN"/> administra tu <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/><ph name="END_LINK"/></translation>
+<translation id="8118488170956489476">Tu organización <ph name="BEGIN_LINK"/>administra el navegador<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> administra tu <ph name="BEGIN_LINK"/>navegador<ph name="END_LINK"/></translation>
 <translation id="8168435359814927499">Contenido</translation>
 <translation id="7702907602086592255">Dominio</translation>

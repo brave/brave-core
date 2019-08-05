@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">مكافآت Brave</translation>
 <translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
 <translation id="6406506848690869874">مزامنة</translation>
-<translation id="8488282162676695335">محفظة Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") غير مسموح به في Brave.</translation>
+<translation id="5655621391922317800">محافظ Crypto Wallets</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") غير مسموح به في Brave.</translation>
 <translation id="7450557937477381864">أغلق Chrome</translation>
 <translation id="7008934821596358692">لإنهاء الاستيراد، أغلق جميع نوافذ كروم.</translation>
 <translation id="5735465527556462863">غلق Brave (قديم)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">دفعات Brave</translation>
 <translation id="3489524616427966890">فتح النوافذ وعلامات التبويب</translation>
 <translation id="3699882589215410581">تثبيت وتشغيل Widevine</translation>
+<translation id="3696083746357487900">تثبيت Crypto Wallets</translation>
 <translation id="8053096063396012732">تثبيت Widevine</translation>
 <translation id="4840334696217618631">أعد تشغيل المتصفح لتمكين Widevine</translation>
 <translation id="8410111618231938546">إن Google Widevine هو جزء من رمز إدارة الحقوق الرقمية (DRM) التي لا نمتلكها ولا يمكننا فحصها في Brave Software. يتم تحميل رمز Google Widevine من خوادم Google، وليس من خوادمنا. يتم تحميله فقط عند تمكين هذا الخيار. نحن لا نشجع استخدام DRM، لكننا نحترم اختيار المستخدم ونقر بأن بعض مستخدمي Brave يرغبون في استخدام الخدمات التي تتطلب ذلك.
@@ -27,7 +28,7 @@
 <translation id="2240268017737062801">اسأل عندما يريد أحد المواقع تشغيل الوسائط تلقائيًا</translation>
 <translation id="3371702087847741961">السؤال عندما يريد أحد المواقع تشغيل الوسائط تلقائيًا (مُوصى به)</translation>
 <translation id="3218385319396786393">تم حظر التشغيل التلقائي في هذه الصفحة</translation>
-<translation id="4988333904713528597">اسمح دائماً بالتشغيل الأوتوماتيكي على <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">اسمح دائماً بالتشغيل الأوتوماتيكي على <ph name="HOST"/></translation>
 <translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
 <translation id="5883458389055721080">لم يراجع Brave هذا الملحق للأمان والسلامة. قم بتثبيت هذا الملحق فقط إذا كنت تثق في المطور.</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
@@ -35,6 +36,7 @@
 <translation id="6123134130710658846">إخفاء زر Brave Rewards</translation>
 <translation id="7635711399568194460">يخفي زر Brave Rewards في شريط الموقع عند عدم تمكين Brave Rewards</translation>
 <translation id="7965178729203412357">هوية تور الجديدة</translation>
+<translation id="8511502469534942133">اتصال Tor جديد لهذا الموقع</translation>
 <translation id="8784924142044142231">الخروج من برنامج تور (Tor)</translation>
 <translation id="5410152065859052603">برنامج تور (Tor)</translation>
 <translation id="3696187925156352769">افتح نافذة Tor</translation>
@@ -84,6 +86,9 @@
 <translation id="6786747875388722282">الإضافات</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
+<translation id="1765684547504191670">يستخدم مكوّن Media Router لتمكين Chromecast في المتصفح.</translation>
+<translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
+<translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="4154389611571860454">يستخدم ملحق رفيق IPFS لدعم IPFS في المستعرض.</translation>
 <translation id="8137559199583651773">إدارة الإضافات</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>

@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "সমস্ত সাইটের জন্য CSS নিয়মগুলি পরিস্কার করুন",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "উন্নত ভিউ",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "সহজ ভিউ",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "সাইটগুলিতে প্রায়শই কুকিজ ও স্ক্রিপ্ট থাকে, এগুলি আপনাকে এবং আপনার ডিভাইস শনাক্ত করতে চেষ্টা করে (প্রায়শই বিজ্ঞাপনগুলিতে এম্বেড থাকে)। এগুলি আপনার পরিচয় জানার চেষ্টা করে এবং আপনি প্রতিটি সাইটে কী করেন তাতে নজর রেখে আপনাকে ওয়েবে অনুসরণ করে। Brave এই জিনিসগুলি ব্লক করে, এতে আপনি অনুসৃত না হয়েই ব্রাউজ করতে পারবেন।",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "ক্রশ-সাইট ট্র্যাকার এবং অন্যান্য রোমাঞ্চকর জিনিসগুলি ব্লক করা হয়েছে",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "এই ভিউতে শিল্ড সেটিংসে পরিবর্তন এই সাইটে ওয়েবের সুসঙ্গতা প্রভাবিত করতে পারে।",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "বুঝেছি",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "আরও জানুন",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Καθαρίστε τους κανόνες CSS για όλους τους ιστότοπους",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Εμφάνιση για Προχωρημένους",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Απλή Εμφάνιση",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Οι ιστοσελίδες περιλαμβάνουν συχνά cookies και δέσμες ενεργειών που προσπαθούν να αναγνωρίσουν εσάς και τη συσκευή σας (συχνά ενσωματωμένα σε διαφημίσεις). Θέλουν να βρουν ποιος είστε και σας ακολουθούν στον ιστό — παρακολουθώντας τι κάνετε σε κάθε ιστοσελίδα. Το Brave μπλοκάρει αυτά τα πράγματα έτσι ώστε να μπορείτε να περιηγείστε χωρίς να σας ακολουθούν.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Αποκλείστηκαν οι διατοποθεσιακοί ιχνηλάτες και άλλα ανατριχιαστικά πράγματα",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Η αλλαγή των ρυθμίσεων Θωράκισης σ' αυτήν την προβολή μπορεί να επηρεάσει τη συμβατότητα με τον ιστό σ' αυτήν την ιστοσελίδα.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Κατάλαβα!",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Μάθε περισσότερα",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

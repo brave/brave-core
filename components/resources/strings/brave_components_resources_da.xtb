@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="da">
-<translation id="689261804992965033">Annoncer blokeret</translation>
-<translation id="1663506596135222606">Trackere blokeret</translation>
+<translation id="4339730410920731698">Annoncer og trackere blokeret</translation>
 <translation id="2313532038420432247">HTTPS Opgraderinger</translation>
 <translation id="7679428712334662192">Anslået mængde tid sparet</translation>
 <translation id="5206618227023752085">Topside fjernet.</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">Vis din søgehistorik</translation>
 <translation id="1742484101357469636">Dashboard-indstillinger</translation>
 <translation id="8320281346741574991">Vis baggrundsbillede</translation>
+<translation id="7275773481201277457">Vis Brave Stats</translation>
+<translation id="6836061097810262923">Vis ur</translation>
+<translation id="8643377320501056697">Vis topsider</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="8730621377337864115">Færdig</translation>
 <translation id="6248988683584659830">Søgeindstillinger</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">Få mere at vide om Tor i Brave</translation>
 <translation id="4272382368346338917">Yderligere filtre</translation>
 <translation id="8949292968394988358">Advarsel: At slå for mange filtre til, vil gøre ydeevnen dårligere</translation>
-<translation id="1869685517625607604">Totale Rekamer Blokeret:</translation>
+<translation id="8686201964111147748">Antal annoncer og trackere i alt:</translation>
 <translation id="4673764878177947707">Tilpassede filtre</translation>
 <translation id="8803682034537762884">En per linje, et filter er beskredet i Adblock Plus' filtersyntax</translation>
 <translation id="2974339193389078578">Brave, det nye internet</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">Din opmærksomhed er værdifuld. Tjen ved at se annoncer, mens du browser, og støt de indholdsskabere, som du kan lide.</translation>
 <translation id="4942016616604700968">Aktiver belønninger</translation>
 <translation id="3958088479270651626">Importér bogmærker og indstillinger</translation>
-<translation id="5633840519079139680">Brave gør det nemt at indrette omgivelserne, som du kender dem, ved at importere bogmærker og indstillinger fra andre browsere, der er installeret på din computer.</translation>
+<translation id="2609701960545338618">Indstil dit sædvanlige browsermiljø ved at importere bogmærker og indstillinger fra din gamle browser. Avancerede importindstillinger findes i Indstillinger.</translation>
 <translation id="8275038454117074363">Importér</translation>
+<translation id="2088479175984386785">Importer fra...</translation>
 <translation id="5540323067375019678">Administrér dine beskyttelser</translation>
 <translation id="3278033011827237847">Beskyt mod privatlivsinvaderende annoncer og trackere, mens du browser med Brave Shields. Sæt Shields til at være "nede", hvis en side ikke ser ud til at fungere korrekt.</translation>
 <translation id="3366308997091824722">Beskyttelsesindstillinger</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">Prøv DuckDuckGo for en mere privat søgeoplevelse.</translation>
 <translation id="513635702954746724">Vælg dit farvetema</translation>
 <translation id="6842850080200126305">Vælg farven til din værktøjslinje ved at vælge den lyse eller mørke valgmulighed i indstillingspanelet.</translation>
-<translation id="2801098717523961746">Vælg dit tema</translation>
+<translation id="5805868144901917207">Vælg et tema</translation>
+<translation id="8131740175452115882">Bekræft</translation>
+<translation id="713206503018076063">Systemtema (standard)</translation>
+<translation id="1807246157184219062">Lys</translation>
+<translation id="2414886740292270097">Mørk</translation>
 <translation id="3829010735958850433">Spring over velkomsttur</translation>
 <translation id="1201402288615127009">Næste</translation>
 <translation id="1919345977826869612">Reklamer</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">Samlede tips denne måned</translation>
 <translation id="4153752809523809915">Har du givet din yndlings indholdsskaber drikkepenge i dag?</translation>
 <translation id="1165667598801520610">Tilføj Penge</translation>
-<translation id="5314648471460409933">Administrer Midler</translation>
+<translation id="6239274080752256452">Hæv Penge</translation>
 <translation id="2726674968268546964">poletter</translation>
 <translation id="7286722244752781970">Minimumstid på en side før et besøg logges</translation>
 <translation id="4424486208397124985">Mindstebesøg for udgiver-relevans</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">Gendan nu!</translation>
 <translation id="1184075897575325927">Beklager, det ser ud til, at dette tilskud allerede er taget.</translation>
 <translation id="282693359045252357">Næste månedlige drikkepengedato</translation>
-<translation id="6231182869178328516">Jeg har lige givet drikkepenge <ph name="NAME">$1<ex>user</ex></ph> ved hjælp af Brave Browser. Se den på https://brave.com/tips.</translation>
+<translation id="6231182869178328516">Jeg har lige givet drikkepenge <ph name="NAME"/> ved hjælp af Brave Browser. Se den på https://brave.com/tips.</translation>
 <translation id="8404935570206006581">BelønMedBrave</translation>
+<translation id="2876191400747549936">Beklager, der opstod et problem med behandling af din anmodning. Prøv igen.</translation>
 <translation id="7422678632904904341">Beløb:</translation>
 <translation id="5923611424721173182">Nuværende afstemning</translation>
 <translation id="5457113250005438886">Ugyldig</translation>
@@ -170,14 +178,10 @@
 <translation id="9026369588205476247">For at beskytte din anonymitet bliver denne opgørelse over Brave Rewards ikke gemt, arkiveret eller logget nogen steder udover på denne enhed (denne computer). Den kan ikke hentes igen fra Brave i tilfælde af datatab på din enhed.</translation>
 <translation id="1036277985068412734">tilføj midler</translation>
 <translation id="5441565662498481293">Du sender automatisk drikkepenge til:</translation>
-<translation id="4496990471549986619">De Ofte Stillede Spørgsmål</translation>
-<translation id="1688876543043079268">Påmindelse: Brave-tegnebogen er ensrettet og BAT sendes til udgiversider. For mere information om Brave Rewards bedes du besøge:</translation>
-<translation id="2790014973538267577">Vis QR Kode</translation>
-<translation id="5690154556705187369">Sørg for at bruge adressen nedenfor, som matcher den kryptotype, du ejer. Den vil automatisk blive konverteret til BAT af Uphold og vises som en øget saldo i din Brave Rewards-tegnebog. Der kan gå op til en time, før din tegnebogssaldo bliver opdateret.</translation>
-<translation id="8874657527115501951">Send kryptovaluta fra din eksterne konto til din Brave Rewards-tegnebog.</translation>
 <translation id="2827387977307390755">Tillad tips om</translation>
 <translation id="3671566813999349838">Beløb</translation>
 <translation id="3819257035322786455">Sikkerhedskopi</translation>
+<translation id="4989542687859782284">Ikke tilgængelig</translation>
 <translation id="1312977698678162065">Få betalt for at se relevante annoncer som respekterer dit privatliv.</translation>
 <translation id="7655723274266132226">Nu kan du tjene ved at se reklamer.</translation>
 <translation id="2975780980638932742">Brave Ads er nu på markedet!</translation>
@@ -275,9 +279,12 @@
 <translation id="1135093233619227159">Du kan fjerne enhver side, der modtager månedlige donationer, indefra donationspanelet.</translation>
 <translation id="5082474983463379713">Bemærk venligst:</translation>
 <translation id="1430915738399379752">Udskriv</translation>
+<translation id="135956957367307069">Din anmodning behandles stadig, vent venligst.</translation>
+<translation id="8725066075913043281">Prøv igen</translation>
 <translation id="3173528272490482456">Klar til at begynde?</translation>
 <translation id="913775524828049259">Ja, Jeg er Klar</translation>
 <translation id="108052542935515756">Du kan starte med</translation>
+<translation id="2678666039642976470">Tilslut tegnebogen igen</translation>
 <translation id="194625454574835815">Gendannelsesnøgle</translation>
 <translation id="6354568176665589146">Tilbagevendende</translation>
 <translation id="7577100371127227294">Månedlige donationer</translation>
@@ -306,7 +313,7 @@
 <translation id="8014425282125849700">Indimellem vil du få tilbudt gratis token-uddelinger fra Brave. Sørg for at holde udkig efter notifikationen!</translation>
 <translation id="1370034647041840967">Optjen tokens for din opmærksomhed overfor annoncer, og giv den videre for at støtte de indholdsskabere som du værdsætter!</translation>
 <translation id="3905359437915971466">Indsæt, hæv og administrer midler på</translation>
-<translation id="5866139915213160210">Din Brave tegnebog er styret af</translation>
+<translation id="1401808324297710517">Din Brave-tegnebog er drevet af</translation>
 <translation id="6401272292123354754">Brave Belønninger er bygget på den Basale Opmærksomhedspolet. Lær mere om BOP</translation>
 <translation id="7823359893981882407">her</translation>
 <translation id="4483635855837696643">Gendan din tegnebog</translation>
@@ -345,7 +352,6 @@
 <translation id="8615803647903750175">Tegnebogsaktivitet</translation>
 <translation id="2620624773940447728">Tegnebogsadresse</translation>
 <translation id="4989277977420164514">Saldo i pung</translation>
-<translation id="8725066075913043281">Prøv igen</translation>
 <translation id="1083771727630442739">Oprettelse af tegnebog fejlede</translation>
 <translation id="9146039192200831719">Check venligst din internetforbindelse.</translation>
 <translation id="1910721550319506122">Velkommen!</translation>
@@ -380,6 +386,21 @@
 <translation id="8101881066646819737">Din Brave Ads token-tildeling</translation>
 <translation id="2151535059686617995">Det’er din heldige dag!</translation>
 <translation id="6255773350565723852">Dit token-tilskud er på vej.</translation>
+<translation id="7512440811010447157">verificer</translation>
+<translation id="8030169304546394654">Afbrudt</translation>
+<translation id="8267327690882073581">Bekræft Tegnebog</translation>
+<translation id="4569155249847375786">Bekræftet</translation>
+<translation id="7591798679868259510">Gå til min Uphold-konto</translation>
+<translation id="9200453331904391567">Afbryd forbindelsen fra Brave Belønninger</translation>
+<translation id="46988480989545156">Bekræft tegnebog</translation>
+<translation id="1554282356558968486">Vores tegnebogsservice leveres af</translation>
+<translation id="6771734945114850124">Venligst hav din regeringsudstedte ID tilgængelig.</translation>
+<translation id="4483114863312340607">Hæv og indsæt midler</translation>
+<translation id="6600381840029958159">Ingen grund til at løse captcha for at optjene annoncebelønninger</translation>
+<translation id="4332021186346461319">Modtagne belønninger udløber aldrig og deponeres øjeblikkeligt i din tegnebog</translation>
+<translation id="2610007079772760276">En verificeret tegnebog giver dig mulighed for at:</translation>
+<translation id="7565794512491053578">Bekræft din tegnebog</translation>
+<translation id="698531289520577961">Og administrer dine midler let!</translation>
 <translation id="1181037720776840403">Fjern</translation>
 <translation id="7885157704277298658">Kopieret!</translation>
 <translation id="5379640681913450928">Ordoptælling:</translation>
@@ -440,4 +461,5 @@
 <translation id="1399673826422570698">Du har muligvis netværksproblemer, eller også er der et problem med synkroniseringsserverne.</translation>
 <translation id="5286379413446391050">Kunne ikke forbinde til synkroniseringservere</translation>
 <translation id="2410472020237369473">Din computers ur kan være indstillet til den forkerte tid eller tidszone. Tjek dine urindstillinger.</translation>
+<translation id="5655621391922317800">Crypto-Tegnebøger</translation>
 </translationbundle>

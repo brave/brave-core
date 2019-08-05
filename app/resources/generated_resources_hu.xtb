@@ -1630,7 +1630,9 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="473546211690256853">Ennek a fióknak a kezelője: <ph name="DOMAIN"/>.</translation>
 <translation id="622537739776246443">A profil törölve lesz</translation>
 <translation id="5632566673632479864">Fiókja (<ph name="EMAIL"/>) többé nincs elsődleges fiókként engedélyezve. Mivel ezt a fiókot a(z) <ph name="DOMAIN"/> domain kezeli, könyvjelzői, előzményei, jelszavai és más beállításai törlődnek erről az eszközről.</translation>
+<translation id="3797739167230984533">A(z) <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> kezelését<ph name="END_LINK"/> az Ön szervezete végzi</translation>
 <translation id="1722460139690167654">A(z) <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> kezelője<ph name="END_LINK"/>: <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Böngészőjének kezelését<ph name="END_LINK"/> a szervezete végzi</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Böngészőjét<ph name="END_LINK"/> a(z) <ph name="ENROLLMENT_DOMAIN"/> felügyeli</translation>
 <translation id="8168435359814927499">Tartalom</translation>
 <translation id="7702907602086592255">Domain</translation>

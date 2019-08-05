@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hi">
-<translation id="689261804992965033">विज्ञापन बंद किए गए</translation>
-<translation id="1663506596135222606">ट्रैकर अवरुद्ध किया गया</translation>
+<translation id="4339730410920731698">विज्ञापन और ट्रैकर्स बाधित</translation>
 <translation id="2313532038420432247">HTTPS अपग्रेड किया गया</translation>
 <translation id="7679428712334662192">अनुमानित समय सेव किया गया</translation>
 <translation id="5206618227023752085">शीर्ष साइट हटाई गयीं।</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">अपनी ब्राउज़िंग हिस्ट्री को देखें.</translation>
 <translation id="1742484101357469636">डैशबोर्ड सेटिंग</translation>
 <translation id="8320281346741574991">बैकग्राउंड इमेज दिखाएँ</translation>
+<translation id="7275773481201277457">Brave के आँकड़े दिखाएँ</translation>
+<translation id="6836061097810262923">घडी दिखाएँ</translation>
+<translation id="8643377320501056697">मुख्य साइटों को दिखाएँ</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
 <translation id="8730621377337864115">पूर्ण</translation>
 <translation id="6248988683584659830">खोज सेटिंग्स.</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">ब्रेव में टर के बारे में अधिक जानें</translation>
 <translation id="4272382368346338917">अतिरिक्त फ़िल्टर</translation>
 <translation id="8949292968394988358">चेतावनी: अत्यधिक फ़िल्टर चालू करने से प्रदर्शन में गिरावट आएगी</translation>
-<translation id="1869685517625607604">संपूर्ण विज्ञापन प्रतिबन्ध:</translation>
+<translation id="8686201964111147748">अवरुद्ध किए गए कुल विज्ञापन और ट्रैकर:</translation>
 <translation id="4673764878177947707">कस्टम फ़िल्टर</translation>
 <translation id="8803682034537762884">प्रति पंक्ति एक, एडब्लॉक प्लस फ़िल्टर सिंटैक्स मे एक फ़िल्टर वर्णित है</translation>
 <translation id="2974339193389078578">नया इंटरनेट Brave करें</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">आपकी दिलचस्पी हमारे लिए महत्वपूर्ण है। ब्राउज़ करते समय गोपनीयता का पालन करने वाले विज्ञापन देखकर धनोपार्जन करें और इसे अपने पसंदीदा सामग्री निर्माताओं की सहायता के लिए भुगतान करें।</translation>
 <translation id="4942016616604700968">रिवार्ड्स सक्रिय करें</translation>
 <translation id="3958088479270651626">बुकमार्क और सेटिंग आयात करें</translation>
-<translation id="5633840519079139680">Brave से आपके लिए बुकमार्क और आपके कंप्यूटर पर इंस्टॉल किए गए दूसरे ब्राउज़र की सेटिंग आयात करके सामान्य परिवेश सेट करना आसान हो जाता है।</translation>
+<translation id="2609701960545338618">अपने पुराने ब्राउज़र से बुकमार्क और सेटिंग को इम्पोर्ट करके अपना उपयुक्त ब्राउज़िंग वातावरण सेट करें। इम्पोर्ट करने के उन्नत विकल्प सेटिंग में पाए जा सकते हैं।</translation>
 <translation id="8275038454117074363">आयात करें</translation>
+<translation id="2088479175984386785">से इम्पोर्ट करें...</translation>
 <translation id="5540323067375019678">अपने शील्ड प्रबंधित करें</translation>
 <translation id="3278033011827237847">Brave शील्ड के साथ ब्राउज़ करते समय गोपनीयता मे दखल देने वाले विज्ञापनों और ट्रैकर्स से बचाव करें। यदि कोई साइट ठीक से काम नहीं%#8217 कर रही है तो शील्ड को "डाउन" पर सेट करें।</translation>
 <translation id="3366308997091824722">शील्ड सेटिंग्स</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">और अधिक निजी अनुभव के लिए DuckDuckGo आज़माएँ।</translation>
 <translation id="513635702954746724">अपने रंग की थीम चुनें</translation>
 <translation id="6842850080200126305">सेटिंग्स पैनल से हल्का या गहरा का विकल्प चुनकर अपने टूलबार का रंग सेट करें।</translation>
-<translation id="2801098717523961746">अपना थीम चुनें</translation>
+<translation id="5805868144901917207">एक थीम चुनें</translation>
+<translation id="8131740175452115882">दुबारा पूछें</translation>
+<translation id="713206503018076063">सिस्टम थीम (डिफ़ॉल्ट)</translation>
+<translation id="1807246157184219062">मन्द</translation>
+<translation id="2414886740292270097">गाढ़ा</translation>
 <translation id="3829010735958850433">स्वागत यात्रा को छोड़ें</translation>
 <translation id="1201402288615127009">अगला</translation>
 <translation id="1919345977826869612">विज्ञापन</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">इस महीने के कुल टिप्स</translation>
 <translation id="4153752809523809915">क्या अपने अपने पसंदीदा सामग्री निर्माता को आज टिप किया?</translation>
 <translation id="1165667598801520610">फंड्स जोड़ें</translation>
-<translation id="5314648471460409933">फंड्स को व्यवस्थित करें</translation>
+<translation id="6239274080752256452">धनराशि निकाले</translation>
 <translation id="2726674968268546964">टोकंस</translation>
 <translation id="7286722244752781970">विजिट दर्ज़ करने के लिए न्यूनतम पेज समय</translation>
 <translation id="4424486208397124985">प्रकाशक की योग्यता के लिए न्यूनतम विज़िट</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">अब पुनर्प्राप्त करें!</translation>
 <translation id="1184075897575325927">क्षमा करें, ऐसा लगता है कि इस अनुदान पर पहले ही दावा किया जा चुका है।</translation>
 <translation id="282693359045252357">अगली मासिक टिप की तिथि</translation>
-<translation id="6231182869178328516">मैंने अभी Brave ब्राउज़र का उपयोग करते हुए <ph name="NAME">$1<ex>user</ex></ph> को बख्शीश दी। इसे https://brave.com/tips पर देखें।</translation>
+<translation id="6231182869178328516">मैंने अभी Brave ब्राउज़र का उपयोग करते हुए <ph name="NAME"/> को बख्शीश दी। इसे https://brave.com/tips पर देखें।</translation>
 <translation id="8404935570206006581">Braveकेटिप</translation>
+<translation id="2876191400747549936">क्षमा करें आपका अनुरोध प्रोसेस करने में समस्या उत्पन्न हुई है, कृपया पुनः प्रयास करें।</translation>
 <translation id="7422678632904904341">मात्रा</translation>
 <translation id="5923611424721173182">वर्तमान समाधान</translation>
 <translation id="5457113250005438886">अमान्य</translation>
@@ -171,14 +179,10 @@
 <translation id="9026369588205476247">आपकी निजता को सुरक्षित रखने के लिए, इस Brave रिवार्ड्स के लेखा जोखा को आपके डिवाइस(इस कंप्यूटर) के आलावा कहीं और सुरक्षित, दर्ज़ और जोड़ा नहीं गया है| आपके डिवाइस पर डाटा हानि की स्थिति में ये Brave से पुनःप्राप्त नहीं किया जा सकता|</translation>
 <translation id="1036277985068412734">फंड्स जोड़ें</translation>
 <translation id="5441565662498481293">आप स्वचालित रूप से को एक टिप भेज रहे हैं:</translation>
-<translation id="4496990471549986619">अधिक पूछे  जाने वाले सवाल</translation>
-<translation id="1688876543043079268">रिमाइंडर: ब्रेव वॉलेट एकसमान दिशा में काम करता है और BAT प्रकाशक साइटों की ओर चले जाते हैं. ब्रेव इनामों के बारे में अधिक जानकारी के लिए कृपया देखें</translation>
-<translation id="2790014973538267577">QR Code दिखाएं</translation>
-<translation id="5690154556705187369">नीचे दिए गए पते का उपयोग करना सुनिश्चित करें जो आपके निजी क्रिप्टो के प्रकार से मेल खाता है। यह कायम रहते हुए अपने आप BAT में परिवर्तित कर दिया जाएगा और आपके Brave इनाम वालेट में बढ़े हुए बैलेंस के रूप में दिखाई देगा। कृपया अपने वॉलेट बैलेंस को अपडेट करने के लिए लगभग एक घंटे का समय दें।</translation>
-<translation id="8874657527115501951">अपने बाहरी खातों से अपने ब्रेव इनामी वॉलेट में क्रिप्टोकरेंसी भेजें</translation>
 <translation id="2827387977307390755">पर सुझावों की अनुमति दें</translation>
 <translation id="3671566813999349838">राशि</translation>
 <translation id="3819257035322786455">बैकअप</translation>
+<translation id="4989542687859782284">अनुपलब्ध है</translation>
 <translation id="1312977698678162065">प्रासंगिक विज्ञापनों को देखने के लिए भुगतान करें जो आपकी निजता का सम्मान करते हैं।</translation>
 <translation id="7655723274266132226">अब आप विज्ञापनों को देखकर कमा सकते हैं।</translation>
 <translation id="2975780980638932742">Brave विज्ञापन आ गए हैं!</translation>
@@ -276,9 +280,12 @@
 <translation id="1135093233619227159">आप इस टिप्स पैनल में जाकर किसी साइट को मासिक टिप पाने वालों की सूची से निकाल सकते हैं।</translation>
 <translation id="5082474983463379713">कृपया याद रखें:</translation>
 <translation id="1430915738399379752">प्रिंट करें</translation>
+<translation id="135956957367307069">आपका अनुरोध अभी भी प्रोसेस हो रहा है, कृपया प्रतीक्षा करें।</translation>
+<translation id="8725066075913043281">दोबारा कोशिश करें</translation>
 <translation id="3173528272490482456">शुरू करने के लिए तैयार?</translation>
 <translation id="913775524828049259">हाँ मैं तैयार हूँ</translation>
 <translation id="108052542935515756">के साथ आप शुरू कर सकते हैं</translation>
+<translation id="2678666039642976470">वॉलेट पुनः कनेक्ट करें</translation>
 <translation id="194625454574835815">रिकवरी कुंजी</translation>
 <translation id="6354568176665589146">आवर्ती</translation>
 <translation id="7577100371127227294">मासिक टिप्स</translation>
@@ -307,7 +314,7 @@
 <translation id="8014425282125849700">कभी-कभी, आपको ब्रेव की ओर से मुफ्त टोकन अनुदान की पेशकश की जाएगी। सूचना के लिए नजर रखना सुनिश्चित करें!</translation>
 <translation id="1370034647041840967">विज्ञापनों पर ध्यान देने के लिए टोकन कमाएं और आपके लिए महत्वपूर्ण सामग्री निर्माताओं का समर्थन करने के लिए इसे आगे भेजें!</translation>
 <translation id="3905359437915971466">पर जोड़ें, निकालें और फंड्स व्यवस्थित करें</translation>
-<translation id="5866139915213160210">आपका ब्रेव वालेट प्रबंधित हैं</translation>
+<translation id="1401808324297710517">आपका Brave वॉलेट द्वारा संचालित है</translation>
 <translation id="6401272292123354754">Brave रिवार्ड्स बेसिक अटेंशन टोकन पर बने हैं| BAT के बारे में और जानें</translation>
 <translation id="7823359893981882407">यहाँ</translation>
 <translation id="4483635855837696643">अपने वॉलेट को पुनर्स्थापित करें</translation>
@@ -346,7 +353,6 @@
 <translation id="8615803647903750175">वॉलेट गतिविधि</translation>
 <translation id="2620624773940447728">वॉलेट का पता</translation>
 <translation id="4989277977420164514">वॉलेट शेष</translation>
-<translation id="8725066075913043281">दोबारा प्रयास करें</translation>
 <translation id="1083771727630442739">वालेट निर्माण असफल</translation>
 <translation id="9146039192200831719">कृपया अपने इंटरनेट कनेक्शन की जाँच करें.</translation>
 <translation id="1910721550319506122">स्वागत!</translation>
@@ -381,6 +387,21 @@
 <translation id="8101881066646819737">आपके Brave विज्ञापन टोकन के अनुदान</translation>
 <translation id="2151535059686617995">आज’ आपका भाग्यशाली दिन है!</translation>
 <translation id="6255773350565723852">आपकी टोकन अनुदान पहुँच रही है।</translation>
+<translation id="7512440811010447157">सत्यापित करें</translation>
+<translation id="8030169304546394654">डिसकनेक्ट करें</translation>
+<translation id="8267327690882073581">वॉलेट सत्यापित करें</translation>
+<translation id="4569155249847375786">सत्यापित है</translation>
+<translation id="7591798679868259510">मेरे मान्य खाते पर जाएँ</translation>
+<translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
+<translation id="46988480989545156">वॉलेट सत्यापित करें</translation>
+<translation id="1554282356558968486">हमारी वॉलेट सेवा द्वारा प्रदान की जाती है</translation>
+<translation id="6771734945114850124">कृपया प्रशासन द्वारा जारी ID अपने पास रखें।</translation>
+<translation id="4483114863312340607">धनराशि निकालें और जमा करें</translation>
+<translation id="6600381840029958159">विज्ञापनों के इनाम पाने के लिए कैप्चा हल करना ज़रूरी नहीं है</translation>
+<translation id="4332021186346461319">प्राप्त किए गए इनाम कभी समाप्त नहीं होते और आपके वॉलेट में तुरंत जमा कर दिए जाते हैं</translation>
+<translation id="2610007079772760276">एक सत्यापित वॉलेट आपको निम्नलिखित करने की अनुमति देता है:</translation>
+<translation id="7565794512491053578">अपना वॉलेट सत्यापित करें</translation>
+<translation id="698531289520577961">और अपनी धराशि को आसानी से प्रबंधित करें!</translation>
 <translation id="1181037720776840403">निकालें</translation>
 <translation id="7885157704277298658">कॉपी की गई!</translation>
 <translation id="5379640681913450928">शब्दों की संख्या:</translation>
@@ -441,4 +462,5 @@
 <translation id="1399673826422570698">आपको नेटवर्क संबंधी समस्या हो सकती है या सिंक सर्वर से समस्या हो सकती है।</translation>
 <translation id="5286379413446391050">सिंक सर्वर से कनेक्ट नहीं किया जा सका</translation>
 <translation id="2410472020237369473">आपके कंप्यूटर की घड़ी गलत समय या समय क्षेत्र पर सेट हो सकती है। अपनी घड़ी की सेटिंग को जांचें।</translation>
+<translation id="5655621391922317800">क्रिप्टो वॉलेट</translation>
 </translationbundle>

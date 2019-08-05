@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-BR">
-<translation id="689261804992965033">Anúncios Bloqueados</translation>
-<translation id="1663506596135222606">Rastreadores Bloqueados</translation>
+<translation id="4339730410920731698">Anúncios e rastreadores bloqueados</translation>
 <translation id="2313532038420432247">HTTPS Upgrades</translation>
 <translation id="7679428712334662192">Estimativa de Tempo Economizado</translation>
 <translation id="5206618227023752085">Site principal removido.</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">Visualizar seu histórico de navegação</translation>
 <translation id="1742484101357469636">Configurações do Painel</translation>
 <translation id="8320281346741574991">Exibir imagem de fundo</translation>
+<translation id="7275773481201277457">Mostrar Estatísticas do Brave</translation>
+<translation id="6836061097810262923">Mostrar Relógio</translation>
+<translation id="8643377320501056697">Mostrar os Melhores Sites</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="8730621377337864115">Concluído</translation>
 <translation id="6248988683584659830">Configurações de pesquisa</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">Saiba mais sobre o Tor no Brave</translation>
 <translation id="4272382368346338917">Filtros Adicionais</translation>
 <translation id="8949292968394988358">Aviso: Ativar muitos filtros pode prejudicar o desempenho</translation>
-<translation id="1869685517625607604">Total de anúncios bloqueados:</translation>
+<translation id="8686201964111147748">Total de anúncios e rastreadores bloqueados:</translation>
 <translation id="4673764878177947707">Filtros personalizados</translation>
 <translation id="8803682034537762884">Um por linha, o filtro é descrito na sintaxe de filtro do Adblock Plus</translation>
 <translation id="2974339193389078578">Desbrave a nova internet com o Brave</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">Sua atenção é valiosa. Ganhe enquanto navega vendo anúncios que respeitam a sua privacidade e pague para apoiar os criadores de conteúdo que você adora.</translation>
 <translation id="4942016616604700968">Ativar Recompensas</translation>
 <translation id="3958088479270651626">Importar favoritos e configurações</translation>
-<translation id="5633840519079139680">O Brave facilita a configuração do seu ambiente de navegação, importando os favoritos e as configurações de outros navegadores instalados no seu computador.</translation>
+<translation id="2609701960545338618">Estabeleça seu ambiente de navegação de sempre importando seus favoritos e configurações de seu navegador antigo. Opções de importação avançadas podem ser encontradas nas Configurações.</translation>
 <translation id="8275038454117074363">Importar</translation>
+<translation id="2088479175984386785">Importar de...</translation>
 <translation id="5540323067375019678">Gerenciar suas proteções</translation>
 <translation id="3278033011827237847">Proteja-se de anúncios e trackers invasivos enquanto navega na internet com o Brave Shields. Desative o Shields caso um site não esteja funcionando adequadamente.</translation>
 <translation id="3366308997091824722">Configurações de Escudo</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">Para uma experiência de pesquisa com maior privacidade, experimente o DuckDuckGo.</translation>
 <translation id="513635702954746724">Escolha seu tema de cores</translation>
 <translation id="6842850080200126305">Para definir a cor da sua barra de ferramentas, selecione a opção clara ou escura no painel de configurações.</translation>
-<translation id="2801098717523961746">Escolha seu tema</translation>
+<translation id="5805868144901917207">Selecione um tema</translation>
+<translation id="8131740175452115882">Confirmar</translation>
+<translation id="713206503018076063">Tema do sistema (padrão)</translation>
+<translation id="1807246157184219062">Claro</translation>
+<translation id="2414886740292270097">Escuro</translation>
 <translation id="3829010735958850433">Pular introdução</translation>
 <translation id="1201402288615127009">Próxima</translation>
 <translation id="1919345977826869612">Anúncios</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">Total de doações este mês</translation>
 <translation id="4153752809523809915">Você já fez uma doação ao seu criador de conteúdo favorito hoje?</translation>
 <translation id="1165667598801520610">Adicionar Fundos</translation>
-<translation id="5314648471460409933">Gerenciar fundos</translation>
+<translation id="6239274080752256452">Retirar Fundos</translation>
 <translation id="2726674968268546964">tokens</translation>
 <translation id="7286722244752781970">Tempo mínimo na página antes de fazer login</translation>
 <translation id="4424486208397124985">Visitas mínimas para relevância do editor</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">Recuperar agora!</translation>
 <translation id="1184075897575325927">Sinto muito, parece que esse auxílio já foi reivindicado.</translation>
 <translation id="282693359045252357">Data da próxima gorjeta mensal</translation>
-<translation id="6231182869178328516">Acabei de dar uma gorjeta para <ph name="NAME">$1<ex>user</ex></ph> usando o Brave Browser. Confira em https://brave.com/tips.</translation>
+<translation id="6231182869178328516">Acabei de dar uma gorjeta para <ph name="NAME"/> usando o Brave Browser. Confira em https://brave.com/tips.</translation>
 <translation id="8404935570206006581">DêGorjetasComBrave</translation>
+<translation id="2876191400747549936">Desculpe, houve um problema ao processar o seu pedido. Por favor, tente novamente.</translation>
 <translation id="7422678632904904341">Quantia:</translation>
 <translation id="5923611424721173182">Reconciliação Atual</translation>
 <translation id="5457113250005438886">Inválido</translation>
@@ -170,14 +178,10 @@
 <translation id="9026369588205476247">Para proteger sua privacidade, esta declaração de Recompensas da Brave  não é salva, gravada ou conectada em nenhum lugar, exceto em seu dispositivo (este computador). Não poderá ser recuperada da Brave em caso de perda de dados do seu dispositivo.</translation>
 <translation id="1036277985068412734">adicionar fundos</translation>
 <translation id="5441565662498481293">Você está automaticamente enviando uma contribuição para:</translation>
-<translation id="4496990471549986619">Perguntas Frequentes</translation>
-<translation id="1688876543043079268">Lembrete: A Carteira do Brave é unidirecional e o BAT flui para sites de editores. Para mais informações sobre o Brave Rewards, visite</translation>
-<translation id="2790014973538267577">Mostrar QR Code</translation>
-<translation id="5690154556705187369">Certifique-se de usar o endereço abaixo que corresponda ao tipo de criptomoeda que você possui. Ele será convertido automaticamente em BAT pelo Uphold e será exibido como um aumento no saldo da sua carteira do Brave Rewards. Aguarde até uma hora para que o saldo da sua carteira seja atualizado.</translation>
-<translation id="8874657527115501951">Enviar criptomoeda de sua conta externa para a carteira do Brave Rewards.</translation>
 <translation id="2827387977307390755">Permitir gorjetas em</translation>
 <translation id="3671566813999349838">Valor</translation>
 <translation id="3819257035322786455">Backup</translation>
+<translation id="4989542687859782284">Indisponível</translation>
 <translation id="1312977698678162065">Receba dinheiro para ver anúncios relevantes que respeitam a sua privacidade.</translation>
 <translation id="7655723274266132226">Agora você pode ganhar visualizando anúncios.</translation>
 <translation id="2975780980638932742">Os anúncios do Brave chegaram!</translation>
@@ -275,9 +279,12 @@
 <translation id="1135093233619227159">Você pode remover qualquer site que esteja recebendo doações mensais no painel "Doações".</translation>
 <translation id="5082474983463379713">Observe:</translation>
 <translation id="1430915738399379752">Imprimir</translation>
+<translation id="135956957367307069">Seu pedido ainda está sendo processado, por favor, aguarde.</translation>
+<translation id="8725066075913043281">Tentar novamente</translation>
 <translation id="3173528272490482456">Pronto para começar?</translation>
 <translation id="913775524828049259">Sim, Estou Pronto</translation>
 <translation id="108052542935515756">Você pode começar com</translation>
+<translation id="2678666039642976470">Reconecte a carteira</translation>
 <translation id="194625454574835815">Redefinir senha</translation>
 <translation id="6354568176665589146">Recorrente</translation>
 <translation id="7577100371127227294">Doações Mensais</translation>
@@ -306,7 +313,7 @@
 <translation id="8014425282125849700">Ocasionalmente, você receberá concessões gratuitas de token do Brave. Certifique-se de ficar de olho no alerta!</translation>
 <translation id="1370034647041840967">Ganhe tokens ao ver anúncios e pague para apoiar os criadores de conteúdo que você valoriza!</translation>
 <translation id="3905359437915971466">Adicione, retire e gerencie fundos em</translation>
-<translation id="5866139915213160210">Sua carteira Brave é gerenciada por</translation>
+<translation id="1401808324297710517">Sua carteira Brave é disponibilizada por</translation>
 <translation id="6401272292123354754">As Recompensas Brave são construídas no Basic Attention Token. Saiba mais sobre BAT</translation>
 <translation id="7823359893981882407">aqui</translation>
 <translation id="4483635855837696643">Restaurar sua carteira</translation>
@@ -345,7 +352,6 @@
 <translation id="8615803647903750175">Atividade da Carteira</translation>
 <translation id="2620624773940447728">Endereço da carteira</translation>
 <translation id="4989277977420164514">saldo da carteira</translation>
-<translation id="8725066075913043281">Tentar novamente</translation>
 <translation id="1083771727630442739">Falha na criação de carteira</translation>
 <translation id="9146039192200831719">Por favor, verifique sua conexão à internet.</translation>
 <translation id="1910721550319506122">Bem-vindo!</translation>
@@ -380,6 +386,21 @@
 <translation id="8101881066646819737">Sua Quantia de Tokens do Brave Ads</translation>
 <translation id="2151535059686617995">É’ o seu dia de sorte!</translation>
 <translation id="6255773350565723852">Seu auxílio token está a caminho.</translation>
+<translation id="7512440811010447157">verificar</translation>
+<translation id="8030169304546394654">Desconectado</translation>
+<translation id="8267327690882073581">Verificar Carteira</translation>
+<translation id="4569155249847375786">Verificado</translation>
+<translation id="7591798679868259510">Ir para a minha conta Uphold</translation>
+<translation id="9200453331904391567">Desconectar-se de Brave Rewards</translation>
+<translation id="46988480989545156">Verificar carteira</translation>
+<translation id="1554282356558968486">Nosso serviço de carteira é fornecido por</translation>
+<translation id="6771734945114850124">Por favor, tenha disponível seu documento de identificação emitido pelo governo.</translation>
+<translation id="4483114863312340607">Retirar e adicionar fundos</translation>
+<translation id="6600381840029958159">Não é necessário resolver o captcha para ganhar recompensas com anúncios</translation>
+<translation id="4332021186346461319">Prêmios recebidos não expiram e são depositados em sua carteira instantaneamente</translation>
+<translation id="2610007079772760276">Uma carteira verificada permite que você:</translation>
+<translation id="7565794512491053578">Verificar sua Carteira</translation>
+<translation id="698531289520577961">E gerencie seus fundos facilmente!</translation>
 <translation id="1181037720776840403">Remover</translation>
 <translation id="7885157704277298658">Copiado!</translation>
 <translation id="5379640681913450928">Contagem de palavras:</translation>
@@ -440,4 +461,5 @@
 <translation id="1399673826422570698">Talvez sua rede ou os servidores de sincronização estejam com um problema.</translation>
 <translation id="5286379413446391050">Não foi possível conectar-se aos servidores de sincronização</translation>
 <translation id="2410472020237369473">O relógio do seu computador pode estar definido para a hora errada ou fuso horário. Verifique as configurações do seu relógio.</translation>
+<translation id="5655621391922317800">Carteiras Cripto</translation>
 </translationbundle>

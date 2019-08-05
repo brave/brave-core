@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="cs">
-<translation id="689261804992965033">Zablokovaných reklam</translation>
-<translation id="1663506596135222606">Zablokovaných trackerů</translation>
+<translation id="4339730410920731698">Reklamy a trackery jsou zablokovány</translation>
 <translation id="2313532038420432247">Upgradů na HTTPS</translation>
 <translation id="7679428712334662192">Odhadovaná úspora času</translation>
 <translation id="5206618227023752085">Vrchní stránka odstraněna.</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">Zobrazit historii prohlížení</translation>
 <translation id="1742484101357469636">Nastavení nástěnky</translation>
 <translation id="8320281346741574991">Ukázat obrázek v pozadí</translation>
+<translation id="7275773481201277457">Zobrazit Brave Stats</translation>
+<translation id="6836061097810262923">Zobrazit hodiny</translation>
+<translation id="8643377320501056697">Ukázat Top stránky</translation>
 <translation id="6165508094623778733">Zjistit více</translation>
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="6248988683584659830">Nastavení vyhledávání</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">Zjistěte více o prohlížeči Tor v Brave</translation>
 <translation id="4272382368346338917">Další filtry</translation>
 <translation id="8949292968394988358">Varování: Po zapnutí příliš mnoha filtrů dojde ke snížení výkonu</translation>
-<translation id="1869685517625607604">Celkem zablokovaných reklam:</translation>
+<translation id="8686201964111147748">Počet blokovaných reklam a sledovačů:</translation>
 <translation id="4673764878177947707">Vlastní filtry</translation>
 <translation id="8803682034537762884">Jeden na řádek, filtr je popsán v syntaxi filtru Adblock Plus</translation>
 <translation id="2974339193389078578">Odvážně brázděte internet s prohlížečem Brave</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">Vaše pozornost má reálnou hodnotu. Vydělávejte zobrazováním reklam, zachovávajících vaše soukromí a přispějte těmito prostředky tvůrcům, kteří jsou vám blízcí.</translation>
 <translation id="4942016616604700968">Povolit Rewards</translation>
 <translation id="3958088479270651626">Importovat záložky a nastavení</translation>
-<translation id="5633840519079139680">Brave vám usnadní nastavení vlastního obvyklého prostředí importováním záložek a nastavení z ostatních prohlížečů, které máte na počítači instalovány.</translation>
+<translation id="2609701960545338618">Nastavte si prostředí, na něž jste zvyklí, importováním záložek a nastavení z vašeho starého prohlížeče. Pokročilé možnosti importu naleznete v Nastavení.</translation>
 <translation id="8275038454117074363">Importovat</translation>
+<translation id="2088479175984386785">Importovat z</translation>
 <translation id="5540323067375019678">Nastavení vašich štítů</translation>
 <translation id="3278033011827237847">Chrání proti reklamám a trackerům narušujícím soukromí při prohlížení se Štíty Brave. Pokud to vypadá, že stránka nefunguje správně, nastavte Štíty na „dole“.</translation>
 <translation id="3366308997091824722">Nastavení štítu</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">Chcete-li více soukromé vyhledávání, zkuste prohlížeč DuckDuckGo.</translation>
 <translation id="513635702954746724">Vyberte si barvu motivu</translation>
 <translation id="6842850080200126305">Nastavte barvu lišty nástrojů výběrem světlé nebo tmavé z panelu nastavení.</translation>
-<translation id="2801098717523961746">Vyberte si motiv</translation>
+<translation id="5805868144901917207">Zvolte téma</translation>
+<translation id="8131740175452115882">Potvrdit</translation>
+<translation id="713206503018076063">Téma systému (výchozí)</translation>
+<translation id="1807246157184219062">Světlé</translation>
+<translation id="2414886740292270097">Tmavé</translation>
 <translation id="3829010735958850433">Přeskočit uvítací prohlídku</translation>
 <translation id="1201402288615127009">Další</translation>
 <translation id="1919345977826869612">Reklamy</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">Celkem příspěvků tento měsíc</translation>
 <translation id="4153752809523809915">Už jste dnes přispěli vašemu oblíbenému tvůrci obsahu?</translation>
 <translation id="1165667598801520610">Přidat prostředky</translation>
-<translation id="5314648471460409933">Spravovat finance</translation>
+<translation id="6239274080752256452">Výběr prostředků</translation>
 <translation id="2726674968268546964">známky</translation>
 <translation id="7286722244752781970">Minimální doba přítomnosti na stránce před započítáním návštěvy</translation>
 <translation id="4424486208397124985">Minimální počet návštěv pro relevanci autora</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">Obnovit ihned!</translation>
 <translation id="1184075897575325927">Je nám líto, tento grant byl zjevně již nárokován.</translation>
 <translation id="282693359045252357">Datum dalšího měsíčního příspěvku</translation>
-<translation id="6231182869178328516">Právě jsem přispěl <ph name="NAME">$1<ex>user</ex></ph> pomocí prohlížeče Brave. Podívejte se na https://brave.com/tips.</translation>
+<translation id="6231182869178328516">Právě jsem přispěl <ph name="NAME"/> pomocí prohlížeče Brave. Podívejte se na https://brave.com/tips.</translation>
 <translation id="8404935570206006581">SpropitnéSBrave</translation>
+<translation id="2876191400747549936">Je nám líto, ale při vyřizování vašeho požadavku nastal problém, zkuste to prosím znova</translation>
 <translation id="7422678632904904341">Množství:</translation>
 <translation id="5923611424721173182">Aktuální srovnání</translation>
 <translation id="5457113250005438886">Neplatné</translation>
@@ -171,14 +179,10 @@ Povolte je návštěvou</translation>
 <translation id="9026369588205476247">Pro ochranu vašeho soukromí není tento výpis Brave Rewards ukládán, nahráván ani zaznamenáván jinam než na vaše zařízení (tento počítač). V případě ztráty dat z vašeho zařízení vám společnost Brave tento výpis nebude moci zpětně poskytnout.</translation>
 <translation id="1036277985068412734">přidat prostředky</translation>
 <translation id="5441565662498481293">Automaticky posíláte příspěvek:</translation>
-<translation id="4496990471549986619">Často kladené dotazy</translation>
-<translation id="1688876543043079268">Připomínáme: Peněženka Brave je jednosměrná a BAT se odesílají na stránky vydavatelů. Pro více informací o Brave Rewards prosím navštivte</translation>
-<translation id="2790014973538267577">Ukázat QR kód</translation>
-<translation id="5690154556705187369">Ujistěte se, že používáte níže uvedenou adresu, která odpovídá typu kryptoměny, kterou vlastníte. Ta bude automaticky převedena na BAT společností Uphold a projeví se jako navýšení zůstatku ve vaší peněžence Brave Rewards. Aktualizace zůstatku ve vaší peněžence může trvat až jednu hodinu.</translation>
-<translation id="8874657527115501951">Posílejte kryptoměnu z vašeho externího účtu na vaši peněženku Brave Rewards.</translation>
 <translation id="2827387977307390755">Povolit příspěvky na</translation>
 <translation id="3671566813999349838">Částka</translation>
 <translation id="3819257035322786455">Zálohovat</translation>
+<translation id="4989542687859782284">Nedostupné</translation>
 <translation id="1312977698678162065">Získávejte peníze za zobrazování relevantních reklam, které respektují vaše soukromí.</translation>
 <translation id="7655723274266132226">Nyní si můžete vydělat více díky zobrazování reklam.</translation>
 <translation id="2975780980638932742">Reklamy Brave jsou tu!</translation>
@@ -276,9 +280,12 @@ Povolte je návštěvou</translation>
 <translation id="1135093233619227159">Na panelu příspěvků můžete posílání příspěvků stránkám zrušit.</translation>
 <translation id="5082474983463379713">Vezměte prosím na vědomí:</translation>
 <translation id="1430915738399379752">Tisk</translation>
+<translation id="135956957367307069">Váš požadavek zpracováváme, čekejte prosím.</translation>
+<translation id="8725066075913043281">Zkusit znovu</translation>
 <translation id="3173528272490482456">Jste připraveni začít?</translation>
 <translation id="913775524828049259">Ano, jsem připraven(a)</translation>
 <translation id="108052542935515756">Můžete začít s</translation>
+<translation id="2678666039642976470">Znova připojit peněženku</translation>
 <translation id="194625454574835815">Klíč pro obnovení</translation>
 <translation id="6354568176665589146">Opakující se</translation>
 <translation id="7577100371127227294">Měsíční příspěvky</translation>
@@ -307,7 +314,7 @@ Povolte je návštěvou</translation>
 <translation id="8014425282125849700">Čas od času vám Brave nabídne bezplatné tokenové granty. Nezapomeňte tedy sledovat upozornění!</translation>
 <translation id="1370034647041840967">Získávejte tokeny za vaši pozornost vůči reklamám a posílejte je přímo tvůrcům obsahu, kterých si vážíte!</translation>
 <translation id="3905359437915971466">Přičíst, vybrat a spravovat finance na</translation>
-<translation id="5866139915213160210">Vaši peněženku Brave spravuje</translation>
+<translation id="1401808324297710517">Vaše Brave peněženka je zajišťována</translation>
 <translation id="6401272292123354754">Odměny Brave staví na základní známce Basic Attention Token (BAT). Zjistěte si o ní více</translation>
 <translation id="7823359893981882407">zde</translation>
 <translation id="4483635855837696643">Obnovit vaši peněženku</translation>
@@ -346,7 +353,6 @@ Povolte je návštěvou</translation>
 <translation id="8615803647903750175">Aktivita v peněžence</translation>
 <translation id="2620624773940447728">Adresa peněženky</translation>
 <translation id="4989277977420164514">rovnováha v peněžence</translation>
-<translation id="8725066075913043281">Zkusit znovu</translation>
 <translation id="1083771727630442739">Tvorba peněženky se nezdařila</translation>
 <translation id="9146039192200831719">Zkontrolujte prosím vaše připojení k internetu.</translation>
 <translation id="1910721550319506122">Vítejte!</translation>
@@ -381,6 +387,21 @@ Povolte je návštěvou</translation>
 <translation id="8101881066646819737">Váš</translation>
 <translation id="2151535059686617995">Dnes máte šťastný den!</translation>
 <translation id="6255773350565723852">Váš grant je na cestě.</translation>
+<translation id="7512440811010447157">ověřit</translation>
+<translation id="8030169304546394654">Odpojeno</translation>
+<translation id="8267327690882073581">Ověřit peněženku</translation>
+<translation id="4569155249847375786">Ověřeno</translation>
+<translation id="7591798679868259510">Přejít na můj Uphold účet</translation>
+<translation id="9200453331904391567">Odpojit od Brave Rewards</translation>
+<translation id="46988480989545156">Ověřit peněženku</translation>
+<translation id="1554282356558968486">Správa peněženky je zajišťována</translation>
+<translation id="6771734945114850124">Prosím připravte si vaší vládou vydané identifikační číslo.</translation>
+<translation id="4483114863312340607">Vybírat a ukládat prostředky</translation>
+<translation id="6600381840029958159">Není třeba vyřešit captcha, abyste získaly odměny za reklamy</translation>
+<translation id="4332021186346461319">Obdržené odměny nikdy nepropadnou a budou okamžitě uloženy do vaší peněženky</translation>
+<translation id="2610007079772760276">Ověřená peněženka vám umožní:</translation>
+<translation id="7565794512491053578">Ověřit vaši peněženku</translation>
+<translation id="698531289520577961">A spravujte své prostředky s lehkostí!</translation>
 <translation id="1181037720776840403">Odebrat</translation>
 <translation id="7885157704277298658">Zkopírováno!</translation>
 <translation id="5379640681913450928">Počet slov:</translation>
@@ -441,4 +462,5 @@ Povolte je návštěvou</translation>
 <translation id="1399673826422570698">Buď máte potíže s připojením nebo je problém na synchronizačních serverech.</translation>
 <translation id="5286379413446391050">Připojení k synchronizovaným serverům se nezdařilo</translation>
 <translation id="2410472020237369473">Hodiny vašeho počítače mohou být nastaveny na nesprávný čas nebo časové pásmo. Zkontrolujte nastavení času.</translation>
+<translation id="5655621391922317800">Krypto peněženky</translation>
 </translationbundle>

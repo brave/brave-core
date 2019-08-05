@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Teie Brave’i rakenduste tokenivõimalus",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "kinnita",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Lahti ühendatud",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Kinnita rahakott",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Kinnitatud",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Ava minu Upholdi konto",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Katkesta Brave Rewardsi ühendus",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Kinnita rahakott",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Meie rahakotiteenust pakub",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Hoidke oma ametlik isikutunnistus käepärast.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Hoidke oma reklaamide preemiate tokenid alles",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Lisage tokeneid krediitkaardiga",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Võtke tokeneid välja",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Kinnitatud rahakott võimaldab teil",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Kinnitage oma rahakott",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Ja hallake oma vahendeid hõlpsalt!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Kinnitatud",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Pole saadaval",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Ühenda rahakott uuesti",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Teie rahakott on kinnitatud!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Palju õnne! Teie $name$ rahakoti kinnitamine õnnestus ja te saate nüüd vahendeid lisada ja välja võtta.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Oi ei. Teie rahakotiga ei saa ühendust.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Ärge muretsege. See võib juhtuda erinevatel turvalisusega seotud põhjustel. Probleemi lahendamiseks looge lihtsalt rahakotiga uuesti ühendus.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }
