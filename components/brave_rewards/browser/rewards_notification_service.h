@@ -72,6 +72,7 @@ class RewardsNotificationService {
   virtual const RewardsNotificationsMap& GetAllNotifications() const = 0;
   virtual void ReadRewardsNotificationsJSON() = 0;
   virtual void StoreRewardsNotifications() = 0;
+  virtual bool Exists(RewardsNotificationID id) const = 0;
 
   void AddObserver(RewardsNotificationServiceObserver* observer);
   void RemoveObserver(RewardsNotificationServiceObserver* observer);

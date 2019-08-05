@@ -241,6 +241,15 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
   profile_->GetPrefs()->SetString(prefs::kRewardsNotifications, result);
 }
 
+bool RewardsNotificationServiceImpl::Exists(RewardsNotificationID id) const {
+  DCHECK(!id.empty());
+  if (rewards_notifications_.find(id) == rewards_notifications_.end()) {
+    return false;
+  }
+
+  return true;
+}
+
 void RewardsNotificationServiceImpl::TriggerOnNotificationAdded(
     const RewardsNotification& rewards_notification) {
   for (auto& observer : observers_)
