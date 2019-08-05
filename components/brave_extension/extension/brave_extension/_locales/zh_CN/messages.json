@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "清除所有站点的 CSS 规则",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "高级视图",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "简单视图",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "站点通常包含 Cookie 和脚本（通常嵌入在广告中），用于识别您和您的设备。他们希望了解您是谁，并在网上关注您 - 跟踪您在各个网站上的活动。Brave 会拦截这些内容，让您安全浏览，而不会被跟踪。",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "已拦截跨站点跟踪器和其他有害内容",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "在此视图中更改 Shield 设置可能影响此站点的网络兼容性。",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "知道了",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "了解更多",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

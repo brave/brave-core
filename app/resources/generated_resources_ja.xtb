@@ -1630,7 +1630,9 @@
 <translation id="473546211690256853">このアカウントは <ph name="DOMAIN"/> によって管理されています。</translation>
 <translation id="622537739776246443">プロフィールは削除されます</translation>
 <translation id="5632566673632479864">お使いのアカウント <ph name="EMAIL"/> は、メイン アカウントとして使用できなくなりました。このアカウントは <ph name="DOMAIN"/> で管理されているため、ブックマーク、履歴、パスワードなどの設定はこの端末から削除されます。</translation>
+<translation id="3797739167230984533">ご使用の <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> は組織によって管理<ph name="END_LINK"/>されています</translation>
 <translation id="1722460139690167654">ご使用の <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> は <ph name="ENROLLMENT_DOMAIN"/> によって管理されています<ph name="END_LINK"/></translation>
+<translation id="8118488170956489476">お使いの<ph name="BEGIN_LINK"/>ブラウザは組織によって管理<ph name="END_LINK"/>されています</translation>
 <translation id="1365180424462182382">ご使用の<ph name="BEGIN_LINK"/>ブラウザは <ph name="ENROLLMENT_DOMAIN"/> によって管理されています<ph name="END_LINK"/></translation>
 <translation id="8168435359814927499">コンテンツ</translation>
 <translation id="7702907602086592255">ドメイン</translation>

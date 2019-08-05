@@ -1647,7 +1647,9 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="473546211690256853">Dit account wordt beheerd door <ph name="DOMAIN"/>.</translation>
 <translation id="622537739776246443">Profiel wordt verwijderd</translation>
 <translation id="5632566673632479864">Je account <ph name="EMAIL"/> is niet meer toegestaan als het primaire account. Omdat dit account wordt beheerd door <ph name="DOMAIN"/>, worden je bladwijzers, geschiedenis, wachtwoorden en andere instellingen gewist op dit apparaat.</translation>
+<translation id="3797739167230984533">Je <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> wordt beheerd<ph name="END_LINK"/> door je organisatie</translation>
 <translation id="1722460139690167654">Je <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> wordt beheerd<ph name="END_LINK"/> door <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Je <ph name="BEGIN_LINK"/>browser wordt beheerd<ph name="END_LINK"/> door je organisatie</translation>
 <translation id="1365180424462182382">Je <ph name="BEGIN_LINK"/>browser wordt beheerd<ph name="END_LINK"/> door <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Content</translation>
 <translation id="7702907602086592255">Domein</translation>
@@ -2414,7 +2416,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="399179161741278232">Geïmporteerd</translation>
 <translation id="5225324770654022472">Snelle link voor apps weergeven</translation>
 <translation id="5072836811783999860">Beheerde bladwijzers weergeven</translation>
-<translation id="3613134908380545408">Toon <ph name="FOLDER_NAME">$1<ex>managed bookmarks</ex></ph></translation>
+<translation id="3613134908380545408">Toon <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Snelle link voor apps weergeven</translation>
 <translation id="711840821796638741">Beheerde bladwijzers weergeven</translation>
 <translation id="2367972762794486313">Apps weergeven</translation>

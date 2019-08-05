@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Jūsų „Brave“ reklamos žetonų išmoka",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "patvirtinti",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Atsijungta",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Patvirtinti piniginę",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Patvirtinta",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Eiti į mano „Uphold“ paskyrą",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Atsijungti nuo „Brave Rewards“",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Patvirtinti piniginę",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Mūsų piniginės paslaugą teikia",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Pasiruoškite valdžios institucijos išduotą asmens tapatybės dokumentą.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Išsaugokite savo atlygio už reklamą žetonus",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Pridėkite žetonų, naudodami kredito kortelę",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Išsiimkite žetonų",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Patvirtinta piniginė jums suteikia galimybę:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Patvirtinkite piniginę",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Lengvai tvarkykite savo pinigus!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Jūsų piniginė patvirtinta",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Nepasiekiama",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Iš naujo prijungti piniginę",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Jūsų piniginė patvirtinta!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Sveikiname! Jūsų $name$ piniginė sėkmingai patvirtinta, jau galite pridėti ir išsiimti pinigų.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Oi! Jūsų piniginė nepasiekiama.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Nesirūpinkite. Taip gali atsitikti dėl įvairių saugumo priežasčių. Tiesiog iš naujo prisijunkite prie jos ir taip problema bus išspręsta.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

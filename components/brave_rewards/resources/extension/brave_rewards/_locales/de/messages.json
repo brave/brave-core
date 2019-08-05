@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Ihre Brave-Ads-Tokenzuteilung",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "verifizieren",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Verbindung getrennt",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Wallet verifizieren",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Verifiziert",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Zu meinem Uphold-Account gehen",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Die Verbindung zu Brave Rewards trennen",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Wallet verifizieren",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Unser Wallet-Service wird bereitgestellt von",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Stellen Sie bitte sicher, dass Ihre amtlichen Ausweisdokumente verfügbar sind.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Behalten Sie Ihre Ad-Rewards-Token",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Fügen Sie über Ihre Kreditkarte Tokens hinzu.",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Tokens abheben",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Ein verifiziertes Wallet ermöglicht es Ihnen:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Verifizieren Sie Ihr Wallet",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Und verwalten Sie mühelos Ihre Geldmittel!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Verifiziert",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Nicht verfügbar",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Wallet erneut verbinden",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Ihr Wallet ist verifiziert!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Herzlichen Glückwunsch! Ihr $name$ Wallet wurde erfolgreich verifiziert und steht für die Einzahlung und Auszahlung von Geldmitteln bereit.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Oh oh, Ihr Wallet kann nicht erreicht werden.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Keine Sorge, dies kann auf eine Vielzahl von Sicherheitsgründen zurückzuführen sein. Das Problem sollte behoben werden, wenn die Verbindung einfach wiederhergestellt wird.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

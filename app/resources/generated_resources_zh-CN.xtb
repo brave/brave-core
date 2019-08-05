@@ -1629,7 +1629,9 @@
 <translation id="473546211690256853">此帐号由 <ph name="DOMAIN"/> 管理</translation>
 <translation id="622537739776246443">个人资料将被删除</translation>
 <translation id="5632566673632479864">您的帐号 <ph name="EMAIL"/> 已无法再用作主帐号。该帐号由 <ph name="DOMAIN"/> 管理，因此您的书签、历史记录、密码及其他设置将从此设备中清除。</translation>
+<translation id="3797739167230984533">您的 <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> 由所属组织管理<ph name="END_LINK"/></translation>
 <translation id="1722460139690167654">您的<ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/><ph name="END_LINK"/>由 <ph name="ENROLLMENT_DOMAIN"/> 管理</translation>
+<translation id="8118488170956489476">您的<ph name="BEGIN_LINK"/>浏览器由所属组织管理<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382">您的<ph name="BEGIN_LINK"/>浏览器<ph name="END_LINK"/>由 <ph name="ENROLLMENT_DOMAIN"/> 管理</translation>
 <translation id="8168435359814927499">内容</translation>
 <translation id="7702907602086592255">域名</translation>

@@ -1631,7 +1631,9 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="473546211690256853">Šią paskyrą tvarko <ph name="DOMAIN"/>.</translation>
 <translation id="622537739776246443">Profilis bus ištrintas</translation>
 <translation id="5632566673632479864">Jūsų paskyra <ph name="EMAIL"/> nebeleidžiama kaip pagrindinė paskyra. Kadangi ši paskyra tvarkoma <ph name="DOMAIN"/>, jūsų žymės, istorija, slaptažodžiai ir kiti nustatymai bus išvalyti iš šio įrenginio.</translation>
+<translation id="3797739167230984533">Jūsų <ph name="BEGIN_LINK"/>„<ph name="DEVICE_TYPE"/>“ tvarko<ph name="END_LINK"/> jūsų organizacija</translation>
 <translation id="1722460139690167654">Jūsų <ph name="BEGIN_LINK"/>„<ph name="DEVICE_TYPE"/>“ tvarko<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Jūsų <ph name="BEGIN_LINK"/>naršyklę tvarko<ph name="END_LINK"/> jūsų organizacija</translation>
 <translation id="1365180424462182382">Jūsų <ph name="BEGIN_LINK"/>naršyklę tvarko<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Turinys</translation>
 <translation id="7702907602086592255">Domenas</translation>

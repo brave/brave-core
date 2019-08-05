@@ -1629,7 +1629,9 @@
 <translation id="473546211690256853"><ph name="DOMAIN"/>, ഈ അക്കൗണ്ട് നിയന്ത്രിക്കുന്നു</translation>
 <translation id="622537739776246443">പ്രൊഫൈല്‍ ഇല്ലാതാക്കപ്പെടും</translation>
 <translation id="5632566673632479864">നിങ്ങളുടെ അക്കൗണ്ട് <ph name="EMAIL"/>, ഇനി പ്രാഥമിക അക്കൗണ്ടായി അംഗീകരിക്കില്ല. <ph name="DOMAIN"/> ഈ അക്കൗണ്ട് മാനേജ് ചെയ്യുന്നതിനാൽ, നിങ്ങളുടെ ബുക്ക്‌മാർക്കുകളും ചരിത്രവും പാസ്‌വേഡുകളും മറ്റ് ക്രമീകരവും ഈ ഉപകരണത്തിൽ നിന്ന് മായ്‌ക്കുന്നതാണ്.</translation>
+<translation id="3797739167230984533">നിങ്ങളുടെ സ്ഥാപനമാണ് <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> മാനേജ് ചെയ്യുന്നത്<ph name="END_LINK"/></translation>
 <translation id="1722460139690167654">നിങ്ങളുടെ <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> മാനേജ് ചെയ്യുന്നത്<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> ആണ്</translation>
+<translation id="8118488170956489476">നിങ്ങളുടെ സ്ഥാപനമാണ് നിങ്ങളുടെ <ph name="BEGIN_LINK"/>ബ്രൗസർ മാനേജ് ചെയ്യുന്നത്<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382">നിങ്ങളുടെ <ph name="BEGIN_LINK"/>ബ്രൗസർ മാനേജ് ചെയ്യുന്നത്<ph name="END_LINK"/><ph name="ENROLLMENT_DOMAIN"/> ആണ്</translation>
 <translation id="8168435359814927499">ഉള്ളടക്കം</translation>
 <translation id="7702907602086592255">ഡൊമെയ്‌ൻ</translation>

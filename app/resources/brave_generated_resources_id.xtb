@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Pemblokir Iklan Brave</translation>
 <translation id="6406506848690869874">Sync</translation>
-<translation id="8488282162676695335">Dompet Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") tidak diizinkan di Brave.</translation>
+<translation id="5655621391922317800">Dompet Kripto</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak diizinkan di Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk menyelesaikan impor, tutup semua jendela Chrome.</translation>
 <translation id="5735465527556462863">Tutup Brave (lama)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave Payments</translation>
 <translation id="3489524616427966890">Jendela dan tab terbuka</translation>
 <translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
+<translation id="3696083746357487900">Instal Dompet Kripto</translation>
 <translation id="8053096063396012732">Pasang Widevine</translation>
 <translation id="4840334696217618631">Mulai ulang peramban untuk mengaktifkan Widevine</translation>
 <translation id="8410111618231938546">Google Widevine adalah sepotong kode Digital Rights Management (DRM) yang tidak kami miliki dan tidak bisa kami periksa di Brave Software. Kode Google Widevine dimuat dari server Google, bukan dari server kami. Kode ini hanya dimuat jika Anda mengaktifkan pilihan ini. Kami tidak menyarankan penggunaan DRM, tetapi kami menghormati pilihan pengguna dan mengakui bahwa beberapa pengguna Brave ingin menggunakan layanan yang memerlukannya.
@@ -27,7 +28,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="2240268017737062801">Tanya ketika situs ingin memutar otomatis media</translation>
 <translation id="3371702087847741961">Tanya ketika situs ingin memainkan media secara otomatis (direkomendasikan)</translation>
 <translation id="3218385319396786393">Putar otomatis pada laman ini diblokir</translation>
-<translation id="4988333904713528597">Selalu izinkan putar otomatis di <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Selalu izinkan putar otomatis di <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Lanjutkan memblokir putar otomatis</translation>
 <translation id="5883458389055721080">Brave belum meninjau ekstensi ini untuk keamanan dan keselamatan. Hanya instal esktensi ini jika Anda mempercayai sang pengembang.</translation>
 <translation id="2044383478723007273">Warna Brave</translation>
@@ -35,6 +36,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6123134130710658846">Sembunyikan tombol Brave Rewards</translation>
 <translation id="7635711399568194460">Sembunyikan tombol Brave Rewards di bilah lokasi saat Brave Rewards tidak diaktifkan.</translation>
 <translation id="7965178729203412357">Identitas Tor Baru</translation>
+<translation id="8511502469534942133">Koneksi Tor Baru Untuk Situs Ini</translation>
 <translation id="8784924142044142231">Keluar dari Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Buka Jendela Tor</translation>
@@ -84,6 +86,9 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6786747875388722282">Ekstensi</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk menampilkan torrent langsung di peramban. Mendukung file torrent dan tautan magnet.</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mengaktifkan berbagi layar dan fitur lainnya di peramban.</translation>
+<translation id="1765684547504191670">Menggunakan komponen Media Router untuk mengaktifkan Chromecast dalam peramban.</translation>
+<translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
+<translation id="7179921470347911571">Luncurkan Ulang Sekarang</translation>
 <translation id="4154389611571860454">Gunakan ekstensi IPFS untuk mendukung IPFS di peramban</translation>
 <translation id="8137559199583651773">Kelola ekstensi</translation>
 <translation id="4928988318462976765">Toko Ekstensi Web</translation>

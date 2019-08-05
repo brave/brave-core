@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Nagrody Brave</translation>
 <translation id="7942180974165298215">Blokada reklam Brave</translation>
 <translation id="6406506848690869874">Synchronizacja</translation>
-<translation id="8488282162676695335">Portfel Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2</ph>") - to rozszerzenie nie jest dozwolone w Brave.</translation>
+<translation id="5655621391922317800">Portfele kryptowalut</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") - to rozszerzenie nie jest dozwolone w Brave.</translation>
 <translation id="7450557937477381864">Zamknij Chrome</translation>
 <translation id="7008934821596358692">Aby zakończyć importowanie, zamknij wszystkie okna przeglądarki Chrome.</translation>
 <translation id="5735465527556462863">Zamknij Brave (starą wersję)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Płatności Brave</translation>
 <translation id="3489524616427966890">Otwieraj okna  i karty</translation>
 <translation id="3699882589215410581">Zainstaluj i uruchom Widevine</translation>
+<translation id="3696083746357487900">Zainstaluj portfel kryptowalut</translation>
 <translation id="8053096063396012732">Zainstaluj Widevine</translation>
 <translation id="4840334696217618631">Uruchom ponownie przeglądarkę, aby włączyć Widevine</translation>
 <translation id="8410111618231938546">Google Widevine to fragment kodu zarządzania prawami cyfrowymi (DRM), który nie należy do Brave Software i którego nie jesteśmy w stanie kontrolować. Kod Google Widevine wczytywany jest z serwerów Google, a nie z naszych. Jest wczytywany tylko wtedy, gdy włączysz taką opcję. Odradzamy używanie DRM, ale szanujemy wybór użytkownika i przyjmujemy do wiadomości, że niektórzy użytkownicy Brave chcą korzystać z usług, które tego wymagają.
@@ -27,7 +28,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="2240268017737062801">Zapytaj, kiedy strona chce odtwarzać automatycznie multimedia</translation>
 <translation id="3371702087847741961">Zapytaj, kiedy strona chce odtwarzać automatycznie multimedia (zalecane)</translation>
 <translation id="3218385319396786393">Zablokowano automatyczne odtwarzanie na tej stronie</translation>
-<translation id="4988333904713528597">Zawsze zezwalaj na autoodtwarzanie na <ph name="HOST">$1</ph></translation>
+<translation id="4988333904713528597">Zawsze zezwalaj na autoodtwarzanie na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Kontynuuj blokowanie automatycznego odtwarzania</translation>
 <translation id="5883458389055721080">Brave nie zweryfikował tego rozszerzenia pod względem bezpieczeństwa i ochrony. Instaluj to rozszerzenie tylko wtedy, gdy ufasz programistom.</translation>
 <translation id="2044383478723007273">Kolory Brave</translation>
@@ -35,6 +36,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="6123134130710658846">Ukryj przycisk nagród Brave</translation>
 <translation id="7635711399568194460">Kiedy nagrody Brave są wyłączone, ukrywa przycisk nagród na pasku lokalizacji.</translation>
 <translation id="7965178729203412357">Nowa tożsamość Tor</translation>
+<translation id="8511502469534942133">Nowe połączenie z siecią Tor dla tej strony</translation>
 <translation id="8784924142044142231">Wyjdź z sieci Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Otwórz okno Tor</translation>
@@ -83,7 +85,10 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="8721331068159819483">Takie same jak w systemie MacOS</translation>
 <translation id="6786747875388722282">Rozszerzenia</translation>
 <translation id="2896916411183256228">Do prawidłowego wyświetlania torrentów bezpośrednio w przeglądarce używane jest narzędzie WebTorrent. Wspierane są pliki typu torrent i linki magnetyczne.</translation>
-<translation id="6554397389149987360">Stosuje komponent Hangouts, aby umożliwić udostępnianie ekranu i inne funkcje w przeglądarce.</translation>
+<translation id="6554397389149987360">Stosuj komponent Hangouts, aby umożliwić udostępnianie ekranu i inne funkcje w przeglądarce.</translation>
+<translation id="1765684547504191670">Stosuj komponent Media Router, aby umożliwić działanie Chromecast w przeglądarce.</translation>
+<translation id="9156965752763025780">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave.</translation>
+<translation id="7179921470347911571">Uruchom ponownie teraz</translation>
 <translation id="4154389611571860454">Używa rozszerzenia towarzyszącego IPFS do obsługi IPFS w przeglądarce.</translation>
 <translation id="8137559199583651773">Zarządzaj rozszerzeniami</translation>
 <translation id="4928988318462976765">Sklep z rozszerzeniami sieciowymi</translation>

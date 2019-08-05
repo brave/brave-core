@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Hibah Token Iklan Brave Anda",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "verifikasi",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Terputus",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Verifikasi Dompet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Terverifikasi",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Ke akun Uphold saya",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Putuskan dari Brave Reward",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Verifikasi dompet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Layanan dompet kami disediakan oleh",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Harap siapkan ID resmi Anda.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Pertahankan token Reward Iklan Anda",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Tambahkan token menggunakan kartu kredit",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Tarik token",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Dompet terverifikasi mengizinkan Anda:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Verifikasikan Dompet Anda",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Dan kelola dana Anda dengan mudah!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Terverifikasi",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Tidak tersedia",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Sambungkan ulang dompet",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Dompet Anda terverifikasi!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Selamat! Dompet $name$ Anda berhasil terverifikasi dan siap menambahkan atau menarik dana.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Ups. Dompet Anda tidak dapat dijangkau.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Tak perlu khawatir. Ini dapat terjadi karena sejumlah alasan keamanan. Cukup sambungkan ulang untuk mengatasinya.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -1631,7 +1631,9 @@
 <translation id="473546211690256853">Овим налогом управља <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Профил ће бити избрисан</translation>
 <translation id="5632566673632479864">Налог <ph name="EMAIL"/> није више дозвољен као примарни налог. Пошто тим налогом управља <ph name="DOMAIN"/>, обележивачи, историја, лозинке и друга подешавања биће обрисани са уређаја.</translation>
+<translation id="3797739167230984533">Организација <ph name="BEGIN_LINK"/>управља уређајем <ph name="DEVICE_TYPE"/><ph name="END_LINK"/></translation>
 <translation id="1722460139690167654"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/>-ом управља<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Организација <ph name="BEGIN_LINK"/>управља прегледачем<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Прегледачем управља<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Садржај</translation>
 <translation id="7702907602086592255">Домен</translation>

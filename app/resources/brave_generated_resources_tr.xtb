@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Ödülleri</translation>
 <translation id="7942180974165298215">Brave Reklam Engelleme</translation>
 <translation id="6406506848690869874">Sync</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") Brave'de izin verilmiyor.</translation>
+<translation id="5655621391922317800">Kripto Cüzdanlar</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") Brave'de izin verilmiyor.</translation>
 <translation id="7450557937477381864">Chrome'u Kapat</translation>
 <translation id="7008934821596358692">İçe aktarmayı bitirmek için tüm Chrome pencerelerini kapatın.</translation>
 <translation id="5735465527556462863">Brave'i (eski) Kapat</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave Ödemeleri</translation>
 <translation id="3489524616427966890">Açık pencereler ve sekmeler</translation>
 <translation id="3699882589215410581">Widevine'ı yükle ve çalıştır</translation>
+<translation id="3696083746357487900">Kripto Cüzdanlar Yükle</translation>
 <translation id="8053096063396012732">Widevine'ı yükle</translation>
 <translation id="4840334696217618631">Widevine’ı etkinleştirmek için tarayıcıyı yeniden başlatın</translation>
 <translation id="8410111618231938546">Google Widevine, Brave Yazılım'da sahibi olmadığımız ve denetlemediğimiz bir Digital Rights Management (DRM) kodu parçasıdır. Google Widevine kodu bizim sunucularımızdan değil Google sunucularından yüklenir. Sadece bu seçeneği etkinleştirdiğinizde yüklenir. DRM kullanımını teşvik etmiyoruz, fakat kullanıcı tercihlerine saygı duyuyor ve bazı Brave kullanıcılarının bunu gerektiren hizmetleri kullanmak isteyebileceğini biliyoruz.
@@ -27,7 +28,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="2240268017737062801">Bir site medyayı otomatik oynatmak istediğinde sor</translation>
 <translation id="3371702087847741961">Bir site medyayı otomatik oynatmak istediğinde sor (tavsiye edilir)</translation>
 <translation id="3218385319396786393">Bu sayfada otomatik oynatma engellenmiş</translation>
-<translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> her zaman otomatik oynatmaya izin ver</translation>
+<translation id="4988333904713528597"><ph name="HOST"/> her zaman otomatik oynatmaya izin ver</translation>
 <translation id="4150684676757176434">Oto-Oynatmayı engellemeye devam et</translation>
 <translation id="5883458389055721080">Brave bu eklentiyi, koruma ve güvenlik bakımından henüz değerlendirmedi. Bu eklentiyi yalnızca geliştiricisine güveniyorsanız yükleyin.</translation>
 <translation id="2044383478723007273">Brave renkleri</translation>
@@ -35,6 +36,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="6123134130710658846">Brave Ödülleri butonunu gizle</translation>
 <translation id="7635711399568194460">Brave Ödülleri etkin olmadığında konum çubuğundaki Brave Ödülleri butonunu gizler</translation>
 <translation id="7965178729203412357">Yeni Tor Kimliği</translation>
+<translation id="8511502469534942133">Bu Site İçin Yeni Tor Bağlantısı</translation>
 <translation id="8784924142044142231">Tor'dan Çıkış</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Tor Penceresini Aç</translation>
@@ -84,6 +86,9 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="6786747875388722282">Uzantılar</translation>
 <translation id="2896916411183256228">Torrentleri doğrudan tarayıcıda görüntülemek için WebTorrent'i kullanır. Torrent dosyalarını ve magnet bağlantılarını destekler.</translation>
 <translation id="6554397389149987360">Ekran paylaşımını ve tarayıcıdaki diğer özellikleri etkinleştirmek için Hangouts bileşenini kullanır.</translation>
+<translation id="1765684547504191670">Tarayıcıda Chromecast'i etkinleştirmek için Medya Yönlendiricisi bileşenini kullanır.</translation>
+<translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
+<translation id="7179921470347911571">Şimdi Tekrar Başlat</translation>
 <translation id="4154389611571860454">Tarayıcıda IPFS'yi desteklemek için IPFS eşlikçi eklentisini kullanır.</translation>
 <translation id="8137559199583651773">Uzantıları yönet</translation>
 <translation id="4928988318462976765">Web Uzantıları Mağazası</translation>

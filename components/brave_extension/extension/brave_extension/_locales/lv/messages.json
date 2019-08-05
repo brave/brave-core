@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "Visām vietnēm dzēst CSS noteikumus",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "Paplašinātais skatījums",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Vienkāršais skats",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Vietnēs bieži ir iekļauti sīkfaili un skripti, kas mēģina identificēt jūs un jūsu ierīci (bieži iegulti reklāmās). Tie vēlas noskaidrot, kas jūs esat, un sekot jums visā tīmeklī — sekojot tam, ko jūs darāt katrā vietnē. Brave tos bloķē, lai jūs varētu veikt pārlūkošanu, netiekot izsekoti.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Bloķēti starpvietņu izsekotāji un citas nejaukas lietas",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Ekrāna iestatījumu maiņa šajā skatā var ietekmēt šīs vietnes saderību ar tīmekli.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Sapratu!",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Uzzināt vairāk",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

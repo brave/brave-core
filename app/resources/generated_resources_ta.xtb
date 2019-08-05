@@ -1631,7 +1631,9 @@
 <translation id="473546211690256853">இந்தக் கணக்கு <ph name="DOMAIN"/> ஆல் நிர்வகிக்கப்படுகிறது</translation>
 <translation id="622537739776246443">சுயவிவரம் நீக்கப்படும்</translation>
 <translation id="5632566673632479864">உங்கள் <ph name="EMAIL"/> கணக்கு இனி முதன்மைக் கணக்காகச் செயல்பட அனுமதிக்கப்படாது. இந்தக் கணக்கை <ph name="DOMAIN"/> நிர்வகிப்பதால், உங்கள் புக்மார்க்குகள், வரலாறு, கடவுச்சொற்கள் மற்றும் பிற அமைப்புகள் இந்தச் சாதனத்திலிருந்து அழிக்கப்படும்.</translation>
+<translation id="3797739167230984533">உங்கள் நிறுவனம் உங்களுடைய <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> சாதனத்தை நிர்வகிக்கிறது<ph name="END_LINK"/></translation>
 <translation id="1722460139690167654">உங்கள் <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/>ஐ நிர்வகிப்பது<ph name="END_LINK"/>: <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">உங்கள் நிறுவனம் உங்கள் <ph name="BEGIN_LINK"/>உலாவியை நிர்வகிக்கிறது<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382">உங்கள் <ph name="BEGIN_LINK"/>உலாவியை நிர்வகிப்பது<ph name="END_LINK"/>: <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">உள்ளடக்கம்</translation>
 <translation id="7702907602086592255">டொமைன்</translation>

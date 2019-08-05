@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave ಜಾಹೀರಾತು ನಿರ್ಬಂಧ</translation>
 <translation id="6406506848690869874">ಸಿಂಕ್</translation>
-<translation id="8488282162676695335">Brave ವ್ಯಾಲೆಟ್</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ವಿಸ್ತರಣೆ ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") , ಇದು Brave ನಲ್ಲಿ ಅನುಮತಿಸಲಾಗಿಲ್ಲ.</translation>
+<translation id="5655621391922317800">Crypto ವ್ಯಾಲೆಟ್‌ಗಳು</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ವಿಸ್ತರಣೆ ID "<ph name="EXTENSION_ID"/>") , ಇದು Brave ನಲ್ಲಿ ಅನುಮತಿಸಲಾಗಿಲ್ಲ.</translation>
 <translation id="7450557937477381864">Chrome ಮುಚ್ಚಿ</translation>
 <translation id="7008934821596358692">ಆಮದು ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು, ಎಲ್ಲಾ Chrome ವಿಂಡೋಗಳನ್ನು ಮುಚ್ಚಿ.</translation>
 <translation id="5735465527556462863">Brave ಮುಚ್ಚಿ (ಹಳೆಯ)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave ಪಾವತಿಗಳು</translation>
 <translation id="3489524616427966890">ವಿಂಡೋಗಳು ಮತ್ತು ಟ್ಯಾಬ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="3699882589215410581">Widevine ಸ್ಥಾಪಿಸಿ ಮತ್ತು ರನ್ ಮಾಡಿ</translation>
+<translation id="3696083746357487900">Crypto ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಿ</translation>
 <translation id="8053096063396012732">Widevine ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
 <translation id="4840334696217618631">Widevine ಸಕ್ರಿಯಗೊಳಿಸಲು ಬ್ರೌಸರ್ ರಿಸ್ಟಾರ್ಟ್ ಮಾಡಿ</translation>
 <translation id="8410111618231938546">Google Widevine ಎಂಬುದು ಡಿಜಿಟಲ್ ರೈಟ್ಸ್ ಮ್ಯಾನೇಜ್‌ಮೆಂಟ್ (DRM) ಕೋಡ್‌ನ ಭಾಗವಾಗಿದ್ದು, ನಾವು ಅಂದರೆ Brave ಅದರ ಮಾಲೀಕತ್ವವನ್ನು ಹೊಂದಿರುವುದಿಲ್ಲ ಮತ್ತು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. Google Widevine ಕೋಡ್ ಅನ್ನು Google ಸರ್ವರ್‌ಗಳಿಂದ ಲೋಡ್ ಮಾಡಲಾಗಿರುತ್ತದೆಯೇ ಹೊರತು, ನಮ್ಮ ಸರ್ವರ್‌ಗಳಿಂದಲ್ಲ. ನೀವು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ ಮಾತ್ರವೇ ಇದನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತದೆ. ನಾವು DRM ಬಳಕೆಯನ್ನು ಪ್ರೋತ್ಸಾಹಿಸುವುದಿಲ್ಲವಾದರೂ, ಬಳಕೆದಾರರ ಆಯ್ಕೆಯನ್ನು ನಾವು ಗೌರವಿಸುತ್ತೇವೆ ಹಾಗೆಯೇ ಕೆಲವು Brave ಬಳಕೆದಾರರು ಇದರ ಅಗತ್ಯವಿರುವ ಸೇವೆಗಳನ್ನು ಬಳಸಲು ಬಯಸುತ್ತಾರೆ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೇವೆ.
@@ -27,7 +28,7 @@
 <translation id="2240268017737062801">ಸೈಟ್ ಮೀಡಿಯಾ ಸ್ವಯಂಪ್ಲೇ ಮಾಡಲು ಬಯಸಿದಾಗ ಕೇಳಿ</translation>
 <translation id="3371702087847741961">ಸೈಟ್ ಮೀಡಿಯಾ ಸ್ವಯಂಪ್ಲೇ ಮಾಡಲು ಬಯಸಿದಾಗ ಕೇಳಿ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)</translation>
 <translation id="3218385319396786393">ಈ ಪುಟದಲ್ಲಿ ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
-<translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> ನಲ್ಲಿ ಯಾವಾಗಲೂ ಸ್ವಯಂಪ್ಲೇ ಅನುಮತಿಸಿ</translation>
+<translation id="4988333904713528597"><ph name="HOST"/> ನಲ್ಲಿ ಯಾವಾಗಲೂ ಸ್ವಯಂಪ್ಲೇ ಅನುಮತಿಸಿ</translation>
 <translation id="4150684676757176434">ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸುವಿಕೆಯನ್ನು ಮುಂದುವರಿಸಿ</translation>
 <translation id="5883458389055721080">Brave ಈ ವಿಸ್ತರಣೆಯನ್ನು ಸುರಕ್ಷತೆ ಹಾಗೂ ರಕ್ಷಣೆಗಾಗಿ ಪರಿಶೀಲಿಸಿಲ್ಲ. ನೀವು ಡೆವಲಪರ್ ಮೇಲೆ ನಂಬಿಕೆ ಹೊಂದಿದ್ದಲ್ಲಿ ಮಾತ್ರ ಈ ವಿಸ್ತರಣೆಯನ್ನು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ.</translation>
 <translation id="2044383478723007273">Brave ಬಣ್ಣಗಳು</translation>
@@ -35,6 +36,7 @@
 <translation id="6123134130710658846">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಬಟನ್ ಮರೆ ಮಾಡಿ</translation>
 <translation id="7635711399568194460">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸದಿದ್ದಾಗ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್ ಬಟನ್‌ ಅನ್ನು ಲೊಕೇಶನ್ ಬಾರ್‌ನಲ್ಲಿ ಮರೆ ಮಾಡಿ</translation>
 <translation id="7965178729203412357">ಹೊಸ Tor ಗುರುತಿಸುವಿಕೆ</translation>
+<translation id="8511502469534942133">ಈ ಸೈಟ್‌ಗಾಗಿ ಹೊಸ Tor ಸಂಪರ್ಕ</translation>
 <translation id="8784924142044142231">Tor ನಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Tor ವಿಂಡೋ ತೆರೆಯಿರಿ</translation>
@@ -84,6 +86,9 @@
 <translation id="6786747875388722282">ವಿಸ್ತರಣೆಗಳು</translation>
 <translation id="2896916411183256228">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನೇರವಾಗಿ torrent ಗಳನ್ನು ಪ್ರದರ್ಶಿಸಲು WebTorrent ಅನ್ನು ಬಳಸುತ್ತದೆ. torrent ಫೈಲ್‌ಗಳು ಮತ್ತು ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ.</translation>
 <translation id="6554397389149987360">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಪರದೆ ಹಂಚಿಕೆ ಮತ್ತು ಇತರ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು Hangouts ಅಂಶವನ್ನು ಬಳಸುತ್ತದೆ.</translation>
+<translation id="1765684547504191670">ಬ್ರೌಸರ್‌ನಲ್ಲಿ Chromecast ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಮೀಡಿಯಾ ರೂಟರ್ ಕಾಂಪೋನೆಂಟ್ ಅನ್ನು ಬಳಸುತ್ತದೆ.</translation>
+<translation id="9156965752763025780">ನೀವು ಮುಂದಿನ ಬಾರಿ Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿದಾಗ ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಾರ್ಯಗತಗೊಳ್ಳುತ್ತವೆ.</translation>
+<translation id="7179921470347911571">ಇದೀಗ ಮರುಆರಂಭಿಸಿ</translation>
 <translation id="4154389611571860454">ಬ್ರೌಸರ್‌ನಲ್ಲಿ IPFS ಬೆಂಬಲಿಸಲು IPFS ಕಂಪಾನಿಯನ್ ವಿಸ್ತರಣೆಯನ್ನು ಬಳಸುತ್ತದೆ.</translation>
 <translation id="8137559199583651773">ವಿಸ್ತರಣೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ</translation>
 <translation id="4928988318462976765">ವೆಬ್ ವಿಸ್ತರಣೆಗಳು ಸ್ಟೋರ್</translation>

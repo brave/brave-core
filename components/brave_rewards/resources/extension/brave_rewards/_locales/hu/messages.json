@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Brave Ads token jóváírásod",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "ellenőrizd",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Nincs kapcsolat",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Ellenőrizd a pénztárcát",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Ellenőrizve",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Lépj be Uphold fiókodba",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Brave Jutalmak kapcsolat bontása",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Ellenőrizd a pénztárcát",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Pénztárca-szolgáltatásunk biztosítója a(z)",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Kérünk, legyen kéznél egy hivatalos személyi igazolvány.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Megtarthatod reklámok utáni jutalmaid tokenjeit",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Tokeneket adhatsz hozzá hitelkártyával",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Tokenek lehívása",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Az ellenőrzött pénztárca előnyei:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Ellenőrizd pénztárcádat",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Hogy könnyedén kezelhesd pénzedet!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Ellenőrizve",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Nem érhető el",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Csatlakoztasd újra a pénztárcát",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Pénztárcád ellenőrizve lett!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Gratulálunk! $name$ pénztárcád ellenőrzése sikerült, és készen áll a pénz feltöltésére és kivevésére.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Hoppá. Pénztárcádat nem lehet elérni.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Nem kell aggódni. Ez több okból is megtörténhet. Egyszerű újracsatlakozással megoldódnak a problémák.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

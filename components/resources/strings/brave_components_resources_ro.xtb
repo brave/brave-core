@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
-<translation id="689261804992965033">Reclame Blocate</translation>
-<translation id="1663506596135222606">Urmăritoare Blocate</translation>
+<translation id="4339730410920731698">Reclame și trackere blocate</translation>
 <translation id="2313532038420432247">Actualizări HTTPS</translation>
 <translation id="7679428712334662192">Timp Estimativ Salvat</translation>
 <translation id="5206618227023752085">Siteul de sus a fost eliminat.</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">Vizualizare istoric navigare</translation>
 <translation id="1742484101357469636">Setări tablou de bord</translation>
 <translation id="8320281346741574991">Afișează imaginea de fundal</translation>
+<translation id="7275773481201277457">Afișare date statistice Brave</translation>
+<translation id="6836061097810262923">Afișare ceas</translation>
+<translation id="8643377320501056697">Afișare site-uri de top</translation>
 <translation id="6165508094623778733">Aflați mai multe</translation>
 <translation id="8730621377337864115">Efectuat</translation>
 <translation id="6248988683584659830">Setări căutare</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">Aflați mai multe despre Tor în Brave</translation>
 <translation id="4272382368346338917">Filtre suplimentare</translation>
 <translation id="8949292968394988358">Atenție: Activarea unui număr prea mare de filtre va afecta funcționarea</translation>
-<translation id="1869685517625607604">Numărul total de reclame blocate:</translation>
+<translation id="8686201964111147748">Numărul total de reclame și urmăriri blocate:</translation>
 <translation id="4673764878177947707">Filtre personalizate</translation>
 <translation id="8803682034537762884">Unul pe linie, un filtru este descris în sintaxa Adblock Plus</translation>
 <translation id="2974339193389078578">Brave, noul internet</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">Atenția dumneavoastră este valoroasă. Câștigați vizualizând reclame care respectă confidențialitatea și plătiți mai departe pentru a susține creatorii de conținut care vă plac.</translation>
 <translation id="4942016616604700968">Activează recompense</translation>
 <translation id="3958088479270651626">Importați marcaje și setări</translation>
-<translation id="5633840519079139680">Brave facilitează configurarea mediului obișnuit prin importarea de marcaje și setări de la alte browsere instalate pe calculator.</translation>
+<translation id="2609701960545338618">Importați-vă marcajele și setările din browser-ul dvs. precedent pentru a vă reconstrui mediul dvs. de browsing obișnuit. Setările avansate de importare se află în Setări.</translation>
 <translation id="8275038454117074363">Importă</translation>
+<translation id="2088479175984386785">Importare din...</translation>
 <translation id="5540323067375019678">Administrați scuturile</translation>
 <translation id="3278033011827237847">Protejați-vă împotriva reclamelor și trackerelor care invadează intimitatea în timp ce navigați cu scuturile Brave. Setați scuturile ca „dezactivate” dacă un site nu pare să funcționeze corect.</translation>
 <translation id="3366308997091824722">Setări scut</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">Pentru o experiență de căutare mai privată, încercați DuckDuckGo.</translation>
 <translation id="513635702954746724">Alegeți tema cromatică</translation>
 <translation id="6842850080200126305">Setați culoarea barei de instrumente selectând opțiunea de culori deschise sau închise din panoul de setări.</translation>
-<translation id="2801098717523961746">Alegeți tema dvs.</translation>
+<translation id="5805868144901917207">Selectați o temă</translation>
+<translation id="8131740175452115882">Confirmați</translation>
+<translation id="713206503018076063">Temă sistem (implicită)</translation>
+<translation id="1807246157184219062">Lumină</translation>
+<translation id="2414886740292270097">Negru</translation>
 <translation id="3829010735958850433">Sari peste turul de bun venit</translation>
 <translation id="1201402288615127009">Înainte</translation>
 <translation id="1919345977826869612">Reclame</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">Plăți totale în această lună</translation>
 <translation id="4153752809523809915">Ați plătit astăzi creatorul preferat de conținut?</translation>
 <translation id="1165667598801520610">Adaugă fonduri</translation>
-<translation id="5314648471460409933">Administrare fonduri</translation>
+<translation id="6239274080752256452">Retragere fonduri</translation>
 <translation id="2726674968268546964">token-uri</translation>
 <translation id="7286722244752781970">Timp minim pe pagină înainte de înregistrarea unei vizite</translation>
 <translation id="4424486208397124985">Vizite minime pentru relevanța editorului</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">Recuperare acum</translation>
 <translation id="1184075897575325927">Ne pare rău, se pare că acest grant a fost revendicat deja.</translation>
 <translation id="282693359045252357">Data următoarei plăți lunare</translation>
-<translation id="6231182869178328516">Tocmai am dat un bacșiș lui <ph name="NAME">$1<ex>user</ex></ph> folosind Brave Browser. Vezi despre ce e vorba la https://brave.com/tips.</translation>
+<translation id="6231182869178328516">Tocmai am dat un bacșiș lui <ph name="NAME"/> folosind Brave Browser. Vezi despre ce e vorba la https://brave.com/tips.</translation>
 <translation id="8404935570206006581">DațiBacșișCuBrave</translation>
+<translation id="2876191400747549936">Ne pare rău, dar a avut loc o problemă în timpul procesării cererii dvs. Vă rugăm să încercați din nou.</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="5923611424721173182">Reconciliere actuală</translation>
 <translation id="5457113250005438886">Invalid</translation>
@@ -170,14 +178,10 @@
 <translation id="9026369588205476247">Pentru a vă proteja confidențialitatea, acest extras de cont Brave Rewards nu este salvat, înregistrat sau trecut în jurnal decât pe dispozitivul dvs. (computerul pe care îl folosiți). Dacă pierdeți datele de pe dispozitivul dvs., nu veți putea obține acest extras din partea Brave.</translation>
 <translation id="1036277985068412734">adaugă fonduri</translation>
 <translation id="5441565662498481293">Trimiți automat o plată către:</translation>
-<translation id="4496990471549986619">Lista de întrebări frecvente</translation>
-<translation id="1688876543043079268">Memento: Portofelul Brave este unidirecțional și BAT curge către siteurile agenției de publicitate. Pentru mai multe informații despre Brave Rewards, vă rugăm vizitați</translation>
-<translation id="2790014973538267577">Afișare cod QR</translation>
-<translation id="5690154556705187369">Asigurați-vă că utilizați adresa de mai jos care se potrivește cu tipul de criptomonedă pe care o dețineți. Va fi schimbată automat în BAT de către Uphold și va apărea ca un sold mai mare în portofelul Brave Rewards. Vă rugăm așteptați până la o oră ca soldul portofelului să se actualizeze.</translation>
-<translation id="8874657527115501951">Trimiteți criptomonedă din contul dvs. extern în portofelul dvs. de recompense Brave.</translation>
 <translation id="2827387977307390755">Permite bacșiș pe</translation>
 <translation id="3671566813999349838">Sumă</translation>
 <translation id="3819257035322786455">Backup</translation>
+<translation id="4989542687859782284">Indisponibil</translation>
 <translation id="1312977698678162065">Sunteți plătiți să vedeți reclame relevante care vă respectă confidențialitatea.</translation>
 <translation id="7655723274266132226">Acum puteți câștiga bani vizualizând reclame.</translation>
 <translation id="2975780980638932742">Brave Ads a sosit!</translation>
@@ -275,9 +279,12 @@
 <translation id="1135093233619227159">Puteți să eliminați orice site care primește plăți lunare din interiorul panoului de Plăți.</translation>
 <translation id="5082474983463379713">Vă rugăm rețineți:</translation>
 <translation id="1430915738399379752">Printează</translation>
+<translation id="135956957367307069">Cererea dvs. este încă în curs de procesare. Vă rugăm să așteptați.</translation>
+<translation id="8725066075913043281">Încearcă din nou</translation>
 <translation id="3173528272490482456">Gata să începem?</translation>
 <translation id="913775524828049259">Da sunt gata</translation>
 <translation id="108052542935515756">Puteți începe cu</translation>
+<translation id="2678666039642976470">Reconectare portofel</translation>
 <translation id="194625454574835815">Cod de recuperare</translation>
 <translation id="6354568176665589146">Recurent</translation>
 <translation id="7577100371127227294">Plăți lunare</translation>
@@ -306,7 +313,7 @@
 <translation id="8014425282125849700">Ocazional, vi se vor oferi token-uri gratuite de la Brave. Fiți atenți la aceste alerte!</translation>
 <translation id="1370034647041840967">Câștigați token-uri pentru atenția oferită reclamelor și plătiți mai departe pentru a susține creatorii de conținut pe care îi apreciați!</translation>
 <translation id="3905359437915971466">Adăugați, retrageți și administrați fonduri pe</translation>
-<translation id="5866139915213160210">Portofelul Brave este administrat de</translation>
+<translation id="1401808324297710517">Portofelul dvs. Brave este construit pe platforma</translation>
 <translation id="6401272292123354754">Recompensele Brave sunt construite pe Token-ul Atenție de Bază. Aflați mai multe despre BAT</translation>
 <translation id="7823359893981882407">aici</translation>
 <translation id="4483635855837696643">Recuperare portofel</translation>
@@ -345,7 +352,6 @@
 <translation id="8615803647903750175">Activitate portofel</translation>
 <translation id="2620624773940447728">Adresa portofelului</translation>
 <translation id="4989277977420164514">sold portofel</translation>
-<translation id="8725066075913043281">Încercați din nou</translation>
 <translation id="1083771727630442739">Crearea portofelului a eșuat</translation>
 <translation id="9146039192200831719">Vă rugăm verificați conexiunea la internet.</translation>
 <translation id="1910721550319506122">Bun venit!</translation>
@@ -380,6 +386,21 @@
 <translation id="8101881066646819737">Acordare token reclame Brave</translation>
 <translation id="2151535059686617995">Este’ ziua dumneavoastră norocoasă!</translation>
 <translation id="6255773350565723852">Grantul token-ului dumneavoastră trebuie să sosească.</translation>
+<translation id="7512440811010447157">verifică</translation>
+<translation id="8030169304546394654">Deconectat</translation>
+<translation id="8267327690882073581">Verificare portofel</translation>
+<translation id="4569155249847375786">Verificat</translation>
+<translation id="7591798679868259510">Mergi la contul meu Uphold</translation>
+<translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
+<translation id="46988480989545156">Verificare portofel</translation>
+<translation id="1554282356558968486">Serviciul nostru de portofel este furnizat de</translation>
+<translation id="6771734945114850124">Vă rugăm să aveți la îndemână actul de identitate emis de autoritățile naționale.</translation>
+<translation id="4483114863312340607">Retragere și adăugare fonduri</translation>
+<translation id="6600381840029958159">Nu aveți nevoie să rezolvați captcha pentru a câștiga răsplăți pentru reclame</translation>
+<translation id="4332021186346461319">Răsplățile primite nu expiră niciodată și vor fi depuse în portofelul dvs. imediat.</translation>
+<translation id="2610007079772760276">Un portofel verificat vă permite să:</translation>
+<translation id="7565794512491053578">Verificați-vă portofelul</translation>
+<translation id="698531289520577961">Și administrați-vă fondurile cu ușurință!</translation>
 <translation id="1181037720776840403">Eliminare</translation>
 <translation id="7885157704277298658">Copiat!</translation>
 <translation id="5379640681913450928">Număr de cuvinte:</translation>
@@ -440,4 +461,5 @@
 <translation id="1399673826422570698">Este posibil să aveți probleme cu rețeaua sau ar putea exista o problemă cu serverele de sincronizare.</translation>
 <translation id="5286379413446391050">Conectarea la serverele Sync nu a reușit</translation>
 <translation id="2410472020237369473">Este posibil ca ora sau fusul orar al ceasului computerului dvs. să fie configurate incorect. Verificați setările ceasului dvs.</translation>
+<translation id="5655621391922317800">Portofele cripto</translation>
 </translationbundle>
