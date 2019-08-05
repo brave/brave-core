@@ -29,11 +29,10 @@ def main():
     gpg_full_key_id = args.gpg_full_key_id
     if args.get(unmount, default=False) and channel in ['beta', 'dev', 'nightly']:
         unmount = args.unmount
-     if channel in ['release']:
-         if not args.gpg_passphrase:
-             logging.error(
-                "Error: --gpg_passphrase required for channel {}".format(channel))
-            exit(1)
+        if channel in ['release']:
+            if not args.gpg_passphrase:
+                logging.error("Error: --gpg_passphrase required for channel {}".format(channel))
+                exit(1)
         else:
             gpg_passphrase = args.gpg_passphrase
     s3_test_buckets = args.s3_test_buckets
@@ -342,9 +341,10 @@ def parse_args():
                         required=True)
     parser.add_argument('-s', '--s3_test_buckets', help='Upload to test S3 buckets (same names but with'
                         ' \'-test\' postfix) for QA testing', action='store_true')
-    parser.add_argument('-u', '--unmount', help='Unmount the ~/.gnupg filesystem if this key is found in ',
-                       ' the GPG Keyring', required=False)
+    parser.add_argument('-u', '--unmount', help='Unmount the ~/.gnupg filesystem if this key is found in',
+                        ' the GPG Keyring', required=False)
     return parser.parse_args()
+
 
 if __name__ == '__main__':
     sys.exit(main())
