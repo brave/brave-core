@@ -5,6 +5,9 @@
 
 #include "brave/components/p3a/brave_p3a_service.h"
 
+#include <memory>
+#include <string>
+
 #include "base/command_line.h"
 #include "base/i18n/timezone.h"
 #include "base/metrics/histogram_samples.h"
@@ -22,6 +25,7 @@
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
+#include "brave/components/p3a/pref_names.h"
 #include "brave/vendor/brave_base/random.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -97,6 +101,8 @@ BraveP3AService::~BraveP3AService() = default;
 void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry) {
   BraveP3ALogStore::RegisterPrefs(registry);
   registry->RegisterTimePref(kLastRotationTimeStampPref, {});
+  registry->RegisterBooleanPref(kP3AEnabled, true);
+  registry->RegisterBooleanPref(kP3ANoticeAcknowledged, false);
 }
 
 void BraveP3AService::InitCallbacks() {
@@ -343,4 +349,5 @@ void BraveP3AService::UpdateRotationTimer() {
   VLOG(2) << "BraveP3AService new rotation timer will fire at "
           << base::Time::Now() + next_rotation << " after " << next_rotation;
 }
+
 }  // namespace brave

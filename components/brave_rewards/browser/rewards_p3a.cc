@@ -82,4 +82,4 @@ void RecordNoWalletCreatedForAllMetrics() {
   RecordAdsState(AdsP3AState::kNoWallet);
 }
 
-}  // brave_rewards
+}  // namespace brave_rewards

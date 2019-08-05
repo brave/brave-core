@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_prochlo/brave_prochlo_message.h"
 
+#include <vector>
+
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/stl_util.h"

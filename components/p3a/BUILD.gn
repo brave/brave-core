@@ -11,6 +11,8 @@ source_set("p3a") {
     "brave_p3a_uploader.h",
     "p3a_core_metrics.cc",
     "p3a_core_metrics.h",
+    "pref_names.cc",
+    "pref_names.h",
   ]
 
   deps = [

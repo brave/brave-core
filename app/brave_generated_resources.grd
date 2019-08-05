@@ -539,6 +539,16 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
           Black Stripes
         </message>
       </if>
+      <!-- P3A -->
+      <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR" desc="Text that shows on the info bar where user acknowledges the P3A message">
+        Brave uses completely private product analytics to estimate the overall usage of certain features
+      </message>
+      <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR_ACKNOWLEDGE" desc="OK button that shows on the info bar where user acknowledges the P3A message">
+        Got it
+      </message>
+      <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR_DISABLE" desc="Disable button that shows on the info bar where user acknowledges the P3A message">
+        Disable
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_GOOGLE_ANALYTICS_POLYFILL" file="resources/js/google_analytics_polyfill.js" type="BINDATA" />
