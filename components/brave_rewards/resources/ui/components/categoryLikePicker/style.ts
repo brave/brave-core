@@ -31,9 +31,9 @@ export const StyledCategoryActionOptoutButton = styled<{}, 'div'>('div')`
 `
 
 export const StyledCategoryActionOptinFilledButton = styled(StyledCategoryActionOptinButton)`
-  color: red;
+  color: ${p => p.theme.palette.red500};
 `
 
 export const StyledCategoryActionOptoutFilledButton = styled(StyledCategoryActionOptoutButton)`
-  color: red;
+  color: ${p => p.theme.palette.red500};
 `

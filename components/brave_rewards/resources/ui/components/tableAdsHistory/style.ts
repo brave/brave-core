@@ -68,7 +68,7 @@ export const StyledAdContentDiv = styled<{}, 'div'>('div')`
   border: 1px solid;
   border-collapse: separate;
   border-radius: 5px;
-  border-color:  ${p => p.theme.color.subtle};
+  border-color: ${p => p.theme.color.subtle};
   padding: 10px;
   display: inline-flex;
   align-items: center;

@@ -717,10 +717,11 @@ storiesOf('Feature Components/Rewards/Modal', module)
     ]
     return (
       <ModalShowAdsHistory
-      onClose={doNothing}
-      rows={rows}
-      adsPerHour={adsPerHour}
-      hasSavedEntries={true}
+        onClose={doNothing}
+        rows={rows}
+        adsPerHour={adsPerHour}
+        hasSavedEntries={true}
+        totalDays={7}
       />
     )
   })
@@ -728,9 +729,9 @@ storiesOf('Feature Components/Rewards/Modal', module)
     const adsPerHour = 0
     return (
       <ModalShowAdsHistory
-      onClose={doNothing}
-      rows={undefined}
-      adsPerHour={adsPerHour}
+        onClose={doNothing}
+        rows={undefined}
+        adsPerHour={adsPerHour}
       />
     )
   })

@@ -8,7 +8,7 @@ exports[`ShowAdsHistory tests basic tests matches the snapshot 1`] = `
 
 .c1 {
   display: inline-block;
-  color: #CED0DB;
+  color: #ced0db;
   cursor: pointer;
   font-size: 13px;
   font-weight: normal;

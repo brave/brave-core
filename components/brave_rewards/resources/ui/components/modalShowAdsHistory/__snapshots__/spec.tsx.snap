@@ -10,7 +10,7 @@ exports[`ModalShowAdsHistory tests basic tests matches the snapshot 1`] = `
 .c6 {
   font-size: 22px;
   font-weight: 600;
-  color: rgb(193,45,124);
+  color: #a3278f;
   margin-bottom: 10px;
   line-height: 1.3;
 }
@@ -24,7 +24,8 @@ exports[`ModalShowAdsHistory tests basic tests matches the snapshot 1`] = `
 
 .c10 {
   font-size: 18px;
-  color: rgb(193,45,124);
+  color: #a3278f;
+  margin-right: 5px;
 }
 
 .c9 {
@@ -33,7 +34,7 @@ exports[`ModalShowAdsHistory tests basic tests matches the snapshot 1`] = `
 
 .c11 {
   font-size: 18px;
-  color: rgb(193,45,124);
+  color: #a3278f;
   font-weight: 600;
 }
 
@@ -162,7 +163,7 @@ exports[`ModalShowAdsHistory tests basic tests matches the snapshot 1`] = `
             <span
               className="c11"
             >
-              0MISSING: adsPerHourPlural
+              0
             </span>
           </div>
         </div>

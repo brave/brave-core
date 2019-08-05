@@ -38,6 +38,8 @@ export interface DetailRow {
   adDetailRows: AdDetailRow[]
 }
 
+export type AdAction = 'click' | 'dismiss' | 'view' | 'landed'
+
 interface AdContent {
   brand: string
   brandInfo: string
@@ -45,7 +47,7 @@ interface AdContent {
   brandUrl: string
   brandDisplayUrl: string
   likeAction: number
-  adAction: 'click' | 'dismiss' | 'view' | 'landed'
+  adAction: AdAction
   savedAd: boolean
   flaggedAd: boolean
   logoUrl?: string

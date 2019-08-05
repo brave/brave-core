@@ -28,9 +28,8 @@ export interface Props {
   rows?: DetailRow[]
   onClose?: () => void
   id?: string
-  isMobile?: boolean
   adsPerHour?: number
-  adsPerDay?: number
+  totalDays?: number
   hasSavedEntries?: boolean
   onSavedFilterClick?: () => void
   onAllFilterClick?: () => void
@@ -88,16 +87,16 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
   }
 
   render () {
-    const { id, onClose, isMobile, adsPerHour, hasSavedEntries, rows } = this.props
+    const { id, onClose, adsPerHour, hasSavedEntries, rows, totalDays } = this.props
 
     return (
-      <Modal id={id} onClose={onClose} isMobile={isMobile} testId={'show-ads-history-modal'}>
+      <Modal id={id} onClose={onClose} testId={'show-ads-history-modal'}>
         <StyledWrapper>
           <StyledAdsHistoryTitle>
             {getLocale('adsHistoryTitle')}
           </StyledAdsHistoryTitle>
           <StyledSubTitleText>
-            {getLocale('adsHistorySubTitle')}
+            {getLocale('adsHistorySubTitle', { totalDays: totalDays || '0' })}
           </StyledSubTitleText>
           <StyledAdsHeaderWrapper>
             <StyledAdsInfoTextWrapper>
@@ -105,7 +104,7 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
                 {getLocale('adsCurrentlyViewing')}
               </StyledAdsInfoText>
               <StyledAdsPerHourText>
-                {(adsPerHour || '0') + (adsPerHour !== 1 ? getLocale('adsPerHourPlural') : getLocale('adsPerHourSingular'))}
+                {adsPerHour || '0'}
               </StyledAdsPerHourText>
             </StyledAdsInfoTextWrapper>
               {

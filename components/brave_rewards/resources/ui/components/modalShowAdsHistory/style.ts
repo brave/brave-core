@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
-  font-family: Poppins, sans-serif;
+  font-family: ${p => p.theme.fontFamily.heading};
   padding-top: 10px;
   white-space: nowrap;
 `
@@ -14,14 +14,14 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
 export const StyledLink = styled<{}, 'a'>('a')`
   cursor: pointer;
   display: inline-block;
-  color: #CED0DB;
+  color: ${p => p.theme.palette.grey300};
   font-size: 16px;
   letter-spacing: 0;
 `
 
 export const StyledNotSelectedLink = styled<{}, 'span'>('span')`
   display: inline-block;
-  color: #696FDC;
+  color: ${p => p.theme.color.brandBat};
   font-size: 16px;
   letter-spacing: 0;
 `
@@ -30,26 +30,16 @@ export const StyledText = styled<{}, 'span'>('span')`
   font-size: 16px;
   letter-spacing: 0;
   display: inline-block;
-  color: #C2C4CF;
+  color: ${p => p.theme.color.text};
   margin: 0 10px 0;
 `
 
 export const StyledAdsHistoryTitle = styled<{}, 'div'>('div')`
   font-size: 22px;
   font-weight: 600;
-  color: rgb(193, 45, 124);
+  color: ${p => p.theme.palette.magenta600};
   margin-bottom: 10px;
   line-height: 1.3;
-`
-
-export const StyledNote = styled<{}, 'div'>('div')`
-  max-width: 508px;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  margin-bottom: 10px;
-  line-height: 1.5;
-  color: #686978;
 `
 
 export const StyledSeparatorText = styled<{}, 'span'>('span')`
@@ -57,7 +47,7 @@ export const StyledSeparatorText = styled<{}, 'span'>('span')`
   font-weight: 200;
   letter-spacing: 0;
   display: inline-block;
-  color: #C2C4CF
+  color: ${p => p.theme.color.text};
 `
 
 export const StyledSubTitleText = styled<{}, 'div'>('div')`
@@ -69,7 +59,8 @@ export const StyledSubTitleText = styled<{}, 'div'>('div')`
 
 export const StyledAdsInfoText = styled<{}, 'span'>('span')`
   font-size: 18px;
-  color: rgb(193, 45, 124);
+  color: ${p => p.theme.palette.magenta600};
+  margin-right: 5px;
 `
 
 export const StyledAdsInfoTextWrapper = styled<{}, 'div'>('div')`
@@ -78,7 +69,7 @@ export const StyledAdsInfoTextWrapper = styled<{}, 'div'>('div')`
 
 export const StyledAdsPerHourText = styled<{}, 'span'>('span')`
   font-size: 18px;
-  color: rgb(193, 45, 124);
+  color: ${p => p.theme.palette.magenta600};
   font-weight: 600;
 `
 
@@ -105,14 +96,14 @@ export const StyledThumbDownFilter = styled<{}, 'div'>('div')`
   padding: 4px;
   padding-top: 0px;
   cursor: pointer;
-  color: CED0DB;
+  color: ${p => p.theme.color.subtle};
 `
 
 export const StyledThumbDownNotSelectedFilter = styled<{}, 'div'>('div')`
   display: inline-block;
   width: 32px;
   height: 32px;
-  color: #696FDC;
+  color: ${p => p.theme.color.brandBat};
   padding: 4px;
   padding-top: 0px;
 `

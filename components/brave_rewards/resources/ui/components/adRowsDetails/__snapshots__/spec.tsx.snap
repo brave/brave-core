@@ -4,7 +4,7 @@ exports[`Ad Rows Details tests basic tests matches the snapshot 1`] = `
 .c4 {
   font-family: Muli,sans-serif;
   font-size: 14px;
-  color: #686978;
+  color: #5e6175;
   display: inline-block;
 }
 
@@ -25,8 +25,8 @@ exports[`Ad Rows Details tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
-  color: #DADCE8;
-  background-color: #DADCE8;
+  color: #c2c4cf;
+  background-color: #c2c4cf;
   height: 2px;
   border: none;
 }
@@ -37,7 +37,7 @@ exports[`Ad Rows Details tests basic tests matches the snapshot 1`] = `
   border: none;
   width: 16px;
   height: 16px;
-  color: #9E9FAB;
+  color: #c2c4cf;
   padding: 1px;
   outline: none;
   display: inline-block;
