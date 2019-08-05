@@ -37,7 +37,7 @@ class RewardsNotificationService {
     REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS,
     REWARDS_NOTIFICATION_BACKUP_WALLET,
     REWARDS_NOTIFICATION_TIPS_PROCESSED,
-    REWARDS_NOTIFICATION_ADS_LAUNCH,
+    REWARDS_NOTIFICATION_ADS_ONBOARDING,
     REWARDS_NOTIFICATION_VERIFIED_PUBLISHER,
     REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS,
     REWARDS_NOTIFICATION_GENERAL_LEDGER
@@ -72,6 +72,7 @@ class RewardsNotificationService {
   virtual const RewardsNotificationsMap& GetAllNotifications() const = 0;
   virtual void ReadRewardsNotificationsJSON() = 0;
   virtual void StoreRewardsNotifications() = 0;
+  virtual bool Exists(RewardsNotificationID id) const = 0;
 
   void AddObserver(RewardsNotificationServiceObserver* observer);
   void RemoveObserver(RewardsNotificationServiceObserver* observer);

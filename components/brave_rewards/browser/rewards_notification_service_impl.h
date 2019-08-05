@@ -43,6 +43,8 @@ class RewardsNotificationServiceImpl
   void ReadRewardsNotifications(const base::Value::ListStorage& root);
   void StoreRewardsNotifications() override;
 
+  bool Exists(RewardsNotificationID id) const override;
+
  private:
   bool IsUGPGrant(const std::string& grant_type);
   std::string GetGrantIdPrefix(const std::string& grant_type);

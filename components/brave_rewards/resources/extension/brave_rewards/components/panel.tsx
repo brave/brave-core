@@ -370,7 +370,7 @@ export class Panel extends React.Component<Props, State> {
         type = 'tipsProcessed'
         text = getMessage('tipsProcessedNotification')
         break
-      case RewardsNotificationType.REWARDS_NOTIFICATION_ADS_LAUNCH:
+      case RewardsNotificationType.REWARDS_NOTIFICATION_ADS_ONBOARDING:
         type = 'ads-launch'
         text = getMessage('braveAdsLaunchMsg')
         break
