@@ -30,7 +30,6 @@ const locale = {
   themeOption1: 'Light',
   themeOption2: 'Dark',
   themeOption3: 'System theme (default)',
-
   // fifth screen
   protectYourPrivacy: 'Manage your shields',
   adjustProtectionLevel: 'Protect against privacy-invading ads and trackers while browsing with Brave Shields. Set Shields to "down" if a site doesn’t seem to be working properly.',

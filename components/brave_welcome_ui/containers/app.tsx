@@ -108,7 +108,6 @@ export class WelcomePage extends React.Component<Props, State> {
               <ThemeBox
                 index={4}
                 currentScreen={this.currentScreen}
-                onClick={this.onClickNext}
                 onChangeTheme={actions.setTheme}
                 browserThemes={welcomeData.browserThemes}
               />

@@ -39,6 +39,7 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   outline-width: 2px;
   outline-color: ${p => p.theme.color.brandBrave};
   cursor: pointer;
+  margin: 0 16px;
 
   > option {
     /* see https://github.com/brave/brave-browser/issues/4213 for info */
