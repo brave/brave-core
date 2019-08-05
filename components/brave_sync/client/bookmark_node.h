@@ -9,10 +9,18 @@
 
 namespace brave_sync {
 
+class BraveBookmarkNode : public bookmarks::BookmarkNode {
+ public:
+  explicit BraveBookmarkNode(int64_t id, const GURL& url, Type type);
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveBookmarkNode);
+};
+
 // Sync Managed PerrmanentNode
 class BraveBookmarkPermanentNode : public bookmarks::BookmarkPermanentNode {
  public:
-  explicit BraveBookmarkPermanentNode(int64_t id);
+  explicit BraveBookmarkPermanentNode(int64_t id, Type type);
   ~BraveBookmarkPermanentNode() override;
 
   void set_visible(bool value) { visible_ = value; }
