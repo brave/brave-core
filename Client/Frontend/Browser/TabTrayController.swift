@@ -457,6 +457,9 @@ class TabTrayController: UIViewController, Themeable {
         // we clear out all of the private tabs
         tabManager.willSwitchTabMode(leavingPBM: privateMode)
         privateMode = !privateMode
+        
+        //When we switch from Private => Regular make sure we reset _selectedIndex, fix for bug #888
+        tabManager.resetSelectedIndex()
 
         toolbar.privateModeButton.isSelected = privateMode
         collectionView.layoutSubviews()
