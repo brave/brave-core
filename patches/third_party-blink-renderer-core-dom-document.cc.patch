@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..20c2f139b8461ff4d5b3e113cc6adabb6edb297f 100644
+index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..aa90f39f216d526c763e640b5cc006cd8c860d00 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -315,6 +315,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
@@ -30,7 +30,7 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..20c2f139b8461ff4d5b3e113cc6adabb
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        frame_(initializer.GetFrame()),
-@@ -777,8 +791,140 @@ Document::~Document() {
+@@ -777,7 +791,149 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -43,8 +43,8 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..20c2f139b8461ff4d5b3e113cc6adabb
 +    page_graph_ = nullptr;
 +  }
 +#endif
- }
- 
++}
++
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +static bool IsDocumentLocal(const blink::Document* document) {
 +  // If the current document is in a different security origin than the
@@ -77,11 +77,21 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..20c2f139b8461ff4d5b3e113cc6adabb
 +  const blink::Document* const top_doc = &document->TopDocument();
 +  const blink::Document* current_doc = document;
 +  while (current_doc != top_doc) {
-+    blink::SecurityOrigin::AccessResultDomainDetail detail;
-+    if (!current_doc->GetSecurityOrigin()->CanAccess(
-+        top_doc->GetSecurityOrigin(), detail)) {
++    // Check whether the current document is origin-compatible with the top
++    // document, *excluding* document.domain changes.
++    using AccessResultDomainDetail =
++        blink::SecurityOrigin::AccessResultDomainDetail;
++    AccessResultDomainDetail detail;
++    const bool canAccess = current_doc->GetSecurityOrigin()->CanAccess(
++        top_doc->GetSecurityOrigin(), detail);
++    if ((!canAccess
++          && (detail == AccessResultDomainDetail::kDomainNotRelevant
++              || detail == AccessResultDomainDetail::kDomainNotSet))
++        || (canAccess
++            && detail == AccessResultDomainDetail::kDomainMatchNecessary)) {
 +      return false;
 +    }
++
 +    LOG_ASSERT(current_doc->LocalOwner());
 +    current_doc = &current_doc->LocalOwner()->GetDocument();
 +  }
@@ -165,13 +175,12 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..20c2f139b8461ff4d5b3e113cc6adabb
 +                                                  DOMNodeIds::IdForNode(this),
 +                                                  nodeName(), Url());
 +  return page_graph_;
-+}
+ }
 +#endif
-+
+ 
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
-   DCHECK(position.IsNotNull());
-@@ -5300,6 +5446,22 @@ String Document::cookie(ExceptionState& exception_state) const {
+@@ -5300,6 +5456,22 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (cookie_url.IsEmpty())
      return String();
  
@@ -194,7 +203,7 @@ index 0851cbf21a11b41cf446b7fcd664d8b0ec3a6881..20c2f139b8461ff4d5b3e113cc6adabb
    return Cookies(this, cookie_url);
  }
  
-@@ -5331,6 +5493,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5331,6 +5503,21 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
    if (cookie_url.IsEmpty())
      return;
  
