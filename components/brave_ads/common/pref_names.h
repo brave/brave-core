@@ -17,9 +17,8 @@ extern const char kAdsPerDay[];
 
 extern const char kIdleThreshold[];
 
-extern const char kShouldShowFirstLaunchNotification[];
-extern const char kHasRemovedFirstLaunchNotification[];
-extern const char kLastShownFirstLaunchNotificationTimestamp[];
+extern const char kShouldShowOnboarding[];
+extern const char kOnboardingTimestamp[];
 
 extern const char kShouldShowMyFirstAdNotification[];
 

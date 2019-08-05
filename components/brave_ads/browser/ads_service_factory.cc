@@ -99,12 +99,8 @@ void AdsServiceFactory::RegisterProfilePrefs(
 
   registry->RegisterBooleanPref(prefs::kShouldShowMyFirstAdNotification, true);
 
-  registry->RegisterBooleanPref(
-      prefs::kShouldShowFirstLaunchNotification, true);
-  registry->RegisterBooleanPref(
-      prefs::kHasRemovedFirstLaunchNotification, false);
-  registry->RegisterUint64Pref(
-      prefs::kLastShownFirstLaunchNotificationTimestamp, 0);
+  registry->RegisterBooleanPref(prefs::kShouldShowOnboarding, true);
+  registry->RegisterUint64Pref(prefs::kOnboardingTimestamp, 0);
 }
 
 }  // namespace brave_ads

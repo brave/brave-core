@@ -22,15 +22,11 @@ const char kAdsPerDay[] = "brave.brave_ads.ads_per_day";
 const char kIdleThreshold[] = "brave.brave_ads.idle_threshold";
 
 // Stores whether onboarding should be shown
-const char kShouldShowFirstLaunchNotification[] =
+const char kShouldShowOnboarding[] =
     "brave.brave_ads.should_show_first_launch_notification";
 
-// Stores whether onboarding was completed
-const char kHasRemovedFirstLaunchNotification[] =
-    "brave.brave_ads.has_removed_first_launch_notification";
-
-// Stores the timestamp of when onboarding was first shown
-const char kLastShownFirstLaunchNotificationTimestamp[] =
+// Stores the timestamp of when onboarding was shown
+const char kOnboardingTimestamp[] =
     "brave.brave_ads.launch_notification_timestamp";
 
 // Stores whether we should show the My First Ad notification

@@ -95,11 +95,11 @@ class AdsServiceImpl : public AdsService,
   void Start();
   bool StartService();
   void UpdateIsProductionFlag();
-  bool IsProduction();
+  bool IsProduction() const;
   void UpdateIsDebugFlag();
-  bool IsDebug();
+  bool IsDebug() const;
   void UpdateIsTestingFlag();
-  bool IsTesting();
+  bool IsTesting() const;
   void Stop();
   void ResetTimer();
   void CheckIdleState();
@@ -207,9 +207,11 @@ class AdsServiceImpl : public AdsService,
   void DisableAdsForUnsupportedRegions(
       const std::string& region,
       const std::vector<std::string>& regions);
-  void MayBeShowFirstLaunchNotificationForSupportedRegion(
+  void MayBeShowOnboardingForSupportedRegion(
       const std::string& region,
       const std::vector<std::string>& regions);
+  uint64_t MigrateTimestampToDoubleT(
+      const uint64_t timestamp_in_seconds) const;
 
   bool GetBooleanPref(const std::string& path) const;
   void SetBooleanPref(const std::string& path, const bool value);
@@ -242,18 +244,18 @@ class AdsServiceImpl : public AdsService,
       const std::string& notification_id);
   void MaybeViewAd();
   void RetryViewingAdWithId(const std::string& id);
-  bool ShouldShowMyFirstAdNotification();
+
+  bool ShouldShowMyFirstAdNotification() const;
   void MaybeShowMyFirstAdNotification();
-  void MaybeShowFirstLaunchNotification();
-  bool ShouldShowFirstLaunchNotification();
-  void ShowFirstLaunchNotification();
-  void MaybeStartFirstLaunchNotificationTimeoutTimer();
-  void StartFirstLaunchNotificationTimeoutTimer();
-  void OnFirstLaunchNotificationTimedOut(uint32_t timer_id);
-  uint64_t GetFirstLaunchNotificationTimeoutTimerOffset();
-  bool HasFirstLaunchNotificationExpired();
-  uint64_t GetFirstLaunchNotificationTimeout();
-  void RemoveFirstLaunchNotification();
+
+  void MaybeShowOnboarding();
+  bool ShouldShowOnboarding() const;
+  void ShowOnboarding();
+  void RemoveOnboarding();
+  void MaybeStartRemoveOnboardingTimer();
+  bool ShouldRemoveOnboarding() const;
+  void StartRemoveOnboardingTimer();
+  void OnRemoveOnboarding(uint32_t timer_id);
 
   uint32_t next_timer_id();
 
@@ -268,7 +270,7 @@ class AdsServiceImpl : public AdsService,
   bool is_upgrading_from_pre_brave_ads_build_;
   std::string retry_viewing_ad_with_id_;
   uint32_t next_timer_id_;
-  uint32_t ads_launch_id_;
+  uint32_t remove_onboarding_timer_id_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED

@@ -18,6 +18,7 @@
 #include "base/task_runner_util.h"
 #include "base/task/post_task.h"
 #include "base/time/time.h"
+#include "base/i18n/time_formatting.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/notification_info.h"
 #include "bat/ads/notification_event_type.h"
@@ -71,7 +72,8 @@ namespace brave_ads {
 
 namespace {
 
-const char kRewardsNotificationAdsLaunch[] = "rewards_notification_ads_launch";
+const char kRewardsNotificationAdsOnboarding[] =
+    "rewards_notification_ads_onboarding";
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
@@ -323,7 +325,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       is_initialized_(false),
       retry_viewing_ad_with_id_(""),
       next_timer_id_(0),
-      ads_launch_id_(0),
+      remove_onboarding_timer_id_(0),
       bundle_state_backend_(
           new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
@@ -355,6 +357,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
   display_service_impl->AddNotificationHandler(
       NotificationHandler::Type::BRAVE_ADS,
       std::make_unique<AdsNotificationHandler>(this));
+
+  MaybeShowOnboarding();
 
   MaybeStart(false);
 }
@@ -458,7 +462,7 @@ void AdsServiceImpl::UpdateIsProductionFlag() {
   bat_ads_service_->SetProduction(is_production, base::NullCallback());
 }
 
-bool AdsServiceImpl::IsProduction() {
+bool AdsServiceImpl::IsProduction() const {
 #if defined(OS_ANDROID)
 
 #if defined(OFFICIAL_BUILD)
@@ -485,7 +489,7 @@ void AdsServiceImpl::UpdateIsDebugFlag() {
   bat_ads_service_->SetDebug(is_debug, base::NullCallback());
 }
 
-bool AdsServiceImpl::IsDebug() {
+bool AdsServiceImpl::IsDebug() const {
   #if defined(NDEBUG)
     const auto& command_line = *base::CommandLine::ForCurrentProcess();
     return command_line.HasSwitch(switches::kDebug);
@@ -499,7 +503,7 @@ void AdsServiceImpl::UpdateIsTestingFlag() {
   bat_ads_service_->SetTesting(is_testing, base::NullCallback());
 }
 
-bool AdsServiceImpl::IsTesting() {
+bool AdsServiceImpl::IsTesting() const {
   const auto& command_line = *base::CommandLine::ForCurrentProcess();
   return command_line.HasSwitch(switches::kTesting);
 }
@@ -528,9 +532,6 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(bool success) {
   bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
 
-  MaybeStartFirstLaunchNotificationTimeoutTimer();
-  MaybeShowFirstLaunchNotification();
-
   MaybeShowMyFirstAdNotification();
 }
 
@@ -546,149 +547,115 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
   SetBooleanPref(prefs::kShouldShowMyFirstAdNotification, false);
 }
 
-bool AdsServiceImpl::ShouldShowMyFirstAdNotification() {
+bool AdsServiceImpl::ShouldShowMyFirstAdNotification() const {
   auto should_show = GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
   return IsAdsEnabled() && should_show;
 }
 
-void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
-  if (!ShouldShowFirstLaunchNotification()) {
-    RemoveFirstLaunchNotification();
+void AdsServiceImpl::MaybeShowOnboarding() {
+  if (!ShouldShowOnboarding()) {
+    MaybeStartRemoveOnboardingTimer();
     return;
   }
 
-  auto now = static_cast<uint64_t>(
-      (base::Time::Now() - base::Time()).InSeconds());
-  SetUint64Pref(prefs::kLastShownFirstLaunchNotificationTimestamp, now);
-
-  ShowFirstLaunchNotification();
+  ShowOnboarding();
 }
 
-bool AdsServiceImpl::ShouldShowFirstLaunchNotification() {
-  auto should_show = GetBooleanPref(prefs::kShouldShowFirstLaunchNotification);
-  return !IsAdsEnabled() && should_show;
+bool AdsServiceImpl::ShouldShowOnboarding() const {
+  auto is_ads_enabled = GetBooleanPref(prefs::kEnabled);
+
+  auto is_rewards_enabled =
+      GetBooleanPref(brave_rewards::prefs::kBraveRewardsEnabled);
+
+  auto should_show = GetBooleanPref(prefs::kShouldShowOnboarding);
+
+  return IsSupportedRegion() && !is_ads_enabled && is_rewards_enabled
+      && should_show;
 }
 
-void AdsServiceImpl::ShowFirstLaunchNotification() {
-  auto* rewards_service =
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
-
-  auto* rewards_notification_service =
-      rewards_service->GetNotificationService();
-
+void AdsServiceImpl::ShowOnboarding() {
+  auto type = RewardsNotificationService::REWARDS_NOTIFICATION_ADS_ONBOARDING;
   RewardsNotificationService::RewardsNotificationArgs args;
-  rewards_notification_service->AddNotification(
-      RewardsNotificationService::REWARDS_NOTIFICATION_ADS_LAUNCH,
-      args, kRewardsNotificationAdsLaunch);
+  auto* id = kRewardsNotificationAdsOnboarding;
 
-  SetBooleanPref(prefs::kShouldShowFirstLaunchNotification, false);
+  auto* notification_service = rewards_service_->GetNotificationService();
+  notification_service->AddNotification(type, args, id);
 
-  StartFirstLaunchNotificationTimeoutTimer();
+  SetBooleanPref(prefs::kShouldShowOnboarding, false);
+
+  auto now = base::Time::Now().ToDoubleT();
+  SetUint64Pref(prefs::kOnboardingTimestamp, now);
+
+  StartRemoveOnboardingTimer();
 }
 
-void AdsServiceImpl::MaybeStartFirstLaunchNotificationTimeoutTimer() {
-  bool has_removed = GetBooleanPref(prefs::kHasRemovedFirstLaunchNotification);
-  if (has_removed) {
+void AdsServiceImpl::MaybeStartRemoveOnboardingTimer() {
+  if (!ShouldRemoveOnboarding()) {
     return;
   }
 
-  StartFirstLaunchNotificationTimeoutTimer();
+  StartRemoveOnboardingTimer();
 }
 
-void AdsServiceImpl::StartFirstLaunchNotificationTimeoutTimer() {
-  uint64_t timer_offset_in_seconds;
+bool AdsServiceImpl::ShouldRemoveOnboarding() const {
+  auto* notification_service = rewards_service_->GetNotificationService();
+  return notification_service->Exists(kRewardsNotificationAdsOnboarding);
+}
 
-  if (HasFirstLaunchNotificationExpired()) {
-    timer_offset_in_seconds = base::Time::kSecondsPerMinute;
+void AdsServiceImpl::StartRemoveOnboardingTimer() {
+  if (remove_onboarding_timer_id_ != 0) {
+    return;
+  }
+
+  auto now_in_seconds = base::Time::Now().ToDoubleT();
+
+  auto timestamp_in_seconds =
+      MigrateTimestampToDoubleT(GetUint64Pref(prefs::kOnboardingTimestamp));
+
+  if (IsDebug()) {
+    timestamp_in_seconds += 5 * base::Time::kSecondsPerMinute;
   } else {
-    timer_offset_in_seconds = GetFirstLaunchNotificationTimeoutTimerOffset();
+    timestamp_in_seconds += base::Time::kMicrosecondsPerWeek /
+        base::Time::kMicrosecondsPerSecond;
   }
 
-  auto timer_offset = base::TimeDelta::FromSeconds(timer_offset_in_seconds);
+  uint64_t timer_offset_in_seconds;
+  if (now_in_seconds >= timestamp_in_seconds) {
+    timer_offset_in_seconds = 1 * base::Time::kSecondsPerMinute;
+  } else {
+    timer_offset_in_seconds = timestamp_in_seconds - now_in_seconds;
+  }
 
-  uint32_t timer_id = next_timer_id();
-  ads_launch_id_ = timer_id;
-  timers_[timer_id] = std::make_unique<base::OneShotTimer>();
-  timers_[timer_id]->Start(FROM_HERE,
-      timer_offset,
-      base::BindOnce(&AdsServiceImpl::OnFirstLaunchNotificationTimedOut,
-          AsWeakPtr(),
-          timer_id));
+  remove_onboarding_timer_id_ = next_timer_id();
+
+  timers_[remove_onboarding_timer_id_] = std::make_unique<base::OneShotTimer>();
+  timers_[remove_onboarding_timer_id_]->Start(FROM_HERE,
+      base::TimeDelta::FromSeconds(timer_offset_in_seconds),
+      base::BindOnce(&AdsServiceImpl::OnRemoveOnboarding, AsWeakPtr(),
+          remove_onboarding_timer_id_));
+
+  auto time = base::TimeFormatFriendlyDateAndTime(
+      base::Time::FromDoubleT(timestamp_in_seconds));
+
+  LOG(INFO) << "Start timer to remove onboarding on " << time;
 }
 
-void AdsServiceImpl::OnFirstLaunchNotificationTimedOut(uint32_t timer_id) {
+void AdsServiceImpl::OnRemoveOnboarding(uint32_t timer_id) {
   timers_.erase(timer_id);
-  RemoveFirstLaunchNotification();
+  RemoveOnboarding();
 }
 
-uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeoutTimerOffset() {
-  auto timeout_in_seconds = GetFirstLaunchNotificationTimeout();
-
-  auto timestamp_in_seconds =
-      GetUint64Pref(prefs::kLastShownFirstLaunchNotificationTimestamp);
-
-  auto now_in_seconds = static_cast<uint64_t>(
-      (base::Time::Now() - base::Time()).InSeconds());
-
-  auto timer_offset = (timestamp_in_seconds +
-      timeout_in_seconds) - now_in_seconds;
-
-  return timer_offset;
-}
-
-bool AdsServiceImpl::HasFirstLaunchNotificationExpired() {
-  auto timeout_in_seconds = GetFirstLaunchNotificationTimeout();
-
-  auto timestamp_in_seconds =
-      GetUint64Pref(prefs::kLastShownFirstLaunchNotificationTimestamp);
-
-  auto now_in_seconds = static_cast<uint64_t>(
-      (base::Time::Now() - base::Time()).InSeconds());
-
-  if (now_in_seconds < (timestamp_in_seconds + timeout_in_seconds)) {
-    return false;
-  }
-
-  return true;
-}
-
-uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeout() {
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  auto timeout_in_seconds =
-      command_line.HasSwitch(switches::kDebug)
-      ? (5 * base::Time::kSecondsPerMinute)
-      : (base::Time::kMicrosecondsPerWeek /
-         base::Time::kMicrosecondsPerSecond);
-  return timeout_in_seconds;
-}
-
-void AdsServiceImpl::RemoveFirstLaunchNotification() {
-  bool has_removed = GetBooleanPref(prefs::kHasRemovedFirstLaunchNotification);
-  if (has_removed) {
+void AdsServiceImpl::RemoveOnboarding() {
+  if (!ShouldRemoveOnboarding()) {
     return;
   }
 
-  KillTimer(ads_launch_id_);
+  KillTimer(remove_onboarding_timer_id_);
 
-  auto* rewards_service =
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
+  auto* notification_service = rewards_service_->GetNotificationService();
+  notification_service->DeleteNotification(kRewardsNotificationAdsOnboarding);
 
-  if (!rewards_service) {
-    return;
-  }
-
-  auto* rewards_notification_service =
-      rewards_service->GetNotificationService();
-
-  if (!rewards_notification_service) {
-    return;
-  }
-
-  rewards_notification_service->DeleteNotification(
-      kRewardsNotificationAdsLaunch);
-
-  SetBooleanPref(prefs::kHasRemovedFirstLaunchNotification, true);
+  LOG(INFO) << "Removed onboarding";
 }
 
 void AdsServiceImpl::Stop() {
@@ -714,7 +681,6 @@ void AdsServiceImpl::OnShutdownBatAds(const int32_t result) {
     return;
   }
 
-  RemoveFirstLaunchNotification();
   Shutdown();
   ResetAllState();
 
@@ -783,11 +749,14 @@ void AdsServiceImpl::OnResetAllState(bool success) {
 void AdsServiceImpl::MigratePrefs() {
   is_upgrading_from_pre_brave_ads_build_ = IsUpgradingFromPreBraveAdsBuild();
   if (is_upgrading_from_pre_brave_ads_build_) {
+    LOG(INFO) << "Migrating ads preferences from pre Brave ads build";
+
     // Force migration of preferences from version 1 if
     // |is_upgrading_from_pre_brave_ads_build_| is set to |true| to fix
     // "https://github.com/brave/brave-browser/issues/5434"
-
     SetIntegerPref(prefs::kVersion, 1);
+  } else {
+    LOG(INFO) << "Migrating ads preferences";
   }
 
   auto source_version = GetPrefsVersion();
@@ -907,7 +876,7 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
     "IE"   // Ireland
   };
 
-  MayBeShowFirstLaunchNotificationForSupportedRegion(region, new_regions);
+  MayBeShowOnboardingForSupportedRegion(region, new_regions);
 }
 
 int AdsServiceImpl::GetPrefsVersion() const {
@@ -918,17 +887,17 @@ bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
   // Brave ads was hidden in 0.62.x however due to a bug |prefs::kEnabled| was
   // set to |true| causing "https://github.com/brave/brave-browser/issues/5434"
 
-  // |prefs::kAdsPerDay| was not serialized in 0.62.x
+  // |prefs::kIdleThreshold| was not serialized in 0.62.x
 
   // |prefs::kVersion| was introduced in 0.63.x
 
   // We can detect if we are upgrading from a pre Brave ads build by checking
-  // |prefs::kEnabled| is set to |true|, |prefs::kAdsPerDay| does not exist,
+  // |prefs::kEnabled| is set to |true|, |prefs::kIdleThreshold| does not exist,
   // |prefs::kVersion| does not exist and it is not the first time the browser
   // has run for this user
 
-  return GetBooleanPref(prefs::kEnabled) && !PrefExists(prefs::kAdsPerDay) &&
-      !PrefExists(prefs::kVersion) && !first_run::IsChromeFirstRun();
+  return GetBooleanPref(prefs::kEnabled) && !PrefExists(prefs::kIdleThreshold)
+      && !PrefExists(prefs::kVersion) && !first_run::IsChromeFirstRun();
 }
 
 void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
@@ -950,24 +919,38 @@ void AdsServiceImpl::DisableAdsForUnsupportedRegions(
   SetAdsEnabled(false);
 }
 
-void AdsServiceImpl::MayBeShowFirstLaunchNotificationForSupportedRegion(
+void AdsServiceImpl::MayBeShowOnboardingForSupportedRegion(
     const std::string& region,
     const std::vector<std::string>& supported_regions) {
   if (IsAdsEnabled()) {
     return;
   }
 
-  SetBooleanPref(prefs::kHasRemovedFirstLaunchNotification, false);
-  SetUint64Pref(prefs::kLastShownFirstLaunchNotificationTimestamp, 0);
-
   if (std::find(supported_regions.begin(), supported_regions.end(), region)
       == supported_regions.end()) {
-    // Do not show first launch notification for unsupported region
-    SetBooleanPref(prefs::kShouldShowFirstLaunchNotification, false);
     return;
   }
 
-  SetBooleanPref(prefs::kShouldShowFirstLaunchNotification, true);
+  SetBooleanPref(prefs::kShouldShowOnboarding, true);
+  SetUint64Pref(prefs::kOnboardingTimestamp, 0);
+}
+
+uint64_t AdsServiceImpl::MigrateTimestampToDoubleT(
+    const uint64_t timestamp_in_seconds) const {
+  if (timestamp_in_seconds < 10000000000) {
+    // Already migrated as DoubleT will never reach 10000000000 in our lifetime
+    // and legacy timestamps are above 10000000000
+    return timestamp_in_seconds;
+  }
+
+  // Migrate date to DoubleT
+  auto now = base::Time::Now();
+  auto now_in_seconds = static_cast<uint64_t>((now - base::Time()).InSeconds());
+
+  auto delta = timestamp_in_seconds - now_in_seconds;
+
+  auto date = now + base::TimeDelta::FromSeconds(delta);
+  return date.ToDoubleT();
 }
 
 bool AdsServiceImpl::GetBooleanPref(
@@ -1117,6 +1100,8 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == prefs::kEnabled ||
       pref == brave_rewards::prefs::kBraveRewardsEnabled) {
     if (IsAdsEnabled()) {
+      RemoveOnboarding();
+
       MaybeStart(false);
     } else {
       Stop();
