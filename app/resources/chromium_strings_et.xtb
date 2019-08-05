@@ -15,7 +15,7 @@
 <translation id="7918740962659365265">Aidake Brave'i täiustada, saates Brave'ile krahhiaruandeid ja lingi <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="1403270718080126244"><ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Beeta</translation>
+<translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beeta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="4685833011652060085">Hangi abi Bravei kasutamise kohta</translation>
@@ -25,7 +25,7 @@
 <translation id="2310890394934209120">Brave OS-i aluseks on täiendav <ph name="BEGIN_LINK_CROS_OSS"/>avatud lähtekoodiga tarkvara<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">Brave OS töötab täiendava <ph name="BEGIN_LINK_CROS_OSS"/>avatud lähtekoodiga tarkvara<ph name="END_LINK_CROS_OSS"/> toel, nagu ka näiteks <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (beetaversioon)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="8948097099929452692">Brave'is ei kasutata. Kohatäide ressursikaartide sünkroonis hoidmiseks.</translation>
-<translation id="5009217320733452434">Brave'is ei kasutata. Kohatäide ressursikaartide sünkroonis hoidmiseks. See ootab ühte argumenti: <ph name="ARGUMENT">$1</ph>.</translation>
+<translation id="5009217320733452434">Brave'is ei kasutata. Kohatäide ressursikaartide sünkroonis hoidmiseks. See ootab ühte argumenti: <ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">Brave ei pruugi õigesti töötada, kuna seda ei toetata enam operatsioonisüsteemis Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Brave ei pruugi õigesti töötada, kuna seda ei toetata enam Windows XP-s ega Windows Vistas</translation>
 <translation id="189297655255130768">Brave ei reageeri. Kas soovite kohe taaskäivitada?</translation>

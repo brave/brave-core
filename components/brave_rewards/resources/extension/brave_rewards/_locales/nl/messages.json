@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Uw Brave Ads Token-toelage",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "Verifiëren",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Verbinding verbroken",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Verifieer Wallet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Geverifieerd",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Ga naar mijn Uphold-account",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Verbreek de verbinding met Brave Rewards",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Verifieer wallet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Onze wallet-dienst wordt geleverd door",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Houd je door de overheid uitgegeven ID bij de hand.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Bewaar je Ad Rewards-tokens",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Voeg tokens toe met een creditcard",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Tokens opnemen",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "Met een geverifieerde wallet kun je:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Verifieer Je Wallet",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "En beheer je geld gemakkelijk!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Geverifieerd",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Niet beschikbaar",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Wallet opnieuw verbinden",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Je wallet is geverifieerd!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Gefeliciteerd! Je $name$ wallet is succesvol geverifieerd en klaar om geldmiddelen toe te voegen en op te nemen.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Oh oh. Je wallet is niet bereikbaar.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Maak je geen zorgen. Dit kan om verschillende veiligheidsredenen gebeuren. Maak gewoon opnieuw verbinding om dit probleem op te lossen.",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

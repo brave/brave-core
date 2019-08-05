@@ -1628,7 +1628,9 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="473546211690256853">Denne kontoen administreres av <ph name="DOMAIN"/>.</translation>
 <translation id="622537739776246443">Profilen blir slettet</translation>
 <translation id="5632566673632479864">Kontoen din (<ph name="EMAIL"/>) er ikke tillatt som primærkonto lenger. Siden denne kontoen administreres av <ph name="DOMAIN"/>, slettes bokmerkene, loggen, passordene og andre innstillinger du har, fra denne enheten.</translation>
+<translation id="3797739167230984533"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> administreres<ph name="END_LINK"/> av organisasjonen din</translation>
 <translation id="1722460139690167654"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> administreres<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Nettleseren administreres<ph name="END_LINK"/> av organisasjonen din</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Nettleseren administreres<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Innhold</translation>
 <translation id="7702907602086592255">Domene</translation>

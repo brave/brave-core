@@ -1630,7 +1630,9 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="473546211690256853">Tài khoản này do <ph name="DOMAIN"/> quản lý</translation>
 <translation id="622537739776246443">Hồ sơ này sẽ bị xóa</translation>
 <translation id="5632566673632479864">Tài khoản <ph name="EMAIL"/> của bạn không còn được phép làm tài khoản chính nữa. Vì tài khoản này do <ph name="DOMAIN"/> quản lý, nên dấu trang, lịch sử, mật khẩu và các tùy chọn cài đặt khác sẽ bị xóa khỏi thiết bị này.</translation>
+<translation id="3797739167230984533"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> của bạn do<ph name="END_LINK"/> tổ chức của bạn quản lý</translation>
 <translation id="1722460139690167654"><ph name="ENROLLMENT_DOMAIN"/> <ph name="BEGIN_LINK"/>quản lý <ph name="DEVICE_TYPE"/><ph name="END_LINK"/> của bạn</translation>
+<translation id="8118488170956489476">Tổ chức bạn <ph name="BEGIN_LINK"/>quản lý trình duyệt<ph name="END_LINK"/> của bạn</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> <ph name="BEGIN_LINK"/>quản lý trình duyệt<ph name="END_LINK"/> của bạn</translation>
 <translation id="8168435359814927499">Nội dung</translation>
 <translation id="7702907602086592255">Miền</translation>

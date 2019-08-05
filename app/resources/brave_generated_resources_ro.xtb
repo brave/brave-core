@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Recompense Brave</translation>
 <translation id="7942180974165298215">Blocare reclame Brave</translation>
 <translation id="6406506848690869874">Sincronizare</translation>
-<translation id="8488282162676695335">Portofel Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID extensie "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nu este permis în Brave.</translation>
+<translation id="5655621391922317800">Portofele cripto</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID extensie "<ph name="EXTENSION_ID"/>") nu este permis în Brave.</translation>
 <translation id="7450557937477381864">Închide Chrome</translation>
 <translation id="7008934821596358692">Pentru finalizarea importului, închideți toate ferestrele Chrome.</translation>
 <translation id="5735465527556462863">Închidere Brave (vechi)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Plăți Brave</translation>
 <translation id="3489524616427966890">Deschidere ferestre și file</translation>
 <translation id="3699882589215410581">Instalați și rulați Widevine</translation>
+<translation id="3696083746357487900">Instalare Portofele cripto</translation>
 <translation id="8053096063396012732">Instalează Widevine</translation>
 <translation id="4840334696217618631">Repornește browserul pentru activarea Widevine</translation>
 <translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
@@ -27,7 +28,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="2240268017737062801">Întrebați când un site vrea să redea automat media</translation>
 <translation id="3371702087847741961">Solicită când un site dorește să redea automat media (recomandat)</translation>
 <translation id="3218385319396786393">Redarea automată a fost blocată pe această pagină</translation>
-<translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuă blocarea autoredării</translation>
 <translation id="5883458389055721080">Brave nu a analizat securitatea și siguranța acestei extensii. Instalați această extensie numai dacă aveți încredere în dezvoltator.</translation>
 <translation id="2044383478723007273">Culori Brave</translation>
@@ -35,6 +36,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6123134130710658846">Ascunde butonul Brave Rewards</translation>
 <translation id="7635711399568194460">Ascunde butonul Brave Rewards în bara locației când Brave Rewards nu este activat</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
+<translation id="8511502469534942133">Conexiune Tor nouă pentru acest site</translation>
 <translation id="8784924142044142231">Ieșire din Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Deschide fereastră Tor</translation>
@@ -84,6 +86,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6786747875388722282">Extensii</translation>
 <translation id="2896916411183256228">Utilizează WebTorrent pentru afișarea torrent-elor direct în browser. Acceptă fișiere torrent și linkuri magnet.</translation>
 <translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
+<translation id="1765684547504191670">Folosește componenta Media Router pentru a activa Chromecast în browser.</translation>
+<translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
+<translation id="7179921470347911571">Relansare acum</translation>
 <translation id="4154389611571860454">Folosește extensia companion IPFS pentru a accepta IPFS în browser.</translation>
 <translation id="8137559199583651773">Gestionați extensiile</translation>
 <translation id="4928988318462976765">Magazin Extensii Web</translation>

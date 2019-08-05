@@ -1631,7 +1631,9 @@
 <translation id="473546211690256853">Η διαχείριση αυτού του λογαριασμού γίνεται από τον τομέα <ph name="DOMAIN"/>.</translation>
 <translation id="622537739776246443">Το προφίλ θα διαγραφεί</translation>
 <translation id="5632566673632479864">Δεν είναι πλέον δυνατή η χρήση του λογαριασμού σας <ph name="EMAIL"/> ως κύριου λογαριασμού. Επειδή ο λογαριασμός είναι διαχειριζόμενος από τον τομέα <ph name="DOMAIN"/>, οι σελιδοδείκτες, το ιστορικό, οι κωδικοί πρόσβασης και άλλες ρυθμίσεις σας θα διαγραφούν από αυτήν τη συσκευή.</translation>
+<translation id="3797739167230984533">Η συσκευή <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> είναι διαχειριζόμενη<ph name="END_LINK"/> από τον οργανισμό σας</translation>
 <translation id="1722460139690167654">Η συσκευή <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> είναι διαχειριζόμενη<ph name="END_LINK"/> από τον τομέα <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Η <ph name="BEGIN_LINK"/>διαχείριση του προγράμματος περιήγησής σας<ph name="END_LINK"/> πραγματοποιείται από τον οργανισμό σας</translation>
 <translation id="1365180424462182382">Το <ph name="BEGIN_LINK"/>πρόγραμμα περιήγησής σας είναι διαχειριζόμενο<ph name="END_LINK"/> από τον τομέα <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Περιεχόμενο</translation>
 <translation id="7702907602086592255">Τομέας</translation>

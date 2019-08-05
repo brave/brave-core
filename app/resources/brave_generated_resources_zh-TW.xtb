@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave 廣告阻擋</translation>
 <translation id="6406506848690869874">同步</translation>
-<translation id="8488282162676695335">Brave 錢包</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") 在 Brave 中是不允許的。</translation>
+<translation id="5655621391922317800">加密錢包</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
 <translation id="7450557937477381864">關閉 Chrome</translation>
 <translation id="7008934821596358692">關閉所有 Chrome 視窗以完成匯入。</translation>
 <translation id="5735465527556462863">關閉 Brave (舊版)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Brave Payments</translation>
 <translation id="3489524616427966890">開啟視窗和分頁</translation>
 <translation id="3699882589215410581">安裝並執行 Widevine</translation>
+<translation id="3696083746357487900">安裝加密錢包</translation>
 <translation id="8053096063396012732">安裝 Widevine</translation>
 <translation id="4840334696217618631">重新啟動瀏覽器以啟用 Widevine</translation>
 <translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
@@ -27,7 +28,7 @@
 <translation id="2240268017737062801">當網站想要自動播放媒體時詢問我</translation>
 <translation id="3371702087847741961">當網站想要自動播放媒體時詢問我（建議使用）</translation>
 <translation id="3218385319396786393">此頁面已禁止自動播放</translation>
-<translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST"/></translation>
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
 <translation id="5883458389055721080">Brave 未驗證過此擴充套件的安全性。只在您信任此開開發者時才安裝此擴充套件。</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
@@ -35,6 +36,7 @@
 <translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
 <translation id="7635711399568194460">當 Brave Rewards 未啟用時，在網址列隱藏 Brave Rewards 按鈕</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
+<translation id="8511502469534942133">為此網站建立的新 Tor 連線</translation>
 <translation id="8784924142044142231">退出 Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">打開 Tor 視窗</translation>
@@ -84,6 +86,9 @@
 <translation id="6786747875388722282">擴充功能</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
+<translation id="1765684547504191670">使用媒體路由器元件以在瀏覽器中啟用 Chromecast。</translation>
+<translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
+<translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="4154389611571860454">使用 IPFS 配對擴充套件以在瀏覽器中支援 IPFS。</translation>
 <translation id="8137559199583651773">管理擴充功能</translation>
 <translation id="4928988318462976765">網路擴充功能商店</translation>

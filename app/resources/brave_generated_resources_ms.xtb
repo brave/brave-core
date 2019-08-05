@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Sekatan Iklan Brave</translation>
 <translation id="6406506848690869874">Segerak</translation>
-<translation id="8488282162676695335">Dompet Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") tidak dibenarkan dalam Brave.</translation>
+<translation id="5655621391922317800">Dompet Crypto</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak dibenarkan dalam Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk melengkapkan pengimportan, tutup semua tetingkap Chrome.</translation>
 <translation id="5735465527556462863">Tutup Brave (lama)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Pembayaran Brave</translation>
 <translation id="3489524616427966890">Buka tetingkap dan tab</translation>
 <translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
+<translation id="3696083746357487900">Pasang Dompet Crypto</translation>
 <translation id="8053096063396012732">Pasang Widevine</translation>
 <translation id="4840334696217618631">Hidupkan semula penyemak imbas untuk mengaktifkan Widevine</translation>
 <translation id="8410111618231938546">Google Widevine ialah secebis kod Pengurusan Hak Digital (DRM) yang kami di Perisian Brave tidak memilikinya dan tidak boleh memeriksanya. The Kod Google Widevine dimuatkan dari pelayan Google, bukan dari pelayan kami. Ia dimuatkan hanya apabila anda mendayakan pilihan ini. Kami tidak menggalakkan anda untuk menggunakan DRM, namun kami menghormati pilihan pengguna dan mengakui bahawa sebahagian pengguna Brave ingin menggunakan perkhidmatan yang memerlukannya.
@@ -27,7 +28,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2240268017737062801">Tanya bila laman mahu memain automatik media</translation>
 <translation id="3371702087847741961">Tanya apabila laman mahu memainkan media (disyorkan)</translation>
 <translation id="3218385319396786393">Main automatik telah disekat di halaman ini</translation>
-<translation id="4988333904713528597">Sentiasa benarkan automain pada <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Sentiasa benarkan automain pada <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Teruskan menyekat autoplay</translation>
 <translation id="5883458389055721080">Brave belum menyemak sambungan ini untuk perlindungan dan keselamatan. Pasang sambungan ini hanya jika anda mempercayai pembangunnya.</translation>
 <translation id="2044383478723007273">Warna-warna Brave</translation>
@@ -35,6 +36,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="6123134130710658846">Sembunyi butang Brave Rewards</translation>
 <translation id="7635711399568194460">Sembunyi butang Brave Rewards dalam bar lokasi apabila Brave Rewatds tidak diaktifkan</translation>
 <translation id="7965178729203412357">Identiti Tor Baharu</translation>
+<translation id="8511502469534942133">Sambungan Tor baru Untuk Tapak Ini</translation>
 <translation id="8784924142044142231">Keluar Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Buka Tetingkap Tor</translation>
@@ -84,6 +86,9 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="6786747875388722282">Sambungan</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk memaparkan torrent secara langsung dalam penyemak imbas. Menyokong fail torrent dan pautan magnet.</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mendayakan perkongsian skrin dan lain-lain ciri dalam pelayar.</translation>
+<translation id="1765684547504191670">Menggunakan komponen Media Router untuk membolehkan Chromecast dalam pelayar.</translation>
+<translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
+<translation id="7179921470347911571">Lancarkan Semula Sekarang</translation>
 <translation id="4154389611571860454">Menggunakan sambungan teman IPFS untuk menyokong IPFS dalam pelayar.</translation>
 <translation id="8137559199583651773">Uruskan sambungan...</translation>
 <translation id="4928988318462976765">Kedai Sambungan Web</translation>

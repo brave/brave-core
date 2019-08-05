@@ -1629,7 +1629,9 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="473546211690256853">Denne konto administreres af <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Profilen slettes</translation>
 <translation id="5632566673632479864">Din konto, <ph name="EMAIL"/>, kan ikke længere være den primære konto. Da denne konto administreres af <ph name="DOMAIN"/>, ryddes dine bogmærker, din historik, dine adgangskoder og andre indstillinger fra denne enhed.</translation>
+<translation id="3797739167230984533">Din <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> administreres<ph name="END_LINK"/> af din organisation</translation>
 <translation id="1722460139690167654">Din <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> administreres<ph name="END_LINK"/> af <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Din <ph name="BEGIN_LINK"/>browser administreres<ph name="END_LINK"/> af din organisation</translation>
 <translation id="1365180424462182382">Din <ph name="BEGIN_LINK"/>browser administreres<ph name="END_LINK"/> af <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Indhold</translation>
 <translation id="7702907602086592255">Domæne</translation>

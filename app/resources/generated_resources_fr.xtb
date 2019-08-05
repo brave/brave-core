@@ -1631,7 +1631,9 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="473546211690256853">Ce compte est géré par <ph name="DOMAIN"/>.</translation>
 <translation id="622537739776246443">Le profil va être supprimé</translation>
 <translation id="5632566673632479864">Votre compte <ph name="EMAIL"/> n'est plus autorisé comme compte principal. Étant donné que ce compte est géré par <ph name="DOMAIN"/>, vos favoris, votre historique, vos mots de passe et les autres paramètres seront effacés de cet appareil.</translation>
+<translation id="3797739167230984533">Votre <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> est géré<ph name="END_LINK"/> par votre organisation</translation>
 <translation id="1722460139690167654">Votre <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> est géré<ph name="END_LINK"/> par <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Votre <ph name="BEGIN_LINK"/>navigateur est géré<ph name="END_LINK"/> par votre organisation</translation>
 <translation id="1365180424462182382">Votre <ph name="BEGIN_LINK"/>navigateur est géré<ph name="END_LINK"/> par <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Contenu</translation>
 <translation id="7702907602086592255">Domaine</translation>

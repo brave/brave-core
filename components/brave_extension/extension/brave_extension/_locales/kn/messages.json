@@ -158,5 +158,33 @@
   "resetAllFilterSettings": {
     "message": "ಎಲ್ಲ ಸೈಟಿಗಾಗಿ CSS ನಿಯಮಗಳು",
     "description": "Message for context menu that resets all cosmetic filters"
+  },
+  "advancedView": {
+    "message": "ಸುಧಾರಿತ ವೀಕ್ಷಣೆ",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "ಸರಳ ವೀಕ್ಷಣೆ",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "ಸೈಟ್‌ಗಳು ಆಗಾಗ್ಗೆ ಕುಕೀಗಳು ಮತ್ತು ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳನ್ನು ಒಳಗೊಂಡಿರುತ್ತವೆ ಮತ್ತು ಅವುಗಳು ನಿಮ್ಮನ್ನು ಮತ್ತು ನಿಮ್ಮ ಸಾಧನವನ್ನು (ಆಗಾಗ್ಗೆ ಜಾಹೀರಾತುಗಳಾಗಿ ಎಂಬೆಡ್ ಮಾಡಲಾಗಿರುವುದು) ಗುರುತಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತವೆ. ನೀವು ಯಾರೆಂದು ಪತ್ತೆಹಚ್ಚಲು ಅವುಗಳು ಬಯಸುತ್ತವೆ ಮತ್ತು ವೆಬ್‌ನಾದ್ಯಂತ ನಿಮ್ಮನ್ನು ಅನುಸರಣೆ ಮಾಡುತ್ತವೆ — ಈ ಮೂಲಕ ಪ್ರತಿ ಸೈಟ್‌ನಲ್ಲಿ ನೀವು ಏನನ್ನು ಮಾಡುತ್ತೀರೆಂದು ಟ್ರ್ಯಾಕ್ ಮಾಡುತ್ತವೆ. ಈ ಸಂಗತಿಗಳನ್ನು Brave ನಿರ್ಬಂಧಿಸುತ್ತದೆ ಮತ್ತು ಈ ಮೂಲಕ ನೀವು ಅನುಸರಣೆ ಮಾಡಲ್ಪಡದೇ ಬ್ರೌಸ್ ಮಾಡಬಹುದು.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "ಕ್ರಾಸ್-ಸೈಟ್ ಟ್ರ್ಯಾಕರ್‌ಗಳು ಇತರೆ ಅಹಿತಕರ ಸಂಗತಿಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "ಈ ವೀಕ್ಷಣೆಯಲ್ಲಿ ಶೀಲ್ಡ್ ಸೆಟ್ಟಿಂಗ್‌‌ಗಳನ್ನು ಬದಲಾಯಿಸುವುದರಿಂದ ಈ ಸೈಟ್‌ನಲ್ಲಿ ವೆಬ್ ಹೊಂದಾಣಿಕೆಗೆ ಪರಿಣಾಮ ಬೀರಬಹುದು.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "ಅರ್ಥವಾಯಿತು",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

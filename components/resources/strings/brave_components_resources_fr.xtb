@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr">
-<translation id="689261804992965033">Publicités bloquées</translation>
-<translation id="1663506596135222606">Pisteurs bloqués</translation>
+<translation id="4339730410920731698">Publicités et traceurs bloqués</translation>
 <translation id="2313532038420432247">Redirection en connexions sécurisées (HTTPS)</translation>
 <translation id="7679428712334662192">Temps économisé estimé</translation>
 <translation id="5206618227023752085">Site du haut supprimé.</translation>
@@ -23,6 +22,9 @@
 <translation id="5550994254534676787">Voir l'historique de navigation</translation>
 <translation id="1742484101357469636">Paramètres du tableau de bord</translation>
 <translation id="8320281346741574991">Afficher l'image d'arrière-plan</translation>
+<translation id="7275773481201277457">Afficher les statistiques de Brave</translation>
+<translation id="6836061097810262923">Afficher l'horloge</translation>
+<translation id="8643377320501056697">Afficher les sites les plus visités</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="8730621377337864115">Terminé</translation>
 <translation id="6248988683584659830">Rechercher</translation>
@@ -45,7 +47,7 @@
 <translation id="6975708438781948564">En savoir plus sur Tor dans Brave</translation>
 <translation id="4272382368346338917">Filtres supplémentaires</translation>
 <translation id="8949292968394988358">Avertissement : l'activation d'un trop grand nombre de filtres réduira les performances</translation>
-<translation id="1869685517625607604">Nombre de publicités bloquées :</translation>
+<translation id="8686201964111147748">Nombre total de pubs et de trackers bloqués :</translation>
 <translation id="4673764878177947707">Filtres Personnalisés</translation>
 <translation id="8803682034537762884">Un filtre est décrit par ligne dans la syntaxe du filtre Adblock Plus.</translation>
 <translation id="2974339193389078578">Brave est le nouvel Internet</translation>
@@ -55,8 +57,9 @@
 <translation id="2862598513212603756">Votre attention est précieuse. Gagnez de l'argent en visionnant des publicités respectueuses de la vie privée pendant que vous naviguez, et reversez vos gains afin de soutenir les créateurs de contenu que vous aimez.</translation>
 <translation id="4942016616604700968">Activer les Récompenses</translation>
 <translation id="3958088479270651626">Importer les favoris et les paramètres</translation>
-<translation id="5633840519079139680">Brave vous permet de configurer facilement votre environnement habituel en important vos signets et réglages depuis les autres navigateurs installés sur votre ordinateur.</translation>
+<translation id="2609701960545338618">Configurez votre environnement de navigation habituel en important les favoris et les paramètres de votre ancien navigateur. Les options d'importation avancées se trouvent dans Paramètres.</translation>
 <translation id="8275038454117074363">Importer</translation>
+<translation id="2088479175984386785">Importer de…</translation>
 <translation id="5540323067375019678">Gérez vos protections</translation>
 <translation id="3278033011827237847">Protégez-vous contre les publicités et les trackers portant atteinte à la vie privée lorsque vous naviguez avec Brave Shields. Réglez Shields sur « faible » si un site ne semble pas fonctionner correctement.</translation>
 <translation id="3366308997091824722">Réglages du bouclier</translation>
@@ -68,7 +71,11 @@
 <translation id="4428458837269935199">Pour une expérience de recherche plus privée, essayez DuckDuckGo.</translation>
 <translation id="513635702954746724">Choisissez votre thème coloré</translation>
 <translation id="6842850080200126305">Définissez la couleur de votre barre d'outils en sélectionnant l'option clair ou sombre dans le panneau des paramètres.</translation>
-<translation id="2801098717523961746">Choisir votre thème</translation>
+<translation id="5805868144901917207">Sélectionnez un thème</translation>
+<translation id="8131740175452115882">Confirmer</translation>
+<translation id="713206503018076063">Thème du système (par défaut)</translation>
+<translation id="1807246157184219062">Léger</translation>
+<translation id="2414886740292270097">Sombre</translation>
 <translation id="3829010735958850433">Sauter la visite guidée</translation>
 <translation id="1201402288615127009">Suivant</translation>
 <translation id="1919345977826869612">Annonces</translation>
@@ -101,7 +108,7 @@
 <translation id="3024485967181749006">Total des dons ce mois-ci</translation>
 <translation id="4153752809523809915">Avez-vous fait un petit don à votre créateur·rice de contenu préféré·e aujourd'hui ?</translation>
 <translation id="1165667598801520610">Ajouter des Fonds</translation>
-<translation id="5314648471460409933">Gérer les Fonds</translation>
+<translation id="6239274080752256452">Retirer des fonds</translation>
 <translation id="2726674968268546964">jetons</translation>
 <translation id="7286722244752781970">Temps minimum sur la page avant de considérer que c'est une visite</translation>
 <translation id="4424486208397124985">Nombre minimum de visites pour considérer l'éditeur comme pertinent</translation>
@@ -137,8 +144,9 @@
 <translation id="7797604753681168055">Récupérer maintenant!</translation>
 <translation id="1184075897575325927">Désolé, il semble que cette allocation ait déjà été réclamée.</translation>
 <translation id="282693359045252357">Date de la prochaine contribution mensuelle</translation>
-<translation id="6231182869178328516">Je viens de faire un don à <ph name="NAME">$1<ex>user</ex></ph> avec le navigateur Brave. Pour le voir, rendez-vous sur https://brave.com/tips.</translation>
+<translation id="6231182869178328516">Je viens de faire un don à <ph name="NAME"/> avec le navigateur Brave. Pour le voir, rendez-vous sur https://brave.com/tips.</translation>
 <translation id="8404935570206006581">PourboireAvecBrave</translation>
+<translation id="2876191400747549936">Désolé, un problème s'est produit lors du traitement de votre demande. Veuillez réessayer.</translation>
 <translation id="7422678632904904341">Montant :</translation>
 <translation id="5923611424721173182">Rapprochement actuel</translation>
 <translation id="5457113250005438886">Invalide</translation>
@@ -170,14 +178,10 @@
 <translation id="9026369588205476247">Afin de protéger votre vie privée, ce relevé de Récompenses Brave n'est pas sauvegardé, ni archivé ou enregistré ailleurs que sur votre appareil (cet ordinateur). Brave ne peut pas le récupérer en cas de perte de données sur votre appareil.</translation>
 <translation id="1036277985068412734">ajouter des fonds</translation>
 <translation id="5441565662498481293">Vous envoyez automatiquement des dons à :</translation>
-<translation id="4496990471549986619">la FAQ</translation>
-<translation id="1688876543043079268">Rappel : le portefeuille Brave est unidirectionnel et les BAT vont aux sites des éditeurs. Pour en savoir plus sur les Récompenses Brave, veuillez consulter</translation>
-<translation id="2790014973538267577">Afficher le QR Code</translation>
-<translation id="5690154556705187369">Veillez à bien utiliser l'adresse ci-dessous correspondant au type de crypto que vous utilisez. Uphold le convertira directement en BAT et cela sera crédité dans votre porte-monnaie Brave Rewards. Veuillez nous accorder une heure au maximum pour que votre porte-monnaie soit crédité.</translation>
-<translation id="8874657527115501951">Envoyez des cryptomonnaies de votre compte externe vers votre porte-monnaie Brave Rewards.</translation>
 <translation id="2827387977307390755">Autoriser les dons sur</translation>
 <translation id="3671566813999349838">Montant</translation>
 <translation id="3819257035322786455">Sauvegarde</translation>
+<translation id="4989542687859782284">Indisponible</translation>
 <translation id="1312977698678162065">Gagnez de l'argent en regardant des annonces respectueuses de votre vie privée.</translation>
 <translation id="7655723274266132226">Vous pouvez à présent gagner de l'argent en regardant de la publicité.</translation>
 <translation id="2975780980638932742">Brave Ads est arrivé !</translation>
@@ -275,9 +279,12 @@
 <translation id="1135093233619227159">Vous pouvez dissocier n'importe quel site des pourboires mensuels depuis l'intérieur du panneau Pourboires.</translation>
 <translation id="5082474983463379713">Veuillez noter :</translation>
 <translation id="1430915738399379752">Imprimer</translation>
+<translation id="135956957367307069">Votre demande est toujours en cours de traitement, veuillez patienter.</translation>
+<translation id="8725066075913043281">Réessayer</translation>
 <translation id="3173528272490482456">Prêt·e à démarrer ?</translation>
 <translation id="913775524828049259">Oui, allons-y</translation>
 <translation id="108052542935515756">Vous pouvez commencer avec</translation>
+<translation id="2678666039642976470">Reconnecter le portefeuille</translation>
 <translation id="194625454574835815">Clé de Récupération</translation>
 <translation id="6354568176665589146">Récurrent</translation>
 <translation id="7577100371127227294">Dons Mensuels</translation>
@@ -306,7 +313,7 @@
 <translation id="8014425282125849700">Occasionnellement, Brave vous offrira des contributions en jetons gratuites. Soyez bien attentif-ve aux alertes !</translation>
 <translation id="1370034647041840967">Gagnez des jetons pour votre attention aux annonces et versez-les pour aider les créateurs de contenu que vous appréciez!</translation>
 <translation id="3905359437915971466">Ajoutez, retirez et gérez des fonds à</translation>
-<translation id="5866139915213160210">Votre porte-monnaie Brave est géré par</translation>
+<translation id="1401808324297710517">Votre portefeuille Brave est propulsé par</translation>
 <translation id="6401272292123354754">Les récompenses Brave sont basées sur le jeton d'attention de base (BAT). En savoir plus sur le BAT</translation>
 <translation id="7823359893981882407">ici</translation>
 <translation id="4483635855837696643">Restaurer votre porte-monnaie</translation>
@@ -345,7 +352,6 @@
 <translation id="8615803647903750175">Activité du portefeuille</translation>
 <translation id="2620624773940447728">Adresse du porte-monnaie</translation>
 <translation id="4989277977420164514">solde du porte-monnaie</translation>
-<translation id="8725066075913043281">Réessayer</translation>
 <translation id="1083771727630442739">Une erreur est survenue lors de la création du portefeuille</translation>
 <translation id="9146039192200831719">Veuillez vérifier votre connexion internet.</translation>
 <translation id="1910721550319506122">Bienvenue !</translation>
@@ -380,6 +386,21 @@
 <translation id="8101881066646819737">Votre allocation de jetons Brave Ads</translation>
 <translation id="2151535059686617995">C'est votre jour de chance !</translation>
 <translation id="6255773350565723852">Votre subvention symbolique est en route.</translation>
+<translation id="7512440811010447157">vérifier</translation>
+<translation id="8030169304546394654">Déconnecté</translation>
+<translation id="8267327690882073581">Vérifier le portefeuille</translation>
+<translation id="4569155249847375786">Vérifié</translation>
+<translation id="7591798679868259510">Accéder à mon compte Uphold</translation>
+<translation id="9200453331904391567">Déconnexion des primes Brave</translation>
+<translation id="46988480989545156">Vérifier le portefeuille</translation>
+<translation id="1554282356558968486">Notre service de portefeuille est fourni par</translation>
+<translation id="6771734945114850124">Veuillez vous munir de votre carte d'identité nationale.</translation>
+<translation id="4483114863312340607">Retirez et ajoutez des fonds</translation>
+<translation id="6600381840029958159">Pas besoin de résoudre des captcha pour gagner des primes publicitaires</translation>
+<translation id="4332021186346461319">Les primes reçues n'expireront jamais et seront instantanément déposées dans votre portefeuille.</translation>
+<translation id="2610007079772760276">Un portefeuille vérifié vous permet de :</translation>
+<translation id="7565794512491053578">Vérifiez votre portefeuille</translation>
+<translation id="698531289520577961">Et gérez facilement vos fonds !</translation>
 <translation id="1181037720776840403">Supprimer</translation>
 <translation id="7885157704277298658">Copié !</translation>
 <translation id="5379640681913450928">Nombre de mots :</translation>
@@ -440,4 +461,5 @@
 <translation id="1399673826422570698">Vous rencontrez peut-être des problèmes de réseau, ou il y a peut-être un problème au niveau des serveurs de synchronisation.</translation>
 <translation id="5286379413446391050">Connexion aux serveurs Sync impossible</translation>
 <translation id="2410472020237369473">L'horloge de votre ordinateur est peut-être réglée sur la mauvaise heure ou le mauvais fuseau horaire. Vérifiez les paramètres de votre horloge.</translation>
+<translation id="5655621391922317800">Portefeuilles de cryptomonnaies</translation>
 </translationbundle>

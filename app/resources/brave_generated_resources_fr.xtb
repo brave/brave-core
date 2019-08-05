@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Récompenses Brave</translation>
 <translation id="7942180974165298215">Bloqueur de publicité Brave</translation>
 <translation id="6406506848690869874">Synchroniser</translation>
-<translation id="8488282162676695335">Porte-monnaie Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") n'est pas autorisé dans Brave.</translation>
+<translation id="5655621391922317800">Portefeuilles de cryptomonnaies</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") n'est pas autorisé dans Brave.</translation>
 <translation id="7450557937477381864">Fermez Chrome</translation>
 <translation id="7008934821596358692">Pour terminer l'importation, fermez toutes les fenêtres Chrome.</translation>
 <translation id="5735465527556462863">Fermer Brave (ancien)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Paiements Brave</translation>
 <translation id="3489524616427966890">Ouvrir les fenêtres et les onglets</translation>
 <translation id="3699882589215410581">Installer et exécuter Widevine</translation>
+<translation id="3696083746357487900">Installer des portefeuilles de cryptomonnaies</translation>
 <translation id="8053096063396012732">Installer Widevine</translation>
 <translation id="4840334696217618631">Redémarrez le navigateur pour activer Widevine</translation>
 <translation id="8410111618231938546">Google Widevine fait partie du code de Gestion des droits numériques (GDN) que nous, Brave Software, ne pouvons pas inspecter et dont nous ne sommes pas propriétaires. Le code de Google Widevine est téléchargé à partir des serveurs de Google, et non de nos serveurs. Il n'est téléchargé que lorsque vous activez cette option. Nous n'encourageons pas l'utilisation de GDN, mais respectons le choix de l'utilisateur et reconnaissons que certains utilisateurs de Brave souhaiteraient utiliser des services pour lesquels cela est nécessaire.
@@ -27,7 +28,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2240268017737062801">Demander lorsqu'un site veut lire automatiquement un média</translation>
 <translation id="3371702087847741961">Demander lorsqu'un site souhaite lire automatiquement le contenu multimédia (recommandé)</translation>
 <translation id="3218385319396786393">La lecture automatique a été bloquée sur cette page</translation>
-<translation id="4988333904713528597">Toujours autoriser la lecture automatique sur <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Toujours autoriser la lecture automatique sur <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuer le blocage de la lecture automatique</translation>
 <translation id="5883458389055721080">La sécurité et la sûreté de cette extension n'ont pas été examinées par Brave. Installez cette extension seulement si vous faites confiance au développeur.</translation>
 <translation id="2044383478723007273">Les couleurs de Brave</translation>
@@ -35,6 +36,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6123134130710658846">Masquer le bouton Brave Rewards</translation>
 <translation id="7635711399568194460">Masque le bouton Brave Rewards dans la barre d’emplacement lorsque Brave Rewards n’est pas activé.</translation>
 <translation id="7965178729203412357">Nouvelle identité Tor</translation>
+<translation id="8511502469534942133">Nouvelle connexion Tor pour ce site</translation>
 <translation id="8784924142044142231">Quitter Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Ouvrir une fenêtre Tor</translation>
@@ -84,6 +86,9 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Utilise WebTorrent pour afficher les torrents directement dans le navigateur. Compatible avec les fichiers torrent et les liens magnétiques.</translation>
 <translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>
+<translation id="1765684547504191670">Utilise le routeur média pour activer Chromecast dans le navigateur.</translation>
+<translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
+<translation id="7179921470347911571">Relancer maintenant</translation>
 <translation id="4154389611571860454">Utilise l'extension IPFS companion pour prendre en charge IPFS dans le navigateur.</translation>
 <translation id="8137559199583651773">Gérer les extensions</translation>
 <translation id="4928988318462976765">Magasin d'extensions Web</translation>

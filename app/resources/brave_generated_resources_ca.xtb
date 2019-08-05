@@ -4,8 +4,8 @@
 <translation id="3333887201479867589">Premis de Brave</translation>
 <translation id="7942180974165298215">Blocatge d'anuncis de Brave</translation>
 <translation id="6406506848690869874">Sincronització</translation>
-<translation id="8488282162676695335">Cartera de Brave</translation>
-<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (amb identificador d'extensió "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") no es permet a Brave.</translation>
+<translation id="5655621391922317800">Moneders Crypto</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (amb identificador d'extensió "<ph name="EXTENSION_ID"/>") no es permet a Brave.</translation>
 <translation id="7450557937477381864">Tanqueu Chrome</translation>
 <translation id="7008934821596358692">Per a finalitzar la importació tanqueu totes les finestres de Chrome</translation>
 <translation id="5735465527556462863">Tanca Brave (antic)</translation>
@@ -15,6 +15,7 @@
 <translation id="6165477144235978006">Pagaments a Brave</translation>
 <translation id="3489524616427966890">Obre finestres i pestanyes</translation>
 <translation id="3699882589215410581">Instal·la i executa Widevine</translation>
+<translation id="3696083746357487900">Instal·lar Moneders Crypto</translation>
 <translation id="8053096063396012732">Instal·la Widevine</translation>
 <translation id="4840334696217618631">Reinicia el navegador per activar Widevine</translation>
 <translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l'elecció de l'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen. 
@@ -28,7 +29,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="3371702087847741961">Pregunta quan un lloc vol fer reproducció automàtica
 (recomanat)</translation>
 <translation id="3218385319396786393">Reproducció automàtica bloquejada en aquesta pàgina</translation>
-<translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
+<translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
 <translation id="5883458389055721080">Brave no ha revisat aquesta extensió amb finalitats de seguretat. Instal·la aquesta extensió només si confies en el desenvolupador.</translation>
 <translation id="2044383478723007273">Colors de Brave</translation>
@@ -36,6 +37,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6123134130710658846">Amaga el botó de Premis de Brave</translation>
 <translation id="7635711399568194460">Amaga el botó de Premis de Brave a la barra d'ubicació quan Premis de Brave no està habilitat</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
+<translation id="8511502469534942133">Nova connexió Tor per a aquest lloc.</translation>
 <translation id="8784924142044142231">Surt de Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Obre una finestra de Tor</translation>
@@ -85,6 +87,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Fa servir WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i magnet links.</translation>
 <translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
+<translation id="1765684547504191670">Fa servir el component Media Router per habilitar Chromecast al navegador.</translation>
+<translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
+<translation id="7179921470347911571">Rellançar Ara</translation>
 <translation id="4154389611571860454">Utilitza l'extensió complementària d'IPFS per admetre IPFS al navegador.</translation>
 <translation id="8137559199583651773">Gestiona les extensions</translation>
 <translation id="4928988318462976765">Botiga d'extensions web</translation>

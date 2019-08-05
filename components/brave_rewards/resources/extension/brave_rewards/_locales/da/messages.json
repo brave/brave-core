@@ -462,5 +462,99 @@
   "grantFinishTokenTitleAds": {
     "message": "Din Brave Ads token-tildeling",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "verificere",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Afbrudt",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Bekræft tegnebogen",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Bekræftet",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Gå til min Uphold-konto",
+    "description": "CTA to open uphold account"
+  },
+  "walletDisconnect":  {
+    "message": "Afbryd fra Brave Belønninger",
+    "description": "CTA to disconnect user wallet from rewards"
+  },
+  "walletVerificationButton":  {
+    "message": "Bekræft Tegnebog",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Vores tegnebogsservice leveres af",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Venligst hav din regeringsudstedte ID tilgængelig.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Behold dine Ad Rewards-tokens",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Tilføj tokens ved hjælp af kreditkort",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Træk tokens tilbage",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "En verificeret tegnebog giver dig mulighed for at:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Bekræft din tegnebog",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "Og administrer dine midler let!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Godkendt",
+    "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Ikke tilgængelig",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Tilslut tegnebogen igen",
+    "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Din tegnebog er bekræftet!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Tillykke! Din $name$ tegnebog blev bekræftet og er klar til at indsætte og hæve midler.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Åh åh. Din tegnebog er ikke tilgængelig.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "Ingen bekymringer. Dette kan ske af en række sikkerhedsmæssige årsager. Du skal bare oprette forbindelse igen, og dette vil løse problemet",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -1640,7 +1640,9 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="473546211690256853">Akun ini dikelola oleh <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Profil akan dihapus</translation>
 <translation id="5632566673632479864"><ph name="EMAIL"/> akun Anda tidak lagi diizinkan sebagai akun utama. Karena akun ini dikelola oleh <ph name="DOMAIN"/>, bookmark, histori, sandi, dan setelan Anda lainnya akan dihapus dari perangkat ini.</translation>
+<translation id="3797739167230984533"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> dikelola<ph name="END_LINK"/> oleh organisasi Anda</translation>
 <translation id="1722460139690167654"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> Anda dikelola<ph name="END_LINK"/> oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Browser dikelola<ph name="END_LINK"/> oleh organisasi Anda</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Browser Anda dikelola<ph name="END_LINK"/> oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Konten</translation>
 <translation id="7702907602086592255">Domain</translation>

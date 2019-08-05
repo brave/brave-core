@@ -1647,7 +1647,9 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="473546211690256853">Šo kontu pārvalda <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Profiles tiks dzēsts</translation>
 <translation id="5632566673632479864">Jūsu kontu <ph name="EMAIL"/> vairs nav atļauts izmantot kā primāro kontu. Šis konts tiek pārvaldīts domēnā <ph name="DOMAIN"/>, tādēļ jūsu grāmatzīmes, vēsture, paroles un citi iestatījumi tiks dzēsti no šīs ierīces.</translation>
+<translation id="3797739167230984533">Jūsu <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> pārvalda<ph name="END_LINK"/> jūsu organizācija</translation>
 <translation id="1722460139690167654">Jūsu ierīci <ph name="BEGIN_LINK"/>(veids: <ph name="DEVICE_TYPE"/>) pārvalda<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="8118488170956489476">Jūsu <ph name="BEGIN_LINK"/>pārlūku pārvalda<ph name="END_LINK"/> organizācija</translation>
 <translation id="1365180424462182382">Jūsu <ph name="BEGIN_LINK"/>pārlūkprogrammu pārvalda<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Saturs</translation>
 <translation id="7702907602086592255">Domēns</translation>
