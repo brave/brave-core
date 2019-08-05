@@ -129,12 +129,15 @@ bool AdBlockRegionalServiceManager::NetworkFilterMatches(
     const std::string& tab_host,
     bool* matching_exception_filter,
     bool* matching_important_filter,
-    bool* cancel_request_explicitly) {
+    bool* cancel_request_explicitly,
+    bool skip_unimportant,
+    bool skip_exception) {
   base::AutoLock lock(regional_services_lock_);
   for (const auto& regional_service : regional_services_) {
     if (regional_service.second->NetworkFilterMatches(
             url, resource_type, tab_host, matching_exception_filter,
-            matching_important_filter, cancel_request_explicitly)) {
+            matching_important_filter, cancel_request_explicitly,
+            skip_unimportant, skip_exception)) {
       return true;
     }
     if (matching_exception_filter && *matching_exception_filter) {
