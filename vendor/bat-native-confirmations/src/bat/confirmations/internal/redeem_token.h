@@ -39,11 +39,11 @@ class RedeemToken {
       const std::string& creative_instance_id,
       const ConfirmationType confirmation_type);
   void Redeem(
-    const ConfirmationInfo& confirmation_info);
+    const ConfirmationInfo& confirmation);
 
  private:
   void CreateConfirmation(
-      const ConfirmationInfo& confirmation_info);
+      const ConfirmationInfo& confirmation);
   void CreateConfirmation(
       const std::string& creative_instance_id,
       const TokenInfo& token_info,
@@ -53,24 +53,24 @@ class RedeemToken {
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      const ConfirmationInfo& confirmation_info);
+      const ConfirmationInfo& confirmation);
 
   void FetchPaymentToken(
-      const ConfirmationInfo& confirmation_info);
+      const ConfirmationInfo& confirmation);
   void OnFetchPaymentToken(
       const std::string& url,
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      const ConfirmationInfo& confirmation_info);
+      const ConfirmationInfo& confirmation);
 
   void OnRedeem(
       const Result result,
-      const ConfirmationInfo& confirmation_info,
+      const ConfirmationInfo& confirmation,
       const bool should_retry = true);
 
-  void ScheduleNextRetryForFailedConfirmations() const;
-  uint64_t CalculateTimerForNextRetryForFailedConfirmations() const;
+  bool Verify(
+    const ConfirmationInfo& confirmation) const;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
