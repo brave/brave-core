@@ -1,6 +1,6 @@
 github "Alamofire/Alamofire"		"4.8.2"
 github "garvankeeley/Deferred"		"9.9.2"
-github "SnapKit/SnapKit"		"4.2.0"
+github "SnapKit/SnapKit"		"5.0.1"
 github "rs/SDWebImage"			"4.4.6"
 github "swisspol/GCDWebServer"		"3.5.2"
 github "kif-framework/KIF"		"v3.7.5"
