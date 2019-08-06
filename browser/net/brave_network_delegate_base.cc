@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/task/post_task.h"
+#include "base/stl_util.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/common/pref_names.h"
@@ -224,7 +225,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-  if (!ContainsKey(callbacks_, ctx->request_identifier)) {
+  if (!base::Contains(callbacks_, ctx->request_identifier)) {
     return;
   }
 
@@ -333,7 +334,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
 }
 
 void BraveNetworkDelegateBase::OnURLRequestDestroyed(URLRequest* request) {
-  if (ContainsKey(callbacks_, request->identifier())) {
+  if (base::Contains(callbacks_, request->identifier())) {
     callbacks_.erase(request->identifier());
   }
   ChromeNetworkDelegate::OnURLRequestDestroyed(request);
@@ -341,5 +342,5 @@ void BraveNetworkDelegateBase::OnURLRequestDestroyed(URLRequest* request) {
 
 bool BraveNetworkDelegateBase::IsRequestIdentifierValid(
     uint64_t request_identifier) {
-  return ContainsKey(callbacks_, request_identifier);
+  return base::Contains(callbacks_, request_identifier);
 }

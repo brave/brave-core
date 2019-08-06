@@ -129,7 +129,7 @@ void BraveRequestHandler::SetReferralHeaders(
 
 bool BraveRequestHandler::IsRequestIdentifierValid(
     uint64_t request_identifier) {
-  return ContainsKey(callbacks_, request_identifier);
+  return base::Contains(callbacks_, request_identifier);
   return true;
 }
 
@@ -193,7 +193,7 @@ int BraveRequestHandler::OnHeadersReceived(
 
 void BraveRequestHandler::OnURLRequestDestroyed(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (ContainsKey(callbacks_, ctx->request_identifier)) {
+  if (base::Contains(callbacks_, ctx->request_identifier)) {
     callbacks_.erase(ctx->request_identifier);
   }
 }
@@ -215,7 +215,7 @@ void BraveRequestHandler::RunNextCallback(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
 
-  if (!ContainsKey(callbacks_, ctx->request_identifier)) {
+  if (!base::Contains(callbacks_, ctx->request_identifier)) {
     return;
   }
 
