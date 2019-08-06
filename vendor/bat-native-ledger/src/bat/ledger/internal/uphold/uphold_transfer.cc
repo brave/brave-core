@@ -82,7 +82,7 @@ void UpholdTransfer::OnCreateTransaction(
 
   if (response_status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, false);
-    uphold_->DisconectWallet();
+    uphold_->DisconnectWallet();
     return;
   }
 
@@ -149,7 +149,7 @@ void UpholdTransfer::OnCommitTransaction(
 
   if (response_status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, true);
-    uphold_->DisconectWallet();
+    uphold_->DisconnectWallet();
     return;
   }
 
