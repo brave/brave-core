@@ -7,11 +7,14 @@
 
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_metrics.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 
@@ -37,6 +40,19 @@ void NewTorConnectionForSite(Browser* browser) {
   if (!current_tab)
     return;
   service->SetNewTorCircuit(current_tab);
+}
+
+void AddNewProfile() {
+  profiles::CreateAndSwitchToNewProfile(
+    ProfileManager::CreateCallback(),
+    ProfileMetrics::ADD_NEW_USER_MENU);
+}
+
+void OpenGuestProfile() {
+  PrefService* service = g_browser_process->local_state();
+  DCHECK(service);
+  DCHECK(service->GetBoolean(prefs::kBrowserGuestModeEnabled));
+  profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
 }
 
 }  // namespace brave

@@ -12,6 +12,8 @@ namespace brave {
 
 void NewOffTheRecordWindowTor(Browser*);
 void NewTorConnectionForSite(Browser*);
+void AddNewProfile();
+void OpenGuestProfile();
 
 }  // namespace brave
 

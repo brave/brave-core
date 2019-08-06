@@ -83,7 +83,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   // Sync & Rewards pages doesn't work on tor(guest) session.
   // They also doesn't work on private window but they are redirected
   // to normal window in this case.
-  if (!browser_->profile()->IsGuestSession()) {
+  const bool is_guest_session = browser_->profile()->IsGuestSession();
+  if (!is_guest_session) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     UpdateCommandForBraveRewards();
 #endif
@@ -97,6 +98,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_TOR)
   UpdateCommandForTor();
 #endif
+  UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, !is_guest_session);
+  UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, !is_guest_session);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -150,7 +153,12 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_WALLET:
       brave::ShowBraveWallet(browser_);
       break;
-
+    case IDC_ADD_NEW_PROFILE:
+      brave::AddNewProfile();
+      break;
+    case IDC_OPEN_GUEST_PROFILE:
+      brave::OpenGuestProfile();
+      break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
       break;
