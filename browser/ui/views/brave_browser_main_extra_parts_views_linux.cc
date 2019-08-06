@@ -30,12 +30,15 @@ ui::NativeTheme* GetNativeThemeForWindow(aura::Window* window) {
     return nullptr;
   }
 
-  // Use the appropriate native theme for the color mode pref
-  BraveThemeType active_builtin_theme =
-                            BraveThemeService::GetActiveBraveThemeType(profile);
-  const bool dark_mode =
-      (active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
-       profile->IsIncognitoProfile() || brave::IsTorProfile(profile));
+  // If using the system (GTK) theme, don't use an Aura NativeTheme at all.
+  // Instead, CustomThemeSupplier is used.
+  if (profile->GetPrefs()->GetBoolean(prefs::kUsesSystemTheme)) {
+    return nullptr;
+  }
+
+  const bool dark_mode = (profile->IsIncognitoProfile() ||
+                          brave::IsTorProfile(profile) ||
+                          brave::IsGuestProfile(profile));
   if (dark_mode && BrowserView::GetBrowserViewForNativeWindow(window)) {
     return ui::NativeThemeDarkAura::instance();
   }
