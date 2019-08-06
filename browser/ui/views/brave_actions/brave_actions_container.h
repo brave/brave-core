@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/extensions/api/extension_action/extension_action_api.h"
 #include "components/prefs/pref_member.h"
+#include "extensions/browser/extension_registry_observer.h"
 #include "extensions/common/extension.h"
 #include "ui/views/view.h"
 
@@ -24,16 +25,15 @@ class BraveRewardsBrowserTest;
 namespace extensions {
 class ExtensionActionManager;
 class ExtensionRegistry;
-class ExtensionRegistryObserver;
 }
 
 // This View contains all the built-in BraveActions such as Shields and Payments
 // TODO(petemill): consider splitting to separate model, like
 // ToolbarActionsModel and ToolbarActionsBar
 class BraveActionsContainer : public views::View,
-                             public extensions::ExtensionActionAPI::Observer,
-                             public extensions::ExtensionRegistryObserver,
-                             public ToolbarActionView::Delegate {
+                              public extensions::ExtensionActionAPI::Observer,
+                              public extensions::ExtensionRegistryObserver,
+                              public ToolbarActionView::Delegate {
  public:
   BraveActionsContainer(Browser* browser, Profile* profile);
   ~BraveActionsContainer() override;
@@ -135,7 +135,8 @@ class BraveActionsContainer : public views::View,
   extensions::ExtensionActionManager* extension_action_manager_;
 
   // Listen to extension load, unloaded notifications.
-  ScopedObserver<extensions::ExtensionRegistry, ExtensionRegistryObserver>
+  ScopedObserver<extensions::ExtensionRegistry,
+                 extensions::ExtensionRegistryObserver>
       extension_registry_observer_;
 
   // Listen to when the action is updated
