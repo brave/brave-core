@@ -12,9 +12,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
 #include "ui/resources/grit/webui_resources_map.h"
-#if defined(OS_ANDROID)
-#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
-#endif
 
 #if !defined(OS_ANDROID)
 content::WebUIDataSource* CreateBasicUIHTMLSource(
