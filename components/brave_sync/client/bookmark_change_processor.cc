@@ -281,12 +281,12 @@ void BookmarkChangeProcessor::BookmarkModelBeingDeleted(
 
 void BookmarkChangeProcessor::BookmarkNodeAdded(BookmarkModel* model,
                                                 const BookmarkNode* parent,
-                                                int index) {
+                                                size_t index) {
 }
 
 void BookmarkChangeProcessor::OnWillRemoveBookmarks(BookmarkModel* model,
                                                     const BookmarkNode* parent,
-                                                    int old_index,
+                                                    size_t old_index,
                                                     const BookmarkNode* node) {
 }
 
@@ -334,7 +334,7 @@ void BookmarkChangeProcessor::CloneBookmarkNodeForDelete(
 void BookmarkChangeProcessor::BookmarkNodeRemoved(
     BookmarkModel* model,
     const BookmarkNode* parent,
-    int old_index,
+    size_t old_index,
     const BookmarkNode* node,
     const std::set<GURL>& no_longer_bookmarked) {
   // TODO(bridiver) - should this be in OnWillRemoveBookmarks?
@@ -388,8 +388,10 @@ void BookmarkChangeProcessor::BookmarkMetaInfoChanged(
 }
 
 void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
-      const BookmarkNode* old_parent, int old_index,
-      const BookmarkNode* new_parent, int new_index) {
+                                                const BookmarkNode* old_parent,
+                                                size_t old_index,
+                                                const BookmarkNode* new_parent,
+                                                size_t new_index) {
   auto* node = new_parent->GetChild(new_index);
   model->DeleteNodeMetaInfo(node, "order");
   BookmarkNodeChanged(model, node);
