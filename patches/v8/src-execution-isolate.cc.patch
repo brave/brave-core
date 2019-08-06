@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
-index 8a8db12ca3f59577436d148bb2693c836720af2d..7ba00ed47ebb03d154a3dbb5415994baca7b7d40 100644
+index 8a8db12ca3f59577436d148bb2693c836720af2d..d0fcaa683cfa779156321b4c8c43c0ce6a052349 100644
 --- a/src/execution/isolate.cc
 +++ b/src/execution/isolate.cc
 @@ -89,6 +89,8 @@
@@ -11,7 +11,7 @@ index 8a8db12ca3f59577436d148bb2693c836720af2d..7ba00ed47ebb03d154a3dbb5415994ba
  extern "C" const uint8_t* v8_Default_embedded_blob_;
  extern "C" uint32_t v8_Default_embedded_blob_size_;
  
-@@ -4588,6 +4590,34 @@ void Isolate::SetIdle(bool is_idle) {
+@@ -4588,6 +4590,47 @@ void Isolate::SetIdle(bool is_idle) {
    }
  }
  
@@ -40,6 +40,19 @@ index 8a8db12ca3f59577436d148bb2693c836720af2d..7ba00ed47ebb03d154a3dbb5415994ba
 +  }
 +
 +  return 0;
++}
++
++void Isolate::ReportBuiltInCallAndResponse(const char* func_name,
++    const std::vector<const char*>& args, const char* result) {
++  BuiltInFuncCallFunc call_func = GetBuiltInFuncCallFunc();
++  auto extern_isolate = reinterpret_cast<v8::Isolate*>(this);
++  if (call_func) {
++    call_func(*extern_isolate, func_name, args);
++  }
++  BuiltInFuncResponseFunc rs_func = GetBuiltInFuncResponseFunc();
++  if (rs_func) {
++    rs_func(*extern_isolate, func_name, result);
++  }
 +}
 +#endif
 +

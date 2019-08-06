@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.h b/src/execution/isolate.h
-index 4b4bf9cd7c61687b0f36da1eaa672979c59dab67..8c3da2b5b241add142b7a7359bf47ea15fac567a 100644
+index 4b4bf9cd7c61687b0f36da1eaa672979c59dab67..a9e522885e6adcb389ddc3e57f4b70ee069cb553 100644
 --- a/src/execution/isolate.h
 +++ b/src/execution/isolate.h
 @@ -35,6 +35,8 @@
@@ -11,7 +11,7 @@ index 4b4bf9cd7c61687b0f36da1eaa672979c59dab67..8c3da2b5b241add142b7a7359bf47ea1
  #ifdef V8_INTL_SUPPORT
  #include "unicode/uversion.h"  // Define U_ICU_NAMESPACE.
  namespace U_ICU_NAMESPACE {
-@@ -1545,6 +1547,18 @@ class Isolate final : private HiddenFactory {
+@@ -1545,6 +1547,37 @@ class Isolate final : private HiddenFactory {
  
    V8_EXPORT_PRIVATE void SetIdle(bool is_idle);
  
@@ -25,17 +25,38 @@ index 4b4bf9cd7c61687b0f36da1eaa672979c59dab67..8c3da2b5b241add142b7a7359bf47ea1
 +  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func) {
 +    eval_script_compiled_func_ = func;
 +  }
++
++  BuiltInFuncCallFunc GetBuiltInFuncCallFunc() const {
++    return built_in_func_call_func_;
++  }
++
++  void SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func) {
++    built_in_func_call_func_ = func;
++  }
++
++  BuiltInFuncResponseFunc GetBuiltInFuncResponseFunc() const {
++    return built_in_func_response_func_;
++  }
++
++  void SetBuiltInFuncResponseFunc(const BuiltInFuncResponseFunc func) {
++    built_in_func_response_func_ = func;
++  }
++
++  void ReportBuiltInCallAndResponse(const char* func_name,
++    const std::vector<const char*>& args, const char* result);
 +#endif
 +
   private:
    explicit Isolate(std::unique_ptr<IsolateAllocator> isolate_allocator);
    ~Isolate();
-@@ -1863,6 +1877,10 @@ class Isolate final : private HiddenFactory {
+@@ -1863,6 +1896,12 @@ class Isolate final : private HiddenFactory {
    base::Mutex thread_data_table_mutex_;
    ThreadDataTable thread_data_table_;
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  EvalScriptCompiledFunc eval_script_compiled_func_ = nullptr;
++  BuiltInFuncCallFunc built_in_func_call_func_ = nullptr;
++  BuiltInFuncResponseFunc built_in_func_response_func_ = nullptr;
 +#endif
 +
    // Delete new/delete operators to ensure that Isolate::New() and

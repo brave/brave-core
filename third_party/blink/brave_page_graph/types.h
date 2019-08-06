@@ -150,6 +150,14 @@ typedef enum {
 } StorageLocation;
 std::string StorageLocationToString(const StorageLocation location) noexcept;
 
+typedef enum {
+  kJSBuiltInDateNow = 0,
+  kJSBuiltInDateConstructor,
+  kJSBuiltInDateParse,
+} JSBuiltIn;
+JSBuiltIn JSBuiltInFromString(const std::string& built_in_name) noexcept;
+const std::string& JSBuiltInToSting(const JSBuiltIn built_in_name) noexcept;
+
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;
 typedef int ScriptId;

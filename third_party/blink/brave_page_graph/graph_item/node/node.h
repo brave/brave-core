@@ -42,7 +42,9 @@ friend class PageGraph;
   virtual bool IsNodeShields() const;
   virtual bool IsNodeStorage() const;
   virtual bool IsNodeStorageRoot() const;
-  virtual bool IsNodeWebAPI() const;
+  virtual bool IsNodeJS() const;
+  virtual bool IsNodeJSWebAPI() const;
+  virtual bool IsNodeJSBuiltIn() const;
 
  protected:
   Node(PageGraph* const graph);

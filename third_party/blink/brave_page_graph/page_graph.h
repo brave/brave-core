@@ -63,7 +63,8 @@ class NodeStorageLocalStorage;
 class NodeStorageRoot;
 class NodeStorageSessionStorage;
 class NodeTrackerFilter;
-class NodeWebAPI;
+class NodeJSBuiltIn;
+class NodeJSWebAPI;
 class RequestMetadata;
 class RequestTracker;
 class ScriptTracker;
@@ -156,6 +157,10 @@ friend NodeHTMLElement;
     const std::vector<const WTF::String>& arguments);
   void RegisterWebAPIResult(const MethodName& method,
     const WTF::String& result);
+  void RegisterJSBuiltInCall(const JSBuiltIn built_in,
+    const std::vector<const char*>& args);
+  void RegisterJSBuiltInResponse(const JSBuiltIn built_in,
+    const char* result);
 
   // Methods for handling the registration of script units in the document,
   // and v8 script executing.
@@ -254,7 +259,11 @@ friend NodeHTMLElement;
 
   // Index structure for storing and looking up webapi nodes.
   // This map does not own the references.
-  std::map<MethodName, NodeWebAPI* const> webapi_nodes_;
+  std::map<MethodName, NodeJSWebAPI* const> webapi_nodes_;
+
+  // Index structure for storing and looking up nodes representing built
+  // in JS funcs and methods. This map does not own the references.
+  std::map<JSBuiltIn, NodeJSBuiltIn* const> builtin_js_nodes_;
 
   // Index structure for looking up HTML nodes.
   // This map does not own the references.

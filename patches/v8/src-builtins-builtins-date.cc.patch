@@ -1,0 +1,86 @@
+diff --git a/src/builtins/builtins-date.cc b/src/builtins/builtins-date.cc
+index d33387354283d53158d247e86df9ca2a9ab6f262..02046dc9bfa7ca823ec644a282c845a06eccebd6 100644
+--- a/src/builtins/builtins-date.cc
++++ b/src/builtins/builtins-date.cc
+@@ -16,6 +16,11 @@
+ #endif
+ #include "src/strings/string-stream.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <string>
++#endif
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -206,9 +211,27 @@ Object SetLocalDateValue(Isolate* isolate, Handle<JSDate> date,
+ // ES #sec-date-constructor
+ BUILTIN(DateConstructor) {
+   HandleScope scope(isolate);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    BuiltInFuncCallFunc call_func = isolate->GetBuiltInFuncCallFunc();
++    if (call_func) {
++      call_func(*reinterpret_cast<v8::Isolate*>(isolate), "new Date()",
++        {});
++    }
++  }
++#endif
+   if (args.new_target()->IsUndefined(isolate)) {
+     double const time_val = JSDate::CurrentTimeValue(isolate);
+     DateBuffer buffer = ToDateString(time_val, isolate->date_cache());
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    BuiltInFuncResponseFunc rs_func = isolate->GetBuiltInFuncResponseFunc();
++    if (rs_func) {
++      rs_func(*reinterpret_cast<v8::Isolate*>(isolate), "new Date()",
++        buffer.begin());
++    }
++  }
++#endif
+     RETURN_RESULT_OR_FAILURE(
+         isolate, isolate->factory()->NewStringFromUtf8(VectorOf(buffer)));
+   }
+@@ -288,12 +311,27 @@ BUILTIN(DateConstructor) {
+       time_val = std::numeric_limits<double>::quiet_NaN();
+     }
+   }
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    BuiltInFuncResponseFunc rs_func = isolate->GetBuiltInFuncResponseFunc();
++    if (rs_func) {
++      rs_func(*reinterpret_cast<v8::Isolate*>(isolate), "new Date()",
++        ::std::to_string(time_val).c_str());
++    }
++  }
++#endif
+   RETURN_RESULT_OR_FAILURE(isolate, JSDate::New(target, new_target, time_val));
+ }
+ 
+ // ES6 section 20.3.3.1 Date.now ( )
+ BUILTIN(DateNow) {
+   HandleScope scope(isolate);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("Date.now", {},
++      ::std::to_string(JSDate::CurrentTimeValue(isolate)).c_str());
++  }
++#endif
+   return *isolate->factory()->NewNumber(JSDate::CurrentTimeValue(isolate));
+ }
+ 
+@@ -304,6 +342,13 @@ BUILTIN(DateParse) {
+   ASSIGN_RETURN_FAILURE_ON_EXCEPTION(
+       isolate, string,
+       Object::ToString(isolate, args.atOrUndefined(isolate, 1)));
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    std::string value(string->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse("Date.parse", {value.c_str()},
++      ::std::to_string(ParseDateTimeString(isolate, string)).c_str());
++  }
++#endif
+   return *isolate->factory()->NewNumber(ParseDateTimeString(isolate, string));
+ }
+ 

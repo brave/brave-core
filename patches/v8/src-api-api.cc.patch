@@ -1,5 +1,5 @@
 diff --git a/src/api/api.cc b/src/api/api.cc
-index 399aca7eb61dff4c67ad1fbe0620af3a3bf94254..2bd4177938e54ce95473f5c6147a015c57f38571 100644
+index 399aca7eb61dff4c67ad1fbe0620af3a3bf94254..aa01ab5b63236f862dc967367d17779bd1345d8e 100644
 --- a/src/api/api.cc
 +++ b/src/api/api.cc
 @@ -126,6 +126,8 @@
@@ -132,7 +132,7 @@ index 399aca7eb61dff4c67ad1fbe0620af3a3bf94254..2bd4177938e54ce95473f5c6147a015c
  int Name::GetIdentityHash() {
    auto self = Utils::OpenHandle(this);
    return static_cast<int>(self->Hash());
-@@ -7611,6 +7670,18 @@ void Isolate::CheckMemoryPressure() {
+@@ -7611,6 +7670,28 @@ void Isolate::CheckMemoryPressure() {
    heap->CheckMemoryPressure();
  }
  
@@ -145,6 +145,16 @@ index 399aca7eb61dff4c67ad1fbe0620af3a3bf94254..2bd4177938e54ce95473f5c6147a015c
 +void Isolate::SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func) {
 +  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
 +  internal_isolate->SetEvalScriptCompiledFunc(func);
++}
++
++void Isolate::SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  internal_isolate->SetBuiltInFuncCallFunc(func);
++}
++
++void Isolate::SetBuiltInFuncResponseFunc(const BuiltInFuncResponseFunc func) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  internal_isolate->SetBuiltInFuncResponseFunc(func);
 +}
 +#endif
 +
