@@ -19,6 +19,7 @@
 #include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/values.h"
+#include "base/base64.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
@@ -26,8 +27,10 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::SignedToken;
 using challenge_bypass_ristretto::BatchDLEQProof;
+using challenge_bypass_ristretto::VerificationSignature;
 using challenge_bypass_ristretto::PublicKey;
 
 namespace confirmations {
@@ -246,6 +249,16 @@ void RedeemToken::OnFetchPaymentToken(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
+  if (response_status_code == net::HTTP_NOT_FOUND) {
+    if (!Verify(confirmation_info)) {
+      OnRedeem(FAILED, confirmation_info, false);
+      return;
+    }
+
+    Redeem(confirmation_info.creative_instance_id, confirmation_info.type);
+    return;
+  }
+
   if (response_status_code != net::HTTP_OK) {
     BLOG(ERROR) << "Failed to fetch payment token";
     OnRedeem(FAILED, confirmation_info);
@@ -418,6 +431,40 @@ void RedeemToken::OnRedeem(
         << " confirmation id with " << confirmation_info.creative_instance_id
         << " creative instance id for " << std::string(confirmation_info.type);
   }
+}
+
+bool RedeemToken::Verify(
+    const ConfirmationInfo& confirmation_info) const {
+  std::string credential;
+  base::Base64Decode(confirmation_info.credential, &credential);
+
+  base::Optional<base::Value> value = base::JSONReader::Read(credential);
+  if (!value || !value->is_dict()) {
+    return false;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return false;
+  }
+
+  auto* signature_value = dictionary->FindKey("signature");
+  if (!signature_value) {
+    return false;
+  }
+
+  auto signature = signature_value->GetString();
+  auto verification_signature = VerificationSignature::decode_base64(signature);
+
+  CreateConfirmationRequest request;
+  auto payload = request.CreateConfirmationRequestDTO(
+      confirmation_info.creative_instance_id,
+          confirmation_info.blinded_payment_token, confirmation_info.type);
+
+  auto unblinded_token = confirmation_info.token_info.unblinded_token;
+  auto verification_key = unblinded_token.derive_verification_key();
+
+  return verification_key.verify(verification_signature, payload);
 }
 
 }  // namespace confirmations

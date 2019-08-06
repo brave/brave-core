@@ -69,6 +69,9 @@ class RedeemToken {
       const ConfirmationInfo& confirmation_info,
       const bool should_retry = true);
 
+  bool Verify(
+    const ConfirmationInfo& confirmation_info) const;
+
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
   UnblindedTokens* unblinded_tokens_;  // NOT OWNED
