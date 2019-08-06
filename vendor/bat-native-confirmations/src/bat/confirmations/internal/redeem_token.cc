@@ -23,6 +23,7 @@
 #include "base/base64.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
+#include "base/base64.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -179,7 +180,7 @@ void RedeemToken::OnCreateConfirmation(
 
   if (response_status_code != net::HTTP_CREATED) {
     BLOG(ERROR) << "Failed to create confirmation";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, false);
     return;
   }
 
