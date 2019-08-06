@@ -48,6 +48,8 @@ std::string GetPlatformIdentifier() {
     return "winx64-bc";
 #elif defined(OS_MACOSX)
   return "osx-bc";
+#elif defined(OS_ANDROID)
+  return "android-bc";
 #elif defined(OS_LINUX)
   return "linux-bc";
 #else
