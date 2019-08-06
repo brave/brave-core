@@ -14,10 +14,6 @@ bool FixupBrowserAboutURL(GURL* url,
                           content::BrowserContext* browser_context) {
   bool result = FixupBrowserAboutURL_ChromiumImpl(url, browser_context);
 
-  // no special win10 welcome page
-  if (url->host() == chrome::kChromeUIWelcomeWin10Host)
-    *url = GURL(chrome::kChromeUIWelcomeURL);
-
   // redirect sync-internals
   if (url->host() == chrome::kChromeUISyncInternalsHost) {
     GURL::Replacements replacements;
