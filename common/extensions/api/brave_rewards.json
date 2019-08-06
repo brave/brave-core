@@ -487,6 +487,31 @@
         ]
       },
       {
+        "name": "tipGitHubUser",
+        "type": "function",
+        "description": "Allow the user to perform a donation to a GitHub user",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "name": "mediaMetaData",
+            "type": "object",
+            "properties": {
+              "mediaType": {
+                "type": "string",
+                "description": "description used in UI to identify the media type"
+              },
+              "userName": {
+                "type": "string",
+                "description": "Username of the GitHub author"
+              }
+            }
+          }
+        ]
+      },
+      {
         "name": "getPublisherData",
         "type": "function",
         "description": "Get publisher data",

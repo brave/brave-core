@@ -1,4 +1,3 @@
-
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -26,6 +25,10 @@ namespace braveledger_media {
 class GitHub : public ledger::LedgerCallbackHandler {
  public:
   explicit GitHub(bat_ledger::LedgerImpl* ledger);
+
+  void SaveMediaInfo(
+      const std::map<std::string, std::string>& data,
+      ledger::PublisherInfoCallback callback);
 
   void ProcessActivityFromUrl(uint64_t window_id,
                               const ledger::VisitData& visit_data);
@@ -77,7 +80,25 @@ class GitHub : public ledger::LedgerCallbackHandler {
   void OnMediaActivityError(
       uint64_t window_id);
 
+void OnMetaDataGet(
+      ledger::PublisherInfoCallback callback,
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
+void OnMediaPublisherInfo(
+    uint64_t window_id,
+    const std::string& user_id,
+    const std::string& screen_name,
+    const std::string& publisher_name,
+    const std::string& profile_picture,
+    ledger::PublisherInfoCallback callback,
+    ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info);
+
   static std::string GetUserNameFromURL(const std::string& path);
+
+  static std::string GetUserName(const std::string& json_string);
 
   static std::string GetMediaKey(const std::string& user_name);
 
@@ -111,6 +132,7 @@ class GitHub : public ledger::LedgerCallbackHandler {
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetPublisherKey);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetMediaKey);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetUserNameFromURL);
+  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetUserName);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetUserId);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetPublisherName);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONStringValue);

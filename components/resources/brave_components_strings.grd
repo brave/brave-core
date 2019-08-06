@@ -251,6 +251,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Enable content-level tips on these sites</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_YT" desc="">YouTube</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_REDT" desc="">Reddit</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_GH" desc="">GitHub</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW" desc="">Twitter</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT1" desc="">Tip on the spot as you find gems.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">Support your favorite sites with recurring monthly tips.</message>
@@ -431,6 +432,8 @@
       <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Tips</message>
       <message name="IDS_BRAVE_UI_REDDIT_TIP_TITLE" desc="">Tip {{ user }} for their post:</message>
       <message name="IDS_BRAVE_UI_REDDIT_TIP_TITLE_EMPTY" desc="We use this title when reddit text is empty">Tip {{ user }} for their post!</message>
+      <message name="IDS_BRAVE_UI_GITHUB_TIP_TITLE" desc="">Tip {{ user }} for their post:</message>
+      <message name="IDS_BRAVE_UI_GITHUB_TIP_TITLE_EMPTY" desc="We use this title when github text is empty">Tip {{ user }} </message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated {{reservedAmount}} BAT for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
       <message name="IDS_BRAVE_UI_RESERVED_MORE_LINK" desc="Text for the link that explains more about reserved amount">Learn more.</message>

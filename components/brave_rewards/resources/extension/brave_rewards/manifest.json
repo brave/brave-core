@@ -39,6 +39,14 @@
     },
     {
       "matches": [
+        "https://*.github.com/*"
+      ],
+      "js": [
+        "out/brave_rewards_panel_content_github.bundle.js"
+      ]
+    },
+    {
+      "matches": [
         "https://*.reddit.com/*"
       ],
       "js": [

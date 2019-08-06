@@ -23,7 +23,7 @@ Media::Media(bat_ledger::LedgerImpl* ledger):
   media_reddit_(new braveledger_media::Reddit(ledger)),
   media_vimeo_(new braveledger_media::Vimeo(ledger)),
   media_github_(new braveledger_media::GitHub(ledger)) {
-}
+}  // namespace braveledger_media
 
 Media::~Media() {}
 
@@ -140,6 +140,10 @@ void Media::SaveMediaInfo(const std::string& type,
     media_reddit_->SaveMediaInfo(data, callback);
     return;
   }
+  if (type == GITHUB_MEDIA_TYPE) {
+    media_github_->SaveMediaInfo(data, callback);
+    return;
+  }
 }
 
 // static
@@ -152,5 +156,4 @@ std::string Media::GetShareURL(
 
   return std::string();
 }
-
 }  // namespace braveledger_media

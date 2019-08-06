@@ -128,6 +128,8 @@ class Banner extends React.Component<Props, State> {
       return `@${mediaMetaData.screenName}`
     } else if (mediaMetaData.mediaType === 'reddit') {
       return `u/${mediaMetaData.userName}`
+    } else if (mediaMetaData.mediaType === 'github') {
+      return `@${mediaMetaData.userName}`
     }
     return ''
   }
@@ -194,7 +196,6 @@ class Banner extends React.Component<Props, State> {
     if (!verified) {
       logo = ''
     }
-
     return (
       <SiteBanner
         domain={publisher.publisherKey}
