@@ -46,7 +46,6 @@ class ConfirmationsImpl : public Confirmations {
 
   // Confirmations
   void AppendConfirmationToQueue(const ConfirmationInfo& confirmation_info);
-  void RemoveConfirmationFromQueue(const ConfirmationInfo& confirmation_info);
   void StartRetryingFailedConfirmations(const uint64_t start_timer_in);
   bool IsRetryingFailedConfirmations() const;
 
@@ -108,7 +107,8 @@ class ConfirmationsImpl : public Confirmations {
 
   // Confirmations
   uint32_t retry_failed_confirmations_timer_id_;
-  void RetryFailedConfirmations() const;
+  void RemoveConfirmationFromQueue(const ConfirmationInfo& confirmation_info);
+  void RetryFailedConfirmations();
   void StopRetryingFailedConfirmations();
   std::vector<ConfirmationInfo> confirmations_;
 

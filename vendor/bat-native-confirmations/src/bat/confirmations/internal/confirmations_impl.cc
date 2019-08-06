@@ -803,24 +803,34 @@ void ConfirmationsImpl::AppendConfirmationToQueue(
   confirmations_.push_back(confirmation_info);
 
   SaveState();
+
+  BLOG(INFO) << "Added " << confirmation_info.id
+      << " confirmation id with " << confirmation_info.creative_instance_id
+      << " creative instance id for " << std::string(confirmation_info.type)
+      << " to the confirmations queue";
+
 }
 
 void ConfirmationsImpl::RemoveConfirmationFromQueue(
     const ConfirmationInfo& confirmation_info) {
-  auto id = confirmation_info.id;
-
   auto it = std::find_if(confirmations_.begin(), confirmations_.end(),
       [=](const ConfirmationInfo& info) {
-        return (info.id == id);
+        return (info.id == confirmation_info.id);
       });
 
   if (it == confirmations_.end()) {
+    BLOG(WARNING) << "Failed to remove " << confirmation_info.id
+        << " confirmation id with " << confirmation_info.creative_instance_id
+        << " creative instance id for " << std::string(confirmation_info.type)
+        << " from the confirmations queue";
+
     return;
   }
 
-  BLOG(INFO) << "Removed " << confirmation_info.creative_instance_id
+  BLOG(INFO) << "Removed " << confirmation_info.id
+      << " confirmation id with " << confirmation_info.creative_instance_id
       << " creative instance id for " << std::string(confirmation_info.type)
-      << " from the confirmation queue";
+      << " from the confirmations queue";
 
   confirmations_.erase(it);
 
@@ -1098,13 +1108,15 @@ void ConfirmationsImpl::StartRetryingFailedConfirmations(
       << " seconds";
 }
 
-void ConfirmationsImpl::RetryFailedConfirmations() const {
+void ConfirmationsImpl::RetryFailedConfirmations() {
   if (confirmations_.size() == 0) {
     BLOG(INFO) << "No failed confirmations to retry";
     return;
   }
 
   ConfirmationInfo confirmation_info(confirmations_.front());
+  RemoveConfirmationFromQueue(confirmation_info);
+
   redeem_token_->Redeem(confirmation_info);
 }
 

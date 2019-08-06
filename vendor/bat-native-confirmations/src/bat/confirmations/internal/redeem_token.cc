@@ -58,11 +58,17 @@ void RedeemToken::Redeem(
   }
 
   auto token_info = unblinded_tokens_->GetToken();
+  unblinded_tokens_->RemoveToken(token_info);
+
   CreateConfirmation(creative_instance_id, token_info, confirmation_type);
+
+  confirmations_->RefillTokensIfNecessary();
 }
 
 void RedeemToken::Redeem(
     const ConfirmationInfo& confirmation_info) {
+  BLOG(INFO) << "Redeem";
+
   CreateConfirmation(confirmation_info);
 }
 
@@ -112,7 +118,6 @@ void RedeemToken::CreateConfirmation(
     const TokenInfo& token_info,
     const ConfirmationType confirmation_type) {
   DCHECK(!creative_instance_id.empty());
-  DCHECK(unblinded_tokens_->TokenExists(token_info));
 
   ConfirmationInfo confirmation_info;
 
@@ -398,44 +403,23 @@ void RedeemToken::OnRedeem(
     const Result result,
     const ConfirmationInfo& confirmation_info,
     const bool should_retry) {
-  confirmations_->RemoveConfirmationFromQueue(confirmation_info);
-
-
   if (result != SUCCESS) {
-    BLOG(WARNING) << "Failed to redeem token with "
-        << confirmation_info.creative_instance_id
-        << " creative instance id for "
-        << std::string(confirmation_info.type);
+    BLOG(WARNING) << "Failed to redeem " << confirmation_info.id
+        << " confirmation id with " << confirmation_info.creative_instance_id
+        << " creative instance id for " << std::string(confirmation_info.type);
 
     if (should_retry) {
-      BLOG(INFO) << "Retry " << confirmation_info.creative_instance_id
-          << " creative instance id for "
-          << std::string(confirmation_info.type);
-
-      BLOG(INFO) << "Added " << confirmation_info.creative_instance_id
-          << " creative instance id for "
-          << std::string(confirmation_info.type)
-          << " to the confirmations queue";
-
       confirmations_->AppendConfirmationToQueue(confirmation_info);
     }
   } else {
-    BLOG(INFO) << "Successfully redeemed token with "
-        << confirmation_info.creative_instance_id
+    BLOG(INFO) << "Successfully redeemed " << confirmation_info.id
+        << " confirmation id with " << confirmation_info.creative_instance_id
         << " creative instance id for " << std::string(confirmation_info.type);
-  }
-
-  if (unblinded_tokens_->RemoveToken(confirmation_info.token_info)) {
-    BLOG(INFO) << "Removed " <<
-        confirmation_info.token_info.unblinded_token.encode_base64()
-        << " unblinded token";
   }
 
   if (!confirmations_->IsRetryingFailedConfirmations()) {
     ScheduleNextRetryForFailedConfirmations();
   }
-
-  confirmations_->RefillTokensIfNecessary();
 }
 
 void RedeemToken::ScheduleNextRetryForFailedConfirmations() const {
