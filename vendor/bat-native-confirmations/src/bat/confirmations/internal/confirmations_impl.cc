@@ -194,6 +194,12 @@ base::Value ConfirmationsImpl::GetConfirmationsAsDictionary(
     confirmation_dictionary.SetKey("credential",
         base::Value(confirmation.credential));
 
+    confirmation_dictionary.SetKey("timestamp_in_seconds",
+        base::Value(std::to_string(confirmation.timestamp_in_seconds)));
+
+    confirmation_dictionary.SetKey("created",
+        base::Value(confirmation.created));
+
     list.GetList().push_back(std::move(confirmation_dictionary));
   }
 
@@ -527,6 +533,24 @@ bool ConfirmationsImpl::GetConfirmationsFromDictionary(
       // Credential missing, skip confirmation
       DCHECK(false) << "Confirmation missing credential";
       continue;
+    }
+
+    // Timestamp
+    auto* timestamp_in_seconds_value =
+        confirmation_dictionary->FindKey("timestamp_in_seconds");
+    if (timestamp_in_seconds_value) {
+      auto timestamp_in_seconds =
+          std::stoull(timestamp_in_seconds_value->GetString());
+
+      confirmation_info.timestamp_in_seconds = timestamp_in_seconds;
+    }
+
+    // Created
+    auto* created_value = confirmation_dictionary->FindKey("created");
+    if (created_value) {
+      confirmation_info.created = created_value->GetBool();
+    } else {
+      confirmation_info.created = true;
     }
 
     confirmations->push_back(confirmation_info);
