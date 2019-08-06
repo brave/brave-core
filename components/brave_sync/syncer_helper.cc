@@ -54,6 +54,8 @@ uint64_t GetIndexByOrder(const std::string& record_order) {
   return index;
 }
 
+}   // namespace
+
 uint64_t GetIndexByCompareOrderStartFrom(
     const bookmarks::BookmarkNode* parent,
     const bookmarks::BookmarkNode* src,
@@ -62,18 +64,46 @@ uint64_t GetIndexByCompareOrderStartFrom(
   src->GetMetaInfo("order", &src_order);
   DCHECK(!src_order.empty());
   DCHECK_GE(index, 0);
+  bool use_order = true;  // If false use object_id
+  std::string src_object_id;
   while (index < parent->child_count()) {
     const bookmarks::BookmarkNode* node = parent->GetChild(index);
-    std::string node_order;
-    node->GetMetaInfo("order", &node_order);
-    if (!node_order.empty() &&
-        brave_sync::CompareOrder(src_order, node_order)) {
+    if (src->id() == node->id()) {
+      // We reached ourselves, no sense to go further, because we know all
+      // unsorted elements are in the end
       return index;
+    }
+
+    if (use_order) {
+      std::string node_order;
+      node->GetMetaInfo("order", &node_order);
+      if (!node_order.empty() &&
+          brave_sync::CompareOrder(src_order, node_order)) {
+        return index;
+      }
+
+      if (src_order == node_order) {
+        use_order = false;
+      }
+    }
+
+    if (!use_order) {
+      if (src_object_id.empty()) {
+        src->GetMetaInfo("object_id", &src_object_id);
+      }
+
+      std::string node_object_id;
+      node->GetMetaInfo("object_id", &node_object_id);
+
+      if (src_object_id < node_object_id) {
+        return index;
+      }
     }
     ++index;
   }
   return index;
 }
+
 // |node| is near the end in parent
 void RepositionRespectOrder(
     bookmarks::BookmarkModel* bookmark_model,
@@ -82,7 +112,6 @@ void RepositionRespectOrder(
   int index = GetIndexByCompareOrderStartFrom(parent, node, 0);
   bookmark_model->Move(node, parent, index);
 }
-}   // namespace
 
 void AddBraveMetaInfo(
     const bookmarks::BookmarkNode* node,
@@ -135,6 +164,7 @@ uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
   }
   return index;
 }
+
 void RepositionOnApplyChangesFromSyncModel(
     bookmarks::BookmarkModel* bookmark_model,
     const std::multimap<int, const bookmarks::BookmarkNode*>& to_reposition) {
