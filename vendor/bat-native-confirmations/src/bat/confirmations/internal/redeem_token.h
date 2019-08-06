@@ -69,9 +69,6 @@ class RedeemToken {
       const ConfirmationInfo& confirmation_info,
       const bool should_retry = true);
 
-  void ScheduleNextRetryForFailedConfirmations() const;
-  uint64_t CalculateTimerForNextRetryForFailedConfirmations() const;
-
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
   UnblindedTokens* unblinded_tokens_;  // NOT OWNED

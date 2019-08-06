@@ -82,9 +82,9 @@ void ConfirmationsImpl::MaybeStart() {
   auto start_timer_in = CalculateTokenRedemptionTimeInSeconds();
   StartPayingOutRedeemedTokens(start_timer_in);
 
-  RetryFailedConfirmations();
-
   RefillTokensIfNecessary();
+
+  StartRetryingFailedConfirmations();
 }
 
 void ConfirmationsImpl::NotifyAdsIfConfirmationsIsReady() {
@@ -809,6 +809,9 @@ void ConfirmationsImpl::AppendConfirmationToQueue(
       << " creative instance id for " << std::string(confirmation_info.type)
       << " to the confirmations queue";
 
+  if (!IsRetryingFailedConfirmations()) {
+    StartRetryingFailedConfirmations();
+  }
 }
 
 void ConfirmationsImpl::RemoveConfirmationFromQueue(
@@ -1086,13 +1089,15 @@ void ConfirmationsImpl::UpdateNextTokenRedemptionDate() {
   SaveState();
 }
 
+void ConfirmationsImpl::StartRetryingFailedConfirmations() {
+  auto start_timer_in =
+      brave_base::random::Geometric(kRetryFailedConfirmationsAfterSeconds);
+
+  StartRetryingFailedConfirmations(start_timer_in);
+}
+
 void ConfirmationsImpl::StartRetryingFailedConfirmations(
     const uint64_t start_timer_in) {
-  if (confirmations_.size() == 0) {
-    BLOG(INFO) << "No failed confirmations to retry";
-    return;
-  }
-
   StopRetryingFailedConfirmations();
 
   confirmations_client_->SetTimer(start_timer_in,
@@ -1109,6 +1114,8 @@ void ConfirmationsImpl::StartRetryingFailedConfirmations(
 }
 
 void ConfirmationsImpl::RetryFailedConfirmations() {
+  StopRetryingFailedConfirmations();
+
   if (confirmations_.size() == 0) {
     BLOG(INFO) << "No failed confirmations to retry";
     return;
@@ -1118,6 +1125,8 @@ void ConfirmationsImpl::RetryFailedConfirmations() {
   RemoveConfirmationFromQueue(confirmation_info);
 
   redeem_token_->Redeem(confirmation_info);
+
+  StartRetryingFailedConfirmations();
 }
 
 void ConfirmationsImpl::StopRetryingFailedConfirmations() {

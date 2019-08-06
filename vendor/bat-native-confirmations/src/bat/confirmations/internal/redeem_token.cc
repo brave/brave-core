@@ -70,6 +70,8 @@ void RedeemToken::Redeem(
   BLOG(INFO) << "Redeem";
 
   CreateConfirmation(confirmation_info);
+
+  confirmations_->RefillTokensIfNecessary();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -416,23 +418,6 @@ void RedeemToken::OnRedeem(
         << " confirmation id with " << confirmation_info.creative_instance_id
         << " creative instance id for " << std::string(confirmation_info.type);
   }
-
-  if (!confirmations_->IsRetryingFailedConfirmations()) {
-    ScheduleNextRetryForFailedConfirmations();
-  }
-}
-
-void RedeemToken::ScheduleNextRetryForFailedConfirmations() const {
-  auto start_timer_in = CalculateTimerForNextRetryForFailedConfirmations();
-  confirmations_->StartRetryingFailedConfirmations(start_timer_in);
-}
-
-uint64_t RedeemToken::CalculateTimerForNextRetryForFailedConfirmations() const {
-  auto start_timer_in = kRetryFailedConfirmationsAfterSeconds;
-  auto rand_delay = brave_base::random::Geometric(start_timer_in);
-  start_timer_in = rand_delay;
-
-  return start_timer_in;
 }
 
 }  // namespace confirmations
