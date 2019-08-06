@@ -325,8 +325,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
   }
 
   // no special win10 welcome page
-  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
-      url->host() == chrome::kChromeUIWelcomeHost) {
+  if (url->host() == chrome::kChromeUIWelcomeHost) {
     *url = GURL(chrome::kChromeUIWelcomeURL);
     return true;
   }
