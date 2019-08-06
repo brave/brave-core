@@ -6,6 +6,7 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
+#include "brave/browser/translate/buildflags/buildflags.h"
 #include "components/spellcheck/spellcheck_buildflags.h"
 #if !BUILDFLAG(USE_BROWSER_SPELLCHECKER)
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
@@ -94,4 +95,14 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
     ui::SimpleMenuModel* menu,
     bool is_checked) {
   // Suppress adding "Spellcheck->Ask Brave for suggestions" item.
+}
+
+void BraveRenderViewContextMenu::InitMenu() {
+  RenderViewContextMenu_Chromium::InitMenu();
+// Only show the translate item when ENABLE_BRAVE_TRANSLATE (go-translate) is
+// enabled.
+#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+  menu_model_.RemoveItemAt(
+      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE));
+#endif
 }
