@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TRANSLATE_BRAVE_TRANSLATE_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TRANSLATE_BRAVE_TRANSLATE_BUBBLE_VIEW_H_
 
+#include <memory>
+#include <utility>
+
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 
 #include "brave/browser/translate/buildflags/buildflags.h"

@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TRANSLATE_BRAVE_TRANSLATE_ICON_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TRANSLATE_BRAVE_TRANSLATE_ICON_VIEW_H_
 
+#include <string>
+
 #include "chrome/browser/ui/views/translate/translate_icon_view.h"
 
 #include "base/memory/weak_ptr.h"
