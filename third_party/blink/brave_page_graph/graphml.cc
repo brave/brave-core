@@ -47,7 +47,7 @@ namespace {
   const GraphMLAttr* const key_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "key");
   const GraphMLAttr* const method_attr = new GraphMLAttr(
-    kGraphMLAttrForTypeEdge, "method");
+    kGraphMLAttrForTypeNode, "method");
   const GraphMLAttr* const node_id_attr = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "node id", kGraphMLAttrTypeLong);
   const GraphMLAttr* const node_text = new GraphMLAttr(

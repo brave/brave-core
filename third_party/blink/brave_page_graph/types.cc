@@ -4,10 +4,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
+#include <map>
 #include <string>
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 
+using ::std::map;
 using ::std::string;
 
 namespace brave_page_graph {
@@ -155,6 +158,30 @@ string StorageLocationToString(const StorageLocation location) noexcept {
     case kStorageLocationSessionStorage:
       return "sessionStorage";
   }
+}
+
+namespace {
+  const map<JSBuiltIn, string> js_built_in_enum_to_str_map = {
+    {kJSBuiltInDateNow, "Date.now"},
+    {kJSBuiltInDateConstructor, "new Date()"},
+    {kJSBuiltInDateParse, "Date.parse"},
+  };
+
+  map<string, JSBuiltIn> js_built_in_str_to_enum_map = {
+    {"Date.now", kJSBuiltInDateNow},
+    {"new Date()", kJSBuiltInDateConstructor},
+    {"Date.parse", kJSBuiltInDateParse},
+  };
+}
+
+JSBuiltIn JSBuiltInFromString(const string& built_in_name) noexcept {
+  LOG_ASSERT(js_built_in_str_to_enum_map.count(built_in_name) != 0);
+  return js_built_in_str_to_enum_map.at(built_in_name);
+}
+
+const string& JSBuiltInToSting(const JSBuiltIn built_in) noexcept {
+  LOG_ASSERT(js_built_in_enum_to_str_map.count(built_in) != 0);
+  return js_built_in_enum_to_str_map.at(built_in);
 }
 
 FingerprintingRule::FingerprintingRule(const std::string& primary_pattern,

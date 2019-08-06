@@ -103,7 +103,15 @@ bool Node::IsNodeStorageRoot() const {
   return false;
 }
 
-bool Node::IsNodeWebAPI() const {
+bool Node::IsNodeJS() const {
+  return false;
+}
+
+bool Node::IsNodeJSWebAPI() const {
+  return false;
+}
+
+bool Node::IsNodeJSBuiltIn() const {
   return false;
 }
 

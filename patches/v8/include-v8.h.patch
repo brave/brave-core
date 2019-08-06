@@ -1,5 +1,5 @@
 diff --git a/include/v8.h b/include/v8.h
-index c54b088404229dccf015e20b6a5bab19d3d94e69..25b25ca08b9f6c220d6db3d22fea22eeda5fa257 100644
+index c54b088404229dccf015e20b6a5bab19d3d94e69..0242b409fdb78a8141963ed2afae843823560f8b 100644
 --- a/include/v8.h
 +++ b/include/v8.h
 @@ -26,6 +26,8 @@
@@ -11,19 +11,25 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..25b25ca08b9f6c220d6db3d22fea22ee
  // We reserve the V8_* prefix for macros defined in V8 public API and
  // assume there are no name conflicts with the embedder's code.
  
-@@ -34,6 +36,11 @@
+@@ -34,6 +36,17 @@
   */
  namespace v8 {
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +typedef void (*EvalScriptCompiledFunc)(v8::Isolate& isolate,
 +    const int parent_script_id, const int script_id);
++
++typedef void (*BuiltInFuncCallFunc)(v8::Isolate& isolate,
++    const char* builtin_name, const std::vector<const char*>& args);
++
++typedef void (*BuiltInFuncResponseFunc)(v8::Isolate& isolate,
++    const char* builtin_name, const char* value);
 +#endif
 +
  class AccessorSignature;
  class Array;
  class ArrayBuffer;
-@@ -1326,6 +1333,10 @@ class V8_EXPORT Module {
+@@ -1326,6 +1339,10 @@ class V8_EXPORT Module {
     * kEvaluated or kErrored.
     */
    Local<UnboundModuleScript> GetUnboundModuleScript();
@@ -92,6 +98,8 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..25b25ca08b9f6c220d6db3d22fea22ee
 +  int GetExecutingScriptId();
 +
 +  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func);
++  void SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func);
++  void SetBuiltInFuncResponseFunc(const BuiltInFuncResponseFunc func);
 +#endif
 +
   private:
