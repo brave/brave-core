@@ -46,8 +46,7 @@ class ConfirmationsImpl : public Confirmations {
 
   // Confirmations
   void AppendConfirmationToQueue(const ConfirmationInfo& confirmation_info);
-  void RemoveConfirmationFromQueue(const ConfirmationInfo& confirmation_info);
-  void StartRetryingFailedConfirmations(const uint64_t start_timer_in);
+  void StartRetryingFailedConfirmations();
 
   // Ads rewards
   void UpdateAdsRewards(const bool should_refresh) override;
@@ -79,8 +78,8 @@ class ConfirmationsImpl : public Confirmations {
   bool OnTimer(const uint32_t timer_id) override;
 
   // Refill tokens
-  void RefillTokensIfNecessary() const;
   void StartRetryingToGetRefillSignedTokens(const uint64_t start_timer_in);
+  void RefillTokensIfNecessary() const;
 
   // Redeem unblinded tokens
   void ConfirmAd(std::unique_ptr<NotificationInfo> info) override;
@@ -107,9 +106,11 @@ class ConfirmationsImpl : public Confirmations {
 
   // Confirmations
   uint32_t retry_failed_confirmations_timer_id_;
-  void RetryFailedConfirmations() const;
-  void StopRetryingFailedConfirmations();
+  void RemoveConfirmationFromQueue(const ConfirmationInfo& confirmation_info);
+  void StartRetryingFailedConfirmations(const uint64_t start_timer_in);
   bool IsRetryingFailedConfirmations() const;
+  void RetryFailedConfirmations();
+  void StopRetryingFailedConfirmations();
   std::vector<ConfirmationInfo> confirmations_;
 
   // Transaction history

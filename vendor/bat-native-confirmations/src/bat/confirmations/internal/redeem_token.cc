@@ -14,19 +14,23 @@
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/fetch_payment_token_request.h"
+#include "bat/confirmations/internal/time.h"
 
 #include "base/logging.h"
 #include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/values.h"
+#include "base/base64.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::SignedToken;
 using challenge_bypass_ristretto::BatchDLEQProof;
+using challenge_bypass_ristretto::VerificationSignature;
 using challenge_bypass_ristretto::PublicKey;
 
 namespace confirmations {
@@ -60,18 +64,32 @@ void RedeemToken::Redeem(
   }
 
   auto token_info = unblinded_tokens_->GetToken();
+  unblinded_tokens_->RemoveToken(token_info);
+
   CreateConfirmation(creative_instance_id, token_info, confirmation_type);
+
+  confirmations_->RefillTokensIfNecessary();
 }
 
 void RedeemToken::Redeem(
-    const ConfirmationInfo& confirmation_info) {
-  CreateConfirmation(confirmation_info);
+    const ConfirmationInfo& confirmation) {
+  BLOG(INFO) << "Redeem";
+
+  if (!confirmation.created) {
+    CreateConfirmation(confirmation);
+
+    confirmations_->RefillTokensIfNecessary();
+
+    return;
+  }
+
+  FetchPaymentToken(confirmation);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void RedeemToken::CreateConfirmation(
-    const ConfirmationInfo& confirmation_info) {
+    const ConfirmationInfo& confirmation) {
   BLOG(INFO) << "CreateConfirmation";
 
   BLOG(INFO) << "POST /v1/confirmation/{confirmation_id}/{credential}";
@@ -79,16 +97,14 @@ void RedeemToken::CreateConfirmation(
 
   BLOG(INFO) << "URL Request:";
 
-  auto url = request.BuildUrl(confirmation_info.id,
-      confirmation_info.credential);
+  auto url = request.BuildUrl(confirmation.id, confirmation.credential);
   BLOG(INFO) << "  URL: " << url;
 
   auto method = request.GetMethod();
 
   auto confirmation_request_dto = request.CreateConfirmationRequestDTO(
-      confirmation_info.creative_instance_id,
-      confirmation_info.blinded_payment_token,
-      confirmation_info.type);
+      confirmation.creative_instance_id, confirmation.blinded_payment_token,
+          confirmation.type);
 
   auto body = request.BuildBody(confirmation_request_dto);
   BLOG(INFO) << "  Body: " << body;
@@ -103,7 +119,7 @@ void RedeemToken::CreateConfirmation(
   BLOG(INFO) << "  Content_type: " << content_type;
 
   auto callback = std::bind(&RedeemToken::OnCreateConfirmation,
-      this, url, _1, _2, _3, confirmation_info);
+      this, url, _1, _2, _3, confirmation);
 
   confirmations_client_->LoadURL(url, headers, body, content_type,
       method, callback);
@@ -114,35 +130,34 @@ void RedeemToken::CreateConfirmation(
     const TokenInfo& token_info,
     const ConfirmationType confirmation_type) {
   DCHECK(!creative_instance_id.empty());
-  DCHECK(unblinded_tokens_->TokenExists(token_info));
 
-  ConfirmationInfo confirmation_info;
+  ConfirmationInfo confirmation;
 
-  confirmation_info.id = base::GenerateGUID();
+  confirmation.id = base::GenerateGUID();
 
-  confirmation_info.creative_instance_id = creative_instance_id;
+  confirmation.creative_instance_id = creative_instance_id;
 
-  confirmation_info.type = confirmation_type;
+  confirmation.type = confirmation_type;
 
-  confirmation_info.token_info = token_info;
+  confirmation.token_info = token_info;
 
   auto payment_tokens = helper::Security::GenerateTokens(1);
-  confirmation_info.payment_token = payment_tokens.front();
+  confirmation.payment_token = payment_tokens.front();
 
   auto blinded_payment_tokens = helper::Security::BlindTokens(payment_tokens);
   auto blinded_payment_token = blinded_payment_tokens.front();
-  confirmation_info.blinded_payment_token = blinded_payment_token;
+  confirmation.blinded_payment_token = blinded_payment_token;
 
   CreateConfirmationRequest request;
 
-  auto confirmation_request_dto =
-      request.CreateConfirmationRequestDTO(creative_instance_id,
+  auto payload = request.CreateConfirmationRequestDTO(creative_instance_id,
       blinded_payment_token, confirmation_type);
 
-  confirmation_info.credential =
-      request.CreateCredential(token_info, confirmation_request_dto);
+  confirmation.credential = request.CreateCredential(token_info, payload);
 
-  CreateConfirmation(confirmation_info);
+  confirmation.timestamp_in_seconds = Time::NowInSeconds();
+
+  CreateConfirmation(confirmation);
 }
 
 void RedeemToken::OnCreateConfirmation(
@@ -150,8 +165,8 @@ void RedeemToken::OnCreateConfirmation(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
-    const ConfirmationInfo& confirmation_info) {
-  DCHECK(!confirmation_info.id.empty());
+    const ConfirmationInfo& confirmation) {
+  DCHECK(!confirmation.id.empty());
 
   BLOG(INFO) << "OnCreateConfirmation";
 
@@ -164,47 +179,47 @@ void RedeemToken::OnCreateConfirmation(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 201 &&
-      response_status_code != 400) {
+  if (response_status_code != 201) {
     BLOG(ERROR) << "Failed to create confirmation";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation, false);
     return;
   }
 
-  if (response_status_code != 400) {
-    // Parse JSON response
-    base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
-    if (!dictionary || !dictionary->is_dict()) {
-      BLOG(ERROR) << "Failed to parse response: " << response;
-      OnRedeem(FAILED, confirmation_info);
-      return;
-    }
-
-    // Get id
-    auto* id_value = dictionary->FindKey("id");
-    if (!id_value) {
-      BLOG(ERROR) << "Response missing id";
-      OnRedeem(FAILED, confirmation_info);
-      return;
-    }
-
-    auto id = id_value->GetString();
-
-    // Validate id
-    if (id != confirmation_info.id) {
-      BLOG(ERROR) << "Response id: " << id
-          << " does not match confirmation id: " << confirmation_info.id;
-      OnRedeem(FAILED, confirmation_info);
-      return;
-    }
+  // Parse JSON response
+  base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
+  if (!dictionary || !dictionary->is_dict()) {
+    BLOG(ERROR) << "Failed to parse response: " << response;
+    OnRedeem(FAILED, confirmation);
+    return;
   }
 
+  // Get id
+  auto* id_value = dictionary->FindKey("id");
+  if (!id_value) {
+    BLOG(ERROR) << "Response missing id";
+    OnRedeem(FAILED, confirmation);
+    return;
+  }
+
+  auto id = id_value->GetString();
+
+  // Validate id
+  if (id != confirmation.id) {
+    BLOG(ERROR) << "Response id: " << id
+        << " does not match confirmation id: " << confirmation.id;
+    OnRedeem(FAILED, confirmation);
+    return;
+  }
+
+  ConfirmationInfo created_confirmation(confirmation);
+  created_confirmation.created = true;
+
   // Fetch payment token
-  FetchPaymentToken(confirmation_info);
+  FetchPaymentToken(created_confirmation);
 }
 
-void RedeemToken::FetchPaymentToken(const ConfirmationInfo& confirmation_info) {
-  DCHECK(!confirmation_info.id.empty());
+void RedeemToken::FetchPaymentToken(const ConfirmationInfo& confirmation) {
+  DCHECK(!confirmation.id.empty());
 
   BLOG(INFO) << "FetchPaymentToken";
 
@@ -213,13 +228,13 @@ void RedeemToken::FetchPaymentToken(const ConfirmationInfo& confirmation_info) {
 
   BLOG(INFO) << "URL Request:";
 
-  auto url = request.BuildUrl(confirmation_info.id);
+  auto url = request.BuildUrl(confirmation.id);
   BLOG(INFO) << "  URL: " << url;
 
   auto method = request.GetMethod();
 
   auto callback = std::bind(&RedeemToken::OnFetchPaymentToken,
-      this, url, _1, _2, _3, confirmation_info);
+      this, url, _1, _2, _3, confirmation);
 
   confirmations_client_->LoadURL(url, {}, "", "", method, callback);
 }
@@ -229,7 +244,7 @@ void RedeemToken::OnFetchPaymentToken(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
-    const ConfirmationInfo& confirmation_info) {
+    const ConfirmationInfo& confirmation) {
   BLOG(INFO) << "OnFetchPaymentToken";
 
   BLOG(INFO) << "URL Request Response:";
@@ -241,9 +256,20 @@ void RedeemToken::OnFetchPaymentToken(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
+  if (response_status_code == 404) {
+    if (!Verify(confirmation)) {
+      BLOG(ERROR) << "Failed to verify confirmation";
+      OnRedeem(FAILED, confirmation, false);
+      return;
+    }
+
+    Redeem(confirmation.creative_instance_id, confirmation.type);
+    return;
+  }
+
   if (response_status_code != 200) {
     BLOG(ERROR) << "Failed to fetch payment token";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -251,7 +277,7 @@ void RedeemToken::OnFetchPaymentToken(
   base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(ERROR) << "Failed to parse response: " << response;
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -259,7 +285,7 @@ void RedeemToken::OnFetchPaymentToken(
   auto* id_value = dictionary->FindKey("id");
   if (!id_value) {
     BLOG(ERROR) << "Response missing id";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -269,7 +295,7 @@ void RedeemToken::OnFetchPaymentToken(
   auto* payment_token_value = dictionary->FindKey("paymentToken");
   if (!payment_token_value) {
     BLOG(ERROR) << "Response missing paymentToken";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -277,7 +303,7 @@ void RedeemToken::OnFetchPaymentToken(
   base::DictionaryValue* payment_token_dictionary;
   if (!payment_token_value->GetAsDictionary(&payment_token_dictionary)) {
     BLOG(ERROR) << "Response missing paymentToken dictionary";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -285,7 +311,7 @@ void RedeemToken::OnFetchPaymentToken(
   auto* public_key_value = payment_token_dictionary->FindKey("publicKey");
   if (!public_key_value) {
     BLOG(ERROR) << "Response missing publicKey in paymentToken dictionary";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
   auto public_key_base64 = public_key_value->GetString();
@@ -295,7 +321,7 @@ void RedeemToken::OnFetchPaymentToken(
   if (!confirmations_->IsValidPublicKeyForCatalogIssuers(public_key_base64)) {
     BLOG(ERROR) << "Response public_key: " << public_key_base64
         << " was not found in the catalog issuers";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -303,7 +329,7 @@ void RedeemToken::OnFetchPaymentToken(
   auto* batch_proof_value = payment_token_dictionary->FindKey("batchProof");
   if (!batch_proof_value) {
     BLOG(ERROR) << "Response missing batchProof in paymentToken dictionary";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -314,14 +340,14 @@ void RedeemToken::OnFetchPaymentToken(
   auto* signed_tokens_value = payment_token_dictionary->FindKey("signedTokens");
   if (!signed_tokens_value) {
     BLOG(ERROR) << "Response missing signedTokens in paymentToken dictionary";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
   base::ListValue signed_token_base64_values(signed_tokens_value->GetList());
   if (signed_token_base64_values.GetSize() != 1) {
     BLOG(ERROR) << "Too many signedTokens";
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -333,8 +359,8 @@ void RedeemToken::OnFetchPaymentToken(
   }
 
   // Verify and unblind payment token
-  auto payment_tokens = {confirmation_info.payment_token};
-  auto blinded_payment_tokens = {confirmation_info.blinded_payment_token};
+  auto payment_tokens = {confirmation.payment_token};
+  auto blinded_payment_tokens = {confirmation.blinded_payment_token};
 
   auto unblinded_payment_tokens = batch_proof.verify_and_unblind(
      payment_tokens, blinded_payment_tokens, signed_tokens, public_key);
@@ -345,13 +371,13 @@ void RedeemToken::OnFetchPaymentToken(
     BLOG(ERROR) << "  Batch proof: " << batch_proof_base64;
 
     BLOG(ERROR) << "  Payment tokens (" << payment_tokens.size() << "):";
-    auto payment_token_base64 = confirmation_info.payment_token.encode_base64();
+    auto payment_token_base64 = confirmation.payment_token.encode_base64();
     BLOG(ERROR) << "    " << payment_token_base64;
 
     BLOG(ERROR) << "  Blinded payment tokens (" << blinded_payment_tokens.size()
         << "):";
     auto blinded_payment_token_base64 =
-        confirmation_info.blinded_payment_token.encode_base64();
+        confirmation.blinded_payment_token.encode_base64();
     BLOG(ERROR) << "    " << blinded_payment_token_base64;
 
     BLOG(ERROR) << "  Signed tokens (" << signed_tokens.size() << "):";
@@ -362,7 +388,7 @@ void RedeemToken::OnFetchPaymentToken(
 
     BLOG(ERROR) << "  Public key: " << public_key_base64;
 
-    OnRedeem(FAILED, confirmation_info);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -373,7 +399,8 @@ void RedeemToken::OnFetchPaymentToken(
   unblinded_payment_token_info.public_key = public_key_base64;
 
   if (unblinded_payment_tokens_->TokenExists(unblinded_payment_token_info)) {
-    OnRedeem(FAILED, confirmation_info, false);
+    BLOG(ERROR) << "Duplicate unblinded payment token";
+    OnRedeem(FAILED, confirmation, false);
     return;
   }
 
@@ -391,64 +418,62 @@ void RedeemToken::OnFetchPaymentToken(
       << unblinded_payment_tokens_->Count() << " unblinded payment tokens";
 
   confirmations_->AppendTransactionToHistory(
-      estimated_redemption_value, confirmation_info.type);
+      estimated_redemption_value, confirmation.type);
 
-  OnRedeem(SUCCESS, confirmation_info, false);
+  OnRedeem(SUCCESS, confirmation, false);
 }
 
 void RedeemToken::OnRedeem(
     const Result result,
-    const ConfirmationInfo& confirmation_info,
+    const ConfirmationInfo& confirmation,
     const bool should_retry) {
-  confirmations_->RemoveConfirmationFromQueue(confirmation_info);
-
-
   if (result != SUCCESS) {
-    BLOG(WARNING) << "Failed to redeem token with "
-        << confirmation_info.creative_instance_id
-        << " creative instance id for "
-        << std::string(confirmation_info.type);
+    BLOG(WARNING) << "Failed to redeem " << confirmation.id
+        << " confirmation id with " << confirmation.creative_instance_id
+        << " creative instance id for " << std::string(confirmation.type);
 
     if (should_retry) {
-      BLOG(INFO) << "Retry " << confirmation_info.creative_instance_id
-          << " creative instance id for "
-          << std::string(confirmation_info.type);
-
-      BLOG(INFO) << "Added " << confirmation_info.creative_instance_id
-          << " creative instance id for "
-          << std::string(confirmation_info.type)
-          << " to the confirmations queue";
-
-      confirmations_->AppendConfirmationToQueue(confirmation_info);
+      confirmations_->AppendConfirmationToQueue(confirmation);
     }
   } else {
-    BLOG(INFO) << "Successfully redeemed token with "
-        << confirmation_info.creative_instance_id
-        << " creative instance id for " << std::string(confirmation_info.type);
+    BLOG(INFO) << "Successfully redeemed " << confirmation.id
+        << " confirmation id with " << confirmation.creative_instance_id
+        << " creative instance id for " << std::string(confirmation.type);
   }
-
-  if (unblinded_tokens_->RemoveToken(confirmation_info.token_info)) {
-    BLOG(INFO) << "Removed " <<
-        confirmation_info.token_info.unblinded_token.encode_base64()
-        << " unblinded token";
-  }
-
-  ScheduleNextRetryForFailedConfirmations();
-
-  confirmations_->RefillTokensIfNecessary();
 }
 
-void RedeemToken::ScheduleNextRetryForFailedConfirmations() const {
-  auto start_timer_in = CalculateTimerForNextRetryForFailedConfirmations();
-  confirmations_->StartRetryingFailedConfirmations(start_timer_in);
-}
+bool RedeemToken::Verify(
+    const ConfirmationInfo& confirmation) const {
+  std::string credential;
+  base::Base64Decode(confirmation.credential, &credential);
 
-uint64_t RedeemToken::CalculateTimerForNextRetryForFailedConfirmations() const {
-  auto start_timer_in = kRetryFailedConfirmationsAfterSeconds;
-  auto rand_delay = base::RandInt(0, start_timer_in / 10);
-  start_timer_in += rand_delay;
+  base::Optional<base::Value> value = base::JSONReader::Read(credential);
+  if (!value || !value->is_dict()) {
+    return false;
+  }
 
-  return start_timer_in;
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return false;
+  }
+
+  auto* signature_value = dictionary->FindKey("signature");
+  if (!signature_value) {
+    return false;
+  }
+
+  auto signature = signature_value->GetString();
+  auto verification_signature = VerificationSignature::decode_base64(signature);
+
+  CreateConfirmationRequest request;
+  auto payload = request.CreateConfirmationRequestDTO(
+      confirmation.creative_instance_id, confirmation.blinded_payment_token,
+          confirmation.type);
+
+  auto unblinded_token = confirmation.token_info.unblinded_token;
+  auto verification_key = unblinded_token.derive_verification_key();
+
+  return verification_key.verify(verification_signature, payload);
 }
 
 }  // namespace confirmations
