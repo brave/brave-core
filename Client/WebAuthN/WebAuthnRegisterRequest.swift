@@ -37,7 +37,7 @@ struct WebAuthnRegisterRequest: Decodable {
         let user: User
         let rp: Rp
         let challenge: String
-        let excludeCredentials: [PublicKeyCredentialDescriptor]
+        let excludeCredentials: [PublicKeyCredentialDescriptor]?
     }
     let publicKey: PublicKey
 }
