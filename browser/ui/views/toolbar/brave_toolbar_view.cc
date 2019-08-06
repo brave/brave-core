@@ -10,9 +10,12 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/bookmarks/bookmark_bubble_sign_in_delegate.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
@@ -75,11 +78,24 @@ gfx::Insets CalcLocationBarMargin(int toolbar_width,
   return {0, location_bar_margin_l, 0, location_bar_margin_r};
 }
 
+bool HasMultipleUserProfiles() {
+  ProfileAttributesStorage* profile_storage =
+          &g_browser_process->profile_manager()->GetProfileAttributesStorage();
+  size_t profile_count = profile_storage->GetNumberOfProfiles();
+  return (profile_count != 1);
+}
+
+bool IsAvatarButtonHideable(Profile* profile) {
+  return !brave::IsTorProfile(profile) &&
+      !profile->IsIncognitoProfile() &&
+      !profile->IsGuestSession();
+}
+
 }  // namespace
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
-    : ToolbarView(browser, browser_view) {
-}
+    : ToolbarView(browser, browser_view),
+      profile_observer_(this) { }
 
 BraveToolbarView::~BraveToolbarView() {}
 
@@ -92,14 +108,21 @@ void BraveToolbarView::Init() {
     return;
   }
 
+  Profile* profile = browser()->profile();
+
+  // Track changes in profile count
+  if (IsAvatarButtonHideable(profile)) {
+    profile_observer_.Add(
+        &g_browser_process->profile_manager()->GetProfileAttributesStorage());
+  }
   // track changes in bookmarks enabled setting
   edit_bookmarks_enabled_.Init(
-      bookmarks::prefs::kEditBookmarksEnabled, browser()->profile()->GetPrefs(),
+      bookmarks::prefs::kEditBookmarksEnabled, profile->GetPrefs(),
       base::Bind(&BraveToolbarView::OnEditBookmarksEnabledChanged,
                  base::Unretained(this)));
   // track changes in wide locationbar setting
   location_bar_is_wide_.Init(
-      kLocationBarIsWide, browser()->profile()->GetPrefs(),
+      kLocationBarIsWide, profile->GetPrefs(),
       base::Bind(&BraveToolbarView::OnLocationBarIsWideChanged,
                  base::Unretained(this)));
 
@@ -136,6 +159,16 @@ void BraveToolbarView::OnThemeChanged() {
     bookmark_->UpdateImage();
 }
 
+void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
+  Update(nullptr);
+}
+
+void BraveToolbarView::OnProfileWasRemoved(
+    const base::FilePath& profile_path,
+    const base::string16& profile_name) {
+  Update(nullptr);
+}
+
 void BraveToolbarView::LoadImages() {
   ToolbarView::LoadImages();
   if (bookmark_)
@@ -148,6 +181,16 @@ void BraveToolbarView::Update(content::WebContents* tab) {
   if (bookmark_) {
     bookmark_->SetVisible(browser_defaults::bookmarks_enabled &&
                           edit_bookmarks_enabled_.GetValue());
+  }
+  // Remove avatar menu if only a single user profile exists.
+  // Always show if private / tor / guest window, as an indicator.
+  auto* avatar_button = GetAvatarToolbarButton();
+  if (avatar_button) {
+    auto* profile = browser_->profile();
+    const bool should_show_profile =
+      !IsAvatarButtonHideable(profile) ||
+      HasMultipleUserProfiles();
+    avatar_button->SetVisible(should_show_profile);
   }
 }
 
