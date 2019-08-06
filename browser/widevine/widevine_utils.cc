@@ -7,9 +7,12 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
+#include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/permissions/permission_request_manager.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/subresource_filter/chrome_subresource_filter_client.h"
+#include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include <string>
@@ -24,10 +27,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
-#include "brave/common/pref_names.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "components/prefs/pref_service.h"
 #endif
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
@@ -88,7 +89,8 @@ void RequestWidevinePermission(content::WebContents* web_contents) {
 void EnableWidevineCdmComponent(content::WebContents* web_contents) {
   DCHECK(web_contents);
 
-  PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
+  PrefService* prefs =
+      static_cast<Profile*>(web_contents->GetBrowserContext())->GetPrefs();
   if (prefs->GetBoolean(kWidevineOptedIn))
     return;
 
@@ -120,3 +122,8 @@ void InstallBundleOrRestartBrowser() {
   }
 }
 #endif
+
+void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask) {
+  Profile* profile = static_cast<Profile*>(web_contents->GetBrowserContext());
+  profile->GetPrefs()->SetBoolean(kAskWidevineInstall, !dont_ask);
+}

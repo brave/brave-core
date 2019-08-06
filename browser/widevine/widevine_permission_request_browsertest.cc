@@ -100,6 +100,24 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
+
+  // Check permission bubble is not visible when user turns it off.
+  observer.bubble_added_ = false;
+  DontAskWidevineInstall(GetActiveWebContents(), true);
+  EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GURL("chrome://newtab/")));
+  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  content::RunAllTasksUntilIdle();
+  EXPECT_FALSE(observer.bubble_added_);
+
+  // Check permission bubble is visible when user turns it on.
+  observer.bubble_added_ = false;
+  DontAskWidevineInstall(GetActiveWebContents(), false);
+  EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GURL("chrome://newtab/")));
+  drm_tab_helper->OnWidevineKeySystemAccessRequest();
+  content::RunAllTasksUntilIdle();
+  EXPECT_TRUE(observer.bubble_added_);
 }
 
 // Check extra text is added.
@@ -122,8 +140,9 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   DCHECK(delegate_view);
   // Original PermissionsBubbleDialogDelegateView has one child.
   // It's label that includes icon and fragment test.
-  // For widevine permission requests, one more label is added.
-  EXPECT_EQ(2ull, delegate_view->children().size());
+  // For widevine permission requests, two more child views are added.
+  // one for extra label and the other one is do not ask checkbox.
+  EXPECT_EQ(3ul, delegate_view->children().size());
 }
 
 // OptedInPref of bundling tests are done by

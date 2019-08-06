@@ -6,14 +6,42 @@
 #include <vector>
 
 #include "brave/browser/widevine/widevine_permission_request.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/permissions/permission_request.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/chrome_typography.h"
 #include "ui/gfx/text_constants.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/window/dialog_delegate.h"
 
 namespace {
+
+class DontAskAgainCheckbox : public views::Checkbox,
+                             public views::ButtonListener {
+ public:
+  explicit DontAskAgainCheckbox(WidevinePermissionRequest* request);
+
+ private:
+  // views::ButtonListener overrides:
+  void ButtonPressed(Button* sender, const ui::Event& event) override;
+
+  WidevinePermissionRequest* request_;
+
+  DISALLOW_COPY_AND_ASSIGN(DontAskAgainCheckbox);
+};
+
+DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)
+    : Checkbox(l10n_util::GetStringUTF16(IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX),
+               this),
+      request_(request) {
+}
+
+void DontAskAgainCheckbox::ButtonPressed(Button* sender,
+                                         const ui::Event& event) {
+  request_->set_dont_ask_widevine_install(GetChecked());
+}
 
 bool HasWidevinePermissionRequest(
     const std::vector<PermissionRequest*>& requests) {
@@ -27,7 +55,7 @@ bool HasWidevinePermissionRequest(
   return false;
 }
 
-void AddWidevineExplanatoryMessageTextIfNeeded(
+void AddAdditionalWidevineViewControlsIfNeeded(
     views::DialogDelegateView* dialog_delegate,
     const std::vector<PermissionRequest*>& requests) {
   if (!HasWidevinePermissionRequest(requests))
@@ -47,6 +75,7 @@ void AddWidevineExplanatoryMessageTextIfNeeded(
   // Resize width. Then, it's height deduced.
   text->SizeToFit(preferred_dialog_width - dialog_delegate->margins().width());
   dialog_delegate->AddChildView(text);
+  dialog_delegate->AddChildView(new DontAskAgainCheckbox(widevine_request));
 }
 
 }  // namespace

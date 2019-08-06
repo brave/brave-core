@@ -43,7 +43,7 @@ void WidevinePermissionRequest::PermissionGranted() {
 }
 
 void WidevinePermissionRequest::PermissionDenied() {
-  // Do nothing.
+  DontAskWidevineInstall(web_contents_, dont_ask_widevine_install_);
 }
 
 void WidevinePermissionRequest::Cancelled() {

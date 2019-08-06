@@ -41,6 +41,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kHideBraveRewardsButton, false);
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
+  registry->RegisterBooleanPref(kAskWidevineInstall, true);
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   BraveWidevineBundleManager::RegisterProfilePrefs(registry);
 #endif
