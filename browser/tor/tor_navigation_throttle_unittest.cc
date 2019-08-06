@@ -7,16 +7,15 @@
 
 #include <utility>
 
-#include "brave/common/tor/pref_names.h"
-#include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "base/files/scoped_temp_dir.h"
+#include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/profiles/tor_unittest_profile_manager.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
-#include "components/prefs/pref_service.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/test/mock_navigation_handle.h"
+#include "content/public/test/test_browser_thread_bundle.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -25,66 +24,73 @@ using content::NavigationThrottle;
 
 namespace tor {
 
-class TorNavigationThrottleUnitTest
-    : public ChromeRenderViewHostTestHarness {
+class TorNavigationThrottleUnitTest : public testing::Test {
  public:
-  TorNavigationThrottleUnitTest() = default;
+  TorNavigationThrottleUnitTest()
+      : local_state_(TestingBrowserProcess::GetGlobal()) {}
   ~TorNavigationThrottleUnitTest() override = default;
 
   void SetUp() override {
-    ChromeRenderViewHostTestHarness::SetUp();
+    // Create a new temporary directory, and store the path
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    TestingBrowserProcess::GetGlobal()->SetProfileManager(
+        new TorUnittestProfileManager(temp_dir_.GetPath()));
+    // Create profile.
+    ProfileManager* profile_manager = g_browser_process->profile_manager();
+    ASSERT_TRUE(profile_manager);
+    Profile* profile = profile_manager->GetProfile(
+        temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir));
+    Profile* tor_profile = profile_manager->GetProfile(
+        BraveProfileManager::GetTorProfilePath());
+    web_contents_ =
+        content::WebContentsTester::CreateTestWebContents(profile, nullptr);
+    tor_web_contents_ =
+        content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
   }
 
   void TearDown() override {
-    ChromeRenderViewHostTestHarness::TearDown();
+    tor_web_contents_.reset();
+    web_contents_.reset();
+    TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
   }
 
-  content::BrowserContext* CreateBrowserContext() override {
-    TestingProfile::Builder builder;
-    auto prefs =
-        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    RegisterUserProfilePrefs(prefs->registry());
-    prefs->registry()->
-      RegisterBooleanPref(prefs::kProfileUsingTor, false);
-    builder.SetPrefService(std::move(prefs));
-    return builder.Build().release();
+  content::WebContents* web_contents() {
+    return web_contents_.get();
   }
 
-  content::RenderFrameHostTester* render_frame_host_tester(
-      content::RenderFrameHost* host) {
-    return content::RenderFrameHostTester::For(host);
+  content::WebContents* tor_web_contents() {
+    return tor_web_contents_.get();
   }
 
-  content::WebContentsTester* web_contents_tester() {
-    return content::WebContentsTester::For(web_contents());
-  }
  private:
+  content::TestBrowserThreadBundle thread_bundle_;
+  // The path to temporary directory used to contain the test operations.
+  base::ScopedTempDir temp_dir_;
+  ScopedTestingLocalState local_state_;
+  std::unique_ptr<content::WebContents> web_contents_;
+  std::unique_ptr<content::WebContents> tor_web_contents_;
   DISALLOW_COPY_AND_ASSIGN(TorNavigationThrottleUnitTest);
 };
 
 // Tests TorNavigationThrottle::MaybeCreateThrottleFor with tor enabled/disabled
 TEST_F(TorNavigationThrottleUnitTest, Instantiation) {
-  profile()->GetPrefs()->SetBoolean(prefs::kProfileUsingTor, true);
-  web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
-  content::RenderFrameHost* rfh = main_rfh();
-  GURL url("http://www.example.com");
-  content::MockNavigationHandle test_handle(url, rfh);
+  content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
     TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle);
   EXPECT_TRUE(throttle != nullptr);
-  profile()->GetPrefs()->SetBoolean(prefs::kProfileUsingTor, false);
+
+  content::MockNavigationHandle test_handle2(web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle2 =
-    TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle);
+    TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle2);
   EXPECT_TRUE(throttle2 == nullptr);
 }
 
 TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
-  web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
-  content::RenderFrameHost* rfh = main_rfh();
-  GURL url("http://www.example.com");
-  content::MockNavigationHandle test_handle(url, rfh);
+  content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
-    std::make_unique<TorNavigationThrottle>(&test_handle);
+    TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle);
+  GURL url("http://www.example.com");
+  test_handle.set_url(url);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << url;
 
@@ -113,12 +119,11 @@ TEST_F(TorNavigationThrottleUnitTest, WhitelistedScheme) {
 // Every schemes other than whitelisted scheme, no matter it is internal or
 // external scheme
 TEST_F(TorNavigationThrottleUnitTest, BlockedScheme) {
-  web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
-  content::RenderFrameHost* rfh = main_rfh();
-  GURL url("ftp://ftp.example.com");
-  content::MockNavigationHandle test_handle(url, rfh);
+  content::MockNavigationHandle test_handle(tor_web_contents());
   std::unique_ptr<TorNavigationThrottle> throttle =
-    std::make_unique<TorNavigationThrottle>(&test_handle);
+    TorNavigationThrottle::MaybeCreateThrottleFor(&test_handle);
+  GURL url("ftp://ftp.example.com");
+  test_handle.set_url(url);
   EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
             throttle->WillStartRequest().action()) << url;
 
