@@ -14,7 +14,9 @@ ConfirmationInfo::ConfirmationInfo() :
     token_info(TokenInfo()),
     payment_token(nullptr),
     blinded_payment_token(nullptr),
-    credential("") {}
+    credential(""),
+    timestamp_in_seconds(0),
+    created(false) {}
 
 ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& info) :
     id(info.id),
@@ -23,7 +25,9 @@ ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& info) :
     token_info(info.token_info),
     payment_token(info.payment_token),
     blinded_payment_token(info.blinded_payment_token),
-    credential(info.credential) {}
+    credential(info.credential),
+    timestamp_in_seconds(info.timestamp_in_seconds),
+    created(info.created) {}
 
 ConfirmationInfo::~ConfirmationInfo() {}
 

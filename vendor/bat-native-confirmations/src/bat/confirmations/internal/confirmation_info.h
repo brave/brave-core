@@ -6,6 +6,7 @@
 #ifndef BAT_CONFIRMATIONS_INTERNAL_CONFIRMATION_INFO_H_
 #define BAT_CONFIRMATIONS_INTERNAL_CONFIRMATION_INFO_H_
 
+#include <stdint.h>
 #include <string>
 
 #include "bat/confirmations/confirmation_type.h"
@@ -30,6 +31,8 @@ struct ConfirmationInfo {
   Token payment_token;
   BlindedToken blinded_payment_token;
   std::string credential;
+  uint64_t timestamp_in_seconds;
+  bool created;
 };
 
 }  // namespace confirmations

@@ -82,9 +82,9 @@ void ConfirmationsImpl::MaybeStart() {
   auto start_timer_in = CalculateTokenRedemptionTimeInSeconds();
   StartPayingOutRedeemedTokens(start_timer_in);
 
-  RetryFailedConfirmations();
-
   RefillTokensIfNecessary();
+
+  StartRetryingFailedConfirmations();
 }
 
 void ConfirmationsImpl::NotifyAdsIfConfirmationsIsReady() {
@@ -193,6 +193,12 @@ base::Value ConfirmationsImpl::GetConfirmationsAsDictionary(
 
     confirmation_dictionary.SetKey("credential",
         base::Value(confirmation.credential));
+
+    confirmation_dictionary.SetKey("timestamp_in_seconds",
+        base::Value(std::to_string(confirmation.timestamp_in_seconds)));
+
+    confirmation_dictionary.SetKey("created",
+        base::Value(confirmation.created));
 
     list.GetList().push_back(std::move(confirmation_dictionary));
   }
@@ -529,6 +535,24 @@ bool ConfirmationsImpl::GetConfirmationsFromDictionary(
       continue;
     }
 
+    // Timestamp
+    auto* timestamp_in_seconds_value =
+        confirmation_dictionary->FindKey("timestamp_in_seconds");
+    if (timestamp_in_seconds_value) {
+      auto timestamp_in_seconds =
+          std::stoull(timestamp_in_seconds_value->GetString());
+
+      confirmation_info.timestamp_in_seconds = timestamp_in_seconds;
+    }
+
+    // Created
+    auto* created_value = confirmation_dictionary->FindKey("created");
+    if (created_value) {
+      confirmation_info.created = created_value->GetBool();
+    } else {
+      confirmation_info.created = true;
+    }
+
     confirmations->push_back(confirmation_info);
   }
 
@@ -803,24 +827,37 @@ void ConfirmationsImpl::AppendConfirmationToQueue(
   confirmations_.push_back(confirmation_info);
 
   SaveState();
+
+  BLOG(INFO) << "Added " << confirmation_info.id
+      << " confirmation id with " << confirmation_info.creative_instance_id
+      << " creative instance id for " << std::string(confirmation_info.type)
+      << " to the confirmations queue";
+
+  if (!IsRetryingFailedConfirmations()) {
+    StartRetryingFailedConfirmations();
+  }
 }
 
 void ConfirmationsImpl::RemoveConfirmationFromQueue(
     const ConfirmationInfo& confirmation_info) {
-  auto id = confirmation_info.id;
-
   auto it = std::find_if(confirmations_.begin(), confirmations_.end(),
       [=](const ConfirmationInfo& info) {
-        return (info.id == id);
+        return (info.id == confirmation_info.id);
       });
 
   if (it == confirmations_.end()) {
+    BLOG(WARNING) << "Failed to remove " << confirmation_info.id
+        << " confirmation id with " << confirmation_info.creative_instance_id
+        << " creative instance id for " << std::string(confirmation_info.type)
+        << " from the confirmations queue";
+
     return;
   }
 
-  BLOG(INFO) << "Removed " << confirmation_info.creative_instance_id
+  BLOG(INFO) << "Removed " << confirmation_info.id
+      << " confirmation id with " << confirmation_info.creative_instance_id
       << " creative instance id for " << std::string(confirmation_info.type)
-      << " from the confirmation queue";
+      << " from the confirmations queue";
 
   confirmations_.erase(it);
 
@@ -1076,13 +1113,15 @@ void ConfirmationsImpl::UpdateNextTokenRedemptionDate() {
   SaveState();
 }
 
+void ConfirmationsImpl::StartRetryingFailedConfirmations() {
+  auto start_timer_in =
+      brave_base::random::Geometric(kRetryFailedConfirmationsAfterSeconds);
+
+  StartRetryingFailedConfirmations(start_timer_in);
+}
+
 void ConfirmationsImpl::StartRetryingFailedConfirmations(
     const uint64_t start_timer_in) {
-  if (confirmations_.size() == 0) {
-    BLOG(INFO) << "No failed confirmations to retry";
-    return;
-  }
-
   StopRetryingFailedConfirmations();
 
   confirmations_client_->SetTimer(start_timer_in,
@@ -1098,14 +1137,20 @@ void ConfirmationsImpl::StartRetryingFailedConfirmations(
       << " seconds";
 }
 
-void ConfirmationsImpl::RetryFailedConfirmations() const {
+void ConfirmationsImpl::RetryFailedConfirmations() {
+  StopRetryingFailedConfirmations();
+
   if (confirmations_.size() == 0) {
     BLOG(INFO) << "No failed confirmations to retry";
     return;
   }
 
   ConfirmationInfo confirmation_info(confirmations_.front());
+  RemoveConfirmationFromQueue(confirmation_info);
+
   redeem_token_->Redeem(confirmation_info);
+
+  StartRetryingFailedConfirmations();
 }
 
 void ConfirmationsImpl::StopRetryingFailedConfirmations() {
