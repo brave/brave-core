@@ -6,6 +6,7 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/stl_util.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -56,8 +57,8 @@ class ClientHintsBrowserTest : public InProcessBrowserTest {
  private:
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
     for (size_t i = 0; i < blink::kClientHintsMappingsCount; ++i) {
-      if (base::ContainsKey(request.headers,
-                            blink::kClientHintsHeaderMapping[i])) {
+      if (base::Contains(request.headers,
+                         blink::kClientHintsHeaderMapping[i])) {
         count_client_hints_headers_seen_++;
       }
     }
