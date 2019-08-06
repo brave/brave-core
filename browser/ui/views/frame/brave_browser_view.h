@@ -13,6 +13,13 @@ class BraveBrowserView : public BrowserView {
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
+  ShowTranslateBubbleResult ShowTranslateBubble(
+      content::WebContents* web_contents,
+      translate::TranslateStep step,
+      const std::string& source_language,
+      const std::string& target_language,
+      translate::TranslateErrors::Type error_type,
+      bool is_user_gesture) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);

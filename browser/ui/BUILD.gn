@@ -78,6 +78,10 @@ source_set("ui") {
       "views/rounded_separator.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
+      "views/translate/brave_translate_bubble_view.cc",
+      "views/translate/brave_translate_bubble_view.h",
+      "views/translate/brave_translate_icon_view.cc",
+      "views/translate/brave_translate_icon_view.h",
     ]
 
     if (enable_sparkle) {

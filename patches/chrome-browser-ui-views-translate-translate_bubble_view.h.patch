@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/translate/translate_bubble_view.h b/chrome/browser/ui/views/translate/translate_bubble_view.h
+index 0eba3d7441cb352e81faea58548c87b40489f5a2..c5514bf7018a89c328bd11cfaaeecea7f9103d5b 100644
+--- a/chrome/browser/ui/views/translate/translate_bubble_view.h
++++ b/chrome/browser/ui/views/translate/translate_bubble_view.h
+@@ -143,6 +143,7 @@ class TranslateBubbleView : public LocationBarBubbleDelegateView,
+     COMBOBOX_ID_TARGET_LANGUAGE,
+   };
+ 
++  friend class BraveTranslateBubbleView;
+   friend class TranslateBubbleViewTest;
+   friend void ::translate::test_utils::PressTranslate(::Browser*);
+   friend void ::translate::test_utils::PressRevert(::Browser*);
