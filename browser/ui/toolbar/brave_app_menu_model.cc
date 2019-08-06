@@ -54,6 +54,19 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
           IDS_SHOW_BRAVE_SYNC);
     }
   }
+
+  // Insert Create New Profile item
+  auto profile_items_insert_index = GetIndexOfCommandId(IDC_ZOOM_MENU) - 1;
+  InsertItemWithStringIdAt(profile_items_insert_index,
+    IDC_OPEN_GUEST_PROFILE,
+    IDS_OPEN_GUEST_PROFILE);
+  InsertItemWithStringIdAt(
+    GetIndexOfCommandId(IDC_OPEN_GUEST_PROFILE),
+    IDC_ADD_NEW_PROFILE,
+    IDS_ADD_NEW_PROFILE);
+  InsertSeparatorAt(
+    GetIndexOfCommandId(IDC_ADD_NEW_PROFILE), ui::NORMAL_SEPARATOR);
+
   InsertItemWithStringIdAt(
       GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
       IDC_SHOW_BRAVE_ADBLOCK,
