@@ -45,10 +45,10 @@ class AdBlockStats: LocalAdblockResourceProtocol {
             self.setDataFile(data: data, id: bundledGeneralBlocklist)
         }
         
-        loadDatFilesFromDocumentsDirectory()
+        loadDatFilesFromApplicationSupportDirectory()
     }
     
-    private func loadDatFilesFromDocumentsDirectory() {
+    private func loadDatFilesFromApplicationSupportDirectory() {
         let fm = FileManager.default
 
         guard let folderUrl = fm.getOrCreateFolder(name: AdblockResourceDownloader.folderName) else {

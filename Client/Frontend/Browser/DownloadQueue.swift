@@ -82,7 +82,7 @@ extension Download: URLSessionTaskDelegate, URLSessionDownloadDelegate {
     }
 
     private func uniqueDownloadPathForFilename(_ filename: String) throws -> URL {
-        let downloadsPath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("Downloads")
+        let downloadsPath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
 
         let basePath = downloadsPath.appendingPathComponent(filename)
         let fileExtension = basePath.pathExtension

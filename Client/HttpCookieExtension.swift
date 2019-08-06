@@ -15,6 +15,8 @@ public extension HTTPCookie {
         return "CookiesData.json"
     }
     
+    private static let directory = FileManager.SearchPathDirectory.applicationSupportDirectory.url
+    
     typealias Success = Bool
     class func saveToDisk(_ filename: String = HTTPCookie.locallySavedFile, completion: ((Success) -> Void)? = nil) {
         let cookieStore = WKWebsiteDataStore.default().httpCookieStore
@@ -31,7 +33,7 @@ public extension HTTPCookie {
          */
         WKWebsiteDataStore.default().fetchDataRecords(ofTypes: [WKWebsiteDataTypeCookies]) { _ in}
         cookieStore.getAllCookies { cookies in
-            guard let baseDir = FileManager.documentDirectoryURL else {
+            guard let baseDir = directory else {
                 completion?(false)
                 return
             }
@@ -47,7 +49,7 @@ public extension HTTPCookie {
     }
     
     class func loadFromDisk(_ filename: String = HTTPCookie.locallySavedFile, completion: ((Success) -> Void)? = nil) {
-        guard let baseDir = FileManager.documentDirectoryURL else {
+        guard let baseDir = directory else {
             completion?(false)
             return
         }
@@ -82,7 +84,7 @@ public extension HTTPCookie {
     }
     
     class func deleteLocalCookieFile(_ filename: String = HTTPCookie.locallySavedFile) {
-        guard let baseDir = FileManager.documentDirectoryURL else {
+        guard let baseDir = directory else {
             return
         }
         let url = baseDir.appendingPathComponent(filename)

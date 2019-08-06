@@ -57,7 +57,7 @@ class AdblockDebugMenuTableViewController: TableViewController {
                 return fm.contents(atPath: bundlePath)
             }
             
-            // Search in documents directory otherwise
+            // Search in application support directory otherwise
             let folderName = AdblockResourceDownloader.folderName
             guard let folderUrl = fm.getOrCreateFolder(name: folderName) else { return nil }
             
