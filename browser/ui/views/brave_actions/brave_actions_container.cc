@@ -67,7 +67,7 @@ BraveActionsContainer::~BraveActionsContainer() {
 void BraveActionsContainer::Init() {
   // automatic layout
   auto vertical_container_layout = std::make_unique<views::BoxLayout>(
-                                                views::BoxLayout::kHorizontal);
+      views::BoxLayout::Orientation::kHorizontal);
   vertical_container_layout->set_main_axis_alignment(
       views::BoxLayout::MainAxisAlignment::kCenter);
   vertical_container_layout->set_cross_axis_alignment(
