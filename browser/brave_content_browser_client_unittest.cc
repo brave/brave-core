@@ -87,14 +87,3 @@ TEST_F(BraveContentBrowserClientTest, ResolvesSync) {
   ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
         &url2, nullptr));
 }
-
-TEST_F(BraveContentBrowserClientTest, ResolvesWelcomePage) {
-  GURL url("chrome://welcome-win10/");
-  ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
-        &url, nullptr));
-  ASSERT_STREQ(url.spec().c_str(), "chrome://welcome/");
-
-  GURL url2("chrome://welcome/");
-  ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
-        &url2, nullptr));
-}
