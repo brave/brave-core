@@ -116,7 +116,7 @@ bool Edge::IsEdgeTextChange() const {
   return false;
 }
 
-bool Edge::IsEdgeWebAPI() const {
+bool Edge::IsEdgeJS() const {
   return false;
 }
 

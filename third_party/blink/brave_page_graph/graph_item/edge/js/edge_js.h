@@ -3,47 +3,35 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_WEBAPI_EDGE_WEBAPI_H_
-#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_WEBAPI_EDGE_WEBAPI_H_
-
-#include <string>
+#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_JS_EDGE_JS_H_
+#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_JS_EDGE_JS_H_
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
-
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
 
 namespace brave_page_graph {
 
 class Node;
-class NodeActor;
-class NodeWebAPI;
 class PageGraph;
 
-class EdgeWebAPI : public Edge {
+class EdgeJS : public Edge {
 friend class PageGraph;
  public:
-  EdgeWebAPI() = delete;
-  ~EdgeWebAPI() override;
-
-  const std::string& GetMethod() { return method_; }
-
-  ItemDesc GetItemDesc() const override;
+  EdgeJS() = delete;
+  ~EdgeJS() override;
 
   GraphMLXMLList GetGraphMLAttributes() const override;
 
-  bool IsEdgeWebAPI() const override;
-
-  virtual bool IsEdgeWebAPICall() const;
-  virtual bool IsEdgeWebAPIResult() const;
+  virtual const MethodName& GetMethodName() const = 0;
+  bool IsEdgeJS() const override;
+  virtual bool IsEdgeJSCall() const;
+  virtual bool IsEdgeJSResult() const;
 
  protected:
-  EdgeWebAPI(PageGraph* const graph, Node* const out_node,
-    Node* const in_node, const std::string& method);
-
- private:
-  const std::string method_;
+  EdgeJS(PageGraph* const graph, Node* const out_node,
+    Node* const in_node);
 };
 
 }  // namespace brave_page_graph
@@ -51,16 +39,16 @@ friend class PageGraph;
 namespace blink {
 
 template <>
-struct DowncastTraits<brave_page_graph::EdgeWebAPI> {
+struct DowncastTraits<brave_page_graph::EdgeJS> {
   static bool AllowFrom(const brave_page_graph::Edge& edge) {
-    return edge.IsEdgeWebAPI();
+    return edge.IsEdgeJS();
   }
   static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
-    return IsA<brave_page_graph::EdgeWebAPI>(
+    return IsA<brave_page_graph::EdgeJS>(
         DynamicTo<brave_page_graph::Edge>(graph_item));
   }
 };
 
 }  // namespace blink
 
-#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_WEBAPI_EDGE_WEBAPI_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_JS_EDGE_JS_H_

@@ -79,8 +79,8 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/storage/edge_storage_read_result.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/storage/edge_storage_set.h"
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/webapi/edge_webapi_call.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/webapi/edge_webapi_result.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/js/edge_js_call.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/js/edge_js_result.h"
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extensions.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_remote_frame.h"
@@ -108,7 +108,9 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/storage/node_storage_localstorage.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/storage/node_storage_sessionstorage.h"
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_webapi.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js_builtin.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js_webapi.h"
 
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
@@ -210,6 +212,24 @@ static void OnEvalScriptCompiled(v8::Isolate& isolate,
   }
 }
 
+static void OnBuiltInFuncCall(v8::Isolate& isolate, const char* built_in_name,
+    const std::vector<const char*>& args) {
+  PageGraph* const page_graph = PageGraph::GetFromIsolate(isolate);
+  if (page_graph) {
+    page_graph->RegisterJSBuiltInCall(JSBuiltInFromString(built_in_name),
+        args);
+  }
+}
+
+static void OnBuiltInFuncResponse(v8::Isolate& isolate,
+    const char* built_in_name, const char* value) {
+  PageGraph* const page_graph = PageGraph::GetFromIsolate(isolate);
+  if (page_graph) {
+    page_graph->RegisterJSBuiltInResponse(JSBuiltInFromString(built_in_name),
+        value);
+  }
+}
+
 PageGraph::PageGraph(blink::ExecutionContext& execution_context,
     const DOMNodeId node_id, const WTF::String& tag_name,
     const blink::KURL& url) :
@@ -219,8 +239,8 @@ PageGraph::PageGraph(blink::ExecutionContext& execution_context,
       ad_shield_node_(new NodeShield(this, brave_shields::kAds)),
       tracker_shield_node_(new NodeShield(this, brave_shields::kTrackers)),
       js_shield_node_(new NodeShield(this, brave_shields::kJavaScript)),
-      fingerprinting_shield_node_(new NodeShield(this,
-                                                 brave_shields::kFingerprinting)),
+      fingerprinting_shield_node_(
+          new NodeShield(this, brave_shields::kFingerprinting)),
       storage_node_(new NodeStorageRoot(this)),
       cookie_jar_node_(new NodeStorageCookieJar(this)),
       local_storage_node_(new NodeStorageLocalStorage(this)),
@@ -258,6 +278,8 @@ PageGraph::PageGraph(blink::ExecutionContext& execution_context,
   Isolate* const isolate = execution_context_.GetIsolate();
   if (isolate) {
     isolate->SetEvalScriptCompiledFunc(&OnEvalScriptCompiled);
+    isolate->SetBuiltInFuncCallFunc(&OnBuiltInFuncCall);
+    isolate->SetBuiltInFuncResponseFunc(&OnBuiltInFuncResponse);
   }
 
   yuck = this;
@@ -1031,17 +1053,17 @@ void PageGraph::RegisterWebAPICall(const MethodName& method,
   NodeActor* const acting_node = GetCurrentActingNode();
   LOG_ASSERT(IsA<NodeScript>(acting_node));
 
-  NodeWebAPI* webapi_node;
+  NodeJSWebAPI* webapi_node;
   if (webapi_nodes_.count(method) == 0) {
-    webapi_node = new NodeWebAPI(this, method);
+    webapi_node = new NodeJSWebAPI(this, method);
     AddNode(webapi_node);
     webapi_nodes_.emplace(method, webapi_node);
   } else {
     webapi_node = webapi_nodes_.at(method);
   }
 
-  AddEdge(new EdgeWebAPICall(this, static_cast<NodeScript*>(acting_node),
-                             webapi_node, method, local_args));
+  AddEdge(new EdgeJSCall(this, static_cast<NodeScript*>(acting_node),
+    webapi_node, local_args));
 }
 
 void PageGraph::RegisterWebAPIResult(const MethodName& method,
@@ -1053,11 +1075,58 @@ void PageGraph::RegisterWebAPIResult(const MethodName& method,
   LOG_ASSERT(IsA<NodeScript>(caller_node));
 
   LOG_ASSERT(webapi_nodes_.count(method) != 0);
-  NodeWebAPI* webapi_node = webapi_nodes_.at(method);
+  NodeJSWebAPI* webapi_node = webapi_nodes_.at(method);
 
-  AddEdge(new EdgeWebAPIResult(this, webapi_node,
-                               static_cast<NodeScript*>(caller_node), method,
-                               local_result));
+  AddEdge(new EdgeJSResult(this, webapi_node,
+    static_cast<NodeScript*>(caller_node), local_result));
+}
+
+void PageGraph::RegisterJSBuiltInCall(const JSBuiltIn built_in,
+    const std::vector<const char*>& arguments) {
+  std::vector<const string> local_args;
+  stringstream buffer;
+  size_t args_length = arguments.size();
+  for (size_t i = 0; i < args_length; ++i) {
+    local_args.push_back(string(arguments[i]));
+    if (i != args_length - 1) {
+      buffer << local_args.at(i) << ", ";
+    } else {
+      buffer << local_args.at(i);
+    }
+  }
+  Log("RegisterJSBuiltInCall) built in: " + JSBuiltInToSting(built_in)
+    + ", arguments: " + buffer.str());
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+  LOG_ASSERT(IsA<NodeScript>(acting_node));
+
+  NodeJSBuiltIn* js_built_in_node;
+  if (builtin_js_nodes_.count(built_in) == 0) {
+    js_built_in_node = new NodeJSBuiltIn(this, built_in);
+    AddNode(js_built_in_node);
+    builtin_js_nodes_.emplace(built_in, js_built_in_node);
+  } else {
+    js_built_in_node = builtin_js_nodes_.at(built_in);
+  }
+
+  AddEdge(new EdgeJSCall(this, static_cast<NodeScript*>(acting_node),
+    js_built_in_node, local_args));
+}
+
+void PageGraph::RegisterJSBuiltInResponse(const JSBuiltIn built_in,
+    const char* value) {
+  const string local_result(value);
+  Log("RegisterJSBuiltInResponse) built in: " + JSBuiltInToSting(built_in)
+    + ", result: " + local_result);
+
+  NodeActor* const caller_node = GetCurrentActingNode();
+  LOG_ASSERT(IsA<NodeScript>(caller_node));
+
+  LOG_ASSERT(builtin_js_nodes_.count(built_in) != 0);
+  NodeJSBuiltIn* js_built_in_node = builtin_js_nodes_.at(built_in);
+
+  AddEdge(new EdgeJSResult(this, js_built_in_node,
+    static_cast<NodeScript*>(caller_node), local_result));
 }
 
 GraphMLXML PageGraph::ToGraphML() const {
