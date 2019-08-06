@@ -6,26 +6,19 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
-#include "components/spellcheck/spellcheck_buildflags.h"
-#if !BUILDFLAG(USE_BROWSER_SPELLCHECKER)
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
-#endif
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
 // back to the Chromium one for the Chromium implementation.
 #undef RenderViewContextMenu
 #define RenderViewContextMenu RenderViewContextMenu_Chromium
 
-#if !defined(OS_MACOSX)
 // Use our subclass to initialize SpellingOptionsSubMenuObserver.
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
-#endif
 
 #include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"  // NOLINT
 
-#if !defined(OS_MACOSX)
 #undef SpellingOptionsSubMenuObserver
-#endif
 
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
