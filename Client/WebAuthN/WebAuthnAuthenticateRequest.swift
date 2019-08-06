@@ -7,6 +7,7 @@ struct WebAuthnAuthenticateRequest {
     var rpID: String?
     var challenge: String
     var allowCredentials: [String] = []
+    var userPresence: Bool
 
     enum RequestKeys: String, CodingKey {
         case publicKey
@@ -17,6 +18,7 @@ struct WebAuthnAuthenticateRequest {
         case challenge
         case allowCredentials
         case authenticatorSelection
+        case userVerification
     }
 }
 
@@ -32,6 +34,10 @@ extension WebAuthnAuthenticateRequest: Decodable {
         
         rpID = try publicKeyDictionary.decodeIfPresent(String.self, forKey: .rpId)
         challenge = try publicKeyDictionary.decode(String.self, forKey: .challenge)
+        
+        // userPresence is the inverse of userVerification
+        let userVerifcationString = try publicKeyDictionary.decodeIfPresent(String.self, forKey: .userVerification) ?? ""
+        userPresence = userVerifcationString == "discouraged"
         
         let allowCredentialsArray = try publicKeyDictionary.decode([AllowCredentials].self, forKey: .allowCredentials)
     

@@ -446,11 +446,6 @@ class U2FExtensions: NSObject {
         let clientData = WebAuthnClientData(type: WebAuthnClientDataType.get.rawValue, challenge: request.challenge, origin: url)
         do {
             let clientDataJSON = try JSONEncoder().encode(clientData)
-            guard let allowCredential = request.allowCredentials.first else {
-                sendFIDO2AuthenticationError(handle: handle)
-                return
-            }
-            let requestId = allowCredential
             
             if let rpId = request.rpID {
                 getAssertionRequest.rpId = rpId
@@ -472,23 +467,29 @@ class U2FExtensions: NSObject {
                 return
             }
             getAssertionRequest.clientDataHash = clientDataHash
+            
+            getAssertionRequest.options = [
+                YKFKeyFIDO2GetAssertionRequestOptionUP: request.userPresence,
+            ]
 
             var allowList = [YKFFIDO2PublicKeyCredentialDescriptor]()
-            for credentialId in request.allowCredentials {
-                let credentialDescriptor = YKFFIDO2PublicKeyCredentialDescriptor()
-                
-                guard let credentialIdData = Data(base64Encoded: credentialId) else {
-                    sendFIDO2AuthenticationError(handle: handle)
-                    return
+            if request.allowCredentials.count > 0 {
+                for credentialId in request.allowCredentials {
+                    let credentialDescriptor = YKFFIDO2PublicKeyCredentialDescriptor()
+                    
+                    guard let credentialIdData = Data(base64Encoded: credentialId) else {
+                        sendFIDO2AuthenticationError(handle: handle)
+                        return
+                    }
+                    
+                    credentialDescriptor.credentialId = credentialIdData
+                    let credType = YKFFIDO2PublicKeyCredentialType()
+                    credType.name = "public-key"
+                    credentialDescriptor.credentialType = credType
+                    allowList.append(credentialDescriptor)
                 }
-                
-                credentialDescriptor.credentialId = credentialIdData
-                let credType = YKFFIDO2PublicKeyCredentialType()
-                credType.name = "public-key"
-                credentialDescriptor.credentialType = credType
-                allowList.append(credentialDescriptor)
+                getAssertionRequest.allowList = allowList
             }
-            getAssertionRequest.allowList = allowList
             
             guard let fido2Service = YubiKitManager.shared.keySession.fido2Service else {
                 sendFIDO2AuthenticationError(handle: handle)
@@ -510,14 +511,14 @@ class U2FExtensions: NSObject {
                     self.sendFIDO2AuthenticationError(handle: handle)
                     return
                 }
-                self.finalizeFIDO2Authentication(handle: handle, response: response, requestId: requestId, clientDataJSON: clientDataJSON, error: nil)
+                self.finalizeFIDO2Authentication(handle: handle, response: response, clientDataJSON: clientDataJSON, error: nil)
             }
         } catch {
             sendFIDO2AuthenticationError(handle: handle, errorDescription: error.localizedDescription)
         }
     }
     
-    private func finalizeFIDO2Authentication(handle: Int, response: YKFKeyFIDO2GetAssertionResponse, requestId: String, clientDataJSON: Data, error: NSErrorPointer) {
+    private func finalizeFIDO2Authentication(handle: Int, response: YKFKeyFIDO2GetAssertionResponse, clientDataJSON: Data, error: NSErrorPointer) {
         guard error == nil else {
             let errorDescription = error?.pointee?.localizedDescription ?? Strings.U2FAuthenticationError
             sendFIDO2AuthenticationError(handle: handle, errorDescription: errorDescription)
@@ -527,10 +528,17 @@ class U2FExtensions: NSObject {
         let authenticatorData = response.authData.base64EncodedString()
         let clientDataJSONString = clientDataJSON.base64EncodedString()
         let sig = response.signature.base64EncodedString()
+
+       let userHandle = response.user?.userId.base64EncodedString() ?? ""
+        
+        guard let requestId = response.credential?.credentialId.base64EncodedString() else {
+            sendFIDO2AuthenticationError(handle: handle)
+            return
+        }
         
         cleanupFIDO2Authentication(handle: handle)
         ensureMainThread {
-            self.tab?.webView?.evaluateJavaScript("navigator.credentials.postGet('\(handle)', \(true), '\(requestId)', '\(authenticatorData)', '\(clientDataJSONString)', '\(sig)', '')", completionHandler: { _, error in
+            self.tab?.webView?.evaluateJavaScript("navigator.credentials.postGet('\(handle)', \(true), '\(requestId)', '\(authenticatorData)', '\(clientDataJSONString)', '\(sig)', '\(userHandle)', '')", completionHandler: { _, error in
                 if error != nil {
                     let errorDescription = error?.localizedDescription ?? U2FErrorMessages.ErrorAuthentication.rawValue
                     log.error(errorDescription)

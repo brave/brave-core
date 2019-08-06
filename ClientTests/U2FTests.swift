@@ -58,6 +58,7 @@ class U2FTests: XCTestCase {
             XCTAssertEqual(request.challenge, "mdMbxTPACurawWFHqkoltSUwDear2OZQVl/uhBNqiaM=", "request challenge is correct.")
             XCTAssertEqual(request.allowCredentials.count, 1, "request allowCredential count is correct")
             XCTAssertEqual(request.allowCredentials.first, "OvQO5490o1w89Op/9dp4w7VvKuLEk5NHcfOnc2ZECtc=", "request allowCredential is correct")
+            XCTAssertTrue(request.userPresence, "request userPresence is correct")
         } catch {
             XCTFail("\(error)")
         }

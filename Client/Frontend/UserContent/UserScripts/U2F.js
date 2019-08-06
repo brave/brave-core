@@ -86,10 +86,11 @@ class $<attest> {
 }
 
 class $<assert> {
-  constructor (authenticatorData, clientDataJSON, signature) {
+  constructor (authenticatorData, clientDataJSON, signature, userHandle) {
     this.authenticatorData = window.base64ToArrayBuffer(authenticatorData)
     this.clientDataJSON = window.base64ToArrayBuffer(clientDataJSON)
     this.signature = window.base64ToArrayBuffer(signature)
+    this.userHandle = window.base64ToArrayBuffer(userHandle)
   }
 }
 
@@ -128,17 +129,17 @@ Object.defineProperty($<webauthn>, 'postCreate', {
 })
 
 Object.defineProperty($<webauthn>, 'postGet', {
-  value: function (handle, fromNative, id, authenticatorData, clientDataJSON, signature, errorName, errorDescription) {
+  value: function (handle, fromNative, id, authenticatorData, clientDataJSON, signature, userHandle, errorName, errorDescription) {
     if (fromNative) {
       caller = window.top.$<webauthn>.caller[handle]
-      caller.$<webauthn>.postGet(handle, false, id, authenticatorData, clientDataJSON, signature, errorName, errorDescription);
+      caller.$<webauthn>.postGet(handle, false, id, authenticatorData, clientDataJSON, signature, userHandle, errorName, errorDescription);
       return;
     }
     if (errorName) {
       $<webauthn>.reject[handle](new DOMException(errorDescription, errorName))
       return
     }
-    response = new $<assert>(authenticatorData, clientDataJSON, signature)
+    response = new $<assert>(authenticatorData, clientDataJSON, signature, userHandle)
     data = new $<pkc>(id, response)
     $<webauthn>.resolve[handle](data)
   }
