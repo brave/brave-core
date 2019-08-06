@@ -329,4 +329,112 @@ TEST_F(SyncerHelperTest, GetIndexInFolder) {
   EXPECT_EQ(GetIndex(folder1, &node), 1u);
 }
 
+TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
+  // This test emulates folowing STR
+  // 1. on device A create bookmarks A1.com and A2.com
+  // 2. on device B create bookmarks B1.com and B2.com
+  // 3. create sync chain on device A and connect device B with a codephrase
+  // 4. wait for bookmarks will be synchromized between device A and B
+  // 5. on device A in Add bookmark dialog enter Name A3.com, URL A3.com,
+  //    but dont press Save button
+  // 6. repeat pt 5 on device B, for B3.com
+  // 7. press Save button on devices A and B
+  // Expected bookmarks on devices A and B are sorted in the same way
+  const auto* node_a1 = model()->AddURL(model()->bookmark_bar_node(), 0,
+                                          base::ASCIIToUTF16("A1.com"),
+                                          GURL("https://a1.com/"));
+  AddBraveMetaInfo(node_a1, model());
+  const auto* node_a2 = model()->AddURL(model()->bookmark_bar_node(), 1,
+                                          base::ASCIIToUTF16("A2.com"),
+                                          GURL("https://a2.com/"));
+  AddBraveMetaInfo(node_a2, model());
+  const auto* node_b1 = model()->AddURL(model()->bookmark_bar_node(), 2,
+                                          base::ASCIIToUTF16("B1.com"),
+                                          GURL("https://b1.com/"));
+  AddBraveMetaInfo(node_b1, model());
+  const auto* node_b2 = model()->AddURL(model()->bookmark_bar_node(), 3,
+                                          base::ASCIIToUTF16("B2.com"),
+                                          GURL("https://b2.com/"));
+  AddBraveMetaInfo(node_b2, model());
+
+  // Expect b1 and b2 no need to move
+  uint64_t index_to_move_b1 = GetIndexByCompareOrderStartFrom(
+      model()->bookmark_bar_node(),
+      node_b1,
+      0);
+  EXPECT_EQ(index_to_move_b1, 2u);
+
+  uint64_t index_to_move_b2 = GetIndexByCompareOrderStartFrom(
+      model()->bookmark_bar_node(),
+      node_b2,
+      0);
+  EXPECT_EQ(index_to_move_b2, 3u);
+
+  const auto* node_a3 = model()->AddURL(model()->bookmark_bar_node(), 4,
+                                          base::ASCIIToUTF16("A3.com"),
+                                          GURL("https://a3.com/"));
+  AddBraveMetaInfo(node_a3, model());
+  const auto* node_b3 = model()->AddURL(model()->bookmark_bar_node(), 5,
+                                          base::ASCIIToUTF16("B3.com"),
+                                          GURL("https://b3.com/"));
+  AddBraveMetaInfo(node_b3, model());
+  const auto* node_c3 = model()->AddURL(model()->bookmark_bar_node(), 6,
+                                          base::ASCIIToUTF16("C3.com"),
+                                          GURL("https://c3.com/"));
+  AddBraveMetaInfo(node_c3, model());
+
+  std::string a3_order;
+  node_a3->GetMetaInfo("order", &a3_order);
+  EXPECT_TRUE(!a3_order.empty());
+
+  std::string a3_object_id;
+  node_a3->GetMetaInfo("object_id", &a3_object_id);
+  EXPECT_TRUE(!a3_object_id.empty());
+
+  // Emulating nodes a3, b3, and c3 have the same order
+  const_cast<BookmarkNode*>(node_b3)->SetMetaInfo("order", a3_order);
+  const_cast<BookmarkNode*>(node_c3)->SetMetaInfo("order", a3_order);
+
+  // Expecting sorting of same order bookmarks by object_id
+  // object_id is 16 comma and spaces separated values of 16 uint8
+  // Will assign these object ids to make RepositionRespectOrder do sorting:
+  //  C3      A3       B3
+  // "..." < 1,2,3 < "@@@"
+  ASSERT_TRUE("..." < a3_object_id && a3_object_id < "@@@");
+  const_cast<BookmarkNode*>(node_b3)->SetMetaInfo("object_id", "@@@");
+  const_cast<BookmarkNode*>(node_c3)->SetMetaInfo("object_id", "...");
+
+  //  0  1  2  3       4        5        6
+  // A1 A2 B1 B2  A3(1,2,3)  B3(@@@)  C3(...)
+  auto title_at_4 = model()->bookmark_bar_node()->GetChild(4)->GetTitle();
+  EXPECT_EQ(title_at_4, base::ASCIIToUTF16("A3.com"));
+  auto title_at_5 = model()->bookmark_bar_node()->GetChild(5)->GetTitle();
+  EXPECT_EQ(title_at_5, base::ASCIIToUTF16("B3.com"));
+  auto title_at_6 = model()->bookmark_bar_node()->GetChild(6)->GetTitle();
+  EXPECT_EQ(title_at_6, base::ASCIIToUTF16("C3.com"));
+
+  RepositionRespectOrder(model(), node_b3);
+  //  0  1  2  3       4        5        6
+  // A1 A2 B1 B2  A3(1,2,3)  B3(@@@)  C3(...)
+  // node B3 hadn't moved because it reached itself
+  title_at_4 = model()->bookmark_bar_node()->GetChild(4)->GetTitle();
+  EXPECT_EQ(title_at_4, base::ASCIIToUTF16("A3.com"));
+  title_at_5 = model()->bookmark_bar_node()->GetChild(5)->GetTitle();
+  EXPECT_EQ(title_at_5, base::ASCIIToUTF16("B3.com"));
+  title_at_6 = model()->bookmark_bar_node()->GetChild(6)->GetTitle();
+  EXPECT_EQ(title_at_6, base::ASCIIToUTF16("C3.com"));
+
+  RepositionRespectOrder(model(), node_c3);
+  //  0  1  2  3     4        5        6
+  // A1 A2 B1 B2  C3(...) A3(1,2,3) B3(@@@)
+  // node C3 moved to the correct position, so B3 is on the right place now
+
+  title_at_4 = model()->bookmark_bar_node()->GetChild(4)->GetTitle();
+  EXPECT_EQ(title_at_4, base::ASCIIToUTF16("C3.com"));
+  title_at_5 = model()->bookmark_bar_node()->GetChild(5)->GetTitle();
+  EXPECT_EQ(title_at_5, base::ASCIIToUTF16("A3.com"));
+  title_at_6 = model()->bookmark_bar_node()->GetChild(6)->GetTitle();
+  EXPECT_EQ(title_at_6, base::ASCIIToUTF16("B3.com"));
+}
+
 }   // namespace brave_sync
