@@ -236,58 +236,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 }
 #endif
 
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    RewriteWelcomeWin10Host) {
-  std::vector<std::string> schemes {
-    "brave://",
-    "chrome://",
-  };
-
-  for (const std::string& scheme : schemes) {
-    content::WebContents* contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    ui_test_utils::NavigateToURL(
-        browser(),
-        GURL(scheme + chrome::kChromeUIWelcomeWin10Host));
-    ASSERT_TRUE(WaitForLoadStop(contents));
-
-    EXPECT_STREQ(base::UTF16ToUTF8(browser()->location_bar_model()
-                    ->GetFormattedFullURL()).c_str(),
-                 "brave://welcome");
-    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetVirtualURL().spec().c_str(),
-                 "chrome://welcome/");
-    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetURL().spec().c_str(),
-                 "chrome://welcome/");
-  }
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    RewriteChromeWelcomeWin10) {
-  std::vector<std::string> schemes {
-    "brave://",
-    "chrome://",
-  };
-
-  for (const std::string& scheme : schemes) {
-    content::WebContents* contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    ui_test_utils::NavigateToURL(browser(), GURL(scheme + "welcome-win10/"));
-    ASSERT_TRUE(WaitForLoadStop(contents));
-
-    EXPECT_STREQ(base::UTF16ToUTF8(browser()->location_bar_model()
-                    ->GetFormattedFullURL()).c_str(),
-                 "brave://welcome");
-    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetVirtualURL().spec().c_str(),
-                 "chrome://welcome/");
-    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetURL().spec().c_str(),
-                 "chrome://welcome/");
-  }
-}
-
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
