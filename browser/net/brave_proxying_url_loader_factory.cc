@@ -130,7 +130,6 @@ BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
     network::mojom::URLLoaderClientPtr client)
     : factory_(factory),
       request_(request),
-      original_initiator_(request.request_initiator),
       request_id_(request_id),
       network_service_request_id_(network_service_request_id),
       render_process_id_(render_process_id),
