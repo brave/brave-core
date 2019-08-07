@@ -77,6 +77,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_navigation_throttle.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/tor/switches.h"
 #include "brave/components/services/tor/public/cpp/manifest.h"
@@ -355,6 +356,13 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   throttles.push_back(
       std::make_unique<extensions::BraveWalletNavigationThrottle>(handle));
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
+    tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle);
+  if (tor_navigation_throttle)
+    throttles.push_back(std::move(tor_navigation_throttle));
 #endif
 
   return throttles;

@@ -118,38 +118,43 @@ TEST_F(BraveProfileManagerTest, GetTorProfilePath) {
 }
 
 TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
-  base::FilePath dest_path = temp_dir_.GetPath();
-  dest_path = dest_path.Append(tor::kTorProfileDir);
+  base::FilePath dest_path =
+    temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
+  base::FilePath tor_dest_path =
+    temp_dir_.GetPath().Append(tor::kTorProfileDir);
 
   ProfileManager* profile_manager = g_browser_process->profile_manager();
 
-  Profile* profile;
-
-  // Successfully create the profile
-  profile = profile_manager->GetProfile(dest_path);
+  // Successfully create test profile and tor profile
+  Profile* profile = profile_manager->GetProfile(dest_path);
+  Profile* tor_profile = profile_manager->GetProfile(tor_dest_path);
   ASSERT_TRUE(profile);
+  ASSERT_TRUE(tor_profile);
 
-  // Check that the profile name is non empty
+  // Check that the tor_profile name is non empty
   std::string profile_name =
-      profile->GetPrefs()->GetString(prefs::kProfileName);
+      tor_profile->GetPrefs()->GetString(prefs::kProfileName);
   EXPECT_EQ(profile_name,
             l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
 
-  // Check that the profile avatar index is valid
+  // Check that the tor_profile avatar index is valid
   size_t avatar_index =
-      profile->GetPrefs()->GetInteger(prefs::kProfileAvatarIndex);
+      tor_profile->GetPrefs()->GetInteger(prefs::kProfileAvatarIndex);
   EXPECT_EQ(avatar_index, size_t(0));
   EXPECT_FALSE(
-    profile->GetPrefs()->GetBoolean(prefs::kProfileUsingDefaultName));
-  EXPECT_TRUE(profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
+    tor_profile->GetPrefs()->GetBoolean(prefs::kProfileUsingDefaultName));
+  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
+  EXPECT_TRUE(
+    tor_profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
 
   // Check WebRTC IP handling policy.
   EXPECT_EQ(
-    profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
+    tor_profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
     content::kWebRTCIPHandlingDisableNonProxiedUdp);
 
   // Check SafeBrowsing status
-  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(prefs::kSafeBrowsingEnabled));
+  EXPECT_FALSE(
+    tor_profile->GetPrefs()->GetBoolean(prefs::kSafeBrowsingEnabled));
 }
 
 // This is for tor guest window, remove it when we have persistent tor profiles

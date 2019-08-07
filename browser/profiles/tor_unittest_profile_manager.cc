@@ -24,10 +24,7 @@ Profile* TorUnittestProfileManager::CreateProfileHelper(
     if (!base::CreateDirectory(path))
       return nullptr;
   }
-  if (path == BraveProfileManager::GetTorProfilePath())
-    return CreateTorProfile(path, nullptr);
-  else
-    return new TestingProfile(path, nullptr);
+  return CreateProfile(path, nullptr);
 }
 
 Profile* TorUnittestProfileManager::CreateProfileAsyncHelper(
@@ -38,10 +35,7 @@ Profile* TorUnittestProfileManager::CreateProfileAsyncHelper(
       FROM_HERE,
       base::BindOnce(base::IgnoreResult(&base::CreateDirectory), path));
 
-  if (path == BraveProfileManager::GetTorProfilePath())
-    return CreateTorProfile(path, this);
-  else
-    return new TestingProfile(path, this);
+  return CreateProfile(path, this);
 }
 
 void TorUnittestProfileManager::InitProfileUserPrefs(Profile* profile) {
@@ -52,7 +46,7 @@ void TorUnittestProfileManager::InitProfileUserPrefs(Profile* profile) {
   }
 }
 
-Profile* TorUnittestProfileManager::CreateTorProfile(
+Profile* TorUnittestProfileManager::CreateProfile(
     const base::FilePath& path, Delegate* delegate) {
   TestingProfile::Builder profile_builder;
   sync_preferences::PrefServiceMockFactory factory;
