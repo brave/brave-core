@@ -634,22 +634,22 @@ TEST_F(BraveBookmarkChangeProcessorTest, NestedFoldersCreatedFromSync) {
   change_processor()->ApplyChangesFromSyncModel(records);
 
   // Verify the model
-  ASSERT_EQ(model()->other_node()->child_count(), 1);
-  const auto* folder1 = model()->other_node()->GetChild(0);
+  ASSERT_EQ(model()->other_node()->children().size(), 1U);
+  const auto* folder1 = model()->other_node()->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
 
-  ASSERT_EQ(folder1->child_count(), 1);
-  const auto* folder2 = folder1->GetChild(0);
+  ASSERT_EQ(folder1->children().size(), 1U);
+  const auto* folder2 = folder1->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
 
-  ASSERT_EQ(folder2->child_count(), 1);
-  const auto* folder3 = folder2->GetChild(0);
+  ASSERT_EQ(folder2->children().size(), 1U);
+  const auto* folder3 = folder2->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder3->GetTitle()), "Folder3");
 
-  ASSERT_EQ(folder3->child_count(), 2);
-  const auto* node_a = folder3->GetChild(0);
+  ASSERT_EQ(folder3->children().size(), 2U);
+  const auto* node_a = folder3->children()[0].get();
   EXPECT_EQ(node_a->url().spec(), "https://a.com/");
-  const auto* node_b = folder3->GetChild(1);
+  const auto* node_b = folder3->children()[1].get();
   EXPECT_EQ(node_b->url().spec(), "https://b.com/");
 }
 
@@ -669,10 +669,10 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
       "1.1.1",
       "", false, ""));
 
-  ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 0);
+  ASSERT_EQ(model()->bookmark_bar_node()->children().size(), 0U);
   change_processor()->ApplyChangesFromSyncModel(records);
-  ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 1);
-  const auto* folder1 = model()->bookmark_bar_node()->GetChild(0);
+  ASSERT_EQ(model()->bookmark_bar_node()->children().size(), 1U);
+  const auto* folder1 = model()->bookmark_bar_node()->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
 
   records.clear();
@@ -681,11 +681,11 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
       "Folder2",
       "2.1.1",
       "", false, ""));
-  ASSERT_EQ(model()->mobile_node()->child_count(), 0);
+  ASSERT_EQ(model()->mobile_node()->children().size(), 0U);
   change_processor()->ApplyChangesFromSyncModel(records);
-  ASSERT_EQ(model()->mobile_node()->child_count(), 0);
-  ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 2);
-  const auto* folder2 = model()->bookmark_bar_node()->GetChild(1);
+  ASSERT_EQ(model()->mobile_node()->children().size(), 0U);
+  ASSERT_EQ(model()->bookmark_bar_node()->children().size(), 2U);
+  const auto* folder2 = model()->bookmark_bar_node()->children()[1].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
 
   records.clear();
@@ -694,10 +694,10 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
       "Folder3",
       "1.1.1",
       "", true, ""));
-  ASSERT_EQ(model()->other_node()->child_count(), 0);
+  ASSERT_EQ(model()->other_node()->children().size(), 0U);
   change_processor()->ApplyChangesFromSyncModel(records);
-  ASSERT_EQ(model()->other_node()->child_count(), 1);
-  const auto* folder3 = model()->other_node()->GetChild(0);
+  ASSERT_EQ(model()->other_node()->children().size(), 1U);
+  const auto* folder3 = model()->other_node()->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder3->GetTitle()), "Folder3");
 }
 
@@ -723,9 +723,9 @@ TEST_F(BraveBookmarkChangeProcessorTest, Utf8FromSync) {
       "1.1.1",
       "", false, ""));
 
-  ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 0);
+  ASSERT_EQ(model()->bookmark_bar_node()->children().size(), 0U);
   change_processor()->ApplyChangesFromSyncModel(records);
-  const auto* folder1 = model()->bookmark_bar_node()->GetChild(0);
+  const auto* folder1 = model()->bookmark_bar_node()->children()[0].get();
   EXPECT_EQ(folder1->GetTitle(), title_utf16);
 }
 
@@ -922,12 +922,12 @@ TEST_F(BraveBookmarkChangeProcessorTest, TitleCustomTitle) {
   change_processor()->ApplyChangesFromSyncModel(records);
 
   // Verify the model
-  ASSERT_EQ(model()->other_node()->child_count(), 1);
-  const auto* folder1 = model()->other_node()->GetChild(0);
+  ASSERT_EQ(model()->other_node()->children().size(), 1U);
+  const auto* folder1 = model()->other_node()->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
 
-  ASSERT_EQ(folder1->child_count(), 1);
-  const auto* folder2 = folder1->GetChild(0);
+  ASSERT_EQ(folder1->children().size(), 1U);
+  const auto* folder2 = folder1->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
 }
 
@@ -944,11 +944,11 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkFromMobileGoesToToolbar) {
   records.push_back(std::move(a_record));
   change_processor()->ApplyChangesFromSyncModel(records);
   // Verify the model, now we should find the folder and the nodes
-  EXPECT_EQ(model()->other_node()->child_count(), 0);
-  EXPECT_EQ(model()->mobile_node()->child_count(), 0);
-  ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 1);
+  EXPECT_EQ(model()->other_node()->children().size(), 0U);
+  EXPECT_EQ(model()->mobile_node()->children().size(), 0U);
+  ASSERT_EQ(model()->bookmark_bar_node()->children().size(), 1U);
 
-  const auto* node_a = model()->bookmark_bar_node()->GetChild(0);
+  const auto* node_a = model()->bookmark_bar_node()->children()[0].get();
   EXPECT_EQ(node_a->url().spec(), "https://a.com/");
 }
 
@@ -1002,14 +1002,14 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolder) {
   change_processor()->ApplyChangesFromSyncModel(records2);
 
   // Verify the model, now we should find the folder and the nodes
-  ASSERT_EQ(model()->other_node()->child_count(), 1);
-  const auto* folder1 = model()->other_node()->GetChild(0);
+  ASSERT_EQ(model()->other_node()->children().size(), 1U);
+  const auto* folder1 = model()->other_node()->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
 
-  ASSERT_EQ(folder1->child_count(), 2);
-  const auto* node_a = folder1->GetChild(0);
+  ASSERT_EQ(folder1->children().size(), 2U);
+  const auto* node_a = folder1->children()[0].get();
   EXPECT_EQ(node_a->url().spec(), "https://a.com/");
-  const auto* node_b = folder1->GetChild(1);
+  const auto* node_b = folder1->children()[1].get();
   EXPECT_EQ(node_b->url().spec(), "https://b.com/");
   EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
 }
@@ -1116,22 +1116,22 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderAgressive) {
   }
 
   // Verify now all is as expected
-  ASSERT_EQ(model()->other_node()->child_count(), 1);
-  const auto* folder1 = model()->other_node()->GetChild(0);
+  ASSERT_EQ(model()->other_node()->children().size(), 1U);
+  const auto* folder1 = model()->other_node()->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
 
-  ASSERT_EQ(folder1->child_count(), 1);
-  const auto* folder2 = folder1->GetChild(0);
+  ASSERT_EQ(folder1->children().size(), 1U);
+  const auto* folder2 = folder1->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
 
-  ASSERT_EQ(folder2->child_count(), 1);
-  const auto* folder3 = folder2->GetChild(0);
+  ASSERT_EQ(folder2->children().size(), 1U);
+  const auto* folder3 = folder2->children()[0].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder3->GetTitle()), "Folder3");
 
-  ASSERT_EQ(folder3->child_count(), 2);
-  const auto* node_a = folder3->GetChild(0);
+  ASSERT_EQ(folder3->children().size(), 2U);
+  const auto* node_a = folder3->children()[0].get();
   EXPECT_EQ(node_a->url().spec(), "https://a.com/");
-  const auto* node_b = folder3->GetChild(1);
+  const auto* node_b = folder3->children()[1].get();
   EXPECT_EQ(node_b->url().spec(), "https://b.com/");
   EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
 }
@@ -1280,35 +1280,35 @@ TEST_F(BraveBookmarkChangeProcessorTest,
   }
 
   // Verify now all is as expected
-  ASSERT_EQ(model()->other_node()->child_count(), 3);
-  const auto* node_0_1 = model()->other_node()->GetChild(0);
+  ASSERT_EQ(model()->other_node()->children().size(), 3U);
+  const auto* node_0_1 = model()->other_node()->children()[0].get();
   EXPECT_EQ(node_0_1->url().spec(), "https://0-1.com/");
-  const auto* folder1 = model()->other_node()->GetChild(1);
+  const auto* folder1 = model()->other_node()->children()[1].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
-  const auto* node_0_2 = model()->other_node()->GetChild(2);
+  const auto* node_0_2 = model()->other_node()->children()[2].get();
   EXPECT_EQ(node_0_2->url().spec(), "https://0-2.com/");
 
-  ASSERT_EQ(folder1->child_count(), 3);
-  const auto* node_1_1 = folder1->GetChild(0);
+  ASSERT_EQ(folder1->children().size(), 3U);
+  const auto* node_1_1 = folder1->children()[0].get();
   EXPECT_EQ(node_1_1->url().spec(), "https://1-1.com/");
-  const auto* folder2 = folder1->GetChild(1);
+  const auto* folder2 = folder1->children()[1].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
-  const auto* node_1_2 = folder1->GetChild(2);
+  const auto* node_1_2 = folder1->children()[2].get();
   EXPECT_EQ(node_1_2->url().spec(), "https://1-2.com/");
 
-  ASSERT_EQ(folder2->child_count(), 4);
-  const auto* node_2_1 = folder2->GetChild(0);
+  ASSERT_EQ(folder2->children().size(), 4U);
+  const auto* node_2_1 = folder2->children()[0].get();
   EXPECT_EQ(node_2_1->url().spec(), "https://2-1.com/");
-  const auto* folder3 = folder2->GetChild(1);
+  const auto* folder3 = folder2->children()[1].get();
   EXPECT_EQ(base::UTF16ToUTF8(folder3->GetTitle()), "Folder3");
   // Below fails if GetIndex uses tree iteartor
-  const auto* node_2_2 = folder2->GetChild(2);
+  const auto* node_2_2 = folder2->children()[2].get();
   EXPECT_EQ(node_2_2->url().spec(), "https://2-2.com/");
 
-  ASSERT_EQ(folder3->child_count(), 2);
-  const auto* node_a = folder3->GetChild(0);
+  ASSERT_EQ(folder3->children().size(), 2U);
+  const auto* node_a = folder3->children()[0].get();
   EXPECT_EQ(node_a->url().spec(), "https://a.com/");
-  const auto* node_b = folder3->GetChild(1);
+  const auto* node_b = folder3->children()[1].get();
   EXPECT_EQ(node_b->url().spec(), "https://b.com/");
   EXPECT_FALSE(GetPendingNodeRoot()->IsVisible());
 }
@@ -1321,7 +1321,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete) {
                            GURL("https://a.com/"));
   model()->Remove(node_a);
 
-  EXPECT_EQ(change_processor()->GetDeletedNodeRoot()->child_count(), 0);
+  EXPECT_EQ(change_processor()->GetDeletedNodeRoot()->children().size(), 0U);
 
   // Expect there will be no calls, because no any records to send
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(0);

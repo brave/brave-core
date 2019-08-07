@@ -100,17 +100,15 @@ LoadExtraNodes(bookmarks::LoadExtraCallback callback,
 namespace {
 
 void GetOrder(const bookmarks::BookmarkNode* parent,
-              int index,
+              size_t index,
               std::string* prev_order,
               std::string* next_order,
               std::string* parent_order) {
-  DCHECK_GE(index, 0);
-  auto* prev_node = index == 0 ?
-    nullptr :
-    parent->GetChild(index - 1);
-  auto* next_node = index == parent->child_count() - 1 ?
-    nullptr :
-    parent->GetChild(index + 1);
+  DCHECK_LT(index, parent->children().size());
+  auto* prev_node = index == 0 ? nullptr : parent->children()[index - 1].get();
+  auto* next_node = index + 1 == parent->children().size()
+                        ? nullptr
+                        : parent->children()[index + 1].get();
 
   if (prev_node)
     prev_node->GetMetaInfo("order", prev_order);
@@ -122,12 +120,10 @@ void GetOrder(const bookmarks::BookmarkNode* parent,
 }
 
 void GetPrevObjectId(const bookmarks::BookmarkNode* parent,
-                     int index,
+                     size_t index,
                      std::string* prev_object_id) {
-  DCHECK_GE(index, 0);
-  auto* prev_node = index == 0 ?
-    nullptr :
-    parent->GetChild(index - 1);
+  DCHECK_LT(index, parent->children().size());
+  auto* prev_node = index == 0 ? nullptr : parent->children()[index - 1].get();
 
   if (prev_node)
     prev_node->GetMetaInfo("object_id", prev_object_id);
@@ -148,11 +144,11 @@ const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
   return nullptr;
 }
 
-uint64_t GetIndexByOrder(const bookmarks::BookmarkNode* root_node,
+size_t GetIndexByOrder(const bookmarks::BookmarkNode* root_node,
                          const std::string& record_order) {
-  int index = 0;
-  while (index < root_node->child_count()) {
-    const bookmarks::BookmarkNode* node = root_node->GetChild(index);
+  size_t index = 0;
+  while (index < root_node->children().size()) {
+    const bookmarks::BookmarkNode* node = root_node->children()[index].get();
     std::string node_order;
     node->GetMetaInfo("order", &node_order);
 
@@ -165,7 +161,7 @@ uint64_t GetIndexByOrder(const bookmarks::BookmarkNode* root_node,
   return index;
 }
 
-uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
+size_t GetIndex(const bookmarks::BookmarkNode* root_node,
                   const jslib::Bookmark& record) {
   return GetIndexByOrder(root_node, record.order);
 }
@@ -351,8 +347,8 @@ void BookmarkChangeProcessor::BookmarkNodeRemoved(
   auto* deleted_node = GetDeletedNodeRoot();
   CHECK(deleted_node);
   bookmarks::BookmarkNodeData data(node);
-  CloneBookmarkNodeForDelete(
-      data.elements, deleted_node, deleted_node->child_count());
+  CloneBookmarkNodeForDelete(data.elements, deleted_node,
+                             deleted_node->children().size());
 }
 
 void BookmarkChangeProcessor::BookmarkAllUserNodesRemoved(
@@ -393,19 +389,19 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
                                                 size_t old_index,
                                                 const BookmarkNode* new_parent,
                                                 size_t new_index) {
-  auto* node = new_parent->GetChild(new_index);
+  auto* node = new_parent->children()[new_index].get();
   model->DeleteNodeMetaInfo(node, "order");
   BookmarkNodeChanged(model, node);
   // TODO(darkdh): handle old_parent == new_parent to avoid duplicate order
   // clearing. Also https://github.com/brave/sync/issues/231 blocks update to
   // another devices
-  for (int i = old_index; i < old_parent->child_count(); ++i) {
-    auto* shifted_node = old_parent->GetChild(i);
+  for (size_t i = old_index; i < old_parent->children().size(); ++i) {
+    auto* shifted_node = old_parent->children()[i].get();
     model->DeleteNodeMetaInfo(shifted_node, "order");
     BookmarkNodeChanged(model, shifted_node);
   }
-  for (int i = new_index; i < new_parent->child_count(); ++i) {
-    auto* shifted_node = new_parent->GetChild(i);
+  for (size_t i = new_index; i < new_parent->children().size(); ++i) {
+    auto* shifted_node = new_parent->children()[i].get();
     model->DeleteNodeMetaInfo(shifted_node, "order");
     BookmarkNodeChanged(model, shifted_node);
   }
@@ -453,11 +449,11 @@ void BookmarkChangeProcessor::Reset(bool clear_meta_info) {
 void BookmarkChangeProcessor::DeleteSelfAndChildren(
     const bookmarks::BookmarkNode* node) {
   DCHECK(node->is_folder());
-  for (int i = 0; i < node->child_count(); ++i) {
-    if (node->GetChild(i)->is_folder()) {
-      DeleteSelfAndChildren(node->GetChild(i));
+  for (size_t i = 0; i < node->children().size(); ++i) {
+    if (node->children()[i].get()->is_folder()) {
+      DeleteSelfAndChildren(node->children()[i].get());
     } else {
-      bookmark_model_->Remove(node->GetChild(i));
+      bookmark_model_->Remove(node->children()[i].get());
     }
   }
   bookmark_model_->Remove(node);
@@ -469,8 +465,8 @@ void ValidateFolderOrders(const bookmarks::BookmarkNode* folder_node) {
   // Validate direct children order
   std::string left_order;
   std::string right_order;
-  for (auto i = 0; i < folder_node->child_count(); ++i) {
-    const auto* node = folder_node->GetChild(i);
+  for (size_t i = 0; i < folder_node->children().size(); ++i) {
+    const auto* node = folder_node->children()[i].get();
     std::string order;
     node->GetMetaInfo("order", &order);
     if (order.empty()) {
@@ -496,8 +492,8 @@ void ValidateFolderOrders(const bookmarks::BookmarkNode* folder_node) {
     if (!compare_result) {
       DLOG(ERROR) << "ValidateFolderOrders failed";
       DLOG(ERROR) << "folder_node=" << folder_node->GetTitle();
-      DLOG(ERROR) << "folder_node->child_count()=" <<
-                                                  folder_node->child_count();
+      DLOG(ERROR) << "folder_node->children().size()="
+                  << folder_node->children().size();
       DLOG(ERROR) << "i=" << i;
       DLOG(ERROR) << "left_order=" << left_order;
       DLOG(ERROR) << "right_order=" << right_order;
@@ -536,14 +532,14 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
 
       if (new_parent_node) {
         DCHECK(!bookmark_record.order.empty());
-        int64_t index = GetIndex(new_parent_node, bookmark_record);
+        size_t index = GetIndex(new_parent_node, bookmark_record);
         bookmark_model_->Move(node, new_parent_node, index);
       } else if (!bookmark_record.order.empty()) {
         std::string order;
         node->GetMetaInfo("order", &order);
         DCHECK(!order.empty());
         if (bookmark_record.order != order) {
-          int64_t index = GetIndex(node->parent(), bookmark_record);
+          size_t index = GetIndex(node->parent(), bookmark_record);
           bookmark_model_->Move(node, node->parent(), index);
         }
       }
@@ -616,8 +612,8 @@ void BookmarkChangeProcessor::CompletePendingNodesMove(
   std::vector<MoveInfo> move_infos;
 
   bookmarks::BookmarkNode* pending_node_root = GetPendingNodeRoot();
-  for (int i = 0; i < pending_node_root->child_count(); ++i) {
-    bookmarks::BookmarkNode* node = pending_node_root->GetChild(i);
+  for (size_t i = 0; i < pending_node_root->children().size(); ++i) {
+    bookmarks::BookmarkNode* node = pending_node_root->children()[i].get();
 
     std::string parent_object_id;
     node->GetMetaInfo("parent_object_id", &parent_object_id);
@@ -641,7 +637,7 @@ void BookmarkChangeProcessor::CompletePendingNodesMove(
   for (auto& move_info : move_infos) {
     auto* node = std::get<0>(move_info);
     const auto& order = std::get<1>(move_info);
-    int64_t index = GetIndexByOrder(created_folder_node, order);
+    size_t index = GetIndexByOrder(created_folder_node, order);
 
     bookmark_model_->Move(node, created_folder_node, index);
     // Now we dont need "parent_object_id" metainfo on node, because node
@@ -711,12 +707,14 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   bookmark->order = order;
 
   int index = node->parent()->GetIndexOf(node);
+  DCHECK_GE(index, 0);
   std::string prev_object_id;
-  GetPrevObjectId(node->parent(), index, &prev_object_id);
+  GetPrevObjectId(node->parent(), static_cast<size_t>(index), &prev_object_id);
   bookmark->prevObjectId = prev_object_id;
 
   std::string prev_order, next_order, parent_order;
-  GetOrder(node->parent(), index, &prev_order, &next_order, &parent_order);
+  GetOrder(node->parent(), static_cast<size_t>(index), &prev_order, &next_order,
+           &parent_order);
   if (parent_order.empty() && node->parent()->is_permanent_node()) {
     int permanent_parent_index = GetPermanentNodeIndex(node->parent());
     parent_order =
