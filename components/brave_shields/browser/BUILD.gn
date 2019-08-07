@@ -57,6 +57,7 @@ source_set("browser") {
     "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//brave/vendor/autoplay-whitelist/brave:autoplay-whitelist",
     "//chrome/common",
+    "//components/keyed_service/core",
     "//components/prefs",
     "//content/public/browser",
     "//net",

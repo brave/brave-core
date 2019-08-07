@@ -100,7 +100,7 @@ void MakeStubResponse(const network::ResourceRequest& request,
 
   // Craft response headers.
   // TODO(iefremov): Allowing any origins still breaks some CORS requests.
-  // Maybe we can provide something smarter here.
+  // Maybe we can provide something smarter here (issues/4396).
   std::string raw_headers =
       "HTTP/1.1 200 OK\r\n"
       "Access-Control-Allow-Origin: *\r\n"

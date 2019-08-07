@@ -9,13 +9,11 @@
 #include <utility>
 
 #include "base/task/post_task.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
@@ -212,7 +210,7 @@ void BraveRequestHandler::RunCallbackForRequestIdentifier(
 }
 
 // TODO(iefremov): Merge all callback containers into one and run only one loop
-// instead of many.
+// instead of many (issues/5574).
 void BraveRequestHandler::RunNextCallback(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);

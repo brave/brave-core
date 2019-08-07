@@ -22,7 +22,6 @@
 #include "net/base/completion_repeating_callback.h"
 #include "net/http/http_util.h"
 #include "services/network/public/cpp/features.h"
-#include "third_party/blink/public/platform/resource_request_blocked_reason.h"
 #include "url/origin.h"
 
 namespace {
@@ -725,11 +724,11 @@ void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
   // needs to be unique per-BrowserContext so request handlers can make sense of
   // it. Note that |network_service_request_id_| by contrast is not necessarily
   // unique, so we don't use it for identity here.
-  const uint64_t web_request_id = request_id_generator_->Generate();
+  const uint64_t brave_request_id = request_id_generator_->Generate();
 
   auto result = requests_.emplace(
       std::make_unique<InProgressRequest>(
-          this, web_request_id, request_id, routing_id, render_process_id_,
+          this, brave_request_id, request_id, routing_id, render_process_id_,
           frame_tree_node_id_, options, request, resource_context_,
           traffic_annotation, std::move(loader_request), std::move(client)));
   (*result.first)->Restart();

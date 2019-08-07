@@ -38,10 +38,17 @@ source_set("net") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
+    "//brave/components/brave_shields/browser",
+    "//components/prefs",
     "//content/public/browser",
     "//content/public/common",
     "//extensions/common:common_constants",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/system",
     "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//url",
   ]
 
   if (is_android) {
