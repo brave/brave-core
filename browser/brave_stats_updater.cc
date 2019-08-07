@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_stats_updater.h"
+
+#include <string>
+#include <utility>
 
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_stats_updater_params.h"
@@ -48,6 +52,8 @@ std::string GetPlatformIdentifier() {
     return "winx64-bc";
 #elif defined(OS_MACOSX)
   return "osx-bc";
+#elif defined(OS_ANDROID)
+  return "android-bc";
 #elif defined(OS_LINUX)
   return "linux-bc";
 #else
@@ -62,8 +68,9 @@ GURL GetUpdateURL(const GURL& base_update_url,
                                          GetPlatformIdentifier());
   update_url =
       net::AppendQueryParameter(update_url, "channel", GetChannelName());
-  update_url = net::AppendQueryParameter(update_url, "version",
-                    version_info::GetBraveVersionWithoutChromiumMajorVersion());
+  update_url = net::AppendQueryParameter(
+      update_url, "version",
+      version_info::GetBraveVersionWithoutChromiumMajorVersion());
   update_url = net::AppendQueryParameter(update_url, "daily",
                                          stats_updater_params.GetDailyParam());
   update_url = net::AppendQueryParameter(update_url, "weekly",
@@ -79,7 +86,7 @@ GURL GetUpdateURL(const GURL& base_update_url,
   return update_url;
 }
 
-}
+}  // namespace
 
 namespace brave {
 
@@ -87,11 +94,9 @@ GURL BraveStatsUpdater::g_base_update_url_(
     "https://laptop-updates.brave.com/1/usage/brave-core");
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
-  : pref_service_(pref_service) {
-}
+    : pref_service_(pref_service) {}
 
-BraveStatsUpdater::~BraveStatsUpdater() {
-}
+BraveStatsUpdater::~BraveStatsUpdater() {}
 
 void BraveStatsUpdater::Start() {
   // Startup timer, only initiated once we've checked for a promo
@@ -205,8 +210,10 @@ void BraveStatsUpdater::SendServerPing() {
             "Not implemented."
         })");
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  auto stats_updater_params = std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
-  resource_request->url = GetUpdateURL(g_base_update_url_, *stats_updater_params);
+  auto stats_updater_params =
+      std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
+  resource_request->url =
+      GetUpdateURL(g_base_update_url_, *stats_updater_params);
   resource_request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -229,7 +236,8 @@ void BraveStatsUpdater::SetBaseUpdateURLForTest(const GURL& base_update_url) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(PrefService* pref_service) {
+std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(
+    PrefService* pref_service) {
   return std::make_unique<BraveStatsUpdater>(pref_service);
 }
 
