@@ -6,7 +6,11 @@
 #ifndef BRAVE_COMPONENTS_P3A_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_P3A_PREF_NAMES_H_
 
+namespace brave {
+
 extern const char kP3AEnabled[];
 extern const char kP3ANoticeAcknowledged[];
+
+}  // namespace brave
 
 #endif  // BRAVE_COMPONENTS_P3A_PREF_NAMES_H_

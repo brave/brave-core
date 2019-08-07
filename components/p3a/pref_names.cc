@@ -5,5 +5,9 @@
 
 #include "brave/components/p3a/pref_names.h"
 
+namespace brave {
+
 const char kP3AEnabled[] = "brave.p3a.enabled";
 const char kP3ANoticeAcknowledged[] = "brave.p3a.notice_acknowledged";
+
+}  // namespace brave

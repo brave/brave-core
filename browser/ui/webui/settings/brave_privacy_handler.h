@@ -24,6 +24,9 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
   void SetWebRTCPolicy(const base::ListValue* args);
   void GetWebRTCPolicy(const base::ListValue* args);
 
+  void SetP3AEnabled(const base::ListValue* args);
+  void GetP3AEnabled(const base::ListValue* args);
+
   Profile* profile_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BravePrivacyHandler);

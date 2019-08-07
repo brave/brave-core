@@ -549,6 +549,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_CONFIRM_P3A_INFO_BAR_DISABLE" desc="Disable button that shows on the info bar where user acknowledges the P3A message">
         Disable
       </message>
+      <message name="IDS_BRAVE_P3A_ENABLE_SETTING" desc="Description that shows in settings for toggling P3A">
+        Automatically send completely private product analytics to Brave
+      </message>
+      <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
+        This anonymous info only lets Brave estimate the overall usage of certain features.
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_GOOGLE_ANALYTICS_POLYFILL" file="resources/js/google_analytics_polyfill.js" type="BINDATA" />

@@ -9,11 +9,13 @@
 
 #include "base/bind.h"
 #include "base/values.h"
-#include "chrome/common/pref_names.h"
+#include "brave/components/p3a/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/common/webrtc_ip_handling_policy.h"
 
 void BravePrivacyHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -25,6 +27,14 @@ void BravePrivacyHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "setWebRTCPolicy",
       base::BindRepeating(&BravePrivacyHandler::SetWebRTCPolicy,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setP3AEnabled",
+      base::BindRepeating(&BravePrivacyHandler::SetP3AEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getP3AEnabled",
+      base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
                           base::Unretained(this)));
 }
 
@@ -48,4 +58,26 @@ void BravePrivacyHandler::GetWebRTCPolicy(const base::ListValue* args) {
   ResolveJavascriptCallback(
       args->GetList()[0].Clone(),
       base::Value(policy));
+}
+
+void BravePrivacyHandler::SetP3AEnabled(const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+
+  bool enabled;
+  args->GetBoolean(0, &enabled);
+
+  PrefService* local_state = g_browser_process->local_state();
+  local_state->SetBoolean(brave::kP3AEnabled, enabled);
+}
+
+void BravePrivacyHandler::GetP3AEnabled(const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+
+  PrefService* local_state = g_browser_process->local_state();
+  bool enabled = local_state->GetBoolean(brave::kP3AEnabled);
+
+  AllowJavascript();
+  ResolveJavascriptCallback(
+      args->GetList()[0].Clone(),
+      base::Value(enabled));
 }

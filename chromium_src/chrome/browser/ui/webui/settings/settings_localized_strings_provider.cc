@@ -153,7 +153,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"getMoreExtensionsLabel",
       IDS_BRAVE_SETTINGS_GET_MORE_EXTENSIONS_LABEL},
     {"getMoreExtensionsSubLabel",
-      IDS_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE}
+      IDS_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE},
+    {"p3aEnableTitle",
+      IDS_BRAVE_P3A_ENABLE_SETTING},
+    {"p3aEnabledDesc",
+      IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM}
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           base::size(localized_strings));

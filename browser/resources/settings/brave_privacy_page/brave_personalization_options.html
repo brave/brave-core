@@ -31,6 +31,13 @@
         </template>
       </select>
     </div>
+    <settings-toggle-button id="p3aEnabled"
+        pref=""
+        checked="[[p3aEnabled_]]"
+        label="$i18n{p3aEnableTitle}"
+        sub-label="$i18n{p3aEnabledDesc}"
+        on-settings-boolean-control-change="onP3AEnabledChange_">
+    </settings-toggle-button>
   </template>
   <script src="brave_personalization_options.js"></script>
 </dom-module>

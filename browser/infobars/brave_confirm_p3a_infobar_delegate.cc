@@ -8,6 +8,10 @@
 #include <memory>
 #include <utility>
 
+#include "brave/common/pref_names.h"
+#include "brave/common/url_constants.h"
+#include "brave/components/p3a/pref_names.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/grit/chromium_strings.h"
 #include "components/infobars/core/infobar.h"
@@ -16,11 +20,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
-#include "brave/common/pref_names.h"
-#include "brave/common/url_constants.h"
-#include "brave/components/p3a/pref_names.h"
-#include "brave/grit/brave_generated_resources.h"
-
 // static
 void BraveConfirmP3AInfoBarDelegate::Create(InfoBarService* infobar_service,
                                             PrefService* local_state) {
@@ -28,8 +27,8 @@ void BraveConfirmP3AInfoBarDelegate::Create(InfoBarService* infobar_service,
   // - P3A is disabled
   // - notice has already been acknowledged
   if (local_state) {
-    if (!local_state->GetBoolean(kP3AEnabled) ||
-        local_state->GetBoolean(kP3ANoticeAcknowledged)) {
+    if (!local_state->GetBoolean(brave::kP3AEnabled) ||
+        local_state->GetBoolean(brave::kP3ANoticeAcknowledged)) {
       return;
     }
   }
@@ -65,7 +64,7 @@ bool BraveConfirmP3AInfoBarDelegate::ShouldExpire(
 void BraveConfirmP3AInfoBarDelegate::InfoBarDismissed() {
   // Mark notice as acknowledged when infobar is dismissed
   if (local_state_) {
-    local_state_->SetBoolean(kP3ANoticeAcknowledged, true);
+    local_state_->SetBoolean(brave::kP3ANoticeAcknowledged, true);
   }
 }
 
@@ -96,7 +95,7 @@ GURL BraveConfirmP3AInfoBarDelegate::GetLinkURL() const {
 bool BraveConfirmP3AInfoBarDelegate::Accept() {
   // Mark notice as acknowledged when infobar is dismissed
   if (local_state_) {
-    local_state_->SetBoolean(kP3ANoticeAcknowledged, true);
+    local_state_->SetBoolean(brave::kP3ANoticeAcknowledged, true);
   }
   return true;
 }
@@ -105,7 +104,7 @@ bool BraveConfirmP3AInfoBarDelegate::Cancel() {
   // OK button is "Disable"
   // Clicking should disable P3A
   if (local_state_) {
-    local_state_->SetBoolean(kP3AEnabled, false);
+    local_state_->SetBoolean(brave::kP3AEnabled, false);
   }
   return true;
 }

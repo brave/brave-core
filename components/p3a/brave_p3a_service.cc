@@ -276,9 +276,14 @@ void BraveP3AService::StartScheduledUpload() {
   if (!log_store_->has_staged_log()) {
     log_store_->StageNextLog();
   }
-  const std::string log = log_store_->staged_log();
-  VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes";
-  uploader_->UploadLog(log, "", "", {});
+
+  // Only upload if service is enabled.
+  bool p3a_enabled = local_state_->GetBoolean(brave::kP3AEnabled);
+  if (p3a_enabled) {
+    const std::string log = log_store_->staged_log();
+    VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes";
+    uploader_->UploadLog(log, "", "", {});
+  }
 }
 
 void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,

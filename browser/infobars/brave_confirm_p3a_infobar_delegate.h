@@ -17,11 +17,9 @@
 class InfoBarService;
 class PrefService;
 
-// An infobar that is run with a string and a "Learn More" link.
+// An infobar that is run with a string, buttons, and a "Learn More" link.
 class BraveConfirmP3AInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
-  // Creates a missing Google API Keys infobar and delegate and adds the infobar
-  // to |infobar_service|.
   static void Create(InfoBarService* infobar_service, PrefService* local_state);
 
  private:

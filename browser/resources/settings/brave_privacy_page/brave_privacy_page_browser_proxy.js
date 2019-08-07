@@ -13,6 +13,14 @@ cr.define('settings', function() {
      * @param {string} policy name.
      */
     setWebRTCPolicy(policy) {}
+    /**
+     * @return {!Promise<string>}
+     */
+    getP3AEnabled() {}
+    /**
+     * @param {boolean} enabled (true/false).
+     */
+    setP3AEnabled(value) {}
   }
 
   /**
@@ -27,6 +35,16 @@ cr.define('settings', function() {
     /** @override */
     setWebRTCPolicy(policy) {
       chrome.send('setWebRTCPolicy', [policy]);
+    }
+
+    /** @override */
+    getP3AEnabled() {
+      return cr.sendWithPromise('getP3AEnabled');
+    }
+
+    /** @override */
+    setP3AEnabled(value) {
+      chrome.send('setP3AEnabled', [value])
     }
   }
 
