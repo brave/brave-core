@@ -42,7 +42,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   bool NetworkFilterMatches(const GURL &url, content::ResourceType resource_type,
     const std::string& tab_host, bool* did_match_exception,
     bool* did_match_important, bool* cancel_request_explicitly,
-    bool skip_unimportant, bool skip_exception);
+    bool previously_matched_rule, bool previously_matched_exception);
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 

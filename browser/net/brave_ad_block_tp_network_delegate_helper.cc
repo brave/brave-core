@@ -131,7 +131,7 @@ void OnBeforeURLRequestAdBlockTP(
                                    tab_host, &did_match_exception,
                                    &did_match_important,
                                    &ctx->cancel_request_explicitly,
-                                   was_blocked || did_match_exception,
+                                   was_blocked,
                                    did_match_exception);
   }
   if (!did_match_important) {
@@ -140,7 +140,7 @@ void OnBeforeURLRequestAdBlockTP(
                                    tab_host, &did_match_exception,
                                    &did_match_important,
                                    &ctx->cancel_request_explicitly,
-                                   was_blocked || did_match_exception,
+                                   was_blocked,
                                    did_match_exception);
   }
 

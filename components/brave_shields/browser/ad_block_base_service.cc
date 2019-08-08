@@ -123,8 +123,8 @@ void AdBlockBaseService::Cleanup() {
 bool AdBlockBaseService::NetworkFilterMatches(const GURL& url,
     content::ResourceType resource_type, const std::string& tab_host,
     bool* did_match_exception, bool* did_match_important,
-    bool* cancel_request_explicitly, bool skip_unimportant,
-    bool skip_exception) {
+    bool* cancel_request_explicitly, bool previously_matched_rule,
+    bool previously_matched_exception) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   // Determine third-party here so the library doesn't need to figure it out.
@@ -142,8 +142,8 @@ bool AdBlockBaseService::NetworkFilterMatches(const GURL& url,
 
   bool matched = ad_block_client_->matches(url.spec(), url.host(),
         tab_host, is_third_party, ResourceTypeToString(resource_type),
-        &explicit_cancel, &exception, &important, &redirect, skip_unimportant,
-        skip_exception);
+        &explicit_cancel, &exception, &important, &redirect, previously_matched_rule,
+        previously_matched_exception);
 
   *did_match_exception |= exception;
   *did_match_important |= important;

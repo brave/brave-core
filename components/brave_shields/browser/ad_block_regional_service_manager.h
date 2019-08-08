@@ -48,8 +48,8 @@ class AdBlockRegionalServiceManager {
                             bool* matching_exception_filter,
                             bool* matching_important_filter,
                             bool* cancel_request_explicitly,
-                            bool skip_unimportant,
-                            bool skip_exception);
+                            bool previously_matched_rule,
+                            bool previously_matched_exception);
   void EnableTag(const std::string& tag, bool enabled);
   void EnableFilterList(const std::string& uuid, bool enabled);
 
