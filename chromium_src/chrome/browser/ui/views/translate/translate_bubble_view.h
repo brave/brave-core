@@ -10,6 +10,8 @@
   private: \
     friend class BraveTranslateBubbleView; \
   public:
+// define BRAVE_TRANSLATE_BUBBLE_VIEW_H_
+
 class BraveTranslateBubbleView;
 #include "../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.h"
 

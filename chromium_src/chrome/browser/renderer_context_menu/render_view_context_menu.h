@@ -9,6 +9,8 @@
   private: \
     friend class BraveRenderViewContextMenu; \
   public:
+// define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
+
 // Get the Chromium declaration.
 #define RenderViewContextMenu RenderViewContextMenu_Chromium
 #include "../../../../../chrome/browser/renderer_context_menu/render_view_context_menu.h"
