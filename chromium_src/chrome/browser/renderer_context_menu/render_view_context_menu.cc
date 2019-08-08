@@ -37,21 +37,6 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
   : RenderViewContextMenu_Chromium(render_frame_host, params) {
 }
 
-void RenderViewContextMenu_Chromium::AppendBraveLinkItems() {
-}
-
-void BraveRenderViewContextMenu::AppendBraveLinkItems() {
-  if (!params_.link_url.is_empty()) {
-    const Browser* browser = GetBrowser();
-    const bool is_app = browser && browser->is_app();
-
-    menu_model_.AddItemWithStringId(
-        IDC_CONTENT_CONTEXT_OPENLINKTOR,
-        is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
-               : IDS_CONTENT_CONTEXT_OPENLINKTOR);
-  }
-}
-
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
@@ -99,10 +84,29 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
+
+  // Add Open Link with Tor
+  int index = -1;
+  if (!params_.link_url.is_empty()) {
+    const Browser* browser = GetBrowser();
+    const bool is_app = browser && browser->is_app();
+
+    index = menu_model_.GetIndexOfCommandId(
+        IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
+    DCHECK_NE(index, -1);
+
+    menu_model_.InsertItemWithStringIdAt(
+        index + 1,
+        IDC_CONTENT_CONTEXT_OPENLINKTOR,
+        is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
+               : IDS_CONTENT_CONTEXT_OPENLINKTOR);
+  }
+
 // Only show the translate item when ENABLE_BRAVE_TRANSLATE (go-translate) is
 // enabled.
 #if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
-  menu_model_.RemoveItemAt(
-      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE));
+  index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
+  if (index != -1)
+    menu_model_.RemoveItemAt(index);
 #endif
 }

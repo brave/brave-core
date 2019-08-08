@@ -6,6 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_VIEW_H_
 
+#define BRAVE_TRANSLATE_BUBBLE_VIEW_H_ \
+  private: \
+    friend class BraveTranslateBubbleView; \
+  public:
 class BraveTranslateBubbleView;
 #include "../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.h"
 

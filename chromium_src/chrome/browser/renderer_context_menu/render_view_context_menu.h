@@ -5,6 +5,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 
+#define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_ \
+  private: \
+    friend class BraveRenderViewContextMenu; \
+  public:
 // Get the Chromium declaration.
 #define RenderViewContextMenu RenderViewContextMenu_Chromium
 #include "../../../../../chrome/browser/renderer_context_menu/render_view_context_menu.h"
@@ -15,7 +19,6 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
  public:
   BraveRenderViewContextMenu(content::RenderFrameHost* render_frame_host,
                              const content::ContextMenuParams& params);
-  void AppendBraveLinkItems() override;
   // RenderViewContextMenuBase:
   bool IsCommandIdEnabled(int command_id) const override;
   void ExecuteCommand(int id, int event_flags) override;
