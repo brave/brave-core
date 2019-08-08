@@ -74,6 +74,65 @@
         "parameters": []
       },
       {
+        "name": "hostnameCosmeticResources",
+        "type": "function",
+        "description": "Get a cosmetic adblocking stylesheet, generic style exceptions, and script injections specific for the given hostname and domain",
+        "parameters": [
+          {
+            "name": "hostname",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "hostnameSpecificResources",
+                "type": "object",
+                "properties": {
+                  "hide_selectors": {"type": "array", "items": {"type": "string"}, "description": "Hostname-specific CSS selectors that should be hidden from the page"},
+                  "style_selectors": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}, "description": "Hostname-specific CSS selectors that should be restyled, with their associated CSS style rules"},
+                  "exceptions": {"type": "array", "items": {"type": "string"}, "description": "Hostname-specific overrides for generic cosmetic blocking selectors"},
+                  "injected_script": {"type": "string", "description": "A script to inject as the page is loading"}
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "classIdStylesheet",
+        "type": "function",
+        "description": "Get a stylesheet of generic rules that may apply to the given set of classes and ids without any of the given excepted selectors",
+        "parameters": [
+          {
+            "name": "classes",
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          {
+            "name": "ids",
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          {
+            "name": "exceptions",
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "stylesheet",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getBraveShieldsEnabled",
         "type": "function",
         "description": "Get brave shields control type for a url",

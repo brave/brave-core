@@ -16,6 +16,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
@@ -45,6 +46,13 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   void AddResources(const std::string& resources);
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
+
+  base::Optional<base::Value> HostnameCosmeticResources(
+          const std::string& hostname);
+  std::string ClassIdStylesheet(
+          const std::vector<std::string>& classes,
+          const std::vector<std::string>& ids,
+          const std::vector<std::string>& exceptions);
 
  protected:
   friend class ::AdBlockServiceTest;
