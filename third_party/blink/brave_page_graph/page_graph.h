@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_PAGE_GRAPH_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_PAGE_GRAPH_H_
 
+#include <chrono>
 #include <map>
 #include <memory>
 #include <string>
@@ -153,9 +154,9 @@ friend NodeHTMLElement;
   void RegisterWebAPIResult(const MethodName& method,
     const WTF::String& result);
   void RegisterJSBuiltInCall(const JSBuiltIn built_in,
-    const std::vector<const char*>& args);
+    const std::vector<const std::string>& args);
   void RegisterJSBuiltInResponse(const JSBuiltIn built_in,
-    const char* result);
+    const std::string& result);
 
   // Methods for handling the registration of script units in the document,
   // and v8 script executing.
@@ -184,6 +185,9 @@ friend NodeHTMLElement;
                              blink::protocol::Array<WTF::String>& report);
 
   GraphMLXML ToGraphML() const;
+
+  const std::chrono::time_point<std::chrono::high_resolution_clock>&
+    GetTimestamp() const;
 
   void Log(const std::string& str) const;
 
@@ -292,6 +296,8 @@ friend NodeHTMLElement;
   // Reference to the execution context associated with the page graph, which if
   // it exists, will always be for the top level frame.
   blink::ExecutionContext& execution_context_;
+
+  std::chrono::time_point<std::chrono::high_resolution_clock> start_;
 };
 
 }  // namespace brave_page_graph
