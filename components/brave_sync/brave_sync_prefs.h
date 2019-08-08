@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/macros.h"
+#include "base/values.h"
 
 class PrefService;
 class Profile;
@@ -64,6 +65,8 @@ extern const char kSyncApiVersion[];
 extern const char kSyncMigrateBookmarksVersion[];
 // Cached object_id list for unconfirmed records
 extern const char kSyncRecordsToResend[];
+// Meta info of kSyncRecordsToResend
+extern const char kSyncRecordsToResendMeta[];
 
 class Prefs {
  public:
@@ -108,8 +111,13 @@ class Prefs {
   void SetMigratedBookmarksVersion(const int);
 
   std::vector<std::string> GetRecordsToResend() const;
-  void AddToRecordsToResend(const std::string& object_id);
+  void AddToRecordsToResend(const std::string& object_id,
+                            std::unique_ptr<base::DictionaryValue> meta);
   void RemoveFromRecordsToResend(const std::string& object_id);
+  const base::DictionaryValue*
+  GetRecordToResendMeta(const std::string& object_id) const;
+  void SetRecordToResendMeta(const std::string& object_id,
+                             std::unique_ptr<base::DictionaryValue> meta);
 
   void Clear();
 

@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <set>
 #include <utility>
+#include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
@@ -99,9 +101,22 @@ using brave_sync::BraveSyncServiceObserver;
 using brave_sync::jslib::SyncRecord;
 using brave_sync::MockBraveSyncClient;
 using brave_sync::RecordsList;
+using brave_sync::SimpleBookmarkSyncRecord;
 using brave_sync::SimpleDeviceRecord;
 using testing::_;
 using testing::AtLeast;
+
+namespace {
+
+const bookmarks::BookmarkNode* GetSingleNodeByUrl(
+    bookmarks::BookmarkModel* model, const std::string& url) {
+  std::vector<const bookmarks::BookmarkNode*> nodes;
+  model->GetNodesByURL(GURL(url), &nodes);
+  size_t nodes_size = nodes.size();
+  CHECK_EQ(nodes_size, 1u);
+  const bookmarks::BookmarkNode* node = nodes.at(0);
+  return node;
+}
 
 bool DevicesContains(brave_sync::SyncDevices* devices, const std::string& id,
     const std::string& name) {
@@ -127,6 +142,24 @@ MATCHER_P2(ContainsDeviceRecord, action, name,
   }
   return false;
 }
+
+size_t g_overridden_minutes = 0;
+base::Time g_overridden_now;
+std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForMinutes(
+    int overridden_minutes,
+    const base::Time& now = base::subtle::TimeNowIgnoringOverride()) {
+  g_overridden_minutes = overridden_minutes;
+  g_overridden_now = now;
+  return std::make_unique<base::subtle::ScopedTimeClockOverrides>(
+    []() {
+     return g_overridden_now +
+         base::TimeDelta::FromMinutes(g_overridden_minutes);
+    },
+    nullptr,
+    nullptr);
+}
+
+}  // namespace
 
 class MockBraveSyncServiceObserver : public BraveSyncServiceObserver {
  public:
@@ -773,4 +806,92 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
 
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncEnabled));
+}
+
+TEST_F(BraveSyncServiceTest, ExponentialResend) {
+  bookmarks::AddIfNotBookmarked(model(),
+                                GURL("https://a.com/"),
+                                base::ASCIIToUTF16("A.com"));
+  // Explicitly set sync_timestamp, object_id and order because it is supposed
+  // to be set in syncer
+  auto* node = GetSingleNodeByUrl(model(), "https://a.com/");
+  model()->SetNodeMetaInfo(node, "sync_timestamp",
+                           std::to_string(base::Time::Now().ToJsTime()));
+  const char* record_a_object_id =
+      "121, 194, 37, 61, 199, 11, 166, 234, "
+      "214, 197, 45, 215, 241, 206, 219, 130";
+  model()->SetNodeMetaInfo(node, "object_id", record_a_object_id);
+  const char* record_a_order = "1.1.1.1";
+  model()->SetNodeMetaInfo(node, "order", record_a_order);
+
+  brave_sync_prefs()->SetThisDeviceId("1");
+  std::unique_ptr<RecordsList> records = std::make_unique<RecordsList>();
+  records->push_back(SimpleBookmarkSyncRecord(
+      SyncRecord::Action::A_CREATE,
+      record_a_object_id,
+      "https://a.com/",
+      "A.com - title",
+      record_a_order, "", brave_sync_prefs()->GetThisDeviceId()));
+
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
+  sync_service()->SendSyncRecords("BOOKMARKS", std::move(records));
+
+  EXPECT_EQ(brave_sync_prefs()->GetRecordsToResend().size(), 1u);
+  const base::DictionaryValue* meta =
+    brave_sync_prefs()->GetRecordToResendMeta(record_a_object_id);
+  int send_retry_number = -1;
+  meta->GetInteger("send_retry_number", &send_retry_number);
+  EXPECT_EQ(send_retry_number, 0);
+  double sync_timestamp = -1;
+  meta->GetDouble("sync_timestamp", &sync_timestamp);
+  EXPECT_NE(sync_timestamp, -1);
+
+  int expected_send_retry_number = 0;
+
+  static const std::vector<unsigned> exponential_waits =
+      brave_sync::BraveProfileSyncServiceImpl::GetExponentialWaitsForTests();
+  const int max_send_retries = exponential_waits.size() - 1;
+  std::set<int> should_sent_at;
+  for (size_t j = 0; j < exponential_waits.size(); ++j) {
+    should_sent_at.insert(exponential_waits[j]);
+  }
+  auto contains = [](const std::set<int>& set, int val) {
+    return set.find(val) != set.end();
+  };
+  for (size_t i = 0; i <= exponential_waits.back(); ++i) {
+    auto time_override =
+      OverrideForMinutes(i, base::Time::FromJsTime(sync_timestamp));
+    bool is_send_expected = contains(should_sent_at, i);
+    int expect_call_times = is_send_expected ? 1 : 0;
+    EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(
+        expect_call_times);
+    sync_service()->ResendSyncRecords("BOOKMARKS");
+
+    if (is_send_expected) {
+      if (++expected_send_retry_number > max_send_retries)
+        expected_send_retry_number = max_send_retries;
+      send_retry_number = -1;
+      meta = brave_sync_prefs()->GetRecordToResendMeta(record_a_object_id);
+      meta->GetInteger("send_retry_number", &send_retry_number);
+      EXPECT_EQ(send_retry_number, expected_send_retry_number);
+    }
+  }
+
+  // resolve to confirm records
+  RecordsList records_to_resolve;
+  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
+      SyncRecord::Action::A_CREATE,
+      record_a_object_id,
+      "https://a.com/",
+      "A.com",
+      "1.1.1.1", "", brave_sync_prefs()->GetThisDeviceId()));
+  auto timestamp_resolve = base::Time::Now();
+  records_to_resolve.at(0)->syncTimestamp = timestamp_resolve;
+  brave_sync::SyncRecordAndExistingList records_and_existing_objects;
+  sync_service()->CreateResolveList(records_to_resolve,
+                                    &records_and_existing_objects);
+
+  EXPECT_EQ(brave_sync_prefs()->GetRecordsToResend().size(), 0u);
+  EXPECT_EQ(brave_sync_prefs()->GetRecordToResendMeta(record_a_object_id),
+                                                      nullptr);
 }

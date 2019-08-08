@@ -58,14 +58,15 @@ SyncRecordPtr SimpleBookmarkSyncRecord(
     const std::string& location,
     const std::string& title,
     const std::string& order,
-    const std::string& parent_object_id) {
+    const std::string& parent_object_id,
+    const std::string& device_id) {
   auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
   record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
     brave_sync::jslib::SyncRecord::Action::A_MIN,
     brave_sync::jslib::SyncRecord::Action::A_MAX,
     brave_sync::jslib::SyncRecord::Action::A_INVALID);
 
-  record->deviceId = "3";
+  record->deviceId = device_id;
   record->objectId = object_id.empty() ? tools::GenerateObjectId() : object_id;
   record->objectData = "bookmark";
 

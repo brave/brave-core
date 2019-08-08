@@ -40,6 +40,11 @@ using jslib_const::SyncRecordType_PREFERENCES;
 using jslib::Device;
 using tools::IsTimeEmpty;
 
+const std::vector<unsigned>
+    BraveProfileSyncServiceImpl::kExponentialWaits = {10, 20, 40, 80};
+const int BraveProfileSyncServiceImpl::kMaxSendRetries =
+    BraveProfileSyncServiceImpl::kExponentialWaits.size() - 1;
+
 
 namespace {
 
@@ -242,7 +247,6 @@ void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(
     SendSyncRecords(
       jslib_const::SyncRecordType_BOOKMARKS, std::move(records));
   }
-  ResendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS);
 }
 
 BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {}
@@ -860,6 +864,7 @@ void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
   const bool history = brave_sync_prefs_->GetSyncHistoryEnabled();
   const bool preferences = brave_sync_prefs_->GetSyncSiteSettingsEnabled();
   FetchSyncRecords(bookmarks, history, preferences, 1000);
+  ResendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS);
 }
 
 void BraveProfileSyncServiceImpl::SignalWaitableEvent() {
@@ -888,7 +893,12 @@ void BraveProfileSyncServiceImpl::SendSyncRecords(
   brave_sync_client_->SendSyncRecords(category_name, *records);
   if (category_name == kBookmarks) {
     for (auto& record : *records) {
-      brave_sync_prefs_->AddToRecordsToResend(record->objectId);
+      std::unique_ptr<base::DictionaryValue> meta =
+        std::make_unique<base::DictionaryValue>();
+      meta->SetInteger("send_retry_number", 0);
+      meta->SetDouble("sync_timestamp", record->syncTimestamp.ToJsTime());
+      brave_sync_prefs_->AddToRecordsToResend(record->objectId,
+                                              std::move(meta));
     }
   }
 }
@@ -903,6 +913,32 @@ void BraveProfileSyncServiceImpl::ResendSyncRecords(
       return;
     for (auto& object_id : records_to_resend) {
       auto* node = FindByObjectId(model_, object_id);
+
+      // Check resend interval
+      const base::DictionaryValue* meta =
+        brave_sync_prefs_->GetRecordToResendMeta(object_id);
+      DCHECK(meta);
+      int current_retry_number = kMaxSendRetries;
+      meta->GetInteger("send_retry_number", &current_retry_number);
+      DCHECK_GE(current_retry_number, 0);
+      double sync_timestamp = 0;
+      meta->GetDouble("sync_timestamp", &sync_timestamp);
+      DCHECK(!base::Time::FromJsTime(sync_timestamp).is_null());
+
+      if ((base::Time::Now() -
+          base::Time::FromJsTime(sync_timestamp)) <
+          GetRetryExponentialWaitAmount(current_retry_number))
+        continue;
+
+      // Increase retry number
+      if (++current_retry_number > kMaxSendRetries)
+        current_retry_number = kMaxSendRetries;
+      std::unique_ptr<base::DictionaryValue> new_meta =
+        base::DictionaryValue::From(
+          std::make_unique<base::Value>(meta->Clone()));
+      new_meta->SetInteger("send_retry_number", current_retry_number);
+      brave_sync_prefs_->SetRecordToResendMeta(object_id, std::move(new_meta));
+
       if (node) {
         records->push_back(
           BookmarkNodeToSyncBookmark(model_, brave_sync_prefs_.get(), node));
@@ -914,6 +950,23 @@ void BraveProfileSyncServiceImpl::ResendSyncRecords(
     if (!records->empty())
       brave_sync_client_->SendSyncRecords(category_name, *records);
   }
+}
+
+// static
+base::TimeDelta BraveProfileSyncServiceImpl::GetRetryExponentialWaitAmount(
+    int retry_number) {
+  DCHECK_LE(retry_number, kMaxSendRetries);
+
+  if (retry_number > kMaxSendRetries) {
+    retry_number = kMaxSendRetries;
+  }
+  return base::TimeDelta::FromMinutes(kExponentialWaits[retry_number]);
+}
+
+// static
+std::vector<unsigned>
+BraveProfileSyncServiceImpl::GetExponentialWaitsForTests() {
+  return kExponentialWaits;
 }
 
 }   // namespace brave_sync

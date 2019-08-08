@@ -36,6 +36,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyNewToSync);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetExistingObjects);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest,
                      OnSetupSyncHaveCode_Reset_SetupAgain);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, ExponentialResend);
 
 class BraveSyncServiceTest;
 
@@ -135,6 +136,7 @@ class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetExistingObjects);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            OnSetupSyncHaveCode_Reset_SetupAgain);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ExponentialResend);
   friend class ::BraveSyncServiceTest;
 
   void SignalWaitableEvent();
@@ -168,6 +170,12 @@ class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
   void SendSyncRecords(const std::string& category_name,
                        RecordsListPtr records);
   void ResendSyncRecords(const std::string& category_name);
+
+
+  static base::TimeDelta GetRetryExponentialWaitAmount(int retry_number);
+  static std::vector<unsigned> GetExponentialWaitsForTests();
+  static const std::vector<unsigned> kExponentialWaits;
+  static const int kMaxSendRetries;
 
   std::unique_ptr<brave_sync::prefs::Prefs> brave_sync_prefs_;
   // True when is in active sync chain
