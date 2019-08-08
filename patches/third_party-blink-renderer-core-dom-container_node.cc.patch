@@ -2,7 +2,7 @@ diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party
 index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b57d13cd62 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
-@@ -61,6 +61,14 @@
+@@ -61,6 +61,13 @@
  #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  
@@ -10,7 +10,6 @@ index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b5
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/document.h"
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-+
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +
