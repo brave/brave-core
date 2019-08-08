@@ -314,7 +314,6 @@ class SettingsViewController: TableViewController {
             rows: [
                 Row(text: Strings.Report_a_bug,
                     selection: { [unowned self] in
-                        // Report a bug
                         self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.BraveCommunityURL)
                         self.dismiss(animated: true)
                     },
