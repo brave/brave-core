@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
 
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE) && BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
@@ -20,7 +19,6 @@
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/style/platform_style.h"
-#endif
 
 BraveTranslateBubbleView::BraveTranslateBubbleView(
     views::View* anchor_view,
@@ -36,7 +34,6 @@ BraveTranslateBubbleView::BraveTranslateBubbleView(
 BraveTranslateBubbleView::~BraveTranslateBubbleView() {
 }
 
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE) && BUILDFLAG(ENABLE_EXTENSIONS)
 views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
   views::View* view = new views::View();
   views::GridLayout* layout =
@@ -139,5 +136,3 @@ void BraveTranslateBubbleView::Init() {
   RemoveChildView(before_translate_view_);
   before_translate_view_ = AddChildView(BraveCreateViewBeforeTranslate());
 }
-#endif
-

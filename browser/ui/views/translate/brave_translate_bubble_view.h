@@ -17,9 +17,8 @@
 class BraveTranslateIconView;
 
 // The purpose of this subclass is to repurpose the translate bubble to install
-// google translate extension. Functions are only overridden by the subclass if
-// extensions are enabled and ENABLE_BRAVE_TRANSLATE (go-translate) is not
-// enabled.
+// google translate extension, this is only used when
+// ENABLE_BRAVE_TRANSLATE_EXTENSION is true.
 class BraveTranslateBubbleView : public TranslateBubbleView {
  public:
   BraveTranslateBubbleView(views::View* anchor_view,
@@ -28,20 +27,16 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
                            content::WebContents* web_contents);
   ~BraveTranslateBubbleView() override;
 
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE) && BUILDFLAG(ENABLE_EXTENSIONS)
   // views::BubbleDialogDelegateView methods.
   void Init() override;
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
 
   // views::View methods.
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
-#endif
 
  private:
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE) && BUILDFLAG(ENABLE_EXTENSIONS)
   views::View* BraveCreateViewBeforeTranslate();
   void InstallGoogleTranslate();
-#endif
 
   DISALLOW_COPY_AND_ASSIGN(BraveTranslateBubbleView);
 };

@@ -5,6 +5,12 @@
 
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 
+#include "brave/browser/translate/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #define TranslateIconView BraveTranslateIconView
+#endif
 #include "../../../../../../../chrome/browser/ui/views/page_action/omnibox_page_action_icon_container_view.cc"
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #undef TranslateIconView
+#endif

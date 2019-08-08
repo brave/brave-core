@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE) && BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/ui/browser.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
@@ -15,7 +14,6 @@
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_registry.h"
-#endif
 
 BraveTranslateIconView::BraveTranslateIconView(
     CommandUpdater* command_updater,
@@ -27,7 +25,6 @@ BraveTranslateIconView::BraveTranslateIconView(
 BraveTranslateIconView::~BraveTranslateIconView() {
 }
 
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE) && BUILDFLAG(ENABLE_EXTENSIONS)
 void BraveTranslateIconView::InstallGoogleTranslate() {
   if (!GetWebContents())
     return;
@@ -71,4 +68,3 @@ bool BraveTranslateIconView::Update() {
 
   return TranslateIconView::Update();
 }
-#endif

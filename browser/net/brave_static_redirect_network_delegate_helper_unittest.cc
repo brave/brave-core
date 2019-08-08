@@ -305,7 +305,7 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(ret, net::OK);
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslate) {
   net::TestDelegate test_delegate;
   std::string query_string(

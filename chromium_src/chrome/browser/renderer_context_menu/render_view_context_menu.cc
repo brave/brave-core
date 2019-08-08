@@ -102,9 +102,8 @@ void BraveRenderViewContextMenu::InitMenu() {
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
 
-// Only show the translate item when ENABLE_BRAVE_TRANSLATE (go-translate) is
-// enabled.
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+  // Only show the translate item when go-translate is enabled.
+#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
   if (index != -1)
     menu_model_.RemoveItemAt(index);

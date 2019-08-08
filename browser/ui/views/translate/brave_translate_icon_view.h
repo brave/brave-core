@@ -12,36 +12,28 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
-#include "extensions/buildflags/buildflags.h"
-
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE) && BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/common/extensions/webstore_install_result.h"
-#endif
+#include "extensions/buildflags/buildflags.h"
 
 // The purpose of this subclass is to hide translate icon and translate bubble
 // when Google Translate extension is installed. This subclass also takes care
 // of installing Google Translate extension upon requests from translate
-// bubble, and updates both UI based on the installation result. Functions are
-// only overridden by this subclass if extensions are enabled and
-// ENABLE_BRAVE_TRANSLATE (go-translate) is not enabled.
+// bubble, and updates both UI based on the installation result. This subclass
+// is only used when ENABLE_BRAVE_TRANSLATE_EXTENSION is true.
 class BraveTranslateIconView : public TranslateIconView {
  public:
   BraveTranslateIconView(CommandUpdater* command_updater,
                          PageActionIconView::Delegate* delegate);
   ~BraveTranslateIconView() override;
 
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE) && BUILDFLAG(ENABLE_EXTENSIONS)
   bool Update() override;
 
   void InstallGoogleTranslate();
-#endif
 
  private:
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE) && BUILDFLAG(ENABLE_EXTENSIONS)
   void OnInstallResult(bool success,
                        const std::string& error,
                        extensions::webstore_install::Result result);
-#endif
 
   base::WeakPtrFactory<BraveTranslateIconView> weak_ptr_factory_;
 
