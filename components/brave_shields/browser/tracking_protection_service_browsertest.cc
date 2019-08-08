@@ -8,10 +8,11 @@
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/net/url_request_mock_util.h"
@@ -34,25 +35,11 @@ const char kRedirectPage[] = "/client-redirect?";
 const char kStoragePage[] = "/storage.html";
 #endif
 
-using content::BrowserThread;
-using extensions::ExtensionBrowserTest;
+const char kTestDataDirectory[] = "tracking-protection-data";
+const char kEmbeddedTestServerDirectory[] = "tracking-protection-web";
 
-const std::string kTrackingProtectionComponentTestId(
-    "eclbkhjphkhalklhipiicaldjbnhdfkc");
-
-const char kTrackingProtectionComponentTestBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsleoSxQ3DN+6xym2P1uX"
-    "mN6ArIWd9Oru5CSjS0SRE5upM2EnAl/C20TP8JdIlPi/3tk/SN6Y92K3xIhAby5F"
-    "0rbPDSTXEWGy72tv2qb/WySGwDdvYQu9/J5sEDneVcMrSHcC0VWgcZR0eof4BfOy"
-    "fKMEnHX98tyA3z+vW5ndHspR/Xvo78B3+6HX6tyVm/pNlCNOm8W8feyfDfPpK2Lx"
-    "qRLB7PumyhR625txxolkGC6aC8rrxtT3oymdMfDYhB4BZBrzqdriyvu1NdygoEiF"
-    "WhIYw/5zv1NyIsfUiG8wIs5+OwS419z7dlMKsg1FuB2aQcDyjoXx1habFfHQfQwL"
-    "qwIDAQAB";
-
-class TrackingProtectionServiceTest : public ExtensionBrowserTest {
+class TrackingProtectionServiceTest : public BaseLocalDataFilesBrowserTest {
  public:
-  TrackingProtectionServiceTest() {}
-
 #if BUILDFLAG(BRAVE_STP_ENABLED)
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpDefaultCommandLine(command_line);
@@ -60,79 +47,20 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
   }
 #endif
 
-  void SetUp() override {
-    InitEmbeddedTestServer();
-    ExtensionBrowserTest::SetUp();
+  // BaseLocalDataFilesBrowserTest overrides
+  const char* test_data_directory() override { return kTestDataDirectory; }
+  const char* embedded_test_server_directory() override {
+    return kEmbeddedTestServerDirectory;
   }
-
-  void SetUpOnMainThread() override {
-    ExtensionBrowserTest::SetUpOnMainThread();
-    base::PostTaskWithTraits(
-        FROM_HERE, {BrowserThread::IO},
-        base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
-    host_resolver()->AddRule("*", "127.0.0.1");
-  }
-
-  void PreRunTestOnMainThread() override {
-    ExtensionBrowserTest::PreRunTestOnMainThread();
-    WaitForTrackingProtectionServiceThread();
-    ASSERT_TRUE(
-        g_brave_browser_process->local_data_files_service()->IsInitialized());
-  }
-
-  void InitEmbeddedTestServer() {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    content::SetupCrossSiteRedirector(embedded_test_server());
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(embedded_test_server()->Start());
-  }
-
-  void InitService() {
-    brave_component_updater::LocalDataFilesService::
-        SetComponentIdAndBase64PublicKeyForTest(
-            kTrackingProtectionComponentTestId,
-            kTrackingProtectionComponentTestBase64PublicKey);
-  }
-
-  void GetTestDataDir(base::FilePath* test_data_dir) {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
-  }
-
-  bool InstallTrackingProtectionExtension() {
-    base::FilePath test_data_dir;
-    GetTestDataDir(&test_data_dir);
-    const extensions::Extension* tracking_protection_extension =
-        InstallExtension(test_data_dir.AppendASCII("tracking-protection-data"),
-                         1);
-    if (!tracking_protection_extension)
-      return false;
-
-    g_brave_browser_process->tracking_protection_service()->OnComponentReady(
-        tracking_protection_extension->id(),
-        tracking_protection_extension->path(), "");
-    WaitForTrackingProtectionServiceThread();
-
-    return true;
-  }
-
-  void WaitForTrackingProtectionServiceThread() {
-    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
-    ASSERT_TRUE(tr_helper->Run());
-    scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        base::CreateSingleThreadTaskRunnerWithTraits({BrowserThread::IO})
-            .get()));
-    ASSERT_TRUE(io_helper->Run());
+  LocalDataFilesObserver* service() override {
+    return g_brave_browser_process->tracking_protection_service();
   }
 };
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
 IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingBlocked) {
   ASSERT_TRUE(TrackingProtectionHelper::IsSmartTrackingProtectionEnabled());
-  ASSERT_TRUE(InstallTrackingProtectionExtension());
+  ASSERT_TRUE(InstallMockExtension());
 
   std::string message;
   content::DOMMessageQueue message_queue;
@@ -187,7 +115,7 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingBlocked) {
 
 IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingAllowed) {
   ASSERT_TRUE(TrackingProtectionHelper::IsSmartTrackingProtectionEnabled());
-  ASSERT_TRUE(InstallTrackingProtectionExtension());
+  ASSERT_TRUE(InstallMockExtension());
 
   std::string message;
   content::DOMMessageQueue message_queue;
@@ -240,7 +168,7 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingAllowed) {
 
 IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, CancelledNavigation) {
   ASSERT_TRUE(TrackingProtectionHelper::IsSmartTrackingProtectionEnabled());
-  ASSERT_TRUE(InstallTrackingProtectionExtension());
+  ASSERT_TRUE(InstallMockExtension());
 
   std::string message;
   content::DOMMessageQueue message_queue;
