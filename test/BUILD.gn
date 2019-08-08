@@ -133,6 +133,7 @@ test("brave_unit_tests") {
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/github_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/twitch_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/twitter_unittest.cc",
+      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/unsplash_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/vimeo_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/youtube_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/uphold/uphold_util_unittest.cc",
