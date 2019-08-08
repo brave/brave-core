@@ -167,11 +167,28 @@ extension BrowserViewController: WKNavigationDelegate {
             //  Rather than using `sourceFrame.isMainFrame` or even comparing `sourceFrame == targetFrame`, a simple URL check is used.
             // No adblocking logic is be used on session restore urls. It uses javascript to retrieve the
             // request then the page is reloaded with a proper url and adblocking rules are applied.
+            
+            // Can't use mainDocumentURL as it is not reliable and main purpose is to  check that frame url and request url is same where frame is main.
+            var frame: WKFrameInfo?
+            
+            // This is to get valid frame (in case of reload source frame is alwyas uninitialized).
+            if navigationAction.sourceFrame == nil {
+                frame = navigationAction.targetFrame
+            } else {
+                frame = navigationAction.sourceFrame
+            }
+            
+            // This is done because the there can be a frame with no request
+            if frame != nil, frame!.securityOrigin.protocol.isEmpty {
+                frame = nil
+            }
+            
             if
-                let mainDocumentURL = navigationAction.request.mainDocumentURL,
-                mainDocumentURL.schemelessAbsoluteString == url.schemelessAbsoluteString,
+                let mainDocumentURL = navigationAction.request.url,
                 !url.isSessionRestoreURL,
-                navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true {
+                frame?.isMainFrame == true,
+                mainDocumentURL.schemelessAbsoluteString == frame?.request.url?.schemelessAbsoluteString ?? ""
+                 {
                 
                 // Identify specific block lists that need to be applied to the requesting domain
                 let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
