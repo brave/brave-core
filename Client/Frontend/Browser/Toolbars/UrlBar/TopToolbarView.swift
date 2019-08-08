@@ -465,7 +465,7 @@ extension TopToolbarView: TabLocationViewDelegate {
         
         var overlayText = locationText
         // Make sure to use the result from topToolbarDisplayTextForURL as it is responsible for extracting out search terms when on a search page
-        if let text = locationText, let url = URL(string: text), let host = url.host, AppConstants.MOZ_PUNYCODE {
+        if let text = locationText, let url = URL(string: text), let host = url.host {
             overlayText = url.absoluteString.replacingOccurrences(of: host, with: host.asciiHostToUTF8())
         }
         enterOverlayMode(overlayText, pasted: false, search: isSearchQuery)

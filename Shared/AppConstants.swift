@@ -70,20 +70,6 @@ public struct AppConstants {
         #endif
     }()
 
-    /// Enables support for International Domain Names (IDN)
-    /// Disabled because of https://bugzilla.mozilla.org/show_bug.cgi?id=1312294
-    public static let MOZ_PUNYCODE: Bool = {
-        #if MOZ_CHANNEL_RELEASE
-            return false
-        #elseif MOZ_CHANNEL_BETA
-            return false
-        #elseif MOZ_CHANNEL_FENNEC
-            return true
-        #else
-            return true
-        #endif
-    }()
-
     /// The maximum length of a URL stored by Firefox. Shared with Places on desktop.
     public static let DB_URL_LENGTH_MAX = 65536
 

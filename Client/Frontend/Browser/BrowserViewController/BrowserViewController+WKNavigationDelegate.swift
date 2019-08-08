@@ -21,14 +21,6 @@ extension WKNavigationAction {
     }
 }
 
-extension URL {
-    /// Obtain a schemeless absolute string
-    fileprivate var schemelessAbsoluteString: String {
-        guard let scheme = self.scheme else { return absoluteString }
-        return absoluteString.replacingOccurrences(of: "\(scheme)://", with: "")
-    }
-}
-
 extension BrowserViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         if tabManager.selectedTab?.webView !== webView {

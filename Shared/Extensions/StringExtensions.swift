@@ -60,6 +60,11 @@ extension String {
         }
         return trimmed
     }
+    
+    //Minimize trimming effort for characterset based on string
+    public func trim(_ charactersInString: String) -> String {
+        return self.trimmingCharacters(in: CharacterSet(charactersIn: charactersInString))
+    }
 
     /// Adds a newline at the closest space from the middle of a string.
     /// Example turning "Mark as Read" into "Mark as\n Read"

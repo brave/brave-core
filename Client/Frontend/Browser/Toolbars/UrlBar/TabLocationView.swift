@@ -126,7 +126,7 @@ class TabLocationView: UIView {
         urlTextField.accessibilityActionsSource = self
         urlTextField.font = UIConstants.DefaultChromeFont
         urlTextField.backgroundColor = .clear
-
+        urlTextField.clipsToBounds = true
         // Remove the default drop interaction from the URL text field so that our
         // custom drop interaction on the BVC can accept dropped URLs.
         if let dropInteraction = urlTextField.textDropInteraction {
@@ -341,15 +341,8 @@ class TabLocationView: UIView {
     }
 
     fileprivate func updateTextWithURL() {
-        if let host = url?.host, AppConstants.MOZ_PUNYCODE {
-            urlTextField.text = url?.absoluteString.replacingOccurrences(of: host, with: host.asciiHostToUTF8())
-        } else {
-            urlTextField.text = url?.absoluteString
-        }
-        // remove https:// (the scheme) from the url when displaying
-        if let scheme = url?.scheme, let range = url?.absoluteString.range(of: "\(scheme)://") {
-            urlTextField.text = url?.absoluteString.replacingCharacters(in: range, with: "")
-        }
+        (urlTextField as? DisplayTextField)?.hostString = url?.host ?? ""
+        urlTextField.text = url?.schemelessAbsoluteString.trim("/")
     }
 }
 
@@ -427,8 +420,10 @@ extension TabLocationView: TabEventHandler {
     }
 }
 
-private class DisplayTextField: UITextField {
+class DisplayTextField: UITextField {
     weak var accessibilityActionsSource: AccessibilityActionsSource?
+    var hostString: String = ""
+    let pathPadding: CGFloat = 20.0
 
     override var accessibilityCustomActions: [UIAccessibilityCustomAction]? {
         get {
@@ -439,7 +434,22 @@ private class DisplayTextField: UITextField {
         }
     }
 
-    fileprivate override var canBecomeFirstResponder: Bool {
+    override var canBecomeFirstResponder: Bool {
         return false
+    }
+    
+    // This override is done in case the eTLD+1 string overflows the width of textField.
+    // In that case the textRect is adjusted to show right aligned and truncate left.
+    // Since this textField changes with WebView domain change, performance implications are low.
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        var rect: CGRect = super.textRect(forBounds: bounds)
+        
+        if let size: CGSize = (self.hostString as NSString?)?.size(withAttributes: [.font: self.font!]) {
+            if size.width > self.bounds.width {
+                rect.origin.x = rect.origin.x - (size.width + pathPadding - self.bounds.width)
+                rect.size.width = size.width + pathPadding
+            }
+        }
+        return rect
     }
 }
