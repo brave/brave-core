@@ -125,7 +125,6 @@ class BraveProxyingURLLoaderFactory
     void HandleResponseOrRedirectHeaders(
         net::CompletionOnceCallback continuation);
     void OnRequestError(const network::URLLoaderCompletionStatus& status);
-    bool IsRedirectSafe(const GURL& from_url, const GURL& to_url);
     void HandleBeforeRequestRedirect();
 
     // TODO(iefremov): Get rid of shared_ptr, we should clearly own the pointer.

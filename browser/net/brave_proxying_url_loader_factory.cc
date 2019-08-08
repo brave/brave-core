@@ -262,13 +262,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     const network::ResourceResponseHead& head) {
-  if (redirect_url_ != redirect_info.new_url &&
-      !IsRedirectSafe(request_.url, redirect_info.new_url)) {
-    OnRequestError(
-        network::URLLoaderCompletionStatus(net::ERR_UNSAFE_REDIRECT));
-    return;
-  }
-
   current_response_ = head;
   HandleResponseOrRedirectHeaders(
       base::BindRepeating(&InProgressRequest::ContinueToBeforeRedirect,
@@ -646,13 +639,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(
 
   // Deletes |this|.
   factory_->RemoveRequest(this);
-}
-
-// Determines whether it is safe to redirect from |from_url| to |to_url|.
-bool BraveProxyingURLLoaderFactory::InProgressRequest::IsRedirectSafe(
-    const GURL& from_url,
-    const GURL& to_url) {
-  return content::IsSafeRedirectTarget(from_url, to_url);
 }
 
 BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(

@@ -286,10 +286,6 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
         factory_request, header_client, bypass_redirect_checks);
 
   // TODO(iefremov): Skip proxying for certain requests?
-  use_proxy |= true;
-  if (bypass_redirect_checks)
-    *bypass_redirect_checks = true;
-
   use_proxy |= BraveProxyingURLLoaderFactory::MaybeProxyRequest(
       browser_context,
       frame, is_navigation ? -1 : render_process_id,
