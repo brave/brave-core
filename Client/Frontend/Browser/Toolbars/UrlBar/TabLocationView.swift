@@ -188,11 +188,9 @@ class TabLocationView: UIView {
         return button
     }()
     
-    lazy var separatorLine: UIView = {
-        let line = UIView()
-        line.layer.cornerRadius = 2
-        return line
-    }()
+    lazy var separatorLine: UIView = CustomSeparatorView(lineSize: .init(width: 1, height: 26), cornerRadius: 2)
+    
+    lazy var tabOptionsStackView = UIStackView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -208,33 +206,25 @@ class TabLocationView: UIView {
         addGestureRecognizer(longPressRecognizer)
         addGestureRecognizer(tapRecognizer)
         
-        let buttonContentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        var optionSubviews = [readerModeButton, reloadButton, separatorLine, shieldsButton]
+        separatorLine.isUserInteractionEnabled = false
         
-        #if NO_REWARDS
-        [readerModeButton, reloadButton, separatorLine, shieldsButton].forEach {
-            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-            $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        }
-        
-        let buttonsStackview = UIStackView(arrangedSubviews: [shieldsButton])
-        
-        shieldsButton.contentEdgeInsets = buttonContentEdgeInsets
-        #else
-        [readerModeButton, reloadButton, separatorLine, shieldsButton, rewardsButton].forEach {
-            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-            $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        }
-        
-        let buttonsStackview = UIStackView(arrangedSubviews: [shieldsButton, rewardsButton])
-        
-        shieldsButton.contentEdgeInsets = buttonContentEdgeInsets
-        rewardsButton.contentEdgeInsets = buttonContentEdgeInsets
-        
+        #if !NO_REWARDS
+        optionSubviews.append(rewardsButton)
         #endif
         
+        let buttonContentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        optionSubviews.forEach {
+            ($0 as? CustomSeparatorView)?.layoutMargins = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: 2)
+            ($0 as? UIButton)?.contentEdgeInsets = buttonContentEdgeInsets
+            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        }
+        optionSubviews.forEach(tabOptionsStackView.addArrangedSubview)
+        
         urlTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
-
-        let subviews = [lockImageView, urlTextField, readerModeButton, reloadButton, separatorLine, buttonsStackview]
+        
+        let subviews = [lockImageView, urlTextField, tabOptionsStackView]
         contentView = UIStackView(arrangedSubviews: subviews)
         contentView.distribution = .fill
         contentView.alignment = .center
@@ -242,28 +232,18 @@ class TabLocationView: UIView {
         contentView.isLayoutMarginsRelativeArrangement = true
         contentView.insetsLayoutMarginsFromSafeArea = false
         contentView.spacing = 10
+        contentView.setCustomSpacing(5, after: urlTextField)
+        
+        tabOptionsStackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 6)
+        tabOptionsStackView.isLayoutMarginsRelativeArrangement = true
         addSubview(contentView)
         
-        // Reduce spacing after separator to make space for shields button tappable area.
-        contentView.setCustomSpacing(2, after: separatorLine)
-
         contentView.snp.makeConstraints { make in
-            make.leading.top.bottom.equalTo(self)
-            make.trailing.equalTo(self).inset(6)
+            make.leading.trailing.top.bottom.equalTo(self)
         }
         
-        lockImageView.snp.makeConstraints { make in
-            make.height.equalTo(TabLocationViewUX.ButtonSize)
-        }
-        
-        separatorLine.snp.makeConstraints { make in
-            make.width.equalTo(1)
-            make.height.equalTo(26)
-        }
-        
-        readerModeButton.snp.makeConstraints { make in
-            make.size.width.equalTo(TabLocationViewUX.ButtonSize.width)
-            make.size.height.equalTo(TabLocationViewUX.ButtonSize.height)
+        tabOptionsStackView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(contentView)
         }
 
         // Setup UIDragInteraction to handle dragging the location
@@ -358,6 +338,13 @@ extension TabLocationView: UIGestureRecognizerDelegate {
         // If the longPressRecognizer is active, fail the tap recognizer to avoid conflicts.
         return gestureRecognizer == longPressRecognizer && otherGestureRecognizer == tapRecognizer
     }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if gestureRecognizer == tapRecognizer && touch.view == tabOptionsStackView {
+            return false
+        }
+        return true
+    }
 }
 
 // MARK: - UIDragInteractionDelegate
@@ -451,5 +438,35 @@ class DisplayTextField: UITextField {
             }
         }
         return rect
+    }
+}
+
+private class CustomSeparatorView: UIView {
+    
+    private let innerView: UIView
+    init(lineSize: CGSize, cornerRadius: CGFloat = 0) {
+        innerView = UIView(frame: .init(origin: .zero, size: lineSize))
+        super.init(frame: .zero)
+        backgroundColor = .clear
+        innerView.layer.cornerRadius = cornerRadius
+        addSubview(innerView)
+        innerView.snp.makeConstraints {
+            $0.width.height.equalTo(lineSize)
+            $0.centerY.equalTo(self)
+            $0.leading.trailing.equalTo(self.layoutMarginsGuide)
+        }
+    }
+    
+    override var backgroundColor: UIColor? {
+        get {
+            return innerView.backgroundColor
+        }
+        set {
+            innerView.backgroundColor = newValue
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
