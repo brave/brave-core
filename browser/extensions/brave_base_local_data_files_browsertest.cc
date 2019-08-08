@@ -48,7 +48,7 @@ void BaseLocalDataFilesBrowserTest::GetTestDataDir(
 }
 
 void BaseLocalDataFilesBrowserTest::MaybeInitEmbeddedTestServer() {
-  if (embedded_test_server_directory() == NULL)
+  if (!embedded_test_server_directory())
     return;
 
   base::FilePath test_data_dir;

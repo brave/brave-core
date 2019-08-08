@@ -36,6 +36,7 @@ const char kStoragePage[] = "/storage.html";
 #endif
 
 const char kTestDataDirectory[] = "tracking-protection-data";
+const char kEmbeddedTestServerDirectory[] = "tracking-protection-web";
 
 class TrackingProtectionServiceTest : public BaseLocalDataFilesBrowserTest {
  public:
@@ -48,7 +49,9 @@ class TrackingProtectionServiceTest : public BaseLocalDataFilesBrowserTest {
 
   // BaseLocalDataFilesBrowserTest overrides
   const char* test_data_directory() override { return kTestDataDirectory; }
-  const char* embedded_test_server_directory() override { return ""; }
+  const char* embedded_test_server_directory() override {
+    return kEmbeddedTestServerDirectory;
+  }
   LocalDataFilesObserver* service() override {
     return g_brave_browser_process->tracking_protection_service();
   }
