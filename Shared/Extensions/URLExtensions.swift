@@ -212,6 +212,12 @@ extension URL {
 
         return nil
     }
+    
+    // Obtain a schemeless absolute string
+    public var schemelessAbsoluteString: String {
+        guard let scheme = self.scheme else { return absoluteString }
+        return absoluteString.replacingOccurrences(of: "\(scheme)://", with: "")
+    }
 
     /**
     Returns the base domain from a given hostname. The base domain name is defined as the public domain suffix
