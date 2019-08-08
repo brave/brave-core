@@ -254,7 +254,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         if (data.action === 'authorization') {
           const url = data.args['redirect_url']
           if (url && url.length > 0) {
-            window.open(url)
+            window.open(url, '_self')
           }
           ui.modalRedirect = 'hide'
           break
