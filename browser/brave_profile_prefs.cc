@@ -128,6 +128,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowClock, true);
   registry->RegisterBooleanPref(kNewTabPageShowTopSites, true);
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
+
+  // Brave Wallet
+  registry->RegisterStringPref(kBraveWalletAES256GCMSivNonce, "");
+  registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
 }
 
 }  // namespace brave

@@ -53,5 +53,7 @@ extern const char kNewTabPageShowClock[];
 extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];
 extern const char kBraveEnabledMediaRouter[];
+extern const char kBraveWalletAES256GCMSivNonce[];
+extern const char kBraveWalletEncryptedSeed[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_
