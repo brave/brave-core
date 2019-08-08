@@ -38,6 +38,26 @@
             ]
           }
         ]
+      }, {
+        "name": "getWalletSeed",
+        "type": "function",
+        "description": "Called when website detects a Dapp",
+        "parameters": [
+          {
+            "name": "key",
+            "type": "binary"
+          }, {
+            "name": "seedCallback",
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "seed",
+                "type": "binary"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

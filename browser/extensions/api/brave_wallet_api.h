@@ -32,6 +32,16 @@ class BraveWalletIsEnabledFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveWalletGetWalletSeedFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.getWalletSeed", UNKNOWN)
+
+ protected:
+  ~BraveWalletGetWalletSeedFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
