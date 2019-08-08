@@ -19,6 +19,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_util.h"
+#include "brave/components/brave_shields/browser/ad_block_base_service.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 
 using brave_shields::BraveShieldsWebContentsObserver;
 using brave_shields::ControlType;
@@ -34,6 +38,43 @@ const char kInvalidUrlError[] = "Invalid URL.";
 const char kInvalidControlTypeError[] = "Invalid ControlType.";
 
 }  // namespace
+
+
+ExtensionFunction::ResponseAction BraveShieldsHostnameCosmeticResourcesFunction::Run() {
+  std::unique_ptr<brave_shields::HostnameCosmeticResources::Params> params(
+      brave_shields::HostnameCosmeticResources::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  adblock::HostnameResources resources = g_brave_browser_process->ad_block_service()->hostnameCosmeticResources(params->hostname);
+
+  auto result_list = std::make_unique<base::ListValue>();
+
+  result_list->GetList().push_back(base::Value(resources.stylesheet));
+
+  base::Value exceptions(base::Value::Type::LIST);
+  for(auto i = resources.exceptions.begin(); i != resources.exceptions.end(); i++) {
+    exceptions.GetList().push_back(base::Value(*i));
+  }
+  result_list->GetList().push_back(std::move(exceptions));
+
+  base::Value injections(base::Value::Type::LIST);
+  for(auto i = resources.script_injections.begin(); i != resources.script_injections.end(); i++) {
+    injections.GetList().push_back(base::Value(*i));
+  }
+  result_list->GetList().push_back(std::move(injections));
+
+  return RespondNow(ArgumentList(std::move(result_list)));
+}
+
+ExtensionFunction::ResponseAction BraveShieldsClassIdStylesheetFunction::Run() {
+  std::unique_ptr<brave_shields::ClassIdStylesheet::Params> params(
+      brave_shields::ClassIdStylesheet::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  std::string stylesheet = g_brave_browser_process->ad_block_service()->classIdStylesheet(params->classes, params->ids, params->exceptions);
+  return RespondNow(OneArgument(std::make_unique<base::Value>(stylesheet)));
+}
+
 
 ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   std::unique_ptr<brave_shields::AllowScriptsOnce::Params> params(

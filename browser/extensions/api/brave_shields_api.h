@@ -11,6 +11,26 @@
 namespace extensions {
 namespace api {
 
+class BraveShieldsHostnameCosmeticResourcesFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.hostnameCosmeticResources", UNKNOWN)
+
+ protected:
+  ~BraveShieldsHostnameCosmeticResourcesFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsClassIdStylesheetFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.classIdStylesheet", UNKNOWN)
+
+ protected:
+  ~BraveShieldsClassIdStylesheetFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 class BraveShieldsAllowScriptsOnceFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.allowScriptsOnce", UNKNOWN)

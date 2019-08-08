@@ -50,6 +50,69 @@
         ]
       },
       {
+        "name": "hostnameCosmeticResources",
+        "type": "function",
+        "description": "Get a cosmetic adblocking stylesheet, generic style exceptions, and script injections specific for the given hostname and domain",
+        "parameters": [
+          {
+            "name": "hostname",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "stylesheet",
+                "type": "string"
+              },
+              {
+                "name": "genericExceptions",
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              {
+                "name": "scriptInjections",
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "classIdStylesheet",
+        "type": "function",
+        "description": "Get a stylesheet of generic rules that may apply to the given set of classes and ids without any of the given excepted selectors",
+        "parameters": [
+          {
+            "name": "classes",
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          {
+            "name": "ids",
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          {
+            "name": "exceptions",
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "stylesheet",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getBraveShieldsEnabled",
         "type": "function",
         "description": "Get brave shields control type for a url",

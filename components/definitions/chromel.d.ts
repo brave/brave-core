@@ -199,6 +199,9 @@ declare namespace chrome.braveShields {
   const setNoScriptControlTypeAsync: any
   const getNoScriptControlTypeAsync: any
 
+  const hostnameCosmeticResources: (hostname: string, callback: (stylesheet: string, genericExceptions: string[], scriptInjections: string[]) => void) => void
+  const classIdStylesheet: (classes: string[], ids: string[], exceptions: string[], callback: (stylesheet: string) => void) => void
+
   type BraveShieldsViewPreferences = {
     showAdvancedView: boolean
   }

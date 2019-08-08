@@ -20,7 +20,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -186,6 +185,14 @@ void AdBlockBaseService::EnableTagOnIOThread(
 
 bool AdBlockBaseService::TagExists(const std::string& tag) {
   return std::find(tags_.begin(), tags_.end(), tag) != tags_.end();
+}
+
+adblock::HostnameResources AdBlockBaseService::hostnameCosmeticResources(const std::string& hostname) {
+  return this->ad_block_client_->hostnameCosmeticResources(hostname);
+}
+
+std::string AdBlockBaseService::classIdStylesheet(const std::vector<std::string>& classes, const std::vector<std::string>& ids, const std::vector<std::string>& exceptions) {
+  return this->ad_block_client_->classIdStylesheet(classes, ids, exceptions);
 }
 
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {

@@ -19,6 +19,7 @@
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 
 class AdBlockServiceTest;
 
@@ -44,6 +45,9 @@ class AdBlockBaseService : public BaseBraveShieldsService {
     bool* cancel_request_explicitly) override;
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
+
+  adblock::HostnameResources hostnameCosmeticResources(const std::string& hostname);
+  std::string classIdStylesheet(const std::vector<std::string>& classes, const std::vector<std::string>& ids, const std::vector<std::string>& exceptions);
 
  protected:
   friend class ::AdBlockServiceTest;
