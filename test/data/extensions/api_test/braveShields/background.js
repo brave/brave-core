@@ -10,5 +10,12 @@ chrome.test.runTests([
       chrome.test.fail();
     }
   },
+  function braveShieldsHasWalletAccessButNotSeed() {
+    if (chrome.braveWallet && !chrome.braveWallet.getWalletSeed) {
+      chrome.test.succeed();
+    } else {
+      chrome.test.fail();
+    }
+  },
 ]);
 
