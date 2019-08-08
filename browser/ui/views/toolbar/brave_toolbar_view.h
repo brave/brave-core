@@ -6,12 +6,15 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 
+#include "base/scoped_observer.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/prefs/pref_member.h"
 
 class BookmarkButton;
 
-class BraveToolbarView : public ToolbarView {
+class BraveToolbarView : public ToolbarView,
+                         public ProfileAttributesStorage::Observer {
  public:
   explicit BraveToolbarView(Browser* browser, BrowserView* browser_view);
   ~BraveToolbarView() override;
@@ -32,12 +35,20 @@ class BraveToolbarView : public ToolbarView {
   void ResetLocationBarBounds();
   void ResetBookmarkButtonBounds();
 
+  // ProfileAttributesStorage::Observer:
+  void OnProfileAdded(const base::FilePath& profile_path) override;
+  void OnProfileWasRemoved(const base::FilePath& profile_path,
+      const base::string16& profile_name) override;
+
   BookmarkButton* bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
   BooleanPrefMember location_bar_is_wide_;
   // Whether this toolbar has been initialized.
   bool brave_initialized_ = false;
+  // Tracks profile count to determine whether profile switcher should be shown.
+  ScopedObserver<ProfileAttributesStorage, BraveToolbarView>
+      profile_observer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
