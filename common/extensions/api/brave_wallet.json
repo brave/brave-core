@@ -27,6 +27,16 @@
         "type": "function",
         "description": "Called to determine if brave wallet is alrady enabled",
         "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
         ]
       }
     ],
