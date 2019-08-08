@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
-index 63b85e3e1085f68b6bd40f7209749ff1abd15c4f..1fb8e9483aa72ddd7bf65eea19e63dd8e06bb274 100644
+index 63b85e3e1085f68b6bd40f7209749ff1abd15c4f..6de68ebfc1b703242ed160b11eb9f830d099bd2e 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
-@@ -61,6 +61,14 @@
+@@ -61,6 +61,13 @@
  #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  
@@ -10,14 +10,13 @@ index 63b85e3e1085f68b6bd40f7209749ff1abd15c4f..1fb8e9483aa72ddd7bf65eea19e63dd8
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/document.h"
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-+
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +
  namespace blink {
  
  static void DispatchChildInsertionEvents(Node&);
-@@ -930,6 +938,67 @@ void ContainerNode::NotifyNodeInsertedInternal(
+@@ -930,6 +937,67 @@ void ContainerNode::NotifyNodeInsertedInternal(
    EventDispatchForbiddenScope assert_no_event_dispatch;
    ScriptForbiddenScope forbid_script;
  
@@ -85,7 +84,7 @@ index 63b85e3e1085f68b6bd40f7209749ff1abd15c4f..1fb8e9483aa72ddd7bf65eea19e63dd8
    for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
-@@ -948,6 +1017,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+@@ -948,6 +1016,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
    ScriptForbiddenScope forbid_script;
    EventDispatchForbiddenScope assert_no_event_dispatch;
  

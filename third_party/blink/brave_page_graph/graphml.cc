@@ -5,6 +5,8 @@
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 
+#include <map>
+#include <regex>
 #include <string>
 #include <vector>
 
@@ -14,6 +16,10 @@
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 using ::std::endl;
+using ::std::map;
+using ::std::regex;
+using ::std::regex_match;
+using ::std::regex_replace;
 using ::std::string;
 using ::std::to_string;
 using ::std::unique_ptr;
@@ -54,6 +60,14 @@ namespace {
     kGraphMLAttrForTypeNode, "text");
   const GraphMLAttr* const node_type = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "node type");
+  const GraphMLAttr* const page_graph_edge_id_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "id", kGraphMLAttrTypeLong);
+  const GraphMLAttr* const page_graph_node_id_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "id", kGraphMLAttrTypeLong);
+  const GraphMLAttr* const page_graph_edge_time_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "timestamp", kGraphMLAttrTypeDouble);
+  const GraphMLAttr* const page_graph_node_time_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "timestamp", kGraphMLAttrTypeDouble);
   const GraphMLAttr* const parent_node_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "parent", kGraphMLAttrTypeLong);
   const GraphMLAttr* const primary_pattern_attr = new GraphMLAttr(
@@ -89,10 +103,12 @@ namespace {
     attr_name_attr, attr_value, before_node_attr, block_type_attr, call_args,
     edge_type_attr, event_listener_id_attr, host_attr, incognito_attr,
     is_deleted_attr, is_style_attr, key_attr, method_attr, node_id_attr,
-    node_text, node_type, parent_node_attr, primary_pattern_attr,
-    request_id_attr, request_type_attr, resource_type_attr, rule_attr,
-    script_id_attr, script_type, secondary_pattern_attr, source_attr,
-    status_type, success_attr, tag_attr, url_attr, value_attr
+    node_text, node_type, page_graph_edge_id_attr, page_graph_node_id_attr,
+    page_graph_edge_time_attr, page_graph_node_time_attr,
+    parent_node_attr, primary_pattern_attr, request_id_attr, request_type_attr,
+    resource_type_attr, rule_attr, script_id_attr, script_type,
+    secondary_pattern_attr, source_attr, status_type, success_attr, tag_attr,
+    url_attr, value_attr
   };
 }
 
@@ -135,8 +151,27 @@ GraphMLXML GraphMLAttr::ToValue(const char* value) const {
 
 GraphMLXML GraphMLAttr::ToValue(const string& value) const {
   LOG_ASSERT(type_ == kGraphMLAttrTypeString);
+
+  const map<const char*, const char*> replacements = {
+    {"\"", "&quot;"},
+    {"'", "&apos;"},
+    {"<", "&lt;"},
+    {">", "&gt;"},
+  };
+
+  string escaped_string(value);
+
+  for (auto const &item : replacements) {
+    const regex from(item.first, std::regex::icase | std::regex::ECMAScript);
+    const string to(item.second);
+    escaped_string = regex_replace(escaped_string, from, to);
+  }
+
+  const regex amp_for_escape("&(?!(quot|apos|lt|gt|amp);)");
+  escaped_string = regex_replace(escaped_string, amp_for_escape, "&amp;");
+
   return "<data key=\"" + GetGraphMLId() + "\">" +
-            "<![CDATA[" + value + "]]>" +
+            "<![CDATA[" + escaped_string + "]]>" +
             "</data>";
 }
 
@@ -153,7 +188,11 @@ GraphMLXML GraphMLAttr::ToValue(const bool value) const {
 GraphMLXML GraphMLAttr::ToValue(const uint64_t value) const {
   LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
   return "<data key=\"" + GetGraphMLId() + "\">" + to_string(value) + "</data>";
+}
 
+GraphMLXML GraphMLAttr::ToValue(const double value) const {
+  LOG_ASSERT(type_ == kGraphMLAttrTypeDouble);
+  return "<data key=\"" + GetGraphMLId() + "\">" + to_string(value) + "</data>";
 }
 
 const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
@@ -190,6 +229,14 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return node_text;
     case kGraphMLAttrDefNodeType:
       return node_type;
+    case kGraphMLAttrDefPageGraphEdgeId:
+      return page_graph_edge_id_attr;
+    case kGraphMLAttrDefPageGraphNodeId:
+      return page_graph_node_id_attr;
+    case kGraphMLAttrDefPageGraphEdgeTimestamp:
+      return page_graph_edge_time_attr;
+    case kGraphMLAttrDefPageGraphNodeTimestamp:
+      return page_graph_node_time_attr;
     case kGraphMLAttrDefParentNodeId:
       return parent_node_attr;
     case kGraphMLAttrDefPrimaryPattern:

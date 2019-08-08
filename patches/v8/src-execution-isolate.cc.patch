@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
-index 8a8db12ca3f59577436d148bb2693c836720af2d..d0fcaa683cfa779156321b4c8c43c0ce6a052349 100644
+index 8a8db12ca3f59577436d148bb2693c836720af2d..7ac32b1ad082a0a045a7ef70b806b4ecc2329955 100644
 --- a/src/execution/isolate.cc
 +++ b/src/execution/isolate.cc
 @@ -89,6 +89,8 @@
@@ -43,7 +43,7 @@ index 8a8db12ca3f59577436d148bb2693c836720af2d..d0fcaa683cfa779156321b4c8c43c0ce
 +}
 +
 +void Isolate::ReportBuiltInCallAndResponse(const char* func_name,
-+    const std::vector<const char*>& args, const char* result) {
++    const std::vector<const std::string>& args, const std::string& result) {
 +  BuiltInFuncCallFunc call_func = GetBuiltInFuncCallFunc();
 +  auto extern_isolate = reinterpret_cast<v8::Isolate*>(this);
 +  if (call_func) {

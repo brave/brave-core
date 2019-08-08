@@ -56,6 +56,10 @@ GraphMLXMLList Node::GetGraphMLAttributes() const {
   GraphMLXMLList attrs = GraphItem::GetGraphMLAttributes();
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue(GetItemName()));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphNodeId)
+      ->ToValue(GetId()));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphNodeTimestamp)
+      ->ToValue(GetMicroSecSincePageStart()));
   return attrs;
 }
 

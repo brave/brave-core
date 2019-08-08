@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 
 #include <climits>
+#include <chrono>
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -130,6 +131,7 @@ using ::std::string;
 using ::std::stringstream;
 using ::std::to_string;
 using ::std::unique_ptr;
+using ::std::vector;
 
 using ::blink::Document;
 using ::blink::DynamicTo;
@@ -213,20 +215,20 @@ static void OnEvalScriptCompiled(v8::Isolate& isolate,
 }
 
 static void OnBuiltInFuncCall(v8::Isolate& isolate, const char* built_in_name,
-    const std::vector<const char*>& args) {
+    const vector<const string>& args) {
   PageGraph* const page_graph = PageGraph::GetFromIsolate(isolate);
   if (page_graph) {
-    page_graph->RegisterJSBuiltInCall(JSBuiltInFromString(built_in_name),
-        args);
+    page_graph->RegisterJSBuiltInCall(
+        JSBuiltInFromString(built_in_name), args);
   }
 }
 
 static void OnBuiltInFuncResponse(v8::Isolate& isolate,
-    const char* built_in_name, const char* value) {
+    const char* built_in_name, const string& value) {
   PageGraph* const page_graph = PageGraph::GetFromIsolate(isolate);
   if (page_graph) {
-    page_graph->RegisterJSBuiltInResponse(JSBuiltInFromString(built_in_name),
-        value);
+    page_graph->RegisterJSBuiltInResponse(
+        JSBuiltInFromString(built_in_name), value);
   }
 }
 
@@ -245,7 +247,8 @@ PageGraph::PageGraph(blink::ExecutionContext& execution_context,
       cookie_jar_node_(new NodeStorageCookieJar(this)),
       local_storage_node_(new NodeStorageLocalStorage(this)),
       session_storage_node_(new NodeStorageSessionStorage(this)),
-      execution_context_(execution_context) {
+      execution_context_(execution_context),
+      start_(std::chrono::high_resolution_clock::now()) {
   const string local_tag_name(tag_name.Utf8().data());
 
   const KURL normalized_url = NormalizeUrl(url);
@@ -1035,8 +1038,8 @@ void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id,
 }
 
 void PageGraph::RegisterWebAPICall(const MethodName& method,
-    const std::vector<const String>& arguments) {
-  std::vector<const string> local_args;
+    const vector<const String>& arguments) {
+  vector<const string> local_args;
   stringstream buffer;
   size_t args_length = arguments.size();
   for (size_t i = 0; i < args_length; ++i) {
@@ -1082,12 +1085,12 @@ void PageGraph::RegisterWebAPIResult(const MethodName& method,
 }
 
 void PageGraph::RegisterJSBuiltInCall(const JSBuiltIn built_in,
-    const std::vector<const char*>& arguments) {
-  std::vector<const string> local_args;
+    const vector<const string>& arguments) {
+  vector<const string> local_args;
   stringstream buffer;
-  size_t args_length = arguments.size();
+  const size_t args_length = arguments.size();
   for (size_t i = 0; i < args_length; ++i) {
-    local_args.push_back(string(arguments[i]));
+    local_args.push_back(arguments[i]);
     if (i != args_length - 1) {
       buffer << local_args.at(i) << ", ";
     } else {
@@ -1114,7 +1117,7 @@ void PageGraph::RegisterJSBuiltInCall(const JSBuiltIn built_in,
 }
 
 void PageGraph::RegisterJSBuiltInResponse(const JSBuiltIn built_in,
-    const char* value) {
+    const string& value) {
   const string local_result(value);
   Log("RegisterJSBuiltInResponse) built in: " + JSBuiltInToSting(built_in)
     + ", result: " + local_result);
@@ -1155,6 +1158,11 @@ GraphMLXML PageGraph::ToGraphML() const {
   builder << "\t</graph>" << endl;
   builder << "</graphml>" << endl;
   return builder.str();
+}
+
+const std::chrono::time_point<std::chrono::high_resolution_clock>&
+    PageGraph::GetTimestamp() const {
+  return start_;
 }
 
 NodeActor* PageGraph::GetCurrentActingNode() const {

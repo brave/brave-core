@@ -5,6 +5,8 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/graph_item.h"
 
+#include <chrono>
+#include <ctime>
 #include <string>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
@@ -24,10 +26,12 @@ void GraphItem::StartGraphMLExport(PageGraphId id_counter) {
 
 GraphItem::GraphItem(PageGraph* const graph) :
     id_(++(graph->id_counter_)),
+    time_(std::chrono::high_resolution_clock::now()),
     graph_(graph) {}
 
 GraphItem::GraphItem() :
     id_(++ad_hoc_id_counter),
+    time_(std::chrono::high_resolution_clock::now()),
     graph_(nullptr) {}
 
 GraphItem::~GraphItem() {}
@@ -46,6 +50,11 @@ bool GraphItem::IsEdge() const {
 
 bool GraphItem::IsNode() const {
   return false;
+}
+
+double GraphItem::GetMicroSecSincePageStart() const {
+  return std::chrono::duration_cast<std::chrono::microseconds>(
+      time_ - graph_->GetTimestamp()).count();
 }
 
 }  // namespace brave_page_graph

@@ -1,17 +1,20 @@
 diff --git a/include/v8.h b/include/v8.h
-index c54b088404229dccf015e20b6a5bab19d3d94e69..0242b409fdb78a8141963ed2afae843823560f8b 100644
+index c54b088404229dccf015e20b6a5bab19d3d94e69..218172df2895406de1efcf7fdf17c3c19216322a 100644
 --- a/include/v8.h
 +++ b/include/v8.h
-@@ -26,6 +26,8 @@
+@@ -26,6 +26,11 @@
  #include "v8-version.h"   // NOLINT(build/include)
  #include "v8config.h"     // NOLINT(build/include)
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <string>
++#endif
 +
  // We reserve the V8_* prefix for macros defined in V8 public API and
  // assume there are no name conflicts with the embedder's code.
  
-@@ -34,6 +36,17 @@
+@@ -34,6 +39,17 @@
   */
  namespace v8 {
  
@@ -20,16 +23,16 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..0242b409fdb78a8141963ed2afae8438
 +    const int parent_script_id, const int script_id);
 +
 +typedef void (*BuiltInFuncCallFunc)(v8::Isolate& isolate,
-+    const char* builtin_name, const std::vector<const char*>& args);
++    const char* builtin_name, const std::vector<const std::string>& args);
 +
 +typedef void (*BuiltInFuncResponseFunc)(v8::Isolate& isolate,
-+    const char* builtin_name, const char* value);
++    const char* builtin_name, const std::string& value);
 +#endif
 +
  class AccessorSignature;
  class Array;
  class ArrayBuffer;
-@@ -1326,6 +1339,10 @@ class V8_EXPORT Module {
+@@ -1326,6 +1342,10 @@ class V8_EXPORT Module {
     * kEvaluated or kErrored.
     */
    Local<UnboundModuleScript> GetUnboundModuleScript();
@@ -40,7 +43,7 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..0242b409fdb78a8141963ed2afae8438
  };
  
  /**
-@@ -1406,6 +1423,12 @@ class V8_EXPORT ScriptCompiler {
+@@ -1406,6 +1426,12 @@ class V8_EXPORT ScriptCompiler {
      // Source takes ownership of CachedData.
      V8_INLINE Source(Local<String> source_string, const ScriptOrigin& origin,
                       CachedData* cached_data = nullptr);
@@ -53,7 +56,7 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..0242b409fdb78a8141963ed2afae8438
      V8_INLINE Source(Local<String> source_string,
                       CachedData* cached_data = nullptr);
      V8_INLINE ~Source();
-@@ -1433,6 +1456,9 @@ class V8_EXPORT ScriptCompiler {
+@@ -1433,6 +1459,9 @@ class V8_EXPORT ScriptCompiler {
      ScriptOriginOptions resource_options;
      Local<Value> source_map_url;
      Local<PrimitiveArray> host_defined_options;
@@ -63,7 +66,7 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..0242b409fdb78a8141963ed2afae8438
  
      // Cached data from previous compilation (if a kConsume*Cache flag is
      // set), or hold newly generated cache data (kProduce*Cache flags) are
-@@ -1619,7 +1645,11 @@ class V8_EXPORT ScriptCompiler {
+@@ -1619,7 +1648,11 @@ class V8_EXPORT ScriptCompiler {
     */
    static V8_WARN_UNUSED_RESULT MaybeLocal<Script> Compile(
        Local<Context> context, StreamedSource* source,
@@ -76,7 +79,7 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..0242b409fdb78a8141963ed2afae8438
  
    /**
     * Return a version tag for CachedData for the current V8 version & flags.
-@@ -4124,6 +4154,13 @@ class V8_EXPORT Function : public Object {
+@@ -4124,6 +4157,13 @@ class V8_EXPORT Function : public Object {
     */
    Local<Value> GetBoundFunction() const;
  
@@ -90,7 +93,7 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..0242b409fdb78a8141963ed2afae8438
    ScriptOrigin GetScriptOrigin() const;
    V8_INLINE static Function* Cast(Value* obj);
    static const int kLineOffsetNotFound;
-@@ -8518,6 +8555,14 @@ class V8_EXPORT Isolate {
+@@ -8518,6 +8558,14 @@ class V8_EXPORT Isolate {
    void operator delete(void*, size_t) = delete;
    void operator delete[](void*, size_t) = delete;
  
@@ -105,7 +108,7 @@ index c54b088404229dccf015e20b6a5bab19d3d94e69..0242b409fdb78a8141963ed2afae8438
   private:
    template <class K, class V, class Traits>
    friend class PersistentValueMapBase;
-@@ -10141,6 +10186,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
+@@ -10141,6 +10189,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
        host_defined_options(origin.HostDefinedOptions()),
        cached_data(data) {}
  

@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.h b/src/execution/isolate.h
-index 4b4bf9cd7c61687b0f36da1eaa672979c59dab67..a9e522885e6adcb389ddc3e57f4b70ee069cb553 100644
+index 4b4bf9cd7c61687b0f36da1eaa672979c59dab67..123b99232e4dccd0b7afd06680be90ae75d8deff 100644
 --- a/src/execution/isolate.h
 +++ b/src/execution/isolate.h
 @@ -35,6 +35,8 @@
@@ -43,7 +43,7 @@ index 4b4bf9cd7c61687b0f36da1eaa672979c59dab67..a9e522885e6adcb389ddc3e57f4b70ee
 +  }
 +
 +  void ReportBuiltInCallAndResponse(const char* func_name,
-+    const std::vector<const char*>& args, const char* result);
++    const std::vector<const std::string>& args, const std::string& result);
 +#endif
 +
   private:
