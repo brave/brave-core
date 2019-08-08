@@ -9,7 +9,8 @@ import Data
 
 private struct TopToolbarViewUX {
     static let LocationPadding: CGFloat = 8
-    static let Padding: CGFloat = 10
+    static let SmallPadding: CGFloat = 2
+    static let NormalPadding: CGFloat = 10
     static let LocationHeight: CGFloat = 34
     static let ButtonHeight: CGFloat = 44
     static let LocationContentOffset: CGFloat = 8
@@ -18,7 +19,7 @@ private struct TopToolbarViewUX {
     
     static let TabsButtonRotationOffset: CGFloat = 1.5
     static let TabsButtonHeight: CGFloat = 18.0
-    static let ToolbarButtonInsets = UIEdgeInsets(equalInset: Padding)
+    static let ToolbarButtonInsets = UIEdgeInsets(equalInset: NormalPadding)
 }
 
 protocol TopToolbarDelegate: class {
@@ -187,13 +188,12 @@ class TopToolbarView: UIView, ToolbarProtocol {
     
     private let mainStackView = UIStackView().then {
         $0.alignment = .center
-        $0.spacing = 16
+        $0.spacing = 8
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private let navigationStackView = UIStackView().then {
         $0.distribution = .fillEqually
-        $0.spacing = 16
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -227,14 +227,20 @@ class TopToolbarView: UIView, ToolbarProtocol {
         navigationStackView.addArrangedSubview(backButton)
         navigationStackView.addArrangedSubview(forwardButton)
         
+        [backButton, forwardButton, menuButton, tabsButton].forEach {
+            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        }
+        
         [navigationStackView, locationContainer, tabsButton, menuButton, cancelButton].forEach {
             mainStackView.addArrangedSubview($0)
         }
         
+        mainStackView.setCustomSpacing(16, after: locationContainer)
+        
         mainStackView.snp.makeConstraints { make in
             make.top.bottom.equalTo(self)
-            make.leading.equalTo(self.safeArea.leading).inset(TopToolbarViewUX.Padding)
-            make.trailing.equalTo(self.safeArea.trailing).inset(TopToolbarViewUX.Padding)
+            make.leading.equalTo(self.safeArea.leading).inset(topToolbarPadding)
+            make.trailing.equalTo(self.safeArea.trailing).inset(topToolbarPadding)
         }
         
         line.snp.makeConstraints { make in
@@ -255,6 +261,20 @@ class TopToolbarView: UIView, ToolbarProtocol {
         
         locationView.snp.makeConstraints { make in
             make.edges.equalTo(self.locationContainer)
+        }
+    }
+    
+    private var topToolbarPadding: CGFloat {
+        // The only case where we want small padding is on iPads and iPhones in landscape.
+        // Instead of padding we give extra tap area for buttons on the toolbar.
+        if !inOverlayMode && toolbarIsShowing { return TopToolbarViewUX.SmallPadding }
+        return TopToolbarViewUX.NormalPadding
+    }
+    
+    private func updateMargins() {
+        mainStackView.snp.updateConstraints {
+            $0.leading.equalTo(self.safeArea.leading).inset(topToolbarPadding)
+            $0.trailing.equalTo(self.safeArea.trailing).inset(topToolbarPadding)
         }
     }
     
@@ -302,6 +322,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     // that can show in either mode.
     func setShowToolbar(_ shouldShow: Bool) {
         toolbarIsShowing = shouldShow
+        updateMargins()
         setNeedsUpdateConstraints()
         // when we transition from portrait to landscape, calling this here causes
         // the constraints to be calculated too early and there are constraint errors
@@ -421,6 +442,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
             }
         }
         
+        updateMargins()
         layoutIfNeeded()
     }
     
