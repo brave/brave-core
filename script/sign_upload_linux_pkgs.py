@@ -229,10 +229,10 @@ def download_linux_pkgs_from_github(args, logging):
                 logging.debug("GitHub asset_url: {}".format(
                     asset_url + '/' + filename))
 
-            # Check if the file exists on disk first, and rename it if so
-            # to prevent a situation where the expect script fails because
-            # the rpm has already been signed
-            rename_file_if_exists(filename, logging)
+            # Check if the file exists on disk first, and remove it if found.
+            # This prevents a situation where the expect script fails because
+            # the rpm has already been signed.
+            remove_existing_file(filename, logging)
 
             # Instantiate new requests session, versus reusing the repo session above.
             # Headers was likely being reused in that session, and not allowing us
@@ -290,18 +290,14 @@ def perform_github_download(asset_url, args, logging, filename, file_list):
             "Requests Response status_code != 200: {}".format(r.status_code))
 
 
-def rename_file_if_exists(filename, logging):
+def remove_existing_file(filename, logging):
     if os.path.isfile(os.path.join(os.getcwd(), filename)):
-        now = datetime.datetime.now()
-        datestring = "{}{}{}.{}{}{}".format(now.year, now.month, now.day, now.hour,
-                                            now.minute, now.second)
-        logging.info("Found file \'{}\' already exists, renaming to: \'{}\'.".
-                     format(filename, filename + '.' + datestring))
+        logging.info("File \'{}\' already exists, removing...".format(filename))
         try:
-            os.rename(filename, filename + '.' + datestring)
+            os.remove(filename)
         except Exception as e:
             logging.error(
-                "Error: could not rename file {}: {}".format(filename, e))
+                "Error: could not remove file {}: {}".format(filename, e))
 
 
 def parse_args():
