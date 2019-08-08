@@ -181,7 +181,7 @@ void RedeemToken::OnCreateConfirmation(
 
   if (response_status_code != 201) {
     BLOG(ERROR) << "Failed to create confirmation";
-    OnRedeem(FAILED, confirmation, false);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
