@@ -63,8 +63,6 @@ fi
 npm run build
 echo "Building sync"
 npm run build:sync
-echo "Building adblock library"
-npm run build:adblock
 
 # Sets up local configurations from the tracked .template files
 

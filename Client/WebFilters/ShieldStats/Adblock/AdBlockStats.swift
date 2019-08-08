@@ -10,47 +10,30 @@ private let log = Logger.browserLogger
 class AdBlockStats: LocalAdblockResourceProtocol {
     static let shared = AdBlockStats()
     
-    typealias LocaleCode = String
-    static let defaultLocale = "en"
-    
     /// File name of bundled general blocklist.
     private let bundledGeneralBlocklist = "ABPFilterParserData"
     
     fileprivate var fifoCacheOfUrlsChecked = FifoDict()
     
-    fileprivate lazy var adblockStatsResources: [String: ABPFilterLibWrapper] = {
-        // Two general blocklists are provided:
-        // 1. bundled with small amount of general blocklist rules.
-        // 2. A bigger list, downloaded from the server.
-        let generalAdblockers = [bundledGeneralBlocklist: ABPFilterLibWrapper(),
-                                AdblockerType.general.identifier: ABPFilterLibWrapper()]
-        return generalAdblockers
-    }()
+    // Adblock engine for general adblock lists.
+    private let generalAdblockEngine: AdblockRustEngine
     
-    let currentLocaleCode: LocaleCode
+    /// Adblock engine for regional, non-english locales.
+    private var regionalAdblockEngine: AdblockRustEngine?
     
     fileprivate var isRegionalAdblockEnabled: Bool { return Preferences.Shields.useRegionAdBlock.value }
     
     fileprivate init() {
-        currentLocaleCode = Locale.current.languageCode ?? AdBlockStats.defaultLocale
-        updateRegionalAdblockEnabledState()
-    }
-    
-    private func isGeneralAdblocker(id: String) -> Bool {
-        return id == AdblockerType.general.identifier || id == bundledGeneralBlocklist
+        generalAdblockEngine = AdblockRustEngine()
     }
     
     func startLoading() {
-        loadLocalData(name: bundledGeneralBlocklist, type: "dat") { data in
-            self.setDataFile(data: data, id: bundledGeneralBlocklist)
-        }
-        
-        loadDatFilesFromApplicationSupportDirectory()
+        loadDownloadedDatFiles()
     }
     
-    private func loadDatFilesFromApplicationSupportDirectory() {
+    private func loadDownloadedDatFiles() {
         let fm = FileManager.default
-
+        
         guard let folderUrl = fm.getOrCreateFolder(name: AdblockResourceDownloader.folderName) else {
             log.error("Could not get directory with .dat files")
             return
@@ -59,7 +42,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
         let enumerator = fm.enumerator(at: folderUrl, includingPropertiesForKeys: nil)
         let filePaths = enumerator?.allObjects as? [URL]
         let datFileUrls = filePaths?.filter { $0.pathExtension == "dat" }
-
+        
         datFileUrls?.forEach {
             let fileName = $0.deletingPathExtension().lastPathComponent
             
@@ -68,14 +51,8 @@ class AdBlockStats: LocalAdblockResourceProtocol {
         }
     }
     
-    fileprivate func updateRegionalAdblockEnabledState() {
-        if currentLocaleCode == AdBlockStats.defaultLocale { return }
-        
-        adblockStatsResources[currentLocaleCode] = ABPFilterLibWrapper()
-    }
-    
     func shouldBlock(_ request: URLRequest, currentTabUrl: URL?) -> Bool {
-        guard let url = request.url else {
+        guard let url = request.url, let requestHost = url.host else {
             return false
         }
         
@@ -102,18 +79,14 @@ class AdBlockStats: LocalAdblockResourceProtocol {
         }
         
         var isBlocked = false
-        let header = "*/*"
         
-        for (id, adblocker) in adblockStatsResources where adblocker.hasDataFile() {
-            if !isGeneralAdblocker(id: id) && !isRegionalAdblockEnabled { continue }
-            
-            isBlocked = adblocker.isBlockedConsideringType(url.absoluteString,
-                                                                      mainDocumentUrl: mainDocDomain,
-                                                                      acceptHTTPHeader: header)
-            
-            if isBlocked { break }
+        isBlocked = generalAdblockEngine.shouldBlock(requestUrl: url.absoluteString, requestHost: requestHost, sourceHost: mainDocDomain)
+        
+        // Main adblocker didn't catch this rule, checking regional filters if applicable.
+        if !isBlocked, isRegionalAdblockEnabled, let regionalAdblocker = regionalAdblockEngine {
+            isBlocked = regionalAdblocker.shouldBlock(requestUrl: url.absoluteString, requestHost: requestHost, sourceHost: mainDocDomain)
         }
-
+        
         fifoCacheOfUrlsChecked.addItem(key, value: isBlocked as AnyObject)
         
         return isBlocked
@@ -122,7 +95,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     // Firefox has uses urls of the form
     // http://localhost:6571/errors/error.html?url=http%3A//news.google.ca/
     // to populate the browser history, and load+redirect using GCDWebServer
-    func stripLocalhostWebServer(_ url: String?) -> String {
+    private func stripLocalhostWebServer(_ url: String?) -> String {
         guard let url = url else { return "" }
     
         // I think the ones prefixed with the following are the only ones of concern. There is also about/sessionrestore urls, not sure if we need to look at those
@@ -137,14 +110,26 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     
     @discardableResult func setDataFile(data: Data, id: String) -> Deferred<()> {
         let completion = Deferred<()>()
-
-        guard let adblocker = adblockStatsResources[id] else { return completion }
         
-        adblocker.setDataFile(data)
+        if !isGeneralAdblocker(id: id) && regionalAdblockEngine == nil {
+            regionalAdblockEngine = AdblockRustEngine()
+        }
         
-        if adblocker.hasDataFile() {
+        guard let engine = isGeneralAdblocker(id: id) ? generalAdblockEngine : regionalAdblockEngine else {
+            log.error("Adblock engine with id: \(id) is nil")
+            return completion
+        }
+        
+        if engine.set(data: data) {
+            log.debug("Adblock file with id: \(id) deserialized successfully")
             completion.fill(())
+        } else {
+            log.error("Failed to deserialize adblock list with id: \(id)")
         }
         return completion
+    }
+    
+    private func isGeneralAdblocker(id: String) -> Bool {
+        return id == AdblockerType.general.identifier || id == bundledGeneralBlocklist
     }
 }

@@ -21,7 +21,6 @@ class AdblockResourceDownloader {
     private let networkManager: NetworkManager
     private let locale: String
     
-    private let endpoint = "https://adblock-data.s3.brave.com/ios/"
     static let folderName = "abp-data"
     
     init(networkManager: NetworkManager = NetworkManager(), locale: String? = Locale.current.languageCode) {
@@ -64,8 +63,7 @@ class AdblockResourceDownloader {
         let queue = DispatchQueue(label: queueName)
         let nm = networkManager
         let folderName = AdblockResourceDownloader.folderName
-        // name of the file on server
-        let resourceName = type.resourceName
+        
         // file name of which the file will be saved on disk
         let fileName = type.identifier
         
@@ -73,8 +71,8 @@ class AdblockResourceDownloader {
             let fileExtension = "." + fileType.rawValue
             let etagExtension = fileExtension + ".etag"
             
-            guard let resourceName = resourceName,
-                let url = URL(string: endpoint + resourceName + fileExtension) else {
+            guard let resourceName = type.resourceName(for: fileType),
+                let url = URL(string: fileType.endpoint + resourceName + fileExtension) else {
                 return Deferred<AdBlockNetworkResource>()
             }
             
