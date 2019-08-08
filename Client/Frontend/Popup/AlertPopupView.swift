@@ -6,16 +6,20 @@ import UIKit
 import BraveShared
 
 class AlertPopupView: PopupView {
-    
     fileprivate var dialogImage: UIImageView?
     fileprivate var titleLabel: UILabel!
     fileprivate var messageLabel: UILabel!
     fileprivate var containerView: UIView!
+    fileprivate var textField: UITextField?
+    
+    var text: String? {
+        return textField?.text
+    }
     
     fileprivate let kAlertPopupScreenFraction: CGFloat = 0.8
     fileprivate let kPadding: CGFloat = 20.0
     
-    init(image: UIImage?, title: String, message: String) {
+    init(image: UIImage?, title: String, message: String, inputType: UIKeyboardType? = nil, secureInput: Bool = false, inputPlaceholder: String? = nil) {
         super.init(frame: CGRect.zero)
         
         overlayDismisses = false
@@ -47,6 +51,23 @@ class AlertPopupView: PopupView {
         messageLabel.text = message
         messageLabel.numberOfLines = 0
         containerView.addSubview(messageLabel)
+        
+        if let inputType = inputType {
+            textField = UITextField(frame: CGRect.zero).then {
+                $0.keyboardType = inputType
+                $0.textColor = .black
+                $0.placeholder = inputPlaceholder ?? ""
+                $0.autocorrectionType = .no
+                $0.autocapitalizationType = .none
+                $0.layer.cornerRadius = 4
+                $0.layer.borderColor = UIColor(white: 0, alpha: 0.3).cgColor
+                $0.layer.borderWidth = 1
+                $0.delegate = self
+                $0.textAlignment = .center
+                $0.isSecureTextEntry = secureInput
+                containerView.addSubview($0)
+            }
+        }
         
         updateSubviews()
         
@@ -100,9 +121,20 @@ class AlertPopupView: PopupView {
         messageLabelFrame.origin.y = rint(titleLabelFrame.maxY + kPadding * 1.5 / 2.0 * resizePercentage)
         messageLabel.frame = messageLabelFrame
         
+        var textFieldFrame = textField?.frame ?? CGRect.zero
+        var maxY = messageLabel.text?.isEmpty == true ? titleLabelFrame.maxY : messageLabelFrame.maxY
+        if let textField = textField {
+            textFieldFrame.size.width = width - kPadding * 2
+            textFieldFrame.size.height = 35
+            textFieldFrame.origin.x = kPadding
+            textFieldFrame.origin.y = maxY + kPadding
+            textField.frame = textFieldFrame
+            maxY = textFieldFrame.maxY
+        }
+        
         var containerViewFrame: CGRect = containerView.frame
         containerViewFrame.size.width = width
-        containerViewFrame.size.height = rint(messageLabelFrame.maxY + kPadding * 1.5 * resizePercentage)
+        containerViewFrame.size.height = rint(maxY + kPadding * 1.5 * resizePercentage)
         containerView.frame = containerViewFrame
     }
     
@@ -114,5 +146,18 @@ class AlertPopupView: PopupView {
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func showWithType(showType: PopupViewShowType) {
+        super.showWithType(showType: showType)
+        
+        textField?.becomeFirstResponder()
+    }
+}
+
+extension AlertPopupView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
