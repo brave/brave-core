@@ -15,8 +15,30 @@ import Shared
 /// need to invoke the completionHandler passed to us from the WKWebView delegate or else
 /// a runtime exception is thrown.
 class JSPromptAlertController: UIAlertController {
-    var alertInfo: JSAlertInfo?
-
+    
+    var info: JSAlertInfo?
+    var showsCancel: Bool = false
+    
+    convenience init(title: String?, message: String?, preferredStyle: UIAlertController.Style = .alert, info: JSAlertInfo, showCancel: Bool = true) {
+        self.init(title: title, message: message, preferredStyle: preferredStyle)
+        self.info = info
+        self.showsCancel = showCancel
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if let handler = info?.suppressHandler {
+            self.addAction(UIAlertAction(title: Strings.SuppressAlertsActionTitle, style: .default, handler: { _ in
+                handler(true)
+            }))
+        }
+        if showsCancel {
+            self.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: { _ in
+                self.info?.cancel()
+            }))
+        }
+    }
+    
     weak var delegate: JSPromptAlertControllerDelegate?
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -33,23 +55,26 @@ class JSPromptAlertController: UIAlertController {
  *  of the provided completionHandler to let us generate the UIAlertController when needed.
  */
 protocol JSAlertInfo {
+    typealias SuppressHandler = (Bool) -> Void
     func alertController() -> JSPromptAlertController
     func cancel()
+    var suppressHandler: SuppressHandler? {get set}
 }
 
 struct MessageAlert: JSAlertInfo {
     let message: String
     let frame: WKFrameInfo
     let completionHandler: () -> Void
+    var suppressHandler: SuppressHandler?
 
     func alertController() -> JSPromptAlertController {
         let alertController = JSPromptAlertController(title: titleForJavaScriptPanelInitiatedByFrame(frame),
-            message: message,
-            preferredStyle: .alert)
+                                                                    message: message,
+                                                                    info: self,
+                                                                    showCancel: false)
         alertController.addAction(UIAlertAction(title: Strings.OKString, style: .default) { _ in
             self.completionHandler()
         })
-        alertController.alertInfo = self
         return alertController
     }
 
@@ -62,23 +87,16 @@ struct ConfirmPanelAlert: JSAlertInfo {
     let message: String
     let frame: WKFrameInfo
     let completionHandler: (Bool) -> Void
-
-    init(message: String, frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
-        self.message = message
-        self.frame = frame
-        self.completionHandler = completionHandler
-    }
+    var suppressHandler: SuppressHandler?
 
     func alertController() -> JSPromptAlertController {
         // Show JavaScript confirm dialogs.
-        let alertController = JSPromptAlertController(title: titleForJavaScriptPanelInitiatedByFrame(frame), message: message, preferredStyle: .alert)
+        let alertController = JSPromptAlertController(title: titleForJavaScriptPanelInitiatedByFrame(frame),
+                                                                    message: message,
+                                                                    info: self)
         alertController.addAction(UIAlertAction(title: Strings.OKString, style: .default) { _ in
             self.completionHandler(true)
         })
-        alertController.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel) { _ in
-            self.cancel()
-        })
-        alertController.alertInfo = self
         return alertController
     }
 
@@ -92,18 +110,12 @@ struct TextInputAlert: JSAlertInfo {
     let frame: WKFrameInfo
     let completionHandler: (String?) -> Void
     let defaultText: String?
-
-    var input: UITextField!
-
-    init(message: String, frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void, defaultText: String?) {
-        self.message = message
-        self.frame = frame
-        self.completionHandler = completionHandler
-        self.defaultText = defaultText
-    }
-
+    var suppressHandler: SuppressHandler?
+    
     func alertController() -> JSPromptAlertController {
-        let alertController = JSPromptAlertController(title: titleForJavaScriptPanelInitiatedByFrame(frame), message: message, preferredStyle: .alert)
+        let alertController = JSPromptAlertController(title: titleForJavaScriptPanelInitiatedByFrame(frame),
+                                                                    message: message,
+                                                                    info: self)
         var input: UITextField!
         alertController.addTextField(configurationHandler: { (textField: UITextField) in
             input = textField
@@ -112,10 +124,6 @@ struct TextInputAlert: JSAlertInfo {
         alertController.addAction(UIAlertAction(title: Strings.OKString, style: .default) { _ in
             self.completionHandler(input.text)
         })
-        alertController.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel) { _ in
-            self.cancel()
-        })
-        alertController.alertInfo = self
         return alertController
     }
 

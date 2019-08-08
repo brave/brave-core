@@ -2196,37 +2196,73 @@ extension BrowserViewController: WKUIDelegate {
     }
 
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
-        let messageAlert = MessageAlert(message: message, frame: frame, completionHandler: completionHandler)
-        if shouldDisplayJSAlertForWebView(webView) {
-            present(messageAlert.alertController(), animated: true, completion: nil)
-        } else if let promptingTab = tabManager[webView] {
-            promptingTab.queueJavascriptAlertPrompt(messageAlert)
-        } else {
-            // This should never happen since an alert needs to come from a web view but just in case call the handler
-            // since not calling it will result in a runtime exception.
+        var messageAlert = MessageAlert(message: message, frame: frame, completionHandler: completionHandler, suppressHandler: nil)
+        handleAlert(webView: webView, alert: &messageAlert) {
             completionHandler()
         }
     }
 
     func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
-        let confirmAlert = ConfirmPanelAlert(message: message, frame: frame, completionHandler: completionHandler)
-        if shouldDisplayJSAlertForWebView(webView) {
-            present(confirmAlert.alertController(), animated: true, completion: nil)
-        } else if let promptingTab = tabManager[webView] {
-            promptingTab.queueJavascriptAlertPrompt(confirmAlert)
-        } else {
+        var confirmAlert = ConfirmPanelAlert(message: message, frame: frame, completionHandler: completionHandler, suppressHandler: nil)
+        handleAlert(webView: webView, alert: &confirmAlert) {
             completionHandler(false)
         }
     }
 
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
-        let textInputAlert = TextInputAlert(message: prompt, frame: frame, completionHandler: completionHandler, defaultText: defaultText)
-        if shouldDisplayJSAlertForWebView(webView) {
-            present(textInputAlert.alertController(), animated: true, completion: nil)
-        } else if let promptingTab = tabManager[webView] {
-            promptingTab.queueJavascriptAlertPrompt(textInputAlert)
-        } else {
+        var textInputAlert = TextInputAlert(message: prompt, frame: frame, completionHandler: completionHandler, defaultText: defaultText, suppressHandler: nil)
+        handleAlert(webView: webView, alert: &textInputAlert) {
             completionHandler(nil)
+        }
+    }
+    
+    func suppressJSAlerts(webView: WKWebView) {
+        let script = """
+                    window.alert=window.confirm=window.prompt=function(n){},
+                    [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
+                    """
+        webView.evaluateJavaScript(script, completionHandler: nil)
+    }
+    
+    func handleAlert<T: JSAlertInfo>(webView: WKWebView, alert: inout T, completionHandler: @escaping () -> Void) {
+        guard let promptingTab = tabManager[webView], !promptingTab.blockAllAlerts else {
+            suppressJSAlerts(webView: webView)
+            tabManager[webView]?.cancelQueuedAlerts()
+            completionHandler()
+            return
+        }
+        promptingTab.alertShownCount += 1
+        var suppressBlock: JSAlertInfo.SuppressHandler = {[unowned self] suppress in
+            if suppress {
+                func suppressDialogues(_: UIAlertAction) {
+                    self.suppressJSAlerts(webView: webView)
+                    promptingTab.blockAllAlerts = true
+                    self.tabManager[webView]?.cancelQueuedAlerts()
+                    completionHandler()
+                }
+                // Show confirm alert here.
+                let suppressSheet = UIAlertController(title: nil, message: Strings.SuppressAlertsActionMessage, preferredStyle: .actionSheet)
+                suppressSheet.addAction(UIAlertAction(title: Strings.SuppressAlertsActionTitle, style: .destructive, handler: suppressDialogues))
+                suppressSheet.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: { _ in
+                    completionHandler()
+                }))
+                if UIDevice.current.userInterfaceIdiom == .pad, let popoverController = suppressSheet.popoverPresentationController {
+                    popoverController.sourceView = self.view
+                    popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                    popoverController.permittedArrowDirections = []
+                }
+                self.present(suppressSheet, animated: true)
+            } else {
+                completionHandler()
+            }
+        }
+        alert.suppressHandler = promptingTab.alertShownCount > 1 ? suppressBlock : nil
+        if shouldDisplayJSAlertForWebView(webView) {
+            let controller = alert.alertController()
+            controller.delegate = self
+            present(controller, animated: true)
+        } else {
+            promptingTab.queueJavascriptAlertPrompt(alert)
         }
     }
 

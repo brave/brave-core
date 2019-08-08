@@ -47,6 +47,8 @@ class Tab: NSObject {
     
     let rewardsId: UInt32
     
+    var alertShownCount: Int = 0
+    var blockAllAlerts: Bool = false
     private(set) var type: TabType = .regular
     
     var isPrivate: Bool {
