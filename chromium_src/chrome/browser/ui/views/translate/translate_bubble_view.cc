@@ -17,10 +17,10 @@
   IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE
 #endif
 
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-#define BraveTranslateBubbleView TranslateBubbleView
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#define BRAVE_TRANSLATE_BUBBLE_VIEW_ BraveTranslateBubbleView
+#else
+#define BRAVE_TRANSLATE_BUBBLE_VIEW_ TranslateBubbleView
 #endif
+
 #include "../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.cc" // NOLINT
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-#undef BraveTranslateBubbleView
-#endif
