@@ -4,6 +4,7 @@
   "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
+    "build": "npm run build-storybook",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
     "pep8": "pycodestyle --max-line-length 120 -r script",
