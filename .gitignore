@@ -39,3 +39,4 @@ venv/
 *.deb
 *.rpm
 *.exe
+.storybook-out

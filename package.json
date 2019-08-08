@@ -9,6 +9,7 @@
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui": "webpack --config components/webpack/webpack.config.js --progress --colors",
+    "build-storybook": "build-storybook -c .storybook -o .storybook-out",
     "storybook": "start-storybook",
     "test-unit": "jest -t",
     "test-security": "npm audit",
