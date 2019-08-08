@@ -16,4 +16,8 @@ extension Data {
         self.copyBytes(to: &bytes, count: self.count)
         return bytes
     }
+    
+    public var int8Array: [Int8] {
+        return self.map { Int8(bitPattern: $0) }
+    }
 }

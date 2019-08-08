@@ -14,13 +14,13 @@
 #import "Shared-Bridging-Header.h"
 #import "Storage-Bridging-Header.h"
 
-#import "ABPFilterLibWrapper.h"
-
 #import "HttpsEverywhereObjC.h"
 #import "NSData+GZIP.h"
 #import "NSFileManager+Tar.h"
 
 #import <YubiKit/YubiKit.h>
 #import <CommonCrypto/CommonCrypto.h>
+
+#import "ablock_rust_lib.h"
 
 #endif
