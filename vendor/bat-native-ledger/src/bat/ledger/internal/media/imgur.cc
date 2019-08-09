@@ -162,6 +162,15 @@ std::string Imgur::GetPublisherKey(const std::string& key) {
     return std::string();
   }
 
+  // TODO: we need to rethink this method.
+  //
+  // We need to use this API call:
+  // https://api.imgur.com/3/account/{{username}}
+  //
+  // This will return an Account object that has the account_id.
+  // We can grab a user's client_id to use the API, although this
+  // gets into a grey area for the ToS. For now, going to leave
+  // this. Needs rework.
   return (std::string)IMGUR_MEDIA_TYPE + "#channel:" + key;
 }
 
