@@ -42,12 +42,10 @@ bool URLMatched(const GURL& url) {
       base::CompareCase::INSENSITIVE_ASCII);
 }
 
-/**
- * Returns true if the URL contains a URL fragment that starts with "ix=". For
- * example, https://webtorrent.io/torrents/big-buck-bunny.torrent#ix=1.
- * Otherwise, returns false.
- */
-bool IsViewerURL(const GURL& url) {
+
+// Returns true if the URL contains a URL fragment that starts with "ix=". For
+// example, https://webtorrent.io/torrents/big-buck-bunny.torrent#ix=1.
+ bool IsViewerURL(const GURL& url) {
   return base::StartsWith(url.ref(), "ix=",
       base::CompareCase::INSENSITIVE_ASCII);
 }
@@ -75,12 +73,9 @@ bool IsWebtorrentInitiated(std::shared_ptr<brave::BraveRequestInfo> ctx) {
       ctx->initiator_url.host() == brave_webtorrent_extension_id;
 }
 
-/**
- * Returns true if the resource type is a frame (i.e. a top level page) or a
- * subframe (i.e. a frame or iframe). For all other resource types (stylesheet,
- * script, XHR request, etc.), returns false.
- */
-
+// Returns true if the resource type is a frame (i.e. a top level page) or a
+// subframe (i.e. a frame or iframe). For all other resource types (stylesheet,
+// script, XHR request, etc.), returns false.
 bool IsMainFrameResource(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   return ctx->resource_type == content::ResourceType::kMainFrame;
 }

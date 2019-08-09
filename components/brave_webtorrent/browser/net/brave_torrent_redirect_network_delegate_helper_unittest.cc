@@ -459,5 +459,4 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                                            &location));
   EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
   EXPECT_EQ(ret, net::OK);
-
 }
