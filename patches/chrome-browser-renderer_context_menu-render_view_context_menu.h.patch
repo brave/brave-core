@@ -1,13 +1,12 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-index 824741727052dfd87f8f65df8bbb5adf4a9f1e2e..ea5b8370d907d7d991ae67d4f66f33d5ec4ef7c2 100644
+index 824741727052dfd87f8f65df8bbb5adf4a9f1e2e..3caba335f84e5126c5912451b5dbcc807b21f62a 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-@@ -114,6 +114,8 @@ class RenderViewContextMenu : public RenderViewContextMenuBase {
+@@ -113,6 +113,7 @@ class RenderViewContextMenu : public RenderViewContextMenuBase {
+   // Returns true if keyboard lock is active and requires the user to press and
    // hold escape to exit exclusive access mode.
    bool IsPressAndHoldEscRequiredToExitFullscreen() const;
++  BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
  
-+  virtual void AppendBraveLinkItems();
-+
   private:
    friend class RenderViewContextMenuTest;
-   friend class TestRenderViewContextMenu;

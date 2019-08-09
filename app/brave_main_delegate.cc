@@ -15,7 +15,6 @@
 #include "build/build_config.h"
 #include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
@@ -29,7 +28,6 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
-#include "components/translate/core/browser/translate_prefs.h"
 #include "components/unified_consent/feature.h"
 #include "extensions/common/extension_features.h"
 #include "services/network/public/cpp/features.h"
@@ -163,9 +161,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       autofill::features::kAutofillServerCommunication.name,
       network::features::kNetworkService.name,
       unified_consent::kUnifiedConsent.name,
-#if !defined(CHROME_MULTIPLE_DLL_CHILD) && !BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
-      translate::kTranslateUI.name,  // only available in browser process
-#endif
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
 

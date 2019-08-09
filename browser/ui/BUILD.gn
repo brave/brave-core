@@ -1,5 +1,6 @@
 import("//brave/build/config.gni")
 import("//build/config/features.gni")
+import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//chrome/common/features.gni")
@@ -84,6 +85,15 @@ source_set("ui") {
       sources += [
         "views/update_recommended_message_box_mac.mm",
         "views/update_recommended_message_box_mac.h",
+      ]
+    }
+
+    if (enable_brave_translate_extension) {
+      sources += [
+        "views/translate/brave_translate_bubble_view.cc",
+        "views/translate/brave_translate_bubble_view.h",
+        "views/translate/brave_translate_icon_view.cc",
+        "views/translate/brave_translate_icon_view.h",
       ]
     }
   }
