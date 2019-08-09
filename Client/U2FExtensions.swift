@@ -404,7 +404,7 @@ class U2FExtensions: NSObject {
     private func sendFIDO2RegistrationError(handle: Int, errorName: String = FIDO2ErrorMessages.NotAllowedError.rawValue, errorDescription: String = Strings.U2FRegistrationError) {
         cleanupFIDO2Registration(handle: handle)
         ensureMainThread {
-            self.tab?.webView?.evaluateJavaScript("navigator.credentials.postCreate('\(handle)', \(true),'', '', '', '\(errorName)', '\(errorDescription)')", completionHandler: { _, error in
+            self.tab?.webView?.evaluateJavaScript("navigator.credentials.postCreate('\(handle)', \(true),'', '', '', '\(errorName.toBase64())', '\(errorDescription.toBase64())')", completionHandler: { _, error in
                 if error != nil {
                     let errorDescription = error?.localizedDescription ?? U2FErrorMessages.ErrorRegistration.rawValue
                     log.error(errorDescription)
@@ -576,7 +576,7 @@ class U2FExtensions: NSObject {
     private func sendFIDO2AuthenticationError(handle: Int, errorName: String = FIDO2ErrorMessages.NotAllowedError.rawValue, errorDescription: String = Strings.U2FAuthenticationError) {
         cleanupFIDO2Authentication(handle: handle)
         ensureMainThread {
-            self.tab?.webView?.evaluateJavaScript("navigator.credentials.postGet('\(handle)', \(true), '', '', '', '', '\(errorName)', '\(errorDescription)')", completionHandler: { _, error in
+            self.tab?.webView?.evaluateJavaScript("navigator.credentials.postGet('\(handle)', \(true), '', '', '', '', '\(errorName.toBase64())', '\(errorDescription.toBase64())')", completionHandler: { _, error in
                 if error != nil {
                     let errorDescription = error?.localizedDescription ?? U2FErrorMessages.ErrorAuthentication.rawValue
                     log.error(errorDescription)
@@ -730,7 +730,7 @@ class U2FExtensions: NSObject {
         cleanupFIDORegistration(handle: handle)
         if requestId >= 0 {
             ensureMainThread {
-                self.tab?.webView?.evaluateJavaScript("u2f.postLowLevelRegister(\(requestId), \(true), '', '', '', \(errorCode.rawValue), '\(errorMessage)')", completionHandler: { _, error in
+                self.tab?.webView?.evaluateJavaScript("u2f.postLowLevelRegister(\(requestId), \(true), '', '', '', \(errorCode.rawValue), '\(errorMessage.toBase64())')", completionHandler: { _, error in
                     if error != nil {
                         let errorDescription = error?.localizedDescription ?? U2FErrorMessages.ErrorRegistration.rawValue
                         log.error(errorDescription)
@@ -740,7 +740,7 @@ class U2FExtensions: NSObject {
         }
         
         ensureMainThread {
-            self.tab?.webView?.evaluateJavaScript("u2f.postRegister('\(handle)', \(true), '', '', '', \(errorCode.rawValue), '\(errorMessage)')", completionHandler: { _, error in
+            self.tab?.webView?.evaluateJavaScript("u2f.postRegister('\(handle)', \(true), '', '', '', \(errorCode.rawValue), '\(errorMessage.toBase64())')", completionHandler: { _, error in
                 if error != nil {
                     let errorDescription = error?.localizedDescription ?? U2FErrorMessages.ErrorRegistration.rawValue
                     log.error(errorDescription)
@@ -858,7 +858,7 @@ class U2FExtensions: NSObject {
         
         if requestId >= 0 {
             ensureMainThread {
-                self.tab?.webView?.evaluateJavaScript("u2f.postLowLevelSign(\(requestId), \(true), '', '', '', \(errorCode.rawValue), '\(errorMessage)')", completionHandler: { _, error in
+                self.tab?.webView?.evaluateJavaScript("u2f.postLowLevelSign(\(requestId), \(true), '', '', '', \(errorCode.rawValue), '\(errorMessage.toBase64())')", completionHandler: { _, error in
                     if error != nil {
                         let errorDescription = error?.localizedDescription ?? U2FErrorMessages.ErrorAuthentication.rawValue
                         log.error(errorDescription)
@@ -868,7 +868,7 @@ class U2FExtensions: NSObject {
         }
         
         ensureMainThread {
-            self.tab?.webView?.evaluateJavaScript("u2f.postSign('\(handle)', \(true), '', '', '', \(errorCode.rawValue), '\(errorMessage)')", completionHandler: { _, error in
+            self.tab?.webView?.evaluateJavaScript("u2f.postSign('\(handle)', \(true), '', '', '', \(errorCode.rawValue), '\(errorMessage.toBase64())')", completionHandler: { _, error in
                 if error != nil {
                     let errorDescription = error?.localizedDescription ?? U2FErrorMessages.ErrorAuthentication.rawValue
                     log.error(errorDescription)
@@ -1082,4 +1082,11 @@ extension Strings {
     public static let pinLabel = NSLocalizedString("pinLabel", bundle: Bundle.shared, value: "Enter the PIN", comment: "Label for the text box when a security key with PIN is inserted.")
     public static let pinPlaceholder = NSLocalizedString("pinPlaceholder", bundle: Bundle.shared, value: "PIN", comment: "Placeholder text for PIN")
     public static let confirmPin = NSLocalizedString("confirmPin", bundle: Bundle.shared, value: "Confirm", comment: "Button text to confirm PIN")
+}
+
+extension String {
+    /// Encode a String to Base64
+    func toBase64() -> String {
+        return Data(self.utf8).base64EncodedString()
+    }
 }
