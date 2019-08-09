@@ -23,8 +23,7 @@ import {
 import * as torrentActions from '../actions/webtorrent_actions'
 
 // Assets
-require('../../../styles/webtorrent.css')
-require('../../../fonts/poppins.css')
+require('../styles/styles.css')
 require('../../../fonts/muli.css')
 
 interface Props {
