@@ -62,6 +62,10 @@ typedef enum {
   kGraphMLAttrDefNodeTag,
   kGraphMLAttrDefNodeText,
   kGraphMLAttrDefNodeType,
+  kGraphMLAttrDefPageGraphEdgeId,
+  kGraphMLAttrDefPageGraphNodeId,
+  kGraphMLAttrDefPageGraphEdgeTimestamp,
+  kGraphMLAttrDefPageGraphNodeTimestamp,
   kGraphMLAttrDefParentNodeId,
   kGraphMLAttrDefPrimaryPattern,
   kGraphMLAttrDefRequestId,
@@ -149,6 +153,43 @@ typedef enum {
   kStorageLocationSessionStorage
 } StorageLocation;
 std::string StorageLocationToString(const StorageLocation location) noexcept;
+
+typedef enum {
+  kJSBuiltInDateNow = 0,
+  kJSBuiltInDateConstructor,
+  kJSBuiltInDateParse,
+  kJSBuiltInDateUTC,
+  kJSBuiltInDatePrototypeSetDate,
+  kJSBuiltInDatePrototypeSetFullYear,
+  kJSBuiltInDatePrototypeSetHours,
+  kJSBuiltInDatePrototypeSetMilliseconds,
+  kJSBuiltInDatePrototypeSetMinutes,
+  kJSBuiltInDatePrototypeSetMonth,
+  kJSBuiltInDatePrototypeSetSeconds,
+  kJSBuiltInDatePrototypeSetTime,
+  kJSBuiltInDatePrototypeSetUTCDate,
+  kJSBuiltInDatePrototypeSetUTCFullYear,
+  kJSBuiltInDatePrototypeSetUTCHours,
+  kJSBuiltInDatePrototypeSetUTCMilliseconds,
+  kJSBuiltInDatePrototypeSetUTCMinutes,
+  kJSBuiltInDatePrototypeSetUTCMonth,
+  kJSBuiltInDatePrototypeSetUTCSeconds,
+  kJSBuiltInDatePrototypeToDateString,
+  kJSBuiltInDatePrototypeToISOString,
+  kJSBuiltInDatePrototypeToString,
+  kJSBuiltInDatePrototypeToTimeString,
+  kJSBuiltInDatePrototypeToLocaleDateString,
+  kJSBuiltInDatePrototypeToLocalString,
+  kJSBuiltInDatePrototypeToLocalTimeString,
+  kJSBuiltInDatePrototypeToUTCString,
+  kJSBuiltInDatePrototypeGetYear,
+  kJSBuiltInDatePrototypeSetYear,
+  kJSBuiltInDatePrototypeToJSON,
+  kJSBuiltInJSONParse,
+  kJSBuiltInJSONStringify,
+} JSBuiltIn;
+JSBuiltIn JSBuiltInFromString(const std::string& built_in_name) noexcept;
+const std::string& JSBuiltInToSting(const JSBuiltIn built_in_name) noexcept;
 
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;

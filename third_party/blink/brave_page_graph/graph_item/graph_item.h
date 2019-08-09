@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_GRAPH_ITEM_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_GRAPH_ITEM_H_
 
+#include <ctime>
+#include <chrono>
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
@@ -19,6 +22,8 @@ friend class PageGraph;
   virtual ~GraphItem();
 
   PageGraphId GetId() const { return id_; }
+  std::chrono::time_point<std::chrono::high_resolution_clock> GetTimestamp()
+    const { return time_; }
 
   virtual ItemName GetItemName() const = 0;
   virtual ItemDesc GetItemDesc() const;
@@ -30,6 +35,8 @@ friend class PageGraph;
   virtual bool IsEdge() const;
   virtual bool IsNode() const;
 
+  double GetMicroSecSincePageStart() const;
+
  protected:
   GraphItem(PageGraph* const graph);
   // For use ONLY with items generated ad-hoc during GraphML export.
@@ -37,10 +44,11 @@ friend class PageGraph;
 
   PageGraph* GetGraph() const { return graph_; }
 
- private:
+ protected:
   static void StartGraphMLExport(PageGraphId id_counter);
 
   const PageGraphId id_;
+  const std::chrono::time_point<std::chrono::high_resolution_clock> time_;
   PageGraph* const graph_;
 };
 

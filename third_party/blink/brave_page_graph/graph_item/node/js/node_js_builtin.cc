@@ -1,0 +1,50 @@
+/* Copyright (c) 2019 The Brave Software Team. Distributed under the MPL2
+ * license. This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js_builtin.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js.h"
+#include "brave/third_party/blink/brave_page_graph/graphml.h"
+#include "brave/third_party/blink/brave_page_graph/page_graph.h"
+#include "brave/third_party/blink/brave_page_graph/types.h"
+
+using ::std::string;
+
+namespace brave_page_graph {
+
+NodeJSBuiltIn::NodeJSBuiltIn(PageGraph* const graph, const JSBuiltIn builtin) :
+      NodeJS(graph),
+      built_in_name_(builtin) {}
+
+NodeJSBuiltIn::~NodeJSBuiltIn() {}
+
+ItemName NodeJSBuiltIn::GetItemName() const {
+  return "JS builtin";
+}
+
+ItemDesc NodeJSBuiltIn::GetItemDesc() const {
+  return Node::GetItemDesc() + " [" + JSBuiltInToSting(built_in_name_) + "]";
+}
+
+GraphMLXMLList NodeJSBuiltIn::GetGraphMLAttributes() const {
+  GraphMLXMLList attrs = NodeJS::GetGraphMLAttributes();
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
+      ->ToValue(JSBuiltInToSting(built_in_name_)));
+  return attrs;
+}
+
+JSBuiltIn NodeJSBuiltIn::GetBuiltIn() const {
+  return built_in_name_;
+}
+
+const MethodName& NodeJSBuiltIn::GetMethodName() const {
+  return JSBuiltInToSting(built_in_name_);
+}
+
+bool NodeJSBuiltIn::IsNodeJSBuiltIn() const {
+  return true;
+}
+
+}  // namespace brave_page_graph

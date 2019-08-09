@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
-index c9c6225eb8fd8b8278c707beb521bde910ab49d9..fe3b8754a18fd8ed790124f04269ac36f9915dd1 100644
+index c9c6225eb8fd8b8278c707beb521bde910ab49d9..9febc53ebffdc0a8917d376e6ae6e8dd3c4d2b70 100644
 --- a/src/execution/isolate.cc
 +++ b/src/execution/isolate.cc
 @@ -93,6 +93,8 @@
@@ -11,7 +11,7 @@ index c9c6225eb8fd8b8278c707beb521bde910ab49d9..fe3b8754a18fd8ed790124f04269ac36
  extern "C" const uint8_t* v8_Default_embedded_blob_;
  extern "C" uint32_t v8_Default_embedded_blob_size_;
  
-@@ -4403,6 +4405,35 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
+@@ -4403,6 +4405,49 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
    }
  }
  
@@ -38,9 +38,23 @@ index c9c6225eb8fd8b8278c707beb521bde910ab49d9..fe3b8754a18fd8ed790124f04269ac36
 +    if (script.id() > 0) {
 +      return script.id();
 +    }
++    it.Advance();
 +  }
 +
 +  return 0;
++}
++
++void Isolate::ReportBuiltInCallAndResponse(const char* func_name,
++    const std::vector<const std::string>& args, const std::string& result) {
++  BuiltInFuncCallFunc call_func = GetBuiltInFuncCallFunc();
++  auto extern_isolate = reinterpret_cast<v8::Isolate*>(this);
++  if (call_func) {
++    call_func(*extern_isolate, func_name, args);
++  }
++  BuiltInFuncResponseFunc rs_func = GetBuiltInFuncResponseFunc();
++  if (rs_func) {
++    rs_func(*extern_isolate, func_name, result);
++  }
 +}
 +#endif
 +

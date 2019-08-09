@@ -56,6 +56,10 @@ GraphMLXMLList Node::GetGraphMLAttributes() const {
   GraphMLXMLList attrs = GraphItem::GetGraphMLAttributes();
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue(GetItemName()));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphNodeId)
+      ->ToValue(GetId()));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphNodeTimestamp)
+      ->ToValue(GetMicroSecSincePageStart()));
   return attrs;
 }
 
@@ -103,7 +107,15 @@ bool Node::IsNodeStorageRoot() const {
   return false;
 }
 
-bool Node::IsNodeWebAPI() const {
+bool Node::IsNodeJS() const {
+  return false;
+}
+
+bool Node::IsNodeJSWebAPI() const {
+  return false;
+}
+
+bool Node::IsNodeJSBuiltIn() const {
   return false;
 }
 

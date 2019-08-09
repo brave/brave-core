@@ -1,0 +1,44 @@
+diff --git a/src/builtins/builtins-json.cc b/src/builtins/builtins-json.cc
+index 896a45389c4abd03f774eb9a1e266a31eed4079e..e494baec822ee0170c144ed445fba9c3b2f0fc6a 100644
+--- a/src/builtins/builtins-json.cc
++++ b/src/builtins/builtins-json.cc
+@@ -9,6 +9,11 @@
+ #include "src/logging/counters.h"
+ #include "src/objects/objects-inl.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <string>
++#endif
++
+ namespace v8 {
+ namespace internal {
+ 
+@@ -21,6 +26,14 @@ BUILTIN(JsonParse) {
+   ASSIGN_RETURN_FAILURE_ON_EXCEPTION(isolate, string,
+                                      Object::ToString(isolate, source));
+   string = String::Flatten(isolate, string);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    std::string from_str(Object::ToString(isolate, source).ToHandleChecked()->ToCString().get());
++    std::string json_str(string->ToCString().get());
++    isolate->ReportBuiltInCallAndResponse("JSON.parse",
++      {from_str}, json_str);
++  }
++#endif
+   RETURN_RESULT_OR_FAILURE(
+       isolate, String::IsOneByteRepresentationUnderneath(*string)
+                    ? JsonParser<uint8_t>::Parse(isolate, string, reviver)
+@@ -33,6 +46,12 @@ BUILTIN(JsonStringify) {
+   Handle<Object> object = args.atOrUndefined(isolate, 1);
+   Handle<Object> replacer = args.atOrUndefined(isolate, 2);
+   Handle<Object> indent = args.atOrUndefined(isolate, 3);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    isolate->ReportBuiltInCallAndResponse("JSON.stringify",
++      {std::string("<ignore>")}, std::string("<ignore>"));
++  }
++#endif
+   RETURN_RESULT_OR_FAILURE(isolate,
+                            JsonStringify(isolate, object, replacer, indent));
+ }
