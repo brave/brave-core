@@ -30,6 +30,7 @@ Building the code
 -----------------
 
 1. Install the latest [Xcode developer tools](https://developer.apple.com/xcode/downloads/) from Apple. (Xcode 10 and up required)
+1. Make sure `npm` is installed, `node` version 12 is recommended
 1. Install Carthage:
     ```shell
     brew update
