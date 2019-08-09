@@ -124,17 +124,15 @@ std::string Imgur::GetUserId(const std::string& json_string) {
 // static
 std::string Imgur::GetPublisherName(const std::string& response,
                                     const std::string& user_name) {
-  if (response.empty() || user_name.empty()) {
+  if (response.empty() && user_name.empty()) {
     return std::string();
   }
 
-  const std::string start_string = "\"" + user_name + "\",\"name\":\"";
-
   std::string publisher_name = braveledger_media::ExtractData(
-    response, start_string, "\"");
-
+      response,
+      "<div class=\"ProfileMeta-user\">", "</div>");
   if (publisher_name.empty()) {
-    return std::string();
+    return user_name;
   }
 
   return publisher_name;
@@ -325,9 +323,8 @@ void Imgur::OnUserPage(
   }
 
   const std::string user_name = GetUserNameFromUrl(visit_data.path);
-  //const std::string publisher_name = GetPublisherName(response,
-  //                                                    user_name);
-  const std::string publisher_name = user_name;
+  const std::string publisher_name = GetPublisherName(response,
+                                                      user_name);
 
   SavePublisherInfo(
       window_id,
