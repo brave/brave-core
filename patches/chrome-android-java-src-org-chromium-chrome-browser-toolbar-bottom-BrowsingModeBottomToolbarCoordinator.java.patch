@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java
+index c9b1bbc4b15f8dc1cfd52fdbe76c5bd02f44fed3..d584853fd1b1f70dc9c16e3ed356c03e7bc81c55 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java
+@@ -38,7 +38,7 @@ public class BrowsingModeBottomToolbarCoordinator {
+     private final HomeButton mHomeButton;
+ 
+     /** The share button that lives in the bottom toolbar. */
+-    private final ShareButton mShareButton;
++    private final BookmarksButton mShareButton;
+ 
+     /** The search accelerator that lives in the bottom toolbar. */
+     private final SearchAccelerator mSearchAccelerator;
