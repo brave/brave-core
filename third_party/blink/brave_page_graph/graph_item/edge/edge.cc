@@ -55,8 +55,8 @@ GraphMLXMLList Edge::GetGraphMLAttributes() const {
       ->ToValue(GetItemName()));
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphEdgeId)
       ->ToValue(GetId()));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphEdgeTimestamp)
-      ->ToValue(GetMicroSecSincePageStart()));
+  //attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphEdgeTimestamp)
+  //    ->ToValue(GetMicroSecSincePageStart()));
   return attrs;
 }
 

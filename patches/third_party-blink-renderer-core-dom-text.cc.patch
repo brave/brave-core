@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/text.cc b/third_party/blink/renderer/core/dom/text.cc
-index 65c3f62815293afb33c6ccce350382c58837492c..8e2485e3331f3af13cbf3b45e48493dfc1b340a0 100644
+index 65c3f62815293afb33c6ccce350382c58837492c..71f62a146ace0ce8f2f237f8a3a7a1bd9bfef62d 100644
 --- a/third_party/blink/renderer/core/dom/text.cc
 +++ b/third_party/blink/renderer/core/dom/text.cc
-@@ -45,10 +45,26 @@
+@@ -45,14 +45,40 @@
  #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
@@ -29,3 +29,17 @@ index 65c3f62815293afb33c6ccce350382c58837492c..8e2485e3331f3af13cbf3b45e48493df
  }
  
  Text* Text::CreateEditingText(Document& document, const String& data) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  Text* text_node = MakeGarbageCollected<Text>(
++      document, data, kCreateEditingText);
++  if (document.GetPageGraph() != nullptr) {
++    document.GetPageGraph()->RegisterHTMLTextNodeCreated(
++      DOMNodeIds::IdForNode(text_node), data);
++  }
++  return text_node;
++#else
+   return MakeGarbageCollected<Text>(document, data, kCreateEditingText);
++#endif
+ }
+ 
+ Node* Text::MergeNextSiblingNodesIfPossible() {
