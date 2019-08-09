@@ -331,20 +331,15 @@
     "@types/parse-torrent": "^5.8.3",
     "@types/webtorrent": "^0.98.5",
     "bignumber.js": "^7.2.1",
-    "bittorrent-tracker": "github:brave/bittorrent-tracker#0f459819cdbd19d43440c17ace46890d86acb055",
     "bluebird": "^3.5.1",
-    "chrome-dgram": "^3.0.1",
-    "chrome-net": "^3.3.1",
     "clipboard-copy": "^2.0.0",
-    "http-node": "^1.2.0",
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
     "react-chrome-redux": "^1.5.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "throttleit": "^1.0.0",
-    "torrent-discovery": "github:brave/torrent-discovery#b565f40278c1cb910722ceb027a739d9173d587a",
     "unique-selector": "^0.4.1",
-    "webtorrent": "github:brave/webtorrent#423f1faca0f45c2aa0d199e224178ebc6733bf78"
+    "webtorrent": "^0.107.2"
   }
 }
