@@ -176,7 +176,9 @@ source_set("ledger") {
   ]
 
   if (brave_ads_enabled) {
-    rebase_path("bat-native-confirmations", dep_base)
+    deps += [
+      rebase_path("bat-native-confirmations", dep_base)
+    ]
   }
 
   public_deps = [
