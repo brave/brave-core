@@ -88,6 +88,7 @@ class U2FExtensions: NSObject {
     fileprivate var popup: AlertPopupView
     fileprivate var currentMessageType = U2FMessageType.None
     fileprivate var currentHandle = -1
+    fileprivate var currentTabId = ""
     
     // Using a property style approch to avoid observing twice.
     private var observeSessionStateUpdates: Bool = false {
@@ -202,6 +203,14 @@ class U2FExtensions: NSObject {
         return url.domainURL.absoluteString
     }
     
+    private func setCurrentTabId() {
+        guard let tabId = tab?.id else {
+            sendFIDO2RegistrationError(handle: currentHandle)
+            return
+        }
+        currentTabId = tabId
+    }
+    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard context == &U2FExtensions.observationContext else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
@@ -237,6 +246,8 @@ class U2FExtensions: NSObject {
     private func handleFIDO2Registration(handle: Int, request: WebAuthnRegisterRequest) {
         currentMessageType = U2FMessageType.FIDO2Create
         currentHandle = handle
+        
+        setCurrentTabId()
         
         let makeCredentialRequest = YKFKeyFIDO2MakeCredentialRequest()
         guard let url = getCurrentURL() else {
@@ -437,6 +448,8 @@ class U2FExtensions: NSObject {
         currentMessageType = U2FMessageType.FIDO2Get
         currentHandle = handle
         
+        setCurrentTabId()
+        
         let getAssertionRequest = YKFKeyFIDO2GetAssertionRequest()
         guard let url = getCurrentURL() else {
             sendFIDO2AuthenticationError(handle: handle, errorName: FIDO2ErrorMessages.SecurityError.rawValue)
@@ -600,7 +613,7 @@ class U2FExtensions: NSObject {
             return
         }
         
-        if fido2Service.keyState == .touchKey || u2fService.keyState == .YKFKeyU2FServiceKeyStateTouchKey {
+        if tab?.id == currentTabId && (fido2Service.keyState == .touchKey || u2fService.keyState == .YKFKeyU2FServiceKeyStateTouchKey) {
             popup.showWithType(showType: .flyUp)
             return
         }
@@ -673,6 +686,8 @@ class U2FExtensions: NSObject {
     private func handleFIDORegistration(handle: Int, request: FIDORegisterRequest, requestId: Int) {
         currentMessageType = U2FMessageType.FIDORegister
         currentHandle = handle
+        
+        setCurrentTabId()
         
         guard let registerRequest = YKFKeyU2FRegisterRequest(challenge: request.challenge, appId: request.appId ?? "") else {
             sendFIDORegistrationError(handle: handle, requestId: requestId, errorCode: U2FErrorCodes.bad_request)
@@ -778,6 +793,8 @@ class U2FExtensions: NSObject {
     private func handleFIDOAuthentication(handle: Int, keys: [FIDOSignRequest], requestId: Int) {
         currentMessageType = U2FMessageType.FIDOSign
         currentHandle = handle
+        
+        setCurrentTabId()
         
         guard let u2fservice = YubiKitManager.shared.keySession.u2fService else {
             sendFIDOAuthenticationError(handle: handle, requestId: requestId, errorCode: U2FErrorCodes.other_error)
