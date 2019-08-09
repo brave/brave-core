@@ -330,7 +330,7 @@
     "@types/parse-torrent": "^5.8.3",
     "@types/webtorrent": "^0.98.5",
     "bignumber.js": "^7.2.1",
-    "bittorrent-tracker": "github:brave/bittorrent-tracker#36bccfc97f933ac956b0aed9b09c69c8fb49e713",
+    "bittorrent-tracker": "github:brave/bittorrent-tracker#0f459819cdbd19d43440c17ace46890d86acb055",
     "bluebird": "^3.5.1",
     "chrome-dgram": "^3.0.1",
     "chrome-net": "^3.3.1",
@@ -342,8 +342,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "throttleit": "^1.0.0",
-    "torrent-discovery": "github:brave/torrent-discovery#b8e96e25949fa63b5edce3ad8a80322f57c547e3",
+    "torrent-discovery": "github:brave/torrent-discovery#b565f40278c1cb910722ceb027a739d9173d587a",
     "unique-selector": "^0.4.1",
-    "webtorrent": "github:brave/webtorrent#652fbeecd6c05076fdfd0f1e64ccb3957d51e21f"
+    "webtorrent": "github:brave/webtorrent#ed433c35ba6f4e1e15d62c1a9a7a9241a7504e66"
   }
 }
