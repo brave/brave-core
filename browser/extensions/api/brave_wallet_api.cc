@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/base64.h"
+#include "base/environment.h"
 #include "brave/browser/brave_wallet/brave_wallet_utils.h"
 #include "brave/common/extensions/api/brave_wallet.h"
 #include "brave/common/extensions/extension_constants.h"
@@ -153,6 +154,17 @@ BraveWalletGetWalletSeedFunction::Run() {
   blob.assign(derived.begin(), derived.end());
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(blob)));
+}
+
+ExtensionFunction::ResponseAction
+BraveWalletGetProjectIDFunction::Run() {
+  std::string project_id(BRAVE_INFURA_PROJECT_ID);
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
+    env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
+  }
+  return RespondNow(OneArgument(
+      std::make_unique<base::Value>(project_id)));
 }
 
 }  // namespace api

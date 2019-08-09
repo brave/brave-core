@@ -3,6 +3,10 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
+declare_args() {
+  brave_infura_project_id = ""
+}
+
 source_set("extensions") {
   sources = [
     "api/rewards_notifications_api.cc",
@@ -50,6 +54,7 @@ source_set("extensions") {
       "brave_wallet_navigation_throttle.cc",
       "brave_wallet_navigation_throttle.h",
     ]
+    configs += [ ":infura_config" ]
   }
 
   deps = [
@@ -84,4 +89,10 @@ source_set("extensions") {
       "//brave/components/brave_webtorrent:static_resources",
     ]
   }
+}
+
+config("infura_config") {
+  defines = [
+    "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\""
+  ]
 }
