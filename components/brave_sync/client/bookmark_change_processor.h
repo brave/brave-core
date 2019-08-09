@@ -136,8 +136,8 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   Profile* profile_;  // not owned
   bookmarks::BookmarkModel* bookmark_model_;  // not owned
 
-  bookmarks::BookmarkNode* deleted_node_root_;
-  bookmarks::BookmarkNode* pending_node_root_;
+  std::unique_ptr<bookmarks::BookmarkNode> deleted_node_root_;
+  std::unique_ptr<bookmarks::BookmarkNode> pending_node_root_;
 
   DISALLOW_COPY_AND_ASSIGN(BookmarkChangeProcessor);
 };

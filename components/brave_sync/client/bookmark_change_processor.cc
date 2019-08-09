@@ -13,6 +13,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
 #include "brave/components/brave_sync/client/bookmark_node.h"
 #include "brave/components/brave_sync/jslib_const.h"
@@ -80,21 +81,13 @@ bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node) {
   return IsSyncManagedNodeDeleted(node) || IsSyncManagedNodePending(node);
 }
 
-bookmarks::BookmarkPermanentNodeList
-LoadExtraNodes(bookmarks::LoadExtraCallback callback,
+std::unique_ptr<bookmarks::BookmarkPermanentNode> LoadManagedNode(
+    bookmarks::LoadManagedNodeCallback callback,
     int64_t* next_node_id) {
   // TODO(bridiver) - deleted node should not be visible
-  bookmarks::BookmarkPermanentNodeList extra_nodes;
   if (callback)
-    extra_nodes = std::move(callback).Run(next_node_id);
-
-  auto deleted_node = MakePermanentNode(kDeletedBookmarksTitle, next_node_id);
-  extra_nodes.push_back(std::move(deleted_node));
-
-  auto pending_node = MakePermanentNode(kPendingBookmarksTitle, next_node_id);
-  extra_nodes.push_back(std::move(pending_node));
-
-  return extra_nodes;
+    return std::move(callback).Run(next_node_id);
+  return nullptr;
 }
 
 namespace {
@@ -797,38 +790,48 @@ void BookmarkChangeProcessor::GetAllSyncData(
 
 bookmarks::BookmarkNode* BookmarkChangeProcessor::GetDeletedNodeRoot() {
   if (!deleted_node_root_) {
-    ui::TreeNodeIterator<const bookmarks::BookmarkNode>
-        iterator(bookmark_model_->root_node());
-    while (iterator.has_next()) {
-      const bookmarks::BookmarkNode* node = iterator.Next();
-      if (node->is_permanent_node() &&
-          IsSyncManagedNodeDeleted(
-              static_cast<const bookmarks::BookmarkPermanentNode*>(node))) {
-        deleted_node_root_ = const_cast<bookmarks::BookmarkNode*>(node);
-        return deleted_node_root_;
-      }
-    }
+    int64_t next_node_id = bookmark_model_->next_node_id();
+    deleted_node_root_ =
+        MakePermanentNode(kDeletedBookmarksTitle, &next_node_id);
+    bookmark_model_->Move(deleted_node_root_.get(),
+                          bookmark_model_->root_node(), 0);
+    //ui::TreeNodeIterator<const bookmarks::BookmarkNode>
+    //    iterator(bookmark_model_->root_node());
+    //while (iterator.has_next()) {
+    //  const bookmarks::BookmarkNode* node = iterator.Next();
+    //  if (node->is_permanent_node() &&
+    //      IsSyncManagedNodeDeleted(
+    //          static_cast<const bookmarks::BookmarkPermanentNode*>(node))) {
+    //    deleted_node_root_ = const_cast<bookmarks::BookmarkNode*>(node);
+    //    return deleted_node_root_;
+    //  }
+    //}
   }
-  DCHECK(deleted_node_root_);
-  return deleted_node_root_;
+  DCHECK(deleted_node_root_.get());
+  return deleted_node_root_.get();
 }
 
 bookmarks::BookmarkNode* BookmarkChangeProcessor::GetPendingNodeRoot() {
   if (!pending_node_root_) {
-    ui::TreeNodeIterator<const bookmarks::BookmarkNode>
-        iterator(bookmark_model_->root_node());
-    while (iterator.has_next()) {
-      const bookmarks::BookmarkNode* node = iterator.Next();
-      if (node->is_permanent_node() &&
-          IsSyncManagedNodePending(
-              static_cast<const bookmarks::BookmarkPermanentNode*>(node))) {
-        pending_node_root_ = const_cast<bookmarks::BookmarkNode*>(node);
-        return pending_node_root_;
-      }
-    }
+    int64_t next_node_id = bookmark_model_->next_node_id();
+    pending_node_root_ =
+        MakePermanentNode(kPendingBookmarksTitle, &next_node_id);
+    bookmark_model_->Move(pending_node_root_.get(),
+                          bookmark_model_->root_node(), 0);
+    // ui::TreeNodeIterator<const bookmarks::BookmarkNode>
+    //    iterator(bookmark_model_->root_node());
+    //while (iterator.has_next()) {
+    //  const bookmarks::BookmarkNode* node = iterator.Next();
+    //  if (node->is_permanent_node() &&
+    //      IsSyncManagedNodePending(
+    //          static_cast<const bookmarks::BookmarkPermanentNode*>(node))) {
+    //    pending_node_root_ = const_cast<bookmarks::BookmarkNode*>(node);
+    //    return pending_node_root_;
+    //  }
+    //}
   }
-  DCHECK(pending_node_root_);
-  return pending_node_root_;
+  DCHECK(pending_node_root_.get());
+  return pending_node_root_.get();
 }
 
 int BookmarkChangeProcessor::FindMigrateSubOrderLength(

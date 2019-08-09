@@ -14,7 +14,7 @@ class BraveBookmarkClient : public ChromeBookmarkClient {
       bookmarks::ManagedBookmarkService* managed_bookmark_service,
       sync_bookmarks::BookmarkSyncService* bookmark_sync_service);
 
-  bookmarks::LoadExtraCallback GetLoadExtraNodesCallback() override;
+  bookmarks::LoadManagedNodeCallback GetLoadManagedNodeCallback() override;
   bool IsPermanentNodeVisible(
       const bookmarks::BookmarkPermanentNode* node) override;
 

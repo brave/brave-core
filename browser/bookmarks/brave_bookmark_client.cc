@@ -22,12 +22,13 @@ BraveBookmarkClient::BraveBookmarkClient(
                            managed_bookmark_service,
                            bookmark_sync_service) {}
 
-bookmarks::LoadExtraCallback BraveBookmarkClient::GetLoadExtraNodesCallback() {
+bookmarks::LoadManagedNodeCallback
+BraveBookmarkClient::GetLoadManagedNodeCallback() {
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  return base::BindOnce(&brave_sync::LoadExtraNodes,
-      ChromeBookmarkClient::GetLoadExtraNodesCallback());
+  return base::BindOnce(&brave_sync::LoadManagedNode,
+      ChromeBookmarkClient::GetLoadManagedNodeCallback());
 #endif
-  return ChromeBookmarkClient::GetLoadExtraNodesCallback();
+  return ChromeBookmarkClient::GetLoadManagedNodeCallback();
 }
 
 bool BraveBookmarkClient::IsPermanentNodeVisible(
