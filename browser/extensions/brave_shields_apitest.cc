@@ -45,6 +45,15 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsExtensionApiTest,
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 IN_PROC_BROWSER_TEST_F(BraveShieldsExtensionApiTest,
+    BraveExtensionWithWalletHasAccess) {
+  ResultCatcher catcher;
+  const Extension* extension =
+    LoadExtension(extension_dir_.AppendASCII("braveShieldsWithWallet"));
+  ASSERT_TRUE(extension);
+  ASSERT_TRUE(catcher.GetNextResult()) << message_;
+}
+
+IN_PROC_BROWSER_TEST_F(BraveShieldsExtensionApiTest,
     BraveWalletAPIAvailable) {
   ResultCatcher catcher;
   const Extension* extension =
