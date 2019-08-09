@@ -81,8 +81,8 @@ bool IsWebtorrentInitiated(std::shared_ptr<brave::BraveRequestInfo> ctx) {
  * script, XHR request, etc.), returns false.
  */
 
-bool IsFrameResource(std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  return content::IsResourceTypeFrame(ctx->resource_type);
+bool IsMainFrameResource(std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  return ctx->resource_type == content::ResourceType::kMainFrame;
 }
 
 }  // namespace
@@ -96,7 +96,7 @@ int OnHeadersReceived_TorrentRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   if (!original_response_headers ||
-      !IsFrameResource(ctx) ||
+      !IsMainFrameResource(ctx) ||
       ctx->is_webtorrent_disabled ||
       // download .torrent, do not redirect
       (IsWebtorrentInitiated(ctx) && !IsViewerURL(ctx->request_url)) ||
