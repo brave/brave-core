@@ -628,6 +628,14 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
     }
 
     for (size_t i = 0; i < page_score.size(); i++) {
+      auto taxonomy = user_model_->GetTaxonomyAtIndex(i);
+      if (client_->IsFilteredCategory(taxonomy)) {
+        BLOG(INFO) << taxonomy
+                   << " taxonomy has been excluded from the winner over time";
+
+        continue;
+      }
+
       winner_over_time_page_score[i] += page_score[i];
     }
   }
@@ -637,7 +645,7 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
 
 std::string AdsImpl::GetWinningCategory(
     const std::vector<double>& page_score) {
-  return user_model_->WinningCategory(page_score);
+  return user_model_->GetWinningCategory(page_score);
 }
 
 std::string AdsImpl::GetWinningCategory(const std::string& html) {
@@ -844,13 +852,6 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
     // winnerOverTime', category, winnerOverTime, arbitraryKey }
 
     BLOG(INFO) << "Notification not made: category is empty";
-
-    return;
-  }
-
-  if (client_->IsFilteredCategory(category)) {
-    BLOG(INFO) << "Notification not made: category \"" << category
-               << "\" appears in filtered categories list";
 
     return;
   }
