@@ -115,6 +115,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/ledger_impl.h",
     "src/bat/ledger/internal/media/helper.h",
     "src/bat/ledger/internal/media/helper.cc",
+    "src/bat/ledger/internal/media/imgur.h",
+    "src/bat/ledger/internal/media/imgur.cc",
     "src/bat/ledger/internal/media/media.cc",
     "src/bat/ledger/internal/media/media.h",
     "src/bat/ledger/internal/media/reddit.h",
