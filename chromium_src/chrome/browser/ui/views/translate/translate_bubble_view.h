@@ -9,6 +9,11 @@
 #define BRAVE_TRANSLATE_BUBBLE_VIEW_H_ \
   private: \
     friend class BraveTranslateBubbleView; \
+    friend class BraveTranslateBubbleViewTest; \
+    FRIEND_TEST_ALL_PREFIXES(BraveTranslateBubbleViewTest, \
+                             BraveBeforeTranslateView); \
+    FRIEND_TEST_ALL_PREFIXES(BraveTranslateBubbleViewTest, TranslateButton); \
+    FRIEND_TEST_ALL_PREFIXES(BraveTranslateBubbleViewTest, CancelButton); \
   public:
 // define BRAVE_TRANSLATE_BUBBLE_VIEW_H_
 

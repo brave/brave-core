@@ -79,6 +79,8 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
 }
 
 void BraveTranslateBubbleView::InstallGoogleTranslate() {
+  if (!web_contents())
+    return;
   Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
   if (!browser)
     return;

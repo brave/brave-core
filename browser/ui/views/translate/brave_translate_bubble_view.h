@@ -34,9 +34,12 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
   // views::View methods.
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
 
+ protected:
+  virtual void InstallGoogleTranslate();
+
  private:
+  friend class BraveTranslateBubbleViewTest;
   views::View* BraveCreateViewBeforeTranslate();
-  void InstallGoogleTranslate();
 
   DISALLOW_COPY_AND_ASSIGN(BraveTranslateBubbleView);
 };
