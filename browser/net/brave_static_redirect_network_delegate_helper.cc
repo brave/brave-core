@@ -46,7 +46,7 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix4);
   static URLPattern crxDownload_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   static URLPattern translate_pattern(URLPattern::SCHEME_HTTPS,
       kTranslateElementJSPattern);
   static URLPattern translate_language_pattern(URLPattern::SCHEME_HTTPS,
@@ -103,7 +103,7 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   if (translate_pattern.MatchesURL(request_url)) {
     replacements.SetQueryStr(request_url.query_piece());
     replacements.SetPathStr(request_url.path_piece());
