@@ -11,13 +11,14 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
-      'bittorrent-tracker': path.resolve(__dirname, '../../node_modules/bittorrent-tracker'),
       'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src'),
-      'dgram': 'chrome-dgram',
-      'dns': path.resolve(__dirname, '../common/dns.ts'),
-      'net': 'chrome-net',
-      'torrent-discovery': path.resolve(__dirname, '../../node_modules/torrent-discovery')
-    }
+      // TODO(feross): Publish chrome-dns and add to "chromeapp" package.json
+      // field so this isn't required anymore
+      dns: path.resolve(__dirname, '../common/dns.ts')
+    },
+    // For explanation of "chromeapp", see:
+    // https://github.com/brave/brave-browser/issues/5587
+    aliasFields: ['chromeapp']
   },
   plugins: [
     new GenerateDepfilePlugin({
@@ -33,7 +34,7 @@ module.exports = (env, argv) => ({
       },
       {
         test: /\.css$/,
-        loader: ['style-loader', 'css-loader'],
+        loader: ['style-loader', 'css-loader']
       },
       // Loads font files for Font Awesome
       {
