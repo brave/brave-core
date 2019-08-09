@@ -12,7 +12,8 @@ chrome.test.runTests([
     }
   },
   function braveWalletExtensionSeedFunctionHasAccess() {
-    if (chrome.braveWallet && chrome.braveWallet.getWalletSeed) {
+    if (chrome.braveWallet && chrome.braveWallet.getWalletSeed &&
+        chrome.braveWallet.getProjectID) {
       chrome.test.succeed();
     } else {
       chrome.test.fail();
@@ -68,6 +69,16 @@ chrome.test.runTests([
         }
         chrome.test.fail();
       })
+    })
+  },
+  function braveWalletExtensionGetProjectIDWorks() {
+    chrome.braveWallet.getProjectID((projectID) => {
+      if (projectID === "test-project-id") {
+        chrome.test.succeed();
+        return
+      }
+      console.log('Failed project ID is: ' + projectID)
+      chrome.test.fail();
     })
   }
 ]);

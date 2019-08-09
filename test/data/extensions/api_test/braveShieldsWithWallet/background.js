@@ -4,11 +4,11 @@
 
 chrome.test.runTests([
   function braveShieldsHasWalletAccessButNotSeed() {
-    if (chrome.braveWallet && !chrome.braveWallet.getWalletSeed) {
+    if (chrome.braveWallet && !chrome.braveWallet.getWalletSeed &&
+        !chrome.braveWallet.getProjectID) {
       chrome.test.succeed();
     } else {
       chrome.test.fail();
     }
   },
 ]);
-

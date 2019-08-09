@@ -42,6 +42,16 @@ class BraveWalletGetWalletSeedFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveWalletGetProjectIDFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.getProjectID", UNKNOWN)
+
+ protected:
+  ~BraveWalletGetProjectIDFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

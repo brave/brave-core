@@ -55,6 +55,8 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsExtensionApiTest,
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsExtensionApiTest,
     BraveWalletAPIAvailable) {
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  env->SetVar("BRAVE_INFURA_PROJECT_ID", "test-project-id");
   ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveWallet"));
