@@ -119,7 +119,7 @@ Object.defineProperty($<webauthn>, 'postCreate', {
         return;
       }
       if (errorName) {
-        $<webauthn>.reject[handle](new DOMException(errorDescription, errorName))
+        $<webauthn>.reject[handle](new DOMException(atob(errorDescription), atob(errorName)))
         return
       }
       response = new $<attest>(attestationObject, clientDataJSON)
@@ -136,7 +136,7 @@ Object.defineProperty($<webauthn>, 'postGet', {
       return;
     }
     if (errorName) {
-      $<webauthn>.reject[handle](new DOMException(errorDescription, errorName))
+      $<webauthn>.reject[handle](new DOMException(atob(errorDescription), atob(errorName)))
       return
     }
     response = new $<assert>(authenticatorData, clientDataJSON, signature, userHandle)
@@ -155,7 +155,7 @@ Object.defineProperty($<u2f>, 'postSign', {
     if (errorCode > 1) {
       errorData = {
         'errorCode': errorCode,
-        'errorMessage': errorMessage
+        'errorMessage': atob(errorMessage)
       }
       $<u2f>.resolve[handle](errorData)
       return
@@ -175,7 +175,7 @@ Object.defineProperty($<u2f>, 'postRegister', {
     if (errorCode > 1) {
       errorData = {
         'errorCode': errorCode,
-        'errorMessage': errorMessage
+        'errorMessage': atob(errorMessage)
       }
       $<u2f>.resolve[handle](errorData)
       return
