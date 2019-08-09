@@ -81,6 +81,31 @@ class AdsServiceImpl : public AdsService,
       const bool is_active) override;
   void OnTabClosed(SessionID tab_id) override;
 
+  void GetAdsHistory(OnGetAdsHistoryCallback callback) override;
+
+  void ToggleAdThumbUp(const std::string& id,
+                       const std::string& creative_set_id,
+                       int action,
+                       OnToggleAdThumbUpCallback callback) override;
+  void ToggleAdThumbDown(const std::string& id,
+                         const std::string& creative_set_id,
+                         int action,
+                         OnToggleAdThumbDownCallback callback) override;
+  void ToggleAdOptInAction(const std::string& category,
+                           int action,
+                           OnToggleAdOptInActionCallback callback) override;
+  void ToggleAdOptOutAction(const std::string& category,
+                            int action,
+                            OnToggleAdOptOutActionCallback callback) override;
+  void ToggleSaveAd(const std::string& id,
+                    const std::string& creative_set_id,
+                    bool saved,
+                    OnToggleSaveAdCallback callback) override;
+  void ToggleFlagAd(const std::string& id,
+                    const std::string& creative_set_id,
+                    bool flagged,
+                    OnToggleFlagAdCallback callback) override;
+
   void Shutdown() override;
 
   // AdsClient implementation
@@ -127,6 +152,9 @@ class AdsServiceImpl : public AdsService,
   void CloseNotification(const std::string& id) override;
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
   void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
+  void ConfirmAction(const std::string& uuid,
+                     const std::string& creative_set_id,
+                     const ads::ConfirmationType& type) override;
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;
   void URLRequest(
@@ -183,6 +211,30 @@ class AdsServiceImpl : public AdsService,
       const ads::OnGetAdsCallback& callback,
       const std::string& category,
       const std::vector<ads::AdInfo>& ads);
+
+  void OnGetAdsHistory(
+      OnGetAdsHistoryCallback callback,
+      const base::flat_map<uint64_t, std::vector<std::string>>&
+          json_ads_history);
+
+  void OnToggleAdThumbUp(OnToggleAdThumbUpCallback callback,
+                         const std::string& id,
+                         int action);
+  void OnToggleAdThumbDown(OnToggleAdThumbDownCallback callback,
+                           const std::string& id,
+                           int action);
+  void OnToggleAdOptInAction(OnToggleAdOptInActionCallback callback,
+                             const std::string& category,
+                             int action);
+  void OnToggleAdOptOutAction(OnToggleAdOptOutActionCallback callback,
+                              const std::string& category,
+                              int action);
+  void OnToggleSaveAd(OnToggleSaveAdCallback callback,
+                      const std::string& id,
+                      bool saved);
+  void OnToggleFlagAd(OnToggleSaveAdCallback callback,
+                      const std::string& id,
+                      bool flagged);
 
   void OnSaveBundleState(const ads::OnSaveCallback& callback, bool success);
   void OnLoaded(

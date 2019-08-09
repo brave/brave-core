@@ -11,6 +11,7 @@
 @required
 
 - (void)confirmAd:(std::unique_ptr<ads::NotificationInfo>)info;
+- (void)confirmAction:(const std::string &)uuid creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)type;
 - (void)eventLog:(const std::string &)json;
 - (void)getAds:(const std::string &)category callback:(ads::OnGetAdsCallback)callback;
 - (const std::string)getAdsLocale;

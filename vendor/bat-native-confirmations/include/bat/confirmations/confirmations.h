@@ -7,6 +7,7 @@
 #define BAT_CONFIRMATIONS_CONFIRMATIONS_H_
 
 #include <stdint.h>
+#include <string>
 #include <vector>
 #include <memory>
 
@@ -55,6 +56,12 @@ class CONFIRMATIONS_EXPORT Confirmations {
 
   // Should be called when an ad is sustained in Ads
   virtual void ConfirmAd(std::unique_ptr<NotificationInfo> info) = 0;
+
+  // Should be called when an ad is sustained in Ads
+  virtual void ConfirmAction(
+      const std::string& uuid,
+      const std::string& creative_set_id,
+      const ConfirmationType& type) = 0;
 
   // Should be called to update ads rewards, i.e. after a grant is claimed
   virtual void UpdateAdsRewards(const bool should_refresh) = 0;

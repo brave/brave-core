@@ -17,6 +17,7 @@
 
 namespace ads {
 
+class AdsImpl;
 struct BundleState;
 
 class Bundle {

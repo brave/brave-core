@@ -14,29 +14,28 @@
 #include <map>
 
 #include "base/base64.h"
+#include "base/i18n/time_formatting.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
-#include "base/i18n/time_formatting.h"
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/render_view_host.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/render_view_host.h"
 #include "content/public/common/bindings_policy.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
-
 
 using content::WebUIMessageHandler;
 
@@ -87,6 +86,20 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetContributionList(const base::ListValue* args);
   void CheckImported(const base::ListValue* args);
   void GetAdsData(const base::ListValue* args);
+  void GetAdsHistory(const base::ListValue* args);
+  void OnGetAdsHistory(const base::ListValue& ads_history);
+  void ToggleAdThumbUp(const base::ListValue* args);
+  void OnToggleAdThumbUp(const std::string& id, int action);
+  void ToggleAdThumbDown(const base::ListValue* args);
+  void OnToggleAdThumbDown(const std::string& id, int action);
+  void ToggleAdOptInAction(const base::ListValue* args);
+  void OnToggleAdOptInAction(const std::string& category, int action);
+  void ToggleAdOptOutAction(const base::ListValue* args);
+  void OnToggleAdOptOutAction(const std::string& category, int action);
+  void ToggleSaveAd(const base::ListValue* args);
+  void OnToggleSaveAd(const std::string& id, bool saved);
+  void ToggleFlagAd(const base::ListValue* args);
+  void OnToggleFlagAd(const std::string& id, bool flagged);
   void SaveAdsSetting(const base::ListValue* args);
   void SetBackupCompleted(const base::ListValue* args);
   void OnGetWalletPassphrase(const std::string& pass);
@@ -311,6 +324,27 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getAdsData",
       base::BindRepeating(&RewardsDOMHandler::GetAdsData,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getAdsHistory",
+      base::BindRepeating(&RewardsDOMHandler::GetAdsHistory,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.toggleAdThumbUp",
+      base::BindRepeating(&RewardsDOMHandler::ToggleAdThumbUp,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.toggleAdThumbDown",
+      base::BindRepeating(&RewardsDOMHandler::ToggleAdThumbDown,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.toggleAdOptInAction",
+      base::BindRepeating(&RewardsDOMHandler::ToggleAdOptInAction,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.toggleAdOptOutAction",
+      base::BindRepeating(&RewardsDOMHandler::ToggleAdOptOutAction,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.toggleSaveAd",
+      base::BindRepeating(&RewardsDOMHandler::ToggleSaveAd,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.toggleFlagAd",
+      base::BindRepeating(&RewardsDOMHandler::ToggleFlagAd,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.saveAdsSetting",
       base::BindRepeating(&RewardsDOMHandler::SaveAdsSetting,
@@ -999,6 +1033,184 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
   ads_data.SetBoolean("adsUIEnabled", ads_ui_enabled);
 
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsData", ads_data);
+}
+
+void RewardsDOMHandler::GetAdsHistory(const base::ListValue* args) {
+  if (!ads_service_) {
+    return;
+  }
+
+  ads_service_->GetAdsHistory(base::Bind(&RewardsDOMHandler::OnGetAdsHistory,
+                                         weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsHistory",
+                                         ads_history);
+}
+
+void RewardsDOMHandler::ToggleAdThumbUp(const base::ListValue* args) {
+  CHECK_EQ(3U, args->GetSize());
+  if (!ads_service_) {
+    return;
+  }
+
+  const std::string id = args->GetList()[0].GetString();
+  const std::string creative_set_id = args->GetList()[1].GetString();
+  const int action = args->GetList()[2].GetInt();
+  ads_service_->ToggleAdThumbUp(
+      id, creative_set_id, action,
+      base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbUp,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnToggleAdThumbUp(const std::string& id, int action) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetKey("uuid", base::Value(id));
+  result.SetKey("action", base::Value(action));
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleAdThumbUp",
+                                         result);
+}
+
+void RewardsDOMHandler::ToggleAdThumbDown(const base::ListValue* args) {
+  CHECK_EQ(3U, args->GetSize());
+  if (!ads_service_) {
+    return;
+  }
+
+  const std::string id = args->GetList()[0].GetString();
+  const std::string creative_set_id = args->GetList()[1].GetString();
+  const int action = args->GetList()[2].GetInt();
+  ads_service_->ToggleAdThumbDown(
+      id, creative_set_id, action,
+      base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbDown,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnToggleAdThumbDown(const std::string& id, int action) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetKey("uuid", base::Value(id));
+  result.SetKey("action", base::Value(action));
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleAdThumbDown",
+                                         result);
+}
+
+void RewardsDOMHandler::ToggleAdOptInAction(const base::ListValue* args) {
+  CHECK_EQ(2U, args->GetSize());
+  if (!ads_service_) {
+    return;
+  }
+
+  const std::string category = args->GetList()[0].GetString();
+  const int action = args->GetList()[1].GetInt();
+  ads_service_->ToggleAdOptInAction(
+      category, action,
+      base::BindOnce(&RewardsDOMHandler::OnToggleAdOptInAction,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnToggleAdOptInAction(const std::string& category,
+                                              int action) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetKey("category", base::Value(category));
+  result.SetKey("action", base::Value(action));
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleAdOptInAction",
+                                         result);
+}
+
+void RewardsDOMHandler::ToggleAdOptOutAction(const base::ListValue* args) {
+  CHECK_EQ(2U, args->GetSize());
+  if (!ads_service_) {
+    return;
+  }
+
+  const std::string category = args->GetList()[0].GetString();
+  const int action = args->GetList()[1].GetInt();
+  ads_service_->ToggleAdOptOutAction(
+      category, action,
+      base::BindOnce(&RewardsDOMHandler::OnToggleAdOptOutAction,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnToggleAdOptOutAction(const std::string& category,
+                                               int action) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetKey("category", base::Value(category));
+  result.SetKey("action", base::Value(action));
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleAdOptOutAction",
+                                         result);
+}
+
+void RewardsDOMHandler::ToggleSaveAd(const base::ListValue* args) {
+  CHECK_EQ(3U, args->GetSize());
+  if (!ads_service_) {
+    return;
+  }
+
+  const std::string id = args->GetList()[0].GetString();
+  const std::string creative_set_id = args->GetList()[1].GetString();
+  const bool saved = args->GetList()[2].GetBool();
+  ads_service_->ToggleSaveAd(id, creative_set_id, saved,
+                             base::BindOnce(&RewardsDOMHandler::OnToggleSaveAd,
+                                            weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnToggleSaveAd(const std::string& id, bool saved) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetKey("uuid", base::Value(id));
+  result.SetKey("saved", base::Value(saved));
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleSaveAd",
+                                         result);
+}
+
+void RewardsDOMHandler::ToggleFlagAd(const base::ListValue* args) {
+  CHECK_EQ(3U, args->GetSize());
+  if (!ads_service_) {
+    return;
+  }
+
+  const std::string id = args->GetList()[0].GetString();
+  const std::string creative_set_id = args->GetList()[1].GetString();
+  const bool flagged = args->GetList()[2].GetBool();
+  ads_service_->ToggleFlagAd(id, creative_set_id, flagged,
+                             base::BindOnce(&RewardsDOMHandler::OnToggleFlagAd,
+                                            weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnToggleFlagAd(const std::string& id, bool flagged) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetKey("uuid", base::Value(id));
+  result.SetKey("flagged", base::Value(flagged));
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleFlagAd",
+                                         result);
 }
 
 void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {

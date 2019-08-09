@@ -11,6 +11,9 @@ static const char kConfirmationTypeClick[] = "click";
 static const char kConfirmationTypeDismiss[] = "dismiss";
 static const char kConfirmationTypeView[] = "view";
 static const char kConfirmationTypeLanded[] = "landed";
+static const char kConfirmationTypeFlag[] = "flag";
+static const char kConfirmationTypeUpvote[] = "upvote";
+static const char kConfirmationTypeDownvote[] = "downvote";
 
 ConfirmationType::ConfirmationType(const std::string& value) {
   if (value == kConfirmationTypeClick) {
@@ -21,6 +24,12 @@ ConfirmationType::ConfirmationType(const std::string& value) {
     value_ = VIEW;
   } else if (value == kConfirmationTypeLanded) {
     value_ = LANDED;
+  } else if (value == kConfirmationTypeFlag) {
+    value_ = FLAG;
+  } else if (value == kConfirmationTypeUpvote) {
+    value_ = UPVOTE;
+  } else if (value == kConfirmationTypeDownvote) {
+    value_ = DOWNVOTE;
   } else {
     value_ = UNKNOWN;
   }
@@ -54,6 +63,18 @@ ConfirmationType::operator std::string() const {
 
     case LANDED: {
       return kConfirmationTypeLanded;
+    }
+
+    case FLAG: {
+      return kConfirmationTypeFlag;
+    }
+
+    case UPVOTE: {
+      return kConfirmationTypeUpvote;
+    }
+
+    case DOWNVOTE: {
+      return kConfirmationTypeDownvote;
     }
   }
 }

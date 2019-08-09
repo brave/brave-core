@@ -317,6 +317,13 @@ void AdsClientMojoBridge::ConfirmAd(const std::string& notification_info) {
     ads_client_->ConfirmAd(std::move(info));
 }
 
+void AdsClientMojoBridge::ConfirmAction(const std::string& uuid,
+    const std::string& creative_set_id,
+    const std::string& type) {
+  ads_client_->ConfirmAction(uuid, creative_set_id,
+                             ads::ConfirmationType(type));
+}
+
 // static
 void AdsClientMojoBridge::OnSaveBundleState(
     CallbackHolder<SaveBundleStateCallback>* holder,

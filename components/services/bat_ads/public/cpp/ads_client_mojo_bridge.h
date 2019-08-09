@@ -74,6 +74,9 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   void CloseNotification(const std::string& id) override;
   void SetCatalogIssuers(const std::string& issuers_info) override;
   void ConfirmAd(const std::string& notification_info) override;
+  void ConfirmAction(const std::string& uuid,
+                     const std::string& creative_set_id,
+                     const std::string& type) override;
   void SaveBundleState(const std::string& bundle_state,
                        SaveBundleStateCallback callback) override;
   void GetAds(const std::string& category,
@@ -123,7 +126,6 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       ads::Result result,
       const std::string& category,
       const std::vector<ads::AdInfo>& ad_info);
-
 
   ads::AdsClient* ads_client_;
 

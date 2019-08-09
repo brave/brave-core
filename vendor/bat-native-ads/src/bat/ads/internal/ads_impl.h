@@ -14,18 +14,19 @@
 #include <memory>
 
 #include "bat/ads/ads.h"
+#include "bat/ads/ad_history_detail.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/notification_event_type.h"
 #include "bat/ads/notification_info.h"
 
 #include "bat/ads/internal/ads_serve.h"
+#include "bat/ads/internal/bundle.h"
+#include "bat/ads/internal/client.h"
 #include "bat/ads/internal/event_type_blur_info.h"
 #include "bat/ads/internal/event_type_destroy_info.h"
 #include "bat/ads/internal/event_type_focus_info.h"
 #include "bat/ads/internal/event_type_load_info.h"
 #include "bat/ads/internal/notification_result_type.h"
-#include "bat/ads/internal/client.h"
-#include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/notifications.h"
 
 #include "bat/usermodel/user_model.h"
@@ -106,6 +107,28 @@ class AdsImpl : public Ads {
 
   void SetConfirmationsIsReady(const bool is_ready) override;
 
+  std::map<uint64_t, std::vector<AdsHistory>> GetAdsHistory() override;
+
+  AdContent::LikeAction ToggleAdThumbUp(const std::string& id,
+                                        const std::string& creative_set_id,
+                                        AdContent::LikeAction action) override;
+  AdContent::LikeAction ToggleAdThumbDown(
+      const std::string& id,
+      const std::string& creative_set_id,
+      AdContent::LikeAction action) override;
+  CategoryContent::OptAction ToggleAdOptInAction(
+      const std::string& category,
+      CategoryContent::OptAction action) override;
+  CategoryContent::OptAction ToggleAdOptOutAction(
+      const std::string& category,
+      CategoryContent::OptAction action) override;
+  bool ToggleSaveAd(const std::string& id,
+                    const std::string& creative_set_id,
+                    bool saved) override;
+  bool ToggleFlagAd(const std::string& id,
+                    const std::string& creative_set_id,
+                    bool flagged) override;
+
   void ChangeLocale(const std::string& locale) override;
 
   void ClassifyPage(const std::string& url, const std::string& html) override;
@@ -147,6 +170,10 @@ class AdsImpl : public Ads {
       const std::deque<uint64_t> history,
       const uint64_t seconds_window,
       const uint64_t allowable_ad_count) const;
+  bool HistoryRespectsRollingTimeConstraint(
+      const std::deque<AdHistoryDetail> history,
+      const uint64_t seconds_window,
+      const uint64_t allowable_ad_count) const;
   bool IsAllowedToShowAds();
   bool DoesHistoryRespectMinimumWaitTimeToShowAds();
   bool DoesHistoryRespectAdsPerDayLimit();
@@ -175,12 +202,17 @@ class AdsImpl : public Ads {
   void StopSustainingAdInteraction();
   bool IsSustainingAdInteraction() const;
   bool IsStillViewingAd() const;
-  void ConfirmAd(const NotificationInfo& info, const ConfirmationType type);
+  void ConfirmAd(const NotificationInfo& info, const ConfirmationType& type);
+  void ConfirmAction(const std::string& uuid,
+                     const std::string& creative_set_id,
+                     const ConfirmationType& type);
 
   void OnTimer(const uint32_t timer_id) override;
 
   uint64_t next_easter_egg_timestamp_in_seconds_;
   void GenerateAdReportingConfirmationEvent(const NotificationInfo& info);
+  void GenerateAdReportingConfirmationEvent(const std::string& uuid,
+                                            const ConfirmationType& type);
   void GenerateAdReportingLoadEvent(const LoadInfo& info);
   void GenerateAdReportingBackgroundEvent();
   void GenerateAdReportingForegroundEvent();
@@ -195,7 +227,11 @@ class AdsImpl : public Ads {
       const NotificationInfo& info,
       const NotificationResultInfoResultType type);
 
+  void GenerateAdsHistoryEntry(const NotificationInfo& notification_info,
+                               const ConfirmationType& type);
+
   bool IsNotificationFromSampleCatalog(const NotificationInfo& info) const;
+  bool IsCreativeSetFromSampleCatalog(const std::string& creative_set_id) const;
 
   bool IsSupportedUrl(const std::string& url) const;
   bool UrlHostsMatch(const std::string& url_1, const std::string& url_2) const;

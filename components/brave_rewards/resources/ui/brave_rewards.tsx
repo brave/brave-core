@@ -125,6 +125,34 @@ window.cr.define('brave_rewards', function () {
     getActions().onAdsData(adsData)
   }
 
+  function adsHistory (adsHistory: Rewards.AdsHistoryData[]) {
+    getActions().onAdsHistory(adsHistory)
+  }
+
+  function onToggleAdThumbUp (result: Rewards.ToggleLikeAction) {
+    getActions().onToggleAdThumbUp(result)
+  }
+
+  function onToggleAdThumbDown (result: Rewards.ToggleLikeAction) {
+    getActions().onToggleAdThumbDown(result)
+  }
+
+  function onToggleAdOptInAction (result: Rewards.ToggleOptAction) {
+    getActions().onToggleAdOptInAction(result)
+  }
+
+  function onToggleAdOptOutAction (result: Rewards.ToggleOptAction) {
+    getActions().onToggleAdOptOutAction(result)
+  }
+
+  function onToggleSaveAd (result: Rewards.ToggleSaveAd) {
+    getActions().onToggleSaveAd(result)
+  }
+
+  function onToggleFlagAd (result: Rewards.ToggleFlagAd) {
+    getActions().onToggleFlagAd(result)
+  }
+
   function onPendingContributionSaved (result: number) {
     if (result === 0) {
       getActions().getPendingContributions()
@@ -221,6 +249,13 @@ window.cr.define('brave_rewards', function () {
     initAutoContributeSettings,
     imported,
     adsData,
+    adsHistory,
+    onToggleAdThumbUp,
+    onToggleAdThumbDown,
+    onToggleAdOptInAction,
+    onToggleAdOptOutAction,
+    onToggleSaveAd,
+    onToggleFlagAd,
     pendingContributions,
     onPendingContributionSaved,
     rewardsEnabled,

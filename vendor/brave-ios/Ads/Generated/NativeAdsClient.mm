@@ -16,6 +16,9 @@ NativeAdsClient::~NativeAdsClient() {
 void NativeAdsClient::ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) {
   [bridge_ confirmAd:std::move(info)];
 }
+void NativeAdsClient::ConfirmAction(const std::string & uuid, const std::string & creative_set_id, const ads::ConfirmationType & type) {
+  [bridge_ confirmAction:uuid creativeSetId:creative_set_id confirmationType:type];
+}
 void NativeAdsClient::EventLog(const std::string & json) {
   [bridge_ eventLog:json];
 }

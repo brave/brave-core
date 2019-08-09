@@ -437,6 +437,12 @@ void BatLedgerImpl::ConfirmAd(const std::string& info) {
   ledger_->ConfirmAd(info);
 }
 
+void BatLedgerImpl::ConfirmAction(const std::string& uuid,
+    const std::string& creative_set_id,
+    const std::string& type) {
+  ledger_->ConfirmAction(uuid, creative_set_id, type);
+}
+
 // static
 void BatLedgerImpl::OnGetTransactionHistory(
     CallbackHolder<GetTransactionHistoryCallback>* holder,

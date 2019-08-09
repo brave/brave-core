@@ -4,15 +4,43 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/client.h"
+
+#include "bat/ads/ad_history_detail.h"
+#include "bat/ads/internal/classification_helper.h"
+#include "bat/ads/internal/filtered_ad.h"
+#include "bat/ads/internal/filtered_category.h"
+#include "bat/ads/internal/flagged_ad.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/time.h"
-#include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/saved_ad.h"
+#include "bat/ads/internal/static_values.h"
+#include "bat/ads/internal/time.h"
 
 #include "base/guid.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
+
+namespace {
+
+std::vector<ads::FilteredAd>::iterator FindFilteredAdByUUID(
+    std::vector<ads::FilteredAd>* filtered_ad,
+    const std::string& uuid) {
+  return std::find_if(
+      filtered_ad->begin(), filtered_ad->end(),
+      [&uuid](const ads::FilteredAd& ad) { return ad.uuid == uuid; });
+}
+
+std::vector<ads::FilteredCategory>::iterator FindFilteredCategoryByName(
+    std::vector<ads::FilteredCategory>* filtered_category,
+    const std::string& name) {
+  return std::find_if(filtered_category->begin(), filtered_category->end(),
+                      [&name](const ads::FilteredCategory& category) {
+                        return category.name == name;
+                      });
+}
+
+}  // namespace
 
 namespace ads {
 
@@ -21,6 +49,7 @@ Client::Client(AdsImpl* ads, AdsClient* ads_client) :
     ads_(ads),
     ads_client_(ads_client),
     client_state_(new ClientState()) {
+  (void)ads_;
 }
 
 Client::~Client() = default;
@@ -31,9 +60,9 @@ void Client::Initialize(InitializeCallback callback) {
   LoadState();
 }
 
-void Client::AppendCurrentTimeToAdsShownHistory() {
-  auto now_in_seconds = Time::NowInSeconds();
-  client_state_->ads_shown_history.push_front(now_in_seconds);
+void Client::AppendAdToAdsShownHistory(
+    const AdHistoryDetail& ad_history_detail) {
+  client_state_->ads_shown_history.push_front(ad_history_detail);
 
   if (client_state_->ads_shown_history.size() >
       kMaximumEntriesInAdsShownHistory) {
@@ -43,8 +72,258 @@ void Client::AppendCurrentTimeToAdsShownHistory() {
   SaveState();
 }
 
-const std::deque<uint64_t> Client::GetAdsShownHistory() {
+const std::deque<AdHistoryDetail> Client::GetAdsShownHistory() {
   return client_state_->ads_shown_history;
+}
+
+AdContent::LikeAction Client::ToggleAdThumbUp(
+    const std::string& id,
+    const std::string& creative_set_id,
+    AdContent::LikeAction action) {
+  AdContent::LikeAction like_action;
+  if (action == AdContent::LIKE_ACTION_THUMBS_UP) {
+    like_action = AdContent::LIKE_ACTION_NONE;
+  } else {
+    like_action = AdContent::LIKE_ACTION_THUMBS_UP;
+  }
+
+  // Remove this ad from the filtered ads list
+  auto it_ad = FindFilteredAdByUUID(&client_state_->ad_prefs.filtered_ads, id);
+  if (it_ad != client_state_->ad_prefs.filtered_ads.end()) {
+    client_state_->ad_prefs.filtered_ads.erase(it_ad);
+  }
+
+  // Update the history detail for ads matching this UUID
+  for (auto& item : client_state_->ads_shown_history) {
+    if (item.ad_content.uuid == id) {
+      item.ad_content.like_action = like_action;
+    }
+  }
+
+  SaveState();
+
+  return like_action;
+}
+
+AdContent::LikeAction Client::ToggleAdThumbDown(
+    const std::string& id,
+    const std::string& creative_set_id,
+    AdContent::LikeAction action) {
+  AdContent::LikeAction like_action;
+  if (action == AdContent::LIKE_ACTION_THUMBS_DOWN) {
+    like_action = AdContent::LIKE_ACTION_NONE;
+  } else {
+    like_action = AdContent::LIKE_ACTION_THUMBS_DOWN;
+  }
+
+  // Update this ad in the filtered ads list
+  auto it_ad = FindFilteredAdByUUID(&client_state_->ad_prefs.filtered_ads, id);
+  if (like_action == AdContent::LIKE_ACTION_NONE) {
+    if (it_ad != client_state_->ad_prefs.filtered_ads.end()) {
+      client_state_->ad_prefs.filtered_ads.erase(it_ad);
+    }
+  } else {
+    if (it_ad == client_state_->ad_prefs.filtered_ads.end()) {
+      FilteredAd filtered_ad;
+      filtered_ad.uuid = id;
+      filtered_ad.creative_set_id = creative_set_id;
+      client_state_->ad_prefs.filtered_ads.push_back(filtered_ad);
+    }
+  }
+
+  // Update the history detail for ads matching this UUID
+  for (auto& item : client_state_->ads_shown_history) {
+    if (item.ad_content.uuid == id) {
+      item.ad_content.like_action = like_action;
+    }
+  }
+
+  SaveState();
+
+  return like_action;
+}
+
+CategoryContent::OptAction Client::ToggleAdOptInAction(
+    const std::string& category,
+    CategoryContent::OptAction action) {
+  CategoryContent::OptAction opt_action;
+  if (action == CategoryContent::OPT_ACTION_OPT_IN) {
+    opt_action = CategoryContent::OPT_ACTION_NONE;
+  } else {
+    opt_action = CategoryContent::OPT_ACTION_OPT_IN;
+  }
+
+  // Remove this category from the filtered categories list
+  auto it = FindFilteredCategoryByName(
+      &client_state_->ad_prefs.filtered_categories, category);
+  if (it != client_state_->ad_prefs.filtered_categories.end()) {
+    client_state_->ad_prefs.filtered_categories.erase(it);
+  }
+
+  // Update the history for this category
+  for (auto& item : client_state_->ads_shown_history) {
+    if (item.category_content.category == category) {
+      item.category_content.opt_action = opt_action;
+    }
+  }
+
+  SaveState();
+
+  return opt_action;
+}
+
+CategoryContent::OptAction Client::ToggleAdOptOutAction(
+    const std::string& category,
+    CategoryContent::OptAction action) {
+  CategoryContent::OptAction opt_action;
+  if (action == CategoryContent::OPT_ACTION_OPT_OUT) {
+    opt_action = CategoryContent::OPT_ACTION_NONE;
+  } else {
+    opt_action = CategoryContent::OPT_ACTION_OPT_OUT;
+  }
+
+  // Update this category in the filtered categories list
+  auto it = FindFilteredCategoryByName(
+      &client_state_->ad_prefs.filtered_categories, category);
+  if (opt_action == 0) {
+    if (it != client_state_->ad_prefs.filtered_categories.end()) {
+      client_state_->ad_prefs.filtered_categories.erase(it);
+    }
+  } else {
+    if (it == client_state_->ad_prefs.filtered_categories.end()) {
+      FilteredCategory filtered_category;
+      filtered_category.name = category;
+      client_state_->ad_prefs.filtered_categories.push_back(filtered_category);
+    }
+  }
+
+  // Update the history for this category
+  for (auto& item : client_state_->ads_shown_history) {
+    if (item.category_content.category == category) {
+      item.category_content.opt_action = opt_action;
+    }
+  }
+
+  SaveState();
+
+  return opt_action;
+}
+
+bool Client::ToggleSaveAd(const std::string& id,
+                          const std::string& creative_set_id,
+                          bool saved) {
+  const bool saved_ad = !saved;
+
+  // Update this ad in the saved ads list
+  auto it_ad =
+      std::find_if(client_state_->ad_prefs.saved_ads.begin(),
+                   client_state_->ad_prefs.saved_ads.end(),
+                   [&id](const ads::SavedAd& ad) { return ad.uuid == id; });
+  if (saved_ad) {
+    if (it_ad == client_state_->ad_prefs.saved_ads.end()) {
+      SavedAd saved_ad;
+      saved_ad.uuid = id;
+      saved_ad.creative_set_id = creative_set_id;
+      client_state_->ad_prefs.saved_ads.push_back(saved_ad);
+    }
+  } else {
+    if (it_ad != client_state_->ad_prefs.saved_ads.end()) {
+      client_state_->ad_prefs.saved_ads.erase(it_ad);
+    }
+  }
+
+  // Update the history detail for ads matching this UUID
+  for (auto& item : client_state_->ads_shown_history) {
+    if (item.ad_content.uuid == id) {
+      item.ad_content.saved_ad = saved_ad;
+    }
+  }
+
+  SaveState();
+
+  return saved_ad;
+}
+
+bool Client::ToggleFlagAd(const std::string& id,
+                          const std::string& creative_set_id,
+                          bool flagged) {
+  const bool flagged_ad = !flagged;
+
+  // Update this ad in the flagged ads list
+  auto it_ad =
+      std::find_if(client_state_->ad_prefs.flagged_ads.begin(),
+                   client_state_->ad_prefs.flagged_ads.end(),
+                   [&id](const ads::FlaggedAd& ad) { return ad.uuid == id; });
+  if (flagged_ad) {
+    if (it_ad == client_state_->ad_prefs.flagged_ads.end()) {
+      FlaggedAd flagged_ad;
+      flagged_ad.uuid = id;
+      flagged_ad.creative_set_id = creative_set_id;
+      client_state_->ad_prefs.flagged_ads.push_back(flagged_ad);
+    }
+  } else {
+    if (it_ad != client_state_->ad_prefs.flagged_ads.end()) {
+      client_state_->ad_prefs.flagged_ads.erase(it_ad);
+    }
+  }
+
+  // Update the history detail for ads matching this UUID
+  for (auto& item : client_state_->ads_shown_history) {
+    if (item.ad_content.uuid == id) {
+      item.ad_content.flagged_ad = flagged_ad;
+    }
+  }
+
+  SaveState();
+
+  return flagged_ad;
+}
+
+bool Client::IsFilteredCategory(const std::string& category) const {
+  // If passed in category has a subcategory and the current filter
+  // does not, check if it's a child of the filter. Conversely, if the
+  // passed in category has no subcategory but the current filter
+  // does, it can't be a match at all so move on to the next
+  // filter. Otherwise, perform an exact match to determine whether or
+  // not to filter the category.
+  std::vector<std::string> category_classifications =
+      helper::Classification::GetClassifications(category);
+  for (const auto& filtered_category :
+       client_state_->ad_prefs.filtered_categories) {
+    std::vector<std::string> filtered_classifications =
+        helper::Classification::GetClassifications(filtered_category.name);
+    if (category_classifications.size() > 1 &&
+        filtered_classifications.size() == 1) {
+      if (category_classifications[0] == filtered_classifications[0]) {
+        return true;
+      }
+    } else if (category_classifications.size() == 1 &&
+               filtered_classifications.size() > 1) {
+      continue;
+    } else if (filtered_category.name == category) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool Client::IsFilteredAd(const std::string& creative_set_id) const {
+  auto it = std::find_if(client_state_->ad_prefs.filtered_ads.begin(),
+                         client_state_->ad_prefs.filtered_ads.end(),
+                         [&creative_set_id](const ads::FilteredAd& ad) {
+                           return ad.creative_set_id == creative_set_id;
+                         });
+  return it != client_state_->ad_prefs.filtered_ads.end();
+}
+
+bool Client::IsFlaggedAd(const std::string& creative_set_id) const {
+  auto it = std::find_if(client_state_->ad_prefs.flagged_ads.begin(),
+                         client_state_->ad_prefs.flagged_ads.end(),
+                         [&creative_set_id](const ads::FlaggedAd& ad) {
+                           return ad.creative_set_id == creative_set_id;
+                         });
+  return it != client_state_->ad_prefs.flagged_ads.end();
 }
 
 void Client::UpdateAdUUID() {

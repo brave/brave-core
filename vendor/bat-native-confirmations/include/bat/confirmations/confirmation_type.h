@@ -17,7 +17,10 @@ class ConfirmationType {
     CLICK,
     DISMISS,
     VIEW,
-    LANDED
+    LANDED,
+    FLAG,
+    UPVOTE,
+    DOWNVOTE
   };
 
   ConfirmationType() = default;

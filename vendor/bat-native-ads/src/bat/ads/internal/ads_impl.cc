@@ -8,34 +8,52 @@
 #include <algorithm>
 #include <utility>
 
+#include "bat/ads/ad_history_detail.h"
 #include "bat/ads/ads_client.h"
-#include "bat/ads/notification_info.h"
+#include "bat/ads/ads_history.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/notification_info.h"
 
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/classification_helper.h"
+#include "bat/ads/internal/locale_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/search_providers.h"
-#include "bat/ads/internal/locale_helper.h"
-#include "bat/ads/internal/uri_helper.h"
-#include "bat/ads/internal/time.h"
 #include "bat/ads/internal/static_values.h"
+#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/uri_helper.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
-#include "base/rand_util.h"
-#include "base/strings/string_util.h"
-#include "base/strings/string_split.h"
-#include "base/time/time.h"
 #include "base/guid.h"
+#include "base/rand_util.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 
 #include "url/gurl.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
+
+namespace {
+
+const int kDaysOfAdsHistory = 7;
+
+std::string GetDisplayUrl(const std::string& url) {
+  GURL gurl(url);
+  if (!gurl.is_valid())
+    return std::string();
+
+  return gurl.host();
+}
+
+}  // namespace
 
 namespace ads {
 
@@ -329,6 +347,7 @@ void AdsImpl::NotificationEventViewed(
   GenerateAdReportingNotificationShownEvent(notification);
 
   ConfirmAd(notification, ConfirmationType::VIEW);
+  GenerateAdsHistoryEntry(notification, ConfirmationType::VIEW);
 }
 
 void AdsImpl::NotificationEventClicked(
@@ -340,6 +359,7 @@ void AdsImpl::NotificationEventClicked(
       NotificationResultInfoResultType::CLICKED);
 
   ConfirmAd(notification, ConfirmationType::CLICK);
+  GenerateAdsHistoryEntry(notification, ConfirmationType::CLICK);
 }
 
 void AdsImpl::NotificationEventDismissed(
@@ -351,6 +371,7 @@ void AdsImpl::NotificationEventDismissed(
       NotificationResultInfoResultType::DISMISSED);
 
   ConfirmAd(notification, ConfirmationType::DISMISS);
+  GenerateAdsHistoryEntry(notification, ConfirmationType::DISMISS);
 }
 
 void AdsImpl::NotificationEventTimedOut(
@@ -415,6 +436,88 @@ void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
 
 void AdsImpl::SetConfirmationsIsReady(const bool is_ready) {
   is_confirmations_ready_ = is_ready;
+}
+
+std::map<uint64_t, std::vector<AdsHistory>> AdsImpl::GetAdsHistory() {
+  std::map<uint64_t, std::vector<AdsHistory>> ads_history;
+  base::Time now = base::Time::Now().LocalMidnight();
+
+  auto ad_history_details = client_->GetAdsShownHistory();
+  for (auto& detail_item : ad_history_details) {
+    auto history_item = std::make_unique<AdsHistory>();
+    history_item->details.push_back(detail_item);
+
+    base::Time timestamp =
+        Time::FromDoubleT(detail_item.timestamp_in_seconds).LocalMidnight();
+    base::TimeDelta time_delta = now - timestamp;
+    if (time_delta.InDays() >= kDaysOfAdsHistory) {
+      break;
+    }
+
+    const uint64_t timestamp_in_seconds =
+        static_cast<uint64_t>((timestamp - base::Time()).InSeconds());
+    ads_history[timestamp_in_seconds].push_back(*history_item);
+  }
+
+  return ads_history;
+}
+
+AdContent::LikeAction AdsImpl::ToggleAdThumbUp(
+    const std::string& id,
+    const std::string& creative_set_id,
+    AdContent::LikeAction action) {
+  AdContent::LikeAction like_action =
+      client_->ToggleAdThumbUp(id, creative_set_id, action);
+
+  if (like_action == AdContent::LIKE_ACTION_THUMBS_UP) {
+    ConfirmAction(id, creative_set_id, ConfirmationType::UPVOTE);
+  }
+
+  return like_action;
+}
+
+AdContent::LikeAction AdsImpl::ToggleAdThumbDown(
+    const std::string& id,
+    const std::string& creative_set_id,
+    AdContent::LikeAction action) {
+  AdContent::LikeAction like_action =
+      client_->ToggleAdThumbDown(id, creative_set_id, action);
+
+  if (like_action == AdContent::LIKE_ACTION_THUMBS_DOWN) {
+    ConfirmAction(id, creative_set_id, ConfirmationType::DOWNVOTE);
+  }
+
+  return like_action;
+}
+
+CategoryContent::OptAction AdsImpl::ToggleAdOptInAction(
+    const std::string& category,
+    CategoryContent::OptAction action) {
+  return client_->ToggleAdOptInAction(category, action);
+}
+
+CategoryContent::OptAction AdsImpl::ToggleAdOptOutAction(
+    const std::string& category,
+    CategoryContent::OptAction action) {
+  return client_->ToggleAdOptOutAction(category, action);
+}
+
+bool AdsImpl::ToggleSaveAd(const std::string& id,
+                           const std::string& creative_set_id,
+                           bool saved) {
+  return client_->ToggleSaveAd(id, creative_set_id, saved);
+}
+
+bool AdsImpl::ToggleFlagAd(const std::string& id,
+                           const std::string& creative_set_id,
+                           bool flagged) {
+  bool flag_ad = client_->ToggleFlagAd(id, creative_set_id, flagged);
+
+  if (flag_ad) {
+    ConfirmAction(id, creative_set_id, ConfirmationType::FLAG);
+  }
+
+  return flag_ad;
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
@@ -525,6 +628,14 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
     }
 
     for (size_t i = 0; i < page_score.size(); i++) {
+      auto taxonomy = user_model_->GetTaxonomyAtIndex(i);
+      if (client_->IsFilteredCategory(taxonomy)) {
+        BLOG(INFO) << taxonomy
+                   << " taxonomy has been excluded from the winner over time";
+
+        continue;
+      }
+
       winner_over_time_page_score[i] += page_score[i];
     }
   }
@@ -534,7 +645,7 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
 
 std::string AdsImpl::GetWinningCategory(
     const std::vector<double>& page_score) {
-  return user_model_->WinningCategory(page_score);
+  return user_model_->GetWinningCategory(page_score);
 }
 
 std::string AdsImpl::GetWinningCategory(const std::string& html) {
@@ -826,6 +937,18 @@ std::vector<AdInfo> AdsImpl::GetAvailableAds(
       continue;
     }
 
+    if (client_->IsFilteredAd(ad.creative_set_id)) {
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
+          << " appears in filtered ads list";
+      continue;
+    }
+
+    if (client_->IsFlaggedAd(ad.creative_set_id)) {
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
+          << " appears in flagged ads list";
+      continue;
+    }
+
     available_ads.push_back(ad);
   }
 
@@ -934,7 +1057,6 @@ bool AdsImpl::ShowAd(
   notifications_->Add(*notification_info);
   ads_client_->ShowNotification(std::move(notification_info));
 
-  client_->AppendCurrentTimeToAdsShownHistory();
   client_->AppendCurrentTimeToCreativeSetHistory(ad_info.creative_set_id);
   client_->AppendCurrentTimeToCampaignHistory(ad_info.campaign_id);
 
@@ -951,6 +1073,27 @@ bool AdsImpl::HistoryRespectsRollingTimeConstraint(
 
   for (const auto& timestamp_in_seconds : history) {
     if (now_in_seconds - timestamp_in_seconds < seconds_window) {
+      recent_count++;
+    }
+  }
+
+  if (recent_count <= allowable_ad_count) {
+    return true;
+  }
+
+  return false;
+}
+
+bool AdsImpl::HistoryRespectsRollingTimeConstraint(
+    const std::deque<AdHistoryDetail> history,
+    const uint64_t seconds_window,
+    const uint64_t allowable_ad_count) const {
+  uint64_t recent_count = 0;
+
+  auto now_in_seconds = Time::NowInSeconds();
+
+  for (const auto& detail : history) {
+    if (now_in_seconds - detail.timestamp_in_seconds < seconds_window) {
       recent_count++;
     }
   }
@@ -1252,7 +1395,7 @@ bool AdsImpl::IsStillViewingAd() const {
 
 void AdsImpl::ConfirmAd(
     const NotificationInfo& info,
-    const ConfirmationType type) {
+    const ConfirmationType& type) {
   if (IsNotificationFromSampleCatalog(info)) {
     BLOG(INFO) << "Confirmation not made: Sample Ad";
 
@@ -1266,6 +1409,21 @@ void AdsImpl::ConfirmAd(
   GenerateAdReportingConfirmationEvent(*notification_info);
 
   ads_client_->ConfirmAd(std::move(notification_info));
+}
+
+void AdsImpl::ConfirmAction(
+    const std::string& uuid,
+    const std::string& creative_set_id,
+    const ConfirmationType& type) {
+  if (IsCreativeSetFromSampleCatalog(creative_set_id)) {
+    BLOG(INFO) << "Confirmation not made: Sample Ad";
+
+    return;
+  }
+
+  GenerateAdReportingConfirmationEvent(uuid, type);
+
+  ads_client_->ConfirmAction(uuid, creative_set_id, type);
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {
@@ -1316,8 +1474,8 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 
   writer.String("notificationClassification");
   writer.StartArray();
-  std::vector<std::string> classifications = base::SplitString(
-      info.category, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  auto classifications =
+      helper::Classification::GetClassifications(info.category);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -1392,8 +1550,8 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   writer.String("notificationClassification");
   writer.StartArray();
-  std::vector<std::string> classifications = base::SplitString(
-      info.category, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  auto classifications =
+      helper::Classification::GetClassifications(info.category);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -1419,6 +1577,12 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
 void AdsImpl::GenerateAdReportingConfirmationEvent(
     const NotificationInfo& info) {
+  GenerateAdReportingConfirmationEvent(info.uuid, info.type);
+}
+
+void AdsImpl::GenerateAdReportingConfirmationEvent(
+  const std::string& uuid,
+  const ConfirmationType& type) {
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
@@ -1435,11 +1599,11 @@ void AdsImpl::GenerateAdReportingConfirmationEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("notificationId");
-  writer.String(info.uuid.c_str());
+  writer.String(uuid.c_str());
 
   writer.String("notificationType");
-  auto type = std::string(info.type);
-  writer.String(type.c_str());
+  auto confirmation_type = std::string(type);
+  writer.String(confirmation_type.c_str());
 
   writer.EndObject();
 
@@ -1485,9 +1649,8 @@ void AdsImpl::GenerateAdReportingLoadEvent(
 
   writer.String("tabClassification");
   writer.StartArray();
-  std::vector<std::string> classifications = base::SplitString(
-      info.tab_classification, "-", base::KEEP_WHITESPACE,
-      base::SPLIT_WANT_ALL);
+  auto classifications =
+      helper::Classification::GetClassifications(info.tab_classification);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -1717,9 +1880,34 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   ads_client_->EventLog(json);
 }
 
+void AdsImpl::GenerateAdsHistoryEntry(
+    const NotificationInfo& notification_info,
+    const ConfirmationType& confirmation_type) {
+  auto ad_history_detail = std::make_unique<AdHistoryDetail>();
+  ad_history_detail->timestamp_in_seconds = Time::NowInSeconds();
+  ad_history_detail->uuid = base::GenerateGUID();
+  ad_history_detail->ad_content.uuid = notification_info.uuid;
+  ad_history_detail->ad_content.creative_set_id =
+      notification_info.creative_set_id;
+  ad_history_detail->ad_content.brand = notification_info.advertiser;
+  ad_history_detail->ad_content.brand_info = notification_info.text;
+  ad_history_detail->ad_content.brand_display_url =
+      GetDisplayUrl(notification_info.url);
+  ad_history_detail->ad_content.brand_url = notification_info.url;
+  ad_history_detail->ad_content.ad_action = confirmation_type;
+  ad_history_detail->category_content.category = notification_info.category;
+
+  client_->AppendAdToAdsShownHistory(*ad_history_detail);
+}
+
 bool AdsImpl::IsNotificationFromSampleCatalog(
     const NotificationInfo& info) const {
   return info.creative_set_id.empty();
+}
+
+bool AdsImpl::IsCreativeSetFromSampleCatalog(
+  const std::string& creative_set_id) const {
+  return creative_set_id.empty();
 }
 
 bool AdsImpl::IsSupportedUrl(const std::string& url) const {

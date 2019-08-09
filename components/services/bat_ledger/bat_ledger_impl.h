@@ -201,6 +201,9 @@ class BatLedgerImpl : public mojom::BatLedger,
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
+  void ConfirmAction(const std::string& uuid,
+                     const std::string& creative_set_id,
+                     const std::string& type) override;
 
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>
