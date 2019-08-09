@@ -50,6 +50,7 @@ declare namespace Rewards {
       twitter: boolean
       reddit: boolean
       github: boolean
+      stackoverflow: boolean
     }
     excludedList: ExcludedPublisher[]
     firstLoad: boolean | null

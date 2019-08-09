@@ -52,6 +52,14 @@
       "js": [
         "out/brave_rewards_panel_content_reddit.bundle.js"
       ]
+    },
+    {
+      "matches": [
+        "https://*.stackoverflow.com/*"
+      ],
+      "js": [
+        "out/brave_rewards_panel_content_stackoverflow.bundle.js"
+      ]
     }
   ],
   "icons": {

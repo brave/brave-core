@@ -332,6 +332,89 @@ void BraveRewardsTipGitHubUserFunction::OnGitHubPublisherInfoSaved(
 
   Release();
 }
+
+//////////////////
+
+BraveRewardsTipStackOverflowUserFunction::BraveRewardsTipStackOverflowUserFunction()
+    : weak_factory_(this) {
+}
+
+BraveRewardsTipStackOverflowUserFunction::~BraveRewardsTipStackOverflowUserFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsTipStackOverflowUserFunction::Run() {
+  std::unique_ptr<brave_rewards::TipStackOverflowUser::Params> params(
+      brave_rewards::TipStackOverflowUser::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  // Sanity check: don't allow tips in private / tor contexts,
+  // although the command should not have been enabled in the first place.
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (profile->IsOffTheRecord()) {
+    return RespondNow(
+        Error("Cannot tip StackOverflow user in a private context"));
+  }
+
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service) {
+    AddRef();
+    std::map<std::string, std::string> args;
+    args["post_id"] = params->media_meta_data.post_id;
+    if (args["post_id"].empty()) {
+      LOG(ERROR) << "Cannot tip user without post id";
+    } else {
+      rewards_service->SaveInlineMediaInfo(
+          params->media_meta_data.media_type,
+          args,
+          base::Bind(&BraveRewardsTipStackOverflowUserFunction::
+                     OnStackOverflowPublisherInfoSaved,
+                     weak_factory_.GetWeakPtr()));
+    }
+  }
+  return RespondNow(NoArguments());
+}
+
+
+void BraveRewardsTipStackOverflowUserFunction::OnStackOverflowPublisherInfoSaved(
+    std::unique_ptr<::brave_rewards::ContentSite> publisher_info) {
+  std::unique_ptr<brave_rewards::TipStackOverflowUser::Params> params(
+      brave_rewards::TipStackOverflowUser::Params::Create(*args_));
+
+  if (!publisher_info) {
+    // TODO(nejczdovc): what should we do in this case?
+    Release();
+    return;
+  }
+
+  // Get web contents for this tab
+  content::WebContents* contents = nullptr;
+  if (!ExtensionTabUtil::GetTabById(
+        params->tab_id,
+        Profile::FromBrowserContext(browser_context()),
+        false,
+        nullptr,
+        nullptr,
+        &contents,
+        nullptr)) {
+    return;
+  }
+
+  auto params_dict = std::make_unique<base::DictionaryValue>();
+  params_dict->SetString("publisherKey", publisher_info->id);
+  params_dict->SetString("url", publisher_info->url);
+
+  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
+  media_meta_data_dict.SetStringKey("mediaType",
+                                  params->media_meta_data.media_type);
+  media_meta_data_dict.SetStringKey("name", publisher_info->name);
+  params_dict->SetPath("mediaMetaData",
+                       std::move(media_meta_data_dict));
+
+  ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
+
+  Release();
+}
 //////////////////
 
 BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() {

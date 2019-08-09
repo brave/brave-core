@@ -544,4 +544,128 @@ void StackOverflow::SavePublisherInfo(
   }
 }
 
+void StackOverflow::OnMediaPublisherInfo(
+    ledger::Result result,
+    ledger::PublisherInfoPtr info,
+    uint64_t window_id,
+    const std::string& media_key,
+    const std::string& user_id,
+    const std::string& publisher_name,
+    const std::string& profile_url,
+    const std::string& profile_image,
+    ledger::PublisherInfoCallback callback) {
+
+  if (result != ledger::Result::LEDGER_OK  &&
+    result != ledger::Result::NOT_FOUND) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+
+  if (!info || result == ledger::Result::NOT_FOUND) {
+    SavePublisherInfo(
+        media_key,
+        user_id,
+        publisher_name,
+        profile_url,
+        profile_image,
+        window_id,
+        std::move(callback));
+  } else {
+    // TODO(nejczdovc): we need to check if user is verified,
+    //  but his image was not saved yet, so that we can fix it
+    callback(result, std::move(info));
+  }
+}
+
+void StackOverflow::OnMetaDataGet(
+      ledger::PublisherInfoCallback callback,
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers) {
+  if (response_status_code != net::HTTP_OK) {
+    callback(ledger::Result::TIP_ERROR, nullptr);
+    return;
+  }
+
+  auto response_dict = base::JSONReader::Read(response);
+  if (!response_dict || !response_dict->is_dict()) {
+    callback(ledger::Result::TIP_ERROR, nullptr);
+  }
+
+  auto* items = response_dict->FindKey("items");
+  if (!items || !items->is_list()) {
+    callback(ledger::Result::TIP_ERROR, nullptr);
+  }
+
+  auto& items_list = items->GetList();
+  if (!items_list.size()) {
+    callback(ledger::Result::TIP_ERROR, nullptr);
+  }
+
+  auto& body = items_list[0];
+  auto* owner = body.FindKey("owner");
+  if (!owner || !owner->is_dict()) {
+    callback(ledger::Result::TIP_ERROR, nullptr);
+  }
+
+  auto* user_id_val = owner->FindKey("user_id");
+  auto* display_name_val = owner->FindKey("display_name");
+  auto* profile_url_val = owner->FindKey("link");
+  auto* profile_image_val = owner->FindKey("profile_image");
+
+  if (!(user_id_val &&
+      display_name_val &&
+      profile_url_val &&
+      profile_image_val)) {
+    callback(ledger::Result::TIP_ERROR, nullptr);
+  }
+
+  if (!(user_id_val->is_int() &&
+      display_name_val->is_string() &&
+      profile_url_val->is_string()) &&
+      profile_image_val->is_string()) {
+    callback(ledger::Result::TIP_ERROR, nullptr);
+  }
+
+  int32_t user_id = user_id_val->GetInt();
+  std::string display_name = display_name_val->GetString();
+  std::string profile_url = profile_url_val->GetString();
+  std::string user_name = GetUserNameFromURL(profile_url);
+  std::string profile_image = profile_image_val->GetString();
+  std::string media_key = GetMediaKey(user_name);
+
+  ledger_->GetMediaPublisherInfo(
+      media_key,
+      std::bind(&StackOverflow::OnMediaPublisherInfo,
+          this,
+          _1,
+          _2,
+          0,
+          media_key,
+          std::to_string(user_id),
+          display_name,
+          profile_url,
+          profile_image,
+          callback));
+}
+
+
+void StackOverflow::SaveMediaInfo(
+    const std::map<std::string, std::string>& data,
+    ledger::PublisherInfoCallback callback) {
+  auto post_id = data.find("post_id");
+  auto url = GetAPIURLForPostId(post_id->second);
+  ledger_->LoadURL(url,
+      std::vector<std::string>(),
+      "",
+      "",
+      ledger::URL_METHOD::GET,
+      std::bind(&StackOverflow::OnMetaDataGet,
+          this,
+          std::move(callback),
+          _1,
+          _2,
+          _3));
+}
+
 } // namespace braveledger_media

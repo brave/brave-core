@@ -114,6 +114,23 @@ const tipGitHubMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
   })
 }
 
+const tipStackOverflowMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
+  mediaMetaData.mediaType = 'stackoverflow'
+  chrome.tabs.query({
+    active: true,
+    windowId: chrome.windows.WINDOW_ID_CURRENT
+  }, (tabs) => {
+    if (!tabs || tabs.length === 0) {
+      return
+    }
+    const tabId = tabs[0].id
+    if (tabId === undefined) {
+      return
+    }
+    chrome.braveRewards.tipStackOverflowUser(tabId, mediaMetaData)
+  })
+}
+
 const tipRedditMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
   mediaMetaData.mediaType = 'reddit'
   chrome.tabs.query({
@@ -144,6 +161,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           break
         case 'github':
           tipGitHubMedia(msg.mediaMetaData)
+          break
+        case 'stackoverflow':
+          tipStackOverflowMedia(msg.mediaMetaData)
           break
       }
       return false

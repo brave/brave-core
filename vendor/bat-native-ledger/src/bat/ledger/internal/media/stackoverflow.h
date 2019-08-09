@@ -98,6 +98,23 @@ class StackOverflow : public ledger::LedgerCallbackHandler {
   void OnMediaActivityError(
       uint64_t window_id);
 
+  void OnMediaPublisherInfo(
+      ledger::Result result,
+      ledger::PublisherInfoPtr info,
+      uint64_t window_id,
+      const std::string& media_key,
+      const std::string& user_id,
+      const std::string& publisher_name,
+      const std::string& profile_url,
+      const std::string& profile_image,
+      ledger::PublisherInfoCallback callback);
+
+  void OnMetaDataGet(
+        ledger::PublisherInfoCallback callback,
+        int response_status_code,
+        const std::string& response,
+        const std::map<std::string, std::string>& headers);
+
   static std::string GetUserNameFromURL(const std::string& path);
 
   static std::string GetUserName(const std::string& json_string);

@@ -49,6 +49,9 @@ declare namespace RewardsTip {
   } | {
     mediaType: 'github'
     userName: string
+  } | {
+    mediaType: 'stackoverflow'
+    postId: string
   }
 
   interface GitHubMetaData {

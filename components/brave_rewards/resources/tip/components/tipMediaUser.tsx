@@ -42,6 +42,9 @@ class TipMediaUser extends React.Component<Props, {}> {
     } else if (mediaMetaData.mediaType === 'github') {
       let name = this.props.publisher.name
       this.actions.onTweet(name, '')
+    } else if (mediaMetaData.mediaType === 'stackoverflow') {
+      let name = this.props.publisher.name
+      this.actions.onTweet(name, '')
     }
     this.actions.onCloseDialog()
   }
