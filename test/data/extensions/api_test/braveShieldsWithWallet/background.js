@@ -3,11 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 chrome.test.runTests([
-  function braveShieldsExtensionHasAccess() {
-    if (chrome.braveShields) {
+  function braveShieldsHasWalletAccessButNotSeed() {
+    if (chrome.braveWallet && !chrome.braveWallet.getWalletSeed) {
       chrome.test.succeed();
     } else {
       chrome.test.fail();
     }
   },
 ]);
+
