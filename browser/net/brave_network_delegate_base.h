@@ -38,7 +38,7 @@ void RemoveTrackableSecurityHeadersForThirdParty(
 
 // BraveNetworkDelegateBase is the central point from within the Brave code to
 // add hooks into the network stack.
-class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
+class BraveNetworkDelegateBase /*: public ChromeNetworkDelegate*/ {
  public:
   using ResponseCallback = base::Callback<void(const base::DictionaryValue&)>;
   using ResponseListener = base::Callback<void(const base::DictionaryValue&,
@@ -46,34 +46,34 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
 
   explicit BraveNetworkDelegateBase(
       extensions::EventRouterForwarder* event_router);
-  ~BraveNetworkDelegateBase() override;
+  virtual ~BraveNetworkDelegateBase();  // override
 
   bool IsRequestIdentifierValid(uint64_t request_identifier);
 
   // NetworkDelegate implementation.
-  int OnBeforeURLRequest(net::URLRequest* request,
-                         net::CompletionOnceCallback callback,
-                         GURL* new_url) override;
-  int OnBeforeStartTransaction(net::URLRequest* request,
-                               net::CompletionOnceCallback callback,
-                               net::HttpRequestHeaders* headers) override;
-  int OnHeadersReceived(
-      net::URLRequest* request,
-      net::CompletionOnceCallback callback,
-      const net::HttpResponseHeaders* original_response_headers,
-      scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-      GURL* allowed_unsafe_redirect_url) override;
+  //int OnBeforeURLRequest(net::URLRequest* request,
+  //                       net::CompletionOnceCallback callback,
+  //                       GURL* new_url) override;
+  //int OnBeforeStartTransaction(net::URLRequest* request,
+  //                             net::CompletionOnceCallback callback,
+  //                             net::HttpRequestHeaders* headers) override;
+  //int OnHeadersReceived(
+  //    net::URLRequest* request,
+  //    net::CompletionOnceCallback callback,
+  //    const net::HttpResponseHeaders* original_response_headers,
+  //    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+  //    GURL* allowed_unsafe_redirect_url) override;
 
-  bool OnCanGetCookies(const net::URLRequest& request,
-                       const net::CookieList& cookie_list,
-                       bool allowed_from_caller) override;
+  //bool OnCanGetCookies(const net::URLRequest& request,
+  //                     const net::CookieList& cookie_list,
+  //                     bool allowed_from_caller) override;
 
-  bool OnCanSetCookie(const net::URLRequest& request,
-                      const net::CanonicalCookie& cookie,
-                      net::CookieOptions* options,
-                      bool allowed_from_caller) override;
+  //bool OnCanSetCookie(const net::URLRequest& request,
+  //                    const net::CanonicalCookie& cookie,
+  //                    net::CookieOptions* options,
+  //                    bool allowed_from_caller) override;
 
-  void OnURLRequestDestroyed(net::URLRequest* request) override;
+  //void OnURLRequestDestroyed(net::URLRequest* request) override;
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
  protected:
@@ -103,6 +103,7 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
       pref_change_registrar_;
 
   bool allow_google_auth_;
+  base::FilePath profile_path_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);
 };

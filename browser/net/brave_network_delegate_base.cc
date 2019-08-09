@@ -100,7 +100,7 @@ void RemoveTrackableSecurityHeadersForThirdParty(
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
-    : ChromeNetworkDelegate(event_router),
+    : //ChromeNetworkDelegate(event_router),
       referral_headers_list_(nullptr),
       allow_google_auth_(true) {
   // Initialize the preference change registrar.
@@ -149,102 +149,102 @@ void BraveNetworkDelegateBase::SetReferralHeaders(
   referral_headers_list_.reset(referral_headers);
 }
 
-int BraveNetworkDelegateBase::OnBeforeURLRequest(
-    URLRequest* request,
-    net::CompletionOnceCallback callback,
-    GURL* new_url) {
-  if (before_url_request_callbacks_.empty() || !request) {
-    return ChromeNetworkDelegate::OnBeforeURLRequest(
-        request, std::move(callback), new_url);
-  }
-  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
-  ctx->new_url = new_url;
-  ctx->event_type = brave::kOnBeforeRequest;
-  callbacks_[request->identifier()] = std::move(callback);
-  RunNextCallback(request, ctx);
-  return net::ERR_IO_PENDING;
-}
-
-int BraveNetworkDelegateBase::OnBeforeStartTransaction(
-    URLRequest* request,
-    net::CompletionOnceCallback callback,
-    net::HttpRequestHeaders* headers) {
-  if (before_start_transaction_callbacks_.empty() || !request) {
-    return ChromeNetworkDelegate::OnBeforeStartTransaction(
-        request, std::move(callback), headers);
-  }
-  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
-  ctx->event_type = brave::kOnBeforeStartTransaction;
-  ctx->headers = headers;
-  ctx->referral_headers_list = referral_headers_list_.get();
-  callbacks_[request->identifier()] = std::move(callback);
-  RunNextCallback(request, ctx);
-  return net::ERR_IO_PENDING;
-}
-
-int BraveNetworkDelegateBase::OnHeadersReceived(
-    URLRequest* request,
-    net::CompletionOnceCallback callback,
-    const net::HttpResponseHeaders* original_response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-    GURL* allowed_unsafe_redirect_url) {
-  if (request->top_frame_origin().has_value()) {
-    RemoveTrackableSecurityHeadersForThirdParty(
-        request->url(), request->top_frame_origin().value(),
-        original_response_headers, override_response_headers);
-  }
-
-  if (headers_received_callbacks_.empty() || !request) {
-    return ChromeNetworkDelegate::OnHeadersReceived(
-        request, std::move(callback), original_response_headers,
-        override_response_headers, allowed_unsafe_redirect_url);
-  }
-
-  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
-  callbacks_[request->identifier()] = std::move(callback);
-  brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
-  ctx->event_type = brave::kOnHeadersReceived;
-  ctx->original_response_headers = original_response_headers;
-  ctx->override_response_headers = override_response_headers;
-  ctx->allowed_unsafe_redirect_url = allowed_unsafe_redirect_url;
-
-  // Return ERR_IO_PENDING and run callbacks later by posting a task.
-  // URLRequestHttpJob::awaiting_callback_ will be set to true after we
-  // return net::ERR_IO_PENDING here, callbacks need to be run later than this
-  // to set awaiting_callback_ back to false.
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
-      base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-                 base::Unretained(this), request, ctx));
-  return net::ERR_IO_PENDING;
-}
-
-bool BraveNetworkDelegateBase::OnCanGetCookies(
-    const URLRequest& request,
-    const net::CookieList& cookie_list,
-    bool allowed_from_caller) {
-  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
-  ctx->allow_google_auth = allow_google_auth_;
-  brave::BraveRequestInfo::FillCTXFromRequest(&request, ctx);
-  ctx->event_type = brave::kOnCanGetCookies;
-
-  return OnAllowAccessCookies(request, ctx);
-}
-
-bool BraveNetworkDelegateBase::OnCanSetCookie(
-    const URLRequest& request,
-    const net::CanonicalCookie& cookie,
-    net::CookieOptions* options,
-    bool allowed_from_caller) {
-  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
-  ctx->allow_google_auth = allow_google_auth_;
-  brave::BraveRequestInfo::FillCTXFromRequest(&request, ctx);
-  ctx->event_type = brave::kOnCanSetCookies;
-
-  return OnAllowAccessCookies(request, ctx);
-}
+//int BraveNetworkDelegateBase::OnBeforeURLRequest(
+//    URLRequest* request,
+//    net::CompletionOnceCallback callback,
+//    GURL* new_url) {
+//  if (before_url_request_callbacks_.empty() || !request) {
+//    return ChromeNetworkDelegate::OnBeforeURLRequest(
+//        request, std::move(callback), new_url);
+//  }
+//  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
+//  brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
+//  ctx->new_url = new_url;
+//  ctx->event_type = brave::kOnBeforeRequest;
+//  callbacks_[request->identifier()] = std::move(callback);
+//  RunNextCallback(request, ctx);
+//  return net::ERR_IO_PENDING;
+//}
+//
+//int BraveNetworkDelegateBase::OnBeforeStartTransaction(
+//    URLRequest* request,
+//    net::CompletionOnceCallback callback,
+//    net::HttpRequestHeaders* headers) {
+//  if (before_start_transaction_callbacks_.empty() || !request) {
+//    return ChromeNetworkDelegate::OnBeforeStartTransaction(
+//        request, std::move(callback), headers);
+//  }
+//  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
+//  brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
+//  ctx->event_type = brave::kOnBeforeStartTransaction;
+//  ctx->headers = headers;
+//  ctx->referral_headers_list = referral_headers_list_.get();
+//  callbacks_[request->identifier()] = std::move(callback);
+//  RunNextCallback(request, ctx);
+//  return net::ERR_IO_PENDING;
+//}
+//
+//int BraveNetworkDelegateBase::OnHeadersReceived(
+//    URLRequest* request,
+//    net::CompletionOnceCallback callback,
+//    const net::HttpResponseHeaders* original_response_headers,
+//    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+//    GURL* allowed_unsafe_redirect_url) {
+//  if (request->top_frame_origin().has_value()) {
+//    RemoveTrackableSecurityHeadersForThirdParty(
+//        request->url(), request->top_frame_origin().value(),
+//        original_response_headers, override_response_headers);
+//  }
+//
+//  if (headers_received_callbacks_.empty() || !request) {
+//    return ChromeNetworkDelegate::OnHeadersReceived(
+//        request, std::move(callback), original_response_headers,
+//        override_response_headers, allowed_unsafe_redirect_url);
+//  }
+//
+//  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
+//  callbacks_[request->identifier()] = std::move(callback);
+//  brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
+//  ctx->event_type = brave::kOnHeadersReceived;
+//  ctx->original_response_headers = original_response_headers;
+//  ctx->override_response_headers = override_response_headers;
+//  ctx->allowed_unsafe_redirect_url = allowed_unsafe_redirect_url;
+//
+//  // Return ERR_IO_PENDING and run callbacks later by posting a task.
+//  // URLRequestHttpJob::awaiting_callback_ will be set to true after we
+//  // return net::ERR_IO_PENDING here, callbacks need to be run later than this
+//  // to set awaiting_callback_ back to false.
+//  base::PostTaskWithTraits(
+//      FROM_HERE, {BrowserThread::IO},
+//      base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
+//                 base::Unretained(this), request, ctx));
+//  return net::ERR_IO_PENDING;
+//}
+//
+//bool BraveNetworkDelegateBase::OnCanGetCookies(
+//    const URLRequest& request,
+//    const net::CookieList& cookie_list,
+//    bool allowed_from_caller) {
+//  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
+//  ctx->allow_google_auth = allow_google_auth_;
+//  brave::BraveRequestInfo::FillCTXFromRequest(&request, ctx);
+//  ctx->event_type = brave::kOnCanGetCookies;
+//
+//  return OnAllowAccessCookies(request, ctx);
+//}
+//
+//bool BraveNetworkDelegateBase::OnCanSetCookie(
+//    const URLRequest& request,
+//    const net::CanonicalCookie& cookie,
+//    net::CookieOptions* options,
+//    bool allowed_from_caller) {
+//  std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
+//  ctx->allow_google_auth = allow_google_auth_;
+//  brave::BraveRequestInfo::FillCTXFromRequest(&request, ctx);
+//  ctx->event_type = brave::kOnCanSetCookies;
+//
+//  return OnAllowAccessCookies(request, ctx);
+//}
 
 void BraveNetworkDelegateBase::RunCallbackForRequestIdentifier(
     uint64_t request_identifier,
@@ -349,15 +349,15 @@ void BraveNetworkDelegateBase::RunNextCallback(
     if (!ctx->new_referrer.is_empty()) {
       request->SetReferrer(ctx->new_referrer.spec());
     }
-    rv = ChromeNetworkDelegate::OnBeforeURLRequest(
-        request, std::move(wrapped_callback), ctx->new_url);
+    //rv = ChromeNetworkDelegate::OnBeforeURLRequest(
+    //    request, std::move(wrapped_callback), ctx->new_url);
   } else if (ctx->event_type == brave::kOnBeforeStartTransaction) {
-    rv = ChromeNetworkDelegate::OnBeforeStartTransaction(
-        request, std::move(wrapped_callback), ctx->headers);
+    /*rv = ChromeNetworkDelegate::OnBeforeStartTransaction(
+        request, std::move(wrapped_callback), ctx->headers);*/
   } else if (ctx->event_type == brave::kOnHeadersReceived) {
-    rv = ChromeNetworkDelegate::OnHeadersReceived(
-        request, std::move(wrapped_callback), ctx->original_response_headers,
-        ctx->override_response_headers, ctx->allowed_unsafe_redirect_url);
+    //rv = ChromeNetworkDelegate::OnHeadersReceived(
+    //    request, std::move(wrapped_callback), ctx->original_response_headers,
+    //    ctx->override_response_headers, ctx->allowed_unsafe_redirect_url);
   }
 
   // ChromeNetworkDelegate returns net::ERR_IO_PENDING if an extension is
@@ -367,12 +367,12 @@ void BraveNetworkDelegateBase::RunNextCallback(
   }
 }
 
-void BraveNetworkDelegateBase::OnURLRequestDestroyed(URLRequest* request) {
-  if (base::Contains(callbacks_, request->identifier())) {
-    callbacks_.erase(request->identifier());
-  }
-  ChromeNetworkDelegate::OnURLRequestDestroyed(request);
-}
+//void BraveNetworkDelegateBase::OnURLRequestDestroyed(URLRequest* request) {
+//  if (base::Contains(callbacks_, request->identifier())) {
+//    callbacks_.erase(request->identifier());
+//  }
+//  ChromeNetworkDelegate::OnURLRequestDestroyed(request);
+//}
 
 bool BraveNetworkDelegateBase::IsRequestIdentifierValid(
     uint64_t request_identifier) {
