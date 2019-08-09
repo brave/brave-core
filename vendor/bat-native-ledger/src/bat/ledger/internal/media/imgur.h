@@ -47,11 +47,26 @@ class Imgur : public ledger::LedgerCallbackHandler {
       uint64_t window_id,
       const ledger::VisitData& visit_data);
 
+  void ImagePath(
+      uint64_t window_id,
+      const ledger::VisitData& visit_data);
+
+  void FetchUserNameFromMedia(
+      uint64_t window_id,
+      const ledger::VisitData& visit_data);
+
   void FetchDataFromUrl(
       const std::string& url,
       braveledger_media::FetchDataFromUrlCallback callback);
 
   void OnUserPage(
+      uint64_t window_id,
+      const ledger::VisitData& visit_data,
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
+  void OnImagePath(
       uint64_t window_id,
       const ledger::VisitData& visit_data,
       int response_status_code,
@@ -111,6 +126,8 @@ void OnMediaPublisherInfo(
 
   static std::string GetPublisherName(const std::string& response,
                                       const std::string& user_name);
+
+  static std::string GetPublisherNameFromImage(const std::string& response);
 
   static std::string GetProfileUrl(const std::string& user_name);
 

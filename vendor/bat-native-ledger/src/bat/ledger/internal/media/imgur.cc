@@ -108,10 +108,11 @@ std::string Imgur::GetUserName(const std::string& json_string) {
 // static
 std::string Imgur::GetMediaKey(const std::string& screen_name) {
   if (screen_name.empty()) {
-    return "";
+    return std::string();
   }
 
-  return (std::string)IMGUR_MEDIA_TYPE + "_" + screen_name;
+  const std::string screen_name_lower = base::ToLowerASCII(screen_name);
+  return (std::string)IMGUR_MEDIA_TYPE + "_" + screen_name_lower;
 }
 
 // static
@@ -133,6 +134,22 @@ std::string Imgur::GetPublisherName(const std::string& response,
       "<div class=\"ProfileMeta-user\">", "</div>");
   if (publisher_name.empty()) {
     return user_name;
+  }
+
+  return publisher_name;
+}
+
+// static
+std::string Imgur::GetPublisherNameFromImage(const std::string& response) {
+  if (response.empty()) {
+    return std::string();
+  }
+
+  std::string publisher_name = braveledger_media::ExtractData(
+      response,
+      "\"account_url\":\"", "\"");
+  if (publisher_name.empty()) {
+    return std::string();
   }
 
   return publisher_name;
@@ -161,24 +178,12 @@ void Imgur::ProcessActivityFromUrl(uint64_t window_id,
     return;
   }
 
+  if (visit_data.path.find("/gallery") != std::string::npos) {
+    ImagePath(window_id, visit_data);
+    return;
+  }
+
   OnMediaActivityError(visit_data, window_id);
-  //const std::string user_name = GetUserNameFromUrl(visit_data.path);
-  //const std::string media_key = GetMediaKey(user_name);
-
-  //if (media_key.empty()) {
-  //  OnMediaActivityError(window_id);
-  //  return;
-  //}
-
-  //ledger_->GetMediaPublisherInfo(
-  //    media_key,
-  //    std::bind(&Imgur::OnUserActivity,
-  //              this,
-  //              _1,
-  //              _2,
-  //              window_id,
-  //              visit_data,
-  //              media_key));
 }
 
 void Imgur::UserPath(
@@ -195,6 +200,48 @@ void Imgur::UserPath(
         _1,
         _2));
 
+}
+
+void Imgur::ImagePath(
+    uint64_t window_id,
+    const ledger::VisitData& visit_data) {
+
+  // TODO: some more checks here ?
+
+  if (visit_data.url.empty()) {
+    OnMediaActivityError(visit_data, window_id);
+    return;
+  }
+  FetchDataFromUrl(visit_data.url,
+      std::bind(&Imgur::OnImagePath,
+          this,
+          window_id,
+          visit_data,
+          _1,
+          _2,
+          _3));
+}
+
+void Imgur::OnImagePath(
+		uint64_t window_id,
+		const ledger::VisitData& visit_data,
+		int response_status_code,
+		const std::string& response,
+		const std::map<std::string, std::string>& headers) {
+  if (response_status_code != net::HTTP_OK) {
+    OnMediaActivityError(visit_data, window_id);
+    return;
+  }
+
+  const std::string name = GetPublisherNameFromImage(response);
+  LOG(INFO) << "NANI: " << name;
+
+  if (name.empty()) {
+    OnMediaActivityError(visit_data, window_id);
+    return;
+  }
+
+  // TODO: call activity method
 }
 
 void Imgur::OnUserActivity(
