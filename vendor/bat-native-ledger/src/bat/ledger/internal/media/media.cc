@@ -22,7 +22,8 @@ Media::Media(bat_ledger::LedgerImpl* ledger):
   media_twitter_(new braveledger_media::Twitter(ledger)),
   media_reddit_(new braveledger_media::Reddit(ledger)),
   media_vimeo_(new braveledger_media::Vimeo(ledger)),
-  media_github_(new braveledger_media::GitHub(ledger)) {
+  media_github_(new braveledger_media::GitHub(ledger)),
+  media_stackoverflow_(new braveledger_media::StackOverflow(ledger)) {
 }  // namespace braveledger_media
 
 Media::~Media() {}
@@ -88,6 +89,8 @@ void Media::GetMediaActivityFromUrl(
     media_vimeo_->ProcessActivityFromUrl(window_id, *visit_data);
   } else if (type == GITHUB_MEDIA_TYPE) {
     media_github_->ProcessActivityFromUrl(window_id, *visit_data);
+  } else if (type == STACKOVERFLOW_MEDIA_TYPE) {
+    media_stackoverflow_->ProcessActivityFromUrl(window_id, *visit_data);
   } else {
     OnMediaActivityError(std::move(visit_data), type, window_id);
   }
