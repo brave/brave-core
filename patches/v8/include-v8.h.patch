@@ -1,28 +1,37 @@
 diff --git a/include/v8.h b/include/v8.h
-index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..ac90f681fcbb91ec9882bc808e9513bbe36e85d8 100644
+index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..5e7787aea4fe601ba66aeab07c52558c52eff435 100644
 --- a/include/v8.h
 +++ b/include/v8.h
-@@ -28,6 +28,7 @@
+@@ -28,6 +28,10 @@
  #include "v8-version.h"   // NOLINT(build/include_directory)
  #include "v8config.h"     // NOLINT(build/include_directory)
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <string>
++#endif
  // We reserve the V8_* prefix for macros defined in V8 public API and
  // assume there are no name conflicts with the embedder's code.
  
-@@ -36,6 +38,11 @@
+@@ -36,6 +41,17 @@
   */
  namespace v8 {
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +typedef void (*EvalScriptCompiledFunc)(v8::Isolate& isolate,
 +    const int parent_script_id, const int script_id);
++
++typedef void (*BuiltInFuncCallFunc)(v8::Isolate& isolate,
++    const char* builtin_name, const std::vector<const std::string>& args);
++
++typedef void (*BuiltInFuncResponseFunc)(v8::Isolate& isolate,
++    const char* builtin_name, const std::string& value);
 +#endif
 +
  class AccessorSignature;
  class Array;
  class ArrayBuffer;
-@@ -1541,6 +1548,10 @@ class V8_EXPORT Module : public Data {
+@@ -1541,6 +1557,10 @@ class V8_EXPORT Module : public Data {
     */
    Local<UnboundModuleScript> GetUnboundModuleScript();
  
@@ -33,7 +42,7 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..ac90f681fcbb91ec9882bc808e9513bb
    /*
     * Callback defined in the embedder.  This is responsible for setting
     * the module's exported values with calls to SetSyntheticModuleExport().
-@@ -1659,6 +1670,12 @@ class V8_EXPORT ScriptCompiler {
+@@ -1659,6 +1679,12 @@ class V8_EXPORT ScriptCompiler {
      // Source takes ownership of CachedData.
      V8_INLINE Source(Local<String> source_string, const ScriptOrigin& origin,
                       CachedData* cached_data = nullptr);
@@ -46,7 +55,7 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..ac90f681fcbb91ec9882bc808e9513bb
      V8_INLINE Source(Local<String> source_string,
                       CachedData* cached_data = nullptr);
      V8_INLINE ~Source();
-@@ -1686,6 +1703,9 @@ class V8_EXPORT ScriptCompiler {
+@@ -1686,6 +1712,9 @@ class V8_EXPORT ScriptCompiler {
      ScriptOriginOptions resource_options;
      Local<Value> source_map_url;
      Local<PrimitiveArray> host_defined_options;
@@ -56,7 +65,7 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..ac90f681fcbb91ec9882bc808e9513bb
  
      // Cached data from previous compilation (if a kConsume*Cache flag is
      // set), or hold newly generated cache data (kProduce*Cache flags) are
-@@ -1872,7 +1892,11 @@ class V8_EXPORT ScriptCompiler {
+@@ -1872,7 +1901,11 @@ class V8_EXPORT ScriptCompiler {
     */
    static V8_WARN_UNUSED_RESULT MaybeLocal<Script> Compile(
        Local<Context> context, StreamedSource* source,
@@ -69,7 +78,7 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..ac90f681fcbb91ec9882bc808e9513bb
  
    /**
     * Return a version tag for CachedData for the current V8 version & flags.
-@@ -4508,6 +4532,13 @@ class V8_EXPORT Function : public Object {
+@@ -4508,6 +4541,13 @@ class V8_EXPORT Function : public Object {
     */
    Local<Value> GetBoundFunction() const;
  
@@ -83,7 +92,7 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..ac90f681fcbb91ec9882bc808e9513bb
    ScriptOrigin GetScriptOrigin() const;
    V8_INLINE static Function* Cast(Value* obj);
    static const int kLineOffsetNotFound;
-@@ -9505,6 +9536,12 @@ class V8_EXPORT Isolate {
+@@ -9505,6 +9545,14 @@ class V8_EXPORT Isolate {
    void operator delete(void*, size_t) = delete;
    void operator delete[](void*, size_t) = delete;
  
@@ -91,12 +100,14 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..ac90f681fcbb91ec9882bc808e9513bb
 +  int GetExecutingScriptId();
 +
 +  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func);
++  void SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func);
++  void SetBuiltInFuncResponseFunc(const BuiltInFuncResponseFunc func);
 +#endif
 +
   private:
    template <class K, class V, class Traits>
    friend class PersistentValueMapBase;
-@@ -11265,6 +11302,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
+@@ -11265,6 +11313,21 @@ ScriptCompiler::Source::Source(Local<String> string, const ScriptOrigin& origin,
        host_defined_options(origin.HostDefinedOptions()),
        cached_data(data) {}
  

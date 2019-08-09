@@ -53,6 +53,10 @@ GraphMLXMLList Edge::GetGraphMLAttributes() const {
   GraphMLXMLList attrs = GraphItem::GetGraphMLAttributes();
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue(GetItemName()));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphEdgeId)
+      ->ToValue(GetId()));
+  //attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphEdgeTimestamp)
+  //    ->ToValue(GetMicroSecSincePageStart()));
   return attrs;
 }
 
@@ -116,7 +120,7 @@ bool Edge::IsEdgeTextChange() const {
   return false;
 }
 
-bool Edge::IsEdgeWebAPI() const {
+bool Edge::IsEdgeJS() const {
   return false;
 }
 

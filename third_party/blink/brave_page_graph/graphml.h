@@ -30,6 +30,7 @@ class GraphMLAttr {
   GraphMLXML ToValue(const int value) const;
   GraphMLXML ToValue(const bool value) const;
   GraphMLXML ToValue(const uint64_t value) const;
+  GraphMLXML ToValue(const double value) const;
 
  protected:
   const uint64_t id_;

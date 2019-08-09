@@ -4,10 +4,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
+#include <map>
 #include <string>
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 
+using ::std::map;
 using ::std::string;
 
 namespace brave_page_graph {
@@ -155,6 +158,88 @@ string StorageLocationToString(const StorageLocation location) noexcept {
     case kStorageLocationSessionStorage:
       return "sessionStorage";
   }
+}
+
+namespace {
+  const map<JSBuiltIn, string> js_built_in_enum_to_str_map = {
+    {kJSBuiltInDateNow, "Date.now"},
+    {kJSBuiltInDateConstructor, "new Date()"},
+    {kJSBuiltInDateParse, "Date.parse"},
+    {kJSBuiltInDateUTC, "Date.UTC"},
+    {kJSBuiltInDatePrototypeSetDate, "Date.prototype.setDate"},
+    {kJSBuiltInDatePrototypeSetFullYear, "Date.prototype.setFullYear"},
+    {kJSBuiltInDatePrototypeSetHours, "Date.prototype.setHours"},
+    {kJSBuiltInDatePrototypeSetMilliseconds, "Date.prototype.setMilliseconds"},
+    {kJSBuiltInDatePrototypeSetMinutes, "Date.prototype.setMinutes"},
+    {kJSBuiltInDatePrototypeSetMonth, "Date.prototype.setMonth"},
+    {kJSBuiltInDatePrototypeSetSeconds, "Date.prototype.setSeconds"},
+    {kJSBuiltInDatePrototypeSetTime, "Date.prototype.setTime"},
+    {kJSBuiltInDatePrototypeSetUTCDate, "Date.prototype.setUTCDate"},
+    {kJSBuiltInDatePrototypeSetUTCFullYear, "Date.prototype.setUTCFullYear"},
+    {kJSBuiltInDatePrototypeSetUTCHours, "Date.prototype.setUTCHours"},
+    {kJSBuiltInDatePrototypeSetUTCMilliseconds, "Date.prototype.setUTCMilliseconds"},
+    {kJSBuiltInDatePrototypeSetUTCMinutes, "Date.prototype.setUTCMinutes"},
+    {kJSBuiltInDatePrototypeSetUTCMonth, "Date.prototype.setUTCMonth"},
+    {kJSBuiltInDatePrototypeSetUTCSeconds, "Date.prototype.setUTCSeconds"},
+    {kJSBuiltInDatePrototypeToDateString, "Date.prototype.toDateString"},
+    {kJSBuiltInDatePrototypeToISOString, "Date.prototype.toISOString"},
+    {kJSBuiltInDatePrototypeToString, "Date.prototype.toString"},
+    {kJSBuiltInDatePrototypeToTimeString, "Date.prototype.toTimeString"},
+    {kJSBuiltInDatePrototypeToLocaleDateString, "Date.prototype.toLocaleDateString"},
+    {kJSBuiltInDatePrototypeToLocalString, "Date.prototype.toLocalString"},
+    {kJSBuiltInDatePrototypeToLocalTimeString, "Date.prototype.toLocaleTimeString"},
+    {kJSBuiltInDatePrototypeToUTCString, "Date.prototype.toUTCString"},
+    {kJSBuiltInDatePrototypeGetYear, "Date.prototype.getYear"},
+    {kJSBuiltInDatePrototypeSetYear, "Date.prototype.setYear"},
+    {kJSBuiltInDatePrototypeToJSON, "Date.prototype.toJSON"},
+    {kJSBuiltInJSONParse, "JSON.parse"},
+    {kJSBuiltInJSONStringify, "JSON.stringify"},
+  };
+
+  const map<string, JSBuiltIn> js_built_in_str_to_enum_map = {
+    {"Date.now", kJSBuiltInDateNow},
+    {"new Date()", kJSBuiltInDateConstructor},
+    {"Date.parse", kJSBuiltInDateParse},
+    {"Date.UTC", kJSBuiltInDateUTC},
+    {"Date.prototype.setDate", kJSBuiltInDatePrototypeSetDate},
+    {"Date.prototype.setFullYear", kJSBuiltInDatePrototypeSetFullYear},
+    {"Date.prototype.setHours", kJSBuiltInDatePrototypeSetHours},
+    {"Date.prototype.setMilliseconds", kJSBuiltInDatePrototypeSetMilliseconds},
+    {"Date.prototype.setMinutes", kJSBuiltInDatePrototypeSetMinutes},
+    {"Date.prototype.setMonth", kJSBuiltInDatePrototypeSetMonth},
+    {"Date.prototype.setSeconds", kJSBuiltInDatePrototypeSetSeconds},
+    {"Date.prototype.setTime", kJSBuiltInDatePrototypeSetTime},
+    {"Date.prototype.setUTCDate", kJSBuiltInDatePrototypeSetUTCDate},
+    {"Date.prototype.setUTCFullYear", kJSBuiltInDatePrototypeSetUTCFullYear},
+    {"Date.prototype.setUTCHours", kJSBuiltInDatePrototypeSetUTCHours},
+    {"Date.prototype.setUTCMilliseconds", kJSBuiltInDatePrototypeSetUTCMilliseconds},
+    {"Date.prototype.setUTCMinutes", kJSBuiltInDatePrototypeSetUTCMinutes},
+    {"Date.prototype.setUTCMonth", kJSBuiltInDatePrototypeSetUTCMonth},
+    {"Date.prototype.setUTCSeconds", kJSBuiltInDatePrototypeSetUTCSeconds},
+    {"Date.prototype.toDateString", kJSBuiltInDatePrototypeToDateString},
+    {"Date.prototype.toISOString", kJSBuiltInDatePrototypeToISOString},
+    {"Date.prototype.toString", kJSBuiltInDatePrototypeToString},
+    {"Date.prototype.toTimeString", kJSBuiltInDatePrototypeToTimeString},
+    {"Date.prototype.toLocaleDateString", kJSBuiltInDatePrototypeToLocaleDateString},
+    {"Date.prototype.toLocalString", kJSBuiltInDatePrototypeToLocalString},
+    {"Date.prototype.toLocaleTimeString", kJSBuiltInDatePrototypeToLocalTimeString},
+    {"Date.prototype.toUTCString", kJSBuiltInDatePrototypeToUTCString},
+    {"Date.prototype.getYear", kJSBuiltInDatePrototypeGetYear},
+    {"Date.prototype.setYear", kJSBuiltInDatePrototypeSetYear},
+    {"Date.prototype.toJSON", kJSBuiltInDatePrototypeToJSON},
+    {"JSON.parse", kJSBuiltInJSONParse},
+    {"JSON.stringify", kJSBuiltInJSONStringify},
+  };
+}
+
+JSBuiltIn JSBuiltInFromString(const string& built_in_name) noexcept {
+  LOG_ASSERT(js_built_in_str_to_enum_map.count(built_in_name) != 0);
+  return js_built_in_str_to_enum_map.at(built_in_name);
+}
+
+const string& JSBuiltInToSting(const JSBuiltIn built_in) noexcept {
+  LOG_ASSERT(js_built_in_enum_to_str_map.count(built_in) != 0);
+  return js_built_in_enum_to_str_map.at(built_in);
 }
 
 FingerprintingRule::FingerprintingRule(const std::string& primary_pattern,
