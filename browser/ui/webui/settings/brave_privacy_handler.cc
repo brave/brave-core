@@ -29,13 +29,11 @@ void BravePrivacyHandler::RegisterMessages() {
       base::BindRepeating(&BravePrivacyHandler::SetWebRTCPolicy,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "setP3AEnabled",
-      base::BindRepeating(&BravePrivacyHandler::SetP3AEnabled,
-                          base::Unretained(this)));
+      "setP3AEnabled", base::BindRepeating(&BravePrivacyHandler::SetP3AEnabled,
+                                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "getP3AEnabled",
-      base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
-                          base::Unretained(this)));
+      "getP3AEnabled", base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
+                                           base::Unretained(this)));
 }
 
 void BravePrivacyHandler::SetWebRTCPolicy(const base::ListValue* args) {
@@ -52,12 +50,10 @@ void BravePrivacyHandler::GetWebRTCPolicy(const base::ListValue* args) {
   CHECK(profile_);
 
   std::string policy =
-    profile_->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy);
+      profile_->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy);
 
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args->GetList()[0].Clone(),
-      base::Value(policy));
+  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(policy));
 }
 
 void BravePrivacyHandler::SetP3AEnabled(const base::ListValue* args) {
@@ -77,7 +73,5 @@ void BravePrivacyHandler::GetP3AEnabled(const base::ListValue* args) {
   bool enabled = local_state->GetBoolean(brave::kP3AEnabled);
 
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args->GetList()[0].Clone(),
-      base::Value(enabled));
+  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(enabled));
 }

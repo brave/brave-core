@@ -23,7 +23,7 @@ class BraveConfirmP3AInfoBarDelegate : public ConfirmInfoBarDelegate {
   static void Create(InfoBarService* infobar_service, PrefService* local_state);
 
  private:
-  BraveConfirmP3AInfoBarDelegate(PrefService* local_state);
+  explicit BraveConfirmP3AInfoBarDelegate(PrefService* local_state);
   ~BraveConfirmP3AInfoBarDelegate() override;
 
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;

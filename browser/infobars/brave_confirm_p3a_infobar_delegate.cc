@@ -40,12 +40,9 @@ void BraveConfirmP3AInfoBarDelegate::Create(InfoBarService* infobar_service,
 
 BraveConfirmP3AInfoBarDelegate::BraveConfirmP3AInfoBarDelegate(
     PrefService* local_state)
-    : ConfirmInfoBarDelegate(),
-    local_state_(local_state) {
-}
+    : ConfirmInfoBarDelegate(), local_state_(local_state) {}
 
-BraveConfirmP3AInfoBarDelegate::~BraveConfirmP3AInfoBarDelegate() {
-}
+BraveConfirmP3AInfoBarDelegate::~BraveConfirmP3AInfoBarDelegate() {}
 
 infobars::InfoBarDelegate::InfoBarIdentifier
 BraveConfirmP3AInfoBarDelegate::GetIdentifier() const {

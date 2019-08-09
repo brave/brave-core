@@ -42,6 +42,8 @@ bool MakeProchlomation(uint64_t metric,
   DCHECK(data);
   DCHECK(crowd_id);
   DCHECK(shuffler_item);
+  // TODO(iefremov): - create patch for adding `brave_p3a`
+  // to src/base/trace_event/builtin_categories.h
   // TRACE_EVENT0("brave_p3a", "MakeProchlomation");
 
   BraveProchloCrypto crypto;
@@ -108,6 +110,8 @@ void GenerateProchloMessage(uint64_t metric_hash,
                             uint64_t metric_value,
                             const MessageMetainfo& meta,
                             brave_pyxis::PyxisMessage* pyxis_message) {
+  // TODO(iefremov): - create patch for adding `brave_p3a`
+  // to src/base/trace_event/builtin_categories.h
   // TRACE_EVENT0("brave_p3a", "GenerateProchloMessage");
   ShufflerItem item;
   uint8_t data[kProchlomationDataLength] = {0};
@@ -159,6 +163,8 @@ void GenerateP3AMessage(uint64_t metric_hash,
                         uint64_t metric_value,
                         const MessageMetainfo& meta,
                         brave_pyxis::RawP3AValue* p3a_message) {
+  // TODO(iefremov): - create patch for adding `brave_p3a`
+  // to src/base/trace_event/builtin_categories.h
   // TRACE_EVENT0("brave_p3a", "GenerateP3AMessage");
   uint8_t data[kProchlomationDataLength] = {0};
 
