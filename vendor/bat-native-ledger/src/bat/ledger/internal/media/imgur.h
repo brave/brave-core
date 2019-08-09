@@ -43,6 +43,15 @@ class Imgur : public ledger::LedgerCallbackHandler {
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
 
+	void OnMediaPublisherActivity(
+			ledger::Result result,
+			ledger::PublisherInfoPtr publisher_info,
+			uint64_t window_id,
+			const ledger::VisitData& visit_data,
+			const std::string& media_key,
+			const std::string& user_name,
+			const std::string& publisher_name);
+
   void UserPath(
       uint64_t window_id,
       const ledger::VisitData& visit_data);

@@ -15,6 +15,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/imgur.h"
 #include "net/http/http_status_code.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
 using std::placeholders::_1;
@@ -182,6 +183,11 @@ void Imgur::ProcessActivityFromUrl(uint64_t window_id,
     ImagePath(window_id, visit_data);
     return;
   }
+  // e.g. t/petshow2019/mmpkhTu
+  if (re2::RE2::FullMatch(visit_data.path, "\\/t\\/[0-9a-zA-Z]+\\/[0-9a-zA-Z]+")) {
+    ImagePath(window_id, visit_data);
+    return;
+  }
 
   OnMediaActivityError(visit_data, window_id);
 }
@@ -234,15 +240,58 @@ void Imgur::OnImagePath(
   }
 
   const std::string name = GetPublisherNameFromImage(response);
-  LOG(INFO) << "NANI: " << name;
-
   if (name.empty()) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
-  // TODO: call activity method
+  std::string media_key = GetMediaKey(name);
+  if (media_key.empty()) {
+    OnMediaActivityError(visit_data, window_id);
+    return;
+  }
+
+  ledger_->GetMediaPublisherInfo(
+      media_key,
+      std::bind(&Imgur::OnMediaPublisherActivity,
+          this,
+          _1,
+          _2,
+          window_id,
+          visit_data,
+          media_key,
+          name,
+          name));
+
 }
+
+void Imgur::OnMediaPublisherActivity(
+		ledger::Result result,
+		ledger::PublisherInfoPtr publisher_info,
+		uint64_t window_id,
+		const ledger::VisitData& visit_data,
+		const std::string& media_key,
+		const std::string& user_name,
+		const std::string& publisher_name) {
+
+    if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+      SavePublisherInfo(
+          window_id,
+          user_name,
+          publisher_name,
+          std::bind(&Imgur::OnImgurSaved,
+              this,
+              _1,
+              _2),
+              std::string());
+    } else {
+      GetPublisherPanelInfo(
+          window_id,
+          visit_data,
+          publisher_info->id);
+    }
+}
+
 
 void Imgur::OnUserActivity(
     uint64_t window_id,
