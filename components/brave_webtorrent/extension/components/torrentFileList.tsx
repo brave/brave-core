@@ -13,12 +13,13 @@ import { File, TorrentObj } from '../constants/webtorrentState'
 
 interface Props {
   torrentId: string
-  torrent?: TorrentObj
+  torrent?: TorrentObj,
+  onSaveAllFiles: () => void
 }
 
 export default class TorrentFileList extends React.PureComponent<Props, {}> {
   render () {
-    const { torrent, torrentId } = this.props
+    const { torrent, torrentId, onSaveAllFiles } = this.props
     if (!torrent || !torrent.files) {
       return (
         <div className='torrentSubhead'>
@@ -89,9 +90,23 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
       }
     })
 
+    const saveAllFiles = () => {
+      if (!torrent.serverURL || !torrent.files || torrent.progress !== 1) {
+        return
+      }
+      onSaveAllFiles()
+    }
+
     return (
       <div>
         <Heading children='Files' level={2} className='torrentHeading' />
+        <a
+          href='#'
+          onClick={saveAllFiles}
+          className={torrent.progress === 1 ? 'active' : 'inactive'}
+        >
+          Save All Files...
+        </a>
         <Table header={header} rows={rows}>
           <div className='loadingContainer'>
             <div className='__icon'>

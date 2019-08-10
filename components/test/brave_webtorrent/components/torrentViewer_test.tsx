@@ -10,14 +10,17 @@ import TorrentViewer from '../../../brave_webtorrent/extension/components/torren
 describe('torrentViewer component', () => {
   describe('torrentViewer dumb component', () => {
     it('renders the component', () => {
-      const tabId = 1
-      const torrentId = 'id'
+      const torrentState: TorrentState = {
+        tabId: 1,
+        torrentId: 'id'
+      }
+      const name = 'name'
       const wrapper = shallow(
         <TorrentViewer
           actions={{}}
-          tabId={tabId}
-          torrentId={torrentId}
+          name={name}
           torrent={torrentObj}
+          torrentState={torrentState}
         />
       )
       const assertion = wrapper.find('.torrent-viewer')

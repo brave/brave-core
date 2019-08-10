@@ -7,6 +7,8 @@ import { addTorrentEvents, removeTorrentEvents } from './events/torrentEvents'
 import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
 import { Instance } from 'parse-torrent'
+import { basename, extname } from 'path'
+import * as JSZip from 'jszip'
 
 let webTorrent: WebTorrent.Instance | undefined
 let servers: { [key: string]: any } = { }
@@ -78,4 +80,63 @@ export const delTorrent = (infoHash: string) => {
   }
 
   maybeDestroyWebTorrent()
+}
+
+export const saveAllFiles = (infoHash: string) => {
+  const torrent = findTorrent(infoHash)
+
+  if (!torrent || !torrent.name || !torrent.files) return
+
+  const files: WebTorrent.TorrentFile[] = torrent.files
+
+  let zip: any = new JSZip()
+  const zipFilename = basename(torrent.name, extname(torrent.name)) + '.zip'
+
+  const downloadBlob = (blob: Blob) => {
+    const url = URL.createObjectURL(blob)
+
+    chrome.downloads.download({
+      url: url,
+      filename: zipFilename,
+      saveAs: false,
+      conflictAction: 'uniquify'
+    })
+  }
+
+  const downloadZip = () => {
+    if (files.length > 1) {
+      // generate the zip relative to the torrent folder
+      zip = zip.folder(torrent.name)
+    }
+
+    zip.generateAsync({ type: 'blob' })
+      .then(
+        (blob: Blob) => downloadBlob(blob),
+        (err: Error) => console.error(err)
+      )
+  }
+
+  const addFilesToZip = () => {
+    let addedFiles = 0
+
+    files.forEach(file => {
+      file.getBlob((err, blob) => {
+        if (err) {
+          console.error(err)
+        } else {
+          // add file to zip
+          zip.file(file.path, blob)
+        }
+
+        addedFiles += 1
+
+        // start the download when all files have been added
+        if (addedFiles === files.length) {
+          downloadZip()
+        }
+      })
+    })
+  }
+
+  addFilesToZip()
 }

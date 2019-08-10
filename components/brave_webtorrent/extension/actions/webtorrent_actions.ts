@@ -16,3 +16,4 @@ export const serverUpdated = (torrent: Torrent, serverURL: string) =>
 export const startTorrent = (torrentId: string, tabId: number) => action(types.WEBTORRENT_START_TORRENT, { torrentId, tabId })
 export const stopDownload = (tabId: number) => action(types.WEBTORRENT_STOP_DOWNLOAD, { tabId })
 export const torrentParsed = (torrentId: string, tabId: number, infoHash: string | undefined, errorMsg: string | undefined, parsedTorrent?: Instance) => action(types.WEBTORRENT_TORRENT_PARSED, { torrentId, tabId, infoHash, errorMsg, parsedTorrent })
+export const saveAllFiles = (infoHash: string) => action(types.WEBTORRENT_SAVE_ALL_FILES, { infoHash })

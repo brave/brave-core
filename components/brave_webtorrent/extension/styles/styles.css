@@ -97,3 +97,11 @@ a {
 #iframe {
   border: 0;
 }
+
+a.inactive {
+  color: gray;
+}
+
+a.inactive:hover {
+  cursor: default;
+}

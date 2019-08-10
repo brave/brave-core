@@ -60,10 +60,8 @@ export class BraveWebtorrentPage extends React.Component<Props, {}> {
       <TorrentViewer
         actions={actions}
         name={name}
-        torrentId={torrentState.torrentId}
-        errorMsg={torrentState.errorMsg}
+        torrentState={torrentState}
         torrent={torrentObj}
-        tabId={torrentState.tabId}
       />
     )
   }
