@@ -268,7 +268,7 @@ BraveRewardsTipGitHubUserFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   if (profile->IsOffTheRecord()) {
     return RespondNow(
-        Error("Cannot tip Twitter user in a private context"));
+        Error("Cannot tip GitHub user in a private context"));
   }
 
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);

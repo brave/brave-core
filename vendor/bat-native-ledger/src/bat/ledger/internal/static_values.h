@@ -67,6 +67,7 @@
 #define REDDIT_MEDIA_TYPE               "reddit"
 #define VIMEO_MEDIA_TYPE                "vimeo"
 #define GITHUB_MEDIA_TYPE               "github"
+#define MEDIUM_MEDIA_TYPE               "medium"
 #define YOUTUBE_PROVIDER_URL            "https://www.youtube.com/oembed"
 #define TWITCH_PROVIDER_URL             "https://api.twitch.tv/v5/oembed"
 #define VIMEO_PROVIDER_URL              "https://vimeo.com/api/oembed.json"
@@ -75,9 +76,12 @@
 #define TWITTER_TLD                     "twitter.com"
 #define REDDIT_TLD                      "reddit.com"
 #define VIMEO_TLD                       "vimeo.com"
-#define GITHUB_TLD                      "github.com"
+#define GITHUB_TLD                      "github.com"            
+#define MEDIUM_TLD                      "medium.com"
 #define TWITCH_VOD_URL                  "https://www.twitch.tv/videos/"
 #define REDDIT_USER_URL                 "https://www.reddit.com/user/"
+// TODO(PETER): Add correct user type
+#define MEDIUM_USER_URL                 "https://www.medium.com/"
 #define OLD_REDDIT_DOMAIN               "old.reddit.com"
 #define MEDIA_DELIMITER                 '_'
 #define WALLET_PASSPHRASE_DELIM         ' '

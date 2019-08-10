@@ -22,7 +22,8 @@ Media::Media(bat_ledger::LedgerImpl* ledger):
   media_twitter_(new braveledger_media::Twitter(ledger)),
   media_reddit_(new braveledger_media::Reddit(ledger)),
   media_vimeo_(new braveledger_media::Vimeo(ledger)),
-  media_github_(new braveledger_media::GitHub(ledger)) {
+  media_github_(new braveledger_media::GitHub(ledger)),
+  media_medium_(new braveledger_media::Medium(ledger)) {
 }  // namespace braveledger_media
 
 Media::~Media() {}
@@ -88,6 +89,8 @@ void Media::GetMediaActivityFromUrl(
     media_vimeo_->ProcessActivityFromUrl(window_id, *visit_data);
   } else if (type == GITHUB_MEDIA_TYPE) {
     media_github_->ProcessActivityFromUrl(window_id, *visit_data);
+  } else if (type == MEDIUM_MEDIA_TYPE) {
+    media_medium_->ProcessActivityFromUrl(window_id, *visit_data);
   } else {
     OnMediaActivityError(std::move(visit_data), type, window_id);
   }
@@ -113,6 +116,9 @@ void Media::OnMediaActivityError(ledger::VisitDataPtr visit_data,
   } else if (type == VIMEO_MEDIA_TYPE) {
     url = VIMEO_TLD;
     name = VIMEO_MEDIA_TYPE;
+  } else if (type == MEDIUM_MEDIA_TYPE) {
+    url = MEDIUM_TLD;
+    name = MEDIUM_MEDIA_TYPE;
   }
 
   if (url.empty()) {
@@ -138,6 +144,10 @@ void Media::SaveMediaInfo(const std::string& type,
     return;
   } else if (type == REDDIT_MEDIA_TYPE) {
     media_reddit_->SaveMediaInfo(data, callback);
+    return;
+  }
+  if (type == MEDIUM_MEDIA_TYPE) {
+    media_medium_->SaveMediaInfo(data, callback);
     return;
   }
   if (type == GITHUB_MEDIA_TYPE) {
