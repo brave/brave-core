@@ -156,36 +156,36 @@ bool BraveContentBrowserClient::AllowAccessCookie(
           render_process_id, render_frame_id, url, first_party, tab_origin);
 }
 
-bool BraveContentBrowserClient::AllowGetCookie(
-    const GURL& url,
-    const GURL& first_party,
-    const net::CookieList& cookie_list,
-    content::ResourceContext* context,
-    int render_process_id,
-    int render_frame_id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
-                                 render_frame_id);
-  OnCookiesRead(render_process_id, render_frame_id, url, first_party,
-                cookie_list, !allow);
-
-  return allow;
-}
-
-bool BraveContentBrowserClient::AllowSetCookie(
-    const GURL& url,
-    const GURL& first_party,
-    const net::CanonicalCookie& cookie,
-    content::ResourceContext* context,
-    int render_process_id,
-    int render_frame_id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
-                                 render_frame_id);
-  OnCookieChange(render_process_id, render_frame_id, url, first_party, cookie,
-                 !allow);
-  return allow;
-}
+//bool BraveContentBrowserClient::AllowGetCookie(
+//    const GURL& url,
+//    const GURL& first_party,
+//    const net::CookieList& cookie_list,
+//    content::ResourceContext* context,
+//    int render_process_id,
+//    int render_frame_id) {
+//  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+//  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
+//                                 render_frame_id);
+//  OnCookiesRead(render_process_id, render_frame_id, url, first_party,
+//                cookie_list, !allow);
+//
+//  return allow;
+//}
+//
+//bool BraveContentBrowserClient::AllowSetCookie(
+//    const GURL& url,
+//    const GURL& first_party,
+//    const net::CanonicalCookie& cookie,
+//    content::ResourceContext* context,
+//    int render_process_id,
+//    int render_frame_id) {
+//  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+//  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
+//                                 render_frame_id);
+//  OnCookieChange(render_process_id, render_frame_id, url, first_party, cookie,
+//                 !allow);
+//  return allow;
+//}
 
 content::ContentBrowserClient::AllowWebBluetoothResult
 BraveContentBrowserClient::AllowWebBluetooth(

@@ -31,41 +31,41 @@ using content::ResourceRequestInfo;
 using net::HttpResponseHeaders;
 using net::URLRequest;
 
-namespace {
-
-bool OnAllowAccessCookies(
-    const URLRequest& request,
-    std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  ResourceRequestInfo* info = ResourceRequestInfo::ForRequest(&request);
-  if (info) {
-    ProfileIOData* io_data =
-        ProfileIOData::FromResourceContext(info->GetContext());
-
-    content_settings::BraveCookieSettings* cookie_settings =
-        (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
-
-    GURL url = request.url();
-    GURL first_party = request.site_for_cookies();
-    GURL tab_origin = GURL(request.network_isolation_key().ToString());
-    if (tab_origin.is_empty() && request.top_frame_origin().has_value())
-      tab_origin = request.top_frame_origin()->GetURL();
-    return
-        cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin) &&
-        // TODO(bridiver) - handle this in BraveCookieSettings
-        g_brave_browser_process->tracking_protection_service()
-            ->ShouldStoreState(cookie_settings,
-                               io_data->GetHostContentSettingsMap(),
-                               ctx->render_process_id,
-                               ctx->render_frame_id,
-                               url,
-                               first_party,
-                               tab_origin);
-  }
-
-  return true;
-}
-
-}  // namespace
+//namespace {
+//
+//bool OnAllowAccessCookies(
+//    const URLRequest& request,
+//    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+//  ResourceRequestInfo* info = ResourceRequestInfo::ForRequest(&request);
+//  if (info) {
+//    ProfileIOData* io_data =
+//        ProfileIOData::FromResourceContext(info->GetContext());
+//
+//    content_settings::BraveCookieSettings* cookie_settings =
+//        (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
+//
+//    GURL url = request.url();
+//    GURL first_party = request.site_for_cookies();
+//    GURL tab_origin = GURL(request.network_isolation_key().ToString());
+//    if (tab_origin.is_empty() && request.top_frame_origin().has_value())
+//      tab_origin = request.top_frame_origin()->GetURL();
+//    return
+//        cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin) &&
+//        // TODO(bridiver) - handle this in BraveCookieSettings
+//        g_brave_browser_process->tracking_protection_service()
+//            ->ShouldStoreState(cookie_settings,
+//                               io_data->GetHostContentSettingsMap(),
+//                               ctx->render_process_id,
+//                               ctx->render_frame_id,
+//                               url,
+//                               first_party,
+//                               tab_origin);
+//  }
+//
+//  return true;
+//}
+//
+//}  // namespace
 
 base::flat_set<base::StringPiece>* TrackableSecurityHeaders() {
   static base::NoDestructor<base::flat_set<base::StringPiece>>
