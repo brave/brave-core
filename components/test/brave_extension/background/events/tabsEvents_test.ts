@@ -4,6 +4,7 @@
 
 import '../../../../brave_extension/extension/brave_extension/background/events/tabsEvents'
 import actions from '../../../../brave_extension/extension/brave_extension/background/actions/tabActions'
+import * as types from '../../../../brave_extension/extension/brave_extension/constants/tabTypes'
 
 interface TabActivatedEvent extends chrome.events.Event<(activeInfo: chrome.tabs.TabActiveInfo) => void> {
   emit: (detail: chrome.tabs.TabActiveInfo) => void
@@ -22,6 +23,8 @@ describe('tabsEvents events', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
       spy = jest.spyOn(actions, 'activeTabChanged')
+        // ensure return value is also mocked so a warning about lack of tabId is not thrown
+        .mockReturnValue({ type: types.ACTIVE_TAB_CHANGED, windowId: 1, tabId: 2 })
     })
     afterEach(() => {
       spy.mockRestore()
@@ -43,7 +46,7 @@ describe('tabsEvents events', () => {
   })
   describe('chrome.tabs.onCreated', () => {
     let spy: jest.SpyInstance
-    const inputTab = {
+    const inputTab: chrome.tabs.Tab = {
       id: 3,
       index: 0,
       pinned: false,
@@ -51,10 +54,14 @@ describe('tabsEvents events', () => {
       windowId: 1,
       active: true,
       incognito: false,
-      selected: true
+      selected: true,
+      discarded: false,
+      autoDiscardable: false
     }
     beforeEach(() => {
       spy = jest.spyOn(actions, 'tabCreated')
+        // ensure return value is also mocked so a warning about lack of tabId is not thrown
+        .mockReturnValue({ type: types.TAB_CREATED, tab: inputTab })
     })
     afterEach(() => {
       spy.mockRestore()
@@ -76,7 +83,7 @@ describe('tabsEvents events', () => {
     let spy: jest.SpyInstance
     const inputTabId = 3
     const inputChangeInfo = {}
-    const inputTab = {
+    const inputTab: chrome.tabs.Tab = {
       id: 3,
       index: 0,
       pinned: false,
@@ -84,10 +91,19 @@ describe('tabsEvents events', () => {
       windowId: 1,
       active: true,
       incognito: false,
-      selected: true
+      selected: true,
+      discarded: false,
+      autoDiscardable: false
     }
     beforeEach(() => {
       spy = jest.spyOn(actions, 'tabDataChanged')
+        // ensure return value is also mocked so a warning about lack of tabId is not thrown
+        .mockReturnValue({
+          type: types.TAB_DATA_CHANGED,
+          tab: inputTab,
+          tabId: inputTabId,
+          changeInfo: inputChangeInfo
+        })
     })
     afterEach(() => {
       spy.mockRestore()

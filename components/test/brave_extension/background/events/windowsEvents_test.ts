@@ -4,6 +4,7 @@
 
 import '../../../../brave_extension/extension/brave_extension/background/events/windowsEvents'
 import actions from '../../../../brave_extension/extension/brave_extension/background/actions/windowActions'
+import * as types from '../../../../brave_extension/extension/brave_extension/constants/windowTypes'
 
 interface WindowIdEvent extends chrome.events.Event<(windowId: number) => void> {
   emit: (windowId: number) => void
@@ -18,6 +19,8 @@ describe('windowsEvents events', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
       spy = jest.spyOn(actions, 'windowFocusChanged')
+        // ensure return value is also mocked so a warning about lack of tabId is not thrown
+        .mockReturnValue({ type: types.WINDOW_FOCUS_CHANGED, windowId: 1 })
     })
     afterEach(() => {
       spy.mockRestore()
@@ -35,7 +38,7 @@ describe('windowsEvents events', () => {
   })
   describe('chrome.windows.onCreated', () => {
     let spy: jest.SpyInstance
-    const window = {
+    const window: chrome.windows.Window = {
       id: 1,
       state: 'normal',
       focused: true,
@@ -45,6 +48,8 @@ describe('windowsEvents events', () => {
     }
     beforeEach(() => {
       spy = jest.spyOn(actions, 'windowCreated')
+        // ensure return value is also mocked so a warning about lack of tabId is not thrown
+        .mockReturnValue({ type: types.WINDOW_CREATED, window })
     })
     afterEach(() => {
       spy.mockRestore()
@@ -65,6 +70,8 @@ describe('windowsEvents events', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
       spy = jest.spyOn(actions, 'windowRemoved')
+        // ensure return value is also mocked so a warning about lack of tabId is not thrown
+        .mockReturnValue({ type: types.WINDOW_REMOVED, windowId: 1 })
     })
     afterEach(() => {
       spy.mockRestore()

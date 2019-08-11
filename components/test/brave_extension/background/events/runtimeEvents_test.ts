@@ -5,6 +5,8 @@
 import '../../../../brave_extension/extension/brave_extension/background/events/runtimeEvents'
 import windowActions from '../../../../brave_extension/extension/brave_extension/background/actions/windowActions'
 import tabActions from '../../../../brave_extension/extension/brave_extension/background/actions/tabActions'
+import * as windowTypes from '../../../../brave_extension/extension/brave_extension/constants/windowTypes'
+import * as tabTypes from '../../../../brave_extension/extension/brave_extension/constants/tabTypes'
 import { ChromeEvent } from '../../../testData'
 
 interface InputWindows {
@@ -41,12 +43,36 @@ describe('runtimeEvents events', () => {
     const p = new Promise((resolve, reject) => {
       deferred = resolve
     })
+    const window: chrome.windows.Window = {
+      id: 1,
+      state: 'normal',
+      focused: true,
+      alwaysOnTop: false,
+      incognito: false,
+      type: 'normal'
+    }
+    const tab: chrome.tabs.Tab = {
+      id: 3,
+      index: 0,
+      pinned: false,
+      highlighted: false,
+      windowId: 1,
+      active: true,
+      incognito: false,
+      selected: true,
+      discarded: false,
+      autoDiscardable: false
+    }
     let windowCreatedSpy: jest.SpyInstance
     let tabCreatedSpy: jest.SpyInstance
     let windowGetAllSpy: jest.SpyInstance
     beforeEach((cb) => {
       windowCreatedSpy = jest.spyOn(windowActions, 'windowCreated')
+        // ensure return value is also mocked so a warning about lack of tabId is not thrown
+        .mockReturnValue({ type: windowTypes.WINDOW_CREATED, window })
       tabCreatedSpy = jest.spyOn(tabActions, 'tabCreated')
+        // ensure return value is also mocked so a warning about lack of tabId is not thrown
+        .mockReturnValue({ type: tabTypes.TAB_CREATED, tab })
       windowGetAllSpy = jest.spyOn(chrome.windows, 'getAllAsync').mockImplementation(() => {
         deferred(inputWindows)
         return p

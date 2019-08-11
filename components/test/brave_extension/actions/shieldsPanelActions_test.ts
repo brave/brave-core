@@ -14,19 +14,20 @@ import {
 // Actions
 import * as actions from '../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
 
+const details: ShieldDetails = {
+  ads: 'allow',
+  trackers: 'block',
+  httpUpgradableResources: 'allow',
+  origin: 'https://www.brave.com',
+  hostname: 'www.brave.com',
+  id: 1,
+  javascript: 'allow',
+  fingerprinting: 'allow',
+  cookies: 'allow'
+}
+
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
-    const details: ShieldDetails = {
-      ads: 'allow',
-      trackers: 'block',
-      httpUpgradableResources: 'allow',
-      origin: 'https://www.brave.com',
-      hostname: 'www.brave.com',
-      id: 1,
-      javascript: 'allow',
-      fingerprinting: 'allow',
-      cookies: 'allow'
-    }
     expect(actions.shieldsPanelDataUpdated(details)).toEqual({
       type: types.SHIELDS_PANEL_DATA_UPDATED,
       details
