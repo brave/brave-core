@@ -47,7 +47,7 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
     const renderFileLink = (file: File, ix: number, isDownload: boolean) => {
       if (isDownload) {
         if (torrent.serverURL) {
-          const url = torrent.serverURL + '/' + ix
+          const url = `${torrent.serverURL}/${ix}/${file.name}`
           return (
             <a href={url} download={file.name}>
               ⇩
