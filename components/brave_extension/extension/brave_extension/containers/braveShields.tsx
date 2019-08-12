@@ -33,6 +33,10 @@ import {
   SetAdvancedViewFirstAccess,
   ShieldsReady
 } from '../types/actions/shieldsPanelActions'
+import { SetStoreSettingsChange } from '../types/actions/settingsActions'
+import { SettingsData } from '../types/other/settingsTypes'
+
+// Helpers
 import { shieldsHasFocus } from '../helpers/shieldsUtils'
 
 interface Props {
@@ -50,24 +54,23 @@ interface Props {
     setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
     setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
+    setStoreSettingsChange: SetStoreSettingsChange
     shieldsReady: ShieldsReady
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData
-  settings: any
+  settingsData: SettingsData
 }
 
 interface State {
   showReadOnlyView: boolean
-  showAdvancedView: boolean
 }
 
 export default class Shields extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      showReadOnlyView: false,
-      showAdvancedView: props.settings.showAdvancedView
+      showReadOnlyView: false
     }
   }
 
@@ -76,11 +79,9 @@ export default class Shields extends React.PureComponent<Props, State> {
   }
 
   toggleAdvancedView = () => {
-    const { showAdvancedView } = this.state
+    const { showAdvancedView } = this.props.settingsData
     shieldsAPI.setViewPreferences({ showAdvancedView: !showAdvancedView })
-      // change local state so the component can trigger an update
-      // otherwise change will be visible only after shields closes
-      .then(() => this.setState({ showAdvancedView: !showAdvancedView }))
+      .then(() => this.props.actions.setStoreSettingsChange({ showAdvancedView: !showAdvancedView }))
       .catch((err) => console.log('[Shields] Unable to toggle advanced view interface:', err))
   }
 
@@ -98,12 +99,12 @@ export default class Shields extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { shieldsPanelTabData, persistentData, actions } = this.props
-    const { showAdvancedView, showReadOnlyView } = this.state
+    const { shieldsPanelTabData, persistentData, settingsData, actions } = this.props
+    const { showReadOnlyView } = this.state
     if (!shieldsPanelTabData) {
       return null
     }
-    return showAdvancedView
+    return settingsData.showAdvancedView
       ? (
         <AdvancedView
           shieldsPanelTabData={shieldsPanelTabData}

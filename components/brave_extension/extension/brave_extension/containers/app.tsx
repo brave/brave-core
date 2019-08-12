@@ -5,6 +5,7 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as shieldsPanelActions from '../actions/shieldsPanelActions'
+import * as settingsActions from '../actions/settingsActions'
 import * as shieldsPanelState from '../state/shieldsPanelState'
 import BraveShields from '../containers/braveShields'
 import { State } from '../types/state/mainState'
@@ -18,12 +19,16 @@ const mapStateToProps = (
   return ({
     shieldsPanelTabData: shieldsPanelState.getActiveTabData(state.shieldsPanel),
     persistentData: shieldsPanelState.getPersistentData(state.shieldsPanel),
-    settings: ownProps.settings
+    settingsData: shieldsPanelState.mergeSettingsData(state.shieldsPanel, ownProps.settings)
   })
 }
 
+// combine all actions used outside background pages.
+// for background action bindings, refer to background/index.js
+const actions = Object.assign({}, shieldsPanelActions, settingsActions)
+
 const mapDispatchToProps = (dispatch: any) => ({
-  actions: bindActionCreators(shieldsPanelActions, dispatch)
+  actions: bindActionCreators(actions, dispatch)
 })
 
 export default connect(
