@@ -8,6 +8,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
@@ -50,7 +51,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
   registry->RegisterBooleanPref(kNoScriptControlType, false);
   registry->RegisterBooleanPref(kAdControlType, true);
-  registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled, false);
+  // > advanced view is defaulted to true for EXISTING users; false for new
+  bool is_new_user = first_run::IsChromeFirstRun();
+  registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled,
+                                is_new_user == false);
   registry->RegisterBooleanPref(kGoogleLoginControlType, true);
   registry->RegisterBooleanPref(kFBEmbedControlType, true);
   registry->RegisterBooleanPref(kTwitterEmbedControlType, true);
