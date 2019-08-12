@@ -240,6 +240,8 @@ test("brave_unit_tests") {
     "//components/sync_preferences",
     "//components/translate/core/browser:test_support",
     "//content/public/common",
+    "//services/network/public/cpp:cpp",
+    "//services/network:test_support",
     "//third_party/cacheinvalidation",
   ]
 
