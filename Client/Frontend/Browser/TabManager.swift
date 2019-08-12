@@ -358,9 +358,14 @@ class TabManager: NSObject {
 
         let type: TabType = isPrivate ? .private : .regular
         let tab = Tab(configuration: configuration, type: type)
-        if !isPrivate {
+        
+        if isPrivate {
+            // Creating random tab id for private mode, as we don't want to save to database.
+            tab.id = UUID().uuidString
+        } else {
             tab.id = id ?? TabMO.create()
         }
+        
         configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie, isPrivate: isPrivate)
         return tab
     }
@@ -400,6 +405,7 @@ class TabManager: NSObject {
     }
     
     private func saveTabOrder() {
+        if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
         let allTabIds = allTabs.compactMap { $0.id }
         TabMO.saveTabOrder(tabIds: allTabIds)
     }
@@ -472,6 +478,7 @@ class TabManager: NSObject {
     }
     
     func saveTab(_ tab: Tab, saveOrder: Bool = false) {
+        if PrivateBrowsingManager.shared.isPrivateBrowsing { return }
         guard let data = savedTabData(tab: tab) else { return }
         
         TabMO.update(tabData: data)
