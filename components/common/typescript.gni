@@ -4,7 +4,6 @@ import("//tools/grit/grit_rule.gni")
 brave_common_web_compile_inputs = [
   # common includes change
   rebase_path("classSet.ts"),
-  rebase_path("dns.ts"),
   rebase_path("debounce.ts"),
   rebase_path("locale.ts"),
   rebase_path("BraveCoreThemeProvider.tsx"),

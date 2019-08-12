@@ -11,10 +11,7 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
-      'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src'),
-      // TODO(feross): Publish chrome-dns and add to "chromeapp" package.json
-      // field so this isn't required anymore
-      dns: path.resolve(__dirname, '../common/dns.ts')
+      'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src')
     },
     // For explanation of "chromeapp", see:
     // https://github.com/brave/brave-browser/issues/5587
