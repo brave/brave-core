@@ -29,6 +29,7 @@ void BraveConfirmP3AInfoBarDelegate::Create(InfoBarService* infobar_service,
   if (local_state) {
     if (!local_state->GetBoolean(brave::kP3AEnabled) ||
         local_state->GetBoolean(brave::kP3ANoticeAcknowledged)) {
+      local_state->SetBoolean(brave::kP3ANoticeAcknowledged, true);
       return;
     }
   }

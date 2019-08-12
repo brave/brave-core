@@ -28,6 +28,7 @@
 #include "brave/components/p3a/pref_names.h"
 #include "brave/vendor/brave_base/random.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -102,7 +103,10 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry) {
   BraveP3ALogStore::RegisterPrefs(registry);
   registry->RegisterTimePref(kLastRotationTimeStampPref, {});
   registry->RegisterBooleanPref(kP3AEnabled, true);
-  registry->RegisterBooleanPref(kP3ANoticeAcknowledged, false);
+
+  // New users are shown the P3A notice via the welcome page.
+  registry->RegisterBooleanPref(kP3ANoticeAcknowledged,
+                                first_run::IsChromeFirstRun());
 }
 
 void BraveP3AService::InitCallbacks() {
