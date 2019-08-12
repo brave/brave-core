@@ -1,17 +1,20 @@
 diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
-index c9c6225eb8fd8b8278c707beb521bde910ab49d9..9febc53ebffdc0a8917d376e6ae6e8dd3c4d2b70 100644
+index c9c6225eb8fd8b8278c707beb521bde910ab49d9..d92c4a6f9142a25ea8fc9f43a9745e1a3da2c309 100644
 --- a/src/execution/isolate.cc
 +++ b/src/execution/isolate.cc
-@@ -93,6 +93,8 @@
+@@ -93,6 +93,11 @@
  #include "src/diagnostics/unwinding-info-win64.h"
  #endif  // V8_OS_WIN64
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#include "src/utils/ostreams.h"
++
  extern "C" const uint8_t* v8_Default_embedded_blob_;
  extern "C" uint32_t v8_Default_embedded_blob_size_;
  
-@@ -4403,6 +4405,49 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
+@@ -4403,6 +4408,49 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
    }
  }
  

@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -35,11 +36,11 @@ ItemDesc NodeAdFilter::GetItemDesc() const {
   return builder.str();
 }
 
-GraphMLXMLList NodeAdFilter::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = NodeFilter::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefRule)
-      ->ToValue(rule_));
-  return attrs;
+void NodeAdFilter::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  NodeFilter::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefRule)
+      ->AddValueNode(doc, parent_node, rule_);
 }
 
 bool NodeAdFilter::IsNodeAdFilter() const {

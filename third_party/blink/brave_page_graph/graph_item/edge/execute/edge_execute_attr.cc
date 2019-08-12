@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/execute/edge_execute_attr.h"
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -35,11 +36,11 @@ ItemDesc EdgeExecuteAttr::GetItemDesc() const {
   return EdgeExecute::GetItemDesc() + " [" + attribute_name_ + "]";
 }
 
-GraphMLXMLList EdgeExecuteAttr::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = EdgeExecute::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefAttrName)
-      ->ToValue(attribute_name_));
-  return attrs;
+void EdgeExecuteAttr::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  EdgeExecute::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefAttrName)
+      ->AddValueNode(doc, parent_node, attribute_name_);
 }
 
 bool EdgeExecuteAttr::IsEdgeExecuteAttr() const {

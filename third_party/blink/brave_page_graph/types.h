@@ -41,9 +41,7 @@ class NodeHTML;
 
 typedef std::string ItemDesc;
 typedef std::string ItemName;
-typedef std::string GraphMLXML;
 typedef std::string GraphMLId;
-typedef std::vector<const GraphMLXML> GraphMLXMLList;
 
 typedef enum {
   kGraphMLAttrDefAttrName = 0,

@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -40,11 +41,11 @@ ItemDesc NodeRemoteFrame::GetItemDesc() const {
   return builder.str();
 }
 
-GraphMLXMLList NodeRemoteFrame::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = Node::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefURL)
-      ->ToValue(url_));
-  return attrs;
+void NodeRemoteFrame::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  Node::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefURL)
+      ->AddValueNode(doc, parent_node, url_);
 }
 
 bool NodeRemoteFrame::IsNodeRemoteFrame() const {

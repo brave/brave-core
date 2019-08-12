@@ -7,11 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_EXTENSIONS_H_
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
-
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
 namespace brave_page_graph {

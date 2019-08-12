@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EVENT_LISTENER_EDGE_EVENT_LISTENER_ACTION_H_
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
@@ -32,7 +33,8 @@ friend class PageGraph;
 
   ItemDesc GetItemDesc() const override;
 
-  GraphMLXMLList GetGraphMLAttributes() const override;
+  void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
+      const override;
 
   bool IsEdgeEventListenerAction() const override;
 

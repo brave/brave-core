@@ -4,6 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js_builtin.h"
+
+#include <libxml/tree.h>
+
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
@@ -28,11 +31,11 @@ ItemDesc NodeJSBuiltIn::GetItemDesc() const {
   return Node::GetItemDesc() + " [" + JSBuiltInToSting(built_in_name_) + "]";
 }
 
-GraphMLXMLList NodeJSBuiltIn::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = NodeJS::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
-      ->ToValue(JSBuiltInToSting(built_in_name_)));
-  return attrs;
+void NodeJSBuiltIn::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  NodeJS::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
+      ->AddValueNode(doc, parent_node, JSBuiltInToSting(built_in_name_));
 }
 
 JSBuiltIn NodeJSBuiltIn::GetBuiltIn() const {

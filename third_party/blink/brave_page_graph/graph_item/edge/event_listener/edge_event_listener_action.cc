@@ -5,6 +5,8 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/event_listener/edge_event_listener_action.h"
 
+#include <libxml/tree.h>
+
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -36,15 +38,15 @@ ItemDesc EdgeEventListenerAction::GetItemDesc() const {
       + " [listener script id: " + to_string(listener_script_id_) + "]";
 }
 
-GraphMLXMLList EdgeEventListenerAction::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = Edge::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefKey)
-      ->ToValue(event_type_));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefEventListenerId)
-      ->ToValue(listener_id_));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefScriptId)
-      ->ToValue(listener_script_id_));
-  return attrs;
+void EdgeEventListenerAction::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  Edge::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefKey)
+      ->AddValueNode(doc, parent_node, event_type_);
+  GraphMLAttrDefForType(kGraphMLAttrDefEventListenerId)
+      ->AddValueNode(doc, parent_node, listener_id_);
+  GraphMLAttrDefForType(kGraphMLAttrDefScriptId)
+      ->AddValueNode(doc, parent_node, listener_script_id_);
 }
 
 bool EdgeEventListenerAction::IsEdgeEventListenerAction() const {
