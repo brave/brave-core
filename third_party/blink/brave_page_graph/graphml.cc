@@ -6,9 +6,11 @@
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 
 #include <map>
-#include <regex>
 #include <string>
 #include <vector>
+
+#include <libxml/entities.h>
+#include <libxml/tree.h>
 
 #include "base/logging.h"
 
@@ -17,9 +19,6 @@
 
 using ::std::endl;
 using ::std::map;
-using ::std::regex;
-using ::std::regex_match;
-using ::std::regex_replace;
 using ::std::string;
 using ::std::to_string;
 using ::std::unique_ptr;
@@ -138,61 +137,62 @@ GraphMLId GraphMLAttr::GetGraphMLId() const {
   return "d" + to_string(id_);
 }
 
-GraphMLXML GraphMLAttr::ToDefinition() const {
-   return "<key id=\"" + GetGraphMLId() + "\" " +
-                "for=\"" + GraphMLForToString(for_) + "\" " +
-                "attr.name=\"" + name_ + "\" " +
-                "attr.type=\"" + RequestTypeToString(type_) + "\"/>";
+void GraphMLAttr::AddDefinitionNode(xmlNodePtr parent_node) const {
+  xmlNodePtr new_node = xmlNewChild(parent_node, NULL, BAD_CAST "key", NULL);
+  xmlSetProp(new_node, BAD_CAST "id", BAD_CAST GetGraphMLId().c_str());
+  xmlSetProp(new_node, BAD_CAST "for",
+      BAD_CAST GraphMLForToString(for_).c_str());
+  xmlSetProp(new_node, BAD_CAST "attr.name", BAD_CAST name_.c_str());
+  xmlSetProp(new_node, BAD_CAST "attr.type",
+      BAD_CAST RequestTypeToString(type_).c_str());
 }
 
-GraphMLXML GraphMLAttr::ToValue(const char* value) const {
-  return ToValue(string(value));
+void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+    const char* value) const {
+  AddValueNode(doc, parent_node, string(value));
 }
 
-GraphMLXML GraphMLAttr::ToValue(const string& value) const {
+void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+    const string& value) const {
   LOG_ASSERT(type_ == kGraphMLAttrTypeString);
-
-  const map<const char*, const char*> replacements = {
-    {"\"", "&quot;"},
-    {"'", "&apos;"},
-    {"<", "&lt;"},
-    {">", "&gt;"},
-  };
-
-  string escaped_string(value);
-
-  for (auto const &item : replacements) {
-    const regex from(item.first, std::regex::icase | std::regex::ECMAScript);
-    const string to(item.second);
-    escaped_string = regex_replace(escaped_string, from, to);
-  }
-
-  const regex amp_for_escape("&(?!(quot|apos|lt|gt|amp);)");
-  escaped_string = regex_replace(escaped_string, amp_for_escape, "&amp;");
-
-  return "<data key=\"" + GetGraphMLId() + "\">" +
-            "<![CDATA[" + escaped_string + "]]>" +
-            "</data>";
+  xmlChar* encoded_content = xmlEncodeEntitiesReentrant(doc,
+      BAD_CAST value.c_str());
+  xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL,
+      BAD_CAST "data", encoded_content);
+  xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
+  xmlFree(encoded_content);
 }
 
-GraphMLXML GraphMLAttr::ToValue(const int value) const {
+void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+    const int value) const {
   LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
-  return "<data key=\"" + GetGraphMLId() + "\">" + to_string(value) + "</data>";
+  xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
+      BAD_CAST to_string(value).c_str());
+  xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
 }
 
-GraphMLXML GraphMLAttr::ToValue(const bool value) const {
+void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+    const bool value) const {
   LOG_ASSERT(type_ == kGraphMLAttrTypeBoolean);
-  return "<data key=\"" + GetGraphMLId() + "\">" + to_string(value) + "</data>";
+  xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
+      BAD_CAST to_string(value).c_str());
+  xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
 }
 
-GraphMLXML GraphMLAttr::ToValue(const uint64_t value) const {
+void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+    const uint64_t value) const {
   LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
-  return "<data key=\"" + GetGraphMLId() + "\">" + to_string(value) + "</data>";
+  xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
+      BAD_CAST to_string(value).c_str());
+  xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
 }
 
-GraphMLXML GraphMLAttr::ToValue(const double value) const {
+void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+    const double value) const {
   LOG_ASSERT(type_ == kGraphMLAttrTypeDouble);
-  return "<data key=\"" + GetGraphMLId() + "\">" + to_string(value) + "</data>";
+  xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
+      BAD_CAST to_string(value).c_str());
+  xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
 }
 
 const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {

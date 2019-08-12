@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <libxml/tree.h>
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
@@ -40,11 +41,11 @@ ItemDesc EdgeJSCall::GetItemDesc() const {
   return GetItemName() + " [arguments: " + GetArgumentsString() + "]";
 }
 
-GraphMLXMLList EdgeJSCall::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = EdgeJS::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefCallArgs)
-      ->ToValue(GetArgumentsString()));
-  return attrs;
+void EdgeJSCall::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  EdgeJS::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefCallArgs)
+      ->AddValueNode(doc, parent_node, GetArgumentsString());
 }
 
 const vector<const string>& EdgeJSCall::GetArguments() const {

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <sstream>
 #include <string>
+#include <libxml/tree.h>
 
 #include "base/logging.h"
 
@@ -83,13 +84,13 @@ ItemDesc NodeHTMLElement::GetItemDesc() const {
   return builder.str();
 }
 
-GraphMLXML NodeHTMLElement::GetGraphMLTag() const {
-  stringstream builder;
-  builder << NodeHTML::GetGraphMLTag();
+void NodeHTMLElement::AddGraphMLTag(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  NodeHTML::AddGraphMLTag(doc, parent_node);
 
   for (NodeHTML* const child_node : child_nodes_) {
     EdgeHTML html_edge(this, child_node);
-    builder << endl << html_edge.GetGraphMLTag();
+    html_edge.AddGraphMLTag(doc, parent_node);
   }
 
   // For each event listener, draw an edge from the listener script to the DOM
@@ -102,17 +103,15 @@ GraphMLXML NodeHTMLElement::GetGraphMLTag() const {
 
     EdgeEventListener event_listener_edge(this, listener_node, event_type,
                                           listener_id);
-    builder << endl << event_listener_edge.GetGraphMLTag();
+    event_listener_edge.AddGraphMLTag(doc, parent_node);
   }
-
-  return builder.str();
 }
 
-GraphMLXMLList NodeHTMLElement::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = NodeHTML::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeTag)
-      ->ToValue(TagName()));
-  return attrs;
+void NodeHTMLElement::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  NodeHTML::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefNodeTag)
+      ->AddValueNode(doc, parent_node, TagName());
 }
 
 void NodeHTMLElement::PlaceChildNodeAfterSiblingNode(NodeHTML* const child,

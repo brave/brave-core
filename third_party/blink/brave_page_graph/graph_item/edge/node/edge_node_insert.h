@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_NODE_EDGE_NODE_INSERT_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_NODE_EDGE_NODE_INSERT_H_
 
+#include <libxml/tree.h>
+
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -31,7 +33,8 @@ friend class PageGraph;
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 
-  GraphMLXMLList GetGraphMLAttributes() const override;
+  void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
+      const override;
 
   bool IsEdgeNodeInsert() const override;
 

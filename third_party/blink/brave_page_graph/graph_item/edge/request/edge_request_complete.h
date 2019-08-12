@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_COMPLETE_H_
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
@@ -31,7 +32,8 @@ friend class PageGraph;
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 
-  GraphMLXMLList GetGraphMLAttributes() const override;
+  void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
+      const override;
 
   bool IsEdgeRequestComplete() const override;
 

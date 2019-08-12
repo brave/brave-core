@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_complete.h"
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 
@@ -38,11 +39,11 @@ ItemDesc EdgeRequestComplete::GetItemDesc() const {
     + " [" + ResourceTypeToString(resource_type_) + "]";
 }
 
-GraphMLXMLList EdgeRequestComplete::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = EdgeRequestResponse::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefResourceType)
-      ->ToValue(ResourceTypeToString(resource_type_)));
-  return attrs;
+void EdgeRequestComplete::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  EdgeRequestResponse::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefResourceType)
+      ->AddValueNode(doc, parent_node, ResourceTypeToString(resource_type_));
 }
 
 bool EdgeRequestComplete::IsEdgeRequestComplete() const {

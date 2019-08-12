@@ -9,6 +9,7 @@ source_set("brave_page_graph") {
     "//third_party/blink/renderer/platform/wtf",
     "//third_party/boringssl",
     "//third_party/icu",
+    "//third_party/libxml",
     "//url",
   ]
 

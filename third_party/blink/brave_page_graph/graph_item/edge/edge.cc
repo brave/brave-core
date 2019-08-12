@@ -5,8 +5,8 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
 
-#include <sstream>
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -17,7 +17,6 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
 using ::std::string;
-using ::std::stringstream;
 using ::std::to_string;
 
 namespace brave_page_graph {
@@ -37,27 +36,26 @@ GraphMLId Edge::GetGraphMLId() const {
   return "e" + to_string(GetId());
 }
 
-GraphMLXML Edge::GetGraphMLTag() const {
-  stringstream builder;
-  builder << "<edge id=\"" << GetGraphMLId() << "\" "
-          << "source=\"" << out_node_->GetGraphMLId() << "\" "
-          << "target=\"" << in_node_->GetGraphMLId() << "\">";
-  for (const GraphMLXML& elm : GetGraphMLAttributes()) {
-    builder << elm;
-  }
-  builder << "</edge>";
-  return builder.str();
+void Edge::AddGraphMLTag(xmlDocPtr doc, xmlNodePtr parent_node) const {
+  xmlNodePtr new_node = xmlNewChild(parent_node, NULL, BAD_CAST "edge", NULL);
+  xmlSetProp(new_node, BAD_CAST "id", BAD_CAST GetGraphMLId().c_str());
+  xmlSetProp(new_node, BAD_CAST "source",
+      BAD_CAST out_node_->GetGraphMLId().c_str());
+  xmlSetProp(new_node, BAD_CAST "target",
+      BAD_CAST in_node_->GetGraphMLId().c_str());
+  AddGraphMLAttributes(doc, new_node);
 }
 
-GraphMLXMLList Edge::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = GraphItem::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
-      ->ToValue(GetItemName()));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphEdgeId)
-      ->ToValue(GetId()));
-  //attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphEdgeTimestamp)
-  //    ->ToValue(GetMicroSecSincePageStart()));
-  return attrs;
+void Edge::AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node) const {
+  GraphItem::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
+      ->AddValueNode(doc, parent_node, GetItemName());
+  GraphMLAttrDefForType(kGraphMLAttrDefPageGraphEdgeId)
+      ->AddValueNode(doc, parent_node, GetId());
+  if (graph_ != nullptr) {
+    GraphMLAttrDefForType(kGraphMLAttrDefPageGraphEdgeTimestamp)
+      ->AddValueNode(doc, parent_node, GetMicroSecSincePageStart());
+  }
 }
 
 bool Edge::IsEdge() const {

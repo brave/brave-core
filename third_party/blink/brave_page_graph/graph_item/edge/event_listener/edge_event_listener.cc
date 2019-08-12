@@ -5,9 +5,8 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/event_listener/edge_event_listener.h"
 
-#include <ostream>
-#include <sstream>
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -18,7 +17,6 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_html_element.h"
 
 using ::std::string;
-using ::std::stringstream;
 using ::std::to_string;
 
 namespace brave_page_graph {
@@ -49,13 +47,12 @@ ItemDesc EdgeEventListener::GetItemDesc() const {
       + " [listener id: " + to_string(listener_id_) + "]";
 }
 
-GraphMLXMLList EdgeEventListener::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = Edge::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefKey)
-      ->ToValue(event_type_));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefEventListenerId)
-      ->ToValue(listener_id_));
-  return attrs;
+void EdgeEventListener::AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node) const {
+  Edge::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefKey)
+      ->AddValueNode(doc, parent_node, event_type_);
+  GraphMLAttrDefForType(kGraphMLAttrDefEventListenerId)
+      ->AddValueNode(doc, parent_node, listener_id_);
 }
 
 bool EdgeEventListener::IsEdgeEventListener() const {

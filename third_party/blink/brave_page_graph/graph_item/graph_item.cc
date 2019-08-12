@@ -40,8 +40,8 @@ ItemDesc GraphItem::GetItemDesc() const {
   return GetItemName() + " #" + to_string(id_);
 }
 
-GraphMLXMLList GraphItem::GetGraphMLAttributes() const {
-  return GraphMLXMLList();
+void GraphItem::AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
+    const {
 }
 
 bool GraphItem::IsEdge() const {

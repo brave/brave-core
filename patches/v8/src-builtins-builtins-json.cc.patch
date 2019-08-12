@@ -1,5 +1,5 @@
 diff --git a/src/builtins/builtins-json.cc b/src/builtins/builtins-json.cc
-index 896a45389c4abd03f774eb9a1e266a31eed4079e..e494baec822ee0170c144ed445fba9c3b2f0fc6a 100644
+index 896a45389c4abd03f774eb9a1e266a31eed4079e..d40aae95b53b1ddec75fdb7dda869c3f5ff50da4 100644
 --- a/src/builtins/builtins-json.cc
 +++ b/src/builtins/builtins-json.cc
 @@ -9,6 +9,11 @@
@@ -19,12 +19,12 @@ index 896a45389c4abd03f774eb9a1e266a31eed4079e..e494baec822ee0170c144ed445fba9c3
                                       Object::ToString(isolate, source));
    string = String::Flatten(isolate, string);
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  {
-+    std::string from_str(Object::ToString(isolate, source).ToHandleChecked()->ToCString().get());
-+    std::string json_str(string->ToCString().get());
-+    isolate->ReportBuiltInCallAndResponse("JSON.parse",
-+      {from_str}, json_str);
-+  }
++//  {
++//    std::string from_str(Object::ToString(isolate, source).ToHandleChecked()->ToCString().get());
++//    std::string json_str(string->ToCString().get());
++//    isolate->ReportBuiltInCallAndResponse("JSON.parse",
++//      {from_str}, json_str);
++//  }
 +#endif
    RETURN_RESULT_OR_FAILURE(
        isolate, String::IsOneByteRepresentationUnderneath(*string)
@@ -34,10 +34,10 @@ index 896a45389c4abd03f774eb9a1e266a31eed4079e..e494baec822ee0170c144ed445fba9c3
    Handle<Object> replacer = args.atOrUndefined(isolate, 2);
    Handle<Object> indent = args.atOrUndefined(isolate, 3);
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  {
-+    isolate->ReportBuiltInCallAndResponse("JSON.stringify",
-+      {std::string("<ignore>")}, std::string("<ignore>"));
-+  }
++//  {
++//    isolate->ReportBuiltInCallAndResponse("JSON.stringify",
++//      {std::string("<ignore>")}, std::string("<ignore>"));
++//  }
 +#endif
    RETURN_RESULT_OR_FAILURE(isolate,
                             JsonStringify(isolate, object, replacer, indent));

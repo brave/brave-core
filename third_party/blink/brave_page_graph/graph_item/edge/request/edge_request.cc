@@ -5,6 +5,8 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
 
+#include <libxml/tree.h>
+
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -27,13 +29,13 @@ RequestURL EdgeRequest::GetRequestURL() const {
   return GetResourceNode()->GetURL();
 }
 
-GraphMLXMLList EdgeRequest::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = Edge::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefRequestId)
-      ->ToValue(request_id_));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefStatus)
-      ->ToValue(RequestStatusToString(request_status_)));
-  return attrs;
+void EdgeRequest::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  Edge::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefRequestId)
+      ->AddValueNode(doc, parent_node, request_id_);
+  GraphMLAttrDefForType(kGraphMLAttrDefStatus)
+      ->AddValueNode(doc, parent_node, RequestStatusToString(request_status_));
 }
 
 bool EdgeRequest::IsEdgeRequest() const {

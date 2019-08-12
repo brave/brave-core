@@ -36,7 +36,8 @@ friend class PageGraph;
   virtual NodeResource* GetResourceNode() const = 0;
   virtual Node* GetRequestingNode() const = 0;
 
-  GraphMLXMLList GetGraphMLAttributes() const override;
+  void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
+      const override;
 
   bool IsEdgeRequest() const override;
 

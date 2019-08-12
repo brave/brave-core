@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <libxml/tree.h>
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
@@ -30,7 +31,8 @@ friend class PageGraph;
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 
-  GraphMLXMLList GetGraphMLAttributes() const override;
+  void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
+      const override;
 
   const std::vector<const std::string>& GetArguments() const;
   std::string GetArgumentsString() const;

@@ -5,7 +5,7 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_html.h"
 
-#include <sstream>
+#include <libxml/tree.h>
 
 #include "base/logging.h"
 
@@ -20,7 +20,6 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
 using ::std::stringstream;
-
 using ::blink::DynamicTo;
 
 namespace brave_page_graph {
@@ -47,13 +46,13 @@ ItemDesc NodeHTML::GetItemDesc() const {
   return builder.str();
 }
 
-GraphMLXMLList NodeHTML::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = Node::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeId)
-      ->ToValue(node_id_));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefIsDeleted)
-      ->ToValue(is_deleted_));
-  return attrs;
+void NodeHTML::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  Node::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefNodeId)
+      ->AddValueNode(doc, parent_node, node_id_);
+  GraphMLAttrDefForType(kGraphMLAttrDefIsDeleted)
+      ->AddValueNode(doc, parent_node, is_deleted_);
 }
 
 void NodeHTML::AddInEdge(const Edge* const in_edge) {
