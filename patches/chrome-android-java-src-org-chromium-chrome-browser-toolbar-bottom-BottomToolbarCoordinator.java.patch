@@ -1,0 +1,10 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
+index 4200f0f96ffc14dd43f48672805c4949a26b7719..fdf79e002ce1408c17210b079d7cd1e52f0b9b5f 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
+@@ -135,4 +135,5 @@ class BottomToolbarCoordinator {
+         }
+         mThemeColorProvider.destroy();
+     }
++    public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {if (mBrowsingModeCoordinator != null) {mBrowsingModeCoordinator.updateBookmarkButton(isBookmarked, editingAllowed);}}
+ }
