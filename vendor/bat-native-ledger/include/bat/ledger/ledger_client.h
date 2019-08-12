@@ -42,7 +42,8 @@ LEDGER_EXPORT enum LogLevel {
 LEDGER_EXPORT enum URL_METHOD {
   GET = 0,
   PUT = 1,
-  POST = 2
+  POST = 2,
+  PATCH = 3
 };
 
 class LEDGER_EXPORT LogStream {
