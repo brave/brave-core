@@ -45,7 +45,7 @@ bool URLMatched(const GURL& url) {
 
 // Returns true if the URL contains a URL fragment that starts with "ix=". For
 // example, https://webtorrent.io/torrents/big-buck-bunny.torrent#ix=1.
- bool IsViewerURL(const GURL& url) {
+bool IsViewerURL(const GURL& url) {
   return base::StartsWith(url.ref(), "ix=",
       base::CompareCase::INSENSITIVE_ASCII);
 }
