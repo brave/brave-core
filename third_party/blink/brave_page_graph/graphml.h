@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <libxml/tree.h>
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
@@ -24,13 +25,19 @@ class GraphMLAttr {
   GraphMLAttr(const GraphMLAttrForType for_value, const std::string& name,
     const GraphMLAttrType type);
   GraphMLId GetGraphMLId() const;
-  GraphMLXML ToDefinition() const;
-  GraphMLXML ToValue(const char* value) const;
-  GraphMLXML ToValue(const std::string& value) const;
-  GraphMLXML ToValue(const int value) const;
-  GraphMLXML ToValue(const bool value) const;
-  GraphMLXML ToValue(const uint64_t value) const;
-  GraphMLXML ToValue(const double value) const;
+  void AddDefinitionNode(xmlNodePtr parent_node) const;
+  void AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+      const char* value) const;
+  void AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+      const std::string& value) const;
+  void AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+      const int value) const;
+  void AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+      const bool value) const;
+  void AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+      const uint64_t value) const;
+  void AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+      const double value) const;
 
  protected:
   const uint64_t id_;
@@ -40,7 +47,6 @@ class GraphMLAttr {
 };
 
 const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept;
-GraphMLXML GraphMLAttrDefToString(const GraphMLAttr attr_def) noexcept;
 const std::vector<const GraphMLAttr* const>& GetGraphMLAttrs();
 
 }  // namespace brave_page_graph

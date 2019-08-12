@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -63,15 +64,15 @@ void NodeScript::AddInEdge(const Edge* const in_edge) {
   }
 }
 
-GraphMLXMLList NodeScript::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = NodeActor::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefScriptId)
-      ->ToValue(script_id_));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefScriptType)
-      ->ToValue(ScriptTypeToString(script_type_)));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefURL)
-      ->ToValue(url_));
-  return attrs;
+void NodeScript::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  NodeActor::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefScriptId)
+      ->AddValueNode(doc, parent_node, script_id_);
+  GraphMLAttrDefForType(kGraphMLAttrDefScriptType)
+      ->AddValueNode(doc, parent_node, ScriptTypeToString(script_type_));
+  GraphMLAttrDefForType(kGraphMLAttrDefURL)
+      ->AddValueNode(doc, parent_node, url_);
 }
 
 bool NodeScript::IsNodeScript() const {

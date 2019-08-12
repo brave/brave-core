@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/html/node_html_text.h"
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "base/logging.h"
 
@@ -29,7 +30,6 @@
 
 using ::std::string;
 using ::std::to_string;
-
 using ::blink::DOMNodeId;
 using ::blink::DynamicTo;
 
@@ -50,11 +50,11 @@ ItemDesc NodeHTMLText::GetItemDesc() const {
   return NodeHTML::GetItemDesc() + " [length: " + to_string(text_.size()) + "]";
 }
 
-GraphMLXMLList NodeHTMLText::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = NodeHTML::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeText)
-      ->ToValue(text_));
-  return attrs;
+void NodeHTMLText::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  NodeHTML::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefNodeText)
+      ->AddValueNode(doc, parent_node, text_);
 }
 
 void NodeHTMLText::AddInEdge(const Edge* const in_edge) {

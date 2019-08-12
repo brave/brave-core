@@ -5,8 +5,6 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_parser.h"
 
-#include <string>
-
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -14,9 +12,6 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_actor.h"
-
-using ::std::string;
-using ::std::to_string;
 
 namespace brave_page_graph {
 

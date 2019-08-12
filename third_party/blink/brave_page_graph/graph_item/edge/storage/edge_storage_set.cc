@@ -35,11 +35,11 @@ ItemDesc EdgeStorageSet::GetItemDesc() const {
   return EdgeStorage::GetItemDesc() + " [value: " + value_ + "]";
 }
 
-GraphMLXMLList EdgeStorageSet::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = EdgeStorage::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
-      ->ToValue(value_));
-  return attrs;
+void EdgeStorageSet::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  EdgeStorage::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefValue)
+      ->AddValueNode(doc, parent_node, value_);
 }
 
 bool EdgeStorageSet::IsEdgeStorageSet() const {
