@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/storage/edge_storage_read_result.h"
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -35,11 +36,11 @@ ItemDesc EdgeStorageReadResult::GetItemDesc() const {
   return EdgeStorage::GetItemDesc() + " [value: " + value_ + "]";
 }
 
-GraphMLXMLList EdgeStorageReadResult::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = EdgeStorage::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
-      ->ToValue(value_));
-  return attrs;
+void EdgeStorageReadResult::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  EdgeStorage::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefValue)
+      ->AddValueNode(doc, parent_node, value_);
 }
 
 bool EdgeStorageReadResult::IsEdgeStorageReadResult() const {

@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/js/edge_js_result.h"
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
@@ -36,11 +37,11 @@ ItemDesc EdgeJSResult::GetItemDesc() const {
   return GetItemName() + " [result: " + result_ + "]";
 }
 
-GraphMLXMLList EdgeJSResult::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = EdgeJS::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
-      ->ToValue(result_));
-  return attrs;
+void EdgeJSResult::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  EdgeJS::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefValue)
+      ->AddValueNode(doc, parent_node, result_);
 }
 
 const string& EdgeJSResult::GetResult() const {

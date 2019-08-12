@@ -8,6 +8,7 @@
 
 #include <ctime>
 #include <chrono>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
@@ -29,8 +30,9 @@ friend class PageGraph;
   virtual ItemDesc GetItemDesc() const;
 
   virtual GraphMLId GetGraphMLId() const = 0;
-  virtual GraphMLXML GetGraphMLTag() const = 0;
-  virtual GraphMLXMLList GetGraphMLAttributes() const;
+  virtual void AddGraphMLTag(xmlDocPtr doc, xmlNodePtr parent_node) const = 0;
+  virtual void AddGraphMLAttributes(xmlDocPtr doc,
+      xmlNodePtr parent_node) const;
 
   virtual bool IsEdge() const;
   virtual bool IsNode() const;
@@ -49,7 +51,7 @@ friend class PageGraph;
 
   const PageGraphId id_;
   const std::chrono::time_point<std::chrono::high_resolution_clock> time_;
-  PageGraph* const graph_;
+  PageGraph* const graph_ = nullptr;
 };
 
 }  // namespace brave_page_graph

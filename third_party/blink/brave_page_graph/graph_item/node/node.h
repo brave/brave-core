@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_H_
 
+#include <libxml/tree.h>
+
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -27,8 +29,9 @@ friend class PageGraph;
   const EdgeList& GetOutEdges() const { return out_edges_; }
 
   GraphMLId GetGraphMLId() const override;
-  GraphMLXML GetGraphMLTag() const override;
-  GraphMLXMLList GetGraphMLAttributes() const override;
+  void AddGraphMLTag(xmlDocPtr doc, xmlNodePtr parent_node) const override;
+  void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
+      const override;
 
   bool IsNode() const override;
 

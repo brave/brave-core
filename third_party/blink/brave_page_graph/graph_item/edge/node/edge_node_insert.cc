@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <string>
+#include <libxml/tree.h>
 
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 
@@ -70,17 +71,17 @@ ItemDesc EdgeNodeInsert::GetItemDesc() const {
   return builder.str();
 }
 
-GraphMLXMLList EdgeNodeInsert::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = EdgeNode::GetGraphMLAttributes();
+void EdgeNodeInsert::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  EdgeNode::AddGraphMLAttributes(doc, parent_node);
   if (parent_node_id_) {
-    attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefParentNodeId)
-        ->ToValue(parent_node_id_));
+    GraphMLAttrDefForType(kGraphMLAttrDefParentNodeId)
+        ->AddValueNode(doc, parent_node, parent_node_id_);
   }
   if (prior_sibling_node_id_) {
-    attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefBeforeNodeId)
-        ->ToValue(prior_sibling_node_id_));
+    GraphMLAttrDefForType(kGraphMLAttrDefBeforeNodeId)
+        ->AddValueNode(doc, parent_node, prior_sibling_node_id_);
   }
-  return attrs;
 }
 
 bool EdgeNodeInsert::IsEdgeNodeInsert() const {

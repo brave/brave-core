@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -35,11 +36,11 @@ ItemDesc NodeResource::GetItemDesc() const {
   return Node::GetItemDesc() + " [" + url_ + "]";
 }
 
-GraphMLXMLList NodeResource::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = Node::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefURL)
-      ->ToValue(url_));
-  return attrs;
+void NodeResource::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  Node::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefURL)
+      ->AddValueNode(doc, parent_node, url_);
 }
 
 bool NodeResource::IsNodeResource() const {

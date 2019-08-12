@@ -4,6 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js_webapi.h"
+
+#include <libxml/tree.h>
+
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
@@ -26,11 +29,11 @@ ItemDesc NodeJSWebAPI::GetItemDesc() const {
   return Node::GetItemDesc() + " [" + method_name_ + "]";
 }
 
-GraphMLXMLList NodeJSWebAPI::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = Node::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
-      ->ToValue(method_name_));
-  return attrs;
+void NodeJSWebAPI::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  NodeJS::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
+      ->AddValueNode(doc, parent_node, method_name_);
 }
 
 const MethodName& NodeJSWebAPI::GetMethodName() const {

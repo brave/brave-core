@@ -5,6 +5,8 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/js/edge_js.h"
 
+#include <libxml/tree.h>
+
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -21,9 +23,8 @@ EdgeJS::EdgeJS(PageGraph* const graph, Node* const out_node,
 
 EdgeJS::~EdgeJS() {}
 
-GraphMLXMLList EdgeJS::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = Edge::GetGraphMLAttributes();
-  return attrs;
+void EdgeJS::AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node) const {
+  Edge::AddGraphMLAttributes(doc, parent_node);
 }
 
 bool EdgeJS::IsEdgeJS() const {

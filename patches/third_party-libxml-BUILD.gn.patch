@@ -1,0 +1,12 @@
+diff --git a/third_party/libxml/BUILD.gn b/third_party/libxml/BUILD.gn
+index 4b3cbec874a288c49116340e33f7cef78797e320..112a2b06d9cc6db8ec8f54ab2e467d85c40ff557 100644
+--- a/third_party/libxml/BUILD.gn
++++ b/third_party/libxml/BUILD.gn
+@@ -145,6 +145,7 @@   visibility = [
+     "//third_party/blink/renderer/*",
+     "//third_party/fontconfig",
+     "//third_party/libxslt",
++    "//brave/third_party/blink/brave_page_graph",
+   ]
+   if (is_ios) {
+     foreach(tgt, ios_libxml_visibility_additions) {

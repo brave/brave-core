@@ -16,6 +16,8 @@
 #include <sstream>
 #include <string>
 
+#include <libxml/tree.h>
+
 #include "gin/public/context_holder.h"
 #include "gin/public/gin_embedders.h"
 
@@ -1132,32 +1134,45 @@ void PageGraph::RegisterJSBuiltInResponse(const JSBuiltIn built_in,
     static_cast<NodeScript*>(caller_node), local_result));
 }
 
-GraphMLXML PageGraph::ToGraphML() const {
+string PageGraph::ToGraphML() const {
   GraphItem::StartGraphMLExport(id_counter_);
 
-  stringstream builder;
-  builder << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl
-    << "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"" << endl
-    << "\t\txmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl
-    << "\t\txsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns" << endl
-    << "\t\t\thttp://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">" << endl;
+  xmlDocPtr graphml_doc = xmlNewDoc(BAD_CAST "1.0");
+  xmlNodePtr graphml_root_node = xmlNewNode(NULL, BAD_CAST "graphml");
+  xmlDocSetRootElement(graphml_doc, graphml_root_node);
+
+  xmlNewNs(graphml_root_node,
+      BAD_CAST "http://graphml.graphdrawing.org/xmlns", NULL);
+  xmlNsPtr xsi_ns = xmlNewNs(graphml_root_node,
+      BAD_CAST "http://www.w3.org/2001/XMLSchema-instance", BAD_CAST "xsi");
+  xmlNewNsProp(graphml_root_node, xsi_ns, BAD_CAST "schemaLocation",
+      BAD_CAST "http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd");
 
   for (const GraphMLAttr* const graphml_attr : GetGraphMLAttrs()) {
-    builder << "\t" << graphml_attr->ToDefinition() << "\n";
+    graphml_attr->AddDefinitionNode(graphml_root_node);
   }
 
-  builder << "\t<graph id=\"G\" edgedefault=\"directed\">" << endl;
+  xmlNodePtr graph_node = xmlNewChild(graphml_root_node, NULL,
+      BAD_CAST "graph", NULL);
+  xmlSetProp(graph_node, BAD_CAST "id", BAD_CAST "G");
+  xmlSetProp(graph_node, BAD_CAST "edgedefault", BAD_CAST "directed");
 
   for (const unique_ptr<Node>& elm : Nodes()) {
-    builder << elm->GetGraphMLTag() << endl;
+    elm->AddGraphMLTag(graphml_doc, graph_node);
   }
   for (const unique_ptr<const Edge>& elm : Edges()) {
-    builder << elm->GetGraphMLTag() << endl;
+    elm->AddGraphMLTag(graphml_doc, graph_node);
   }
 
-  builder << "\t</graph>" << endl;
-  builder << "</graphml>" << endl;
-  return builder.str();
+  xmlChar *xml_string;
+  int size;
+  xmlDocDumpMemoryEnc(graphml_doc, &xml_string, &size, "UTF-8");
+  const string graphml_string(reinterpret_cast<const char*>(xml_string));
+
+  xmlFree(xml_string);
+  xmlFree(graphml_doc);
+
+  return graphml_string;
 }
 
 const std::chrono::time_point<std::chrono::high_resolution_clock>&

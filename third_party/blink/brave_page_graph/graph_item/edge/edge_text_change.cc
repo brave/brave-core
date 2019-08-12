@@ -33,11 +33,11 @@ ItemName EdgeTextChange::GetItemDesc() const {
   return Edge::GetItemDesc() + " [" + text_ + "]";
 }
 
-GraphMLXMLList EdgeTextChange::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = Edge::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
-      ->ToValue(text_));
-  return attrs;
+void EdgeTextChange::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  Edge::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefValue)
+      ->AddValueNode(doc, parent_node, text_);
 }
 
 bool EdgeTextChange::IsEdgeTextChange() const {
