@@ -73,6 +73,7 @@ class FakeMCSClient : public MCSClient {
   FakeMCSClient(base::Clock* clock,
                 ConnectionFactory* connection_factory,
                 GCMStore* gcm_store,
+                scoped_refptr<base::SequencedTaskRunner> io_task_runner,
                 GCMStatsRecorder* recorder);
   ~FakeMCSClient() override;
   void Login(uint64_t android_id, uint64_t security_token) override;
@@ -92,11 +93,18 @@ class FakeMCSClient : public MCSClient {
   mcs_proto::DataMessageStanza last_data_message_stanza_;
 };
 
-FakeMCSClient::FakeMCSClient(base::Clock* clock,
-                             ConnectionFactory* connection_factory,
-                             GCMStore* gcm_store,
-                             GCMStatsRecorder* recorder)
-    : MCSClient("", clock, connection_factory, gcm_store, recorder),
+FakeMCSClient::FakeMCSClient(
+    base::Clock* clock,
+    ConnectionFactory* connection_factory,
+    GCMStore* gcm_store,
+    scoped_refptr<base::SequencedTaskRunner> io_task_runner,
+    GCMStatsRecorder* recorder)
+    : MCSClient("",
+                clock,
+                connection_factory,
+                gcm_store,
+                io_task_runner,
+                recorder),
       last_android_id_(0u),
       last_security_token_(0u),
       last_message_tag_(kNumProtoTypes) {
@@ -165,6 +173,7 @@ class FakeGCMInternalsBuilder : public GCMInternalsBuilder {
       base::Clock* clock,
       ConnectionFactory* connection_factory,
       GCMStore* gcm_store,
+      scoped_refptr<base::SequencedTaskRunner> io_task_runner,
       GCMStatsRecorder* recorder) override;
   std::unique_ptr<ConnectionFactory> BuildConnectionFactory(
       const std::vector<GURL>& endpoints,
@@ -172,6 +181,7 @@ class FakeGCMInternalsBuilder : public GCMInternalsBuilder {
       base::RepeatingCallback<
           void(network::mojom::ProxyResolvingSocketFactoryRequest)>
           get_socket_factory_callback,
+      scoped_refptr<base::SequencedTaskRunner> io_task_runner,
       GCMStatsRecorder* recorder,
       network::NetworkConnectionTracker* network_connection_tracker) override;
 
@@ -193,9 +203,10 @@ std::unique_ptr<MCSClient> FakeGCMInternalsBuilder::BuildMCSClient(
     base::Clock* clock,
     ConnectionFactory* connection_factory,
     GCMStore* gcm_store,
+    scoped_refptr<base::SequencedTaskRunner> io_task_runner,
     GCMStatsRecorder* recorder) {
-  return base::WrapUnique<MCSClient>(
-      new FakeMCSClient(clock, connection_factory, gcm_store, recorder));
+  return base::WrapUnique<MCSClient>(new FakeMCSClient(
+      clock, connection_factory, gcm_store, io_task_runner, recorder));
 }
 
 std::unique_ptr<ConnectionFactory>
@@ -205,6 +216,7 @@ FakeGCMInternalsBuilder::BuildConnectionFactory(
     base::RepeatingCallback<
         void(network::mojom::ProxyResolvingSocketFactoryRequest)>
             get_socket_factory_callback,
+    scoped_refptr<base::SequencedTaskRunner> io_task_runner,
     GCMStatsRecorder* recorder,
     network::NetworkConnectionTracker* network_connection_tracker) {
   return base::WrapUnique<ConnectionFactory>(new FakeConnectionFactory());
@@ -430,7 +442,8 @@ void GCMClientImplTest::InitializeGCMClient() {
   chrome_build_info.version = kChromeVersion;
   chrome_build_info.product_category_for_subtypes = kProductCategoryForSubtypes;
   gcm_client_->Initialize(
-      chrome_build_info, gcm_store_path(), task_runner_, base::DoNothing(),
+      chrome_build_info, gcm_store_path(), task_runner_,
+      base::ThreadTaskRunnerHandle::Get(), base::DoNothing(),
       base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
           &test_url_loader_factory_),
       network::TestNetworkConnectionTracker::GetInstance(),
