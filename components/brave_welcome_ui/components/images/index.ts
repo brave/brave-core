@@ -4,6 +4,7 @@
 
 import styled, { keyframes } from 'styled-components'
 
+import P3AImage from './welcome_p3a.svg'
 import LionImage from './lion_logo.svg'
 import ImportImage from './welcome_import.svg'
 import RewardsImage from './welcome_rewards.svg'
@@ -16,6 +17,10 @@ const BaseImage = styled<{}, 'img'>('img')`
   box-sizing: border-box;
   display: block;
   max-width: 100%;
+`
+
+export const WelcomeP3AImage = styled(BaseImage).attrs({ src: P3AImage })`
+  height: 140px;
 `
 
 export const WelcomeLionImage = styled(BaseImage).attrs({ src: LionImage })`

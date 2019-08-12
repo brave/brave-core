@@ -5,13 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph } from '../../../components'
+import { Content, Title, Paragraph, Link } from '../../../components'
 
 // Utils
 import locale from '../fakeLocale'
 
 // Images
-import { WelcomeShieldsImage } from '../../../components/images'
+import { WelcomeP3AImage } from '../../../components/images'
 
 interface Props {
   index: number
@@ -28,9 +28,9 @@ export default class ShieldsBox extends React.PureComponent<Props> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <WelcomeShieldsImage />
-        <Title>{locale.protectYourPrivacy}</Title>
-        <Paragraph>{locale.adjustProtectionLevel}</Paragraph>
+        <WelcomeP3AImage />
+        <Title>{locale.p3aHead}</Title>
+        <Paragraph>{locale.p3aBody}<Link>{locale.p3aSettings}</Link>.</Paragraph>
       </Content>
     )
   }

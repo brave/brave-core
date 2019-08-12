@@ -77,3 +77,30 @@ export const Bullet = styled(BaseButton as ComponentType<any>)`
     }
   `}
 `
+
+/**
+ * Button that look like link
+ */
+export const Link = styled<{}, 'button'>('button')`
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  color: ${p => p.theme.color.brandBrave};
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: inherit;
+  display: inline-block;
+  text-align: left;
+  width: fit-content;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:focus {
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 2px;
+  }
+  &:active {
+    outline: none;
+  }
+`
