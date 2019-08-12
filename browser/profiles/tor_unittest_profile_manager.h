@@ -17,13 +17,14 @@ class TorUnittestProfileManager : public ProfileManagerWithoutInit {
  protected:
   Profile* CreateProfileHelper(const base::FilePath& path) override;
 
-  Profile* CreateProfileAsyncHelper(const base::FilePath& path,
-                                    Delegate* delegate) override;
+  std::unique_ptr<Profile> CreateProfileAsyncHelper(
+      const base::FilePath& path,
+      Delegate* delegate) override;
 
   void InitProfileUserPrefs(Profile* profile) override;
 
  private:
-  Profile* CreateProfile(const base::FilePath& path, Delegate* delegate);
+  std::unique_ptr<Profile> CreateProfile(const base::FilePath& path, Delegate* delegate);
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_TOR_UNITTEST_PROFILE_MANAGER_H_
