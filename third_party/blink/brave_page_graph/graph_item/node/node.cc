@@ -5,10 +5,9 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
-#include <ostream>
-#include <sstream>
 #include <string>
 #include <vector>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -19,7 +18,6 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
 
 using ::std::string;
-using ::std::stringstream;
 using ::std::to_string;
 using ::std::vector;
 
@@ -42,25 +40,20 @@ GraphMLId Node::GetGraphMLId() const {
   return "n" + to_string(GetId());
 }
 
-GraphMLXML Node::GetGraphMLTag() const {
-  stringstream builder;
-  builder << "<node id=\"" + GetGraphMLId() + "\">";
-  for (const GraphMLXML& elm : GetGraphMLAttributes()) {
-    builder << elm;
-  }
-  builder << "</node>";
-  return builder.str();
+void Node::AddGraphMLTag(xmlDocPtr doc, xmlNodePtr parent_node) const {
+  xmlNodePtr new_node = xmlNewChild(parent_node, NULL, BAD_CAST "node", NULL);
+  xmlSetProp(new_node, BAD_CAST "id", BAD_CAST GetGraphMLId().c_str());
+  AddGraphMLAttributes(doc, new_node);
 }
 
-GraphMLXMLList Node::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = GraphItem::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
-      ->ToValue(GetItemName()));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphNodeId)
-      ->ToValue(GetId()));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefPageGraphNodeTimestamp)
-      ->ToValue(GetMicroSecSincePageStart()));
-  return attrs;
+void Node::AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node) const {
+  GraphItem::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
+      ->AddValueNode(doc, parent_node, GetItemName());
+  GraphMLAttrDefForType(kGraphMLAttrDefPageGraphNodeId)
+      ->AddValueNode(doc, parent_node, GetId());
+  GraphMLAttrDefForType(kGraphMLAttrDefPageGraphNodeTimestamp)
+      ->AddValueNode(doc, parent_node, GetMicroSecSincePageStart());
 }
 
 bool Node::IsNode() const {

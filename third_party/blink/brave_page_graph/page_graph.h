@@ -189,7 +189,7 @@ friend NodeHTMLElement;
   void GenerateReportForNode(const blink::DOMNodeId node_id,
                              blink::protocol::Array<WTF::String>& report);
 
-  GraphMLXML ToGraphML() const;
+  std::string ToGraphML() const;
 
   const std::chrono::time_point<std::chrono::high_resolution_clock>&
     GetTimestamp() const;

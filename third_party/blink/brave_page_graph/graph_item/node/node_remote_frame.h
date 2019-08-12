@@ -6,10 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_REMOTE_FRAME_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_REMOTE_FRAME_H_
 
+#include <libxml/tree.h>
+
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
-
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
 namespace brave_page_graph {
@@ -25,7 +26,8 @@ friend class PageGraph;
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 
-  GraphMLXMLList GetGraphMLAttributes() const override;
+  void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
+      const override;
 
   bool IsNodeRemoteFrame() const override;
 

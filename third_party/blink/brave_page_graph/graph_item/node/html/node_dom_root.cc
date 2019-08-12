@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <string>
+#include <libxml/tree.h>
 
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 
@@ -42,11 +43,11 @@ ItemDesc NodeDOMRoot::GetItemDesc() const {
   return builder.str();
 }
 
-GraphMLXMLList NodeDOMRoot::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = NodeHTMLElement::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefURL)
-      ->ToValue(url_));
-  return attrs;
+void NodeDOMRoot::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  NodeHTMLElement::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefURL)
+      ->AddValueNode(doc, parent_node, url_);
 }
 
 bool NodeDOMRoot::IsNodeDOMRoot() const {

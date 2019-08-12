@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/filter/node_tracker_filter.h"
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -32,11 +33,11 @@ ItemDesc NodeTrackerFilter::GetItemDesc() const {
   return NodeFilter::GetItemDesc() + " [" + host_ + "]";
 }
 
-GraphMLXMLList NodeTrackerFilter::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = NodeFilter::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefHost)
-      ->ToValue(host_));
-  return attrs;
+void NodeTrackerFilter::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  NodeFilter::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefHost)
+      ->AddValueNode(doc, parent_node, host_);
 }
 
 bool NodeTrackerFilter::IsNodeTrackerFilter() const {

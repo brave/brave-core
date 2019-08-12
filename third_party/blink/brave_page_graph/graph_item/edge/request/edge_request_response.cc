@@ -5,6 +5,8 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_response.h"
 
+#include <libxml/tree.h>
+
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -39,13 +41,13 @@ ItemName EdgeRequestResponse::GetItemName() const {
   return "request response";
 }
 
-GraphMLXMLList EdgeRequestResponse::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = EdgeRequest::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
-      ->ToValue(response_header_string_));
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
-      ->ToValue(to_string(response_body_length_)));
-  return attrs;
+void EdgeRequestResponse::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  EdgeRequest::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefValue)
+      ->AddValueNode(doc, parent_node, response_header_string_);
+  GraphMLAttrDefForType(kGraphMLAttrDefValue)
+      ->AddValueNode(doc, parent_node, to_string(response_body_length_));
 }
 
 bool EdgeRequestResponse::IsEdgeRequestResponse() const {

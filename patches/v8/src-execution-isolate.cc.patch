@@ -1,17 +1,18 @@
 diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
-index 8a8db12ca3f59577436d148bb2693c836720af2d..7ac32b1ad082a0a045a7ef70b806b4ecc2329955 100644
+index 8a8db12ca3f59577436d148bb2693c836720af2d..70854688ce9b1943ec73c8529fabc21f7379ed89 100644
 --- a/src/execution/isolate.cc
 +++ b/src/execution/isolate.cc
-@@ -89,6 +89,8 @@
+@@ -89,6 +89,9 @@
  #include "src/diagnostics/unwinding-info-win64.h"
  #endif
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#include "src/utils/ostreams.h"
 +
  extern "C" const uint8_t* v8_Default_embedded_blob_;
  extern "C" uint32_t v8_Default_embedded_blob_size_;
  
-@@ -4588,6 +4590,47 @@ void Isolate::SetIdle(bool is_idle) {
+@@ -4588,6 +4591,49 @@ void Isolate::SetIdle(bool is_idle) {
    }
  }
  
@@ -34,9 +35,11 @@ index 8a8db12ca3f59577436d148bb2693c836720af2d..7ac32b1ad082a0a045a7ef70b806b4ec
 +    }
 +
 +    Script script = Script::cast(maybe_script);
++
 +    if (script.id() > 0) {
 +      return script.id();
 +    }
++    it.Advance();
 +  }
 +
 +  return 0;

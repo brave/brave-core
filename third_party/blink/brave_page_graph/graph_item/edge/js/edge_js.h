@@ -22,7 +22,8 @@ friend class PageGraph;
   EdgeJS() = delete;
   ~EdgeJS() override;
 
-  GraphMLXMLList GetGraphMLAttributes() const override;
+  void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
+      const override;
 
   virtual const MethodName& GetMethodName() const = 0;
   bool IsEdgeJS() const override;

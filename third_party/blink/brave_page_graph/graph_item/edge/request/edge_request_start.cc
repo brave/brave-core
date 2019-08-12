@@ -6,6 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 
 #include <string>
+#include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -41,11 +42,11 @@ ItemDesc EdgeRequestStart::GetItemDesc() const {
       + " [" + RequestTypeToString(request_type_) + "]";
 }
 
-GraphMLXMLList EdgeRequestStart::GetGraphMLAttributes() const {
-  GraphMLXMLList attrs = EdgeRequest::GetGraphMLAttributes();
-  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefRequestType)
-      ->ToValue(RequestTypeToString(request_type_)));
-  return attrs;
+void EdgeRequestStart::AddGraphMLAttributes(xmlDocPtr doc,
+    xmlNodePtr parent_node) const {
+  EdgeRequest::AddGraphMLAttributes(doc, parent_node);
+  GraphMLAttrDefForType(kGraphMLAttrDefRequestType)
+      ->AddValueNode(doc, parent_node, RequestTypeToString(request_type_));
 }
 
 bool EdgeRequestStart::IsEdgeRequestStart() const {
