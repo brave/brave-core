@@ -14,7 +14,6 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/cdm_registry.h"
 #include "content/public/common/cdm_info.h"
@@ -73,15 +72,7 @@ class BraveWidevineBundleManagerTest : public testing::Test {
     content::CdmRegistry::GetInstance()->Init();
   }
 
-  void PreparePrefs() {
-    auto* registry = static_cast<user_prefs::PrefRegistrySyncable*>(
-        pref_service()->DeprecatedGetPrefRegistry());
-    registry->RegisterBooleanPref(kWidevineOptedIn, false);
-    BraveWidevineBundleManager::RegisterProfilePrefs(registry);
-  }
-
   void PrepareTest(bool empty_cdms) {
-    PreparePrefs();
     PrepareCdmRegistry(empty_cdms);
   }
 
