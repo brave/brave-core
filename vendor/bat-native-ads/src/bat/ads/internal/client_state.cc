@@ -95,6 +95,12 @@ Result ClientState::FromJson(
 
   if (client.HasMember("adsShownHistory")) {
     for (const auto& ad_shown : client["adsShownHistory"].GetArray()) {
+      // adsShownHistory used to be an array of timestamps, so if
+      // that's what we have here don't import them and we'll just
+      // start fresh.
+      if (ad_shown.IsUint64()) {
+        continue;
+      }
       AdHistoryDetail ad_history_detail;
       rapidjson::StringBuffer buffer;
       rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
