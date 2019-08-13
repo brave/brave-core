@@ -52,6 +52,8 @@ static const std::map<std::string, bool> kSupportedRegions = {
   { "IE", true  }   // Ireland
 };
 
+static char kUntargetedPageClassification[] = "untargeted";
+
 }  // namespace ads
 
 #endif  // BAT_ADS_INTERNAL_STATIC_VALUES_H_
