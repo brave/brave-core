@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.document;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.ChromeSwitches;
@@ -25,8 +26,6 @@ public class BraveLauncherActivity extends Activity {
         CommandLine.getInstance().appendSwitch(ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE);
         FirstRunStatus.setFirstRunFlowComplete(true);
 
-        // Enable bottom toolbar
-        ChromePreferenceManager.getInstance().writeBoolean(
-            ChromePreferenceManager.BOTTOM_TOOLBAR_ENABLED_KEY, true);
+        ChromePreferenceManager.getInstance().isBottomToolbarEnabled();
     }
 }

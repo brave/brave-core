@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser;
 
 import android.content.Context;
+
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 

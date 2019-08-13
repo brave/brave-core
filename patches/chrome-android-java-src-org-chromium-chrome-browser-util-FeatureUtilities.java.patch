@@ -1,0 +1,23 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
+index a1fd6aced1b2dfe6eca978d1977517383913cd37..372073625ea57801572e5ac429682dd0d135f9a7 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
+@@ -491,17 +491,7 @@ public class FeatureUtilities {
+      * @return Whether or not the bottom toolbar is enabled.
+      */
+     public static boolean isBottomToolbarEnabled() {
+-        if (sIsBottomToolbarEnabled == null) {
+-            ChromePreferenceManager prefManager = ChromePreferenceManager.getInstance();
+-
+-            sIsBottomToolbarEnabled = prefManager.readBoolean(
+-                    ChromePreferenceManager.BOTTOM_TOOLBAR_ENABLED_KEY, false);
+-        }
+-        // TODO(crbug.com/944228): TabGroupsAndroid and ChromeDuet are incompatible for now.
+-        return sIsBottomToolbarEnabled
+-                && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+-                        ContextUtils.getApplicationContext())
+-                && !isTabGroupsAndroidEnabled();
++        return ChromePreferenceManager.getInstance().isBottomToolbarEnabled();
+     }
+ 
+     /**

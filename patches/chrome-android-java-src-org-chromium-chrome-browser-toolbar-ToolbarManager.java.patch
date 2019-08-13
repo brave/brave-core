@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 5e062152c274c9f03aecd657ac9009705ac48db5..8d1f5dfee786f6a2e0bfe3d491daa88274e798e9 100644
+index 5e062152c274c9f03aecd657ac9009705ac48db5..c1fbcd05150187179249c901e164aa4c1fa78645 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 @@ -777,13 +777,7 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
@@ -21,7 +21,7 @@ index 5e062152c274c9f03aecd657ac9009705ac48db5..8d1f5dfee786f6a2e0bfe3d491daa882
          boolean editingAllowed = currentTab == null || mBookmarkBridge == null
                  || mBookmarkBridge.isEditBookmarksEnabled();
          mToolbar.updateBookmarkButton(isBookmarked, editingAllowed);
-+        mBottomControlsCoordinator.updateBookmarkButton(isBookmarked, editingAllowed);
++        if (mBottomControlsCoordinator != null) {mBottomControlsCoordinator.updateBookmarkButton(isBookmarked, editingAllowed);}
      }
  
      private void updateReloadState(boolean tabCrashed) {
