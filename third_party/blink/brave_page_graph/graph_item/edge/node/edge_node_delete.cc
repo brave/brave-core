@@ -30,4 +30,4 @@ bool EdgeNodeDelete::IsEdgeNodeDelete() const {
   return true;
 }
 
-}  // namespace brave_page_graph
+} // namespace brave_page_graph
