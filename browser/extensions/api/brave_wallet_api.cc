@@ -29,6 +29,9 @@
 namespace extensions {
 namespace api {
 
+const size_t BraveWalletGetWalletSeedFunction::kNonceByteLength = 12;
+const size_t BraveWalletGetWalletSeedFunction::kSeedByteLength = 32;
+
 ExtensionFunction::ResponseAction
 BraveWalletPromptToEnableWalletFunction::Run() {
   std::unique_ptr<brave_wallet::PromptToEnableWallet::Params> params(
@@ -62,94 +65,138 @@ BraveWalletIsEnabledFunction::Run() {
   return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
 }
 
+// Returns 32 bytes of output from HKDF-Expand-SHA256.
+// This is done so that ethereum-remote-client never actually directly has
+// aaccess to the master seed, but it does have a deterministic seed.
+// The salt value is the same intentionally on all clients.
+std::string
+BraveWalletGetWalletSeedFunction::GetEthereumRemoteClientSeedFromRootSeed(
+    const std::string& seed) {
+  base::StringPiece salt("brave-ethwallet-salt");
+  base::StringPiece info("ethwallet");
+  return crypto::HkdfSha256(base::StringPiece(seed.begin(), seed.end()),
+      salt, info, kSeedByteLength);
+}
+
+bool
+BraveWalletGetWalletSeedFunction::SealSeed(const std::string& seed,
+    const std::string& key, const std::string& nonce,
+    std::string* cipher_seed) {
+  crypto::Aead aes_256_gcm_siv(crypto::Aead::AES_256_GCM_SIV);
+  aes_256_gcm_siv.Init(&key);
+  return aes_256_gcm_siv.Seal(base::StringPiece(seed.begin(), seed.end()),
+        nonce, base::StringPiece(""), cipher_seed);
+}
+
+bool BraveWalletGetWalletSeedFunction::OpenSeed(const std::string& cipher_seed,
+    const std::string& key, const std::string& nonce,
+    std::string* seed) {
+  crypto::Aead aes_256_gcm_siv(crypto::Aead::AES_256_GCM_SIV);
+  aes_256_gcm_siv.Init(&key);
+  return aes_256_gcm_siv.Open(cipher_seed, nonce, base::StringPiece(""), seed);
+}
+
+// Store the seed in preferences, binary pref strings need to be
+// base64 encoded.  Base64 encoding is fail safe.
+void BraveWalletGetWalletSeedFunction::SaveToPrefs(
+    Profile* profile, const std::string& cipher_seed,
+    const std::string& nonce) {
+  // Store the seed in preferences, binary pref strings need to be
+  // base64 encoded.  Base64 encoding is fail safe.
+  std::string base64_nonce;
+  std::string base64_cipher_seed;
+  base::Base64Encode(nonce, &base64_nonce);
+  base::Base64Encode(base::StringPiece(cipher_seed.begin(),
+                                       cipher_seed.end()),
+      &base64_cipher_seed);
+  profile->GetPrefs()->SetString(kBraveWalletAES256GCMSivNonce, base64_nonce);
+  profile->GetPrefs()->SetString(kBraveWalletEncryptedSeed,
+      base64_cipher_seed);
+}
+
+bool BraveWalletGetWalletSeedFunction::LoadFromPrefs(
+    Profile *profile, std::string* cipher_seed, std::string* nonce) {
+  if (!profile->GetPrefs()->HasPrefPath(kBraveWalletAES256GCMSivNonce) ||
+      !profile->GetPrefs()->HasPrefPath(kBraveWalletEncryptedSeed)) {
+    return false;
+  }
+  if (!base::Base64Decode(
+           profile->GetPrefs()->GetString(kBraveWalletAES256GCMSivNonce),
+           nonce)) {
+    return false;
+  }
+  if (!base::Base64Decode(
+           profile->GetPrefs()->GetString(kBraveWalletEncryptedSeed),
+           cipher_seed)) {
+    return false;
+  }
+  return true;
+}
+
+// Generate a new random nonce
+std::string BraveWalletGetWalletSeedFunction::GetRandomNonce() {
+  // crypto::RandBytes is fail safe.
+  uint8_t nonceBytes[kNonceByteLength];
+  crypto::RandBytes(nonceBytes, kNonceByteLength);
+  return std::string(
+      reinterpret_cast<char*>(nonceBytes), kNonceByteLength);
+}
+
+// Generate a new seed.
+std::string BraveWalletGetWalletSeedFunction::GetRandomSeed() {
+  // crypto::RandBytes is fail safe.
+  uint8_t random_seed_bytes[kSeedByteLength];
+  crypto::RandBytes(random_seed_bytes, kSeedByteLength);
+  return std::string(
+      reinterpret_cast<char*>(random_seed_bytes), kSeedByteLength);
+}
+
+// Generates a random 32 byte root seed and stores it in prefs
+// in an encrypted form.  It also stores the nonce that was used
+// from AES 256 GCM SIV.
+// If this function is called multiple times, the previous value
+// from prefs will be re-used.
+// The return value is passed to chrome.braveWallet.getWalletSeed
+// via the second paramter callback function.
+// The return value will not be the root seed, but instead a
+// deterministic hash of that seed.
 ExtensionFunction::ResponseAction
 BraveWalletGetWalletSeedFunction::Run() {
-  // Setup AES 256 GCM SIV using the passed in 32-byte key
+  // make sure the passed in enryption key is 32 bytes.
   std::unique_ptr<brave_wallet::GetWalletSeed::Params> params(
     brave_wallet::GetWalletSeed::Params::Create(*args_));
   if (params->key.size() != 32) {
     return RespondNow(Error("Invalid input key size"));
   }
-  std::string aes_256_gcm_siv_key(params->key.begin(), params->key.end());
-  crypto::Aead aes_256_gcm_siv(crypto::Aead::AES_256_GCM_SIV);
-  aes_256_gcm_siv.Init(&aes_256_gcm_siv_key);
 
-  // Check if we already have a nonce for the algorithm stored,
-  // if we do, use that since we'll simply decrypt the seed in that case.
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  base::StringPiece aes_256_gcm_siv_nonce;
-  const size_t kNonceByteLength = 12;
-  if (profile->GetPrefs()->HasPrefPath(kBraveWalletAES256GCMSivNonce)) {
-    std::string nonce;
-    if (!base::Base64Decode(
-             profile->GetPrefs()->GetString(kBraveWalletAES256GCMSivNonce),
-             &nonce)) {
-      return RespondNow(Error("Error base64 decoding nonce"));
-    }
-    aes_256_gcm_siv_nonce = nonce;
-  } else {
-    uint8_t nonceBytes[kNonceByteLength];
-    // crypto::RandBytes is fail safe.
-    crypto::RandBytes(nonceBytes, kNonceByteLength);
-    aes_256_gcm_siv_nonce = base::StringPiece(
-        reinterpret_cast<char*>(nonceBytes), kNonceByteLength);
-  }
-  DCHECK_EQ(aes_256_gcm_siv_nonce.size(), kNonceByteLength);
-
-  // Check if we already have a seed stored, if so, we will return the hash
-  // of that.
-  const size_t kSeedByteLength = 32;
+  std::string nonce;
+  std::string cipher_seed;
   std::string seed;
-  std::string encrypted_seed;
-  if (profile->GetPrefs()->HasPrefPath(kBraveWalletEncryptedSeed)) {
-    if (!base::Base64Decode(
-             profile->GetPrefs()->GetString(kBraveWalletEncryptedSeed),
-             &encrypted_seed)) {
-      return RespondNow(Error("Error base64 decoding encrypted seed"));
-    }
+  // Check if we already have a nonce and seed stored in prefs.
+  std::string aes_256_gcm_siv_key(params->key.begin(), params->key.end());
+  if (LoadFromPrefs(Profile::FromBrowserContext(browser_context()),
+        &cipher_seed, &nonce)) {
     // Decrypt the existing seed.
-    if (!aes_256_gcm_siv.Open(encrypted_seed, aes_256_gcm_siv_nonce,
-             base::StringPiece(""), &seed)) {
-      return RespondNow(Error("Error decrypting encrypted seed"));
+    if (!OpenSeed(cipher_seed, aes_256_gcm_siv_key, nonce, &seed)) {
+      return RespondNow(Error("Error decrypting cipher seed"));
     }
   } else {
-    // Generate a new seed.
-    uint8_t random_seed_bytes[kSeedByteLength];
-    // crypto::RandBytes is fail safe.
-    crypto::RandBytes(random_seed_bytes, kSeedByteLength);
-
+    // No valid previous value was stored, so generate new random values.
+    nonce = GetRandomNonce();
+    seed = GetRandomSeed();
     // Encrypt that seed.
-    if (!aes_256_gcm_siv.Seal(base::StringPiece(
-            reinterpret_cast<char*>(random_seed_bytes), kSeedByteLength),
-        aes_256_gcm_siv_nonce, base::StringPiece(""), &encrypted_seed)) {
+    if (!SealSeed(seed, aes_256_gcm_siv_key, nonce, &cipher_seed)) {
       return RespondNow(Error("Error encrypting"));
     }
-
-    // Store the seed in preferences, binary pref strings need to be
-    // base64 encoded.  Base64 encoding is fail safe.
-    std::string base64_nonce;
-    std::string base64_encrypted_seed;
-    base::Base64Encode(aes_256_gcm_siv_nonce, &base64_nonce);
-    base::Base64Encode(base::StringPiece(encrypted_seed.begin(),
-                                         encrypted_seed.end()),
-        &base64_encrypted_seed);
-    profile->GetPrefs()->SetString(kBraveWalletAES256GCMSivNonce, base64_nonce);
-    profile->GetPrefs()->SetString(kBraveWalletEncryptedSeed,
-        base64_encrypted_seed);
-
-    seed.assign(random_seed_bytes, random_seed_bytes + kSeedByteLength);
+    // Save it to prefs.
+    SaveToPrefs(Profile::FromBrowserContext(browser_context()), cipher_seed,
+        nonce);
   }
+  // We should have the correct nonce size and seed size at this point
+  // regardless of if it was newly genearted or retrieved from prefs.
+  DCHECK_EQ(nonce.size(), kNonceByteLength);
   DCHECK_EQ(seed.size(), kSeedByteLength);
-
-  // Returns 32 bytes of output from HKDF-Expand-SHA256.
-  // This is done so that ethereum-remote-client never actually directly has
-  // aaccess to the master seed, but it does have a deterministic seed.
-  // The salt value is the same intentionally on all clients.
-  base::StringPiece hkdfsha256Salt("brave-ethwallet-salt");
-  base::StringPiece hkdfsha256Info("ethwallet");
-  std::string derived =
-      crypto::HkdfSha256(base::StringPiece(seed.begin(), seed.end()),
-          hkdfsha256Salt, hkdfsha256Info, kSeedByteLength);
+  std::string derived = GetEthereumRemoteClientSeedFromRootSeed(seed);
   base::Value::BlobStorage blob;
   blob.assign(derived.begin(), derived.end());
   return RespondNow(OneArgument(

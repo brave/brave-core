@@ -8,6 +8,8 @@
 
 #include "extensions/browser/extension_function.h"
 
+class Profile;
+
 namespace extensions {
 namespace api {
 
@@ -37,6 +39,21 @@ class BraveWalletGetWalletSeedFunction : public UIThreadExtensionFunction {
   DECLARE_EXTENSION_FUNCTION("braveWallet.getWalletSeed", UNKNOWN)
 
  protected:
+  static std::string GetEthereumRemoteClientSeedFromRootSeed(
+      const std::string& seed);
+  static bool SealSeed(const std::string& seed, const std::string& key,
+      const std::string& nonce, std::string* cipher_seed);
+  static bool OpenSeed(const std::string& cipher_seed,
+      const std::string& key, const std::string& nonce, std::string* seed);
+  static void SaveToPrefs(Profile *, const std::string& cipher_seed,
+      const std::string& nonce);
+  static bool LoadFromPrefs(Profile *, std::string* cipher_seed,
+      std::string* nonce);
+  static std::string GetRandomNonce();
+  static std::string GetRandomSeed();
+  static const size_t kNonceByteLength;
+  static const size_t kSeedByteLength;
+
   ~BraveWalletGetWalletSeedFunction() override {}
 
   ResponseAction Run() override;
