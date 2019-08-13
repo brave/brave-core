@@ -60,7 +60,7 @@ void ChangeLocale(
     const std::string& locale)
 ```
 
-`ClassifyPage` should be called when a page has loaded in the current browser tab, and the HTML is available for analysis
+`OnPageLoaded` should be called when a page has loaded in the current browser tab, and the HTML is available for analysis
 ```
 void OnPageLoaded(
     const std::string& url,
