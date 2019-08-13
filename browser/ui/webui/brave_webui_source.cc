@@ -479,6 +479,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletVerificationList2", IDS_BRAVE_UI_WALLET_VERIFICATION_LIST2 },
         { "walletVerificationList3", IDS_BRAVE_UI_WALLET_VERIFICATION_LIST3 },
         { "walletVerificationListHeader", IDS_BRAVE_UI_WALLET_VERIFICATION_HEADER },  // NOLINT
+        { "walletVerificationNote1", IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE1 },
+        { "walletVerificationNote2", IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2 },
         { "walletVerificationTitle1", IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE1 },
         { "walletVerificationTitle2", IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE2 },
         { "walletVerified", IDS_BRAVE_UI_WALLET_VERIFIED },

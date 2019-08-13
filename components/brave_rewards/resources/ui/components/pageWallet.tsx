@@ -10,10 +10,10 @@ import {
   ModalActivity,
   ModalBackupRestore,
   ModalPending,
+  ModalVerify,
   WalletEmpty,
   WalletSummary,
-  WalletWrapper,
-  PanelVerify
+  WalletWrapper
 } from 'brave-ui/features/rewards'
 import { WalletAddIcon, WalletWithdrawIcon } from 'brave-ui/components/icons'
 import { AlertWallet, WalletState } from 'brave-ui/features/rewards/walletWrapper'
@@ -32,7 +32,7 @@ interface State {
   modalBackup: boolean
   modalActivity: boolean
   modalPendingContribution: boolean
-  showVerifyOnBoarding: boolean
+  modalVerify: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -46,7 +46,7 @@ class PageWallet extends React.Component<Props, State> {
       modalBackup: false,
       modalActivity: false,
       modalPendingContribution: false,
-      showVerifyOnBoarding: false
+      modalVerify: false
     }
   }
 
@@ -56,6 +56,7 @@ class PageWallet extends React.Component<Props, State> {
 
   componentDidMount () {
     this.isBackupUrl()
+    this.isVerifyUrl()
   }
 
   onModalBackupClose = () => {
@@ -193,6 +194,18 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
+  isVerifyUrl = () => {
+    if (this.urlHashIs('#verify')) {
+      this.toggleVerifyModal()
+    }
+  }
+
+  toggleVerifyModal = () => {
+    this.setState({
+      modalVerify: !this.state.modalVerify
+    })
+  }
+
   onModalActivityAction (action: string) {
     // TODO NZ implement
     console.log(action)
@@ -322,26 +335,16 @@ class PageWallet extends React.Component<Props, State> {
 
   handleUpholdLink = (link: string) => {
     const { ui, externalWallet } = this.props.rewardsData
-    if (
-      !this.state.showVerifyOnBoarding &&
-      !ui.onBoardingDisplayed &&
-      (!externalWallet || (externalWallet && externalWallet.status === 0))) {
-      this.setState({
-        showVerifyOnBoarding: true
-      })
+    if (!ui.onBoardingDisplayed &&
+        (!externalWallet || (externalWallet && externalWallet.status === 0))) {
+      this.toggleVerifyModal()
       return
     }
-
-    this.setState({
-      showVerifyOnBoarding: false
-    })
-
-    this.actions.onOnBoardingDisplayed()
 
     window.open(link, '_self')
   }
 
-  onVerifyClick = () => {
+  onVerifyClick = (hideVerify: boolean) => {
     const { externalWallet } = this.props.rewardsData
 
     if (!externalWallet || !externalWallet.verifyUrl) {
@@ -349,13 +352,11 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    this.handleUpholdLink(externalWallet.verifyUrl)
-  }
+    if (hideVerify) {
+      this.actions.onOnBoardingDisplayed()
+    }
 
-  toggleVerifyPanel = () => {
-    this.setState({
-      showVerifyOnBoarding: !this.state.showVerifyOnBoarding
-    })
+    this.handleUpholdLink(externalWallet.verifyUrl)
   }
 
   getWalletStatus = (): WalletState => {
@@ -473,19 +474,11 @@ class PageWallet extends React.Component<Props, State> {
           grants={this.getGrants()}
           alert={this.walletAlerts()}
           walletState={this.getWalletStatus()}
-          onVerifyClick={this.onVerifyClick}
+          onVerifyClick={this.onVerifyClick.bind(this, false)}
           onDisconnectClick={this.onDisconnectClick}
           goToUphold={this.goToUphold}
           userName={this.getUserName()}
         >
-          {
-            this.state.showVerifyOnBoarding
-            ? <PanelVerify
-              onVerifyClick={this.onVerifyClick}
-              onClose={this.toggleVerifyPanel}
-            />
-            : null
-          }
           {
             enabledMain
             ? emptyWallet
@@ -519,6 +512,14 @@ class PageWallet extends React.Component<Props, State> {
               onClose={this.onModalPendingToggle}
               rows={this.getPendingRows()}
               onRemoveAll={this.removeAllPendingContribution}
+            />
+            : null
+        }
+        {
+          this.state.modalVerify
+            ? <ModalVerify
+              onVerifyClick={this.onVerifyClick.bind(this, true)}
+              onClose={this.toggleVerifyModal}
             />
             : null
         }

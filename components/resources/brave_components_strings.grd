@@ -549,13 +549,15 @@
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_BUTTON" desc="">Verify wallet</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_FOOTER" desc="">Our wallet service is provided by</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_ID" desc="">Please have your government issued ID available.</message>
-      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST1" desc="">Withdraw and add funds</message>
-      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST2" desc="">No need to solve captcha to earn ads rewards</message>
-      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST3" desc="">Rewards received will never expire and be deposited to your wallet instantly</message>
-      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_HEADER" desc="">A verified wallet allows you to:</message>
-      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE1" desc="">Verify Your Wallet</message>
-      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE2" desc="">And manage your funds easily!</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST1" desc="">Withdraw BAT that you earn from viewing privacy-respecting ads</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST2" desc="">Purchase additional BAT with credit cards and other sources</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST3" desc="">Withdraw BAT that you may have previously added to your Brave Rewards wallet</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_HEADER" desc="">Benefits of verifying</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE1" desc="">Ready to verify your wallet?</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE2" desc="">Verification is not necessary to earn rewards for creator contributions</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFIED" desc="">Verified</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE1" desc="">Uphold may require you to verify your identity based on services requested.</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2" desc="">Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.</message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->
