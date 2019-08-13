@@ -6,11 +6,7 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 
 // Components
-import Viewer from '../extension/components/torrentViewer'
-
-// Styles
-require('../extension/styles/styles.css')
-
+import TorrentViewer from '../extension/components/torrentViewer'
 // Storybook
 const fullPageStoryStyles: object = {
   width: '-webkit-fill-available',
@@ -56,7 +52,7 @@ storiesOf('WebTorrent', module)
   .addDecorator(FullPageStory)
   .add('Page', () => {
     return (
-      <Viewer
+      <TorrentViewer
         actions={consoleLog}
         torrentId={'Torrent Id'}
         tabId={1}
@@ -66,7 +62,7 @@ storiesOf('WebTorrent', module)
   })
   .add('Page with torrent', () => {
     return (
-      <Viewer
+      <TorrentViewer
         actions={consoleLog}
         torrentId={'Fake Torrent'}
         torrent={sampleTorrent}
