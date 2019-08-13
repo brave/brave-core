@@ -7,6 +7,7 @@ import { shallow } from 'enzyme'
 import { applicationState, torrentState, torrentObj } from '../testData'
 import { TorrentState } from '../../../brave_webtorrent/extension/constants/webtorrentState'
 import { BraveWebtorrentPage, mapStateToProps } from '../../../brave_webtorrent/extension/components/app'
+import { StyledTorrentViewer } from '../../../brave_webtorrent/extension/styles/styles'
 
 describe('BraveWebtorrentPage component', () => {
   describe('mapStateToProps', () => {
@@ -39,8 +40,7 @@ describe('BraveWebtorrentPage component', () => {
         />
       ).dive()
 
-      const assertion = wrapper.find('.torrent-viewer')
-      expect(assertion.length).toBe(1)
+      expect(wrapper.find(StyledTorrentViewer)).toHaveLength(1)
     })
   })
 })

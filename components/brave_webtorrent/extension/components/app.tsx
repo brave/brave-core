@@ -22,10 +22,6 @@ import {
 // Utils
 import * as torrentActions from '../actions/webtorrent_actions'
 
-// Assets
-require('../styles/styles.css')
-require('../../../fonts/muli.css')
-
 interface Props {
   torrentState: TorrentState
   torrentObj?: TorrentObj

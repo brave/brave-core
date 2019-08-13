@@ -6,6 +6,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { torrentObj } from '../testData'
 import TorrentViewer from '../../../brave_webtorrent/extension/components/torrentViewer'
+import { StyledTorrentViewer } from '../../../brave_webtorrent/extension/styles/styles'
 
 describe('torrentViewer component', () => {
   describe('torrentViewer dumb component', () => {
@@ -23,8 +24,7 @@ describe('torrentViewer component', () => {
           torrentState={torrentState}
         />
       )
-      const assertion = wrapper.find('.torrent-viewer')
-      expect(assertion.length).toBe(1)
+      expect(wrapper.find(StyledTorrentViewer)).toHaveLength(1)
     })
   })
 })

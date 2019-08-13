@@ -4,7 +4,12 @@
 
 import * as React from 'react'
 
+// Assets
+require('../../../fonts/muli.css')
+require('../styles/styles.css')
+
 // Components
+import { StyledTorrentViewer } from '../styles/styles'
 import TorrentViewerHeader from './torrentViewerHeader'
 import TorrentStatus from './torrentStatus'
 import TorrentFileList from './torrentFileList'
@@ -28,7 +33,7 @@ export default class TorrentViewer extends React.PureComponent<Props, {}> {
     const onSaveAllFiles = () => actions.saveAllFiles(infoHash)
 
     return (
-      <div className='torrent-viewer'>
+      <StyledTorrentViewer>
         <TorrentViewerHeader
           name={name}
           torrent={torrent}
@@ -44,7 +49,7 @@ export default class TorrentViewer extends React.PureComponent<Props, {}> {
           onSaveAllFiles={onSaveAllFiles}
         />
         <TorrentViewerFooter torrent={torrent} />
-      </div>
+      </StyledTorrentViewer>
     )
   }
 }
