@@ -68,11 +68,11 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
       provider->GetDistanceMetric(views::DISTANCE_UNRELATED_CONTROL_VERTICAL));
 
   if (views::PlatformStyle::kIsOkButtonLeading) {
-    layout->AddView(accept_button.release());
-    layout->AddView(cancel_button.release());
+    layout->AddView(std::move(accept_button));
+    layout->AddView(std::move(cancel_button));
   } else {
-    layout->AddView(cancel_button.release());
-    layout->AddView(accept_button.release());
+    layout->AddView(std::move(cancel_button));
+    layout->AddView(std::move(accept_button));
   }
 
   return view;
