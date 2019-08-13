@@ -37,7 +37,7 @@
 #include "brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
 #endif
 
@@ -72,7 +72,7 @@ void BraveRequestHandler::SetupCallbacks() {
   before_url_request_callbacks_.push_back(callback);
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   callback =
       base::BindRepeating(brave::OnBeforeURLRequest_TranslateRedirectWork);
   before_url_request_callbacks_.push_back(callback);
