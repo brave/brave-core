@@ -65,10 +65,11 @@ BraveWalletIsEnabledFunction::Run() {
   return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
 }
 
-// Returns 32 bytes of output from HKDF-Expand-SHA256.
+// Returns 32 bytes of output from HKDF-SHA256.
 // This is done so that ethereum-remote-client never actually directly has
-// aaccess to the master seed, but it does have a deterministic seed.
+// access to the master seed, but it does have a deterministic seed.
 // The salt value is the same intentionally on all clients.
+// See https://github.com/brave/brave-browser/wiki/Brave-Ethereum-Remote-Client-Wallet-Seed-Information#note-on-salts
 std::string
 BraveWalletGetWalletSeedFunction::GetEthereumRemoteClientSeedFromRootSeed(
     const std::string& seed) {
@@ -159,7 +160,10 @@ std::string BraveWalletGetWalletSeedFunction::GetRandomSeed() {
 // The return value is passed to chrome.braveWallet.getWalletSeed
 // via the second paramter callback function.
 // The return value will not be the root seed, but instead a
-// deterministic hash of that seed.
+// deterministic hash of that seed with HKDF, so that we can use
+// other HKDF hashes with different info parameters for different purposes.
+// For more information, see:
+// https://github.com/brave/brave-browser/wiki/Brave-Ethereum-Remote-Client-Wallet-Seed-Information
 ExtensionFunction::ResponseAction
 BraveWalletGetWalletSeedFunction::Run() {
   // make sure the passed in enryption key is 32 bytes.
