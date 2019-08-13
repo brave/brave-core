@@ -49,7 +49,28 @@ static const std::map<std::string, bool> kSupportedRegions = {
   { "FR", true  },  // France
   { "AU", true  },  // Australia
   { "NZ", true  },  // New Zealand
-  { "IE", true  }   // Ireland
+  { "IE", true  },  // Ireland
+  { "AR", false },  // Argentina
+  { "AT", false },  // Austria
+  { "BR", false },  // Brazil
+  { "CH", false },  // Switzerland
+  { "CL", false },  // Chile
+  { "CO", false },  // Colombia
+  { "DK", false },  // Denmark
+  { "EC", false },  // Ecuador
+  { "IL", false },  // Israel
+  { "IN", false },  // India
+  { "IT", false },  // Italy
+  { "KR", false },  // Korea
+  { "MX", false },  // Mexico
+  { "NL", false },  // Netherlands
+  { "PE", false },  // Peru
+  { "PH", false },  // Philippines
+  { "PL", false },  // Poland
+  { "SE", false },  // Sweden
+  { "SG", false },  // Singapore
+  { "VE", false },  // Venezuela
+  { "ZA", false }   // South Africa
 };
 
 static char kUntargetedPageClassification[] = "untargeted";
