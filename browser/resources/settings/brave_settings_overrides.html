@@ -16,12 +16,16 @@
     <settings-people-page prefs="{{prefs}}"
       page-visibility="[[pageVisibility]]">
     </settings-people-page>
-    <settings-default-browser-page></settings-default-browser-page>
-    <div class="settings-box">$i18n{onStartup}</div>
-    <div class="settings-box continuation">
-      <settings-on-startup-page prefs="{{prefs}}">
-      </settings-on-startup-page>
-    </div>
+    <settings-animated-pages id="pages" section="getStarted">
+      <div route-path="default">
+        <settings-default-browser-page></settings-default-browser-page>
+        <div class="settings-box">$i18n{onStartup}</div>
+        <div class="settings-box continuation">
+          <settings-on-startup-page prefs="{{prefs}}">
+          </settings-on-startup-page>
+        </div>
+      </div>
+    </settings-animated-pages>
   </template>
 </dom-module>
 
@@ -31,20 +35,33 @@
     <style>
       :host {
         display: inline-block;
-        --settings-card-max-width: 790px !important;
+        /* we will enforce sizing at the container level and let children fill 100% of parent
+          top-down, rather than chromium's strategy of children setting their max width
+          bottom-up, which can be confusing, especially when our layout is different. */
+        --cr-centered-card-container_-_max-width: 100% !important; /* was 680px */
+        --brave-settings-content-max-width: 708px;
+        --brave-settings-menu-width: var(--settings-menu-width);
+        --brave-settings-menu-margin: 12px;
       }
       cr-drawer {
         display: none !important;
       }
       #container {
-        display: flex !important;
-        flex-direction: row;
+        /* menu and content next to each other in the horizontal center */
         justify-content: center;
-        align-items: flex-start;
         background: #F1F3F5; /* neutral100 */
       }
-      #left, #main, #right {
-        flex: unset !important;
+      #left {
+        /* fixed size menu */
+        flex: 0 0 calc(var(--settings-menu-width) + var(--brave-settings-menu-margin) * 2)  !important;
+      }
+      #main {
+        /* Take up rest of container up to a max */
+        flex: 0 1 var(--brave-settings-content-max-width) !important;
+      }
+      #right {
+        /* this element is only a space filler in chromium */
+        display: none;
       }
       :host-context([dark]) #container {
         background: #1E2127;
@@ -70,7 +87,7 @@
         --settings-nav-item-color: #424242 !important;
         position: sticky;
         top: var(--brave-settings-menu-margin-v);
-        margin: 0 12px 0 12px !important;
+        margin: 0 var(--brave-settings-menu-margin) !important;
         max-height: calc(100vh - 56px - (var(--brave-settings-menu-margin-v) * 2) - (var(--brave-settings-menu-padding) * 2));
         min-width: 172px;
         border-radius: 6px;

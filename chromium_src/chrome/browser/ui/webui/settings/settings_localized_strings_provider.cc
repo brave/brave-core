@@ -9,11 +9,20 @@
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 }  // namespace settings
+
+// Override some chromium strings
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/grit/chromium_strings.h"
+#include "chrome/grit/generated_resources.h"
+
+#undef IDS_SETTINGS_EDIT_PERSON
+#define IDS_SETTINGS_EDIT_PERSON IDS_SETTINGS_BRAVE_EDIT_PROFILE
+#undef IDS_SETTINGS_PROFILE_NAME_AND_PICTURE
+#define IDS_SETTINGS_PROFILE_NAME_AND_PICTURE IDS_SETTINGS_BRAVE_EDIT_PROFILE
+
 #include "../../../../../../chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"  // NOLINT
 
 #include "brave/browser/ui/webui/brave_settings_ui.h"
-#include "brave/grit/brave_generated_resources.h"
-
 namespace settings {
 
 void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {

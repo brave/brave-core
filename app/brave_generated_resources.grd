@@ -224,6 +224,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         Brave has not reviewed this extension for security and safety. Only install this extension if you trust the developer.
       </message>
+      <!-- Settings / Get Started -->
+      <message name="IDS_SETTINGS_BRAVE_EDIT_PROFILE" desc="Title to edit the profile user name and picture">
+        Profile name and icon
+      </message>
       <!-- Appearance -->
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
         Brave colors
