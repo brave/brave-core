@@ -37,7 +37,7 @@ BraveTranslateBubbleView::~BraveTranslateBubbleView() {
 views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
   views::View* view = new views::View();
   views::GridLayout* layout =
-      view->SetLayoutManager(std::make_unique<views::GridLayout>(view));
+      view->SetLayoutManager(std::make_unique<views::GridLayout>());
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
 
   constexpr int kButtonColumnSetId = 0;
