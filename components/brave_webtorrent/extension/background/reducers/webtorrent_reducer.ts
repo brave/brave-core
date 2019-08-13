@@ -13,7 +13,12 @@ import * as torrentTypes from '../../constants/webtorrent_types'
 import { File, TorrentState, TorrentsState } from '../../constants/webtorrentState'
 
 // Utils
-import { addTorrent, delTorrent, findTorrent } from '../webtorrent'
+import {
+  addTorrent,
+  delTorrent,
+  findTorrent,
+  saveAllFiles as webtorrentSaveAllFiles
+} from '../webtorrent'
 import { getTabData } from '../api/tabs_api'
 import { parseTorrentRemote } from '../api/torrent_api'
 
@@ -224,6 +229,11 @@ const torrentParsed = (torrentId: string, tabId: number, infoHash: string | unde
   return { ...state, torrentObjMap, torrentStateMap }
 }
 
+const saveAllFiles = (state: TorrentsState, infoHash: string) => {
+  webtorrentSaveAllFiles(infoHash)
+  return { ...state }
+}
+
 const defaultState: TorrentsState = { currentWindowId: -1, activeTabIds: {}, torrentStateMap: {}, torrentObjMap: {} }
 export const webtorrentReducer = (state: TorrentsState = defaultState, action: any) => { // TODO: modify any to be actual action type
   const payload = action.payload
@@ -288,6 +298,9 @@ export const webtorrentReducer = (state: TorrentsState = defaultState, action: a
     case torrentTypes.types.WEBTORRENT_TORRENT_PARSED:
       state = torrentParsed(payload.torrentId, payload.tabId, payload.infoHash,
         payload.errorMsg, payload.parsedTorrent, state)
+      break
+    case torrentTypes.types.WEBTORRENT_SAVE_ALL_FILES:
+      state = saveAllFiles(state, payload.infoHash)
       break
   }
 

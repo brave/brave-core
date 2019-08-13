@@ -328,11 +328,13 @@
     "webpack-cli": "^3.0.8"
   },
   "dependencies": {
+    "@types/jszip": "^3.1.6",
     "@types/parse-torrent": "^5.8.3",
     "@types/webtorrent": "^0.98.5",
     "bignumber.js": "^7.2.1",
     "bluebird": "^3.5.1",
     "clipboard-copy": "^2.0.0",
+    "jszip": "^3.2.2",
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
     "react-chrome-redux": "^1.5.1",

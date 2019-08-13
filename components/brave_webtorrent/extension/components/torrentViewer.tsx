@@ -11,20 +11,21 @@ import TorrentFileList from './torrentFileList'
 import TorrentViewerFooter from './torrentViewerFooter'
 
 // Constants
-import { TorrentObj } from '../constants/webtorrentState'
+import { TorrentObj, TorrentState } from '../constants/webtorrentState'
 
 interface Props {
   actions: any
-  tabId: number
   name?: string | string[]
-  torrentId: string
-  errorMsg?: string
   torrent?: TorrentObj
+  torrentState: TorrentState
 }
 
 export default class TorrentViewer extends React.PureComponent<Props, {}> {
   render () {
-    const { actions, tabId, name, torrentId, torrent, errorMsg } = this.props
+    const { actions, name, torrent, torrentState } = this.props
+    const { torrentId, tabId, errorMsg, infoHash } = torrentState
+
+    const onSaveAllFiles = () => actions.saveAllFiles(infoHash)
 
     return (
       <div className='torrent-viewer'>
@@ -37,7 +38,11 @@ export default class TorrentViewer extends React.PureComponent<Props, {}> {
           onStopDownload={actions.stopDownload}
         />
         <TorrentStatus torrent={torrent} errorMsg={errorMsg} />
-        <TorrentFileList torrentId={torrentId} torrent={torrent} />
+        <TorrentFileList
+          torrentId={torrentId}
+          torrent={torrent}
+          onSaveAllFiles={onSaveAllFiles}
+        />
         <TorrentViewerFooter torrent={torrent} />
       </div>
     )
