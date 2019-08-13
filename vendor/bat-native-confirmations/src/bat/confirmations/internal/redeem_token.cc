@@ -254,7 +254,7 @@ void RedeemToken::OnFetchPaymentToken(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != net::HTTP_NOT_FOUND) {
+  if (response_status_code == net::HTTP_NOT_FOUND) {
     if (!Verify(confirmation)) {
       BLOG(ERROR) << "Failed to verify confirmation";
       OnRedeem(FAILED, confirmation, false);
