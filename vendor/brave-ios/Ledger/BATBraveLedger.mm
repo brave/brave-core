@@ -22,6 +22,9 @@
 
 #import "BATLedgerDatabase.h"
 
+#import "url/gurl.h"
+#import "net/base/registry_controlled_domains/registry_controlled_domain.h"
+
 #define BATLedgerReadonlyBridge(__type, __objc_getter, __cpp_getter) \
 - (__type)__objc_getter { return ledger->__cpp_getter(); }
 
@@ -325,17 +328,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Publishers
 
-- (void)publisherInfoForId:(NSString *)publisherId completion:(void (NS_NOESCAPE ^)(BATPublisherInfo * _Nullable))completion
-{
-  ledger->GetPublisherInfo(std::string(publisherId.UTF8String), ^(ledger::Result result, ledger::PublisherInfoPtr info) {
-    if (result == ledger::Result::LEDGER_OK && info.get() != nullptr) {
-      completion([[BATPublisherInfo alloc] initWithPublisherInfo:*info]);
-    } else {
-      completion(nil);
-    }
-  });
-}
-
 - (void)listActivityInfoFromStart:(unsigned int)start
                             limit:(unsigned int)limit
                            filter:(BATActivityInfoFilter *)filter
@@ -354,13 +346,32 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   }
 }
 
-- (void)publisherActivityFromURL:(NSURL *)URL
-                      faviconURL:(nullable NSURL *)faviconURL
-                   publisherBlob:(nullable NSString *)publisherBlob
+- (void)fetchPublisherActivityFromURL:(NSURL *)URL
+                           faviconURL:(nullable NSURL *)faviconURL
+                        publisherBlob:(nullable NSString *)publisherBlob
+                                tabId:(uint64_t)tabId
 {
-  auto visitData = [self visitDataForURL:URL tabId:0];
+  GURL parsedUrl(URL.absoluteString.UTF8String);
+
+  if (!parsedUrl.is_valid()) {
+      return;
+  }
+
+  auto origin = parsedUrl.GetOrigin();
+  std::string baseDomain =
+  GetDomainAndRegistry(origin.host(), net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
+  if (baseDomain == "") {
+    return;
+  }
+
+  ledger::VisitDataPtr visitData = ledger::VisitData::New();
+  visitData->domain = visitData->name = baseDomain;
+  visitData->path = parsedUrl.PathForRequest();
+  visitData->url = origin.spec();
+  
   if (faviconURL) {
-    visitData.favicon_url = std::string(faviconURL.absoluteString.UTF8String);
+    visitData->favicon_url = std::string(faviconURL.absoluteString.UTF8String);
   }
 
   std::string blob = std::string();
@@ -368,7 +379,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     blob = std::string(publisherBlob.UTF8String);
   }
 
-  ledger->GetPublisherActivityFromUrl(1, visitData.Clone(), blob);
+  ledger->GetPublisherActivityFromUrl(tabId, std::move(visitData), blob);
 }
 
 - (void)deleteActivityInfo:(const std::string &)publisher_key callback:(ledger::DeleteActivityInfoCallback )callback
@@ -376,6 +387,13 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   const auto bridgedKey = [NSString stringWithUTF8String:publisher_key.c_str()];
   const auto stamp = ledger->GetReconcileStamp();
   [BATLedgerDatabase deleteActivityInfoWithPublisherID:bridgedKey reconcileStamp:stamp completion:^(BOOL success) {
+    if (success) {
+      for (BATBraveLedgerObserver *observer in self.observers) {
+        if (observer.activityRemoved) {
+          observer.activityRemoved([NSString stringWithUTF8String:publisher_key.c_str()]);
+        }
+      }
+    }
     callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
   }];
 }
@@ -683,9 +701,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 + (bool)isMediaURL:(NSURL *)url firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
 {
-  return ledger::Ledger::IsMediaLink(std::string(url.absoluteString.UTF8String),
-                                     std::string(firstPartyURL.absoluteString.UTF8String),
-                                     std::string(referrerURL.absoluteString.UTF8String));
+  std::string referrer = referrerURL != nil ? referrerURL.absoluteString.UTF8String : "";
+  return ledger::Ledger::IsMediaLink(url.absoluteString.UTF8String,
+                                     firstPartyURL.absoluteString.UTF8String,
+                                     referrer);
 }
 
 - (NSString *)encodedURI:(NSString *)uri
@@ -717,27 +736,15 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Reporting
 
-- (const ledger::VisitData)visitDataForURL:(NSURL *)url tabId:(UInt32)tabId
-{
-  const auto normalizedHost = std::string(url.bat_normalizedHost.UTF8String);
-  ledger::VisitData visit(normalizedHost,
-                          std::string(url.host.UTF8String),
-                          std::string(url.path.UTF8String),
-                          tabId,
-                          normalizedHost,
-                          std::string(url.absoluteString.UTF8String),
-                          "",
-                          "");
-  return visit;
-}
-
 - (void)setSelectedTabId:(UInt32)selectedTabId
 {
-  if (selectedTabId != 0) {
+  if (_selectedTabId != selectedTabId) {
     ledger->OnHide(_selectedTabId, [[NSDate date] timeIntervalSince1970]);
   }
   _selectedTabId = selectedTabId;
-  ledger->OnShow(_selectedTabId, [[NSDate date] timeIntervalSince1970]);
+  if (_selectedTabId > 0) {
+    ledger->OnShow(_selectedTabId, [[NSDate date] timeIntervalSince1970]);
+  }
 }
 
 - (void)applicationDidBecomeActive
@@ -757,8 +764,25 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)reportLoadedPageWithURL:(NSURL *)url tabId:(UInt32)tabId
 {
-  const auto visit = [self visitDataForURL:url tabId:tabId];
-  ledger->OnLoad(visit.Clone(), [[NSDate date] timeIntervalSince1970]);
+  GURL parsedUrl(url.absoluteString.UTF8String);
+  auto origin = parsedUrl.GetOrigin();
+  const std::string baseDomain =
+  GetDomainAndRegistry(origin.host(), net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  
+  if (baseDomain == "") {
+    return;
+  }
+  
+  const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
+  
+  ledger::VisitDataPtr data = ledger::VisitData::New();
+  data->tld = data->name = baseDomain;
+  data->domain = origin.host();
+  data->path = parsedUrl.path();
+  data->tab_id = tabId;
+  data->url = publisher_url;
+  
+  ledger->OnLoad(std::move(data), [[NSDate date] timeIntervalSince1970]);
 }
 
 - (void)reportXHRLoad:(NSURL *)url tabId:(UInt32)tabId firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
@@ -766,39 +790,49 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   std::map<std::string, std::string> partsMap;
   const auto urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
   for (NSURLQueryItem *item in urlComponents.queryItems) {
-    partsMap[std::string(item.name.UTF8String)] = std::string(item.value.UTF8String);
+    std::string value = item.value != nil ? item.value.UTF8String : "";
+    partsMap[std::string(item.name.UTF8String)] = value;
   }
 
-  ledger::VisitData visit("", "",
-                          std::string(url.absoluteString.UTF8String),
-                          tabId,
-                          "", "", "", "");
+  auto visit = ledger::VisitData::New();
+  visit->path = url.absoluteString.UTF8String;
+  visit->tab_id = tabId;
+
+  std::string ref = referrerURL != nil ? referrerURL.absoluteString.UTF8String : "";
+  std::string fpu = firstPartyURL != nil ? firstPartyURL.absoluteString.UTF8String : "";
 
   ledger->OnXHRLoad(tabId,
-                    std::string(url.absoluteString.UTF8String),
+                    url.absoluteString.UTF8String,
                     partsMap,
-                    std::string(firstPartyURL.absoluteString.UTF8String),
-                    std::string(referrerURL.absoluteString.UTF8String),
-                    visit.Clone());
+                    fpu,
+                    ref,
+                    std::move(visit));
 }
 
 - (void)reportPostData:(NSData *)postData url:(NSURL *)url tabId:(UInt32)tabId firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
 {
-  ledger::VisitData visit("", "",
-                          std::string(url.absoluteString.UTF8String),
-                          tabId,
-                          "", "", "", "");
+  GURL parsedUrl(url.absoluteString.UTF8String);
+  if (!parsedUrl.is_valid()) {
+    return;
+  }
+  
+  const auto postDataString = [[[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding] stringByRemovingPercentEncoding];
+  
+  auto visit = ledger::VisitData::New();
+  visit->path = parsedUrl.spec();
+  visit->tab_id = tabId;
+  
+  std::string ref = referrerURL != nil ? referrerURL.absoluteString.UTF8String : "";
+  std::string fpu = firstPartyURL != nil ? firstPartyURL.absoluteString.UTF8String : "";
 
-  const auto postDataString = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
-
-  ledger->OnPostData(std::string(url.absoluteString.UTF8String),
-                     std::string(firstPartyURL.absoluteString.UTF8String),
-                     std::string(referrerURL.absoluteString.UTF8String),
-                     std::string(postDataString.UTF8String),
-                     visit.Clone());
+  ledger->OnPostData(parsedUrl.spec(),
+                     fpu,
+                     ref,
+                     postDataString.UTF8String,
+                     std::move(visit));
 }
 
-- (void)reportTabClosedWithTabId:(UInt32)tabId
+- (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId
 {
   ledger->OnUnload(tabId, [[NSDate date] timeIntervalSince1970]);
 }
@@ -996,12 +1030,25 @@ BATLedgerBridge(BOOL,
 {
   [self.mNotifications removeObject:notification];
   [self writeNotificationsToDisk];
+  
+  for (BATBraveLedgerObserver *observer in self.observers) {
+    if (observer.notificationsRemoved) {
+      observer.notificationsRemoved(@[notification]);
+    }
+  }
 }
 
 - (void)clearAllNotifications
 {
+  NSArray *notifications = [self.mNotifications copy];
   [self.mNotifications removeAllObjects];
   [self writeNotificationsToDisk];
+  
+  for (BATBraveLedgerObserver *observer in self.observers) {
+    if (observer.notificationsRemoved) {
+      observer.notificationsRemoved(notifications);
+    }
+  }
 }
 
 - (void)startNotificationTimers
@@ -1136,6 +1183,12 @@ BATLedgerBridge(BOOL,
   [self.mNotifications addObject:notification];
 
   // Post to observers
+  for (BATBraveLedgerObserver *observer in self.observers) {
+    if (observer.notificationAdded) {
+      observer.notificationAdded(notification);
+    }
+  }
+  
   [NSNotificationCenter.defaultCenter postNotificationName:BATBraveLedgerNotificationAdded object:nil];
 
   [self writeNotificationsToDisk];
@@ -1360,7 +1413,7 @@ BATLedgerBridge(BOOL,
   }
 
   callback(VectorFromNSArray(publishers, ^ledger::PublisherInfoPtr(BATPublisherInfo *info){
-    return info.cppObjPtr.Clone();
+    return info.cppObjPtr;
   }), next_record);
 }
 
@@ -1417,7 +1470,7 @@ BATLedgerBridge(BOOL,
       const auto publisherID = filter_.id;
       const auto info = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
       if (info) {
-        callback(ledger::Result::LEDGER_OK, info.cppObjPtr.Clone());
+        callback(ledger::Result::LEDGER_OK, info.cppObjPtr);
       } else {
         // This part diverges from brave-core. brave-core actually goes into an infinite loop here?
         // Hope im missing something on their side where they don't even call this method unless
@@ -1438,7 +1491,7 @@ BATLedgerBridge(BOOL,
   const auto mediaKey = [NSString stringWithUTF8String:media_key.c_str()];
   const auto publisher = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:mediaKey];
   if (publisher) {
-    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
+    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
   } else {
     callback(ledger::Result::NOT_FOUND, nullptr);
   }
@@ -1449,7 +1502,7 @@ BATLedgerBridge(BOOL,
   const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:*filter];
   const auto publisher = [BATLedgerDatabase panelPublisherWithFilter:filter_];
   if (publisher) {
-    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
+    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
   } else {
     callback(ledger::Result::NOT_FOUND, nullptr);
   }
@@ -1460,7 +1513,7 @@ BATLedgerBridge(BOOL,
   const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
   const auto publisher = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
   if (publisher) {
-    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
+    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
   } else {
     callback(ledger::Result::NOT_FOUND, nullptr);
   }
@@ -1489,7 +1542,7 @@ BATLedgerBridge(BOOL,
     const auto publisher = [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
     [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:publisher completion:^(BOOL success) {
       if (success) {
-        callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
+        callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
       } else {
         callback(ledger::Result::LEDGER_ERROR, nullptr);
       }
@@ -1567,7 +1620,7 @@ BATLedgerBridge(BOOL,
   if (publisher_info.get() != nullptr) {
     const auto publisher = [[BATPublisherInfo alloc] initWithPublisherInfo:*publisher_info];
     [BATLedgerDatabase insertOrUpdatePublisherInfo:publisher completion:^(BOOL success) {
-      callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
+      callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
     }];
   } else {
     callback(ledger::Result::LEDGER_ERROR, nullptr);
@@ -1578,7 +1631,7 @@ BATLedgerBridge(BOOL,
 {
   const auto pendingContributions = [BATLedgerDatabase pendingContributions];
   callback(VectorFromNSArray(pendingContributions, ^ledger::PendingContributionInfoPtr(BATPendingContributionInfo *info){
-    return info.cppObjPtr.Clone();
+    return info.cppObjPtr;
   }));
 }
 
@@ -1589,7 +1642,15 @@ BATLedgerBridge(BOOL,
 
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId
 {
-  // Likely to be removed when `GetPublisherActivityFromUrl` gets a callback
+  if (publisher_info.get() == nullptr || result != ledger::Result::LEDGER_OK) {
+    return;
+  }
+  auto info = [[BATPublisherInfo alloc] initWithPublisherInfo:*publisher_info];
+  for (BATBraveLedgerObserver *observer in self.observers) {
+    if (observer.fetchedPanelPublisher) {
+      observer.fetchedPanelPublisher(info, windowId);
+    }
+  }
 }
 
 - (void)removeAllPendingContributions:(ledger::RemovePendingContributionCallback)callback
