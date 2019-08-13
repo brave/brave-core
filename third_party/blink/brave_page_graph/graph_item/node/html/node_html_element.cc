@@ -41,8 +41,6 @@
 
 using ::std::endl;
 using ::std::find;
-using ::std::istream_iterator;
-using ::std::istringstream;
 using ::std::string;
 using ::std::stringstream;
 using ::std::to_string;
@@ -69,15 +67,11 @@ ItemDesc NodeHTMLElement::GetItemDesc() const {
 
   builder << " [" << tag_name_;
   if (attributes_.count("id") == 1) {
-    builder << "#" << attributes_.at("id");
+    builder << " id: " << attributes_.at("id");
   }
+  
   if (attributes_.count("class") == 1) {
-    builder << "#" << attributes_.at("id");
-    istringstream class_names(attributes_.at("class"));
-    istream_iterator<std::string> class_name{class_names};
-    for (; class_name != istream_iterator<string>(); ++class_name) {
-      builder << "." << *class_name;
-    }
+    builder << " class: " << attributes_.at("class");
   }
   builder << "]";
 
