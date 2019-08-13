@@ -157,6 +157,7 @@ export default class Shields extends React.PureComponent<Props, State> {
           )
         }
         <Footer
+          enabled={this.isShieldsEnabled}
           isBlockedListOpen={isBlockedListOpen}
           toggleAdvancedView={toggleAdvancedView}
         />

@@ -14,6 +14,7 @@ import * as tabsAPI from '../../background/api/tabsAPI'
 import { getLocale } from '../../background/api/localeAPI'
 
 export interface Props {
+  enabled: boolean
   isBlockedListOpen: boolean
   toggleAdvancedView: () => void
 }
@@ -25,12 +26,12 @@ export default class Footer extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { isBlockedListOpen, toggleAdvancedView } = this.props
+    const { enabled, isBlockedListOpen, toggleAdvancedView } = this.props
     return (
       <MainFooter>
-        <Link disabled={isBlockedListOpen} onClick={toggleAdvancedView}>
+        {enabled && <Link disabled={isBlockedListOpen} onClick={toggleAdvancedView}>
           {getLocale('simpleView')}
-        </Link>
+        </Link>}
         <Link
           id='braveShieldsFooter'
           onClick={this.openSettings}

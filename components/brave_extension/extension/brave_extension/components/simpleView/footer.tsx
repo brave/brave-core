@@ -14,6 +14,7 @@ import * as tabsAPI from '../../background/api/tabsAPI'
 import { getLocale } from '../../background/api/localeAPI'
 
 export interface Props {
+  enabled: boolean
   toggleAdvancedView: () => void
 }
 
@@ -24,12 +25,13 @@ export default class Footer extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { toggleAdvancedView } = this.props
+    const { enabled, toggleAdvancedView } = this.props
     return (
       <MainFooter>
+        {enabled &&
         <Link onClick={toggleAdvancedView}>
           {getLocale('advancedView')}
-        </Link>
+        </Link>}
         <Link id='braveShieldsFooter' onClick={this.openSettings}>
           {getLocale('changeDefaults')}
         </Link>

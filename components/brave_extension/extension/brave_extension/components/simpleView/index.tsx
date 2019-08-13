@@ -79,6 +79,7 @@ export default class ShieldsSimpleView extends React.PureComponent<Props, {}> {
           toggleReadOnlyView={toggleReadOnlyView}
         />
         <Footer
+          enabled={this.isShieldsEnabled}
           toggleAdvancedView={toggleAdvancedView}
         />
       </ShieldsPanel>
