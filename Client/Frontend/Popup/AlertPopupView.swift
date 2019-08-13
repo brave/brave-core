@@ -4,9 +4,10 @@
 
 import UIKit
 import BraveShared
+import Lottie
 
 class AlertPopupView: PopupView {
-    fileprivate var dialogImage: UIImageView?
+    fileprivate var dialogImage: UIView?
     fileprivate var titleLabel: UILabel!
     fileprivate var messageLabel: UILabel!
     fileprivate var containerView: UIView!
@@ -19,7 +20,8 @@ class AlertPopupView: PopupView {
     fileprivate let kAlertPopupScreenFraction: CGFloat = 0.8
     fileprivate let kPadding: CGFloat = 20.0
     
-    init(image: UIImage?, title: String, message: String, inputType: UIKeyboardType? = nil, secureInput: Bool = false, inputPlaceholder: String? = nil) {
+    init(imageView: UIView?, title: String, message: String, inputType: UIKeyboardType? = nil,
+         secureInput: Bool = false, inputPlaceholder: String? = nil) {
         super.init(frame: CGRect.zero)
         
         overlayDismisses = false
@@ -30,10 +32,9 @@ class AlertPopupView: PopupView {
         containerView = UIView(frame: CGRect.zero)
         containerView.autoresizingMask = [.flexibleWidth]
         
-        if let image = image {
-            let di = UIImageView(image: image)
-            containerView.addSubview(di)
-            dialogImage = di
+        if let imageView = imageView {
+            containerView.addSubview(imageView)
+            dialogImage = imageView
         }
         
         titleLabel = UILabel(frame: CGRect.zero)
@@ -100,13 +101,19 @@ class AlertPopupView: PopupView {
             messageLabel.adjustsFontSizeToFitWidth = true
             updateSubviews(resizePercentage: resizePercentage)
         }
+        
+        // Lottie animation stops playing when view is not visible, the animation needs to be resumed.
+        if let animationView = dialogImage as? AnimationView, !animationView.isAnimationPlaying {
+            animationView.play()
+        }
     }
     
     fileprivate func updateSubviews(resizePercentage: CGFloat) {
         let width: CGFloat = dialogWidth
         
         var imageFrame: CGRect = dialogImage?.frame ?? CGRect.zero
-        if let dialogImage = dialogImage, let dialogImageSize = dialogImage.image?.size {
+        if let dialogImage = dialogImage {
+            let dialogImageSize = dialogImage.frame.size
             imageFrame.size = CGSize(width: dialogImageSize.width * resizePercentage, height: dialogImageSize.height * resizePercentage)
             imageFrame.origin.x = (width - imageFrame.width) / 2.0
             imageFrame.origin.y = kPadding * 2.0 * resizePercentage

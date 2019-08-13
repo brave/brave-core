@@ -158,7 +158,7 @@ class SyncSettingsTableViewController: UITableViewController {
         
         guard let popupTitle = title, let popupMessage = message, let popupButtonName = removeButtonName else { fatalError() }
         
-        let popup = AlertPopupView(image: nil, title: popupTitle, message: popupMessage)
+        let popup = AlertPopupView(imageView: nil, title: popupTitle, message: popupMessage)
         let fontSize: CGFloat = 15
         
         popup.addButton(title: Strings.CancelButtonTitle, fontSize: fontSize) { return .flyDown }
