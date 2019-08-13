@@ -420,6 +420,54 @@ extension URL {
 
 }
 
+// Helpers to deal with Peek and Pop
+extension URL {
+    public var eligibleForPeekAndPop: Bool {
+        let ignoredSchemes = ["about"]
+        
+        guard let scheme = self.scheme else { return false }
+        
+        if let _ = ignoredSchemes.index(of: scheme) {
+            return false
+        }
+        
+        if self.host == "localhost" {
+            return false
+        }
+        
+        return true
+    }
+    
+    public var isImageResource: Bool {
+        return ["jpg", "jpeg", "png", "gif"].contains(pathExtension)
+    }
+    
+    public var imageSize: CGSize? {
+        let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+        guard let imageSource = CGImageSourceCreateWithURL(self as CFURL, imageSourceOptions),
+            let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, imageSourceOptions) as? [AnyHashable: Any],
+            let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as String],
+            let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as String] else {
+                return nil
+        }
+        
+        var width: CGFloat = 0
+        var height: CGFloat = 0
+        
+        // swiftlint:disable force_cast
+        CFNumberGetValue((pixelWidth as! CFNumber), .cgFloatType, &width)
+        
+        // swiftlint:disable force_cast
+        CFNumberGetValue((pixelHeight as! CFNumber), .cgFloatType, &height)
+        
+        guard width > 0, height > 0 else {
+            return nil
+        }
+        
+        return CGSize(width: width, height: height)
+    }
+}
+
 //MARK: Private Helpers
 private extension URL {
     func publicSuffixFromHost( _ host: String, withAdditionalParts additionalPartCount: Int) -> String? {
