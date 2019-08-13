@@ -120,7 +120,8 @@ test("brave_unit_tests") {
 
   if (brave_wallet_enabled) {
     sources += [
-      "//brave/browser/extensions/brave_wallet_navigation_throttle_unittest.cc"
+      "//brave/browser/extensions/brave_wallet_navigation_throttle_unittest.cc",
+      "//brave/browser/extensions/brave_wallet_unittest.cc",
     ]
   }
 

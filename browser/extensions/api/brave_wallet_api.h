@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_WALLET_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_WALLET_API_H_
 
+#include <string>
+
 #include "extensions/browser/extension_function.h"
 
 class Profile;
@@ -38,7 +40,6 @@ class BraveWalletGetWalletSeedFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.getWalletSeed", UNKNOWN)
 
- protected:
   static std::string GetEthereumRemoteClientSeedFromRootSeed(
       const std::string& seed);
   static bool SealSeed(const std::string& seed, const std::string& key,
@@ -54,6 +55,7 @@ class BraveWalletGetWalletSeedFunction : public UIThreadExtensionFunction {
   static const size_t kNonceByteLength;
   static const size_t kSeedByteLength;
 
+ protected:
   ~BraveWalletGetWalletSeedFunction() override {}
 
   ResponseAction Run() override;

@@ -85,7 +85,7 @@ BraveWalletGetWalletSeedFunction::SealSeed(const std::string& seed,
   crypto::Aead aes_256_gcm_siv(crypto::Aead::AES_256_GCM_SIV);
   aes_256_gcm_siv.Init(&key);
   return aes_256_gcm_siv.Seal(base::StringPiece(seed.begin(), seed.end()),
-        nonce, base::StringPiece(""), cipher_seed);
+      nonce, base::StringPiece(""), cipher_seed);
 }
 
 bool BraveWalletGetWalletSeedFunction::OpenSeed(const std::string& cipher_seed,
@@ -115,7 +115,7 @@ void BraveWalletGetWalletSeedFunction::SaveToPrefs(
 }
 
 bool BraveWalletGetWalletSeedFunction::LoadFromPrefs(
-    Profile *profile, std::string* cipher_seed, std::string* nonce) {
+    Profile* profile, std::string* cipher_seed, std::string* nonce) {
   if (!profile->GetPrefs()->HasPrefPath(kBraveWalletAES256GCMSivNonce) ||
       !profile->GetPrefs()->HasPrefPath(kBraveWalletEncryptedSeed)) {
     return false;
