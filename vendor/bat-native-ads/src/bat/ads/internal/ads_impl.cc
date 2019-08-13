@@ -538,10 +538,11 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   LoadUserModel();
 }
 
-void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
+void AdsImpl::OnPageLoaded(
+    const std::string& url,
+    const std::string& html) {
   if (!IsInitialized()) {
     BLOG(INFO) << "Site visited " << url << ", not initialized";
-
     return;
   }
 
