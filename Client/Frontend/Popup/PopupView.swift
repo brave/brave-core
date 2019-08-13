@@ -297,6 +297,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         showHandler?()
         
         delegate?.popupViewDidShow(self)
+        setNeedsLayout()
     }
     
     func dismiss() {

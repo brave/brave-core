@@ -1294,7 +1294,7 @@ class BrowserViewController: UIViewController {
         
         topToolbar.leaveOverlayMode()
         
-        let popup = AlertPopupView(image: #imageLiteral(resourceName: "browser_lock_popup"), title: Strings.Browser_lock_callout_title, message: Strings.Browser_lock_callout_message)
+        let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "browser_lock_popup")), title: Strings.Browser_lock_callout_title, message: Strings.Browser_lock_callout_message)
         popup.addButton(title: Strings.Browser_lock_callout_not_now) { () -> PopupViewDismissType in
             Preferences.Popups.browserLock.value = true
             self.browserLockPopup = nil
@@ -1336,7 +1336,7 @@ class BrowserViewController: UIViewController {
         
         topToolbar.leaveOverlayMode()
         
-        let popup = AlertPopupView(image: UIImage(named: "duckduckgo"), title: Strings.DDG_callout_title, message: Strings.DDG_callout_message)
+        let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "duckduckgo")), title: Strings.DDG_callout_title, message: Strings.DDG_callout_message)
         popup.dismissHandler = { [weak self] in
             self?.presentBrowserLockCallout()
         }
