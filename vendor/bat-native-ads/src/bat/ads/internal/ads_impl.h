@@ -93,8 +93,8 @@ class AdsImpl : public Ads {
       const std::string& id,
       const NotificationInfo& notification);
 
-  int32_t last_shown_tab_id_;
-  std::string last_shown_tab_url_;
+  int32_t active_tab_id_;
+  std::string active_tab_url_;
   std::string previous_tab_url_;
   void OnTabUpdated(
       const int32_t tab_id,
@@ -131,10 +131,20 @@ class AdsImpl : public Ads {
 
   void ChangeLocale(const std::string& locale) override;
 
-  void ClassifyPage(const std::string& url, const std::string& html) override;
+  void OnPageLoaded(
+      const std::string& url,
+      const std::string& html) override;
+
+  void MaybeClassifyPage(
+      const std::string& url,
+      const std::string& html);
+  bool ShouldClassifyPages() const;
+  std::string ClassifyPage(
+      const std::string& url,
+      const std::string& html);
+
   std::string GetWinnerOverTimeCategory();
   std::string GetWinningCategory(const std::vector<double>& page_score);
-  std::string GetWinningCategory(const std::string& html);
 
   std::map<std::string, std::vector<double>> page_score_cache_;
   void CachePageScore(
@@ -150,13 +160,28 @@ class AdsImpl : public Ads {
       const std::string& json);
 
   void CheckEasterEgg(const std::string& url);
-  void CheckReadyAdServe(const bool forced);
-  void ServeAdFromCategory(const std::string& category);
-  void OnGetAds(
+
+  void CheckReadyAdServe(
+      const bool forced);
+  void ServeAdFromCategory(
+      const std::string& category);
+  void OnServeAdFromCategory(
       const Result result,
       const std::string& category,
       const std::vector<AdInfo>& ads);
-  std::vector<AdInfo> GetAvailableAds(const std::vector<AdInfo>& ads);
+  bool ServeAdFromParentCategory(
+      const std::string& category,
+      const std::vector<AdInfo>& ads);
+  void ServeUntargetedAd();
+  void OnServeUntargetedAd(
+      const Result result,
+      const std::string& category,
+      const std::vector<AdInfo>& ads);
+  void ServeAd(
+      const std::string& category,
+      const std::vector<AdInfo>& ads);
+  std::vector<AdInfo> GetEligibleAds(
+      const std::vector<AdInfo>& ads);
 
   bool AdRespectsTotalMaxFrequencyCapping(const AdInfo& ad);
   bool AdRespectsPerDayFrequencyCapping(const AdInfo& ad);
@@ -174,8 +199,8 @@ class AdsImpl : public Ads {
       const std::deque<AdHistoryDetail> history,
       const uint64_t seconds_window,
       const uint64_t allowable_ad_count) const;
-  bool IsAllowedToShowAds();
-  bool DoesHistoryRespectMinimumWaitTimeToShowAds();
+  bool IsAllowedToServeAds();
+  bool DoesHistoryRespectMinimumWaitTimeToServeAds();
   bool DoesHistoryRespectAdsPerDayLimit();
 
   uint32_t collect_activity_timer_id_;
@@ -213,6 +238,10 @@ class AdsImpl : public Ads {
   void GenerateAdReportingConfirmationEvent(const NotificationInfo& info);
   void GenerateAdReportingConfirmationEvent(const std::string& uuid,
                                             const ConfirmationType& type);
+
+  void MaybeGenerateAdReportingLoadEvent(
+      const std::string& url,
+      const std::string& classification);
   void GenerateAdReportingLoadEvent(const LoadInfo& info);
   void GenerateAdReportingBackgroundEvent();
   void GenerateAdReportingForegroundEvent();

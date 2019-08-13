@@ -1360,12 +1360,14 @@ void AdsServiceImpl::ChangeLocale(const std::string& locale) {
   bat_ads_->ChangeLocale(locale);
 }
 
-void AdsServiceImpl::ClassifyPage(const std::string& url,
-                                  const std::string& page) {
-  if (!connected())
+void AdsServiceImpl::OnPageLoaded(
+    const std::string& url,
+    const std::string& html) {
+  if (!connected()) {
     return;
+  }
 
-  bat_ads_->ClassifyPage(url, page);
+  bat_ads_->OnPageLoaded(url, html);
 }
 
 int AdsServiceImpl::GetIdleThreshold() {

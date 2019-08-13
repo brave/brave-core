@@ -120,7 +120,7 @@ void AdsTabHelper::OnWebContentsDistillationDone(
       distiller_result->has_distilled_content() &&
       distiller_result->has_markup_info() &&
       distiller_result->distilled_content().has_html()) {
-    ads_service_->ClassifyPage(url.spec(),
+    ads_service_->OnPageLoaded(url.spec(),
                                distiller_result->distilled_content().html());
   } else {
     // TODO(bridiver) - fall back to web_contents()->GenerateMHTML or ignore?

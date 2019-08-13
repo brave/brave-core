@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/locale_helper.h"
+#include "bat/ads/internal/static_values.h"
 
 namespace ads {
 
@@ -25,20 +26,10 @@ Ads* Ads::CreateInstance(AdsClient* ads_client) {
 }
 
 bool Ads::IsSupportedRegion(const std::string& locale) {
-  auto region = helper::Locale::GetCountryCode(locale);
+  auto region = GetRegion(locale);
 
-  std::vector<std::string> regions = {
-    "US",  // United States of America
-    "CA",  // Canada
-    "GB",  // United Kingdom (Great Britain and Northern Ireland)
-    "DE",  // Germany
-    "FR",  // France
-    "AU",  // Australia
-    "NZ",  // New Zealand
-    "IE"   // Ireland
-  };
-
-  if (std::find(regions.begin(), regions.end(), region) == regions.end()) {
+  auto it = kSupportedRegions.find(region);
+  if (it == kSupportedRegions.end()) {
     return false;
   }
 

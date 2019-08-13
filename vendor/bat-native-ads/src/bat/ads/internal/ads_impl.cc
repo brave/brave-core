@@ -61,8 +61,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     is_first_run_(true),
     is_foreground_(false),
     media_playing_({}),
-    last_shown_tab_id_(0),
-    last_shown_tab_url_(""),
+    active_tab_id_(0),
+    active_tab_url_(""),
     previous_tab_url_(""),
     page_score_cache_({}),
     last_shown_notification_info_(NotificationInfo()),
@@ -157,8 +157,11 @@ void AdsImpl::InitializeStep4(const Result result) {
 
 bool AdsImpl::IsInitialized() {
   if (!is_initialized_ ||
-      !ads_client_->IsAdsEnabled() ||
-      !user_model_->IsInitialized()) {
+      !ads_client_->IsAdsEnabled()) {
+    return false;
+  }
+
+  if (ShouldClassifyPages() && !user_model_->IsInitialized()) {
     return false;
   }
 
@@ -301,9 +304,9 @@ void AdsImpl::OnMediaStopped(const int32_t tab_id) {
 }
 
 bool AdsImpl::IsMediaPlaying() const {
-  auto tab = media_playing_.find(last_shown_tab_id_);
+  auto tab = media_playing_.find(active_tab_id_);
   if (tab == media_playing_.end()) {
-    // Media is not playing in the last shown tab
+    // Media is not playing in the active tab
     return false;
   }
 
@@ -398,9 +401,9 @@ void AdsImpl::OnTabUpdated(
     BLOG(INFO) << "OnTabUpdated.IsFocused for tab id: " << tab_id
         << " and url: " << url;
 
-    last_shown_tab_id_ = tab_id;
-    previous_tab_url_ = last_shown_tab_url_;
-    last_shown_tab_url_ = url;
+    active_tab_id_ = tab_id;
+    previous_tab_url_ = active_tab_url_;
+    active_tab_url_ = url;
 
     TestShoppingData(url);
     TestSearchState(url);
@@ -523,10 +526,18 @@ bool AdsImpl::ToggleFlagAd(const std::string& id,
 void AdsImpl::ChangeLocale(const std::string& locale) {
   auto language_code = helper::Locale::GetLanguageCode(locale);
 
-  auto locales = ads_client_->GetLocales();
+  if (!ShouldClassifyPages()) {
+    client_->SetLocale(language_code);
+
+    InitializeStep4(SUCCESS);
+    return;
+  }
+
+  auto locales = client_->GetLocales();
   if (std::find(locales.begin(), locales.end(), language_code)
       != locales.end()) {
     BLOG(INFO) << "Changed locale to " << language_code;
+
     client_->SetLocale(language_code);
   } else {
     BLOG(INFO) << language_code << " locale not found, so changed locale to "
@@ -538,10 +549,11 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   LoadUserModel();
 }
 
-void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
+void AdsImpl::OnPageLoaded(
+    const std::string& url,
+    const std::string& html) {
   if (!IsInitialized()) {
     BLOG(INFO) << "Site visited " << url << ", not initialized";
-
     return;
   }
 
@@ -562,52 +574,71 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
 
   if (!IsSupportedUrl(url)) {
     BLOG(INFO) << "Site visited " << url << ", unsupported URL";
-
     return;
   }
 
   if (TestSearchState(url)) {
     BLOG(INFO) << "Site visited " << url << ", URL is a search engine";
-
     return;
   }
 
   TestShoppingData(url);
 
+  MaybeClassifyPage(url, html);
+
+  CheckEasterEgg(url);
+
+  BLOG(INFO) << "Site visited " << url << ", previous tab url was "
+      << previous_tab_url_;
+}
+
+void AdsImpl::MaybeClassifyPage(
+    const std::string& url,
+    const std::string& html) {
+  if (!ShouldClassifyPages()) {
+    MaybeGenerateAdReportingLoadEvent(url, kUntargetedPageClassification);
+    return;
+  }
+
+  auto classification = ClassifyPage(url, html);
+  MaybeGenerateAdReportingLoadEvent(url, classification);
+}
+
+bool AdsImpl::ShouldClassifyPages() const {
+  auto locale = ads_client_->GetAdsLocale();
+  auto region = helper::Locale::GetCountryCode(locale);
+
+  auto it = kSupportedRegions.find(region);
+  if (it == kSupportedRegions.end()) {
+    return false;
+  }
+
+  return it->second;
+}
+
+std::string AdsImpl::ClassifyPage(
+    const std::string& url,
+    const std::string& html) {
   auto page_score = user_model_->ClassifyPage(html);
+
   auto winning_category = GetWinningCategory(page_score);
   if (winning_category.empty()) {
-    BLOG(INFO) << "Site visited " << url
-        << ", not enough content to classify page";
-
-    return;
+    BLOG(INFO) << "Failed to classify page at " << url
+        << " as not enough content";
+    return "";
   }
 
   client_->SetLastPageClassification(winning_category);
 
   client_->AppendPageScoreToPageScoreHistory(page_score);
 
-  CachePageScore(last_shown_tab_url_, page_score);
+  CachePageScore(active_tab_url_, page_score);
 
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Site visited', { url, immediateWinner, winnerOverTime }
+  BLOG(INFO) << "Successfully classified page at " << url << " as "
+      << winning_category << ". Winning category over time is "
+      << GetWinnerOverTimeCategory();
 
-  auto winner_over_time_category = GetWinnerOverTimeCategory();
-
-  BLOG(INFO) << "Site visited " << url << ", immediateWinner is "
-      << winning_category << " and winnerOverTime is "
-      << winner_over_time_category << ", previous tab url "
-      << previous_tab_url_;
-
-  if (last_shown_tab_url_ == url) {
-    LoadInfo load_info;
-    load_info.tab_id = last_shown_tab_id_;
-    load_info.tab_url = last_shown_tab_url_;
-    load_info.tab_classification = winning_category;
-    GenerateAdReportingLoadEvent(load_info);
-  }
-
-  CheckEasterEgg(url);
+  return winning_category;
 }
 
 std::string AdsImpl::GetWinnerOverTimeCategory() {
@@ -623,9 +654,7 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
       winner_over_time_page_score.end(), 0);
 
   for (const auto& page_score : page_score_history) {
-    if (page_score.size() != count) {
-      return "";
-    }
+    DCHECK(page_score.size() == count);
 
     for (size_t i = 0; i < page_score.size(); i++) {
       auto taxonomy = user_model_->GetTaxonomyAtIndex(i);
@@ -646,11 +675,6 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
 std::string AdsImpl::GetWinningCategory(
     const std::vector<double>& page_score) {
   return user_model_->GetWinningCategory(page_score);
-}
-
-std::string AdsImpl::GetWinningCategory(const std::string& html) {
-  auto page_score = user_model_->ClassifyPage(html);
-  return GetWinningCategory(page_score);
 }
 
 void AdsImpl::CachePageScore(
@@ -762,7 +786,6 @@ void AdsImpl::OnLoadSampleBundle(
 
   auto ad_rand = base::RandInt(0, ads_count - 1);
   auto ad = ads.at(ad_rand);
-
   ShowAd(ad, category);
 }
 
@@ -787,44 +810,31 @@ void AdsImpl::CheckEasterEgg(const std::string& url) {
   }
 }
 
-void AdsImpl::CheckReadyAdServe(const bool forced) {
+void AdsImpl::CheckReadyAdServe(
+    const bool forced) {
   if (!IsInitialized() || !bundle_->IsReady()) {
     BLOG(INFO) << "Notification not made: Not initialized";
-
     return;
   }
 
   if (!forced) {
     if (!is_confirmations_ready_) {
       BLOG(INFO) << "Notification not made: Confirmations not ready";
-
       return;
     }
 
     if (!IsForeground()) {
-      // TODO(Terry Mancey): Implement Log (#44)
-      // 'Notification not made', { reason: 'not in foreground' }
-
       BLOG(INFO) << "Notification not made: Not in foreground";
-
       return;
     }
 
     if (IsMediaPlaying()) {
-      // TODO(Terry Mancey): Implement Log (#44)
-      // 'Notification not made', { reason: 'media playing in browser' }
-
       BLOG(INFO) << "Notification not made: Media playing in browser";
-
       return;
     }
 
-    if (!IsAllowedToShowAds()) {
-      // TODO(Terry Mancey): Implement Log (#44)
-      // 'Notification not made', { reason: 'not allowed based on history' }
-
+    if (!IsAllowedToServeAds()) {
       BLOG(INFO) << "Notification not made: Not allowed based on history";
-
       return;
     }
   }
@@ -833,105 +843,121 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
   ServeAdFromCategory(category);
 }
 
-void AdsImpl::ServeAdFromCategory(const std::string& category) {
+void AdsImpl::ServeAdFromCategory(
+    const std::string& category) {
   BLOG(INFO) << "Notification for category " << category;
 
   std::string catalog_id = bundle_->GetCatalogId();
   if (catalog_id.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ad catalog' }
-
     BLOG(INFO) << "Notification not made: No ad catalog";
-
     return;
   }
 
-  if (category.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no classified pages) for
-    // winnerOverTime', category, winnerOverTime, arbitraryKey }
-
-    BLOG(INFO) << "Notification not made: category is empty";
-
+  if (!category.empty()) {
+    auto callback =
+        std::bind(&AdsImpl::OnServeAdFromCategory, this, _1, _2, _3);
+    ads_client_->GetAds(category, callback);
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3);
-  ads_client_->GetAds(category, callback);
+  BLOG(INFO) << "Notification not made: Category is empty, trying "
+      << "again with untargeted category";
+
+  ServeUntargetedAd();
 }
 
-void AdsImpl::OnGetAds(
+void AdsImpl::OnServeAdFromCategory(
     const Result result,
     const std::string& category,
     const std::vector<AdInfo>& ads) {
-  if (result != SUCCESS) {
-    auto pos = category.find_last_of('-');
-    if (pos != std::string::npos) {
-      std::string new_category = category.substr(0, pos);
-
-      BLOG(INFO) << "Notification not made: No ads found in \"" << category
-          << "\" category, trying again with \"" << new_category
-          << "\" category";
-
-      auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3);
-      ads_client_->GetAds(new_category, callback);
-
-      return;
-    }
-
-    if (ads.empty()) {
-      // TODO(Terry Mancey): Implement Log (#44)
-      // 'Notification not made', { reason: 'no ads for category', category }
-
-      BLOG(INFO) << "Notification not made: No ads found in \"" << category
-          << "\" category";
-
-      return;
-    }
-  }
-
-  auto available_ads = GetAvailableAds(ads);
-
-  BLOG(INFO) << "Found " << available_ads.size() << " out of " << ads.size()
-      << " availables ads for \"" << category << "\" category";
-
-  if (available_ads.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ad (or permitted ad) for
-    // winnerOverTime', category, winnerOverTime, arbitraryKey }
-
-    BLOG(INFO) << "Notification not made: No ad (or permitted ad) for \""
-        << category << "\" category";
-
+  auto eligible_ads = GetEligibleAds(ads);
+  if (!eligible_ads.empty()) {
+    ServeAd(category, eligible_ads);
     return;
   }
 
-  auto rand = base::RandInt(0, available_ads.size() - 1);
-  auto ad = available_ads.at(rand);
+  if (ServeAdFromParentCategory(category, eligible_ads)) {
+    return;
+  }
+
+  BLOG(INFO) << "Notification not made: No ads found in \"" << category
+      << "\" category, trying again with untargeted category";
+
+  ServeUntargetedAd();
+}
+
+bool AdsImpl::ServeAdFromParentCategory(
+    const std::string& category,
+    const std::vector<AdInfo>& ads) {
+  auto pos = category.find_last_of('-');
+  if (pos == std::string::npos) {
+    return false;
+  }
+
+  std::string parent_category = category.substr(0, pos);
+
+  BLOG(INFO) << "Notification not made: No ads found in \"" << category
+      << "\" category, trying again with \"" << parent_category
+      << "\" category";
+
+  auto callback =
+      std::bind(&AdsImpl::OnServeAdFromCategory, this, _1, _2, _3);
+  ads_client_->GetAds(parent_category, callback);
+
+  return true;
+}
+
+void AdsImpl::ServeUntargetedAd() {
+  auto callback = std::bind(&AdsImpl::OnServeUntargetedAd, this, _1, _2, _3);
+  ads_client_->GetAds(kUntargetedPageClassification, callback);
+}
+
+void AdsImpl::OnServeUntargetedAd(
+    const Result result,
+    const std::string& category,
+    const std::vector<AdInfo>& ads) {
+  auto eligible_ads = GetEligibleAds(ads);
+  if (!eligible_ads.empty()) {
+    ServeAd(category, eligible_ads);
+    return;
+  }
+
+  BLOG(INFO) << "Notification not made: No ad (or eligible ad) for \""
+      << category << "\" category";
+}
+
+void AdsImpl::ServeAd(
+    const std::string& category,
+    const std::vector<AdInfo>& ads) {
+  BLOG(INFO) << "Found " << ads.size() << " eligible ads for \"" << category
+      << "\" category";
+
+  auto rand = base::RandInt(0, ads.size() - 1);
+  auto ad = ads.at(rand);
   ShowAd(ad, category);
 }
 
-std::vector<AdInfo> AdsImpl::GetAvailableAds(
+std::vector<AdInfo> AdsImpl::GetEligibleAds(
     const std::vector<AdInfo>& ads) {
-  std::vector<AdInfo> available_ads = {};
+  std::vector<AdInfo> eligible_ads = {};
 
   for (const auto& ad : ads) {
     if (!AdRespectsTotalMaxFrequencyCapping(ad)) {
-      BLOG(INFO) << "creativeSetId " << ad.creative_set_id
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
           << " has exceeded the totalMax";
 
       continue;
     }
 
     if (!AdRespectsPerDayFrequencyCapping(ad)) {
-      BLOG(INFO) << "creativeSetId " << ad.creative_set_id
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
           << " has exceeded the perDay";
 
       continue;
     }
 
     if (!AdRespectsDailyCapFrequencyCapping(ad)) {
-      BLOG(INFO) << "creativeSetId " << ad.creative_set_id
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
           << " has exceeded the dailyCap";
 
       continue;
@@ -949,10 +975,10 @@ std::vector<AdInfo> AdsImpl::GetAvailableAds(
       continue;
     }
 
-    available_ads.push_back(ad);
+    eligible_ads.push_back(ad);
   }
 
-  return available_ads;
+  return eligible_ads;
 }
 
 bool AdsImpl::AdRespectsTotalMaxFrequencyCapping(const AdInfo& ad) {
@@ -1015,8 +1041,8 @@ bool AdsImpl::IsAdValid(const AdInfo& ad_info) {
         << std::endl << "  advertiser: " << ad_info.advertiser
         << std::endl << "  notificationText: " << ad_info.notification_text
         << std::endl << "  notificationUrl: " << ad_info.notification_url
-        << std::endl << "  creativeSetId: " << ad_info.notification_url
-        << std::endl << "  uuid: " << ad_info.notification_url;
+        << std::endl << "  creativeSetId: " << ad_info.creative_set_id
+        << std::endl << "  uuid: " << ad_info.uuid;
 
     return false;
   }
@@ -1105,19 +1131,19 @@ bool AdsImpl::HistoryRespectsRollingTimeConstraint(
   return false;
 }
 
-bool AdsImpl::IsAllowedToShowAds() {
+bool AdsImpl::IsAllowedToServeAds() {
   auto does_history_respect_ads_per_day_limit =
       DoesHistoryRespectAdsPerDayLimit();
 
   bool does_history_respect_minimum_wait_time;
   if (!IsMobile()) {
     does_history_respect_minimum_wait_time =
-        DoesHistoryRespectMinimumWaitTimeToShowAds();
+        DoesHistoryRespectMinimumWaitTimeToServeAds();
   } else {
     does_history_respect_minimum_wait_time = true;
   }
 
-  BLOG(INFO) << "IsAllowedToShowAds:";
+  BLOG(INFO) << "IsAllowedToServeAds:";
   BLOG(INFO) << "    does_history_respect_minimum_wait_time: "
       << does_history_respect_minimum_wait_time;
   BLOG(INFO) << "    does_history_respect_ads_per_day_limit: "
@@ -1127,7 +1153,7 @@ bool AdsImpl::IsAllowedToShowAds() {
       does_history_respect_ads_per_day_limit;
 }
 
-bool AdsImpl::DoesHistoryRespectMinimumWaitTimeToShowAds() {
+bool AdsImpl::DoesHistoryRespectMinimumWaitTimeToServeAds() {
   auto ads_shown_history = client_->GetAdsShownHistory();
 
   auto hour_window = base::Time::kSecondsPerHour;
@@ -1139,7 +1165,7 @@ bool AdsImpl::DoesHistoryRespectMinimumWaitTimeToShowAds() {
   auto respects_minimum_wait_time = HistoryRespectsRollingTimeConstraint(
       ads_shown_history, minimum_wait_time, 0);
 
-  BLOG(INFO) << "DoesHistoryRespectMinimumWaitTimeToShowAds:";
+  BLOG(INFO) << "DoesHistoryRespectMinimumWaitTimeToServeAds:";
   BLOG(INFO) << "    respects_hour_limit: "
       << respects_hour_limit;
   BLOG(INFO) << "    respects_minimum_wait_time: "
@@ -1382,10 +1408,10 @@ bool AdsImpl::IsSustainingAdInteraction() const {
 }
 
 bool AdsImpl::IsStillViewingAd() const {
-  if (!UrlHostsMatch(last_shown_tab_url_, last_shown_notification_info_.url)) {
+  if (!UrlHostsMatch(active_tab_url_, last_shown_notification_info_.url)) {
     BLOG(INFO) << "IsStillViewingAd last_shown_notification_info_url: "
         << last_shown_notification_info_.url
-        << " does not match last_shown_tab_url: " << last_shown_tab_url_;
+        << " does not match last_shown_tab_url: " << active_tab_url_;
 
     return false;
   }
@@ -1611,6 +1637,20 @@ void AdsImpl::GenerateAdReportingConfirmationEvent(
 
   auto* json = buffer.GetString();
   ads_client_->EventLog(json);
+}
+
+void AdsImpl::MaybeGenerateAdReportingLoadEvent(
+    const std::string& url,
+    const std::string& classification) {
+  if (active_tab_url_ != url) {
+    return;
+  }
+
+  LoadInfo load_info;
+  load_info.tab_id = active_tab_id_;
+  load_info.tab_url = active_tab_url_;
+  load_info.tab_classification = classification;
+  GenerateAdReportingLoadEvent(load_info);
 }
 
 void AdsImpl::GenerateAdReportingLoadEvent(

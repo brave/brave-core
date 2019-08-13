@@ -37,7 +37,7 @@ class BatAdsImpl :
   void Shutdown(ShutdownCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
   void ChangeLocale(const std::string& locale) override;
-  void ClassifyPage(const std::string& url, const std::string& page) override;
+  void OnPageLoaded(const std::string& url, const std::string& html) override;
   void ServeSampleAd() override;
   void OnTimer(const uint32_t timer_id) override;
   void OnUnIdle() override;

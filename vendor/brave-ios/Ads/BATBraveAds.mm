@@ -206,7 +206,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 - (void)reportLoadedPageWithURL:(NSURL *)url html:(NSString *)html
 {
   const auto urlString = std::string(url.absoluteString.UTF8String);
-  ads->ClassifyPage(urlString, std::string(html.UTF8String));
+  ads->OnPageLoaded(urlString, std::string(html.UTF8String));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId
