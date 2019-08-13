@@ -16,6 +16,7 @@
 #include "brave/components/brave_sync/public/brave_profile_sync_service.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/sync/driver/profile_sync_service.h"
+#include "services/network/public/cpp/network_connection_tracker.h"
 
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkAdded);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkDeleted);
@@ -45,9 +46,11 @@ namespace prefs {
 class Prefs;
 }   // namespace prefs
 
-class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
-                                    public BraveSyncService,
-                                    public SyncMessageHandler {
+class BraveProfileSyncServiceImpl
+      : public BraveProfileSyncService,
+        public BraveSyncService,
+        public network::NetworkConnectionTracker::NetworkConnectionObserver,
+        public SyncMessageHandler {
  public:
   explicit BraveProfileSyncServiceImpl(Profile* profile,
                                        InitParams init_params);
@@ -94,6 +97,9 @@ class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
   int GetDisableReasons() const override;
   CoreAccountInfo GetAuthenticatedAccountInfo() const override;
   bool IsAuthenticatedAccountPrimary() const override;
+
+  // NetworkConnectionTracker::NetworkConnectionObserver implementation.
+  void OnConnectionChanged(network::mojom::ConnectionType type) override;
 
   // KeyedService implementation.  This must be called exactly
   // once (before this object is destroyed).

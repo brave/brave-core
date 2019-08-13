@@ -225,6 +225,7 @@ BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
       !brave_sync_prefs_->GetThisDeviceName().empty()) {
     brave_sync_configured_ = true;
   }
+  network_connection_tracker_->AddNetworkConnectionObserver(this);
 }
 
 void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(
@@ -249,7 +250,9 @@ void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(
   }
 }
 
-BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {}
+BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {
+  network_connection_tracker_->RemoveNetworkConnectionObserver(this);
+}
 
 void BraveProfileSyncServiceImpl::OnSetupSyncHaveCode(
     const std::string& sync_words, const std::string& device_name) {
@@ -601,7 +604,6 @@ int BraveProfileSyncServiceImpl::GetDisableReasons() const {
   // kSyncManaged is set by Brave so it will contain
   // DISABLE_REASON_ENTERPRISE_POLICY and
   // SaveCardBubbleControllerImpl::ShouldShowSignInPromo will return false.
-  // kSyncManaged is disabled by us
   return ProfileSyncService::GetDisableReasons();
 }
 
@@ -612,6 +614,12 @@ BraveProfileSyncServiceImpl::GetAuthenticatedAccountInfo() const {
 
 bool BraveProfileSyncServiceImpl::IsAuthenticatedAccountPrimary() const {
   return true;
+}
+
+void BraveProfileSyncServiceImpl::OnConnectionChanged(
+    network::mojom::ConnectionType type) {
+  if (type == network::mojom::ConnectionType::CONNECTION_NONE)
+    SignalWaitableEvent();
 }
 
 void BraveProfileSyncServiceImpl::Shutdown() {
@@ -648,6 +656,12 @@ void BraveProfileSyncServiceImpl::ResetSyncInternal() {
   brave_sync_initialized_ = false;
 
   brave_sync_prefs_->SetSyncEnabled(false);
+  ProfileSyncService::GetUserSettings()->SetSyncRequested(false);
+
+  // brave sync doesn't support pause sync so treating every new sync chain as
+  // first time setup
+  syncer::SyncPrefs sync_prefs(sync_client_->GetPrefService());
+  sync_prefs.SetLastSyncedTime(base::Time());
 
   reseting_ = false;
 }
@@ -813,10 +827,6 @@ void BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged(
     const std::string& pref) {
   if (pref == prefs::kSyncEnabled) {
     brave_sync_client_->OnSyncEnabledChanged();
-    if (!brave_sync_prefs_->GetSyncEnabled()) {
-      brave_sync_initialized_ = false;
-      ProfileSyncService::GetUserSettings()->SetSyncRequested(false);
-    }
   }
   NotifySyncStateChanged();
 }
