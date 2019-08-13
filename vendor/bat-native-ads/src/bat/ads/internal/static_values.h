@@ -7,6 +7,8 @@
 #define BAT_ADS_INTERNAL_STATIC_VALUES_H_
 
 #include <stdint.h>
+#include <string>
+#include <map>
 
 #include "base/time/time.h"
 
@@ -36,6 +38,19 @@ static const uint64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
 
 static char kDefaultLanguageCode[] = "en";
 static char kDefaultCountryCode[] = "US";
+
+static const std::map<std::string, bool> kSupportedRegions = {
+  // {{region, targeted}}
+
+  { "US", true  },  // United States of America
+  { "CA", true  },  // Canada
+  { "GB", true  },  // United Kingdom (Great Britain and Northern Ireland)
+  { "DE", true  },  // Germany
+  { "FR", true  },  // France
+  { "AU", true  },  // Australia
+  { "NZ", true  },  // New Zealand
+  { "IE", true  }   // Ireland
+};
 
 }  // namespace ads
 
