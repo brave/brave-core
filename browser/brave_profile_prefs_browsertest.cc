@@ -13,6 +13,7 @@
 #include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
+#include "brave/browser/brave_first_run_browsertest.h"
 
 using BraveProfilePrefsBrowserTest = InProcessBrowserTest;
 
@@ -29,9 +30,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kHTTPSEVerywhereControlType));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kNoScriptControlType));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(
-        kShieldsAdvancedViewEnabled));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kAdControlType));
   EXPECT_TRUE(
@@ -50,6 +48,25 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetBoolean(kHideBraveRewardsButton));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
+}
+
+// First run of Brave should default Shields to Simple view
+const char kFirstRunEmptyPrefs[] = "{}";
+typedef FirstRunMasterPrefsBrowserTestT<kFirstRunEmptyPrefs>
+    BraveProfilePrefsFirstRunBrowserTest;
+IN_PROC_BROWSER_TEST_F(BraveProfilePrefsFirstRunBrowserTest,
+                       AdvancedShieldsNewUserValue) {
+  EXPECT_FALSE(
+        browser()->profile()->GetPrefs()->GetBoolean(
+          kShieldsAdvancedViewEnabled));
+}
+
+// Existing Brave users should default shields to Advanced view
+IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, AdvancedShieldsExistingUserValue) {
+  first_run::CreateSentinelIfNeeded();
+  EXPECT_TRUE(
+        browser()->profile()->GetPrefs()->GetBoolean(
+          kShieldsAdvancedViewEnabled));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
