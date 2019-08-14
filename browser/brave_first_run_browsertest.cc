@@ -28,7 +28,8 @@ void FirstRunMasterPrefsBrowserTestBase::TearDown() {
   InProcessBrowserTest::TearDown();
 }
 
-void FirstRunMasterPrefsBrowserTestBase::SetUpCommandLine(base::CommandLine* command_line) {
+void FirstRunMasterPrefsBrowserTestBase::SetUpCommandLine(
+    base::CommandLine* command_line) {
   command_line->AppendSwitch(switches::kForceFirstRun);
   EXPECT_EQ(first_run::AUTO_IMPORT_NONE, first_run::auto_import_state());
 

@@ -62,7 +62,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsFirstRunBrowserTest,
 }
 
 // Existing Brave users should default shields to Advanced view
-IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, AdvancedShieldsExistingUserValue) {
+IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
+                       AdvancedShieldsExistingUserValue) {
   first_run::CreateSentinelIfNeeded();
   EXPECT_TRUE(
         browser()->profile()->GetPrefs()->GetBoolean(

@@ -10,6 +10,7 @@
 // See browser/brave_profile_prefs_browsertest.cc for an example
 // Useful for verifying first-run functionality.
 
+#include <memory>
 #include <string>
 
 #include "base/base_switches.h"
