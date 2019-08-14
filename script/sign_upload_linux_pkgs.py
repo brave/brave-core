@@ -23,16 +23,16 @@ from lib.github import GitHub
 def main():
 
     args = parse_args()
-
     channel = args.channel
     repo_dir = args.repo_dir
     dist_dir = os.path.join(repo_dir, 'dist')
     gpg_full_key_id = args.gpg_full_key_id
-    if channel in ['release']:
-        if not args.gpg_passphrase:
-            logging.error(
-                "Error: --gpg_passphrase required for channel {}".format(channel))
-            exit(1)
+    if args.get(unmount, default=False) and channel in ['beta', 'dev', 'nightly']:
+        unmount = args.unmount
+        if channel in ['release']:
+            if not args.gpg_passphrase:
+                logging.error("Error: --gpg_passphrase required for channel {}".format(channel))
+                exit(1)
         else:
             gpg_passphrase = args.gpg_passphrase
     s3_test_buckets = args.s3_test_buckets
@@ -56,9 +56,25 @@ def main():
     try:
         output = subprocess.check_output(list_keys_cmd, shell=True)
     except subprocess.CalledProcessError as cpe:
-        logging.error("Error: Expected GPG ID not found in keyring!")
-        logging.error("Error: {}".format(cpe))
-        exit(1)
+        logging.debug("Expected GPG ID not found in keyring!")
+        logging.debug("Output from gpg2 --list-keys command: {}".format(cpe))
+        if args.unmount is not False and channel in ['beta', 'dev', 'nightly']:
+            logging.debug("Unmounting /home/ubuntu/.gnupg")
+            list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(
+                unmount)
+            logging.debug("Running command: {}".format(list_keys_cmd))
+            try:
+                output = subprocess.check_output(list_keys_cmd, shell=True)
+            except subprocess.CalledProcessError as cpe:
+                logging.error("Error: {}".format(cpe))
+                exit(1)
+            try:
+                unmount_cmd = "sudo umount /home/ubuntu/.gnupg"
+                logging.debug("Running command: {}".format(unmount_cmd))
+                output = subprocess.check_output(unmount_cmd, shell=True)
+            except subprocess.CalledProcessError as cpe:
+                logging.error("Error: {}".format(cpe))
+                exit(1)
 
     saved_path = os.getcwd()
     try:
@@ -321,6 +337,8 @@ def parse_args():
                         required=True)
     parser.add_argument('-s', '--s3_test_buckets', help='Upload to test S3 buckets (same names but with'
                         ' \'-test\' postfix) for QA testing', action='store_true')
+    parser.add_argument('-u', '--unmount', help='Unmount the ~/.gnupg filesystem if this key is found in',
+                        ' the GPG Keyring', required=False)
     return parser.parse_args()
 
 
