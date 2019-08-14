@@ -15,6 +15,7 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
@@ -266,6 +267,32 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
   }
 #endif
 }
+
+bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
+    content::BrowserContext* browser_context,
+    content::RenderFrameHost* frame,
+    int render_process_id,
+    bool is_navigation,
+    bool is_download,
+    const url::Origin& request_initiator,
+    network::mojom::URLLoaderFactoryRequest* factory_request,
+    network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client,
+    bool* bypass_redirect_checks) {
+  bool use_proxy = false;
+
+  use_proxy = ChromeContentBrowserClient::WillCreateURLLoaderFactory(
+      browser_context,
+        frame, render_process_id, is_navigation, is_download, request_initiator,
+        factory_request, header_client, bypass_redirect_checks);
+
+  // TODO(iefremov): Skip proxying for certain requests?
+  use_proxy |= BraveProxyingURLLoaderFactory::MaybeProxyRequest(
+      browser_context,
+      frame, is_navigation ? -1 : render_process_id,
+      factory_request);
+  return use_proxy;
+}
+
 
 void BraveContentBrowserClient::MaybeHideReferrer(
     content::BrowserContext* browser_context,

@@ -17,33 +17,51 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 
 #define DAT_FILE "rs-ABPFilterParserData.dat"
 
 namespace brave_shields {
 
-std::string AdBlockService::g_ad_block_component_id_(
-    kAdBlockComponentId);
+namespace {
+
+std::string GetTagFromPrefName(const std::string& pref_name) {
+  if (pref_name == kFBEmbedControlType) {
+    return brave_shields::kFacebookEmbeds;
+  }
+  if (pref_name == kTwitterEmbedControlType) {
+    return brave_shields::kTwitterEmbeds;
+  }
+  if (pref_name == kLinkedInEmbedControlType) {
+    return brave_shields::kLinkedInEmbeds;
+  }
+  return "";
+}
+
+}  // namespace
+
+std::string AdBlockService::g_ad_block_component_id_(kAdBlockComponentId);
 std::string AdBlockService::g_ad_block_component_base64_public_key_(
     kAdBlockComponentBase64PublicKey);
 
 AdBlockService::AdBlockService(
     brave_component_updater::BraveComponent::Delegate* delegate)
-    : AdBlockBaseService(delegate) {
-}
+    : AdBlockBaseService(delegate) {}
 
-AdBlockService::~AdBlockService() {
-}
+AdBlockService::~AdBlockService() {}
 
 bool AdBlockService::Init() {
   if (!AdBlockBaseService::Init())
     return false;
 
-  Register(kAdBlockComponentName,
-           g_ad_block_component_id_,
+  Register(kAdBlockComponentName, g_ad_block_component_id_,
            g_ad_block_component_base64_public_key_);
   return true;
 }
@@ -51,8 +69,7 @@ bool AdBlockService::Init() {
 void AdBlockService::OnComponentReady(const std::string& component_id,
                                       const base::FilePath& install_dir,
                                       const std::string& manifest) {
-  base::FilePath dat_file_path =
-      install_dir.AppendASCII(DAT_FILE);
+  base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
   GetDATFileData(dat_file_path);
 }
 
@@ -76,6 +93,41 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kAdBlockCustomFilters, std::string());
   registry->RegisterDictionaryPref(kAdBlockRegionalFilters);
   registry->RegisterBooleanPref(kAdBlockCheckedDefaultRegion, false);
+}
+
+AdBlockPrefService::AdBlockPrefService(PrefService* prefs) : prefs_(prefs) {
+  pref_change_registrar_.reset(new PrefChangeRegistrar());
+  pref_change_registrar_->Init(prefs_);
+  pref_change_registrar_->Add(
+      kFBEmbedControlType,
+      base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
+                          base::Unretained(this), kFBEmbedControlType));
+  pref_change_registrar_->Add(
+      kTwitterEmbedControlType,
+      base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
+                          base::Unretained(this), kTwitterEmbedControlType));
+  pref_change_registrar_->Add(
+      kLinkedInEmbedControlType,
+      base::BindRepeating(&AdBlockPrefService::OnPreferenceChanged,
+                          base::Unretained(this), kLinkedInEmbedControlType));
+  OnPreferenceChanged(kFBEmbedControlType);
+  OnPreferenceChanged(kTwitterEmbedControlType);
+  OnPreferenceChanged(kLinkedInEmbedControlType);
+}
+
+AdBlockPrefService::~AdBlockPrefService() = default;
+
+void AdBlockPrefService::OnPreferenceChanged(const std::string& pref_name) {
+  std::string tag = GetTagFromPrefName(pref_name);
+  if (tag.length() == 0) {
+    return;
+  }
+  bool enabled = prefs_->GetBoolean(pref_name);
+  g_brave_browser_process->ad_block_service()->EnableTag(tag, enabled);
+  g_brave_browser_process->ad_block_regional_service_manager()->EnableTag(
+      tag, enabled);
+  g_brave_browser_process->ad_block_custom_filters_service()->EnableTag(
+      tag, enabled);
 }
 
 }  // namespace brave_shields

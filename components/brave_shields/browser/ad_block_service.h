@@ -13,9 +13,13 @@
 #include <vector>
 
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "content/public/browser/browser_thread.h"
 
 class AdBlockServiceTest;
+class PrefChangeRegistrar;
+class PrefService;
 
 using brave_component_updater::BraveComponent;
 
@@ -62,6 +66,21 @@ std::unique_ptr<AdBlockService> AdBlockServiceFactory(
 
 // Registers the local_state preferences used by Adblock
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);
+
+// Eventually we should merge |AdBlockService| into this class. At the moment
+// it's only responsibility is tracking some adblocking preferences.
+class AdBlockPrefService : public KeyedService {
+ public:
+  explicit AdBlockPrefService(PrefService* prefs);
+  ~AdBlockPrefService() override;
+
+ private:
+  void OnPreferenceChanged(const std::string& pref_name);
+
+  PrefService* prefs_ = nullptr;
+  std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
+      pref_change_registrar_;
+};
 
 }  // namespace brave_shields
 
