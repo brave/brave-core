@@ -7,6 +7,7 @@ import { storiesOf } from '@storybook/react'
 
 // Components
 import TorrentViewer from '../extension/components/torrentViewer'
+import { TorrentState } from '../extension/constants/webtorrentState'
 // Storybook
 const fullPageStoryStyles: object = {
   width: '-webkit-fill-available',
@@ -47,6 +48,11 @@ const sampleTorrent = {
   tabClients: new Set([1, 2, 4, 5])
 }
 
+const torrentState: TorrentState = {
+  tabId: 1,
+  torrentId: 'id'
+}
+
 // Storybook UI
 storiesOf('WebTorrent', module)
   .addDecorator(FullPageStory)
@@ -54,9 +60,8 @@ storiesOf('WebTorrent', module)
     return (
       <TorrentViewer
         actions={consoleLog}
-        torrentId={'Torrent Id'}
-        tabId={1}
         name={'Fake Torrent with really long title'}
+        torrentState={torrentState}
       />
     )
   })
@@ -64,10 +69,9 @@ storiesOf('WebTorrent', module)
     return (
       <TorrentViewer
         actions={consoleLog}
-        torrentId={'Fake Torrent'}
         torrent={sampleTorrent}
-        tabId={1}
         name={'Sample Torrent Name'}
+        torrentState={torrentState}
       />
     )
   })
