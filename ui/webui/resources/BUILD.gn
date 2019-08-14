@@ -1,12 +1,8 @@
 import("//tools/grit/grit_rule.gni")
 import("//ui/webui/webui_features.gni")
-import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 
 grit("resources") {
-  defines = [
-    "optimize_webui=$optimize_webui",
-    "brave_wallet_enabled=$brave_wallet_enabled"
-  ]
+  defines = [ "optimize_webui=$optimize_webui" ]
   source = "brave_webui_resources.grd"
 
   # The .grd contains references to generated files.
