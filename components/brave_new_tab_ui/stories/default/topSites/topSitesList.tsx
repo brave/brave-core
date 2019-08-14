@@ -9,7 +9,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { reorder, getItems } from '../helpers'
 
 // Feature-specific components
-import { List } from '../../../components/default'
+import { List } from '../../../components/default/topSites'
 import createWidget from '../../../components/default/widget'
 
 // Component group
@@ -43,7 +43,11 @@ class TopSitesList extends React.PureComponent<Props, State> {
         <Droppable droppableId='droppable' direction='horizontal'>
           {(provided) => {
             return (
-              <List {...provided.droppableProps} innerRef={provided.innerRef}>
+              <List
+                blockNumber={this.state.items.length}
+                {...provided.droppableProps}
+                innerRef={provided.innerRef}
+              >
                 {this.state.items.map((item, index) => <TopSite item={item} index={index} key={index} />)}
                 {provided.placeholder}
               </List>

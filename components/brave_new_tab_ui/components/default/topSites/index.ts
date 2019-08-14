@@ -5,21 +5,25 @@
 import styled from 'brave-ui/theme'
 import createWidget from '../widget'
 
-export const List = styled<{}, 'div'>('div')`
+interface ListProps {
+  blockNumber: number
+}
+
+export const List = styled<ListProps, 'div'>('div')`
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(6, 92px);
+  grid-template-columns: repeat(${p => Math.min(p.blockNumber, 6).toString()}, 92px);
 
   @media screen and (max-width: 1150px) {
     justify-content: center;
   }
 
   @media screen and (max-width: 700px) {
-    grid-template-columns: repeat(3, 92px);
+    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 3).toString()}, 92px);
   }
 
   @media screen and (max-width: 390px) {
-    grid-template-columns: repeat(2, 92px);
+    grid-template-columns: repeat(${p => Math.min(p.blockNumber, 2).toString()}, 92px);
   }
 `
 
