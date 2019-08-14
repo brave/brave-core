@@ -239,12 +239,18 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Ads & Confirmations
 
+/// Confirm an ad and update confirmations (called from the ads layer)
+- (void)confirmAd:(NSString *)info;
+
+/// Set catalog issuers ad and update confirmations (called from the ads layer)
+- (void)setCatalogIssuers:(NSString *)issuers;
+
 /// Update ad totals on month roll over without fetching latest balances from
 /// server
 - (void)updateAdsRewards;
 
 /// Get the number of ads received and the estimated earnings of viewing said ads for this cycle
-- (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings))completion NS_SWIFT_NAME(adsDetailsForCurrentCycle(_:));
+- (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate * _Nullable nextPaymentDate))completion NS_SWIFT_NAME(adsDetailsForCurrentCycle(_:));
 
 #pragma mark - Notifications
 

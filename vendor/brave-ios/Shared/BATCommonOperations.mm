@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "BATCommonOperations.h"
+#include <vector>
 
 @interface BATCommonOperations ()
 @property (nonatomic, copy) NSString *storagePath;
@@ -84,7 +85,15 @@
   const auto nsurl = [NSURL URLWithString:[NSString stringWithUTF8String:url.c_str()]];
   const auto request = [[NSMutableURLRequest alloc] initWithURL:nsurl];
 
-  // At the moment `headers` is ignored, as I'm not sure how to use an array of strings to setup HTTP headers...
+  for (const auto& header : headers) {
+    const auto bridged = [NSString stringWithUTF8String:header.c_str()];
+    const auto split = [bridged componentsSeparatedByString:@":"];
+    if (split.count == 2 && split.firstObject && split.lastObject) {
+      auto name = [split.firstObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+      auto value = [split.lastObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+      [request setValue:value forHTTPHeaderField:name];
+    }
+   }
 
   if (content_type.length() > 0) {
     [request setValue:[NSString stringWithUTF8String:content_type.c_str()] forHTTPHeaderField:@"Content-Type"];
