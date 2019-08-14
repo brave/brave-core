@@ -2,15 +2,7 @@ diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profile
 index 285f9e09a9020e8647fe363f7d3b0c867b1d26ea..10a247b701690ff70f1039a43d94dd164c3f18dd 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
-@@ -24,6 +24,7 @@
- #include "base/task/post_task.h"
- #include "base/task/task_traits.h"
- #include "base/threading/thread_task_runner_handle.h"
-+#include "brave/browser/net/brave_profile_network_delegate.h"
- #include "build/build_config.h"
- #include "chrome/browser/browser_process.h"
- #include "chrome/browser/chrome_notification_types.h"
-@@ -417,6 +418,9 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
+@@ -417,6 +417,9 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
      extensions::kExtensionScheme,
  #endif
      content::kChromeUIScheme,
