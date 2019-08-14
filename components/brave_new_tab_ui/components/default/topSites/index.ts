@@ -6,17 +6,15 @@ import styled from 'brave-ui/theme'
 import createWidget from '../widget'
 
 export const List = styled<{}, 'div'>('div')`
-  padding: 0 70px;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(6, 92px);
 
   @media screen and (max-width: 1150px) {
     justify-content: center;
-    padding: 40px;
   }
 
-  @media screen and (max-width: 630px) {
+  @media screen and (max-width: 700px) {
     grid-template-columns: repeat(3, 92px);
   }
 
