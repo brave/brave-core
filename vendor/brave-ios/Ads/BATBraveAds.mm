@@ -4,6 +4,7 @@
 
 #import "BATBraveAds.h"
 #import "BATAdsNotification.h"
+#import "BATBraveLedger.h"
 
 #import "bat/ads/ads.h"
 
@@ -238,7 +239,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 
 - (void)confirmAd:(std::unique_ptr<ads::NotificationInfo>)info
 {
-  // TODO: Add Implementation
+  [self.ledger confirmAd:[NSString stringWithUTF8String:info->ToJson().c_str()]];
 }
 
 - (void)confirmAction:(const std::string &)uuid creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)type
@@ -259,7 +260,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 
 - (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info
 {
-  // TODO: Add implementation
+  [self.ledger setCatalogIssuers:[NSString stringWithUTF8String:info->ToJson().c_str()]];
 }
 
 #pragma mark - Configuration
@@ -287,7 +288,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 
 - (const std::string)getAdsLocale
 {
-  return std::string([NSLocale currentLocale].localeIdentifier.UTF8String);
+  return std::string([[NSLocale preferredLanguages] firstObject].UTF8String);
 }
 
 - (bool)isAdsEnabled
@@ -443,7 +444,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 
 - (void)eventLog:(const std::string &)json
 {
-  // TODO: Add Implementation
+  [self log:__FILE__ line:__LINE__ logLevel:ads::LogLevel::LOG_INFO]->stream() << json << std::endl;
 }
 
 - (std::unique_ptr<ads::LogStream>)log:(const char *)file line:(const int)line logLevel:(const ads::LogLevel)log_level
