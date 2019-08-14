@@ -66,6 +66,17 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const service_manager::Identity& identity,
       base::CommandLine* command_line) override;
 
+  bool WillCreateURLLoaderFactory(
+      content::BrowserContext* browser_context,
+      content::RenderFrameHost* frame,
+      int render_process_id,
+      bool is_navigation,
+      bool is_download,
+      const url::Origin& request_initiator,
+      network::mojom::URLLoaderFactoryRequest* factory_request,
+      network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client,
+      bool* bypass_redirect_checks) override;
+
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,
                          const GURL& document_url,

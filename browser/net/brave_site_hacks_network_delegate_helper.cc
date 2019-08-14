@@ -71,36 +71,21 @@ void CheckForCookieOverride(const GURL& url, const URLPattern& pattern,
   }
 }
 
-bool IsBlockTwitterSiteHack(std::shared_ptr<BraveRequestInfo> ctx,
-                            net::HttpRequestHeaders* headers) {
-  URLPattern redirectURLPattern(URLPattern::SCHEME_ALL, kTwitterRedirectURL);
-  URLPattern referrerPattern(URLPattern::SCHEME_ALL, kTwitterReferrer);
-  if (redirectURLPattern.MatchesURL(ctx->request_url)) {
-    std::string referrer;
-    if (headers->GetHeader(kRefererHeader, &referrer) &&
-        referrerPattern.MatchesURL(GURL(referrer))) {
-      return true;
-    }
-  }
-  return false;
-}
-
 int OnBeforeStartTransaction_SiteHacksWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
+  // TODO(bridiver): Fix the Forbes cookie override with enabled NetworkService.
   CheckForCookieOverride(ctx->request_url,
       URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
       kForbesExtraCookies);
-  if (IsBlockTwitterSiteHack(ctx, headers)) {
-    return net::ERR_ABORTED;
-  }
   if (IsUAWhitelisted(ctx->request_url)) {
     std::string user_agent;
     if (headers->GetHeader(kUserAgentHeader, &user_agent)) {
       base::ReplaceFirstSubstringAfterOffset(&user_agent, 0,
         "Chrome", "Brave Chrome");
       headers->SetHeader(kUserAgentHeader, user_agent);
+      ctx->set_headers.insert(kUserAgentHeader);
     }
   }
   return net::OK;
