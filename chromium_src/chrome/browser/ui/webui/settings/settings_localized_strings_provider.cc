@@ -14,6 +14,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
+#include "extensions/common/extension_urls.h"
 
 #undef IDS_SETTINGS_EDIT_PERSON
 #define IDS_SETTINGS_EDIT_PERSON IDS_SETTINGS_BRAVE_EDIT_PROFILE
@@ -146,12 +147,22 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"relaunchButtonLabel",
       IDS_SETTINGS_RELAUNCH_BUTTON_LABEL},
     {"manageExtensionsLabel",
-      IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL}
+      IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL},
+    {"getMoreExtensionsLabel",
+      IDS_SETTINGS_GET_MORE_EXTENSIONS_LABEL},
+    {"getMoreExtensionsSubLabel",
+      IDS_SETTINGS_GET_MORE_EXTENSIONS_SUBLABEL}
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           base::size(localized_strings));
   html_source->AddString("webRTCLearnMoreURL",
       base::ASCIIToUTF16(kWebRTCLearnMoreURL));
+  html_source->AddString("getMoreExtensionsUrl",
+    base::ASCIIToUTF16(
+      google_util::AppendGoogleLocaleParam(
+                GURL(extension_urls::GetWebstoreExtensionsCategoryURL()),
+                g_browser_process->GetApplicationLocale())
+                .spec()));
 }
 
 void BraveAddResources(content::WebUIDataSource* html_source,
