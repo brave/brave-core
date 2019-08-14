@@ -1,28 +1,22 @@
 diff --git a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-index 0a3a1a7c8944c3b9be7fe8d02e90759677b3ad63..89dbfd4be6970542a4c956532458b25684918264 100644
+index 0a3a1a7c8944c3b9be7fe8d02e90759677b3ad63..f41e33cfea83b4fa17e06c0340c23c8973944a51 100644
 --- a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 +++ b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-@@ -35,23 +35,7 @@
+@@ -35,7 +35,7 @@
  
      <include layout="@layout/toolbar_space" />
  
 -    <LinearLayout
--        android:id="@+id/share_button_wrapper"
--        style="@style/BottomToolbarButtonWrapper"
--        android:contentDescription="@string/share" >
--
--        <org.chromium.chrome.browser.toolbar.bottom.ShareButton
--            android:id="@+id/share_button"
--            android:src="@drawable/ic_share_white_24dp"
--            app:tint="@color/standard_mode_tint"
--            style="@style/SplitToolbarButton" />
--
--        <TextView
--            android:id="@+id/share_button_label"
--            style="@style/BottomToolbarLabel"
--            android:text="@string/share" />
--
++    <!--<LinearLayout
+         android:id="@+id/share_button_wrapper"
+         style="@style/BottomToolbarButtonWrapper"
+         android:contentDescription="@string/share" >
+@@ -51,7 +51,8 @@
+             style="@style/BottomToolbarLabel"
+             android:text="@string/share" />
+ 
 -    </LinearLayout>
++    </LinearLayout>-->
 +    <include layout="@layout/brave_bookmark_toolbar" />
  
      <include layout="@layout/toolbar_space" />
