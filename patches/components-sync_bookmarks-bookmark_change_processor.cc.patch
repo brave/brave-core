@@ -1,5 +1,5 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
-index 35a73a07bbcdd8aeba13acf37c6754aadb039768..52483687b7929da553b10f26423486597b1ed240 100644
+index 35a73a07bbcdd8aeba13acf37c6754aadb039768..ac7ebcbda6bc1de634b81be44ce98c2c3656b3ac 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.cc
 +++ b/components/sync_bookmarks/bookmark_change_processor.cc
 @@ -87,6 +87,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
@@ -23,19 +23,11 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..52483687b7929da553b10f2642348659
        error_handler()->OnUnrecoverableError(error);
        return;
      }
-+    BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED_1
++    BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED
  
      if (!PlaceSyncNode(MOVE, new_parent, new_index, &trans, &sync_node,
                         model_associator_)) {
-@@ -429,6 +431,7 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
- 
-   UpdateTransactionVersion(new_version, model,
-                            std::vector<const BookmarkNode*>(1, child));
-+  BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED_2
- }
- 
- void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
-@@ -458,6 +461,7 @@ void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
+@@ -458,6 +460,7 @@ void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
      return;
    }
  
@@ -43,7 +35,7 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..52483687b7929da553b10f2642348659
    CreateOrUpdateSyncNode(node);
  }
  
-@@ -490,6 +494,7 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
+@@ -490,6 +493,7 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
        DCHECK_EQ(sync_child.GetParentId(),
                  model_associator_->GetSyncIdFromChromeId(node->id()));
  
@@ -51,7 +43,7 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..52483687b7929da553b10f2642348659
        if (!PlaceSyncNode(MOVE, node, i, &trans, &sync_child,
                           model_associator_)) {
          syncer::SyncError error(FROM_HERE,
-@@ -718,6 +723,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+@@ -718,9 +722,11 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
                     << src.GetBookmarkSpecifics().url();
          continue;
        }
@@ -59,20 +51,7 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..52483687b7929da553b10f2642348659
        model_associator_->Associate(dst, src);
      }
  
-@@ -725,6 +731,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
++    BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL
+     to_reposition.insert(std::make_pair(src.GetPositionIndex(), dst));
      bookmark_model_->SetNodeSyncTransactionVersion(dst, model_version);
    }
- 
-+#if !defined(BRAVE_CHROMIUM_BUILD)
-   // When we added or updated bookmarks in the previous loop, we placed them to
-   // the far right position.  Now we iterate over all these modified items in
-   // sync order, left to right, moving them into their proper positions.
-@@ -732,6 +739,8 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
-     const BookmarkNode* parent = it->second->parent();
-     model->Move(it->second, parent, it->first);
-   }
-+#endif
-+  BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL
- 
-   // Clean up the temporary node.
-   if (foster_parent) {

@@ -33,6 +33,19 @@ using bookmarks::BookmarkNode;
 
 namespace brave_sync {
 
+namespace {
+
+// |node| is near the end in parent
+void RepositionRespectOrder(
+    bookmarks::BookmarkModel* bookmark_model,
+    const bookmarks::BookmarkNode* node) {
+  const bookmarks::BookmarkNode* parent = node->parent();
+  int index = GetIndexByCompareOrderStartFrom(parent, node, 0);
+  bookmark_model->Move(node, parent, index);
+}
+
+}   // namespace
+
 class SyncerHelperTest : public testing::Test {
  public:
   SyncerHelperTest() {}

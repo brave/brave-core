@@ -22,14 +22,6 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
 // |src| is the node which is about to be inserted into |parent|
 uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
                   const bookmarks::BookmarkNode* src);
-void RepositionOnApplyChangesFromSyncModel(
-  bookmarks::BookmarkModel* bookmark_model,
-  const std::multimap<int, const bookmarks::BookmarkNode*>& to_reposition);
-
-// Exported for test only
-void RepositionRespectOrder(
-    bookmarks::BookmarkModel* bookmark_model,
-    const bookmarks::BookmarkNode* node);
 
 uint64_t GetIndexByCompareOrderStartFrom(
     const bookmarks::BookmarkNode* parent,

@@ -104,15 +104,6 @@ uint64_t GetIndexByCompareOrderStartFrom(
   return index;
 }
 
-// |node| is near the end in parent
-void RepositionRespectOrder(
-    bookmarks::BookmarkModel* bookmark_model,
-    const bookmarks::BookmarkNode* node) {
-  const bookmarks::BookmarkNode* parent = node->parent();
-  int index = GetIndexByCompareOrderStartFrom(parent, node, 0);
-  bookmark_model->Move(node, parent, index);
-}
-
 void AddBraveMetaInfo(
     const bookmarks::BookmarkNode* node,
     bookmarks::BookmarkModel* model) {
@@ -163,14 +154,6 @@ uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
     }
   }
   return index;
-}
-
-void RepositionOnApplyChangesFromSyncModel(
-    bookmarks::BookmarkModel* bookmark_model,
-    const std::multimap<int, const bookmarks::BookmarkNode*>& to_reposition) {
-  for (auto it = to_reposition.begin(); it != to_reposition.end(); ++it) {
-    RepositionRespectOrder(bookmark_model, it->second);
-  }
 }
 
 }   // namespace brave_sync

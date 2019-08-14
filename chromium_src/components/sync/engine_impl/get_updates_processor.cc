@@ -103,6 +103,11 @@ void ExtractBookmarkMeta(sync_pb::SyncEntity* entity,
       bool result = base::StringToInt64(metaInfo.value, &ctime);
       DCHECK(result);
       entity->set_ctime(ctime);
+    } else if (metaInfo.key == "position_in_parent") {
+      int64_t position_in_parent;
+      bool result = base::StringToInt64(metaInfo.value, &position_in_parent);
+      DCHECK(result);
+      entity->set_position_in_parent(position_in_parent);
     } else if (metaInfo.key == "icon_data") {
       std::string icon_data_decoded;
       base::Base64Decode(metaInfo.value, &icon_data_decoded);
@@ -120,6 +125,9 @@ void MigrateFromLegacySync(sync_pb::SyncEntity* entity) {
   }
   if (!entity->has_version()) {
     entity->set_version(1);
+  }
+  if (!entity->has_position_in_parent()) {
+    entity->set_position_in_parent(0);
   }
 }
 
@@ -180,9 +188,6 @@ void AddBookmarkNode(sync_pb::SyncEntity* entity, const SyncRecord* record) {
 
   MigrateFromLegacySync(entity);
 
-  // Position will be calculated later by order comparison
-  // TODO(darkdh): dealing with USS remote changes handler
-  entity->set_position_in_parent(0);
   if (record->action == SyncRecord::Action::A_DELETE)
     entity->set_deleted(true);
   else

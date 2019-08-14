@@ -8,11 +8,9 @@
 
 
 #define BRAVE_SYNC_REPOSITION_METHODS \
-syncer::SyncError UpdateChildrenPositions( \
-    const bookmarks::BookmarkNode* parent_node, \
-    syncer::WriteTransaction* trans); \
-void MakeRepositionAndUpdateSyncNodes( \
-    const std::multimap<int, const bookmarks::BookmarkNode*>& to_reposition, \
+void MoveSyncNode( \
+    int index, \
+    const bookmarks::BookmarkNode* node, \
     const syncer::BaseTransaction* trans);
 
 #include "../../../../../components/sync_bookmarks/bookmark_change_processor.h"

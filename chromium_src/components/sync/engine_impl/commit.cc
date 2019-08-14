@@ -150,6 +150,10 @@ ConvertCommitsToBraveRecords(sync_pb::ClientToServerMessage* message,
       metaInfo.value = std::to_string(entity.ctime());
       bookmark->metaInfo.push_back(metaInfo);
 
+      metaInfo.key = "position_in_parent";
+      metaInfo.value = std::to_string(entity.position_in_parent());
+      bookmark->metaInfo.push_back(metaInfo);
+
       if (bm_specifics.has_favicon()) {
         std::string icon_base64;
         base::Base64Encode(bm_specifics.favicon(), &icon_base64);
