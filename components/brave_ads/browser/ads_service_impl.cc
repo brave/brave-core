@@ -800,7 +800,8 @@ bool AdsServiceImpl::MigratePrefs(
       mappings {
     // {{from version, to version}, function}
     {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
-    {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3}
+    {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
+    {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
   };
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
@@ -876,6 +877,39 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
     "AU",  // Australia
     "NZ",  // New Zealand
     "IE"   // Ireland
+  };
+
+  MayBeShowOnboardingForSupportedRegion(region, new_regions);
+}
+
+void AdsServiceImpl::MigratePrefsVersion3To4() {
+  auto locale = GetAdsLocale();
+  auto region = ads::Ads::GetRegion(locale);
+
+  // On-board users for newly supported regions
+  std::vector<std::string> new_regions = {
+    "AR",  // Argentina
+    "AT",  // Austria
+    "BR",  // Brazil
+    "CH",  // Switzerland
+    "CL",  // Chile
+    "CO",  // Colombia
+    "DK",  // Denmark
+    "EC",  // Ecuador
+    "IL",  // Israel
+    "IN",  // India
+    "IT",  // Italy
+    "JP",  // Japan
+    "KR",  // Korea
+    "MX",  // Mexico
+    "NL",  // Netherlands
+    "PE",  // Peru
+    "PH",  // Philippines
+    "PL",  // Poland
+    "SE",  // Sweden
+    "SG",  // Singapore
+    "VE",  // Venezuela
+    "ZA"   // South Africa
   };
 
   MayBeShowOnboardingForSupportedRegion(region, new_regions);
