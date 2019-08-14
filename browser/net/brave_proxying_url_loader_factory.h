@@ -197,7 +197,8 @@ class BraveProxyingURLLoaderFactory
       content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
       int render_process_id,
-      network::mojom::URLLoaderFactoryRequest* factory_request);
+      mojo::PendingReceiver<network::mojom::URLLoaderFactory>*
+          factory_receiver);
 
   // network::mojom::URLLoaderFactory:
   void CreateLoaderAndStart(network::mojom::URLLoaderRequest loader_request,
