@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/net/brave_network_delegate_base.h"
-
 #include <string>
 
 #include "brave/browser/net/url_context.h"
