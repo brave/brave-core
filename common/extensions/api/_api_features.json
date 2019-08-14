@@ -105,7 +105,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://welcome/*",
-      "chrome://settings/*"
+      "chrome://settings/*",
+      "chrome://newtab/*"
     ]
   }]
 }
