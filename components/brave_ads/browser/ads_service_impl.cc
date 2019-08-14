@@ -1174,6 +1174,10 @@ void AdsServiceImpl::SetAdsPerHour(const uint64_t ads_per_hour) {
 }
 
 void AdsServiceImpl::GetAdsHistory(OnGetAdsHistoryCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
   bat_ads_->GetAdsHistory(base::BindOnce(&AdsServiceImpl::OnGetAdsHistory,
                                          AsWeakPtr(), std::move(callback)));
 }
@@ -1260,6 +1264,10 @@ void AdsServiceImpl::ToggleAdThumbUp(const std::string& id,
                                      const std::string& creative_set_id,
                                      int action,
                                      OnToggleAdThumbUpCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
   bat_ads_->ToggleAdThumbUp(id, creative_set_id, action,
                             base::BindOnce(&AdsServiceImpl::OnToggleAdThumbUp,
                                            AsWeakPtr(), std::move(callback)));
@@ -1275,6 +1283,10 @@ void AdsServiceImpl::ToggleAdThumbDown(const std::string& id,
                                        const std::string& creative_set_id,
                                        int action,
                                        OnToggleAdThumbDownCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
   bat_ads_->ToggleAdThumbDown(
       id, creative_set_id, action,
       base::BindOnce(&AdsServiceImpl::OnToggleAdThumbDown, AsWeakPtr(),
@@ -1291,6 +1303,10 @@ void AdsServiceImpl::ToggleAdOptInAction(
     const std::string& category,
     int action,
     OnToggleAdOptInActionCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
   bat_ads_->ToggleAdOptInAction(
       category, action,
       base::BindOnce(&AdsServiceImpl::OnToggleAdOptInAction, AsWeakPtr(),
@@ -1308,6 +1324,10 @@ void AdsServiceImpl::ToggleAdOptOutAction(
     const std::string& category,
     int action,
     OnToggleAdOptOutActionCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
   bat_ads_->ToggleAdOptOutAction(
       category, action,
       base::BindOnce(&AdsServiceImpl::OnToggleAdOptOutAction, AsWeakPtr(),
@@ -1325,6 +1345,10 @@ void AdsServiceImpl::ToggleSaveAd(const std::string& id,
                                   const std::string& creative_set_id,
                                   bool saved,
                                   OnToggleSaveAdCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
   bat_ads_->ToggleSaveAd(id, creative_set_id, saved,
                          base::BindOnce(&AdsServiceImpl::OnToggleSaveAd,
                                         AsWeakPtr(), std::move(callback)));
@@ -1340,6 +1364,10 @@ void AdsServiceImpl::ToggleFlagAd(const std::string& id,
                                   const std::string& creative_set_id,
                                   bool flagged,
                                   OnToggleFlagAdCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
   bat_ads_->ToggleFlagAd(id, creative_set_id, flagged,
                          base::BindOnce(&AdsServiceImpl::OnToggleFlagAd,
                                         AsWeakPtr(), std::move(callback)));
