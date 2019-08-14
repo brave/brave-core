@@ -162,6 +162,9 @@ class BraveSyncServiceTest : public testing::Test {
   BraveSyncServiceImpl* sync_service() { return sync_service_; }
   MockBraveSyncClient* sync_client() { return sync_client_; }
   MockBraveSyncServiceObserver* observer() { return observer_.get(); }
+  brave_sync::prefs::Prefs* sync_prefs() {
+    return sync_service_->sync_prefs_.get();
+  }
 
  private:
   // Need this as a very first member to run tests in UI thread
@@ -357,11 +360,11 @@ TEST_F(BraveSyncServiceTest, GetSeed) {
   // Service gets seed from client via BraveSyncServiceImpl::OnSaveInitData
   const auto binary_seed = brave_sync::Uint8Array(16, 77);
 
-  EXPECT_TRUE(sync_service()->sync_prefs_->GetPrevSeed().empty());
+  EXPECT_TRUE(sync_prefs()->GetPrevSeed().empty());
   sync_service()->OnSaveInitData(binary_seed, {0});
   std::string expected_seed = brave_sync::StrFromUint8Array(binary_seed);
   EXPECT_EQ(sync_service()->GetSeed(), expected_seed);
-  EXPECT_TRUE(sync_service()->sync_prefs_->GetPrevSeed().empty());
+  EXPECT_TRUE(sync_prefs()->GetPrevSeed().empty());
 }
 
 bool DevicesContains(brave_sync::SyncDevices* devices, const std::string& id,
@@ -403,8 +406,8 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
-  sync_service()->sync_prefs_->SetThisDeviceId("1");
-  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+  sync_prefs()->SetThisDeviceId("1");
+  auto devices = sync_prefs()->GetSyncDevices();
 
   EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
   EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
@@ -428,14 +431,14 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(resolved_records);
 
-  auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices_final = sync_prefs()->GetSyncDevices();
   EXPECT_TRUE(DevicesContains(devices_final.get(), "1", "device1"));
   EXPECT_TRUE(DevicesContains(devices_final.get(), "2", "device2"));
   EXPECT_FALSE(DevicesContains(devices_final.get(), "3", "device3"));
 }
 
 TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
-  sync_service()->sync_prefs_->SetThisDeviceId("1");
+  sync_prefs()->SetThisDeviceId("1");
   RecordsList records;
   records.push_back(SimpleDeviceRecord(
       SyncRecord::Action::A_CREATE,
@@ -446,7 +449,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
-  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices = sync_prefs()->GetSyncDevices();
 
   EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
   EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
@@ -465,7 +468,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
 
   sync_service()->OnResolvedPreferences(resolved_records);
 
-  auto devices_semi_final = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices_semi_final = sync_prefs()->GetSyncDevices();
   EXPECT_FALSE(DevicesContains(devices_semi_final.get(), "2", "device2"));
   EXPECT_TRUE(DevicesContains(devices_semi_final.get(), "1", "device1"));
 
@@ -478,14 +481,14 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
 
   sync_service()->OnResolvedPreferences(resolved_records2);
 
-  auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices_final = sync_prefs()->GetSyncDevices();
   EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
   EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
   EXPECT_FALSE(sync_service()->IsSyncConfigured());
 }
 
 TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
-  sync_service()->sync_prefs_->SetThisDeviceId("1");
+  sync_prefs()->SetThisDeviceId("1");
   RecordsList records;
   records.push_back(SimpleDeviceRecord(
       SyncRecord::Action::A_CREATE,
@@ -496,7 +499,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
-  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices = sync_prefs()->GetSyncDevices();
 
   EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
   EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
@@ -513,7 +516,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
   sync_service()->OnResolvedPreferences(resolved_records);
 
-  auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices_final = sync_prefs()->GetSyncDevices();
   EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
   EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
 
@@ -527,7 +530,7 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
   sync_service()->OnSetupSyncNewToSync("this_device");
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncEnabled));
-  sync_service()->sync_prefs_->SetThisDeviceId("0");
+  sync_prefs()->SetThisDeviceId("0");
 
   RecordsList records;
   records.push_back(SimpleDeviceRecord(
@@ -539,7 +542,7 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
 
   sync_service()->OnResolvedPreferences(records);
 
-  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices = sync_prefs()->GetSyncDevices();
 
   EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
   EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
@@ -551,7 +554,7 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
   resolved_records.push_back(std::move(resolved_record));
   sync_service()->OnResolvedPreferences(resolved_records);
 
-  auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices_final = sync_prefs()->GetSyncDevices();
   EXPECT_FALSE(DevicesContains(devices_final.get(), "0", "this_device"));
   EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
 
@@ -730,7 +733,7 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
-  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+  auto devices = sync_prefs()->GetSyncDevices();
 
   ASSERT_EQ(devices->size(), 1u);
   EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
@@ -771,4 +774,55 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
 
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncEnabled));
+}
+
+TEST_F(BraveSyncServiceTest, FetchDevices) {
+  EXPECT_CALL(*observer(),
+      OnSyncStateChanged(sync_service())).Times(1);
+  sync_prefs()->SetSyncBookmarksEnabled(true);
+
+  sync_prefs()->SetLastFetchTime(base::Time::Now());
+  sync_service()->RemoveObserver(observer());
+
+  // No devices, no observers: we should fetch devices
+  ASSERT_EQ(sync_prefs()->GetSyncDevices()->size(), 0u);
+  EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(1);
+  // Less than 2 devices, don't fetch bookmarks
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(0);
+  sync_service()->RequestSyncData();
+
+  // Have one device, no observers: we should fetch devices
+  RecordsList records;
+  records.push_back(SimpleDeviceRecord(
+      SyncRecord::Action::A_CREATE,
+      "0", "this_device"));
+  sync_service()->OnResolvedPreferences(records);
+
+  ASSERT_EQ(sync_prefs()->GetSyncDevices()->size(), 1u);
+  EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(1);
+  // Less than 2 devices, don't fetch bookmarks
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(0);
+  sync_service()->RequestSyncData();
+
+  // Have two devices, no observers: we should not fetch devices, as the chain
+  // is already created and we don't care if we will have then 3 or more
+
+  // TODO(Alexey): we should be aware if we will have less than two or
+  // if our device would be removed from the chain by action from the other
+  // device
+  records.push_back(SimpleDeviceRecord(
+      SyncRecord::Action::A_CREATE,
+      "1", "other_device"));
+  sync_service()->OnResolvedPreferences(records);
+
+  ASSERT_EQ(sync_prefs()->GetSyncDevices()->size(), 2u);
+  EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(0);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
+  sync_service()->RequestSyncData();
+
+  // Have two devices, one observer: should do fetch devices
+  sync_service()->AddObserver(observer());
+  EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
+  sync_service()->RequestSyncData();
 }
