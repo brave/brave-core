@@ -539,6 +539,14 @@ void BraveSyncServiceImpl::OnSyncWordsPrepared(const std::string& words) {
   NotifyHaveSyncWords(words);
 }
 
+bool BraveSyncServiceImpl::ShouldFetchDevices(size_t sync_devices_count) const {
+  // Fetch devices in two cases only:
+  // 1) We have one or zero devices, so we want to know when chain
+  //    is actually created to send initial sync data
+  // 2) We have at least one SyncUI page opened
+  return (sync_devices_count <= 1) || observers_.might_have_observers();
+}
+
 // Here we query sync lib for the records after initialization (or again later)
 void BraveSyncServiceImpl::RequestSyncData() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -556,9 +564,13 @@ void BraveSyncServiceImpl::RequestSyncData() {
     SendCreateDevice();
   }
 
-  sync_client_->SendFetchSyncDevices();
+  size_t sync_devices_count = sync_prefs_->GetSyncDevices()->size();
 
-  if (sync_prefs_->GetSyncDevices()->size() <= 1) {
+  if (ShouldFetchDevices(sync_devices_count)) {
+    sync_client_->SendFetchSyncDevices();
+  }
+
+  if (sync_devices_count <= 1) {
     // No sense to fetch or sync bookmarks when there no at least two devices
     // in chain
     // Set last fetch time here because we had fetched devices at least

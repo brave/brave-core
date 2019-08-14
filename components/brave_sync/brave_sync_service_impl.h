@@ -37,6 +37,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, BackgroundSyncStarted);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BackgroundSyncStopped);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest,
                                           OnSetupSyncHaveCode_Reset_SetupAgain);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, FetchDevices);
 
 class BraveSyncServiceTest;
 
@@ -112,6 +113,7 @@ class BraveSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BackgroundSyncStopped);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            OnSetupSyncHaveCode_Reset_SetupAgain);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, FetchDevices);
 
   friend class ::BraveSyncServiceTest;
 
@@ -145,6 +147,7 @@ class BraveSyncServiceImpl
   void OnSyncPrefsChanged(const std::string& pref);
 
   // Other private methods
+  bool ShouldFetchDevices(size_t sync_devices_count) const;
   void RequestSyncData();
   void FetchSyncRecords(const bool bookmarks, const bool history,
     const bool preferences, int max_records);
