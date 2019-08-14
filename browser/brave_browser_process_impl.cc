@@ -68,13 +68,12 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
       base::TimeDelta::FromSeconds(3));
 #endif
 
-  brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(
                      [](brave::BraveStatsUpdater* stats_updater) {
                        stats_updater->Start();
                      },
-                     base::Unretained(brave_stats_updater_.get())));
+                     base::Unretained(brave_stats_updater())));
 }
 
 brave_component_updater::BraveComponent::Delegate*
@@ -263,3 +262,9 @@ BraveBrowserProcessImpl::brave_widevine_bundle_manager() {
   return brave_widevine_bundle_manager_.get();
 }
 #endif
+
+brave::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
+  if (!brave_stats_updater_)
+    brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
+  return brave_stats_updater_.get();
+}
