@@ -1,8 +1,21 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-index 778321d0d46ef15d35f9c8cd242cc9e88981a303..b8ad055a9c23e18cf68e3eca967a2a4d19a374bb 100644
+index 778321d0d46ef15d35f9c8cd242cc9e88981a303..0a7c9b62839f58a8ecfd7e4c70a6909fc8f56ace 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-@@ -284,6 +284,7 @@ base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {
+@@ -273,6 +273,12 @@ bool AvatarToolbarButton::ShouldShowGenericIcon() const {
+     // This can happen if the user deletes the current profile.
+     return true;
+   }
++
++  // If the profile is using the placeholder avatar, fall back on the themeable
++  // vector icon instead.
++  if (entry->GetAvatarIconIndex() == profiles::GetPlaceholderAvatarIndex())
++    return true;
++
+   return entry->GetAvatarIconIndex() == 0 &&
+          g_browser_process->profile_manager()
+                  ->GetProfileAttributesStorage()
+@@ -284,6 +290,7 @@ base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {
    if (IsIncognito())
      return l10n_util::GetStringUTF16(IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP);
  

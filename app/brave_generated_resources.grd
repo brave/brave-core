@@ -494,6 +494,54 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
           Brave Browser Development Apps
         </message>
       </if>
+      <!-- Avatars -->
+      <message name="IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER" desc="The label for the avatar_braveorange.png avatar.">
+        Brave Orange
+      </message>
+      <if expr="not is_android">
+        <message name="IDS_BRAVE_AVATAR_LABEL_56" desc="The label for the avatar_orangepeel.png avatar.">
+          Orange Peel
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_57" desc="The label for the avatar_nana.png avatar.">
+          Nana
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_58" desc="The label for the avatar_envy.png avatar.">
+          Envy
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_59" desc="The label for the avatar_clearskies.png avatar.">
+          Clear Skies
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_60" desc="The label for the avatar_bondyblue.png avatar.">
+          Bondy Blue
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_61" desc="The label for the avatar_blurple.png avatar.">
+          Blurple
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_62" desc="The label for the avatar_darknight.png avatar.">
+          Dark Knight
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_63" desc="The label for the avatar_orangepeel_shape.png avatar.">
+          Orange Peel Shape
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_64" desc="The label for the avatar_nana_shape.png avatar.">
+          Nana Shape
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_65" desc="The label for the avatar_envy_shape.png avatar.">
+          Envy Shape
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_66" desc="The label for the avatar_clearskies_shape.png avatar.">
+          Clear Skies Shape
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_67" desc="The label for the avatar_bondyblue_shape.png avatar.">
+          Bondy Blue Shape
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_68" desc="The label for the avatar_blurple_shape.png avatar.">
+          Blurple Shape
+        </message>
+        <message name="IDS_BRAVE_AVATAR_LABEL_69" desc="The label for the avatar_darknight_shape.png avatar.">
+          Dark Knight Shape
+        </message>
+      </if>
     </messages>
     <includes>
       <include name="IDR_BRAVE_GOOGLE_ANALYTICS_POLYFILL" file="resources/js/google_analytics_polyfill.js" type="BINDATA" />
