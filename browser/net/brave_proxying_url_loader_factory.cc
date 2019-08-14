@@ -620,11 +620,11 @@ bool BraveProxyingURLLoaderFactory::MaybeProxyRequest(
     content::BrowserContext* browser_context,
     content::RenderFrameHost* render_frame_host,
     int render_process_id,
-    network::mojom::URLLoaderFactoryRequest* factory_request) {
+    mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  auto proxied_request = std::move(*factory_request);
+  auto proxied_receiver = std::move(*factory_receiver);
   network::mojom::URLLoaderFactoryPtrInfo target_factory_info;
-  *factory_request = mojo::MakeRequest(&target_factory_info);
+  *factory_receiver = mojo::MakeRequest(&target_factory_info);
 
   base::PostTaskWithTraits(
       FROM_HERE, {content::BrowserThread::IO},
@@ -632,7 +632,7 @@ bool BraveProxyingURLLoaderFactory::MaybeProxyRequest(
           &ResourceContextData::StartProxying,
           browser_context->GetResourceContext(), render_process_id,
           render_frame_host ? render_frame_host->GetFrameTreeNodeId() : 0,
-          std::move(proxied_request), std::move(target_factory_info)));
+          std::move(proxied_receiver), std::move(target_factory_info)));
   return true;
 }
 
