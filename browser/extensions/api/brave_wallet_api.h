@@ -6,7 +6,11 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_WALLET_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_WALLET_API_H_
 
+#include <string>
+
 #include "extensions/browser/extension_function.h"
+
+class Profile;
 
 namespace extensions {
 namespace api {
@@ -28,6 +32,41 @@ class BraveWalletIsEnabledFunction : public UIThreadExtensionFunction {
 
  protected:
   ~BraveWalletIsEnabledFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveWalletGetWalletSeedFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.getWalletSeed", UNKNOWN)
+
+  static std::string GetEthereumRemoteClientSeedFromRootSeed(
+      const std::string& seed);
+  static bool SealSeed(const std::string& seed, const std::string& key,
+      const std::string& nonce, std::string* cipher_seed);
+  static bool OpenSeed(const std::string& cipher_seed,
+      const std::string& key, const std::string& nonce, std::string* seed);
+  static void SaveToPrefs(Profile *, const std::string& cipher_seed,
+      const std::string& nonce);
+  static bool LoadFromPrefs(Profile *, std::string* cipher_seed,
+      std::string* nonce);
+  static std::string GetRandomNonce();
+  static std::string GetRandomSeed();
+  static const size_t kNonceByteLength;
+  static const size_t kSeedByteLength;
+
+ protected:
+  ~BraveWalletGetWalletSeedFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveWalletGetProjectIDFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.getProjectID", UNKNOWN)
+
+ protected:
+  ~BraveWalletGetProjectIDFunction() override {}
 
   ResponseAction Run() override;
 };
