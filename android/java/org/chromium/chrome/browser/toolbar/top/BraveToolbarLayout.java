@@ -42,6 +42,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                                                            View.OnLongClickListener {
   private ImageView mBraveShieldsButton;
   private FrameLayout mShieldsLayout;
+  private FrameLayout mRewardsLayout;
   private ChromeActivity mMainActivity;
   private BraveShieldsMenuHandler mBraveShieldsMenuHandler;
   private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
@@ -64,6 +65,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   protected void onFinishInflate() {
       super.onFinishInflate(); 
       mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
+      mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
       mBraveShieldsButton = (ImageView) findViewById(R.id.brave_shields_button);
       if (mBraveShieldsButton != null) {
           mBraveShieldsButton.setClickable(true);
@@ -246,6 +248,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   protected void updateModernLocationBarColor(int color) {
       mShieldsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+      mRewardsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
   }
 
   protected int getBoundsAfterAccountingForRightButtons(
@@ -259,7 +262,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
       return toolbarButtonsContainer.getMeasuredWidth() -
             mShieldsLayout.getWidth() -
-            //mRewardsLayout.getWidth() +
+            mRewardsLayout.getWidth() +
             params.getMarginEnd();
   }
 

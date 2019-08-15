@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java b/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
+index 80072b7f7afc55c1d893416b614267edbfb7b2da..091832ed91eea9462378b30ac3ec717e648e211e 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
+@@ -21,7 +21,7 @@ import java.util.Set;
+ /**
+  * ChromePreferenceManager stores and retrieves various values in Android shared preferences.
+  */
+-public class ChromePreferenceManager {
++public class ChromePreferenceManager extends BravePreferenceManager {
+     // For new int values with a default of 0, just document the key and its usage, and call
+     // #readInt and #writeInt directly.
+     // For new boolean values, document the key and its usage, call #readBoolean and #writeBoolean

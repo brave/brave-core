@@ -7,10 +7,12 @@ package org.chromium.chrome.browser.document;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.ChromeSwitches;
 import org.chromium.chrome.browser.firstrun.FirstRunStatus;
+import org.chromium.chrome.browser.preferences.ChromePreferenceManager;
 
 /**
  * Base class for ChromeLauncherActivity
@@ -23,5 +25,7 @@ public class BraveLauncherActivity extends Activity {
         // Disable FTR experience
         CommandLine.getInstance().appendSwitch(ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE);
         FirstRunStatus.setFirstRunFlowComplete(true);
+
+        ChromePreferenceManager.getInstance().isBottomToolbarEnabled();
     }
 }
