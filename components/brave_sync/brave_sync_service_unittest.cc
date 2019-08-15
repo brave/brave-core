@@ -826,3 +826,67 @@ TEST_F(BraveSyncServiceTest, FetchDevices) {
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
   sync_service()->RequestSyncData();
 }
+
+
+namespace {
+
+base::TimeDelta g_overridden_delta;
+std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForDelta(
+    base::TimeDelta overridden_delta) {
+  g_overridden_delta = overridden_delta;
+  return std::make_unique<base::subtle::ScopedTimeClockOverrides>(
+    []() {
+     return base::subtle::TimeNowIgnoringOverride() + g_overridden_delta;
+    },
+    nullptr,
+    nullptr);
+}
+
+}  // namespace
+
+TEST_F(BraveSyncServiceTest, FetchDevicesAllowInLargePeriod) {
+  EXPECT_CALL(*observer(),
+      OnSyncStateChanged(sync_service())).Times(1);
+  sync_prefs()->SetSyncBookmarksEnabled(true);
+
+  sync_prefs()->SetLastFetchTime(base::Time::Now());
+  sync_service()->RemoveObserver(observer());
+  sync_prefs()->SetLastFetchDevicesTime(base::Time::Now());
+
+  // Have two devices, no observers: we should not fetch devices, as the chain
+  // is already created and we don't care if we will have then 3 or more
+  RecordsList records;
+  records.push_back(SimpleDeviceRecord(
+      SyncRecord::Action::A_CREATE,
+      "0", "this_device"));
+  records.push_back(SimpleDeviceRecord(
+      SyncRecord::Action::A_CREATE,
+      "1", "other_device"));
+
+  sync_service()->OnResolvedPreferences(records);
+
+  ASSERT_EQ(sync_prefs()->GetSyncDevices()->size(), 2u);
+  EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(0);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
+  sync_service()->RequestSyncData();
+
+  auto forced_interval = sync_service()->GetForcedFetchDevicesIntervalForTest();
+
+  // Move time forward on a half period and don't expect to send fetch devices
+  {
+    auto time_override = OverrideForDelta(forced_interval / 2);
+
+    EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(0);
+    EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
+    sync_service()->RequestSyncData();
+  }
+
+  // Move time forward on a whole period and now expect to send fetch devices
+  {
+    auto time_override = OverrideForDelta(forced_interval);
+
+    EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(1);
+    EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
+    sync_service()->RequestSyncData();
+  }
+}
