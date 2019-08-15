@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, BATAdsNotificationEventType) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BATAdsNotification, BATBraveAds;
+@class BATAdsNotification, BATBraveAds, BATBraveLedger;
 
 NS_SWIFT_NAME(BraveAdsNotificationHandler)
 @protocol BATBraveAdsNotificationHandler
@@ -37,6 +37,8 @@ NS_SWIFT_NAME(BraveAdsNotificationHandler)
 
 NS_SWIFT_NAME(BraveAds)
 @interface BATBraveAds : NSObject
+
+@property (nonatomic, weak) BATBraveLedger *ledger;
 
 /// The notifications handler.
 ///

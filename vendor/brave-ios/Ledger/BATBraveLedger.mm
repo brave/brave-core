@@ -967,30 +967,34 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - Ads & Confirmations
 
+- (void)confirmAd:(NSString *)info
+{
+  ledger->ConfirmAd(info.UTF8String);
+}
+
+- (void)setCatalogIssuers:(NSString *)issuers
+{
+  ledger->SetCatalogIssuers(issuers.UTF8String);
+}
+
 - (void)updateAdsRewards
 {
   ledger->UpdateAdsRewards();
 }
 
-- (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings))completion
+- (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion
 {
   ledger->GetTransactionHistory(^(std::unique_ptr<ledger::TransactionsInfo> list) {
-    if (list == nullptr || list->transactions.empty()) {
-      completion(0, 0.0);
+    if (list == nullptr) {
+      completion(0, 0.0, nil);
     } else {
-      int adsReceived = 0;
-      double estimatedEarnings = 0.0;
-
-      for (const auto& transaction : list->transactions) {
-        if (transaction.estimated_redemption_value == 0.0) {
-          continue;
-        }
-
-        adsReceived++;
-        estimatedEarnings += transaction.estimated_redemption_value;
+      NSDate *nextPaymentDate = nil;
+      if (list->next_payment_date_in_seconds > 0) {
+        nextPaymentDate = [NSDate dateWithTimeIntervalSince1970:list->next_payment_date_in_seconds];
       }
-
-      completion((NSInteger)adsReceived, estimatedEarnings);
+      completion(list->ad_notifications_received_this_month,
+                 list->estimated_pending_rewards,
+                 nextPaymentDate);
     }
   });
 }
@@ -1724,18 +1728,19 @@ BATLedgerBridge(BOOL,
 
 - (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback
 {
+  // For uphold wallets (not implemented)
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
   callback(std::move(wallets));
 }
 
 - (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet
 {
-
+  // For uphold wallets (not implemented)
 }
 
 - (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ShowNotificationCallback)callback
 {
-
+  // TODO: Add notifications
 }
 
 @end

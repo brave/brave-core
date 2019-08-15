@@ -103,6 +103,7 @@
   self.ads = [[self.adsClass alloc] initWithStateStoragePath:adsStorage];
   NSString *ledgerStorage = [self.configuration.stateStoragePath stringByAppendingPathComponent:@"ledger"];
   self.ledger = [[self.ledgerClass alloc] initWithStateStoragePath:ledgerStorage];
+  self.ads.ledger = self.ledger;
   self.ledger.ads = self.ads;
   __auto_type __weak weakSelf = self;
   self.ledger.faviconFetcher = ^(NSURL *pageURL, void (^completion)(NSURL * _Nullable)) {
