@@ -79,6 +79,9 @@ SyncRecordPtr PrepareResolvedDevice(
 
 }  // namespace
 
+// static
+constexpr base::TimeDelta BraveSyncServiceImpl::kForcedFetchDevicesInterval;
+
 BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
     sync_client_(BraveSyncClient::Create(this, profile)),
     sync_initialized_(false),
@@ -539,12 +542,23 @@ void BraveSyncServiceImpl::OnSyncWordsPrepared(const std::string& words) {
   NotifyHaveSyncWords(words);
 }
 
+// static
+base::TimeDelta BraveSyncServiceImpl::GetForcedFetchDevicesIntervalForTest() {
+  return kForcedFetchDevicesInterval;
+}
+
 bool BraveSyncServiceImpl::ShouldFetchDevices(size_t sync_devices_count) const {
   // Fetch devices in two cases only:
   // 1) We have one or zero devices, so we want to know when chain
   //    is actually created to send initial sync data
   // 2) We have at least one SyncUI page opened
-  return (sync_devices_count <= 1) || observers_.might_have_observers();
+  // 3) More than 10 minutes passed since last `fetch-sync-devices`
+  auto last_fetch_devices_time = sync_prefs_->GetLastFetchDevicesTime();
+
+  return (sync_devices_count <= 1) || observers_.might_have_observers() ||
+      tools::IsTimeEmpty(last_fetch_devices_time) ||
+      (base::Time::Now() - last_fetch_devices_time) >
+                                                    kForcedFetchDevicesInterval;
 }
 
 // Here we query sync lib for the records after initialization (or again later)
@@ -567,6 +581,7 @@ void BraveSyncServiceImpl::RequestSyncData() {
   size_t sync_devices_count = sync_prefs_->GetSyncDevices()->size();
 
   if (ShouldFetchDevices(sync_devices_count)) {
+    sync_prefs_->SetLastFetchDevicesTime(base::Time::Now());
     sync_client_->SendFetchSyncDevices();
   }
 

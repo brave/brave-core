@@ -28,6 +28,7 @@ const char kSyncDeviceList[] = "brave_sync.device_list";
 const char kSyncApiVersion[] = "brave_sync.api_version";
 const char kSyncMigrateBookmarksVersion[]
                                        = "brave_sync.migrate_bookmarks_version";
+const char kSyncLastFetchDevicesTime[] = "brave_sync.last_fetch_devices_time";
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
@@ -166,6 +167,14 @@ void Prefs::SetMigratedBookmarksVersion(const int migrate_bookmarks) {
   pref_service_->SetInteger(kSyncMigrateBookmarksVersion, migrate_bookmarks);
 }
 
+void Prefs::SetLastFetchDevicesTime(const base::Time &time) {
+  pref_service_->SetTime(kSyncLastFetchDevicesTime, time);
+}
+
+base::Time Prefs::GetLastFetchDevicesTime() {
+  return pref_service_->GetTime(kSyncLastFetchDevicesTime);
+}
+
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncDeviceId);
   pref_service_->ClearPref(kSyncSeed);
@@ -180,6 +189,7 @@ void Prefs::Clear() {
   pref_service_->ClearPref(kSyncDeviceList);
   pref_service_->ClearPref(kSyncApiVersion);
   pref_service_->ClearPref(kSyncMigrateBookmarksVersion);
+  pref_service_->ClearPref(kSyncLastFetchDevicesTime);
 }
 
 }  // namespace prefs

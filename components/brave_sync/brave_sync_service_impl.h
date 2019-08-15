@@ -38,6 +38,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, BackgroundSyncStopped);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest,
                                           OnSetupSyncHaveCode_Reset_SetupAgain);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, FetchDevices);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, FetchDevicesAllowInLargePeriod);
 
 class BraveSyncServiceTest;
 
@@ -114,6 +115,8 @@ class BraveSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            OnSetupSyncHaveCode_Reset_SetupAgain);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, FetchDevices);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
+                           FetchDevicesAllowInLargePeriod);
 
   friend class ::BraveSyncServiceTest;
 
@@ -186,6 +189,8 @@ class BraveSyncServiceImpl
     return reseting_;
   }
 
+  static base::TimeDelta GetForcedFetchDevicesIntervalForTest();
+
   void SetDeviceName(const std::string& name);
 
   std::unique_ptr<BraveSyncClient> sync_client_;
@@ -214,6 +219,9 @@ class BraveSyncServiceImpl
   base::Time last_time_fetch_sent_;
 
   std::unique_ptr<base::RepeatingTimer> timer_;
+
+  static constexpr base::TimeDelta kForcedFetchDevicesInterval
+                                             = base::TimeDelta::FromMinutes(10);
 
   // Registrar used to monitor the profile prefs.
   PrefChangeRegistrar profile_pref_change_registrar_;

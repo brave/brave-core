@@ -57,6 +57,8 @@ extern const char kSyncApiVersion[];
 // The version of bookmarks state: 0,1,... .
 // Current to migrate to is 1.
 extern const char kSyncMigrateBookmarksVersion[];
+// The time the latest performing fetch-sync-devices request
+extern const char kSyncLastFetchDevicesTime[];
 
 class Prefs {
  public:
@@ -97,6 +99,9 @@ class Prefs {
 
   int GetMigratedBookmarksVersion();
   void SetMigratedBookmarksVersion(const int);
+
+  void SetLastFetchDevicesTime(const base::Time &time);
+  base::Time GetLastFetchDevicesTime();
 
   void Clear();
 
