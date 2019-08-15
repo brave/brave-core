@@ -373,6 +373,8 @@ test("brave_browser_tests") {
     "//brave/browser/brave_content_browser_client_browsertest.cc",
     "//brave/browser/brave_features_browsertest.cc",
     "//brave/browser/brave_profile_prefs_browsertest.cc",
+    "//brave/browser/brave_first_run_browsertest.h",
+    "//brave/browser/brave_first_run_browsertest.cc",
     "//brave/browser/brave_resources_browsertest.cc",
     "//brave/browser/brave_stats_updater_browsertest.cc",
     "//brave/browser/browsing_data/brave_clear_browsing_data_browsertest.cc",
