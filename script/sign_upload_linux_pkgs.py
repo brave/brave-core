@@ -27,12 +27,12 @@ def main():
     repo_dir = args.repo_dir
     dist_dir = os.path.join(repo_dir, 'dist')
     gpg_full_key_id = args.gpg_full_key_id
-    if args.get(unmount, default=False) and channel in ['beta', 'dev', 'nightly']:
+    if args.unmount is not False and channel in ['beta', 'dev', 'nightly']:
         unmount = args.unmount
-        if channel in ['release']:
-            if not args.gpg_passphrase:
-                logging.error("Error: --gpg_passphrase required for channel {}".format(channel))
-                exit(1)
+    if channel in ['release']:
+        if not args.gpg_passphrase:
+            logging.error("Error: --gpg_passphrase required for channel {}".format(channel))
+            exit(1)
         else:
             gpg_passphrase = args.gpg_passphrase
     s3_test_buckets = args.s3_test_buckets
