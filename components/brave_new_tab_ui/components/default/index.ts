@@ -6,7 +6,7 @@
 import { StatsContainer, StatsItem } from './stats'
 import { Header, Main, Footer } from './grid'
 import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper } from './settings'
-import { List, ListWidget, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
+import { ListWidget, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { ClockWidget } from './clock'
 import createWidget from './widget'
@@ -19,7 +19,6 @@ export {
   Header,
   Main,
   Footer,
-  List,
   ListWidget,
   Tile,
   TileActionsContainer,

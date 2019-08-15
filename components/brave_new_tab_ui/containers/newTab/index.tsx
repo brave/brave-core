@@ -9,7 +9,6 @@ import {
   Page,
   Header,
   ClockWidget as Clock,
-  Main,
   ListWidget as List,
   Footer,
   App,
@@ -162,36 +161,51 @@ class NewTabPage extends React.Component<Props, State> {
         }
         <Page>
           <Header>
-            <Stats stats={newTabData.stats} showWidget={newTabData.showStats}/>
-            <Clock showWidget={newTabData.showClock} />
-            <Main>
-              <List showWidget={newTabData.showTopSites}>
-                {
-                  this.props.newTabData.gridSites.map((site: NewTab.Site) =>
-                    <Block
-                      key={site.url}
-                      id={site.url}
-                      title={site.title}
-                      href={site.url}
-                      favicon={site.favicon}
-                      style={{ backgroundColor: site.themeColor || site.computedThemeColor }}
-                      onToggleBookmark={this.onToggleBookmark.bind(this, site)}
-                      onPinnedTopSite={this.onTogglePinnedTopSite.bind(this, site)}
-                      onIgnoredTopSite={this.onIgnoredTopSite.bind(this, site)}
-                      onDraggedSite={this.onDraggedSite}
-                      onDragEnd={this.onDragEnd}
-                      isPinned={site.pinned}
-                      isBookmarked={site.bookmarked !== undefined}
-                    />
-                  )
-                }
-              </List>
+            <Stats
+              textDirection={newTabData.textDirection}
+              stats={newTabData.stats}
+              showWidget={newTabData.showStats}
+              hideWidget={this.toggleShowStats}
+              menuPosition={'right'}
+            />
+            <Clock
+              textDirection={newTabData.textDirection}
+              showWidget={newTabData.showClock}
+              hideWidget={this.toggleShowClock}
+              menuPosition={'left'}
+            />
+            {this.props.newTabData.gridSites.length && <List
+              blockNumber={this.props.newTabData.gridSites.length}
+              textDirection={newTabData.textDirection}
+              showWidget={newTabData.showTopSites}
+              menuPosition={'right'}
+              hideWidget={this.toggleShowTopSites}
+            >
               {
-                this.props.newTabData.showSiteRemovalNotification
-                ? <SiteRemovalNotification actions={actions} />
-                : null
+                this.props.newTabData.gridSites.map((site: NewTab.Site) =>
+                  <Block
+                    key={site.url}
+                    id={site.url}
+                    title={site.title}
+                    href={site.url}
+                    favicon={site.favicon}
+                    style={{ backgroundColor: site.themeColor || site.computedThemeColor }}
+                    onToggleBookmark={this.onToggleBookmark.bind(this, site)}
+                    onPinnedTopSite={this.onTogglePinnedTopSite.bind(this, site)}
+                    onIgnoredTopSite={this.onIgnoredTopSite.bind(this, site)}
+                    onDraggedSite={this.onDraggedSite}
+                    onDragEnd={this.onDragEnd}
+                    isPinned={site.pinned}
+                    isBookmarked={site.bookmarked !== undefined}
+                  />
+                )
               }
-            </Main>
+            </List>}
+            {
+              this.props.newTabData.showSiteRemovalNotification
+              ? <SiteRemovalNotification actions={actions} />
+              : null
+            }
           </Header>
           <Footer>
             <FooterInfo

@@ -7,7 +7,7 @@ import styled from 'brave-ui/theme'
 export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   -webkit-font-smoothing: antialiased;
   display: grid;
-  grid-template-columns: repeat(4, fit-content(100%));
+  grid-template-columns: repeat(3, fit-content(100%));
   grid-gap: 25px 50px;
   font-weight: 400;
   margin: 0;
@@ -16,7 +16,7 @@ export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   font-size: inherit;
   font-family: inherit;
 
-  @media screen and (max-width: 630px) {
+  @media screen and (max-width: 700px) {
     grid-template-columns: repeat(2, fit-content(100%));
   }
 

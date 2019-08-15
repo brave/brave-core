@@ -7,37 +7,45 @@ import styled from 'brave-ui/theme'
 export const Header = styled<{}, 'header'>('header')`
   box-sizing: border-box;
   display: grid;
-  height: 100%;
-  margin: 70px 0 0;
-  grid-template-columns: 1fr auto auto;
-  grid-template-rows: 100px;
-  grid-gap: 30px 0;
+  margin: 46px 0 0;
+  grid-template-columns: fit-content(100%) auto fit-content(100%);
+  grid-template-rows: fit-content(100%) fit-content(100%) fit-content(100%) fit-content(100%);
   grid-template-areas:
-    "stats clock"
-    "topsites topsites";
+    "stats . clock"
+    ". . clock"
+    "topsites topsites topsites"
+    "notification notification notification";
 
-  > *:first-child {
+  > *:nth-child(1) {
     grid-area: stats;
-    margin: 0 70px 0 70px;
+    margin: 0 46px 0 46px;
   }
-
   > *:nth-child(2) {
     grid-area: clock;
-    margin: 0 70px 0 70px;
+    margin: 0 46px 0 46px;
   }
 
   > *:nth-child(3) {
     grid-area: topsites;
+    margin: 0 46px 0 46px;
+    justify-self: start;
+  }
+
+  > *:nth-child(4) {
+    grid-area: notification;
+    justify-self: center;
   }
 
   @media screen and (max-width: 1150px) {
-    grid-template-rows: 1fr;
+    grid-row-gap: 4px;
     grid-template-areas:
-    "clock"
-    "stats"
-    "topsites";
+    "clock clock clock"
+    "stats stats stats"
+    "topsites topsites topsites"
+    "notification notification notification";
 
-    > *:first-child {
+
+    > *:nth-child(1) {
       margin: auto;
       text-align: center;
     }
@@ -48,11 +56,11 @@ export const Header = styled<{}, 'header'>('header')`
     }
 
     > *:nth-child(3) {
+      margin: auto;
       justify-content: center;
     }
   }
 `
-
 export const Main = styled<{}, 'main'>('main')`
   box-sizing: border-box;
 `
