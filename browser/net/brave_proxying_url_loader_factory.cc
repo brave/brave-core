@@ -19,7 +19,8 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/resource_context.h"
 #include "content/public/common/url_utils.h"
-#include "mojo/public/cpp/system/string_data_pipe_producer.h"
+#include "mojo/public/cpp/system/data_pipe_producer.h"
+#include "mojo/public/cpp/system/string_data_source.h"
 #include "net/base/completion_repeating_callback.h"
 #include "net/http/http_util.h"
 #include "services/network/public/cpp/features.h"
@@ -32,7 +33,7 @@ struct WriteData {
   // Wek ref. |client| destroys itself in |OnComplete()|.
   network::mojom::URLLoaderClient* client;
   std::string data;
-  std::unique_ptr<mojo::StringDataPipeProducer> producer;
+  std::unique_ptr<mojo::DataPipeProducer> producer;
 };
 
 void OnWrite(std::unique_ptr<WriteData> write_data, MojoResult result) {
@@ -360,13 +361,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     write_data->client = this;
     write_data->data = response_data;
     write_data->producer =
-        std::make_unique<mojo::StringDataPipeProducer>(std::move(producer));
+        std::make_unique<mojo::DataPipeProducer>(std::move(producer));
 
     base::StringPiece string_piece(write_data->data);
-    write_data->producer->Write(string_piece,
-                                mojo::StringDataPipeProducer::AsyncWritingMode::
-                                    STRING_STAYS_VALID_UNTIL_COMPLETION,
-                                base::BindOnce(OnWrite, std::move(write_data)));
+    write_data->producer->Write(
+        std::make_unique<mojo::StringDataSource>(
+            string_piece, mojo::StringDataSource::AsyncWritingMode::
+                              STRING_STAYS_VALID_UNTIL_COMPLETION),
+        base::BindOnce(OnWrite, std::move(write_data)));
     return;
   }
 
