@@ -51,6 +51,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 }
 
 // First run of Brave should default Shields to Simple view
+#if !defined(OS_ANDROID)
 const char kFirstRunEmptyPrefs[] = "{}";
 typedef FirstRunMasterPrefsBrowserTestT<kFirstRunEmptyPrefs>
     BraveProfilePrefsFirstRunBrowserTest;
@@ -69,6 +70,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
         browser()->profile()->GetPrefs()->GetBoolean(
           kShieldsAdvancedViewEnabled));
 }
+#endif
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
                        DisableGoogleServicesByDefault) {
