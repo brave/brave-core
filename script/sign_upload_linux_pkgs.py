@@ -337,7 +337,7 @@ def parse_args():
                         required=True)
     parser.add_argument('-s', '--s3_test_buckets', help='Upload to test S3 buckets (same names but with'
                         ' \'-test\' postfix) for QA testing', action='store_true')
-    parser.add_argument('-u', '--unmount', help='Unmount the ~/.gnupg filesystem if this key is found in',
+    parser.add_argument('-u', '--unmount', help='Unmount the ~/.gnupg filesystem if this key is found in'
                         ' the GPG Keyring', required=False)
     return parser.parse_args()
 
