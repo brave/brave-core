@@ -78,21 +78,24 @@ void ExtractBookmarkMeta(sync_pb::SyncEntity* entity,
                          const Bookmark& bookmark) {
   sync_pb::BookmarkSpecifics* bm_specifics = specifics->mutable_bookmark();
   for (const auto metaInfo : bookmark.metaInfo) {
+    // version need to be incremented
+    if (metaInfo.key != "version") {
+      sync_pb::MetaInfo* meta_info = bm_specifics->add_meta_info();
+      meta_info->set_key(metaInfo.key);
+      meta_info->set_value(metaInfo.value);
+    }
     if (metaInfo.key == "originator_cache_guid") {
       entity->set_originator_cache_guid(metaInfo.value);
-      sync_pb::MetaInfo* meta_info = bm_specifics->add_meta_info();
-      meta_info->set_key("originator_cache_guid");
-      meta_info->set_value(metaInfo.value);
     } else if (metaInfo.key == "originator_client_item_id") {
       entity->set_originator_client_item_id(metaInfo.value);
-      sync_pb::MetaInfo* meta_info = bm_specifics->add_meta_info();
-      meta_info->set_key("originator_client_item_id");
-      meta_info->set_value(metaInfo.value);
     } else if (metaInfo.key == "version") {
       int64_t version;
       bool result = base::StringToInt64(metaInfo.value, &version);
       DCHECK(result);
-      entity->set_version(version + 1);
+      entity->set_version(++version);
+      sync_pb::MetaInfo* meta_info = bm_specifics->add_meta_info();
+      meta_info->set_key(metaInfo.key);
+      meta_info->set_value(std::to_string(version));
     } else if (metaInfo.key == "mtime") {
       int64_t mtime;
       bool result = base::StringToInt64(metaInfo.value, &mtime);

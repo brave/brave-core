@@ -167,6 +167,13 @@ class BraveProfileSyncServiceImpl
 
   void SetPermanentNodesOrder(const std::string& base_order);
 
+  std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
+    const bookmarks::BookmarkNode* node);
+  // These SyncEntityInfo is for legacy device who doesn't send meta info for
+  // sync entity
+  void SaveSyncEntityInfo(const jslib::SyncRecord* record);
+  void LoadSyncEntityInfo(jslib::SyncRecord* record);
+
   void CreateResolveList(
     const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
     SyncRecordAndExistingList* records_and_existing_objects);

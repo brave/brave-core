@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -31,6 +32,7 @@
 namespace brave_sync {
 
 using browser_sync::ChromeSyncClient;
+using jslib::MetaInfo;
 using jslib::SyncRecord;
 using jslib_const::kBookmarks;
 using jslib_const::kHistorySites;
@@ -124,60 +126,22 @@ std::unique_ptr<SyncRecord> CreateDeleteBookmarkByObjectId(
   return record;
 }
 
-std::unique_ptr<SyncRecord> BookmarkNodeToSyncBookmark(
-    bookmarks::BookmarkModel* model,
-    const prefs::Prefs* brave_sync_prefs,
-    const bookmarks::BookmarkNode* node) {
-  if (node->is_permanent_node() || !node->parent())
-    return std::unique_ptr<SyncRecord>();
-
-  auto record = std::make_unique<SyncRecord>();
-  record->deviceId = brave_sync_prefs->GetThisDeviceId();
-  record->objectData = jslib_const::SyncObjectData_BOOKMARK;
-
-  auto bookmark = std::make_unique<jslib::Bookmark>();
-  bookmark->site.location = node->url().spec();
-  bookmark->site.title = base::UTF16ToUTF8(node->GetTitledUrlNodeTitle());
-  bookmark->site.customTitle = base::UTF16ToUTF8(node->GetTitle());
-  // bookmark->site.lastAccessedTime - ignored
-  bookmark->site.creationTime = node->date_added();
-  bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
-  // Url may have type OTHER_NODE if it is in Deleted Bookmarks
-  bookmark->isFolder = (node->type() != bookmarks::BookmarkNode::URL &&
-                           node->type() != bookmarks::BookmarkNode::OTHER_NODE);
-  bookmark->hideInToolbar =
-      node->parent() != model->bookmark_bar_node();
-
-  std::string object_id;
-  node->GetMetaInfo("object_id", &object_id);
-  record->objectId = object_id;
-
-  std::string parent_object_id;
-  node->parent()->GetMetaInfo("object_id", &parent_object_id);
-  bookmark->parentFolderObjectId = parent_object_id;
-
-  std::string order;
-  node->GetMetaInfo("order", &order);
-  DCHECK(!order.empty());
-  bookmark->order = order;
-
-  std::string sync_timestamp;
-  node->GetMetaInfo("sync_timestamp", &sync_timestamp);
-  DCHECK(!sync_timestamp.empty());
-
-  record->syncTimestamp = base::Time::FromJsTime(std::stod(sync_timestamp));
-
-  record->action = jslib::SyncRecord::Action::A_UPDATE;
-
-  record->SetBookmark(std::move(bookmark));
-
-  return record;
-}
-
 void DoDispatchGetRecordsCallback(
     GetRecordsCallback cb,
     std::unique_ptr<brave_sync::RecordsList> records) {
   cb.Run(std::move(records));
+}
+
+void AddSyncEntityInfo(jslib::Bookmark* bookmark,
+                       const bookmarks::BookmarkNode* node,
+                       const std::string& key) {
+  std::string value;
+  if (node->GetMetaInfo(key, &value)) {
+    MetaInfo metaInfo;
+    metaInfo.key = key;
+    metaInfo.value = value;
+    bookmark->metaInfo.push_back(metaInfo);
+  }
 }
 
 }   // namespace
@@ -560,6 +524,9 @@ void BraveProfileSyncServiceImpl::OnResolvedSyncRecords(
   if (category_name == jslib_const::kPreferences) {
     OnResolvedPreferences(*records.get());
   } else if (category_name == kBookmarks) {
+    for (auto& record : *records) {
+      LoadSyncEntityInfo(record.get());
+    }
     // Send records to syncer
     if (get_record_cb_)
       sync_thread_->task_runner()->PostTask(FROM_HERE,
@@ -690,6 +657,103 @@ void BraveProfileSyncServiceImpl::SetPermanentNodesOrder(
   brave_sync_prefs_->SetMigratedBookmarksVersion(2);
 }
 
+std::unique_ptr<SyncRecord>
+BraveProfileSyncServiceImpl::BookmarkNodeToSyncBookmark(
+    const bookmarks::BookmarkNode* node) {
+  if (node->is_permanent_node() || !node->parent())
+    return std::unique_ptr<SyncRecord>();
+
+  auto record = std::make_unique<SyncRecord>();
+  record->deviceId = brave_sync_prefs_->GetThisDeviceId();
+  record->objectData = jslib_const::SyncObjectData_BOOKMARK;
+
+  auto bookmark = std::make_unique<jslib::Bookmark>();
+  bookmark->site.location = node->url().spec();
+  bookmark->site.title = base::UTF16ToUTF8(node->GetTitledUrlNodeTitle());
+  bookmark->site.customTitle = base::UTF16ToUTF8(node->GetTitle());
+  // bookmark->site.lastAccessedTime - ignored
+  bookmark->site.creationTime = node->date_added();
+  bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
+  // Url may have type OTHER_NODE if it is in Deleted Bookmarks
+  bookmark->isFolder = (node->type() != bookmarks::BookmarkNode::URL &&
+                           node->type() != bookmarks::BookmarkNode::OTHER_NODE);
+  bookmark->hideInToolbar =
+      node->parent() != model_->bookmark_bar_node();
+
+  std::string object_id;
+  node->GetMetaInfo("object_id", &object_id);
+  record->objectId = object_id;
+
+  std::string parent_object_id;
+  node->parent()->GetMetaInfo("object_id", &parent_object_id);
+  bookmark->parentFolderObjectId = parent_object_id;
+
+  std::string order;
+  node->GetMetaInfo("order", &order);
+  DCHECK(!order.empty());
+  bookmark->order = order;
+
+  std::string sync_timestamp;
+  node->GetMetaInfo("sync_timestamp", &sync_timestamp);
+  DCHECK(!sync_timestamp.empty());
+
+  record->syncTimestamp = base::Time::FromJsTime(std::stod(sync_timestamp));
+
+  record->action = jslib::SyncRecord::Action::A_UPDATE;
+
+  AddSyncEntityInfo(bookmark.get(), node, "originator_cache_guid");
+  AddSyncEntityInfo(bookmark.get(), node, "originator_client_item_id");
+  AddSyncEntityInfo(bookmark.get(), node, "version");
+  AddSyncEntityInfo(bookmark.get(), node, "mtime");
+  AddSyncEntityInfo(bookmark.get(), node, "ctime");
+  AddSyncEntityInfo(bookmark.get(), node, "position_in_parent");
+  AddSyncEntityInfo(bookmark.get(), node, "icon_data");
+
+  record->SetBookmark(std::move(bookmark));
+
+  return record;
+}
+
+void BraveProfileSyncServiceImpl::SaveSyncEntityInfo(
+    const jslib::SyncRecord* record) {
+  auto* node = FindByObjectId(model_, record->objectId);
+  // no need to save for DELETE
+  if (node) {
+    auto& bookmark = record->GetBookmark();
+    for (auto& meta_info : bookmark.metaInfo) {
+      model_->SetNodeMetaInfo(node, meta_info.key, meta_info.value);
+    }
+  }
+}
+
+void BraveProfileSyncServiceImpl::LoadSyncEntityInfo(
+    jslib::SyncRecord* record) {
+  auto* node = FindByObjectId(model_, record->objectId);
+  if (node) {
+    auto* bookmark = record->mutable_bookmark();
+    if (!bookmark->metaInfo.empty())
+      return;
+    AddSyncEntityInfo(bookmark, node, "originator_cache_guid");
+    AddSyncEntityInfo(bookmark, node, "originator_client_item_id");
+    AddSyncEntityInfo(bookmark, node, "mtime");
+    AddSyncEntityInfo(bookmark, node, "ctime");
+    AddSyncEntityInfo(bookmark, node, "position_in_parent");
+    AddSyncEntityInfo(bookmark, node, "icon_data");
+    std::string s_version;
+    // Version needs to be incremented by 1 for legacy sync to emulate
+    // GetUpdateProcessor behavior
+    if (node->GetMetaInfo("version", &s_version)) {
+      int64_t version;
+      bool result = base::StringToInt64(s_version, &version);
+      DCHECK(result);
+      MetaInfo metaInfo;
+      metaInfo.key = "version";
+      metaInfo.value = std::to_string(++version);
+      bookmark->metaInfo.push_back(metaInfo);
+    }
+  }
+}
+
 void BraveProfileSyncServiceImpl::CreateResolveList(
     const std::vector<std::unique_ptr<SyncRecord>>& records,
     SyncRecordAndExistingList* records_and_existing_objects) {
@@ -705,8 +769,7 @@ void BraveProfileSyncServiceImpl::CreateResolveList(
     resolved_record->first = SyncRecord::Clone(*record);
     auto* node = FindByObjectId(model_, record->objectId);
     if (node) {
-      resolved_record->second =
-        BookmarkNodeToSyncBookmark(model_, brave_sync_prefs_.get(), node);
+      resolved_record->second = BookmarkNodeToSyncBookmark(node);
     }
 
     records_and_existing_objects->push_back(std::move(resolved_record));
@@ -904,6 +967,7 @@ void BraveProfileSyncServiceImpl::SendSyncRecords(
   brave_sync_client_->SendSyncRecords(category_name, *records);
   if (category_name == kBookmarks) {
     for (auto& record : *records) {
+      SaveSyncEntityInfo(record.get());
       std::unique_ptr<base::DictionaryValue> meta =
         std::make_unique<base::DictionaryValue>();
       meta->SetInteger("send_retry_number", 0);
@@ -951,8 +1015,7 @@ void BraveProfileSyncServiceImpl::ResendSyncRecords(
       brave_sync_prefs_->SetRecordToResendMeta(object_id, std::move(new_meta));
 
       if (node) {
-        records->push_back(
-          BookmarkNodeToSyncBookmark(model_, brave_sync_prefs_.get(), node));
+        records->push_back(BookmarkNodeToSyncBookmark(node));
       } else {
         records->push_back(
           CreateDeleteBookmarkByObjectId(brave_sync_prefs_.get(), object_id));
