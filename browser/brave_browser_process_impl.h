@@ -79,6 +79,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
+  brave::BraveStatsUpdater* brave_stats_updater();
 
  private:
   void CreateProfileManager();

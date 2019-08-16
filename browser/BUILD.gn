@@ -159,6 +159,7 @@ source_set("browser_process") {
   } else {
     sources += [
       "android/brave_shields_content_settings.cc",
+      "android/brave_stats_updater_android.cc",
     ]
 
     deps += [

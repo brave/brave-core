@@ -8,13 +8,21 @@ package org.chromium.chrome.browser;
 import android.content.Context;
 
 import org.chromium.base.Log;
+import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 
 /**
  * Brave's extension for ChromeActivity
  */
+@JNINamespace("chrome::android")
 public abstract class BraveActivity extends ChromeActivity {
+    @Override
+    public void onResumeWithNative() {
+        super.onResumeWithNative();
+        nativeRestartStatsUpdater();
+    }
+
     @Override
     public void onStartWithNative() {
         super.onStartWithNative();
@@ -23,4 +31,6 @@ public abstract class BraveActivity extends ChromeActivity {
         PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_SECTION_ENABLED, false);
         PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_LIST_VISIBLE, false);
     }
+
+    private native void nativeRestartStatsUpdater();
 }
