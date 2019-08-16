@@ -337,7 +337,8 @@ void BraveSyncServiceImpl::OnGetInitData(const std::string& sync_version) {
 
   brave_sync::client_data::Config config;
   config.api_version = sync_prefs_->GetApiVersion();
-  config.server_url = "https://sync.brave.com";
+  //config.server_url = "https://sync.brave.com";
+  config.server_url = "https://sync-staging.brave.com";
   config.debug = true;
   sync_client_->SendGotInitData(seed, device_id, config, sync_words_);
 }
@@ -413,11 +414,11 @@ void BraveSyncServiceImpl::OnGetExistingObjects(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   // TODO(bridiver) - what do we do with is_truncated ?
   // It appears to be ignored in b-l
-  if (!tools::IsTimeEmpty(last_record_time_stamp)) {
-    sync_prefs_->SetLatestRecordTime(last_record_time_stamp);
-  }
 
   if (category_name == jslib_const::kBookmarks) {
+    if (!tools::IsTimeEmpty(last_record_time_stamp)) {
+      sync_prefs_->SetLatestRecordTime(last_record_time_stamp);
+    }
     auto records_and_existing_objects =
         std::make_unique<SyncRecordAndExistingList>();
     bookmark_change_processor_->GetAllSyncData(
@@ -425,6 +426,9 @@ void BraveSyncServiceImpl::OnGetExistingObjects(
     sync_client_->SendResolveSyncRecords(
         category_name, std::move(records_and_existing_objects));
   } else if (category_name == brave_sync::jslib_const::kPreferences) {
+    if (!tools::IsTimeEmpty(last_record_time_stamp)) {
+      sync_prefs_->SetLatestDeviceRecordTime(last_record_time_stamp);
+    }
     auto existing_records = PrepareResolvedPreferences(*records.get());
     sync_client_->SendResolveSyncRecords(
         category_name, std::move(existing_records));
@@ -556,7 +560,7 @@ void BraveSyncServiceImpl::RequestSyncData() {
     SendCreateDevice();
   }
 
-  sync_client_->SendFetchSyncDevices();
+  FetchDevices();
 
   if (sync_prefs_->GetSyncDevices()->size() <= 1) {
     // No sense to fetch or sync bookmarks when there no at least two devices
@@ -603,6 +607,17 @@ void BraveSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
     category_names,
     start_at_time,
     max_records);
+}
+
+void BraveSyncServiceImpl::FetchDevices() {
+  DCHECK(sync_client_);
+  sync_prefs_->SetLastFetchTime(base::Time::Now());
+
+  base::Time start_at_time = sync_prefs_->GetLatestDeviceRecordTime();
+  sync_client_->SendFetchSyncRecords(
+    { brave_sync::jslib_const::kPreferences },
+    start_at_time,
+    1000);
 }
 
 void BraveSyncServiceImpl::SendCreateDevice() {

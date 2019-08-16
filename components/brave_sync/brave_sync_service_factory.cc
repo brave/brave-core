@@ -74,6 +74,7 @@ void BraveSyncServiceFactory::RegisterProfilePrefs(
   registry->RegisterBooleanPref(prefs::kSyncHistoryEnabled, false);
 
   registry->RegisterTimePref(prefs::kSyncLatestRecordTime, base::Time());
+  registry->RegisterTimePref(prefs::kSyncLatestDeviceRecordTime, base::Time());
   registry->RegisterTimePref(prefs::kSyncLastFetchTime, base::Time());
 
   registry->RegisterStringPref(prefs::kSyncDeviceList, std::string());

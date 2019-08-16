@@ -148,6 +148,7 @@ class BraveSyncServiceImpl
   void RequestSyncData();
   void FetchSyncRecords(const bool bookmarks, const bool history,
     const bool preferences, int max_records);
+  void FetchDevices();
 
   void SendCreateDevice();
   void SendDeviceSyncRecord(
