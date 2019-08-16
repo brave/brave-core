@@ -41,20 +41,6 @@
 #include "components/os_crypt/key_storage_config_linux.h"
 #endif
 
-#if defined(USE_X11)
-#if defined(USE_LIBSECRET)
-#include "chrome/browser/password_manager/native_backend_libsecret.h"
-#endif
-#include "chrome/browser/password_manager/native_backend_kwallet_x.h"
-#include "chrome/browser/password_manager/password_store_x.h"
-#include "components/os_crypt/key_storage_util_linux.h"
-
-base::nix::DesktopEnvironment ChromeImporter::GetDesktopEnvironment() {
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  return base::nix::GetDesktopEnvironment(env.get());
-}
-#endif
-
 using base::Time;
 
 ChromeImporter::ChromeImporter() {
@@ -314,92 +300,29 @@ double ChromeImporter::chromeTimeToDouble(int64_t time) {
 }
 
 void ChromeImporter::ImportPasswords(const base::FilePath& prefs_filename) {
-  #if !defined(USE_X11)
-    base::FilePath passwords_path =
-      source_path_.Append(
-        base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
+  base::FilePath passwords_path = source_path_.Append(
+      base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
 
-    password_manager::LoginDatabase database(passwords_path);
-    if (!database.Init()) {
-      LOG(ERROR) << "LoginDatabase Init() failed";
-      return;
-    }
+  password_manager::LoginDatabase database(passwords_path);
+  if (!database.Init()) {
+    LOG(ERROR) << "LoginDatabase Init() failed";
+    return;
+  }
 
-    std::vector<std::unique_ptr<autofill::PasswordForm>> forms;
-    bool success = database.GetAutofillableLogins(&forms);
-    if (success) {
-      for (size_t i = 0; i < forms.size(); ++i) {
-        bridge_->SetPasswordForm(*forms[i].get());
-      }
+  std::vector<std::unique_ptr<autofill::PasswordForm>> forms;
+  bool success = database.GetAutofillableLogins(&forms);
+  if (success) {
+    for (size_t i = 0; i < forms.size(); ++i) {
+      bridge_->SetPasswordForm(*forms[i].get());
     }
-    std::vector<std::unique_ptr<autofill::PasswordForm>> blacklist;
-    success = database.GetBlacklistLogins(&blacklist);
-    if (success) {
-      for (size_t i = 0; i < blacklist.size(); ++i) {
-        bridge_->SetPasswordForm(*blacklist[i].get());
-      }
+  }
+  std::vector<std::unique_ptr<autofill::PasswordForm>> blacklist;
+  success = database.GetBlacklistLogins(&blacklist);
+  if (success) {
+    for (size_t i = 0; i < blacklist.size(); ++i) {
+      bridge_->SetPasswordForm(*blacklist[i].get());
     }
-  #else
-    base::FilePath prefs_path = source_path_.Append(prefs_filename);
-    const base::Value *value;
-    scoped_refptr<JsonPrefStore> prefs = new JsonPrefStore(prefs_path);
-    int local_profile_id;
-    if (prefs->ReadPrefs() != PersistentPrefStore::PREF_READ_ERROR_NONE) {
-      return;
-    }
-    if (!prefs->GetValue(password_manager::prefs::kLocalProfileId, &value)) {
-      return;
-    }
-    if (!value->GetAsInteger(&local_profile_id)) {
-      return;
-    }
-
-    std::unique_ptr<PasswordStoreX::NativeBackend> backend;
-    base::nix::DesktopEnvironment desktop_env = GetDesktopEnvironment();
-
-    // WIP proper kEnableEncryptionSelection
-    os_crypt::SelectedLinuxBackend selected_backend =
-        os_crypt::SelectBackend(std::string(), true, desktop_env);
-    if (!backend &&
-        (selected_backend == os_crypt::SelectedLinuxBackend::KWALLET ||
-        selected_backend == os_crypt::SelectedLinuxBackend::KWALLET5)) {
-      base::nix::DesktopEnvironment used_desktop_env =
-          selected_backend == os_crypt::SelectedLinuxBackend::KWALLET
-              ? base::nix::DESKTOP_ENVIRONMENT_KDE4
-              : base::nix::DESKTOP_ENVIRONMENT_KDE5;
-      backend.reset(new NativeBackendKWallet(local_profile_id,
-                                             used_desktop_env));
-    } else if (selected_backend == os_crypt::SelectedLinuxBackend::GNOME_ANY ||
-               selected_backend ==
-                   os_crypt::SelectedLinuxBackend::GNOME_KEYRING ||
-               selected_backend ==
-                   os_crypt::SelectedLinuxBackend::GNOME_LIBSECRET) {
-  #if defined(USE_LIBSECRET)
-      if (!backend &&
-          (selected_backend == os_crypt::SelectedLinuxBackend::GNOME_ANY ||
-           selected_backend ==
-               os_crypt::SelectedLinuxBackend::GNOME_LIBSECRET)) {
-        backend.reset(new NativeBackendLibsecret(local_profile_id));
-      }
-  #endif
-    }
-    if (backend && backend->Init()) {
-      std::vector<std::unique_ptr<autofill::PasswordForm>> forms;
-      bool success = backend->GetAutofillableLogins(&forms);
-      if (success) {
-        for (size_t i = 0; i < forms.size(); ++i) {
-          bridge_->SetPasswordForm(*forms[i].get());
-        }
-      }
-      std::vector<std::unique_ptr<autofill::PasswordForm>> blacklist;
-      success = backend->GetBlacklistLogins(&blacklist);
-      if (success) {
-        for (size_t i = 0; i < blacklist.size(); ++i) {
-          bridge_->SetPasswordForm(*blacklist[i].get());
-        }
-      }
-    }
-  #endif
+  }
 }
 
 void ChromeImporter::ImportCookies() {
