@@ -421,6 +421,14 @@
     "message": "Indiciu",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Trimiteți o plată",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Indiciu",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Creatorul $name$ a fost verificat recent",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Deconectare de la Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Verificare portofel",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Serviciul nostru de portofel este furnizat de",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Vă rugăm să aveți la îndemână actul de identitate emis de autoritățile naționale.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Păstrați-vă simbolurile Ad Rewards",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Adăugați simboluri folosind cardul de credit",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Retragere simboluri",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Un portofel verificat vă permite să:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Verificați-vă portofelul",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Și administrați-vă fondurile cu ușurință!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Verificat",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Nu vă faceți griji. Acest lucru se poate întâmpla din diverse motive de securitate. Este de ajuns să vă reconectați pentru a rezolva problema.",
+    "message": "Nu vă faceți griji. Aceasta se poate întâmpla dintr-o varietate de motive de securitate. Reconectarea va rezolva această problemă.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

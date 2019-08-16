@@ -421,6 +421,14 @@
     "message": "ምክር",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "ጠቃሚ ምክር ይላኩ",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "ምክር",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "ፈጣሪ $name$ በቅርቡ ተረጋግጧል ",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "ከ Brave ሽልማቶች ግንኙነትዎን ያቋርጡ",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "የዋሌትን ትክክለኛነት አጣራ",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "የዋሌት አገልግሎታችን የተዘጋጀው በ",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "እባክዎ ከመንግስት የተሰጠዎትን የመታወቂያ ካርድ ዝግጁ ያድርጉ።",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "የማስታወቂያ ሽልማት ተለዋጭ ስሞችን ያቆዩ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "ክሬዲት ካርድ በመጠቀም ተለዋጭ ስሞችን ያክሉ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "ተለዋጭ ስሞችን ወጪ ያድርጉ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "ትክክለኛነቱ የተረጋገጠ ዋሌት እንዲያደርጉ የሚያስችልዎት፡",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "ዋሌትዎን ያረጋግጡ",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "እናም ገንዘቦችዎን በቀላሉ ያስተዳድሩ! ",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "ተረጋግጧል",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "ችግር የለም። ይህ በተለያዩ የደህንነት ምክንያቶች ሊከሰት ይችላል። በድጋሚ ትስስር መፍጠር ብቻ ችግሩን ይፈታዋል።",
+    "message": "ኣይጨነቁ። ይህ ለተለያዩ የደህንነት ምክንያቶች ሊከሰት ይችላል። ከሱ ጋር እንደገና በመገናኘት ይህንን ችግር ይፈታል።",
     "description": "Title for notification when wallet is disconnected"
   }
 }

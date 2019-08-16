@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Bu sitelerdeki içerik-seviyesi bahşişleri etkinleştir</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Mücevherleri bulduğunuz noktaya dokunun.</translation>
 <translation id="6135431587052937035">Favori sitelerinizi aylık tekrarlayan bağışlar ile destekleyin</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Az önce Brave Tarayıcısı'nı kullanarak <ph name="NAME"/>'a bahşiş verdim. https://brave.com/tips 'ten göz at.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Üzgünüz ki isteminizin işlenmesinde bir sorun oluştu, lütfen tekrar deneyin.</translation>
+<translation id="3082557070674409251">Tıklandı</translation>
+<translation id="7119308337584989771">Görevden alındı</translation>
+<translation id="6805660603861526473">Görüldü</translation>
 <translation id="7422678632904904341">Tutar:</translation>
 <translation id="5923611424721173182">Mevcut Mutabakat</translation>
 <translation id="5457113250005438886">Geçersiz</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">Brave Yazılım. Brave, Brave Yazılımın tescil edilmiş markasıdır. Site isimleri site sahibinin markası veya tescil edilmiş markası olabilir.</translation>
 <translation id="9026369588205476247">Gizliliğinizi korumak için bu Brave Ödülleri açıklaması cihazınızdan başka hiçbir yere (bu bilgisayar) kaydedilmedi, dosyalanmadı ya da listelenmedi. Cihazınızda veri kaybı yaşanması halinde Brave üzerinden geri getirilemez.</translation>
 <translation id="1036277985068412734">para ekle</translation>
+<translation id="3587482841069643663">Tümü</translation>
+<translation id="4241224519481557898">Kategori</translation>
+<translation id="3080423471207781945">Saat başına alınan en fazla reklam sayısı:</translation>
+<translation id="2631006050119455616">Kaydedildi</translation>
+<translation id="2155330833364281539">Geçtiğimiz {{totalDays}} gün içinde aldığınız reklamlartediğini sorun.</translation>
+<translation id="8863685593846905344">Reklam geçmişi</translation>
+<translation id="5212777575344695266">Uygunsuz Olarak İşaretle</translation>
+<translation id="2111256234277361810">Uygunsuz Olarak İşaretle ✓</translation>
+<translation id="8988332871810963281">Şu anda hiçbir Brave Reklam geçmişi yok</translation>
+<translation id="5345727496083327478">Artık bu kategoriden reklam almayacaksınız</translation>
+<translation id="5317780077021120954">Kaydet</translation>
 <translation id="5441565662498481293">Otomatik olarak bir ipucu gönderiyorsunuz:</translation>
 <translation id="2827387977307390755">Şunda bahşişlere izin ver</translation>
 <translation id="3671566813999349838">Miktar</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Bir kez</translation>
 <translation id="9182287025588539628">Tek-Seferlik Bahşiş</translation>
 <translation id="6381574025952123568">Açılış Bilançosu</translation>
+<translation id="532275381857891532">7 günlük reklam geçmişi</translation>
 <translation id="4923459931733593730">Ödeme</translation>
 <translation id="4021593982164260556">Ödeme her ayın {{day}}. günü yapılır.</translation>
 <translation id="6104680658798556671">Ödeme yapılmadı.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Aylık Bahşişler</translation>
 <translation id="2391095793008133394">Gönderileri için {{ user }}'a bahşiş ver:</translation>
 <translation id="7557413530932469222">Gönderileri için {{ user }}'a bahşiş verin!</translation>
+<translation id="717513177896084801">İpucu {{ user }}</translation>
 <translation id="1110535155349301542">kaldır</translation>
+<translation id="8204292894173669182">Kaydedilenlerden kaldır</translation>
 <translation id="8942997470474842562">#8217;Henüz katkı almak için kaydolmamış #8217; oluşturucular için {{ayrılmışMiktar}} BAT belirlediniz. Tarayıcınız, onlar doğrulayana veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam edecektir.</translation>
 <translation id="8759753423332885148">Daha fazla bilgi edinin.</translation>
 <translation id="3157931365184549694">Geri yükle</translation>
@@ -395,12 +413,14 @@
 <translation id="46988480989545156">Cüzdanı doğrula</translation>
 <translation id="1554282356558968486">Cüzdan hizmetimiz $name$ tarafından sağlanmaktadır.</translation>
 <translation id="6771734945114850124">Lütfen devlet tarafından verilmiş kimliğinizi hazır tutun.</translation>
-<translation id="4483114863312340607">Para çek ve yatır</translation>
-<translation id="6600381840029958159">Reklam ödülü kazanmak için captcha çözmeye gerek yok</translation>
-<translation id="4332021186346461319">Alınmış ödüllerin süresi asla geçmez ve cüzdanınıza anında yatırılır</translation>
-<translation id="2610007079772760276">Doğrulanmış bir cüzdan şunlara imkan tanır:</translation>
-<translation id="7565794512491053578">Cüzdanınızı Doğrulayın</translation>
-<translation id="698531289520577961">Ve paranızı kolaylıkla yönetin!</translation>
+<translation id="8697510149346635496">Gizliliğe saygı duyan reklamları görüntüleyerek kazandığınız BAT’ı geri çekin</translation>
+<translation id="1481480653609649134">Kredi kartları ve diğer kaynaklar ile ek BAT satın alın</translation>
+<translation id="9096003370755878766">Brave Rewards cüzdanınıza daha önce eklemiş olabileceğiniz BAT'ı geri çekin</translation>
+<translation id="5275978662119683162">Doğrulamanın faydaları</translation>
+<translation id="5166793288622772189">Cüzdanınızı doğrulamak için hazır mısınız?</translation>
+<translation id="8766217572332535979">İçerik oluşturucu katkıları için ödül kazanmak için doğrulama gerekli değildir</translation>
+<translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
+<translation id="723054503945711909">Brave Software Inc. onlarla bir hesap oluştururken, onaylama için verdiğiniz kişisel bilgilerin hiçbirini işlemez, saklamaz veya erişemez.</translation>
 <translation id="1181037720776840403">Kaldır</translation>
 <translation id="7885157704277298658">Kopyalandı!</translation>
 <translation id="5379640681913450928">Kelime Sayısı:</translation>

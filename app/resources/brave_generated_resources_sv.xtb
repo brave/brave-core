@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave annonsblockerare</translation>
 <translation id="6406506848690869874">Synka</translation>
 <translation id="5655621391922317800">Kryptoplånböcker</translation>
+<translation id="2445484935443597917">Skapa en ny profil</translation>
+<translation id="2666990579225592931">Öppna ett gästfönster</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") är inte tillåtet i Brave.</translation>
 <translation id="7450557937477381864">Stäng Brave</translation>
 <translation id="7008934821596358692">Stäng alla Brave fönster för att göra klart importen.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Öppna fönster och flikar</translation>
 <translation id="3699882589215410581">Installera och kör Wildwine</translation>
 <translation id="3696083746357487900">Installera kryptoplånböcker</translation>
+<translation id="8926389886865778422">Fråga inte igen.</translation>
+<translation id="4726634924419692905">Fråga när en webbplats vill installera Widevine på din dator.</translation>
 <translation id="8053096063396012732">Installera Widevine</translation>
 <translation id="4840334696217618631">Starta om webbläsaren för att aktivera Widevine</translation>
 <translation id="8410111618231938546">Google Widevine är ett stycke kod för Digital Rights Management (DRM) som vi på Brave Software varken äger eller kan inspektera. Koden för Google Wideline laddas från Googles servrar, inte från våra servrar. Den laddas endast när du aktiverar det här valet. Vi avråder från användning av DRM, men vi respekterar användarens val och tillstår att vissa Brave-användare vill använda tjänster som kräver detta.
@@ -31,6 +35,7 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="4988333904713528597">Autospela alltid på <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
 <translation id="5883458389055721080">Brave har inte granskat detta tillägg gällande säkerhet. Installera bara tillägget om du litar på utvecklaren.</translation>
+<translation id="8081858229109418493">Profilnamn och ikon</translation>
 <translation id="2044383478723007273">Bravefärger</translation>
 <translation id="2814998458708016836">Använd brett adressfält</translation>
 <translation id="6123134130710658846">Dölj Brave Rewards-knappen</translation>
@@ -57,6 +62,9 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="8754605759692119662">Detta blockerar de flesta annonser på webbplatser, inte Brave privata annonser — de kontrolleras från</translation>
 <translation id="6388201778088078932">inställningar.</translation>
 <translation id="9185018653595759199">Blockering av sociala media</translation>
+<translation id="7390783310074170337">Standardvy</translation>
+<translation id="130615081792797568">Enkel vy</translation>
+<translation id="2360360976480535628">Avancerad vy</translation>
 <translation id="5709627087332022422">Blockera cross-site-spårare</translation>
 <translation id="9075744464571452108">Enhetsigenkänning</translation>
 <translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
@@ -95,6 +103,9 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="9181207987584064303">Visa i Web Extensions Store</translation>
 <translation id="4846154056248462491">Vid avslut</translation>
 <translation id="5057399635433117814">Översätt denna sida? Detta kommer att skicka all text på sidan till Microsoft för översättning.</translation>
+<translation id="330263065709195164">Installera Google Translate-tillägget för att översätta den här sidan?</translation>
+<translation id="3789841737615482174">Installera</translation>
+<translation id="7658239707568436148">Avbryt</translation>
 <translation id="3371343170427636147">Brave Browser Nightly-appar</translation>
 <translation id="4097979995947147464">Brave Browser Beta-appar</translation>
 <translation id="8303432794159193481">Brave Browser Dev-appar</translation>

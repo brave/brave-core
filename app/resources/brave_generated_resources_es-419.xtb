@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Bloqueador de Publicidad Brave</translation>
 <translation id="6406506848690869874">Sincronización</translation>
 <translation id="5655621391922317800">Billeteras de criptomonedas</translation>
+<translation id="2445484935443597917">Crear un perfil nuevo</translation>
+<translation id="2666990579225592931">Abrir una ventana como invitado</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID de extensión "<ph name="EXTENSION_ID"/>") no se permite en Brave.</translation>
 <translation id="7450557937477381864">Cerrar Chrome</translation>
 <translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Abrir ventanas y pestañas</translation>
 <translation id="3699882589215410581">Instalar y ejecutar Widevine</translation>
 <translation id="3696083746357487900">Instalar billeteres de criptomonedas</translation>
+<translation id="8926389886865778422">No volver a preguntar</translation>
+<translation id="4726634924419692905">Preguntarme cuando un sitio intente instalar Widevine en mi computadora.</translation>
 <translation id="8053096063396012732">Instalar Widevine</translation>
 <translation id="4840334696217618631">Reiniciar el navegador para habilitar Widevine</translation>
 <translation id="8410111618231938546">El código de Google Wide Vine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilita esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y reconocemos que algunos usuarios de Brave desean utilizar los servicios cuando son requeridos.
@@ -31,6 +35,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="4988333904713528597">Siempre permitir la reproducción automática en <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar bloqueando la reproducción automática</translation>
 <translation id="5883458389055721080">Brave no ha comprobado que esta extensión sea segura. Instálela solo si confía en el desarrollador.</translation>
+<translation id="8081858229109418493">Ícono y nombre de perfil</translation>
 <translation id="2044383478723007273">Colores de Brave</translation>
 <translation id="2814998458708016836">Usar la barra de direcciones amplia</translation>
 <translation id="6123134130710658846">Ocultar botón de Recompensas Brave</translation>
@@ -57,6 +62,9 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="8754605759692119662">Esto bloqueará la mayoría de los anuncios en los sitios web, pero no los de Brave. Puede controlar los anuncios privados de Brave en la</translation>
 <translation id="6388201778088078932">configuración.</translation>
 <translation id="9185018653595759199">Bloqueo en redes sociales</translation>
+<translation id="7390783310074170337">Vista predeterminada</translation>
+<translation id="130615081792797568">Vista simple</translation>
+<translation id="2360360976480535628">Vista avanzada</translation>
 <translation id="5709627087332022422">Bloquear los rastreadores entre sitios</translation>
 <translation id="9075744464571452108">Reconocimiento de dispositivos</translation>
 <translation id="3570081523466826008">Actualizar las conexiones a HTTPS</translation>
@@ -95,6 +103,9 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="9181207987584064303">Ver en la Tienda virtual de extensiones</translation>
 <translation id="4846154056248462491">Al salir</translation>
 <translation id="5057399635433117814">¿Quiere traducir esta página? Esto enviará todo el texto de esta página a Microsoft para su traducción.</translation>
+<translation id="330263065709195164">¿Deseas instalar la extensión de Google Translate para traducir esta página?</translation>
+<translation id="3789841737615482174">Instalar</translation>
+<translation id="7658239707568436148">Cancelar</translation>
 <translation id="3371343170427636147">Aplicaciones del navegador Brave Nightly</translation>
 <translation id="4097979995947147464">Aplicaciones del navegador Brave Beta</translation>
 <translation id="8303432794159193481">Aplicaciones del navegador Brave Dev</translation>

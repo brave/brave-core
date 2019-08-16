@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Activer les dons relatifs au contenu sur ces sites</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Donnez à la volée quand vous tombez sur des joyaux</translation>
 <translation id="6135431587052937035">Soutenez vos sites favoris en leur versant un pourboire mensuel récurrent.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Je viens de faire un don à <ph name="NAME"/> avec le navigateur Brave. Pour le voir, rendez-vous sur https://brave.com/tips.</translation>
 <translation id="8404935570206006581">PourboireAvecBrave</translation>
 <translation id="2876191400747549936">Désolé, un problème s'est produit lors du traitement de votre demande. Veuillez réessayer.</translation>
+<translation id="3082557070674409251">Cliqué</translation>
+<translation id="7119308337584989771">Rejeté</translation>
+<translation id="6805660603861526473">Visionné</translation>
 <translation id="7422678632904904341">Montant :</translation>
 <translation id="5923611424721173182">Rapprochement actuel</translation>
 <translation id="5457113250005438886">Invalide</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave est une marque déposée de Brave Software.  Les noms des sites peuvent être des marques ou des marques déposées du propriétaire du site.</translation>
 <translation id="9026369588205476247">Afin de protéger votre vie privée, ce relevé de Récompenses Brave n'est pas sauvegardé, ni archivé ou enregistré ailleurs que sur votre appareil (cet ordinateur). Brave ne peut pas le récupérer en cas de perte de données sur votre appareil.</translation>
 <translation id="1036277985068412734">ajouter des fonds</translation>
+<translation id="3587482841069643663">Tous</translation>
+<translation id="4241224519481557898">Catégorie</translation>
+<translation id="3080423471207781945">Maximum de publicités reçues par heure :</translation>
+<translation id="2631006050119455616">Enregistré</translation>
+<translation id="2155330833364281539">Publicités que vous avez reçues dans les derniers {{totalDays}} jours</translation>
+<translation id="8863685593846905344">Historique des publicités</translation>
+<translation id="5212777575344695266">Marquer comme inapproprié</translation>
+<translation id="2111256234277361810">Marquer comme inapproprié ✓</translation>
+<translation id="8988332871810963281">Il n'y a actuellement aucune histoire de Brave Publicités</translation>
+<translation id="5345727496083327478">Vous ne recevrez plus de publicités de cette catégorie</translation>
+<translation id="5317780077021120954">Enregistrer</translation>
 <translation id="5441565662498481293">Vous envoyez automatiquement des dons à :</translation>
 <translation id="2827387977307390755">Autoriser les dons sur</translation>
 <translation id="3671566813999349838">Montant</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Ponctuels</translation>
 <translation id="9182287025588539628">Dons ponctuels</translation>
 <translation id="6381574025952123568">Solde à l'ouverture</translation>
+<translation id="532275381857891532">Historique des publicités des sept derniers jours</translation>
 <translation id="4923459931733593730">Paiement</translation>
 <translation id="4021593982164260556">Le paiement est effectué le {{day}} de chaque mois.</translation>
 <translation id="6104680658798556671">Paiement non effectué.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Dons Mensuels</translation>
 <translation id="2391095793008133394">Donner un pourboire à {{ user }} pour sa publication :</translation>
 <translation id="7557413530932469222">Donner un pourboire à {{ user }} pour sa publication !</translation>
+<translation id="717513177896084801">Astuce {{ user }}</translation>
 <translation id="1110535155349301542">effacer</translation>
+<translation id="8204292894173669182">Retirer de l'enregistrement</translation>
 <translation id="8942997470474842562">Vous avez désigné {{reservedAmount}} BAT pour les créateurs qui ne se sont pas encore inscrits pour recevoir des contributions. Votre navigateur continuera d'essayer de contribuer jusqu'à la vérification, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
 <translation id="8759753423332885148">En savoir plus.</translation>
 <translation id="3157931365184549694">Restaurer</translation>
@@ -395,12 +413,14 @@
 <translation id="46988480989545156">Vérifier le portefeuille</translation>
 <translation id="1554282356558968486">Notre service de portefeuille est fourni par</translation>
 <translation id="6771734945114850124">Veuillez vous munir de votre carte d'identité nationale.</translation>
-<translation id="4483114863312340607">Retirez et ajoutez des fonds</translation>
-<translation id="6600381840029958159">Pas besoin de résoudre des captcha pour gagner des primes publicitaires</translation>
-<translation id="4332021186346461319">Les primes reçues n'expireront jamais et seront instantanément déposées dans votre portefeuille.</translation>
-<translation id="2610007079772760276">Un portefeuille vérifié vous permet de :</translation>
-<translation id="7565794512491053578">Vérifiez votre portefeuille</translation>
-<translation id="698531289520577961">Et gérez facilement vos fonds !</translation>
+<translation id="8697510149346635496">Retirez les BAT que vous gagnez en regardant des publicités respectueuses de la vie privée.</translation>
+<translation id="1481480653609649134">Achetez des BAT supplémentaires avec des cartes de crédit et d'autres sources</translation>
+<translation id="9096003370755878766">Retirez les BAT que vous avez peut-être déjà ajoutés à votre portefeuille Brave Récompenses.</translation>
+<translation id="5275978662119683162">Avantages de la vérification</translation>
+<translation id="5166793288622772189">Prêt à vérifier votre portefeuille ?</translation>
+<translation id="8766217572332535979">La vérification n'est pas nécessaire pour obtenir des récompenses pour les contributions des créateurs.</translation>
+<translation id="8465442795593991224">Uphold peut vous demander de vérifier votre identité en fonction des services demandés.</translation>
+<translation id="723054503945711909">Brave Software Inc. ne traite, ne stocke et n'accède à aucun des renseignements personnels que vous fournissez à Uphold lorsque vous créez un compte chez eux.</translation>
 <translation id="1181037720776840403">Supprimer</translation>
 <translation id="7885157704277298658">Copié !</translation>
 <translation id="5379640681913450928">Nombre de mots :</translation>

@@ -421,6 +421,14 @@
     "message": "Propina",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Enviar una propina",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Propina",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Creador $name$verificado recientemente",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Desconectar de las recompensas de Brave",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Verificar cartera",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Servicio de cartera ofrecido por",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Ten a mano tu carné de identidad",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Conserva los testigos de tus recompensas de publicidad ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Añadir testigos utilizando tarjeta de crédito",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Retirar testigos ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Una cartera verificada te permite:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Verifica tu cartera",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "¡Y gestiona tus fondos fácilmente!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Verificada",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "No te preocupes. Esto puede pasar por muchos motivos. Prueba a reconectarte para solucionar este problema.",
+    "message": "No te preocupes. Esto se puede deber a diferentes cuestiones de seguridad. Basta con reconectarse para solucionar el problema.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

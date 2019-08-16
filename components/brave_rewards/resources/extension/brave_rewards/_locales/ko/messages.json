@@ -421,6 +421,14 @@
     "message": "팁",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "팁 보내기 ",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "팁",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "최근에 인증된 창작자 $name$",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Brave Rewards에서 연결 해제됨",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "월렛 검증하기",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "월렛 서비스 기능 제공사:",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "정부에서 발급한 유효한 신분증을 준비해 주세요.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "광고 리워드 토큰을 보관하세요",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "신용카드로 토큰 추가",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "토큰 인출",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "검증 완료된 월렛으로 할 수 있는 기능:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "월렛을 검증하세요",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "그리고 손쉽게 자금을 관리하세요!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "검증 완료됨",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "걱정마세요. 본 에러는 다양한 보안 상의 이유 때문에 발생할 수 있습니다. 간단히 다시 접속하시면 문제가 해결될 것입니다.",
+    "message": "걱정하지 마세요. 이런 일은 다양한 보안 이유로 발생할 수 있습니다. 단순히 재연결하면 이 문제가 해결됩니다. ",
     "description": "Title for notification when wallet is disconnected"
   }
 }

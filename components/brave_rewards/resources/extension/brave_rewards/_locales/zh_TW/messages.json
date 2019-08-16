@@ -421,6 +421,14 @@
     "message": "小費",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "傳送提示",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "小費",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "創作者 $name$ 最近已被驗證",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "從 Brave Rewards 取消連結",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "驗證錢包",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "我的錢包服務提供由",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "請提供您的政府核發的身份證明文件。",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "保留您的廣告獎勵代幣",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "使用信用卡新增代幣",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "提出代幣",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "驗證過的錢包讓您可以：",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "驗證您的錢包",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "並且很容易地管理您的資金",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "已驗證",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "別擔心。這可能是因為各種安全性原因而發生。通常只要重新連線就可以解決。",
+    "message": "別擔心。這有可能出於各種安全因素而發生。只需重新連線即可解決此問題。",
     "description": "Title for notification when wallet is disconnected"
   }
 }

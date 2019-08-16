@@ -421,6 +421,14 @@
     "message": "Arbatpinigiai",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Siųsti arbatpinigių",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Arbatpinigiai",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Kūrėjas vardu $name$ neseniai patikrintas",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Atsijungti nuo „Brave Rewards“",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Patvirtinti piniginę",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Mūsų piniginės paslaugą teikia",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Pasiruoškite valdžios institucijos išduotą asmens tapatybės dokumentą.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Išsaugokite savo atlygio už reklamą žetonus",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Pridėkite žetonų, naudodami kredito kortelę",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Išsiimkite žetonų",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Patvirtinta piniginė jums suteikia galimybę:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Patvirtinkite piniginę",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Lengvai tvarkykite savo pinigus!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Jūsų piniginė patvirtinta",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Nesirūpinkite. Taip gali atsitikti dėl įvairių saugumo priežasčių. Tiesiog iš naujo prisijunkite prie jos ir taip problema bus išspręsta.",
+    "message": "Nesirūpinkite. Taip gali atsitikti dėl įvairių saugumo priežasčių. Tiesiog iš naujo prisijunkite ir taip problema bus išspręsta.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

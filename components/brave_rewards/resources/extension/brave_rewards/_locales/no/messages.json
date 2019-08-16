@@ -421,6 +421,14 @@
     "message": "Tips",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Send tips",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Tips",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Skaper $name$ nylig verifisert",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Koble fra Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Verifiser lommeboken",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Lommeboktjenesten vår leveres av",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Ha legitimasjon utstedt av offentlig myndighet tilgjengelig.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Behold Ad Rewards-tokenene dine",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Legg til tokener med kredittkort",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Ta ut tokener",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Med en verifisert lommebok kan du:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Verifiser lommeboken din",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Og administrer midlene dine enkelt!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Verifisert",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Ikke vær redd. Det kan være en rekke sikkerhetsårsaker til at dette skjer. Bare koble til på nytt for å løse dette problemet.",
+    "message": "Ikke vær redd. Det kan være en rekke sikkerhetsårsaker til at dette skjer. Problemet kan enkelt løses ved å koble til på nytt.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

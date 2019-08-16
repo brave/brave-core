@@ -421,6 +421,14 @@
     "message": "टिप ",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "एक टिप भेजें",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "टिप ",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "हाल ही मे प्रमाणित किए गए निर्माता के $name$",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Brave Rewards से डिसकनेक्ट करें",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "वॉलेट सत्यापित करें",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "हमारी वॉलेट सेवा द्वारा प्रदान की जाती है",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "कृपया प्रशासन द्वारा जारी ID अपने पास रखें।",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "विज्ञापन के इनाम का टोकन अपने पास रखें",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "क्रेडिट कार्ड का उपयोग करके टोकन जोड़ें",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "टोकनों को निकाले",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "एक सत्यापित वॉलेट आपको निम्नलिखित करने की अनुमति देता है:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "अपना वॉलेट सत्यापित करें",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "और अपनी धराशि को आसानी से प्रबंधित करें!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "सत्यापित है",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "कोई बात नहीं। यह अनेक सुरक्षा कारणों से हो सकता है। केवल पुनः कनेक्ट करने से इस समस्या का समाधान हो जाएगा।s",
+    "message": "कोई चिंता नहीं। यह विभिन्न सुरक्षा कारणों से हो सकता है। बस इसे फिर से जोड़ने से इस समस्या का समाधान हो जाएगा।",
     "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Ativar gorjetas mínimas nestes sites</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Faça doações no local à medida que encontra preciosidades.</translation>
 <translation id="6135431587052937035">Apoie os seus sites favoritos com dicas mensais recorrentes.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Acabei de dar uma gorjeta para <ph name="NAME"/> usando o Brave Browser. Confira em https://brave.com/tips.</translation>
 <translation id="8404935570206006581">DêGorjetasComBrave</translation>
 <translation id="2876191400747549936">Desculpe, houve um problema ao processar o seu pedido. Por favor, tente novamente.</translation>
+<translation id="3082557070674409251">Clicado</translation>
+<translation id="7119308337584989771">Dispensado</translation>
+<translation id="6805660603861526473">Visualizado</translation>
 <translation id="7422678632904904341">Quantia:</translation>
 <translation id="5923611424721173182">Reconciliação Atual</translation>
 <translation id="5457113250005438886">Inválido</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. O Brave é uma marca registrada da Brave Software. Os nomes de sites podem ser marcas comerciais ou marcas registradas do proprietário do site.</translation>
 <translation id="9026369588205476247">Para proteger sua privacidade, esta declaração de Recompensas da Brave  não é salva, gravada ou conectada em nenhum lugar, exceto em seu dispositivo (este computador). Não poderá ser recuperada da Brave em caso de perda de dados do seu dispositivo.</translation>
 <translation id="1036277985068412734">adicionar fundos</translation>
+<translation id="3587482841069643663">Tudo</translation>
+<translation id="4241224519481557898">Categoria</translation>
+<translation id="3080423471207781945">Máximo de anúncios recebidos por dia:</translation>
+<translation id="2631006050119455616">Salvo</translation>
+<translation id="2155330833364281539">Anúncios que você recebeu nos últimos {{totalDays}} dias</translation>
+<translation id="8863685593846905344">Histórico de anúncios</translation>
+<translation id="5212777575344695266">Marcar como inapropriado</translation>
+<translation id="2111256234277361810">Marcar como inapropriado ✓</translation>
+<translation id="8988332871810963281">Não há atualmente um histórico de Brave Ads</translation>
+<translation id="5345727496083327478">Você não vai mais receber anúncios desta categoria</translation>
+<translation id="5317780077021120954">Salvar</translation>
 <translation id="5441565662498481293">Você está automaticamente enviando uma contribuição para:</translation>
 <translation id="2827387977307390755">Permitir gorjetas em</translation>
 <translation id="3671566813999349838">Valor</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Uma vez</translation>
 <translation id="9182287025588539628">Doações Únicas</translation>
 <translation id="6381574025952123568">Saldo inicial</translation>
+<translation id="532275381857891532">Histórico de anúncios de 7 dias</translation>
 <translation id="4923459931733593730">Pagamento</translation>
 <translation id="4021593982164260556">Pagamento realizado no dia {{day}} de cada mês.</translation>
 <translation id="6104680658798556671">Pagamento não realizado.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Doações Mensais</translation>
 <translation id="2391095793008133394">Dê uma gorjeta para {{ user }} por sua publicação:</translation>
 <translation id="7557413530932469222">Dar uma gorjeta para {{ user }} por sua publicação!</translation>
+<translation id="717513177896084801">Enviar gorjeta para {{ user }}</translation>
 <translation id="1110535155349301542">remover</translation>
+<translation id="8204292894173669182">Remover de salvos</translation>
 <translation id="8942997470474842562">Você’designou {{reservedAmount}} BAT para criadores de conteúdo que ainda não se inscreveram para receber contribuições. Seu navegador vai tentar realizar a contribuição até que eles sejam verificados ou até que 90 dias tenham se passado.</translation>
 <translation id="8759753423332885148">Saiba mais.</translation>
 <translation id="3157931365184549694">Restaurar</translation>
@@ -395,12 +413,14 @@
 <translation id="46988480989545156">Verificar carteira</translation>
 <translation id="1554282356558968486">Nosso serviço de carteira é fornecido por</translation>
 <translation id="6771734945114850124">Por favor, tenha disponível seu documento de identificação emitido pelo governo.</translation>
-<translation id="4483114863312340607">Retirar e adicionar fundos</translation>
-<translation id="6600381840029958159">Não é necessário resolver o captcha para ganhar recompensas com anúncios</translation>
-<translation id="4332021186346461319">Prêmios recebidos não expiram e são depositados em sua carteira instantaneamente</translation>
-<translation id="2610007079772760276">Uma carteira verificada permite que você:</translation>
-<translation id="7565794512491053578">Verificar sua Carteira</translation>
-<translation id="698531289520577961">E gerencie seus fundos facilmente!</translation>
+<translation id="8697510149346635496">Saque BAT que você tenha recebido por visualizar anúncios que respeitam a privacidade</translation>
+<translation id="1481480653609649134">Compre BAT adicionais com cartões de crédito e outras fontes</translation>
+<translation id="9096003370755878766">Saque BAT que você tenha adicionado anteriormente à sua carteira Brave Rewards</translation>
+<translation id="5275978662119683162">Benefícios da verificação</translation>
+<translation id="5166793288622772189">Pronto para verificar sua carteira?</translation>
+<translation id="8766217572332535979">A verificação não é necessária para ganhar recompensas por contribuições de criador</translation>
+<translation id="8465442795593991224">A Uphold pode exigir que você verifique sua identidade com base nos serviços solicitados.</translation>
+<translation id="723054503945711909">A Brave Software Inc. não processa, armazena ou acessa quaisquer informações pessoais que você fornece à Uphold quando estabelece uma conta com eles.</translation>
 <translation id="1181037720776840403">Remover</translation>
 <translation id="7885157704277298658">Copiado!</translation>
 <translation id="5379640681913450928">Contagem de palavras:</translation>

@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Włącz napiwki dotyczące treści w tych witrynach</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Przekazuj napiwek od razu, gdy trafisz na prawdziwą perełkę.</translation>
 <translation id="6135431587052937035">Wspieraj swoje ulubione strony poprzez comiesięczne napiwki</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Przekaż napiwek <ph name="NAME"/>, korzystając z przeglądarki Brave. Sprawdź pod adresem https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Przepraszamy, wystąpił problem z przetworzeniem żądania. Spróbuj ponownie.</translation>
+<translation id="3082557070674409251">Kliknięte</translation>
+<translation id="7119308337584989771">Odrzucone</translation>
+<translation id="6805660603861526473">Wyświetlone</translation>
 <translation id="7422678632904904341">Kwota:</translation>
 <translation id="5923611424721173182">Obecne uzgodnienie</translation>
 <translation id="5457113250005438886">Nieprawidlowy</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave jest zastrzeżonym znakiem handlowym Brave Software. Nazwy stron mogą być znakami towarowymi lub zastrzeżonymi znakami towarowymi właściciela strony.</translation>
 <translation id="9026369588205476247">Aby chronić Twoją prywatność, to oświadczenie Nagród Brave nie jest zapisywane ani raportowane nigdzie indziej poza Twoim urządzeniem. W razie utraty danych z urządzenia nie można odzyskać oświadczenia.</translation>
 <translation id="1036277985068412734">dodaj środki</translation>
+<translation id="3587482841069643663">Wszystkie</translation>
+<translation id="4241224519481557898">Kategoria</translation>
+<translation id="3080423471207781945">Maksymalna liczba wyświetlanych reklam na godzinę:</translation>
+<translation id="2631006050119455616">Zapisano</translation>
+<translation id="2155330833364281539">Reklamy otrzymane w ciągu {{totalDays}} ostatnich dni</translation>
+<translation id="8863685593846905344">Historia reklam</translation>
+<translation id="5212777575344695266">Oznacz jako niestosowną</translation>
+<translation id="2111256234277361810">Oznacz jako niestosowną ✓</translation>
+<translation id="8988332871810963281">Obecnie nie posiadasz historii reklam Brave</translation>
+<translation id="5345727496083327478">Nie będziesz już otrzymywać reklam z tej kategorii</translation>
+<translation id="5317780077021120954">Zapisz</translation>
 <translation id="5441565662498481293">Wysyłasz automatyczne napiwki do:</translation>
 <translation id="2827387977307390755">Zezwól na napiwki w</translation>
 <translation id="3671566813999349838">Kwota</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Jeden raz</translation>
 <translation id="9182287025588539628">Jednorazowe napiwki</translation>
 <translation id="6381574025952123568">Saldo otwarcia</translation>
+<translation id="532275381857891532">7-dniowa historia reklam</translation>
 <translation id="4923459931733593730">Płatność</translation>
 <translation id="4021593982164260556">Płatność dokonywana {{day}} dnia każdego miesiąca.</translation>
 <translation id="6104680658798556671">Nie dokonano płatności.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Miesięczne napiwki</translation>
 <translation id="2391095793008133394">Przekaż {{ user }} napiwek za ten post:</translation>
 <translation id="7557413530932469222">Przekaż {{ user }} napiwek za ten post!</translation>
+<translation id="717513177896084801">Przekaż napiwek dla {{ user }}</translation>
 <translation id="1110535155349301542">usuń</translation>
+<translation id="8204292894173669182">Usuń z zapisanych</translation>
 <translation id="8942997470474842562">Przeznaczyłeś {{reservedAmount}} BAT dla twórców, którzy nie zarejestrowali się jeszcze, aby otrzymywać wsparcie. Twoja przeglądarka będzie próbowała wnieść wsparcie do czasu, gdy zostaną zweryfikowani, lub gdy minie 90 dni.</translation>
 <translation id="8759753423332885148">Dowiedz się więcej.</translation>
 <translation id="3157931365184549694">Przywróć</translation>
@@ -299,7 +317,7 @@
 <translation id="5717619667204259673">Klucz ten należy przechowywać w bezpiecznym miejscu.</translation>
 <translation id="4699702339303280827">Zawsze możesz skorzystać z tego klucza, aby odzyskać portfel, jeśli coś przytrafi się Twojej przeglądarce lub komputerowi. Pamiętaj, aby ochronić go przed osobami, które mogłyby go użyć, by ukraść Twój portfel. Prawdopodobnie najbezpieczniej będzie zapisać klucz na kartce lub w innymi miejscu, w którym przechowujesz ważne informacje.</translation>
 <translation id="7354412786785889047">Możesz wesprzeć tego twórcę treści, dając napiwek. To forma podziękowania za tworzenie świetnych treści. Napiwek jest wypłacany zweryfikowanym twórcom w pierwszym tygodniu każdego miesiąca kalendarzowego.</translation>
-<translation id="3475063317678050010">Jeśli chcesz, możesz zaplanować comiesięczne, stałe napiwki w ramach wsparcia dla tego twórcy.</translation>
+<translation id="3475063317678050010">Jeśli chcesz, możesz zaplanować miesięczne napiwki, aby regularnie wspierać tę stronę.</translation>
 <translation id="3074127054582480056">Uwaga</translation>
 <translation id="822513417008209372">Aktualnie wspierasz</translation>
 <translation id="5010112177773747965">bez Twojej zgody.</translation>
@@ -395,12 +413,14 @@
 <translation id="46988480989545156">Weryfikuj portfel</translation>
 <translation id="1554282356558968486">Nasza usługa portfela jest świadczona przez</translation>
 <translation id="6771734945114850124">Przygotuj dokument tożsamości do weryfikacji.</translation>
-<translation id="4483114863312340607">Wypłatę i dodawanie środków</translation>
-<translation id="6600381840029958159">Nie musisz rozwiązywać captcha, aby zdobyć nagrody z reklam</translation>
-<translation id="4332021186346461319">Otrzymane nagrody nigdy nie wygasną i zostaną natychmiast przekazane do Twojego portfela</translation>
-<translation id="2610007079772760276">Zweryfikowany portfel pozwala na:</translation>
-<translation id="7565794512491053578">Weryfikuj portfel</translation>
-<translation id="698531289520577961">I zarządzaj łatwo swoimi środkami!</translation>
+<translation id="8697510149346635496">Wypłać tokeny BAT, które otrzymujesz za wyświetlanie reklam szanujących prywatność</translation>
+<translation id="1481480653609649134">Kup dodatkowe tokeny BAT za pomocą kart płatniczych i innych źródeł</translation>
+<translation id="9096003370755878766">Wypłać tokeny BAT, które zostały wcześniej dodane do Twojego portfela nagród Brave</translation>
+<translation id="5275978662119683162">Korzyści z weryfikacji</translation>
+<translation id="5166793288622772189">Gotowy do weryfikacji portfela?</translation>
+<translation id="8766217572332535979">Weryfikacja nie jest konieczna, aby zarobić nagrody dla wspierania twórców</translation>
+<translation id="8465442795593991224">Uphold może wymagać weryfikacji Twojej tożsamości w zależności od żądanych usług.</translation>
+<translation id="723054503945711909">Brave Software Inc. nie przetwarza, nie przechowuje ani nie uzyskuje dostępu do żadnych danych osobowych, które podajesz Uphold, zakładając konto w tym serwisie.</translation>
 <translation id="1181037720776840403">Usuń</translation>
 <translation id="7885157704277298658">Skopiowano!</translation>
 <translation id="5379640681913450928">Liczba słów:</translation>

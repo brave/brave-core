@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Aktyvinti turiniui skirtus arbatpinigius šiose svetainėse</translation>
 <translation id="995782501881226248">„YouTube“</translation>
 <translation id="3905400818082450708">„Reddit“</translation>
+<translation id="6032511312767282174">„GitHub“</translation>
 <translation id="2635094637295383009">„Twitter“</translation>
 <translation id="3920963435109110161">Radę brangenybių, iškart vietoje duokite arbatpinigių.</translation>
 <translation id="6135431587052937035">Paremk mėgstamas svetaines reguliariais mėnesiniais arbatpinigiais.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Naudodamasis „Brave“ naršykle ką tik daviau arbatpinigių <ph name="NAME"/>. Daugiau apie tai galite sužinoti adresu https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Apgailestaujame, apdorojant jūsų užklausą iškilo problema, bandykite dar kartą.</translation>
+<translation id="3082557070674409251">Spustelėta</translation>
+<translation id="7119308337584989771">Atsisakyta</translation>
+<translation id="6805660603861526473">Žiūrėta</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="5923611424721173182">Dabartinis suderintas likutis</translation>
 <translation id="5457113250005438886">Negalioja</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">© „Brave Software“, 2016–2018 m. „Brave“ yra registruotasis „Brave Software“ prekių ženklas. Svetainių pavadinimai gali būti jų savininkų prekių ženklai arba registruotieji prekių ženklai.</translation>
 <translation id="9026369588205476247">Siekiant apsaugoti jūsų privatumą, ši „Brave Rewards“ ataskaita neįrašoma, neregistruojama ir nelaikoma niekur kitur, o tik jūsų įrenginyje (šiame kompiuteryje). Įrenginyje praradus duomenis, iš „Brave“ jos gauti nebus galima.</translation>
 <translation id="1036277985068412734">pridėti lėšų</translation>
+<translation id="3587482841069643663">Visi</translation>
+<translation id="4241224519481557898">Kategorija</translation>
+<translation id="3080423471207781945">Maksimalus per valandą gautų reklamų skaičius:</translation>
+<translation id="2631006050119455616">Išsaugota</translation>
+<translation id="2155330833364281539">Reklamos, kurias gavai per pastarąsias {{totalDays}} d.</translation>
+<translation id="8863685593846905344">Reklamų istorija</translation>
+<translation id="5212777575344695266">Pažymėti kaip netinkamą</translation>
+<translation id="2111256234277361810">Pažymėti kaip netinkamą ✓</translation>
+<translation id="8988332871810963281">Šiuo metu nėra „Brave“ reklamų istorijos</translation>
+<translation id="5345727496083327478">Nebegausite šios kategorijos reklamų</translation>
+<translation id="5317780077021120954">Išsaugoti</translation>
 <translation id="5441565662498481293">Automatiškai siunčiamų arbatpinigių gavėjas:</translation>
 <translation id="2827387977307390755">Leisti arbatpinigius</translation>
 <translation id="3671566813999349838">Suma</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Vienkartiniai</translation>
 <translation id="9182287025588539628">Vienkartiniai arbatpinigiai</translation>
 <translation id="6381574025952123568">Pradinis likutis</translation>
+<translation id="532275381857891532">7 dienų reklamų istorija</translation>
 <translation id="4923459931733593730">Mokėjimas</translation>
 <translation id="4021593982164260556">Mokėjimas atliekamas kiekvieno mėnesio {{diena}} d.</translation>
 <translation id="6104680658798556671">Mokėjimas neatliktas.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Mėnesiniai arbatpinigiai</translation>
 <translation id="2391095793008133394">Sumokėti naudotojui {{ user }} arbatpinigių už įrašą:</translation>
 <translation id="7557413530932469222">Sumokėti naudotojui {{ user }} arbatpinigių už įrašą!</translation>
+<translation id="717513177896084801">Sumokėti naudotojui {{ user }} arbatpinigių</translation>
 <translation id="1110535155349301542">pašalinti</translation>
+<translation id="8204292894173669182">Pašalinti iš įrašytų</translation>
 <translation id="8942997470474842562">Tu paskyrei {{reservedAmount}} BAT kūrėjams, kurie dar neužsisakė gauti įmokų. Tavo naršyklė mėgins paskirti lėšas, kol jie užsisakys, arba 90 dienų.</translation>
 <translation id="8759753423332885148">Sužinokite daugiau.</translation>
 <translation id="3157931365184549694">Atkurti</translation>
@@ -396,12 +414,14 @@
 <translation id="46988480989545156">Patvirtinti piniginę</translation>
 <translation id="1554282356558968486">Mūsų piniginės paslaugą teikia</translation>
 <translation id="6771734945114850124">Pasiruoškite valdžios institucijos išduotą asmens tapatybės dokumentą.</translation>
-<translation id="4483114863312340607">Išsiimkite ir pridėkite lėšų</translation>
-<translation id="6600381840029958159">Norint pelnyti atlygį už reklamą, nereikia spręsti „captcha“</translation>
-<translation id="4332021186346461319">Gautas atlygis neturi galiojimo pabaigos ir iškart bus padėtas į jūsų piniginę</translation>
-<translation id="2610007079772760276">Patvirtinta piniginė jums suteikia galimybę:</translation>
-<translation id="7565794512491053578">Patvirtinkite piniginę</translation>
-<translation id="698531289520577961">Lengvai tvarkykite savo lėšas!</translation>
+<translation id="8697510149346635496">Išmokėti BAT, kuriuos pelnėte už privatumą gerbiančių reklamų peržiūrą</translation>
+<translation id="1481480653609649134">Įsigyti papildomų BAT, sumokant kreditine kortele ir iš kitų šaltinių</translation>
+<translation id="9096003370755878766">Išmokėti BAT, kuriuos anksčiau pridėjote į savo „Brave Rewards“ piniginę</translation>
+<translation id="5275978662119683162">Patvirtinimo privalumai</translation>
+<translation id="5166793288622772189">Pasirengę patvirtinti savo piniginę?</translation>
+<translation id="8766217572332535979">Norint pelnyti atlygį kūrėjų aukoms, patvirtinimas nebūtinas</translation>
+<translation id="8465442795593991224">Atsižvelgiant į prašomas paslaugas, „Uphold“ gali pareikalauti jūsų patvirtinti savo tapatybę.</translation>
+<translation id="723054503945711909">„Brave Software Inc.“ netvarko, nelaiko ir nepasiekia jokios asmeninės informacijos, kurią teikiate „Uphold“, kai ten susikuriate paskyrą.</translation>
 <translation id="1181037720776840403">Pašalinti</translation>
 <translation id="7885157704277298658">Nukopijuota!</translation>
 <translation id="5379640681913450928">Žodžių skaičius:</translation>

@@ -584,6 +584,15 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Sertifikatets signaturverdi</translation>
 <translation id="4104163789986725820">E&amp;ksportér</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnKvalifisering</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">serienummer</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="4196967880387277612">E</translation>
 <translation id="5434065355175441495">PKCS #1 RSA-kryptering</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 med RSA-kryptering</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 med RSA-kryptering</translation>
@@ -1998,6 +2007,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="2650609753175229582"><ph name="URL"/> ber om tillatelse til å spille beskyttet innhold. Identiteten til enheten din bekreftes av Brave Software og kan bli gjort tilgjengelig for dette nettstedet.</translation>
 <translation id="1746402432151920942">Beskyttet medieidentifikator</translation>
 <translation id="1322046419516468189">Se og administrer lagrede passord i <ph name="SAVED_PASSWORDS_STORE"/> din</translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Passordet er lagret. Se og administrer lagrede passord på <ph name="SAVED_PASSWORDS_STORE"/> din.</translation>
 <translation id="5713644099811900409">Brave Software-konto</translation>
 <translation id="3785727820640310185">Lagrede passord for dette nettstedet</translation>

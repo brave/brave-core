@@ -421,6 +421,14 @@
     "message": "Napiwek",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Wyślij napiwek",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Napiwek",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Twórca $name$ został niedawno zweryfikowany",
     "description": "Notification text that tells user which publisher just verified",
@@ -486,42 +494,6 @@
   "walletDisconnect":  {
     "message": "Rozłącz Nagrody Brave",
     "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerificationButton":  {
-    "message": "Weryfikuj portfel",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Nasza usługa portfela jest świadczona przez",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Prosimy o udostępnienie dokumentu tożsamości wydanego przez rząd.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Zachowaj swoje tokeny z reklam",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Dodaj tokeny za pomocą karty płatniczej",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Wypłata tokenów",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Zweryfikowany portfel pozwala na:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Weryfikuj portfel",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "I zarządzaj łatwo swoimi środkami",
-    "description": "Second part of the title in verify panel"
   },
   "walletVerified":  {
     "message": "Zweryfikowany",

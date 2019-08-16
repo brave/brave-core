@@ -421,6 +421,14 @@
     "message": "انعام",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "ارسال یک انعام",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "انعام",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "سازنده $name$ به‌تازگی تأیید شد",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "قطع ارتباط از پاداش‌های Brave",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "تأیید کیف پول",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "سرویس کیف پول ما ارائه‌شده است توسط",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "لطفاً شناسه صادرشده دولتی خود را در اختیار داشته باشید.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "کدهای «پاداش‌های آگهی» خود را حفظ کنید",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "کدها را با استفاده از کارت اعتباری اضافه کنید",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "برداشتن کدها",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "کیف پول تأییدشده به شما امکان می‌دهد:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "تأیید کیف پول",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "و سرمایه‌هایتان را به آسانی مدیریت کنید!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "تأیید شد",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "نگران نباشید. این مورد ممکن است به دلایل امنیتی مختلف روی دهد. کافی است آن را دوباره متصل کنید تا این مشکلات برطرف شوند.",
+    "message": "نگران نباشید. این مشکل بنا به دلایل امنیتی اتفاق می‌افتد. با اتصال مجدد به آن، مشکل را برطرف خواهد کرد.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave Ad Block</translation>
 <translation id="6406506848690869874">同期</translation>
 <translation id="5655621391922317800">仮想通貨ウォレット</translation>
+<translation id="2445484935443597917">新しいプロフィールを作成</translation>
+<translation id="2666990579225592931">ゲスト ウィンドウを開く</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") はBraveでは許可されていません。</translation>
 <translation id="7450557937477381864">Chromeを閉じる</translation>
 <translation id="7008934821596358692">インポートを終了するには、すべてのChromeウィンドウを閉じてください。</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">ウィンドウとタブを開く</translation>
 <translation id="3699882589215410581">Widevineをインストールして起動する</translation>
 <translation id="3696083746357487900">仮想通貨ウォレットをインストール</translation>
+<translation id="8926389886865778422">再表示させない</translation>
+<translation id="4726634924419692905">サイトがお使いのコンピューターにWidevineをインストールする時期を尋ねる。</translation>
 <translation id="8053096063396012732">Widevineをインストールする</translation>
 <translation id="4840334696217618631">Widevineを有効にするためにブラウザーを再起動する</translation>
 <translation id="8410111618231938546">Google WidevineはBrave Softwareが所有しておらず、検査できないデジタル著作権管理（DRM）コードの1つです。Google Widevineのコードは弊社のサーバーではなくGoogleのサーバーから割り当てられます。このコードはこのオプションを有効にしている際にのみ読み込まれます。弊社はDRMの使用は推奨しませんがユーザーの選択を尊重しており、一部のBraveユーザーがGoogle Widevineを要求するサービスの利用を望んでいることは承知しております。
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597"><ph name="HOST"/> で自動再生を常に許可する。</translation>
 <translation id="4150684676757176434">自動再生のブロックを継続する</translation>
 <translation id="5883458389055721080">Braveはこの拡張のセキュリティと安全性を確認していません。開発元が信頼できる場合のみ、この拡張をインストールしてください。</translation>
+<translation id="8081858229109418493">プロフィール名とアイコン</translation>
 <translation id="2044383478723007273">テーマ</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="6123134130710658846">Brave Rewardsボタンを非表示にする</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">これでウェブサイト上の大半の広告はブロックされます。Brave広告については</translation>
 <translation id="6388201778088078932">設定で管理できます。</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
+<translation id="7390783310074170337">デフォルト表示</translation>
+<translation id="130615081792797568">簡略表示</translation>
+<translation id="2360360976480535628">詳細表示</translation>
 <translation id="5709627087332022422">クロスサイトのトラッカーをブロックする</translation>
 <translation id="9075744464571452108">デバイス認識</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
 <translation id="4846154056248462491">終了時に</translation>
 <translation id="5057399635433117814">このページを翻訳しますか？このページのテキストはマイクロソフトに送られて翻訳されます。</translation>
+<translation id="330263065709195164">Google翻訳拡張機能をインストールしてこのページを翻訳しますか。</translation>
+<translation id="3789841737615482174">インストール</translation>
+<translation id="7658239707568436148">キャンセル</translation>
 <translation id="3371343170427636147">Brave Nightly</translation>
 <translation id="4097979995947147464">Brave Beta</translation>
 <translation id="8303432794159193481">Brave Dev</translation>

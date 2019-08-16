@@ -421,6 +421,14 @@
     "message": "Premeeri",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Saada preemia",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Premeeri",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Looja $name$ kinnitas hiljuti",
     "description": "Notification text that tells user which publisher just verified",
@@ -486,42 +494,6 @@
   "walletDisconnect":  {
     "message": "Katkesta Brave Rewardsi ühendus",
     "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerificationButton":  {
-    "message": "Kinnita rahakott",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Meie rahakotiteenust pakub",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Hoidke oma ametlik isikutunnistus käepärast.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Hoidke oma reklaamide preemiate tokenid alles",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Lisage tokeneid krediitkaardiga",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Võtke tokeneid välja",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Kinnitatud rahakott võimaldab teil",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Kinnitage oma rahakott",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Ja hallake oma vahendeid hõlpsalt!",
-    "description": "Second part of the title in verify panel"
   },
   "walletVerified":  {
     "message": "Kinnitatud",

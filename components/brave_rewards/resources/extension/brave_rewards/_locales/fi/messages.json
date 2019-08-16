@@ -421,6 +421,14 @@
     "message": "Tippi",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Lähetä tippi",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Tippi",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Kehittäjä $name$ vahvistettiin hiljattain",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Katkaise yhteys Brave-palkintoihin",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Vahvista kukkaro",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Verkkokukkaropalvelumme tarjoaa",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Ole hyvä ja pidä virallinen henkilötodistuksesi valmiina.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Pidä mainospalkintorahakkeesi",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Lisää rahakkeita käyttämällä luottokorttia",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Nosta rahakkeita",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Vahvistetun kukkaron avulla voit:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Vahvista kukkarosi",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Ja hallitse rahojasi helposti!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Vahvistettu",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Ei huolta. Näin voi käydä lukuisista eri tietoturvasyistä. Ongelman ratkaisemiseksi sinun tarvitsee vain yhdistää siihen uudestaan.",
+    "message": "Ei huolta. Tämä voi johtua useista turvallisuussyistä. Uuden yhteyden muodostamisen pitäisi ratkaista tämän ongelman.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

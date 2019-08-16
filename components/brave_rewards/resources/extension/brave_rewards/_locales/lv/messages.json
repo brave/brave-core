@@ -421,6 +421,14 @@
     "message": "Dzeramnauda",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Nosūtīt padomu",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Dzeramnauda",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Izstrādātājs $name$nesen apstiprināja ",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Atspējot Brave balvas",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Pārbaudīt maku",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Mūsu maka pakalpojumu sniedz",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Lūdzu, sagatavojiet savu valdības izdoto personu apliecinošo dokumentu.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Paturiet savus Ad Rewards marķierus",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Pievienot marķierus, izmantojot kredītkarti",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Izņemt marķierus",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Pārbaudīts maks jums ļauj:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Verificējiet savu maku",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Un viegli pārvaldiet savus līdzekļus!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Pārbaudīts",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Tas nekas. Tā var notikt dažādu drošības apsvērumu dēļ. Vienkārši izveidojot savienojumu ar to no jauna, un šis jautājums tiks atrisināts.",
+    "message": "Tas nekas. Tā var notikt dažādu drošības apsvērumu dēļ. Vienkārši izveidojot savienojumu ar to no jauna, šis jautājums tiks atrisināts.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

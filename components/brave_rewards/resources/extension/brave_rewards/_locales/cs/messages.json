@@ -421,6 +421,14 @@
     "message": "Příspěvek ",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Odeslat spropitné",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Příspěvek ",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Tvůrce $name$ byl nedávno ověřen",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Odpojit od Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Ověřit peněženku",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Správa peněženky je zajišťována",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Prosím připravte si vaší vládou vydané identifikační číslo.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Ponechte si své Ad Rewards tokeny",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Přidat tokeny pomocí kreditní karty",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Vybrat tokeny",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Ověřená peněženka vám umožní:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Ověřit vaši peněženku",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "A spravujte své prostředky s lehkostí!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Ověřeno",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Nebojte se. Mohlo k tomu dojít z nejrůznějších bezpečnostních důvodů. Opětovné připojení tento problém vyřeší.",
+    "message": "Nemějte obavy. Dochází k tomu z různých bezpečnostních důvodů. K vyřešení problému se stačí pouze opětovně připojit.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

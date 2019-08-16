@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">فعال کردن نکات در سطح محتوا در این سایت‌ها</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">وقتی جواهر پیدا می‌کنید، انعام بدهید.</translation>
 <translation id="6135431587052937035">با انعام‌های ماهانه تکرارشونده، از سایت‌های دلخواهتان پشتیبانی کنید.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">به‌تازگی با استفاده از مرورگر Brave، به <ph name="NAME"/> انعام دادم. این مورد را در https://brave.com/tips بررسی کنید.</translation>
 <translation id="8404935570206006581">انعام با Brave</translation>
 <translation id="2876191400747549936">متأسفیم مشکلی در پردازش درخواستتان وجود داشت، لطفاً دوباره امتحان کنید.</translation>
+<translation id="3082557070674409251">کلیک شده</translation>
+<translation id="7119308337584989771">نادیده گرفته شده</translation>
+<translation id="6805660603861526473">مشاهده شده</translation>
 <translation id="7422678632904904341">مقدار:</translation>
 <translation id="5923611424721173182">تطبیق فعلی</translation>
 <translation id="5457113250005438886">نامعتبر</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software‏. Brave نشان تجاری ثبت‌شده Brave Software است. ممکن است نام سایت‌ها، نشان‌های تجاری یا نشان‌های تجاری ثبت‌شده مالک آن سایت‌ها باشد.</translation>
 <translation id="9026369588205476247">برای محافظت از حریم خصوصی‌تان، این صورت‌حساب «پاداش‌های Brave» در جایی به‌جز دستگاهتان (این رایانه) ذخیره، ضبط یا گزارش نمی‌شود. در صورت از دست رفتن داده در دستگاهتان، نمی‌توان این صورت‌حساب را از Brave بازیابی کرد.</translation>
 <translation id="1036277985068412734">افزودن سرمایه</translation>
+<translation id="3587482841069643663">همه</translation>
+<translation id="4241224519481557898">دسته‌بندی</translation>
+<translation id="3080423471207781945">حداکثر تبلیغات دریافتی در هر ساعت:</translation>
+<translation id="2631006050119455616">ذخیره شد</translation>
+<translation id="2155330833364281539">تبلیغاتی که در {{totalDays}} روز گذشته دریافت کرده‌اید</translation>
+<translation id="8863685593846905344">تاریخچه تبلیغات</translation>
+<translation id="5212777575344695266">علامت‌گذاری به عنوان نامناسب</translation>
+<translation id="2111256234277361810">علامت‌گذاری به عنوان نامناسب ✓</translation>
+<translation id="8988332871810963281">در حال حاضر تاریخچه تبلیغات Brave وجود ندارد</translation>
+<translation id="5345727496083327478">دیگر تبلیغاتی از این دسته‌بندی دریافت نخواهید کرد</translation>
+<translation id="5317780077021120954">ذخیره</translation>
 <translation id="5441565662498481293">به‌طور خودکار انعامی به این مورد ارسال می‌کنید:</translation>
 <translation id="2827387977307390755">اجازه ارائه انعام به</translation>
 <translation id="3671566813999349838">مبلغ</translation>
@@ -191,8 +206,8 @@
 <translation id="8804164990146287819">خط‌مشی رازداری</translation>
 <translation id="4281844954008187215">شرایط خدمات</translation>
 <translation id="4405997465645469914">با روشن کردن «پاداش‌های Brave»، مشخص می‌کنید که این مورد را خوانده‌اید و با آن موافقت می‌کنید</translation>
-<translation id="8819542691525488940">با کلیک کردن روی ‘Yes, I'm in!’، مشخص می‌کنید که موارد زیر را خوانده‌اید و با آن‌ها موافق هستید</translation>
-<translation id="8071424789698327147">با کلیک کردن روی ‘Yes, I'm Ready!’، مشخص می‌کنید که موارد زیر را خوانده‌اید و با آن‌ها موافق هستید</translation>
+<translation id="8819542691525488940">با کلیک کردن روی '!Yes, I'm in'، مشخص می‌کنید که موارد زیر را خوانده‌اید و با آن‌ها موافق هستید</translation>
+<translation id="8071424789698327147">با کلیک کردن روی '!Yes, I'm Ready'، مشخص می‌کنید که موارد زیر را خوانده‌اید و با آن‌ها موافق هستید</translation>
 <translation id="7530570094705720669">ایجاد کیف پول</translation>
 <translation id="2105596359439030979">توجهتان ارزش زیادی دارد. با دیدن آگهی‌هایی که حریم خصوصی را رعایت می‌کنند پاداش دریافت کنید و از پدیدآورندگان محتوایی که دوست دارید حمایت مالی کنید.</translation>
 <translation id="516395624550019162">بله، موافقم!</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">یک‌باره</translation>
 <translation id="9182287025588539628">انعام یک‌باره</translation>
 <translation id="6381574025952123568">موجودی اولیه</translation>
+<translation id="532275381857891532">تاریخچه 7 روزه تبلیغات</translation>
 <translation id="4923459931733593730">پرداخت</translation>
 <translation id="4021593982164260556">پرداخت {{day}}ام هر ماه انجام می‌شود.</translation>
 <translation id="6104680658798556671">پرداخت انجام نشد.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">انعام ماهانه</translation>
 <translation id="2391095793008133394">برای پست {{ user }}، به او انعام دهید:</translation>
 <translation id="7557413530932469222">برای پست {{ user }}، به او انعام دهید!</translation>
+<translation id="717513177896084801">انعام {{ کاربر }}</translation>
 <translation id="1110535155349301542">حذف</translation>
+<translation id="8204292894173669182">حذف از موارد ذخیره شده</translation>
 <translation id="8942997470474842562">{{reservedAmount}}‏ BAT برای پدیدآورندگانی که هنوز برای دریافت کمک ثبت‌نام نکرده‌اند در نظر گرفته‌اید. مرورگرتان تا زمانی که آنها کمک را تأیید کنند، یا حداکثر 90 روز تلاش می‌کند کمک را انجام دهد.</translation>
 <translation id="8759753423332885148">بیشتر بدانید.</translation>
 <translation id="3157931365184549694">بازیابی</translation>
@@ -395,12 +413,14 @@
 <translation id="46988480989545156">تأیید کیف پول</translation>
 <translation id="1554282356558968486">سرویس کیف پول ما ارائه‌شده است توسط</translation>
 <translation id="6771734945114850124">لطفاً شناسه صادرشده دولتی خود را در اختیار داشته باشید.</translation>
-<translation id="4483114863312340607">برداشتن و افزودن سرمایه</translation>
-<translation id="6600381840029958159">نیازی نیست که به گذرنویسه پاسخ دهید تا پاداش‌های آگهی را به دست آورید</translation>
-<translation id="4332021186346461319">پاداش‌های دریافتی هیچ‌گاه منقضی نمی‌شوند و فوراً به کیف پول شما واریز می‌شوند.</translation>
-<translation id="2610007079772760276">کیف پول تأییدشده به شما امکان می‌دهد:</translation>
-<translation id="7565794512491053578">تأیید کیف پول</translation>
-<translation id="698531289520577961">و سرمایه‌هایتان را به‌آسانی مدیریت کنید!</translation>
+<translation id="8697510149346635496">BAT را برداشت کنید که از مشاهده تبلیغاتی به دست آمده‌اند که به حریم خصوصی احترام می‌گذارند</translation>
+<translation id="1481480653609649134">با کارت اعتباری و سایر منابع، BAT اضافی خریداری کنید</translation>
+<translation id="9096003370755878766">BAT را که قبلاً به کیف پاداش‌های Brave خود اضافه کرده‌اید، برداشت کنید</translation>
+<translation id="5275978662119683162">مزیت‌های تأیید</translation>
+<translation id="5166793288622772189">آماده تأیید کیف خود هستید؟</translation>
+<translation id="8766217572332535979">تأیید برای کسب پاداش‌ها برای ایجادکننده مشارکت‌کننده‌ها ضروری نیست.</translation>
+<translation id="8465442795593991224">ممکن است Uphold شما را ملزم به تأیید هویتتان بر اساس خدمات درخواستی کند.</translation>
+<translation id="723054503945711909">Brave Software Inc.اطلاعات شخصی را که در زمان ایجاد یک حساب با Uphold در اختیار آنها قرار داده‌اید، پردازش و ذخیره‌سازی نخواهد کرد و به آنها دسترسی نخواهد داشت.</translation>
 <translation id="1181037720776840403">حذف</translation>
 <translation id="7885157704277298658">کپی شد!</translation>
 <translation id="5379640681913450928">تعداد کلمه:</translation>

@@ -421,6 +421,14 @@
     "message": "Propina",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Enviar una propina",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Propina",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "El creador $name$ se verificó recientemente",
     "description": "Notification text that tells user which publisher just verified",
@@ -486,42 +494,6 @@
   "walletDisconnect":  {
     "message": "Desconectar de Recompensas de Brave",
     "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerificationButton":  {
-    "message": "Verificar billetera",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Nuestro servicio de billetera es proporcionado por",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Ten a mano tu identificación emitida por el gobierno.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Conservar tokens de recompensas de anuncios",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Agregar tokens usando una tarjeta de crédito",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Retirar tokens",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Una billetera verificada te permite:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Verifica tu billetera",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "¡Y gestionar tus fondos fácilmente!",
-    "description": "Second part of the title in verify panel"
   },
   "walletVerified":  {
     "message": "Verificada",
