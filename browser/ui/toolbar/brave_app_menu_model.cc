@@ -37,19 +37,16 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
         IDC_SHOW_BRAVE_REWARDS,
         IDS_SHOW_BRAVE_REWARDS);
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
-        IDC_SHOW_BRAVE_WALLET,
-        IDS_SHOW_BRAVE_WALLET);
+    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
+                             IDC_SHOW_BRAVE_WALLET, IDS_SHOW_BRAVE_WALLET);
 #endif
-      InsertItemWithStringIdAt(
+    InsertItemWithStringIdAt(
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
         GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET),
 #else
         GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
 #endif
-        IDC_SHOW_BRAVE_SYNC,
-        IDS_SHOW_BRAVE_SYNC);
+        IDC_SHOW_BRAVE_SYNC, IDS_SHOW_BRAVE_SYNC);
   }
 
   // Insert Create New Profile item

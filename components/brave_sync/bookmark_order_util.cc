@@ -13,10 +13,10 @@ namespace brave_sync {
 namespace {
 
 bool CompareOrder(const std::vector<int>& vec_left,
-    const std::vector<int>& vec_right) {
+                  const std::vector<int>& vec_right) {
   // Use C++ stdlib
   return std::lexicographical_compare(vec_left.begin(), vec_left.end(),
-    vec_right.begin(), vec_right.end());
+                                      vec_right.begin(), vec_right.end());
 }
 
 }  // namespace
@@ -39,7 +39,7 @@ std::vector<int> OrderToIntVect(const std::string& s) {
   return vec_int;
 }
 
-std::string ToOrderString(const std::vector<int> &vec_int) {
+std::string ToOrderString(const std::vector<int>& vec_int) {
   std::string ret;
   for (size_t i = 0; i < vec_int.size(); ++i) {
     if (vec_int[i] < 0) {
@@ -94,8 +94,9 @@ std::string GetPrevOrderFromNextOrder(std::vector<int>* vec_next) {
 }  // namespace
 
 // Inspired by https://github.com/brave/sync/blob/staging/client/bookmarkUtil.js
-std::string GetOrder(const std::string& prev, const std::string& next,
-    const std::string& parent) {
+std::string GetOrder(const std::string& prev,
+                     const std::string& next,
+                     const std::string& parent) {
   if (prev.empty() && next.empty()) {
     DCHECK(!parent.empty());
     return parent + ".1";
@@ -160,13 +161,14 @@ std::string GetOrder(const std::string& prev, const std::string& next,
       }
     }
 
-    NOTREACHED() << "[BraveSync] " << __func__ << " prev=" << prev <<
-        " next=" << next << " terminated with " << ToOrderString(vec_result);
+    NOTREACHED() << "[BraveSync] " << __func__ << " prev=" << prev
+                 << " next=" << next << " terminated with "
+                 << ToOrderString(vec_result);
   }
 
-  NOTREACHED() << "[BraveSync] " << __func__ <<
-      " condition is not handled prev.empty()=" << prev.empty() <<
-      " next.empty()=" << next.empty();
+  NOTREACHED() << "[BraveSync] " << __func__
+               << " condition is not handled prev.empty()=" << prev.empty()
+               << " next.empty()=" << next.empty();
 
   return "";
 }

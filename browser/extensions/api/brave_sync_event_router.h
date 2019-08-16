@@ -18,9 +18,9 @@ namespace brave_sync {
 struct SyncRecord;
 struct Config;
 struct RecordAndExistingObject;
-}   // namespace brave_sync
-}   // namespace api
-}   // namespace extensions
+}  // namespace brave_sync
+}  // namespace api
+}  // namespace extensions
 
 using extensions::api::brave_sync::RecordAndExistingObject;
 
@@ -65,6 +65,6 @@ class BraveSyncEventRouter {
   EventRouter* event_router_;
 };
 
-}   // namespace extensions
+}  // namespace extensions
 
-#endif    // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_EVENT_ROUTER_H_
+#endif  // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_EVENT_ROUTER_H_

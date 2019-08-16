@@ -1,8 +1,8 @@
-import("buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 import("//build/config/features.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
+import("buildflags/buildflags.gni")
 
 if (enable_brave_sync) {
   source_set("js_sync_lib_impl") {
@@ -12,26 +12,26 @@ if (enable_brave_sync) {
       "client/brave_sync_client.h",
       "client/brave_sync_client_impl.cc",
       "client/brave_sync_client_impl.h",
-      "client/client_ext_impl_data.cc",
-      "client/client_ext_impl_data.h",
       "client/client_data.cc",
       "client/client_data.h",
+      "client/client_ext_impl_data.cc",
+      "client/client_ext_impl_data.h",
     ]
 
     deps = [
       ":public",
       "//base",
-      "//components/prefs",
       "//components/bookmarks/browser",
       "//components/bookmarks/common",
       "//components/keyed_service/content",
       "//components/keyed_service/core",
-      "//components/prefs",
       "//components/pref_registry",
+      "//components/prefs",
+      "//components/prefs",
       "//content/public/browser",
       "//extensions/browser",
-      "//services/network/public/cpp",
       "//net",
+      "//services/network/public/cpp",
       "//ui/base",
     ]
   }
@@ -72,12 +72,13 @@ source_set("public") {
   ]
 
   deps = [
-      "buildflags",
+    "buildflags",
   ]
 
   if (enable_brave_sync) {
     deps += [
       ":core",
+
       # For IsBraveSyncAllowedByFlag in
       # components/sync/driver/sync_driver_switches.cc
       "//brave/common:switches",
@@ -121,9 +122,7 @@ source_set("brave_sync") {
   ]
 
   if (enable_brave_sync) {
-    deps += [
-      ":js_sync_lib_impl",
-    ]
+    deps += [ ":js_sync_lib_impl" ]
   }
 }
 
@@ -131,7 +130,7 @@ pack_web_resources("generated_resources") {
   resource_name = "brave_sync"
   output_dir = "$root_gen_dir/brave/components/brave_sync"
   deps = [
-    "ui"
+    "ui",
   ]
 }
 
@@ -159,33 +158,33 @@ grit("static_resources") {
 
 repack("resources") {
   deps = [
-    ":static_resources",
     ":generated_resources",
+    ":static_resources",
   ]
 
   sources = [
-    "$root_gen_dir/brave/components/brave_sync/brave_sync_static.pak",
     "$root_gen_dir/brave/components/brave_sync/brave_sync_generated.pak",
+    "$root_gen_dir/brave/components/brave_sync/brave_sync_static.pak",
   ]
 
   output = "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak"
 }
 
 if (enable_brave_sync) {
-source_set("testutil") {
-  testonly = true
+  source_set("testutil") {
+    testonly = true
 
-  deps = [
-    ":brave_sync",
-    "//base",
-    "//content/public/browser",
-    "//chrome/test:test_support",
-    "//testing/gtest",
-  ]
+    deps = [
+      ":brave_sync",
+      "//base",
+      "//chrome/test:test_support",
+      "//content/public/browser",
+      "//testing/gtest",
+    ]
 
-  sources = [
-    "test_util.cc",
-    "test_util.h",
-  ]
-}
+    sources = [
+      "test_util.cc",
+      "test_util.h",
+    ]
+  }
 }

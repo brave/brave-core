@@ -90,7 +90,7 @@ std::unique_ptr<SiteSetting> SiteSetting::Clone(
   ret_val->ledgerPayments = site_setting.ledgerPayments;
   ret_val->ledgerPaymentsShown = site_setting.ledgerPaymentsShown;
   ret_val->fields = site_setting.fields;
-  return  ret_val;
+  return ret_val;
 }
 
 Device::Device() = default;
@@ -100,7 +100,7 @@ Device::~Device() = default;
 std::unique_ptr<Device> Device::Clone(const Device& device) {
   auto ret_val = std::make_unique<Device>();
   ret_val->name = device.name;
-  return  ret_val;
+  return ret_val;
 }
 
 SyncRecord::SyncRecord() : action(SyncRecord::Action::A_INVALID) {}
@@ -126,7 +126,7 @@ std::unique_ptr<SyncRecord> SyncRecord::Clone(const SyncRecord& record) {
 
   ret_val->syncTimestamp = record.syncTimestamp;
 
-  return  ret_val;
+  return ret_val;
 }
 
 bool SyncRecord::has_bookmark() const {
@@ -194,6 +194,6 @@ void SyncRecord::SetDevice(std::unique_ptr<Device> device) {
   device_ = std::move(device);
 }
 
-}   // namespace jslib
+}  // namespace jslib
 
-}   // namespace brave_sync
+}  // namespace brave_sync

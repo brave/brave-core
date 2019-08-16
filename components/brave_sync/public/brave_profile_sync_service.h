@@ -21,8 +21,8 @@ class BraveSyncService;
 
 class BraveProfileSyncService : public syncer::ProfileSyncService {
  public:
-  explicit BraveProfileSyncService(InitParams init_params) :
-    syncer::ProfileSyncService(std::move(init_params)) {}
+  explicit BraveProfileSyncService(InitParams init_params)
+      : syncer::ProfileSyncService(std::move(init_params)) {}
   ~BraveProfileSyncService() override {}
 
   virtual bool IsBraveSyncEnabled() const = 0;

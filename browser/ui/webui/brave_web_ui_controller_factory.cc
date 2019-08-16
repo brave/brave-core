@@ -106,7 +106,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == chrome::kChromeUIWelcomeURL ||
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
       (url.host_piece() == kBraveUISyncHost &&
-          switches::IsBraveSyncAllowedByFlag()) ||
+       switches::IsBraveSyncAllowedByFlag()) ||
 #endif
       url.host_piece() == chrome::kChromeUINewTabHost ||
       url.host_piece() == chrome::kChromeUISettingsHost) {

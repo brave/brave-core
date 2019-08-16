@@ -52,14 +52,13 @@ std::unique_ptr<KeyedService> BuildFakeBookmarkModelForTests(
   return model;
 }
 
-SyncRecordPtr SimpleBookmarkSyncRecord(
-    const int action,
-    const std::string& object_id,
-    const std::string& location,
-    const std::string& title,
-    const std::string& order,
-    const std::string& parent_object_id,
-    const std::string& device_id) {
+SyncRecordPtr SimpleBookmarkSyncRecord(const int action,
+                                       const std::string& object_id,
+                                       const std::string& location,
+                                       const std::string& title,
+                                       const std::string& order,
+                                       const std::string& parent_object_id,
+                                       const std::string& device_id) {
   auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
   record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
     brave_sync::jslib::SyncRecord::Action::A_MIN,
@@ -143,4 +142,4 @@ SyncRecordPtr SimpleDeviceRecord(
   return record;
 }
 
-}   // namespace brave_sync
+}  // namespace brave_sync

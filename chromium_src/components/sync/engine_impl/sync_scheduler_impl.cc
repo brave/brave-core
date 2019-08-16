@@ -24,9 +24,9 @@ void SyncSchedulerImpl::OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
 }  // namespace syncer
 
 #define BRAVE_SYNC_SCHEDULER_IMPL_TRY_SYNC_CYCLE_JOB \
-  SyncCycle cycle(cycle_context_, this); \
-  if (mode_ != CONFIGURATION_MODE) { \
-    syncer_->DownloadBraveRecords(&cycle); \
+  SyncCycle cycle(cycle_context_, this);             \
+  if (mode_ != CONFIGURATION_MODE) {                 \
+    syncer_->DownloadBraveRecords(&cycle);           \
   }
 
 #include "../../../../../components/sync/engine_impl/sync_scheduler_impl.cc"  // NOLINT

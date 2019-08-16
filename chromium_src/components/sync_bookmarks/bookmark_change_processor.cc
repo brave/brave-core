@@ -23,18 +23,16 @@ namespace {
 class ScopedPauseObserver {
  public:
   explicit ScopedPauseObserver(BookmarkModel* model,
-                               BookmarkModelObserver* observer) :
-      model_(model),  observer_(observer) {
+                               BookmarkModelObserver* observer)
+      : model_(model), observer_(observer) {
     DCHECK_NE(observer_, nullptr);
     DCHECK_NE(model_, nullptr);
     model_->RemoveObserver(observer_);
   }
-  ~ScopedPauseObserver() {
-    model_->AddObserver(observer_);
-  }
+  ~ScopedPauseObserver() { model_->AddObserver(observer_); }
 
  private:
-  BookmarkModel* model_;  // Not owned
+  BookmarkModel* model_;             // Not owned
   BookmarkModelObserver* observer_;  // Not owned
 };
 
@@ -60,7 +58,7 @@ bool IsFirstLoadedFavicon(BookmarkChangeProcessor* bookmark_change_processor,
   return false;
 }
 
-}   // namespace
+}  // namespace
 
 namespace sync_bookmarks {
 
@@ -68,13 +66,13 @@ void BookmarkChangeProcessor::MoveSyncNode(
     int index,
     const bookmarks::BookmarkNode* node,
     const syncer::BaseTransaction* trans) {
-  syncer::WriteTransaction write_trans(FROM_HERE, trans->GetUserShare(),
+  syncer::WriteTransaction write_trans(
+      FROM_HERE, trans->GetUserShare(),
       static_cast<syncer::syncable::WriteTransaction*>(
           trans->GetWrappedTrans()));
   syncer::WriteNode sync_node(&write_trans);
   if (!model_associator_->InitSyncNodeFromChromeId(node->id(), &sync_node)) {
-    syncer::SyncError error(FROM_HERE,
-                            syncer::SyncError::DATATYPE_ERROR,
+    syncer::SyncError error(FROM_HERE, syncer::SyncError::DATATYPE_ERROR,
                             "Failed to init sync node from chrome node",
                             syncer::BOOKMARKS);
     error_handler()->OnUnrecoverableError(error);
@@ -83,40 +81,47 @@ void BookmarkChangeProcessor::MoveSyncNode(
 
   if (!PlaceSyncNode(MOVE, node->parent(), index, &write_trans, &sync_node,
                      model_associator_)) {
-    syncer::SyncError error(FROM_HERE,
-                            syncer::SyncError::DATATYPE_ERROR,
-                            "Failed to place sync node",
-                            syncer::BOOKMARKS);
+    syncer::SyncError error(FROM_HERE, syncer::SyncError::DATATYPE_ERROR,
+                            "Failed to place sync node", syncer::BOOKMARKS);
     error_handler()->OnUnrecoverableError(error);
     return;
   }
 }
 
-}   // namespace sync_bookmarks
+}  // namespace sync_bookmarks
 
 #define BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_FAVICON_CHANGED \
-  if (IsFirstLoadedFavicon(this, bookmark_model_, node)) return;
+  if (IsFirstLoadedFavicon(this, bookmark_model_, node))              \
+    return;
+
+#define BRAVE_BOOKMARK_CHANGE_PROCESSOR_UPDATE_SYNC_NODE_PROPERTIES \
+  brave_sync::AddBraveMetaInfo(src, model);
 
 #define BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED \
-  ScopedPauseObserver pause(bookmark_model_, this); \
-  brave_sync::AddBraveMetaInfo(child, model); \
+  ScopedPauseObserver pause(bookmark_model_, this);         \
+  brave_sync::AddBraveMetaInfo(child, model);               \
   SetSyncNodeMetaInfo(child, &sync_node);
 
 #define BRAVE_BOOKMARK_CHANGE_PROCESSOR_CHILDREN_REORDERED \
-      ScopedPauseObserver pause(bookmark_model_, this); \
-      brave_sync::AddBraveMetaInfo(child, model); \
-      SetSyncNodeMetaInfo(child, &sync_child);
+  ScopedPauseObserver pause(bookmark_model_, this);        \
+  brave_sync::AddBraveMetaInfo(child, model);              \
+  SetSyncNodeMetaInfo(child, &sync_child);
 
-#define BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL \
-    int new_index = brave_sync::GetIndexByCompareOrderStartFrom(dst->parent(), \
-                                                                dst, 0); \
-    if (src.GetPositionIndex() != new_index) { \
-      to_reposition.insert(std::make_pair(new_index, dst)); \
-      MoveSyncNode(new_index, dst, trans); \
-    } else  // NOLINT
+#define BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_1 \
+  bookmark_model_->SetNodeMetaInfo(dst, "FirstLoadedFavicon", "true");
 
-#include "../../../../components/sync_bookmarks/bookmark_change_processor.cc"   // NOLINT
+#define BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_2   \
+  int new_index =                                                         \
+      brave_sync::GetIndexByCompareOrderStartFrom(dst->parent(), dst, 0); \
+  if (src.GetPositionIndex() != new_index) {                              \
+    to_reposition.insert(std::make_pair(new_index, dst));                 \
+    MoveSyncNode(new_index, dst, trans);                                  \
+  } else  // NOLINT
+
+#include "../../../../components/sync_bookmarks/bookmark_change_processor.cc"  // NOLINT
 #undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_FAVICON_CHANGED
+#undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_UPDATE_SYNC_NODE_PROPERTIES
 #undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED
 #undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_CHILDREN_REORDERED
-#undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL
+#undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_1
+#undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_2

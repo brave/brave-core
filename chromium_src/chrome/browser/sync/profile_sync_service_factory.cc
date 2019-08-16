@@ -29,7 +29,7 @@ std::unique_ptr<syncer::ProfileSyncService> BraveBuildServiceInstanceFor(
     syncer::ProfileSyncService::InitParams init_params) {
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
   return std::make_unique<BraveProfileSyncServiceImpl>(profile,
-                                                   std::move(init_params));
+                                                       std::move(init_params));
 #else
   return std::make_unique<syncer::ProfileSyncService>(std::move(init_params));
 #endif

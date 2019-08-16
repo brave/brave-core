@@ -7,8 +7,8 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_GLUE_SYNC_ENGINE_IMPL_H_
 
 #define BRAVE_SYNC_ENGINE_IMPL_H \
-friend SyncEngineHost* BraveGetSyncEngineHost(SyncEngineImpl*);
+  friend SyncEngineHost* BraveGetSyncEngineHost(SyncEngineImpl*);
 
-#include "../../../../../../components/sync/driver/glue/sync_engine_impl.h"   // NOLINT
+#include "../../../../../../components/sync/driver/glue/sync_engine_impl.h"  // NOLINT
 #undef BRAVE_SYNC_ENGINE_IMPL_H
-#endif    // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_GLUE_SYNC_ENGINE_IMPL_H_
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_GLUE_SYNC_ENGINE_IMPL_H_

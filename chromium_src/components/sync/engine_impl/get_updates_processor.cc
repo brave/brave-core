@@ -12,12 +12,13 @@
 
 namespace syncer {
 namespace {
-SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*, ModelTypeSet*,
+SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*,
+                              ModelTypeSet*,
                               std::unique_ptr<brave_sync::RecordsList>);
-}   // namespace
-}   // namespace syncer
+}  // namespace
+}  // namespace syncer
 
-#include "../../../../../components/sync/engine_impl/get_updates_processor.cc"    // NOLINT
+#include "../../../../../components/sync/engine_impl/get_updates_processor.cc"  // NOLINT
 #include "base/base64.h"
 #include "base/guid.h"
 #include "base/strings/string_number_conversions.h"
@@ -26,8 +27,8 @@ SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*, ModelTypeSet*,
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "components/sync/base/hash_util.h"
 #include "components/sync/base/time.h"
-#include "components/sync/syncable/syncable_proto_util.h"
 #include "components/sync/engine_impl/loopback_server/loopback_server_entity.h"
+#include "components/sync/syncable/syncable_proto_util.h"
 #include "url/gurl.h"
 
 namespace syncer {
@@ -55,9 +56,9 @@ void AddBookmarkSpecifics(sync_pb::EntitySpecifics* specifics,
 
   bm_specifics->set_title(bookmark.site.TryGetNonEmptyTitle());
   bm_specifics->set_creation_time_us(
-    TimeToProtoTime(bookmark.site.creationTime));
+      TimeToProtoTime(bookmark.site.creationTime));
   bm_specifics->set_icon_url(bookmark.site.favicon);
-      // base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
+  // base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
   sync_pb::MetaInfo* meta_info = bm_specifics->add_meta_info();
   meta_info->set_key("order");
   meta_info->set_value(bookmark.order);
@@ -150,7 +151,8 @@ void AddRootForType(sync_pb::SyncEntity* entity, ModelType type) {
   entity->mutable_specifics()->CopyFrom(specifics);
 }
 
-void AddPermanentNode(sync_pb::SyncEntity* entity, const std::string& name,
+void AddPermanentNode(sync_pb::SyncEntity* entity,
+                      const std::string& name,
                       const std::string& tag) {
   DCHECK(entity);
   sync_pb::EntitySpecifics specifics;
@@ -205,7 +207,7 @@ void ConstructUpdateResponse(sync_pb::GetUpdatesResponse* gu_response,
   DCHECK(request_types);
   for (ModelType type : *request_types) {
     sync_pb::DataTypeProgressMarker* marker =
-      gu_response->add_new_progress_marker();
+        gu_response->add_new_progress_marker();
     marker->set_data_type_id(GetSpecificsFieldNumberFromModelType(type));
     marker->set_token("token");
     if (type == BOOKMARKS) {
@@ -241,11 +243,11 @@ SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse* update_response,
   return SyncerError(SyncerError::SYNCER_OK);
 }
 
-}   // namespace
+}  // namespace
 
 void GetUpdatesProcessor::AddBraveRecords(
     std::unique_ptr<RecordsList> records) {
   brave_records_ = std::move(records);
 }
 
-}   // namespace syncer
+}  // namespace syncer

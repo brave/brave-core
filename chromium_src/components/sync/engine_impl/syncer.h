@@ -10,14 +10,15 @@
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 
-#define BRAVE_SYNCER_H \
- public: \
-  void DownloadBraveRecords(SyncCycle* cycle); \
- private: \
+#define BRAVE_SYNCER_H                                                 \
+ public:                                                               \
+  void DownloadBraveRecords(SyncCycle* cycle);                         \
+                                                                       \
+ private:                                                              \
   void OnGetRecords(std::unique_ptr<brave_sync::RecordsList> records); \
   std::unique_ptr<brave_sync::RecordsList> brave_records_;
 
 #include "../../../../../components/sync/engine_impl/syncer.h"
 #undef BRAVE_SYNCER_H
 
-#endif    // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_SYNCER_H_
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_SYNCER_H_

@@ -9,9 +9,9 @@
 
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/sync_devices.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 
 namespace brave_sync {
 namespace prefs {
@@ -36,8 +36,7 @@ const char kSyncRecordsToResendMeta[] = "brave_sync_records_to_resend_meta";
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
-void Prefs::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
+void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(prefs::kSyncDeviceId, std::string());
   registry->RegisterStringPref(prefs::kSyncSeed, std::string());
   registry->RegisterStringPref(prefs::kSyncPrevSeed, std::string());
@@ -218,14 +217,14 @@ void Prefs::RemoveFromRecordsToResend(const std::string& object_id) {
   dict_update->RemoveKey(object_id);
 }
 
-const base::DictionaryValue*
-Prefs::GetRecordToResendMeta(const std::string& object_id) const {
+const base::DictionaryValue* Prefs::GetRecordToResendMeta(
+    const std::string& object_id) const {
   const base::DictionaryValue* dict =
-    pref_service_->GetDictionary(kSyncRecordsToResendMeta);
+      pref_service_->GetDictionary(kSyncRecordsToResendMeta);
   const base::DictionaryValue* meta = nullptr;
   const base::Value* meta_value = dict->FindDictKey(object_id);
   if (meta_value) {
-     meta_value->GetAsDictionary(&meta);
+    meta_value->GetAsDictionary(&meta);
   }
   return meta;
 }

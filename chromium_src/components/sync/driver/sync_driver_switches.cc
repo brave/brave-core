@@ -15,4 +15,4 @@ bool IsSyncAllowedByFlag() {
   return IsSyncAllowedByFlag_ChromiumImpl() && IsBraveSyncAllowedByFlag();
 }
 
-}   // namespace switches
+}  // namespace switches

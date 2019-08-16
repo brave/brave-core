@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_SYNCER_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_SYNCER_HELPER_H_
 
-#include <string>
 #include <map>
+#include <string>
 
 namespace bookmarks {
 class BookmarkModel;
 class BookmarkNode;
-}   // namespace bookmarks
+}  // namespace bookmarks
 
 namespace brave_sync {
 
@@ -23,11 +23,10 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
 uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
                   const bookmarks::BookmarkNode* src);
 
-uint64_t GetIndexByCompareOrderStartFrom(
-    const bookmarks::BookmarkNode* parent,
-    const bookmarks::BookmarkNode* src,
-    int index);
+uint64_t GetIndexByCompareOrderStartFrom(const bookmarks::BookmarkNode* parent,
+                                         const bookmarks::BookmarkNode* src,
+                                         int index);
 
-}   // namespace brave_sync
+}  // namespace brave_sync
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SYNC_SYNCER_HELPER_H_

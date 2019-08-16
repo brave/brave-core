@@ -6,13 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_BOOKMARKS_BOOKMARK_CHANGE_PROCESSOR_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_BOOKMARKS_BOOKMARK_CHANGE_PROCESSOR_H_
 
-
-#define BRAVE_SYNC_REPOSITION_METHODS \
-void MoveSyncNode( \
-    int index, \
-    const bookmarks::BookmarkNode* node, \
-    const syncer::BaseTransaction* trans);
+#define BRAVE_BOOKMARK_CHANGE_PROCESSOR_H_                          \
+  void MoveSyncNode(int index, const bookmarks::BookmarkNode* node, \
+                    const syncer::BaseTransaction* trans);
 
 #include "../../../../../components/sync_bookmarks/bookmark_change_processor.h"
+#undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_BOOKMARKS_BOOKMARK_CHANGE_PROCESSOR_H_

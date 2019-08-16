@@ -8,17 +8,17 @@
 
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 
-#define BRAVE_SYNC_SCHEDULER_IMPL_H \
- public: \
+#define BRAVE_SYNC_SCHEDULER_IMPL_H_                                       \
   void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override; \
-  void OnPollSyncCycle(brave_sync::GetRecordsCallback cb, \
-                       base::WaitableEvent* wevent) override; \
- private: \
-  friend class SyncManagerImpl; \
-  brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function_; \
+  void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,                  \
+                       base::WaitableEvent* wevent) override;              \
+                                                                           \
+ private:                                                                  \
+  friend class SyncManagerImpl;                                            \
+  brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function_;  \
   brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function_;
 
 #include "../../../../../components/sync/engine_impl/sync_scheduler_impl.h"
-#undef BRAVE_SYNC_SCHEDULER_IMPL_H
+#undef BRAVE_SYNC_SCHEDULER_IMPL_H_
 
-#endif    // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_SYNC_SCHEDULER_IMPL_H_    // NOLINT
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_SYNC_SCHEDULER_IMPL_H_

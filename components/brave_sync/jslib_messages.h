@@ -64,7 +64,7 @@ class Bookmark {
 
   Site site;
   bool isFolder;
-  std::string parentFolderObjectId;   // bytes
+  std::string parentFolderObjectId;  // bytes
   std::vector<std::string> fields;
   bool hideInToolbar;
   std::string order;
@@ -133,8 +133,8 @@ class SyncRecord {
   };
 
   Action action;
-  std::string deviceId;   // bytes
-  std::string objectId;   // bytes
+  std::string deviceId;  // bytes
+  std::string objectId;  // bytes
 
   std::string objectData;
 
@@ -162,8 +162,8 @@ class SyncRecord {
   std::unique_ptr<Device> device_;
 };
 
-}   // namespace jslib
+}  // namespace jslib
 
-}   // namespace brave_sync
+}  // namespace brave_sync
 
-#endif    // BRAVE_COMPONENTS_BRAVE_SYNC_JSLIB_MESSAGES_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_JSLIB_MESSAGES_H_

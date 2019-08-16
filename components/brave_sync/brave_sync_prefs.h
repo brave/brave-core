@@ -6,8 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 
-#include <string>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/macros.h"
@@ -114,8 +114,8 @@ class Prefs {
   void AddToRecordsToResend(const std::string& object_id,
                             std::unique_ptr<base::DictionaryValue> meta);
   void RemoveFromRecordsToResend(const std::string& object_id);
-  const base::DictionaryValue*
-  GetRecordToResendMeta(const std::string& object_id) const;
+  const base::DictionaryValue* GetRecordToResendMeta(
+      const std::string& object_id) const;
   void SetRecordToResendMeta(const std::string& object_id,
                              std::unique_ptr<base::DictionaryValue> meta);
 

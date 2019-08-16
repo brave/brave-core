@@ -44,13 +44,13 @@ class BraveSyncServiceTest;
 namespace brave_sync {
 namespace prefs {
 class Prefs;
-}   // namespace prefs
+}  // namespace prefs
 
 class BraveProfileSyncServiceImpl
-      : public BraveProfileSyncService,
-        public BraveSyncService,
-        public network::NetworkConnectionTracker::NetworkConnectionObserver,
-        public SyncMessageHandler {
+    : public BraveProfileSyncService,
+      public BraveSyncService,
+      public network::NetworkConnectionTracker::NetworkConnectionObserver,
+      public SyncMessageHandler {
  public:
   explicit BraveProfileSyncServiceImpl(Profile* profile,
                                        InitParams init_params);
@@ -83,7 +83,7 @@ class BraveProfileSyncServiceImpl
   void OnSyncReady() override;
   void OnGetExistingObjects(const std::string& category_name,
                             std::unique_ptr<brave_sync::RecordsList> records,
-                            const base::Time &last_record_time_stamp,
+                            const base::Time& last_record_time_stamp,
                             const bool is_truncated) override;
   void OnResolvedSyncRecords(
       const std::string& category_name,
@@ -146,8 +146,10 @@ class BraveProfileSyncServiceImpl
   friend class ::BraveSyncServiceTest;
 
   void SignalWaitableEvent();
-  void FetchSyncRecords(const bool bookmarks, const bool history,
-                        const bool preferences, int max_records);
+  void FetchSyncRecords(const bool bookmarks,
+                        const bool history,
+                        const bool preferences,
+                        int max_records);
   void SendCreateDevice();
   void SendDeviceSyncRecord(const int action,
                             const std::string& device_name,
@@ -161,29 +163,26 @@ class BraveProfileSyncServiceImpl
 
   void ResetSyncInternal();
   void ForceCompleteReset();
-  bool GetResettingForTest() const {
-    return reseting_;
-  }
+  bool GetResettingForTest() const { return reseting_; }
 
   void SetPermanentNodesOrder(const std::string& base_order);
 
   std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
-    const bookmarks::BookmarkNode* node);
+      const bookmarks::BookmarkNode* node);
   // These SyncEntityInfo is for legacy device who doesn't send meta info for
   // sync entity
   void SaveSyncEntityInfo(const jslib::SyncRecord* record);
   void LoadSyncEntityInfo(jslib::SyncRecord* record);
 
   void CreateResolveList(
-    const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
-    SyncRecordAndExistingList* records_and_existing_objects);
+      const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
+      SyncRecordAndExistingList* records_and_existing_objects);
 
   void SendAndPurgePendingRecords();
 
   void SendSyncRecords(const std::string& category_name,
                        RecordsListPtr records);
   void ResendSyncRecords(const std::string& category_name);
-
 
   static base::TimeDelta GetRetryExponentialWaitAmount(int retry_number);
   static std::vector<unsigned> GetExponentialWaitsForTests();
@@ -224,6 +223,6 @@ class BraveProfileSyncServiceImpl
 
   DISALLOW_COPY_AND_ASSIGN(BraveProfileSyncServiceImpl);
 };
-}   // namespace brave_sync
+}  // namespace brave_sync
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_PROFILE_SYNC_SERVICE_IMPL_H_

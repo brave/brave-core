@@ -50,7 +50,7 @@ class BraveAutocompleteProviderClientUnitTest : public testing::Test {
 
 TEST_F(BraveAutocompleteProviderClientUnitTest,
        SyncURLSuggestedNotSyncInternal) {
-  ASSERT_FALSE(BuiltinExists(
-      base::ASCIIToUTF16(chrome::kChromeUISyncInternalsHost)));
+  ASSERT_FALSE(
+      BuiltinExists(base::ASCIIToUTF16(chrome::kChromeUISyncInternalsHost)));
   ASSERT_TRUE(BuiltinExists(base::ASCIIToUTF16(kBraveUISyncHost)));
 }

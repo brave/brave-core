@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "../../../../../components/sync/engine_impl/syncer.cc"   // NOLINT
+#include "../../../../../components/sync/engine_impl/syncer.cc"  // NOLINT
 
 namespace syncer {
 
@@ -31,4 +31,3 @@ void Syncer::DownloadBraveRecords(SyncCycle* cycle) {
 }
 
 }  // namespace syncer
-

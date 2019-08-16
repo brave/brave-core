@@ -152,10 +152,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
   std::vector<std::string> pages {
     "adblock",
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-    "rewards",
+        "rewards",
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-    chrome::kChromeUISyncHost,
+        chrome::kChromeUISyncHost,
 #endif
   };
 

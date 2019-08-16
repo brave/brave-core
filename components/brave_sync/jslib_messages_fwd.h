@@ -27,7 +27,7 @@ class SyncRecord;
 
 namespace syncer {
 class Syncer;
-}   // namespace syncer
+}  // namespace syncer
 
 namespace brave_sync {
 
@@ -40,11 +40,10 @@ typedef std::vector<SyncRecordAndExistingPtr> SyncRecordAndExistingList;
 
 using Uint8Array = std::vector<unsigned char>;
 using GetRecordsCallback =
-  base::RepeatingCallback<void(std::unique_ptr<RecordsList>)>;
-using NudgeSyncCycleDelegate =
-  base::Callback<void(RecordsListPtr)>;
+    base::RepeatingCallback<void(std::unique_ptr<RecordsList>)>;
+using NudgeSyncCycleDelegate = base::Callback<void(RecordsListPtr)>;
 using PollSyncCycleDelegate =
-  base::Callback<void(GetRecordsCallback, base::WaitableEvent* wevent)>;
+    base::Callback<void(GetRecordsCallback, base::WaitableEvent* wevent)>;
 
 }  // namespace brave_sync
 

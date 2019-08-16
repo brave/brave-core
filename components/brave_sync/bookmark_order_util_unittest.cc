@@ -81,7 +81,8 @@ TEST(BookmarkOrderUtilTest, CompareOrder) {
 }
 
 TEST(BookmarkOrderUtilTest, GetOrder) {
-  // Ported from https://github.com/brave/sync/blob/staging/test/client/bookmarkUtil.js
+  // Ported from
+  // https://github.com/brave/sync/blob/staging/test/client/bookmarkUtil.js
   EXPECT_EQ(GetOrder("", "2.0.1", ""), "2.0.0.1");
 
   EXPECT_EQ(GetOrder("", "2.0.9", ""), "2.0.8");
@@ -111,4 +112,4 @@ TEST(BookmarkOrderUtilTest, GetOrder) {
   EXPECT_EQ(GetOrder("1.1.1.2.1", "1.1.1.3", ""), "1.1.1.2.2");
 }
 
-}   // namespace brave_sync
+}  // namespace brave_sync

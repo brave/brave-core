@@ -12,13 +12,14 @@ namespace syncer {
 using brave_sync::RecordsList;
 }  // namespace syncer
 
-#define BRAVE_GET_UPDATES_PROCESSOR_H \
- public: \
+#define BRAVE_GET_UPDATES_PROCESSOR_H                         \
+ public:                                                      \
   void AddBraveRecords(std::unique_ptr<RecordsList> records); \
- private: \
+                                                              \
+ private:                                                     \
   std::unique_ptr<RecordsList> brave_records_;
 
 #include "../../../../../components/sync/engine_impl/get_updates_processor.h"
 #undef BRAVE_GET_UPDATES_PROCESSOR_H
 
-#endif    // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_GET_UPDATES_PROCESSOR_H_    // NOLINT
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_GET_UPDATES_PROCESSOR_H_

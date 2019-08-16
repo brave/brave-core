@@ -10,13 +10,13 @@
 
 namespace syncer {
 class Syncer;
-}   // namespace syncer
+}  // namespace syncer
 
-#define BRAVE_SYNC_MANAGER_INIT_ARGS_H \
-brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function; \
-brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function;
+#define BRAVE_SYNC_MANAGER_INIT_ARGS_H                                   \
+  brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function; \
+  brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function;
 
 #include "../../../../../components/sync/engine/sync_manager.h"
 #undef BRAVE_SYNC_MANAGER_INIT_ARGS_H
 
-#endif    // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_SYNC_MANAGER_H_
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_SYNC_MANAGER_H_

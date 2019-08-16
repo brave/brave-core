@@ -96,6 +96,6 @@ class BraveSyncClientImpl : public BraveSyncClient,
   DISALLOW_COPY_AND_ASSIGN(BraveSyncClientImpl);
 };
 
-}   // namespace brave_sync
+}  // namespace brave_sync
 
-#endif    // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_IMPL_H_

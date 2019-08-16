@@ -27,35 +27,32 @@ SyncEngineHost* BraveGetSyncEngineHost(SyncEngineImpl* sync_engine) {
 }
 
 void OnNudgeSyncCycleOnOwnerThread(base::WeakPtr<SyncEngineImpl> sync_engine,
-                                  brave_sync::RecordsListPtr records_list) {
+                                   brave_sync::RecordsListPtr records_list) {
   if (sync_engine.get())
     static_cast<BraveProfileSyncService*>(
-        BraveGetSyncEngineHost(sync_engine.get()))->OnNudgeSyncCycle(
-            std::move(records_list));
+        BraveGetSyncEngineHost(sync_engine.get()))
+        ->OnNudgeSyncCycle(std::move(records_list));
 }
 
 void OnNudgeSyncCycle(WeakHandle<SyncEngineImpl> sync_engine_impl,
                       brave_sync::RecordsListPtr records_list) {
-  sync_engine_impl.Call(FROM_HERE,
-                        &OnNudgeSyncCycleOnOwnerThread,
+  sync_engine_impl.Call(FROM_HERE, &OnNudgeSyncCycleOnOwnerThread,
                         base::Passed(&records_list));
 }
 
 void OnPollSyncCycleOnOwnerThread(base::WeakPtr<SyncEngineImpl> sync_engine,
-                                 GetRecordsCallback cb,
-                                 base::WaitableEvent* wevent) {
+                                  GetRecordsCallback cb,
+                                  base::WaitableEvent* wevent) {
   if (sync_engine.get())
     static_cast<BraveProfileSyncService*>(
-        BraveGetSyncEngineHost(sync_engine.get()))->OnPollSyncCycle(cb, wevent);
+        BraveGetSyncEngineHost(sync_engine.get()))
+        ->OnPollSyncCycle(cb, wevent);
 }
 
 void OnPollSyncCycle(WeakHandle<SyncEngineImpl> sync_engine_impl,
                      GetRecordsCallback cb,
                      base::WaitableEvent* wevent) {
-  sync_engine_impl.Call(FROM_HERE,
-                        &OnPollSyncCycleOnOwnerThread,
-                        cb,
-                        wevent);
+  sync_engine_impl.Call(FROM_HERE, &OnPollSyncCycleOnOwnerThread, cb, wevent);
 }
 #endif
 
@@ -64,17 +61,14 @@ void BraveInit(WeakHandle<SyncEngineImpl> sync_engine_impl,
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
   DCHECK(args);
   args->nudge_sync_cycle_delegate_function =
-      base::BindRepeating(&OnNudgeSyncCycle,
-                          sync_engine_impl);
+      base::BindRepeating(&OnNudgeSyncCycle, sync_engine_impl);
   args->poll_sync_cycle_delegate_function =
-      base::BindRepeating(&OnPollSyncCycle,
-                          sync_engine_impl);
+      base::BindRepeating(&OnPollSyncCycle, sync_engine_impl);
 #endif
 }
 
 }  // namespace syncer
 
-#define BRAVE_SYNC_ENGINE_BACKEND_DO_INITIALIZE \
-BraveInit(host_, &args);
+#define BRAVE_SYNC_ENGINE_BACKEND_DO_INITIALIZE BraveInit(host_, &args);
 
-#include "../../../../../../components/sync/driver/glue/sync_engine_backend.cc"   // NOLINT
+#include "../../../../../../components/sync/driver/glue/sync_engine_backend.cc"  // NOLINT

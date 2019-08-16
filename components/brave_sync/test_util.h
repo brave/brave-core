@@ -44,8 +44,9 @@ class MockBraveSyncClient : public BraveSyncClient {
   MOCK_METHOD0(SendFetchSyncDevices, void());
   MOCK_METHOD2(SendResolveSyncRecords, void(const std::string& category_name,
     std::unique_ptr<SyncRecordAndExistingList> list));
-  MOCK_METHOD2(SendSyncRecords, void(const std::string& category_name,
-    const RecordsList& records));
+  MOCK_METHOD2(SendSyncRecords,
+               void(const std::string& category_name,
+                    const RecordsList& records));
   MOCK_METHOD0(SendDeleteSyncUser, void());
   MOCK_METHOD1(SendDeleteSyncCategory, void(const std::string& category_name));
   MOCK_METHOD2(SendGetBookmarksBaseOrder, void(const std::string& device_id,
@@ -62,14 +63,13 @@ std::unique_ptr<Profile> CreateBraveSyncProfile(const base::FilePath& path);
 std::unique_ptr<KeyedService> BuildFakeBookmarkModelForTests(
      content::BrowserContext* context);
 
-SyncRecordPtr SimpleBookmarkSyncRecord(
-    const int action,
-    const std::string& object_id,
-    const std::string& location,
-    const std::string& title,
-    const std::string& order,
-    const std::string& parent_object_id,
-    const std::string& device_id = "3");
+SyncRecordPtr SimpleBookmarkSyncRecord(const int action,
+                                       const std::string& object_id,
+                                       const std::string& location,
+                                       const std::string& title,
+                                       const std::string& order,
+                                       const std::string& parent_object_id,
+                                       const std::string& device_id = "3");
 
 SyncRecordPtr SimpleFolderSyncRecord(
     const int action,

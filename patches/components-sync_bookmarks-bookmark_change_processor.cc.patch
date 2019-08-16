@@ -1,25 +1,24 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
-index 35a73a07bbcdd8aeba13acf37c6754aadb039768..ac7ebcbda6bc1de634b81be44ce98c2c3656b3ac 100644
+index 35a73a07bbcdd8aeba13acf37c6754aadb039768..67cb25e20a9c2eb1f70661de4e03c956b7a6a6bc 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.cc
 +++ b/components/sync_bookmarks/bookmark_change_processor.cc
 @@ -87,6 +87,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
    bookmark_specifics.set_creation_time_us(src->date_added().ToInternalValue());
    dst->SetBookmarkSpecifics(bookmark_specifics);
    SetSyncNodeFavicon(src, model, dst);
-+  brave_sync::AddBraveMetaInfo(src, model);
++  BRAVE_BOOKMARK_CHANGE_PROCESSOR_UPDATE_SYNC_NODE_PROPERTIES
    SetSyncNodeMetaInfo(src, dst);
  }
  
-@@ -383,7 +384,7 @@ int64_t BookmarkChangeProcessor::UpdateSyncNode(
+@@ -383,7 +384,6 @@ int64_t BookmarkChangeProcessor::UpdateSyncNode(
  
  void BookmarkChangeProcessor::BookmarkMetaInfoChanged(
      BookmarkModel* model, const BookmarkNode* node) {
 -  BookmarkNodeChanged(model, node);
-+  // TODO(darkdh): make sure the meta info changed is what we want to sync
  }
  
  void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
-@@ -415,6 +416,7 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
+@@ -415,6 +415,7 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
        error_handler()->OnUnrecoverableError(error);
        return;
      }
@@ -27,7 +26,7 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..ac7ebcbda6bc1de634b81be44ce98c2c
  
      if (!PlaceSyncNode(MOVE, new_parent, new_index, &trans, &sync_node,
                         model_associator_)) {
-@@ -458,6 +460,7 @@ void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
+@@ -458,6 +459,7 @@ void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
      return;
    }
  
@@ -35,7 +34,7 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..ac7ebcbda6bc1de634b81be44ce98c2c
    CreateOrUpdateSyncNode(node);
  }
  
-@@ -490,6 +493,7 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
+@@ -490,6 +492,7 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
        DCHECK_EQ(sync_child.GetParentId(),
                  model_associator_->GetSyncIdFromChromeId(node->id()));
  
@@ -43,15 +42,15 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..ac7ebcbda6bc1de634b81be44ce98c2c
        if (!PlaceSyncNode(MOVE, node, i, &trans, &sync_child,
                           model_associator_)) {
          syncer::SyncError error(FROM_HERE,
-@@ -718,9 +722,11 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+@@ -718,9 +721,11 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
                     << src.GetBookmarkSpecifics().url();
          continue;
        }
-+      bookmark_model_->SetNodeMetaInfo(dst, "FirstLoadedFavicon", "true");
++      BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_1
        model_associator_->Associate(dst, src);
      }
  
-+    BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL
++    BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_2
      to_reposition.insert(std::make_pair(src.GetPositionIndex(), dst));
      bookmark_model_->SetNodeSyncTransactionVersion(dst, model_version);
    }

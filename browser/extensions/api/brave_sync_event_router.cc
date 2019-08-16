@@ -146,4 +146,4 @@ void BraveSyncEventRouter::LoadClient() {
   event_router_->BroadcastEvent(std::move(event));
 }
 
-}   // namespace extensions
+}  // namespace extensions
