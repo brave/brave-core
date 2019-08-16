@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/time/time.h"
 
 #include "../../../../../components/sync/engine_impl/syncer.cc"  // NOLINT
 
@@ -29,7 +30,11 @@ void Syncer::DownloadBraveRecords(SyncCycle* cycle) {
   base::WaitableEvent wevent;
   cycle->delegate()->OnPollSyncCycle(std::move(on_get_records), &wevent);
   // Make sure OnGetRecords will be the next task on sync thread
-  wevent.Wait();
+  // it will timeout in 3 mins to prevent sync thread from being blocked as
+  // fail-safe
+  bool result = wevent.TimedWait(base::TimeDelta::FromMinutes(3));
+  if (!result)
+    LOG(WARNING) << "WaitableEvent timed out";
 }
 
 }  // namespace syncer
