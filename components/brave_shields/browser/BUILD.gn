@@ -34,6 +34,8 @@ source_set("browser") {
     "brave_shields_web_contents_observer_android.cc",
     "brave_shields_web_contents_observer.cc",
     "brave_shields_web_contents_observer.h",
+    "cookie_pref_service.cc",
+    "cookie_pref_service.h",
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
@@ -57,11 +59,14 @@ source_set("browser") {
     "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//brave/vendor/autoplay-whitelist/brave:autoplay-whitelist",
     "//chrome/common",
+    "//components/content_settings/core/common",
+    "//components/content_settings/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",
     "//content/public/browser",
     "//net",
     "//third_party/leveldatabase",
+    "//url",
   ]
 
   if (enable_extensions) {

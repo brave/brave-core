@@ -23,6 +23,7 @@ struct Referrer;
 
 class GURL;
 class HostContentSettingsMap;
+class PrefService;
 class Profile;
 class ProfileIOData;
 
@@ -39,12 +40,17 @@ void SetBraveShieldsEnabled(Profile* profile, bool enable, const GURL& url);
 // reset to the default value
 void ResetBraveShieldsEnabled(Profile* profile, const GURL& url);
 bool GetBraveShieldsEnabled(Profile* profile, const GURL& url);
+bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
 
 void SetAdControlType(Profile* profile, ControlType type, const GURL& url);
 ControlType GetAdControlType(Profile* profile, const GURL& url);
 
 void SetCookieControlType(Profile* profile, ControlType type, const GURL& url);
+void SetCookieControlType(HostContentSettingsMap* map,
+                          ControlType type,
+                          const GURL& url);
 ControlType GetCookieControlType(Profile* profile, const GURL& url);
+ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url);
 
 void SetFingerprintingControlType(Profile* profile,
                                   ControlType type,

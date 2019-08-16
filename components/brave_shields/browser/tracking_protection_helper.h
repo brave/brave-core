@@ -30,7 +30,6 @@ class TrackingProtectionHelper
   void RenderFrameHostChanged(content::RenderFrameHost* old_host,
                               content::RenderFrameHost* new_host) override;
   void RenderFrameDeleted(content::RenderFrameHost* render_frame_host) override;
-  static bool IsSmartTrackingProtectionEnabled();
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
  private:

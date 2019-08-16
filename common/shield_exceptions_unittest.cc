@@ -5,13 +5,13 @@
 
 #include "brave/common/shield_exceptions.h"
 
-
+#include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 
 namespace {
 
 typedef testing::Test BraveShieldsExceptionsTest;
-using brave::IsWhitelistedCookieException;
+using content_settings::IsWhitelistedCookieException;
 using brave::IsWhitelistedFingerprintingException;
 
 TEST_F(BraveShieldsExceptionsTest, IsWhitelistedCookieException) {

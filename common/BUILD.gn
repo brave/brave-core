@@ -113,15 +113,9 @@ source_set("shield_exceptions") {
   ]
 
   deps = [
+    "//brave/extensions:common",
     "//url",
   ]
-  if (is_android) {
-    deps += [
-      "//brave/app/android:common_extensions",
-    ]
-  } else {
-    deps += [ "//extensions/common" ]
-  }
 }
 
 config("constants_configs") {

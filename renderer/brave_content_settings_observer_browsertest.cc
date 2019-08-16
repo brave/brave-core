@@ -6,6 +6,7 @@
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -20,6 +21,8 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/http/http_request_headers.h"
 #include "net/test/embedded_test_server/http_request.h"
+
+using brave_shields::ControlType;
 
 const char kIframeID[] = "test";
 
@@ -74,6 +77,7 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       url_ = embedded_test_server()->GetURL("a.com", "/iframe.html");
       iframe_url_ = embedded_test_server()->GetURL("b.com", "/simple.html");
       image_url_ = embedded_test_server()->GetURL("b.com", "/logo.png");
+      top_level_page_url_ = GURL("http://a.com/");
       top_level_page_pattern_ =
           ContentSettingsPattern::FromString("http://a.com/*");
       iframe_pattern_ = ContentSettingsPattern::FromString("http://b.com/*");
@@ -132,6 +136,10 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       return s;
     }
 
+    const GURL top_level_page_url() {
+      return top_level_page_url_;
+    }
+
     const ContentSettingsPattern& top_level_page_pattern() {
       return top_level_page_pattern_;
     }
@@ -169,121 +177,64 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
     }
 
     void Block3PCookies() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kCookies, CONTENT_SETTING_BLOCK);
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          first_party_pattern(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kCookies, CONTENT_SETTING_ALLOW);
+      brave_shields::SetCookieControlType(browser()->profile(),
+                                          ControlType::BLOCK_THIRD_PARTY,
+                                          top_level_page_url());
     }
 
     void BlockCookies() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kCookies, CONTENT_SETTING_BLOCK);
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          first_party_pattern(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kCookies, CONTENT_SETTING_BLOCK);
+      brave_shields::SetCookieControlType(browser()->profile(),
+                                          ControlType::BLOCK,
+                                          top_level_page_url());
     }
 
     void AllowCookies() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kCookies, CONTENT_SETTING_ALLOW);
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          first_party_pattern(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kCookies, CONTENT_SETTING_ALLOW);
+      brave_shields::SetCookieControlType(browser()->profile(),
+                                          ControlType::ALLOW,
+                                          top_level_page_url());
     }
 
     void ShieldsDown() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kBraveShields, CONTENT_SETTING_BLOCK);
+      brave_shields::SetBraveShieldsEnabled(browser()->profile(),
+                                            false,
+                                            top_level_page_url());
     }
 
     void ShieldsUp() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kBraveShields, CONTENT_SETTING_ALLOW);
+      brave_shields::SetBraveShieldsEnabled(browser()->profile(),
+                                            true,
+                                            top_level_page_url());
     }
 
     void AllowFingerprinting() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kFingerprinting,
-          CONTENT_SETTING_ALLOW);
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          first_party_pattern(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kFingerprinting,
-          CONTENT_SETTING_ALLOW);
+      brave_shields::SetFingerprintingControlType(browser()->profile(),
+                                                  ControlType::ALLOW,
+                                                  top_level_page_url());
     }
 
     void BlockFingerprinting() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kFingerprinting,
-          CONTENT_SETTING_BLOCK);
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          first_party_pattern(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kFingerprinting,
-          CONTENT_SETTING_BLOCK);
+      brave_shields::SetFingerprintingControlType(browser()->profile(),
+                                                  ControlType::BLOCK,
+                                                  top_level_page_url());
     }
 
     void Block3PFingerprinting() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kFingerprinting,
-          CONTENT_SETTING_BLOCK);
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern(),
-          first_party_pattern(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kFingerprinting,
-          CONTENT_SETTING_ALLOW);
+      brave_shields::SetFingerprintingControlType(
+          browser()->profile(),
+          ControlType::BLOCK_THIRD_PARTY,
+          top_level_page_url());
     }
 
     void BlockScripts() {
-      content_settings()->SetContentSettingCustomScope(
-          ContentSettingsPattern::Wildcard(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_JAVASCRIPT,
-          "",
-          CONTENT_SETTING_BLOCK);
+      brave_shields::SetNoScriptControlType(browser()->profile(),
+                                            ControlType::BLOCK,
+                                            top_level_page_url());
     }
 
     void AllowScripts() {
-      content_settings()->SetContentSettingCustomScope(
-          ContentSettingsPattern::Wildcard(),
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_JAVASCRIPT,
-          "",
-          CONTENT_SETTING_ALLOW);
+      brave_shields::SetNoScriptControlType(browser()->profile(),
+                                            ControlType::ALLOW,
+                                            top_level_page_url());
     }
 
     content::WebContents* contents() {
@@ -322,6 +273,7 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
     GURL url_;
     GURL iframe_url_;
     GURL image_url_;
+    GURL top_level_page_url_;
     ContentSettingsPattern top_level_page_pattern_;
     ContentSettingsPattern first_party_pattern_;
     ContentSettingsPattern iframe_pattern_;
