@@ -6,7 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_SYNCER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_IMPL_SYNCER_H_
 
-#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 

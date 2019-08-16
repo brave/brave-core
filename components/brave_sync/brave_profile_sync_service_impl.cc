@@ -128,7 +128,7 @@ std::unique_ptr<SyncRecord> CreateDeleteBookmarkByObjectId(
 void DoDispatchGetRecordsCallback(
     GetRecordsCallback cb,
     std::unique_ptr<brave_sync::RecordsList> records) {
-  cb.Run(std::move(records));
+  std::move(cb).Run(std::move(records));
 }
 
 void AddSyncEntityInfo(jslib::Bookmark* bookmark,
@@ -301,7 +301,7 @@ void BraveProfileSyncServiceImpl::OnResetSync() {
     ResetSyncInternal();
   } else {
     // We have to send delete record and wait for library deleted response then
-    // we can reset it by ResetInternal()
+    // we can reset it by ResetSyncInternal()
     const std::string device_id = brave_sync_prefs_->GetThisDeviceId();
     OnDeleteDevice(device_id);
     reseting_ = true;
@@ -524,8 +524,9 @@ void BraveProfileSyncServiceImpl::OnResolvedSyncRecords(
     // Send records to syncer
     if (get_record_cb_)
       sync_thread_->task_runner()->PostTask(
-          FROM_HERE, base::BindOnce(&DoDispatchGetRecordsCallback,
-                                    get_record_cb_, std::move(records)));
+          FROM_HERE,
+          base::BindOnce(&DoDispatchGetRecordsCallback,
+                         std::move(get_record_cb_), std::move(records)));
     SignalWaitableEvent();
   } else if (category_name == kHistorySites) {
     NOTIMPLEMENTED();
@@ -608,6 +609,7 @@ void BraveProfileSyncServiceImpl::NotifyHaveSyncWords(
 }
 
 void BraveProfileSyncServiceImpl::ResetSyncInternal() {
+  SignalWaitableEvent();
   brave_sync_prefs_->SetPrevSeed(brave_sync_prefs_->GetSeed());
 
   brave_sync_prefs_->Clear();
@@ -912,7 +914,7 @@ void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
     return;
   }
 
-  get_record_cb_ = cb;
+  get_record_cb_ = std::move(cb);
   wevent_ = wevent;
 
   const bool bookmarks = brave_sync_prefs_->GetSyncBookmarksEnabled();
@@ -923,6 +925,7 @@ void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
 }
 
 void BraveProfileSyncServiceImpl::SignalWaitableEvent() {
+  std::move(get_record_cb_);
   if (wevent_) {
     wevent_->Signal();
     wevent_ = nullptr;

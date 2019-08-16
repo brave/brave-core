@@ -8,6 +8,8 @@
 #include <memory>
 #include <utility>
 
+#include "base/bind.h"
+
 #include "../../../../../components/sync/engine_impl/syncer.cc"  // NOLINT
 
 namespace syncer {
@@ -23,9 +25,9 @@ void Syncer::DownloadBraveRecords(SyncCycle* cycle) {
   // syncer will be alive as long as sync is enabled
   brave_records_.reset();
   brave_sync::GetRecordsCallback on_get_records =
-      base::BindRepeating(&Syncer::OnGetRecords, AsWeakPtr());
+      base::BindOnce(&Syncer::OnGetRecords, base::Unretained(this));
   base::WaitableEvent wevent;
-  cycle->delegate()->OnPollSyncCycle(on_get_records, &wevent);
+  cycle->delegate()->OnPollSyncCycle(std::move(on_get_records), &wevent);
   // Make sure OnGetRecords will be the next task on sync thread
   wevent.Wait();
 }

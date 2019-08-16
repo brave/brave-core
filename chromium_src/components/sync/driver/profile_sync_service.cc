@@ -43,7 +43,7 @@ void OnPollSyncCycle(base::WeakPtr<ProfileSyncService> profile_sync_service,
                      base::WaitableEvent* wevent) {
   if (profile_sync_service.get()) {
     static_cast<BraveProfileSyncService*>(profile_sync_service.get())
-        ->OnPollSyncCycle(cb, wevent);
+        ->OnPollSyncCycle(std::move(cb), wevent);
   }
 }
 #endif

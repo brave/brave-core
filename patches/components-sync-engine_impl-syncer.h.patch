@@ -1,16 +1,7 @@
 diff --git a/components/sync/engine_impl/syncer.h b/components/sync/engine_impl/syncer.h
-index 23b389eada81c850c3a8856678d046e599a060da..48654f4c09558ea4d0ac246ebe16178019b30a0e 100644
+index 23b389eada81c850c3a8856678d046e599a060da..30ce667ae1e00e51bf4f227084da8f4ca30f8dc2 100644
 --- a/components/sync/engine_impl/syncer.h
 +++ b/components/sync/engine_impl/syncer.h
-@@ -32,7 +32,7 @@ class SyncCycle;
- // A Syncer instance expects to run on a dedicated thread.  Calls to SyncShare()
- // may take an unbounded amount of time because it may block on network I/O, on
- // lock contention, or on tasks posted to other threads.
--class Syncer {
-+class Syncer : public base::SupportsWeakPtr<Syncer> {
-  public:
-   explicit Syncer(CancelationSignal* cancelation_signal);
-   virtual ~Syncer();
 @@ -94,6 +94,7 @@ class Syncer {
    // Whether the syncer is in the middle of a sync attempt.
    bool is_syncing_;

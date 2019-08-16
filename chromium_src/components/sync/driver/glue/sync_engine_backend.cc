@@ -46,13 +46,14 @@ void OnPollSyncCycleOnOwnerThread(base::WeakPtr<SyncEngineImpl> sync_engine,
   if (sync_engine.get())
     static_cast<BraveProfileSyncService*>(
         BraveGetSyncEngineHost(sync_engine.get()))
-        ->OnPollSyncCycle(cb, wevent);
+        ->OnPollSyncCycle(std::move(cb), wevent);
 }
 
 void OnPollSyncCycle(WeakHandle<SyncEngineImpl> sync_engine_impl,
                      GetRecordsCallback cb,
                      base::WaitableEvent* wevent) {
-  sync_engine_impl.Call(FROM_HERE, &OnPollSyncCycleOnOwnerThread, cb, wevent);
+  sync_engine_impl.Call(FROM_HERE, &OnPollSyncCycleOnOwnerThread,
+                        base::Passed(&cb), wevent);
 }
 #endif
 

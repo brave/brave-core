@@ -18,7 +18,7 @@ void SyncSchedulerImpl::OnNudgeSyncCycle(
 void SyncSchedulerImpl::OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
                                         base::WaitableEvent* wevent) {
   DCHECK(poll_sync_cycle_delegate_function_);
-  poll_sync_cycle_delegate_function_.Run(cb, wevent);
+  poll_sync_cycle_delegate_function_.Run(std::move(cb), wevent);
 }
 
 }  // namespace syncer
