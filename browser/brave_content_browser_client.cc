@@ -33,7 +33,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
-#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
@@ -135,60 +134,6 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
-}
-
-bool BraveContentBrowserClient::AllowAccessCookie(
-    const GURL& url,
-    const GURL& first_party,
-    content::ResourceContext* context,
-    int render_process_id,
-    int render_frame_id) {
-  GURL tab_origin = first_party;
-
-  if (tab_origin.is_empty())
-    tab_origin = BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-        render_process_id, render_frame_id, -1).GetOrigin();
-
-  ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
-  return
-      io_data->GetCookieSettings()->IsCookieAccessAllowed(url, tab_origin) &&
-      g_brave_browser_process->tracking_protection_service()->ShouldStoreState(
-          io_data->GetHostContentSettingsMap(),
-          render_process_id,
-          render_frame_id,
-          url,
-          tab_origin);
-}
-
-bool BraveContentBrowserClient::AllowGetCookie(
-    const GURL& url,
-    const GURL& first_party,
-    const net::CookieList& cookie_list,
-    content::ResourceContext* context,
-    int render_process_id,
-    int render_frame_id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
-                                 render_frame_id);
-  OnCookiesRead(render_process_id, render_frame_id, url, first_party,
-                cookie_list, !allow);
-
-  return allow;
-}
-
-bool BraveContentBrowserClient::AllowSetCookie(
-    const GURL& url,
-    const GURL& first_party,
-    const net::CanonicalCookie& cookie,
-    content::ResourceContext* context,
-    int render_process_id,
-    int render_frame_id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
-                                 render_frame_id);
-  OnCookieChange(render_process_id, render_frame_id, url, first_party, cookie,
-                 !allow);
-  return allow;
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult
