@@ -15,10 +15,10 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
-#include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile_io_data.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -40,25 +40,21 @@ bool OnAllowAccessCookies(
     ProfileIOData* io_data =
         ProfileIOData::FromResourceContext(info->GetContext());
 
-    content_settings::BraveCookieSettings* cookie_settings =
-        (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
-
     GURL url = request.url();
-    GURL first_party = request.site_for_cookies();
-    GURL tab_origin = GURL(request.network_isolation_key().ToString());
+    GURL tab_origin = request.site_for_cookies();
+    if (tab_origin.is_empty())
+      tab_origin = GURL(request.network_isolation_key().ToString());
     if (tab_origin.is_empty() && request.top_frame_origin().has_value())
       tab_origin = request.top_frame_origin()->GetURL();
+
     return
-        cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin) &&
-        // TODO(bridiver) - handle this in BraveCookieSettings
-        g_brave_browser_process->tracking_protection_service()
-            ->ShouldStoreState(cookie_settings,
-                               io_data->GetHostContentSettingsMap(),
-                               ctx->render_process_id,
-                               ctx->render_frame_id,
-                               url,
-                               first_party,
-                               tab_origin);
+        io_data->GetCookieSettings()->IsCookieAccessAllowed(url, tab_origin) &&
+            g_brave_browser_process->tracking_protection_service()
+                ->ShouldStoreState(io_data->GetHostContentSettingsMap(),
+                                   ctx->render_process_id,
+                                   ctx->render_frame_id,
+                                   url,
+                                   tab_origin);
   }
 
   return true;

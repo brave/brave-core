@@ -37,9 +37,11 @@ source_set("net") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
     "//brave/components/brave_shields/browser",
+    "//brave/extensions:common",
     "//components/prefs",
     "//content/public/browser",
     "//content/public/common",
+    "//components/content_settings/core/browser",
     "//extensions/common:common_constants",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
@@ -48,16 +50,6 @@ source_set("net") {
     "//services/network/public/mojom",
     "//url",
   ]
-
-  if (is_android) {
-    deps += [
-      "//brave/app/android:common_extensions",
-    ]
-  } else {
-    deps += [
-      "//extensions/common",
-    ]
-  }
 
   if (enable_brave_referrals) {
     sources += [
