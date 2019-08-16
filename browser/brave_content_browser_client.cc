@@ -23,12 +23,10 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
@@ -145,18 +143,21 @@ bool BraveContentBrowserClient::AllowAccessCookie(
     content::ResourceContext* context,
     int render_process_id,
     int render_frame_id) {
-  GURL tab_origin =
-      BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-          render_process_id, render_frame_id, -1).GetOrigin();
-  ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
-  content_settings::BraveCookieSettings* cookie_settings =
-      (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
+  GURL tab_origin = first_party;
 
-  return cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin) &&
-      // TODO(bridiver) - handle this in BraveCookieSettings
+  if (tab_origin.is_empty())
+    tab_origin = BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
+        render_process_id, render_frame_id, -1).GetOrigin();
+
+  ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
+  return
+      io_data->GetCookieSettings()->IsCookieAccessAllowed(url, tab_origin) &&
       g_brave_browser_process->tracking_protection_service()->ShouldStoreState(
-          cookie_settings, io_data->GetHostContentSettingsMap(),
-          render_process_id, render_frame_id, url, first_party, tab_origin);
+          io_data->GetHostContentSettingsMap(),
+          render_process_id,
+          render_frame_id,
+          url,
+          tab_origin);
 }
 
 bool BraveContentBrowserClient::AllowGetCookie(

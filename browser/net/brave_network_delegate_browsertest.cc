@@ -1,9 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -34,6 +36,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
     nested_iframe_script_url_ =
         embedded_test_server()->GetURL("a.com", "/nested_iframe_script.html");
 
+    top_level_page_url_ = GURL("http://a.com/");
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("http://a.com/*");
     first_party_pattern_ =
@@ -45,14 +48,9 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   void AllowCookies() {
-    content_settings()->SetContentSettingCustomScope(
-        top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies,
-        CONTENT_SETTING_ALLOW);
-    content_settings()->SetContentSettingCustomScope(
-        top_level_page_pattern_, first_party_pattern_,
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies,
-        CONTENT_SETTING_ALLOW);
+    brave_shields::SetCookieControlType(browser()->profile(),
+                                        brave_shields::ControlType::ALLOW,
+                                        top_level_page_url_);
   }
 
  protected:
@@ -60,6 +58,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL nested_iframe_script_url_;
 
  private:
+  GURL top_level_page_url_;
   ContentSettingsPattern top_level_page_pattern_;
   ContentSettingsPattern first_party_pattern_;
   ContentSettingsPattern iframe_pattern_;

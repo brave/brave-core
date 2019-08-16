@@ -2,22 +2,3 @@ import("//brave/build/config.gni")
 
 group("symbol_dist_resources") {}
 group("dist_resources") {}
-
-source_set("common_extensions") {
-  sources = [
-    "//extensions/common/error_utils.cc",
-    "//extensions/common/error_utils.h",
-    "//extensions/common/url_pattern.cc",
-    "//extensions/common/url_pattern.h",
-    "//extensions/common/url_pattern_set.cc",
-    "//extensions/common/url_pattern_set.h",
-  ]
-
-  deps = [
-    "//base",
-    "//components/url_pattern_index",
-    "//extensions/buildflags",
-    "//extensions/common:common_constants",
-    "//url",
-  ]
-}
