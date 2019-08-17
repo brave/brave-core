@@ -1,16 +1,8 @@
 diff --git a/components/sync/engine_impl/get_updates_processor.cc b/components/sync/engine_impl/get_updates_processor.cc
-index faeff075cf940e8c1db7941f4c3dca27bf63f580..98992f1553a4622fe2a3918108fb8a89ac7bc5ff 100644
+index faeff075cf940e8c1db7941f4c3dca27bf63f580..af6143ed5625e060ca17e5ebf93fbbd4a85061d2 100644
 --- a/components/sync/engine_impl/get_updates_processor.cc
 +++ b/components/sync/engine_impl/get_updates_processor.cc
-@@ -36,6 +36,7 @@ bool ShouldRequestEncryptionKey(SyncCycleContext* context) {
- SyncerError HandleGetEncryptionKeyResponse(
-     const sync_pb::ClientToServerResponse& update_response,
-     SyncCycleContext* context) {
-+  return SyncerError(SyncerError::SYNCER_OK);
-   bool success = false;
-   if (update_response.get_updates().encryption_keys_size() == 0) {
-     LOG(ERROR) << "Failed to receive encryption key from server.";
-@@ -225,6 +226,7 @@ SyncerError GetUpdatesProcessor::ExecuteDownloadUpdates(
+@@ -225,6 +225,7 @@ SyncerError GetUpdatesProcessor::ExecuteDownloadUpdates(
  
    SyncerError result = SyncerProtoUtil::PostClientToServerMessage(
        *msg, &update_response, cycle, &partial_failure_data_types);

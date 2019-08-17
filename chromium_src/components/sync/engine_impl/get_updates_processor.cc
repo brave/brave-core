@@ -26,8 +26,10 @@ SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*,
 #include "base/time/time.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "components/sync/base/hash_util.h"
+#include "components/sync/base/system_encryptor.h"
 #include "components/sync/base/time.h"
 #include "components/sync/engine_impl/loopback_server/loopback_server_entity.h"
+#include "components/sync/nigori/cryptographer.h"
 #include "components/sync/syncable/syncable_proto_util.h"
 #include "url/gurl.h"
 
@@ -227,9 +229,37 @@ void ConstructUpdateResponse(sync_pb::GetUpdatesResponse* gu_response,
       }
       std::copy(entities.begin(), entities.end(),
                 RepeatedPtrFieldBackInserter(gu_response->mutable_entries()));
+    } else if (type == NIGORI) {
+      google::protobuf::RepeatedPtrField<sync_pb::SyncEntity> entities;
+      sync_pb::EntitySpecifics specifics;
+      AddDefaultFieldValue(NIGORI, &specifics);
+      sync_pb::SyncEntity* entity = entities.Add();
+      AddRootForType(entity, NIGORI);
+      sync_pb::NigoriSpecifics* nigori = specifics.mutable_nigori();
+      nigori->set_encrypt_everything(false);
+      nigori->set_encrypt_bookmarks(false);
+      syncer::SystemEncryptor encryptor;
+      syncer::Cryptographer cryptographer(&encryptor);
+      KeyParams params = {KeyDerivationParams::CreateForPbkdf2(), "foobar"};
+      syncer::KeyDerivationMethod method = params.derivation_params.method();
+      bool add_key_result = cryptographer.AddKey(params);
+      DCHECK(add_key_result);
+      bool get_keys_result =
+          cryptographer.GetKeys(nigori->mutable_encryption_keybag());
+      DCHECK(get_keys_result);
+      nigori->set_keybag_is_frozen(true);
+      nigori->set_keystore_migration_time(1U);
+      nigori->set_passphrase_type(sync_pb::NigoriSpecifics::CUSTOM_PASSPHRASE);
+      nigori->set_custom_passphrase_key_derivation_method(
+          EnumKeyDerivationMethodToProto(method));
+      entity->mutable_specifics()->CopyFrom(specifics);
+
+      std::copy(entities.begin(), entities.end(),
+                RepeatedPtrFieldBackInserter(gu_response->mutable_entries()));
     }
-    gu_response->set_changes_remaining(0);
   }
+  gu_response->set_changes_remaining(0);
+  gu_response->add_encryption_keys("dummy_encryption_key");
 }
 
 SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse* update_response,
