@@ -307,7 +307,7 @@ BravePatching.RegisterPolymerTemplateModifications({
       if (!advancedToggleTemplate) {
         console.error('[Brave Settings Overrides] Could not find advanced toggle template')
       }
-      const advancedToggleText = advancedToggleTemplate.content.querySelector('paper-button span')
+      const advancedToggleText = advancedToggleTemplate.content.querySelector('cr-button span')
       if (!advancedToggleText) {
         console.error('[Brave Settings Overrides] Could not find advanced toggle text')
       }
