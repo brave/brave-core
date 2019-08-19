@@ -141,25 +141,10 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
       metaInfo.value = std::to_string(version);
       bookmark->metaInfo.push_back(metaInfo);
 
-      metaInfo.key = "mtime";
-      metaInfo.value = std::to_string(entity.mtime());
-      bookmark->metaInfo.push_back(metaInfo);
-
-      metaInfo.key = "ctime";
-      metaInfo.value = std::to_string(entity.ctime());
-      bookmark->metaInfo.push_back(metaInfo);
-
       metaInfo.key = "position_in_parent";
       metaInfo.value = std::to_string(entity.position_in_parent());
       bookmark->metaInfo.push_back(metaInfo);
 
-      if (bm_specifics.has_favicon()) {
-        std::string icon_base64;
-        base::Base64Encode(bm_specifics.favicon(), &icon_base64);
-        metaInfo.key = "icon_data";
-        metaInfo.value = icon_base64;
-        bookmark->metaInfo.push_back(metaInfo);
-      }
       record->SetBookmark(std::move(bookmark));
       if (!skip_record)
         record_list->push_back(std::move(record));

@@ -698,10 +698,7 @@ BraveProfileSyncServiceImpl::BookmarkNodeToSyncBookmark(
   AddSyncEntityInfo(bookmark.get(), node, "originator_cache_guid");
   AddSyncEntityInfo(bookmark.get(), node, "originator_client_item_id");
   AddSyncEntityInfo(bookmark.get(), node, "version");
-  AddSyncEntityInfo(bookmark.get(), node, "mtime");
-  AddSyncEntityInfo(bookmark.get(), node, "ctime");
   AddSyncEntityInfo(bookmark.get(), node, "position_in_parent");
-  AddSyncEntityInfo(bookmark.get(), node, "icon_data");
 
   record->SetBookmark(std::move(bookmark));
 
@@ -729,10 +726,7 @@ void BraveProfileSyncServiceImpl::LoadSyncEntityInfo(
       return;
     AddSyncEntityInfo(bookmark, node, "originator_cache_guid");
     AddSyncEntityInfo(bookmark, node, "originator_client_item_id");
-    AddSyncEntityInfo(bookmark, node, "mtime");
-    AddSyncEntityInfo(bookmark, node, "ctime");
     AddSyncEntityInfo(bookmark, node, "position_in_parent");
-    AddSyncEntityInfo(bookmark, node, "icon_data");
     std::string s_version;
     // Version needs to be incremented by 1 for legacy sync to emulate
     // GetUpdateProcessor behavior

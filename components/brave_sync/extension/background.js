@@ -48,6 +48,12 @@ chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) 
   // Fixup ids
   for (var i = 0; i < records.length; ++i) {
     fixupSyncRecordBrowserToExt(records[i]);
+    // delete meta info for now until all platforms can support
+    // "Version" and "UniquePosition" of chromium sync proto
+    if ('bookmark' in records[i]) {
+      if ('metaInfo' in records[i].bookmark)
+        delete records[i].bookmark.metaInfo;
+    }
   }
   console.log(`"send-sync-records" category_name=${JSON.stringify(category_name)} records=${JSON.stringify(records)}`);
   callbackList["send-sync-records"](null, category_name, records);

@@ -99,25 +99,11 @@ void ExtractBookmarkMeta(sync_pb::SyncEntity* entity,
       sync_pb::MetaInfo* meta_info = bm_specifics->add_meta_info();
       meta_info->set_key(metaInfo.key);
       meta_info->set_value(std::to_string(version));
-    } else if (metaInfo.key == "mtime") {
-      int64_t mtime;
-      bool result = base::StringToInt64(metaInfo.value, &mtime);
-      DCHECK(result);
-      entity->set_mtime(mtime);
-    } else if (metaInfo.key == "ctime") {
-      int64_t ctime;
-      bool result = base::StringToInt64(metaInfo.value, &ctime);
-      DCHECK(result);
-      entity->set_ctime(ctime);
     } else if (metaInfo.key == "position_in_parent") {
       int64_t position_in_parent;
       bool result = base::StringToInt64(metaInfo.value, &position_in_parent);
       DCHECK(result);
       entity->set_position_in_parent(position_in_parent);
-    } else if (metaInfo.key == "icon_data") {
-      std::string icon_data_decoded;
-      base::Base64Decode(metaInfo.value, &icon_data_decoded);
-      bm_specifics->set_favicon(icon_data_decoded);
     }
   }
 }
