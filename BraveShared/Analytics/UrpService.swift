@@ -19,7 +19,7 @@ struct UrpService {
 
     let host: String
     private let apiKey: String
-    let sessionManager: SessionManager
+    let sessionManager: Session
 
     init?(host: String, apiKey: String) {
         self.host = host
@@ -28,17 +28,13 @@ struct UrpService {
         guard let hostUrl = try? host.asURL(), let normalizedHost = hostUrl.normalizedHost else { return nil }
 
         // Certificate pinning
-        let serverTrustPolicies: [String: ServerTrustPolicy] = [
-            normalizedHost: .pinCertificates(
-                certificates: ServerTrustPolicy.certificates(),
-                validateCertificateChain: true,
-                validateHost: true
-            )
+        let serverTrustPolicies: [String: PinnedCertificatesTrustEvaluator] = [
+            normalizedHost: PinnedCertificatesTrustEvaluator()
         ]
 
-        sessionManager = SessionManager(
-            serverTrustPolicyManager: ServerTrustPolicyManager(
-                policies: serverTrustPolicies
+        sessionManager = Session(
+            serverTrustManager: ServerTrustManager(
+                evaluators: serverTrustPolicies
             )
         )
     }
@@ -100,7 +96,7 @@ struct UrpService {
     }
 }
 
-extension SessionManager {
+extension Session {
     /// All requests to referral api use PUT method, accept and receive json.
     func urpApiRequest(endPoint: URL, params: [String: String], completion: @escaping (DataResponse<Any>) -> Void) {
         self.request(endPoint, method: .put, parameters: params, encoding: JSONEncoding.default).responseJSON { response in

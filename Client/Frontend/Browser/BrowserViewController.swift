@@ -2669,7 +2669,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
                     application.endBackgroundTask(taskId)
                 })
 
-                Alamofire.request(url).validate(statusCode: 200..<300).response { response in
+                AF.request(url).validate(statusCode: 200..<300).response { response in
                     // Only set the image onto the pasteboard if the pasteboard hasn't changed since
                     // fetching the image; otherwise, in low-bandwidth situations,
                     // we might be overwriting something that the user has subsequently added.
@@ -2702,7 +2702,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
     }
 
     private func getData(_ url: URL, success: @escaping (Data) -> Void) {
-        Alamofire.request(url).validate(statusCode: 200..<300).response { response in
+        AF.request(url).validate(statusCode: 200..<300).response { response in
             if let data = response.data {
                 success(data)
             }
