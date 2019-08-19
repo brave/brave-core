@@ -427,7 +427,7 @@ extension URL {
         
         guard let scheme = self.scheme else { return false }
         
-        if let _ = ignoredSchemes.index(of: scheme) {
+        if let _ = ignoredSchemes.firstIndex(of: scheme) {
             return false
         }
         

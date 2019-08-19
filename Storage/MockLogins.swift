@@ -77,7 +77,7 @@ open class MockLogins: BrowserLogins, SyncableLogins {
     }
 
     open func addLogin(_ login: LoginData) -> Success {
-        if let _ = cache.index(of: login as! Login) {
+        if let _ = cache.firstIndex(of: login as! Login) {
             return deferMaybe(LoginDataError(description: "Already in the cache"))
         }
         cache.append(login as! Login)
@@ -100,7 +100,7 @@ open class MockLogins: BrowserLogins, SyncableLogins {
     }
 
     open func updateLogin(_ login: LoginData) -> Success {
-        if let index = cache.index(of: login as! Login) {
+        if let index = cache.firstIndex(of: login as! Login) {
             cache[index].timePasswordChanged = Date.nowMicroseconds()
             return succeed()
         }

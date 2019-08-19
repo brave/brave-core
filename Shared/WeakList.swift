@@ -59,7 +59,7 @@ open class WeakList<T: AnyObject>: Sequence {
     }
     
     open func index(of object: T) -> Int? {
-        return self.items.index(where: { $0.value === object })
+        return self.items.firstIndex(where: { $0.value === object })
     }
     
     open subscript(index: Int) -> T? {

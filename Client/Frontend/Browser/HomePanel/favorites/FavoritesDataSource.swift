@@ -101,6 +101,9 @@ extension FavoritesDataSource: NSFetchedResultsControllerDelegate {
             }
         case .move:
             break
+        @unknown default:
+            assertionFailure()
+            break
         }
     }
 }

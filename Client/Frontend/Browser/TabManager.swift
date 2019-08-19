@@ -148,7 +148,7 @@ class TabManager: NSObject {
             return nil
         }
         
-        return tabsForCurrentMode.index(of: selectedTab)
+        return tabsForCurrentMode.firstIndex(of: selectedTab)
     }
     
     // What the users sees displayed based on current private browsing mode
@@ -226,7 +226,7 @@ class TabManager: NSObject {
         }
 
         if let tab = tab {
-            _selectedIndex = allTabs.index(of: tab) ?? -1
+            _selectedIndex = allTabs.firstIndex(of: tab) ?? -1
         } else {
             _selectedIndex = -1
         }
@@ -387,7 +387,7 @@ class TabManager: NSObject {
 
         let toTab = currentTabs[visibleToIndex]
 
-        guard let fromIndex = allTabs.index(of: tab), let toIndex = allTabs.index(of: toTab) else {
+        guard let fromIndex = allTabs.firstIndex(of: tab), let toIndex = allTabs.firstIndex(of: toTab) else {
             return
         }
         
@@ -397,7 +397,7 @@ class TabManager: NSObject {
         let tab = allTabs.remove(at: fromIndex)
         allTabs.insert(tab, at: toIndex)
 
-        if let previouslySelectedTab = previouslySelectedTab, let previousSelectedIndex = allTabs.index(of: previouslySelectedTab) {
+        if let previouslySelectedTab = previouslySelectedTab, let previousSelectedIndex = allTabs.firstIndex(of: previouslySelectedTab) {
             _selectedIndex = previousSelectedIndex
         }
 
@@ -417,7 +417,7 @@ class TabManager: NSObject {
 
         if parent == nil || parent?.type != tab.type {
             allTabs.append(tab)
-        } else if let parent = parent, var insertIndex = allTabs.index(of: parent) {
+        } else if let parent = parent, var insertIndex = allTabs.firstIndex(of: parent) {
             insertIndex += 1
             while insertIndex < allTabs.count && allTabs[insertIndex].isDescendentOf(parent) {
                 insertIndex += 1
@@ -534,7 +534,7 @@ class TabManager: NSObject {
         
         hideNetworkActivitySpinner()
 
-        guard let removalIndex = allTabs.index(where: { $0 === tab }) else {
+        guard let removalIndex = allTabs.firstIndex(where: { $0 === tab }) else {
             log.debug("Could not find index of tab to remove")
             return
         }
@@ -563,7 +563,7 @@ class TabManager: NSObject {
 
         var tabIndex: Int = -1
         if let oldTab = oldSelectedTab {
-            tabIndex = currentTabs.index(of: oldTab) ?? -1
+            tabIndex = currentTabs.firstIndex(of: oldTab) ?? -1
         }
 
         let prevCount = count
@@ -579,7 +579,7 @@ class TabManager: NSObject {
         if let oldTab = oldSelectedTab, tab !== oldTab {
             // If it wasn't the selected tab we removed, then keep it like that.
             // It might have changed index, so we look it up again.
-            _selectedIndex = allTabs.index(of: oldTab) ?? -1
+            _selectedIndex = allTabs.firstIndex(of: oldTab) ?? -1
         } else if let parentTab = tab.parent,
             currentTabs.count > 1,
             let newTab = currentTabs.reduce(currentTabs.first, { currentBestTab, tab2 in
@@ -593,7 +593,7 @@ class TabManager: NSObject {
             }
         }), parentTab == newTab, tab !== newTab, newTab.lastExecutedTime != nil {
             // We select the most recently visited tab, only if it is also the parent tab of the closed tab.
-            _selectedIndex = allTabs.index(of: newTab) ?? -1
+            _selectedIndex = allTabs.firstIndex(of: newTab) ?? -1
         } else {
             // By now, we've just removed the selected one, and no previously loaded
             // tabs. So let's load the final one in the tab tray.
@@ -602,7 +602,7 @@ class TabManager: NSObject {
             }
 
             if let currentTab = currentTabs[safe: tabIndex] {
-                _selectedIndex = allTabs.index(of: currentTab) ?? -1
+                _selectedIndex = allTabs.firstIndex(of: currentTab) ?? -1
             } else {
                 _selectedIndex = -1
             }
@@ -658,7 +658,7 @@ class TabManager: NSObject {
         
         // Remove the current tab last to prevent switching tabs while removing tabs
         if let selectedTab = selectedTab {
-            if let selectedIndex = tabsCopy.index(of: selectedTab) {
+            if let selectedIndex = tabsCopy.firstIndex(of: selectedTab) {
                 let removed = tabsCopy.remove(at: selectedIndex)
                 removeTabs(tabsCopy)
                 removeTab(removed)

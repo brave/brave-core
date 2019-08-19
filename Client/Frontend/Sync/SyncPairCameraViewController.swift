@@ -182,6 +182,7 @@ extension AVCaptureVideoOrientation {
             case .landscapeRight:       return .landscapeRight
             case .portrait:             return .portrait
             case .portraitUpsideDown:   return .portraitUpsideDown
+            @unknown default:           assertionFailure(); return .portrait
             }
         }
     }

@@ -95,6 +95,8 @@ extension UIView {
                 make.height.equalTo(amount)
             case .horizontal:
                 make.width.equalTo(amount)
+            @unknown default:
+                assertionFailure()
             }
         }
         return spacer

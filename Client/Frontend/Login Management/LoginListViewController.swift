@@ -387,7 +387,7 @@ fileprivate class ListSelectionController: NSObject {
 
     func deselectIndexPath(_ indexPath: IndexPath) {
         guard let foundSelectedPath = (selectedIndexPaths.filter { $0.row == indexPath.row && $0.section == indexPath.section }).first,
-              let indexToRemove = selectedIndexPaths.index(of: foundSelectedPath) else {
+            let indexToRemove = selectedIndexPaths.firstIndex(of: foundSelectedPath) else {
             return
         }
 
@@ -465,7 +465,7 @@ class LoginDataSource: NSObject, UITableViewDataSource {
     }
 
     @objc func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        return titles.index(of: Character(title)) ?? 0
+        return titles.firstIndex(of: Character(title)) ?? 0
     }
 
     @objc func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

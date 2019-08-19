@@ -25,7 +25,7 @@ private extension TrayToBrowserAnimator {
         let tabManager = bvc.tabManager
         let displayedTabs = tabManager.tabsForCurrentMode
         
-        guard let selectedTab = bvc.tabManager.selectedTab, let expandFromIndex = displayedTabs.index(of: selectedTab) else {
+        guard let selectedTab = bvc.tabManager.selectedTab, let expandFromIndex = displayedTabs.firstIndex(of: selectedTab) else {
             fatalError("No tab selected for transition.")
         }
         bvc.view.frame = transitionContext.finalFrame(for: bvc)
@@ -148,7 +148,7 @@ private extension BrowserToTrayAnimator {
         let container = transitionContext.containerView
         let tabManager = bvc.tabManager
         let displayedTabs = tabManager.tabsForCurrentMode
-        guard let selectedTab = bvc.tabManager.selectedTab, let scrollToIndex = displayedTabs.index(of: selectedTab) else {
+        guard let selectedTab = bvc.tabManager.selectedTab, let scrollToIndex = displayedTabs.firstIndex(of: selectedTab) else {
             fatalError("No tab selected for transition.")
         }
 

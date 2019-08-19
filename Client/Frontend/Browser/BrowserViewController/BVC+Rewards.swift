@@ -31,6 +31,9 @@ struct RewardsHelper {
             case .logInfo, .logResponse, .logRequest: logger.info(logOutput)
             case .logWarning: logger.warning(logOutput)
             case .logError: logger.error(logOutput)
+            @unknown default:
+                assertionFailure()
+                logger.debug(logOutput)
             }
         }, withFlush: nil)
     }
