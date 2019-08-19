@@ -135,9 +135,12 @@
                      faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
                            html:(NSString *)html
+           shouldClassifyForAds:(BOOL)shouldClassify
 {
   [self onTabRetrieved:tabId url:url faviconURL:faviconURL html:html];
-  [self.ads reportLoadedPageWithURL:url html:html];
+  if (shouldClassify) {
+    [self.ads reportLoadedPageWithURL:url html:html];
+  }
   [self.ledger reportLoadedPageWithURL:url tabId:tabId];
 }
 

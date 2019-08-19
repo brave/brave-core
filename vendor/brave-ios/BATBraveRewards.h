@@ -87,10 +87,15 @@ NS_SWIFT_NAME(BraveRewards)
               isSelected:(BOOL)isSelected
                isPrivate:(BOOL)isPrivate;
 /// Report that a page has loaded in the current browser tab, and the HTML is available for analysis
+///
+/// @note Send false for `shouldClassifyForAds` if the load happened due to tabs restoring
+///       after app launch or if response header for the page load contains
+///       "cache-control: no-store"
 - (void)reportLoadedPageWithURL:(NSURL *)url
                      faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
-                           html:(NSString *)html NS_SWIFT_NAME(reportLoadedPage(url:faviconUrl:tabId:html:));
+                           html:(NSString *)html
+           shouldClassifyForAds:(BOOL)shouldClassify NS_SWIFT_NAME(reportLoadedPage(url:faviconUrl:tabId:html:shouldClassifyForAds:));
 /// Report any XHR load happening in the page
 - (void)reportXHRLoad:(NSURL *)url
                 tabId:(UInt32)tabId
