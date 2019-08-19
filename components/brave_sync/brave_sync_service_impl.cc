@@ -613,7 +613,18 @@ void BraveSyncServiceImpl::FetchDevices() {
   DCHECK(sync_client_);
   sync_prefs_->SetLastFetchTime(base::Time::Now());
 
-  base::Time start_at_time = sync_prefs_->GetLatestDeviceRecordTime();
+  // When the chain is not fully created, force start_at_time to 0.
+  // We need that to force sync lib send request through S3.
+  // Otherwise with STR of:
+  // 1. Create sync chain on deviceA, copy codephrase
+  // 2. Connect deviceB to the sync chain through codephrase
+  // With the first request deviceB gets only sync record with containing
+  // deviceA but then with next requests through SQS, deviceB never gets record
+  // with itself, because AWS lambda had put sync_record into sqs_deviceA only,
+  // because sqs_deviceB was not created or listed at that moment
+  base::Time start_at_time = (sync_prefs_->GetSyncDevices()->size() <= 1) ?
+      base::Time() : sync_prefs_->GetLatestDeviceRecordTime();
+
   sync_client_->SendFetchSyncRecords(
     { brave_sync::jslib_const::kPreferences },
     start_at_time,
