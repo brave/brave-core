@@ -111,6 +111,8 @@ class PasscodeSettingsViewController: TableViewController {
             navigationItem.title = Strings.AuthenticationTouchIDPasscodeSetting
         case .none:
             navigationItem.title = Strings.AuthenticationPasscode
+        @unknown default:
+            assertionFailure()
         }
     }
 }

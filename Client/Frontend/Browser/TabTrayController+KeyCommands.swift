@@ -66,7 +66,7 @@ extension TabTrayController {
         let tabs = self.tabs
         let currentIndex: Int
         if let selected = tabManager.selectedTab {
-            currentIndex = tabs.index(of: selected) ?? 0
+            currentIndex = tabs.firstIndex(of: selected) ?? 0
         } else {
             currentIndex = 0
         }

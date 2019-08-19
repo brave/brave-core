@@ -61,8 +61,8 @@ extension DataSource {
     /// Since they are structs we cannot obtain references to them to alter them, we must directly access them
     /// from `sections[x].rows[y]`
     func indexPath(rowUUID: String, sectionUUID: String) -> IndexPath? {
-        guard let section = sections.index(where: { $0.uuid == sectionUUID }),
-            let row = sections[section].rows.index(where: { $0.uuid == rowUUID }) else {
+        guard let section = sections.firstIndex(where: { $0.uuid == sectionUUID }),
+            let row = sections[section].rows.firstIndex(where: { $0.uuid == rowUUID }) else {
                 return nil
         }
         return IndexPath(row: row, section: section)

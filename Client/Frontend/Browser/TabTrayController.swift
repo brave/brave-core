@@ -611,7 +611,7 @@ extension TabTrayController: TabManagerDelegate {
 
         let updated = [ selected, previous ]
             .compactMap { $0 }
-            .compactMap { tabs.index(of: $0) }
+            .compactMap { tabs.firstIndex(of: $0) }
             .map { IndexPath(item: $0, section: 0) }
 
         assertIsMainThread("Changing selected tab is on main thread")
@@ -634,7 +634,7 @@ extension TabTrayController: TabManagerDelegate {
 
     func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
         // Get the index of the added tab from it's set (private or normal)
-        guard let index = tabManager.tabsForCurrentMode.index(of: tab) else { return }
+        guard let index = tabManager.tabsForCurrentMode.firstIndex(of: tab) else { return }
         if !privateTabsAreEmpty() {
             emptyPrivateTabsView.isHidden = true
         }
@@ -858,7 +858,7 @@ extension TabManagerDataSource: UICollectionViewDragDelegate {
 @available(iOS 11.0, *)
 extension TabManagerDataSource: UICollectionViewDropDelegate {
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-        guard isDragging, let destinationIndexPath = coordinator.destinationIndexPath, let dragItem = coordinator.items.first?.dragItem, let tab = dragItem.localObject as? Tab, let sourceIndex = tabs.index(of: tab) else {
+        guard isDragging, let destinationIndexPath = coordinator.destinationIndexPath, let dragItem = coordinator.items.first?.dragItem, let tab = dragItem.localObject as? Tab, let sourceIndex = tabs.firstIndex(of: tab) else {
             return
         }
 
@@ -878,7 +878,7 @@ extension TabManagerDataSource: UICollectionViewDropDelegate {
 
         // If the tab doesn't exist by the time we get here, we must return a
         // `.cancel` operation continuously until `isDragging` can be reset.
-        guard isDragging, tabs.index(of: tab) != nil else {
+        guard isDragging, tabs.firstIndex(of: tab) != nil else {
             isDragging = false
             return UICollectionViewDropProposal(operation: .cancel)
         }
@@ -1057,7 +1057,7 @@ extension TabTrayController: TabPeekDelegate {
     }
 
     func tabPeekDidCloseTab(_ tab: Tab) {
-        if let index = self.tabDataSource.tabs.index(of: tab),
+        if let index = self.tabDataSource.tabs.firstIndex(of: tab),
             let cell = self.collectionView?.cellForItem(at: IndexPath(item: index, section: 0)) as? TabCell {
             cell.close()
         }

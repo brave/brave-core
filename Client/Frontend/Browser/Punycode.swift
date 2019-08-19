@@ -19,7 +19,7 @@ extension String {
     }
 
     fileprivate func toIndex(_ value: Character) -> Int {
-        return asciiPunycode.index(of: value)!
+        return asciiPunycode.firstIndex(of: value)!
     }
 
     fileprivate func adapt(_ delta: Int, numPoints: Int, firstTime: Bool) -> Int {

@@ -218,6 +218,8 @@ extension HistoryViewController: NSFetchedResultsControllerDelegate {
       if let newIndexPath = newIndexPath {
         tableView.insertRows(at: [newIndexPath], with: .automatic)
       }
+    @unknown default:
+        assertionFailure()
     }
     updateEmptyPanelState()
   }

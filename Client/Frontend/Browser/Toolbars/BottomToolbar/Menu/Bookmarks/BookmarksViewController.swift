@@ -417,6 +417,9 @@ extension BookmarksViewController: NSFetchedResultsControllerDelegate {
       tableView.deleteRows(at: [indexPath], with: .automatic)
     case .move:
       break
+    @unknown default:
+        assertionFailure()
+        break
     }
   }
 }

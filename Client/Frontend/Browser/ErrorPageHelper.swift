@@ -139,7 +139,7 @@ class ErrorPageHelper {
                 return GCDWebServerResponse(statusCode: 404)
             }
 
-            guard let index = self.redirecting.index(of: url) else {
+            guard let index = self.redirecting.firstIndex(of: url) else {
                 return GCDWebServerDataResponse(redirect: url, permanent: false)
             }
 
@@ -241,7 +241,7 @@ class ErrorPageHelper {
                     return
                 }
 
-                if let index = ErrorPageHelper.redirecting.index(of: previousURL) {
+                if let index = ErrorPageHelper.redirecting.firstIndex(of: previousURL) {
                     ErrorPageHelper.redirecting.remove(at: index)
                 }
             }
