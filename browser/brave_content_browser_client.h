@@ -77,6 +77,13 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client,
       bool* bypass_redirect_checks) override;
 
+  void WillCreateWebSocket(
+      content::RenderFrameHost* frame,
+      network::mojom::WebSocketRequest* request,
+      network::mojom::AuthenticationHandlerPtr* auth_handler,
+      network::mojom::TrustedHeaderClientPtr* header_client,
+      uint32_t* options) override;
+
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,
                          const GURL& document_url,

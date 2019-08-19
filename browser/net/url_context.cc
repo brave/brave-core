@@ -182,7 +182,18 @@ void BraveRequestInfo::FillCTX(
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->tab_url = request.top_frame_origin;
+  // TODO(iefremov): Replace with NetworkIsolationKey when it is available
+  // in ResourceRequest
   ctx->tab_origin = request.top_frame_origin.value_or(url::Origin()).GetURL();
+  // TODO(iefremov): We still need this for WebSockets, currently
+  // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
+  // (See |BraveProxyingWebSocket|).
+  if (ctx->tab_origin.is_empty()) {
+    ctx->tab_origin = brave_shields::BraveShieldsWebContentsObserver::
+        GetTabURLFromRenderFrameInfo(ctx->render_process_id,
+                                     ctx->render_frame_id,
+                                     ctx->frame_tree_node_id).GetOrigin();
+  }
 
   ProfileIOData* io_data =
       ProfileIOData::FromResourceContext(resource_context);

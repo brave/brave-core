@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/browser/adblock_stub_response.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/resource_context.h"
 #include "content/public/common/url_utils.h"
@@ -25,66 +26,6 @@
 #include "url/origin.h"
 
 namespace {
-
-// User data key for ResourceContextData.
-const void* const kResourceContextUserDataKey = &kResourceContextUserDataKey;
-
-class ResourceContextData : public base::SupportsUserData::Data {
- public:
-  ~ResourceContextData() override {}
-
-  static void StartProxying(
-      content::ResourceContext* resource_context,
-      int render_process_id,
-      int frame_tree_node_id,
-      network::mojom::URLLoaderFactoryRequest request,
-      network::mojom::URLLoaderFactoryPtrInfo target_factory) {
-    DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-
-    auto* self = static_cast<ResourceContextData*>(
-        resource_context->GetUserData(kResourceContextUserDataKey));
-    if (!self) {
-      self = new ResourceContextData();
-      resource_context->SetUserData(kResourceContextUserDataKey,
-                                    base::WrapUnique(self));
-    }
-
-    if (!self->request_handler_) {
-      self->request_handler_.reset(new BraveRequestHandler);
-    }
-
-    auto proxy = std::make_unique<BraveProxyingURLLoaderFactory>(
-        self->request_handler_.get(), resource_context, render_process_id,
-        frame_tree_node_id, std::move(request), std::move(target_factory),
-        self->request_id_generator_,
-        base::BindOnce(&ResourceContextData::RemoveProxy,
-                       self->weak_factory_.GetWeakPtr()));
-
-    self->proxies_.emplace(std::move(proxy));
-  }
-
-  void RemoveProxy(BraveProxyingURLLoaderFactory* proxy) {
-    auto it = proxies_.find(proxy);
-    DCHECK(it != proxies_.end());
-    proxies_.erase(it);
-  }
-
- private:
-  ResourceContextData()
-      : request_id_generator_(base::MakeRefCounted<RequestIDGenerator>()),
-        weak_factory_(this) {}
-
-  std::unique_ptr<BraveRequestHandler> request_handler_;
-  scoped_refptr<RequestIDGenerator> request_id_generator_;
-
-  std::set<std::unique_ptr<BraveProxyingURLLoaderFactory>,
-           base::UniquePtrComparator>
-      proxies_;
-
-  base::WeakPtrFactory<ResourceContextData> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(ResourceContextData);
-};
 
 // Helper struct for crafting responses.
 struct WriteData {

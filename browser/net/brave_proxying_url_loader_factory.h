@@ -17,12 +17,11 @@
 #include "base/callback.h"
 #include "base/containers/unique_ptr_adapters.h"
 #include "base/macros.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
+#include "brave/browser/net/brave_proxying_utils.h"
 #include "brave/browser/net/url_context.h"
-#include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/binding_set.h"
 #include "net/base/completion_once_callback.h"
@@ -39,26 +38,6 @@ class BrowserContext;
 class RenderFrameHost;
 class ResourceContext;
 }  // namespace content
-
-class RequestIDGenerator
-    : public base::RefCountedThreadSafe<RequestIDGenerator> {
- public:
-  RequestIDGenerator() = default;
-  int64_t Generate() {
-    DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-    return ++id_;
-  }
-
- private:
-  friend class base::RefCountedThreadSafe<RequestIDGenerator>;
-  ~RequestIDGenerator() {}
-
-  // Although this initialization can be done in a thread other than the IO
-  // thread, we expect at least one memory barrier before actually calling
-  // Generate in the IO thread, so we don't protect the variable with a lock.
-  int64_t id_ = 0;
-  DISALLOW_COPY_AND_ASSIGN(RequestIDGenerator);
-};
 
 // Cargoculted from WebRequestProxyingURLLoaderFactory and
 // signin::ProxyingURLLoaderFactory
@@ -220,7 +199,7 @@ class BraveProxyingURLLoaderFactory
 
   void MaybeRemoveProxy();
 
-  BraveRequestHandler* request_handler_;
+  BraveRequestHandler* const request_handler_;
   content::ResourceContext* resource_context_;
   const int render_process_id_;
   const int frame_tree_node_id_;
