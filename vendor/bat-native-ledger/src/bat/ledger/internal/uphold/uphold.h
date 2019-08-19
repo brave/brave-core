@@ -71,9 +71,12 @@ class Uphold {
     GetUserCallback callback);
 
  private:
-  void ContributionCompleted(ledger::Result result,
-                             bool created,
-                             const std::string &viewing_id);
+  void ContributionCompleted(
+      const ledger::Result result,
+      const bool created,
+      const std::string& viewing_id,
+      const double fee = 0,
+      const ledger::ExternalWallet& wallet = {});
 
   void OnFeeCompleted(ledger::Result result,
                     bool created,
