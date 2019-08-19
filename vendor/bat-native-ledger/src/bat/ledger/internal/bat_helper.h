@@ -426,26 +426,6 @@ enum class SERVER_TYPES {
   PUBLISHER_DISTRO
 };
 
-struct SERVER_LIST_BANNER {
-  SERVER_LIST_BANNER();
-  SERVER_LIST_BANNER(const SERVER_LIST_BANNER&);
-  ~SERVER_LIST_BANNER();
-
-  std::string title_;
-  std::string description_;
-  std::string background_;
-  std::string logo_;
-  std::vector<int> amounts_;
-  std::map<std::string, std::string> social_;
-};
-
-struct SERVER_LIST {
-  bool verified;
-  bool excluded;
-  std::string address;
-  SERVER_LIST_BANNER banner;
-};
-
 using SaveVisitSignature = void(const std::string&, uint64_t);
 using SaveVisitCallback = std::function<SaveVisitSignature>;
 
@@ -484,9 +464,6 @@ bool getJSONRecoverWallet(const std::string& json,
 bool getJSONResponse(const std::string& json,
                      unsigned int* statusCode,
                      std::string* error);
-
-bool getJSONServerList(const std::string& json,
-                       std::map<std::string, SERVER_LIST>* list);
 
 bool getJSONAddresses(const std::string& json,
                       std::map<std::string, std::string>* addresses);

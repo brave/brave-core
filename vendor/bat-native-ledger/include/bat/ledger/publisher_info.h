@@ -21,6 +21,8 @@ using PublisherInfoPtr = mojom::PublisherInfoPtr;
 using PublisherInfoList = std::vector<PublisherInfoPtr>;
 using PublisherBanner = mojom::PublisherBanner;
 using PublisherBannerPtr = mojom::PublisherBannerPtr;
+using ServerPublisherInfo = mojom::ServerPublisherInfo;
+using ServerPublisherInfoPtr = mojom::ServerPublisherInfoPtr;
 
 const char kClearFavicon[] = "clear";
 const char kIgnorePublisherBlob[] = "ignore";

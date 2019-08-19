@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/values.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
@@ -205,11 +206,14 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                          ledger::Result result,
                          ledger::PublisherInfoPtr publisher_info);
 
+  ledger::PublisherBannerPtr ParsePublisherBanner(
+      base::DictionaryValue* dictionary);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
 
-  std::map<std::string, braveledger_bat_helper::SERVER_LIST> server_list_;
+  std::map<std::string, ledger::ServerPublisherInfoPtr> server_list_;
 
   double a_;
 

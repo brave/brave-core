@@ -38,7 +38,7 @@ struct PublisherBanner {
   array<int32> amounts;
   string provider;
   map<string, string> social;
-  bool verified;
+  bool verified = false;
 };
 
 struct PendingContribution {
@@ -222,4 +222,11 @@ enum Result {
   PENDING_NOT_ENOUGH_FUNDS = 22,
   RECURRING_TABLE_EMPTY = 23,
   EXPIRED_TOKEN = 24,
+};
+
+struct ServerPublisherInfo {
+  bool verified = false;
+  bool excluded = false;
+  string address;
+  PublisherBanner banner;
 };

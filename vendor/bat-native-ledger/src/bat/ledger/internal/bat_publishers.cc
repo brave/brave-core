@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_reader.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_publishers.h"
 #include "bat/ledger/internal/bignum.h"
@@ -38,7 +39,7 @@ namespace braveledger_bat_publishers {
 BatPublishers::BatPublishers(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   state_(new braveledger_bat_helper::PUBLISHER_STATE_ST),
-  server_list_(std::map<std::string, braveledger_bat_helper::SERVER_LIST>()) {
+  server_list_(std::map<std::string, ledger::ServerPublisherInfoPtr>()) {
   calcScoreConsts(state_->min_publisher_duration_);
 }
 
@@ -535,9 +536,11 @@ bool BatPublishers::isVerified(const std::string& publisher_id) {
     return false;
   }
 
-  const braveledger_bat_helper::SERVER_LIST values = result->second;
+  if (!result->second) {
+    return false;
+  }
 
-  return values.verified;
+  return result->second->verified;
 }
 
 bool BatPublishers::isExcluded(const std::string& publisher_id,
@@ -556,10 +559,11 @@ bool BatPublishers::isExcluded(const std::string& publisher_id,
   if (result == server_list_.end()) {
     return false;
   }
+  if (!result->second) {
+    return false;
+  }
 
-  const braveledger_bat_helper::SERVER_LIST values = result->second;
-
-  return values.excluded;
+  return result->second->excluded;
 }
 
 void BatPublishers::clearAllBalanceReports() {
@@ -699,15 +703,119 @@ void BatPublishers::OnPublishersListSaved(ledger::Result result) {
 }
 
 bool BatPublishers::loadPublisherList(const std::string& data) {
-  std::map<std::string, braveledger_bat_helper::SERVER_LIST> list;
+  std::map<std::string, ledger::ServerPublisherInfoPtr> list;
 
-  bool success = braveledger_bat_helper::getJSONServerList(data, &list);
-
-  if (success) {
-    server_list_ = list;
+  base::Optional<base::Value> value = base::JSONReader::Read(data);
+  if (!value || !value->is_list()) {
+    return false;
   }
 
-  return success;
+  base::ListValue* publishers = nullptr;
+  if (!value->GetAsList(&publishers)) {
+    return false;
+  }
+
+  for (auto& item : *publishers) {
+    base::ListValue* values = nullptr;
+    if (!item.GetAsList(&values)) {
+      return false;
+    }
+
+    auto publisher = ledger::ServerPublisherInfo::New();
+
+    // Publisher key
+    std::string publisher_key = "";
+    if (!values->GetList()[0].is_string()) {
+      continue;
+    }
+    publisher_key = values->GetList()[0].GetString();
+
+    if (publisher_key.empty()) {
+      continue;
+    }
+
+    // Verified
+    if (!values->GetList()[1].is_bool()) {
+      continue;
+    }
+    publisher->verified = values->GetList()[1].GetBool();
+
+    // Excluded
+    if (!values->GetList()[2].is_bool()) {
+      continue;
+    }
+    publisher->excluded = values->GetList()[2].GetBool();
+
+    // Address
+    if (!values->GetList()[3].is_string()) {
+      continue;
+    }
+    publisher->address = values->GetList()[3].GetString();
+
+    // Banner
+    base::DictionaryValue* banner = nullptr;
+    if (values->GetList()[4].GetAsDictionary(&banner)) {
+      publisher->banner = ParsePublisherBanner(banner);
+    }
+
+    list.emplace(publisher_key, std::move(publisher));
+  }
+
+  server_list_ = std::move(list);
+  return true;
+}
+
+ledger::PublisherBannerPtr BatPublishers::ParsePublisherBanner(
+    base::DictionaryValue* dictionary) {
+  if (!dictionary->is_dict()) {
+    return nullptr;
+  }
+
+  auto banner = ledger::PublisherBanner::New();
+
+  auto* title = dictionary->FindKey("title");
+  if (title && title->is_string()) {
+    banner->title = title->GetString();
+  }
+
+  auto* description = dictionary->FindKey("description");
+  if (description && description->is_string()) {
+    banner->description = description->GetString();
+  }
+
+  auto* background = dictionary->FindKey("backgroundUrl");
+  if (background && background->is_string()) {
+    banner->background = background->GetString();
+
+    if (!banner->background.empty()) {
+      banner->background = "chrome://rewards-image/" + banner->background;
+    }
+  }
+
+  auto* logo = dictionary->FindKey("logoUrl");
+  if (logo && logo->is_string()) {
+    banner->logo = logo->GetString();
+
+    if (!banner->logo.empty()) {
+      banner->logo = "chrome://rewards-image/" + banner->logo;
+    }
+  }
+
+  auto* amounts = dictionary->FindKey("donationAmounts");
+  if (amounts && amounts->is_list()) {
+    for (const auto& it : amounts->GetList()) {
+      banner->amounts.push_back(it.GetInt());
+    }
+  }
+
+  auto* social = dictionary->FindKey("socialLinks");
+  if (social && social->is_dict()) {
+    for (const auto& it : social->DictItems()) {
+      banner->social.insert(std::make_pair(it.first, it.second.GetString()));
+    }
+  }
+
+  return banner;
 }
 
 void BatPublishers::getPublisherActivityFromUrl(
@@ -847,39 +955,26 @@ void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
 void BatPublishers::getPublisherBanner(
     const std::string& publisher_id,
     ledger::PublisherBannerCallback callback) {
-  ledger::PublisherBanner banner;
-  banner.publisher_key = publisher_id;
+  ledger::PublisherBannerPtr banner;
 
   if (!server_list_.empty()) {
     auto result = server_list_.find(publisher_id);
 
     if (result != server_list_.end()) {
-      const braveledger_bat_helper::SERVER_LIST values = result->second;
-
-      banner.title = values.banner.title_;
-      banner.description = values.banner.description_;
-      banner.amounts = values.banner.amounts_;
-      banner.social = mojo::MapToFlatMap(values.banner.social_);
-
-      // WebUI must not make external network requests, so map
-      // external resopurces to chrome://rewards-image and handle them
-      // via our custom data source
-      if (!values.banner.background_.empty()) {
-        banner.background = "chrome://rewards-image/"
-            + values.banner.background_;
-      }
-
-      if (!values.banner.logo_.empty()) {
-        banner.logo = "chrome://rewards-image/" + values.banner.logo_;
+      if (result->second && result->second->banner) {
+        banner = result->second->banner->Clone();
       }
     }
   }
+
+  banner->publisher_key = publisher_id;
+  banner->verified = isVerified(publisher_id);
 
   ledger::PublisherInfoCallback callbackGetPublisher =
       std::bind(&BatPublishers::OnPublisherBanner,
                 this,
                 callback,
-                banner,
+                *banner,
                 _1,
                 _2);
 
@@ -901,7 +996,6 @@ void BatPublishers::OnPublisherBanner(
 
   new_banner->name = publisher_info->name;
   new_banner->provider = publisher_info->provider;
-  new_banner->verified = publisher_info->verified;
 
   if (new_banner->logo.empty()) {
     new_banner->logo = publisher_info->favicon_url;
@@ -942,9 +1036,11 @@ std::string BatPublishers::GetPublisherAddress(
     return "";
   }
 
-  const braveledger_bat_helper::SERVER_LIST values = result->second;
+  if (!result->second) {
+    return "";
+  }
 
-  return values.address;
+  return result->second->address;
 }
 
 }  // namespace braveledger_bat_publishers

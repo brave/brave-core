@@ -225,7 +225,7 @@ class Banner extends React.Component<Props, State> {
           : mediaMetaData.mediaType === 'reddit'
           ? this.getRedditText()
           : publisher.description
-        : null
+        : publisher.description
       }
       </SiteBanner>
     )
