@@ -9,6 +9,7 @@ cr.define('settings', function() {
      * @param {boolean} value name.
      */
     setWebTorrentEnabled(value) {}
+    setBraveWalletEnabled(value) {}
     setHangoutsEnabled(value) {}
     setIPFSCompanionEnabled(value) {}
     getRestartNeeded() {}
@@ -21,6 +22,9 @@ cr.define('settings', function() {
     /** @override */
     setWebTorrentEnabled(value) {
       chrome.send('setWebTorrentEnabled', [value]);
+    }
+    setBraveWalletEnabled(value) {
+      chrome.send('setBraveWalletEnabled', [value]);
     }
     setHangoutsEnabled(value) {
       chrome.send('setHangoutsEnabled', [value]);

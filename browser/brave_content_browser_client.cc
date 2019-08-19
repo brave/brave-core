@@ -17,6 +17,7 @@
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/tor/buildflags.h"
+#include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -33,6 +34,7 @@
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_context.h"
@@ -363,11 +365,14 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (url->SchemeIs(content::kChromeUIScheme) &&
       url->host() == ethereum_remote_client_host) {
-    auto* registry = extensions::ExtensionRegistry::Get(browser_context);
-    if (registry->ready_extensions().GetByID(
-        ethereum_remote_client_extension_id)) {
-      *url = GURL(ethereum_remote_client_base_url);
-      return true;
+    Profile* profile = Profile::FromBrowserContext(browser_context);
+    if (profile->GetPrefs()->GetBoolean(kBraveWalletEnabled)) {
+      auto* registry = extensions::ExtensionRegistry::Get(browser_context);
+      if (registry->ready_extensions().GetByID(
+          ethereum_remote_client_extension_id)) {
+        *url = GURL(ethereum_remote_client_base_url);
+        return true;
+      }
     }
   }
 #endif

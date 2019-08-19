@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_WALLET_NAVIGATION_THROTTLE_H_
 
 #include "base/macros.h"
+#include "base/timer/timer.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "extensions/browser/test_extension_registry_observer.h"
 
@@ -30,12 +31,17 @@ class BraveWalletNavigationThrottle : public content::NavigationThrottle,
   const char* GetNameForLogging() override;
 
  private:
+  void WalletBackgroundScriptTimer();
+  void ScheduleBackgroundScriptTimer();
+  void ResumeThrottle();
+
   // ExtensionRegistryObserver:
   void OnExtensionReady(content::BrowserContext* browser_context,
                         const extensions::Extension* extension) override;
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
     extension_registry_observer_;
-  bool resume_pending;
+  bool resume_pending_;
+  base::OneShotTimer timer_;
   DISALLOW_COPY_AND_ASSIGN(BraveWalletNavigationThrottle);
 };
 
