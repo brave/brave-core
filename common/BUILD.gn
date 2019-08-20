@@ -79,6 +79,8 @@ source_set("common") {
       "extensions/brave_extensions_api_provider.h",
       "extensions/extension_constants.cc",
       "extensions/extension_constants.h",
+      "extensions/whitelist.cc",
+      "extensions/whitelist.h",
     ]
 
     public_deps = [
