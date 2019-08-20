@@ -9,7 +9,7 @@ import { NoScriptInfo, NoScriptEntry } from '../types/other/noScriptInfo'
 import { getLocale } from '../background/api/localeAPI'
 
 // Helpers
-import { getOrigin } from './urlUtils'
+import { getOrigin, isHttpOrHttps } from './urlUtils'
 
 /**
  * Filter resources by origin to be used for generating NoScriptInfo.
@@ -121,5 +121,5 @@ export const getBlockScriptText = (haveUserInteracted: boolean, isBlocked: boole
 export const getAllowedScriptsOrigins = (modifiedNoScriptInfo: NoScriptInfo): Array<string> => {
   const getAllowedOrigins = Object.entries(modifiedNoScriptInfo)
     .filter(url => url[1].actuallyBlocked === false)
-  return getAllowedOrigins.map(url => getOrigin(url[0]) + '/')
+  return getAllowedOrigins.map(url => isHttpOrHttps(url[0]) ? getOrigin(url[0]) + '/' : url[0])
 }
