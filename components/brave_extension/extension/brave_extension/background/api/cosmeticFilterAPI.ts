@@ -2,6 +2,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+const generateCosmeticBlockingStylesheet = (hideSelectors: string[], styleSelectors: any) => {
+  let stylesheet = ''
+  if (hideSelectors.length > 0) {
+    stylesheet += hideSelectors[0]
+    for (const selector of hideSelectors.slice(1)) {
+      stylesheet += ',' + selector
+    }
+    stylesheet += '{display:none !important;}\n'
+  }
+  for (const selector in styleSelectors) {
+    stylesheet += selector + '{' + styleSelectors[selector] + '\n'
+  }
+
+  return stylesheet
+}
+
 export const addSiteCosmeticFilter = async (origin: string, cssfilter: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     let storeList = Object.assign({}, storeData.cosmeticFilterList)
@@ -19,6 +35,36 @@ export const removeSiteFilter = (origin: string) => {
     let storeList = Object.assign({}, storeData.cosmeticFilterList)
     delete storeList[origin]
     chrome.storage.local.set({ 'cosmeticFilterList': storeList })
+  })
+}
+
+export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => {
+  chrome.braveShields.hostnameCosmeticResources(hostname, (resources) => {
+    if (chrome.runtime.lastError) {
+      console.warn('Unable to get cosmetic filter data for the current host')
+      return
+    }
+
+    const stylesheet = generateCosmeticBlockingStylesheet(resources.hide_selectors, resources.style_selectors)
+    if (stylesheet) {
+      chrome.tabs.insertCSS(tabId, {
+        code: stylesheet,
+        cssOrigin: 'user',
+        runAt: 'document_start'
+      })
+    }
+
+    chrome.tabs.sendMessage(tabId, {
+      type: 'cosmeticFilterGenericExceptions',
+      exceptions: resources.exceptions
+    })
+
+    if (resources.injected_script) {
+      chrome.tabs.executeScript(tabId, {
+        code: resources.injected_script,
+        runAt: 'document_start'
+      })
+    }
   })
 }
 

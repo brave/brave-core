@@ -49,6 +49,16 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       rule.host = msg.baseURI
       break
     }
+    case 'classIdStylesheet': {
+      chrome.braveShields.classIdStylesheet(msg.classes, msg.ids, msg.exceptions, stylesheet => {
+        chrome.tabs.insertCSS({
+          code: stylesheet,
+          cssOrigin: 'user',
+          runAt: 'document_start'
+        })
+      })
+      break
+    }
   }
 })
 
