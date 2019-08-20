@@ -68,17 +68,6 @@ source_set("browser") {
     "//third_party/leveldatabase",
     "//url",
   ]
-
-  if (enable_extensions) {
-    sources += [
-      "extension_whitelist_service.cc",
-      "extension_whitelist_service.h",
-    ]
-
-    deps += [
-      "//brave/vendor/extension-whitelist/brave:extension-whitelist",
-    ]
-  }
 }
 
 if (is_mac) {
