@@ -167,7 +167,7 @@ void Prefs::SetMigratedBookmarksVersion(const int migrate_bookmarks) {
   pref_service_->SetInteger(kSyncMigrateBookmarksVersion, migrate_bookmarks);
 }
 
-void Prefs::SetLastFetchDevicesTime(const base::Time &time) {
+void Prefs::SetLastFetchDevicesTime(const base::Time& time) {
   pref_service_->SetTime(kSyncLastFetchDevicesTime, time);
 }
 

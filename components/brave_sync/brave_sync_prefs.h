@@ -100,7 +100,7 @@ class Prefs {
   int GetMigratedBookmarksVersion();
   void SetMigratedBookmarksVersion(const int);
 
-  void SetLastFetchDevicesTime(const base::Time &time);
+  void SetLastFetchDevicesTime(const base::Time& time);
   base::Time GetLastFetchDevicesTime();
 
   void Clear();

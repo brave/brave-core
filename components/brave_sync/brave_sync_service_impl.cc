@@ -556,9 +556,9 @@ bool BraveSyncServiceImpl::ShouldFetchDevices(size_t sync_devices_count) const {
   auto last_fetch_devices_time = sync_prefs_->GetLastFetchDevicesTime();
 
   return (sync_devices_count <= 1) || observers_.might_have_observers() ||
-      tools::IsTimeEmpty(last_fetch_devices_time) ||
-      (base::Time::Now() - last_fetch_devices_time) >
-                                                    kForcedFetchDevicesInterval;
+         tools::IsTimeEmpty(last_fetch_devices_time) ||
+         (base::Time::Now() - last_fetch_devices_time) >
+             kForcedFetchDevicesInterval;
 }
 
 // Here we query sync lib for the records after initialization (or again later)

@@ -220,8 +220,8 @@ class BraveSyncServiceImpl
 
   std::unique_ptr<base::RepeatingTimer> timer_;
 
-  static constexpr base::TimeDelta kForcedFetchDevicesInterval
-                                             = base::TimeDelta::FromMinutes(10);
+  static constexpr base::TimeDelta kForcedFetchDevicesInterval =
+      base::TimeDelta::FromMinutes(10);
 
   // Registrar used to monitor the profile prefs.
   PrefChangeRegistrar profile_pref_change_registrar_;

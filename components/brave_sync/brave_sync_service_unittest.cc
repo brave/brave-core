@@ -777,8 +777,7 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
 }
 
 TEST_F(BraveSyncServiceTest, FetchDevices) {
-  EXPECT_CALL(*observer(),
-      OnSyncStateChanged(sync_service())).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_prefs()->SetSyncBookmarksEnabled(true);
 
   sync_prefs()->SetLastFetchTime(base::Time::Now());
@@ -793,9 +792,8 @@ TEST_F(BraveSyncServiceTest, FetchDevices) {
 
   // Have one device, no observers: we should fetch devices
   RecordsList records;
-  records.push_back(SimpleDeviceRecord(
-      SyncRecord::Action::A_CREATE,
-      "0", "this_device"));
+  records.push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "0", "this_device"));
   sync_service()->OnResolvedPreferences(records);
 
   ASSERT_EQ(sync_prefs()->GetSyncDevices()->size(), 1u);
@@ -810,9 +808,8 @@ TEST_F(BraveSyncServiceTest, FetchDevices) {
   // TODO(Alexey): we should be aware if we will have less than two or
   // if our device would be removed from the chain by action from the other
   // device
-  records.push_back(SimpleDeviceRecord(
-      SyncRecord::Action::A_CREATE,
-      "1", "other_device"));
+  records.push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "other_device"));
   sync_service()->OnResolvedPreferences(records);
 
   ASSERT_EQ(sync_prefs()->GetSyncDevices()->size(), 2u);
@@ -827,7 +824,6 @@ TEST_F(BraveSyncServiceTest, FetchDevices) {
   sync_service()->RequestSyncData();
 }
 
-
 namespace {
 
 base::TimeDelta g_overridden_delta;
@@ -835,18 +831,16 @@ std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForDelta(
     base::TimeDelta overridden_delta) {
   g_overridden_delta = overridden_delta;
   return std::make_unique<base::subtle::ScopedTimeClockOverrides>(
-    []() {
-     return base::subtle::TimeNowIgnoringOverride() + g_overridden_delta;
-    },
-    nullptr,
-    nullptr);
+      []() {
+        return base::subtle::TimeNowIgnoringOverride() + g_overridden_delta;
+      },
+      nullptr, nullptr);
 }
 
 }  // namespace
 
 TEST_F(BraveSyncServiceTest, FetchDevicesAllowInLargePeriod) {
-  EXPECT_CALL(*observer(),
-      OnSyncStateChanged(sync_service())).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_prefs()->SetSyncBookmarksEnabled(true);
 
   sync_prefs()->SetLastFetchTime(base::Time::Now());
@@ -856,12 +850,10 @@ TEST_F(BraveSyncServiceTest, FetchDevicesAllowInLargePeriod) {
   // Have two devices, no observers: we should not fetch devices, as the chain
   // is already created and we don't care if we will have then 3 or more
   RecordsList records;
-  records.push_back(SimpleDeviceRecord(
-      SyncRecord::Action::A_CREATE,
-      "0", "this_device"));
-  records.push_back(SimpleDeviceRecord(
-      SyncRecord::Action::A_CREATE,
-      "1", "other_device"));
+  records.push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "0", "this_device"));
+  records.push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "other_device"));
 
   sync_service()->OnResolvedPreferences(records);
 
