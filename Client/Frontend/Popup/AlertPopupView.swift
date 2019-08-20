@@ -21,7 +21,7 @@ class AlertPopupView: PopupView {
     fileprivate let kPadding: CGFloat = 20.0
     
     init(imageView: UIView?, title: String, message: String, inputType: UIKeyboardType? = nil,
-         secureInput: Bool = false, inputPlaceholder: String? = nil) {
+         secureInput: Bool = false, inputPlaceholder: String? = nil, titleWeight: UIFont.Weight = UIFont.Weight.bold, titleSize: CGFloat = 24) {
         super.init(frame: CGRect.zero)
         
         overlayDismisses = false
@@ -40,7 +40,7 @@ class AlertPopupView: PopupView {
         titleLabel = UILabel(frame: CGRect.zero)
         titleLabel.textColor = BraveUX.GreyJ
         titleLabel.textAlignment = .center
-        titleLabel.font = UIFont.systemFont(ofSize: 24, weight: UIFont.Weight.bold)
+        titleLabel.font = UIFont.systemFont(ofSize: titleSize, weight: titleWeight)
         titleLabel.text = title
         titleLabel.numberOfLines = 0
         containerView.addSubview(titleLabel)

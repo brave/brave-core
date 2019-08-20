@@ -91,22 +91,22 @@ class U2FExtensions: NSObject {
     
     /// Show when user has to touch his auth key
     fileprivate let touchKeyPopup = AlertPopupView(imageView: lottieAnimation(for: "webauth_touch_key"),
-                                                   title: Strings.touchKeyMessage, message: "")
+                                                   title: Strings.touchKeyMessage, message: "", titleWeight: .semibold, titleSize: 21)
     
     /// Show when user's key hasn't been inserted yet
     fileprivate let insertKeyPopup = AlertPopupView(imageView: lottieAnimation(for: "webauth_insert_key"),
-                                                    title: Strings.insertKeyMessage, message: "")
+                                                    title: Strings.insertKeyMessage, message: "", titleWeight: .semibold, titleSize: 21)
  
     /// Show to enter key's pin
     fileprivate let pinVerificationPopup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "enter_pin")),
                                                           title: Strings.pinTitle, message: "",
                                                           inputType: .default, secureInput: true,
-                                                          inputPlaceholder: Strings.pinPlaceholder)
+                                                          inputPlaceholder: Strings.pinPlaceholder, titleWeight: .semibold, titleSize: 21)
     
     /// Show when key's pin authentication is pending
     fileprivate let verificationPendingPopup =
         AlertPopupView(imageView: lottieAnimation(for: "webauth_verify_key"),
-                       title: Strings.verificationPending, message: "")
+                       title: Strings.verificationPending, message: "", titleWeight: .semibold, titleSize: 21)
     
     private static func lottieAnimation(for bundleResource: String) -> AnimationView {
         let animationView = AnimationView(name: bundleResource).then {
@@ -651,6 +651,8 @@ class U2FExtensions: NSObject {
     
     // This modal is presented when FIDO/FIDO2 APIs are waiting for the security key
     private func presentInsertKeyModal() {
+        let currentURL = self.tab?.url?.host ?? ""
+        insertKeyPopup.update(title: Strings.insertKeyMessage + currentURL)
         insertKeyPopup.showWithType(showType: .flyUp)
     }
     
@@ -666,6 +668,8 @@ class U2FExtensions: NSObject {
         
         // The modal should be visible for the tab where the U2F API is active
         if u2fActive && tab?.id == currentTabId && (fido2Service.keyState == .touchKey || u2fService.keyState == .YKFKeyU2FServiceKeyStateTouchKey) {
+            let currentURL = self.tab?.url?.host ?? ""
+            touchKeyPopup.update(title: Strings.touchKeyMessage + currentURL)
             touchKeyPopup.showWithType(showType: .flyUp)
             return
         }
@@ -674,7 +678,9 @@ class U2FExtensions: NSObject {
     
     private func handlePinVerificationRequired(completion: @escaping (Bool) -> Void) {
         ensureMainThread {
+            let currentURL = self.tab?.url?.host ?? ""
             self.pinVerificationPopup.addButton(title: Strings.confirmPin, type: .primary) { [weak self] in
+                self?.verificationPendingPopup.update(title: Strings.verificationPending + currentURL)
                 self?.verificationPendingPopup.showWithType(showType: .flyUp)
                 return self?.verifyPin(completion: completion) ?? .flyDown
             }
@@ -1177,15 +1183,15 @@ extension Strings {
     public static let U2FAuthenticationError = NSLocalizedString("U2FAuthenticationError", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Error authenticating your security key", comment: "Error handling U2F authentication.") + tryAgain
     
     //Lightning Modals
-    public static let touchKeyMessage = NSLocalizedString("touchKeyMessage", bundle: Bundle.shared, value: "Touch your key to finish.", comment: "Message for touch key modal.")
-    public static let insertKeyMessage = NSLocalizedString("insertKeyMessage", bundle: Bundle.shared, value: "Insert your security key.", comment: "Message for touch key modal.")
+    public static let touchKeyMessage = NSLocalizedString("touchKeyMessage", bundle: Bundle.shared, value: "Touch your key to finish the request for ", comment: "Message for touch key modal.")
+    public static let insertKeyMessage = NSLocalizedString("insertKeyMessage", bundle: Bundle.shared, value: "Insert your security key for ", comment: "Message for touch key modal.")
     public static let keyCancel = NSLocalizedString("touchKeyCancel", bundle: Bundle.shared, value: "Cancel", comment: "Text for touch key modal button.")
     
     //PIN
     public static let pinTitle = NSLocalizedString("pinTitle", bundle: Bundle.shared, value: "PIN verification required", comment: "Title for the alert modal when a security key with PIN is inserted.")
-    public static let pinPlaceholder = NSLocalizedString("pinPlaceholder", bundle: Bundle.shared, value: "Enter your security key PIN", comment: "Placeholder text for PIN")
+    public static let pinPlaceholder = NSLocalizedString("pinPlaceholder", bundle: Bundle.shared, value: "Enter your PIN", comment: "Placeholder text for PIN")
     public static let confirmPin = NSLocalizedString("confirmPin", bundle: Bundle.shared, value: "Verify", comment: "Button text to confirm PIN")
-    public static let verificationPending = NSLocalizedString("verificationPending", bundle: Bundle.shared, value: "Verifying your PIN...", comment: "Title when PIN code is being verified.")
+    public static let verificationPending = NSLocalizedString("verificationPending", bundle: Bundle.shared, value: "Verifying your PIN for ", comment: "Title when PIN code is being verified.")
 }
 
 extension String {
