@@ -65,10 +65,12 @@ void BraveContentSettingsObserver::DidCommitProvisionalLoad(
 
 bool BraveContentSettingsObserver::IsScriptTemporilyAllowed(
     const GURL& script_url) {
-  // check if scripts from this origin are temporily allowed or not
-  return base::ContainsKey(temporarily_allowed_scripts_,
-      script_url.GetOrigin().spec()) ||
-      base::ContainsKey(temporarily_allowed_scripts_, script_url.spec());
+  // Check if scripts from this origin are temporily allowed or not.
+  // Also matches the full script URL to support data URL cases which we use
+  // the full URL to allow it.
+  return base::ContainsKey(
+      temporarily_allowed_scripts_, script_url.GetOrigin().spec()) ||
+    base::ContainsKey(temporarily_allowed_scripts_, script_url.spec());
 }
 
 void BraveContentSettingsObserver::BraveSpecificDidBlockJavaScript(
