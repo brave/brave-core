@@ -53,7 +53,8 @@
         <div class="label shields-primary-title">$i18n{defaultView}</div>
         <settings-radio-group
           pref="{{prefs.brave.shields.advanced_view_enabled}}">
-          <controlled-radio-button class="shields-view-col" name="false">
+          <controlled-radio-button class="shields-view-col" name="false"
+              pref="[[prefs.brave.shields.advanced_view_enabled]]">
             <div class="flex-center">
               <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" fill-rule="evenodd">
@@ -65,7 +66,8 @@
             </div>
           </controlled-radio-button>
           <div class="vertical-separator"></div>
-          <controlled-radio-button class="shields-view-col" name="true">
+          <controlled-radio-button class="shields-view-col" name="true"
+              pref="[[prefs.brave.shields.advanced_view_enabled]]">
             <div class="flex-center">
               <svg width="50" height="80" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" fill-rule="evenodd">
