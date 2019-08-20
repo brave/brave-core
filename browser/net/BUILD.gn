@@ -52,6 +52,7 @@ source_set("net") {
     "//net",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//third_party/re2",
     "//url",
   ]
 
