@@ -23,8 +23,6 @@ protected:
   LocaleHelperAndroid() = default;
   ~LocaleHelperAndroid() override = default;
 
-  static LocaleHelperAndroid* GetInstance();
-
  private:
   // LocaleHelper impl
   std::string GetLocale() const override;
