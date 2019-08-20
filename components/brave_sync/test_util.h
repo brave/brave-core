@@ -1,11 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_TEST_UTIL_H_
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/files/file_path.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
@@ -41,8 +44,9 @@ class MockBraveSyncClient : public BraveSyncClient {
   MOCK_METHOD0(SendFetchSyncDevices, void());
   MOCK_METHOD2(SendResolveSyncRecords, void(const std::string& category_name,
     std::unique_ptr<SyncRecordAndExistingList> list));
-  MOCK_METHOD2(SendSyncRecords, void (const std::string& category_name,
-    const RecordsList& records));
+  MOCK_METHOD2(SendSyncRecords,
+               void(const std::string& category_name,
+                    const RecordsList& records));
   MOCK_METHOD0(SendDeleteSyncUser, void());
   MOCK_METHOD1(SendDeleteSyncCategory, void(const std::string& category_name));
   MOCK_METHOD2(SendGetBookmarksBaseOrder, void(const std::string& device_id,
@@ -59,13 +63,13 @@ std::unique_ptr<Profile> CreateBraveSyncProfile(const base::FilePath& path);
 std::unique_ptr<KeyedService> BuildFakeBookmarkModelForTests(
      content::BrowserContext* context);
 
-SyncRecordPtr SimpleBookmarkSyncRecord(
-    const int action,
-    const std::string& object_id,
-    const std::string& location,
-    const std::string& title,
-    const std::string& order,
-    const std::string& parent_object_id);
+SyncRecordPtr SimpleBookmarkSyncRecord(const int action,
+                                       const std::string& object_id,
+                                       const std::string& location,
+                                       const std::string& title,
+                                       const std::string& order,
+                                       const std::string& parent_object_id,
+                                       const std::string& device_id = "3");
 
 SyncRecordPtr SimpleFolderSyncRecord(
     const int action,

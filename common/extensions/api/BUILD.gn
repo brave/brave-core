@@ -1,7 +1,8 @@
+import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//tools/grit/grit_rule.gni")
 import("//tools/json_schema_compiler/json_features.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
-import("//tools/grit/grit_rule.gni")
 json_features("api_features") {
   feature_type = "APIFeature"
   method_name = "AddBraveAPIFeatures"
@@ -12,9 +13,7 @@ json_features("api_features") {
   ]
 
   if (brave_wallet_enabled) {
-    sources += [
-      "_brave_wallet_api_features.json",
-    ]
+    sources += [ "_brave_wallet_api_features.json" ]
   }
 }
 
@@ -50,13 +49,14 @@ brave_extensions_api_schema_sources = [
   "brave_rewards.json",
   "brave_theme.json",
   "rewards_notifications.json",
-  "brave_sync.json",
 ]
 
+if (enable_brave_sync) {
+  brave_extensions_api_schema_sources += [ "brave_sync.json" ]
+}
+
 if (brave_wallet_enabled) {
-  brave_extensions_api_schema_sources += [
-    "brave_wallet.json"
-  ]
+  brave_extensions_api_schema_sources += [ "brave_wallet.json" ]
 }
 
 brave_extensions_api_uncompiled_sources = []
@@ -96,7 +96,6 @@ function_registration("generated_api_registration") {
 
   visibility = [ ":api" ]
 }
-
 
 generated_json_strings("generated_api_json_strings") {
   sources = brave_extensions_api_schema_sources +
