@@ -59,8 +59,6 @@ source_set("browser_process") {
     "component_updater/brave_component_updater_configurator.h",
     "component_updater/brave_component_updater_delegate.cc",
     "component_updater/brave_component_updater_delegate.h",
-    "component_updater/brave_crx_update_service.cc",
-    "component_updater/brave_crx_update_service.h",
     "geolocation/brave_geolocation_permission_context.cc",
     "geolocation/brave_geolocation_permission_context.h",
     "metrics/metrics_reporting_util.cc",
