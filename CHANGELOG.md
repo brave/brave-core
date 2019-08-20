@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.11.3](https://github.com/brave/brave-ios/releases/tag/v1.11.3)
+
+ - Added support for U2F/WebAuthn hardware security keys. ([#1406](https://github.com/brave/brave-ios/issues/1406))
+ - Fixed app crash when switching from Private mode to normal mode. ([#1309](https://github.com/brave/brave-ios/issues/1309))
+
 ## [1.11](https://github.com/brave/brave-ios/releases/tag/v1.11)
  
  - Added quick action for New Private Tab from home screen. ([#1258](https://github.com/brave/brave-ios/issues/1258))  
