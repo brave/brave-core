@@ -3,6 +3,8 @@ const unique = require('unique-selector').default
 
 let target: EventTarget | null
 let contentSiteFilters: any
+let genericExceptions: Array<string> | undefined = undefined
+let classIdBuffer: { classes: string[], ids: string[] } = { classes: [], ids: [] }
 
 if (process.env.NODE_ENV === 'development') {
   console.info('development content script here')
@@ -44,7 +46,6 @@ chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => { // fetch fi
   } else if (Object.keys(storeData.cosmeticFilterList).length === 0) {
     console.log('storeData.cosmeticFilterList length === 0')
   } else {
-    //applyDOMCosmeticFilterDebounce(contentSiteFilters)
     console.log('ON COMMITTED MUTATION OBSERVER BEING APPLIED:')
     // removeAll(contentSiteFilters)
     chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => { // fetch filter list
@@ -53,12 +54,17 @@ chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => { // fetch fi
   }
 })
 
-/*function applyDOMCosmeticFilterDebounce (filterList: any) {
+function applyDOMCosmeticFilterDebounce() {
   console.log('applyDOMCosmeticFilterDebounce call')
   let targetNode = document.documentElement
-  let observer = new MutationObserver(function (mutations) {
-    console.log('mutation observed')
-    injectIncrementalStyles(mutations)
+  let observer = new MutationObserver(mutations => {
+    const nodeList: Element[] = [];
+    for (const mutation of mutations) {
+      for (let nodeIndex = 0; nodeIndex < mutation.addedNodes.length; nodeIndex++) {
+        nodeList.push(mutation.addedNodes[nodeIndex] as Element);
+      }
+    }
+    handleNewNodes(nodeList);
   })
   let observerConfig = {
     childList: true,
@@ -66,25 +72,24 @@ chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => { // fetch fi
     // characterData: true
   }
   observer.observe(targetNode, observerConfig)
-}*/
+}
 
-/*function removeAll (siteFilters: any) {
+/*const injectIncrementalStyles = (mutations: MutationRecord[]) => {
   // array of site filters, go through each one and check if idempotent/already applied
-  if (siteFilters) {
-    siteFilters.map((filterData: any) => {
-      console.log(filterData.filter)
-      if (!filterData.isIdempotent || !filterData.applied) { // don't apply if filter is idempotent AND was already applied
-        if (document.querySelector(filterData.filter)) { // attempt filter application
-          document.querySelectorAll(filterData.filter).forEach(e => {
-            console.log(filterData.filter, document.querySelectorAll(filterData.filter))
-            e.remove()
-            filterData.applied = true
-          })
-        }
-        console.log(siteFilters)
+
+  siteFilters.map((mutations: any) => {
+    console.log(filterData.filter)
+    if (!filterData.isIdempotent || !filterData.applied) { // don't apply if filter is idempotent AND was already applied
+      if (document.querySelector(filterData.filter)) { // attempt filter application
+        document.querySelectorAll(filterData.filter).forEach(e => {
+          console.log(filterData.filter, document.querySelectorAll(filterData.filter))
+          e.remove()
+          filterData.applied = true
+        })
       }
-    })
-  }
+      console.log(siteFilters)
+    }
+  })
 }*/
 /*
   let contentSiteFilters = [
@@ -104,7 +109,68 @@ chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => { // fetch fi
   ]
 */
 
-// MutationObserver(applyDOMCosmeticFilters())
+const handleNewNodes = (newNodes: Element[]) => {
+  const { classes, ids } = getClassesAndIds(newNodes);
+  if (!(genericExceptions)) {
+    classIdBuffer.classes.push(...classes)
+    classIdBuffer.ids.push(...ids)
+  } else {
+    chrome.runtime.sendMessage({
+      type: 'classIdStylesheet',
+      classes,
+      ids,
+      exceptions: genericExceptions,
+    })
+  }
+}
+
+const getClassesAndIds = (function() {
+  const queriedIds = new Set();
+  const queriedClasses = new Set();
+  const regexWhitespace = /\s/;
+
+  const new_classes_and_ids = function(addedNodes: Element[]) {
+    const ids = [];
+    const classes = [];
+
+    for (const node of addedNodes) {
+      let v = node.id;
+      if (typeof v === 'string' && v.length !== 0) {
+        v = v.trim();
+        if(!queriedIds.has(v) && v.length !== 0) {
+          ids.push(v);
+          queriedIds.add(v);
+        }
+      }
+      let vv = node.className;
+      if (typeof vv === 'string' && vv.length !== 0 && !regexWhitespace.test(vv)) {
+        if(!queriedClasses.has(vv)) {
+          classes.push(vv);
+          queriedClasses.add(vv);
+        }
+      } else {
+        let vvv = node.classList;
+        if (vvv !== undefined) {
+          let j = vvv.length;
+          while (j--) {
+            const v = vvv[j];
+            if(queriedClasses.has(v) === false) {
+              classes.push(v);
+              queriedClasses.add(v);
+            }
+          }
+        }
+      }
+    }
+    return {classes, ids};
+  };
+
+  return new_classes_and_ids;
+})();
+
+let allNodes = Array.from(document.querySelectorAll('[id],[class]'))
+handleNewNodes(allNodes)
+applyDOMCosmeticFilterDebounce()
 
 document.addEventListener('contextmenu', (event) => {
   // send host and store target
@@ -121,6 +187,18 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   switch (action) {
     case 'getTargetSelector': {
       sendResponse(unique(target))
+    }
+    case 'cosmeticFilterGenericExceptions': {
+      genericExceptions = msg.exceptions
+      if (classIdBuffer.classes.length !== 0 || classIdBuffer.ids.length !== 0) {
+        chrome.runtime.sendMessage({
+          type: 'classIdStylesheet',
+          classes: classIdBuffer.classes,
+          ids: classIdBuffer.ids,
+          exceptions: genericExceptions,
+        })
+      }
+      sendResponse(null)
     }
   }
 })

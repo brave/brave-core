@@ -31,6 +31,24 @@ export const removeSiteFilter = (origin: string) => {
 }
 
 export const applyCSSCosmeticFilters = (tabId: number, hostname: string) => {
+  chrome.braveShields.hostnameCosmeticResources(hostname, (stylesheet, genericExceptions, injectedScript) => {
+    chrome.tabs.insertCSS(tabId, {
+      code: stylesheet,
+      cssOrigin: 'user',
+      runAt: 'document_start'
+    })
+
+    chrome.tabs.sendMessage(tabId, {
+      type: 'cosmeticFilterGenericExceptions',
+      exceptions: genericExceptions
+    })
+
+    chrome.tabs.executeScript(tabId, {
+      code: injectedScript,
+      runAt: 'document_start'
+    });
+  })
+
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     if (!storeData.cosmeticFilterList) {
       if (process.env.NODE_ENV === 'shields_development') {
