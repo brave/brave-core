@@ -224,8 +224,7 @@ void ConstructUpdateResponse(sync_pb::GetUpdatesResponse* gu_response,
       sync_pb::NigoriSpecifics* nigori = specifics.mutable_nigori();
       nigori->set_encrypt_everything(false);
       nigori->set_encrypt_bookmarks(false);
-      syncer::SystemEncryptor encryptor;
-      syncer::Cryptographer cryptographer(&encryptor);
+      syncer::Cryptographer cryptographer;
       KeyParams params = {KeyDerivationParams::CreateForPbkdf2(), "foobar"};
       syncer::KeyDerivationMethod method = params.derivation_params.method();
       bool add_key_result = cryptographer.AddKey(params);
