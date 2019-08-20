@@ -45,6 +45,10 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetWebTorrentEnabled,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "setBraveWalletEnabled",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetBraveWalletEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "setHangoutsEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetHangoutsEnabled,
                           base::Unretained(this)));
@@ -212,6 +216,23 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
     service->EnableExtension(ipfs_companion_extension_id);
   } else {
     service->DisableExtension(ipfs_companion_extension_id,
+        extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
+  }
+}
+
+void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
+
+  extensions::ExtensionService* service =
+  extensions::ExtensionSystem::Get(profile_)->extension_service();
+  if (enabled) {
+    service->EnableExtension(ethereum_remote_client_extension_id);
+  } else {
+    service->DisableExtension(ethereum_remote_client_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
   }
 }

@@ -425,6 +425,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
         Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
       </message>
+      <message name="IDS_SETTINGS_BRAVE_WALLET_ENABLED_DESC" desc="The description for Brave Wallet switch in settings">
+        Provides an Ethereum wallet and Dapp browser inside Brave.
+      </message>
      <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
         Uses Hangouts component to enable screen sharing and other features in the browser.
       </message>

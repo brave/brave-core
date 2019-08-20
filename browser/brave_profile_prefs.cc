@@ -147,6 +147,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Brave Wallet
   registry->RegisterStringPref(kBraveWalletAES256GCMSivNonce, "");
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
+  registry->RegisterBooleanPref(kBraveWalletEnabled, true);
 }
 
 }  // namespace brave

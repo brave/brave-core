@@ -9,7 +9,10 @@
 #include <vector>
 
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/common/pref_names.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "chrome/test/base/testing_profile.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/common/content_client.h"
@@ -143,6 +146,21 @@ TEST_F(BraveWalletNavigationThrottleUnitTest, ChromeWalletUrlInstalled) {
   auto throttle = std::make_unique<BraveWalletNavigationThrottle>(&test_handle);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << url;
+}
+
+// Tests the case of loading brave://wallet when the Wallet is explicitly
+// disabled.
+TEST_F(BraveWalletNavigationThrottleUnitTest, ChromeWalletDisabledByPref) {
+  profile()->GetPrefs()->SetBoolean(kBraveWalletEnabled, false);
+  web_contents_tester()->NavigateAndCommit(GURL("http://example.com"));
+  content::RenderFrameHost* host =
+      render_frame_host_tester(main_rfh())->AppendChild("child");
+  GURL url("chrome://wallet");
+  content::MockNavigationHandle test_handle(url, host);
+  test_handle.set_starting_site_instance(host->GetSiteInstance());
+  auto throttle = std::make_unique<BraveWalletNavigationThrottle>(&test_handle);
+  EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
+      throttle->WillStartRequest().action()) << url;
 }
 
 }  // namespace extensions

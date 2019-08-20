@@ -5,9 +5,13 @@
 
 #include "brave/browser/extensions/brave_wallet_navigation_throttle.h"
 
+#include "base/bind.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -22,13 +26,15 @@ BraveWalletNavigationThrottle::BraveWalletNavigationThrottle(
         content::NavigationHandle* navigation_handle) :
     content::NavigationThrottle(navigation_handle),
     extension_registry_observer_(this),
-    resume_pending(false) {
+    resume_pending_(false) {
   extension_registry_observer_.Add(
       ExtensionRegistry::Get(
           navigation_handle->GetWebContents()->GetBrowserContext()));
 }
 
-BraveWalletNavigationThrottle::~BraveWalletNavigationThrottle() {}
+BraveWalletNavigationThrottle::~BraveWalletNavigationThrottle() {
+  timer_.Stop();
+}
 
 content::NavigationThrottle::ThrottleCheckResult
 BraveWalletNavigationThrottle::WillStartRequest() {
@@ -39,10 +45,16 @@ BraveWalletNavigationThrottle::WillStartRequest() {
   const GURL& url = navigation_handle()->GetURL();
   if (url.SchemeIs(content::kChromeUIScheme) &&
       url.host() == ethereum_remote_client_host) {
+    // If a user has explicitly disabled the Brave Wallet,
+    // then don't defer and try to install it.
+    if (!Profile::FromBrowserContext(web_contents->GetBrowserContext())->
+        GetPrefs()->GetBoolean(kBraveWalletEnabled)) {
+      return content::NavigationThrottle::BLOCK_REQUEST;
+    }
     auto* registry = ExtensionRegistry::Get(web_contents->GetBrowserContext());
     if (!registry->ready_extensions().GetByID(
           ethereum_remote_client_extension_id)) {
-      resume_pending = true;
+      resume_pending_ = true;
       extensions::ExtensionService* service =
          extensions::ExtensionSystem::Get(
              web_contents->GetBrowserContext())->extension_service();
@@ -64,10 +76,38 @@ const char* BraveWalletNavigationThrottle::GetNameForLogging() {
 void BraveWalletNavigationThrottle::OnExtensionReady(
     content::BrowserContext* browser_context,
     const Extension* extension) {
-  if (resume_pending &&
+  if (resume_pending_ &&
       extension->id() == ethereum_remote_client_extension_id) {
-    Resume();
+    // TODO(bbondy): For some reason the page won't load directly after install
+    // and on startups even though the Ready event has fired.
+    // There are no ExtensionRegistryObserver functions that get
+    // called after this. I even tried checking if the background
+    // process was available, and it was.
+    // Delaying 1 second for when the extension is not already
+    // loaded and ready makes this work reliabley for now.
+    // The bug without this only seems to surface itself in Release builds.
+    ScheduleBackgroundScriptTimer();
   }
+}
+
+void BraveWalletNavigationThrottle::ScheduleBackgroundScriptTimer() {
+  constexpr base::TimeDelta kBackgroundScriptTimeout =
+      base::TimeDelta::FromSeconds(1);
+  timer_.Stop();
+  timer_.Start(FROM_HERE, kBackgroundScriptTimeout,
+  base::BindOnce(
+      &BraveWalletNavigationThrottle::WalletBackgroundScriptTimer,
+      base::Unretained(this)));
+}
+
+void BraveWalletNavigationThrottle::WalletBackgroundScriptTimer() {
+  ResumeThrottle();
+}
+
+void BraveWalletNavigationThrottle::ResumeThrottle() {
+  timer_.Stop();
+  resume_pending_ = false;
+  Resume();
 }
 
 }  // namespace extensions
