@@ -15,6 +15,7 @@
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 #include "brave/components/brave_sync/public/brave_profile_sync_service.h"
 #include "components/bookmarks/browser/bookmark_model.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/profile_sync_service.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
 
