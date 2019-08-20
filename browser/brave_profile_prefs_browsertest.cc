@@ -30,9 +30,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kHTTPSEVerywhereControlType));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kNoScriptControlType));
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(
-        kShieldsAdvancedViewEnabled));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kAdControlType));
   EXPECT_TRUE(
@@ -66,7 +63,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsFirstRunBrowserTest,
 // Existing Brave users should default shields to Advanced view
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
                        AdvancedShieldsExistingUserValue) {
-  first_run::CreateSentinelIfNeeded();
   EXPECT_TRUE(
         browser()->profile()->GetPrefs()->GetBoolean(
           kShieldsAdvancedViewEnabled));
