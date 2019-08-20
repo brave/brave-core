@@ -62,8 +62,10 @@
         /* this element is only a space filler in chromium */
         display: none;
       }
-      :host-context([dark]) #container {
-        background: #1E2127;
+      @media (prefers-color-scheme: dark) {
+        #container {
+          background: #1E2127;
+        }
       }
     </style>
   </template>
@@ -95,10 +97,12 @@
         padding: 30px !important;
       }
 
-      :host-context([dark]) {
-        --settings-nav-item-color: #F4F4F4 !important;
-        border-color: transparent !important;
-        background-color: #161719;
+      @media (prefers-color-scheme: dark) {
+        :host {
+          --settings-nav-item-color: #F4F4F4 !important;
+          border-color: transparent !important;
+          background-color: #161719;
+        }
       }
 
       a[href] {
@@ -123,8 +127,10 @@
         height: 20px;
       }
 
-      :host-context([dark]) a[href].iron-selected iron-icon {
-        color: var(--settings-nav-item-color) !important;
+      @media (prefers-color-scheme: dark) {
+        a[href].iron-selected iron-icon {
+          color: var(--settings-nav-item-color) !important;
+        }
       }
 
       a[href],
