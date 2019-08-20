@@ -5,7 +5,7 @@
 import actions from '../../../../brave_extension/extension/brave_extension/background/actions/shieldsPanelActions'
 import * as shieldsAPI from '../../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'
 import { activeTabData } from '../../../testData'
-// import { Tab as TabType } from '../../../types/state/shieldsPannelState'
+import { ShieldDetails } from '../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 
 describe('Shields API', () => {
   describe('getShieldSettingsForTabData', () => {
@@ -26,7 +26,9 @@ describe('Shields API', () => {
         windowId: 1,
         active: true,
         incognito: false,
-        selected: false
+        selected: false,
+        discarded: false,
+        autoDiscardable: false
       }
 
       expect.assertions(1)
@@ -91,15 +93,13 @@ describe('Shields API', () => {
       spy.mockRestore()
     })
     it('resolves and calls requestShieldPanelData', (cb) => {
-      const tab = {
-        url: 'https://www.brave.com/test',
-        origin: 'https://www.brave.com',
-        hostname: 'www.brave.com',
-        id: 2,
-        braveShields: 'block',
+      const details: ShieldDetails = {
         ads: 'block',
         trackers: 'block',
         httpUpgradableResources: 'block',
+        origin: 'https://www.brave.com',
+        hostname: 'www.brave.com',
+        id: 2,
         javascript: 'block',
         fingerprinting: 'block',
         cookies: 'block'
@@ -109,7 +109,11 @@ describe('Shields API', () => {
       shieldsAPI.requestShieldPanelData(tabId)
         .then(() => {
           expect(spy).toBeCalledTimes(1)
-          expect(spy.mock.calls[0][0]).toEqual(tab)
+          expect(spy.mock.calls[0][0]).toEqual({
+            ...details,
+            url: 'https://www.brave.com/test',
+            braveShields: 'block'
+          })
           cb()
         })
         .catch((e: Error) => {

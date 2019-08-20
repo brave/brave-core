@@ -6,7 +6,7 @@
 import * as sinon from 'sinon'
 import * as cosmeticFilterAPI from '../../../../brave_extension/extension/brave_extension/background/api/cosmeticFilterAPI'
 
-describe('cosmeticFilterTestSuite', () => {
+describe('cosmeticFilter API', () => {
   describe('addSiteCosmeticFilter', () => {
     const url = 'https://www.brave.com'
     const filter = '#cssFilter'
@@ -233,7 +233,6 @@ describe('cosmeticFilterTestSuite', () => {
         cssOrigin: 'user',
         runAt: 'document_start'
       })
-
     })
     // chrome.local.storage.get() always returns an empty object if nothing exists
     it('doesn\'t apply filters if storage for host is implicitly undefined', () => {

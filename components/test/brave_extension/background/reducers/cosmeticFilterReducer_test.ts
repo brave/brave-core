@@ -29,9 +29,68 @@ import { initialState } from '../../../testData'
 import * as deepFreeze from 'deep-freeze-node'
 import * as actions from '../../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
 
+const origin = 'https://brave.com'
+const windowId = 1
+const tabId = 2
+
+const details: ShieldDetails = {
+  id: tabId,
+  origin,
+  hostname: 'brave.com',
+  httpUpgradableResources: 'block',
+  javascript: 'block',
+  trackers: 'block',
+  ads: 'block',
+  fingerprinting: 'block',
+  cookies: 'block'
+}
+
+const tab: chrome.tabs.Tab = {
+  active: true,
+  id: tabId,
+  windowId,
+  index: 1,
+  pinned: false,
+  highlighted: false,
+  incognito: false,
+  selected: false,
+  discarded: false,
+  autoDiscardable: false
+}
+
+const state: State = deepFreeze({
+  persistentData: {
+    isFirstAccess: true
+  },
+  tabs: {
+    2: {
+      ...details,
+      adsBlocked: 0,
+      controlsOpen: true,
+      braveShields: 'allow',
+      trackersBlocked: 0,
+      httpsRedirected: 0,
+      javascriptBlocked: 0,
+      fingerprintingBlocked: 0,
+      noScriptInfo: {},
+      adsBlockedResources: [],
+      fingerprintingBlockedResources: [],
+      httpsRedirectedResources: [],
+      trackersBlockedResources: []
+    }
+  },
+  windows: {
+    1: 2
+  },
+  currentWindowId: 1
+})
+
 describe('cosmeticFilterReducer', () => {
   it('should handle initial state', () => {
-    expect(shieldsPanelReducer(undefined, actions.blockAdsTrackers('allow')))
+    // avoid printing error logs to the test console.
+    // this is expected since state is undefined but we want to avoid polluting the test logs
+    console.error = () => ''
+    expect(shieldsPanelReducer(undefined, actions.allowScriptOriginsOnce()))
       .toEqual(initialState.cosmeticFilter)
   })
   describe('ON_COMMITTED', () => {
@@ -175,18 +234,7 @@ describe('cosmeticFilterReducer', () => {
       shieldsPanelReducer(state, {
         type: tabTypes.TAB_DATA_CHANGED,
         tabId: tabId,
-        tab: {
-          active: true,
-          id: tabId,
-          windowId,
-          index: 1,
-          pinned: false,
-          highlighted: false,
-          incognito: false,
-          selected: false,
-          discarded: false,
-          autoDiscardable: false
-        },
+        tab,
         changeInfo: {}
       })
       expect(updateActiveTabSpy).toBeCalledTimes(1)
@@ -198,16 +246,8 @@ describe('cosmeticFilterReducer', () => {
         type: tabTypes.TAB_DATA_CHANGED,
         tabId: tabId,
         tab: {
-          active: false,
-          id: tabId,
-          windowId,
-          index: 1,
-          pinned: false,
-          highlighted: false,
-          incognito: false,
-          selected: false,
-          discarded: false,
-          autoDiscardable: false
+          ...tab,
+          active: false
         },
         changeInfo: {}
       })
@@ -215,8 +255,6 @@ describe('cosmeticFilterReducer', () => {
     })
   })
   describe('TAB_CREATED', () => {
-    const windowId = 1
-    const tabId = 2
     const state = {
       ...initialState.shieldsPanel,
       windows: {
@@ -235,16 +273,8 @@ describe('cosmeticFilterReducer', () => {
       shieldsPanelReducer(state, {
         type: tabTypes.TAB_CREATED,
         tab: {
-          active: true,
-          id: tabId,
-          windowId,
-          index: 1,
-          pinned: false,
-          highlighted: false,
-          incognito: false,
-          selected: false,
-          discarded: false,
-          autoDiscardable: false
+          ...tab,
+          active: true
         }
       })
       expect(updateActiveTabSpy).toBeCalledTimes(1)
@@ -255,102 +285,22 @@ describe('cosmeticFilterReducer', () => {
       shieldsPanelReducer(state, {
         type: tabTypes.TAB_CREATED,
         tab: {
-          active: false,
-          id: tabId,
-          windowId,
-          index: 1,
-          pinned: false,
-          highlighted: false,
-          incognito: false,
-          selected: false,
-          discarded: false,
-          autoDiscardable: false
+          ...tab,
+          active: false
         }
       })
       expect(updateActiveTabSpy).not.toBeCalled()
     })
   })
-  const origin = 'https://brave.com'
-  const state: State = deepFreeze({
-    persistentData: {},
-    tabs: {
-      2: {
-        origin,
-        hostname: 'brave.com',
-        adsBlocked: 0,
-        controlsOpen: true,
-        braveShields: 'allow',
-        trackersBlocked: 0,
-        httpsRedirected: 0,
-        javascriptBlocked: 0,
-        fingerprintingBlocked: 0,
-        id: 2,
-        httpUpgradableResources: 'block',
-        javascript: 'block',
-        trackers: 'block',
-        ads: 'block',
-        fingerprinting: 'block',
-        cookies: 'block',
-        noScriptInfo: {},
-        adsBlockedResources: [],
-        fingerprintingBlockedResources: [],
-        httpsRedirectedResources: [],
-        trackersBlockedResources: []
-      }
-    },
-    windows: {
-      1: 2
-    },
-    currentWindowId: 1
-  })
   describe('SHIELDS_PANEL_DATA_UPDATED', () => {
     it('updates state detail', () => {
-      const tabId = 2
-      const details: ShieldDetails = {
-        id: tabId,
-        hostname: 'brave.com',
-        origin: 'brave.com',
-        ads: 'block',
-        trackers: 'block',
-        httpUpgradableResources: 'block',
-        javascript: 'block',
-        fingerprinting: 'block',
-        cookies: 'block'
-      }
       expect(
           shieldsPanelReducer(initialState.shieldsPanel, {
             type: shieldPanelTypes.SHIELDS_PANEL_DATA_UPDATED,
             details
           })).toEqual({
+            ...state,
             currentWindowId: -1,
-            persistentData: {
-              isFirstAccess: true
-            },
-            tabs: {
-              [tabId]: {
-                adsBlocked: 0,
-                trackersBlocked: 0,
-                httpsRedirected: 0,
-                javascriptBlocked: 0,
-                fingerprintingBlocked: 0,
-                hostname: 'brave.com',
-                origin: 'brave.com',
-                id: tabId,
-                ads: 'block',
-                trackers: 'block',
-                httpUpgradableResources: 'block',
-                javascript: 'block',
-                fingerprinting: 'block',
-                cookies: 'block',
-                controlsOpen: true,
-                braveShields: 'allow',
-                noScriptInfo: {},
-                adsBlockedResources: [],
-                fingerprintingBlockedResources: [],
-                httpsRedirectedResources: [],
-                trackersBlockedResources: []
-              }
-            },
             windows: {}
           })
     })
