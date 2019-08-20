@@ -72,9 +72,8 @@
                 "items": {"type": "string"}
               },
               {
-                "name": "scriptInjections",
-                "type": "array",
-                "items": {"type": "string"}
+                "name": "injectedScript",
+                "type": "string"
               }
             ]
           }

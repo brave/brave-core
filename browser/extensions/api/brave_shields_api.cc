@@ -57,11 +57,7 @@ ExtensionFunction::ResponseAction BraveShieldsHostnameCosmeticResourcesFunction:
   }
   result_list->GetList().push_back(std::move(exceptions));
 
-  base::Value injections(base::Value::Type::LIST);
-  for(auto i = resources.script_injections.begin(); i != resources.script_injections.end(); i++) {
-    injections.GetList().push_back(base::Value(*i));
-  }
-  result_list->GetList().push_back(std::move(injections));
+  result_list->GetList().push_back(base::Value(resources.injected_script));
 
   return RespondNow(ArgumentList(std::move(result_list)));
 }
