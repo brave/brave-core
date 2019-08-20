@@ -168,6 +168,10 @@ uint64_t Vimeo::GetDuration(
     }
   }
 
+  if (time < 0) {
+    time = 0;
+  }
+
   return static_cast<uint64_t>(std::round(time));
 }
 
