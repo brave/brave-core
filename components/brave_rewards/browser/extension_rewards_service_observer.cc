@@ -28,7 +28,7 @@ ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {
 
 void ExtensionRewardsServiceObserver::OnWalletInitialized(
     RewardsService* rewards_service,
-    uint32_t result) {
+    int32_t result) {
   auto* event_router = extensions::EventRouter::Get(profile_);
 
   auto converted_result = static_cast<ledger::Result>(result);

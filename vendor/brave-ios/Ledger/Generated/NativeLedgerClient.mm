@@ -92,9 +92,6 @@ void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, l
 void NativeLedgerClient::RestorePublishers(ledger::RestorePublishersCallback callback) {
   [bridge_ restorePublishers:callback];
 }
-void NativeLedgerClient::OnWalletInitialized(ledger::Result result) {
-  [bridge_ onWalletInitialized:result];
-}
 void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) {
   [bridge_ onWalletProperties:result arg1:std::move(arg1)];
 }

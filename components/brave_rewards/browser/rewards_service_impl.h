@@ -96,7 +96,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void Init();
   void StartLedger();
-  void CreateWallet() override;
+  void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties() override;
   void FetchGrants(const std::string& lang,
                    const std::string& paymentId) override;
@@ -290,6 +290,8 @@ class RewardsServiceImpl : public RewardsService,
   FRIEND_TEST_ALL_PREFIXES(RewardsServiceTest, OnWalletProperties);
 
   const base::OneShotEvent& ready() const { return ready_; }
+  void OnCreateWallet(CreateWalletCallback callback,
+                      ledger::Result result);
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
                           bool success);
   void OnLedgerStateLoaded(ledger::OnLoadCallback callback,
@@ -299,7 +301,6 @@ class RewardsServiceImpl : public RewardsService,
                              bool success);
   void OnPublisherStateLoaded(ledger::OnLoadCallback callback,
                               const std::string& data);
-  void TriggerOnWalletInitialized(const ledger::Result result);
   void OnFetchWalletProperties(const ledger::Result result,
                                ledger::WalletPropertiesPtr properties);
   void OnFetchGrants(
@@ -469,9 +470,10 @@ class RewardsServiceImpl : public RewardsService,
                              const bool exclude,
                              const ledger::Result result);
 
+  void OnWalletInitialized(ledger::Result result);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
-  void OnWalletInitialized(ledger::Result result) override;
   void OnGrantCaptcha(const std::string& image,
                       const std::string& hint);
   void OnRecoverWallet(ledger::Result result,

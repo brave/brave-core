@@ -21,12 +21,16 @@ namespace api {
 
 class BraveRewardsCreateWalletFunction : public UIThreadExtensionFunction {
  public:
+  BraveRewardsCreateWalletFunction();
   DECLARE_EXTENSION_FUNCTION("braveRewards.createWallet", UNKNOWN)
 
  protected:
   ~BraveRewardsCreateWalletFunction() override;
 
   ResponseAction Run() override;
+ private:
+  base::WeakPtrFactory<BraveRewardsCreateWalletFunction> weak_factory_;
+  void OnCreateWallet(int32_t result);
 };
 
 class BraveRewardsTipSiteFunction : public UIThreadExtensionFunction {

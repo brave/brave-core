@@ -31,14 +31,24 @@ using brave_rewards::RewardsServiceFactory;
 namespace extensions {
 namespace api {
 
+BraveRewardsCreateWalletFunction::BraveRewardsCreateWalletFunction()
+    : weak_factory_(this) {
+}
+
 BraveRewardsCreateWalletFunction::~BraveRewardsCreateWalletFunction() {
+}
+
+void BraveRewardsCreateWalletFunction::OnCreateWallet(int32_t result) {
 }
 
 ExtensionFunction::ResponseAction BraveRewardsCreateWalletFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service) {
-    rewards_service->CreateWallet();
+    rewards_service->CreateWallet(
+        base::Bind(
+            &BraveRewardsCreateWalletFunction::OnCreateWallet,
+            weak_factory_.GetWeakPtr()));
   }
   return RespondNow(NoArguments());
 }

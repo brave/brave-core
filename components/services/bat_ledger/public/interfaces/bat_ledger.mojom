@@ -23,8 +23,8 @@ interface BatLedgerService {
 };
 
 interface BatLedger {
-  Initialize();
-  CreateWallet();
+  Initialize() => (ledger.mojom.Result result);
+  CreateWallet() => (ledger.mojom.Result result);
   FetchWalletProperties() =>
       (ledger.mojom.Result result, ledger.mojom.WalletProperties properties);
 
@@ -156,7 +156,6 @@ interface BatLedgerClient {
   [Sync]
   GenerateGUID() => (string guid);
   LoadLedgerState() => (ledger.mojom.Result result, string data);
-  OnWalletInitialized(ledger.mojom.Result result);
   LoadPublisherState() => (ledger.mojom.Result result, string data);
   LoadPublisherList() => (ledger.mojom.Result result, string data);
   SaveLedgerState(string ledger_state) => (ledger.mojom.Result result);

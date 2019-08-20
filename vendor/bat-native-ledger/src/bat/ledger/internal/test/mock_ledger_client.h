@@ -6,6 +6,7 @@
 #ifndef BAT_LEDGER_MOCK_LEDGER_CLIENT_
 #define BAT_LEDGER_MOCK_LEDGER_CLIENT_
 
+#include <memory>
 #include <vector>
 #include <string>
 
@@ -26,12 +27,11 @@ class MockLedgerClient : public ledger::LedgerClient {
   // KeyedService:
   void Shutdown() override;
 
-  void CreateWallet() override;
+  void CreateWallet(ledger::LedgerCallbackHandler* handler) override;
 
  protected:
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
-  void OnWalletInitialized(ledger::Result result) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;

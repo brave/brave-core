@@ -86,21 +86,48 @@ LedgerImpl::~LedgerImpl() {
   }
 }
 
-void LedgerImpl::Initialize() {
-  DCHECK(!initializing_);
-  initializing_ = true;
-  auto callback = std::bind(&LedgerImpl::OnLedgerStateLoaded, this, _1, _2);
-  LoadLedgerState(std::move(callback));
+void LedgerImpl::OnWalletInitializedInternal(ledger::Result result,
+    ledger::InitializeCallback callback) {
+  initializing_ = false;
+  callback(result);
+  if (result == ledger::Result::LEDGER_OK ||
+      result == ledger::Result::WALLET_CREATED) {
+    initialized_ = true;
+    LoadPublisherList(this);
+    bat_contribution_->SetReconcileTimer();
+    RefreshGrant(false);
+  } else {
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize wallet";
+  }
 }
 
-bool LedgerImpl::CreateWallet() {
+void LedgerImpl::Initialize(ledger::InitializeCallback callback) {
+  DCHECK(!initializing_);
+  initializing_ = true;
+  ledger::InitializeCallback on_wallet =
+      std::bind(&LedgerImpl::OnWalletInitializedInternal,
+                this,
+                _1,
+                std::move(callback));
+  auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
+      this,
+      _1,
+      _2,
+      std::move(on_wallet));
+  LoadLedgerState(std::move(on_load));
+}
+
+void LedgerImpl::CreateWallet(ledger::CreateWalletCallback callback) {
   if (initializing_) {
-    return false;
+    return;
   }
 
   initializing_ = true;
-  bat_wallet_->CreateWalletIfNecessary();
-  return true;
+  auto on_wallet = std::bind(&LedgerImpl::OnWalletInitializedInternal,
+      this,
+      _1,
+      std::move(callback));
+  bat_wallet_->CreateWalletIfNecessary(std::move(on_wallet));
 }
 
 braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(
@@ -247,7 +274,8 @@ void LedgerImpl::LoadLedgerState(ledger::OnLoadCallback callback) {
 }
 
 void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
-                                     const std::string& data) {
+                                     const std::string& data,
+                                     ledger::InitializeCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_state_->LoadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -255,25 +283,28 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
       BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
         "Failed ledger state: " << data;
 
-      OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
+      callback(ledger::Result::INVALID_LEDGER_STATE);
     } else {
       auto wallet_info = bat_state_->GetWalletInfo();
       SetConfirmationsWalletInfo(wallet_info);
-      auto callback = std::bind(
-          &LedgerImpl::OnPublisherStateLoaded, this, _1, _2);
-      LoadPublisherState(std::move(callback));
+      auto on_pub_load = std::bind(
+          &LedgerImpl::OnPublisherStateLoaded,
+          this,
+          _1,
+          _2,
+          std::move(callback));
+      LoadPublisherState(std::move(on_pub_load));
       bat_contribution_->OnStartUp();
     }
-  } else {
-    if (result != ledger::Result::NO_LEDGER_STATE) {
-      BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to load ledger state";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed ledger state: " <<
-        data;
-    }
-
-    OnWalletInitialized(result);
+    return;
   }
+  if (result != ledger::Result::NO_LEDGER_STATE) {
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to load ledger state";
+    BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
+      "Failed ledger state: " <<
+      data;
+  }
+  callback(result);
 }
 
 void LedgerImpl::SetConfirmationsWalletInfo(
@@ -297,7 +328,8 @@ void LedgerImpl::LoadPublisherState(ledger::OnLoadCallback callback) {
 }
 
 void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
-                                        const std::string& data) {
+                                        const std::string& data,
+                                        ledger::InitializeCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_publishers_->loadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -314,8 +346,9 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
         "Failed publisher state: " << data;
   }
   if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
-    OnWalletInitialized(ledger::Result::CORRUPTED_WALLET);
+    callback(ledger::Result::CORRUPTED_WALLET);
   } else {
+    callback(result);
     OnWalletInitialized(result);
   }
 }
@@ -369,7 +402,6 @@ std::string LedgerImpl::GenerateGUID() const {
 
 void LedgerImpl::OnWalletInitialized(ledger::Result result) {
   initializing_ = false;
-  ledger_client_->OnWalletInitialized(result);
 
   if (result == ledger::Result::LEDGER_OK ||
       result == ledger::Result::WALLET_CREATED) {

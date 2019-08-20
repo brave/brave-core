@@ -5,6 +5,8 @@
 
 #include "bat/ledger/internal/wallet/create.h"
 
+#include <utility>
+
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
@@ -26,16 +28,17 @@ Create::Create(bat_ledger::LedgerImpl* ledger) :
 Create::~Create() {
 }
 
-void Create::Start() {
-  auto callback = std::bind(&Create::RequestCredentialsCallback,
+void Create::Start(ledger::CreateWalletCallback callback) {
+  auto on_req = std::bind(&Create::RequestCredentialsCallback,
                             this,
                             _1,
                             _2,
-                            _3);
+                            _3,
+                            std::move(callback));
   ledger_->LoadURL(
       braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2),
       std::vector<std::string>(), "", "",
-      ledger::URL_METHOD::GET, callback);
+      ledger::URL_METHOD::GET, on_req);
 }
 
 std::string Create::GetAnonizeProof(const std::string& registrarVK,
@@ -66,13 +69,14 @@ std::string Create::GetAnonizeProof(const std::string& registrarVK,
 }
 
 void Create::RequestCredentialsCallback(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      ledger::CreateWalletCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != net::HTTP_OK) {
-    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
+    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
 
@@ -94,7 +98,7 @@ void Create::RequestCredentialsCallback(
   if (!braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME,
                                             response,
                                             &registrar_vk)) {
-    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
+    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
   DCHECK(!registrar_vk.empty());
@@ -104,7 +108,7 @@ void Create::RequestCredentialsCallback(
   ledger_->SetPreFlight(pre_flight);
 
   if (proof.empty()) {
-    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
+    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
 
@@ -153,25 +157,27 @@ void Create::RequestCredentialsCallback(
   // We should use simple callbacks on iOS
   const std::string url = braveledger_bat_helper::buildURL(
       (std::string)REGISTER_PERSONA + "/" + ledger_->GetUserId(), PREFIX_V2);
-  auto callback = std::bind(&Create::RegisterPersonaCallback,
+  auto on_register = std::bind(&Create::RegisterPersonaCallback,
                             this,
                             _1,
                             _2,
-                            _3);
+                            _3,
+                            std::move(callback));
   ledger_->LoadURL(
     url,
     registerHeaders, payloadStringify, "application/json; charset=utf-8",
-    ledger::URL_METHOD::POST, callback);
+    ledger::URL_METHOD::POST, on_register);
 }
 
 void Create::RegisterPersonaCallback(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      ledger::CreateWalletCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != net::HTTP_OK) {
-    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
+    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
 
@@ -179,7 +185,7 @@ void Create::RegisterPersonaCallback(
   if (!braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME,
                                             response,
                                             &verification)) {
-    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
+    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
   const char* masterUserToken = registerUserFinal(
@@ -194,7 +200,7 @@ void Create::RegisterPersonaCallback(
     // https://github.com/brave-intl/bat-native-anonize/issues/11
     free((void*)masterUserToken); // NOLINT
   } else if (!braveledger_bat_helper::ignore_for_testing()) {
-    ledger_->OnWalletInitialized(
+    callback(
         ledger::Result::REGISTRATION_VERIFICATION_FAILED);
     return;
   }
@@ -208,7 +214,7 @@ void Create::RegisterPersonaCallback(
                                                  &currency,
                                                  &fee_amount,
                                                  &days)) {
-    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
+    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
 
@@ -218,7 +224,7 @@ void Create::RegisterPersonaCallback(
   ledger_->SetDays(days);
   ledger_->SetBootStamp(braveledger_bat_helper::currentTime());
   ledger_->ResetReconcileStamp();
-  ledger_->OnWalletInitialized(ledger::Result::WALLET_CREATED);
+  callback(ledger::Result::WALLET_CREATED);
 }
 
 }  // namespace braveledger_wallet

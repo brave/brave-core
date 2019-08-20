@@ -80,7 +80,6 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
 /// Temporary blocks
 
-@property (nonatomic, copy, nullable) void (^walletInitializedBlock)(const ledger::Result result);
 @property (nonatomic, copy, nullable) void (^walletRecoveredBlock)(const ledger::Result result, const double balance, std::vector<ledger::GrantPtr> grants);
 
 @end
@@ -111,7 +110,13 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
-    ledger->Initialize();
+    ledger->Initialize(^(ledger::Result result){
+      for (BATBraveLedgerObserver *observer in self.observers) {
+        if (observer.walletInitalized) {
+          observer.walletInitalized(static_cast<BATResult>(result));
+        }
+      }
+    });
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -182,7 +187,12 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 - (void)createWallet:(void (^)(NSError * _Nullable))completion
 {
   const auto __weak weakSelf = self;
-  self.walletInitializedBlock = ^(const ledger::Result result) {
+  // Results that can come from CreateWallet():
+  //   - WALLET_CREATED: Good to go
+  //   - LEDGER_ERROR: Already initialized
+  //   - BAD_REGISTRATION_RESPONSE: Request credentials call failure or malformed data
+  //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
+  ledger->CreateWallet(^(ledger::Result result) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; }
     NSError *error = nil;
@@ -193,7 +203,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
         { ledger::Result::REGISTRATION_VERIFICATION_FAILED, "Missing master user token from registered persona" },
       };
       NSDictionary *userInfo = @{};
-      const auto description = errorDescriptions[result];
+      const auto description = errorDescriptions[static_cast<ledger::Result>(result)];
       if (description.length() > 0) {
         userInfo = @{ NSLocalizedDescriptionKey: [NSString stringWithUTF8String:description.c_str()] };
       }
@@ -204,31 +214,17 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       strongSelf.autoContributeEnabled = YES;
       strongSelf.ads.enabled = YES;
       [strongSelf startNotificationTimers];
-      strongSelf.walletInitializedBlock = nil;
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(error);
       });
     }
-  };
-  // Results that can come from CreateWallet():
-  //   - WALLET_CREATED: Good to go
-  //   - LEDGER_ERROR: Already initialized
-  //   - BAD_REGISTRATION_RESPONSE: Request credentials call failure or malformed data
-  //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
-  ledger->CreateWallet();
-}
-
-- (void)onWalletInitialized:(ledger::Result)result
-{
-  if (self.walletInitializedBlock) {
-    self.walletInitializedBlock(result);
-  }
-
-  for (BATBraveLedgerObserver *observer in self.observers) {
-    if (observer.walletInitalized) {
-      observer.walletInitalized(static_cast<BATResult>(result));
+    
+    for (BATBraveLedgerObserver *observer in strongSelf.observers) {
+      if (observer.walletInitalized) {
+        observer.walletInitalized(static_cast<BATResult>(result));
+      }
     }
-  }
+  });
 }
 
 - (void)fetchWalletDetails:(void (^)(BATWalletProperties * _Nullable))completion

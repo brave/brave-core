@@ -486,7 +486,10 @@ void RewardsServiceImpl::StartLedger() {
   bat_ledger_service_->Create(std::move(client_ptr_info),
       MakeRequest(&bat_ledger_));
 
-  bat_ledger_->Initialize();
+  auto callback = base::BindOnce(&RewardsServiceImpl::OnWalletInitialized,
+      AsWeakPtr());
+
+  bat_ledger_->Initialize(std::move(callback));
 }
 
 void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
@@ -528,14 +531,28 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
   }
 }
 
-void RewardsServiceImpl::CreateWallet() {
+void RewardsServiceImpl::OnCreateWallet(
+    CreateWalletCallback callback,
+    ledger::Result result) {
+  OnWalletInitialized(result);
+  std::move(callback).Run(static_cast<int32_t>(result));
+}
+
+void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
   if (ready().is_signaled()) {
-    if (Connected())
-      bat_ledger_->CreateWallet();
+    auto on_create = base::BindOnce(
+        &RewardsServiceImpl::OnCreateWallet,
+        AsWeakPtr(),
+        std::move(callback));
+    if (Connected()) {
+      bat_ledger_->CreateWallet(std::move(on_create));
+    }
   } else {
     ready().Post(FROM_HERE,
-        base::Bind(&brave_rewards::RewardsService::CreateWallet,
-            base::Unretained(this)));
+        base::BindOnce(
+            &brave_rewards::RewardsService::CreateWallet,
+            AsWeakPtr(),
+            std::move(callback)));
   }
 }
 
@@ -822,7 +839,9 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
     StartNotificationTimers(true);
   }
 
-  TriggerOnWalletInitialized(result);
+  for (auto& observer : observers_) {
+    observer.OnWalletInitialized(this, static_cast<int>(result));
+  }
 }
 
 void RewardsServiceImpl::OnWalletProperties(
@@ -1360,12 +1379,6 @@ void RewardsServiceImpl::OnURLLoaderComplete(
              response_body ? *response_body : std::string(),
              headers);
   }
-}
-
-void RewardsServiceImpl::TriggerOnWalletInitialized(
-    const ledger::Result result) {
-  for (auto& observer : observers_)
-    observer.OnWalletInitialized(this, static_cast<int>(result));
 }
 
 void RewardsServiceImpl::OnFetchWalletProperties(

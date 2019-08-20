@@ -14,17 +14,22 @@
 namespace ledger {
 
 using Result = ledger::mojom::Result;
+using InitializeCallback = std::function<void(Result)>;
 
 // LedgerCallbackHandler must not be destroyed if they have pending callbacks
 class LEDGER_EXPORT LedgerCallbackHandler {
  public:
   virtual ~LedgerCallbackHandler() = default;
 
-  virtual void OnLedgerStateLoaded(Result result, const std::string& data) {}
+  virtual void OnLedgerStateLoaded(Result result,
+      const std::string& data,
+      InitializeCallback callback) {}
 
   virtual void OnLedgerStateSaved(Result result) {}
 
-  virtual void OnPublisherStateLoaded(Result result, const std::string& data) {}
+  virtual void OnPublisherStateLoaded(Result result,
+      const std::string& data,
+      InitializeCallback callback) {}
 
   virtual void OnPublisherStateSaved(Result result) {}
 

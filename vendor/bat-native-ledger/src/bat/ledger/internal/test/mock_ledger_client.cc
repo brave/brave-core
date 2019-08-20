@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <string>
+#include <utility>
 
 #include "bat/ledger/internal/test/mock_ledger_client.h"
 #include "bat/ledger/ledger.h"
@@ -20,8 +21,8 @@ MockLedgerClient::MockLedgerClient() :
 MockLedgerClient::~MockLedgerClient() {
 }
 
-void MockLedgerClient::CreateWallet() {
-  ledger_->CreateWallet();
+void MockLedgerClient::CreateWallet(ledger::CreateWalletCallback callback) {
+  ledger_->CreateWallet(std::move(callback));
 }
 
 std::string MockLedgerClient::GenerateGUID() const {
@@ -30,9 +31,6 @@ std::string MockLedgerClient::GenerateGUID() const {
 
 void MockLedgerClient::Shutdown() {
   ledger_.reset();
-}
-
-void MockLedgerClient::OnWalletInitialized(ledger::Result result) {
 }
 
 void MockLedgerClient::OnReconcileComplete(ledger::Result result,

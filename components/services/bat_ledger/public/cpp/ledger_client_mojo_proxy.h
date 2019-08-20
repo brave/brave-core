@@ -27,7 +27,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   // bat_ledger::mojom::BatLedgerClient
   void GenerateGUID(GenerateGUIDCallback callback) override;
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
-  void OnWalletInitialized(const ledger::Result result) override;
   void OnWalletProperties(
       const ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
@@ -200,14 +199,17 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
     // ledger::LedgerCallbackHandler impl
     void OnLedgerStateLoaded(ledger::Result result,
-        const std::string& data) override;
+        const std::string& data,
+        ledger::InitializeCallback callback) override;
     void OnPublisherStateLoaded(ledger::Result result,
-        const std::string& data) override;
+        const std::string& data,
+        ledger::InitializeCallback callback) override;
     void OnPublisherListLoaded(ledger::Result result,
         const std::string& data) override;
     void OnLedgerStateSaved(ledger::Result result) override;
     void OnPublisherStateSaved(ledger::Result result) override;
     void OnPublishersListSaved(ledger::Result result) override;
+
    private:
     base::WeakPtr<LedgerClientMojoProxy> client_;
     Callback callback_;

@@ -42,7 +42,6 @@ private:
   void OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GrantPtr> grants) override;
   void RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) override;
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
-  void OnWalletInitialized(ledger::Result result) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;
   void RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, ledger::RemovePendingContributionCallback callback) override;

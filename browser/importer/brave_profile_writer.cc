@@ -109,7 +109,8 @@ void BraveProfileWriter::SetBridge(BraveInProcessImporterBridge* bridge) {
 }
 
 void BraveProfileWriter::OnWalletInitialized(
-    brave_rewards::RewardsService* rewards_service, uint32_t result) {
+    brave_rewards::RewardsService* rewards_service,
+    int32_t result) {
   if (result != 0 && result != 12) {  // 12: ledger::Result::WALLET_CREATED
     // Cancel the import if wallet creation failed
     std::ostringstream msg;
@@ -312,7 +313,10 @@ void BraveProfileWriter::OnIsWalletCreated(bool created) {
   if (!created) {
     rewards_service_->AddObserver(this);
     LOG(INFO) << "Creating wallet to use for import...";
-    rewards_service_->CreateWallet();
+    rewards_service_->CreateWallet(base::BindOnce(
+       &BraveProfileWriter::OnWalletInitialized,
+       AsWeakPtr(),
+       rewards_service_));
     return;
   }
 
