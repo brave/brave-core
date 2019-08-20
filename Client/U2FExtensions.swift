@@ -477,6 +477,7 @@ class U2FExtensions: NSObject {
         }
         fido2RegHandles.remove(at: index)
         fido2RegisterRequest.removeValue(forKey: handle)
+        YubiKitManager.shared.keySession.cancelCommands()
     }
     
     // FIDO2 Authentication
@@ -728,6 +729,7 @@ class U2FExtensions: NSObject {
         }
         fido2AuthHandles.remove(at: index)
         fido2AuthRequest.removeValue(forKey: handle)
+        YubiKitManager.shared.keySession.cancelCommands()
     }
     
     // FIDO Registration
@@ -841,6 +843,7 @@ class U2FExtensions: NSObject {
         fidoRegHandles.remove(at: index)
         fidoRegisterRequest.removeValue(forKey: handle)
         requestId.removeValue(forKey: handle)
+        YubiKitManager.shared.keySession.cancelCommands()
     }
     
     // FIDO Authetication
@@ -972,6 +975,7 @@ class U2FExtensions: NSObject {
         fidoSignHandles.remove(at: index)
         fidoSignRequests.removeValue(forKey: handle)
         requestId.removeValue(forKey: handle)
+        YubiKitManager.shared.keySession.cancelCommands()
     }
     
     private func handleSessionStateChange() {
