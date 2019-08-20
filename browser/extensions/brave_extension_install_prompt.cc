@@ -5,12 +5,14 @@
 
 #include "brave/browser/extensions/brave_extension_install_prompt.h"
 
-#include "brave/browser/extensions/brave_extension_provider.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
 base::string16 BravePrompt::GetDialogTitle() const {
-  if (!extensions::BraveExtensionProvider::IsVetted(extension())) {
+  if (!g_brave_browser_process->extension_whitelist_service()->IsVetted(
+      extension())) {
     if (type_ == ExtensionInstallPrompt::INSTALL_PROMPT ||
         type_ == ExtensionInstallPrompt::WEBSTORE_WIDGET_PROMPT) {
       return l10n_util::GetStringUTF16(
