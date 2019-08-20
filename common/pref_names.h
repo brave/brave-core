@@ -56,5 +56,6 @@ extern const char kBraveEnabledMediaRouter[];
 extern const char kBraveWalletAES256GCMSivNonce[];
 extern const char kBraveWalletEncryptedSeed[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
+extern const char kBraveWalletEnabled[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_
