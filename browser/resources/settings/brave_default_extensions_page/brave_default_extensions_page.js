@@ -68,5 +68,9 @@ Polymer({
   openExtensionsPage_: function() {
     window.open("chrome://extensions", "_self");
   },
+
+  openWebStoreUrl_: function() {
+    window.open(loadTimeData.getString('getMoreExtensionsUrl'));
+  },
 });
 })();
