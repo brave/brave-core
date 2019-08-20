@@ -1,10 +1,17 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_JSLIB_MESSAGES_FWD_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_JSLIB_MESSAGES_FWD_H_
 
+#include <memory>
+#include <utility>
+#include <vector>
+
+#include "base/callback.h"
+#include "base/synchronization/waitable_event.h"
 #include "build/build_config.h"
 
 // TODO(darkdh): forward declaration with unique_ptr on Windows
@@ -18,6 +25,10 @@ class SyncRecord;
 }
 #endif
 
+namespace syncer {
+class Syncer;
+}  // namespace syncer
+
 namespace brave_sync {
 
 typedef std::unique_ptr<jslib::SyncRecord> SyncRecordPtr;
@@ -28,6 +39,12 @@ typedef std::unique_ptr<SyncRecordAndExisting> SyncRecordAndExistingPtr;
 typedef std::vector<SyncRecordAndExistingPtr> SyncRecordAndExistingList;
 
 using Uint8Array = std::vector<unsigned char>;
+using GetRecordsCallback =
+    base::OnceCallback<void(std::unique_ptr<RecordsList>)>;
+using NudgeSyncCycleDelegate = base::RepeatingCallback<void(RecordsListPtr)>;
+using PollSyncCycleDelegate =
+    base::RepeatingCallback<void(GetRecordsCallback,
+                                 base::WaitableEvent* wevent)>;
 
 }  // namespace brave_sync
 

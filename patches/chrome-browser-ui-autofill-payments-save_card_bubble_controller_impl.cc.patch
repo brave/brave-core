@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc b/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
-index e576d1a0a1f331679c586ef63a17c38063501611..c308f33b68f0f011523798cde65f36f668b187a4 100644
+index e576d1a0a1f331679c586ef63a17c38063501611..efc02bac3777f2050c2399987c5522422740fa3d 100644
 --- a/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
 +++ b/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
-@@ -437,6 +437,7 @@ bool SaveCardBubbleControllerImpl::ShouldRequestExpirationDateFromUser() const {
- }
+@@ -442,6 +442,7 @@ bool SaveCardBubbleControllerImpl::ShouldShowSignInPromo() const {
  
- bool SaveCardBubbleControllerImpl::ShouldShowSignInPromo() const {
-+  BRAVE_SHOULD_SHOW_SIGNIN_PROMO_SHORT_CIRCUIT_TO_FALSE;
-   if (is_upload_save_)
-     return false;
+   const syncer::SyncService* sync_service =
+       ProfileSyncServiceFactory::GetForProfile(GetProfile());
++  CHECK_SYNC_POLICY
  
+   return !sync_service ||
+          sync_service->HasDisableReason(

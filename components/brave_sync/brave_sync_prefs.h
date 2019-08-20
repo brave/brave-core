@@ -6,16 +6,22 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/macros.h"
+#include "base/values.h"
 
 class PrefService;
 class Profile;
 
 namespace base {
 class Time;
+}
+
+namespace user_prefs {
+class PrefRegistrySyncable;
 }
 
 namespace brave_sync {
@@ -57,10 +63,16 @@ extern const char kSyncApiVersion[];
 // The version of bookmarks state: 0,1,... .
 // Current to migrate to is 1.
 extern const char kSyncMigrateBookmarksVersion[];
+// Cached object_id list for unconfirmed records
+extern const char kSyncRecordsToResend[];
+// Meta info of kSyncRecordsToResend
+extern const char kSyncRecordsToResendMeta[];
 
 class Prefs {
  public:
   explicit Prefs(PrefService* pref_service);
+
+  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   std::string GetSeed() const;
   void SetSeed(const std::string& seed);
@@ -97,6 +109,15 @@ class Prefs {
 
   int GetMigratedBookmarksVersion();
   void SetMigratedBookmarksVersion(const int);
+
+  std::vector<std::string> GetRecordsToResend() const;
+  void AddToRecordsToResend(const std::string& object_id,
+                            std::unique_ptr<base::DictionaryValue> meta);
+  void RemoveFromRecordsToResend(const std::string& object_id);
+  const base::DictionaryValue* GetRecordToResendMeta(
+      const std::string& object_id) const;
+  void SetRecordToResendMeta(const std::string& object_id,
+                             std::unique_ptr<base::DictionaryValue> meta);
 
   void Clear();
 

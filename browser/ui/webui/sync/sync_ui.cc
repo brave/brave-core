@@ -1,20 +1,26 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/browser/ui/webui/sync/sync_ui.h"
+
+#include <memory>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
-#include "brave/components/brave_sync/brave_sync_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
-#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_sync/grit/brave_sync_generated_map.h"
-#include "brave/components/brave_sync/sync_devices.h"
+#include "brave/components/brave_sync/grit/brave_sync_resources.h"
+#include "brave/components/brave_sync/public/brave_profile_sync_service.h"
 #include "brave/components/brave_sync/settings.h"
+#include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sync/profile_sync_service_factory.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -60,7 +66,7 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
     std::unique_ptr<brave_sync::Settings> settings,
     std::unique_ptr<brave_sync::SyncDevices> devices);
 
-  brave_sync::BraveSyncService *sync_service_ = nullptr;  // NOT OWNED
+  brave_sync::BraveSyncService* sync_service_ = nullptr;  // NOT OWNED
 
   base::WeakPtrFactory<SyncUIDOMHandler> weak_ptr_factory_;
 
@@ -118,7 +124,12 @@ void SyncUIDOMHandler::RegisterMessages() {
 
 void SyncUIDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
-  sync_service_ = brave_sync::BraveSyncServiceFactory::GetForProfile(profile);
+  auto* profile_sync_service =
+      static_cast<brave_sync::BraveProfileSyncService*>(
+          ProfileSyncServiceFactory::GetAsProfileSyncServiceForProfile(
+              profile));
+
+  sync_service_ = profile_sync_service->GetSyncService();
   if (sync_service_)
     sync_service_->AddObserver(this);
 }
@@ -244,7 +255,7 @@ void SyncUIDOMHandler::OnHaveSyncWords(
       "sync_ui_exports.haveSyncWords", base::Value(sync_words));
 }
 
-} // namespace
+}  // namespace
 
 SyncUI::SyncUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name,
