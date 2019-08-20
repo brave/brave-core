@@ -737,7 +737,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowScripts) {
 
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
-  EXPECT_EQ(contents()->GetAllFrames().size(), 3u);
+  EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -747,7 +747,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
 
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
-  EXPECT_EQ(contents()->GetAllFrames().size(), 3u);
+  EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,

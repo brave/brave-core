@@ -101,6 +101,28 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
         true);
   }
 
+  void AllowScriptOriginAndDataURLOnce(const std::string& origin,
+      const std::string& dataURL) {
+    scoped_refptr<BraveShieldsAllowScriptsOnceFunction> function(
+        new BraveShieldsAllowScriptsOnceFunction());
+    function->set_extension(extension().get());
+    function->set_has_callback(true);
+
+    const GURL url(embedded_test_server()->GetURL(origin, "/simple.js"));
+    const std::string allow_origin = url.GetOrigin().spec();
+
+    int tabId = extensions::ExtensionTabUtil::GetTabId(active_contents());
+    RunFunctionAndReturnSingleResult(
+        function.get(),
+        "[[\"" + allow_origin + "\",\"" + dataURL + "\"], " +
+        std::to_string(tabId) + "]",
+        browser());
+
+    // reload page with dataURL temporarily allowed
+    active_contents()->GetController().Reload(content::ReloadType::NORMAL,
+                                              true);
+  }
+
  private:
   HostContentSettingsMap* content_settings_;
   scoped_refptr<const extensions::Extension> extension_;
@@ -143,6 +165,28 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 1u) <<
     "All script loadings should be blocked after navigating away.";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceDataURL) {
+  EXPECT_TRUE(
+      NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
+  EXPECT_EQ(active_contents()->GetAllFrames().size(), 4u)
+      << "All script loadings should not be blocked by default.";
+
+  BlockScripts();
+  EXPECT_TRUE(
+      NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
+  EXPECT_EQ(active_contents()->GetAllFrames().size(), 1u)
+      << "All script loadings should be blocked.";
+
+  AllowScriptOriginAndDataURLOnce("a.com",
+      "data:application/javascript;base64,"
+      "dmFyIGZyYW1lID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnaWZyYW1lJyk7CmRvY3VtZW"
+      "50LmJvZHkuYXBwZW5kQ2hpbGQoZnJhbWUpOw==");
+
+  EXPECT_TRUE(WaitForLoadStop(active_contents()));
+  EXPECT_EQ(active_contents()->GetAllFrames().size(), 3u)
+      << "Scripts from a.com and data URL should be temporarily allowed.";
 }
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceIframe) {
