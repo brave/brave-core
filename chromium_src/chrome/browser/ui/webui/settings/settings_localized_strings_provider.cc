@@ -149,9 +149,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"manageExtensionsLabel",
       IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL},
     {"getMoreExtensionsLabel",
-      IDS_SETTINGS_GET_MORE_EXTENSIONS_LABEL},
+      IDS_BRAVE_SETTINGS_GET_MORE_EXTENSIONS_LABEL},
     {"getMoreExtensionsSubLabel",
-      IDS_SETTINGS_GET_MORE_EXTENSIONS_SUBLABEL}
+      IDS_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE}
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           base::size(localized_strings));
