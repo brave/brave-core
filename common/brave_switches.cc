@@ -5,7 +5,13 @@
 
 #include "brave/common/brave_switches.h"
 
+#include "base/command_line.h"
+
 namespace switches {
+
+bool IsBraveSyncAllowedByFlag() {
+  return !base::CommandLine::ForCurrentProcess()->HasSwitch(kDisableBraveSync);
+}
 
 // Allows disabling the Brave extension.
 // This is commonly used for loading the extension manually to debug things

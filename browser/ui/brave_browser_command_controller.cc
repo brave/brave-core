@@ -8,10 +8,11 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_pages.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
-#include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/common/brave_switches.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -91,8 +92,10 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
     UpdateCommandForBraveWallet();
 #endif
-    if (brave_sync::BraveSyncService::is_enabled())
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+    if (switches::IsBraveSyncAllowedByFlag())
       UpdateCommandForBraveSync();
+#endif
   }
   UpdateCommandForBraveAdblock();
 #if BUILDFLAG(ENABLE_TOR)

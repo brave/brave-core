@@ -7,6 +7,7 @@
 
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
@@ -39,6 +40,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // appearance
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(kHideBraveRewardsButton, false);
+
+  brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
   registry->RegisterBooleanPref(kAskWidevineInstall, true);

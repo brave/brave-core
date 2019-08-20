@@ -34,9 +34,8 @@ void BraveSyncClientImpl::set_for_testing(BraveSyncClient* sync_client) {
 }
 
 // static
-BraveSyncClient* BraveSyncClient::Create(
-    SyncMessageHandler* handler,
-    Profile* profile) {
+BraveSyncClient* BraveSyncClient::Create(SyncMessageHandler* handler,
+                                         Profile* profile) {
   if (brave_sync_client_for_testing_)
     return brave_sync_client_for_testing_;
 
@@ -69,7 +68,7 @@ void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,
                                           const std::string& sync_words) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   extensions::api::brave_sync::Config config_extension;
-  ConvertConfig(config, config_extension);
+  ConvertConfig(config, &config_extension);
   brave_sync_event_router_->GotInitData(seed, device_id, config_extension,
                                         sync_words);
 }
@@ -96,7 +95,7 @@ void BraveSyncClientImpl::SendResolveSyncRecords(
       records_and_existing_objects_ext;
 
   ConvertResolvedPairs(*records_and_existing_objects,
-                       records_and_existing_objects_ext);
+                       &records_and_existing_objects_ext);
 
   brave_sync_event_router_->ResolveSyncRecords(category_name,
     records_and_existing_objects_ext);
@@ -106,7 +105,7 @@ void BraveSyncClientImpl::SendSyncRecords(const std::string &category_name,
                                           const RecordsList &records) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   std::vector<extensions::api::brave_sync::SyncRecord> records_ext;
-  ConvertSyncRecordsFromLibToExt(records, records_ext);
+  ConvertSyncRecordsFromLibToExt(records, &records_ext);
 
   brave_sync_event_router_->SendSyncRecords(category_name, records_ext);
 }
@@ -151,8 +150,10 @@ void BraveSyncClientImpl::OnSyncEnabledChanged() {
 void BraveSyncClientImpl::OnExtensionReady(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
-  if (extension->id() == brave_sync_extension_id)
+  if (extension->id() == brave_sync_extension_id) {
+    DCHECK(handler_);
     handler_->BackgroundSyncStarted(true);
+  }
 }
 
 void BraveSyncClientImpl::OnExtensionLoaded(
@@ -170,6 +171,7 @@ void BraveSyncClientImpl::OnExtensionUnloaded(
     extensions::UnloadedExtensionReason reason) {
   if (extension->id() == brave_sync_extension_id) {
     extension_loaded_ = false;
+    DCHECK(handler_);
     handler_->BackgroundSyncStopped(true);
   }
 }
@@ -200,11 +202,6 @@ void BraveSyncClientImpl::OnExtensionSystemReady() {
   if (sync_prefs_->GetSyncEnabled()) {
     LoadOrUnloadExtension(true);
   }
-}
-
-void BraveSyncClientImpl::ClearOrderMap() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  brave_sync_event_router_->ClearOrderMap();
 }
 
 }  // namespace brave_sync
