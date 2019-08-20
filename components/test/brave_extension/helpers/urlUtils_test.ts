@@ -49,11 +49,19 @@ describe('urlUtils test', () => {
       const url = 'https://pokemons-invading-tests-breaking-stuff.com/you-knew-that.js'
       expect(getOrigin(url)).toBe('https://pokemons-invading-tests-breaking-stuff.com')
     })
+    it('returns the full URL if origin is not valid', () => {
+      const url = 'data:application/javascript;base64,c3z4r4vgvst0n00b'
+      expect(getOrigin(url)).toBe('data:application/javascript;base64,c3z4r4vgvst0n00b')
+    })
   })
   describe('getHostname', () => {
     it('properly gets the hostname from an URL', () => {
       const url = 'https://pokemons-invading-tests-breaking-stuff.com/you-knew-that.js'
       expect(getHostname(url)).toBe('pokemons-invading-tests-breaking-stuff.com')
+    })
+    it('returns the full URL if origin is not valid', () => {
+      const url = 'data:application/javascript;base64,c3z4r4vgvst0n00b'
+      expect(getHostname(url)).toBe('data:application/javascript;base64,c3z4r4vgvst0n00b')
     })
   })
   describe('stripProtocolFromUrl', () => {
