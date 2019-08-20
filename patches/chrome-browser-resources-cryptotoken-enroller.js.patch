@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/resources/cryptotoken/enroller.js b/chrome/browser/resources/cryptotoken/enroller.js
+index 239721a39805f4845f200a2ec5f0ff09fdee0f3e..829476d48cb0e9dba3bb419087998b323fe81f4f 100644
+--- a/chrome/browser/resources/cryptotoken/enroller.js
++++ b/chrome/browser/resources/cryptotoken/enroller.js
+@@ -111,15 +111,7 @@ async function makeCertAndKey(opt_original) {
+   if (opt_original) {
+     transport = transportType(opt_original);
+   }
+-  if (transport !== null) {
+-    if (transport.length != 2) {
+-      throw Error('bad extension length');
+-    }
+-    if (transport[0] < 3) {
+-      throw Error('too many bits set');  // Only 5 bits are defined.
+-    }
+-  }
+-
++  
+   const keyalg = {name: 'ECDSA', namedCurve: 'P-256'};
+   const keypair =
+       await crypto.subtle.generateKey(keyalg, true, ['sign', 'verify']);
