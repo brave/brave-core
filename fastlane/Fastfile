@@ -52,7 +52,8 @@ platform :ios do
         "ClientTests/TabManagerTests/testQueryAddedMixedTabs",
         "ClientTests/UIImageViewExtensionsTests/testAsyncSetIcon",
         "ClientTests/UIImageViewExtensionsTests/testAsyncSetIconFail",
-        "ClientTests/FingerprintProtectionTest/testFingerprintProtection"
+        "ClientTests/FingerprintProtectionTest/testFingerprintProtection",
+        "ClientTests/TabSessionTests"
       ]
     )
   end
