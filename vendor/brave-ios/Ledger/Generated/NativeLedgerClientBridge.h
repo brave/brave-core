@@ -35,7 +35,6 @@
 - (void)onRecoverWallet:(ledger::Result)result balance:(double)balance grants:(std::vector<ledger::GrantPtr>)grants;
 - (void)removeRecurringTip:(const std::string &)publisher_key callback:(ledger::RemoveRecurringTipCallback)callback;
 - (void)restorePublishers:(ledger::RestorePublishersCallback)callback;
-- (void)onWalletInitialized:(ledger::Result)result;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
 - (void)removeAllPendingContributions:(ledger::RemovePendingContributionCallback)callback;
 - (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(ledger::RemovePendingContributionCallback )callback;

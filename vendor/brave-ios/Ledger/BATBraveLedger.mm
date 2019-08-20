@@ -218,16 +218,13 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
         completion(error);
       });
     }
-  });
-}
-
-- (void)onWalletInitialized:(ledger::Result)result
-{
-  for (BATBraveLedgerObserver *observer in self.observers) {
-    if (observer.walletInitalized) {
-      observer.walletInitalized(static_cast<BATResult>(result));
+    
+    for (BATBraveLedgerObserver *observer in strongSelf.observers) {
+      if (observer.walletInitalized) {
+        observer.walletInitalized(static_cast<BATResult>(result));
+      }
     }
-  }
+  });
 }
 
 - (void)fetchWalletDetails:(void (^)(BATWalletProperties * _Nullable))completion
