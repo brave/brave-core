@@ -1,37 +1,30 @@
-<!-- 
-*Thank you for submitting a pull request, your contributions are greatly appreciated!*
+<!-- *Thank you for submitting a pull request, your contributions are greatly appreciated!* -->
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. 
-List any dependencies that are required for this change.
--->
+## Summary of Changes
+
+This pull request fixes issue #<number>
+<!-- If no ticket has been fixed, please file one now: https://github.com/brave/brave-ios/issues -->
 
 ## Submitter Checklist:
 
-- [ ] Submitted a [ticket](https://github.com/brave/brave-ios/issues) for my issue if one did not already exist.
-- [ ] My patch or PR title has a standard commit message that looks like `Fix #123: This fixes the shattered coffee cup!` (or `No Bug: <message>` if no relevant ticket)
 - [ ] *Unit Tests* are updated to cover new or changed functionality
 - [ ] User-facing strings use `NSLocalizableString()`
-- [ ] New files have MPL-2.0 license header.
-
 
 ## Test Plan:
+<!-- Any useful notes explaining how best to test and verify. -->
 
-<!-- Any useful notes for reviewer explaining how best to test and verify. -->
 
-### Screenshots:
-
+## Screenshots:
 <!-- If your patch includes user interface changes that you would like to suggest or that you would like UX to look at, please include them here. -->
 
 
 ## Reviewer Checklist:
 
-- [ ] PR is linked to an issue via [Zenhub](https://www.zenhub.com/extension).
-- [ ] Issues are assigned to at least one epic.
 - [ ] Issues include necessary QA labels:
-  - [ ] `QA/(Yes|No)`
-  - [ ] `release-notes/(include|exclude)`
-  - [ ] `bug` / `enhancement`
-- [ ] Necessary security reviews have taken place.
-- [ ] Adequate test coverage exists to prevent regressions.
-- [ ] Adequate test plan exists for QA to validate (if applicable)
-
+  - `QA/(Yes|No)`
+  - `release-notes/(include|exclude)`
+  - `bug` / `enhancement`
+- [ ] Necessary [security reviews](https://github.com/brave/internal/issues/new?assignees=&labels=security%2C+security-reviews&template=security-review.md&title=iOS:%20Security+Review+for) have taken place.
+- [ ] Adequate unit test coverage exists to prevent regressions.
+- [ ] Adequate test plan exists for QA to validate (if applicable).
+- [ ] Issue is assigned to a milestone (should happen at merge time).
