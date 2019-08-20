@@ -42,7 +42,7 @@ private:
   void OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GrantPtr> grants) override;
   void RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) override;
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
-  void OnWalletInitialized(ledger::Result result) override;
+  void OnWalletInitialized(ledger::Result result);
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;
   void RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, ledger::RemovePendingContributionCallback callback) override;
@@ -62,7 +62,8 @@ private:
   std::string URIEncode(const std::string & value) override;
   std::unique_ptr<ledger::LogStream> VerboseLog(const char * file, int line, int vlog_level) const override;
   void OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) override;
-  void SetBooleanState(const std::string& name, bool value) override; bool GetBooleanState(const std::string& name) const override;
+  void SetBooleanState(const std::string& name, bool value) override;
+  bool GetBooleanState(const std::string& name) const override;
   void SetIntegerState(const std::string& name, int value) override;
   int GetIntegerState(const std::string& name) const override;
   void SetDoubleState(const std::string& name, double value) override;

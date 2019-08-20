@@ -33,9 +33,6 @@ void MockLedgerClient::Shutdown() {
   ledger_.reset();
 }
 
-void MockLedgerClient::OnWalletInitialized(ledger::Result result) {
-}
-
 void MockLedgerClient::OnReconcileComplete(ledger::Result result,
                                            const std::string& viewing_id) {
 }

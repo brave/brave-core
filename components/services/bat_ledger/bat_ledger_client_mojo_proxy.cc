@@ -128,13 +128,6 @@ void BatLedgerClientMojoProxy::LoadURL(
       ToMojomMethod(method), base::BindOnce(&OnLoadURL, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::OnWalletInitialized(ledger::Result result) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->OnWalletInitialized(result);
-}
-
 void BatLedgerClientMojoProxy::OnWalletProperties(
     ledger::Result result,
     ledger::WalletPropertiesPtr properties) {
@@ -205,6 +198,7 @@ void BatLedgerClientMojoProxy::LoadLedgerState(
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
+
   bat_ledger_client_->LoadLedgerState(
       base::BindOnce(&BatLedgerClientMojoProxy::OnLoadLedgerState, AsWeakPtr(),
         std::move(callback)));

@@ -444,7 +444,8 @@ void RewardsDOMHandler::HandleCreateWalletRequested(
 
   rewards_service_->CreateWallet(
       base::BindOnce(&RewardsDOMHandler::OnWalletInitialized,
-          weak_factory_.GetWeakPtr(), rewards_service_));
+                     weak_factory_.GetWeakPtr(),
+                     rewards_service_));
 }
 
 void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {

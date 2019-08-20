@@ -65,10 +65,6 @@ void LedgerClientMojoProxy::GenerateGUID(GenerateGUIDCallback callback) {
   std::move(callback).Run(ledger_client_->GenerateGUID());
 }
 
-void LedgerClientMojoProxy::OnWalletInitialized(const ledger::Result result) {
-  ledger_client_->OnWalletInitialized(result);
-}
-
 void LedgerClientMojoProxy::OnWalletProperties(
     const ledger::Result result,
     ledger::WalletPropertiesPtr properties) {
@@ -634,7 +630,7 @@ void LedgerClientMojoProxy::LoadState(
 
   ledger_client_->LoadState(
       name, std::bind(LedgerClientMojoProxy::OnLoadState, holder,
-                    _1, _2));
+                      _1, _2));
 }
 
 // static

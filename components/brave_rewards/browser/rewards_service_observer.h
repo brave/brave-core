@@ -27,7 +27,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnWalletInitialized(
       RewardsService* rewards_service,
-      int32_t error_code) {}
+      int32_t result) {}
   virtual void OnWalletProperties(
       RewardsService* rewards_service,
       int error_code,

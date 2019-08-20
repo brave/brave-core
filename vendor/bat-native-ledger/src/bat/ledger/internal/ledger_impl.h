@@ -75,7 +75,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void Initialize(ledger::InitializeCallback callback) override;
 
-  bool CreateWallet(ledger::CreateWalletCallback callback) override;
+  void CreateWallet(ledger::CreateWalletCallback callback) override;
 
   void SetPublisherInfo(
       ledger::PublisherInfoPtr publisher_info);
@@ -185,8 +185,6 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnWalletInitializedInternal(ledger::Result result,
                                    ledger::InitializeCallback callback);
-
-  void OnWalletInitialized(ledger::Result result);
 
   void OnWalletProperties(ledger::Result result,
                           const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
@@ -584,6 +582,8 @@ class LedgerImpl : public ledger::Ledger,
   void OnGetPendingContributions(
     const ledger::PendingContributionInfoList& list,
     ledger::PendingContributionInfoListCallback callback);
+
+  void OnWalletInitialized(ledger::Result result);
 
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,

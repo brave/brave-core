@@ -104,24 +104,30 @@ void LedgerImpl::OnWalletInitializedInternal(ledger::Result result,
 void LedgerImpl::Initialize(ledger::InitializeCallback callback) {
   DCHECK(!initializing_);
   initializing_ = true;
-  ledger::InitializeCallback on_wallet = std::bind(
-      &LedgerImpl::OnWalletInitializedInternal, this, _1, std::move(callback));
-  auto on_load = std::bind(
-      &LedgerImpl::OnLedgerStateLoaded, this, _1, _2, std::move(on_wallet));
+  ledger::InitializeCallback on_wallet =
+      std::bind(&LedgerImpl::OnWalletInitializedInternal,
+                this,
+                _1,
+                std::move(callback));
+  auto on_load = std::bind(&LedgerImpl::OnLedgerStateLoaded,
+      this,
+      _1,
+      _2,
+      std::move(on_wallet));
   LoadLedgerState(std::move(on_load));
 }
 
-bool LedgerImpl::CreateWallet(ledger::CreateWalletCallback callback) {
-  if (!initializing_) {
-    initializing_ = true;
-    ledger::InitializeCallback on_wallet = std::bind(
-        &LedgerImpl::OnWalletInitializedInternal,
-        this,
-        _1,
-        std::move(callback));
-    bat_wallet_->CreateWalletIfNecessary(std::move(on_wallet));
+void LedgerImpl::CreateWallet(ledger::CreateWalletCallback callback) {
+  if (initializing_) {
+    return;
   }
-  return initializing_;
+
+  initializing_ = true;
+  auto on_wallet = std::bind(&LedgerImpl::OnWalletInitializedInternal,
+      this,
+      _1,
+      std::move(callback));
+  bat_wallet_->CreateWalletIfNecessary(std::move(on_wallet));
 }
 
 braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(
@@ -396,7 +402,7 @@ std::string LedgerImpl::GenerateGUID() const {
 
 void LedgerImpl::OnWalletInitialized(ledger::Result result) {
   initializing_ = false;
-  ledger_client_->OnWalletInitialized(result);
+
   if (result == ledger::Result::LEDGER_OK ||
       result == ledger::Result::WALLET_CREATED) {
     initialized_ = true;

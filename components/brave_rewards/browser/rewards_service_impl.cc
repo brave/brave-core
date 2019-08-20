@@ -492,9 +492,6 @@ void RewardsServiceImpl::StartLedger() {
   bat_ledger_->Initialize(std::move(callback));
 }
 
-void RewardsServiceImpl::OnInitialize() {
-}
-
 void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
   PrefService* pref_service = profile_->GetPrefs();
   bool user_has_funded = pref_service->GetBoolean(prefs::kRewardsUserHasFunded);
@@ -534,7 +531,8 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
   }
 }
 
-void RewardsServiceImpl::OnCreateWallet(CreateWalletCallback callback,
+void RewardsServiceImpl::OnCreateWallet(
+    CreateWalletCallback callback,
     ledger::Result result) {
   OnWalletInitialized(result);
   std::move(callback).Run(static_cast<int32_t>(result));
@@ -546,12 +544,15 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
         &RewardsServiceImpl::OnCreateWallet,
         AsWeakPtr(),
         std::move(callback));
-    if (Connected())
+    if (Connected()) {
       bat_ledger_->CreateWallet(std::move(on_create));
+    }
   } else {
     ready().Post(FROM_HERE,
-        base::BindOnce(&brave_rewards::RewardsService::CreateWallet,
-            AsWeakPtr(), std::move(callback)));
+        base::BindOnce(
+            &brave_rewards::RewardsService::CreateWallet,
+            AsWeakPtr(),
+            std::move(callback)));
   }
 }
 
@@ -838,7 +839,9 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
     StartNotificationTimers(true);
   }
 
-  TriggerOnWalletInitialized(static_cast<ledger::Result>(result));
+  for (auto& observer : observers_) {
+    observer.OnWalletInitialized(this, static_cast<int>(result));
+  }
 }
 
 void RewardsServiceImpl::OnWalletProperties(
@@ -1376,12 +1379,6 @@ void RewardsServiceImpl::OnURLLoaderComplete(
              response_body ? *response_body : std::string(),
              headers);
   }
-}
-
-void RewardsServiceImpl::TriggerOnWalletInitialized(
-    const ledger::Result result) {
-  for (auto& observer : observers_)
-    observer.OnWalletInitialized(this, static_cast<int>(result));
 }
 
 void RewardsServiceImpl::OnFetchWalletProperties(
