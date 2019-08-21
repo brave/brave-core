@@ -11,6 +11,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -27,27 +28,26 @@ void SetCookieControlTypeFromPrefs(HostContentSettingsMap* map,
     control_type = ControlType::BLOCK_THIRD_PARTY;
   }
 
-  if (!prefs->GetBoolean("profile.default_content_setting_values.cookies")) {
+  if (IntToContentSetting(prefs->GetInteger(
+          "profile.default_content_setting_values.cookies")) ==
+      ContentSetting::CONTENT_SETTING_BLOCK) {
     control_type = ControlType::BLOCK;
   }
 
   SetCookieControlType(map, control_type, GURL());
 }
 
-void SetCookiePrefDefaults(HostContentSettingsMap* map,
-                           PrefService* prefs) {
+void SetCookiePrefDefaults(HostContentSettingsMap* map, PrefService* prefs) {
   auto type = GetCookieControlType(map, GURL());
   prefs->SetBoolean(prefs::kBlockThirdPartyCookies,
-      type == ControlType::BLOCK_THIRD_PARTY);
+                    type == ControlType::BLOCK_THIRD_PARTY);
 
   if (type == ControlType::BLOCK) {
-    prefs->SetInteger(
-        "profile.default_content_setting_values.cookies",
-        CONTENT_SETTING_BLOCK);
+    prefs->SetInteger("profile.default_content_setting_values.cookies",
+                      CONTENT_SETTING_BLOCK);
   } else {
-    prefs->SetInteger(
-        "profile.default_content_setting_values.cookies",
-        CONTENT_SETTING_ALLOW);
+    prefs->SetInteger("profile.default_content_setting_values.cookies",
+                      CONTENT_SETTING_ALLOW);
   }
 }
 
@@ -56,8 +56,7 @@ void SetCookiePrefDefaults(HostContentSettingsMap* map,
 CookiePrefService::CookiePrefService(
     HostContentSettingsMap* host_content_settings_map,
     PrefService* prefs)
-    : host_content_settings_map_(host_content_settings_map),
-      prefs_(prefs) {
+    : host_content_settings_map_(host_content_settings_map), prefs_(prefs) {
   SetCookiePrefDefaults(host_content_settings_map, prefs);
   host_content_settings_map_->AddObserver(this);
   pref_change_registrar_.Init(prefs_);
