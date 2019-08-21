@@ -9,10 +9,6 @@
 
 namespace switches {
 
-bool IsBraveSyncAllowedByFlag() {
-  return !base::CommandLine::ForCurrentProcess()->HasSwitch(kDisableBraveSync);
-}
-
 // Allows disabling the Brave extension.
 // This is commonly used for loading the extension manually to debug things
 // in debug mode with auto-reloading.
@@ -34,9 +30,6 @@ const char kDisableTorClientUpdaterExtension[] =
 
 // Allows disabling the WebTorrent extension.
 const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
-
-// Allows disabling Brave Sync.
-const char kDisableBraveSync[] = "disable-brave-sync";
 
 // Specifies overriding the built-in theme setting.
 // Valid values are: "dark" | "light".
