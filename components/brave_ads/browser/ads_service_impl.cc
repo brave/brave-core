@@ -1703,8 +1703,8 @@ void AdsServiceImpl::OnPrefsChanged(
     const bool rewards_enabled =
         profile_->GetPrefs()->GetBoolean(
             brave_rewards::prefs::kBraveRewardsEnabled);
-    if (pref == prefs::kBraveAdsEnabled) {
-      if (profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled)) {
+    if (pref == prefs::kEnabled) {
+      if (profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
         brave_rewards::RecordAdsState(AdsP3AState::kAdsEnabled);
         profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsWereDisabled, false);
       } else {

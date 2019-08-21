@@ -1081,11 +1081,11 @@ BraveProfileSyncServiceImpl::GetExponentialWaitsForTests() {
   return kExponentialWaits;
 }
 
-void BraveSyncServiceImpl::RecordSyncStateP3A() const {
+void BraveProfileSyncServiceImpl::RecordSyncStateP3A() const {
   int result = 0;
-  if (sync_prefs_->GetSyncEnabled()) {
+  if (brave_sync_prefs_->GetSyncEnabled()) {
     // Answers are zero-based.
-    result = std::min(sync_prefs_->GetSyncDevices()->size(), 3UL) - 1UL;
+    result = std::min(brave_sync_prefs_->GetSyncDevices()->size(), 3UL) - 1UL;
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Sync.Status", result, 2);
 }

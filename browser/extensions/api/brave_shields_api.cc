@@ -309,6 +309,7 @@ BraveShieldsGetNoScriptControlTypeFunction::Run() {
   return RespondNow(OneArgument(std::move(result)));
 }
 
+ExtensionFunction::ResponseAction
 BraveShieldsOnShieldsPanelShownFunction::Run() {
   ::brave_shields::RecordShieldsUsageP3A(::brave_shields::kClicked,
                                          g_browser_process->local_state());

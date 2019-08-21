@@ -10,6 +10,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/time/time.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -43,7 +44,7 @@ enum class WindowUsageStats {
 };
 
 const char* GetPrefNameForProfile(Profile* profile) {
-  if (profile->GetProfileType() == Profile::INCOGNITO_PROFILE) {
+  if (profile->IsIncognitoProfile()) {
     return kLastTimeIncognitoUsed;
   }
   return nullptr;
@@ -287,7 +288,7 @@ void BraveWindowsTracker::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 void BraveWindowsTracker::OnBrowserAdded(Browser* browser) {
-  if (browser->profile()->IsTorProfile()) {
+  if (brave::IsTorProfile(browser->profile())) {
     local_state_->SetBoolean(kTorUsed, true);
     return;
   }

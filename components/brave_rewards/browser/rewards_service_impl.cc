@@ -919,7 +919,7 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
     // Record P3A:
     RecordWalletBalanceP3A(true, 0);
     const bool ads =
-        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kBraveAdsEnabled);
+        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
     RecordAdsState(ads ? AdsP3AState::kAdsEnabled : AdsP3AState::kAdsDisabled);
   }
 
@@ -950,11 +950,11 @@ void RewardsServiceImpl::OnWalletProperties(
       }
     }
     // Record stats.
-    if (wallet_info) {
+    if (properties) {
       // Sum grants.
       size_t total_grants = 0;
-      for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
-        total_grants += RoundProbiToUint64(wallet_info->grants_[i].probi);
+      for (size_t i = 0; i < properties->grants.size(); i ++) {
+        total_grants += RoundProbiToUint64(properties->grants[i]->probi);
       }
       RecordWalletBalanceP3A(
           true, RoundProbiToUint64(wallet_info->probi_) - total_grants);
