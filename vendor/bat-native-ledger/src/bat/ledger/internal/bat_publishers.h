@@ -94,7 +94,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       const ledger::VisitData& visit_data,
       const std::string& publisher_blob);
 
-  void getPublisherBanner(const std::string& publisher_id,
+  void GetPublisherBanner(const std::string& publisher_id,
                           ledger::PublisherBannerCallback callback);
 
   void setBalanceReportItem(ledger::ACTIVITY_MONTH month,
@@ -213,7 +213,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
 
-  std::map<std::string, ledger::ServerPublisherInfoPtr> server_list_;
+  ledger::ServerPublisherInfoList server_list_;
 
   double a_;
 

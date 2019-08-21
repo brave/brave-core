@@ -26,7 +26,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 6;
+const int kCurrentVersionNumber = 7;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -34,7 +34,8 @@ const int kCompatibleVersionNumber = 1;
 PublisherInfoDatabase::PublisherInfoDatabase(const base::FilePath& db_path) :
     db_path_(db_path),
     initialized_(false),
-    testing_current_version_(-1) {
+    testing_current_version_(-1),
+    server_publisher_info_(std::make_unique<DatabaseServerPublisherInfo>()) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
@@ -67,7 +68,8 @@ bool PublisherInfoDatabase::Init() {
       !CreateActivityInfoTable() ||
       !CreateMediaPublisherInfoTable() ||
       !CreateRecurringTipsTable() ||
-      !CreatePendingContributionsTable()) {
+      !CreatePendingContributionsTable() ||
+      !CreateServerPublisherTable()) {
     return false;
   }
 
@@ -75,6 +77,7 @@ bool PublisherInfoDatabase::Init() {
   CreateActivityInfoIndex();
   CreateRecurringTipsIndex();
   CreatePendingContributionsIndex();
+  CreateServerPublisherIndex();
 
   // Version check.
   sql::InitStatus version_status = EnsureCurrentVersion();
@@ -1059,6 +1062,28 @@ bool PublisherInfoDatabase::RemoveAllPendingContributions() {
   return statement.Run();
 }
 
+/**
+ *
+ * SERVER PUBLISHER
+ *
+ */
+bool PublisherInfoDatabase::CreateServerPublisherTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return server_publisher_info_->CreateTable(&GetDB());
+}
+
+bool PublisherInfoDatabase::CreateServerPublisherIndex() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return server_publisher_info_->CreateIndex(&GetDB());
+}
+
+bool PublisherInfoDatabase::ClearAndInsertServerPublisherList(
+    ledger::ServerPublisherInfoList list) {
+  return server_publisher_info_->ClearAndInsertList(&GetDB(), std::move(list));
+}
+
+// Other -------------------------------------------------------------------
+
 int PublisherInfoDatabase::GetCurrentVersion() {
   if (testing_current_version_ != -1) {
     return testing_current_version_;
@@ -1412,6 +1437,17 @@ bool PublisherInfoDatabase::MigrateV5toV6() {
   return transaction.Commit();
 }
 
+bool PublisherInfoDatabase::MigrateV6toV7() {
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  // TODO add me
+
+  return transaction.Commit();
+}
+
 bool PublisherInfoDatabase::Migrate(int version) {
   switch (version) {
     case 2: {
@@ -1428,6 +1464,9 @@ bool PublisherInfoDatabase::Migrate(int version) {
     }
     case 6: {
       return MigrateV5toV6();
+    }
+    case 7: {
+      return MigrateV6toV7();
     }
     default:
       return false;

@@ -18,6 +18,7 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "build/build_config.h"
@@ -91,6 +92,8 @@ class PublisherInfoDatabase {
 
   bool RemoveAllPendingContributions();
 
+  bool ClearAndInsertServerPublisherList(ledger::ServerPublisherInfoList list);
+
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
 
@@ -134,6 +137,10 @@ class PublisherInfoDatabase {
 
   bool CreatePendingContributionsIndex();
 
+  bool CreateServerPublisherTable();
+
+  bool CreateServerPublisherIndex();
+
   void OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
@@ -149,6 +156,8 @@ class PublisherInfoDatabase {
 
   bool MigrateV5toV6();
 
+  bool MigrateV6toV7();
+
   bool Migrate(int version);
 
   sql::InitStatus EnsureCurrentVersion();
@@ -160,6 +169,7 @@ class PublisherInfoDatabase {
   int testing_current_version_;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
+  std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);

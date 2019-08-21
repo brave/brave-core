@@ -39,7 +39,7 @@ namespace braveledger_bat_publishers {
 BatPublishers::BatPublishers(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   state_(new braveledger_bat_helper::PUBLISHER_STATE_ST),
-  server_list_(std::map<std::string, ledger::ServerPublisherInfoPtr>()) {
+  server_list_(ledger::ServerPublisherInfoList()) {
   calcScoreConsts(state_->min_publisher_duration_);
 }
 
@@ -530,17 +530,19 @@ bool BatPublishers::isVerified(const std::string& publisher_id) {
     return false;
   }
 
-  auto result = server_list_.find(publisher_id);
-
-  if (result == server_list_.end()) {
-    return false;
-  }
-
-  if (!result->second) {
-    return false;
-  }
-
-  return result->second->verified;
+  // TODO ADD SQL QUERY
+//  auto result = server_list_.find(publisher_id);
+//
+//  if (result == server_list_.end()) {
+//    return false;
+//  }
+//
+//  if (!result->second) {
+//    return false;
+//  }
+//
+//  return result->second->verified;
+  return false;
 }
 
 bool BatPublishers::isExcluded(const std::string& publisher_id,
@@ -549,21 +551,22 @@ bool BatPublishers::isExcluded(const std::string& publisher_id,
   if (excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED) {
     return true;
   }
-
-  if (excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED || server_list_.empty()) {
-    return false;
-  }
-
-  auto result = server_list_.find(publisher_id);
-
-  if (result == server_list_.end()) {
-    return false;
-  }
-  if (!result->second) {
-    return false;
-  }
-
-  return result->second->excluded;
+  // TODO ADD SQL QUERY
+//  if (excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED || server_list_.empty()) {
+//    return false;
+//  }
+//
+//  auto result = server_list_.find(publisher_id);
+//
+//  if (result == server_list_.end()) {
+//    return false;
+//  }
+//  if (!result->second) {
+//    return false;
+//  }
+//
+//  return result->second->excluded;
+  return false;
 }
 
 void BatPublishers::clearAllBalanceReports() {
@@ -703,7 +706,7 @@ void BatPublishers::OnPublishersListSaved(ledger::Result result) {
 }
 
 bool BatPublishers::loadPublisherList(const std::string& data) {
-  std::map<std::string, ledger::ServerPublisherInfoPtr> list;
+  ledger::ServerPublisherInfoList list;
 
   base::Optional<base::Value> value = base::JSONReader::Read(data);
   if (!value || !value->is_list()) {
@@ -734,6 +737,8 @@ bool BatPublishers::loadPublisherList(const std::string& data) {
       continue;
     }
 
+    publisher->publisher_key = publisher_key;
+
     // Verified
     if (!values->GetList()[1].is_bool()) {
       continue;
@@ -758,9 +763,14 @@ bool BatPublishers::loadPublisherList(const std::string& data) {
       publisher->banner = ParsePublisherBanner(banner);
     }
 
-    list.emplace(publisher_key, std::move(publisher));
+    list.push_back(std::move(publisher));
   }
 
+  if (list.size() == 0) {
+    return false;
+  }
+
+  // TODO remove me and save into DB
   server_list_ = std::move(list);
   return true;
 }
@@ -952,20 +962,20 @@ void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
   setBalanceReport(month, year, report_info);
 }
 
-void BatPublishers::getPublisherBanner(
+void BatPublishers::GetPublisherBanner(
     const std::string& publisher_id,
     ledger::PublisherBannerCallback callback) {
-  ledger::PublisherBannerPtr banner;
+  ledger::PublisherBannerPtr banner = ledger::PublisherBanner::New();
 
-  if (!server_list_.empty()) {
-    auto result = server_list_.find(publisher_id);
-
-    if (result != server_list_.end()) {
-      if (result->second && result->second->banner) {
-        banner = result->second->banner->Clone();
-      }
-    }
-  }
+//  if (!server_list_.empty()) {
+//    auto result = server_list_.find(publisher_id);
+//
+//    if (result != server_list_.end()) {
+//      if (result->second && result->second->banner) {
+//        banner = result->second->banner->Clone();
+//      }
+//    }
+//  }
 
   banner->publisher_key = publisher_id;
   banner->verified = isVerified(publisher_id);
@@ -1030,17 +1040,18 @@ std::string BatPublishers::GetPublisherAddress(
     return "";
   }
 
-  auto result = server_list_.find(publisher_key);
-
-  if (result == server_list_.end()) {
-    return "";
-  }
-
-  if (!result->second) {
-    return "";
-  }
-
-  return result->second->address;
+//  auto result = server_list_.find(publisher_key);
+//
+//  if (result == server_list_.end()) {
+//    return "";
+//  }
+//
+//  if (!result->second) {
+//    return "";
+//  }
+//
+//  return result->second->address;
+  return "";
 }
 
 }  // namespace braveledger_bat_publishers

@@ -1100,7 +1100,7 @@ void LedgerImpl::FetchFavIcon(const std::string& url,
 
 void LedgerImpl::GetPublisherBanner(const std::string& publisher_id,
                                     ledger::PublisherBannerCallback callback) {
-  bat_publishers_->getPublisherBanner(publisher_id, callback);
+  bat_publishers_->GetPublisherBanner(publisher_id, callback);
 }
 
 void LedgerImpl::OnReconcileCompleteSuccess(

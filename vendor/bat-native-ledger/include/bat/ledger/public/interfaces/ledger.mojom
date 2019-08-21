@@ -225,6 +225,7 @@ enum Result {
 };
 
 struct ServerPublisherInfo {
+  string publisher_key;
   bool verified = false;
   bool excluded = false;
   string address;
