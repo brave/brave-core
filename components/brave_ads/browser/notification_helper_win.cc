@@ -11,7 +11,7 @@ NotificationHelperWin::NotificationHelperWin() = default;
 
 NotificationHelperWin::~NotificationHelperWin() = default;
 
-bool NotificationHelperWin::IsNotificationsAvailable() const {
+bool NotificationHelperWin::ShouldShowNotifications() const {
   return true;
 }
 

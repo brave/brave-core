@@ -29,7 +29,7 @@ NotificationHelperAndroid::NotificationHelperAndroid() = default;
 
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
-bool NotificationHelperAndroid::IsNotificationsAvailable() const {
+bool NotificationHelperAndroid::ShouldShowNotifications() const {
   JNIEnv* env = AttachCurrentThread();
   int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
   bool is_notifications_enabled = (status == kAppNotificationsStatusEnabled ||
@@ -41,7 +41,7 @@ bool NotificationHelperAndroid::IsNotificationsAvailable() const {
 }
 
 bool NotificationHelperAndroid::ShowMyFirstAdNotification() const {
-  if (!IsNotificationsAvailable()) {
+  if (!ShouldShowNotifications()) {
     return false;
   }
 

@@ -11,7 +11,7 @@ NotificationHelperMac::NotificationHelperMac() = default;
 
 NotificationHelperMac::~NotificationHelperMac() = default;
 
-bool NotificationHelperMac::IsNotificationsAvailable() const {
+bool NotificationHelperMac::ShouldShowNotifications() const {
   return true;
 }
 

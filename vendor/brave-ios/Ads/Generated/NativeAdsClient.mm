@@ -49,8 +49,8 @@ bool NativeAdsClient::IsForeground() const {
 bool NativeAdsClient::IsNetworkConnectionAvailable() {
   return [bridge_ isNetworkConnectionAvailable];
 }
-bool NativeAdsClient::IsNotificationsAvailable() const {
-  return [bridge_ isNotificationsAvailable];
+bool NativeAdsClient::ShouldShowNotifications() const {
+  return [bridge_ shouldShowNotifications];
 }
 void NativeAdsClient::KillTimer(uint32_t timer_id) {
   [bridge_ killTimer:timer_id];

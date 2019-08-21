@@ -1440,12 +1440,8 @@ void AdsServiceImpl::SetIdleThreshold(const int threshold) {
   SetIntegerPref(prefs::kIdleThreshold, threshold);
 }
 
-bool AdsServiceImpl::IsNotificationsAvailable() const {
-#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
-  return NotificationHelper::GetInstance()->IsNotificationsAvailable();
-#else
-  return false;
-#endif
+bool AdsServiceImpl::ShouldShowNotifications() const {
+  return NotificationHelper::GetInstance()->ShouldShowNotifications();
 }
 
 void AdsServiceImpl::LoadUserModelForLocale(

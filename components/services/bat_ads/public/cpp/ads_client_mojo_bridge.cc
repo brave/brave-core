@@ -102,14 +102,14 @@ void AdsClientMojoBridge::IsNetworkConnectionAvailable(
   std::move(callback).Run(ads_client_->IsNetworkConnectionAvailable());
 }
 
-bool AdsClientMojoBridge::IsNotificationsAvailable(bool* out_available) {
-  *out_available = ads_client_->IsNotificationsAvailable();
+bool AdsClientMojoBridge::ShouldShowNotifications(bool* out_should_show) {
+  *out_should_show = ads_client_->ShouldShowNotifications();
   return true;
 }
 
-void AdsClientMojoBridge::IsNotificationsAvailable(
-    IsNotificationsAvailableCallback callback) {
-  std::move(callback).Run(ads_client_->IsNotificationsAvailable());
+void AdsClientMojoBridge::ShouldShowNotifications(
+    ShouldShowNotificationsCallback callback) {
+  std::move(callback).Run(ads_client_->ShouldShowNotifications());
 }
 
 bool AdsClientMojoBridge::SetTimer(uint64_t time_offset,

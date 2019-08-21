@@ -366,13 +366,13 @@ void BatAdsClientMojoBridge::SetIdleThreshold(const int threshold) {
   bat_ads_client_->SetIdleThreshold(threshold);
 }
 
-bool BatAdsClientMojoBridge::IsNotificationsAvailable() const {
+bool BatAdsClientMojoBridge::ShouldShowNotifications() const {
   if (!connected())
     return false;
 
-  bool available;
-  bat_ads_client_->IsNotificationsAvailable(&available);
-  return available;
+  bool should_show;
+  bat_ads_client_->ShouldShowNotifications(&should_show);
+  return should_show;
 }
 
 void OnLoadUserModelForLocale(const ads::OnLoadCallback& callback,

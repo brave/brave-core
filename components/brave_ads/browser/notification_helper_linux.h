@@ -25,7 +25,7 @@ class NotificationHelperLinux :
 
  private:
   // NotificationHelper impl
-  bool IsNotificationsAvailable() const override;
+  bool ShouldShowNotifications() const override;
 
   bool ShowMyFirstAdNotification() const override;
 

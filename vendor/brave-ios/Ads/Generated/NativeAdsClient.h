@@ -29,7 +29,7 @@ private:
   bool IsEnabled() const override;
   bool IsForeground() const override;
   bool IsNetworkConnectionAvailable() override;
-  bool IsNotificationsAvailable() const override;
+  bool ShouldShowNotifications() const override;
   void KillTimer(uint32_t timer_id) override;
   void Load(const std::string & name, ads::OnLoadCallback callback) override;
   const std::string LoadJsonSchema(const std::string & name) override;

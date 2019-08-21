@@ -22,7 +22,7 @@
 - (bool)isEnabled;
 - (bool)isForeground;
 - (bool)isNetworkConnectionAvailable;
-- (bool)isNotificationsAvailable;
+- (bool)shouldShowNotifications;
 - (void)killTimer:(uint32_t)timer_id;
 - (void)load:(const std::string &)name callback:(ads::OnLoadCallback)callback;
 - (const std::string)loadJsonSchema:(const std::string &)name;

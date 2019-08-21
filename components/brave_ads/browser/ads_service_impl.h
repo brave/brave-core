@@ -189,9 +189,9 @@ class AdsServiceImpl : public AdsService,
       int line,
       const ads::LogLevel log_level) const override;
   void SetIdleThreshold(const int threshold) override;
-  bool IsNotificationsAvailable() const override;
   void LoadUserModelForLocale(
       const std::string& locale,
+  bool ShouldShowNotifications() const override;
       ads::OnLoadCallback callback) const override;
   bool IsNetworkConnectionAvailable() override;
 

@@ -11,7 +11,7 @@ NotificationHelper::NotificationHelper() = default;
 
 NotificationHelper::~NotificationHelper() = default;
 
-bool NotificationHelper::IsNotificationsAvailable() const {
+bool NotificationHelper::ShouldShowNotifications() const {
   return true;
 }
 

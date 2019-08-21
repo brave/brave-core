@@ -1311,7 +1311,7 @@ void AdsImpl::BundleUpdated() {
 }
 
 void AdsImpl::NotificationAllowedCheck(const bool serve) {
-  auto ok = ads_client_->IsNotificationsAvailable();
+  auto ok = ads_client_->ShouldShowNotifications();
 
   // TODO(Terry Mancey): Implement Log (#44)
   // appConstants.APP_ON_NATIVE_NOTIFICATION_AVAILABLE_CHECK, {err, result}
@@ -1895,9 +1895,9 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.String("notifications");
   writer.StartObject();
 
-  writer.String("available");
-  auto configured = ads_client_->IsNotificationsAvailable();
-  writer.Bool(configured);
+  writer.String("shouldShow");
+  auto should_show = ads_client_->ShouldShowNotifications();
+  writer.Bool(should_show);
 
   writer.EndObject();
 

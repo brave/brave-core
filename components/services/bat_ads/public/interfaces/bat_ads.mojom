@@ -28,7 +28,7 @@ interface BatAdsClient {
   [Sync]
   IsNetworkConnectionAvailable() => (bool available);
   [Sync]
-  IsNotificationsAvailable() => (bool available);
+  ShouldShowNotifications() => (bool should_show);
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   [Sync]

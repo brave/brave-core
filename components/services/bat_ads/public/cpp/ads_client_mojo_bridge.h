@@ -44,9 +44,6 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       GetLocaleCallback callback) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
-  bool IsNotificationsAvailable(bool* out_available) override;
-  void IsNotificationsAvailable(
-      IsNotificationsAvailableCallback callback) override;
   bool SetTimer(uint64_t time_offset, uint32_t* out_timer_id) override;
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
   bool LoadJsonSchema(const std::string& name, std::string* out_json) override;
@@ -85,6 +82,10 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
                        SaveBundleStateCallback callback) override;
   void GetAds(const std::string& category,
               GetAdsCallback callback) override;
+  bool ShouldShowNotifications(
+      bool* out_should_show) override;
+  void ShouldShowNotifications(
+      ShouldShowNotificationsCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind

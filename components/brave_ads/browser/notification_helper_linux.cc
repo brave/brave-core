@@ -11,7 +11,7 @@ NotificationHelperLinux::NotificationHelperLinux() = default;
 
 NotificationHelperLinux::~NotificationHelperLinux() = default;
 
-bool NotificationHelperLinux::IsNotificationsAvailable() const {
+bool NotificationHelperLinux::ShouldShowNotifications() const {
   // Unable to find a way of detecting if notifications are enabled within the
   // operating system so always return true
   return true;

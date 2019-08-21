@@ -480,10 +480,10 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   return nil;
 }
 
-- (bool)isNotificationsAvailable
+- (bool)shouldShowNotifications
 {
-  [self.notificationsHandler isNotificationsAvailable:^(BOOL available) {
-//    completion(available);
+  [self.notificationsHandler shouldShowNotifications:^(BOOL shouldShow) {
+//    completion(shouldShow);
   }];
   // TODO: When this API has a completion block, call it inside above block
   return YES;
