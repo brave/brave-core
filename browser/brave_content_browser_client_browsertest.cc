@@ -275,8 +275,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, TypedMagnetURL) {
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   content::TestNavigationObserver observer(web_contents);
-  LocationBar* location_bar = browser()->window()->GetLocationBar();
-  ui_test_utils::SendToOmniboxAndSubmit(location_bar, magnet_url().spec());
+  ui_test_utils::SendToOmniboxAndSubmit(browser(), magnet_url().spec());
   observer.Wait();
   EXPECT_EQ(magnet_url(), web_contents->GetLastCommittedURL().spec());
 }
