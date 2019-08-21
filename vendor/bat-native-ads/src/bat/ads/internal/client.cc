@@ -551,7 +551,7 @@ void Client::SaveState() {
 
   auto json = client_state_->ToJson();
   auto callback = std::bind(&Client::OnStateSaved, this, _1);
-  ads_client_->Save(_client_name, json, callback);
+  ads_client_->Save(_client_resource_name, json, callback);
 }
 
 void Client::OnStateSaved(const Result result) {
@@ -566,7 +566,7 @@ void Client::OnStateSaved(const Result result) {
 
 void Client::LoadState() {
   auto callback = std::bind(&Client::OnStateLoaded, this, _1, _2);
-  ads_client_->Load(_client_name, callback);
+  ads_client_->Load(_client_resource_name, callback);
 }
 
 void Client::OnStateLoaded(const Result result, const std::string& json) {

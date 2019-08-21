@@ -33,17 +33,22 @@ extern bool _is_testing;
 
 // Determines whether to use the staging or production Ad Serve
 extern bool _is_production;
+// Bundle schema resource name
+extern const char _bundle_schema_resource_name[];
 
-extern const char _bundle_schema_name[];
-extern const char _catalog_schema_name[];
-extern const char _catalog_name[];
-extern const char _client_name[];
+// Catalog schema resource name
+extern const char _catalog_schema_resource_name[];
 
 using InitializeCallback = std::function<void(const Result)>;
 using ShutdownCallback = std::function<void(const Result)>;
 using GetNotificationForIdCallback =
     std::function<void(std::unique_ptr<NotificationInfo>)>;
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
+// Catalog resource name
+extern const char _catalog_resource_name[];
+
+// Client resource name
+extern const char _client_resource_name[];
 
 class ADS_EXPORT Ads {
  public:

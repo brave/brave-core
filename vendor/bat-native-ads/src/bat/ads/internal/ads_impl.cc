@@ -742,7 +742,8 @@ void AdsImpl::OnLoadSampleBundle(
 
   BundleState state;
   std::string error_description;
-  std::string json_schema = ads_client_->LoadJsonSchema(_bundle_schema_name);
+  std::string json_schema =
+      ads_client_->LoadJsonSchema(_bundle_schema_resource_name);
   auto json_result = state.FromJson(json, json_schema, &error_description);
   if (json_result != SUCCESS) {
     BLOG(ERROR) << "Failed to parse sample bundle (" << error_description

@@ -21,7 +21,7 @@ Catalog::~Catalog() {}
 
 bool Catalog::FromJson(const std::string& json) {
   auto catalog_state = std::make_unique<CatalogState>();
-  auto json_schema = ads_client_->LoadJsonSchema(_catalog_schema_name);
+  auto json_schema = ads_client_->LoadJsonSchema(_catalog_schema_resource_name);
   std::string error_description;
   auto result = LoadFromJson(catalog_state.get(), json, json_schema,
       &error_description);
@@ -60,11 +60,11 @@ const IssuersInfo& Catalog::GetIssuers() const {
 }
 
 void Catalog::Save(const std::string& json, OnSaveCallback callback) {
-  ads_client_->Save(_catalog_name, json, callback);
+  ads_client_->Save(_catalog_resource_name, json, callback);
 }
 
 void Catalog::Reset(OnSaveCallback callback) {
-  ads_client_->Reset(_catalog_name, callback);
+  ads_client_->Reset(_catalog_resource_name, callback);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
