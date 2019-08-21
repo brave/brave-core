@@ -36,8 +36,8 @@ IN_PROC_BROWSER_TEST_F(BraveAutocompleteProviderClientTest,
             incognito_client.GetAutocompleteClassifier());
   EXPECT_EQ(normal_client.GetHistoryService(),
             incognito_client.GetHistoryService());
-  EXPECT_EQ(normal_client.GetContextualSuggestionsService(true),
-            incognito_client.GetContextualSuggestionsService(true));
+  EXPECT_EQ(normal_client.GetRemoteSuggestionsService(true),
+            incognito_client.GetRemoteSuggestionsService(true));
   EXPECT_EQ(normal_client.GetDocumentSuggestionsService(true),
             incognito_client.GetDocumentSuggestionsService(true));
 }
