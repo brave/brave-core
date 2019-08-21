@@ -174,7 +174,18 @@ extension AppAuthenticator {
         passcodeVC.isCancellable = isCancellable
         passcodeVC.delegate = delegate
         let navController = UINavigationController(rootViewController: passcodeVC)
-        navController.modalPresentationStyle = .formSheet
+        
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            navController.modalPresentationStyle = .fullScreen
+        } else {
+            navController.modalPresentationStyle = .formSheet
+        }
+        
+        if #available(iOS 13.0, *) {
+            // Prevent dismissing the modal by swipe
+            navController.isModalInPresentation = true
+        }
+        
         controller.present(navController, animated: true, completion: nil)
     }
 }
