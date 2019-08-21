@@ -122,7 +122,7 @@ void AdsImpl::InitializeStep3(const Result result) {
 
   client_->SetLocales(ads_client_->GetLocales());
 
-  auto locale = ads_client_->GetAdsLocale();
+  auto locale = ads_client_->GetLocale();
   ChangeLocale(locale);
 }
 
@@ -604,8 +604,8 @@ void AdsImpl::MaybeClassifyPage(
 }
 
 bool AdsImpl::ShouldClassifyPages() const {
-  auto locale = ads_client_->GetAdsLocale();
   auto region = helper::Locale::GetCountryCode(locale);
+  auto locale = ads_client_->GetLocale();
 
   auto it = kSupportedRegions.find(region);
   if (it == kSupportedRegions.end()) {
@@ -1887,6 +1887,10 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
 
   writer.String("settings");
   writer.StartObject();
+
+  writer.String("locale");
+  auto locale = ads_client_->GetLocale();
+  writer.String(locale.c_str());
 
   writer.String("notifications");
   writer.StartObject();

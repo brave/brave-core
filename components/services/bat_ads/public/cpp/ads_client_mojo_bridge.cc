@@ -65,13 +65,13 @@ void AdsClientMojoBridge::IsForeground(IsForegroundCallback callback) {
   std::move(callback).Run(ads_client_->IsForeground());
 }
 
-bool AdsClientMojoBridge::GetAdsLocale(std::string* out_locale) {
-  *out_locale = ads_client_->GetAdsLocale();
+bool AdsClientMojoBridge::GetLocale(std::string* out_locale) {
+  *out_locale = ads_client_->GetLocale();
   return true;
 }
 
-void AdsClientMojoBridge::GetAdsLocale(GetAdsLocaleCallback callback) {
-  std::move(callback).Run(ads_client_->GetAdsLocale());
+void AdsClientMojoBridge::GetLocale(GetLocaleCallback callback) {
+  std::move(callback).Run(ads_client_->GetLocale());
 }
 
 bool AdsClientMojoBridge::GetAdsPerHour(uint64_t* out_ads_per_hour) {

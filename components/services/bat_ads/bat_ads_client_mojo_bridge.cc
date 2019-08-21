@@ -93,12 +93,12 @@ bool BatAdsClientMojoBridge::IsForeground() const {
   return is_foreground;
 }
 
-const std::string BatAdsClientMojoBridge::GetAdsLocale() const {
+const std::string BatAdsClientMojoBridge::GetLocale() const {
   if (!connected())
     return "en-US";
 
   std::string locale;
-  bat_ads_client_->GetAdsLocale(&locale);
+  bat_ads_client_->GetLocale(&locale);
   return locale;
 }
 

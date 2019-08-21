@@ -146,7 +146,7 @@ class AdsServiceImpl : public AdsService,
 
   // AdsClient implementation
   bool IsForeground() const override;
-  const std::string GetAdsLocale() const override;
+  const std::string GetLocale() const override;
   void GetClientInfo(ads::ClientInfo* info) const override;
   const std::vector<std::string> GetLocales() const override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;

@@ -407,7 +407,7 @@ void AdsServiceImpl::RetryViewingAdWithId(const std::string& id) {
 
 void AdsServiceImpl::MaybeStart(bool should_restart) {
   if (!IsSupportedRegion()) {
-    LOG(INFO) << GetAdsLocale() << " locale does not support Ads";
+    LOG(INFO) << GetLocale() << " locale does not support Ads";
     Shutdown();
     return;
   }
@@ -853,7 +853,7 @@ void AdsServiceImpl::MigratePrefsVersion1To2() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion2To3() {
-  auto locale = GetAdsLocale();
+  auto locale = GetLocale();
   auto region = ads::Ads::GetRegion(locale);
 
   // Disable ads if upgrading from a pre brave ads build due to a bug where ads
@@ -1782,7 +1782,7 @@ const std::vector<std::string> AdsServiceImpl::GetLocales() const {
   return locales;
 }
 
-const std::string AdsServiceImpl::GetAdsLocale() const {
+const std::string AdsServiceImpl::GetLocale() const {
   return LocaleHelper::GetInstance()->GetLocale();
 }
 

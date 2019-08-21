@@ -303,7 +303,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   return locales;
 }
 
-- (const std::string)getAdsLocale
+- (const std::string)getLocale
 {
   return std::string([[NSLocale preferredLanguages] firstObject].UTF8String);
 }

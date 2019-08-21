@@ -25,8 +25,8 @@ void NativeAdsClient::EventLog(const std::string & json) {
 void NativeAdsClient::GetAds(const std::string & category, ads::OnGetAdsCallback callback) {
   [bridge_ getAds:category callback:callback];
 }
-const std::string NativeAdsClient::GetAdsLocale() const {
-  return [bridge_ getAdsLocale];
+const std::string NativeAdsClient::GetLocale() const {
+  return [bridge_ getLocale];
 }
 uint64_t NativeAdsClient::GetAdsPerDay() const {
   return [bridge_ getAdsPerDay];

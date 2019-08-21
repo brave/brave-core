@@ -20,7 +20,7 @@ interface BatAdsClient {
   [Sync]
   IsEnabled() => (bool is_enabled);
   [Sync]
-  GetAdsLocale() => (string locale);
+  GetLocale() => (string locale);
   [Sync]
   GetAdsPerHour() => (uint64 ads_per_hour);
   [Sync]

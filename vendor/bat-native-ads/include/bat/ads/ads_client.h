@@ -64,8 +64,14 @@ class ADS_EXPORT AdsClient {
   // Should return |true| if ads is enabled; otherwise, should return |false|
   virtual bool IsEnabled() const = 0;
 
-  // Should return the operating system's locale, i.e. en, en_US or en_GB.UTF-8
-  virtual const std::string GetAdsLocale() const = 0;
+  // Should return the locale of the operating system using one of the following
+  // formats:
+  //
+  //     <language>-<REGION> i.e. en-US
+  //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
+  //     <language>_<REGION> i.e. en_US
+  //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
+  virtual const std::string GetLocale() const = 0;
 
   // Should return the number of ads that can be shown per hour
   virtual uint64_t GetAdsPerHour() const = 0;

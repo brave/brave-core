@@ -42,7 +42,7 @@ class MockAdsClient : public AdsClient {
 
   MOCK_CONST_METHOD0(IsEnabled, bool());
 
-  MOCK_CONST_METHOD0(GetAdsLocale, const std::string());
+  MOCK_CONST_METHOD0(GetLocale, const std::string());
 
   MOCK_CONST_METHOD0(GetAdsPerHour, uint64_t());
 
