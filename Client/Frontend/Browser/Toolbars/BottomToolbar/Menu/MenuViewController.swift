@@ -180,9 +180,18 @@ class MenuViewController: UITableViewController {
     private enum DoneButtonPosition { case left, right }
     private typealias DoneButton = (style: UIBarButtonItem.SystemItem, position: DoneButtonPosition)
     
-    private func open(_ viewController: UIViewController, doneButton: DoneButton) {
+    private func open(_ viewController: UIViewController, doneButton: DoneButton,
+                      allowSwipeToDismiss: Bool = true) {
         let nav = SettingsNavigationController(rootViewController: viewController)
-        nav.modalPresentationStyle = .formSheet
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            nav.modalPresentationStyle = .fullScreen
+        } else {
+            nav.modalPresentationStyle = .formSheet
+        }
+        
+        if #available(iOS 13.0, *) {
+            nav.isModalInPresentation = !allowSwipeToDismiss
+        }
         
         let button = UIBarButtonItem(barButtonSystemItem: doneButton.style, target: nav, action: #selector(nav.done))
         
@@ -225,7 +234,8 @@ class MenuViewController: UITableViewController {
     private func openSettings() {
         let vc = SettingsViewController(profile: bvc.profile, tabManager: bvc.tabManager)
         vc.settingsDelegate = bvc
-        open(vc, doneButton: DoneButton(style: .done, position: .right))
+        open(vc, doneButton: DoneButton(style: .done, position: .right),
+             allowSwipeToDismiss: false)
     }
     
     private func openShareSheet() {
