@@ -19,9 +19,7 @@ Getting involved
 
 We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution.
 
-* [Discord](https://discord.gg/cR3gmq5):
-    -  `#ios` channel for general conversing.
-    - `#developers-ios` channel for development discussion.
+* Development discussion: ['Contributing-ios' Community Forums](https://community.brave.com/c/contributing/contributing-ios):
 * Bugs:           [File a new bug](https://github.com/brave/brave-ios/issues/new) • [Existing bugs](https://github.com/brave/brave-ios/issues)
 
 Want to contribute but don't know where to start? Here is a list of [Good First Issues](https://github.com/brave/brave-ios/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
