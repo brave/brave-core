@@ -45,7 +45,6 @@
 // GetSyncToBrowserHandler  |
 // SendGotInitData          | OnGetInitData
 // SendFetchSyncRecords     |
-// SendFetchSyncDevices     |
 // SendResolveSyncRecords   |
 // SendSyncRecords          |
 // SendDeleteSyncUser       |
@@ -896,7 +895,6 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   EXPECT_EQ(brave_sync_prefs()->GetLatestDeviceRecordTime(), base::Time());
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
       .Times(1);
-  EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(0);
   sync_service()->FetchDevices();
 
   // Emulate we received this device
@@ -924,7 +922,6 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   ASSERT_EQ(brave_sync_prefs()->GetSyncDevices()->size(), 1u);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
       .Times(1);
-  EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(0);
   sync_service()->FetchDevices();
 
   // If number of devices becomes 2 or more we should set proper non-empty
@@ -939,6 +936,5 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   EXPECT_CALL(*sync_client(),
               SendFetchSyncRecords(_, base::Time(device1_timestamp), _))
       .Times(1);
-  EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(0);
   sync_service()->FetchDevices();
 }
