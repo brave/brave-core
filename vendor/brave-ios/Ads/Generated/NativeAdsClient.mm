@@ -40,8 +40,8 @@ void NativeAdsClient::GetClientInfo(ads::ClientInfo * info) const {
 const std::vector<std::string> NativeAdsClient::GetLocales() const {
   return [bridge_ getLocales];
 }
-bool NativeAdsClient::IsAdsEnabled() const {
-  return [bridge_ isAdsEnabled];
+bool NativeAdsClient::IsEnabled() const {
+  return [bridge_ isEnabled];
 }
 bool NativeAdsClient::IsForeground() const {
   return [bridge_ isForeground];

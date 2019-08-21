@@ -25,8 +25,6 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   ~AdsClientMojoBridge() override;
 
   // Overridden from BatAdsClient:
-  bool IsAdsEnabled(bool* out_is_enabled) override;
-  void IsAdsEnabled(IsAdsEnabledCallback callback) override;
   bool IsForeground(bool* out_is_foreground) override;
   void IsForeground(IsForegroundCallback callback) override;
   bool GetAdsLocale(std::string* out_locale) override;
@@ -38,6 +36,10 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   bool GetAdsPerDay(uint64_t* out_ads_per_day) override;
   void GetAdsPerDay(GetAdsPerDayCallback callback) override;
   bool IsNetworkConnectionAvailable(bool* out_available) override;
+  bool IsEnabled(
+      bool* out_is_enabled) override;
+  void IsEnabled(
+      IsEnabledCallback callback) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
   bool IsNotificationsAvailable(bool* out_available) override;

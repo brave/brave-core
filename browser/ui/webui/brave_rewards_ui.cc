@@ -1022,8 +1022,8 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
   auto is_supported_region = ads_service_->IsSupportedRegion();
   ads_data.SetBoolean("adsIsSupported", is_supported_region);
 
-  auto is_ads_enabled = ads_service_->IsAdsEnabled();
-  ads_data.SetBoolean("adsEnabled", is_ads_enabled);
+  auto is_enabled = ads_service_->IsEnabled();
+  ads_data.SetBoolean("adsEnabled", is_enabled);
 
   auto ads_per_hour = ads_service_->GetAdsPerHour();
   ads_data.SetInteger("adsPerHour", ads_per_hour);
@@ -1226,7 +1226,7 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
   const std::string value = args->GetList()[1].GetString();
 
   if (key == "adsEnabled") {
-    ads_service_->SetAdsEnabled(value == "true");
+    ads_service_->SetEnabled(value == "true");
   } else if (key == "adsPerHour") {
     ads_service_->SetAdsPerHour(std::stoull(value));
   }

@@ -26,7 +26,7 @@ private:
   uint64_t GetAdsPerHour() const override;
   void GetClientInfo(ads::ClientInfo * info) const override;
   const std::vector<std::string> GetLocales() const override;
-  bool IsAdsEnabled() const override;
+  bool IsEnabled() const override;
   bool IsForeground() const override;
   bool IsNetworkConnectionAvailable() override;
   bool IsNotificationsAvailable() const override;

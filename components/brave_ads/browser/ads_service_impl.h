@@ -66,7 +66,8 @@ class AdsServiceImpl : public AdsService,
   // AdsService implementation
   bool IsSupportedRegion() const override;
 
-  void SetAdsEnabled(const bool is_enabled) override;
+  void SetEnabled(
+      const bool is_enabled) override;
 
   void SetAdsPerHour(const uint64_t ads_per_hour) override;
 
@@ -109,7 +110,7 @@ class AdsServiceImpl : public AdsService,
   void Shutdown() override;
 
   // AdsClient implementation
-  bool IsAdsEnabled() const override;
+  bool IsEnabled() const override;
 
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;

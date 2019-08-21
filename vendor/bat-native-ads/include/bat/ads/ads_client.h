@@ -61,8 +61,8 @@ class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
 
-  // Should return true if Brave Ads is enabled otherwise returns false
-  virtual bool IsAdsEnabled() const = 0;
+  // Should return |true| if ads is enabled; otherwise, should return |false|
+  virtual bool IsEnabled() const = 0;
 
   // Should return the operating system's locale, i.e. en, en_US or en_GB.UTF-8
   virtual const std::string GetAdsLocale() const = 0;

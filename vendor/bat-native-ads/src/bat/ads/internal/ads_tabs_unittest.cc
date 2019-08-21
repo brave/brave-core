@@ -42,7 +42,7 @@ class AdsTabsTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right before
     // each test)
 
-    EXPECT_CALL(*mock_ads_client_, IsAdsEnabled())
+    EXPECT_CALL(*mock_ads_client_, IsEnabled())
         .WillRepeatedly(Return(true));
 
     EXPECT_CALL(*mock_ads_client_, Load(_, _))

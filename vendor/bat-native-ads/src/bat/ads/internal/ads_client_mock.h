@@ -40,7 +40,7 @@ class MockAdsClient : public AdsClient {
   MockAdsClient();
   ~MockAdsClient() override;
 
-  MOCK_CONST_METHOD0(IsAdsEnabled, bool());
+  MOCK_CONST_METHOD0(IsEnabled, bool());
 
   MOCK_CONST_METHOD0(GetAdsLocale, const std::string());
 

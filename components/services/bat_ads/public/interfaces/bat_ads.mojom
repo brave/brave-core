@@ -18,7 +18,7 @@ interface BatAdsService {
 
 interface BatAdsClient {
   [Sync]
-  IsAdsEnabled() => (bool is_enabled);
+  IsEnabled() => (bool is_enabled);
   [Sync]
   GetAdsLocale() => (string locale);
   [Sync]

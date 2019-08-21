@@ -22,7 +22,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   ~BatAdsClientMojoBridge() override;
 
   // AdsClient implementation
-  bool IsAdsEnabled() const override;
+  bool IsEnabled() const override;
   bool IsForeground() const override;
   const std::string GetAdsLocale() const override;
   uint64_t GetAdsPerHour() const override;

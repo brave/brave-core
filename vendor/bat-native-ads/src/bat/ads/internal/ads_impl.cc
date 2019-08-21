@@ -156,8 +156,7 @@ void AdsImpl::InitializeStep4(const Result result) {
 }
 
 bool AdsImpl::IsInitialized() {
-  if (!is_initialized_ ||
-      !ads_client_->IsAdsEnabled()) {
+  if (!is_initialized_ || !ads_client_->IsEnabled()) {
     return false;
   }
 

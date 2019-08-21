@@ -512,7 +512,7 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   AdsService* ads_service_ = AdsServiceFactory::GetForProfile(profile);
   if (ads_service_) {
     if (params->key == "adsEnabled") {
-      ads_service_->SetAdsEnabled(params->value == "true");
+      ads_service_->SetEnabled(params->value == "true");
     }
   }
   return RespondNow(NoArguments());

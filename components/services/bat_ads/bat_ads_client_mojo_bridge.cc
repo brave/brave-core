@@ -75,12 +75,12 @@ BatAdsClientMojoBridge::BatAdsClientMojoBridge(
 
 BatAdsClientMojoBridge::~BatAdsClientMojoBridge() {}
 
-bool BatAdsClientMojoBridge::IsAdsEnabled() const {
+bool BatAdsClientMojoBridge::IsEnabled() const {
   if (!connected())
     return false;
 
   bool is_enabled;
-  bat_ads_client_->IsAdsEnabled(&is_enabled);
+  bat_ads_client_->IsEnabled(&is_enabled);
   return is_enabled;
 }
 

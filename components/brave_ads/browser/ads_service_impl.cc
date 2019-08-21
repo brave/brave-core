@@ -422,7 +422,7 @@ void AdsServiceImpl::MaybeStart(bool should_restart) {
     return;
   }
 
-  if (IsAdsEnabled()) {
+  if (IsEnabled()) {
     if (should_restart) {
       base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(FROM_HERE,
           base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr()),
@@ -551,7 +551,7 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
 
 bool AdsServiceImpl::ShouldShowMyFirstAdNotification() const {
   auto should_show = GetBooleanPref(prefs::kShouldShowMyFirstAdNotification);
-  return IsAdsEnabled() && should_show;
+  return IsEnabled() && should_show;
 }
 
 void AdsServiceImpl::MaybeShowOnboarding() {
@@ -958,7 +958,7 @@ void AdsServiceImpl::DisableAdsForUnsupportedRegions(
 void AdsServiceImpl::MayBeShowOnboardingForSupportedRegion(
     const std::string& region,
     const std::vector<std::string>& supported_regions) {
-  if (IsAdsEnabled()) {
+  if (IsEnabled()) {
     return;
   }
 
@@ -1135,7 +1135,7 @@ bool AdsServiceImpl::PrefExists(
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == prefs::kEnabled ||
       pref == brave_rewards::prefs::kBraveRewardsEnabled) {
-    if (IsAdsEnabled()) {
+    if (IsEnabled()) {
       RemoveOnboarding();
 
       MaybeStart(false);
@@ -1152,13 +1152,13 @@ bool AdsServiceImpl::IsSupportedRegion() const {
   return ads::Ads::IsSupportedRegion(locale);
 }
 
-bool AdsServiceImpl::IsAdsEnabled() const {
-  auto is_ads_enabled = GetBooleanPref(prefs::kEnabled);
+bool AdsServiceImpl::IsEnabled() const {
+  auto is_enabled = GetBooleanPref(prefs::kEnabled);
 
   auto is_rewards_enabled =
       GetBooleanPref(brave_rewards::prefs::kBraveRewardsEnabled);
 
-  return is_ads_enabled && is_rewards_enabled;
+  return is_enabled && is_rewards_enabled;
 }
 
 void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
