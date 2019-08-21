@@ -55,8 +55,12 @@ class AdsImpl : public Ads {
   void Shutdown(ShutdownCallback callback) override;
 
   void LoadUserModel();
-  void OnUserModelLoaded(const Result result, const std::string& json);
-  void InitializeUserModel(const std::string& json, const std::string& region);
+  void OnUserModelLoaded(
+      const Result result,
+      const std::string& json);
+  void InitializeUserModel(
+      const std::string& json,
+      const std::string& language);
 
   bool IsMobile() const;
 

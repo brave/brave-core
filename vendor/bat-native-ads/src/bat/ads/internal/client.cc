@@ -450,24 +450,25 @@ void Client::UpdateLastUserIdleStopTime() {
   SaveState();
 }
 
-void Client::SetLocale(const std::string& locale) {
-  client_state_->locale = locale;
+void Client::SetUserModelLanguage(const std::string& language) {
+  client_state_->user_model_language = language;
 
   SaveState();
 }
 
-const std::string Client::GetLocale() {
-  return client_state_->locale;
+const std::string Client::GetUserModelLanguage() {
+  return client_state_->user_model_language;
 }
 
-void Client::SetLocales(const std::vector<std::string>& locales) {
-  client_state_->locales = locales;
+void Client::SetSupportedUserModelLanguages(
+    const std::vector<std::string>& languages) {
+  client_state_->supported_user_model_languages = languages;
 
   SaveState();
 }
 
-const std::vector<std::string> Client::GetLocales() {
-  return client_state_->locales;
+const std::vector<std::string> Client::GetSupportedUserModelLanguages() {
+  return client_state_->supported_user_model_languages;
 }
 
 void Client::SetLastPageClassification(

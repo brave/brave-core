@@ -39,8 +39,8 @@ struct ClientState {
   uint64_t last_shop_time;
   uint64_t last_user_activity;
   uint64_t last_user_idle_stop_time;
-  std::string locale;
-  std::vector<std::string> locales;
+  std::string user_model_language;
+  std::vector<std::string> user_model_languages;
   std::string last_page_classification;
   std::deque<std::vector<double>> page_score_history;
   std::map<std::string, std::deque<uint64_t>> creative_set_history;

@@ -25,7 +25,7 @@ private:
   uint64_t GetAdsPerDay() const override;
   uint64_t GetAdsPerHour() const override;
   void GetClientInfo(ads::ClientInfo * info) const override;
-  const std::vector<std::string> GetLocales() const override;
+  const std::vector<std::string> GetSupportedUserModelLanguages() const override;
   bool IsEnabled() const override;
   bool IsForeground() const override;
   bool IsNetworkConnectionAvailable() override;
@@ -34,7 +34,7 @@ private:
   void Load(const std::string & name, ads::OnLoadCallback callback) override;
   const std::string LoadJsonSchema(const std::string & name) override;
   void LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) override;
-  void LoadUserModelForLocale(const std::string & locale, ads::OnLoadCallback callback) const override;
+  void LoadUserModelForLanguage(const std::string & language, ads::OnLoadCallback callback) const override;
   std::unique_ptr<ads::LogStream> Log(const char * file, const int line, const ads::LogLevel log_level) const override;
   void Reset(const std::string & name, ads::OnResetCallback callback) override;
   void Save(const std::string & name, const std::string & value, ads::OnSaveCallback callback) override;

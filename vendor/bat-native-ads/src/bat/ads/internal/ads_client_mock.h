@@ -56,10 +56,10 @@ class MockAdsClient : public AdsClient {
   MOCK_CONST_METHOD1(GetClientInfo, void(
       ClientInfo* info));
 
-  MOCK_CONST_METHOD0(GetLocales, const std::vector<std::string>());
+  MOCK_CONST_METHOD0(GetUserModelLanguages, const std::vector<std::string>());
 
-  MOCK_CONST_METHOD2(LoadUserModelForLocale, void(
-      const std::string& locale,
+  MOCK_CONST_METHOD2(LoadUserModelForLanguage, void(
+      const std::string& language,
       OnLoadCallback callback));
 
   MOCK_CONST_METHOD0(IsForeground, bool());

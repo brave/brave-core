@@ -25,8 +25,8 @@ ClientState::ClientState() :
     last_shop_time(0),
     last_user_activity(0),
     last_user_idle_stop_time(0),
-    locale(kDefaultLanguageCode),
-    locales({}),
+    user_model_language(kDefaultUserModelLanguage),
+    user_model_languages({}),
     last_page_classification(""),
     page_score_history({}),
     creative_set_history({}),
@@ -49,8 +49,8 @@ ClientState::ClientState(const ClientState& state) :
   last_shop_time(state.last_shop_time),
   last_user_activity(state.last_user_activity),
   last_user_idle_stop_time(state.last_user_idle_stop_time),
-  locale(state.locale),
-  locales(state.locales),
+  user_model_language(state.user_model_language),
+  user_model_languages(state.user_model_languages),
   last_page_classification(state.last_page_classification),
   page_score_history(state.page_score_history),
   creative_set_history(state.creative_set_history),
@@ -155,13 +155,13 @@ Result ClientState::FromJson(
     last_user_idle_stop_time = migrated_timestamp_in_seconds;
   }
 
-  if (client.HasMember("locale")) {
-    locale = client["locale"].GetString();
+  if (client.HasMember("userModelLanguage")) {
+    user_model_language = client["userModelLanguage"].GetString();
   }
 
-  if (client.HasMember("locales")) {
-    for (const auto& locale : client["locales"].GetArray()) {
-      locales.push_back(locale.GetString());
+  if (client.HasMember("userModelLanguages")) {
+    for (const auto& language : client["userModelLanguages"].GetArray()) {
+      user_model_languages.push_back(language.GetString());
     }
   }
 
@@ -276,13 +276,13 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
   writer->String("lastUserIdleStopTime");
   writer->Uint64(state.last_user_idle_stop_time);
 
-  writer->String("locale");
-  writer->String(state.locale.c_str());
+  writer->String("userModelLanguage");
+  writer->String(state.user_model_language.c_str());
 
-  writer->String("locales");
+  writer->String("userModelLanguages");
   writer->StartArray();
-  for (const auto& locale : state.locales) {
-    writer->String(locale.c_str());
+  for (const auto& language : state.user_model_languages) {
+    writer->String(language.c_str());
   }
   writer->EndArray();
 

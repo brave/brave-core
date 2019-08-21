@@ -37,8 +37,8 @@ uint64_t NativeAdsClient::GetAdsPerHour() const {
 void NativeAdsClient::GetClientInfo(ads::ClientInfo * info) const {
   [bridge_ getClientInfo:info];
 }
-const std::vector<std::string> NativeAdsClient::GetLocales() const {
-  return [bridge_ getLocales];
+const std::vector<std::string> NativeAdsClient::GetSupportedUserModelLanguages() const {
+  return [bridge_ getSupportedUserModelLanguages];
 }
 bool NativeAdsClient::IsEnabled() const {
   return [bridge_ isEnabled];
@@ -64,8 +64,8 @@ const std::string NativeAdsClient::LoadJsonSchema(const std::string & name) {
 void NativeAdsClient::LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) {
   [bridge_ loadSampleBundle:callback];
 }
-void NativeAdsClient::LoadUserModelForLocale(const std::string & locale, ads::OnLoadCallback callback) const {
-  [bridge_ loadUserModelForLocale:locale callback:callback];
+void NativeAdsClient::LoadUserModelForLanguage(const std::string & language, ads::OnLoadCallback callback) const {
+  [bridge_ loadUserModelForLanguage:language callback:callback];
 }
 std::unique_ptr<ads::LogStream> NativeAdsClient::Log(const char * file, const int line, const ads::LogLevel log_level) const {
   return [bridge_ log:file line:line logLevel:log_level];

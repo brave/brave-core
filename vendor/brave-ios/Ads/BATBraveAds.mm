@@ -168,9 +168,9 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   nw_path_monitor_start(networkMonitor);
 }
 
-- (NSArray<NSString *> *)supportedLocales
+- (NSArray<NSString *> *)userModelLanguages
 {
-  return NSArrayFromVector([self getLocales]);
+  return NSArrayFromVector([self getUserModelLanguages]);
 }
 
 - (void)removeAllHistory:(void (^)(BOOL))completion
@@ -297,10 +297,10 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   info->platform = ads::ClientInfoPlatformType::IOS;
 }
 
-- (const std::vector<std::string>)getLocales
+- (const std::vector<std::string>)getUserModelLanguages
 {
-  std::vector<std::string> locales = { "en", "fr", "de" };
-  return locales;
+  std::vector<std::string> languages = { "en", "fr", "de" };
+  return languages;
 }
 
 - (const std::string)getLocale
@@ -405,12 +405,12 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   callback(ads::Result::SUCCESS, std::string(contents.UTF8String));
 }
 
-- (void)loadUserModelForLocale:(const std::string &)locale callback:(ads::OnLoadCallback)callback
+- (void)loadUserModelForLanguage:(const std::string &)language callback:(ads::OnLoadCallback)callback
 {
   const auto bundle = [NSBundle bundleForClass:[BATBraveAds class]];
-  const auto localeKey = [[[NSString stringWithUTF8String:locale.c_str()] substringToIndex:2] lowercaseString];
-  const auto path = [[bundle pathForResource:@"locales" ofType:nil]
-                     stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/user_model.json", localeKey]];
+  const auto languageKey = [[[NSString stringWithUTF8String:language.c_str()] substringToIndex:2] lowercaseString];
+  const auto path = [[bundle pathForResource:@"user_models/languages" ofType:nil]
+                     stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/user_model.json", languageKey]];
   if (!path || path.length == 0) {
     callback(ads::Result::FAILED, "");
     return;

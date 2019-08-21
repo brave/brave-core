@@ -148,7 +148,8 @@ class AdsServiceImpl : public AdsService,
   bool IsForeground() const override;
   const std::string GetLocale() const override;
   void GetClientInfo(ads::ClientInfo* info) const override;
-  const std::vector<std::string> GetLocales() const override;
+  const std::vector<std::string>
+      GetSupportedUserModelLanguages() const override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
   void CloseNotification(const std::string& id) override;
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
@@ -189,9 +190,9 @@ class AdsServiceImpl : public AdsService,
       int line,
       const ads::LogLevel log_level) const override;
   void SetIdleThreshold(const int threshold) override;
-  void LoadUserModelForLocale(
-      const std::string& locale,
   bool ShouldShowNotifications() const override;
+  void LoadUserModelForLanguage(
+      const std::string& language,
       ads::OnLoadCallback callback) const override;
   bool IsNetworkConnectionAvailable() override;
 

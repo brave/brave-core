@@ -129,13 +129,15 @@ void BatAdsClientMojoBridge::GetClientInfo(ads::ClientInfo* info) const {
   info->FromJson(out_info_json);
 }
 
-const std::vector<std::string> BatAdsClientMojoBridge::GetLocales() const {
-  if (!connected())
-    return std::vector<std::string>();
+const std::vector<std::string>
+BatAdsClientMojoBridge::GetSupportedUserModelLanguages() const {
+  if (!connected()) {
+    return {};
+  }
 
-  std::vector<std::string> locales;
-  bat_ads_client_->GetLocales(&locales);
-  return locales;
+  std::vector<std::string> languages;
+  bat_ads_client_->GetSupportedUserModelLanguages(&languages);
+  return languages;
 }
 
 void BatAdsClientMojoBridge::ShowNotification(
@@ -375,22 +377,22 @@ bool BatAdsClientMojoBridge::ShouldShowNotifications() const {
   return should_show;
 }
 
-void OnLoadUserModelForLocale(const ads::OnLoadCallback& callback,
+void OnLoadUserModelForLanguage(const ads::OnLoadCallback& callback,
             int32_t result,
             const std::string& value) {
   callback(ToAdsResult(result), value);
 }
 
-void BatAdsClientMojoBridge::LoadUserModelForLocale(
-    const std::string& locale,
+void BatAdsClientMojoBridge::LoadUserModelForLanguage(
+    const std::string& language,
     ads::OnLoadCallback callback) const {
   if (!connected()) {
     callback(ads::Result::FAILED, "");
     return;
   }
 
-  bat_ads_client_->LoadUserModelForLocale(locale,
-      base::BindOnce(&OnLoadUserModelForLocale, std::move(callback)));
+  bat_ads_client_->LoadUserModelForLanguage(language,
+      base::BindOnce(&OnLoadUserModelForLanguage, std::move(callback)));
 }
 
 bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() {

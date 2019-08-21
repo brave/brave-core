@@ -1444,12 +1444,12 @@ bool AdsServiceImpl::ShouldShowNotifications() const {
   return NotificationHelper::GetInstance()->ShouldShowNotifications();
 }
 
-void AdsServiceImpl::LoadUserModelForLocale(
-    const std::string& locale,
+void AdsServiceImpl::LoadUserModelForLanguage(
+    const std::string& language,
     ads::OnLoadCallback callback) const {
   base::StringPiece user_model_raw =
       ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
-          GetUserModelResourceId(locale));
+          GetUserModelResourceId(language));
 
   std::string user_model;
   user_model_raw.CopyToString(&user_model);
@@ -1765,17 +1765,18 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
 #endif
 }
 
-const std::vector<std::string> AdsServiceImpl::GetLocales() const {
-  std::vector<std::string> locales;
+const std::vector<std::string>
+AdsServiceImpl::GetSupportedUserModelLanguages() const {
+  std::vector<std::string> languages;
 
   for (std::map<std::string, int>::iterator it =
           g_user_model_resource_ids.begin();
         it != g_user_model_resource_ids.end();
         ++it) {
-    locales.push_back(it->first);
+    languages.push_back(it->first);
   }
 
-  return locales;
+  return languages;
 }
 
 const std::string AdsServiceImpl::GetLocale() const {

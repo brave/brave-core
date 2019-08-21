@@ -28,7 +28,6 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
   void GetClientInfo(ads::ClientInfo* info) const override;
-  const std::vector<std::string> GetLocales() const override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
   void CloseNotification(const std::string& id) override;
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
@@ -49,6 +48,11 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
             ads::OnSaveCallback callback) override;
   void Load(const std::string& name,
             ads::OnLoadCallback callback) override;
+
+  const std::vector<std::string> GetUserModelLanguages() const override;
+  void LoadUserModelForLanguage(
+      const std::string& language,
+      ads::OnLoadCallback callback) const override;
   void SaveBundleState(
       std::unique_ptr<ads::BundleState> bundle_state,
       ads::OnSaveCallback callback) override;
@@ -65,9 +69,9 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
       int line,
       const ads::LogLevel log_level) const override;
   void SetIdleThreshold(const int threshold) override;
-  void LoadUserModelForLocale(
-      const std::string& locale,
   bool ShouldShowNotifications() const override;
+  void LoadUserModelForLanguage(
+      const std::string& language,
       ads::OnLoadCallback callback) const override;
   bool IsNetworkConnectionAvailable() override;
 

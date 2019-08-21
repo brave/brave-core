@@ -18,7 +18,7 @@
 - (uint64_t)getAdsPerDay;
 - (uint64_t)getAdsPerHour;
 - (void)getClientInfo:(ads::ClientInfo *)info;
-- (const std::vector<std::string>)getLocales;
+- (const std::vector<std::string>)getUserModelLanguages;
 - (bool)isEnabled;
 - (bool)isForeground;
 - (bool)isNetworkConnectionAvailable;
@@ -27,7 +27,7 @@
 - (void)load:(const std::string &)name callback:(ads::OnLoadCallback)callback;
 - (const std::string)loadJsonSchema:(const std::string &)name;
 - (void)loadSampleBundle:(ads::OnLoadSampleBundleCallback)callback;
-- (void)loadUserModelForLocale:(const std::string &)locale callback:(ads::OnLoadCallback)callback;
+- (void)loadUserModelForLanguage:(const std::string &)language callback:(ads::OnLoadCallback)callback;
 - (std::unique_ptr<ads::LogStream>)log:(const char *)file line:(const int)line logLevel:(const ads::LogLevel)log_level;
 - (void)reset:(const std::string &)name callback:(ads::OnResetCallback)callback;
 - (void)save:(const std::string &)name value:(const std::string &)value callback:(ads::OnSaveCallback)callback;

@@ -6,10 +6,11 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-TEST(AdBlockRegionalServiceTest, SupportedLocales) {
-  std::vector<std::string> locales({ "fr", "fR", "fr-FR", "fr-ca" });
-  std::for_each(locales.begin(), locales.end(), [](const std::string& locale) {
+TEST(AdBlockRegionalServiceTest, UserModelLanguages) {
+  std::vector<std::string> languages({ "fr", "fR", "fr-FR", "fr-ca" });
+  std::for_each(languages.begin(), languages.end(),
+      [](const std::string& language) {
     EXPECT_TRUE(brave_shields::AdBlockRegionalServiceManager::IsSupportedLocale(
-        locale));
+        language));
   });
 }

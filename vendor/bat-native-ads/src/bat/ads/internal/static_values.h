@@ -38,6 +38,7 @@ static const uint64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
 
 static char kDefaultLanguageCode[] = "en";
 static char kDefaultCountryCode[] = "US";
+static char kDefaultUserModelLanguage[] = "en";
 
 static const std::map<std::string, bool> kSupportedRegions = {
   // {{region, targeted}}

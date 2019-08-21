@@ -120,7 +120,8 @@ void AdsImpl::InitializeStep3(const Result result) {
     return;
   }
 
-  client_->SetLocales(ads_client_->GetLocales());
+  auto user_model_languages = ads_client_->GetUserModelLanguages();
+  client_->SetUserModelLanguages(user_model_languages);
 
   auto locale = ads_client_->GetLocale();
   ChangeLocale(locale);
@@ -181,23 +182,24 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
 }
 
 void AdsImpl::LoadUserModel() {
-  auto locale = client_->GetLocale();
+  auto language = client_->GetUserModelLanguage();
 
   auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
-  ads_client_->LoadUserModelForLocale(locale, callback);
+  ads_client_->LoadUserModelForLanguage(language, callback);
 }
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
-  auto locale = client_->GetLocale();
+  auto language = client_->GetUserModelLanguage();
 
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to load user model for " << locale << " locale";
+    BLOG(ERROR) << "Failed to load user model for " << language << " language";
     return;
   }
 
-  BLOG(INFO) << "Successfully loaded user model for " << locale << " locale";
+  BLOG(INFO) << "Successfully loaded user model for " << language
+      << " language";
 
-  InitializeUserModel(json, locale);
+  InitializeUserModel(json, language);
 
   if (!IsInitialized()) {
     InitializeStep4(SUCCESS);
@@ -206,15 +208,15 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
 
 void AdsImpl::InitializeUserModel(
     const std::string& json,
-    const std::string& locale) {
+    const std::string& language) {
   // TODO(Terry Mancey): Refactor function to use callbacks
 
-  BLOG(INFO) << "Initializing \"" << locale << "\" user model";
+  BLOG(INFO) << "Initializing user model for \"" << language << "\" language";
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
   user_model_->InitializePageClassifier(json);
 
-  BLOG(INFO) << "Initialized \"" << locale << "\" user model";
+  BLOG(INFO) << "Initialized user model for \"" << language << "\" language";
 }
 
 bool AdsImpl::IsMobile() const {
@@ -523,26 +525,26 @@ bool AdsImpl::ToggleFlagAd(const std::string& id,
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
-  auto language_code = helper::Locale::GetLanguageCode(locale);
+  auto language = helper::Locale::GetLanguageCode(locale);
 
   if (!ShouldClassifyPages()) {
-    client_->SetLocale(language_code);
+    client_->SetUserModelLanguage(language);
 
     InitializeStep4(SUCCESS);
     return;
   }
 
-  auto locales = client_->GetLocales();
-  if (std::find(locales.begin(), locales.end(), language_code)
-      != locales.end()) {
-    BLOG(INFO) << "Changed locale to " << language_code;
+  auto languages = client_->GetUserModelLanguages();
+  if (std::find(languages.begin(), languages.end(), language)
+      != languages.end()) {
+    BLOG(INFO) << "Changed to " << language << " user model";
 
-    client_->SetLocale(language_code);
+    client_->SetUserModelLanguage(language);
   } else {
-    BLOG(INFO) << language_code << " locale not found, so changed locale to "
-        << kDefaultLanguageCode;
+    BLOG(INFO) << language << " user model not found, defaulting to "
+        << kDefaultUserModelLanguage << " user model";
 
-    client_->SetLocale(kDefaultLanguageCode);
+    client_->SetUserModelLanguage(kDefaultUserModelLanguage);
   }
 
   LoadUserModel();
@@ -1901,9 +1903,9 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
 
   writer.EndObject();
 
-  writer.String("locale");
-  auto locale = client_->GetLocale();
-  writer.String(locale.c_str());
+  writer.String("userModelLanguage");
+  auto user_model_language = client_->GetUserModelLanguage();
+  writer.String(user_model_language.c_str());
 
   writer.String("adsPerDay");
   auto ads_per_day = ads_client_->GetAdsPerDay();

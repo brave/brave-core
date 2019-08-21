@@ -134,13 +134,15 @@ void AdsClientMojoBridge::LoadJsonSchema(const std::string& name,
   std::move(callback).Run(ads_client_->LoadJsonSchema(name));
 }
 
-bool AdsClientMojoBridge::GetLocales(std::vector<std::string>* out_locales) {
-  *out_locales = ads_client_->GetLocales();
+bool AdsClientMojoBridge::GetUserModelLanguages(
+    std::vector<std::string>* out_languages) {
+  *out_languages = ads_client_->GetUserModelLanguages();
   return true;
 }
 
-void AdsClientMojoBridge::GetLocales(GetLocalesCallback callback) {
-  std::move(callback).Run(ads_client_->GetLocales());
+void AdsClientMojoBridge::GetUserModelLanguages(
+    GetUserModelLanguagesCallback callback) {
+  std::move(callback).Run(ads_client_->GetUserModelLanguages());
 }
 
 void AdsClientMojoBridge::SetIdleThreshold(int32_t threshold) {
@@ -224,8 +226,8 @@ void AdsClientMojoBridge::Reset(const std::string& name,
 }
 
 // static
-void AdsClientMojoBridge::OnLoadUserModelForLocale(
-    CallbackHolder<LoadUserModelForLocaleCallback>* holder,
+void AdsClientMojoBridge::OnLoadUserModelForLanguage(
+    CallbackHolder<LoadUserModelForLanguageCallback>* holder,
     ads::Result result,
     const std::string& value) {
   if (holder->is_valid())
@@ -233,14 +235,15 @@ void AdsClientMojoBridge::OnLoadUserModelForLocale(
   delete holder;
 }
 
-void AdsClientMojoBridge::LoadUserModelForLocale(
-    const std::string& locale,
-    LoadUserModelForLocaleCallback callback) {
-  // this gets deleted in OnLoadUserModelForLocale
-  auto* holder = new CallbackHolder<LoadUserModelForLocaleCallback>(
+void AdsClientMojoBridge::LoadUserModelForLanguage(
+    const std::string& language,
+    LoadUserModelForLanguageCallback callback) {
+  // this gets deleted in OnLoadUserModelForLanguage
+  auto* holder = new CallbackHolder<LoadUserModelForLanguageCallback>(
       AsWeakPtr(), std::move(callback));
-  ads_client_->LoadUserModelForLocale(locale,
-      std::bind(AdsClientMojoBridge::OnLoadUserModelForLocale, holder, _1, _2));
+  ads_client_->LoadUserModelForLanguage(language,
+      std::bind(AdsClientMojoBridge::OnLoadUserModelForLanguage, holder, _1,
+          _2));
 }
 
 // static

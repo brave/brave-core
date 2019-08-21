@@ -67,8 +67,8 @@ NS_SWIFT_NAME(BraveAds)
 /// The max number of ads the user can see in a day
 @property (nonatomic, assign) NSInteger numberOfAllowableAdsPerDay NS_SWIFT_NAME(adsPerDay);
 
-/// The locales Brave Ads supports currently
-@property (nonatomic, readonly) NSArray<NSString *> *supportedLocales;
+/// The user model locales Brave Ads supports currently
+@property (nonatomic, readonly) NSArray<NSString *> *userModelLanguages;
 
 /// Remove all cached history (should be called when the user clears their browser history)
 - (void)removeAllHistory:(void (^)(BOOL))completion;

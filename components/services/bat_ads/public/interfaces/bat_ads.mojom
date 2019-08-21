@@ -31,10 +31,11 @@ interface BatAdsClient {
   ShouldShowNotifications() => (bool should_show);
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);
+  GetUserModelLanguages() => (array<string> languages);
   [Sync]
   LoadJsonSchema(string name) => (string json);
   [Sync]
-  GetLocales() => (array<string> locales);
+  ShouldShowNotifications() => (bool should_show);
   [Sync]
   GetClientInfo(string client_info) => (string client_info);
   [Sync]
@@ -46,7 +47,7 @@ interface BatAdsClient {
   Load(string name) => (int32 result, string value);
   Reset(string name) => (int32 result);
   EventLog(string json);
-  LoadUserModelForLocale(string locale) => (int32 result, string value);
+  LoadUserModelForLanguage(string language) => (int32 result, string value);
   LoadSampleBundle() => (int32 result, string value);
   URLRequest(string url, array<string> headers, string content,
       string content_type, int32 method) =>

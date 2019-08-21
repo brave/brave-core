@@ -90,13 +90,14 @@ class ADS_EXPORT AdsClient {
   virtual void GetClientInfo(ClientInfo* info) const = 0;
 
   // Should return a list of supported User Model locales
-  virtual const std::vector<std::string> GetLocales() const = 0;
+  virtual const std::vector<std::string>
+      GetUserModelLanguages() const = 0;
 
   // Should load the User Model for the specified locale, user models are a
   // dependency of the application and should be bundled accordingly, the
   // following file structure could be used:
-  virtual void LoadUserModelForLocale(
-      const std::string& locale,
+  virtual void LoadUserModelForLanguage(
+      const std::string& language,
       OnLoadCallback callback) const = 0;
 
   // Should return true if the browser is in the foreground otherwise returns

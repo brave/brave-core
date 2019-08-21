@@ -27,8 +27,6 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   // Overridden from BatAdsClient:
   bool IsForeground(bool* out_is_foreground) override;
   void IsForeground(IsForegroundCallback callback) override;
-  bool GetLocales(std::vector<std::string>* out_locales) override;
-  void GetLocales(GetLocalesCallback callback) override;
   bool GetAdsPerHour(uint64_t* out_ads_per_hour) override;
   void GetAdsPerHour(GetAdsPerHourCallback callback) override;
   bool GetAdsPerDay(uint64_t* out_ads_per_day) override;
@@ -42,6 +40,10 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       std::string* out_locale) override;
   void GetLocale(
       GetLocaleCallback callback) override;
+  bool GetUserModelLanguages(
+      std::vector<std::string>* out_languages) override;
+  void GetUserModelLanguages(
+      GetUserModelLanguagesCallback callback) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
   bool SetTimer(uint64_t time_offset, uint32_t* out_timer_id) override;
@@ -62,8 +64,6 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
             const std::string& value,
             SaveCallback callback) override;
   void Reset(const std::string& name, ResetCallback callback) override;
-  void LoadUserModelForLocale(const std::string& locale,
-                              LoadUserModelForLocaleCallback callback) override;
   void URLRequest(const std::string& url,
                   const std::vector<std::string>& headers,
                   const std::string& content,
@@ -86,6 +86,9 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       bool* out_should_show) override;
   void ShouldShowNotifications(
       ShouldShowNotificationsCallback callback) override;
+  void LoadUserModelForLanguage(
+      const std::string& locale,
+      LoadUserModelForLanguageCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -113,6 +116,8 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
                       ads::Result result);
   static void OnLoadUserModelForLocale(
       CallbackHolder<LoadUserModelForLocaleCallback>* holder,
+  static void OnLoadUserModelForLanguage(
+      CallbackHolder<LoadUserModelForLanguageCallback>* holder,
       ads::Result result,
       const std::string& value);
   static void OnURLRequest(CallbackHolder<URLRequestCallback>* holder,
