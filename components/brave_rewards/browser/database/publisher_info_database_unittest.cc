@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_rewards/browser/publisher_info_database.h"
+#include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"

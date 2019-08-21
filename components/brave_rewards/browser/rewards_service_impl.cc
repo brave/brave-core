@@ -44,7 +44,7 @@
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
-#include "brave/components/brave_rewards/browser/publisher_info_database.h"
+#include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
