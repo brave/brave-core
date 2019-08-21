@@ -61,7 +61,7 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
       self.prefs = [[NSMutableDictionary alloc] init];
       self.numberOfAllowableAdsPerDay = kDefaultNumberOfAdsPerDay;
       self.numberOfAllowableAdsPerHour = kDefaultNumberOfAdsPerHour;
-      self.adsEnabled = YES;
+      self.enabled = YES;
     }
 
     [self setupNetworkMonitoring];
@@ -103,17 +103,17 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 
 #pragma mark - Configuration
 
-- (BOOL)isAdsEnabled
+- (BOOL)isEnabled
 {
   return [(NSNumber *)self.prefs[kAdsEnabledPrefKey] boolValue];
 }
 
-- (void)setAdsEnabled:(BOOL)adsEnabled
+- (void)setEnabled:(BOOL)enabled
 {
-  self.prefs[kAdsEnabledPrefKey] = @(adsEnabled);
+  self.prefs[kAdsEnabledPrefKey] = @(enabled);
   [self savePrefs];
   if (ads != nil) {
-    if (adsEnabled) {
+    if (enabled) {
       ads->Initialize(^(bool) { });
     } else {
       ads->Shutdown(^(bool) { });
@@ -308,9 +308,9 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   return std::string([[NSLocale preferredLanguages] firstObject].UTF8String);
 }
 
-- (bool)isEnabled
+- (bool)isAdsEnabled
 {
-  return self.adsEnabled;
+  return self.enabled;
 }
 
 - (bool)isForeground

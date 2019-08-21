@@ -19,7 +19,7 @@
 - (uint64_t)getAdsPerHour;
 - (void)getClientInfo:(ads::ClientInfo *)info;
 - (const std::vector<std::string>)getUserModelLanguages;
-- (bool)isEnabled;
+- (bool)isAdsEnabled;
 - (bool)isForeground;
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;

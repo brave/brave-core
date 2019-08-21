@@ -212,7 +212,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     if (completion) {
       strongSelf.enabled = YES;
       strongSelf.autoContributeEnabled = YES;
-      strongSelf.ads.adsEnabled = YES;
+      strongSelf.ads.enabled = YES;
       [strongSelf startNotificationTimers];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(error);
