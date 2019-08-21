@@ -58,6 +58,18 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+void RecordShieldsToggled() {
+  PrefService* local_state = g_browser_process->local_state();
+  ::brave_shields::RecordShieldsUsageP3A(::brave_shields::kShutOffShields,
+                                         local_state);
+}
+
+void RecordShieldsSettingChanged() {
+  PrefService* local_state = g_browser_process->local_state();
+  ::brave_shields::RecordShieldsUsageP3A(
+      ::brave_shields::kChangedPerSiteShields, local_state);
+}
+
 ExtensionFunction::ResponseAction
 BraveShieldsSetBraveShieldsEnabledFunction::Run() {
   std::unique_ptr<brave_shields::SetBraveShieldsEnabled::Params> params(
@@ -72,6 +84,8 @@ BraveShieldsSetBraveShieldsEnabledFunction::Run() {
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetBraveShieldsEnabled(profile, params->enabled, url);
+
+  RecordShieldsToggled();
 
   return RespondNow(NoArguments());
 }
@@ -114,6 +128,8 @@ ExtensionFunction::ResponseAction BraveShieldsSetAdControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetAdControlType(profile, control_type, url);
 
+  RecordShieldsSettingChanged();
+
   return RespondNow(NoArguments());
 }
 
@@ -154,6 +170,8 @@ BraveShieldsSetCookieControlTypeFunction::Run() {
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetCookieControlType(profile, control_type, url);
+
+  RecordShieldsSettingChanged();
 
   return RespondNow(NoArguments());
 }
@@ -197,6 +215,8 @@ BraveShieldsSetFingerprintingControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetFingerprintingControlType(profile, control_type, url);
 
+  RecordShieldsSettingChanged();
+
   return RespondNow(NoArguments());
 }
 
@@ -233,6 +253,8 @@ BraveShieldsSetHTTPSEverywhereEnabledFunction::Run() {
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetHTTPSEverywhereEnabled(profile, params->enabled, url);
+
+  RecordShieldsSettingChanged();
 
   return RespondNow(NoArguments());
 }
@@ -276,16 +298,7 @@ BraveShieldsSetNoScriptControlTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetNoScriptControlType(profile, control_type, url);
 
-  // Record stats.
-  PrefService* local_state = g_browser_process->local_state();
-  if (resource_identifier == ::brave_shields::kBraveShields) {
-    ::brave_shields::RecordShieldsUsageP3A(::brave_shields::kShutOffShields,
-                                           local_state);
-  } else {
-    ::brave_shields::RecordShieldsUsageP3A(
-          ::brave_shields::kChangedPerSiteShields,
-          local_state);
-  }
+  RecordShieldsSettingChanged();
 
   return RespondNow(NoArguments());
 }
