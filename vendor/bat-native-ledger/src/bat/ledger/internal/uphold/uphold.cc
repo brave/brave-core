@@ -50,6 +50,32 @@ void Uphold::StartContribution(const std::string &viewing_id,
     const double fee = (amount * 1.05) - amount;
     const double reconcile_amount = amount - fee;
 
+    // rest of the reconcile
+    auto contribution_callback = std::bind(&Uphold::ContributionCompleted,
+                              this,
+                              _1,
+                              _2,
+                              viewing_id,
+                              fee,
+                              *wallet);
+
+    transfer_->Start(reconcile_amount,
+                     address,
+                     std::move(wallet),
+                     contribution_callback);
+  }
+}
+
+void Uphold::ContributionCompleted(
+    const ledger::Result result,
+    const bool created,
+    const std::string& viewing_id,
+    const double fee,
+    const ledger::ExternalWallet& wallet) {
+  const auto reconcile = ledger_->GetReconcileById(viewing_id);
+  const auto amount = ConvertToProbi(std::to_string(reconcile.fee_));
+
+  if (result == ledger::Result::LEDGER_OK) {
     // 5% fee
     auto fee_callback = std::bind(&Uphold::OnFeeCompleted,
                               this,
@@ -59,28 +85,9 @@ void Uphold::StartContribution(const std::string &viewing_id,
 
     transfer_->Start(fee,
                      GetFeeAddress(),
-                     wallet->Clone(),
+                     ledger::ExternalWallet::New(wallet),
                      fee_callback);
-
-    // rest of the reconcile
-    auto contribution_callback = std::bind(&Uphold::ContributionCompleted,
-                              this,
-                              _1,
-                              _2,
-                              viewing_id);
-
-    transfer_->Start(reconcile_amount,
-                     address,
-                     std::move(wallet),
-                     contribution_callback);
   }
-}
-
-void Uphold::ContributionCompleted(ledger::Result result,
-                                   bool created,
-                                   const std::string &viewing_id) {
-  const auto reconcile = ledger_->GetReconcileById(viewing_id);
-  const auto amount = ConvertToProbi(std::to_string(reconcile.fee_));
 
   ledger_->OnReconcileComplete(result,
                                viewing_id,
