@@ -19,61 +19,93 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
  public:
   explicit BatAdsClientMojoBridge(
       mojom::BatAdsClientAssociatedPtrInfo client_info);
+
   ~BatAdsClientMojoBridge() override;
 
   // AdsClient implementation
   bool IsEnabled() const override;
-  bool IsForeground() const override;
-  const std::string GetLocale() const override;
+
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
-  void GetClientInfo(ads::ClientInfo* info) const override;
-  void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
-  void CloseNotification(const std::string& id) override;
-  void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
-  void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
-  void ConfirmAction(const std::string& uuid,
-                     const std::string& creative_set_id,
-                     const ads::ConfirmationType& type) override;
-  uint32_t SetTimer(const uint64_t time_offset) override;
-  void KillTimer(uint32_t timer_id) override;
-  void URLRequest(const std::string& url,
-                  const std::vector<std::string>& headers,
-                  const std::string& content,
-                  const std::string& content_type,
-                  ads::URLRequestMethod method,
-                  ads::URLRequestCallback callback) override;
-  void Save(const std::string& name,
-            const std::string& value,
-            ads::OnSaveCallback callback) override;
-  void Load(const std::string& name,
-            ads::OnLoadCallback callback) override;
+
+  void GetClientInfo(
+      ads::ClientInfo* info) const override;
+
+  const std::string GetLocale() const override;
+
+  bool IsNetworkConnectionAvailable() const override;
+
+  void SetIdleThreshold(
+      const int threshold) override;
+
+  bool IsForeground() const override;
 
   const std::vector<std::string> GetUserModelLanguages() const override;
   void LoadUserModelForLanguage(
       const std::string& language,
       ads::OnLoadCallback callback) const override;
+
+  void ShowNotification(
+      std::unique_ptr<ads::NotificationInfo> info) override;
+  bool ShouldShowNotifications() const override;
+  void CloseNotification(
+      const std::string& id) override;
+
+  void SetCatalogIssuers(
+      std::unique_ptr<ads::IssuersInfo> info) override;
+
+  void ConfirmAd(
+      std::unique_ptr<ads::NotificationInfo> info) override;
+  void ConfirmAction(
+      const std::string& uuid,
+      const std::string& creative_set_id,
+      const ads::ConfirmationType& type) override;
+
+  uint32_t SetTimer(
+      const uint64_t time_offset) override;
+  void KillTimer(
+      const uint32_t timer_id) override;
+
+  void URLRequest(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      const ads::URLRequestMethod method,
+      ads::URLRequestCallback callback) override;
+
+  void Save(
+      const std::string& name,
+      const std::string& value,
+      ads::OnSaveCallback callback) override;
+  void Load(
+      const std::string& name,
+      ads::OnLoadCallback callback) override;
+  void Reset(
+      const std::string& name,
+      ads::OnResetCallback callback) override;
+
+  const std::string LoadJsonSchema(
+      const std::string& name) override;
+
+  void LoadSampleBundle(
+      ads::OnLoadSampleBundleCallback callback) override;
+
   void SaveBundleState(
       std::unique_ptr<ads::BundleState> bundle_state,
       ads::OnSaveCallback callback) override;
-  const std::string LoadJsonSchema(const std::string& name) override;
-  void Reset(const std::string& name,
-             ads::OnResetCallback callback) override;
+
   void GetAds(
       const std::string& category,
       ads::OnGetAdsCallback callback) override;
-  void LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) override;
-  void EventLog(const std::string& json) override;
+
+  void EventLog(
+      const std::string& json) const override;
+
   std::unique_ptr<ads::LogStream> Log(
       const char* file,
-      int line,
+      const int line,
       const ads::LogLevel log_level) const override;
-  void SetIdleThreshold(const int threshold) override;
-  bool ShouldShowNotifications() const override;
-  void LoadUserModelForLanguage(
-      const std::string& language,
-      ads::OnLoadCallback callback) const override;
-  bool IsNetworkConnectionAvailable() override;
 
  private:
   bool connected() const;

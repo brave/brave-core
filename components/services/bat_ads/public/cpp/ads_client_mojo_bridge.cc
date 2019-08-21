@@ -343,7 +343,7 @@ void AdsClientMojoBridge::SaveBundleState(const std::string& bundle_state_json,
       AsWeakPtr(), std::move(callback));
   auto bundle_state = std::make_unique<ads::BundleState>();
 
-  auto schema = ads_client_->LoadJsonSchema(ads::_bundle_schema_name);
+  auto schema = ads_client_->LoadJsonSchema(ads::_bundle_schema_resource_name);
 
   if (bundle_state->FromJson(bundle_state_json, schema) ==
       ads::Result::SUCCESS) {

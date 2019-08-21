@@ -86,7 +86,7 @@ class ADS_EXPORT AdsClient {
 
   // Should return |true| if there is an available network connection;
   // otherwise, should return |false|
-  virtual bool IsNetworkConnectionAvailable() = 0;
+  virtual bool IsNetworkConnectionAvailable() const = 0;
 
   // Should get information about the client, i.e. Platform. returned in |info|
   virtual void GetClientInfo(
@@ -119,13 +119,13 @@ class ADS_EXPORT AdsClient {
   // should return |false|
   virtual bool IsForeground() const = 0;
 
-  // Should return |true| if notifications can be displayed; otherwise should
-  // return |false|
-  virtual bool ShouldShowNotifications() const = 0;
-
   // Should show a notification
   virtual void ShowNotification(
       const std::unique_ptr<NotificationInfo> info) = 0;
+
+  // Should return |true| if notifications can be displayed; otherwise should
+  // return |false|
+  virtual bool ShouldShowNotifications() const = 0;
 
   // Should close a notification
   virtual void CloseNotification(
@@ -231,7 +231,7 @@ class ADS_EXPORT AdsClient {
 
   // Should log an event
   virtual void EventLog(
-      const std::string& json) = 0;
+      const std::string& json) const = 0;
 
   // Should log diagnostic information
   virtual std::unique_ptr<LogStream> Log(

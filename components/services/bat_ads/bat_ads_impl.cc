@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/services/bat_ads/bat_ads_impl.h"
-
 #include <map>
 #include <utility>
 #include <vector>
 
+#include "brave/components/services/bat_ads/bat_ads_impl.h"
 #include "bat/ads/ad_content.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history.h"
@@ -27,15 +26,18 @@ ads::Result ToMojomResult(int32_t result) {
   return (ads::Result)result;
 }
 
-ads::NotificationEventType ToMojomNotificationEventType(int32_t event_type) {
+ads::NotificationEventType ToMojomNotificationEventType(
+    const int32_t event_type) {
   return (ads::NotificationEventType)event_type;
 }
 
-ads::AdContent::LikeAction ToAdsLikeAction(int action) {
+ads::AdContent::LikeAction ToAdsLikeAction(
+    const int action) {
   return static_cast<ads::AdContent::LikeAction>(action);
 }
 
-ads::CategoryContent::OptAction ToAdsOptAction(int action) {
+ads::CategoryContent::OptAction ToAdsOptAction(
+    const int action) {
   return static_cast<ads::CategoryContent::OptAction>(action);
 }
 
@@ -44,29 +46,21 @@ ads::CategoryContent::OptAction ToAdsOptAction(int action) {
 BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info) :
     bat_ads_client_mojo_proxy_(new BatAdsClientMojoBridge(
         std::move(client_info))),
-    ads_(ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {}
+    ads_(ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {
+}
 
-BatAdsImpl::~BatAdsImpl() {}
+BatAdsImpl::~BatAdsImpl() = default;
 
-void BatAdsImpl::Initialize(InitializeCallback callback) {
+void BatAdsImpl::Initialize(
+    InitializeCallback callback) {
   auto* holder = new CallbackHolder<InitializeCallback>(AsWeakPtr(),
       std::move(callback));
 
-  auto initialize_callback = std::bind(BatAdsImpl::OnInitialize, holder, _1);
-  ads_->Initialize(initialize_callback);
+  ads_->Initialize(std::bind(BatAdsImpl::OnInitialize, holder, _1));
 }
 
-void BatAdsImpl::OnInitialize(
-    CallbackHolder<InitializeCallback>* holder,
-    const int32_t result) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(ToMojomResult(result));
-  }
-
-  delete holder;
-}
-
-void BatAdsImpl::Shutdown(ShutdownCallback callback) {
+void BatAdsImpl::Shutdown(
+    ShutdownCallback callback) {
   auto* holder = new CallbackHolder<ShutdownCallback>(AsWeakPtr(),
       std::move(callback));
 
@@ -74,21 +68,13 @@ void BatAdsImpl::Shutdown(ShutdownCallback callback) {
   ads_->Shutdown(shutdown_callback);
 }
 
-void BatAdsImpl::OnShutdown(
-    CallbackHolder<ShutdownCallback>* holder,
-    const int32_t result) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(ToMojomResult(result));
-  }
-
-  delete holder;
-}
-
-void BatAdsImpl::SetConfirmationsIsReady(const bool is_ready) {
+void BatAdsImpl::SetConfirmationsIsReady(
+    const bool is_ready) {
   ads_->SetConfirmationsIsReady(is_ready);
 }
 
-void BatAdsImpl::ChangeLocale(const std::string& locale) {
+void BatAdsImpl::ChangeLocale(
+    const std::string& locale) {
   ads_->ChangeLocale(locale);
 }
 
@@ -122,11 +108,13 @@ void BatAdsImpl::OnBackground() {
   ads_->OnBackground();
 }
 
-void BatAdsImpl::OnMediaPlaying(const int32_t tab_id) {
+void BatAdsImpl::OnMediaPlaying(
+    const int32_t tab_id) {
   ads_->OnMediaPlaying(tab_id);
 }
 
-void BatAdsImpl::OnMediaStopped(const int32_t tab_id) {
+void BatAdsImpl::OnMediaStopped(
+    const int32_t tab_id) {
   ads_->OnMediaStopped(tab_id);
 }
 
@@ -138,7 +126,8 @@ void BatAdsImpl::OnTabUpdated(
   ads_->OnTabUpdated(tab_id, url, is_active, is_incognito);
 }
 
-void BatAdsImpl::OnTabClosed(const int32_t tab_id) {
+void BatAdsImpl::OnTabClosed(
+    const int32_t tab_id) {
   ads_->OnTabClosed(tab_id);
 }
 
@@ -156,7 +145,8 @@ void BatAdsImpl::OnNotificationEvent(
   ads_->OnNotificationEvent(id, ToMojomNotificationEventType(type));
 }
 
-void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+void BatAdsImpl::RemoveAllHistory(
+    RemoveAllHistoryCallback callback) {
   auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(AsWeakPtr(),
       std::move(callback));
 
@@ -165,17 +155,8 @@ void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   ads_->RemoveAllHistory(remove_all_history_callback);
 }
 
-void BatAdsImpl::OnRemoveAllHistory(
-    CallbackHolder<RemoveAllHistoryCallback>* holder,
-    const int32_t result) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(ToMojomResult(result));
-  }
-
-  delete holder;
-}
-
-void BatAdsImpl::GetAdsHistory(GetAdsHistoryCallback callback) {
+void BatAdsImpl::GetAdsHistory(
+    GetAdsHistoryCallback callback) {
   std::map<uint64_t, std::vector<std::string>> result;
 
   auto ads_history_map = ads_->GetAdsHistory();
@@ -190,52 +171,90 @@ void BatAdsImpl::GetAdsHistory(GetAdsHistoryCallback callback) {
   std::move(callback).Run(mojo::MapToFlatMap(result));
 }
 
-void BatAdsImpl::ToggleAdThumbUp(const std::string& id,
-                                 const std::string& creative_set_id,
-                                 int action,
-                                 ToggleAdThumbUpCallback callback) {
+void BatAdsImpl::ToggleAdThumbUp(
+    const std::string& id,
+    const std::string& creative_set_id,
+    const int action,
+    ToggleAdThumbUpCallback callback) {
   int like_action =
       ads_->ToggleAdThumbUp(id, creative_set_id, ToAdsLikeAction(action));
   std::move(callback).Run(id, like_action);
 }
 
-void BatAdsImpl::ToggleAdThumbDown(const std::string& id,
-                                   const std::string& creative_set_id,
-                                   int action,
-                                   ToggleAdThumbDownCallback callback) {
+void BatAdsImpl::ToggleAdThumbDown(
+    const std::string& id,
+    const std::string& creative_set_id,
+    const int action,
+    ToggleAdThumbDownCallback callback) {
   int like_action =
       ads_->ToggleAdThumbDown(id, creative_set_id, ToAdsLikeAction(action));
   std::move(callback).Run(id, like_action);
 }
 
-void BatAdsImpl::ToggleAdOptInAction(const std::string& category,
-                                     int action,
-                                     ToggleAdOptInActionCallback callback) {
+void BatAdsImpl::ToggleAdOptInAction(
+    const std::string& category,
+    const int action,
+    ToggleAdOptInActionCallback callback) {
   int opt_action = ads_->ToggleAdOptInAction(category, ToAdsOptAction(action));
   std::move(callback).Run(category, opt_action);
 }
 
-void BatAdsImpl::ToggleAdOptOutAction(const std::string& category,
-                                      int action,
-                                      ToggleAdOptOutActionCallback callback) {
+void BatAdsImpl::ToggleAdOptOutAction(
+    const std::string& category,
+    const int action,
+    ToggleAdOptOutActionCallback callback) {
   int opt_action = ads_->ToggleAdOptOutAction(category, ToAdsOptAction(action));
   std::move(callback).Run(category, opt_action);
 }
 
-void BatAdsImpl::ToggleSaveAd(const std::string& id,
-                              const std::string& creative_set_id,
-                              bool saved,
-                              ToggleSaveAdCallback callback) {
+void BatAdsImpl::ToggleSaveAd(
+    const std::string& id,
+    const std::string& creative_set_id,
+    const bool saved,
+    ToggleSaveAdCallback callback) {
   bool saved_result = ads_->ToggleSaveAd(id, creative_set_id, saved);
   std::move(callback).Run(id, saved_result);
 }
 
-void BatAdsImpl::ToggleFlagAd(const std::string& id,
-                              const std::string& creative_set_id,
-                              bool flagged,
-                              ToggleFlagAdCallback callback) {
+void BatAdsImpl::ToggleFlagAd(
+    const std::string& id,
+    const std::string& creative_set_id,
+    const bool flagged,
+    ToggleFlagAdCallback callback) {
   bool flagged_result = ads_->ToggleFlagAd(id, creative_set_id, flagged);
   std::move(callback).Run(id, flagged_result);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void BatAdsImpl::OnInitialize(
+    CallbackHolder<InitializeCallback>* holder,
+    const int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnShutdown(
+    CallbackHolder<ShutdownCallback>* holder,
+    const int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnRemoveAllHistory(
+    CallbackHolder<RemoveAllHistoryCallback>* holder,
+    const int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
 }
 
 }  // namespace bat_ads

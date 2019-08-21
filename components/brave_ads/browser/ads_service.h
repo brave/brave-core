@@ -53,47 +53,62 @@ class AdsService : public KeyedService {
       const bool is_enabled) = 0;
 
   virtual uint64_t GetAdsPerHour() const = 0;
-  virtual void SetAdsPerHour(const uint64_t ads_per_hour) = 0;
+  virtual void SetAdsPerHour(
+      const uint64_t ads_per_hour) = 0;
 
-  virtual void GetAdsHistory(OnGetAdsHistoryCallback callback) = 0;
+  virtual void SetConfirmationsIsReady(
+      const bool is_ready) = 0;
 
-  virtual void ToggleAdThumbUp(const std::string& id,
-                               const std::string& creative_set_id,
-                               int action,
-                               OnToggleAdThumbUpCallback callback) = 0;
-  virtual void ToggleAdThumbDown(const std::string& id,
-                                 const std::string& creative_set_id,
-                                 int action,
-                                 OnToggleAdThumbDownCallback callback) = 0;
-  virtual void ToggleAdOptInAction(const std::string& category,
-                                   int action,
-                                   OnToggleAdOptInActionCallback callback) = 0;
-  virtual void ToggleAdOptOutAction(
-      const std::string& category,
-      int action,
-      OnToggleAdOptOutActionCallback callback) = 0;
-  virtual void ToggleSaveAd(const std::string& id,
-                            const std::string& creative_set_id,
-                            bool saved,
-                            OnToggleSaveAdCallback callback) = 0;
-  virtual void ToggleFlagAd(const std::string& id,
-                            const std::string& creative_set_id,
-                            bool flagged,
-                            OnToggleFlagAdCallback callback) = 0;
+  virtual void ChangeLocale(
+      const std::string& locale) = 0;
 
-  // ads::Ads proxy
-  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
-  virtual void ChangeLocale(const std::string& locale) = 0;
   virtual void OnPageLoaded(
       const std::string& url,
       const std::string& html) = 0;
-  virtual void OnMediaStart(SessionID tab_id) = 0;
-  virtual void OnMediaStop(SessionID tab_id) = 0;
+
+  virtual void OnMediaStart(
+      const SessionID& tab_id) = 0;
+  virtual void OnMediaStop(
+      const SessionID& tab_id) = 0;
+
   virtual void OnTabUpdated(
-      SessionID tab_id,
+      const SessionID& tab_id,
       const GURL& url,
       const bool is_active) = 0;
-  virtual void OnTabClosed(SessionID tab_id) = 0;
+  virtual void OnTabClosed(
+      const SessionID& tab_id) = 0;
+
+  virtual void GetAdsHistory(
+      OnGetAdsHistoryCallback callback) = 0;
+
+  virtual void ToggleAdThumbUp(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const int action,
+      OnToggleAdThumbUpCallback callback) = 0;
+  virtual void ToggleAdThumbDown(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const int action,
+      OnToggleAdThumbDownCallback callback) = 0;
+  virtual void ToggleAdOptInAction(
+      const std::string& category,
+      const int action,
+      OnToggleAdOptInActionCallback callback) = 0;
+  virtual void ToggleAdOptOutAction(
+      const std::string& category,
+      const int action,
+      OnToggleAdOptOutActionCallback callback) = 0;
+  virtual void ToggleSaveAd(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const bool saved,
+      OnToggleSaveAdCallback callback) = 0;
+  virtual void ToggleFlagAd(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const bool flagged,
+      OnToggleFlagAdCallback callback) = 0;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);

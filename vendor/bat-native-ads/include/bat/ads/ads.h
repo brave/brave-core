@@ -23,27 +23,35 @@ namespace ads {
 
 struct AdsHistory;
 
-// Reduces the wait time before calling the StartCollectingActivity function
+using InitializeCallback = std::function<void(const Result)>;
+using ShutdownCallback = std::function<void(const Result)>;
+using RemoveAllHistoryCallback = std::function<void(const Result)>;
+
+// |_is_production| indicates that URL requests should use production servers if
+// set to |true| or staging servers if set to |false| but can be overridden via
+// command-line arguments
+extern bool _is_production;
+
+// |_is_debug| indicates that the next catalogue download should be reduced from
+// ~1 hour to ~25 seconds. This value should be set to |false| on production
+// builds and |true| on debug builds but can be overridden via command-line
+// arguments
 extern bool _is_debug;
 
-// Easter egg for serving Ads every kNextEasterEggStartsInSeconds seconds. The
-// user must visit www.iab.com and the manually refresh the page to serve the
-// next easter egg
+// |_is_testing| should be set to |true| if the --is-testing Easter Egg
+// command-line argument is passed; otherwise, should be set to |false|.
+//
+// If |_is_testing| is set to |true| ads are served every
+// kNextEasterEggStartsInSeconds seconds. Visit www.iab.com and manually refresh
+// the page to serve the next easter egg
 extern bool _is_testing;
 
-// Determines whether to use the staging or production Ad Serve
-extern bool _is_production;
 // Bundle schema resource name
 extern const char _bundle_schema_resource_name[];
 
 // Catalog schema resource name
 extern const char _catalog_schema_resource_name[];
 
-using InitializeCallback = std::function<void(const Result)>;
-using ShutdownCallback = std::function<void(const Result)>;
-using GetNotificationForIdCallback =
-    std::function<void(std::unique_ptr<NotificationInfo>)>;
-using RemoveAllHistoryCallback = std::function<void(const Result)>;
 // Catalog resource name
 extern const char _catalog_resource_name[];
 
@@ -57,46 +65,79 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  // Should be called to determine if Ads are supported for the specified locale
-  static bool IsSupportedRegion(const std::string& locale);
+  // Should be called to determine if the specified |locale| is supported.
+  // |locale| should be specified in any of the following formats:
+  //
+  //     <language>-<REGION> i.e. en-US
+  //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
+  //     <language>_<REGION> i.e. en_US
+  //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
+  static bool IsSupportedRegion(
+      const std::string& locale);
 
-  // Should be called to get the region for the specified locale
-  static std::string GetRegion(const std::string& locale);
+  // Return the region for the specified locale. |locale| should be specified in
+  // any of the following formats:
+  //
+  //     <language>-<REGION> i.e. en-US
+  //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
+  //     <language>_<REGION> i.e. en_US
+  //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
+  static std::string GetRegion(
+      const std::string& locale);
 
-  // Should be called when Ads is enabled on the Client
-  virtual void Initialize(InitializeCallback callback) = 0;
+  // Should be called to initialize ads, i.e. when launching the browser or when
+  // ads is implicitly enabled by a user on the client. The callback takes one
+  // argument — |Result| should be set to |SUCCESS| if successful; otherwise,
+  // should be set to |FAILED|
+  virtual void Initialize(
+      InitializeCallback callback) = 0;
 
-  // Should be called when Ads is disabled on the Client
-  virtual void Shutdown(ShutdownCallback callback) = 0;
+  // Should be called to shutdown ads when a user implicitly disables ads.
+  // Shutting down ads will call |CloseNotification| for each ad notification in
+  // the Notification Center on the client. The callback takes one argument —
+  // |Result| should be set to |SUCCESS| if successful; otherwise, should be set
+  // to |FAILED|
+  virtual void Shutdown(
+      ShutdownCallback callback) = 0;
 
-  // Should be called to inform Ads if Confirmations is ready
-  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
+  // Should be called from Ledger to inform ads when Confirmations is ready. ads
+  // will not be served until |is_ready| is set to |true|
+  virtual void SetConfirmationsIsReady(
+      const bool is_ready) = 0;
 
-  // Should be called when the user changes the operating system's locale, i.e.
-  // en, en_US or en_GB.UTF-8 unless the operating system restarts the app
-  virtual void ChangeLocale(const std::string& locale) = 0;
+  // Should be called when the user implicitly changes the locale of their
+  // operating system. This call is not required if the operating system
+  // restarts the browser when changing locale. |locale| should be specified in
+  // any of the following formats:
+  //
+  //     <language>-<REGION> i.e. en-US
+  //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
+  //     <language>_<REGION> i.e. en_US
+  //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
+  virtual void ChangeLocale(
+      const std::string& locale) = 0;
 
-  // Should be called when a page has loaded in the current browser tab, and the
-  // HTML is available for analysis
+  // Should be called when a page has loaded in a browser tab, and the HTML is
+  // available for analysis
   virtual void OnPageLoaded(
       const std::string& url,
       const std::string& html) = 0;
 
-  // Should be called when the user invokes "Show Sample Ad" on the Client; a
-  // Notification is then sent to the Client for processing
+  // Should be called when the user invokes "Show Sample Ad" on the Client
   virtual void ServeSampleAd() = 0;
 
-  // Should be called when a timer is triggered
-  virtual void OnTimer(const uint32_t timer_id) = 0;
+  // Should be called when the timer specified by |timer_id| should be
+  // triggered. Returns |true| if the timer was successfully triggered;
+  // otherwise, should return |false|
+  virtual void OnTimer(
+      const uint32_t timer_id) = 0;
 
-  // Should be called periodically on desktop browsers as set by
-  // SetIdleThreshold to record when the browser is no longer idle. This call is
-  // optional for mobile devices
+  // Should be called when a user is no longer idle. This call is optional for
+  // mobile devices
   virtual void OnUnIdle() = 0;
 
-  // Should be called periodically on desktop browsers as set by
-  // SetIdleThreshold to record when the browser is idle. This call is optional
-  // for mobile devices
+  // Should be called when a user is idle for the specified threshold set in
+  // |SetIdleThreshold|. This call is optional for mobile devices
   virtual void OnIdle() = 0;
 
   // Should be called when the browser enters the foreground
@@ -105,80 +146,98 @@ class ADS_EXPORT Ads {
   // Should be called when the browser enters the background
   virtual void OnBackground() = 0;
 
-  // Should be called to record when a tab has started playing media (A/V)
-  virtual void OnMediaPlaying(const int32_t tab_id) = 0;
+  // Should be called to report when the media has started playing on the
+  // browser tab specified by |tab_id|
+  virtual void OnMediaPlaying(
+      const int32_t tab_id) = 0;
 
-  // Should be called to record when a tab has stopped playing media (A/V)
-  virtual void OnMediaStopped(const int32_t tab_id) = 0;
+  // Should be called to report when the media has stopped playing on the
+  // browser tab specified by |tab_id|
+  virtual void OnMediaStopped(
+      const int32_t tab_id) = 0;
 
-  // Should be called to record user activity on a browser tab
+  // Should be called to report user activity on a browser tab specified by
+  // |tab_id|. |is_active| should be set to |true| if |tab_id| refers to the
+  // currently active tab; otherwise, should be set to |false|. |is_incognito|
+  // should be set to |true| if the tab is private; otherwise, should be set to
+  // |false|
   virtual void OnTabUpdated(
       const int32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) = 0;
 
-  // Should be called to record when a browser tab is closed
-  virtual void OnTabClosed(const int32_t tab_id) = 0;
+  // Should be called to report when a browser tab has been closed as specified
+  // by |tab_id|
+  virtual void OnTabClosed(
+      const int32_t tab_id) = 0;
 
-  // Should return true and NotificationInfo if the notification for the
-  // specified id exists otherwise returns false
+  // Should be called to get the notification specified by |id|. Returns |true|
+  // and a |notification| if the notification exists; otherwise, should return
+  // |false|
   virtual bool GetNotificationForId(
       const std::string& id,
       NotificationInfo* notification) = 0;
 
-  // Should be called when a notification event is triggered
+  // Should be called when a user implicitly views, clicks or dismisses a
+  // notification; or a notification times out
   virtual void OnNotificationEvent(
       const std::string& id,
       const NotificationEventType type) = 0;
 
-  // Should be called to remove all cached history
-  virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
+  // Should be called to remove all cached history. The callback takes one
+  // argument — |Result| should be set to |SUCCESS| if successful; otherwise,
+  // should be set to |FAILED|
+  virtual void RemoveAllHistory(
+      RemoveAllHistoryCallback callback) = 0;
 
-  // Should be called to retrieve ads history
+  // Should be called to get ads history. Returns |std::map<uint64_t,
+  // std::vector<AdsHistory>>| in the format |{timestamp, array<AdsHistory>}|
   virtual std::map<uint64_t, std::vector<AdsHistory>> GetAdsHistory() = 0;
 
-  // Should be called to indicate interest in the given ad. This is a
-  // toggle, so calling it again returns the setting to the neutral
-  // state
+  // Should be called to indicate interest in the specified ad. This is a
+  // toggle, so calling it again returns the setting to the neutral state
   virtual AdContent::LikeAction ToggleAdThumbUp(
       const std::string& id,
       const std::string& creative_set_id,
-      AdContent::LikeAction action) = 0;
+      const AdContent::LikeAction& action) = 0;
 
-  // Should be called to indicate a lack of interest in the given
-  // ad. This is a toggle, so calling it again returns the setting to
-  // the neutral state
+  // Should be called to indicate a lack of interest in the specified ad. This
+  // is a toggle, so calling it again returns the setting to the neutral state
   virtual AdContent::LikeAction ToggleAdThumbDown(
       const std::string& id,
       const std::string& creative_set_id,
-      AdContent::LikeAction action) = 0;
+      const AdContent::LikeAction& action) = 0;
 
-  // Should be called to opt-in to the given ad category. This is a
-  // toggle, so calling it again returns the setting to the neutral
-  // state
+  // Should be called to opt-in to the specified ad category. This is a toggle,
+  // so calling it again neutralizes the ad category. Returns |OptAction" with
+  // the current status
   virtual CategoryContent::OptAction ToggleAdOptInAction(
       const std::string& category,
-      CategoryContent::OptAction action) = 0;
+      const CategoryContent::OptAction& action) = 0;
 
-  // Should be called to opt-out of the given ad category. This is a
-  // toggle, so calling it again returns the setting to the neutral
-  // state
+  // Should be called to opt-out of the specified ad category. This is a toggle,
+  // so calling it again neutralizes the ad category. Returns |OptAction" with
+  // the current status
   virtual CategoryContent::OptAction ToggleAdOptOutAction(
       const std::string& category,
-      CategoryContent::OptAction action) = 0;
+      const CategoryContent::OptAction& action) = 0;
 
-  // Should be called to save an ad for later viewing. This is a
-  // toggle, so calling it again removes the ad from the saved list
-  virtual bool ToggleSaveAd(const std::string& id,
-                            const std::string& creative_set_id,
-                            bool saved) = 0;
+  // Should be called to save an ad for later viewing. This is a toggle, so
+  // calling it again removes the ad from the saved list. Returns |true| if the
+  // ad was saved; otherwise, should return |false|
+  virtual bool ToggleSaveAd(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const bool saved) = 0;
 
-  // Should be called to flag an ad as inappropriate. This is a
-  // toggle, so calling it again unflags the ad
-  virtual bool ToggleFlagAd(const std::string& id,
-                            const std::string& creative_set_id,
-                            bool flagged) = 0;
+  // Should be called to flag an ad as inappropriate. This is a toggle, so
+  // calling it again unflags the ad. Returns |true| if the ad was flagged;
+  // otherwise returns |false|
+  virtual bool ToggleFlagAd(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const bool flagged) = 0;
 
  private:
   // Not copyable, not assignable

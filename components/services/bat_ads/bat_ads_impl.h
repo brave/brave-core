@@ -33,53 +33,86 @@ class BatAdsImpl :
   ~BatAdsImpl() override;
 
   // Overridden from mojom::BatAds:
-  void Initialize(InitializeCallback callback) override;
-  void Shutdown(ShutdownCallback callback) override;
-  void SetConfirmationsIsReady(const bool is_ready) override;
-  void ChangeLocale(const std::string& locale) override;
-  void OnPageLoaded(const std::string& url, const std::string& html) override;
+  void Initialize(
+      InitializeCallback callback) override;
+  void Shutdown(
+      ShutdownCallback callback) override;
+
+  void SetConfirmationsIsReady(
+      const bool is_ready) override;
+
+  void ChangeLocale(
+      const std::string& locale) override;
+
+  void OnPageLoaded(
+      const std::string& url,
+      const std::string& html) override;
+
   void ServeSampleAd() override;
-  void OnTimer(const uint32_t timer_id) override;
+
+  void OnTimer(
+      const uint32_t timer_id) override;
+
   void OnUnIdle() override;
   void OnIdle() override;
+
   void OnForeground() override;
   void OnBackground() override;
-  void OnMediaPlaying(const int32_t tab_id) override;
-  void OnMediaStopped(const int32_t tab_id) override;
+
+  void OnMediaPlaying(
+      const int32_t tab_id) override;
+  void OnMediaStopped(
+      const int32_t tab_id) override;
+
   void OnTabUpdated(
       const int32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) override;
-  void OnTabClosed(const int32_t tab_id) override;
+  void OnTabClosed(
+      const int32_t tab_id) override;
+
   void GetNotificationForId(
       const std::string& id,
       GetNotificationForIdCallback callback) override;
-  void OnNotificationEvent(const std::string& id, const int32_t type) override;
-  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
-  void GetAdsHistory(GetAdsHistoryCallback callback) override;
-  void ToggleAdThumbUp(const std::string& id,
-                       const std::string& creative_set_id,
-                       int action,
-                       ToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(const std::string& id,
-                         const std::string& creative_set_id,
-                         int action,
-                         ToggleAdThumbUpCallback callback) override;
-  void ToggleAdOptInAction(const std::string& category,
-                           int action,
-                           ToggleAdOptInActionCallback callback) override;
-  void ToggleAdOptOutAction(const std::string& category,
-                            int action,
-                            ToggleAdOptOutActionCallback callback) override;
-  void ToggleSaveAd(const std::string& id,
-                    const std::string& creative_set_id,
-                    bool saved,
-                    ToggleSaveAdCallback callback) override;
-  void ToggleFlagAd(const std::string& id,
-                    const std::string& creative_set_id,
-                    bool flagged,
-                    ToggleFlagAdCallback callback) override;
+  void OnNotificationEvent(
+      const std::string& id,
+      const int32_t type) override;
+
+  void RemoveAllHistory(
+      RemoveAllHistoryCallback callback) override;
+
+  void GetAdsHistory(
+      GetAdsHistoryCallback callback) override;
+
+  void ToggleAdThumbUp(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const int action,
+      ToggleAdThumbUpCallback callback) override;
+  void ToggleAdThumbDown(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const int action,
+      ToggleAdThumbUpCallback callback) override;
+  void ToggleAdOptInAction(
+      const std::string& category,
+      const int action,
+      ToggleAdOptInActionCallback callback) override;
+  void ToggleAdOptOutAction(
+      const std::string& category,
+      const int action,
+      ToggleAdOptOutActionCallback callback) override;
+  void ToggleSaveAd(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const bool saved,
+      ToggleSaveAdCallback callback) override;
+  void ToggleFlagAd(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const bool flagged,
+      ToggleFlagAdCallback callback) override;
 
  private:
   // Workaround to pass base::OnceCallback into std::bind
