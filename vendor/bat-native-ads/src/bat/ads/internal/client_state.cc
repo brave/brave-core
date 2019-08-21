@@ -165,8 +165,8 @@ Result ClientState::FromJson(
     }
   }
 
-  if (client.HasMember("last_page_classification")) {
-    last_page_classification = client["last_page_classification"].GetString();
+  if (client.HasMember("lastPageClassification")) {
+    last_page_classification = client["lastPageClassification"].GetString();
   }
 
   if (client.HasMember("pageScoreHistory")) {
@@ -286,7 +286,7 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
   }
   writer->EndArray();
 
-  writer->String("last_page_classification");
+  writer->String("lastPageClassification");
   writer->String(state.last_page_classification.c_str());
 
   writer->String("pageScoreHistory");
