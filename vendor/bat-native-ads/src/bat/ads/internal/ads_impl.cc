@@ -606,8 +606,8 @@ void AdsImpl::MaybeClassifyPage(
 }
 
 bool AdsImpl::ShouldClassifyPages() const {
-  auto region = helper::Locale::GetCountryCode(locale);
   auto locale = ads_client_->GetLocale();
+  auto region = helper::Locale::GetRegionCode(locale);
 
   auto it = kSupportedRegions.find(region);
   if (it == kSupportedRegions.end()) {

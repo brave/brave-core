@@ -37,7 +37,7 @@ bool Ads::IsSupportedRegion(const std::string& locale) {
 }
 
 std::string Ads::GetRegion(const std::string& locale) {
-  return helper::Locale::GetCountryCode(locale);
+  return helper::Locale::GetRegionCode(locale);
 }
 
 }  // namespace ads

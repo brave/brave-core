@@ -36,8 +36,8 @@ static const uint64_t kSustainAdInteractionAfterSeconds = 10;
 static const uint64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
 static const uint64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
 
-static char kDefaultLanguageCode[] = "en";
-static char kDefaultCountryCode[] = "US";
+static char kDefaultLanguage[] = "en";
+static char kDefaultRegion[] = "US";
 static char kDefaultUserModelLanguage[] = "en";
 
 static const std::map<std::string, bool> kSupportedRegions = {

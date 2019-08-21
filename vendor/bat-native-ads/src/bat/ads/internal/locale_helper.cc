@@ -19,7 +19,7 @@ const std::string Locale::GetLanguageCode(const std::string& locale) {
       base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   if (locale_components.size() == 0) {
-    return ads::kDefaultLanguageCode;
+    return ads::kDefaultLanguage;
   }
 
   auto normalized_locale = locale_components.front();
@@ -29,19 +29,19 @@ const std::string Locale::GetLanguageCode(const std::string& locale) {
       normalized_locale, "_", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
   if (components.size() == 0) {
-    return ads::kDefaultLanguageCode;
+    return ads::kDefaultLanguage;
   }
 
   auto language_code = components.front();
   return language_code;
 }
 
-const std::string Locale::GetCountryCode(const std::string& locale) {
+const std::string Locale::GetRegionCode(const std::string& locale) {
   std::vector<std::string> locale_components = base::SplitString(locale, ".",
       base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   if (locale_components.size() == 0) {
-    return ads::kDefaultCountryCode;
+    return ads::kDefaultRegion;
   }
 
   auto normalized_locale = locale_components.front();
@@ -51,11 +51,11 @@ const std::string Locale::GetCountryCode(const std::string& locale) {
       normalized_locale, "_", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
   if (components.size() != 2) {
-    return ads::kDefaultCountryCode;
+    return ads::kDefaultRegion;
   }
 
-  auto country_code = components.at(1);
-  return country_code;
+  auto region_code = components.at(1);
+  return region_code;
 }
 
 }  // namespace helper
