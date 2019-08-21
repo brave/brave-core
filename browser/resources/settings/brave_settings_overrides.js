@@ -338,16 +338,7 @@ BravePatching.RegisterPolymerTemplateModifications({
       console.error('[Brave Settings Overrides] Could not find manage payments link')
     }
     manageLink.remove()
-  },
-// <if expr="is_release_channel">
-  'settings-languages-page': (templateContent) => {
-    const offerTranslateToggle = templateContent.querySelector('#offerTranslateOtherLanguages')
-    if (!offerTranslateToggle) {
-      console.error('[Brave Settings Overrides] Could not find offer translate toggle')
-    }
-    offerTranslateToggle.remove()
   }
-// </if>
 })
 
 // Icons

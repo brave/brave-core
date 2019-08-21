@@ -6,11 +6,18 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/views/update_recommended_message_box_mac.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#include "brave/common/extensions/extension_constants.h"
+#include "extensions/browser/extension_registry.h"
 #endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
@@ -27,4 +34,39 @@ void BraveBrowserView::ShowUpdateChromeDialog() {
 #else
   BrowserView::ShowUpdateChromeDialog();
 #endif
+}
+
+// The translate bubble will be shown if ENABLE_BRAVE_TRANSLATE_GO or
+// ENABLE_BRAVE_TRANSLATE_EXTENSIONS build flag is enabled and Google Translate
+// is not installed. In ENABLE_BRAVE_TRANSLATE case, we utilize chromium's
+// translate UI directly along with go-translate. In
+// ENABLE_BRAVE_TRANSLATE_EXTENSION case, we repurpose the translate bubble to
+// offer Google Translate extension installation, and the bubble will only be
+// shown when Google Translate is not installed.
+ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
+    content::WebContents* web_contents,
+    translate::TranslateStep step,
+    const std::string& source_language,
+    const std::string& target_language,
+    translate::TranslateErrors::Type error_type,
+    bool is_user_gesture) {
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  return BrowserView::ShowTranslateBubble(web_contents,
+                                          step,
+                                          source_language,
+                                          target_language,
+                                          error_type,
+                                          is_user_gesture);
+#elif BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+  if (!extensions::ExtensionRegistry::Get(GetProfile())
+      ->GetInstalledExtension(google_translate_extension_id)) {
+    return BrowserView::ShowTranslateBubble(web_contents,
+                                            step,
+                                            source_language,
+                                            target_language,
+                                            error_type,
+                                            is_user_gesture);
+  }
+#endif
+  return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
 }
