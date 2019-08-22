@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script/classic_pending_script.cc b/third_party/blink/renderer/core/script/classic_pending_script.cc
-index 3bd0f996731b17ea6ac70da395a667eba4ebc874..2e7b9e40b487215e33d06aaa22da5c087c5deaa3 100644
+index 3bd0f996731b17ea6ac70da395a667eba4ebc874..a95708da564cd1a9b7f568623e2433ec0fcc0979 100644
 --- a/third_party/blink/renderer/core/script/classic_pending_script.cc
 +++ b/third_party/blink/renderer/core/script/classic_pending_script.cc
-@@ -30,6 +30,15 @@
+@@ -30,6 +30,16 @@
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/wtf/functional.h"
  
@@ -12,20 +12,21 @@ index 3bd0f996731b17ea6ac70da395a667eba4ebc874..2e7b9e40b487215e33d06aaa22da5c08
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#include "brave/third_party/blink/brave_page_graph/utilities/request_metadata.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 +#endif
 +
  namespace blink {
  
  // <specdef href="https://html.spec.whatwg.org/C/#fetch-a-classic-script">
-@@ -64,8 +73,24 @@ ClassicPendingScript* ClassicPendingScript::Fetch(
+@@ -64,8 +74,24 @@ ClassicPendingScript* ClassicPendingScript::Fetch(
    // We allow streaming, as WatchForLoad() is always called when the script
    // needs to execute and the ScriptResource is not finished, so
    // SetClientIsWaitingForFinished is always set on the resource.
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  ScriptResource* resource = ScriptResource::Fetch(params,
-+    element_document.Fetcher(), pending_script,
-+    ScriptResource::kAllowStreaming);
++      element_document.Fetcher(), pending_script,
++      ScriptResource::kAllowStreaming);
 +  {
 +    ::brave_page_graph::PageGraph* page_graph = element->GetDocument()
 +      .GetPageGraph();
@@ -43,7 +44,7 @@ index 3bd0f996731b17ea6ac70da395a667eba4ebc874..2e7b9e40b487215e33d06aaa22da5c08
    pending_script->CheckState();
    return pending_script;
  }
-@@ -273,6 +298,34 @@ void ClassicPendingScript::NotifyFinished(Resource* resource) {
+@@ -273,6 +299,24 @@ void ClassicPendingScript::NotifyFinished(Resource* resource) {
                                           GetResource()->Url().GetString()));
  
    bool error_occurred = GetResource()->ErrorOccurred() || integrity_failure_;
@@ -53,24 +54,14 @@ index 3bd0f996731b17ea6ac70da395a667eba4ebc874..2e7b9e40b487215e33d06aaa22da5c08
 +      .GetPageGraph();
 +    if (page_graph != nullptr) {
 +      const ResourceResponse& rep = resource->GetResponse();
-+
-+      // Convert the response headers into a single string.
-+      std::stringstream ss;
-+      const HTTPHeaderMap& headers = rep.HttpHeaderFields();
-+      for (HTTPHeaderMap::const_iterator it = headers.begin();
-+          it != headers.end(); ++it) {
-+        ss << it->key << " " << it->value << "\n";
-+      }
-+
-+      const WTF::String& response_header(ss.str().c_str());
-+      brave_page_graph::RequestMetadata metadata(
-+          response_header, rep.EncodedBodyLength());
++      const ::brave_page_graph::ResponseMetadata metadata(rep);
 +
 +      if (error_occurred) {
 +        page_graph->RegisterRequestError(resource->InspectorId(), metadata);
 +      } else {
 +        page_graph->RegisterRequestComplete(resource->InspectorId(),
-+            resource->GetType(), metadata);
++            resource->GetType(), metadata,
++            ::brave_page_graph::ResourceDigest(GetResource()));
 +      }
 +    }
 +  }
@@ -78,7 +69,7 @@ index 3bd0f996731b17ea6ac70da395a667eba4ebc874..2e7b9e40b487215e33d06aaa22da5c08
    AdvanceReadyState(error_occurred ? kErrorOccurred : kReady);
  }
  
-@@ -375,6 +428,20 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
+@@ -375,6 +419,20 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
  
    ScriptSourceCode source_code(streamer_ready ? streamer : nullptr, resource,
                                 not_streamed_reason);

@@ -69,6 +69,7 @@ typedef enum {
   kGraphMLAttrDefRequestId,
   kGraphMLAttrDefRequestType,
   kGraphMLAttrDefResourceType,
+  kGraphMLAttrDefResponseHash,
   kGraphMLAttrDefRule,
   kGraphMLAttrDefScriptId,
   kGraphMLAttrDefScriptType,

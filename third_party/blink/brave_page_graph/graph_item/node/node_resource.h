@@ -9,7 +9,6 @@
 #include <libxml/tree.h>
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
-
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 
