@@ -14,3 +14,4 @@ const char kWidevineMoreInfoURL[] = "https://www.eff.org/issues/drm";
 const char kWidevineTOS[] = "https://policies.google.com/terms";
 const char kRewardsUpholdSupport[] = "https://uphold.com/en/brave/support";
 const char kP3ALearnMoreURL[] = "https://brave.com/P3A";
+const char kP3ASettingsLink[] = "chrome://settings/privacy";
