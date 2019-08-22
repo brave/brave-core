@@ -596,6 +596,8 @@ class BrowserViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        presentOnboardingIntro()
+        
         screenshotHelper.viewIsVisible = true
         screenshotHelper.takePendingScreenshots(tabManager.allTabs)
 
@@ -621,6 +623,17 @@ class BrowserViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.presentDuckDuckGoCallout()
             }
+        }
+    }
+    
+    func presentOnboardingIntro() {
+        if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+            guard let onboarding = OnboardingNavigationController(profile: profile,
+                                                              onboardingType: .newUser) else { return }
+            onboarding.onboardingDelegate = self
+            present(onboarding, animated: true)
+        } else {
+            // Existing users onboarding TBD
         }
     }
 
@@ -3103,5 +3116,17 @@ extension BrowserViewController {
         self.loadQueue.uponQueue(.main) {
             NavigationPath.handle(nav: path, with: self)
         }
+    }
+}
+
+extension BrowserViewController: OnboardingControllerDelegate {
+    func onboardingCompleted(_ onboardingController: OnboardingNavigationController) {
+        switch onboardingController.onboardingType {
+        case .newUser:
+            Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+        default: break
+        }
+        
+        onboardingController.dismiss(animated: true)
     }
 }
