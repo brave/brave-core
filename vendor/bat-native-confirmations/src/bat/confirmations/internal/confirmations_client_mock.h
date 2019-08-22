@@ -89,7 +89,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::LedgerCallbackHandler* handler));
 
   MOCK_METHOD1(LoadPublisherList, void(
-      ledger::LedgerCallbackHandler* handler));
+      ledger::LoadPublisherListCallback callback));
 
   MOCK_METHOD1(LoadNicewareList, void(
       ledger::GetNicewareListCallback callback));

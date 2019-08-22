@@ -59,8 +59,8 @@ void NativeLedgerClient::LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr fi
 void NativeLedgerClient::LoadPublisherInfo(const std::string & publisher_key, ledger::PublisherInfoCallback callback) {
   [bridge_ loadPublisherInfo:publisher_key callback:callback];
 }
-void NativeLedgerClient::LoadPublisherList(ledger::LedgerCallbackHandler * handler) {
-  [bridge_ loadPublisherList:handler];
+void NativeLedgerClient::LoadPublisherList(ledger::LoadPublisherListCallback callback) {
+  [bridge_ loadPublisherList:callback];
 }
 void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];

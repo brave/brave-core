@@ -1917,24 +1917,26 @@ void RewardsServiceImpl::OnTimer(uint32_t timer_id) {
 }
 
 void RewardsServiceImpl::LoadPublisherList(
-    ledger::LedgerCallbackHandler* handler) {
+    ledger::LoadPublisherListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadStateOnFileTaskRunner, publisher_list_path_),
       base::Bind(&RewardsServiceImpl::OnPublisherListLoaded,
-          AsWeakPtr(), base::Unretained(handler)));
+                 AsWeakPtr(),
+                 callback));
 }
 
 void RewardsServiceImpl::OnPublisherListLoaded(
-    ledger::LedgerCallbackHandler* handler,
+    ledger::LoadPublisherListCallback callback,
     const std::string& data) {
   if (!Connected()) {
     return;
   }
 
-  handler->OnPublisherListLoaded(
-      data.empty() ? ledger::Result::NO_PUBLISHER_LIST
-                   : ledger::Result::LEDGER_OK,
-      data);
+  const auto result = data.empty()
+      ? ledger::Result::NO_PUBLISHER_LIST
+      : ledger::Result::LEDGER_OK;
+
+  callback(result, data);
 }
 
 void RewardsServiceImpl::OnGetAllBalanceReports(

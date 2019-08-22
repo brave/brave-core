@@ -93,7 +93,7 @@ void LedgerImpl::OnWalletInitializedInternal(ledger::Result result,
   if (result == ledger::Result::LEDGER_OK ||
       result == ledger::Result::WALLET_CREATED) {
     initialized_ = true;
-    LoadPublisherList(this);
+    LoadPublisherList();
     bat_contribution_->SetReconcileTimer();
     RefreshGrant(false);
   } else {
@@ -367,14 +367,15 @@ void LedgerImpl::SavePublishersList(const std::string& data) {
   ledger_client_->SavePublishersList(data, this);
 }
 
-void LedgerImpl::LoadPublisherList(ledger::LedgerCallbackHandler* handler) {
-  ledger_client_->LoadPublisherList(handler);
+void LedgerImpl::LoadPublisherList() {
+  ledger_client_->LoadPublisherList(
+      std::bind(&LedgerImpl::OnLoadPublisherList, this, _1, _2));
 }
 
-void LedgerImpl::OnPublisherListLoaded(ledger::Result result,
-                                       const std::string& data) {
+void LedgerImpl::OnLoadPublisherList(ledger::Result result,
+                                     const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
-    if (!bat_publishers_->loadPublisherList(data)) {
+    if (!bat_publishers_->ParsePublisherList(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
         "Successfully loaded but failed to parse publish list.";
       BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
@@ -406,7 +407,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
   if (result == ledger::Result::LEDGER_OK ||
       result == ledger::Result::WALLET_CREATED) {
     initialized_ = true;
-    LoadPublisherList(this);
+    LoadPublisherList();
     bat_contribution_->SetReconcileTimer();
     RefreshGrant(false);
   } else {

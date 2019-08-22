@@ -335,8 +335,9 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublishersListSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
   void OnTimer(uint32_t timer_id);
-  void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
-                             const std::string& data);
+  void OnPublisherListLoaded(
+    ledger::LoadPublisherListCallback callback,
+    const std::string& data);
   void OnSavedState(ledger::OnSaveCallback callback, bool success);
   void OnLoadedState(ledger::OnLoadCallback callback,
                                   const std::string& value);
@@ -507,7 +508,7 @@ class RewardsServiceImpl : public RewardsService,
   void SavePublishersList(const std::string& publishers_list,
                           ledger::LedgerCallbackHandler* handler) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
-  void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
+  void LoadPublisherList(ledger::LoadPublisherListCallback callback) override;
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,

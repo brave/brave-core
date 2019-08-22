@@ -87,7 +87,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void OnPublishersListSaved(ledger::Result result) override;
 
-  bool loadPublisherList(const std::string& data);
+  bool ParsePublisherList(const std::string& data);
 
   void getPublisherActivityFromUrl(
       uint64_t windowId,

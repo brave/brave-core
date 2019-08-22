@@ -31,7 +31,7 @@ private:
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoCallback callback) override;
   void LoadPublisherInfo(const std::string & publisher_key, ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherList(ledger::LedgerCallbackHandler * handler) override;
+  void LoadPublisherList(ledger::LoadPublisherListCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
   void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::URL_METHOD method, ledger::LoadURLCallback callback) override;

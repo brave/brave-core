@@ -181,7 +181,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void LoadPublisherState(ledger::OnLoadCallback callback);
 
-  void LoadPublisherList(ledger::LedgerCallbackHandler* handler);
+  void LoadPublisherList();
 
   void OnWalletInitializedInternal(ledger::Result result,
                                    ledger::InitializeCallback callback);
@@ -585,6 +585,9 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnWalletInitialized(ledger::Result result);
 
+  void OnLoadPublisherList(ledger::Result result,
+                             const std::string& data);
+
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,
                               const std::string& data,
@@ -597,9 +600,6 @@ class LedgerImpl : public ledger::Ledger,
   void RefreshPublishersList(bool retryAfterError, bool immediately = false);
 
   void RefreshGrant(bool retryAfterError);
-
-  void OnPublisherListLoaded(ledger::Result result,
-                             const std::string& data) override;
 
   uint64_t retryRequestSetup(uint64_t min_time, uint64_t max_time);
 

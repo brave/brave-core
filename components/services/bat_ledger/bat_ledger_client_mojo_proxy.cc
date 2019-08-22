@@ -224,22 +224,23 @@ void BatLedgerClientMojoProxy::LoadPublisherState(
 }
 
 void BatLedgerClientMojoProxy::OnLoadPublisherList(
-    ledger::LedgerCallbackHandler* handler,
+    ledger::LoadPublisherListCallback callback,
     const ledger::Result result,
     const std::string& data) {
-  handler->OnPublisherListLoaded(result, data);
+  callback(result, data);
 }
 
 void BatLedgerClientMojoProxy::LoadPublisherList(
-    ledger::LedgerCallbackHandler* handler) {
+    ledger::LoadPublisherListCallback callback) {
   if (!Connected()) {
-    handler->OnPublisherListLoaded(ledger::Result::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   bat_ledger_client_->LoadPublisherList(
       base::BindOnce(&BatLedgerClientMojoProxy::OnLoadPublisherList,
-        AsWeakPtr(), base::Unretained(handler)));
+        AsWeakPtr(),
+        std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::OnSaveLedgerState(

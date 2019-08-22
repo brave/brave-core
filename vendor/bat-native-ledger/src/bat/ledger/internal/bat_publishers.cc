@@ -691,7 +691,7 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
 
 void BatPublishers::RefreshPublishersList(const std::string& json) {
   ledger_->SavePublishersList(json);
-  bool success = loadPublisherList(json);
+  bool success = ParsePublisherList(json);
 
   if (success) {
     ledger_->ContributeUnverifiedPublishers();
@@ -705,7 +705,7 @@ void BatPublishers::OnPublishersListSaved(ledger::Result result) {
   setPublishersLastRefreshTimestamp(ts);
 }
 
-bool BatPublishers::loadPublisherList(const std::string& data) {
+bool BatPublishers::ParsePublisherList(const std::string& data) {
   ledger::ServerPublisherInfoList list;
 
   base::Optional<base::Value> value = base::JSONReader::Read(data);

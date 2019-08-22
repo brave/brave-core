@@ -1281,13 +1281,13 @@ BATLedgerBridge(BOOL,
   handler->OnPublisherStateSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
-- (void)loadPublisherList:(ledger::LedgerCallbackHandler *)handler
+- (void)loadPublisherList:(ledger::LoadPublisherListCallback)callback
 {
   const auto contents = [self.commonOps loadContentsFromFileWithName:"publisher_list.json"];
   if (contents.length() > 0) {
-    handler->OnPublisherListLoaded(ledger::Result::LEDGER_OK, contents);
+    callback(ledger::Result::LEDGER_OK, contents);
   } else {
-    handler->OnPublisherListLoaded(ledger::Result::NO_PUBLISHER_LIST, contents);
+    callback(ledger::Result::NO_PUBLISHER_LIST, contents);
   }
 }
 
