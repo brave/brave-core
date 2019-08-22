@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/style/style_fetched_image.cc b/third_party/blink/renderer/core/style/style_fetched_image.cc
-index f6586b48641c05dec3e2171ab1c0131c9af0c6f7..e1c37fcba00658533d37bd249d594f3c660289e6 100644
+index f6586b48641c05dec3e2171ab1c0131c9af0c6f7..07f05edc51ef9823a2e3329fa05a81c8eeb1b0d7 100644
 --- a/third_party/blink/renderer/core/style/style_fetched_image.cc
 +++ b/third_party/blink/renderer/core/style/style_fetched_image.cc
-@@ -36,6 +36,15 @@
+@@ -36,6 +36,16 @@
  #include "third_party/blink/renderer/platform/geometry/layout_size.h"
  #include "third_party/blink/renderer/platform/graphics/placeholder_image.h"
  
@@ -12,13 +12,14 @@ index f6586b48641c05dec3e2171ab1c0131c9af0c6f7..e1c37fcba00658533d37bd249d594f3c
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#include "brave/third_party/blink/brave_page_graph/utilities/request_metadata.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 +#endif
 +
  namespace blink {
  
  StyleFetchedImage::StyleFetchedImage(const Document& document,
-@@ -45,7 +54,21 @@ StyleFetchedImage::StyleFetchedImage(const Document& document,
+@@ -45,7 +55,21 @@ StyleFetchedImage::StyleFetchedImage(const Document& document,
    is_image_resource_ = true;
    is_lazyload_possibly_deferred_ = is_lazyload_possibly_deferred;
  
@@ -40,7 +41,7 @@ index f6586b48641c05dec3e2171ab1c0131c9af0c6f7..e1c37fcba00658533d37bd249d594f3c
    image_->AddObserver(this);
    // ResourceFetcher is not determined from StyleFetchedImage and it is
    // impossible to send a request for refetching.
-@@ -126,7 +149,36 @@ void StyleFetchedImage::RemoveClient(ImageResourceObserver* observer) {
+@@ -126,7 +150,26 @@ void StyleFetchedImage::RemoveClient(ImageResourceObserver* observer) {
    image_->RemoveObserver(observer);
  }
  
@@ -53,24 +54,14 @@ index f6586b48641c05dec3e2171ab1c0131c9af0c6f7..e1c37fcba00658533d37bd249d594f3c
 +        mutable_document->GetPageGraph();
 +    if (page_graph != nullptr) {
 +      const ResourceResponse& rep = resource->GetResponse();
-+
-+      // Convert the response headers into a single string.
-+      std::stringstream ss;
-+      const HTTPHeaderMap& headers = rep.HttpHeaderFields();
-+      for (HTTPHeaderMap::const_iterator it = headers.begin();
-+          it != headers.end(); ++it) {
-+        ss << it->key << " " << it->value << "\n";
-+      }
-+
-+      const WTF::String& response_header(ss.str().c_str());
-+      brave_page_graph::RequestMetadata metadata(
-+          response_header, rep.EncodedBodyLength());
++      const ::brave_page_graph::ResponseMetadata metadata(rep);
 +
 +      if (resource->ErrorOccurred()) {
 +        page_graph->RegisterRequestError(inspector_id_, metadata);
 +      } else {
 +        page_graph->RegisterRequestComplete(inspector_id_,
-+            ResourceType::kImage, metadata);
++            ResourceType::kImage, metadata,
++            brave_page_graph::ImageDigest(resource->GetImage()));
 +      }
 +    }
 +  }

@@ -121,7 +121,7 @@
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
 
 #include "brave/third_party/blink/brave_page_graph/utilities/dispatchers.h"
-#include "brave/third_party/blink/brave_page_graph/utilities/request_metadata.h"
+#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
 
 using ::std::endl;
@@ -677,25 +677,26 @@ void PageGraph::RegisterRequestStartFromCSS(const InspectorId request_id,
 }
 
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
-    const ResourceType type, const RequestMetadata& metadata) {
+    const ResourceType type, const ResponseMetadata& metadata,
+    const string& resource_hash) {
   Log("RegisterRequestComplete) request id: " + to_string(request_id)
-    + ", resource type: " + ResourceTypeToString(type));
+    + ", resource type: " + ResourceTypeToString(type)
+    + ", hash: " + resource_hash);
 
   const shared_ptr<const TrackedRequestRecord> request_record =
     request_tracker_ .RegisterRequestComplete(request_id, type);
 
   TrackedRequest* request = request_record->request.get();
   if (request != nullptr) {
-    request->SetResponseHeaderString(
-        string(metadata.response_header_.Utf8().data()));
-    request->SetResponseBodyLength(metadata.response_body_length_);
+    request->SetResponseMetadata(metadata);
+    request->SetResponseBodyHash(resource_hash);
   }
 
   PossiblyWriteRequestsIntoGraph(request_record);
 }
 
 void PageGraph::RegisterRequestError(const InspectorId request_id,
-    const RequestMetadata& metadata) {
+    const ResponseMetadata& metadata) {
   Log("RegisterRequestError) request id: " + to_string(request_id));
 
   const shared_ptr<const TrackedRequestRecord> request_record =
@@ -703,9 +704,7 @@ void PageGraph::RegisterRequestError(const InspectorId request_id,
 
   TrackedRequest* request = request_record->request.get();
   if (request != nullptr) {
-    request->SetResponseHeaderString(
-        string(metadata.response_header_.Utf8().data()));
-    request->SetResponseBodyLength(metadata.response_body_length_);
+    request->SetResponseMetadata(metadata);
   }
 
   PossiblyWriteRequestsIntoGraph(request_record);
@@ -1287,8 +1286,7 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
       AddEdge(new EdgeRequestStart(this, requester, resource, request_id,
                                    request_type));
       AddEdge(new EdgeRequestError(this, resource, requester, request_id,
-                                   request->ResponseHeaderString(),
-                                   request->ResponseBodyLength()));
+                                   request->GetResponseMetadata()));
     }
   } else {
     const ResourceType resource_type = request->GetResourceType();
@@ -1297,8 +1295,8 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
                                    request_type));
       AddEdge(new EdgeRequestComplete(this, resource, requester, request_id,
                                       resource_type,
-                                      request->ResponseHeaderString(),
-                                      request->ResponseBodyLength()));
+                                      request->GetResponseMetadata(),
+                                      request->GetResponseBodyHash()));
     }
     return;
   }

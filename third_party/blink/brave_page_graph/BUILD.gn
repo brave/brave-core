@@ -159,9 +159,12 @@ source_set("brave_page_graph") {
       "scripts/script_tracker.h",
       "types.cc",
       "types.h",
+      "utilities/digest.cc",
+      "utilities/digest.h",
       "utilities/dispatchers.cc",
       "utilities/dispatchers.h",
-      "utilities/request_metadata.h",
+      "utilities/response_metadata.cc",
+      "utilities/response_metadata.h",
       "utilities/urls.cc",
       "utilities/urls.h",
     ]

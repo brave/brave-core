@@ -7,10 +7,10 @@
 
 #include <libxml/tree.h>
 
-#include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
-
+#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
+#include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 
@@ -22,10 +22,10 @@ namespace brave_page_graph {
 EdgeRequestResponse::EdgeRequestResponse(PageGraph* const graph,
     NodeResource* const out_node, Node* const in_node,
     const InspectorId request_id, const RequestStatus request_status,
-    const string& response_header_string, const int64_t response_body_length) :
+    const ResponseMetadata& metadata) :
       EdgeRequest(graph, out_node, in_node, request_id, request_status),
-      response_header_string_(response_header_string),
-      response_body_length_(response_body_length) {}
+      response_header_string_(metadata.GetResponseHeaderSummary()),
+      response_body_length_(metadata.GetResponseBodyLength()) {}
 
 EdgeRequestResponse::~EdgeRequestResponse() {}
 

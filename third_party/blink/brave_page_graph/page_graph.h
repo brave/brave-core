@@ -66,7 +66,7 @@ class NodeStorageSessionStorage;
 class NodeTrackerFilter;
 class NodeJSBuiltIn;
 class NodeJSWebAPI;
-class RequestMetadata;
+class ResponseMetadata;
 class RequestTracker;
 class ScriptTracker;
 struct TrackedRequestRecord;
@@ -136,9 +136,10 @@ friend NodeHTMLElement;
   void RegisterRequestStartFromCSS(const InspectorId request_id,
     const blink::KURL& url, const RequestType type);
   void RegisterRequestComplete(const InspectorId request_id,
-    const blink::ResourceType type, const RequestMetadata& metadata);
+    const blink::ResourceType type, const ResponseMetadata& metadata,
+    const std::string& resource_hash);
   void RegisterRequestError(const InspectorId request_id,
-    const RequestMetadata& metadata);
+    const ResponseMetadata& metadata);
 
   void RegisterResourceBlockAd(const GURL& url, const std::string& rule);
   void RegisterResourceBlockTracker(const GURL& url, const std::string& host);

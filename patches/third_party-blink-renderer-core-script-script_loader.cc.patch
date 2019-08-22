@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
-index 41d5609b5f2c589e49b7a953f5d354059d663148..5903a2bafe51f6f63681769bf39abf7ccd91bd94 100644
+index 41d5609b5f2c589e49b7a953f5d354059d663148..0092623dbb79ec3b0c2c30a18999a9348b60e581 100644
 --- a/third_party/blink/renderer/core/script/script_loader.cc
 +++ b/third_party/blink/renderer/core/script/script_loader.cc
 @@ -64,6 +64,15 @@
@@ -29,33 +29,33 @@ index 41d5609b5f2c589e49b7a953f5d354059d663148..5903a2bafe51f6f63681769bf39abf7c
    PendingScriptClient::Trace(visitor);
  }
  
-@@ -569,6 +582,25 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
-       else
-         encoding = element_document.Encoding();
- 
+@@ -590,6 +603,25 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+       FetchModuleScriptTree(url, fetch_client_settings_object_fetcher,
+                             modulator, options);
+     }
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+      {
-+        ::brave_page_graph::PageGraph* page_graph = context_document->GetFrame()
-+          ->GetDocument()->GetPageGraph();
-+        if (page_graph != nullptr) {
-+          HTMLScriptElement* script_elm_html = GetHTMLScriptElement();
-+          SVGScriptElement* script_elm_svg = GetSVGScriptElement();
-+          if (script_elm_html != nullptr) {
-+            page_graph->RegisterElmForRemoteScript(
-+              DOMNodeIds::IdForNode(script_elm_html),
-+              url);
-+          } else if (script_elm_svg != nullptr) {
-+            page_graph->RegisterElmForRemoteScript(
-+              DOMNodeIds::IdForNode(script_elm_svg),
-+              url);
-+          }
++    {
++      ::brave_page_graph::PageGraph* page_graph = context_document
++        ->GetFrame()->GetDocument()->GetPageGraph();
++      if (page_graph != nullptr) {
++        HTMLScriptElement* script_elm_html = GetHTMLScriptElement();
++        SVGScriptElement* script_elm_svg = GetSVGScriptElement();
++        if (script_elm_html != nullptr) {
++          page_graph->RegisterElmForRemoteScript(
++            DOMNodeIds::IdForNode(script_elm_html),
++            url);
++        } else if (script_elm_svg != nullptr) {
++          page_graph->RegisterElmForRemoteScript(
++            DOMNodeIds::IdForNode(script_elm_svg),
++            url);
 +        }
 +      }
++    }
 +#endif
-       // <spec step="24.6.A">"classic"
-       //
-       // Fetch a classic script given url, settings object, options, classic
-@@ -647,6 +679,30 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+     // <spec step="24.6">When the chosen algorithm asynchronously completes, set
+     // the script's script to the result. At that time, the script is ready.
+     // ...</spec>
+@@ -647,6 +679,28 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // <spec step="25.2.A.3">The script is ready.</spec>
          //
          // Implemented by ClassicPendingScript.
@@ -67,15 +67,13 @@ index 41d5609b5f2c589e49b7a953f5d354059d663148..5903a2bafe51f6f63681769bf39abf7c
 +          if (page_graph != nullptr) {
 +            HTMLScriptElement* script_elm_html = GetHTMLScriptElement();
 +            SVGScriptElement* script_elm_svg = GetSVGScriptElement();
++            ClassicScript* classic_script = static_cast<ClassicScript*>(
++              prepared_pending_script_->GetSource(base_url));
 +            if (script_elm_html != nullptr) {
-+              ClassicScript* classic_script = static_cast<ClassicScript*>(
-+                prepared_pending_script_->GetSource(base_url));
 +              page_graph->RegisterElmForLocalScript(
 +                DOMNodeIds::IdForNode(script_elm_html),
 +                classic_script->GetScriptSourceCode());
 +            } else if (script_elm_svg != nullptr) {
-+              ClassicScript* classic_script = static_cast<ClassicScript*>(
-+                prepared_pending_script_->GetSource(base_url));
 +              page_graph->RegisterElmForLocalScript(
 +                DOMNodeIds::IdForNode(script_elm_svg),
 +                classic_script->GetScriptSourceCode());
@@ -86,7 +84,7 @@ index 41d5609b5f2c589e49b7a953f5d354059d663148..5903a2bafe51f6f63681769bf39abf7c
          break;
        }
  
-@@ -959,4 +1015,23 @@ ScriptLoader::GetPendingScriptIfControlledByScriptRunnerForCrossDocMove() {
+@@ -959,4 +1013,23 @@ ScriptLoader::GetPendingScriptIfControlledByScriptRunnerForCrossDocMove() {
    return pending_script_;
  }
  
