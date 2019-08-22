@@ -45,7 +45,6 @@ class ActivityStreamDataObserver: DataObserver {
 
     init(profile: Profile) {
         self.profile = profile
-        self.profile.history.setTopSitesCacheSize(ActivityStreamTopSiteCacheSize)
         self.invalidationTime = OneMinuteInMilliseconds * 15
         events.forEach { NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived), name: $0, object: nil) }
     }

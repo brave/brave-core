@@ -11,14 +11,6 @@ import Deferred
 import Data
 import XCTest
 
-open class TabManagerMockProfile: MockProfile {
-    var numberOfTabsStored = 0
-    override public func storeTabs(_ tabs: [RemoteTab]) -> Deferred<Maybe<Int>> {
-        numberOfTabsStored = tabs.count
-        return deferMaybe(tabs.count)
-    }
-}
-
 open class MockTabManagerStateDelegate: TabManagerStateDelegate {
     var numberOfTabsStored = 0
     public func tabManagerWillStoreTabs(_ tabs: [Tab]) {
@@ -120,7 +112,7 @@ class TabManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        let profile = TabManagerMockProfile()
+        let profile = MockProfile()
         manager = TabManager(prefs: profile.prefs, imageStore: nil)
         PrivateBrowsingManager.shared.isPrivateBrowsing = false
     }

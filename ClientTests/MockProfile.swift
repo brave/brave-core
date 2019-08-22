@@ -44,28 +44,20 @@ open class MockActivityStreamDataObserver: DataObserver {
 }
 
 open class MockProfile: Profile {
+    
     // Read/Writeable properties for mocking
-    public var recommendations: HistoryRecommendations
-    public var places: BrowserHistory & Favicons & SyncableHistory & ResettableSyncStorage & HistoryRecommendations
     public var files: FileAccessor
-    public var history: BrowserHistory & SyncableHistory & ResettableSyncStorage
     public var logins: BrowserLogins & SyncableLogins & ResettableSyncStorage
 
     public lazy var panelDataObservers: PanelDataObservers = {
         return MockPanelDataObservers(profile: self)
     }()
 
-    var db: BrowserDB
-
     fileprivate let name: String = "mockaccount"
 
     init() {
         files = MockFiles()
         logins = MockLogins(files: files)
-        db = BrowserDB(filename: "mock.db", schema: BrowserSchema(), files: files)
-        places = SQLiteHistory(db: self.db, prefs: MockProfilePrefs())
-        recommendations = places
-        history = places
     }
 
     public func localName() -> String {
@@ -80,32 +72,12 @@ open class MockProfile: Profile {
 
     public var isShutdown: Bool = false
 
-    public var favicons: Favicons {
-        return self.places
-    }
-
-    lazy public var queue: TabQueue = {
-        return MockTabQueue()
-    }()
-
-    lazy public var metadata: Metadata = {
-        return SQLiteMetadata(db: self.db)
-    }()
-
     lazy public var isChinaEdition: Bool = {
         return Locale.current.identifier == "zh_CN"
     }()
 
     lazy public var certStore: CertStore = {
         return CertStore()
-    }()
-
-    lazy public var bookmarks: BookmarksModelFactorySource & KeywordSearchSource & SyncableBookmarks & LocalItemSource & MirrorItemSource & ShareToDestination = {
-        // Make sure the rest of our tables are initialized before we try to read them!
-        // This expression is for side-effects only.
-        let p = self.places
-
-        return MergedSQLiteBookmarks(db: self.db)
     }()
 
     lazy public var searchEngines: SearchEngines = {
@@ -119,32 +91,4 @@ open class MockProfile: Profile {
     lazy public var recentlyClosedTabs: ClosedTabsStore = {
         return ClosedTabsStore(prefs: self.prefs)
     }()
-
-    internal lazy var remoteClientsAndTabs: RemoteClientsAndTabs = {
-        return SQLiteRemoteClientsAndTabs(db: self.db)
-    }()
-
-    fileprivate lazy var syncCommands: SyncCommands = {
-        return SQLiteRemoteClientsAndTabs(db: self.db)
-    }()
-
-    public func getClients() -> Deferred<Maybe<[RemoteClient]>> {
-        return deferMaybe([])
-    }
-
-    public func getCachedClients() -> Deferred<Maybe<[RemoteClient]>> {
-        return deferMaybe([])
-    }
-
-    public func getClientsAndTabs() -> Deferred<Maybe<[ClientAndTabs]>> {
-        return deferMaybe([])
-    }
-
-    public func getCachedClientsAndTabs() -> Deferred<Maybe<[ClientAndTabs]>> {
-        return deferMaybe([])
-    }
-
-    public func storeTabs(_ tabs: [RemoteTab]) -> Deferred<Maybe<Int>> {
-        return deferMaybe(0)
-    }
 }

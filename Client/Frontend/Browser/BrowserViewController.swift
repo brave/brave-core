@@ -509,50 +509,6 @@ class BrowserViewController: UIViewController {
         // Make the web view the first responder so that it can show the selection menu.
         return tabManager.selectedTab?.webView?.becomeFirstResponder() ?? false
     }
-
-    func loadQueuedTabs(receivedURLs: [URL]? = nil) {
-        // Chain off of a trivial deferred in order to run on the background queue.
-        succeed().upon() { res in
-            self.dequeueQueuedTabs(receivedURLs: receivedURLs ?? [])
-        }
-    }
-
-    fileprivate func dequeueQueuedTabs(receivedURLs: [URL]) {
-        assert(!Thread.current.isMainThread, "This must be called in the background.")
-        self.profile.queue.getQueuedTabs() >>== { cursor in
-
-            // This assumes that the DB returns rows in some kind of sane order.
-            // It does in practice, so WFM.
-            if cursor.count > 0 {
-
-                // Filter out any tabs received by a push notification to prevent dupes.
-                let urls = cursor.compactMap { $0?.url.asURL }.filter { !receivedURLs.contains($0) }
-                if !urls.isEmpty {
-                    DispatchQueue.main.async {
-                        self.tabManager.addTabsForURLs(urls, zombie: false)
-                    }
-                }
-
-                // Clear *after* making an attempt to open. We're making a bet that
-                // it's better to run the risk of perhaps opening twice on a crash,
-                // rather than losing data.
-                self.profile.queue.clearQueuedTabs()
-            }
-                
-            // Then, open any received URLs from push notifications.
-            if !receivedURLs.isEmpty {
-                DispatchQueue.main.async {
-                    let unopenedReceivedURLs = receivedURLs.filter { self.tabManager.getTabForURL($0) == nil }
-
-                    self.tabManager.addTabsForURLs(unopenedReceivedURLs, zombie: false)
-
-                    if let lastURL = receivedURLs.last, let tab = self.tabManager.getTabForURL(lastURL) {
-                        self.tabManager.selectTab(tab)
-                    }
-                }
-            }
-        }
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -894,16 +850,7 @@ class BrowserViewController: UIViewController {
             resetSpoofedUserAgentIfRequired(webView, newURL: url)
         }
 
-        if let nav = tab.loadRequest(PrivilegedRequest(url: url) as URLRequest) {
-            self.recordNavigationInTab(tab, navigation: nav, visitType: visitType)
-        }
-    }
-
-    func addBookmark(_ tabState: TabState) {
-        guard let url = tabState.url else { return }
-        let absoluteString = url.absoluteString
-        let shareItem = ShareItem(url: absoluteString, title: tabState.title, favicon: tabState.favicon)
-        _ = profile.bookmarks.shareItem(shareItem)
+        tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
     }
 
     override func accessibilityPerformEscape() -> Bool {
@@ -1228,18 +1175,6 @@ class BrowserViewController: UIViewController {
             updateViewConstraints()
         }
     }
-    
-    fileprivate func postLocationChangeNotificationForTab(_ tab: Tab, navigation: WKNavigation?) {
-        let notificationCenter = NotificationCenter.default
-        var info = [AnyHashable: Any]()
-        info["url"] = tab.url?.displayURL
-        info["title"] = tab.title
-        if let visitType = self.getVisitTypeForTab(tab, navigation: navigation)?.rawValue {
-            info["visitType"] = visitType
-        }
-        info["tabType"] = tab.type
-        notificationCenter.post(name: .OnLocationChange, object: self, userInfo: info)
-    }
 
     func navigateInTab(tab: Tab, to navigation: WKNavigation? = nil) {
         tabManager.expireSnackbars()
@@ -1251,8 +1186,6 @@ class BrowserViewController: UIViewController {
 
         if let url = webView.url {
             if !url.isErrorPageURL, !url.isAboutHomeURL, !url.isFileURL {
-                postLocationChangeNotificationForTab(tab, navigation: navigation)
-
                 // Fire the readability check. This is here and not in the pageShow event handler in ReaderMode.js anymore
                 // because that event wil not always fire due to unreliable page caching. This will either let us know that
                 // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
@@ -1425,36 +1358,6 @@ extension BrowserViewController: PresentingModalViewControllerDelegate {
     }
 }
 
-/**
- * History visit management.
- * TODO: this should be expanded to track various visit types; see Bug 1166084.
- */
-extension BrowserViewController {
-    func ignoreNavigationInTab(_ tab: Tab, navigation: WKNavigation) {
-        self.ignoredNavigation.insert(navigation)
-    }
-
-    func recordNavigationInTab(_ tab: Tab, navigation: WKNavigation, visitType: VisitType) {
-        self.typedNavigation[navigation] = visitType
-    }
-
-    /**
-     * Untrack and do the right thing.
-     */
-    func getVisitTypeForTab(_ tab: Tab, navigation: WKNavigation?) -> VisitType? {
-        guard let navigation = navigation else {
-            // See https://github.com/WebKit/webkit/blob/master/Source/WebKit2/UIProcess/Cocoa/NavigationState.mm#L390
-            return VisitType.link
-        }
-
-        if let _ = self.ignoredNavigation.remove(navigation) {
-            return nil
-        }
-
-        return self.typedNavigation.removeValue(forKey: navigation) ?? VisitType.link
-    }
-}
-
 extension BrowserViewController: TopToolbarDelegate {
     func showTabTray() {
         if tabManager.tabsForCurrentMode.isEmpty {
@@ -1608,30 +1511,8 @@ extension BrowserViewController: TopToolbarDelegate {
             return
         }
 
-        // We couldn't build a URL, so check for a matching search keyword.
-        let trimmedText = text.trimmingCharacters(in: .whitespaces)
-        guard let possibleKeywordQuerySeparatorSpace = trimmedText.firstIndex(of: " ") else {
-            submitSearchText(text)
-            return
-        }
-
-        let possibleKeyword = String(trimmedText[..<possibleKeywordQuerySeparatorSpace])
-        let possibleQuery = String(trimmedText[trimmedText.index(after: possibleKeywordQuerySeparatorSpace)])
-
-        profile.bookmarks.getURLForKeywordSearch(possibleKeyword).uponQueue(.main) { result in
-            if var urlString = result.successValue,
-                let escapedQuery = possibleQuery.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed),
-                let range = urlString.range(of: "%s") {
-                urlString.replaceSubrange(range, with: escapedQuery)
-
-                if let url = URL(string: urlString) {
-                    self.finishEditingAndSubmit(url, visitType: visitType ?? .typed)
-                    return
-                }
-            }
-
-            self.submitSearchText(text)
-        }
+        // We couldn't build a URL, so pass it on to the search engine.
+        submitSearchText(text)
     }
 
     fileprivate func submitSearchText(_ text: String) {
@@ -2489,9 +2370,8 @@ extension BrowserViewController {
                         try self.readerModeCache.put(currentURL, readabilityResult)
                     } catch _ {
                     }
-                    if let nav = webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) {
-                        self.ignoreNavigationInTab(tab, navigation: nav)
-                    }
+                    
+                    webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest)
                 }
             })
         }
@@ -2515,9 +2395,7 @@ extension BrowserViewController {
                     } else if forwardList.count > 0 && forwardList.first?.url == originalURL {
                         webView.go(to: forwardList.first!)
                     } else {
-                        if let nav = webView.load(URLRequest(url: originalURL)) {
-                            self.ignoreNavigationInTab(tab, navigation: nav)
-                        }
+                        webView.load(URLRequest(url: originalURL))
                     }
                 }
             }
@@ -2925,8 +2803,7 @@ extension BrowserViewController: TabTrayDelegate {
     }
 
     func tabTrayDidAddBookmark(_ tab: Tab) {
-        guard let url = tab.url?.absoluteString, !url.isEmpty else { return }
-        self.addBookmark(tab.tabState)
+        // BRAVE TODO: Not Sure..
     }
 
     func tabTrayRequestsPresentationOf(_ viewController: UIViewController) {

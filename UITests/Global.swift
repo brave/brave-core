@@ -299,15 +299,6 @@ class BrowserUtils {
         return UIDevice.current.userInterfaceIdiom == .pad
     }
 
-    /// Injects a URL and title into the browser's history database.
-    class func addHistoryEntry(_ title: String, url: URL) {
-        let info: [AnyHashable: Any] = [
-            "url": url,
-            "title": title,
-            "visitType": VisitType.link.rawValue]
-        NotificationCenter.default.post(name: .OnLocationChange, object: self, userInfo: info)
-    }
-
     fileprivate class func clearHistoryItemAtIndex(_ index: IndexPath, tester: KIFUITestActor) {
         if let row = tester.waitForCell(at: index, inTableViewWithAccessibilityIdentifier: "History List") {
             tester.swipeView(withAccessibilityLabel: row.accessibilityLabel, value: row.accessibilityValue, in: KIFSwipeDirection.left)
