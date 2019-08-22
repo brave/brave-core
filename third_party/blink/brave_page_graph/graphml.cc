@@ -77,6 +77,8 @@ namespace {
     kGraphMLAttrForTypeEdge, "request type");
   const GraphMLAttr* const resource_type_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "resource type");
+  const GraphMLAttr* const response_hash_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "response hash");
   const GraphMLAttr* const rule_attr = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "rule");
   const GraphMLAttr* const script_id_attr = new GraphMLAttr(
@@ -105,9 +107,9 @@ namespace {
     node_text, node_type, page_graph_edge_id_attr, page_graph_node_id_attr,
     page_graph_edge_time_attr, page_graph_node_time_attr,
     parent_node_attr, primary_pattern_attr, request_id_attr, request_type_attr,
-    resource_type_attr, rule_attr, script_id_attr, script_type,
-    secondary_pattern_attr, source_attr, status_type, success_attr, tag_attr,
-    url_attr, value_attr
+    resource_type_attr, response_hash_attr, rule_attr, script_id_attr,
+    script_type, secondary_pattern_attr, source_attr, status_type, success_attr,
+    tag_attr, url_attr, value_attr
   };
 }
 
@@ -247,6 +249,8 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return request_type_attr;
     case kGraphMLAttrDefResourceType:
       return resource_type_attr;
+    case kGraphMLAttrDefResponseHash:
+      return response_hash_attr;
     case kGraphMLAttrDefRule:
       return rule_attr;
     case kGraphMLAttrDefScriptId:
