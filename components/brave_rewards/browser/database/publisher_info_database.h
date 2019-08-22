@@ -92,7 +92,8 @@ class PublisherInfoDatabase {
 
   bool RemoveAllPendingContributions();
 
-  bool ClearAndInsertServerPublisherList(ledger::ServerPublisherInfoList list);
+  bool ClearAndInsertServerPublisherList(
+      const ledger::ServerPublisherInfoList& list);
 
   // Returns the current version of the publisher info database
   int GetCurrentVersion();

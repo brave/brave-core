@@ -528,6 +528,10 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_key,
       ledger::DeleteActivityInfoCallback callback);
 
+  void ClearAndInsertServerPublisherList(
+      ledger::ServerPublisherInfoList list,
+      ledger::ClearAndInsertServerPublisherListCallback callback);
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
@@ -583,10 +587,14 @@ class LedgerImpl : public ledger::Ledger,
     const ledger::PendingContributionInfoList& list,
     ledger::PendingContributionInfoListCallback callback);
 
-  void OnWalletInitialized(ledger::Result result);
-
   void OnLoadPublisherList(ledger::Result result,
                              const std::string& data);
+
+  void OnParsePublisherList(
+      const ledger::Result result,
+      const std::string& data);
+
+  void OnWalletInitialized(ledger::Result result);
 
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,

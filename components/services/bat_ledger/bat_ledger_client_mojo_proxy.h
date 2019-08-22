@@ -178,6 +178,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::string& publisher_key,
       ledger::DeleteActivityInfoCallback callback) override;
 
+  void ClearAndInsertServerPublisherList(
+    ledger::ServerPublisherInfoList list,
+    ledger::ClearAndInsertServerPublisherListCallback callback) override;
+
  private:
   bool Connected() const;
 

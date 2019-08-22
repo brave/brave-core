@@ -374,27 +374,35 @@ void LedgerImpl::LoadPublisherList() {
 
 void LedgerImpl::OnLoadPublisherList(ledger::Result result,
                                      const std::string& data) {
-  if (result == ledger::Result::LEDGER_OK) {
-    if (!bat_publishers_->ParsePublisherList(data)) {
-      BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-        "Successfully loaded but failed to parse publish list.";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed publisher list: " << data;
-      RefreshPublishersList(true);
-      return;
-    } else {
-      // List was loaded successfully
-      RefreshPublishersList(false);
-      return;
-    }
-  } else {
+  if (result != ledger::Result::LEDGER_OK) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
       "Failed to load publisher list";
     BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
       "Failed publisher list: " << data;
+    RefreshPublishersList(true, true);
+    return;
   }
 
-  RefreshPublishersList(true, true);
+  const auto callback = std::bind(&LedgerImpl::OnParsePublisherList,
+      this,
+      _1,
+      data);
+  bat_publishers_->ParsePublisherList(data, callback);
+}
+
+void LedgerImpl::OnParsePublisherList(
+    const ledger::Result result,
+    const std::string& data) {
+  if (result == ledger::Result::LEDGER_OK) {
+    RefreshPublishersList(false);
+    return;
+  }
+
+  BLOG(this, ledger::LogLevel::LOG_ERROR) <<
+    "Successfully loaded, but failed to parse publish list.";
+  BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
+    "Failed publisher list: " << data;
+  RefreshPublishersList(true);
 }
 
 std::string LedgerImpl::GenerateGUID() const {
@@ -1752,6 +1760,12 @@ void LedgerImpl::DeleteActivityInfo(
       const std::string& publisher_key,
       ledger::DeleteActivityInfoCallback callback) {
   ledger_client_->DeleteActivityInfo(publisher_key, callback);
+}
+
+void LedgerImpl::ClearAndInsertServerPublisherList(
+      ledger::ServerPublisherInfoList list,
+      ledger::ClearAndInsertServerPublisherListCallback callback) {
+  ledger_client_->ClearAndInsertServerPublisherList(std::move(list), callback);
 }
 
 }  // namespace bat_ledger

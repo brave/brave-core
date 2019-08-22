@@ -1078,8 +1078,8 @@ bool PublisherInfoDatabase::CreateServerPublisherIndex() {
 }
 
 bool PublisherInfoDatabase::ClearAndInsertServerPublisherList(
-    ledger::ServerPublisherInfoList list) {
-  return server_publisher_info_->ClearAndInsertList(&GetDB(), std::move(list));
+    const ledger::ServerPublisherInfoList& list) {
+  return server_publisher_info_->ClearAndInsertList(&GetDB(), list);
 }
 
 // Other -------------------------------------------------------------------

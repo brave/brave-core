@@ -28,7 +28,7 @@ bool DatabaseServerPublisherAmounts::CreateTable(sql::Database* db) {
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
-      "publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
+      "publisher_key LONGVARCHAR NOT NULL,"
       "amount DOUBLE DEFAULT 0 NOT NULL,"
       "CONSTRAINT %s_unique "
       "    UNIQUE (publisher_key, amount) "

@@ -690,10 +690,16 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
 }
 
 void BatPublishers::RefreshPublishersList(const std::string& json) {
+  // TODO remove as it's in db now
   ledger_->SavePublishersList(json);
-  bool success = ParsePublisherList(json);
 
-  if (success) {
+  const auto callback =
+      std::bind(&BatPublishers::OnParsePublisherList, this, _1);
+  ParsePublisherList(json, callback);
+}
+
+void BatPublishers::OnParsePublisherList(const ledger::Result result) {
+  if (result == ledger::Result::LEDGER_OK) {
     ledger_->ContributeUnverifiedPublishers();
   }
 }
@@ -705,23 +711,25 @@ void BatPublishers::OnPublishersListSaved(ledger::Result result) {
   setPublishersLastRefreshTimestamp(ts);
 }
 
-bool BatPublishers::ParsePublisherList(const std::string& data) {
+void BatPublishers::ParsePublisherList(
+    const std::string& data,
+    ParsePublisherListCallback callback) {
   ledger::ServerPublisherInfoList list;
 
   base::Optional<base::Value> value = base::JSONReader::Read(data);
   if (!value || !value->is_list()) {
-    return false;
+    callback(ledger::Result::LEDGER_ERROR);
   }
 
   base::ListValue* publishers = nullptr;
   if (!value->GetAsList(&publishers)) {
-    return false;
+    callback(ledger::Result::LEDGER_ERROR);
   }
 
   for (auto& item : *publishers) {
     base::ListValue* values = nullptr;
     if (!item.GetAsList(&values)) {
-      return false;
+      callback(ledger::Result::LEDGER_ERROR);
     }
 
     auto publisher = ledger::ServerPublisherInfo::New();
@@ -767,12 +775,10 @@ bool BatPublishers::ParsePublisherList(const std::string& data) {
   }
 
   if (list.size() == 0) {
-    return false;
+    callback(ledger::Result::LEDGER_ERROR);
   }
 
-  // TODO remove me and save into DB
-  server_list_ = std::move(list);
-  return true;
+  ledger_->ClearAndInsertServerPublisherList(std::move(list), callback);
 }
 
 ledger::PublisherBannerPtr BatPublishers::ParsePublisherBanner(

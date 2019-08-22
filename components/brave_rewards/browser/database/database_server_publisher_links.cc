@@ -28,7 +28,7 @@ bool DatabaseServerPublisherLinks::CreateTable(sql::Database* db) {
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
-      "publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
+      "publisher_key LONGVARCHAR NOT NULL,"
       "provider TEXT,"
       "link TEXT,"
       "CONSTRAINT %s_unique "

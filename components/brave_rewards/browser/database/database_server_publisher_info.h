@@ -27,7 +27,7 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
 
   bool ClearAndInsertList(
       sql::Database* db,
-      ledger::ServerPublisherInfoList list);
+      const ledger::ServerPublisherInfoList& list);
 
  private:
   const char* table_name_ = "server_publisher_info";

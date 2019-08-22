@@ -909,4 +909,18 @@ void BatLedgerClientMojoProxy::DeleteActivityInfo(
       base::BindOnce(&OnDeleteActivityInfo, std::move(callback)));
 }
 
+void OnClearAndInsertServerPublisherList(
+  const ledger::ClearAndInsertServerPublisherListCallback& callback,
+  const ledger::Result result) {
+  callback(result);
+}
+
+void BatLedgerClientMojoProxy::ClearAndInsertServerPublisherList(
+    ledger::ServerPublisherInfoList list,
+    ledger::ClearAndInsertServerPublisherListCallback callback) {
+  bat_ledger_client_->ClearAndInsertServerPublisherList(
+      std::move(list),
+      base::BindOnce(&OnClearAndInsertServerPublisherList, std::move(callback)));
+}
+
 }  // namespace bat_ledger

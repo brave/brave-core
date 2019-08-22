@@ -28,6 +28,8 @@ struct PUBLISHER_STATE_ST;
 
 namespace braveledger_bat_publishers {
 
+using ParsePublisherListCallback = std::function<void(const ledger::Result)>;
+
 class BatPublishers : public ledger::LedgerCallbackHandler {
  public:
   explicit BatPublishers(bat_ledger::LedgerImpl* ledger);
@@ -87,7 +89,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void OnPublishersListSaved(ledger::Result result) override;
 
-  bool ParsePublisherList(const std::string& data);
+  void ParsePublisherList(
+      const std::string& data,
+      ParsePublisherListCallback callback);
 
   void getPublisherActivityFromUrl(
       uint64_t windowId,
@@ -205,6 +209,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                          const ledger::PublisherBanner& banner,
                          ledger::Result result,
                          ledger::PublisherInfoPtr publisher_info);
+
+  void OnParsePublisherList(const ledger::Result result);
 
   ledger::PublisherBannerPtr ParsePublisherBanner(
       base::DictionaryValue* dictionary);

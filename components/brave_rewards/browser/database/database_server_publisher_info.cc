@@ -106,7 +106,7 @@ bool DatabaseServerPublisherInfo::InsertOrUpdate(
 
 bool DatabaseServerPublisherInfo::ClearAndInsertList(
     sql::Database* db,
-    ledger::ServerPublisherInfoList list) {
+    const ledger::ServerPublisherInfoList& list) {
   const std::string clear_query = base::StringPrintf(
       "DELETE FROM %s",
       table_name_);

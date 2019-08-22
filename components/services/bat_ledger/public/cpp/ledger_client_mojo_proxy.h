@@ -183,6 +183,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     const std::string& publisher_key,
     DeleteActivityInfoCallback callback) override;
 
+  void ClearAndInsertServerPublisherList(
+    ledger::ServerPublisherInfoList list,
+    ClearAndInsertServerPublisherListCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -347,6 +351,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnDeleteActivityInfo(
       CallbackHolder<DeleteActivityInfoCallback>* holder,
+      const ledger::Result result);
+
+  static void OnClearAndInsertServerPublisherList(
+      CallbackHolder<ClearAndInsertServerPublisherListCallback>* holder,
       const ledger::Result result);
 
   ledger::LedgerClient* ledger_client_;

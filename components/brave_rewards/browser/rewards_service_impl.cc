@@ -3576,4 +3576,38 @@ void RewardsServiceImpl::ShowNotification(
     callback(ledger::Result::LEDGER_OK);
 }
 
+bool ClearAndInsertServerPublisherListOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const ledger::ServerPublisherInfoList& list) {
+  if (!backend) {
+    return false;
+  }
+
+  return backend->ClearAndInsertServerPublisherList(list);
+}
+
+void RewardsServiceImpl::ClearAndInsertServerPublisherList(
+    ledger::ServerPublisherInfoList list,
+    ledger::ClearAndInsertServerPublisherListCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::Bind(&ClearAndInsertServerPublisherListOnFileTaskRunner,
+               publisher_info_backend_.get(),
+               std::move(list)),
+    base::Bind(&RewardsServiceImpl::OnClearAndInsertServerPublisherList,
+               AsWeakPtr(),
+               callback));
+}
+
+void RewardsServiceImpl::OnClearAndInsertServerPublisherList(
+    ledger::ClearAndInsertServerPublisherListCallback callback,
+    bool result) {
+  const auto result_new = result
+      ? ledger::Result::LEDGER_OK
+      : ledger::Result::LEDGER_ERROR;
+
+  callback(result_new);
+}
+
 }  // namespace brave_rewards

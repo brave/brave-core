@@ -923,4 +923,28 @@ void LedgerClientMojoProxy::DeleteActivityInfo(
                 _1));
 }
 
+// static
+void LedgerClientMojoProxy::OnClearAndInsertServerPublisherList(
+    CallbackHolder<ClearAndInsertServerPublisherListCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::ClearAndInsertServerPublisherList(
+      ledger::ServerPublisherInfoList list,
+      ClearAndInsertServerPublisherListCallback callback) {
+  auto* holder = new CallbackHolder<ClearAndInsertServerPublisherListCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->ClearAndInsertServerPublisherList(
+      std::move(list),
+      std::bind(LedgerClientMojoProxy::OnClearAndInsertServerPublisherList,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger
