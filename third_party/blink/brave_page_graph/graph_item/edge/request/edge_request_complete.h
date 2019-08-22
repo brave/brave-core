@@ -12,7 +12,7 @@
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
 #include "brave/third_party/blink/brave_page_graph/types.h"
-
+#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_response.h"
 
 namespace brave_page_graph {
@@ -41,11 +41,11 @@ friend class PageGraph;
   EdgeRequestComplete(PageGraph* const graph, NodeResource* const out_node,
     Node* const in_node, const InspectorId request_id,
     const blink::ResourceType resource_type,
-    const std::string& response_header_string,
-    const int64_t response_body_length);
+    const ResponseMetadata& metadata, const std::string& hash);
 
  private:
   const blink::ResourceType resource_type_;
+  const std::string hash_;
 };
 
 }  // namespace brave_page_graph

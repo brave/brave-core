@@ -11,9 +11,9 @@
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
-#include "brave/third_party/blink/brave_page_graph/types.h"
-
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
+#include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 
 namespace brave_page_graph {
 
@@ -49,8 +49,7 @@ friend class PageGraph;
   EdgeRequestResponse(PageGraph* const graph, NodeResource* const out_node,
     Node* const in_node, const InspectorId request_id,
     const RequestStatus request_status,
-    const std::string& response_header_string,
-    const int64_t response_body_length);
+    const ResponseMetadata& metadata);
 
  private:
   const std::string response_header_string_;

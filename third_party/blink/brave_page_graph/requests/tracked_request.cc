@@ -4,12 +4,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
+#include <string>
 #include <vector>
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 
+using ::std::string;
 using ::std::vector;
 
 namespace brave_page_graph {
@@ -124,24 +127,22 @@ void TrackedRequest::SetCompletedResourceType(const blink::ResourceType type) {
   resource_type_ = type;
 }
 
-
-const std::string& TrackedRequest::ResponseHeaderString() const {
-  return response_header_string_;
+const ResponseMetadata& TrackedRequest::GetResponseMetadata() const {
+  return response_metadata_;
 }
 
-void TrackedRequest::SetResponseHeaderString(
-    const std::string& response_header_string) {
-  response_header_string_ = response_header_string;
+void TrackedRequest::SetResponseMetadata(const ResponseMetadata& metadata) {
+  response_metadata_ = metadata;
 }
 
-int64_t TrackedRequest::ResponseBodyLength() const {
-  return response_body_length_;
+const string& TrackedRequest::GetResponseBodyHash() const {
+  LOG_ASSERT(request_status_ == RequestStatus::kSuccess);
+  return hash_;
 }
 
-void TrackedRequest::SetResponseBodyLength(
-    const int64_t response_body_length) {
-  response_body_length_ = response_body_length;
+void TrackedRequest::SetResponseBodyHash(const string& response_body_hash) {
+  LOG_ASSERT(request_status_ == RequestStatus::kSuccess);
+  hash_ = response_body_hash;
 }
-
 
 }  // namsepace brave_page_graph

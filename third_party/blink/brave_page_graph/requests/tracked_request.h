@@ -9,11 +9,13 @@
 #include <vector>
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 
 namespace brave_page_graph {
 
 class Node;
 class NodeResource;
+class ResponseMetadata;
 
 class TrackedRequest {
 friend class RequestTracker;
@@ -43,11 +45,11 @@ friend class RequestTracker;
   void SetIsError();
   void SetCompletedResourceType(const blink::ResourceType type);
 
-  const std::string& ResponseHeaderString() const;
-  void SetResponseHeaderString(const std::string& response_header_string);
+  const ResponseMetadata& GetResponseMetadata() const;
+  void SetResponseMetadata(const ResponseMetadata& metadata);
 
-  int64_t ResponseBodyLength() const;
-  void SetResponseBodyLength(const int64_t response_body_length);
+  const std::string& GetResponseBodyHash() const;
+  void SetResponseBodyHash(const std::string& response_body_hash);
 
  protected:
   enum class RequestStatus : uint8_t {
@@ -68,8 +70,8 @@ friend class RequestTracker;
 
   mutable bool is_complete_ = false;
 
-  std::string response_header_string_;
-  int64_t response_body_length_;
+  ResponseMetadata response_metadata_;
+  std::string hash_;
 };
 
 }  // namsepace brave_page_graph

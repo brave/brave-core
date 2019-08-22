@@ -10,18 +10,16 @@
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
-
+#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 
 namespace brave_page_graph {
 
 EdgeRequestError::EdgeRequestError(PageGraph* const graph,
     NodeResource* const out_node, Node* const in_node,
-    const InspectorId request_id,
-    const std::string& response_header_string,
-    const int64_t response_body_length)
+    const InspectorId request_id, const ResponseMetadata& metadata)
     : EdgeRequestResponse(graph, out_node, in_node, request_id,
-          kRequestStatusError, response_header_string, response_body_length) {}
+          kRequestStatusError, metadata) {}
 
 EdgeRequestError::~EdgeRequestError() {}
 
