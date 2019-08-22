@@ -418,6 +418,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL" desc="The label of manage extensions link in settings">
         Manage extensions
       </message>
+      <message name="IDS_BRAVE_SETTINGS_GET_MORE_EXTENSIONS_LABEL" desc="The label of get more extensions link in settings">
+        Get more extensions
+      </message>
       <!-- Extensions page strings -->
       <message name="IDS_MD_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">
         Web Extensions Store
