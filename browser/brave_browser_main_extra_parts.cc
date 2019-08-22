@@ -18,6 +18,10 @@ BraveBrowserMainExtraParts::BraveBrowserMainExtraParts() {
 BraveBrowserMainExtraParts::~BraveBrowserMainExtraParts() {
 }
 
+void BraveBrowserMainExtraParts::PostBrowserStart() {
+  g_brave_browser_process->StartBraveServices();
+}
+
 void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
 #if !defined(OS_ANDROID)
   brave::AutoImportMuon();
@@ -30,5 +34,4 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   // So, call it after browser threads are created.
   g_brave_browser_process->brave_widevine_bundle_manager()->StartupCheck();
 #endif
-  g_brave_browser_process->StartBraveServices();
 }
