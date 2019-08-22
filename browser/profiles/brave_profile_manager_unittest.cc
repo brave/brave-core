@@ -13,6 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
+#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
@@ -29,6 +30,7 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/safe_browsing/common/safe_browsing_prefs.h"
+#include "components/translate/core/browser/translate_pref_names.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "content/public/test/test_utils.h"
@@ -140,16 +142,19 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
       profile->GetPrefs()->GetInteger(prefs::kProfileAvatarIndex);
   EXPECT_EQ(avatar_index, size_t(0));
   EXPECT_FALSE(
-    profile->GetPrefs()->GetBoolean(prefs::kProfileUsingDefaultName));
+      profile->GetPrefs()->GetBoolean(prefs::kProfileUsingDefaultName));
   EXPECT_TRUE(profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
 
   // Check WebRTC IP handling policy.
   EXPECT_EQ(
-    profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
-    content::kWebRTCIPHandlingDisableNonProxiedUdp);
+      profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
+      content::kWebRTCIPHandlingDisableNonProxiedUdp);
 
   // Check SafeBrowsing status
   EXPECT_FALSE(profile->GetPrefs()->GetBoolean(prefs::kSafeBrowsingEnabled));
+
+  // Check translate.enabled for translate bubble.
+  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(prefs::kOfferTranslateEnabled));
 }
 
 // This is for tor guest window, remove it when we have persistent tor profiles
