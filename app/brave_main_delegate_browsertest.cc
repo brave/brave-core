@@ -43,10 +43,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
       &autofill::features::kAutofillServerCommunication,
-      &features::kAudioServiceOutOfProcess,
-      &features::kDefaultEnableOopRasterization,
       &unified_consent::kUnifiedConsent,
-      &features::kLookalikeUrlNavigationSuggestionsUI,
   };
 
   for (const auto* feature : disabled_features)
