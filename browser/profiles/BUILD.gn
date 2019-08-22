@@ -10,11 +10,13 @@ source_set("profiles") {
     "//chrome/common",
     "//content/public/common",
     "//brave/browser/tor",
+    "//brave/browser/translate/buildflags",
     "//brave/content:browser",
     "//brave/common/tor",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_sync",
     "//brave/components/brave_rewards/browser",
+    "//components/translate/core/browser",
     "//ui/base",
   ]
 }
