@@ -98,6 +98,13 @@
         label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
       </cr-link-row>
     </div>
+    <div class="settings-row" id="getMoreExtensionsRow">
+      <cr-link-row
+        label="$i18n{getMoreExtensionsLabel}"
+        sub-label="$i18n{getMoreExtensionsSubLabel}"
+        on-click="openWebStoreUrl_" external>
+      </cr-link-row>
+    </div>
   <template is="dom-if" if="{{ showRestartToast }}">
     <div id="needsRestart">
         <div class="flex-container">
