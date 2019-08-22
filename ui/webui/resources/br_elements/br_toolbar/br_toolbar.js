@@ -64,6 +64,7 @@ Polymer({
     closeMenuPromo: String,
 
     noSearch: {
+      observer: 'noSearchChanged_',
       type: Boolean,
       // boolean props on html attributes must default to false
       value: false
@@ -82,9 +83,7 @@ Polymer({
 
   /** @return {!CrToolbarSearchFieldElement} */
   getSearchField: function() {
-    // make sure conditional has run
-    this.$.searchIf.render()
-    return this.$$('#search');
+    return this.$.search;
   },
 
   /** @private */
@@ -102,6 +101,16 @@ Polymer({
     console.debug('[br_toolbar] Not Implemented: possiblyShowMenuPromo')
   },
 
+  /** @private */
+  noSearchChanged_: function () {
+    this.updateSearchDisplayed_()
+  },
+
+  /** @private */
+  updateSearchDisplayed_: function () {
+    this.$.search.hidden = this.noSearch
+  },
+
   /**
    * @param {string} title
    * @param {boolean} showMenuPromo
@@ -110,8 +119,6 @@ Polymer({
   titleIfNotShowMenuPromo_: function(title, showMenuPromo) {
     return showMenuPromo ? '' : title;
   },
-
-
 
   getNavItemSelectedClassName: function(itemName) {
     // which navigation item is the current page?

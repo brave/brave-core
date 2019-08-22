@@ -15,9 +15,12 @@
         right: 0;
         top: 0;
         color: inherit;
-        display: flex;
         flex-direction: row;
         align-items: stretch;
+      }
+
+      :host:not([hidden]) {
+        display: flex;
       }
 
       .page-search_toggle {
