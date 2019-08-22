@@ -949,18 +949,6 @@ void RewardsServiceImpl::OnWalletProperties(
         wallet_properties->grants.push_back(grant);
       }
     }
-    // Record stats.
-    if (properties) {
-      // Sum grants.
-      size_t total_grants = 0;
-      for (size_t i = 0; i < properties->grants.size(); i ++) {
-        total_grants += RoundProbiToUint64(properties->grants[i]->probi);
-      }
-      RecordWalletBalanceP3A(
-          true, RoundProbiToUint64(wallet_info->probi_) - total_grants);
-      RecordBackendP3AStats();
-    }
-
     // webui
     observer.OnWalletProperties(this,
                                 static_cast<int>(result),
@@ -3420,6 +3408,25 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
     if (balance->total > 0) {
       profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
     }
+
+    // Record stats.
+    double balance_minus_grant = 0;
+    for (auto wallet : balance->wallets) {
+      // Skip anonymous wallet, since it can contain grants.
+      if (wallet.first == "anonymous") {
+        continue;
+      }
+      balance_minus_grant += static_cast<size_t>(wallet.second);
+    }
+
+    // `user_funds` is the amount of user-funded BAT
+    // in the anonymous wallet (ex: not grants).
+    double user_funds;
+    balance_minus_grant +=
+        base::StringToDouble(balance->user_funds, &user_funds);
+
+    RecordWalletBalanceP3A(true, static_cast<size_t>(balance_minus_grant));
+    RecordBackendP3AStats();
   }
 
   std::move(callback).Run(static_cast<int>(result), std::move(new_balance));
