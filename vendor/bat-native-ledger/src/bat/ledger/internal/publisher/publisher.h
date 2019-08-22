@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_BAT_PUBLISHERS_H_
-#define BRAVELEDGER_BAT_PUBLISHERS_H_
+#ifndef BRAVELEDGER_PUBLISHER_PUBLISHER_H_
+#define BRAVELEDGER_PUBLISHER_PUBLISHER_H_
 
 #include <string>
 #include <map>
@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "base/values.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
@@ -28,13 +27,26 @@ struct PUBLISHER_STATE_ST;
 
 namespace braveledger_publisher {
 
+class PublisherServerList;
+
 using ParsePublisherListCallback = std::function<void(const ledger::Result)>;
+using DownloadServerPublisherListCallback =
+    std::function<void(const ledger::Result)>;
 
 class Publisher : public ledger::LedgerCallbackHandler {
  public:
   explicit Publisher(bat_ledger::LedgerImpl* ledger);
 
   ~Publisher() override;
+
+  // Called when timer is triggered
+  void OnTimer(uint32_t timer_id);
+
+  void RefreshPublisher(
+      const std::string& publisher_key,
+      ledger::OnRefreshPublisherCallback callback);
+
+  void SetPublisherServerListTimer();
 
   bool loadState(const std::string& data);
 
@@ -48,7 +60,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void setPublisherMinVisits(const unsigned int visits);
 
-  void setPublishersLastRefreshTimestamp(uint64_t ts);
+  void SetPublisherServerListTimestamp(uint64_t ts);
 
   void SetPublisherExclude(
       const std::string& publisher_id,
@@ -75,7 +87,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   bool getPublisherAllowNonVerified() const;
 
-  uint64_t getLastPublishersListLoadTimestamp() const;
+  uint64_t GetPublisherServerListTimestamp() const;
 
   bool getPublisherAllowVideos() const;
 
@@ -84,10 +96,6 @@ class Publisher : public ledger::LedgerCallbackHandler {
       ledger::PublisherInfoPtr);
 
   std::string GetBalanceReportName(ledger::ACTIVITY_MONTH month, int year);
-
-  void RefreshPublishersList(const std::string & pubs_list);
-
-  void OnPublishersListSaved(ledger::Result result) override;
 
   void ParsePublisherList(
       const std::string& data,
@@ -122,10 +130,6 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   bool isVerified(const std::string& publisher_id);
 
-  void RefreshPublisherVerifiedStatus(
-      const std::string& publisher_key,
-      ledger::OnRefreshPublisherCallback callback);
-
   void SavePublisherProcessed(const std::string& publisher_key);
 
   bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
@@ -137,6 +141,11 @@ class Publisher : public ledger::LedgerCallbackHandler {
       ledger::RestorePublishersCallback callback);
 
  private:
+  void OnRefreshPublisher(
+    const ledger::Result result,
+    const std::string& publisher_key,
+    ledger::OnRefreshPublisherCallback callback);
+
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,
                                ledger::Result result,
@@ -210,16 +219,9 @@ class Publisher : public ledger::LedgerCallbackHandler {
                          ledger::Result result,
                          ledger::PublisherInfoPtr publisher_info);
 
-  void OnParsePublisherList(const ledger::Result result);
-
-  ledger::PublisherBannerPtr ParsePublisherBanner(
-      base::DictionaryValue* dictionary);
-
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
-
-  ledger::ServerPublisherInfoList server_list_;
+  std::unique_ptr<PublisherServerList> server_list_;
 
   double a_;
 
@@ -240,4 +242,4 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
 }  // namespace braveledger_publisher
 
-#endif  // BRAVELEDGER_BAT_PUBLISHERS_H_
+#endif  // BRAVELEDGER_PUBLISHER_PUBLISHER_H_

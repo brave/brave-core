@@ -44,13 +44,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     ledger::GrantPtr grant) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
-  void LoadPublisherList(LoadPublisherListCallback callback) override;
   void SaveLedgerState(const std::string& ledger_state,
       SaveLedgerStateCallback callback) override;
   void SavePublisherState(const std::string& publisher_state,
       SavePublisherStateCallback callback) override;
-  void SavePublishersList(const std::string& publishers_list,
-      SavePublishersListCallback callback) override;
 
   void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info,
       SavePublisherInfoCallback callback) override;
@@ -210,17 +207,11 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
         ledger::InitializeCallback callback) override;
     void OnLedgerStateSaved(ledger::Result result) override;
     void OnPublisherStateSaved(ledger::Result result) override;
-    void OnPublishersListSaved(ledger::Result result) override;
 
    private:
     base::WeakPtr<LedgerClientMojoProxy> client_;
     Callback callback_;
   };
-
-  static void OnLoadPublisherList(
-    CallbackHolder<LoadPublisherListCallback>* holder,
-    const ledger::Result result,
-    const std::string& data);
 
   static void OnSavePublisherInfo(
       CallbackHolder<SavePublisherInfoCallback>* holder,

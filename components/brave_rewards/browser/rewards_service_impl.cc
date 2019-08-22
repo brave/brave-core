@@ -1864,33 +1864,6 @@ void RewardsServiceImpl::TriggerOnRewardsMainEnabled(
     observer.OnRewardsMainEnabled(this, rewards_main_enabled);
 }
 
-void RewardsServiceImpl::SavePublishersList(const std::string& publishers_list,
-                                      ledger::LedgerCallbackHandler* handler) {
-  base::ImportantFileWriter writer(
-      publisher_list_path_, file_task_runner_);
-
-  writer.RegisterOnNextWriteCallbacks(
-      base::Closure(),
-      base::Bind(
-        &PostWriteCallback,
-        base::Bind(&RewardsServiceImpl::OnPublishersListSaved, AsWeakPtr(),
-            base::Unretained(handler)),
-        base::SequencedTaskRunnerHandle::Get()));
-
-  writer.WriteNow(std::make_unique<std::string>(publishers_list));
-}
-
-void RewardsServiceImpl::OnPublishersListSaved(
-    ledger::LedgerCallbackHandler* handler,
-    bool success) {
-  if (!Connected()) {
-    return;
-  }
-
-  handler->OnPublishersListSaved(success ? ledger::Result::LEDGER_OK
-                                         : ledger::Result::LEDGER_ERROR);
-}
-
 void RewardsServiceImpl::SetTimer(uint64_t time_offset,
                                   uint32_t* timer_id) {
   if (next_timer_id_ == std::numeric_limits<uint32_t>::max())
@@ -1914,29 +1887,6 @@ void RewardsServiceImpl::OnTimer(uint32_t timer_id) {
 
   timers_.erase(timer_id);
   bat_ledger_->OnTimer(timer_id);
-}
-
-void RewardsServiceImpl::LoadPublisherList(
-    ledger::LoadPublisherListCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&LoadStateOnFileTaskRunner, publisher_list_path_),
-      base::Bind(&RewardsServiceImpl::OnPublisherListLoaded,
-                 AsWeakPtr(),
-                 callback));
-}
-
-void RewardsServiceImpl::OnPublisherListLoaded(
-    ledger::LoadPublisherListCallback callback,
-    const std::string& data) {
-  if (!Connected()) {
-    return;
-  }
-
-  const auto result = data.empty()
-      ? ledger::Result::NO_PUBLISHER_LIST
-      : ledger::Result::LEDGER_OK;
-
-  callback(result, data);
 }
 
 void RewardsServiceImpl::OnGetAllBalanceReports(

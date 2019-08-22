@@ -1281,22 +1281,6 @@ BATLedgerBridge(BOOL,
   handler->OnPublisherStateSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
-- (void)loadPublisherList:(ledger::LoadPublisherListCallback)callback
-{
-  const auto contents = [self.commonOps loadContentsFromFileWithName:"publisher_list.json"];
-  if (contents.length() > 0) {
-    callback(ledger::Result::LEDGER_OK, contents);
-  } else {
-    callback(ledger::Result::NO_PUBLISHER_LIST, contents);
-  }
-}
-
-- (void)savePublishersList:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler
-{
-  const auto result = [self.commonOps saveContents:publisher_state name:"publisher_list.json"];
-  handler->OnPublishersListSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-}
-
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];

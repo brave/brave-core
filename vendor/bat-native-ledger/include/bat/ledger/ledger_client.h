@@ -79,8 +79,6 @@ using ShowNotificationCallback = std::function<void(const Result)>;
 using SavePendingContributionCallback = std::function<void(const Result)>;
 using DeleteActivityInfoCallback = std::function<void(const ledger::Result)>;
 using SaveRecurringTipCallback = std::function<void(const Result)>;
-using LoadPublisherListCallback =
-    std::function<void(const Result, const std::string& data)>;
 using ClearAndInsertServerPublisherListCallback =
     std::function<void(const Result)>;
 
@@ -109,12 +107,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SavePublisherState(const std::string& publisher_state,
                                   LedgerCallbackHandler* handler) = 0;
-
-  virtual void SavePublishersList(const std::string& publisher_state,
-                                  LedgerCallbackHandler* handler) = 0;
-
-  virtual void LoadPublisherList(
-      ledger::LoadPublisherListCallback callback) = 0;
 
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 

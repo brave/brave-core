@@ -170,8 +170,6 @@ class LedgerImpl : public ledger::Ledger,
   void SavePublisherState(const std::string& data,
                           ledger::LedgerCallbackHandler* handler);
 
-  void SavePublishersList(const std::string& data);
-
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
   void SetConfirmationsWalletInfo(
@@ -180,8 +178,6 @@ class LedgerImpl : public ledger::Ledger,
   void LoadLedgerState(ledger::OnLoadCallback callback);
 
   void LoadPublisherState(ledger::OnLoadCallback callback);
-
-  void LoadPublisherList();
 
   void OnWalletInitializedInternal(ledger::Result result,
                                    ledger::InitializeCallback callback);
@@ -218,13 +214,6 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::Result result,
       double balance,
       const std::vector<braveledger_bat_helper::GRANT>& grants);
-
-  void LoadPublishersListCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void OnPublishersListSaved(ledger::Result result) override;
 
   void LoadURL(const std::string& url,
                const std::vector<std::string>& headers,
@@ -587,13 +576,6 @@ class LedgerImpl : public ledger::Ledger,
     const ledger::PendingContributionInfoList& list,
     ledger::PendingContributionInfoListCallback callback);
 
-  void OnLoadPublisherList(ledger::Result result,
-                             const std::string& data);
-
-  void OnParsePublisherList(
-      const ledger::Result result,
-      const std::string& data);
-
   void OnWalletInitialized(ledger::Result result);
 
   // ledger::LedgerCallbacHandler implementation
@@ -604,8 +586,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnLedgerStateLoaded(ledger::Result result,
                            const std::string& data,
                            ledger::InitializeCallback callback) override;
-
-  void RefreshPublishersList(bool retryAfterError, bool immediately = false);
 
   void RefreshGrant(bool retryAfterError);
 

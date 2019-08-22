@@ -93,7 +93,7 @@ void LedgerImpl::OnWalletInitializedInternal(ledger::Result result,
   if (result == ledger::Result::LEDGER_OK ||
       result == ledger::Result::WALLET_CREATED) {
     initialized_ = true;
-    LoadPublisherList();
+    bat_publisher_->SetPublisherServerListTimer();
     bat_contribution_->SetReconcileTimer();
     RefreshGrant(false);
   } else {
@@ -362,49 +362,6 @@ void LedgerImpl::SavePublisherState(const std::string& data,
   ledger_client_->SavePublisherState(data, handler);
 }
 
-
-void LedgerImpl::SavePublishersList(const std::string& data) {
-  ledger_client_->SavePublishersList(data, this);
-}
-
-void LedgerImpl::LoadPublisherList() {
-  ledger_client_->LoadPublisherList(
-      std::bind(&LedgerImpl::OnLoadPublisherList, this, _1, _2));
-}
-
-void LedgerImpl::OnLoadPublisherList(ledger::Result result,
-                                     const std::string& data) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to load publisher list";
-    BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-      "Failed publisher list: " << data;
-    RefreshPublishersList(true, true);
-    return;
-  }
-
-  const auto callback = std::bind(&LedgerImpl::OnParsePublisherList,
-      this,
-      _1,
-      data);
-  bat_publisher_->ParsePublisherList(data, callback);
-}
-
-void LedgerImpl::OnParsePublisherList(
-    const ledger::Result result,
-    const std::string& data) {
-  if (result == ledger::Result::LEDGER_OK) {
-    RefreshPublishersList(false);
-    return;
-  }
-
-  BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-    "Successfully loaded, but failed to parse publish list.";
-  BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-    "Failed publisher list: " << data;
-  RefreshPublishersList(true);
-}
-
 std::string LedgerImpl::GenerateGUID() const {
   return ledger_client_->GenerateGUID();
 }
@@ -415,7 +372,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
   if (result == ledger::Result::LEDGER_OK ||
       result == ledger::Result::WALLET_CREATED) {
     initialized_ = true;
-    LoadPublisherList();
+    bat_publisher_->SetPublisherServerListTimer();
     bat_contribution_->SetReconcileTimer();
     RefreshGrant(false);
   } else {
@@ -890,42 +847,18 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_id,
   callback(ledger::Result::LEDGER_OK);
 }
 
-void LedgerImpl::DownloadPublisherList(
-    ledger::LoadURLCallback callback) {
-  std::vector<std::string> headers;
-  headers.push_back("Accept-Encoding: gzip");
-
-  // download the list
-  std::string url = braveledger_bat_helper::buildURL(
-      GET_PUBLISHERS_LIST,
-      std::string(), braveledger_bat_helper::SERVER_TYPES::PUBLISHER_DISTRO);
-  LoadURL(
-      url,
-      headers,
-      std::string(),
-      std::string(),
-      ledger::URL_METHOD::GET,
-      callback);
-}
-
 void LedgerImpl::OnTimer(uint32_t timer_id) {
   if (bat_confirmations_->OnTimer(timer_id))
     return;
 
-  if (timer_id == last_pub_load_timer_id_) {
-    last_pub_load_timer_id_ = 0;
-
-    DownloadPublisherList(
-        std::bind(&LedgerImpl::LoadPublishersListCallback,
-          this, _1, _2, _3));
-
-  } else if (timer_id == last_grant_check_timer_id_) {
+  if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
     FetchGrants(std::string(), std::string(),
                 [](ledger::Result _, std::vector<ledger::GrantPtr> __){});
   }
 
   bat_contribution_->OnTimer(timer_id);
+  bat_publisher_->OnTimer(timer_id);
 }
 
 void LedgerImpl::SaveRecurringTip(
@@ -953,68 +886,6 @@ void LedgerImpl::GetOneTimeTips(
                 _1,
                 _2,
                 callback));
-}
-
-void LedgerImpl::LoadPublishersListCallback(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  LogResponse(__func__, response_status_code, "Publisher list", headers);
-  if (response_status_code == net::HTTP_OK && !response.empty()) {
-    bat_publisher_->RefreshPublishersList(response);
-  } else {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Can't fetch publisher list";
-    // error: retry downloading again
-    RefreshPublishersList(true);
-  }
-}
-
-void LedgerImpl::RefreshPublishersList(bool retryAfterError, bool immediately) {
-  uint64_t start_timer_in{ 0ull };
-
-  if (last_pub_load_timer_id_ != 0) {
-    // timer in progress
-    return;
-  }
-
-  uint64_t lastLoadTimestamp =
-        bat_publisher_->getLastPublishersListLoadTimestamp();
-
-  if (immediately) {
-    start_timer_in = 0ull;
-  } else if (retryAfterError) {
-    start_timer_in = retryRequestSetup(60, 300);
-
-    BLOG(this, ledger::LogLevel::LOG_WARNING) <<
-      "Failed to refresh publishesr list, will try again in " <<
-      start_timer_in << " seconds.";
-  } else {
-    uint64_t now = std::time(nullptr);
-
-    // check if lastLoadTimestamp doesn't exist or have erroneous value.
-    // (start_timer_in == 0) is expected to call callback function immediately.
-
-    // time since last successful download
-    uint64_t  time_since_last_download =
-        (lastLoadTimestamp == 0ull || lastLoadTimestamp > now)
-        ? 0ull
-        : now - lastLoadTimestamp;
-
-    uint64_t interval = braveledger_ledger::_publishers_list_load_interval;
-
-    if (now == lastLoadTimestamp) {
-      start_timer_in = interval;
-    } else if (time_since_last_download > 0 &&
-               time_since_last_download < interval) {
-      start_timer_in = interval - time_since_last_download;
-    } else {
-      start_timer_in = 0ull;
-    }
-  }
-
-  // start timer
-  SetTimer(start_timer_in, &last_pub_load_timer_id_);
 }
 
 void LedgerImpl::RefreshGrant(bool retryAfterError) {
@@ -1054,12 +925,6 @@ uint64_t LedgerImpl::retryRequestSetup(uint64_t min_time, uint64_t max_time) {
   DCHECK(max_time > min_time);
   std::uniform_int_distribution <> dist(min_time, max_time);
   return dist(eng);
-}
-
-void LedgerImpl::OnPublishersListSaved(ledger::Result result) {
-  bool retryAfterError = !(ledger::Result::LEDGER_OK == result);
-  bat_publisher_->OnPublishersListSaved(result);
-  RefreshPublishersList(retryAfterError);
 }
 
 bool LedgerImpl::IsWalletCreated() const {
@@ -1577,26 +1442,7 @@ void LedgerImpl::GetTransactionHistory(
 void LedgerImpl::RefreshPublisher(
     const std::string& publisher_key,
     ledger::OnRefreshPublisherCallback callback) {
-  DownloadPublisherList(
-      std::bind(&LedgerImpl::OnRefreshPublisher,
-                this,
-                _1,
-                _2,
-                _3,
-                publisher_key,
-                callback));
-}
-
-void LedgerImpl::OnRefreshPublisher(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    const std::string& publisher_key,
-    ledger::OnRefreshPublisherCallback callback) {
-  LoadPublishersListCallback(response_status_code, response, headers);
-  bat_publisher_->RefreshPublisherVerifiedStatus(
-      publisher_key,
-      callback);
+  bat_publisher_->RefreshPublisher(publisher_key, callback);
 }
 
 scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {

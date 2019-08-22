@@ -9,11 +9,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "bat/ledger/internal/bat_helper.h"
-#include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/bignum.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/publisher/publisher.h"
+#include "bat/ledger/internal/publisher/publisher_server_list.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 #include "mojo/public/cpp/bindings/map.h"
@@ -39,11 +39,36 @@ namespace braveledger_publisher {
 Publisher::Publisher(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   state_(new braveledger_bat_helper::PUBLISHER_STATE_ST),
-  server_list_(ledger::ServerPublisherInfoList()) {
+  server_list_(std::make_unique<PublisherServerList>(ledger, this)) {
   calcScoreConsts(state_->min_publisher_duration_);
 }
 
 Publisher::~Publisher() {
+}
+
+void Publisher::OnTimer(uint32_t timer_id) {
+   server_list_->OnTimer(timer_id);
+}
+
+void Publisher::RefreshPublisher(
+      const std::string& publisher_key,
+      ledger::OnRefreshPublisherCallback callback) {
+  server_list_->Download(std::bind(&Publisher::OnRefreshPublisher,
+          this,
+          _1,
+          publisher_key,
+          callback));
+}
+
+void Publisher::OnRefreshPublisher(
+    const ledger::Result result,
+    const std::string& publisher_key,
+    ledger::OnRefreshPublisherCallback callback) {
+  callback(isVerified(publisher_key));
+}
+
+void Publisher::SetPublisherServerListTimer() {
+  server_list_->SetTimer(false);
 }
 
 void Publisher::calcScoreConsts(const uint64_t& min_duration_seconds) {
@@ -367,7 +392,7 @@ void Publisher::setPublisherMinVisits(const unsigned int visits) {
   saveState();
 }
 
-void Publisher::setPublishersLastRefreshTimestamp(uint64_t ts) {
+void Publisher::SetPublisherServerListTimestamp(uint64_t ts) {
   state_->pubs_load_timestamp_ = ts;
   saveState();
 }
@@ -396,7 +421,7 @@ bool Publisher::getPublisherAllowNonVerified() const {
   return state_->allow_non_verified_;
 }
 
-uint64_t Publisher::getLastPublishersListLoadTimestamp() const {
+uint64_t Publisher::GetPublisherServerListTimestamp() const {
   return state_->pubs_load_timestamp_;
 }
 
@@ -526,9 +551,9 @@ void Publisher::SynopsisNormalizerCallback(
 }
 
 bool Publisher::isVerified(const std::string& publisher_id) {
-  if (server_list_.empty()) {
-    return false;
-  }
+//  if (server_list_.empty()) {
+//    return false;
+//  }
 
   // TODO ADD SQL QUERY
 //  auto result = server_list_.find(publisher_id);
@@ -687,151 +712,6 @@ void Publisher::OnPublisherStateSaved(ledger::Result result) {
     // TODO(anyone) error handling
     return;
   }
-}
-
-void Publisher::RefreshPublishersList(const std::string& json) {
-  // TODO remove as it's in db now
-  ledger_->SavePublishersList(json);
-
-  const auto callback =
-      std::bind(&Publisher::OnParsePublisherList, this, _1);
-  ParsePublisherList(json, callback);
-}
-
-void Publisher::OnParsePublisherList(const ledger::Result result) {
-  if (result == ledger::Result::LEDGER_OK) {
-    ledger_->ContributeUnverifiedPublishers();
-  }
-}
-
-void Publisher::OnPublishersListSaved(ledger::Result result) {
-  uint64_t ts = (ledger::Result::LEDGER_OK == result)
-                ? std::time(nullptr)
-                : 0ull;
-  setPublishersLastRefreshTimestamp(ts);
-}
-
-void Publisher::ParsePublisherList(
-    const std::string& data,
-    ParsePublisherListCallback callback) {
-  ledger::ServerPublisherInfoList list;
-
-  base::Optional<base::Value> value = base::JSONReader::Read(data);
-  if (!value || !value->is_list()) {
-    callback(ledger::Result::LEDGER_ERROR);
-  }
-
-  base::ListValue* publishers = nullptr;
-  if (!value->GetAsList(&publishers)) {
-    callback(ledger::Result::LEDGER_ERROR);
-  }
-
-  for (auto& item : *publishers) {
-    base::ListValue* values = nullptr;
-    if (!item.GetAsList(&values)) {
-      callback(ledger::Result::LEDGER_ERROR);
-    }
-
-    auto publisher = ledger::ServerPublisherInfo::New();
-
-    // Publisher key
-    std::string publisher_key = "";
-    if (!values->GetList()[0].is_string()) {
-      continue;
-    }
-    publisher_key = values->GetList()[0].GetString();
-
-    if (publisher_key.empty()) {
-      continue;
-    }
-
-    publisher->publisher_key = publisher_key;
-
-    // Verified
-    if (!values->GetList()[1].is_bool()) {
-      continue;
-    }
-    publisher->verified = values->GetList()[1].GetBool();
-
-    // Excluded
-    if (!values->GetList()[2].is_bool()) {
-      continue;
-    }
-    publisher->excluded = values->GetList()[2].GetBool();
-
-    // Address
-    if (!values->GetList()[3].is_string()) {
-      continue;
-    }
-    publisher->address = values->GetList()[3].GetString();
-
-    // Banner
-    base::DictionaryValue* banner = nullptr;
-    if (values->GetList()[4].GetAsDictionary(&banner)) {
-      publisher->banner = ParsePublisherBanner(banner);
-    }
-
-    list.push_back(std::move(publisher));
-  }
-
-  if (list.size() == 0) {
-    callback(ledger::Result::LEDGER_ERROR);
-  }
-
-  ledger_->ClearAndInsertServerPublisherList(std::move(list), callback);
-}
-
-ledger::PublisherBannerPtr Publisher::ParsePublisherBanner(
-    base::DictionaryValue* dictionary) {
-  if (!dictionary->is_dict()) {
-    return nullptr;
-  }
-
-  auto banner = ledger::PublisherBanner::New();
-
-  auto* title = dictionary->FindKey("title");
-  if (title && title->is_string()) {
-    banner->title = title->GetString();
-  }
-
-  auto* description = dictionary->FindKey("description");
-  if (description && description->is_string()) {
-    banner->description = description->GetString();
-  }
-
-  auto* background = dictionary->FindKey("backgroundUrl");
-  if (background && background->is_string()) {
-    banner->background = background->GetString();
-
-    if (!banner->background.empty()) {
-      banner->background = "chrome://rewards-image/" + banner->background;
-    }
-  }
-
-  auto* logo = dictionary->FindKey("logoUrl");
-  if (logo && logo->is_string()) {
-    banner->logo = logo->GetString();
-
-    if (!banner->logo.empty()) {
-      banner->logo = "chrome://rewards-image/" + banner->logo;
-    }
-  }
-
-  auto* amounts = dictionary->FindKey("donationAmounts");
-  if (amounts && amounts->is_list()) {
-    for (const auto& it : amounts->GetList()) {
-      banner->amounts.push_back(it.GetInt());
-    }
-  }
-
-  auto* social = dictionary->FindKey("socialLinks");
-  if (social && social->is_dict()) {
-    for (const auto& it : social->DictItems()) {
-      banner->social.insert(std::make_pair(it.first, it.second.GetString()));
-    }
-  }
-
-  return banner;
 }
 
 void Publisher::getPublisherActivityFromUrl(
@@ -1020,12 +900,6 @@ void Publisher::OnPublisherBanner(
   callback(std::move(new_banner));
 }
 
-void Publisher::RefreshPublisherVerifiedStatus(
-    const std::string& publisher_key,
-    ledger::OnRefreshPublisherCallback callback) {
-  callback(isVerified(publisher_key));
-}
-
 void Publisher::SavePublisherProcessed(const std::string& publisher_key) {
   const std::vector<std::string> list = state_->processed_pending_publishers;
   if (std::find(list.begin(), list.end(), publisher_key) == list.end()) {
@@ -1042,9 +916,6 @@ bool Publisher::WasPublisherAlreadyProcessed(
 
 std::string Publisher::GetPublisherAddress(
     const std::string& publisher_key) const {
-  if (server_list_.empty()) {
-    return "";
-  }
 
 //  auto result = server_list_.find(publisher_key);
 //
@@ -1060,4 +931,4 @@ std::string Publisher::GetPublisherAddress(
   return "";
 }
 
-}  // namespace braveledger_publisher
+}  // namespace braveledger_bat_publishers

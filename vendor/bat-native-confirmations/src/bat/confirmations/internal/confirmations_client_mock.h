@@ -84,13 +84,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& publisher_state,
       ledger::LedgerCallbackHandler* handler));
 
-  MOCK_METHOD2(SavePublishersList, void(
-      const std::string& publisher_state,
-      ledger::LedgerCallbackHandler* handler));
-
-  MOCK_METHOD1(LoadPublisherList, void(
-      ledger::LoadPublisherListCallback callback));
-
   MOCK_METHOD1(LoadNicewareList, void(
       ledger::GetNicewareListCallback callback));
 
