@@ -26,15 +26,15 @@ namespace braveledger_bat_helper {
 struct PUBLISHER_STATE_ST;
 }
 
-namespace braveledger_bat_publishers {
+namespace braveledger_publisher {
 
 using ParsePublisherListCallback = std::function<void(const ledger::Result)>;
 
-class BatPublishers : public ledger::LedgerCallbackHandler {
+class Publisher : public ledger::LedgerCallbackHandler {
  public:
-  explicit BatPublishers(bat_ledger::LedgerImpl* ledger);
+  explicit Publisher(bat_ledger::LedgerImpl* ledger);
 
-  ~BatPublishers() override;
+  ~Publisher() override;
 
   bool loadState(const std::string& data);
 
@@ -232,12 +232,12 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   double b2_;
 
   // For testing purposes
-  friend class BatPublishersTest;
-  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, calcScoreConsts);
-  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, concaveScore);
-  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, synopsisNormalizerInternal);
+  friend class PublisherTest;
+  FRIEND_TEST_ALL_PREFIXES(PublisherTest, calcScoreConsts);
+  FRIEND_TEST_ALL_PREFIXES(PublisherTest, concaveScore);
+  FRIEND_TEST_ALL_PREFIXES(PublisherTest, synopsisNormalizerInternal);
 };
 
-}  // namespace braveledger_bat_publishers
+}  // namespace braveledger_publisher
 
 #endif  // BRAVELEDGER_BAT_PUBLISHERS_H_

@@ -328,7 +328,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD2(ClearAndInsertServerPublisherList, void(
       ledger::ServerPublisherInfoList list,
-      ClearAndInsertServerPublisherListCallback callback));
+      ledger::ClearAndInsertServerPublisherListCallback callback));
 };
 
 }  // namespace confirmations
