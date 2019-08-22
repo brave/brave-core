@@ -45,13 +45,6 @@ class MetadataParserHelper: TabEventHandler {
 
             tab.pageMetadata = pageMetadata
             TabEvent.post(.didLoadPageMetadata(pageMetadata), for: tab)
-
-            let userInfo: [String: Any] = [
-                "tabType": tab.type,
-                "pageMetadata": pageMetadata,
-                "tabURL": pageURL
-            ]
-            NotificationCenter.default.post(name: .OnPageMetadataFetched, object: nil, userInfo: userInfo)
         }
     }
 }

@@ -116,13 +116,6 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
             return
         }
 
-        let mainQueue = DispatchQueue.main
-        browserProfile.bookmarks.modelFactory >>== {
-            $0.isBookmarked(displayURL).uponQueue(mainQueue) {
-                self.isBookmarked = $0.successValue ?? false
-            }
-        }
-
         self.ignoreURL = isIgnoredURL(displayURL)
     }
 

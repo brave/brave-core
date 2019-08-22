@@ -120,16 +120,6 @@ extension BrowserDB {
         return nil
     }
 
-    func getRecordByURL(_ url: String, fromTable table: String) -> BookmarkMirrorItem {
-        let args: Args = [url]
-        return self.runQuery("SELECT * FROM \(table) WHERE bmkUri = ?", args: args, factory: BookmarkFactory.mirrorItemFactory).value.successValue![0]!
-    }
-
-    func getRecordByGUID(_ guid: GUID, fromTable table: String) -> BookmarkMirrorItem {
-        let args: Args = [guid]
-        return self.runQuery("SELECT * FROM \(table) WHERE guid = ?", args: args, factory: BookmarkFactory.mirrorItemFactory).value.successValue![0]!
-    }
-
     func getChildrenOfFolder(_ folder: GUID) -> [GUID] {
         let args: Args = [folder]
         let sql = """

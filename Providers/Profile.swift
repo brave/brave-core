@@ -48,16 +48,9 @@ class ProfileFileAccessor: FileAccessor {
  * A Profile manages access to the user's data.
  */
 protocol Profile: class {
-    var bookmarks: BookmarksModelFactorySource & KeywordSearchSource & ShareToDestination & SyncableBookmarks & LocalItemSource & MirrorItemSource { get }
-    // var favicons: Favicons { get }
     var prefs: Prefs { get }
-    var queue: TabQueue { get }
     var searchEngines: SearchEngines { get }
     var files: FileAccessor { get }
-    var history: BrowserHistory & SyncableHistory & ResettableSyncStorage { get }
-    var metadata: Metadata { get }
-    var recommendations: HistoryRecommendations { get }
-    var favicons: Favicons { get }
     var logins: BrowserLogins & SyncableLogins & ResettableSyncStorage { get }
     var certStore: CertStore { get }
     var recentlyClosedTabs: ClosedTabsStore { get }
@@ -71,14 +64,6 @@ protocol Profile: class {
     // I got really weird EXC_BAD_ACCESS errors on a non-null reference when I made this a getter.
     // Similar to <http://stackoverflow.com/questions/26029317/exc-bad-access-when-indirectly-accessing-inherited-member-in-swift>.
     func localName() -> String
-
-    // Do we have an account that (as far as we know) is in a syncable state?
-    func getClients() -> Deferred<Maybe<[RemoteClient]>>
-    func getCachedClients()-> Deferred<Maybe<[RemoteClient]>>
-    func getClientsAndTabs() -> Deferred<Maybe<[ClientAndTabs]>>
-    func getCachedClientsAndTabs() -> Deferred<Maybe<[ClientAndTabs]>>
-
-    @discardableResult func storeTabs(_ tabs: [RemoteTab]) -> Deferred<Maybe<Int>>
 }
 
 fileprivate let PrefKeyClientID = "PrefKeyClientID"
@@ -96,14 +81,14 @@ extension Profile {
 }
 
 open class BrowserProfile: Profile {
-  
+    
+    
     fileprivate let name: String
     fileprivate let keychain: KeychainWrapper
     var isShutdown = false
 
     internal let files: FileAccessor
 
-    let db: BrowserDB
     let loginsDB: BrowserDB
 
     private static var loginsKey: String? {
@@ -156,12 +141,6 @@ open class BrowserProfile: Profile {
 
         // Set up our database handles.
         self.loginsDB = BrowserDB(filename: "logins.db", secretKey: BrowserProfile.loginsKey, schema: LoginsSchema(), files: files)
-        self.db = BrowserDB(filename: "browser.db", schema: BrowserSchema(), files: files)
-
-        let notificationCenter = NotificationCenter.default
-
-        notificationCenter.addObserver(self, selector: #selector(onLocationChange), name: .OnLocationChange, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(onPageMetadataFetched), name: .OnPageMetadataFetched, object: nil)
 
         if isNewProfile {
             log.info("New profile. Removing old account metadata.")
@@ -178,55 +157,16 @@ open class BrowserProfile: Profile {
         log.debug("Reopening profile.")
         isShutdown = false
         
-        db.reopenIfClosed()
         loginsDB.reopenIfClosed()
     }
 
     func shutdown() {
         log.debug("Shutting down profile.")
         isShutdown = true
-
-        db.forceClose()
+        
         loginsDB.forceClose()
     }
-
-    @objc
-    func onLocationChange(notification: NSNotification) {
-        if let v = notification.userInfo!["visitType"] as? Int,
-           let visitType = VisitType(rawValue: v),
-           let url = notification.userInfo!["url"] as? URL, !isIgnoredURL(url),
-           let title = notification.userInfo!["title"] as? NSString {
-
-            // Only record local vists if the change notification originated from a non-private tab
-            let tabType: TabType = notification.userInfo!["tabType"] as? TabType ?? .regular
-            if !tabType.isPrivate {
-                let site = Site(url: url.absoluteString, title: title as String)
-                let visit = SiteVisit(site: site, date: Date.nowMicroseconds(), type: visitType)
-                history.addLocalVisit(visit)
-            }
-
-            history.setTopSitesNeedsInvalidation()
-        } else {
-            log.debug("Ignoring navigation.")
-        }
-    }
-
-    @objc
-    func onPageMetadataFetched(notification: NSNotification) {
-        let tabType = notification.userInfo?["tabType"] as? TabType ?? .regular
-        guard !tabType.isPrivate else {
-            log.debug("Private mode - Ignoring page metadata.")
-            return
-        }
-        guard let pageURL = notification.userInfo?["tabURL"] as? URL,
-              let pageMetadata = notification.userInfo?["pageMetadata"] as? PageMetadata else {
-            log.debug("Metadata notification doesn't contain any metadata!")
-            return
-        }
-        let defaultMetadataTTL: UInt64 = 3 * 24 * 60 * 60 * 1000 // 3 days for the metadata to live
-        self.metadata.storeMetadata(pageMetadata, forPageURL: pageURL, expireAt: defaultMetadataTTL + Date.now())
-    }
-
+    
     deinit {
         log.debug("Deiniting profile \(self.localName()).")
     }
@@ -235,49 +175,8 @@ open class BrowserProfile: Profile {
         return name
     }
 
-    lazy var queue: TabQueue = {
-        withExtendedLifetime(self.history) {
-            return SQLiteQueue(db: self.db)
-        }
-    }()
-
-    /**
-     * Favicons, history, and bookmarks are all stored in one intermeshed
-     * collection of tables.
-     *
-     * Any other class that needs to access any one of these should ensure
-     * that this is initialized first.
-     */
-    fileprivate lazy var places: BrowserHistory & Favicons & SyncableHistory & ResettableSyncStorage & HistoryRecommendations  = {
-        return SQLiteHistory(db: self.db, prefs: self.prefs)
-    }()
-
-    var favicons: Favicons {
-        return self.places
-    }
-
-    var history: BrowserHistory & SyncableHistory & ResettableSyncStorage {
-        return self.places
-    }
-
     lazy var panelDataObservers: PanelDataObservers = {
         return PanelDataObservers(profile: self)
-    }()
-
-    lazy var metadata: Metadata = {
-        return SQLiteMetadata(db: self.db)
-    }()
-
-    var recommendations: HistoryRecommendations {
-        return self.places
-    }
-
-    lazy var bookmarks: BookmarksModelFactorySource & KeywordSearchSource & ShareToDestination & SyncableBookmarks & LocalItemSource & MirrorItemSource = {
-        // Make sure the rest of our tables are initialized before we try to read them!
-        // This expression is for side-effects only.
-        withExtendedLifetime(self.places) {
-            return MergedSQLiteBookmarks(db: self.db)
-        }
     }()
 
     lazy var searchEngines: SearchEngines = {
@@ -292,10 +191,6 @@ open class BrowserProfile: Profile {
         return self.makePrefs()
     }()
 
-    lazy var remoteClientsAndTabs: RemoteClientsAndTabs & ResettableSyncStorage & AccountRemovalDelegate & RemoteDevices = {
-        return SQLiteRemoteClientsAndTabs(db: self.db)
-    }()
-
     lazy var certStore: CertStore = {
         return CertStore()
     }()
@@ -303,26 +198,6 @@ open class BrowserProfile: Profile {
     lazy var recentlyClosedTabs: ClosedTabsStore = {
         return ClosedTabsStore(prefs: self.prefs)
     }()
-
-    public func getClients() -> Deferred<Maybe<[RemoteClient]>> {
-        return self.remoteClientsAndTabs.getClients()
-    }
-
-    public func getCachedClients()-> Deferred<Maybe<[RemoteClient]>> {
-        return self.remoteClientsAndTabs.getClients()
-    }
-
-    public func getClientsAndTabs() -> Deferred<Maybe<[ClientAndTabs]>> {
-        return self.remoteClientsAndTabs.getClientsAndTabs()
-    }
-
-    public func getCachedClientsAndTabs() -> Deferred<Maybe<[ClientAndTabs]>> {
-        return self.remoteClientsAndTabs.getClientsAndTabs()
-    }
-
-    func storeTabs(_ tabs: [RemoteTab]) -> Deferred<Maybe<Int>> {
-        return self.remoteClientsAndTabs.insertOrUpdateTabs(tabs)
-    }
 
     lazy var logins: BrowserLogins & SyncableLogins & ResettableSyncStorage = {
         return SQLiteLogins(db: self.loginsDB)

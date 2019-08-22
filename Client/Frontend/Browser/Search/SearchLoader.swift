@@ -25,13 +25,11 @@ typealias SearchLoader = _SearchLoader<AnyObject, AnyObject>
 class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
     fileprivate let profile: Profile
     fileprivate let topToolbar: TopToolbarView
-    fileprivate let frecentHistory: FrecentHistory
     fileprivate var inProgress: Cancellable?
 
     init(profile: Profile, topToolbar: TopToolbarView) {
         self.profile = profile
         self.topToolbar = topToolbar
-        frecentHistory = profile.history.getFrecentHistory()
 
         super.init()
     }
