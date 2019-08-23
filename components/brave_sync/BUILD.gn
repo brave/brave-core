@@ -66,24 +66,26 @@ source_set("prefs") {
   ]
 }
 
+source_set("switches") {
+  sources = [
+    "switches.cc",
+    "switches.h",
+  ]
+
+  deps = [
+    "//base",
+  ]
+}
+
 source_set("public") {
   sources = [
     "public/brave_profile_sync_service.h",
   ]
 
   deps = [
+    ":core",
     "buildflags",
   ]
-
-  if (enable_brave_sync) {
-    deps += [
-      ":core",
-
-      # For IsBraveSyncAllowedByFlag in
-      # components/sync/driver/sync_driver_switches.cc
-      "//brave/common:switches",
-    ]
-  }
 }
 
 source_set("core") {
@@ -103,6 +105,7 @@ source_set("core") {
   deps = [
     ":jslib_messages",
     ":prefs",
+    ":switches",
     "//base",
     "//components/bookmarks/browser",
     "//crypto",

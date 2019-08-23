@@ -9,13 +9,16 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/common/brave_switches.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#include "brave/components/brave_sync/switches.h"
+#endif
 
 namespace {
 bool IsBraveCommands(int id) {
@@ -93,7 +96,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     UpdateCommandForBraveWallet();
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-    if (switches::IsBraveSyncAllowedByFlag())
+    if (brave_sync::switches::IsBraveSyncAllowedByFlag())
       UpdateCommandForBraveSync();
 #endif
   }

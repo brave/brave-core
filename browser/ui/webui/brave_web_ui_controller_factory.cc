@@ -10,7 +10,6 @@
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
-#include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -36,6 +35,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "brave/browser/ui/webui/sync/sync_ui.h"
+#include "brave/components/brave_sync/switches.h"
 #endif
 
 using content::WebUI;
@@ -64,7 +64,8 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new BraveWalletUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  } else if (host == kBraveUISyncHost && switches::IsBraveSyncAllowedByFlag()) {
+  } else if (host == kBraveUISyncHost &&
+             brave_sync::switches::IsBraveSyncAllowedByFlag()) {
     return new SyncUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -107,7 +108,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == chrome::kChromeUIWelcomeURL ||
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
       (url.host_piece() == kBraveUISyncHost &&
-       switches::IsBraveSyncAllowedByFlag()) ||
+       brave_sync::switches::IsBraveSyncAllowedByFlag()) ||
 #endif
       url.host_piece() == chrome::kChromeUINewTabHost ||
       url.host_piece() == chrome::kChromeUISettingsHost) {

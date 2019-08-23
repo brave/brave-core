@@ -7,20 +7,23 @@
 
 #include <string>
 
-#include "base/command_line.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
-#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/version_info.h"
-#include "brave/common/brave_switches.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "content/public/browser/web_ui_data_source.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#include "brave/components/brave_sync/switches.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
@@ -51,10 +54,12 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                  kBraveSettingsResources[i].value);
   }
 
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
   html_source->AddBoolean("isSyncDisabled",
-                          command_line.HasSwitch(switches::kDisableBraveSync));
+                          !brave_sync::switches::IsBraveSyncAllowedByFlag());
+#else
+  html_source->AddBoolean("isSyncDisabled", true);
+#endif
   html_source->AddString("braveProductVersion",
     version_info::GetBraveVersionWithoutChromiumMajorVersion());
   NavigationBarDataProvider::Initialize(html_source);
