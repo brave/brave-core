@@ -112,10 +112,10 @@ void BookmarkChangeProcessor::MoveSyncNode(
 
 #define BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_2   \
   int new_index =                                                         \
-      brave_sync::GetIndexByCompareOrderStartFrom(dst->parent(), dst, 0); \
-  if (src.GetPositionIndex() != new_index) {                              \
-    to_reposition.insert(std::make_pair(new_index, dst));                 \
-    MoveSyncNode(new_index, dst, trans);                                  \
+      brave_sync::GetIndexByCompareOrderStartFrom(parent, it->second, 0); \
+  if (it->first != new_index) {                                           \
+    model->Move(it->second, parent, new_index);                           \
+    MoveSyncNode(new_index, it->second, trans);                           \
   } else  // NOLINT
 
 #include "../../../../components/sync_bookmarks/bookmark_change_processor.cc"  // NOLINT
