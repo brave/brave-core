@@ -1,5 +1,5 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
-index 35a73a07bbcdd8aeba13acf37c6754aadb039768..67cb25e20a9c2eb1f70661de4e03c956b7a6a6bc 100644
+index 35a73a07bbcdd8aeba13acf37c6754aadb039768..ce1af3e95e3745bf3cb06ecd5a94ed29b3ec4355 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.cc
 +++ b/components/sync_bookmarks/bookmark_change_processor.cc
 @@ -87,6 +87,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
@@ -42,7 +42,7 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..67cb25e20a9c2eb1f70661de4e03c956
        if (!PlaceSyncNode(MOVE, node, i, &trans, &sync_child,
                           model_associator_)) {
          syncer::SyncError error(FROM_HERE,
-@@ -718,9 +721,11 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+@@ -718,6 +721,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
                     << src.GetBookmarkSpecifics().url();
          continue;
        }
@@ -50,7 +50,11 @@ index 35a73a07bbcdd8aeba13acf37c6754aadb039768..67cb25e20a9c2eb1f70661de4e03c956
        model_associator_->Associate(dst, src);
      }
  
+@@ -730,6 +734,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+   // sync order, left to right, moving them into their proper positions.
+   for (auto it = to_reposition.begin(); it != to_reposition.end(); ++it) {
+     const BookmarkNode* parent = it->second->parent();
 +    BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_2
-     to_reposition.insert(std::make_pair(src.GetPositionIndex(), dst));
-     bookmark_model_->SetNodeSyncTransactionVersion(dst, model_version);
+     model->Move(it->second, parent, it->first);
    }
+ 
