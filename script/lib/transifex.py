@@ -27,6 +27,10 @@ def transifex_name_from_filename(source_file_path, filename):
         return 'brave_extension'
     elif 'brave_rewards' in source_file_path:
         return 'rewards_extension'
+    elif 'ethereum-remote-client/brave/app' in source_file_path:
+        return 'brave_ethereum_remote_client_extension'
+    elif 'ethereum-remote-client/app' in source_file_path:
+        return 'ethereum_remote_client_extension'
     assert False, ('JSON files should be mapped explicitly, this '
                    'one is not: ' + source_file_path)
 
@@ -297,7 +301,7 @@ def get_json_strings(json_file_path):
     for key in data:
         string_name = key + '.message'
         string_value = data[key]["message"]
-        string_desc = data[key]["description"]
+        string_desc = data[key]["description"] if "description" in data[key] else ""
         string_tuple = (string_name, string_value, string_desc)
         strings.append(string_tuple)
     return strings
@@ -430,7 +434,7 @@ def braveify(string_value):
 
 def upload_missing_translation_to_transifex(source_string_path, lang_code,
                                             filename, string_name,
-                                            string_value, translated_value):
+                                            translated_value):
     """Uploads the specified string to the specified language code."""
     url_part = 'project/%s/resource/%s/translation/%s/string/%s/' % (
         transifex_project_name, transifex_name_from_filename(
@@ -449,9 +453,38 @@ def upload_missing_translation_to_transifex(source_string_path, lang_code,
     r = requests.put(url, json=payload, auth=get_auth(), headers=headers)
     assert r.status_code >= 200 and r.status_code <= 299, (
         'Aborting. Status code %d: %s' % (r.status_code, r.content))
-    print 'Uploaded %s string: %s -- %s...' % (
-        lang_code, string_name, translated_value[:12].encode('utf-8'))
+    print 'Uploaded %s string: %s...' % (lang_code, string_name)
     return True
+
+
+def upload_missing_json_translations_to_transifex(source_string_path):
+    source_strings = get_json_strings(source_string_path)
+    langs_dir_path = os.path.dirname(os.path.dirname(source_string_path))
+    lang_codes = get_acceptable_json_lang_codes(langs_dir_path)
+    filename = transifex_name_from_filename(source_string_path, '')
+    for lang_code in lang_codes:
+        l10n_path = os.path.join(langs_dir_path, lang_code, 'messages.json')
+        l10n_strings = get_json_strings(l10n_path)
+        l10n_dict = {string_name: string_value for idx, (string_name,
+                     string_value, desc) in enumerate(l10n_strings)}
+        for idx, (
+                string_name, string_value, desc) in enumerate(source_strings):
+            if string_name not in l10n_dict:
+                # print 'Skipping string name %s for lang %s, not existing' % (
+                #    string_name, lang_code)
+                continue
+            if l10n_dict[string_name] == string_value:
+                # print 'Skipping string name %s for lang %s, not localized' % (
+                #    string_name, lang_code)
+                continue
+            translation_value = (l10n_dict[string_name]
+                                 .replace("\"", "\\\"")
+                                 .replace("\r", "\\r")
+                                 .replace("\n", "\\n"))
+            upload_missing_translation_to_transifex(source_string_path,
+                                                    lang_code, filename,
+                                                    string_name.split(".")[0],
+                                                    translation_value)
 
 
 def upload_missing_translations_to_transifex(source_string_path, lang_code,
@@ -470,7 +503,7 @@ def upload_missing_translations_to_transifex(source_string_path, lang_code,
             # 'string ID: %s' % (lang_code, string_name)
             upload_missing_translation_to_transifex(
                 source_string_path, lang_code, filename, string_name,
-                string_value, chromium_xtb_strings[chromium_string_fp])
+                chromium_xtb_strings[chromium_string_fp])
 
 
 def fix_missing_xtb_strings_from_chromium_xtb_strings(
@@ -588,6 +621,26 @@ def upload_source_files_to_transifex(source_file_path, filename):
     assert uploaded, 'Could not upload xml file'
 
 
+def get_acceptable_json_lang_codes(langs_dir_path):
+    lang_codes = set(os.listdir(langs_dir_path))
+    # Source language for Brave locales
+    lang_codes.discard('en_US')
+
+    # Source language for ethereum-remote-client
+    lang_codes.discard('en')
+
+    # Files that are not locales
+    lang_codes.discard('.DS_Store')
+    lang_codes.discard('index.json')
+
+    # ethereum-remote-client has these unsupported locales
+    lang_codes.discard('tml')
+    lang_codes.discard('hn')
+    lang_codes.discard('ph')
+    lang_codes.discard('ht')
+    return lang_codes
+
+
 def pull_source_files_from_transifex(source_file_path, filename):
     ext = os.path.splitext(source_file_path)[1]
     if ext == '.grd':
@@ -608,18 +661,18 @@ def pull_source_files_from_transifex(source_file_path, filename):
                 f.write(xtb_content)
     elif ext == '.json':
         langs_dir_path = os.path.dirname(os.path.dirname(source_file_path))
-        lang_codes = set(os.listdir(langs_dir_path))
-        lang_codes.discard('en_US')
-        lang_codes.discard('.DS_Store')
+        lang_codes = get_acceptable_json_lang_codes(langs_dir_path)
         for lang_code in lang_codes:
             print 'getting filename %s for lang_code %s' % (filename,
                                                             lang_code)
             content = get_transifex_translation_file_content(source_file_path,
                                                              filename,
                                                              lang_code)
-            localized_translation_path = os.path.join(langs_dir_path,
-                                                      lang_code,
-                                                      'messages.json')
+            localized_translation_path = (
+                os.path.join(langs_dir_path, lang_code, 'messages.json'))
+            dir_path = os.path.dirname(localized_translation_path)
+            if not os.path.exists(dir_path):
+                os.mkdir(dir_path)
             with open(localized_translation_path, mode='w') as f:
                 f.write(content)
 
