@@ -167,6 +167,11 @@ class SettingsViewController: TableViewController {
             general.rows.append(row)
         }
         
+        if #available(iOS 13.0, *), UIDevice.isIpad {
+            general.rows.append(BoolRow(title: Strings.AlwaysRequestDesktopSite,
+            option: Preferences.General.alwaysRequestDesktopSite))
+        }
+        
         return general
     }()
     

@@ -201,6 +201,7 @@ class BrowserViewController: UIViewController {
         // Observe some user preferences
         Preferences.Privacy.privateBrowsingOnly.observe(from: self)
         Preferences.General.tabBarVisibility.observe(from: self)
+        Preferences.General.alwaysRequestDesktopSite.observe(from: self)
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         Preferences.Privacy.blockAllCookies.observe(from: self)
         // Lists need to be compiled before attempting tab restoration
@@ -1092,7 +1093,12 @@ class BrowserViewController: UIViewController {
     func restoreSpoofedUserAgentIfRequired(_ webView: WKWebView, newRequest: URLRequest) {
         // Restore any non-default UA from the request's header
         let ua = newRequest.value(forHTTPHeaderField: "User-Agent")
-        webView.customUserAgent = ua != UserAgent.defaultUserAgent() ? ua : nil
+        
+        if #available(iOS 13.0, *) {
+            webView.customUserAgent = Preferences.General.alwaysRequestDesktopSite.value == UserAgent.isDesktopUA(ua) ? nil : ua
+        } else {
+            webView.customUserAgent = ua == UserAgent.defaultUserAgent() ? nil : ua
+        }
     }
 
     fileprivate func presentActivityViewController(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
@@ -1224,7 +1230,13 @@ class BrowserViewController: UIViewController {
         }
         
         // Remember whether or not a desktop site was requested
-        tab.desktopSite = webView.customUserAgent?.isEmpty == false
+        tab.desktopSite = UserAgent.isDesktopUA(webView.customUserAgent)
+        
+        if #available(iOS 13.0, *), UIDevice.isIpad {
+            if webView.customUserAgent?.isEmpty == true {
+                tab.desktopSite = Preferences.General.alwaysRequestDesktopSite.value
+            }
+        }
     }
     
     // MARK: - Browser PIN Callout
@@ -2951,6 +2963,9 @@ extension BrowserViewController: PreferencesObserver {
             setupTabs()
             updateTabsBarVisibility()
             updateApplicationShortcuts()
+        case Preferences.General.alwaysRequestDesktopSite.key:
+            tabManager.reset()
+            self.tabManager.reloadSelectedTab()
         case Preferences.Shields.blockAdsAndTracking.key,
              Preferences.Shields.httpsEverywhere.key,
              Preferences.Shields.blockScripts.key,

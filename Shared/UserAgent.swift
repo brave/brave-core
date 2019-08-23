@@ -104,7 +104,7 @@ open class UserAgent {
             print("Error: Unable to determine platform in UA.")
             return String(userAgent)
         }
-        userAgent.replaceCharacters(in: platformMatch.range, with: "(Macintosh; Intel Mac OS X 10_11_1)")
+        userAgent.replaceCharacters(in: platformMatch.range, with: "(Macintosh; Intel Mac OS X 10_15)")
 
         // Strip mobile section
         let mobileRegex = try? NSRegularExpression(pattern: " FxiOS/[^ ]+ Mobile/[^ ]+", options: [])
@@ -115,5 +115,19 @@ open class UserAgent {
         userAgent.replaceCharacters(in: mobileMatch.range, with: "")
 
         return String(userAgent)
+    }
+    
+    public static func isDesktopUA(_ userAgent: String?) -> Bool {
+        if let userAgent = userAgent, !userAgent.isEmpty {
+            return !userAgent.lowercased().contains("mobile")
+        }
+        
+        //on iOS 13 iPad, we do not require a custom user-agent for Desktop
+        if #available(iOS 13.0, *), UIDevice.isIpad {
+            return true
+        }
+        
+        //However, for iPhone we do..
+        return false
     }
 }
