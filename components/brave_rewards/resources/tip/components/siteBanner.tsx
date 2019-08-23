@@ -85,11 +85,11 @@ class Banner extends React.Component<Props, State> {
   generateSocialLinks = () => {
     const publisher = this.props.publisher
 
-    if (!publisher || !publisher.social) {
+    if (!publisher || !publisher.links) {
       return []
     }
 
-    const socialLinks = publisher.social
+    const socialLinks = publisher.links
 
     // TODO export social type from site banner component
     let result = [] as any

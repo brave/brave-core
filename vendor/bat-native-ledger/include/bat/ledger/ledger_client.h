@@ -81,6 +81,8 @@ using DeleteActivityInfoCallback = std::function<void(const ledger::Result)>;
 using SaveRecurringTipCallback = std::function<void(const Result)>;
 using ClearAndInsertServerPublisherListCallback =
     std::function<void(const Result)>;
+using GetServerPublisherInfoCallback =
+    std::function<void(ledger::ServerPublisherInfoPtr)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -273,6 +275,10 @@ class LEDGER_EXPORT LedgerClient {
   virtual void ClearAndInsertServerPublisherList(
       ledger::ServerPublisherInfoList list,
       ledger::ClearAndInsertServerPublisherListCallback callback) = 0;
+
+  virtual void GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) = 0;
 };
 
 }  // namespace ledger

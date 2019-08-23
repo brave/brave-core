@@ -277,10 +277,10 @@ ledger::PublisherBannerPtr PublisherServerList::ParsePublisherBanner(
     }
   }
 
-  auto* social = dictionary->FindKey("socialLinks");
-  if (social && social->is_dict()) {
-    for (const auto& it : social->DictItems()) {
-      banner->social.insert(std::make_pair(it.first, it.second.GetString()));
+  auto* links = dictionary->FindKey("socialLinks");
+  if (links && links->is_dict()) {
+    for (const auto& it : links->DictItems()) {
+      banner->links.insert(std::make_pair(it.first, it.second.GetString()));
     }
   }
 

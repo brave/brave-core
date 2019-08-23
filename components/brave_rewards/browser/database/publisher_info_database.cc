@@ -179,11 +179,12 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "ci.probi, ci.date, pi.verified, pi.provider "
+      "ci.probi, ci.date, spi.verified, pi.provider "
       "FROM contribution_info as ci "
       "INNER JOIN publisher_info AS pi ON ci.publisher_id = pi.publisher_id "
-      "AND ci.month = ? AND ci.year = ? "
-      "AND ci.category = ?"));
+      "LEFT JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = pi.publisher_id "
+      "WHERE ci.month = ? AND ci.year = ? AND ci.category = ?"));
 
   info_sql.BindInt(0, month);
   info_sql.BindInt(1, year);
@@ -225,7 +226,6 @@ bool PublisherInfoDatabase::CreatePublisherInfoTable() {
   sql.append(
       "("
       "publisher_id LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
-      "verified BOOLEAN DEFAULT 0 NOT NULL,"
       "excluded INTEGER DEFAULT 0 NOT NULL,"
       "name TEXT NOT NULL,"
       "favIcon TEXT NOT NULL,"
@@ -254,21 +254,20 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   sql::Statement publisher_info_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE,
                                  "INSERT OR REPLACE INTO publisher_info "
-                                 "(publisher_id, verified, excluded, "
+                                 "(publisher_id, excluded, "
                                  "name, url, provider, favIcon) "
-                                 "VALUES (?, ?, ?, ?, ?, ?, "
+                                 "VALUES (?, ?, ?, ?, ?, "
                                  "(SELECT IFNULL( "
                                  "(SELECT favicon FROM publisher_info "
                                  "WHERE publisher_id = ?), \"\"))"
                                  ")"));
 
   publisher_info_statement.BindString(0, info.id);
-  publisher_info_statement.BindBool(1, info.verified);
-  publisher_info_statement.BindInt(2, static_cast<int>(info.excluded));
-  publisher_info_statement.BindString(3, info.name);
-  publisher_info_statement.BindString(4, info.url);
-  publisher_info_statement.BindString(5, info.provider);
-  publisher_info_statement.BindString(6, info.id);
+  publisher_info_statement.BindInt(1, static_cast<int>(info.excluded));
+  publisher_info_statement.BindString(2, info.name);
+  publisher_info_statement.BindString(3, info.url);
+  publisher_info_statement.BindString(4, info.provider);
+  publisher_info_statement.BindString(5, info.id);
 
   publisher_info_statement.Run();
 
@@ -304,8 +303,12 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
   }
 
   sql::Statement info_sql(db_.GetUniqueStatement(
-      "SELECT publisher_id, name, url, favIcon, provider, verified, excluded "
-      "FROM publisher_info WHERE publisher_id=?"));
+      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, pi.provider, "
+      "spi.verified, pi.excluded "
+      "FROM publisher_info as pi "
+      "LEFT JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = pi.publisher_id "
+      "WHERE publisher_id=?"));
 
   info_sql.BindString(0, publisher_key);
 
@@ -340,12 +343,15 @@ PublisherInfoDatabase::GetPanelPublisher(
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "pi.provider, pi.verified, pi.excluded, "
+      "pi.provider, spi.verified, pi.excluded, "
       "("
       "SELECT IFNULL(percent, 0) FROM activity_info WHERE "
       "publisher_id = ? AND reconcile_stamp = ? "
       ") as percent "
-      "FROM publisher_info AS pi WHERE pi.publisher_id = ? LIMIT 1"));
+      "FROM publisher_info AS pi "
+      "LEFT JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = pi.publisher_id "
+      "WHERE pi.publisher_id = ? LIMIT 1"));
 
   info_sql.BindString(0, filter->id);
   info_sql.BindInt64(1, filter->reconcile_stamp);
@@ -513,12 +519,14 @@ bool PublisherInfoDatabase::GetActivityList(
   }
 
   std::string query = "SELECT ai.publisher_id, ai.duration, ai.score, "
-                      "ai.percent, ai.weight, pi.verified, pi.excluded, "
+                      "ai.percent, ai.weight, spi.verified, pi.excluded, "
                       "pi.name, pi.url, pi.provider, "
                       "pi.favIcon, ai.reconcile_stamp, ai.visits "
                       "FROM activity_info AS ai "
                       "INNER JOIN publisher_info AS pi "
                       "ON ai.publisher_id = pi.publisher_id "
+                      "LEFT JOIN server_publisher_info AS spi "
+                      "ON spi.publisher_key = pi.publisher_id "
                       "WHERE 1 = 1";
 
   if (!filter->id.empty()) {
@@ -553,7 +561,7 @@ bool PublisherInfoDatabase::GetActivityList(
   }
 
   if (!filter->non_verified) {
-    query += " AND pi.verified = 1";
+    query += " AND spi.verified = 1";
   }
 
   for (const auto& it : filter->order_by) {
@@ -713,9 +721,11 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "pi.provider, pi.verified, pi.excluded "
+      "pi.provider, spi.verified, pi.excluded "
       "FROM media_publisher_info as mpi "
       "INNER JOIN publisher_info AS pi ON mpi.publisher_id = pi.publisher_id "
+      "LEFT JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = pi.publisher_id "
       "WHERE mpi.media_key=?"));
 
   info_sql.BindString(0, media_key);
@@ -751,9 +761,12 @@ bool PublisherInfoDatabase::GetExcludedList(
   }
 
   // We will use every attribute from publisher_info
-  std::string query = "SELECT publisher_id, verified, name,"
-                      "favicon, url, provider "
-                      "FROM publisher_info WHERE excluded = 1";
+  std::string query = "SELECT pi.publisher_id, spi.verified, pi.name,"
+                      "pi.favicon, pi.url, pi.provider "
+                      "FROM publisher_info as pi "
+                      "LEFT JOIN server_publisher_info AS spi "
+                      "ON spi.publisher_key = pi.publisher_id "
+                      "WHERE pi.excluded = 1";
 
   sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
 
@@ -849,9 +862,11 @@ void PublisherInfoDatabase::GetRecurringTips(
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "rd.amount, rd.added_date, pi.verified, pi.provider "
+      "rd.amount, rd.added_date, spi.verified, pi.provider "
       "FROM recurring_donation as rd "
-      "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
+      "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "
+      "LEFT JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = pi.publisher_id "));
 
   while (info_sql.Step()) {
     auto publisher = ledger::PublisherInfo::New();
@@ -997,10 +1012,12 @@ void PublisherInfoDatabase::GetPendingContributions(
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "pi.verified, pi.provider, pc.amount, pc.added_date, "
+      "spi.verified, pi.provider, pc.amount, pc.added_date, "
       "pc.viewing_id, pc.category "
       "FROM pending_contribution as pc "
-      "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id"));
+      "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
+      "LEFT JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = pi.publisher_id "));
 
   while (info_sql.Step()) {
     auto info = ledger::PendingContributionInfo::New();
@@ -1079,7 +1096,30 @@ bool PublisherInfoDatabase::CreateServerPublisherIndex() {
 
 bool PublisherInfoDatabase::ClearAndInsertServerPublisherList(
     const ledger::ServerPublisherInfoList& list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
   return server_publisher_info_->ClearAndInsertList(&GetDB(), list);
+}
+
+ledger::ServerPublisherInfoPtr PublisherInfoDatabase::GetServerPublisherInfo(
+    const std::string& publisher_key) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return nullptr;
+  }
+
+  return server_publisher_info_->GetRecord(&GetDB(), publisher_key);
 }
 
 // Other -------------------------------------------------------------------

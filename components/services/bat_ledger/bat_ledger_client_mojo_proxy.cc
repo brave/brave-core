@@ -884,4 +884,18 @@ void BatLedgerClientMojoProxy::ClearAndInsertServerPublisherList(
       base::BindOnce(&OnClearAndInsertServerPublisherList, std::move(callback)));
 }
 
+void OnGetServerPublisherInfo(
+  const ledger::GetServerPublisherInfoCallback& callback,
+  ledger::ServerPublisherInfoPtr info) {
+  callback(std::move(info));
+}
+
+void BatLedgerClientMojoProxy::GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) {
+  bat_ledger_client_->GetServerPublisherInfo(
+      publisher_key,
+      base::BindOnce(&OnGetServerPublisherInfo, std::move(callback)));
+}
+
 }  // namespace bat_ledger

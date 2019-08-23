@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <bat/ledger/publisher_info.h>
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_proxy.h"
 
 #include "base/logging.h"
@@ -900,6 +901,30 @@ void LedgerClientMojoProxy::ClearAndInsertServerPublisherList(
   ledger_client_->ClearAndInsertServerPublisherList(
       std::move(list),
       std::bind(LedgerClientMojoProxy::OnClearAndInsertServerPublisherList,
+                holder,
+                _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnGetServerPublisherInfo(
+    CallbackHolder<GetServerPublisherInfoCallback>* holder,
+    ledger::ServerPublisherInfoPtr info) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(info));
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetServerPublisherInfo(
+    const std::string& publisher_key,
+    GetServerPublisherInfoCallback callback) {
+  auto* holder = new CallbackHolder<GetServerPublisherInfoCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->GetServerPublisherInfo(
+      publisher_key,
+      std::bind(LedgerClientMojoProxy::OnGetServerPublisherInfo,
                 holder,
                 _1));
 }

@@ -16,9 +16,7 @@
 namespace brave_rewards {
 
 DatabaseServerPublisherInfo::DatabaseServerPublisherInfo() :
-    banner_(std::make_unique<DatabaseServerPublisherBanner>()),
-    links_(std::make_unique<DatabaseServerPublisherLinks>()),
-    amounts_(std::make_unique<DatabaseServerPublisherAmounts>()) {
+    banner_(std::make_unique<DatabaseServerPublisherBanner>()) {
 }
 
 DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() {
@@ -35,7 +33,7 @@ bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
       "publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
       "verified BOOLEAN DEFAULT 0 NOT NULL,"
       "excluded INTEGER DEFAULT 0 NOT NULL,"
-      "addresses TEXT NOT NULL"
+      "address TEXT NOT NULL"
       ")",
       table_name_);
 
@@ -44,19 +42,7 @@ bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
     return false;
   }
 
-  success = banner_->CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = links_->CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = amounts_->CreateTable(db);
-
-  return success;
+  return banner_->CreateTable(db);
 }
 
 bool DatabaseServerPublisherInfo::CreateIndex(sql::Database* db) {
@@ -65,19 +51,7 @@ bool DatabaseServerPublisherInfo::CreateIndex(sql::Database* db) {
     return false;
   }
 
-  success = banner_->CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  success = links_->CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  success = amounts_->CreateIndex(db);
-
-  return success;
+  return banner_->CreateIndex(db);
 }
 
 bool DatabaseServerPublisherInfo::InsertOrUpdate(
@@ -89,7 +63,7 @@ bool DatabaseServerPublisherInfo::InsertOrUpdate(
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-      "(publisher_key, verified, excluded, addresses) "
+      "(publisher_key, verified, excluded, address) "
       "VALUES (?, ?, ?, ?)",
       table_name_);
 
@@ -139,19 +113,35 @@ bool DatabaseServerPublisherInfo::ClearAndInsertList(
       transaction.Rollback();
       return false;
     }
-
-    if (!links_->InsertOrUpdate(db, info->Clone())) {
-      transaction.Rollback();
-      return false;
-    }
-
-    if (!amounts_->InsertOrUpdate(db, info->Clone())) {
-      transaction.Rollback();
-      return false;
-    }
   }
 
   return transaction.Commit();
+}
+
+ledger::ServerPublisherInfoPtr DatabaseServerPublisherInfo::GetRecord(
+    sql::Database* db,
+    const std::string& publisher_key) {
+  const std::string query = base::StringPrintf(
+      "SELECT verified, excluded, address "
+      "FROM %s "
+      "WHERE publisher_key=?",
+      table_name_);
+
+  sql::Statement statment(db->GetUniqueStatement(query.c_str()));
+  statment.BindString(0, publisher_key);
+
+  if (!statment.Step()) {
+    return nullptr;
+  }
+
+  auto info = ledger::ServerPublisherInfo::New();
+  info->publisher_key = publisher_key;
+  info->verified = statment.ColumnBool(0);
+  info->excluded = statment.ColumnBool(1);
+  info->address = statment.ColumnString(2);
+  info->banner = banner_->GetRecord(db, publisher_key);
+
+  return info;
 }
 
 }  // namespace brave_rewards

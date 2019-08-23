@@ -95,6 +95,9 @@ class PublisherInfoDatabase {
   bool ClearAndInsertServerPublisherList(
       const ledger::ServerPublisherInfoList& list);
 
+  ledger::ServerPublisherInfoPtr GetServerPublisherInfo(
+      const std::string& publisher_key);
+
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
 

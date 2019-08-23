@@ -29,7 +29,7 @@ declare namespace RewardsTip {
     logo: string
     amounts: number[],
     provider: string
-    social: Record<string, string>
+    links: Record<string, string>
     verified: boolean
   }
 

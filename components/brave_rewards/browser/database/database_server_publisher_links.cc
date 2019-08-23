@@ -56,8 +56,8 @@ bool DatabaseServerPublisherLinks::InsertOrUpdate(
     return false;
   }
 
-  // It's ok if social links are empty
-  if (info->banner->social.empty()) {
+  // It's ok if links are empty
+  if (info->banner->links.empty()) {
     return true;
   }
 
@@ -66,7 +66,7 @@ bool DatabaseServerPublisherLinks::InsertOrUpdate(
     return false;
   }
 
-  for (const auto& link : info->banner->social) {
+  for (const auto& link : info->banner->links) {
     if (link.second.empty()) {
       continue;
     }
@@ -87,6 +87,27 @@ bool DatabaseServerPublisherLinks::InsertOrUpdate(
   }
 
   return transaction.Commit();
+}
+
+base::flat_map<std::string, std::string> DatabaseServerPublisherLinks::GetRecord(
+    sql::Database* db,
+    const std::string& publisher_key) {
+  const std::string query = base::StringPrintf(
+      "SELECT provider, link FROM %s WHERE publisher_key=?",
+      table_name_);
+
+  sql::Statement statment(db->GetUniqueStatement(query.c_str()));
+  statment.BindString(0, publisher_key);
+
+  base::flat_map<std::string, std::string> links;
+  while (statment.Step()) {
+    const auto pair = std::make_pair(
+        statment.ColumnString(0),
+        statment.ColumnString(1));
+    links.insert(pair);
+  }
+
+  return links;
 }
 
 }  // namespace brave_rewards

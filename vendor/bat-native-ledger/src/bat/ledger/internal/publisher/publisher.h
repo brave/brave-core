@@ -50,7 +50,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   bool loadState(const std::string& data);
 
-  void saveVisit(const std::string& publisher_id,
+  void SaveVisit(const std::string& publisher_key,
                  const ledger::VisitData& visit_data,
                  const uint64_t& duration,
                  uint64_t window_id,
@@ -106,7 +106,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
       const ledger::VisitData& visit_data,
       const std::string& publisher_blob);
 
-  void GetPublisherBanner(const std::string& publisher_id,
+  void GetPublisherBanner(const std::string& publisher_key,
                           ledger::PublisherBannerCallback callback);
 
   void setBalanceReportItem(ledger::ACTIVITY_MONTH month,
@@ -128,13 +128,9 @@ class Publisher : public ledger::LedgerCallbackHandler {
                                   const ledger::PublisherInfoList* list,
                                   uint32_t /* next_record */);
 
-  bool isVerified(const std::string& publisher_id);
-
   void SavePublisherProcessed(const std::string& publisher_key);
 
   bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
-
-  std::string GetPublisherAddress(const std::string& publisher_key) const;
 
   void OnRestorePublishers(
       const ledger::Result result,
@@ -146,6 +142,10 @@ class Publisher : public ledger::LedgerCallbackHandler {
     const std::string& publisher_key,
     ledger::OnRefreshPublisherCallback callback);
 
+  void OnRefreshPublisherServerPublisher(
+    ledger::ServerPublisherInfoPtr info,
+    ledger::OnRefreshPublisherCallback callback);
+
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,
                                ledger::Result result,
@@ -154,17 +154,29 @@ class Publisher : public ledger::LedgerCallbackHandler {
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
 
-  bool isExcluded(const std::string& publisher_id,
-                  const ledger::PUBLISHER_EXCLUDE& excluded);
+  bool IsExcluded(
+      const std::string& publisher_id,
+      const bool server_exclude,
+      const ledger::PUBLISHER_EXCLUDE& excluded);
 
-  void saveVisitInternal(
-      std::string publisher_id,
+  void SaveVisitInternal(
+      bool verified,
+      bool server_excluded,
+      const std::string& publisher_key,
       const ledger::VisitData& visit_data,
       uint64_t duration,
       uint64_t window_id,
       const ledger::PublisherInfoCallback callback,
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
+
+  void OnSaveVisitServerPublisher(
+    ledger::ServerPublisherInfoPtr server_info,
+    const std::string& publisher_key,
+    const ledger::VisitData& visit_data,
+    uint64_t duration,
+    uint64_t window_id,
+    const ledger::PublisherInfoCallback callback);
 
   void onFetchFavIcon(const std::string& publisher_key,
                       uint64_t window_id,
@@ -214,10 +226,16 @@ class Publisher : public ledger::LedgerCallbackHandler {
       uint64_t windowId,
       const ledger::VisitData& visit_data);
 
-  void OnPublisherBanner(ledger::PublisherBannerCallback callback,
-                         const ledger::PublisherBanner& banner,
-                         ledger::Result result,
-                         ledger::PublisherInfoPtr publisher_info);
+  void OnGetPublisherBanner(
+      ledger::ServerPublisherInfoPtr info,
+      const std::string& publisher_key,
+      ledger::PublisherBannerCallback callback);
+
+  void OnGetPublisherBannerPublisher(
+      ledger::PublisherBannerCallback callback,
+      const ledger::PublisherBanner& banner,
+      ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;

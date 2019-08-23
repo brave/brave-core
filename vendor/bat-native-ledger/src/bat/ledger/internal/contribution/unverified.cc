@@ -75,7 +75,8 @@ void Unverified::OnContributeUnverifiedPublishers(
     }
 
     // verified status didn't change
-    if (!ledger_->IsPublisherVerified(item->publisher_key)) {
+    // TODO make sure that value is fetch from DB
+    if (!item->verified) {
       continue;
     }
 

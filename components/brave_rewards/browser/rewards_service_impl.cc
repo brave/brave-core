@@ -2113,7 +2113,7 @@ void RewardsServiceImpl::OnPublisherBanner(
   new_banner->background = banner->background;
   new_banner->logo = banner->logo;
   new_banner->amounts = banner->amounts;
-  new_banner->social = mojo::FlatMapToMap(banner->social);
+  new_banner->links = mojo::FlatMapToMap(banner->links);
   new_banner->provider = banner->provider;
   new_banner->verified = banner->verified;
 
@@ -3558,6 +3558,36 @@ void RewardsServiceImpl::OnClearAndInsertServerPublisherList(
       : ledger::Result::LEDGER_ERROR;
 
   callback(result_new);
+}
+
+ledger::ServerPublisherInfoPtr GetServerPublisherInfoOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& publisher_key) {
+  if (!backend) {
+    return nullptr;
+  }
+
+  return backend->GetServerPublisherInfo(publisher_key);
+}
+
+void RewardsServiceImpl::GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::Bind(&GetServerPublisherInfoOnFileTaskRunner,
+               publisher_info_backend_.get(),
+               publisher_key),
+    base::Bind(&RewardsServiceImpl::OnGetServerPublisherInfo,
+               AsWeakPtr(),
+               callback));
+}
+
+void RewardsServiceImpl::OnGetServerPublisherInfo(
+    ledger::GetServerPublisherInfoCallback callback,
+    ledger::ServerPublisherInfoPtr info) {
+  callback(std::move(info));
 }
 
 }  // namespace brave_rewards

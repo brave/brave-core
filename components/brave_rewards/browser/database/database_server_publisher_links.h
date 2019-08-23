@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_SERVER_PUBLISHER_LINKS_H_
 
+#include <string>
+
+#include "base/containers/flat_map.h"
 #include "bat/ledger/publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_table.h"
 
@@ -21,6 +24,10 @@ class DatabaseServerPublisherLinks: public DatabaseTable {
   bool CreateIndex(sql::Database* db) override;
 
   bool InsertOrUpdate(sql::Database* db, ledger::ServerPublisherInfoPtr info);
+
+  base::flat_map<std::string, std::string> GetRecord(
+      sql::Database* db,
+      const std::string& publisher_key);
 
  private:
   const char* table_name_ = "server_publisher_links";

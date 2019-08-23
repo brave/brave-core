@@ -103,7 +103,7 @@ class LedgerImpl : public ledger::Ledger,
                            ledger::ActivityInfoFilterPtr filter,
                            ledger::PublisherInfoListCallback callback) override;
 
-  void DoDirectTip(const std::string& publisher_id,
+  void DoDirectTip(const std::string& publisher_key,
                    int amount,
                    const std::string& currency,
                    ledger::DoDirectTipCallback callback) override;
@@ -135,10 +135,6 @@ class LedgerImpl : public ledger::Ledger,
   void SaveUnverifiedContribution(
       ledger::PendingContributionList list,
       ledger::SavePendingContributionCallback callback);
-
-  void OnSaveUnverifiedTip(
-      ledger::DoDirectTipCallback callback,
-      ledger::Result result);
 
   uint64_t GetReconcileStamp() const override;
 
@@ -470,8 +466,6 @@ class LedgerImpl : public ledger::Ledger,
 
   void ContributeUnverifiedPublishers();
 
-  bool IsPublisherVerified(const std::string& publisher_key);
-
   void OnContributeUnverifiedPublishers(ledger::Result result,
                                         const std::string& publisher_key = "",
                                         const std::string& publisher_name = "");
@@ -483,8 +477,6 @@ class LedgerImpl : public ledger::Ledger,
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
   void GetExternalWallets(ledger::GetExternalWalletsCallback callback);
-
-  std::string GetPublisherAddress(const std::string& publisher_key) const;
 
   std::string GetCardIdAddress() const;
 
@@ -520,6 +512,10 @@ class LedgerImpl : public ledger::Ledger,
   void ClearAndInsertServerPublisherList(
       ledger::ServerPublisherInfoList list,
       ledger::ClearAndInsertServerPublisherListCallback callback);
+
+  void GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback);
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
@@ -561,16 +557,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnRemoveRecurringTip(
       const ledger::Result result,
       ledger::RemoveRecurringTipCallback callback);
-
-  void ModifyPublisherVerified(
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher,
-    ledger::PublisherInfoCallback callback);
-
-  void ModifyPublisherListVerified(
-    ledger::PublisherInfoList,
-    uint32_t record,
-    ledger::PublisherInfoListCallback callback);
 
   void OnGetPendingContributions(
     const ledger::PendingContributionInfoList& list,

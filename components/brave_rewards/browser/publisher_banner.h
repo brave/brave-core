@@ -21,9 +21,9 @@ namespace brave_rewards {
     std::string description;
     std::string background;
     std::string logo;
-    std::vector<int> amounts;
+    std::vector<double> amounts;
     std::string provider;
-    std::map<std::string, std::string> social;
+    std::map<std::string, std::string> links;
     bool verified;
   };
 

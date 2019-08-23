@@ -6,7 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_SERVER_PUBLISHER_BANNER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_SERVER_PUBLISHER_BANNER_H_
 
+#include <string>
+
 #include "bat/ledger/publisher_info.h"
+#include "brave/components/brave_rewards/browser/database/database_server_publisher_amounts.h"
+#include "brave/components/brave_rewards/browser/database/database_server_publisher_links.h"
 #include "brave/components/brave_rewards/browser/database/database_table.h"
 
 namespace brave_rewards {
@@ -22,8 +26,14 @@ class DatabaseServerPublisherBanner: public DatabaseTable {
 
   bool InsertOrUpdate(sql::Database* db, ledger::ServerPublisherInfoPtr info);
 
+  ledger::PublisherBannerPtr GetRecord(
+      sql::Database* db,
+      const std::string& publisher_key);
+
  private:
   const char* table_name_ = "server_publisher_banner";
+  std::unique_ptr<DatabaseServerPublisherLinks> links_;
+  std::unique_ptr<DatabaseServerPublisherAmounts> amounts_;
 };
 
 }  // namespace brave_rewards

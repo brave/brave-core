@@ -15,7 +15,9 @@
 
 namespace brave_rewards {
 
-DatabaseServerPublisherBanner::DatabaseServerPublisherBanner() {
+DatabaseServerPublisherBanner::DatabaseServerPublisherBanner() :
+    links_(std::make_unique<DatabaseServerPublisherLinks>()),
+    amounts_(std::make_unique<DatabaseServerPublisherAmounts>()) {
 }
 
 DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() {
@@ -24,6 +26,11 @@ DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() {
 bool DatabaseServerPublisherBanner::CreateTable(sql::Database* db) {
   if (db->DoesTableExist(table_name_)) {
     return true;
+  }
+
+  sql::Transaction transaction(db);
+  if (!transaction.Begin()) {
+    return false;
   }
 
   const std::string query = base::StringPrintf(
@@ -40,19 +47,63 @@ bool DatabaseServerPublisherBanner::CreateTable(sql::Database* db) {
       ")",
       table_name_,
       table_name_);
-  // TODO add amounts and social links
 
-  return db->Execute(query.c_str());
+  if(!db->Execute(query.c_str())) {
+    transaction.Rollback();
+    return false;
+  }
+
+  bool success = links_->CreateTable(db);
+  if (!success) {
+    transaction.Rollback();
+    return false;
+  }
+
+  success = amounts_->CreateTable(db);
+  if (!success) {
+    transaction.Rollback();
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 bool DatabaseServerPublisherBanner::CreateIndex(sql::Database* db) {
-  return this->InsertIndex(db, table_name_, "publisher_key");
+  sql::Transaction transaction(db);
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  bool success = this->InsertIndex(db, table_name_, "publisher_key");
+  if (!success) {
+    transaction.Rollback();
+    return false;
+  }
+
+  success = links_->CreateIndex(db);
+  if (!success) {
+    transaction.Rollback();
+    return false;
+  }
+
+  success = amounts_->CreateIndex(db);
+  if (!success) {
+    transaction.Rollback();
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 bool DatabaseServerPublisherBanner::InsertOrUpdate(
     sql::Database* db,
     ledger::ServerPublisherInfoPtr info) {
   if (!info || !info->banner) {
+    return false;
+  }
+
+  sql::Transaction transaction(db);
+  if (!transaction.Begin()) {
     return false;
   }
 
@@ -71,7 +122,49 @@ bool DatabaseServerPublisherBanner::InsertOrUpdate(
   statment.BindString(3, info->banner->background);
   statment.BindString(4, info->banner->logo);
 
-  return statment.Run();
+  if(!statment.Run()) {
+    return false;
+  }
+
+  if (!links_->InsertOrUpdate(db, info->Clone())) {
+    transaction.Rollback();
+    return false;
+  }
+
+  if (!amounts_->InsertOrUpdate(db, info->Clone())) {
+    transaction.Rollback();
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
+ledger::PublisherBannerPtr DatabaseServerPublisherBanner::GetRecord(
+    sql::Database* db,
+    const std::string& publisher_key) {
+  const std::string query = base::StringPrintf(
+      "SELECT title, description, background, logo "
+      "FROM %s "
+      "WHERE publisher_key=?",
+      table_name_);
+
+  sql::Statement statment(db->GetUniqueStatement(query.c_str()));
+  statment.BindString(0, publisher_key);
+
+  if (!statment.Step()) {
+    return nullptr;
+  }
+
+  auto banner = ledger::PublisherBanner::New();
+  banner->publisher_key = publisher_key;
+  banner->title = statment.ColumnString(0);
+  banner->description = statment.ColumnString(1);
+  banner->background = statment.ColumnString(2);
+  banner->logo = statment.ColumnString(3);
+  banner->links = links_->GetRecord(db, publisher_key);
+  banner->amounts = amounts_->GetRecord(db, publisher_key);
+
+  return banner;
 }
 
 }  // namespace brave_rewards

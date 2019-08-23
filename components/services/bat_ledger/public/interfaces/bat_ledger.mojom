@@ -270,4 +270,6 @@ interface BatLedgerClient {
   DeleteActivityInfo(string publisher_key) => (ledger.mojom.Result result);
 
   ClearAndInsertServerPublisherList(array<ledger.mojom.ServerPublisherInfo> list) => (ledger.mojom.Result result);
+
+  GetServerPublisherInfo(string publisher_key) => (ledger.mojom.ServerPublisherInfo? info);
 };

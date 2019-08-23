@@ -181,6 +181,12 @@ class Contribution {
 
   void StartPhaseTwo(const std::string& viewing_id);
 
+  void DoDirectTip(
+      const std::string& publisher_key,
+      int amount,
+      const std::string& currency,
+      ledger::DoDirectTipCallback callback);
+
  private:
   // AUTO CONTRIBUTE: from the list gets only verified publishers and
   // save unverified to the db
@@ -240,6 +246,13 @@ class Contribution {
       ledger::Result result,
       ledger::BalancePtr properties,
       ledger::HasSufficientBalanceToReconcileCallback callback);
+
+  void OnDoDirectTipServerPublisher(
+    ledger::ServerPublisherInfoPtr server_info,
+    const std::string& publisher_key,
+    int amount,
+    const std::string& currency,
+    ledger::DoDirectTipCallback callback);
 
   bool HaveReconcileEnoughFunds(
       const ledger::REWARDS_CATEGORY category,

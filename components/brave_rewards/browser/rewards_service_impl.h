@@ -627,6 +627,10 @@ class RewardsServiceImpl : public RewardsService,
       ledger::ServerPublisherInfoList list,
       ledger::ClearAndInsertServerPublisherListCallback callback) override;
 
+  void GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -662,6 +666,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnClearAndInsertServerPublisherList(
     ledger::ClearAndInsertServerPublisherListCallback callback,
     bool result);
+
+  void OnGetServerPublisherInfo(
+    ledger::GetServerPublisherInfoCallback callback,
+    ledger::ServerPublisherInfoPtr info);
 
   bool Connected() const;
   void ConnectionClosed();

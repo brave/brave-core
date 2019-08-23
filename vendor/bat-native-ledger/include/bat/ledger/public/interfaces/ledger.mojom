@@ -35,9 +35,9 @@ struct PublisherBanner {
   string description;
   string background;
   string logo;
-  array<int32> amounts;
+  array<double> amounts;
   string provider;
-  map<string, string> social;
+  map<string, string> links;
   bool verified = false;
 };
 

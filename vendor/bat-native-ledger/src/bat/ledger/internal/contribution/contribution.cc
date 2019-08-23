@@ -9,6 +9,7 @@
 #include <cmath>
 #include <memory>
 #include <utility>
+#include <bat/ledger/publisher_info.h>
 
 #include "base/time/time.h"
 #include "bat/ledger/internal/contribution/contribution.h"
@@ -664,6 +665,67 @@ void Contribution::ContributeUnverifiedPublishers() {
 
 void Contribution::StartPhaseTwo(const std::string& viewing_id) {
   phase_two_->Start(viewing_id);
+}
+
+void Contribution::DoDirectTip(
+    const std::string& publisher_key,
+    int amount,
+    const std::string& currency,
+    ledger::DoDirectTipCallback callback) {
+  if (publisher_key.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Failed direct donation due to missing publisher id";
+    callback(ledger::Result::NOT_FOUND);
+    return;
+  }
+
+  const auto server_callback =
+    std::bind(&Contribution::OnDoDirectTipServerPublisher,
+              this,
+              _1,
+              publisher_key,
+              amount,
+              currency,
+              callback);
+
+  ledger_->GetServerPublisherInfo(publisher_key, server_callback);
+}
+
+void Contribution::OnDoDirectTipServerPublisher(
+    ledger::ServerPublisherInfoPtr server_info,
+    const std::string& publisher_key,
+    int amount,
+    const std::string& currency,
+    ledger::DoDirectTipCallback callback) {
+  bool is_verified = server_info && server_info->verified;
+
+  // Save to the pending list if not verified
+  if (!is_verified) {
+    auto contribution = ledger::PendingContribution::New();
+    contribution->publisher_key = publisher_key;
+    contribution->amount = amount;
+    contribution->category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+
+    ledger::PendingContributionList list;
+    list.push_back(std::move(contribution));
+
+    ledger_->SaveUnverifiedContribution(
+        std::move(list),
+        callback);
+    return;
+  }
+
+  const auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(
+      publisher_key,
+      amount,
+      currency);
+  const auto direction_list =
+      std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
+  InitReconcile(
+      ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
+      {},
+      direction_list);
+  callback(ledger::Result::LEDGER_OK);
 }
 
 bool Contribution::HaveReconcileEnoughFunds(

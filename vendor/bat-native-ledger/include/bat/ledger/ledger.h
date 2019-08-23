@@ -84,7 +84,7 @@ class LEDGER_EXPORT Ledger {
   // returns false if wallet initialization is already in progress
   virtual void CreateWallet(CreateWalletCallback callback) = 0;
 
-  virtual void DoDirectTip(const std::string& publisher_id,
+  virtual void DoDirectTip(const std::string& publisher_key,
                            int amount,
                            const std::string& currency,
                            ledger::DoDirectTipCallback callback) = 0;

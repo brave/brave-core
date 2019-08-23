@@ -83,4 +83,22 @@ bool DatabaseServerPublisherAmounts::InsertOrUpdate(
   return transaction.Commit();
 }
 
+std::vector<double> DatabaseServerPublisherAmounts::GetRecord(
+    sql::Database* db,
+    const std::string& publisher_key) {
+  const std::string query = base::StringPrintf(
+      "SELECT amount FROM %s WHERE publisher_key=?",
+      table_name_);
+
+  sql::Statement statment(db->GetUniqueStatement(query.c_str()));
+  statment.BindString(0, publisher_key);
+
+  std::vector<double> amounts;
+  while (statment.Step()) {
+    amounts.push_back(statment.ColumnDouble(0));
+  }
+
+  return amounts;
+}
+
 }  // namespace brave_rewards
