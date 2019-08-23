@@ -6551,16 +6551,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_APP_LAUNCHER_TAB_TITLE" desc="Default name for stand alone web page to serve as an App launcher when the new tab doesn't show apps.">
           Apps
         </message>
-        <message name="IDS_NEW_TAB_GUEST_SESSION_HEADING" desc="Heading used when a person enters Guest Session">
+        <message name="IDS_NEW_TAB_GUEST_SESSION_HEADING" desc="Heading used when a profile enters Guest Session">
           You’re browsing as a Guest
         </message>
         <if expr="chromeos">
-          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a person enters Guest Session">
+          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a profile enters Guest Session">
             Pages you view in this window won’t appear in the browser history and they won’t leave other traces, like cookies, on the computer after you sign out. Files you download and bookmarks you create won’t be preserved.
           </message>
         </if>
         <if expr="not chromeos">
-          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a person enters Guest Session">
+          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a profile enters Guest Session">
             Pages you view in this window won’t appear in the browser history and they won’t leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however.
           </message>
         </if>
@@ -9475,7 +9475,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_ACCOUNT_COLUMN" desc="The title of a column in a table under which will be a list of usernames or email addresses, e.g. joe@gmail.com.">
         Account
       </message>
-      <message name="IDS_WEBAUTHN_NAME_COLUMN" desc="The title of a column in a table under which will be a list of names on accounts, i.e. names of people. For example, Joe Smith.">
+      <message name="IDS_WEBAUTHN_NAME_COLUMN" desc="The title of a column in a table under which will be a list of names on accounts, i.e. names of profiles. For example, Joe Smith.">
         Name
       </message>
       <message name="IDS_WEBAUTHN_SELECT_ACCOUNT" desc="The title on a dialog where the user is expected to select an account from a list. For example, the list may include several identities, e.g. joe@gmail.com, mary@gmail.com, and the user has to select one to login as.">

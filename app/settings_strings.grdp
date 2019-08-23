@@ -3548,12 +3548,12 @@
     Cache Storage
   </message>
 
-  <!-- Sync / People Page -->
+  <!-- Sync / Profiles Page -->
   <message name="IDS_SETTINGS_PEOPLE" desc="Name of the settings page which manages Brave's signed-in Brave profile.">
-    People
+    Profiles
   </message>
   <message name="IDS_SETTINGS_PEOPLE_MANAGE_OTHER_PEOPLE" desc="Label for the button that opens the multi-profile user manager.">
-    Manage other people
+    Manage other profiles
   </message>
   <message name="IDS_SETTINGS_CHANGE_PICTURE_PROFILE_PHOTO" desc="The text on the Brave profile photo of the user.">
     Brave Profile photo
@@ -3587,10 +3587,10 @@
     <message name="IDS_SETTINGS_PEOPLE_ENABLE_SCREENLOCK" desc="The text on the checkbox to enable screenlocker for current user.">
       Show lock screen when waking from sleep
     </message>
-    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOCK" desc="Text on the people page which opens up the quick unlock subpage and the title of the quick unlock subpage.">
+    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOCK" desc="Text on the profiles page which opens up the quick unlock subpage and the title of the quick unlock subpage.">
       Screen lock
     </message>
-    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOGIN_LOCK" desc="Text on the people page which opens up the quick unlock subpage and the title of the quick unlock subpage.">
+    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOGIN_LOCK" desc="Text on the profiles page which opens up the quick unlock subpage and the title of the quick unlock subpage.">
       Screen lock and sign-in
     </message>
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_OPTIONS_LOCK" desc="Text on the lock screen which is the subheader for the screen locking options.">
@@ -3605,7 +3605,7 @@
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_OR_PASSWORD" desc="The account password or a custom PIN can be used to unlock the device.">
       PIN or password
     </message>
-    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NONE" desc="Text on the people page which notifies the user that the device will not show lock screen or prompt for auth after waking from sleep.">
+    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NONE" desc="Text on the profiles page which notifies the user that the device will not show lock screen or prompt for auth after waking from sleep.">
       Sign in automatically
     </message>
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_CHANGE_PIN_BUTTON" desc="Button that the user can click to change an existing already-active PIN.">
@@ -3794,8 +3794,8 @@
     <message name="IDS_SETTINGS_SYNC_DISCONNECT_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Sign out of Brave' dialog to stop syncing for managed profiles.">
       Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave Account and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
     </message>
-    <message name="IDS_SETTINGS_EDIT_PERSON" desc="Title of the edit person subpage. This is a subpage to edit the name and icon of a Brave Profile.">
-      Edit person
+    <message name="IDS_SETTINGS_EDIT_PERSON" desc="Title of the edit profile subpage. This is a subpage to edit the name and icon of a Brave Profile.">
+      Edit profile
     </message>
     <message name="IDS_SETTINGS_PROFILE_SHORTCUT_TOGGLE_LABEL" desc="Label of the toggle that creates or removes a desktop shortcut for the profile.">
       Show desktop shortcut
@@ -4050,7 +4050,7 @@
       Remove
     </message>
     <message name="IDS_SETTINGS_USERS_ADD_USERS" desc="Label the dialog for adding users.">
-      Add person
+      Add profile
     </message>
     <message name="IDS_SETTINGS_USERS_ADD_USERS_EMAIL" desc="Label for the email input field for adding users.">
       Email address
