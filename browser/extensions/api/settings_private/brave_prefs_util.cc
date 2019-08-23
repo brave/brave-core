@@ -74,6 +74,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
     settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[browsing_data::prefs::kDeleteHostedAppsDataOnExit] =
     settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kAlwaysShowBookmarkBarOnNTP] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // WebTorrent pref
   (*s_brave_whitelist)[kWebTorrentEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

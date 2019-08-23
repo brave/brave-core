@@ -7,6 +7,7 @@
 
 #include "brave/browser/brave_drm_tab_helper.h"
 #include "brave/browser/greaselion/greaselion_tab_helper.h"
+#include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
@@ -36,6 +37,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
   // Add tab helpers here unless they are intended for android too
   BraveDrmTabHelper::CreateForWebContents(web_contents);
+  BraveBookmarkTabHelper::CreateForWebContents(web_contents);
+
 #if BUILDFLAG(BRAVE_STP_ENABLED)
   if (TrackingProtectionHelper::IsSmartTrackingProtectionEnabled()) {
     brave_shields::TrackingProtectionHelper::CreateForWebContents(web_contents);

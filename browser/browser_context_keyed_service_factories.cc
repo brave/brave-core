@@ -12,6 +12,10 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
 
+#if !defined(OS_ANDROID)
+#include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
+#endif
+
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
@@ -21,6 +25,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   greaselion::GreaselionServiceFactory::GetInstance();
   TorProfileServiceFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
+
+#if !defined(OS_ANDROID)
+  BookmarkPrefsServiceFactory::GetInstance();
+#endif
 }
 
 }  // namespace brave
