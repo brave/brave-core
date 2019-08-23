@@ -56,3 +56,5 @@ const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
 const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
 const char kNewTabPageShowBackgroundImage[] =
     "brave.new_tab_page.show_background_image";
+const char kAlwaysShowBookmarkBarOnNTP[] =
+    "brave.always_show_bookmark_bar_on_ntp";
