@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_ANDROID_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_ANDROID_H_
 
+#include <memory>
+
 #include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
@@ -26,6 +28,7 @@ class NotificationHelperAndroid :
 
  private:
   bool IsBraveAdsNotificationChannelEnabled() const;
+
   std::unique_ptr<NotificationChannelsProviderAndroid> channels_provider_ =
       std::make_unique<NotificationChannelsProviderAndroid>();
 
