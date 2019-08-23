@@ -51,7 +51,7 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(SetIdleThreshold, void(
       const int threshold));
 
-  MOCK_METHOD0(IsNetworkConnectionAvailable, bool());
+  MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
   MOCK_CONST_METHOD1(GetClientInfo, void(
       ClientInfo* info));
@@ -124,7 +124,7 @@ class MockAdsClient : public AdsClient {
       const std::string& category,
       OnGetAdsCallback callback));
 
-  MOCK_METHOD1(EventLog, void(
+  MOCK_CONST_METHOD1(EventLog, void(
       const std::string& json));
 
   std::unique_ptr<LogStream> Log(
