@@ -359,7 +359,7 @@ class AdsServiceImpl : public AdsService,
 
   void ShowNotification(
       std::unique_ptr<ads::NotificationInfo> info) override;
-  bool ShouldShowNotifications() const override;
+  bool ShouldShowNotifications() override;
   void CloseNotification(
       const std::string& id) override;
 

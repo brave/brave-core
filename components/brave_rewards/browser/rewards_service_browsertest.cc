@@ -30,6 +30,7 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/browser/locale_helper_mock.h"
+#include "brave/components/brave_ads/browser/notification_helper_mock.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_constants.h"
@@ -162,6 +163,8 @@ class BraveRewardsBrowserTest
     // You can do set-up work for each test here
 
     MaybeMockLocaleHelper();
+
+    MockNotificationHelper();
   }
 
   ~BraveRewardsBrowserTest() override {
@@ -594,6 +597,20 @@ class BraveRewardsBrowserTest
 
     ON_CALL(*locale_helper_mock_, GetLocale())
         .WillByDefault(Return(locale));
+  }
+
+  void MockNotificationHelper() {
+    notification_helper_mock_ =
+        std::make_unique<NiceMock<brave_ads::NotificationHelperMock>>();
+
+    brave_ads::NotificationHelper::GetInstance()->set_for_testing(
+        notification_helper_mock_.get());
+
+    // TODO(https://openradar.appspot.com/27768556): We must mock
+    // NotificationHelper::ShouldShowNotifications to return false as a
+    // workaround to UNUserNotificationCenter throwing an exception during tests
+    ON_CALL(*notification_helper_mock_, ShouldShowNotifications())
+        .WillByDefault(Return(false));
   }
 
   void MaybeMockUserProfilePreferencesForBraveAdsUpgradePath() {
@@ -1513,6 +1530,7 @@ class BraveRewardsBrowserTest
   brave_ads::AdsServiceImpl* ads_service_;
 
   std::unique_ptr<brave_ads::LocaleHelperMock> locale_helper_mock_;
+  std::unique_ptr<brave_ads::NotificationHelperMock> notification_helper_mock_;
 
   brave_rewards::Grant grant_;
 

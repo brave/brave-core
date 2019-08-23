@@ -1430,7 +1430,7 @@ void AdsImpl::NotificationAllowedCheck(
     // 'Notification not made', { reason: 'notifications not presently allowed'
     // }
 
-    FailedToServeAd("Notifications not presently allowed");
+    FailedToServeAd("Notifications not allowed");
     return;
   }
 

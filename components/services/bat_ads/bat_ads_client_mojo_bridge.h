@@ -48,7 +48,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
 
   void ShowNotification(
       std::unique_ptr<ads::NotificationInfo> info) override;
-  bool ShouldShowNotifications() const override;
+  bool ShouldShowNotifications() override;
   void CloseNotification(
       const std::string& id) override;
 

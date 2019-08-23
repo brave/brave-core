@@ -1,0 +1,126 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#import <Cocoa/Cocoa.h>
+#import <UserNotifications/UserNotifications.h>
+
+#include "base/mac/mac_util.h"
+#include "base/feature_list.h"
+#include "chrome/common/chrome_features.h"
+#include "base/logging.h"
+
+#include "brave/components/brave_ads/browser/notification_helper_mac.h"
+#include "chrome/browser/fullscreen.h"
+
+namespace brave_ads {
+
+NotificationHelperMac::NotificationHelperMac() = default;
+
+NotificationHelperMac::~NotificationHelperMac() = default;
+
+bool NotificationHelperMac::ShouldShowNotifications() {
+  if (IsFullScreenMode()) {
+    LOG(WARNING) << "Notification not made: Full screen mode";
+    return false;
+  }
+
+  if (base::mac::IsAtMostOS10_13()) {
+    LOG(WARNING) << "Native notifications are not supported on macOS prior"
+        " to macOS 10.14 so falling back to Message Center";
+    return true;
+  }
+
+  if (!base::FeatureList::IsEnabled(features::kNativeNotifications)) {
+    LOG(WARNING) << "Native notification feature is disabled so falling back to"
+        " Message Center";
+    return true;
+  }
+
+  if (!IsNotificationsEnabled()) {
+    LOG(INFO) << "Notification not made: Notifications are disabled";
+    return false;
+  }
+
+  return true;
+}
+
+bool NotificationHelperMac::ShowMyFirstAdNotification() {
+  return false;
+}
+
+bool NotificationHelperMac::CanShowBackgroundNotifications() const {
+  return true;
+}
+
+NotificationHelperMac* NotificationHelperMac::GetInstanceImpl() {
+  return base::Singleton<NotificationHelperMac>::get();
+}
+
+NotificationHelper* NotificationHelper::GetInstanceImpl() {
+  return NotificationHelperMac::GetInstanceImpl();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool NotificationHelperMac::IsNotificationsEnabled() const {
+#if !defined(OFFICIAL_BUILD)
+  LOG(WARNING) << "Unable to detect the status of native notifications on non"
+      " official builds as the app is not code signed";
+  return true;
+#else
+  // TODO(https://openradar.appspot.com/27768556): We must mock this function
+  // using NotificationHelperMock as a workaround to UNUserNotificationCenter
+  // throwing an exception during tests
+
+  if (@available(macOS 10.14, *)) {
+    __block bool is_authorized = false;
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    UNUserNotificationCenter *notificationCenter =
+        [UNUserNotificationCenter currentNotificationCenter];
+
+    [notificationCenter getNotificationSettingsWithCompletionHandler:
+        ^(UNNotificationSettings * _Nonnull settings) {
+      switch (settings.authorizationStatus) {
+        case UNAuthorizationStatusDenied: {
+          LOG(WARNING) << "Notification authorization status denied";
+          is_authorized = false;
+          break;
+        }
+
+        case UNAuthorizationStatusNotDetermined: {
+          LOG(INFO) << "Notification authorization status not determined";
+          is_authorized = true;
+          break;
+        }
+
+        case UNAuthorizationStatusAuthorized: {
+          LOG(INFO) << "Notification authorization status authorized";
+          is_authorized = true;
+          break;
+        }
+
+        case UNAuthorizationStatusProvisional: {
+          LOG(INFO) << "Notification authorization status provisional";
+          is_authorized = true;
+          break;
+        }
+      }
+
+      dispatch_semaphore_signal(semaphore);
+    }];
+
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    dispatch_release(semaphore);
+
+    return is_authorized;
+  }
+
+  return true;
+#endif
+}
+
+}  // namespace brave_ads

@@ -68,7 +68,7 @@ source_set("browser") {
       "notification_helper_android.h",
       "notification_helper_linux.cc",
       "notification_helper_linux.h",
-      "notification_helper_mac.cc",
+      "notification_helper_mac.mm",
       "notification_helper_mac.h",
       "notification_helper_win.cc",
       "notification_helper_win.h",
@@ -87,6 +87,12 @@ source_set("browser") {
       "//ui/base",
       "//ui/message_center/public/cpp",
     ]
+
+    if (is_mac) {
+      libs = [
+        "UserNotifications.framework",
+      ]
+    }
 
     if (is_win) {
       deps += [

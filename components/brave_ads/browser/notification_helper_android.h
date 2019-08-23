@@ -8,8 +8,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
-#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 
 #include "brave/components/brave_ads/browser/notification_helper.h"
@@ -17,16 +15,16 @@
 
 namespace brave_ads {
 
-class NotificationHelperAndroid :
-    public NotificationHelper,
-    public base::SupportsWeakPtr<NotificationHelperAndroid> {
+class NotificationHelperAndroid
+    : public NotificationHelper,
+      public base::SupportsWeakPtr<NotificationHelperAndroid> {
  public:
+  static NotificationHelperAndroid* GetInstanceImpl();
+
+ private:
   NotificationHelperAndroid();
   ~NotificationHelperAndroid() override;
 
-  static NotificationHelperAndroid* GetInstance();
-
- private:
   bool IsBraveAdsNotificationChannelEnabled() const;
 
   std::unique_ptr<NotificationChannelsProviderAndroid> channels_provider_ =
@@ -35,9 +33,9 @@ class NotificationHelperAndroid :
   int GetOperatingSystemVersion() const;
 
   // NotificationHelper impl
-  bool ShouldShowNotifications() const override;
+  bool ShouldShowNotifications() override;
 
-  bool ShowMyFirstAdNotification() const override;
+  bool ShowMyFirstAdNotification() override;
 
   bool CanShowBackgroundNotifications() const override;
 

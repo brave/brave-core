@@ -6,28 +6,45 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_WIN_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_WIN_H_
 
-#include "base/macros.h"
-#include "base/memory/singleton.h"
+#include <windows.ui.notifications.h>
+#include <wrl/event.h>
+
 #include "base/memory/weak_ptr.h"
 
 #include "brave/components/brave_ads/browser/notification_helper.h"
 
 namespace brave_ads {
 
-class NotificationHelperWin :
-    public NotificationHelper,
-    public base::SupportsWeakPtr<NotificationHelperWin> {
+class NotificationHelperWin
+    : public NotificationHelper,
+      public base::SupportsWeakPtr<NotificationHelperWin> {
  public:
+  static NotificationHelperWin* GetInstanceImpl();
+
+ private:
   NotificationHelperWin();
   ~NotificationHelperWin() override;
 
-  static NotificationHelperWin* GetInstance();
+  bool IsFocusAssistEnabled() const;
 
- private:
+  bool IsNotificationsEnabled();
+
+  base::string16 GetAppId() const;
+
+  HRESULT InitializeToastNotifier();
+
+  template <unsigned int size, typename T>
+  HRESULT CreateActivationFactory(
+      wchar_t const (&class_name)[size],
+      T** object) const;
+
+  Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::
+      IToastNotifier> notifier_;
+
   // NotificationHelper impl
-  bool ShouldShowNotifications() const override;
+  bool ShouldShowNotifications() override;
 
-  bool ShowMyFirstAdNotification() const override;
+  bool ShowMyFirstAdNotification() override;
 
   bool CanShowBackgroundNotifications() const override;
 
