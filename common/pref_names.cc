@@ -66,3 +66,5 @@ const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";
 const char kBraveWalletAES256GCMSivNonce[] =
     "brave.wallet.aes_256_gcm_siv_nonce";
 const char kBraveWalletEncryptedSeed[] = "brave.wallet.encrypted_seed";
+const char kAlwaysShowBookmarkBarOnNTP[] =
+    "brave.always_show_bookmark_bar_on_ntp";
