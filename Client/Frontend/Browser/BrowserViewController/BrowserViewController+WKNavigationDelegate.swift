@@ -272,6 +272,15 @@ extension BrowserViewController: WKNavigationDelegate {
         // just let the webview handle it as normal.
         decisionHandler(.allow)
     }
+    
+    @available(iOS 13.0, *)
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
+        
+        self.webView(webView, decidePolicyFor: navigationAction) {
+            preferences.preferredContentMode = Preferences.General.alwaysRequestDesktopSite.value ? .desktop : .mobile
+            decisionHandler($0, preferences)
+        }
+    }
 
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 

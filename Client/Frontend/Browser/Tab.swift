@@ -123,7 +123,7 @@ class Tab: NSObject {
 
     /// Whether or not the desktop site was requested with the last request, reload or navigation. Note that this property needs to
     /// be managed by the web view's navigation delegate.
-    var desktopSite: Bool = false
+    var desktopSite: Bool = Preferences.General.alwaysRequestDesktopSite.value
     
     var readerModeAvailableOrActive: Bool {
         if let readerMode = self.getContentScript(name: "ReaderMode") as? ReaderMode {
@@ -195,6 +195,9 @@ class Tab: NSObject {
             configuration!.preferences = WKPreferences()
             configuration!.preferences.javaScriptCanOpenWindowsAutomatically = false
             configuration!.allowsInlineMediaPlayback = true
+            if #available(iOS 13.0, *) {
+                configuration!.defaultWebpagePreferences.preferredContentMode = Preferences.General.alwaysRequestDesktopSite.value ? .desktop : .mobile
+            }
             // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
             configuration!.ignoresViewportScaleLimits = true
             let webView = TabWebView(frame: .zero, configuration: configuration!, isPrivate: isPrivate)
@@ -399,7 +402,13 @@ class Tab: NSObject {
     }
 
     func reload() {
-        let userAgent: String? = desktopSite ? UserAgent.desktopUserAgent() : nil
+        var mobileUA: String?
+        if #available(iOS 13.0, *) {
+            mobileUA = UserAgent.defaultUserAgent()
+        }
+
+        let userAgent: String? = desktopSite ? UserAgent.desktopUserAgent() : mobileUA
+        
         if (userAgent ?? "") != webView?.customUserAgent,
            let currentItem = webView?.backForwardList.currentItem {
             webView?.customUserAgent = userAgent

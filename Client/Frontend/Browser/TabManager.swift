@@ -1034,16 +1034,34 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-            var res = WKNavigationActionPolicy.allow
-            for delegate in delegates {
-                delegate.webView?(webView, decidePolicyFor: navigationAction, decisionHandler: { policy in
-                    if policy == .cancel {
-                        res = policy
-                    }
-                })
-            }
+        var res = WKNavigationActionPolicy.allow
+        for delegate in delegates {
+            delegate.webView?(webView, decidePolicyFor: navigationAction, decisionHandler: { policy in
+                if policy == .cancel {
+                    res = policy
+                }
+            })
+        }
 
-            decisionHandler(res)
+        decisionHandler(res)
+    }
+    
+    @available(iOS 13.0, *)
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
+        
+        var res = WKNavigationActionPolicy.allow
+        var pref = preferences
+        for delegate in delegates {
+            delegate.webView?(webView, decidePolicyFor: navigationAction, preferences: preferences, decisionHandler: { policy, preference  in
+                if policy == .cancel {
+                    res = policy
+                }
+                
+                pref = preference
+            })
+        }
+
+        decisionHandler(res, pref)
     }
 
     func webView(_ webView: WKWebView,
