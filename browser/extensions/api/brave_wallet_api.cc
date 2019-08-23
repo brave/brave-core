@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/environment.h"
 #include "brave/browser/brave_wallet/brave_wallet_utils.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_wallet.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
@@ -38,6 +39,11 @@ BraveWalletPromptToEnableWalletFunction::Run() {
       brave_wallet::PromptToEnableWallet::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
   // Get web contents for this tab
   content::WebContents* contents = nullptr;
   if (!ExtensionTabUtil::GetTabById(
@@ -60,7 +66,7 @@ ExtensionFunction::ResponseAction
 BraveWalletIsEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* registry = extensions::ExtensionRegistry::Get(profile);
-  bool enabled =
+  bool enabled = !brave::IsTorProfile(profile) &&
     registry->ready_extensions().GetByID(ethereum_remote_client_extension_id);
   return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
 }
