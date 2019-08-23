@@ -55,6 +55,7 @@ private enum U2FErrorMessages: String {
 private enum FIDO2ErrorMessages: String {
     case NotAllowedError = "NotAllowedError"
     case SecurityError = "SecurityError"
+    case InvalidStateError = "InvalidStateError"
 }
 
 private enum U2FMessageType: String {
@@ -433,6 +434,11 @@ class U2FExtensions: NSObject {
         }
         
         let makeCredentialError = error as NSError
+        
+        if makeCredentialError.code == YKFKeyFIDO2ErrorCode.CREDENTIAL_EXCLUDED.rawValue {
+            sendFIDO2RegistrationError(handle: handle, errorName: FIDO2ErrorMessages.InvalidStateError.rawValue, errorDescription: error.localizedDescription)
+            return
+        }
         
         guard makeCredentialError.code == YKFKeyFIDO2ErrorCode.PIN_REQUIRED.rawValue else {
             let errorDescription = error.localizedDescription
