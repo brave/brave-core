@@ -9,6 +9,7 @@
 
 namespace brave_shields {
 
+const char kCosmeticFilteredElements[] = "cosmeticFilteredElements";
 const char kAds[] = "ads";
 const char kTrackers[] = "trackers";
 const char kHTTPUpgradableResources[] = "httpUpgradableResources";

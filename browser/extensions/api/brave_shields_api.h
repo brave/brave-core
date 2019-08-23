@@ -63,6 +63,26 @@ class BraveShieldsGetBraveShieldsEnabledFunction
   ResponseAction Run() override;
 };
 
+class BraveShieldsSetCosmeticFilteredElementsFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.setCosmeticFilteredElements", UNKNOWN)
+
+ protected:
+  ~BraveShieldsSetCosmeticFilteredElementsFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsGetCosmeticFilteredElementsFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.getCosmeticFilteredElements", UNKNOWN)
+
+ protected:
+  ~BraveShieldsGetCosmeticFilteredElementsFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 class BraveShieldsSetAdControlTypeFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.setAdControlType", UNKNOWN)

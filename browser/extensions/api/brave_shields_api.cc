@@ -129,6 +129,46 @@ BraveShieldsGetBraveShieldsEnabledFunction::Run() {
   return RespondNow(OneArgument(std::move(result)));
 }
 
+ExtensionFunction::ResponseAction BraveShieldsSetCosmeticFilteredElementsFunction::Run() {
+  std::unique_ptr<brave_shields::SetCosmeticFilteredElements::Params> params(
+      brave_shields::SetCosmeticFilteredElements::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  const GURL url(params->url);
+  // we don't allow setting defaults from the extension
+  if (url.is_empty() || !url.is_valid()) {
+    return RespondNow(Error(kInvalidUrlError, params->url));
+  }
+
+  auto control_type = ControlTypeFromString(params->control_type);
+  if (control_type == ControlType::INVALID) {
+    return RespondNow(Error(kInvalidControlTypeError, params->control_type));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  ::brave_shields::SetCosmeticFilteredElements(profile, control_type, url);
+
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction BraveShieldsGetCosmeticFilteredElementsFunction::Run() {
+  std::unique_ptr<brave_shields::GetCosmeticFilteredElements::Params> params(
+      brave_shields::GetCosmeticFilteredElements::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  const GURL url(params->url);
+  // we don't allow getting defaults from the extension
+  if (url.is_empty() || !url.is_valid()) {
+    return RespondNow(Error(kInvalidUrlError, params->url));
+  }
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  auto type = ::brave_shields::GetCosmeticFilteredElements(profile, url);
+  auto result = std::make_unique<base::Value>(ControlTypeToString(type));
+
+  return RespondNow(OneArgument(std::move(result)));
+}
+
 ExtensionFunction::ResponseAction BraveShieldsSetAdControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::SetAdControlType::Params> params(
       brave_shields::SetAdControlType::Params::Create(*args_));
