@@ -237,6 +237,21 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
                            static_cast<ads::NotificationEventType>(eventType));
 }
 
+- (void)toggleThumbsUpForAd:(NSString *)identifier creativeSetID:(NSString *)creativeSetID
+{
+  ads->ToggleAdThumbUp(identifier.UTF8String,
+                       creativeSetID.UTF8String,
+                       ads::AdContent::LikeAction::LIKE_ACTION_THUMBS_UP);
+}
+
+
+- (void)toggleThumbsDownForAd:(NSString *)identifier creativeSetID:(NSString *)creativeSetID
+{
+  ads->ToggleAdThumbDown(identifier.UTF8String,
+                         creativeSetID.UTF8String,
+                         ads::AdContent::LikeAction::LIKE_ACTION_THUMBS_DOWN);
+}
+
 - (void)confirmAd:(std::unique_ptr<ads::NotificationInfo>)info
 {
   [self.ledger confirmAd:[NSString stringWithUTF8String:info->ToJson().c_str()]];
@@ -244,7 +259,9 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 
 - (void)confirmAction:(const std::string &)uuid creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)type
 {
-  // TODO: Add Implementation
+  [self.ledger confirmAction:[NSString stringWithUTF8String:uuid.c_str()]
+               creativeSetID:[NSString stringWithUTF8String:creative_set_id.c_str()]
+                        type:[NSString stringWithUTF8String:std::string(type).c_str()]];
 }
 
 - (void)getAds:(const std::string &)category callback:(ads::OnGetAdsCallback)callback

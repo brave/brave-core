@@ -107,6 +107,14 @@ NS_SWIFT_NAME(BraveAds)
 - (void)reportNotificationEvent:(NSString *)notificationId
                       eventType:(BATAdsNotificationEventType)eventType;
 
+/// Toggle that the user liked the given ad and more like it should be shown
+- (void)toggleThumbsUpForAd:(NSString *)identifier
+              creativeSetID:(NSString *)creativeSetID;
+
+/// Toggle that the user disliked the given ad and it shouldn't be shown again
+- (void)toggleThumbsDownForAd:(NSString *)identifier
+                creativeSetID:(NSString *)creativeSetID;
+
 #pragma mark -
 
 - (instancetype)init NS_UNAVAILABLE;

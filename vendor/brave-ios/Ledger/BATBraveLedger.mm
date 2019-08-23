@@ -968,6 +968,11 @@ BATLedgerBridge(BOOL,
   ledger->ConfirmAd(info.UTF8String);
 }
 
+- (void)confirmAction:(NSString *)uuid creativeSetID:(NSString *)creativeSetID type:(NSString *)type
+{
+  ledger->ConfirmAction(uuid.UTF8String, creativeSetID.UTF8String, type.UTF8String);
+}
+
 - (void)setCatalogIssuers:(NSString *)issuers
 {
   ledger->SetCatalogIssuers(issuers.UTF8String);
