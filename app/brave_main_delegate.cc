@@ -158,6 +158,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
       autofill::features::kAutofillServerCommunication.name,
+      features::kLookalikeUrlNavigationSuggestionsUI.name,
       unified_consent::kUnifiedConsent.name,
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
