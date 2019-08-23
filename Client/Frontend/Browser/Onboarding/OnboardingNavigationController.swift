@@ -64,14 +64,14 @@ class OnboardingNavigationController: UINavigationController {
         }
     }
     
-    let onboardingType: OnboardingType
+    private(set) var onboardingType: OnboardingType?
     
-    init?(profile: Profile, onboardingType: OnboardingType) {
+    convenience init?(profile: Profile, onboardingType: OnboardingType) {
         guard let firstScreen = onboardingType.screens.first else { return nil }
-        self.onboardingType = onboardingType
         
         let firstViewController = firstScreen.viewController(with: profile)
-        super.init(rootViewController: firstViewController)
+        self.init(rootViewController: firstViewController)
+        self.onboardingType = onboardingType
         firstViewController.delegate = self
         
         isNavigationBarHidden = true
@@ -84,15 +84,12 @@ class OnboardingNavigationController: UINavigationController {
         }
         preferredContentSize = UX.preferredModalSize
     }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) { fatalError() }
 }
 
 extension OnboardingNavigationController: Onboardable {
     
     func presentNextScreen(current: OnboardingViewController) {
-        let allScreens = onboardingType.screens
+        guard let allScreens = onboardingType?.screens else { return }
         let index = allScreens.firstIndex { $0.type == type(of: current) }
         
         guard let nextIndex = index?.advanced(by: 1),
