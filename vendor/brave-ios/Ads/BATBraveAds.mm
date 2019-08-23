@@ -409,8 +409,8 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 {
   const auto bundle = [NSBundle bundleForClass:[BATBraveAds class]];
   const auto languageKey = [[[NSString stringWithUTF8String:language.c_str()] substringToIndex:2] lowercaseString];
-  const auto path = [[bundle pathForResource:@"user_models/languages" ofType:nil]
-                     stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/user_model.json", languageKey]];
+  const auto path = [[bundle pathForResource:@"user_models" ofType:nil]
+                     stringByAppendingPathComponent:[NSString stringWithFormat:@"languages/%@/user_model.json", languageKey]];
   if (!path || path.length == 0) {
     callback(ads::Result::FAILED, "");
     return;
