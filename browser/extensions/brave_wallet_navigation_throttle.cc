@@ -7,7 +7,6 @@
 
 #include "base/bind.h"
 #include "brave/browser/extensions/brave_component_loader.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -48,19 +47,17 @@ BraveWalletNavigationThrottle::WillStartRequest() {
       url.host() == ethereum_remote_client_host) {
     // If a user has explicitly disabled the Brave Wallet,
     // then don't defer and try to install it.
-    content::BrowserContext* browser_context =
-        web_contents->GetBrowserContext();
-    Profile* profile = Profile::FromBrowserContext(browser_context);
-    if (!profile->GetPrefs()->GetBoolean(kBraveWalletEnabled) ||
-        brave::IsTorProfile(profile)) {
+    if (!Profile::FromBrowserContext(web_contents->GetBrowserContext())->
+        GetPrefs()->GetBoolean(kBraveWalletEnabled)) {
       return content::NavigationThrottle::BLOCK_REQUEST;
     }
-    auto* registry = ExtensionRegistry::Get(browser_context);
+    auto* registry = ExtensionRegistry::Get(web_contents->GetBrowserContext());
     if (!registry->ready_extensions().GetByID(
           ethereum_remote_client_extension_id)) {
       resume_pending_ = true;
       extensions::ExtensionService* service =
-         extensions::ExtensionSystem::Get(browser_context)->extension_service();
+         extensions::ExtensionSystem::Get(
+             web_contents->GetBrowserContext())->extension_service();
       if (service) {
         extensions::ComponentLoader* loader = service->component_loader();
         static_cast<extensions::BraveComponentLoader*>(loader)->
