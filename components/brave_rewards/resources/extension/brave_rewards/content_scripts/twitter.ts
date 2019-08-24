@@ -120,13 +120,37 @@ const tipTwitterUser = (mediaMetaData: RewardsTip.MediaMetaData) => {
   chrome.runtime.sendMessage(msg)
 }
 
+const onTipActionKey = (e: KeyboardEvent) => {
+  if (e.key !== 'Enter' && e.code !== 'Space') {
+    return
+  }
+
+  const activeItem = e.target as HTMLElement
+  if (!activeItem) {
+    return
+  }
+
+  const shadowRoot = activeItem.shadowRoot
+  if (!shadowRoot) {
+    return
+  }
+
+  const tipButton: HTMLElement | null = shadowRoot.querySelector('.js-actionButton')
+  if (tipButton) {
+    tipButton.click()
+  }
+}
+
 const createBraveTipAction = (tweet: Element, tweetId: string) => {
   // Create the tip action
   const braveTipAction = document.createElement('div')
   braveTipAction.className = 'ProfileTweet-action js-tooltip action-brave-tip'
   braveTipAction.style.display = 'inline-block'
   braveTipAction.style.minWidth = '80px'
+  braveTipAction.setAttribute('role', 'button')
+  braveTipAction.setAttribute('tabindex', '0')
   braveTipAction.setAttribute('data-original-title', getMessage('twitterTipsHoverText'))
+  braveTipAction.addEventListener('keydown', onTipActionKey)
 
   // Create the tip button
   const braveTipButton = document.createElement('button')
