@@ -9,16 +9,16 @@
 #import "BATBraveRewards.h"
 
 @interface _MockNotificationHandler : NSObject <BATBraveAdsNotificationHandler>
-@property (nonatomic, copy, nullable) BOOL (^isAvailable)();
+@property (nonatomic, copy, nullable) BOOL (^shouldShow)();
 @property (nonatomic, copy, nullable) void (^showNotification)(BATAdsNotification *);
 @property (nonatomic, copy, nullable) void (^clearNotification)(NSString *);
 @end
 
 @implementation _MockNotificationHandler
-- (void)isNotificationsAvailable:(void (^)(BOOL))completionHandler
+- (void)shouldShowNotifications:(void (^)(BOOL))completionHandler
 {
-  if (self.isAvailable) {
-    completionHandler(self.isAvailable());
+  if (self.shouldShow) {
+    completionHandler(self.shouldShow());
   } else {
     completionHandler(true);
   }

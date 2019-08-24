@@ -42,7 +42,7 @@ class AdsTabsTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right before
     // each test)
 
-    EXPECT_CALL(*mock_ads_client_, IsAdsEnabled())
+    EXPECT_CALL(*mock_ads_client_, IsEnabled())
         .WillRepeatedly(Return(true));
 
     EXPECT_CALL(*mock_ads_client_, Load(_, _))
@@ -71,14 +71,15 @@ class AdsTabsTest : public ::testing::Test {
               callback(SUCCESS);
             }));
 
-    EXPECT_CALL(*mock_ads_client_, LoadUserModelForLocale(_, _))
+    EXPECT_CALL(*mock_ads_client_, LoadUserModelForLanguage(_, _))
         .WillRepeatedly(
             Invoke([this](
-                const std::string& locale,
+                const std::string& language,
                 OnLoadCallback callback) {
               auto path = GetResourcesPath();
-              path = path.AppendASCII("locales");
-              path = path.AppendASCII(locale);
+              path = path.AppendASCII("user_models");
+              path = path.AppendASCII("languages");
+              path = path.AppendASCII(language);
               path = path.AppendASCII("user_model.json");
 
               std::string value;

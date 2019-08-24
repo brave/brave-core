@@ -27,7 +27,7 @@ NS_SWIFT_NAME(BraveAdsNotificationHandler)
 /// This can be a combination of permission checks and notification settings for
 /// lock screen, alert type, etc. If the user hasn't yet decided on notification
 /// authorization status, they should be asked when this is called
-- (void)isNotificationsAvailable:(void (^)(BOOL available))completionHandler;
+- (void)shouldShowNotifications:(void (^)(BOOL shouldShow))completionHandler;
 /// Show the given notification to the user (or add it to the queue)
 - (void)showNotification:(BATAdsNotification *)notification;
 /// Remove a pending notification from the queue or remove an already shown
@@ -67,8 +67,8 @@ NS_SWIFT_NAME(BraveAds)
 /// The max number of ads the user can see in a day
 @property (nonatomic, assign) NSInteger numberOfAllowableAdsPerDay NS_SWIFT_NAME(adsPerDay);
 
-/// The locales Brave Ads supports currently
-@property (nonatomic, readonly) NSArray<NSString *> *supportedLocales;
+/// The user model locales Brave Ads supports currently
+@property (nonatomic, readonly) NSArray<NSString *> *userModelLanguages;
 
 /// Remove all cached history (should be called when the user clears their browser history)
 - (void)removeAllHistory:(void (^)(BOOL))completion;

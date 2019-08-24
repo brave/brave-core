@@ -79,7 +79,7 @@ const std::deque<AdHistoryDetail> Client::GetAdsShownHistory() {
 AdContent::LikeAction Client::ToggleAdThumbUp(
     const std::string& id,
     const std::string& creative_set_id,
-    AdContent::LikeAction action) {
+    const AdContent::LikeAction action) {
   AdContent::LikeAction like_action;
   if (action == AdContent::LIKE_ACTION_THUMBS_UP) {
     like_action = AdContent::LIKE_ACTION_NONE;
@@ -108,7 +108,7 @@ AdContent::LikeAction Client::ToggleAdThumbUp(
 AdContent::LikeAction Client::ToggleAdThumbDown(
     const std::string& id,
     const std::string& creative_set_id,
-    AdContent::LikeAction action) {
+    const AdContent::LikeAction action) {
   AdContent::LikeAction like_action;
   if (action == AdContent::LIKE_ACTION_THUMBS_DOWN) {
     like_action = AdContent::LIKE_ACTION_NONE;
@@ -145,7 +145,7 @@ AdContent::LikeAction Client::ToggleAdThumbDown(
 
 CategoryContent::OptAction Client::ToggleAdOptInAction(
     const std::string& category,
-    CategoryContent::OptAction action) {
+    const CategoryContent::OptAction action) {
   CategoryContent::OptAction opt_action;
   if (action == CategoryContent::OPT_ACTION_OPT_IN) {
     opt_action = CategoryContent::OPT_ACTION_NONE;
@@ -174,7 +174,7 @@ CategoryContent::OptAction Client::ToggleAdOptInAction(
 
 CategoryContent::OptAction Client::ToggleAdOptOutAction(
     const std::string& category,
-    CategoryContent::OptAction action) {
+    const CategoryContent::OptAction action) {
   CategoryContent::OptAction opt_action;
   if (action == CategoryContent::OPT_ACTION_OPT_OUT) {
     opt_action = CategoryContent::OPT_ACTION_NONE;
@@ -209,9 +209,10 @@ CategoryContent::OptAction Client::ToggleAdOptOutAction(
   return opt_action;
 }
 
-bool Client::ToggleSaveAd(const std::string& id,
-                          const std::string& creative_set_id,
-                          bool saved) {
+bool Client::ToggleSaveAd(
+    const std::string& id,
+    const std::string& creative_set_id,
+    const bool saved) {
   const bool saved_ad = !saved;
 
   // Update this ad in the saved ads list
@@ -244,9 +245,10 @@ bool Client::ToggleSaveAd(const std::string& id,
   return saved_ad;
 }
 
-bool Client::ToggleFlagAd(const std::string& id,
-                          const std::string& creative_set_id,
-                          bool flagged) {
+bool Client::ToggleFlagAd(
+    const std::string& id,
+    const std::string& creative_set_id,
+    const bool flagged) {
   const bool flagged_ad = !flagged;
 
   // Update this ad in the flagged ads list
@@ -450,24 +452,25 @@ void Client::UpdateLastUserIdleStopTime() {
   SaveState();
 }
 
-void Client::SetLocale(const std::string& locale) {
-  client_state_->locale = locale;
+void Client::SetUserModelLanguage(const std::string& language) {
+  client_state_->user_model_language = language;
 
   SaveState();
 }
 
-const std::string Client::GetLocale() {
-  return client_state_->locale;
+const std::string Client::GetUserModelLanguage() {
+  return client_state_->user_model_language;
 }
 
-void Client::SetLocales(const std::vector<std::string>& locales) {
-  client_state_->locales = locales;
+void Client::SetUserModelLanguages(
+    const std::vector<std::string>& languages) {
+  client_state_->user_model_languages = languages;
 
   SaveState();
 }
 
-const std::vector<std::string> Client::GetLocales() {
-  return client_state_->locales;
+const std::vector<std::string> Client::GetUserModelLanguages() {
+  return client_state_->user_model_languages;
 }
 
 void Client::SetLastPageClassification(
@@ -550,7 +553,7 @@ void Client::SaveState() {
 
   auto json = client_state_->ToJson();
   auto callback = std::bind(&Client::OnStateSaved, this, _1);
-  ads_client_->Save(_client_name, json, callback);
+  ads_client_->Save(_client_resource_name, json, callback);
 }
 
 void Client::OnStateSaved(const Result result) {
@@ -565,7 +568,7 @@ void Client::OnStateSaved(const Result result) {
 
 void Client::LoadState() {
   auto callback = std::bind(&Client::OnStateLoaded, this, _1, _2);
-  ads_client_->Load(_client_name, callback);
+  ads_client_->Load(_client_resource_name, callback);
 }
 
 void Client::OnStateLoaded(const Result result, const std::string& json) {

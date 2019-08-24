@@ -39,7 +39,7 @@
 
 #pragma mark - BATBraveAdsNotificationHandler
 
-- (void)isNotificationsAvailable:(void (^)(BOOL))completionHandler
+- (void)shouldShowNotifications:(void (^)(BOOL))completionHandler
 {
   const auto center = [UNUserNotificationCenter currentNotificationCenter];
   [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {

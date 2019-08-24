@@ -68,10 +68,11 @@ class Client {
   void UpdateLastUserActivity();
   uint64_t GetLastUserActivity();
   void UpdateLastUserIdleStopTime();
-  void SetLocale(const std::string& locale);
-  const std::string GetLocale();
-  void SetLocales(const std::vector<std::string>& locales);
-  const std::vector<std::string> GetLocales();
+  void SetUserModelLanguage(const std::string& language);
+  const std::string GetUserModelLanguage();
+  void SetUserModelLanguages(
+      const std::vector<std::string>& languages);
+  const std::vector<std::string> GetUserModelLanguages();
   void SetLastPageClassification(const std::string& classification);
   const std::string GetLastPageClassification();
   void AppendPageScoreToPageScoreHistory(

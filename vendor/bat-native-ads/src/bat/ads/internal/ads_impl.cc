@@ -87,7 +87,8 @@ AdsImpl::~AdsImpl() {
   StopSustainingAdInteraction();
 }
 
-void AdsImpl::Initialize(InitializeCallback callback) {
+void AdsImpl::Initialize(
+    InitializeCallback callback) {
   BLOG(INFO) << "Initializing ads";
 
   initialize_callback_ = callback;
@@ -104,7 +105,8 @@ void AdsImpl::Initialize(InitializeCallback callback) {
   client_->Initialize(initialize_step_2_callback);
 }
 
-void AdsImpl::InitializeStep2(const Result result) {
+void AdsImpl::InitializeStep2(
+    const Result result) {
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
     return;
@@ -114,19 +116,22 @@ void AdsImpl::InitializeStep2(const Result result) {
   notifications_->Initialize(callback);
 }
 
-void AdsImpl::InitializeStep3(const Result result) {
+void AdsImpl::InitializeStep3(
+    const Result result) {
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
     return;
   }
 
-  client_->SetLocales(ads_client_->GetLocales());
+  auto user_model_languages = ads_client_->GetUserModelLanguages();
+  client_->SetUserModelLanguages(user_model_languages);
 
-  auto locale = ads_client_->GetAdsLocale();
+  auto locale = ads_client_->GetLocale();
   ChangeLocale(locale);
 }
 
-void AdsImpl::InitializeStep4(const Result result) {
+void AdsImpl::InitializeStep4(
+    const Result result) {
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
     return;
@@ -156,8 +161,7 @@ void AdsImpl::InitializeStep4(const Result result) {
 }
 
 bool AdsImpl::IsInitialized() {
-  if (!is_initialized_ ||
-      !ads_client_->IsAdsEnabled()) {
+  if (!is_initialized_ || !ads_client_->IsEnabled()) {
     return false;
   }
 
@@ -168,7 +172,8 @@ bool AdsImpl::IsInitialized() {
   return true;
 }
 
-void AdsImpl::Shutdown(ShutdownCallback callback) {
+void AdsImpl::Shutdown(
+    ShutdownCallback callback) {
   if (!is_initialized_) {
     BLOG(WARNING) << "Failed to shutdown ads as not initialized";
 
@@ -182,23 +187,26 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
 }
 
 void AdsImpl::LoadUserModel() {
-  auto locale = client_->GetLocale();
+  auto language = client_->GetUserModelLanguage();
 
   auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
-  ads_client_->LoadUserModelForLocale(locale, callback);
+  ads_client_->LoadUserModelForLanguage(language, callback);
 }
 
-void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
-  auto locale = client_->GetLocale();
+void AdsImpl::OnUserModelLoaded(
+    const Result result,
+    const std::string& json) {
+  auto language = client_->GetUserModelLanguage();
 
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to load user model for " << locale << " locale";
+    BLOG(ERROR) << "Failed to load user model for " << language << " language";
     return;
   }
 
-  BLOG(INFO) << "Successfully loaded user model for " << locale << " locale";
+  BLOG(INFO) << "Successfully loaded user model for " << language
+      << " language";
 
-  InitializeUserModel(json, locale);
+  InitializeUserModel(json, language);
 
   if (!IsInitialized()) {
     InitializeStep4(SUCCESS);
@@ -207,15 +215,15 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
 
 void AdsImpl::InitializeUserModel(
     const std::string& json,
-    const std::string& locale) {
+    const std::string& language) {
   // TODO(Terry Mancey): Refactor function to use callbacks
 
-  BLOG(INFO) << "Initializing \"" << locale << "\" user model";
+  BLOG(INFO) << "Initializing user model for \"" << language << "\" language";
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
   user_model_->InitializePageClassifier(json);
 
-  BLOG(INFO) << "Initialized \"" << locale << "\" user model";
+  BLOG(INFO) << "Initialized user model for \"" << language << "\" language";
 }
 
 bool AdsImpl::IsMobile() const {
@@ -279,7 +287,8 @@ void AdsImpl::OnUnIdle() {
   NotificationAllowedCheck(true);
 }
 
-void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
+void AdsImpl::OnMediaPlaying(
+    const int32_t tab_id) {
   auto tab = media_playing_.find(tab_id);
   if (tab != media_playing_.end()) {
     // Media is already playing for this tab
@@ -291,7 +300,8 @@ void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
   media_playing_.insert({tab_id, true});
 }
 
-void AdsImpl::OnMediaStopped(const int32_t tab_id) {
+void AdsImpl::OnMediaStopped(
+    const int32_t tab_id) {
   auto tab = media_playing_.find(tab_id);
   if (tab == media_playing_.end()) {
     // Media is not playing for this tab
@@ -421,7 +431,8 @@ void AdsImpl::OnTabUpdated(
   }
 }
 
-void AdsImpl::OnTabClosed(const int32_t tab_id) {
+void AdsImpl::OnTabClosed(
+    const int32_t tab_id) {
   BLOG(INFO) << "OnTabClosed for tab id: " << tab_id;
 
   OnMediaStopped(tab_id);
@@ -431,13 +442,15 @@ void AdsImpl::OnTabClosed(const int32_t tab_id) {
   GenerateAdReportingDestroyEvent(destroy_info);
 }
 
-void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
+void AdsImpl::RemoveAllHistory(
+    RemoveAllHistoryCallback callback) {
   client_->RemoveAllHistory();
 
   callback(SUCCESS);
 }
 
-void AdsImpl::SetConfirmationsIsReady(const bool is_ready) {
+void AdsImpl::SetConfirmationsIsReady(
+    const bool is_ready) {
   is_confirmations_ready_ = is_ready;
 }
 
@@ -468,10 +481,8 @@ std::map<uint64_t, std::vector<AdsHistory>> AdsImpl::GetAdsHistory() {
 AdContent::LikeAction AdsImpl::ToggleAdThumbUp(
     const std::string& id,
     const std::string& creative_set_id,
-    AdContent::LikeAction action) {
-  AdContent::LikeAction like_action =
-      client_->ToggleAdThumbUp(id, creative_set_id, action);
-
+    const AdContent::LikeAction& action) {
+  auto like_action = client_->ToggleAdThumbUp(id, creative_set_id, action);
   if (like_action == AdContent::LIKE_ACTION_THUMBS_UP) {
     ConfirmAction(id, creative_set_id, ConfirmationType::UPVOTE);
   }
@@ -482,10 +493,8 @@ AdContent::LikeAction AdsImpl::ToggleAdThumbUp(
 AdContent::LikeAction AdsImpl::ToggleAdThumbDown(
     const std::string& id,
     const std::string& creative_set_id,
-    AdContent::LikeAction action) {
-  AdContent::LikeAction like_action =
-      client_->ToggleAdThumbDown(id, creative_set_id, action);
-
+    const AdContent::LikeAction& action) {
+  auto like_action = client_->ToggleAdThumbDown(id, creative_set_id, action);
   if (like_action == AdContent::LIKE_ACTION_THUMBS_DOWN) {
     ConfirmAction(id, creative_set_id, ConfirmationType::DOWNVOTE);
   }
@@ -495,27 +504,28 @@ AdContent::LikeAction AdsImpl::ToggleAdThumbDown(
 
 CategoryContent::OptAction AdsImpl::ToggleAdOptInAction(
     const std::string& category,
-    CategoryContent::OptAction action) {
+    const CategoryContent::OptAction& action) {
   return client_->ToggleAdOptInAction(category, action);
 }
 
 CategoryContent::OptAction AdsImpl::ToggleAdOptOutAction(
     const std::string& category,
-    CategoryContent::OptAction action) {
+    const CategoryContent::OptAction& action) {
   return client_->ToggleAdOptOutAction(category, action);
 }
 
-bool AdsImpl::ToggleSaveAd(const std::string& id,
-                           const std::string& creative_set_id,
-                           bool saved) {
+bool AdsImpl::ToggleSaveAd(
+    const std::string& id,
+    const std::string& creative_set_id,
+    const bool saved) {
   return client_->ToggleSaveAd(id, creative_set_id, saved);
 }
 
-bool AdsImpl::ToggleFlagAd(const std::string& id,
-                           const std::string& creative_set_id,
-                           bool flagged) {
-  bool flag_ad = client_->ToggleFlagAd(id, creative_set_id, flagged);
-
+bool AdsImpl::ToggleFlagAd(
+    const std::string& id,
+    const std::string& creative_set_id,
+    const bool flagged) {
+  auto flag_ad = client_->ToggleFlagAd(id, creative_set_id, flagged);
   if (flag_ad) {
     ConfirmAction(id, creative_set_id, ConfirmationType::FLAG);
   }
@@ -523,27 +533,28 @@ bool AdsImpl::ToggleFlagAd(const std::string& id,
   return flag_ad;
 }
 
-void AdsImpl::ChangeLocale(const std::string& locale) {
-  auto language_code = helper::Locale::GetLanguageCode(locale);
+void AdsImpl::ChangeLocale(
+    const std::string& locale) {
+  auto language = helper::Locale::GetLanguageCode(locale);
 
   if (!ShouldClassifyPages()) {
-    client_->SetLocale(language_code);
+    client_->SetUserModelLanguage(language);
 
     InitializeStep4(SUCCESS);
     return;
   }
 
-  auto locales = client_->GetLocales();
-  if (std::find(locales.begin(), locales.end(), language_code)
-      != locales.end()) {
-    BLOG(INFO) << "Changed locale to " << language_code;
+  auto languages = client_->GetUserModelLanguages();
+  if (std::find(languages.begin(), languages.end(), language)
+      != languages.end()) {
+    BLOG(INFO) << "Changed to " << language << " user model";
 
-    client_->SetLocale(language_code);
+    client_->SetUserModelLanguage(language);
   } else {
-    BLOG(INFO) << language_code << " locale not found, so changed locale to "
-        << kDefaultLanguageCode;
+    BLOG(INFO) << language << " user model not found, defaulting to "
+        << kDefaultUserModelLanguage << " user model";
 
-    client_->SetLocale(kDefaultLanguageCode);
+    client_->SetUserModelLanguage(kDefaultUserModelLanguage);
   }
 
   LoadUserModel();
@@ -605,8 +616,8 @@ void AdsImpl::MaybeClassifyPage(
 }
 
 bool AdsImpl::ShouldClassifyPages() const {
-  auto locale = ads_client_->GetAdsLocale();
-  auto region = helper::Locale::GetCountryCode(locale);
+  auto locale = ads_client_->GetLocale();
+  auto region = helper::Locale::GetRegionCode(locale);
 
   auto it = kSupportedRegions.find(region);
   if (it == kSupportedRegions.end()) {
@@ -689,7 +700,8 @@ void AdsImpl::CachePageScore(
   }
 }
 
-void AdsImpl::TestShoppingData(const std::string& url) {
+void AdsImpl::TestShoppingData(
+    const std::string& url) {
   if (!IsInitialized()) {
     BLOG(WARNING) << "Failed to test shopping data as not initialized";
     return;
@@ -702,7 +714,8 @@ void AdsImpl::TestShoppingData(const std::string& url) {
   }
 }
 
-bool AdsImpl::TestSearchState(const std::string& url) {
+bool AdsImpl::TestSearchState(
+    const std::string& url) {
   if (!IsInitialized()) {
     BLOG(WARNING) << "Failed to test search state as not initialized";
     return false;
@@ -741,7 +754,8 @@ void AdsImpl::OnLoadSampleBundle(
 
   BundleState state;
   std::string error_description;
-  std::string json_schema = ads_client_->LoadJsonSchema(_bundle_schema_name);
+  std::string json_schema =
+      ads_client_->LoadJsonSchema(_bundle_schema_resource_name);
   auto json_result = state.FromJson(json, json_schema, &error_description);
   if (json_result != SUCCESS) {
     BLOG(ERROR) << "Failed to parse sample bundle (" << error_description
@@ -789,7 +803,8 @@ void AdsImpl::OnLoadSampleBundle(
   ShowAd(ad, category);
 }
 
-void AdsImpl::CheckEasterEgg(const std::string& url) {
+void AdsImpl::CheckEasterEgg(
+    const std::string& url) {
   if (!_is_testing) {
     return;
   }
@@ -981,7 +996,8 @@ std::vector<AdInfo> AdsImpl::GetEligibleAds(
   return eligible_ads;
 }
 
-bool AdsImpl::AdRespectsTotalMaxFrequencyCapping(const AdInfo& ad) {
+bool AdsImpl::AdRespectsTotalMaxFrequencyCapping(
+    const AdInfo& ad) {
   auto creative_set = GetCreativeSetForId(ad.creative_set_id);
   if (creative_set.size() >= ad.total_max) {
     return false;
@@ -990,7 +1006,8 @@ bool AdsImpl::AdRespectsTotalMaxFrequencyCapping(const AdInfo& ad) {
   return true;
 }
 
-bool AdsImpl::AdRespectsPerDayFrequencyCapping(const AdInfo& ad) {
+bool AdsImpl::AdRespectsPerDayFrequencyCapping(
+    const AdInfo& ad) {
   auto creative_set = GetCreativeSetForId(ad.creative_set_id);
   auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
@@ -998,7 +1015,8 @@ bool AdsImpl::AdRespectsPerDayFrequencyCapping(const AdInfo& ad) {
       creative_set, day_window, ad.per_day);
 }
 
-bool AdsImpl::AdRespectsDailyCapFrequencyCapping(const AdInfo& ad) {
+bool AdsImpl::AdRespectsDailyCapFrequencyCapping(
+    const AdInfo& ad) {
   auto campaign = GetCampaignForId(ad.campaign_id);
   auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
@@ -1006,7 +1024,8 @@ bool AdsImpl::AdRespectsDailyCapFrequencyCapping(const AdInfo& ad) {
       campaign, day_window, ad.daily_cap);
 }
 
-std::deque<uint64_t> AdsImpl::GetCreativeSetForId(const std::string& id) {
+std::deque<uint64_t> AdsImpl::GetCreativeSetForId(
+    const std::string& id) {
   std::deque<uint64_t> creative_set = {};
 
   auto creative_set_history = client_->GetCreativeSetHistory();
@@ -1017,7 +1036,8 @@ std::deque<uint64_t> AdsImpl::GetCreativeSetForId(const std::string& id) {
   return creative_set;
 }
 
-std::deque<uint64_t> AdsImpl::GetCampaignForId(const std::string& id) {
+std::deque<uint64_t> AdsImpl::GetCampaignForId(
+    const std::string& id) {
   std::deque<uint64_t> campaign = {};
 
   auto campaign_history = client_->GetCampaignHistory();
@@ -1028,7 +1048,8 @@ std::deque<uint64_t> AdsImpl::GetCampaignForId(const std::string& id) {
   return campaign;
 }
 
-bool AdsImpl::IsAdValid(const AdInfo& ad_info) {
+bool AdsImpl::IsAdValid(
+    const AdInfo& ad_info) {
   if (ad_info.advertiser.empty() ||
       ad_info.notification_text.empty() ||
       ad_info.notification_url.empty()) {
@@ -1190,7 +1211,8 @@ bool AdsImpl::DoesHistoryRespectAdsPerDayLimit() {
   return respects_day_limit;
 }
 
-void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
+void AdsImpl::StartCollectingActivity(
+    const uint64_t start_timer_in) {
   StopCollectingActivity();
 
   collect_activity_timer_id_ = ads_client_->SetTimer(start_timer_in);
@@ -1311,8 +1333,9 @@ void AdsImpl::BundleUpdated() {
   ads_serve_->UpdateNextCatalogCheck();
 }
 
-void AdsImpl::NotificationAllowedCheck(const bool serve) {
-  auto ok = ads_client_->IsNotificationsAvailable();
+void AdsImpl::NotificationAllowedCheck(
+    const bool serve) {
+  auto ok = ads_client_->ShouldShowNotifications();
 
   // TODO(Terry Mancey): Implement Log (#44)
   // appConstants.APP_ON_NATIVE_NOTIFICATION_AVAILABLE_CHECK, {err, result}
@@ -1362,7 +1385,8 @@ void AdsImpl::NotificationAllowedCheck(const bool serve) {
   CheckReadyAdServe(false);
 }
 
-void AdsImpl::StartSustainingAdInteraction(const uint64_t start_timer_in) {
+void AdsImpl::StartSustainingAdInteraction(
+    const uint64_t start_timer_in) {
   StopSustainingAdInteraction();
 
   sustained_ad_interaction_timer_id_ = ads_client_->SetTimer(start_timer_in);
@@ -1452,7 +1476,8 @@ void AdsImpl::ConfirmAction(
   ads_client_->ConfirmAction(uuid, creative_set_id, type);
 }
 
-void AdsImpl::OnTimer(const uint32_t timer_id) {
+void AdsImpl::OnTimer(
+    const uint32_t timer_id) {
   BLOG(INFO) << "OnTimer: " << std::endl
       << "  timer_id: " << std::to_string(timer_id) << std::endl
       << "  collect_activity_timer_id_: "
@@ -1889,18 +1914,22 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.String("settings");
   writer.StartObject();
 
+  writer.String("locale");
+  auto locale = ads_client_->GetLocale();
+  writer.String(locale.c_str());
+
   writer.String("notifications");
   writer.StartObject();
 
-  writer.String("available");
-  auto configured = ads_client_->IsNotificationsAvailable();
-  writer.Bool(configured);
+  writer.String("shouldShow");
+  auto should_show = ads_client_->ShouldShowNotifications();
+  writer.Bool(should_show);
 
   writer.EndObject();
 
-  writer.String("locale");
-  auto locale = client_->GetLocale();
-  writer.String(locale.c_str());
+  writer.String("userModelLanguage");
+  auto user_model_language = client_->GetUserModelLanguage();
+  writer.String(user_model_language.c_str());
 
   writer.String("adsPerDay");
   auto ads_per_day = ads_client_->GetAdsPerDay();
@@ -1950,7 +1979,8 @@ bool AdsImpl::IsCreativeSetFromSampleCatalog(
   return creative_set_id.empty();
 }
 
-bool AdsImpl::IsSupportedUrl(const std::string& url) const {
+bool AdsImpl::IsSupportedUrl(
+    const std::string& url) const {
   DCHECK(!url.empty()) << "Invalid URL";
 
   return GURL(url).SchemeIsHTTPOrHTTPS();

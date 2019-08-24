@@ -46,17 +46,26 @@ class AdsImpl : public Ads {
   bool is_first_run_;
 
   InitializeCallback initialize_callback_;
-  void Initialize(InitializeCallback callback) override;
-  void InitializeStep2(const Result result);
-  void InitializeStep3(const Result result);
-  void InitializeStep4(const Result result);
+  void Initialize(
+      InitializeCallback callback) override;
+  void InitializeStep2(
+      const Result result);
+  void InitializeStep3(
+      const Result result);
+  void InitializeStep4(
+      const Result result);
   bool IsInitialized();
 
-  void Shutdown(ShutdownCallback callback) override;
+  void Shutdown(
+      ShutdownCallback callback) override;
 
   void LoadUserModel();
-  void OnUserModelLoaded(const Result result, const std::string& json);
-  void InitializeUserModel(const std::string& json, const std::string& region);
+  void OnUserModelLoaded(
+      const Result result,
+      const std::string& json);
+  void InitializeUserModel(
+      const std::string& json,
+      const std::string& language);
 
   bool IsMobile() const;
 
@@ -69,8 +78,10 @@ class AdsImpl : public Ads {
   void OnUnIdle() override;
 
   std::map<int32_t, bool> media_playing_;
-  void OnMediaPlaying(const int32_t tab_id) override;
-  void OnMediaStopped(const int32_t tab_id) override;
+  void OnMediaPlaying(
+      const int32_t tab_id) override;
+  void OnMediaStopped(
+      const int32_t tab_id) override;
   bool IsMediaPlaying() const;
 
   bool GetNotificationForId(
@@ -101,35 +112,41 @@ class AdsImpl : public Ads {
       const std::string& url,
       const bool is_active,
       const bool is_incognito) override;
-  void OnTabClosed(const int32_t tab_id) override;
+  void OnTabClosed(
+      const int32_t tab_id) override;
 
-  void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
+  void RemoveAllHistory(
+      RemoveAllHistoryCallback callback) override;
 
-  void SetConfirmationsIsReady(const bool is_ready) override;
+  void SetConfirmationsIsReady(
+      const bool is_ready) override;
 
   std::map<uint64_t, std::vector<AdsHistory>> GetAdsHistory() override;
-
-  AdContent::LikeAction ToggleAdThumbUp(const std::string& id,
-                                        const std::string& creative_set_id,
-                                        AdContent::LikeAction action) override;
+  AdContent::LikeAction ToggleAdThumbUp(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const AdContent::LikeAction& action) override;
   AdContent::LikeAction ToggleAdThumbDown(
       const std::string& id,
       const std::string& creative_set_id,
-      AdContent::LikeAction action) override;
+      const AdContent::LikeAction& action) override;
   CategoryContent::OptAction ToggleAdOptInAction(
       const std::string& category,
-      CategoryContent::OptAction action) override;
+      const CategoryContent::OptAction& action) override;
   CategoryContent::OptAction ToggleAdOptOutAction(
       const std::string& category,
-      CategoryContent::OptAction action) override;
-  bool ToggleSaveAd(const std::string& id,
-                    const std::string& creative_set_id,
-                    bool saved) override;
-  bool ToggleFlagAd(const std::string& id,
-                    const std::string& creative_set_id,
-                    bool flagged) override;
+      const CategoryContent::OptAction& action) override;
+  bool ToggleSaveAd(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const bool saved) override;
+  bool ToggleFlagAd(
+      const std::string& id,
+      const std::string& creative_set_id,
+      const bool flagged) override;
 
-  void ChangeLocale(const std::string& locale) override;
+  void ChangeLocale(
+      const std::string& locale) override;
 
   void OnPageLoaded(
       const std::string& url,
@@ -144,22 +161,26 @@ class AdsImpl : public Ads {
       const std::string& html);
 
   std::string GetWinnerOverTimeCategory();
-  std::string GetWinningCategory(const std::vector<double>& page_score);
+  std::string GetWinningCategory(
+      const std::vector<double>& page_score);
 
   std::map<std::string, std::vector<double>> page_score_cache_;
   void CachePageScore(
       const std::string& url,
       const std::vector<double>& page_score);
 
-  void TestShoppingData(const std::string& url);
-  bool TestSearchState(const std::string& url);
+  void TestShoppingData(
+      const std::string& url);
+  bool TestSearchState(
+      const std::string& url);
 
   void ServeSampleAd() override;
   void OnLoadSampleBundle(
       const Result result,
       const std::string& json);
 
-  void CheckEasterEgg(const std::string& url);
+  void CheckEasterEgg(
+      const std::string& url);
 
   void CheckReadyAdServe(
       const bool forced);
@@ -183,14 +204,22 @@ class AdsImpl : public Ads {
   std::vector<AdInfo> GetEligibleAds(
       const std::vector<AdInfo>& ads);
 
-  bool AdRespectsTotalMaxFrequencyCapping(const AdInfo& ad);
-  bool AdRespectsPerDayFrequencyCapping(const AdInfo& ad);
-  bool AdRespectsDailyCapFrequencyCapping(const AdInfo& ad);
-  std::deque<uint64_t> GetCreativeSetForId(const std::string& id);
-  std::deque<uint64_t> GetCampaignForId(const std::string& id);
-  bool IsAdValid(const AdInfo& ad_info);
+  bool AdRespectsTotalMaxFrequencyCapping(
+      const AdInfo& ad);
+  bool AdRespectsPerDayFrequencyCapping(
+      const AdInfo& ad);
+  bool AdRespectsDailyCapFrequencyCapping(
+      const AdInfo& ad);
+  std::deque<uint64_t> GetCreativeSetForId(
+      const std::string& id);
+  std::deque<uint64_t> GetCampaignForId(
+      const std::string& id);
+  bool IsAdValid(
+      const AdInfo& ad_info);
   NotificationInfo last_shown_notification_info_;
-  bool ShowAd(const AdInfo& ad_info, const std::string& category);
+  bool ShowAd(
+      const AdInfo& ad_info,
+      const std::string& category);
   bool HistoryRespectsRollingTimeConstraint(
       const std::deque<uint64_t> history,
       const uint64_t seconds_window,
@@ -204,7 +233,8 @@ class AdsImpl : public Ads {
   bool DoesHistoryRespectAdsPerDayLimit();
 
   uint32_t collect_activity_timer_id_;
-  void StartCollectingActivity(const uint64_t start_timer_in);
+  void StartCollectingActivity(
+      const uint64_t start_timer_in);
   void CollectActivity();
   void StopCollectingActivity();
   bool IsCollectingActivity() const;
@@ -215,39 +245,50 @@ class AdsImpl : public Ads {
   void StopDeliveringNotifications();
   bool IsDeliveringNotifications() const;
   bool IsCatalogOlderThanOneDay();
-  void NotificationAllowedCheck(const bool serve);
+  void NotificationAllowedCheck(
+      const bool serve);
 
   void BundleUpdated();
 
   uint32_t sustained_ad_interaction_timer_id_;
   std::string last_sustaining_ad_url_;
-  void StartSustainingAdInteraction(const uint64_t start_timer_in);
+  void StartSustainingAdInteraction(
+      const uint64_t start_timer_in);
   void SustainAdInteractionIfNeeded();
   void SustainAdInteraction();
   void StopSustainingAdInteraction();
   bool IsSustainingAdInteraction() const;
   bool IsStillViewingAd() const;
-  void ConfirmAd(const NotificationInfo& info, const ConfirmationType& type);
-  void ConfirmAction(const std::string& uuid,
-                     const std::string& creative_set_id,
-                     const ConfirmationType& type);
+  void ConfirmAd(
+      const NotificationInfo& info,
+      const ConfirmationType& type);
+  void ConfirmAction(
+      const std::string& uuid,
+      const std::string& creative_set_id,
+      const ConfirmationType& type);
 
-  void OnTimer(const uint32_t timer_id) override;
+  void OnTimer(
+      const uint32_t timer_id) override;
 
   uint64_t next_easter_egg_timestamp_in_seconds_;
-  void GenerateAdReportingConfirmationEvent(const NotificationInfo& info);
-  void GenerateAdReportingConfirmationEvent(const std::string& uuid,
-                                            const ConfirmationType& type);
-
+  void GenerateAdReportingConfirmationEvent(
+      const NotificationInfo& info);
+  void GenerateAdReportingConfirmationEvent(
+      const std::string& uuid,
+      const ConfirmationType& type);
   void MaybeGenerateAdReportingLoadEvent(
       const std::string& url,
       const std::string& classification);
-  void GenerateAdReportingLoadEvent(const LoadInfo& info);
+  void GenerateAdReportingLoadEvent(
+      const LoadInfo& info);
   void GenerateAdReportingBackgroundEvent();
   void GenerateAdReportingForegroundEvent();
-  void GenerateAdReportingBlurEvent(const BlurInfo& info);
-  void GenerateAdReportingDestroyEvent(const DestroyInfo& info);
-  void GenerateAdReportingFocusEvent(const FocusInfo& info);
+  void GenerateAdReportingBlurEvent(
+      const BlurInfo& info);
+  void GenerateAdReportingDestroyEvent(
+      const DestroyInfo& info);
+  void GenerateAdReportingFocusEvent(
+      const FocusInfo& info);
   void GenerateAdReportingRestartEvent();
   void GenerateAdReportingSettingsEvent();
   void GenerateAdReportingNotificationShownEvent(
@@ -256,14 +297,20 @@ class AdsImpl : public Ads {
       const NotificationInfo& info,
       const NotificationResultInfoResultType type);
 
-  void GenerateAdsHistoryEntry(const NotificationInfo& notification_info,
-                               const ConfirmationType& type);
+  void GenerateAdsHistoryEntry(
+      const NotificationInfo& notification_info,
+      const ConfirmationType& type);
 
-  bool IsNotificationFromSampleCatalog(const NotificationInfo& info) const;
-  bool IsCreativeSetFromSampleCatalog(const std::string& creative_set_id) const;
+  bool IsNotificationFromSampleCatalog(
+      const NotificationInfo& info) const;
+  bool IsCreativeSetFromSampleCatalog(
+      const std::string& creative_set_id) const;
 
-  bool IsSupportedUrl(const std::string& url) const;
-  bool UrlHostsMatch(const std::string& url_1, const std::string& url_2) const;
+  bool IsSupportedUrl(
+      const std::string& url) const;
+  bool UrlHostsMatch(
+      const std::string& url_1,
+      const std::string& url_2) const;
 
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;

@@ -10,39 +10,39 @@
 @protocol NativeAdsClientBridge;
 
 class NativeAdsClient : public ads::AdsClient {
-public:
+ public:
   NativeAdsClient(id<NativeAdsClientBridge> bridge);
   ~NativeAdsClient() override;
 
-private:
+ private:
   __unsafe_unretained id<NativeAdsClientBridge> bridge_;
 
-  void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
-  void ConfirmAction(const std::string& uuid, const std::string& creative_set_id, const ads::ConfirmationType& type) override;
-  void EventLog(const std::string & json) override;
-  void GetAds(const std::string & category, ads::OnGetAdsCallback callback) override;
-  const std::string GetAdsLocale() const override;
+  bool IsEnabled() const override;
   uint64_t GetAdsPerDay() const override;
   uint64_t GetAdsPerHour() const override;
   void GetClientInfo(ads::ClientInfo * info) const override;
-  const std::vector<std::string> GetLocales() const override;
-  bool IsAdsEnabled() const override;
+  const std::string GetLocale() const override;
+  bool IsNetworkConnectionAvailable() const override;
+  void SetIdleThreshold(const int threshold) override;
   bool IsForeground() const override;
-  bool IsNetworkConnectionAvailable() override;
-  bool IsNotificationsAvailable() const override;
-  void KillTimer(uint32_t timer_id) override;
+  const std::vector<std::string> GetUserModelLanguages() const override;
+  void LoadUserModelForLanguage(const std::string & language, ads::OnLoadCallback callback) const override;
+  void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
+  bool ShouldShowNotifications() const override;
+  void CloseNotification(const std::string& id) override;
+  void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
+  void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
+  void ConfirmAction(const std::string& uuid, const std::string& creative_set_id, const ads::ConfirmationType& type) override;
+  uint32_t SetTimer(const uint64_t time_offset) override;
+  void KillTimer(const uint32_t timer_id) override;
+  void URLRequest(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & content_type, const ads::URLRequestMethod method, ads::URLRequestCallback callback) override;
+  void Save(const std::string & name, const std::string & value, ads::OnSaveCallback callback) override;
   void Load(const std::string & name, ads::OnLoadCallback callback) override;
+  void Reset(const std::string & name, ads::OnResetCallback callback) override;
   const std::string LoadJsonSchema(const std::string & name) override;
   void LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) override;
-  void LoadUserModelForLocale(const std::string & locale, ads::OnLoadCallback callback) const override;
-  std::unique_ptr<ads::LogStream> Log(const char * file, const int line, const ads::LogLevel log_level) const override;
-  void Reset(const std::string & name, ads::OnResetCallback callback) override;
-  void Save(const std::string & name, const std::string & value, ads::OnSaveCallback callback) override;
   void SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::OnSaveCallback callback) override;
-  void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
-  void SetIdleThreshold(const int threshold) override;
-  uint32_t SetTimer(const uint64_t time_offset) override;
-  void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
-  void CloseNotification(const std::string& id) override;
-  void URLRequest(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & content_type, const ads::URLRequestMethod method, ads::URLRequestCallback callback) override;
+  void GetAds(const std::string & category, ads::OnGetAdsCallback callback) override;
+  void EventLog(const std::string & json) const override;
+  std::unique_ptr<ads::LogStream> Log(const char * file, const int line, const ads::LogLevel log_level) const override;
 };

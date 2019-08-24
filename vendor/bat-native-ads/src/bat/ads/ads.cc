@@ -15,10 +15,10 @@ bool _is_debug = false;
 bool _is_testing = false;
 bool _is_production = false;
 
-const char _bundle_schema_name[] = "bundle-schema.json";
-const char _catalog_schema_name[] = "catalog-schema.json";
-const char _catalog_name[] = "catalog.json";
-const char _client_name[] = "client.json";
+const char _bundle_schema_resource_name[] = "bundle-schema.json";
+const char _catalog_schema_resource_name[] = "catalog-schema.json";
+const char _catalog_resource_name[] = "catalog.json";
+const char _client_resource_name[] = "client.json";
 
 // static
 Ads* Ads::CreateInstance(AdsClient* ads_client) {
@@ -37,7 +37,7 @@ bool Ads::IsSupportedRegion(const std::string& locale) {
 }
 
 std::string Ads::GetRegion(const std::string& locale) {
-  return helper::Locale::GetCountryCode(locale);
+  return helper::Locale::GetRegionCode(locale);
 }
 
 }  // namespace ads

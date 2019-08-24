@@ -25,62 +25,102 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   ~AdsClientMojoBridge() override;
 
   // Overridden from BatAdsClient:
-  bool IsAdsEnabled(bool* out_is_enabled) override;
-  void IsAdsEnabled(IsAdsEnabledCallback callback) override;
-  bool IsForeground(bool* out_is_foreground) override;
-  void IsForeground(IsForegroundCallback callback) override;
-  bool GetAdsLocale(std::string* out_locale) override;
-  void GetAdsLocale(GetAdsLocaleCallback callback) override;
-  bool GetLocales(std::vector<std::string>* out_locales) override;
-  void GetLocales(GetLocalesCallback callback) override;
-  bool GetAdsPerHour(uint64_t* out_ads_per_hour) override;
-  void GetAdsPerHour(GetAdsPerHourCallback callback) override;
-  bool GetAdsPerDay(uint64_t* out_ads_per_day) override;
-  void GetAdsPerDay(GetAdsPerDayCallback callback) override;
-  bool IsNetworkConnectionAvailable(bool* out_available) override;
+  bool IsEnabled(
+      bool* out_is_enabled) override;
+  void IsEnabled(
+      IsEnabledCallback callback) override;
+  bool IsForeground(
+      bool* out_is_foreground) override;
+  void IsForeground(
+      IsForegroundCallback callback) override;
+  bool GetLocale(
+      std::string* out_locale) override;
+  void GetLocale(
+      GetLocaleCallback callback) override;
+  bool GetUserModelLanguages(
+      std::vector<std::string>* out_languages) override;
+  void GetUserModelLanguages(
+      GetUserModelLanguagesCallback callback) override;
+  bool GetAdsPerHour(
+      uint64_t* out_ads_per_hour) override;
+  void GetAdsPerHour(
+      GetAdsPerHourCallback callback) override;
+  bool GetAdsPerDay(
+      uint64_t* out_ads_per_day) override;
+  void GetAdsPerDay(
+      GetAdsPerDayCallback callback) override;
+  bool IsNetworkConnectionAvailable(
+      bool* out_available) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
-  bool IsNotificationsAvailable(bool* out_available) override;
-  void IsNotificationsAvailable(
-      IsNotificationsAvailableCallback callback) override;
-  bool SetTimer(uint64_t time_offset, uint32_t* out_timer_id) override;
-  void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
-  bool LoadJsonSchema(const std::string& name, std::string* out_json) override;
-  void LoadJsonSchema(const std::string& name,
-                      LoadJsonSchemaCallback callback) override;
-  bool GetClientInfo(const std::string& client_info,
-                     std::string* out_client_info) override;
-  void GetClientInfo(const std::string& client_info,
-                     GetClientInfoCallback callback) override;
-
-  void EventLog(const std::string& json) override;
-  void SetIdleThreshold(int32_t threshold) override;
-  void KillTimer(uint32_t timer_id) override;
-  void Load(const std::string& name, LoadCallback callback) override;
-  void Save(const std::string& name,
-            const std::string& value,
-            SaveCallback callback) override;
-  void Reset(const std::string& name, ResetCallback callback) override;
-  void LoadUserModelForLocale(const std::string& locale,
-                              LoadUserModelForLocaleCallback callback) override;
-  void URLRequest(const std::string& url,
-                  const std::vector<std::string>& headers,
-                  const std::string& content,
-                  const std::string& content_type,
-                  int32_t method,
-                  URLRequestCallback callback) override;
-  void LoadSampleBundle(LoadSampleBundleCallback callback) override;
-  void ShowNotification(const std::string& notification_info) override;
-  void CloseNotification(const std::string& id) override;
-  void SetCatalogIssuers(const std::string& issuers_info) override;
-  void ConfirmAd(const std::string& notification_info) override;
-  void ConfirmAction(const std::string& uuid,
-                     const std::string& creative_set_id,
-                     const std::string& type) override;
-  void SaveBundleState(const std::string& bundle_state,
-                       SaveBundleStateCallback callback) override;
-  void GetAds(const std::string& category,
-              GetAdsCallback callback) override;
+  bool ShouldShowNotifications(
+      bool* out_should_show) override;
+  void ShouldShowNotifications(
+      ShouldShowNotificationsCallback callback) override;
+  bool SetTimer(
+      uint64_t time_offset,
+      uint32_t* out_timer_id) override;
+  void SetTimer(
+      uint64_t time_offset,
+      SetTimerCallback callback) override;
+  bool LoadJsonSchema(
+      const std::string& name,
+      std::string* out_json) override;
+  void LoadJsonSchema(
+      const std::string& name,
+      LoadJsonSchemaCallback callback) override;
+  bool GetClientInfo(
+      const std::string& client_info,
+      std::string* out_client_info) override;
+  void GetClientInfo(
+      const std::string& client_info,
+      GetClientInfoCallback callback) override;
+  void EventLog(
+      const std::string& json) override;
+  void SetIdleThreshold(
+      int32_t threshold) override;
+  void KillTimer(
+      uint32_t timer_id) override;
+  void Load(
+      const std::string& name,
+      LoadCallback callback) override;
+  void Save(
+      const std::string& name,
+      const std::string& value,
+      SaveCallback callback) override;
+  void Reset(
+      const std::string& name,
+      ResetCallback callback) override;
+  void LoadUserModelForLanguage(
+      const std::string& locale,
+      LoadUserModelForLanguageCallback callback) override;
+  void URLRequest(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      int32_t method,
+      URLRequestCallback callback) override;
+  void LoadSampleBundle(
+      LoadSampleBundleCallback callback) override;
+  void ShowNotification(
+      const std::string& notification_info) override;
+  void CloseNotification(
+      const std::string& id) override;
+  void SetCatalogIssuers(
+      const std::string& issuers_info) override;
+  void ConfirmAd(
+      const std::string& notification_info) override;
+  void ConfirmAction(
+      const std::string& uuid,
+      const std::string& creative_set_id,
+      const std::string& type) override;
+  void SaveBundleState(
+      const std::string& bundle_state,
+      SaveBundleStateCallback callback) override;
+  void GetAds(
+      const std::string& category,
+      GetAdsCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -99,21 +139,25 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
     Callback callback_;
   };
 
-  static void OnLoad(CallbackHolder<LoadCallback>* holder,
-                     ads::Result result,
-                     const std::string& value);
-  static void OnSave(CallbackHolder<SaveCallback>* holder,
-                     ads::Result result);
-  static void OnReset(CallbackHolder<ResetCallback>* holder,
-                      ads::Result result);
-  static void OnLoadUserModelForLocale(
-      CallbackHolder<LoadUserModelForLocaleCallback>* holder,
+  static void OnLoad(
+      CallbackHolder<LoadCallback>* holder,
       ads::Result result,
       const std::string& value);
-  static void OnURLRequest(CallbackHolder<URLRequestCallback>* holder,
-                           const int status_code,
-                           const std::string& content,
-                           const std::map<std::string, std::string>& headers);
+  static void OnSave(
+      CallbackHolder<SaveCallback>* holder,
+      ads::Result result);
+  static void OnReset(
+      CallbackHolder<ResetCallback>* holder,
+      ads::Result result);
+  static void OnLoadUserModelForLanguage(
+      CallbackHolder<LoadUserModelForLanguageCallback>* holder,
+      ads::Result result,
+      const std::string& value);
+  static void OnURLRequest(
+      CallbackHolder<URLRequestCallback>* holder,
+      const int status_code,
+      const std::string& content,
+      const std::map<std::string, std::string>& headers);
   static void OnLoadSampleBundle(
       CallbackHolder<LoadSampleBundleCallback>* holder,
       ads::Result result,

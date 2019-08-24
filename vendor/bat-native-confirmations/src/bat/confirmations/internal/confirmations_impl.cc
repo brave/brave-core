@@ -693,7 +693,8 @@ void ConfirmationsImpl::SaveState() {
 
   std::string json = ToJSON();
   auto callback = std::bind(&ConfirmationsImpl::OnStateSaved, this, _1);
-  confirmations_client_->SaveState(_confirmations_name, json, callback);
+  confirmations_client_->SaveState(_confirmations_resource_name, json,
+      callback);
 
   NotifyAdsIfConfirmationsIsReady();
 }
@@ -711,7 +712,7 @@ void ConfirmationsImpl::LoadState() {
   BLOG(INFO) << "Loading confirmations state";
 
   auto callback = std::bind(&ConfirmationsImpl::OnStateLoaded, this, _1, _2);
-  confirmations_client_->LoadState(_confirmations_name, callback);
+  confirmations_client_->LoadState(_confirmations_resource_name, callback);
 }
 
 void ConfirmationsImpl::OnStateLoaded(
@@ -750,7 +751,7 @@ void ConfirmationsImpl::ResetState() {
   BLOG(INFO) << "Resetting confirmations to default state";
 
   auto callback = std::bind(&ConfirmationsImpl::OnStateReset, this, _1);
-  confirmations_client_->ResetState(_confirmations_name, callback);
+  confirmations_client_->ResetState(_confirmations_resource_name, callback);
 }
 
 void ConfirmationsImpl::OnStateReset(const Result result) {

@@ -155,7 +155,7 @@ bundle_data("resources") {
     "$ads_dir/resources/bundle-schema.json",
     "$ads_dir/resources/catalog-schema.json",
     "$ads_dir/resources/sample_bundle.json",
-    "$ads_dir/resources/locales",
+    "$ads_dir/resources/user_models",
     "$ledger_dir/niceware/wordlist",
   ]
   outputs = [

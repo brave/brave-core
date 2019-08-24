@@ -25,7 +25,7 @@ class NotificationHelperWin :
 
  private:
   // NotificationHelper impl
-  bool IsNotificationsAvailable() const override;
+  bool ShouldShowNotifications() const override;
 
   bool ShowMyFirstAdNotification() const override;
 

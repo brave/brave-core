@@ -40,9 +40,9 @@ class MockAdsClient : public AdsClient {
   MockAdsClient();
   ~MockAdsClient() override;
 
-  MOCK_CONST_METHOD0(IsAdsEnabled, bool());
+  MOCK_CONST_METHOD0(IsEnabled, bool());
 
-  MOCK_CONST_METHOD0(GetAdsLocale, const std::string());
+  MOCK_CONST_METHOD0(GetLocale, const std::string());
 
   MOCK_CONST_METHOD0(GetAdsPerHour, uint64_t());
 
@@ -51,20 +51,20 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(SetIdleThreshold, void(
       const int threshold));
 
-  MOCK_METHOD0(IsNetworkConnectionAvailable, bool());
+  MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
   MOCK_CONST_METHOD1(GetClientInfo, void(
       ClientInfo* info));
 
-  MOCK_CONST_METHOD0(GetLocales, const std::vector<std::string>());
+  MOCK_CONST_METHOD0(GetUserModelLanguages, const std::vector<std::string>());
 
-  MOCK_CONST_METHOD2(LoadUserModelForLocale, void(
-      const std::string& locale,
+  MOCK_CONST_METHOD2(LoadUserModelForLanguage, void(
+      const std::string& language,
       OnLoadCallback callback));
 
   MOCK_CONST_METHOD0(IsForeground, bool());
 
-  MOCK_CONST_METHOD0(IsNotificationsAvailable, bool());
+  MOCK_CONST_METHOD0(ShouldShowNotifications, bool());
 
   MOCK_METHOD1(ShowNotification, void(
       std::unique_ptr<NotificationInfo> info));
@@ -124,7 +124,7 @@ class MockAdsClient : public AdsClient {
       const std::string& category,
       OnGetAdsCallback callback));
 
-  MOCK_METHOD1(EventLog, void(
+  MOCK_CONST_METHOD1(EventLog, void(
       const std::string& json));
 
   std::unique_ptr<LogStream> Log(
