@@ -1,20 +1,20 @@
 diff --git a/services/network/network_context.cc b/services/network/network_context.cc
-index 6082e82d5854b9d7cec0c2767d7ea7bcf1580614..e70aadc9ddf6141ca195099e5ce842d7b7f7b539 100644
+index 6082e82d5854b9d7cec0c2767d7ea7bcf1580614..fd1abc824e454721df887fdc8fac5a8ea365785c 100644
 --- a/services/network/network_context.cc
 +++ b/services/network/network_context.cc
-@@ -431,6 +431,7 @@ class NetworkContext::ContextNetworkDelegate
+@@ -430,6 +430,7 @@ class NetworkContext::ContextNetworkDelegate
+   bool OnCanGetCookiesInternal(const net::URLRequest& request,
                                 const net::CookieList& cookie_list,
                                 bool allowed_from_caller) override {
++    BRAVE_ON_CAN_GET_COOKIES_INTERNAL
      return allowed_from_caller &&
-+           BRAVE_ON_CAN_GET_COOKIES_INTERNAL
             network_context_->cookie_manager()
                 ->cookie_settings()
-                .IsCookieAccessAllowed(request.url(),
-@@ -442,6 +443,7 @@ class NetworkContext::ContextNetworkDelegate
+@@ -441,6 +442,7 @@ class NetworkContext::ContextNetworkDelegate
+                               const net::CanonicalCookie& cookie,
                                net::CookieOptions* options,
                                bool allowed_from_caller) override {
++    BRAVE_ON_CAN_SET_COOKIES_INTERNAL
      return allowed_from_caller &&
-+           BRAVE_ON_CAN_SET_COOKIES_INTERNAL
             network_context_->cookie_manager()
                 ->cookie_settings()
-                .IsCookieAccessAllowed(request.url(),
