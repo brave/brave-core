@@ -482,11 +482,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 
 - (bool)shouldShowNotifications
 {
-  [self.notificationsHandler shouldShowNotifications:^(BOOL shouldShow) {
-//    completion(shouldShow);
-  }];
-  // TODO: When this API has a completion block, call it inside above block
-  return YES;
+  return [self.notificationsHandler shouldShowNotifications];
 }
 
 - (void)showNotification:(std::unique_ptr<ads::NotificationInfo>)info
