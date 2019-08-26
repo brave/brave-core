@@ -21,13 +21,7 @@ NS_SWIFT_NAME(BraveAdsNotificationHandler)
 @required
 /// Determine whether or not the client can currently show notifications
 /// to the user.
-///
-/// In the case of system notifications:
-///
-/// This can be a combination of permission checks and notification settings for
-/// lock screen, alert type, etc. If the user hasn't yet decided on notification
-/// authorization status, they should be asked when this is called
-- (void)shouldShowNotifications:(void (^)(BOOL shouldShow))completionHandler;
+- (BOOL)shouldShowNotifications;
 /// Show the given notification to the user (or add it to the queue)
 - (void)showNotification:(BATAdsNotification *)notification;
 /// Remove a pending notification from the queue or remove an already shown
