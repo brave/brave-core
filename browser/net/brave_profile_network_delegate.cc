@@ -46,26 +46,11 @@
 
 using content::BrowserThread;
 
-namespace {
-
-std::string GetTagFromPrefName(const std::string& pref_name) {
-  if (pref_name == kFBEmbedControlType) {
-    return brave_shields::kFacebookEmbeds;
-  }
-  if (pref_name == kTwitterEmbedControlType) {
-    return brave_shields::kTwitterEmbeds;
-  }
-  if (pref_name == kLinkedInEmbedControlType) {
-    return brave_shields::kLinkedInEmbeds;
-  }
-  return "";
-}
-
-}  // namespace
-
 BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
-    extensions::EventRouterForwarder* event_router) :
-    BraveNetworkDelegateBase(event_router) {
+    extensions::EventRouterForwarder* event_router)
+    : BraveNetworkDelegateBase(event_router),
+      weak_ptr_factory_io_(this),
+      weak_ptr_factory_ui_(this) {
   brave::OnBeforeURLRequestCallback
   callback =
       base::Bind(brave::OnBeforeURLRequest_SiteHacksWork);
@@ -117,7 +102,7 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   base::PostTaskWithTraits(
       FROM_HERE, {BrowserThread::IO},
       base::Bind(&BraveProfileNetworkDelegate::InitPrefChangeRegistrar,
-                 base::Unretained(this)));
+                 weak_ptr_factory_ui_.GetWeakPtr()));
 }
 
 BraveProfileNetworkDelegate::~BraveProfileNetworkDelegate() {
@@ -132,7 +117,7 @@ void BraveProfileNetworkDelegate::InitPrefChangeRegistrar() {
   base::PostTaskWithTraits(
       FROM_HERE, {BrowserThread::UI},
       base::Bind(&BraveProfileNetworkDelegate::InitPrefChangeRegistrarOnUI,
-                 base::Unretained(this), profile_path()));
+                 weak_ptr_factory_io_.GetWeakPtr(), profile_path()));
 }
 
 void BraveProfileNetworkDelegate::InitPrefChangeRegistrarOnUI(
@@ -148,52 +133,26 @@ void BraveProfileNetworkDelegate::InitPrefChangeRegistrarOnUI(
   user_pref_change_registrar_->Add(
       kGoogleLoginControlType,
       base::BindRepeating(&BraveProfileNetworkDelegate::OnPreferenceChanged,
-                          base::Unretained(this),
+                          weak_ptr_factory_ui_.GetWeakPtr(),
                           user_prefs,
                           kGoogleLoginControlType));
-  user_pref_change_registrar_->Add(
-      kFBEmbedControlType,
-      base::BindRepeating(&BraveProfileNetworkDelegate::OnPreferenceChanged,
-                          base::Unretained(this),
-                          user_prefs, kFBEmbedControlType));
-  user_pref_change_registrar_->Add(
-      kTwitterEmbedControlType,
-      base::BindRepeating(&BraveProfileNetworkDelegate::OnPreferenceChanged,
-                          base::Unretained(this),
-                          user_prefs,
-                          kTwitterEmbedControlType));
-  user_pref_change_registrar_->Add(
-      kLinkedInEmbedControlType,
-      base::BindRepeating(&BraveProfileNetworkDelegate::OnPreferenceChanged,
-                          base::Unretained(this),
-                          user_prefs,
-                          kLinkedInEmbedControlType));
-  UpdateAdBlockFromPref(user_prefs, kFBEmbedControlType);
-  UpdateAdBlockFromPref(user_prefs, kTwitterEmbedControlType);
-  UpdateAdBlockFromPref(user_prefs, kLinkedInEmbedControlType);
-  set_allow_google_auth(user_prefs->GetBoolean(kGoogleLoginControlType));
+  OnPreferenceChanged(user_prefs, kGoogleLoginControlType);
 }
 
 void BraveProfileNetworkDelegate::OnPreferenceChanged(
     PrefService* user_prefs,
     const std::string& pref_name) {
-  UpdateAdBlockFromPref(user_prefs, pref_name);
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  if (pref_name == kGoogleLoginControlType) {
+    base::PostTaskWithTraits(
+        FROM_HERE, {BrowserThread::IO},
+        base::Bind(&BraveProfileNetworkDelegate::UpdateGoogleAuthOnIO,
+                   weak_ptr_factory_ui_.GetWeakPtr(),
+                   user_prefs->GetBoolean(kGoogleLoginControlType)));
+  }
 }
 
-void BraveProfileNetworkDelegate::UpdateAdBlockFromPref(
-    PrefService* user_prefs,
-    const std::string& pref_name) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  set_allow_google_auth(user_prefs->GetBoolean(kGoogleLoginControlType));
-  std::string tag = GetTagFromPrefName(pref_name);
-  if (tag.length() == 0) {
-    return;
-  }
-  // TODO(bridiver) - user pref can't update global values
-  bool enabled = user_prefs->GetBoolean(pref_name);
-  g_brave_browser_process->ad_block_service()->EnableTag(tag, enabled);
-  g_brave_browser_process->ad_block_regional_service_manager()->EnableTag(
-      tag, enabled);
-  g_brave_browser_process->ad_block_custom_filters_service()->EnableTag(
-      tag, enabled);
+void BraveProfileNetworkDelegate::UpdateGoogleAuthOnIO(bool allow_goole_auth) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  set_allow_google_auth(allow_goole_auth);
 }

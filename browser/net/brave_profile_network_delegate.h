@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/net/brave_network_delegate_base.h"
 
 class PrefService;
@@ -25,11 +26,13 @@ class BraveProfileNetworkDelegate : public BraveNetworkDelegateBase {
   void InitPrefChangeRegistrarOnUI(const base::FilePath& profile_path);
   void OnPreferenceChanged(PrefService* user_prefs,
                            const std::string& pref_name);
-  void UpdateAdBlockFromPref(PrefService* user_prefs,
-                             const std::string& pref_name);
+  void UpdateGoogleAuthOnIO(bool allow_goole_auth);
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       user_pref_change_registrar_;
+
+  base::WeakPtrFactory<BraveProfileNetworkDelegate> weak_ptr_factory_io_;
+  base::WeakPtrFactory<BraveProfileNetworkDelegate> weak_ptr_factory_ui_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveProfileNetworkDelegate);
 };
