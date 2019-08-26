@@ -25,7 +25,9 @@ class Clock extends React.PureComponent<{}, ClockState> {
   }
 
   get dateTimeFormat (): any {
-    return new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit' })
+    // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+    const options = { hour: 'numeric', minute: 'numeric' }
+    return new Intl.DateTimeFormat(undefined, options)
   }
 
   get formattedTime () {
