@@ -37,25 +37,9 @@ ContentSetting GetDefaultFromResourceIdentifier(
 }
 
 bool IsWhitelistedCookieException(const GURL& primary_url,
-                                  const GURL& secondary_url,
-                                  bool allow_google_auth) {
+                                  const GURL& secondary_url) {
   // Note that there's already an exception for TLD+1, so don't add those here.
   // Check with the security team before adding exceptions.
-
-  // 1st-party-INdependent whitelist
-  std::vector<URLPattern> fpi_whitelist_patterns = {};
-  if (allow_google_auth) {
-    fpi_whitelist_patterns.push_back(URLPattern(URLPattern::SCHEME_ALL,
-        "https://accounts.google.com/o/oauth2/*"));
-  }
-  bool any_match = std::any_of(fpi_whitelist_patterns.begin(),
-      fpi_whitelist_patterns.end(),
-      [&secondary_url](const URLPattern& pattern) {
-        return pattern.MatchesURL(secondary_url);
-      });
-  if (any_match) {
-    return true;
-  }
 
   // 1st-party-dependent whitelist
   static std::map<GURL, std::vector<URLPattern> > whitelist_patterns = {
