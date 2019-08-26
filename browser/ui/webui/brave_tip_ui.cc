@@ -262,7 +262,7 @@ void RewardsTipDOMHandler::OnPublisherBanner(
     result.SetString("background", banner->background);
     result.SetString("logo", banner->logo);
     result.SetString("provider", banner->provider);
-    result.SetBoolean("verified", banner->verified);
+    result.SetInteger("status", static_cast<int>(banner->status));
 
     auto amounts = std::make_unique<base::ListValue>();
     for (auto const& value : banner->amounts) {

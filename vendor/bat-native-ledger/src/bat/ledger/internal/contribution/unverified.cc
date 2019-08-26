@@ -75,8 +75,7 @@ void Unverified::OnContributeUnverifiedPublishers(
     }
 
     // verified status didn't change
-    // TODO make sure that value is fetch from DB
-    if (!item->verified) {
+    if (item->status == ledger::PublisherStatus::VERIFIED) {
       continue;
     }
 

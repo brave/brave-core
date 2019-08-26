@@ -10,10 +10,23 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/publisher_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=ContributionTest.*
+
+namespace bat_ledger {
+
+class MockLedgerImpl : public LedgerImpl {
+ public:
+  MockLedgerImpl() {}
+  MOCK_METHOD1(IsPublisherConnectedOrVerified,
+      void(const ledger::PublisherStatus status));
+};
+
+}
 
 namespace braveledger_contribution {
 
@@ -26,9 +39,13 @@ class ContributionTest : public testing::Test {
     // Can't have more verified publishers than total publishers
     DCHECK(variation <= iterations);
     for (uint32_t ix = 0; ix < iterations; ix++) {
+      const auto status =
+          ix < variation
+          ? ledger::PublisherStatus::VERIFIED
+          : ledger::PublisherStatus::NOT_VERIFIED;
       ledger::PublisherInfoPtr publisher_info = ledger::PublisherInfo::New();
       publisher_info->id = "example" + std::to_string(ix) + ".com";
-      publisher_info->verified = ix < variation;
+      publisher_info->verified = status;
       publisher_info->percent = (1.0 / iterations) * 100.0;
       publisher_info->weight = (1.0 / iterations) * 100.0;
       publisher_info_list->push_back(std::move(publisher_info));
@@ -79,46 +96,48 @@ class ContributionTest : public testing::Test {
 };
 
 TEST_F(ContributionTest, GetAmountFromVerifiedAuto) {
+  auto contribution =
+      std::make_unique<braveledger_contribution::ContributionTest>(nullptr);
   ledger::PublisherInfoList publisher_info_list;
 
   // 0 publishers and budget of 0 BAT
   GetPublishersForAuto(&publisher_info_list, 0, 0);
   double amount =
-      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 0);
+      contribution->GetAmountFromVerifiedAuto(publisher_info_list, 0);
   EXPECT_EQ(amount, 0);
 
   // 10 publishers total with 5 verified and budget of 30 BAT
   GetPublishersForAuto(&publisher_info_list, 10, 5);
   amount =
-      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 30);
+      contribution->GetAmountFromVerifiedAuto(publisher_info_list, 30);
   EXPECT_EQ(amount, 15);
 
   // 20 publishers total with 10 verified and budget of 30 BAT
   publisher_info_list.clear();
   GetPublishersForAuto(&publisher_info_list, 20, 10);
   amount =
-      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 30);
+      contribution->GetAmountFromVerifiedAuto(publisher_info_list, 30);
   EXPECT_EQ(amount, 15);
 
   // 50 publishers total with 5 verified and budget of 100 BAT
   publisher_info_list.clear();
   GetPublishersForAuto(&publisher_info_list, 50, 5);
   amount =
-      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 100);
+      contribution->GetAmountFromVerifiedAuto(publisher_info_list, 100);
   EXPECT_EQ(amount, 10);
 
   // 100 publishers total with 80 verified and budget of 1478 BAT
   publisher_info_list.clear();
   GetPublishersForAuto(&publisher_info_list, 100, 80);
   amount =
-      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 1478);
+      contribution->GetAmountFromVerifiedAuto(publisher_info_list, 1478);
   EXPECT_NEAR(amount, 1182.4, 0.001f);
 
   // 100 publishers total with 4 verified and budget of 100 BAT
   publisher_info_list.clear();
   GetPublishersForAuto(&publisher_info_list, 100, 4);
   amount =
-      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 100);
+      contribution->GetAmountFromVerifiedAuto(publisher_info_list, 100);
   EXPECT_EQ(amount, 4);
 }
 

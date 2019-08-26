@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_
 
+#include <memory>
 #include <string>
 
 #include "bat/ledger/publisher_info.h"
@@ -16,7 +17,7 @@ namespace brave_rewards {
 
 class DatabaseServerPublisherInfo: public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherInfo();
+  DatabaseServerPublisherInfo();
   ~DatabaseServerPublisherInfo() override;
 
   bool CreateTable(sql::Database* db) override;

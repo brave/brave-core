@@ -8,7 +8,6 @@
 #include <ctime>
 #include <utility>
 #include <vector>
-#include <bat/ledger/publisher_info.h>
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bignum.h"
@@ -40,7 +39,7 @@ namespace braveledger_publisher {
 Publisher::Publisher(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   state_(new braveledger_bat_helper::PUBLISHER_STATE_ST),
-  server_list_(std::make_unique<PublisherServerList>(ledger, this)) {
+  server_list_(std::make_unique<PublisherServerList>(ledger)) {
   calcScoreConsts(state_->min_publisher_duration_);
 }
 
@@ -48,7 +47,7 @@ Publisher::~Publisher() {
 }
 
 void Publisher::OnTimer(uint32_t timer_id) {
-   server_list_->OnTimer(timer_id);
+  server_list_->OnTimer(timer_id);
 }
 
 void Publisher::RefreshPublisher(
@@ -66,7 +65,7 @@ void Publisher::OnRefreshPublisher(
     const std::string& publisher_key,
     ledger::OnRefreshPublisherCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    callback(false);
+    callback(ledger::PublisherStatus::NOT_VERIFIED);
     return;
   }
 
@@ -82,7 +81,11 @@ void Publisher::OnRefreshPublisher(
 void Publisher::OnRefreshPublisherServerPublisher(
     ledger::ServerPublisherInfoPtr info,
     ledger::OnRefreshPublisherCallback callback) {
-  callback(info && info->verified);
+  auto status = ledger::PublisherStatus::NOT_VERIFIED;
+  if (info) {
+    status = info->status;
+  }
+  callback(status);
 }
 
 void Publisher::SetPublisherServerListTimer() {
@@ -190,13 +193,17 @@ void Publisher::OnSaveVisitServerPublisher(
       false);
 
   // we need to do this as I can't move server publisher into final function
-  bool verified = server_info && server_info->verified;
+  auto status = ledger::PublisherStatus::NOT_VERIFIED;
+  if (server_info) {
+    status = server_info->status;
+  }
+
   bool server_excluded = server_info && server_info->excluded;
 
   ledger::PublisherInfoCallback callbackGetPublishers =
       std::bind(&Publisher::SaveVisitInternal,
           this,
-          verified,
+          status,
           server_excluded,
           publisher_key,
           visit_data,
@@ -210,7 +217,7 @@ void Publisher::OnSaveVisitServerPublisher(
 }
 
 void Publisher::SaveVisitInternal(
-    bool verified,
+    const ledger::PublisherStatus status,
     bool server_excluded,
     const std::string& publisher_key,
     const ledger::VisitData& visit_data,
@@ -226,6 +233,8 @@ void Publisher::SaveVisitInternal(
     return;
   }
 
+  bool is_verified = ledger_->IsPublisherConnectedOrVerified(status);
+
   bool new_visit = false;
   if (!publisher_info) {
     new_visit = true;
@@ -234,7 +243,7 @@ void Publisher::SaveVisitInternal(
   }
 
   std::string fav_icon = visit_data.favicon_url;
-  if (verified && !fav_icon.empty()) {
+  if (is_verified && !fav_icon.empty()) {
     if (fav_icon.find(".invalid") == std::string::npos) {
     ledger_->FetchFavIcon(fav_icon,
                           "https://" + ledger_->GenerateGUID() + ".invalid",
@@ -254,7 +263,7 @@ void Publisher::SaveVisitInternal(
   publisher_info->name = visit_data.name;
   publisher_info->provider = visit_data.provider;
   publisher_info->url = visit_data.url;
-  publisher_info->verified = verified;
+  publisher_info->status = status;
 
   bool excluded = IsExcluded(
       publisher_info->id,
@@ -275,8 +284,9 @@ void Publisher::SaveVisitInternal(
   bool min_duration_new = duration < getPublisherMinVisitTime() &&
       !ignore_time;
   bool min_duration_ok = duration > getPublisherMinVisitTime() || ignore_time;
-  bool verified_new = !ledger_->GetPublisherAllowNonVerified() && !verified;
-  bool verified_old = ((!ledger_->GetPublisherAllowNonVerified() && verified) ||
+  bool verified_new = !ledger_->GetPublisherAllowNonVerified() && !is_verified;
+  bool verified_old = (
+      (!ledger_->GetPublisherAllowNonVerified() && is_verified) ||
       ledger_->GetPublisherAllowNonVerified());
 
   if (new_visit &&
@@ -441,11 +451,6 @@ void Publisher::setPublisherMinVisits(const unsigned int visits) {
   saveState();
 }
 
-void Publisher::SetPublisherServerListTimestamp(uint64_t ts) {
-  state_->pubs_load_timestamp_ = ts;
-  saveState();
-}
-
 void Publisher::setPublisherAllowNonVerified(const bool& allow) {
   state_->allow_non_verified_ = allow;
   SynopsisNormalizer();
@@ -468,10 +473,6 @@ unsigned int Publisher::GetPublisherMinVisits() const {
 
 bool Publisher::getPublisherAllowNonVerified() const {
   return state_->allow_non_verified_;
-}
-
-uint64_t Publisher::GetPublisherServerListTimestamp() const {
-  return state_->pubs_load_timestamp_;
 }
 
 bool Publisher::getPublisherAllowVideos() const {
@@ -597,6 +598,11 @@ void Publisher::SynopsisNormalizerCallback(
   ledger::PublisherInfoList normalized_list;
   synopsisNormalizerInternal(&normalized_list, &list, 0);
   ledger_->SaveNormalizedPublisherList(std::move(normalized_list));
+}
+
+bool Publisher::IsConnectedOrVerified(const ledger::PublisherStatus status) {
+  return status == ledger::PublisherStatus::CONNECTED ||
+         status == ledger::PublisherStatus::VERIFIED;
 }
 
 bool Publisher::IsExcluded(
@@ -883,7 +889,7 @@ void Publisher::OnGetPublisherBanner(
 
   if (info) {
     banner = info->banner->Clone();
-    banner->verified = info->verified;
+    banner->status = info->status;
   }
 
   banner->publisher_key = publisher_key;
@@ -935,4 +941,4 @@ bool Publisher::WasPublisherAlreadyProcessed(
   return std::find(list.begin(), list.end(), publisher_key) != list.end();
 }
 
-}  // namespace braveledger_bat_publishers
+}  // namespace braveledger_publisher

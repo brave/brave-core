@@ -25,9 +25,7 @@ namespace braveledger_publisher {
 
 class PublisherServerList {
  public:
-  explicit PublisherServerList(
-      bat_ledger::LedgerImpl* ledger,
-      Publisher* publisher);
+  explicit PublisherServerList(bat_ledger::LedgerImpl* ledger);
   ~PublisherServerList();
 
   void Download(DownloadServerPublisherListCallback callback);
@@ -52,6 +50,8 @@ class PublisherServerList {
     bool retry_after_error,
     const uint64_t last_download);
 
+  ledger::PublisherStatus ParsePublisherStatus(const std::string& status);
+
   void ParsePublisherList(
     const std::string& data,
     ParsePublisherListCallback callback);
@@ -60,7 +60,6 @@ class PublisherServerList {
       base::DictionaryValue* dictionary);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  Publisher* publisher_;  // NOT OWNED
   uint32_t server_list_timer_id_;
 };
 

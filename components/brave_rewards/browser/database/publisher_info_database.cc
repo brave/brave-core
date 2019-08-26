@@ -13,6 +13,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
+#include "base/strings/stringprintf.h"
 #include "bat/ledger/media_event_info.h"
 #include "bat/ledger/pending_contribution.h"
 #include "build/build_config.h"
@@ -179,7 +180,7 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "ci.probi, ci.date, spi.verified, pi.provider "
+      "ci.probi, ci.date, spi.status, pi.provider "
       "FROM contribution_info as ci "
       "INNER JOIN publisher_info AS pi ON ci.publisher_id = pi.publisher_id "
       "LEFT JOIN server_publisher_info AS spi "
@@ -199,7 +200,8 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
     publisher->favicon_url = info_sql.ColumnString(3);
     publisher->weight = info_sql.ColumnDouble(4);
     publisher->reconcile_stamp = info_sql.ColumnInt64(5);
-    publisher->verified = info_sql.ColumnBool(6);
+    publisher->status =
+        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(6));
     publisher->provider = info_sql.ColumnString(7);
 
     list->push_back(std::move(publisher));
@@ -304,7 +306,7 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, pi.provider, "
-      "spi.verified, pi.excluded "
+      "spi.status, pi.excluded "
       "FROM publisher_info as pi "
       "LEFT JOIN server_publisher_info AS spi "
       "ON spi.publisher_key = pi.publisher_id "
@@ -319,7 +321,8 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
     info->url = info_sql.ColumnString(2);
     info->favicon_url = info_sql.ColumnString(3);
     info->provider = info_sql.ColumnString(4);
-    info->verified = info_sql.ColumnBool(5);
+    info->status =
+        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(5));
     info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
         info_sql.ColumnInt(6));
 
@@ -343,7 +346,7 @@ PublisherInfoDatabase::GetPanelPublisher(
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "pi.provider, spi.verified, pi.excluded, "
+      "pi.provider, spi.status, pi.excluded, "
       "("
       "SELECT IFNULL(percent, 0) FROM activity_info WHERE "
       "publisher_id = ? AND reconcile_stamp = ? "
@@ -364,7 +367,8 @@ PublisherInfoDatabase::GetPanelPublisher(
     info->url = info_sql.ColumnString(2);
     info->favicon_url = info_sql.ColumnString(3);
     info->provider = info_sql.ColumnString(4);
-    info->verified = info_sql.ColumnBool(5);
+    info->status =
+        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(5));
     info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
         info_sql.ColumnInt(6));
     info->percent = info_sql.ColumnInt(7);
@@ -519,7 +523,7 @@ bool PublisherInfoDatabase::GetActivityList(
   }
 
   std::string query = "SELECT ai.publisher_id, ai.duration, ai.score, "
-                      "ai.percent, ai.weight, spi.verified, pi.excluded, "
+                      "ai.percent, ai.weight, spi.status, pi.excluded, "
                       "pi.name, pi.url, pi.provider, "
                       "pi.favIcon, ai.reconcile_stamp, ai.visits "
                       "FROM activity_info AS ai "
@@ -561,7 +565,10 @@ bool PublisherInfoDatabase::GetActivityList(
   }
 
   if (!filter->non_verified) {
-    query += " AND spi.verified = 1";
+    const std::string status = base::StringPrintf(
+        " AND spi.status != %1d",
+        ledger::mojom::PublisherStatus::NOT_VERIFIED);
+    query += status;
   }
 
   for (const auto& it : filter->order_by) {
@@ -618,7 +625,8 @@ bool PublisherInfoDatabase::GetActivityList(
     info->score = info_sql.ColumnDouble(2);
     info->percent = info_sql.ColumnInt64(3);
     info->weight = info_sql.ColumnDouble(4);
-    info->verified = info_sql.ColumnBool(5);
+    info->status =
+        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(5));
     info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
         info_sql.ColumnInt(6));
     info->name = info_sql.ColumnString(7);
@@ -721,7 +729,7 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "pi.provider, spi.verified, pi.excluded "
+      "pi.provider, spi.status, pi.excluded "
       "FROM media_publisher_info as mpi "
       "INNER JOIN publisher_info AS pi ON mpi.publisher_id = pi.publisher_id "
       "LEFT JOIN server_publisher_info AS spi "
@@ -737,7 +745,8 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
     info->url = info_sql.ColumnString(2);
     info->favicon_url = info_sql.ColumnString(3);
     info->provider = info_sql.ColumnString(4);
-    info->verified = info_sql.ColumnBool(5);
+    info->status =
+        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(5));
     info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
         info_sql.ColumnInt(6));
 
@@ -761,7 +770,7 @@ bool PublisherInfoDatabase::GetExcludedList(
   }
 
   // We will use every attribute from publisher_info
-  std::string query = "SELECT pi.publisher_id, spi.verified, pi.name,"
+  std::string query = "SELECT pi.publisher_id, spi.status, pi.name,"
                       "pi.favicon, pi.url, pi.provider "
                       "FROM publisher_info as pi "
                       "LEFT JOIN server_publisher_info AS spi "
@@ -775,7 +784,8 @@ bool PublisherInfoDatabase::GetExcludedList(
 
     auto info = ledger::PublisherInfo::New();
     info->id = info_sql.ColumnString(0);
-    info->verified = info_sql.ColumnBool(1);
+    info->status =
+        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(1));
     info->name = info_sql.ColumnString(2);
     info->favicon_url = info_sql.ColumnString(3);
     info->url = info_sql.ColumnString(4);
@@ -862,7 +872,7 @@ void PublisherInfoDatabase::GetRecurringTips(
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "rd.amount, rd.added_date, spi.verified, pi.provider "
+      "rd.amount, rd.added_date, spi.status, pi.provider "
       "FROM recurring_donation as rd "
       "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "
       "LEFT JOIN server_publisher_info AS spi "
@@ -876,7 +886,8 @@ void PublisherInfoDatabase::GetRecurringTips(
     publisher->favicon_url = info_sql.ColumnString(3);
     publisher->weight = info_sql.ColumnDouble(4);
     publisher->reconcile_stamp = info_sql.ColumnInt64(5);
-    publisher->verified = info_sql.ColumnBool(6);
+    publisher->status =
+        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(6));
     publisher->provider = info_sql.ColumnString(7);
 
     list->push_back(std::move(publisher));
@@ -1012,7 +1023,7 @@ void PublisherInfoDatabase::GetPendingContributions(
 
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "spi.verified, pi.provider, pc.amount, pc.added_date, "
+      "spi.status, pi.provider, pc.amount, pc.added_date, "
       "pc.viewing_id, pc.category "
       "FROM pending_contribution as pc "
       "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
@@ -1025,7 +1036,8 @@ void PublisherInfoDatabase::GetPendingContributions(
     info->name = info_sql.ColumnString(1);
     info->url = info_sql.ColumnString(2);
     info->favicon_url = info_sql.ColumnString(3);
-    info->verified = info_sql.ColumnBool(4);
+    info->status =
+        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(4));
     info->provider = info_sql.ColumnString(5);
     info->amount = info_sql.ColumnDouble(6);
     info->added_date = info_sql.ColumnInt64(7);
@@ -1483,7 +1495,7 @@ bool PublisherInfoDatabase::MigrateV6toV7() {
     return false;
   }
 
-  // TODO add me
+  // TODO(nejczdovc): add me
 
   return transaction.Commit();
 }

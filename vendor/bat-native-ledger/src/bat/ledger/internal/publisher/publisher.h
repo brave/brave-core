@@ -60,8 +60,6 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void setPublisherMinVisits(const unsigned int visits);
 
-  void SetPublisherServerListTimestamp(uint64_t ts);
-
   void SetPublisherExclude(
       const std::string& publisher_id,
       const ledger::PUBLISHER_EXCLUDE& exclude,
@@ -86,8 +84,6 @@ class Publisher : public ledger::LedgerCallbackHandler {
   unsigned int GetPublisherMinVisits() const;
 
   bool getPublisherAllowNonVerified() const;
-
-  uint64_t GetPublisherServerListTimestamp() const;
 
   bool getPublisherAllowVideos() const;
 
@@ -136,6 +132,8 @@ class Publisher : public ledger::LedgerCallbackHandler {
       const ledger::Result result,
       ledger::RestorePublishersCallback callback);
 
+  bool IsConnectedOrVerified(const ledger::PublisherStatus status);
+
  private:
   void OnRefreshPublisher(
     const ledger::Result result,
@@ -160,7 +158,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
       const ledger::PUBLISHER_EXCLUDE& excluded);
 
   void SaveVisitInternal(
-      bool verified,
+      const ledger::PublisherStatus,
       bool server_excluded,
       const std::string& publisher_key,
       const ledger::VisitData& visit_data,
@@ -236,6 +234,8 @@ class Publisher : public ledger::LedgerCallbackHandler {
       const ledger::PublisherBanner& banner,
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
+
+  ledger::PublisherStatus ParsePublisherStatus(const std::string& status);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;

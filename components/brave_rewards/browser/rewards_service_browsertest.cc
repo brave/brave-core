@@ -320,16 +320,15 @@ class BraveRewardsBrowserTest :
       if (alter_publisher_list_) {
         *response =
             "["
-            "[\"bumpsmack.com\",true,false,\"address1\",{}],"
-            "[\"duckduckgo.com\",true,false,\"address2\",{}],"
-            "[\"3zsistemi.si\",false,false,\"\",{}]"
+            "[\"bumpsmack.com\",\"connected\",false,\"address1\",{}],"
+            "[\"duckduckgo.com\",\"verified\",false,\"address2\",{}]"
             "]";
       } else {
         *response =
             "["
-            "[\"bumpsmack.com\",true,false,\"address1\",{}],"
-            "[\"duckduckgo.com\",true,false,\"address2\",{}],"
-            "[\"3zsistemi.si\",true,false,\"address3\",{}]"
+            "[\"bumpsmack.com\",\"connected\",false,\"address1\",{}],"
+            "[\"duckduckgo.com\",\"verified\",false,\"address2\",{}],"
+            "[\"3zsistemi.si\",\"verified\",false,\"address3\",{}]"
             "]";
       }
     } else if (base::StartsWith(

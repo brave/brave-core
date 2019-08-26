@@ -11,6 +11,7 @@ import DonationOverlay from 'brave-ui/features/rewards/donationOverlay'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
+import { isPublisherConnectedOrVerified } from '../utils'
 
 interface Props extends RewardsTip.ComponentProps {
   publisher: RewardsTip.Publisher
@@ -61,7 +62,7 @@ class TransientTipOverlay extends React.Component<Props, {}> {
       domain = publisherKey
     }
 
-    const verified = publisher.verified
+    const verified = isPublisherConnectedOrVerified(publisher.status)
     let logo = publisher.logo
 
     const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/

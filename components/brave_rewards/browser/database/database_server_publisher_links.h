@@ -16,7 +16,7 @@ namespace brave_rewards {
 
 class DatabaseServerPublisherLinks: public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherLinks();
+  DatabaseServerPublisherLinks();
   ~DatabaseServerPublisherLinks() override;
 
   bool CreateTable(sql::Database* db) override;

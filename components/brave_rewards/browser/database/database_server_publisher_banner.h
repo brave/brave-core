@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_SERVER_PUBLISHER_BANNER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_SERVER_PUBLISHER_BANNER_H_
 
+#include <memory>
 #include <string>
 
 #include "bat/ledger/publisher_info.h"
@@ -17,7 +18,7 @@ namespace brave_rewards {
 
 class DatabaseServerPublisherBanner: public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherBanner();
+  DatabaseServerPublisherBanner();
   ~DatabaseServerPublisherBanner() override;
 
   bool CreateTable(sql::Database* db) override;

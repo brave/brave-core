@@ -120,7 +120,7 @@ interface BatLedger {
 
   LoadPublisherInfo(string publisher_key) =>
       (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
-  RefreshPublisher(string publisher_key) => (bool verified);
+  RefreshPublisher(string publisher_key) => (ledger.mojom.PublisherStatus status);
 
   StartMonthlyContribution();
 

@@ -9,7 +9,7 @@
 #include <cmath>
 #include <memory>
 #include <utility>
-#include <bat/ledger/publisher_info.h>
+#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ledger/internal/contribution/contribution.h"
@@ -118,13 +118,13 @@ void Contribution::GetVerifiedAutoAmount(
                 callback));
 }
 
-// static
 double Contribution::GetAmountFromVerifiedAuto(
     const ledger::PublisherInfoList& publisher_list,
     double ac_amount) {
   double verified_bat = 0.0;
   for (const auto& publisher : publisher_list) {
-    if (publisher->verified) {
+    const auto add = ledger_->IsPublisherConnectedOrVerified(publisher->status);
+    if (add) {
       verified_bat += (publisher->weight / 100.0) * ac_amount;
     }
   }
@@ -153,7 +153,7 @@ double Contribution::GetAmountFromVerifiedRecurring(
     if (publisher->id.empty()) {
       continue;
     }
-    if (publisher->verified) {
+    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
       total_recurring_amount += publisher->weight;
     }
   }
@@ -177,7 +177,8 @@ ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
       continue;
     }
 
-    if (publisher->verified) {
+    const auto add = ledger_->IsPublisherConnectedOrVerified(publisher->status);
+    if (add) {
       verified.push_back(publisher->Clone());
       verified_total += publisher->weight;
     } else {
@@ -226,7 +227,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
       continue;
     }
 
-    if (publisher->verified) {
+    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
       verified.push_back(publisher->Clone());
       *budget += publisher->weight;
     } else {
@@ -267,7 +268,7 @@ void Contribution::PrepareACList(
     new_publisher.duration_ = publisher->duration;
     new_publisher.score_ = publisher->score;
     new_publisher.visits_ = publisher->visits;
-    new_publisher.verified_ = publisher->verified;
+    new_publisher.status_ = static_cast<int>(publisher->status);
     new_list.push_back(new_publisher);
   }
 
@@ -697,10 +698,13 @@ void Contribution::OnDoDirectTipServerPublisher(
     int amount,
     const std::string& currency,
     ledger::DoDirectTipCallback callback) {
-  bool is_verified = server_info && server_info->verified;
+  auto status = ledger::PublisherStatus::NOT_VERIFIED;
+  if (server_info) {
+    status =  server_info->status;
+  }
 
   // Save to the pending list if not verified
-  if (!is_verified) {
+  if (status != ledger::PublisherStatus::VERIFIED) {
     auto contribution = ledger::PendingContribution::New();
     contribution->publisher_key = publisher_key;
     contribution->amount = amount;

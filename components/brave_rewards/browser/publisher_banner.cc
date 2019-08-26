@@ -1,6 +1,8 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 
 #include <string>
@@ -19,7 +21,7 @@ namespace brave_rewards {
     amounts(std::vector<double>()),
     provider(""),
     links(std::map<std::string, std::string>()),
-    verified(false) {}
+    status(0) {}
 
   PublisherBanner::~PublisherBanner() { }
 
@@ -33,7 +35,7 @@ namespace brave_rewards {
     amounts = properties.amounts;
     provider = properties.provider;
     links = properties.links;
-    verified = properties.verified;
+    status = properties.status;
   }
 
 }  // namespace brave_rewards

@@ -6,13 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_TABLE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_TABLE_H_
 
+#include <string>
+
 #include "sql/database.h"
 
 namespace brave_rewards {
 
 class DatabaseTable {
  public:
-  explicit DatabaseTable();
+  DatabaseTable();
   virtual ~DatabaseTable();
 
   virtual bool CreateTable(sql::Database* db) = 0;

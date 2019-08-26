@@ -31,7 +31,7 @@ bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
       "CREATE TABLE %s "
       "("
       "publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
-      "verified BOOLEAN DEFAULT 0 NOT NULL,"
+      "status TEXT NOT NULL,"
       "excluded INTEGER DEFAULT 0 NOT NULL,"
       "address TEXT NOT NULL"
       ")",
@@ -63,7 +63,7 @@ bool DatabaseServerPublisherInfo::InsertOrUpdate(
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-      "(publisher_key, verified, excluded, address) "
+      "(publisher_key, status, excluded, address) "
       "VALUES (?, ?, ?, ?)",
       table_name_);
 
@@ -71,7 +71,7 @@ bool DatabaseServerPublisherInfo::InsertOrUpdate(
     db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
   statment.BindString(0, info->publisher_key);
-  statment.BindBool(1, info->verified);
+  statment.BindInt(1, static_cast<int>(info->status));
   statment.BindBool(2, info->excluded);
   statment.BindString(3, info->address);
 
@@ -122,7 +122,7 @@ ledger::ServerPublisherInfoPtr DatabaseServerPublisherInfo::GetRecord(
     sql::Database* db,
     const std::string& publisher_key) {
   const std::string query = base::StringPrintf(
-      "SELECT verified, excluded, address "
+      "SELECT status, excluded, address "
       "FROM %s "
       "WHERE publisher_key=?",
       table_name_);
@@ -136,7 +136,8 @@ ledger::ServerPublisherInfoPtr DatabaseServerPublisherInfo::GetRecord(
 
   auto info = ledger::ServerPublisherInfo::New();
   info->publisher_key = publisher_key;
-  info->verified = statment.ColumnBool(0);
+  info->status =
+      static_cast<ledger::mojom::PublisherStatus>(statment.ColumnInt(0));
   info->excluded = statment.ColumnBool(1);
   info->address = statment.ColumnString(2);
   info->banner = banner_->GetRecord(db, publisher_key);

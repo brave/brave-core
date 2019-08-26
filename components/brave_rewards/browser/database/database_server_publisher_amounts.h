@@ -18,7 +18,7 @@ namespace brave_rewards {
 
 class DatabaseServerPublisherAmounts: public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherAmounts();
+  DatabaseServerPublisherAmounts();
   ~DatabaseServerPublisherAmounts() override;
 
   bool CreateTable(sql::Database* db) override;

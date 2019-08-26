@@ -517,6 +517,35 @@ class LedgerImpl : public ledger::Ledger,
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback);
 
+  bool IsPublisherConnectedOrVerified(const ledger::PublisherStatus status);
+
+  void SetBooleanState(const std::string& name, bool value);
+
+  bool GetBooleanState(const std::string& name) const;
+
+  void SetIntegerState(const std::string& name, int value);
+
+  int GetIntegerState(const std::string& name) const;
+
+  void SetDoubleState(const std::string& name, double value);
+
+  double GetDoubleState(const std::string& name) const;
+
+  void SetStringState(const std::string& name, const std::string& value);
+
+  std::string GetStringState(const std::string& name) const;
+
+  void SetInt64State(const std::string& name, int64_t value);
+
+  int64_t GetInt64State(const std::string& name) const;
+
+  void SetUint64State(const std::string& name, uint64_t value);
+
+  uint64_t GetUint64State(const std::string& name) const;
+
+  void ClearState(const std::string& name);
+
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

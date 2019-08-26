@@ -19,7 +19,7 @@ struct PublisherInfo {
   int32 excluded;
   int32 category;
   uint64 reconcile_stamp;
-  bool verified;
+  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
   string name;
   string url;
   string provider;
@@ -38,7 +38,7 @@ struct PublisherBanner {
   array<double> amounts;
   string provider;
   map<string, string> links;
-  bool verified = false;
+  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
 };
 
 struct PendingContribution {
@@ -52,7 +52,7 @@ struct PendingContribution {
 struct PendingContributionInfo {
   string publisher_key;
   int32 category;
-  bool verified;
+  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
   string name;
   string url;
   string provider;
@@ -224,9 +224,15 @@ enum Result {
   EXPIRED_TOKEN = 24,
 };
 
+enum PublisherStatus {
+  NOT_VERIFIED = 0,
+  CONNECTED = 1,
+  VERIFIED = 2
+};
+
 struct ServerPublisherInfo {
   string publisher_key;
-  bool verified = false;
+  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
   bool excluded = false;
   string address;
   PublisherBanner banner;

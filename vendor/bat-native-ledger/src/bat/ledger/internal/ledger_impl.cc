@@ -1494,4 +1494,63 @@ void LedgerImpl::GetServerPublisherInfo(
   ledger_client_->GetServerPublisherInfo(publisher_key, callback);
 }
 
+bool LedgerImpl::IsPublisherConnectedOrVerified(
+    const ledger::PublisherStatus status) {
+  return bat_publisher_->IsConnectedOrVerified(status);
+}
+
+void LedgerImpl::SetBooleanState(const std::string& name, bool value) {
+  ledger_client_->SetBooleanState(name, value);
+}
+
+bool LedgerImpl::GetBooleanState(const std::string& name) const {
+  return ledger_client_->GetBooleanState(name);
+}
+
+void LedgerImpl::SetIntegerState(const std::string& name, int value) {
+  ledger_client_->SetIntegerState(name, value);
+}
+
+int LedgerImpl::GetIntegerState(const std::string& name) const {
+  return ledger_client_->GetIntegerState(name);
+}
+
+void LedgerImpl::SetDoubleState(const std::string& name, double value) {
+  ledger_client_->SetDoubleState(name, value);
+}
+
+double LedgerImpl::GetDoubleState(const std::string& name) const {
+  return ledger_client_->GetDoubleState(name);
+}
+
+void LedgerImpl::SetStringState(
+    const std::string& name,
+    const std::string& value) {
+  ledger_client_->SetStringState(name, value);
+}
+
+std::string LedgerImpl::GetStringState(const std::string& name) const {
+  return ledger_client_->GetStringState(name);
+}
+
+void LedgerImpl::SetInt64State(const std::string& name, int64_t value) {
+  ledger_client_->SetInt64State(name, value);
+}
+
+int64_t LedgerImpl::GetInt64State(const std::string& name) const {
+  return ledger_client_->GetInt64State(name);
+}
+
+void LedgerImpl::SetUint64State(const std::string& name, uint64_t value) {
+  ledger_client_->SetUint64State(name, value);
+}
+
+uint64_t LedgerImpl::GetUint64State(const std::string& name) const {
+  return ledger_client_->GetUint64State(name);
+}
+
+void LedgerImpl::ClearState(const std::string& name) {
+  ledger_client_->ClearState(name);
+}
+
 }  // namespace bat_ledger

@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
+#include "bat/ledger/internal/state_keys.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
@@ -21,9 +22,8 @@ using std::placeholders::_3;
 
 namespace braveledger_publisher {
 
-PublisherServerList::PublisherServerList(bat_ledger::LedgerImpl* ledger, Publisher* publisher) :
+PublisherServerList::PublisherServerList(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
-    publisher_(publisher),
     server_list_timer_id_(0ull) {
 }
 
@@ -31,9 +31,8 @@ PublisherServerList::~PublisherServerList() {
 }
 
 void PublisherServerList::OnTimer(uint32_t timer_id) {
-   if (timer_id == server_list_timer_id_) {
+  if (timer_id == server_list_timer_id_) {
     server_list_timer_id_ = 0;
-
     Download([](const ledger::Result _){});
   }
 }
@@ -70,7 +69,11 @@ void PublisherServerList::OnDownload(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     DownloadServerPublisherListCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, "Publisher list", headers);
+  ledger_->LogResponse(
+      __func__,
+      response_status_code,
+      "Publisher list",
+      headers);
 
   if (response_status_code == net::HTTP_OK && !response.empty()) {
     const auto parse_callback =
@@ -98,7 +101,7 @@ void PublisherServerList::OnParsePublisherList(
     new_time = static_cast<uint64_t>(now.ToDoubleT());
   }
 
-  publisher_->SetPublisherServerListTimestamp(new_time);
+  ledger_->SetUint64State(ledger::kStateServerPublisherListStamp, new_time);
   callback(result);
 }
 
@@ -110,7 +113,8 @@ void PublisherServerList::SetTimer(bool retry_after_error) {
     return;
   }
 
-  uint64_t last_download = publisher_->GetPublisherServerListTimestamp();
+  uint64_t last_download =
+      ledger_->GetUint64State(ledger::kStateServerPublisherListStamp);
   start_timer_in = GetTimerTime(retry_after_error, last_download);
 
   // Start downloading right away
@@ -164,6 +168,19 @@ uint64_t PublisherServerList::GetTimerTime(
   return start_timer_in;
 }
 
+ledger::PublisherStatus PublisherServerList::ParsePublisherStatus(
+    const std::string& status) {
+  if (status == "publisher_verified") {
+    return ledger::PublisherStatus::CONNECTED;
+  }
+
+  if (status == "wallet_connected") {
+    return ledger::PublisherStatus::VERIFIED;
+  }
+
+  return ledger::PublisherStatus::NOT_VERIFIED;
+}
+
 void PublisherServerList::ParsePublisherList(
     const std::string& data,
     ParsePublisherListCallback callback) {
@@ -172,17 +189,19 @@ void PublisherServerList::ParsePublisherList(
   base::Optional<base::Value> value = base::JSONReader::Read(data);
   if (!value || !value->is_list()) {
     callback(ledger::Result::LEDGER_ERROR);
+    return;
   }
 
   base::ListValue* publishers = nullptr;
   if (!value->GetAsList(&publishers)) {
     callback(ledger::Result::LEDGER_ERROR);
+    return;
   }
 
   for (auto& item : *publishers) {
     base::ListValue* values = nullptr;
     if (!item.GetAsList(&values)) {
-      callback(ledger::Result::LEDGER_ERROR);
+      continue;
     }
 
     auto publisher = ledger::ServerPublisherInfo::New();
@@ -200,11 +219,11 @@ void PublisherServerList::ParsePublisherList(
 
     publisher->publisher_key = publisher_key;
 
-    // Verified
-    if (!values->GetList()[1].is_bool()) {
+    // Status
+    if (!values->GetList()[1].is_string()) {
       continue;
     }
-    publisher->verified = values->GetList()[1].GetBool();
+    publisher->status = ParsePublisherStatus(values->GetList()[1].GetString());
 
     // Excluded
     if (!values->GetList()[2].is_bool()) {

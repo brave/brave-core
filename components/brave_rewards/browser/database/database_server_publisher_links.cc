@@ -89,7 +89,8 @@ bool DatabaseServerPublisherLinks::InsertOrUpdate(
   return transaction.Commit();
 }
 
-base::flat_map<std::string, std::string> DatabaseServerPublisherLinks::GetRecord(
+base::flat_map<std::string, std::string>
+DatabaseServerPublisherLinks::GetRecord(
     sql::Database* db,
     const std::string& publisher_key) {
   const std::string query = base::StringPrintf(

@@ -17,7 +17,7 @@ struct PendingContributionInfo {
   PendingContributionInfo(const PendingContributionInfo& data);
 
   std::string publisher_key;
-  bool verified;
+  uint32_t status;
   std::string name;
   std::string favicon_url;
   std::string url;

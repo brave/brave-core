@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_banner.h"
 
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -48,7 +47,7 @@ bool DatabaseServerPublisherBanner::CreateTable(sql::Database* db) {
       table_name_,
       table_name_);
 
-  if(!db->Execute(query.c_str())) {
+  if (!db->Execute(query.c_str())) {
     transaction.Rollback();
     return false;
   }
@@ -122,7 +121,7 @@ bool DatabaseServerPublisherBanner::InsertOrUpdate(
   statment.BindString(3, info->banner->background);
   statment.BindString(4, info->banner->logo);
 
-  if(!statment.Run()) {
+  if (!statment.Run()) {
     return false;
   }
 

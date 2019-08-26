@@ -158,7 +158,7 @@ ContentSite PublisherInfoToContentSite(
     const ledger::PublisherInfo& publisher_info) {
   ContentSite content_site(publisher_info.id);
   content_site.percentage = publisher_info.percent;
-  content_site.verified = publisher_info.verified;
+  content_site.status = static_cast<uint32_t>(publisher_info.status);
   content_site.excluded = publisher_info.excluded;
   content_site.name = publisher_info.name;
   content_site.url = publisher_info.url;
@@ -2115,7 +2115,7 @@ void RewardsServiceImpl::OnPublisherBanner(
   new_banner->amounts = banner->amounts;
   new_banner->links = mojo::FlatMapToMap(banner->links);
   new_banner->provider = banner->provider;
-  new_banner->verified = banner->verified;
+  new_banner->status = static_cast<uint32_t>(banner->status);
 
   std::move(callback).Run(std::move(new_banner));
 }
@@ -2742,7 +2742,7 @@ void RewardsServiceImpl::OnTip(
 
   ledger::PublisherInfoPtr info;
   info->id = publisher_key;
-  info->verified = site->verified;
+  info->status = static_cast<ledger::PublisherStatus>(site->status);
   info->excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info->name = site->name;
   info->url = site->url;
@@ -3012,20 +3012,24 @@ void RewardsServiceImpl::RefreshPublisher(
     const std::string& publisher_key,
     RefreshPublisherCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(false, std::string());
+    std::move(callback).Run(
+        static_cast<uint32_t>(ledger::PublisherStatus::NOT_VERIFIED),
+        "");
     return;
   }
   bat_ledger_->RefreshPublisher(
       publisher_key,
       base::BindOnce(&RewardsServiceImpl::OnRefreshPublisher,
-        AsWeakPtr(), std::move(callback), publisher_key));
+        AsWeakPtr(),
+        std::move(callback),
+        publisher_key));
 }
 
 void RewardsServiceImpl::OnRefreshPublisher(
     RefreshPublisherCallback callback,
     const std::string& publisher_key,
-    bool verified) {
-  std::move(callback).Run(verified, publisher_key);
+    ledger::PublisherStatus status) {
+  std::move(callback).Run(static_cast<uint32_t>(status), publisher_key);
 }
 
 const RewardsNotificationService::RewardsNotificationsMap&
@@ -3089,7 +3093,7 @@ PendingContributionInfo PendingContributionLedgerToRewards(
   PendingContributionInfo info;
   info.publisher_key = contribution->publisher_key;
   info.category = contribution->category;
-  info.verified = contribution->verified;
+  info.status = static_cast<uint32_t>(contribution->status);
   info.name = contribution->name;
   info.url = contribution->url;
   info.provider = contribution->provider;

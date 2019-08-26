@@ -652,7 +652,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnRefreshPublisher(
       RefreshPublisherCallback callback,
       const std::string& publisher_key,
-      bool verified);
+      ledger::PublisherStatus status);
   void OnMediaInlineInfoSaved(
       SaveMediaInfoCallback callback,
       const ledger::Result result,

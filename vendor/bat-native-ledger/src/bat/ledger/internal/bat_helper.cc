@@ -607,14 +607,12 @@ PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
   min_publisher_duration_(braveledger_ledger::_default_min_publisher_duration),
   min_visits_(1),
   allow_non_verified_(true),
-  pubs_load_timestamp_(0ull),
   allow_videos_(true) {}
 
 PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
   min_publisher_duration_ = state.min_publisher_duration_;
   min_visits_ = state.min_visits_;
   allow_non_verified_ = state.allow_non_verified_;
-  pubs_load_timestamp_ = state.pubs_load_timestamp_;
   allow_videos_ = state.allow_videos_;
   monthly_balances_ = state.monthly_balances_;
   migrate_score_2 = state.migrate_score_2;
@@ -634,8 +632,6 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
         d["min_pubslisher_duration"].IsUint() &&
         d.HasMember("min_visits") && d["min_visits"].IsUint() &&
         d.HasMember("allow_non_verified") && d["allow_non_verified"].IsBool() &&
-        d.HasMember("pubs_load_timestamp") &&
-        d["pubs_load_timestamp"].IsUint64() &&
         d.HasMember("allow_videos") && d["allow_videos"].IsBool() &&
         d.HasMember("monthly_balances") && d["monthly_balances"].IsArray());
   }
@@ -644,7 +640,6 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
     min_publisher_duration_ = d["min_pubslisher_duration"].GetUint();
     min_visits_ = d["min_visits"].GetUint();
     allow_non_verified_ = d["allow_non_verified"].GetBool();
-    pubs_load_timestamp_ = d["pubs_load_timestamp"].GetUint64();
     allow_videos_ = d["allow_videos"].GetBool();
 
     for (const auto & i : d["monthly_balances"].GetArray()) {
@@ -695,9 +690,6 @@ void saveToJson(JsonWriter* writer, const PUBLISHER_STATE_ST& data) {
   writer->String("allow_non_verified");
   writer->Bool(data.allow_non_verified_);
 
-  writer->String("pubs_load_timestamp");
-  writer->Uint64(data.pubs_load_timestamp_);
-
   writer->String("allow_videos");
   writer->Bool(data.allow_videos_);
 
@@ -732,7 +724,7 @@ PUBLISHER_ST::PUBLISHER_ST():
   visits_(0),
   percent_(0),
   weight_(0),
-  verified_(false) {}
+  status_(0) {}
 
 PUBLISHER_ST::~PUBLISHER_ST() {}
 
@@ -761,12 +753,19 @@ bool PUBLISHER_ST::loadFromJson(const std::string& json) {
     score_ = d["score"].GetDouble();
     visits_ = d["visits"].GetUint();
     percent_ = d["percent"].GetUint();
-    weight_ = d["pubs_load_timestamp"].GetDouble();
+    weight_ = d["weight"].GetDouble();
+    status_ = 0;  // ledger::PublisherStatus::NOT_VERIFIED
 
+    if (d.HasMember("status") && d["status"].IsUint()) {
+      status_ = d["status"].GetUint();
+    }
+
+    // LEGACY CHECK
     if (d.HasMember("verified") && d["verified"].IsBool()) {
-      verified_ = d["verified"].GetBool();
-    } else {
-      verified_ = false;
+      const bool verified = d["verified"].GetBool();
+      status_ = verified
+          ? 2  // ledger::PublisherStatus::VERIFIED
+          : 0;  // ledger::PublisherStatus::NOT_VERIFIED
     }
   }
 
@@ -794,8 +793,8 @@ void saveToJson(JsonWriter* writer, const PUBLISHER_ST& data) {
   writer->String("weight");
   writer->Double(data.weight_);
 
-  writer->String("verified");
-  writer->Bool(data.verified_);
+  writer->String("status");
+  writer->Uint(data.status_);
 
   writer->EndObject();
 }

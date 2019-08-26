@@ -235,7 +235,7 @@ class Contribution {
       double budget,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
-  static double GetAmountFromVerifiedAuto(
+  double GetAmountFromVerifiedAuto(
       const ledger::PublisherInfoList& publisher_list,
       double ac_amount);
 

@@ -185,7 +185,9 @@ class Banner extends React.Component<Props, State> {
 
     const mediaMetaData = this.props.mediaMetaData
     const publisher = this.props.publisher
-    const verified = publisher.verified
+    const checkmark = utils.isPublisherConnectedOrVerified(publisher.status)
+    const verified = utils.isPublisherVerified(publisher.status)
+    const connected = utils.isPublisherConnected(publisher.status)
     let logo = publisher.logo
 
     const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
@@ -193,7 +195,7 @@ class Banner extends React.Component<Props, State> {
       logo = `chrome://favicon/size/160@2x/${publisher.logo}`
     }
 
-    if (!verified) {
+    if (!checkmark) {
       logo = ''
     }
     return (
@@ -214,7 +216,8 @@ class Banner extends React.Component<Props, State> {
         currentAmount={this.state.currentAmount || '0'}
         onClose={this.onClose}
         social={this.generateSocialLinks()}
-        showUnVerifiedNotice={!verified}
+        showUnVerifiedNotice={!verified || connected}
+        isVerified={checkmark}
         learnMoreNotice={'https://brave.com/faq/#unclaimed-funds'}
         addFundsLink={this.addFundsLink}
       >
