@@ -26,6 +26,13 @@ export const resourceBlocked: actions.ResourceBlocked = (details) => {
   }
 }
 
+export const hideCosmeticElements: actions.HideCosmeticElements = (setting) => {
+  return {
+    type: types.HIDE_COSMETIC_ELEMENTS,
+    setting
+  }
+}
+
 export const blockAdsTrackers: actions.BlockAdsTrackers = (setting) => {
   return {
     type: types.BLOCK_ADS_TRACKERS,

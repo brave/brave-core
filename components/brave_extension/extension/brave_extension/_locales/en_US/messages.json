@@ -47,6 +47,10 @@
     "message": "connection upgraded",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
+  "firstPartyTrackersBlocked": {
+    "message": "This site's ads blocked",
+    "description": "Message for the cosmetic filtering row label"
+  },
   "thirdPartyTrackersBlocked": {
     "message": "Cross-site trackers blocked",
     "description": "Message for the scripts blocked row label"

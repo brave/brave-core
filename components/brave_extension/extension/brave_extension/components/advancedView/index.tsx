@@ -22,6 +22,7 @@ import { Tab, PersistentData } from '../../types/state/shieldsPannelState'
 import { isShieldsEnabled, getFavicon } from '../../helpers/shieldsUtils'
 import {
   ShieldsToggled,
+  HideCosmeticElements,
   BlockAdsTrackers,
   HttpsEverywhereToggled,
   BlockJavaScript,
@@ -38,6 +39,7 @@ import {
 interface Props {
   actions: {
     shieldsToggled: ShieldsToggled
+    hideCosmeticElements: HideCosmeticElements
     blockAdsTrackers: BlockAdsTrackers
     httpsEverywhereToggled: HttpsEverywhereToggled
     blockJavaScript: BlockJavaScript
@@ -114,6 +116,9 @@ export default class Shields extends React.PureComponent<Props, State> {
                 setBlockedListOpen={this.setBlockedListOpen}
                 hostname={shieldsPanelTabData.hostname}
                 favicon={this.favicon}
+                // Cosmetic Blocking
+                cosmeticBlocking={shieldsPanelTabData.cosmeticBlocking}
+                hideCosmeticElements={actions.hideCosmeticElements}
                 // Ads/Trackers
                 ads={shieldsPanelTabData.ads}
                 adsBlocked={shieldsPanelTabData.adsBlocked}

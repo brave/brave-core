@@ -7,6 +7,7 @@ import * as types from '../../constants/shieldsPanelTypes'
 export type SHIELDS_PANEL_DATA_UPDATED = typeof types.SHIELDS_PANEL_DATA_UPDATED
 export type SHIELDS_TOGGLED = typeof types.SHIELDS_TOGGLED
 export type RESOURCE_BLOCKED = typeof types.RESOURCE_BLOCKED
+export type HIDE_COSMETIC_ELEMENTS = typeof types.HIDE_COSMETIC_ELEMENTS
 export type BLOCK_ADS_TRACKERS = typeof types.BLOCK_ADS_TRACKERS
 export type CONTROLS_TOGGLED = typeof types.CONTROLS_TOGGLED
 export type HTTPS_EVERYWHERE_TOGGLED = typeof types.HTTPS_EVERYWHERE_TOGGLED

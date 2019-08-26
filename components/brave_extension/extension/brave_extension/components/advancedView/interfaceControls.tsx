@@ -5,11 +5,12 @@
 import * as React from 'react'
 
 // Group Components
+import CosmeticBlockingControl from './controls/cosmeticBlockingControl'
 import AdsTrackersControl from './controls/adsTrackersControl'
 import HTTPSUpgradesControl from './controls/httpsUpgradesControl'
 
 // Types
-import { BlockAdsTrackers, HttpsEverywhereToggled } from '../../types/actions/shieldsPanelActions'
+import { HideCosmeticElements, BlockAdsTrackers, HttpsEverywhereToggled } from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 
 interface CommonProps {
@@ -17,6 +18,11 @@ interface CommonProps {
   setBlockedListOpen: () => void
   hostname: string
   favicon: string
+}
+
+interface CosmeticBlockingProps {
+  cosmeticBlocking: BlockOptions
+  hideCosmeticElements: HideCosmeticElements
 }
 
 interface AdsTrackersProps {
@@ -36,7 +42,7 @@ interface HTTPSUpgradesProps {
   httpsEverywhereToggled: HttpsEverywhereToggled
 }
 
-export type Props = CommonProps & AdsTrackersProps & HTTPSUpgradesProps
+export type Props = CommonProps & CosmeticBlockingProps & AdsTrackersProps & HTTPSUpgradesProps
 
 export default class InterfaceControls extends React.PureComponent<Props, {}> {
   get commonProps (): CommonProps {
@@ -47,6 +53,11 @@ export default class InterfaceControls extends React.PureComponent<Props, {}> {
   render () {
     return (
       <>
+        <CosmeticBlockingControl
+          {...this.commonProps}
+          cosmeticBlocking={this.props.cosmeticBlocking}
+          hideCosmeticElements={this.props.hideCosmeticElements}
+        />
         <AdsTrackersControl
           {...this.commonProps}
           ads={this.props.ads}

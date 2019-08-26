@@ -19,6 +19,7 @@ import * as shieldsAPI from '../background/api/shieldsAPI'
 import { Tab, PersistentData } from '../types/state/shieldsPannelState'
 import {
   ShieldsToggled,
+  HideCosmeticElements,
   BlockAdsTrackers,
   HttpsEverywhereToggled,
   BlockJavaScript,
@@ -35,6 +36,7 @@ import {
 interface Props {
   actions: {
     shieldsToggled: ShieldsToggled
+    hideCosmeticElements: HideCosmeticElements
     blockAdsTrackers: BlockAdsTrackers
     httpsEverywhereToggled: HttpsEverywhereToggled
     blockJavaScript: BlockJavaScript

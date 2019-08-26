@@ -50,6 +50,15 @@ export interface ResourceBlocked {
   (details: BlockDetails): ResourceBlockedReturn
 }
 
+interface HideCosmeticElementsReturn {
+  type: types.HIDE_COSMETIC_ELEMENTS
+  setting: BlockOptions
+}
+
+export interface HideCosmeticElements {
+  (setting: BlockOptions): HideCosmeticElementsReturn
+}
+
 interface BlockAdsTrackersReturn {
   type: types.BLOCK_ADS_TRACKERS
   setting: BlockOptions
@@ -160,6 +169,7 @@ export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
   ResourceBlockedReturn |
+  HideCosmeticElementsReturn |
   BlockAdsTrackersReturn |
   ControlsToggledReturn |
   HttpsEverywhereToggledReturn |

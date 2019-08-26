@@ -23,6 +23,7 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
 
   return Promise.all([
     chrome.braveShields.getBraveShieldsEnabledAsync(tabData.url),
+    chrome.braveShields.getCosmeticFilteredElementsAsync(tabData.url),
     chrome.braveShields.getAdControlTypeAsync(tabData.url),
     chrome.braveShields.getHTTPSEverywhereEnabledAsync(tabData.url),
     chrome.braveShields.getNoScriptControlTypeAsync(tabData.url),
@@ -35,12 +36,13 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       hostname,
       id: tabData.id,
       braveShields: details[0] ? 'allow' : 'block',
-      ads: details[1],
-      trackers: details[1],
-      httpUpgradableResources: details[2] ? 'block' : 'allow',
-      javascript: details[3],
-      fingerprinting: details[4],
-      cookies: details[5]
+      cosmeticBlocking: details[1],
+      ads: details[2],
+      trackers: details[2],
+      httpUpgradableResources: details[3] ? 'block' : 'allow',
+      javascript: details[4],
+      fingerprinting: details[5],
+      cookies: details[6]
     }
   }).catch(() => {
     return {
@@ -86,6 +88,16 @@ export const requestShieldPanelData = (tabId: number) =>
  */
 export const setAllowBraveShields = (origin: string, setting: string) =>
   chrome.braveShields.setBraveShieldsEnabledAsync(setting === 'allow' ? true : false, origin)
+
+/**
+ * Changes elements affected by cosmetic filtering at origin to be allowed or blocked.
+ * The cosmetic ad-block service will come into effect if the ad is marked as blocked.
+ * @param {string} origin the origin of the site to change the setting for
+ * @param {string} setting 'allow' or 'block'
+ * @return a promise which resolves when the setting is set
+ */
+export const setAllowCosmeticElements = (origin: string, setting: string) =>
+  chrome.braveShields.setCosmeticFilteredElementsAsync(setting, origin)
 
 /**
  * Changes the ads at origin to be allowed or blocked.

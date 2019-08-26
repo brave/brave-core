@@ -70,7 +70,7 @@ export default function cosmeticFilterReducer (
         state = shieldsPanelState.resetBlockingStats(state, action.tabId)
         state = shieldsPanelState.resetBlockingResources(state, action.tabId)
         state = noScriptState.resetNoScriptInfo(state, action.tabId, getOrigin(action.url))
-        applyCSSCosmeticFilters(action.tabId, getHostname(action.url))
+        applyCSSCosmeticFilters(action.tabId, getHostname(action.url), tabData.cosmeticBlocking === "block")
       }
       break
     }
@@ -160,7 +160,7 @@ export default function cosmeticFilterReducer (
         .catch(e => {
           console.error('Could not add filter:', e)
         })
-      applyCSSCosmeticFilters(tabId, tabData.hostname)
+      applyCSSCosmeticFilters(tabId, tabData.hostname, tabData.cosmeticBlocking === "block")
       break
     }
   }

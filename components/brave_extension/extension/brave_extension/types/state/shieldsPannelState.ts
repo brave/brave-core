@@ -6,6 +6,7 @@ import { BlockOptions, BlockTypes, BlockFPOptions, BlockCookiesOptions } from '.
 import { NoScriptInfo } from '../other/noScriptInfo'
 
 export interface Tab {
+  cosmeticBlocking: BlockOptions
   ads: BlockOptions
   adsBlocked: number
   controlsOpen: boolean

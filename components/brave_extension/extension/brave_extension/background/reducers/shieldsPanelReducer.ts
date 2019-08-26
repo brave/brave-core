@@ -20,6 +20,7 @@ import * as noScriptState from '../../state/noScriptState'
 // APIs
 import {
   setAllowBraveShields,
+  setAllowCosmeticElements,
   setAllowAds,
   setAllowTrackers,
   setAllowHTTPUpgradableResources,
@@ -171,6 +172,27 @@ export default function shieldsPanelReducer (
           shieldsPanelState.updateShieldsIconBadgeText(state)
         }
       }
+      break
+    }
+    case shieldsPanelTypes.HIDE_COSMETIC_ELEMENTS: {
+      const tabId: number = shieldsPanelState.getActiveTabId(state)
+      const tabData = shieldsPanelState.getActiveTabData(state)
+
+      if (!tabData) {
+        console.error('Active tab not found')
+        break
+      }
+
+      setAllowCosmeticElements(tabData.origin, toggleShieldsValue(action.setting))
+        .then(() => {
+          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          reloadTab(tabId, true).catch(() => {
+            console.error('Tab reload was not successful')
+          })
+        })
+        .catch(() => {
+          console.error('Could not set cosmetic blocking setting')
+        })
       break
     }
     case shieldsPanelTypes.BLOCK_ADS_TRACKERS: {
