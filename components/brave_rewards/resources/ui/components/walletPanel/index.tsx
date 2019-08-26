@@ -188,9 +188,10 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
         <StyledContainer id={id}>
           {this.publisherInfo()}
           {
-            !isVerified && showUnVerified
+            showUnVerified
             ? <StyledNoticeWrapper>
-              {getLocale('unVerifiedText')}{' '}
+              {getLocale(isVerified ? 'connectedText' : 'unVerifiedText')}
+              {' '}
               <StyledNoticeLink href={moreLink} target={'_blank'}>
                 {' '}
                 {getLocale('unVerifiedTextMore')}
