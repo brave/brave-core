@@ -182,7 +182,17 @@ void BraveRequestInfo::FillCTX(
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->tab_url = request.top_frame_origin;
-  ctx->tab_origin = request.top_frame_origin.value_or(url::Origin()).GetURL();
+  // TODO(iefremov): c77 - navigation doesn't populate top_frame_origin any more
+  // and uses NetworkIsolationKey instead. According to
+  // services/network/public/mojom/url_loader.mojom, this field "will most
+  // likely be removed at some point".
+  if (base::nullopt != request.top_frame_origin) {
+    ctx->tab_origin = request.top_frame_origin->GetURL();
+  } else {
+    ctx->tab_origin = request.trusted_network_isolation_key.GetTopFrameOrigin()
+                          .value_or(url::Origin())
+                          .GetURL();
+  }
 
   ProfileIOData* io_data =
       ProfileIOData::FromResourceContext(resource_context);
