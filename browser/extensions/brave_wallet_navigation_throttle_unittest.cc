@@ -6,13 +6,21 @@
 #include "brave/browser/extensions/brave_wallet_navigation_throttle.h"
 
 #include <memory>
+#include <utility>
 #include <vector>
 
+#include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/profiles/tor_unittest_profile_manager.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
+#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/common/content_client.h"
@@ -23,6 +31,10 @@
 #include "extensions/common/extension_builder.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/common/tor/pref_names.h"
+#endif
 
 using content::NavigationThrottle;
 
@@ -51,14 +63,40 @@ class MockBrowserClient : public content::ContentBrowserClient {
 class BraveWalletNavigationThrottleUnitTest
     : public ChromeRenderViewHostTestHarness {
  public:
-  BraveWalletNavigationThrottleUnitTest() {}
+  BraveWalletNavigationThrottleUnitTest()
+      : local_state_(TestingBrowserProcess::GetGlobal()) {
+  }
 
   void SetUp() override {
-    ChromeRenderViewHostTestHarness::SetUp();
+#if BUILDFLAG(ENABLE_TOR)
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    ProfileManager* profile_manager
+      = new TorUnittestProfileManager(temp_dir_.GetPath());
+    TestingBrowserProcess::GetGlobal()->SetProfileManager(profile_manager);
+    profile_manager->InitProfileUserPrefs(
+        ProfileManager::GetActiveUserProfile());
+    ASSERT_TRUE(profile_manager);
+#endif
     original_client_ = content::SetBrowserClientForTesting(&client_);
+    ChromeRenderViewHostTestHarness::SetUp();
+  }
+
+  content::BrowserContext* CreateBrowserContext() override {
+    TestingProfile::Builder builder;
+    auto prefs =
+        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
+#if BUILDFLAG(ENABLE_TOR)
+    prefs->registry()->RegisterBooleanPref(tor::prefs::kProfileUsingTor, false);
+#endif
+    RegisterUserProfilePrefs(prefs->registry());
+    builder.SetPrefService(std::move(prefs));
+    return builder.Build().release();
   }
 
   void TearDown() override {
+#if BUILDFLAG(ENABLE_TOR)
+    TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
+#endif
     content::SetBrowserClientForTesting(original_client_);
     ChromeRenderViewHostTestHarness::TearDown();
   }
@@ -89,6 +127,9 @@ class BraveWalletNavigationThrottleUnitTest
   scoped_refptr<const Extension> extension_;
   MockBrowserClient client_;
   content::ContentBrowserClient* original_client_;
+  ScopedTestingLocalState local_state_;
+  base::ScopedTempDir temp_dir_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   DISALLOW_COPY_AND_ASSIGN(BraveWalletNavigationThrottleUnitTest);
 };
 
@@ -162,5 +203,30 @@ TEST_F(BraveWalletNavigationThrottleUnitTest, ChromeWalletDisabledByPref) {
   EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
       throttle->WillStartRequest().action()) << url;
 }
+
+#if BUILDFLAG(ENABLE_TOR)
+// Make sure Brave Wallet is not available in a Tor profile.
+TEST_F(BraveWalletNavigationThrottleUnitTest,
+    ChromeWalletNotAvailInTorProfile) {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  Profile* tor_profile = profile_manager->GetProfile(
+      BraveProfileManager::GetTorProfilePath());
+  std::unique_ptr<content::WebContents> tor_web_contents =
+      content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
+
+  content::WebContentsTester::For(tor_web_contents.get())->
+      NavigateAndCommit(GURL("http://example.com"));
+  content::RenderFrameHost* host =
+      render_frame_host_tester(tor_web_contents->GetMainFrame())->
+          AppendChild("child");
+  GURL url("chrome://wallet");
+  content::MockNavigationHandle test_handle(url, host);
+  test_handle.set_starting_site_instance(host->GetSiteInstance());
+  auto throttle = std::make_unique<BraveWalletNavigationThrottle>(&test_handle);
+  EXPECT_EQ(NavigationThrottle::BLOCK_REQUEST,
+      throttle->WillStartRequest().action()) << url;
+  tor_web_contents.reset();
+}
+#endif
 
 }  // namespace extensions
