@@ -20,7 +20,7 @@
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
-#include "brave/browser/net/brave_proxying_utils.h"
+#include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/binding_set.h"

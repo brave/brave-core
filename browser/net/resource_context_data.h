@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NET_BRAVE_PROXYING_UTILS_H_
-#define BRAVE_BROWSER_NET_BRAVE_PROXYING_UTILS_H_
+#ifndef BRAVE_BROWSER_NET_RESOURCE_CONTEXT_DATA_H_
+#define BRAVE_BROWSER_NET_RESOURCE_CONTEXT_DATA_H_
 
 #include <cstdint>
 #include <memory>
@@ -91,4 +91,4 @@ class ResourceContextData : public base::SupportsUserData::Data {
   DISALLOW_COPY_AND_ASSIGN(ResourceContextData);
 };
 
-#endif  // BRAVE_BROWSER_NET_BRAVE_PROXYING_UTILS_H_
+#endif  // BRAVE_BROWSER_NET_RESOURCE_CONTEXT_DATA_H_
