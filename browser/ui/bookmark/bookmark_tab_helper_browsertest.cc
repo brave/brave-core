@@ -54,42 +54,44 @@ void AddBookmarkNode(Profile* profile) {
 
 }  // namespace
 
-IN_PROC_BROWSER_TEST_F(BookmarkTabHelperBrowserTest,
-                       BookmarkBarOnNTPToggleTest) {
-  auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_TRUE(content::NavigateToURL(contents,
-                                     GURL(chrome::kChromeUINewTabURL)));
-  EXPECT_TRUE(IsNTP(contents));
-  chrome::ToggleBookmarkBar(browser());
-  EXPECT_EQ(BookmarkBar::SHOW, browser()->bookmark_bar_state());
-
-  AddBookmarkNode(browser()->profile());
-
-  chrome::ToggleBookmarkBar(browser());
-
-  // Check bookmark is still hidden on NTP.
-  EXPECT_EQ(BookmarkBar::HIDDEN, browser()->bookmark_bar_state());
-}
-
-IN_PROC_BROWSER_TEST_F(BookmarkTabHelperBrowserTest,
-                       AlwaysShowBookmarkBarOnNTPTest) {
+IN_PROC_BROWSER_TEST_F(BookmarkTabHelperBrowserTest, BookmarkBarOnNTPTest) {
   auto* profile = browser()->profile();
-  // Check default is false.
-  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(kAlwaysShowBookmarkBarOnNTP));
+
+  // Check Bookmark bar is hidden by default.
+  EXPECT_EQ(BookmarkBar::HIDDEN, browser()->bookmark_bar_state());
+
+  // Check default is on.
+  EXPECT_TRUE(profile->GetPrefs()->GetBoolean(kAlwaysShowBookmarkBarOnNTP));
+
+  // Loading NTP.
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(content::NavigateToURL(contents,
                                      GURL(chrome::kChromeUINewTabURL)));
   EXPECT_TRUE(IsNTP(contents));
+
+  // Check bookmark bar on NTP is hidden if bookmark bar is empty and
+  // kBookmarkBar is off.
+  EXPECT_EQ(BookmarkBar::HIDDEN, browser()->bookmark_bar_state());
+
   AddBookmarkNode(profile);
-  profile->GetPrefs()->SetBoolean(kAlwaysShowBookmarkBarOnNTP, true);
 
-  // Check bookmark is visible on NTP.
-  EXPECT_EQ(BookmarkBar::SHOW, browser()->bookmark_bar_state());
-
-  // Check bookmark is still visible on NTP regardless of kBookmarkBar pref
-  // change.
+  // Check bookmark is visible on NTP after adding bookmark.
   chrome::ToggleBookmarkBar(browser());
   EXPECT_EQ(BookmarkBar::SHOW, browser()->bookmark_bar_state());
   chrome::ToggleBookmarkBar(browser());
   EXPECT_EQ(BookmarkBar::SHOW, browser()->bookmark_bar_state());
+
+  // Turn off showing bookmark bar on NTP.
+  profile->GetPrefs()->SetBoolean(kAlwaysShowBookmarkBarOnNTP, false);
+
+  // Check bookmark bar on NTP is hidden.
+  EXPECT_EQ(BookmarkBar::HIDDEN, browser()->bookmark_bar_state());
+
+  // Check bookmark bar on NTP is visible when kBookmarkBar pref is on.
+  chrome::ToggleBookmarkBar(browser());
+  EXPECT_EQ(BookmarkBar::SHOW, browser()->bookmark_bar_state());
+
+  // Check bookmark bar on NTP is hidden when kBookmarkBar pref is off.
+  chrome::ToggleBookmarkBar(browser());
+  EXPECT_EQ(BookmarkBar::HIDDEN, browser()->bookmark_bar_state());
 }
