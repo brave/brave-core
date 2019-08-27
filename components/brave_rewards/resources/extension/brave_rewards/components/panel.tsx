@@ -352,7 +352,7 @@ export class Panel extends React.Component<Props, State> {
         text = getMessage('grantNotification')
         break
       case RewardsNotificationType.REWARDS_NOTIFICATION_GRANT_ADS:
-        type = 'grant'
+        type = 'ads'
         text = getMessage('earningsClaimDefault')
         break
       case RewardsNotificationType.REWARDS_NOTIFICATION_BACKUP_WALLET:
