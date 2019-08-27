@@ -16,6 +16,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
+#include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
@@ -293,6 +294,16 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
   return use_proxy;
 }
 
+void BraveContentBrowserClient::WillCreateWebSocket(
+    content::RenderFrameHost* frame,
+    network::mojom::WebSocketRequest* request,
+    network::mojom::AuthenticationHandlerPtr* auth_handler,
+    network::mojom::TrustedHeaderClientPtr* header_client,
+    uint32_t* options) {
+  ChromeContentBrowserClient::WillCreateWebSocket(frame, request, auth_handler,
+                                                  header_client, options);
+  BraveProxyingWebSocket::ProxyWebSocket(frame, request, auth_handler);
+}
 
 void BraveContentBrowserClient::MaybeHideReferrer(
     content::BrowserContext* browser_context,
