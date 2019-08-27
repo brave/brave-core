@@ -20,7 +20,7 @@ class ShareExtensionHelper: NSObject {
         self.selectedTab = tab
     }
 
-    func createActivityViewController(activities: [UIActivity]?, _ completionHandler: @escaping (_ completed: Bool, _ activityType: String?) -> Void) -> UIActivityViewController {
+    func createActivityViewController(_ completionHandler: @escaping (_ completed: Bool, _ activityType: UIActivity.ActivityType?) -> Void) -> UIActivityViewController {
         var activityItems = [AnyObject]()
 
         let printInfo = UIPrintInfo(dictionary: nil)
@@ -34,12 +34,12 @@ class ShareExtensionHelper: NSObject {
             activityItems.append(TabPrintPageRenderer(tab: tab))
         }
         
-        let title = selectedTab?.title ?? absoluteString
-        activityItems.append(TitleActivityItemProvider(title: title))
-
+        if let title = selectedTab?.title {
+            activityItems.append(TitleActivityItemProvider(title: title))
+        }
         activityItems.append(self)
 
-        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: activities)
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
 
         // Hide 'Add to Reading List' which currently uses Safari.
         // We would also hide View Later, if possible, but the exclusion list doesn't currently support
@@ -55,7 +55,7 @@ class ShareExtensionHelper: NSObject {
 
         activityViewController.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
             if !completed {
-                completionHandler(completed, activityType.map { $0.rawValue })
+                completionHandler(completed, activityType)
                 return
             }
             // Bug 1392418 - When copying a url using the share extension there are 2 urls in the pasteboard.
@@ -70,7 +70,7 @@ class ShareExtensionHelper: NSObject {
                 }
             }
 
-            completionHandler(completed, activityType.map { $0.rawValue })
+            completionHandler(completed, activityType)
         }
         return activityViewController
     }

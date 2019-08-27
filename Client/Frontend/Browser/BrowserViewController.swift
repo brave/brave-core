@@ -124,8 +124,8 @@ class BrowserViewController: UIViewController {
     var pendingRequests = [String: URLRequest]()
 
     // This is set when the user taps "Download Link" from the context menu. We then force a
-    // download of the next request through the `WKNavigationDelegate` that matches this URL.
-    var pendingDownloadURL: URL?
+    // download of the next request through the `WKNavigationDelegate` that matches this web view.
+    weak var pendingDownloadWebView: WKWebView?
 
     let downloadQueue = DownloadQueue()
     
@@ -1126,7 +1126,7 @@ class BrowserViewController: UIViewController {
             activities.append(requestDesktopSiteActivity)
         }
         
-        let controller = helper.createActivityViewController(activities: activities, { [unowned self] completed, _ in
+        let controller = helper.createActivityViewController { [unowned self] completed, _ in
             // After dismissing, check to see if there were any prompts we queued up
             self.showQueuedAlertIfAvailable()
 
@@ -1135,7 +1135,7 @@ class BrowserViewController: UIViewController {
             // invoked on iOS 10. See Bug 1297768 for additional details.
             self.displayedPopoverController = nil
             self.updateDisplayedPopoverProperties = nil
-        })
+        }
 
         if let popoverPresentationController = controller.popoverPresentationController {
             popoverPresentationController.sourceView = sourceView

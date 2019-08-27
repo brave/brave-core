@@ -9,6 +9,8 @@ import Deferred
 import BraveShared
 import WebKit
 
+private let log = Logger.browserLogger
+
 // A base protocol for something that can be cleared.
 protocol Clearable {
     func clear() -> Success
@@ -127,5 +129,33 @@ class PasswordsClearable: Clearable {
             }
             return succeed()
         }
+    }
+}
+
+/// Clears all files in Downloads folder.
+class DownloadsClearable: Clearable {
+    var label: String {
+        return Strings.DownloadedFiles
+    }
+    
+    func clear() -> Success {
+        do {
+            let fileManager = FileManager.default
+            let downloadsLocation = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            
+            let filePaths = try fileManager.contentsOfDirectory(atPath: downloadsLocation.path)
+            
+            try filePaths.forEach {
+                var fileUrl = downloadsLocation
+                fileUrl.appendPathComponent($0)
+                try fileManager.removeItem(atPath: fileUrl.path)
+            }
+        } catch {
+            // Not logging the `error` because downloaded file names can be sensitive to some users.
+            log.error("Could not remove downloaded file")
+        }
+        
+        return succeed()
+        
     }
 }

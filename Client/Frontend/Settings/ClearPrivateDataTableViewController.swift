@@ -32,6 +32,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
             (CacheClearable(), true),
             (CookiesAndCacheClearable(), true),
             (PasswordsClearable(profile: self.profile), true),
+            (DownloadsClearable(), true)
             ]
     }()
     
