@@ -19,13 +19,27 @@ export const hasPortNumber = (url: string) => {
  * Get the URL origin via Web API
  * @param {string} url - The URL to get the origin from
  */
-export const getOrigin = (url: string) => new window.URL(url).origin
+export const getOrigin = (url: string) => {
+  // for URLs such as blob:// and data:// that doesn't have a
+  // valid origin, return the full url.
+  if (!isHttpOrHttps(url)) {
+    return url
+  }
+  return new window.URL(url).origin
+}
 
 /**
  * Get the URL hostname via Web API
  * @param {string} url - The URL to get the origin from
  */
-export const getHostname = (url: string) => new window.URL(url).hostname
+export const getHostname = (url: string) => {
+  // for URLs such as blob:// and data:// that doesn't have a
+  // valid origin, return the full url.
+  if (!isHttpOrHttps(url)) {
+    return url
+  }
+  return new window.URL(url).hostname
+}
 
 /**
  * Strip http/https protocol
