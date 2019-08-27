@@ -641,6 +641,8 @@ class TabManager: NSObject {
                 removeAllBrowsingDataForTab(tab)
             }
         }
+        
+        BraveWebView.removeNonPersistentStore()
 
         allTabs = tabs(withType: .regular)
     }
