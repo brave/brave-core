@@ -403,6 +403,7 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_hsts_fingerprinting_browsertest.cc",
+    "//brave/browser/profiles/brave_profile_manager_browsertest.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
     "//brave/browser/renderer_context_menu/brave_spelling_menu_observer_browsertest.cc",
