@@ -85,7 +85,11 @@ class DownloadHelper: NSObject, OpenInHelper {
         
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         
-        let downloadActionText = Strings.Download + " (\(expectedSize ?? ""))"
+        var downloadActionText = Strings.Download
+        // The download can be of undetermined size, adding expected size only if it's available.
+        if let expectedSize = expectedSize {
+            downloadActionText += " (\(expectedSize))"
+        }
         
         let okAction = UIAlertAction(title: downloadActionText, style: .default) { _ in
             self.browserViewController.downloadQueue.enqueue(download)
