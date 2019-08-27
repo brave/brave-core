@@ -11,7 +11,7 @@ import Deferred
 
 class MockFiles: FileAccessor {
     init() {
-        let docPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let docPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0]
         super.init(rootPath: (docPath as NSString).appendingPathComponent("testing"))
     }
 }

@@ -67,6 +67,25 @@ class ClientTests: XCTestCase {
             "0x7f.0x0.0x0.0x1"
             ].forEach { XCTAssertFalse(hostIsValid($0), "\($0) host should not be valid.") }
     }
+    
+    func testEmptyDocumentsDirectory() {
+        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        XCTAssertNotNil(url)
+        
+        let emptyDirectoryExpectation = expectation(description: "empty documents directory")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            do {
+                if try FileManager.default.contentsOfDirectory(atPath: url!.path).isEmpty {
+                    emptyDirectoryExpectation.fulfill()
+                }
+            } catch {
+                XCTFail("Crash at FileManager.contentsOfDirectory")
+            }
+        }
+        
+        wait(for: [emptyDirectoryExpectation], timeout: 4)
+    }
 
     fileprivate func hostIsValid(_ host: String) -> Bool {
         let expectation = self.expectation(description: "Validate host for \(host)")
