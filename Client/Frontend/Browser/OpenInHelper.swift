@@ -73,7 +73,37 @@ class DownloadHelper: NSObject, OpenInHelper {
     }
     
     func open() {
-        // When this is re-enabled in the future, present the new UI here
+        guard let host = request.url?.host, let filename = request.url?.lastPathComponent else {
+            return
+        }
+        
+        let download = HTTPDownload(preflightResponse: preflightResponse, request: request)
+        
+        let expectedSize = download.totalBytesExpected != nil ? ByteCountFormatter.string(fromByteCount: download.totalBytesExpected!, countStyle: .file) : nil
+        
+        let title = "\(filename) - \(host)"
+        
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        
+        let downloadActionText = Strings.Download + " (\(expectedSize ?? ""))"
+        
+        let okAction = UIAlertAction(title: downloadActionText, style: .default) { _ in
+            self.browserViewController.downloadQueue.enqueue(download)
+        }
+        
+        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel)
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        alert.popoverPresentationController?.do {
+            guard let view = browserViewController.view else { return }
+            $0.sourceView = view
+            $0.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.maxY - 16, width: 0, height: 0)
+            $0.permittedArrowDirections = []
+        }
+        
+        browserViewController.present(alert, animated: true, completion: nil)
     }
 }
 

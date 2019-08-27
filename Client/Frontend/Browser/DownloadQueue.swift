@@ -13,53 +13,114 @@ protocol DownloadDelegate {
 }
 
 class Download: NSObject {
+    var delegate: DownloadDelegate?
+    
+    fileprivate(set) var filename: String
+    fileprivate(set) var mimeType: String
+    
+    fileprivate(set) var isComplete = false
+    
+    fileprivate(set) var totalBytesExpected: Int64?
+    fileprivate(set) var bytesDownloaded: Int64
+    
+    override init() {
+        self.filename = "unknown"
+        self.mimeType = "application/octet-stream"
+        
+        self.bytesDownloaded = 0
+        
+        super.init()
+    }
+    
+    func cancel() {}
+    func pause() {}
+    func resume() {}
+    
+    fileprivate func uniqueDownloadPathForFilename(_ filename: String) throws -> URL {
+        let downloadsPath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        
+        let basePath = downloadsPath.appendingPathComponent(filename)
+        let fileExtension = basePath.pathExtension
+        let filenameWithoutExtension = fileExtension.count > 0 ? String(filename.dropLast(fileExtension.count + 1)) : filename
+        
+        var proposedPath = basePath
+        var count = 0
+        
+        while FileManager.default.fileExists(atPath: proposedPath.path) {
+            count += 1
+            
+            let proposedFilenameWithoutExtension = "\(filenameWithoutExtension) (\(count))"
+            proposedPath = downloadsPath.appendingPathComponent(proposedFilenameWithoutExtension).appendingPathExtension(fileExtension)
+        }
+        
+        return proposedPath
+    }
+}
+
+class HTTPDownload: Download {
     let preflightResponse: URLResponse
     let request: URLRequest
-
-    let mimeType: String
-    let filename: String
-
-    var delegate: DownloadDelegate?
-
+    
     var state: URLSessionTask.State {
         return task?.state ?? .suspended
     }
-
-    private(set) var totalBytesExpected: Int64?
-    private(set) var bytesDownloaded: Int64
-
-    private(set) var session: URLSession?
-    private(set) var task: URLSessionDownloadTask?
-
-    private(set) var isComplete = false
-
+    
+    fileprivate(set) var session: URLSession?
+    fileprivate(set) var task: URLSessionDownloadTask?
+    
+    private var resumeData: Data?
+    
     init(preflightResponse: URLResponse, request: URLRequest) {
         self.preflightResponse = preflightResponse
         self.request = request
-
-        self.mimeType = preflightResponse.mimeType ?? "application/octet-stream"
-        self.filename = preflightResponse.suggestedFilename ?? "unknown"
-
-        self.totalBytesExpected = preflightResponse.expectedContentLength > 0 ? preflightResponse.expectedContentLength : nil
-        self.bytesDownloaded = 0
-
+        
         super.init()
-
+        
+        if let filename = preflightResponse.suggestedFilename {
+            self.filename = filename
+        }
+        
+        if let mimeType = preflightResponse.mimeType {
+            self.mimeType = mimeType
+        }
+        
+        self.totalBytesExpected = preflightResponse.expectedContentLength > 0 ? preflightResponse.expectedContentLength : nil
+        
         self.session = URLSession(configuration: .default, delegate: self, delegateQueue: downloadOperationQueue)
         self.task = session?.downloadTask(with: request)
     }
-
-    func cancel() {
+    
+    override func cancel() {
         task?.cancel()
     }
-
-    func resume() {
+    
+    override func pause() {
+        task?.cancel(byProducingResumeData: { resumeData in
+            self.resumeData = resumeData
+        })
+    }
+    
+    override func resume() {
+        guard let resumeData = self.resumeData else {
+            task?.resume()
+            return
+        }
+        
+        task = session?.downloadTask(withResumeData: resumeData)
         task?.resume()
     }
 }
 
-extension Download: URLSessionTaskDelegate, URLSessionDownloadDelegate {
+extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        // Don't bubble up cancellation as an error if the
+        // error is `.cancelled` and we have resume data.
+        if let urlError = error as? URLError,
+            urlError.code == .cancelled,
+            resumeData != nil {
+            return
+        }
+        
         delegate?.download(self, didCompleteWithError: error)
     }
 
@@ -80,25 +141,36 @@ extension Download: URLSessionTaskDelegate, URLSessionDownloadDelegate {
             delegate?.download(self, didCompleteWithError: error)
         }
     }
+}
 
-    private func uniqueDownloadPathForFilename(_ filename: String) throws -> URL {
-        let downloadsPath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-
-        let basePath = downloadsPath.appendingPathComponent(filename)
-        let fileExtension = basePath.pathExtension
-        let filenameWithoutExtension = fileExtension.count > 0 ? String(filename.dropLast(fileExtension.count + 1)) : filename
-
-        var proposedPath = basePath
-        var count = 0
-
-        while FileManager.default.fileExists(atPath: proposedPath.path) {
-            count += 1
-
-            let proposedFilenameWithoutExtension = "\(filenameWithoutExtension) (\(count))"
-            proposedPath = downloadsPath.appendingPathComponent(proposedFilenameWithoutExtension).appendingPathExtension(fileExtension)
+class BlobDownload: Download {
+    fileprivate let data: Data
+    
+    init(filename: String, mimeType: String, size: Int64, data: Data) {
+        self.data = data
+        
+        super.init()
+        
+        self.filename = filename
+        self.mimeType = mimeType
+        
+        self.totalBytesExpected = size
+    }
+    
+    override func resume() {
+        // Wait momentarily before continuing here and firing off the delegate
+        // callbacks. Otherwise, these may end up getting called before the
+        // delegate is set up and the UI may never be notified of completion.
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+            do {
+                let destination = try self.uniqueDownloadPathForFilename(self.filename)
+                try self.data.write(to: destination)
+                self.isComplete = true
+                self.delegate?.download(self, didFinishDownloadingTo: destination)
+            } catch let error {
+                self.delegate?.download(self, didCompleteWithError: error)
+            }
         }
-
-        return proposedPath
     }
 }
 
@@ -126,7 +198,7 @@ class DownloadQueue {
         self.downloads = []
     }
 
-    func enqueueDownload(_ download: Download) {
+    func enqueue(_ download: Download) {
         // Clear the download stats if the queue was empty at the start.
         if downloads.isEmpty {
             combinedBytesDownloaded = 0
@@ -147,9 +219,21 @@ class DownloadQueue {
         delegate?.downloadQueue(self, didStartDownload: download)
     }
 
-    func cancelAllDownloads() {
+    func cancelAll() {
         for download in downloads where !download.isComplete {
             download.cancel()
+        }
+    }
+    
+    func pauseAll() {
+        for download in downloads where !download.isComplete {
+            download.pause()
+        }
+    }
+    
+    func resumeAll() {
+        for download in downloads where !download.isComplete {
+            download.resume()
         }
     }
 }

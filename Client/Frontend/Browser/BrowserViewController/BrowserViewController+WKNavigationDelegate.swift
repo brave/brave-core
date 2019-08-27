@@ -232,6 +232,11 @@ extension BrowserViewController: WKNavigationDelegate {
             request = pendingRequests.removeValue(forKey: url.absoluteString)
         }
         
+        // We can only show this content in the web view if this web view is not pending
+        // download via the context menu.
+        let canShowInWebView = navigationResponse.canShowMIMEType && (webView != pendingDownloadWebView)
+        let forceDownload = webView == pendingDownloadWebView
+        
         if let url = responseURL, let urlHost = responseURL?.normalizedHost {
             // If an upgraded https load happens with a host which was upgraded, increase the stats
             if url.scheme == "https", let _ = pendingHTTPUpgrades.removeValue(forKey: urlHost) {
@@ -242,11 +247,6 @@ extension BrowserViewController: WKNavigationDelegate {
             }
         }
 
-        // We can only show this content in the web view if this URL is not pending
-        // download via the context menu.
-        let canShowInWebView = navigationResponse.canShowMIMEType && (responseURL != pendingDownloadURL)
-        let forceDownload = responseURL == pendingDownloadURL
-
         // Check if this response should be handed off to Passbook.
         if let passbookHelper = OpenPassBookHelper(request: request, response: response, canShowInWebView: canShowInWebView, forceDownload: forceDownload, browserViewController: self) {
             // Clear the network activity indicator since our helper is handling the request.
@@ -254,6 +254,21 @@ extension BrowserViewController: WKNavigationDelegate {
 
             // Open our helper and cancel this response from the webview.
             passbookHelper.open()
+            decisionHandler(.cancel)
+            return
+        }
+        
+        // Check if this response should be downloaded.
+        if let downloadHelper = DownloadHelper(request: request, response: response, canShowInWebView: canShowInWebView, forceDownload: forceDownload, browserViewController: self) {
+            // Clear the network activity indicator since our helper is handling the request.
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
+            // Clear the pending download web view so that subsequent navigations from the same
+            // web view don't invoke another download.
+            pendingDownloadWebView = nil
+            
+            // Open our helper and cancel this response from the webview.
+            downloadHelper.open()
             decisionHandler(.cancel)
             return
         }

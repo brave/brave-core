@@ -52,7 +52,7 @@ class MenuViewController: UITableViewController {
     }
     
     private enum MenuButtons: Int, CaseIterable {
-        case settings, history, bookmarks, add, share
+        case settings, history, bookmarks, downloads, add, share
         
         var title: String {
             switch self {
@@ -61,6 +61,7 @@ class MenuViewController: UITableViewController {
             case .settings: return Strings.SettingsMenuItem
             case .add: return Strings.AddToMenuItem
             case .share: return Strings.ShareWithMenuItem
+            case .downloads: return Strings.DownloadsMenuItem
             }
         }
         
@@ -71,6 +72,7 @@ class MenuViewController: UITableViewController {
             case .settings: return #imageLiteral(resourceName: "menu-settings")
             case .add: return #imageLiteral(resourceName: "menu-add-bookmark")
             case .share: return #imageLiteral(resourceName: "nav-share")
+            case .downloads: return #imageLiteral(resourceName: "menu-downloads")
             }
         }
     }
@@ -156,6 +158,7 @@ class MenuViewController: UITableViewController {
         case .settings: openSettings()
         case .add: openAddBookmark()
         case .share: openShareSheet()
+        case .downloads: openDownloads()
         }
     }
     
@@ -207,6 +210,12 @@ class MenuViewController: UITableViewController {
     private func openBookmarks() {
         let vc = BookmarksViewController(folder: nil, isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
         vc.toolbarUrlActionsDelegate = bvc
+        
+        open(vc, doneButton: DoneButton(style: .done, position: .right))
+    }
+    
+    private func openDownloads() {
+        let vc = DownloadsPanel(profile: bvc.profile)
         
         open(vc, doneButton: DoneButton(style: .done, position: .right))
     }

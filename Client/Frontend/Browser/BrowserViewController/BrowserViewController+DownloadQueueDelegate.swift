@@ -16,7 +16,7 @@ extension BrowserViewController: DownloadQueueDelegate {
 
                 // Handle download cancellation
                 if buttonPressed, !downloadQueue.isEmpty {
-                    downloadQueue.cancelAllDownloads()
+                    downloadQueue.cancelAll()
 
                     let downloadCancelledToast = ButtonToast(labelText: Strings.DownloadCancelledToastLabelText, backgroundColor: UIColor.Photon.Grey60, textAlignment: .center)
 
@@ -50,9 +50,14 @@ extension BrowserViewController: DownloadQueueDelegate {
 
             if error == nil {
                 let downloadCompleteToast = ButtonToast(labelText: download.filename, imageName: "check", buttonText: Strings.DownloadsButtonTitle, completion: { buttonPressed in
-                    if buttonPressed {
-                        // TODO: #205: When we add downloads UI back this may need to show the download (depends on design)
-                    }
+                    guard buttonPressed else { return }
+                    
+                    let nav = SettingsNavigationController(rootViewController:
+                        DownloadsPanel(profile: self.profile))
+                    nav.modalPresentationStyle = .formSheet
+                    nav.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: nav, action: #selector(nav.done))
+                    
+                    self.present(nav, animated: true)
                 })
 
                 self.show(toast: downloadCompleteToast, duration: DispatchTimeInterval.seconds(8))

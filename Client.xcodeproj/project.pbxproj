@@ -95,6 +95,8 @@
 		0AD9F88122F049E5008B4D95 /* AdblockRustEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD9F88022F049E5008B4D95 /* AdblockRustEngine.swift */; };
 		0AD9F88E22F05376008B4D95 /* AdblockRustTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD9F88D22F05376008B4D95 /* AdblockRustTests.swift */; };
 		0AE5C09922CAA01E00DFF3EE /* RewardsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5C09822CAA01E00DFF3EE /* RewardsButton.swift */; };
+		0AEF99A922E22C5E00294C76 /* DownloadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF99A822E22C5E00294C76 /* DownloadsViewController.swift */; };
+		0AEF99B222E22D2200294C76 /* DateGroupedTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEF99B122E22D2200294C76 /* DateGroupedTableData.swift */; };
 		0AEFB84922244135007AF600 /* AdblockDebugMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEFB84822244135007AF600 /* AdblockDebugMenuTableViewController.swift */; };
 		0AEFB8532226D7C5007AF600 /* AdblockResourcesMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEFB8522226D7C5007AF600 /* AdblockResourcesMappings.swift */; };
 		0AEFB88722299E6A007AF600 /* AdblockerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEFB88622299E6A007AF600 /* AdblockerType.swift */; };
@@ -1235,6 +1237,8 @@
 		0AD9F88022F049E5008B4D95 /* AdblockRustEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockRustEngine.swift; sourceTree = "<group>"; };
 		0AD9F88D22F05376008B4D95 /* AdblockRustTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockRustTests.swift; sourceTree = "<group>"; };
 		0AE5C09822CAA01E00DFF3EE /* RewardsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsButton.swift; sourceTree = "<group>"; };
+		0AEF99A822E22C5E00294C76 /* DownloadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsViewController.swift; sourceTree = "<group>"; };
+		0AEF99B122E22D2200294C76 /* DateGroupedTableData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGroupedTableData.swift; sourceTree = "<group>"; };
 		0AEFB84822244135007AF600 /* AdblockDebugMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockDebugMenuTableViewController.swift; sourceTree = "<group>"; };
 		0AEFB8522226D7C5007AF600 /* AdblockResourcesMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockResourcesMappings.swift; sourceTree = "<group>"; };
 		0AEFB88622299E6A007AF600 /* AdblockerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockerType.swift; sourceTree = "<group>"; };
@@ -3500,6 +3504,7 @@
 				A198E75020C701ED00334C11 /* HistoryViewController.swift */,
 				44331DBA22521013007E3E93 /* MenuViewController.swift */,
 				0A8C6992225BC7B100988715 /* ToolbarUrlActionsProtocol.swift */,
+				0AEF99A822E22C5E00294C76 /* DownloadsViewController.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -3875,6 +3880,7 @@
 				E65075901E37F7AB006961AC /* UserAgent.swift */,
 				E65075911E37F7AB006961AC /* WeakList.swift */,
 				2760D2BE215ACCE20068E131 /* BundleExtensions.swift */,
+				0AEF99B122E22D2200294C76 /* DateGroupedTableData.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -5380,6 +5386,7 @@
 				E65075941E37F7AB006961AC /* AppInfo.swift in Sources */,
 				E65075A41E37F7AB006961AC /* NSCharacterSetExtensions.swift in Sources */,
 				E65075B71E37F7AB006961AC /* Logger.swift in Sources */,
+				0AEF99B222E22D2200294C76 /* DateGroupedTableData.swift in Sources */,
 				E65075961E37F7AB006961AC /* AsyncReducer.swift in Sources */,
 				7B9BF91C1E43472E00CB24F4 /* JSONExtensions.swift in Sources */,
 				E65075BD1E37F7AB006961AC /* SystemUtils.swift in Sources */,
@@ -5708,6 +5715,7 @@
 				0A1E84432190A57F0042F782 /* SyncWelcomeViewController.swift in Sources */,
 				D308E4E41A5306F500842685 /* SearchEngines.swift in Sources */,
 				4422D55121BFFB7E00BF1855 /* set.cc in Sources */,
+				0AEF99A922E22C5E00294C76 /* DownloadsViewController.swift in Sources */,
 				A13AC72520EC12360040D4BB /* Migration.swift in Sources */,
 				27FD2CAB2146C31C00A5A779 /* RequestDesktopSiteActivity.swift in Sources */,
 				3BCE6D3C1CEB9E4D0080928C /* ThirdPartySearchAlerts.swift in Sources */,
