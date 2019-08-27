@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <bat/ledger/publisher_info.h>
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_proxy.h"
 
 #include "base/logging.h"

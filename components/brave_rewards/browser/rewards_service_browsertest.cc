@@ -320,15 +320,15 @@ class BraveRewardsBrowserTest :
       if (alter_publisher_list_) {
         *response =
             "["
-            "[\"bumpsmack.com\",\"connected\",false,\"address1\",{}],"
-            "[\"duckduckgo.com\",\"verified\",false,\"address2\",{}]"
+            "[\"bumpsmack.com\",\"publisher_verified\",false,\"address1\",{}],"
+            "[\"duckduckgo.com\",\"wallet_connected\",false,\"address2\",{}]"
             "]";
       } else {
         *response =
             "["
-            "[\"bumpsmack.com\",\"connected\",false,\"address1\",{}],"
-            "[\"duckduckgo.com\",\"verified\",false,\"address2\",{}],"
-            "[\"3zsistemi.si\",\"verified\",false,\"address3\",{}]"
+            "[\"bumpsmack.com\",\"publisher_verified\",false,\"address1\",{}],"
+            "[\"duckduckgo.com\",\"wallet_connected\",false,\"address2\",{}],"
+            "[\"3zsistemi.si\",\"wallet_connected\",false,\"address3\",{}]"
             "]";
       }
     } else if (base::StartsWith(
@@ -773,13 +773,16 @@ class BraveRewardsBrowserTest :
     }
   }
 
-  void TipPublisher(const std::string& publisher,
-                    bool verified = false,
-                    bool monthly = false,
-                    int32_t selection = 0) {
+  void TipPublisher(
+      const std::string& publisher,
+      ledger::PublisherStatus status = ledger::PublisherStatus::NOT_VERIFIED,
+      bool monthly = false,
+      int32_t selection = 0) {
     // we shouldn't be adding publisher to AC list,
     // so that we can focus only on tipping part
     rewards_service_->SetPublisherMinVisitTime(8);
+
+    const bool should_contribute = status == ledger::PublisherStatus::VERIFIED;
 
     // Navigate to a site in a new tab
     GURL url = https_server()->GetURL(publisher, "/index.html");
@@ -868,8 +871,8 @@ class BraveRewardsBrowserTest :
 
     // Signal that direct tip was made and update wallet with new
     // balance
-    if (!monthly && !verified) {
-      UpdateContributionBalance(amount, verified);
+    if (!monthly && !should_contribute) {
+      UpdateContributionBalance(amount, should_contribute);
     }
 
     // Wait for thank you banner to load
@@ -907,23 +910,23 @@ class BraveRewardsBrowserTest :
 
       // Wait for reconciliation to complete
       WaitForTipReconcileCompleted();
-      const auto result = verified
+      const auto result = should_contribute
           ? ledger::Result::LEDGER_OK
           : ledger::Result::RECURRING_TABLE_EMPTY;
       ASSERT_EQ(tip_reconcile_status_, result);
 
       // Signal that monthly contribution was made and update wallet
       // with new balance
-      if (!verified) {
-        UpdateContributionBalance(amount, verified);
+      if (!should_contribute) {
+        UpdateContributionBalance(amount, should_contribute);
       }
-    } else if (!monthly && verified) {
+    } else if (!monthly && should_contribute) {
       // Wait for reconciliation to complete
       WaitForTipReconcileCompleted();
       ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
     }
 
-    if (verified) {
+    if (should_contribute) {
       // Make sure that balance is updated correctly
       {
         content::EvalJsResult js_result = EvalJs(
@@ -1711,8 +1714,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
   ClaimGrant(use_panel);
 
   // Tip verified publisher
-  const bool verified = true;
-  TipPublisher("duckduckgo.com", verified);
+  TipPublisher("duckduckgo.com", ledger::PublisherStatus::VERIFIED);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -1751,9 +1753,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ClaimGrant(use_panel);
 
   // Tip verified publisher
-  const bool verified = true;
   const bool monthly = true;
-  TipPublisher("duckduckgo.com", verified, monthly);
+  TipPublisher("duckduckgo.com", ledger::PublisherStatus::VERIFIED, monthly);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -1773,9 +1774,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ClaimGrant(use_panel);
 
   // Tip verified publisher
-  const bool verified = false;
   const bool monthly = true;
-  TipPublisher("brave.com", verified, monthly);
+  TipPublisher("brave.com", ledger::PublisherStatus::NOT_VERIFIED, monthly);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2220,10 +2220,26 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   TipPublisher("brave.com");
   rewards_service_->OnTip("brave.com", 5.0, false);
   UpdateContributionBalance(5.0, false);  // update pending balance
-  TipPublisher("3zsistemi.si", false, false, 2);
-  TipPublisher("3zsistemi.si", false, false, 1);
-  TipPublisher("3zsistemi.si", false, false, 2);
-  TipPublisher("3zsistemi.si", false, false, 2);
+  TipPublisher(
+      "3zsistemi.si",
+      ledger::PublisherStatus::NOT_VERIFIED,
+      false,
+      2);
+  TipPublisher(
+      "3zsistemi.si",
+      ledger::PublisherStatus::NOT_VERIFIED,
+      false,
+      1);
+  TipPublisher(
+      "3zsistemi.si",
+      ledger::PublisherStatus::NOT_VERIFIED,
+      false,
+      2);
+  TipPublisher(
+      "3zsistemi.si",
+      ledger::PublisherStatus::NOT_VERIFIED,
+      false,
+      2);
 
   // Make sure that pending contribution box shows the correct
   // amount
@@ -2433,9 +2449,26 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EnableRewards();
 
   // Tip verified publisher
-  const bool verified = true;
-  TipPublisher("duckduckgo.com", verified);
+  TipPublisher("duckduckgo.com", ledger::PublisherStatus::VERIFIED);
 
   // Stop observing the Rewards service
   rewards_service()->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisher) {
+  // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  // Enable Rewards
+  EnableRewards();
+
+  // Claim grant using settings page
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // Tip verified publisher
+  TipPublisher("bumpsmack.com", ledger::PublisherStatus::CONNECTED);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
 }

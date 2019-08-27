@@ -15,10 +15,26 @@
 
 namespace brave_rewards {
 
-DatabaseServerPublisherAmounts::DatabaseServerPublisherAmounts() {
+DatabaseServerPublisherAmounts::DatabaseServerPublisherAmounts(
+    int current_db_version) :
+    DatabaseTable(current_db_version) {
 }
 
 DatabaseServerPublisherAmounts::~DatabaseServerPublisherAmounts() {
+}
+
+bool DatabaseServerPublisherAmounts::Init(sql::Database* db) {
+  if (GetCurrentDBVersion() < minimum_version_) {
+    return true;
+  }
+
+  bool success = CreateTable(db);
+  if (!success) {
+    return false;
+  }
+
+  CreateIndex(db);
+  return true;
 }
 
 bool DatabaseServerPublisherAmounts::CreateTable(sql::Database* db) {

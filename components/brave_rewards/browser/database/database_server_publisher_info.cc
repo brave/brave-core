@@ -15,11 +15,28 @@
 
 namespace brave_rewards {
 
-DatabaseServerPublisherInfo::DatabaseServerPublisherInfo() :
-    banner_(std::make_unique<DatabaseServerPublisherBanner>()) {
+DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(
+    int current_db_version) :
+    DatabaseTable(current_db_version),
+    banner_(
+        std::make_unique<DatabaseServerPublisherBanner>(current_db_version)) {
 }
 
 DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() {
+}
+
+bool DatabaseServerPublisherInfo::Init(sql::Database* db) {
+  if (GetCurrentDBVersion() < minimum_version_) {
+    return true;
+  }
+
+  bool success = CreateTable(db);
+  if (!success) {
+    return false;
+  }
+
+  CreateIndex(db);
+  return true;
 }
 
 bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
@@ -109,9 +126,11 @@ bool DatabaseServerPublisherInfo::ClearAndInsertList(
       return false;
     }
 
-    if (!banner_->InsertOrUpdate(db, info->Clone())) {
-      transaction.Rollback();
-      return false;
+    if (info->banner) {
+      if (!banner_->InsertOrUpdate(db, info->Clone())) {
+        transaction.Rollback();
+        return false;
+      }
     }
   }
 

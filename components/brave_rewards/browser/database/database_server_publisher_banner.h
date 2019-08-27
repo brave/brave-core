@@ -18,8 +18,10 @@ namespace brave_rewards {
 
 class DatabaseServerPublisherBanner: public DatabaseTable {
  public:
-  DatabaseServerPublisherBanner();
+  explicit DatabaseServerPublisherBanner(int current_db_version);
   ~DatabaseServerPublisherBanner() override;
+
+  bool Init(sql::Database* db) override;
 
   bool CreateTable(sql::Database* db) override;
 
@@ -33,6 +35,7 @@ class DatabaseServerPublisherBanner: public DatabaseTable {
 
  private:
   const char* table_name_ = "server_publisher_banner";
+  const int minimum_version_ = 7;
   std::unique_ptr<DatabaseServerPublisherLinks> links_;
   std::unique_ptr<DatabaseServerPublisherAmounts> amounts_;
 };

@@ -30,7 +30,9 @@ namespace brave_rewards {
 
 class PublisherInfoDatabase {
  public:
-  explicit PublisherInfoDatabase(const base::FilePath& db_path);
+  PublisherInfoDatabase(
+      const base::FilePath& db_path,
+      const int testing_current_version = -1);
   ~PublisherInfoDatabase();
 
   // Call before Init() to set the error callback to be used for the
@@ -101,8 +103,6 @@ class PublisherInfoDatabase {
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
 
-  void SetTestingCurrentVersion(int value);
-
   bool DeleteActivityInfo(const std::string& publisher_key,
                           uint64_t reconcile_stamp);
 
@@ -140,10 +140,6 @@ class PublisherInfoDatabase {
   bool CreatePendingContributionsTable();
 
   bool CreatePendingContributionsIndex();
-
-  bool CreateServerPublisherTable();
-
-  bool CreateServerPublisherIndex();
 
   void OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);

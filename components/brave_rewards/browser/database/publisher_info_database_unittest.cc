@@ -78,9 +78,7 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
     ASSERT_TRUE(base::PathExists(*db_file));
 
     publisher_info_database_ =
-    std::make_unique<PublisherInfoDatabase>(*db_file);
-
-    publisher_info_database_->SetTestingCurrentVersion(end_version);
+    std::make_unique<PublisherInfoDatabase>(*db_file, end_version);
     ASSERT_NE(publisher_info_database_, nullptr);
   }
 
@@ -186,12 +184,24 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
 
   ledger::PublisherInfo info;
   info.id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  info.verified = false;
+  info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.name = "name";
   info.url = "https://brave.com";
   info.provider = "";
   info.favicon_url = "0";
+
+  ledger::ServerPublisherInfoList list;
+  ledger::ServerPublisherInfoPtr server_info =
+      ledger::ServerPublisherInfo::New();
+
+  server_info->publisher_key = info.id;
+  server_info->status = info.status;
+  server_info->excluded = false;
+  server_info->address = "";
+  list.push_back(server_info->Clone());
+  EXPECT_TRUE(
+      publisher_info_database_->ClearAndInsertServerPublisherList(list));
 
   bool success = publisher_info_database_->InsertOrUpdatePublisherInfo(info);
   EXPECT_TRUE(success);
@@ -204,18 +214,16 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   EXPECT_TRUE(info_sql.Step());
   EXPECT_EQ(CountTableRows("publisher_info"), 1);
   EXPECT_EQ(info_sql.ColumnString(0), info.id);
-  EXPECT_EQ(info_sql.ColumnBool(1), info.verified);
-  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(2)),
+  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(1)),
       info.excluded);
-  EXPECT_EQ(info_sql.ColumnString(3), info.name);
-  EXPECT_EQ(info_sql.ColumnString(4), info.favicon_url);
-  EXPECT_EQ(info_sql.ColumnString(5), info.url);
-  EXPECT_EQ(info_sql.ColumnString(6), info.provider);
+  EXPECT_EQ(info_sql.ColumnString(2), info.name);
+  EXPECT_EQ(info_sql.ColumnString(3), info.favicon_url);
+  EXPECT_EQ(info_sql.ColumnString(4), info.url);
+  EXPECT_EQ(info_sql.ColumnString(5), info.provider);
 
   /**
    * Make sure that second insert is update and not insert
    */
-  info.verified = true;
   info.excluded = ledger::PUBLISHER_EXCLUDE::ALL;
   info.name = "updated";
   info.url = "https://clifton.com";
@@ -233,13 +241,12 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   EXPECT_TRUE(info_sql_1.Step());
   EXPECT_EQ(CountTableRows("publisher_info"), 1);
   EXPECT_EQ(info_sql_1.ColumnString(0), info.id);
-  EXPECT_EQ(info_sql_1.ColumnBool(1), info.verified);
-  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_1.ColumnInt(2)),
+  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_1.ColumnInt(1)),
       info.excluded);
-  EXPECT_EQ(info_sql_1.ColumnString(3), info.name);
-  EXPECT_EQ(info_sql_1.ColumnString(4), info.favicon_url);
-  EXPECT_EQ(info_sql_1.ColumnString(5), info.url);
-  EXPECT_EQ(info_sql_1.ColumnString(6), info.provider);
+  EXPECT_EQ(info_sql_1.ColumnString(2), info.name);
+  EXPECT_EQ(info_sql_1.ColumnString(3), info.favicon_url);
+  EXPECT_EQ(info_sql_1.ColumnString(4), info.url);
+  EXPECT_EQ(info_sql_1.ColumnString(5), info.provider);
 
   /**
    * If favicon is empty, don't update record
@@ -296,7 +303,7 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
   CreateTempDatabase(&temp_dir, &db_file);
 
   std::string excluded_id = "ABCD";
-  bool excluded_verified = false;
+  auto excluded_verified = ledger::PublisherStatus::VERIFIED;
   ledger::PUBLISHER_EXCLUDE excluded  = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
   std::string excluded_name  = "excluded_publisher";
   std::string excluded_url  = "https://iamexcluded.com";
@@ -304,7 +311,7 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
   std::string excluded_favicon  = "0";
 
   std::string included_id = "EFGH";
-  bool included_verified = false;
+  auto included_verified =  ledger::PublisherStatus::NOT_VERIFIED;
   ledger::PUBLISHER_EXCLUDE included  = ledger::PUBLISHER_EXCLUDE::INCLUDED;
   std::string included_name  = "included_publisher";
   std::string included_url  = "https://iamincluded.com";
@@ -316,7 +323,7 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
    */
   ledger::PublisherInfo info;
   info.id = excluded_id;
-  info.verified = excluded_verified;
+  info.status = excluded_verified;
   info.excluded = excluded;
   info.name = excluded_name;
   info.url = excluded_url;
@@ -330,7 +337,7 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
    * Insert Included Publisher
    */
   info.id = included_id;
-  info.verified = included_verified;
+  info.status = included_verified;
   info.excluded = included;
   info.name = included_name;
   info.url = included_url;
@@ -348,7 +355,6 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
   EXPECT_EQ(1UL, pub_list.size());
 
   ASSERT_EQ(pub_list.at(0)->id, excluded_id);
-  ASSERT_EQ(pub_list.at(0)->verified, excluded_verified);
   ASSERT_EQ(pub_list.at(0)->name, excluded_name);
   ASSERT_EQ(pub_list.at(0)->url, excluded_url);
   ASSERT_EQ(pub_list.at(0)->provider, excluded_provider);
@@ -367,7 +373,6 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
 
 
   ASSERT_EQ(pub_list.at(0)->id, included_id);
-  ASSERT_EQ(pub_list.at(0)->verified, included_verified);
   ASSERT_EQ(pub_list.at(0)->name, included_name);
   ASSERT_EQ(pub_list.at(0)->url, included_url);
   ASSERT_EQ(pub_list.at(0)->provider, included_provider);
@@ -384,7 +389,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
 
   ledger::PublisherInfo info;
   info.id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  info.verified = true;
+  info.status = ledger::PublisherStatus::VERIFIED;
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.name = "name";
   info.url = "https://brave.com";
@@ -396,6 +401,18 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   info.weight = 1.5;
   info.reconcile_stamp = 0;
   info.visits = 1;
+
+  ledger::ServerPublisherInfoList list;
+  ledger::ServerPublisherInfoPtr server_info =
+      ledger::ServerPublisherInfo::New();
+
+  server_info->publisher_key = info.id;
+  server_info->status = info.status;
+  server_info->excluded = false;
+  server_info->address = "";
+  list.push_back(server_info->Clone());
+  EXPECT_TRUE(
+      publisher_info_database_->ClearAndInsertServerPublisherList(list));
 
   bool success = publisher_info_database_->InsertOrUpdateActivityInfo(info);
   EXPECT_TRUE(success);
@@ -424,19 +441,17 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   EXPECT_TRUE(info_sql_0.Step());
   EXPECT_EQ(CountTableRows("publisher_info"), 1);
   EXPECT_EQ(info_sql_0.ColumnString(0), info.id);
-  EXPECT_EQ(info_sql_0.ColumnBool(1), info.verified);
-  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_0.ColumnInt(2)),
+  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_0.ColumnInt(1)),
       info.excluded);
-  EXPECT_EQ(info_sql_0.ColumnString(3), info.name);
-  EXPECT_EQ(info_sql_0.ColumnString(4), info.favicon_url);
-  EXPECT_EQ(info_sql_0.ColumnString(5), info.url);
-  EXPECT_EQ(info_sql_0.ColumnString(6), info.provider);
+  EXPECT_EQ(info_sql_0.ColumnString(2), info.name);
+  EXPECT_EQ(info_sql_0.ColumnString(3), info.favicon_url);
+  EXPECT_EQ(info_sql_0.ColumnString(4), info.url);
+  EXPECT_EQ(info_sql_0.ColumnString(5), info.provider);
 
   /**
    * Make sure that second insert is update and not insert,
    * publisher_id and stamp is unique key
    */
-  info.verified = true;
   info.excluded = ledger::PUBLISHER_EXCLUDE::ALL;
   info.name = "update";
   info.url = "https://slo-tech.com";
@@ -762,6 +777,10 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   base::FilePath db_file;
   CreateTempDatabase(&temp_dir, &db_file);
 
+  ledger::ServerPublisherInfoList list;
+  ledger::ServerPublisherInfoPtr server_info =
+      ledger::ServerPublisherInfo::New();
+
   // first entry publisher
   ledger::PublisherInfo info;
   info.id = "publisher_1";
@@ -769,7 +788,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.url = "https://publisher1.com";
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.duration = 0;
-  info.verified = false;
+  info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.visits = 0;
   info.reconcile_stamp = 1;
   EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
@@ -780,7 +799,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.url = "https://publisher2.com";
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.duration = 100;
-  info.verified = false;
+  info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.visits = 1;
   EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
 
@@ -790,9 +809,14 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.url = "https://publisher3.com";
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.duration = 1;
-  info.verified = true;
+  info.status = ledger::PublisherStatus::VERIFIED;
   info.visits = 1;
   EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+  server_info->publisher_key = info.id;
+  server_info->status = info.status;
+  server_info->excluded = false;
+  server_info->address = "";
+  list.push_back(server_info->Clone());
 
   // excluded publisher
   info.id = "publisher_4";
@@ -800,7 +824,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.url = "https://publisher4.com";
   info.excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
   info.duration = 1;
-  info.verified = false;
+  info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.visits = 1;
   EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
 
@@ -810,7 +834,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.url = "https://publisher5.com";
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.duration = 1;
-  info.verified = false;
+  info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.visits = 10;
   EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
 
@@ -820,12 +844,20 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.url = "https://publisher6.com";
   info.excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
   info.duration = 5000;
-  info.verified = true;
+  info.status = ledger::PublisherStatus::VERIFIED;
   info.visits = 10;
   EXPECT_TRUE(publisher_info_database_->InsertOrUpdateActivityInfo(info));
+  server_info->publisher_key = info.id;
+  server_info->status = info.status;
+  list.push_back(server_info->Clone());
 
   EXPECT_EQ(CountTableRows("activity_info"), 6);
   EXPECT_EQ(CountTableRows("publisher_info"), 6);
+
+  EXPECT_TRUE(
+      publisher_info_database_->ClearAndInsertServerPublisherList(list));
+
+  EXPECT_EQ(CountTableRows("server_publisher_info"), 2);
 
   /**
    * Get publisher with min_duration
@@ -899,13 +931,18 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv3tov4) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
   CreateMigrationDatabase(&temp_dir, &db_file, 3, 4);
+  EXPECT_TRUE(publisher_info_database_->Init());
 
   ledger::PublisherInfoList list;
-  auto filter = ledger::ActivityInfoFilter::New();
-  filter->excluded = ledger::ExcludeFilter::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0,
-      std::move(filter), &list));
-  EXPECT_EQ(static_cast<int>(list.size()), 2);
+  const std::string query = "SELECT publisher_id, visits FROM activity_info";
+  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+  while (info_sql.Step()) {
+    auto info = ledger::PublisherInfo::New();
+    info->id = info_sql.ColumnString(0);
+    info->visits = info_sql.ColumnInt(1);
+
+    list.push_back(std::move(info));
+  }
 
   EXPECT_EQ(list.at(0)->id, "slo-tech.com");
   EXPECT_EQ(list.at(0)->visits, 5u);
@@ -921,14 +958,18 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv4tov5) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
   CreateMigrationDatabase(&temp_dir, &db_file, 4, 5);
+  EXPECT_TRUE(publisher_info_database_->Init());
 
   ledger::PublisherInfoList list;
-  auto filter = ledger::ActivityInfoFilter::New();
-  filter->excluded = ledger::ExcludeFilter::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0,
-      std::move(filter), &list));
-  EXPECT_EQ(static_cast<int>(list.size()), 3);
+  const std::string query = "SELECT publisher_id, visits FROM activity_info";
+  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+  while (info_sql.Step()) {
+    auto info = ledger::PublisherInfo::New();
+    info->id = info_sql.ColumnString(0);
+    info->visits = info_sql.ColumnInt(1);
 
+    list.push_back(std::move(info));
+  }
   EXPECT_EQ(list.at(0)->id, "brave.com");
   EXPECT_EQ(list.at(0)->visits, 1u);
   EXPECT_EQ(list.at(1)->id, "slo-tech.com");
@@ -945,13 +986,26 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv5tov6) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
   CreateMigrationDatabase(&temp_dir, &db_file, 5, 6);
+  EXPECT_TRUE(publisher_info_database_->Init());
 
   ledger::PublisherInfoList list;
-  auto filter = ledger::ActivityInfoFilter::New();
-  filter->excluded = ledger::ExcludeFilter::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0,
-      std::move(filter), &list));
-  EXPECT_EQ(static_cast<int>(list.size()), 3);
+  const std::string query =
+      "SELECT publisher_id, visits, "
+      "duration, score, percent, weight, reconcile_stamp "
+      "FROM activity_info";
+  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+  while (info_sql.Step()) {
+    auto info = ledger::PublisherInfo::New();
+    info->id = info_sql.ColumnString(0);
+    info->visits = info_sql.ColumnInt(1);
+    info->duration = info_sql.ColumnInt64(2);
+    info->score = info_sql.ColumnDouble(3);
+    info->percent = info_sql.ColumnInt64(4);
+    info->weight = info_sql.ColumnDouble(5);
+    info->reconcile_stamp = info_sql.ColumnInt64(6);
+
+    list.push_back(std::move(info));
+  }
 
   EXPECT_EQ(list.at(0)->id, "basicattentiontoken.org");
   EXPECT_EQ(list.at(0)->duration, 31u);
@@ -987,22 +1041,33 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv4tov6) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
   CreateMigrationDatabase(&temp_dir, &db_file, 4, 6);
+  EXPECT_TRUE(publisher_info_database_->Init());
 
   ledger::PublisherInfoList list;
-  auto filter = ledger::ActivityInfoFilter::New();
-  filter->excluded = ledger::ExcludeFilter::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0,
-      std::move(filter), &list));
-  EXPECT_EQ(static_cast<int>(list.size()), 3);
+  const std::string query =
+      "SELECT publisher_id, visits, duration, reconcile_stamp "
+      "FROM activity_info";
+  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+  while (info_sql.Step()) {
+    auto info = ledger::PublisherInfo::New();
+    info->id = info_sql.ColumnString(0);
+    info->visits = info_sql.ColumnInt(1);
+    info->duration = info_sql.ColumnInt64(2);
+    info->reconcile_stamp = info_sql.ColumnInt64(3);
+
+    list.push_back(std::move(info));
+  }
 
   EXPECT_EQ(list.at(0)->id, "basicattentiontoken.org");
   EXPECT_EQ(list.at(0)->duration, 15u);
   EXPECT_EQ(list.at(0)->visits, 3u);
   EXPECT_EQ(list.at(0)->reconcile_stamp, 1552214829u);
+
   EXPECT_EQ(list.at(1)->id, "brave.com");
   EXPECT_EQ(list.at(1)->duration, 10u);
   EXPECT_EQ(list.at(1)->visits, 1u);
   EXPECT_EQ(list.at(1)->reconcile_stamp, 1552214829u);
+
   EXPECT_EQ(list.at(2)->id, "slo-tech.com");
   EXPECT_EQ(list.at(2)->duration, 12u);
   EXPECT_EQ(list.at(2)->visits, 1u);
@@ -1011,6 +1076,19 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv4tov6) {
   EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 6);
 }
 
+TEST_F(PublisherInfoDatabaseTest, Migrationv6tov7) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 6, 7);
+
+  EXPECT_TRUE(publisher_info_database_->Init());
+  EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 7);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(7));
+}
+
+
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
@@ -1018,7 +1096,7 @@ TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
 
   ledger::PublisherInfo info;
   info.id = "publisher_1";
-  info.verified = true;
+  info.status = ledger::PublisherStatus::VERIFIED;
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.name = "publisher1";
   info.url = "https://publisher1.com";
@@ -1066,7 +1144,7 @@ void PublisherInfoDatabaseTest::PreparePendingContributions() {
   // Insert publishers
   ledger::PublisherInfo info;
   info.id = "key1";
-  info.verified = false;
+  info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info.name = "key1";
   info.url = "https://key1.com";

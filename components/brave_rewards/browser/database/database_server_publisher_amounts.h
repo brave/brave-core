@@ -18,8 +18,10 @@ namespace brave_rewards {
 
 class DatabaseServerPublisherAmounts: public DatabaseTable {
  public:
-  DatabaseServerPublisherAmounts();
+  explicit DatabaseServerPublisherAmounts(int current_db_version);
   ~DatabaseServerPublisherAmounts() override;
+
+  bool Init(sql::Database* db) override;
 
   bool CreateTable(sql::Database* db) override;
 
@@ -33,6 +35,7 @@ class DatabaseServerPublisherAmounts: public DatabaseTable {
 
  private:
   const char* table_name_ = "server_publisher_amounts";
+  const int minimum_version_ = 7;
 };
 
 }  // namespace brave_rewards

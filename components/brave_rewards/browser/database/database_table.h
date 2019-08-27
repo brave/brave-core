@@ -14,17 +14,25 @@ namespace brave_rewards {
 
 class DatabaseTable {
  public:
-  DatabaseTable();
+  explicit DatabaseTable(int current_db_version);
   virtual ~DatabaseTable();
+
+  virtual bool Init(sql::Database* db) = 0;
 
   virtual bool CreateTable(sql::Database* db) = 0;
 
   virtual bool CreateIndex(sql::Database* db) = 0;
 
+ protected:
   bool InsertIndex(
     sql::Database* db,
     const std::string& table_name,
     const std::string& key);
+
+  int GetCurrentDBVersion();
+
+ private:
+  int current_db_version_;
 };
 
 }  // namespace brave_rewards

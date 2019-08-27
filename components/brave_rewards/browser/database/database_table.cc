@@ -9,7 +9,8 @@
 
 namespace brave_rewards {
 
-DatabaseTable::DatabaseTable() {
+DatabaseTable::DatabaseTable(int current_db_version) {
+  current_db_version_ = current_db_version;
 }
 
 DatabaseTable::~DatabaseTable() {
@@ -27,6 +28,10 @@ bool DatabaseTable::InsertIndex(
       key.c_str());
 
   return db->Execute(query.c_str());
+}
+
+int DatabaseTable::GetCurrentDBVersion() {
+  return current_db_version_;
 }
 
 }  // namespace brave_rewards

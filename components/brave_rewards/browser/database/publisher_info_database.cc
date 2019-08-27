@@ -32,12 +32,16 @@ const int kCompatibleVersionNumber = 1;
 
 }  // namespace
 
-PublisherInfoDatabase::PublisherInfoDatabase(const base::FilePath& db_path) :
+PublisherInfoDatabase::PublisherInfoDatabase(
+    const base::FilePath& db_path,
+    const int testing_current_version) :
     db_path_(db_path),
     initialized_(false),
-    testing_current_version_(-1),
-    server_publisher_info_(std::make_unique<DatabaseServerPublisherInfo>()) {
+    testing_current_version_(testing_current_version) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
+
+  server_publisher_info_ =
+      std::make_unique<DatabaseServerPublisherInfo>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -69,8 +73,7 @@ bool PublisherInfoDatabase::Init() {
       !CreateActivityInfoTable() ||
       !CreateMediaPublisherInfoTable() ||
       !CreateRecurringTipsTable() ||
-      !CreatePendingContributionsTable() ||
-      !CreateServerPublisherTable()) {
+      !CreatePendingContributionsTable()) {
     return false;
   }
 
@@ -78,7 +81,10 @@ bool PublisherInfoDatabase::Init() {
   CreateActivityInfoIndex();
   CreateRecurringTipsIndex();
   CreatePendingContributionsIndex();
-  CreateServerPublisherIndex();
+
+  if (!server_publisher_info_->Init(&GetDB())) {
+    return false;
+  }
 
   // Version check.
   sql::InitStatus version_status = EnsureCurrentVersion();
@@ -1096,16 +1102,6 @@ bool PublisherInfoDatabase::RemoveAllPendingContributions() {
  * SERVER PUBLISHER
  *
  */
-bool PublisherInfoDatabase::CreateServerPublisherTable() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return server_publisher_info_->CreateTable(&GetDB());
-}
-
-bool PublisherInfoDatabase::CreateServerPublisherIndex() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return server_publisher_info_->CreateIndex(&GetDB());
-}
-
 bool PublisherInfoDatabase::ClearAndInsertServerPublisherList(
     const ledger::ServerPublisherInfoList& list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -1142,10 +1138,6 @@ int PublisherInfoDatabase::GetCurrentVersion() {
   }
 
   return kCurrentVersionNumber;
-}
-
-void PublisherInfoDatabase::SetTestingCurrentVersion(int value) {
-  testing_current_version_ = value;
 }
 
 void PublisherInfoDatabase::Vacuum() {
@@ -1490,12 +1482,60 @@ bool PublisherInfoDatabase::MigrateV5toV6() {
 }
 
 bool PublisherInfoDatabase::MigrateV6toV7() {
+  const char* name = "publisher_info";
+  if (!GetDB().DoesTableExist(name)) {
+    return true;
+  }
+
   sql::Transaction transaction(&GetDB());
   if (!transaction.Begin()) {
     return false;
   }
 
-  // TODO(nejczdovc): add me
+  std::string sql = base::StringPrintf(
+      "ALTER TABLE %s RENAME TO %s_old",
+      name,
+      name);
+  if (!GetDB().Execute(sql.c_str())) {
+    return false;
+  }
+
+  sql = base::StringPrintf(
+      "CREATE TABLE %s"
+      "("
+      "publisher_id LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
+      "excluded INTEGER DEFAULT 0 NOT NULL,"
+      "name TEXT NOT NULL,"
+      "favIcon TEXT NOT NULL,"
+      "url TEXT NOT NULL,"
+      "provider TEXT NOT NULL"
+      ")",
+      name);
+
+  if (!GetDB().Execute(sql.c_str())) {
+    transaction.Rollback();
+    return false;
+  }
+
+  const std::string columns =
+      "publisher_id, excluded, name, favIcon, url, provider";
+
+  sql = base::StringPrintf(
+      "PRAGMA foreign_keys=off; "
+      "INSERT INTO %s (%s) SELECT %s FROM %s_old; "
+      "DROP TABLE %s_old;"
+      "PRAGMA foreign_keys=on;",
+      name,
+      columns.c_str(),
+      columns.c_str(),
+      name,
+      name);
+
+  if (!GetDB().Execute(sql.c_str())) {
+    LOG(ERROR) << "DB: Error with MigrateV6toV7";
+    transaction.Rollback();
+    return false;
+  }
 
   return transaction.Commit();
 }

@@ -14,12 +14,29 @@
 
 namespace brave_rewards {
 
-DatabaseServerPublisherBanner::DatabaseServerPublisherBanner() :
-    links_(std::make_unique<DatabaseServerPublisherLinks>()),
-    amounts_(std::make_unique<DatabaseServerPublisherAmounts>()) {
+DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(
+    int current_db_version) :
+    DatabaseTable(current_db_version),
+    links_(std::make_unique<DatabaseServerPublisherLinks>(current_db_version)),
+    amounts_(
+        std::make_unique<DatabaseServerPublisherAmounts>(current_db_version)) {
 }
 
 DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() {
+}
+
+bool DatabaseServerPublisherBanner::Init(sql::Database* db) {
+  if (GetCurrentDBVersion() < minimum_version_) {
+    return true;
+  }
+
+  bool success = CreateTable(db);
+  if (!success) {
+    return false;
+  }
+
+  CreateIndex(db);
+  return true;
 }
 
 bool DatabaseServerPublisherBanner::CreateTable(sql::Database* db) {
