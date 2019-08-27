@@ -137,3 +137,11 @@ export const shieldsReady: actions.ShieldsReady = () => {
     type: types.SHIELDS_READY
   }
 }
+
+export const contentScriptsLoaded: actions.ContentScriptsLoaded = (tabId: number, url: string) => {
+  return {
+    type: types.CONTENT_SCRIPTS_LOADED,
+    tabId,
+    url
+  }
+}

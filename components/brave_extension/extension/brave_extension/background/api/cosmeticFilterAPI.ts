@@ -39,7 +39,7 @@ export const removeSiteFilter = (origin: string) => {
 }
 
 export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => {
-  chrome.braveShields.hostnameCosmeticResources(hostname, (resources) => {
+  chrome.braveShields.hostnameCosmeticResources(hostname, async (resources) => {
     if (chrome.runtime.lastError) {
       console.warn('Unable to get cosmetic filter data for the current host')
       return

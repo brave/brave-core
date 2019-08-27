@@ -172,6 +172,16 @@ export interface ShieldsReady {
   (): ShieldsReadyReturn
 }
 
+interface ContentScriptsLoadedReturn {
+  type: types.CONTENT_SCRIPTS_LOADED,
+  tabId: number,
+  url: string,
+}
+
+export interface ContentScriptsLoaded {
+  (tabId: number, url: string): ContentScriptsLoadedReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -189,4 +199,5 @@ export type shieldPanelActions =
   SetAllScriptsBlockedCurrentStateReturn |
   SetFinalScriptsBlockedStateReturn |
   SetAdvancedViewFirstAccessReturn |
-  ShieldsReadyReturn
+  ShieldsReadyReturn |
+  ContentScriptsLoadedReturn
