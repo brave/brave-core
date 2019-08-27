@@ -1,1 +1,1 @@
-alert("example.*");
+document.title = "Altered";

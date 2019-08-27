@@ -10,6 +10,7 @@
 
 #include "base/macros.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "components/sessions/core/session_id.h"
@@ -33,9 +34,11 @@ class RewardsTabHelper : public RewardsServiceObserver,
  private:
   friend class content::WebContentsUserData<RewardsTabHelper>;
 
+#if BUILDFLAG(ENABLE_GREASELION)
   // RewardsServiceObserver overrides.
   void OnRewardsMainEnabled(RewardsService* rewards_service,
                             bool rewards_main_enabled) override;
+#endif
 
   // content::WebContentsObserver overrides.
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,

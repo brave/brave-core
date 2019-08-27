@@ -5,6 +5,7 @@ import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
@@ -398,7 +399,6 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
     "//brave/browser/extensions/api/brave_theme_api_browsertest.cc",
     "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
-    "//brave/browser/greaselion/greaselion_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_hsts_fingerprinting_browsertest.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
@@ -439,6 +439,12 @@ test("brave_browser_tests") {
   if (bundle_widevine_cdm || enable_widevine_cdm_component) {
     sources += [
       "//brave/browser/widevine/widevine_permission_request_browsertest.cc",
+    ]
+  }
+
+  if (enable_greaselion) {
+    sources += [
+      "//brave/browser/greaselion/greaselion_browsertest.cc",
     ]
   }
 

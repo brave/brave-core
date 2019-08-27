@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_GREASELION_GREASELION_TAB_HELPER_H_
 #define BRAVE_BROWSER_GREASELION_GREASELION_TAB_HELPER_H_
 
+#include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -15,20 +16,24 @@ class WebContents;
 
 namespace greaselion {
 
+class GreaselionService;
+
 class GreaselionTabHelper
-    : public content::WebContentsObserver,
+    : public greaselion::GreaselionDownloadService::Observer,
+      public content::WebContentsObserver,
       public content::WebContentsUserData<GreaselionTabHelper> {
  public:
   explicit GreaselionTabHelper(content::WebContents*);
   ~GreaselionTabHelper() override;
 
- protected:
-  // content::WebContentsObserver overrides.
-  void DocumentLoadedInFrame(
-      content::RenderFrameHost* render_frame_host) override;
-
  private:
   friend class content::WebContentsUserData<GreaselionTabHelper>;
+
+  // GreaselionDownloadService::Observer implementation
+  void OnRulesReady(GreaselionDownloadService* download_service) override;
+
+  GreaselionDownloadService* download_service_;  // NOT OWNED
+  GreaselionService* greaselion_service_;        // NOT OWNED
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(GreaselionTabHelper);

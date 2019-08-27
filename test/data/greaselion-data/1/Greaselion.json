@@ -9,14 +9,6 @@
     },
     {
         "urls": [
-            "https://www.example.*/*"
-        ],
-        "scripts": [
-            "scripts/example-star.js"
-        ]
-    },
-    {
-        "urls": [
             "http://www.a.com:*/*"
         ],
         "scripts": [
@@ -28,7 +20,7 @@
             "rewards-enabled": true
         },
         "urls": [
-            "https://pre1.example.com/*"
+            "http://pre1.example.com/*"
         ],
         "scripts": [
             "scripts/example-com.js"

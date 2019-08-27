@@ -23,8 +23,7 @@ AutoplayWhitelistService::AutoplayWhitelistService(
     LocalDataFilesService* local_data_files_service)
     : LocalDataFilesObserver(local_data_files_service),
       autoplay_whitelist_client_(new AutoplayWhitelistParser()),
-      weak_factory_(this) {
-}
+      weak_factory_(this) {}
 
 AutoplayWhitelistService::~AutoplayWhitelistService() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -34,9 +33,8 @@ AutoplayWhitelistService::~AutoplayWhitelistService() {
 bool AutoplayWhitelistService::ShouldAllowAutoplay(const GURL& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::string etld_plus_one =
-    net::registry_controlled_domains::GetDomainAndRegistry(
-      url,
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
   return autoplay_whitelist_client_->matchesHost(etld_plus_one.c_str());
 }
 
@@ -45,13 +43,12 @@ void AutoplayWhitelistService::OnComponentReady(
     const base::FilePath& install_dir,
     const std::string& manifest) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::FilePath dat_file_path =  install_dir
-      .AppendASCII(AUTOPLAY_DAT_FILE_VERSION)
-      .AppendASCII(AUTOPLAY_DAT_FILE);
+  base::FilePath dat_file_path =
+      install_dir.AppendASCII(AUTOPLAY_DAT_FILE_VERSION)
+          .AppendASCII(AUTOPLAY_DAT_FILE);
 
   base::PostTaskAndReplyWithResult(
-      local_data_files_service()->GetTaskRunner().get(),
-      FROM_HERE,
+      local_data_files_service()->GetTaskRunner().get(), FROM_HERE,
       base::BindOnce(
           &brave_component_updater::LoadDATFileData<AutoplayWhitelistParser>,
           dat_file_path),

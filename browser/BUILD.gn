@@ -3,6 +3,7 @@ import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -92,7 +93,6 @@ source_set("browser_process") {
     ":version_info",
     "autoplay",
     "download",
-    "greaselion",
     "net",
     "permissions",
     "profiles",
@@ -113,7 +113,7 @@ source_set("browser_process") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
-    "//brave/components/greaselion/browser",
+    "//brave/components/greaselion/browser/buildflags",
     "//brave/components/resources",
     "//brave/components/services:brave_content_manifest_overlays",
     "//chrome/common",
@@ -140,6 +140,13 @@ source_set("browser_process") {
     "//services/service_manager/embedder",
     "//ui/base",
   ]
+
+  if (enable_greaselion) {
+    deps += [
+      "greaselion",
+      "//brave/components/greaselion/browser",
+    ]
+  }
 
   if (!is_android) {
     sources += [

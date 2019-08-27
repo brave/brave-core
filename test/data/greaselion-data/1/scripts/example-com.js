@@ -1,1 +1,1 @@
-alert("example.com");
+document.title = "Altered";

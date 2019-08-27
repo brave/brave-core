@@ -11,6 +11,7 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -18,7 +19,7 @@
 namespace brave {
 class BraveReferralsService;
 class BraveStatsUpdater;
-}
+}  // namespace brave
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 class BraveWidevineBundleManager;
@@ -29,7 +30,7 @@ namespace brave_component_updater {
 class ExtensionWhitelistService;
 #endif
 class LocalDataFilesService;
-}
+}  // namespace brave_component_updater
 
 namespace brave_shields {
 class AdBlockService;
@@ -42,7 +43,9 @@ class TrackingProtectionService;
 }  // namespace brave_shields
 
 namespace greaselion {
+#if BUILDFLAG(ENABLE_GREASELION)
 class GreaselionDownloadService;
+#endif
 }  // namespace greaselion
 
 namespace extensions {
@@ -71,7 +74,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   extension_whitelist_service();
 #endif
   brave_shields::ReferrerWhitelistService* referrer_whitelist_service();
+#if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service();
+#endif
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
   brave_component_updater::LocalDataFilesService* local_data_files_service();
@@ -106,8 +111,10 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #endif
   std::unique_ptr<brave_shields::ReferrerWhitelistService>
       referrer_whitelist_service_;
+#if BUILDFLAG(ENABLE_GREASELION)
   std::unique_ptr<greaselion::GreaselionDownloadService>
       greaselion_download_service_;
+#endif
   std::unique_ptr<brave_shields::TrackingProtectionService>
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>

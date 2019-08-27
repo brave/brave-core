@@ -5,10 +5,8 @@
 
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 
-#include "brave/browser/greaselion/greaselion_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
-#include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
 #include "chrome/browser/ui/browser.h"
@@ -22,9 +20,17 @@
 #include "content/public/common/resource_load_info.mojom.h"
 #include "content/public/common/resource_type.h"
 
+#if BUILDFLAG(ENABLE_GREASELION)
+#include "brave/browser/greaselion/greaselion_service_factory.h"
+#include "brave/components/greaselion/browser/greaselion_service.h"
+#endif
+
 using content::ResourceType;
+
+#if BUILDFLAG(ENABLE_GREASELION)
 using greaselion::GreaselionService;
 using greaselion::GreaselionServiceFactory;
+#endif
 
 // DEFINE_WEB_CONTENTS_USER_DATA_KEY(brave_rewards::RewardsTabHelper);
 
@@ -128,6 +134,7 @@ void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
   }
 }
 
+#if BUILDFLAG(ENABLE_GREASELION)
 void RewardsTabHelper::OnRewardsMainEnabled(RewardsService* rewards_service,
                                             bool rewards_main_enabled) {
   GreaselionService* greaselion_service =
@@ -140,6 +147,7 @@ void RewardsTabHelper::OnRewardsMainEnabled(RewardsService* rewards_service,
   greaselion_service->SetFeatureEnabled(greaselion::TWITTER_TIPS,
                                         rewards_main_enabled);
 }
+#endif
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(RewardsTabHelper)
 

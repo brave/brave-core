@@ -10,42 +10,31 @@
 
 #include "base/bind_helpers.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/greaselion/greaselion_service_factory.h"
-#include "brave/common/brave_isolated_worlds.h"
+#include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
-
-using greaselion::GreaselionService;
-using greaselion::GreaselionServiceFactory;
 
 namespace greaselion {
 
 GreaselionTabHelper::GreaselionTabHelper(content::WebContents* web_contents)
-    : WebContentsObserver(web_contents) {}
+    : WebContentsObserver(web_contents) {
+  greaselion_service_ = GreaselionServiceFactory::GetForBrowserContext(
+      web_contents->GetBrowserContext());
+  download_service_ = g_brave_browser_process->greaselion_download_service();
+  download_service_->AddObserver(this);
+}
 
-GreaselionTabHelper::~GreaselionTabHelper() {}
+GreaselionTabHelper::~GreaselionTabHelper() {
+  download_service_->RemoveObserver(this);
+}
 
-void GreaselionTabHelper::DocumentLoadedInFrame(
-    content::RenderFrameHost* render_frame_host) {
-  const GURL& url = render_frame_host->GetLastCommittedURL();
-  std::vector<std::string> scripts;
-  GreaselionService* greaselion_service =
-      GreaselionServiceFactory::GetForBrowserContext(
-          web_contents()->GetBrowserContext());
-  if (!greaselion_service)
-    return;
-  if (!greaselion_service->ScriptsFor(url, &scripts))
-    return;
-
-  for (auto script : scripts) {
-    render_frame_host->ExecuteJavaScriptInIsolatedWorld(
-        base::UTF8ToUTF16(script), base::DoNothing(),
-        ISOLATED_WORLD_ID_GREASELION);
-  }
+void GreaselionTabHelper::OnRulesReady(
+    GreaselionDownloadService* download_service) {
+  greaselion_service_->UpdateInstalledExtensions();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(GreaselionTabHelper)
