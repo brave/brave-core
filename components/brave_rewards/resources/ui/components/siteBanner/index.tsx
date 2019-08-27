@@ -76,6 +76,7 @@ export interface Props {
   showUnVerifiedNotice?: boolean
   learnMoreNotice?: string
   addFundsLink?: string
+  isVerified?: boolean
 }
 
 interface State {
@@ -251,7 +252,8 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       screenName,
       showUnVerifiedNotice,
       learnMoreNotice,
-      addFundsLink
+      addFundsLink,
+      isVerified
     } = this.props
 
     const isTwitterTip: boolean = !!(screenName && screenName !== '')
@@ -294,7 +296,8 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                         <AlertCircleIcon />
                       </StyledNoticeIcon>
                       <StyledNoticeText>
-                        <b>{getLocale('siteBannerNoticeNote')}</b> {getLocale('siteBannerNoticeText')}
+                        <b>{getLocale('siteBannerNoticeNote')}</b>{' '}
+                        {getLocale(isVerified ? 'siteBannerConnectedText' : 'siteBannerNoticeText')}
                         <StyledNoticeLink href={learnMoreNotice} target={'_blank'}>{getLocale('unVerifiedTextMore')}</StyledNoticeLink>
                       </StyledNoticeText>
                     </StyledNoticeWrapper>

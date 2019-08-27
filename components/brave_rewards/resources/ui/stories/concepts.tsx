@@ -186,6 +186,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                   }
                 ]}
                 showUnVerifiedNotice={boolean('Show unverified notice', false)}
+                isVerified={boolean('Is publisher verified', true)}
               >
                 {
                   isTwitterTip()
