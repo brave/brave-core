@@ -95,6 +95,8 @@ struct BraveRequestInfo {
   bool cancel_request_explicitly = false;
   // Default to invalid type for resource_type, so delegate helpers
   // can properly detect that the info couldn't be obtained.
+  // TODO(iefremov): Replace with something like |WebRequestResourceType| to
+  // distinguish WebSockets.
   static constexpr content::ResourceType kInvalidResourceType =
       static_cast<content::ResourceType>(-1);
   content::ResourceType resource_type = kInvalidResourceType;

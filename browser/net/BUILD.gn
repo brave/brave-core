@@ -18,6 +18,8 @@ source_set("net") {
     "brave_profile_network_delegate.h",
     "brave_proxying_url_loader_factory.cc",
     "brave_proxying_url_loader_factory.h",
+    "brave_proxying_web_socket.cc",
+    "brave_proxying_web_socket.h",
     "brave_request_handler.cc",
     "brave_request_handler.h",
     "brave_site_hacks_network_delegate_helper.cc",
@@ -30,6 +32,8 @@ source_set("net") {
     "brave_system_network_delegate.h",
     "brave_system_request_handler.cc",
     "brave_system_request_handler.h",
+    "resource_context_data.cc",
+    "resource_context_data.h",
     "url_context.cc",
     "url_context.h",
   ]
