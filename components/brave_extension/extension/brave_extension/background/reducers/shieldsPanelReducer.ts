@@ -108,6 +108,9 @@ export default function shieldsPanelReducer (
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED: {
       state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
       shieldsPanelState.updateShieldsIcon(state)
+      if (chrome.test && shieldsPanelState.getActiveTabData(state)) {
+        chrome.test.sendMessage('brave-extension-shields-data-ready')
+      }
       break
     }
     case shieldsPanelTypes.SHIELDS_TOGGLED: {
