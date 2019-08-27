@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/themes/brave_theme_utils.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "build/build_config.h"  // For OS_MACOSX
 #include "chrome/browser/search/search.h"
@@ -22,23 +23,28 @@
 
 #if defined(OS_LINUX)
 #include "brave/browser/ui/views/brave_browser_main_extra_parts_views_linux.h"
-#define ChromeBrowserMainExtraPartsViewsLinux BraveBrowserMainExtraPartsViewsLinux // NOLINT
+#define ChromeBrowserMainExtraPartsViewsLinux \
+  BraveBrowserMainExtraPartsViewsLinux  // NOLINT
 #endif
 
 #define HandleNewTabURLRewrite HandleNewTabURLRewrite_ChromiumImpl
 #define HandleNewTabURLReverseRewrite HandleNewTabURLReverseRewrite_ChromiumImpl
 
+#define BRAVE_CHROMECONTENTBROWSERCLIENT_OVERRIDEWEBKITPREFS \
+  switch (GetBravePreferredColorScheme(native_theme, profile)) {
+
 namespace search {
-  bool HandleNewTabURLRewrite(GURL * url, content::BrowserContext * bc) {
-    return false;
-  }
-  bool HandleNewTabURLReverseRewrite(GURL * url, content::BrowserContext * bc) {
-    return false;
-  }
+bool HandleNewTabURLRewrite(GURL* url, content::BrowserContext* bc) {
+  return false;
+}
+bool HandleNewTabURLReverseRewrite(GURL* url, content::BrowserContext* bc) {
+  return false;
+}
 }  // namespace search
 
 #include "../../../../chrome/browser/chrome_content_browser_client.cc"  // NOLINT
 
+#undef BRAVE_CHROMECONTENTBROWSERCLIENT_OVERRIDEWEBKITPREFS
 #undef HandleNewTabURLRewrite
 #undef HandleNewTabURLReverseRewrite_ChromiumImpl
 
