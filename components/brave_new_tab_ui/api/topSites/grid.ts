@@ -13,14 +13,15 @@ import { debounce } from '../../../common/debounce'
 export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) => {
   const sizeToCount = { large: 18, medium: 12, small: 6 }
   const count = sizeToCount[state.gridLayoutSize || 'small']
-  const defaultChromeUrl = 'https://chrome.google.com/webstore?hl=en'
+  const defaultChromeWebStoreUrl = 'https://chrome.google.com/webstore'
 
   // Start with top sites with filtered out ignored sites and pinned sites
   let gridSites = state.topSites.slice()
   .filter((site) =>
     !state.ignoredTopSites.find((ignoredSite) => ignoredSite.url === site.url) &&
     !state.pinnedTopSites.find((pinnedSite) => pinnedSite.url === site.url) &&
-    site.url !== defaultChromeUrl
+    // see https://github.com/brave/brave-browser/issues/5376
+    !site.url.startsWith(defaultChromeWebStoreUrl)
   )
 
   // Then add in pinned sites at the specified index, these need to be added in the same
