@@ -47,5 +47,5 @@ bool BookmarkPrefsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
 
 void BookmarkPrefsServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(kAlwaysShowBookmarkBarOnNTP, false);
+  registry->RegisterBooleanPref(kAlwaysShowBookmarkBarOnNTP, true);
 }
