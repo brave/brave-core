@@ -16,8 +16,6 @@ protocol PopoverContentComponent {
     /// Allows the component to decide whether or not the popover should dismiss based on some gestural action (tapping
     /// the background around the popover or dismissing via pan). Optional, true by defualt
     func popoverShouldDismiss(_ popoverController: PopoverController) -> Bool
-    /// Allows the component to know when the popover was dismissed by some gestural action. Optional
-    func popoverDidDismiss(_ popoverController: PopoverController)
 }
 
 extension PopoverContentComponent {

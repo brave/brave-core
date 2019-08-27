@@ -12,6 +12,7 @@ import Data
 import CoreData
 
 private let log = Logger.browserLogger
+private let rewardsLog = Logger.rewardsLogger
 
 protocol TabManagerDelegate: class {
     func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?)
@@ -23,12 +24,6 @@ protocol TabManagerDelegate: class {
     func tabManagerDidRestoreTabs(_ tabManager: TabManager)
     func tabManagerDidAddTabs(_ tabManager: TabManager)
     func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?)
-    
-    func tabManager(_ tabManager: TabManager, isVerifiedPublisher verified: Bool)
-}
-
-extension TabManagerDelegate {
-    func tabManager(_ tabManager: TabManager, isVerifiedPublisher verified: Bool) { }
 }
 
 protocol TabManagerStateDelegate: class {
@@ -262,15 +257,18 @@ class TabManager: NSObject {
             let newSelectedTab = tab, let previousTab = previous, let newTabUrl = newSelectedTab.url, let previousTabUrl = previousTab.url else { return }
         
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-            rewards.reportTabUpdated(Int(previousTab.rewardsId), url: previousTabUrl, isSelected: false,
-                                     isPrivate: previousTab.isPrivate) { _ in }
-        
-            rewards.reportTabUpdated(Int(newSelectedTab.rewardsId), url: newTabUrl, isSelected: true,
-                                     isPrivate: newSelectedTab.isPrivate) { verified in
-                                        self.delegates.forEach {
-                                            $0.get()?.tabManager(self, isVerifiedPublisher: verified)
-                                        }
+            let previousFaviconURL = URL(string: previousTab.displayFavicon?.url ?? "")
+            if previousFaviconURL == nil {
+                rewardsLog.warning("No favicon found in \(previousTab) to report to rewards panel")
             }
+            rewards.reportTabUpdated(Int(previousTab.rewardsId), url: previousTabUrl, faviconURL: previousFaviconURL, isSelected: false,
+                                     isPrivate: previousTab.isPrivate)
+            let faviconURL = URL(string: newSelectedTab.displayFavicon?.url ?? "")
+            if faviconURL == nil {
+                rewardsLog.warning("No favicon found in \(newSelectedTab) to report to rewards panel")
+            }
+            rewards.reportTabUpdated(Int(newSelectedTab.rewardsId), url: newTabUrl, faviconURL: faviconURL, isSelected: true,
+                                     isPrivate: newSelectedTab.isPrivate)
         }
     }
 

@@ -153,6 +153,7 @@
 		2777273722EB43A100F0214C /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2777273622EB43A100F0214C /* StringExtensions.swift */; };
 		2777274022EB44B300F0214C /* StringExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2777273F22EB44B300F0214C /* StringExtensionTests.swift */; };
 		2777275A22EB4C7700F0214C /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; };
+		276E7A3C22F21DBE00939424 /* RewardsReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276E7A3B22F21DBE00939424 /* RewardsReporting.swift */; };
 		2795274A21A890EB00921AA1 /* FingerprintingProtectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2795274921A890EB00921AA1 /* FingerprintingProtectionTests.swift */; };
 		2798E01D213EFC3F003EDBB1 /* FavoriteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2798E015213EFC3F003EDBB1 /* FavoriteTests.swift */; };
 		279C756B219DDE3B001CD1CB /* FingerprintingProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */; };
@@ -1295,6 +1296,8 @@
 		27658270217130D900754B2F /* DigiCertHighAssurance.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = DigiCertHighAssurance.cer; sourceTree = "<group>"; };
 		2777273622EB43A100F0214C /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		2777273F22EB44B300F0214C /* StringExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensionTests.swift; sourceTree = "<group>"; };
+		276E7A2E22F21A7700939424 /* RewardsReporting.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = RewardsReporting.js; sourceTree = "<group>"; };
+		276E7A3B22F21DBE00939424 /* RewardsReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsReporting.swift; sourceTree = "<group>"; };
 		2795274921A890EB00921AA1 /* FingerprintingProtectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerprintingProtectionTests.swift; sourceTree = "<group>"; };
 		2798E015213EFC3F003EDBB1 /* FavoriteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteTests.swift; sourceTree = "<group>"; };
 		279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerprintingProtection.swift; sourceTree = "<group>"; };
@@ -2674,6 +2677,14 @@
 			path = Certificates;
 			sourceTree = "<group>";
 		};
+		276E7A3A22F21DAB00939424 /* Rewards */ = {
+			isa = PBXGroup;
+			children = (
+				276E7A3B22F21DBE00939424 /* RewardsReporting.swift */,
+			);
+			path = Rewards;
+			sourceTree = "<group>";
+		};
 		27F443962135E11200296C58 /* BraveShareTo */ = {
 			isa = PBXGroup;
 			children = (
@@ -3567,6 +3578,7 @@
 		D03F8F11200EAB8C003C2224 /* AtDocumentStart */ = {
 			isa = PBXGroup;
 			children = (
+				276E7A2E22F21A7700939424 /* RewardsReporting.js */,
 				D03F8F20200EABB0003C2224 /* __firefox__.js */,
 			);
 			path = AtDocumentStart;
@@ -4153,6 +4165,7 @@
 				E689C6FF1E0C716F008BAADB /* Entitlements */,
 				28EADE5C1AFC3A6D007FB2FB /* Extensions */,
 				F84B21F11A0910F600AAB793 /* Frontend */,
+				276E7A3A22F21DAB00939424 /* Rewards */,
 				39A359BD1BFCCE7B006B9E87 /* Helpers */,
 				0A4BEFCD221E11440005551A /* Networking */,
 				0A0D3D2F21A4BC1F00BEE65B /* WebFilters */,
@@ -5925,6 +5938,7 @@
 				3B6889C51D66950E002AC85E /* UIImageColors.swift in Sources */,
 				0A1E84402190A57F0042F782 /* SyncSelectDeviceTypeViewController.swift in Sources */,
 				392ED7E41D0AEF56009D9B62 /* NewTabAccessors.swift in Sources */,
+				276E7A3C22F21DBE00939424 /* RewardsReporting.swift in Sources */,
 				4422D50421BFFB7600BF1855 /* memtable.cc in Sources */,
 				D3A9949D1A3686BD008AD1AC /* Tab.swift in Sources */,
 				0A4BEFD8221EE78E0005551A /* CachedNetworkResource.swift in Sources */,

@@ -136,6 +136,8 @@ class BrowserViewController: UIViewController {
     let safeBrowsing: SafeBrowsing?
     
     let rewards: BraveRewards?
+    let rewardsObserver: LedgerObserver?
+    private(set) var publisher: PublisherInfo?
 
     init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
@@ -147,9 +149,11 @@ class BrowserViewController: UIViewController {
         
         #if NO_REWARDS
         rewards = nil
+        rewardsObserver = nil
         #else
         RewardsHelper.configureRewardsLogs()
         rewards = BraveRewards(configuration: .default)
+        rewardsObserver = LedgerObserver(ledger: rewards!.ledger)
         #endif
 
         super.init(nibName: nil, bundle: nil)
@@ -206,6 +210,26 @@ class BrowserViewController: UIViewController {
         Preferences.Privacy.blockAllCookies.observe(from: self)
         // Lists need to be compiled before attempting tab restoration
         contentBlockListDeferred = ContentBlockerHelper.compileBundledLists()
+        
+        setupRewardsObservers()
+    }
+    
+    private func setupRewardsObservers() {
+        guard let rewards = rewards, let observer = rewardsObserver else { return }
+        rewards.ledger.add(observer)
+        observer.fetchedPanelPublisher = { [weak self] publisher, tabId in
+            guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
+            self.publisher = publisher
+            self.updateRewardsButtonState()
+        }
+        observer.notificationAdded = { [weak self] _ in
+            guard let self = self, self.isViewLoaded else { return }
+            self.updateRewardsButtonState()
+        }
+        observer.notificationsRemoved = { [weak self] _ in
+            guard let self = self, self.isViewLoaded else { return }
+            self.updateRewardsButtonState()
+        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -421,6 +445,8 @@ class BrowserViewController: UIViewController {
         self.updateToolbarStateForTraitCollection(self.traitCollection)
 
         setupConstraints()
+        
+        updateRewardsButtonState()
 
         // Setup UIDropInteraction to handle dragging and dropping
         // links into the view from other apps.
@@ -519,6 +545,10 @@ class BrowserViewController: UIViewController {
         updateTabCountUsingTabManager(tabManager)
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
         favoritesViewController?.updateDuckDuckGoVisibility()
+        
+        if let tabId = tabManager.selectedTab?.rewardsId, rewards?.ledger.selectedTabId == 0 {
+            rewards?.ledger.selectedTabId = tabId
+        }
     }
     
     fileprivate lazy var checkCrashRestoration: () -> Void = {
@@ -618,6 +648,8 @@ class BrowserViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         screenshotHelper.viewIsVisible = false
         super.viewWillDisappear(animated)
+        
+        rewards?.ledger.selectedTabId = 0
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -1814,6 +1846,10 @@ extension BrowserViewController: TabDelegate {
         tab.addContentScript(ResourceDownloadManager(tab: tab), name: ResourceDownloadManager.name())
         
         tab.addContentScript(WindowRenderHelperScript(tab: tab), name: WindowRenderHelperScript.name())
+        
+        if let rewards = self.rewards {
+            tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name())
+        }
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -1862,10 +1898,6 @@ extension BrowserViewController: TabDelegate {
     func tab(_ tab: Tab, didSelectFindInPageForSelection selection: String) {
         updateFindInPageVisibility(visible: true)
         findInPageBar?.text = selection
-    }
-    
-    func tab(_ tab: Tab, isVerifiedPublisher verified: Bool) {
-        topToolbar.locationView.rewardsButton.isVerified = verified
     }
 }
 
@@ -2014,6 +2046,8 @@ extension BrowserViewController: TabManagerDelegate {
             profile.recentlyClosedTabs.addTab(url as URL, title: tab.title, faviconURL: tab.displayFavicon?.url)
         }
         updateTabsBarVisibility()
+        
+        rewards?.reportTabClosed(tabId: tab.rewardsId)
     }
 
     func tabManagerDidAddTabs(_ tabManager: TabManager) {
@@ -2052,10 +2086,6 @@ extension BrowserViewController: TabManagerDelegate {
         let count = tabManager.tabsForCurrentMode.count
         toolbar?.updateTabCount(count)
         topToolbar.updateTabCount(count)
-    }
-    
-    func tabManager(_ tabManager: TabManager, isVerifiedPublisher verified: Bool) {
-        topToolbar.locationView.rewardsButton.isVerified = verified
     }
 }
 

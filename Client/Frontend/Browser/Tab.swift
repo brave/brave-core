@@ -12,6 +12,7 @@ import XCGLogger
 import Data
 
 private let log = Logger.browserLogger
+private let rewardsLog = Logger.rewardsLogger
 
 protocol TabContentScript {
     static func name() -> String
@@ -26,7 +27,6 @@ protocol TabDelegate {
     func tab(_ tab: Tab, didSelectFindInPageForSelection selection: String)
     @objc optional func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
     @objc optional func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
-    func tab(_ tab: Tab, isVerifiedPublisher verified: Bool)
 }
 
 @objc
@@ -151,7 +151,7 @@ class Tab: NSObject {
 
     init(configuration: WKWebViewConfiguration, type: TabType = .regular) {
         self.configuration = configuration
-        rewardsId = UInt32.random(in: UInt32.min...UInt32.max)
+        rewardsId = UInt32.random(in: 1...UInt32.max)
         super.init()
         self.type = type
     }
@@ -390,9 +390,11 @@ class Tab: NSObject {
         DispatchQueue.main.async {
             webView.evaluateJavaScript(getHtmlToStringJSCall, completionHandler: { html, _ in
                 guard let htmlString = html as? String else { return }
-                rewards.reportLoadedPage(url: url, tabId: tabId, html: htmlString) { verified in
-                    self.tabDelegate?.tab(self, isVerifiedPublisher: verified)
+                let faviconURL = URL(string: self.displayFavicon?.url ?? "")
+                if faviconURL == nil {
+                    rewardsLog.warning("No favicon found in \(self) to report to rewards panel")
                 }
+                rewards.reportLoadedPage(url: url, faviconUrl: faviconURL, tabId: tabId, html: htmlString)
             })
         }
     }
