@@ -9,6 +9,7 @@ import Data
 import BraveShared
 
 private let log = Logger.browserLogger
+private let rewardsLog = Logger.rewardsLogger
 
 extension WKNavigationAction {
     /// Allow local requests only if the request is privileged.
@@ -226,7 +227,18 @@ extension BrowserViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         let response = navigationResponse.response
         let responseURL = response.url
-
+        
+        if let tab = tabManager[webView] {
+            if let httpResponse = response as? HTTPURLResponse,
+                let cacheControl = httpResponse.allHeaderFields["Cache-Control"] as? String,
+                cacheControl.contains("no-store") {
+                tab.shouldClassifyLoadsForAds = false
+            }
+            if responseURL?.isSessionRestoreURL == true {
+                tab.shouldClassifyLoadsForAds = false
+            }
+        }
+        
         var request: URLRequest?
         if let url = responseURL {
             request = pendingRequests.removeValue(forKey: url.absoluteString)
@@ -348,11 +360,17 @@ extension BrowserViewController: WKNavigationDelegate {
             updateUIForReaderHomeStateForTab(tab)
         }
     }
-
+    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if let tab = tabManager[webView] {
             navigateInTab(tab: tab, to: navigation)
-            tab.reportPageLoad()
+            if let rewards = rewards {
+                tab.reportPageLoad(to: rewards)
+            }
+            if webView.url?.isLocal == false {
+                // Reset should classify
+                tab.shouldClassifyLoadsForAds = true
+            }
             
             if tab === tabManager.selectedTab {
                 topToolbar.updateProgressBar(1.0)
