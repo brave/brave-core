@@ -71,7 +71,6 @@ class BraveSyncClient {
       const std::vector<std::string> &category_names,
       const base::Time &startAt,
       const int max_records) = 0;
-  virtual void SendFetchSyncDevices() = 0;
   virtual void SendResolveSyncRecords(
       const std::string &category_name,
       std::unique_ptr<SyncRecordAndExistingList> list) = 0;

@@ -143,6 +143,19 @@ void AddSyncEntityInfo(jslib::Bookmark* bookmark,
   }
 }
 
+SyncRecordPtr PrepareResolvedDevice(SyncDevice* device,
+                                    SyncRecord::Action action) {
+  auto record = std::make_unique<jslib::SyncRecord>();
+  record->action = action;
+  record->deviceId = device->device_id_;
+  record->objectId = device->object_id_;
+  record->objectData = jslib_const::SyncObjectData_DEVICE;  // "device"
+  std::unique_ptr<jslib::Device> device_record =
+      std::make_unique<jslib::Device>();
+  device_record->name = device->name_;
+  record->SetDevice(std::move(device_record));
+  return record;
+}
 }  // namespace
 
 BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
@@ -490,6 +503,24 @@ syncer::ModelTypeSet BraveProfileSyncServiceImpl::GetPreferredDataTypes()
                {syncer::DEVICE_INFO});
 }
 
+std::unique_ptr<SyncRecordAndExistingList>
+BraveProfileSyncServiceImpl::PrepareResolvedPreferences(
+    const RecordsList& records) {
+  auto sync_devices = brave_sync_prefs_->GetSyncDevices();
+  auto records_and_existing_objects =
+      std::make_unique<SyncRecordAndExistingList>();
+
+  for (const SyncRecordPtr& record : records) {
+    auto resolved_record = std::make_unique<SyncRecordAndExisting>();
+    resolved_record->first = jslib::SyncRecord::Clone(*record);
+    auto* device = sync_devices->GetByObjectId(record->objectId);
+    if (device)
+      resolved_record->second = PrepareResolvedDevice(device, record->action);
+    records_and_existing_objects->emplace_back(std::move(resolved_record));
+  }
+  return records_and_existing_objects;
+}
+
 void BraveProfileSyncServiceImpl::OnGetExistingObjects(
     const std::string& category_name,
     std::unique_ptr<RecordsList> records,
@@ -498,16 +529,22 @@ void BraveProfileSyncServiceImpl::OnGetExistingObjects(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   // TODO(bridiver) - what do we do with is_truncated ?
   // It appears to be ignored in b-l
-  if (!IsTimeEmpty(last_record_time_stamp)) {
-    brave_sync_prefs_->SetLatestRecordTime(last_record_time_stamp);
-  }
-
   if (category_name == kBookmarks) {
+    if (!IsTimeEmpty(last_record_time_stamp)) {
+      brave_sync_prefs_->SetLatestRecordTime(last_record_time_stamp);
+    }
     auto records_and_existing_objects =
         std::make_unique<SyncRecordAndExistingList>();
     CreateResolveList(*records.get(), records_and_existing_objects.get());
     brave_sync_client_->SendResolveSyncRecords(
         category_name, std::move(records_and_existing_objects));
+  } else if (category_name == kPreferences) {
+    if (!tools::IsTimeEmpty(last_record_time_stamp)) {
+      brave_sync_prefs_->SetLatestDeviceRecordTime(last_record_time_stamp);
+    }
+    auto existing_records = PrepareResolvedPreferences(*records.get());
+    brave_sync_client_->SendResolveSyncRecords(category_name,
+                                               std::move(existing_records));
   }
 }
 
@@ -785,8 +822,6 @@ void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
     category_names.push_back(kPreferences);  // "PREFERENCES";
   }
 
-  brave_sync_prefs_->SetLastFetchTime(base::Time::Now());
-
   base::Time start_at_time = brave_sync_prefs_->GetLatestRecordTime();
   brave_sync_client_->SendFetchSyncRecords(category_names, start_at_time,
                                            max_records);
@@ -893,7 +928,25 @@ bool BraveProfileSyncServiceImpl::IsBraveSyncConfigured() const {
          // |OnSetupSyncHaveCode| or in |OnSetupSyncNewToSync|
          (brave_sync_prefs_->GetSyncDevices()->size() >= 2);
 }
-
+void BraveProfileSyncServiceImpl::FetchDevices() {
+  DCHECK(sync_client_);
+  brave_sync_prefs_->SetLastFetchTime(base::Time::Now());
+  // When the chain is not fully created, force start_at_time to 0.
+  // We need that to force sync lib send request through S3.
+  // Otherwise with STR of:
+  // 1. Create sync chain on deviceA, copy codephrase
+  // 2. Connect deviceB to the sync chain through codephrase
+  // With the first request deviceB gets only sync record with containing
+  // deviceA but then with next requests through SQS, deviceB never gets record
+  // with itself, because AWS lambda had put sync_record into sqs_deviceA only,
+  // because sqs_deviceB was not created or listed at that moment
+  base::Time start_at_time =
+      (brave_sync_prefs_->GetSyncDevices()->size() <= 1)
+          ? base::Time()
+          : brave_sync_prefs_->GetLatestDeviceRecordTime();
+  brave_sync_client_->SendFetchSyncRecords(
+      {brave_sync::jslib_const::kPreferences}, start_at_time, 1000);
+}
 void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
                                                   base::WaitableEvent* wevent) {
   if (!IsBraveSyncEnabled())
@@ -901,7 +954,8 @@ void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
 
   if (IsTimeEmpty(brave_sync_prefs_->GetLastFetchTime()))
     SendCreateDevice();
-  brave_sync_client_->SendFetchSyncDevices();
+
+  FetchDevices();
 
   if (!brave_sync_initialized_) {
     wevent->Signal();

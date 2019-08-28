@@ -82,11 +82,6 @@ void BraveSyncClientImpl::SendFetchSyncRecords(
                                              max_records);
 }
 
-void BraveSyncClientImpl::SendFetchSyncDevices() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  brave_sync_event_router_->FetchSyncDevices();
-}
-
 void BraveSyncClientImpl::SendResolveSyncRecords(
     const std::string &category_name,
     std::unique_ptr<SyncRecordAndExistingList> records_and_existing_objects) {
