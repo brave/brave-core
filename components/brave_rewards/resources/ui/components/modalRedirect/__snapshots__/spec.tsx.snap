@@ -70,9 +70,7 @@ exports[`ModalRedirect tests basic tests matches the snapshot 1`] = `
       >
         <div
           className="c4"
-        >
-          MISSING: processingRequest
-        </div>
+        />
         <div
           className="c5"
         >

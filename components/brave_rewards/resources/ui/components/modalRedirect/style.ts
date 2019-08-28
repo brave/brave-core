@@ -25,6 +25,15 @@ export const StyledLoader = styled<{}, 'div'>('div')`
 
 export const StyledError = styled<{}, 'div'>('div')`
   text-align: center;
+
+  a {
+    color: ${p => p.theme.palette.blurple500};
+    text-decoration: none;
+
+    :hover {
+      text-decoration: underline;
+    }
+  }
 `
 
 export const StyledButton = styled<{}, 'div'>('div')`

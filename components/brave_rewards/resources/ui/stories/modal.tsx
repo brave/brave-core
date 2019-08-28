@@ -537,7 +537,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
   .add('Redirect',() => {
     return (
       <ModalRedirect
-        errorText={text('Error text', 'Sorry there was problem processing your request, please try again.')}
+        titleText={text('Title text', 'Sorry there was problem processing your request, please try again.')}
+        errorText={{ __html: 'Error explanation, more info <a href="#">here</a>.' }}
         onClick={doNothing}
       />
     )

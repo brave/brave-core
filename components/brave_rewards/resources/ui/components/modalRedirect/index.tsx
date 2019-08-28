@@ -11,45 +11,48 @@ import {
   StyledButton
 } from './style'
 import Modal from '../../../components/popupModals/modal/index'
-import { getLocale } from '../../../helpers'
 import { LoaderIcon } from '../../../components/icons'
 import { Button } from '../../../components'
 
 export interface Props {
   id?: string
-  errorText?: string
+  errorText?: {
+    __html: string;
+  }
+  buttonText?: string
+  titleText?: string
   onClick?: () => void
 }
 
 export default class ModalRedirect extends React.PureComponent<Props, {}> {
 
   getButton = () => {
-    const { onClick } = this.props
-    if (!onClick) {
+    const { onClick, buttonText } = this.props
+    if (!onClick || !buttonText) {
       return null
     }
 
     return (
       <StyledButton>
-        <Button onClick={onClick} text={getLocale('processingRequestButton')} type={'accent'} />
+        <Button onClick={onClick} text={buttonText} type={'accent'} />
       </StyledButton>
     )
   }
 
   render () {
-    const { id, errorText } = this.props
+    const { id, errorText, titleText } = this.props
 
     return (
       <Modal id={id} displayCloseButton={false}>
         <StyledWrapper>
           <StyledTitle>
-            {getLocale('processingRequest')}
+            {titleText}
           </StyledTitle>
           {
             errorText
             ? <StyledError>
-                {errorText}
-                {this.getButton()}
+              <p dangerouslySetInnerHTML={errorText} />
+              {this.getButton()}
             </StyledError>
             : <StyledLoader>
               <LoaderIcon />
