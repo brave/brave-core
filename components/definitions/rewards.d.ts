@@ -66,7 +66,7 @@ declare namespace Rewards {
     ui: {
       emptyWallet: boolean
       modalBackup: boolean
-      modalRedirect: 'show' | 'hide' | 'error'
+      modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed'
       paymentIdCheck: boolean
       walletRecoverySuccess: boolean | null
       walletServerProblem: boolean
