@@ -137,6 +137,7 @@ class BrowserViewController: UIViewController {
     
     let rewards: BraveRewards?
     let rewardsObserver: LedgerObserver?
+    private var notificationsHandler: AdsNotificationHandler?
     private(set) var publisher: PublisherInfo?
 
     init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
@@ -212,6 +213,16 @@ class BrowserViewController: UIViewController {
         contentBlockListDeferred = ContentBlockerHelper.compileBundledLists()
         
         setupRewardsObservers()
+        
+        if let rewards = rewards {
+            notificationsHandler = AdsNotificationHandler(ads: rewards.ads, presentingController: self)
+            notificationsHandler?.actionOccured = { [weak self] notification, action in
+                guard let self = self else { return }
+                if action == .opened {
+                    self.openInNewTab(notification.url, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+                }
+            }
+        }
     }
     
     private func setupRewardsObservers() {
