@@ -46,6 +46,29 @@ TEST_F(BraveShieldsExceptionsTest, IsWhitelistedFingerprintingException) {
   EXPECT_FALSE(IsWhitelistedFingerprintingException(
       GURL("https://www.uphold.com/"),
       GURL("https://uphold.netverify.com/iframe")));
+
+  // Tests for sandbox URLs
+  EXPECT_TRUE(IsWhitelistedFingerprintingException(
+      GURL("https://sandbox.uphold.com"),
+      GURL("https://netverify.com/iframe")));
+  EXPECT_TRUE(IsWhitelistedFingerprintingException(
+      GURL("https://sandbox.uphold.com/"),
+      GURL("https://netverify.com")));
+  EXPECT_FALSE(IsWhitelistedFingerprintingException(
+      GURL("http://sandbox.uphold.com/"),
+      GURL("https://uphold.netverify.com/")));
+  EXPECT_FALSE(IsWhitelistedFingerprintingException(
+      GURL("https://sandbox.uphold.com/"),
+      GURL("http://netverify.com/")));
+  EXPECT_FALSE(IsWhitelistedFingerprintingException(
+      GURL("https://netverify.com/iframe"),
+      GURL("https://sandbox.uphold.com/")));
+  EXPECT_FALSE(IsWhitelistedFingerprintingException(
+      GURL("https://sandbox.uphold.com/"),
+      GURL("https://uphold.netverify.com/iframe")));
+  EXPECT_FALSE(IsWhitelistedFingerprintingException(
+      GURL("https://www.sandbox.uphold.com/"),
+      GURL("https://netverify.com/iframe")));
 }
 
 }  // namespace
