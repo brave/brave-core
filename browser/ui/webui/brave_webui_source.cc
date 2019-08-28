@@ -8,10 +8,13 @@
 #include <map>
 #include <vector>
 
+#include "base/strings/utf_string_conversions.h"
+#include "brave/common/url_constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/components_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
@@ -109,6 +112,16 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     }
   };
   AddResourcePaths(source, resources[name]);
+
+  /**
+   * REWARDS
+   */
+  // String used to display not supported region for
+  // uphold wallet connection
+  base::string16 rewards_not_supported_region = l10n_util::GetStringFUTF16(
+      IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_NOT_ALLOWED,
+      base::ASCIIToUTF16(kRewardsUpholdSupport));
+  source->AddString("redirectModalNotAllowed", rewards_not_supported_region);
 
   static std::map<std::string, std::vector<WebUISimpleItem> >
                                                            localized_strings = {
@@ -275,7 +288,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletCorrupted",  IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED },
         { "walletCorruptedNow",  IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED_NOW },
         { "grantAlreadyClaimedText", IDS_BRAVE_REWARDS_LOCAL_GRANT_ALREADY_CLAIMED_TEXT },       // NOLINT
-        { "redirectModalError", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR },       // NOLINT
+        { "redirectModalError", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR },
+        { "redirectModalClose", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE },
+        { "redirectModalErrorWallet", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET },     // NOLINT
 
         { "about", IDS_BRAVE_UI_ABOUT },
         { "accept", IDS_BRAVE_UI_ACCEPT },
