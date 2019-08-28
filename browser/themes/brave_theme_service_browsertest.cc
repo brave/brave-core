@@ -18,6 +18,12 @@
 #include "ui/native_theme/native_theme_dark_aura.h"
 #include "ui/native_theme/native_theme_observer.h"
 
+#if defined(OS_WIN)
+#include "base/run_loop.h"
+#include "base/time/time.h"
+#include "base/win/registry.h"
+#endif
+
 using BraveThemeServiceTest = InProcessBrowserTest;
 using BTS = BraveThemeService;
 
@@ -94,9 +100,9 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
             tp_private.GetColor(test_theme_property));
 }
 
-// Test whether appropriate native theme observer is called when brave theme is
-// changed.
-IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NativeThemeObserverTest) {
+// Test whether appropriate native/web theme observer is called when brave theme
+// is changed.
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ThemeObserverTest) {
   Profile* profile = browser()->profile();
   // Initially set to light.
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
@@ -107,9 +113,16 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NativeThemeObserverTest) {
   EXPECT_CALL(
       native_theme_observer,
       OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi())).Times(2);
-
   ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
       &native_theme_observer);
+
+  TestNativeThemeObserver web_theme_observer;
+  EXPECT_CALL(
+      web_theme_observer,
+      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForWeb())).Times(2);
+
+  ui::NativeTheme::GetInstanceForWeb()->AddObserver(
+      &web_theme_observer);
 
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
@@ -140,3 +153,60 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
         ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
   }
 }
+
+#if defined(OS_WIN)
+// Test native theme notification is called properly by changing reg value.
+// This simulates dark mode setting from Windows settings.
+// And Toggle it twice from initial value to go back to initial value  because
+// reg value changes system value. Otherwise, dark mode config could be changed
+// after running this test.
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, DarkModeChangeByRegTest) {
+  if (!ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported())
+    return;
+
+  base::win::RegKey hkcu_themes_regkey;
+  bool key_open_succeeded = hkcu_themes_regkey.Open(
+      HKEY_CURRENT_USER,
+      L"Software\\Microsoft\\Windows\\CurrentVersion\\"
+      L"Themes\\Personalize",
+      KEY_WRITE) == ERROR_SUCCESS;
+  DCHECK(key_open_succeeded);
+
+  DWORD apps_use_light_theme = 1;
+  hkcu_themes_regkey.ReadValueDW(L"AppsUseLightTheme",
+                                 &apps_use_light_theme);
+  const bool initial_dark_mode = apps_use_light_theme == 0;
+
+  // Toggle dark mode and check get notification for default type (same as...).
+  auto* profile = browser()->profile();
+  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
+
+  apps_use_light_theme = !initial_dark_mode ? 0 : 1;
+  hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
+
+  TestNativeThemeObserver native_theme_observer_for_default;
+  EXPECT_CALL(
+      native_theme_observer_for_default,
+      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi())).Times(1);
+  ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
+      &native_theme_observer_for_default);
+
+  // Toggle dark mode and |native_theme_observer_for_light| will not get
+  // notification for light type.
+  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
+
+  TestNativeThemeObserver native_theme_observer_for_light;
+  EXPECT_CALL(
+      native_theme_observer_for_light,
+      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi())).Times(0);
+  ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
+      &native_theme_observer_for_light);
+
+  apps_use_light_theme = initial_dark_mode ? 0 : 1;
+  hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
+
+  // Timeout is used because we can't get notifiication with light theme.
+  base::RunLoop run_loop;
+  run_loop.RunWithTimeout(base::TimeDelta::FromMilliseconds(500));;
+}
+#endif

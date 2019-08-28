@@ -5,6 +5,7 @@
 
 #include "brave/browser/themes/brave_theme_utils.h"
 
+#include "brave/browser/themes/brave_theme_utils_internal.h"
 #include "ui/native_theme/native_theme.h"
 
 #if defined(OS_WIN)
@@ -15,28 +16,15 @@ namespace ui {
 // static
 void BraveThemeUtils::SetDarkMode(bool dark_mode) {
   NativeTheme::GetInstanceForNativeUi()->set_dark_mode(dark_mode);
+  NativeTheme::GetInstanceForWeb()->set_dark_mode(dark_mode);
 }
 
 // static
-void BraveThemeUtils::SetPreferredColorScheme(BraveThemeType brave_theme_type) {
-  NativeTheme::PreferredColorScheme preferred_color_scheme =
-      NativeTheme::PreferredColorScheme::kNoPreference;
-  switch (brave_theme_type) {
-    case BraveThemeType::BRAVE_THEME_TYPE_DEFAULT:
-      preferred_color_scheme = NativeTheme::GetInstanceForNativeUi()
-                                   ->CalculatePreferredColorScheme();
-      break;
-    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
-      preferred_color_scheme = NativeTheme::PreferredColorScheme::kDark;
-      break;
-    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
-      preferred_color_scheme = NativeTheme::PreferredColorScheme::kLight;
-      break;
-    default:
-      NOTREACHED();
-  }
-  NativeTheme::GetInstanceForNativeUi()->set_preferred_color_scheme(
-      preferred_color_scheme);
+void BraveThemeUtils::ReCalcAndSetPreferredColorScheme() {
+  auto scheme =
+      NativeTheme::GetInstanceForNativeUi()->CalculatePreferredColorScheme();
+  NativeTheme::GetInstanceForNativeUi()->set_preferred_color_scheme(scheme);
+  NativeTheme::GetInstanceForWeb()->set_preferred_color_scheme(scheme);
 }
 
 #if defined(OS_WIN)
@@ -56,7 +44,8 @@ void SetSystemTheme(BraveThemeType type) {
   // Follow os theme type for default type.
   if (type == BraveThemeType::BRAVE_THEME_TYPE_DEFAULT) {
 #if defined(OS_WIN)
-    DCHECK(SystemThemeSupportDarkMode());
+    DCHECK(
+        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported());
     // This sets preferred color scheme on its own.
     ui::UpdateDarkModeStatus();
     return;
@@ -66,40 +55,6 @@ void SetSystemTheme(BraveThemeType type) {
     NOTREACHED();
 #endif
   }
-
-  ui::BraveThemeUtils::SetDarkMode(type ==
-                                   BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  ui::BraveThemeUtils::SetPreferredColorScheme(type);
-  // Have to notify observers explicitly because
-  // |ui::BraveThemeUtils::SetDarkMode()| and
-  // |ui::BraveThemeUtils::SetPreferredColorScheme| just set
-  // ui::NativeTheme:dark_mode_ and ui::NativeTheme:preferred_color_scheme_
-  // values.
-  ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
+  internal::SetSystemThemeForNonDarkModePlatform(type);
 }
 #endif
-
-#if defined(OS_LINUX)
-bool SystemThemeSupportDarkMode() {
-  // Linux doesn't support dark mode yet.
-  return false;
-}
-#endif
-
-ui::NativeTheme::PreferredColorScheme GetBravePreferredColorScheme(
-    const ui::NativeTheme* native_theme,
-    Profile* profile) {
-  BraveThemeType brave_theme_type =
-      BraveThemeService::GetActiveBraveThemeType(profile);
-  switch (brave_theme_type) {
-    case BraveThemeType::BRAVE_THEME_TYPE_DEFAULT:
-      return native_theme->GetPreferredColorScheme();
-    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
-      return ui::NativeTheme::PreferredColorScheme::kDark;
-    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
-      return ui::NativeTheme::PreferredColorScheme::kLight;
-    default:
-      NOTREACHED();
-  }
-  return ui::NativeTheme::PreferredColorScheme::kNoPreference;
-}
