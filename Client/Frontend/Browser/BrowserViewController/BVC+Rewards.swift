@@ -94,6 +94,8 @@ extension BrowserViewController: RewardsUIDelegate {
     }
     
     func loadNewTabWithURL(_ url: URL) {
+        self.presentedViewController?.dismiss(animated: true)
+        
         let request = URLRequest(url: url)
         let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
         tabManager.addTabAndSelect(request, isPrivate: isPrivate)
