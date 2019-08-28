@@ -22,11 +22,6 @@ chrome.braveSync.onFetchSyncRecords.addListener(function(category_names, start_a
   callbackList["fetch-sync-records"](null, category_names, start_at, max_records);
 });
 
-chrome.braveSync.onFetchSyncDevices.addListener(function() {
-  console.log("fetch-sync-devices");
-  callbackList["fetch-sync-devices"](null);
-});
-
 chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, recordsAndExistingObjects) {
   var recordsAndExistingObjectsArrArr = [];
   for(var i = 0; i < recordsAndExistingObjects.length; ++i) {

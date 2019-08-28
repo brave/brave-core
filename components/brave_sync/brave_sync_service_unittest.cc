@@ -45,7 +45,6 @@
 // GetSyncToBrowserHandler  |
 // SendGotInitData          | OnGetInitData
 // SendFetchSyncRecords     |
-// SendFetchSyncDevices     |
 // SendResolveSyncRecords   |
 // SendSyncRecords          |
 // SendDeleteSyncUser       |
@@ -886,4 +885,56 @@ TEST_F(BraveSyncServiceTest, ExponentialResend) {
   EXPECT_EQ(brave_sync_prefs()->GetRecordsToResend().size(), 0u);
   EXPECT_EQ(brave_sync_prefs()->GetRecordToResendMeta(record_a_object_id),
             nullptr);
+}
+
+TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
+  using brave_sync::jslib_const::kPreferences;
+
+  // Expecting SendFetchSyncRecords will be invoked
+  EXPECT_EQ(brave_sync_prefs()->GetLastFetchTime(), base::Time());
+  EXPECT_EQ(brave_sync_prefs()->GetLatestDeviceRecordTime(), base::Time());
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
+      .Times(1);
+  sync_service()->FetchDevices();
+
+  // Emulate we received this device
+  brave_sync_prefs()->SetThisDeviceId("1");
+  auto records = std::make_unique<brave_sync::RecordsList>();
+  records->push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+  auto device1_timestamp = records->back()->syncTimestamp;
+  EXPECT_CALL(*sync_client(), SendResolveSyncRecords(kPreferences, _)).Times(1);
+  sync_service()->OnGetExistingObjects(kPreferences, std::move(records),
+                                       device1_timestamp, false);
+
+  EXPECT_NE(brave_sync_prefs()->GetLastFetchTime(), base::Time());
+  EXPECT_EQ(brave_sync_prefs()->GetLatestDeviceRecordTime(), device1_timestamp);
+
+  // We have moved records into OnGetExistingObjects, so fill again
+  records = std::make_unique<brave_sync::RecordsList>();
+  records->push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+  sync_service()->OnResolvedSyncRecords(kPreferences, std::move(records));
+
+  // When there is only on device in chain, expect fetching sync records with
+  // start_at==0
+  ASSERT_EQ(brave_sync_prefs()->GetSyncDevices()->size(), 1u);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
+      .Times(1);
+  sync_service()->FetchDevices();
+
+  // If number of devices becomes 2 or more we should set proper non-empty
+  // start_at parameter
+  records = std::make_unique<brave_sync::RecordsList>();
+  records->push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "2", "device2"));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+  sync_service()->OnResolvedSyncRecords(kPreferences, std::move(records));
+
+  ASSERT_EQ(brave_sync_prefs()->GetSyncDevices()->size(), 2u);
+  EXPECT_CALL(*sync_client(),
+              SendFetchSyncRecords(_, base::Time(device1_timestamp), _))
+      .Times(1);
+  sync_service()->FetchDevices();
 }

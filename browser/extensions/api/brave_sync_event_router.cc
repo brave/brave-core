@@ -58,18 +58,6 @@ void BraveSyncEventRouter::FetchSyncRecords(
   event_router_->BroadcastEvent(std::move(event));
 }
 
-void BraveSyncEventRouter::FetchSyncDevices() {
-  std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnFetchSyncDevices::Create()
-       .release());
-
-  std::unique_ptr<Event> event(
-     new Event(extensions::events::FOR_TEST,
-       extensions::api::brave_sync::OnFetchSyncDevices::kEventName,
-       std::move(args)));
-  event_router_->BroadcastEvent(std::move(event));
-}
-
 void BraveSyncEventRouter::ResolveSyncRecords(
     const std::string& category_name,
     const std::vector<RecordAndExistingObject>& records_and_existing_objects) {
