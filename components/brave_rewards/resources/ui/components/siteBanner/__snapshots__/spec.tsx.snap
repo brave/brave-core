@@ -113,6 +113,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   -webkit-flex-basis: 217px;
   -ms-flex-preferred-size: 217px;
   flex-basis: 217px;
+  position: relative;
 }
 
 .c10 {

@@ -90,6 +90,7 @@ export const StyledClose = styled<{}, 'button'>('button')`
 export const StyledLogoWrapper = styled<StyleProps, 'div'>('div')`
   padding-left: 45px;
   flex-basis: 217px;
+  position: relative;
 `
 
 export const StyledLogoText = styled<StyleProps, 'div'>('div')`
@@ -255,4 +256,14 @@ export const StyledNoticeLink = styled<{}, 'a'>('a')`
   display: inline-block;
   text-decoration: none;
   margin-left: 4px;
+`
+export const StyledVerifiedIcon = styled<{}, 'div'>('div')`
+  position: absolute;
+  top: -60px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  color: ${p => p.theme.palette.blurple500};
+  background-color: ${p => p.theme.palette.white};
+  border-radius: 100%;
 `

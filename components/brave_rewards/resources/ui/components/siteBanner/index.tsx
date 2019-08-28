@@ -34,7 +34,8 @@ import {
   StyledNoticeWrapper,
   StyledNoticeIcon,
   StyledNoticeText,
-  StyledNoticeLink
+  StyledNoticeLink,
+  StyledVerifiedIcon
 } from './style'
 
 import Donate from '../donate/index'
@@ -47,7 +48,8 @@ import {
   TwitchColorIcon,
   RedditColorIcon,
   GitHubColorIcon,
-  AlertCircleIcon
+  AlertCircleIcon,
+  VerifiedSIcon
 } from '../../../components/icons'
 
 export type Social = { type: SocialType, url: string }
@@ -278,6 +280,14 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
           <StyledContentWrapper>
             <StyledContent>
               <StyledLogoWrapper>
+                {
+                  isVerified
+                  ? <StyledVerifiedIcon>
+                    <VerifiedSIcon/>
+                  </StyledVerifiedIcon>
+                  : null
+                }
+
                 <StyledLogoBorder
                   padding={!logo}
                   bg={logoBgColor}
