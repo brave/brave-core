@@ -23,8 +23,8 @@ const char kClientIdProduction[] = "6d8d9473ed20be627f71ed46e207f40c004c5b1a";
 const char kClientSecretStaging[] = "67bf87da096748c5bc1e195cfbdd59db006618a0";
 const char kClientSecretProduction[] =
     "de1aa4196c8d4aa50c6bc1371734e3f57f781f72";
-const char kFeeAddressStaging[] = "7ab330ae-b7a6-4845-8f07-baab68848e4e";
-const char kFeeAddressProduction[] = "532857d5-ff8b-4ca7-b9ef-5b1e40178340";
+const char kFeeAddressStaging[] = "1b2b466f-5c15-49bf-995e-c91777d3da93";
+const char kFeeAddressProduction[] = "b01e8c55-5004-4761-9e4b-01ec13e25c92";
 
 std::string GetClientId();
 
