@@ -1,37 +1,24 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/test_util.h"
 
+#include <utility>
+
 #include "base/files/file_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_sync/brave_sync_service_factory.h"
-#include "brave/components/brave_sync/client/bookmark_node.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/browser/sync/profile_sync_service_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/test/test_bookmark_client.h"
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-
-namespace {
-
-using namespace bookmarks;
-
-void AddPermanentNode(BookmarkPermanentNodeList* extra_nodes, int64_t id,
-      const std::string& title) {
-  auto node = std::make_unique<brave_sync::BraveBookmarkPermanentNode>(id);
-  node->set_type(bookmarks::BookmarkNode::FOLDER);
-  node->set_visible(false);
-  node->SetTitle(base::UTF8ToUTF16(title));
-  extra_nodes->push_back(std::move(node));
-}
-
-}  // namespace
 
 namespace brave_sync {
 
@@ -40,7 +27,7 @@ MockBraveSyncClient::MockBraveSyncClient() {}
 MockBraveSyncClient::~MockBraveSyncClient() {}
 
 std::unique_ptr<Profile> CreateBraveSyncProfile(const base::FilePath& path) {
-  BraveSyncServiceFactory::GetInstance();
+  ProfileSyncServiceFactory::GetInstance();
 
   sync_preferences::PrefServiceMockFactory factory;
   auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
@@ -56,35 +43,29 @@ std::unique_ptr<Profile> CreateBraveSyncProfile(const base::FilePath& path) {
 
 std::unique_ptr<KeyedService> BuildFakeBookmarkModelForTests(
     content::BrowserContext* context) {
+  using bookmarks::BookmarkModel;
+  using bookmarks::TestBookmarkClient;
   // Don't need context, unless we have more than one profile
-  using namespace bookmarks;
   std::unique_ptr<TestBookmarkClient> client(new TestBookmarkClient());
-  BookmarkPermanentNodeList extra_nodes;
-
-  // These hard-coded titles cannot be changed
-  AddPermanentNode(&extra_nodes, 0xDE1E7ED40DE, "Deleted Bookmarks");
-  AddPermanentNode(&extra_nodes, 0x9E7D17640DE, "Pending Bookmarks");
-
-  client->SetExtraNodesToLoad(std::move(extra_nodes));
   std::unique_ptr<BookmarkModel> model(
       TestBookmarkClient::CreateModelWithClient(std::move(client)));
   return model;
 }
 
-SyncRecordPtr SimpleBookmarkSyncRecord(
-    const int action,
-    const std::string& object_id,
-    const std::string& location,
-    const std::string& title,
-    const std::string& order,
-    const std::string& parent_object_id) {
+SyncRecordPtr SimpleBookmarkSyncRecord(const int action,
+                                       const std::string& object_id,
+                                       const std::string& location,
+                                       const std::string& title,
+                                       const std::string& order,
+                                       const std::string& parent_object_id,
+                                       const std::string& device_id) {
   auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
   record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
     brave_sync::jslib::SyncRecord::Action::A_MIN,
     brave_sync::jslib::SyncRecord::Action::A_MAX,
     brave_sync::jslib::SyncRecord::Action::A_INVALID);
 
-  record->deviceId = "3";
+  record->deviceId = device_id;
   record->objectId = object_id.empty() ? tools::GenerateObjectId() : object_id;
   record->objectData = "bookmark";
 
@@ -161,4 +142,4 @@ SyncRecordPtr SimpleDeviceRecord(
   return record;
 }
 
-}  // namespace
+}  // namespace brave_sync

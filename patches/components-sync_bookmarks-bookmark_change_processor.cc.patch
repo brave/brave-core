@@ -1,0 +1,60 @@
+diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
+index 35a73a07bbcdd8aeba13acf37c6754aadb039768..ce1af3e95e3745bf3cb06ecd5a94ed29b3ec4355 100644
+--- a/components/sync_bookmarks/bookmark_change_processor.cc
++++ b/components/sync_bookmarks/bookmark_change_processor.cc
+@@ -87,6 +87,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
+   bookmark_specifics.set_creation_time_us(src->date_added().ToInternalValue());
+   dst->SetBookmarkSpecifics(bookmark_specifics);
+   SetSyncNodeFavicon(src, model, dst);
++  BRAVE_BOOKMARK_CHANGE_PROCESSOR_UPDATE_SYNC_NODE_PROPERTIES
+   SetSyncNodeMetaInfo(src, dst);
+ }
+ 
+@@ -383,7 +384,6 @@ int64_t BookmarkChangeProcessor::UpdateSyncNode(
+ 
+ void BookmarkChangeProcessor::BookmarkMetaInfoChanged(
+     BookmarkModel* model, const BookmarkNode* node) {
+-  BookmarkNodeChanged(model, node);
+ }
+ 
+ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
+@@ -415,6 +415,7 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
+       error_handler()->OnUnrecoverableError(error);
+       return;
+     }
++    BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED
+ 
+     if (!PlaceSyncNode(MOVE, new_parent, new_index, &trans, &sync_node,
+                        model_associator_)) {
+@@ -458,6 +459,7 @@ void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
+     return;
+   }
+ 
++  BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_FAVICON_CHANGED
+   CreateOrUpdateSyncNode(node);
+ }
+ 
+@@ -490,6 +492,7 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
+       DCHECK_EQ(sync_child.GetParentId(),
+                 model_associator_->GetSyncIdFromChromeId(node->id()));
+ 
++      BRAVE_BOOKMARK_CHANGE_PROCESSOR_CHILDREN_REORDERED
+       if (!PlaceSyncNode(MOVE, node, i, &trans, &sync_child,
+                          model_associator_)) {
+         syncer::SyncError error(FROM_HERE,
+@@ -718,6 +721,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+                    << src.GetBookmarkSpecifics().url();
+         continue;
+       }
++      BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_1
+       model_associator_->Associate(dst, src);
+     }
+ 
+@@ -730,6 +734,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+   // sync order, left to right, moving them into their proper positions.
+   for (auto it = to_reposition.begin(); it != to_reposition.end(); ++it) {
+     const BookmarkNode* parent = it->second->parent();
++    BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL_2
+     model->Move(it->second, parent, it->first);
+   }
+ 
