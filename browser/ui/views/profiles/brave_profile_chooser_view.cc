@@ -20,9 +20,7 @@
 
 void BraveProfileChooserView::ButtonPressed(views::Button* sender,
                                             const ui::Event& event) {
-  if (sender == tor_profile_button_) {
-    profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
-  } else if (sender == users_button_ &&
+  if (sender == users_button_ &&
              browser()->profile()->IsGuestSession()) {
     if (brave::IsTorProfile(browser()->profile()))
       profiles::CloseTorProfileWindows();
@@ -31,19 +29,6 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
   } else {
     ProfileChooserView::ButtonPressed(sender, event);
   }
-}
-
-void BraveProfileChooserView::AddTorButton() {
-  if (brave::ShouldShowTorProfileButton(browser()->profile())) {
-    tor_profile_button_ = CreateAndAddButton(
-        brave::CreateTorProfileButtonIcon(),
-        brave::CreateTorProfileButtonText());
-  }
-}
-
-void BraveProfileChooserView::Reset() {
-  ProfileChooserView::Reset();
-  tor_profile_button_ = nullptr;
 }
 
 void BraveProfileChooserView::AddAutofillHomeView() { }
