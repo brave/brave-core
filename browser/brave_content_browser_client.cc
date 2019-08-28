@@ -241,15 +241,26 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
   return use_proxy;
 }
 
-void BraveContentBrowserClient::WillCreateWebSocket(
+bool BraveContentBrowserClient::WillInterceptWebSocket(
+    content::RenderFrameHost* frame) {
+  //return (frame != nullptr);
+  return ChromeContentBrowserClient::WillInterceptWebSocket(frame);
+}
+
+void BraveContentBrowserClient::CreateWebSocket(
     content::RenderFrameHost* frame,
-    network::mojom::WebSocketRequest* request,
-    network::mojom::AuthenticationHandlerPtr* auth_handler,
-    network::mojom::TrustedHeaderClientPtr* header_client,
-    uint32_t* options) {
-  ChromeContentBrowserClient::WillCreateWebSocket(frame, request, auth_handler,
-                                                  header_client, options);
-  BraveProxyingWebSocket::ProxyWebSocket(frame, request, auth_handler);
+    content::ContentBrowserClient::WebSocketFactory factory,
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<std::string>& user_agent,
+    network::mojom::WebSocketHandshakeClientPtr handshake_client) {
+  ChromeContentBrowserClient::CreateWebSocket(frame, std::move(factory), url,
+                                              site_for_cookies, user_agent,
+                                              std::move(handshake_client));
+  // TODO(max): can't hook in here any more.
+  //BraveProxyingWebSocket::ProxyWebSocket(frame, std::move(factory), url,
+  //                                       site_for_cookies, user_agent,
+  //                                       std::move(handshake_client));
 }
 
 void BraveContentBrowserClient::MaybeHideReferrer(
