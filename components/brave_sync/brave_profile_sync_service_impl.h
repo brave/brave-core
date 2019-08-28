@@ -38,6 +38,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetExistingObjects);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest,
                      OnSetupSyncHaveCode_Reset_SetupAgain);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ExponentialResend);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords);
 
 class BraveSyncServiceTest;
 
@@ -143,6 +144,8 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            OnSetupSyncHaveCode_Reset_SetupAgain);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ExponentialResend);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
+                           GetDevicesWithFetchSyncRecords);
   friend class ::BraveSyncServiceTest;
 
   void SignalWaitableEvent();
@@ -150,6 +153,7 @@ class BraveProfileSyncServiceImpl
                         const bool history,
                         const bool preferences,
                         int max_records);
+  void FetchDevices();
   void SendCreateDevice();
   void SendDeviceSyncRecord(const int action,
                             const std::string& device_name,
@@ -177,6 +181,8 @@ class BraveProfileSyncServiceImpl
   void CreateResolveList(
       const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
       SyncRecordAndExistingList* records_and_existing_objects);
+  std::unique_ptr<SyncRecordAndExistingList> PrepareResolvedPreferences(
+      const RecordsList& records);
 
   void SendAndPurgePendingRecords();
 

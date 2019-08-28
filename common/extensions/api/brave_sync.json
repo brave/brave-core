@@ -227,12 +227,6 @@
         ]
       },
       {
-        "name": "onFetchSyncDevices",
-        "type": "function",
-        "description": "sent to fetch sync devices after a given start time from the sync server",
-        "parameters": []
-      },
-      {
         "name": "onResolveSyncRecords",
         "type": "function",
         "description": "Browser sends resolve records.",
