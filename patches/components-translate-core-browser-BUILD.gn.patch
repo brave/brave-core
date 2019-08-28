@@ -1,0 +1,12 @@
+diff --git a/components/translate/core/browser/BUILD.gn b/components/translate/core/browser/BUILD.gn
+index 5579595141a53a6d72f49e9e807f29c84590861f..843c5f25f18b8ccd6b3a64a56a5d412781382ff1 100644
+--- a/components/translate/core/browser/BUILD.gn
++++ b/components/translate/core/browser/BUILD.gn
+@@ -81,6 +81,7 @@ static_library("browser") {
+     ]
+     deps += [ "//components/infobars/core" ]
+   }
++  deps += ["//brave/components/translate/core/browser"]
+ }
+ 
+ source_set("unit_tests") {
