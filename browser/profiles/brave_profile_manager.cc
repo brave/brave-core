@@ -21,7 +21,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_sync/brave_sync_service_factory.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_constants.h"
@@ -91,9 +90,6 @@ std::string BraveProfileManager::GetLastUsedProfileName() {
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
                                                  bool go_off_the_record) {
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
-  // BraveSyncService need to be created when profile initialized, otherwise
-  // it will only be constructed only when we open chrome:/sync/
-  brave_sync::BraveSyncServiceFactory::GetForProfile(profile);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   content::URLDataSource::Add(profile,

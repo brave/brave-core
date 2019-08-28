@@ -1,0 +1,12 @@
+diff --git a/components/sync/driver/glue/sync_engine_backend.cc b/components/sync/driver/glue/sync_engine_backend.cc
+index f6cdade4a559d1f1e329bc1e4329680407220926..291c26eab481308e05a8eb4f32bd71c2b4d62f0b 100644
+--- a/components/sync/driver/glue/sync_engine_backend.cc
++++ b/components/sync/driver/glue/sync_engine_backend.cc
+@@ -342,6 +342,7 @@ void SyncEngineBackend::DoInitialize(SyncEngine::InitParams params) {
+   args.cache_guid = params.cache_guid;
+   args.birthday = params.birthday;
+   args.bag_of_chips = params.bag_of_chips;
++  BRAVE_SYNC_ENGINE_BACKEND_DO_INITIALIZE
+   sync_manager_->Init(&args);
+   base::trace_event::MemoryDumpManager::GetInstance()->RegisterDumpProvider(
+       this, "SyncDirectory", base::ThreadTaskRunnerHandle::Get());

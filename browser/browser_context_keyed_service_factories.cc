@@ -10,14 +10,12 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
-#include "brave/components/brave_sync/brave_sync_service_factory.h"
 
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_ads::AdsServiceFactory::GetInstance();
   brave_rewards::RewardsServiceFactory::GetInstance();
-  brave_sync::BraveSyncServiceFactory::GetInstance();
   greaselion::GreaselionServiceFactory::GetInstance();
   TorProfileServiceFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();

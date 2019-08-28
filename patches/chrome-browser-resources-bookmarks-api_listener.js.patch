@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/bookmarks/api_listener.js b/chrome/browser/resources/bookmarks/api_listener.js
+index 7bc20ec28e9faebc14dba26c277ea07db0940ed7..b1bafab103435383bbfa27338b8064aae38c1c44 100644
+--- a/chrome/browser/resources/bookmarks/api_listener.js
++++ b/chrome/browser/resources/bookmarks/api_listener.js
+@@ -135,6 +135,7 @@ cr.define('bookmarks.ApiListener', function() {
+    */
+   function onImportBegan() {
+     chrome.bookmarks.onCreated.removeListener(onBookmarkCreated);
++    chrome.bookmarks.onMoved.removeListener(onBookmarkMoved);
+   }
+ 
+   function onImportEnded() {
+@@ -143,6 +144,7 @@ cr.define('bookmarks.ApiListener', function() {
+           bookmarks.util.normalizeNodes(results[0])));
+     });
+     chrome.bookmarks.onCreated.addListener(onBookmarkCreated);
++    chrome.bookmarks.onMoved.addListener(onBookmarkMoved);
+   }
+ 
+   /**

@@ -5,10 +5,13 @@
 
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 
-#include "brave/components/brave_sync/brave_sync_service.h"
+#include <utility>
+
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/sync_devices.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_sync {
 namespace prefs {
@@ -28,8 +31,33 @@ const char kSyncDeviceList[] = "brave_sync.device_list";
 const char kSyncApiVersion[] = "brave_sync.api_version";
 const char kSyncMigrateBookmarksVersion[]
                                        = "brave_sync.migrate_bookmarks_version";
+const char kSyncRecordsToResend[] = "brave_sync_records_to_resend";
+const char kSyncRecordsToResendMeta[] = "brave_sync_records_to_resend_meta";
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
+
+void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterStringPref(prefs::kSyncDeviceId, std::string());
+  registry->RegisterStringPref(prefs::kSyncSeed, std::string());
+  registry->RegisterStringPref(prefs::kSyncPrevSeed, std::string());
+  registry->RegisterStringPref(prefs::kSyncDeviceName, std::string());
+  registry->RegisterStringPref(prefs::kSyncBookmarksBaseOrder, std::string());
+
+  registry->RegisterBooleanPref(prefs::kSyncEnabled, false);
+  registry->RegisterBooleanPref(prefs::kSyncBookmarksEnabled, false);
+  registry->RegisterBooleanPref(prefs::kSyncSiteSettingsEnabled, false);
+  registry->RegisterBooleanPref(prefs::kSyncHistoryEnabled, false);
+
+  registry->RegisterTimePref(prefs::kSyncLatestRecordTime, base::Time());
+  registry->RegisterTimePref(prefs::kSyncLastFetchTime, base::Time());
+
+  registry->RegisterStringPref(prefs::kSyncDeviceList, std::string());
+  registry->RegisterStringPref(prefs::kSyncApiVersion, std::string("0"));
+  registry->RegisterIntegerPref(prefs::kSyncMigrateBookmarksVersion, 0);
+
+  registry->RegisterListPref(prefs::kSyncRecordsToResend);
+  registry->RegisterDictionaryPref(prefs::kSyncRecordsToResendMeta);
+}
 
 std::string Prefs::GetSeed() const {
   return pref_service_->GetString(kSyncSeed);
@@ -73,8 +101,7 @@ void Prefs::SetBookmarksBaseOrder(const std::string& order) {
 }
 
 bool Prefs::GetSyncEnabled() const {
-  return BraveSyncService::is_enabled() &&
-    pref_service_->GetBoolean(kSyncEnabled);
+  return pref_service_->GetBoolean(kSyncEnabled);
 }
 
 void Prefs::SetSyncEnabled(const bool sync_this_device) {
@@ -162,8 +189,50 @@ void Prefs::SetApiVersion(const std::string& api_version) {
 int Prefs::GetMigratedBookmarksVersion() {
   return pref_service_->GetInteger(kSyncMigrateBookmarksVersion);
 }
+
 void Prefs::SetMigratedBookmarksVersion(const int migrate_bookmarks) {
   pref_service_->SetInteger(kSyncMigrateBookmarksVersion, migrate_bookmarks);
+}
+
+std::vector<std::string> Prefs::GetRecordsToResend() const {
+  std::vector<std::string> result;
+  const base::Value* records = pref_service_->GetList(kSyncRecordsToResend);
+  for (const base::Value& record : records->GetList()) {
+    result.push_back(record.GetString());
+  }
+  return result;
+}
+
+void Prefs::AddToRecordsToResend(const std::string& object_id,
+                                 std::unique_ptr<base::DictionaryValue> meta) {
+  ListPrefUpdate list_update(pref_service_, kSyncRecordsToResend);
+  list_update->GetList().emplace_back(object_id);
+  SetRecordToResendMeta(object_id, std::move(meta));
+}
+
+void Prefs::RemoveFromRecordsToResend(const std::string& object_id) {
+  ListPrefUpdate list_update(pref_service_, kSyncRecordsToResend);
+  base::Erase(list_update->GetList(), base::Value(object_id));
+  DictionaryPrefUpdate dict_update(pref_service_, kSyncRecordsToResendMeta);
+  dict_update->RemoveKey(object_id);
+}
+
+const base::DictionaryValue* Prefs::GetRecordToResendMeta(
+    const std::string& object_id) const {
+  const base::DictionaryValue* dict =
+      pref_service_->GetDictionary(kSyncRecordsToResendMeta);
+  const base::DictionaryValue* meta = nullptr;
+  const base::Value* meta_value = dict->FindDictKey(object_id);
+  if (meta_value) {
+    meta_value->GetAsDictionary(&meta);
+  }
+  return meta;
+}
+
+void Prefs::SetRecordToResendMeta(const std::string& object_id,
+                                  std::unique_ptr<base::DictionaryValue> meta) {
+  DictionaryPrefUpdate dict_update(pref_service_, kSyncRecordsToResendMeta);
+  dict_update->SetDictionary(object_id, std::move(meta));
 }
 
 void Prefs::Clear() {
@@ -180,6 +249,8 @@ void Prefs::Clear() {
   pref_service_->ClearPref(kSyncDeviceList);
   pref_service_->ClearPref(kSyncApiVersion);
   pref_service_->ClearPref(kSyncMigrateBookmarksVersion);
+  pref_service_->ClearPref(kSyncRecordsToResend);
+  pref_service_->ClearPref(kSyncRecordsToResendMeta);
 }
 
 }  // namespace prefs

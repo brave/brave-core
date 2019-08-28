@@ -1,29 +1,24 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("extensions") {
   sources = [
-    "api/rewards_notifications_api.cc",
-    "api/rewards_notifications_api.h",
     "api/brave_rewards_api.cc",
     "api/brave_rewards_api.h",
     "api/brave_shields_api.cc",
     "api/brave_shields_api.h",
-    "api/brave_sync_api.cc",
-    "api/brave_sync_api.h",
-    "api/brave_sync_event_router.cc",
-    "api/brave_sync_event_router.h",
     "api/brave_theme_api.cc",
     "api/brave_theme_api.h",
+    "api/rewards_notifications_api.cc",
+    "api/rewards_notifications_api.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
     "brave_component_extension_resource_manager.cc",
     "brave_component_extension_resource_manager.h",
     "brave_component_loader.cc",
     "brave_component_loader.h",
-    "brave_extensions_browser_api_provider.cc",
-    "brave_extensions_browser_api_provider.h",
     "brave_extension_install_prompt.cc",
     "brave_extension_install_prompt.h",
     "brave_extension_management.cc",
@@ -32,12 +27,14 @@ source_set("extensions") {
     "brave_extension_provider.h",
     "brave_extension_service.cc",
     "brave_extension_service.h",
+    "brave_extensions_browser_api_provider.cc",
+    "brave_extensions_browser_api_provider.h",
     "brave_theme_event_router.cc",
     "brave_theme_event_router.h",
     "brave_tor_client_updater.cc",
     "brave_tor_client_updater.h",
     "updater/brave_update_client_config.cc",
-    "updater/brave_update_client_config.h"
+    "updater/brave_update_client_config.h",
   ]
 
   deps = [
@@ -46,11 +43,8 @@ source_set("extensions") {
     "//brave/common:pref_names",
     "//brave/common/extensions/api",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_extension:generated_resources",
-    "//brave/components/brave_sync",
-    "//brave/components/brave_sync:generated_resources",
-    "//brave/components/brave_sync:static_resources",
+    "//brave/components/brave_extension:static_resources",
     "//components/prefs",
     "//components/update_client:patch_impl",
     "//components/update_client:unzip_impl",
@@ -64,6 +58,20 @@ source_set("extensions") {
     deps += [
       "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
       "//brave/components/brave_rewards/resources/extension:static_resources",
+    ]
+  }
+  if (enable_brave_sync) {
+    sources += [
+      "api/brave_sync_api.cc",
+      "api/brave_sync_api.h",
+      "api/brave_sync_event_router.cc",
+      "api/brave_sync_event_router.h",
+    ]
+
+    deps += [
+      "//brave/components/brave_sync",
+      "//brave/components/brave_sync:generated_resources",
+      "//brave/components/brave_sync:static_resources",
     ]
   }
   if (enable_brave_webtorrent) {
