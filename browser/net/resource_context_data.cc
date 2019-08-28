@@ -54,13 +54,16 @@ void ResourceContextData::StartProxying(
 
 // static
 void ResourceContextData::StartProxyingWebSocket(
+    content::ContentBrowserClient::WebSocketFactory factory,
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<std::string>& user_agent,
+    network::mojom::WebSocketHandshakeClientPtrInfo handshake_client,
     content::ResourceContext* resource_context,
     int render_process_id,
     int frame_id,
     int frame_tree_node_id,
-    const url::Origin& origin,
-    network::mojom::WebSocketPtrInfo proxied_socket_ptr_info,
-    network::mojom::WebSocketRequest proxied_request) {
+    const url::Origin& origin) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
 
   auto* self = static_cast<ResourceContextData*>(
@@ -75,16 +78,28 @@ void ResourceContextData::StartProxyingWebSocket(
     self->request_handler_.reset(new BraveRequestHandler);
   }
 
+  network::ResourceRequest request;
+  request.url = url;
+  // TODO(iefremov): site_for_cookies is not enough, we should find a way
+  // to initialize NetworkIsolationKey.
+  request.site_for_cookies = site_for_cookies;
+  if (user_agent) {
+    request.headers.SetHeader(net::HttpRequestHeaders::kUserAgent, *user_agent);
+  }
+  request.request_initiator = origin;
+  request.render_frame_id = frame_id;
+
   auto proxy = std::make_unique<BraveProxyingWebSocket>(
-      self->request_handler_.get(), resource_context, render_process_id,
-      frame_id, frame_tree_node_id, origin,
-      self->request_id_generator_,
-      network::mojom::WebSocketPtr(std::move(proxied_socket_ptr_info)),
-      std::move(proxied_request),
+      std::move(factory), request,
+      network::mojom::WebSocketHandshakeClientPtr(std::move(handshake_client)),
+      render_process_id, frame_tree_node_id, resource_context,
+      self->request_id_generator_, self->request_handler_.get(),
       base::BindOnce(&ResourceContextData::RemoveProxyWebSocket,
                      self->weak_factory_.GetWeakPtr()));
 
+  auto* raw_proxy = proxy.get();
   self->websocket_proxies_.emplace(std::move(proxy));
+  raw_proxy->Start();
 }
 
 
