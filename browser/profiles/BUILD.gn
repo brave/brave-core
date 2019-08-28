@@ -7,16 +7,15 @@ source_set("profiles") {
   ]
   deps = [
     "//base",
-    "//chrome/common",
-    "//content/public/common",
     "//brave/browser/tor",
     "//brave/browser/translate/buildflags",
-    "//brave/content:browser",
     "//brave/common/tor",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_sync",
     "//brave/components/brave_rewards/browser",
+    "//brave/content:browser",
+    "//chrome/common",
     "//components/translate/core/browser",
+    "//content/public/common",
     "//ui/base",
   ]
 }

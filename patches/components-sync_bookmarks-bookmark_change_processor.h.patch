@@ -1,0 +1,12 @@
+diff --git a/components/sync_bookmarks/bookmark_change_processor.h b/components/sync_bookmarks/bookmark_change_processor.h
+index e11a2ddf641edc7098c06433fd22d86467e2aabf..d29059927ef563fb6e0a365da740d50ba8360bfd 100644
+--- a/components/sync_bookmarks/bookmark_change_processor.h
++++ b/components/sync_bookmarks/bookmark_change_processor.h
+@@ -172,6 +172,7 @@ class BookmarkChangeProcessor : public bookmarks::BookmarkModelObserver,
+       bookmarks::BookmarkModel* model,
+       const std::vector<const bookmarks::BookmarkNode*>& nodes);
+ 
++  BRAVE_BOOKMARK_CHANGE_PROCESSOR_H_
+  protected:
+   void StartImpl() override;
+ 

@@ -1,15 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#ifndef BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_H_
-#define BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_H_
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_H_
+
+#include <memory>
 #include <string>
 
 #include "base/macros.h"
 #include "base/observer_list.h"
-#include "components/bookmarks/browser/bookmark_storage.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "extensions/buildflags/buildflags.h"
 
 class Profile;
@@ -21,14 +22,10 @@ class BraveSyncServiceObserver;
 class Settings;
 class SyncDevices;
 
-bookmarks::BookmarkPermanentNodeList
-LoadExtraNodes(bookmarks::LoadExtraCallback callback, int64_t* next_node_id);
-bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node);
-
-class BraveSyncService : public KeyedService {
+class BraveSyncService {
  public:
   BraveSyncService();
-  ~BraveSyncService() override;
+  virtual ~BraveSyncService();
 
   typedef base::Callback<void(std::unique_ptr<brave_sync::Settings>,
                               std::unique_ptr<brave_sync::SyncDevices>)>
@@ -55,10 +52,8 @@ class BraveSyncService : public KeyedService {
   void AddObserver(BraveSyncServiceObserver* observer);
   void RemoveObserver(BraveSyncServiceObserver* observer);
 
-  static bool is_enabled();
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  virtual BraveSyncClient* GetSyncClient() = 0;
+  virtual BraveSyncClient* GetBraveSyncClient() = 0;
 #endif
 
 
@@ -71,4 +66,4 @@ class BraveSyncService : public KeyedService {
 
 }  // namespace brave_sync
 
-#endif  // BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_H_

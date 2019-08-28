@@ -1,0 +1,12 @@
+diff --git a/components/sync/engine_impl/syncer.h b/components/sync/engine_impl/syncer.h
+index 23b389eada81c850c3a8856678d046e599a060da..30ce667ae1e00e51bf4f227084da8f4ca30f8dc2 100644
+--- a/components/sync/engine_impl/syncer.h
++++ b/components/sync/engine_impl/syncer.h
+@@ -94,6 +94,7 @@ class Syncer {
+   // Whether the syncer is in the middle of a sync attempt.
+   bool is_syncing_;
+ 
++  BRAVE_SYNCER_H
+   DISALLOW_COPY_AND_ASSIGN(Syncer);
+ };
+ 

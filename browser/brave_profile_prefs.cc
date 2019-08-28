@@ -5,11 +5,9 @@
 
 #include "brave/browser/brave_profile_prefs.h"
 
-#include "brave/browser/themes/brave_theme_service.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
@@ -18,7 +16,6 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "components/signin/core/browser/signin_pref_names.h"
-#include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/feature_switch.h"
@@ -32,29 +29,19 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_profile_service.h"
-#endif
-
 using extensions::FeatureSwitch;
 
 namespace brave {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-  brave_rewards::RewardsService::RegisterProfilePrefs(registry);
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(
       registry);
 
   // appearance
-#if !defined(OS_ANDROID)
-  BraveThemeService::RegisterProfilePrefs(registry);
-#endif
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(kHideBraveRewardsButton, false);
 
-#if BUILDFLAG(ENABLE_TOR)
-  tor::TorProfileService::RegisterProfilePrefs(registry);
-#endif
+  brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
@@ -75,11 +62,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   webtorrent::RegisterProfilePrefs(registry);
 #endif
 
-#if defined(OS_LINUX)
-  // Use brave theme by default instead of gtk theme.
-  registry->SetDefaultPrefValue(prefs::kUsesSystemTheme, base::Value(false));
-#endif
-
   // Hangouts
   registry->RegisterBooleanPref(kHangoutsEnabled, true);
 
@@ -95,9 +77,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       FeatureSwitch::load_media_router_component_extension()->IsEnabled());
 #endif
 
-  // No sign into Brave functionality
-  registry->SetDefaultPrefValue(prefs::kSigninAllowed, base::Value(false));
-
   // Restore last profile on restart
   registry->SetDefaultPrefValue(
       prefs::kRestoreOnStartup,
@@ -109,10 +88,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Not using chrome's web service for resolving navigation errors
   registry->SetDefaultPrefValue(prefs::kAlternateErrorPagesEnabled,
                                 base::Value(false));
-
-  // Disable spell check service
-  registry->SetDefaultPrefValue(
-      spellcheck::prefs::kSpellCheckUseSpellingService, base::Value(false));
 
   // Disable safebrowsing reporting
   registry->SetDefaultPrefValue(
@@ -129,12 +104,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Make sync managed to dsiable some UI after password saving.
   registry->SetDefaultPrefValue(syncer::prefs::kSyncManaged, base::Value(true));
-
-  // Make sure sign into Brave is not enabled
-  // The older kSigninAllowed is deprecated and only in use in Android until
-  // C71.
-  registry->SetDefaultPrefValue(prefs::kSigninAllowedOnNextStartup,
-                                base::Value(false));
 
   // Disable cloud print
   // Cloud Print: Don't allow this browser to act as Cloud Print server
