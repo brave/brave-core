@@ -7,14 +7,6 @@
 #define BRAVE_BROWSER_THEMES_BRAVE_THEME_UTILS_H_
 
 #include "brave/browser/themes/brave_theme_service.h"
-#include "ui/native_theme/native_theme.h"
-
-// When system theme preferred color is changed this is called from
-// ChromeContentBrowserClient to see if we need to ignore the change if we are
-// in one of our themes (not in "same as system" theme).
-ui::NativeTheme::PreferredColorScheme GetBravePreferredColorScheme(
-    const ui::NativeTheme* native_theme,
-    Profile* profile);
 
 bool SystemThemeSupportDarkMode();
 
@@ -34,7 +26,9 @@ namespace ui {
 class BraveThemeUtils {
  public:
   static void SetDarkMode(bool dark_mode);
-  static void SetPreferredColorScheme(BraveThemeType brave_theme_type);
+  // Recalculate preferred color scheme based on current dark mode that set by
+  // SetDarkMode() and set it to NativeTheme.
+  static void ReCalcAndSetPreferredColorScheme();
 };
 }  // namespace ui
 

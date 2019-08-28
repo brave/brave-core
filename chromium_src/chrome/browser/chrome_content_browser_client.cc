@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/themes/brave_theme_utils.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "build/build_config.h"  // For OS_MACOSX
 #include "chrome/browser/search/search.h"
@@ -29,9 +28,6 @@
 
 #define HandleNewTabURLRewrite HandleNewTabURLRewrite_ChromiumImpl
 #define HandleNewTabURLReverseRewrite HandleNewTabURLReverseRewrite_ChromiumImpl
-
-#define BRAVE_CHROMECONTENTBROWSERCLIENT_OVERRIDEWEBKITPREFS \
-  switch (GetBravePreferredColorScheme(native_theme, profile)) {
 
 namespace search {
 bool HandleNewTabURLRewrite(GURL* url, content::BrowserContext* bc) {
