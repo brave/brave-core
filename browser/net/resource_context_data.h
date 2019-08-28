@@ -15,6 +15,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/supports_user_data.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/content_browser_client.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 
@@ -61,13 +62,16 @@ class ResourceContextData : public base::SupportsUserData::Data {
       network::mojom::URLLoaderFactoryPtrInfo target_factory);
 
   static void StartProxyingWebSocket(
+      content::ContentBrowserClient::WebSocketFactory factory,
+      const GURL& url,
+      const GURL& site_for_cookies,
+      const base::Optional<std::string>& user_agent,
+      network::mojom::WebSocketHandshakeClientPtrInfo handshake_client,
       content::ResourceContext* resource_context,
       int render_process_id,
       int frame_id,
       int frame_tree_node_id,
-      const url::Origin& origin,
-      network::mojom::WebSocketPtrInfo proxied_socket_ptr_info,
-      network::mojom::WebSocketRequest proxied_request);
+      const url::Origin& origin);
 
   void RemoveProxy(BraveProxyingURLLoaderFactory* proxy);
   void RemoveProxyWebSocket(BraveProxyingWebSocket* proxy);
