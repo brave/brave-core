@@ -12,6 +12,52 @@ declare namespace chrome.dns {
   function resolve (hostname: string, callback: any): void
 }
 
+declare namespace chrome.settingsPrivate {
+  // See chromium definition at
+  // https://chromium.googlesource.com/chromium/src.git/+/master/chrome/common/extensions/api/settings_private.idl
+  enum PrefType {
+    BOOLEAN = 'BOOLEAN',
+    NUMBER = 'NUMBER',
+    STRING = 'STRING',
+    URL = 'URL',
+    LIST = 'LIST',
+    DICTIONARY = 'DICTIONARY'
+  }
+
+  type PrefBooleanValue = {
+    type: PrefType.BOOLEAN,
+    value: boolean
+  }
+  type SettingsNumberValue = {
+    type: PrefType.NUMBER,
+    value: number
+  }
+  type SettingsStringValue = {
+    type: PrefType.STRING,
+    value: string
+  }
+  // TODO(petemill): implement other types as needed
+
+  type PrefObject = {
+    key: string
+  } & (PrefBooleanValue)
+
+  type GetPrefCallback = (pref: PrefObject) => void
+  function getPref (key: string, callback: GetPrefCallback): void
+
+  type SetPrefCallback = (success: boolean) => void
+  function setPref (key: string, value: any, pageId?: string | null, callback?: SetPrefCallback): void
+
+  type GetAllPrefsCallback = (prefs: PrefObject[]) => void
+  function getAllPrefs (callback: GetAllPrefsCallback): void
+
+  type GetDefaultZoomCallback = (zoom: number) => void
+  function getDefaultZoom (callback: GetDefaultZoomCallback): void
+
+  type SetDefaultZoomCallback = (success: boolean) => void
+  function setDefaultZoom (zoom: number, callback?: SetDefaultZoomCallback): void
+}
+
 declare namespace chrome.braveRewards {
   const createWallet: () => {}
   const tipSite: (tabId: number, publisherKey: string) => {}
@@ -141,6 +187,13 @@ declare namespace chrome.braveShields {
   const allowScriptsOnce: any
   const javascript: any
   const plugins: any
+
+  type BraveShieldsViewPreferences = {
+    showAdvancedView: boolean
+  }
+  type BraveShieldsSetViewPreferencesData = {
+    showAdvancedView?: boolean
+  }
 }
 
 declare namespace chrome.braveWallet {

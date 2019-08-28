@@ -110,6 +110,29 @@ interface OnMessageEvent extends chrome.events.Event<(message: object, options: 
   emit: (message: object) => void
 }
 
+type MockSettingsStore = {
+  [key: string]: chrome.settingsPrivate.PrefObject
+}
+
+// Initialize with defaults.
+// TODO: do this in individual tests that rely on individual settings,
+//   using the `addMockSetting` function
+let mockSettings: MockSettingsStore = {
+  ['brave.shields.advanced_view_enabled']: {
+    key: 'brave.shields.advanced_view_enabled',
+    type: 'BOOLEAN',
+    value: false
+  }
+}
+
+export function addMockSetting (key: string, pref: chrome.settingsPrivate.PrefObject) {
+  mockSettings[key] = pref
+}
+
+export function clearMockSettings () {
+  mockSettings = {}
+}
+
 export const getMockChrome = () => {
   let mock = {
     send: (methodName: string, ...args: Array<any>) => undefined,
@@ -250,10 +273,34 @@ export const getMockChrome = () => {
         setImmediate(cb)
       },
       onClicked: new ChromeEvent()
+    },
+    settingsPrivate: {
+      getPref (key: string, callback: chrome.settingsPrivate.GetPrefCallback): void {
+        if (!mockSettings[key]) {
+          throw new Error(`Mock Settings Store did not have a value for key "${key}". Please seed the store before the test is run using \`addMockSetting\``)
+        }
+        callback(mockSettings[key])
+      },
+      setPref (key: string, value: any, pageId?: string | null, callback?: chrome.settingsPrivate.SetPrefCallback): void {
+        if (!mockSettings[key]) {
+          throw new Error(`Mock Settings Store did not have a value for key "${key}". Please seed the store before the test is run using \`addMockSetting\`.`)
+        }
+        mockSettings[key].value = value
+        callback(true)
+      },
+      PrefType: {
+        BOOLEAN: 'BOOLEAN',
+        NUMBER: 'NUMBER',
+        STRING: 'STRING',
+        URL: 'URL',
+        LIST: 'LIST',
+        DICTIONARY: 'DICTIONARY'
+      }
     }
   }
   return mock
 }
+
 export const window = () => {
   let mock = {
     prompt: function (text: String) {
@@ -268,7 +315,7 @@ export const initialState = deepFreeze({
     currentWindowId: -1,
     tabs: {},
     windows: {},
-    persistentData: { isFirstAccess: true, advancedView: false }
+    persistentData: { isFirstAccess: true }
   },
   dappDetection: {},
   runtime: {},
@@ -276,7 +323,7 @@ export const initialState = deepFreeze({
     currentWindowId: -1,
     tabs: {},
     windows: {},
-    persistentData: { isFirstAccess: true, advancedView: false }
+    persistentData: { isFirstAccess: true }
   }
 })
 

@@ -12,6 +12,9 @@ import AdvancedView from './advancedView'
 import SimpleView from './simpleView'
 import ReadOnlyView from './readOnlyView'
 
+// API
+import * as shieldsAPI from '../background/api/shieldsAPI'
+
 // Types
 import { Tab, PersistentData } from '../types/state/shieldsPannelState'
 import {
@@ -26,8 +29,7 @@ import {
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess,
-  ToggleAdvancedView
+  SetAdvancedViewFirstAccess
 } from '../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -44,37 +46,51 @@ interface Props {
     setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
     setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
-    toggleAdvancedView: ToggleAdvancedView
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData
+  settings: any
 }
 
 interface State {
   showReadOnlyView: boolean
+  showAdvancedView: boolean
 }
 
 export default class Shields extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { showReadOnlyView: false }
+    this.state = {
+      showReadOnlyView: false,
+      showAdvancedView: props.settings.showAdvancedView
+    }
   }
 
   toggleReadOnlyView = () => {
     this.setState({ showReadOnlyView: !this.state.showReadOnlyView })
   }
 
+  toggleAdvancedView = () => {
+    const { showAdvancedView } = this.state
+    shieldsAPI.setViewPreferences({ showAdvancedView: !showAdvancedView })
+      // change local state so the component can trigger an update
+      // otherwise change will be visible only after shields closes
+      .then(() => this.setState({ showAdvancedView: !showAdvancedView }))
+      .catch((err) => console.log('[Shields] Unable to toggle advanced view interface:', err))
+  }
+
   render () {
     const { shieldsPanelTabData, persistentData, actions } = this.props
-    const { showReadOnlyView } = this.state
+    const { showAdvancedView, showReadOnlyView } = this.state
     if (!shieldsPanelTabData) {
       return null
     }
-    return persistentData.advancedView
+    return showAdvancedView
       ? (
         <AdvancedView
           shieldsPanelTabData={shieldsPanelTabData}
           persistentData={persistentData}
+          toggleAdvancedView={this.toggleAdvancedView}
           actions={actions}
         />
       ) : showReadOnlyView
@@ -88,6 +104,7 @@ export default class Shields extends React.PureComponent<Props, State> {
           shieldsPanelTabData={shieldsPanelTabData}
           persistentData={persistentData}
           actions={actions}
+          toggleAdvancedView={this.toggleAdvancedView}
           toggleReadOnlyView={this.toggleReadOnlyView}
         />
       )

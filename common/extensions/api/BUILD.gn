@@ -23,6 +23,7 @@ json_features("permission_features") {
   sources = [
     "//chrome/common/extensions/api/_permission_features.json",
     "//extensions/common/api/_permission_features.json",
+    "_permission_features.json",
   ]
 }
 

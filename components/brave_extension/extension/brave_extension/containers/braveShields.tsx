@@ -9,10 +9,18 @@ import * as shieldsPanelState from '../state/shieldsPanelState'
 import BraveShields from '../components/braveShields'
 import { State } from '../types/state/mainState'
 
-const mapStateToProps = (state: State) => ({
-  shieldsPanelTabData: shieldsPanelState.getActiveTabData(state.shieldsPanel),
-  persistentData: shieldsPanelState.getPersistentData(state.shieldsPanel)
-})
+const mapStateToProps = (
+  state: State,
+  ownProps: {
+    settings: chrome.braveShields.BraveShieldsViewPreferences
+  }
+) => {
+  return ({
+    shieldsPanelTabData: shieldsPanelState.getActiveTabData(state.shieldsPanel),
+    persistentData: shieldsPanelState.getPersistentData(state.shieldsPanel),
+    settings: ownProps.settings
+  })
+}
 
 const mapDispatchToProps = (dispatch: any) => ({
   actions: bindActionCreators(shieldsPanelActions, dispatch)
