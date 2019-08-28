@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "base/json/json_reader.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
@@ -19,7 +21,8 @@ namespace braveledger_uphold {
     name(""),
     member_at(""),
     verified(false),
-    status(UserStatus::EMPTY) {}
+    status(UserStatus::EMPTY),
+    bat_not_allowed(true) {}
 
   User::~User() {}
 
@@ -92,6 +95,16 @@ void UpholdUser::OnGet(
   if (member_at && member_at->is_string()) {
     user.member_at = member_at->GetString();
     user.verified = !user.member_at.empty();
+  }
+
+  auto* currencies = dictionary->FindKey("currencies");
+  if (currencies && currencies->is_list()) {
+    const std::string currency = "BAT";
+    auto bat_in_list = std::find(
+        currencies->GetList().begin(),
+        currencies->GetList().end(),
+        base::Value(currency));
+    user.bat_not_allowed = bat_in_list == currencies->GetList().end();
   }
 
   auto* status = dictionary->FindKey("status");
