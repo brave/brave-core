@@ -69,5 +69,7 @@
 - (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
 - (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ShowNotificationCallback)callback;
 - (void)deleteActivityInfo:(const std::string&)publisher_key callback:(ledger::DeleteActivityInfoCallback)callback;
+- (void)clearAndInsertServerPublisherList:(ledger::ServerPublisherInfoList)list callback:(ledger::ClearAndInsertServerPublisherListCallback)callback;
+- (void)getServerPublisherInfo:(const std::string&)publisher_key callback:(ledger::GetServerPublisherInfoCallback) callback;
 
 @end

@@ -194,3 +194,9 @@ void NativeLedgerClient::ShowNotification(const std::string& type, const std::ve
 void NativeLedgerClient::DeleteActivityInfo(const std::string& publisher_key, ledger::DeleteActivityInfoCallback callback) {
   [bridge_ deleteActivityInfo:publisher_key callback:callback];
 }
+void NativeLedgerClient::ClearAndInsertServerPublisherList(ledger::ServerPublisherInfoList list, ledger::ClearAndInsertServerPublisherListCallback callback) {
+  [bridge_ clearAndInsertServerPublisherList:std::move(list) callback:callback];
+}
+void NativeLedgerClient::GetServerPublisherInfo(const std::string& publisher_key, ledger::GetServerPublisherInfoCallback callback) {
+  [bridge_ getServerPublisherInfo:publisher_key callback:callback];
+}

@@ -450,8 +450,9 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)refreshPublisherWithId:(NSString *)publisherId completion:(void (^)(BOOL verified))completion
 {
-  ledger->RefreshPublisher(std::string(publisherId.UTF8String), ^(bool verified) {
-    completion(verified);
+  ledger->RefreshPublisher(std::string(publisherId.UTF8String), ^(ledger::PublisherStatus status) {
+    // FIXME: This should be forwarding the whole state
+    completion(status == ledger::PublisherStatus::VERIFIED);
   });
 }
 
@@ -1728,4 +1729,28 @@ BATLedgerBridge(BOOL,
   // TODO: Add notifications
 }
 
+- (void)getServerPublisherInfo:(const std::string &)publisher_key callback:(ledger::GetServerPublisherInfoCallback)callback
+{
+  // FIXME: Add implementation
+}
+
+- (void)clearAndInsertServerPublisherList:(ledger::ServerPublisherInfoList)list callback:(ledger::ClearAndInsertServerPublisherListCallback)callback
+{
+  // FIXME: Add implementation
+}
+
+@end
+
+// FIXME: This is a patch, need to use the actual verified state
+@implementation BATPublisherInfo (BuildFix)
+- (BOOL)isVerified {
+  return NO;
+}
+- (void)setVerified:(BOOL)verified { }
+@end
+@implementation BATPendingContributionInfo (BuildFix)
+- (BOOL)isVerified {
+  return NO;
+}
+- (void)setVerified:(BOOL)verified { }
 @end
