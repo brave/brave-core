@@ -12,7 +12,6 @@ import XCGLogger
 import Data
 
 private let log = Logger.browserLogger
-private let rewardsLog = Logger.rewardsLogger
 
 protocol TabContentScript {
     static func name() -> String
@@ -88,6 +87,7 @@ class Tab: NSObject {
     var url: URL?
     var mimeType: String?
     var isEditing: Bool = false
+    var shouldClassifyLoadsForAds = true
 
     // When viewing a non-HTML content type in the webview (like a PDF document), this URL will
     // point to a tempfile containing the content so it can be shared to external applications.
@@ -374,29 +374,6 @@ class Tab: NSObject {
             return webView.load(request)
         }
         return nil
-    }
-    
-    func reportPageLoad() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-            let rewards = appDelegate.browserViewController.rewards,
-            let webView = webView,
-            let url = webView.url,
-            !url.isLocal,
-            !PrivateBrowsingManager.shared.isPrivateBrowsing else { return }
-        
-        let getHtmlToStringJSCall = "document.documentElement.outerHTML.toString()"
-        let tabId = rewardsId
-        
-        DispatchQueue.main.async {
-            webView.evaluateJavaScript(getHtmlToStringJSCall, completionHandler: { html, _ in
-                guard let htmlString = html as? String else { return }
-                let faviconURL = URL(string: self.displayFavicon?.url ?? "")
-                if faviconURL == nil {
-                    rewardsLog.warning("No favicon found in \(self) to report to rewards panel")
-                }
-                rewards.reportLoadedPage(url: url, faviconUrl: faviconURL, tabId: tabId, html: htmlString)
-            })
-        }
     }
 
     func stop() {
