@@ -46,6 +46,8 @@ void BraveProfileChooserView::Reset() {
   tor_profile_button_ = nullptr;
 }
 
+void BraveProfileChooserView::AddAutofillHomeView() { }
+
 void BraveProfileChooserView::AddDiceSyncErrorView(
     const AvatarMenu::Item& avatar_item,
     sync_ui_util::AvatarSyncErrorType error,

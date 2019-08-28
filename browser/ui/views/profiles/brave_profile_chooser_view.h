@@ -20,6 +20,7 @@ class BraveProfileChooserView : public ProfileChooserView {
 
   void Reset() override;
 
+  void AddAutofillHomeView() override;
   void AddDiceSyncErrorView(const AvatarMenu::Item& avatar_item,
                             sync_ui_util::AvatarSyncErrorType error,
                             int button_string_id) override;
