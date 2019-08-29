@@ -19,6 +19,27 @@
       <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave/product_logo_32_nightly.png" />
       <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave/product_logo_32_dev.png" />
       <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave/product_logo_32_development.png" />
+      <if expr="not is_android">
+        <!-- Avatar icons -->
+        <!-- Generated via zsh :
+          > declare -i a=56
+          > for file in $(cat < avatarlist); do echo "<structure type=\"chrome_scaled_image\" name=\"IDR_PROFILE_AVATAR_$a\" file=\"common/avatars/$file\" />"; a=a+1 done | pbcopy
+        -->
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_56" file="common/avatars/avatar_orangepeel.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_57" file="common/avatars/avatar_nana.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_58" file="common/avatars/avatar_envy.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_59" file="common/avatars/avatar_clearskies.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_60" file="common/avatars/avatar_bondyblue.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_61" file="common/avatars/avatar_blurple.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_62" file="common/avatars/avatar_darknight.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_63" file="common/avatars/avatar_orangepeel_shape.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_64" file="common/avatars/avatar_nana_shape.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_65" file="common/avatars/avatar_envy_shape.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_66" file="common/avatars/avatar_clearskies_shape.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_67" file="common/avatars/avatar_bondyblue_shape.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_68" file="common/avatars/avatar_blurple_shape.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_69" file="common/avatars/avatar_darknight_shape.png" />
+      </if>
     </structures>
   </release>
 </grit>
