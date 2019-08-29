@@ -78,6 +78,21 @@ std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
   return upload_data;
 }
 
+std::string GetUploadData(const network::ResourceRequest& request) {
+  std::string upload_data;
+  if (!request.request_body) {
+    return {};
+  }
+  const auto* elements = request.request_body->elements();
+  for (const network::DataElement& element : *elements) {
+    if (element.type() == network::mojom::DataElementType::kBytes) {
+      upload_data.append(element.bytes(), element.length());
+    }
+  }
+
+  return upload_data;
+}
+
 }  // namespace
 
 BraveRequestInfo::BraveRequestInfo() = default;
@@ -138,5 +153,68 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
 
   ctx->upload_data = GetUploadDataFromURLRequest(request);
 }
+
+// static
+void BraveRequestInfo::FillCTX(
+    const network::ResourceRequest& request,
+    int render_process_id,
+    int frame_tree_node_id,
+    uint64_t request_identifier,
+    content::ResourceContext* resource_context,
+    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  ctx->request_identifier = request_identifier;
+  ctx->request_url = request.url;
+  // TODO(iefremov): Replace GURL with Origin
+  ctx->initiator_url =
+      request.request_initiator.value_or(url::Origin()).GetURL();
+
+  ctx->referrer = request.referrer;
+  ctx->referrer_policy = request.referrer_policy;
+
+  ctx->resource_type =
+      static_cast<content::ResourceType>(request.resource_type);
+
+  ctx->is_webtorrent_disabled = IsWebTorrentDisabled(resource_context);
+
+  ctx->render_frame_id = request.render_frame_id;
+  ctx->render_process_id = render_process_id;
+  ctx->frame_tree_node_id = frame_tree_node_id;
+
+  // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
+  // ctx->tab_url = request.top_frame_origin;
+  // TODO(iefremov): Replace with NetworkIsolationKey when it is available
+  // in ResourceRequest
+  ctx->tab_origin = request.top_frame_origin.value_or(url::Origin()).GetURL();
+  // TODO(iefremov): We still need this for WebSockets, currently
+  // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
+  // (See |BraveProxyingWebSocket|).
+  if (ctx->tab_origin.is_empty()) {
+    ctx->tab_origin = brave_shields::BraveShieldsWebContentsObserver::
+        GetTabURLFromRenderFrameInfo(ctx->render_process_id,
+                                     ctx->render_frame_id,
+                                     ctx->frame_tree_node_id).GetOrigin();
+  }
+
+  ProfileIOData* io_data =
+      ProfileIOData::FromResourceContext(resource_context);
+
+  ctx->allow_brave_shields = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kBraveShields) &&
+    !ctx->tab_origin.SchemeIs(kChromeExtensionScheme);
+  ctx->allow_ads = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kAds);
+  ctx->allow_http_upgradable_resource =
+      brave_shields::IsAllowContentSettingWithIOData(io_data, ctx->tab_origin,
+          ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kHTTPUpgradableResources);
+  ctx->allow_referrers = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kReferrers);
+
+  ctx->upload_data = GetUploadData(request);
+}
+
 
 }  // namespace brave

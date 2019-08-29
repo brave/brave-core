@@ -209,25 +209,41 @@ export const getMockChrome = () => {
       allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
         setImmediate(cb)
       },
-      plugins: {
-        setAsync: function () {
-          return Promise.resolve()
-        },
-        getAsync: function () {
-          return Promise.resolve({
-            setting: 'block'
-          })
-        }
+      getBraveShieldsEnabledAsync: function (url: string) {
+        return Promise.resolve(false)
       },
-      javascript: {
-        setAsync: function () {
-          return Promise.resolve()
-        },
-        getAsync: function () {
-          return Promise.resolve({
-            setting: 'block'
-          })
-        }
+      getAdControlTypeAsync: function (url: string) {
+        return Promise.resolve('block')
+      },
+      getCookieControlTypeAsync: function (url: string) {
+        return Promise.resolve('block')
+      },
+      getFingerprintingControlTypeAsync: function (url: string) {
+        return Promise.resolve('block')
+      },
+      getHTTPSEverywhereEnabledAsync: function (url: string) {
+        return Promise.resolve(true)
+      },
+      getNoScriptControlTypeAsync: function (url: string) {
+        return Promise.resolve('block')
+      },
+      setBraveShieldsEnabledAsync: function (url: string, enabled: boolean) {
+        return new Promise(() => [])
+      },
+      setAdControlTypeAsync: function (url: string, controlType: string) {
+        return new Promise(() => [])
+      },
+      setCookieControlTypeAsync: function (url: string, controlType: string) {
+        return new Promise(() => [])
+      },
+      setFingerprintingControlTypeAsync: function (url: string, controlType: string) {
+        return new Promise(() => [])
+      },
+      setHTTPSEverywhereEnabledAsync: function (url: string, enabled: boolean) {
+        return new Promise(() => [])
+      },
+      setNoScriptControlTypeAsync: function (url: string, controlType: string) {
+        return new Promise(() => [])
       }
     },
     i18n: {

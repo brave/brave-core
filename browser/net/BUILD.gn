@@ -16,12 +16,24 @@ source_set("net") {
     "brave_network_delegate_base.h",
     "brave_profile_network_delegate.cc",
     "brave_profile_network_delegate.h",
+    "brave_proxying_url_loader_factory.cc",
+    "brave_proxying_url_loader_factory.h",
+    "brave_proxying_web_socket.cc",
+    "brave_proxying_web_socket.h",
+    "brave_request_handler.cc",
+    "brave_request_handler.h",
     "brave_site_hacks_network_delegate_helper.cc",
     "brave_site_hacks_network_delegate_helper.h",
     "brave_static_redirect_network_delegate_helper.cc",
     "brave_static_redirect_network_delegate_helper.h",
+    "brave_stp_util.cc",
+    "brave_stp_util.h",
     "brave_system_network_delegate.cc",
     "brave_system_network_delegate.h",
+    "brave_system_request_handler.cc",
+    "brave_system_request_handler.h",
+    "resource_context_data.cc",
+    "resource_context_data.h",
     "url_context.cc",
     "url_context.h",
   ]
@@ -30,21 +42,20 @@ source_set("net") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
+    "//brave/components/brave_shields/browser",
+    "//brave/extensions:common",
+    "//components/prefs",
     "//content/public/browser",
     "//content/public/common",
+    "//components/content_settings/core/browser",
     "//extensions/common:common_constants",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/system",
     "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//url",
   ]
-
-  if (is_android) {
-    deps += [
-      "//brave/app/android:common_extensions",
-    ]
-  } else {
-    deps += [
-      "//extensions/common",
-    ]
-  }
 
   if (enable_brave_referrals) {
     sources += [

@@ -340,4 +340,16 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                                            &location));
   EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
   EXPECT_EQ(ret, net::OK);
+
+  brave_request_info->resource_type = content::ResourceType::kSubFrame;
+
+  ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+      orig_response_headers.get(), &overwrite_response_headers,
+      &allowed_unsafe_redirect_url, callback, brave_request_info);
+
+  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
+  EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
+                                                           &location));
+  EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
+  EXPECT_EQ(ret, net::OK);
 }

@@ -18,10 +18,10 @@
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
+
 #if BUILDFLAG(BRAVE_STP_ENABLED)
 #include "brave/components/brave_shields/browser/tracking_protection_helper.h"
-
-using brave_shields::TrackingProtectionHelper;
+#include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #endif
 // Add tab helpers here unless they are intended for android too
 #endif
@@ -40,7 +40,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
-  if (TrackingProtectionHelper::IsSmartTrackingProtectionEnabled()) {
+  if (TrackingProtectionService::IsSmartTrackingProtectionEnabled()) {
     brave_shields::TrackingProtectionHelper::CreateForWebContents(web_contents);
   }
 #endif

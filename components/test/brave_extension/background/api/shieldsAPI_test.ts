@@ -6,7 +6,6 @@ import actions from '../../../../brave_extension/extension/brave_extension/backg
 import * as shieldsAPI from '../../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'
 import { activeTabData } from '../../../testData'
 // import { Tab as TabType } from '../../../types/state/shieldsPannelState'
-import * as resourceIdentifiers from '../../../../brave_extension/extension/brave_extension/constants/resourceIdentifiers'
 
 describe('Shields API', () => {
   describe('getShieldSettingsForTabData', () => {
@@ -45,75 +44,6 @@ describe('Shields API', () => {
           id: 5,
           cookies: 'block'
         })
-        cb()
-      })
-      .catch((e: Error) => {
-        console.error(e.toString())
-      })
-    })
-
-    it('returns `block` by default for braveShields', (cb) => {
-      const tab: chrome.tabs.Tab = {
-        url: 'https://www.brave.com/charizard/knows/serg',
-        index: 1,
-        pinned: false,
-        highlighted: false,
-        windowId: 1,
-        active: true,
-        incognito: false,
-        selected: false,
-        id: 1337
-      }
-
-      expect.assertions(1)
-      shieldsAPI.getShieldSettingsForTabData(tab).then((data) => {
-        expect(data.braveShields).toBe('block')
-        cb()
-      })
-      .catch((e: Error) => {
-        console.error(e.toString())
-      })
-    })
-
-    it('returns `block` by default for braveShields when origin is not http or https', (cb) => {
-      const tab: chrome.tabs.Tab = {
-        url: 'ftp://www.brave.com/serg/dont/know/pikachu',
-        index: 1,
-        pinned: false,
-        highlighted: false,
-        windowId: 1,
-        active: true,
-        incognito: false,
-        selected: false,
-        id: 1337
-      }
-
-      expect.assertions(1)
-      shieldsAPI.getShieldSettingsForTabData(tab).then((data) => {
-        expect(data.braveShields).toBe('block')
-        cb()
-      })
-      .catch((e: Error) => {
-        console.error(e.toString())
-      })
-    })
-
-    it('returns `block` by default for braveShields when origin is an about page', (cb) => {
-      const tab: chrome.tabs.Tab = {
-        url: 'chrome://welcome',
-        index: 1,
-        pinned: false,
-        highlighted: false,
-        windowId: 1,
-        active: true,
-        incognito: false,
-        selected: false,
-        id: 1337
-      }
-
-      expect.assertions(1)
-      shieldsAPI.getShieldSettingsForTabData(tab).then((data) => {
-        expect(data.braveShields).toBe('block')
         cb()
       })
       .catch((e: Error) => {
@@ -191,265 +121,105 @@ describe('Shields API', () => {
   describe('setAllowAds', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
+      spy = jest.spyOn(chrome.braveShields, 'setAdControlTypeAsync')
     })
     afterEach(() => {
       spy.mockRestore()
     })
-    it('calls chrome.braveShields.plugins with the correct args', () => {
+    it('calls chrome.braveShields.setAdControlTypeAsync with the correct args', () => {
       shieldsAPI.setAllowAds('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
       const arg0 = spy.mock.calls[0][0]
-      expect.assertions(1)
-      expect(arg0).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_ADS },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-    })
-    it('passes only 1 arg to chrome.braveShields.plugins', () => {
-      shieldsAPI.setAllowAds('https://www.brave.com', 'block')
-        .catch(() => {
-          expect(true).toBe(false)
-        })
-      expect.assertions(1)
-      expect(spy.mock.calls[0].length).toBe(1)
-    })
-    it('resolves the returned promise', (cb) => {
-      shieldsAPI.setAllowAds('https://www.brave.com', 'block')
-        .then(cb)
-        .catch((e: Error) => {
-          console.error(e.toString())
-        })
-    })
-  })
-
-  describe('setAllowTrackers', () => {
-    let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
-    it('calls chrome.braveShields.plugins with the correct args', () => {
-      shieldsAPI.setAllowTrackers('https://www.brave.com', 'block')
-        .catch(() => {
-          expect(true).toBe(false)
-        })
-      const arg0 = spy.mock.calls[0][0]
-      expect.assertions(1)
-      expect(arg0).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKERS },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-    })
-    it('passes only 1 arg to chrome.braveShields.plugins', () => {
-      shieldsAPI.setAllowTrackers('https://www.brave.com', 'block')
-        .catch(() => {
-          expect(true).toBe(false)
-        })
-      expect.assertions(1)
-      expect(spy.mock.calls[0].length).toBe(1)
-    })
-    it('resolves the returned promise', (cb) => {
-      shieldsAPI.setAllowTrackers('https://www.brave.com', 'block')
-        .then(cb)
-        .catch((e: Error) => {
-          console.error(e.toString())
-        })
+      const arg1 = spy.mock.calls[0][1]
+      expect.assertions(2)
+      expect(arg0).toEqual('block')
+      expect(arg1).toEqual('https://www.brave.com')
     })
   })
 
   describe('setAllowHTTPUpgradableResource', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
+      spy = jest.spyOn(chrome.braveShields, 'setHTTPSEverywhereEnabledAsync')
     })
     afterEach(() => {
       spy.mockRestore()
     })
-    it('calls chrome.braveShields.plugins with the correct args', () => {
+    it('calls chrome.braveShields.setHTTPSEverywhereEnabledAsync with the correct args', () => {
       shieldsAPI.setAllowHTTPUpgradableResources('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
       const arg0 = spy.mock.calls[0][0]
-      expect.assertions(1)
-      expect(arg0).toEqual({
-        primaryPattern: '*://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-    })
-    it('passes only 1 arg to chrome.braveShields.plugins', () => {
-      shieldsAPI.setAllowHTTPUpgradableResources('https://www.brave.com', 'block')
-        .catch(() => {
-          expect(true).toBe(false)
-        })
-      expect.assertions(1)
-      expect(spy.mock.calls[0].length).toBe(1)
-    })
-    it('resolves the returned promise', (cb) => {
-      shieldsAPI.setAllowHTTPUpgradableResources('https://www.brave.com', 'block')
-        .then(cb)
-        .catch((e: Error) => {
-          console.error(e.toString())
-        })
+      const arg1 = spy.mock.calls[0][1]
+      expect.assertions(2)
+      expect(arg0).toEqual(true)
+      expect(arg1).toEqual('https://www.brave.com')
     })
   })
 
   describe('setAllowJavaScript', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.javascript, 'setAsync')
+      spy = jest.spyOn(chrome.braveShields, 'setNoScriptControlTypeAsync')
     })
     afterEach(() => {
       spy.mockRestore()
     })
-
-    it('calls chrome.braveShields.plugins with the correct args', () => {
+    it('calls chrome.braveShields.setNoScriptControlTypeAsync with the correct args', () => {
       shieldsAPI.setAllowJavaScript('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
       const arg0 = spy.mock.calls[0][0]
-      expect.assertions(1)
-      expect(arg0).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-    })
-
-    it('passes only 1 arg to chrome.braveShields.plugins', () => {
-      shieldsAPI.setAllowJavaScript('https://www.brave.com', 'block')
-        .catch(() => {
-          expect(true).toBe(false)
-        })
-      expect.assertions(1)
-      expect(spy.mock.calls[0].length).toBe(1)
-    })
-
-    it('resolves the returned promise', (cb) => {
-      shieldsAPI.setAllowJavaScript('https://www.brave.com', 'block')
-        .then(cb)
-        .catch((e: Error) => {
-          console.error(e.toString())
-        })
+      const arg1 = spy.mock.calls[0][1]
+      expect.assertions(2)
+      expect(arg0).toEqual('block')
+      expect(arg1).toEqual('https://www.brave.com')
     })
   })
 
   describe('setAllowFingerprinting', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
+      spy = jest.spyOn(chrome.braveShields, 'setFingerprintingControlTypeAsync')
     })
     afterEach(() => {
       spy.mockRestore()
     })
-    it('calls chrome.braveShields.plugins with the correct args', () => {
+    it('calls chrome.braveShields.setFingerprintingControlTypeAsync with the correct args', () => {
       shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
       const arg0 = spy.mock.calls[0][0]
+      const arg1 = spy.mock.calls[0][1]
       expect.assertions(2)
-      expect(arg0).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-      const arg1 = spy.mock.calls[1][0]
-      expect(arg1).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        secondaryPattern: 'https://firstParty/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-    })
-    it('passes only 1 arg to chrome.braveShields.plugins', () => {
-      shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
-        .catch(() => {
-          expect(true).toBe(false)
-        })
-      expect.assertions(2)
-      expect(spy.mock.calls[0].length).toBe(1)
-      expect(spy.mock.calls[1].length).toBe(1)
-    })
-    it('resolves the returned promise', (cb) => {
-      shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
-        .then(function () {
-          cb()
-        })
-        .catch((e: Error) => {
-          console.error(e.toString())
-        })
+      expect(arg0).toEqual('block')
+      expect(arg1).toEqual('https://www.brave.com')
     })
   })
 
   describe('setAllowCookies', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
+      spy = jest.spyOn(chrome.braveShields, 'setCookieControlTypeAsync')
     })
     afterEach(() => {
       spy.mockRestore()
     })
-    it('calls chrome.braveShields.plugins with the correct args', () => {
+    it('calls chrome.braveShields.setCookieControlTypeAsync with the correct args', () => {
       shieldsAPI.setAllowCookies('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
       const arg0 = spy.mock.calls[0][0]
-      expect.assertions(3)
-      expect(arg0).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_REFERRERS },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-      const arg1 = spy.mock.calls[1][0]
-      expect(arg1).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-      const arg2 = spy.mock.calls[2][0]
-      expect(arg2).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        secondaryPattern: 'https://firstParty/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-    })
-    it('passes only 1 arg to chrome.braveShields.plugins', () => {
-      shieldsAPI.setAllowCookies('https://www.brave.com', 'block')
-        .catch(() => {
-          expect(true).toBe(false)
-        })
+      const arg1 = spy.mock.calls[0][1]
       expect.assertions(2)
-      expect(spy.mock.calls[0].length).toBe(1)
-      expect(spy.mock.calls[1].length).toBe(1)
-    })
-    it('resolves the returned promise', (cb) => {
-      shieldsAPI.setAllowCookies('https://www.brave.com', 'block')
-        .then(() => {
-          cb()
-        })
-        .catch((e: Error) => {
-          console.error(e.toString())
-        })
+      expect(arg0).toEqual('block')
+      expect(arg1).toEqual('https://www.brave.com')
     })
   })
 

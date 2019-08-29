@@ -16,32 +16,142 @@ class BraveShieldsAllowScriptsOnceFunction : public UIThreadExtensionFunction {
   DECLARE_EXTENSION_FUNCTION("braveShields.allowScriptsOnce", UNKNOWN)
 
  protected:
-  ~BraveShieldsAllowScriptsOnceFunction() override;
+  ~BraveShieldsAllowScriptsOnceFunction() override {}
 
   ResponseAction Run() override;
 };
 
-class BraveShieldsContentSettingGetFunction
+class BraveShieldsSetBraveShieldsEnabledFunction
     : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.get", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveShields.setBraveShieldsEnabled", UNKNOWN)
 
  protected:
-  ~BraveShieldsContentSettingGetFunction() override {}
+  ~BraveShieldsSetBraveShieldsEnabledFunction() override {}
 
-  // ExtensionFunction:
   ResponseAction Run() override;
 };
 
-class BraveShieldsContentSettingSetFunction
+class BraveShieldsGetBraveShieldsEnabledFunction
     : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveShields.set", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveShields.getBraveShieldsEnabled", UNKNOWN)
 
  protected:
-  ~BraveShieldsContentSettingSetFunction() override {}
+  ~BraveShieldsGetBraveShieldsEnabledFunction() override {}
 
-  // ExtensionFunction:
+  ResponseAction Run() override;
+};
+
+class BraveShieldsSetAdControlTypeFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.setAdControlType", UNKNOWN)
+
+ protected:
+  ~BraveShieldsSetAdControlTypeFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsGetAdControlTypeFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.getAdControlType", UNKNOWN)
+
+ protected:
+  ~BraveShieldsGetAdControlTypeFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsSetCookieControlTypeFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.setCookieControlType", UNKNOWN)
+
+ protected:
+  ~BraveShieldsSetCookieControlTypeFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsGetCookieControlTypeFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.getCookieControlType", UNKNOWN)
+
+ protected:
+  ~BraveShieldsGetCookieControlTypeFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsSetFingerprintingControlTypeFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.setFingerprintingControlType",
+                             UNKNOWN)
+
+ protected:
+  ~BraveShieldsSetFingerprintingControlTypeFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsGetFingerprintingControlTypeFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.getFingerprintingControlType",
+                             UNKNOWN)
+
+ protected:
+  ~BraveShieldsGetFingerprintingControlTypeFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsSetHTTPSEverywhereEnabledFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.setHTTPSEverywhereEnabled",
+                             UNKNOWN)
+
+ protected:
+  ~BraveShieldsSetHTTPSEverywhereEnabledFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsGetHTTPSEverywhereEnabledFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.getHTTPSEverywhereEnabled",
+                             UNKNOWN)
+
+ protected:
+  ~BraveShieldsGetHTTPSEverywhereEnabledFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsSetNoScriptControlTypeFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.setNoScriptControlType", UNKNOWN)
+
+ protected:
+  ~BraveShieldsSetNoScriptControlTypeFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsGetNoScriptControlTypeFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.getNoScriptControlType", UNKNOWN)
+
+ protected:
+  ~BraveShieldsGetNoScriptControlTypeFunction() override {}
+
   ResponseAction Run() override;
 };
 

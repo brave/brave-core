@@ -54,8 +54,6 @@ const char kForbesExtraCookies[] =
     "forbes_ab=true; welcomeAd=true; adblock_session=Off; "
     "dailyWelcomeCookie=true";
 const char kTwitterPattern[] = "https://*.twitter.com/*";
-const char kTwitterReferrer[] = "https://twitter.com/*";
-const char kTwitterRedirectURL[] = "https://mobile.twitter.com/i/nojs_router*";
 
 const char kCookieHeader[] = "Cookie";
 // Intentional misspelling on referrer to match HTTP spec

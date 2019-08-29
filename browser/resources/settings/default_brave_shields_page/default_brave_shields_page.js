@@ -18,7 +18,7 @@ Polymer({
       type: Array,
       value: function() {
         return [
-          {value: '3p', name: loadTimeData.getString('block3rdPartyCookies')},
+          {value: 'block_third_party', name: loadTimeData.getString('block3rdPartyCookies')},
           {value: 'block', name: loadTimeData.getString('blockAllCookies')},
           {value: 'allow', name: loadTimeData.getString('allowAllCookies')}
         ]
@@ -30,7 +30,7 @@ Polymer({
       type: Array,
       value: function() {
         return [
-          {value: '3p', name: loadTimeData.getString('block3rdPartyFingerprinting')},
+          {value: 'block_third_party', name: loadTimeData.getString('block3rdPartyFingerprinting')},
           {value: 'block', name: loadTimeData.getString('blockAllFingerprinting')},
           {value: 'allow', name: loadTimeData.getString('allowAllFingerprinting')}
         ]
@@ -85,7 +85,7 @@ Polymer({
     this.browserProxy_.setFingerprintingControlType(this.$.fingerprintingControlType.value);
   },
   onHTTPSEverywhereControlChange_: function() {
-    this.browserProxy_.setHTTPSEverywhereControlType(this.$.httpsEverywhereControlType.checked);
+    this.browserProxy_.setHTTPSEverywhereEnabled(this.$.httpsEverywhereControlType.checked);
   },
   onNoScriptControlChange_: function() {
     this.browserProxy_.setNoScriptControlType(this.$.noScriptControlType.checked);
