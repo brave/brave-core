@@ -109,6 +109,7 @@ export type NotificationType =
 export type WalletState =
   'unverified' |
   'verified' |
+  'connected' |
   'disconnected_unverified' |
   'disconnected_verified'
 
@@ -387,6 +388,21 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           </StyledVerifiedButton>
         )
 
+      case 'connected':
+        return (
+          <Button
+            type={'accent'}
+            icon={{
+              image: <CaratDownIcon />,
+              position: 'after'
+            }}
+            text={getLocale('walletButtonUnverified')}
+            {...buttonProps}
+            onClick={this.toggleVerificationDetails}
+            id={'verify-wallet-button'}
+          />
+        )
+
       case 'disconnected_unverified':
       case 'disconnected_verified':
         return (
@@ -416,15 +432,27 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
   }
 
   getVerificationDetails = () => {
-    const { goToUphold, userName, onDisconnectClick } = this.props
+    const { goToUphold, userName, onDisconnectClick, onVerifyClick, walletState } = this.props
+    const verified = walletState === 'verified'
+    const connected = walletState === 'connected'
 
     return (
       <WalletPopup
         onClose={this.toggleVerificationDetails}
         userName={userName || ''}
+        verified={verified}
       >
         {
           <StyledDialogList>
+            {
+              connected
+              ? <li>
+                <StyledLink onClick={this.onDetailsLinkClicked.bind(this, onVerifyClick)} target={'_blank'}>
+                  {getLocale('walletGoToVerifyPage')}
+                </StyledLink>
+              </li>
+              : null
+            }
             <li>
               <StyledLink onClick={this.onDetailsLinkClicked.bind(this, goToUphold)} target={'_blank'}>
                 {getLocale('walletGoToUphold')}
@@ -600,7 +628,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               !notification
                 ? <>
                   {
-                    this.state.verificationDetails && connectedVerified && onDisconnectClick
+                    this.state.verificationDetails && onDisconnectClick
                       ? this.getVerificationDetails()
                       : null
                   }

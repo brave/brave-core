@@ -25,6 +25,7 @@ export interface Props {
   onClose: () => void
   userName: string
   id?: string
+  verified?: boolean
 }
 
 export default class WalletPopup extends React.PureComponent<Props, {}> {
@@ -38,7 +39,8 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
       children,
       onClose,
       userName,
-      id
+      id,
+      verified
     } = this.props
     return (
       <StyledWrapper onClick={onClose} id={id}>
@@ -49,9 +51,13 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
                 <UpholdColorIcon />
               </StyledIcon>
               {userName}
-              <StyledStatus>
-                {getLocale('walletVerified')}
-              </StyledStatus>
+              {
+                verified
+                ? <StyledStatus>
+                  {getLocale('walletVerified')}
+                </StyledStatus>
+                : null
+              }
             </StyledHeader>
             {children}
           </StyledContent>

@@ -82,10 +82,13 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
         alert={showAlert ? alert : undefined}
         walletState={select('wallet status', {
           unverified: 'unverified',
+          connected: 'connected',
           verified: 'verified',
           'disconnected unverified': 'disconnected_unverified',
           'disconnected verified': 'disconnected_verified'
         }, 'unverified') as WalletState}
+        onDisconnectClick={doNothing}
+        userName={'Brave Software'}
       >
         Some content
       </WalletWrapper>

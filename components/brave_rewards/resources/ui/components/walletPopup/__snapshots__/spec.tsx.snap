@@ -33,12 +33,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   margin-bottom: 10px;
 }
 
-.c6 {
-  font-weight: normal;
-  float: right;
-  color: #39a84c;
-}
-
 .c4 {
   vertical-align: middle;
   display: inline-block;
@@ -153,11 +147,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
           </svg>
         </span>
         tester
-        <div
-          className="c6"
-        >
-          MISSING: walletVerified
-        </div>
       </div>
       <p>
         hi
