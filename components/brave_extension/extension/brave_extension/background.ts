@@ -7,7 +7,7 @@ global.Promise = bluebird
 
 function promisifier (method: any) {
   // return a function
-  return function promisified (...args: string[]) {
+  return function promisified (...args: any[]) {
     // which returns a promise
     return new Promise((resolve: any) => {
       args.push(resolve)
@@ -26,14 +26,12 @@ promisifyAll(chrome, [
   'tabs',
   'windows'
 ])
+
 promisifyAll(chrome.storage, [
   'local'
 ])
 
-promisifyAll(chrome.braveShields, [
-  'javascript',
-  'plugins'
-])
+bluebird.promisifyAll(chrome.braveShields, { promisifier })
 
 require('./background/api')
 require('./background/events')

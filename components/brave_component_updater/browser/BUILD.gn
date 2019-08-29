@@ -1,3 +1,5 @@
+import("//extensions/buildflags/buildflags.gni")
+
 source_set("browser") {
   sources = [
     "brave_component.cc",
@@ -13,4 +15,16 @@ source_set("browser") {
   deps = [
     "//base",
   ]
+
+  if (enable_extensions) {
+    sources += [
+      "extension_whitelist_service.cc",
+      "extension_whitelist_service.h",
+    ]
+
+    deps += [
+      "//brave/vendor/extension-whitelist/brave:extension-whitelist",
+      "//extensions/common",
+    ]
+  }
 }

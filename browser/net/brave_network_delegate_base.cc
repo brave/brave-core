@@ -10,6 +10,7 @@
 
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/net/brave_stp_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -20,13 +21,14 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
+
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 
 using content::BrowserThread;
@@ -47,6 +49,35 @@ content::WebContents* GetWebContentsFromProcessAndFrameId(int render_process_id,
   return content::WebContents::FromFrameTreeNodeId(render_frame_id);
 }
 
+bool OnAllowAccessCookies(
+    const URLRequest& request,
+    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  ResourceRequestInfo* info = ResourceRequestInfo::ForRequest(&request);
+  if (info) {
+    ProfileIOData* io_data =
+        ProfileIOData::FromResourceContext(info->GetContext());
+
+    GURL url = request.url();
+    GURL tab_origin = request.site_for_cookies();
+    if (tab_origin.is_empty())
+      tab_origin = GURL(request.network_isolation_key().ToString());
+    if (tab_origin.is_empty() && request.top_frame_origin().has_value())
+      tab_origin = request.top_frame_origin()->GetURL();
+
+    return
+        io_data->GetCookieSettings()->IsCookieAccessAllowed(url, tab_origin) &&
+            g_brave_browser_process->tracking_protection_service()
+                ->ShouldStoreState(io_data->GetHostContentSettingsMap(),
+                                   ctx->render_process_id,
+                                   ctx->render_frame_id,
+                                   url,
+                                   tab_origin);
+  }
+
+  return true;
+}
+
+
 std::string GetTagFromPrefName(const std::string& pref_name) {
   if (pref_name == kFBEmbedControlType) {
     return brave_shields::kFacebookEmbeds;
@@ -61,41 +92,6 @@ std::string GetTagFromPrefName(const std::string& pref_name) {
 }
 
 }  // namespace
-
-base::flat_set<base::StringPiece>* TrackableSecurityHeaders() {
-  static base::NoDestructor<base::flat_set<base::StringPiece>>
-      kTrackableSecurityHeaders(base::flat_set<base::StringPiece>{
-          "Strict-Transport-Security", "Expect-CT", "Public-Key-Pins",
-          "Public-Key-Pins-Report-Only"});
-  return kTrackableSecurityHeaders.get();
-}
-
-void RemoveTrackableSecurityHeadersForThirdParty(
-    URLRequest* request,
-    const net::HttpResponseHeaders* original_response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers) {
-  if (!request || !request->top_frame_origin().has_value() ||
-      (!original_response_headers && !override_response_headers->get())) {
-    return;
-  }
-
-  auto top_frame_origin = request->top_frame_origin().value();
-  auto request_url = request->url();
-
-  if (net::registry_controlled_domains::SameDomainOrHost(
-          request_url, top_frame_origin,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    return;
-  }
-
-  if (!override_response_headers->get()) {
-    *override_response_headers =
-        new net::HttpResponseHeaders(original_response_headers->raw_headers());
-  }
-  for (auto header : *TrackableSecurityHeaders()) {
-    (*override_response_headers)->RemoveHeader(header.as_string());
-  }
-}
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
@@ -207,7 +203,7 @@ int BraveNetworkDelegateBase::OnHeadersReceived(
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url) {
-  RemoveTrackableSecurityHeadersForThirdParty(
+  brave::RemoveTrackableSecurityHeadersForThirdParty(
       request, original_response_headers, override_response_headers);
 
   if (headers_received_callbacks_.empty() || !request) {

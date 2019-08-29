@@ -31,6 +31,7 @@ int OnBeforeStartTransaction_ReferralsWork(
   for (const auto& it : request_headers_dict->DictItems()) {
     if (it.first == kBravePartnerHeader) {
       headers->SetHeader(it.first, it.second.GetString());
+      ctx->set_headers.insert(it.first);
     }
   }
   return net::OK;

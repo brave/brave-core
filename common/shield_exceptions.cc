@@ -38,32 +38,13 @@ bool IsBlockedResource(const GURL& gurl) {
                      });
 }
 
-bool IsWhitelistedCookieException(const GURL& firstPartyOrigin,
-    const GURL& subresourceUrl, bool allow_google_auth) {
-  // Note that there's already an exception for TLD+1, so don't add those here.
-  // Check with the security team before adding exceptions.
-
-  // 1st-party-INdependent whitelist
-  std::vector<URLPattern> fpi_whitelist_patterns = {};
-  if (allow_google_auth) {
-    fpi_whitelist_patterns.push_back(URLPattern(URLPattern::SCHEME_ALL,
-        "https://accounts.google.com/o/oauth2/*"));
-  }
-  bool any_match = std::any_of(fpi_whitelist_patterns.begin(),
-      fpi_whitelist_patterns.end(),
-      [&subresourceUrl](const URLPattern& pattern) {
-        return pattern.MatchesURL(subresourceUrl);
-      });
-  if (any_match) {
-    return true;
-  }
-
-  // 1st-party-dependent whitelist
+bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
+    const GURL& subresourceUrl) {
   static std::map<GURL, std::vector<URLPattern> > whitelist_patterns = {
     {
-      GURL("https://www.sliver.tv/"),
+      GURL("https://uphold.com/"),
       std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
-            "https://*.thetatoken.org:8700/*")})
+            "https://uphold.netverify.com/*")})
     }
   };
   std::map<GURL, std::vector<URLPattern> >::iterator i =

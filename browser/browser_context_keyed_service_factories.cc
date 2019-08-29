@@ -5,6 +5,8 @@
 
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
+#include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
+#include "brave/browser/brave_shields/cookie_pref_service_factory.h"
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -16,6 +18,8 @@ namespace brave {
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_ads::AdsServiceFactory::GetInstance();
   brave_rewards::RewardsServiceFactory::GetInstance();
+  brave_shields::AdBlockPrefServiceFactory::GetInstance();
+  brave_shields::CookiePrefServiceFactory::GetInstance();
   greaselion::GreaselionServiceFactory::GetInstance();
   TorProfileServiceFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();

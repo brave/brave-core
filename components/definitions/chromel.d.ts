@@ -131,8 +131,25 @@ declare namespace chrome.braveShields {
   }
 
   const allowScriptsOnce: any
-  const javascript: any
-  const plugins: any
+  const setBraveShieldsEnabledAsync: any
+  const getBraveShieldsEnabledAsync: any
+  const setAdControlTypeAsync: any
+  const getAdControlTypeAsync: any
+  const setCookieControlTypeAsync: any
+  const getCookieControlTypeAsync: any
+  const setFingerprintingControlTypeAsync: any
+  const getFingerprintingControlTypeAsync: any
+  const setHTTPSEverywhereEnabledAsync: any
+  const getHTTPSEverywhereEnabledAsync: any
+  const setNoScriptControlTypeAsync: any
+  const getNoScriptControlTypeAsync: any
+
+  type BraveShieldsViewPreferences = {
+    showAdvancedView: boolean
+  }
+  type BraveShieldsSetViewPreferencesData = {
+    showAdvancedView?: boolean
+  }
 }
 
 declare namespace chrome.braveTheme {

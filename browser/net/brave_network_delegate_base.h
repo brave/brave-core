@@ -11,8 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_set.h"
-#include "base/strings/string_piece.h"
 #include "brave/browser/net/url_context.h"
 #include "chrome/browser/net/chrome_network_delegate.h"
 #include "content/public/browser/browser_thread.h"
@@ -27,13 +25,6 @@ class EventRouterForwarder;
 namespace net {
 class URLRequest;
 }
-
-base::flat_set<base::StringPiece>* TrackableSecurityHeaders();
-
-void RemoveTrackableSecurityHeadersForThirdParty(
-    net::URLRequest* request,
-    const net::HttpResponseHeaders* original_response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers);
 
 // BraveNetworkDelegateBase is the central point from within the Brave code to
 // add hooks into the network stack.

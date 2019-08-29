@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/extension_whitelist_service.h"
+#include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
 
 #include <utility>
 
@@ -11,13 +11,18 @@
 #include "base/task_runner_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/vendor/extension-whitelist/extension_whitelist_parser.h"
+#include "extensions/common/extension.h"
 
-namespace brave_shields {
+using extensions::Extension;
+
+namespace brave_component_updater {
 
 ExtensionWhitelistService::ExtensionWhitelistService(
-    LocalDataFilesService* local_data_files_service)
+    LocalDataFilesService* local_data_files_service,
+    const std::vector<std::string>& whitelist)
     : LocalDataFilesObserver(local_data_files_service),
       extension_whitelist_client_(new ExtensionWhitelistParser()),
+      whitelist_(whitelist),
       weak_factory_(this) {
 }
 
@@ -36,6 +41,18 @@ bool ExtensionWhitelistService::IsBlacklisted(
     const std::string& extension_id) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return extension_whitelist_client_->isBlacklisted(extension_id.c_str());
+}
+
+bool ExtensionWhitelistService::IsVetted(const Extension* extension) const {
+  return ExtensionWhitelistService::IsVetted(extension->id());
+}
+
+bool ExtensionWhitelistService::IsVetted(const std::string& id) const {
+  if (std::find(whitelist_.begin(), whitelist_.end(), id) !=
+      whitelist_.end())
+    return true;
+
+  return IsWhitelisted(id);
 }
 
 void ExtensionWhitelistService::OnComponentReady(
@@ -75,8 +92,10 @@ void ExtensionWhitelistService::OnGetDATFileData(GetDATFileDataResult result) {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<ExtensionWhitelistService> ExtensionWhitelistServiceFactory(
-    LocalDataFilesService* local_data_files_service) {
-  return std::make_unique<ExtensionWhitelistService>(local_data_files_service);
+    LocalDataFilesService* local_data_files_service,
+    const std::vector<std::string>& whitelist) {
+  return std::make_unique<ExtensionWhitelistService>(local_data_files_service,
+                                                     whitelist);
 }
 
-}  // namespace brave_shields
+}  // namespace brave_component_updater

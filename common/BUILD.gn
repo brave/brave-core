@@ -79,6 +79,8 @@ source_set("common") {
       "extensions/brave_extensions_api_provider.h",
       "extensions/extension_constants.cc",
       "extensions/extension_constants.h",
+      "extensions/whitelist.cc",
+      "extensions/whitelist.h",
     ]
 
     public_deps = [
@@ -87,7 +89,6 @@ source_set("common") {
   }
 
   deps = [
-    ":brave_cookie_blocking",
     ":pref_names",
     ":shield_exceptions",
     ":switches",
@@ -117,18 +118,6 @@ source_set("common") {
   }
 }
 
-
-source_set("brave_cookie_blocking") {
-  sources = [
-    "brave_cookie_blocking.cc",
-    "brave_cookie_blocking.h",
-  ]
-
-  deps = [
-    "//base:logging_buildflags",
-  ]
-}
-
 source_set("shield_exceptions") {
   sources = [
     "shield_exceptions.cc",
@@ -136,15 +125,9 @@ source_set("shield_exceptions") {
   ]
 
   deps = [
+    "//brave/extensions:common",
     "//url",
   ]
-  if (is_android) {
-    deps += [ 
-      "//brave/app/android:common_extensions",
-    ]
-  } else {
-    deps += [ "//extensions/common" ]
-  }
 }
 
 config("constants_configs") {

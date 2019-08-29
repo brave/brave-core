@@ -29,7 +29,6 @@ import { getLocale } from '../background/api/localeAPI'
 import {
   blockedResourcesSize,
   getTotalBlockedSizeStrings,
-  getToggleStateViaEventTarget
 } from '../helpers/shieldsUtils'
 
 // Types
@@ -72,8 +71,8 @@ export default class Header extends React.PureComponent<Props, {}> {
     return getTotalBlockedSizeStrings(this.blockedItemsSize, httpsUpgrades)
   }
 
-  onToggleShields = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const shieldsOption: BlockOptions = getToggleStateViaEventTarget(event)
+  onToggleShieldsMain = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const shieldsOption: BlockOptions = event.target.checked ? 'allow' : 'block'
     this.props.shieldsToggled(shieldsOption)
   }
 
@@ -92,7 +91,7 @@ export default class Header extends React.PureComponent<Props, {}> {
             </MainToggleHeading>
             {enabled ? <MainToggleText>{getLocale('enabledMessage')}</MainToggleText> : null}
           </div>
-          <Toggle id='mainToggle' size='large' checked={enabled} onChange={this.onToggleShields} disabled={isBlockedListOpen} />
+          <Toggle id='mainToggle' size='large' checked={enabled} onChange={this.onToggleShieldsMain} disabled={isBlockedListOpen} />
         </MainToggle>
         <SiteOverview status={enabled ? 'enabled' : 'disabled'}>
           <SiteInfo>
