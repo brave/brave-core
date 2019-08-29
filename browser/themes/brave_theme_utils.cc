@@ -44,7 +44,8 @@ void SetSystemTheme(BraveThemeType type) {
   // Follow os theme type for default type.
   if (type == BraveThemeType::BRAVE_THEME_TYPE_DEFAULT) {
 #if defined(OS_WIN)
-    DCHECK(SystemThemeSupportDarkMode());
+    DCHECK(
+        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported());
     // This sets preferred color scheme on its own.
     ui::UpdateDarkModeStatus();
     return;
@@ -55,12 +56,5 @@ void SetSystemTheme(BraveThemeType type) {
 #endif
   }
   internal::SetSystemThemeForNonDarkModePlatform(type);
-}
-#endif
-
-#if defined(OS_LINUX)
-bool SystemThemeSupportDarkMode() {
-  // Linux doesn't support dark mode yet.
-  return false;
 }
 #endif

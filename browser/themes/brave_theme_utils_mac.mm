@@ -11,16 +11,10 @@
 #include "brave/browser/themes/brave_theme_utils_internal.h"
 #include "ui/native_theme/native_theme.h"
 
-bool SystemThemeSupportDarkMode() {
-  // Dark mode is supported since Mojave.
-  if (@available(macOS 10.14, *))
-    return true;
-  return false;
-}
-
 void SetSystemTheme(BraveThemeType type) {
   if (type == BRAVE_THEME_TYPE_DEFAULT) {
-    DCHECK(SystemThemeSupportDarkMode());
+    DCHECK(
+        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported());
     [NSApp setAppearance:nil];
     return;
   }

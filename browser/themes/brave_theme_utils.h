@@ -8,8 +8,6 @@
 
 #include "brave/browser/themes/brave_theme_service.h"
 
-bool SystemThemeSupportDarkMode();
-
 // When system supports system per-application system theme changing, set it.
 // Currently, only MacOS support it.
 // Otherewise, we need to overrides from native theme level and explicitly

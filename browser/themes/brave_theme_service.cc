@@ -277,5 +277,5 @@ bool BraveThemeService::SystemThemeModeEnabled() {
       switches::kForceDarkMode))
     return true;
 
-  return SystemThemeSupportDarkMode();
+  return ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported();
 }

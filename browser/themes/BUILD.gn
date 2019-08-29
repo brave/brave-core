@@ -10,7 +10,6 @@ source_set("themes") {
       "brave_theme_utils_internal.cc",
       "brave_theme_utils_internal.h",
       "brave_theme_utils_mac.mm",
-      "brave_theme_utils_win.cc",
       "theme_properties.cc",
       "theme_properties.h",
     ]
