@@ -5,12 +5,6 @@
 
 #include "brave/browser/translate/buildflags/buildflags.h"
 
-// Only allows TranslateURLFetcher::Request to work when using go-translate.
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#define BRAVE_REQUEST
-#else
-#define BRAVE_REQUEST return false;
-#endif
-
 #include "../../../../../../components/translate/core/browser/translate_url_fetcher.cc"
-#undef BRAVE_REQUEST
+#endif
