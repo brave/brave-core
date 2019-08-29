@@ -959,34 +959,43 @@ std::vector<AdInfo> AdsImpl::GetEligibleAds(
   for (const auto& ad : ads) {
     if (!AdRespectsTotalMaxFrequencyCapping(ad)) {
       BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
-          << " has exceeded the totalMax";
+          << " has exceeded the frequency capping for totalMax";
+
+      continue;
+    }
+
+    if (!AdRespectsPerHourFrequencyCapping(ad)) {
+      BLOG(WARNING) << "adUUID " << ad.uuid
+          << " has exceeded the frequency capping for perHour";
 
       continue;
     }
 
     if (!AdRespectsPerDayFrequencyCapping(ad)) {
       BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
-          << " has exceeded the perDay";
+          << " has exceeded the frequency capping for perDay";
 
       continue;
     }
 
     if (!AdRespectsDailyCapFrequencyCapping(ad)) {
-      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
-          << " has exceeded the dailyCap";
+      BLOG(WARNING) << "campaignId " << ad.campaign_id
+          << " has exceeded the frequency capping for dailyCap";
 
       continue;
     }
 
     if (client_->IsFilteredAd(ad.creative_set_id)) {
       BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
-          << " appears in filtered ads list";
+          << " appears in the filtered ads list";
+
       continue;
     }
 
     if (client_->IsFlaggedAd(ad.creative_set_id)) {
       BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
-          << " appears in flagged ads list";
+          << " appears in the flagged ads list";
+
       continue;
     }
 
@@ -1006,6 +1015,15 @@ bool AdsImpl::AdRespectsTotalMaxFrequencyCapping(
   return true;
 }
 
+bool AdsImpl::AdRespectsPerHourFrequencyCapping(
+    const AdInfo& ad) {
+  auto ads_shown = GetAdsShownForId(ad.uuid);
+  auto hour_window = base::Time::kSecondsPerHour;
+
+  return HistoryRespectsRollingTimeConstraint(
+      ads_shown, hour_window, 1);
+}
+
 bool AdsImpl::AdRespectsPerDayFrequencyCapping(
     const AdInfo& ad) {
   auto creative_set = GetCreativeSetForId(ad.creative_set_id);
@@ -1022,6 +1040,20 @@ bool AdsImpl::AdRespectsDailyCapFrequencyCapping(
 
   return HistoryRespectsRollingTimeConstraint(
       campaign, day_window, ad.daily_cap);
+}
+
+std::deque<uint64_t> AdsImpl::GetAdsShownForId(
+    const std::string& id) {
+  std::deque<uint64_t> ads_shown = {};
+
+  auto ads_shown_history = client_->GetAdsShownHistory();
+  for (const auto& ad_shown : ads_shown_history) {
+    if (ad_shown.ad_content.uuid == id) {
+      ads_shown.push_back(ad_shown.timestamp_in_seconds);
+    }
+  }
+
+  return ads_shown;
 }
 
 std::deque<uint64_t> AdsImpl::GetCreativeSetForId(

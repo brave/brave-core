@@ -206,14 +206,20 @@ class AdsImpl : public Ads {
 
   bool AdRespectsTotalMaxFrequencyCapping(
       const AdInfo& ad);
+  bool AdRespectsPerHourFrequencyCapping(
+      const AdInfo& ad);
   bool AdRespectsPerDayFrequencyCapping(
       const AdInfo& ad);
   bool AdRespectsDailyCapFrequencyCapping(
       const AdInfo& ad);
+
+  std::deque<uint64_t> GetAdsShownForId(
+      const std::string& id);
   std::deque<uint64_t> GetCreativeSetForId(
       const std::string& id);
   std::deque<uint64_t> GetCampaignForId(
       const std::string& id);
+
   bool IsAdValid(
       const AdInfo& ad_info);
   NotificationInfo last_shown_notification_info_;
