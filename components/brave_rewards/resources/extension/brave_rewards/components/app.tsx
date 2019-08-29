@@ -80,7 +80,7 @@ export class RewardsPanel extends React.Component<Props, State> {
         // Check every second no more than 'limit' times
         // clear the interval if panel closes
 
-        const markupMatch = 'channel-header__channel-link'
+        const markupMatch = 'channel-header'
         let itr = 0
         const limit = 5
         let interval = setInterval(poll, 1000)
