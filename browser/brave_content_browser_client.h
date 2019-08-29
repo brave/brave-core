@@ -105,7 +105,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
-  bool allow_google_auth_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
 };

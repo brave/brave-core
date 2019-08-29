@@ -5,6 +5,38 @@
 
 #include "services/network/network_context.h"
 
+#include <map>
+#include <vector>
+
+#include "url/gurl.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
+
+bool IsWhitelistedCookieException(const GURL& request_url,
+                                  const GURL& first_party_url) {
+  // Check with the security team before adding exceptions.
+
+  // 1st-party-dependent whitelist
+  std::map<GURL, std::vector<ContentSettingsPattern>> whitelist_patterns = {
+    {
+      GURL("https://www.sliver.tv/"),
+      std::vector<ContentSettingsPattern>({
+        ContentSettingsPattern::FromString("https://*.thetatoken.org:8700/*"),
+      }),
+    }
+  };
+
+  std::map<GURL, std::vector<ContentSettingsPattern>>::iterator i =
+      whitelist_patterns.find(first_party_url.GetOrigin());
+  if (i == whitelist_patterns.end()) {
+    return false;
+  }
+  std::vector<ContentSettingsPattern> &exceptions = i->second;
+  return std::any_of(exceptions.begin(), exceptions.end(),
+      [&request_url](const ContentSettingsPattern& pattern) {
+        return pattern.Matches(request_url);
+      });
+}
+
 GURL GetURLForCookieAccess(const net::URLRequest& request) {
   if (!request.site_for_cookies().is_empty())
     return request.site_for_cookies();
@@ -22,12 +54,14 @@ GURL GetURLForCookieAccess(const net::URLRequest& request) {
 }
 
 #define BRAVE_ON_CAN_GET_COOKIES_INTERNAL \
-network_context_->cookie_manager() \
-                ->cookie_settings() \
-                .IsCookieAccessAllowed( \
-                    request.url(), \
-                    GetURLForCookieAccess(request)) \
-                    &&
+return allowed_from_caller && \
+       (network_context_->cookie_manager() \
+          ->cookie_settings() \
+          .IsCookieAccessAllowed( \
+              request.url(), \
+              GetURLForCookieAccess(request)) || \
+        IsWhitelistedCookieException(request.url(), \
+                                     GetURLForCookieAccess(request)));
 
 #define BRAVE_ON_CAN_SET_COOKIES_INTERNAL BRAVE_ON_CAN_GET_COOKIES_INTERNAL
 

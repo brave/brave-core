@@ -66,8 +66,7 @@ bool OnAllowAccessCookies(
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
     : ChromeNetworkDelegate(event_router),
-      referral_headers_list_(nullptr),
-      allow_google_auth_(true) {
+      referral_headers_list_(nullptr) {
   // Initialize the preference change registrar.
   base::PostTaskWithTraits(
       FROM_HERE, {BrowserThread::UI},
@@ -76,10 +75,6 @@ BraveNetworkDelegateBase::BraveNetworkDelegateBase(
 }
 
 BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {}
-
-void BraveNetworkDelegateBase::set_allow_google_auth(bool allow) {
-  allow_google_auth_ = allow;
-}
 
 void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
@@ -191,7 +186,6 @@ bool BraveNetworkDelegateBase::OnCanGetCookies(
     const net::CookieList& cookie_list,
     bool allowed_from_caller) {
   std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
-  ctx->allow_google_auth = allow_google_auth_;
   brave::BraveRequestInfo::FillCTXFromRequest(&request, ctx);
   ctx->event_type = brave::kOnCanGetCookies;
 
@@ -204,7 +198,6 @@ bool BraveNetworkDelegateBase::OnCanSetCookie(
     net::CookieOptions* options,
     bool allowed_from_caller) {
   std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
-  ctx->allow_google_auth = allow_google_auth_;
   brave::BraveRequestInfo::FillCTXFromRequest(&request, ctx);
   ctx->event_type = brave::kOnCanSetCookies;
 

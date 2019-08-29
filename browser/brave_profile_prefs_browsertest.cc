@@ -35,8 +35,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kAdControlType));
   EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kGoogleLoginControlType));
-  EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kFBEmbedControlType));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kTwitterEmbedControlType));
