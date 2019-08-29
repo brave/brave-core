@@ -222,8 +222,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "skipWelcomeTour", IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON },
         { "next", IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON },
         { "done", IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON },
-        { "privacyTitle", IDS_BRAVE_WELCOME_PAGE_PRIVACY_TITLE },
-        //{ "privacyDesc", brave_welcome_page_privacy_desc },
+        { "privacyTitle", IDS_BRAVE_WELCOME_PAGE_PRIVACY_TITLE }
       }
     }, {
       std::string("rewards"), {
