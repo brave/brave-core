@@ -40,7 +40,11 @@ export default class FooterBox extends React.PureComponent<Props, {}> {
         </FooterLeftColumn>
         <FooterMiddleColumn>
           {Array.from({ length: totalScreensSize }, (v: undefined, k: number) => (
-            <Bullet active={currentScreen === k + 1} key={k} onClick={onClickSlideBullet.bind(this, k + 1)}>&bull;</Bullet>
+            <Bullet active={currentScreen === k + 1} key={k} onClick={onClickSlideBullet.bind(this, k + 1)}>
+              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'>
+                <circle cx='8' cy='8' r='8' fill='currentColor' fillRule='evenodd' />
+              </svg>
+            </Bullet>
           ))}
         </FooterMiddleColumn>
         <FooterRightColumn>

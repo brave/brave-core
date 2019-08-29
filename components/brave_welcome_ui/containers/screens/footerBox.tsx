@@ -52,7 +52,9 @@ export default class FooterBox extends React.PureComponent<Props, {}> {
               key={k}
               onClick={onClickSlideBullet.bind(this, k + 1)}
             >
-              &bull;
+              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'>
+                <circle cx='8' cy='8' r='8' fill='currentColor' fillRule='evenodd' />
+              </svg>
             </Bullet>
           ))}
         </FooterMiddleColumn>

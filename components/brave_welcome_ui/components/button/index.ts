@@ -19,7 +19,7 @@ const BaseButton = styled<BaseButtonProps, 'button'>('button')`
   background: none;
   border: none;
   cursor: pointer;
-  outline: inherit;
+  outline: none;
 `
 
 export const FooterButton = styled(Button as ComponentType<ButtonProps>)`
@@ -45,6 +45,10 @@ export const SkipButton = styled(BaseButton)`
   &:hover {
     opacity: .9;
   }
+
+  &:focus {
+    box-shadow: 0 0 0 2px ${p => p.theme.color.outlineColor};
+  }
 `
 
 export const PrimaryButton = styled(Button as ComponentType<ButtonProps>)`
@@ -55,18 +59,24 @@ export const PrimaryButton = styled(Button as ComponentType<ButtonProps>)`
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px rgba(255,80,0,0.2);
+    box-shadow: 0 0 0 2px ${p => p.theme.color.outlineColor};
   }
 `
 
 export const Bullet = styled(BaseButton as ComponentType<any>)`
-  padding: 0 7px;
-  font-size: 36px;
+  margin: 0 7px;
+  width: 11px;
+  height: 11px;
   color: #7C7D8C;
   letter-spacing: 0;
 
   &:hover {
     color: #343546;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px ${p => p.theme.color.outlineColor};
+    border-radius: 50%;
   }
 
   ${p => p.active && css`
@@ -97,7 +107,7 @@ export const Link = styled<{}, 'button'>('button')`
     text-decoration: underline;
   }
   &:focus {
-    outline-color: ${p => p.theme.color.brandBrave};
+    outline-color: ${p => p.theme.color.outlineColor};
     outline-width: 2px;
   }
   &:active {

@@ -82,6 +82,17 @@ export const Content = styled<ContentProps, 'section'>('section')`
   max-width: 580px;
   padding: 24px;
 
+  /*
+    prevents focus on all content's child elements if the parent is not active.
+    this is needed because due to our animation transition, the parent container
+    cannot have "display: none" and is using "opacity: 0" instead, making invisible
+    elements still accessible via keyboard, creating an a11y issue.
+    see https://github.com/brave/brave-browser/issues/5504
+  */
+  > * {
+    display: ${p => p.active === false && 'none'};
+  }
+
   ${p => p.active && css`
     opacity: 1;
     transform: translateX(0) scale(1);
