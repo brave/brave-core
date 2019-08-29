@@ -46,7 +46,7 @@ NS_SWIFT_NAME(BraveLedger)
 /// Whether or not to use staging servers. Defaults to false
 @property (nonatomic, class, getter=isDebug) BOOL debug;
 /// Whether or not to use production servers. Defaults to true
-@property (nonatomic, class, getter=isProduction) BOOL production;
+@property (nonatomic, class) BATEnvironment environment;
 /// Marks if this is being ran in a test environment. Defaults to false
 @property (nonatomic, class, getter=isTesting) BOOL testing;
 /// Number of minutes between reconciles override. Defaults to 0 (no override)

@@ -10,14 +10,22 @@
 + (BATBraveRewardsConfiguration *)defaultConfiguration
 {
   __auto_type config = [[BATBraveRewardsConfiguration alloc] init];
+  config.environment = BATEnvironmentDevelopment;
   config.stateStoragePath = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES).firstObject;
+  return config;
+}
+
++ (BATBraveRewardsConfiguration *)stagingConfiguration
+{
+  __auto_type config = [self defaultConfiguration];
+  config.environment = BATEnvironmentStaging;
   return config;
 }
 
 + (BATBraveRewardsConfiguration *)productionConfiguration
 {
   __auto_type config = [self defaultConfiguration];
-  config.production = YES;
+  config.environment = BATEnvironmentProduction;
   return config;
 }
 
@@ -35,7 +43,7 @@
 {
   __auto_type config = [[BATBraveRewardsConfiguration alloc] init];
   config.stateStoragePath = self.stateStoragePath;
-  config.production = self.production;
+  config.environment = self.environment;
   config.testing = self.testing;
   config.useShortRetries = self.useShortRetries;
   config.overridenNumberOfSecondsBetweenReconcile = self.overridenNumberOfSecondsBetweenReconcile;
@@ -80,12 +88,12 @@
     self.ledgerClass = ledgerClass ?: BATBraveLedger.class;
     self.adsClass = adsClass ?: BATBraveAds.class;
 
-    BATBraveAds.debug = !configuration.production;
-    BATBraveAds.production = configuration.production;
+    BATBraveAds.debug = configuration.environment != BATEnvironmentProduction;
+    BATBraveAds.production = configuration.environment == BATEnvironmentProduction;
     BATBraveAds.testing = configuration.testing;
 
-    BATBraveLedger.debug = !configuration.production;
-    BATBraveLedger.production = configuration.production;
+    BATBraveLedger.debug = configuration.environment != BATEnvironmentProduction;
+    BATBraveLedger.environment = configuration.environment;
     BATBraveLedger.testing = configuration.testing;
     BATBraveLedger.useShortRetries = configuration.useShortRetries;
     BATBraveLedger.reconcileTime = configuration.overridenNumberOfSecondsBetweenReconcile;
