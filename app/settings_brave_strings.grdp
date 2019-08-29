@@ -70,7 +70,7 @@
     By turning this off, you can sign in to Brave sites like Gmail without signing in to Brave
   </message>
 
-  <!-- People Page -->
+  <!-- Profiles Page -->
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_SINGULAR" desc="Warning message displayed in the Sign out of Brave dialog that indicates profile browsing data will be removed from the device.">
     This will delete 1 item from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>.
   </message>

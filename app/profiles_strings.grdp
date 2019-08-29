@@ -60,11 +60,11 @@
 
   <!-- Multi-profile -->
   <message name="IDS_PROFILES_OPTIONS_GROUP_NAME" desc="The name of the sync group in the options dialog when using the new Profiles UI.">
-    People
+    Profiles
   </message>
   <if expr="is_macosx">
     <message name="IDS_PROFILES_CREATE_NEW_PROFILE_OPTION" desc="In Title Case. Create new profile menu item and button title.">
-      Add Person...
+      Add Profile...
     </message>
   </if>
   <message name="IDS_PROFILES_PROFILE_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu bubble.">
@@ -132,7 +132,7 @@
       Hide accounts
     </message>
     <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-      Manage people
+      Manage profiles
     </message>
     <message name="IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a guest window.">
       Open Guest window
@@ -155,7 +155,7 @@
       Hide Accounts
     </message>
     <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-      Manage People
+      Manage Profiles
     </message>
     <message name="IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a guest window.">
       Open Guest Window
@@ -165,10 +165,10 @@
     </message>
   </if>
   <message name="IDS_PROFILES_EDIT_PROFILE_ACCESSIBLE_NAME" desc="Description of the Edit Profile button. This is used for accessibility.">
-    Edit person, <ph name="PROFILE_NAME">$1<ex>Jane Doe</ex></ph>
+    Edit profile, <ph name="PROFILE_NAME">$1<ex>Jane Doe</ex></ph>
   </message>
   <message name="IDS_PROFILES_EDIT_SIGNED_IN_PROFILE_ACCESSIBLE_NAME" desc="Description of the Edit Profile button for a signed-in profile. This is used for accessibility.">
-    Edit person, <ph name="PROFILE_NAME">$1<ex>Jane Doe</ex></ph>, <ph name="USERNAME">$2<ex>jane.doe@gmail.com</ex></ph>
+    Edit profile, <ph name="PROFILE_NAME">$1<ex>Jane Doe</ex></ph>, <ph name="USERNAME">$2<ex>jane.doe@gmail.com</ex></ph>
   </message>
   <message name="IDS_PROFILES_GUEST_PROFILE_NAME" desc="Name of the guest profile.">
     Guest
@@ -183,7 +183,7 @@
     User <ph name="VALUE">$1<ex>1</ex></ph>
   </message>
   <message name="IDS_NEW_NUMBERED_PROFILE_NAME" desc="The name given to a newly created profile. Displayed in wrench menu and settings UI using the --new-profile-management flag.">
-    Person <ph name="VALUE">$1<ex>1</ex></ph>
+    Profile <ph name="VALUE">$1<ex>1</ex></ph>
   </message>
   <message name="IDS_SINGLE_PROFILE_DISPLAY_NAME" desc="The name displayed by the avatar button if only one profile exists.">
     You
@@ -420,7 +420,7 @@
     Not signed in
   </message>
   <message name="IDS_PROFILES_CREATE_BUTTON_LABEL" desc="The label that appears on the profile create button in the options dialog to allow a user to create a new profile.">
-    Add person...
+    Add profile...
   </message>
   <message name="IDS_PROFILES_MANAGE_BUTTON_LABEL" desc="The label that appears on the profile manage button in the options dialog to allow a user to manage their profile.">
     Edit...
@@ -441,10 +441,10 @@
     Your administrator has made a system-wide change that disables some old profiles.
   </message>
   <message name="IDS_OLD_PROFILES_DISABLED_ADD_PERSON_SUGGESTION" desc="The suggestion that tells the user to create a new profile when the user tries to use an old profile that is disabled by policy">
-    To continue, click OK, then click Add Person to create a new profile for your email address.
+    To continue, click OK, then click Add Profile to create a new profile for your email address.
   </message>
   <message name="IDS_OLD_PROFILES_DISABLED_ADD_PERSON_SUGGESTION_WITH_DOMAIN" desc="The suggestion that tells the user to create a new profile with the domain when the user tries to use an old profile that is disabled by policy">
-    To continue, click OK, then click Add Person to create a new profile for your <ph name="DOMAIN">$1<ex>example.com</ex></ph> email address.
+    To continue, click OK, then click Add Profile to create a new profile for your <ph name="DOMAIN">$1<ex>example.com</ex></ph> email address.
   </message>
   <message name="IDS_OLD_PROFILES_DISABLED_REMOVED_OLD_PROFILE" desc="The suggestion that tells the user to delete old profile when the user tries to use an old profile that is disabled by policy">
     Although you can no longer access your old profile, you can still remove it.
@@ -467,7 +467,7 @@
   <if expr="not is_android">
     <!-- Create Profile Dialog -->
     <message name="IDS_PROFILES_CREATE_TITLE" desc="Title of the create profile dialog">
-      Add person
+      Add profile
     </message>
     <message name="IDS_PROFILES_CREATE_LOCAL_ERROR" desc="Message shown when a local error (for example, a disk error) occurs during profile creation.">
       The new user couldn't be created. Please check your hard drive space and permissions and try again.
@@ -498,14 +498,14 @@
     <!-- User manager web UI -->
     <if expr="use_titlecase">
       <message name="IDS_ADD_USER_BUTTON" desc="Text shown on an add user button on login/locker screen">
-        Add Person
+        Add Profile
       </message>
       <if expr="not chromeos">
         <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-          Remove This Person
+          Remove This Profile
         </message>
         <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
-          Add Supervised Person
+          Add Supervised Profile
         </message>
       </if>
       <if expr="chromeos">
@@ -522,14 +522,14 @@
     </if>
     <if expr="not use_titlecase">
       <message name="IDS_ADD_USER_BUTTON" desc="Text shown on an add user button on login/locker screen">
-        Add person
+        Add profile
       </message>
       <if expr="not chromeos">
         <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-          Remove this person
+          Remove this profile
         </message>
         <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
-          Add supervised person
+          Add supervised profile
         </message>
       </if>
       <if expr="chromeos">
@@ -619,10 +619,10 @@
         Please unlock your profile before browsing as a guest.
       </message>
       <message name="IDS_USER_MANAGER_REMOVE_PROFILE_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to remove a profile while all profiles are locked.">
-        Please unlock your profile before removing a person.
+        Please unlock your profile before removing a profile.
       </message>
       <message name="IDS_USER_MANAGER_ADD_PROFILE_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to add a profile while all profiles are locked.">
-        Please unlock your profile before adding a person.
+        Please unlock your profile before adding a profile.
       </message>
       <message name="IDS_USER_MANAGER_PROMPT_MESSAGE" desc="Prompt message displayed on UserManager when force-sign-in policy is enabled.">
         To use Brave, please sign in
