@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "bat/ledger/ledger.h"
 #include "brave/components/services/bat_ledger/bat_ledger_impl.h"
 #include "mojo/public/cpp/bindings/strong_associated_binding.h"
 
@@ -39,9 +38,9 @@ void BatLedgerServiceImpl::Create(
   initialized_ = true;
 }
 
-void BatLedgerServiceImpl::SetProduction(bool is_production) {
+void BatLedgerServiceImpl::SetEnvironment(ledger::Environment environment) {
   DCHECK(!initialized_ || testing());
-  ledger::is_production = is_production;
+  ledger::_environment = environment;
 }
 
 void BatLedgerServiceImpl::SetDebug(bool is_debug) {
@@ -63,8 +62,8 @@ void BatLedgerServiceImpl::SetTesting() {
   ledger::is_testing = true;
 }
 
-void BatLedgerServiceImpl::GetProduction(GetProductionCallback callback) {
-  std::move(callback).Run(ledger::is_production);
+void BatLedgerServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
+  std::move(callback).Run(ledger::_environment);
 }
 
 void BatLedgerServiceImpl::GetDebug(GetDebugCallback callback) {

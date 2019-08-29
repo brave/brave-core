@@ -502,16 +502,14 @@ void RewardsServiceImpl::StartLedger() {
   bat_ledger_service_.set_connection_error_handler(
       base::Bind(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
 
-  bool is_production = true;
+  ledger::Environment environment = ledger::Environment::STAGING;
   // Environment
   #if defined(OFFICIAL_BUILD) && defined(OS_ANDROID)
-    is_production = !ShouldUseStagingServerForAndroid();
+    environment = GetServerEnvironmentForAndroid();
   #elif defined(OFFICIAL_BUILD)
-    is_production = true;
-  #else
-    is_production = false;
+    environment = ledger::Environment::PRODUCTION;
   #endif
-  SetProduction(is_production);
+  SetEnvironment(environment);
 
   SetDebug(false);
 
@@ -2861,16 +2859,16 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
     }
 
     if (name == "staging") {
-      bool is_production;
+      ledger::Environment environment;
       std::string lower = base::ToLowerASCII(value);
 
       if (lower == "true" || lower == "1") {
-        is_production = false;
+        environment = ledger::Environment::STAGING;
       } else {
-        is_production = true;
+        environment = ledger::Environment::PRODUCTION;
       }
 
-      SetProduction(is_production);
+      SetEnvironment(environment);
       continue;
     }
 
@@ -2923,6 +2921,18 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       uphold->user_name = "Brave Test";
       uphold->transferred = true;
       SaveExternalWallet(ledger::kWalletUphold, std::move(uphold));
+      continue;
+    }
+
+    if (name == "development") {
+      ledger::Environment environment;
+      std::string lower = base::ToLowerASCII(value);
+
+      if (lower == "true" || lower == "1") {
+        environment = ledger::Environment::DEVELOPMENT;
+        SetEnvironment(environment);
+      }
+
       continue;
     }
   }
@@ -2992,9 +3002,9 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
   // this is needed because we are using braveledger_bat_helper::buildURL
   // directly in BraveRewardsBrowserTest
   #if defined(OFFICIAL_BUILD)
-  ledger::is_production = true;
+  ledger::_environment = ledger::Environment::PRODUCTION;
   #else
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   #endif
 }
 
@@ -3002,8 +3012,12 @@ void RewardsServiceImpl::StartMonthlyContributionForTest() {
   bat_ledger_->StartMonthlyContribution();
 }
 
-void RewardsServiceImpl::GetProduction(const GetProductionCallback& callback) {
-  bat_ledger_service_->GetProduction(callback);
+void RewardsServiceImpl::CheckInsufficientFundsForTesting() {
+  MaybeShowNotificationAddFunds();
+}
+
+void RewardsServiceImpl::GetEnvironment(const GetEnvironmentCallback& callback) {
+  bat_ledger_service_->GetEnvironment(callback);
 }
 
 void RewardsServiceImpl::GetDebug(const GetDebugCallback& callback) {
@@ -3020,8 +3034,8 @@ void RewardsServiceImpl::GetShortRetries(
   bat_ledger_service_->GetShortRetries(callback);
 }
 
-void RewardsServiceImpl::SetProduction(bool production) {
-  bat_ledger_service_->SetProduction(production);
+void RewardsServiceImpl::SetEnvironment(ledger::Environment environment) {
+  bat_ledger_service_->SetEnvironment(environment);
 }
 
 void RewardsServiceImpl::SetDebug(bool debug) {
@@ -4016,13 +4030,18 @@ void RewardsServiceImpl::GrantAttestationResult(
 #endif
 
 #if defined(OS_ANDROID)
-bool RewardsServiceImpl::ShouldUseStagingServerForAndroid() {
-  bool use_staging = false;
+ledger::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
+  auto result = ledger::Environment::PRODUCTION;
   if (profile_ && profile_->GetPrefs()) {
-    use_staging = profile_->GetPrefs()->
-        GetBoolean(prefs::kUseRewardsStagingServer);
+    use_staging =
+        profile_->GetPrefs()->GetBoolean(prefs::kUseRewardsStagingServer);
   }
-  return use_staging;
+
+  if (use_staging) {
+    result = ledger::Environment::STAGING;
+  };
+
+  return result;
 }
 #endif
 

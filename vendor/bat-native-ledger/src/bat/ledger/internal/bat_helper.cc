@@ -2218,31 +2218,55 @@ std::string buildURL(const std::string& path,
   std::string url;
   switch (server) {
     case SERVER_TYPES::BALANCE:
-      if (ledger::is_production) {
-        url = BALANCE_PRODUCTION_SERVER;
-      } else {
-        url = BALANCE_STAGING_SERVER;
+      switch (ledger::_environment) {
+        case ledger::Environment::STAGING:
+          url = BALANCE_STAGING_SERVER;
+          break;
+        case ledger::Environment::PRODUCTION:
+          url = BALANCE_PRODUCTION_SERVER;
+          break;
+        case ledger::Environment::DEVELOPMENT:
+          url = BALANCE_DEVELOPMENT_SERVER;
+          break;
       }
       break;
     case SERVER_TYPES::PUBLISHER:
-      if (ledger::is_production) {
-        url = PUBLISHER_PRODUCTION_SERVER;
-      } else {
-        url = PUBLISHER_STAGING_SERVER;
+      switch (ledger::_environment) {
+        case ledger::Environment::STAGING:
+          url = PUBLISHER_STAGING_SERVER;
+          break;
+        case ledger::Environment::PRODUCTION:
+          url = PUBLISHER_PRODUCTION_SERVER;
+          break;
+        case ledger::Environment::DEVELOPMENT:
+          url = PUBLISHER_DEVELOPMENT_SERVER;
+          break;
       }
       break;
     case SERVER_TYPES::PUBLISHER_DISTRO:
-      if (ledger::is_production) {
-        url = PUBLISHER_DISTRO_PRODUCTION_SERVER;
-      } else {
-        url = PUBLISHER_DISTRO_STAGING_SERVER;
+      switch (ledger::_environment) {
+        case ledger::Environment::STAGING:
+          url = PUBLISHER_DISTRO_STAGING_SERVER;
+          break;
+        case ledger::Environment::PRODUCTION:
+          url = PUBLISHER_DISTRO_PRODUCTION_SERVER;
+          break;
+        case ledger::Environment::DEVELOPMENT:
+          url = PUBLISHER_DISTRO_DEVELOPMENT_SERVER;
+          break;
       }
       break;
-    default:
-      if (ledger::is_production) {
-        url = LEDGER_PRODUCTION_SERVER;
-      } else {
-        url = LEDGER_STAGING_SERVER;
+    case SERVER_TYPES::LEDGER:
+      switch (ledger::_environment) {
+        case ledger::Environment::STAGING:
+          url = LEDGER_STAGING_SERVER;
+          break;
+        case ledger::Environment::PRODUCTION:
+          url = LEDGER_PRODUCTION_SERVER;
+          break;
+        case ledger::Environment::DEVELOPMENT:
+          url = LEDGER_DEVELOPMENT_SERVER;
+          break;
       }
       break;
   }

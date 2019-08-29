@@ -13,7 +13,8 @@
 
 namespace ledger {
 
-bool is_production = true;
+Environment _environment = Environment::PRODUCTION;
+
 bool is_debug = false;
 bool is_testing = false;
 int reconcile_time = 0;  // minutes

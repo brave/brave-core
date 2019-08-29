@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "bat/ledger/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "services/service_manager/public/cpp/service_context_ref.h"
 
@@ -23,13 +24,13 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   void Create(mojom::BatLedgerClientAssociatedPtrInfo client_info,
               mojom::BatLedgerAssociatedRequest bat_ledger) override;
 
-  void SetProduction(bool isProduction) override;
+  void SetEnvironment(ledger::Environment environment) override;
   void SetDebug(bool isDebug) override;
   void SetReconcileTime(int32_t time) override;
   void SetShortRetries(bool short_retries) override;
   void SetTesting() override;
 
-  void GetProduction(GetProductionCallback callback) override;
+  void GetEnvironment(GetEnvironmentCallback callback) override;
   void GetDebug(GetDebugCallback callback) override;
   void GetReconcileTime(GetReconcileTimeCallback callback) override;
   void GetShortRetries(GetShortRetriesCallback callback) override;

@@ -322,7 +322,10 @@ void LedgerImpl::OnLedgerStateLoaded(
 void LedgerImpl::SetConfirmationsWalletInfo(
     const braveledger_bat_helper::WALLET_INFO_ST& wallet_info) {
   if (!bat_confirmations_) {
-    confirmations::_is_production = ledger::is_production;
+    // TODO(Terry): change when ads/confirmations adopts enums
+    bool is_production =
+        ledger::_environment == ledger::Environment::PRODUCTION;
+    confirmations::_is_production = is_production;
     confirmations::_is_debug = ledger::is_debug;
 
     bat_confirmations_.reset(

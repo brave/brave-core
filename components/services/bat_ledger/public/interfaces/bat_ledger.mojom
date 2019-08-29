@@ -10,13 +10,13 @@ const string kServiceName = "bat_ledger";
 interface BatLedgerService {
   Create(associated BatLedgerClient bat_ledger_client,
          associated BatLedger& bat_ledger);
-  SetProduction(bool isProduction);
+  SetEnvironment(ledger.mojom.Environment environment);
   SetDebug(bool isDebug);
   SetReconcileTime(int32 time);
   SetShortRetries(bool short_retries);
   SetTesting();
 
-  GetProduction() => (bool production);
+  GetEnvironment() => (ledger.mojom.Environment environment);
   GetDebug() => (bool debug);
   GetReconcileTime() => (int32 time);
   GetShortRetries() => (bool short_retries);
