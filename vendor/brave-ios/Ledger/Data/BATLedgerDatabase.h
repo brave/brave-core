@@ -6,6 +6,9 @@
 #import "Records.h"
 #import "ledger.mojom.objc.h"
 
+// FIXME: Remove this later
+#import "BATBraveLedger.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);

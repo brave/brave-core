@@ -84,13 +84,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& publisher_state,
       ledger::LedgerCallbackHandler* handler));
 
-  MOCK_METHOD2(SavePublishersList, void(
-      const std::string& publisher_state,
-      ledger::LedgerCallbackHandler* handler));
-
-  MOCK_METHOD1(LoadPublisherList, void(
-      ledger::LedgerCallbackHandler* handler));
-
   MOCK_METHOD1(LoadNicewareList, void(
       ledger::GetNicewareListCallback callback));
 
@@ -325,6 +318,14 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD2(DeleteActivityInfo, void(
       const std::string& publisher_key,
       ledger::DeleteActivityInfoCallback callback));
+
+  MOCK_METHOD2(ClearAndInsertServerPublisherList, void(
+      ledger::ServerPublisherInfoList list,
+      ledger::ClearAndInsertServerPublisherListCallback callback));
+
+  MOCK_METHOD2(GetServerPublisherInfo, void(
+      const std::string& publisher_key,
+      ledger::GetServerPublisherInfoCallback callback));
 };
 
 }  // namespace confirmations

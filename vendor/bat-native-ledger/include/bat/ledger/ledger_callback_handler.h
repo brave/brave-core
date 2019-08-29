@@ -32,10 +32,6 @@ class LEDGER_EXPORT LedgerCallbackHandler {
       InitializeCallback callback) {}
 
   virtual void OnPublisherStateSaved(Result result) {}
-
-  virtual void OnPublishersListSaved(Result result) {}
-
-  virtual void OnPublisherListLoaded(Result result, const std::string& data) {}
 };
 
 }  // namespace ledger

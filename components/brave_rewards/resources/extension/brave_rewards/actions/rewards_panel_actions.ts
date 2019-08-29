@@ -130,8 +130,8 @@ export const onPublisherBanner = (banner: RewardsExtension.PublisherBanner) =>
     banner
   })
 
-export const refreshPublisher = (verified: boolean, publisherKey: string) => action(types.ON_PUBLISHER_STATUS_REFRESHED, {
-  verified,
+export const refreshPublisher = (status: number, publisherKey: string) => action(types.ON_PUBLISHER_STATUS_REFRESHED, {
+  status,
   publisherKey
 })
 

@@ -75,7 +75,7 @@ void Unverified::OnContributeUnverifiedPublishers(
     }
 
     // verified status didn't change
-    if (!ledger_->IsPublisherVerified(item->publisher_key)) {
+    if (item->status != ledger::PublisherStatus::VERIFIED) {
       continue;
     }
 

@@ -268,4 +268,12 @@ NS_SWIFT_NAME(BraveLedger)
 
 @end
 
+// FIXME: This is a patch, need to use the actual verified state
+@interface BATPublisherInfo (BuildFix)
+@property (nonatomic, getter=isVerified) BOOL verified;
+@end
+@interface BATPendingContributionInfo (BuildFix)
+@property (nonatomic, getter=isVerified) BOOL verified;
+@end
+
 NS_ASSUME_NONNULL_END

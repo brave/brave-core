@@ -536,7 +536,8 @@ void Twitch::OnMediaPublisherActivity(
                   _1,
                   _2));
   } else {
-    if (info->verified && info->favicon_url.empty()) {
+    const auto add = ledger_->IsPublisherConnectedOrVerified(info->status);
+    if (add && info->favicon_url.empty()) {
       std::string publisher_name;
       std::string publisher_favicon_url;
 

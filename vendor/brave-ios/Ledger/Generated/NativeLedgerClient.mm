@@ -59,9 +59,6 @@ void NativeLedgerClient::LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr fi
 void NativeLedgerClient::LoadPublisherInfo(const std::string & publisher_key, ledger::PublisherInfoCallback callback) {
   [bridge_ loadPublisherInfo:publisher_key callback:callback];
 }
-void NativeLedgerClient::LoadPublisherList(ledger::LedgerCallbackHandler * handler) {
-  [bridge_ loadPublisherList:handler];
-}
 void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];
 }
@@ -127,9 +124,6 @@ void NativeLedgerClient::SavePublisherInfo(ledger::PublisherInfoPtr publisher_in
 }
 void NativeLedgerClient::SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) {
   [bridge_ savePublisherState:publisher_state handler:handler];
-}
-void NativeLedgerClient::SavePublishersList(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) {
-  [bridge_ savePublishersList:publisher_state handler:handler];
 }
 void NativeLedgerClient::SaveState(const std::string & name, const std::string & value, ledger::OnSaveCallback callback) {
   [bridge_ saveState:name value:value callback:callback];
@@ -199,4 +193,10 @@ void NativeLedgerClient::ShowNotification(const std::string& type, const std::ve
 }
 void NativeLedgerClient::DeleteActivityInfo(const std::string& publisher_key, ledger::DeleteActivityInfoCallback callback) {
   [bridge_ deleteActivityInfo:publisher_key callback:callback];
+}
+void NativeLedgerClient::ClearAndInsertServerPublisherList(ledger::ServerPublisherInfoList list, ledger::ClearAndInsertServerPublisherListCallback callback) {
+  [bridge_ clearAndInsertServerPublisherList:std::move(list) callback:callback];
+}
+void NativeLedgerClient::GetServerPublisherInfo(const std::string& publisher_key, ledger::GetServerPublisherInfoCallback callback) {
+  [bridge_ getServerPublisherInfo:publisher_key callback:callback];
 }

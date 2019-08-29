@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_PUBLISHER_INFO_DATABASE_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_PUBLISHER_INFO_DATABASE_H_
 
 #include <memory>
 #include <string>
@@ -18,6 +18,7 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "build/build_config.h"
@@ -29,7 +30,9 @@ namespace brave_rewards {
 
 class PublisherInfoDatabase {
  public:
-  explicit PublisherInfoDatabase(const base::FilePath& db_path);
+  PublisherInfoDatabase(
+      const base::FilePath& db_path,
+      const int testing_current_version = -1);
   ~PublisherInfoDatabase();
 
   // Call before Init() to set the error callback to be used for the
@@ -91,10 +94,14 @@ class PublisherInfoDatabase {
 
   bool RemoveAllPendingContributions();
 
+  bool ClearAndInsertServerPublisherList(
+      const ledger::ServerPublisherInfoList& list);
+
+  ledger::ServerPublisherInfoPtr GetServerPublisherInfo(
+      const std::string& publisher_key);
+
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
-
-  void SetTestingCurrentVersion(int value);
 
   bool DeleteActivityInfo(const std::string& publisher_key,
                           uint64_t reconcile_stamp);
@@ -149,6 +156,8 @@ class PublisherInfoDatabase {
 
   bool MigrateV5toV6();
 
+  bool MigrateV6toV7();
+
   bool Migrate(int version);
 
   sql::InitStatus EnsureCurrentVersion();
@@ -160,6 +169,7 @@ class PublisherInfoDatabase {
   int testing_current_version_;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
+  std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);
@@ -167,4 +177,4 @@ class PublisherInfoDatabase {
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_PUBLISHER_INFO_DATABASE_H_
