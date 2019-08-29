@@ -31,7 +31,6 @@ private:
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoCallback callback) override;
   void LoadPublisherInfo(const std::string & publisher_key, ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherList(ledger::LedgerCallbackHandler * handler) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
   void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::URL_METHOD method, ledger::LoadURLCallback callback) override;
@@ -55,7 +54,6 @@ private:
   void SavePendingContribution(ledger::PendingContributionList list, ledger::SavePendingContributionCallback callback) override;
   void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) override;
   void SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;
-  void SavePublishersList(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;
   void SaveState(const std::string & name, const std::string & value, ledger::OnSaveCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
   void SetTimer(uint64_t time_offset, uint32_t * timer_id) override;
@@ -79,4 +77,6 @@ private:
   void SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) override;
   void ShowNotification(const std::string& type, const std::vector<std::string>& args,  ledger::ShowNotificationCallback callback) override;
   void DeleteActivityInfo(const std::string& publisher_key, ledger::DeleteActivityInfoCallback callback) override;
+  void ClearAndInsertServerPublisherList(ledger::ServerPublisherInfoList list, ledger::ClearAndInsertServerPublisherListCallback callback) override;
+  void GetServerPublisherInfo(const std::string& publisher_key, ledger::GetServerPublisherInfoCallback callback) override;
 };

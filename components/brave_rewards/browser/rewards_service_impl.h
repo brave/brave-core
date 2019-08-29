@@ -331,11 +331,7 @@ class RewardsServiceImpl : public RewardsService,
                                  uint32_t limit,
                                  ledger::PublisherInfoListCallback callback,
                                  ledger::PublisherInfoList list);
-  void OnPublishersListSaved(ledger::LedgerCallbackHandler* handler,
-                             bool success);
   void OnTimer(uint32_t timer_id);
-  void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
-                             const std::string& data);
   void OnSavedState(ledger::OnSaveCallback callback, bool success);
   void OnLoadedState(ledger::OnLoadCallback callback,
                                   const std::string& value);
@@ -502,10 +498,7 @@ class RewardsServiceImpl : public RewardsService,
       uint32_t limit,
       ledger::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoListCallback callback) override;
-  void SavePublishersList(const std::string& publishers_list,
-                          ledger::LedgerCallbackHandler* handler) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
-  void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
@@ -628,6 +621,14 @@ class RewardsServiceImpl : public RewardsService,
       const std::vector<std::string>& args,
       ledger::ShowNotificationCallback callback) override;
 
+  void ClearAndInsertServerPublisherList(
+      ledger::ServerPublisherInfoList list,
+      ledger::ClearAndInsertServerPublisherListCallback callback) override;
+
+  void GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -649,7 +650,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnRefreshPublisher(
       RefreshPublisherCallback callback,
       const std::string& publisher_key,
-      bool verified);
+      ledger::PublisherStatus status);
   void OnMediaInlineInfoSaved(
       SaveMediaInfoCallback callback,
       const ledger::Result result,
@@ -659,6 +660,14 @@ class RewardsServiceImpl : public RewardsService,
       ledger::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
+
+  void OnClearAndInsertServerPublisherList(
+    ledger::ClearAndInsertServerPublisherListCallback callback,
+    bool result);
+
+  void OnGetServerPublisherInfo(
+    ledger::GetServerPublisherInfoCallback callback,
+    ledger::ServerPublisherInfoPtr info);
 
   bool Connected() const;
   void ConnectionClosed();

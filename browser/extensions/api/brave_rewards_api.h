@@ -287,7 +287,7 @@ class BraveRewardsRefreshPublisherFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnRefreshPublisher(bool verified, const std::string& publisher_key);
+  void OnRefreshPublisher(uint32_t status, const std::string& publisher_key);
 };
 
 class BraveRewardsGetAllNotificationsFunction :

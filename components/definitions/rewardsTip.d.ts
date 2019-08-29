@@ -20,6 +20,12 @@ declare namespace RewardsTip {
     rewardsDonateData: State  // TODO(nejczdovc): migrate to tips
   }
 
+  export enum PublisherStatus {
+    NOT_VERIFIED = 0,
+    CONNECTED = 1,
+    VERIFIED = 2
+  }
+
   interface Publisher {
     publisherKey: string
     name: string
@@ -29,8 +35,8 @@ declare namespace RewardsTip {
     logo: string
     amounts: number[],
     provider: string
-    social: Record<string, string>
-    verified: boolean
+    links: Record<string, string>
+    status: PublisherStatus
   }
 
   type MediaMetaData = {

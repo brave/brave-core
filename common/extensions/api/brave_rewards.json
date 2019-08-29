@@ -54,7 +54,7 @@
             "properties": {
               "status": {
                 "type": "integer",
-                "description": "publisher attention score"
+                "description": "grant process status"
               },
               "expiryTime": {
                 "type": "integer",
@@ -113,9 +113,9 @@
                 "type": "string",
                 "description": "url of the current tab"
               },
-              "verified": {
-                "type": "boolean",
-                "description": "is publisher verified"
+              "status": {
+                "type": "integer",
+                "description": "publisher status"
               }
             }
           }
@@ -279,9 +279,9 @@
                   "type": "integer",
                   "description": "publisher attention score"
                 },
-                "verified": {
-                  "type": "boolean",
-                  "description": "is publisher verified"
+                "status": {
+                  "type": "integer",
+                  "description": "publisher status"
                 }
               }
             }
@@ -745,7 +745,7 @@
       {
         "name": "refreshPublisher",
         "type": "function",
-        "description": "Refreshes verified status for individual publisher",
+        "description": "Refreshes individual publisher status",
         "parameters": [
           {
             "name": "publisherKey",
@@ -756,8 +756,8 @@
             "name": "callback",
             "parameters": [
               {
-                "name": "verified",
-                "type": "boolean"
+                "name": "status",
+                "type": "integer"
               },
               {
                 "name": "publisherKey",

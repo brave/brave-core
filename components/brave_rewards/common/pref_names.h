@@ -21,6 +21,9 @@ extern const char kRewardsAddFundsNotification[];
 extern const char kRewardsNotificationStartupDelay[];
 extern const char kRewardsExternalWallets[];
 
+// Defined in native-ledger
+extern const char kStateServerPublisherListStamp[];
+
 }  // namespace prefs
 }  // namespace brave_rewards
 

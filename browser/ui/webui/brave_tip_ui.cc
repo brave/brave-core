@@ -262,19 +262,19 @@ void RewardsTipDOMHandler::OnPublisherBanner(
     result.SetString("background", banner->background);
     result.SetString("logo", banner->logo);
     result.SetString("provider", banner->provider);
-    result.SetBoolean("verified", banner->verified);
+    result.SetInteger("status", static_cast<int>(banner->status));
 
     auto amounts = std::make_unique<base::ListValue>();
-    for (int const& value : banner->amounts) {
+    for (auto const& value : banner->amounts) {
       amounts->AppendInteger(value);
     }
     result.SetList("amounts", std::move(amounts));
 
-    auto social = std::make_unique<base::DictionaryValue>();
-    for (auto const& item : banner->social) {
-      social->SetString(item.first, item.second);
+    auto links = std::make_unique<base::DictionaryValue>();
+    for (auto const& item : banner->links) {
+      links->SetString(item.first, item.second);
     }
-    result.SetDictionary("social", std::move(social));
+    result.SetDictionary("links", std::move(links));
   }
 
   web_ui()->CallJavascriptFunctionUnsafe(

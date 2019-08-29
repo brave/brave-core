@@ -45,13 +45,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     ledger::GrantPtr grant) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
-  void LoadPublisherList(LoadPublisherListCallback callback) override;
   void SaveLedgerState(const std::string& ledger_state,
       SaveLedgerStateCallback callback) override;
   void SavePublisherState(const std::string& publisher_state,
       SavePublisherStateCallback callback) override;
-  void SavePublishersList(const std::string& publishers_list,
-      SavePublishersListCallback callback) override;
 
   void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info,
       SavePublisherInfoCallback callback) override;
@@ -184,6 +181,14 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     const std::string& publisher_key,
     DeleteActivityInfoCallback callback) override;
 
+  void ClearAndInsertServerPublisherList(
+    ledger::ServerPublisherInfoList list,
+    ClearAndInsertServerPublisherListCallback callback) override;
+
+  void GetServerPublisherInfo(
+      const std::string& publisher_key,
+      GetServerPublisherInfoCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -203,11 +208,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
         const std::string& data) override;
     void OnPublisherStateLoaded(ledger::Result result,
         const std::string& data) override;
-    void OnPublisherListLoaded(ledger::Result result,
-        const std::string& data) override;
     void OnLedgerStateSaved(ledger::Result result) override;
     void OnPublisherStateSaved(ledger::Result result) override;
-    void OnPublishersListSaved(ledger::Result result) override;
+
    private:
     base::WeakPtr<LedgerClientMojoProxy> client_;
     Callback callback_;
@@ -343,6 +346,14 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnDeleteActivityInfo(
       CallbackHolder<DeleteActivityInfoCallback>* holder,
       const ledger::Result result);
+
+  static void OnClearAndInsertServerPublisherList(
+      CallbackHolder<ClearAndInsertServerPublisherListCallback>* holder,
+      const ledger::Result result);
+
+  static void OnGetServerPublisherInfo(
+    CallbackHolder<GetServerPublisherInfoCallback>* holder,
+    ledger::ServerPublisherInfoPtr info);
 
   ledger::LedgerClient* ledger_client_;
 

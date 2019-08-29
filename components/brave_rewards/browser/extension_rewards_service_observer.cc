@@ -131,7 +131,7 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
   extensions::api::brave_rewards::OnPublisherData::Publisher publisher;
 
   publisher.percentage = info->percent;
-  publisher.verified = info->verified;
+  publisher.status = static_cast<int>(info->status);
   publisher.excluded = info->excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
   publisher.name = info->name;
   publisher.url = info->url;
@@ -280,7 +280,7 @@ void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
 
     publisher.publisher_key = list[i].id;
     publisher.percentage = list[i].percentage;
-    publisher.verified = list[i].verified;
+    publisher.status = list[i].status;
   }
 
   std::unique_ptr<base::ListValue> args(

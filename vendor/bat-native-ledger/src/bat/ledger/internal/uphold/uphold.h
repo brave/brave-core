@@ -71,6 +71,12 @@ class Uphold {
     GetUserCallback callback);
 
  private:
+  void OnServerPublisherInfo(
+    ledger::ServerPublisherInfoPtr info,
+    const std::string& viewing_id,
+    int amount,
+    const ledger::ExternalWallet& wallet);
+
   void ContributionCompleted(
       const ledger::Result result,
       const bool created,

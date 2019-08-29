@@ -29,6 +29,12 @@ declare namespace RewardsExtension {
     rewardsPanelData: State
   }
 
+  export enum PublisherStatus {
+    NOT_VERIFIED = 0,
+    CONNECTED = 1,
+    VERIFIED = 2
+  }
+
   interface Publisher {
     excluded?: boolean
     favicon_url?: string
@@ -39,7 +45,7 @@ declare namespace RewardsExtension {
     tabId?: number
     tabUrl?: string
     url?: string
-    verified?: boolean
+    status?: PublisherStatus
   }
 
   export interface Grant {
@@ -126,7 +132,7 @@ declare namespace RewardsExtension {
   interface PublisherNormalized {
     publisher_key: string
     percentage: number
-    verified: boolean
+    status: PublisherStatus
   }
 
   interface ExcludedSitesChanged {
@@ -148,7 +154,7 @@ declare namespace RewardsExtension {
     amounts: number[],
     provider: string
     social: Record<string, string>
-    verified: boolean
+    status: PublisherStatus
   }
 
   export interface Balance {

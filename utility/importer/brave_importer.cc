@@ -599,9 +599,7 @@ bool ParsePinnedSites(BraveLedger* ledger,
     if (TryFindIntKey(&item, "pinPercentage", publisher.pin_percentage)) {
       if (publisher.pin_percentage > 0) {
         // Read publisher fields from synopsis; provide default values on error
-        if (!TryFindBoolKey(&item, "verified", publisher.verified)) {
-          publisher.verified = false;
-        }
+        publisher.verified = false;  // we can default to false as we use db now
         if (!TryFindStringKey(&item, "siteName", publisher.name)) {
           publisher.name = publisher.key;
         }

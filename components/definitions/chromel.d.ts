@@ -120,7 +120,7 @@ declare namespace chrome.braveRewards {
   const onRecurringTipRemoved: {
     addListener: (callback: (success: boolean) => void) => void
   }
-  const refreshPublisher: (publisherKey: string, callback: (enabled: boolean, publisherKey: string) => void) => {}
+  const refreshPublisher: (publisherKey: string, callback: (status: number, publisherKey: string) => void) => {}
   const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
   const getInlineTipSetting: (key: string, callback: (enabled: boolean) => void) => {}
   const fetchBalance: (callback: (balance: RewardsExtension.Balance) => void) => {}

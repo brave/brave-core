@@ -5,6 +5,7 @@
 import { types } from '../../constants/rewards_panel_types'
 import * as storage from '../storage'
 import { setBadgeText } from '../browserAction'
+import { isPublisherConnectedOrVerified } from '../../utils'
 
 const getWindowId = (id: number) => {
   return `id_${id}`
@@ -93,7 +94,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         // Valid match and either is a different tab with the same url,
         // or the same tab but it has been unloaded and re-loaded.
         // Set state.
-        setBadgeText(state, publisher.verified, tab.id)
+        setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), tab.id)
         publishers[id].tabId = tab.id
       }
 
@@ -115,7 +116,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         const newPublisher = publishers[id]
 
         if (newPublisher.tabId) {
-          setBadgeText(state, newPublisher.verified, newPublisher.tabId)
+          setBadgeText(state, isPublisherConnectedOrVerified(newPublisher.status), newPublisher.tabId)
         }
       }
 
@@ -261,7 +262,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           newPublisher.publisher_key === publisher.publisher_key)
 
         if (updated) {
-          publisher.verified = updated.verified
+          publisher.status = updated.status
           publisher.percentage = updated.percentage
           publisher.excluded = false
         } else {
@@ -356,7 +357,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         for (const key in publishers) {
           let publisher = publishers[key]
           if (publisher.publisher_key === publisherKey) {
-            publisher.verified = payload.verified
+            publisher.status = payload.status
           }
         }
         state = {
@@ -422,7 +423,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           return
         }
 
-        setBadgeText(state, publisher.verified, publisher.tabId)
+        setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), publisher.tabId)
       })
 
       break
