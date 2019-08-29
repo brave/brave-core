@@ -11,18 +11,7 @@
 namespace {
 
 typedef testing::Test BraveShieldsExceptionsTest;
-using content_settings::IsWhitelistedCookieException;
 using brave::IsWhitelistedFingerprintingException;
-
-TEST_F(BraveShieldsExceptionsTest, IsWhitelistedCookieException) {
-  // Cookie exceptions for Google auth domains
-  EXPECT_TRUE(IsWhitelistedCookieException(GURL("https://www.airbnb.com/"),
-      GURL("https://accounts.google.com/o/oauth2/iframe"), true));
-  EXPECT_FALSE(IsWhitelistedCookieException(GURL("https://www.mozilla.org/"),
-      GURL("https://www.googletagmanager.com/gtm.js"), true));
-  EXPECT_FALSE(IsWhitelistedCookieException(GURL("https://www.airbnb.com/"),
-      GURL("https://accounts.google.com/o/oauth2/iframe"), false));
-}
 
 TEST_F(BraveShieldsExceptionsTest, IsWhitelistedFingerprintingException) {
   EXPECT_TRUE(IsWhitelistedFingerprintingException(

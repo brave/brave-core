@@ -69,7 +69,6 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
  protected:
   void RunNextCallback(net::URLRequest* request,
                        std::shared_ptr<brave::BraveRequestInfo> ctx);
-  void set_allow_google_auth(bool allow);
   const base::FilePath& profile_path() { return profile_path_; }
 
   std::vector<brave::OnBeforeURLRequestCallback> before_url_request_callbacks_;
@@ -91,8 +90,6 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
-
-  bool allow_google_auth_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);
 };

@@ -19,10 +19,6 @@ ContentSetting GetDefaultFromResourceIdentifier(
     const GURL& primary_url,
     const GURL& secondary_url);
 
-bool IsWhitelistedCookieException(const GURL& primary_url,
-                                  const GURL& secondary_url,
-                                  bool allow_google_auth);
-
 bool IsAllowContentSetting(const ContentSettingsForOneType& content_settings,
                            const GURL& primary_url,
                            const GURL& secondary_url,
