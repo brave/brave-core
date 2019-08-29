@@ -42,7 +42,7 @@ using GetTransactionHistoryCallback =
 using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
                                   ledger::WalletPropertiesPtr)>;
 using OnRefreshPublisherCallback =
-    std::function<void(bool)>;
+    std::function<void(ledger::PublisherStatus)>;
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback = std::function<void(ledger::Result,
                                                 ledger::BalancePtr)>;
@@ -75,7 +75,7 @@ class LEDGER_EXPORT Ledger {
   // returns false if wallet initialization is already in progress
   virtual bool CreateWallet() = 0;
 
-  virtual void DoDirectTip(const std::string& publisher_id,
+  virtual void DoDirectTip(const std::string& publisher_key,
                            int amount,
                            const std::string& currency) = 0;
 

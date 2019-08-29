@@ -17,7 +17,7 @@ PendingContributionInfo::~PendingContributionInfo() { }
 PendingContributionInfo::PendingContributionInfo(
     const PendingContributionInfo& data) {
   publisher_key = data.publisher_key;
-  verified = data.verified;
+  status = data.status;
   name = data.name;
   favicon_url = data.favicon_url;
   url = data.url;

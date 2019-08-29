@@ -9,6 +9,7 @@
 #include <cmath>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/time/time.h"
 #include "bat/ledger/internal/contribution/contribution.h"
@@ -117,13 +118,13 @@ void Contribution::GetVerifiedAutoAmount(
                 callback));
 }
 
-// static
 double Contribution::GetAmountFromVerifiedAuto(
     const ledger::PublisherInfoList& publisher_list,
     double ac_amount) {
   double verified_bat = 0.0;
   for (const auto& publisher : publisher_list) {
-    if (publisher->verified) {
+    const auto add = ledger_->IsPublisherConnectedOrVerified(publisher->status);
+    if (add) {
       verified_bat += (publisher->weight / 100.0) * ac_amount;
     }
   }
@@ -152,7 +153,7 @@ double Contribution::GetAmountFromVerifiedRecurring(
     if (publisher->id.empty()) {
       continue;
     }
-    if (publisher->verified) {
+    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
       total_recurring_amount += publisher->weight;
     }
   }
@@ -176,7 +177,8 @@ ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
       continue;
     }
 
-    if (publisher->verified) {
+    const auto add = ledger_->IsPublisherConnectedOrVerified(publisher->status);
+    if (add) {
       verified.push_back(publisher->Clone());
       verified_total += publisher->weight;
     } else {
@@ -223,7 +225,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
       continue;
     }
 
-    if (publisher->verified) {
+    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
       verified.push_back(publisher->Clone());
       *budget += publisher->weight;
     } else {
@@ -262,7 +264,7 @@ void Contribution::PrepareACList(
     new_publisher.duration_ = publisher->duration;
     new_publisher.score_ = publisher->score;
     new_publisher.visits_ = publisher->visits;
-    new_publisher.verified_ = publisher->verified;
+    new_publisher.status_ = static_cast<int>(publisher->status);
     new_list.push_back(new_publisher);
   }
 
@@ -660,6 +662,63 @@ void Contribution::ContributeUnverifiedPublishers() {
 
 void Contribution::StartPhaseTwo(const std::string& viewing_id) {
   phase_two_->Start(viewing_id);
+}
+
+void Contribution::DoDirectTip(
+    const std::string& publisher_key,
+    int amount,
+    const std::string& currency) {
+  if (publisher_key.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Failed direct donation due to missing publisher id";
+    return;
+  }
+
+  const auto server_callback =
+    std::bind(&Contribution::OnDoDirectTipServerPublisher,
+              this,
+              _1,
+              publisher_key,
+              amount,
+              currency);
+
+  ledger_->GetServerPublisherInfo(publisher_key, server_callback);
+}
+
+void Contribution::OnDoDirectTipServerPublisher(
+    ledger::ServerPublisherInfoPtr server_info,
+    const std::string& publisher_key,
+    int amount,
+    const std::string& currency) {
+  auto status = ledger::PublisherStatus::NOT_VERIFIED;
+  if (server_info) {
+    status =  server_info->status;
+  }
+
+  // Save to the pending list if not verified
+  if (status != ledger::PublisherStatus::VERIFIED) {
+    auto contribution = ledger::PendingContribution::New();
+    contribution->publisher_key = publisher_key;
+    contribution->amount = amount;
+    contribution->category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+
+    ledger::PendingContributionList list;
+    list.push_back(std::move(contribution));
+
+    ledger_->SaveUnverifiedContribution(std::move(list));
+    return;
+  }
+
+  const auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(
+      publisher_key,
+      amount,
+      currency);
+  const auto direction_list =
+      std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
+  InitReconcile(
+      ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
+      {},
+      direction_list);
 }
 
 bool Contribution::HaveReconcileEnoughFunds(

@@ -5,15 +5,15 @@
 
 #include <utility>
 
-#include "bat/ledger/internal/bat_publishers.h"
+#include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatPublishersTest.*
+// npm run test -- brave_unit_tests --filter=PublisherTest.*
 
-namespace braveledger_bat_publishers {
+namespace braveledger_publisher {
 
-class BatPublishersTest : public testing::Test {
+class PublisherTest : public testing::Test {
  protected:
   void CreatePublisherInfoList(
       ledger::PublisherInfoList* list) {
@@ -35,9 +35,9 @@ class BatPublishersTest : public testing::Test {
   }
 };
 
-TEST_F(BatPublishersTest, calcScoreConsts) {
-  braveledger_bat_publishers::BatPublishers* publishers =
-      new braveledger_bat_publishers::BatPublishers(nullptr);
+TEST_F(PublisherTest, calcScoreConsts) {
+  braveledger_publisher::Publisher* publishers =
+      new braveledger_publisher::Publisher(nullptr);
 
   /*
    * Test 5 seconds
@@ -73,9 +73,9 @@ TEST_F(BatPublishersTest, calcScoreConsts) {
   EXPECT_EQ(publishers->b2_, 9000000);
 }
 
-TEST_F(BatPublishersTest, concaveScore) {
-  braveledger_bat_publishers::BatPublishers* publishers =
-      new braveledger_bat_publishers::BatPublishers(nullptr);
+TEST_F(PublisherTest, concaveScore) {
+  braveledger_publisher::Publisher* publishers =
+      new braveledger_publisher::Publisher(nullptr);
 
   /*
    * min duration: 5 seconds
@@ -117,9 +117,9 @@ TEST_F(BatPublishersTest, concaveScore) {
   EXPECT_NEAR(publishers->concaveScore(500000), 74.7025, 0.001f);
 }
 
-TEST_F(BatPublishersTest, synopsisNormalizerInternal) {
-  std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers =
-      std::make_unique<braveledger_bat_publishers::BatPublishers>(nullptr);
+TEST_F(PublisherTest, synopsisNormalizerInternal) {
+  std::unique_ptr<braveledger_publisher::Publisher> bat_publishers =
+      std::make_unique<braveledger_publisher::Publisher>(nullptr);
   // create test PublisherInfo list
   ledger::PublisherInfoList new_list;
   ledger::PublisherInfoList list;
@@ -150,4 +150,4 @@ TEST_F(BatPublishersTest, synopsisNormalizerInternal) {
   }
 }
 
-}  // namespace braveledger_bat_publishers
+}  // namespace braveledger_publisher

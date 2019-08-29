@@ -36,8 +36,8 @@ namespace braveledger_media {
 class Media;
 }
 
-namespace braveledger_bat_publishers {
-class BatPublishers;
+namespace braveledger_publisher {
+class Publisher;
 }
 
 namespace braveledger_bat_state {
@@ -101,7 +101,7 @@ class LedgerImpl : public ledger::Ledger,
                            const ledger::ActivityInfoFilter& filter,
                            ledger::PublisherInfoListCallback callback) override;
 
-  void DoDirectTip(const std::string& publisher_id,
+  void DoDirectTip(const std::string& publisher_key,
                    int amount,
                    const std::string& currency) override;
 
@@ -161,8 +161,6 @@ class LedgerImpl : public ledger::Ledger,
   void SavePublisherState(const std::string& data,
                           ledger::LedgerCallbackHandler* handler);
 
-  void SavePublishersList(const std::string& data);
-
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
   void SetConfirmationsWalletInfo(
@@ -171,8 +169,6 @@ class LedgerImpl : public ledger::Ledger,
   void LoadLedgerState(ledger::OnLoadCallback callback);
 
   void LoadPublisherState(ledger::OnLoadCallback callback);
-
-  void LoadPublisherList(ledger::LedgerCallbackHandler* handler);
 
   void OnWalletInitialized(ledger::Result result);
 
@@ -207,13 +203,6 @@ class LedgerImpl : public ledger::Ledger,
       ledger::Result result,
       double balance,
       const std::vector<braveledger_bat_helper::GRANT>& grants);
-
-  void LoadPublishersListCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void OnPublishersListSaved(ledger::Result result) override;
 
   void LoadURL(const std::string& url,
                const std::vector<std::string>& headers,
@@ -462,8 +451,6 @@ class LedgerImpl : public ledger::Ledger,
 
   void ContributeUnverifiedPublishers();
 
-  bool IsPublisherVerified(const std::string& publisher_key);
-
   void OnContributeUnverifiedPublishers(ledger::Result result,
                                         const std::string& publisher_key = "",
                                         const std::string& publisher_name = "");
@@ -475,8 +462,6 @@ class LedgerImpl : public ledger::Ledger,
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
   void GetExternalWallets(ledger::GetExternalWalletsCallback callback);
-
-  std::string GetPublisherAddress(const std::string& publisher_key) const;
 
   std::string GetCardIdAddress() const;
 
@@ -504,6 +489,43 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& type,
       const ledger::ShowNotificationCallback& callback,
       const std::vector<std::string>& args = {});
+
+  void ClearAndInsertServerPublisherList(
+      ledger::ServerPublisherInfoList list,
+      ledger::ClearAndInsertServerPublisherListCallback callback);
+
+  void GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback);
+
+  bool IsPublisherConnectedOrVerified(const ledger::PublisherStatus status);
+
+  void SetBooleanState(const std::string& name, bool value);
+
+  bool GetBooleanState(const std::string& name) const;
+
+  void SetIntegerState(const std::string& name, int value);
+
+  int GetIntegerState(const std::string& name) const;
+
+  void SetDoubleState(const std::string& name, double value);
+
+  double GetDoubleState(const std::string& name) const;
+
+  void SetStringState(const std::string& name, const std::string& value);
+
+  std::string GetStringState(const std::string& name) const;
+
+  void SetInt64State(const std::string& name, int64_t value);
+
+  int64_t GetInt64State(const std::string& name) const;
+
+  void SetUint64State(const std::string& name, uint64_t value);
+
+  uint64_t GetUint64State(const std::string& name) const;
+
+  void ClearState(const std::string& name);
+
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
@@ -546,16 +568,6 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::Result result,
       ledger::RemoveRecurringTipCallback callback);
 
-  void ModifyPublisherVerified(
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher,
-    ledger::PublisherInfoCallback callback);
-
-  void ModifyPublisherListVerified(
-    ledger::PublisherInfoList,
-    uint32_t record,
-    ledger::PublisherInfoListCallback callback);
-
   void OnGetPendingContributions(
     const ledger::PendingContributionInfoList& list,
     ledger::PendingContributionInfoListCallback callback);
@@ -567,12 +579,7 @@ class LedgerImpl : public ledger::Ledger,
   void OnLedgerStateLoaded(ledger::Result result,
                            const std::string& data) override;
 
-  void RefreshPublishersList(bool retryAfterError, bool immediately = false);
-
   void RefreshGrant(bool retryAfterError);
-
-  void OnPublisherListLoaded(ledger::Result result,
-                             const std::string& data) override;
 
   uint64_t retryRequestSetup(uint64_t min_time, uint64_t max_time);
 
@@ -592,7 +599,7 @@ class LedgerImpl : public ledger::Ledger,
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_grant::Grants> bat_grants_;
-  std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
+  std::unique_ptr<braveledger_publisher::Publisher> bat_publisher_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;

@@ -115,7 +115,7 @@ interface BatLedger {
 
   LoadPublisherInfo(string publisher_key) =>
       (uint32 result, ledger.mojom.PublisherInfo? info);
-  RefreshPublisher(string publisher_key) => (bool verified);
+  RefreshPublisher(string publisher_key) => (ledger.mojom.PublisherStatus status);
 
   StartMonthlyContribution();
 
@@ -153,10 +153,8 @@ interface BatLedgerClient {
   LoadLedgerState() => (int32 result, string data);
   OnWalletInitialized(int32 result);
   LoadPublisherState() => (int32 result, string data);
-  LoadPublisherList() => (int32 result, string data);
   SaveLedgerState(string ledger_state) => (int32 result);
   SavePublisherState(string publisher_state) => (int32 result);
-  SavePublishersList(string publishers_list) => (int32 result);
 
   OnWalletProperties(int32 result, ledger.mojom.WalletProperties? properties);
   OnGrant(int32 result, ledger.mojom.Grant? grant);
@@ -267,4 +265,8 @@ interface BatLedgerClient {
   SaveExternalWallet(string wallet_type, ledger.mojom.ExternalWallet wallet);
 
   ShowNotification(string type, array<string> args) => (int32 result);
+
+  ClearAndInsertServerPublisherList(array<ledger.mojom.ServerPublisherInfo> list) => (int32 result);
+
+  GetServerPublisherInfo(string publisher_key) => (ledger.mojom.ServerPublisherInfo? info);
 };

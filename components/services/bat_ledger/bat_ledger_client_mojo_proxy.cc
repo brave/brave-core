@@ -249,24 +249,6 @@ void BatLedgerClientMojoProxy::LoadPublisherState(
         AsWeakPtr(), std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::OnLoadPublisherList(
-    ledger::LedgerCallbackHandler* handler,
-    int32_t result, const std::string& data) {
-  handler->OnPublisherListLoaded(ToLedgerResult(result), data);
-}
-
-void BatLedgerClientMojoProxy::LoadPublisherList(
-    ledger::LedgerCallbackHandler* handler) {
-  if (!Connected()) {
-    handler->OnPublisherListLoaded(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  bat_ledger_client_->LoadPublisherList(
-      base::BindOnce(&BatLedgerClientMojoProxy::OnLoadPublisherList,
-        AsWeakPtr(), base::Unretained(handler)));
-}
-
 void BatLedgerClientMojoProxy::OnSaveLedgerState(
     ledger::LedgerCallbackHandler* handler,
     int32_t result) {
@@ -301,25 +283,6 @@ void BatLedgerClientMojoProxy::SavePublisherState(
 
   bat_ledger_client_->SavePublisherState(publisher_state,
       base::BindOnce(&BatLedgerClientMojoProxy::OnSavePublisherState,
-        AsWeakPtr(), base::Unretained(handler)));
-}
-
-void BatLedgerClientMojoProxy::OnSavePublishersList(
-    ledger::LedgerCallbackHandler* handler,
-    int32_t result) {
-  handler->OnPublishersListSaved(ToLedgerResult(result));
-}
-
-void BatLedgerClientMojoProxy::SavePublishersList(
-    const std::string& publishers_list,
-    ledger::LedgerCallbackHandler* handler) {
-  if (!Connected()) {
-    handler->OnPublishersListSaved(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  bat_ledger_client_->SavePublishersList(publishers_list,
-      base::BindOnce(&BatLedgerClientMojoProxy::OnSavePublishersList,
         AsWeakPtr(), base::Unretained(handler)));
 }
 
@@ -899,6 +862,35 @@ void BatLedgerClientMojoProxy::ShowNotification(
       type,
       args,
       base::BindOnce(&OnShowNotification, std::move(callback)));
+}
+
+void OnClearAndInsertServerPublisherList(
+    const ledger::ClearAndInsertServerPublisherListCallback& callback,
+    int32_t result) {
+  callback(ToLedgerResult(result));
+}
+
+void BatLedgerClientMojoProxy::ClearAndInsertServerPublisherList(
+    ledger::ServerPublisherInfoList list,
+    ledger::ClearAndInsertServerPublisherListCallback callback) {
+  bat_ledger_client_->ClearAndInsertServerPublisherList(
+      std::move(list),
+      base::BindOnce(&OnClearAndInsertServerPublisherList,
+          std::move(callback)));
+}
+
+void OnGetServerPublisherInfo(
+  const ledger::GetServerPublisherInfoCallback& callback,
+  ledger::ServerPublisherInfoPtr info) {
+  callback(std::move(info));
+}
+
+void BatLedgerClientMojoProxy::GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) {
+  bat_ledger_client_->GetServerPublisherInfo(
+      publisher_key,
+      base::BindOnce(&OnGetServerPublisherInfo, std::move(callback)));
 }
 
 }  // namespace bat_ledger

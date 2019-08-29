@@ -58,11 +58,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                          ledger::PublisherInfoCallback callback) override;
   void LoadPanelPublisherInfo(ledger::ActivityInfoFilter filter,
                               ledger::PublisherInfoCallback callback) override;
-  void SavePublishersList(const std::string& publishers_list,
-                          ledger::LedgerCallbackHandler* handler) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void KillTimer(const uint32_t timer_id) override;
-  void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
 
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
@@ -180,6 +177,14 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::vector<std::string>& args,
       const ledger::ShowNotificationCallback& callback) override;
 
+  void ClearAndInsertServerPublisherList(
+    ledger::ServerPublisherInfoList list,
+    ledger::ClearAndInsertServerPublisherListCallback callback) override;
+
+  void GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) override;
+
  private:
   bool Connected() const;
 
@@ -194,13 +199,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       int32_t result, const std::string& data);
   void OnLoadPublisherState(ledger::OnLoadCallback callback,
       int32_t result, const std::string& data);
-  void OnLoadPublisherList(ledger::LedgerCallbackHandler* handler,
-      int32_t result, const std::string& data);
   void OnSaveLedgerState(ledger::LedgerCallbackHandler* handler,
       int32_t result);
   void OnSavePublisherState(ledger::LedgerCallbackHandler* handler,
-      int32_t result);
-  void OnSavePublishersList(ledger::LedgerCallbackHandler* handler,
       int32_t result);
 
   DISALLOW_COPY_AND_ASSIGN(BatLedgerClientMojoProxy);

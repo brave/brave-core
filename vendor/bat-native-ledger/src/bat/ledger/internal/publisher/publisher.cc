@@ -10,9 +10,10 @@
 #include <vector>
 
 #include "bat/ledger/internal/bat_helper.h"
-#include "bat/ledger/internal/bat_publishers.h"
 #include "bat/ledger/internal/bignum.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/publisher/publisher.h"
+#include "bat/ledger/internal/publisher/publisher_server_list.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 #include "mojo/public/cpp/bindings/map.h"
@@ -33,19 +34,65 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_bat_publishers {
+namespace braveledger_publisher {
 
-BatPublishers::BatPublishers(bat_ledger::LedgerImpl* ledger):
+Publisher::Publisher(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   state_(new braveledger_bat_helper::PUBLISHER_STATE_ST),
-  server_list_(std::map<std::string, braveledger_bat_helper::SERVER_LIST>()) {
+  server_list_(std::make_unique<PublisherServerList>(ledger)) {
   calcScoreConsts(state_->min_publisher_duration_);
 }
 
-BatPublishers::~BatPublishers() {
+Publisher::~Publisher() {
 }
 
-void BatPublishers::calcScoreConsts(const uint64_t& min_duration_seconds) {
+void Publisher::OnTimer(uint32_t timer_id) {
+  server_list_->OnTimer(timer_id);
+}
+
+void Publisher::RefreshPublisher(
+      const std::string& publisher_key,
+      ledger::OnRefreshPublisherCallback callback) {
+  server_list_->Download(std::bind(&Publisher::OnRefreshPublisher,
+          this,
+          _1,
+          publisher_key,
+          callback));
+}
+
+void Publisher::OnRefreshPublisher(
+    const ledger::Result result,
+    const std::string& publisher_key,
+    ledger::OnRefreshPublisherCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(ledger::PublisherStatus::NOT_VERIFIED);
+    return;
+  }
+
+  const auto server_callback =
+    std::bind(&Publisher::OnRefreshPublisherServerPublisher,
+              this,
+              _1,
+              callback);
+
+  ledger_->GetServerPublisherInfo(publisher_key, server_callback);
+}
+
+void Publisher::OnRefreshPublisherServerPublisher(
+    ledger::ServerPublisherInfoPtr info,
+    ledger::OnRefreshPublisherCallback callback) {
+  auto status = ledger::PublisherStatus::NOT_VERIFIED;
+  if (info) {
+    status = info->status;
+  }
+  callback(status);
+}
+
+void Publisher::SetPublisherServerListTimer() {
+  server_list_->SetTimer(false);
+}
+
+void Publisher::calcScoreConsts(const uint64_t& min_duration_seconds) {
   // we increase duration for 100 to keep it as close to muon implementation
   // as possible (we used 1000 in muon)
   // keeping it with only seconds visits are not spaced out equally
@@ -59,7 +106,7 @@ void BatPublishers::calcScoreConsts(const uint64_t& min_duration_seconds) {
 
 // courtesy of @dimitry-xyz:
 // https://github.com/brave/ledger/issues/2#issuecomment-221752002
-double BatPublishers::concaveScore(const uint64_t& duration_seconds) {
+double Publisher::concaveScore(const uint64_t& duration_seconds) {
   uint64_t duration_big = duration_seconds * 100;
   return (-b_ + std::sqrt(b2_ + (a4_ * duration_big))) / a2_;
 }
@@ -83,35 +130,30 @@ bool ignoreMinTime(const std::string& publisher_id) {
   return !getProviderName(publisher_id).empty();
 }
 
-void BatPublishers::saveVisit(const std::string& publisher_id,
-                              const ledger::VisitData& visit_data,
-                              const uint64_t& duration,
-                              uint64_t window_id,
-                              const ledger::PublisherInfoCallback callback) {
-  if (!ledger_->GetRewardsMainEnabled() || publisher_id.empty()) {
+void Publisher::SaveVisit(
+    const std::string& publisher_key,
+    const ledger::VisitData& visit_data,
+    const uint64_t& duration,
+    uint64_t window_id,
+    const ledger::PublisherInfoCallback callback) {
+  if (!ledger_->GetRewardsMainEnabled() || publisher_key.empty()) {
     return;
   }
 
-  auto filter = CreateActivityFilter(publisher_id,
-      ledger::EXCLUDE_FILTER::FILTER_ALL,
-      false,
-      ledger_->GetReconcileStamp(),
-      true,
-      false);
-
-  ledger::PublisherInfoCallback callbackGetPublishers =
-      std::bind(&BatPublishers::saveVisitInternal, this,
-                publisher_id,
+  auto server_callback =
+      std::bind(&Publisher::OnSaveVisitServerPublisher,
+                this,
+                _1,
+                publisher_key,
                 visit_data,
                 duration,
                 window_id,
-                callback,
-                _1,
-                _2);
-  ledger_->GetActivityInfo(filter, callbackGetPublishers);
+                callback);
+
+  ledger_->GetServerPublisherInfo(publisher_key, server_callback);
 }
 
-ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
+ledger::ActivityInfoFilter Publisher::CreateActivityFilter(
     const std::string& publisher_id,
     ledger::EXCLUDE_FILTER excluded,
     bool min_duration,
@@ -124,19 +166,60 @@ ledger::ActivityInfoFilter BatPublishers::CreateActivityFilter(
   filter.min_duration = min_duration ? getPublisherMinVisitTime() : 0;
   filter.reconcile_stamp = currentReconcileStamp;
   filter.non_verified = non_verified;
-  filter.min_visits = min_visits ? getPublisherMinVisits() : 0;
+  filter.min_visits = min_visits ? GetPublisherMinVisits() : 0;
 
   return filter;
 }
 
-std::string BatPublishers::GetBalanceReportName(
+std::string Publisher::GetBalanceReportName(
     const ledger::ACTIVITY_MONTH month,
     int year) {
   return std::to_string(year) + "_" + std::to_string(month);
 }
 
-void BatPublishers::saveVisitInternal(
-    std::string publisher_id,
+void Publisher::OnSaveVisitServerPublisher(
+    ledger::ServerPublisherInfoPtr server_info,
+    const std::string& publisher_key,
+    const ledger::VisitData& visit_data,
+    uint64_t duration,
+    uint64_t window_id,
+    const ledger::PublisherInfoCallback callback) {
+  auto filter = CreateActivityFilter(
+      publisher_key,
+      ledger::EXCLUDE_FILTER::FILTER_ALL,
+      false,
+      ledger_->GetReconcileStamp(),
+      true,
+      false);
+
+  // we need to do this as I can't move server publisher into final function
+  auto status = ledger::PublisherStatus::NOT_VERIFIED;
+  if (server_info) {
+    status = server_info->status;
+  }
+
+  bool server_excluded = server_info && server_info->excluded;
+
+  ledger::PublisherInfoCallback callbackGetPublishers =
+      std::bind(&Publisher::SaveVisitInternal,
+          this,
+          status,
+          server_excluded,
+          publisher_key,
+          visit_data,
+          duration,
+          window_id,
+          callback,
+          _1,
+          _2);
+
+  ledger_->GetActivityInfo(std::move(filter), callbackGetPublishers);
+}
+
+void Publisher::SaveVisitInternal(
+    const ledger::PublisherStatus status,
+    bool server_excluded,
+    const std::string& publisher_key,
     const ledger::VisitData& visit_data,
     uint64_t duration,
     uint64_t window_id,
@@ -149,21 +232,22 @@ void BatPublishers::saveVisitInternal(
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
-  bool verified = isVerified(publisher_id);
+
+  bool is_verified = ledger_->IsPublisherConnectedOrVerified(status);
 
   bool new_visit = false;
   if (!publisher_info) {
     new_visit = true;
     publisher_info = ledger::PublisherInfo::New();
-    publisher_info->id = publisher_id;
+    publisher_info->id = publisher_key;
   }
 
   std::string fav_icon = visit_data.favicon_url;
-  if (verified && !fav_icon.empty()) {
+  if (is_verified && !fav_icon.empty()) {
     if (fav_icon.find(".invalid") == std::string::npos) {
     ledger_->FetchFavIcon(fav_icon,
                           "https://" + ledger_->GenerateGUID() + ".invalid",
-                          std::bind(&BatPublishers::onFetchFavIcon,
+                          std::bind(&Publisher::onFetchFavIcon,
                                     this,
                                     publisher_info->id,
                                     window_id,
@@ -179,12 +263,13 @@ void BatPublishers::saveVisitInternal(
   publisher_info->name = visit_data.name;
   publisher_info->provider = visit_data.provider;
   publisher_info->url = visit_data.url;
-  publisher_info->verified = verified;
+  publisher_info->status = status;
 
-  bool excluded = isExcluded(
+  bool excluded = IsExcluded(
       publisher_info->id,
+      server_excluded,
       static_cast<ledger::PUBLISHER_EXCLUDE>(publisher_info->excluded));
-  bool ignore_time = ignoreMinTime(publisher_id);
+  bool ignore_time = ignoreMinTime(publisher_key);
   if (duration == 0) {
     ignore_time = false;
   }
@@ -199,8 +284,9 @@ void BatPublishers::saveVisitInternal(
   bool min_duration_new = duration < getPublisherMinVisitTime() &&
       !ignore_time;
   bool min_duration_ok = duration > getPublisherMinVisitTime() || ignore_time;
-  bool verified_new = !ledger_->GetPublisherAllowNonVerified() && !verified;
-  bool verified_old = ((!ledger_->GetPublisherAllowNonVerified() && verified) ||
+  bool verified_new = !ledger_->GetPublisherAllowNonVerified() && !is_verified;
+  bool verified_old = (
+      (!ledger_->GetPublisherAllowNonVerified() && is_verified) ||
       ledger_->GetPublisherAllowNonVerified());
 
   if (new_visit &&
@@ -242,7 +328,7 @@ void BatPublishers::saveVisitInternal(
   }
 }
 
-void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
+void Publisher::onFetchFavIcon(const std::string& publisher_key,
                                    uint64_t window_id,
                                    bool success,
                                    const std::string& favicon_url) {
@@ -253,7 +339,7 @@ void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
   }
 
   ledger_->GetPublisherInfo(publisher_key,
-      std::bind(&BatPublishers::onFetchFavIconDBResponse,
+      std::bind(&Publisher::onFetchFavIconDBResponse,
                 this,
                 _1,
                 _2,
@@ -261,7 +347,7 @@ void BatPublishers::onFetchFavIcon(const std::string& publisher_key,
                 window_id));
 }
 
-void BatPublishers::onFetchFavIconDBResponse(
+void Publisher::onFetchFavIconDBResponse(
     ledger::Result result,
     ledger::PublisherInfoPtr info,
     const std::string& favicon_url,
@@ -286,7 +372,7 @@ void BatPublishers::onFetchFavIconDBResponse(
   }
 }
 
-void BatPublishers::OnPublisherInfoSaved(
+void Publisher::OnPublisherInfoSaved(
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
   if (result != ledger::Result::LEDGER_OK || !info) {
@@ -297,17 +383,19 @@ void BatPublishers::OnPublisherInfoSaved(
   SynopsisNormalizer();
 }
 
-void BatPublishers::setExclude(const std::string& publisher_id,
-                               const ledger::PUBLISHER_EXCLUDE& exclude) {
-    ledger_->GetPublisherInfo(publisher_id,
-        std::bind(&BatPublishers::onSetExcludeInternal,
-                  this,
-                  exclude,
-                  _1,
-                  _2));
+void Publisher::SetPublisherExclude(
+    const std::string& publisher_id,
+    const ledger::PUBLISHER_EXCLUDE& exclude) {
+  ledger_->GetPublisherInfo(
+    publisher_id,
+    std::bind(&Publisher::OnSetPublisherExclude,
+              this,
+              exclude,
+              _1,
+              _2));
 }
 
-void BatPublishers::onSetExcludeInternal(
+void Publisher::OnSetPublisherExclude(
     ledger::PUBLISHER_EXCLUDE exclude,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info) {
@@ -330,14 +418,14 @@ void BatPublishers::onSetExcludeInternal(
   OnExcludedSitesChanged(publisherKey, exclude);
 }
 
-void BatPublishers::RestorePublishers() {
+void Publisher::RestorePublishers() {
   ledger_->OnRestorePublishers(
-      std::bind(&BatPublishers::OnRestorePublishersInternal,
+      std::bind(&Publisher::OnRestorePublishersInternal,
                 this,
                 _1));
 }
 
-void BatPublishers::OnRestorePublishersInternal(bool success) {
+void Publisher::OnRestorePublishersInternal(bool success) {
   if (success) {
     OnExcludedSitesChanged("-1", ledger::PUBLISHER_EXCLUDE::ALL);
     SynopsisNormalizer();
@@ -348,66 +436,57 @@ void BatPublishers::OnRestorePublishersInternal(bool success) {
 }
 
 // In seconds
-void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) {
+void Publisher::setPublisherMinVisitTime(const uint64_t& duration) {
   state_->min_publisher_duration_ = duration;
   calcScoreConsts(duration);
   SynopsisNormalizer();
   saveState();
 }
 
-void BatPublishers::setPublisherMinVisits(const unsigned int visits) {
+void Publisher::setPublisherMinVisits(const unsigned int visits) {
   state_->min_visits_ = visits;
   SynopsisNormalizer();
   saveState();
 }
 
-void BatPublishers::setPublishersLastRefreshTimestamp(uint64_t ts) {
-  state_->pubs_load_timestamp_ = ts;
-  saveState();
-}
-
-void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
+void Publisher::setPublisherAllowNonVerified(const bool& allow) {
   state_->allow_non_verified_ = allow;
   SynopsisNormalizer();
   saveState();
 }
 
-void BatPublishers::setPublisherAllowVideos(const bool& allow) {
+void Publisher::setPublisherAllowVideos(const bool& allow) {
   state_->allow_videos_ = allow;
   SynopsisNormalizer();
   saveState();
 }
 
-uint64_t BatPublishers::getPublisherMinVisitTime() const {
+uint64_t Publisher::getPublisherMinVisitTime() const {
   return state_->min_publisher_duration_;
 }
 
-unsigned int BatPublishers::getPublisherMinVisits() const {
+unsigned int Publisher::GetPublisherMinVisits() const {
   return state_->min_visits_;
 }
 
-bool BatPublishers::getPublisherAllowNonVerified() const {
+bool Publisher::getPublisherAllowNonVerified() const {
   return state_->allow_non_verified_;
 }
 
-uint64_t BatPublishers::getLastPublishersListLoadTimestamp() const {
-  return state_->pubs_load_timestamp_;
-}
-
-bool BatPublishers::getPublisherAllowVideos() const {
+bool Publisher::getPublisherAllowVideos() const {
   return state_->allow_videos_;
 }
 
-bool BatPublishers::GetMigrateScore() const {
+bool Publisher::GetMigrateScore() const {
   return state_->migrate_score_2;
 }
 
-void BatPublishers::SetMigrateScore(bool value) {
+void Publisher::SetMigrateScore(bool value) {
   state_->migrate_score_2 = value;
   saveState();
 }
 
-void BatPublishers::NormalizeContributeWinners(
+void Publisher::NormalizeContributeWinners(
     ledger::PublisherInfoList* newList,
     const ledger::PublisherInfoList* list,
     uint32_t record) {
@@ -415,7 +494,7 @@ void BatPublishers::NormalizeContributeWinners(
   synopsisNormalizerInternal(newList, list, record);
 }
 
-void BatPublishers::synopsisNormalizerInternal(
+void Publisher::synopsisNormalizerInternal(
     ledger::PublisherInfoList* newList,
     const ledger::PublisherInfoList* list,
     uint32_t /* next_record */) {
@@ -494,7 +573,7 @@ void BatPublishers::synopsisNormalizerInternal(
   }
 }
 
-void BatPublishers::SynopsisNormalizer() {
+void Publisher::SynopsisNormalizer() {
   auto filter = CreateActivityFilter("",
       ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
@@ -508,10 +587,10 @@ void BatPublishers::SynopsisNormalizer() {
       0,
       0,
       filter,
-      std::bind(&BatPublishers::SynopsisNormalizerCallback, this, _1, _2));
+      std::bind(&Publisher::SynopsisNormalizerCallback, this, _1, _2));
 }
 
-void BatPublishers::SynopsisNormalizerCallback(
+void Publisher::SynopsisNormalizerCallback(
     ledger::PublisherInfoList list,
     uint32_t record) {
   ledger::PublisherInfoList normalized_list;
@@ -519,45 +598,28 @@ void BatPublishers::SynopsisNormalizerCallback(
   ledger_->SaveNormalizedPublisherList(std::move(normalized_list));
 }
 
-bool BatPublishers::isVerified(const std::string& publisher_id) {
-  if (server_list_.empty()) {
-    return false;
-  }
-
-  auto result = server_list_.find(publisher_id);
-
-  if (result == server_list_.end()) {
-    return false;
-  }
-
-  const braveledger_bat_helper::SERVER_LIST values = result->second;
-
-  return values.verified;
+bool Publisher::IsConnectedOrVerified(const ledger::PublisherStatus status) {
+  return status == ledger::PublisherStatus::CONNECTED ||
+         status == ledger::PublisherStatus::VERIFIED;
 }
 
-bool BatPublishers::isExcluded(const std::string& publisher_id,
-                               const ledger::PUBLISHER_EXCLUDE& excluded) {
+bool Publisher::IsExcluded(
+    const std::string& publisher_id,
+    const bool server_exclude,
+    const ledger::PUBLISHER_EXCLUDE& excluded) {
   // If exclude is set to 1, we should avoid further computation and return true
   if (excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED) {
     return true;
   }
 
-  if (excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED || server_list_.empty()) {
+  if (excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED) {
     return false;
   }
 
-  auto result = server_list_.find(publisher_id);
-
-  if (result == server_list_.end()) {
-    return false;
-  }
-
-  const braveledger_bat_helper::SERVER_LIST values = result->second;
-
-  return values.excluded;
+  return server_exclude;
 }
 
-void BatPublishers::clearAllBalanceReports() {
+void Publisher::clearAllBalanceReports() {
   if (state_->monthly_balances_.empty()) {
     return;
   }
@@ -565,7 +627,7 @@ void BatPublishers::clearAllBalanceReports() {
   saveState();
 }
 
-void BatPublishers::setBalanceReport(ledger::ACTIVITY_MONTH month,
+void Publisher::setBalanceReport(ledger::ACTIVITY_MONTH month,
                                 int year,
                                 const ledger::BalanceReportInfo& report_info) {
   braveledger_bat_helper::REPORT_BALANCE_ST report_balance;
@@ -592,7 +654,7 @@ void BatPublishers::setBalanceReport(ledger::ACTIVITY_MONTH month,
   saveState();
 }
 
-bool BatPublishers::getBalanceReport(ledger::ACTIVITY_MONTH month,
+bool Publisher::getBalanceReport(ledger::ACTIVITY_MONTH month,
                                      int year,
                                      ledger::BalanceReportInfo* report_info) {
   std::string name = GetBalanceReportName(month, year);
@@ -624,7 +686,7 @@ bool BatPublishers::getBalanceReport(ledger::ACTIVITY_MONTH month,
 }
 
 std::map<std::string, ledger::BalanceReportInfo>
-BatPublishers::getAllBalanceReports() {
+Publisher::GetAllBalanceReports() {
   std::map<std::string, ledger::BalanceReportInfo> newReports;
   for (auto const& report : state_->monthly_balances_) {
     ledger::BalanceReportInfo newReport;
@@ -643,13 +705,13 @@ BatPublishers::getAllBalanceReports() {
   return newReports;
 }
 
-void BatPublishers::saveState() {
+void Publisher::saveState() {
   std::string data;
   braveledger_bat_helper::saveToJsonString(*state_, &data);
   ledger_->SavePublisherState(data, this);
 }
 
-bool BatPublishers::loadState(const std::string& data) {
+bool Publisher::loadState(const std::string& data) {
   braveledger_bat_helper::PUBLISHER_STATE_ST state;
   if (!braveledger_bat_helper::loadFromJson(&state, data.c_str()))
     return false;
@@ -659,7 +721,7 @@ bool BatPublishers::loadState(const std::string& data) {
   return true;
 }
 
-void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
+void Publisher::OnPublisherStateSaved(ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Could not save publisher state";
@@ -668,35 +730,7 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
   }
 }
 
-void BatPublishers::RefreshPublishersList(const std::string& json) {
-  ledger_->SavePublishersList(json);
-  bool success = loadPublisherList(json);
-
-  if (success) {
-    ledger_->ContributeUnverifiedPublishers();
-  }
-}
-
-void BatPublishers::OnPublishersListSaved(ledger::Result result) {
-  uint64_t ts = (ledger::Result::LEDGER_OK == result)
-                ? std::time(nullptr)
-                : 0ull;
-  setPublishersLastRefreshTimestamp(ts);
-}
-
-bool BatPublishers::loadPublisherList(const std::string& data) {
-  std::map<std::string, braveledger_bat_helper::SERVER_LIST> list;
-
-  bool success = braveledger_bat_helper::getJSONServerList(data, &list);
-
-  if (success) {
-    server_list_ = list;
-  }
-
-  return success;
-}
-
-void BatPublishers::getPublisherActivityFromUrl(
+void Publisher::getPublisherActivityFromUrl(
     uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& publisher_blob) {
@@ -756,7 +790,7 @@ void BatPublishers::getPublisherActivityFromUrl(
   new_data.favicon_url = "";
 
   ledger_->GetPanelPublisherInfo(filter,
-        std::bind(&BatPublishers::OnPanelPublisherInfo,
+        std::bind(&Publisher::OnPanelPublisherInfo,
                   this,
                   _1,
                   _2,
@@ -764,13 +798,13 @@ void BatPublishers::getPublisherActivityFromUrl(
                   new_data));
 }
 
-void BatPublishers::OnSaveVisitInternal(
+void Publisher::OnSaveVisitInternal(
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
   // TODO(nejczdovc): handle if needed
 }
 
-void BatPublishers::OnPanelPublisherInfo(
+void Publisher::OnPanelPublisherInfo(
     ledger::Result result,
     ledger::PublisherInfoPtr info,
     uint64_t windowId,
@@ -780,27 +814,22 @@ void BatPublishers::OnPanelPublisherInfo(
   }
 
   if (result == ledger::Result::NOT_FOUND && !visit_data.domain.empty()) {
-    auto callback = std::bind(&BatPublishers::OnSaveVisitInternal,
+    auto callback = std::bind(&Publisher::OnSaveVisitInternal,
                               this,
                               _1,
                               _2);
 
-    saveVisitInternal(visit_data.domain,
-                      visit_data,
-                      0,
-                      windowId,
-                      callback,
-                      result,
-                      nullptr);
+    SaveVisit(visit_data.domain, visit_data, 0, windowId, callback);
   }
 }
 
-void BatPublishers::OnExcludedSitesChanged(const std::string& publisher_id,
-                                           ledger::PUBLISHER_EXCLUDE exclude) {
+void Publisher::OnExcludedSitesChanged(
+    const std::string& publisher_id,
+    ledger::PUBLISHER_EXCLUDE exclude) {
   ledger_->OnExcludedSitesChanged(publisher_id, exclude);
 }
 
-void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
+void Publisher::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
                                          int year,
                                          ledger::ReportType type,
                                          const std::string& probi) {
@@ -835,54 +864,47 @@ void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
   setBalanceReport(month, year, report_info);
 }
 
-void BatPublishers::getPublisherBanner(
-    const std::string& publisher_id,
+void Publisher::GetPublisherBanner(
+    const std::string& publisher_key,
     ledger::PublisherBannerCallback callback) {
-  ledger::PublisherBanner banner;
-  banner.publisher_key = publisher_id;
+  const auto banner_callback = std::bind(&Publisher::OnGetPublisherBanner,
+                this,
+                _1,
+                publisher_key,
+                callback);
 
-  if (!server_list_.empty()) {
-    auto result = server_list_.find(publisher_id);
+  ledger_->GetServerPublisherInfo(publisher_key, banner_callback);
+}
 
-    if (result != server_list_.end()) {
-      const braveledger_bat_helper::SERVER_LIST values = result->second;
+void Publisher::OnGetPublisherBanner(
+    ledger::ServerPublisherInfoPtr info,
+    const std::string& publisher_key,
+    ledger::PublisherBannerCallback callback) {
+  auto banner = ledger::PublisherBanner::New();
 
-      banner.title = values.banner.title_;
-      banner.description = values.banner.description_;
-      banner.amounts = values.banner.amounts_;
-      banner.social = mojo::MapToFlatMap(values.banner.social_);
-
-      // WebUI must not make external network requests, so map
-      // external resopurces to chrome://rewards-image and handle them
-      // via our custom data source
-      if (!values.banner.background_.empty()) {
-        banner.background = "chrome://rewards-image/"
-            + values.banner.background_;
-      }
-
-      if (!values.banner.logo_.empty()) {
-        banner.logo = "chrome://rewards-image/" + values.banner.logo_;
-      }
-    }
+  if (info) {
+    banner = info->banner->Clone();
+    banner->status = info->status;
   }
 
-  ledger::PublisherInfoCallback callbackGetPublisher =
-      std::bind(&BatPublishers::OnPublisherBanner,
+  banner->publisher_key = publisher_key;
+
+  const auto publisher_callback =
+      std::bind(&Publisher::OnGetPublisherBannerPublisher,
                 this,
                 callback,
-                banner,
+                *banner,
                 _1,
                 _2);
 
-  ledger_->GetPublisherInfo(publisher_id, callbackGetPublisher);
+  ledger_->GetPublisherInfo(publisher_key, publisher_callback);
 }
 
-void BatPublishers::OnPublisherBanner(
+void Publisher::OnGetPublisherBannerPublisher(
     ledger::PublisherBannerCallback callback,
     const ledger::PublisherBanner& banner,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info) {
-
   auto new_banner = ledger::PublisherBanner::New(banner);
 
   if (!publisher_info || result != ledger::Result::LEDGER_OK) {
@@ -892,7 +914,6 @@ void BatPublishers::OnPublisherBanner(
 
   new_banner->name = publisher_info->name;
   new_banner->provider = publisher_info->provider;
-  new_banner->verified = publisher_info->verified;
 
   if (new_banner->logo.empty()) {
     new_banner->logo = publisher_info->favicon_url;
@@ -901,13 +922,7 @@ void BatPublishers::OnPublisherBanner(
   callback(std::move(new_banner));
 }
 
-void BatPublishers::RefreshPublisherVerifiedStatus(
-    const std::string& publisher_key,
-    ledger::OnRefreshPublisherCallback callback) {
-  callback(isVerified(publisher_key));
-}
-
-void BatPublishers::SavePublisherProcessed(const std::string& publisher_key) {
+void Publisher::SavePublisherProcessed(const std::string& publisher_key) {
   const std::vector<std::string> list = state_->processed_pending_publishers;
   if (std::find(list.begin(), list.end(), publisher_key) == list.end()) {
     state_->processed_pending_publishers.push_back(publisher_key);
@@ -915,27 +930,10 @@ void BatPublishers::SavePublisherProcessed(const std::string& publisher_key) {
   saveState();
 }
 
-bool BatPublishers::WasPublisherAlreadyProcessed(
+bool Publisher::WasPublisherAlreadyProcessed(
     const std::string& publisher_key) const {
   const std::vector<std::string> list = state_->processed_pending_publishers;
   return std::find(list.begin(), list.end(), publisher_key) != list.end();
 }
 
-std::string BatPublishers::GetPublisherAddress(
-    const std::string& publisher_key) const {
-  if (server_list_.empty()) {
-    return "";
-  }
-
-  auto result = server_list_.find(publisher_key);
-
-  if (result == server_list_.end()) {
-    return "";
-  }
-
-  const braveledger_bat_helper::SERVER_LIST values = result->second;
-
-  return values.address;
-}
-
-}  // namespace braveledger_bat_publishers
+}  // namespace braveledger_publisher

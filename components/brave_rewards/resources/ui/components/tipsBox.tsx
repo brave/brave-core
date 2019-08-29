@@ -80,14 +80,15 @@ class TipBox extends React.Component<Props, State> {
     if (recurringList) {
       recurring = recurringList.map((item: Rewards.Publisher) => {
         let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-        if (item.favIcon && item.verified) {
+        const verified = utils.isPublisherConnectedOrVerified(item.status)
+        if (item.favIcon && verified) {
           faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
         }
 
         return {
           profile: {
             name: item.name,
-            verified: item.verified,
+            verified,
             provider: (item.provider ? item.provider : undefined) as Provider,
             src: faviconUrl
           },
@@ -107,7 +108,8 @@ class TipBox extends React.Component<Props, State> {
     if (tipsList) {
       tips = tipsList.map((item: Rewards.Publisher) => {
         let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-        if (item.favIcon && item.verified) {
+        const verified = utils.isPublisherConnectedOrVerified(item.status)
+        if (item.favIcon && verified) {
           faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
         }
 
@@ -116,7 +118,7 @@ class TipBox extends React.Component<Props, State> {
         return {
           profile: {
             name: item.name,
-            verified: item.verified,
+            verified,
             provider: (item.provider ? item.provider : undefined) as Provider,
             src: faviconUrl
           },
