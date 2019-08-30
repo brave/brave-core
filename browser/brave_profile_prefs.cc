@@ -53,7 +53,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNoScriptControlType, false);
   registry->RegisterBooleanPref(kAdControlType, true);
   registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled, false);
-  registry->RegisterBooleanPref(kGoogleLoginControlType, true);
   registry->RegisterBooleanPref(kFBEmbedControlType, true);
   registry->RegisterBooleanPref(kTwitterEmbedControlType, true);
   registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);

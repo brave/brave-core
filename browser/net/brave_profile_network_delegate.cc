@@ -146,12 +146,6 @@ void BraveProfileNetworkDelegate::InitPrefChangeRegistrarOnUI(
   user_pref_change_registrar_.reset(new PrefChangeRegistrar());
   user_pref_change_registrar_->Init(user_prefs);
   user_pref_change_registrar_->Add(
-      kGoogleLoginControlType,
-      base::BindRepeating(&BraveProfileNetworkDelegate::OnPreferenceChanged,
-                          base::Unretained(this),
-                          user_prefs,
-                          kGoogleLoginControlType));
-  user_pref_change_registrar_->Add(
       kFBEmbedControlType,
       base::BindRepeating(&BraveProfileNetworkDelegate::OnPreferenceChanged,
                           base::Unretained(this),
@@ -171,7 +165,6 @@ void BraveProfileNetworkDelegate::InitPrefChangeRegistrarOnUI(
   UpdateAdBlockFromPref(user_prefs, kFBEmbedControlType);
   UpdateAdBlockFromPref(user_prefs, kTwitterEmbedControlType);
   UpdateAdBlockFromPref(user_prefs, kLinkedInEmbedControlType);
-  set_allow_google_auth(user_prefs->GetBoolean(kGoogleLoginControlType));
 }
 
 void BraveProfileNetworkDelegate::OnPreferenceChanged(
@@ -184,7 +177,6 @@ void BraveProfileNetworkDelegate::UpdateAdBlockFromPref(
     PrefService* user_prefs,
     const std::string& pref_name) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  set_allow_google_auth(user_prefs->GetBoolean(kGoogleLoginControlType));
   std::string tag = GetTagFromPrefName(pref_name);
   if (tag.length() == 0) {
     return;
