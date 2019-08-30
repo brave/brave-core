@@ -85,6 +85,11 @@ bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
       GURL("https://uphold.com/"),
       std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
             "https://uphold.netverify.com/*")})
+    },
+    {
+      GURL("https://sandbox.uphold.com/"),
+      std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
+            "https://netverify.com/*")})
     }
   };
   std::map<GURL, std::vector<URLPattern> >::iterator i =
