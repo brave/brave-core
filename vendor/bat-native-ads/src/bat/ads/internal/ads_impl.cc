@@ -127,15 +127,8 @@ void AdsImpl::InitializeStep4(const Result result) {
 
   NotificationAllowedCheck(false);
 
-  //ads notifications don't sustain reboot, so remove all
-  auto ads_shown_history = client_->GetAdsShownHistory();
-  if (!ads_shown_history.empty()) {
-    uint64_t ad_shown_timestamp = ads_shown_history.front();
-    uint64_t boot_timestamp = Time::NowInSeconds() - 
-        static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds());    
-    if (ad_shown_timestamp <= boot_timestamp) {
-      notifications_->RemoveAll();
-    }
+  if (IsMobile()) {
+    CleanPostedAsRegistryAfterReboot();
   }
 
   client_->UpdateAdUUID();
@@ -147,6 +140,19 @@ void AdsImpl::InitializeStep4(const Result result) {
   }
 
   ads_serve_->DownloadCatalog();
+}
+
+void AdsImpl::CleanPostedAsRegistryAfterReboot() {
+  //ads notifications don't sustain reboot, so remove all
+  auto ads_shown_history = client_->GetAdsShownHistory();
+  if (!ads_shown_history.empty()) {
+    uint64_t ad_shown_timestamp = ads_shown_history.front();
+    uint64_t boot_timestamp = Time::NowInSeconds() -
+        static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds());
+    if (ad_shown_timestamp <= boot_timestamp) {
+      notifications_->RemoveAll();
+    }
+  }
 }
 
 bool AdsImpl::IsInitialized() {
@@ -993,7 +999,7 @@ bool AdsImpl::IsAllowedToShowAds() {
       << does_history_respect_ads_per_day_limit;
 
   return does_history_respect_minimum_wait_time &&
-      does_history_respect_ads_per_day_limit && 
+      does_history_respect_ads_per_day_limit &&
       notifications_->Count() < kMaximumAdNotifications;
 }
 
