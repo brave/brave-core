@@ -13,7 +13,6 @@ const char kEnabled[] = "brave.brave_ads.enabled";
 
 const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 const char kAdsPerDay[] = "brave.brave_ads.ads_per_day";
-const char kAdsPerSameTime[] = "brave.brave_ads.ads_per_same_time";
 
 const char kIdleThreshold[] = "brave.brave_ads.idle_threshold";
 

@@ -97,7 +97,6 @@ void AdsServiceFactory::RegisterProfilePrefs(
 
   #if defined(OS_ANDROID)
     registry->RegisterUint64Pref(prefs::kAdsPerDay, 12);
-    registry->RegisterUint64Pref(prefs::kAdsPerSameTime, 3);
   #else
     registry->RegisterUint64Pref(prefs::kAdsPerDay, 20);
   #endif

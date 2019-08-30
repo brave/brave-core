@@ -14,7 +14,6 @@ extern const char kEnabled[];
 
 extern const char kAdsPerHour[];
 extern const char kAdsPerDay[];
-extern const char kAdsPerSameTime[];
 
 extern const char kIdleThreshold[];
 

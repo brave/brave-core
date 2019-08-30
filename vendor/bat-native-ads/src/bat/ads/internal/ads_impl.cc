@@ -994,7 +994,7 @@ bool AdsImpl::IsAllowedToShowAds() {
 
   return does_history_respect_minimum_wait_time &&
       does_history_respect_ads_per_day_limit && 
-      notifications_->Count() < ads_client_->GetAdsPerSameTime();
+      notifications_->Count() < kMaximumAdNotifications;
 }
 
 bool AdsImpl::DoesHistoryRespectMinimumWaitTimeToShowAds() {
@@ -1718,10 +1718,6 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.String("adsPerHour");
   auto ads_per_hour = ads_client_->GetAdsPerHour();
   writer.Uint64(ads_per_hour);
-
-  writer.String("adsPerSameTime");
-  auto ads_per_same_time = ads_client_->GetAdsPerSameTime();
-  writer.Uint64(ads_per_same_time);
 
   writer.EndObject();
 

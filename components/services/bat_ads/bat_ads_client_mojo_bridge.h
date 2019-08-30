@@ -27,7 +27,6 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   const std::string GetAdsLocale() const override;
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
-  uint64_t GetAdsPerSameTime() const override;
   void GetClientInfo(ads::ClientInfo* info) const override;
   const std::vector<std::string> GetLocales() const override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;

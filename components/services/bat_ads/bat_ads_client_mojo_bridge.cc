@@ -120,15 +120,6 @@ uint64_t BatAdsClientMojoBridge::GetAdsPerDay() const {
   return ads_per_day;
 }
 
-uint64_t BatAdsClientMojoBridge::GetAdsPerSameTime() const {
-  if (!connected())
-    return 0;
-
-  uint64_t ads_per_same_time;
-  bat_ads_client_->GetAdsPerSameTime(&ads_per_same_time);
-  return ads_per_same_time;
-}
-
 void BatAdsClientMojoBridge::GetClientInfo(ads::ClientInfo* info) const {
   if (!connected())
     return;
