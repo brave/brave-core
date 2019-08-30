@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index e4909a9b80ed30510843b72f0ede108d500f6ac3..e3fb559b8654bb11c28f5d87083f4acfc1adce65 100644
+index e4909a9b80ed30510843b72f0ede108d500f6ac3..1502a691191a482789c001b14c162d638ca35731 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
 @@ -3,10 +3,23 @@
@@ -26,7 +26,7 @@ index e4909a9b80ed30510843b72f0ede108d500f6ac3..e3fb559b8654bb11c28f5d87083f4acf
  
  bool CookieSettingsBase::ShouldDeleteCookieOnExit(
      const ContentSettingsForOneType& cookie_settings,
-@@ -38,14 +51,44 @@ bool CookieSettingsBase::ShouldDeleteCookieOnExit(
+@@ -38,14 +51,45 @@ bool CookieSettingsBase::ShouldDeleteCookieOnExit(
    return setting == CONTENT_SETTING_SESSION_ONLY || matches_session_only_rule;
  }
  
@@ -54,6 +54,7 @@ index e4909a9b80ed30510843b72f0ede108d500f6ac3..e3fb559b8654bb11c28f5d87083f4acf
 +    const GURL& url,
 +    const GURL& site_for_cookies,
 +    const base::Optional<url::Origin>& top_frame_origin) const {
++  BRAVE_IS_COOKIE_ACCESS_ALLOWED
 +  // TODO(crbug.com/988398): top_frame_origin is not yet always available.
 +  // Ensure that the DCHECK always passes and remove the FeatureList check.
 +  if (!base::FeatureList::IsEnabled(kImprovedCookieControls))
