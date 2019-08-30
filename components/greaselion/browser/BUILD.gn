@@ -14,6 +14,7 @@ source_set("browser") {
     "//brave/components/brave_component_updater/browser",
     "//content/public/browser",
     "//content/public/common",
+    "//chrome/common",
     "//url",
   ]
 
