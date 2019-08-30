@@ -421,6 +421,14 @@
     "message": "Donation",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Send Drikkepenge",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Donation",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Skaber $name$ verificeret for nylig",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Ingen bekymringer. Dette kan ske af en række sikkerhedsmæssige årsager. Du skal bare oprette forbindelse igen, og dette vil løse problemet",
+    "message": "Bare rolig. Dette kan ske grundet en række sikkerhedsmæssige årsager. Tilslut dig blot igen, og problemet vil være løst.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

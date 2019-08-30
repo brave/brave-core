@@ -421,6 +421,14 @@
     "message": "Napiwek",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Wyślij napiwek",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Napiwek",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Twórca $name$ został niedawno zweryfikowany",
     "description": "Notification text that tells user which publisher just verified",

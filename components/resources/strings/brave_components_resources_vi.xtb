@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Bật chế độ thưởng theo cấp độ nội dung trên các trang này</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gửi tiền tip ngay khi bạn tìm thấy điều hay.</translation>
 <translation id="6135431587052937035">Hỗ trợ trang web yêu thích của bạn với những món tiền thưởng định kỳ hàng tháng.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME"/> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Rất tiếc, đã xảy ra trục trặc khi xử lý yêu cầu của bạn, vui lòng thử lại.</translation>
+<translation id="3082557070674409251">Đã nhấp</translation>
+<translation id="7119308337584989771">Đã loại bỏ</translation>
+<translation id="6805660603861526473">Đã xem</translation>
 <translation id="7422678632904904341">Số lượng:</translation>
 <translation id="5923611424721173182">Đối chiếu Hiện tại</translation>
 <translation id="5457113250005438886">Không hợp lệ</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave là thương hiệu đã đăng ký của Brave Software. Tên trang web có thể là thương hiệu hoặc thương hiệu đã đăng ký của chủ sở hữu trang web.</translation>
 <translation id="9026369588205476247">Để bảo vệ sự riêng tư của bạn, bản kê Phần thưởng Brave này không được lưu trữ hay ghi chép lại bất kỳ đâu ngoài thiết bị của bạn (máy tính này). Nó không thể được truy xuất từ Brave trong trường hợp thiết bị của bạn bị mất dữ liệu.</translation>
 <translation id="1036277985068412734">thêm tiền</translation>
+<translation id="3587482841069643663">Tất cả</translation>
+<translation id="4241224519481557898">Danh mục</translation>
+<translation id="3080423471207781945">Số quảng cáo tối đa nhận được mỗi giờ:</translation>
+<translation id="2631006050119455616">Đã lưu</translation>
+<translation id="2155330833364281539">Những quảng cáo bạn đã nhận được trong {{totalDays}} ngày qua</translation>
+<translation id="8863685593846905344">Lịch sử Quảng cáo</translation>
+<translation id="5212777575344695266">Đánh dấu Là Không phù hợp</translation>
+<translation id="2111256234277361810">Đánh dấu Là Không phù hợp ✓</translation>
+<translation id="8988332871810963281">Hiện không có lịch sử Quảng cáo Brave</translation>
+<translation id="5345727496083327478">Bạn sẽ không nhận được quảng cáo từ danh mục này nữa</translation>
+<translation id="5317780077021120954">Lưu</translation>
 <translation id="5441565662498481293">Bạn đang tự động gửi tiền tip đến:</translation>
 <translation id="2827387977307390755">Cho phép tiền boa</translation>
 <translation id="3671566813999349838">Số tiền</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Một lần</translation>
 <translation id="9182287025588539628">Tiền Tip Một lần</translation>
 <translation id="6381574025952123568">Số dư đầu kỳ</translation>
+<translation id="532275381857891532">Lịch sử Quảng cáo 7 ngày</translation>
 <translation id="4923459931733593730">Thanh toán</translation>
 <translation id="4021593982164260556">Thanh toán thực hiện mỗi {{day}}th ngày hàng tháng.</translation>
 <translation id="6104680658798556671">Chưa thực hiện thanh toán.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Tiền tip Hàng tháng</translation>
 <translation id="2391095793008133394">Gợi ý {{ user }} cho bài đăng của họ:</translation>
 <translation id="7557413530932469222">Gợi ý {{ user }} cho bài đăng của họ!</translation>
+<translation id="717513177896084801">Mách nước {{ user }}</translation>
 <translation id="1110535155349301542">gỡ bỏ</translation>
+<translation id="8204292894173669182">Xóa Khỏi Mục Đã Lưu</translation>
 <translation id="8942997470474842562">Bạn đã chỉ định {{reservedAmount}} BAT cho những người sáng tạo vẫn chưa đăng ký để nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.</translation>
 <translation id="8759753423332885148">Tìm hiểu thêm.</translation>
 <translation id="3157931365184549694">Khôi phục</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">Ví đã xác thực sẽ cho phép bạn:</translation>
 <translation id="7565794512491053578">Xác thực Ví Của bạn</translation>
 <translation id="698531289520577961">Và quản lý tiền của bạn dễ dàng!</translation>
+<translation id="8697510149346635496">Rút BAT mà bạn kiếm được nhờ xem các quảng cáo tôn trọng quyền riêng tư</translation>
+<translation id="1481480653609649134">Mua thêm BAT bằng thẻ tín dụng và các nguồn tiền khác</translation>
+<translation id="9096003370755878766">Rút BAT mà trước đó có thể bạn đã thêm vào ví Phần thưởng Brave của mình</translation>
+<translation id="5275978662119683162">Lợi ích của việc xác thực</translation>
+<translation id="5166793288622772189">Bạn đã sẵn sàng xác thực ví của mình chưa?</translation>
+<translation id="8766217572332535979">Không cần thiết phải xác thực để có thể nhận phần thưởng cho những đóng góp của người sáng tạo</translation>
+<translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
+<translation id="723054503945711909">Công ty Brave Software Inc. không xử lý, lưu trữ hay truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho Uphold khi bạn thiết lập tài khoản với họ.</translation>
 <translation id="1181037720776840403">Xóa</translation>
 <translation id="7885157704277298658">Đã sao chép!</translation>
 <translation id="5379640681913450928">Số lượng chữ:</translation>

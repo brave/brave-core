@@ -421,6 +421,14 @@
     "message": "انعام",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "ارسال یک انعام",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "انعام",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "سازنده $name$ به‌تازگی تأیید شد",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "نگران نباشید. این مورد ممکن است به دلایل امنیتی مختلف روی دهد. کافی است آن را دوباره متصل کنید تا این مشکلات برطرف شوند.",
+    "message": "نگران نباشید. این مشکل بنا به دلایل امنیتی اتفاق می‌افتد. با اتصال مجدد به آن، مشکل را برطرف خواهد کرد.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

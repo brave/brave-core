@@ -421,6 +421,14 @@
     "message": "打赏",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "发送提示",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "打赏",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "内容创建者 $name$ 最近已经过验证",
     "description": "Notification text that tells user which publisher just verified",

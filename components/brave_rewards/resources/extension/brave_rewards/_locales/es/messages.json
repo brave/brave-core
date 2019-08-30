@@ -421,6 +421,14 @@
     "message": "Propina",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Enviar una propina",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Propina",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Creador $name$verificado recientemente",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "No te preocupes. Esto puede pasar por muchos motivos. Prueba a reconectarte para solucionar este problema.",
+    "message": "No te preocupes. Esto se puede deber a diferentes cuestiones de seguridad. Basta con reconectarse para solucionar el problema.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

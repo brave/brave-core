@@ -421,6 +421,14 @@
     "message": "Propina",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Envia una propina",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Propina",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "S'ha verificat fa poc el creador $name$",
     "description": "Notification text that tells user which publisher just verified",

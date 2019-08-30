@@ -421,6 +421,14 @@
     "message": "Trinkgeld",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Einen Tipp senden",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Trinkgeld",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Urheber $name$ kürzlich verifiziert",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Keine Sorge, dies kann auf eine Vielzahl von Sicherheitsgründen zurückzuführen sein. Das Problem sollte behoben werden, wenn die Verbindung einfach wiederhergestellt wird.",
+    "message": "Keine Sorge. Dies kann aus verschiedenen Sicherheitsgründen geschehen. Durch einfaches Wiederherstellen der Verbindung wird dieses Problem gelöst.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

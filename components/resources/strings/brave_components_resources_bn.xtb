@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">এই সাইটগুলিতে বিষয়বস্তু-স্তরের পরামর্শগুলি সক্ষম করুন</translation>
 <translation id="995782501881226248">ইউটিউব</translation>
 <translation id="3905400818082450708">রেড্ডিট</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">রত্ন পাওয়া মাত্র দান করুন|</translation>
 <translation id="6135431587052937035">পুনরাবৃত্ত মাসিক পরামর্শগুলি দিয়ে আপনার পছন্দের সাইটগুলিকে সহায়তা করুন।</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Brave Browser ব্যবহার করে আমি এইমাত্র <ph name="NAME"/> টিপ দিয়েছি। https://brave.com/tips তে এটি পরীক্ষা করে দেখুন।</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">দুঃখিত আপনার অনুরোধ প্রক্রিয়াকরণে একটি সমস্যা ছিল, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="3082557070674409251">ক্লিক করা হয়েছে</translation>
+<translation id="7119308337584989771">খারিজ করা হয়েছে</translation>
+<translation id="6805660603861526473">দেখা হয়েছে</translation>
 <translation id="7422678632904904341">অর্থরাশি:</translation>
 <translation id="5923611424721173182">সাম্প্রতিক রিকনসাইল</translation>
 <translation id="5457113250005438886">অবৈধ</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave সফ্টওয়্যার। Brave হল Brave সফ্টওয়্যারের একটি নিবন্ধিত ট্রেডমার্ক। সাইটের নামগুলি সাইটের মালিকের ট্রেডমার্ক বা নিবন্ধিত ট্রেডমার্ক হতে পারে।</translation>
 <translation id="9026369588205476247">আপনার গোপনীয়তা সুরক্ষিত রাখতে এই ব্রেভ রিওয়ার্ডস বিবৃতি সংরক্ষণ, রেকর্ড বা লগ করা হয় না কোনখানে আপনার ডিভাইস ছাড়া (এই কম্পিউটার)| এই ডিভাইসের ডেটা বিনষ্ট হলে ব্রেভ থেকে এটি পুনরুদ্ধার করা যাবে না|</translation>
 <translation id="1036277985068412734">অর্থ যোগ করুন</translation>
+<translation id="3587482841069643663">সকল</translation>
+<translation id="4241224519481557898">বিভাগ</translation>
+<translation id="3080423471207781945">এক ঘণ্টায় পাওয়া সর্বাধিক বিজ্ঞাপন:</translation>
+<translation id="2631006050119455616">সেভ করা হয়েছে</translation>
+<translation id="2155330833364281539">গত {{totalDays}} দিনে আপনার পাওয়া বিজ্ঞাপন</translation>
+<translation id="8863685593846905344">বিজ্ঞাপনের ইতিহাস</translation>
+<translation id="5212777575344695266">অনুপযুক্ত হিসাবে চিহ্নিত করুন</translation>
+<translation id="2111256234277361810">অনুপযুক্ত হিসাবে চিহ্নিত করুন ✓</translation>
+<translation id="8988332871810963281">বর্তমানে কোনো Brave বিজ্ঞাপনের ইতিহাস নেই</translation>
+<translation id="5345727496083327478">আপনি এই বিভাগ থেকে আর বিজ্ঞাপন পাবেন না</translation>
+<translation id="5317780077021120954">সেভ করুন</translation>
 <translation id="5441565662498481293">আপনি স্বয়ংক্রিয়ভাবে একটি বখশিশ পাঠিয়েছেন একে:</translation>
 <translation id="2827387977307390755">এর উপর পরামর্শের অনুমোদন করুন</translation>
 <translation id="3671566813999349838">পরিমান</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">এক বারের জন্য</translation>
 <translation id="9182287025588539628">একবারের দান/পরামর্শ</translation>
 <translation id="6381574025952123568">ওপেনিং ব্যালেন্স</translation>
+<translation id="532275381857891532">7-দিনের বিজ্ঞাপনের ইতিহাস</translation>
 <translation id="4923459931733593730">পেমেন্ট</translation>
 <translation id="4021593982164260556">প্রতি মাসে প্রতি {{day}} দিনে অর্থ প্রদান করা হয়|</translation>
 <translation id="6104680658798556671">পেমেন্ট করা হয়নি|</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">মাসিক পরামর্শ</translation>
 <translation id="2391095793008133394">পরামর্শ {{ user }} তাদের পোস্টের জন্য:</translation>
 <translation id="7557413530932469222">পরামর্শ {{ user }} তাদের পোস্টের জন্য!</translation>
+<translation id="717513177896084801">পরামর্শ {{ user }}</translation>
 <translation id="1110535155349301542">অপসারণ করুন</translation>
+<translation id="8204292894173669182">সংরক্ষিত থেকে সরান</translation>
 <translation id="8942997470474842562">অবদানগুলি পেতে যে নির্মাতারা এখনও সাইন আপ করেননি তাদের জন্য আপনি {{reservedAmount}} BAT নির্ধারণ করেছেন। আপনার ব্রাউজারটি যাচাই করা না হলে অথবা 90 দিন পেরিয়ে না গেলে অবদান দেওয়া চালিয়ে যাব।</translation>
 <translation id="8759753423332885148">আরও জানুন।</translation>
 <translation id="3157931365184549694">পুনরুদ্ধার করুন</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">একটি যাচাইকৃত ওয়ালেট আপনাকে নিম্নলিখিত ক্ষেত্রে অনুমতি দেয়:</translation>
 <translation id="7565794512491053578">আপনার ওয়ালেট যাচাই করুন</translation>
 <translation id="698531289520577961">এবং সহজেই আপনার ফান্ড পরিচালনা করুন!</translation>
+<translation id="8697510149346635496">গোপনীয়তাকে সম্মান করা বিজ্ঞাপনগুলি থেকে আপনি যে BAT অর্জন করেছেন তা উইথড্র করুন</translation>
+<translation id="1481480653609649134">ক্রেডিট কার্ড এবং অন্যান্য উত্সগুলি দিয়ে আরও BAT কিনুন</translation>
+<translation id="9096003370755878766">আপনার Brave পুরস্কারের ওয়ালেটের সাথে আগে আপনি যোগ করে থাকতে পারেন এমন BAT উইথড্র করুন</translation>
+<translation id="5275978662119683162">যাচাই করার সুবিধাসমূহ</translation>
+<translation id="5166793288622772189">আপনার ওয়ালেট যাচাইকরণ করতে প্রস্তুত?</translation>
+<translation id="8766217572332535979">স্রষ্টার অবদানগুলির জন্য পুরস্কার অর্জন করতে যাচাইকরণের প্রয়োজন নেই</translation>
+<translation id="8465442795593991224">অনুরোধকৃত পরিষেবাগুলির উপর ভিত্তি করে সমর্থনের জন্য আপনার পরিচয় যাচাই করার প্রয়োজন হতে পারে।</translation>
+<translation id="723054503945711909">আপনি যখন Brave Software Inc. এর সাথে একটি অ্যাকাউন্ট স্থাপন করেন তখন সেটিকে সমর্থন করতে আপনি যে ব্যক্তিগত তথ্য প্রদান করেন তা তারা প্রক্রিয়াকরণ, মজুত, বা অ্যাক্সেস করে না।</translation>
 <translation id="1181037720776840403">সরিয়ে দিন</translation>
 <translation id="7885157704277298658">কপি করা হয়েছে!</translation>
 <translation id="5379640681913450928">শব্দ সংখ্যা:</translation>
