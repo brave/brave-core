@@ -87,6 +87,7 @@ class AdsServiceImpl : public AdsService,
 
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
+  uint64_t GetAdsPerSameTime() const override;
 
  private:
   friend class AdsNotificationHandler;

@@ -92,6 +92,15 @@ void AdsClientMojoBridge::GetAdsPerDay(GetAdsPerDayCallback callback) {
   std::move(callback).Run(ads_client_->GetAdsPerDay());
 }
 
+bool AdsClientMojoBridge::GetAdsPerSameTime(uint64_t* out_ads_per_same_time) {
+  *out_ads_per_same_time = ads_client_->GetAdsPerSameTime();
+  return true;
+}
+
+void AdsClientMojoBridge::GetAdsPerSameTime(GetAdsPerSameTimeCallback callback) {
+  std::move(callback).Run(ads_client_->GetAdsPerSameTime());
+}
+
 bool AdsClientMojoBridge::IsNetworkConnectionAvailable(bool* out_available) {
   *out_available = ads_client_->IsNetworkConnectionAvailable();
   return true;

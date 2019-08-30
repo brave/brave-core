@@ -887,6 +887,7 @@ void AdsServiceImpl::MigratePrefsVersion1To2() const {
 
   #if defined(OS_ANDROID)
     profile_->GetPrefs()->SetUint64(prefs::kAdsPerDay, 12);
+    profile_->GetPrefs()->SetUint64(prefs::kAdsPerSameTime, 3);
   #else
     profile_->GetPrefs()->SetUint64(prefs::kAdsPerDay, 20);
   #endif
@@ -988,6 +989,10 @@ void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
   return profile_->GetPrefs()->GetUint64(prefs::kAdsPerHour);
+}
+
+uint64_t AdsServiceImpl::GetAdsPerSameTime() const {
+  return profile_->GetPrefs()->GetUint64(prefs::kAdsPerSameTime);
 }
 
 void AdsServiceImpl::SetAdsPerHour(const uint64_t ads_per_hour) {

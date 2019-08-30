@@ -26,6 +26,8 @@ interface BatAdsClient {
   [Sync]
   GetAdsPerDay() => (uint64 ads_per_day);
   [Sync]
+  GetAdsPerSameTime() => (uint64 ads_per_same_time);
+  [Sync]
   IsNetworkConnectionAvailable() => (bool available);
   [Sync]
   IsNotificationsAvailable() => (bool available);

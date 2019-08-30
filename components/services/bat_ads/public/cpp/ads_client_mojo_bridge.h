@@ -37,6 +37,8 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   void GetAdsPerHour(GetAdsPerHourCallback callback) override;
   bool GetAdsPerDay(uint64_t* out_ads_per_day) override;
   void GetAdsPerDay(GetAdsPerDayCallback callback) override;
+  bool GetAdsPerSameTime(uint64_t* out_ads_per_same_time) override;
+  void GetAdsPerSameTime(GetAdsPerSameTimeCallback callback) override;
   bool IsNetworkConnectionAvailable(bool* out_available) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;

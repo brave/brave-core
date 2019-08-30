@@ -112,6 +112,10 @@ bool Notifications::Exists(const std::string& id) const {
   return true;
 }
 
+uint64_t Notifications::Count() const {
+  return notifications_.size();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 std::map<std::string, NotificationInfo> Notifications::GetNotificationsFromList(

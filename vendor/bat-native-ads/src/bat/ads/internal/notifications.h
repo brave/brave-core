@@ -36,6 +36,8 @@ class Notifications {
 
   bool Exists(const std::string& id) const;
 
+  uint64_t Count() const;
+
  private:
   bool is_initialized_;
 

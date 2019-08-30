@@ -30,6 +30,7 @@
 #include "base/strings/string_split.h"
 #include "base/time/time.h"
 #include "base/guid.h"
+#include "base/system/sys_info.h"
 
 #include "url/gurl.h"
 
@@ -125,6 +126,17 @@ void AdsImpl::InitializeStep4(const Result result) {
   ads_client_->SetIdleThreshold(kIdleThresholdInSeconds);
 
   NotificationAllowedCheck(false);
+
+  //ads notifications don't sustain reboot, so remove all
+  auto ads_shown_history = client_->GetAdsShownHistory();
+  if (!ads_shown_history.empty()) {
+    uint64_t ad_shown_timestamp = ads_shown_history.front();
+    uint64_t boot_timestamp = Time::NowInSeconds() - 
+        static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds());    
+    if (ad_shown_timestamp <= boot_timestamp) {
+      notifications_->RemoveAll();
+    }
+  }
 
   client_->UpdateAdUUID();
 
@@ -981,7 +993,8 @@ bool AdsImpl::IsAllowedToShowAds() {
       << does_history_respect_ads_per_day_limit;
 
   return does_history_respect_minimum_wait_time &&
-      does_history_respect_ads_per_day_limit;
+      does_history_respect_ads_per_day_limit && 
+      notifications_->Count() < ads_client_->GetAdsPerSameTime();
 }
 
 bool AdsImpl::DoesHistoryRespectMinimumWaitTimeToShowAds() {
@@ -1705,6 +1718,10 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.String("adsPerHour");
   auto ads_per_hour = ads_client_->GetAdsPerHour();
   writer.Uint64(ads_per_hour);
+
+  writer.String("adsPerSameTime");
+  auto ads_per_same_time = ads_client_->GetAdsPerSameTime();
+  writer.Uint64(ads_per_same_time);
 
   writer.EndObject();
 

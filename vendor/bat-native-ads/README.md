@@ -167,6 +167,11 @@ uint64_t GetAdsPerHour() const
 uint64_t GetAdsPerDay() const
 ```
 
+`GetAdsPerSameTime` should return the number of ads that can be shown at the same time
+```
+uint64_t GetAdsPerSameTime() const
+```
+
 `SetIdleThreshold` should set the idle threshold specified in seconds, for how often `OnIdle` or `OnUndle` should be called
 ```
 void SetIdleThreshold(
