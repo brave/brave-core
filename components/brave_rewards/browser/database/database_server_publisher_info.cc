@@ -48,7 +48,7 @@ bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
       "CREATE TABLE %s "
       "("
       "publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
-      "status TEXT NOT NULL,"
+      "status INTEGER DEFAULT 0 NOT NULL,"
       "excluded INTEGER DEFAULT 0 NOT NULL,"
       "address TEXT NOT NULL"
       ")",
