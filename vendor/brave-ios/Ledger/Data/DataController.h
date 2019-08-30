@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) BOOL storeExists;
 
+@property (nonatomic, readonly) NSPersistentContainer *container;
+
 /// Context object also allows us access to all persistent container data if needed.
 + (NSManagedObjectContext *)viewContext;
 

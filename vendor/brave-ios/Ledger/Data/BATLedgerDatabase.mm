@@ -98,6 +98,26 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   return fetchedObjects.firstObject;
 }
 
++ (nullable ServerPublisherInfo *)getServerPublisherInfoWithPublisherID:(NSString *)publisherID context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:ServerPublisherInfo.class withPublisherID:publisherID additionalPredicate:nil context:context];
+}
+
++ (nullable ServerPublisherAmount *)getServerPublisherAmountWithPublisherID:(NSString *)publisherID amount:(double)amount context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:ServerPublisherAmount.class withPublisherID:publisherID additionalPredicate:[NSPredicate predicateWithFormat:@"amount == %lf", amount] context:context];
+}
+
++ (nullable ServerPublisherBanner *)getServerPublisherBannerWithPublisherID:(NSString *)publisherID context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:ServerPublisherBanner.class withPublisherID:publisherID additionalPredicate:nil context:context];
+}
+
++ (nullable ServerPublisherLink *)getServerPublisherLinkWithPublisherID:(NSString *)publisherID provider:(NSString *)provider context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:ServerPublisherLink.class withPublisherID:publisherID additionalPredicate:[NSPredicate predicateWithFormat:@"provider == %@", provider] context:context];
+}
+
 #pragma mark - Publisher Info
 
 + (BATPublisherInfo *)publisherInfoWithPublisherID:(NSString *)publisherID
@@ -625,6 +645,210 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 #pragma clang diagnostic ignored "-Wobjc-messaging-id"
   return [[fetchedObjects valueForKeyPath:@"@sum.amount"] doubleValue];
 #pragma clang diagnostic pop
+}
+
+#pragma mark - Publisher List / Info
+
++ (nullable BATServerPublisherInfo *)serverPublisherInfoWithPublisherID:(NSString *)publisherID
+{
+  const auto serverInfo = [self getServerPublisherInfoWithPublisherID:publisherID context:DataController.viewContext];
+  if (!serverInfo) {
+    return nil;
+  }
+  
+  const auto info = [[BATServerPublisherInfo alloc] init];
+  info.publisherKey = publisherID;
+  info.status = static_cast<BATPublisherStatus>(serverInfo.status);
+  info.excluded = serverInfo.excluded;
+  info.address = serverInfo.address;
+  return info;
+}
+
++ (void)insertOrUpdateServerPublisherList:(NSArray<BATServerPublisherInfo *> *)list context:(NSManagedObjectContext *)context
+{
+  for (BATServerPublisherInfo *info in list) {
+    auto pi = [self getServerPublisherInfoWithPublisherID:info.publisherKey context:context] ?: [[ServerPublisherInfo alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+    pi.publisherID = info.publisherKey;
+    pi.status = static_cast<int32_t>(info.status);
+    pi.excluded = info.excluded;
+    pi.address = info.address;
+  }
+}
+
++ (void)insertOrUpdateServerPublisherList:(NSArray<BATServerPublisherInfo *> *)list
+                               completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    [self insertOrUpdateServerPublisherList:list context:context];
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
++ (void)clearAndInsertList:(NSArray<BATServerPublisherInfo *> *)list
+                completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    const auto fetchRequest = ServerPublisherInfo.fetchRequest;
+    fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class)
+                                      inManagedObjectContext:context];
+    NSError *error = nil;
+    if ([DataController.shared.container.persistentStoreDescriptions.firstObject.type isEqualToString:NSSQLiteStoreType]) {
+      const auto deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
+      [context executeRequest:deleteRequest error:&error];
+    } else {
+      const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+      for (ServerPublisherInfo *spi in fetchedObjects) {
+        [context deleteObject:spi];
+      }
+    }
+    if (error) {
+      NSLog(@"%@", error);
+    }
+    [self insertOrUpdateServerPublisherList:list context:context];
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
+#pragma mark - Publisher List / Banner Amounts
+
++ (nullable NSArray<NSNumber *> *)bannerAmountsForPublisherWithPublisherID:(NSString *)publisherID
+{
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = ServerPublisherAmount.fetchRequest;
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherAmount.class)
+                                    inManagedObjectContext:context];
+  fetchRequest.predicate = [NSPredicate predicateWithFormat:@"publisherID == %@", publisherID];
+  fetchRequest.sortDescriptors = @[ [[NSSortDescriptor alloc] initWithKey:@"amount" ascending:YES] ];
+  
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+  }
+  
+  const auto amounts = [[NSMutableArray<NSNumber *> alloc] init];
+  for (ServerPublisherAmount *amount in fetchedObjects) {
+    [amounts addObject:@(amount.amount)];
+  }
+  
+  if (amounts.count == 0) {
+    return nil;
+  }
+  return amounts;
+}
+
++ (void)insertOrUpdateBannerAmountsForServerPublisherInfo:(BATServerPublisherInfo *)info context:(NSManagedObjectContext *)context
+{
+  for (NSNumber *amountObj in info.banner.amounts) {
+    double amount = [amountObj doubleValue];
+    auto spa = [self getServerPublisherAmountWithPublisherID:info.publisherKey amount:amount context:context] ?: [[ServerPublisherAmount alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherAmount.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+    spa.serverPublisherInfo = [self getServerPublisherInfoWithPublisherID:info.publisherKey context:context];
+    spa.amount = amount;
+    spa.publisherID = info.publisherKey;
+  }
+}
+
++ (void)insertOrUpdateBannerAmountsForServerPublisherInfo:(BATServerPublisherInfo *)info
+                                               completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  if (!info.banner) {
+    completion(NO);
+    return;
+  }
+  
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    [self insertOrUpdateBannerAmountsForServerPublisherInfo:info context:context];
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
+#pragma mark - Publisher List / Banner
+
++ (nullable BATPublisherBanner *)bannerForPublisherID:(NSString *)publisherID
+{
+  const auto spb = [self getServerPublisherBannerWithPublisherID:publisherID context:DataController.viewContext];
+  if (!spb) {
+    return nil;
+  }
+  const auto banner = [[BATPublisherBanner alloc] init];
+  banner.publisherKey = publisherID;
+  banner.title = spb.title;
+  banner.desc = spb.desc;
+  banner.background = spb.background;
+  banner.logo = spb.logo;
+  banner.links = [self publisherLinksWithPublisherID:publisherID];
+  banner.amounts = [self bannerAmountsForPublisherWithPublisherID:publisherID];
+  return banner;
+}
+
++ (void)insertOrUpdateBannerForServerPublisherInfo:(BATServerPublisherInfo *)info
+                                        completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  if (!info.banner) {
+    completion(NO);
+    return;
+  }
+  
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    auto spb = [self getServerPublisherBannerWithPublisherID:info.publisherKey context:context] ?: [[ServerPublisherBanner alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherBanner.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+    spb.serverPublisherInfo = [self getServerPublisherInfoWithPublisherID:info.publisherKey context:context];
+    spb.publisherID = info.publisherKey;
+    spb.title = info.banner.title;
+    spb.desc = info.banner.desc;
+    spb.background = info.banner.background;
+    spb.logo = info.banner.logo;
+    
+    // This is the same as core, they insert banner, amounts and links all at the same time
+    [self insertOrUpdateBannerAmountsForServerPublisherInfo:info context:context];
+    [self insertOrUpdateLinksForServerPublisherInfo:info context:context];
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
+#pragma mark - Publisher List / Link
+
++ (nullable NSDictionary<NSString *, NSString *> *)publisherLinksWithPublisherID:(NSString *)publisherID
+{
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = ServerPublisherLink.fetchRequest;
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherLink.class)
+                                    inManagedObjectContext:context];
+  fetchRequest.predicate = [NSPredicate predicateWithFormat:@"publisherID == %@", publisherID];
+  
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+  }
+  
+  const auto links = [[NSMutableDictionary<NSString *, NSString *> alloc] init];
+  for (ServerPublisherLink *link in fetchedObjects) {
+    links[link.provider] = link.link;
+  }
+  if (links.count == 0) {
+    return nil;
+  }
+  return links;
+}
+
++ (void)insertOrUpdateLinksForServerPublisherInfo:(BATServerPublisherInfo *)info context:(NSManagedObjectContext *)context
+{
+  for (NSString *provider in info.banner.links) {
+    auto spl = [self getServerPublisherLinkWithPublisherID:info.publisherKey provider:provider context:context] ?: [[ServerPublisherLink alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherLink.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+    spl.serverPublisherInfo = [self getServerPublisherInfoWithPublisherID:info.publisherKey context:context];
+    spl.publisherID = info.publisherKey;
+    spl.provider = provider;
+    spl.link = info.banner.links[provider];
+  }
+}
+
++ (void)insertOrUpdateLinksForServerPublisherInfo:(BATServerPublisherInfo *)info
+                                       completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  if (!info.banner) {
+    completion(NO);
+    return;
+  }
+  
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    [self insertOrUpdateLinksForServerPublisherInfo:info context:context];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 @end
