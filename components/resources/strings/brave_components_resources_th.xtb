@@ -125,6 +125,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="9031738692126722094">เปิดใช้ทิประดับเนื้อหาในเว็บไซต์เหล่านี้</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">ทิปในจุดที่คุณพบอัญมณี</translation>
 <translation id="6135431587052937035">สนับสนุนเว็บไซต์โปรดของคุณด้วยคำแนะนำเวียนซ้ำรายเดือน</translation>
@@ -148,6 +149,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6231182869178328516">ฉันเพิ่งให้ทิป <ph name="NAME"/> ผ่านเบราว์เซอร์ Brave ลองเข้าไปดูได้ที่ https://brave.com/tips</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">ขออภัย การดำเนินการคำขอของคุณมีปัญหา โปรดลองใหม่อีกครั้ง</translation>
+<translation id="3082557070674409251">คลิกแล้ว</translation>
+<translation id="7119308337584989771">ปิด</translation>
+<translation id="6805660603861526473">ดูแล้ว</translation>
 <translation id="7422678632904904341">จำนวน:</translation>
 <translation id="5923611424721173182">งบกระทบยอดปัจจุบัน</translation>
 <translation id="5457113250005438886">ไม่ถูกต้อง</translation>
@@ -178,6 +182,17 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6832986780040139899">©2016–2018 Brave Software Brave เป็นเครื่องหมายการค้าที่ได้ลงทะเบียนไว้ของ Brave Software ชื่อไซต์อาจเป็นเครื่องหมายการค้า หรือเครื่องหมายการค้าที่ได้ลงทะเบียนไว้ของเจ้าของไซต์</translation>
 <translation id="9026369588205476247">เพื่อป้องกันความเป็นส่วนตัวของคุณ  รายงาน Brave Rewards นี้จะไม่ถูกบันทึกหรือเข้าสู่ระบบทุกที่นอกเหนือจากอุปกรณ์ของคุณ (คอมพิวเตอร์นี้) มันไม่มีทางที่จะได้รับจากBrave ในกรณีที่มีข้อมูลสูญหายบนอุปกรณ์ของคุณ</translation>
 <translation id="1036277985068412734">เพิ่มเงินทุน</translation>
+<translation id="3587482841069643663">ทั้งหมด</translation>
+<translation id="4241224519481557898">หมวดหมู่</translation>
+<translation id="3080423471207781945">โฆษณาสูงสุดที่ได้รับต่อชั่วโมง:</translation>
+<translation id="2631006050119455616">บันทึกแล้ว</translation>
+<translation id="2155330833364281539">โฆษณาที่คุณได้รับในช่วง {{totalDays}} วันที่ผ่านมา</translation>
+<translation id="8863685593846905344">ประวัติโฆษณา</translation>
+<translation id="5212777575344695266">ทำเครื่องหมายว่าไม่เหมาะสม</translation>
+<translation id="2111256234277361810">ทำเครื่องหมายว่าไม่เหมาะสม ✓</translation>
+<translation id="8988332871810963281">ขณะนี้ไม่มีประวัติ Brave Ads</translation>
+<translation id="5345727496083327478">คุณจะไม่ได้รับโฆษณาจากหมวดหมู่นี้อีกต่อไป</translation>
+<translation id="5317780077021120954">บันทึก</translation>
 <translation id="5441565662498481293">คุณกำลังส่งทิปโดยอัตโนมัติไปยัง:</translation>
 <translation id="2827387977307390755">อนุญาตเปิดทิป</translation>
 <translation id="3671566813999349838">จำนวน</translation>
@@ -268,6 +283,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8370173854533168890">ครั้งเดียว</translation>
 <translation id="9182287025588539628">ทิปครั้งเดียว</translation>
 <translation id="6381574025952123568">ยอดคงเหลือที่เปิด</translation>
+<translation id="532275381857891532">ประวัติโฆษณาในช่วง 7 วัน</translation>
 <translation id="4923459931733593730">การชำระเงิน</translation>
 <translation id="4021593982164260556">ทำการจ่ายเงินทุก ๆ {{day}} วันในแต่ละเดือน</translation>
 <translation id="6104680658798556671">ไม่ได้ทำการชำระเงิน</translation>
@@ -291,7 +307,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7577100371127227294">การให้ทิปรายเดือน</translation>
 <translation id="2391095793008133394">ให้ทิป {{ user }} สำหรับโพสต์ของเขา:</translation>
 <translation id="7557413530932469222">ให้ทิป {{ user }} สำหรับโพสต์ของเขา!</translation>
+<translation id="717513177896084801">ให้ทิป {{ user }}</translation>
 <translation id="1110535155349301542">นำออก</translation>
+<translation id="8204292894173669182">ลบออกจากที่บันทึกไว้</translation>
 <translation id="8942997470474842562">คุณได้มอบ {{reservedAmount}} BAT ให้กับผู้สร้างที่ยังไม่ได้ลงทะเบียนรับเงินสนับสนุน เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนไปเรื่อย ๆ จนกว่าผู้สร้างจะยืนยัน หรือจนกระทั่งเวลาผ่านไป 90 วัน</translation>
 <translation id="8759753423332885148">เรียนรู้เพิ่มเติม</translation>
 <translation id="3157931365184549694">คืนค่า</translation>
@@ -396,12 +414,14 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="46988480989545156">ยืนยันวอลเล็ท</translation>
 <translation id="1554282356558968486">บริการวอลเล็ทของเราให้บริการโดย</translation>
 <translation id="6771734945114850124">โปรดเตรียมเอกสารแสดงตัวที่ออกโดยหน่วยงานรัฐให้พร้อม</translation>
-<translation id="4483114863312340607">ถอนและฝากเงิน</translation>
-<translation id="6600381840029958159">ไม่จำเป็นต้องตอบ Captcha เพื่อรับรางวัลจากโฆษณา</translation>
-<translation id="4332021186346461319">รางวัลที่ได้รับจะไม่มีวันหมดอายุและนำฝากเข้าวอลเล็ทของคุณโดยทันที</translation>
-<translation id="2610007079772760276">วอลเล็ทที่ยืนยันแล้วจะสามารถ:</translation>
-<translation id="7565794512491053578">ยืนยันวอลเล็ทของคุณ</translation>
-<translation id="698531289520577961">และบริหารเงินของคุณอย่างง่ายดาย!</translation>
+<translation id="8697510149346635496">ถอน BAT ที่คุณได้รับจากการดูโฆษณาที่เคารพความเป็นส่วนตัว</translation>
+<translation id="1481480653609649134">ซื้อ BAT เพิ่มด้วยบัตรเครดิตและแหล่งอื่น ๆ</translation>
+<translation id="9096003370755878766">ถอน BAT ที่คุณอาจเพิ่มเข้าไปในกระเป๋าเงิน Brave Rewards ของคุณก่อนหน้านี้</translation>
+<translation id="5275978662119683162">ประโยชน์ของการยืนยันตัวตน</translation>
+<translation id="5166793288622772189">พร้อมที่จะยืนยันกระเป๋าเงินของคุณหรือยัง</translation>
+<translation id="8766217572332535979">การยืนยันตัวตนนั้นไม่จำเป็นสำหรับการได้รับรางวัลตอบแทนสำหรับการสนับสนุนของผู้สร้าง</translation>
+<translation id="8465442795593991224">Uphold อาจกำหนดให้คุณยืนยันตัวตนของคุณตามบริการที่ร้องขอ</translation>
+<translation id="723054503945711909">Brave Software Inc. จะไม่ประมวลผล เก็บบันทึก หรือเข้าถึงข้อมูลส่วนบุคคลใด ๆ ที่คุณให้ไว้กับ Uphold เมื่อคุณสร้างบัญชีกับทางนั้น</translation>
 <translation id="1181037720776840403">ลบออก</translation>
 <translation id="7885157704277298658">คัดลอกแล้ว!</translation>
 <translation id="5379640681913450928">จำนวนคำ:</translation>

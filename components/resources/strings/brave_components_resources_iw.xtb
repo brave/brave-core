@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">נא לאפשר טיפים על רמת התוכן באתרים אלה</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">טוויטר</translation>
 <translation id="3920963435109110161">תגמלו מיידית, כשתגלו אוצרות</translation>
 <translation id="6135431587052937035">תמכו באתרים האהובים עליכם במתן טיפים חודשיים</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">הרגע נתתי טיפ <ph name="NAME"/> באמצעות דפדפן Brave. אפשר לראות את זה ב-https://brave.com/tips.</translation>
 <translation id="8404935570206006581">תנו טיפ עם Brave</translation>
 <translation id="2876191400747549936">אנו מצטערים, הייתה בעיה בעיבוד הבקשה שלך, נא לנסות שוב.</translation>
+<translation id="3082557070674409251">נלחץ</translation>
+<translation id="7119308337584989771">נדחה</translation>
+<translation id="6805660603861526473">נצפה</translation>
 <translation id="7422678632904904341">סכום:</translation>
 <translation id="5923611424721173182">הסדר נוכחי</translation>
 <translation id="5457113250005438886">לא תקף</translation>
@@ -179,6 +183,17 @@
 Brave היא סימן מסחרי רשום של Brave Software. שמות אתרים עשויים להיות סימנים מסחריים או סימנים מסחריים רשומים של בעל האתר.</translation>
 <translation id="9026369588205476247">על מנת להגן על הפרטיות שלכם, הצהרה זו של Brave Rewards לא נשמרת, רשומה או מתועדת בשום מקום פרט למכשיר שלך (מחשב זה). לא ניתן לשחזר אותה מ-Brave במקרה של אובדן נתונים במכשירכם.</translation>
 <translation id="1036277985068412734">הוסיפו כסף</translation>
+<translation id="3587482841069643663">הכל</translation>
+<translation id="4241224519481557898">קטגוריה</translation>
+<translation id="3080423471207781945">מספר מקסימלי של מודעות שהתקבלו לשעה:</translation>
+<translation id="2631006050119455616">בוצעה שמירה</translation>
+<translation id="2155330833364281539">מודעות שקיבלת ב-{{totalDays}} הימים האחרונים</translation>
+<translation id="8863685593846905344">היסטוריית מודעות</translation>
+<translation id="5212777575344695266">סמן כבלתי הולם</translation>
+<translation id="2111256234277361810">סמן כבלתי הולם  ✓</translation>
+<translation id="8988332871810963281">לא קיימת כרגע היסטוריית Brave Ads</translation>
+<translation id="5345727496083327478">לא תקבל עוד מודעות מקטגוריה זו</translation>
+<translation id="5317780077021120954">שמור</translation>
 <translation id="5441565662498481293">את/ה שולח/ת אוטומטי טיפ אל:</translation>
 <translation id="2827387977307390755">לאפשר טיפים ב-</translation>
 <translation id="3671566813999349838">כמות</translation>
@@ -269,6 +284,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="8370173854533168890">חד פעמי</translation>
 <translation id="9182287025588539628">טיפ חד-פעמי</translation>
 <translation id="6381574025952123568">יתרת פתיחה</translation>
+<translation id="532275381857891532">היסטוריית מודעות של 7 ימים</translation>
 <translation id="4923459931733593730">תשלום</translation>
 <translation id="4021593982164260556">התשלום מתבצע ביום ה-{{day}} לכל חודש.</translation>
 <translation id="6104680658798556671">התשלום לא בוצע.</translation>
@@ -292,7 +308,9 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="7577100371127227294">טיפים חודשיים</translation>
 <translation id="2391095793008133394">תנו טיפ ל-{{ user }} עבור הפוסט שלו/ה:</translation>
 <translation id="7557413530932469222">תנו טיפ ל-{{ user }} עבור הפוסט שלו/ה!</translation>
+<translation id="717513177896084801">מתן טיפ ל-{{ user }}</translation>
 <translation id="1110535155349301542">הסר</translation>
+<translation id="8204292894173669182">הסר משמורים</translation>
 <translation id="8942997470474842562">ביצעתם הקצאה של {{ }} BAT ליוצרים שטרם נרשמו לקבלת תגמולים. הדפדפן ימשיך לנסות לתרום עד אשר יאומתו או עד שיחלפו 90 יום.</translation>
 <translation id="8759753423332885148">למד עוד.</translation>
 <translation id="3157931365184549694">שחזר</translation>
@@ -397,12 +415,14 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="46988480989545156">אימות ארנק</translation>
 <translation id="1554282356558968486">שירות הארנקים שלנו מסופק על ידי</translation>
 <translation id="6771734945114850124">נא להכין את תעודת הזהות שלך שהונפקה על ידי הממשלה בהישג יד.</translation>
-<translation id="4483114863312340607">משיכת והוספת כספים</translation>
-<translation id="6600381840029958159">אין צורך לפתור captcha כדי להרוויח תגמולים עבור מודעות פרסומת</translation>
-<translation id="4332021186346461319">תגמולים שהתקבלו לעולם לא יפוגו, והם יופקדו בארנקך באופן מיידי</translation>
-<translation id="2610007079772760276">ארנק מאומת מאפשר לך:</translation>
-<translation id="7565794512491053578">אימות הארנק שלך</translation>
-<translation id="698531289520577961">ונהל/י את הכספים שלך בקלות!</translation>
+<translation id="8697510149346635496">משיכת BAT שאת/ה מרוויח/ה מצפייה במודעות שמכבדות פרטיות</translation>
+<translation id="1481480653609649134">רכישת BAT נוספים באמצעות כרטיסי אשראי ומקורות אחרים</translation>
+<translation id="9096003370755878766">משיכת BAT שייתכן שהוספת בעבר לארנק Brave Rewards שלך</translation>
+<translation id="5275978662119683162">היתרונות באימות</translation>
+<translation id="5166793288622772189">מוכנ/ה לאמת את הארנק שלך?</translation>
+<translation id="8766217572332535979">אימות אינו הכרחי כדי לקבל תגמולים עבור תרומות יוצרים</translation>
+<translation id="8465442795593991224">Uphold עשויה לדרוש ממך לאמת את זהותך על בסיס השירותים המבוקשים.</translation>
+<translation id="723054503945711909">חברת .Brave Software Inc אינה מעבדת, מאחסנת או ניגשת לשום מידע אישי שהנך מוסר/ת ל-Uphold בעת פתיחת חשבון אצלם.</translation>
 <translation id="1181037720776840403">הסר</translation>
 <translation id="7885157704277298658">הועתק!</translation>
 <translation id="5379640681913450928">ספירת מילים:</translation>

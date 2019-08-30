@@ -421,6 +421,14 @@
     "message": "Propina",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Envia una propina",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Propina",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "S'ha verificat fa poc el creador $name$",
     "description": "Notification text that tells user which publisher just verified",
@@ -486,42 +494,6 @@
   "walletDisconnect":  {
     "message": "Desconnectar de Gratificacions Brave",
     "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerificationButton":  {
-    "message": "Verificar el moneder",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "El nostre servei de moneder és proveït per",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Si us plau, tingues a mà el teu  document d'identitat.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Guardar les teves fitxes de Gratificació per Anunci",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Afegir fitxes amb la targeta de crèdit",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Retirar fitxes",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Un moneder verificat et permet:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Verifica el teu Moneder",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "I gestiona els teus fons fàcilment!",
-    "description": "Second part of the title in verify panel"
   },
   "walletVerified":  {
     "message": "Verificat",

@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
 <translation id="6406506848690869874">Sincronização</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
+<translation id="2445484935443597917">Criar um novo perfil</translation>
+<translation id="2666990579225592931">Abrir janela de convidado</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") não é permitida no Brave.</translation>
 <translation id="7450557937477381864">Fechar Chrome</translation>
 <translation id="7008934821596358692">Para terminar a importação, fechar todas as janelas do windows Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Abrir janelas e separadores</translation>
 <translation id="3699882589215410581">Instalar e correr Widevine</translation>
 <translation id="3696083746357487900">Instalar a Crypto Wallets</translation>
+<translation id="8926389886865778422">Não voltar a perguntar</translation>
+<translation id="4726634924419692905">Perguntar quando um site quer instalar o Widevine no seu computador.</translation>
 <translation id="8053096063396012732">Instalar o Widevine</translation>
 <translation id="4840334696217618631">Reiniciar o navegador para ativar o Widevine</translation>
 <translation id="8410111618231938546">O Google Widevine é parte do código da Gestão de Direitos Digitais (GDD) que nós na Brave Software não detemos e não podemos inspecionar. O código do Google Widevine é carregado a partir de servidores da Google, não a partir dos nossos servidores. É carregado apenas quando tem essa opção permitida. Desencorajamos a utilização da GDD, mas respeitamos a escolha do utilizador e reconhecemos que alguns utilizadores do Brave gostariam de utilizar serviços que o requerem.
@@ -31,6 +35,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4988333904713528597">Permitir sempre reprodução automática e <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar a bloquear a reprodução automática</translation>
 <translation id="5883458389055721080">A Brave não avaliou a segurança e proteção desta extensão. Apenas instale a extensão caso confie no desenvolvedor da mesma.</translation>
+<translation id="8081858229109418493">Nome de perfil e ícone</translation>
 <translation id="2044383478723007273">Cores Brave</translation>
 <translation id="2814998458708016836">Usar a barra de endereços grande</translation>
 <translation id="6123134130710658846">Ocultar o botão Brave Rewards</translation>
@@ -57,6 +62,9 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8754605759692119662">Isto bloqueará a maioria dos anúncios em sites, mas não os anúncios Brave particulares; estes são controláveis na</translation>
 <translation id="6388201778088078932">configurações.</translation>
 <translation id="9185018653595759199">Bloqueio de redes sociais</translation>
+<translation id="7390783310074170337">Vista padrão</translation>
+<translation id="130615081792797568">Vista simples</translation>
+<translation id="2360360976480535628">Vista avançada</translation>
 <translation id="5709627087332022422">Bloquear rastreadores cross-site</translation>
 <translation id="9075744464571452108">Reconhecimento de dispositivo</translation>
 <translation id="3570081523466826008">Atualizar ligações para HTTPS</translation>
@@ -95,6 +103,9 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="9181207987584064303">Ver na Loja de Extensões Web</translation>
 <translation id="4846154056248462491">Ao sair</translation>
 <translation id="5057399635433117814">Traduzir esta página? Isto enviará todo o texto desta página à Microsoft para tradução.</translation>
+<translation id="330263065709195164">Instalar a extensão do Google Translate para a tradução desta página?</translation>
+<translation id="3789841737615482174">Instalar</translation>
+<translation id="7658239707568436148">Cancelar</translation>
 <translation id="3371343170427636147">Aplicações Noturnas do Browser Brave</translation>
 <translation id="4097979995947147464">Aplicações Beta do Browser Brave</translation>
 <translation id="8303432794159193481">Aplicações de Dispositivos do Browser Brave</translation>

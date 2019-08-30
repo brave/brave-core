@@ -24,7 +24,7 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "あなたはプライバシーとセキュリティの保護なしでこのサイトを閲覧しています。",
+    "message": "このサイトを閲覧中、プライバシーとセキュリティ保護は無効です。",
     "description": "Message telling the user that shields are disabled"
   },
   "itemsBlocked": {

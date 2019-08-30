@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Blokování reklam Brave</translation>
 <translation id="6406506848690869874">Synchronizace</translation>
 <translation id="5655621391922317800">Krypto peněženky</translation>
+<translation id="2445484935443597917">Vytvořit nový profil</translation>
+<translation id="2666990579225592931">Otevřít okno hosta</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID rozšíření "<ph name="EXTENSION_ID"/>") není v Brave povoleno.</translation>
 <translation id="7450557937477381864">Zavřít Chrome</translation>
 <translation id="7008934821596358692">Pro dokončení importu zavřete všechna okna prohlížeče Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Otevřená okna a karty</translation>
 <translation id="3699882589215410581">Nainstalovat a spustit Widevine</translation>
 <translation id="3696083746357487900">Instalovat Krypto peněženky</translation>
+<translation id="8926389886865778422">Dotaz již nezobrazovat</translation>
+<translation id="4726634924419692905">Zobrazit dotaz, když bude stránka chtít do vašeho počítače nainstalovat doplněk Widevine.</translation>
 <translation id="8053096063396012732">Instalovat Widevine</translation>
 <translation id="4840334696217618631">Restartujte prohlížeč, abyste povolili Widevine</translation>
 <translation id="8410111618231938546">Google Widevine je kód pro správu digitálních práv (DRM), který ve společnosti Brave Software nevlastníme a nemůžeme jej kontrolovat. Kód Google Widevine je nahráván ze serverů Google, ne z našich serverů. Nahraje se pouze po povolení této možnosti. Používání DRM nedoporučujeme, ale respektujeme volbu uživatele a uznáváme, že někteří uživatelé Brave by rádi využívali služby, které DRM vyžadují.
@@ -31,6 +35,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4988333904713528597">Vždy povolit automatické přehrávání na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
 <translation id="5883458389055721080">Brave nepřezkoumal bezpečnost tohoto rozšíření. Toto rozšíření nainstalujte pouze tehdy, pokud důvěřujete vývojáři.</translation>
+<translation id="8081858229109418493">Název profilu a ikona</translation>
 <translation id="2044383478723007273">Barvy Brave</translation>
 <translation id="2814998458708016836">Použít široký adresní řádek</translation>
 <translation id="6123134130710658846">Skrýt tlačítko Brave Rewards</translation>
@@ -57,6 +62,9 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8754605759692119662">Toto zablokuje většinu reklam na webových stránkách, nikoli soukromé reklamy Brave — ty jsou řízeny v</translation>
 <translation id="6388201778088078932">nastavení.</translation>
 <translation id="9185018653595759199">Blokování sociálních médií</translation>
+<translation id="7390783310074170337">Výchozí zobrazení</translation>
+<translation id="130615081792797568">Jednoduché zobrazení</translation>
+<translation id="2360360976480535628">Pokročilé zobrazení</translation>
 <translation id="5709627087332022422">Blokovat trackery mezi weby</translation>
 <translation id="9075744464571452108">Rozpoznání zařízení</translation>
 <translation id="3570081523466826008">Upgradovat spojení k HTTPS</translation>
@@ -95,6 +103,9 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="9181207987584064303">Zobrazit v Obchodu webových rozšíření</translation>
 <translation id="4846154056248462491">Na výstupu</translation>
 <translation id="5057399635433117814">Chcete tuto stránku přeložit? Tím odešlete veškerý text na této stránce společnosti Microsoft, která provede překlad.</translation>
+<translation id="330263065709195164">Chcete za účelem překladu této stránky nainstalovat rozšíření Google Translate?</translation>
+<translation id="3789841737615482174">Instalovat</translation>
+<translation id="7658239707568436148">Zrušit</translation>
 <translation id="3371343170427636147">Noční aplikace prohlížeče Brave</translation>
 <translation id="4097979995947147464">Beta aplikace prohlížeče Brave</translation>
 <translation id="8303432794159193481">Vývojové aplikace prohlížeče Brave</translation>

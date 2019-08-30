@@ -421,6 +421,14 @@
     "message": "Bahşiş",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Bir İpucu Gönder",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Bahşiş",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "$name$ isimli oluşturucu kısa süre önce onaylandı",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Brave Ödüllerden Ayrıl",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Cüzdanı doğrula",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Cüzdan hizmetimizi sağlayan:",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Lütfen devlet tarafından verilmiş kimliğinizi hazır tutun.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Reklam Ödül jetonlarınızı saklayın",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Kredi kartı ile jeton ekleyin",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Jeton çekin",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Doğrulanmış bir cüzdan şunlara olanak tanır:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Cüzdanınızı Doğrulayın",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Ve paranızı kolaylıkla yönetin!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Doğrulandı",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Telaşlanmayın. Bu, çeşitli güvenlik sebeplerinden kaynaklı yaşanabilir. Basitçe tekrar bağlanmak bu sorunu çözecektir.",
+    "message": "Telaşa gerek yok. Bu, çeşitli güvenlik nedenleriyle olabilir. Yeniden bağlanmak basitçe bu sorunu çözecektir.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -421,6 +421,14 @@
     "message": "ทิป",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "ส่งทิป",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "ทิป",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "ผู้สร้าง $name$ ที่ยืนยันเมื่อไม่นานมานี้",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "ยกเลิกการเชื่อมต่อกับ Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "ยืนยันวอลเล็ท",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "บริการวอลเล็ทของเราให้บริการโดย",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "โปรดเตรียมเอกสารแสดงตัวที่ออกโดยหน่วยงานรัฐให้พร้อม",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "เก็บโทเค็นจาก Ad Rewards ของคุณ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "เพิ่มโทเค็นโดยใช้บัตรเครดิต",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "ถอนโทเค็น",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "วอลเล็ทที่ยืนยันแล้วจะสามารถ:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "ยืนยันวอลเล็ทของคุณ",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "และบริหารเงินของคุณอย่างง่ายดาย!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "ยืนยันแล้ว",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "ไม่ต้องกังวล กรณีนี้อาจมีสาเหตุมาจากเหตุผลด้านความปลอดภัยหลายอย่าง โปรดเชื่อมต่อใหม่เพื่อแก้ไขปัญหานี้",
+    "message": "ไม่ต้องห่วง นี่อาจมีสาเหตุมาจากเหตุผลด้านความปลอดภัยหลายประการ การเชื่อมต่อใหม่อีกครั้งจะช่วยแก้ไขปัญหานี้",
     "description": "Title for notification when wallet is disconnected"
   }
 }

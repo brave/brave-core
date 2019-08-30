@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Aktiver innholdsnivåtips på disse sidene</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gi tips på stedet når du finner skatter.</translation>
 <translation id="6135431587052937035">Støtt favorittsidene dine med gjentakende månedlige tips.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Jeg tipset akkurat <ph name="NAME"/> som bruker Brave-nettleseren. Sjekk det ut på https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Beklager, det var problemer med å behandle forespørselen. Prøv på nytt.</translation>
+<translation id="3082557070674409251">Klikket</translation>
+<translation id="7119308337584989771">Lukket</translation>
+<translation id="6805660603861526473">Vist</translation>
 <translation id="7422678632904904341">Beløp:</translation>
 <translation id="5923611424721173182">Gjeldende forsoning</translation>
 <translation id="5457113250005438886">Ugyldig</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave er et registrert varemerke for Brave Software. Nettstednavn kan være varemerker eller registrerte varemerker for nettstedseieren.</translation>
 <translation id="9026369588205476247">For å beskytte ditt personvern, blir ikke denne Brave Rewards-utskriften lagret eller logget noen andre steder enn på din enhet (denne datamaskinen). Den kan ikke hentes opp igjen fra Brave i tilfelle datatap på din enhet.</translation>
 <translation id="1036277985068412734">legg til midler</translation>
+<translation id="3587482841069643663">Alle</translation>
+<translation id="4241224519481557898">Kategori</translation>
+<translation id="3080423471207781945">Maksimalt antall mottatte annonser pr. time:</translation>
+<translation id="2631006050119455616">Lagret</translation>
+<translation id="2155330833364281539">Annonser du har mottatt de siste {{totalDays}} dagene</translation>
+<translation id="8863685593846905344">Annonsehistorikk</translation>
+<translation id="5212777575344695266">Merk som usømmelig</translation>
+<translation id="2111256234277361810">Merk som usømmelig ✓</translation>
+<translation id="8988332871810963281">Det er ingen Brave Ads-historikk for øyeblikket</translation>
+<translation id="5345727496083327478">Du kommer ikke til å motta annonser fra denne kategorien lenger</translation>
+<translation id="5317780077021120954">Lagre</translation>
 <translation id="5441565662498481293">Du sender automatisk et tips til:</translation>
 <translation id="2827387977307390755">Tillat tips på</translation>
 <translation id="3671566813999349838">Sum</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Éngang</translation>
 <translation id="9182287025588539628">Engangstips</translation>
 <translation id="6381574025952123568">Inngående balanse</translation>
+<translation id="532275381857891532">7-dagers annonsehistorikk</translation>
 <translation id="4923459931733593730">Betaling</translation>
 <translation id="4021593982164260556">Betalinger utført hver {{dag}}
 dag i hver måned.</translation>
@@ -291,7 +307,9 @@ dag i hver måned.</translation>
 <translation id="7577100371127227294">Månedlige tips</translation>
 <translation id="2391095793008133394">Tips {{ user }} for innlegget deres:</translation>
 <translation id="7557413530932469222">Tips {{ user }} for innlegget deres!</translation>
+<translation id="717513177896084801">Tips {{ user }}</translation>
 <translation id="1110535155349301542">fjern</translation>
+<translation id="8204292894173669182">Fjern fra Lagrede</translation>
 <translation id="8942997470474842562">Du har tildelt {{reservedAmount}} BAT til skapere som ikke har registrert seg for å motta bidrag ennå. Nettleseren din vil fortsette å prøve å bidra helt til de verifiserer bidraget eller til det har gått 90 dager.</translation>
 <translation id="8759753423332885148">Finn ut mer.</translation>
 <translation id="3157931365184549694">Gjenopprett</translation>
@@ -396,12 +414,14 @@ dag i hver måned.</translation>
 <translation id="46988480989545156">Verifiser lommeboken</translation>
 <translation id="1554282356558968486">Lommeboktjenesten vår leveres av</translation>
 <translation id="6771734945114850124">Ha legitimasjon utstedt av offentlig myndighet tilgjengelig.</translation>
-<translation id="4483114863312340607">Ta ut og sett inn penger</translation>
-<translation id="6600381840029958159">Du trenger ikke løse captcha for å tjene annonsebelønninger</translation>
-<translation id="4332021186346461319">Belønninger du mottar, utløper aldri og settes inn i lommeboken din umiddelbart</translation>
-<translation id="2610007079772760276">Med en verifisert lommebok kan du:</translation>
-<translation id="7565794512491053578">Verifiser lommeboken din</translation>
-<translation id="698531289520577961">Og administrer midlene dine enkelt!</translation>
+<translation id="8697510149346635496">Ta ut BAT som du tjener på å se på annonser som respekterer personvernet</translation>
+<translation id="1481480653609649134">Kjøp flere BAT med kredittkort og andre betalingskilder</translation>
+<translation id="9096003370755878766">Ta ut BAT som du kan ha satt inn i Brave Rewards-lommeboken din tidligere</translation>
+<translation id="5275978662119683162">Fordeler med å verifisere</translation>
+<translation id="5166793288622772189">Klar til å verifisere lommeboken din?</translation>
+<translation id="8766217572332535979">Verifisering trengs ikke for å tjene belønninger for skaperbidrag</translation>
+<translation id="8465442795593991224">Uphold kan kreve at du verifiserer identiteten din basert på tjenestene du har forespurt.</translation>
+<translation id="723054503945711909">Brave Software Inc. verken behandler, lagrer eller bruker noen av de personlige opplysningene som du gir til Uphold når du oppretter konto hos dem.</translation>
 <translation id="1181037720776840403">Fjern</translation>
 <translation id="7885157704277298658">Kopiert!</translation>
 <translation id="5379640681913450928">Antall ord:</translation>

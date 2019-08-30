@@ -421,6 +421,14 @@
     "message": "Tip",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Magpadala ng Tip",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Tip",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Kamakailang na-verify ang creator na si $name$",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Idiskonekta mula sa Mga Reward ng Brave",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "I-verify ang wallet",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Ang aming serbisyo ng wallet ay mula sa",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Pakihanda ang iyong ID na bigay ng gobyerno.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Mapanatili ang iyong mga token ng Mga Reward sa Ad",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Magdagdag ng mga token gamit ang credit card",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Mag-withdraw ng mga token",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Ang na-verify na wallet ay nagbibigay-daan sa iyo na:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "I-verify ang Iyong Wallet",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "At madaling mapamahalaan ang iyong mga pondo!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Na-verify",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Walang dapat ipag-alala. May iba't ibang dahilang panseguridad kung bakit puwede itong mangyari. Malulutas ang isyung ito sa simpleng pagkonektang muli.",
+    "message": "Huwag mag-alala. Puwede itong mangyari dahil sa iba't ibang dahilang panseguridad. Malulutas ng pagkonekta lang ulit dito ang isyu.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

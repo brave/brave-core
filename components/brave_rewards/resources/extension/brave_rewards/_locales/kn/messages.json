@@ -421,6 +421,14 @@
     "message": "ಸಲಹೆ",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "ಸಲಹೆ ಕಳುಹಿಸಿ",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "ಸಲಹೆ",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "ರಚಿಸುವವರ $name$ ಇತ್ತೀಚೆಗೆ ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "ನಮ್ಮ ವ್ಯಾಲೆಟ್ ಸೇವೆಯನ್ನು ಒದಗಿಸಿದವರು",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "ದಯವಿಟ್ಟು ಸರ್ಕಾರ ನೀಡಿರುವ ನಿಮ್ಮ ID ಲಭ್ಯವಿಟ್ಟುಕೊಳ್ಳಿ.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "ನಿಮ್ಮ ಜಾಹೀರಾತು ರಿವಾರ್ಡ್‌ಗಳ ಟೋಕನ್‌ಗಳನ್ನು ಇರಿಸಿಕೊಳ್ಳಿ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್ ಬಳಸಿಕೊಂಡು ಟೋಕನ್‌ಗಳನ್ನು ಸೇರಿಸಿ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "ಟೋಕನ್‌ಗಳನ್ನು ಹಿಂಪಡೆಯಿರಿ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "ಪರಿಶೀಲಿಸಲಾದ ವ್ಯಾಲೆಟ್ ನಿಮಗೆ ಇದನ್ನು ಮಾಡಲು ಅನುಮತಿಸುತ್ತದೆ:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "ಮತ್ತು ನಿಮ್ಮ ಫಂಡ್‌ಗಳನ್ನು ಸುಲಭವಾಗಿ ನಿರ್ವಹಿಸಿ!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "ಚಿಂತಿಸಬೇಡಿ. ಇದು ವಿವಿಧ ಭದ್ರತೆ ಕಾರಣಗಳಿಂದ ಉಂಟಾಗಬಹುದು. ಈ ಸಮಸ್ಯೆಯನ್ನು ಪರಿಹರಿಸಲು ಅದಕ್ಕೆ ಮರುಸಂಪರ್ಕಗೊಳಿಸಿ.",
+    "message": "ಚಿಂತಿಸಬೇಡಿ. ಇದು ವಿವಿಧ ಭದ್ರತೆ ಕಾರಣಗಳಿಂದ ಉಂಟಾಗಬಹುದು. ಸಂಪರ್ಕವನ್ನು ಸರಳವಾಗಿ ಮರುಸ್ಥಾಪಿಸುವುದರಿಂದ ಈ ಸಮಸ್ಯೆಯು ಪರಿಹಾರವಾಗುತ್ತದೆ.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Tillåt dricks på contentnivå på dessa webbplatser</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Donera direkt när du hittar pärlor.</translation>
 <translation id="6135431587052937035">Stöd dina favoritsajter med en summa pengar varje månad.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Jag gav just dricks till <ph name="NAME"/> med Brave Browser. Kolla in den på https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Det gick inte att behandla din förfrågan. Försök igen.</translation>
+<translation id="3082557070674409251">Klickat</translation>
+<translation id="7119308337584989771">Avfärdat</translation>
+<translation id="6805660603861526473">Sett</translation>
 <translation id="7422678632904904341">Belopp:</translation>
 <translation id="5923611424721173182">Aktuell avstämning</translation>
 <translation id="5457113250005438886">Ogiltig</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave är ett registrerat varumärke som tillhör Brave Software. Webbplatser kan vara varumärken eller registrerade varumärken som tillhör webbplatsägaren.</translation>
 <translation id="9026369588205476247">För att skydda din integritet kommer detta kontoutdrag för Brave Rewards inte att sparas, spelas in eller loggas någon annanstans än på din enhet (den här datorn). Det kan inte hämtas från Brave i händelse av att din enhet förlorar data.</translation>
 <translation id="1036277985068412734">Sätt in pengar</translation>
+<translation id="3587482841069643663">Alla</translation>
+<translation id="4241224519481557898">Kategori</translation>
+<translation id="3080423471207781945">Maximalt antal mottagna annonser per timme:</translation>
+<translation id="2631006050119455616">Sparat</translation>
+<translation id="2155330833364281539">Annonser som du har fått under de senaste {{totalDays}} dagarna</translation>
+<translation id="8863685593846905344">Annonshistorik</translation>
+<translation id="5212777575344695266">Markera som olämpligt</translation>
+<translation id="2111256234277361810">Markera som olämpligt ✓</translation>
+<translation id="8988332871810963281">Det finns för närvarande ingen Brave Ads-historik</translation>
+<translation id="5345727496083327478">Du kommer inte längre att få annonser från denna kategori</translation>
+<translation id="5317780077021120954">Spara</translation>
 <translation id="5441565662498481293">Du skickar automatiskt dricks till:</translation>
 <translation id="2827387977307390755">Tillåt dricks vid</translation>
 <translation id="3671566813999349838">Belopp</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">En gång</translation>
 <translation id="9182287025588539628">Engångsdonationer</translation>
 <translation id="6381574025952123568">Öppningssaldo</translation>
+<translation id="532275381857891532">7-dagars annonshistorik</translation>
 <translation id="4923459931733593730">Betalning</translation>
 <translation id="4021593982164260556">Betalning utförs var {{day}}:e dag varje månad.</translation>
 <translation id="6104680658798556671">Betalning inte gjord</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Månatliga donationer</translation>
 <translation id="2391095793008133394">Ge {{ user }} dricks för deras inlägg:</translation>
 <translation id="7557413530932469222">Ge {{ user }} dricks för deras inlägg!</translation>
+<translation id="717513177896084801">Ge dricks till {{ user }}</translation>
 <translation id="1110535155349301542">Ta bort</translation>
+<translation id="8204292894173669182">Ta bort från sparat</translation>
 <translation id="8942997470474842562">Du har avsatt {{reservedAmount}} BAT till skapare som ännu inte har registrerat sig för att ta emot stöd. Din webbläsare fortsätter att försöka ge stöd tills de verifierar sig eller tills 90 dagar har gått.</translation>
 <translation id="8759753423332885148">lär dig mer.</translation>
 <translation id="3157931365184549694">Återställ</translation>
@@ -395,12 +413,14 @@
 <translation id="46988480989545156">Verifiera plånbok</translation>
 <translation id="1554282356558968486">Vår plånbokstjänst tillhandahålls av</translation>
 <translation id="6771734945114850124">Ha din myndighetsutfärdade id-handling till hands.</translation>
-<translation id="4483114863312340607">Ta ut och sätt in tillgångar</translation>
-<translation id="6600381840029958159">Du behöver inte lösa CAPTCHA för att få belöningar från annonser</translation>
-<translation id="4332021186346461319">Mottagna belöningar har inget slutdatum, och du kan överföra dem till plånboken direkt</translation>
-<translation id="2610007079772760276">Med en verifierad plånbok kan du:</translation>
-<translation id="7565794512491053578">Verifiera plånboken</translation>
-<translation id="698531289520577961">Och hantera dina tillgångar enkelt!</translation>
+<translation id="8697510149346635496">Ta ut BAT som du tjänar genom att se integritetsrespekterande annonser</translation>
+<translation id="1481480653609649134">Köp ytterligare BAT med kreditkort och andra källor</translation>
+<translation id="9096003370755878766">Ta ut BAT som du tidigare kan ha lagt till i din Brave Rewards-plånbok</translation>
+<translation id="5275978662119683162">Fördelar med att verifiera</translation>
+<translation id="5166793288622772189">Redo att verifiera din plånbok?</translation>
+<translation id="8766217572332535979">Verifiering behövs inte för att få belöningar för skaparbidrag</translation>
+<translation id="8465442795593991224">Uphold kan kräva att du verifierar din identitet baserat på begärda tjänster.</translation>
+<translation id="723054503945711909">Brave Software Inc. bearbetar inte, lagrar eller får tillgång till några av de personuppgifter som du tillhandahåller Uphold när du skapar ett konto hos dem.</translation>
 <translation id="1181037720776840403">Ta bort</translation>
 <translation id="7885157704277298658">Kopierades!</translation>
 <translation id="5379640681913450928">Ordantal:</translation>

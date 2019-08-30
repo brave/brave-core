@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Увімкнути винагороди за рівнем вмісту на цих сайтах</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Платіть на місці, коли знаходите коштовності.</translation>
 <translation id="6135431587052937035">Підтримуйте свої улюблені сайти щомісячними платежами.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Я щойно відправив/відправила винагороду користувачу <ph name="NAME"/> за допомогою Brave Browser. Спробуйте тут: https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Вибачте, при обробці вашого запиту виникла помилка, будь ласка, спробуйте ще раз.</translation>
+<translation id="3082557070674409251">Натиснуто</translation>
+<translation id="7119308337584989771">Закрито</translation>
+<translation id="6805660603861526473">Переглянуто</translation>
 <translation id="7422678632904904341">Сума:</translation>
 <translation id="5923611424721173182">Поточне узгодження</translation>
 <translation id="5457113250005438886">Недійсний</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave є зареєстрованим знаком для товарів і послуг Brave Software. Назви сайтів можуть бути знаками для товарів і послуг або зареєстрованими знаками для товарів і послуг власників сайтів.</translation>
 <translation id="9026369588205476247">З метою захисту вашої конфіденційності цю виписку винагород Brave не буде збережено, записано чи зареєстровано ніде, крім вашого пристрою (цього комп'ютера). Її не можна буде витягнути з Brave у випадку втрати даних на вашому пристрої.</translation>
 <translation id="1036277985068412734">додати кошти</translation>
+<translation id="3587482841069643663">Все</translation>
+<translation id="4241224519481557898">Категорія</translation>
+<translation id="3080423471207781945">Максимальна кількість реклами, отриманої за годину:</translation>
+<translation id="2631006050119455616">Збережено</translation>
+<translation id="2155330833364281539">Реклама, яку ви отримали за останні {{totalDays}} днів</translation>
+<translation id="8863685593846905344">Історія Реклами</translation>
+<translation id="5212777575344695266">Позначити як Неналежне</translation>
+<translation id="2111256234277361810">Позначити як Неналежне ✓</translation>
+<translation id="8988332871810963281">На даний момент немає історії Реклами Brave</translation>
+<translation id="5345727496083327478">Ви більше не отримуватимете реклами з цієї категорії</translation>
+<translation id="5317780077021120954">Зберегти</translation>
 <translation id="5441565662498481293">Ви автоматично надсилаєте чайові:</translation>
 <translation id="2827387977307390755">Дозволити підказки щодо</translation>
 <translation id="3671566813999349838">Кількість</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Один раз</translation>
 <translation id="9182287025588539628">Одноразові Відрахування</translation>
 <translation id="6381574025952123568">Вхідний залишок</translation>
+<translation id="532275381857891532">7-денна історія Реклами</translation>
 <translation id="4923459931733593730">Платіж</translation>
 <translation id="4021593982164260556">Оплата здійснюється кожного {{день}}-го дня кожного місяця.</translation>
 <translation id="6104680658798556671">Платіж не зроблено.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Щомісячні відрахування</translation>
 <translation id="2391095793008133394">Заплатити {{ user }} за публікацію:</translation>
 <translation id="7557413530932469222">Заплатіть {{ user }} за публікацію!</translation>
+<translation id="717513177896084801">Заплатити {{ user }}</translation>
 <translation id="1110535155349301542">видалити</translation>
+<translation id="8204292894173669182">Видалити зі Збереженого</translation>
 <translation id="8942997470474842562">Ви ’призначили {{reservedAmount}} BAT для творців, які ще не’ зареєструвались для отримання внесків. Ваш браузер буде продовжувати спроби зробити внесок, доки вони не будуть верифіковані, або доки не пройде 90 днів.</translation>
 <translation id="8759753423332885148">Дізнатись більше.</translation>
 <translation id="3157931365184549694">Відновити</translation>
@@ -395,12 +413,14 @@
 <translation id="46988480989545156">Верифікувати гаманець</translation>
 <translation id="1554282356558968486">Наш сервіс "гаманець" надається</translation>
 <translation id="6771734945114850124">Будь ласка, приготуйте ваше ID, видане органами державної влади.</translation>
-<translation id="4483114863312340607">Виводьте та додавайте кошти</translation>
-<translation id="6600381840029958159">Не потрібно розв'язувати капчу, щоб заробити рекламну винагороду</translation>
-<translation id="4332021186346461319">Отримані винагороди не мають строку дії, і вони будуть додані до вашого гаманця одразу ж</translation>
-<translation id="2610007079772760276">Верифікований гаманець дозволяє вам:</translation>
-<translation id="7565794512491053578">Верифікуйте ваш гаманець</translation>
-<translation id="698531289520577961">Та легко керуйте своїми коштами!</translation>
+<translation id="8697510149346635496">Виводьте BAT, які ви заробили, переглядаючи рекламу, що поважає приватність</translation>
+<translation id="1481480653609649134">Купуйте додаткові BAT за допомогою кредитних карт та інших джерел</translation>
+<translation id="9096003370755878766">Вивести BAT, які ви могли раніше додати до вашого гаманця Винагород Brave</translation>
+<translation id="5275978662119683162">Переваги верифікації</translation>
+<translation id="5166793288622772189">Готові до верифікації вашого гаманця?</translation>
+<translation id="8766217572332535979">Щоб заробляти винагороди для внесків творця не обов'язково проходити верифікацію</translation>
+<translation id="8465442795593991224">Uphold може вимагати від вас підтвердження вашої особи, залежно від запитаних послуг.</translation>
+<translation id="723054503945711909">Brave Software Inc. не обробляє, не зберігає та не має доступу до будь-якої особистої інформації, яку ви надаєте Uphold, коли створюєте в них обліковий запис.</translation>
 <translation id="1181037720776840403">Видалити</translation>
 <translation id="7885157704277298658">Скопійовано!</translation>
 <translation id="5379640681913450928">Кількість слів:</translation>

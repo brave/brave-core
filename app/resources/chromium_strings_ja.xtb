@@ -24,6 +24,8 @@
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
 <translation id="2310890394934209120">Brave OS は、さらに追加の<ph name="BEGIN_LINK_CROS_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_CROS_OSS"/>によって実現しました。</translation>
 <translation id="8160794320557846790">Brave OS も <ph name="BEGIN_LINK_LINUX_OSS"/>Linux（ベータ版）<ph name="END_LINK_LINUX_OSS"/>も追加の<ph name="BEGIN_LINK_CROS_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_CROS_OSS"/>によって実現しました。</translation>
+<translation id="8948097099929452692">Braveでは使用されていません。 同期の際に、リソースマップの整合性を維持するためのプレースホルダーです。</translation>
+<translation id="5009217320733452434">Braveでは使用されていません。 同期の際に、リソースマップの整合性を維持するためのプレースホルダーです。以下の引数が必要です。: &lt;ph name="ARGUMENT"&gt;$1&lt;/ph&gt;.</translation>
 <translation id="6913582816347128893">Mac OS X 10.9 はサポートされなくなったため、Brave は正常に機能しない可能性があります。</translation>
 <translation id="7977787072794666032">Windows XP と Windows Vista はサポートされなくなったため、Brave は正常に機能しない可能性があります</translation>
 <translation id="189297655255130768">Brave が応答しません。今すぐ再起動しますか？</translation>
@@ -176,7 +178,13 @@
 <translation id="2433912322225810055">この拡張機能では、Brave の起動時、またはアドレスバーからの検索時に表示されるページも制御されます。</translation>
 <translation id="2871190378186459992">Brave の優れたアプリ、ゲーム、拡張機能、テーマをぜひご利用ください。</translation>
 <translation id="3350544518197210895">Brave（mDNS インバウンド）</translation>
+<translation id="5846303060623790781">Brave Beta (mDNS-In)</translation>
+<translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
+<translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">mDNS トラフィックを許可する Brave のインバウンド ルールです。</translation>
+<translation id="7272074097076644710">Brave BetaでインバウンドのmDNSトラフィックを許可するルール。</translation>
+<translation id="4991512282053949769">Brave NightlyでインバウンドのmDNSトラフィックを許可するルール。</translation>
+<translation id="3856641371299712128">Brave DevでインバウンドのmDNSトラフィックを許可するルール。</translation>
 <translation id="8207657266087451193">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave Software に画像が送信されます。この機能は設定でいつでも無効にできます。</translation>
 <translation id="5499063270485366718">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave Software に画像が送信されます。</translation>
 <translation id="215320507915280336">Brave Software 検索と同じスペルチェックが使用されます。ブラウザに入力したテキストは Brave Software に送信されます。この動作はいつでも設定で変更できます。</translation>

@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
 <translation id="6406506848690869874">مزامنة</translation>
 <translation id="5655621391922317800">محافظ Crypto Wallets</translation>
+<translation id="2445484935443597917">إنشاء ملف شخصي جديد</translation>
+<translation id="2666990579225592931">فتح نافذة "ضيف"</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") غير مسموح به في Brave.</translation>
 <translation id="7450557937477381864">أغلق Chrome</translation>
 <translation id="7008934821596358692">لإنهاء الاستيراد، أغلق جميع نوافذ كروم.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">فتح النوافذ وعلامات التبويب</translation>
 <translation id="3699882589215410581">تثبيت وتشغيل Widevine</translation>
 <translation id="3696083746357487900">تثبيت Crypto Wallets</translation>
+<translation id="8926389886865778422">عدم السؤال مرة أخرى</translation>
+<translation id="4726634924419692905">اسأل عندما يريد موقع ما تثبيت Widevine على جهاز الكمبيوتر الخاص بك.</translation>
 <translation id="8053096063396012732">تثبيت Widevine</translation>
 <translation id="4840334696217618631">أعد تشغيل المتصفح لتمكين Widevine</translation>
 <translation id="8410111618231938546">إن Google Widevine هو جزء من رمز إدارة الحقوق الرقمية (DRM) التي لا نمتلكها ولا يمكننا فحصها في Brave Software. يتم تحميل رمز Google Widevine من خوادم Google، وليس من خوادمنا. يتم تحميله فقط عند تمكين هذا الخيار. نحن لا نشجع استخدام DRM، لكننا نحترم اختيار المستخدم ونقر بأن بعض مستخدمي Brave يرغبون في استخدام الخدمات التي تتطلب ذلك.
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597">اسمح دائماً بالتشغيل الأوتوماتيكي على <ph name="HOST"/></translation>
 <translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
 <translation id="5883458389055721080">لم يراجع Brave هذا الملحق للأمان والسلامة. قم بتثبيت هذا الملحق فقط إذا كنت تثق في المطور.</translation>
+<translation id="8081858229109418493">اسم ورمز الملف الشخصي</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
 <translation id="2814998458708016836">استخدام شريط عناوين عريض</translation>
 <translation id="6123134130710658846">إخفاء زر Brave Rewards</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">سيؤدي هذا إلى حظر معظم الإعلانات على مواقع الويب، وليس الإعلانات الخاصة بمتصفح Brave — يتم التحكم في هذه الإعلانات في</translation>
 <translation id="6388201778088078932">الإعدادات.</translation>
 <translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
+<translation id="7390783310074170337">العرض الافتراضي</translation>
+<translation id="130615081792797568">عرض بسيط</translation>
+<translation id="2360360976480535628">عرض متقدم</translation>
 <translation id="5709627087332022422">حظر برامج التتبع عبر المواقع</translation>
 <translation id="9075744464571452108">التعرف على الجهاز</translation>
 <translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">عرض في متجر إضافات الويب</translation>
 <translation id="4846154056248462491">عند الخروج</translation>
 <translation id="5057399635433117814">ترجم هذه الصفحة؟ سوف يرسل هذا كل النص في هذه الصفحة إلى Microsoft للترجمة.</translation>
+<translation id="330263065709195164">هل تريد تثبيت امتداد Google Translate لترجمة هذه الصفحة؟</translation>
+<translation id="3789841737615482174">تثبيت</translation>
+<translation id="7658239707568436148">إلغاء</translation>
 <translation id="3371343170427636147">تطبيقات متصفح Brave الليلية</translation>
 <translation id="4097979995947147464">تطبيقات متصفح Brave التجريبية</translation>
 <translation id="8303432794159193481">تطبيقات تطوير متصفح Brave</translation>

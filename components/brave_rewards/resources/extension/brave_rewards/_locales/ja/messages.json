@@ -60,7 +60,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "自動寄付に含める",
+    "message": "自動支援に含める",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -140,7 +140,7 @@
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "自動寄付",
+    "message": "自動支援",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -176,11 +176,11 @@
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "自動寄付",
+    "message": "自動支援",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "あなたは$amount$ BAT寄付しました",
+    "message": "あなたは$amount$ BAT支援しました",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
@@ -218,11 +218,11 @@
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
-    "message": "寄付の処理中に問題が発生しました。",
+    "message": "支援の処理中に問題が発生しました。",
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "自動寄付のためにスケジュールされた毎月の支払いと毎月のチップは、残高不足のため完了できませんでした。30日後に再実行します。",
+    "message": "自動支援のためにスケジュールされた毎月の支払いと毎月のチップは、残高不足のため完了できませんでした。30日後に再実行します。",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -298,7 +298,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "このクリエイターは、Braveユーザーから寄付を受け取る登録をまだ行っていません。彼らが認証するまでは、贈ったチップはあなたのウォレットに保留されます。",
+    "message": "このクリエイターは、Braveユーザーから支援を受け取る登録をまだ行っていません。彼らが認証するまでは、贈ったチップはあなたのウォレットに保留されます。",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -306,7 +306,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "{{reservedAmount}} BAT を贈る相手に、寄付を受け取る登録を行っていないクリエイターを指名しました。あなたのブラウザは、クリエイターからの認証を受けるか、90日が経過するまで試し続けます。",
+    "message": "{{reservedAmount}} BAT を贈る相手に、支援を受け取る登録を行っていないクリエイターを指名しました。あなたのブラウザは、クリエイターからの認証を受けるか、90日が経過するまで試し続けます。",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -421,6 +421,14 @@
     "message": "チップ",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "ヒントを送る",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "チップ",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "クリエイターの$name$は最近認証されました",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Braveの報酬から切断",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "ウォレットを確認",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Braveのウォレットサービスは以下の企業のご協力を得てご提供しています",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "政府発行の身分証明書をご用意ください。",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "広告報酬トークンを保管",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "クレジットカードを使ってトークンを追加",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "トークンの引き出し",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "確認済みのウォレットを使用すると、以下の機能が利用できます：",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "お使いのウォレットを確認",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "さらに資金管理も簡単に！",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "確認済み",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "ご心配は無用です。この問題は、さまざまなセキュリティ上の理由で発生する可能性があります。再接続するだけでこの問題は解決します。",
+    "message": "心配はありません。これはさまざまなセキュリティー上の理由で発生することがあります。再接続すればこの問題は解決します。",
     "description": "Title for notification when wallet is disconnected"
   }
 }

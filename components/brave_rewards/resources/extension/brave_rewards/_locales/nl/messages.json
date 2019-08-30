@@ -421,6 +421,14 @@
     "message": "Tip",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Stuur fooi",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Tip",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Ontwikkelaar $name$ is recentelijk geverifieerd",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Verbreek de verbinding met Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Verifieer wallet",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Onze wallet-dienst wordt geleverd door",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Houd je door de overheid uitgegeven ID bij de hand.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Bewaar je Ad Rewards-tokens",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Voeg tokens toe met een creditcard",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Tokens opnemen",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Met een geverifieerde wallet kun je:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Verifieer Je Wallet",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "En beheer je geld gemakkelijk!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Geverifieerd",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Maak je geen zorgen. Dit kan om verschillende veiligheidsredenen gebeuren. Maak gewoon opnieuw verbinding om dit probleem op te lossen.",
+    "message": "Maak je geen zorgen. Dit kan om verschillende veiligheidsredenen gebeuren. Je kunt dit probleem oplossen door eenvoudigweg opnieuw verbinding te maken.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

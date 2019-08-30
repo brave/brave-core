@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Activează bacșișuri la nivel de conținut pe aceste site-uri</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Atingeți pe spot când găsiți pietre prețioase.</translation>
 <translation id="6135431587052937035">Susțineți-vă site-urile preferate cu recompense lunare repetate.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Tocmai am dat un bacșiș lui <ph name="NAME"/> folosind Brave Browser. Vezi despre ce e vorba la https://brave.com/tips.</translation>
 <translation id="8404935570206006581">DațiBacșișCuBrave</translation>
 <translation id="2876191400747549936">Ne pare rău, dar a avut loc o problemă în timpul procesării cererii dvs. Vă rugăm să încercați din nou.</translation>
+<translation id="3082557070674409251">Dat clic</translation>
+<translation id="7119308337584989771">Respins</translation>
+<translation id="6805660603861526473">Vizualizat</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="5923611424721173182">Reconciliere actuală</translation>
 <translation id="5457113250005438886">Invalid</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave este marcă înregistrată a Brave Software. Numele siteurilor pot fi mărci înregistrate ale proprietarilor siteurilor.</translation>
 <translation id="9026369588205476247">Pentru a vă proteja confidențialitatea, acest extras de cont Brave Rewards nu este salvat, înregistrat sau trecut în jurnal decât pe dispozitivul dvs. (computerul pe care îl folosiți). Dacă pierdeți datele de pe dispozitivul dvs., nu veți putea obține acest extras din partea Brave.</translation>
 <translation id="1036277985068412734">adaugă fonduri</translation>
+<translation id="3587482841069643663">Toate</translation>
+<translation id="4241224519481557898">Categorie</translation>
+<translation id="3080423471207781945">Maximum de reclame primite pe oră:</translation>
+<translation id="2631006050119455616">S-a salvat</translation>
+<translation id="2155330833364281539">Reclame pe care le-ați primit în ultimele {{totalDays}} zile</translation>
+<translation id="8863685593846905344">Istoric reclame</translation>
+<translation id="5212777575344695266">Marcați ca inadecvat</translation>
+<translation id="2111256234277361810">Marcați ca inadecvat ✓</translation>
+<translation id="8988332871810963281">Nu există niciun istoric de reclame Brave</translation>
+<translation id="5345727496083327478">Nu veți mai primi reclame din această categorie</translation>
+<translation id="5317780077021120954">Salvează</translation>
 <translation id="5441565662498481293">Trimiți automat o plată către:</translation>
 <translation id="2827387977307390755">Permite bacșiș pe</translation>
 <translation id="3671566813999349838">Sumă</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">O dată</translation>
 <translation id="9182287025588539628">Plăți Unice</translation>
 <translation id="6381574025952123568">Soldul de deschidere</translation>
+<translation id="532275381857891532">Istoric reclame pe 7 zile</translation>
 <translation id="4923459931733593730">Plată</translation>
 <translation id="4021593982164260556">Plată efectuată în fiecare {{day}} zi din fiecare lună.</translation>
 <translation id="6104680658798556671">Plata nu a fost efectuată.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Plăți lunare</translation>
 <translation id="2391095793008133394">Dați-i bacșiș lui {{ user }} pentru postarea sa:</translation>
 <translation id="7557413530932469222">Dați-i bacșiș lui {{ user }} pentru postarea sa!</translation>
+<translation id="717513177896084801">Plată {{ user}}</translation>
 <translation id="1110535155349301542">îndepărtare</translation>
+<translation id="8204292894173669182">Ștergeți din salvate</translation>
 <translation id="8942997470474842562">Ați’ alocat {{reservedAmount}} BAT pentru creatori care încă nu’ s-au înscris pentru a primi contribuții. Browserul dumneavoastră va continua să încerce să contribuie până când aceștia sunt verificați sau până la trecerea a 90 de zile.</translation>
 <translation id="8759753423332885148">Aflați mai multe.</translation>
 <translation id="3157931365184549694">Restabilește</translation>
@@ -395,12 +413,14 @@
 <translation id="46988480989545156">Verificare portofel</translation>
 <translation id="1554282356558968486">Serviciul nostru de portofel este furnizat de</translation>
 <translation id="6771734945114850124">Vă rugăm să aveți la îndemână actul de identitate emis de autoritățile naționale.</translation>
-<translation id="4483114863312340607">Retragere și adăugare fonduri</translation>
-<translation id="6600381840029958159">Nu aveți nevoie să rezolvați captcha pentru a câștiga răsplăți pentru reclame</translation>
-<translation id="4332021186346461319">Răsplățile primite nu expiră niciodată și vor fi depuse în portofelul dvs. imediat.</translation>
-<translation id="2610007079772760276">Un portofel verificat vă permite să:</translation>
-<translation id="7565794512491053578">Verificați-vă portofelul</translation>
-<translation id="698531289520577961">Și administrați-vă fondurile cu ușurință!</translation>
+<translation id="8697510149346635496">Retrageți BAT câștigat din vizualizarea reclamelor care țin de respectarea confidențialității</translation>
+<translation id="1481480653609649134">Achiziționați BAT suplimentar cu carduri de credit și alte surse</translation>
+<translation id="9096003370755878766">Retrageți BAT pe care poate l-ați adăugat anterior în portofelul Recompense Brave</translation>
+<translation id="5275978662119683162">Beneficiile verificării</translation>
+<translation id="5166793288622772189">Sunteți pregătit să vă verificați portofelul?</translation>
+<translation id="8766217572332535979">Nu este necesară verificarea pentru a câștiga recompense pentru contribuțiile de creator</translation>
+<translation id="8465442795593991224">Uphold s-ar putea să solicite să vă verificați identitatea pe baza serviciilor solicitate.</translation>
+<translation id="723054503945711909">Brave Software Inc. nu procesează, nu stochează sau nu accesează nicio informație personală pe care o furnizați Uphold când creați un cont.</translation>
 <translation id="1181037720776840403">Eliminare</translation>
 <translation id="7885157704277298658">Copiat!</translation>
 <translation id="5379640681913450928">Număr de cuvinte:</translation>

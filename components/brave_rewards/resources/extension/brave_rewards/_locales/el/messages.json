@@ -421,6 +421,14 @@
     "message": "Συμβουλή",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Στείλτε μια συμβουλή",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Συμβουλή",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Ο δημιουργός $name$ επικυρώθηκε πρόσφατα",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Αποσύνδεση από τις Ανταμοιβές Brave",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Επαλήθευση πορτοφολιού",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Η υπηρεσία πορτοφολιού μας παρέχεται από",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Παρακαλούμε να έχετε διαθέσιμη την αστυνομική σας ταυτότητα.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Διατηρήστε τα νομίσματά σας από Ανταμοιβές Διαφημίσεων",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Προσθέστε νομίσματα με τη χρήση πιστωτικής κάρτας",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Ανάληψη νομισμάτων",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Ένα επαληθευμένο πορτοφόλι σας επιτρέπει να:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Επαληθεύστε το Πορτοφόλι Σας",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Και διαχειριστείτε εύκολα τα κεφάλαιά σας!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Επαληθεύτηκε",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Μην ανησυχείτε. Αυτό μπορεί να συμβαίνει για διάφορους λόγους ασφαλείας. Μια απλή επανασύνδεση μ' αυτό θα επιλύσει το πρόβλημα/προβλήματα",
+    "message": "Μην ανησυχείτε. Αυτό μπορεί να συνέβη για διάφορους λόγους ασφαλείας. Απλά επανασυνδεθείτε και το πρόβλημα θα λυθεί.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

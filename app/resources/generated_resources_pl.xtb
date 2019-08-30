@@ -169,7 +169,7 @@
 <translation id="4200983522494130825">Nowa &amp;karta</translation>
 <translation id="8418445294933751433">&amp;Pokaż jako kartę</translation>
 <translation id="1723824996674794290">&amp;Nowe okno</translation>
-<translation id="6516243500644829484">Nowe okno &amp;incognito</translation>
+<translation id="6516243500644829484">Nowe okno &amp;prywatne</translation>
 <translation id="6120205520491252677">Przypnij tę stronę do ekranu startowego...</translation>
 <translation id="9065203028668620118">Edytuj</translation>
 <translation id="5329858601952122676">&amp;Usuń</translation>
@@ -189,7 +189,7 @@
 <translation id="3285322247471302225">Nowa &amp;karta</translation>
 <translation id="8879284080359814990">&amp;Pokaż jako kartę</translation>
 <translation id="176587472219019965">&amp;Nowe okno</translation>
-<translation id="7973394300052703468">Nowe okno &amp;incognito</translation>
+<translation id="7973394300052703468">Nowe okno &amp;prywatne</translation>
 <translation id="5157635116769074044">Przypnij tę stronę do ekranu startowego...</translation>
 <translation id="5830720307094128296">Zapisz stronę &amp;jako...</translation>
 <translation id="4672657274720418656">Zbadaj stronę</translation>
@@ -408,9 +408,9 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Trwa pobieranie pliku}few{Trwa pobieranie plików}many{Trwa pobieranie plików}other{Trwa pobieranie plików}}</translation>
 <translation id="5425042808445046667">Pobieraj dalej</translation>
 <translation id="5284445933715251131">Pobieraj dalej</translation>
-<translation id="203837651858678035">Zamknąć tryb incognito mimo to?</translation>
+<translation id="203837651858678035">Zamknąć tryb prywatny mimo to?</translation>
 <translation id="9148058034647219655">Zakończ</translation>
-<translation id="7376221878517288144">Zamknąć tryb incognito mimo to?</translation>
+<translation id="7376221878517288144">Zamknąć tryb prywatny mimo to?</translation>
 <translation id="973473557718930265">Zakończ</translation>
 <translation id="7707599169365957976">Możesz pomóc w ulepszaniu Bezpiecznego przeglądania, wysyłając do Brave Software pewne informacje o systemie i część zawartości stron.</translation>
 <translation id="4923279099980110923">Tak, chcę pomóc</translation>
@@ -773,11 +773,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (<ph name="NUM_KILOBYTES_LIVE"/> w szczycie)</translation>
 <translation id="8004582292198964060">Przeglądarka</translation>
 <translation id="3678156199662914018">Rozszerzenie: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Rozszerzenie w trybie incognito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Rozszerzenie w trybie prywatnym: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">Aplikacja: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Aplikacja w trybie incognito: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Aplikacja w trybie prywatnym: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Karta: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Karta incognito: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Karta prywatna: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Aplikacja tła: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Strona w tle: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Wtyczka: <ph name="PLUGIN_NAME"/></translation>
@@ -792,7 +792,7 @@
 <translation id="2282146716419988068">Proces GPU</translation>
 <translation id="2087822576218954668">Drukuj: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Ramka podrzędna: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Ramka podrzędna incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Ramka podrzędna prywatna: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">Aplikacja: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Usługa: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Odbiorca: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -2239,8 +2239,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">Ta strona zamierza udostępnić informacje aplikacji poza trybem incognito.</translation>
-<translation id="1227836882233136433">Zamknąć tryb incognito?</translation>
+<translation id="4540437243849625078">Ta strona zamierza udostępnić informacje aplikacji poza trybem prywatnym.</translation>
+<translation id="1227836882233136433">Zamknąć tryb prywatny?</translation>
 <translation id="662080504995468778">Zostań</translation>
 <translation id="2593289874938379417">Brave nie ma dostępu do żądanego zasobu.</translation>
 <translation id="760197030861754408">Wejdź na <ph name="LANDING_PAGE"/>, by połączyć.</translation>
@@ -2404,12 +2404,12 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7235737137505019098">Na Twoim kluczu bezpieczeństwa nie ma wystarczającej ilości miejsca na kolejne konta.</translation>
 <translation id="3984431586879874039">Zezwolić tej stronie na odczytywanie danych klucza bezpieczeństwa?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> chce odczytać markę i model Twojego klucza bezpieczeństwa</translation>
-<translation id="7618452966706304788">Czy chcesz używać funkcji Touch ID w aplikacji <ph name="APP_NAME"/> w trybie incognito?</translation>
-<translation id="3098826269712097986">Dane logowania zostaną zapisane po wyjściu z trybu incognito. Umożliwi Ci to późniejsze korzystanie na tej stronie z funkcji Touch ID.</translation>
+<translation id="7618452966706304788">Czy chcesz używać funkcji Touch ID w aplikacji <ph name="APP_NAME"/> w trybie prywatnym?</translation>
+<translation id="3098826269712097986">Dane logowania zostaną zapisane po wyjściu z trybu prywatnego. Umożliwi Ci to późniejsze korzystanie na tej stronie z funkcji Touch ID.</translation>
 <translation id="2172784515318616985">Dalej</translation>
 <translation id="5186185447130319458">Prywatne</translation>
 <translation id="7643842463591647490">{0,plural, =1{# otwarte okno}few{# otwarte okna}many{# otwartych okien}other{# otwartego okna}}</translation>
-<translation id="2579188629646253712">Zamknij tryb incognito</translation>
+<translation id="2579188629646253712">Zamknij tryb prywatny</translation>
 <translation id="394984172568887996">Zaimportowane z IE</translation>
 <translation id="1543284117603151572">Zaimportowane z Edge</translation>
 <translation id="5502500733115278303">Zaimportowane z Firefoxa</translation>
@@ -2424,10 +2424,10 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8368859634510605990">&amp;Otwórz wszystkie zakładki</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Otwórz wszystkie}=1{&amp;Otwórz zakładkę}few{&amp;Otwórz wszystkie (#)}many{&amp;Otwórz wszystkie (#)}other{&amp;Otwórz wszystkie (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Otwórz wszystkie w &amp;nowym oknie}=1{Otwórz w &amp;nowym oknie}few{Otwórz wszystkie (#) w &amp;nowym oknie}many{Otwórz wszystkie (#) w &amp;nowym oknie}other{Otwórz wszystkie (#) w &amp;nowym oknie}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Otwórz wszystkie w oknie &amp;incognito}=1{Otwórz w oknie &amp;incognito}few{Otwórz wszystkie (#) w oknie &amp;incognito}many{Otwórz wszystkie (#) w oknie &amp;incognito}other{Otwórz wszystkie (#) w oknie &amp;incognito}}</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Otwórz wszystkie w oknie &amp;prywatnym}=1{Otwórz w oknie &amp;prywatnym}few{Otwórz wszystkie (#) w oknie &amp;prywatnym}many{Otwórz wszystkie (#) w oknie &amp;prywatnym}other{Otwórz wszystkie (#) w oknie &amp;prywatnym}}</translation>
 <translation id="3613422051106148727">&amp;Otwórz w nowej karcie</translation>
 <translation id="4853020600495124913">Otwórz w &amp;nowym oknie</translation>
-<translation id="2431625704210501303">Otwórz w oknie &amp;incognito</translation>
+<translation id="2431625704210501303">Otwórz w oknie &amp;prywatnym</translation>
 <translation id="6702639462873609204">&amp;Edytuj</translation>
 <translation id="3088325635286126843">&amp;Zmień nazwę</translation>
 <translation id="713122686776214250">Dodaj &amp;stronę</translation>
@@ -2600,8 +2600,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="4159681666905192102">To jest konto dla dzieci, którym zarządzają <ph name="CUSTODIAN_EMAIL"/> i <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Użytkownik nadzorowany</translation>
 <translation id="5720705177508910913">Bieżący użytkownik</translation>
-<translation id="1850357845349976573">{0,plural, =1{Incognito}few{# otwarte okna incognito}many{# otwartych okien incognito}other{# otwartego okna incognito}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Incognito}few{Incognito (#)}many{Incognito (#)}other{Incognito (#)}}</translation>
+<translation id="1850357845349976573">{0,plural, =1{prywatne}few{# otwarte okna prywatne}many{# otwartych okien prywatnych}other{# otwartego okna prywatnego}}</translation>
+<translation id="37784332082579802">{0,plural, =1{prywatne}few{prywatne (#)}many{prywatne (#)}other{prywatne (#)}}</translation>
 <translation id="5070556616376997776">Korzystasz z prywatnego okna</translation>
 <translation id="2199298570273670671">Błąd</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: synchronizacja nie działa</translation>

@@ -421,6 +421,14 @@
     "message": "טיפ",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "שליחת טיפ",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "טיפ",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "היוצר/ת $name$ אומת/ה לאחרונה",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "התנתקות מתגמולי Brave",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "אימות ארנק",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "שירות הארנקים שלנו מסופק על ידי",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "נא להכין את תעודת הזהות שלך שהונפקה על ידי הממשלה בהישג יד.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "שמירת טוקני ה-Ad Rewards שלך ",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "הוספת טוקנים באמצעות כרטיס אשראי",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "משיכת טוקנים",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "ארנק מאומת מאפשר לך:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "אימות הארנק שלך",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "ונהל/י את הכספים שלך בקלות!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "מאומת",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "אל דאגה. זה יכול לקרות ממגוון סיבות אבטחה. פשוט התחבר/י אליו מחדש על מנת לפתור בעיה זו.",
+    "message": "אל דאגה. זה יכול לקרות ממגוון סיבות אבטחה. ניתן לפתור בעיה זו פשוט על ידי התחברות מחדש.\n",
     "description": "Title for notification when wallet is disconnected"
   }
 }

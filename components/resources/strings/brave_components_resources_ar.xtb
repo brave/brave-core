@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">تمكين الإكراميات على مستوى المحتوى على هذه المواقع</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">ريديت</translation>
+<translation id="6032511312767282174">جيت هاب</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">قدم المكافأة على الفور بينما تجد الأحجار الكريمة.</translation>
 <translation id="6135431587052937035">ادعم المواقع المفضلة لديك من خلال منحة شهرية دورية.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">لقد أعطيت إكرامية لـ <ph name="NAME"/> باستخدام متصفح Brave. يمكنك التحقق من ذلك في https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">عذرًا، حدثت مشكلة أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.</translation>
+<translation id="3082557070674409251">تم النقر عليه</translation>
+<translation id="7119308337584989771">تم رفضه</translation>
+<translation id="6805660603861526473">تمت مشاهدته</translation>
 <translation id="7422678632904904341">المقدار:</translation>
 <translation id="5923611424721173182">التسوية الحالية</translation>
 <translation id="5457113250005438886">غير صالح</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave هي علامة تجارية مسجلة لشركة Brave Software. قد تكون أسماء المواقع علامات تجارية أو علامات تجارية مسجلة لمالك الموقع.</translation>
 <translation id="9026369588205476247">لحماية خصوصيتك، لا يتم حفظ بيان مكافآت Brave أو تسجيله في أي مكان آخر بخلاف جهازك (هذا الكمبيوتر). لا يمكن استرداده من Brave في حالة فقدان البيانات من جهازك.</translation>
 <translation id="1036277985068412734">إضافة الأموال.</translation>
+<translation id="3587482841069643663">الكل</translation>
+<translation id="4241224519481557898">الفئة</translation>
+<translation id="3080423471207781945">الحد الأقصى للإعلانات التي يتم تلقيها في الساعة:</translation>
+<translation id="2631006050119455616">تم الحفظ</translation>
+<translation id="2155330833364281539">الإعلانات التي تلقيتها في الأيام {{totalDays}} الماضية</translation>
+<translation id="8863685593846905344">إضافة إلى السجل</translation>
+<translation id="5212777575344695266">وضع علامة كإعلان غير لائق</translation>
+<translation id="2111256234277361810">ضع علامة كإعلان غير لائق ✓</translation>
+<translation id="8988332871810963281">لا يوجد حالياً أي سجل إعلانات Brave</translation>
+<translation id="5345727496083327478">لن تتلقى إعلانات من هذه الفئة بعد الآن</translation>
+<translation id="5317780077021120954">حفظ</translation>
 <translation id="5441565662498481293">إنك ترسل الإكراميات تلقائيًا إلى:</translation>
 <translation id="2827387977307390755">السماح بالنصائح عن</translation>
 <translation id="3671566813999349838">المبلغ</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">مرةً واحدة</translation>
 <translation id="9182287025588539628">مكافآت لمرة واحدة</translation>
 <translation id="6381574025952123568">الرصيد الافتتاحي</translation>
+<translation id="532275381857891532">سجل الإعلانات لمدة 7 أيام</translation>
 <translation id="4923459931733593730">دفعة</translation>
 <translation id="4021593982164260556">يتم عمل الدفع في اليوم {{day}} في كل شهر.</translation>
 <translation id="6104680658798556671">لم يتم الدفع.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">المكافآت الشهرية</translation>
 <translation id="2391095793008133394">قم بإرشاد {{ user }} بشأن منشورهم:</translation>
 <translation id="7557413530932469222">قم بإرشاد {{ user }} بشأن منشورهم!</translation>
+<translation id="717513177896084801">تلميح {{ user }}</translation>
 <translation id="1110535155349301542">إزالة</translation>
+<translation id="8204292894173669182">إزالة من قائمة المحفوظات</translation>
 <translation id="8942997470474842562">قمت بتخصيص {{reservedAmount}} BAT للمؤلفين الذين لم يسجلوا بعد لتلقي المساهمات. سيستمر متصفحك في المحاولة حتى يقوموا بتأكيد حساباتهم، أو حتى مرور 90 يومًا.</translation>
 <translation id="8759753423332885148">اعرف المزيد.</translation>
 <translation id="3157931365184549694">استعادة</translation>
@@ -395,12 +413,14 @@
 <translation id="46988480989545156">التحقق من المحفظة</translation>
 <translation id="1554282356558968486">تتوفر خدمتنا للمحافظ من قبل</translation>
 <translation id="6771734945114850124">يرجى أن تكون هويتك الصادرة من الحكومة متاحة.</translation>
-<translation id="4483114863312340607">سحب وإضافة رصيد</translation>
-<translation id="6600381840029958159">لا حاجة لحل رموز captcha لكسب مكافآت الإعلانات</translation>
-<translation id="4332021186346461319">لن تنتهي المكافآت المستلمة أبدًا وستودع في محفظتك على الفور</translation>
-<translation id="2610007079772760276">تتيح لك المحفظة التي تم التحقق منها:</translation>
-<translation id="7565794512491053578">تحقق من محفظتك</translation>
-<translation id="698531289520577961">وتولى إدارة رصيدك بسهولة!</translation>
+<translation id="8697510149346635496">اسحب رموز BAT التي تكسبها من عرض الإعلانات التي تحترم الخصوصية</translation>
+<translation id="1481480653609649134">قم بشراء رموز BAT إضافية بواسطة بطاقات الائتمان وغيرها من المصادر</translation>
+<translation id="9096003370755878766">اسحب رموز BAT التي قد تكون أضفتها سابقاً في محفظة مكافآت Brave الخاصة بك</translation>
+<translation id="5275978662119683162">فوائد التحقق</translation>
+<translation id="5166793288622772189">هل أنت مستعد للتحقق من محفظتك؟</translation>
+<translation id="8766217572332535979">التحقق ليس ضرورياً لربح المكافآت الخاصة بمساهمات المنشئ</translation>
+<translation id="8465442795593991224">قد يتطلب منك Uphold التحقق من هويتك بناءً على الخدمات المطلوبة.</translation>
+<translation id="723054503945711909">لا تقوم شركة Brave Software Inc بمعالجة أو تخزين أو الوصول إلى أي من المعلومات الشخصية التي تقدمها إلى Uphold عند إنشاء حساب معهم.</translation>
 <translation id="1181037720776840403">إزالة</translation>
 <translation id="7885157704277298658">تم النسخ.</translation>
 <translation id="5379640681913450928">عدد الكلمات:</translation>

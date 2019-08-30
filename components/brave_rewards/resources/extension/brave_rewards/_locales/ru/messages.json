@@ -421,6 +421,14 @@
     "message": "Поддержать",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Отправить чаевые",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Поддержать",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Автор $name$ недавно зарегистрировался.",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Отключиться от Brave Rewards",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Проверить кошелек",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Услуги нашего кошелька предоставляются",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Подготовьте удостоверение личности, выданное государственным учреждением.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Хранит ваши токены Ad Rewards",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Добавление токенов с помощью кредитной карты",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Вывод токенов",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Проверенный кошелек позволяет вам:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Проверьте свой кошелек",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "И простое управление вашими средствами!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Проверен",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Не волнуйтесь. Это могло произойти по различным причинам, связанным с безопасностью. Простое переподключение может решить проблему.",
+    "message": "Не беспокойтесь.Такое может случиться из-за соображений безопасности. Попробуйте подключиться снова для решения этой проблемы.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -421,6 +421,14 @@
     "message": "Tip",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Kirim Tip",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Tip",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Kreator $name$ diverifikasi belum lama ini",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Putuskan dari Brave Reward",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Verifikasi dompet",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Layanan dompet kami disediakan oleh",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Harap siapkan ID resmi Anda.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Pertahankan token Reward Iklan Anda",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Tambahkan token menggunakan kartu kredit",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Tarik token",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Dompet terverifikasi mengizinkan Anda:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Verifikasikan Dompet Anda",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Dan kelola dana Anda dengan mudah!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Terverifikasi",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Tak perlu khawatir. Ini dapat terjadi karena sejumlah alasan keamanan. Cukup sambungkan ulang untuk mengatasinya.",
+    "message": "Jangan khawatir. Hal ini dapat terjadi untuk berbagai alasan keamanan. Cukup dengan menghubungkan kembali ke sana akan memecahkan masalah ini.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

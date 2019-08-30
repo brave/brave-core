@@ -421,6 +421,14 @@
     "message": "Trinkgeld",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Einen Tipp senden",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Trinkgeld",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Urheber $name$ kürzlich verifiziert",
     "description": "Notification text that tells user which publisher just verified",
@@ -487,42 +495,6 @@
     "message": "Die Verbindung zu Brave Rewards trennen",
     "description": "CTA to disconnect user wallet from rewards"
   },
-  "walletVerificationButton":  {
-    "message": "Wallet verifizieren",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletVerificationFooter":  {
-    "message": "Unser Wallet-Service wird bereitgestellt von",
-    "description": "Notice about who is our partner for user wallet"
-  },
-  "walletVerificationID":  {
-    "message": "Stellen Sie bitte sicher, dass Ihre amtlichen Ausweisdokumente verfügbar sind.",
-    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
-  },
-  "walletVerificationListCompact1":  {
-    "message": "Behalten Sie Ihre Ad-Rewards-Token",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact2":  {
-    "message": "Fügen Sie über Ihre Kreditkarte Tokens hinzu.",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListCompact3":  {
-    "message": "Tokens abheben",
-    "description": "Bullet point why connecting wallet is good"
-  },
-  "walletVerificationListHeader":  {
-    "message": "Ein verifiziertes Wallet ermöglicht es Ihnen:",
-    "description": "Header for bullet list of user wallet features"
-  },
-  "walletVerificationTitle1":  {
-    "message": "Verifizieren Sie Ihr Wallet",
-    "description": "First part of the title in verify panel"
-  },
-  "walletVerificationTitle2":  {
-    "message": "Und verwalten Sie mühelos Ihre Geldmittel!",
-    "description": "Second part of the title in verify panel"
-  },
   "walletVerified":  {
     "message": "Verifiziert",
     "description": "Status button that tells user that he is verified"
@@ -554,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Keine Sorge, dies kann auf eine Vielzahl von Sicherheitsgründen zurückzuführen sein. Das Problem sollte behoben werden, wenn die Verbindung einfach wiederhergestellt wird.",
+    "message": "Keine Sorge. Dies kann aus verschiedenen Sicherheitsgründen geschehen. Durch einfaches Wiederherstellen der Verbindung wird dieses Problem gelöst.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

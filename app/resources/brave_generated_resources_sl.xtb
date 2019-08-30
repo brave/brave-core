@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Blokiranje oglasov Brave</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
 <translation id="5655621391922317800">Kripto denarnice</translation>
+<translation id="2445484935443597917">Ustvari nov profil</translation>
+<translation id="2666990579225592931">Odpri okno načina za goste</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="7450557937477381864">Zapri Chrome</translation>
 <translation id="7008934821596358692">Če želite končati uvoz, zaprite vsa okna v brskalniku Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Odpri okna in zavihke</translation>
 <translation id="3699882589215410581">Namesti in zaženi Widevine</translation>
 <translation id="3696083746357487900">Namestite kripto denarnice</translation>
+<translation id="8926389886865778422">Ne sprašuj več</translation>
+<translation id="4726634924419692905">Vprašaj, ko želi spletno mesto namestiti Widevine na vaš računalnik</translation>
 <translation id="8053096063396012732">Namesti Widevine</translation>
 <translation id="4840334696217618631">Znova zaženite brskalnik, da omogočite Widevine</translation>
 <translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ni v lasti družbe Brave Software in ga ne moremo pregledati. Koda Google Widevine je naložena iz strežnikov Google, ne iz naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in se zavedamo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597">Vedno dovoli samodejno predvajanje na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nadaljuj z blokiranjem samodejnega predvajanja</translation>
 <translation id="5883458389055721080">Brave ni pregledal zaščito in varnost te razširitve. To razširitev namestite samo, če razvijalcu zaupate.</translation>
+<translation id="8081858229109418493">Profilno ime in ikona</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
 <translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
 <translation id="6123134130710658846">Skrij gumb Brave Rewards</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">To bo blokiralo večino oglasov na spletnih mestih, ne pa Brave zasebnih oglasov, ki jih nadzorujejo nastavitve</translation>
 <translation id="6388201778088078932">.</translation>
 <translation id="9185018653595759199">Blokiranje družbenih medijev</translation>
+<translation id="7390783310074170337">Privzeti pogled</translation>
+<translation id="130615081792797568">Preprost pogled</translation>
+<translation id="2360360976480535628">Napredni pogled</translation>
 <translation id="5709627087332022422">Blokiraj sledilce med mesti</translation>
 <translation id="9075744464571452108">Prepoznavanje naprave</translation>
 <translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">Ogled v trgovini s spletnimi razširitvami</translation>
 <translation id="4846154056248462491">Ob izhodu</translation>
 <translation id="5057399635433117814">Želite prevod te strani? Celotno besedilo s te strani bo poslano Microsoftu v prevod.</translation>
+<translation id="330263065709195164">Želite namestiti razširitev Prevajalnik Google za prevod te strani?</translation>
+<translation id="3789841737615482174">Namesti</translation>
+<translation id="7658239707568436148">Prekliči</translation>
 <translation id="3371343170427636147">Nočne aplikacije brskalnika Brave</translation>
 <translation id="4097979995947147464">Beta aplikacije brskalnika Brave</translation>
 <translation id="8303432794159193481">Dev aplikacije brskalnika Brave</translation>
