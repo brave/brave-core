@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Wezesha vidokezi katika kiwango cha maudhui kwenye tovuti hizi</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Changia papo hapo unapoona kito.</translation>
 <translation id="6135431587052937035">Ziwezeshe tovuti zako unazozipenda kwa michango ya kujirudia kila mwezi.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Nimemzawadia <ph name="NAME"/> kwa kutumia Kisakuzi cha Brave. Angalia kwenye https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Samahani, kulikuwa na tatizo wakati wa kuchakata ombi lako, tafadhali jaribu tena.</translation>
+<translation id="3082557070674409251">Umebofya</translation>
+<translation id="7119308337584989771">Umepuuza</translation>
+<translation id="6805660603861526473">Umetazama</translation>
 <translation id="7422678632904904341">Kiasi:</translation>
 <translation id="5923611424721173182">Suluhisho la Sasa</translation>
 <translation id="5457113250005438886">Si sahihi</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave ni alama ya biashara iliyosajiliwa ya Brave Software. Majina ya tovuti yanaweza kuwa alama za biashara au alama za biashara zilizosajiliwa za mmiliki wa tovuti.</translation>
 <translation id="9026369588205476247">Ili kulinda faragha yako, kauli hii ya Brave Rewards haihifadhiwi, kurekodiwa wa kutunzwa popote pale zaidi ya kwenye kifaa chako (kompyuta hii). Hiawezi kurejeshwa kutoka Brave ikitokea data zimepotea kwenye kifaa chako.</translation>
 <translation id="1036277985068412734">ongeza fedha</translation>
+<translation id="3587482841069643663">Zote</translation>
+<translation id="4241224519481557898">Kategoria</translation>
+<translation id="3080423471207781945">Idadi ya juu ya matangazo uliyopokea kwa saa:</translation>
+<translation id="2631006050119455616">Imehifadhi</translation>
+<translation id="2155330833364281539">Matangazo ambayo ulipokea siku  {{totalDays}} zilizopita</translation>
+<translation id="8863685593846905344">Historia ya Matangazo</translation>
+<translation id="5212777575344695266">Tia Alama Kuwa Haifai</translation>
+<translation id="2111256234277361810">Tia Alama Kuwa Haifai ✓</translation>
+<translation id="8988332871810963281">Hakuna historia ya Matangazo ya Brave kwa sasa</translation>
+<translation id="5345727496083327478">Hutapokea tena matangazo kutoka kwenye kategoria hii</translation>
+<translation id="5317780077021120954">Hifadhi</translation>
 <translation id="5441565662498481293">Unatuma zawadi kiotomatiki kwa:</translation>
 <translation id="2827387977307390755">Ruhusu michango katika</translation>
 <translation id="3671566813999349838">Kiasi</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Mara moja</translation>
 <translation id="9182287025588539628">Michango ya Mara Moja</translation>
 <translation id="6381574025952123568">Sakio Anzia</translation>
+<translation id="532275381857891532">Historia ya Matangazo ya Siku 7</translation>
 <translation id="4923459931733593730">Malipo</translation>
 <translation id="4021593982164260556">Malipo hufanywa kila siku ya {{day}} kila mwezi.</translation>
 <translation id="6104680658798556671">Malipo hayakufanyika.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Michango ya Kila Mwezi</translation>
 <translation id="2391095793008133394">Mzawadie {{ user }} kwa makala yake:</translation>
 <translation id="7557413530932469222">Mzawadie {{ user }} kwa makala yake!</translation>
+<translation id="717513177896084801">Kidokezo {{ user }}</translation>
 <translation id="1110535155349301542">ondoa</translation>
+<translation id="8204292894173669182">Ondoa Kwenye Yaliyohifadhiwa</translation>
 <translation id="8942997470474842562">Umepewa#8217; kiwango cha BAT {{reservedAmount}} BAT kwa watengenezaji ambao bado hawajajisajili’ ili kupokea michango. Kisakuzi chako kitaendelea kujaribu kuchangia hadi watakapothibitisha, au hadi siku 90 zitakapokuwa zimepita.</translation>
 <translation id="8759753423332885148">Jifunze zaidi.</translation>
 <translation id="3157931365184549694">Rejesha</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">Pochi iliyothibitishwa hukuruhusu:</translation>
 <translation id="7565794512491053578">Thibitisha Pochi Yako</translation>
 <translation id="698531289520577961">Na udhibiti pesa zako kwa urahisi!</translation>
+<translation id="8697510149346635496">Toa BAT unayopata kwa kutazama matangazo yanayoheshimu faragha</translation>
+<translation id="1481480653609649134">Nunua BAT ya ziada kwa kadi za mikopo na vyanzo vingine</translation>
+<translation id="9096003370755878766">Toa BAT ambayo huenda uliongeza awali kwenye pochi yako ya Brave Rewards</translation>
+<translation id="5275978662119683162">Manufaa ya kuthibitisha</translation>
+<translation id="5166793288622772189">Tayari kuthibitisha pochi yako?</translation>
+<translation id="8766217572332535979">Uthibitishaji si muhimu ili kupata zawadi kwa ajili ya michango ya mtengenezaji</translation>
+<translation id="8465442795593991224">Huenda Uphold ikakuhitaji kuthibitisha utambulisho wako kulingana na huduma zilizoombwa.</translation>
+<translation id="723054503945711909">Brave Software Inc. haichakati, kuhifadhi wala kufikia taarifa yoyote ya binafsi unayoipa Uphold unapofungua akaunti nao.</translation>
 <translation id="1181037720776840403">Ondoa</translation>
 <translation id="7885157704277298658">Imenakiliwa!</translation>
 <translation id="5379640681913450928">Idadi ya Maneno:</translation>

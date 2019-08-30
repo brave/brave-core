@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">在这些站点上启用内容级提示</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">当您找到宝石时当场打赏。</translation>
 <translation id="6135431587052937035">每月重复给予小费，支持您喜欢的网站。</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">我最近使用 Brave 浏览器打赏了 <ph name="NAME"/>。快来 https://brave.com/tips 看看吧。</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">抱歉，处理您的请求时出错，请重试。</translation>
+<translation id="3082557070674409251">已单击</translation>
+<translation id="7119308337584989771">已放弃</translation>
+<translation id="6805660603861526473">已查看</translation>
 <translation id="7422678632904904341">金额：</translation>
 <translation id="5923611424721173182">当前协调</translation>
 <translation id="5457113250005438886">无效</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016 –2018 Brave Software。Brave 是 Brave Software 的注册商标。网站名称可能是网站所有者的商标或注册商标。</translation>
 <translation id="9026369588205476247">为保护您的隐私，Brave Rewards 声明不会在您设备（此计算机）以外的地方保存、记录或计入日志。如果您设备上的数据丢失，则无法从 Brave 中进行检索。</translation>
 <translation id="1036277985068412734">添加资金</translation>
+<translation id="3587482841069643663">全部</translation>
+<translation id="4241224519481557898">类别</translation>
+<translation id="3080423471207781945">每小时收到的最高广告数：</translation>
+<translation id="2631006050119455616">已保存</translation>
+<translation id="2155330833364281539">过去 {{totalDays}} 天收到的广告</translation>
+<translation id="8863685593846905344">广告历史记录</translation>
+<translation id="5212777575344695266">标记为不适用</translation>
+<translation id="2111256234277361810">标记为不适用✓</translation>
+<translation id="8988332871810963281">当前没有 Brave 广告历史记录</translation>
+<translation id="5345727496083327478">您将不会收到此类广告</translation>
+<translation id="5317780077021120954">保存</translation>
 <translation id="5441565662498481293">您正在自动发送打赏至：</translation>
 <translation id="2827387977307390755">允许打赏</translation>
 <translation id="3671566813999349838">金额</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">一次</translation>
 <translation id="9182287025588539628">一次性赏金</translation>
 <translation id="6381574025952123568">打开余额</translation>
+<translation id="532275381857891532">7 天广告历史记录</translation>
 <translation id="4923459931733593730">付款</translation>
 <translation id="4021593982164260556">每月的第 {{day}}天付款</translation>
 <translation id="6104680658798556671">未付款。</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">每月赏金</translation>
 <translation id="2391095793008133394">对 @{{ user }} 的博文打赏：</translation>
 <translation id="7557413530932469222">对 @{{ user }} 的博文打赏喽！</translation>
+<translation id="717513177896084801">提示 {{ user }}</translation>
 <translation id="1110535155349301542">删除</translation>
+<translation id="8204292894173669182">从已保存项中移除</translation>
 <translation id="8942997470474842562">您为尚未注册接收打赏的创建者设立了{{reservedAmount}} BAT的捐款。您的浏览器将会继续尝试捐款，直到该用户通过验证，但不会超过90天。</translation>
 <translation id="8759753423332885148">了解详情。</translation>
 <translation id="3157931365184549694">恢复</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">您可使用已验证的钱包进行如下活动：</translation>
 <translation id="7565794512491053578">验证钱包</translation>
 <translation id="698531289520577961">轻松管理资金！</translation>
+<translation id="8697510149346635496">提现您查看尊重隐私的广告所赚取的 BAT</translation>
+<translation id="1481480653609649134">使用信用卡和其他资源购买更多 BAT</translation>
+<translation id="9096003370755878766">提现您之前添加到 Brave Rewards 钱包中的 BAT</translation>
+<translation id="5275978662119683162">验证优势</translation>
+<translation id="5166793288622772189">准备好验证钱包了吗？</translation>
+<translation id="8766217572332535979">无需验证，即可赚取创作者贡献奖励</translation>
+<translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
+<translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
 <translation id="1181037720776840403">删除</translation>
 <translation id="7885157704277298658">已复制！</translation>
 <translation id="5379640681913450928">字数：</translation>

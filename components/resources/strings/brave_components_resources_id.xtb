@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Aktifkan tips tingkat konten di situs-situs ini</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Beri tip secara langsung saat Anda menemukan permata.</translation>
 <translation id="6135431587052937035">Dukung situs favorit Anda dengan tip bulanan berulang.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Saya baru saja memberi tip untuk <ph name="NAME"/> melalui Brave Browser. Simak di https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipDenganBrave</translation>
 <translation id="2876191400747549936">Maaf, terjadi masalah saat memproses permintaan Anda, harap coba kembali.</translation>
+<translation id="3082557070674409251">Diklik</translation>
+<translation id="7119308337584989771">Diabaikan</translation>
+<translation id="6805660603861526473">Dilihat</translation>
 <translation id="7422678632904904341">Jumlah:</translation>
 <translation id="5923611424721173182">Rekonsiliasi Saat Ini</translation>
 <translation id="5457113250005438886">Tidak valid</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave adalah merek dagang terdaftar dari Brave Software. Nama situs mungkin merupakan merek dagang atau merek dagang terdaftar dari pemilik situs.</translation>
 <translation id="9026369588205476247">Untuk melindungi privasi Anda, laporan Brave Rewards ini tidak simpan, direkam, atau dicatat di mana pun selain di perangkat Anda (komputer ini). Ini tidak dapat diambil kembali dari Brave saat ada kehilangan data di perangkat Anda.</translation>
 <translation id="1036277985068412734">tambah dana</translation>
+<translation id="3587482841069643663">Semua</translation>
+<translation id="4241224519481557898">Kategori</translation>
+<translation id="3080423471207781945">Maksimum iklan yang diterima per jam:</translation>
+<translation id="2631006050119455616">Disimpan</translation>
+<translation id="2155330833364281539">Iklan yang Anda terima dalam {{totalDays}} hari ini</translation>
+<translation id="8863685593846905344">Riwayat Iklan</translation>
+<translation id="5212777575344695266">Tandai Sebagai Tidak Pantas</translation>
+<translation id="2111256234277361810">Tandai Sebagai Tidak Pantas ✓</translation>
+<translation id="8988332871810963281">Saat ini tidak ada riwayat iklan Brave</translation>
+<translation id="5345727496083327478">Anda tidak akan lagi menerima iklan dari kategori ini</translation>
+<translation id="5317780077021120954">Simpan</translation>
 <translation id="5441565662498481293">Anda secara otomatis mengirim tip ke:</translation>
 <translation id="2827387977307390755">Izinkan tip pada</translation>
 <translation id="3671566813999349838">Jumlah</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Satu kali</translation>
 <translation id="9182287025588539628">Tip Satu Kali</translation>
 <translation id="6381574025952123568">Saldo Awal</translation>
+<translation id="532275381857891532">Riwayat Iklan 7 hari</translation>
 <translation id="4923459931733593730">Pembayaran</translation>
 <translation id="4021593982164260556">Pembayaran dilakukan setiap hari ke-{{day}} setiap bulan.</translation>
 <translation id="6104680658798556671">Pembayaran tidak dilakukan.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Tip Bulanan</translation>
 <translation id="2391095793008133394">Beri {{ user }} tip untuk posnya:</translation>
 <translation id="7557413530932469222">Beri {{ user }} tip untuk posnya!</translation>
+<translation id="717513177896084801">Tip {{ user }}</translation>
 <translation id="1110535155349301542">hapus</translation>
+<translation id="8204292894173669182">Hapus Dari Disimpan</translation>
 <translation id="8942997470474842562">Anda telah menetapkan {{reservedAmount}} BAT untuk pembuat yang belum mendaftar untuk menerima kontribusi. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
 <translation id="8759753423332885148">Pelajari lebih lanjut.</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">Dompet terverifikasi mengizinkan Anda:</translation>
 <translation id="7565794512491053578">Verifikasikan Dompet Anda</translation>
 <translation id="698531289520577961">Dan kelola dana dengan mudah!</translation>
+<translation id="8697510149346635496">Tarik BAT yang Anda dapat dari melihat iklan yang menghormati privasi</translation>
+<translation id="1481480653609649134">Beli BAT tambahan dengan kartu kredit dan sumber lain</translation>
+<translation id="9096003370755878766">Tarik BAT yang mungkin sudah pernah Anda masukkan ke dompet Imbalan Brave Anda</translation>
+<translation id="5275978662119683162">Manfaat verifikasi</translation>
+<translation id="5166793288622772189">Siap memverifikasi dompet Anda?</translation>
+<translation id="8766217572332535979">Verifikasi tidak diperlukan untuk mendapatkan imbalan bagi kontribusi untuk pencipta</translation>
+<translation id="8465442795593991224">Uphold mungkin memerlukan verifikasi identitas Anda berdasarkan layanan yang diminta.</translation>
+<translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda berikan kepada Uphold ketika Anda membuat akun dengan mereka.</translation>
 <translation id="1181037720776840403">Hapus</translation>
 <translation id="7885157704277298658">Disalin!</translation>
 <translation id="5379640681913450928">Jumlah Kata:</translation>

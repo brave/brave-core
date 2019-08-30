@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">مسدود کردن آگهی با Brave</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
 <translation id="5655621391922317800">کیف پول‌های رمزنگاری</translation>
+<translation id="2445484935443597917">ایجاد نمایه جدید</translation>
+<translation id="2666990579225592931">باز کردن پنجره مهمان</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (شناسه افزونه "<ph name="EXTENSION_ID"/>") در Brave مجاز نیست.</translation>
 <translation id="7450557937477381864">بستن Chrome</translation>
 <translation id="7008934821596358692">برای تکمیل وارد کردن، همه پنجره‌های Chrome را ببندید.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">باز کردن پنجره‌ها و برگه‌ها</translation>
 <translation id="3699882589215410581">Widevine را نصب و اجرا کنید</translation>
 <translation id="3696083746357487900">نصب کیف پول‌های رمزنگاری</translation>
+<translation id="8926389886865778422">دوباره سؤال نشود</translation>
+<translation id="4726634924419692905">زمانی که یک سایت می‌خواهد Widevine را روی رایانه‌تان نصب کند، سؤال بپرسد.</translation>
 <translation id="8053096063396012732">نصب Widevine</translation>
 <translation id="4840334696217618631">برای فعال کردن Widevine، مرورگر را دوباره راه‌اندازی کنید</translation>
 <translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597">همیشه در <ph name="HOST"/> به پخش خودکار اجازه داده شود</translation>
 <translation id="4150684676757176434">پخش خودکار همچنان مسدود شود</translation>
 <translation id="5883458389055721080">Brave ایمنی و امنیت این افزونه را بررسی نکرده است. فقط درصورتی که به برنامه‌نویس اعتماد دارید، این افزونه را نصب کنید.</translation>
+<translation id="8081858229109418493">نام و آیکون نمایه</translation>
 <translation id="2044383478723007273">رنگ‌های Brave</translation>
 <translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
 <translation id="6123134130710658846">پنهان کردن دکمه «پاداش‌های Brave»</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">این کار اکثر آگهی‌ها را در وب‌سایت‌ها مسدود می‌کند، به‌جز آگهی‌های خصوصی Brave ‏— این موارد در اینجا کنترل می‌شوند:</translation>
 <translation id="6388201778088078932">تنظیمات.</translation>
 <translation id="9185018653595759199">مسدود کردن رسانه اجتماعی</translation>
+<translation id="7390783310074170337">نمای پیش‌فرض</translation>
+<translation id="130615081792797568">نمای ساده</translation>
+<translation id="2360360976480535628">نمای پیشرفته</translation>
 <translation id="5709627087332022422">مسدود کردن ردیاب‌های بین سایتی</translation>
 <translation id="9075744464571452108">تشخیص دستگاه</translation>
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
 <translation id="4846154056248462491">در برگه خروج</translation>
 <translation id="5057399635433117814">این صفحه ترجمه شود؟ با این کار کل نوشتار موجود در این صفحه برای ترجمه به Microsoft ارسال خواهد شد.</translation>
+<translation id="330263065709195164">افزونه Google Translate را برای ترجمه این صفحه نصب کنید؟</translation>
+<translation id="3789841737615482174">نصب</translation>
+<translation id="7658239707568436148">لغو</translation>
 <translation id="3371343170427636147">برنامه‌های Nightly مرورگر Brave</translation>
 <translation id="4097979995947147464">برنامه‌های Beta مرورگر Brave</translation>
 <translation id="8303432794159193481">برنامه‌های Dev مرورگر Brave</translation>

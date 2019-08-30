@@ -421,6 +421,14 @@
     "message": "ทิป",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "ส่งทิป",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "ทิป",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "ผู้สร้าง $name$ ที่ยืนยันเมื่อไม่นานมานี้",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "ไม่ต้องกังวล กรณีนี้อาจมีสาเหตุมาจากเหตุผลด้านความปลอดภัยหลายอย่าง โปรดเชื่อมต่อใหม่เพื่อแก้ไขปัญหานี้",
+    "message": "ไม่ต้องห่วง นี่อาจมีสาเหตุมาจากเหตุผลด้านความปลอดภัยหลายประการ การเชื่อมต่อใหม่อีกครั้งจะช่วยแก้ไขปัญหานี้",
     "description": "Title for notification when wallet is disconnected"
   }
 }

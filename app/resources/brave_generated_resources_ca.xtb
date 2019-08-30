@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Blocatge d'anuncis de Brave</translation>
 <translation id="6406506848690869874">Sincronització</translation>
 <translation id="5655621391922317800">Moneders Crypto</translation>
+<translation id="2445484935443597917">Crea un perfil</translation>
+<translation id="2666990579225592931">Obre la finestra de convidat</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (amb identificador d'extensió "<ph name="EXTENSION_ID"/>") no es permet a Brave.</translation>
 <translation id="7450557937477381864">Tanqueu Chrome</translation>
 <translation id="7008934821596358692">Per a finalitzar la importació tanqueu totes les finestres de Chrome</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Obre finestres i pestanyes</translation>
 <translation id="3699882589215410581">Instal·la i executa Widevine</translation>
 <translation id="3696083746357487900">Instal·lar Moneders Crypto</translation>
+<translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
+<translation id="4726634924419692905">Pregunta quan un lloc vulgui instal·lar Widevine al teu ordinador.</translation>
 <translation id="8053096063396012732">Instal·la Widevine</translation>
 <translation id="4840334696217618631">Reinicia el navegador per activar Widevine</translation>
 <translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l'elecció de l'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen. 
@@ -32,6 +36,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
 <translation id="5883458389055721080">Brave no ha revisat aquesta extensió amb finalitats de seguretat. Instal·la aquesta extensió només si confies en el desenvolupador.</translation>
+<translation id="8081858229109418493">Nom de perfil i imatge</translation>
 <translation id="2044383478723007273">Colors de Brave</translation>
 <translation id="2814998458708016836">Fer servir una barra d'adreces ampla</translation>
 <translation id="6123134130710658846">Amaga el botó de Premis de Brave</translation>
@@ -58,6 +63,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8754605759692119662">D'aquesta manera es bloquejaran la majoria dels anuncis als llocs web, no els anuncis privats de Brave, els quals es control·len a la</translation>
 <translation id="6388201778088078932">ajustos.</translation>
 <translation id="9185018653595759199">Bloqueig de mitjans socials</translation>
+<translation id="7390783310074170337">Vista per defecte</translation>
+<translation id="130615081792797568">Vista senzilla</translation>
+<translation id="2360360976480535628">Vista avançada</translation>
 <translation id="5709627087332022422">Bloquejar rastrejadors entre llocs</translation>
 <translation id="9075744464571452108">Reconeixement de dispositius</translation>
 <translation id="3570081523466826008">Actualitzar connexions a HTTPS</translation>
@@ -96,6 +104,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="9181207987584064303">Veure a la botiga d'extensions web</translation>
 <translation id="4846154056248462491">En sortir</translation>
 <translation id="5057399635433117814">Vols traduir aquesta pàgina? Això enviarà tot el text d'aquesta pàgina a Microsoft per traduir-lo.</translation>
+<translation id="330263065709195164">Instal·lar l'extensió de Google Translate per a traduir aquesta pàgina?</translation>
+<translation id="3789841737615482174">Instal·la</translation>
+<translation id="7658239707568436148">Cancel·la</translation>
 <translation id="3371343170427636147">Aplicacions nocturnes de l'explorador Brave</translation>
 <translation id="4097979995947147464">Aplicacions beta de l'explorador Brave</translation>
 <translation id="8303432794159193481">Aplicacions de desenv. de l'explorador Brave</translation>

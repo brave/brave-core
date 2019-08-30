@@ -421,6 +421,14 @@
     "message": "Indiciu",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Trimiteți o plată",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Indiciu",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Creatorul $name$ a fost verificat recent",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Nu vă faceți griji. Acest lucru se poate întâmpla din diverse motive de securitate. Este de ajuns să vă reconectați pentru a rezolva problema.",
+    "message": "Nu vă faceți griji. Aceasta se poate întâmpla dintr-o varietate de motive de securitate. Reconectarea va rezolva această problemă.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

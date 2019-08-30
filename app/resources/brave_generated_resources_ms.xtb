@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Sekatan Iklan Brave</translation>
 <translation id="6406506848690869874">Segerak</translation>
 <translation id="5655621391922317800">Dompet Crypto</translation>
+<translation id="2445484935443597917">Buat Profil Baharu</translation>
+<translation id="2666990579225592931">Buka Tetingkap Tetamu</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak dibenarkan dalam Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk melengkapkan pengimportan, tutup semua tetingkap Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Buka tetingkap dan tab</translation>
 <translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
 <translation id="3696083746357487900">Pasang Dompet Crypto</translation>
+<translation id="8926389886865778422">Jangan tanya lagi</translation>
+<translation id="4726634924419692905">Tanya apabila laman mahu memasang Widevine pada komputer anda.</translation>
 <translation id="8053096063396012732">Pasang Widevine</translation>
 <translation id="4840334696217618631">Hidupkan semula penyemak imbas untuk mengaktifkan Widevine</translation>
 <translation id="8410111618231938546">Google Widevine ialah secebis kod Pengurusan Hak Digital (DRM) yang kami di Perisian Brave tidak memilikinya dan tidak boleh memeriksanya. The Kod Google Widevine dimuatkan dari pelayan Google, bukan dari pelayan kami. Ia dimuatkan hanya apabila anda mendayakan pilihan ini. Kami tidak menggalakkan anda untuk menggunakan DRM, namun kami menghormati pilihan pengguna dan mengakui bahawa sebahagian pengguna Brave ingin menggunakan perkhidmatan yang memerlukannya.
@@ -31,6 +35,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="4988333904713528597">Sentiasa benarkan automain pada <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Teruskan menyekat autoplay</translation>
 <translation id="5883458389055721080">Brave belum menyemak sambungan ini untuk perlindungan dan keselamatan. Pasang sambungan ini hanya jika anda mempercayai pembangunnya.</translation>
+<translation id="8081858229109418493">Nama profil dan ikon</translation>
 <translation id="2044383478723007273">Warna-warna Brave</translation>
 <translation id="2814998458708016836">Gunakan bar alamat lebih lebar</translation>
 <translation id="6123134130710658846">Sembunyi butang Brave Rewards</translation>
@@ -57,6 +62,9 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8754605759692119662">Ini akan menyekat kebanyakan iklan di laman web, tetapi bukan iklan persendirian Brave —  iklan ini dikawal dalam</translation>
 <translation id="6388201778088078932">tetapan.</translation>
 <translation id="9185018653595759199">Penyekatan media sosial</translation>
+<translation id="7390783310074170337">Paparan lalai</translation>
+<translation id="130615081792797568">Paparan ringkas</translation>
+<translation id="2360360976480535628">Paparan lanjutan</translation>
 <translation id="5709627087332022422">Sekat penjejak merentas laman</translation>
 <translation id="9075744464571452108">Pengecaman peranti</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
@@ -95,6 +103,9 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="9181207987584064303">Lihat di Kedai Sambungan Web</translation>
 <translation id="4846154056248462491">Semasa keluar</translation>
 <translation id="5057399635433117814">Terjemahkan halaman ini? Ini akan menghantar semua teks di halaman ini kepada Microsoft untuk diterjemahkan.</translation>
+<translation id="330263065709195164">Pasang sambungan Google Translate untuk menterjemah halaman ini?</translation>
+<translation id="3789841737615482174">Pasang</translation>
+<translation id="7658239707568436148">Batal</translation>
 <translation id="3371343170427636147">Aplikasi Malam Pelayar Brave</translation>
 <translation id="4097979995947147464">Aplikasi Beta Pelayar Brave</translation>
 <translation id="8303432794159193481">Aplikasi Pembangunan Pelayar Brave</translation>

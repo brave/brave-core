@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave ಜಾಹೀರಾತು ನಿರ್ಬಂಧ</translation>
 <translation id="6406506848690869874">ಸಿಂಕ್</translation>
 <translation id="5655621391922317800">Crypto ವ್ಯಾಲೆಟ್‌ಗಳು</translation>
+<translation id="2445484935443597917">ಹೊಸ ಪ್ರೊಫೈಲ್ ರಚಿಸಿ</translation>
+<translation id="2666990579225592931">ಅತಿಥಿ ವಿಂಡೋವನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ವಿಸ್ತರಣೆ ID "<ph name="EXTENSION_ID"/>") , ಇದು Brave ನಲ್ಲಿ ಅನುಮತಿಸಲಾಗಿಲ್ಲ.</translation>
 <translation id="7450557937477381864">Chrome ಮುಚ್ಚಿ</translation>
 <translation id="7008934821596358692">ಆಮದು ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು, ಎಲ್ಲಾ Chrome ವಿಂಡೋಗಳನ್ನು ಮುಚ್ಚಿ.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">ವಿಂಡೋಗಳು ಮತ್ತು ಟ್ಯಾಬ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="3699882589215410581">Widevine ಸ್ಥಾಪಿಸಿ ಮತ್ತು ರನ್ ಮಾಡಿ</translation>
 <translation id="3696083746357487900">Crypto ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಿ</translation>
+<translation id="8926389886865778422">ಮತ್ತೆ ಕೇಳಬೇಡಿ</translation>
+<translation id="4726634924419692905">ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ Widevine ಅನ್ನು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ಸೈಟ್ ಬಯಸಿದಾಗ ಕೇಳಿ.</translation>
 <translation id="8053096063396012732">Widevine ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
 <translation id="4840334696217618631">Widevine ಸಕ್ರಿಯಗೊಳಿಸಲು ಬ್ರೌಸರ್ ರಿಸ್ಟಾರ್ಟ್ ಮಾಡಿ</translation>
 <translation id="8410111618231938546">Google Widevine ಎಂಬುದು ಡಿಜಿಟಲ್ ರೈಟ್ಸ್ ಮ್ಯಾನೇಜ್‌ಮೆಂಟ್ (DRM) ಕೋಡ್‌ನ ಭಾಗವಾಗಿದ್ದು, ನಾವು ಅಂದರೆ Brave ಅದರ ಮಾಲೀಕತ್ವವನ್ನು ಹೊಂದಿರುವುದಿಲ್ಲ ಮತ್ತು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. Google Widevine ಕೋಡ್ ಅನ್ನು Google ಸರ್ವರ್‌ಗಳಿಂದ ಲೋಡ್ ಮಾಡಲಾಗಿರುತ್ತದೆಯೇ ಹೊರತು, ನಮ್ಮ ಸರ್ವರ್‌ಗಳಿಂದಲ್ಲ. ನೀವು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ ಮಾತ್ರವೇ ಇದನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತದೆ. ನಾವು DRM ಬಳಕೆಯನ್ನು ಪ್ರೋತ್ಸಾಹಿಸುವುದಿಲ್ಲವಾದರೂ, ಬಳಕೆದಾರರ ಆಯ್ಕೆಯನ್ನು ನಾವು ಗೌರವಿಸುತ್ತೇವೆ ಹಾಗೆಯೇ ಕೆಲವು Brave ಬಳಕೆದಾರರು ಇದರ ಅಗತ್ಯವಿರುವ ಸೇವೆಗಳನ್ನು ಬಳಸಲು ಬಯಸುತ್ತಾರೆ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೇವೆ.
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597"><ph name="HOST"/> ನಲ್ಲಿ ಯಾವಾಗಲೂ ಸ್ವಯಂಪ್ಲೇ ಅನುಮತಿಸಿ</translation>
 <translation id="4150684676757176434">ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸುವಿಕೆಯನ್ನು ಮುಂದುವರಿಸಿ</translation>
 <translation id="5883458389055721080">Brave ಈ ವಿಸ್ತರಣೆಯನ್ನು ಸುರಕ್ಷತೆ ಹಾಗೂ ರಕ್ಷಣೆಗಾಗಿ ಪರಿಶೀಲಿಸಿಲ್ಲ. ನೀವು ಡೆವಲಪರ್ ಮೇಲೆ ನಂಬಿಕೆ ಹೊಂದಿದ್ದಲ್ಲಿ ಮಾತ್ರ ಈ ವಿಸ್ತರಣೆಯನ್ನು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ.</translation>
+<translation id="8081858229109418493">ಪ್ರೊಫೈಲ್ ಹೆಸರು ಮತ್ತು ಐಕಾನ್</translation>
 <translation id="2044383478723007273">Brave ಬಣ್ಣಗಳು</translation>
 <translation id="2814998458708016836">ವೈಡ್ ಅಡ್ರೆಸ್ ಬಾರ್ ಬಳಸಿ</translation>
 <translation id="6123134130710658846">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಬಟನ್ ಮರೆ ಮಾಡಿ</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">ಇದು ವೆಬ್‌ಸೈಟ್‌ಗಳಲ್ಲಿ ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸುವುದಾದರೂ — ನಲ್ಲಿ ನಿಯಂತ್ರಿಸಲಾಗಿರುವ Brave ಜಾಹೀರಾತುಗಳನ್ನಲ್ಲ</translation>
 <translation id="6388201778088078932">ಸೆಟ್ಟಿಂಗ್‌‌ಗಳು.</translation>
 <translation id="9185018653595759199">ಸಾಮಾಜಿಕ ಮಾಧ್ಯಮವನ್ನು ನಿರ್ಬಂಧಿಸುವಿಕೆ</translation>
+<translation id="7390783310074170337">ಡೀಫಾಲ್ಟ್ ವೀಕ್ಷಣೆ</translation>
+<translation id="130615081792797568">ಸರಳ ವೀಕ್ಷಣೆ</translation>
+<translation id="2360360976480535628">ಸುಧಾರಿತ ವೀಕ್ಷಣೆ</translation>
 <translation id="5709627087332022422">ಕ್ರಾಸ್-ಸೈಟ್ ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="9075744464571452108">ಸಾಧನ ಗುರುತಿಸುವಿಕೆ</translation>
 <translation id="3570081523466826008">HTTPS ಗೆ ಸಂಪರ್ಕಗಳನ್ನು ಮೇಲ್ದರ್ಜೆಗೇರಿಸಿ</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">ವೆಬ್ ವಿಸ್ತರಣೆಗಳು ಸ್ಟೋರ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
 <translation id="4846154056248462491">ತೊರೆಯುವಾಗ</translation>
 <translation id="5057399635433117814">ಈ ಪುಟವನ್ನು ಅನುವಾದಿಸುವುದೇ? ಇದು ಅನುವಾದಕ್ಕಾಗಿ Microsoft ಗೆ ಈ ಪುಟವು ಎಲ್ಲಾ ಪಠ್ಯಗಳನ್ನು ಕಳುಹಿಸುತ್ತದೆ.</translation>
+<translation id="330263065709195164">ಈ ಪುಟವನ್ನು ಭಾಷಾಂತರಿಸಲು Google Translate ವಿಸ್ತರಣೆಯನ್ನು ಸ್ಥಾಪಿಸಬೇಕೆ?</translation>
+<translation id="3789841737615482174">ಸ್ಥಾಪಿಸು</translation>
+<translation id="7658239707568436148">ರದ್ದುಮಾಡಿ</translation>
 <translation id="3371343170427636147">Brave ಬ್ರೌಸರ್ ನೈಟ್ಲಿ ಆ್ಯಪ್‌‌ಗಳು</translation>
 <translation id="4097979995947147464">Brave ಬ್ರೌಸರ್ ಬೀಟಾ ಆ್ಯಪ್‌ಗಳು</translation>
 <translation id="8303432794159193481">Brave ಬ್ರೌಸರ್ ಡೆವ್ ಆ್ಯಪ್‌‌ಗಳು</translation>

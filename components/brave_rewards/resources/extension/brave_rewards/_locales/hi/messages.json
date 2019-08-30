@@ -421,6 +421,14 @@
     "message": "टिप ",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "एक टिप भेजें",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "टिप ",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "हाल ही मे प्रमाणित किए गए निर्माता के $name$",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "कोई बात नहीं। यह अनेक सुरक्षा कारणों से हो सकता है। केवल पुनः कनेक्ट करने से इस समस्या का समाधान हो जाएगा।s",
+    "message": "कोई चिंता नहीं। यह विभिन्न सुरक्षा कारणों से हो सकता है। बस इसे फिर से जोड़ने से इस समस्या का समाधान हो जाएगा।",
     "description": "Title for notification when wallet is disconnected"
   }
 }

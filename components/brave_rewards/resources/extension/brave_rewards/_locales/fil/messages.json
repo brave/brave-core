@@ -421,6 +421,14 @@
     "message": "Tip",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Magpadala ng Tip",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Tip",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Kamakailang na-verify ang creator na si $name$",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Walang dapat ipag-alala. May iba't ibang dahilang panseguridad kung bakit puwede itong mangyari. Malulutas ang isyung ito sa simpleng pagkonektang muli.",
+    "message": "Huwag mag-alala. Puwede itong mangyari dahil sa iba't ibang dahilang panseguridad. Malulutas ng pagkonekta lang ulit dito ang isyu.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

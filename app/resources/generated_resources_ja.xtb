@@ -27,7 +27,7 @@
 <translation id="4627442949885028695">他の端末で開いたタブ</translation>
 <translation id="7253276740368043692">他の端末と同じタブを使用するには、Brave にログインします。</translation>
 <translation id="6351063337294363751">このメニューで閲覧データを削除できます</translation>
-<translation id="6040143037577758943">近い</translation>
+<translation id="6040143037577758943">閉じる</translation>
 <translation id="6463795194797719782">編集(&amp;E)</translation>
 <translation id="8131740175452115882">確認</translation>
 <translation id="4394049700291259645">無効にする</translation>
@@ -584,6 +584,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">証明書の署名値</translation>
 <translation id="4104163789986725820">エクスポート(&amp;X)</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">serialNumber</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">MAIL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">businessCategory</translation>
+<translation id="6561757256477115975">jurisdictionLocalityName</translation>
+<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
+<translation id="8904360804686555987">jurisdictionCountryName</translation>
+<translation id="8718098216622210506">STREET</translation>
+<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA 暗号化</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 with RSA 暗号化</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 with RSA 暗号化</translation>
@@ -1671,6 +1689,7 @@
 <translation id="1234808891666923653">サービス ワーカー</translation>
 <translation id="3432762828853624962">共有ワーカー</translation>
 <translation id="2927017729816812676">キャッシュ ストレージ</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">アプリ</translation>
 <translation id="542872847390508405">ゲスト モードでブラウジング中</translation>
 <translation id="537813040452600081">このウィンドウで開いたページはブラウザ履歴には記録されません。Cookie などの記録も、ログアウトするとパソコンから消去されます。ダウンロードしたファイルや追加したブックマークは保持されません。</translation>
@@ -2000,6 +2019,7 @@
 <translation id="2650609753175229582"><ph name="URL"/> が保護されたコンテンツの再生を要求しています。デバイスの認証情報が Brave Software によって確認され、このサイトによる認証情報へのアクセスが許可されます。</translation>
 <translation id="1746402432151920942">保護されているメディア識別子</translation>
 <translation id="1322046419516468189"><ph name="SAVED_PASSWORDS_STORE"/> での保存パスワードの表示と管理</translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">パスワードが保存されました。保存パスワードの表示と管理は <ph name="SAVED_PASSWORDS_STORE"/> で行えます。</translation>
 <translation id="5713644099811900409">Brave Software アカウントを使用</translation>
 <translation id="3785727820640310185">このサイト用に保存されているパスワード</translation>
@@ -2264,6 +2284,7 @@
 <translation id="8750155211039279868"><ph name="ORIGIN"/> がシリアルポートへの接続を要求しています</translation>
 <translation id="4943691134276646401">「<ph name="CHROME_EXTENSION_NAME"/>」がシリアルポートへの接続を要求しています</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/>（<ph name="DEVICE_PATH"/>）</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> が HID デバイスへの接続を要求しています</translation>
 <translation id="6078769373519310690">「<ph name="CHROME_EXTENSION_NAME"/>」が HID デバイスへの接続を要求しています</translation>
 <translation id="4419610272958564173">不明なデバイス（ベンダー: <ph name="VENDOR_ID"/>、プロダクト: <ph name="PRODUCT_ID"/>）</translation>
@@ -2396,9 +2417,9 @@
 <translation id="399179161741278232">インポートしたブックマーク</translation>
 <translation id="5225324770654022472">アプリのショートカットを表示</translation>
 <translation id="5072836811783999860">管理対象のブックマークを表示</translation>
+<translation id="3613134908380545408">表示する: <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">アプリのショートカットを表示</translation>
 <translation id="711840821796638741">管理対象のブックマークを表示</translation>
-<translation id="3613134908380545408">「<ph name="FOLDER_NAME"/>」を表示</translation>
 <translation id="2367972762794486313">アプリを表示</translation>
 <translation id="8368859634510605990">すべてのブックマークを開く(&amp;O)</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{すべてを開く(&amp;O)}=1{ブックマークを開く(&amp;O)}other{すべて（# 件）を開く(&amp;O)}}</translation>
@@ -2881,13 +2902,22 @@
 <translation id="6352773953037195952">最も高い</translation>
 <translation id="3677657024345889897">最小</translation>
 <translation id="167160931442925455">最大</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>%（デフォルト）</translation>
 <translation id="3602290021589620013">プレビュー</translation>
 <translation id="7037509989619051237">テキスト読み上げの音声をプレビュー</translation>
 <translation id="5471768120198416576">こんにちは。テキスト読み上げの音声です。</translation>
 <translation id="6902066522699286937">プレビューする音声</translation>
 <translation id="304747341537320566">読み上げエンジン</translation>
+<translation id="5270041685309222649">Kiosk Next Shell(Dev)</translation>
+<translation id="6409191325648119263">Kiosk Next Shell</translation>
+<translation id="5940519603482193359">次回サインイン時、Kiosk Next Shellを有効にします</translation>
+<translation id="407536568752283520">Kiosk Next Shellを無効にして、通常のBrave OSに戻ります。</translation>
 <translation id="1036348656032585052">オフにする</translation>
+<translation id="6588712220520211269">Kiosk Next Shellをオフにする</translation>
+<translation id="2446993819525566591">Kiosk Next Shellをオンにする</translation>
+<translation id="1960737068939025292">これにより、Kiosk Next Shellがオフになり、サインアウトして通常のBrave OSに戻ります。</translation>
+<translation id="7316400597244914467">サインアウトしてKiosk Next Shellが有効になります。</translation>
 <translation id="1067291318998134776">Linux（ベータ版）</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1366177842110999534">ご使用の <ph name="DEVICE_TYPE"/> で Linux のツール、エディタ、IDE を実行します。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
@@ -3721,6 +3751,7 @@
 <translation id="5021750053540820849">まだ更新されていません</translation>
 <translation id="3448492834076427715">アカウントを更新</translation>
 <translation id="2923234477033317484">このアカウントを削除</translation>
+<translation id="8995603266996330174">以下で管理されます:  <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">メイン アカウント</translation>
 <translation id="3158033540161634471">指紋の設定</translation>
 <translation id="1587907146729660231">電源ボタンを指でタップしてください</translation>
@@ -3749,7 +3780,6 @@
 <translation id="3608576286259426129">ユーザー画像のプレビュー</translation>
 <translation id="2114896190328250491">撮影者: <ph name="NAME"/></translation>
 <translation id="7155171745945906037">カメラやファイルに保存されている写真</translation>
-<translation id="8995603266996330174">管理ドメイン: <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Brave で Brave Software の最先端技術を活用</translation>
 <translation id="5244474230056479698"><ph name="EMAIL"/> に同期しています</translation>
 <translation id="4326270470840334364">このアカウントは <ph name="DOMAIN"/> で管理されているため、ブックマーク、履歴、パスワードなどの設定はこの端末から消去されます。ただし、データは Brave Software アカウントに保存され、<ph name="BEGIN_LINK"/>Brave Software ダッシュボード<ph name="END_LINK"/>で管理できます。</translation>
@@ -3966,7 +3996,6 @@
 <translation id="8781980678064919987">ディスプレイを閉じたときにシャットダウンする</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% - 残り <ph name="TIME"/></translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - あと <ph name="TIME"/>で充電完了</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">システム</translation>
 <translation id="2077129598763517140">ハードウェア アクセラレーションが使用可能な場合は使用する</translation>
 <translation id="1889984860246851556">プロキシ設定を開く</translation>

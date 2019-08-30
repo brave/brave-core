@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Slå drikkepenge på indholdsniveau til på disse sider</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Donér på stedet, når du finder perler.</translation>
 <translation id="6135431587052937035">Støt dine yndlingssider med faste månedlige tips.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Jeg har lige givet drikkepenge <ph name="NAME"/> ved hjælp af Brave Browser. Se den på https://brave.com/tips.</translation>
 <translation id="8404935570206006581">BelønMedBrave</translation>
 <translation id="2876191400747549936">Beklager, der opstod et problem med behandling af din anmodning. Prøv igen.</translation>
+<translation id="3082557070674409251">Klikket</translation>
+<translation id="7119308337584989771">Afvist</translation>
+<translation id="6805660603861526473">Set</translation>
 <translation id="7422678632904904341">Beløb:</translation>
 <translation id="5923611424721173182">Nuværende afstemning</translation>
 <translation id="5457113250005438886">Ugyldig</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave er et registreret varemærke af Brave Software. Sidenavne kan være varemærker eller registrerede varemærker af sideejeren.</translation>
 <translation id="9026369588205476247">For at beskytte din anonymitet bliver denne opgørelse over Brave Rewards ikke gemt, arkiveret eller logget nogen steder udover på denne enhed (denne computer). Den kan ikke hentes igen fra Brave i tilfælde af datatab på din enhed.</translation>
 <translation id="1036277985068412734">tilføj midler</translation>
+<translation id="3587482841069643663">Alle</translation>
+<translation id="4241224519481557898">Kategori</translation>
+<translation id="3080423471207781945">Maksimal mængde reklamer i timen:</translation>
+<translation id="2631006050119455616">Gemt</translation>
+<translation id="2155330833364281539">Reklamer som du har modtaget inden for de sidste {{totalDays}} dage</translation>
+<translation id="8863685593846905344">Reklamehistorik</translation>
+<translation id="5212777575344695266">Marker som upassende</translation>
+<translation id="2111256234277361810">Marker som upassende ✓</translation>
+<translation id="8988332871810963281">Der er på nuværende tidspunkt ingen Brave Ads historik</translation>
+<translation id="5345727496083327478">Du vil ikke længere modtage reklamer fra denne kategori</translation>
+<translation id="5317780077021120954">Gem</translation>
 <translation id="5441565662498481293">Du sender automatisk drikkepenge til:</translation>
 <translation id="2827387977307390755">Tillad tips om</translation>
 <translation id="3671566813999349838">Beløb</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">En gang</translation>
 <translation id="9182287025588539628">Engangsdonationer</translation>
 <translation id="6381574025952123568">Åbningssaldo</translation>
+<translation id="532275381857891532">7-dages Reklamehistorik</translation>
 <translation id="4923459931733593730">Betaling</translation>
 <translation id="4021593982164260556">Betaling gennemføres hver den {{dag}}. i hver måned.</translation>
 <translation id="6104680658798556671">Betaling ikke gennemført</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Månedlige donationer</translation>
 <translation id="2391095793008133394">Beløn {{ user }} for deres indlæg:</translation>
 <translation id="7557413530932469222">Beløn {{ user }} for deres indlæg!</translation>
+<translation id="717513177896084801">Giv drikkepenge til {{ user }}</translation>
 <translation id="1110535155349301542">fjern</translation>
+<translation id="8204292894173669182">Fjern fra Gemte</translation>
 <translation id="8942997470474842562">Du’har angivet {{reservedAmount}} BAT for skabere som endnu ikke’har skrevet sig op til at modtage bidrag. Din browser vil fortsat forsøge at bidrage indtil de godkender, eller indtil 90 dage er gået.</translation>
 <translation id="8759753423332885148">Lær mere.</translation>
 <translation id="3157931365184549694">Gendan</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">En verificeret tegnebog giver dig mulighed for at:</translation>
 <translation id="7565794512491053578">Bekræft din tegnebog</translation>
 <translation id="698531289520577961">Og administrer dine midler let!</translation>
+<translation id="8697510149346635496">Hæv BAT som du tjener på at se privatlivs-respekterende reklamer</translation>
+<translation id="1481480653609649134">Køb flere BAT med kreditkort og andre metoder</translation>
+<translation id="9096003370755878766">Hæv BAT som du muligvis tidligere har tilføjet til din Brave Rewards tegnebog</translation>
+<translation id="5275978662119683162">Fordele ved verifikation</translation>
+<translation id="5166793288622772189">Klar til at verificere din tegnebog?</translation>
+<translation id="8766217572332535979">Verifikation er ikke nødvendigt for at modtage belønning for bidrag.</translation>
+<translation id="8465442795593991224">Uphold vil muligvis bede dig om at bekræfte din identitet, baseret på hvilke tjenester der bruges.</translation>
+<translation id="723054503945711909">Brave Software Inc. hverken behandler, opbevarer, eller benytter sig af den personlige information som du overlader til Uphold når du opretter en konto ved dem.</translation>
 <translation id="1181037720776840403">Fjern</translation>
 <translation id="7885157704277298658">Kopieret!</translation>
 <translation id="5379640681913450928">Ordoptælling:</translation>

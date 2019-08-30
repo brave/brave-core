@@ -421,6 +421,14 @@
     "message": "Tip",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Kirim Tip",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Tip",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Kreator $name$ diverifikasi belum lama ini",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Tak perlu khawatir. Ini dapat terjadi karena sejumlah alasan keamanan. Cukup sambungkan ulang untuk mengatasinya.",
+    "message": "Jangan khawatir. Hal ini dapat terjadi untuk berbagai alasan keamanan. Cukup dengan menghubungkan kembali ke sana akan memecahkan masalah ini.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

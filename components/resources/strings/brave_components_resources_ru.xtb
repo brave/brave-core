@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Включить поддержку за контент на этих сайтах</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Рекомендуйте сразу же, как только увидели интересное.</translation>
 <translation id="6135431587052937035">Поддержите свои любимые сайты регулярным ежемесячным вознаграждением.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Я только что поддержал(а) <ph name="NAME"/> через браузер Brave. Узнать больше можно на https://brave.com/tips.</translation>
 <translation id="8404935570206006581">ЧаевыеСBrave</translation>
 <translation id="2876191400747549936">Извините, при обработке вашего запроса возникла проблема, попробуйте еще раз.</translation>
+<translation id="3082557070674409251">Нажато</translation>
+<translation id="7119308337584989771">Отклонено</translation>
+<translation id="6805660603861526473">Просмотрено</translation>
 <translation id="7422678632904904341">Сумма:</translation>
 <translation id="5923611424721173182">Текущее согласование</translation>
 <translation id="5457113250005438886">Неверно</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave является зарегистрированной торговой маркой Brave Software. Названия сайтов могут быть торговыми марками или зарегистрированными торговыми марками владельцев сайтов.</translation>
 <translation id="9026369588205476247">Для защиты вашей конфиденциальности данное заявление Brave о вознаграждении не сохраняется, не записывается и не регистрируется нигде, кроме вашего устройства (этого компьютера). В случае потери данных на вашем устройстве, его невозможно будет восстановить у Brave.</translation>
 <translation id="1036277985068412734">добавить средства</translation>
+<translation id="3587482841069643663">Все</translation>
+<translation id="4241224519481557898">Категория</translation>
+<translation id="3080423471207781945">Максимум рекламы получено за час:</translation>
+<translation id="2631006050119455616">Сохранено</translation>
+<translation id="2155330833364281539">Реклама, полученная за предыдущие {{totalDays}} дней</translation>
+<translation id="8863685593846905344">История рекламы</translation>
+<translation id="5212777575344695266">Пометить как неуместное</translation>
+<translation id="2111256234277361810">Пометить как неуместное ✓</translation>
+<translation id="8988332871810963281">Нет истории Brave Ads</translation>
+<translation id="5345727496083327478">Реклама из этой категории больше не будет показываться</translation>
+<translation id="5317780077021120954">Сохранить</translation>
 <translation id="5441565662498481293">Вы автоматически отправляете чаевые:</translation>
 <translation id="2827387977307390755">Разрешить советы по</translation>
 <translation id="3671566813999349838">Сумма</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Один раз</translation>
 <translation id="9182287025588539628">Прошлые рекомендации</translation>
 <translation id="6381574025952123568">Начальное сальдо</translation>
+<translation id="532275381857891532">История рекламы за неделю</translation>
 <translation id="4923459931733593730">Платеж</translation>
 <translation id="4021593982164260556">Оплата производится каждый {{день}}-й день каждого месяца.</translation>
 <translation id="6104680658798556671">Платеж не осуществлен.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Ежемесячные рекомендации</translation>
 <translation id="2391095793008133394">Дать чаевые за пост {{user}}:</translation>
 <translation id="7557413530932469222">Дать чаевые за пост {{user}}!</translation>
+<translation id="717513177896084801">Отправить чаевые {{ user }}</translation>
 <translation id="1110535155349301542">удалить</translation>
+<translation id="8204292894173669182">Удалить из сохраненного</translation>
 <translation id="8942997470474842562">Не удалось отправить грант в размере BAT {{reservedAmount}}, поскольку его получатель еще не участвует в программе дарения. Браузер будет повторять попытку до успешного результата, но не более 90 дней.</translation>
 <translation id="8759753423332885148">Узнать больше.</translation>
 <translation id="3157931365184549694">Восстановить</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">Проверенный кошелек позволяет вам:</translation>
 <translation id="7565794512491053578">Проверьте свой кошелек</translation>
 <translation id="698531289520577961">И простое управление вашими средствами!</translation>
+<translation id="8697510149346635496">Вывести BAT, которые вы заработали за просмотр рекламы, уважающей вашу конфиденциальность</translation>
+<translation id="1481480653609649134">Приобретите дополнительные BAT с помощью кредитных карт или других средств</translation>
+<translation id="9096003370755878766">Вывести BAT, которые вы могли добавить в свой кошелек Brave Rewards</translation>
+<translation id="5275978662119683162">Преимущества подтверждения</translation>
+<translation id="5166793288622772189">Готовы подтвердить свой кошелек?</translation>
+<translation id="8766217572332535979">Подтверждение не обязательно для получения награды за поддержку авторов</translation>
+<translation id="8465442795593991224">Uphold может запросить подтверждение вашей личности на основании запрошенных услуг.</translation>
+<translation id="723054503945711909">Brave Software Inc. не обрабатывает, не хранит и не имеет доступа к вашим персональным данным, которые вы предоставляете Uphold при создании учетной записи.</translation>
 <translation id="1181037720776840403">Удалить</translation>
 <translation id="7885157704277298658">Готово!</translation>
 <translation id="5379640681913450928">Количество слов:</translation>

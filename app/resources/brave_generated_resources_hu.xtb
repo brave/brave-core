@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave hirdetés blokkolása</translation>
 <translation id="6406506848690869874">Szinkronizálás</translation>
 <translation id="5655621391922317800">Kriptopénztárcák</translation>
+<translation id="2445484935443597917">Új profil létrehozása</translation>
+<translation id="2666990579225592931">Vendég módú ablak megnyitása</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (kiterjesztésazonosító "<ph name="EXTENSION_ID"/>") nem engedélyezett a Brave-ben.</translation>
 <translation id="7450557937477381864">Chrome bezárása</translation>
 <translation id="7008934821596358692">Az importálás befejezéséhez zárja be az összes Chrome ablakot.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Ablakok és lapok megnyitása</translation>
 <translation id="3699882589215410581">Widevine telepítése és futtatása</translation>
 <translation id="3696083746357487900">Kriptopénztárcák telepítése</translation>
+<translation id="8926389886865778422">Többször ne figyelmeztessen</translation>
+<translation id="4726634924419692905">Kérdezzen rá, amikor egy webhely a Widevine-t akarja telepíteni a számítógépére.</translation>
 <translation id="8053096063396012732">Widevine telepítése</translation>
 <translation id="4840334696217618631">Widevine engedélyezéséhez indítsa újra a böngészőt</translation>
 <translation id="8410111618231938546">A Google Widevine egy digitális jogkezelő (DRM - Digital Rights Management) kód, amelyet mi a Brave Software vállalatnál nem birtokolunk és nem vizsgálunk meg. A Google Widevine kódot Google szerverektől töltjük be, nem pedig saját szervereinkről. Csak akkor töltődik be, ha engedélyezi ezt az opciót. Javasoljuk a DRM használatát, de tiszteletben tartjuk a felhasználók döntését és elismerjük, hogy néhány Brave felhasználó olyan szolgáltatásokat szeretne használni, amelyekhez ez szükséges.
@@ -31,6 +35,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4988333904713528597">Automatikus lejátszás általános engedélyezése itt: <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Automatikus lejátszás további blokkolása</translation>
 <translation id="5883458389055721080">A Brave még nem ellenőrizte ezt a kiterjesztést biztonság szempontjából. Csak akkor telepítsd ezt a kiterjesztést, ha megbízol a fejlesztőben.</translation>
+<translation id="8081858229109418493">Profilnév és ikon</translation>
 <translation id="2044383478723007273">Brave színek</translation>
 <translation id="2814998458708016836">Használj széles címsort</translation>
 <translation id="6123134130710658846">Brave jutalmak gomb elrejtése</translation>
@@ -57,6 +62,9 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="8754605759692119662">Ez letiltja a weboldalakon a legtöbb reklámot, de a privát hirdetéseket nem — azok kezelési helye a</translation>
 <translation id="6388201778088078932">beállítások.</translation>
 <translation id="9185018653595759199">Közösségi média blokkolása</translation>
+<translation id="7390783310074170337">Alapértelmezett nézet</translation>
+<translation id="130615081792797568">Egyszerű nézet</translation>
+<translation id="2360360976480535628">Speciális nézet</translation>
 <translation id="5709627087332022422">Webhelyközi nyomkövetők letiltása</translation>
 <translation id="9075744464571452108">Eszközfelismerés</translation>
 <translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
@@ -95,6 +103,9 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="9181207987584064303">Megtekintés a Webes Kiterjesztések Áruházában</translation>
 <translation id="4846154056248462491">Kilépéskor</translation>
 <translation id="5057399635433117814">Fordítsuk le ezt az oldalt? Akkor az oldalon lévő minden szöveget el fogunk küldeni a Microsofthoz, fordításra.</translation>
+<translation id="330263065709195164">Telepíti a Google Fordító bővítményt az oldal lefordításához?</translation>
+<translation id="3789841737615482174">Telepítés</translation>
+<translation id="7658239707568436148">Mégse</translation>
 <translation id="3371343170427636147">Brave böngésző Nightly alkalmazások</translation>
 <translation id="4097979995947147464">Brave böngésző béta alkalmazások</translation>
 <translation id="8303432794159193481">Brave böngésző fejlesztői alkalmazások</translation>

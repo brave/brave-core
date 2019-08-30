@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave'i reklaamiblokeerija</translation>
 <translation id="6406506848690869874">Sünkroonimine</translation>
 <translation id="5655621391922317800">Krüptorahakotid</translation>
+<translation id="2445484935443597917">Loo uus profiil</translation>
+<translation id="2666990579225592931">Ava külalise aken</translation>
 <translation id="120759863357279975">Laiendus <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ei ole Brave''is lubatud.</translation>
 <translation id="7450557937477381864">Sulge Chrome</translation>
 <translation id="7008934821596358692">Importimise lõpetamiseks sulgege kõik Chrome'i vahelehed.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Ava aknad ja vahekaardid</translation>
 <translation id="3699882589215410581">Installi ja käivita Widevine</translation>
 <translation id="3696083746357487900">Installi krüptirahakotid</translation>
+<translation id="8926389886865778422">Ära enam küsi</translation>
+<translation id="4726634924419692905">Küsi, kui sait soovib Widevine’i arvutisse installida.</translation>
 <translation id="8053096063396012732">Installi Widevine</translation>
 <translation id="4840334696217618631">Taaskäivita Widevine lubamiseks brauser</translation>
 <translation id="8410111618231938546">Google Widevine on osa digitaalõiguste haldamise (DRM) süsteemist, mida Brave Software ei oma ega saa kontrollida. Google Widevine laaditakse alla Google'i serveritest, mitte meie omadest. See laaditakse alla ainult siis, kui annate selleks oma loa. Me ei soovita DRMi süsteemi kasutamist, kuid austame oma kasutajate valikut ja mõistame, et mõned Brave'i kasutajad soovivad kasutada teenuseid, kus seda vaja on.
@@ -31,6 +35,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4988333904713528597">Luba alati automaatesitust saidil <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Jätka automaatesitamise blokeerimist</translation>
 <translation id="5883458389055721080">Brave pole veel selle laienduse turvalisust ja ohutust kontrollinud. Installige see laiendus ainult juhul, kui usaldate arendajat.</translation>
+<translation id="8081858229109418493">Profiili nimi ja ikoon</translation>
 <translation id="2044383478723007273">Brave'i värvid</translation>
 <translation id="2814998458708016836">Kasuta laia aadressiriba</translation>
 <translation id="6123134130710658846">Peida Brave Rewards nupp</translation>
@@ -57,6 +62,9 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="8754605759692119662">See blokeerib veebisaiditel enamiku reklaamid, kuid mitte Brave’i privaatsed reklaamid — neid kontrollitakse järgmises:</translation>
 <translation id="6388201778088078932">seaded.</translation>
 <translation id="9185018653595759199">Sotsiaalmeedia blokeerimine</translation>
+<translation id="7390783310074170337">Vaikevaade</translation>
+<translation id="130615081792797568">Lihtvaade</translation>
+<translation id="2360360976480535628">Täpsem vaade</translation>
 <translation id="5709627087332022422">Blokeeri saitidevahelised jälitajad</translation>
 <translation id="9075744464571452108">Seadme tuvastamine</translation>
 <translation id="3570081523466826008">Täienda ühendused HTTPS-ile</translation>
@@ -95,6 +103,9 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="9181207987584064303">Kuva veebilaienduste poes</translation>
 <translation id="4846154056248462491">Väljumisel</translation>
 <translation id="5057399635433117814">Tõlkida seda lehte? See saadab kogu selle lehe teksti Microsoftile tõlkimiseks.</translation>
+<translation id="330263065709195164">Kas installida selle lehe tõlkimiseks Google’i tõlke laiendus?</translation>
+<translation id="3789841737615482174">Installi</translation>
+<translation id="7658239707568436148">Tühista</translation>
 <translation id="3371343170427636147">Brave’i brauseri Nightly rakendused</translation>
 <translation id="4097979995947147464">Brave’i brauseri beetarakendused</translation>
 <translation id="8303432794159193481">Brave’i brauseri arendaja rakendused</translation>
