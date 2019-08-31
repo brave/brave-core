@@ -71,8 +71,8 @@ class BraveShieldStatsView: UIView, Themeable {
     }
     
     @objc private func update() {
-        adsStatView.stat = "\(BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection)"
-        httpsStatView.stat = "\(BraveGlobalShieldStats.shared.httpse)"
+        adsStatView.stat = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection).decimalFormattedString ?? "0"
+        httpsStatView.stat = BraveGlobalShieldStats.shared.httpse.decimalFormattedString ?? "0"
         timeStatView.stat = timeSaved
     }
     
@@ -103,7 +103,11 @@ class BraveShieldStatsView: UIView, Themeable {
                 text = Strings.ShieldsTimeStatsDays
             }
             
-            return "\(Int(counter))\(text)"
+            if let counterLocaleStr = Int(counter).decimalFormattedString {
+                return counterLocaleStr + text
+            } else {
+                return "0" + Strings.ShieldsTimeStatsSeconds     // If decimalFormattedString returns nil, default to "0s"
+            }
         }
     }
 }
@@ -165,5 +169,14 @@ class StatView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+fileprivate extension Int {
+    var decimalFormattedString: String? {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        numberFormatter.locale = NSLocale.current
+        return numberFormatter.string(from: self as NSNumber)
     }
 }
