@@ -30,7 +30,10 @@
 #include "base/strings/string_split.h"
 #include "base/time/time.h"
 #include "base/guid.h"
+
+#if defined(OS_ANDROID)
 #include "base/system/sys_info.h"
+#endif
 
 #include "url/gurl.h"
 
@@ -127,9 +130,9 @@ void AdsImpl::InitializeStep4(const Result result) {
 
   NotificationAllowedCheck(false);
 
-  if (IsMobile()) {
-    CleanPostedAsRegistryAfterReboot();
-  }
+#if defined(OS_ANDROID)
+    RemoveAllNotificationsAfterReboot();
+#endif
 
   client_->UpdateAdUUID();
 
@@ -142,7 +145,8 @@ void AdsImpl::InitializeStep4(const Result result) {
   ads_serve_->DownloadCatalog();
 }
 
-void AdsImpl::CleanPostedAsRegistryAfterReboot() {
+#if defined(OS_ANDROID)
+void AdsImpl::RemoveAllNotificationsAfterReboot() {
   //ads notifications don't sustain reboot, so remove all
   auto ads_shown_history = client_->GetAdsShownHistory();
   if (!ads_shown_history.empty()) {
@@ -154,6 +158,7 @@ void AdsImpl::CleanPostedAsRegistryAfterReboot() {
     }
   }
 }
+#endif
 
 bool AdsImpl::IsInitialized() {
   if (!is_initialized_ ||
@@ -949,6 +954,9 @@ bool AdsImpl::ShowAd(
       << std::endl << "  url: " << notification_info->url
       << std::endl << "  uuid: " << notification_info->uuid;
 
+  if (notifications_->Count() >= kMaximumAdNotifications) {
+    notifications_->Remove();
+  }
   notifications_->Add(*notification_info);
   ads_client_->ShowNotification(std::move(notification_info));
 
@@ -999,8 +1007,7 @@ bool AdsImpl::IsAllowedToShowAds() {
       << does_history_respect_ads_per_day_limit;
 
   return does_history_respect_minimum_wait_time &&
-      does_history_respect_ads_per_day_limit &&
-      notifications_->Count() < kMaximumAdNotifications;
+      does_history_respect_ads_per_day_limit;
 }
 
 bool AdsImpl::DoesHistoryRespectMinimumWaitTimeToShowAds() {

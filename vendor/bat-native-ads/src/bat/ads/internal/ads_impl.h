@@ -150,7 +150,6 @@ class AdsImpl : public Ads {
   bool IsAllowedToShowAds();
   bool DoesHistoryRespectMinimumWaitTimeToShowAds();
   bool DoesHistoryRespectAdsPerDayLimit();
-  void CleanPostedAsRegistryAfterReboot();
 
   uint32_t collect_activity_timer_id_;
   void StartCollectingActivity(const uint64_t start_timer_in);
@@ -165,6 +164,9 @@ class AdsImpl : public Ads {
   bool IsDeliveringNotifications() const;
   bool IsCatalogOlderThanOneDay();
   void NotificationAllowedCheck(const bool serve);
+  #if defined(OS_ANDROID)
+  void RemoveAllNotificationsAfterReboot();
+  #endif
 
   void BundleUpdated();
 
