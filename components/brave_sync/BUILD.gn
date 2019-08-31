@@ -78,6 +78,20 @@ source_set("switches") {
   ]
 }
 
+source_set("crypto") {
+  sources = [
+    "crypto/crypto.cc",
+    "crypto/crypto.h",
+  ]
+
+  deps = [
+    "//brave/vendor/bat-native-tweetnacl:tweetnacl",
+    "//brave/vendor/bip39wally-core-native:bip39wally-core",
+    "//crypto",
+    "//third_party/boringssl",
+  ]
+}
+
 source_set("public") {
   sources = [
     "public/brave_profile_sync_service.h",
@@ -104,6 +118,7 @@ source_set("core") {
   ]
 
   deps = [
+    ":crypto",
     ":jslib_messages",
     ":prefs",
     ":switches",
