@@ -19,7 +19,7 @@ struct PublisherInfo {
   int32 excluded;
   int32 category;
   uint64 reconcile_stamp;
-  bool verified;
+  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
   string name;
   string url;
   string provider;
@@ -35,10 +35,10 @@ struct PublisherBanner {
   string description;
   string background;
   string logo;
-  array<int32> amounts;
+  array<double> amounts;
   string provider;
-  map<string, string> social;
-  bool verified;
+  map<string, string> links;
+  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
 };
 
 struct PendingContribution {
@@ -52,7 +52,7 @@ struct PendingContribution {
 struct PendingContributionInfo {
   string publisher_key;
   int32 category;
-  bool verified;
+  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
   string name;
   string url;
   string provider;
@@ -123,4 +123,18 @@ struct ExternalWallet {
   string user_name;
   string account_url;
   bool transferred;
+};
+
+enum PublisherStatus {
+  NOT_VERIFIED = 0,
+  CONNECTED = 1,
+  VERIFIED = 2
+};
+
+struct ServerPublisherInfo {
+  string publisher_key;
+  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
+  bool excluded = false;
+  string address;
+  PublisherBanner banner;
 };

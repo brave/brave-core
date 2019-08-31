@@ -43,7 +43,7 @@
 #define RECOVER_WALLET_PUBLIC_KEY       "/wallet?publicKey="
 #define GET_SET_PROMOTION               "/grants"
 #define GET_PROMOTION_CAPTCHA           "/captchas/"
-#define GET_PUBLISHERS_LIST             "/api/v2/public/channels"
+#define GET_PUBLISHERS_LIST             "/api/v3/public/channels"
 
 #define REGISTRARVK_FIELDNAME           "registrarVK"
 #define VERIFICATION_FIELDNAME          "verification"

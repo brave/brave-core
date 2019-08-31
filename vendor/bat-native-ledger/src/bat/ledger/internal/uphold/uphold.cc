@@ -34,36 +34,49 @@ Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
 Uphold::~Uphold() {
 }
 
-void Uphold::StartContribution(const std::string &viewing_id,
+void Uphold::StartContribution(const std::string& viewing_id,
                                ledger::ExternalWalletPtr wallet) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   for (const auto& item : reconcile.directions_) {
-    const std::string address =
-        ledger_->GetPublisherAddress(item.publisher_key_);
-    if (address.empty()) {
-      ContributionCompleted(ledger::Result::LEDGER_ERROR, false, viewing_id);
-      return;
-    }
+    auto callback = std::bind(&Uphold::OnServerPublisherInfo,
+        this,
+        _1,
+        viewing_id,
+        item.amount_,
+        *wallet);
 
-    const double amount = static_cast<double>(item.amount_);
-    const double fee = (amount * 1.05) - amount;
-    const double reconcile_amount = amount - fee;
-
-    // rest of the reconcile
-    auto contribution_callback = std::bind(&Uphold::ContributionCompleted,
-                              this,
-                              _1,
-                              _2,
-                              viewing_id,
-                              fee,
-                              *wallet);
-
-    transfer_->Start(reconcile_amount,
-                     address,
-                     std::move(wallet),
-                     contribution_callback);
+    ledger_->GetServerPublisherInfo(item.publisher_key_, callback);
   }
+}
+
+void Uphold::OnServerPublisherInfo(
+    ledger::ServerPublisherInfoPtr info,
+    const std::string& viewing_id,
+    int amount,
+    const ledger::ExternalWallet& wallet) {
+  if (!info || info->address.empty()) {
+    ContributionCompleted(ledger::Result::LEDGER_ERROR, false, viewing_id);
+    return;
+  }
+
+  const double amount_double = static_cast<double>(amount);
+  const double fee = (amount_double * 1.05) - amount_double;
+  const double reconcile_amount = amount_double - fee;
+
+  // rest of the reconcile
+  auto contribution_callback = std::bind(&Uphold::ContributionCompleted,
+                            this,
+                            _1,
+                            _2,
+                            viewing_id,
+                            fee,
+                            wallet);
+
+  transfer_->Start(reconcile_amount,
+                   info->address,
+                   ledger::ExternalWallet::New(wallet),
+                   contribution_callback);
 }
 
 void Uphold::ContributionCompleted(

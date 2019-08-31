@@ -584,19 +584,19 @@ void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
     result->SetString("background", banner->background);
     result->SetString("logo", banner->logo);
     result->SetString("provider", banner->provider);
-    result->SetBoolean("verified", banner->verified);
+    result->SetInteger("verified", banner->status);
 
     auto amounts = std::make_unique<base::ListValue>();
-    for (int const& value : banner->amounts) {
+    for (auto const& value : banner->amounts) {
       amounts->AppendInteger(value);
     }
     result->SetList("amounts", std::move(amounts));
 
-    auto social = std::make_unique<base::DictionaryValue>();
-    for (auto const& item : banner->social) {
-      social->SetString(item.first, item.second);
+    auto links = std::make_unique<base::DictionaryValue>();
+    for (auto const& item : banner->links) {
+      links->SetString(item.first, item.second);
     }
-    result->SetDictionary("social", std::move(social));
+    result->SetDictionary("links", std::move(links));
   }
 
   Respond(OneArgument(std::move(result)));
@@ -626,9 +626,11 @@ ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
 }
 
 void BraveRewardsRefreshPublisherFunction::OnRefreshPublisher(
-    bool verified, const std::string& publisher_key) {
-  Respond(TwoArguments(std::make_unique<base::Value>(verified),
-                       std::make_unique<base::Value>(publisher_key)));
+    uint32_t status,
+    const std::string& publisher_key) {
+  Respond(TwoArguments(
+      std::make_unique<base::Value>(static_cast<int>(status)),
+      std::make_unique<base::Value>(publisher_key)));
 }
 
 BraveRewardsGetAllNotificationsFunction::

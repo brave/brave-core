@@ -350,22 +350,22 @@ describe('rewards panel reducer', () => {
         {
           publisher_key: 'brave.com',
           percentage: 50,
-          verified: true
+          status: 2
         },
         {
           publisher_key: 'brave1.com',
           percentage: 30,
-          verified: true
+          status: 2
         },
         {
           publisher_key: 'brave2.com',
           percentage: 10,
-          verified: true
+          status: 2
         },
         {
           publisher_key: 'brave3.com',
           percentage: 10,
-          verified: true
+          status: 2
         }
       ]
 
@@ -376,14 +376,14 @@ describe('rewards panel reducer', () => {
             tabUrl: 'https://brave.com',
             publisher_key: 'brave.com',
             percentage: 30,
-            verified: false,
+            status: 0,
             excluded: true
           },
           id_2: {
             tabUrl: 'https://brave4.com',
             publisher_key: 'brave4.com',
             percentage: 40,
-            verified: true
+            status: 2
           }
         }
       }
@@ -394,14 +394,14 @@ describe('rewards panel reducer', () => {
             tabUrl: 'https://brave.com',
             publisher_key: 'brave.com',
             percentage: 50,
-            verified: true,
+            status: 2,
             excluded: false
           },
           id_2: {
             tabUrl: 'https://brave4.com',
             publisher_key: 'brave4.com',
             percentage: 0,
-            verified: true
+            status: 2
           }
         }
       }
@@ -450,14 +450,14 @@ describe('rewards panel reducer', () => {
             tabUrl: 'https://brave.com',
             publisher_key: 'brave.com',
             percentage: 30,
-            verified: false,
+            status: 2,
             excluded: true
           },
           id_2: {
             tabUrl: 'https://brave4.com',
             publisher_key: 'brave4.com',
             percentage: 40,
-            verified: true
+            status: 2
           }
         }
       }
@@ -468,14 +468,14 @@ describe('rewards panel reducer', () => {
             tabUrl: 'https://brave.com',
             publisher_key: 'brave.com',
             percentage: 30,
-            verified: false,
+            status: 2,
             excluded: false
           },
           id_2: {
             tabUrl: 'https://brave4.com',
             publisher_key: 'brave4.com',
             percentage: 40,
-            verified: true
+            status: 2
           }
         }
       }

@@ -236,7 +236,7 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
       // Add publisher to `publisher_info`
       auto site = std::make_unique<brave_rewards::ContentSite>();
       site->id = publisher.key;
-      site->verified = publisher.verified;
+      site->status = 0;
       site->excluded = 0;
       site->name = publisher.name;
       site->favicon_url = "";

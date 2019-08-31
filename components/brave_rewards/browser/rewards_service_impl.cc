@@ -44,7 +44,7 @@
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
-#include "brave/components/brave_rewards/browser/publisher_info_database.h"
+#include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
@@ -158,7 +158,7 @@ ContentSite PublisherInfoToContentSite(
     const ledger::PublisherInfo& publisher_info) {
   ContentSite content_site(publisher_info.id);
   content_site.percentage = publisher_info.percent;
-  content_site.verified = publisher_info.verified;
+  content_site.status = static_cast<uint32_t>(publisher_info.status);
   content_site.excluded = publisher_info.excluded;
   content_site.name = publisher_info.name;
   content_site.url = publisher_info.url;
@@ -1812,33 +1812,6 @@ void RewardsServiceImpl::TriggerOnRewardsMainEnabled(
     observer.OnRewardsMainEnabled(this, rewards_main_enabled);
 }
 
-void RewardsServiceImpl::SavePublishersList(const std::string& publishers_list,
-                                      ledger::LedgerCallbackHandler* handler) {
-  base::ImportantFileWriter writer(
-      publisher_list_path_, file_task_runner_);
-
-  writer.RegisterOnNextWriteCallbacks(
-      base::Closure(),
-      base::Bind(
-        &PostWriteCallback,
-        base::Bind(&RewardsServiceImpl::OnPublishersListSaved, AsWeakPtr(),
-            base::Unretained(handler)),
-        base::SequencedTaskRunnerHandle::Get()));
-
-  writer.WriteNow(std::make_unique<std::string>(publishers_list));
-}
-
-void RewardsServiceImpl::OnPublishersListSaved(
-    ledger::LedgerCallbackHandler* handler,
-    bool success) {
-  if (!Connected()) {
-    return;
-  }
-
-  handler->OnPublishersListSaved(success ? ledger::Result::LEDGER_OK
-                                         : ledger::Result::LEDGER_ERROR);
-}
-
 void RewardsServiceImpl::SetTimer(uint64_t time_offset,
                                   uint32_t* timer_id) {
   if (next_timer_id_ == std::numeric_limits<uint32_t>::max())
@@ -1862,27 +1835,6 @@ void RewardsServiceImpl::OnTimer(uint32_t timer_id) {
 
   timers_.erase(timer_id);
   bat_ledger_->OnTimer(timer_id);
-}
-
-void RewardsServiceImpl::LoadPublisherList(
-    ledger::LedgerCallbackHandler* handler) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&LoadStateOnFileTaskRunner, publisher_list_path_),
-      base::Bind(&RewardsServiceImpl::OnPublisherListLoaded,
-          AsWeakPtr(), base::Unretained(handler)));
-}
-
-void RewardsServiceImpl::OnPublisherListLoaded(
-    ledger::LedgerCallbackHandler* handler,
-    const std::string& data) {
-  if (!Connected()) {
-    return;
-  }
-
-  handler->OnPublisherListLoaded(
-      data.empty() ? ledger::Result::NO_PUBLISHER_LIST
-                   : ledger::Result::LEDGER_OK,
-      data);
 }
 
 void RewardsServiceImpl::OnGetAllBalanceReports(
@@ -2135,9 +2087,9 @@ void RewardsServiceImpl::OnPublisherBanner(
   new_banner->background = banner->background;
   new_banner->logo = banner->logo;
   new_banner->amounts = banner->amounts;
-  new_banner->social = mojo::FlatMapToMap(banner->social);
+  new_banner->links = mojo::FlatMapToMap(banner->links);
   new_banner->provider = banner->provider;
-  new_banner->verified = banner->verified;
+  new_banner->status = static_cast<uint32_t>(banner->status);
 
   std::move(callback).Run(std::move(new_banner));
 }
@@ -2707,7 +2659,7 @@ void RewardsServiceImpl::OnTip(
 
   ledger::PublisherInfoPtr info;
   info->id = publisher_key;
-  info->verified = site->verified;
+  info->status = static_cast<ledger::PublisherStatus>(site->status);
   info->excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
   info->name = site->name;
   info->url = site->url;
@@ -2961,20 +2913,24 @@ void RewardsServiceImpl::RefreshPublisher(
     const std::string& publisher_key,
     RefreshPublisherCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(false, std::string());
+    std::move(callback).Run(
+        static_cast<uint32_t>(ledger::PublisherStatus::NOT_VERIFIED),
+        "");
     return;
   }
   bat_ledger_->RefreshPublisher(
       publisher_key,
       base::BindOnce(&RewardsServiceImpl::OnRefreshPublisher,
-        AsWeakPtr(), std::move(callback), publisher_key));
+        AsWeakPtr(),
+        std::move(callback),
+        publisher_key));
 }
 
 void RewardsServiceImpl::OnRefreshPublisher(
     RefreshPublisherCallback callback,
     const std::string& publisher_key,
-    bool verified) {
-  std::move(callback).Run(verified, publisher_key);
+    ledger::PublisherStatus status) {
+  std::move(callback).Run(static_cast<uint32_t>(status), publisher_key);
 }
 
 const RewardsNotificationService::RewardsNotificationsMap&
@@ -3038,7 +2994,7 @@ PendingContributionInfo PendingContributionLedgerToRewards(
   PendingContributionInfo info;
   info.publisher_key = contribution->publisher_key;
   info.category = contribution->category;
-  info.verified = contribution->verified;
+  info.status = static_cast<uint32_t>(contribution->status);
   info.name = contribution->name;
   info.url = contribution->url;
   info.provider = contribution->provider;
@@ -3467,6 +3423,70 @@ void RewardsServiceImpl::ShowNotification(
       notification_args,
       "rewards_notification_general_ledger_" + type);
     callback(ledger::Result::LEDGER_OK);
+}
+
+bool ClearAndInsertServerPublisherListOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const ledger::ServerPublisherInfoList& list) {
+  if (!backend) {
+    return false;
+  }
+
+  return backend->ClearAndInsertServerPublisherList(list);
+}
+
+void RewardsServiceImpl::ClearAndInsertServerPublisherList(
+    ledger::ServerPublisherInfoList list,
+    ledger::ClearAndInsertServerPublisherListCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::Bind(&ClearAndInsertServerPublisherListOnFileTaskRunner,
+               publisher_info_backend_.get(),
+               std::move(list)),
+    base::Bind(&RewardsServiceImpl::OnClearAndInsertServerPublisherList,
+               AsWeakPtr(),
+               callback));
+}
+
+void RewardsServiceImpl::OnClearAndInsertServerPublisherList(
+    ledger::ClearAndInsertServerPublisherListCallback callback,
+    bool result) {
+  const auto result_new = result
+      ? ledger::Result::LEDGER_OK
+      : ledger::Result::LEDGER_ERROR;
+
+  callback(result_new);
+}
+
+ledger::ServerPublisherInfoPtr GetServerPublisherInfoOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& publisher_key) {
+  if (!backend) {
+    return nullptr;
+  }
+
+  return backend->GetServerPublisherInfo(publisher_key);
+}
+
+void RewardsServiceImpl::GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::Bind(&GetServerPublisherInfoOnFileTaskRunner,
+               publisher_info_backend_.get(),
+               publisher_key),
+    base::Bind(&RewardsServiceImpl::OnGetServerPublisherInfo,
+               AsWeakPtr(),
+               callback));
+}
+
+void RewardsServiceImpl::OnGetServerPublisherInfo(
+    ledger::GetServerPublisherInfoCallback callback,
+    ledger::ServerPublisherInfoPtr info) {
+  callback(std::move(info));
 }
 
 }  // namespace brave_rewards

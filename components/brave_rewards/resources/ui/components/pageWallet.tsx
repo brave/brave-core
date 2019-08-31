@@ -295,8 +295,9 @@ class PageWallet extends React.Component<Props, State> {
   getPendingRows = (): PendingDetailRow[] => {
     const { balance, pendingContributions } = this.props.rewardsData
     return pendingContributions.map((item: Rewards.PendingContribution) => {
+      const verified = utils.isPublisherConnectedOrVerified(item.status)
       let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-      if (item.favIcon && item.verified) {
+      if (item.favIcon && verified) {
         faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
       }
 
@@ -311,7 +312,7 @@ class PageWallet extends React.Component<Props, State> {
       return {
         profile: {
           name: item.name,
-          verified: item.verified,
+          verified,
           provider: (item.provider ? item.provider : undefined) as Provider,
           src: faviconUrl
         },

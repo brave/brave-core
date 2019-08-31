@@ -517,8 +517,9 @@ export class Panel extends React.Component<Props, State> {
     }, 2000)
   }
 
-  resetPublisherStatus = (wasVerified: boolean) => {
-    if (wasVerified || this.state.timerPassed) {
+  resetPublisherStatus = (status: number) => {
+    const verified = utils.isPublisherConnectedOrVerified(status)
+    if (verified || this.state.timerPassed) {
       this.setState({
         timerPassed: false,
         refreshingPublisher: false,
@@ -538,11 +539,11 @@ export class Panel extends React.Component<Props, State> {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const publisherKey = publisher && publisher.publisher_key
     if (publisherKey) {
-      chrome.braveRewards.refreshPublisher(publisherKey, (verified: boolean, publisherKey: string) => {
+      chrome.braveRewards.refreshPublisher(publisherKey, (status: number, publisherKey: string) => {
         if (publisherKey) {
-          this.actions.refreshPublisher(verified, publisherKey)
+          this.actions.refreshPublisher(status, publisherKey)
         }
-        this.resetPublisherStatus(verified)
+        this.resetPublisherStatus(status)
       })
     }
   }
@@ -644,6 +645,9 @@ export class Panel extends React.Component<Props, State> {
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
     let { currentGrant } = this.props.rewardsPanelData
     const defaultContribution = this.getContribution(publisher)
+    const checkmark = publisher && utils.isPublisherConnectedOrVerified(publisher.status)
+    const connected = publisher && utils.isPublisherConnected(publisher.status)
+    const notVerified = publisher && utils.isPublisherNotVerified(publisher.status)
     const tipAmounts = defaultContribution !== '0.0'
       ? this.generateAmounts(publisher)
       : undefined
@@ -660,7 +664,7 @@ export class Panel extends React.Component<Props, State> {
     let faviconUrl
     if (publisher && publisher.url) {
       faviconUrl = `chrome://favicon/size/48@2x/${publisher.url}`
-      if (publisher.favicon_url && publisher.verified) {
+      if (publisher.favicon_url && checkmark) {
         faviconUrl = `chrome://favicon/size/48@2x/${publisher.favicon_url}`
       }
     }
@@ -714,7 +718,7 @@ export class Panel extends React.Component<Props, State> {
               publisherName={publisher.name}
               publisherImg={faviconUrl}
               monthlyAmount={defaultContribution}
-              isVerified={publisher.verified}
+              isVerified={checkmark}
               tipsEnabled={true}
               includeInAuto={!publisher.excluded}
               attentionScore={(publisher.percentage || 0).toString()}
@@ -722,7 +726,7 @@ export class Panel extends React.Component<Props, State> {
               donationAction={this.showTipSiteDetail}
               onAmountChange={this.onContributionAmountChange}
               onIncludeInAuto={this.switchAutoContribute}
-              showUnVerified={!publisher.verified}
+              showUnVerified={connected || notVerified}
               acEnabled={enabledAC}
               donationAmounts={tipAmounts}
               moreLink={'https://brave.com/faq/#unclaimed-funds'}

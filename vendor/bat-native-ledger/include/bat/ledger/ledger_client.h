@@ -75,6 +75,10 @@ using PendingContributionsTotalCallback = std::function<void(double)>;
 using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
 using ShowNotificationCallback = std::function<void(Result)>;
+using ClearAndInsertServerPublisherListCallback =
+    std::function<void(const Result)>;
+using GetServerPublisherInfoCallback =
+    std::function<void(ledger::ServerPublisherInfoPtr)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -103,11 +107,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SavePublisherState(const std::string& publisher_state,
                                   LedgerCallbackHandler* handler) = 0;
-
-  virtual void SavePublishersList(const std::string& publisher_state,
-                                  LedgerCallbackHandler* handler) = 0;
-
-  virtual void LoadPublisherList(LedgerCallbackHandler* handler) = 0;
 
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 
@@ -271,6 +270,14 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& type,
       const std::vector<std::string>& args,
       const ledger::ShowNotificationCallback& callback) = 0;
+
+  virtual void ClearAndInsertServerPublisherList(
+      ledger::ServerPublisherInfoList list,
+      ledger::ClearAndInsertServerPublisherListCallback callback) = 0;
+
+  virtual void GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) = 0;
 };
 
 }  // namespace ledger

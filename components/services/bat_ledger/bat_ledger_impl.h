@@ -238,7 +238,7 @@ class BatLedgerImpl : public mojom::BatLedger,
       uint32_t num);
   static void OnRefreshPublisher(
       CallbackHolder<RefreshPublisherCallback>* holder,
-      bool verified);
+      ledger::PublisherStatus status);
 
   static void OnGetActivityInfoList(
     CallbackHolder<GetActivityInfoListCallback>* holder,

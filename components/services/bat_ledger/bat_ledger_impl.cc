@@ -498,9 +498,10 @@ void BatLedgerImpl::SaveMediaInfo(
 
 void BatLedgerImpl::OnRefreshPublisher(
     CallbackHolder<RefreshPublisherCallback>* holder,
-    bool verified) {
+    ledger::PublisherStatus status) {
+  DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(verified);
+    std::move(holder->get()).Run(status);
 
   delete holder;
 }
