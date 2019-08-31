@@ -70,7 +70,7 @@ void Notifications::Add(const NotificationInfo& info) {
 
 void Notifications::Remove() {
   if (!notifications_.empty()) {
-    ads_client_->CloseNotification(notifications_.front()->id);
+    ads_client_->CloseNotification(notifications_.front().id);
     notifications_.pop_front();
     SaveState();
   }
