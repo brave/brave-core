@@ -36,8 +36,9 @@ class ProfileFileAccessor: FileAccessor {
         if let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: sharedContainerIdentifier) {
             rootPath = url.path
         } else {
-            log.error("Unable to find the shared container. Defaulting profile location to ~/Documents instead.")
-            rootPath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
+            log.error("Unable to find the shared container. Defaulting profile location to ~/Library/Application Support/ instead.")
+            rootPath = (NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory,
+                                                            .userDomainMask, true)[0])
         }
 
         super.init(rootPath: URL(fileURLWithPath: rootPath).appendingPathComponent(profileDirName).path)
@@ -81,7 +82,6 @@ extension Profile {
 }
 
 open class BrowserProfile: Profile {
-    
     
     fileprivate let name: String
     fileprivate let keychain: KeychainWrapper
