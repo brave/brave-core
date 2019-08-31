@@ -49,12 +49,13 @@ void Notifications::Initialize(InitializeCallback callback) {
 bool Notifications::Get(const std::string& id, NotificationInfo* info) const {
   DCHECK(is_initialized_);
 
-  auto notification = notifications_.find(id);
-  if (notification == notifications_.end()) {
+  auto iter = std::find_if(notifications_.begin(), notifications_.end(),
+      [&id](const auto & v){return v.id == id;});
+  if (iter == notifications_.end()) {
     return false;
   }
 
-  *info = notification->second;
+  *info = *iter;
 
   return true;
 }
@@ -62,20 +63,28 @@ bool Notifications::Get(const std::string& id, NotificationInfo* info) const {
 void Notifications::Add(const NotificationInfo& info) {
   DCHECK(is_initialized_);
 
-  notifications_.insert({info.id, info});
+  notifications_.push_back(info);
 
   SaveState();
+}
+
+void Notifications::Remove() {
+  if (!notifications_.empty()) {
+    notifications_.pop_front();
+  }
 }
 
 bool Notifications::Remove(const std::string& id) {
   DCHECK(is_initialized_);
 
-  if (!Exists(id)) {
+  auto iter = std::find_if(notifications_.begin(), notifications_.end(),
+      [&id](const auto & v){return v.id == id;});
+  if (iter == notifications_.end()) {
     return false;
   }
 
   ads_client_->CloseNotification(id);
-  notifications_.erase(id);
+  notifications_.erase(iter);
 
   SaveState();
 
@@ -86,9 +95,9 @@ void Notifications::RemoveAll() {
   DCHECK(is_initialized_);
 
   for (const auto& notification : notifications_) {
-    auto id = notification.first;
-    Remove(id);
+    ads_client_->CloseNotification(notification.id);
   }
+  notifications_.clear();
 
   SaveState();
 }
@@ -97,15 +106,17 @@ void Notifications::CloseAll() const {
   DCHECK(is_initialized_);
 
   for (const auto& notification : notifications_) {
-    auto id = notification.first;
-    ads_client_->CloseNotification(id);
+    ads_client_->CloseNotification(notification.id);
   }
+  //the diff with RemoveAll: it doesn't save state
 }
 
 bool Notifications::Exists(const std::string& id) const {
   DCHECK(is_initialized_);
 
-  if (notifications_.find(id) == notifications_.end()) {
+  auto iter = std::find_if(notifications_.begin(), notifications_.end(),
+      [&id](const auto & v){return v.id == id;});
+  if (iter == notifications_.end()) {
     return false;
   }
 
@@ -118,11 +129,11 @@ uint64_t Notifications::Count() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::map<std::string, NotificationInfo> Notifications::GetNotificationsFromList(
+std::deque<NotificationInfo> Notifications::GetNotificationsFromList(
     base::ListValue* list) const {
   DCHECK(list);
 
-  std::map<std::string, NotificationInfo> notifications;
+  std::deque<NotificationInfo> notifications;
 
   for (auto& item : *list) {
     base::DictionaryValue* dictionary;
@@ -135,7 +146,7 @@ std::map<std::string, NotificationInfo> Notifications::GetNotificationsFromList(
       continue;
     }
 
-    notifications.insert({notification_info.id, notification_info});
+    notifications.push_back(notification_info);
   }
 
   return notifications;
@@ -175,7 +186,7 @@ bool Notifications::GetNotificationFromDictionary(
     return false;
   }
 
-  *info = NotificationInfo(notification_info);
+  *info = notification_info;
 
   return true;
 }
@@ -350,24 +361,23 @@ base::Value Notifications::GetAsList() {
   base::Value list(base::Value::Type::LIST);
 
   for (const auto& notification : notifications_) {
-    NotificationInfo notification_info = NotificationInfo(notification.second);
 
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
     dictionary.SetKey(kNotificationIdKey,
-        base::Value(notification_info.id));
+        base::Value(notification.id));
     dictionary.SetKey(kNotificationCreativeSetIdKey,
-        base::Value(notification_info.creative_set_id));
+        base::Value(notification.creative_set_id));
     dictionary.SetKey(kNotificationCategoryKey,
-        base::Value(notification_info.category));
+        base::Value(notification.category));
     dictionary.SetKey(kNotificationAdvertiserKey,
-        base::Value(notification_info.advertiser));
+        base::Value(notification.advertiser));
     dictionary.SetKey(kNotificationTextKey,
-        base::Value(notification_info.text));
+        base::Value(notification.text));
     dictionary.SetKey(kNotificationUrlKey,
-        base::Value(notification_info.url));
+        base::Value(notification.url));
     dictionary.SetKey(kNotificationUuidKey,
-        base::Value(notification_info.uuid));
+        base::Value(notification.uuid));
 
     list.GetList().push_back(std::move(dictionary));
   }

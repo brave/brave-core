@@ -7,7 +7,7 @@
 #define BAT_ADS_INTERNAL_NOTIFICATIONS_H_
 
 #include <string>
-#include <map>
+#include <deque>
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_impl.h"
@@ -29,8 +29,9 @@ class Notifications {
   bool Get(const std::string& id, NotificationInfo* info) const;
 
   void Add(const NotificationInfo& info);
+  void Remove(); //removes the front item
 
-  bool Remove(const std::string& id);
+  bool Remove(const std::string& id); //removes an item by id
   void RemoveAll();
   void CloseAll() const;
 
@@ -43,9 +44,9 @@ class Notifications {
 
   InitializeCallback callback_;
 
-  std::map<std::string, NotificationInfo> notifications_;
+  std::deque<NotificationInfo> notifications_;
 
-  std::map<std::string, NotificationInfo> GetNotificationsFromList(
+  std::deque<NotificationInfo> GetNotificationsFromList(
       base::ListValue* list) const;
 
   bool GetNotificationFromDictionary(
