@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PAYMENTS_CONTENT_SITE_
-#define BRAVE_BROWSER_PAYMENTS_CONTENT_SITE_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_CONTENT_SITE_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_CONTENT_SITE_H_
 
 #include <string>
 #include <vector>
@@ -14,7 +15,7 @@ namespace brave_rewards {
 
 struct ContentSite {
   ContentSite();
-  ContentSite(const std::string& site_id);
+  explicit ContentSite(const std::string& site_id);
   ContentSite(const ContentSite& properties);
   ~ContentSite();
 
@@ -25,7 +26,7 @@ struct ContentSite {
 
   std::string id;
   double percentage;
-  bool verified;
+  uint32_t status;
   int excluded;
   std::string name;
   std::string favicon_url;
@@ -39,4 +40,4 @@ typedef std::vector<ContentSite> ContentSiteList;
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_BROWSER_PAYMENTS_CONTENT_SITE_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_CONTENT_SITE_H_

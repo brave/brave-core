@@ -32,3 +32,23 @@ export const convertProbiToFixed = (probi: string, places: number = 1) => {
 
   return result
 }
+
+export const isPublisherVerified = (status: Rewards.PublisherStatus) => {
+  return status === 2
+}
+
+export const isPublisherConnected = (status?: RewardsExtension.PublisherStatus) => {
+  if (status === undefined) {
+    return false
+  }
+
+  return status === 1
+}
+
+export const isPublisherConnectedOrVerified = (status: Rewards.PublisherStatus) => {
+  return status === 2 || status === 1
+}
+
+export const isPublisherNotVerified = (status: Rewards.PublisherStatus) => {
+  return status === 0
+}

@@ -222,8 +222,6 @@ struct PUBLISHER_STATE_ST {
       braveledger_ledger::_default_min_publisher_duration;  // In seconds
   unsigned int min_visits_ = 1u;
   bool allow_non_verified_ = true;
-  // last publishers list load timestamp (seconds)
-  uint64_t pubs_load_timestamp_ = 0ull;
   bool allow_videos_ = true;
   std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;
   bool migrate_score_2 = false;
@@ -251,7 +249,7 @@ struct PUBLISHER_ST {
   // cast for each publisher.
   double weight_ = .0;
 
-  bool verified_ = false;
+  unsigned int status_ = 0;
 };
 
 struct WINNERS_ST {
@@ -426,26 +424,6 @@ enum class SERVER_TYPES {
   PUBLISHER_DISTRO
 };
 
-struct SERVER_LIST_BANNER {
-  SERVER_LIST_BANNER();
-  SERVER_LIST_BANNER(const SERVER_LIST_BANNER&);
-  ~SERVER_LIST_BANNER();
-
-  std::string title_;
-  std::string description_;
-  std::string background_;
-  std::string logo_;
-  std::vector<int> amounts_;
-  std::map<std::string, std::string> social_;
-};
-
-struct SERVER_LIST {
-  bool verified;
-  bool excluded;
-  std::string address;
-  SERVER_LIST_BANNER banner;
-};
-
 using SaveVisitSignature = void(const std::string&, uint64_t);
 using SaveVisitCallback = std::function<SaveVisitSignature>;
 
@@ -484,9 +462,6 @@ bool getJSONRecoverWallet(const std::string& json,
 bool getJSONResponse(const std::string& json,
                      unsigned int* statusCode,
                      std::string* error);
-
-bool getJSONServerList(const std::string& json,
-                       std::map<std::string, SERVER_LIST>* list);
 
 bool getJSONAddresses(const std::string& json,
                       std::map<std::string, std::string>* addresses);

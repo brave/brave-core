@@ -77,7 +77,7 @@ using GetOneTimeTipsCallback = base::OnceCallback<void(
 using GetPublisherBannerCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::PublisherBanner>)>;
 using RefreshPublisherCallback =
-    base::OnceCallback<void(bool, const std::string&)>;
+    base::OnceCallback<void(uint32_t, const std::string&)>;
 using SaveMediaInfoCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSite>)>;
 using GetInlineTipSettingCallback = base::OnceCallback<void(bool)>;

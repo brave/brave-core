@@ -121,17 +121,23 @@ declare namespace Rewards {
     expiryTime: number
   }
 
-  export enum Status {
+  export enum ExcludeStatus {
     DEFAULT = 0,
     EXCLUDED = 1,
     INCLUDED = 2
   }
 
+  export enum PublisherStatus {
+    NOT_VERIFIED = 0,
+    CONNECTED = 1,
+    VERIFIED = 2
+  }
+
   export interface Publisher {
     publisherKey: string
     percentage: number
-    verified: boolean
-    excluded: Status
+    status: PublisherStatus
+    excluded: ExcludeStatus
     url: string
     name: string
     provider: string
@@ -142,7 +148,7 @@ declare namespace Rewards {
 
   export interface ExcludedPublisher {
     id: string
-    verified: boolean
+    status: PublisherStatus
     url: string
     name: string
     provider: string
@@ -190,7 +196,7 @@ declare namespace Rewards {
   export interface PendingContribution {
     publisherKey: string
     percentage: number
-    verified: boolean
+    status: PublisherStatus
     url: string
     name: string
     provider: string

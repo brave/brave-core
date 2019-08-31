@@ -833,7 +833,7 @@ void RewardsDOMHandler::OnContentSiteList(
       publisher->SetString("id", item.id);
       publisher->SetDouble("percentage", item.percentage);
       publisher->SetString("publisherKey", item.id);
-      publisher->SetBoolean("verified", item.verified);
+      publisher->SetInteger("status", item.status);
       publisher->SetInteger("excluded", item.excluded);
       publisher->SetString("name", item.name);
       publisher->SetString("provider", item.provider);
@@ -855,7 +855,7 @@ void RewardsDOMHandler::OnExcludedSiteList(
     for (auto const& item : *list) {
       auto publisher = std::make_unique<base::DictionaryValue>();
       publisher->SetString("id", item.id);
-      publisher->SetBoolean("verified", item.verified);
+      publisher->SetInteger("status", item.status);
       publisher->SetString("name", item.name);
       publisher->SetString("provider", item.provider);
       publisher->SetString("url", item.url);
@@ -944,7 +944,7 @@ void RewardsDOMHandler::OnGetRecurringTips(
         publisher->SetString("id", item.id);
         publisher->SetDouble("percentage", item.percentage);
         publisher->SetString("publisherKey", item.id);
-        publisher->SetBoolean("verified", item.verified);
+        publisher->SetInteger("status", item.status);
         publisher->SetInteger("excluded", item.excluded);
         publisher->SetString("name", item.name);
         publisher->SetString("provider", item.provider);
@@ -971,7 +971,7 @@ void RewardsDOMHandler::OnGetOneTimeTips(
         publisher->SetString("id", item.id);
         publisher->SetDouble("percentage", item.percentage);
         publisher->SetString("publisherKey", item.id);
-        publisher->SetBoolean("verified", item.verified);
+        publisher->SetInteger("status", item.status);
         publisher->SetInteger("excluded", item.excluded);
         publisher->SetString("name", item.name);
         publisher->SetString("provider", item.provider);
@@ -1401,7 +1401,8 @@ void RewardsDOMHandler::OnGetPendingContributions(
       auto contribution =
           std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
       contribution->SetKey("publisherKey", base::Value(item.publisher_key));
-      contribution->SetKey("verified", base::Value(item.verified));
+      contribution->SetKey("status",
+          base::Value(static_cast<int>(item.status)));
       contribution->SetKey("name", base::Value(item.name));
       contribution->SetKey("provider", base::Value(item.provider));
       contribution->SetKey("url", base::Value(item.url));

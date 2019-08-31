@@ -66,3 +66,35 @@ export const getGrant = (grant?: RewardsExtension.GrantInfo) => {
 
   return grant
 }
+
+export const isPublisherVerified = (status?: RewardsExtension.PublisherStatus) => {
+  if (status === undefined) {
+    return false
+  }
+
+  return status === 2
+}
+
+export const isPublisherConnected = (status?: RewardsExtension.PublisherStatus) => {
+  if (status === undefined) {
+    return false
+  }
+
+  return status === 1
+}
+
+export const isPublisherConnectedOrVerified = (status?: RewardsExtension.PublisherStatus) => {
+  if (status === undefined) {
+    return false
+  }
+
+  return status === 2 || status === 1
+}
+
+export const isPublisherNotVerified = (status?: RewardsExtension.PublisherStatus) => {
+  if (status === undefined) {
+    return false
+  }
+
+  return status === 0
+}

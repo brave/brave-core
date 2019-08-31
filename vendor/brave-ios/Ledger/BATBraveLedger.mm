@@ -454,8 +454,9 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)refreshPublisherWithId:(NSString *)publisherId completion:(void (^)(BOOL verified))completion
 {
-  ledger->RefreshPublisher(std::string(publisherId.UTF8String), ^(bool verified) {
-    completion(verified);
+  ledger->RefreshPublisher(std::string(publisherId.UTF8String), ^(ledger::PublisherStatus status) {
+    // FIXME: This should be forwarding the whole state
+    completion(status == ledger::PublisherStatus::VERIFIED);
   });
 }
 
@@ -1276,22 +1277,6 @@ BATLedgerBridge(BOOL,
   handler->OnPublisherStateSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
-- (void)loadPublisherList:(ledger::LedgerCallbackHandler *)handler
-{
-  const auto contents = [self.commonOps loadContentsFromFileWithName:"publisher_list.json"];
-  if (contents.length() > 0) {
-    handler->OnPublisherListLoaded(ledger::Result::LEDGER_OK, contents);
-  } else {
-    handler->OnPublisherListLoaded(ledger::Result::NO_PUBLISHER_LIST, contents);
-  }
-}
-
-- (void)savePublishersList:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler
-{
-  const auto result = [self.commonOps saveContents:publisher_state name:"publisher_list.json"];
-  handler->OnPublishersListSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-}
-
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];
@@ -1738,4 +1723,28 @@ BATLedgerBridge(BOOL,
 
 }
 
+- (void)getServerPublisherInfo:(const std::string &)publisher_key callback:(ledger::GetServerPublisherInfoCallback)callback
+{
+  // FIXME: Add implementation
+}
+
+- (void)clearAndInsertServerPublisherList:(ledger::ServerPublisherInfoList)list callback:(ledger::ClearAndInsertServerPublisherListCallback)callback
+{
+  // FIXME: Add implementation
+}
+
+@end
+
+// FIXME: This is a patch, need to use the actual verified state
+@implementation BATPublisherInfo (BuildFix)
+- (BOOL)isVerified {
+  return NO;
+}
+- (void)setVerified:(BOOL)verified { }
+@end
+@implementation BATPendingContributionInfo (BuildFix)
+- (BOOL)isVerified {
+  return NO;
+}
+- (void)setVerified:(BOOL)verified { }
 @end
