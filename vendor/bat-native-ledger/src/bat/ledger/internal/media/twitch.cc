@@ -200,7 +200,7 @@ std::string Twitch::GetMediaIdFromUrl(
 
   if (url.find("twitch.tv/videos/") != std::string::npos) {
     mediaId = braveledger_media::ExtractData(publisher_blob,
-      "data-test-selector=\"videos-channel-header-item\" href=\"/", "/");
+      "data-a-target=\"videos-channel-header-item\" href=\"/", "/");
   }
   return mediaId;
 }
@@ -235,7 +235,7 @@ void Twitch::UpdatePublisherData(
 std::string Twitch::GetPublisherName(
     const std::string& publisher_blob) {
   return braveledger_media::ExtractData(publisher_blob,
-    "<h5 class=\"\">", "</h5>");
+    "<h5 class>", "</h5>");
 }
 
 // static
