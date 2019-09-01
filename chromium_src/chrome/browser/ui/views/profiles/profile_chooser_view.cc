@@ -6,7 +6,6 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/profiles/brave_profile_chooser_view.h"
 #define ADD_TOR_EXIT_BUTTON_ \
-  static_cast<BraveProfileChooserView*>(this)->AddTorButton(); \
   if (brave::IsTorProfile(browser()->profile())) \
     text = l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR);
 #include "../../../../../../../chrome/browser/ui/views/profiles/profile_chooser_view.cc"  // NOLINT
