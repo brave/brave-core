@@ -42,6 +42,9 @@ class ProfileFileAccessor: FileAccessor {
         }
 
         super.init(rootPath: URL(fileURLWithPath: rootPath).appendingPathComponent(profileDirName).path)
+        
+        // Create the "Downloads" folder in the documents directory if doesn't exist.
+        FileManager.default.getOrCreateFolder(name: "Downloads", excludeFromBackups: true, location: .documentDirectory)
     }
 }
 

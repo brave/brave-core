@@ -15,6 +15,15 @@ extension FileManager {
     }
     public typealias FolderLockObj = (folder: Folder, lock: Bool)
     
+    /// URL where files downloaded by user are stored.
+    /// If the download folder doesn't exists it creates a new one
+    func downloadsPath() throws -> URL {
+        FileManager.default.getOrCreateFolder(name: "Downloads", excludeFromBackups: true, location: .documentDirectory)
+        
+        return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask,
+                                       appropriateFor: nil, create: false).appendingPathComponent("Downloads")
+    }
+    
     //Lock a folder using FolderLockObj provided.
     @discardableResult public func setFolderAccess(_ lockObjects: [FolderLockObj]) -> Bool {
         guard let baseDir = baseDirectory() else { return false }
@@ -60,6 +69,7 @@ extension FileManager {
     
     /// Creates a folder at given location and returns its URL.
     /// If folder already exists, returns its URL as well.
+    @discardableResult
     func getOrCreateFolder(name: String, excludeFromBackups: Bool = true,
                            location: SearchPathDirectory = .applicationSupportDirectory) -> URL? {
         guard let documentsDir = location.url else { return nil }

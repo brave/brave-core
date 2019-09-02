@@ -141,8 +141,7 @@ class DownloadsClearable: Clearable {
     func clear() -> Success {
         do {
             let fileManager = FileManager.default
-            let downloadsLocation = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            
+            let downloadsLocation = try FileManager.default.downloadsPath()
             let filePaths = try fileManager.contentsOfDirectory(atPath: downloadsLocation.path)
             
             try filePaths.forEach {

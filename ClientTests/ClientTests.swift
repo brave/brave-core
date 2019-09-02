@@ -68,23 +68,21 @@ class ClientTests: XCTestCase {
             ].forEach { XCTAssertFalse(hostIsValid($0), "\($0) host should not be valid.") }
     }
     
-    func testEmptyDocumentsDirectory() {
-        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        XCTAssertNotNil(url)
+    func testDownloadsFolder() {
+        let path = try? FileManager.default.downloadsPath()
+        XCTAssertNotNil(path)
         
-        let emptyDirectoryExpectation = expectation(description: "empty documents directory")
+        XCTAssert(FileManager.default.fileExists(atPath: path!.path))
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            do {
-                if try FileManager.default.contentsOfDirectory(atPath: url!.path).isEmpty {
-                    emptyDirectoryExpectation.fulfill()
-                }
-            } catch {
-                XCTFail("Crash at FileManager.contentsOfDirectory")
-            }
-        }
+        // Let's pretend user deletes downloads folder via files.app
+        XCTAssertNoThrow(try FileManager.default.removeItem(at: path!))
         
-        wait(for: [emptyDirectoryExpectation], timeout: 4)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: path!.path))
+        
+        // Calling downloads path should recreate the deleted folder
+        XCTAssertNoThrow(try FileManager.default.downloadsPath())
+        
+        XCTAssert(FileManager.default.fileExists(atPath: path!.path))
     }
 
     fileprivate func hostIsValid(_ host: String) -> Bool {

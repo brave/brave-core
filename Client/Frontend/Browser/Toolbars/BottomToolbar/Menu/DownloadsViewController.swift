@@ -141,7 +141,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     private func fetchData() -> [DownloadedFile] {
         var downloadedFiles: [DownloadedFile] = []
         do {
-            let downloadsPath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let downloadsPath = try FileManager.default.downloadsPath()
             let files = try FileManager.default.contentsOfDirectory(at: downloadsPath, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
             
             for file in files {
