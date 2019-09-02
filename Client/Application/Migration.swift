@@ -35,7 +35,6 @@ class Migration {
     private static func documentsDirectoryCleanup() {
         FileManager.default.removeFolder(withName: "abp-data", location: .documentDirectory)
         FileManager.default.removeFolder(withName: "https-everywhere-data", location: .documentDirectory)
-        FileManager.default.removeFolder(withName: "Downloads", location: .documentDirectory)
         
         FileManager.default.moveFile(sourceName: "CookiesData.json", sourceLocation: .documentDirectory,
                                      destinationName: "CookiesData.json",
