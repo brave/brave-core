@@ -595,6 +595,9 @@ export class Panel extends React.Component<Props, State> {
     }
 
     switch (externalWallet.status) {
+      // ledger::WalletStatus::CONNECTED
+      case 1:
+        return 'connected'
       // ledger::WalletStatus::VERIFIED
       case 2:
         return 'verified'
