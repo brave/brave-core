@@ -38,7 +38,11 @@ open class AppInfo {
     /// Return the shared container identifier (also known as the app group) to be used with for example background
     /// http requests. It is the base bundle identifier with a "group." prefix.
     public static var sharedContainerIdentifier: String {
-        let bundleIdentifier = baseBundleIdentifier
+        var bundleIdentifier = baseBundleIdentifier
+        if bundleIdentifier == "com.brave.ios.BrowserBeta" {
+            // com.brave.ios.BrowserBeta is taken and can't be used as an app group.
+            bundleIdentifier = "com.brave.ios.BrowserBeta.unique"
+        }
         return "group." + bundleIdentifier
     }
 
