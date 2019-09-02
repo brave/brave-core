@@ -421,6 +421,14 @@
     "message": "দান",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "একটি পরামর্শ পাঠান",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "দান",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "স্রষ্টা $name$ সম্প্রতি যাচাইকৃত হয়েছেন",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "চিন্তা করবেন না। এটি বিবিধ সুরক্ষার কারণ থেকে ঘটতে পারে। এটি খালি পুনরায় সংযোগ করা এই সমস্যাগুলির সমাধান করবে।",
+    "message": "চিন্তা করবেন না। এটি বিভিন্ন সুরক্ষা সম্পর্কিত বিষয় থেকে হতে পারে। শুধুমাত্র এর সাথে আবার সংযোগ করলেই এই সমস্যাটির সমাধান হয়ে যাবে।",
     "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Blokiranje oglasa u pregledniku Brave</translation>
 <translation id="6406506848690869874">Sinkronizacija</translation>
 <translation id="5655621391922317800">Kripto novčanici</translation>
+<translation id="2445484935443597917">Izradi novi profil</translation>
+<translation id="2666990579225592931">Otvori prozor u načinu rada za goste</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dopušteno u pregledniku Brave.</translation>
 <translation id="7450557937477381864">Zatvori Chrome</translation>
 <translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Otvori prozore i kartice</translation>
 <translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
 <translation id="3696083746357487900">Instaliraj kripto novčanike</translation>
+<translation id="8926389886865778422">Više me ne pitaj</translation>
+<translation id="4726634924419692905">Prikazuje se upozorenje kada se mrežnim mjestom želi instalirati aplikacija Widevine na vašem računalu.</translation>
 <translation id="8053096063396012732">Instaliraj aplikaciju Widevine</translation>
 <translation id="4840334696217618631">Poništi preglednik za omogućavanje aplikacije Widevine</translation>
 <translation id="8410111618231938546">Widevine tvrtke Google dio je koda za upravljanje digitalnim pravima (DRM) koji tvrtka Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja tvrtke Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
@@ -31,6 +35,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nastavi blokirati automatsku reprodukciju</translation>
 <translation id="5883458389055721080">Društvo Brave nije pregledalo razinu sigurnosti i zaštite ovog dodatka. Instalirajte samo ovaj dodatak ako vjerujete programeru.</translation>
+<translation id="8081858229109418493">Naziv profila i ikona</translation>
 <translation id="2044383478723007273">Boje preglednika Brave</translation>
 <translation id="2814998458708016836">Upotrijebi široku adresnu traku</translation>
 <translation id="6123134130710658846">Sakrij gumbe za nagrade Brave</translation>
@@ -57,6 +62,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="8754605759692119662">Ovom se značajkom blokira većina oglasa na mrežnim mjestima, ali ne i Braveovi privatni oglasi kojima se upravlja u</translation>
 <translation id="6388201778088078932">postavkama.</translation>
 <translation id="9185018653595759199">Blokiranje društvenih mreža</translation>
+<translation id="7390783310074170337">Zadani prikaz</translation>
+<translation id="130615081792797568">Jednostavni prikaz</translation>
+<translation id="2360360976480535628">Napredni prikaz</translation>
 <translation id="5709627087332022422">Blokiraj elemente za praćenje na više mjesta</translation>
 <translation id="9075744464571452108">Prepoznavanje uređaja</translation>
 <translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
@@ -95,6 +103,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="9181207987584064303">Pogledati u Prodavnici mrežnih ekstenzija</translation>
 <translation id="4846154056248462491">Na izlasku</translation>
 <translation id="5057399635433117814">Prevesti ovu stranicu? Ovom se radnjom šalju svi testovi na ovoj stranici poduzeću Microsoft na prevođenje.</translation>
+<translation id="330263065709195164">Instalirati programski dodatak Google Prevoditelj za prijevod ove stranice?</translation>
+<translation id="3789841737615482174">Instaliraj</translation>
+<translation id="7658239707568436148">Odustani</translation>
 <translation id="3371343170427636147">Aplikacije preglednika Brave za spavanje</translation>
 <translation id="4097979995947147464">Aplikacije beta preglednika Brave</translation>
 <translation id="8303432794159193481">Razvojne aplikacije preglednika Brave</translation>

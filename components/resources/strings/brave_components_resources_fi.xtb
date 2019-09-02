@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Salli sisältötason tipit näillä sivustoilla</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Tipaa heti, kun löydät jotain mahtavaa.</translation>
 <translation id="6135431587052937035">Tue suosikkisivustojasi kuukausittain toistuvilla tipeillä.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Annoin juuri tipin henkilölle <ph name="NAME"/> Brave-selaimen kautta. Voit tutustua siihen osoitteessa https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TippaaBravella</translation>
 <translation id="2876191400747549936">Ikävä kyllä pyyntösi käsittelyssä oli ongelmia. Ole hyvä ja yritä uudestaan.</translation>
+<translation id="3082557070674409251">Klikattu</translation>
+<translation id="7119308337584989771">Hylätty</translation>
+<translation id="6805660603861526473">Katsottu</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="5923611424721173182">Nykyinen yhteensovitus</translation>
 <translation id="5457113250005438886">Ei pätevä</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave-ohjelmisto. Brave on Brave Softwaren rekisteröity tuotemerkki. Sivustojen nimet saattavat olla sivustojen omistajien tuotemerkkejä tai rekisteröityjä tuotemerkkejä.</translation>
 <translation id="9026369588205476247">Yksityisyytesi suojaamiseksi tätä Brave -palkinto-otetta ei tallenneta tai kirjata minnekään muualle kuin laitteeseesi (tähän tietokoneeseen). Sitä ei voi noutaa Bravesta, vaikka tiedot katoaisivat laitteestasi.</translation>
 <translation id="1036277985068412734">lisää varoja</translation>
+<translation id="3587482841069643663">Kaikki</translation>
+<translation id="4241224519481557898">Kategoria</translation>
+<translation id="3080423471207781945">Mainosten maksimimäärä per tunti:</translation>
+<translation id="2631006050119455616">Tallennettu</translation>
+<translation id="2155330833364281539">Viimeisen {{totalDays}} päivän aikana vastaanottamasi mainokset</translation>
+<translation id="8863685593846905344">Mainoshistoria</translation>
+<translation id="5212777575344695266">Merkitse sopimattomaksi</translation>
+<translation id="2111256234277361810">Merkitse sopimattomaksi ✓</translation>
+<translation id="8988332871810963281">Brave Ads -historiaa ei ole tällä hetkellä</translation>
+<translation id="5345727496083327478">Et enää saa mainoksia tästä kategoriasta</translation>
+<translation id="5317780077021120954">Tallenna</translation>
 <translation id="5441565662498481293">Lähetät automaattisesti vinkin kohteelle:</translation>
 <translation id="2827387977307390755">Salli vinkit</translation>
 <translation id="3671566813999349838">Summa</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Kertaluontoinen</translation>
 <translation id="9182287025588539628">Kertatipit</translation>
 <translation id="6381574025952123568">Avoin tase</translation>
+<translation id="532275381857891532">7 päivän mainoshistoria</translation>
 <translation id="4923459931733593730">Maksu</translation>
 <translation id="4021593982164260556">Maksu suoritetaan joka kuukauden {{day}}. päivä.</translation>
 <translation id="6104680658798556671">Maksua ei suoritettu.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Kuukausittaiset tipit</translation>
 <translation id="2391095793008133394">Anna käyttäjälle {{ user }} tippi heidän julkaisustaan:</translation>
 <translation id="7557413530932469222">Anna käyttäjälle {{ user }} tippi heidän julkaisustaan!</translation>
+<translation id="717513177896084801">Tippaa käyttäjää {{ user }}</translation>
 <translation id="1110535155349301542">poista</translation>
+<translation id="8204292894173669182">Poista tallennetuista</translation>
 <translation id="8942997470474842562">Olet myöntänyt {{reservedAmount}} BATia kehittäjille, jotka eivät ole vielä rekisteröityneet vastaanottamaan avustuksia. Selaimesi pyrkii tekemään avustuksia joko kyseisen henkilön vahvistukseen asti tai kunnes 90 päivää on kulunut.</translation>
 <translation id="8759753423332885148">Lue lisää.</translation>
 <translation id="3157931365184549694">Palauta</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">Vahvistetun kukkaron avulla voit:</translation>
 <translation id="7565794512491053578">Vahvista kukkarosi</translation>
 <translation id="698531289520577961">Ja hallitse rahojasi helposti!</translation>
+<translation id="8697510149346635496">Nosta BATit, jotka ansaitset yksityisyyttä kunnioittavia mainoksia katsomalla</translation>
+<translation id="1481480653609649134">Osta lisää BATeja luottokorteilla ja muilla lähteillä</translation>
+<translation id="9096003370755878766">Nosta BATit, jotka olet saattanut lisätä Brave Rewards -lompakkoosi</translation>
+<translation id="5275978662119683162">Vahvistamisen edut</translation>
+<translation id="5166793288622772189">Oletko valmis vahvistamaan lompakkosi?</translation>
+<translation id="8766217572332535979">Kehittäjien avustuksista saatujen palkintojen ansaitsemiseen ei tarvita vahvistusta</translation>
+<translation id="8465442795593991224">Ylläpito saattaa vaatia sinua vahvistamaan henkilöllisyytesi pyydetyistä palveluista riippuen.</translation>
+<translation id="723054503945711909">Brave Software Inc. ei käsittele, tallenna tai käytä mitään henkilökohtaisia tietoja, joita luovutit Upholdille luodessasi heidän käyttäjätilinsä.</translation>
 <translation id="1181037720776840403">Poista</translation>
 <translation id="7885157704277298658">Kopioitu</translation>
 <translation id="5379640681913450928">Sanamäärä</translation>

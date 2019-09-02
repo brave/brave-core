@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
 <translation id="6406506848690869874">সিঙ্ক করুন</translation>
 <translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
+<translation id="2445484935443597917">একটি নতুন প্রোফাইল তৈরি করুন</translation>
+<translation id="2666990579225592931">গেস্ট উইন্ডো খুলুন</translation>
 <translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="7450557937477381864">Chrome বন্ধ করুন</translation>
 <translation id="7008934821596358692">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Chrome উইন্ডোগুলি বন্ধ করুন</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">উইন্ডো এবং ট্যাবগুলি খুলুন</translation>
 <translation id="3699882589215410581">Widevine ইনস্টল করুন এবং চালান</translation>
 <translation id="3696083746357487900">Crypto ওয়ালেটগুলি ইনস্টল করুন</translation>
+<translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
+<translation id="4726634924419692905">কোনো সাইট আপনার কম্পিউটারে Widevine ইনস্টল করতে চাইলে জিজ্ঞাসা করুন।</translation>
 <translation id="8053096063396012732">Widevine ইনস্টল করুন</translation>
 <translation id="4840334696217618631">Widevine সক্রিয় করতে ব্রাউজার রিস্টার্ট করুন</translation>
 <translation id="8410111618231938546">Google Widevine একটি ডিজিটাল রাইটস ম্যানেজমেন্ট (DRM) কোড যা Brave সফ্টওয়ের মালিকানাধীন নয় এবং আমরা তা পরীক্ষাও করতে পারি না| Google Widevine Google সার্ভার থেকে লোড করা হয়, আমাদের সার্ভার থেকে নয়| এটি শুধু তখনি লোড করা হয় যখন আপনি এই বিকল্পটি সক্ষম করেন| আমরা DRM ব্যবহার করতে বারণ করি, কিন্তু আমরা ব্যবহারকারীদের পছন্দের সম্মান করি এবং স্বীকার করি যে কিছু Brave ব্যবহারকারী কিছু পরিষেবা ব্যবহার করতে চাইবেন যার জন্য এর প্রয়োজন হবে|
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597">সর্বদা <ph name="HOST"/> এ স্বতঃ চলার অনুমতি দিন</translation>
 <translation id="4150684676757176434">অটোপ্লে ব্লক করা চালিয়ে যান</translation>
 <translation id="5883458389055721080">Brave সুরক্ষা এবং নিরাপত্তার জন্য এই সম্প্রসারণটি পর্যালোচনা করেনি। আপনি ডেভেলপারকে বিশ্বাস করলেই শুধুমাত্র এই সম্প্রসারণটি ইনস্টল করুন।</translation>
+<translation id="8081858229109418493">প্রোফাইলের নাম ও আইকন</translation>
 <translation id="2044383478723007273">Brave রঙ</translation>
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
 <translation id="6123134130710658846">Brave পুরস্কারের বোতাম লুকান</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">এটি ওয়েবসাটগুলিতে দেখানো বেশিরভাগ বিজ্ঞাপনগুলিকে ব্লক করবে, Brave ব্যক্তিগত বিজ্ঞাপনগুলি নয় — যেগুলি</translation>
 <translation id="6388201778088078932">সেটিংস।</translation>
 <translation id="9185018653595759199">সামাজিক মিডিয়া রোধক</translation>
+<translation id="7390783310074170337">ডিফল্ট ভিউ</translation>
+<translation id="130615081792797568">সহজ ভিউ</translation>
+<translation id="2360360976480535628">উন্নত ভিউ</translation>
 <translation id="5709627087332022422">ক্রশ-সাইট ট্র্যাকারগুলিকে ব্লক করুন</translation>
 <translation id="9075744464571452108">ডিভাইস শনাক্তকরণ</translation>
 <translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">ওয়েব এক্সটেনশন স্টোরে দেখুন</translation>
 <translation id="4846154056248462491">প্রস্থানের সময়</translation>
 <translation id="5057399635433117814">এই পৃষ্ঠাটি অনুবাদ করবেন? অনুবাদের জন্য এটি Microsoft-এ এই পৃষ্ঠায় সমস্ত পাঠ্য পাঠাবে।</translation>
+<translation id="330263065709195164">এই পৃষ্ঠাটি অনুবাদ করতে Google Translate এক্সটেনসন ইনস্টল করবেন?</translation>
+<translation id="3789841737615482174">ইনস্টল করুন</translation>
+<translation id="7658239707568436148">বাতিল করুন</translation>
 <translation id="3371343170427636147">Brave ব্রাউজার নাইটলি অ্যাপস</translation>
 <translation id="4097979995947147464">Brave ব্রাউজার বিটা অ্যাপসে নিয়ন্ত্রিত হয়</translation>
 <translation id="8303432794159193481">Brave ব্রাউজার ডেভ অ্যাপস</translation>

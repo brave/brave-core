@@ -421,6 +421,14 @@
     "message": "Donacija",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Pošaljite napojnicu",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Donacija",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Kreator $name$ je nedavno verifikovao",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Bez brige. To se može dogoditi iz različitih sigurnosnih razloga. Jednostavno se ponovo povežite da biste rešili ovaj problem.",
+    "message": "Ne brinite. Ovo se dešava iz niza sigurnosnih razloga. Jednostavno ponovno povezivanje sa njim rešiće ovaj problem.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

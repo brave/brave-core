@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">ብሬቭ ኣድ ብሎክ</translation>
 <translation id="6406506848690869874">አመሳስል</translation>
 <translation id="5655621391922317800">Crypto ዋሌቶች</translation>
+<translation id="2445484935443597917">አዲስ መገለጫ ፍጠር</translation>
+<translation id="2666990579225592931">የእንግዳ መስኮትን ክፈት</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") በብሬቭ ውስጥ አይፈቀድም፡፡</translation>
 <translation id="7450557937477381864">ክሮም ዝጋ</translation>
 <translation id="7008934821596358692">ማስተላለፍ ለመጨረስ፣ ሁሉኑም የክሮም ዊንደው ይዝጉ፡፡</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">መስኮቶችን እና ትሮችን ክፈት</translation>
 <translation id="3699882589215410581">ዊንድቬን ገጥመው ይክፈቱ</translation>
 <translation id="3696083746357487900">የ Crypto ዋሌቶችን ጫን</translation>
+<translation id="8926389886865778422">ደግመው አይጠይቁ</translation>
+<translation id="4726634924419692905">አንድ ጣቢያ በኮምፒተርዎ ላይ Widevine ን ለመጫን ሲፈልግ ይጠይቁ።</translation>
 <translation id="8053096063396012732">Widevineን ይጫኑ</translation>
 <translation id="4840334696217618631">Widevine ን ለማንቃት አሳሹን እንደገና ያስጀምሩ</translation>
 <translation id="8410111618231938546">Google Widevine የዲጂታል መብት አስተዳደር (DRM) አካል የሆነ ኮድ ሲሆን እኛ ብሬቭ ሶፍትዌር ባለቤትነት የሌለንና ምርመራ ማካሄድ አንችልም፡፡ Google Widevine ኮድ ከኛ ሰርቨር ሳይሆን ከ Google ሰርቨር ማግኘት ይችላሉ፡፡ የሚጀምረው ይህን አማራጭ ካበራቹህ ብቻ ነው፡፡ DRM እንዲጠቀሙ አናበረታታም፣ ቢሆንም የተጠቃሚዎቻችንን ምርጫ እናከብራለን እንዲሁም አንድ አንድ የብሬቭ ተጠቃሚዎች ይህን የሚጠይቅ አገልግሎት መጠቀም እንደሚፈልጉ እውቅና እነሰታለን፡፡
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597"><ph name="HOST"/> ላይ በራስ መጫወቱን ሁልግዜም ፍቀድ;</translation>
 <translation id="4150684676757176434">አውቶለይ መከላከሉን ይቀጥል</translation>
 <translation id="5883458389055721080">Brave የዚህን ቅጥያ ደህንነትና አስተማማኝነት አላጣራም። ይህን ቅጥያ መጫን ያለብህ አዘጋጁን የምታምነው ከሆነ ብቻ ነው።</translation>
+<translation id="8081858229109418493">የገጽ ስም እና አዶ</translation>
 <translation id="2044383478723007273">የብሬቭ ቀለም</translation>
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="6123134130710658846">የ Brave Rewards መምረጫ ቁልፍ ደብቅ</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">ይህም በድረ ገጾች ላይ ያሉ አብዛኞቹን ማስታወቂያዎች እንጂ Brave የግል ማስታወቂያዎችን — አያግድም፤ እነርሱ ቁጥጥር የሚደረግባቸው</translation>
 <translation id="6388201778088078932">ቅንብሮች።</translation>
 <translation id="9185018653595759199">የማህበራዊ ሚዲያ እገዳ</translation>
+<translation id="7390783310074170337">ነባሪ እይታ</translation>
+<translation id="130615081792797568">ቀላል እይታ</translation>
+<translation id="2360360976480535628">የላቀ እይታ</translation>
 <translation id="5709627087332022422">ድረ ገጽ ተሻጋሪ ተከታታዮችን አግድ።</translation>
 <translation id="9075744464571452108">መሳሪያ ማወቂያ</translation>
 <translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳድግ</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
 <translation id="4846154056248462491">ሲወጣ</translation>
 <translation id="5057399635433117814">ይህ ገጽ ይተርጎም? ይሄ ሁሉንም ጽሁፎች ለትርጉም ወደ Microsoft እንዲላኩ ያደርጋቸዋል።</translation>
+<translation id="330263065709195164">ይህን ገጽ ለመተርጎም የጉግል ትርጉም ቅጥያ ይጫኑ?</translation>
+<translation id="3789841737615482174">ጫን</translation>
+<translation id="7658239707568436148">ሰርዝ</translation>
 <translation id="3371343170427636147">Brave የመዳሰሻ የምሽት መተግበሪያዎች</translation>
 <translation id="4097979995947147464">በ Brave የመዳሰሻ ቤታ መተግበሪያዎች ነው</translation>
 <translation id="8303432794159193481">የ Brave መዳሰሻ ማጎልበቻ መተግበሪያዎች</translation>

@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave 廣告阻擋</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="5655621391922317800">加密錢包</translation>
+<translation id="2445484935443597917">建立新的個人資料</translation>
+<translation id="2666990579225592931">開啟訪客視窗</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
 <translation id="7450557937477381864">關閉 Chrome</translation>
 <translation id="7008934821596358692">關閉所有 Chrome 視窗以完成匯入。</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">開啟視窗和分頁</translation>
 <translation id="3699882589215410581">安裝並執行 Widevine</translation>
 <translation id="3696083746357487900">安裝加密錢包</translation>
+<translation id="8926389886865778422">不再詢問這個問題</translation>
+<translation id="4726634924419692905">當網站要求安裝 Widevine 到您的電腦時先詢問</translation>
 <translation id="8053096063396012732">安裝 Widevine</translation>
 <translation id="4840334696217618631">重新啟動瀏覽器以啟用 Widevine</translation>
 <translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST"/></translation>
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
 <translation id="5883458389055721080">Brave 未驗證過此擴充套件的安全性。只在您信任此開開發者時才安裝此擴充套件。</translation>
+<translation id="8081858229109418493">設定檔名稱和圖示</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">這將會封鎖網站上大多數的廣告，但不包含 Brave 的隱私廣告，那些可在後方的頁面中控制</translation>
 <translation id="6388201778088078932">設定。</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
+<translation id="7390783310074170337">預設瀏覽</translation>
+<translation id="130615081792797568">簡式瀏覽</translation>
+<translation id="2360360976480535628">進階瀏覽</translation>
 <translation id="5709627087332022422">封鎖跨站追蹤器</translation>
 <translation id="9075744464571452108">裝置識別</translation>
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">在「網路擴充功能商店」檢視</translation>
 <translation id="4846154056248462491">離開</translation>
 <translation id="5057399635433117814">翻譯此頁面？這將會把此頁面上的所有文字傳送給微軟以進行翻譯。</translation>
+<translation id="330263065709195164">安裝 Google Translate 擴充功能來翻譯這個頁面？</translation>
+<translation id="3789841737615482174">安裝</translation>
+<translation id="7658239707568436148">取消</translation>
 <translation id="3371343170427636147">Brave 瀏覽器 Nightly 應用程式</translation>
 <translation id="4097979995947147464">Brave 瀏覽器 Beta 應用程式</translation>
 <translation id="8303432794159193481">Brave 瀏覽器 Dev 應用程式</translation>

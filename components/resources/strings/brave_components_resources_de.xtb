@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Trinkgelder nach Inhaltsniveau auf diesen Seiten ermöglichen</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Tippen Sie auf die entsprechende Stelle, wenn Sie Edelsteine finden.</translation>
 <translation id="6135431587052937035">Unterstützen Sie Ihre Lieblings-Websites mit wiederkehrenden monatlichen Spenden.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Ich habe gerade <ph name="NAME"/> mit dem Brave-Browser ein Trinkgeld gegeben. Sehen Sie es sich unter https://brave.com/tips an.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Entschuldigung, bei der Bearbeitung Ihrer Anfrage ist ein Problem aufgetreten. Versuchen Sie es bitte erneut.</translation>
+<translation id="3082557070674409251">Geklickt</translation>
+<translation id="7119308337584989771">Abgelehnt</translation>
+<translation id="6805660603861526473">Angesehen</translation>
 <translation id="7422678632904904341">Betrag:</translation>
 <translation id="5923611424721173182">Aktueller Abgleich</translation>
 <translation id="5457113250005438886">Ungültig</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave ist ein eingetragenes Warenzeichen von Brave Software. Seitennamen können Marken oder eingetragene Warenzeichen des Seiteninhabers sein.</translation>
 <translation id="9026369588205476247">Um Ihre Privatsphäre zu schützen, wird diese Brave Rewards-Erklärung an keinem anderen Ort als auf Ihrem Gerät (diesem Computer) gespeichert, aufgezeichnet oder protokolliert. Im Falle eines Datenverlustes auf Ihrem Gerät kann es nicht von Brave abgerufen werden.</translation>
 <translation id="1036277985068412734">Geldmittel hinzufügen</translation>
+<translation id="3587482841069643663">Alle</translation>
+<translation id="4241224519481557898">Kategorie</translation>
+<translation id="3080423471207781945">Maximal pro Stunde erhaltene Werbung:</translation>
+<translation id="2631006050119455616">Gespeichert</translation>
+<translation id="2155330833364281539">Werbung, die Sie in den vergangenen  {{totalDays}} Tagen erhalten haben</translation>
+<translation id="8863685593846905344">Werbeverlauf</translation>
+<translation id="5212777575344695266">Als unangemessen kennzeichnen</translation>
+<translation id="2111256234277361810">Als unangemessen kennzeichnen ✓</translation>
+<translation id="8988332871810963281">Derzeit gibt es keinen Brave-Werbeverlauf</translation>
+<translation id="5345727496083327478">Sie erhalten keine Werbung mehr aus dieser Kategorie</translation>
+<translation id="5317780077021120954">Speichern</translation>
 <translation id="5441565662498481293">Sie senden automatisch Trinkgeld an:</translation>
 <translation id="2827387977307390755">Trinkgelder erlauben auf</translation>
 <translation id="3671566813999349838">Betrag</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Einmal</translation>
 <translation id="9182287025588539628">Einmalige Trinkgelder</translation>
 <translation id="6381574025952123568">Eröffnungsbilanz</translation>
+<translation id="532275381857891532">7-tägiger Werbeverlauf</translation>
 <translation id="4923459931733593730">Bezahlung</translation>
 <translation id="4021593982164260556">Bezahlung jeden {{day}}ten Tag im Monat gemacht.</translation>
 <translation id="6104680658798556671">Bezahlung nicht erfolgt.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Monatliche Trinkgelder</translation>
 <translation id="2391095793008133394">Geben Sie {{ user }} ein Trinkgeld für den Beitrag:</translation>
 <translation id="7557413530932469222">Geben Sie {{ user }} ein Trinkgeld für den Beitrag!</translation>
+<translation id="717513177896084801">Tipp {{ user }}</translation>
 <translation id="1110535155349301542">entfernen</translation>
+<translation id="8204292894173669182">Aus 'Gespeichert' entfernen</translation>
 <translation id="8942997470474842562">Sie haben {{reservedAmount}} BAT für Ersteller bestimmt, die sich noch nicht für den Empfang von Beiträgen angemeldet haben. Ihr Browser wird weiterhin versuchen, ihnen Beiträge zukommen zu lassen, bis sie sich verifiziert haben oder bis 90 Tage verstrichen sind.</translation>
 <translation id="8759753423332885148">Mehr hierzu.</translation>
 <translation id="3157931365184549694">Wiederherstellen</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">Ein verifiziertes Wallet ermöglicht es Ihnen:</translation>
 <translation id="7565794512491053578">Verifizieren Sie Ihr Wallet</translation>
 <translation id="698531289520577961">Und verwalten Sie mühelos Ihre Geldmittel!</translation>
+<translation id="8697510149346635496">BAT abheben, die Sie mit dem Ansehen von Werbeanzeigen, die die Privatsphäre respektieren, verdienen</translation>
+<translation id="1481480653609649134">Kaufen Sie zusätzlich BAT mit Kreditkarten und anderen Quellen</translation>
+<translation id="9096003370755878766">Heben Sie BAT ab, die Sie Ihrer Brave-Prämien-Geldbörse möglicherweise zuvor hinzugefügt haben</translation>
+<translation id="5275978662119683162">Vorteile der Verifizierung</translation>
+<translation id="5166793288622772189">Bereit, Ihre Geldbörse zu verifizieren?</translation>
+<translation id="8766217572332535979">Eine Verifizierung ist nicht notwendig, um Prämien für Urheberbeiträge zu verdienen</translation>
+<translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
+<translation id="723054503945711909">Brave Software Inc. verarbeitet, speichert oder greift nicht auf persönliche Informationen zu, die Sie Uphold zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
 <translation id="1181037720776840403">Entfernen</translation>
 <translation id="7885157704277298658">Kopiert!</translation>
 <translation id="5379640681913450928">Wortanzahl:</translation>

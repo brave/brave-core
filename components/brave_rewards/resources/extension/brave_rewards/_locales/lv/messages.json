@@ -421,6 +421,14 @@
     "message": "Dzeramnauda",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Nosūtīt padomu",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Dzeramnauda",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Izstrādātājs $name$nesen apstiprināja ",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Tas nekas. Tā var notikt dažādu drošības apsvērumu dēļ. Vienkārši izveidojot savienojumu ar to no jauna, un šis jautājums tiks atrisināts.",
+    "message": "Tas nekas. Tā var notikt dažādu drošības apsvērumu dēļ. Vienkārši izveidojot savienojumu ar to no jauna, šis jautājums tiks atrisināts.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Chặn Quảng cáo Brave</translation>
 <translation id="6406506848690869874">Đồng bộ</translation>
 <translation id="5655621391922317800">Ví Điện tử</translation>
+<translation id="2445484935443597917">Tạo hồ sơ mới</translation>
+<translation id="2666990579225592931">Mở cửa sổ khách</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID phần mở rộng "<ph name="EXTENSION_ID"/>") không được phép trong Brave.</translation>
 <translation id="7450557937477381864">Đóng Chrome</translation>
 <translation id="7008934821596358692">Để hoàn tất nhập, hãy đóng mọi cửa sổ Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Cửa sổ và tab đang mở</translation>
 <translation id="3699882589215410581">Cài và chạy Widevine</translation>
 <translation id="3696083746357487900">Cài đặt Ví Điện tử</translation>
+<translation id="8926389886865778422">Đừng hỏi lại</translation>
+<translation id="4726634924419692905">Hỏi khi một website muốn cài đặt Widevine trên máy tính của bạn.</translation>
 <translation id="8053096063396012732">Cài đặt Widevine</translation>
 <translation id="4840334696217618631">Khởi động lại trình duyệt để bật Widevine</translation>
 <translation id="8410111618231938546">Google Widevine là một phần của mã Quản lý Quyền Kỹ thuật số (Digital Rights Management hay DRM) mà chúng tôi tại Brave Software không sở hữu và không thể kiểm tra. Mã Google Widevine được tải từ các máy chủ của Google chứ không phải từ các máy chủ của chúng tôi. Mã này chỉ được tải khi bạn bật tùy chọn này. Chúng tôi không khuyến khích sử dụng DRM, nhưng chúng tôi tôn trọng lựa chọn của người dùng và thừa nhận rằng một số người dùng Brave muốn sử dụng các dịch vụ cần tới mã đó.
@@ -31,6 +35,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
 <translation id="5883458389055721080">Brave chưa rà soát tính bảo mật và an toàn của phần mở rộng này. Hãy chỉ cài đặt phần mở rộng này nếu bạn tin tưởng nhà phát triển đó.</translation>
+<translation id="8081858229109418493">Tên và ảnh đại diện hồ sơ</translation>
 <translation id="2044383478723007273">Màu sắc của brave</translation>
 <translation id="2814998458708016836">Dùng thanh địa chỉ rộng</translation>
 <translation id="6123134130710658846">Ẩn nút Tiền thưởng Brave</translation>
@@ -57,6 +62,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8754605759692119662">Công cụ này sẽ chặn hầu hết quảng cáo trên các website chứ không phải các quảng cáo riêng của Brave, chúng được kiểm soát trong</translation>
 <translation id="6388201778088078932">cài đặt.</translation>
 <translation id="9185018653595759199">Chặn truyền thông xã hội</translation>
+<translation id="7390783310074170337">Chế độ xem mặc định</translation>
+<translation id="130615081792797568">Chế độ xem đơn giản</translation>
+<translation id="2360360976480535628">Chế độ xem nâng cao</translation>
 <translation id="5709627087332022422">Chặn các bộ theo dõi trên mọi website</translation>
 <translation id="9075744464571452108">Nhận diện thiết bị</translation>
 <translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
@@ -95,6 +103,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="9181207987584064303">Xem trong Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="4846154056248462491">Khi thoát</translation>
 <translation id="5057399635433117814">Dịch trang này? Lệnh này sẽ gửi tất cả văn bản trên trang này đến Microsoft để dịch.</translation>
+<translation id="330263065709195164">Cài đặt phần mở rộng Google Translate để dịch trang này?</translation>
+<translation id="3789841737615482174">Cài đặt</translation>
+<translation id="7658239707568436148">Hủy</translation>
 <translation id="3371343170427636147">Các Ứng dụng Ban đêm của Trình duyệt Brave</translation>
 <translation id="4097979995947147464">Các Ứng dụng của Trình duyệt Brave Beta</translation>
 <translation id="8303432794159193481">Các Ứng dụng của Trình duyệt Brave Dev</translation>

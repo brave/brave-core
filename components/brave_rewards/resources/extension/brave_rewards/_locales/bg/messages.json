@@ -421,6 +421,14 @@
     "message": "Бакшиш",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Изпратете бакшиш",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Бакшиш",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Създателят $name$ беше потвърден наскоро",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Няма проблеми. Това може да се случи поради някои съображения за сигурност. Просто се свържете отново и проблемите ще бъдат отстранени.",
+    "message": "Няма проблем. Това може да се случи поради различни причини за сигурност. Повторното свързване ще реши този проблем.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

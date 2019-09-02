@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Blocare reclame Brave</translation>
 <translation id="6406506848690869874">Sincronizare</translation>
 <translation id="5655621391922317800">Portofele cripto</translation>
+<translation id="2445484935443597917">Creează un profil nou</translation>
+<translation id="2666990579225592931">Deschide o fereastră pentru invitați</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID extensie "<ph name="EXTENSION_ID"/>") nu este permis în Brave.</translation>
 <translation id="7450557937477381864">Închide Chrome</translation>
 <translation id="7008934821596358692">Pentru finalizarea importului, închideți toate ferestrele Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Deschidere ferestre și file</translation>
 <translation id="3699882589215410581">Instalați și rulați Widevine</translation>
 <translation id="3696083746357487900">Instalare Portofele cripto</translation>
+<translation id="8926389886865778422">Nu mai întreba</translation>
+<translation id="4726634924419692905">Solicită când un site intenționează să instaleze Widevine pe calculator.</translation>
 <translation id="8053096063396012732">Instalează Widevine</translation>
 <translation id="4840334696217618631">Repornește browserul pentru activarea Widevine</translation>
 <translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
@@ -31,6 +35,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuă blocarea autoredării</translation>
 <translation id="5883458389055721080">Brave nu a analizat securitatea și siguranța acestei extensii. Instalați această extensie numai dacă aveți încredere în dezvoltator.</translation>
+<translation id="8081858229109418493">Nume profil și iconiță</translation>
 <translation id="2044383478723007273">Culori Brave</translation>
 <translation id="2814998458708016836">Utilizați bara de adrese lată</translation>
 <translation id="6123134130710658846">Ascunde butonul Brave Rewards</translation>
@@ -57,6 +62,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8754605759692119662">Aceasta va bloca majoritatea reclamelor pe site-uri, nu și reclamele private Brave — acelea sunt controlate în</translation>
 <translation id="6388201778088078932">setări.</translation>
 <translation id="9185018653595759199">Blocare pe rețelele de socializare</translation>
+<translation id="7390783310074170337">Vizualizare implicită</translation>
+<translation id="130615081792797568">Vizualizare simplă</translation>
+<translation id="2360360976480535628">Vizualizare avansată</translation>
 <translation id="5709627087332022422">Blocați trackerele inter-site-uri</translation>
 <translation id="9075744464571452108">Recunoașterea dispozitivului</translation>
 <translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
@@ -95,6 +103,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="9181207987584064303">Vizualizare în Magazinul Extensii Web</translation>
 <translation id="4846154056248462491">La ieșire</translation>
 <translation id="5057399635433117814">Doriți ca această pagină să fie tradusă? Această comandă va trimite tot textul de pe pagină către Microsoft pentru traducere.</translation>
+<translation id="330263065709195164">Instalați extensia Google Translate pentru a traduce această pagină?</translation>
+<translation id="3789841737615482174">Instalează</translation>
+<translation id="7658239707568436148">Anulare</translation>
 <translation id="3371343170427636147">Aplicații de noapte browser Brave</translation>
 <translation id="4097979995947147464">Aplicații beta browser Brave</translation>
 <translation id="8303432794159193481">Aplicații dezv browser Brave</translation>

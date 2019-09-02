@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Pemblokir Iklan Brave</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="5655621391922317800">Dompet Kripto</translation>
+<translation id="2445484935443597917">Buat Profil Baru</translation>
+<translation id="2666990579225592931">Buka Jendela Tamu</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak diizinkan di Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk menyelesaikan impor, tutup semua jendela Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Jendela dan tab terbuka</translation>
 <translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
 <translation id="3696083746357487900">Instal Dompet Kripto</translation>
+<translation id="8926389886865778422">Jangan tanya lagi</translation>
+<translation id="4726634924419692905">Tanyakan saat suatu situs ingin menginstal Widevine di komputer Anda.</translation>
 <translation id="8053096063396012732">Pasang Widevine</translation>
 <translation id="4840334696217618631">Mulai ulang peramban untuk mengaktifkan Widevine</translation>
 <translation id="8410111618231938546">Google Widevine adalah sepotong kode Digital Rights Management (DRM) yang tidak kami miliki dan tidak bisa kami periksa di Brave Software. Kode Google Widevine dimuat dari server Google, bukan dari server kami. Kode ini hanya dimuat jika Anda mengaktifkan pilihan ini. Kami tidak menyarankan penggunaan DRM, tetapi kami menghormati pilihan pengguna dan mengakui bahwa beberapa pengguna Brave ingin menggunakan layanan yang memerlukannya.
@@ -31,6 +35,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="4988333904713528597">Selalu izinkan putar otomatis di <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Lanjutkan memblokir putar otomatis</translation>
 <translation id="5883458389055721080">Brave belum meninjau ekstensi ini untuk keamanan dan keselamatan. Hanya instal esktensi ini jika Anda mempercayai sang pengembang.</translation>
+<translation id="8081858229109418493">Nama profil dan ikon</translation>
 <translation id="2044383478723007273">Warna Brave</translation>
 <translation id="2814998458708016836">Gunakan bilah alamat lebar</translation>
 <translation id="6123134130710658846">Sembunyikan tombol Brave Rewards</translation>
@@ -57,6 +62,9 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8754605759692119662">Ini akan memblokir sebagian besar iklan pada website, bukan iklan privat Brave — iklan-iklan tersebut diatur di</translation>
 <translation id="6388201778088078932">pengaturan.</translation>
 <translation id="9185018653595759199">Pemblokiran media sosial</translation>
+<translation id="7390783310074170337">Tampilan baku</translation>
+<translation id="130615081792797568">Tampilan sederhana</translation>
+<translation id="2360360976480535628">Tampilan lanjut</translation>
 <translation id="5709627087332022422">Blokir pelacak cross-site</translation>
 <translation id="9075744464571452108">Pengenalan perangkat</translation>
 <translation id="3570081523466826008">Tingkatkan koneksi ke HTTPS</translation>
@@ -95,6 +103,9 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="9181207987584064303">Lihat di Toko Ekstensi Web</translation>
 <translation id="4846154056248462491">Saat keluar</translation>
 <translation id="5057399635433117814">Terjemahkan laman ini? Ini akan mengirim semua teks pada laman ini ke Microsoft untuk diterjemahkan.</translation>
+<translation id="330263065709195164">Pasang ekstensi Google Terjemahan untuk menerjemahkan halaman ini?</translation>
+<translation id="3789841737615482174">Instal</translation>
+<translation id="7658239707568436148">Batal</translation>
 <translation id="3371343170427636147">Aplikasi Peramban Brave Nightly</translation>
 <translation id="4097979995947147464">Aplikasi Peramban Brave Beta</translation>
 <translation id="8303432794159193481">Aplikasi Pengembang Peramban Brave</translation>

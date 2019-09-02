@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave-mainostenesto</translation>
 <translation id="6406506848690869874">Synkronointi</translation>
 <translation id="5655621391922317800">Kryptokukkarot</translation>
+<translation id="2445484935443597917">Luo uusi profiili</translation>
+<translation id="2666990579225592931">Avaa vierasikkuna</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ei ole sallittu Bravessa.</translation>
 <translation id="7450557937477381864">Sulje Chrome</translation>
 <translation id="7008934821596358692">Sulje kaikki Chrome-ikkunat lopettaaksesi tuonnin.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Avaa ikkunat ja välilehdet</translation>
 <translation id="3699882589215410581">Asenna ja suorita Widevine</translation>
 <translation id="3696083746357487900">Asenna kryptokukkaroita</translation>
+<translation id="8926389886865778422">Älä kysy uudestaan</translation>
+<translation id="4726634924419692905">Kysy, jos sivusto tahtoo asentaa Widevinen tietokoneellesi.</translation>
 <translation id="8053096063396012732">Asenna Widevine</translation>
 <translation id="4840334696217618631">Käynnistä selain uudelleen salliaksesi Widevinen</translation>
 <translation id="8410111618231938546">Google Widevine on osa digitaalisen käyttöoikeuksien hallinnan (DRM) koodia, jota me Brave Softwarella emme omista tai voi tarkkailla. Google Widevine -koodi ladataan Googlen palvelimilta, ei meidän palvelimiltamme. Se ladataan vain, kun sallit tämän vaihtoehdon. Emme suosittele DRM:n käyttöä, mutta kunnioitamme käyttäjiemme valintaa ja tiedostamme, että jotkut Braven käyttäjät saattavat haluta käyttää palveluita, jotka vaativat sitä.
@@ -31,6 +35,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4988333904713528597">Salli aina automaattinen toisto <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Jatka automaattisen toiston estoa</translation>
 <translation id="5883458389055721080">Brave ei ole tarkistanut tämän laajennuksen turvallisuutta. Asenna tämä laajennus vain, jos luotat sen kehittäjään.</translation>
+<translation id="8081858229109418493">Profiilin nimi ja kuvake</translation>
 <translation id="2044383478723007273">Brave -värit</translation>
 <translation id="2814998458708016836">Käytä leveää osoitekenttää</translation>
 <translation id="6123134130710658846">Piilota Brave Rewards -painike</translation>
@@ -57,6 +62,9 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="8754605759692119662">Tämä estää useimmat verkkosivujen mainokset, mutta ei Braven yksityismainoksia, sillä niiden hallinnoinnin keskus on</translation>
 <translation id="6388201778088078932">asetukset.</translation>
 <translation id="9185018653595759199">Sosiaalisen median esto</translation>
+<translation id="7390783310074170337">Oletusnäkymä</translation>
+<translation id="130615081792797568">Yksinkertainen näkymä</translation>
+<translation id="2360360976480535628">Edistynyt näkymä</translation>
 <translation id="5709627087332022422">Estä cross-site-seuraimet</translation>
 <translation id="9075744464571452108">Laitteentunnistus</translation>
 <translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
@@ -95,6 +103,9 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="9181207987584064303">Näytä verkkolaajennusmyymälässä</translation>
 <translation id="4846154056248462491">Poistuessa</translation>
 <translation id="5057399635433117814">Haluatko kääntää tämän sivun? Tämä komento lähettää kaiken tämän sivun tekstin Microsoftille käännettäväksi.</translation>
+<translation id="330263065709195164">Asennetaanko Google Translate -laajennus tämän sivun käännättämistä varten?</translation>
+<translation id="3789841737615482174">Asenna</translation>
+<translation id="7658239707568436148">Peruuta</translation>
 <translation id="3371343170427636147">Brave-selaimen Nightly-sovellukset</translation>
 <translation id="4097979995947147464">Brave-selaimen betasovellukset</translation>
 <translation id="8303432794159193481">Brave-selaimen kehittäjän sovellukset</translation>

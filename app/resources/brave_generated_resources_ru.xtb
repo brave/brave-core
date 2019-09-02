@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Блокировка рекламы Brave</translation>
 <translation id="6406506848690869874">Синхронизация</translation>
 <translation id="5655621391922317800">Криптовалютные кошельки</translation>
+<translation id="2445484935443597917">Создать профиль</translation>
+<translation id="2666990579225592931">Открыть окно в гостевом режиме</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID расширения "<ph name="EXTENSION_ID"/>") не разрешено в Brave.</translation>
 <translation id="7450557937477381864">Закрыть Chrome</translation>
 <translation id="7008934821596358692">Чтобы завершить импорт, закройте все окна Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Открытые окна и вкладки</translation>
 <translation id="3699882589215410581">Установить и запустить Widevine</translation>
 <translation id="3696083746357487900">Установка криптовалютных кошельков</translation>
+<translation id="8926389886865778422">Больше не спрашивать</translation>
+<translation id="4726634924419692905">Просить подтверждения, если ресурс пытается установить Widevine на ваш компьютер</translation>
 <translation id="8053096063396012732">Установить Widevine</translation>
 <translation id="4840334696217618631">Перезапустите браузер, чтобы включить Widevine</translation>
 <translation id="8410111618231938546">Google Widevine является частью кода Управления цифровыми правами (DRM), в отношении которого Brave Software не имеет прав на владение и изучение. Код Google Widevine загружается из серверов Google, а не наших серверов. Он загружается только в том случае, если вы включите эту опцию. Мы не рекомендуем использовать DRM, но мы уважаем выбор пользователя и признаем, что некоторые пользователи Brave хотели бы пользоваться услугами, которые его требуют.
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597">Всегда разрешать автоматическое воспроизведение на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продолжить блокирование автоматического воспроизведения</translation>
 <translation id="5883458389055721080">Brave не проверяет, безопасны ли расширения. Устанавливайте расширения только в том случае, если полностью доверяете их разработчикам.</translation>
+<translation id="8081858229109418493">Имя и иконка профиля</translation>
 <translation id="2044383478723007273">Цвета Brave</translation>
 <translation id="2814998458708016836">Использовать широкую адресную строку</translation>
 <translation id="6123134130710658846">Кнопка «Скрыть награды Brave»</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">Это блокирует большинство рекламы на веб-сайтах, но не  рекламу Brave — она контролируется в</translation>
 <translation id="6388201778088078932">настройки.</translation>
 <translation id="9185018653595759199">Блокировка социальных сетей</translation>
+<translation id="7390783310074170337">Стандартный вид</translation>
+<translation id="130615081792797568">Простой вид</translation>
+<translation id="2360360976480535628">Расширенный вид</translation>
 <translation id="5709627087332022422">Блокировать скрытые трекеры</translation>
 <translation id="9075744464571452108">Распознавание устройства</translation>
 <translation id="3570081523466826008">Обновлять соединения до HTTPS</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">Открыть в магазине расширений</translation>
 <translation id="4846154056248462491">На выходе</translation>
 <translation id="5057399635433117814">Перевести эту страницу? Весь ее текст будет отправлен в Microsoft для перевода.</translation>
+<translation id="330263065709195164">Установить расширение Google Переводчик для перевода этой страницы?</translation>
+<translation id="3789841737615482174">Установить</translation>
+<translation id="7658239707568436148">Отмена</translation>
 <translation id="3371343170427636147">Ночные сборки приложений браузера Brave</translation>
 <translation id="4097979995947147464">Бета-приложения браузера Brave</translation>
 <translation id="8303432794159193481">Приложения разработчика для браузера Brave</translation>

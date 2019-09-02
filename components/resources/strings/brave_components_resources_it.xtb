@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Abilita le mance a livello di contenuto su questi siti</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Fai una donazione sul momento quando scopri dei gioielli.</translation>
 <translation id="6135431587052937035">Supporta i tuoi siti preferiti con suggerimenti mensili periodici.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Ho appena dato la mancia a <ph name="NAME"/> usando il Browser Brave. Scroprilo su https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Spiacenti, si è verificato un problema durante l'elaborazione della tua richiesta, ti preghiamo di riprovare.</translation>
+<translation id="3082557070674409251">Cliccato</translation>
+<translation id="7119308337584989771">Archiviato</translation>
+<translation id="6805660603861526473">Visualizzati</translation>
 <translation id="7422678632904904341">Importo:</translation>
 <translation id="5923611424721173182">Riconciliazione corrente</translation>
 <translation id="5457113250005438886">Non valido</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave è un marchio registrato di Brave Software. I nomi dei siti possono essere marchi o marchi registrati del proprietario del sito.</translation>
 <translation id="9026369588205476247">Per proteggere la tua privacy, questo estratto conto delle Ricompense Brave non viene salvato né registrato da nessun'altra parte eccetto il tuo dispositivo (questo computer). Non può essere recuperato da Brave in caso di perdita di dati sul dispositivo.</translation>
 <translation id="1036277985068412734">aggiungi fondi</translation>
+<translation id="3587482841069643663">Tutti</translation>
+<translation id="4241224519481557898">Categoria</translation>
+<translation id="3080423471207781945">Annunci massimi ricevuti per ora:</translation>
+<translation id="2631006050119455616">Modifiche salvate</translation>
+<translation id="2155330833364281539">Annunci che hai ricevuto nei {{totalDays}} giorni passati</translation>
+<translation id="8863685593846905344">Cronologia degli Annunci</translation>
+<translation id="5212777575344695266">Contrassegna come inappropriato</translation>
+<translation id="2111256234277361810">Contrassegna come inappropriato ✓</translation>
+<translation id="8988332871810963281">Attualmente non c'è cronologia degli Annunci di Brave</translation>
+<translation id="5345727496083327478">Non riceverai più annunci da questa categoria</translation>
+<translation id="5317780077021120954">Salva</translation>
 <translation id="5441565662498481293">Invii automaticamente una mancia a:</translation>
 <translation id="2827387977307390755">Consenti mance su</translation>
 <translation id="3671566813999349838">Importo</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Una volta</translation>
 <translation id="9182287025588539628">Donazioni singole</translation>
 <translation id="6381574025952123568">Saldo Iniziale</translation>
+<translation id="532275381857891532">Cronologia degli annunci di 7 giorni</translation>
 <translation id="4923459931733593730">Pagamento</translation>
 <translation id="4021593982164260556">Pagamento effettuato ogni {{day}} di ciascun mese.</translation>
 <translation id="6104680658798556671">Pagamento non effettuato.</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Donazioni mensili</translation>
 <translation id="2391095793008133394">Dai una mancia a {{ user }} per il suo post</translation>
 <translation id="7557413530932469222">Dai una mancia a {{ user }} per il suo post!</translation>
+<translation id="717513177896084801">Dai la mancia a {{ user }}</translation>
 <translation id="1110535155349301542">rimuovi</translation>
+<translation id="8204292894173669182">Rimuovi dai salvati</translation>
 <translation id="8942997470474842562">Hai designato {{reservedAmount}} BAT per i creatori che non si sono ancora iscritti per ricevere i contributi. Il tuo browser continuerà a provare a contribuire fino a quando non si saranno verificati o fino a quando non saranno passati 90 giorni.</translation>
 <translation id="8759753423332885148">Scopri di più.</translation>
 <translation id="3157931365184549694">Ripristina</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">Un portafoglio verificato ti consente di:</translation>
 <translation id="7565794512491053578">Verifica il tuo Portafoglio</translation>
 <translation id="698531289520577961">E gestisci i tuoi fondi facilmente!</translation>
+<translation id="8697510149346635496">Preleva i BAT che guadagni visualizzando annunci che rispettano la privacy</translation>
+<translation id="1481480653609649134">Acquista BAT aggiuntivi con carta di credito e altre fonti</translation>
+<translation id="9096003370755878766">Preleva BAT che potresti aver aggiunto in precedenza al tuo portafoglio Ricompense di Brave</translation>
+<translation id="5275978662119683162">Vantaggi della verifica</translation>
+<translation id="5166793288622772189">Pronto a verificare il tuo portafoglio?</translation>
+<translation id="8766217572332535979">La verifica non è necessaria per guadagnare ricompense per i contributi del creatore</translation>
+<translation id="8465442795593991224">Uphold potrebbe richiedere di verificare la tua identità in base ai servizi richiesti.</translation>
+<translation id="723054503945711909">Brave Software Inc. non elabora, conserva oppure accede a nessun dato personale che fornisci a Uphold quando crei un account con loro.</translation>
 <translation id="1181037720776840403">Rimuovi</translation>
 <translation id="7885157704277298658">Copiato!</translation>
 <translation id="5379640681913450928">Conteggio parole:</translation>

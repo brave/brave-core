@@ -421,6 +421,14 @@
     "message": "ምክር",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "ጠቃሚ ምክር ይላኩ",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "ምክር",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "ፈጣሪ $name$ በቅርቡ ተረጋግጧል ",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "ችግር የለም። ይህ በተለያዩ የደህንነት ምክንያቶች ሊከሰት ይችላል። በድጋሚ ትስስር መፍጠር ብቻ ችግሩን ይፈታዋል።",
+    "message": "ኣይጨነቁ። ይህ ለተለያዩ የደህንነት ምክንያቶች ሊከሰት ይችላል። ከሱ ጋር እንደገና በመገናኘት ይህንን ችግር ይፈታል።",
     "description": "Title for notification when wallet is disconnected"
   }
 }

@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave annonsesporing</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
 <translation id="5655621391922317800">Kryptolommebøker</translation>
+<translation id="2445484935443597917">Opprett en ny profil</translation>
+<translation id="2666990579225592931">Åpne et gjestevindu</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") er ikke tillatt hos Brave.</translation>
 <translation id="7450557937477381864">Lukk Chrome</translation>
 <translation id="7008934821596358692">For å avslutte importering, lukk alle Chrome-vinduer.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Åpne vinduer og faner</translation>
 <translation id="3699882589215410581">Installer og kjør Widevine</translation>
 <translation id="3696083746357487900">Installer kryptolommebøker</translation>
+<translation id="8926389886865778422">Ikke spør igjen</translation>
+<translation id="4726634924419692905">Spør når et nettsted vil installere Widevine på datamaskinen din.</translation>
 <translation id="8053096063396012732">Installer Widevine</translation>
 <translation id="4840334696217618631">Start nettleseren på nytt for å aktivere Widevine</translation>
 <translation id="8410111618231938546">Google Widevine er en bit Digital Rettighetsstyring (DRM)-kode som vi hos Brave Software ikke eier, og ikke kan inspisere. Google Widevine-koden lastes fra Googles servere, ikke fra våre servere. Den lastes kun når du slår på dette alternativet. Vi fraråder bruk av DRM, men vi respekterer brukerens valg, og anerkjenner at noen Brave-brukere ønsker å bruke tjenester som krever det.
@@ -31,6 +35,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4988333904713528597">Tillat alltid automatisk visning av <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsett å blokkere autoavspilling</translation>
 <translation id="5883458389055721080">Brave har ikke fornyet denne utvidelsen for sikkerhet. Kun installer denne utvidelsen dersom du stoler på utvikleren.</translation>
+<translation id="8081858229109418493">Profilnavn og -ikon</translation>
 <translation id="2044383478723007273">Brave farger</translation>
 <translation id="2814998458708016836">Bruk vid adresselinje</translation>
 <translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
@@ -57,6 +62,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8754605759692119662">Dette vil blokkere de fleste annonser på nettsider, ikke private Brave-annonser — disse kontrolleres i</translation>
 <translation id="6388201778088078932">innstillinger.</translation>
 <translation id="9185018653595759199">Blokkering i sosiale medier</translation>
+<translation id="7390783310074170337">Standard visning</translation>
+<translation id="130615081792797568">Enkel visning</translation>
+<translation id="2360360976480535628">Avansert visning</translation>
 <translation id="5709627087332022422">Blokker tredjeparts sporere.</translation>
 <translation id="9075744464571452108">Enhetsgjenkjennelse</translation>
 <translation id="3570081523466826008">Oppgrader tilkoblinger til HTTPS</translation>
@@ -95,6 +103,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="9181207987584064303">Vis i butikken for nettutvidelser</translation>
 <translation id="4846154056248462491">Ved avslutning</translation>
 <translation id="5057399635433117814">Oversette denne siden? Dette vil sende all tekst på denne siden til Microsoft for oversettelse</translation>
+<translation id="330263065709195164">Vil du installere Google Oversetter-utvidelsen for å oversette denne siden?</translation>
+<translation id="3789841737615482174">Installer</translation>
+<translation id="7658239707568436148">Avbryt</translation>
 <translation id="3371343170427636147">Brave Browser Nattapper</translation>
 <translation id="4097979995947147464">Brave Browser Betaapper</translation>
 <translation id="8303432794159193481">Brave Browser Utviklerapper</translation>
