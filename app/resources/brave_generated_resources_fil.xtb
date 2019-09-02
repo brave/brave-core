@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Pag-block ng Ad ng Brave</translation>
 <translation id="6406506848690869874">Mag-sync</translation>
 <translation id="5655621391922317800">Mga Crypto Wallet</translation>
+<translation id="2445484935443597917">Gumawa ng Bagong Profile</translation>
+<translation id="2666990579225592931">Buksan ang Window ng Bisita</translation>
 <translation id="120759863357279975">Ang <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ay hindi pinapayagan sa Brave.</translation>
 <translation id="7450557937477381864">Isara ang Chrome</translation>
 <translation id="7008934821596358692">Upang matapos ang pag-import, isara ang lahat ng window ng Chrome.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Mga nakabukas na window at tab</translation>
 <translation id="3699882589215410581">I-install at patakbuhin ang Widevine</translation>
 <translation id="3696083746357487900">Mag-install ng Mga Crypto Wallet</translation>
+<translation id="8926389886865778422">Huwag nang itanong ulit</translation>
+<translation id="4726634924419692905">Magtanong kapag gusto ng isang site na i-install ang Widevine sa iyong computer.</translation>
 <translation id="8053096063396012732">I-install ang Widevine</translation>
 <translation id="4840334696217618631">I-restart ang browser para i-enable ang Widevine</translation>
 <translation id="8410111618231938546">Ang Google Widevine ay isang bahagi ng code ng Digital Rights Management (DRM) na hindi namin pag-aari sa Brave Software at hindi namin maaaring suriin. Naka-load ang Google Widevine sa mga server ng Google, hindi sa mga server namin. Malo-load lang ito kapag na-enable mo ang opsyong ito. Hindi namin hinihikayat ang paggamit ng DRM, ngunit iginagalang namin ang pasya ng user at kinikilala namin na ang ilang user ng Brave ay gustong gumamit ng mga serbisyong humihingi nito.
@@ -31,6 +35,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4988333904713528597">Palaging payagan ang autoplay sa <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Patuloy na i-block ang pag-autoplay</translation>
 <translation id="5883458389055721080">Hindi na-review ng Brave ang extension na ito para sa seguridad at kaligtasan. I-install lang ang extension na ito kung pinagkakatiwalaan mo ang developer.</translation>
+<translation id="8081858229109418493">Pangalan at icon ng profile</translation>
 <translation id="2044383478723007273">Mga kulay ng brave</translation>
 <translation id="2814998458708016836">Gumamit ng malapad na address bar</translation>
 <translation id="6123134130710658846">Itago ang Brave Rewards button</translation>
@@ -57,6 +62,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8754605759692119662">Iba-block nito ang karamihan ng mga ad sa mga website, hindi mga pribadong ad ng Brave — nakokontrol ang mga iyon sa</translation>
 <translation id="6388201778088078932">mga setting.</translation>
 <translation id="9185018653595759199">Pag-block sa social media</translation>
+<translation id="7390783310074170337">Default na view</translation>
+<translation id="130615081792797568">Simpleng view</translation>
+<translation id="2360360976480535628">Advanced na view</translation>
 <translation id="5709627087332022422">I-block ang mga cross-site tracker</translation>
 <translation id="9075744464571452108">Pagkilala ng device</translation>
 <translation id="3570081523466826008">I-upgrade sa HTTPS ang mga koneksyon</translation>
@@ -95,6 +103,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="9181207987584064303">Tingnan sa Store ng Mga Web Extension</translation>
 <translation id="4846154056248462491">Sa pag-exit</translation>
 <translation id="5057399635433117814">I-translate ang page na ito? Ipapadala nito ang lahat ng teksto sa page na ito sa Microsoft para sa translation.</translation>
+<translation id="330263065709195164">I-install ang extension ng Google Translate para i-translate ang page na ito?</translation>
+<translation id="3789841737615482174">Mag-install</translation>
+<translation id="7658239707568436148">Kanselahin</translation>
 <translation id="3371343170427636147">Brave Browser Nightly Apps</translation>
 <translation id="4097979995947147464">Brave Browser Beta Apps</translation>
 <translation id="8303432794159193481">Brave Browser Dev Apps</translation>

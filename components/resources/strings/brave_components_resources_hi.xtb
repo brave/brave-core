@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">इन साइटों पर सामग्री-स्तर की बख्शीश को सक्षम करें</translation>
 <translation id="995782501881226248">यूट्यूब</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">ट्विटर</translation>
 <translation id="3920963435109110161">जैसे ही आप रत्न ढूंढने में सफल होते है तभी उसी वक़्त टिप अर्जित करें.</translation>
 <translation id="6135431587052937035">आवर्ती मासिक टिप्स के साथ अपनी पसंदीदा साइटों का समर्थन करें।</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">मैंने अभी Brave ब्राउज़र का उपयोग करते हुए <ph name="NAME"/> को बख्शीश दी। इसे https://brave.com/tips पर देखें।</translation>
 <translation id="8404935570206006581">Braveकेटिप</translation>
 <translation id="2876191400747549936">क्षमा करें आपका अनुरोध प्रोसेस करने में समस्या उत्पन्न हुई है, कृपया पुनः प्रयास करें।</translation>
+<translation id="3082557070674409251">क्लिक किया गया</translation>
+<translation id="7119308337584989771">बरखास्त</translation>
+<translation id="6805660603861526473">देखा गया</translation>
 <translation id="7422678632904904341">मात्रा</translation>
 <translation id="5923611424721173182">वर्तमान समाधान</translation>
 <translation id="5457113250005438886">अमान्य</translation>
@@ -178,6 +182,17 @@
 <translation id="6832986780040139899">और#169;2016और#8211;2018 ब्रेव सॉफ्टवेयर. ब्रेव एक ब्रेव सॉफ्टवेर का पंजीकृत ट्रेडमार्क है. साइट के नाम साइट के मालिक के ट्रेडमार्क या पंजीकृत ट्रेडमार्क हो सकते हैं।</translation>
 <translation id="9026369588205476247">आपकी निजता को सुरक्षित रखने के लिए, इस Brave रिवार्ड्स के लेखा जोखा को आपके डिवाइस(इस कंप्यूटर) के आलावा कहीं और सुरक्षित, दर्ज़ और जोड़ा नहीं गया है| आपके डिवाइस पर डाटा हानि की स्थिति में ये Brave से पुनःप्राप्त नहीं किया जा सकता|</translation>
 <translation id="1036277985068412734">फंड्स जोड़ें</translation>
+<translation id="3587482841069643663">सभी</translation>
+<translation id="4241224519481557898">श्रेणी</translation>
+<translation id="3080423471207781945">प्रति घंटे प्राप्त अधिकतम विज्ञापन:</translation>
+<translation id="2631006050119455616">सेव कर लिया गया है</translation>
+<translation id="2155330833364281539">आपके द्वारा पिछले {{totalDays}} दिनों में प्राप्त किए गए विज्ञापन</translation>
+<translation id="8863685593846905344">एड्स इतिहास</translation>
+<translation id="5212777575344695266">अनुचित के रूप में चिह्नित करें</translation>
+<translation id="2111256234277361810">अनुचित के रूप में चिह्नित करें ✓</translation>
+<translation id="8988332871810963281">वर्तमान में कोई Brave Ads इतिहास नहीं है</translation>
+<translation id="5345727496083327478">अब आपको इस श्रेणी के विज्ञापन नहीं मिलेंगे</translation>
+<translation id="5317780077021120954">सहेजें</translation>
 <translation id="5441565662498481293">आप स्वचालित रूप से को एक टिप भेज रहे हैं:</translation>
 <translation id="2827387977307390755">पर सुझावों की अनुमति दें</translation>
 <translation id="3671566813999349838">राशि</translation>
@@ -268,6 +283,7 @@
 <translation id="8370173854533168890">One टाइम</translation>
 <translation id="9182287025588539628">1-टाइम टिप्स</translation>
 <translation id="6381574025952123568">प्रारंभिक शेष</translation>
+<translation id="532275381857891532">7-दिवसीय विज्ञापन इतिहास</translation>
 <translation id="4923459931733593730">भुगतान</translation>
 <translation id="4021593982164260556">भुगतान हर महीने की प्रत्येक {{day}}th को किया जाता है|</translation>
 <translation id="6104680658798556671">भुगतान नहीं किया गया।</translation>
@@ -291,7 +307,9 @@
 <translation id="7577100371127227294">मासिक टिप्स</translation>
 <translation id="2391095793008133394">उनके पोस्ट के लिए टिप {{ उपयोगकर्ता }}:</translation>
 <translation id="7557413530932469222">उनके पोस्ट के लिए टिप {{ उपयोगकर्ता }}!</translation>
+<translation id="717513177896084801">टिप {{ user }}</translation>
 <translation id="1110535155349301542">हटाना</translation>
+<translation id="8204292894173669182">सेव्ड से हटा दें</translation>
 <translation id="8942997470474842562">आप#8217;ने {{reservedAmount}} BAT उन निर्माताओं के लिए निर्धारित किये हैं जिन्होंने #8217;अभी तक योगदान पाने के लिए साइन अप नहीं किया है। जब तक कि वो सत्यापित न कर दें, या 90 दिनों के बीतने तक आपका ब्राउज़र निरंतर प्रयास करता रहेगा।</translation>
 <translation id="8759753423332885148">और जानें।</translation>
 <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
@@ -402,6 +420,14 @@
 <translation id="2610007079772760276">एक सत्यापित वॉलेट आपको निम्नलिखित करने की अनुमति देता है:</translation>
 <translation id="7565794512491053578">अपना वॉलेट सत्यापित करें</translation>
 <translation id="698531289520577961">और अपनी धराशि को आसानी से प्रबंधित करें!</translation>
+<translation id="8697510149346635496">BAT को वापस लें जो आप गोपनीयता-सम्मान वाले विज्ञापन देखने से कमाते हैं</translation>
+<translation id="1481480653609649134">क्रेडिट कार्ड और अन्य स्रोतों से अतिरिक्त BAT खरीदें</translation>
+<translation id="9096003370755878766">BAT को निकले जिसे आपने पहले अपने Brave Rewards वॉलेट में जोड़ा होगा</translation>
+<translation id="5275978662119683162">सत्यापन करने के लाभ</translation>
+<translation id="5166793288622772189">अपने बटुए को सत्यापित करने के लिए तैयार हैं?</translation>
+<translation id="8766217572332535979">निर्माता के योगदान के लिए पुरस्कार अर्जित करने के लिए सत्यापन आवश्यक नहीं है</translation>
+<translation id="8465442795593991224">अनुरोध की गई सेवाओं के आधार पर आपको अपनी पहचान सत्यापित करने के लिए Uphold की आवश्यकता हो सकती है।</translation>
+<translation id="723054503945711909">Brave Software Inc. एसे किसी भी व्यक्तिगत जानकारी को प्रोसेस, स्टोर या एक्सेस नहीं करता है, जिसे आप उनके साथ एक खाता स्थापित करते समय Uphold को प्रदान करते हैं।</translation>
 <translation id="1181037720776840403">निकालें</translation>
 <translation id="7885157704277298658">कॉपी की गई!</translation>
 <translation id="5379640681913450928">शब्दों की संख्या:</translation>

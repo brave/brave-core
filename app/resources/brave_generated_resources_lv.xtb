@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">Brave reklāmu bloķētājs</translation>
 <translation id="6406506848690869874">Sinhronizācija</translation>
 <translation id="5655621391922317800">Kripto maki</translation>
+<translation id="2445484935443597917">Izveidot jaunu profilu</translation>
+<translation id="2666990579225592931">Atvērt viesa režīma logu</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nav atļauts Brave.</translation>
 <translation id="7450557937477381864">Aizvērt Chrome</translation>
 <translation id="7008934821596358692">Lai pabeigtu importēšanu, aizveriet visus Chrome logus.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Atvērts logus un cilnes</translation>
 <translation id="3699882589215410581">Instalēt un palaist Widevine</translation>
 <translation id="3696083746357487900">Instalēt kripto makus</translation>
+<translation id="8926389886865778422">Nejautāt atkārtoti</translation>
+<translation id="4726634924419692905">Vaicāt, kad vietne vēlas instalēt Widevine uz jūsu datora.</translation>
 <translation id="8053096063396012732">Instalējiet Widevine</translation>
 <translation id="4840334696217618631">Restartējiet pārlūku, lai iespējotu Widevine</translation>
 <translation id="8410111618231938546">Google Widevine ir Digitālā satura tiesību pārvaldības (DRM) koda daļa, kas mums, Brave Software, nepieder un ko mēs nevaram pārbaudīt. Google Widevine kods tiek ielādēts no Google serveriem, nevis no mūsu serveriem. Tas tiek ielādēts tikai tad, ja Jūs iespējojat šo opciju. Mēs atturam no DRM izmantošanas, bet mēs cienām lietotāju izvēli un pieņemam, ka daži Brave lietotāji vēlas izmantot pakalpojumus, kuriem tas ir nepieciešams.
@@ -31,6 +35,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Turpināt bloķēt automātisko atskaņošanu</translation>
 <translation id="5883458389055721080">Brave vēl nav pārskatījis šo paplašinājumu attiecībā uz tā aizsardzību un drošumu. Instalējiet šo paplašinājumu tikai tad, ja uzticaties izstrādātājam.</translation>
+<translation id="8081858229109418493">Profila nosaukums un ikona</translation>
 <translation id="2044383478723007273">Brave krāsas</translation>
 <translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
 <translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
@@ -57,6 +62,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8754605759692119662">Šī funkcija bloķēs lielāko daļu tīmekļa vietņu reklāmas — neieskaitot Brave privātās reklāmas; tās kontrolē</translation>
 <translation id="6388201778088078932">iestatījumi.</translation>
 <translation id="9185018653595759199">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
+<translation id="7390783310074170337">Noklusējuma skats</translation>
+<translation id="130615081792797568">Vienkāršs skats</translation>
+<translation id="2360360976480535628">Uzlabots skats</translation>
 <translation id="5709627087332022422">Bloķēt starpvietņu izsekotājus</translation>
 <translation id="9075744464571452108">Ierīces atpazīšana</translation>
 <translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
@@ -95,6 +103,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="9181207987584064303">Skatīt paplašinājumu interneta veikalā</translation>
 <translation id="4846154056248462491">Izejot</translation>
 <translation id="5057399635433117814">Vai tulkot šo lapu? Šī funkcija nosūtīs visu šīs lapas tekstu "Microsoft", lai veiktu tulkošanu.</translation>
+<translation id="330263065709195164">Instalēt Google Translate paplašinājumu, lai tulkotu šo lapu?</translation>
+<translation id="3789841737615482174">Instalēt</translation>
+<translation id="7658239707568436148">Atcelt</translation>
 <translation id="3371343170427636147">Brave Nightly pārlūka lietotnes</translation>
 <translation id="4097979995947147464">Brave Beta pārlūka lietotnes</translation>
 <translation id="8303432794159193481">Brave Dev pārlūka lietotnes</translation>

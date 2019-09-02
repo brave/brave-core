@@ -124,6 +124,7 @@
 <translation id="9031738692126722094">Schakel fooien op contentniveau toe op deze websites</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Geef meteen een tip als je edelstenen vindt.</translation>
 <translation id="6135431587052937035">Ondersteun je favoriete sites met terugkerende maandelijkse fooien.</translation>
@@ -147,6 +148,9 @@
 <translation id="6231182869178328516">Ik heb <ph name="NAME"/> zojuist een fooi gegeven via de Brave Browser. Ontdek meer op https://brave.com/tips.</translation>
 <translation id="8404935570206006581">FooiVanBrave</translation>
 <translation id="2876191400747549936">Er is helaas een probleem opgetreden bij het verwerken van je verzoek. Probeer het opnieuw.</translation>
+<translation id="3082557070674409251">Geklikt</translation>
+<translation id="7119308337584989771">Afgewezen</translation>
+<translation id="6805660603861526473">Bekeken</translation>
 <translation id="7422678632904904341">Bedrag:</translation>
 <translation id="5923611424721173182">Huidige Verzoening</translation>
 <translation id="5457113250005438886">Ongeldig</translation>
@@ -177,6 +181,17 @@
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave is een geregistreerd handelsmerk van Brave Software. Namen van websites kunnen handelsmerken of geregistreerde handelsmerken van de eigenaar van de website zijn.</translation>
 <translation id="9026369588205476247">Om je privacy te beschermen is dit Brave Rewards afschrift niet opgeslagen of bewaard buiten je apparaat (deze computer). Het kan niet achterhaald worden via Brave indien je de data op je apparaat verliest.</translation>
 <translation id="1036277985068412734">voeg geld toe</translation>
+<translation id="3587482841069643663">Alles</translation>
+<translation id="4241224519481557898">Categorie</translation>
+<translation id="3080423471207781945">Maximaal aantal ontvangen advertenties per uur:</translation>
+<translation id="2631006050119455616">Opgeslagen</translation>
+<translation id="2155330833364281539">Advertenties die je de afgelopen {{totalDays}} dagen hebt ontvangen</translation>
+<translation id="8863685593846905344">Advertentiegeschiedenis</translation>
+<translation id="5212777575344695266">Markeren als ongepast</translation>
+<translation id="2111256234277361810">Markeren als ongepast ✓</translation>
+<translation id="8988332871810963281">Er is momenteel geen geschiedenis van Brave Ads</translation>
+<translation id="5345727496083327478">Je ontvangt niet langer advertenties uit deze categorie</translation>
+<translation id="5317780077021120954">Opslaan</translation>
 <translation id="5441565662498481293">Je stuurt automatisch een fooi naar:</translation>
 <translation id="2827387977307390755">Sta fooi toe op</translation>
 <translation id="3671566813999349838">Bedrag</translation>
@@ -267,6 +282,7 @@
 <translation id="8370173854533168890">Eén keer</translation>
 <translation id="9182287025588539628">Eenmalige Tips</translation>
 <translation id="6381574025952123568">Initieel tegoed</translation>
+<translation id="532275381857891532">7-daagse advertentiegeschiedenis</translation>
 <translation id="4923459931733593730">Betaling</translation>
 <translation id="4021593982164260556">Betaling wordt elke {{day}}de dag van de maand uitgevoerd</translation>
 <translation id="6104680658798556671">Betaling niet uitgevoerd</translation>
@@ -290,7 +306,9 @@
 <translation id="7577100371127227294">Maandelijkse Tips</translation>
 <translation id="2391095793008133394">Geef {{ user }} een fooi voor hun post:</translation>
 <translation id="7557413530932469222">Geef {{ user }} een fooi voor hun post!</translation>
+<translation id="717513177896084801">Geef fooi aan {{ user }}</translation>
 <translation id="1110535155349301542">verwijder</translation>
+<translation id="8204292894173669182">Verwijderen uit opgeslagen</translation>
 <translation id="8942997470474842562">Je hebt BAT {{reservedAmount}} toegewezen aan makers die zich nog niet hebben aangemeld voor het ontvangen van bijdragen. Je browser zal blijven proberen bij te dragen tot ze verifiëren of tot er 90 dagen zijn verstreken.</translation>
 <translation id="8759753423332885148">Meer informatie.</translation>
 <translation id="3157931365184549694">Herstellen</translation>
@@ -401,6 +419,14 @@
 <translation id="2610007079772760276">Met een geverifieerde wallet kun je:</translation>
 <translation id="7565794512491053578">Verifieer Je Wallet</translation>
 <translation id="698531289520577961">En beheer je geld gemakkelijk!</translation>
+<translation id="8697510149346635496">Neem BAT op die je verdient door het bekijken van advertenties die privacy respecteren</translation>
+<translation id="1481480653609649134">Koop extra BAT met creditcards en andere bronnen</translation>
+<translation id="9096003370755878766">Neem BAT op die je mogelijk eerder aan je Brave Rewards-portemonnee hebt toegevoegd</translation>
+<translation id="5275978662119683162">Voordelen van verificatie</translation>
+<translation id="5166793288622772189">Ben je klaar om je portemonnee te verifiëren?</translation>
+<translation id="8766217572332535979">Verificatie is niet nodig om beloningen te verdienen voor bijdragen als maker</translation>
+<translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
+<translation id="723054503945711909">Brave Software Inc. verwerkt, bewaart of heeft geen toegang tot de persoonlijke informatie die je verstrekt aan Uphold wanneer je een account bij hen aanmaakt.</translation>
 <translation id="1181037720776840403">Verwijderen</translation>
 <translation id="7885157704277298658">Gekopieerd.</translation>
 <translation id="5379640681913450928">Aantal woorden:</translation>

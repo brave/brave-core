@@ -421,6 +421,14 @@
     "message": "טיפ",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "שליחת טיפ",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "טיפ",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "היוצר/ת $name$ אומת/ה לאחרונה",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "אל דאגה. זה יכול לקרות ממגוון סיבות אבטחה. פשוט התחבר/י אליו מחדש על מנת לפתור בעיה זו.",
+    "message": "אל דאגה. זה יכול לקרות ממגוון סיבות אבטחה. ניתן לפתור בעיה זו פשוט על ידי התחברות מחדש.\n",
     "description": "Title for notification when wallet is disconnected"
   }
 }

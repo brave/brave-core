@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "nahoru ",
+    "message": "zapnuty",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "dolů ",
+    "message": "vypnuty ",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
@@ -20,7 +20,7 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Pokud se zdá, že je stránka pokažená, zkuste snížit úroveň štítu",
+    "message": "Pokud se zdá, že je stránka pokažená, zkuste štíty vypnout",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {

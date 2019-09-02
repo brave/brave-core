@@ -421,6 +421,14 @@
     "message": "Príspevok",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "Zaslať tip",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "Príspevok",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Tvorcu $name$ sme nedávno verifikovali",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Žiadne obavy. Mohlo sa to stať z rozličných bezpečnostných dôvodov. Problém môže byť vyriešený jednoducho opätovným pripojením.",
+    "message": "Nemajte obavy. Toto sa môže stať z rôznych dôvodov. Jednoducho sa opätovne pripojte a problém bude vyriešený.",
     "description": "Title for notification when wallet is disconnected"
   }
 }

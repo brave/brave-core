@@ -421,6 +421,14 @@
     "message": "팁",
     "description": "Icon label for Reddit tips"
   },
+  "githubTipsHoverText": {
+    "message": "팁 보내기 ",
+    "description": "Hover text for GitHub tips action"
+  },
+  "githubTipsIconLabel": {
+    "message": "팁",
+    "description": "Icon label for GitHub tips"
+  },
   "verifiedPublisherNotification": {
     "message": "최근에 인증된 창작자 $name$",
     "description": "Notification text that tells user which publisher just verified",
@@ -554,7 +562,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "걱정마세요. 본 에러는 다양한 보안 상의 이유 때문에 발생할 수 있습니다. 간단히 다시 접속하시면 문제가 해결될 것입니다.",
+    "message": "걱정하지 마세요. 이런 일은 다양한 보안 이유로 발생할 수 있습니다. 단순히 재연결하면 이 문제가 해결됩니다. ",
     "description": "Title for notification when wallet is disconnected"
   }
 }

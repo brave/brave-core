@@ -5,6 +5,8 @@
 <translation id="7942180974165298215">„Brave Ad Block“</translation>
 <translation id="6406506848690869874">Sinchronizavimas</translation>
 <translation id="5655621391922317800">Kriptovaliutų piniginės</translation>
+<translation id="2445484935443597917">Kurti naują profilį</translation>
+<translation id="2666990579225592931">Atidaryti svečio langą</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (plėtinio ID "<ph name="EXTENSION_ID"/>") nėra leidžiamas naršyklėje „Brave“.</translation>
 <translation id="7450557937477381864">Užverti „Chrome“</translation>
 <translation id="7008934821596358692">Kad užbaigtumėte importuoti, užverkite visus „Chrome“ langus.</translation>
@@ -16,6 +18,8 @@
 <translation id="3489524616427966890">Atidaryti langai ir skirtukai</translation>
 <translation id="3699882589215410581">Įdiekite ir paleiskite „Widevine“</translation>
 <translation id="3696083746357487900">Įdiegti kriptovaliutų pinigines</translation>
+<translation id="8926389886865778422">Neklauskite dar kartą</translation>
+<translation id="4726634924419692905">Klausti, kai svetainė nori įdiegti „Widevine“ jūsų kompiuteryje.</translation>
 <translation id="8053096063396012732">Diegti „Widevine“</translation>
 <translation id="4840334696217618631">Paleiskite naršyklę iš naujo, kad „Widevine“ pradėtų veikti</translation>
 <translation id="8410111618231938546">„Google Widevine“ yra skaitmeninio teisių valdymo (DRM) kodo elementas, kuris nepriklauso „Brave Software“ ir todėl negalime jo patikrinti. „Google Widevine“ kodas įkeliamas iš „Google“ serverių, o ne iš mūsų serverių. Jis įkeliamas tik tada, kai aktyvinate šią parinktį. Mes neskatiname naudoti DRM, bet gerbiame naudotojų pasirinkimą ir pripažįstame, kad kai kurie „Brave“ naudotojai nori naudotis paslaugomis, kurioms DRM yra reikalingas.
@@ -31,6 +35,7 @@
 <translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Toliau blokuoti automatinį leidimą</translation>
 <translation id="5883458389055721080">„Brave“ nepatikrino šio plėtinio saugumo. Šį plėtinį įdiekite, tik jei pasitikite jo kūrėju.</translation>
+<translation id="8081858229109418493">Profilio pavadinimas ir piktograma</translation>
 <translation id="2044383478723007273">„Brave“ spalvos</translation>
 <translation id="2814998458708016836">Naudoti plačią adreso juostą</translation>
 <translation id="6123134130710658846">Slėpti mygtuką „Brave Rewards“</translation>
@@ -57,6 +62,9 @@
 <translation id="8754605759692119662">Šiuo veiksmu bus užblokuota dauguma svetainių reklamų, tačiau ne privačios „Brave“ reklamos — jos valdomos srityje</translation>
 <translation id="6388201778088078932">nuostatos.</translation>
 <translation id="9185018653595759199">Socialinės žiniasklaidos blokavimas</translation>
+<translation id="7390783310074170337">Numatytasis rodinys</translation>
+<translation id="130615081792797568">Paprastas rodinys</translation>
+<translation id="2360360976480535628">Išplėstinis rodinys</translation>
 <translation id="5709627087332022422">Blokuoti kelių svetainių sekiklius</translation>
 <translation id="9075744464571452108">Įrenginio atpažinimas</translation>
 <translation id="3570081523466826008">Pakeisti ryšius į HTTPS</translation>
@@ -95,6 +103,9 @@
 <translation id="9181207987584064303">Žiūrėti plėtinių parduotuvėje</translation>
 <translation id="4846154056248462491">Išjungiant</translation>
 <translation id="5057399635433117814">Išversti šį puslapį? Tokiu atveju visas šio puslapio tekstas bus nusiųstas „Microsoft“, kad būtų išverstas.</translation>
+<translation id="330263065709195164">Įdiegti „Google“ vertėjo papildinį, kad šis puslapis būtų išverstas?</translation>
+<translation id="3789841737615482174">Įdiegti</translation>
+<translation id="7658239707568436148">Atšaukti</translation>
 <translation id="3371343170427636147">„Brave“ naršyklės naktinės programos</translation>
 <translation id="4097979995947147464">„Brave“ naršyklės beta versijos programos</translation>
 <translation id="8303432794159193481">„Brave“ naršyklės kūrimo programos</translation>
