@@ -1,0 +1,10 @@
+source_set("ntp_tiles") {
+  sources = [
+    "brave_popular_sites_impl.cc",
+    "brave_popular_sites_impl.h",
+  ]
+
+  deps = [
+    "//components/ntp_tiles",
+  ]
+}
