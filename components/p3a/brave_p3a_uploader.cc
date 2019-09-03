@@ -20,18 +20,18 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotation() {
       semantics {
         sender: "Brave Privacy-Preserving Product Analytics Uploader"
         description:
-          "Report of anonimized usage statistics. The desciprtion is WIP."
+          "Report of anonymized usage statistics. For more info, see https://brave.com/P3A"
         trigger:
           "Reports are automatically generated on startup and at intervals "
           "while Brave is running."
         data:
-          "A protocol buffer with anonimized and encrypted usage data."
+          "A protocol buffer with anonymized and encrypted usage data."
         destination: WEBSITE
       }
       policy {
         cookies_allowed: NO
         setting:
-          "To be implemented."
+          "Users can enable or disable it in brave://settings/privacy"
          policy_exception_justification:
            "Not implemented."
       })");
