@@ -5,3 +5,16 @@ script/uplift.py @bsclifton
 vendor/brave-ios/ @kylehickinson
 /README.md @bsclifton
 Jenkinsfile @mihaiplesa
+
+# Rewards
+vendor/bat-native-ledger/ @NejcZdovc
+components/brave_rewards/ @NejcZdovc
+components/services/bat_ledger/ @NejcZdovc
+browser/ui/webui/brave_rewards_ui.h @NejcZdovc
+browser/ui/webui/brave_rewards_ui.cc @NejcZdovc
+
+# Ads
+vendor/bat-native-ads/ @tmancey
+vendor/bat-native-confirmations/ @tmancey
+components/brave_ads/ @tmancey
+components/services/bat_ads/ @tmancey
