@@ -614,7 +614,7 @@ void LedgerImpl::FetchGrants(const std::string& lang,
                              const std::string& payment_id,
                              const std::string& safetynet_token,
                              ledger::FetchGrantsCallback callback) const {
-  bat_grants_->FetchGrants(lang, payment_id, callback, safetynet_token);
+  bat_grants_->FetchGrants(lang, payment_id, safetynet_token, callback);
 }
 
 void LedgerImpl::OnGrants(ledger::Result result,

@@ -70,16 +70,12 @@ void Grants::FetchGrants(const std::string& lang,
 #if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
     safetynet_prefix = PREFIX_V3;
 #endif
-  auto callback = std::bind(&Grants::GetGrantsCallback, this, safetynet_token, _1, _2, _3);
   auto internal_callback = std::bind(
       &Grants::GetGrantsCallback,
       this,
       safetynet_token,
       _1, _2, _3,
       std::move(callback));
-  ledger_->LoadURL(braveledger_bat_helper::buildURL(
-        (std::string)GET_SET_PROMOTION + arguments, safetynet_token.empty() ? PREFIX_V4 : safetynet_prefix),
-      headers, "", "", ledger::URL_METHOD::GET, callback);
   ledger_->LoadURL(
       braveledger_bat_helper::buildURL(
           (std::string)GET_SET_PROMOTION + arguments, safetynet_token.empty() ? PREFIX_V4 : safetynet_prefix),
@@ -96,6 +92,7 @@ void Grants::GetGrantsCallback(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     ledger::FetchGrantsCallback callback) {
+  braveledger_bat_helper::GRANT properties;
   braveledger_bat_helper::Grants grants;
   braveledger_bat_helper::GRANTS_PROPERTIES_ST grants_properties;
 

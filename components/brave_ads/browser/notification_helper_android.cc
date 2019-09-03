@@ -6,9 +6,9 @@
 #include <string>
 
 #include "brave/components/brave_ads/browser/notification_helper_android.h"
-#include "jni/NotificationSystemStatusUtil_jni.h"
-#include "jni/BraveAds_jni.h"
-#include "jni/BraveAdsSignupDialog_jni.h"
+#include "chrome/android/chrome_jni_headers/NotificationSystemStatusUtil_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveAds_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveAdsSignupDialog_jni.h"
 #include "base/android/jni_string.h"
 #include "base/system/sys_info.h"
 

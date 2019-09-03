@@ -38,10 +38,13 @@
 #include "content/public/common/bindings_policy.h"
 #if defined(OS_ANDROID)
 #include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
-#include "components/grit/components_resources.h"
+// #include "components/grit/components_resources.h"
 #include "components/grit/components_scaled_resources.h"
-#include "content/public/browser/url_data_source.h"
-#include "chrome/browser/ui/webui/favicon_source.h"
+// TODO(samartnik): they excluded FaviconSource from Android in Chromium.
+// Need to find out how to workaround this.
+// #include "content/public/browser/url_data_source.h"
+// #include "chrome/browser/ui/webui/favicon_source.h"
+// #include "components/favicon_base/favicon_url_parser.h"
 #endif
 
 using content::WebUIMessageHandler;
@@ -267,13 +270,15 @@ RewardsDOMHandler::~RewardsDOMHandler() {
 }
 
 void RewardsDOMHandler::RegisterMessages() {
-
-#if defined(OS_ANDROID)
-  // Create our favicon data source.
-  Profile* profile = Profile::FromWebUI(web_ui());
-  content::URLDataSource::Add(profile,
-                              std::make_unique<FaviconSource>(profile));
-#endif
+// TODO(samartnik): they excluded FaviconSource from Android in Chromium.
+// Need to find out how to workaround this.
+// #if defined(OS_ANDROID)
+//   // Create our favicon data source.
+//   Profile* profile = Profile::FromWebUI(web_ui());
+//   content::URLDataSource::Add(profile,
+//                               std::make_unique<FaviconSource>(profile,
+//                                 chrome::FaviconUrlFormat::kFaviconLegacy));
+// #endif
 
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
       base::BindRepeating(&RewardsDOMHandler::HandleCreateWalletRequested,

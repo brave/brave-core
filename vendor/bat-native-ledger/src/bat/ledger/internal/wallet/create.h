@@ -55,7 +55,8 @@ class Create {
   void StartSafetyNetCallback(
       int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      ledger::CreateWalletCallback callback);
 
   std::string GetAnonizeProof(const std::string& registrarVK,
                               const std::string& id,
