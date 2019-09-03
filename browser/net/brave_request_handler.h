@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "base/sequence_checker.h"
+#include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/net/url_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/completion_once_callback.h"
@@ -25,8 +27,6 @@ class BraveRequestHandler {
 
   BraveRequestHandler();
   ~BraveRequestHandler();
-
-  bool IsRequestIdentifierValid(uint64_t request_identifier);
 
   int OnBeforeURLRequest(std::shared_ptr<brave::BraveRequestInfo> ctx,
                          net::CompletionOnceCallback callback,
@@ -46,6 +46,8 @@ class BraveRequestHandler {
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
  private:
+  void RunCallbackForRequestIdentifierInTaskRunner(uint64_t request_identifier,
+                                                   int rv);
   void SetupCallbacks();
   void InitPrefChangeRegistrarOnUI();
   void SetReferralHeaders(base::ListValue* referral_headers);
@@ -70,6 +72,12 @@ class BraveRequestHandler {
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
 
+  scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
+
+  base::WeakPtrFactory<BraveRequestHandler> weak_factory_io_{this};
+  base::WeakPtrFactory<BraveRequestHandler> weak_factory_ui_{this};
   base::WeakPtrFactory<BraveRequestHandler> weak_factory_{this};
   DISALLOW_COPY_AND_ASSIGN(BraveRequestHandler);
 };
