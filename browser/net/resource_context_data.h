@@ -24,7 +24,7 @@ class BraveProxyingWebSocket;
 class BraveRequestHandler;
 
 namespace content {
-class ResourceContext;
+class BrowserContext;
 }
 
 // Used for both URLLoaders and WebSocket proxies.
@@ -33,7 +33,7 @@ class RequestIDGenerator
  public:
   RequestIDGenerator() = default;
   int64_t Generate() {
-    DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
     return ++id_;
   }
 
@@ -55,19 +55,19 @@ class ResourceContextData : public base::SupportsUserData::Data {
   ~ResourceContextData() override;
 
   static void StartProxying(
-      content::ResourceContext* resource_context,
+      content::BrowserContext* browser_context,
       int render_process_id,
       int frame_tree_node_id,
       network::mojom::URLLoaderFactoryRequest request,
       network::mojom::URLLoaderFactoryPtrInfo target_factory);
 
-  static void StartProxyingWebSocket(
+  static BraveProxyingWebSocket* StartProxyingWebSocket(
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const GURL& site_for_cookies,
       const base::Optional<std::string>& user_agent,
       network::mojom::WebSocketHandshakeClientPtrInfo handshake_client,
-      content::ResourceContext* resource_context,
+      content::BrowserContext* browser_context,
       int render_process_id,
       int frame_id,
       int frame_tree_node_id,

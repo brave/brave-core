@@ -36,7 +36,6 @@
 namespace content {
 class BrowserContext;
 class RenderFrameHost;
-class ResourceContext;
 }  // namespace content
 
 // Cargoculted from WebRequestProxyingURLLoaderFactory and
@@ -59,7 +58,7 @@ class BraveProxyingURLLoaderFactory
         int32_t routing_id,
         uint32_t options,
         const network::ResourceRequest& request,
-        content::ResourceContext* resource_context,
+        content::BrowserContext* browser_context,
         const net::MutableNetworkTrafficAnnotationTag& traffic_annotation,
         network::mojom::URLLoaderRequest loader_request,
         network::mojom::URLLoaderClientPtr client);
@@ -118,7 +117,7 @@ class BraveProxyingURLLoaderFactory
     const int32_t routing_id_;
     const uint32_t options_;
 
-    content::ResourceContext* resource_context_;
+    content::BrowserContext* browser_context_;
     const net::MutableNetworkTrafficAnnotationTag traffic_annotation_;
     mojo::Binding<network::mojom::URLLoader> proxied_loader_binding_;
     network::mojom::URLLoaderClientPtr target_client_;
@@ -162,7 +161,7 @@ class BraveProxyingURLLoaderFactory
   // by calling MaybeProxyRequest().
   BraveProxyingURLLoaderFactory(
       BraveRequestHandler* request_handler,
-      content::ResourceContext* resource_context,
+      content::BrowserContext* browser_context,
       int render_process_id,
       int frame_tree_node_id,
       network::mojom::URLLoaderFactoryRequest request,
@@ -201,7 +200,7 @@ class BraveProxyingURLLoaderFactory
   void MaybeRemoveProxy();
 
   BraveRequestHandler* const request_handler_;
-  content::ResourceContext* resource_context_;
+  content::BrowserContext* browser_context_;
   const int render_process_id_;
   const int frame_tree_node_id_;
 
