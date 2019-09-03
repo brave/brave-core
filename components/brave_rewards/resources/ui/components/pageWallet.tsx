@@ -368,6 +368,9 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     switch (externalWallet.status) {
+      // ledger::WalletStatus::CONNECTED
+      case 1:
+        return 'connected'
       // WalletStatus::VERIFIED
       case 2:
         return 'verified'

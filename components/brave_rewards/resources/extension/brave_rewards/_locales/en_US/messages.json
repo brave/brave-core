@@ -524,5 +524,9 @@
   "connectedText":  {
     "message": "This creator has not yet signed up to receive contributions from Brave users. Any tips you send will remain in your wallet until they verify.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Complete wallet verification",
+    "description": "CTA for completing wallet verification"
   }
 }
