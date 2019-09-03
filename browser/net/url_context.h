@@ -16,7 +16,7 @@
 #include "url/gurl.h"
 
 namespace content {
-class ResourceContext;
+class BrowserContext;
 }
 
 namespace network {
@@ -109,7 +109,7 @@ struct BraveRequestInfo {
       int render_process_id,
       int frame_tree_node_id,
       uint64_t request_identifier,
-      content::ResourceContext* resource_context,
+      content::BrowserContext* browser_context,
       std::shared_ptr<brave::BraveRequestInfo> ctx);
 
  private:
