@@ -46,8 +46,8 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="provider" attributeType="String" syncable="YES"/>
         <attribute name="publisherID" attributeType="String" syncable="YES"/>
+        <attribute name="status" attributeType="Integer 32" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="url" attributeType="String" syncable="YES"/>
-        <attribute name="verified" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ActivityInfo" inverseName="publisher" inverseEntity="ActivityInfo" syncable="YES"/>
         <relationship name="contributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ContributionInfo" inverseName="publisher" inverseEntity="ContributionInfo" syncable="YES"/>
         <relationship name="pendingContributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PendingContribution" inverseName="publisher" inverseEntity="PendingContribution" syncable="YES"/>

@@ -439,11 +439,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return [[BATLedgerDatabase publishersWithActivityFromOffset:0 limit:1 filter:filter] firstObject];
 }
 
-- (void)refreshPublisherWithId:(NSString *)publisherId completion:(void (^)(BOOL verified))completion
+- (void)refreshPublisherWithId:(NSString *)publisherId completion:(void (^)(BATPublisherStatus status))completion
 {
   ledger->RefreshPublisher(std::string(publisherId.UTF8String), ^(ledger::PublisherStatus status) {
-    // FIXME: This should be forwarding the whole state
-    completion(status == ledger::PublisherStatus::VERIFIED);
+    completion(static_cast<BATPublisherStatus>(status));
   });
 }
 
@@ -1723,26 +1722,23 @@ BATLedgerBridge(BOOL,
 
 - (void)getServerPublisherInfo:(const std::string &)publisher_key callback:(ledger::GetServerPublisherInfoCallback)callback
 {
-  // FIXME: Add implementation
+  const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
+  const auto info = [BATLedgerDatabase serverPublisherInfoWithPublisherID:publisherID];
+  if (!info) {
+    callback(nullptr);
+    return;
+  }
+  callback(info.cppObjPtr);
 }
 
 - (void)clearAndInsertServerPublisherList:(ledger::ServerPublisherInfoList)list callback:(ledger::ClearAndInsertServerPublisherListCallback)callback
 {
-  // FIXME: Add implementation
+  const auto list_ = NSArrayFromVector(&list, ^BATServerPublisherInfo *(const ledger::ServerPublisherInfoPtr& info) {
+    return [[BATServerPublisherInfo alloc] initWithServerPublisherInfo:*info];
+  });
+  [BATLedgerDatabase clearAndInsertList:list_ completion:^(BOOL success) {
+    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  }];
 }
 
-@end
-
-// FIXME: This is a patch, need to use the actual verified state
-@implementation BATPublisherInfo (BuildFix)
-- (BOOL)isVerified {
-  return NO;
-}
-- (void)setVerified:(BOOL)verified { }
-@end
-@implementation BATPendingContributionInfo (BuildFix)
-- (BOOL)isVerified {
-  return NO;
-}
-- (void)setVerified:(BOOL)verified { }
 @end
