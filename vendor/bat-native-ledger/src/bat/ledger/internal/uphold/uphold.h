@@ -28,6 +28,8 @@ using TransactionCallback = std::function<void(ledger::Result, bool created)>;
 using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
 using CreateCardCallback =
     std::function<void(ledger::Result, const std::string&)>;
+using CreateAnonAddressCallback =
+    std::function<void(ledger::Result, const std::string&)>;
 
 class Uphold {
  public:
@@ -69,6 +71,10 @@ class Uphold {
   void GetUser(
     ledger::ExternalWalletPtr wallet,
     GetUserCallback callback);
+
+  void CreateAnonAddressIfNecessary(
+      ledger::ExternalWalletPtr wallet,
+      CreateAnonAddressCallback callback);
 
  private:
   void OnServerPublisherInfo(
