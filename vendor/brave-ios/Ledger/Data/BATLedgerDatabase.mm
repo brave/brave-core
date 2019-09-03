@@ -693,15 +693,9 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class)
                                       inManagedObjectContext:context];
     NSError *error = nil;
-    if ([DataController.shared.container.persistentStoreDescriptions.firstObject.type isEqualToString:NSSQLiteStoreType]) {
-      const auto deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
-      [context executeRequest:deleteRequest error:&error];
-    } else {
-      const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-      for (ServerPublisherInfo *spi in fetchedObjects) {
-        [context deleteObject:spi];
-      }
-    }
+    const auto deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
+    [context executeRequest:deleteRequest error:&error];
+    
     if (error) {
       NSLog(@"%@", error);
     }

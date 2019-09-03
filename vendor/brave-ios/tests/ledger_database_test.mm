@@ -9,16 +9,22 @@
 #import "BATLedgerDatabase.h"
 
 
-@interface InMemoryDataController : DataController
+@interface TempTestDataController : DataController
+@property (nonatomic, nullable) NSUUID *folderPrefix;
 @end
 
-@implementation InMemoryDataController
+@implementation TempTestDataController
 
-- (void)addPersistentStoreForContainer:(NSPersistentContainer *)container
+- (NSURL *)storeDirectoryURL
 {
-  const auto description = [[NSPersistentStoreDescription alloc] init];
-  description.type = NSInMemoryStoreType;
-  container.persistentStoreDescriptions = @[description];
+  if (!self.folderPrefix) {
+    self.folderPrefix = [NSUUID UUID];
+  }
+  const auto documentURL = [NSTemporaryDirectory() stringByAppendingPathComponent:self.folderPrefix.UUIDString];
+  if (!documentURL) {
+    return nil;
+  }
+  return [NSURL fileURLWithPath:documentURL];
 }
 
 @end
@@ -37,13 +43,14 @@
                                              name:NSManagedObjectContextDidSaveNotification
                                            object:nil];
 
-  DataController.shared = [[InMemoryDataController alloc] init];
+  DataController.shared = [[TempTestDataController alloc] init];
 }
 
 - (void)tearDown
 {
   [super tearDown];
   [DataController.viewContext reset];
+  [[NSFileManager defaultManager] removeItemAtURL:DataController.shared.storeDirectoryURL error:nil];
   self.contextSaveCompletion = nil;
   [NSNotificationCenter.defaultCenter removeObserver:self];
 }
@@ -292,7 +299,7 @@
 
   NSMutableArray<BATPublisherInfo *> *publisherTips = [[NSMutableArray alloc] init];
   for (BATPublisherInfo *tipInfo in tips) {
-    if (tipInfo.id == pubId) {
+    if ([tipInfo.id isEqualToString:pubId]) {
       [publisherTips addObject:tipInfo];
     }
   }
@@ -383,6 +390,10 @@
 
   const auto filter = [[BATActivityInfoFilter alloc] init];
   filter.id = @"111";
+  const auto sort = [[BATActivityInfoFilterOrderPair alloc] init];
+  sort.propertyName = @"reconcileStamp";
+  sort.ascending = NO;
+  filter.orderBy = @[ sort ];
 
   auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
   XCTAssertEqual(result.count, 1);
@@ -450,7 +461,7 @@
   result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
   XCTAssertEqual(result.firstObject.reconcileStamp, 10);
   XCTAssertEqual(result.firstObject.percent, 22);
-  XCTAssertEqual(result.firstObject.id, @"2");
+  XCTAssert([result.firstObject.id isEqualToString:@"2"]);
 }
 
 #pragma mark - publishersWithActivityFromOffset
@@ -472,23 +483,26 @@
 - (void)testPublishersWithFiltersLimitOffset
 {
   const auto filter = [[BATActivityInfoFilter alloc] init];
+  const auto sort = [[BATActivityInfoFilterOrderPair alloc] init];
+  sort.propertyName = @"publisherID";
+  sort.ascending = YES;
+  filter.orderBy = @[ sort ];
 
   [self createBATPublisherInfo:@"1" reconcileStamp:10 percent:10 createActivityInfo:YES];
   [self createBATPublisherInfo:@"2" reconcileStamp:10 percent:10 createActivityInfo:YES];
   [self createBATPublisherInfo:@"3" reconcileStamp:10 percent:10 createActivityInfo:YES];
-  // result without any filters is [3, 2, 1]
 
   const auto limit = 1;
   const auto resultWithLimit = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:limit filter:filter];
 
   XCTAssertEqual(resultWithLimit.count, 1);
-  XCTAssertEqual(resultWithLimit.firstObject.id, @"3");
+  XCTAssert([resultWithLimit.firstObject.id isEqualToString:@"1"]);
 
   const auto offset = 2;
   const auto resultWithOffset = [BATLedgerDatabase publishersWithActivityFromOffset:offset limit:30 filter:filter];
 
   XCTAssertEqual(resultWithOffset.count, 1);
-  XCTAssertEqual(resultWithOffset.firstObject.id, @"1");
+  XCTAssert([resultWithOffset.firstObject.id isEqualToString:@"3"]);
 }
 
 - (void)testPublishersWithFiltersSorting
@@ -509,9 +523,9 @@
                                                                              limit:0
                                                                             filter:filter];
 
-  XCTAssertEqual(ascendingResult[0].id, @"3");
-  XCTAssertEqual(ascendingResult[1].id, @"1");
-  XCTAssertEqual(ascendingResult[2].id, @"2");
+  XCTAssert([ascendingResult[0].id isEqualToString:@"3"]);
+  XCTAssert([ascendingResult[1].id isEqualToString:@"1"]);
+  XCTAssert([ascendingResult[2].id isEqualToString:@"2"]);
 
   // Descending order
   const auto percentDescending = [[BATActivityInfoFilterOrderPair alloc] init];
@@ -524,9 +538,9 @@
                                                                               limit:0
                                                                              filter:filter];
 
-  XCTAssertEqual(descendingResult[0].id, @"2");
-  XCTAssertEqual(descendingResult[1].id, @"1");
-  XCTAssertEqual(descendingResult[2].id, @"3");
+  XCTAssert([descendingResult[0].id isEqualToString:@"2"]);
+  XCTAssert([descendingResult[1].id isEqualToString:@"1"]);
+  XCTAssert([descendingResult[2].id isEqualToString:@"3"]);
 
   // Two sort descriptors
 
@@ -572,7 +586,7 @@
   filter.id = idForFilter;
 
   const auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.firstObject.id, idForFilter);
+  XCTAssert([result.firstObject.id isEqualToString:idForFilter]);
 
   const auto idDoesNotExist = @"not_exists";
   filter.id = idDoesNotExist;
@@ -595,7 +609,7 @@
 
   const auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
   XCTAssertEqual(result.count, 2);
-  XCTAssertNotEqual(result.firstObject.id, @"3");
+  XCTAssertFalse([result.firstObject.id isEqualToString:@"3"]);
 
   // non existent stamp
   filter.reconcileStamp = 333;
@@ -771,7 +785,7 @@
 
   XCTAssert([self countMustBeEqualTo:1 forEntityName:@"MediaPublisherInfo"]);
   const auto newPub = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:@"key"];
-  XCTAssertEqual(newPub.id, @"1");
+  XCTAssert([newPub.id isEqualToString:@"1"]);
 }
 
 - (void)testMediaPublisherInfoWithMediaKey
@@ -786,7 +800,7 @@
   }];
 
   const auto result = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:key];
-  XCTAssertEqual(result.id, publisherId);
+  XCTAssert([result.id isEqualToString:publisherId]);
 
   const auto emptyResult = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:@"empty"];
   XCTAssertNil(emptyResult);
@@ -813,7 +827,7 @@
 
   const auto tips = BATLedgerDatabase.recurringTips;
   XCTAssertEqual(tips.count, 1);
-  XCTAssertEqual(tips.firstObject.id, publisherId);
+  XCTAssert([tips.firstObject.id isEqualToString:publisherId]);
   XCTAssertEqual(tips.firstObject.weight, amount);
 }
 
@@ -863,7 +877,7 @@
   XCTAssert([self countMustBeEqualTo:1 forEntityName:@"RecurringDonation"]);
   const auto tipsLeft = BATLedgerDatabase.recurringTips;
   XCTAssertEqual(tipsLeft.count, 1);
-  XCTAssertNotEqual(tipsLeft.firstObject.id, @"1");
+  XCTAssertFalse([tipsLeft.firstObject.id isEqualToString:@"1"]);
 }
 
 - (void)createRecurringTip:(NSString *)publisherId amount:(double)amount date:(uint32_t)date
