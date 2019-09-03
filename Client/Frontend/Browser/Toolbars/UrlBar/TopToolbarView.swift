@@ -37,6 +37,7 @@ protocol TopToolbarDelegate: class {
     // Returns either (search query, true) or (url, false).
     func topToolbarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
     func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView)
+    func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView)
@@ -139,15 +140,17 @@ class TopToolbarView: UIView, ToolbarProtocol {
         return button
     }()
 
-    var bookmarkButton = ToolbarButton()
+    lazy var bookmarkButton = ToolbarButton().then {
+        $0.setImage(#imageLiteral(resourceName: "menu_bookmarks").template, for: .normal)
+        $0.accessibilityLabel = Strings.BookmarksMenuItem
+        $0.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
+    }
+    
     var forwardButton = ToolbarButton()
     var shareButton = ToolbarButton()
     var addTabButton = ToolbarButton()
     lazy var menuButton = ToolbarButton().then {
         $0.contentMode = .center
-        $0.setImage(#imageLiteral(resourceName: "nav-menu").template, for: .normal)
-        $0.accessibilityLabel = Strings.AppMenuButtonAccessibilityLabel
-        $0.addTarget(self, action: #selector(didClickMenu), for: .touchUpInside)
         $0.accessibilityIdentifier = "topToolbarView-menuButton"
     }
 
@@ -158,7 +161,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }()
 
     lazy var actionButtons: [Themeable & UIButton] =
-        [self.shareButton, self.tabsButton,
+        [self.shareButton, self.tabsButton, self.bookmarkButton,
          self.forwardButton, self.backButton, self.menuButton].compactMap { $0 }
     
     /// Update the shields icon based on whether or not shields are enabled for this site
@@ -206,6 +209,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
         helper = ToolbarHelper(toolbar: self)
         setupConstraints()
         
+        Preferences.General.showBookmarkToolbarShortcut.observe(from: self)
+        
         // Make sure we hide any views that shouldn't be showing in non-overlay mode.
         updateViewsForOverlayModeAndToolbarChanges()
     }
@@ -227,11 +232,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
         navigationStackView.addArrangedSubview(backButton)
         navigationStackView.addArrangedSubview(forwardButton)
         
-        [backButton, forwardButton, menuButton, tabsButton].forEach {
+        [backButton, forwardButton, bookmarkButton, tabsButton, menuButton].forEach {
             $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
         }
         
-        [navigationStackView, locationContainer, tabsButton, menuButton, cancelButton].forEach {
+        [navigationStackView, bookmarkButton, locationContainer, tabsButton, menuButton, cancelButton].forEach {
             mainStackView.addArrangedSubview($0)
         }
         
@@ -421,6 +426,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
         menuButton.isHidden = !toolbarIsShowing || inOverlayMode
         tabsButton.isHidden = !toolbarIsShowing || inOverlayMode
         locationView.contentView.isHidden = inOverlayMode
+        
+        let showBookmarkPref = Preferences.General.showBookmarkToolbarShortcut.value
+        bookmarkButton.isHidden = showBookmarkPref ? inOverlayMode : true
     }
     
     private func animateToOverlayState(overlayMode overlay: Bool, didCancel cancel: Bool = false) {
@@ -431,7 +439,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
         }
         
         if inOverlayMode {
-            [progressBar, navigationStackView, menuButton, tabsButton, locationView.contentView].forEach {
+            [progressBar, navigationStackView, bookmarkButton, menuButton, tabsButton, locationView.contentView].forEach {
                 $0?.isHidden = true
             }
             
@@ -458,12 +466,24 @@ class TopToolbarView: UIView, ToolbarProtocol {
         delegate?.topToolbarDidPressScrollToTop(self)
     }
     
+    @objc func didClickBookmarkButton() {
+        delegate?.topToolbarDidTapBookmarkButton(self)
+    }
+    
     @objc func didClickMenu() {
         delegate?.topToolbarDidTapMenuButton(self)
     }
     
     @objc func didClickBraveShieldsButton() {
         delegate?.topToolbarDidTapBraveShieldsButton(self)
+    }
+}
+
+// MARK: - PreferencesObserver
+
+extension TopToolbarView: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        updateViewsForOverlayModeAndToolbarChanges()
     }
 }
 
