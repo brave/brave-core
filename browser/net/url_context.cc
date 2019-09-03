@@ -237,8 +237,7 @@ void BraveRequestInfo::FillCTX(
   ctx->allow_http_upgradable_resource =
       !brave_shields::GetHTTPSEverywhereEnabled(profile, ctx->tab_origin);
   ctx->allow_referrers =
-      brave_shields::GetCookieControlType(profile, ctx->tab_origin) ==
-          brave_shields::ControlType::ALLOW;
+      brave_shields::AllowReferrers(profile, ctx->tab_origin);
   ctx->upload_data = GetUploadData(request);
 }
 
