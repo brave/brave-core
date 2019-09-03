@@ -68,7 +68,7 @@ export default class Settings extends React.PureComponent<Props, {}> {
       onClick
     } = this.props
     return (
-      <SettingsWrapper innerRef={this.settingsMenuRef}>
+      <SettingsWrapper title={getLocale('dashboardSettingsTitle')} innerRef={this.settingsMenuRef}>
         <IconButton onClick={onClick} onKeyDown={this.onKeyPressSettings}><SettingsIcon/></IconButton>
         {showSettingsMenu &&
           <SettingsMenu textDirection={textDirection}>
