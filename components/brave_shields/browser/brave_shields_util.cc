@@ -238,6 +238,18 @@ ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url) {
   }
 }
 
+bool AllowReferrers(Profile* profile, const GURL& url) {
+  return AllowReferrers(
+      HostContentSettingsMapFactory::GetForProfile(profile), url);
+}
+
+bool AllowReferrers(HostContentSettingsMap* map, const GURL& url) {
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kReferrers);
+
+  return setting != CONTENT_SETTING_BLOCK;
+}
+
 void SetFingerprintingControlType(Profile* profile,
                                   ControlType type,
                                   const GURL& url) {
