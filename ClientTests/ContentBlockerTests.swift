@@ -20,38 +20,44 @@ class ContentBlockerTests: XCTestCase {
         let bundleURL = testBundle.bundleURL
         store = WKContentRuleListStore(url: bundleURL)!
         
+        let cleanStoreExpectation = expectation(description: "rule list setup")
+        cleanStoreExpectation.isInverted = true
+        
         contentBlocker = BlocklistName(filename: contentBlockerName)
         
         store.getAvailableContentRuleListIdentifiers { ids in
-            if ids != nil && !ids!.isEmpty {
-                XCTAssert(false)
-                return
+            if ids?.isEmpty == false {
+                cleanStoreExpectation.fulfill()
             }
         }
+        
+        wait(for: [cleanStoreExpectation], timeout: 1)
     }
     
     override func tearDown() {
         let ruleListsRemoved = XCTestExpectation(description: "rule lists removed")
         
+        var removedRuleLists: [XCTestExpectation] = []
+        
         store.getAvailableContentRuleListIdentifiers { ids in
             guard let ids = ids else { return }
             
-            var idsWithCompletions = [String: Deferred<()>]()
-            
             ids.forEach { id in
-                idsWithCompletions[id] = Deferred<()>()
+                let idExpectation = self.expectation(description: "id: \(id)")
+                
+                removedRuleLists.append(idExpectation)
+                
                 self.store.removeContentRuleList(forIdentifier: id) { error in
                     if error != nil { return }
-                    idsWithCompletions[id]?.fill(())
+                    idExpectation.fulfill()
+                    
                 }
             }
             
-            all(Array(idsWithCompletions.values)).upon { _ in
-                ruleListsRemoved.fulfill()
-            }
+            ruleListsRemoved.fulfill()
         }
         
-        wait(for: [ruleListsRemoved], timeout: 1)
+        wait(for: [ruleListsRemoved] + removedRuleLists, timeout: 2)
         
         super.tearDown()
     }
