@@ -661,6 +661,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   info.status = static_cast<BATPublisherStatus>(serverInfo.status);
   info.excluded = serverInfo.excluded;
   info.address = serverInfo.address;
+  info.banner = [self bannerForPublisherID:publisherID];
   return info;
 }
 
@@ -672,14 +673,15 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     pi.status = static_cast<int32_t>(info.status);
     pi.excluded = info.excluded;
     pi.address = info.address;
+    [self insertOrUpdateBannerForServerPublisherInfo:info context:context];
   }
 }
 
-+ (void)insertOrUpdateServerPublisherList:(NSArray<BATServerPublisherInfo *> *)list
++ (void)insertOrUpdateServerPublisherInfo:(BATServerPublisherInfo *)info
                                completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
-    [self insertOrUpdateServerPublisherList:list context:context];
+    [self insertOrUpdateServerPublisherList:@[info] context:context];
   } completion:WriteToDataControllerCompletion(completion)];
 }
 
@@ -705,6 +707,45 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     }
     [self insertOrUpdateServerPublisherList:list context:context];
   } completion:WriteToDataControllerCompletion(completion)];
+}
+
+#pragma mark - Publisher List / Banner
+
++ (nullable BATPublisherBanner *)bannerForPublisherID:(NSString *)publisherID
+{
+  const auto spb = [self getServerPublisherBannerWithPublisherID:publisherID context:DataController.viewContext];
+  if (!spb) {
+    return nil;
+  }
+  const auto banner = [[BATPublisherBanner alloc] init];
+  banner.publisherKey = publisherID;
+  banner.title = spb.title;
+  banner.desc = spb.desc;
+  banner.background = spb.background;
+  banner.logo = spb.logo;
+  banner.links = [self publisherLinksWithPublisherID:publisherID];
+  banner.amounts = [self bannerAmountsForPublisherWithPublisherID:publisherID];
+  return banner;
+}
+
++ (void)insertOrUpdateBannerForServerPublisherInfo:(BATServerPublisherInfo *)info
+                                        context:(NSManagedObjectContext *)context
+{
+  if (!info.banner) {
+    return;
+  }
+  
+  auto spb = [self getServerPublisherBannerWithPublisherID:info.publisherKey context:context] ?: [[ServerPublisherBanner alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherBanner.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+  spb.serverPublisherInfo = [self getServerPublisherInfoWithPublisherID:info.publisherKey context:context];
+  spb.publisherID = info.publisherKey;
+  spb.title = info.banner.title;
+  spb.desc = info.banner.desc;
+  spb.background = info.banner.background;
+  spb.logo = info.banner.logo;
+  
+  // This is the same as core, they insert banner, amounts and links all at the same time
+  [self insertOrUpdateBannerAmountsForServerPublisherInfo:info context:context];
+  [self insertOrUpdateLinksForServerPublisherInfo:info context:context];
 }
 
 #pragma mark - Publisher List / Banner Amounts
@@ -737,6 +778,10 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 
 + (void)insertOrUpdateBannerAmountsForServerPublisherInfo:(BATServerPublisherInfo *)info context:(NSManagedObjectContext *)context
 {
+  if (!info.banner) {
+    return;
+  }
+  
   for (NSNumber *amountObj in info.banner.amounts) {
     double amount = [amountObj doubleValue];
     auto spa = [self getServerPublisherAmountWithPublisherID:info.publisherKey amount:amount context:context] ?: [[ServerPublisherAmount alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherAmount.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
@@ -746,66 +791,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   }
 }
 
-+ (void)insertOrUpdateBannerAmountsForServerPublisherInfo:(BATServerPublisherInfo *)info
-                                               completion:(nullable BATLedgerDatabaseWriteCompletion)completion
-{
-  if (!info.banner) {
-    if (completion) {
-      completion(NO);
-    }
-    return;
-  }
-  
-  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
-    [self insertOrUpdateBannerAmountsForServerPublisherInfo:info context:context];
-  } completion:WriteToDataControllerCompletion(completion)];
-}
-
-#pragma mark - Publisher List / Banner
-
-+ (nullable BATPublisherBanner *)bannerForPublisherID:(NSString *)publisherID
-{
-  const auto spb = [self getServerPublisherBannerWithPublisherID:publisherID context:DataController.viewContext];
-  if (!spb) {
-    return nil;
-  }
-  const auto banner = [[BATPublisherBanner alloc] init];
-  banner.publisherKey = publisherID;
-  banner.title = spb.title;
-  banner.desc = spb.desc;
-  banner.background = spb.background;
-  banner.logo = spb.logo;
-  banner.links = [self publisherLinksWithPublisherID:publisherID];
-  banner.amounts = [self bannerAmountsForPublisherWithPublisherID:publisherID];
-  return banner;
-}
-
-+ (void)insertOrUpdateBannerForServerPublisherInfo:(BATServerPublisherInfo *)info
-                                        completion:(nullable BATLedgerDatabaseWriteCompletion)completion
-{
-  if (!info.banner) {
-    if (completion) {
-      completion(NO);
-    }
-    return;
-  }
-  
-  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
-    auto spb = [self getServerPublisherBannerWithPublisherID:info.publisherKey context:context] ?: [[ServerPublisherBanner alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherBanner.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-    spb.serverPublisherInfo = [self getServerPublisherInfoWithPublisherID:info.publisherKey context:context];
-    spb.publisherID = info.publisherKey;
-    spb.title = info.banner.title;
-    spb.desc = info.banner.desc;
-    spb.background = info.banner.background;
-    spb.logo = info.banner.logo;
-    
-    // This is the same as core, they insert banner, amounts and links all at the same time
-    [self insertOrUpdateBannerAmountsForServerPublisherInfo:info context:context];
-    [self insertOrUpdateLinksForServerPublisherInfo:info context:context];
-  } completion:WriteToDataControllerCompletion(completion)];
-}
-
-#pragma mark - Publisher List / Link
+#pragma mark - Publisher List / Banner Links
 
 + (nullable NSDictionary<NSString *, NSString *> *)publisherLinksWithPublisherID:(NSString *)publisherID
 {
@@ -833,6 +819,9 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 
 + (void)insertOrUpdateLinksForServerPublisherInfo:(BATServerPublisherInfo *)info context:(NSManagedObjectContext *)context
 {
+  if (!info.banner) {
+    return;
+  }
   for (NSString *provider in info.banner.links) {
     auto spl = [self getServerPublisherLinkWithPublisherID:info.publisherKey provider:provider context:context] ?: [[ServerPublisherLink alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherLink.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
     spl.serverPublisherInfo = [self getServerPublisherInfoWithPublisherID:info.publisherKey context:context];
@@ -840,21 +829,6 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     spl.provider = provider;
     spl.link = info.banner.links[provider];
   }
-}
-
-+ (void)insertOrUpdateLinksForServerPublisherInfo:(BATServerPublisherInfo *)info
-                                       completion:(nullable BATLedgerDatabaseWriteCompletion)completion
-{
-  if (!info.banner) {
-    if (completion) {
-      completion(NO);
-    }
-    return;
-  }
-  
-  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
-    [self insertOrUpdateLinksForServerPublisherInfo:info context:context];
-  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 @end

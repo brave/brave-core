@@ -119,36 +119,18 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 /// Get the amount of BAT allocated for pending contributions
 + (double)reservedAmountForPendingContributions;
 
-#pragma mark - Publisher List / Info
+#pragma mark - Publisher List
 
 + (nullable BATServerPublisherInfo *)serverPublisherInfoWithPublisherID:(NSString *)publisherID;
-
-+ (void)insertOrUpdateServerPublisherList:(NSArray<BATServerPublisherInfo *> *)list
-                               completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 + (void)clearAndInsertList:(NSArray<BATServerPublisherInfo *> *)list
                 completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
-#pragma mark - Publisher List / Banner
+#pragma mark - Publisher List / Test Helpers
 
 + (nullable BATPublisherBanner *)bannerForPublisherID:(NSString *)publisherID;
-
-+ (void)insertOrUpdateBannerForServerPublisherInfo:(BATServerPublisherInfo *)info
-                                        completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-#pragma mark - Publisher List / Banner Amounts
-
 + (nullable NSArray<NSNumber *> *)bannerAmountsForPublisherWithPublisherID:(NSString *)publisherID;
-
-+ (void)insertOrUpdateBannerAmountsForServerPublisherInfo:(BATServerPublisherInfo *)info
-                                               completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-#pragma mark - Publisher List / Link
-
 + (nullable NSDictionary<NSString *, NSString *> *)publisherLinksWithPublisherID:(NSString *)publisherID;
-
-+ (void)insertOrUpdateLinksForServerPublisherInfo:(BATServerPublisherInfo *)info
-                                       completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 #pragma mark -
 

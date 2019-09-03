@@ -1021,9 +1021,24 @@
 
 - (BATServerPublisherInfo *)serverPublisherInfo:(NSString *)publisherID
 {
+  return [self serverPublisherInfo:publisherID amounts:nil links:nil];
+}
+
+- (BATServerPublisherInfo *)serverPublisherInfo:(NSString *)publisherID
+                                        amounts:(nullable NSArray<NSNumber *> *)amounts
+                                          links:(nullable NSDictionary<NSString *, NSString *> *)links
+{
   auto info = [[BATServerPublisherInfo alloc] init];
   info.publisherKey = publisherID;
   info.address = publisherID;
+  
+  const auto banner = [[BATPublisherBanner alloc] init];
+  banner.publisherKey = publisherID;
+  banner.desc = @"brave";
+  banner.amounts = amounts ?: @[ @1.0, @5.0, @10.0 ];
+  banner.links = links ?: @{ @"twitter": @"twitter.com", @"youtube": @"youtube.com" };
+  info.banner = banner;
+  
   return info;
 }
 
@@ -1040,7 +1055,7 @@
     [self serverPublisherInfo:@"duckduckgo.com"]
   ];
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateServerPublisherList:list completion:nil];
+    [BATLedgerDatabase clearAndInsertList:list completion:nil];
   }];
   for (BATServerPublisherInfo *info in list) {
     XCTAssertNotNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
@@ -1054,7 +1069,7 @@
     [self serverPublisherInfo:@"duckduckgo.com"]
   ];
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateServerPublisherList:firstList completion:nil];
+    [BATLedgerDatabase clearAndInsertList:firstList completion:nil];
   }];
   const auto secondList = @[
     [self serverPublisherInfo:@"github.com"],
@@ -1064,10 +1079,18 @@
     [BATLedgerDatabase clearAndInsertList:secondList completion:nil];
   }];
   for (BATServerPublisherInfo *info in firstList) {
+    // Ensure all originals were destroyed
     XCTAssertNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
+    XCTAssertNil([BATLedgerDatabase bannerForPublisherID:info.publisherKey]);
+    XCTAssertNil([BATLedgerDatabase bannerAmountsForPublisherWithPublisherID:info.publisherKey]);
+    XCTAssertNil([BATLedgerDatabase publisherLinksWithPublisherID:info.publisherKey]);
   }
   for (BATServerPublisherInfo *info in secondList) {
-    XCTAssertNotNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
+    const auto queriedInfo = [BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey];
+    XCTAssertNotNil(queriedInfo);
+    XCTAssertNotNil(queriedInfo.banner);
+    XCTAssert(queriedInfo.banner.amounts.count > 0);
+    XCTAssert(queriedInfo.banner.links.count > 0);
   }
 }
 
@@ -1077,26 +1100,18 @@
 {
   const auto publisherID = @"brave.com";
   const auto info = [self serverPublisherInfo:publisherID];
-  const auto banner = [[BATPublisherBanner alloc] init];
-  banner.publisherKey = publisherID;
-  banner.desc = @"brave";
-  banner.amounts = @[ @1.0, @5.0, @10.0 ];
-  banner.links = @{ @"twitter": @"twitter.com", @"youtube": @"youtube.com" };
-  info.banner = banner;
   
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateServerPublisherList:@[info] completion:nil];
+    [BATLedgerDatabase clearAndInsertList:@[info] completion:nil];
   }];
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateBannerForServerPublisherInfo:info completion:nil];
-  }];
-  const auto amounts = [BATLedgerDatabase bannerAmountsForPublisherWithPublisherID:publisherID];
-  const auto links = [BATLedgerDatabase publisherLinksWithPublisherID:publisherID];
-  XCTAssertEqual(amounts.count, banner.amounts.count);
-  XCTAssert([banner.amounts isEqualToArray:amounts]);
-  XCTAssertEqual(links.count, banner.links.count);
+  const auto queriedInfo = [BATLedgerDatabase serverPublisherInfoWithPublisherID:publisherID];
+  const auto amounts = queriedInfo.banner.amounts;
+  const auto links =  queriedInfo.banner.links;
+  XCTAssertEqual(amounts.count, info.banner.amounts.count);
+  XCTAssert([amounts isEqualToArray:info.banner.amounts]);
+  XCTAssertEqual(links.count, info.banner.links.count);
   for (NSString *key in links) {
-    XCTAssert([banner.links[key] isEqualToString:links[key]]);
+    XCTAssert([info.banner.links[key] isEqualToString:links[key]]);
   }
 }
 
