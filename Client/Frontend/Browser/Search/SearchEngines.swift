@@ -49,8 +49,11 @@ class SearchEngines {
     fileprivate let fileAccessor: FileAccessor
 
     static let defaultRegionSearchEngines = [
-        "DE": OpenSearchEngine.EngineNames.qwant,
-        "FR": OpenSearchEngine.EngineNames.qwant
+        "DE": OpenSearchEngine.EngineNames.duckDuckGo,
+        "FR": OpenSearchEngine.EngineNames.qwant,
+        "AU": OpenSearchEngine.EngineNames.duckDuckGo,
+        "NZ": OpenSearchEngine.EngineNames.duckDuckGo,
+        "IE": OpenSearchEngine.EngineNames.duckDuckGo,
     ]
     
     init(files: FileAccessor) {
