@@ -700,7 +700,8 @@ class RewardsServiceImpl : public RewardsService,
   bool ShouldUseStagingServerForAndroid();
 
 #if defined(OS_ANDROID)
-  void CreateWalletAttestationResult(bool result,
+  void CreateWalletAttestationResult(CreateWalletCallback callback,
+      bool result,
       const std::string& result_string);
   void FetchGrantAttestationResult(const std::string& lang,
                                 const std::string& payment_id,

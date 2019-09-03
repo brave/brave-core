@@ -222,6 +222,7 @@ enum Result {
   EXPIRED_TOKEN = 24,
   BAT_NOT_ALLOWED = 25,
   ALREADY_EXISTS = 26,
+  SAFETYNET_ATTESTATION_FAILED = 27
 };
 
 enum PublisherStatus {
