@@ -220,7 +220,7 @@ void Uphold::TransferAnonToExternalWallet(
 
   // transfer funds from anon wallet to uphold
   ledger_->TransferAnonToExternalWallet(
-    wallet->address,
+    std::move(wallet),
     allow_zero_balance,
     transfer_callback);
 }
@@ -286,6 +286,12 @@ void Uphold::GetUser(
     ledger::ExternalWalletPtr wallet,
     GetUserCallback callback) {
   user_->Get(std::move(wallet), callback);
+}
+
+void Uphold::CreateAnonAddressIfNecessary(
+    ledger::ExternalWalletPtr wallet,
+    CreateAnonAddressCallback callback) {
+  card_->CreateAnonAddressIfNecessary(std::move(wallet), callback);
 }
 
 }  // namespace braveledger_uphold

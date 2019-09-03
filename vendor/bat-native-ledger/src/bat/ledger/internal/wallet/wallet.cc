@@ -7,9 +7,12 @@
 
 #include <utility>
 
+#include "base/json/json_writer.h"
+#include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/state_keys.h"
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/wallet/create.h"
 #include "bat/ledger/internal/wallet/recover.h"
@@ -263,23 +266,26 @@ void Wallet::OnTransferAnonToExternalWallet(
     const std::map<std::string, std::string>& headers,
     ledger::TransferAnonToExternalWalletCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
-  if (response_status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR);
+
+  if (response_status_code == net::HTTP_OK ||
+      response_status_code == net::HTTP_CONFLICT) {
+    callback(ledger::Result::LEDGER_OK);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(ledger::Result::LEDGER_ERROR);
 }
 
 void Wallet::TransferAnonToExternalWallet(
-      const std::string& new_address,
-      const bool allow_zero_balance,
-      ledger::TransferAnonToExternalWalletCallback callback) {
+    ledger::ExternalWalletPtr wallet,
+    const bool allow_zero_balance,
+    ledger::TransferAnonToExternalWalletCallback callback) {
+
   FetchBalance(std::bind(&Wallet::OnTransferAnonToExternalWalletBalance,
                this,
                _1,
                _2,
-               new_address,
+               *wallet,
                allow_zero_balance,
                callback));
 }
@@ -287,7 +293,7 @@ void Wallet::TransferAnonToExternalWallet(
 void Wallet::OnTransferAnonToExternalWalletBalance(
     ledger::Result result,
     ledger::BalancePtr properties,
-    const std::string& new_address,
+    const ledger::ExternalWallet& wallet,
     const bool allow_zero_balance,
     ledger::TransferAnonToExternalWalletCallback callback) {
   if (result != ledger::Result::LEDGER_OK || !properties) {
@@ -300,28 +306,44 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
     return;
   }
 
-  const std::string path = (std::string)WALLET_PROPERTIES
-      + ledger_->GetPaymentId()
-      + "/claim";
+  const std::string anon_address =
+      ledger_->GetStringState(ledger::kStateUpholdAnonAddress);
 
-  const std::string url = braveledger_bat_helper::buildURL(
-      path,
-      PREFIX_V2,
-      braveledger_bat_helper::SERVER_TYPES::LEDGER);
-  auto transfer_callback = std::bind(&Wallet::OnTransferAnonToExternalWallet,
-                            this,
-                            _1,
-                            _2,
-                            _3,
-                            callback);
+  if (!anon_address.empty()) {
+    OnTransferAnonToExternalWalletAddress(
+        ledger::Result::ALREADY_EXISTS,
+        anon_address,
+        wallet.address,
+        properties->user_funds,
+        callback);
+    return;
+  }
 
+  auto anon_callback =
+      std::bind(&Wallet::OnTransferAnonToExternalWalletAddress,
+          this,
+          _1,
+          _2,
+          wallet.address,
+          properties->user_funds,
+          callback);
+
+  auto wallet_ptr = ledger::ExternalWallet::New(wallet);
+  uphold_->CreateAnonAddressIfNecessary(std::move(wallet_ptr), anon_callback);
+}
+
+std::string Wallet::GetClaimPayload(
+    const std::string user_funds,
+    const std::string new_address,
+    const std::string anon_address) {
   braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
 
   braveledger_bat_helper::UNSIGNED_TX unsigned_tx;
-  unsigned_tx.amount_ = properties->user_funds;
+  unsigned_tx.amount_ = user_funds;
   unsigned_tx.currency_ = "BAT";
   unsigned_tx.destination_ = new_address;
-  std::string octets = braveledger_bat_helper::stringifyUnsignedTx(unsigned_tx);
+  const std::string octets =
+      braveledger_bat_helper::stringifyUnsignedTx(unsigned_tx);
 
   std::string header_digest = "SHA-256=" +
       braveledger_bat_helper::getBase64(
@@ -339,23 +361,87 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
       &public_key,
       &new_secret_key);
   if (!success) {
+    return "";
+  }
+
+  std::string header_signature = braveledger_bat_helper::sign(
+      header_keys,
+      header_values,
+      1,
+      "primary",
+      new_secret_key);
+
+  base::Value payload(base::Value::Type::DICTIONARY);
+
+  base::Value signed_tx(base::Value::Type::DICTIONARY);
+  signed_tx.SetStringKey("octets", octets);
+
+  base::Value denomination(base::Value::Type::DICTIONARY);
+  denomination.SetStringKey("amount", user_funds);
+  denomination.SetStringKey("currency", "BAT");
+
+  base::Value body(base::Value::Type::DICTIONARY);
+  body.SetStringKey("destination", new_address);
+  body.SetKey("denomination", std::move(denomination));
+  signed_tx.SetKey("body", std::move(body));
+
+  base::Value headers(base::Value::Type::DICTIONARY);
+  headers.SetStringKey("digest", header_digest);
+  headers.SetStringKey("signature", header_signature);
+  signed_tx.SetKey("headers", std::move(headers));
+
+  payload.SetKey("signedTx", std::move(signed_tx));
+  payload.SetStringKey("anonymousAddress", anon_address);
+
+  std::string json;
+  base::JSONWriter::Write(payload, &json);
+
+  return json;
+}
+
+void Wallet::OnTransferAnonToExternalWalletAddress(
+    ledger::Result result,
+    const std::string& anon_address,
+    const std::string& new_address,
+    const std::string& user_funds,
+    ledger::TransferAnonToExternalWalletCallback callback) {
+  if ((result != ledger::Result::LEDGER_OK &&
+      result != ledger::Result::ALREADY_EXISTS)
+      || anon_address.empty()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  std::string headerSignature = braveledger_bat_helper::sign(header_keys,
-                                                             header_values,
-                                                             1,
-                                                             "primary",
-                                                             new_secret_key);
+  if (result != ledger::Result::ALREADY_EXISTS) {
+    ledger_->SetStringState(ledger::kStateUpholdAnonAddress, anon_address);
+  }
 
-  braveledger_bat_helper::RECONCILE_PAYLOAD_ST reconcile_payload;
-  reconcile_payload.request_signedtx_headers_digest_ = header_digest;
-  reconcile_payload.request_signedtx_headers_signature_ = headerSignature;
-  reconcile_payload.request_signedtx_body_ = unsigned_tx;
-  reconcile_payload.request_signedtx_octets_ = octets;
-  std::string payload_stringify =
-      braveledger_bat_helper::stringifyReconcilePayloadSt(reconcile_payload);
+  const std::string path = base::StringPrintf(
+      "%s%s/claim",
+      WALLET_PROPERTIES,
+      ledger_->GetPaymentId().c_str());
+
+  const std::string url = braveledger_bat_helper::buildURL(
+      path,
+      PREFIX_V2,
+      braveledger_bat_helper::SERVER_TYPES::LEDGER);
+
+  auto transfer_callback = std::bind(&Wallet::OnTransferAnonToExternalWallet,
+                          this,
+                          _1,
+                          _2,
+                          _3,
+                          callback);
+
+  const std::string payload = GetClaimPayload(
+      user_funds,
+      new_address,
+      anon_address);
+
+  if (payload.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
 
   std::vector<std::string> wallet_header;
   wallet_header.push_back("Content-Type: application/json; charset=UTF-8");
@@ -363,7 +449,7 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
   ledger_->LoadURL(
       url,
       wallet_header,
-      payload_stringify,
+      payload,
       "application/json; charset=utf-8",
       ledger::URL_METHOD::POST,
       transfer_callback);
