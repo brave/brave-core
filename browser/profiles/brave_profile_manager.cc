@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process_impl.h"
@@ -25,6 +26,8 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
@@ -41,7 +44,9 @@
 using content::BrowserThread;
 
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
-  : ProfileManager(user_data_dir) {}
+  : ProfileManager(user_data_dir) {
+  MigrateProfileNames();
+}
 
 // static
 base::FilePath BraveProfileManager::GetTorProfilePath() {
@@ -126,4 +131,25 @@ void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
   prefs->SetBoolean(prefs::kSigninAllowed, false);
   prefs->SetBoolean(bookmarks::prefs::kEditBookmarksEnabled, false);
   prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, false);
+}
+
+void BraveProfileManager::MigrateProfileNames() {
+#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
+  // If any profiles have a default name using an
+  // older version of the default name string format,
+  // then name it with the new default name string format.
+  // e.g. 'Person X' --> 'Profile X'.
+  ProfileAttributesStorage& storage = GetProfileAttributesStorage();
+  std::vector<ProfileAttributesEntry*> entries =
+      storage.GetAllProfilesAttributesSortedByName();
+  // Make sure we keep the numbering the same.
+  for (auto* entry : entries) {
+    // Rename the necessary profiles.
+    if (entry->IsUsingDefaultName() &&
+        !storage.IsDefaultProfileName(entry->GetName())) {
+      auto icon_index = entry->GetAvatarIconIndex();
+      entry->SetName(storage.ChooseNameForNewProfile(icon_index));
+    }
+  }
+#endif
 }
