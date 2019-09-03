@@ -1017,6 +1017,89 @@
   XCTAssertEqual(amount, 30.0);
 }
 
+#pragma mark - Publisher List / Info
+
+- (BATServerPublisherInfo *)serverPublisherInfo:(NSString *)publisherID
+{
+  auto info = [[BATServerPublisherInfo alloc] init];
+  info.publisherKey = publisherID;
+  info.address = publisherID;
+  return info;
+}
+
+- (void)testServerPublisherInfoNotFound
+{
+  const auto publisher = [BATLedgerDatabase serverPublisherInfoWithPublisherID:@"duckduckgo.com"];
+  XCTAssertNil(publisher);
+}
+
+- (void)testInsertServerPublisherListAndQuery
+{
+  const auto list = @[
+    [self serverPublisherInfo:@"brave.com"],
+    [self serverPublisherInfo:@"duckduckgo.com"]
+  ];
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase insertOrUpdateServerPublisherList:list completion:nil];
+  }];
+  for (BATServerPublisherInfo *info in list) {
+    XCTAssertNotNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
+  }
+}
+
+- (void)testClearAndInsertServerPublisherList
+{
+  const auto firstList = @[
+    [self serverPublisherInfo:@"brave.com"],
+    [self serverPublisherInfo:@"duckduckgo.com"]
+  ];
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase insertOrUpdateServerPublisherList:firstList completion:nil];
+  }];
+  const auto secondList = @[
+    [self serverPublisherInfo:@"github.com"],
+    [self serverPublisherInfo:@"twitter.com"]
+  ];
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase clearAndInsertList:secondList completion:nil];
+  }];
+  for (BATServerPublisherInfo *info in firstList) {
+    XCTAssertNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
+  }
+  for (BATServerPublisherInfo *info in secondList) {
+    XCTAssertNotNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
+  }
+}
+
+#pragma mark - Publisher List / Banner
+
+- (void)testInsertPublisherListBannerForPublisherInfo
+{
+  const auto publisherID = @"brave.com";
+  const auto info = [self serverPublisherInfo:publisherID];
+  const auto banner = [[BATPublisherBanner alloc] init];
+  banner.publisherKey = publisherID;
+  banner.desc = @"brave";
+  banner.amounts = @[ @1.0, @5.0, @10.0 ];
+  banner.links = @{ @"twitter": @"twitter.com", @"youtube": @"youtube.com" };
+  info.banner = banner;
+  
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase insertOrUpdateServerPublisherList:@[info] completion:nil];
+  }];
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase insertOrUpdateBannerForServerPublisherInfo:info completion:nil];
+  }];
+  const auto amounts = [BATLedgerDatabase bannerAmountsForPublisherWithPublisherID:publisherID];
+  const auto links = [BATLedgerDatabase publisherLinksWithPublisherID:publisherID];
+  XCTAssertEqual(amounts.count, banner.amounts.count);
+  XCTAssert([banner.amounts isEqualToArray:amounts]);
+  XCTAssertEqual(links.count, banner.links.count);
+  for (NSString *key in links) {
+    XCTAssert([banner.links[key] isEqualToString:links[key]]);
+  }
+}
+
 #pragma mark - Handling background context reads/writes
 
 - (void)contextSaved

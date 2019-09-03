@@ -750,7 +750,9 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
                                                completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   if (!info.banner) {
-    completion(NO);
+    if (completion) {
+      completion(NO);
+    }
     return;
   }
   
@@ -782,7 +784,9 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
                                         completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   if (!info.banner) {
-    completion(NO);
+    if (completion) {
+      completion(NO);
+    }
     return;
   }
   
@@ -842,7 +846,9 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
                                        completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   if (!info.banner) {
-    completion(NO);
+    if (completion) {
+      completion(NO);
+    }
     return;
   }
   
