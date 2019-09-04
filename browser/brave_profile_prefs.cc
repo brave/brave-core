@@ -29,6 +29,10 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #endif
 
+#if !defined(OS_ANDROID)
+#include "chrome/browser/first_run/first_run.h"
+#endif
+
 using extensions::FeatureSwitch;
 
 namespace brave {
@@ -52,7 +56,15 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
   registry->RegisterBooleanPref(kNoScriptControlType, false);
   registry->RegisterBooleanPref(kAdControlType, true);
-  registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled, false);
+  // > advanced view is defaulted to true for EXISTING users; false for new
+  bool is_new_user = false;
+
+  #if !defined(OS_ANDROID)
+  is_new_user = first_run::IsChromeFirstRun();
+  #endif
+
+  registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled,
+                                is_new_user == false);
   registry->RegisterBooleanPref(kFBEmbedControlType, true);
   registry->RegisterBooleanPref(kTwitterEmbedControlType, true);
   registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);
