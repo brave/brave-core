@@ -76,6 +76,11 @@ void UpholdWallet::OnGenerate(
     return;
   }
 
+  if (user.bat_not_allowed) {
+    callback(ledger::Result::BAT_NOT_ALLOWED, std::move(wallet_ptr));
+    return;
+  }
+
   if (!wallet_ptr || result != ledger::Result::LEDGER_OK) {
     callback(result, std::move(wallet_ptr));
     return;

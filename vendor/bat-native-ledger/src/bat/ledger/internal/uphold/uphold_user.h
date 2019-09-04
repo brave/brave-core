@@ -30,6 +30,7 @@ struct User {
   std::string member_at;
   bool verified;
   UserStatus status;
+  bool bat_not_allowed;
 
   User();
   ~User();

@@ -13,6 +13,7 @@ extern const char kMagnetScheme[];
 extern const char kRewardsScheme[];
 extern const char kWidevineMoreInfoURL[];
 extern const char kWidevineTOS[];
+extern const char kRewardsUpholdSupport[];
 
 // This is introduced to replace |kDownloadChromeUrl| in
 // outdated_upgrade_bubble_view.cc"
