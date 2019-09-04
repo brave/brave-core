@@ -16,7 +16,6 @@ import {
   StyledCopyImage,
   StyledIconAction,
   StyledBalanceConverted,
-  StyledBalanceUnavailable,
   StyledGrantWrapper,
   StyledGrant,
   StyledActionWrapper,
@@ -660,45 +659,30 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                       </StyledIconAction>
                       : null
                   }
-                  {
-                    walletState && (walletState === 'disconnected_unverified' || walletState === 'disconnected_verified')
-                      ? <StyledBalance>
-                        <StyledBalanceUnavailable>{getLocale('balanceUnavailable')}</StyledBalanceUnavailable>
-                        <StyleGrantButton>
+                  <StyledBalance>
+                    <StyledBalanceTokens data-test-id='balance'>
+                      {balance} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
+                    </StyledBalanceTokens>
+                    {
+                      converted
+                        ? <StyledBalanceConverted>{converted}</StyledBalanceConverted>
+                        : null
+                    }
+                    {
+                      hasGrants
+                        ? <StyleGrantButton>
                           <Button
-                            text={getLocale('reconnectWallet')}
+                            text={getLocale('grants')}
                             size={'small'}
                             type={'subtle'}
                             level={'secondary'}
-                            onClick={onVerifyClick}
+                            onClick={this.toggleGrantDetails}
+                            icon={{ position: 'after', image: this.state.grantDetails ? <CaratUpIcon /> : <CaratDownIcon /> }}
                           />
                         </StyleGrantButton>
-                      </StyledBalance>
-                      : <StyledBalance>
-                        <StyledBalanceTokens data-test-id='balance'>
-                          {balance} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
-                        </StyledBalanceTokens>
-                        {
-                          converted
-                            ? <StyledBalanceConverted>{converted}</StyledBalanceConverted>
-                            : null
-                        }
-                        {
-                          hasGrants
-                            ? <StyleGrantButton>
-                              <Button
-                                text={getLocale('grants')}
-                                size={'small'}
-                                type={'subtle'}
-                                level={'secondary'}
-                                onClick={this.toggleGrantDetails}
-                                icon={{ position: 'after', image: this.state.grantDetails ? <CaratUpIcon /> : <CaratDownIcon /> }}
-                              />
-                            </StyleGrantButton>
-                            : null
-                        }
-                      </StyledBalance>
-                  }
+                        : null
+                    }
+                  </StyledBalance>
                   {
                     this.state.grantDetails && hasGrants
                       ? <StyledGrantWrapper>
