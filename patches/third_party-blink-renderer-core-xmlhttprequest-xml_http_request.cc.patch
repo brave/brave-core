@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..7372772f1b1d980634fcefdf1f2c9bd5792b350f 100644
+index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..82be46ccc626f11c9777333f5f50ccf8771ec030 100644
 --- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
 +++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-@@ -100,6 +100,14 @@
+@@ -100,6 +100,16 @@
  #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
@@ -12,12 +12,14 @@ index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..7372772f1b1d980634fcefdf1f2c9bd5
 +#include "third_party/blink/renderer/platform/loader/fetch/raw_resource.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 +#endif
 +
  namespace blink {
  
  namespace {
-@@ -1156,6 +1164,27 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
+@@ -1156,6 +1166,25 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
    loader_->SetTimeout(timeout_);
    base::TimeTicks start_time = base::TimeTicks::Now();
    loader_->Start(std::move(request));
@@ -30,7 +32,7 @@ index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..7372772f1b1d980634fcefdf1f2c9bd5
 +      RawResource* const raw_resource = loader_->GetRawResource();
 +      if (raw_resource != nullptr) {
 +        ::brave_page_graph::PageGraph* page_graph =
-+          ::brave_page_graph::PageGraph::GetFromIsolate(*isolate_);
++          ::brave_page_graph::PageGraph::GetFromExecutionContext(*GetExecutionContext());
 +        if (page_graph != nullptr) {
 +          page_graph->RegisterRequestStartFromCurrentScript(
 +            raw_resource->InspectorId(), url_,
@@ -39,9 +41,57 @@ index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..7372772f1b1d980634fcefdf1f2c9bd5
 +      }
 +    }
 +  }
-+#else
-+  loader_->Start(request);
 +#endif
  
    if (!async_) {
      base::TimeDelta blocking_time = base::TimeTicks::Now() - start_time;
+@@ -1346,6 +1375,23 @@ void XMLHttpRequest::HandleRequestError(DOMExceptionCode exception_code,
+ 
+   probe::DidFinishXHR(GetExecutionContext(), this);
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (loader_ != nullptr) {
++      RawResource* const raw_resource = loader_->GetRawResource();
++      if (raw_resource != nullptr) {
++        ::brave_page_graph::PageGraph* page_graph =
++            ::brave_page_graph::PageGraph::GetFromExecutionContext(
++                *GetExecutionContext());
++        if (page_graph != nullptr) {
++          const ::brave_page_graph::ResponseMetadata response_metadata(response_);
++          page_graph->RegisterRequestError(raw_resource->InspectorId(), response_metadata);
++        }
++      }
++    }
++  }
++#endif
++
+   send_flag_ = false;
+   if (!async_) {
+     DCHECK_NE(exception_code, DOMExceptionCode::kNoError);
+@@ -1790,6 +1836,25 @@ void XMLHttpRequest::NotifyParserStopped() {
+ void XMLHttpRequest::EndLoading() {
+   probe::DidFinishXHR(GetExecutionContext(), this);
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (loader_ != nullptr) {
++      RawResource* const raw_resource = loader_->GetRawResource();
++      if (raw_resource != nullptr) {
++        ::brave_page_graph::PageGraph* page_graph =
++            ::brave_page_graph::PageGraph::GetFromExecutionContext(
++                *GetExecutionContext());
++        if (page_graph != nullptr) {
++          const ::brave_page_graph::ResponseMetadata response_metadata(response_);
++          page_graph->RegisterRequestComplete(raw_resource->InspectorId(), raw_resource->GetType(),
++                                              response_metadata,
++                                              ::brave_page_graph::ResourceDigest(raw_resource));
++        }
++      }
++    }
++  }
++#endif
++
+   if (loader_) {
+     // Set |m_error| in order to suppress the cancel notification (see
+     // XMLHttpRequest::didFail).
