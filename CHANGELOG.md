@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.11.4](https://github.com/brave/brave-ios/releases/tag/v1.11.4)
+
+ - Added support for Adblock Rust library. ([#1442](https://github.com/brave/brave-ios/issues/1442))
+
 ## [1.11.3](https://github.com/brave/brave-ios/releases/tag/v1.11.3)
 
  - Added support for U2F/WebAuthn hardware security keys. ([#1406](https://github.com/brave/brave-ios/issues/1406))
