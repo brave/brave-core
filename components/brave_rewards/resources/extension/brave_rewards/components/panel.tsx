@@ -399,7 +399,7 @@ export class Panel extends React.Component<Props, State> {
         const type = args[0]
 
         switch (type) {
-          case 'wallet_verified': {
+          case 'wallet_new_verified': {
             text = (
               <>
                 <div><b>{getMessage('walletVerifiedNotification')}</b></div>
