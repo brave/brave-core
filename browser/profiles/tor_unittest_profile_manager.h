@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_PROFILES_TOR_UNITTEST_PROFILE_MANAGER_H_
 #define BRAVE_BROWSER_PROFILES_TOR_UNITTEST_PROFILE_MANAGER_H_
 
+#include <memory>
+
 #include "chrome/browser/profiles/profile_manager.h"
 
 class TorUnittestProfileManager : public ProfileManagerWithoutInit {
@@ -24,7 +26,8 @@ class TorUnittestProfileManager : public ProfileManagerWithoutInit {
   void InitProfileUserPrefs(Profile* profile) override;
 
  private:
-  std::unique_ptr<Profile> CreateProfile(const base::FilePath& path, Delegate* delegate);
+  std::unique_ptr<Profile> CreateProfile(const base::FilePath& path,
+                                         Delegate* delegate);
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_TOR_UNITTEST_PROFILE_MANAGER_H_

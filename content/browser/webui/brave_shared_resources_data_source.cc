@@ -109,8 +109,8 @@ std::string BraveSharedResourcesDataSource::GetSource() {
 
 void BraveSharedResourcesDataSource::StartDataRequest(
     const std::string& path,
-    const ResourceRequestInfo::WebContentsGetter& wc_getter,
-    const URLDataSource::GotDataCallback& callback) {
+    const content::ResourceRequestInfo::WebContentsGetter& wc_getter,
+    const content::URLDataSource::GotDataCallback& callback) {
   int idr = GetIdrForPath(path);
   DCHECK_NE(-1, idr) << " path: " << path;
   scoped_refptr<base::RefCountedMemory> bytes;
