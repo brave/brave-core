@@ -18,3 +18,6 @@ vendor/bat-native-ads/ @tmancey
 vendor/bat-native-confirmations/ @tmancey
 components/brave_ads/ @tmancey
 components/services/bat_ads/ @tmancey
+
+# Network
+browser/net/ @iefremov
