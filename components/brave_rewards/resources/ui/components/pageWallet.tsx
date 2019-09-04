@@ -201,6 +201,9 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   toggleVerifyModal = () => {
+    if (this.state.modalVerify) {
+      window.history.replaceState({}, 'Rewards', '/')
+    }
     this.setState({
       modalVerify: !this.state.modalVerify
     })
