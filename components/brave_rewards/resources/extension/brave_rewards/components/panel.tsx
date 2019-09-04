@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
 import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
-import { NotificationType, WalletState } from 'brave-ui/features/rewards/walletWrapper'
+import { NotificationType } from 'brave-ui/features/rewards/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from 'brave-ui/features/rewards/alert'
 
@@ -70,7 +70,8 @@ export class Panel extends React.Component<Props, State> {
       this.actions.OnPendingContributionsTotal(amount)
     }))
 
-    this.getExternalWallet()
+    const { externalWallet } = this.props.rewardsPanelData
+    utils.getExternalWallet(this.actions, externalWallet)
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -231,7 +232,7 @@ export class Panel extends React.Component<Props, State> {
     }
 
     if (externalWallet.verifyUrl) {
-      this.handleUpholdLink(externalWallet.verifyUrl)
+      utils.handleUpholdLink(externalWallet.verifyUrl, externalWallet)
       return
     }
   }
@@ -548,70 +549,6 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  getExternalWallet = (open: boolean = false) => {
-    chrome.braveRewards.getExternalWallet('uphold', (result: number, wallet: RewardsExtension.ExternalWallet) => {
-      // EXPIRED TOKEN
-      if (result === 24) {
-        this.getExternalWallet(open)
-        return
-      }
-
-      this.actions.onExternalWallet(wallet)
-
-      if (open && wallet.verifyUrl) {
-        this.handleUpholdLink(wallet.verifyUrl)
-      }
-    })
-  }
-
-  handleUpholdLink = (link: string) => {
-    const { externalWallet } = this.props.rewardsPanelData
-
-    if (!externalWallet || (externalWallet && externalWallet.status === 0)) {
-      link = 'brave://rewards/#verify'
-    }
-
-    chrome.tabs.create({
-      url: link
-    })
-  }
-
-  onVerifyClick = () => {
-    const { externalWallet } = this.props.rewardsPanelData
-
-    if (!externalWallet || externalWallet.verifyUrl) {
-      this.getExternalWallet(true)
-      return
-    }
-
-    this.handleUpholdLink(externalWallet.verifyUrl)
-  }
-
-  getWalletStatus = (): WalletState => {
-    const { externalWallet } = this.props.rewardsPanelData
-
-    if (!externalWallet) {
-      return 'unverified'
-    }
-
-    switch (externalWallet.status) {
-      // ledger::WalletStatus::CONNECTED
-      case 1:
-        return 'connected'
-      // ledger::WalletStatus::VERIFIED
-      case 2:
-        return 'verified'
-      // ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED
-      case 3:
-        return 'disconnected_unverified'
-      // ledger::WalletStatus::DISCONNECTED_VERIFIED
-      case 4:
-        return 'disconnected_verified'
-      default:
-        return 'unverified'
-    }
-  }
-
   goToUphold = () => {
     const { externalWallet } = this.props.rewardsPanelData
 
@@ -623,21 +560,12 @@ export class Panel extends React.Component<Props, State> {
     window.open(externalWallet.accountUrl, '_blank')
   }
 
-  getUserName = () => {
-    const { externalWallet } = this.props.rewardsPanelData
-    if (!externalWallet) {
-      return ''
-    }
-
-    return externalWallet.userName
-  }
-
   onDisconnectClick = () => {
     chrome.braveRewards.disconnectWallet('uphold')
   }
 
   render () {
-    const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
+    const { pendingContributionTotal, enabledAC, externalWallet } = this.props.rewardsPanelData
     const { total, rates } = this.props.rewardsPanelData.balance
     const { grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
@@ -702,11 +630,11 @@ export class Panel extends React.Component<Props, State> {
         onFinish={this.onFinish}
         convertProbiToFixed={utils.convertProbiToFixed}
         grants={utils.getGrants(grants)}
-        walletState={this.getWalletStatus()}
-        onVerifyClick={this.onVerifyClick}
+        walletState={utils.getWalletStatus(externalWallet)}
+        onVerifyClick={utils.onVerifyClick.bind(this, this.actions)}
         onDisconnectClick={this.onDisconnectClick}
         goToUphold={this.goToUphold}
-        userName={this.getUserName()}
+        userName={utils.getUserName(externalWallet)}
         {...notification}
       >
         <WalletSummarySlider

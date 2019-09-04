@@ -52,6 +52,11 @@ export class RewardsPanel extends React.Component<Props, State> {
     chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
       this.props.actions.onAllNotifications(list)
     })
+
+    if (!this.props.rewardsPanelData.enabledMain) {
+      const { externalWallet } = this.props.rewardsPanelData
+      utils.getExternalWallet(this.actions, externalWallet)
+    }
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -64,6 +69,21 @@ export class RewardsPanel extends React.Component<Props, State> {
     if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
       chrome.windows.getCurrent({}, this.onWindowCallback)
     }
+  }
+
+  goToUphold = () => {
+    const { externalWallet } = this.props.rewardsPanelData
+
+    if (!externalWallet || !externalWallet.accountUrl) {
+      this.actions.getExternalWallet('uphold')
+      return
+    }
+
+    window.open(externalWallet.accountUrl, '_blank')
+  }
+
+  onDisconnectClick = () => {
+    chrome.braveRewards.disconnectWallet('uphold')
   }
 
   getTabData () {
@@ -165,9 +185,23 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   openRewardsAddFunds () {
-    chrome.tabs.create({
-      url: 'chrome://rewards/#add-funds'
-    })
+    const { externalWallet } = this.props.rewardsPanelData
+
+    if (!externalWallet) {
+      return
+    }
+
+    if (externalWallet.addUrl) {
+      chrome.tabs.create({
+        url: externalWallet.addUrl
+      })
+      return
+    }
+
+    if (externalWallet.verifyUrl) {
+      utils.handleUpholdLink(externalWallet.verifyUrl, externalWallet)
+      return
+    }
   }
 
   openTOS () {
@@ -192,7 +226,8 @@ export class RewardsPanel extends React.Component<Props, State> {
       walletCreating,
       walletProperties,
       walletCorrupted,
-      balance
+      balance,
+      externalWallet
     } = this.props.rewardsPanelData
 
     const converted = utils.convertBalance(balance.total.toString(), balance.rates)
@@ -228,6 +263,11 @@ export class RewardsPanel extends React.Component<Props, State> {
                 grants={utils.getGrants(walletProperties.grants)}
                 converted={utils.formatConverted(converted)}
                 convertProbiToFixed={utils.convertProbiToFixed}
+                walletState={utils.getWalletStatus(externalWallet)}
+                onVerifyClick={utils.onVerifyClick.bind(this, this.actions)}
+                onDisconnectClick={this.onDisconnectClick}
+                goToUphold={this.goToUphold}
+                userName={utils.getUserName(externalWallet)}
                 actions={[
                   {
                     name: getMessage('addFunds'),
