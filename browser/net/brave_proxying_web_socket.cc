@@ -89,6 +89,7 @@ void BraveProxyingWebSocket::Start() {
                                    browser_context_, ctx_);
   int result = request_handler_->OnBeforeURLRequest(
       ctx_, continuation, &redirect_url_);
+  // TODO(bridiver) - need to handle general case for redirect_url
 
   if (result == net::ERR_BLOCKED_BY_CLIENT ||
       // handle adblock kEmptyDataURI
@@ -127,10 +128,16 @@ void BraveProxyingWebSocket::WebSocketFactoryRun(const GURL& url,
       network::mojom::TrustedHeaderClientPtr trusted_header_client) {
   DCHECK(!forwarding_handshake_client_);
   proxy_url_ = url;
-  proxy_additional_headers_ = std::move(additional_headers);
   forwarding_handshake_client_ = std::move(handshake_client);
   proxy_auth_handler_ = std::move(auth_handler);
   proxy_trusted_header_client_ = std::move(trusted_header_client);
+
+  if (!proxy_has_extra_headers()) {
+    for (const auto& header : additional_headers) {
+      request_.headers.SetHeader(header->name, header->value);
+    }
+  }
+
   Start();
 }
 
@@ -255,6 +262,33 @@ void BraveProxyingWebSocket::OnBeforeRequestComplete(int error_code) {
     return;
   }
 
+  if (proxy_has_extra_headers()) {
+    proxy_trusted_header_client_->OnBeforeSendHeaders(
+        request_.headers,
+        base::BindOnce(
+            &BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy,
+            weak_factory_.GetWeakPtr()));
+  } else {
+    OnBeforeSendHeadersCompleteFromProxy(
+        net::OK, request_.headers);
+  }
+}
+
+void BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy(
+    int error_code,
+    const base::Optional<net::HttpRequestHeaders>& headers) {
+  DCHECK(proxy_has_extra_headers() || !binding_as_handshake_client_.is_bound());
+  if (error_code != net::OK) {
+    OnError(error_code);
+    return;
+  }
+
+  // update the headers from the proxy
+  if (headers)
+    request_.headers = *headers;
+  else
+    request_.headers.Clear();
+
   auto continuation = base::BindRepeating(
       &BraveProxyingWebSocket::OnBeforeSendHeadersComplete,
       weak_factory_.GetWeakPtr());
@@ -275,56 +309,31 @@ void BraveProxyingWebSocket::OnBeforeRequestComplete(int error_code) {
     return;
 
   DCHECK_EQ(net::OK, result);
-  OnBeforeSendHeadersComplete(net::OK);
+  continuation.Run(net::OK);
 }
 
-void BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy(
-    int error_code,
-    const base::Optional<net::HttpRequestHeaders>& headers) {
+void BraveProxyingWebSocket::OnBeforeSendHeadersComplete(int error_code) {
+  DCHECK(proxy_has_extra_headers() || !binding_as_handshake_client_.is_bound());
+
   if (error_code != net::OK) {
     OnError(error_code);
     return;
   }
 
   if (on_before_send_headers_callback_)
-    std::move(on_before_send_headers_callback_).Run(error_code, headers);
+    std::move(on_before_send_headers_callback_).Run(
+        error_code, base::Optional<net::HttpRequestHeaders>(request_.headers));
 
   if (!proxy_has_extra_headers())
     ContinueToStartRequest(error_code);
 }
 
-void BraveProxyingWebSocket::OnBeforeSendHeadersComplete(int error_code) {
-  DCHECK(proxy_has_extra_headers() || !binding_as_handshake_client_.is_bound());
-  if (error_code != net::OK) {
-    OnError(error_code);
-    return;
-  }
-
-  if (proxy_has_extra_headers()) {
-    proxy_trusted_header_client_->OnBeforeSendHeaders(
-        request_.headers,
-        base::BindOnce(
-            &BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy,
-            weak_factory_.GetWeakPtr()));
-  } else {
-    OnBeforeSendHeadersCompleteFromProxy(net::OK, request_.headers);
-  }
-}
-
 void BraveProxyingWebSocket::ContinueToStartRequest(int error_code) {
-  base::flat_set<std::string> used_header_names;
   std::vector<network::mojom::HttpHeaderPtr> additional_headers;
-  for (net::HttpRequestHeaders::Iterator it(request_.headers); it.GetNext();) {
-    additional_headers.push_back(
-        network::mojom::HttpHeader::New(it.name(), it.value()));
-    used_header_names.insert(base::ToLowerASCII(it.name()));
-  }
-  if (!proxy_additional_headers_.empty()) {
-    for (const auto& header : proxy_additional_headers_) {
-      if (!used_header_names.contains(base::ToLowerASCII(header->name))) {
-        additional_headers.push_back(
-            network::mojom::HttpHeader::New(header->name, header->value));
-      }
+  if (!proxy_has_extra_headers()) {
+    for (net::HttpRequestHeaders::Iterator it(request_.headers); it.GetNext();) {
+      additional_headers.push_back(
+          network::mojom::HttpHeader::New(it.name(), it.value()));
     }
   }
 

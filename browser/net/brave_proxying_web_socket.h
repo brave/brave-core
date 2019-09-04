@@ -144,7 +144,6 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
 
   // chrome websocket proxy
   GURL proxy_url_;
-  std::vector<network::mojom::HttpHeaderPtr> proxy_additional_headers_;
   network::mojom::AuthenticationHandlerPtr proxy_auth_handler_;
   network::mojom::TrustedHeaderClientPtr proxy_trusted_header_client_;
 

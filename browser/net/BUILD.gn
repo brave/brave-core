@@ -37,6 +37,7 @@ source_set("net") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
     "//brave/browser/translate/buildflags",
+    "//brave/common",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_webtorrent/browser/buildflags",
