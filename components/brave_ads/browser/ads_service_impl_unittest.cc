@@ -86,7 +86,7 @@ class MockRewardsService : public RewardsService {
   MOCK_CONST_METHOD0(SetUserChangedContribution, void());
   MOCK_METHOD1(GetAutoContribute,
       void(brave_rewards::GetAutoContributeCallback));
-  MOCK_CONST_METHOD1(SetAutoContribute, void(bool));
+  MOCK_METHOD1(SetAutoContribute, void(bool));
   MOCK_CONST_METHOD0(UpdateAdsRewards, void());
   MOCK_METHOD2(SetTimer, void(uint64_t, uint32_t*));
   MOCK_METHOD1(GetAllBalanceReports,
