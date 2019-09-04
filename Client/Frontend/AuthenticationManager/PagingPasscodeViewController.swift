@@ -7,6 +7,8 @@ private let PaneSwipeDuration: TimeInterval = 0.3
 
 /// Base class for implementing a Passcode configuration screen with multiple 'panes'.
 class PagingPasscodeViewController: BasePasscodeViewController {
+    var completion: (() -> Void)?
+    
     fileprivate lazy var pager: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
@@ -46,6 +48,7 @@ class PagingPasscodeViewController: BasePasscodeViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
+        completion?()
     }
 }
 
