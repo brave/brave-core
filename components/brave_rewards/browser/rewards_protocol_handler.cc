@@ -11,23 +11,11 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "brave/common/url_constants.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/escape.h"
 
 namespace {
-
-bool IsRewardsEnabled(content::BrowserContext* browser_context) {
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (!profile) {
-    return false;
-  }
-
-  return profile->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled);
-}
 
 GURL TranslateUrl(const GURL& url) {
   if (!url.is_valid()) {
@@ -74,11 +62,10 @@ void LoadRewardsURL(
     return;
   }
 
-  if (IsRewardsEnabled(web_contents->GetBrowserContext())) {
-    const auto new_url = TranslateUrl(url);
-    web_contents->GetController().LoadURL(new_url, content::Referrer(),
-        page_transition, std::string());
-  }
+  // we need to allow url to be processed even if rewards are off
+  const auto new_url = TranslateUrl(url);
+  web_contents->GetController().LoadURL(new_url, content::Referrer(),
+      page_transition, std::string());
 }
 
 }  // namespace

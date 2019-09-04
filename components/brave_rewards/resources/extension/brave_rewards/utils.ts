@@ -4,6 +4,7 @@
 
 import BigNumber from 'bignumber.js'
 import { getMessage } from './background/api/locale_api'
+import { WalletState } from 'brave-ui/features/rewards/walletWrapper'
 
 export const convertBalance = (tokens: string, rates: Record<string, number> | undefined, currency: string = 'USD'): string => {
   const tokensNum = parseFloat(tokens)
@@ -97,4 +98,70 @@ export const isPublisherNotVerified = (status?: RewardsExtension.PublisherStatus
   }
 
   return status === 0
+}
+
+export const getWalletStatus = (externalWallet?: RewardsExtension.ExternalWallet): WalletState => {
+  if (!externalWallet) {
+    return 'unverified'
+  }
+
+  switch (externalWallet.status) {
+    // ledger::WalletStatus::CONNECTED
+    case 1:
+      return 'connected'
+    // ledger::WalletStatus::VERIFIED
+    case 2:
+      return 'verified'
+    // ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED
+    case 3:
+      return 'disconnected_unverified'
+    // ledger::WalletStatus::DISCONNECTED_VERIFIED
+    case 4:
+      return 'disconnected_verified'
+    default:
+      return 'unverified'
+  }
+}
+
+export const getUserName = (externalWallet?: RewardsExtension.ExternalWallet) => {
+  if (!externalWallet) {
+    return ''
+  }
+
+  return externalWallet.userName
+}
+
+export const handleUpholdLink = (link: string, externalWallet?: RewardsExtension.ExternalWallet) => {
+  if (!externalWallet || (externalWallet && externalWallet.status === 0)) {
+    link = 'brave://rewards/#verify'
+  }
+
+  chrome.tabs.create({
+    url: link
+  })
+}
+
+export const getExternalWallet = (actions: any, externalWallet?: RewardsExtension.ExternalWallet, open: boolean = false) => {
+  chrome.braveRewards.getExternalWallet('uphold', (result: number, wallet: RewardsExtension.ExternalWallet) => {
+    // EXPIRED TOKEN
+    if (result === 24) {
+      getExternalWallet(actions, externalWallet, open)
+      return
+    }
+
+    actions.onExternalWallet(wallet)
+
+    if (open && wallet.verifyUrl) {
+      handleUpholdLink(wallet.verifyUrl)
+    }
+  })
+}
+
+export const onVerifyClick = (actions: any, externalWallet?: RewardsExtension.ExternalWallet) => {
+  if (!externalWallet || externalWallet.verifyUrl) {
+    getExternalWallet(actions, externalWallet, true)
+    return
+  }
+
+  handleUpholdLink(externalWallet.verifyUrl)
 }
