@@ -197,6 +197,7 @@ window.cr.define('brave_rewards', function () {
   function disconnectWallet (properties: {walletType: string, result: number}) {
     if (properties.result === 0) {
       getActions().getExternalWallet(properties.walletType)
+      getActions().getBalance()
     }
   }
 

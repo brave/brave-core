@@ -121,6 +121,7 @@ export const getUIMessages = (): Record<string, string> => {
     'walletButtonDisconnected',
     'walletButtonUnverified',
     'walletButtonVerified',
+    'walletGoToVerifyPage',
     'walletGoToUphold',
     'walletDisconnect',
     'walletVerificationButton',
@@ -132,9 +133,7 @@ export const getUIMessages = (): Record<string, string> => {
     'walletVerificationListHeader',
     'walletVerificationTitle1',
     'walletVerificationTitle2',
-    'walletVerified',
-    'balanceUnavailable',
-    'reconnectWallet'
+    'walletVerified'
   ]
 
   let translations = {}
