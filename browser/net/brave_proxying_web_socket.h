@@ -105,7 +105,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   void ContinueToHeadersReceived();
   void OnBeforeSendHeadersCompleteFromProxy(
       int error_code,
-      const net::HttpRequestHeaders& headers);
+      const base::Optional<net::HttpRequestHeaders>& headers);
   void OnHeadersReceivedCompleteFromProxy(
       int error_code,
       const base::Optional<std::string>& headers,

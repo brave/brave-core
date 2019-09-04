@@ -13,6 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "brave/browser/net/brave_request_handler.h"
+#include "brave/common/network_constants.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -82,7 +83,6 @@ void BraveProxyingWebSocket::Start() {
         weak_factory_.GetWeakPtr());
   }
 
-  bool should_collapse_initiator = false;
   ctx_ = std::make_shared<brave::BraveRequestInfo>();
   brave::BraveRequestInfo::FillCTX(request_, process_id_,
                                    frame_tree_node_id_, request_id_,
@@ -90,11 +90,9 @@ void BraveProxyingWebSocket::Start() {
   int result = request_handler_->OnBeforeURLRequest(
       ctx_, continuation, &redirect_url_);
 
-  // It doesn't make sense to collapse WebSocket requests since they won't be
-  // associated with a DOM element.
-  DCHECK(!should_collapse_initiator);
-
-  if (result == net::ERR_BLOCKED_BY_CLIENT) {
+  if (result == net::ERR_BLOCKED_BY_CLIENT ||
+      // handle adblock kEmptyDataURI
+      redirect_url_ == kEmptyDataURI) {
     OnError(result);
     return;
   }
@@ -183,7 +181,9 @@ void BraveProxyingWebSocket::ContinueToHeadersReceived() {
       ctx_, continuation, response_.headers.get(),
       &override_headers_, &redirect_url_);
 
-  if (result == net::ERR_BLOCKED_BY_CLIENT) {
+  if (result == net::ERR_BLOCKED_BY_CLIENT ||
+      // handle adblock kEmptyDataURI
+      redirect_url_ == kEmptyDataURI) {
     OnError(result);
     return;
   }
@@ -280,7 +280,7 @@ void BraveProxyingWebSocket::OnBeforeRequestComplete(int error_code) {
 
 void BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy(
     int error_code,
-    const net::HttpRequestHeaders& headers) {
+    const base::Optional<net::HttpRequestHeaders>& headers) {
   if (error_code != net::OK) {
     OnError(error_code);
     return;
@@ -289,7 +289,8 @@ void BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy(
   if (on_before_send_headers_callback_)
     std::move(on_before_send_headers_callback_).Run(error_code, headers);
 
-  ContinueToStartRequest(error_code);
+  if (!proxy_has_extra_headers())
+    ContinueToStartRequest(error_code);
 }
 
 void BraveProxyingWebSocket::OnBeforeSendHeadersComplete(int error_code) {
@@ -300,11 +301,13 @@ void BraveProxyingWebSocket::OnBeforeSendHeadersComplete(int error_code) {
   }
 
   if (proxy_has_extra_headers()) {
-    DCHECK(on_before_send_headers_callback_);
     proxy_trusted_header_client_->OnBeforeSendHeaders(
-        request_.headers, std::move(on_before_send_headers_callback_));
+        request_.headers,
+        base::BindOnce(
+            &BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy,
+            weak_factory_.GetWeakPtr()));
   } else {
-    ContinueToStartRequest(net::OK);
+    OnBeforeSendHeadersCompleteFromProxy(net::OK, request_.headers);
   }
 }
 
@@ -357,6 +360,8 @@ void BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy(
     response_.headers = override_headers_;
     override_headers_ = nullptr;
   }
+
+  ResumeIncomingMethodCallProcessing();
 }
 
 void BraveProxyingWebSocket::OnHeadersReceivedComplete(int error_code) {
@@ -365,18 +370,19 @@ void BraveProxyingWebSocket::OnHeadersReceivedComplete(int error_code) {
     return;
   }
 
+  std::string headers;
+  if (override_headers_)
+    headers = override_headers_->raw_headers();
+
   if (proxy_has_extra_headers()) {
     proxy_trusted_header_client_->OnHeadersReceived(
-        override_headers_->raw_headers(),
+        headers,
         base::BindOnce(
             &BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy,
             weak_factory_.GetWeakPtr()));
   } else {
-    if (override_headers_) {
-      response_.headers = override_headers_;
-      override_headers_ = nullptr;
-    }
-    ResumeIncomingMethodCallProcessing();
+    OnHeadersReceivedCompleteFromProxy(
+        error_code, base::Optional<std::string>(headers), GURL());
   }
 }
 
