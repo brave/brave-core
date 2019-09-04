@@ -182,13 +182,33 @@ class SettingsPage extends React.Component<Props, State> {
     const { ui } = this.props.rewardsData
 
     if (ui.modalRedirect === 'show') {
-      return <ModalRedirect />
+      return (
+        <ModalRedirect
+          id={'redirect-modal-show'}
+          titleText={getLocale('processingRequest')}
+        />
+      )
+    }
+
+    if (ui.modalRedirect === 'notAllowed') {
+      return (
+        <ModalRedirect
+          id={'redirect-modal-not-allowed'}
+          errorText={{ __html: getLocale('redirectModalNotAllowed') }}
+          titleText={getLocale('redirectModalErrorWallet')}
+          buttonText={getLocale('redirectModalClose')}
+          onClick={this.actions.hideRedirectModal}
+        />
+      )
     }
 
     if (ui.modalRedirect === 'error') {
       return (
         <ModalRedirect
-          errorText={getLocale('redirectModalError')}
+          id={'redirect-modal-error'}
+          errorText={{ __html: getLocale('redirectModalError') }}
+          buttonText={getLocale('processingRequestButton')}
+          titleText={getLocale('processingRequest')}
           onClick={this.onRedirectError}
         />
       )

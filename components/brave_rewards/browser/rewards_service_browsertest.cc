@@ -231,11 +231,16 @@ class BraveRewardsBrowserTest :
         ? "2018-08-01T09:53:51.258Z"
         : "null";
 
-    return
-    "{"
-      "\"name\": \"Test User\","
-      "\"memberAt\": " + verified + ""
-    "}";
+    const std::string name = "Test User";
+
+    return base::StringPrintf(
+      "{"
+        "\"name\": \"%s\","
+        "\"memberAt\": \"%s\","
+        "\"currencies\": [\"BAT\"]"
+      "}",
+      name.c_str(),
+      verified.c_str());
   }
 
   void GetTestResponse(const std::string& url,

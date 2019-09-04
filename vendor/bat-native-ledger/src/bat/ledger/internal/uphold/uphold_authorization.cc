@@ -176,6 +176,11 @@ void UpholdAuthorization::OnGetUser(
   auto wallet_ptr = ledger::ExternalWallet::New(wallet);
   std::map<std::string, std::string> args;
 
+  if (user.bat_not_allowed) {
+    callback(ledger::Result::BAT_NOT_ALLOWED, args);
+    return;
+  }
+
   if (user.status == UserStatus::OK) {
     wallet_ptr->status = user.verified
         ? ledger::WalletStatus::VERIFIED
