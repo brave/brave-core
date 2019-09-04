@@ -29,6 +29,7 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/unified_consent/feature.h"
+#include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -158,6 +159,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
       autofill::features::kAutofillServerCommunication.name,
+      features::kAudioServiceOutOfProcess.name,
       features::kLookalikeUrlNavigationSuggestionsUI.name,
       unified_consent::kUnifiedConsent.name,
   };
