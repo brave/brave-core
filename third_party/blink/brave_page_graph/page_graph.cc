@@ -1270,8 +1270,7 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
   // this batch of requests (first condition) or if this batch of requests
   // hasn't finished yet (e.g. we don't have both a request and a response)
   // (second condition).
-  if (record->is_first_reply == false ||
-      request->IsComplete() == false) {
+  if (!record->is_first_reply || !request->IsComplete()) {
     return;
   }
 
