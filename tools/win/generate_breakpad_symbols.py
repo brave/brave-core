@@ -16,8 +16,9 @@ import subprocess
 import sys
 import threading
 
+from datetime import datetime, timedelta
 
-CONCURRENT_TASKS=4
+CONCURRENT_TASKS=1
 BRAVE_ROOT=os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 
@@ -59,6 +60,7 @@ def GenerateSymbols(options, binaries):
       if options.verbose:
         with print_lock:
           print "Generating symbols for %s" % binary
+          thread_start = datetime.utcnow()
 
       dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
       syms = GetCommandOutput([dump_syms, binary])
@@ -76,6 +78,12 @@ def GenerateSymbols(options, binaries):
       f = open(os.path.join(output_path, symbol_file), 'w')
       f.write(syms)
       f.close()
+
+      if options.verbose:
+        with print_lock:
+          thread_end = datetime.utcnow()
+          elapsed = thread_end - thread_start
+          print("Completed generating symbols for {}: elapsed time {} seconds".format(binary, elapsed.total_seconds()))
 
       queue.task_done()
 
