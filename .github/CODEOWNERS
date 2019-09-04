@@ -20,4 +20,4 @@ components/brave_ads/ @tmancey
 components/services/bat_ads/ @tmancey
 
 # Network
-browser/net/
+browser/net/ @iefremov
