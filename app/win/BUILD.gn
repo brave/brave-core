@@ -8,10 +8,18 @@ action("generate_breakpad_symbols") {
     symbols_dir
   ]
 
+  # On both Windows x86 and x64 we will single thread
+  # symbol generation due to Python's Global Interpreter
+  # Lock (GIL) which causes a large slowdown if
+  # multi-threaded.
+  platform_threads = "1"
+
   args = [
     "--symbols-dir=" + rebase_path(symbols_dir),
-    "--jobs=16",
+    "--jobs=" + platform_threads,
     "--build-dir=" + rebase_path(root_out_dir),
+    "--verbose",
+    "--clear",
     rebase_path(root_out_dir)
   ]
 
