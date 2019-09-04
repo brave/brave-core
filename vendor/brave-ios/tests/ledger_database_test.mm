@@ -1068,8 +1068,11 @@
     [self serverPublisherInfo:@"brave.com"],
     [self serverPublisherInfo:@"duckduckgo.com"]
   ];
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase clearAndInsertList:list completion:nil];
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase clearAndInsertList:list completion:^(BOOL success) {
+      XCTAssertTrue(success);
+      [expectation fulfill];
+    }];
   }];
   for (BATServerPublisherInfo *info in list) {
     XCTAssertNotNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
@@ -1082,16 +1085,26 @@
     [self serverPublisherInfo:@"brave.com"],
     [self serverPublisherInfo:@"duckduckgo.com"]
   ];
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase clearAndInsertList:firstList completion:nil];
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase clearAndInsertList:firstList completion:^(BOOL success) {
+      XCTAssertTrue(success);
+      [expectation fulfill];
+    }];
   }];
+  
   const auto secondList = @[
     [self serverPublisherInfo:@"github.com"],
     [self serverPublisherInfo:@"twitter.com"]
   ];
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase clearAndInsertList:secondList completion:nil];
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase clearAndInsertList:secondList completion:^(BOOL success) {
+      XCTAssertTrue(success);
+      [expectation fulfill];
+    }];
   }];
+  
   for (BATServerPublisherInfo *info in firstList) {
     // Ensure all originals were destroyed
     XCTAssertNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
@@ -1114,11 +1127,15 @@
 {
   const auto publisherID = @"brave.com";
   const auto info = [self serverPublisherInfo:publisherID];
-  
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase clearAndInsertList:@[info] completion:nil];
+
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase clearAndInsertList:@[info] completion:^(BOOL success) {
+      XCTAssertTrue(success);
+      [expectation fulfill];
+    }];
   }];
   const auto queriedInfo = [BATLedgerDatabase serverPublisherInfoWithPublisherID:publisherID];
+  XCTAssertNotNil(queriedInfo.banner);
   const auto amounts = queriedInfo.banner.amounts;
   const auto links =  queriedInfo.banner.links;
   XCTAssertEqual(amounts.count, info.banner.amounts.count);
@@ -1127,6 +1144,15 @@
   for (NSString *key in links) {
     XCTAssert([info.banner.links[key] isEqualToString:links[key]]);
   }
+}
+
+#pragma mark -
+
+- (void)waitForCompletion:(void (^)(XCTestExpectation *))task
+{
+  auto __block expectation = [self expectationWithDescription:NSUUID.UUID.UUIDString];
+  task(expectation);
+  [self waitForExpectations:@[expectation] timeout:5];
 }
 
 #pragma mark - Handling background context reads/writes
