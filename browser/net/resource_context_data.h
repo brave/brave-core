@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <memory>
 #include <set>
+#include <string>
 
 #include "base/containers/unique_ptr_adapters.h"
 #include "base/macros.h"

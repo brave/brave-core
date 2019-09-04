@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/resource_context_data.h"
 
+#include <string>
 #include <utility>
 
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
