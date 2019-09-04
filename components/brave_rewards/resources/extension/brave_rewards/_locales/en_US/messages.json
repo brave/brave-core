@@ -526,7 +526,7 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "No worries. This can happen for a variety of security reasons. Simply reconnecting to it will solve this issue.",
+    "message": "No worries. This can happen for a variety of security reasons. Reconnecting your wallet will solve this issue.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
