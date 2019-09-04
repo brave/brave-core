@@ -172,15 +172,17 @@ void BraveP3ALogStore::LoadPersistedUnsentLogs() {
       if (!base::StringToUint64(v->GetString(), &entry.value)) {
         return;
       }
-    } else
+    } else {
       return;
+    }
 
     // Sent flag.
     if (const base::Value* v =
             dict.FindKeyOfType(kLogSentKey, base::Value::Type::BOOLEAN)) {
       entry.sent = v->GetBool();
-    } else
+    } else {
       return;
+    }
 
     // Timestamp.
     if (const base::Value* v =

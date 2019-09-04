@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 

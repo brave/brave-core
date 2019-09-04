@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_SERVICE_H_
 #define BRAVE_COMPONENTS_P3A_BRAVE_P3A_SERVICE_H_
 
+#include <memory>
+#include <string>
+
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"

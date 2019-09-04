@@ -237,15 +237,15 @@ void MaybeStripRefcodeAndCountry(prochlo::MessageMetainfo* meta) {
   } else {
     // Now the minimum platform is MacOS at ~3%, so cut off for a group under
     // here becomes 3/(0.05*0.03) = 2000.
-    if (country == "US" or country.empty()) {
+    if (country == "US" || country.empty()) {
       const bool us_and_ref =
-          country == "US" and (refcode == kRefcodeNone || refcode == "GDB255" ||
+          country == "US" && (refcode == kRefcodeNone || refcode == "GDB255" ||
                                refcode == "BRV001");
       const bool unknown_and_ref =
-          country.empty() and
+          country.empty() &&
           (kNotableRefcodes.count(refcode) > 0 || refcode == kRefcodeNone);
 
-      if (!(us_and_ref or unknown_and_ref)) {
+      if (!(us_and_ref || unknown_and_ref)) {
         meta->refcode = kRefcodeOther;
       }
     } else if (kNotableCountries.count(country) > 0) {

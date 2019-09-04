@@ -14,11 +14,6 @@
 
 #include <assert.h>
 #include <fcntl.h>
-#include "third_party/boringssl/src/include/openssl/ecdh.h"
-#include "third_party/boringssl/src/include/openssl/err.h"
-#include "third_party/boringssl/src/include/openssl/hmac.h"
-#include "third_party/boringssl/src/include/openssl/pem.h"
-#include "third_party/boringssl/src/include/openssl/rand.h"
 #include <stdint.h>
 #include <stdio.h>
 
@@ -26,7 +21,13 @@
 #include <iostream>
 #include <string>
 
-#include "prochlo_crypto.h"
+#include "third_party/boringssl/src/include/openssl/ecdh.h"
+#include "third_party/boringssl/src/include/openssl/err.h"
+#include "third_party/boringssl/src/include/openssl/hmac.h"
+#include "third_party/boringssl/src/include/openssl/pem.h"
+#include "third_party/boringssl/src/include/openssl/rand.h"
+
+#include "brave/components/brave_prochlo/prochlo_crypto.h"
 
 namespace prochlo {
 
@@ -43,7 +44,7 @@ bool Crypto::load_shuffler_key(const std::string& keyfile) {
 EVP_PKEY* Crypto::load_public_key(const std::string& keyfile) {
   FILE* fp = fopen(keyfile.c_str(), "r");
   if (fp == nullptr) {
-    //warn("fopen()");
+    // warn("fopen()");
     return nullptr;
   }
 
@@ -58,10 +59,10 @@ EVP_PKEY* Crypto::load_public_key(const std::string& keyfile) {
 }
 
 Crypto::Crypto()
-  : public_shuffler_key_(nullptr), public_analyzer_key_(nullptr) {
+    : public_shuffler_key_(nullptr), public_analyzer_key_(nullptr) {
   // Pedantically check that we have the same endianness everywhere
-//  uint32_t number = 1;
-//  assert(reinterpret_cast<uint8_t*>(&number)[0] == 1);
+  //  uint32_t number = 1;
+  //  assert(reinterpret_cast<uint8_t*>(&number)[0] == 1);
 
   // Ensure the AES128-GCM default nonce length is kNonceLength
   assert(EVP_CIPHER_iv_length(EVP_aes_128_gcm()) == kNonceLength);
@@ -77,12 +78,12 @@ Crypto::~Crypto() {
 }
 
 Crypto::ProchlomationToAnalyzerItemEncryption::
-  ProchlomationToAnalyzerItemEncryption(EVP_PKEY* peer_key,
-    const Prochlomation& prochlomation,
-    AnalyzerItem* analyzer_item)
-  : Encryption(peer_key),
-  prochlomation(prochlomation),
-  analyzer_item(analyzer_item) {}
+    ProchlomationToAnalyzerItemEncryption(EVP_PKEY* peer_key,
+                                          const Prochlomation& prochlomation,
+                                          AnalyzerItem* analyzer_item)
+    : Encryption(peer_key),
+      prochlomation(prochlomation),
+      analyzer_item(analyzer_item) {}
 
 uint8_t* Crypto::ProchlomationToAnalyzerItemEncryption::ToPublicKey() {
   return analyzer_item->client_public_key;
@@ -101,7 +102,7 @@ uint8_t* Crypto::ProchlomationToAnalyzerItemEncryption::ToTag() {
 }
 
 bool Crypto::ProchlomationToAnalyzerItemEncryption::StreamDataForEncryption(
-  EVP_CIPHER_CTX* ctx) {
+    EVP_CIPHER_CTX* ctx) {
   // Stream the proclomation to the cipher and write out the ciphertext.
   uint8_t* next_byte = nullptr;
   size_t ciphertext_byte_count = 0;
@@ -110,10 +111,10 @@ bool Crypto::ProchlomationToAnalyzerItemEncryption::StreamDataForEncryption(
   // First the metric
   next_byte = &analyzer_item->ciphertext[ciphertext_byte_count];
   const uint8_t* to_metric =
-    reinterpret_cast<const uint8_t*>(&prochlomation.metric);
+      reinterpret_cast<const uint8_t*>(&prochlomation.metric);
   if (EVP_EncryptUpdate(ctx, next_byte, &out_length, to_metric,
-    sizeof(prochlomation.metric)) != 1) {
-    //warn("Couldn't encrypt metric with AES128-GCM.");
+                        sizeof(prochlomation.metric)) != 1) {
+    // warn("Couldn't encrypt metric with AES128-GCM.");
     ERR_print_errors_fp(stderr);
     return false;
   }
@@ -123,8 +124,8 @@ bool Crypto::ProchlomationToAnalyzerItemEncryption::StreamDataForEncryption(
   next_byte = &analyzer_item->ciphertext[ciphertext_byte_count];
   const uint8_t* to_data = prochlomation.data;
   if (EVP_EncryptUpdate(ctx, next_byte, &out_length, to_data,
-    kProchlomationDataLength) != 1) {
-    //warn("Couldn't encrypt data with AES128-GCM.");
+                        kProchlomationDataLength) != 1) {
+    // warn("Couldn't encrypt data with AES128-GCM.");
     ERR_print_errors_fp(stderr);
     return false;
   }
@@ -134,12 +135,13 @@ bool Crypto::ProchlomationToAnalyzerItemEncryption::StreamDataForEncryption(
 }
 
 Crypto::PlainShufflerItemToShufflerItemEncryption::
-  PlainShufflerItemToShufflerItemEncryption(
-    EVP_PKEY* peer_key, const PlainShufflerItem& plain_shuffler_item,
-    ShufflerItem* shuffler_item)
-  : Encryption(peer_key),
-  plain_shuffler_item(plain_shuffler_item),
-  shuffler_item(shuffler_item) {}
+    PlainShufflerItemToShufflerItemEncryption(
+        EVP_PKEY* peer_key,
+        const PlainShufflerItem& plain_shuffler_item,
+        ShufflerItem* shuffler_item)
+    : Encryption(peer_key),
+      plain_shuffler_item(plain_shuffler_item),
+      shuffler_item(shuffler_item) {}
 
 uint8_t* Crypto::PlainShufflerItemToShufflerItemEncryption::ToPublicKey() {
   return shuffler_item->client_public_key;
@@ -158,7 +160,7 @@ uint8_t* Crypto::PlainShufflerItemToShufflerItemEncryption::ToTag() {
 }
 
 bool Crypto::PlainShufflerItemToShufflerItemEncryption::StreamDataForEncryption(
-  EVP_CIPHER_CTX* ctx) {
+    EVP_CIPHER_CTX* ctx) {
   // Stream the PlainShufflerItem to the CIPHER and write out the ciphertext.
   uint8_t* next_byte = nullptr;
   size_t ciphertext_byte_count = 0;
@@ -167,11 +169,11 @@ bool Crypto::PlainShufflerItemToShufflerItemEncryption::StreamDataForEncryption(
   // First the analyzer item (i.e., its innards).
   next_byte = &shuffler_item->ciphertext[ciphertext_byte_count];
   const uint8_t* to_analyzer_item_ciphertext =
-    plain_shuffler_item.analyzer_item.ciphertext;
+      plain_shuffler_item.analyzer_item.ciphertext;
   if (EVP_EncryptUpdate(ctx, next_byte, &out_length,
-    to_analyzer_item_ciphertext,
-    kProchlomationCiphertextLength) != 1) {
-    //warn("Couldn't encrypt analyzer item ciphertext with AES128-GCM.");
+                        to_analyzer_item_ciphertext,
+                        kProchlomationCiphertextLength) != 1) {
+    // warn("Couldn't encrypt analyzer item ciphertext with AES128-GCM.");
     ERR_print_errors_fp(stderr);
     return false;
   }
@@ -180,8 +182,8 @@ bool Crypto::PlainShufflerItemToShufflerItemEncryption::StreamDataForEncryption(
   next_byte = &shuffler_item->ciphertext[ciphertext_byte_count];
   const uint8_t* to_analyzer_item_tag = plain_shuffler_item.analyzer_item.tag;
   if (EVP_EncryptUpdate(ctx, next_byte, &out_length, to_analyzer_item_tag,
-    kTagLength) != 1) {
-    //warn("Couldn't encrypt analyzer item tag with AES128-GCM.");
+                        kTagLength) != 1) {
+    // warn("Couldn't encrypt analyzer item tag with AES128-GCM.");
     ERR_print_errors_fp(stderr);
     return false;
   }
@@ -189,10 +191,10 @@ bool Crypto::PlainShufflerItemToShufflerItemEncryption::StreamDataForEncryption(
 
   next_byte = &shuffler_item->ciphertext[ciphertext_byte_count];
   const uint8_t* to_analyzer_item_nonce =
-    plain_shuffler_item.analyzer_item.nonce;
+      plain_shuffler_item.analyzer_item.nonce;
   if (EVP_EncryptUpdate(ctx, next_byte, &out_length, to_analyzer_item_nonce,
-    kNonceLength) != 1) {
-    //warn("Couldn't encrypt analyzer item nonce with AES128-GCM.");
+                        kNonceLength) != 1) {
+    // warn("Couldn't encrypt analyzer item nonce with AES128-GCM.");
     ERR_print_errors_fp(stderr);
     return false;
   }
@@ -200,11 +202,12 @@ bool Crypto::PlainShufflerItemToShufflerItemEncryption::StreamDataForEncryption(
 
   next_byte = &shuffler_item->ciphertext[ciphertext_byte_count];
   const uint8_t* to_analyzer_item_client_public_key =
-    plain_shuffler_item.analyzer_item.client_public_key;
+      plain_shuffler_item.analyzer_item.client_public_key;
   if (EVP_EncryptUpdate(ctx, next_byte, &out_length,
-    to_analyzer_item_client_public_key,
-    kPublicKeyLength) != 1) {
-    //warn("Couldn't encrypt analyzer item client public key with AES128-GCM.");
+                        to_analyzer_item_client_public_key,
+                        kPublicKeyLength) != 1) {
+    // warn("Couldn't encrypt analyzer item client public key with
+    // AES128-GCM.");
     ERR_print_errors_fp(stderr);
     return false;
   }
@@ -214,8 +217,8 @@ bool Crypto::PlainShufflerItemToShufflerItemEncryption::StreamDataForEncryption(
   next_byte = &shuffler_item->ciphertext[ciphertext_byte_count];
   const uint8_t* to_crowd_id = plain_shuffler_item.crowd_id;
   if (EVP_EncryptUpdate(ctx, next_byte, &out_length, to_crowd_id,
-    kCrowdIdLength) != 1) {
-    //warn("Couldn't encrypt crowd IDwith AES128-GCM.");
+                        kCrowdIdLength) != 1) {
+    // warn("Couldn't encrypt crowd IDwith AES128-GCM.");
     ERR_print_errors_fp(stderr);
     return false;
   }
@@ -232,20 +235,21 @@ bool Crypto::MakeEncryptedMessage(Encryption* encryption) {
   do {  // Using BoringSSL's scoped EVP_PKEY pointers would be a lot more
         // exciting here that the do {} while(false) kludge.
     if (!GenerateKeyPair(peer_key, &my_key, encryption->ToPublicKey())) {
-      //warn("Couldn't generate an ephemeral keypair during %s message creation.",
+      // warn("Couldn't generate an ephemeral keypair during %s message
+      // creation.",
       //  encryption->TypeString());
       break;
     }
 
     uint8_t symmetric_key[kSymmetricKeyLength];
     if (!DeriveSecretSymmetricKey(my_key, peer_key, symmetric_key)) {
-      //warn("Couldn't generate a symmetric key during %s message creation.",
+      // warn("Couldn't generate a symmetric key during %s message creation.",
       //  encryption->TypeString());
       break;
     }
 
     if (!Encrypt(symmetric_key, encryption)) {
-      //warn("Couldn't encrypt for %s.", encryption->TypeString());
+      // warn("Couldn't encrypt for %s.", encryption->TypeString());
       break;
     }
 
@@ -262,21 +266,22 @@ bool Crypto::MakeEncryptedMessage(Encryption* encryption) {
 }
 
 bool Crypto::EncryptForAnalyzer(const Prochlomation& prochlomation,
-  AnalyzerItem* analyzer_item) {
+                                AnalyzerItem* analyzer_item) {
   ProchlomationToAnalyzerItemEncryption encryption(
-    public_analyzer_key_, prochlomation, analyzer_item);
+      public_analyzer_key_, prochlomation, analyzer_item);
   return MakeEncryptedMessage(&encryption);
 }
 
 bool Crypto::EncryptForShuffler(const PlainShufflerItem& plain_shuffler_item,
-  ShufflerItem* shuffler_item) {
+                                ShufflerItem* shuffler_item) {
   PlainShufflerItemToShufflerItemEncryption encryption(
-    public_shuffler_key_, plain_shuffler_item, shuffler_item);
+      public_shuffler_key_, plain_shuffler_item, shuffler_item);
   return MakeEncryptedMessage(&encryption);
 }
 
-bool Crypto::GenerateKeyPair(EVP_PKEY* peer_public_key, EVP_PKEY** key_out,
-  uint8_t* binary_key) {
+bool Crypto::GenerateKeyPair(EVP_PKEY* peer_public_key,
+                             EVP_PKEY** key_out,
+                             uint8_t* binary_key) {
   assert(peer_public_key != nullptr);
   assert(key_out != nullptr);
   assert(binary_key != nullptr);
@@ -290,19 +295,19 @@ bool Crypto::GenerateKeyPair(EVP_PKEY* peer_public_key, EVP_PKEY** key_out,
     // Generate a key based on the peer's key parameters.
     ctx = EVP_PKEY_CTX_new(peer_public_key, /*e=*/nullptr);
     if (ctx == nullptr) {
-      //warn("Couldn't create an EVP_PKEY_CTX.");
+      // warn("Couldn't create an EVP_PKEY_CTX.");
       ERR_print_errors_fp(stderr);
       break;
     }
 
     if (EVP_PKEY_keygen_init(ctx) != 1) {
-      //warn("Couldn't initialize the key-pair generation.");
+      // warn("Couldn't initialize the key-pair generation.");
       ERR_print_errors_fp(stderr);
       break;
     }
 
     if (EVP_PKEY_keygen(ctx, &key) != 1) {
-      //warn("Couldn't generate a key pair.");
+      // warn("Couldn't generate a key pair.");
       ERR_print_errors_fp(stderr);
       break;
     }
@@ -310,19 +315,20 @@ bool Crypto::GenerateKeyPair(EVP_PKEY* peer_public_key, EVP_PKEY** key_out,
     // Serialize the key.
     bio = BIO_new(BIO_s_mem());
     if (bio == nullptr) {
-      //warn("Couldn't allocate an OpenSSL buffer.");
+      // warn("Couldn't allocate an OpenSSL buffer.");
       ERR_print_errors_fp(stderr);
       break;
     }
 
     if (i2d_PUBKEY_bio(bio, key) != 1) {
-      //warn("Couldn't serialize a key pair.");
+      // warn("Couldn't serialize a key pair.");
       ERR_print_errors_fp(stderr);
       break;
     }
 
     uint8_t* serialized_buffer = nullptr;
-    size_t serialized_key_length = BIO_get_mem_data(bio, (char **)&serialized_buffer);
+    size_t serialized_key_length =
+        BIO_get_mem_data(bio, reinterpret_cast<char**>(&serialized_buffer));
     // We'd better have provisioned enough space for the serialized public key.
     assert(serialized_key_length <= kPublicKeyLength);
 
@@ -351,8 +357,8 @@ bool Crypto::GenerateKeyPair(EVP_PKEY* peer_public_key, EVP_PKEY** key_out,
 }
 
 bool Crypto::DeriveSecretSymmetricKey(EVP_PKEY* local_key,
-  EVP_PKEY* peer_public_key,
-  uint8_t* secret_key) {
+                                      EVP_PKEY* peer_public_key,
+                                      uint8_t* secret_key) {
   assert(local_key != nullptr);
   assert(peer_public_key != nullptr);
   assert(secret_key != nullptr);
@@ -362,26 +368,27 @@ bool Crypto::DeriveSecretSymmetricKey(EVP_PKEY* local_key,
   do {
     ctx = EVP_PKEY_CTX_new(local_key, /*e=*/nullptr);
     if (ctx == nullptr) {
-      //warn("Couldn't create an EVP_PKEY_CTX for secret derivation.");
+      // warn("Couldn't create an EVP_PKEY_CTX for secret derivation.");
       ERR_print_errors_fp(stderr);
       break;
     }
 
     if (EVP_PKEY_derive_init(ctx) != 1) {
-      //warn("Couldn't initiate a secret derivation.");
+      // warn("Couldn't initiate a secret derivation.");
       ERR_print_errors_fp(stderr);
       break;
     }
 
     if (EVP_PKEY_derive_set_peer(ctx, peer_public_key) != 1) {
-      //warn("Couldn't set the public key of my peer for a secret derivation.");
+      // warn("Couldn't set the public key of my peer for a secret
+      // derivation.");
       ERR_print_errors_fp(stderr);
       break;
     }
 
     size_t derived_secret_length = 0;
     if (EVP_PKEY_derive(ctx, nullptr, &derived_secret_length) != 1) {
-      //warn("Couldn't find the length of the derived secret.");
+      // warn("Couldn't find the length of the derived secret.");
       ERR_print_errors_fp(stderr);
       break;
     }
@@ -389,7 +396,7 @@ bool Crypto::DeriveSecretSymmetricKey(EVP_PKEY* local_key,
     uint8_t derived_secret[kSharedSecretLength];
 
     if (EVP_PKEY_derive(ctx, derived_secret, &derived_secret_length) != 1) {
-      //warn("Couldn't derive a shared secret.");
+      // warn("Couldn't derive a shared secret.");
       ERR_print_errors_fp(stderr);
       break;
     }
@@ -403,11 +410,11 @@ bool Crypto::DeriveSecretSymmetricKey(EVP_PKEY* local_key,
     // zero).
     uint32_t hmac_length;
     uint8_t* hmac = HMAC(EVP_sha256(),
-      /* key = */ expansion, kSharedSecretExpansionLength,
-      /* d = */ derived_secret, derived_secret_length,
-      /* md = */ expansion, &hmac_length);
+                         /* key = */ expansion, kSharedSecretExpansionLength,
+                         /* d = */ derived_secret, derived_secret_length,
+                         /* md = */ expansion, &hmac_length);
     if (hmac == nullptr) {
-      //warn("Couldn't HMAC the derived secret.");
+      // warn("Couldn't HMAC the derived secret.");
       ERR_print_errors_fp(stderr);
       break;
     }
@@ -416,14 +423,14 @@ bool Crypto::DeriveSecretSymmetricKey(EVP_PKEY* local_key,
     // well-defined additional data (namely, 1).
     uint8_t one = 1;
     hmac = HMAC(EVP_sha256(),
-      /* key = */ expansion, kSharedSecretExpansionLength,
-      /* d = */ &one, sizeof(one),  // arbitrary choice
-      /* md = */ expansion, /* md_len= */ nullptr);  // No need to
-                                                     // obtain the
-                                                     // length of the
-                                                     // md yet again.
+                /* key = */ expansion, kSharedSecretExpansionLength,
+                /* d = */ &one, sizeof(one),  // arbitrary choice
+                /* md = */ expansion, /* md_len= */ nullptr);  // No need to
+                                                               // obtain the
+                                                               // length of the
+                                                               // md yet again.
     if (hmac == nullptr) {
-      //warn("Couldn't HMAC to expand the symmetric key.");
+      // warn("Couldn't HMAC to expand the symmetric key.");
       ERR_print_errors_fp(stderr);
       break;
     }
@@ -449,7 +456,7 @@ bool Crypto::Encrypt(const uint8_t* symmetric_key, Encryption* encryption) {
   do {
     ctx = EVP_CIPHER_CTX_new();
     if (ctx == nullptr) {
-      //warn("Couldn't create a new EVP_CIPHER_CTX.");
+      // warn("Couldn't create a new EVP_CIPHER_CTX.");
       ERR_print_errors_fp(stderr);
       break;
     }
@@ -458,22 +465,22 @@ bool Crypto::Encrypt(const uint8_t* symmetric_key, Encryption* encryption) {
 
     // Set up a random nonce
     if (RAND_bytes(encryption->ToNonce(), kNonceLength) != 1) {
-      //warn("Couldn't generate random nonce.");
+      // warn("Couldn't generate random nonce.");
       ERR_print_errors_fp(stderr);
       break;
     }
 
     if (EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(),
-      /* impl= */ nullptr, symmetric_key,
-      /* iv= */ encryption->ToNonce()) != 1) {
-      //warn("Couldn't initialize for AES128-GCM encryption.");
+                           /* impl= */ nullptr, symmetric_key,
+                           /* iv= */ encryption->ToNonce()) != 1) {
+      // warn("Couldn't initialize for AES128-GCM encryption.");
       ERR_print_errors_fp(stderr);
       break;
     }
 
     if (!encryption->StreamDataForEncryption(ctx)) {
-      //warn("Couldn't stream data for %s AES128-GCM encryption.",
-      //encryption->TypeString());
+      // warn("Couldn't stream data for %s AES128-GCM encryption.",
+      // encryption->TypeString());
       break;
     }
 
@@ -481,7 +488,7 @@ bool Crypto::Encrypt(const uint8_t* symmetric_key, Encryption* encryption) {
     // at this point.
     int32_t out_length;
     if (EVP_EncryptFinal_ex(ctx, /* out= */ nullptr, &out_length) != 1) {
-      //warn("Couldn't finalize the prochlomation encryption.");
+      // warn("Couldn't finalize the prochlomation encryption.");
       ERR_print_errors_fp(stderr);
       break;
     }
@@ -489,8 +496,9 @@ bool Crypto::Encrypt(const uint8_t* symmetric_key, Encryption* encryption) {
 
     // We have filled in the ciphertext. Now we also need to fill in the tag.
     if (EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, kTagLength,
-      encryption->ToTag()) != 1) {
-      //warn("Couldn't obtain the AEAD tag from the prochlomation encryption.");
+                            encryption->ToTag()) != 1) {
+      // warn("Couldn't obtain the AEAD tag from the prochlomation
+      // encryption.");
       ERR_print_errors_fp(stderr);
       break;
     }
@@ -505,4 +513,4 @@ bool Crypto::Encrypt(const uint8_t* symmetric_key, Encryption* encryption) {
   return false;
 }
 
-} // namespace prochlo
+}  // namespace prochlo

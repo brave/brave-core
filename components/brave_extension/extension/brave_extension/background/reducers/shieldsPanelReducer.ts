@@ -323,7 +323,9 @@ export default function shieldsPanelReducer (
       break
     }
     case shieldsPanelTypes.SHIELDS_READY: {
-      onShieldsPanelShown()
+      onShieldsPanelShown().catch(() => {
+        console.error('error calling `chrome.braveShields.onShieldsPanelShown()`')
+      })
       break
     }
   }

@@ -6,6 +6,7 @@
 #include "brave/components/p3a/p3a_core_metrics.h"
 
 #include <numeric>
+#include <utility>
 
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/statistics_recorder.h"
@@ -100,8 +101,9 @@ void DoHistogramBravezation(base::StringPiece histogram_name,
       answer = 2;
     } else if (11 <= sample && sample <= 50) {
       answer = 3;
-    } else
+    } else {
       answer = 4;
+    }
 
     UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.TabCount", answer, 4);
     return;
@@ -222,7 +224,7 @@ void UsagePermanentState::RecordP3A() {
   if (daily_uptimes_.size() == kNumOfSavedDailyUptimes) {
     base::TimeDelta total = GetTotalUsage();
     const int minutes = total.InMinutes();
-    DCHECK(minutes >= 0);
+    DCHECK_GE(minutes, 0);
     if (0 <= minutes && minutes < 30) {
       answer = 1;
     } else if (30 <= minutes && minutes < 5 * 60) {

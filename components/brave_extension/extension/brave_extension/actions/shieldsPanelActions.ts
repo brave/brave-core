@@ -123,7 +123,7 @@ export const setFinalScriptsBlockedState: actions.SetFinalScriptsBlockedState = 
 export const setAdvancedViewFirstAccess: actions.SetAdvancedViewFirstAccess = () => {
   return {
     type: types.SET_ADVANCED_VIEW_FIRST_ACCESS
-   }
+  }
 }
 
 export const shieldsReady: actions.ShieldsReady = () => {

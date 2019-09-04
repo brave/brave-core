@@ -32,4 +32,4 @@ constexpr char kP3AIgnoreServerErrors[] = "p3a-ignore-server-errors";
 }  // namespace switches
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_PREF_NAMES_H_
+#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_SWITCHES_H_

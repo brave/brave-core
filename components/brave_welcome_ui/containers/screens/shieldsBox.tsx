@@ -30,8 +30,9 @@ export default class ShieldsBox extends React.PureComponent<Props> {
       >
         <WelcomeP3AImage />
         <Title>{getLocale('privacyTitle')}</Title>
-        <Paragraph dangerouslySetInnerHTML={{ __html: getLocale('privacyDesc') }}>
-        </Paragraph>
+        <Paragraph
+          dangerouslySetInnerHTML={{ __html: getLocale('privacyDesc') }}
+        />
       </Content>
     )
   }

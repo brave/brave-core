@@ -21,11 +21,11 @@ enum class ImporterSource {
   kEdge,
   kSize
 };
-}
+}  // namespace
 
 void RecordImporterP3A(importer::ImporterType type) {
   ImporterSource metric;
-  switch(type) {
+  switch (type) {
   case importer::TYPE_UNKNOWN:
     metric = ImporterSource::kNone;
     break;

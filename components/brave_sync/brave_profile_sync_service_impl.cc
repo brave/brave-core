@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_sync/brave_profile_sync_service_impl.h"
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 

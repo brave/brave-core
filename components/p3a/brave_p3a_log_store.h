@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_H_
-#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_H_
+#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
+#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
+
+#include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -31,7 +33,8 @@ class BraveP3ALogStore : public metrics::LogStore {
     virtual ~LogSerializer() {}
   };
 
-  BraveP3ALogStore(LogSerializer* serializer, PrefService* local_state);
+  explicit BraveP3ALogStore(LogSerializer* serializer,
+                            PrefService* local_state);
 
   // TODO(iefremov): Make parent destructor virtual?
   virtual ~BraveP3ALogStore();
@@ -60,7 +63,7 @@ class BraveP3ALogStore : public metrics::LogStore {
  private:
   struct LogEntry {
     LogEntry() {}
-    LogEntry(size_t value) : value(value) {}
+    explicit LogEntry(size_t value) : value(value) {}
     void ResetSentState() {
       sent = false;
       sent_timestamp = {};
@@ -92,4 +95,4 @@ class BraveP3ALogStore : public metrics::LogStore {
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_H_
+#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_

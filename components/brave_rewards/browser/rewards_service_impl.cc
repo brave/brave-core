@@ -1115,7 +1115,7 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
   if (!Connected())
     return;
 
-  if (state.second.is_dict()){
+  if (state.second.is_dict()) {
     // Extract some properties from the parsed json.
     base::Value* auto_contribute = state.second.FindKey("auto_contribute");
     if (auto_contribute && auto_contribute->is_bool()) {

@@ -5,6 +5,8 @@
 
 #include "brave/components/p3a/brave_p3a_uploader.h"
 
+#include <utility>
+
 #include "base/base64.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"

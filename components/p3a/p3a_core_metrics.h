@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_P3A_P3A_CORE_METRICS_H_
 #define BRAVE_COMPONENTS_P3A_P3A_CORE_METRICS_H_
 
+#include <list>
+
 #include "base/timer/timer.h"
 #include "chrome/browser/resource_coordinator/usage_clock.h"
 #include "chrome/browser/ui/browser_list_observer.h"

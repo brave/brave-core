@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef __LIB_CRYPTO_H__
-#define __LIB_CRYPTO_H__
+#ifndef BRAVE_COMPONENTS_BRAVE_PROCHLO_PROCHLO_CRYPTO_H_
+#define BRAVE_COMPONENTS_BRAVE_PROCHLO_PROCHLO_CRYPTO_H_
 
 #include <memory>
+#include <string>
 
 #include "third_party/boringssl/src/include/openssl/evp.h"
 
-#include "prochlo_data.h"
+#include "brave/components/brave_prochlo/prochlo_data.h"
 
 namespace prochlo {
 
 class Crypto {
-public:
+ public:
   // Load the public key for the Analyzer
   bool load_analyzer_key(const std::string& keyfile);
 
@@ -35,19 +36,19 @@ public:
   ~Crypto();
 
   bool EncryptForAnalyzer(const Prochlomation& prochlomation,
-    AnalyzerItem* analyzer_item);
+                          AnalyzerItem* analyzer_item);
 
   bool EncryptForShuffler(const PlainShufflerItem& plain_shuffler_item,
-    ShufflerItem* shuffler_item);
+                          ShufflerItem* shuffler_item);
 
-private:
+ private:
   friend class BraveProchloCrypto;
 
   // A convenient interface for encrypting between pairs of Prochlo messages
   // without producing a separate serialized copy of the input.
   class Encryption {
-  public:
-    Encryption(EVP_PKEY* peer_key) : peer_key(peer_key) {}
+   public:
+    explicit Encryption(EVP_PKEY* peer_key) : peer_key(peer_key) {}
 
     EVP_PKEY* ToPeerKey() { return peer_key; }
 
@@ -61,10 +62,10 @@ private:
   };
 
   class ProchlomationToAnalyzerItemEncryption : public Crypto::Encryption {
-  public:
+   public:
     ProchlomationToAnalyzerItemEncryption(EVP_PKEY* peer_key,
-      const Prochlomation& prochlomation,
-      AnalyzerItem* analyzer_item);
+                                          const Prochlomation& prochlomation,
+                                          AnalyzerItem* analyzer_item);
     const Prochlomation& prochlomation;
     AnalyzerItem* analyzer_item;
 
@@ -76,10 +77,11 @@ private:
   };
 
   class PlainShufflerItemToShufflerItemEncryption : public Crypto::Encryption {
-  public:
+   public:
     PlainShufflerItemToShufflerItemEncryption(
-      EVP_PKEY* peer_key, const PlainShufflerItem& plain_shuffler_item,
-      ShufflerItem* shuffler_item);
+        EVP_PKEY* peer_key,
+        const PlainShufflerItem& plain_shuffler_item,
+        ShufflerItem* shuffler_item);
     const PlainShufflerItem& plain_shuffler_item;
     ShufflerItem* shuffler_item;
 
@@ -91,11 +93,13 @@ private:
   };
 
   bool MakeEncryptedMessage(Encryption* encryption);
-  bool GenerateKeyPair(EVP_PKEY* peer_public_key, EVP_PKEY** key_out,
-    uint8_t* binary_key);
+  bool GenerateKeyPair(EVP_PKEY* peer_public_key,
+                       EVP_PKEY** key_out,
+                       uint8_t* binary_key);
 
-  bool DeriveSecretSymmetricKey(EVP_PKEY* local_key, EVP_PKEY* peer_public_key,
-    uint8_t* secret_key);
+  bool DeriveSecretSymmetricKey(EVP_PKEY* local_key,
+                                EVP_PKEY* peer_public_key,
+                                uint8_t* secret_key);
   bool Encrypt(const uint8_t* symmetric_key, Encryption* encryption);
 
   // Load a public key returning the structure
@@ -107,4 +111,4 @@ private:
 
 }  // namespace prochlo
 
-#endif // __LIB_CRYPTO_H__
+#endif  // BRAVE_COMPONENTS_BRAVE_PROCHLO_PROCHLO_CRYPTO_H_

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef __LIB_DATA_H__
-#define __LIB_DATA_H__
+#ifndef BRAVE_COMPONENTS_BRAVE_PROCHLO_PROCHLO_DATA_H_
+#define BRAVE_COMPONENTS_BRAVE_PROCHLO_PROCHLO_DATA_H_
 
 #include <cstdint>
 #include <cstddef>
@@ -164,4 +164,4 @@ constexpr size_t kShufflerItemLength = kEncryptedPlainShufflerItemLength;
 
 }  // namespace prochlo
 
-#endif //  __LIB_DATA_H__
+#endif  //  BRAVE_COMPONENTS_BRAVE_PROCHLO_PROCHLO_DATA_H_

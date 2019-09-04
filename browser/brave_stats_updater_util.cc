@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -80,7 +81,7 @@ int GetIsoWeekNumber(base::Time time) {
 base::Time GetYMDAsDate(base::StringPiece ymd) {
   const auto pieces = base::SplitStringPiece(ymd, "-", base::TRIM_WHITESPACE,
                                              base::SPLIT_WANT_NONEMPTY);
-  DCHECK(pieces.size() == 3);
+  DCHECK_EQ(pieces.size(), 3);
   base::Time::Exploded time;
   base::Time().LocalExplode(&time);
 
