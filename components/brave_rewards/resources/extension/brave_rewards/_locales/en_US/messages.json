@@ -476,7 +476,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verified",
+    "message": "Wallet Verified",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
