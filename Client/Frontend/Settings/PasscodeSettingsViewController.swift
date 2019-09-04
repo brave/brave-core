@@ -41,6 +41,7 @@ class PasscodeSettingsViewController: TableViewController {
                     Row(text: Strings.AuthenticationTurnOffPasscode,
                         selection: { [unowned self] in
                             let setupPasscodeController = RemovePasscodeViewController()
+                            setupPasscodeController.completion = self.reloadSections
                             let container = UINavigationController(rootViewController: setupPasscodeController)
                             self.present(container, animated: true)
                         },
@@ -49,6 +50,7 @@ class PasscodeSettingsViewController: TableViewController {
                     Row(text: Strings.AuthenticationChangePasscode,
                         selection: { [unowned self] in
                             let changePasscodeController = ChangePasscodeViewController()
+                            changePasscodeController.completion = self.reloadSections
                             let container = UINavigationController(rootViewController: changePasscodeController)
                             self.present(container, animated: true)
                         }
@@ -80,6 +82,7 @@ class PasscodeSettingsViewController: TableViewController {
                     Row(text: Strings.AuthenticationTurnOnPasscode,
                         selection: { [unowned self] in
                             let setupPasscodeController = SetupPasscodeViewController()
+                            setupPasscodeController.completion = self.reloadSections
                             let container = UINavigationController(rootViewController: setupPasscodeController)
                             self.present(container, animated: true)
                         },
