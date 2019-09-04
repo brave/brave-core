@@ -23,6 +23,7 @@ extern const char kRewardsExternalWallets[];
 
 // Defined in native-ledger
 extern const char kStateServerPublisherListStamp[];
+extern const char kStateUpholdAnonAddress[];
 
 }  // namespace prefs
 }  // namespace brave_rewards

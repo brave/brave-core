@@ -9,6 +9,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
+#include "bat/ledger/internal/state_keys.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -99,6 +100,14 @@ void UpholdWallet::OnGenerate(
 
   if (current_status == ledger::WalletStatus::CONNECTED &&
       wallet_ptr->status == ledger::WalletStatus::VERIFIED) {
+    allow_zero_balance = true;
+  }
+
+  // if we don't have anon address we need to force claim so that server
+  // can save it
+  const std::string anon_address =
+      ledger_->GetStringState(ledger::kStateUpholdAnonAddress);
+  if (anon_address.empty()) {
     allow_zero_balance = true;
   }
 
