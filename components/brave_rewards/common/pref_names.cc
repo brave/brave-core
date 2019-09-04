@@ -26,6 +26,8 @@ const char kRewardsNotificationStartupDelay[] =
 const char kRewardsExternalWallets[] = "brave.rewards.external_wallets";
 const char kStateServerPublisherListStamp[] =
     "brave.rewards.server_publisher_list_stamp";
+const char kStateUpholdAnonAddress[] =
+    "brave.rewards.uphold_anon_address";
 
 }  // namespace prefs
 }  // namespace brave_rewards
