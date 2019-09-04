@@ -331,7 +331,8 @@ void BraveProxyingWebSocket::OnBeforeSendHeadersComplete(int error_code) {
 void BraveProxyingWebSocket::ContinueToStartRequest(int error_code) {
   std::vector<network::mojom::HttpHeaderPtr> additional_headers;
   if (!proxy_has_extra_headers()) {
-    for (net::HttpRequestHeaders::Iterator it(request_.headers); it.GetNext();) {
+    for (net::HttpRequestHeaders::Iterator it(request_.headers);
+         it.GetNext();) {
       additional_headers.push_back(
           network::mojom::HttpHeader::New(it.name(), it.value()));
     }
