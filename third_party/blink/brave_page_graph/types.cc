@@ -15,7 +15,7 @@ using ::std::string;
 
 namespace brave_page_graph {
 
-string RequestTypeToString(const GraphMLAttrType type) noexcept {
+string GraphMLAttrTypeToString(const GraphMLAttrType type) noexcept {
   switch (type) {
     case kGraphMLAttrTypeString:
       return "string";
@@ -35,7 +35,7 @@ string RequestTypeToString(const GraphMLAttrType type) noexcept {
   }
 }
 
-string GraphMLForToString(const GraphMLAttrForType type) noexcept {
+string GraphMLForTypeToString(const GraphMLAttrForType type) noexcept {
   switch (type) {
     case kGraphMLAttrForTypeNode:
       return "node";
@@ -49,6 +49,8 @@ string GraphMLForToString(const GraphMLAttrForType type) noexcept {
 
 string RequestTypeToString(const RequestType type) noexcept {
   switch (type) {
+    case kRequestTypeAJAX:
+      return "AJAX";
     case kRequestTypeImage:
       return "Image";
     case kRequestTypeScriptClassic:

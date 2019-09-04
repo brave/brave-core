@@ -143,10 +143,10 @@ void GraphMLAttr::AddDefinitionNode(xmlNodePtr parent_node) const {
   xmlNodePtr new_node = xmlNewChild(parent_node, NULL, BAD_CAST "key", NULL);
   xmlSetProp(new_node, BAD_CAST "id", BAD_CAST GetGraphMLId().c_str());
   xmlSetProp(new_node, BAD_CAST "for",
-      BAD_CAST GraphMLForToString(for_).c_str());
+      BAD_CAST GraphMLForTypeToString(for_).c_str());
   xmlSetProp(new_node, BAD_CAST "attr.name", BAD_CAST name_.c_str());
   xmlSetProp(new_node, BAD_CAST "attr.type",
-      BAD_CAST RequestTypeToString(type_).c_str());
+      BAD_CAST GraphMLAttrTypeToString(type_).c_str());
 }
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,

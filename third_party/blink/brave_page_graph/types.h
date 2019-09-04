@@ -91,14 +91,14 @@ typedef enum {
   kGraphMLAttrTypeDouble,
   kGraphMLAttrTypeUnknown
 } GraphMLAttrType;
-std::string RequestTypeToString(const GraphMLAttrType type) noexcept;
+std::string GraphMLAttrTypeToString(const GraphMLAttrType type) noexcept;
 
 typedef enum {
   kGraphMLAttrForTypeNode = 0,
   kGraphMLAttrForTypeEdge,
   kGraphMLAttrForTypeUnknown
 } GraphMLAttrForType;
-std::string GraphMLForToString(const GraphMLAttrForType type) noexcept;
+std::string GraphMLForTypeToString(const GraphMLAttrForType type) noexcept;
 
 typedef enum {
   kRequestTypeAJAX = 0,
