@@ -90,9 +90,6 @@ void PublisherServerList::OnDownload(
 void PublisherServerList::OnParsePublisherList(
     const ledger::Result result,
     DownloadServerPublisherListCallback callback) {
-  bool retry_after_error = result != ledger::Result::LEDGER_OK;
-  SetTimer(retry_after_error);
-
   uint64_t new_time = 0ull;
   if (result == ledger::Result::LEDGER_OK) {
     ledger_->ContributeUnverifiedPublishers();
@@ -102,6 +99,10 @@ void PublisherServerList::OnParsePublisherList(
   }
 
   ledger_->SetUint64State(ledger::kStateServerPublisherListStamp, new_time);
+
+  bool retry_after_error = result != ledger::Result::LEDGER_OK;
+  SetTimer(retry_after_error);
+
   callback(result);
 }
 
@@ -260,15 +261,21 @@ ledger::PublisherBannerPtr PublisherServerList::ParsePublisherBanner(
   }
 
   auto banner = ledger::PublisherBanner::New();
-
+  bool empty = true;
   auto* title = dictionary->FindKey("title");
   if (title && title->is_string()) {
     banner->title = title->GetString();
+    if (!banner->title.empty()) {
+      empty = false;
+    }
   }
 
   auto* description = dictionary->FindKey("description");
   if (description && description->is_string()) {
     banner->description = description->GetString();
+    if (!banner->description.empty()) {
+      empty = false;
+    }
   }
 
   auto* background = dictionary->FindKey("backgroundUrl");
@@ -277,6 +284,7 @@ ledger::PublisherBannerPtr PublisherServerList::ParsePublisherBanner(
 
     if (!banner->background.empty()) {
       banner->background = "chrome://rewards-image/" + banner->background;
+      empty = false;
     }
   }
 
@@ -286,6 +294,7 @@ ledger::PublisherBannerPtr PublisherServerList::ParsePublisherBanner(
 
     if (!banner->logo.empty()) {
       banner->logo = "chrome://rewards-image/" + banner->logo;
+      empty = false;
     }
   }
 
@@ -294,6 +303,10 @@ ledger::PublisherBannerPtr PublisherServerList::ParsePublisherBanner(
     for (const auto& it : amounts->GetList()) {
       banner->amounts.push_back(it.GetInt());
     }
+
+    if (banner->amounts.size() != 0) {
+      empty = false;
+    }
   }
 
   auto* links = dictionary->FindKey("socialLinks");
@@ -301,6 +314,14 @@ ledger::PublisherBannerPtr PublisherServerList::ParsePublisherBanner(
     for (const auto& it : links->DictItems()) {
       banner->links.insert(std::make_pair(it.first, it.second.GetString()));
     }
+
+    if (banner->links.size() != 0) {
+      empty = false;
+    }
+  }
+
+  if (empty) {
+    return nullptr;
   }
 
   return banner;
