@@ -74,6 +74,7 @@
 		0AA21E4A2302C4CC00358988 /* webauth_verify_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AA21E472302C4CC00358988 /* webauth_verify_key.json */; };
 		0AA21E4B2302C4CC00358988 /* webauth_insert_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AA21E482302C4CC00358988 /* webauth_insert_key.json */; };
 		0AA21E4C2302C4CC00358988 /* webauth_touch_key.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AA21E492302C4CC00358988 /* webauth_touch_key.json */; };
+		0AA4AA99231849450009AAEF /* ABPFilterParserData.dat in Resources */ = {isa = PBXBuildFile; fileRef = 0AA4AA98231849440009AAEF /* ABPFilterParserData.dat */; };
 		0AA4FC392109D685000B173A /* CRUDProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA4FC382109D685000B173A /* CRUDProtocols.swift */; };
 		0AAAAC972249174A009A8763 /* SyncAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAAAC962249174A009A8763 /* SyncAlerts.swift */; };
 		0AAAACAD22491CC7009A8763 /* ErrorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAAACAC22491CC7009A8763 /* ErrorExtensions.swift */; };
@@ -1220,6 +1221,7 @@
 		0AA21E472302C4CC00358988 /* webauth_verify_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = webauth_verify_key.json; sourceTree = "<group>"; };
 		0AA21E482302C4CC00358988 /* webauth_insert_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = webauth_insert_key.json; sourceTree = "<group>"; };
 		0AA21E492302C4CC00358988 /* webauth_touch_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = webauth_touch_key.json; sourceTree = "<group>"; };
+		0AA4AA98231849440009AAEF /* ABPFilterParserData.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ABPFilterParserData.dat; sourceTree = "<group>"; };
 		0AA4FC382109D685000B173A /* CRUDProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDProtocols.swift; sourceTree = "<group>"; };
 		0AAAAC962249174A009A8763 /* SyncAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncAlerts.swift; sourceTree = "<group>"; };
 		0AAAACAC22491CC7009A8763 /* ErrorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorExtensions.swift; sourceTree = "<group>"; };
@@ -2640,6 +2642,7 @@
 			children = (
 				0A063D4B22EB2945001CE50B /* ablock_rust_lib.h */,
 				0A063D4A22EB2945001CE50B /* libadblock.a */,
+				0AA4AA98231849440009AAEF /* ABPFilterParserData.dat */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -5215,6 +5218,7 @@
 				D0FCF8081FE4772D004A7995 /* MainFrameAtDocumentStart.js in Resources */,
 				0A0D3D5021A5609600BEE65B /* SafeBrowsingError.html in Resources */,
 				74821FFE1DB6D3AC00EEEA72 /* MailSchemes.plist in Resources */,
+				0AA4AA99231849450009AAEF /* ABPFilterParserData.dat in Resources */,
 				4422D57621C05DE600BF1855 /* httpse.leveldb.tgz in Resources */,
 				FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */,
 				D308EE561CBF0BF5006843F2 /* CertError.css in Resources */,

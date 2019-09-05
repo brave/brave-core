@@ -23,6 +23,8 @@ class AdblockResourceDownloader {
     
     static let folderName = "abp-data"
     
+    static let endpoint = "https://adblock-data.s3.brave.com/iOS13"
+    
     init(networkManager: NetworkManager = NetworkManager(), locale: String? = Locale.current.languageCode) {
         if locale == nil {
             log.warning("No locale provided, using default one(\"en\")")
@@ -68,15 +70,17 @@ class AdblockResourceDownloader {
         let fileName = type.identifier
         
         let completedDownloads = type.associatedFiles.map { fileType -> Deferred<AdBlockNetworkResource> in
-            let fileExtension = "." + fileType.rawValue
+            let fileExtension = fileType.rawValue
             let etagExtension = fileExtension + ".etag"
             
-            guard let resourceName = type.resourceName(for: fileType),
-                let url = URL(string: fileType.endpoint + resourceName + fileExtension) else {
+            guard let resourceName = type.resourceName(for: fileType), var url = type.endpoint else {
                 return Deferred<AdBlockNetworkResource>()
             }
             
-            let etag = fileFromDocumentsAsString(fileName + etagExtension, inFolder: folderName)
+            url.appendPathComponent(resourceName)
+            url.appendPathExtension(fileExtension)
+            
+            let etag = fileFromDocumentsAsString("\(fileName).\(etagExtension)", inFolder: folderName)
             let request = nm.downloadResource(with: url, resourceType: .cached(etag: etag))
                 .mapQueue(queue) { resource in
                     AdBlockNetworkResource(resource: resource, fileType: fileType, type: type)
