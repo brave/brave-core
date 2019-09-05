@@ -10,6 +10,7 @@
 
 namespace ledger {
   const char kStateServerPublisherListStamp[] = "server_publisher_list_stamp";
+  const char kStateUpholdAnonAddress[] = "uphold_anon_address";
 }  // namespace ledger
 
 #endif  // BRAVELEDGER_STATE_KEYS_H_

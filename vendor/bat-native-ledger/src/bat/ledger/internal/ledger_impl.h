@@ -493,7 +493,7 @@ class LedgerImpl : public ledger::Ledger,
       ledger::DisconnectWalletCallback callback) override;
 
   void TransferAnonToExternalWallet(
-      const std::string& new_address,
+      ledger::ExternalWalletPtr wallet,
       const bool allow_zero_balance,
       ledger::TransferAnonToExternalWalletCallback callback);
 
