@@ -499,14 +499,6 @@
     "message": "Verified",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Unavailable",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Reconnect wallet",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Your wallet is verified!",
     "description": "Title for notification when wallet becomes verified"
