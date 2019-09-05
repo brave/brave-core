@@ -111,5 +111,9 @@ chrome.braveRewards.onDisconnectWallet.addListener((properties: {result: number,
     chrome.braveRewards.getExternalWallet(properties.walletType, (result: number, wallet: RewardsExtension.ExternalWallet) => {
       rewardsPanelActions.onExternalWallet(wallet)
     })
+
+    chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
+      rewardsPanelActions.onBalance(balance)
+    })
   }
 })
