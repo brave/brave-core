@@ -8,6 +8,7 @@
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
@@ -26,17 +27,8 @@ using greaselion::GreaselionDownloadService;
 using greaselion::GreaselionService;
 using greaselion::GreaselionServiceFactory;
 
-const char kLocalDataFilesComponentTestId[] =
-    "eclbkhjphkhalklhipiicaldjbnhdfkc";
-
-const char kLocalDataFilesComponentTestBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsleoSxQ3DN+6xym2P1uX"
-    "mN6ArIWd9Oru5CSjS0SRE5upM2EnAl/C20TP8JdIlPi/3tk/SN6Y92K3xIhAby5F"
-    "0rbPDSTXEWGy72tv2qb/WySGwDdvYQu9/J5sEDneVcMrSHcC0VWgcZR0eof4BfOy"
-    "fKMEnHX98tyA3z+vW5ndHspR/Xvo78B3+6HX6tyVm/pNlCNOm8W8feyfDfPpK2Lx"
-    "qRLB7PumyhR625txxolkGC6aC8rrxtT3oymdMfDYhB4BZBrzqdriyvu1NdygoEiF"
-    "WhIYw/5zv1NyIsfUiG8wIs5+OwS419z7dlMKsg1FuB2aQcDyjoXx1habFfHQfQwL"
-    "qwIDAQAB";
+const char kTestDataDirectory[] = "greaselion-data";
+const char kEmbeddedTestServerDirectory[] = "greaselion";
 
 class GreaselionDownloadServiceWaiter
     : public GreaselionDownloadService::Observer {
@@ -93,67 +85,29 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
   DISALLOW_COPY_AND_ASSIGN(GreaselionServiceWaiter);
 };
 
-class GreaselionServiceTest : public ExtensionBrowserTest {
+class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
  public:
   GreaselionServiceTest() {}
 
-  void SetUp() override {
-    InitEmbeddedTestServer();
-    InitService();
-    ExtensionBrowserTest::SetUp();
+  // BaseLocalDataFilesBrowserTest overrides
+  const char* test_data_directory() override { return kTestDataDirectory; }
+  const char* embedded_test_server_directory() override {
+    return kEmbeddedTestServerDirectory;
+  }
+  LocalDataFilesObserver* service() override {
+    return g_brave_browser_process->greaselion_download_service();
   }
 
-  void SetUpOnMainThread() override {
-    ExtensionBrowserTest::SetUpOnMainThread();
-    host_resolver()->AddRule("*", "127.0.0.1");
-  }
-
-  void PreRunTestOnMainThread() override {
-    ExtensionBrowserTest::PreRunTestOnMainThread();
-    ASSERT_TRUE(
-        g_brave_browser_process->local_data_files_service()->IsInitialized());
-  }
-
-  void InitEmbeddedTestServer() {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(embedded_test_server()->Start());
-  }
-
-  void InitService() {
-    brave_component_updater::LocalDataFilesService::
-        SetComponentIdAndBase64PublicKeyForTest(
-            kLocalDataFilesComponentTestId,
-            kLocalDataFilesComponentTestBase64PublicKey);
-  }
-
-  void GetTestDataDir(base::FilePath* test_data_dir) {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
-  }
-
-  bool InstallGreaselionExtension() {
-    base::FilePath test_data_dir;
-    GetTestDataDir(&test_data_dir);
-    const extensions::Extension* mock_extension =
-        InstallExtension(test_data_dir.AppendASCII("greaselion-data"), 1);
-    if (!mock_extension)
-      return false;
-
+  void WaitForService() override {
+    // wait for Greaselion download service to load and parse its
+    // configuration file
     greaselion::GreaselionDownloadService* download_service =
         g_brave_browser_process->greaselion_download_service();
-    download_service->OnComponentReady(mock_extension->id(),
-                                       mock_extension->path(), "");
-    // wait for Greaselion download service to load and parse its configuration
-    // file
     GreaselionDownloadServiceWaiter(download_service).Wait();
     GreaselionService* greaselion_service =
         GreaselionServiceFactory::GetForBrowserContext(profile());
     // wait for the Greaselion service to install all the extensions it creates
     GreaselionServiceWaiter(greaselion_service).Wait();
-    return true;
   }
 
   int GetRulesSize() {
@@ -182,21 +136,21 @@ class GreaselionServiceTest : public ExtensionBrowserTest {
 // precompiled URLPatterns if initialized twice. (This can happen if
 // the parent component is updated while Brave is running.)
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ClearCache) {
-  ASSERT_TRUE(InstallGreaselionExtension());
+  ASSERT_TRUE(InstallMockExtension());
   int size = GetRulesSize();
   // clear the cache manually to make sure we're actually
   // reinitializing it the second time
   ClearRules();
-  ASSERT_TRUE(InstallGreaselionExtension());
+  ASSERT_TRUE(InstallMockExtension());
   EXPECT_EQ(size, GetRulesSize());
   // now reinitialize without manually clearing (simulates an in-place
   // component update)
-  ASSERT_TRUE(InstallGreaselionExtension());
+  ASSERT_TRUE(InstallMockExtension());
   EXPECT_EQ(size, GetRulesSize());
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
-  ASSERT_TRUE(InstallGreaselionExtension());
+  ASSERT_TRUE(InstallMockExtension());
   GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
@@ -213,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
-  ASSERT_TRUE(InstallGreaselionExtension());
+  ASSERT_TRUE(InstallMockExtension());
 
   GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
   ui_test_utils::NavigateToURL(browser(), url);

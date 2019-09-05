@@ -24,7 +24,7 @@ class BaseLocalDataFilesBrowserTest : public ExtensionBrowserTest {
   void PreRunTestOnMainThread() override;
 
  protected:
-  void WaitForService();
+  virtual void WaitForService();
   void GetTestDataDir(base::FilePath* test_data_dir);
   void MaybeInitEmbeddedTestServer();
   void MaybeSetUpEmbeddedTestServerOnMainThread();
