@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-index c474f520f11bce5d73909b00b6689333b451d1a7..a6e69a2f7de6a8e08e1e677a97204faf9156d635 100644
+index c474f520f11bce5d73909b00b6689333b451d1a7..d44d5a21f1409717e8d7ee8509ca87c91789069a 100644
 --- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
 +++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-@@ -95,6 +95,15 @@
+@@ -95,6 +95,16 @@
  #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
@@ -12,13 +12,14 @@ index c474f520f11bce5d73909b00b6689333b451d1a7..a6e69a2f7de6a8e08e1e677a97204faf
 +#include "third_party/blink/renderer/platform/loader/fetch/raw_resource.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#include "brave/third_party/blink/brave_page_graph/utilities/request_metadata.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 +#endif
 +
  namespace blink {
  
  namespace {
-@@ -1161,6 +1170,25 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
+@@ -1161,6 +1171,25 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
                                                     resource_loader_options);
    loader_->SetTimeout(timeout_);
    loader_->Start(request);
@@ -44,25 +45,7 @@ index c474f520f11bce5d73909b00b6689333b451d1a7..a6e69a2f7de6a8e08e1e677a97204faf
  
    if (!async_)
      ThrowForLoadFailureIfNeeded(exception_state, String());
-@@ -1350,6 +1378,17 @@ void XMLHttpRequest::HandleDidCancel() {
-                 received_length, expected_length));
- }
- 
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+WTF::String StringifyHeaderFields(const HTTPHeaderMap& headers) {
-+  std::stringstream ss;
-+  for (HTTPHeaderMap::const_iterator it = headers.begin();
-+      it != headers.end(); ++it) {
-+    ss << it->key << " " << it->value << "\n";
-+  }
-+  return WTF::String(ss.str().c_str());
-+}
-+#endif
-+
- void XMLHttpRequest::HandleRequestError(DOMExceptionCode exception_code,
-                                         const AtomicString& type,
-                                         int64_t received_length,
-@@ -1358,6 +1397,25 @@ void XMLHttpRequest::HandleRequestError(DOMExceptionCode exception_code,
+@@ -1358,6 +1387,23 @@ void XMLHttpRequest::HandleRequestError(DOMExceptionCode exception_code,
  
    probe::DidFinishXHR(GetExecutionContext(), this);
  
@@ -75,10 +58,8 @@ index c474f520f11bce5d73909b00b6689333b451d1a7..a6e69a2f7de6a8e08e1e677a97204faf
 +            ::brave_page_graph::PageGraph::GetFromExecutionContext(
 +                *GetExecutionContext());
 +        if (page_graph != nullptr) {
-+          const WTF::String response_header(StringifyHeaderFields(response_.HttpHeaderFields()));
-+          const ::brave_page_graph::RequestMetadata request_metadata(
-+              response_header, response_.EncodedBodyLength());
-+          page_graph->RegisterRequestError(raw_resource->InspectorId(), request_metadata);
++          const ::brave_page_graph::ResponseMetadata response_metadata(response_);
++          page_graph->RegisterRequestError(raw_resource->InspectorId(), response_metadata);
 +        }
 +      }
 +    }
@@ -88,7 +69,7 @@ index c474f520f11bce5d73909b00b6689333b451d1a7..a6e69a2f7de6a8e08e1e677a97204faf
    send_flag_ = false;
    if (!async_) {
      DCHECK_NE(exception_code, DOMExceptionCode::kNoError);
-@@ -1755,6 +1813,26 @@ void XMLHttpRequest::NotifyParserStopped() {
+@@ -1755,6 +1801,25 @@ void XMLHttpRequest::NotifyParserStopped() {
  void XMLHttpRequest::EndLoading() {
    probe::DidFinishXHR(GetExecutionContext(), this);
  
@@ -101,11 +82,10 @@ index c474f520f11bce5d73909b00b6689333b451d1a7..a6e69a2f7de6a8e08e1e677a97204faf
 +            ::brave_page_graph::PageGraph::GetFromExecutionContext(
 +                *GetExecutionContext());
 +        if (page_graph != nullptr) {
-+          const WTF::String response_header(StringifyHeaderFields(response_.HttpHeaderFields()));
-+          const ::brave_page_graph::RequestMetadata request_metadata(
-+              response_header, response_.EncodedBodyLength());
++          const ::brave_page_graph::ResponseMetadata response_metadata(response_);
 +          page_graph->RegisterRequestComplete(raw_resource->InspectorId(), raw_resource->GetType(),
-+                                              request_metadata);
++                                              response_metadata,
++                                              ::brave_page_graph::ResourceDigest(raw_resource));
 +        }
 +      }
 +    }
