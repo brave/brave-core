@@ -931,19 +931,22 @@ bool BraveProfileSyncServiceImpl::IsBraveSyncConfigured() const {
 void BraveProfileSyncServiceImpl::FetchDevices() {
   DCHECK(sync_client_);
   brave_sync_prefs_->SetLastFetchTime(base::Time::Now());
-  // When the chain is not fully created, force start_at_time to 0.
-  // We need that to force sync lib send request through S3.
-  // Otherwise with STR of:
-  // 1. Create sync chain on deviceA, copy codephrase
-  // 2. Connect deviceB to the sync chain through codephrase
-  // With the first request deviceB gets only sync record with containing
-  // deviceA but then with next requests through SQS, deviceB never gets record
-  // with itself, because AWS lambda had put sync_record into sqs_deviceA only,
-  // because sqs_deviceB was not created or listed at that moment
-  base::Time start_at_time =
-      (brave_sync_prefs_->GetSyncDevices()->size() <= 1)
-          ? base::Time()
-          : brave_sync_prefs_->GetLatestDeviceRecordTime();
+  // When the chain is not fully created or our device preferences queue is
+  // not available, it may happened we will not find required device sync
+  // record when we will be switched to use SQS instead of S3 in sync lib.
+  // Default Chromium fetch interval is 60 sec.
+  // So during 70 sec after the chain creation forcing use of S3
+  // by set start_at_time to 0.
+
+  base::Time start_at_time;
+  if (brave_sync_prefs_->GetSyncDevices()->size() <= 1 ||
+      (!tools::IsTimeEmpty(chain_created_time_) &&
+       (base::Time::Now() - chain_created_time_).InSeconds() < 70u)) {
+    start_at_time = base::Time();
+  } else {
+    start_at_time = brave_sync_prefs_->GetLatestDeviceRecordTime();
+  }
+
   brave_sync_client_->SendFetchSyncRecords(
       {brave_sync::jslib_const::kPreferences}, start_at_time, 1000);
 }
