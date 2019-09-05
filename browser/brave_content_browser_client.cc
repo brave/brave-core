@@ -288,12 +288,10 @@ void BraveContentBrowserClient::MaybeHideReferrer(
 #endif
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
-  const bool allow_referrers = brave_shields::IsAllowContentSettingsForProfile(
-      profile, document_url, document_url, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kReferrers);
-  const bool shields_up = brave_shields::IsAllowContentSettingsForProfile(
-      profile, document_url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields);
+  const bool allow_referrers = brave_shields::AllowReferrers(profile,
+                                                             document_url);
+  const bool shields_up = brave_shields::GetBraveShieldsEnabled(profile,
+                                                                document_url);
   // Top-level navigations get empty referrers (brave/brave-browser#3422).
   GURL replacement_referrer_url;
   if (!is_main_frame) {

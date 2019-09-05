@@ -247,7 +247,7 @@ bool AllowReferrers(HostContentSettingsMap* map, const GURL& url) {
   ContentSetting setting = map->GetContentSetting(
       url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kReferrers);
 
-  return setting != CONTENT_SETTING_BLOCK;
+  return setting == CONTENT_SETTING_ALLOW;
 }
 
 void SetFingerprintingControlType(Profile* profile,
