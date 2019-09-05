@@ -71,9 +71,9 @@ constexpr const char* kCollectedHistograms[] = {
 };
 
 base::TimeDelta GetRandomizedUploadInterval(
-    base::TimeDelta max_upload_interval) {
+    base::TimeDelta average_upload_interval) {
   return base::TimeDelta::FromSecondsD(
-      brave_base::random::Geometric(max_upload_interval.InSecondsF()));
+      brave_base::random::Geometric(average_upload_interval.InSecondsF()));
 }
 
 base::TimeDelta TimeDeltaTillMonday(base::Time time) {
@@ -124,7 +124,7 @@ void BraveP3AService::Init() {
   // Init basic prefs.
   initialized_ = true;
 
-  max_upload_interval_ =
+  average_upload_interval_ =
       base::TimeDelta::FromSeconds(kDefaultUploadIntervalSeconds);
 
   upload_server_url_ = GURL(kDefaultUploadServerUrl);
@@ -133,7 +133,7 @@ void BraveP3AService::Init() {
   VLOG(2) << "BraveP3AService::Init() Done!";
   VLOG(2) << "BraveP3AService parameters are:"
           << " upload_enabled_ = " << upload_enabled_
-          << ", max_upload_interval_ = " << max_upload_interval_
+          << ", average_upload_interval_ = " << average_upload_interval_
           << ", randomize_upload_interval_ = " << randomize_upload_interval_
           << ", upload_server_url_ = " << upload_server_url_.spec()
           << ", rotation_interval_ = " << rotation_interval_;
@@ -168,9 +168,9 @@ void BraveP3AService::Init() {
       base::Bind(&BraveP3AService::StartScheduledUpload, this),
       (randomize_upload_interval_
            ? base::BindRepeating(GetRandomizedUploadInterval,
-                                 max_upload_interval_)
+                                 average_upload_interval_)
            : base::BindRepeating([](base::TimeDelta x) { return x; },
-                                 max_upload_interval_))));
+                                 average_upload_interval_))));
 
   // Start the engine if we are enabled.
   if (upload_enabled_) {
@@ -213,7 +213,7 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
         cmdline->GetSwitchValueASCII(switches::kP3AUploadIntervalSeconds);
     int64_t seconds;
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
-      max_upload_interval_ = base::TimeDelta::FromSeconds(seconds);
+      average_upload_interval_ = base::TimeDelta::FromSeconds(seconds);
     }
   }
 

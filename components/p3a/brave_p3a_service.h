@@ -78,8 +78,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   // Enable by command line during the beta test.
   bool upload_enabled_ = false;
-  // Maximum interval between uploading different values.
-  base::TimeDelta max_upload_interval_;
+  // The average interval between uploading different values.
+  base::TimeDelta average_upload_interval_;
   bool randomize_upload_interval_ = true;
   // Interval between rotations, only used for testing from the command line.
   base::TimeDelta rotation_interval_;
