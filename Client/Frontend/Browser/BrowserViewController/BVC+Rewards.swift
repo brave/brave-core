@@ -26,9 +26,9 @@ struct RewardsHelper {
             let logOutput = extraInfo.isEmpty ? data : "\(extraInfo) \(data)"
             
             switch logLevel {
-            case .logDebug: log.debug(logOutput)
             // Response and request log levels are ledger-specific.
-            case .logInfo, .logResponse, .logRequest: log.info(logOutput)
+            case .logDebug, .logResponse, .logRequest: log.debug(logOutput)
+            case .logInfo: log.info(logOutput)
             case .logWarning: log.warning(logOutput)
             case .logError: log.error(logOutput)
             @unknown default:
