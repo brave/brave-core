@@ -30,10 +30,10 @@ void RecordImporterP3A(importer::ImporterType type) {
     metric = ImporterSource::kNone;
     break;
 #if defined(OS_WIN)
-  case TYPE_IE:
+  case importer::TYPE_IE:
     metric = ImporterSource::kIE;
     break;
-  case TYPE_EDGE:
+  case importer::TYPE_EDGE:
     metric = ImporterSource::kEdge;
     break;
 #endif
