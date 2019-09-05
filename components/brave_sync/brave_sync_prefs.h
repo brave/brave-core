@@ -51,8 +51,10 @@ extern const char kSyncEnabled[];
 extern const char kSyncBookmarksEnabled[];
 extern const char kSyncSiteSettingsEnabled[];
 extern const char kSyncHistoryEnabled[];
-// The latest time of synced record, field 'syncTimestamp'
+// The latest time of synced bookmark record, field 'syncTimestamp'
 extern const char kSyncLatestRecordTime[];
+// The latest time of synced device record
+extern const char kSyncLatestDeviceRecordTime[];
 // The time of latest fetch records operation
 extern const char kSyncLastFetchTime[];
 // the list of all known sync devices
@@ -96,6 +98,8 @@ class Prefs {
 
   void SetLatestRecordTime(const base::Time &time);
   base::Time GetLatestRecordTime();
+  void SetLatestDeviceRecordTime(const base::Time& time);
+  base::Time GetLatestDeviceRecordTime();
   void SetLastFetchTime(const base::Time &time);
   base::Time GetLastFetchTime();
 

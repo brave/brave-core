@@ -46,8 +46,6 @@ class BraveSyncEventRouter {
     const base::Time& startAt,
     const int max_records);
 
-  void FetchSyncDevices();
-
   void ResolveSyncRecords(const std::string &category_name,
     const std::vector<RecordAndExistingObject>& records_and_existing_objects);
 
