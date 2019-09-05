@@ -9,14 +9,6 @@ private let log = Logger.browserLogger
 
 enum FileType: String {
     case dat, json, tgz
-    
-    var endpoint: String {
-        switch self {
-        case .dat: return "https://adblock-data.s3.brave.com/4/"
-        case .json: return "https://adblock-data.s3.brave.com/ios/"
-        case .tgz: return "" // Httpse resources are not supported yet.
-        }
-    }
 }
 
 enum AdblockerType {
@@ -55,6 +47,17 @@ enum AdblockerType {
         case .httpse: return AdblockResourcesMappings.generalHttpseName
         case .regional(let locale): return ResourceLocale(rawValue: locale)?.resourceName(for: fileType)
         }
+    }
+    
+    /// A name under which given resource is stored on server.
+    var endpoint: URL? {
+        guard var url = URL(string: AdblockResourceDownloader.endpoint) else { return nil }
+        
+        if case .regional = self {
+            url.appendPathComponent("regional")
+        }
+        
+        return url
     }
     
     var blockListName: BlocklistName? {

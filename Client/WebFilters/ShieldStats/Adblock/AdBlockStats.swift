@@ -28,7 +28,23 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     }
     
     func startLoading() {
+        parseBundledGeneralBlocklist()
         loadDownloadedDatFiles()
+    }
+    
+    private func parseBundledGeneralBlocklist() {
+        guard let path = Bundle.main.path(forResource: bundledGeneralBlocklist, ofType: "dat") else {
+            log.error("Can't find path for bundled general blocklist")
+            return
+        }
+        let fileUrl = URL(fileURLWithPath: path)
+        
+        do {
+            let data = try Data(contentsOf: fileUrl)
+            generalAdblockEngine.set(data: data)
+        } catch {
+            log.error("Failed to parse bundled general blocklist: \(error)")
+        }
     }
     
     private func loadDownloadedDatFiles() {
@@ -122,6 +138,9 @@ class AdBlockStats: LocalAdblockResourceProtocol {
         
         if engine.set(data: data) {
             log.debug("Adblock file with id: \(id) deserialized successfully")
+            // Clearing the cache or checked urls.
+            // The new list can bring blocked resource that were previously set as not-blocked.
+            fifoCacheOfUrlsChecked = FifoDict()
             completion.fill(())
         } else {
             log.error("Failed to deserialize adblock list with id: \(id)")
