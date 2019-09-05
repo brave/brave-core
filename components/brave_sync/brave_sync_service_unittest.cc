@@ -145,19 +145,24 @@ MATCHER_P2(ContainsDeviceRecord,
   return false;
 }
 
-size_t g_overridden_minutes = 0;
+base::TimeDelta g_overridden_time_delta;
 base::Time g_overridden_now;
+
+std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForTimeDelta(
+    base::TimeDelta overridden_time_delta,
+    const base::Time& now = base::subtle::TimeNowIgnoringOverride()) {
+  g_overridden_time_delta = overridden_time_delta;
+  g_overridden_now = now;
+  return std::make_unique<base::subtle::ScopedTimeClockOverrides>(
+      []() { return g_overridden_now + g_overridden_time_delta; }, nullptr,
+      nullptr);
+}
+
 std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForMinutes(
     int overridden_minutes,
     const base::Time& now = base::subtle::TimeNowIgnoringOverride()) {
-  g_overridden_minutes = overridden_minutes;
-  g_overridden_now = now;
-  return std::make_unique<base::subtle::ScopedTimeClockOverrides>(
-      []() {
-        return g_overridden_now +
-               base::TimeDelta::FromMinutes(g_overridden_minutes);
-      },
-      nullptr, nullptr);
+  return OverrideForTimeDelta(base::TimeDelta::FromMinutes(overridden_minutes),
+                              now);
 }
 
 }  // namespace
@@ -924,17 +929,35 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
       .Times(1);
   sync_service()->FetchDevices();
 
-  // If number of devices becomes 2 or more we should set proper non-empty
-  // start_at parameter
+  // If number of devices becomes 2 or more we should next 70 sec use s3
+  // with epmty start_at_time and then switch to sqs with non-empty
+  // start_at_time
   records = std::make_unique<brave_sync::RecordsList>();
   records->push_back(
       SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "2", "device2"));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedSyncRecords(kPreferences, std::move(records));
 
+  // Chain has been created but 70 sec not yet passed
   ASSERT_EQ(brave_sync_prefs()->GetSyncDevices()->size(), 2u);
-  EXPECT_CALL(*sync_client(),
-              SendFetchSyncRecords(_, base::Time(device1_timestamp), _))
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
       .Times(1);
   sync_service()->FetchDevices();
+
+  // Less than 70 seconds have passed, we should fetch with empty start_at
+  {
+    auto time_override = OverrideForTimeDelta(base::TimeDelta::FromSeconds(65));
+    EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
+        .Times(1);
+    sync_service()->FetchDevices();
+  }
+
+  // More than 70 seconds have passed, we should fetch with non-empty start_at
+  {
+    auto time_override = OverrideForTimeDelta(base::TimeDelta::FromSeconds(75));
+    EXPECT_CALL(*sync_client(),
+                SendFetchSyncRecords(_, base::Time(device1_timestamp), _))
+        .Times(1);
+    sync_service()->FetchDevices();
+  }
 }
