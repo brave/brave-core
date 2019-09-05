@@ -51,8 +51,9 @@ void SetCookieControlType(HostContentSettingsMap* map,
                           const GURL& url);
 ControlType GetCookieControlType(Profile* profile, const GURL& url);
 ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url);
-// referrers is always set along with cookies so there is no setter and
-// these is just included for backwards compat
+
+// Referrers is always set along with cookies so there is no setter and
+// these is just included for backwards compat.
 bool AllowReferrers(Profile* profile, const GURL& url);
 bool AllowReferrers(HostContentSettingsMap* map, const GURL& url);
 
