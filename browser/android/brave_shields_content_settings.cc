@@ -10,15 +10,13 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
+#include "brave/build/android/jni_headers/BraveShieldsContentSettings_jni.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-
-#include "jni/BraveShieldsContentSettings_jni.h"
-
 
 namespace chrome {
 namespace android {
