@@ -3411,7 +3411,7 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
 
     // Record stats.
     double balance_minus_grant = 0;
-    for (auto wallet : balance->wallets) {
+    for (const auto& wallet : balance->wallets) {
       // Skip anonymous wallet, since it can contain grants.
       if (wallet.first == "anonymous") {
         continue;

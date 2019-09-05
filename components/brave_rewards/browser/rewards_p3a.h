@@ -18,10 +18,10 @@ enum class AutoContributionsP3AState {
   kAutoContributeOn,
 };
 
-void RecordAutoContributionsState(AutoContributionsP3AState state,
-                                  int count);
+void RecordAutoContributionsState(AutoContributionsP3AState state, int count);
 
-void RecordTipsState(bool wallet_created, int one_time_count,
+void RecordTipsState(bool wallet_created,
+                     int one_time_count,
                      int recurring_count);
 
 enum class AdsP3AState {

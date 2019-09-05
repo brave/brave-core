@@ -23,35 +23,35 @@ void RecordWalletBalanceP3A(bool wallet_created, size_t b) {
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletBalance", answer, 3);
 }
 
-void RecordAutoContributionsState(AutoContributionsP3AState state,
-                                  int count) {
+void RecordAutoContributionsState(AutoContributionsP3AState state, int count) {
   DCHECK_GE(count, 0);
   int answer = 0;
   switch (state) {
-  case AutoContributionsP3AState::kNoWallet:
-    break;
-  case AutoContributionsP3AState::kWalletCreatedAutoContributeOff:
-    answer = 1;
-    break;
-  case AutoContributionsP3AState::kAutoContributeOn:
-    switch (count) {
-    case 0:
-      answer = 2;
+    case AutoContributionsP3AState::kNoWallet:
       break;
-    case 1:
-      answer = 3;
+    case AutoContributionsP3AState::kWalletCreatedAutoContributeOff:
+      answer = 1;
+      break;
+    case AutoContributionsP3AState::kAutoContributeOn:
+      switch (count) {
+        case 0:
+          answer = 2;
+          break;
+        case 1:
+          answer = 3;
+          break;
+        default:
+          answer = 4;
+      }
       break;
     default:
-      answer = 4;
-    }
-    break;
-  default:
-    NOTREACHED();
+      NOTREACHED();
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.AutoContributionsState", answer, 4);
 }
 
-void RecordTipsState(bool wallet_created, int one_time_count,
+void RecordTipsState(bool wallet_created,
+                     int one_time_count,
                      int recurring_count) {
   DCHECK_GE(one_time_count, 0);
   DCHECK_GE(recurring_count, 0);
