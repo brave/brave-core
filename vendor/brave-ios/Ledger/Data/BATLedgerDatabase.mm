@@ -864,6 +864,9 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     return;
   }
   for (NSString *provider in banner.links) {
+    if ([(NSString *)banner.links[provider] length] == 0) {
+      continue;
+    }
     auto spl = [[ServerPublisherLink alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherLink.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
     spl.serverPublisherInfo = info;
     spl.publisherID = info.publisherID;
