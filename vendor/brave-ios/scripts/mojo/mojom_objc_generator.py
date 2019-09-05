@@ -162,7 +162,10 @@ class Generator(generator.Generator):
     if self._IsObjCNumberKind(kind):
       return accessor
     if self._IsMojomStruct(kind):
-      return "%s.cppObjPtr" % accessor
+      if mojom.IsNullableKind(kind):
+        return "%s != nil ? %s.cppObjPtr : nullptr" % (accessor, accessor)
+      else:
+        return "%s.cppObjPtr" % accessor
     if mojom.IsEnumKind(kind):
       return "static_cast<%s::%s>(%s)" % (self._CppNamespace(), kind.name, accessor)
     if mojom.IsStringKind(kind):
@@ -241,7 +244,16 @@ class Generator(generator.Generator):
       return accessor
     if self._IsMojomStruct(kind):
       args = (self.class_prefix, kind.name, kind.name, accessor)
-      return "[[%s%s alloc] initWith%s:*%s]" % args
+      base = "[[%s%s alloc] initWith%s:*%s]" % args
+      if mojom.IsNullableKind(kind):
+        return """^%s%s *{
+          if (%s.get() != nullptr) {
+            return %s;
+          }
+          return nil;
+        }()""" % (self.class_prefix, kind.name, accessor, base)
+      else:
+        return base
     if mojom.IsEnumKind(kind):
       return "static_cast<%s%s>(%s)" % (self.class_prefix, kind.name, accessor)
     if mojom.IsStringKind(kind):
