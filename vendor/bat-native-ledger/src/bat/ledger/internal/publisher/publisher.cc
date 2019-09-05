@@ -888,7 +888,10 @@ void Publisher::OnGetPublisherBanner(
   auto banner = ledger::PublisherBanner::New();
 
   if (info) {
-    banner = info->banner->Clone();
+    if (info->banner) {
+      banner = info->banner->Clone();
+    }
+
     banner->status = info->status;
   }
 
