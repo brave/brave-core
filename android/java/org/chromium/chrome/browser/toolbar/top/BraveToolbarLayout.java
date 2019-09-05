@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
+import org.chromium.chrome.browser.tabmodel.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.util.AccessibilityUtil;
 import org.chromium.chrome.browser.util.MathUtils;
@@ -63,11 +64,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   protected void onFinishInflate() {
-      super.onFinishInflate(); 
+      super.onFinishInflate();
       mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
       mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
       mBraveShieldsButton = (ImageView) findViewById(R.id.brave_shields_button);
       if (mBraveShieldsButton != null) {
+          mBraveShieldsButton.setEnabled(false);
           mBraveShieldsButton.setClickable(true);
           mBraveShieldsButton.setOnClickListener(this);
           mBraveShieldsButton.setOnLongClickListener(this);
@@ -86,9 +88,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               }
               if (isTopShield) {
                   if (isOn) {
-                      setBraveShieldsColored();
+                      enableBraveShieldsButton();
                   } else {
-                      setBraveShieldsBlackAndWhite();
+                      disableBraveShieldsButton();
                   }
               }
               if (currentTab.isLoading()) {
@@ -112,6 +114,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               mBraveShieldsMenuHandler.updateValues(tabId);
           }
       };
+      // Initially disabled. Shields button state will be updated when tab is
+      // shown and loading state is changed.
+      // Otherwise, button can be clicked when displayed tab is not ready.
+      disableBraveShieldsButton();
   }
 
   @Override
@@ -124,13 +130,24 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   public void setTabModelSelector(TabModelSelector selector) {
       mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
             @Override
+            public void onShown(Tab tab, @TabSelectionType int type) {
+                try {
+                    // Update shields button state when visible tab is changed.
+                    URL url = new URL(tab.getUrl());
+                    updateBraveShieldsButtonState(tab.getProfile(), url.toString());
+                } catch (Exception e) {
+                    disableBraveShieldsButton();
+                }
+            }
+
+            @Override
             public void onPageLoadStarted(Tab tab, String url) {
                 if (mMainActivity.getActivityTab() == tab) {
                     try {
                         URL urlCheck = new URL(url);
-                        setBraveShieldsColor(tab.getProfile(), urlCheck.toString());
+                        updateBraveShieldsButtonState(tab.getProfile(), urlCheck.toString());
                     } catch (Exception e) {
-                        setBraveShieldsBlackAndWhite();
+                        disableBraveShieldsButton();
                     }
                 }
                 mBraveShieldsMenuHandler.clearBraveShieldsCount(tab.getId());
@@ -142,9 +159,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                     try {
                         URL urlCheck = new URL(url);
                         mBraveShieldsMenuHandler.updateHost(urlCheck.toString());
-                        setBraveShieldsColor(tab.getProfile(), urlCheck.toString());
+                        updateBraveShieldsButtonState(tab.getProfile(), urlCheck.toString());
                     } catch (Exception e) {
-                        setBraveShieldsBlackAndWhite();
+                        disableBraveShieldsButton();
                     }
                 }
             }
@@ -174,23 +191,25 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           }
           try {
               URL url = new URL(currentTab.getUrl());
-              setBraveShieldsColor(currentTab.getProfile(), url.toString());
+              updateBraveShieldsButtonState(currentTab.getProfile(), url.toString());
               mBraveShieldsMenuHandler.show(mBraveShieldsButton, url.toString(),
                   url.getHost(), currentTab.getId(), currentTab.getProfile());
           } catch (Exception e) {
-              setBraveShieldsBlackAndWhite();
+              disableBraveShieldsButton();
           }
       }
   }
 
-  private void setBraveShieldsBlackAndWhite() {
+  private void disableBraveShieldsButton() {
       if (null != mBraveShieldsButton) {
+          mBraveShieldsButton.setEnabled(false);
           mBraveShieldsButton.setImageResource(R.drawable.btn_brave_off);
       }
   }
 
-  protected void setBraveShieldsColored() {
+  protected void enableBraveShieldsButton() {
       if (null != mBraveShieldsButton) {
+          mBraveShieldsButton.setEnabled(true);
           mBraveShieldsButton.setImageResource(R.drawable.btn_brave);
       }
     }
@@ -210,8 +229,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       return AccessibilityUtil.showAccessibilityToast(context, v, description);
   }
 
-  public void populateUrlAnimatorSet(boolean hasFocus, int urlFocusToolbarButtonsDuration, 
-      int urlClearFocusTabStackDelayMs, int urlFocusToolbarButtonsTranslationXDP, 
+  public void populateUrlAnimatorSet(boolean hasFocus, int urlFocusToolbarButtonsDuration,
+      int urlClearFocusTabStackDelayMs, int urlFocusToolbarButtonsTranslationXDP,
       List<Animator> animators) {
     if (mBraveShieldsButton != null) {
         Animator animator;
@@ -266,12 +285,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
             params.getMarginEnd();
   }
 
-  private void setBraveShieldsColor(Profile profile, String url) {
+  private void updateBraveShieldsButtonState(Profile profile, String url) {
       if (BraveShieldsContentSettings.getShields(profile, url, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
           // Set Brave Shields button in color if we have a valid URL
-          setBraveShieldsColored();
+          enableBraveShieldsButton();
       } else {
-          setBraveShieldsBlackAndWhite();
+          disableBraveShieldsButton();
       }
   }
 }
