@@ -685,7 +685,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 {
   const auto context = [DataController newBackgroundContext];
   
-  const auto batchSize = 5000.0;
+  const auto batchSize = 1000.0;
   const auto numberOfSplits = (NSInteger)ceil(list.count / batchSize);
   NSMutableArray *split = [[NSMutableArray alloc] init];
   for (NSUInteger i = 0; i < numberOfSplits; i++) {
@@ -695,34 +695,54 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   }
   BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Splitting " << list.count << " records into " << numberOfSplits << " batches" << std::endl;
   NSDate *start = [NSDate date];
-  [context performBlock:^{
-    const auto fetchRequest = ServerPublisherInfo.fetchRequest;
-    fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class)
-                                      inManagedObjectContext:context];
-    NSError *error = nil;
-    const auto deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
-    [context executeRequest:deleteRequest error:&error];
-    
-    if (context.hasChanges) {
-      [context save:nil];
-    }
-    
-    for (NSArray *section in split) {
-      [self insertOrUpdateServerPublisherList:section context:context];
+  const auto group = dispatch_group_create();
+  dispatch_group_enter(group);
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [context performBlockAndWait:^{
+      const auto fetchRequest = ServerPublisherInfo.fetchRequest;
+      fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class)
+                                        inManagedObjectContext:context];
+      NSError *error = nil;
+      const auto deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
+      [context executeRequest:deleteRequest error:&error];
+      
       if (context.hasChanges) {
-        NSError *error;
-        if (![context save:&error]) {
-          BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription << std::endl;
+        [context save:nil];
+      }
+    }];
+    const auto splitIndex = ceil(split.count / 2.0);
+    [context performBlock:^{
+      for (NSArray *section in [split subarrayWithRange:NSMakeRange(0, splitIndex)]) {
+        [self insertOrUpdateServerPublisherList:section context:context];
+        if (context.hasChanges) {
+          NSError *error;
+          if (![context save:&error]) {
+            BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription << std::endl;
+          }
         }
       }
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-      NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:start];
-      BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Completed inserting " << list.count << " records into DB. Took " << duration << " seconds" << std::endl;
-      completion(true);
-    });
-  }];
+      dispatch_group_leave(group);
+    }];
+    const auto newContext = [DataController newBackgroundContext];
+    dispatch_group_enter(group);
+    [newContext performBlock:^{
+      for (NSArray *section in [split subarrayWithRange:NSMakeRange(splitIndex, split.count - splitIndex)]) {
+        [self insertOrUpdateServerPublisherList:section context:newContext];
+        if (newContext.hasChanges) {
+          NSError *error;
+          if (![newContext save:&error]) {
+            BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription << std::endl;
+          }
+        }
+      }
+      dispatch_group_leave(group);
+    }];
+  });
+  dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+    NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:start];
+    BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Completed inserting " << list.count << " records into DB. Took " << duration << " seconds" << std::endl;
+    completion(true);
+  });
 }
 
 #pragma mark - Publisher List / Banner
