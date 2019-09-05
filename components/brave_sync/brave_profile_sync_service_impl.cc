@@ -1085,8 +1085,10 @@ BraveProfileSyncServiceImpl::GetExponentialWaitsForTests() {
 void BraveProfileSyncServiceImpl::RecordSyncStateP3A() const {
   int result = 0;
   if (brave_sync_prefs_->GetSyncEnabled()) {
+    unsigned long device_count =
+        static_cast<unsigned long>(brave_sync_prefs_->GetSyncDevices()->size());
     // Answers are zero-based.
-    result = std::min(brave_sync_prefs_->GetSyncDevices()->size(), 3UL) - 1UL;
+    result = std::min(device_count, 3UL) - 1UL;
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Sync.Status", result, 2);
 }
