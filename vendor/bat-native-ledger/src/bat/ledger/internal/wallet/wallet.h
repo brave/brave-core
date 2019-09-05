@@ -70,7 +70,7 @@ class Wallet {
       ledger::DisconnectWalletCallback callback);
 
   void TransferAnonToExternalWallet(
-      const std::string& new_address,
+      ledger::ExternalWalletPtr wallet,
       const bool allow_zero_balance,
       ledger::TransferAnonToExternalWalletCallback callback);
 
@@ -104,11 +104,23 @@ class Wallet {
     ledger::TransferAnonToExternalWalletCallback callback);
 
   void OnTransferAnonToExternalWalletBalance(
-    ledger::Result result,
-    ledger::BalancePtr properties,
-    const std::string& new_address,
-    const bool allow_zero_balance,
-    ledger::TransferAnonToExternalWalletCallback callback);
+      ledger::Result result,
+      ledger::BalancePtr properties,
+      const ledger::ExternalWallet& wallet,
+      const bool allow_zero_balance,
+      ledger::TransferAnonToExternalWalletCallback callback);
+
+  std::string GetClaimPayload(
+      const std::string user_funds,
+      const std::string new_address,
+      const std::string anon_address);
+
+  void OnTransferAnonToExternalWalletAddress(
+      ledger::Result result,
+      const std::string& anon_address,
+      const std::string& new_address,
+      const std::string& user_funds,
+      ledger::TransferAnonToExternalWalletCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Create> create_;

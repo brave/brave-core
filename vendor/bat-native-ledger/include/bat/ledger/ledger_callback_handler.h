@@ -43,6 +43,7 @@ LEDGER_EXPORT enum Result {
   RECURRING_TABLE_EMPTY = 23,
   EXPIRED_TOKEN = 24,
   BAT_NOT_ALLOWED = 25,
+  ALREADY_EXISTS = 26,
 };
 
 // LedgerCallbackHandler must not be destroyed if they have pending callbacks
