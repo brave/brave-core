@@ -494,39 +494,5 @@ class NSURLExtensionsTests: XCTestCase {
         }
 
     }
-    
-    func testeligibleForPeekAndPop() {
-        let goodurls = [
-            "https://www.example.com",
-            "https://www.example.com/index.html",
-            "https://m.foo.com/bar/baz?noo=abc#123",
-            "https://m.example.co.uk/index.html"
-        ]
-        let badurls = [
-            "about:home",
-            "http://localhost:1234/about/firefox"
-        ]
-
-        goodurls.forEach { XCTAssertTrue(URL(string:$0)!.eligibleForPeekAndPop) }
-        badurls.forEach { XCTAssertFalse(URL(string:$0)!.eligibleForPeekAndPop) }
-    }
-    
-    func testisImageResource() {
-        let goodurls = [
-            "https://www.example.com/image.png",
-            "https://www.example.com/image.jpg",
-            "https://m.foo.com/bar/image.jpeg"
-        ]
-        let badurls = [
-            "https://www.example.com",
-            "https://www.example.com/index.html",
-            "https://m.foo.com/bar/baz?noo=abc#123",
-            "about:home",
-            "http://localhost:1234/about/firefox"
-        ]
-        
-        goodurls.forEach { XCTAssertTrue(URL(string:$0)!.isImageResource) }
-        badurls.forEach { XCTAssertFalse(URL(string:$0)!.isImageResource) }
-    }
 
 }
