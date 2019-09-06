@@ -175,7 +175,7 @@
 <translation id="5329858601952122676">刪除(&amp;D)</translation>
 <translation id="4608500690299898628">尋找(&amp;F)...</translation>
 <translation id="3712897371525859903">另存網頁為(&amp;A)...</translation>
-<translation id="6089481419520884864">提取頁面</translation>
+<translation id="2369105924912929484">切換摘要網頁內容</translation>
 <translation id="6607831829715835317">更多工具(&amp;L)</translation>
 <translation id="3994878504415702912">縮放(&amp;Z)</translation>
 <translation id="4779083564647765204">縮放</translation>
@@ -720,7 +720,7 @@
 <translation id="8276560076771292512">清除快取並強制重新載入</translation>
 <translation id="3164329792803560526">這個分頁正與 <ph name="APP_NAME"/> 共用</translation>
 <translation id="8864055848767439877">正在與 <ph name="APP_NAME"/> 共用 <ph name="TAB_NAME"/></translation>
-<translation id="1337692097987160377">共用此分頁</translation>
+<translation id="8236917170563564587">改為分享這個分頁</translation>
 <translation id="1272079795634619415">停止</translation>
 <translation id="7564847347806291057">結束處理程序</translation>
 <translation id="5233231016133573565">程序 ID</translation>
@@ -902,6 +902,7 @@
 <translation id="8284279544186306258">所有 <ph name="WEBSITE_1"/> 網站</translation>
 <translation id="4883436287898674711">所有 <ph name="WEBSITE_1"/> 網站</translation>
 <translation id="2204034823255629767">讀取及變更你輸入的任何設定</translation>
+<translation id="6979044105893951891">啟動及結束受管理的訪客工作階段</translation>
 <translation id="2741912629735277980">在登入畫面上顯示 UI</translation>
 <translation id="8191230140820435481">管理你的應用程式、擴充功能和主題</translation>
 <translation id="6259104249628300056">探索您區域網路中的裝置</translation>
@@ -960,6 +961,7 @@
 <translation id="1205489148908752564">讀取及變更使用者許可清單</translation>
 <translation id="3432757130254800023">傳送要在區域網路顯示的影音內容</translation>
 <translation id="5235750401727657667">取代新分頁開啟時顯示的網頁</translation>
+<translation id="1784707308176068866">合作內建應用程式提出要求時在背景執行</translation>
 <translation id="5527463195266282916">試圖降級外掛程式。</translation>
 <translation id="8565650234829130278">試圖降級應用程式。</translation>
 <translation id="1415990189994829608">這個工作階段類型不允許使用 <ph name="EXTENSION_NAME"/> (擴充功能 ID 為「<ph name="EXTENSION_ID"/>」)。</translation>
@@ -1155,9 +1157,6 @@
 <translation id="8743864605301774756">1 小時前更新</translation>
 <translation id="7363117941401515667">更新時間為 <ph name="HOURS"/> 小時前</translation>
 <translation id="1329584516321524826">剛才更新</translation>
-<translation id="224940702122312781">這個網頁會耗用許多數據流量。</translation>
-<translation id="3861241522664181545">已暫停載入頁面。</translation>
-<translation id="6921709132208495314">停止這個網頁使用數據流量</translation>
 <translation id="2262332168014443534">精簡模式現在可讓你更快速地瀏覽所有網頁，包括 HTTPS 網頁。</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="2724841811573117416">WebRTC 記錄</translation>
@@ -1267,7 +1266,6 @@
 <translation id="8017679124341497925">已編輯捷徑</translation>
 <translation id="1174073918202301297">已新增捷徑</translation>
 <translation id="2926085873880284723">還原預設捷徑</translation>
-<translation id="2942581856830209953">自訂這個頁面</translation>
 <translation id="5801450813341024983">Brave 背景</translation>
 <translation id="2800760947029405028">上傳圖片</translation>
 <translation id="8342861492835240085">選取集合</translation>
@@ -1282,6 +1280,7 @@
 <translation id="1564414980088536597">無法使用這張圖片，請選擇其他圖片。</translation>
 <translation id="385051799172605136">返回</translation>
 <translation id="8033827949643255796">已選取</translation>
+<translation id="2942581856830209953">自訂這個頁面</translation>
 <translation id="3497560059572256875">分享 Doodle</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1299,6 +1298,10 @@
 <translation id="820568752112382238">最常造訪的網站</translation>
 <translation id="5857171483910641802">系統會根據你經常造訪的網站提供捷徑建議</translation>
 <translation id="1211769675100312947">自訂專屬捷徑</translation>
+<translation id="7460045493116006516">你目前安裝的主題</translation>
+<translation id="9068849894565669697">選取顏色</translation>
+<translation id="8798099450830957504">預設</translation>
+<translation id="8259556432390118667">十六進位顏色值</translation>
 <translation id="2858138569776157458">熱門網站</translation>
 <translation id="5376169624176189338">按一下回上一頁，按住可查看記錄</translation>
 <translation id="9103868373786083162">按下即可返回，內容選單會顯示歷史記錄</translation>
@@ -1322,7 +1325,6 @@
 <translation id="833986336429795709">請選擇要用來開啟這個連結的應用程式</translation>
 <translation id="192494336144674234">選擇開啟工具</translation>
 <translation id="9053893665344928494">記住我的選擇</translation>
-<translation id="5541687815721799001">使用應用程式</translation>
 <translation id="5340857474604400806">繼續使用 Brave</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (無痕模式)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (訪客)</translation>
@@ -1380,7 +1382,6 @@
 <translation id="7108338896283013870">隱藏</translation>
 <translation id="1426410128494586442">是</translation>
 <translation id="4250680216510889253">否</translation>
-<translation id="7378627244592794276">不需要</translation>
 <translation id="5317780077021120954">儲存</translation>
 <translation id="4285418559658561636">更新密碼</translation>
 <translation id="9094033019050270033">更新密碼</translation>
@@ -1621,6 +1622,9 @@
 <translation id="8249615410597138718">傳送至你的裝置</translation>
 <translation id="5310281978693206542">將連結傳送至裝置</translation>
 <translation id="2315587498123194634">傳送連結到「<ph name="DEVICE_NAME"/>」</translation>
+<translation id="7761380698973548146">用你的裝置撥打電話</translation>
+<translation id="7427798576651127129">用「<ph name="DEVICE_NAME"/>」撥打電話</translation>
+<translation id="462021874527520979">用你的裝置撥打電話</translation>
 <translation id="4520385623207007473">使用中的 Cookie</translation>
 <translation id="4763408175235639573">系統在你瀏覽這個網頁時設定了下列 Cookie</translation>
 <translation id="2719936478972253983">系統已封鎖下列 Cookie</translation>
@@ -1728,17 +1732,10 @@
 <translation id="6022526133015258832">開啟全螢幕</translation>
 <translation id="6845038076637626672">最大化開啟</translation>
 <translation id="6860427144121307915">在分頁中開啟</translation>
-<translation id="3074037959626057712">你已登入帳戶並開啟了同步功能</translation>
 <translation id="1231733316453485619">要開啟同步處理功能嗎？</translation>
 <translation id="4736292055110123391">讓你在所有裝置上的書籤、密碼、歷史記錄及其他設定保持同步</translation>
 <translation id="5736731321935944068">Brave Software 可能會使用你的歷史記錄，為你提供個人化的搜尋服務、廣告內容和其他各項 Brave Software 服務</translation>
 <translation id="4201546031411513170">你隨時可以在設定中選擇要同步處理的資料。</translation>
-<translation id="3149880132460839085">Brave 同步</translation>
-<translation id="3796902758602917951">您的書籤、歷史記錄、密碼和其他設定都會在您的 Brave Software 帳戶中保持同步，讓您在所有個人裝置上使用。</translation>
-<translation id="3111958038206230539">享有個人化的 Brave Software 服務</translation>
-<translation id="295992419959320001">Brave Software 可能會使用您的瀏覽記錄，為您提供個人化的搜尋服務、廣告內容和其他各項 Brave Software 服務</translation>
-<translation id="3070156078150543526">Brave Software 可能會使用您的瀏覽記錄，為您提供個人化的搜尋服務和其他各項 Brave Software 服務。</translation>
-<translation id="2709453993673701466">想在開啟同步功能和個人化功能前先進行管理嗎？請前往「<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>」。</translation>
 <translation id="2497852260688568942">你的管理員停用了同步功能</translation>
 <translation id="562935524653278697">你的管理員停用了書籤、歷史記錄、密碼和其他設定的同步功能。</translation>
 <translation id="2169062631698640254">繼續登入</translation>
@@ -1816,8 +1813,7 @@
 <translation id="2126167708562367080">你的管理員停用了同步功能。</translation>
 <translation id="5462539695964427820">已透過 Brave Software 資訊主頁停止同步功能。</translation>
 <translation id="8805140816472474147">如要開始同步處理，請確認同步處理設定。</translation>
-<translation id="4835836146030131423">登入發生錯誤。</translation>
-<translation id="4365673000813822030">糟糕，同步處理已停止運作。</translation>
+<translation id="5771816112378578655">設定中...</translation>
 <translation id="3492788708641132712">同步功能無法正常運作，請嘗試重新登入。</translation>
 <translation id="6349170655202535379">同步功能無法正常運作。請嘗試登出，再重新登入。</translation>
 <translation id="974555521953189084">如要開始同步處理，請輸入你的通關密語</translation>
@@ -1828,9 +1824,7 @@
 <translation id="7912080627461681647">伺服器上的密碼已變更。請先登出然後重新登入。</translation>
 <translation id="1877520246462554164">無法取得驗證憑證。請先登出，然後重新登入再試一次。</translation>
 <translation id="9100765901046053179">進階設定</translation>
-<translation id="5771816112378578655">設定中...</translation>
 <translation id="2731700343119398978">請稍候...</translation>
-<translation id="4684427112815847243">同步處理所有資料</translation>
 <translation id="7218743184834293955">系統已採用你的同步通關密語針對資料進行加密處理。加密的資料不包括 Brave Software Pay 的付款方式和地址。</translation>
 <translation id="7158251077901880179">系統已採用你在 <ph name="TIME"/>設定的同步通關密語針對資料進行加密處理。加密的資料不包括 Brave Software Pay 的付款方式和地址。</translation>
 <translation id="1171389789873508468">系統已採用你在 <ph name="TIME"/>設定的 Brave Software 密碼針對資料進行加密處理。加密的資料不包括 Brave Software Pay 的付款方式和地址。</translation>
@@ -1842,7 +1836,10 @@
 <translation id="5990386583461751448">已翻譯</translation>
 <translation id="5659833766619490117">無法翻譯這個網頁的內容</translation>
 <translation id="969096075394517431">變更語言</translation>
+<translation id="9095388113577226029">更多語言...</translation>
+<translation id="7027891519253193555">不是<ph name="LANGUAGE"/>網頁嗎？</translation>
 <translation id="6831043979455480757">翻譯</translation>
+<translation id="7378627244592794276">不需要</translation>
 <translation id="1103523840287552314">一律翻譯<ph name="LANGUAGE"/></translation>
 <translation id="7600965453749440009">一律不翻譯<ph name="LANGUAGE"/></translation>
 <translation id="1285320974508926690">一律不翻譯此網站</translation>
@@ -1855,7 +1852,11 @@
 <translation id="5677503058916217575">網頁語言：</translation>
 <translation id="126710816202626562">翻譯語言：</translation>
 <translation id="3668570675727296296">語言設定</translation>
+<translation id="1803531841600994172">翻譯目標語言</translation>
+<translation id="456717285308019641">要翻譯的網頁語言</translation>
 <translation id="4297322094678649474">變更語言</translation>
+<translation id="7731119595976065702">更多語言...</translation>
+<translation id="2444119669991608829">不是<ph name="LANGUAGE"/>網頁嗎？</translation>
 <translation id="3937734102568271121">一律翻譯<ph name="LANGUAGE"/></translation>
 <translation id="4330387663455830245">一律不翻譯<ph name="LANGUAGE"/>內容</translation>
 <translation id="8797459392481275117">一律不翻譯這個網站的內容</translation>
@@ -1867,6 +1868,8 @@
 <translation id="3177909033752230686">網頁語言：</translation>
 <translation id="4254813446494774748">翻譯語言：</translation>
 <translation id="6156960295318603523">語言設定</translation>
+<translation id="545426320101607695">翻譯目標語言</translation>
+<translation id="822519928942492333">要翻譯的網頁語言</translation>
 <translation id="7931318309563332511">不明</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> 要求傳送通知給你</translation>
 <translation id="2482878487686419369">通知</translation>
@@ -1922,6 +1925,11 @@
 <translation id="4058793769387728514">立即檢查文件</translation>
 <translation id="7339785458027436441">輸入時檢查拼字</translation>
 <translation id="2749881179542288782">檢查拼字及文法</translation>
+<translation id="883062543841130884">替代項目</translation>
+<translation id="5302932258331363306">顯示替代項目</translation>
+<translation id="5260334392110301220">智慧型引號</translation>
+<translation id="7121728544325372695">智慧型破折號</translation>
+<translation id="2653275834716714682">替換文字</translation>
 <translation id="2845382757467349449">永遠顯示書籤列</translation>
 <translation id="8053390638574070785">重新載入此網頁</translation>
 <translation id="8651585100578802546">強制重新載入此網頁</translation>
@@ -2131,16 +2139,6 @@
 <translation id="3925842537050977900">從檔案櫃中取消固定</translation>
 <translation id="469230890969474295">OEM 資料夾</translation>
 <translation id="6201792273624501289">Linux 應用程式</translation>
-<translation id="1477301030751268706">Identity API 憑證快取</translation>
-<translation id="8642171459927087831">存取憑證</translation>
-<translation id="8049913480579063185">擴充功能名稱</translation>
-<translation id="1357589289913453911">擴充功能 ID</translation>
-<translation id="3898521660513055167">憑證狀態</translation>
-<translation id="2098305189700762159">找不到</translation>
-<translation id="5880247576487732437">提供的憑證</translation>
-<translation id="845627346958584683">到期時間</translation>
-<translation id="5238369540257804368">範圍</translation>
-<translation id="2391762656119864333">撤銷</translation>
 <translation id="29488703364906173">一款快速、簡單又安全的新世代網路瀏覽器。</translation>
 <translation id="8910146161325739742">分享螢幕畫面</translation>
 <translation id="8621979332865976405">分享整個螢幕畫面</translation>
@@ -2219,6 +2217,8 @@
 <translation id="4130199216115862831">裝置記錄</translation>
 <translation id="6231881193380278751">在網址中加入查詢間距的參數，設定自動重新整理網頁的時間：chrome://device-log/?refresh=&lt;秒數&gt;</translation>
 <translation id="7180611975245234373">重新整理</translation>
+<translation id="6643016212128521049">清除</translation>
+<translation id="3016381065346027039">沒有記錄項目</translation>
 <translation id="1260240842868558614">顯示：</translation>
 <translation id="1165039591588034296">錯誤</translation>
 <translation id="1124772482545689468">使用者</translation>
@@ -2247,7 +2247,6 @@
 <translation id="7830594666202422257">連線至 Linux</translation>
 <translation id="59324397759951282"><ph name="MANUFACTURER_NAME"/> USB 裝置</translation>
 <translation id="8763927697961133303">USB 裝置</translation>
-<translation id="8798099450830957504">預設</translation>
 <translation id="5734362860645681824">通訊</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> 要求配對</translation>
 <translation id="5331425616433531170">「<ph name="CHROME_EXTENSION_NAME"/>」要求配對</translation>
@@ -2271,7 +2270,7 @@
 <translation id="8480869669560681089">不明的 <ph name="VENDOR_NAME"/> 裝置</translation>
 <translation id="1500297251995790841">不明裝置 [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="810875025413331850">找不到附近的裝置。</translation>
-<translation id="796416202355062143"><ph name="ORIGIN"/> 要求掃描附近的藍牙裝置，已找到下列裝置：</translation>
+<translation id="4351060348582610152"><ph name="ORIGIN"/> 要求掃描附近的藍牙裝置。已找到下列裝置：</translation>
 <translation id="8368027906805972958">不明或不支援的裝置 (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7003844668372540529"><ph name="VENDOR_NAME"/> 提供的不明產品 <ph name="PRODUCT_ID"/></translation>
 <translation id="3163201441334626963">供應商 <ph name="VENDOR_ID"/> 提供的不明產品 <ph name="PRODUCT_ID"/></translation>
@@ -2293,13 +2292,13 @@
 <translation id="5398772614898833570">已封鎖廣告</translation>
 <translation id="2859806420264540918">這個網站會顯示干擾性或誤導性的廣告。</translation>
 <translation id="4077917118009885966">已封鎖這個網站的廣告</translation>
+<translation id="6456955391422100996">已移除廣告。</translation>
+<translation id="7533556202636568669">這個廣告使用太多裝置資源，因此 Brave 已將其移除。</translation>
 <translation id="8497219075884839166">Windows 公用程式</translation>
 <translation id="897525204902889653">隔離服務</translation>
 <translation id="7055152154916055070">已禁止重新導向：</translation>
 <translation id="6777817260680419853">已禁止重新導向</translation>
 <translation id="694592694773692225">已在這個網頁禁止重新導向。</translation>
-<translation id="8149707863742670433">Brave Software 提供的網路瀏覽器，滿足你的需求</translation>
-<translation id="3541561136058491590">無論使用任何裝置，只要以你的 Brave Software 帳戶登入 Brave，即可取得你的書籤、歷史記錄、密碼，並套用相同的設定。</translation>
 <translation id="8945142681652245463">使用 Brave Software Brave 快速瀏覽網路</translation>
 <translation id="2618024864038703735">使用 Brave Software Brave 安全瀏覽網路</translation>
 <translation id="8142180567942285208">使用 Brave 享有智慧瀏覽體驗</translation>
@@ -2309,12 +2308,6 @@
 <translation id="683373380308365518">改用智慧又安全的瀏覽器</translation>
 <translation id="989239400026154074">Brave Software 推薦使用 Brave</translation>
 <translation id="6676231621615806698">開啟 Brave</translation>
-<translation id="7494065396242762445">開啟 Windows 設定</translation>
-<translation id="2137068468602026500">在「網路瀏覽器」之下，按一下 [Microsoft Edge]<ph name="BEGIN_BOLD"/><ph name="END_BOLD"/></translation>
-<translation id="3720996970802414353">確定切換</translation>
-<translation id="3389312115541230716">以滑鼠右鍵按一下工作列中的 <ph name="SMALL_PRODUCT_LOGO"/> 圖示</translation>
-<translation id="258932246702879617">選取 [固定至工作列]<ph name="BEGIN_BOLD"/><ph name="END_BOLD"/></translation>
-<translation id="7537601449003285327">固定至工作列</translation>
 <translation id="5250372599208556903"><ph name="SEARCH_ENGINE_NAME"/> 會使用你的位置資訊，為你提供當地的相關內容。你可以在 [<ph name="SETTINGS_LINK"/>] 中變更這項設定。</translation>
 <translation id="3737536731758327622">你的下載內容會顯示在這裡</translation>
 <translation id="4782664866169793230">Brave 目前受到自動測試軟體控制。</translation>
@@ -2331,6 +2324,30 @@
 <translation id="874689135111202667">{0,plural, =1{要將 1 個檔案上傳到這個網站嗎？}other{要將 # 個檔案上傳到這個網站嗎？}}</translation>
 <translation id="1956390763342388273">你即將上傳「<ph name="FOLDER_PATH"/>」中的所有檔案。除非你信任該網站，否則請勿這麼做。</translation>
 <translation id="1243314992276662751">上傳</translation>
+<translation id="1574038418461948632">要將變更儲存至「<ph name="FILENAME"/>」嗎？</translation>
+<translation id="5181988524012865000">要將變更儲存至檔案嗎？</translation>
+<translation id="2775188527796017992"><ph name="ORIGIN"/> 可以將你的變更直接儲存至「<ph name="FILENAME"/>」。在你關閉此分頁前，這個網站都能儲存變更。</translation>
+<translation id="5375793835576008230"><ph name="ORIGIN"/> 可以將你的變更直接儲存至「<ph name="FOLDERNAME"/>」中的檔案。在你關閉此分頁前，這個網站都能儲存變更。</translation>
+<translation id="6532106788206463496">儲存變更</translation>
+<translation id="5102007300153090427">這個頁面可以儲存至檔案。</translation>
+<translation id="197228003527531594">這個頁面可以查看裝置資料夾中的所有檔案。</translation>
+<translation id="766254481392580456"><ph name="ORIGIN"/> 可以將你的變更直接儲存至「<ph name="FILENAME"/>」</translation>
+<translation id="856745937116041450"><ph name="ORIGIN"/> 可以將你的變更直接儲存至下列檔案</translation>
+<translation id="2150212764721500731"><ph name="ORIGIN"/> 可以將你的變更直接儲存至「<ph name="FOLDERNAME"/>」中的檔案</translation>
+<translation id="7509896576944228744"><ph name="ORIGIN"/> 可以將你的變更直接儲存至下列資料夾</translation>
+<translation id="8152021341839173449"><ph name="ORIGIN"/> 可以將你的變更直接儲存至下列檔案和資料夾</translation>
+<translation id="3343738344138980580"><ph name="ORIGIN"/> 可以查看「<ph name="FOLDERNAME"/>」中的所有檔案</translation>
+<translation id="1507049466468737452"><ph name="ORIGIN"/> 可以查看下列資料夾中的所有檔案</translation>
+<translation id="6868139415119881457"><ph name="ORIGIN"/> 可以查看你的變更，並將變更直接儲存至下列檔案和資料夾</translation>
+<translation id="5126611267288187364">查看變更</translation>
+<translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>、<ph name="FILE2"/>}other{<ph name="FILE1"/>、<ph name="FILE2"/> 和另外 # 個檔案}}</translation>
+<translation id="1790976235243700817">移除存取權</translation>
+<translation id="1392975001822614900">無法儲存至這個資料夾</translation>
+<translation id="7613156935003315818"><ph name="ORIGIN"/> 無法將你的變更儲存至此資料夾，因為資料夾中包含系統檔案。</translation>
+<translation id="4403775189117163360">選擇其他資料夾</translation>
+<translation id="7643932971554933646">要允許網站查看檔案嗎？</translation>
+<translation id="999180493986838144"><ph name="ORIGIN"/> 可以查看「<ph name="FOLDERNAME"/>」中的所有檔案。在你關閉此分頁前，這個網站可以查看此資料夾的所有變更。</translation>
+<translation id="7201420661433230412">查看檔案</translation>
 <translation id="3015639418649705390">立即重新啟動</translation>
 <translation id="8712637175834984815">我瞭解了</translation>
 <translation id="2783952358106015700">透過「<ph name="APP_NAME"/>」使用安全金鑰</translation>
@@ -2407,6 +2424,8 @@
 <translation id="5186185447130319458">無痕模式</translation>
 <translation id="7643842463591647490">{0,plural, =1{# 個開啟的視窗}other{# 個開啟的視窗}}</translation>
 <translation id="2579188629646253712">結束無痕模式</translation>
+<translation id="479219453908726046">進行調查</translation>
+<translation id="4406504596603350105">您的意見對我們來說非常重要。</translation>
 <translation id="394984172568887996">從 IE 匯入</translation>
 <translation id="1543284117603151572">從 Edge 匯入的書籤</translation>
 <translation id="5502500733115278303">從 Firefox 匯入的書籤</translation>
@@ -2516,27 +2535,19 @@
 <translation id="5138227688689900538">顯示較少</translation>
 <translation id="5270167208902136840">顯示另外 <ph name="NUMBER_OF_MORE_APPS"/> 個應用程式</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> 個應用程式</translation>
-<translation id="8099495042588009598">更多權限</translation>
+<translation id="485480310608090163">更多設定和權限</translation>
 <translation id="8747503242566427664">這個應用程式可以：</translation>
 <translation id="7207631048330366454">搜尋應用程式</translation>
 <translation id="9011424611726486705">開啟網站設定</translation>
 <translation id="4739098340603978916">大小：<ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">版本：<ph name="VERSION"/></translation>
-<translation id="6005695835120147974">媒體路由器</translation>
+<translation id="1920390473494685033">聯絡人</translation>
 <translation id="7787308148023287649">在其他螢幕上顯示</translation>
 <translation id="7710568461918838723">投放(&amp;C)...</translation>
-<translation id="5537725057119320332">投放</translation>
-<translation id="1383876407941801731">搜尋</translation>
-<translation id="8970203673128054105">查看投放模式清單</translation>
-<translation id="1277908057200820621">查看裝置清單</translation>
-<translation id="6685083257944113180">停止，<ph name="SINK_NAME"/>，<ph name="SINK_STATUS"/></translation>
-<translation id="2847759467426165163">投放至</translation>
 <translation id="6700480081846086223">投放 <ph name="HOST_NAME"/></translation>
 <translation id="682123305478866682">投放桌面</translation>
 <translation id="2148892889047469596">投放分頁</translation>
 <translation id="8274332263553132018">投放檔案</translation>
-<translation id="8627151598708688654">選取來源</translation>
-<translation id="3468275649641751422">串流播放影片或音訊檔案</translation>
 <translation id="781167124805380294">投放 <ph name="FILE_NAME"/></translation>
 <translation id="8890516388109605451">來源</translation>
 <translation id="1116694919640316211">關於</translation>
@@ -2544,28 +2555,12 @@
 <translation id="9011163749350026987">一律顯示圖示</translation>
 <translation id="1706586824377653884">由管理員新增</translation>
 <translation id="6467304607960172345">針對全螢幕影片進行最佳化處理</translation>
-<translation id="1597210476603167523">允許投放到 Brave Software Hangouts 這類雲端服務。</translation>
-<translation id="3653941710869291743">歡迎在 Brave 中體驗 Cast 服務！</translation>
-<translation id="2841638550927239436">您可以使用這項功能讓電視或其他裝置顯示 Brave 的內容。</translation>
-<translation id="5234764350956374838">關閉</translation>
 <translation id="4579581181964204535">無法投放 <ph name="HOST_NAME"/>。</translation>
 <translation id="8757090071857742562">無法投放桌面，請檢查您是否已確認要開始分享您的螢幕畫面。</translation>
 <translation id="8032244173881942855">無法投放分頁。</translation>
-<translation id="2279874276457403668">一次只能建立一個工作階段。</translation>
 <translation id="6169666352732958425">無法投放桌面。</translation>
 <translation id="4081242589061676262">無法投放檔案。</translation>
 <translation id="4075639477629295004">無法投放「<ph name="FILE_NAME"/>」。</translation>
-<translation id="7255220508626648026">現正投放：<ph name="ROUTETITLE"/></translation>
-<translation id="7889966925761734854">搜尋</translation>
-<translation id="4430019312045809116">音量</translation>
-<translation id="1156488781945104845">目前時間</translation>
-<translation id="6930242544192836755">持續時間</translation>
-<translation id="7902874111237641165">流暢動作 [測試版]</translation>
-<translation id="8343956361364550006">使用高頻寬即可享有最佳畫質和動畫效果。其他連線速度較慢的使用者可能無法看見你的內容。</translation>
-<translation id="4931132176527519925">一律使用鏡像功能</translation>
-<translation id="3279741024917655738">在以下位置顯示全螢幕影片</translation>
-<translation id="4772404146526168240">本機螢幕和遠端螢幕</translation>
-<translation id="3766223500670287046">遠端螢幕</translation>
 <translation id="3930737994424905957">正在尋找裝置</translation>
 <translation id="5209320130288484488">找不到裝置</translation>
 <translation id="4415245286584082850">找不到裝置。您可以在新分頁中開啟說明中心文章。</translation>
@@ -2574,7 +2569,6 @@
 <translation id="1536754031901697553">正在中斷連線…</translation>
 <translation id="1854180393107901205">停止投放</translation>
 <translation id="5307030433605830021">不支援的來源</translation>
-<translation id="4271396100647220620">找不到相符的項目</translation>
 <translation id="6972180789171089114">音效/影片</translation>
 <translation id="2541002089857695151">要讓全螢幕投放最佳化嗎？</translation>
 <translation id="4144218403971135344">取得畫質更高的影片，並降低耗電量。只能透過支援 Cast 的螢幕播放影片。</translation>
@@ -2601,8 +2595,8 @@
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (兒童專用帳戶)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     我認為不應封鎖這個網站！</translation>
-<translation id="8662795692588422978">人員</translation>
-<translation id="6790820461102226165">新增使用者...</translation>
+<translation id="5832813618714645810">人員</translation>
+<translation id="7171000599584840888">新增使用者...</translation>
 <translation id="1781771911845953849">帳戶與同步處理</translation>
 <translation id="4974733135013075877">結束並執行 Childlock</translation>
 <translation id="3965965397408324205">離開<ph name="PROFILE_NAME"/></translation>
@@ -2623,23 +2617,23 @@
 <translation id="1692115862433274081">使用其他帳戶</translation>
 <translation id="5287425679749926365">你的帳戶</translation>
 <translation id="4801448226354548035">隱藏帳戶</translation>
-<translation id="8400146488506985033">管理使用者</translation>
+<translation id="2935225303485967257">管理使用者</translation>
 <translation id="7388222713940428051">開啟訪客視窗</translation>
 <translation id="127668050356036882">關閉所有視窗</translation>
 <translation id="8883847527783433352">同步到其他帳戶</translation>
 <translation id="2761898608071930085">使用其他帳戶</translation>
 <translation id="1464258312790801189">你的帳戶</translation>
 <translation id="6655458902729017087">隱藏帳戶</translation>
-<translation id="8770507190024617908">管理使用者</translation>
+<translation id="688280436658139163">管理使用者</translation>
 <translation id="2666990579225592931">開啟訪客視窗</translation>
 <translation id="5869948122057593679">關閉所有視窗</translation>
-<translation id="7652808307838961528">編輯使用者，<ph name="PROFILE_NAME"/></translation>
-<translation id="6112952769866305444">編輯使用者，<ph name="PROFILE_NAME"/>，<ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">編輯使用者，<ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">編輯使用者，<ph name="PROFILE_NAME"/>，<ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">訪客</translation>
 <translation id="475088594373173692">第一位使用者</translation>
 <translation id="4535127706710932914">預設設定檔</translation>
 <translation id="4389091756366370506">使用者 <ph name="VALUE"/></translation>
-<translation id="749028671485790643">人員 <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">人員 <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">你</translation>
 <translation id="3031417829280473749">特務 X</translation>
 <translation id="412730574613779332">彈力俠</translation>
@@ -2715,19 +2709,19 @@
 <translation id="5068919226082848014">披薩</translation>
 <translation id="6170470584681422115">三明治</translation>
 <translation id="1830550083491357902">未登入</translation>
-<translation id="5941153596444580863">新增使用者...</translation>
+<translation id="5828545842856466741">新增使用者...</translation>
 <translation id="9149866541089851383">編輯...</translation>
 <translation id="2836635946302913370">管理員已禁止使用這個使用者名稱登入。</translation>
 <translation id="2721695630904737430">你的管理員停用了受監管的使用者。</translation>
 <translation id="1468571364034902819">無法使用這個設定檔</translation>
 <translation id="2261323523305321874">你的管理員變更了系統設定，部分舊的設定檔因此遭到停用。</translation>
-<translation id="2684004000387153598">如要繼續操作，請依序點選 [確定] 和 [新增使用者]，為你的電子郵件地址建立新的設定檔。</translation>
-<translation id="7683373461016844951">如要繼續操作，請依序點選 [確定] 和 [新增使用者]，為你的 <ph name="DOMAIN"/> 電子郵件地址建立新的設定檔。</translation>
+<translation id="2254158488150713536">如要繼續操作，請依序點選 [確定] 和 [新增使用者]，為你的電子郵件地址建立新的設定檔。</translation>
+<translation id="1725743343613175327">如要繼續操作，請依序點選 [確定] 和 [新增使用者]，為你的 <ph name="DOMAIN"/> 電子郵件地址建立新的設定檔。</translation>
 <translation id="8650543407998814195">雖然你無法再使用舊的設定檔，但仍可將其移除。</translation>
 <translation id="2871813825302180988">已有人在這個裝置上使用這個帳戶。</translation>
 <translation id="7654941827281939388">已有人在這台電腦上使用這個帳戶。</translation>
 <translation id="9022847679183471841"><ph name="AVATAR_NAME"/>目前已在這部電腦上使用這個帳戶。</translation>
-<translation id="7463006580194749499">新增使用者</translation>
+<translation id="6921634551681321094">新增使用者</translation>
 <translation id="5389237414310520250">無法建立新的使用者。請檢查您的硬碟空間和權限，然後再試一次。</translation>
 <translation id="2673589024369449924">建立這位使用者的桌面捷徑</translation>
 <translation id="2731710757838467317">正在建立受監管使用者。這可能需要幾分鐘的時間。</translation>
@@ -2735,13 +2729,13 @@
 <translation id="6690751852586194791">選擇要新增至裝置的受監管使用者。</translation>
 <translation id="5525677322972469346">建立新的受監管使用者</translation>
 <translation id="8630903300770275248">匯入受監管的使用者</translation>
-<translation id="5832805196449965646">新增使用者</translation>
-<translation id="8214962590150211830">移除這個使用者</translation>
-<translation id="1451917004835509682">新增受監管的使用者</translation>
+<translation id="4904061654709986277">新增使用者</translation>
+<translation id="6114945161119872228">移除這個使用者</translation>
+<translation id="769308100792069196">新增受監管的使用者</translation>
 <translation id="3470442499439619530">移除這個使用者</translation>
 <translation id="4296575653627536209">新增受監管的使用者</translation>
-<translation id="1701062906490865540">移除這個使用者</translation>
-<translation id="2239921694246509981">新增受監管的使用者</translation>
+<translation id="8006143138282906848">移除這個使用者</translation>
+<translation id="6912187023601892621">新增受監管的使用者</translation>
 <translation id="1608626060424371292">移除這位使用者</translation>
 <translation id="493571969993549666">新增受監管的使用者</translation>
 <translation id="9101691533782776290">啟動應用程式</translation>
@@ -2763,8 +2757,8 @@
 <translation id="6164005077879661055">將這位受監管的使用者移除後，系統即會永久刪除所有與該使用者相關的檔案和本機資料。管理員仍可前往 <ph name="MANAGEMENT_URL"/> 查看這位受監管使用者的網頁瀏覽記錄和設定。</translation>
 <translation id="3410832398355316179">將這位使用者移除後，與這位使用者相關聯的所有檔案和本機資料都會遭到永久刪除。<ph name="USER_EMAIL"/> 日後仍然可以登入。</translation>
 <translation id="672213144943476270">以訪客身分瀏覽之前，請先取消鎖定您的個人資料。</translation>
-<translation id="3478685642445675458">移除任何人之前，請先取消鎖定您的個人資料。</translation>
-<translation id="4648499713050786492">新增任何人之前，請先取消鎖定您的個人資料。</translation>
+<translation id="8086119151297127544">移除任何人之前，請先取消鎖定您的個人資料。</translation>
+<translation id="7805701378418968629">新增任何人之前，請先取消鎖定您的個人資料。</translation>
 <translation id="8978225823042133615">如要使用 Brave，請登入帳戶</translation>
 <translation id="4893336867552636863">這會將您的瀏覽資料從這個裝置上永久刪除。</translation>
 <translation id="2496180316473517155">瀏覽記錄</translation>
@@ -2810,9 +2804,33 @@
 <translation id="5747785204778348146">開發人員版 - 不穩定</translation>
 <translation id="5600706100022181951">下載更新將使用 <ph name="UPDATE_SIZE_MB"/> MB 的行動數據。要繼續嗎？</translation>
 <translation id="5402815541704507626">使用行動數據下載更新</translation>
+<translation id="3493486281776271508">需要網際網路連線</translation>
+<translation id="672609503628871915">查看新功能</translation>
 <translation id="5085162214018721575">正在檢查有無更新</translation>
 <translation id="4570609078116869893">自動為所有使用者更新 Brave</translation>
 <translation id="7102687220333134671">自動更新功能已開啟</translation>
+<translation id="8284326494547611709">字幕</translation>
+<translation id="1755601632425835748">文字大小</translation>
+<translation id="3179982752812949580">文字字型</translation>
+<translation id="6850286078059909152">文字顏色</translation>
+<translation id="8042142357103597104">文字不透明度</translation>
+<translation id="1656528038316521561">背景不透明度</translation>
+<translation id="5750288053043553775">0</translation>
+<translation id="8689998525144040851">100</translation>
+<translation id="2442916515643169563">文字陰影</translation>
+<translation id="3599221874935822507">外凸</translation>
+<translation id="274029851662193272">內凹</translation>
+<translation id="8184472985242519288">平均</translation>
+<translation id="8619803522055190423">投射陰影</translation>
+<translation id="3930968231047618417">背景顏色</translation>
+<translation id="7569983096843329377">黑色</translation>
+<translation id="2713444072780614174">白色</translation>
+<translation id="7942349550061667556">紅色</translation>
+<translation id="6017514345406065928">綠色</translation>
+<translation id="1555130319947370107">藍色</translation>
+<translation id="5901630391730855834">黃色</translation>
+<translation id="161042844686301425">青色</translation>
+<translation id="4115378294792113321">洋紅色</translation>
 <translation id="6981982820502123353">協助工具</translation>
 <translation id="5840822070878669614">開啟 Brave 線上應用程式商店</translation>
 <translation id="6073903501322152803">新增協助工具功能</translation>
@@ -2821,6 +2839,15 @@
 <translation id="2558896001721082624">一律在系統選單中顯示協助工具選項</translation>
 <translation id="7280649757394340890">文字轉語音聲音設定</translation>
 <translation id="6635956300022133031">選取及自訂文字轉語音的聲音</translation>
+<translation id="7991296728590311172">開關功能設定</translation>
+<translation id="1877860345998737529">開關動作指派</translation>
+<translation id="6129953537138746214">空格</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="6710213216561001401">返回</translation>
+<translation id="2915873080513663243">自動掃描</translation>
+<translation id="8912810933860534797">啟用自動掃描</translation>
+<translation id="6617100836880592260">掃描速度：<ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="7919210519031517829"><ph name="DURATION"/> 秒</translation>
 <translation id="2981113813906970160">顯示大型滑鼠游標</translation>
 <translation id="5072052264945641674">調整游標大小</translation>
 <translation id="4209092469652827314">大</translation>
@@ -2897,6 +2924,7 @@
 <translation id="574209121243317957">音調</translation>
 <translation id="3871092408932389764">最低</translation>
 <translation id="6352773953037195952">最高</translation>
+<translation id="4430019312045809116">音量</translation>
 <translation id="3677657024345889897">最小</translation>
 <translation id="167160931442925455">最大</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
@@ -2906,15 +2934,6 @@
 <translation id="5471768120198416576">你好！這是文字轉語音的語音。</translation>
 <translation id="6902066522699286937">要預覽的語音</translation>
 <translation id="304747341537320566">語音引擎</translation>
-<translation id="5270041685309222649">Kiosk Next Shell (Dev)</translation>
-<translation id="6409191325648119263">Kiosk Next Shell</translation>
-<translation id="5940519603482193359">下次登入時啟用 Kiosk Next Shell。</translation>
-<translation id="407536568752283520">停用 Kiosk Next Shell 並退回一般的 Brave OS 體驗。</translation>
-<translation id="1036348656032585052">關閉</translation>
-<translation id="6588712220520211269">關閉 Kiosk Next Shell</translation>
-<translation id="2446993819525566591">開啟 Kiosk Next Shell</translation>
-<translation id="1960737068939025292">這將會關閉 Kiosk Next Shell，將您登出並退回到一般的 Brave OS 體驗。</translation>
-<translation id="7316400597244914467">這會將您登出並開啟 Kiosk Next Shell。</translation>
 <translation id="1067291318998134776">Linux (測試版)</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1366177842110999534">在您的 <ph name="DEVICE_TYPE"/> 上執行 Linux 工具、編輯器和 IDE。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
@@ -2929,17 +2948,19 @@
 <translation id="3819257035322786455">備份</translation>
 <translation id="3233271424239923319">備份 Linux 應用程式和檔案</translation>
 <translation id="184273675144259287">以先前的備份取代你的 Linux 應用程式和檔案</translation>
+<translation id="8774379074441005279">確認還原</translation>
+<translation id="3328489342742826322">還原備份內容時，系統將會刪除 Linux 檔案資料夾中的現有 Linux 應用程式和資料。</translation>
 <translation id="7105390788077117391">USB 偏好設定</translation>
 <translation id="3201422919974259695">可用的 USB 裝置將會顯示在這裡。</translation>
 <translation id="1343865611738742294">請授權 Linux 應用程式存取 USB 裝置。移除後，Linux 將不會記住這部 USB 裝置。</translation>
 <translation id="3661172646479098821">目前僅支援 Android 裝置。</translation>
 <translation id="1679806121152819234">外掛程式虛擬機器</translation>
-<translation id="8343187330304787218">管理在 <ph name="DEVICE_TYPE"/> 上執行 Plugin VM 的設定</translation>
+<translation id="1878541307036593717">設定權限</translation>
 <translation id="7508054832109420082">給予印表機的存取權限</translation>
 <translation id="2258855745387252834">如要共用資料夾，請在「檔案」應用程式中的資料夾上按一下滑鼠右鍵，然後選取 [與外掛程式 VM 共用]。</translation>
 <translation id="2295473777859797944">Brave Software Play 商店</translation>
 <translation id="572155275267014074">Android 設定</translation>
-<translation id="4767209642168463274">在 Bravebook 上安裝來自 Brave Software Play 的應用程式和遊戲。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
+<translation id="9081422163530430821">在你的 <ph name="DEVICE_TYPE"/> 上透過 Brave Software Play 安裝應用程式和遊戲。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
 <translation id="2966937470348689686">管理 Android 偏好設定</translation>
 <translation id="4074367893748481070">移除 Brave Software Play 商店</translation>
 <translation id="2792290659606763004">要移除 Android 應用程式嗎？</translation>
@@ -2950,6 +2971,7 @@
       其他裝置上的應用程式或內容不會受到影響。</translation>
 <translation id="492299503953721473">移除 Android 應用程式</translation>
 <translation id="7566118625369982896">管理 Play 應用程式連結</translation>
+<translation id="5026688690798028095">開啟「應用程式管理」頁面</translation>
 <translation id="2433507940547922241">外觀</translation>
 <translation id="1177863135347784049">自訂</translation>
 <translation id="1925021887439448749">輸入自訂網址</translation>
@@ -2975,7 +2997,6 @@
 <translation id="5860033963881614850">關</translation>
 <translation id="5916664084637901428">開啟</translation>
 <translation id="1378613616312864539">這項設定目前受「<ph name="NAME"/>」控制</translation>
-<translation id="6643016212128521049">清除</translation>
 <translation id="8465252176946159372">無效</translation>
 <translation id="8647834505253004544">網址無效</translation>
 <translation id="7946586320617670168">來源必須是安全來源</translation>
@@ -3046,6 +3067,7 @@
 <translation id="1779652936965200207">請在「<ph name="DEVICE_NAME"/>」上輸入以下密碼金鑰：</translation>
 <translation id="9088917181875854783">請確認以下密碼金鑰是否顯示於「<ph name="DEVICE_NAME"/>」上：</translation>
 <translation id="3368922792935385530">已連線</translation>
+<translation id="6727969043791803658">已連線，電量為 <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="8874184842967597500">未連線</translation>
 <translation id="7617366389578322136">正在連線至「<ph name="DEVICE_NAME"/>」</translation>
 <translation id="2138398485845393913">仍在連線至「<ph name="DEVICE_NAME"/>」</translation>
@@ -3144,7 +3166,11 @@
 <translation id="6985607387932385770">印表機</translation>
 <translation id="1815579292149538864">設定或管理 CUPS 印表機。</translation>
 <translation id="8030656706657716245">新增印表機</translation>
+<translation id="8025958612547562988">將偵測到的印表機儲存至你的個人資料，或新增印表機。</translation>
+<translation id="6980969641756020642">可儲存的可用印表機</translation>
+<translation id="8151638057146502721">設定</translation>
 <translation id="2297705863329999812">搜尋印表機</translation>
+<translation id="7956373551960864128">已儲存的印表機</translation>
 <translation id="168991973552362966">新增鄰近印表機</translation>
 <translation id="3038612606416062604">手動新增印表機</translation>
 <translation id="8002274832045662704">進階印表機設定</translation>
@@ -3183,17 +3209,20 @@
 <translation id="5696679855467848181">目前使用中的 PPD：<ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353">無法自動設定「<ph name="PRINTER_NAME"/>」。請手動設定印表機的進階選項。</translation>
 <translation id="804786196054284061">使用者授權協議</translation>
+<translation id="6318944945640833942">偵測不到印表機，請再次輸入印表機位址。</translation>
+<translation id="2434449159125086437">無法設定印表機，請檢查設定後再試一次。</translation>
 <translation id="4733793249294335256">位置</translation>
 <translation id="7754704193130578113">下載每個檔案前先詢問儲存位置</translation>
 <translation id="5713072761819014678">取消連結 Brave Software 雲端硬碟帳戶</translation>
 <translation id="486635084936119914">下載特定類型的檔案後自動開啟</translation>
 <translation id="3653160965917900914">網路檔案共用</translation>
 <translation id="5763315388120433852">設定或管理網路檔案共用。</translation>
-<translation id="2367199180085172140">新增檔案共用</translation>
+<translation id="5734697361979786483">新增檔案共用區</translation>
 <translation id="247051149076336810">檔案共用網址</translation>
 <translation id="5247051749037287028">顯示名稱 (選填)</translation>
 <translation id="3544879808695557954">使用者名稱 (選填)</translation>
 <translation id="6949434160682548041">密碼 (選填)</translation>
+<translation id="8879921471468674457">記住登入資訊</translation>
 <translation id="6091761513005122595">已成功共用掛接的裝置。</translation>
 <translation id="9024158959543687197">掛接共用裝置時發生錯誤。請檢查檔案共用網址，然後再試一次。</translation>
 <translation id="1954813140452229842">掛接共用裝置時發生錯誤。請檢查你的憑證，然後再試一次。</translation>
@@ -3202,24 +3231,44 @@
 <translation id="706626672220389329">掛接共用裝置時發生錯誤。指定的共用裝置已掛接。</translation>
 <translation id="5985458664595100876">網址格式無效。支援的格式為 \\server\share 和 smb://server/share。</translation>
 <translation id="6644513150317163574">網址格式無效。使用單一登入 (SSO) 驗證時，必須將伺服器指定為主機名稱。</translation>
-<translation id="9147304170847707004">驗證方式</translation>
+<translation id="4050225813016893843">驗證方式</translation>
 <translation id="7740996059027112821">標準</translation>
 <translation id="5115338116365931134">單一登入 (SSO)</translation>
-<translation id="174617397682753897">Kerberos 帳戶</translation>
-<translation id="2249269794707377949">這個頁面可讓你管理所有用於單一登入特定應用程式、網站和檔案共用區的 Kerberos 帳戶。</translation>
-<translation id="1987317783729300807">帳戶</translation>
-<translation id="7665369617277396874">新增帳戶</translation>
-<translation id="3297951628821704004">從這個裝置移除帳戶</translation>
-<translation id="757941033127302446">已登入</translation>
-<translation id="1117602883390928720">新增 Kerberos 帳戶</translation>
+<translation id="1327272175893960498">Kerberos 票證</translation>
+<translation id="1709217939274742847">選擇要用於驗證的票證。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
+<translation id="4739639199548674512">票證</translation>
+<translation id="6112727384379533756">新增票證</translation>
+<translation id="8251441930213048644">立即重新整理</translation>
+<translation id="4820236583224459650">設為使用中票證</translation>
+<translation id="4502423230170890588">從這個裝置中移除</translation>
+<translation id="2507253002925770350">已移除票證</translation>
+<translation id="1436390408194692385">有效期間：<ph name="TICKET_TIME_LEFT"/></translation>
+<translation id="2665647207431876759">已過期</translation>
+<translation id="5565735124758917034">管理中</translation>
+<translation id="8608618451198398104">新增 Kerberos 票證</translation>
+<translation id="508059534790499809">更新 Kerberos 票證</translation>
+<translation id="245650153866130664">如果要自動重新整理票證，請勾選「記住密碼」。你的密碼只會儲存在你的裝置上。</translation>
+<translation id="3895090224522145010">Kerberos 使用者名稱</translation>
+<translation id="2325444234681128157">記住密碼</translation>
+<translation id="4232375817808480934">設定 Kerberos</translation>
+<translation id="4392896746540753732">編輯設定檔</translation>
 <translation id="6452961788130242735">網路發生問題或領域無效</translation>
-<translation id="6542184058496424548">使用者名稱無效 (格式應為 user@realm.com)</translation>
+<translation id="9094038138851891550">使用者名稱無效</translation>
 <translation id="4345732373643853732">伺服器無法辨識使用者名稱</translation>
+<translation id="5184209580557088469">已有票證使用這個使用者名稱</translation>
 <translation id="3975565978598857337">無法連線至指定領域的伺服器</translation>
 <translation id="3841964634449506551">密碼無效</translation>
 <translation id="1629314197035607094">密碼已過期</translation>
 <translation id="197989455406964291">KDC 不支援加密類型</translation>
-<translation id="6957572737510023982">糟糕！發生錯誤 (錯誤代碼：<ph name="ERROR_CODE"/>)。</translation>
+<translation id="2584109212074498965">無法取得 Kerberos 票證。請再試一次，或與貴機構的裝置管理員聯絡。(錯誤代碼 <ph name="ERROR_CODE"/>)。</translation>
+<translation id="2956070239128776395">群組中有巢狀區段：<ph name="ERROR_LINE"/></translation>
+<translation id="8999560016882908256">區段語法錯誤：<ph name="ERROR_LINE"/></translation>
+<translation id="1251366534849411931">缺少左大括弧：<ph name="ERROR_LINE"/></translation>
+<translation id="5315738755890845852">多餘的大括弧：<ph name="ERROR_LINE"/></translation>
+<translation id="5846200638699387931">關聯語法錯誤：<ph name="ERROR_LINE"/></translation>
+<translation id="8952831374766033534">不支援的設定選項：<ph name="ERROR_LINE"/></translation>
+<translation id="6902336033320348843">不支援的區段：<ph name="ERROR_LINE"/></translation>
+<translation id="604388835206766544">無法剖析設定</translation>
 <translation id="3101709781009526431">日期與時間</translation>
 <translation id="2059913712424898428">時區</translation>
 <translation id="4547672827276975204">自動設定</translation>
@@ -3236,6 +3285,7 @@
 <translation id="8468750959626135884">使用 Android 手機解鎖您的 <ph name="DEVICE_TYPE"/>。</translation>
 <translation id="3571734092741541777">設定</translation>
 <translation id="3336664756920573711">使用 Android 手機解鎖你的 <ph name="DEVICE_TYPE"/></translation>
+<translation id="1036348656032585052">關閉</translation>
 <translation id="1164674268730883318">要關閉 <ph name="DEVICE_TYPE"/> 專用 Smart Lock 嗎？</translation>
 <translation id="2739030071582769583">關閉 <ph name="DEVICE_TYPE"/> 專用 Smart Lock 後，您必須輸入密碼才能解鎖 Brave 裝置，無法直接使用手機解鎖。</translation>
 <translation id="4737715515457435632">請連上網路</translation>
@@ -3266,6 +3316,7 @@
 <translation id="8426713856918551002">啟用中</translation>
 <translation id="3652817283076144888">正在初始化</translation>
 <translation id="6528513914570774834">允許這個裝置的其他使用者使用這個網路</translation>
+<translation id="2122305276694332719">自動連線至隱藏網路會讓其他人可以查看你的裝置和部分網路設定，建議你不要啟用這項設定。</translation>
 <translation id="9153934054460603056">儲存身分與密碼</translation>
 <translation id="8656768832129462377">不檢查</translation>
 <translation id="1399511500114202393">不使用使用者憑證</translation>
@@ -3286,6 +3337,9 @@
 <translation id="8461914792118322307">Proxy</translation>
 <translation id="5213891612754844763">顯示 Proxy 設定</translation>
 <translation id="4801512016965057443">允許行動數據漫遊</translation>
+<translation id="5457991019809708398">已啟用，未使用漫遊服務</translation>
+<translation id="3969092967100188979">已啟用，正在使用漫遊服務</translation>
+<translation id="5804175651771201311">已關閉漫遊服務</translation>
 <translation id="4720185134442950733">行動數據網路</translation>
 <translation id="2517472476991765520">掃描</translation>
 <translation id="8386903983509584791">掃描完成</translation>
@@ -3316,7 +3370,7 @@
 <translation id="8452135315243592079">找不到 SIM 卡</translation>
 <translation id="2617342710774726426">SIM 卡已鎖定</translation>
 <translation id="4848518990323155912">啟用 SIM 卡鎖定功能 (輸入 PIN 碼才能使用行動數據)</translation>
-<translation id="8179976553408161302">Enter</translation>
+<translation id="5463231940765244860">輸入</translation>
 <translation id="5075131525758602494">輸入 SIM 卡的 PIN 碼</translation>
 <translation id="8431909052837336408">變更 SIM 卡的 PIN 碼</translation>
 <translation id="289644616180464099">SIM 卡已鎖定</translation>
@@ -3326,6 +3380,11 @@
 <translation id="5669691691057771421">輸入新的 PIN 碼</translation>
 <translation id="5473333559083690127">再次輸入新的 PIN 碼</translation>
 <translation id="1164899421101904659">輸入 PIN 解鎖金鑰</translation>
+<translation id="5713723565110096165">PIN 碼不正確。剩餘重試次數：<ph name="RETRIES"/> 次。</translation>
+<translation id="8500234928660943538">PUK 不正確。剩餘重試次數：<ph name="RETRIES"/> 次。</translation>
+<translation id="834290227245955730">PIN 碼無效。剩餘重試次數：<ph name="RETRIES"/> 次。</translation>
+<translation id="6015266928248016057">PUK 無效。剩餘重試次數：<ph name="RETRIES"/> 次。</translation>
+<translation id="1272293450992660632">PIN 碼值不相符。</translation>
 <translation id="7582582252461552277">偏好使用這個網路</translation>
 <translation id="7469894403370665791">自動連線至這個網路</translation>
 <translation id="4267953847983678297">自動連線至行動網路</translation>
@@ -3334,7 +3393,6 @@
 <translation id="8986362086234534611">清除</translation>
 <translation id="7881483672146086348">查看帳戶</translation>
 <translation id="2392369802118427583">啟用</translation>
-<translation id="8151638057146502721">設定</translation>
 <translation id="5920543303088087579">你的管理員禁止使用者連線到這個網路</translation>
 <translation id="1235458158152011030">已知網路</translation>
 <translation id="3003144360685731741">慣用網路</translation>
@@ -3456,7 +3514,6 @@
 <translation id="1994173015038366702">網站網址</translation>
 <translation id="3082374807674020857"><ph name="PAGE_TITLE"/> - <ph name="PAGE_URL"/></translation>
 <translation id="2586672484245266891">請輸入較短的網址</translation>
-<translation id="7788444488075094252">語言與輸入法</translation>
 <translation id="4181841719683918333">語言</translation>
 <translation id="5302048478445481009">語言</translation>
 <translation id="6388429472088318283">搜尋語言</translation>
@@ -3547,6 +3604,7 @@
 <translation id="1432581352905426595">管理搜尋引擎</translation>
 <translation id="2862205630718215619">Brave Software 助理</translation>
 <translation id="6978121630131642226">搜尋引擎</translation>
+<translation id="1383876407941801731">搜尋</translation>
 <translation id="6410668567036790476">新增搜尋引擎</translation>
 <translation id="1128591060186966949">編輯搜尋引擎</translation>
 <translation id="5719603411793408026">預設搜尋引擎</translation>
@@ -3555,15 +3613,12 @@
 <translation id="1459967076783105826">由擴充功能新增的搜尋引擎</translation>
 <translation id="6678717876183468697">查詢網址</translation>
 <translation id="7063311912041006059">以 <ph name="SPECIAL_SYMBOL"/> 取代查詢的網址</translation>
-<translation id="6953878494808481632">相關資訊</translation>
-<translation id="4145922204387553806">允許 Brave Software 助理根據畫面上的內容顯示相關資訊</translation>
 <translation id="472896694312062378">「Ok Brave Software」</translation>
 <translation id="873163986259711670">只要說出「Ok Brave Software」，就能隨時存取 Brave Software 助理</translation>
 <translation id="7972554217702001243">只要有人說出「Ok Brave Software」即啟動 Brave Software 助理。為了節省電力，系統只有在裝置連接到電源時才會啟動「Ok Brave Software」。</translation>
 <translation id="5825412242012995131">啟用 (建議設定)</translation>
 <translation id="5067399438976153555">一律啟用</translation>
 <translation id="5419405654816502573">Voice Match</translation>
-<translation id="3640613767643722554">訓練 Brave Software 助理辨識你的聲音</translation>
 <translation id="1803545009660609783">重新調校</translation>
 <translation id="5355099869024327351">允許 Brave Software 助理向你顯示通知</translation>
 <translation id="133535873114485416">偏好的輸入來源</translation>
@@ -3583,6 +3638,7 @@
 <translation id="5518219166343146486">當網站要讀取已複製到剪貼簿的文字和圖片時，必須先詢問你</translation>
 <translation id="2089795179672254991">當網站要讀取已複製到剪貼簿的文字和圖片時，必須先詢問你 (建議使用)</translation>
 <translation id="16815041330799488">禁止網站讀取已複製到剪貼簿的文字和圖片</translation>
+<translation id="2546283357679194313">Cookie 和網站資料</translation>
 <translation id="3668823961463113931">處理常式</translation>
 <translation id="5689516760719285838">位置</translation>
 <translation id="9219103736887031265">圖片</translation>
@@ -3686,7 +3742,6 @@
 <translation id="577624874850706961">搜尋 Cookie</translation>
 <translation id="6196640612572343990">封鎖第三方 Cookie</translation>
 <translation id="6782111308708962316">禁止第三方網站儲存及讀取 Cookie 資料</translation>
-<translation id="3378503599595235699">將本機資料保留到你關閉瀏覽器為止</translation>
 <translation id="1274977772557788323">Adobe Flash Player 儲存設定</translation>
 <translation id="1281501490173223206">僅適用於目前的無痕模式工作階段</translation>
 <translation id="3479035826743782247">目前的無痕模式工作階段</translation>
@@ -3718,7 +3773,7 @@
 <translation id="8016266267177410919">暫時儲存空間</translation>
 <translation id="4175737294868205930">永久儲存空間</translation>
 <translation id="1296497012903089238">憑證類型</translation>
-<translation id="8553342806078037065">管理其他使用者</translation>
+<translation id="3707212204259470604">管理其他使用者</translation>
 <translation id="8907706281008466056">Brave Software 個人資料相片</translation>
 <translation id="2408955596600435184">請輸入你的 PIN 碼</translation>
 <translation id="6619990499523117484">確認你的 PIN 碼</translation>
@@ -3741,18 +3796,28 @@
 <translation id="4068776064906523561">已儲存的指紋</translation>
 <translation id="4562155214028662640">新增指紋</translation>
 <translation id="1719312230114180055">注意：使用高強度的密碼或 PIN 碼會比感應指紋來得安全。</translation>
-<translation id="6029292188939175871">刪除[<ph name="FINGERPRINT_NAME"/>]，按鈕</translation>
+<translation id="1582955169539260415">刪除 [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">指紋 <ph name="NEW_FINGER_NUMBER"/></translation>
+<translation id="4461062867270151760">在螢幕鎖定畫面啟用 Brave 媒體播放功能</translation>
+<translation id="7665369617277396874">新增帳戶</translation>
 <translation id="5866136067811459986">管理你已登入的 Brave Software 帳戶。Brave 和 Brave Software Play 的網站、應用程式和擴充功能可能會使用這些帳戶為你提供個人化的使用體驗 (依權限而定)。</translation>
+<translation id="1987317783729300807">帳戶</translation>
 <translation id="8418661265246754237">Brave Software 帳戶</translation>
 <translation id="5021750053540820849">尚未更新</translation>
+<translation id="4637083375689622795">更多動作 (<ph name="EMAIL"/>)</translation>
 <translation id="3448492834076427715">更新帳戶</translation>
+<translation id="2458379781610688953">更新帳戶 (<ph name="EMAIL"/>)</translation>
+<translation id="2701737434167469065">登入，<ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">移除這個帳戶</translation>
 <translation id="8995603266996330174">由 <ph name="DOMAIN"/> 管理</translation>
 <translation id="4659077111144409915">主要帳戶</translation>
+<translation id="8864458770072227512">已將 <ph name="EMAIL"/> 從這個裝置中移除</translation>
 <translation id="3158033540161634471">設定指紋</translation>
 <translation id="1587907146729660231">用手指輕觸電源按鈕</translation>
 <translation id="176193854664720708">指紋感應器位於電源按鈕上，請以任何一隻手指輕觸指紋感應器。</translation>
+<translation id="3615073365085224194">請以手指輕觸指紋感應器</translation>
+<translation id="899676909165543803">指紋感應器位於鍵盤右下方，請用任何一隻手指輕觸指紋感應器。</translation>
+<translation id="4535767533210902251">指紋感應器位於鍵盤右上方，請用任何一隻手指輕觸指紋感應器。</translation>
 <translation id="7189965711416741966">指紋新增成功。</translation>
 <translation id="9220820413868316583">請移開手指，然後再試一次。</translation>
 <translation id="4534661889221639075">請再試一次。</translation>
@@ -3780,7 +3845,7 @@
 <translation id="9125982323641182972">在 Brave 中體驗 Brave Software 智慧功能</translation>
 <translation id="5244474230056479698">同步到 <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">這個帳戶是由 <ph name="DOMAIN"/> 所管理，因此系統會將你的書籤、歷史記錄、密碼和其他設定從這個裝置上清除。不過，你的資料仍會儲存在你的 Brave Software 帳戶中，並可透過 <ph name="BEGIN_LINK"/>Brave Software 資訊主頁<ph name="END_LINK"/>管理。</translation>
-<translation id="4037889604535939429">編輯使用者</translation>
+<translation id="6906406176003824042">編輯使用者</translation>
 <translation id="6739923123728562974">顯示桌面捷徑</translation>
 <translation id="2450310832094867474">要關閉同步處理功能並登出嗎？</translation>
 <translation id="3699920817649120894">要停用同步處理和個人化功能嗎？</translation>
@@ -3805,6 +3870,7 @@
 <translation id="4824958205181053313">取消同步處理？</translation>
 <translation id="3058498974290601450">你隨時可以在設定中開啟同步功能</translation>
 <translation id="7529411698175791732">檢查你的網際網路連線。如果問題持續發生，請嘗試登出，然後再次登入。</translation>
+<translation id="4684427112815847243">同步處理所有資料</translation>
 <translation id="1125261911132334651">管理你的 Brave Software 帳戶</translation>
 <translation id="4570387585180509432">地址、電話號碼和其他資訊</translation>
 <translation id="5117427536932535467">主題和桌布</translation>
@@ -3995,21 +4061,23 @@
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/>後充飽</translation>
 <translation id="2620436844016719705">系統</translation>
 <translation id="2077129598763517140">在可用時使用硬體加速</translation>
-<translation id="1889984860246851556">開啟 Proxy 設定</translation>
+<translation id="3817524650114746564">開啟電腦的 Proxy 設定</translation>
+<translation id="809792523045608178"><ph name="IDS_SHORT_PRODUCT_NAME"/> 正在使用擴充功能的 Proxy 設定</translation>
+<translation id="2824942875887026017"><ph name="IDS_SHORT_PRODUCT_NAME"/> 正在使用系統管理員的 Proxy 設定</translation>
 <translation id="1940546824932169984">已連結的裝置</translation>
 <translation id="3468999815377931311">Android 手機</translation>
-<translation id="2789927670850159391">將你的手機與 Bravebook 連結。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
+<translation id="5826395379250998812">請將 <ph name="DEVICE_TYPE"/> 連線至手機。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">沒有適用裝置。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">等待驗證中。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="6518133107902771759">驗證</translation>
-<translation id="7179187931092694802">使用你的手機解鎖 Bravebook。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
+<translation id="4142052906269098341">用你的手機解鎖 <ph name="DEVICE_TYPE"/>。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">即時網路共用</translation>
 <translation id="6415900369006735853">透過手機連上網際網路</translation>
 <translation id="4746351372139058112">Messages</translation>
-<translation id="2248072377758660530">透過你的 Bravebook 收發簡訊。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
+<translation id="965211523698323809">透過你的 <ph name="DEVICE_TYPE"/> 收發簡訊。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="5153234146675181447">移除手機</translation>
-<translation id="2307631131458143837">中斷手機與 Bravebook 的連線</translation>
-<translation id="1146102139091738471">中斷手機與 Bravebook 的連線後，這兩個裝置就不會再自動連線。</translation>
+<translation id="4650591383426000695">中斷手機與 <ph name="DEVICE_TYPE"/> 的連線</translation>
+<translation id="5117139026559873716">中斷手機與 <ph name="DEVICE_TYPE"/> 的連線。這兩個裝置將不再自動連線。</translation>
 <translation id="7878562273885520351">你的密碼可能已經外洩</translation>
 <translation id="1089439967362294234">變更密碼</translation>
 <translation id="6187156085111579405">如有必要，這裡未列出的項目也會一併移除。如要進一步瞭解&lt;a href="<ph name="URL"/>"&gt;垃圾軟體防護功能&lt;/a&gt;，請參閱 Brave 隱私權白皮書。</translation>
@@ -4074,9 +4142,24 @@
 <translation id="3341699307020049241">PIN 碼不正確。你還可以再試 <ph name="RETRIES"/> 次。</translation>
 <translation id="2439545803278355377">請輸入新的 PIN 碼。PIN 碼必須至少包含四個字元，可以使用字母、數字和其他字元。</translation>
 <translation id="1781291988450150470">目前的 PIN 碼</translation>
+<translation id="4617001782309103936">太短</translation>
 <translation id="3732530910372558017">PIN 碼不能超過 63 個字元</translation>
 <translation id="1307165550267142340">已建立 PIN 碼</translation>
 <translation id="2699911226086014512">PIN 碼作業失敗，錯誤代碼為 <ph name="RETRIES"/>。</translation>
+<translation id="3873423927483480833">顯示 PIN 碼</translation>
+<translation id="21354425047973905">隱藏 PIN 碼</translation>
+<translation id="1901984611178952431">管理登入資料</translation>
+<translation id="3286737518123001369">查看並刪除安全金鑰儲存的登入資料</translation>
+<translation id="2399939490305346086">安全金鑰登入資料</translation>
+<translation id="6841187140911216178">如要查看登入資料，請插入並輕觸安全金鑰</translation>
+<translation id="6013505829696424563">如要查看登入資料，請輸入安全金鑰的 PIN 碼。如果你不知道 PIN 碼，則必須重設安全金鑰。</translation>
+<translation id="3713047097299026954">此安全金鑰未儲存任何登入資料</translation>
+<translation id="1511997356770098059">此安全金鑰無法儲存任何登入資料</translation>
+<translation id="579915268381781820">你的安全金鑰已移除。</translation>
+<translation id="117916940443676133">你的安全金鑰未受 PIN 碼保護。如要管理登入資料，請先建立 PIN 碼。</translation>
+<translation id="8705629851992224300">無法讀取你的安全金鑰</translation>
+<translation id="3076977359333237641">已刪除你的登入資料</translation>
+<translation id="3508492320654304609">無法刪除你的登入資料</translation>
 <translation id="3341703758641437857">允許存取檔案網址</translation>
 <translation id="9003647077635673607">允許在所有網站上執行</translation>
 <translation id="698524779381350301">自動授予下列網站的存取權限</translation>
@@ -4189,7 +4272,6 @@
 <translation id="720110658997053098">讓裝置永久使用 Kiosk 模式</translation>
 <translation id="1909880997794698664">你確定要讓這個裝置永久使用 Kiosk 模式嗎？</translation>
 <translation id="1512210426710821809">如要復原這個動作，唯一的辦法是重新安裝 <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
-<translation id="4472575034687746823">開始使用</translation>
 <translation id="8281886186245836920">略過</translation>
 <translation id="2342740338116612727">已新增書籤</translation>
 <translation id="7835178595033117206">已移除書籤</translation>
@@ -4314,7 +4396,6 @@
 <translation id="2202898655984161076">列出印表機清單時發生問題，你的部分印表機尚未使用 <ph name="CLOUD_PRINT_NAME"/> 完成註冊。</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> 連接器處理程序當掉了，你要重新啟動嗎？</translation>
 <translation id="6904655473976120856">按下 [應用程式] 按鈕即可結束</translation>
-<translation id="79766959863778284">XR 獨立裝置服務</translation>
 <translation id="8909833622202089127">網站正在追蹤你的位置</translation>
 <translation id="375636864092143889">網站正在使用你的麥克風</translation>
 <translation id="7256069762010468647">網站正在使用你的攝影機</translation>

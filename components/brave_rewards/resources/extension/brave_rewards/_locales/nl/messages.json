@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Maak je geen zorgen. Dit kan om verschillende veiligheidsredenen gebeuren. Maak gewoon opnieuw verbinding om dit probleem op te lossen.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Deze maker heeft zich nog niet aangemeld voor het ontvangen van bijdragen van Brave-gebruikers. Fooien die je stuurt, blijven in je wallet tot hij of zij verifieert.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

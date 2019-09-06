@@ -35,6 +35,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="2814998458708016836">Usar barra de endereços larga</translation>
 <translation id="6123134130710658846">Ocultar botão Recompensas do Brave</translation>
 <translation id="7635711399568194460">Oculta o botão Recompensas do Brave na barra de localização quando as Recompensas do Brave não estiverem habilitadas</translation>
+<translation id="4262166817826183486">Sempre mostrar barra de favoritos na página da Nova Aba</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
 <translation id="8511502469534942133">Nova Conexão Tor para Este Site</translation>
 <translation id="8784924142044142231">Sair do Tor</translation>
@@ -61,7 +62,6 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="9075744464571452108">Reconhecimento de dispositivo</translation>
 <translation id="3570081523466826008">Fazer upgrade das conexões para HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
-<translation id="7498695072878479744">Permitir os botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
 <translation id="5165042248369837294">Permitir tuítes incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir postagens incorporadas no LinkedIn</translation>
@@ -85,12 +85,14 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="8721331068159819483">O mesmo que no macOS</translation>
 <translation id="6786747875388722282">Extensões</translation>
 <translation id="2896916411183256228">Usa o WebTorrent para exibir torrents diretamente no navegador. Suporta arquivos torrent e links magnéticos.</translation>
+<translation id="5554028991651120544">Oferece uma carteira Ethereum e um navegador Dapp integrado ao Brave</translation>
 <translation id="6554397389149987360">Usa o componente Hangouts para ativar o compartilhamento de tela e outros recursos no navegador.</translation>
 <translation id="1765684547504191670">Usa um componente de Roteador de Mídia para habilitar Chromecast no navegador</translation>
 <translation id="9156965752763025780">As alterações entrarão em vigor na próxima vez que você reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Reiniciar agora</translation>
 <translation id="4154389611571860454">Usa a extensão do complemento IPFS para suportar o IPFS no navegador.</translation>
 <translation id="8137559199583651773">Gerenciar extensões</translation>
+<translation id="7013485839273047434">Mais extensões</translation>
 <translation id="4928988318462976765">Loja Virtual de Extensões</translation>
 <translation id="9181207987584064303">Visualizar na Loja Virtual de Extensões</translation>
 <translation id="4846154056248462491">Ao sair</translation>
@@ -100,4 +102,19 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="8303432794159193481">Aplicativos de Desenv do Navegador Brave</translation>
 <translation id="8292967014767479012">Aplicativos do Navegador Brave</translation>
 <translation id="4743468424889072281">Aplicativos de Desenvolvimento do Navegador Brave</translation>
+<translation id="4568409039725976900">Laranja Brave</translation>
+<translation id="7216062233533864908">Casca de Laranja</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Invidia</translation>
+<translation id="8111795220552176635">Céu Azul</translation>
+<translation id="8323875061602721187">Azul</translation>
+<translation id="8267711815380227275">Roxeado</translation>
+<translation id="831132225871108758">Cavaleiro Negro</translation>
+<translation id="1473185169764311478">Formato Casca de Laranja</translation>
+<translation id="8658537263568841491">Formato Nana</translation>
+<translation id="8967241601928387177">Formato Invidia</translation>
+<translation id="7232547941405761864">Formato Céu Azul</translation>
+<translation id="5500050460919597479">Formato Azul Bondy</translation>
+<translation id="5359364898094115985">Formato Roxeado</translation>
+<translation id="3385506478125681119">Formato Cavaleiro Negro</translation>
 </translationbundle>

@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Nesirūpinkite. Taip gali atsitikti dėl įvairių saugumo priežasčių. Tiesiog iš naujo prisijunkite prie jos ir taip problema bus išspręsta.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Šis kūrėjas dar neužsiregistravo, kad gautų „Brave“ naudotojų aukas. Visi jūsų išsiųsti arbatpinigiai liks jūsų piniginėje, kol galiausiai jie patvirtins.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

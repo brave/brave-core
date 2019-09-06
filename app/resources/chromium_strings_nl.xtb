@@ -113,7 +113,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="1421502046520299169">Over &amp;Brave OS</translation>
 <translation id="2534623228451928732">&amp;Brave OS updaten</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="3360368475735266712">Log in om Brave op al je apparaten te synchroniseren en te personaliseren</translation>
 <translation id="5477319665405831211">Brave synchroniseren en personaliseren op al je apparaten</translation>
 <translation id="4934157190377700991">Je bent nu ingelogd bij Brave</translation>
 <translation id="4100716194836114130">Personaliseer jouw Brave</translation>
@@ -144,6 +143,8 @@ Als je toch inlogt, worden Brave-gegevens zoals bladwijzers, geschiedenis en and
 <translation id="6746636977031158624">Brave OS kan je gegevens niet synchroniseren omdat de inloggegevens voor je account zijn verouderd.</translation>
 <translation id="2999152167963026588">Brave OS kan je gegevens niet synchroniseren omdat synchronisatie niet beschikbaar is voor je domein.</translation>
 <translation id="1459786048951724030">Brave OS kan je gegevens niet synchroniseren door een fout tijdens het inloggen.</translation>
+<translation id="6813094029720377619">Je wist cookies wanneer je Brave sluit. Als je wilt doorgaan met synchroniseren, wijzig je deze <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">instellingen</translation>
 <translation id="663059986967017181">Gekopieerd naar Brave</translation>
 <translation id="1457432835062259213">App-opstartprogramma van Brave</translation>
 <translation id="82609232232243542">Inloggen bij Brave</translation>
@@ -163,7 +164,7 @@ Als je wilt voorkomen dat <ph name="NEW_PROFILE_NAME"/> toegang krijgt tot je ac
 
 Controleer je e-mail op <ph name="ACCOUNT_EMAIL"/> voor verdere instructies.</translation>
 <translation id="1820843143331379651">Vanaf Brave 70 zijn profielen van gebruikers met beperkte rechten niet meer beschikbaar.</translation>
-<translation id="3066805437003400520">De browsergegevens van deze persoon worden verwijderd van dit apparaat. Als je de gegevens wilt herstellen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">De browsergegevens van deze persoon worden verwijderd van dit apparaat. Als je de gegevens wilt herstellen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave is nu nog beter</translation>
 <translation id="7192666605334070839">Het is nu gemakkelijker om Brave met je Brave Software-account en op gedeelde computers te gebruiken.</translation>
 <translation id="3511996232906761537">Hier vind je internet, bladwijzers en andere Brave-instellingen.</translation>
@@ -232,14 +233,6 @@ Controleer je e-mail op <ph name="ACCOUNT_EMAIL"/> voor verdere instructies.</tr
 <translation id="7808415789955822133">Voorwaarden van Brave OS</translation>
 <translation id="7207456302801184289">Welkom bij Brave</translation>
 <translation id="5688839044908745927">Brave is bijna klaar.</translation>
-<translation id="7758342895140862711">Neem Brave overal mee naartoe</translation>
-<translation id="3610173904388112975">Browsen met innovaties van Brave Software</translation>
-<translation id="3479552764303398839">Niet nu</translation>
-<translation id="8013374903356993822">Brave sneller openen</translation>
-<translation id="7625138338483121345">Brave instellen als je standaardbrowser</translation>
-<translation id="5927044791090834489">Brave vastzetten op je taakbalk</translation>
-<translation id="8933981935877469796">Selecteer <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">Klik op <ph name="BEGIN_BOLD"/>Toch overschakelen<ph name="END_BOLD"/> als die knop wordt weergegeven</translation>
 <translation id="3507835409099344374">Ga naar instellingen voor Brave-meldingen</translation>
 <translation id="1026406809507858026">{0,plural, =0{Er is een Brave-update beschikbaar}=1{Er is een Brave-update beschikbaar}other{Er is al # dagen een Brave-update beschikbaar}}</translation>
 <translation id="720532315408041257">Je beheerder vraagt je Brave opnieuw te starten om deze update toe te passen</translation>
@@ -259,6 +252,7 @@ Controleer je e-mail op <ph name="ACCOUNT_EMAIL"/> voor verdere instructies.</tr
 <translation id="8208853227947884571">Brave is up-to-date</translation>
 <translation id="6686872257969654608">Over Brave OS</translation>
 <translation id="2280363356796735201">Hulp bij Brave OS</translation>
+<translation id="38898988211673781">Cookies en sitegegevens wissen wanneer je Brave sluit</translation>
 <translation id="5253815230176279256">Brave Software Pay (gekopieerd naar Brave)</translation>
 <translation id="5468853758063275923">Brave is je standaardbrowser</translation>
 <translation id="1775322105159056176">Brave kan de standaardbrowser niet bepalen of instellen</translation>
@@ -275,6 +269,7 @@ Controleer je e-mail op <ph name="ACCOUNT_EMAIL"/> voor verdere instructies.</tr
 <translation id="8372880274820509128">Je gegevens worden voor extra beveiliging door Brave gecodeerd.</translation>
 <translation id="7445061995866044926">Uitloggen bij Brave?</translation>
 <translation id="7453070689008684791">Brave gebruikt de toegang tot je Drive om suggesties te doen in de adresbalk</translation>
+<translation id="3360368475735266712">Log in om Brave op al je apparaten te synchroniseren en te personaliseren</translation>
 <translation id="9221712274065451529">Deze taal wordt gebruikt om de Brave OS-UI weer te geven</translation>
 <translation id="3518788198614984730">Brave OS weergeven in deze taal</translation>
 <translation id="5757460455745382269">Deze taal wordt gebruikt om de Brave-UI weer te geven</translation>

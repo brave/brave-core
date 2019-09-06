@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/strings/string_number_conversions.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
@@ -95,6 +96,13 @@ void BraveMockRenderViewContextMenu::AddMenuItem(int command_id,
   items_.push_back(item);
 }
 
+void BraveMockRenderViewContextMenu::AddMenuItemWithIcon(
+    int command_id,
+    const base::string16& title,
+    const gfx::ImageSkia& image) {
+  AddMenuItem(command_id, title);
+}
+
 void BraveMockRenderViewContextMenu::AddCheckItem(int command_id,
                                                   const base::string16& title) {
   MockMenuItem item;
@@ -145,6 +153,14 @@ void BraveMockRenderViewContextMenu::AddSubMenu(int command_id,
     }
     items_.push_back(sub_item);
   }
+}
+
+void BraveMockRenderViewContextMenu::AddSubMenuWithStringIdAndIcon(
+    int command_id,
+    int message_id,
+    ui::MenuModel* model,
+    const gfx::ImageSkia& image) {
+  AddSubMenu(command_id, base::NumberToString16(message_id), model);
 }
 
 void BraveMockRenderViewContextMenu::UpdateMenuItem(
@@ -203,8 +219,7 @@ void BraveMockRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
 }
 
 void BraveMockRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
-    bool is_checked) {
-}
+    bool is_checked) {}
 
 content::RenderViewHost* BraveMockRenderViewContextMenu::GetRenderViewHost()
     const {

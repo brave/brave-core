@@ -35,6 +35,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2814998458708016836">Gunakan bar alamat lebih lebar</translation>
 <translation id="6123134130710658846">Sembunyi butang Brave Rewards</translation>
 <translation id="7635711399568194460">Sembunyi butang Brave Rewards dalam bar lokasi apabila Brave Rewatds tidak diaktifkan</translation>
+<translation id="4262166817826183486">Sentiasa tunjukkan penanda buku di laman Tab Baru</translation>
 <translation id="7965178729203412357">Identiti Tor Baharu</translation>
 <translation id="8511502469534942133">Sambungan Tor baru Untuk Tapak Ini</translation>
 <translation id="8784924142044142231">Keluar Tor</translation>
@@ -61,7 +62,6 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="9075744464571452108">Pengecaman peranti</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
 <translation id="4824468494729001999">Sekat skrip</translation>
-<translation id="7498695072878479744">Benarkan butang log masuk Google di tapak web pihak ketiga</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
 <translation id="5165042248369837294">Benarkan Twitter memasukkan tweet</translation>
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
@@ -85,12 +85,14 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8721331068159819483">Sama seperti macOS</translation>
 <translation id="6786747875388722282">Sambungan</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk memaparkan torrent secara langsung dalam penyemak imbas. Menyokong fail torrent dan pautan magnet.</translation>
+<translation id="5554028991651120544">Menyediakan dompet Ethereum dan pelayar Dapp di dalam Brave.</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mendayakan perkongsian skrin dan lain-lain ciri dalam pelayar.</translation>
 <translation id="1765684547504191670">Menggunakan komponen Media Router untuk membolehkan Chromecast dalam pelayar.</translation>
 <translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
 <translation id="7179921470347911571">Lancarkan Semula Sekarang</translation>
 <translation id="4154389611571860454">Menggunakan sambungan teman IPFS untuk menyokong IPFS dalam pelayar.</translation>
 <translation id="8137559199583651773">Uruskan sambungan...</translation>
+<translation id="7013485839273047434">Dapatkan lebih banyak sambungan</translation>
 <translation id="4928988318462976765">Kedai Sambungan Web</translation>
 <translation id="9181207987584064303">Lihat di Kedai Sambungan Web</translation>
 <translation id="4846154056248462491">Semasa keluar</translation>
@@ -100,4 +102,19 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8303432794159193481">Aplikasi Pembangunan Pelayar Brave</translation>
 <translation id="8292967014767479012">Aplikasi Pelayar Brave</translation>
 <translation id="4743468424889072281">Aplikasi Pembangunan Pelayar Brave</translation>
+<translation id="4568409039725976900">Jingga Berani</translation>
+<translation id="7216062233533864908">Kupasan Oren</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Cemburu</translation>
+<translation id="8111795220552176635">Langit Cerah</translation>
+<translation id="8323875061602721187">Biru Bondy</translation>
+<translation id="8267711815380227275">Blurple</translation>
+<translation id="831132225871108758">Pahlawan Hitam</translation>
+<translation id="1473185169764311478">Bentu Kupasan Oren</translation>
+<translation id="8658537263568841491">Bentuk Nana</translation>
+<translation id="8967241601928387177">Bentuk Cemburu</translation>
+<translation id="7232547941405761864">Bentuk Langit Cerah</translation>
+<translation id="5500050460919597479">Bentuk Biru Bondy</translation>
+<translation id="5359364898094115985">Bentuk Blurple</translation>
+<translation id="3385506478125681119">Bentuk Pahlawan Hitam</translation>
 </translationbundle>

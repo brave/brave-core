@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Tak perlu khawatir. Ini dapat terjadi karena sejumlah alasan keamanan. Cukup sambungkan ulang untuk mengatasinya.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Pembuat konten ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Setiap tips yang Anda kirim akan tetap disimpan di dompet Anda sampai mereka memverifikasi.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

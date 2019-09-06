@@ -27,13 +27,10 @@ namespace extensions {
 
 BraveComponentLoader::BraveComponentLoader(
     ExtensionServiceInterface* extension_service,
-    PrefService* profile_prefs,
-    PrefService* local_state,
     Profile* profile)
-    : ComponentLoader(extension_service, profile_prefs, local_state, profile),
+    : ComponentLoader(extension_service, profile),
       profile_(profile),
-      profile_prefs_(profile_prefs) {
-}
+      profile_prefs_(profile->GetPrefs()) {}
 
 BraveComponentLoader::~BraveComponentLoader() {
 }

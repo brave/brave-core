@@ -1,16 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/init/ChromeBrowserInitializer.java b/chrome/android/java/src/org/chromium/chrome/browser/init/ChromeBrowserInitializer.java
-index b5226f5ae747b24b18b94bb1718e497c7cbd9ff7..4b5e68b09a24429f3fb0e443ee4f77d60a14dc0d 100644
+index 00315dd4ba42ff47b881dcdbcdac9391fe471066..cf87f77a78fab17906aa2f5da69fb29675808929 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/init/ChromeBrowserInitializer.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/init/ChromeBrowserInitializer.java
-@@ -37,6 +37,7 @@ import org.chromium.chrome.browser.ChromeSwitches;
+@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.ChromeSwitches;
  import org.chromium.chrome.browser.FileProviderHelper;
  import org.chromium.chrome.browser.crash.LogcatExtractionRunnable;
  import org.chromium.chrome.browser.download.DownloadManagerService;
 +import org.chromium.chrome.browser.init.BraveBrowserInitializer;
  import org.chromium.chrome.browser.services.GoogleServicesManager;
+ import org.chromium.chrome.browser.util.FeatureUtilities;
  import org.chromium.chrome.browser.webapps.ActivityAssigner;
- import org.chromium.chrome.browser.webapps.ChromeWebApkHost;
-@@ -92,7 +93,7 @@ public class ChromeBrowserInitializer {
+@@ -90,7 +91,7 @@ public class ChromeBrowserInitializer {
       */
      public static ChromeBrowserInitializer getInstance() {
          if (sChromeBrowserInitializer == null) {
@@ -19,7 +19,7 @@ index b5226f5ae747b24b18b94bb1718e497c7cbd9ff7..4b5e68b09a24429f3fb0e443ee4f77d6
          }
          return sChromeBrowserInitializer;
      }
-@@ -196,7 +197,7 @@ public class ChromeBrowserInitializer {
+@@ -194,7 +195,7 @@ public class ChromeBrowserInitializer {
       * This is needed for device class manager which depends on commandline args that are
       * initialized in preInflationStartup()
       */

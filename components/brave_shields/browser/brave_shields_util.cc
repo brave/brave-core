@@ -85,7 +85,7 @@ ContentSettingsPattern GetPatternFromURL(const GURL& url,
 
   return scheme_wildcard && !url.has_port()
       ? ContentSettingsPattern::FromString("*://" + url.host() + "/*")
-      : ContentSettingsPattern::FromString(url.GetOrigin().spec() + "/*");
+      : ContentSettingsPattern::FromString(url.GetOrigin().spec() + "*");
 }
 
 std::string ControlTypeToString(ControlType type) {
@@ -257,6 +257,18 @@ ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url) {
   } else {
     return ControlType::BLOCK;
   }
+}
+
+bool AllowReferrers(Profile* profile, const GURL& url) {
+  return AllowReferrers(
+      HostContentSettingsMapFactory::GetForProfile(profile), url);
+}
+
+bool AllowReferrers(HostContentSettingsMap* map, const GURL& url) {
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kReferrers);
+
+  return setting == CONTENT_SETTING_ALLOW;
 }
 
 void SetFingerprintingControlType(Profile* profile,

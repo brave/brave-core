@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.cc b/chrome/browser/importer/external_process_importer_client.cc
-index 7320911bb2c1e848eafe487f9b376df2177521e8..6e7278eb8fd6fc9fd2ad339192e4eb7cf7ba3964 100644
+index d6f6de319f3662dbd1d0b4bf469c8325aea127a9..dd7e12127a6339e1eff0da8307464eb0c256d615 100644
 --- a/chrome/browser/importer/external_process_importer_client.cc
 +++ b/chrome/browser/importer/external_process_importer_client.cc
-@@ -69,6 +69,12 @@ void ExternalProcessImporterClient::Start() {
+@@ -67,6 +67,12 @@ void ExternalProcessImporterClient::Start() {
    localized_strings.try_emplace(
        IDS_BOOKMARK_BAR_FOLDER_NAME,
        l10n_util::GetStringUTF8(IDS_BOOKMARK_BAR_FOLDER_NAME));

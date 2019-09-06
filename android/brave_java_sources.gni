@@ -4,6 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 brave_java_sources = [
-  "../../brave/android/java/org/chromium/chrome/browser/init/BraveBrowserInitializer.java",
-  "../../brave/android/java/org/chromium/chrome/browser/search_engines/BraveTemplateUrlService.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
 ]

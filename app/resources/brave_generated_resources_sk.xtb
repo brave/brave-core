@@ -35,6 +35,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="2814998458708016836">Použite široký riadok adresy</translation>
 <translation id="6123134130710658846">Skryť tlačidlo Brave odmeny</translation>
 <translation id="7635711399568194460">Keď nie sú povolené Brave odmeny, tlačidlo Brave odmeny na paneli lokality sa skryje</translation>
+<translation id="4262166817826183486">Vždy zobrazovať panel so záložkami na stránke Nová karta</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="8511502469534942133">Nové Tor pripojenie k tejto stránke</translation>
 <translation id="8784924142044142231">Opustiť Tor</translation>
@@ -61,7 +62,6 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="9075744464571452108">Rozpoznanie zariadenia</translation>
 <translation id="3570081523466826008">Inovujte pripojenia na HTTPS</translation>
 <translation id="4824468494729001999">Blokovať skripty</translation>
-<translation id="7498695072878479744">Povoliť prihlasovacie tlačidlá Google na stránkach tretích strán</translation>
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
 <translation id="5165042248369837294">Povoliť embedované tweety pre Twitter</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
@@ -85,12 +85,14 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="8721331068159819483">Rovnaké ako macOS</translation>
 <translation id="6786747875388722282">Rozšírenia</translation>
 <translation id="2896916411183256228">Na zobrazenie torrentov priamo v prehliadači používa WebTorrent. Podporuje torrentové súbory a magnetové odkazy.</translation>
+<translation id="5554028991651120544">Poskytuje peňaženku Ethereum a prehliadač Dapp v Brave.</translation>
 <translation id="6554397389149987360">Používa komponenty služby Hangouts, ktoré umožňujú zdieľanie obrazovky a ďalšie funkcie v prehliadači.</translation>
 <translation id="1765684547504191670">Používa prvok Media Router na povolenie Chromecastu v prehliadači.</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
 <translation id="7179921470347911571">Spustiť ešte raz</translation>
 <translation id="4154389611571860454">Používa rozšírenie  IPFS companion na podporu IPFS v prehliadači.</translation>
 <translation id="8137559199583651773">Spravovať rozšírenia</translation>
+<translation id="7013485839273047434">Získať ďalšie rozšírenia</translation>
 <translation id="4928988318462976765">Obchod s webovými rozšíreniami</translation>
 <translation id="9181207987584064303">Zobraziť v Obchode webových rozšírení</translation>
 <translation id="4846154056248462491">Pri ukončení</translation>
@@ -100,4 +102,19 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="8303432794159193481">Dev aplikácie Brave prehliadača</translation>
 <translation id="8292967014767479012">Brave Browser aplikácie</translation>
 <translation id="4743468424889072281">Development aplikácie Brave prehliadača</translation>
+<translation id="4568409039725976900">Brave oranžová</translation>
+<translation id="7216062233533864908">Pomarančová kôra</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Závisť</translation>
+<translation id="8111795220552176635">Jasná obloha</translation>
+<translation id="8323875061602721187">Modrá Bondy</translation>
+<translation id="8267711815380227275">Modrá Blurple</translation>
+<translation id="831132225871108758">Temný rytier</translation>
+<translation id="1473185169764311478">Tvar Pomarančová kôra</translation>
+<translation id="8658537263568841491">Tvar Nana</translation>
+<translation id="8967241601928387177">Tvar Závisť</translation>
+<translation id="7232547941405761864">Tvar Jasná obloha</translation>
+<translation id="5500050460919597479">Tvar Modrá Bondy</translation>
+<translation id="5359364898094115985">Tvar Modrá Blurple</translation>
+<translation id="3385506478125681119">Tvar Temný rytier</translation>
 </translationbundle>

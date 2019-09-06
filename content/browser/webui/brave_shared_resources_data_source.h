@@ -1,5 +1,12 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #ifndef BRAVE_CONTENT_BROWSER_WEBUI_BRAVE_SHARED_RESOURCES_DATA_SOURCE_H_
 #define BRAVE_CONTENT_BROWSER_WEBUI_BRAVE_SHARED_RESOURCES_DATA_SOURCE_H_
+
+#include <string>
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
@@ -8,28 +15,26 @@
 
 namespace brave_content {
 
-using namespace content;
-
 // A DataSource for chrome://brave-resources/ URLs.
-class BraveSharedResourcesDataSource : public URLDataSource {
+class BraveSharedResourcesDataSource : public content::URLDataSource {
  public:
   BraveSharedResourcesDataSource();
   ~BraveSharedResourcesDataSource() override;
 
   // URLDataSource implementation.
-  std::string GetSource() const override;
+  std::string GetSource() override;
   void StartDataRequest(
       const std::string& path,
-      const ResourceRequestInfo::WebContentsGetter& wc_getter,
-      const URLDataSource::GotDataCallback& callback) override;
-  bool AllowCaching() const override;
-  std::string GetMimeType(const std::string& path) const override;
-  bool ShouldServeMimeTypeAsContentTypeHeader() const override;
+      const content::ResourceRequestInfo::WebContentsGetter& wc_getter,
+      const content::URLDataSource::GotDataCallback& callback) override;
+  bool AllowCaching() override;
+  std::string GetMimeType(const std::string& path) override;
+  bool ShouldServeMimeTypeAsContentTypeHeader() override;
   scoped_refptr<base::SingleThreadTaskRunner> TaskRunnerForRequestPath(
-      const std::string& path) const override;
+      const std::string& path) override;
   std::string GetAccessControlAllowOriginForOrigin(
-      const std::string& origin) const override;
-  bool IsGzipped(const std::string& path) const override;
+      const std::string& origin) override;
+  bool IsGzipped(const std::string& path) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveSharedResourcesDataSource);
@@ -37,4 +42,4 @@ class BraveSharedResourcesDataSource : public URLDataSource {
 
 }  // namespace brave_content
 
-#endif
+#endif  // BRAVE_CONTENT_BROWSER_WEBUI_BRAVE_SHARED_RESOURCES_DATA_SOURCE_H_

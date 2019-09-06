@@ -223,6 +223,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, CrashURLTest) {
   content::WindowedNotificationObserver observer(
       content::NOTIFICATION_WEB_CONTENTS_DISCONNECTED,
       content::NotificationService::AllSources());
+  content::ScopedAllowRendererCrashes allow_renderer_crashes(active_contents());
   browser()->OpenURL(
       content::OpenURLParams(GURL("brave://crash/"), content::Referrer(),
                              WindowOpenDisposition::CURRENT_TAB,

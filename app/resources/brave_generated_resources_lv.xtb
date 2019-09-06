@@ -35,6 +35,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
 <translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
 <translation id="7635711399568194460">Slēpj Brave balvu pogu atrašanās vietas joslā, kad Brave balvas nav iespējotas</translation>
+<translation id="4262166817826183486">Vienmēr rādīt grāmatzīmes jaunas cilnes lapā</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
 <translation id="8511502469534942133">Jauns Tor savienojums šai vietnei</translation>
 <translation id="8784924142044142231">Iziet no Tor</translation>
@@ -61,7 +62,6 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="9075744464571452108">Ierīces atpazīšana</translation>
 <translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
 <translation id="4824468494729001999">Bloķēt skriptus</translation>
-<translation id="7498695072878479744">Atļaut Google pieteikšanās pogas trešo pušu vietnēs</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
 <translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
@@ -85,12 +85,14 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8721331068159819483">Tāds pats kā macOS</translation>
 <translation id="6786747875388722282">Paplašinājumi</translation>
 <translation id="2896916411183256228">Izmanto programmu WebTorrent, lai torentus parādītu uzreiz pārlūkprogrammā. Atbalsta torentu failus un magnētiskās saites.</translation>
+<translation id="5554028991651120544">Nodrošina Ethereum maku un Dapp pārlūkprogrammu Brave sistēmā.</translation>
 <translation id="6554397389149987360">Izmanto funkcijas Hangouts elementu, lai pārlūkprogrammā iespējotu ekrāna kopīgošanu un citas funkcijas.</translation>
 <translation id="1765684547504191670">Izmanto funkcijas Media Router elementu, lai pārlūkā iespējotu Chromecast.</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
 <translation id="4154389611571860454">Izmanto IPFS kompanjona paplašinājumu, lai atbalstītu IPFS lietošanu pārlūkprogrammā.</translation>
 <translation id="8137559199583651773">Pārvaldīt paplašinājumus</translation>
+<translation id="7013485839273047434">Iegūt citus paplašinājumus</translation>
 <translation id="4928988318462976765">Paplašinājumu interneta veikals</translation>
 <translation id="9181207987584064303">Skatīt paplašinājumu interneta veikalā</translation>
 <translation id="4846154056248462491">Izejot</translation>
@@ -100,4 +102,19 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8303432794159193481">Brave Dev pārlūka lietotnes</translation>
 <translation id="8292967014767479012">Brave pārlūka vietnes</translation>
 <translation id="4743468424889072281">Brave pārlūka izstrādes lietotnes</translation>
+<translation id="4568409039725976900">Oranžais Brave</translation>
+<translation id="7216062233533864908">Apelsīna miza</translation>
+<translation id="8285320948587819446">Omīte</translation>
+<translation id="2016467614790224371">Skauģis</translation>
+<translation id="8111795220552176635">Skaidras debesis</translation>
+<translation id="8323875061602721187">Jūras zils</translation>
+<translation id="8267711815380227275">Zilpurs</translation>
+<translation id="831132225871108758">Tumšais bruņinieks</translation>
+<translation id="1473185169764311478">Apelsīna mizas forma</translation>
+<translation id="8658537263568841491">Omītes forma</translation>
+<translation id="8967241601928387177">Skauģa forma</translation>
+<translation id="7232547941405761864">Skaidras debess forma</translation>
+<translation id="5500050460919597479">Jūras zila forma</translation>
+<translation id="5359364898094115985">Zilpura forma</translation>
+<translation id="3385506478125681119">Tumšā bruņinieka forma</translation>
 </translationbundle>

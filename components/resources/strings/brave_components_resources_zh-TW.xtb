@@ -181,7 +181,6 @@
 <translation id="2827387977307390755">允許開啟小費功能</translation>
 <translation id="3671566813999349838">金額</translation>
 <translation id="3819257035322786455">備份</translation>
-<translation id="4989542687859782284">不可用</translation>
 <translation id="1312977698678162065">瀏覽尊重您隱私的相關廣告並獲取報酬。</translation>
 <translation id="7655723274266132226">現在您可以透過檢視廣告來賺錢了。</translation>
 <translation id="2975780980638932742">Brave 廣告抵達了！</translation>
@@ -284,7 +283,6 @@
 <translation id="3173528272490482456">準備好開始了嗎？</translation>
 <translation id="913775524828049259">是，我準備好了</translation>
 <translation id="108052542935515756">您可以開始從</translation>
-<translation id="2678666039642976470">重新連結錢包</translation>
 <translation id="194625454574835815">還原金鑰</translation>
 <translation id="6354568176665589146">週期性</translation>
 <translation id="7577100371127227294">每月小費</translation>
@@ -367,6 +365,7 @@
 <translation id="6727483290601442544">查看詳情</translation>
 <translation id="1988679729106502285">注意：</translation>
 <translation id="5815103311506128988">這位建立者尚未登記接受 Brave 使用者的提撥金。您的瀏覽器會不斷嘗試提撥，直到他們驗證或 90 天過後為止。</translation>
+<translation id="603411408512957306">這位建立者尚未登記接受 Brave 使用者的提撥金。您的瀏覽器會不斷嘗試提撥，直到他們驗證或 90 天過後為止。</translation>
 <translation id="4292832015778676417">從廣告賺取</translation>
 <translation id="3197752845651180812">預定的捐助</translation>
 <translation id="3164105678355419142">週期性打賞</translation>
@@ -389,7 +388,7 @@
 <translation id="7512440811010447157">驗證</translation>
 <translation id="8030169304546394654">已取消連結</translation>
 <translation id="8267327690882073581">驗證錢包</translation>
-<translation id="4569155249847375786">已驗證</translation>
+<translation id="543510923939676996">已驗證</translation>
 <translation id="7591798679868259510">到我的 Uphold 帳號</translation>
 <translation id="9200453331904391567">從 Brave Rewards 取消連結</translation>
 <translation id="46988480989545156">驗證錢包</translation>
@@ -401,6 +400,15 @@
 <translation id="2610007079772760276">驗證過的錢包讓您可以：</translation>
 <translation id="7565794512491053578">驗證您的錢包</translation>
 <translation id="698531289520577961">並且很容易地管理您的資金</translation>
+<translation id="8697510149346635496">提領您從瀏覽支援隱私廣告賺取的 BAT（注意力代幣）</translation>
+<translation id="1481480653609649134">以信用卡或其他來源購買其他 BAT（注意力代幣）</translation>
+<translation id="9096003370755878766">提領您可能先前新增至您的 Brave 獎勵電子錢包的 BAT (注意力代幣)</translation>
+<translation id="5275978662119683162">驗證的好處</translation>
+<translation id="5166793288622772189">準備好驗證您的電子錢包了嗎？</translation>
+<translation id="8766217572332535979">創作者貢獻作品賺取獎勵不需驗證</translation>
+<translation id="4569155249847375786">已驗證</translation>
+<translation id="8465442795593991224">根據服務要求，Uphold 可能需要您驗證身分識別</translation>
+<translation id="723054503945711909">當您建立您的帳號時，Brave 軟體公司不會處理、儲存或存取您提供給 Uphold 的任何個人資料。</translation>
 <translation id="1181037720776840403">移除</translation>
 <translation id="7885157704277298658">已複製！</translation>
 <translation id="5379640681913450928">字數：</translation>

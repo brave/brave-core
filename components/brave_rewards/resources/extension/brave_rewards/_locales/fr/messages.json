@@ -226,7 +226,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Impossible d'envoyer votre astuce. Veuillez réessayer plus tard.",
+    "message": "Impossible d'envoyer votre don. Veuillez réessayer plus tard.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Aucun problème. Cela peut se produire pour diverses raisons de sécurité. Il suffit de s'y reconnecter pour résoudre ce problème.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Tous les pourboires que vous envoyez resteront dans votre portefeuille jusqu'à ce qu'ils soient vérifiés.\n\n",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

@@ -107,7 +107,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 }  // namespace
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
-      content::BrowserContext* browser_context, const GURL& url) const {
+      content::BrowserContext* browser_context, const GURL& url) {
   WebUIFactoryFunction function = GetWebUIFactoryFunction(NULL, url);
   if (function) {
     return reinterpret_cast<WebUI::TypeID>(function);
@@ -116,10 +116,8 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
 }
 
 std::unique_ptr<WebUIController>
-BraveWebUIControllerFactory::CreateWebUIControllerForURL(
-    WebUI* web_ui,
-    const GURL& url) const {
-
+BraveWebUIControllerFactory::CreateWebUIControllerForURL(WebUI* web_ui,
+                                                         const GURL& url) {
   WebUIFactoryFunction function = GetWebUIFactoryFunction(web_ui, url);
   if (!function) {
     return ChromeWebUIControllerFactory::CreateWebUIControllerForURL(

@@ -1,11 +1,10 @@
 <link rel="import" href="chrome://resources/html/polymer.html">
 
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
-<link rel="import" href="chrome://resources/html/md_select_css.html">
+<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
 <link rel="import" href="brave_appearance_browser_proxy.html">
 <link rel="import" href="../settings_shared_css.html">
 <link rel="import" href="../settings_vars_css.html">
-
 <dom-module id="settings-brave-appearance-theme">
   <template>
     <style include="settings-shared md-select iron-flex">
@@ -13,29 +12,24 @@
     <div class="settings-box first">
       <div class="start">$i18n{appearanceSettingsBraveTheme}</div>
       <settings-dropdown-menu id="braveThemeType"
-          label="$i18n{appearanceSettingsBraveTheme}"
-          pref="{{prefs.brave.theme.type}}"
-          menu-options="[[braveThemeList_]]">
+                              label="$i18n{appearanceSettingsBraveTheme}"
+                              pref="{{prefs.brave.theme.type}}"
+                              menu-options="[[braveThemeList_]]">
       </settings-dropdown-menu>
     </div>
   </template>
   <script src="brave_appearance_page.js"></script>
 </dom-module>
-
 <dom-module id="settings-brave-appearance-toolbar">
   <template>
     <style include="settings-shared md-select iron-flex">
     </style>
-    <settings-toggle-button
-      pref="{{prefs.brave.location_bar_is_wide}}"
-      label="$i18n{appearanceSettingsLocationBarIsWide}"
-    >
+    <settings-toggle-button pref="{{prefs.brave.location_bar_is_wide}}"
+                            label="$i18n{appearanceSettingsLocationBarIsWide}">
     </settings-toggle-button>
-    <settings-toggle-button
-      pref="{{prefs.brave.hide_brave_rewards_button}}"
-      label="$i18n{appearanceSettingsHideBraveRewardsButtonLabel}"
-      sub-label="$i18n{appearanceSettingsHideBraveRewardsButtonDesc}"
-    >
+    <settings-toggle-button pref="{{prefs.brave.hide_brave_rewards_button}}"
+                            label="$i18n{appearanceSettingsHideBraveRewardsButtonLabel}"
+                            sub-label="$i18n{appearanceSettingsHideBraveRewardsButtonDesc}">
     </settings-toggle-button>
   </template>
 </dom-module>

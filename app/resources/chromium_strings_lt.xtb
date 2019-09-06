@@ -3,6 +3,9 @@
 <translationbundle lang="lt">
 <translation id="5194812628624740897">Atjungus <ph name="USERNAME"/>, bus išvalyta jūsų istorija, žymės, nustatymai ir kiti „Brave“ duomenys, saugomi šiame įrenginyje. „Brave Software“ paskyroje saugomi duomenys nebus išvalyti. Juos galite tvarkyti <ph name="GOOGLE_DASHBOARD_LINK"/>„Brave Software“ informacijos suvestinėje<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">„Brave“</translation>
+<translation id="2069994121511856876">„Brave Nightly“</translation>
+<translation id="4947625801334180582">„Brave Beta“</translation>
+<translation id="2566435362010629810">„Brave Dev“</translation>
 <translation id="6373767849825830651">„Brave“ – tai žiniatinklio naršyklė, kurią naudojant akimirksniu paleidžiami tinklalapiai ir programos. Ji greita, stabili ir lengvai naudojama. Saugiau naršykite žiniatinklį naudodami į „Brave“ integruotą apsaugą nuo kenkėjiškų programų ir sukčiavimo.</translation>
 <translation id="680297041157509674">„Brave“ OS</translation>
 <translation id="4847979153841887006">„Brave“ logotipas</translation>
@@ -21,6 +24,8 @@
 <translation id="4651430425715739110">Autorių teisės priklauso „Brave“ autoriams, <ph name="YEAR"/> m. Visos teisės saugomos.</translation>
 <translation id="2310890394934209120">„Brave“ OS pasiekiama naudojant papildomą <ph name="BEGIN_LINK_CROS_OSS"/>atvirojo šaltinio programinę įrangą<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">„Brave“ OS pasiekiama naudojant papildomą <ph name="BEGIN_LINK_CROS_OSS"/>atvirojo šaltinio programinę įrangą<ph name="END_LINK_CROS_OSS"/> (kaip ir <ph name="BEGIN_LINK_LINUX_OSS"/>„Linux“ (beta versija)<ph name="END_LINK_LINUX_OSS"/>).</translation>
+<translation id="8948097099929452692">„Brave“ naršyklėje nenaudojama. Vietaženklis, palaikantis išteklių žemėlapių sinchronizavimą.</translation>
+<translation id="5009217320733452434">„Brave“ naršyklėje nenaudojama. Vietaženklis, palaikantis išteklių žemėlapių sinchronizavimą. Laukiama vieno argumento: <ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">„Brave“ gali tinkamai neveikti, nes ji nebepalaikoma naudojant 10.9 versijos „Mac OS X“.</translation>
 <translation id="7977787072794666032">„Brave“ gali tinkamai neveikti, nes ji nebepalaikoma naudojant „Windows XP“ arba „Windows Vista“</translation>
 <translation id="189297655255130768">„Brave“ neatsako. Paleisti iš naujo dabar?</translation>
@@ -110,7 +115,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="1421502046520299169">Apie &amp;„Brave“ OS</translation>
 <translation id="2534623228451928732">&amp;„Brave“ OS naujinys</translation>
 <translation id="8447483940522230788">„Brave“ pagalbos priemonė</translation>
-<translation id="3360368475735266712">Prisijunkite, kad galėtumėte sinchronizuoti ir suasmeninti „Brave“ skirtinguose įrenginiuose</translation>
 <translation id="5477319665405831211">Sinchronizuokite ir suasmeninkite „Brave“ skirtinguose įrenginiuose</translation>
 <translation id="4934157190377700991">Esate prisijungę prie „Brave“</translation>
 <translation id="4100716194836114130">Tai jūsų „Brave“</translation>
@@ -141,6 +145,8 @@ Prisijungus bet kuriuo būdu, „Brave“ informacija, pvz., žymės, istorija i
 <translation id="6746636977031158624">„Brave“ OS negali sinchronizuoti duomenų, nes paskyros išsami prisijungimo informacija yra pasenusi.</translation>
 <translation id="2999152167963026588">„Brave“ OS negali sinchronizuoti duomenų, nes jūsų domene sinchronizavimas nepasiekiamas.</translation>
 <translation id="1459786048951724030">„Brave“ OS negali sinchronizuoti duomenų, nes prisijungiant įvyko klaida.</translation>
+<translation id="6813094029720377619">Išeidami iš „Brave“ išvalote slapukus. Jei norite toliau sinchronizuoti, pakeiskite šį <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">nustatymų</translation>
 <translation id="663059986967017181">Nukopijuota į „Brave“</translation>
 <translation id="1457432835062259213">„Brave“ programų paleidimo priemonė</translation>
 <translation id="82609232232243542">Prisijungti prie „Brave“</translation>
@@ -160,7 +166,7 @@ Kad <ph name="NEW_PROFILE_NAME"/> negalėtų pasiekti jūsų paskyros, būtinai 
 
 Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, kuriame rasite daugiau instrukcijų.</translation>
 <translation id="1820843143331379651">Prižiūrimų naudotojų profiliai nebebus pasiekiami nuo 70 vers. „Brave“.</translation>
-<translation id="3066805437003400520">Šio asmens naršymo duomenys bus ištrinti iš šio įrenginio. Jei norite atkurti duomenis, prisijunkite prie „Brave“ kaip <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Šio asmens naršymo duomenys bus ištrinti iš šio įrenginio. Jei norite atkurti duomenis, prisijunkite prie „Brave“ kaip <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">„Brave“ dabar dar tobulesnė</translation>
 <translation id="7192666605334070839">Dabar galite lengviau naudoti „Brave“ naudodami „Brave Software“ paskyrą ir bendrinamus kompiuterius.</translation>
 <translation id="3511996232906761537">Čia saugoma žiniatinklio informacija, žymės ir kiti „Brave“ duomenys.</translation>
@@ -175,7 +181,13 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="2433912322225810055">Ji taip pat kontroliuoja, koks puslapis rodomas, kai paleidžiate „Brave“ arba ieškote „Omnibox“.</translation>
 <translation id="2871190378186459992">Atraskite puikių „Brave“ programų, žaidimų, plėtinių ir temų.</translation>
 <translation id="3350544518197210895">„Brave“ (mDNS-In)</translation>
+<translation id="5846303060623790781">„Brave Beta“ (mDNS-In)</translation>
+<translation id="3599046180970731601">„Brave Nightly“ (mDNS-In)</translation>
+<translation id="7881806463410697784">„Brave Dev“ (mDNS-In)</translation>
 <translation id="1912973375560256099">„Brave“ skirta taisyklė, pagal kurią leidžiamas mDNS srautas.</translation>
+<translation id="7272074097076644710">„Brave Beta“ skirta taisyklė, pagal kurią leidžiamas mDNS srautas.</translation>
+<translation id="4991512282053949769">„Brave Nightly“ skirta taisyklė, pagal kurią leidžiamas mDNS srautas.</translation>
+<translation id="3856641371299712128">„Brave Dev“ skirta taisyklė, pagal kurią leidžiamas mDNS srautas.</translation>
 <translation id="8207657266087451193">Jei nebus naudingo vaizdo aprašo, „Brave“ bandys jums jį pateikti. Kad būtų galima kurti aprašus, vaizdai siunčiami į sistemą „Brave Software“. Šią parinktį galite bet kada išjungti skiltyje „Nustatymai“.</translation>
 <translation id="5499063270485366718">Jei nebus naudingo vaizdo aprašo, „Brave“ bandys jums jį pateikti. Kad būtų galima kurti aprašus, vaizdai siunčiami į sistemą „Brave Software“.</translation>
 <translation id="215320507915280336">Naudojamas tas pats rašybos tikrinimas kaip ir „Brave Software“ paieškoje. Tekstas, kurį įvedate naršyklėje, nusiunčiamas „Brave Software“. Šį veikimą visada galite pakeisti nustatymuose.</translation>
@@ -226,14 +238,6 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="7808415789955822133">„Brave“ OS sąlygos</translation>
 <translation id="7207456302801184289">Sveiki, tai „Brave“</translation>
 <translation id="5688839044908745927">„Brave“ beveik paruošta.</translation>
-<translation id="7758342895140862711">Pasiimkite „Brave“ bet kur</translation>
-<translation id="3610173904388112975">Žiniatinklio naršymas naudojant „Brave Software“ išmaniąsias funkcijas</translation>
-<translation id="3479552764303398839">Ne dabar</translation>
-<translation id="8013374903356993822">Greičiau pasiekite „Brave“</translation>
-<translation id="7625138338483121345">Nustatymas „Brave“ numatytąja naršykle</translation>
-<translation id="5927044791090834489">„Brave“ prisegimas prie užduočių juostos</translation>
-<translation id="8933981935877469796">Pasirinkite <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">Jei bus rodomas, spustelėkite mygtuką <ph name="BEGIN_BOLD"/>Vis tiek perjungti<ph name="END_BOLD"/></translation>
 <translation id="3507835409099344374">Eiti į „Brave“ pranešimų nustatymus</translation>
 <translation id="1026406809507858026">{0,plural, =0{Pasiekiamas „Brave“ naujinys}=1{Pasiekiamas „Brave“ naujinys}one{„Brave“ naujinys pasiekiamas # dieną}few{„Brave“ naujinys pasiekiamas # dienas}many{„Brave“ naujinys pasiekiamas # dienos}other{„Brave“ naujinys pasiekiamas # dienų}}</translation>
 <translation id="720532315408041257">Administratorius prašo paleisti iš naujo „Brave“, kad galėtų pritaikyti šį naujinį</translation>
@@ -246,6 +250,7 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="1197672524850678392">Nepavyko paleisti „Brave“. Bandykite dar kartą.</translation>
 <translation id="6040143037577758943">Uždaryti</translation>
 <translation id="5147525139567260139">„Brave“ skirtuko bendrinimas</translation>
+<translation id="2076319850279844250">Padėkite mums tobulinti „Brave“</translation>
 <translation id="8541922081612557424">Apie „Brave“</translation>
 <translation id="3262506503470845422">Gaukite pagalbos dėl „Brave“</translation>
 <translation id="1864557848095568223">Atnaujinama „Brave“</translation>
@@ -253,6 +258,7 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="8208853227947884571">„Brave“ naujausios versijos</translation>
 <translation id="6686872257969654608">Apie „Brave“ OS</translation>
 <translation id="2280363356796735201">Gaukite pagalbos dėl „Brave“ OS</translation>
+<translation id="38898988211673781">Išeinant iš „Brave“ išvalyti slapukus ir svetainės duomenis</translation>
 <translation id="5253815230176279256">„Brave Software Pay“ (nukopijuota į „Brave“)</translation>
 <translation id="5468853758063275923">„Brave“ yra numatytoji naršyklė</translation>
 <translation id="1775322105159056176">„Brave“ nepavyko aptikti arba nustatyti numatytosios naršyklės</translation>
@@ -269,6 +275,7 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="8372880274820509128">Kad būtų papildomai užtikrintas saugumas, „Brave“ užšifruos jūsų duomenis.</translation>
 <translation id="7445061995866044926">Atsijungti nuo „Brave“?</translation>
 <translation id="7453070689008684791">„Brave“ turės prieigą prie Disko, kad galėtų teikti pasiūlymus adreso juostoje</translation>
+<translation id="3360368475735266712">Prisijunkite, kad galėtumėte sinchronizuoti ir suasmeninti „Brave“ skirtinguose įrenginiuose</translation>
 <translation id="9221712274065451529">Ši kalba vartojama „Brave“ OS NS pateikti</translation>
 <translation id="3518788198614984730">Pateikti „Brave“ OS šia kalba</translation>
 <translation id="5757460455745382269">Ši kalba vartojama „Brave“ NS pateikti</translation>

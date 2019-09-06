@@ -35,6 +35,7 @@
 <translation id="2814998458708016836">استخدام شريط عناوين عريض</translation>
 <translation id="6123134130710658846">إخفاء زر Brave Rewards</translation>
 <translation id="7635711399568194460">يخفي زر Brave Rewards في شريط الموقع عند عدم تمكين Brave Rewards</translation>
+<translation id="4262166817826183486">إظهار شريط الإشارات المرجعية في صفحة علامة التبويب الجديدة دائماً</translation>
 <translation id="7965178729203412357">هوية تور الجديدة</translation>
 <translation id="8511502469534942133">اتصال Tor جديد لهذا الموقع</translation>
 <translation id="8784924142044142231">الخروج من برنامج تور (Tor)</translation>
@@ -61,7 +62,6 @@
 <translation id="9075744464571452108">التعرف على الجهاز</translation>
 <translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="4824468494729001999">حظر البرامج النصية</translation>
-<translation id="7498695072878479744">السماح بإضافة أزرار تسجيل الدخول إلى جوجل على صفحات أطراف ثالثة</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
@@ -85,12 +85,14 @@
 <translation id="8721331068159819483">تماماً مثل ماك</translation>
 <translation id="6786747875388722282">الإضافات</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
+<translation id="5554028991651120544">يتيح محفظة Ethereum ومتصفح Dapp في Brave.</translation>
 <translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
 <translation id="1765684547504191670">يستخدم مكوّن Media Router لتمكين Chromecast في المتصفح.</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="4154389611571860454">يستخدم ملحق رفيق IPFS لدعم IPFS في المستعرض.</translation>
 <translation id="8137559199583651773">إدارة الإضافات</translation>
+<translation id="7013485839273047434">احصل على المزيد من الإضافات</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>
 <translation id="9181207987584064303">عرض في متجر إضافات الويب</translation>
 <translation id="4846154056248462491">عند الخروج</translation>
@@ -100,4 +102,19 @@
 <translation id="8303432794159193481">تطبيقات تطوير متصفح Brave</translation>
 <translation id="8292967014767479012">تطبيقات متصفح Brave</translation>
 <translation id="4743468424889072281">تطبيقات تطوير متصفح Brave</translation>
+<translation id="4568409039725976900">Brave برتقالي</translation>
+<translation id="7216062233533864908">قشر البرتقال</translation>
+<translation id="8285320948587819446">نانا</translation>
+<translation id="2016467614790224371">الحسد</translation>
+<translation id="8111795220552176635">سماء صافية</translation>
+<translation id="8323875061602721187">بوندي بلو</translation>
+<translation id="8267711815380227275">أزرق قنطريوني</translation>
+<translation id="831132225871108758">فارس الظلام</translation>
+<translation id="1473185169764311478">شكل قشر البرتقال</translation>
+<translation id="8658537263568841491">شكل نانا</translation>
+<translation id="8967241601928387177">شكل الحسد</translation>
+<translation id="7232547941405761864">شكل سماء صافية</translation>
+<translation id="5500050460919597479">شكل بوندي بلو</translation>
+<translation id="5359364898094115985">شكل الأزرق القنطريوني</translation>
+<translation id="3385506478125681119">شكل فارس الظلام</translation>
 </translationbundle>

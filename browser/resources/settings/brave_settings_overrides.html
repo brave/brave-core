@@ -1,4 +1,3 @@
-<link rel="import" href="chrome://brave-resources/polymer_overriding.html">
 <link rel="import" href="brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.html">
 <link rel="import" href="brave_reset_page/brave_reset_profile_dialog_behavior.html">
 <!-- Need chromium icons to be defined so that we can rewrite -->
@@ -46,8 +45,10 @@
       #left, #main, #right {
         flex: unset !important;
       }
-      :host-context([dark]) #container {
-        background: #1E2127;
+      @media (prefers-color-scheme: dark) {
+        #container {
+          background: #1E2127;
+        }
       }
     </style>
   </template>
@@ -79,10 +80,12 @@
         padding: 30px !important;
       }
 
-      :host-context([dark]) {
-        --settings-nav-item-color: #F4F4F4 !important;
-        border-color: transparent !important;
-        background-color: #161719;
+      @media (prefers-color-scheme: dark) {
+        :host {
+          --settings-nav-item-color: #F4F4F4 !important;
+          border-color: transparent !important;
+          background-color: #161719;
+        }
       }
 
       a[href] {
@@ -107,8 +110,10 @@
         height: 20px;
       }
 
-      :host-context([dark]) a[href].iron-selected iron-icon {
-        color: var(--settings-nav-item-color) !important;
+      @media (prefers-color-scheme: dark) {
+        a[href].iron-selected iron-icon {
+          color: var(--settings-nav-item-color) !important;
+        }
       }
 
       a[href],

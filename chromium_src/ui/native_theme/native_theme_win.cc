@@ -1,35 +1,23 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-#include "ui/native_theme/native_theme_dark_aura.h"
-#include "ui/native_theme/native_theme_win.h"
+// Copyright (c) 2019 The Brave Authors
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 namespace {
-
-bool system_dark_mode_overridden = false;
-bool dark_mode_enabled = false;
-
-bool OverrideSystemDarkMode() {
-  return system_dark_mode_overridden;
-}
-
-bool GetSystemDarkModeEnabledOverrides() {
-  return dark_mode_enabled;
-}
-
+bool s_ignore_system_dark_mode_change = false;
 }  // namespace
+
+#define BRAVE_NATIVETHEMEWIN_UPDATEDARKMODESTATUS \
+  if (s_ignore_system_dark_mode_change) {         \
+    return;                                       \
+  }
 
 #include "../../../../ui/native_theme/native_theme_win.cc"  // NOLINT
 
 namespace ui {
 
-void SetOverrideSystemDarkMode(bool override,
-                               bool enable_dark_mode) {
-  system_dark_mode_overridden = override;
-  dark_mode_enabled = enable_dark_mode;
+void NATIVE_THEME_EXPORT IgnoreSystemDarkModeChange(bool ignore) {
+  s_ignore_system_dark_mode_change = ignore;
 }
 
 }  // namespace ui
-

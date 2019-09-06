@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace21f4991c 100644
+index 0c52ff3c73580e38b2828fabdeb0e9c340428ca3..c99d78bb59960edf586b9079677dcbf0b7ea6f92 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -190,6 +190,10 @@ if (!is_android && !is_mac) {
@@ -13,7 +13,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
  
          deps += [
            ":chrome_dll",
-@@ -289,6 +293,7 @@ if (!is_android && !is_mac) {
+@@ -297,6 +301,7 @@ if (!is_android && !is_mac) {
            "//headless:headless_shell_lib",
            "//services/service_manager/embedder",
          ]
@@ -21,7 +21,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
  
          public_deps = [
            ":xdg_mime",  # Needs to be public for installer to consume files.
-@@ -435,6 +440,7 @@ if (is_win) {
+@@ -431,6 +436,7 @@ if (is_win) {
        "//third_party/wtl",
        "//ui/views",
      ]
@@ -29,7 +29,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
  
      ldflags = [
        "/DELAYLOAD:advapi32.dll",
-@@ -569,6 +575,7 @@ if (is_win) {
+@@ -566,6 +572,7 @@ if (is_win) {
          "//headless:headless_shell_child_lib",
          "//services/service_manager/embedder",
        ]
@@ -37,7 +37,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
  
        ldflags = [
          "/DELAYLOAD:comctl32.dll",
-@@ -680,6 +687,11 @@ if (is_win) {
+@@ -677,6 +684,11 @@ if (is_win) {
      ]
    }
  
@@ -49,7 +49,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
-@@ -713,6 +725,7 @@ if (is_win) {
+@@ -710,6 +722,7 @@ if (is_win) {
                    rebase_path("app/app.exports", root_build_dir) ]
      }
    }
@@ -57,7 +57,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
  
    compiled_action("chrome_app_strings") {
      tool = "//chrome/tools/build/mac:infoplist_strings_tool"
-@@ -742,7 +755,7 @@ if (is_win) {
+@@ -739,7 +752,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -66,7 +66,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -823,7 +836,7 @@ if (is_win) {
+@@ -820,7 +833,7 @@ if (is_win) {
        # framework itself, that would cause a cyclical dependency. Instead,
        # this dependency directly copies the file into the framework's
        # resources directory.
@@ -75,7 +75,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
      }
    }
  
-@@ -1249,6 +1262,7 @@ if (is_win) {
+@@ -1247,6 +1260,7 @@ if (is_win) {
        "//services/service_manager/embedder",
        "//third_party/cld_3/src/src:cld_3",
      ]
@@ -83,7 +83,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
  
      if (is_component_build) {
        libs = [ "Carbon.framework" ]
-@@ -1313,6 +1327,10 @@ if (is_win) {
+@@ -1311,6 +1325,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -94,7 +94,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
  
      ldflags = [ "-Wl,-install_name,@executable_path/../Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full/$chrome_framework_name" ]
  
-@@ -1483,6 +1501,7 @@ if (is_win) {
+@@ -1475,6 +1493,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -102,7 +102,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
      "//chrome/browser",
      "//chrome/common",
      "//components/gwp_asan/buildflags",
-@@ -1556,13 +1575,14 @@ group("child_dependencies") {
+@@ -1547,13 +1566,14 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -118,7 +118,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1635,6 +1655,7 @@ group("resources") {
+@@ -1626,6 +1646,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -126,7 +126,7 @@ index e06ba8ee8bcf4cc240029fc66a7c2681786217a0..a77998f9bd28b8a9965a7e10611c2ace
    ]
  }
  
-@@ -1886,6 +1907,7 @@ if (is_android) {
+@@ -1882,6 +1903,7 @@ if (is_android) {
        "//content/public/common:service_names",
        "//services/service_manager/embedder",
      ]

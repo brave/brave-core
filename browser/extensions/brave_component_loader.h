@@ -18,9 +18,7 @@ namespace extensions {
 class BraveComponentLoader : public ComponentLoader {
  public:
   BraveComponentLoader(ExtensionServiceInterface* extension_service,
-                  PrefService* prefs,
-                  PrefService* local_state,
-                  Profile* browser_context);
+                       Profile* browser_context);
   ~BraveComponentLoader() override;
 
   // Adds the default component extensions. If |skip_session_components|

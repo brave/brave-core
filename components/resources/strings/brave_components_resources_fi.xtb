@@ -181,7 +181,6 @@
 <translation id="2827387977307390755">Salli vinkit</translation>
 <translation id="3671566813999349838">Summa</translation>
 <translation id="3819257035322786455">Varmuuskopiointi</translation>
-<translation id="4989542687859782284">Ei käytettävissä</translation>
 <translation id="1312977698678162065">Saa palkkio yksityisyyttäsi kunnioittavien, relevanttien mainosten katselusta.</translation>
 <translation id="7655723274266132226">Voit nyt ansaita rahaa mainoksia katsomalla.</translation>
 <translation id="2975780980638932742">Brave-mainokset ovat täällä</translation>
@@ -284,7 +283,6 @@
 <translation id="3173528272490482456">Oletko valmis aloittamaan?</translation>
 <translation id="913775524828049259">Kyllä, olen valmis</translation>
 <translation id="108052542935515756">Voit aloittaa</translation>
-<translation id="2678666039642976470">Yhdistä kukkaro uudestaan</translation>
 <translation id="194625454574835815">Palautusavain</translation>
 <translation id="6354568176665589146">Toistuva</translation>
 <translation id="7577100371127227294">Kuukausittaiset tipit</translation>
@@ -367,6 +365,7 @@
 <translation id="6727483290601442544">Katso yksityiskohdat</translation>
 <translation id="1988679729106502285">HUOMIO:</translation>
 <translation id="5815103311506128988">Tämä kehittäjä ei ole vielä rekisteröitynyt vastaanottamaan  Brave-käyttäjien avustuksia. Selaimesi pyrkii tekemään avustuksia joko kyseisen henkilön vahvistukseen asti tai kunnes 90 päivää on kulunut.</translation>
+<translation id="603411408512957306">Tämä kehittäjä ei ole vielä rekisteröitynyt vastaanottamaan  Brave-käyttäjien avustuksia. Selaimesi pyrkii tekemään avustuksia joko kyseisen henkilön vahvistukseen asti tai kunnes 90 päivää on kulunut.</translation>
 <translation id="4292832015778676417">ansaittu mainoksista</translation>
 <translation id="3197752845651180812">Odottavat lahjoitukset</translation>
 <translation id="3164105678355419142">Toistuva tippi</translation>
@@ -389,7 +388,7 @@
 <translation id="7512440811010447157">vahvista</translation>
 <translation id="8030169304546394654">Yhteys katkaistu</translation>
 <translation id="8267327690882073581">Vahvista kukkaro</translation>
-<translation id="4569155249847375786">Vahvistettu</translation>
+<translation id="543510923939676996">Vahvistettu</translation>
 <translation id="7591798679868259510">Siirry Uphold-tiliini</translation>
 <translation id="9200453331904391567">Katkaise yhteys Brave-palkinnoista</translation>
 <translation id="46988480989545156">Vahvista kukkaro</translation>
@@ -401,6 +400,15 @@
 <translation id="2610007079772760276">Vahvistetun kukkaron avulla voit:</translation>
 <translation id="7565794512491053578">Vahvista kukkarosi</translation>
 <translation id="698531289520577961">Ja hallitse rahojasi helposti!</translation>
+<translation id="8697510149346635496">Nosta BATit, jotka ansaitset yksityisyyttä kunnioittavia mainoksia katsomalla</translation>
+<translation id="1481480653609649134">Osta lisää BATeja luottokorteilla ja muilla lähteillä</translation>
+<translation id="9096003370755878766">Nosta BATit, jotka olet saattanut lisätä Brave Rewards -lompakkoosi</translation>
+<translation id="5275978662119683162">Vahvistamisen edut</translation>
+<translation id="5166793288622772189">Oletko valmis vahvistamaan lompakkosi?</translation>
+<translation id="8766217572332535979">Kehittäjien avustuksista saatujen palkintojen ansaitsemiseen ei tarvita vahvistusta</translation>
+<translation id="4569155249847375786">Vahvistettu</translation>
+<translation id="8465442795593991224">Ylläpito saattaa vaatia sinua vahvistamaan henkilöllisyytesi pyydetyistä palveluista riippuen.</translation>
+<translation id="723054503945711909">Brave Software Inc. ei käsittele, tallenna tai käytä mitään henkilökohtaisia tietoja, joita luovutit Upholdille luodessasi heidän käyttäjätilinsä.</translation>
 <translation id="1181037720776840403">Poista</translation>
 <translation id="7885157704277298658">Kopioitu</translation>
 <translation id="5379640681913450928">Sanamäärä</translation>

@@ -112,7 +112,6 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="1421502046520299169">Über &amp;Brave OS</translation>
 <translation id="2534623228451928732">&amp;Brave OS aktualisieren</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="3360368475735266712">Wenn Sie sich anmelden, wird Brave auf allen Ihren Geräten synchronisiert und personalisiert</translation>
 <translation id="5477319665405831211">Brave wird auf allen Ihren Geräten synchronisiert und personalisiert</translation>
 <translation id="4934157190377700991">Sie sind jetzt in Brave angemeldet.</translation>
 <translation id="4100716194836114130">Dies ist Ihr persönlicher Brave-Browser</translation>
@@ -143,6 +142,8 @@ Sollten Sie sich trotzdem anmelden, werden die Brave-Daten wie Lesezeichen, Verl
 <translation id="6746636977031158624">Brave OS konnte Ihre Daten nicht synchronisieren, da die Anmeldedaten Ihres Kontos veraltet sind.</translation>
 <translation id="2999152167963026588">Brave OS konnte Ihre Daten nicht synchronisieren, da die Synchronisierung für Ihre Domain nicht verfügbar ist.</translation>
 <translation id="1459786048951724030">Brave OS konnte Ihre Daten aufgrund eines Fehlers bei der Anmeldung nicht synchronisieren.</translation>
+<translation id="6813094029720377619">Cookies werden gelöscht, wenn Sie Brave beenden. Ändern Sie <ph name="COOKIE_SETTINGS_LINK"/>, wenn die Synchronisierung fortgesetzt werden soll.</translation>
+<translation id="3340978935015468852">Einstellungen</translation>
 <translation id="663059986967017181">In Brave kopiert</translation>
 <translation id="1457432835062259213">Brave App Launcher</translation>
 <translation id="82609232232243542">In Brave anmelden</translation>
@@ -162,7 +163,7 @@ Um zu verhindern, dass <ph name="NEW_PROFILE_NAME"/> auf Ihr Konto zugreift, sch
 
 Weitere Informationen wurden per E-Mail an <ph name="ACCOUNT_EMAIL"/> gesendet.</translation>
 <translation id="1820843143331379651">Die betreuten Nutzerprofile sind ab Brave 70 nicht mehr verfügbar.</translation>
-<translation id="3066805437003400520">Die Browserdaten dieser Person werden von diesem Gerät gelöscht. Wenn Sie die Daten wiederherstellen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>
+<translation id="669092380621816981">Die Browserdaten dieser Person werden von diesem Gerät gelöscht. Wenn Sie die Daten wiederherstellen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>
 <translation id="2827121003398607864">Brave ist jetzt noch besser</translation>
 <translation id="7192666605334070839">Sie können Brave jetzt noch einfacher mit Ihrem Brave Software-Konto und auf gemeinsam genutzten Computern verwenden.</translation>
 <translation id="3511996232906761537">Hier können Sie im Web surfen und Ihre Lesezeichen und andere Brave-Inhalte speichern.</translation>
@@ -234,14 +235,6 @@ Weitere Informationen wurden per E-Mail an <ph name="ACCOUNT_EMAIL"/> gesendet.<
 <translation id="7808415789955822133">Brave OS-Nutzungsbedingungen</translation>
 <translation id="7207456302801184289">Willkommen bei Brave</translation>
 <translation id="5688839044908745927">Brave ist gleich bereit.</translation>
-<translation id="7758342895140862711">Brave überall mitnehmen</translation>
-<translation id="3610173904388112975">Smart surfen mit Brave Software</translation>
-<translation id="3479552764303398839">Jetzt nicht</translation>
-<translation id="8013374903356993822">Schneller Zugriff auf Brave</translation>
-<translation id="7625138338483121345">Brave als Standardbrowser festlegen</translation>
-<translation id="5927044791090834489">Brave an Ihre Taskleiste anpinnen</translation>
-<translation id="8933981935877469796">Wählen Sie <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/> aus</translation>
-<translation id="1585657529869845941">Klicken Sie auf <ph name="BEGIN_BOLD"/>Trotzdem wechseln<ph name="END_BOLD"/>, falls die Schaltfläche angezeigt wird</translation>
 <translation id="3507835409099344374">Zu Brave-Benachrichtigungseinstellungen wechseln</translation>
 <translation id="1026406809507858026">{0,plural, =0{Ein Brave-Update ist verfügbar}=1{Ein Brave-Update ist verfügbar}other{Ein Brave-Update ist seit # Tagen verfügbar}}</translation>
 <translation id="720532315408041257">Laut Ihrem Administrator sollten Sie Brave neu starten, um dieses Update durchzuführen</translation>
@@ -261,6 +254,7 @@ Weitere Informationen wurden per E-Mail an <ph name="ACCOUNT_EMAIL"/> gesendet.<
 <translation id="8208853227947884571">Brave ist auf dem neuesten Stand</translation>
 <translation id="6686872257969654608">Über Brave OS</translation>
 <translation id="2280363356796735201">Hilfe für Brave OS aufrufen</translation>
+<translation id="38898988211673781">Cookies und Websitedaten beim Beenden von Brave löschen</translation>
 <translation id="5253815230176279256">Brave Software Pay (in Brave kopiert)</translation>
 <translation id="5468853758063275923">Brave ist Ihr Standardbrowser</translation>
 <translation id="1775322105159056176">Brave kann den Standardbrowser nicht bestimmen oder festlegen</translation>
@@ -277,6 +271,7 @@ Weitere Informationen wurden per E-Mail an <ph name="ACCOUNT_EMAIL"/> gesendet.<
 <translation id="8372880274820509128">Brave verschlüsselt Ihre Daten zur Erhöhung der Sicherheit.</translation>
 <translation id="7445061995866044926">Von Brave abmelden?</translation>
 <translation id="7453070689008684791">Brave greift auf Brave Software Drive zu, um in der Adressleiste Vorschläge zu machen</translation>
+<translation id="3360368475735266712">Wenn Sie sich anmelden, wird Brave auf allen Ihren Geräten synchronisiert und personalisiert</translation>
 <translation id="9221712274065451529">Diese Sprache wird für die Brave OS-UI verwendet</translation>
 <translation id="3518788198614984730">Brave OS in dieser Sprache anzeigen</translation>
 <translation id="5757460455745382269">Diese Sprache wird für die Brave-UI verwendet</translation>

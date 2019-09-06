@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/css/md_colors.css b/ui/webui/resources/css/md_colors.css
-index 975052085abfcc8ceabf8aa8b929d14023a81cfe..00744e3ed2bfc0d8312d1e6a0597baefdcc797bc 100644
+index 383a5f373a0a370b13d20e84f1df23c972bae580..f8986ff3117e2942a523abc9aebeb88cfacf5492 100644
 --- a/ui/webui/resources/css/md_colors.css
 +++ b/ui/webui/resources/css/md_colors.css
 @@ -1,6 +1,7 @@

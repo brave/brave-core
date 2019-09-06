@@ -35,6 +35,7 @@
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="6123134130710658846">የ Brave Rewards መምረጫ ቁልፍ ደብቅ</translation>
 <translation id="7635711399568194460">Brave Rewards  ካልበራ በአድራሻው አሞሌ ላይ ያለው የ Brave Rewards መጫኛ ይደበቃል።</translation>
+<translation id="4262166817826183486">ምንጊዜም በአዲስ የትር ገጽ ላይ አዳዲስ ዕልባቶችን አሳይ</translation>
 <translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
 <translation id="8511502469534942133">ለዚህ ድረ ገጽ አዲስ የ Tor ትስስር</translation>
 <translation id="8784924142044142231">ከቶር ይውጡ</translation>
@@ -61,7 +62,6 @@
 <translation id="9075744464571452108">መሳሪያ ማወቂያ</translation>
 <translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳድግ</translation>
 <translation id="4824468494729001999">ስክሪፕቶችን አግድ</translation>
-<translation id="7498695072878479744">የ Google መግቢያ መጫኛ ቁልፎችን በሶስተኛ ወገን ጣቢያዎች ላይ ይፍቀዱ።</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
@@ -85,12 +85,14 @@
 <translation id="8721331068159819483">ከ macOS ጋር ተመሳሳይ</translation>
 <translation id="6786747875388722282">ቅጥያዎች</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
+<translation id="5554028991651120544">በ Brave ውስጥ የ Ethereum ቋት እና የ Dapp ማሰሺያን ያቀርባል።</translation>
 <translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
 <translation id="1765684547504191670">በማሰሺያው ውስጥ Chromecast ን ለማንቃት የሚዲያ ራውተር አካልን ተጠቀም።</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና አስጀምር</translation>
 <translation id="4154389611571860454">በአሳሽ ውስጥ IPFSን ለመደገፍ የ IPFS አጃቢ ቅጥያ ይጠቀማል።</translation>
 <translation id="8137559199583651773">ቅጥያዎችን ያስተዳድሩ</translation>
+<translation id="7013485839273047434">ተጨማሪ ቅጥያዎችን ያግኙ</translation>
 <translation id="4928988318462976765">የድረገጽ ተቀጥላ ማከማቻ</translation>
 <translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
 <translation id="4846154056248462491">ሲወጣ</translation>
@@ -100,4 +102,19 @@
 <translation id="8303432794159193481">የ Brave መዳሰሻ ማጎልበቻ መተግበሪያዎች</translation>
 <translation id="8292967014767479012">የ Brave መዳሰሻ መተግበሪያዎች</translation>
 <translation id="4743468424889072281">የ Brave መዳሰሻ ማጎልበቻ መተግበሪያዎች</translation>
+<translation id="4568409039725976900">Brave ብርቱካናማ</translation>
+<translation id="7216062233533864908">የብርቱካን ልጣጭ</translation>
+<translation id="8285320948587819446">ናና</translation>
+<translation id="2016467614790224371">ኤንቪ</translation>
+<translation id="8111795220552176635">የጠራ ሰማይ</translation>
+<translation id="8323875061602721187">ሰማያዊ Bondy</translation>
+<translation id="8267711815380227275">ሰማያዊ በሐምራዊ</translation>
+<translation id="831132225871108758">ዳርክ ናይት</translation>
+<translation id="1473185169764311478">የብርቱካን ልጣጭ ቅርጽ</translation>
+<translation id="8658537263568841491">የናና ቅርጽ</translation>
+<translation id="8967241601928387177">ኤንቪ ቅርጽ</translation>
+<translation id="7232547941405761864">የጠራ ሰማይ ቅርጽ</translation>
+<translation id="5500050460919597479">ሰማያዊ Bondy ቅርጽ</translation>
+<translation id="5359364898094115985">ሰማያዊ በሐምራዊ ቅርጽ</translation>
+<translation id="3385506478125681119">ዳርክ ናይት ቅርጽ</translation>
 </translationbundle>

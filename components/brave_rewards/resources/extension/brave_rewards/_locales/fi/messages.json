@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Ei huolta. Näin voi käydä lukuisista eri tietoturvasyistä. Ongelman ratkaisemiseksi sinun tarvitsee vain yhdistää siihen uudestaan.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Tämä kehittäjä ei ole vielä rekisteröitynyt vastaanottamaan Brave-käyttäjien avustuksia. Kaikki lähettämäsi tipit pysyvät lompakossasi heidän vahvistukseensa saakka.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

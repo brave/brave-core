@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "אל דאגה. זה יכול לקרות ממגוון סיבות אבטחה. פשוט התחבר/י אליו מחדש על מנת לפתור בעיה זו.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "יוצר זה עדיין לא נרשם לקבלת תרומות ממשתמשי Brave. כל הטיפים שתשלחו יישארו בארנק שלכם עד אשר יאומת.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

@@ -1,11 +1,11 @@
 diff --git a/content/browser/permissions/permission_service_impl.cc b/content/browser/permissions/permission_service_impl.cc
-index d698c592c82c54dc8456fe2a07926956bac13e52..3273fb9a95bfa6b0f575d416fcc6ff287bcee56b 100644
+index 4c5760c91344f9e251cedb385d7beafb45da57cb..a5fa8ddcde7425e79b8672dbddc867934b264839 100644
 --- a/content/browser/permissions/permission_service_impl.cc
 +++ b/content/browser/permissions/permission_service_impl.cc
-@@ -91,6 +91,9 @@ bool PermissionDescriptorToPermissionType(
-     case PermissionName::PERIODIC_BACKGROUND_SYNC:
-       *permission_type = PermissionType::PERIODIC_BACKGROUND_SYNC;
-       return true;
+@@ -108,6 +108,9 @@ bool PermissionDescriptorToPermissionType(
+         return true;
+       }
+       break;
 +    case PermissionName::AUTOPLAY:
 +      *permission_type  = PermissionType::AUTOPLAY;
 +      return true;

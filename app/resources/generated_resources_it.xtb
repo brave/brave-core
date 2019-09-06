@@ -175,7 +175,7 @@
 <translation id="5329858601952122676">&amp;Elimina</translation>
 <translation id="4608500690299898628">&amp;Trova...</translation>
 <translation id="3712897371525859903">Salva pagina &amp;con nome...</translation>
-<translation id="6089481419520884864">Pagina Distill</translation>
+<translation id="2369105924912929484">Attiva i contenuti della pagina distill</translation>
 <translation id="6607831829715835317">A&amp;ltri strumenti</translation>
 <translation id="3994878504415702912">&amp;Carattere</translation>
 <translation id="4779083564647765204">Zoom</translation>
@@ -720,7 +720,7 @@
 <translation id="8276560076771292512">Svuota la cache e ricarica manualmente</translation>
 <translation id="3164329792803560526">Condivisione di questa scheda con <ph name="APP_NAME"/></translation>
 <translation id="8864055848767439877">Condivisione di <ph name="TAB_NAME"/> con <ph name="APP_NAME"/></translation>
-<translation id="1337692097987160377">Condividi questa scheda</translation>
+<translation id="8236917170563564587">Condividi questa scheda invece</translation>
 <translation id="1272079795634619415">Interrompi</translation>
 <translation id="7564847347806291057">Termina processo</translation>
 <translation id="5233231016133573565">ID processo</translation>
@@ -902,6 +902,7 @@
 <translation id="8284279544186306258">tutti i siti <ph name="WEBSITE_1"/></translation>
 <translation id="4883436287898674711">Tutti i siti <ph name="WEBSITE_1"/></translation>
 <translation id="2204034823255629767">Lettura e modifica del testo digitato</translation>
+<translation id="6979044105893951891">Avvio e chiusura di sessioni Ospite gestite</translation>
 <translation id="2741912629735277980">Visualizza UI sulla schermata di accesso</translation>
 <translation id="8191230140820435481">Gestire applicazioni, estensioni e temi</translation>
 <translation id="6259104249628300056">Rilevamento di dispositivi sulla rete locale</translation>
@@ -960,6 +961,7 @@
 <translation id="1205489148908752564">Leggi e modifica gli utenti inclusi nella whitelist</translation>
 <translation id="3432757130254800023">Invio di audio e video agli schermi sulla rete locale</translation>
 <translation id="5235750401727657667">Sostituzione della pagina visualizzata quando viene aperta una nuova scheda</translation>
+<translation id="1784707308176068866">Esegui in background quando richiesto da un'applicazione nativa interoperativa</translation>
 <translation id="5527463195266282916">Hai tentato di eseguire il downgrade dell'estensione.</translation>
 <translation id="8565650234829130278">Hai tentato di eseguire il downgrade dell'applicazione.</translation>
 <translation id="1415990189994829608">L'estensione <ph name="EXTENSION_NAME"/> (ID estensione "<ph name="EXTENSION_ID"/>") non è consentita in questo tipo di sessione.</translation>
@@ -1155,9 +1157,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8743864605301774756">Aggiornata 1 ora fa</translation>
 <translation id="7363117941401515667">Ultimo aggiornamento: <ph name="HOURS"/> ore fa</translation>
 <translation id="1329584516321524826">Aggiornata adesso</translation>
-<translation id="224940702122312781">Questa pagina utilizzerà una grande quantità di dati.</translation>
-<translation id="3861241522664181545">Pagina in pausa.</translation>
-<translation id="6921709132208495314">Interrompi l'utilizzo dei dati su questa pagina</translation>
 <translation id="2262332168014443534">La modalità Lite ora velocizza la navigazione in tutte le pagine, incluse quelle HTTPS.</translation>
 <translation id="8428213095426709021">Impostazioni</translation>
 <translation id="2724841811573117416">Log WebRTC</translation>
@@ -1267,7 +1266,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8017679124341497925">Scorciatoia modificata</translation>
 <translation id="1174073918202301297">Scorciatoia aggiunta</translation>
 <translation id="2926085873880284723">Ripristina scorciatoie predefinite</translation>
-<translation id="2942581856830209953">Personalizza questa pagina</translation>
 <translation id="5801450813341024983">Sfondi di Brave</translation>
 <translation id="2800760947029405028">Carica un'immagine</translation>
 <translation id="8342861492835240085">Seleziona una raccolta</translation>
@@ -1282,6 +1280,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1564414980088536597">Impossibile utilizzare l'immagine. Scegline un'altra.</translation>
 <translation id="385051799172605136">Indietro</translation>
 <translation id="8033827949643255796">selezionati</translation>
+<translation id="2942581856830209953">Personalizza questa pagina</translation>
 <translation id="3497560059572256875">Condividi doodle</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1299,6 +1298,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="820568752112382238">Siti più visitati</translation>
 <translation id="5857171483910641802">Le scorciatoie vengono suggerite in base ai siti web più visitati</translation>
 <translation id="1211769675100312947">Le scorciatoie vengono selezionate in base a te</translation>
+<translation id="7460045493116006516">Tema installato attualmente</translation>
+<translation id="9068849894565669697">Seleziona colore</translation>
+<translation id="8798099450830957504">Default</translation>
+<translation id="8259556432390118667">Valore del colore esadecimale</translation>
 <translation id="2858138569776157458">Siti princ.</translation>
 <translation id="5376169624176189338">Fai clic per tornare indietro, tieni premuto per vedere la cronologia</translation>
 <translation id="9103868373786083162">Premi per tornare indietro, menu contestuale per visualizzare la cronologia</translation>
@@ -1322,7 +1325,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="833986336429795709">Scegli un'app per aprire il link</translation>
 <translation id="192494336144674234">Apri con</translation>
 <translation id="9053893665344928494">Memorizza la mia scelta</translation>
-<translation id="5541687815721799001">Utilizza l'app</translation>
 <translation id="5340857474604400806">Rimani in Brave</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (In incognito)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Ospite)</translation>
@@ -1380,7 +1382,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7108338896283013870">Nascondi</translation>
 <translation id="1426410128494586442">Sì</translation>
 <translation id="4250680216510889253">No</translation>
-<translation id="7378627244592794276">No</translation>
 <translation id="5317780077021120954">Salva</translation>
 <translation id="4285418559658561636">Aggiorna password</translation>
 <translation id="9094033019050270033">Aggiorna password</translation>
@@ -1622,6 +1623,9 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8249615410597138718">Invia ai tuoi dispositivi</translation>
 <translation id="5310281978693206542">Invia link ai tuoi dispositivi</translation>
 <translation id="2315587498123194634">Invia link a <ph name="DEVICE_NAME"/></translation>
+<translation id="7761380698973548146">Chiama dai tuoi dispositivi</translation>
+<translation id="7427798576651127129">Chiamata da <ph name="DEVICE_NAME"/></translation>
+<translation id="462021874527520979">Chiama dai tuoi dispositivi</translation>
 <translation id="4520385623207007473">Cookie in uso</translation>
 <translation id="4763408175235639573">Durante la visualizzazione della pagina sono stati impostati i seguenti cookie</translation>
 <translation id="2719936478972253983">Sono stati bloccati i seguenti cookie</translation>
@@ -1729,17 +1733,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6022526133015258832">Apri a schermo intero</translation>
 <translation id="6845038076637626672">Apri ingrandita</translation>
 <translation id="6860427144121307915">Apri in una scheda</translation>
-<translation id="3074037959626057712">Hai eseguito l'accesso e attivato la sincronizzazione</translation>
 <translation id="1231733316453485619">Attivare la sincronizzazione?</translation>
 <translation id="4736292055110123391">Sincronizza i preferiti, le password, la cronologia e non solo su tutti i tuoi dispositivi</translation>
 <translation id="5736731321935944068">Brave Software può utilizzare la tua cronologia per personalizzare la Ricerca, gli annunci e altri servizi Brave Software</translation>
 <translation id="4201546031411513170">Puoi scegliere in qualsiasi momento i dati da sincronizzare nelle impostazioni.</translation>
-<translation id="3149880132460839085">Brave Sync</translation>
-<translation id="3796902758602917951">I tuoi preferiti, la cronologia, le password e altre impostazioni verranno sincronizzati con il tuo account Brave Software per consentirti di utilizzarli su tutti i tuoi dispositivi</translation>
-<translation id="3111958038206230539">Personalizza i servizi Brave Software</translation>
-<translation id="295992419959320001">Brave Software può utilizzare la tua cronologia di navigazione per personalizzare la Ricerca, gli annunci e altri servizi Brave Software.</translation>
-<translation id="3070156078150543526">Brave Software può utilizzare la tua cronologia di navigazione per personalizzare la Ricerca e altri servizi Brave Software</translation>
-<translation id="2709453993673701466">Vuoi gestire la sincronizzazione e la personalizzazione prima di attivarle? Visita le <ph name="BEGIN_LINK"/>Impostazioni<ph name="END_LINK"/>.</translation>
 <translation id="2497852260688568942">La sincronizzazione è stata disattivata dall'amministratore</translation>
 <translation id="562935524653278697">L'amministratore ha disattivato la sincronizzazione dei tuoi preferiti, della cronologia, delle password e di altre impostazioni.</translation>
 <translation id="2169062631698640254">Accedi comunque</translation>
@@ -1817,8 +1814,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2126167708562367080">La sincronizzazione è stata disattivata dall'amministratore.</translation>
 <translation id="5462539695964427820">La sincronizzazione è stata interrotta tramite Brave Software Dashboard.</translation>
 <translation id="8805140816472474147">Conferma le impostazioni di sincronizzazione per avviare l'operazione.</translation>
-<translation id="4835836146030131423">Errore durante l'accesso.</translation>
-<translation id="4365673000813822030">Spiacenti, la sincronizzazione si è interrotta.</translation>
+<translation id="5771816112378578655">Configurazione in corso...</translation>
 <translation id="3492788708641132712">La sincronizzazione non funziona. Riprova ad accedere.</translation>
 <translation id="6349170655202535379">La sincronizzazione non funziona. Prova a uscire e ad accedere di nuovo.</translation>
 <translation id="974555521953189084">Inserisci la passphrase per avviare la sincronizzazione</translation>
@@ -1829,9 +1825,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7912080627461681647">La password è stata modificata sul server. Esci e accedi nuovamente.</translation>
 <translation id="1877520246462554164">Recupero del token di autenticazione non riuscito. Esci e accedi nuovamente per riprovare.</translation>
 <translation id="9100765901046053179">Impostazioni avanzate</translation>
-<translation id="5771816112378578655">Configurazione in corso...</translation>
 <translation id="2731700343119398978">Attendi...</translation>
-<translation id="4684427112815847243">Sincronizza tutto</translation>
 <translation id="7218743184834293955">I dati vengono criptati con la tua passphrase di sincronizzazione. Non sono inclusi i metodi di pagamento e gli indirizzi di Brave Software Pay.</translation>
 <translation id="7158251077901880179">I dati sono stati criptati con la tua passphrase di sincronizzazione il giorno <ph name="TIME"/>. Non sono inclusi i metodi di pagamento e gli indirizzi di Brave Software Pay.</translation>
 <translation id="1171389789873508468">I dati sono stati criptati con la tua password Brave Software dal giorno <ph name="TIME"/>. Non sono inclusi i metodi di pagamento e gli indirizzi di Brave Software Pay.</translation>
@@ -1843,7 +1837,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5990386583461751448">Tradotta</translation>
 <translation id="5659833766619490117">Impossibile tradurre questa pagina</translation>
 <translation id="969096075394517431">Cambia le lingue</translation>
+<translation id="9095388113577226029">Altre lingue</translation>
+<translation id="7027891519253193555">La pagina non è in <ph name="LANGUAGE"/>?</translation>
 <translation id="6831043979455480757">Traduci</translation>
+<translation id="7378627244592794276">No</translation>
 <translation id="1103523840287552314">Traduci sempre <ph name="LANGUAGE"/></translation>
 <translation id="7600965453749440009">Non tradurre mai <ph name="LANGUAGE"/></translation>
 <translation id="1285320974508926690">Non tradurre mai questo sito</translation>
@@ -1856,7 +1853,11 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5677503058916217575">Lingua della pagina:</translation>
 <translation id="126710816202626562">Lingua della traduzione:</translation>
 <translation id="3668570675727296296">Impostazioni lingua</translation>
+<translation id="1803531841600994172">Lingua in cui tradurre</translation>
+<translation id="456717285308019641">Lingua della pagina da tradurre</translation>
 <translation id="4297322094678649474">Cambia le lingue</translation>
+<translation id="7731119595976065702">Altre lingue…</translation>
+<translation id="2444119669991608829">La pagina non è in <ph name="LANGUAGE"/>?</translation>
 <translation id="3937734102568271121">Traduci sempre questa lingua: <ph name="LANGUAGE"/></translation>
 <translation id="4330387663455830245">Non tradurre mai <ph name="LANGUAGE"/></translation>
 <translation id="8797459392481275117">Non tradurre mai questo sito</translation>
@@ -1868,6 +1869,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3177909033752230686">Lingua della pagina:</translation>
 <translation id="4254813446494774748">Lingua della traduzione:</translation>
 <translation id="6156960295318603523">Impostazioni lingua</translation>
+<translation id="545426320101607695">Lingua in cui tradurre</translation>
+<translation id="822519928942492333">Lingua della pagina da tradurre</translation>
 <translation id="7931318309563332511">Sconosciuta</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> vuole inviarti notifiche</translation>
 <translation id="2482878487686419369">Notifiche</translation>
@@ -1923,6 +1926,11 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4058793769387728514">Controlla documento ora</translation>
 <translation id="7339785458027436441">Controllo ortografico durante la digitazione</translation>
 <translation id="2749881179542288782">Controllo ortografia e grammatica</translation>
+<translation id="883062543841130884">Sostituzioni</translation>
+<translation id="5302932258331363306">Mostra sostituzioni</translation>
+<translation id="5260334392110301220">Virgolette smart</translation>
+<translation id="7121728544325372695">Trattini smart</translation>
+<translation id="2653275834716714682">Sostituzione del testo</translation>
 <translation id="2845382757467349449">Mostra sempre barra dei Preferiti</translation>
 <translation id="8053390638574070785">Ricarica questa pagina</translation>
 <translation id="8651585100578802546">Forza aggiornamento di questa pagina</translation>
@@ -2132,16 +2140,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3925842537050977900">Stacca dallo shelf</translation>
 <translation id="469230890969474295">Cartella OEM</translation>
 <translation id="6201792273624501289">App Linux</translation>
-<translation id="1477301030751268706">Cache token dell'API Identity</translation>
-<translation id="8642171459927087831">Token di accesso</translation>
-<translation id="8049913480579063185">Nome estensione</translation>
-<translation id="1357589289913453911">ID estensione</translation>
-<translation id="3898521660513055167">Stato token</translation>
-<translation id="2098305189700762159">Non trovato</translation>
-<translation id="5880247576487732437">Token presente</translation>
-<translation id="845627346958584683">Data di scadenza</translation>
-<translation id="5238369540257804368">Ambiti</translation>
-<translation id="2391762656119864333">Revoca</translation>
 <translation id="29488703364906173">Un browser web veloce, semplice e sicuro, ideato per il Web moderno.</translation>
 <translation id="8910146161325739742">Condividi lo schermo</translation>
 <translation id="8621979332865976405">Condividi tutto lo schermo</translation>
@@ -2220,6 +2218,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4130199216115862831">Log dispositivo</translation>
 <translation id="6231881193380278751">Aggiungi un parametro query nell'URL per aggiornare automaticamente la pagina: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Aggiorna</translation>
+<translation id="6643016212128521049">Pulisci</translation>
+<translation id="3016381065346027039">Non ci sono voci di log</translation>
 <translation id="1260240842868558614">Mostra:</translation>
 <translation id="1165039591588034296">Errore</translation>
 <translation id="1124772482545689468">Utente</translation>
@@ -2248,7 +2248,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7830594666202422257">Connetti a Linux</translation>
 <translation id="59324397759951282">Dispositivo USB da <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="8763927697961133303">Dispositivo USB</translation>
-<translation id="8798099450830957504">Default</translation>
 <translation id="5734362860645681824">Comunicazioni</translation>
 <translation id="2340263603246777781">Il sito <ph name="ORIGIN"/> desidera accoppiarsi</translation>
 <translation id="5331425616433531170">L'estensione "<ph name="CHROME_EXTENSION_NAME"/>" desidera accoppiarsi</translation>
@@ -2272,7 +2271,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8480869669560681089">Dispositivo sconosciuto di <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">Dispositivo sconosciuto [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="810875025413331850">Nessun dispositivo trovato nelle vicinanze.</translation>
-<translation id="796416202355062143"><ph name="ORIGIN"/> richiede di eseguire la scansione per rilevare dispositivi Bluetooth nelle vicinanze; sono stati rilevati i seguenti dispositivi:</translation>
+<translation id="4351060348582610152"><ph name="ORIGIN"/> richiede di eseguire la scansione per rilevare dispositivi Bluetooth nelle vicinanze. Sono stati rilevati i seguenti dispositivi:</translation>
 <translation id="8368027906805972958">Dispositivo sconosciuto o non supportato (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7003844668372540529">Prodotto sconosciuto <ph name="PRODUCT_ID"/> di <ph name="VENDOR_NAME"/></translation>
 <translation id="3163201441334626963">Prodotto sconosciuto <ph name="PRODUCT_ID"/> del fornitore <ph name="VENDOR_ID"/></translation>
@@ -2294,13 +2293,13 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5398772614898833570">Annunci bloccati</translation>
 <translation id="2859806420264540918">Questo sito mostra annunci invasivi o fuorvianti.</translation>
 <translation id="4077917118009885966">Annunci bloccati su questo sito</translation>
+<translation id="6456955391422100996">Annuncio rimosso.</translation>
+<translation id="7533556202636568669">Questo annuncio usa troppe risorse per il tuo dispositivo, pertanto Brave l'ha rimosso.</translation>
 <translation id="8497219075884839166">Utilità Windows</translation>
 <translation id="897525204902889653">Servizio di quarantena</translation>
 <translation id="7055152154916055070">Reindirizzamento bloccato:</translation>
 <translation id="6777817260680419853">Reindirizzamento bloccato</translation>
 <translation id="694592694773692225">Reindirizzamento bloccato in questa pagina.</translation>
-<translation id="8149707863742670433">Il browser web di Brave Software, per te</translation>
-<translation id="3541561136058491590">Accedi a Brave con il tuo account Brave Software per trovare i tuoi preferiti, la cronologia, le password e altre impostazioni su tutti i tuoi dispositivi.</translation>
 <translation id="8945142681652245463">Naviga velocemente con Brave Software Brave</translation>
 <translation id="2618024864038703735">Naviga in sicurezza con Brave Software Brave</translation>
 <translation id="8142180567942285208">Naviga in modo intelligente con Brave</translation>
@@ -2310,12 +2309,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="683373380308365518">Passa a un browser intelligente e sicuro</translation>
 <translation id="989239400026154074">Brave Software consiglia Brave</translation>
 <translation id="6676231621615806698">Apri Brave</translation>
-<translation id="7494065396242762445">Apri Impostazioni Windows</translation>
-<translation id="2137068468602026500">Fai clic su <ph name="BEGIN_BOLD"/>Microsoft Edge<ph name="END_BOLD"/> nella sezione Browser web</translation>
-<translation id="3720996970802414353">Switch anyway (Passa comunque)</translation>
-<translation id="3389312115541230716">Fai clic con il pulsante destro del mouse sull'icona <ph name="SMALL_PRODUCT_LOGO"/> nella barra delle applicazioni</translation>
-<translation id="258932246702879617">Seleziona <ph name="BEGIN_BOLD"/>Aggiungi alla barra delle applicazioni<ph name="END_BOLD"/></translation>
-<translation id="7537601449003285327">Aggiungi alla barra delle applicazioni</translation>
 <translation id="5250372599208556903"><ph name="SEARCH_ENGINE_NAME"/> utilizza la tua posizione per fornirti contenuti locali. Puoi modificare questa preferenza nelle <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3737536731758327622">I tuoi download vengono visualizzati qui</translation>
 <translation id="4782664866169793230">Brave è controllato da software di test automatizzato.</translation>
@@ -2332,6 +2325,30 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="874689135111202667">{0,plural, =1{ Caricare un file in questo sito?}other{Caricare # file in questo sito?}}</translation>
 <translation id="1956390763342388273">Verranno caricati tutti i file da "<ph name="FOLDER_PATH"/>". Esegui questa operazione solo se ritieni il sito affidabile.</translation>
 <translation id="1243314992276662751">Carica</translation>
+<translation id="1574038418461948632">Vuoi salvare le modifiche nel file <ph name="FILENAME"/>?</translation>
+<translation id="5181988524012865000">Vuoi salvare le modifiche nei file?</translation>
+<translation id="2775188527796017992"><ph name="ORIGIN"/> potrà salvare le modifiche direttamente nel file <ph name="FILENAME"/>. Il sito può salvare le modifiche fino alla chiusura di questa scheda.</translation>
+<translation id="5375793835576008230"><ph name="ORIGIN"/> potrà salvare le modifiche direttamente nei file della cartella <ph name="FOLDERNAME"/>. Il sito può salvare le modifiche fino alla chiusura di questa scheda.</translation>
+<translation id="6532106788206463496">Salva modifiche</translation>
+<translation id="5102007300153090427">Questa pagina è autorizzata a salvare dati nei file.</translation>
+<translation id="197228003527531594">Questa pagina è autorizzata a visualizzare tutti i file in una cartella sul dispositivo.</translation>
+<translation id="766254481392580456"><ph name="ORIGIN"/> può salvare le modifiche direttamente nel file <ph name="FILENAME"/></translation>
+<translation id="856745937116041450"><ph name="ORIGIN"/> può salvare le modifiche direttamente nei file che seguono</translation>
+<translation id="2150212764721500731"><ph name="ORIGIN"/> può salvare le modifiche direttamente nei file della cartella <ph name="FOLDERNAME"/></translation>
+<translation id="7509896576944228744"><ph name="ORIGIN"/> può salvare le modifiche direttamente nelle seguenti cartelle</translation>
+<translation id="8152021341839173449"><ph name="ORIGIN"/> può salvare le modifiche direttamente nei file e nelle cartelle che seguono</translation>
+<translation id="3343738344138980580"><ph name="ORIGIN"/> può visualizzare tutti i file nella cartella <ph name="FOLDERNAME"/></translation>
+<translation id="1507049466468737452"><ph name="ORIGIN"/> può visualizzare tutti i file nelle seguenti cartelle</translation>
+<translation id="6868139415119881457"><ph name="ORIGIN"/> può visualizzare e salvare le modifiche direttamente nei file e nelle cartelle che seguono</translation>
+<translation id="5126611267288187364">Visualizza modifiche</translation>
+<translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>, <ph name="FILE2"/>}other{<ph name="FILE1"/>, <ph name="FILE2"/> e altri #}}</translation>
+<translation id="1790976235243700817">Rimuovi accesso</translation>
+<translation id="1392975001822614900">Impossibile salvare in questa cartella</translation>
+<translation id="7613156935003315818"><ph name="ORIGIN"/> non può salvare le modifiche in questa cartella, perché contiene file di sistema.</translation>
+<translation id="4403775189117163360">Scegli una cartella diversa</translation>
+<translation id="7643932971554933646">Vuoi consentire al sito di visualizzare i file?</translation>
+<translation id="999180493986838144"><ph name="ORIGIN"/> potrà visualizzare tutti i file della cartella <ph name="FOLDERNAME"/>. Questo sito può vedere le modifiche alla cartella fino alla chiusura di questa scheda.</translation>
+<translation id="7201420661433230412">Visualizza i file</translation>
 <translation id="3015639418649705390">Riavvia ora</translation>
 <translation id="8712637175834984815">Fatto</translation>
 <translation id="2783952358106015700">Utilizza il token di sicurezza con <ph name="APP_NAME"/></translation>
@@ -2517,27 +2534,19 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5138227688689900538">Mostra meno</translation>
 <translation id="5270167208902136840">Mostra altre <ph name="NUMBER_OF_MORE_APPS"/> app</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> app</translation>
-<translation id="8099495042588009598">Altre autorizzazioni</translation>
+<translation id="485480310608090163">Altre impostazioni e autorizzazioni</translation>
 <translation id="8747503242566427664">Questa app può:</translation>
 <translation id="7207631048330366454">Cerca nelle app</translation>
 <translation id="9011424611726486705">Apri le impostazioni del sito</translation>
 <translation id="4739098340603978916">Dimensioni: <ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">Versione: <ph name="VERSION"/></translation>
-<translation id="6005695835120147974">Media Router</translation>
+<translation id="1920390473494685033">Contatti</translation>
 <translation id="7787308148023287649">Mostra sull'altro schermo</translation>
 <translation id="7710568461918838723">&amp;Trasmetti...</translation>
-<translation id="5537725057119320332">Trasmetti</translation>
-<translation id="1383876407941801731">Cerca</translation>
-<translation id="8970203673128054105">Visualizza l'elenco della modalità di trasmissione</translation>
-<translation id="1277908057200820621">Visualizza elenco dei dispositivi</translation>
-<translation id="6685083257944113180">Ferma, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
-<translation id="2847759467426165163">Trasmetti a</translation>
 <translation id="6700480081846086223">Trasmetti <ph name="HOST_NAME"/></translation>
 <translation id="682123305478866682">Trasmetti desktop</translation>
 <translation id="2148892889047469596">Trasmetti scheda</translation>
 <translation id="8274332263553132018">Trasmetti file</translation>
-<translation id="8627151598708688654">Seleziona fonte</translation>
-<translation id="3468275649641751422">Trasmetti in streaming un file video o audio</translation>
 <translation id="781167124805380294">Trasmetti <ph name="FILE_NAME"/></translation>
 <translation id="8890516388109605451">Fonti</translation>
 <translation id="1116694919640316211">Informazioni</translation>
@@ -2545,28 +2554,12 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="9011163749350026987">Mostra sempre l'icona</translation>
 <translation id="1706586824377653884">Aggiunta dall'amministratore</translation>
 <translation id="6467304607960172345">Ottimizza video a schermo intero</translation>
-<translation id="1597210476603167523">Abilita la trasmissione ai servizi basati sulla cloud quali Brave Software Hangouts.</translation>
-<translation id="3653941710869291743">Benvenuto nell'esperienza Cast di Brave.</translation>
-<translation id="2841638550927239436">Puoi utilizzare questa funzione per visualizzare i contenuti di Brave alla TV o su altri dispositivi.</translation>
-<translation id="5234764350956374838">Ignora</translation>
 <translation id="4579581181964204535">Impossibile trasmettere <ph name="HOST_NAME"/>.</translation>
 <translation id="8757090071857742562">Impossibile trasmettere il desktop. Verifica di avere confermato la richiesta di avvio della condivisione dello schermo.</translation>
 <translation id="8032244173881942855">Impossibile trasmettere la scheda.</translation>
-<translation id="2279874276457403668">È possibile creare una sola sessione alla volta.</translation>
 <translation id="6169666352732958425">Impossibile trasmettere il desktop.</translation>
 <translation id="4081242589061676262">Impossibile trasmettere il file.</translation>
 <translation id="4075639477629295004">Impossibile trasmettere <ph name="FILE_NAME"/>.</translation>
-<translation id="7255220508626648026">Trasmissione: <ph name="ROUTETITLE"/></translation>
-<translation id="7889966925761734854">Cerca</translation>
-<translation id="4430019312045809116">Volume</translation>
-<translation id="1156488781945104845">Ora corrente</translation>
-<translation id="6930242544192836755">Durata</translation>
-<translation id="7902874111237641165">Smooth motion [beta]</translation>
-<translation id="8343956361364550006">Utilizza larghezza di banda elevata per garantire video o animazioni ottimali. Altri utenti con connessioni lente potrebbero non riuscire a vedere i tuoi contenuti.</translation>
-<translation id="4931132176527519925">Usa sempre il mirroring</translation>
-<translation id="3279741024917655738">Mostra video a schermo intero su</translation>
-<translation id="4772404146526168240">Entrambi gli schermi</translation>
-<translation id="3766223500670287046">Schermo remoto</translation>
 <translation id="3930737994424905957">Ricerca di dispositivi in corso</translation>
 <translation id="5209320130288484488">Nessun dispositivo trovato</translation>
 <translation id="4415245286584082850">Nessun dispositivo trovato. Apri un articolo del Centro assistenza in una nuova scheda.</translation>
@@ -2575,7 +2568,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1536754031901697553">Disconnessione…</translation>
 <translation id="1854180393107901205">Interrompi trasmissione</translation>
 <translation id="5307030433605830021">Fonte non supportata</translation>
-<translation id="4271396100647220620">Nessuna corrispondenza</translation>
 <translation id="6972180789171089114">Audio/video</translation>
 <translation id="2541002089857695151">Vuoi ottimizzare la trasmissione a schermo intero?</translation>
 <translation id="4144218403971135344">Migliora la qualità dei video e fai durare di più la batteria. I video verranno riprodotti soltanto sullo schermo compatibile con Brave Software Cast.</translation>
@@ -2602,8 +2594,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (account di minori)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     Non credo che questo sito debba essere bloccato.</translation>
-<translation id="8662795692588422978">Persone</translation>
-<translation id="6790820461102226165">Aggiungi persona...</translation>
+<translation id="5832813618714645810">Persone</translation>
+<translation id="7171000599584840888">Aggiungi persona...</translation>
 <translation id="1781771911845953849">Account e sincronizzazioni</translation>
 <translation id="4974733135013075877">Esci e blocca</translation>
 <translation id="3965965397408324205">Esci da <ph name="PROFILE_NAME"/></translation>
@@ -2624,23 +2616,23 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1692115862433274081">Utilizza un altro account</translation>
 <translation id="5287425679749926365">I tuoi account</translation>
 <translation id="4801448226354548035">Nascondi account</translation>
-<translation id="8400146488506985033">Gestisci utenti</translation>
+<translation id="2935225303485967257">Gestisci utenti</translation>
 <translation id="7388222713940428051">Apri finestra Ospite</translation>
 <translation id="127668050356036882">Chiudi tutte le finestre</translation>
 <translation id="8883847527783433352">Sincronizza con un altro account</translation>
 <translation id="2761898608071930085">Usa un altro account</translation>
 <translation id="1464258312790801189">I tuoi account</translation>
 <translation id="6655458902729017087">Nascondi account</translation>
-<translation id="8770507190024617908">Gestisci utenti</translation>
+<translation id="688280436658139163">Gestisci utenti</translation>
 <translation id="2666990579225592931">Apri finestra Ospite</translation>
 <translation id="5869948122057593679">Chiudi tutte le finestre</translation>
-<translation id="7652808307838961528">Modifica persona, <ph name="PROFILE_NAME"/></translation>
-<translation id="6112952769866305444">Modifica persona, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Modifica persona, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Modifica persona, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Ospite</translation>
 <translation id="475088594373173692">Primo utente</translation>
 <translation id="4535127706710932914">Profilo predefinito</translation>
 <translation id="4389091756366370506">Utente <ph name="VALUE"/></translation>
-<translation id="749028671485790643">Persona <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Persona <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Tu</translation>
 <translation id="3031417829280473749">Agente X</translation>
 <translation id="412730574613779332">Spandex</translation>
@@ -2716,19 +2708,19 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5068919226082848014">Pizza</translation>
 <translation id="6170470584681422115">Sandwich</translation>
 <translation id="1830550083491357902">Accesso non eseguito</translation>
-<translation id="5941153596444580863">Aggiungi persona...</translation>
+<translation id="5828545842856466741">Aggiungi persona...</translation>
 <translation id="9149866541089851383">Modifica...</translation>
 <translation id="2836635946302913370">L'accesso con questo nome utente è stato disattivato dall'amministratore.</translation>
 <translation id="2721695630904737430">Gli utenti supervisionati sono stati disattivati dall'amministratore.</translation>
 <translation id="1468571364034902819">Impossibile utilizzare questo profilo</translation>
 <translation id="2261323523305321874">L'amministratore ha apportato una modifica a livello di sistema che disabilita alcuni vecchi profili.</translation>
-<translation id="2684004000387153598">Per continuare, fai clic su OK, quindi fai clic su Aggiungi persona per creare un nuovo profilo per il tuo indirizzo email.</translation>
-<translation id="7683373461016844951">Per continuare, fai clic su OK, quindi fai clic su Aggiungi persona per creare un nuovo profilo per il tuo indirizzo email <ph name="DOMAIN"/>.</translation>
+<translation id="2254158488150713536">Per continuare, fai clic su OK, quindi fai clic su Aggiungi persona per creare un nuovo profilo per il tuo indirizzo email.</translation>
+<translation id="1725743343613175327">Per continuare, fai clic su OK, quindi fai clic su Aggiungi persona per creare un nuovo profilo per il tuo indirizzo email <ph name="DOMAIN"/>.</translation>
 <translation id="8650543407998814195">Anche se non puoi più accedere al tuo vecchio profilo, puoi comunque rimuoverlo.</translation>
 <translation id="2871813825302180988">Questo account è già in uso su questo dispositivo.</translation>
 <translation id="7654941827281939388">Questo account è già in uso su questo computer.</translation>
 <translation id="9022847679183471841">L'account è già utilizzato su questo computer da <ph name="AVATAR_NAME"/>.</translation>
-<translation id="7463006580194749499">Aggiungi persona</translation>
+<translation id="6921634551681321094">Aggiungi persona</translation>
 <translation id="5389237414310520250">Impossibile creare il nuovo utente. Controlla lo spazio disponibile sul disco rigido e le autorizzazioni e riprova.</translation>
 <translation id="2673589024369449924">Crea un collegamento sul desktop per questo utente</translation>
 <translation id="2731710757838467317">Creazione dell'utente controllato in corso. Potrebbero essere necessari alcuni istanti.</translation>
@@ -2736,13 +2728,13 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6690751852586194791">Scegli un utente controllato da aggiungere a questo dispositivo.</translation>
 <translation id="5525677322972469346">Crea un nuovo utente supervisionato</translation>
 <translation id="8630903300770275248">Importa utente controllato</translation>
-<translation id="5832805196449965646">Aggiungi persona</translation>
-<translation id="8214962590150211830">Rimuovi questa persona</translation>
-<translation id="1451917004835509682">Aggiungi persona supervisionata</translation>
+<translation id="4904061654709986277">Aggiungi persona</translation>
+<translation id="6114945161119872228">Rimuovi questa persona</translation>
+<translation id="769308100792069196">Aggiungi persona supervisionata</translation>
 <translation id="3470442499439619530">Rimuovi questo utente</translation>
 <translation id="4296575653627536209">Aggiungi utente supervisionato</translation>
-<translation id="1701062906490865540">Rimuovi questa persona</translation>
-<translation id="2239921694246509981">Aggiungi persona supervisionata</translation>
+<translation id="8006143138282906848">Rimuovi questa persona</translation>
+<translation id="6912187023601892621">Aggiungi persona supervisionata</translation>
 <translation id="1608626060424371292">Rimuovi questo utente</translation>
 <translation id="493571969993549666">Aggiungi utente supervisionato</translation>
 <translation id="9101691533782776290">Avvia app</translation>
@@ -2764,8 +2756,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6164005077879661055">Tutti i file e i dati locali associati all'utente controllato verranno eliminati definitivamente in seguito alla rimozione dell'utente. Le impostazioni e i siti web visitati relativi all'utente controllato potrebbero essere ancora visibili al gestore all'indirizzo <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">Tutti i file e i dati locali associati a questo utente verranno eliminati definitivamente in seguito alla rimozione dell'utente. <ph name="USER_EMAIL"/> può ancora accedere in seguito.</translation>
 <translation id="672213144943476270">Sblocca il tuo profilo prima di navigare come ospite.</translation>
-<translation id="3478685642445675458">Sblocca il tuo profilo prima di rimuovere una persona.</translation>
-<translation id="4648499713050786492">Sblocca il tuo profilo prima di aggiungere una persona.</translation>
+<translation id="8086119151297127544">Sblocca il tuo profilo prima di rimuovere una persona.</translation>
+<translation id="7805701378418968629">Sblocca il tuo profilo prima di aggiungere una persona.</translation>
 <translation id="8978225823042133615">Accedi per usare Brave</translation>
 <translation id="4893336867552636863">I tuoi dati di navigazione verranno eliminati definitivamente da questo dispositivo.</translation>
 <translation id="2496180316473517155">Cronologia di navigazione</translation>
@@ -2811,9 +2803,33 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5747785204778348146">Sviluppatore - non stabile</translation>
 <translation id="5600706100022181951">Il download dell'aggiornamento richiederà <ph name="UPDATE_SIZE_MB"/> MB di dati mobili. Vuoi continuare?</translation>
 <translation id="5402815541704507626">Scarica l'aggiornamento usando i dati mobili</translation>
+<translation id="3493486281776271508">È necessaria una connessione a Internet</translation>
+<translation id="672609503628871915">Scopri le novità</translation>
 <translation id="5085162214018721575">Verifica disponibilità aggiornamenti</translation>
 <translation id="4570609078116869893">Aggiorna automaticamente Brave per tutti gli utenti</translation>
 <translation id="7102687220333134671">Gli aggiornamenti automatici sono attivi</translation>
+<translation id="8284326494547611709">Sottotitoli</translation>
+<translation id="1755601632425835748">Dimensioni testo</translation>
+<translation id="3179982752812949580">Carattere testo</translation>
+<translation id="6850286078059909152">Colore testo</translation>
+<translation id="8042142357103597104">Opacità testo</translation>
+<translation id="1656528038316521561">Opacità sfondo</translation>
+<translation id="5750288053043553775">0</translation>
+<translation id="8689998525144040851">100</translation>
+<translation id="2442916515643169563">Ombreggiatura testo</translation>
+<translation id="3599221874935822507">In rilievo</translation>
+<translation id="274029851662193272">Incassato</translation>
+<translation id="8184472985242519288">Uniforme</translation>
+<translation id="8619803522055190423">Ombreggiatura</translation>
+<translation id="3930968231047618417">Colore sfondo</translation>
+<translation id="7569983096843329377">Nero</translation>
+<translation id="2713444072780614174">Bianco</translation>
+<translation id="7942349550061667556">Rosso</translation>
+<translation id="6017514345406065928">Verde</translation>
+<translation id="1555130319947370107">Blu</translation>
+<translation id="5901630391730855834">Giallo</translation>
+<translation id="161042844686301425">Ciano</translation>
+<translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Accessibilità</translation>
 <translation id="5840822070878669614">Apri Brave Web Store</translation>
 <translation id="6073903501322152803">Aggiungi funzioni di accessibilità</translation>
@@ -2822,6 +2838,15 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2558896001721082624">Mostra sempre le opzioni di accessibilità nel menu di sistema</translation>
 <translation id="7280649757394340890">Impostazioni voce per sintesi vocale</translation>
 <translation id="6635956300022133031">Seleziona e personalizza le voci per la sintesi vocale</translation>
+<translation id="7991296728590311172">Impostazioni Switch Access</translation>
+<translation id="1877860345998737529">Assegnazione di azioni ai sensori</translation>
+<translation id="6129953537138746214">Spazio</translation>
+<translation id="8179976553408161302">Invio</translation>
+<translation id="6710213216561001401">Indietro</translation>
+<translation id="2915873080513663243">Scansione automatica</translation>
+<translation id="8912810933860534797">Attiva scansione automatica</translation>
+<translation id="6617100836880592260">Velocità di scansione: <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="7919210519031517829"><ph name="DURATION"/> s</translation>
 <translation id="2981113813906970160">Mostra puntatore mouse grande</translation>
 <translation id="5072052264945641674">Regola dimensioni puntatore</translation>
 <translation id="4209092469652827314">Grande</translation>
@@ -2898,6 +2923,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="574209121243317957">Tono</translation>
 <translation id="3871092408932389764">Minimo</translation>
 <translation id="6352773953037195952">Massimo</translation>
+<translation id="4430019312045809116">Volume</translation>
 <translation id="3677657024345889897">Al minimo</translation>
 <translation id="167160931442925455">Al massimo</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
@@ -2907,15 +2933,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5471768120198416576">Ciao! Sono la voce della sintesi locale.</translation>
 <translation id="6902066522699286937">Voce per l'anteprima</translation>
 <translation id="304747341537320566">Motori di riconoscimento vocale</translation>
-<translation id="5270041685309222649">Kiosk Next Shell (Dev)</translation>
-<translation id="6409191325648119263">Kiosk Next Shell</translation>
-<translation id="5940519603482193359">Abilita la Kiosk Next Shell per il prossimo accesso.</translation>
-<translation id="407536568752283520">Disabilita la Kiosk Next Shell e ritorna alla normale esperienza Brave OS.</translation>
-<translation id="1036348656032585052">Disattiva</translation>
-<translation id="6588712220520211269">Disattiva la Kiosk Next Shell</translation>
-<translation id="2446993819525566591">Attiva la Kiosk Next Shell</translation>
-<translation id="1960737068939025292">Questo disattiverà la Kiosk Next Shell, ti disconnetterà e ti riporterà alla normale esperienza Brave OS.</translation>
-<translation id="7316400597244914467">Questo ti disconetterà e attiverà la Kiosk Next Shell.</translation>
 <translation id="1067291318998134776">Linux (beta)</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1366177842110999534">Esegui strumenti, editor e IDE di Linux sul tuo dispositivo <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ulteriori informazioni&lt;/a&gt;</translation>
@@ -2930,17 +2947,19 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3819257035322786455">Backup</translation>
 <translation id="3233271424239923319">Backup app e file Linux</translation>
 <translation id="184273675144259287">Sostituisci app e file Linux con un backup precedente</translation>
+<translation id="8774379074441005279">Conferma il ripristino</translation>
+<translation id="3328489342742826322">Il ripristino da un backup elimina le applicazioni Linux esistenti e i dati nelle tue cartelle di file Linux.</translation>
 <translation id="7105390788077117391">Preferenze USB</translation>
 <translation id="3201422919974259695">I dispositivi USB disponibili vengono indicati qui.</translation>
 <translation id="1343865611738742294">Concedi alle app Linux l'autorizzazione ad accedere ai dispositivi USB. Dopo la rimozione di un dispositivo USB, Linux non manterrà memorizzato il dispositivo.</translation>
 <translation id="3661172646479098821">Al momento sono supportati solo i dispositivi Android.</translation>
 <translation id="1679806121152819234">Plugin VM</translation>
-<translation id="8343187330304787218">Gestisci le impostazioni per eseguire Plugin VM sul tuo <ph name="DEVICE_TYPE"/></translation>
+<translation id="1878541307036593717">Imposta autorizzazioni</translation>
 <translation id="7508054832109420082">Fornisci l'accesso alle stampanti</translation>
 <translation id="2258855745387252834">Per la condivisione, fai clic con il tasto destro del mouse su una cartella dell'app File, quindi seleziona "Condividi con Plugin VM".</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Impostazioni di Android</translation>
-<translation id="4767209642168463274">Installa app e giochi di Brave Software Play sul Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ulteriori informazioni&lt;/a&gt;</translation>
+<translation id="9081422163530430821">Installa app e giochi da Brave Software Play su <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ulteriori informazioni&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Gestisci le preferenze Android</translation>
 <translation id="4074367893748481070">Rimuovi il Brave Software Play Store</translation>
 <translation id="2792290659606763004">Rimuovere le app Android?</translation>
@@ -2951,6 +2970,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
       L'eliminazione non riguarda app o contenuti presenti su altri dispositivi.</translation>
 <translation id="492299503953721473">Rimuovi app Android</translation>
 <translation id="7566118625369982896">Gestisci i link dell'app Play</translation>
+<translation id="5026688690798028095">Apri Gestione app</translation>
 <translation id="2433507940547922241">Aspetto</translation>
 <translation id="1177863135347784049">Personalizzati</translation>
 <translation id="1925021887439448749">Inserisci l'indirizzo web personalizzato</translation>
@@ -2976,7 +2996,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5860033963881614850">Spento</translation>
 <translation id="5916664084637901428">On</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> controlla questa impostazione</translation>
-<translation id="6643016212128521049">Pulisci</translation>
 <translation id="8465252176946159372">Non valido</translation>
 <translation id="8647834505253004544">Indirizzo web non valido</translation>
 <translation id="7946586320617670168">L'origine deve essere sicura</translation>
@@ -3047,6 +3066,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1779652936965200207">Inserisci questa passkey su "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="9088917181875854783">Conferma che la passkey sia visualizzata su "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="3368922792935385530">Connessa</translation>
+<translation id="6727969043791803658">Dispositivo connesso. Livello batteria: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="8874184842967597500">Non connessa</translation>
 <translation id="7617366389578322136">Collegamento a "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="2138398485845393913">Connessione a "<ph name="DEVICE_NAME"/>" ancora in corso</translation>
@@ -3145,7 +3165,11 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6985607387932385770">Stampanti</translation>
 <translation id="1815579292149538864">Configura o gestisci le stampanti CUPS.</translation>
 <translation id="8030656706657716245">Aggiungi stampante</translation>
+<translation id="8025958612547562988">Salva le stampanti rilevate nel tuo profilo o aggiungi una nuova stampante.</translation>
+<translation id="6980969641756020642">Stampanti disponibili da salvare</translation>
+<translation id="8151638057146502721">Configura</translation>
 <translation id="2297705863329999812">Cerca stampanti</translation>
+<translation id="7956373551960864128">Stampanti salvate</translation>
 <translation id="168991973552362966">Aggiungi una stampante vicina</translation>
 <translation id="3038612606416062604">Aggiungi manualmente una stampante</translation>
 <translation id="8002274832045662704">Configurazione avanzata stampante</translation>
@@ -3184,17 +3208,20 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5696679855467848181">File PPD attualmente in uso: <ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353">Impossibile configurare automaticamente la stampante <ph name="PRINTER_NAME"/>. Specifica dettagli avanzati della stampante.</translation>
 <translation id="804786196054284061">Contratto di licenza con l'utente finale</translation>
+<translation id="6318944945640833942">Impossibile rilevare una stampante. Inserisci di nuovo l'indirizzo della stampante.</translation>
+<translation id="2434449159125086437">Impossibile configurare la stampante. Verifica la configurazione e riprova.</translation>
 <translation id="4733793249294335256">Posizione</translation>
 <translation id="7754704193130578113">Chiedi dove salvare il file prima di scaricarlo</translation>
 <translation id="5713072761819014678">Scollega account Brave Software Drive</translation>
 <translation id="486635084936119914">Apri automaticamente determinati tipi di file dopo il download</translation>
 <translation id="3653160965917900914">Condivisioni file di rete</translation>
 <translation id="5763315388120433852">Configura o gestisci condivisioni file di rete.</translation>
-<translation id="2367199180085172140">Aggiungi Condivisione file</translation>
+<translation id="5734697361979786483">Aggiungi condivisione file</translation>
 <translation id="247051149076336810">URL condivisione file</translation>
 <translation id="5247051749037287028">Nome visualizzato (facoltativo)</translation>
 <translation id="3544879808695557954">Nome utente (facoltativo)</translation>
 <translation id="6949434160682548041">Password (facoltativa)</translation>
+<translation id="8879921471468674457">Memorizza dati di accesso</translation>
 <translation id="6091761513005122595">Condivisione montata correttamente.</translation>
 <translation id="9024158959543687197">Errore durante il montaggio della condivisione. Verifica l'URL condivisione file e riprova.</translation>
 <translation id="1954813140452229842">Errore durante il montaggio della condivisione. Verifica le tue credenziali e riprova.</translation>
@@ -3203,24 +3230,44 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="706626672220389329">Errore durante il montaggio della condivisione. La condivisione specificata è già montata.</translation>
 <translation id="5985458664595100876">Formato dell'URL non valido. I formati supportati sono \\server\share e smb://server/share.</translation>
 <translation id="6644513150317163574">Formato URL non valido. Il server deve essere specificato come nome host quando viene utilizzata l'autenticazione SSO.</translation>
-<translation id="9147304170847707004">Metodo di autenticazione</translation>
+<translation id="4050225813016893843">Metodo di autenticazione</translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="5115338116365931134">SSO</translation>
-<translation id="174617397682753897">Account Kerberos</translation>
-<translation id="2249269794707377949">Qui puoi gestire tutti gli account Kerberos per l'accesso Single Sign-On in determinati siti web e app, nonché le condivisioni file.</translation>
-<translation id="1987317783729300807">Account</translation>
-<translation id="7665369617277396874">Aggiungi account</translation>
-<translation id="3297951628821704004">Rimuovi account da questo dispositivo</translation>
-<translation id="757941033127302446">Accesso effettuato</translation>
-<translation id="1117602883390928720">Aggiungi account Kerberos</translation>
+<translation id="1327272175893960498">Richieste di Kerberos</translation>
+<translation id="1709217939274742847">Scegli una richiesta da usare per l'autenticazione. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
+<translation id="4739639199548674512">Richieste</translation>
+<translation id="6112727384379533756">Aggiungi una richiesta</translation>
+<translation id="8251441930213048644">Aggiorna ora</translation>
+<translation id="4820236583224459650">Imposta come richiesta attiva</translation>
+<translation id="4502423230170890588">Rimuovi da questo dispositivo</translation>
+<translation id="2507253002925770350">Richiesta rimossa</translation>
+<translation id="1436390408194692385">Validità per <ph name="TICKET_TIME_LEFT"/></translation>
+<translation id="2665647207431876759">Scaduta</translation>
+<translation id="5565735124758917034">Attivo</translation>
+<translation id="8608618451198398104">Aggiungi una richiesta di Kerberos</translation>
+<translation id="508059534790499809">Aggiorna una richiesta di Kerberos</translation>
+<translation id="245650153866130664">Per aggiornare automaticamente una richiesta, seleziona "Memorizza la password". La tua password verrà memorizzata solo sul tuo dispositivo.</translation>
+<translation id="3895090224522145010">Nome utente di Kerberos</translation>
+<translation id="2325444234681128157">Memorizza la password</translation>
+<translation id="4232375817808480934">Configura Kerberos</translation>
+<translation id="4392896746540753732">Modifica il file di configurazione</translation>
 <translation id="6452961788130242735">Problema di rete o area di autenticazione non valida</translation>
-<translation id="6542184058496424548">Nome utente non valido (deve essere user@realm.com)</translation>
+<translation id="9094038138851891550">Nome utente non valido</translation>
 <translation id="4345732373643853732">Nome utente non noto al server</translation>
+<translation id="5184209580557088469">Esiste già una richiesta con questo nome utente</translation>
 <translation id="3975565978598857337">Tentativo di contatto del server per area di autenticazione non riuscito</translation>
 <translation id="3841964634449506551">Password non valida</translation>
 <translation id="1629314197035607094">Password scaduta</translation>
 <translation id="197989455406964291">KDC non supporta il tipo di crittografia</translation>
-<translation id="6957572737510023982">Spiacenti. Si è verificato un problema (codice di errore <ph name="ERROR_CODE"/>).</translation>
+<translation id="2584109212074498965">Impossibile recuperare la richiesta di Kerberos. Riprova o contatta l'amministratore del dispositivo dell'organizzazione. (Codice errore: <ph name="ERROR_CODE"/>).</translation>
+<translation id="2956070239128776395">Sezione nidificata nel gruppo: <ph name="ERROR_LINE"/></translation>
+<translation id="8999560016882908256">Errore di sintassi in una sezione: <ph name="ERROR_LINE"/></translation>
+<translation id="1251366534849411931">Parentesi graffa aperta prevista: <ph name="ERROR_LINE"/></translation>
+<translation id="5315738755890845852">Parentesi graffa aggiuntiva: <ph name="ERROR_LINE"/></translation>
+<translation id="5846200638699387931">Errore di sintassi nella relazione: <ph name="ERROR_LINE"/></translation>
+<translation id="8952831374766033534">Opzione di configurazione non supportata: <ph name="ERROR_LINE"/></translation>
+<translation id="6902336033320348843">Sezione non supportata: <ph name="ERROR_LINE"/></translation>
+<translation id="604388835206766544">Impossibile analizzare la configurazione</translation>
 <translation id="3101709781009526431">Data e ora</translation>
 <translation id="2059913712424898428">Fuso orario</translation>
 <translation id="4547672827276975204">Imposta automaticamente</translation>
@@ -3237,6 +3284,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8468750959626135884">Sblocca il tuo <ph name="DEVICE_TYPE"/> con il tuo telefono Android.</translation>
 <translation id="3571734092741541777">Configura</translation>
 <translation id="3336664756920573711">Sblocca il tuo dispositivo <ph name="DEVICE_TYPE"/> usando il tuo telefono Android</translation>
+<translation id="1036348656032585052">Disattiva</translation>
 <translation id="1164674268730883318">Disattivare Smart Lock per <ph name="DEVICE_TYPE"/>?</translation>
 <translation id="2739030071582769583">Se disattivi Smart Lock per <ph name="DEVICE_TYPE"/>, non puoi sbloccare i tuoi dispositivi Brave utilizzando il telefono. Dovrai digitare la password.</translation>
 <translation id="4737715515457435632">Collegati a una rete</translation>
@@ -3267,6 +3315,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8426713856918551002">Attivazione in corso</translation>
 <translation id="3652817283076144888">Inizializzazione in corso</translation>
 <translation id="6528513914570774834">Consenti ad altri utenti del dispositivo di usare questa rete</translation>
+<translation id="2122305276694332719">La connessione automatica a una rete nascosta consente ad altre persone di rilevare il tuo dispositivo e alcune impostazioni di rete, pertanto è sconsigliata.</translation>
 <translation id="9153934054460603056">Salva identità e password</translation>
 <translation id="8656768832129462377">Non verificare</translation>
 <translation id="1399511500114202393">Nessun certificato utente</translation>
@@ -3287,6 +3336,9 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8461914792118322307">Proxy</translation>
 <translation id="5213891612754844763">Mostra impostazioni proxy</translation>
 <translation id="4801512016965057443">Consenti roaming dati mobile</translation>
+<translation id="5457991019809708398">Attivo, non in roaming</translation>
+<translation id="3969092967100188979">Attivo, in roaming</translation>
+<translation id="5804175651771201311">Roaming disattivato</translation>
 <translation id="4720185134442950733">Rete di dati mobili</translation>
 <translation id="2517472476991765520">Scansiona</translation>
 <translation id="8386903983509584791">Scansione completata</translation>
@@ -3317,7 +3369,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8452135315243592079">Scheda SIM mancante</translation>
 <translation id="2617342710774726426">La scheda SIM è bloccata</translation>
 <translation id="4848518990323155912">Attiva blocco della scheda SIM (è necessario che il PIN utilizzi i dati mobili)</translation>
-<translation id="8179976553408161302">Invio</translation>
+<translation id="5463231940765244860">Inserisci</translation>
 <translation id="5075131525758602494">Inserisci il PIN della SIM</translation>
 <translation id="8431909052837336408">Cambia il PIN della SIM</translation>
 <translation id="289644616180464099">La scheda SIM è bloccata</translation>
@@ -3327,6 +3379,11 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5669691691057771421">Inserisci il nuovo PIN</translation>
 <translation id="5473333559083690127">Inserisci ancora il nuovo PIN</translation>
 <translation id="1164899421101904659">Inserisci il codice di sblocco PIN</translation>
+<translation id="5713723565110096165">PIN errato. Tentativi ancora disponibili: <ph name="RETRIES"/>.</translation>
+<translation id="8500234928660943538">PUK errato. Tentativi ancora disponibili: <ph name="RETRIES"/>.</translation>
+<translation id="834290227245955730">PIN non valido. Tentativi ancora disponibili: <ph name="RETRIES"/>.</translation>
+<translation id="6015266928248016057">PUK non valido. Tentativi ancora disponibili: <ph name="RETRIES"/>.</translation>
+<translation id="1272293450992660632">I valori PIN non corrispondono.</translation>
 <translation id="7582582252461552277">Preferisci questa rete</translation>
 <translation id="7469894403370665791">Collegati automaticamente a questa rete</translation>
 <translation id="4267953847983678297">Collegati automaticamente alla rete mobile</translation>
@@ -3335,7 +3392,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8986362086234534611">Elimina</translation>
 <translation id="7881483672146086348">Visualizza account</translation>
 <translation id="2392369802118427583">Attiva</translation>
-<translation id="8151638057146502721">Configura</translation>
 <translation id="5920543303088087579">La connessione a questa rete è stata disattivata dall'amministratore</translation>
 <translation id="1235458158152011030">Reti note</translation>
 <translation id="3003144360685731741">Reti preferite</translation>
@@ -3457,7 +3513,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1994173015038366702">URL sito</translation>
 <translation id="3082374807674020857"><ph name="PAGE_TITLE"/> - <ph name="PAGE_URL"/></translation>
 <translation id="2586672484245266891">Inserisci un URL più breve</translation>
-<translation id="7788444488075094252">Lingue e immissione</translation>
 <translation id="4181841719683918333">Lingue</translation>
 <translation id="5302048478445481009">Lingua</translation>
 <translation id="6388429472088318283">Cerca lingue</translation>
@@ -3548,6 +3603,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1432581352905426595">Imposta motori di ricerca</translation>
 <translation id="2862205630718215619">Assistente Brave Software</translation>
 <translation id="6978121630131642226">Motori di ricerca</translation>
+<translation id="1383876407941801731">Cerca</translation>
 <translation id="6410668567036790476">Aggiungi motore di ricerca</translation>
 <translation id="1128591060186966949">Modifica motore di ricerca</translation>
 <translation id="5719603411793408026">Motori di ricerca predefiniti</translation>
@@ -3556,15 +3612,12 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1459967076783105826">Motori di ricerca aggiunti da estensioni</translation>
 <translation id="6678717876183468697">URL query</translation>
 <translation id="7063311912041006059">URL con <ph name="SPECIAL_SYMBOL"/> al posto della query</translation>
-<translation id="6953878494808481632">Informazioni correlate</translation>
-<translation id="4145922204387553806">Permetti all'assistente di mostrarti informazioni basate sui contenuti dello schermo</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
 <translation id="873163986259711670">Accedi all'assistente ogni volta che dici "Ok Brave Software"</translation>
 <translation id="7972554217702001243">Attiva l'assistente quando qualcuno dice "Ok Brave Software". Per consumare meno batteria, la hotword "Ok Brave Software" è attiva solo quando il dispositivo è collegato a una fonte di alimentazione.</translation>
 <translation id="5825412242012995131">On (opzione consigliata)</translation>
 <translation id="5067399438976153555">Sempre attivo</translation>
 <translation id="5419405654816502573">Voice Match</translation>
-<translation id="3640613767643722554">Insegna all'assistente a riconoscere la tua voce</translation>
 <translation id="1803545009660609783">Reimposta</translation>
 <translation id="5355099869024327351">Consenti all'assistente di mostrarti le notifiche</translation>
 <translation id="133535873114485416">Metodo di immissione preferito</translation>
@@ -3584,6 +3637,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5518219166343146486">Chiedi conferma quando un sito vuole leggere il testo e le immagini copiati negli appunti</translation>
 <translation id="2089795179672254991">Chiedi conferma quando un sito vuole leggere il testo e le immagini copiati negli appunti (opzione consigliata)</translation>
 <translation id="16815041330799488">Non consentire ai siti di leggere testi e immagini copiati negli appunti</translation>
+<translation id="2546283357679194313">Cookie e dati dei siti</translation>
 <translation id="3668823961463113931">Gestori</translation>
 <translation id="5689516760719285838">Posizione</translation>
 <translation id="9219103736887031265">Immagini</translation>
@@ -3687,7 +3741,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="577624874850706961">Cerca cookie</translation>
 <translation id="6196640612572343990">Blocca cookie di terze parti</translation>
 <translation id="6782111308708962316">Impedisci ai siti web di terze parti di salvare e leggere i dati dei cookie</translation>
-<translation id="3378503599595235699">Memorizza dati locali solo fino a chiusura del browser</translation>
 <translation id="1274977772557788323">Impostazioni di archiviazione Adobe Flash Player</translation>
 <translation id="1281501490173223206">Solo per la sessione di navigazione in incognito corrente</translation>
 <translation id="3479035826743782247">Sessione di navigazione in incognito corrente</translation>
@@ -3719,7 +3772,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8016266267177410919">Archiviazione temporanea</translation>
 <translation id="4175737294868205930">Archiviazione persistente</translation>
 <translation id="1296497012903089238">Tipo di certificato</translation>
-<translation id="8553342806078037065">Gestisci altre persone</translation>
+<translation id="3707212204259470604">Gestisci altre persone</translation>
 <translation id="8907706281008466056">Foto profilo Brave Software</translation>
 <translation id="2408955596600435184">Inserisci il codice PIN</translation>
 <translation id="6619990499523117484">Conferma il codice PIN</translation>
@@ -3742,18 +3795,28 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4068776064906523561">Impronte digitali salvate</translation>
 <translation id="4562155214028662640">Aggiungi impronta digitale</translation>
 <translation id="1719312230114180055">Nota: la tua impronta digitale potrebbe essere meno sicura di una password o di un PIN efficaci.</translation>
-<translation id="6029292188939175871">elimina [<ph name="FINGERPRINT_NAME"/>], pulsante</translation>
+<translation id="1582955169539260415">elimina [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Impronta <ph name="NEW_FINGER_NUMBER"/></translation>
+<translation id="4461062867270151760">Attiva la riproduzione multimediale di Brave quando viene impostato il blocco schermo</translation>
+<translation id="7665369617277396874">Aggiungi account</translation>
 <translation id="5866136067811459986">Gestisci gli Account Brave Software a cui hai effettuato l'accesso. Siti web, app ed estensioni in Brave e Brave Software Play potrebbero utilizzare questi account per personalizzare la tua esperienza in base alle autorizzazioni.</translation>
+<translation id="1987317783729300807">Account</translation>
 <translation id="8418661265246754237">Account Brave Software</translation>
 <translation id="5021750053540820849">Non ancora aggiornato</translation>
+<translation id="4637083375689622795">Altre azioni, <ph name="EMAIL"/></translation>
 <translation id="3448492834076427715">Aggiorna account</translation>
+<translation id="2458379781610688953">Aggiorna account, <ph name="EMAIL"/></translation>
+<translation id="2701737434167469065">Accedi, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">Rimuovi questo account</translation>
 <translation id="8995603266996330174">Gestito da <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Account principale</translation>
+<translation id="8864458770072227512">L'account <ph name="EMAIL"/> è stato rimosso da questo dispositivo</translation>
 <translation id="3158033540161634471">Imposta la tua impronta</translation>
 <translation id="1587907146729660231">Tocca il tasto di accensione con un dito</translation>
 <translation id="176193854664720708">Il sensore di impronte digitali si trova nel tasto di accensione. Toccalo leggermente con un dito.</translation>
+<translation id="3615073365085224194">Tocca il sensore di impronte digitali con il dito</translation>
+<translation id="899676909165543803">Il sensore di impronte digitali è il tasto in basso a destra della tastiera. Toccalo leggermente con un dito.</translation>
+<translation id="4535767533210902251">Il sensore di impronte digitali è il tasto in alto a destra della tastiera. Toccalo leggermente con un dito.</translation>
 <translation id="7189965711416741966">Impronta digitale aggiunta.</translation>
 <translation id="9220820413868316583">Solleva, quindi riprova.</translation>
 <translation id="4534661889221639075">Riprova.</translation>
@@ -3781,7 +3844,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="9125982323641182972">Tutta l'intelligenza Brave Software in Brave</translation>
 <translation id="5244474230056479698">Sincronizzazione con <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Questo account è gestito da <ph name="DOMAIN"/>, pertanto i preferiti, la cronologia, le password e altre impostazioni verranno cancellati da questo dispositivo. I tuoi dati rimarranno però memorizzati nel tuo account Brave Software e potrai gestirli su <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
-<translation id="4037889604535939429">Modifica persona</translation>
+<translation id="6906406176003824042">Modifica persona</translation>
 <translation id="6739923123728562974">Mostra collegamento sul desktop</translation>
 <translation id="2450310832094867474">Vuoi disattivare la sincronizzazione e uscire?</translation>
 <translation id="3699920817649120894">Disattivare la sincronizzazione e la personalizzazione?</translation>
@@ -3806,6 +3869,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4824958205181053313">Vuoi annullare la sincronizzazione?</translation>
 <translation id="3058498974290601450">Puoi attivare la sincronizzazione in qualsiasi momento nelle impostazioni</translation>
 <translation id="7529411698175791732">Controlla la connessione a Internet. Se il problema persiste, prova a uscire e ad accedere di nuovo.</translation>
+<translation id="4684427112815847243">Sincronizza tutto</translation>
 <translation id="1125261911132334651">Gestisci il tuo Account Brave Software</translation>
 <translation id="4570387585180509432">Indirizzi, numeri di telefono e non solo</translation>
 <translation id="5117427536932535467">Temi e sfondi</translation>
@@ -3996,21 +4060,23 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> alla ricarica completa</translation>
 <translation id="2620436844016719705">Sistema</translation>
 <translation id="2077129598763517140">Usa accelerazione hardware quando disponibile</translation>
-<translation id="1889984860246851556">Apri le impostazioni proxy</translation>
+<translation id="3817524650114746564">Apri le impostazioni proxy del computer</translation>
+<translation id="809792523045608178"><ph name="IDS_SHORT_PRODUCT_NAME"/> usa le impostazioni proxy di un'estensione</translation>
+<translation id="2824942875887026017"><ph name="IDS_SHORT_PRODUCT_NAME"/> usa le impostazioni proxy stabilite dall'amministratore</translation>
 <translation id="1940546824932169984">Dispositivi collegati</translation>
 <translation id="3468999815377931311">Telefono Android</translation>
-<translation id="2789927670850159391">Collega il Bravebook al telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
+<translation id="5826395379250998812">Connetti <ph name="DEVICE_TYPE"/> con il tuo telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Nessun dispositivo idoneo. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">In attesa di verifica. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
 <translation id="6518133107902771759">Verifica</translation>
-<translation id="7179187931092694802">Sblocca il Bravebook con il telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
+<translation id="4142052906269098341">Sblocca <ph name="DEVICE_TYPE"/> con il telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Tethering istantaneo</translation>
 <translation id="6415900369006735853">Connettiti a Internet tramite il telefono</translation>
 <translation id="4746351372139058112">Messaggi</translation>
-<translation id="2248072377758660530">Invia e ricevi SMS dal Bravebook. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
+<translation id="965211523698323809">Invia e ricevi SMS da <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
 <translation id="5153234146675181447">Elimina telefono</translation>
-<translation id="2307631131458143837">Scollega il telefono dal Bravebook</translation>
-<translation id="1146102139091738471">Scollega il telefono dal Bravebook. I due dispositivi non si connetteranno più automaticamente.</translation>
+<translation id="4650591383426000695">Disconnetti il telefono da <ph name="DEVICE_TYPE"/></translation>
+<translation id="5117139026559873716">Disconnetti il telefono da <ph name="DEVICE_TYPE"/>. I due dispositivi non si connetteranno più automaticamente.</translation>
 <translation id="7878562273885520351">La tua password potrebbe essere stata compromessa</translation>
 <translation id="1089439967362294234">Cambia password</translation>
 <translation id="6187156085111579405">Se necessario verranno rimossi anche elementi non elencati qui. Leggi ulteriori informazioni sulla &lt;a href="<ph name="URL"/>"&gt;protezione da software indesiderato&lt;/a&gt; nel whitepaper sulla privacy di Brave.</translation>
@@ -4075,9 +4141,24 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3341699307020049241">PIN errato. Hai ancora a disposizione <ph name="RETRIES"/> tentativi.</translation>
 <translation id="2439545803278355377">Inserisci il nuovo PIN. Il PIN deve avere almeno quattro caratteri e può contenere lettere, numeri e altri caratteri.</translation>
 <translation id="1781291988450150470">PIN attuale</translation>
+<translation id="4617001782309103936">Troppo corto</translation>
 <translation id="3732530910372558017">Il PIN deve contenere massimo 63 caratteri</translation>
 <translation id="1307165550267142340">Il PIN è stato creato</translation>
 <translation id="2699911226086014512">Operazione con PIN non riuscita. Codice <ph name="RETRIES"/>.</translation>
+<translation id="3873423927483480833">Mostra i codici PIN</translation>
+<translation id="21354425047973905">Nascondi i codici PIN</translation>
+<translation id="1901984611178952431">Gestisci i dati di accesso</translation>
+<translation id="3286737518123001369">Visualizza ed elimina i dati di accesso memorizzati sul token di sicurezza</translation>
+<translation id="2399939490305346086">Dati di accesso del token di sicurezza</translation>
+<translation id="6841187140911216178">Per visualizzare i dati di accesso, inserisci e tocca il token di sicurezza</translation>
+<translation id="6013505829696424563">Per visualizzare i dati di accesso, inserisci il PIN del token di sicurezza. Se non conosci il PIN, devi reimpostare il token di sicurezza.</translation>
+<translation id="3713047097299026954">Nessun dato di accesso memorizzato sul token di sicurezza</translation>
+<translation id="1511997356770098059">Questo token di sicurezza non supporta la memorizzazione di dati di accesso</translation>
+<translation id="579915268381781820">Il token di sicurezza è stato rimosso.</translation>
+<translation id="117916940443676133">Il token di sicurezza non è protetto tramite PIN. Per poter gestire i dati di accesso devi creare un PIN.</translation>
+<translation id="8705629851992224300">Impossibile leggere il token di sicurezza</translation>
+<translation id="3076977359333237641">I dati di accesso sono stati eliminati</translation>
+<translation id="3508492320654304609">Impossibile eliminare i dati di accesso</translation>
 <translation id="3341703758641437857">Consenti l'accesso agli URL dei file</translation>
 <translation id="9003647077635673607">Consenti su tutti i siti web</translation>
 <translation id="698524779381350301">Consenti accesso automatico ai seguenti siti</translation>
@@ -4190,7 +4271,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="720110658997053098">Mantieni definitivamente questo dispositivo in modalità kiosk</translation>
 <translation id="1909880997794698664">Vuoi mantenere definitivamente questo dispositivo in modalità kiosk?</translation>
 <translation id="1512210426710821809">L'unico modo per annullare questa operazione è reinstallare <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
-<translation id="4472575034687746823">Come iniziare</translation>
 <translation id="8281886186245836920">Salta</translation>
 <translation id="2342740338116612727">Preferiti aggiunti</translation>
 <translation id="7835178595033117206">Segnalibro rimosso</translation>
@@ -4315,7 +4395,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2202898655984161076">Si è verificato un problema nella visualizzazione dell'elenco di stampanti. È possibile che alcune stampanti non siano state registrate correttamente con <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Il processo del connettore <ph name="CLOUD_PRINT_NAME"/> si è bloccato. Riavviarlo?</translation>
 <translation id="6904655473976120856">Premi il pulsante App per uscire</translation>
-<translation id="79766959863778284">Servizio per dispositivi XR isolati</translation>
 <translation id="8909833622202089127">Il sito sta monitorando la tua posizione</translation>
 <translation id="375636864092143889">Il sito sta usando il microfono</translation>
 <translation id="7256069762010468647">Il sito sta usando la videocamera</translation>

@@ -25,13 +25,14 @@ Profile* TorUnittestProfileManager::CreateProfileHelper(
       return nullptr;
   }
   if (path == BraveProfileManager::GetTorProfilePath())
-    return CreateTorProfile(path, nullptr);
+    return CreateTorProfile(path, nullptr).release();
   else
     return new TestingProfile(path, nullptr);
 }
 
-Profile* TorUnittestProfileManager::CreateProfileAsyncHelper(
-    const base::FilePath& path, Delegate* delegate) {
+std::unique_ptr<Profile> TorUnittestProfileManager::CreateProfileAsyncHelper(
+    const base::FilePath& path,
+    Delegate* delegate) {
   // ThreadTaskRunnerHandle::Get() is TestingProfile's "async" IOTaskRunner
   // (ref. TestingProfile::GetIOTaskRunner()).
   base::ThreadTaskRunnerHandle::Get()->PostTask(
@@ -41,7 +42,7 @@ Profile* TorUnittestProfileManager::CreateProfileAsyncHelper(
   if (path == BraveProfileManager::GetTorProfilePath())
     return CreateTorProfile(path, this);
   else
-    return new TestingProfile(path, this);
+    return std::unique_ptr<TestingProfile>(new TestingProfile(path, this));
 }
 
 void TorUnittestProfileManager::InitProfileUserPrefs(Profile* profile) {
@@ -52,7 +53,7 @@ void TorUnittestProfileManager::InitProfileUserPrefs(Profile* profile) {
   }
 }
 
-Profile* TorUnittestProfileManager::CreateTorProfile(
+std::unique_ptr<Profile> TorUnittestProfileManager::CreateTorProfile(
     const base::FilePath& path, Delegate* delegate) {
   TestingProfile::Builder profile_builder;
   sync_preferences::PrefServiceMockFactory factory;
@@ -64,6 +65,5 @@ Profile* TorUnittestProfileManager::CreateTorProfile(
   profile_builder.SetPrefService(std::move(prefs));
   profile_builder.SetPath(path);
   profile_builder.SetDelegate(delegate);
-  std::unique_ptr<TestingProfile> profile = profile_builder.Build();
-  return profile.release();
+  return profile_builder.Build();
 }

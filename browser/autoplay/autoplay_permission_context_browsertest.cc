@@ -146,12 +146,13 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
     return WaitForLoadStop(contents());
   }
 
-  void WaitForPlaying() {
+  void WaitForPlaying(const GURL& url) {
     std::string msg_from_renderer;
-    ASSERT_TRUE(ExecuteScriptAndExtractString(contents(),
-                                              "notifyWhenPlaying();",
-                                              &msg_from_renderer));
-    ASSERT_EQ("PLAYING", msg_from_renderer);
+    ASSERT_TRUE(ExecuteScriptAndExtractString(
+        contents(), "notifyWhenPlaying();", &msg_from_renderer))
+        << url.spec();
+    ASSERT_EQ("PLAYING", msg_from_renderer)
+        << url.spec() + " says: " + msg_from_renderer;
   }
 
  private:
@@ -349,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
   EXPECT_TRUE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(1, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying();
+  WaitForPlaying(autoplay_method_url());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
@@ -364,23 +365,29 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
   EXPECT_TRUE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(1, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying();
+  WaitForPlaying(autoplay_attr_url());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
+}
 
-  // Muted version of above
+// Click allow from promt (muted)
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllowMuted) {
+  std::string result;
   AskAutoplay();
-  popup_prompt_factory->ResetCounts();
-  result.clear();
+  PermissionRequestManager* manager =
+      PermissionRequestManager::FromWebContents(contents());
+  auto popup_prompt_factory =
+      std::make_unique<MockPermissionPromptFactory>(manager);
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+  popup_prompt_factory->set_response_type(PermissionRequestManager::ACCEPT_ALL);
 
   NavigateToURLUntilLoadStop(autoplay_method_muted_url());
   EXPECT_TRUE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(1, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying();
+  WaitForPlaying(autoplay_method_muted_url());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
@@ -395,7 +402,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
   EXPECT_TRUE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(1, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying();
+  WaitForPlaying(autoplay_attr_muted_url());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
@@ -481,7 +488,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying();
+  WaitForPlaying(autoplay_method_url());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
@@ -493,7 +500,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying();
+  WaitForPlaying(autoplay_attr_url());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
@@ -508,7 +515,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying();
+  WaitForPlaying(autoplay_method_muted_url());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
@@ -520,7 +527,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
-  WaitForPlaying();
+  WaitForPlaying(autoplay_attr_muted_url());
   EXPECT_TRUE(ExecuteScriptAndExtractString(contents(),
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);

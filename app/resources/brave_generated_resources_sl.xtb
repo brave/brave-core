@@ -35,6 +35,7 @@
 <translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
 <translation id="6123134130710658846">Skrij gumb Brave Rewards</translation>
 <translation id="7635711399568194460">Skrije gumb Brave Rewards v vrstici z lokacijo, kadar storitev Brave Rewards ni omogočena</translation>
+<translation id="4262166817826183486">Ob odpiranju novega zavihka vedno pokaži vrstico z zaznamki</translation>
 <translation id="7965178729203412357">Nova identiteta Tor</translation>
 <translation id="8511502469534942133">Nova Tor povezava za to spletno mesto</translation>
 <translation id="8784924142044142231">Izhod iz brskalnika Tor</translation>
@@ -61,7 +62,6 @@
 <translation id="9075744464571452108">Prepoznavanje naprave</translation>
 <translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
-<translation id="7498695072878479744">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
@@ -85,12 +85,14 @@
 <translation id="8721331068159819483">Enako kot MacOs</translation>
 <translation id="6786747875388722282">Razširitve</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
+<translation id="5554028991651120544">Brave ponuja denarnico Ethereum in brskalnik Dapp</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
 <translation id="1765684547504191670">Uporablja komponento Media Router, da omogoči Chromecast v brskalniku.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="4154389611571860454">Uporablja razširitev IPFS za podporo IPFS-ja v brskalniku.</translation>
 <translation id="8137559199583651773">Upravljanje razširitev</translation>
+<translation id="7013485839273047434">Več razširitev</translation>
 <translation id="4928988318462976765">Trgovina s spletnimi razširitvami</translation>
 <translation id="9181207987584064303">Ogled v trgovini s spletnimi razširitvami</translation>
 <translation id="4846154056248462491">Ob izhodu</translation>
@@ -100,4 +102,19 @@
 <translation id="8303432794159193481">Dev aplikacije brskalnika Brave</translation>
 <translation id="8292967014767479012">Aplikacije brskalnika Brave</translation>
 <translation id="4743468424889072281">Razvojne aplikacije brskalnika Brave</translation>
+<translation id="4568409039725976900">Brave Orange</translation>
+<translation id="7216062233533864908">Orange Peel</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Envy</translation>
+<translation id="8111795220552176635">Clear Skies</translation>
+<translation id="8323875061602721187">Bondy Blue</translation>
+<translation id="8267711815380227275">Blurple</translation>
+<translation id="831132225871108758">Dark Knight</translation>
+<translation id="1473185169764311478">Oblika Orange Peel</translation>
+<translation id="8658537263568841491">Oblika Nana</translation>
+<translation id="8967241601928387177">Oblika Envy</translation>
+<translation id="7232547941405761864">Oblika Clear Skies</translation>
+<translation id="5500050460919597479">Oblika Bondy Blue</translation>
+<translation id="5359364898094115985">Oblika  Blurple</translation>
+<translation id="3385506478125681119">Oblika Dark Knight</translation>
 </translationbundle>

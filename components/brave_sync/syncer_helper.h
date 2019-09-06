@@ -20,12 +20,12 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
                       bookmarks::BookmarkModel* bookmark_model);
 
 // |src| is the node which is about to be inserted into |parent|
-uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
-                  const bookmarks::BookmarkNode* src);
+size_t GetIndex(const bookmarks::BookmarkNode* parent,
+                const bookmarks::BookmarkNode* src);
 
-uint64_t GetIndexByCompareOrderStartFrom(const bookmarks::BookmarkNode* parent,
-                                         const bookmarks::BookmarkNode* src,
-                                         int index);
+size_t GetIndexByCompareOrderStartFrom(const bookmarks::BookmarkNode* parent,
+                                       const bookmarks::BookmarkNode* src,
+                                       size_t index);
 
 }  // namespace brave_sync
 

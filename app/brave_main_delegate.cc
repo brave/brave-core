@@ -31,6 +31,7 @@
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "components/unified_consent/feature.h"
+#include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -141,13 +142,17 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       extensions_features::kNewExtensionUpdaterService.name,
 #endif
+    // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated on
+    // this feature.
+      features::kWebUIDarkMode.name,
       omnibox::kSimplifyHttpsIndicator.name,
   };
 
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
       autofill::features::kAutofillServerCommunication.name,
-      network::features::kNetworkService.name,
+      features::kAudioServiceOutOfProcess.name,
+      features::kLookalikeUrlNavigationSuggestionsUI.name,
       unified_consent::kUnifiedConsent.name,
 #if !defined(CHROME_MULTIPLE_DLL_CHILD) && !BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
       translate::kTranslateUI.name,  // only available in browser process
