@@ -379,22 +379,6 @@ struct GRANTS_PROPERTIES_ST {
   std::vector<GRANT_RESPONSE> grants_;
 };
 
-struct MEDIA_PUBLISHER_INFO {
-  MEDIA_PUBLISHER_INFO();
-  MEDIA_PUBLISHER_INFO(const MEDIA_PUBLISHER_INFO&);
-  ~MEDIA_PUBLISHER_INFO();
-
-  // load from json string
-  bool loadFromJson(const std::string & json);
-
-  std::string publisherName_;
-  std::string publisherURL_;
-  std::string favIconURL_;
-  std::string channelName_;
-  std::string publisher_id_;
-  ledger::MediaEventInfo twitchEventInfo_;
-};
-
 struct BATCH_PROOF {
   BATCH_PROOF();
   ~BATCH_PROOF();
