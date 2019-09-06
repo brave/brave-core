@@ -64,7 +64,7 @@ ContentSettingsPattern GetPatternFromURL(const GURL& url,
 
   return scheme_wildcard && !url.has_port()
       ? ContentSettingsPattern::FromString("*://" + url.host() + "/*")
-      : ContentSettingsPattern::FromString(url.GetOrigin().spec() + "/*");
+      : ContentSettingsPattern::FromString(url.GetOrigin().spec() + "*");
 }
 
 std::string ControlTypeToString(ControlType type) {
