@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/devtools/front_end/elements/module.json b/third_party/blink/renderer/devtools/front_end/elements/module.json
-index 52c482733e9bdd2f0e8af758c4101d6a5ecf4ebe..15801dfc128e62ffa2ce5d3a85ea7198b3d35d75 100644
+index 52c482733e9bdd2f0e8af758c4101d6a5ecf4ebe..a184d79e7536ba6737db929c93c573d8a64ae141 100644
 --- a/third_party/blink/renderer/devtools/front_end/elements/module.json
 +++ b/third_party/blink/renderer/devtools/front_end/elements/module.json
 @@ -302,6 +302,15 @@
@@ -11,7 +11,7 @@ index 52c482733e9bdd2f0e8af758c4101d6a5ecf4ebe..15801dfc128e62ffa2ce5d3a85ea7198
 +            "type": "view",
 +            "location": "elements-sidebar",
 +            "id": "elements.domPageGraphInfo",
-+            "title": "Page Graph Info",
++            "title": "Page Graph",
 +            "order": 7,
 +            "persistence": "permanent",
 +            "className": "Elements.PageGraphInfoWidget"

@@ -4,12 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 .page-graph-report {
-    padding-bottom: 3px;
+    border-bottom: 1px #ccc solid;
 }
 
 .page-graph-report-item {
     padding: 8px;
-    border-bottom: 1px #ccc solid;
+    border-top: 1px #ccc solid;
     font-size: 1.25em;
 }
 
