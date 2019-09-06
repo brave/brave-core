@@ -12,6 +12,12 @@ class OnboardingViewController: UIViewController {
     var profile: Profile
     let theme: Theme
     
+    /// Whether the on-boarding is dark or not, based solely on passed in theme
+    ///  Added explicitly to make removal easier in the future if just `theme` is used
+    var dark: Bool {
+        return theme.isDark
+    }
+    
     init(profile: Profile, theme: Theme) {
         self.profile = profile
         self.theme = theme
@@ -23,7 +29,7 @@ class OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = theme.colors.home
+        view.backgroundColor = dark ? UIColor(rgb: 0x212529) : UIColor(rgb: 0xFFFFFF)
     }
     
     /// Default behavior to present next onboarding screen.

@@ -31,7 +31,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
         tableView.alwaysBounceVertical = false
         tableView.register(BackForwardTableViewCell.self, forCellReuseIdentifier: self.BackForwardListCellIdentifier)
         tableView.backgroundColor = BackForwardViewUX.BackgroundColor
-        let blurEffect = UIBlurEffect(style: .extraLight)
+        let blurEffect = UIBlurEffect(style: .regular)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         tableView.backgroundView = blurEffectView
         

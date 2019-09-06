@@ -60,6 +60,7 @@ extension OnboardingSearchEnginesViewController {
         }
         
         private let titleStackView = UIStackView().then { stackView in
+            stackView.spacing = 10
             stackView.axis = .vertical
         }
         
