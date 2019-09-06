@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/sync_scheduler_impl.cc b/components/sync/engine_impl/sync_scheduler_impl.cc
-index 217652eec756c9e4ff4bf7bd74a9cd481672ed1b..7e153a22dd363213f1a0091e295ec9f2d5120cea 100644
+index 532ffe153a1ab98ff2498980882f85ccafb0538c..e5acdb6f0f004b50a7ebfd54c6a9cf2c6aaec6a3 100644
 --- a/components/sync/engine_impl/sync_scheduler_impl.cc
 +++ b/components/sync/engine_impl/sync_scheduler_impl.cc
-@@ -660,6 +660,7 @@ void SyncSchedulerImpl::TryCanaryJob() {
+@@ -659,6 +659,7 @@ void SyncSchedulerImpl::TryCanaryJob() {
  }
  
  void SyncSchedulerImpl::TrySyncCycleJob() {

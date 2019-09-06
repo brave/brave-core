@@ -13,3 +13,54 @@
     </style>
   </template>
 </dom-module>
+
+<dom-module id="brave-override-style-cr-button">
+  <template>
+    <style>
+      /* Default/light theme button colors */
+      :host {
+        --brave-text-color: #3b3e4f; /* grey800 */
+        --brave-brand-color: #ff7654; /* orange400 */
+        --brave-primary-hover: #ff977d; /* orange300 */
+        --brave-default-hover: rgba(255, 118, 84, 0.1); /* orange400 */
+        --brave-focus-outline: rgba(255, 118, 84, 0.4); /* orange400 */
+        --brave-default-border: #c2c4cf; /* grey 400 */
+        --ink-color: var(--brave-brand-color) !important;
+      }
+      /* Dark theme colors */
+      @media (prefers-color-scheme: dark) {
+        :host {
+          --brave-text-color: #ffffff;
+          --brave-default-border: #5e6175; /* grey 700 */
+        }
+      }
+      /* Default button */
+      :host {
+        font-family: Muli !important;
+        border-radius: 20px !important;
+        border: 1px solid;
+        border-color: var(--brave-default-border) !important;
+        color: var(--brave-text-color) !important;
+        outline: none;
+      }
+      :host-context(.focus-outline-visible):host(:focus) {
+        box-shadow: 0 0 0 3px var(--brave-focus-outline) !important;
+      }
+      /* Action button */
+      :host(.action-button) {
+        background-color: var(--brave-brand-color) !important;
+        color: #ffffff !important;
+        border: none !important;
+      }
+      :host(.action-button:hover) {
+        background: var(--brave-primary-hover) !important;
+      }
+      /* Not-action button */
+      :host(:not(.action-button):hover) {
+        background: none !important;
+        border-color: var(--brave-brand-color) !important;
+        color: var(--brave-brand-color) !important;
+      }
+    </style>
+  </template>
+</dom-module>

@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Tas nekas. Tā var notikt dažādu drošības apsvērumu dēļ. Vienkārši izveidojot savienojumu ar to no jauna, šis jautājums tiks atrisināts.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Šis satura veidotājs vēl nav pierakstījies ziedojumu saņemšanai no Brave lietotājiem. Dzeramnauda, ko nosūtīsiet, paliks jūsu makā līdz brīdim, kad attiecīgais veidotājs to apstiprinās.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

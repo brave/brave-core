@@ -734,10 +734,12 @@ TEST_F(BraveSyncServiceTest, GetPreferredDataTypes) {
 TEST_F(BraveSyncServiceTest, GetDisableReasons) {
   sync_prefs()->SetManagedForTest(true);
   EXPECT_EQ(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY);
+            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY |
+                syncer::SyncService::DISABLE_REASON_USER_CHOICE);
   sync_service()->OnSetSyncEnabled(true);
   EXPECT_EQ(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY);
+            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY |
+                syncer::SyncService::DISABLE_REASON_USER_CHOICE);
   brave_sync_prefs()->SetMigratedBookmarksVersion(2);
   EXPECT_EQ(sync_service()->GetDisableReasons(),
             syncer::SyncService::DISABLE_REASON_NONE);

@@ -110,7 +110,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="1421502046520299169">Tungkol sa &amp;Brave OS</translation>
 <translation id="2534623228451928732">I-update ang &amp;Brave OS</translation>
 <translation id="8447483940522230788">Helper ng Brave</translation>
-<translation id="3360368475735266712">Mag-sign in para i-sync at i-personalize ang Brave sa lahat ng iyong device</translation>
 <translation id="5477319665405831211">I-sync at i-personalize ang Brave sa lahat ng iyong device</translation>
 <translation id="4934157190377700991">Naka-sign in ka ngayon sa Brave</translation>
 <translation id="4100716194836114130">Ito ang iyong Brave</translation>
@@ -141,6 +140,8 @@ Kapag nag-sign in ka pa rin, isasama sa <ph name="ACCOUNT_EMAIL_NEW"/> ang impor
 <translation id="6746636977031158624">Hindi ma-sync ng Brave OS ang iyong data dahil hindi napapanahon ang mga detalye sa pag-sign in sa iyong account.</translation>
 <translation id="2999152167963026588">Hindi ma-sync ng Brave OS ang iyong data dahil hindi available ang Pag-sync para sa iyong domain.</translation>
 <translation id="1459786048951724030">Hindi ma-sync ng Brave OS ang iyong data dahil sa isang error sa pagsa-sign in.</translation>
+<translation id="6813094029720377619">Maki-clear mo ang cookies kapag umalis ka sa Brave. Para patuloy na mag-sync, baguhin ang <ph name="COOKIE_SETTINGS_LINK"/> na ito.</translation>
+<translation id="3340978935015468852">mga setting</translation>
 <translation id="663059986967017181">Kinopya sa Brave</translation>
 <translation id="1457432835062259213">App Launcher ng Brave</translation>
 <translation id="82609232232243542">Mag-sign in sa Brave</translation>
@@ -160,7 +161,7 @@ Upang mapigilan si <ph name="NEW_PROFILE_NAME"/> na ma-access ang iyong account,
 
 Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagang tagubilin.</translation>
 <translation id="1820843143331379651">Mawawala na ang mga profile ng pinangangasiwaang user simula sa Brave 70.</translation>
-<translation id="3066805437003400520">Made-delete sa device na ito ang data mula sa pag-browse ng taong ito. Para ma-recover ang data, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Made-delete sa device na ito ang data sa pag-browse ng taong ito. Para ma-recover ang data, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Mas mahusay na ang Brave</translation>
 <translation id="7192666605334070839">Ngayon, mas madali nang gamitin ang Brave sa iyong Brave Software Account at sa mga nakabahaging computer.</translation>
 <translation id="3511996232906761537">Makikita dito ang iyong web, mga bookmark at iba pang mga bagay-bagay sa Brave.</translation>
@@ -226,14 +227,6 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="7808415789955822133">Mga tuntunin ng Brave OS</translation>
 <translation id="7207456302801184289">Maligayang Pagdating sa Brave</translation>
 <translation id="5688839044908745927">Halos handa na ang Brave.</translation>
-<translation id="7758342895140862711">Dalhin ang Brave sa lahat ng lugar</translation>
-<translation id="3610173904388112975">Pag-browse sa web gamit ang mga smart na feature ng Brave Software</translation>
-<translation id="3479552764303398839">Hindi ngayon</translation>
-<translation id="8013374903356993822">Pumunta sa Brave nang mas mabilis</translation>
-<translation id="7625138338483121345">Gawing default mong browser ang Brave</translation>
-<translation id="5927044791090834489">I-pin ang Brave sa iyong taskbar</translation>
-<translation id="8933981935877469796">Piliin ang <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">I-click ang <ph name="BEGIN_BOLD"/>Lumipat pa rin<ph name="END_BOLD"/>, kung lalabas ito</translation>
 <translation id="3507835409099344374">Pumunta sa mga setting ng notification ng Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{May available na update sa Brave}=1{May available na update sa Brave}one{# araw nang may available na update sa Brave}other{# na araw nang may available na update sa Brave}}</translation>
 <translation id="720532315408041257">Hinihiling sa iyo ng administrator mo na muli mong ilunsad ang Brave para malapat ang update na ito</translation>
@@ -253,6 +246,7 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="8208853227947884571">Napapanahon ang Brave</translation>
 <translation id="6686872257969654608">Tungkol sa Brave OS</translation>
 <translation id="2280363356796735201">Humingi ng tulong sa Brave OS</translation>
+<translation id="38898988211673781">I-clear ang cookies at data ng site kapag umalis ka sa Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (kinopya sa Brave)</translation>
 <translation id="5468853758063275923">Brave ang iyong default na browser</translation>
 <translation id="1775322105159056176">Hindi matukoy o maitakda ng Brave ang default na browser</translation>
@@ -269,6 +263,7 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="8372880274820509128">Para sa karagdagang seguridad, ie-encrypt ng Brave ang iyong data.</translation>
 <translation id="7445061995866044926">Mag-sign out sa Brave?</translation>
 <translation id="7453070689008684791">Ia-access ng Brave ang iyong Drive para makapagmungkahi sa address bar</translation>
+<translation id="3360368475735266712">Mag-sign in para i-sync at i-personalize ang Brave sa lahat ng iyong device</translation>
 <translation id="9221712274065451529">Ginagamit ang wikang ito para ipakita ang Brave OS UI</translation>
 <translation id="3518788198614984730">Ipakita ang Brave OS sa wikang ito</translation>
 <translation id="5757460455745382269">Ginagamit ang wikang ito para ipakita ang Brave UI</translation>

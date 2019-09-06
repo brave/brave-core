@@ -110,7 +110,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1421502046520299169">Brave OS 정보</translation>
 <translation id="2534623228451928732">Brave OS 업데이트</translation>
 <translation id="8447483940522230788">Brave 도우미</translation>
-<translation id="3360368475735266712">로그인하여 모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
 <translation id="5477319665405831211">모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
 <translation id="4934157190377700991">이제 Brave에 로그인되었습니다.</translation>
 <translation id="4100716194836114130">나만의 Brave</translation>
@@ -141,6 +140,8 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="6746636977031158624">계정의 로그인 세부정보가 오래되어 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
 <translation id="2999152167963026588">내 도메인에서 동기화를 사용할 수 없으므로 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
 <translation id="1459786048951724030">로그인 중 오류가 발생하여 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
+<translation id="6813094029720377619">Brave을 종료할 때 쿠키를 삭제합니다. 동기화를 계속하려면 이 <ph name="COOKIE_SETTINGS_LINK"/>을(를) 변경하세요.</translation>
+<translation id="3340978935015468852">설정</translation>
 <translation id="663059986967017181">Brave에 복사됨</translation>
 <translation id="1457432835062259213">Brave 앱 런처</translation>
 <translation id="82609232232243542">Brave에 로그인</translation>
@@ -160,7 +161,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 
 자세한 안내를 보려면 <ph name="ACCOUNT_EMAIL"/>에서 이메일을 확인하세요.</translation>
 <translation id="1820843143331379651">Brave 70부터는 관리 대상 사용자 프로필을 사용할 수 없습니다.</translation>
-<translation id="3066805437003400520">선택한 사용자의 인터넷 사용 기록이 이 기기에서 삭제됩니다. 데이터를 복구하려면 <ph name="USER_EMAIL"/>(으)로 Brave에 로그인하세요.</translation>
+<translation id="669092380621816981">선택한 사용자의 인터넷 사용 기록이 이 기기에서 삭제됩니다. 데이터를 복구하려면 <ph name="USER_EMAIL"/>(으)로 Brave에 로그인하세요.</translation>
 <translation id="2827121003398607864">더욱 업그레이드된 Brave</translation>
 <translation id="7192666605334070839">이제 Brave Software 계정으로 공유 컴퓨터에서 Brave을 손쉽게 사용할 수 있습니다.</translation>
 <translation id="3511996232906761537">웹, 북마크 및 기타 Brave 콘텐츠가 여기에 저장됩니다.</translation>
@@ -226,14 +227,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7808415789955822133">Brave OS 용어</translation>
 <translation id="7207456302801184289">Brave에 오신 것을 환영합니다.</translation>
 <translation id="5688839044908745927">Brave 준비가 거의 완료되었습니다.</translation>
-<translation id="7758342895140862711">어디에서나 Brave 사용</translation>
-<translation id="3610173904388112975">Brave Software과 스마트하게 웹을 탐색하세요</translation>
-<translation id="3479552764303398839">나중에</translation>
-<translation id="8013374903356993822">Brave을 더 빠르게 사용해 보세요.</translation>
-<translation id="7625138338483121345">Brave을 기본 브라우저로 사용</translation>
-<translation id="5927044791090834489">Brave을 작업 표시줄에 고정</translation>
-<translation id="8933981935877469796"><ph name="SMALL_PRODUCT_LOGO"/><ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/> 선택</translation>
-<translation id="1585657529869845941"><ph name="BEGIN_BOLD"/>전환하기<ph name="END_BOLD"/> 버튼이 표시되면 클릭하세요</translation>
 <translation id="3507835409099344374">Brave 알림 설정으로 이동</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave 업데이트 출시}=1{Brave 업데이트 출시}other{Brave 업데이트가 출시된 지 #일 지남}}</translation>
 <translation id="720532315408041257">관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다.</translation>
@@ -253,6 +246,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8208853227947884571">Brave이 최신 버전임</translation>
 <translation id="6686872257969654608">Brave OS 정보</translation>
 <translation id="2280363356796735201">Brave OS 도움말 보기</translation>
+<translation id="38898988211673781">Brave을 종료할 때 쿠키 및 사이트 데이터 삭제</translation>
 <translation id="5253815230176279256">Brave Software Pay(Brave에 복사됨)</translation>
 <translation id="5468853758063275923">Brave이 기본 브라우저로 설정되어 있습니다.</translation>
 <translation id="1775322105159056176">Brave에서 기본 브라우저를 확인하거나 설정할 수 없습니다.</translation>
@@ -269,6 +263,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8372880274820509128">보안 강화를 위해 Brave에서 사용자 데이터를 암호화합니다.</translation>
 <translation id="7445061995866044926">Brave에서 로그아웃</translation>
 <translation id="7453070689008684791">Brave에서 내 드라이브에 액세스하여 주소 표시줄에 추천 검색어를 표시합니다.</translation>
+<translation id="3360368475735266712">로그인하여 모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
 <translation id="9221712274065451529">Brave OS UI가 이 언어로 표시됩니다.</translation>
 <translation id="3518788198614984730">이 언어로 Brave OS 표시</translation>
 <translation id="5757460455745382269">Brave UI가 이 언어로 표시됩니다.</translation>

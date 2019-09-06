@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "No worries. This can happen for a variety of security reasons. Simply reconnecting to it will solve this issue.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "This creator has not yet signed up to receive contributions from Brave users. Any tips you send will remain in your wallet until they verify.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

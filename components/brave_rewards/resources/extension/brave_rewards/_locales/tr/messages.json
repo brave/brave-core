@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Telaşa gerek yok. Bu, çeşitli güvenlik nedenleriyle olabilir. Yeniden bağlanmak basitçe bu sorunu çözecektir.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Bu içerik oluşturucusu henüz Brave kullanıcılarının katkılarını almak için kaydolmadı. Gönderdiğiniz bütün bahşişler, onlar doğrulayana kadar cüzdanınızda kalacaktır. ",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Trinkgelder erlauben auf</translation>
 <translation id="3671566813999349838">Betrag</translation>
 <translation id="3819257035322786455">Sicherung</translation>
-<translation id="4989542687859782284">Nicht verfügbar</translation>
 <translation id="1312977698678162065">Werden Sie bezahlt, relevante Werbung zu sehen, die Ihre Privatsphäre respektieren.</translation>
 <translation id="7655723274266132226">Jetzt können Sie verdienen, indem Sie Werbeanzeigen anschauen.</translation>
 <translation id="2975780980638932742">Brave Werbung ist da!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Bereit für den Anfang?</translation>
 <translation id="913775524828049259">Ja, ich bin bereit</translation>
 <translation id="108052542935515756">Sie können beginnen mit der</translation>
-<translation id="2678666039642976470">Wallet erneut verbinden</translation>
 <translation id="194625454574835815">Wiederherstellungsschlüssel</translation>
 <translation id="6354568176665589146">Wiederkehrend</translation>
 <translation id="7577100371127227294">Monatliche Trinkgelder</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Detaillierte Informationen anzeigen</translation>
 <translation id="1988679729106502285">HINWEIS:</translation>
 <translation id="5815103311506128988">Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Ihr Browser wird weiterhin versuchen, ihm Beiträge zukommen zu lassen, bis er sich verifiziert hat oder bis 90 Tage verstrichen sind.</translation>
+<translation id="603411408512957306">Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Ihr Browser wird weiterhin versuchen, ihm Beiträge zukommen zu lassen, bis er sich verifiziert hat oder bis 90 Tage verstrichen sind.</translation>
 <translation id="4292832015778676417">verdient aus Werbeanzeigen</translation>
 <translation id="3197752845651180812">Ausstehende Beiträge</translation>
 <translation id="3164105678355419142">Wiederkehrendes Trinkgeld</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">verifiziert</translation>
 <translation id="8030169304546394654">Verbindung getrennt</translation>
 <translation id="8267327690882073581">Wallet verifizieren</translation>
-<translation id="4569155249847375786">Verifiziert</translation>
+<translation id="543510923939676996">Verifiziert</translation>
 <translation id="7591798679868259510">Zu meinem Uphold-Account gehen</translation>
 <translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
 <translation id="46988480989545156">Wallet verifizieren</translation>
@@ -425,6 +424,7 @@
 <translation id="5275978662119683162">Vorteile der Verifizierung</translation>
 <translation id="5166793288622772189">Bereit, Ihre Geldbörse zu verifizieren?</translation>
 <translation id="8766217572332535979">Eine Verifizierung ist nicht notwendig, um Prämien für Urheberbeiträge zu verdienen</translation>
+<translation id="4569155249847375786">Verifiziert</translation>
 <translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
 <translation id="723054503945711909">Brave Software Inc. verarbeitet, speichert oder greift nicht auf persönliche Informationen zu, die Sie Uphold zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
 <translation id="1181037720776840403">Entfernen</translation>

@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Benarkan tip pada</translation>
 <translation id="3671566813999349838">Jumlah</translation>
 <translation id="3819257035322786455">Sandaran</translation>
-<translation id="4989542687859782284">Tidak tersedia</translation>
 <translation id="1312977698678162065">Dapatkan bayaran dengan menonton iklan berkaitan yang menghormati privasi anda.</translation>
 <translation id="7655723274266132226">Kini anda boleh menjana pendapatan dengan melihat iklan.</translation>
 <translation id="2975780980638932742">Iklan Brave telah tiba!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Sedia untuk bermula?</translation>
 <translation id="913775524828049259">Ya Saya Bersedia</translation>
 <translation id="108052542935515756">Anda boleh bermula dengan</translation>
-<translation id="2678666039642976470">Sambung semula dompet</translation>
 <translation id="194625454574835815">Kunci Pemulihan</translation>
 <translation id="6354568176665589146">Berulang</translation>
 <translation id="7577100371127227294">Tip Bulanan</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Lihat Butiran</translation>
 <translation id="1988679729106502285">CATATAN:</translation>
 <translation id="5815103311506128988">Pencipta ini belum lagi mendaftar untuk menerima sumbangan daripada pengguna Brave. Penyemak imbas anda akan terus berusaha untuk menyumbang sehingga mereka mengesahkan, atau sehingga 90 hari telah berlalu.</translation>
+<translation id="603411408512957306">Pencipta ini belum lagi mendaftar untuk menerima sumbangan daripada pengguna Brave. Penyemak imbas anda akan terus berusaha untuk menyumbang sehingga mereka mengesahkan, atau sehingga 90 hari telah berlalu.</translation>
 <translation id="4292832015778676417">diperoleh daripada iklan</translation>
 <translation id="3197752845651180812">Sumbangan menunggu</translation>
 <translation id="3164105678355419142">Tip berulang</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">sahkan</translation>
 <translation id="8030169304546394654">Sambungan Terputus</translation>
 <translation id="8267327690882073581">Sahkan Dompet</translation>
-<translation id="4569155249847375786">Disahkan</translation>
+<translation id="543510923939676996">Disahkan</translation>
 <translation id="7591798679868259510">Pergi ke akaun Uphold saya</translation>
 <translation id="9200453331904391567">Putuskan daripada Brave Rewards</translation>
 <translation id="46988480989545156">Sahkan dompet</translation>
@@ -425,6 +424,7 @@
 <translation id="5275978662119683162">Manfaat pengesahan</translation>
 <translation id="5166793288622772189">Sudah sedia untuk mengesahkan dompet anda?</translation>
 <translation id="8766217572332535979">Pengesahan tidak diperlukan untuk mendapatkan ganjaran bagi sumbangan pencipta</translation>
+<translation id="4569155249847375786">Disahkan</translation>
 <translation id="8465442795593991224">Uphold mungkin memerlukan anda untuk mengesahkan identiti anda berdasarkan perkhidmatan yang diminta.</translation>
 <translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses sebarang maklumat peribadi yang anda berikan kepada Uphold apabila anda mencipta akaun dengan mereka.</translation>
 <translation id="1181037720776840403">Alih keluar</translation>

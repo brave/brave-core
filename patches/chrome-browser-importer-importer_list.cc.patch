@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index 71659dd4133d71a90276f364ca685e78533b8979..f33c4354a6e5f7d69ca347e737e272494d1b036e 100644
+index 57c0506feeb1318ed0ed77b47ffce4babfe0b8e1..bc7c6e04098780d12c9c55d676f587ea5b7e8937 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
 @@ -29,6 +29,9 @@

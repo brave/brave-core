@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Usijali. Hii inaweza kutendeka kwa sababu mbalimbali. Kuunganisha kwayo tu kutatatua tatizo hili.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Mtengeneza maudhui huyu bado hajajisajili ili kuanza kupokea michango kutoka kwa watumiaji wa Brave. Zawadi yoyote utakayotuma itabaki kwenye wallet yako hadi watakapothibitisha.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

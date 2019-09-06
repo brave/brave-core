@@ -31,8 +31,10 @@
         z-index: 10;
       }
 
-      :host-context([dark]) #needsRestart {
-        background-color: #161719;
+      @media (prefers-color-scheme: dark) {
+        #needsRestart {
+          background-color: #161719;
+        }
       }
 
       #needsRestart .flex:last-child {

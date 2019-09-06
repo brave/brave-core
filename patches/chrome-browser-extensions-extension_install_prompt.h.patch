@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_install_prompt.h b/chrome/browser/extensions/extension_install_prompt.h
-index 44c0b01772fd3e2a1c1670eb077553e972e05e60..ddbf41e0c2a85293fe03249b9810932e02aa2c2b 100644
+index dcea843a6d7190d4e9e30d6ecce28028f18fd783..6f30d828db13b9f38f184499089d420cdbea4d4b 100644
 --- a/chrome/browser/extensions/extension_install_prompt.h
 +++ b/chrome/browser/extensions/extension_install_prompt.h
 @@ -87,7 +87,7 @@ class ExtensionInstallPrompt {

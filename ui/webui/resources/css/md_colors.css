@@ -1,5 +1,4 @@
-html,
-html[dark] {
+html {
   --brave-toolbar-gradient: linear-gradient(-90deg, #A3278F 0%, #E52F50 100%); /* linear gradient: red500 -> magenta600 */
   --md-background-color: rgb(233, 236, 239); /* neutral200 */
   --md-loading-message-color: #5E6175; /* grey700 */
@@ -7,7 +6,9 @@ html[dark] {
   /* --md-toolbar-color: linear-gradient(to left, #b10e95, #e72f4e) !important; */
 }
 
-html[dark] {
-  --md-background-color: rgb(30, 32, 41);  /* grey900 */
-  --md-loading-message-color: #C2C4CF;  /* grey400 */
+@media (prefers-color-scheme: dark) {
+  html {
+    --md-background-color: rgb(30, 32, 41); /* grey900 */
+    --md-loading-message-color: #C2C4CF; /* grey400 */
+  }
 }

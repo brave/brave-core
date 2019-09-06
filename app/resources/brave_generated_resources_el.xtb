@@ -40,6 +40,7 @@
 <translation id="2814998458708016836">Χρησιμοποιήστε φαρδιά γραμμή διευθύνσεων</translation>
 <translation id="6123134130710658846">Απόκρυψη πλήκτρου Ανταμοιβών Brave</translation>
 <translation id="7635711399568194460">Απόκρυψη του πλήκτρου Ανταμοιβών Brave στη γραμμή τοποθεσίας όταν οι Ανταμοιβές Brave δεν είναι ενεργοποιημένες</translation>
+<translation id="4262166817826183486">Να εμφανίζεται πάντα η γραμμή με τους σελιδοδείκτες στη σελίδα Νέας Καρτέλας</translation>
 <translation id="7965178729203412357">Νέα Ταυτότητα Tor</translation>
 <translation id="8511502469534942133">Νέα Σύνδεση Tor Γι' Αυτήν Την Ιστοσελίδα</translation>
 <translation id="8784924142044142231">Έξοδος από Tor</translation>
@@ -69,7 +70,6 @@
 <translation id="9075744464571452108">Αναγνώριση συσκευής</translation>
 <translation id="3570081523466826008">Αναβάθμιση συνδέσεων σε HTTPS</translation>
 <translation id="4824468494729001999">Αποκλεισμός διαλόγων</translation>
-<translation id="7498695072878479744">Επιτρέψτε τα πλήκτρα σύνδεσης Google σε ιστότοπους τρίτων</translation>
 <translation id="863171915776379000">Επιτρέψτε σύνδεση με Facebook και ενσωματωμένες αναρτήσεις</translation>
 <translation id="5165042248369837294">Επιτρέψτε στο Twitter ενσωματωμένα tweet</translation>
 <translation id="958971637207126733">Να επιτρέπονται οι ενσωματωμένες αναρτήσεις LinkedIn</translation>
@@ -93,12 +93,14 @@
 <translation id="8721331068159819483">Το ίδιο όπως στο macOS</translation>
 <translation id="6786747875388722282">Επεκτάσεις</translation>
 <translation id="2896916411183256228">Χρησιμοποιεί το WebTorrent για την εμφάνιση torrents απευθείας στο πρόγραμμα περιήγησης. Υποστηρίζει αρχεία torrent και magnet συνδέσμους.</translation>
+<translation id="5554028991651120544">Παρέχει ένα πορτοφόλι Ethereum και ένα πρόγραμμα περιήγησης Dapp στο Brave.</translation>
 <translation id="6554397389149987360">Χρησιμοποιεί το στοιχείο Hangouts για να ενεργοποιήσει την κοινή χρήση οθόνης και άλλες λειτουργίες στο πρόγραμμα περιήγησης.</translation>
 <translation id="1765684547504191670">Χρησιμοποιεί το στοιχείο Media Router για να ενεργοποιήσει το Chromecast στο πρόγραμμα περιήγησης.</translation>
 <translation id="9156965752763025780">Οι αλλαγές που πραγματοποιήσατε θα ισχύσουν την επόμενη φορά που θα εκκινήσετε το Brave.</translation>
 <translation id="7179921470347911571">Επανεκκίνηση Τώρα</translation>
 <translation id="4154389611571860454">Χρησιμοποιεί τη συνοδευτική επέκταση IPFS για υποστήριξη του IPFS στο πρόγραμμα περιήγησης</translation>
 <translation id="8137559199583651773">Διαχείριση επεκτάσεων</translation>
+<translation id="7013485839273047434">Λάβετε περισσότερες επεκτάσεις</translation>
 <translation id="4928988318462976765">Ηλεκτρονικό Κατάστημα Επεκτάσεων</translation>
 <translation id="9181207987584064303">Προβολή στο Ηλεκτρονικό Κατάστημα των Επεκτάσεων</translation>
 <translation id="4846154056248462491">Κατά την έξοδο</translation>
@@ -111,4 +113,19 @@
 <translation id="8303432794159193481">Εφαρμογές Dev Του Brave Προγράμματος Περιήγησης</translation>
 <translation id="8292967014767479012">Εφαρμογές Του Brave Προγράμματος Περιήγησης</translation>
 <translation id="4743468424889072281">Εφαρμογές Ανάπτυξης Του Brave Προγράμματος Περιήγησης</translation>
+<translation id="4568409039725976900">Γενναίο Πορτοκαλί</translation>
+<translation id="7216062233533864908">Φλοιός Πορτοκάλι</translation>
+<translation id="8285320948587819446">Νανά</translation>
+<translation id="2016467614790224371">Φθόνος</translation>
+<translation id="8111795220552176635">Καθαροί Ουρανοί</translation>
+<translation id="8323875061602721187">Μπλε Μπόντι</translation>
+<translation id="8267711815380227275">Μπλε-Μοβ</translation>
+<translation id="831132225871108758">Σκοτεινός Ιππότης</translation>
+<translation id="1473185169764311478">Σχήμα Φλοιός Πορτοκάλι</translation>
+<translation id="8658537263568841491">Σχήμα Νανά</translation>
+<translation id="8967241601928387177">Σχήμα Φθόνος</translation>
+<translation id="7232547941405761864">Σχήμα Καθαροί Ουρανοί</translation>
+<translation id="5500050460919597479">Σχήμα Μπλε Μπόντι</translation>
+<translation id="5359364898094115985">Σχήμα Μπλε-Μοβ</translation>
+<translation id="3385506478125681119">Σχήμα Σκοτεινός Ιππότης</translation>
 </translationbundle>

@@ -16,13 +16,12 @@
 #include "url/gurl.h"
 
 namespace content {
-class ResourceContext;
+class BrowserContext;
 }
 
 namespace network {
 struct ResourceRequest;
 }
-class BraveNetworkDelegateBase;
 class BraveRequestHandler;
 
 namespace brave {
@@ -111,13 +110,12 @@ struct BraveRequestInfo {
       int render_process_id,
       int frame_tree_node_id,
       uint64_t request_identifier,
-      content::ResourceContext* resource_context,
+      content::BrowserContext* browser_context,
       std::shared_ptr<brave::BraveRequestInfo> ctx);
 
  private:
   // Please don't add any more friends here if it can be avoided.
-  // We should also remove the ones below.
-  friend class ::BraveNetworkDelegateBase;
+  // We should also remove the one below.
   friend class ::BraveRequestHandler;
 
   GURL* new_url = nullptr;

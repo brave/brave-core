@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Keine Sorge. Dies kann aus verschiedenen Sicherheitsgründen geschehen. Durch einfaches Wiederherstellen der Verbindung wird dieses Problem gelöst.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Alle von Ihnen gesendeten Trinkgelder bleiben in Ihrem Wallet, bis er sich verifiziert hat.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

@@ -28,6 +28,7 @@ if (enable_brave_sync) {
       "//components/pref_registry",
       "//components/prefs",
       "//components/prefs",
+      "//components/signin/public/identity_manager",
       "//content/public/browser",
       "//extensions/browser",
       "//net",

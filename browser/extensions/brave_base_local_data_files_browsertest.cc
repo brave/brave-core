@@ -14,7 +14,6 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
-#include "chrome/browser/net/url_request_mock_util.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_test_utils.h"
@@ -63,9 +62,6 @@ void BaseLocalDataFilesBrowserTest::MaybeSetUpEmbeddedTestServerOnMainThread() {
   if (!embedded_test_server_directory())
     return;
 
-  base::PostTaskWithTraits(
-      FROM_HERE, {content::BrowserThread::IO},
-      base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
   host_resolver()->AddRule("*", "127.0.0.1");
 }
 

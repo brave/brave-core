@@ -22,9 +22,11 @@
       --cr-card-elevation_-_box-shadow: 0 !important;
       --cr-card-border-radius: 4px !important;
     }
-    html[dark] {
-      --cr-primary-text-color: #F4F4F4 !important;
-      --cr-secondary-text_-_color: #AEB1C2 !important;
+    @media (prefers-color-scheme: dark) {
+      html {
+        --cr-primary-text-color: #F4F4F4 !important;
+        --cr-secondary-text_-_color: #AEB1C2 !important;
+      }
     }
   </style>
 </custom-style>

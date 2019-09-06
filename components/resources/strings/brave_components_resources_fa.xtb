@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">اجازه ارائه انعام به</translation>
 <translation id="3671566813999349838">مبلغ</translation>
 <translation id="3819257035322786455">پشتیبان‌گیری</translation>
-<translation id="4989542687859782284">ناموجود</translation>
 <translation id="1312977698678162065">با تماشای آگهی‌های مرتبطی که به حریم خصوصی‌تان احترام می‌گذارند پاداش دریافت کنید.</translation>
 <translation id="7655723274266132226">اکنون می‌توانید با مشاهده آگهی‌ها، دریافت کنید.</translation>
 <translation id="2975780980638932742">آگهی‌های Brave ارائه شد!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">برای شروع به کار آماده‌اید؟</translation>
 <translation id="913775524828049259">بله، آماده‌ام</translation>
 <translation id="108052542935515756">با این می‌توانید شروع کنید</translation>
-<translation id="2678666039642976470">اتصال مجدد کیف پول</translation>
 <translation id="194625454574835815">کلید بازیابی</translation>
 <translation id="6354568176665589146">تکرارشونده</translation>
 <translation id="7577100371127227294">انعام ماهانه</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">مشاهده جزئیات</translation>
 <translation id="1988679729106502285">توجه:</translation>
 <translation id="5815103311506128988">این پدیدآورنده هنوز برای دریافت کمک از کاربران Brave ثبت‌نام نکرده است. مرورگرتان تا زمانی که پدیدآورنده به تأیید برسد، یا تا 90 روز  سعی می‌کند کمک را انجام دهد.</translation>
+<translation id="603411408512957306">این پدیدآورنده هنوز برای دریافت کمک از کاربران Brave ثبت‌نام نکرده است. مرورگرتان تا زمانی که پدیدآورنده به تأیید برسد، یا تا 90 روز  سعی می‌کند کمک را انجام دهد.</translation>
 <translation id="4292832015778676417">دریافت‌شده از آگهی‌ها</translation>
 <translation id="3197752845651180812">مشارکت‌های معلق</translation>
 <translation id="3164105678355419142">انعام تکرارشونده</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">تأیید</translation>
 <translation id="8030169304546394654">ارتباط قطع شد</translation>
 <translation id="8267327690882073581">تأیید کیف پول</translation>
-<translation id="4569155249847375786">تأیید شد</translation>
+<translation id="543510923939676996">تأیید شد</translation>
 <translation id="7591798679868259510">رفتن به حساب Uphold من</translation>
 <translation id="9200453331904391567">قطع ارتباط از پاداش‌های Brave</translation>
 <translation id="46988480989545156">تأیید کیف پول</translation>
@@ -425,6 +424,7 @@
 <translation id="5275978662119683162">مزیت‌های تأیید</translation>
 <translation id="5166793288622772189">آماده تأیید کیف خود هستید؟</translation>
 <translation id="8766217572332535979">تأیید برای کسب پاداش‌ها برای ایجادکننده مشارکت‌کننده‌ها ضروری نیست.</translation>
+<translation id="4569155249847375786">تأیید شد</translation>
 <translation id="8465442795593991224">ممکن است Uphold شما را ملزم به تأیید هویتتان بر اساس خدمات درخواستی کند.</translation>
 <translation id="723054503945711909">Brave Software Inc.اطلاعات شخصی را که در زمان ایجاد یک حساب با Uphold در اختیار آنها قرار داده‌اید، پردازش و ذخیره‌سازی نخواهد کرد و به آنها دسترسی نخواهد داشت.</translation>
 <translation id="1181037720776840403">حذف</translation>

@@ -29,18 +29,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   std::unique_ptr<content::BrowserMainParts> CreateBrowserMainParts(
       const content::MainFunctionParams& parameters) override;
   void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
-  bool AllowGetCookie(const GURL& url,
-                      const GURL& first_party,
-                      const net::CookieList& cookie_list,
-                      content::ResourceContext* context,
-                      int render_process_id,
-                      int render_frame_id) override;
-  bool AllowSetCookie(const GURL& url,
-                      const GURL& first_party,
-                      const net::CanonicalCookie& cookie,
-                      content::ResourceContext* context,
-                      int render_process_id,
-                      int render_frame_id) override;
 
   bool HandleExternalProtocol(
       const GURL& url,
@@ -50,8 +38,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       bool is_main_frame,
       ui::PageTransition page_transition,
       bool has_user_gesture,
-      network::mojom::URLLoaderFactoryRequest* factory_request,
-      network::mojom::URLLoaderFactory*& out_factory) override;  // NOLINT
+      network::mojom::URLLoaderFactoryPtr* out_factory) override;
 
   content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
       content::BrowserContext* browser_context,
@@ -73,16 +60,18 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       bool is_navigation,
       bool is_download,
       const url::Origin& request_initiator,
-      network::mojom::URLLoaderFactoryRequest* factory_request,
+      mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
       network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client,
       bool* bypass_redirect_checks) override;
 
-  void WillCreateWebSocket(
+  bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
+  void CreateWebSocket(
       content::RenderFrameHost* frame,
-      network::mojom::WebSocketRequest* request,
-      network::mojom::AuthenticationHandlerPtr* auth_handler,
-      network::mojom::TrustedHeaderClientPtr* header_client,
-      uint32_t* options) override;
+      content::ContentBrowserClient::WebSocketFactory factory,
+      const GURL& url,
+      const GURL& site_for_cookies,
+      const base::Optional<std::string>& user_agent,
+      network::mojom::WebSocketHandshakeClientPtr handshake_client) override;
 
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,
@@ -98,9 +87,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
 
  private:
-  bool AllowAccessCookie(const GURL& url, const GURL& first_party,
-      content::ResourceContext* context, int render_process_id,
-      int render_frame_id);
   void OnAllowGoogleAuthChanged();
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>

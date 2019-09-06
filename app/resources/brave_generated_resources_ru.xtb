@@ -40,6 +40,7 @@
 <translation id="2814998458708016836">Использовать широкую адресную строку</translation>
 <translation id="6123134130710658846">Кнопка «Скрыть награды Brave»</translation>
 <translation id="7635711399568194460">Скрывает кнопку «Награды Brave» в адресной строке, когда «Награды Brave» не включены</translation>
+<translation id="4262166817826183486">Всегда показывать панель закладок на странице Новая вкладка</translation>
 <translation id="7965178729203412357">Новый Tor-идентификатор</translation>
 <translation id="8511502469534942133">Новое подключение через Tor для этого сайта</translation>
 <translation id="8784924142044142231">Выйти из Tor</translation>
@@ -69,7 +70,6 @@
 <translation id="9075744464571452108">Распознавание устройства</translation>
 <translation id="3570081523466826008">Обновлять соединения до HTTPS</translation>
 <translation id="4824468494729001999">Блокировать скрипты</translation>
-<translation id="7498695072878479744">Разрешить кнопки входа в Google на сторонних сайтах</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
@@ -93,12 +93,14 @@
 <translation id="8721331068159819483">Как на macOS</translation>
 <translation id="6786747875388722282">Расширения</translation>
 <translation id="2896916411183256228">WebTorrent позволит отображать информацию о торрентах прямо в браузере. Поддерживаются торрент-файлы и magnet-ссылки.</translation>
+<translation id="5554028991651120544">Обеспечивает кошелек Ethereum и браузер Dapp внутри Brave.</translation>
 <translation id="6554397389149987360">С помощью компонента Hangouts можно прямо в браузере демонстрировать свой экран и пользоваться другими возможностями.</translation>
 <translation id="1765684547504191670">Использует компонент Media Router для включения Chromecast в браузере.</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="7179921470347911571">Перезапустить</translation>
 <translation id="4154389611571860454">Использует расширение IPFS для поддержки IPFS в браузере.</translation>
 <translation id="8137559199583651773">Управление расширениями</translation>
+<translation id="7013485839273047434">Получить больше расширений</translation>
 <translation id="4928988318462976765">Магазин расширений</translation>
 <translation id="9181207987584064303">Открыть в магазине расширений</translation>
 <translation id="4846154056248462491">На выходе</translation>
@@ -111,4 +113,19 @@
 <translation id="8303432794159193481">Приложения разработчика для браузера Brave</translation>
 <translation id="8292967014767479012">Приложения браузера Brave</translation>
 <translation id="4743468424889072281">Приложения для разработки браузера Brave</translation>
+<translation id="4568409039725976900">Brave Orange</translation>
+<translation id="7216062233533864908">Апельсиновая кожура</translation>
+<translation id="8285320948587819446">Нана</translation>
+<translation id="2016467614790224371">Envy</translation>
+<translation id="8111795220552176635">Светлые небеса</translation>
+<translation id="8323875061602721187">Бонди Блу</translation>
+<translation id="8267711815380227275">Ф</translation>
+<translation id="831132225871108758">Темный рыцарь</translation>
+<translation id="1473185169764311478">Шаблон Апельсиновая кожура</translation>
+<translation id="8658537263568841491">Шаблон Нана</translation>
+<translation id="8967241601928387177">Шаблон Envy</translation>
+<translation id="7232547941405761864">Форма</translation>
+<translation id="5500050460919597479">Форма Бонди Блу</translation>
+<translation id="5359364898094115985">Cbyt</translation>
+<translation id="3385506478125681119">Шаблон Темный рыцарь</translation>
 </translationbundle>
