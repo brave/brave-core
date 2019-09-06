@@ -51,7 +51,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       base::Value(GetDefaultPrefValueForMetricsReporting()));
   brave::BraveP3AService::RegisterPrefs(registry);
   brave_shields::RegisterShieldsP3APrefs(registry);
+#if !defined(OS_ANDROID)
   BraveWindowsTracker::RegisterPrefs(registry);
+#endif
   BraveUptimeTracker::RegisterPrefs(registry);
 }
 

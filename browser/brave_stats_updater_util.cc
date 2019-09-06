@@ -81,7 +81,7 @@ int GetIsoWeekNumber(base::Time time) {
 base::Time GetYMDAsDate(base::StringPiece ymd) {
   const auto pieces = base::SplitStringPiece(ymd, "-", base::TRIM_WHITESPACE,
                                              base::SPLIT_WANT_NONEMPTY);
-  DCHECK_EQ(pieces.size(), 3);
+  DCHECK_EQ(pieces.size(), 3ull);
   base::Time::Exploded time;
   base::Time().LocalExplode(&time);
 

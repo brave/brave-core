@@ -13,15 +13,19 @@
 #include "base/time/time.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
+#if !defined(OS_ANDROID)
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
+#endif
+
 namespace brave {
 
 namespace {
+#if !defined(OS_ANDROID)
 BraveWindowsTracker* g_brave_windows_tracker_instance = nullptr;
 
 constexpr char kLastTimeIncognitoUsed[] =
@@ -50,6 +54,7 @@ const char* GetPrefNameForProfile(Profile* profile) {
   }
   return nullptr;
 }
+#endif  // !defined(OS_ANDROID)
 
 // Please keep this list sorted and synced with |DoHistogramBravezation|.
 constexpr const char* kBravezationHistograms[] = {
@@ -262,6 +267,7 @@ void BraveUptimeTracker::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kDailyUptimesListPrefName);
 }
 
+#if !defined(OS_ANDROID)
 BraveWindowsTracker::BraveWindowsTracker(PrefService* local_state)
     : local_state_(local_state) {
   if (!local_state) {
@@ -332,6 +338,7 @@ void BraveWindowsTracker::UpdateP3AValues() const {
   const int tor_used = !local_state_->GetBoolean(kTorUsed);
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.TorEverUsed", tor_used, 1);
 }
+#endif  // !defined(OS_ANDROID)
 
 void SetupHistogramsBraveization() {
   for (const char* histogram_name : kBravezationHistograms) {

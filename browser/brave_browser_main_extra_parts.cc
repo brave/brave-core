@@ -51,6 +51,8 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   brave_shields::RecordShieldsUsageP3A(brave_shields::kNeverClicked,
                                        g_browser_process->local_state());
 
+#if !defined(OS_ANDROID)
   brave::BraveWindowsTracker::CreateInstance(g_browser_process->local_state());
+#endif
   brave::BraveUptimeTracker::CreateInstance(g_browser_process->local_state());
 }
