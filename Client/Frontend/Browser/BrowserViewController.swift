@@ -1883,6 +1883,7 @@ extension BrowserViewController: TabDelegate {
         
         if let rewards = self.rewards {
             tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name())
+            tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
         }
     }
 

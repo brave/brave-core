@@ -12,7 +12,7 @@ private let log = Logger.rewardsLogger
 
 class RewardsReporting: TabContentScript {
     let rewards: BraveRewards
-    let tab: Tab
+    weak var tab: Tab?
     
     init(rewards: BraveRewards, tab: Tab) {
         self.rewards = rewards
@@ -44,7 +44,7 @@ class RewardsReporting: TabContentScript {
                 let json = try JSONSerialization.data(withJSONObject: body, options: [])
                 var content = try JSONDecoder().decode(Content.self, from: json)
                 
-                guard let tabURL = tab.url else { return }
+                guard let tab = tab, let tabURL = tab.url else { return }
                 
                 if content.url.hasPrefix("//") {
                     content.url = "\(tabURL.scheme ?? "http"):\(content.url)"
