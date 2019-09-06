@@ -1137,12 +1137,7 @@ void PublisherInfoDatabase::RecordP3AStats(bool auto_contributions_on) {
   sql::Statement sql(
       db_.GetCachedStatement(SQL_FROM_HERE,
                              "SELECT category, COUNT(*) FROM contribution_info "
-                             "WHERE category in (?, ?, ?) GROUP BY 1"));
-
-  sql.BindInt(0, ledger::AUTO_CONTRIBUTE);
-  sql.BindInt(1, ledger::ONE_TIME_TIP);
-  sql.BindInt(2, ledger::RECURRING_TIP);
-
+                             "GROUP BY 1"));
   int auto_contributions = 0;
   int tips = 0;
   int queued_recurring = 0;
