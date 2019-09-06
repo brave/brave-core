@@ -39,13 +39,16 @@ TEST_F(BraveShieldsExceptionsTest, IsWhitelistedFingerprintingException) {
   // Tests for sandbox URLs
   EXPECT_TRUE(IsWhitelistedFingerprintingException(
       GURL("https://sandbox.uphold.com"),
-      GURL("https://netverify.com/iframe")));
+      GURL("https://sandbox-uphold.netverify.com/iframe")));
   EXPECT_TRUE(IsWhitelistedFingerprintingException(
       GURL("https://sandbox.uphold.com/"),
-      GURL("https://netverify.com")));
+      GURL("https://random-subdomain.netverify.com")));
+  EXPECT_TRUE(IsWhitelistedFingerprintingException(
+      GURL("https://sandbox.uphold.com/"),
+      GURL("https://uphold.netverify.com")));
   EXPECT_FALSE(IsWhitelistedFingerprintingException(
       GURL("http://sandbox.uphold.com/"),
-      GURL("https://uphold.netverify.com/")));
+      GURL("https://netverify.com/")));
   EXPECT_FALSE(IsWhitelistedFingerprintingException(
       GURL("https://sandbox.uphold.com/"),
       GURL("http://netverify.com/")));
@@ -53,10 +56,10 @@ TEST_F(BraveShieldsExceptionsTest, IsWhitelistedFingerprintingException) {
       GURL("https://netverify.com/iframe"),
       GURL("https://sandbox.uphold.com/")));
   EXPECT_FALSE(IsWhitelistedFingerprintingException(
-      GURL("https://sandbox.uphold.com/"),
-      GURL("https://uphold.netverify.com/iframe")));
+      GURL("https://random-subdomain.uphold.com/"),
+      GURL("https://netverify.com/iframe")));
   EXPECT_FALSE(IsWhitelistedFingerprintingException(
-      GURL("https://www.sandbox.uphold.com/"),
+      GURL("http://www.sandbox.uphold.com/"),
       GURL("https://netverify.com/iframe")));
 }
 
