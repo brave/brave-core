@@ -40,6 +40,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2814998458708016836">Bruk vid adresselinje</translation>
 <translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
 <translation id="7635711399568194460">Skjuler "Brave Rewards"-knappen i plasseringslinjen når Brave Reward ikke er aktivert</translation>
+<translation id="4262166817826183486">Vis alltid bokmerkeraden når du åpner en ny fane.</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-tilkobling for dette nettstedet</translation>
 <translation id="8784924142044142231">Avslutt Tor</translation>
@@ -69,7 +70,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="9075744464571452108">Enhetsgjenkjennelse</translation>
 <translation id="3570081523466826008">Oppgrader tilkoblinger til HTTPS</translation>
 <translation id="4824468494729001999">Blokker skript</translation>
-<translation id="7498695072878479744">Tillat innloggingsknapper fra Google på tredjepartssider</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
 <translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
@@ -93,12 +93,14 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8721331068159819483">Samme som macOS</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
 <translation id="2896916411183256228">Bruker WebTorrent til å vise torrents direkte i nettleseren. Støtter torrent-filer og magnetlenker.</translation>
+<translation id="5554028991651120544">Sørger for en Ethereum-lommebok og dApp-nettleser inne i Brave.</translation>
 <translation id="6554397389149987360">Bruk Hangouts-komponenten for å aktivere skjermdeling og andre funksjoner i nettleseren.</translation>
 <translation id="1765684547504191670">Bruker Media Router-komponenten for å aktivere Chromecast i nettleseren.</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
 <translation id="7179921470347911571">Start på nytt nå</translation>
 <translation id="4154389611571860454">Bruker IPFS-utvidelse for å støtte IPFS i nettleseren.</translation>
 <translation id="8137559199583651773">Administrer utvidelser</translation>
+<translation id="7013485839273047434">Få flere utvidelser</translation>
 <translation id="4928988318462976765">Butikken for nettutvidelser</translation>
 <translation id="9181207987584064303">Vis i butikken for nettutvidelser</translation>
 <translation id="4846154056248462491">Ved avslutning</translation>
@@ -111,4 +113,19 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8303432794159193481">Brave Browser Utviklerapper</translation>
 <translation id="8292967014767479012">Brave Browser Apper</translation>
 <translation id="4743468424889072281">Brave Browser Utviklingsapper</translation>
+<translation id="4568409039725976900">Modig Appelsin</translation>
+<translation id="7216062233533864908">Appelsinskall</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Misunnelse</translation>
+<translation id="8111795220552176635">Blå himmel</translation>
+<translation id="8323875061602721187">Blågrønn</translation>
+<translation id="8267711815380227275">Blålilla</translation>
+<translation id="831132225871108758">Mørk ridder</translation>
+<translation id="1473185169764311478">Appelsinskallform</translation>
+<translation id="8658537263568841491">Nanaform</translation>
+<translation id="8967241601928387177">Misunnelsesform</translation>
+<translation id="7232547941405761864">Klar himmelform</translation>
+<translation id="5500050460919597479">Blågrønn form</translation>
+<translation id="5359364898094115985">Blålilla form</translation>
+<translation id="3385506478125681119">Mørk ridderform</translation>
 </translationbundle>

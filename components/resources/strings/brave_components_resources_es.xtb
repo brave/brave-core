@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Permiso de sugerencias activado</translation>
 <translation id="3671566813999349838">Cantidad</translation>
 <translation id="3819257035322786455">Copia de seguridad</translation>
-<translation id="4989542687859782284">No disponible</translation>
 <translation id="1312977698678162065">Recibe pagos por visualizar anuncios relevantes que respetan tu privacidad.</translation>
 <translation id="7655723274266132226">Ahora puedes ganar viendo anuncios.</translation>
 <translation id="2975780980638932742">¡Brave Ads ha llegado!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">¿Preparado para empezar?</translation>
 <translation id="913775524828049259">Sí, estoy listo</translation>
 <translation id="108052542935515756">Puedes empezar con el</translation>
-<translation id="2678666039642976470">Reconectar cartera</translation>
 <translation id="194625454574835815">Clave de recuperación</translation>
 <translation id="6354568176665589146">Periódico</translation>
 <translation id="7577100371127227294">Propinas mensuales</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Ver detalles</translation>
 <translation id="1988679729106502285">AVISO:</translation>
 <translation id="5815103311506128988">Este creador aún no se ha registrado para recibir contribuciones de los usuarios de Brave. El navegador intentará contribuir hasta que se verifique o hasta que hayan pasado noventa días.</translation>
+<translation id="603411408512957306">Este creador aún no se ha registrado para recibir contribuciones de los usuarios de Brave. El navegador intentará contribuir hasta que se verifique o hasta que hayan pasado noventa días.</translation>
 <translation id="4292832015778676417">ganado de anuncios</translation>
 <translation id="3197752845651180812">Contribuciones pendientes</translation>
 <translation id="3164105678355419142">Contribución económica periódica</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">verificar</translation>
 <translation id="8030169304546394654">Desconectada</translation>
 <translation id="8267327690882073581">Verificar cartera</translation>
-<translation id="4569155249847375786">Verificada</translation>
+<translation id="543510923939676996">Verificada</translation>
 <translation id="7591798679868259510">Ir a mi cuenta Uphold</translation>
 <translation id="9200453331904391567">Desconectar de las recompensas de Brave</translation>
 <translation id="46988480989545156">Verificar cartera</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">Beneficios de la verificación</translation>
 <translation id="5166793288622772189">¿Está listo para verificar tu cartera?</translation>
 <translation id="8766217572332535979">La verificación no es necesaria para ganar recompensas por las contribuciones de los creadores</translation>
+<translation id="4569155249847375786">Verificada</translation>
 <translation id="8465442795593991224">Uphold puede requerir que verifiques tu identidad en base a los servicios solicitados.</translation>
 <translation id="723054503945711909">Brave Software Inc. no procesa, almacena o accede a ninguna información personal que hayas proporcionado a Uphold al crear una cuenta con ellos.</translation>
 <translation id="1181037720776840403">Eliminar</translation>
@@ -481,5 +481,5 @@
 <translation id="1399673826422570698">Puede que tengas problemas de red o que haya un problema con los servidores de sincronización.</translation>
 <translation id="5286379413446391050">No se pudo conectar a los servidores de sincronización</translation>
 <translation id="2410472020237369473">Es posible que el reloj de tu ordenador esté ajustado a una hora o zona horaria errónea. Comprueba la configuración de tu reloj.</translation>
-<translation id="5655621391922317800">Criptocarteras</translation>
+<translation id="5655621391922317800">Crypto Wallets</translation>
 </translationbundle>

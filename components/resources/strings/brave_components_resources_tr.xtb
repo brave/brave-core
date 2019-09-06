@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Şunda bahşişlere izin ver</translation>
 <translation id="3671566813999349838">Miktar</translation>
 <translation id="3819257035322786455">Yedekle</translation>
-<translation id="4989542687859782284">Kullanılamaz</translation>
 <translation id="1312977698678162065">Gizliliğinize saygılı ve alakalı reklamlar görüntüleyerek ödeme alın.</translation>
 <translation id="7655723274266132226">Şimdi reklam izleyerek kazanabilirsin.</translation>
 <translation id="2975780980638932742">Brave Reklamları geldi!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Başlamaya hazır mısınız?</translation>
 <translation id="913775524828049259">Evet Hazırım</translation>
 <translation id="108052542935515756">Şununla başlayabilirsiniz</translation>
-<translation id="2678666039642976470">Cüzdana tekrar bağlan</translation>
 <translation id="194625454574835815">Yedekleme Anahtarı</translation>
 <translation id="6354568176665589146">Tekrar eden</translation>
 <translation id="7577100371127227294">Aylık Bahşişler</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Detayları Görüntüle</translation>
 <translation id="1988679729106502285">NOT:</translation>
 <translation id="5815103311506128988">Bu içerik oluşturucusu henüz Brave kullanıcılarının katkılarını almak için kaydolmadı. Tarayıcınız, onlar doğrulayana veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam edecektir.</translation>
+<translation id="603411408512957306">Bu içerik oluşturucusu henüz Brave kullanıcılarının katkılarını almak için kaydolmadı. Tarayıcınız, onlar doğrulayana veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam edecektir.</translation>
 <translation id="4292832015778676417">reklamlardan kazanıldı</translation>
 <translation id="3197752845651180812">Bekleyen katkılar</translation>
 <translation id="3164105678355419142">Yinelenen bahşiş</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">doğrula</translation>
 <translation id="8030169304546394654">Bağlantı kesildi</translation>
 <translation id="8267327690882073581">Cüzdanı Doğrula</translation>
-<translation id="4569155249847375786">Doğrulandı</translation>
+<translation id="543510923939676996">Doğrulandı</translation>
 <translation id="7591798679868259510">Uphold hesabıma git</translation>
 <translation id="9200453331904391567">Brave Ödüllerden Ayrıl</translation>
 <translation id="46988480989545156">Cüzdanı doğrula</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">Doğrulamanın faydaları</translation>
 <translation id="5166793288622772189">Cüzdanınızı doğrulamak için hazır mısınız?</translation>
 <translation id="8766217572332535979">İçerik oluşturucu katkıları için ödül kazanmak için doğrulama gerekli değildir</translation>
+<translation id="4569155249847375786">Doğrulandı</translation>
 <translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
 <translation id="723054503945711909">Brave Software Inc. onlarla bir hesap oluştururken, onaylama için verdiğiniz kişisel bilgilerin hiçbirini işlemez, saklamaz veya erişemez.</translation>
 <translation id="1181037720776840403">Kaldır</translation>

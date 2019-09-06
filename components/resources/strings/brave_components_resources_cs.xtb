@@ -197,7 +197,6 @@ Povolte je návštěvou</translation>
 <translation id="2827387977307390755">Povolit příspěvky na</translation>
 <translation id="3671566813999349838">Částka</translation>
 <translation id="3819257035322786455">Zálohovat</translation>
-<translation id="4989542687859782284">Nedostupné</translation>
 <translation id="1312977698678162065">Získávejte peníze za zobrazování relevantních reklam, které respektují vaše soukromí.</translation>
 <translation id="7655723274266132226">Nyní si můžete vydělat více díky zobrazování reklam.</translation>
 <translation id="2975780980638932742">Reklamy Brave jsou tu!</translation>
@@ -301,7 +300,6 @@ Povolte je návštěvou</translation>
 <translation id="3173528272490482456">Jste připraveni začít?</translation>
 <translation id="913775524828049259">Ano, jsem připraven(a)</translation>
 <translation id="108052542935515756">Můžete začít s</translation>
-<translation id="2678666039642976470">Znova připojit peněženku</translation>
 <translation id="194625454574835815">Klíč pro obnovení</translation>
 <translation id="6354568176665589146">Opakující se</translation>
 <translation id="7577100371127227294">Měsíční příspěvky</translation>
@@ -386,6 +384,7 @@ Povolte je návštěvou</translation>
 <translation id="6727483290601442544">Zobrazit podrobnosti</translation>
 <translation id="1988679729106502285">POZNÁMKA:</translation>
 <translation id="5815103311506128988">Tento tvůrce se ještě nepřihlásil k přijímání příspěvků od uživatelů Brave. Váš prohlížeč se bude nadále pokoušet o realizování příspěvku, dokud nedojde k potvrzení z jejich strany nebo dokud neuplyne 90 dní.</translation>
+<translation id="603411408512957306">Tento tvůrce se ještě nepřihlásil k přijímání příspěvků od uživatelů Brave. Váš prohlížeč se bude nadále pokoušet o realizování příspěvku, dokud nedojde k potvrzení z jejich strany nebo dokud neuplyne 90 dní.</translation>
 <translation id="4292832015778676417">výdělek z reklam</translation>
 <translation id="3197752845651180812">Čekající příspěvky</translation>
 <translation id="3164105678355419142">Opakovaný dar</translation>
@@ -408,7 +407,7 @@ Povolte je návštěvou</translation>
 <translation id="7512440811010447157">ověřit</translation>
 <translation id="8030169304546394654">Odpojeno</translation>
 <translation id="8267327690882073581">Ověřit peněženku</translation>
-<translation id="4569155249847375786">Ověřeno</translation>
+<translation id="543510923939676996">Ověřeno</translation>
 <translation id="7591798679868259510">Přejít na můj Uphold účet</translation>
 <translation id="9200453331904391567">Odpojit od Brave Rewards</translation>
 <translation id="46988480989545156">Ověřit peněženku</translation>
@@ -420,6 +419,7 @@ Povolte je návštěvou</translation>
 <translation id="5275978662119683162">Výhody ověření</translation>
 <translation id="5166793288622772189">Jste připraveni ověřit si peněženku?</translation>
 <translation id="8766217572332535979">K získávání odměn za příspěvky není nutné ověření</translation>
+<translation id="4569155249847375786">Ověřeno</translation>
 <translation id="8465442795593991224">Společnost Uphold může v závislosti na požadovaných službách vyžadovat ověření vaší totožnosti.</translation>
 <translation id="723054503945711909">Společnost Brave Software Inc. nezpracovává, nepřechovává ani nezpřístupňuje žádné osobní údaje, které poskytujete společnosti Uphold při zakládání uživatelského účtu.</translation>
 <translation id="1181037720776840403">Odebrat</translation>

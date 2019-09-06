@@ -40,6 +40,7 @@
 <translation id="2814998458708016836">ವೈಡ್ ಅಡ್ರೆಸ್ ಬಾರ್ ಬಳಸಿ</translation>
 <translation id="6123134130710658846">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಬಟನ್ ಮರೆ ಮಾಡಿ</translation>
 <translation id="7635711399568194460">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸದಿದ್ದಾಗ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್ ಬಟನ್‌ ಅನ್ನು ಲೊಕೇಶನ್ ಬಾರ್‌ನಲ್ಲಿ ಮರೆ ಮಾಡಿ</translation>
+<translation id="4262166817826183486">ಯಾವಾಗಲೂ ಬುಕ್‌ಮಾರ್ಕ್ ಬಾರ್ ಅನ್ನು ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದ ಮೇಲೆ ತೋರಿಸಿ</translation>
 <translation id="7965178729203412357">ಹೊಸ Tor ಗುರುತಿಸುವಿಕೆ</translation>
 <translation id="8511502469534942133">ಈ ಸೈಟ್‌ಗಾಗಿ ಹೊಸ Tor ಸಂಪರ್ಕ</translation>
 <translation id="8784924142044142231">Tor ನಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
@@ -69,7 +70,6 @@
 <translation id="9075744464571452108">ಸಾಧನ ಗುರುತಿಸುವಿಕೆ</translation>
 <translation id="3570081523466826008">HTTPS ಗೆ ಸಂಪರ್ಕಗಳನ್ನು ಮೇಲ್ದರ್ಜೆಗೇರಿಸಿ</translation>
 <translation id="4824468494729001999">ನಿರ್ಬಂಧಿತ ಲಿಪಿಗಳು</translation>
-<translation id="7498695072878479744">Google ಲಾಗಿನ್ ಬಟನ್‌ಗಳನ್ನು ತೃತೀಯ ಪಕ್ಷದ ಸೈಟ್‌ಗಳಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="863171915776379000">ಫೇಸ್‌ಬುಕ್ ಲಾಗಿನ್‌ಗಳನ್ನು ಮತ್ತು ಎಂಬೆಡ್ ಮಾಡಿದ ಪೋಸ್ಟ್‌ಗಳನ್ಮು ಅನುಮತಿಸಿ</translation>
 <translation id="5165042248369837294">ಎಂಬೆಡ್ ಮಾಡಿದ ಟ್ವೀಟ್‌ಗಳನ್ನು ಟ್ವಿಟರ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="958971637207126733">ಎಂಬೆಡ್ ಮಾಡಲಾದ ಫೋಸ್ಟ್‌ಗಳನ್ನು LinkedIn ನಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
@@ -93,12 +93,14 @@
 <translation id="8721331068159819483">macOS ನ ರೀತಿಯಲ್ಲಿ</translation>
 <translation id="6786747875388722282">ವಿಸ್ತರಣೆಗಳು</translation>
 <translation id="2896916411183256228">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನೇರವಾಗಿ torrent ಗಳನ್ನು ಪ್ರದರ್ಶಿಸಲು WebTorrent ಅನ್ನು ಬಳಸುತ್ತದೆ. torrent ಫೈಲ್‌ಗಳು ಮತ್ತು ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ.</translation>
+<translation id="5554028991651120544">Brave ನೊಳಗೆ Ethereum ವಾಲೆಟ್ ಮತ್ತು Dapp ಬ್ರೌಸರ್ ಅನ್ನು ನೀಡುತ್ತದೆ.</translation>
 <translation id="6554397389149987360">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಪರದೆ ಹಂಚಿಕೆ ಮತ್ತು ಇತರ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು Hangouts ಅಂಶವನ್ನು ಬಳಸುತ್ತದೆ.</translation>
 <translation id="1765684547504191670">ಬ್ರೌಸರ್‌ನಲ್ಲಿ Chromecast ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಮೀಡಿಯಾ ರೂಟರ್ ಕಾಂಪೋನೆಂಟ್ ಅನ್ನು ಬಳಸುತ್ತದೆ.</translation>
 <translation id="9156965752763025780">ನೀವು ಮುಂದಿನ ಬಾರಿ Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿದಾಗ ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಾರ್ಯಗತಗೊಳ್ಳುತ್ತವೆ.</translation>
 <translation id="7179921470347911571">ಇದೀಗ ಮರುಆರಂಭಿಸಿ</translation>
 <translation id="4154389611571860454">ಬ್ರೌಸರ್‌ನಲ್ಲಿ IPFS ಬೆಂಬಲಿಸಲು IPFS ಕಂಪಾನಿಯನ್ ವಿಸ್ತರಣೆಯನ್ನು ಬಳಸುತ್ತದೆ.</translation>
 <translation id="8137559199583651773">ವಿಸ್ತರಣೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ</translation>
+<translation id="7013485839273047434">ಇನ್ನಷ್ಟು ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ</translation>
 <translation id="4928988318462976765">ವೆಬ್ ವಿಸ್ತರಣೆಗಳು ಸ್ಟೋರ್</translation>
 <translation id="9181207987584064303">ವೆಬ್ ವಿಸ್ತರಣೆಗಳು ಸ್ಟೋರ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
 <translation id="4846154056248462491">ತೊರೆಯುವಾಗ</translation>
@@ -111,4 +113,19 @@
 <translation id="8303432794159193481">Brave ಬ್ರೌಸರ್ ಡೆವ್ ಆ್ಯಪ್‌‌ಗಳು</translation>
 <translation id="8292967014767479012">Brave ಬ್ರೌಸರ್ ಆ್ಯಪ್‌‌ಗಳು</translation>
 <translation id="4743468424889072281">Brave ಬ್ರೌಸರ್ ಡೆವಲಪ್‌ಮೆಂಟ್‌ ಆ್ಯಪ್‌‌ಗಳು</translation>
+<translation id="4568409039725976900">Brave ಆರೆಂಜ್</translation>
+<translation id="7216062233533864908">ಆರೆಂಜ್ ಪೀಲ್</translation>
+<translation id="8285320948587819446">ನಾನಾ</translation>
+<translation id="2016467614790224371">ಎನ್ವಿ</translation>
+<translation id="8111795220552176635">ಕ್ಲಿಯರ್ ಸ್ಕೈಸ್</translation>
+<translation id="8323875061602721187">ಬಾಂಡಿ ಬ್ಲೂ</translation>
+<translation id="8267711815380227275">ಬ್ಲರ್ಪಲ್</translation>
+<translation id="831132225871108758">ಡಾರ್ಕ್ ನೈಟ್</translation>
+<translation id="1473185169764311478">ಆರೆಂಜ್ ಪೀಲ್ ಶೇಪ್</translation>
+<translation id="8658537263568841491">ನಾನಾ ಶೇಪ್</translation>
+<translation id="8967241601928387177">ಎನ್ವಿ ಶೇಪ್</translation>
+<translation id="7232547941405761864">ಕ್ಲಿಯರ್ ಸ್ಕೈಸ್ ಶೇಪ್</translation>
+<translation id="5500050460919597479">ಬಾಂಡಿ ಬ್ಲೂ ಶೇಪ್</translation>
+<translation id="5359364898094115985">ಬ್ಲರ್ಪಲ್ ಶೇಪ್</translation>
+<translation id="3385506478125681119">ಡಾರ್ಕ್ ನೈಟ್ ಶೇಪ್</translation>
 </translationbundle>

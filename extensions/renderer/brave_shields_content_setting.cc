@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/extensions/renderer/brave_shields_content_setting.h"
+
+#include <memory>
+#include <utility>
+#include <vector>
 
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
@@ -38,16 +43,18 @@ v8::Local<v8::Object> BraveShieldsContentSetting::Create(
   CHECK(property_values->GetDictionary(1u, &value_spec));
 
   gin::Handle<BraveShieldsContentSetting> handle = gin::CreateHandle(
-      isolate, new BraveShieldsContentSetting(request_handler, type_refs, access_checker,
-                                  pref_name, *value_spec));
+      isolate,
+      new BraveShieldsContentSetting(request_handler, type_refs, access_checker,
+                                     pref_name, *value_spec));
   return handle.ToV8().As<v8::Object>();
 }
 
-BraveShieldsContentSetting::BraveShieldsContentSetting(APIRequestHandler* request_handler,
-                               const APITypeReferenceMap* type_refs,
-                               const BindingAccessChecker* access_checker,
-                               const std::string& pref_name,
-                               const base::DictionaryValue& set_value_spec)
+BraveShieldsContentSetting::BraveShieldsContentSetting(
+    APIRequestHandler* request_handler,
+    const APITypeReferenceMap* type_refs,
+    const BindingAccessChecker* access_checker,
+    const std::string& pref_name,
+    const base::DictionaryValue& set_value_spec)
     : request_handler_(request_handler),
       type_refs_(type_refs),
       access_checker_(access_checker),
@@ -83,11 +90,13 @@ BraveShieldsContentSetting::BraveShieldsContentSetting(APIRequestHandler* reques
 
 BraveShieldsContentSetting::~BraveShieldsContentSetting() = default;
 
-gin::WrapperInfo BraveShieldsContentSetting::kWrapperInfo = {gin::kEmbedderNativeGin};
+gin::WrapperInfo BraveShieldsContentSetting::kWrapperInfo = {
+    gin::kEmbedderNativeGin};
 
 gin::ObjectTemplateBuilder BraveShieldsContentSetting::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
-  return Wrappable<BraveShieldsContentSetting>::GetObjectTemplateBuilder(isolate)
+  return Wrappable<BraveShieldsContentSetting>::GetObjectTemplateBuilder(
+             isolate)
       .SetMethod("get", &BraveShieldsContentSetting::Get)
       .SetMethod("set", &BraveShieldsContentSetting::Set);
 }
@@ -120,15 +129,12 @@ void BraveShieldsContentSetting::HandleFunction(const std::string& method_name,
   if (!access_checker_->HasAccessOrThrowError(context, full_name))
     return;
 
-  std::unique_ptr<base::ListValue> converted_arguments;
-  v8::Local<v8::Function> callback;
-  std::string error;
   const APISignature* signature = type_refs_->GetTypeMethodSignature(full_name);
-  if (!signature->ParseArgumentsToJSON(context, argument_list, *type_refs_,
-                                       &converted_arguments, &callback,
-                                       &error)) {
+  APISignature::JSONParseResult parse_result =
+      signature->ParseArgumentsToJSON(context, argument_list, *type_refs_);
+  if (!parse_result.succeeded()) {
     arguments->ThrowTypeError(api_errors::InvocationError(
-        full_name, signature->GetExpectedSignature(), error));
+        full_name, signature->GetExpectedSignature(), *parse_result.error));
     return;
   }
 
@@ -148,10 +154,11 @@ void BraveShieldsContentSetting::HandleFunction(const std::string& method_name,
     }
   }
 
-  converted_arguments->Insert(0u, std::make_unique<base::Value>(pref_name_));
+  parse_result.arguments->Insert(0u, std::make_unique<base::Value>(pref_name_));
   request_handler_->StartRequest(
-      context, "braveShields." + method_name, std::move(converted_arguments),
-      callback, v8::Local<v8::Function>(), binding::RequestThread::UI);
+      context, "braveShields." + method_name, std::move(parse_result.arguments),
+      parse_result.callback, v8::Local<v8::Function>(),
+      binding::RequestThread::UI);
 }
 
 }  // namespace extensions

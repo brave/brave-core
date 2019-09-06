@@ -1,20 +1,20 @@
 diff --git a/components/gcm_driver/gcm_client_impl.cc b/components/gcm_driver/gcm_client_impl.cc
-index f4580329d84ef5c2c364d87601d982f069607454..b59532e673c977f69dbe1511ab266f685aa1e5d8 100644
+index f6a6a35e98087ac56f39dd40e0ee3169f5865e88..d7e7fded33b44eeb15b0a559d9385457c65350d4 100644
 --- a/components/gcm_driver/gcm_client_impl.cc
 +++ b/components/gcm_driver/gcm_client_impl.cc
-@@ -356,6 +356,7 @@ void GCMClientImpl::Initialize(
+@@ -323,6 +323,7 @@ void GCMClientImpl::Initialize(
  }
  
  void GCMClientImpl::Start(StartMode start_mode) {
 +  return; // GCM disabled in Brave
    DCHECK_NE(UNINITIALIZED, state_);
+   DCHECK(io_task_runner_->RunsTasksInCurrentSequence());
  
-   if (state_ == LOADED) {
-@@ -863,6 +864,7 @@ void GCMClientImpl::ResetCache() {
+@@ -851,6 +852,7 @@ void GCMClientImpl::ResetCache() {
  
  void GCMClientImpl::Register(
      scoped_refptr<RegistrationInfo> registration_info) {
 +  return; // GCM disabled in Brave
    DCHECK_EQ(state_, READY);
+   DCHECK(io_task_runner_->RunsTasksInCurrentSequence());
  
-   // Registrations should never pass as an app_id the special category used

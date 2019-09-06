@@ -8,8 +8,7 @@
 #include "base/android/jni_android.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_stats_updater.h"
-
-#include "jni/BraveActivity_jni.h"
+#include "brave/build/android/jni_headers/BraveActivity_jni.h"
 
 namespace chrome {
 namespace android {

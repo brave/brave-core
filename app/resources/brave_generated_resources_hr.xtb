@@ -40,6 +40,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="2814998458708016836">Upotrijebi široku adresnu traku</translation>
 <translation id="6123134130710658846">Sakrij gumbe za nagrade Brave</translation>
 <translation id="7635711399568194460">Sakrivaju se gumbi za nagrade Brave u lokacijskoj traci kada značajka Nagrade Brave nije omogućena</translation>
+<translation id="4262166817826183486">Uvijek prikaži knjižne oznake na stranici Nova kartica</translation>
 <translation id="7965178729203412357">Novi identitet za Tor</translation>
 <translation id="8511502469534942133">Nova veza tor za ovo mrežno mjesto</translation>
 <translation id="8784924142044142231">Izađi iz funkcije Tor</translation>
@@ -69,7 +70,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="9075744464571452108">Prepoznavanje uređaja</translation>
 <translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
-<translation id="7498695072878479744">Dopusti gumbe za prijavu u uslugu Google na mrežnim mjestima trećih strana</translation>
 <translation id="863171915776379000">Dopusti prijave u društvenu mrežu Facebook i ugrađene objave</translation>
 <translation id="5165042248369837294">Dopusti ugrađene objave na društvenoj mreži Twitter</translation>
 <translation id="958971637207126733">Dopusti ugrađene objave na mreži LinkedIn</translation>
@@ -93,12 +93,14 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="8721331068159819483">Kao na operativnom sustavu macOS</translation>
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="2896916411183256228">Rabi WebTorrent za prikazivanje torenta izravno u pregledniku. Podržava datoteke i magnetne poveznice za torente.</translation>
+<translation id="5554028991651120544">Pruža se novčanik Ethereum i preglednik Dapp unutar usluge Brave.</translation>
 <translation id="6554397389149987360">Rabi komponentu Hangouts za omogućavanje dijeljenja zaslona i drugih značajki u pregledniku.</translation>
 <translation id="1765684547504191670">Upotrebljava se komponenta Medijski usmjerivač kako bi se omogućila značajka Chromecast u pregledniku.</translation>
 <translation id="9156965752763025780">Promjene će početi vrijediti sljedeći put kad ponovo pokrenete Brave.</translation>
 <translation id="7179921470347911571">Ponovno pokreni sad</translation>
 <translation id="4154389611571860454">Upotrebljava se dodatni programski nastavak IPFS za podržavanje IPFS-a u pregledniku.</translation>
 <translation id="8137559199583651773">Upravljanje proširenjima</translation>
+<translation id="7013485839273047434">Dohvati više proširenja</translation>
 <translation id="4928988318462976765">Prodavniza mrežnih ekstenzija</translation>
 <translation id="9181207987584064303">Pogledati u Prodavnici mrežnih ekstenzija</translation>
 <translation id="4846154056248462491">Na izlasku</translation>
@@ -111,4 +113,19 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="8303432794159193481">Razvojne aplikacije preglednika Brave</translation>
 <translation id="8292967014767479012">Aplikacije preglednika Brave</translation>
 <translation id="4743468424889072281">Razvojne aplikacije preglednika Brave</translation>
+<translation id="4568409039725976900">Narančasto Brave</translation>
+<translation id="7216062233533864908">Narančina koža</translation>
+<translation id="8285320948587819446">Baka</translation>
+<translation id="2016467614790224371">Zavist</translation>
+<translation id="8111795220552176635">Čista neba</translation>
+<translation id="8323875061602721187">Modroplava</translation>
+<translation id="8267711815380227275">Plavoljubičasta</translation>
+<translation id="831132225871108758">Tamni vitez</translation>
+<translation id="1473185169764311478">Oblik narančine kože</translation>
+<translation id="8658537263568841491">Oblik bake</translation>
+<translation id="8967241601928387177">Oblik zavisti</translation>
+<translation id="7232547941405761864">Oblik čistih neba</translation>
+<translation id="5500050460919597479">Oblik modroplave</translation>
+<translation id="5359364898094115985">Oblik plavoljubičaste</translation>
+<translation id="3385506478125681119">Oblik tamnog viteza</translation>
 </translationbundle>

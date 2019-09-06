@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Permet Propines</translation>
 <translation id="3671566813999349838">Quantitat</translation>
 <translation id="3819257035322786455">Còpia de seguretat</translation>
-<translation id="4989542687859782284">No disponible</translation>
 <translation id="1312977698678162065">Cobra per veure anuncis rellevants que respecten la teva intimitat.</translation>
 <translation id="7655723274266132226">Ara pots guanyar per mirar anuncis.</translation>
 <translation id="2975780980638932742">Ha arribat Anuncis de Brave!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Llest per començar?</translation>
 <translation id="913775524828049259">Si, estic llest</translation>
 <translation id="108052542935515756">Pots començar amb</translation>
-<translation id="2678666039642976470">Reconnectar moneder</translation>
 <translation id="194625454574835815">Clau de recuperació</translation>
 <translation id="6354568176665589146">Recurrent</translation>
 <translation id="7577100371127227294">Propines Mensuals</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Veure detalls</translation>
 <translation id="1988679729106502285">NOTA:</translation>
 <translation id="5815103311506128988">Aquest creador encara no s'ha donat d'alta per rebre les contribucions dels usuaris Brave. El teu navegador seguirà intentant fer una aportació fins que es verifiqui, o fins que passin 90 dies.</translation>
+<translation id="603411408512957306">Aquest creador encara no s'ha donat d'alta per rebre les contribucions dels usuaris Brave. El teu navegador seguirà intentant fer una aportació fins que es verifiqui, o fins que passin 90 dies.</translation>
 <translation id="4292832015778676417">guanys dels anuncis</translation>
 <translation id="3197752845651180812">Contribucions pendents</translation>
 <translation id="3164105678355419142">Propina recurrent</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">verificar</translation>
 <translation id="8030169304546394654">Sense connexió</translation>
 <translation id="8267327690882073581">Verificar el moneder</translation>
-<translation id="4569155249847375786">Verificat</translation>
+<translation id="543510923939676996">Verificat</translation>
 <translation id="7591798679868259510">Anar al meu compte d'Uphold</translation>
 <translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
 <translation id="46988480989545156">Verificar el moneder</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">Beneficis de la verificació</translation>
 <translation id="5166793288622772189">Preparat per a verificar el teu moneder?</translation>
 <translation id="8766217572332535979">La verificació no és necessària per a obtenir gratificacions per les contribucions de creador</translation>
+<translation id="4569155249847375786">Verificat</translation>
 <translation id="8465442795593991224">Uphold et pot demanar que verifiquis la teva identitat en funció dels serveis demanats.</translation>
 <translation id="723054503945711909">Brave Software Inc. no processa, emmagatzema, o accedeix a cap informació personal que proporcionis a UPhold quan estableixis un compte amb ells.</translation>
 <translation id="1181037720776840403">Suprimeix</translation>

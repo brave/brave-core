@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">以下でチップを許可：</translation>
 <translation id="3671566813999349838">金額</translation>
 <translation id="3819257035322786455">バックアップ</translation>
-<translation id="4989542687859782284">利用できません</translation>
 <translation id="1312977698678162065">プライバシー重視型広告を閲覧して報酬を得る。</translation>
 <translation id="7655723274266132226">広告を見て報酬を得ることができるようになりました。</translation>
 <translation id="2975780980638932742">Brave Ads を受信しました！</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">始める準備はできましたか？</translation>
 <translation id="913775524828049259">準備できました！</translation>
 <translation id="108052542935515756">こちらで始めることができます：</translation>
-<translation id="2678666039642976470">ウォレットを再接続</translation>
 <translation id="194625454574835815">回復キー</translation>
 <translation id="6354568176665589146">繰り返し</translation>
 <translation id="7577100371127227294">毎月のチップ</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">詳細を表示</translation>
 <translation id="1988679729106502285">注意:</translation>
 <translation id="5815103311506128988">このクリエイターは、Brave ユーザーから支援を受け取る登録を行っていません。あなたのブラウザは、クリエイターからの認証を受けるか、90日が経過するまで試し続けます。</translation>
+<translation id="603411408512957306">このクリエイターは、Brave ユーザーから支援を受け取る登録を行っていません。あなたのブラウザは、クリエイターからの認証を受けるか、90日が経過するまで試し続けます。</translation>
 <translation id="4292832015778676417">広告からの収入</translation>
 <translation id="3197752845651180812">未承認の支援支払い</translation>
 <translation id="3164105678355419142">定期的に支払うチップ</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">確認</translation>
 <translation id="8030169304546394654">切断されました</translation>
 <translation id="8267327690882073581">ウォレットを確認</translation>
-<translation id="4569155249847375786">確認済み</translation>
+<translation id="543510923939676996">確認済み</translation>
 <translation id="7591798679868259510">Upholdのアカウントに移動</translation>
 <translation id="9200453331904391567">Braveの報酬から切断</translation>
 <translation id="46988480989545156">ウォレットを確認</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">検証のメリット</translation>
 <translation id="5166793288622772189">お使いのウォレットを確認する準備はできていますか。</translation>
 <translation id="8766217572332535979">作成者の貢献に対する報酬の取得に検証は必要はありません</translation>
+<translation id="4569155249847375786">確認済み</translation>
 <translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を行う必要性がある場合があります。</translation>
 <translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報の処理、保存、アクセスを行いません。</translation>
 <translation id="1181037720776840403">削除</translation>

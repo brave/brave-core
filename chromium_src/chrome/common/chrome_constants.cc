@@ -127,7 +127,6 @@ const base::FilePath::CharType kSystemProfileDir[] = FPL("System Profile");
 
 // filenames
 const base::FilePath::CharType kCacheDirname[] = FPL("Cache");
-const base::FilePath::CharType kChannelIDFilename[] = FPL("Origin Bound Certs");
 const base::FilePath::CharType kCookieFilename[] = FPL("Cookies");
 const base::FilePath::CharType kCRLSetFilename[] =
     FPL("Certificate Revocation Lists");
@@ -147,6 +146,8 @@ const base::FilePath::CharType kLocalStateFilename[] = FPL("Local State");
 const base::FilePath::CharType kMediaCacheDirname[] = FPL("Media Cache");
 const base::FilePath::CharType kNetworkPersistentStateFilename[] =
     FPL("Network Persistent State");
+const base::FilePath::CharType kNotificationSchedulerStorageDirname[] =
+    FPL("Notification Scheduler");
 const base::FilePath::CharType kOfflinePageArchivesDirname[] =
     FPL("Offline Pages/archives");
 const base::FilePath::CharType kOfflinePageMetadataDirname[] =

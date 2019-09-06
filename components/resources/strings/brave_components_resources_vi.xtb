@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Cho phép tiền boa</translation>
 <translation id="3671566813999349838">Số tiền</translation>
 <translation id="3819257035322786455">Sao lưu</translation>
-<translation id="4989542687859782284">Không khả dụng</translation>
 <translation id="1312977698678162065">Được trả tiền khi xem các quảng cáo liên quan và tôn trọng sự riêng tư của bạn.</translation>
 <translation id="7655723274266132226">Giờ đây bạn có thể kiếm tiền bằng cách xem quảng cáo.</translation>
 <translation id="2975780980638932742">Brave Ads đã xuất hiện!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Sẵn sàng bắt đầu chưa?</translation>
 <translation id="913775524828049259">Vâng tôi đã sẵn sàng</translation>
 <translation id="108052542935515756">Bạn có thể bắt đầu với</translation>
-<translation id="2678666039642976470">Kết nối lại ví</translation>
 <translation id="194625454574835815">Khoá Khôi phục</translation>
 <translation id="6354568176665589146">Tái diễn</translation>
 <translation id="7577100371127227294">Tiền tip Hàng tháng</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Xem Chi tiết</translation>
 <translation id="1988679729106502285">LƯU Ý:</translation>
 <translation id="5815103311506128988">Người sáng tạo này vẫn chưa đăng ký để nhận đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.</translation>
+<translation id="603411408512957306">Người sáng tạo này vẫn chưa đăng ký để nhận đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.</translation>
 <translation id="4292832015778676417">thu được từ quảng cáo</translation>
 <translation id="3197752845651180812">Đóng góp chờ xử lý</translation>
 <translation id="3164105678355419142">Tiền thưởng thường chọn</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">xác thực</translation>
 <translation id="8030169304546394654">Đã ngắt kết nối</translation>
 <translation id="8267327690882073581">Xác thực Ví</translation>
-<translation id="4569155249847375786">Đã xác thực</translation>
+<translation id="543510923939676996">Đã xác thực</translation>
 <translation id="7591798679868259510">Truy cập tài khoản Uphold của tôi</translation>
 <translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
 <translation id="46988480989545156">Xác thực ví</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">Lợi ích của việc xác thực</translation>
 <translation id="5166793288622772189">Bạn đã sẵn sàng xác thực ví của mình chưa?</translation>
 <translation id="8766217572332535979">Không cần thiết phải xác thực để có thể nhận phần thưởng cho những đóng góp của người sáng tạo</translation>
+<translation id="4569155249847375786">Đã xác thực</translation>
 <translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
 <translation id="723054503945711909">Công ty Brave Software Inc. không xử lý, lưu trữ hay truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho Uphold khi bạn thiết lập tài khoản với họ.</translation>
 <translation id="1181037720776840403">Xóa</translation>

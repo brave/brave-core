@@ -40,6 +40,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="2814998458708016836">Geniş adres çubuğu kullan</translation>
 <translation id="6123134130710658846">Brave Ödülleri butonunu gizle</translation>
 <translation id="7635711399568194460">Brave Ödülleri etkin olmadığında konum çubuğundaki Brave Ödülleri butonunu gizler</translation>
+<translation id="4262166817826183486">Yeni Sekme sayfasında yer imleri çubuğunu her zaman göster</translation>
 <translation id="7965178729203412357">Yeni Tor Kimliği</translation>
 <translation id="8511502469534942133">Bu Site İçin Yeni Tor Bağlantısı</translation>
 <translation id="8784924142044142231">Tor'dan Çıkış</translation>
@@ -69,7 +70,6 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="9075744464571452108">Cihaz tanımlama</translation>
 <translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
 <translation id="4824468494729001999">Script'leri engelle</translation>
-<translation id="7498695072878479744">Üçüncü taraf sitelerinde Google giriş butonlarına izin ver</translation>
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
 <translation id="5165042248369837294">Gömülü Twitter tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
@@ -93,12 +93,14 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="8721331068159819483">macOS ile aynı</translation>
 <translation id="6786747875388722282">Uzantılar</translation>
 <translation id="2896916411183256228">Torrentleri doğrudan tarayıcıda görüntülemek için WebTorrent'i kullanır. Torrent dosyalarını ve magnet bağlantılarını destekler.</translation>
+<translation id="5554028991651120544">Ethereum cüzdan ve Brave içinde Dapp tarayıcı içerir.</translation>
 <translation id="6554397389149987360">Ekran paylaşımını ve tarayıcıdaki diğer özellikleri etkinleştirmek için Hangouts bileşenini kullanır.</translation>
 <translation id="1765684547504191670">Tarayıcıda Chromecast'i etkinleştirmek için Medya Yönlendiricisi bileşenini kullanır.</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
 <translation id="7179921470347911571">Şimdi Tekrar Başlat</translation>
 <translation id="4154389611571860454">Tarayıcıda IPFS'yi desteklemek için IPFS eşlikçi eklentisini kullanır.</translation>
 <translation id="8137559199583651773">Uzantıları yönet</translation>
+<translation id="7013485839273047434">Daha fazla uzatma edin</translation>
 <translation id="4928988318462976765">Web Uzantıları Mağazası</translation>
 <translation id="9181207987584064303">Web Uzantıları Mağazası'nda görüntüle</translation>
 <translation id="4846154056248462491">Çıkışta</translation>
@@ -111,4 +113,19 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="8303432794159193481">Brave Tarayıcı Geliştirme Uygulamaları</translation>
 <translation id="8292967014767479012">Brave Browser Uygulamaları</translation>
 <translation id="4743468424889072281">Brave Browser Geliştirme Uygulamaları</translation>
+<translation id="4568409039725976900">Brave Turuncu</translation>
+<translation id="7216062233533864908">Portakal Kabuğu</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Envy</translation>
+<translation id="8111795220552176635">Açık Gökyüzü</translation>
+<translation id="8323875061602721187">Bond Mavisi</translation>
+<translation id="8267711815380227275">Mavi-mor</translation>
+<translation id="831132225871108758">Kara Şövalye</translation>
+<translation id="1473185169764311478">Portakal Kabuğu Şekli</translation>
+<translation id="8658537263568841491">Nana Şekli</translation>
+<translation id="8967241601928387177">Envy Şekil</translation>
+<translation id="7232547941405761864">Açık Gökyüzü Şekli</translation>
+<translation id="5500050460919597479">Bond Mavisi Şekli</translation>
+<translation id="5359364898094115985">Mavi-mor Şekil</translation>
+<translation id="3385506478125681119">Kara Şövalye Şekli</translation>
 </translationbundle>

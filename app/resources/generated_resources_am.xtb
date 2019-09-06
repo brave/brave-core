@@ -175,7 +175,7 @@
 <translation id="5329858601952122676">&amp;ሠርዝ</translation>
 <translation id="4608500690299898628">&amp;አግኝ…</translation>
 <translation id="3712897371525859903">ገጽ አስቀምጥ &amp;እንደ…</translation>
-<translation id="6089481419520884864">ገጹን አጣራ</translation>
+<translation id="2369105924912929484">የተጣሩ የገጽ ይዘቶችን ይቀያይሩ</translation>
 <translation id="6607831829715835317">&amp;ተጨማሪ መሣሪያዎች</translation>
 <translation id="3994878504415702912">&amp;ማጉሊያ</translation>
 <translation id="4779083564647765204">ማጉሊያ</translation>
@@ -584,6 +584,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">የሰርቲፊኬት ፊርማ እሴት</translation>
 <translation id="4104163789986725820">ወደ &amp;ውጪ ላክ...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">ተራ ቁጥር</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">ደብዳቤ</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">የንግድ ስራ ፈርጅ</translation>
+<translation id="6561757256477115975">jurisdictionLocalityName</translation>
+<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
+<translation id="8904360804686555987">jurisdictionCountryName</translation>
+<translation id="8718098216622210506">መንገድ</translation>
+<translation id="6969275223369931223">የፖስታ ኮድ</translation>
 <translation id="5434065355175441495">PKCS #1 RSA ምስጠራ</translation>
 <translation id="1221024147024329929">PKCS #1 MD2  ከRSA ምስጠራ ጋር</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 ከRSA ምስጠራ ጋር</translation>
@@ -702,7 +720,7 @@
 <translation id="8276560076771292512">ባዶ መሸጎጫ እና ደረቅ ዳግም መጫን</translation>
 <translation id="3164329792803560526">ወደ <ph name="APP_NAME"/> ይህን ትር በማጋራት ላይ</translation>
 <translation id="8864055848767439877"><ph name="TAB_NAME"/> ለ <ph name="APP_NAME"/> በማጋራት ላይ</translation>
-<translation id="1337692097987160377">ይህን ትር አጋራ</translation>
+<translation id="8236917170563564587">በምትኩ ይህን ትር አጋራ</translation>
 <translation id="1272079795634619415">አቁም</translation>
 <translation id="7564847347806291057">ሂደቱን ግታ</translation>
 <translation id="5233231016133573565">የሂደት መለያ ቁጥር</translation>
@@ -884,6 +902,7 @@
 <translation id="8284279544186306258">ሁሉም የ<ph name="WEBSITE_1"/> ጣቢያዎች</translation>
 <translation id="4883436287898674711">ሁሉም የ<ph name="WEBSITE_1"/> ጣቢያዎች</translation>
 <translation id="2204034823255629767">የሚተይቡትን ማንኛውም ነገር ያነብባል እና ይቀይራል</translation>
+<translation id="6979044105893951891">አስጀምር እና የሚተዳደሩ የእንግዳ ክፍለ ጊዜያትን ትተህ ውጣ</translation>
 <translation id="2741912629735277980">በመለያ መግቢያ ማያ ገጽ ላይ ዩአይ አሳይ</translation>
 <translation id="8191230140820435481">መተግበሪያዎችዎን፣ ቅጥያዎችዎን እና ገጽታዎችዎን ያቀናብራል</translation>
 <translation id="6259104249628300056">በአካባቢዎ አውታረ መረብ ላይ መሣሪያዎችን ያግኙ</translation>
@@ -942,6 +961,7 @@
 <translation id="1205489148908752564">በተፈቀደላቸው ዝርዝር ውስጥ ያሉ ተጠቃሚዎችን ያንብቡ እና ይቀይሩ</translation>
 <translation id="3432757130254800023">ኦዲዮ እና ቪዲዮ በአካባቢያዊ አውታረ መረብ ላይ ላሉ ማሳያዎች ላክ</translation>
 <translation id="5235750401727657667">አዲስ ትር በሚከፈትበት ጊዜ የሚመለከቱትን ገጽ ይተኩ</translation>
+<translation id="1784707308176068866">በተባባሪ ቤተኛ መተግበሪያ ሲጠየቅ በበስተጀርባ ውስጥ አሂድ</translation>
 <translation id="5527463195266282916">የቅጥያ ስሪቱን ለማውረድ ተሞክሯል።</translation>
 <translation id="8565650234829130278">የመተግበሪያውን ስሪት ለማውረድ ተሞክሯል።</translation>
 <translation id="1415990189994829608"><ph name="EXTENSION_NAME"/> (የቅጥያ መታወቂያ «<ph name="EXTENSION_ID"/>») በዚህ የክፍለ-ጊዜ አይነት ላይ አይፈቀድም።</translation>
@@ -1140,9 +1160,6 @@ nil</translation>
 <translation id="8743864605301774756">ከ1 ሰዓት በፊት ተዘምኗል</translation>
 <translation id="7363117941401515667">ከ<ph name="HOURS"/> ሰዓቶች በፊት ተዘምኗል</translation>
 <translation id="1329584516321524826">አሁን የተዘመነ</translation>
-<translation id="224940702122312781">ይህ ገጽ ብዙ ውሂብ ይጠቀማል።</translation>
-<translation id="3861241522664181545">ገጽ ባለበት ቆሟል።</translation>
-<translation id="6921709132208495314">በዚህ ገጽ ላይ ውሂብ መጠቀም ያቁሙ</translation>
 <translation id="2262332168014443534">ቀላል ሁነታ ኤችቲቲፒኤስ ጨምሮ በሁሉም ገጾች ላይ ማሰስን ይበልጥ ፈጣን ያደርጋል።</translation>
 <translation id="8428213095426709021">ቅንብሮች</translation>
 <translation id="2724841811573117416">የWebRTC ምዝግብ ማስታወሻዎች</translation>
@@ -1252,7 +1269,6 @@ nil</translation>
 <translation id="8017679124341497925">አቋራጭ አርትዖት ተደርጎበታል</translation>
 <translation id="1174073918202301297">አቋራጭ ታክሏል</translation>
 <translation id="2926085873880284723">ነባሪ አቋራጮችን ወደነበሩበት መልስ</translation>
-<translation id="2942581856830209953">ይህን ገጽ ብጁ ያድርጉ</translation>
 <translation id="5801450813341024983">Brave በስተጀርባዎች</translation>
 <translation id="2800760947029405028">ምስል ስቀል</translation>
 <translation id="8342861492835240085">አንድ ስብስብ ይምረጡ</translation>
@@ -1267,6 +1283,7 @@ nil</translation>
 <translation id="1564414980088536597">ይህ ምስል ጥቅም ላይ ሊውል አይችልም። የተለየ ምስል ይምረጡ።</translation>
 <translation id="385051799172605136">ተመለስ</translation>
 <translation id="8033827949643255796">ተመርጧል</translation>
+<translation id="2942581856830209953">ይህን ገጽ ብጁ ያድርጉ</translation>
 <translation id="3497560059572256875">Doodle አጋራ</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1284,6 +1301,10 @@ nil</translation>
 <translation id="820568752112382238">በብዛት የተጎበኙ ጣቢያዎች</translation>
 <translation id="5857171483910641802">አቋራጮች እርስዎ በብዛት በሚጎበኟቸው ድር ጣቢያዎች መሠረት ይጠቆማሉ</translation>
 <translation id="1211769675100312947">አቋራጮች ተመርጠው የሚሰበሰቡት በእርስዎ ነው</translation>
+<translation id="7460045493116006516">እርስዎ የጫኑት አሁን ያለ ገጽታ</translation>
+<translation id="9068849894565669697">ቀለም ይምረጡ</translation>
+<translation id="8798099450830957504">እንደወረደ</translation>
+<translation id="8259556432390118667">የአስራስድስትዮሽ ቀለም እሴት</translation>
 <translation id="2858138569776157458">ከፍተኛ ጣቢያዎች</translation>
 <translation id="5376169624176189338">ወደ ኋላ ለመመለስ ጠቅ ያድርጉ፣ ታሪክ ለማየት ይያዙ</translation>
 <translation id="9103868373786083162">ለመመለስ ይጫኑ፣ ታሪክን ለማየት የአውድ ምናሌ</translation>
@@ -1307,7 +1328,6 @@ nil</translation>
 <translation id="833986336429795709">ይህን አገናኝ ለመክፈት አንድ መተግበሪያ ይምረጡ</translation>
 <translation id="192494336144674234">ይክፈቱ በ</translation>
 <translation id="9053893665344928494">ምርጫዬን አስታውስ</translation>
-<translation id="5541687815721799001">መተግበሪያ ይጠቀሙ</translation>
 <translation id="5340857474604400806">በBrave ውስጥ ይቆዩ</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ማንነትን የማያሳውቅ)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (እንግዳ)</translation>
@@ -1365,7 +1385,6 @@ nil</translation>
 <translation id="7108338896283013870">ደብቅ</translation>
 <translation id="1426410128494586442">አዎ</translation>
 <translation id="4250680216510889253">አይ</translation>
-<translation id="7378627244592794276">አይ</translation>
 <translation id="5317780077021120954">አስቀምጥ</translation>
 <translation id="4285418559658561636">የይለፍ ቃልን ያዘምኑ</translation>
 <translation id="9094033019050270033">የይለፍ ቃል ያዘምኑ</translation>
@@ -1607,6 +1626,9 @@ nil</translation>
 <translation id="8249615410597138718">ወደ መሣሪያዎችዎ ይላኩ</translation>
 <translation id="5310281978693206542">አገናኝ ወደ የእርስዎ መሣሪያዎች ይላኩ</translation>
 <translation id="2315587498123194634">አገናኝ ወደ <ph name="DEVICE_NAME"/> ይላኩ</translation>
+<translation id="7761380698973548146">ከእርስዎ መሣሪያዎች የመጣ ጥሪ</translation>
+<translation id="7427798576651127129">ጥሪ ከ<ph name="DEVICE_NAME"/></translation>
+<translation id="462021874527520979">ከእርስዎ መሣሪያዎች የመጣ ጥሪ</translation>
 <translation id="4520385623207007473">ጥቅም ላይ የዋሉ ኩኪዎች</translation>
 <translation id="4763408175235639573">ይህን ገጽ ሲመለከቱት የሚከተሉት ኩኪዎች ተቀናብረዋል</translation>
 <translation id="2719936478972253983">የሚከተሉት ኩኪዎች ታግደዋል</translation>
@@ -1674,6 +1696,7 @@ nil</translation>
 <translation id="1234808891666923653">የአገልግሎት ሰራተኛዎች</translation>
 <translation id="3432762828853624962">የተጋሩ ሠራተኞች</translation>
 <translation id="2927017729816812676">የመሸጎጫ ማከማቻ</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">መተግበሪያዎች</translation>
 <translation id="542872847390508405">እያሰሱ ያለው እንደ እንግዳ ነው</translation>
 <translation id="537813040452600081">በዚህ መስኮት ላይ የሚመለከቷቸውን ገጾች በአሳሽ ታሪክ ላይ የማይታዩ ሲሆን ዘግተው ከወጡ በኋላ ገጾቹ እንደ ኩኪዎች ያሉ ሌሎች መከታተያዎችን አይተዉም። የሚያወርዷቸው ፋይሎች እና ዕልባቶች አይቀመጡም።</translation>
@@ -1713,17 +1736,10 @@ nil</translation>
 <translation id="6022526133015258832">ሙሉ ማያ ገጽ ክፈት</translation>
 <translation id="6845038076637626672">ሰፍቶ ክፈት</translation>
 <translation id="6860427144121307915">በትር ውስጥ ክፈት</translation>
-<translation id="3074037959626057712">በመለያ ገብተው ስምረትን አብርተዋል</translation>
 <translation id="1231733316453485619">አስምር ይብራ?</translation>
 <translation id="4736292055110123391">የእርስዎን ዕልባቶች፣ የይለፍ ቃላት፣ ታሪክ እና ተጨማሪ ነገሮች በሁሉም መሣሪያዎችዎ ላይ ያሳምሩ</translation>
 <translation id="5736731321935944068">Brave Software ፍለጋን፣ ማስታወቂያዎችን እና ሌሎች የBrave Software አገልግሎቶችን ግላዊነት ለማላበስ የእርስዎን ታሪክ ሊጠቀም ይችላል</translation>
 <translation id="4201546031411513170">በማንኛውም ጊዜ በቅንብሮች ውስጥ ምን ለማስመር መምረጥ ይችላሉ።</translation>
-<translation id="3149880132460839085">የብሬቭ ማመሳሰል</translation>
-<translation id="3796902758602917951">የእርስዎን ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት እና ሌሎች ቅንብሮች በሁሉም መሣሪያዎችዎ ላይ መጠቀም እንዲችሉ ከBrave Software መለያዎ ጋር ይሰምራሉ</translation>
-<translation id="3111958038206230539">የBrave Software አገልግሎቶችን ግላዊነት አላብስ</translation>
-<translation id="295992419959320001">Brave Software ፍለጋን፣ ማስታወቂያዎችን እና ሌሎች የBrave Software አገልግሎቶችን ግላዊነት ለማላበስ ሲል የአሰሳ ታሪክዎን ሊጠቀም ይችላል።</translation>
-<translation id="3070156078150543526">Brave Software ፍለጋን እና ሌሎች የBrave Software አገልግሎቶችን ግላዊነት ለማላበስ የአሰሳ ታሪክዎን ሊጠቀም ይችላል</translation>
-<translation id="2709453993673701466">ስምረት እና ግላዊነት ማላበስ ከመብራታቸው በፊት ማቀናበር ይፈልጋሉ? <ph name="BEGIN_LINK"/>ቅንብሮች<ph name="END_LINK"/>ን ይጎብኙ።</translation>
 <translation id="2497852260688568942">ስምረት በእርስዎ አስተዳዳሪ ተሰናክሏል</translation>
 <translation id="562935524653278697">የእርስዎ አስተዳዳሪ የእርስዎን ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት እና ሌሎች ቅንብሮች ስምረትን አሰናክለዋል።</translation>
 <translation id="2169062631698640254">ለማንኛውም ግባ</translation>
@@ -1801,8 +1817,7 @@ nil</translation>
 <translation id="2126167708562367080">ስምረት በእርስዎ አስተዳዳሪ ተሰናክሏል።</translation>
 <translation id="5462539695964427820">ስምረት በBrave Software ዳሽቦርዱ በኩል ቆሟል።</translation>
 <translation id="8805140816472474147">ስምረትን ለመጀመር የስምረት ቅንብሮችን ያረጋግጡ።</translation>
-<translation id="4835836146030131423">በመግባት ጊዜ ስህተት።</translation>
-<translation id="4365673000813822030">ውይ፣ ማመሳሰል መስራት አቁሟል።</translation>
+<translation id="5771816112378578655">ጭነቱ በሂደት ላይ…</translation>
 <translation id="3492788708641132712">ስምረት እየሰራ አይደለም። እንደገና ለመግባት ይሞክሩ።</translation>
 <translation id="6349170655202535379">ስምረት እየሰራ አይደለም። ዘግተው ወጥተው እና ተመልሰው ለመግባት ይሞክሩ።</translation>
 <translation id="974555521953189084">ስምረትን ለመጀመር የይለፍ ሐረግዎን ያስገቡ</translation>
@@ -1813,9 +1828,7 @@ nil</translation>
 <translation id="7912080627461681647">የእርስዎ የይለፍ ቃል በአገልጋዩ ላይ ተቀይሯል። እባክዎ ዘግተው ይውጡና እንደገና ይግቡ።</translation>
 <translation id="1877520246462554164">የማረጋገጫ ማስመሰያውን ማግኘት አልተሳካም። እንደገና ለመሞከር እባክዎ ዘግተው ይውጡና እንደገና ይግቡ።</translation>
 <translation id="9100765901046053179">የላቁ ቅንብሮች</translation>
-<translation id="5771816112378578655">ጭነቱ በሂደት ላይ…</translation>
 <translation id="2731700343119398978">እባክዎ ይጠብቁ...</translation>
-<translation id="4684427112815847243">ሁሉንም ያመሳስሉ</translation>
 <translation id="7218743184834293955">ውሂብ በስምረት ይለፍ ሐረግዎ ተመስጥሯል። ይህ ከBrave Software Pay የመክፈያ ዘዴዎችን እና አድራሻዎችን አያካትትም።</translation>
 <translation id="7158251077901880179">ውሂብ <ph name="TIME"/> ላይ በነበረው የስምረት ይለፍ ሐረግዎ የተመሠጠረ ነው። ይህ ከBrave Software Pay የመክፈያ ዘዴዎችን እና አድራሻዎችን አያካትትም።</translation>
 <translation id="1171389789873508468">ውሂብ <ph name="TIME"/> ላይ በነበረው የBrave Software ይለፍ ቃልዎ ተመስጥሯል። ይህ ከBrave Software Pay የመክፈያ ዘዴዎችን እና አድራሻዎችን አያካትትም።</translation>
@@ -1827,7 +1840,10 @@ nil</translation>
 <translation id="5990386583461751448">የተተረጎመ</translation>
 <translation id="5659833766619490117">ይህ ገጽ ሊተረጎም አልቻለም</translation>
 <translation id="969096075394517431">ቋንቋዎችን ይቀይሩ</translation>
+<translation id="9095388113577226029">ተጨማሪ ቋንቋዎች...</translation>
+<translation id="7027891519253193555">ገጽ በ<ph name="LANGUAGE"/> አይደለም?</translation>
 <translation id="6831043979455480757">መተርጎም</translation>
+<translation id="7378627244592794276">አይ</translation>
 <translation id="1103523840287552314">ሁልጊዜ <ph name="LANGUAGE"/>ን መተርጎም</translation>
 <translation id="7600965453749440009"><ph name="LANGUAGE"/>ን በጭራሽ አትተርጉም</translation>
 <translation id="1285320974508926690">ይህን ጣቢያ በጭራሽ አትተርጉም</translation>
@@ -1840,7 +1856,11 @@ nil</translation>
 <translation id="5677503058916217575">የገጽ ቋንቋ፦</translation>
 <translation id="126710816202626562">የትርጉም ቋንቋ፦</translation>
 <translation id="3668570675727296296">የቋንቋ ቅንብሮች</translation>
+<translation id="1803531841600994172">የሚተረጎምበት ቋንቋ</translation>
+<translation id="456717285308019641">የሚተረጎመው የገጽ ቋንቋ</translation>
 <translation id="4297322094678649474">ቋንቋዎችን ይቀይሩ</translation>
+<translation id="7731119595976065702">ተጨማሪ ቋንቋዎች...</translation>
+<translation id="2444119669991608829">ገጽ በ<ph name="LANGUAGE"/> አይደለም?</translation>
 <translation id="3937734102568271121">ሁልጊዜ <ph name="LANGUAGE"/>ን ተርጉም</translation>
 <translation id="4330387663455830245"><ph name="LANGUAGE"/>ን በጭራሽ አትተርጉም</translation>
 <translation id="8797459392481275117">ይህን ጣቢያ በጭራሽ አትተርጉም</translation>
@@ -1852,6 +1872,8 @@ nil</translation>
 <translation id="3177909033752230686">የገጽ ቋንቋ፦</translation>
 <translation id="4254813446494774748">የትርጉም ቋንቋ፦</translation>
 <translation id="6156960295318603523">የቋንቋ ቅንብሮች</translation>
+<translation id="545426320101607695">የሚተረጎምበት ቋንቋ</translation>
+<translation id="822519928942492333">የሚተረጎመው የገጽ ቋንቋ</translation>
 <translation id="7931318309563332511">ያልታወቀ</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ማሳወቂያዎችን ለእርስዎ መላክ ይፈልጋል</translation>
 <translation id="2482878487686419369">ማስታወቂያዎች</translation>
@@ -1907,6 +1929,11 @@ nil</translation>
 <translation id="4058793769387728514">ሰነዱን አሁን አረጋግጥ</translation>
 <translation id="7339785458027436441">በሚጽፉበት ጊዜ ሆሄ ያረጋግጡ</translation>
 <translation id="2749881179542288782">ሰዋሰው እና ሆሄ አርም</translation>
+<translation id="883062543841130884">ምትኮች</translation>
+<translation id="5302932258331363306">ምትኮችን አሳይ</translation>
+<translation id="5260334392110301220">ዘመናዊ ጥቅሶች</translation>
+<translation id="7121728544325372695">ዘመናዊ ዳሾች</translation>
+<translation id="2653275834716714682">የጽሑፍ ምትክ</translation>
 <translation id="2845382757467349449">ሁልጊዜ የዕልባቶች አሞሌን አሳይ</translation>
 <translation id="8053390638574070785">ይህን ገጽ ዳግም ጫን</translation>
 <translation id="8651585100578802546">ይህ ገጽ እንደገና እንዲጀምር አስገድድ</translation>
@@ -2001,6 +2028,7 @@ nil</translation>
 <translation id="2650609753175229582"><ph name="URL"/> የተጠበቀ ይዘትን ማጫወት ይፈልጋል። የመሣሪያዎ ማንነት በBrave Software የሚረጋገጥ ሲሆን በዚህ ጣቢያ ሊደረስበት ይችላል።</translation>
 <translation id="1746402432151920942">የተጠበቀ ሚዲያ ለዪ</translation>
 <translation id="1322046419516468189">በእርስዎ <ph name="SAVED_PASSWORDS_STORE"/> ውስጥ የተቀመጡ የይለፍ ቃላትን ይመልከቱ እና ያስተዳድሩ</translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">የይለፍ ቃል ተቀምጧል። የተቀመጡ የይለፍ ቃላትን በእርስዎ <ph name="SAVED_PASSWORDS_STORE"/> ይመልከቱ እና ያስተዳድሩ።</translation>
 <translation id="5713644099811900409">የBrave Software መለያ</translation>
 <translation id="3785727820640310185">የተቀመጡ የዚህ ጣቢያ የይለፍ ቃላት</translation>
@@ -2115,16 +2143,6 @@ nil</translation>
 <translation id="3925842537050977900">ከመደርደሪያ ንቀል</translation>
 <translation id="469230890969474295">የኦኢኤም አቃፊ</translation>
 <translation id="6201792273624501289">Linux መተግበሪያዎች</translation>
-<translation id="1477301030751268706">የመታወቂያ ኤ ፒ አይ ማስመሰያ መሸጎጫ</translation>
-<translation id="8642171459927087831">የመዳረሻ ማስመሰያ</translation>
-<translation id="8049913480579063185">የቅጥያ ስም</translation>
-<translation id="1357589289913453911">የቅጥያ መታወቂያ</translation>
-<translation id="3898521660513055167">የማስመሰያ ሁኔታ</translation>
-<translation id="2098305189700762159">አልተገኘም</translation>
-<translation id="5880247576487732437">ማስመሰያ አለ</translation>
-<translation id="845627346958584683">ጊዜው የሚቃጠልበት ጊዜ</translation>
-<translation id="5238369540257804368">ወሰኖች</translation>
-<translation id="2391762656119864333">ሻር</translation>
 <translation id="29488703364906173">ለዘመናዊ ድር የተሰራ ፈጣን፣ ቀላል እና ደህንነቱ አስተማማኝ የሆነ የድር አሳሽ።</translation>
 <translation id="8910146161325739742">የእርስዎን ገጸ ማያ ያጋሩ</translation>
 <translation id="8621979332865976405">መላውን ማያ ገጽዎ ያጋሩ</translation>
@@ -2203,6 +2221,8 @@ nil</translation>
 <translation id="4130199216115862831">የመሣሪያ ምዝግብ ማስታወሻ</translation>
 <translation id="6231881193380278751">ገጹን በራስ-ለማደስ በዩአርኤል ውስጥ የመጠይቅ ልኬት ያክሉ፦ chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">አድስ</translation>
+<translation id="6643016212128521049">አጽዳ</translation>
+<translation id="3016381065346027039">ምንም ምዝግብ ግቤቶች የሉም</translation>
 <translation id="1260240842868558614">አሳይ፦</translation>
 <translation id="1165039591588034296">ስህተት</translation>
 <translation id="1124772482545689468">ተጠቃሚ</translation>
@@ -2231,7 +2251,6 @@ nil</translation>
 <translation id="7830594666202422257">ከLinux ጋር ተገናኝ</translation>
 <translation id="59324397759951282">የዩኤስቢ መሣሪያ ከ<ph name="MANUFACTURER_NAME"/></translation>
 <translation id="8763927697961133303">የዩኤስቢ መሣሪያ</translation>
-<translation id="8798099450830957504">እንደወረደ</translation>
 <translation id="5734362860645681824">ተግባቦት</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> መጣመር ይፈልጋል</translation>
 <translation id="5331425616433531170">«<ph name="CHROME_EXTENSION_NAME"/>» መጣመር ይፈልጋል</translation>
@@ -2255,7 +2274,7 @@ nil</translation>
 <translation id="8480869669560681089">ያልታወቀው መሣሪያ ከ<ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">የማይታወቅ መሣሪያ [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="810875025413331850">በአቅራቢያ ያሉ ምንም መሣሪያዎች አልተገኙም።</translation>
-<translation id="796416202355062143"><ph name="ORIGIN"/> በአቅራቢያ የብሉቱዝ መሣሪያዎች ካሉ መቃኘት ይፈልጋል፣ የሚከተሉት መሣሪያዎች ተገኝተዋል፦</translation>
+<translation id="4351060348582610152"><ph name="ORIGIN"/> በአቅራቢያ የብሉቱዝ መሣሪያዎች ካሉ መቃኘት ይፈልጋል። የሚከተሉት መሣሪያዎች ተገኝተዋል፦</translation>
 <translation id="8368027906805972958">ያልታወቀ ወይም የማይደገፍ መሣሪያ (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7003844668372540529">ያልታወቀ ምርት <ph name="PRODUCT_ID"/> ከ<ph name="VENDOR_NAME"/></translation>
 <translation id="3163201441334626963">ያልታወቀ ምርት <ph name="PRODUCT_ID"/> ከ<ph name="VENDOR_ID"/> ሻጭ</translation>
@@ -2265,6 +2284,7 @@ nil</translation>
 <translation id="8750155211039279868"><ph name="ORIGIN"/> ወደ ተከታታይ ወደብ ማገናኘት ይፈልጋል</translation>
 <translation id="4943691134276646401">«<ph name="CHROME_EXTENSION_NAME"/>» ወደ ተከታታይ ወደብ መገናኘት ይፈልጋል</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> ወደ HID መሣሪያ ማገናኘት ይፈልጋል</translation>
 <translation id="6078769373519310690">«<ph name="CHROME_EXTENSION_NAME"/>» ወደ ኤችአይዲ መሣሪያ መገናኘት ይፈልጋል</translation>
 <translation id="4419610272958564173">ያልታወቀ መሣሪያ (አቅራቢ፦ <ph name="VENDOR_ID"/>፣ ምርት፦ <ph name="PRODUCT_ID"/>)</translation>
@@ -2276,13 +2296,13 @@ nil</translation>
 <translation id="5398772614898833570">ማስታወቂያዎች ታግደዋል</translation>
 <translation id="2859806420264540918">ይህ ጣቢያ ረባሽ ወይም አሳሳች ማስታወቂያዎችን ያሳያል።</translation>
 <translation id="4077917118009885966">በዚህ ጣቢያ ላይ ማስታወቂያዎች ታግደዋል</translation>
+<translation id="6456955391422100996">ማስታወቂያ ተወግዷል።</translation>
+<translation id="7533556202636568669">ይህ ማስታወቂያ ከልክ በላይ ብዙ ግብዓቶች ለእርስዎ መሣሪያ አሉት ስለሆነም Brave አስወግዶታል።</translation>
 <translation id="8497219075884839166">የWindows መገልገያዎች</translation>
 <translation id="897525204902889653">የማግለያ አገልግሎት</translation>
 <translation id="7055152154916055070">አቅጣጫ ማዞር ታግዷል፦</translation>
 <translation id="6777817260680419853">አቅጣጫ ማዞር ታግዷል</translation>
 <translation id="694592694773692225">በዚህ ገጽ ላይ አቅጣጫ ማዞር ታግዷል።</translation>
-<translation id="8149707863742670433">በBrave Software የቀረበ የድር አሳሽ፣ ለእርስዎ</translation>
-<translation id="3541561136058491590">የእርስዎን ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት እና ሌሎች ቅንብሮችን በሁሉም መሣሪያዎችዎ ላይ ለማግኘት በBrave Software መለያዎ ወደ Brave ይግቡ።</translation>
 <translation id="8945142681652245463">ከBrave Software Brave ጋር በፍጥነት ያስሱ</translation>
 <translation id="2618024864038703735">ከBrave Software Brave ጋር ደህንነቱ በተጠበቀ ሁኔታ ያስሱ</translation>
 <translation id="8142180567942285208">ከBrave ጋር በዘመናዊ መንገድ ያስሱ</translation>
@@ -2292,12 +2312,6 @@ nil</translation>
 <translation id="683373380308365518">ወደ ዘመናዊ እና ደህንነቱ የተጠበቀ አሳሽ ይቀይሩ</translation>
 <translation id="989239400026154074">Brave Software Braveን ይመክራል</translation>
 <translation id="6676231621615806698">Braveን ክፈት</translation>
-<translation id="7494065396242762445">የWindows ቅንብሮችን ክፈት</translation>
-<translation id="2137068468602026500"><ph name="BEGIN_BOLD"/>Microsoft Edge<ph name="END_BOLD"/> ከድር ማሰሻ ስር ጠቅ ያድርጉ</translation>
-<translation id="3720996970802414353">ለማንኛውም ቀይር</translation>
-<translation id="3389312115541230716">በተግባር አሞሌው ላይ የ<ph name="SMALL_PRODUCT_LOGO"/> አዶን ቀኝ ጠቅ ያድርጉ</translation>
-<translation id="258932246702879617"><ph name="BEGIN_BOLD"/>ወደ የተግባር አሞሌ አያይዝ<ph name="END_BOLD"/> የሚለውን ይምረጡ</translation>
-<translation id="7537601449003285327">ከተግባር አሞሌ ጋር አያይዝ</translation>
 <translation id="5250372599208556903"><ph name="SEARCH_ENGINE_NAME"/> አካባቢያዊ ይዘትን ለእርስዎ ለመስጠት አካባቢዎን ይጠቀማል። ይህን በ<ph name="SETTINGS_LINK"/> ውስጥ መቀየር ይችላሉ።</translation>
 <translation id="3737536731758327622">የእርስዎ ውርዶች እዚህ ይታያሉ</translation>
 <translation id="4782664866169793230">Brave በራስ-ሰር የሙከራ ሶፍትዌር ቁጥጥር ሥር ነው።</translation>
@@ -2314,6 +2328,30 @@ nil</translation>
 <translation id="874689135111202667">{0,plural, =1{አንድ ፋይል ወደዚህ ጣቢያ ይሰቀል?}one{# ፋይሎች ወደዚህ ጣቢያ ይሰቀሉ?}other{# ፋይሎች ወደዚህ ጣቢያ ይሰቀሉ?}}</translation>
 <translation id="1956390763342388273">ይህ ሁሉንም ፋይሎች ከ«<ph name="FOLDER_PATH"/>» ይሰቅላል። ጣቢያውን የሚያምኑት ከሆነ ብቻ ይህን ያድርጉ።</translation>
 <translation id="1243314992276662751">ስቀል</translation>
+<translation id="1574038418461948632">ለውጦች ወደ <ph name="FILENAME"/> ይቀመጡ?</translation>
+<translation id="5181988524012865000">በፋይሎች ላይ ለውጦች ይቀመጡ?</translation>
+<translation id="2775188527796017992"><ph name="ORIGIN"/> በቀጥታ የእርስዎን ለውጦች ወደ <ph name="FILENAME"/> ለማስቀመጥ ይችላል። ይህን ትር እስከሚዘጉ ድረስ ጣቢያው ለውጦችን ማስቀመጥ ይችላል።</translation>
+<translation id="5375793835576008230"><ph name="ORIGIN"/> በቀጥታ ወደ በ <ph name="FOLDERNAME"/> ውስጥ ያሉ ፋይሎች የእርስዎን ለውጦች ለማስቀመጥ ይችላል። ይህን ትር እስከሚዘጉ ድረስ ጣቢያው ለውጦችን ማስቀመጥ ይችላል።</translation>
+<translation id="6532106788206463496">ለውጦችን አስቀምጥ</translation>
+<translation id="5102007300153090427">ይህ ገጽ ወደ ፋይሎች ለማስቀመጥ ተፈቅዶለታል።</translation>
+<translation id="197228003527531594">ይህ ገጽ በእርስዎ መሣሪያ ላይ ባለ አቃፊ ውስጥ ያሉ ሁሉንም ፋይሎች ለመመልከት ተፈቅዶለታል።</translation>
+<translation id="766254481392580456"><ph name="ORIGIN"/> በቀጥታ ወደ <ph name="FILENAME"/> የእርስዎን ለውጦች ማስቀመጥ ይችላል</translation>
+<translation id="856745937116041450"><ph name="ORIGIN"/> ለውጦችዎን በቀጥታ ወደ የሚከተሉት ፋይሎች ማስቀመጥ ይችላል</translation>
+<translation id="2150212764721500731"><ph name="ORIGIN"/> በቀጥታ የእርስዎን ለውጦች በ <ph name="FOLDERNAME"/> ውስጥ ማስቀመጥ ይችላል</translation>
+<translation id="7509896576944228744"><ph name="ORIGIN"/> ለውጦችዎን በቀጥታ ወደ የሚከተሉት አቃፊዎች ማስቀመጥ ይችላል</translation>
+<translation id="8152021341839173449"><ph name="ORIGIN"/> ለውጦችዎን በቀጥታ ወደሚከተሉት ፋይሎች እና አቃፊዎች ማስቀመጥ ይችላል</translation>
+<translation id="3343738344138980580"><ph name="ORIGIN"/> ሁሉንም በ <ph name="FOLDERNAME"/> ውስጥ ያሉ ፋይሎች መመልከት ይችላል</translation>
+<translation id="1507049466468737452"><ph name="ORIGIN"/> በሚከተሉት አቃፊዎች ውስጥ ያሉ ሁሉንም ፋይሎች ማየት ይችላል</translation>
+<translation id="6868139415119881457"><ph name="ORIGIN"/> የእርስዎን ለውጦች ማየት እና በቀጥታ ወደ የሚከተሉት ፋይሎች እና አቃፊዎች ማስቀመጥ ይችላል</translation>
+<translation id="5126611267288187364">ለውጦችን ይመልከቱ</translation>
+<translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>፣ <ph name="FILE2"/>}one{<ph name="FILE1"/>፣ <ph name="FILE2"/>፣ እና # ተጨማሪ}other{<ph name="FILE1"/>፣ <ph name="FILE2"/>፣ እና # ተጨማሪ}}</translation>
+<translation id="1790976235243700817">መዳረሻን አስወግድ</translation>
+<translation id="1392975001822614900">ወደዚህ አቃፊ ማስቀመጥ አልተቻለም</translation>
+<translation id="7613156935003315818">ይህ አቃፊ የስርዓት ፋይሎችን ስለያዘ <ph name="ORIGIN"/> ለውጦችዎን ወደ አቃፊው ማስቀመጥ አይችልም።</translation>
+<translation id="4403775189117163360">የተለየ አቃፊ ይምረጡ</translation>
+<translation id="7643932971554933646">ጣቢያ ፋይሎችን እንዲያይ ይፈቀድለት?</translation>
+<translation id="999180493986838144"><ph name="ORIGIN"/> በ <ph name="FOLDERNAME"/> ውስጥ ያሉትን ሁሉንም ፋይሎች ለማየት ይችላል። ጣቢያው ይህን ትር እስከሚዘጉ ድረስ ወደ አቃፊው የሚደረጉ ማናቸውንም ለውጦች ማየት ይችላል።</translation>
+<translation id="7201420661433230412">ፋይሎችን ይመልከቱ</translation>
 <translation id="3015639418649705390">አሁን ዳግም ያስጀምሩ</translation>
 <translation id="8712637175834984815">ገባኝ</translation>
 <translation id="2783952358106015700">የእርስዎን የደህንነት ቁልፍ በ<ph name="APP_NAME"/> ይጠቀሙ</translation>
@@ -2397,9 +2435,9 @@ nil</translation>
 <translation id="399179161741278232">ከውጭ የመጣ</translation>
 <translation id="5225324770654022472">የመተግበሪያዎች አቋራጮችን አሳይ</translation>
 <translation id="5072836811783999860">የሚቀናበሩ ዕልባቶችን አሳይ</translation>
+<translation id="3613134908380545408">አሳይ <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">የመተግበሪያዎች አቋራጮችን አሳይ</translation>
 <translation id="711840821796638741">የሚቀናበሩ ዕልባቶችን አሳይ</translation>
-<translation id="3613134908380545408"><ph name="FOLDER_NAME"/>ን አሳይ</translation>
 <translation id="2367972762794486313">መተግበሪያዎችን አሳይ</translation>
 <translation id="8368859634510605990">&amp;ሁሉንም እልባቶች ክፈት</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;ሁሉንም ክፈት}=1{&amp;ዕልባት ክፈት}one{&amp;ሁሉንም ክፈት (#)}other{&amp;ሁሉንም ክፈት (#)}}</translation>
@@ -2499,27 +2537,19 @@ nil</translation>
 <translation id="5138227688689900538">ያነሰ አሳይ</translation>
 <translation id="5270167208902136840"><ph name="NUMBER_OF_MORE_APPS"/> ተጨማሪ መተግበሪያዎችን አሳይ</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> መተግበሪያዎች</translation>
-<translation id="8099495042588009598">ተጨማሪ ፈቃዶች</translation>
+<translation id="485480310608090163">ተጨማሪ ቅንብሮች እና ፈቃዶች</translation>
 <translation id="8747503242566427664">ይህ መተግበሪያ የሚከተሉትን ማድረግ ይችላል፦</translation>
 <translation id="7207631048330366454">መተግበሪያዎችን ይፈልጉ</translation>
 <translation id="9011424611726486705">የጣቢያ ቅንብሮችን ክፈት</translation>
 <translation id="4739098340603978916">መጠን፦ <ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">ስሪት፦ <ph name="VERSION"/></translation>
-<translation id="6005695835120147974">ሚዲያ ራውተር</translation>
+<translation id="1920390473494685033">እውቂያዎች</translation>
 <translation id="7787308148023287649">በሌላ ማያ ገጽ ላይ አሳይ</translation>
 <translation id="7710568461918838723">&amp;Cast...</translation>
-<translation id="5537725057119320332">Cast</translation>
-<translation id="1383876407941801731">ፍለጋ</translation>
-<translation id="8970203673128054105">የcast ሁነታ ዝርዝር ይመልከቱ</translation>
-<translation id="1277908057200820621">የመሣሪያ ዝርዝርን ይመልከቱ</translation>
-<translation id="6685083257944113180">አቁም፣ <ph name="SINK_NAME"/>፣ <ph name="SINK_STATUS"/></translation>
-<translation id="2847759467426165163">ይውሰዱ ወደ</translation>
 <translation id="6700480081846086223"><ph name="HOST_NAME"/> ውሰድ</translation>
 <translation id="682123305478866682">ዴስክቶፕ ውሰድ</translation>
 <translation id="2148892889047469596">ትር ውስድ</translation>
 <translation id="8274332263553132018">ፋይል Cast ያድርጉ</translation>
-<translation id="8627151598708688654">ምንጭ ይምረጡ</translation>
-<translation id="3468275649641751422">የቪዲዮ ወይም የኦዲዮ ፋይል ዥረት ይልቀቁ</translation>
 <translation id="781167124805380294"><ph name="FILE_NAME"/>ን Cast ያድርጉ</translation>
 <translation id="8890516388109605451">ምንጮች</translation>
 <translation id="1116694919640316211">ስለ</translation>
@@ -2527,28 +2557,12 @@ nil</translation>
 <translation id="9011163749350026987">ሁልጊዜ አዶን አሳይ</translation>
 <translation id="1706586824377653884">በእርስዎ አስተዳዳሪ ታክሏል</translation>
 <translation id="6467304607960172345">ባለሙሉ ማያ ቪዲዮዎችን አትባ</translation>
-<translation id="1597210476603167523">እንደ Brave Software Hangouts ወዳሉ በደመና ላይ ለተመሠረቱ አገልግሎቶች cast ማድረግን ያንቁ።</translation>
-<translation id="3653941710869291743">እንኳን ወደ በBrave ውስጥ የCast ተሞክሮ በደህና መጡ!</translation>
-<translation id="2841638550927239436">ከBrave የመጡ ይዘቶችን በእርስዎ ቴሌቪዥን ወይም በሌሎች መሣሪያዎች ላይ ለማሳየት ይህን ባሕሪ መጠቀም ይችላሉ።</translation>
-<translation id="5234764350956374838">አሰናብት</translation>
 <translation id="4579581181964204535"><ph name="HOST_NAME"/>ን cast ማድረግ አልተቻለም።</translation>
 <translation id="8757090071857742562">ዴስክቶፑን cast ማድረግ አልተቻለም።  ማያ ገጽዎን ማጋራት ለመጀመር ጥያቄውን ማረጋገጥዎን ይመልከቱ።</translation>
 <translation id="8032244173881942855">ትሩን cast ማድረግ አልተቻለም።</translation>
-<translation id="2279874276457403668">በአንድ ጊዜ አንድ ክፍለ-ጊዜ ብቻ ነው ሊፈጠር የሚችለው።</translation>
 <translation id="6169666352732958425">ዴስክቶፕን cast ማድረግ አልተቻለም።</translation>
 <translation id="4081242589061676262">ፋይልን cast ማድረግ አልተቻለም።</translation>
 <translation id="4075639477629295004"><ph name="FILE_NAME"/>ን cast ማድረግ አልተቻለም።</translation>
-<translation id="7255220508626648026">Casting፦ <ph name="ROUTETITLE"/></translation>
-<translation id="7889966925761734854">ይፈልጉ</translation>
-<translation id="4430019312045809116">ድምፅ</translation>
-<translation id="1156488781945104845">የአሁኑ ሰዓት</translation>
-<translation id="6930242544192836755">ጊዜ</translation>
-<translation id="7902874111237641165">ለስላሳ እንቅስቃሴ [የቅድመ ይሁንታ ሙከራ]</translation>
-<translation id="8343956361364550006">ለምርጥ የቪዲዮ ወይም እነማ ከፍተኛ መተላለፊያ ይዘት ይጠቀሙ። ዝግተኛ ግንኙነቶች ያላቸው ሌሎች ሰዎች የእርስዎን ይዘት መመልከት ላይችሉ ይችላሉ።</translation>
-<translation id="4931132176527519925">ሁልጊዜ ግልባጭ ማድረግ ተጠቀም</translation>
-<translation id="3279741024917655738">የሙሉ ገጽ ዕይታ ቪዲዮዎችን አሳይ በርቷል</translation>
-<translation id="4772404146526168240">ሁለቱም ማያ ገጾች</translation>
-<translation id="3766223500670287046">የሩቅ ማያ ገጽ</translation>
 <translation id="3930737994424905957">መሣሪያዎችን በመፈለግ ላይ</translation>
 <translation id="5209320130288484488">ምንም መሣሪያዎች አልተገኙም</translation>
 <translation id="4415245286584082850">ምንም መሣሪያዎች አልተገኙም። የእገዛ ማዕከል ጽሑፍ በአዲስ ትር ላይ ይክፈቱ።</translation>
@@ -2557,7 +2571,6 @@ nil</translation>
 <translation id="1536754031901697553">ግንኙነት በማቋረጥ ላይ...</translation>
 <translation id="1854180393107901205">መውሰድ አቁም</translation>
 <translation id="5307030433605830021">ምንጭ አይደገፍም</translation>
-<translation id="4271396100647220620">ምንም ተዛማጆች የሉም</translation>
 <translation id="6972180789171089114">ኦዲዮ/ቪዲዮ</translation>
 <translation id="2541002089857695151">ሙሉ ማያ ገጽን መውሰድ ይትባ?</translation>
 <translation id="4144218403971135344">የተሻለ ጥራት ያለውን ቪዲዮ ያግኙ እና የባትሪ ዕድሜ ይቆጥቡ። ቪዲዮ በእርስዎ የCast-የነቃ ማያ ገጽ ላይ ብቻ ይጫወታል።</translation>
@@ -2584,8 +2597,8 @@ nil</translation>
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (የህጻናት መለያ)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
 ይህ ጣቢያ መታገድ ያለበት አይመስለኝም!</translation>
-<translation id="8662795692588422978">ሰዎች</translation>
-<translation id="6790820461102226165">ሰው አክል...</translation>
+<translation id="5832813618714645810">ሰዎች</translation>
+<translation id="7171000599584840888">ሰው አክል...</translation>
 <translation id="1781771911845953849">መለያዎች እና ማስመር</translation>
 <translation id="4974733135013075877">ውጣ እና ከልጅ ቆልፍ</translation>
 <translation id="3965965397408324205">ከ<ph name="PROFILE_NAME"/> ውጣ</translation>
@@ -2606,23 +2619,23 @@ nil</translation>
 <translation id="1692115862433274081">ሌላ መለያ ተጠቀም</translation>
 <translation id="5287425679749926365">የእርስዎ መለያዎች</translation>
 <translation id="4801448226354548035">መለያዎችን ደብቅ</translation>
-<translation id="8400146488506985033">ሰዎችን አቀናብር</translation>
+<translation id="2935225303485967257">ሰዎችን አቀናብር</translation>
 <translation id="7388222713940428051">የእንግዳ መስኮትን ክፈት</translation>
 <translation id="127668050356036882">ሁሉንም የእርስዎ መስኮቶች ይዝጉ</translation>
 <translation id="8883847527783433352">ከሌላ መለያ ጋር ያስምሩ</translation>
 <translation id="2761898608071930085">ሌላ መለያ ተጠቀም</translation>
 <translation id="1464258312790801189">የእርስዎ መለያዎች</translation>
 <translation id="6655458902729017087">መለያዎችን ደብቅ</translation>
-<translation id="8770507190024617908">ሰዎችን አቀናብር</translation>
+<translation id="688280436658139163">ሰዎችን አቀናብር</translation>
 <translation id="2666990579225592931">የእንግዳ መስኮትን ክፈት</translation>
 <translation id="5869948122057593679">ሁሉንም የእርስዎ መስኮቶች ይዝጉ</translation>
-<translation id="7652808307838961528">ግለሰብ፣ <ph name="PROFILE_NAME"/>ን አርትዕ</translation>
-<translation id="6112952769866305444">ግለሰብ፣ <ph name="PROFILE_NAME"/>፣ <ph name="USERNAME"/> ያርትዑ</translation>
+<translation id="4133080584509825342">ግለሰብ፣ <ph name="PROFILE_NAME"/>ን አርትዕ</translation>
+<translation id="4848862725510532982">ግለሰብ፣ <ph name="PROFILE_NAME"/>፣ <ph name="USERNAME"/> ያርትዑ</translation>
 <translation id="3294437725009624529">እንግዳ</translation>
 <translation id="475088594373173692">የመጀመሪያ ተጠቃሚ</translation>
 <translation id="4535127706710932914">ነባሪ መገለጫ</translation>
 <translation id="4389091756366370506">ተጠቃሚ <ph name="VALUE"/></translation>
-<translation id="749028671485790643">ሰው <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">ሰው <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">እርስዎ</translation>
 <translation id="3031417829280473749">Agent X</translation>
 <translation id="412730574613779332">Spandex</translation>
@@ -2698,19 +2711,19 @@ nil</translation>
 <translation id="5068919226082848014">ፒዛ</translation>
 <translation id="6170470584681422115">ሳንድዊች</translation>
 <translation id="1830550083491357902">አልተገባም</translation>
-<translation id="5941153596444580863">ሰው አክል...</translation>
+<translation id="5828545842856466741">ሰው አክል...</translation>
 <translation id="9149866541089851383">አርትዕ…</translation>
 <translation id="2836635946302913370">በዚህ ተጠቃሚ ስም መግባት በአስተዳዳሪዎ ተሰናክሏል።</translation>
 <translation id="2721695630904737430">ክትትል የሚደረግባቸው ተጠቃሚዎች በእርስዎ አስተዳዳሪ ተሰናክልዋል።</translation>
 <translation id="1468571364034902819">ይህን መገለጫ መጠቀም አይቻልም</translation>
 <translation id="2261323523305321874">የእርስዎ አስተዳዳሪ አንዳንድ የቆዩ መገለጫዎችን የሚያሰናክል ሙሉ ስርዓት ለውጦችን አድርገዋል።</translation>
-<translation id="2684004000387153598">ለመቀጠል እሺን ጠቅ ያድርጉ፣ ከዚያ ለኢሜይል አድራሻዎ አዲስ መገለጫ ለመፍጠር ሰው አክልን ጠቅ ያድርጉ።</translation>
-<translation id="7683373461016844951">ለመቀጠል እሺን ጠቅ ያድርጉ፣ ከዚያ ለ<ph name="DOMAIN"/> ኢሜይል አድራሻዎ አዲስ መገለጫ ለመስራት ሰው አክልን ጠቅ ያድርጉ።</translation>
+<translation id="2254158488150713536">ለመቀጠል እሺን ጠቅ ያድርጉ፣ ከዚያ ለኢሜይል አድራሻዎ አዲስ መገለጫ ለመፍጠር ሰው አክልን ጠቅ ያድርጉ።</translation>
+<translation id="1725743343613175327">ለመቀጠል እሺን ጠቅ ያድርጉ፣ ከዚያ ለ<ph name="DOMAIN"/> ኢሜይል አድራሻዎ አዲስ መገለጫ ለመስራት ሰው አክልን ጠቅ ያድርጉ።</translation>
 <translation id="8650543407998814195">ምንም እንኳ ከእንግዲህ የድሮ መገለጫዎን መድረስ ባይችሉም አሁንም ሊያስወግዱት ይችላሉ።</translation>
 <translation id="2871813825302180988">ይህ መለያ አስቀድሞ በዚህ መሣሪያ ላይ ስራ ላይ ውሏል።</translation>
 <translation id="7654941827281939388">ይህ መለያ አስቀድሞ በዚህ ኮምፒውተር ላይ ስራ ላይ ውሏል።</translation>
 <translation id="9022847679183471841">ይህ መለያ አስቀድሞ በዚህ ኮምፒውተር ላይ በ<ph name="AVATAR_NAME"/> ጥቅም ላይ እየዋለ ነው።</translation>
-<translation id="7463006580194749499">ሰው አክል</translation>
+<translation id="6921634551681321094">ሰው አክል</translation>
 <translation id="5389237414310520250">አዲሱ ተጠቃሚ ሊፈጠር አልቻለም። እባክዎ የደረቅ አንጻፊዎ ቦታ እና ፍቃዶችን ያረጋግጡና እንደገና ይሞክሩ።</translation>
 <translation id="2673589024369449924">ለዚህ ተጠቃሚ የዴስክቶፕ ላይ አቋራጭ ፍጠር</translation>
 <translation id="2731710757838467317">የእርስዎ ክትትል የሚደረግበት ተጠቃሚ በመፍጠር ላይ። ይሄ ትንሽ ጊዜ ሊወስድ ይችላል።</translation>
@@ -2718,13 +2731,13 @@ nil</translation>
 <translation id="6690751852586194791">ወደዚህ መሣሪያ የሚያክሉት ክትትል የሚደረግበት ተጠቃሚ ይምረጡ።</translation>
 <translation id="5525677322972469346">አዲስ ክትትል የሚደረግበት ተጠቃሚ ፍጠር</translation>
 <translation id="8630903300770275248">ትክክል የሚደረግበት ተጠቃሚ አስመጣ</translation>
-<translation id="5832805196449965646">ሰው አክል</translation>
-<translation id="8214962590150211830">ይህን ሰው አስወግድ</translation>
-<translation id="1451917004835509682">ቁጥጥር የሚደረግበት ግለሰብን ያክሉ</translation>
+<translation id="4904061654709986277">ሰው አክል</translation>
+<translation id="6114945161119872228">ይህን ሰው አስወግድ</translation>
+<translation id="769308100792069196">ቁጥጥር የሚደረግበት ግለሰብን ያክሉ</translation>
 <translation id="3470442499439619530">ይህን ተጠቃሚ አስወግድ</translation>
 <translation id="4296575653627536209">ክትትል የሚደረግበት ተጠቃሚ አክል</translation>
-<translation id="1701062906490865540">ይህን ሰው አስወግድ</translation>
-<translation id="2239921694246509981">ቁጥጥር የሚደረግበት ግለሰብን ያክሉ</translation>
+<translation id="8006143138282906848">ይህን ሰው አስወግድ</translation>
+<translation id="6912187023601892621">ቁጥጥር የሚደረግበት ግለሰብን ያክሉ</translation>
 <translation id="1608626060424371292">ይህን ተጠቃሚ አስወግድ</translation>
 <translation id="493571969993549666">ክትትል የሚደረግበት ተጠቃሚ አክል</translation>
 <translation id="9101691533782776290">መተግበሪያ አስጀምር</translation>
@@ -2746,8 +2759,8 @@ nil</translation>
 <translation id="6164005077879661055">ይህ ክትትል የሚደረግበት ተጠቃሚ አንዴ ከተወገደ በኋላ ሁሉም ከዚህ ክትትል የሚደረግበት ተጠቃሚ ጋር የተጎዳኙ ፋይሎች እና አካባቢያዊ ውሂብ እስከመጨረሻው ይሰረዛሉ። አስተዳዳሪው የዚህ ክትትል የሚደረግበት ተጠቃሚ የጎበኛቸው ድር ጣቢያዎች እና ቅንብሮች <ph name="MANAGEMENT_URL"/> ላይ ሊያዩት ይችላሉ።</translation>
 <translation id="3410832398355316179">አንዴ ይህ ተጠቃሚ ከተወገደ በኋላ ከዚህ ተጠቃሚ ጋር የተጎዳኙ ሁሉም ፋይሎች እና አካባቢያዊ ውሂብ እስከመጨረሻው ይወገዳሉ። <ph name="USER_EMAIL"/> አሁን በኋላ በመለያ መግባት ይችላሉ።</translation>
 <translation id="672213144943476270">እንደ እንግዳ ከማሰስዎ በፊት የእርስዎን መገለጫ እባክዎ ይክፈቱ።</translation>
-<translation id="3478685642445675458">አንድ ሰው ከማስወገድዎ በፊት እባክዎ የእርስዎን መገለጫ ይክፈቱ።</translation>
-<translation id="4648499713050786492">አንድ ሰው ከማከልዎ በፊት እባክዎ የእርስዎን መገለጫ ይክፈቱ።</translation>
+<translation id="8086119151297127544">አንድ ሰው ከማስወገድዎ በፊት እባክዎ የእርስዎን መገለጫ ይክፈቱ።</translation>
+<translation id="7805701378418968629">አንድ ሰው ከማከልዎ በፊት እባክዎ የእርስዎን መገለጫ ይክፈቱ።</translation>
 <translation id="8978225823042133615">Braveን ለመጠቀም እባክዎ በመለያ ያግቡ</translation>
 <translation id="4893336867552636863">ይሄ የአሰሳ ውሂብዎን ለዘለዓለም ከዚህ መሣሪያ ይሰርዘዋል።</translation>
 <translation id="2496180316473517155">ታሪክ አሰሳ</translation>
@@ -2793,9 +2806,33 @@ nil</translation>
 <translation id="5747785204778348146">ገንቢ - ያልተረጋጋ</translation>
 <translation id="5600706100022181951">ዝማኔው ከሞባይል ውሂብ <ph name="UPDATE_SIZE_MB"/> ሜባ በመጠቀም ይወርዳል። መቀጠል ይፈልጋሉ?</translation>
 <translation id="5402815541704507626">የተንቀሳቃሽ ስልክ ውሂብን በመጠቀም ዝማኔን ያውርዱ</translation>
+<translation id="3493486281776271508">የበየነ መረብ ግንኙነት ያስፈልጋል</translation>
+<translation id="672609503628871915">ምን አዲስ ነገር እንዳለ ይመልከቱ</translation>
 <translation id="5085162214018721575">ዝማኔዎችን በመፈተሽ ላይ</translation>
 <translation id="4570609078116869893">Braveን ለሁሉም ተጠቃሚዎች በራስ-ሰር አዘምን</translation>
 <translation id="7102687220333134671">ራስ-ሰር ዝማኔዎች በርተዋል</translation>
+<translation id="8284326494547611709">መግለጫ ጽሑፎች</translation>
+<translation id="1755601632425835748">የጽሑፍ መጠን</translation>
+<translation id="3179982752812949580">የጽሑፍ ቅርጸ ቁምፊ</translation>
+<translation id="6850286078059909152">የጽሑፍ ቀለም</translation>
+<translation id="8042142357103597104">የጽሑፍ በርሃን-ከልነት</translation>
+<translation id="1656528038316521561">የበስተጀርባ ብርሃን-ከልነት</translation>
+<translation id="5750288053043553775">0</translation>
+<translation id="8689998525144040851">100</translation>
+<translation id="2442916515643169563">የጽሑፍ ጥላ</translation>
+<translation id="3599221874935822507">የተነሣ</translation>
+<translation id="274029851662193272">የተደበረ</translation>
+<translation id="8184472985242519288">ወጥ የሆነ</translation>
+<translation id="8619803522055190423">ጥላ ጣል</translation>
+<translation id="3930968231047618417">የዳራ ቀለም</translation>
+<translation id="7569983096843329377">ጥቁር</translation>
+<translation id="2713444072780614174">ነጭ</translation>
+<translation id="7942349550061667556">ቀይ</translation>
+<translation id="6017514345406065928">አረንጓዴ</translation>
+<translation id="1555130319947370107">ሰማያዊ</translation>
+<translation id="5901630391730855834">ቢጫ</translation>
+<translation id="161042844686301425">ውሃ ሰማያዊ</translation>
+<translation id="4115378294792113321">ሮዝ</translation>
 <translation id="6981982820502123353">ተደራሽነት</translation>
 <translation id="5840822070878669614">Brave የድር መደብርን ይክፈቱ</translation>
 <translation id="6073903501322152803">የተደራሽነት ባህሪያትን ያክሉ</translation>
@@ -2804,6 +2841,15 @@ nil</translation>
 <translation id="2558896001721082624">በሥርዓት ምናሌ ውስጥ የተደራሽነት አማራጮችን ሁልጊዜ አሳይ</translation>
 <translation id="7280649757394340890">የጽሑፍ-ወደ-ንግግር ድምጽ ቅንብሮች</translation>
 <translation id="6635956300022133031">የጽሑፍ-ወደ-ንግግር ድምጾችን ይምረጡና ያብጁ</translation>
+<translation id="7991296728590311172">የመቀያየሪያ መዳረሻ ቅንብሮች</translation>
+<translation id="1877860345998737529">የእርምጃ ምደባን ቀያይር</translation>
+<translation id="6129953537138746214">ባዶ ቦታ</translation>
+<translation id="8179976553408161302">አስገባ</translation>
+<translation id="6710213216561001401">ቀዳሚ</translation>
+<translation id="2915873080513663243">ራስ-ቅኝት</translation>
+<translation id="8912810933860534797">ራስ-ቃኝን አንቃ</translation>
+<translation id="6617100836880592260">የቅኝት ፍጥነት፦ <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="7919210519031517829"><ph name="DURATION"/> ሴ</translation>
 <translation id="2981113813906970160">ትልቅ የመዳፊት ጠቋሚ አሳይ</translation>
 <translation id="5072052264945641674">የጠቋሚ መጠንን አስተካክል</translation>
 <translation id="4209092469652827314">ትልቅ</translation>
@@ -2880,15 +2926,16 @@ nil</translation>
 <translation id="574209121243317957">ቅላፄ</translation>
 <translation id="3871092408932389764">ዝቅተኛው</translation>
 <translation id="6352773953037195952">ከፍተኛው</translation>
+<translation id="4430019312045809116">ድምፅ</translation>
 <translation id="3677657024345889897">ከሁሉም ጸጥ ያለው</translation>
 <translation id="167160931442925455">በጣም ጮክ ያለ</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (ነባሪ)</translation>
 <translation id="3602290021589620013">ቅድመ-ዕይታ</translation>
 <translation id="7037509989619051237">ቅድሚያ የሚታይ ጽሑፍ</translation>
 <translation id="5471768120198416576">ጤና ይስጥልን! እኔ የጽሑፍ-ወደ-ንግግር ድምጽዎ ነኝ።</translation>
 <translation id="6902066522699286937">ቅድሚያ የሚታይ ድምጽ</translation>
 <translation id="304747341537320566">የንግግር ፕሮግራሞች</translation>
-<translation id="1036348656032585052">አጥፋ</translation>
 <translation id="1067291318998134776">Linux (ቅድመ-ይሁንታ)</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1366177842110999534">የLinux መሣሪያዎች፣ አርታዒዎች፣ እና IDEዎች በእርስዎ <ph name="DEVICE_TYPE"/> ላይ ያሂዱ። &lt;a target="_blank" href="<ph name="URL"/>"&gt;የበለጠ ለመረዳት&lt;/a&gt;</translation>
@@ -2903,17 +2950,19 @@ nil</translation>
 <translation id="3819257035322786455">ምትኬ ያስቀምጡ</translation>
 <translation id="3233271424239923319">Linux መተግበሪያዎችን እና ፋይሎችን በምትኬ ያስቀምጡ</translation>
 <translation id="184273675144259287">የእርስዎን የ Linux መተግበሪያዎች እና ፋይሎች ከዚህ ቀደም በነበረ ምትኬ ይተኳቸው</translation>
+<translation id="8774379074441005279">ወደነበረበት መመለስን ያረጋግጡ</translation>
+<translation id="3328489342742826322">ከምትኬ ወደነበረበት መመለስ ነባር የLinux መተግበሪያዎችን እና በLinux ፋይሎች አቃፊዎ ውስጥ ያለ ውሂብን ይሰርዛል።</translation>
 <translation id="7105390788077117391">የዩኤስቢ ምርጫዎች</translation>
 <translation id="3201422919974259695">ሊገኙ የሚችሉ የዩኤስቢ መሣሪያዎች እዚህ ላይ ብቅ ይላሉ።</translation>
 <translation id="1343865611738742294">የዩኤስቢ መተግበሪያዎች እንዲደርስባቸው ለ Linux ፈቃድ ይስጡት። ከተወገደ በኋላ Linux የዩኤስቢ መሣሪያውን አያስታውሰውም።</translation>
 <translation id="3661172646479098821">የAndroid መሣሪያዎች ብቻ ናቸው በአሁኑ ጊዜ የሚደገፉት።</translation>
 <translation id="1679806121152819234">PluginVm</translation>
-<translation id="8343187330304787218">Plugin VM በእርስዎ <ph name="DEVICE_TYPE"/> ላይ ለማስኬድ ቅንብሮችን ያስተዳድሩ</translation>
+<translation id="1878541307036593717">ፈቃዶችን አቀናብር</translation>
 <translation id="7508054832109420082">ለአታሚዎች መዳረሻ ይስጡ</translation>
 <translation id="2258855745387252834">ለማጋራት በፋይሎች መተግበሪያው ውስጥ አንዱን አቃፊ በቀኝ ጠቅ ያድርጉት፣ ከዚያ «በተሰኪ ቪኤም አጋራ»ን ይምረጡ።</translation>
 <translation id="2295473777859797944">Brave Software Play መደብር</translation>
 <translation id="572155275267014074">የAndroid ቅንብሮች</translation>
-<translation id="4767209642168463274">በእርስዎ Bravebook ላይ መተግበሪያዎችን እና ጨዋታዎችን ከBrave Software Play ይጫኑ። &lt;a target="_blank" href="<ph name="URL"/>"&gt;የበለጠ ለመረዳት&lt;/a&gt;</translation>
+<translation id="9081422163530430821">በእርስዎ <ph name="DEVICE_TYPE"/> ላይ መተግበሪያዎችን እና ጨዋታዎችን ከBrave Software Play ይጫኑ። &lt;a target="_blank" href="<ph name="URL"/>"&gt;የበለጠ ለመረዳት&lt;/a&gt;</translation>
 <translation id="2966937470348689686">የAndroid ምርጫዎችን ያቀናብሩ</translation>
 <translation id="4074367893748481070">Brave Software Play መደብርን አስወግድ</translation>
 <translation id="2792290659606763004">የAndroid መተግበሪያዎች ይወገዱ?</translation>
@@ -2924,6 +2973,7 @@ nil</translation>
       ይህ በሌሎች መሣሪያዎች ላይ ባሉ መተግበሪያዎች ወይም ይዘት ላይ ተጽዕኖ አያሳርፍባቸውም።</translation>
 <translation id="492299503953721473">የAndroid መተግበሪያዎችን አስወግድ</translation>
 <translation id="7566118625369982896">የPlay መተግበሪያ አገናኞችን ያቀናብሩ</translation>
+<translation id="5026688690798028095">የመተግበሪያ አስተዳደርን ክፈት</translation>
 <translation id="2433507940547922241">ገጽታ</translation>
 <translation id="1177863135347784049">ብጁ</translation>
 <translation id="1925021887439448749">ብጁ የድር አድራሻ ያስገቡ</translation>
@@ -2949,7 +2999,6 @@ nil</translation>
 <translation id="5860033963881614850">አጥፋ</translation>
 <translation id="5916664084637901428">በርቷል</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> ይህን ቅንብር እየተቆጣጠሩት ነው</translation>
-<translation id="6643016212128521049">አጽዳ</translation>
 <translation id="8465252176946159372">ልክ ያልሆነ</translation>
 <translation id="8647834505253004544">የሚሰራ የድር አድራሻ አይደለም</translation>
 <translation id="7946586320617670168">ምንጭ ደህንነቱ የተጠበቀ መሆን አለበት</translation>
@@ -3020,6 +3069,7 @@ nil</translation>
 <translation id="1779652936965200207">እባክዎ ይህን የይለፍ ቁልፍ በ«<ph name="DEVICE_NAME"/>» ላይ ያስገቡ፦</translation>
 <translation id="9088917181875854783">እባክዎ ይህን የይለፍ ቁልፍ በ«<ph name="DEVICE_NAME"/>» ላይ መታየቱን ያረጋግጡ፦</translation>
 <translation id="3368922792935385530">ተያይዟል</translation>
+<translation id="6727969043791803658">ተገናኝቷል፣ <ph name="BATTERY_PERCENTAGE"/>% ባትሪ</translation>
 <translation id="8874184842967597500">አልተገናኘም</translation>
 <translation id="7617366389578322136">ከ«<ph name="DEVICE_NAME"/>» ጋር በመገናኘት ላይ</translation>
 <translation id="2138398485845393913">ከ«<ph name="DEVICE_NAME"/>» ጋር የሚደረገው ግንኙነት አሁንም በሂደት ላይ ነው</translation>
@@ -3118,7 +3168,11 @@ nil</translation>
 <translation id="6985607387932385770">አታሚዎች</translation>
 <translation id="1815579292149538864">የCUPS አታሚዎችን ያዋቅሩ ወይም ያቀናብሩ።</translation>
 <translation id="8030656706657716245">አታሚ አክል</translation>
+<translation id="8025958612547562988">ተፈልገው የተገኙ አታሚዎችን ወደ የእርስዎ መገለጫ ተቀምጧል ወይም አዲስ አታሚ ያክሉ</translation>
+<translation id="6980969641756020642">ለማስቀመጥ ሊገኝ የሚችሉ አታሚዎች</translation>
+<translation id="8151638057146502721">አዋቅር</translation>
 <translation id="2297705863329999812">አታሚዎችን ይፈልጉ</translation>
+<translation id="7956373551960864128">የእርስዎ የተቀመጡ አታሚዎች</translation>
 <translation id="168991973552362966">በአቅራቢያ ያለ አታሚን ያክሉ</translation>
 <translation id="3038612606416062604">አታሚን ራስዎ ያክሉ</translation>
 <translation id="8002274832045662704">የላቀ የአታሚ ውቅረት</translation>
@@ -3157,17 +3211,20 @@ nil</translation>
 <translation id="5696679855467848181">አሁን ጥቅም ላይ የዋለ የPPD ፋይል፦ <ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353"><ph name="PRINTER_NAME"/> በራስ ሰር ሊዋቀር አልተቻለም። የላቀ አታሚ ዝርዝሮችን እባክዎ ይጥቀሱ።</translation>
 <translation id="804786196054284061">የመጨረሻ ተጠቃሚ የፍቃድ ስምምነት</translation>
+<translation id="6318944945640833942">አታሚን ፈልጎ ማግኘት አልተቻለም። እባክዎ የአታሚ አድራሻን እንደገና ያስገቡ።</translation>
+<translation id="2434449159125086437">አታሚን ማቀናበር አልተቻለም። እባክዎ ውቅረትን ይፈትሹ እና እንደገና ይሞክሩ።</translation>
 <translation id="4733793249294335256">አካባቢ</translation>
 <translation id="7754704193130578113">እያንዳንዱ ፋይል ከመውረዱ በፊት የት እንደሚቀመጥ ጠይቅ</translation>
 <translation id="5713072761819014678">የBrave Software Drive መለያን አላቅቅ</translation>
 <translation id="486635084936119914">ካወረዱ በኋላ የተወሰኑ የፋይል አይነቶችን ክፈት</translation>
 <translation id="3653160965917900914">የአውታረ መረብ ፋይል ማጋራቶች</translation>
 <translation id="5763315388120433852">የአውታረ መረብ ፋይል ማጋራቶችን ያዋቅሩ ወይም ያቀናብሩ።</translation>
-<translation id="2367199180085172140">ፋይል አጋራን ያክሉ</translation>
+<translation id="5734697361979786483">ፋይል አጋራን ያክሉ</translation>
 <translation id="247051149076336810">የፋይል ማጋራት ዩአርኤል</translation>
 <translation id="5247051749037287028">የማሳያ ስም (ከተፈለገ)</translation>
 <translation id="3544879808695557954">የተጠቃሚ ስም (አማራጭ)</translation>
 <translation id="6949434160682548041">የይለፍ ቃል (አማራጭ)</translation>
+<translation id="8879921471468674457">በመለያ መግቢያ መረጃን አስታውስ</translation>
 <translation id="6091761513005122595">አጋራ በተሳካ ሁኔታ ተፈናጥጧል።</translation>
 <translation id="9024158959543687197">ማጋራትን ማፈናጠጥ ላይ ስህተት። የፋይል አጋራ ዩአርኤሉን ይፈትሹትና እንደገና ይሞክሩ።</translation>
 <translation id="1954813140452229842">ማጋራትን ማፈናጠጥ ላይ ስህተት። እባክዎ ምስክርነቶችዎን ይፈትሹና እንደገና ይሞክሩ።</translation>
@@ -3176,24 +3233,44 @@ nil</translation>
 <translation id="706626672220389329">ማጋራትን ማፈናጠጥ ላይ ስህተት። የተገለጸው ማጋራት አስቀድሞ ተፈናጥጧል።</translation>
 <translation id="5985458664595100876">ልክ ያልሆነ የዩአርኤል ቅርጸት። የሚደገፉ ቅርጸቶች \\server\share እና smb://server/share ናቸው።</translation>
 <translation id="6644513150317163574">ልክ ያልሆነ የዩአርኤል ቅርጸት። SSO ማረጋገጫ ጥቅም ላይ በሚውልበት ጊዜ የአስተናጋጅ ስምን አገልጋዩ መጥቀስ ይኖርበታል።</translation>
-<translation id="9147304170847707004">የማረጋገጫ ዘዴ</translation>
+<translation id="4050225813016893843">የማረጋገጫ ዘዴ</translation>
 <translation id="7740996059027112821">መደበኛ</translation>
 <translation id="5115338116365931134">SSO</translation>
-<translation id="174617397682753897">የKerberos መለያዎች</translation>
-<translation id="2249269794707377949">በተወሰኑ መተግበሪያዎች እና ድር ጣቢያዎች ላይ ለነጠላ መግቢያ እና ለፋይል ማጋራቶች የሆኑ የKerberos መለያዎች እዚህ መቀናበር ይችላሉ።</translation>
-<translation id="1987317783729300807">መለያዎች</translation>
-<translation id="7665369617277396874">መለያ ያክሉ</translation>
-<translation id="3297951628821704004">መለያን ከዚህ መሣሪያ አስወግድ</translation>
-<translation id="757941033127302446">በመለያ ገብቷል</translation>
-<translation id="1117602883390928720">የ Kerberos መለያ ያክሉ</translation>
+<translation id="1327272175893960498">የKerberos ቲኬቶች</translation>
+<translation id="1709217939274742847">ለማረጋገጥ የሚጠቀሙበት ቲኬት ይምረጡ። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
+<translation id="4739639199548674512">ቲኬቶች</translation>
+<translation id="6112727384379533756">ቲኬት ያክሉ</translation>
+<translation id="8251441930213048644">አሁንኑ አድስ</translation>
+<translation id="4820236583224459650">እንደ ገቢር ቲኬት አቀናብር</translation>
+<translation id="4502423230170890588">ከዚህ መሣሪያ አስወግድ</translation>
+<translation id="2507253002925770350">ቲኬት ተወግዷል</translation>
+<translation id="1436390408194692385">ለ<ph name="TICKET_TIME_LEFT"/> የሚሰራ</translation>
+<translation id="2665647207431876759">ጊዜው አልፏል</translation>
+<translation id="5565735124758917034">ገባሪ</translation>
+<translation id="8608618451198398104">የKerberos ቲኬት ያክሉ</translation>
+<translation id="508059534790499809">የKerberos ቲኬት ያድሱ</translation>
+<translation id="245650153866130664">አንድ ቲኬትን በራስ-ሰር ለማደስ «ይለፍ ቃልን አስታውስ» ላይ ምልክት ያድርጉ። የእርስዎ ይለፍ ቃል በመሣሪያዎ ላይ ብቻ ነው የሚከማቸው።</translation>
+<translation id="3895090224522145010">የKerberos ተጠቃሚ ስም</translation>
+<translation id="2325444234681128157">የይለፍ ቃል አስታውስ</translation>
+<translation id="4232375817808480934">Kerberosን ያዋቅሩ</translation>
+<translation id="4392896746540753732">የውቅረት ፋይሉን ያርትዑ</translation>
 <translation id="6452961788130242735">የአውታረ መረብ ችግር ወይም መጥፎ ይዞታ</translation>
-<translation id="6542184058496424548">የማይሠራ የተጠቃሚ ስም (user@realm.com መሆን አለበት)</translation>
+<translation id="9094038138851891550">ልክ ያልሆነ ተጠቃሚ ስም</translation>
 <translation id="4345732373643853732">የተጠቃሚ ስም ለአገልጋይ አይታወቅም</translation>
+<translation id="5184209580557088469">ይህ የተጠቃሚ ስም ያለው ቲኬት አስቀድሞ አለ</translation>
 <translation id="3975565978598857337">ለማከማቸት አገልጋይን ማግኘት አልተሳካም</translation>
 <translation id="3841964634449506551">የይለፍ ቃል ልክ አይደለም</translation>
 <translation id="1629314197035607094">የይለፍ ቃል ጊዜው አልፎበታል</translation>
 <translation id="197989455406964291">KDC የምስጠራ ዓይነትን አይደግፍም</translation>
-<translation id="6957572737510023982">ኤጭ! የሆነ ነገር ተሳስቷል (የስህተት ኮድ <ph name="ERROR_CODE"/>)።</translation>
+<translation id="2584109212074498965">የKerberos ቲኬት ማግኘት አልተቻለም። እንደገና ይሞክሩ፣ ወይም የድርጅትዎን የመሣሪያ አስተዳዳሪ ያነጋግሩ። (የስህተት ኮድ፦ <ph name="ERROR_CODE"/>)።</translation>
+<translation id="2956070239128776395">ክፍል በቡድን እቀፍ ውስጥ ተካቷል፦ <ph name="ERROR_LINE"/></translation>
+<translation id="8999560016882908256">የክፍል አጻጻፍ ስህተት፦ <ph name="ERROR_LINE"/></translation>
+<translation id="1251366534849411931">የሚገመት ጠምዛዛ መያዣን መክፈቻ፦ <ph name="ERROR_LINE"/></translation>
+<translation id="5315738755890845852">ትርፍ ጠምዛዛ መያዣ፦ <ph name="ERROR_LINE"/></translation>
+<translation id="5846200638699387931">የዝምድና አጻጻፍ ስህተት፦ <ph name="ERROR_LINE"/></translation>
+<translation id="8952831374766033534">የውቅረት አማራጭ አይደገፍም፦ <ph name="ERROR_LINE"/></translation>
+<translation id="6902336033320348843">ክፍል አይደገፍም፦ <ph name="ERROR_LINE"/></translation>
+<translation id="604388835206766544">ውቅረትን መተንተን አልተሳካም</translation>
 <translation id="3101709781009526431">ቀን እና ሰዓት</translation>
 <translation id="2059913712424898428">የሰዓት ሰቅ</translation>
 <translation id="4547672827276975204">በራስ-ሰር አቀናብር</translation>
@@ -3210,6 +3287,7 @@ nil</translation>
 <translation id="8468750959626135884">የእርስዎን <ph name="DEVICE_TYPE"/> በAndroid ስልክዎ ይክፈቱት።</translation>
 <translation id="3571734092741541777">አዋቅር</translation>
 <translation id="3336664756920573711">የእርስዎን <ph name="DEVICE_TYPE"/> በAndroid ስልክዎ ይክፈቱት</translation>
+<translation id="1036348656032585052">አጥፋ</translation>
 <translation id="1164674268730883318">Smart Lock ለ<ph name="DEVICE_TYPE"/> ያጥፉ?</translation>
 <translation id="2739030071582769583">ዘመናዊ ቁልፍን ለ<ph name="DEVICE_TYPE"/> ካጠፉ ስልክዎን ተጠቅመው የBrave መሣሪያዎችዎን ማስከፈት አይችሉም። የይለፍ ቃልዎን መተየብ ይኖርብዎታል።</translation>
 <translation id="4737715515457435632">እባክዎ ከአንድ አውታረ መረብ ጋር ይገናኙ</translation>
@@ -3240,6 +3318,7 @@ nil</translation>
 <translation id="8426713856918551002">በማንቃት ላይ</translation>
 <translation id="3652817283076144888">በማስጀመር ላይ</translation>
 <translation id="6528513914570774834">ሌሎች የዚህ መሣሪያ ተጠቃሚዎች ይህን አውታረ መረብ እንዲጠቀሙ ይፍቀዱላቸው</translation>
+<translation id="2122305276694332719">ወደ ተደበቀ አውታረ መረብ በራስ ሰር ማገናኘት ሌሎች የእርስዎን መሣሪያ እና አንዳንድ የአውታረ መረብ ቅንብሮችን እንዲመለከቱ ይፈቅድላቸዋል እንዲሁም የሚመከር አይደለም።</translation>
 <translation id="9153934054460603056">ማንነት እና የይለፍ ቃል ያስቀምጡ</translation>
 <translation id="8656768832129462377">አታረጋግጥ</translation>
 <translation id="1399511500114202393">ምንም የተጠቃሚ እውቅና ማረጋገጫ የለም</translation>
@@ -3260,6 +3339,9 @@ nil</translation>
 <translation id="8461914792118322307">ተኪ</translation>
 <translation id="5213891612754844763">የተኪ ቅንብሮችን አሳይ</translation>
 <translation id="4801512016965057443">የተንቀሳቃሽ ስልክ ውሂብ ዝውውር ይፍቀዱ</translation>
+<translation id="5457991019809708398">በርቷል፣ እያንዣበበ አይደለም</translation>
+<translation id="3969092967100188979">በርቷል፣ በማንዣበብ ላይ</translation>
+<translation id="5804175651771201311">በማንዣበብ ላይ ጠፍቷል</translation>
 <translation id="4720185134442950733">የተንቀሳቃሽ ውሂብ አውታረ መረብ</translation>
 <translation id="2517472476991765520">ቃኝ</translation>
 <translation id="8386903983509584791">መቃኘት ተጠናቅቋል</translation>
@@ -3290,7 +3372,7 @@ nil</translation>
 <translation id="8452135315243592079">ሲም ካርድ ይጎድላል</translation>
 <translation id="2617342710774726426">ሲም ካርድ ተዘግቷል</translation>
 <translation id="4848518990323155912">ሲም ካርድ መቆለፈን አንቃ (ተንቀሳቃሽ ውሂብን ለመጠቀም ፒን ጠይቅ)</translation>
-<translation id="8179976553408161302">አስገባ</translation>
+<translation id="5463231940765244860">አስገባ</translation>
 <translation id="5075131525758602494">የሲም ፒን ያስገቡ</translation>
 <translation id="8431909052837336408">የሲም ፒን ይለውጡ</translation>
 <translation id="289644616180464099">ሲም ካርድ ተዘግቷል</translation>
@@ -3300,6 +3382,11 @@ nil</translation>
 <translation id="5669691691057771421">አዲስ ፒን ያስገቡ</translation>
 <translation id="5473333559083690127">አዲሱን ፒን ደግመው ያስገቡ</translation>
 <translation id="1164899421101904659">የፒን መክፈቻ ቁልፍ ያስገቡ</translation>
+<translation id="5713723565110096165">የተሳሳተ ፒን። በግራ በኩል ዳግም ይሞክራል፦ <ph name="RETRIES"/>።</translation>
+<translation id="8500234928660943538">ትክክል ያልኾነ PUK። በግራ በኩል ዳግም ይሞክራል፦ <ph name="RETRIES"/>።</translation>
+<translation id="834290227245955730">ልክ ያልኾነ ፒን። በግራ በኩል ዳግም ይሞክራል፦ <ph name="RETRIES"/>።</translation>
+<translation id="6015266928248016057">ልክ ያልኾነ PUK። በግራ በኩል ዳግም ይሞክራል፦ <ph name="RETRIES"/>።</translation>
+<translation id="1272293450992660632">ፒን እሴቶች አይዛመዱም።</translation>
 <translation id="7582582252461552277">ይህን አውታረ መረብ አስቀድመው ይምረጡ</translation>
 <translation id="7469894403370665791">ከዚህ አውታረ መረብ ጋር በራስ-ሰር ይገናኙ</translation>
 <translation id="4267953847983678297">በራስ-ሰር ከተንቀሳቃሽ ስልክ አውታረ መረብ ጋር ተገናኝ</translation>
@@ -3308,7 +3395,6 @@ nil</translation>
 <translation id="8986362086234534611">እርሳ</translation>
 <translation id="7881483672146086348">መለያን ይመልከቱ</translation>
 <translation id="2392369802118427583">አግብር</translation>
-<translation id="8151638057146502721">አዋቅር</translation>
 <translation id="5920543303088087579">ከዚህ አውታረ መረብ ጋር መገናኘት በአስተዳዳሪዎ ተሰናክሏል</translation>
 <translation id="1235458158152011030">የታወቁ አውታረ መረቦች</translation>
 <translation id="3003144360685731741">ተመራጭ አውታረ መረቦች</translation>
@@ -3430,7 +3516,6 @@ nil</translation>
 <translation id="1994173015038366702">የጣቢያ ዩአርኤል</translation>
 <translation id="3082374807674020857"><ph name="PAGE_TITLE"/> - <ph name="PAGE_URL"/></translation>
 <translation id="2586672484245266891">እባክዎ ያጠረ ዩአርኤል ያስገቡ</translation>
-<translation id="7788444488075094252">ቋንቋዎች እና ግብአት</translation>
 <translation id="4181841719683918333">ቋንቋዎች</translation>
 <translation id="5302048478445481009">ቋንቋ</translation>
 <translation id="6388429472088318283">ቋንቋዎችን ይፈልጉ</translation>
@@ -3521,6 +3606,7 @@ nil</translation>
 <translation id="1432581352905426595">የፍለጋ ፕሮግራሞችን ያቀናብሩ</translation>
 <translation id="2862205630718215619">Brave Software ረዳት</translation>
 <translation id="6978121630131642226">የፍለጋ ፕሮግራሞች</translation>
+<translation id="1383876407941801731">ፍለጋ</translation>
 <translation id="6410668567036790476">የፍለጋ ፕሮግራም ያክሉ</translation>
 <translation id="1128591060186966949">የፍለጋ ፕሮግራምን ያርትዑ</translation>
 <translation id="5719603411793408026">ነባሪ የፍለጋ ፕሮግራሞች</translation>
@@ -3529,15 +3615,12 @@ nil</translation>
 <translation id="1459967076783105826">በቅጥያዎች የታከሉ የፍለጋ ፕሮግራሞች</translation>
 <translation id="6678717876183468697">የጥያቄ ዩአርኤል</translation>
 <translation id="7063311912041006059">ከመጠይቅ ይልቅ <ph name="SPECIAL_SYMBOL"/> ያለው ዩአርኤል</translation>
-<translation id="6953878494808481632">ተዛማጅ መረጃ</translation>
-<translation id="4145922204387553806">ረዳቱ በእርስዎ ማያ ገጽ ላይ ካለው ጋር ተዛማጅ መረጃ ለእርስዎ እንዲሰጥዎት ያድርጉ</translation>
 <translation id="472896694312062378">«Ok Brave Software»</translation>
 <translation id="873163986259711670">«Ok Brave Software» ባሉ ማንኛውም ጊዜ ረዳትዎን ይድረሱ</translation>
 <translation id="7972554217702001243">የሆነ ሰው «Ok Brave Software» ሲል ረዳቱን ያግብሩ። ባትሪን ለመቆጠብ ሲባል «Ok Brave Software» የሚበራው መሣሪያዎ ከኃይል ምንጭ ጋር ሲገናኝ ብቻ ነው።</translation>
 <translation id="5825412242012995131">በርቷል (የሚመከር)</translation>
 <translation id="5067399438976153555">ሁሌም አብራ</translation>
 <translation id="5419405654816502573">Voice match</translation>
-<translation id="3640613767643722554">የእርስዎ ረዳት ድምጽዎን ለይቶ እንዲያውቅ ያስተምሩት</translation>
 <translation id="1803545009660609783">ዳግም አሰልጥን</translation>
 <translation id="5355099869024327351">ረዳቱ ማሳውቂያዎችን ለእርስዎ እንዲያሳይ ፍቀድ</translation>
 <translation id="133535873114485416">ተመራጭ ግቤት</translation>
@@ -3557,6 +3640,7 @@ nil</translation>
 <translation id="5518219166343146486">አንድ ጣቢያ ወደ ቅንጥብ ሰሌዳ የተቀዱትን ጽሑፍ እና ምስሎች መመልከት ሲፈልግ ይጠይቅ</translation>
 <translation id="2089795179672254991">አንድ ጣቢያ እርስዎ ወደ ቅንጥብ ሰሌዳ የቀዱትን ጽሑፍ እና ምስሎች መመልከት ሲፈልግ ይጠይቅ (የሚመከር)</translation>
 <translation id="16815041330799488">ጣቢያዎች ወደ ቅንጥብ ሰሌዳው የተቀዱ ጽሑፍን እና ምስሎችን እንዲመለከቱ አትፍቀድ</translation>
+<translation id="2546283357679194313">ኩኪዎች እና የጣቢያ ውሂብ</translation>
 <translation id="3668823961463113931">ተቆጣጣሪዎች</translation>
 <translation id="5689516760719285838">አካባቢ</translation>
 <translation id="9219103736887031265">ምስሎች</translation>
@@ -3660,7 +3744,6 @@ nil</translation>
 <translation id="577624874850706961">ኩኪዎችን ፈልግ</translation>
 <translation id="6196640612572343990">የሦስተኛ ወገን ኩኪዎችን አግድ</translation>
 <translation id="6782111308708962316">የሦስተኛ ወገን ድር ጣቢያዎች የኩኪ ውሂብን እንዳያስቀምጡ እና እንዳያነብቡ ከልክል</translation>
-<translation id="3378503599595235699">ከአሳሽዎ እስኪወጡ ድረስ ብቻ አካባቢያዊ ውሂብ ያስቀምጡ</translation>
 <translation id="1274977772557788323">የAdobe Flash Player ማከማቻ ቅንብሮች</translation>
 <translation id="1281501490173223206">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ ብቻ</translation>
 <translation id="3479035826743782247">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ</translation>
@@ -3692,7 +3775,7 @@ nil</translation>
 <translation id="8016266267177410919">ጊዜያዊ ማከማቻ</translation>
 <translation id="4175737294868205930">ቋሚ ማከማቻ</translation>
 <translation id="1296497012903089238">የእውቅና ማረጋገጫ አይነት</translation>
-<translation id="8553342806078037065">ሌሎች ሰዎችን አቀናብር</translation>
+<translation id="3707212204259470604">ሌሎች ሰዎችን አቀናብር</translation>
 <translation id="8907706281008466056">Brave Software የመገለጫ ፎቶ</translation>
 <translation id="2408955596600435184">የእርስዎን ፒን ያስገቡ</translation>
 <translation id="6619990499523117484">የእርስዎን ፒን ያረጋግጡ</translation>
@@ -3715,17 +3798,28 @@ nil</translation>
 <translation id="4068776064906523561">የተቀመጡ የጣት አሻራዎች</translation>
 <translation id="4562155214028662640">የጣት አሻራን አክል</translation>
 <translation id="1719312230114180055">ማስታወሻ፦ የጣት አሻራዎ ከጠንካራ ይለፍ ቃል ወይም ፒን ባነሰ መልኩ የተጠበቀ ሊሆን ይችላል።</translation>
-<translation id="6029292188939175871">[<ph name="FINGERPRINT_NAME"/>]ን ሰርዝ፣ አዝራር</translation>
+<translation id="1582955169539260415">ሰርዝ [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">ጣት <ph name="NEW_FINGER_NUMBER"/></translation>
+<translation id="4461062867270151760">በማያ ገጽ ቁልፍ ላይ የBrave ሚዲያ መልሶ ማጫወትን ያንቁ</translation>
+<translation id="7665369617277396874">መለያ ያክሉ</translation>
 <translation id="5866136067811459986">የእርስዎን በመለያ የተገባባቸው የ Brave Software መለያዎች ያስተዳድሩ በ Brave እና በ Brave Software Play ውስጥ ያሉ የድር ጣቢያዎች፣ መተግበሪያዎች እና ቅጥያዎች የእርስዎን ተሞክሮ በፈቃዶች ላይ በመመርኮዝ ብጁ ለማድረግ እነዚህን መለያዎች ሊጠቀሙ ይችሉ ይሆናል።</translation>
+<translation id="1987317783729300807">መለያዎች</translation>
 <translation id="8418661265246754237">የBrave Software መለያዎች</translation>
 <translation id="5021750053540820849">እስካሁን አልተዘመነም</translation>
+<translation id="4637083375689622795">ተጨማሪ እርምጃዎች፣ <ph name="EMAIL"/></translation>
 <translation id="3448492834076427715">መለያን አዘምን</translation>
+<translation id="2458379781610688953">መለያን <ph name="EMAIL"/> አዘምን</translation>
+<translation id="2701737434167469065">ግባ፣ <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">ይህን መለያ አስወግድ</translation>
+<translation id="8995603266996330174">በ <ph name="DOMAIN"/> የሚተዳደር</translation>
 <translation id="4659077111144409915">ዋና መለያ</translation>
+<translation id="8864458770072227512"><ph name="EMAIL"/> ከዚህ መሣሪያ ላይ ተወግዷል</translation>
 <translation id="3158033540161634471">የጣት አሻራዎን ያዋቅሩ</translation>
 <translation id="1587907146729660231">በጣትዎ የኃይል አዝራሩን ነካ ያድርጉ</translation>
 <translation id="176193854664720708">የጣት አሻራ ዳሳሹ በኃይል አዝራሩ ውስጥ ነው። በማንኛውም ጣት ቀስ ብለው ይንኩት።</translation>
+<translation id="3615073365085224194">የጣት አሻራ ዳሳሹን በእርስዎ ጣት ይንኩት</translation>
+<translation id="899676909165543803">የጣት አሽራ ዳሳሹ በእርስዎ የቁልፍ ሰሌዳ ላይ ከግርጌ ያለው ቀኝ እጅ ቁልፉ ነው። በማናቸውም ጣት በስሱ ነካ ያድርጉት።</translation>
+<translation id="4535767533210902251">የጣት አሽራ ዳሳሹ በእርስዎ የቁልፍ ሰሌዳ ላይ ከላይ ያለው ቀኝ እጅ ቁልፉ ነው። በማናቸውም ጣት በስሱ ነካ ያድርጉት።</translation>
 <translation id="7189965711416741966">የጣት አሻራ ታክሏል።</translation>
 <translation id="9220820413868316583">ያንሱ እና ከዚያ እንደገና ይሞክሩ።</translation>
 <translation id="4534661889221639075">እንደገና ይሞክሩ።</translation>
@@ -3750,11 +3844,10 @@ nil</translation>
 <translation id="3608576286259426129">የተጠቃሚ ምስል ቅድመ-እይታ</translation>
 <translation id="2114896190328250491">ፎቶ በ<ph name="NAME"/></translation>
 <translation id="7155171745945906037">ነባር ፎቶ ከካሜራ ወይም ከፋይል</translation>
-<translation id="8995603266996330174">የተቀናበረው በ<ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Brave Software ዘመናዊ ነገሮችን በBrave ላይ ያግኙ</translation>
 <translation id="5244474230056479698">ከ<ph name="EMAIL"/> ጋር በማስመር ላይ</translation>
 <translation id="4326270470840334364">ይህ መለያ የሚቀናበረው በ<ph name="DOMAIN"/> ስለሆነ የእርስዎ ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት እና ሌሎች ቅንብሮች ከዚህ መሣሪያ ይጸዳሉ። ይሁንና፣ የእርስዎ ውሂብ በBrave Software መለያ ላይ እንዳለ የሚቀር ሲሆን በ<ph name="BEGIN_LINK"/>Brave Software ዳሽቦርድ<ph name="END_LINK"/> ላይ መቀናበር ይችላል።</translation>
-<translation id="4037889604535939429">ሰውን ያርትዑ</translation>
+<translation id="6906406176003824042">ሰውን ያርትዑ</translation>
 <translation id="6739923123728562974">የዴስክቶፕ አቋራጭን አሳይ</translation>
 <translation id="2450310832094867474">ማመሳሰል ይጥፋ እና በመለያ ይወጣ?</translation>
 <translation id="3699920817649120894">ስምረት እና ግላዊነት ማላበስ ይጥፋ?</translation>
@@ -3779,6 +3872,7 @@ nil</translation>
 <translation id="4824958205181053313">ስምረት ይሰረዝ?</translation>
 <translation id="3058498974290601450">ስምረትን በማንኛውም ጊዜ በቅንብሮች ውስጥ ማብራት ይችላሉ።</translation>
 <translation id="7529411698175791732">የበይነመረብ ግንኙነትዎን ይፈትሹ። ችግሩ ከቀጠለ ዘግተው ወጥተው እንደገና ለመግባት ይሞክሩ።</translation>
+<translation id="4684427112815847243">ሁሉንም ያመሳስሉ</translation>
 <translation id="1125261911132334651">የBrave Software መለያዎን ያቀናብሩ</translation>
 <translation id="4570387585180509432">አድራሻዎች፣ ስልክ ቁጥሮች እና ተጨማሪ ነገሮች</translation>
 <translation id="5117427536932535467">ገጽታዎች እና የግድግዳ ወረቀቶች</translation>
@@ -3967,24 +4061,25 @@ nil</translation>
 <translation id="8781980678064919987">ክዳኑ ሲዘጋ አጥፋ</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> ቀርቷል</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - እስከሚሞላ ድረስ <ph name="TIME"/></translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">ስርዓት</translation>
 <translation id="2077129598763517140">ሲገኝ የሃርድዌር ማጣደፍን ተጠቀም</translation>
-<translation id="1889984860246851556">የተኪ ቅንብሮችን ክፈት</translation>
+<translation id="3817524650114746564">የእርስዎን ኮምፒውተር ወኪል ቅንብሮች ይክፈቱ</translation>
+<translation id="809792523045608178"><ph name="IDS_SHORT_PRODUCT_NAME"/> ከቅጥያ የወኪል ቅንብሮችን እየተጠቀመ ነው</translation>
+<translation id="2824942875887026017"><ph name="IDS_SHORT_PRODUCT_NAME"/> ከእርስዎ አስተዳዳሪ የወኪል ቅንብሮችን እየተጠቀመ ነው</translation>
 <translation id="1940546824932169984">የተገናኙ መሣሪያዎች</translation>
 <translation id="3468999815377931311">የAndroid ስልክ</translation>
-<translation id="2789927670850159391">የእርስዎን Bravebook ከስልክዎ ጋር ያገናኙት። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
+<translation id="5826395379250998812">የእርስዎን <ph name="DEVICE_TYPE"/> ከስልክዎ ጋር ያገናኙት። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">ምንም ብቁ የሆኑ መሣሪያዎች የሉም። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">ማረጋገጫን በመጠበቅ ላይ። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
 <translation id="6518133107902771759">አረጋግጥ</translation>
-<translation id="7179187931092694802">የእርስዎን Bravebook በስልክዎ ይክፈቱ። <ph name="LINK_BEGIN"/>ተጨማሪ ለመረዳት<ph name="LINK_END"/></translation>
+<translation id="4142052906269098341">የእርስዎን <ph name="DEVICE_TYPE"/> በስልክዎ መክፈት አለብዎት። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">ቅጽበታዊ እንደ ሞደም መሰካት</translation>
 <translation id="6415900369006735853">በስልክዎ በኩል ከበይነመረቡ ጋር ይገናኙ</translation>
 <translation id="4746351372139058112">መልዕክቶች</translation>
-<translation id="2248072377758660530">መልዕክቶችን ወደ የእርስዎ Bravebook ይላኩ እና ከእሱ ይቀበሉ። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
+<translation id="965211523698323809">ከእርስዎ <ph name="DEVICE_TYPE"/> ሆነው የጽሑፍ መልዕክቶችን ይላኩ እና ይቀበሉ። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት<ph name="LINK_END"/></translation>
 <translation id="5153234146675181447">ስልክን እርሳ</translation>
-<translation id="2307631131458143837">የእርስዎን ስልክ ከBravebook ጋር ያለውን ግንኙነት ያቋርጡ</translation>
-<translation id="1146102139091738471">የእርስዎን ስልክ ከBravebook ጋር ያለውን ግንኙነት ያቋርጡ። ከእንግዲህ በራስ-ሰር አይገናኙም።</translation>
+<translation id="4650591383426000695">ስልክዎን ከ<ph name="DEVICE_TYPE"/> ጋር ያለው ግንኙነት ያቋርጡት</translation>
+<translation id="5117139026559873716">የእርስዎን ስልክ ከእርስዎ <ph name="DEVICE_TYPE"/> ጋር ያለውን ግንኙነት ያቋርጡ። ከእንግዲህ በራስ-ሰር አይገናኙም።</translation>
 <translation id="7878562273885520351">የእርስዎ ይለፍ ቃል ተሰርቆ ሊሆን ይችላል</translation>
 <translation id="1089439967362294234">የይለፍ ቃል ቀይር</translation>
 <translation id="6187156085111579405">ካስፈለገ እንዲሁም እዚህ ያልተዘረዘሩ ንጥሎች ሊወገዱ ይችላሉ። በBrave የግላዊነት ነጭ ወረቀት ላይ ስለ&lt;a href="<ph name="URL"/>"&gt;የማይፈለግ ሶፍትዌር ጥበቃ&lt;/a&gt; የበለጠ ይረዱ።</translation>
@@ -4049,9 +4144,24 @@ nil</translation>
 <translation id="3341699307020049241">ትክክል ያልሆነ ፒን። ቀሪ <ph name="RETRIES"/> ሙከራዎች አልዎት።</translation>
 <translation id="2439545803278355377">አዲሱን የእርስዎ ፒን ያስገቡ። ፒን ቢያንስ የአራት ቁምፊዎች ርዝመት ሊኖረው ይገባል እና ፊደላትን፣ ቁጥሮችን እና ሌሎች ቁምፊዎችን ይይዛል።</translation>
 <translation id="1781291988450150470">የአሁኑ ፒን</translation>
+<translation id="4617001782309103936">በጣም አጭር</translation>
 <translation id="3732530910372558017">ፒን ቢበዛ 63 ቁምፊዎች መሆን አለበት</translation>
 <translation id="1307165550267142340">የእርስዎ ፒን ተፈጥሯል</translation>
 <translation id="2699911226086014512">ከኮድ <ph name="RETRIES"/> ጋር የፒን ሥርዓተ ክወና ተሰናክሏል።</translation>
+<translation id="3873423927483480833">ፒኖችን አሳይ</translation>
+<translation id="21354425047973905">ፒኖችን ይደብቁ</translation>
+<translation id="1901984611178952431">በመለያ መግቢያ ውሂብን አስተዳድር</translation>
+<translation id="3286737518123001369">በእርስዎ የደህንነት ቁልፍ ላይ የተከማቸውን በመለያ መግቢያ ውሂብ ይመልከቱ እና ይሰረዙ</translation>
+<translation id="2399939490305346086">የደህንነት ቁልፍ በመለያ መግቢያ ውሂብ</translation>
+<translation id="6841187140911216178">በመለያ መግቢያ ውሂብን ለመመልከት፣ የእርስዎን የደህንነት ቁልፍ ያስገቡ እና ይንኩ</translation>
+<translation id="6013505829696424563">በመለያ መግቢያ ውሂብን ለማየት፣ ለእርስዎ የደህንነት ቁልፍ የሚሆነውን ፒን ያስገቡ። ፒኑን የማያውቁት ከሆነ፣ የደህንነት ቁልፉን ዳግም ማቀናበር ያስፈልግዎታል።</translation>
+<translation id="3713047097299026954">ይህ የደህንነት ቁልፍ ምንም በመለያ መግቢያ ውሂብ የለውም</translation>
+<translation id="1511997356770098059">የደህንነት ቁልፉ ምንም በመለያ መግቢያ ውሂብ ማከማቸት አይችልም</translation>
+<translation id="579915268381781820">የእርስዎ የደህንነት ቁልፍ ተወግዷል።</translation>
+<translation id="117916940443676133">የእርስዎ ደህንነት ቁልፍ በፒን ጥበቃ እየተደረገለት አይደለም ያለው። በመለያ መግቢያ ውሂብን ለማስተዳደር፣ በመጀመሪያ ፒን ይፍጠሩ።</translation>
+<translation id="8705629851992224300">የእርስዎ የደህንነት ቁልፍ ሊነበብ አልተቻለም</translation>
+<translation id="3076977359333237641">የእርስዎ በመለያ መግቢያ ውሂብ ተሰርዟል</translation>
+<translation id="3508492320654304609">የእርስዎ በመለያ መግቢያ ውሂብ ሊሰረዝ አልተቻለም</translation>
 <translation id="3341703758641437857">ለፋይል ዩአርኤልዎች መዳረሻ ፍቀድ</translation>
 <translation id="9003647077635673607">በሁሉም ድር ጣቢያዎች ላይ ፍቀድ</translation>
 <translation id="698524779381350301">በሚከተሉት ጣቢያዎች ላይ መዳረሻን በራስሰር ፍቀድ</translation>
@@ -4164,7 +4274,6 @@ nil</translation>
 <translation id="720110658997053098">ይህን መሣሪያ እስከመጨረሻው በኪዮስክ ሁነታ አቆየው</translation>
 <translation id="1909880997794698664">እርግጠኛ ነዎት ይህን መሣሪያ በኪዮስክ ሁነታ እስከመጨረሻው ማቆየት ይፈልጋሉ?</translation>
 <translation id="1512210426710821809">ይህን መቀልበስ የሚቻልበት ብቸኛው መንገድ <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>ን ዳግም መጫን ነው</translation>
-<translation id="4472575034687746823">ይጀምሩ</translation>
 <translation id="8281886186245836920">ዝለል</translation>
 <translation id="2342740338116612727">ዕልባቶች ታክለዋል</translation>
 <translation id="7835178595033117206">ዕልባት ተወግዷል</translation>
@@ -4289,7 +4398,6 @@ nil</translation>
 <translation id="2202898655984161076">አታሚዎችን መዘርዘር ላይ ችግር ነበር። አንዳንድ አታሚዎችዎ በተሳካ ሁኔታ <ph name="CLOUD_PRINT_NAME"/> ላይ አልተመዘገቡም።</translation>
 <translation id="3220586366024592812">የ<ph name="CLOUD_PRINT_NAME"/> አገናኙ ተሰናክሏል። ዳግም ይጀመር?</translation>
 <translation id="6904655473976120856">ለመውጣት የመተግበሪያ አዝራርን ይጫኑ</translation>
-<translation id="79766959863778284">XR የተነጠለ የመሣሪያ አገልግሎት</translation>
 <translation id="8909833622202089127">ጣቢያ የእርስዎን አካባቢ እየተከታተለ ነው</translation>
 <translation id="375636864092143889">ጣቢያ የእርስዎን ማይክሮፎን እየተጠቀመ ነው</translation>
 <translation id="7256069762010468647">ጣቢያ የእርስዎን ካሜራ እየተጠቀመ ነው</translation>
