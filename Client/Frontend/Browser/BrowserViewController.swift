@@ -2287,55 +2287,6 @@ extension BrowserViewController: WKUIDelegate {
             self.tabManager.removeTab(tab)
         }
     }
-    
-    func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        guard let url = elementInfo.linkURL else { return false }
-        return url.eligibleForPeekAndPop
-    }
-    
-    func webView(_ webView: WKWebView, commitPreviewingViewController previewingViewController: UIViewController) {
-        guard let previewViewController = previewingViewController as? PreviewViewController else { return }
-        tabManager.selectedTab?.loadRequest(URLRequest(url: previewViewController.url))
-    }
-    
-    func webView(_ webView: WKWebView,
-                 previewingViewControllerForElement elementInfo: WKPreviewElementInfo,
-                 defaultActions previewActions: [WKPreviewActionItem]) -> UIViewController? {
-        guard let tab = tabManager.selectedTab, let url = elementInfo.linkURL else { return nil }
-        let previewViewController = PreviewViewController(tab: tab, url: url)
-        
-        // If the URL is an image resource,
-        // we want to show the image without an empty white space in a preview page.
-        if url.isImageResource, let imageSize = url.imageSize {
-            previewViewController.preferredContentSize = imageSize
-        }
-
-        previewViewController.openURLInNewTab = { url in
-            guard let _ = self.tabManager.selectedTab else { return }
-            let tab = self.tabManager.addTab(PrivilegedRequest(url: url) as URLRequest,
-                                             afterTab: self.tabManager.selectedTab,
-                                             isPrivate: false)
-            self.tabManager.selectTab(tab)
-        }
-        
-        previewViewController.openURLInNewPrivateTab = { url in
-            guard let _ = self.tabManager.selectedTab else { return }
-            let tab = self.tabManager.addTab(PrivilegedRequest(url: url) as URLRequest,
-                                             afterTab: self.tabManager.selectedTab,
-                                             isPrivate: true)
-            self.tabManager.selectTab(tab)
-        }
-        
-        previewViewController.copyURL = { url in
-            UIPasteboard.general.url = url
-        }
-        
-        previewViewController.shareURL = { url in
-            self.presentActivityViewController(url, sourceView: self.view, sourceRect: self.view.bounds, arrowDirection: .any)
-        }
-        
-        return previewViewController
-    }
 }
 
 extension BrowserViewController: ReaderModeDelegate {
