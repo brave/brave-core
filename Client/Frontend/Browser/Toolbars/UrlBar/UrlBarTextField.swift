@@ -71,15 +71,13 @@ class UrlBarTextField: AutocompleteTextField {
 extension UrlBarTextField: Themeable {
     
     func applyTheme(_ theme: Theme) {
-        switch theme {
-        case .regular:
-            backgroundColor = BraveUX.LocationBarBackgroundColor
-        case .private:
-            backgroundColor = BraveUX.LocationBarBackgroundColor_PrivateMode
-        }
+        styleChildren(theme: theme)
         
-        textColor = UIColor.TextField.TextAndTint.colorFor(theme)
-        clearButtonTintColor = textColor
-        highlightColor = UIColor.TextField.Highlight.colorFor(theme)
+        backgroundColor = theme.colors.addressBar.withAlphaComponent(theme.colors.transparencies.addressBarAlpha)
+        
+        let text = theme.colors.tints.header
+        textColor = text
+        clearButtonTintColor = text
+        highlightColor = text.withAlphaComponent(0.2)
     }
 }

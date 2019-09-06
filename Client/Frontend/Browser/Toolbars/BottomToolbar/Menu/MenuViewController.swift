@@ -26,7 +26,6 @@ private class MenuCell: UITableViewCell {
             $0.trailing.equalTo(self).inset(12)
             $0.leading.equalTo(iconView.snp.trailing)
         }
-        labelView.textColor = .black
         separatorInset = UIEdgeInsets(top: 0, left: iconLength, bottom: 0, right: 0)
     }
     @available(*, unavailable)
@@ -67,12 +66,12 @@ class MenuViewController: UITableViewController {
         
         var icon: UIImage {
             switch self {
-            case .bookmarks: return #imageLiteral(resourceName: "menu_bookmarks")
-            case .history: return #imageLiteral(resourceName: "menu-history")
-            case .settings: return #imageLiteral(resourceName: "menu-settings")
-            case .add: return #imageLiteral(resourceName: "menu-add-bookmark")
-            case .share: return #imageLiteral(resourceName: "nav-share")
-            case .downloads: return #imageLiteral(resourceName: "menu-downloads")
+            case .bookmarks: return #imageLiteral(resourceName: "menu_bookmarks").template
+            case .history: return #imageLiteral(resourceName: "menu-history").template
+            case .settings: return #imageLiteral(resourceName: "menu-settings").template
+            case .add: return #imageLiteral(resourceName: "menu-add-bookmark").template
+            case .share: return #imageLiteral(resourceName: "nav-share").template
+            case .downloads: return #imageLiteral(resourceName: "menu-downloads").template
             }
         }
     }
@@ -114,6 +113,7 @@ class MenuViewController: UITableViewController {
         
         tableView.separatorColor = UX.separatorColor
         tableView.rowHeight = UX.rowHeight
+        tableView.backgroundColor = .clear
         
         tableView.contentInset = UIEdgeInsets(top: UX.topBottomInset, left: 0,
                                               bottom: UX.topBottomInset, right: 0)
@@ -124,10 +124,6 @@ class MenuViewController: UITableViewController {
         // Hide separator line of the last cell.
         tableView.tableFooterView =
             UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-        
-        // TODO: Make the background view transparent with alpha 0.6
-        // simple setting its alpha doesn't seem to work.
-        tableView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
         
         let size = CGSize(width: 200, height: UIScreen.main.bounds.height)
         
@@ -172,10 +168,24 @@ class MenuViewController: UITableViewController {
         
         cell.labelView.text = button.title
         cell.iconView.image = button.icon
+        
+        let homeColor = Theme.of(tab).colors.tints.home
+        cell.iconView.tintColor = homeColor.withAlphaComponent(0.6)
+        cell.labelView.textColor = homeColor
         cell.tag = button.rawValue
         cell.backgroundColor = .clear
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.contentView.backgroundColor = Theme.of(tab).colors.home.withAlphaComponent(0.5)
+    }
+    
+    override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.contentView.backgroundColor = .clear
     }
     
     // MARK: - Actions

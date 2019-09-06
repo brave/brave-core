@@ -494,6 +494,7 @@
 		5D1DC57220AE005400905E5A /* JSInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1DC56820AE005400905E5A /* JSInjector.swift */; };
 		5D1DC57320AE005400905E5A /* SyncSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1DC56920AE005400905E5A /* SyncSite.swift */; };
 		5D1DC57420AE005400905E5A /* ios-sync.js in Resources */ = {isa = PBXBuildFile; fileRef = 5D1DC56A20AE005400905E5A /* ios-sync.js */; };
+		5D21AE082303B70E00B30D97 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 5D21AE002303B70E00B30D97 /* Themes */; };
 		5D24AF8221BA459000F9506A /* BlocklistName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D24AF8121BA459000F9506A /* BlocklistName.swift */; };
 		5D24AF8421BA489A00F9506A /* ContentBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D24AF8321BA489A00F9506A /* ContentBlocker.swift */; };
 		5D24AF9021BA4D7700F9506A /* ContentBlockerRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D24AF8F21BA4D7700F9506A /* ContentBlockerRegion.swift */; };
@@ -501,6 +502,7 @@
 		5D6DDEFE2141B6A1001FF0AE /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEF62141B6A0001FF0AE /* Preferences.swift */; };
 		5D6DDF0021428CF0001FF0AE /* DAUTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEFF21428CF0001FF0AE /* DAUTests.swift */; };
 		5D7001C222249F7B00E576FB /* ShortNameToFileMapping.json in Resources */ = {isa = PBXBuildFile; fileRef = 5D7001BA22249F7A00E576FB /* ShortNameToFileMapping.json */; };
+		5D8AE6AF230C76B60096C845 /* AppearanceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8AE6AE230C76B60096C845 /* AppearanceExtensions.swift */; };
 		5DE5250D218CE92C000DFAA6 /* block-ads.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE52508218CE92B000DFAA6 /* block-ads.json */; };
 		5DE5250E218CE92C000DFAA6 /* block-images.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE52509218CE92B000DFAA6 /* block-images.json */; };
 		5DE5250F218CE92C000DFAA6 /* upgrade-http.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE5250A218CE92B000DFAA6 /* upgrade-http.json */; };
@@ -1866,6 +1868,7 @@
 		5D1DC56820AE005400905E5A /* JSInjector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSInjector.swift; sourceTree = "<group>"; };
 		5D1DC56920AE005400905E5A /* SyncSite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncSite.swift; sourceTree = "<group>"; };
 		5D1DC56A20AE005400905E5A /* ios-sync.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "ios-sync.js"; sourceTree = "<group>"; };
+		5D21AE002303B70E00B30D97 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
 		5D24AF8121BA459000F9506A /* BlocklistName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistName.swift; sourceTree = "<group>"; };
 		5D24AF8321BA489A00F9506A /* ContentBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlocker.swift; sourceTree = "<group>"; };
 		5D24AF8F21BA4D7700F9506A /* ContentBlockerRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerRegion.swift; sourceTree = "<group>"; };
@@ -1873,6 +1876,7 @@
 		5D6DDEF62141B6A0001FF0AE /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		5D6DDEFF21428CF0001FF0AE /* DAUTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAUTests.swift; sourceTree = "<group>"; };
 		5D7001BA22249F7A00E576FB /* ShortNameToFileMapping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ShortNameToFileMapping.json; sourceTree = "<group>"; };
+		5D8AE6AE230C76B60096C845 /* AppearanceExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppearanceExtensions.swift; path = Extensions/AppearanceExtensions.swift; sourceTree = "<group>"; };
 		5DE52508218CE92B000DFAA6 /* block-ads.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "block-ads.json"; sourceTree = "<group>"; };
 		5DE52509218CE92B000DFAA6 /* block-images.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "block-images.json"; sourceTree = "<group>"; };
 		5DE5250A218CE92B000DFAA6 /* upgrade-http.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "upgrade-http.json"; sourceTree = "<group>"; };
@@ -2772,6 +2776,7 @@
 				595E0EE021CAEF5B00813D49 /* FileManagerExtension.swift */,
 				592F521D2217327B0078395E /* HttpCookieExtension.swift */,
 				F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */,
+				5D8AE6AE230C76B60096C845 /* AppearanceExtensions.swift */,
 			);
 			indentWidth = 4;
 			name = Extensions;
@@ -3401,6 +3406,14 @@
 			path = sync;
 			sourceTree = "<group>";
 		};
+		5D26E89C22E117660015D7E9 /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				7B3631E91C244FEE00D12AF9 /* Theme.swift */,
+			);
+			path = Themes;
+			sourceTree = "<group>";
+		};
 		5D6DDEDF214003A6001FF0AE /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -3712,7 +3725,7 @@
 				E65607601C08B4E200534B02 /* SearchInputView.swift */,
 				E63ED7D71BFCD9990097D08E /* LoginTableViewCell.swift */,
 				C4E3984B1D21F2FD004E89BA /* TabTrayButtonExtensions.swift */,
-				7B3631E91C244FEE00D12AF9 /* Theme.swift */,
+				5D26E89C22E117660015D7E9 /* Themes */,
 				59A68B1F857A8638598A63A0 /* TwoLineCell.swift */,
 				D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */,
 				27D87C2D2152B50200FB55C6 /* GradientView.swift */,
@@ -4262,6 +4275,7 @@
 				D03F8F22200EAC1E003C2224 /* AllFramesAtDocumentStart.js */,
 				D0FCF8041FE4772D004A7995 /* MainFrameAtDocumentEnd.js */,
 				D0FCF8051FE4772D004A7995 /* MainFrameAtDocumentStart.js */,
+				5D21AE002303B70E00B30D97 /* Themes */,
 				3BC659581E5BA505006D560F /* top_sites.json */,
 				3BC659481E5BA4AE006D560F /* TopSites */,
 				C6345ECA2113B3A000CFB983 /* SearchPlugins */,
@@ -5229,6 +5243,7 @@
 				4422D4AD21BFFB7600BF1855 /* LICENSE in Resources */,
 				5EB57D0222FDC0CB00A07325 /* FullscreenHelper.js in Resources */,
 				E4B7B7641A793CF20022C5E0 /* CharisSILR.ttf in Resources */,
+				5D21AE082303B70E00B30D97 /* Themes in Resources */,
 				4422D56D21BFFB7F00BF1855 /* make_unicode_groups.py in Resources */,
 				E4B7B7681A793CF20022C5E0 /* FiraSans-Bold.ttf in Resources */,
 				E4B7B7781A793CF20022C5E0 /* FiraSans-Italic.ttf in Resources */,
@@ -5879,6 +5894,7 @@
 				A83E5AB71C1D993D0026D912 /* UIPasteboardExtensions.swift in Sources */,
 				C6B81B8A212D84BD00996084 /* ImageCacheType.swift in Sources */,
 				D8EFFA0C1FF5B1FA001D3A09 /* NavigationRouter.swift in Sources */,
+				5D8AE6AF230C76B60096C845 /* AppearanceExtensions.swift in Sources */,
 				D0E55C4F1FB4FD23006DC274 /* FormPostHelper.swift in Sources */,
 				E650754E1E37F6AE006961AC /* GeometryExtensions.swift in Sources */,
 				D3972BF41C22412B00035B87 /* TitleActivityItemProvider.swift in Sources */,

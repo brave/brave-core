@@ -161,7 +161,7 @@ class TabLocationView: UIView {
         return readerModeButton
     }()
     
-    lazy var reloadButton = ToolbarButton().then {
+    lazy var reloadButton = ToolbarButton(top: true).then {
         $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
         $0.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
         $0.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
@@ -172,7 +172,7 @@ class TabLocationView: UIView {
     }
 
     lazy var shieldsButton: ToolbarButton = {
-        let button = ToolbarButton()
+        let button = ToolbarButton(top: true)
         button.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
         button.addTarget(self, action: #selector(didClickBraveShieldsButton), for: .touchUpInside)
         button.imageView?.contentMode = .center
@@ -380,20 +380,21 @@ extension TabLocationView: AccessibilityActionsSource {
 // MARK: - Themeable
 
 extension TabLocationView: Themeable {
+    var themeableChildren: [Themeable?]? {
+        return [reloadButton]
+    }
+    
     func applyTheme(_ theme: Theme) {
-        switch theme {
-        case .regular:
-            backgroundColor = BraveUX.LocationBarBackgroundColor
-        case .private:
-            backgroundColor = BraveUX.LocationBarBackgroundColor_PrivateMode
-        }
-
-        urlTextField.textColor = UIColor.Browser.Tint.colorFor(theme)
-        readerModeButton.selectedTintColor = UIColor.TextField.ReaderModeButtonSelected.colorFor(theme)
-        readerModeButton.unselectedTintColor = UIColor.TextField.ReaderModeButtonUnselected.colorFor(theme)
+        styleChildren(theme: theme)
         
-        reloadButton.applyTheme(theme)
-        separatorLine.backgroundColor = UIColor.TextField.Separator.colorFor(theme)
+        backgroundColor = theme.colors.addressBar.withAlphaComponent(theme.colors.transparencies.addressBarAlpha)
+        
+        urlTextField.textColor = theme.colors.tints.addressBar
+
+        readerModeButton.unselectedTintColor = theme.colors.tints.header
+        readerModeButton.selectedTintColor = theme.colors.accent
+
+        separatorLine.backgroundColor = theme.colors.border.withAlphaComponent(theme.colors.transparencies.borderAlpha)
     }
 }
 

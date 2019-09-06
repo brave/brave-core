@@ -46,11 +46,7 @@ class SearchSettingsTableViewController: UITableViewController {
         }
 
         let footer = SettingsTableSectionHeaderFooterView(frame: CGRect(width: tableView.bounds.width, height: 44))
-        footer.showBottomBorder = false
         tableView.tableFooterView = footer
-
-        tableView.separatorColor = SettingsUX.TableViewSeparatorColor
-        tableView.backgroundColor = SettingsUX.TableViewHeaderBackgroundColor
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -69,7 +65,6 @@ class SearchSettingsTableViewController: UITableViewController {
                 cell = UITableViewCell(style: .default, reuseIdentifier: nil)
                 cell.textLabel?.text = Strings.SearchSettingSuggestionCellTitle
                 let toggle = UISwitch()
-                toggle.onTintColor = UIConstants.ControlTintColor
                 toggle.addTarget(self, action: #selector(didToggleSearchSuggestions), for: .valueChanged)
                 toggle.isOn = model.shouldShowSearchSuggestions
                 cell.editingAccessoryView = toggle
@@ -87,7 +82,6 @@ class SearchSettingsTableViewController: UITableViewController {
             cell.showsReorderControl = true
             
             let toggle = UISwitch()
-            toggle.onTintColor = UIConstants.ControlTintColor
             // This is an easy way to get from the toggle control to the corresponding index.
             toggle.tag = index
             toggle.addTarget(self, action: #selector(didToggleEngine), for: .valueChanged)

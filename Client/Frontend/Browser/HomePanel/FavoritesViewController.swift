@@ -105,8 +105,6 @@ class FavoritesViewController: UIViewController, Themeable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
-        
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(gesture:)))
         collection.addGestureRecognizer(longPressGesture)
         
@@ -202,10 +200,14 @@ class FavoritesViewController: UIViewController, Themeable {
         updateDuckDuckGoVisibility()
     }
     
+    var themeableChildren: [Themeable?]? {
+        return [braveShieldStatsView]
+    }
+    
     func applyTheme(_ theme: Theme) {
-        let isPrivate = theme == .private
-        view.backgroundColor = isPrivate ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
-        braveShieldStatsView.timeStatView.color = isPrivate ? UX.GreyA : UX.GreyJ
+        styleChildren(theme: theme)
+       
+        view.backgroundColor = theme.colors.home
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

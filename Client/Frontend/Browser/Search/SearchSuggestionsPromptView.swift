@@ -16,15 +16,12 @@ class SearchSuggestionPromptView: UIView {
         static let PromptYesFont = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
         static let PromptNoFont = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
         static let PromptInsets = UIEdgeInsets(top: 15, left: 12, bottom: 15, right: 12)
-        static let PromptButtonColor = BraveUX.Blue
     }
     
     init(optionSelected: @escaping (Bool) -> Void) {
         self.optionSelected = optionSelected
         
         super.init(frame: .zero)
-        
-        backgroundColor = UX.PromptColor
         
         let promptBottomBorder = UIView()
         promptBottomBorder.backgroundColor = BraveUX.GreyD
@@ -44,7 +41,6 @@ class SearchSuggestionPromptView: UIView {
         
         let promptYesButton = InsetButton()
         promptYesButton.setTitle(Strings.Yes, for: .normal)
-        promptYesButton.setTitleColor(UX.PromptButtonColor, for: .normal)
         promptYesButton.titleLabel?.font = UX.PromptYesFont
         promptYesButton.titleEdgeInsets = UX.PromptInsets
         // If the prompt message doesn't fit, this prevents it from pushing the buttons
@@ -55,7 +51,6 @@ class SearchSuggestionPromptView: UIView {
         
         let promptNoButton = InsetButton()
         promptNoButton.setTitle(Strings.No, for: .normal)
-        promptNoButton.setTitleColor(UX.PromptButtonColor, for: .normal)
         promptNoButton.titleLabel?.font = UX.PromptNoFont
         promptNoButton.titleEdgeInsets = UX.PromptInsets
         // If the prompt message doesn't fit, this prevents it from pushing the buttons

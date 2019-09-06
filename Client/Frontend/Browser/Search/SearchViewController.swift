@@ -82,7 +82,6 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
     }
 
     override func viewDidLoad() {
-        view.backgroundColor = UIConstants.PanelBackgroundColor
         let blur = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         view.addSubview(blur)
 
@@ -90,7 +89,6 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
 
         KeyboardHelper.defaultHelper.addDelegate(self)
 
-        searchEngineScrollView.layer.backgroundColor = SearchViewControllerUX.SearchEngineScrollViewBackgroundColor
         searchEngineScrollView.layer.shadowRadius = 0
         searchEngineScrollView.layer.shadowOpacity = 100
         searchEngineScrollView.layer.shadowOffset = CGSize(width: 0, height: -SearchViewControllerUX.SearchEngineTopBorderWidth)
@@ -769,8 +767,6 @@ fileprivate class SuggestionButton: InsetButton {
         setTitleColor(UIConstants.HighlightBlue, for: [])
         setTitleColor(UIColor.Photon.White100, for: .highlighted)
         titleLabel?.font = DynamicFontHelper.defaultHelper.DefaultMediumFont
-        backgroundColor = SearchViewControllerUX.SuggestionBackgroundColor
-        layer.borderColor = SearchViewControllerUX.SuggestionBorderColor.cgColor
         layer.borderWidth = SearchViewControllerUX.SuggestionBorderWidth
         layer.cornerRadius = SearchViewControllerUX.SuggestionCornerRadius
         contentEdgeInsets = SearchViewControllerUX.SuggestionInsets

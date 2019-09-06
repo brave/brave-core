@@ -12,16 +12,26 @@ class SyncDeviceTypeButton: UIControl {
     var imageView: UIImageView = UIImageView()
     var label: UILabel = UILabel()
     var type: DeviceType!
+    
+    // Color for the opposite state of `pressed`
+    private var pressedReversedColor = BraveUX.BraveOrange
     var pressed: Bool = false {
         didSet {
+            if pressed == oldValue {
+                // Needed with usage of `pressedReversedColor`
+                return
+            }
+            
+            let newColor = pressedReversedColor
+            pressedReversedColor = label.textColor
+            label.textColor = newColor
+            
             if pressed {
-                label.textColor = BraveUX.BraveOrange
                 if let anim = POPSpringAnimation(propertyNamed: kPOPLayerScaleXY) {
                     anim.toValue = NSValue(cgSize: CGSize(width: 0.9, height: 0.9))
                     layer.pop_add(anim, forKey: "size")
                 }
             } else {
-                label.textColor = BraveUX.GreyJ
                 if let anim = POPSpringAnimation(propertyNamed: kPOPLayerScaleXY) {
                     anim.toValue = NSValue(cgSize: CGSize(width: 1.0, height: 1.0))
                     layer.pop_add(anim, forKey: "size")
@@ -34,7 +44,6 @@ class SyncDeviceTypeButton: UIControl {
         self.init(frame: CGRect.zero)
         
         clipsToBounds = false
-        backgroundColor = UIColor.white
         layer.cornerRadius = 12
         layer.shadowColor = BraveUX.GreyJ.cgColor
         layer.shadowRadius = 3
@@ -48,7 +57,6 @@ class SyncDeviceTypeButton: UIControl {
         
         label.text = title
         label.font = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.bold)
-        label.textColor = BraveUX.GreyJ
         label.textAlignment = .center
         addSubview(label)
         
@@ -100,7 +108,6 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
         $0.textAlignment = .center
         $0.numberOfLines = 0
         $0.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
-        $0.textColor = BraveUX.GreyH
     }
     
     let mainStackView = UIStackView().then {

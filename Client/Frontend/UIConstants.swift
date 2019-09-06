@@ -6,29 +6,6 @@ import Foundation
 import Shared
 import BraveShared
 
-// A browser color represents the color of UI in both Private browsing mode and normal mode
-struct BrowserColor {
-    let normalColor: UIColor
-    let PBMColor: UIColor
-    init(normal: UIColor, pbm: UIColor) {
-        self.normalColor = normal
-        self.PBMColor = pbm
-    }
-
-    init(normal: Int, pbm: Int) {
-        self.normalColor = UIColor(rgb: normal)
-        self.PBMColor = UIColor(rgb: pbm)
-    }
-
-    func color(isPBM: Bool) -> UIColor {
-        return isPBM ? PBMColor : normalColor
-    }
-
-    func colorFor(_ theme: Theme) -> UIColor {
-        return color(isPBM: theme.isPrivate)
-    }
-}
-
 extension UIColor {
     // These are defaults from http://design.firefox.com/photon/visuals/color.html
     struct Defaults {
@@ -38,53 +15,6 @@ extension UIColor {
         static let MobilePrivatePurple = UIColor(rgb: 0xcf68ff)
         static let PaleBlue = UIColor(rgb: 0xB0D5FB)
         static let LightBeige = UIColor(rgb: 0xf0e6dc)
-    }
-
-    struct Browser {
-        static let Background = BrowserColor(normal: Photon.Grey10, pbm: Photon.Grey70)
-        static let Text = BrowserColor(normal: .white, pbm: Photon.Grey60)
-        static let URLBarDivider = BrowserColor(normal: Photon.Grey90A10, pbm: Photon.Grey60)
-        static let LocationBarBackground = Photon.Grey30
-        static let Tint = BrowserColor(normal: Photon.Grey80, pbm: Photon.Grey30)
-    }
-
-    struct URLBar {
-        static let Border = BrowserColor(normal: Photon.Grey50, pbm: Photon.Grey80)
-        static let ActiveBorder = BrowserColor(normal: Photon.Blue50A30, pbm: Photon.Grey60)
-        static let Tint = BrowserColor(normal: Photon.Blue50A30, pbm: Photon.Grey10)
-    }
-
-    struct TextField {
-        static let Background = BrowserColor(normal: .white, pbm: Defaults.MobileGreyF)
-        static let TextAndTint = BrowserColor(normal: Photon.Grey80, pbm: .white)
-        static let Highlight = BrowserColor(normal: Defaults.iOSHighlightBlue, pbm: Defaults.Purple60A30)
-        static let ReaderModeButtonSelected = BrowserColor(normal: Photon.Blue40, pbm: Defaults.MobilePrivatePurple)
-        static let ReaderModeButtonUnselected = BrowserColor(normal: Photon.Grey50, pbm: Photon.Grey40)
-        static let PageOptionsSelected = ReaderModeButtonSelected
-        static let PageOptionsUnselected = UIColor.Browser.Tint
-        static let Separator = BrowserColor(normal: #colorLiteral(red: 0.7333333333, green: 0.7333333333, blue: 0.8039215686, alpha: 1), pbm: Photon.Grey70)
-        
-    }
-
-    // The back/forward/refresh/menu button (bottom toolbar)
-    struct ToolbarButton {
-        static let SelectedTint = BrowserColor(normal: Photon.Blue40, pbm: Photon.Purple50)
-        static let DisabledTint = BrowserColor(normal: Photon.Grey30, pbm: Photon.Grey50)
-    }
-
-    struct LoadingBar {
-        static let Start = BrowserColor(normal: Photon.Blue50A30, pbm: Photon.Purple50)
-        static let End = BrowserColor(normal: Photon.Blue50, pbm: Photon.Magenta50)
-    }
-
-    struct TabTray {
-        static let Background = Browser.Background
-        static let ToolbarButtonTint = BrowserColor(normal: Photon.Grey80, pbm: Photon.Grey30)
-    }
-
-    struct TopTabs {
-        static let PrivateModeTint = BrowserColor(normal: Photon.Grey10, pbm: Photon.Grey40)
-        static let Background = BrowserColor(normal: Photon.White100, pbm: Photon.Grey80)
     }
 }
 

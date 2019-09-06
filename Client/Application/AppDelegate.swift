@@ -209,6 +209,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // Override point for customization after application launch.
         var shouldPerformAdditionalDelegateHandling = true
 
+        // BVC generally handles theme applying, but in some instances views are established
+        // before then (e.g. passcode, so can be privacy concern, meaning this should be called ASAP)
+        // In order to properly apply background and align this with the rest of the UI (keyboard / header)
+        // this needs to be called. UI could be handled internally to view systems,
+        // but then keyboard may misalign with Brave selected theme override
+        Theme.of(nil).applyAppearanceProperties()
+        
         UIScrollView.doBadSwizzleStuff()
 
         #if BUDDYBUILD
@@ -266,13 +273,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         }
         
         AdblockResourceDownloader.shared.startLoading()
-
-        UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
-      
-        (UISwitch.appearance() as UISwitch).do {
-            $0.tintColor = BraveUX.SwitchTintColor
-            $0.onTintColor = BraveUX.BraveOrange
-        }
       
         return shouldPerformAdditionalDelegateHandling
     }

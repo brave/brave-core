@@ -5,10 +5,6 @@ import Shared
 import BraveShared
 import Data
 
-struct SyncUX {
-    static let backgroundColor = UIColor(rgb: 0xF8F8F8)
-}
-
 class RoundInterfaceButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -18,10 +14,12 @@ class RoundInterfaceButton: UIButton {
 
 class SyncViewController: UIViewController {
 
+    override func loadView() {
+        view = SyncView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = SyncUX.backgroundColor
         NotificationCenter.default.addObserver(self, selector: #selector(didLeaveSyncGroup), name: Sync.Notifications.didLeaveSyncGroup, object: nil)
     }
     
@@ -45,4 +43,7 @@ class SyncViewController: UIViewController {
             self?.navigationController?.popToRootViewController(animated: true)
         }
     }
+    
+    // This is used for `appearance()` usage, so can target sync background views
+    class SyncView: UIView {}
 }

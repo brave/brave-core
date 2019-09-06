@@ -37,44 +37,16 @@ class SettingsTableSectionHeaderFooterView: UITableViewHeaderFooterView {
         }
     }
 
-    var showTopBorder: Bool = true {
-        didSet {
-            topBorder.isHidden = !showTopBorder
-        }
-    }
-
-    var showBottomBorder: Bool = true {
-        didSet {
-            bottomBorder.isHidden = !showBottomBorder
-        }
-    }
-
     lazy var titleLabel: UILabel = {
         var headerLabel = UILabel()
-        headerLabel.textColor = SettingsUX.TableViewHeaderTextColor
         headerLabel.font = UIFont.systemFont(ofSize: 12.0, weight: UIFont.Weight.regular)
         headerLabel.numberOfLines = 0
         return headerLabel
     }()
 
-    fileprivate lazy var topBorder: UIView = {
-        let topBorder = UIView()
-        topBorder.backgroundColor = UIConstants.SeparatorColor
-        return topBorder
-    }()
-
-    fileprivate lazy var bottomBorder: UIView = {
-        let bottomBorder = UIView()
-        bottomBorder.backgroundColor = UIConstants.SeparatorColor
-        return bottomBorder
-    }()
-
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = SettingsUX.TableViewHeaderBackgroundColor
         addSubview(titleLabel)
-        addSubview(topBorder)
-        addSubview(bottomBorder)
 
         setupInitialConstraints()
     }
@@ -84,23 +56,11 @@ class SettingsTableSectionHeaderFooterView: UITableViewHeaderFooterView {
     }
 
     func setupInitialConstraints() {
-        bottomBorder.snp.makeConstraints { make in
-            make.bottom.left.right.equalTo(self)
-            make.height.equalTo(0.5)
-        }
-
-        topBorder.snp.makeConstraints { make in
-            make.top.left.right.equalTo(self)
-            make.height.equalTo(0.5)
-        }
-
         remakeTitleAlignmentConstraints()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        showTopBorder = true
-        showBottomBorder = true
         titleLabel.text = nil
         titleAlignment = .bottom
     }

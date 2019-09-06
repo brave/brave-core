@@ -14,7 +14,9 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         static let spaceBetweenRows: CGFloat = 8
     }
     
-    let searchEngines: SearchEngines
+    var searchEngines: SearchEngines {
+        profile.searchEngines
+    }
     
     private var contentView: View {
         return view as! View // swiftlint:disable:this force_cast
@@ -22,13 +24,6 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
     
     override func loadView() {
         view = View()
-    }
-    
-    override init(profile: Profile) {
-        self.searchEngines = profile.searchEngines
-        super.init(profile: profile)
-        
-        //super.init(nibName: nil, bundle: nil)
     }
 
     override func viewDidLoad() {
@@ -39,6 +34,12 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         
         contentView.continueButton.addTarget(self, action: #selector(continueTapped), for: .touchDown)
         contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchDown)
+        
+        // This is kind of stupid, but for some reason the table's background color will not
+        // go away or be forced to .clear, so just mimicing
+        let tablebackground = UIView()
+        tablebackground.backgroundColor = contentView.backgroundColor
+        contentView.searchEnginesTable.backgroundView = tablebackground
     }
     
     @objc override func continueTapped() {
@@ -97,6 +98,7 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
         
         cell.searchEngineName = searchEngine.shortName
         cell.searchEngineImage = searchEngine.image
+        cell.selectedBackgroundColor = theme.colors.accent
         
         if searchEngine == defaultEngine {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)

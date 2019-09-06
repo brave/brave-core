@@ -24,7 +24,6 @@ class SyncAddDeviceViewController: SyncViewController {
     lazy var codewordsView: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18.0, weight: UIFont.Weight.medium)
-        label.textColor = BraveUX.GreyJ
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
         return label
@@ -93,7 +92,6 @@ class SyncAddDeviceViewController: SyncViewController {
 
         containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.backgroundColor = UIColor.white
         containerView.layer.cornerRadius = 8
         containerView.layer.masksToBounds = true
 
@@ -155,12 +153,10 @@ class SyncAddDeviceViewController: SyncViewController {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
-        titleLabel.textColor = BraveUX.GreyJ
         titleDescriptionStackView.addArrangedSubview(titleLabel)
 
         descriptionLabel = UILabel()
         descriptionLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
-        descriptionLabel.textColor = BraveUX.GreyH
         descriptionLabel.numberOfLines = 0
         descriptionLabel.lineBreakMode = .byTruncatingTail
         descriptionLabel.textAlignment = .center

@@ -69,6 +69,14 @@ class PopoverController: UIViewController {
     /// Whether or not to automatically dismiss the popup when the device orientation changes
     var dismissesOnOrientationChanged = true
     
+    /// Defines the desired color for the entire popup menu
+    /// Child controller may specify their own `backgroundColor`, however arrow/carrot color is also handled here
+    var color: UIColor? {
+        didSet {
+            containerView.color = color
+        }
+    }
+    
     /// Allows the presenter to know when the popover was dismissed by some gestural action.
     var popoverDidDismiss: ((_ popoverController: PopoverController) -> Void)?
     

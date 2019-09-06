@@ -10,12 +10,12 @@ import BraveShared
 class BottomToolbarView: UIView, ToolbarProtocol {
     weak var tabToolbarDelegate: ToolbarDelegate?
 
-    let tabsButton = TabsButton()
-    let forwardButton = ToolbarButton()
-    let backButton = ToolbarButton()
-    let shareButton = ToolbarButton()
-    let addTabButton = ToolbarButton()
-    let menuButton = ToolbarButton()
+    let tabsButton = TabsButton(top: false)
+    let forwardButton = ToolbarButton(top: false)
+    let backButton = ToolbarButton(top: false)
+    let shareButton = ToolbarButton(top: false)
+    let addTabButton = ToolbarButton(top: false)
+    let menuButton = ToolbarButton(top: false)
     let actionButtons: [Themeable & UIButton]
 
     var helper: ToolbarHelper?
@@ -104,14 +104,12 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 // MARK: - Themeable
 
 extension BottomToolbarView: Themeable {
+    var themeableChildren: [Themeable?]? {
+        return actionButtons
+    }
+    
     func applyTheme(_ theme: Theme) {
-        switch theme {
-        case .regular:
-            backgroundColor = BraveUX.ToolbarsBackgroundSolidColor
-        case .private:
-            backgroundColor = BraveUX.DarkToolbarsBackgroundSolidColor
-        }
-
-        helper?.setTheme(theme: theme, forButtons: actionButtons)
+        styleChildren(theme: theme)
+        backgroundColor = theme.colors.footer
     }
 }

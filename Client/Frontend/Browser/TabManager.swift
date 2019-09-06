@@ -243,13 +243,6 @@ class TabManager: NSObject {
         }
         if let tab = selectedTab {
             TabEvent.post(.didGainFocus, for: tab)
-            
-            switch tab.type {
-            case .regular:
-                UITextField.appearance().keyboardAppearance = .light
-            case .private:
-                UITextField.appearance().keyboardAppearance = .dark
-            }
         }
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,

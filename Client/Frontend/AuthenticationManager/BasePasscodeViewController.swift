@@ -36,7 +36,6 @@ class BasePasscodeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = SettingsUX.TableViewHeaderBackgroundColor
         updateRightBarButtonItem()
     }
 
