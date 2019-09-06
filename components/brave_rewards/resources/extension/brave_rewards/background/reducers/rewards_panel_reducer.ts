@@ -398,7 +398,15 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         notifications
       }
 
-      if (state.currentNotification === undefined && id) {
+      const found = list.find((notification: RewardsExtension.Notification) => {
+        if (!notification || !state) {
+          return false
+        }
+
+        return notification.id === state.currentNotification
+      })
+
+      if (id && (state.currentNotification === undefined || !found)) {
         state.currentNotification = id
       }
 
