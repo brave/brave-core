@@ -7,7 +7,7 @@
 
 #import "DataController.h"
 #import "BATLedgerDatabase.h"
-
+#import "RewardsLogger.h"
 
 @interface TempTestDataController : DataController
 @property (nonatomic, nullable) NSUUID *folderPrefix;
@@ -44,6 +44,10 @@
                                            object:nil];
 
   DataController.shared = [[TempTestDataController alloc] init];
+  
+  [BATBraveRewardsLogger configureWithLogCallback:^(BATLogLevel logLevel, int line, NSString * _Nonnull file, NSString * _Nonnull data) {
+    NSLog(@"%@", data);
+  } withFlush:^{ }];
 }
 
 - (void)tearDown

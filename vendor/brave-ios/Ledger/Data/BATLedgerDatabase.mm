@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#import <Foundation/Foundation.h>
 #import "BATLedgerDatabase.h"
 
 #import "DataController.h"
@@ -683,21 +684,21 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 + (void)clearAndInsertList:(NSArray<BATServerPublisherInfo *> *)list
                 completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
-  const auto context = [DataController newBackgroundContext];
-  
-  const auto batchSize = 1000.0;
-  const auto numberOfSplits = (NSInteger)ceil(list.count / batchSize);
-  NSMutableArray *split = [[NSMutableArray alloc] init];
-  for (NSUInteger i = 0; i < numberOfSplits; i++) {
-    auto index = i * batchSize;
-    NSArray* sub = [[list subarrayWithRange:NSMakeRange(index, MIN(batchSize, list.count - index))] copy];
-    [split addObject:sub];
-  }
-  BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Splitting " << list.count << " records into " << numberOfSplits << " batches" << std::endl;
-  NSDate *start = [NSDate date];
-  const auto group = dispatch_group_create();
-  dispatch_group_enter(group);
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    const auto batchSize = 1000.0;
+    const auto numberOfSplits = (NSInteger)ceil(list.count / batchSize);
+    NSMutableArray *split = [[NSMutableArray alloc] init];
+    for (NSUInteger i = 0; i < numberOfSplits; i++) {
+      auto index = i * batchSize;
+      NSArray* sub = [[list subarrayWithRange:NSMakeRange(index, MIN(batchSize, list.count - index))] copy];
+      [split addObject:sub];
+    }
+    BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Splitting " << list.count << " records into " << numberOfSplits << " batches" << std::endl;
+    
+    const auto context = [DataController newBackgroundContext];
+    
+    NSDate *start = [NSDate date];
+    BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Deleting publisher list" << std::endl;
     [context performBlockAndWait:^{
       const auto fetchRequest = ServerPublisherInfo.fetchRequest;
       fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class)
@@ -710,38 +711,32 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
         [context save:nil];
       }
     }];
-    const auto splitIndex = ceil(split.count / 2.0);
-    [context performBlock:^{
-      for (NSArray *section in [split subarrayWithRange:NSMakeRange(0, splitIndex)]) {
-        [self insertOrUpdateServerPublisherList:section context:context];
-        if (context.hasChanges) {
-          NSError *error;
-          if (![context save:&error]) {
-            BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription << std::endl;
+    BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Deleted publisher list in " << [[NSDate date] timeIntervalSinceDate:start] << " seconds" << std::endl;
+    const auto operationQueue = [[NSOperationQueue alloc] init];
+    // 2 concurrent ops operate better than 4 or 6 when testing
+    operationQueue.maxConcurrentOperationCount = MIN(2, [[NSProcessInfo processInfo] activeProcessorCount]);
+    operationQueue.name = @"Publisher List Insertions";
+    BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Inserting " << list.count << " publisher info objects" << std::endl;
+    for (NSArray *section in split) {
+      [operationQueue addOperationWithBlock:^{
+        const auto newContext = [DataController newBackgroundContext];
+        [newContext performBlockAndWait:^{
+          [self insertOrUpdateServerPublisherList:section context:newContext];
+          if (newContext.hasChanges) {
+            NSError *error;
+            if (![newContext save:&error]) {
+              BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription << std::endl;
+            }
           }
-        }
-      }
-      dispatch_group_leave(group);
-    }];
-    const auto newContext = [DataController newBackgroundContext];
-    dispatch_group_enter(group);
-    [newContext performBlock:^{
-      for (NSArray *section in [split subarrayWithRange:NSMakeRange(splitIndex, split.count - splitIndex)]) {
-        [self insertOrUpdateServerPublisherList:section context:newContext];
-        if (newContext.hasChanges) {
-          NSError *error;
-          if (![newContext save:&error]) {
-            BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription << std::endl;
-          }
-        }
-      }
-      dispatch_group_leave(group);
-    }];
-  });
-  dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        }];
+      }];
+    }
+    [operationQueue waitUntilAllOperationsAreFinished];
     NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:start];
-    BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Completed inserting " << list.count << " records into DB. Took " << duration << " seconds" << std::endl;
-    completion(true);
+    BLOG(ledger::LogLevel::LOG_INFO) << "CoreData: Completed publisher list task. Took total of " << duration << " seconds" << std::endl;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      completion(true);
+    });
   });
 }
 
