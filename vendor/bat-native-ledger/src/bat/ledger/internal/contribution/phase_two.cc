@@ -13,6 +13,10 @@
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
+#if defined(OS_IOS)
+#include <dispatch/dispatch.h>
+#endif
+
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -376,6 +380,14 @@ void PhaseTwo::Proof() {
     }
   }
 
+#if defined(OS_IOS)
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    const auto result = this->ProofBatch(batch_proofs);
+    dispatch_async(dispatch_get_main_queue(), ^{
+      this->ProofBatchCallback(batch_proofs, result);
+    });
+  });
+#else
   base::PostTaskAndReplyWithResult(
       ledger_->GetTaskRunner().get(),
       FROM_HERE,
@@ -385,6 +397,7 @@ void PhaseTwo::Proof() {
       base::BindOnce(&PhaseTwo::ProofBatchCallback,
         base::Unretained(this),
         batch_proofs));
+#endif
 }
 
 std::vector<std::string> PhaseTwo::ProofBatch(
