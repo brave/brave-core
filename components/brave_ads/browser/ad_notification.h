@@ -11,14 +11,20 @@
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
-#include "bat/ads/notification_info.h"
 #include "build/build_config.h"
 
 namespace message_center {
 class Notification;
 }
 
+namespace ads {
+struct NotificationInfo;
+}
+
+
 namespace brave_ads {
+
+const char* const kBraveAdsUrlPrefix ="chrome://brave_ads/?";
 
 std::unique_ptr<message_center::Notification> CreateAdNotification(
     const ads::NotificationInfo& notification_info);

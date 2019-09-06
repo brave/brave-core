@@ -60,23 +60,26 @@ bool Notifications::Get(const std::string& id, NotificationInfo* info) const {
   return true;
 }
 
-void Notifications::Add(const NotificationInfo& info) {
+void Notifications::PushBack(const NotificationInfo& info) {
   DCHECK(is_initialized_);
 
   notifications_.push_back(info);
+  ads_client_->ShowNotification(std::make_unique<NotificationInfo>(info));
 
   SaveState();
 }
 
-void Notifications::Remove() {
+void Notifications::PopFront(bool should_dismiss) {
   if (!notifications_.empty()) {
-    ads_client_->CloseNotification(notifications_.front().id);
+    if (should_dismiss){
+      ads_client_->CloseNotification(notifications_.front().id);
+    }
     notifications_.pop_front();
     SaveState();
   }
 }
 
-bool Notifications::Remove(const std::string& id) {
+bool Notifications::Remove(const std::string& id, bool should_dismiss) {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(notifications_.begin(), notifications_.end(),
@@ -85,7 +88,9 @@ bool Notifications::Remove(const std::string& id) {
     return false;
   }
 
-  ads_client_->CloseNotification(id);
+  if (should_dismiss){
+    ads_client_->CloseNotification(id);
+  }
   notifications_.erase(iter);
 
   SaveState();
@@ -93,24 +98,17 @@ bool Notifications::Remove(const std::string& id) {
   return true;
 }
 
-void Notifications::RemoveAll() {
+void Notifications::RemoveAll(bool should_dismiss) {
   DCHECK(is_initialized_);
 
-  for (const auto& notification : notifications_) {
-    ads_client_->CloseNotification(notification.id);
+  if (should_dismiss){
+    for (const auto& notification : notifications_) {
+      ads_client_->CloseNotification(notification.id);
+    }
   }
   notifications_.clear();
 
   SaveState();
-}
-
-void Notifications::CloseAll() const {
-  DCHECK(is_initialized_);
-
-  for (const auto& notification : notifications_) {
-    ads_client_->CloseNotification(notification.id);
-  }
-  //the diff with RemoveAll: it doesn't save state
 }
 
 bool Notifications::Exists(const std::string& id) const {

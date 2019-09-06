@@ -154,7 +154,7 @@ void AdsImpl::RemoveAllNotificationsAfterReboot() {
     uint64_t boot_timestamp = Time::NowInSeconds() -
         static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds());
     if (ad_shown_timestamp <= boot_timestamp) {
-      notifications_->RemoveAll();
+      notifications_->RemoveAll(false);
     }
   }
 }
@@ -178,7 +178,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
     return;
   }
 
-  notifications_->CloseAll();
+  notifications_->RemoveAll(true);
 
   callback(SUCCESS);
 }
@@ -357,7 +357,7 @@ void AdsImpl::NotificationEventViewed(
 void AdsImpl::NotificationEventClicked(
     const std::string& id,
     const NotificationInfo& notification) {
-  notifications_->Remove(id);
+  notifications_->Remove(id, true);
 
   GenerateAdReportingNotificationResultEvent(notification,
       NotificationResultInfoResultType::CLICKED);
@@ -368,7 +368,7 @@ void AdsImpl::NotificationEventClicked(
 void AdsImpl::NotificationEventDismissed(
     const std::string& id,
     const NotificationInfo& notification) {
-  notifications_->Remove(id);
+  notifications_->Remove(id, false);
 
   GenerateAdReportingNotificationResultEvent(notification,
       NotificationResultInfoResultType::DISMISSED);
@@ -379,7 +379,7 @@ void AdsImpl::NotificationEventDismissed(
 void AdsImpl::NotificationEventTimedOut(
     const std::string& id,
     const NotificationInfo& notification) {
-  notifications_->Remove(id);
+  notifications_->Remove(id, false);
 
   GenerateAdReportingNotificationResultEvent(notification,
       NotificationResultInfoResultType::TIMEOUT);
@@ -954,11 +954,11 @@ bool AdsImpl::ShowAd(
       << std::endl << "  url: " << notification_info->url
       << std::endl << "  uuid: " << notification_info->uuid;
 
-  if (notifications_->Count() >= kMaximumAdNotifications) {
-    notifications_->Remove();
+  notifications_->PushBack(*notification_info);
+  if (notifications_->Count() > kMaximumAdNotifications) {
+    notifications_->PopFront(true);
   }
-  notifications_->Add(*notification_info);
-  ads_client_->ShowNotification(std::move(notification_info));
+
 
   client_->AppendCurrentTimeToAdsShownHistory();
   client_->AppendCurrentTimeToCreativeSetHistory(ad_info.creative_set_id);

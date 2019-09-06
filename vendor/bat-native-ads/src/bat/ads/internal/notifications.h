@@ -28,12 +28,11 @@ class Notifications {
 
   bool Get(const std::string& id, NotificationInfo* info) const;
 
-  void Add(const NotificationInfo& info);
-  void Remove(); //removes the front item
+  void PushBack(const NotificationInfo& info);
+  void PopFront(bool should_dismiss);
 
-  bool Remove(const std::string& id); //removes an item by id
-  void RemoveAll();
-  void CloseAll() const;
+  bool Remove(const std::string& id, bool should_dismiss);
+  void RemoveAll(bool should_dismiss);
 
   bool Exists(const std::string& id) const;
 
