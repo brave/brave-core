@@ -113,7 +113,6 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="1421502046520299169">Teave &amp;Brave OS-i kohta</translation>
 <translation id="2534623228451928732">Värskenda &amp;Brave OS-i</translation>
 <translation id="8447483940522230788">Bravei abiline</translation>
-<translation id="3360368475735266712">Logige sisse, et Brave kõigis oma seadmetes sünkroonida ja isikupärastada</translation>
 <translation id="5477319665405831211">Sünkroonige ja isikupärastage Brave kõigis oma seadmetes</translation>
 <translation id="4934157190377700991">Olete nüüd Brave'i sisse logitud</translation>
 <translation id="4100716194836114130">See on teie Brave</translation>
@@ -144,6 +143,8 @@ Kui logite siiski sisse, liidetakse Bravei teave, nagu järjehoidjad, ajalugu ja
 <translation id="6746636977031158624">Brave OS ei saanud andmeid sünkroonida, sest teie konto sisselogimisandmed on aegunud.</translation>
 <translation id="2999152167963026588">Brave OS ei saanud teie andmeid sünkroonida, sest teie domeenil pole sünkroonimine saadaval.</translation>
 <translation id="1459786048951724030">Brave OS ei saanud sisselogimisvea tõttu teie andmeid sünkroonida.</translation>
+<translation id="6813094029720377619">Bravei sulgemisel kustutatakse küpsisefailid. Sünkroonimise jätkamiseks muutke seda: <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">seaded</translation>
 <translation id="663059986967017181">Kopeeritud Brave'i</translation>
 <translation id="1457432835062259213">Bravei rakenduste käiviti</translation>
 <translation id="82609232232243542">Brave'i sisselogimine</translation>
@@ -163,7 +164,7 @@ Kui soovite takistada kasutajal <ph name="NEW_PROFILE_NAME"/> teie kontole juurd
 
 Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Jälgitavad kasutajaprofiilid ei ole enam alates Bravei versioonist 70 saadaval.</translation>
-<translation id="3066805437003400520">Selle isiku sirvimisandmed kustutatakse seadmest. Andmete taastamiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Selle isiku sirvimisandmed kustutatakse seadmest. Andmete taastamiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave muutus just paremaks</translation>
 <translation id="7192666605334070839">Nüüd on Bravei lihtsam kasutada Brave Software'i kontoga ja jagatud arvutistes.</translation>
 <translation id="3511996232906761537">Siin asuvad teie veeb, järjehoidjad ja ülejäänud Bravei kraam.</translation>
@@ -235,14 +236,6 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="7808415789955822133">Brave OS-i tingimused</translation>
 <translation id="7207456302801184289">Tere tulemast Bravei</translation>
 <translation id="5688839044908745927">Brave on peaaegu valmis.</translation>
-<translation id="7758342895140862711">Võtke Brave kõikjale kaasa</translation>
-<translation id="3610173904388112975">Veebi sirvimine Brave Software'i nutikate funktsioonidega</translation>
-<translation id="3479552764303398839">Mitte praegu</translation>
-<translation id="8013374903356993822">Bravei kiirem avamine</translation>
-<translation id="7625138338483121345">Bravei vaikebrauseriks määramine</translation>
-<translation id="5927044791090834489">Bravei kinnitamine tegumiribale</translation>
-<translation id="8933981935877469796">Valige <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">Kui see kuvatakse, klõpsake valikul <ph name="BEGIN_BOLD"/>Vaheta ikkagi<ph name="END_BOLD"/></translation>
 <translation id="3507835409099344374">Ava Bravei märguandeseaded</translation>
 <translation id="1026406809507858026">{0,plural, =0{Bravei värskendus on saadaval}=1{Bravei värskendus on saadaval}other{Bravei värskendus on # päeva saadaval olnud}}</translation>
 <translation id="720532315408041257">Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada</translation>
@@ -262,6 +255,7 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="8208853227947884571">Brave on ajakohane</translation>
 <translation id="6686872257969654608">Teave Brave OS-i kohta</translation>
 <translation id="2280363356796735201">Brave OS-i puhul abi hankimine</translation>
+<translation id="38898988211673781">Kustuta Bravei sulgemisel küpsisefailide ja saitide andmed</translation>
 <translation id="5253815230176279256">Brave Pay (kopeeritud Brave'i)</translation>
 <translation id="5468853758063275923">Brave on teie vaikebrauser</translation>
 <translation id="1775322105159056176">Brave ei saa määrata ega seadistada vaikebrauserit</translation>
@@ -278,6 +272,7 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="8372880274820509128">Turvalisuse suurendamiseks krüptib Brave teie andmed.</translation>
 <translation id="7445061995866044926">Kas logida Brave'ist välja?</translation>
 <translation id="7453070689008684791">Brave pääseb teie Drive'ile juurde, et aadressiribal soovitusi anda</translation>
+<translation id="3360368475735266712">Logige sisse, et Brave kõigis oma seadmetes sünkroonida ja isikupärastada</translation>
 <translation id="9221712274065451529">Seda keelt kasutatakse Brave OS-i UI kuvamiseks</translation>
 <translation id="3518788198614984730">Kuva Brave OS selles keeles</translation>
 <translation id="5757460455745382269">Seda keelt kasutatakse Brave UI kuvamiseks</translation>

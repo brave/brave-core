@@ -40,6 +40,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2814998458708016836">Koristi široku traku sa adresama</translation>
 <translation id="6123134130710658846">Sakrij taster za Brave nagrade</translation>
 <translation id="7635711399568194460">Sakriva taster za Brave nagrade u traci onda kada Brave nagrade nisu omogućene</translation>
+<translation id="4262166817826183486">Uvek pokaži traku sa obeleživačima stranice na stranici nove kartice</translation>
 <translation id="7965178729203412357">Novi Tor identitet</translation>
 <translation id="8511502469534942133">Nova Tor veza za ovaj sajt</translation>
 <translation id="8784924142044142231">Izađite iz Tor-a</translation>
@@ -69,7 +70,6 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="9075744464571452108">Prepoznavanje uređaja</translation>
 <translation id="3570081523466826008">Nadogradi veze u HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
-<translation id="7498695072878479744">Dozvoli prijavljivanje putem Google-a na veb lokacijama treće strane</translation>
 <translation id="863171915776379000">Dozvoli prijavljivanje putem Facebook-a i ugrađene objave</translation>
 <translation id="5165042248369837294">Dozvoli Twitter ugrađene tvitove</translation>
 <translation id="958971637207126733">Dozvolite ugrađene objave Linkedinu</translation>
@@ -93,12 +93,14 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="8721331068159819483">Isto kao macOS</translation>
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="2896916411183256228">Koristi WebTorrent da prikazuje torrente direktno u pretraživaču. Podržava torrent fajlove i magnetne veze.</translation>
+<translation id="5554028991651120544">Obezbeđuje Ethereum novčanik i Dapp pregledač unutar Brave-a.</translation>
 <translation id="6554397389149987360">Koristi komponentu Hangouts da biste omogućili deljenje ekrana i druge funkcije u pregledaču.</translation>
 <translation id="1765684547504191670">Koristi komponentu Media Router-a da bi omogućio Chromecast u pregledaču.</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="4154389611571860454">Koristi IPFS propratno proširenje da podrži IPFS u pregledaču.</translation>
 <translation id="8137559199583651773">Управљај додацима</translation>
+<translation id="7013485839273047434">Nabavi još ekstenzija</translation>
 <translation id="4928988318462976765">Prodavnica Veb proširenja</translation>
 <translation id="9181207987584064303">Prikaži u prodavnici Veb proširenja</translation>
 <translation id="4846154056248462491">Na izlazu</translation>
@@ -111,4 +113,19 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="8303432794159193481">Razvojne aplikacije Brave pregledača</translation>
 <translation id="8292967014767479012">Aplikacije Brave pregledača</translation>
 <translation id="4743468424889072281">Razvojne aplikacije Brave pregledača</translation>
+<translation id="4568409039725976900">Hrabro narandžasto</translation>
+<translation id="7216062233533864908">Pomorandžina kora</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Zavist</translation>
+<translation id="8111795220552176635">Vedro nebo</translation>
+<translation id="8323875061602721187">Bondy plavo</translation>
+<translation id="8267711815380227275">Blurple</translation>
+<translation id="831132225871108758">Tamni vitez</translation>
+<translation id="1473185169764311478">Oblik kore od pomorandže</translation>
+<translation id="8658537263568841491">Nana oblik</translation>
+<translation id="8967241601928387177">Oblik zavisti</translation>
+<translation id="7232547941405761864">Oblik vedrog neba</translation>
+<translation id="5500050460919597479">Bondy plavo oblik</translation>
+<translation id="5359364898094115985">Burple oblik</translation>
+<translation id="3385506478125681119">Oblik tamnog viteza</translation>
 </translationbundle>

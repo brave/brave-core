@@ -40,6 +40,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="2814998458708016836">Breite Adressleiste verwenden</translation>
 <translation id="6123134130710658846">Brave-Rewards-Button ausblenden</translation>
 <translation id="7635711399568194460">Blendet den Brave-Rewards-Button im Standortbalken aus, wenn Brave Rewards deaktiviert ist</translation>
+<translation id="4262166817826183486">Lesezeichenleiste immer auf der Seite Neuer Reiter anzeigen</translation>
 <translation id="7965178729203412357">Neue Tor-Identität</translation>
 <translation id="8511502469534942133">Neue Tor-Verbindung für diese Seite</translation>
 <translation id="8784924142044142231">Tor verlassen</translation>
@@ -69,7 +70,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="9075744464571452108">Geräteerkennung</translation>
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
 <translation id="4824468494729001999">Skripte blockieren</translation>
-<translation id="7498695072878479744">Google-Anmeldebuttons auf Seiten dritter Parteien erlauben</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
 <translation id="5165042248369837294">Eingebettete Twitter-Nachrichten erlauben</translation>
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
@@ -93,12 +93,14 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8721331068159819483">Dasselbe wie macOS</translation>
 <translation id="6786747875388722282">Erweiterungen</translation>
 <translation id="2896916411183256228">Nutzt WebTorrent, um Torrents direkt im Browser anzuzeigen. Unterstützt Torrent-Dateien und Magnet-Links.</translation>
+<translation id="5554028991651120544">Bietet in Brave eine Ethereum-Wallet und einen Dapp-Browser.</translation>
 <translation id="6554397389149987360">Nutzt Hangouts-Komponente, um das Teilen des Bildschirms und andere Funktionen im Browser zu ermöglichen.</translation>
 <translation id="1765684547504191670">Eine Media-Router-Komponente wird verwendet, um Chromecast in dem Browser zu aktivieren.</translation>
 <translation id="9156965752763025780">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
 <translation id="7179921470347911571">Jetzt neustarten</translation>
 <translation id="4154389611571860454">Verwendet die IPFS-Erweiterung, um IPFS im Browser zu unterstützen.</translation>
 <translation id="8137559199583651773">Erweiterungen verwalten</translation>
+<translation id="7013485839273047434">Weitere Erweiterungen holen</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Im Web Extensions Store anzeigen</translation>
 <translation id="4846154056248462491">Beim Beenden</translation>
@@ -111,4 +113,19 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8303432794159193481">Brave-Browser-Entwicklerapps</translation>
 <translation id="8292967014767479012">Brave-Browser-Apps</translation>
 <translation id="4743468424889072281">Brave-Browser-Entwicklungsapps</translation>
+<translation id="4568409039725976900">Brave Orange</translation>
+<translation id="7216062233533864908">Orangenschale</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Neid</translation>
+<translation id="8111795220552176635">Blauer Himmel</translation>
+<translation id="8323875061602721187">Bondy Blue</translation>
+<translation id="8267711815380227275">Blurple</translation>
+<translation id="831132225871108758">Dark Knight</translation>
+<translation id="1473185169764311478">Orangenschale-Form</translation>
+<translation id="8658537263568841491">Nana-Form</translation>
+<translation id="8967241601928387177">Neid-Form</translation>
+<translation id="7232547941405761864">Blauer Himmel-Form</translation>
+<translation id="5500050460919597479">Bondy Blue-Form</translation>
+<translation id="5359364898094115985">Blurple-Form</translation>
+<translation id="3385506478125681119">Dark Knight-Form</translation>
 </translationbundle>

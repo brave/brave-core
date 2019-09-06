@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">팁 허용</translation>
 <translation id="3671566813999349838">금액</translation>
 <translation id="3819257035322786455">백업</translation>
-<translation id="4989542687859782284">이용불가</translation>
 <translation id="1312977698678162065">귀하의 개인 정보를 존중하는 관련 광고를 보고 보상을 받으세요.</translation>
 <translation id="7655723274266132226">이제 광고 보기로 돈을 벌 수 있습니다</translation>
 <translation id="2975780980638932742">Brave 광고가 왔습니다!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">시작할 준비가 되셨나요?</translation>
 <translation id="913775524828049259">네, 준비됐습니다</translation>
 <translation id="108052542935515756">시작할 수 있는 것:</translation>
-<translation id="2678666039642976470">월렛 다시 접속</translation>
 <translation id="194625454574835815">복구 키</translation>
 <translation id="6354568176665589146">반복하기</translation>
 <translation id="7577100371127227294">월간 팁</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">세부 내용 보기</translation>
 <translation id="1988679729106502285">주의:</translation>
 <translation id="5815103311506128988">이 크리에이터가 아직 브레이브 유저들로부터 기부를 받기 위한 회원 가입을 하지 않으셨습니다. 귀하의 브라우저는 그들이 확인 할 때까지 혹은 90일이 지나기까지 계속 기부를 시도하게 됩니다.</translation>
+<translation id="603411408512957306">이 크리에이터가 아직 브레이브 유저들로부터 기부를 받기 위한 회원 가입을 하지 않으셨습니다. 귀하의 브라우저는 그들이 확인 할 때까지 혹은 90일이 지나기까지 계속 기부를 시도하게 됩니다.</translation>
 <translation id="4292832015778676417">광고로부터 수입</translation>
 <translation id="3197752845651180812">기부금 보류</translation>
 <translation id="3164105678355419142">정기 팁</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">검증</translation>
 <translation id="8030169304546394654">연결 해제됨</translation>
 <translation id="8267327690882073581">월렛 검증하기</translation>
-<translation id="4569155249847375786">검증 완료</translation>
+<translation id="543510923939676996">검증 완료</translation>
 <translation id="7591798679868259510">내 Uphold 계정으로 이동</translation>
 <translation id="9200453331904391567">Brave Rewards에서 접속 해제됨.</translation>
 <translation id="46988480989545156">월렛 검증하기</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">인증의 이점</translation>
 <translation id="5166793288622772189">월렛을 인증할 준비가 되셨나요?</translation>
 <translation id="8766217572332535979">창작자 기여에 대한 보상을 받기 위해 인증이 필요하지는 않습니다</translation>
+<translation id="4569155249847375786">검증 완료됨</translation>
 <translation id="8465442795593991224">Uphold가 요청된 서비스에 기반하여 귀하의 신원 확인을 요구할 수도 있습니다.</translation>
 <translation id="723054503945711909">Brave Software Inc.는 계정을 만들 때 Uphold에 제공된 개인 정보를 처리, 저장, 또는 액세스하지 않습니다.</translation>
 <translation id="1181037720776840403">삭제</translation>

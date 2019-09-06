@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Izinkan tip pada</translation>
 <translation id="3671566813999349838">Jumlah</translation>
 <translation id="3819257035322786455">Cadangkan</translation>
-<translation id="4989542687859782284">Tak tersedia</translation>
 <translation id="1312977698678162065">Dapatkan bayaran untuk melihat iklan relevan yang menghormati privasi Anda.</translation>
 <translation id="7655723274266132226">Sekarang Anda bisa mendapatkan penghasilan dari melihat iklan.</translation>
 <translation id="2975780980638932742">Brave Ads telah tiba!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Siap untuk memulai?</translation>
 <translation id="913775524828049259">Ya, Saya Siap</translation>
 <translation id="108052542935515756">Anda dapat mulai dengan</translation>
-<translation id="2678666039642976470">Sambung ulang dompet</translation>
 <translation id="194625454574835815">Kunci Pemulihan</translation>
 <translation id="6354568176665589146">Berulang</translation>
 <translation id="7577100371127227294">Tip Bulanan</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Lihat Rincian</translation>
 <translation id="1988679729106502285">CATATAN:</translation>
 <translation id="5815103311506128988">Pembuat ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
+<translation id="603411408512957306">Pembuat ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
 <translation id="4292832015778676417">diperoleh dari iklan</translation>
 <translation id="3197752845651180812">Kontribusi tertunda</translation>
 <translation id="3164105678355419142">Tip berulang</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">verifikasi</translation>
 <translation id="8030169304546394654">Terputus</translation>
 <translation id="8267327690882073581">Verifikasi Dompet</translation>
-<translation id="4569155249847375786">Terverifikasi</translation>
+<translation id="543510923939676996">Terverifikasi</translation>
 <translation id="7591798679868259510">Ke akun Uphold saya</translation>
 <translation id="9200453331904391567">Putuskan dari Brave Reward</translation>
 <translation id="46988480989545156">Verifikasi dompet</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">Manfaat verifikasi</translation>
 <translation id="5166793288622772189">Siap memverifikasi dompet Anda?</translation>
 <translation id="8766217572332535979">Verifikasi tidak diperlukan untuk mendapatkan imbalan bagi kontribusi untuk pencipta</translation>
+<translation id="4569155249847375786">Terverifikasi</translation>
 <translation id="8465442795593991224">Uphold mungkin memerlukan verifikasi identitas Anda berdasarkan layanan yang diminta.</translation>
 <translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda berikan kepada Uphold ketika Anda membuat akun dengan mereka.</translation>
 <translation id="1181037720776840403">Hapus</translation>

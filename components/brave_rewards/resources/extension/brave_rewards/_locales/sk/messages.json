@@ -528,5 +528,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Nemajte obavy. Toto sa môže stať z rôznych dôvodov. Jednoducho sa opätovne pripojte a problém bude vyriešený.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Tento tvorca sa ešte nezaregistroval, aby dostával príspevky od používateľov Brave. Všetky tipy, ktoré odošlete, zostanú vo vašej peňaženke, kým ich neoveria.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

@@ -40,6 +40,7 @@
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="6123134130710658846">הסתר את כפתור Brave Rewards</translation>
 <translation id="7635711399568194460">מסתיר את כפתור Brave Rewards בסרגל המיקום כש-Brave Rewards אינו זמין</translation>
+<translation id="4262166817826183486">הצג תמיד את סרגל הסימניות בדף "כרטיסייה חדשה"</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
 <translation id="8511502469534942133">חיבור Tor חדש עבור אתר זה</translation>
 <translation id="8784924142044142231">יציאה מ-Tor</translation>
@@ -70,7 +71,6 @@
 <translation id="9075744464571452108">זיהוי מכשיר</translation>
 <translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="4824468494729001999">חסום סקריפטים</translation>
-<translation id="7498695072878479744">אפשר כפתור התחברות לגוגל באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
@@ -94,12 +94,14 @@
 <translation id="8721331068159819483">כמו macOS</translation>
 <translation id="6786747875388722282">תוספים</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
+<translation id="5554028991651120544">מספק ארנק אתריום ודפדפן Dapp בתוך Brave.</translation>
 <translation id="6554397389149987360">משתמש ברכיב Hangouts כדי לאפשר שיתוף מסך ותכונות אחרות בדפדפן.</translation>
 <translation id="1765684547504191670">נעשה שימוש ברכיב Media Router כדי לאפשר את Chromecast בדפדפן.</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="4154389611571860454">משתמש בהרחבה נלווית ל-IPFS לתמיכה ב-IPFS בדפדפן.</translation>
 <translation id="8137559199583651773">נהל תוספים</translation>
+<translation id="7013485839273047434">קבל/י הרחבות נוספות</translation>
 <translation id="4928988318462976765">חנות תוספי רשת</translation>
 <translation id="9181207987584064303">הצג בחנות תוספי רשת</translation>
 <translation id="4846154056248462491">ביציאה</translation>
@@ -112,4 +114,19 @@
 <translation id="8303432794159193481">יישומי פיתוח של דפדפן Brave</translation>
 <translation id="8292967014767479012">יישומי דפדפן Brave</translation>
 <translation id="4743468424889072281">יישומי פיתוח של דפדפן Brave</translation>
+<translation id="4568409039725976900">כתום Brave</translation>
+<translation id="7216062233533864908">קליפת תפוז</translation>
+<translation id="8285320948587819446">ננה</translation>
+<translation id="2016467614790224371">קנאה</translation>
+<translation id="8111795220552176635">שמיים צלולים</translation>
+<translation id="8323875061602721187">בונדי בלו</translation>
+<translation id="8267711815380227275">Blurple</translation>
+<translation id="831132225871108758">האביר האפל</translation>
+<translation id="1473185169764311478">צורת קליפת תפוז</translation>
+<translation id="8658537263568841491">בצורת ננה</translation>
+<translation id="8967241601928387177">בצורת קנאה</translation>
+<translation id="7232547941405761864">בצורת שמיים צלולים</translation>
+<translation id="5500050460919597479">בצורת בונדי בלו</translation>
+<translation id="5359364898094115985">בצורת Blurple</translation>
+<translation id="3385506478125681119">בצורת האביר האפל</translation>
 </translationbundle>

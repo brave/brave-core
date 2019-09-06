@@ -106,7 +106,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="1421502046520299169">‏מידע על &amp;מערכת ההפעלה של Brave‏</translation>
 <translation id="2534623228451928732">‏עדכן את &amp;מערכת ההפעלה של Brave‏</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="3360368475735266712">‏כניסה לחשבון תסנכרן ותתאים אישית את Brave בכל המכשירים שברשותך</translation>
 <translation id="5477319665405831211">‏סינכרון והתאמה אישית של Brave בכל המכשירים שברשותך</translation>
 <translation id="4934157190377700991">‏אתה מחובר כעת ל-Brave</translation>
 <translation id="4100716194836114130">‏זהו ה-Brave שלך</translation>
@@ -137,6 +136,8 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="6746636977031158624">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך מפני שפרטי הכניסה של חשבונך אינם מעודכנים.</translation>
 <translation id="2999152167963026588">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך מפני שסנכרון אינו זמין עבור הדומיין שלך.</translation>
 <translation id="1459786048951724030">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך עקב שגיאה בתהליך הכניסה.</translation>
+<translation id="6813094029720377619">‏בחרת לנקות את קובצי ה-Cookie בכל יציאה מ-Brave. כדי להמשיך בסנכרון, יש לשנות את <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">הגדרות</translation>
 <translation id="663059986967017181">‏הועתק אל Brave</translation>
 <translation id="1457432835062259213">Brave App Launcher</translation>
 <translation id="82609232232243542">‏כניסה ל-Brave</translation>
@@ -156,7 +157,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 
 בדוק את האימייל בחשבון <ph name="ACCOUNT_EMAIL"/> לקבלת הנחיות נוספות.</translation>
 <translation id="1820843143331379651">‏פרופילים של משתמשים בפיקוח יפסיקו להיות זמינים החל מ-Brave 70.</translation>
-<translation id="3066805437003400520">‏נתוני הגלישה של האדם הזה יימחקו מהמכשיר. כדי לשחזר את הנתונים, יש להיכנס ל-Brave בתור <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">‏נתוני הגלישה של האדם הזה יימחקו מהמכשיר. כדי לשחזר את הנתונים, יש להיכנס ל-Brave בתור <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">‏Brave השתפר</translation>
 <translation id="7192666605334070839">‏קל יותר כעת להשתמש ב-Brave באמצעות חשבון Brave Software שלך ובמחשבים משותפים.</translation>
 <translation id="3511996232906761537">‏היסטוריית האתרים, הסימניות ונתונים נוספים מ-Brave נמצאים כאן.</translation>
@@ -222,14 +223,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="7808415789955822133">‏תנאים עבור מערכת ההפעלה של Brave</translation>
 <translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
 <translation id="5688839044908745927">‏Brave כמעט מוכן.</translation>
-<translation id="7758342895140862711">‏לוקחים את Brave לכל מקום</translation>
-<translation id="3610173904388112975">‏גלישה באינטרנט עם Brave Software Smarts</translation>
-<translation id="3479552764303398839">לא עכשיו</translation>
-<translation id="8013374903356993822">‏רוצה להגיע ל-Brave מהר יותר?</translation>
-<translation id="7625138338483121345">‏הגדר את Brave בתור דפדפן ברירת המחדל</translation>
-<translation id="5927044791090834489">‏הצמד את Brave לשורת המשימות</translation>
-<translation id="8933981935877469796">‏בחר ב-<ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">אם הלחצן <ph name="BEGIN_BOLD"/>אני רוצה להחליף בכל מקרה<ph name="END_BOLD"/> מופיע, צריך ללחוץ עליו</translation>
 <translation id="3507835409099344374">‏מעבר אל הגדרות ההודעות של Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{‏יש עדכון ל-Brave}=1{‏יש עדכון ל-Brave}two{‏עדכון של Brave זמין כבר # ימים}many{‏עדכון של Brave זמין כבר # ימים}other{‏עדכון של Brave זמין כבר # ימים}}</translation>
 <translation id="720532315408041257">‏לפי בקשת מנהל המערכת, יש להפעיל מחדש את Brave כדי להחיל את העדכון הזה</translation>
@@ -249,6 +242,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8208853227947884571">‏Brave‏ מעודכן</translation>
 <translation id="6686872257969654608">‏על מערכת ההפעלה של Brave</translation>
 <translation id="2280363356796735201">‏קבל עזרה בנושא Brave OS</translation>
+<translation id="38898988211673781">‏קובצי ה-Cookie ונתוני האתר ינוקו בכל יציאה מ-Brave</translation>
 <translation id="5253815230176279256">‏Brave Software Pay (‏הועתק ל-Brave)</translation>
 <translation id="5468853758063275923">‏Brave מוגדר כדפדפן ברירת המחדל</translation>
 <translation id="1775322105159056176">‏ב-Brave לא ניתן לקבוע או להגדיר את דפדפן ברירת המחדל</translation>
@@ -265,6 +259,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8372880274820509128">‏לשיפור האבטחה, Brave יצפין את הנתונים.</translation>
 <translation id="7445061995866044926">‏האם לצאת מ-Brave?</translation>
 <translation id="7453070689008684791">‏Brave ייגש ל-Drive שלך כדי להציג הצעות בסרגל הכתובות</translation>
+<translation id="3360368475735266712">‏כניסה לחשבון תסנכרן ותתאים אישית את Brave בכל המכשירים שברשותך</translation>
 <translation id="9221712274065451529">‏זו השפה שבה מוצג ממשק המשתמש של Brave OS</translation>
 <translation id="3518788198614984730">‏הצג את Brave OS בשפה זו</translation>
 <translation id="5757460455745382269">‏זו השפה שבה מוצג ממשק המשתמש של Brave</translation>

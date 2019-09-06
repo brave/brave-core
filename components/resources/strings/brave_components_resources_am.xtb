@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">መረጃዎች በፍቃድ</translation>
 <translation id="3671566813999349838">ሰርዝ</translation>
 <translation id="3819257035322786455">ምትክ</translation>
-<translation id="4989542687859782284">አይገኝም</translation>
 <translation id="1312977698678162065">ሚስጥሮን የሚያከብር ተያያዥ ማስታወቅያ ለማየት ክፍያ ያግኙ፡፡</translation>
 <translation id="7655723274266132226">አሁን ማስታወቂያዎችን በማየት ገቢ ማግኘት ይችላሉ።</translation>
 <translation id="2975780980638932742">የBrave ማስታወቂያዎች ደርሰዋል!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">ለመጀመር ዝግጁ ናቹህ?</translation>
 <translation id="913775524828049259">አዎ ዝግጁ ነኝ</translation>
 <translation id="108052542935515756">በ መጀመር ይችላሉ</translation>
-<translation id="2678666039642976470">ዋሌትን እንደገና አገናኝ</translation>
 <translation id="194625454574835815">የዳግም ማግኛ ቁልፍ</translation>
 <translation id="6354568176665589146">ምምላስ</translation>
 <translation id="7577100371127227294">ወርሓዊ መረጃዎች</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">ዝርዝሩን ይመልከቱ</translation>
 <translation id="1988679729106502285">ያስታውሱ፤</translation>
 <translation id="5815103311506128988">ይህ ፈጣሪ ከ Brave ተጠቃሚዎች ክፍያዎችን ለማግኘት ገና አልተመዘገበም። አሳሽዎ እስከሚያረጋግጡ ወይም 90 ቀናት እስከሚያልፉ ድረስ መዋጮውን ለማድረግ ይሞክራል።</translation>
+<translation id="603411408512957306">ይህ ፈጣሪ ከ Brave ተጠቃሚዎች ክፍያዎችን ለማግኘት ገና አልተመዘገበም። አሳሽዎ እስከሚያረጋግጡ ወይም 90 ቀናት እስከሚያልፉ ድረስ መዋጮውን ለማድረግ ይሞክራል።</translation>
 <translation id="4292832015778676417">ከማስታወቂያዎች የተገኘ</translation>
 <translation id="3197752845651180812">በመጠባበቅ ላይ ያለ አስተዋፅኦ</translation>
 <translation id="3164105678355419142">በተደጋጋሚ የተሰጡ ጠቃሚ ምክሮች</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">ትክክለኛነቱን አጣራ</translation>
 <translation id="8030169304546394654">ግንኙነቱ ተቋርጧል</translation>
 <translation id="8267327690882073581">ዋሌትን አረጋግጥ</translation>
-<translation id="4569155249847375786">ተረጋግጧል</translation>
+<translation id="543510923939676996">ተረጋግጧል</translation>
 <translation id="7591798679868259510">ወደ የኔ አፕሆልድ መለያ ሂድ</translation>
 <translation id="9200453331904391567">ከ Brave ሽልማቶች ጋር ግንኙነትዎን ያቋርጡ</translation>
 <translation id="46988480989545156">የዋሌትን ትክክለኛነት አጣራ</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">የማረጋገጥ ጥቅሞች</translation>
 <translation id="5166793288622772189">ዋሌትዎን ለማረጋገጥ ዝግጁ ነዎት?</translation>
 <translation id="8766217572332535979">ለፈጣሪ መዋጮዎች ሽልማቶችን ለማግኘት ማረጋገጫ አስፈላጊ አይደለም</translation>
+<translation id="4569155249847375786">ተረጋግጧል</translation>
 <translation id="8465442795593991224">በተጠየቁ አገልግሎቶች ላይ ተመስርተው ማንነትዎን እንዲያረጋግጡ ድጋፍ ሊጠይቅዎ ይችላል፡፡</translation>
 <translation id="723054503945711909">ከእነሱ ጋር አካውንት ሲያበቁ Brave Software Inc. ለሚደግፉት የሰጡትን ማንኛውንም መረጃ አይሠራም ፣ አያከማችም ወይም አይደርስበትም።</translation>
 <translation id="1181037720776840403">አስወግድ</translation>

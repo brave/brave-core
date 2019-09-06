@@ -40,6 +40,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="2814998458708016836">Használj széles címsort</translation>
 <translation id="6123134130710658846">Brave jutalmak gomb elrejtése</translation>
 <translation id="7635711399568194460">Elrejti a Brave Jutalmak gombot a helysávban, amikor a Brave Jutalmak nincs engedélyezve.</translation>
+<translation id="4262166817826183486">Könyvjelzők sáv mindig legyen látható az Új lapon</translation>
 <translation id="7965178729203412357">Új Tor azonosító</translation>
 <translation id="8511502469534942133">Új Tor csatlakozás ehhez az oldalhoz</translation>
 <translation id="8784924142044142231">Kilépés a Tor böngészőből</translation>
@@ -69,7 +70,6 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="9075744464571452108">Eszközfelismerés</translation>
 <translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
 <translation id="4824468494729001999">Parancsfájlok letiltása</translation>
-<translation id="7498695072878479744">Google bejelentkezési gombok engedélyezése külső felek oldalain</translation>
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
 <translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
@@ -93,12 +93,14 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="8721331068159819483">Ugyanaz, mint macOS-en</translation>
 <translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="2896916411183256228">WebTorrentet használ torrentek megjelenítésére közvetlenül a böngészőben. Támogatja a torrentfájlokat és mágneslinkeket.</translation>
+<translation id="5554028991651120544">Egy Ethereum pénztárcát és Dapp böngészőt nyújt a Brave-ben.</translation>
 <translation id="6554397389149987360">Hangouts komponenseket használ, hogy lehetővé tegye a képernyőmegosztást és más funkciókat a böngészőben.</translation>
 <translation id="1765684547504191670">Média-útválasztó komponens használatával engedélyezi a Chromecastot a böngészőben.</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
 <translation id="7179921470347911571">Indítsd újra most</translation>
 <translation id="4154389611571860454">IPFS Companion bővítmény használata, hogy a böngésző támogathassa az IPFS-t.</translation>
 <translation id="8137559199583651773">Bővítmények kezelése</translation>
+<translation id="7013485839273047434">Tölts le további kiterjesztéseket</translation>
 <translation id="4928988318462976765">Webes Kiterjesztések Áruháza</translation>
 <translation id="9181207987584064303">Megtekintés a Webes Kiterjesztések Áruházában</translation>
 <translation id="4846154056248462491">Kilépéskor</translation>
@@ -111,4 +113,19 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="8303432794159193481">Brave böngésző fejlesztői alkalmazások</translation>
 <translation id="8292967014767479012">Brave bőngésző alkalmazások</translation>
 <translation id="4743468424889072281">Brave böngésző fejlesztési alkalmazások</translation>
+<translation id="4568409039725976900">Brave Narancs</translation>
+<translation id="7216062233533864908">Narancshéj</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Irigy</translation>
+<translation id="8111795220552176635">Tiszta ég</translation>
+<translation id="8323875061602721187">Bondy Blue</translation>
+<translation id="8267711815380227275">Blurple</translation>
+<translation id="831132225871108758">Sötét lovag</translation>
+<translation id="1473185169764311478">Narancshéj alakzat</translation>
+<translation id="8658537263568841491">Nana alakzat</translation>
+<translation id="8967241601928387177">Irigy alakzat</translation>
+<translation id="7232547941405761864">Tiszta ég alakzat</translation>
+<translation id="5500050460919597479">Bondy Blue alakzat</translation>
+<translation id="5359364898094115985">Blurple alakzat</translation>
+<translation id="3385506478125681119">Sötét lovag alakzat</translation>
 </translationbundle>

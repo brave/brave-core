@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Разрешете съветите за</translation>
 <translation id="3671566813999349838">Сума</translation>
 <translation id="3819257035322786455">Резервно копие</translation>
-<translation id="4989542687859782284">Не е налично</translation>
 <translation id="1312977698678162065">Получете заплащане, за да виждате подходящи реклами, които зачитат поверителността ви.</translation>
 <translation id="7655723274266132226">Сега можете да печелите като гледате реклами.</translation>
 <translation id="2975780980638932742">Brave Ads са тук!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Готови ли сте да започнете?</translation>
 <translation id="913775524828049259">Да, готов съм</translation>
 <translation id="108052542935515756">Можете да започнете с</translation>
-<translation id="2678666039642976470">Свържете портфейла отново</translation>
 <translation id="194625454574835815">Ключ за възстановяване</translation>
 <translation id="6354568176665589146">Повтарящ се</translation>
 <translation id="7577100371127227294">Ежемесечни дарения</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Преглед на детайлите</translation>
 <translation id="1988679729106502285">ЗАБЕЛЕЖКА:</translation>
 <translation id="5815103311506128988">Този създател все още не се е регистрирал да получава вноски от Brave потребители. Вашият браузър ще продължава да се опитва да прави вноски докато той потвърди или до 90 дена.</translation>
+<translation id="603411408512957306">Този създател все още не се е регистрирал да получава вноски от Brave потребители. Вашият браузър ще продължава да се опитва да прави вноски докато той потвърди или до 90 дена.</translation>
 <translation id="4292832015778676417">спечелено от реклами</translation>
 <translation id="3197752845651180812">Допринасяния в процес на изчакване</translation>
 <translation id="3164105678355419142">Повтарящ се бакшиш</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">потвърди</translation>
 <translation id="8030169304546394654">Разкачен</translation>
 <translation id="8267327690882073581">Потвърди портфейла</translation>
-<translation id="4569155249847375786">Потвърден</translation>
+<translation id="543510923939676996">Потвърден</translation>
 <translation id="7591798679868259510">Отидете на своя Uphold акаунт</translation>
 <translation id="9200453331904391567">Разкачане от Brave награди</translation>
 <translation id="46988480989545156">Потвърди портфейла</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">Ползи от проверката</translation>
 <translation id="5166793288622772189">Готови ли сте да потвърдите портфейла си?</translation>
 <translation id="8766217572332535979">Не е необходима проверка, за да печелите награди за принос на създателите</translation>
+<translation id="4569155249847375786">Потвърден</translation>
 <translation id="8465442795593991224">Uphold може да изисква да потвърдите самоличността си въз основа на поисканите услуги.</translation>
 <translation id="723054503945711909">Brave Software Inc. не обработва, не съхранява и няма достъп до никои от личните данни, които предоставяте на Uphold, когато създавате акаунт при тях.</translation>
 <translation id="1181037720776840403">Премахване</translation>

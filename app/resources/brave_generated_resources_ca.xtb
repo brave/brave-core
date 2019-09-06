@@ -41,6 +41,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="2814998458708016836">Fer servir una barra d'adreces ampla</translation>
 <translation id="6123134130710658846">Amaga el botó de Premis de Brave</translation>
 <translation id="7635711399568194460">Amaga el botó de Premis de Brave a la barra d'ubicació quan Premis de Brave no està habilitat</translation>
+<translation id="4262166817826183486">Mostrar sempre la barra de marcadors a la Pestanya Nova</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
 <translation id="8511502469534942133">Nova connexió Tor per a aquest lloc.</translation>
 <translation id="8784924142044142231">Surt de Tor</translation>
@@ -70,7 +71,6 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="9075744464571452108">Reconeixement de dispositius</translation>
 <translation id="3570081523466826008">Actualitzar connexions a HTTPS</translation>
 <translation id="4824468494729001999">Bloquejar scripts</translation>
-<translation id="7498695072878479744">Permet els botons d’inici de sessió de Google a llocs de tercers</translation>
 <translation id="863171915776379000">Permet l'inici de sessió i publicacions incrustades de Facebook</translation>
 <translation id="5165042248369837294">Permet tuits incrustats de Twitter</translation>
 <translation id="958971637207126733">Permet publicacions incrustades de LinkedIn</translation>
@@ -94,12 +94,14 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8721331068159819483">Mateix que MacOS</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Fa servir WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i magnet links.</translation>
+<translation id="5554028991651120544">Aporta un moneder Ethereum i un navegador Dapp dins Brave.</translation>
 <translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
 <translation id="1765684547504191670">Fa servir el component Media Router per habilitar Chromecast al navegador.</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
 <translation id="7179921470347911571">Rellançar Ara</translation>
 <translation id="4154389611571860454">Utilitza l'extensió complementària d'IPFS per admetre IPFS al navegador.</translation>
 <translation id="8137559199583651773">Gestiona les extensions</translation>
+<translation id="7013485839273047434">Obteniu més extensions</translation>
 <translation id="4928988318462976765">Botiga d'extensions web</translation>
 <translation id="9181207987584064303">Veure a la botiga d'extensions web</translation>
 <translation id="4846154056248462491">En sortir</translation>
@@ -112,4 +114,19 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8303432794159193481">Aplicacions de desenv. de l'explorador Brave</translation>
 <translation id="8292967014767479012">Aplicacions de l'explorador Brave</translation>
 <translation id="4743468424889072281">Aplicacions de desenvolupament de l'explorador Brave</translation>
+<translation id="4568409039725976900">Taronja Brave</translation>
+<translation id="7216062233533864908">Pela de taronja</translation>
+<translation id="8285320948587819446">Iaia</translation>
+<translation id="2016467614790224371">Enveja</translation>
+<translation id="8111795220552176635">Cel ras</translation>
+<translation id="8323875061602721187">Blau Bondi</translation>
+<translation id="8267711815380227275">Blau Violat</translation>
+<translation id="831132225871108758">Cavaller Obscur</translation>
+<translation id="1473185169764311478">Forma Pela de Taronja</translation>
+<translation id="8658537263568841491">Forma Iaia</translation>
+<translation id="8967241601928387177">Forma Enveja</translation>
+<translation id="7232547941405761864">Forma Cel Ras</translation>
+<translation id="5500050460919597479">Forma Blau Bondi</translation>
+<translation id="5359364898094115985">Forma Blau Violat</translation>
+<translation id="3385506478125681119">Forma Cavaller Obscur</translation>
 </translationbundle>
