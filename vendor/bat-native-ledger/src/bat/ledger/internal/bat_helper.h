@@ -379,18 +379,6 @@ struct GRANTS_PROPERTIES_ST {
   std::vector<GRANT_RESPONSE> grants_;
 };
 
-// The struct is serialized/deserialized from/into JSON
-// as part of MEDIA_PUBLISHER_INFO
-struct TWITCH_EVENT_INFO {
-  TWITCH_EVENT_INFO();
-  TWITCH_EVENT_INFO(const TWITCH_EVENT_INFO&);
-  ~TWITCH_EVENT_INFO();
-
-  std::string event_;
-  std::string time_;
-  std::string status_;
-};
-
 struct MEDIA_PUBLISHER_INFO {
   MEDIA_PUBLISHER_INFO();
   MEDIA_PUBLISHER_INFO(const MEDIA_PUBLISHER_INFO&);
@@ -404,7 +392,7 @@ struct MEDIA_PUBLISHER_INFO {
   std::string favIconURL_;
   std::string channelName_;
   std::string publisher_id_;
-  TWITCH_EVENT_INFO twitchEventInfo_;
+  ledger::MediaEventInfo twitchEventInfo_;
 };
 
 struct BATCH_PROOF {

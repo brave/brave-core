@@ -1682,16 +1682,6 @@ void saveToJson(JsonWriter* writer, const CLIENT_STATE_ST& data) {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-TWITCH_EVENT_INFO::TWITCH_EVENT_INFO() {}
-
-TWITCH_EVENT_INFO::TWITCH_EVENT_INFO(const TWITCH_EVENT_INFO& twitchEventInfo):
-  event_(twitchEventInfo.event_),
-  time_(twitchEventInfo.time_),
-  status_(twitchEventInfo.status_) {}
-
-TWITCH_EVENT_INFO::~TWITCH_EVENT_INFO() {}
-
-/////////////////////////////////////////////////////////////////////////////
 MEDIA_PUBLISHER_INFO::MEDIA_PUBLISHER_INFO() {}
 
 MEDIA_PUBLISHER_INFO::MEDIA_PUBLISHER_INFO(
@@ -1729,9 +1719,9 @@ bool MEDIA_PUBLISHER_INFO::loadFromJson(const std::string & json) {
     favIconURL_ = d["favIconURL"].GetString();
     channelName_ = d["channelName"].GetString();
     publisher_id_ = d["publisherId"].GetString();
-    twitchEventInfo_.event_ = d["twitch_event"].GetString();
-    twitchEventInfo_.time_ = d["twitch_time"].GetString();
-    twitchEventInfo_.status_ = d["twitch_status"].GetString();
+    twitchEventInfo_.event = d["twitch_event"].GetString();
+    twitchEventInfo_.time = d["twitch_time"].GetString();
+    twitchEventInfo_.status = d["twitch_status"].GetString();
   }
   return !error;
 }
@@ -1755,13 +1745,13 @@ void saveToJson(JsonWriter* writer, const MEDIA_PUBLISHER_INFO& data) {
   writer->String(data.publisher_id_.c_str());
 
   writer->String("twitch_event");
-  writer->String(data.twitchEventInfo_.event_.c_str());
+  writer->String(data.twitchEventInfo_.event.c_str());
 
   writer->String("twitch_time");
-  writer->String(data.twitchEventInfo_.time_.c_str());
+  writer->String(data.twitchEventInfo_.time.c_str());
 
   writer->String("twitch_status");
-  writer->String(data.twitchEventInfo_.status_.c_str());
+  writer->String(data.twitchEventInfo_.status.c_str());
 
   writer->EndObject();
 }
