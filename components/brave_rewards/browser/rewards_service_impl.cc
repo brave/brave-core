@@ -190,54 +190,6 @@ std::string URLMethodToRequestType(ledger::URL_METHOD method) {
   }
 }
 
-uint64_t RoundProbiToUint64(base::StringPiece probi) {
-  if (probi.size() < 18) return 0;
-  uint64_t grant = 0;
-  base::StringToUint64(probi.substr(0, probi.size() - 18), &grant);
-  return grant;
-}
-
-
-void ExtractAndLogP3AStats(const base::DictionaryValue& dict) {
-  const base::Value* probi_value =
-      dict.FindPath({"walletProperties", "probi_"});
-  if (!probi_value || !probi_value->is_string()) {
-    LOG(WARNING) << "Bad ledger state";
-    return;
-  }
-
-  // Get grants.
-  const base::Value* grants_value = dict.FindKey("grants");
-  uint64_t total_grants = 0;
-  if (grants_value) {
-    if (!grants_value->is_list()) {
-      LOG(WARNING) << "Bad grant value in ledger_state.";
-    } else {
-      const auto& grants = grants_value->GetList();
-      // Sum all grants.
-      for (const auto& grant : grants) {
-        if (!grant.is_dict()) {
-          LOG(WARNING) << "Bad grant value in ledger_state.";
-          continue;
-        }
-        const base::Value* grant_amount = grant.FindKey("probi_");
-        const base::Value* grant_currency = grant.FindKey("altcurrency");
-        if (grant_amount->is_string() && grant_currency->is_string() &&
-            grant_currency->GetString() == "BAT") {
-          // Some kludge computations because we don't want to be very precise
-          // for P3A purposes. Assuming grants can't be negative and are
-          // greater than 1 BAT.
-          const std::string& grant_str = grant_amount->GetString();
-          total_grants += RoundProbiToUint64(grant_str);
-        }
-      }
-    }
-  }
-  const uint64_t total =
-      RoundProbiToUint64(probi_value->GetString()) - total_grants;
-  RecordWalletBalanceP3A(true, total);
-}
-
 // Returns pair of string and its parsed counterpart. We parse it on the file
 // thread for the performance sake. It's should be better to remove the string
 // representation in the [far] future.
@@ -3410,21 +3362,8 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
     }
 
     // Record stats.
-    double balance_minus_grant = 0;
-    for (const auto& wallet : balance->wallets) {
-      // Skip anonymous wallet, since it can contain grants.
-      if (wallet.first == "anonymous") {
-        continue;
-      }
-      balance_minus_grant += static_cast<size_t>(wallet.second);
-    }
-
-    // `user_funds` is the amount of user-funded BAT
-    // in the anonymous wallet (ex: not grants).
-    double user_funds;
-    balance_minus_grant +=
-        base::StringToDouble(balance->user_funds, &user_funds);
-
+    double balance_minus_grant = CalcWalletBalanceForP3A(balance->wallets,
+                                                         balance->user_funds);
     RecordWalletBalanceP3A(true, static_cast<size_t>(balance_minus_grant));
     RecordBackendP3AStats();
   }

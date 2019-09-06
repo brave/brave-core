@@ -7,6 +7,14 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_P3A_H_
 
 #include <stddef.h>
+#include <ctype.h>
+
+#include "base/containers/flat_map.h"
+#include "base/strings/string_piece.h"
+
+namespace base {
+class DictionaryValue;
+}
 
 namespace brave_rewards {
 
@@ -36,6 +44,13 @@ enum class AdsP3AState {
 void RecordAdsState(AdsP3AState state);
 
 void RecordNoWalletCreatedForAllMetrics();
+
+double CalcWalletBalanceForP3A(base::flat_map<std::string, double> wallets,
+                               std::string user_funds);
+
+uint64_t RoundProbiToUint64(base::StringPiece probi);
+
+void ExtractAndLogP3AStats(const base::DictionaryValue& dict);
 
 }  // namespace brave_rewards
 
