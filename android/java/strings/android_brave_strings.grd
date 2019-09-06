@@ -102,6 +102,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_REWARDS" desc="Content description for the button that is enable, disable Brave Rewards.">
         Manage Brave Rewards
       </message>
+      <message name="IDS_PREFS_ABOUT_CHROME" desc="Title for the About Chrome page. [CHAR-LIMIT=32]">
+        About Brave
+      </message>
     </messages>
   </release>
 </grit>
