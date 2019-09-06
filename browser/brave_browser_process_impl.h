@@ -57,10 +57,10 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.
-  void ResourceDispatcherHostCreated() override;
 
   ProfileManager* profile_manager() override;
 
+  void StartBraveServices();
   brave_shields::AdBlockService* ad_block_service();
   brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service();
   brave_shields::AdBlockRegionalServiceManager*

@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Nemějte obavy. Dochází k tomu z různých bezpečnostních důvodů. K vyřešení problému se stačí pouze opětovně připojit.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Tento tvůrce se dosud nepřihlásil k přijímání příspěvků od uživatelů Brave. Veškeré zaslané příspěvky zůstanou ve vaší peněžence, dokud nedojde k ověření.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

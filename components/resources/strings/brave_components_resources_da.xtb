@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Tillad tips om</translation>
 <translation id="3671566813999349838">Beløb</translation>
 <translation id="3819257035322786455">Sikkerhedskopi</translation>
-<translation id="4989542687859782284">Ikke tilgængelig</translation>
 <translation id="1312977698678162065">Få betalt for at se relevante annoncer som respekterer dit privatliv.</translation>
 <translation id="7655723274266132226">Nu kan du tjene ved at se reklamer.</translation>
 <translation id="2975780980638932742">Brave Ads er nu på markedet!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Klar til at begynde?</translation>
 <translation id="913775524828049259">Ja, Jeg er Klar</translation>
 <translation id="108052542935515756">Du kan starte med</translation>
-<translation id="2678666039642976470">Tilslut tegnebogen igen</translation>
 <translation id="194625454574835815">Gendannelsesnøgle</translation>
 <translation id="6354568176665589146">Tilbagevendende</translation>
 <translation id="7577100371127227294">Månedlige donationer</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Vis detaljer</translation>
 <translation id="1988679729106502285">NOTE:</translation>
 <translation id="5815103311506128988">Denne skaber har endnu ikke skrevet sig op til at modtage bidrag fra Brave-brugere. Din browser vil fortsat forsøge at bidrage indtil de godkender, eller indtil 90 dage er gået.</translation>
+<translation id="603411408512957306">Denne skaber har endnu ikke skrevet sig op til at modtage bidrag fra Brave-brugere. Din browser vil fortsat forsøge at bidrage indtil de godkender, eller indtil 90 dage er gået.</translation>
 <translation id="4292832015778676417">tjent på reklamer</translation>
 <translation id="3197752845651180812">Afventende bidrag</translation>
 <translation id="3164105678355419142">Tilbagevendende drikkepenge</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">verificer</translation>
 <translation id="8030169304546394654">Afbrudt</translation>
 <translation id="8267327690882073581">Bekræft Tegnebog</translation>
-<translation id="4569155249847375786">Bekræftet</translation>
+<translation id="543510923939676996">Bekræftet</translation>
 <translation id="7591798679868259510">Gå til min Uphold-konto</translation>
 <translation id="9200453331904391567">Afbryd forbindelsen fra Brave Belønninger</translation>
 <translation id="46988480989545156">Bekræft tegnebog</translation>
@@ -425,6 +424,7 @@
 <translation id="5275978662119683162">Fordele ved verifikation</translation>
 <translation id="5166793288622772189">Klar til at verificere din tegnebog?</translation>
 <translation id="8766217572332535979">Verifikation er ikke nødvendigt for at modtage belønning for bidrag.</translation>
+<translation id="4569155249847375786">Bekræftet</translation>
 <translation id="8465442795593991224">Uphold vil muligvis bede dig om at bekræfte din identitet, baseret på hvilke tjenester der bruges.</translation>
 <translation id="723054503945711909">Brave Software Inc. hverken behandler, opbevarer, eller benytter sig af den personlige information som du overlader til Uphold når du opretter en konto ved dem.</translation>
 <translation id="1181037720776840403">Fjern</translation>

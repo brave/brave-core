@@ -22,10 +22,10 @@ void SetOrder(bookmarks::BookmarkModel* model,
   bookmarks::BookmarkNode* parent =
       const_cast<bookmarks::BookmarkNode*>(node->parent());
 
-  auto* prev_node = index == 0 ? nullptr : parent->GetChild(index - 1);
-  auto* next_node = index == parent->child_count() - 1
+  auto* prev_node = index == 0 ? nullptr : parent->children()[index - 1].get();
+  auto* next_node = static_cast<size_t>(index) == parent->children().size() - 1
                         ? nullptr
-                        : parent->GetChild(index + 1);
+                        : parent->children()[index + 1].get();
 
   std::string prev_order;
   std::string next_order;
@@ -40,31 +40,30 @@ void SetOrder(bookmarks::BookmarkModel* model,
   model->SetNodeMetaInfo(node, "order", order);
 }
 
-uint64_t GetIndexByOrder(const std::string& record_order) {
-  uint64_t index = 0;
+size_t GetIndexByOrder(const std::string& record_order) {
+  size_t index = 0;
   size_t last_dot_index = record_order.rfind(".");
   DCHECK(last_dot_index != std::string::npos);
   std::string last_digit = record_order.substr(last_dot_index + 1);
-  bool result = base::StringToUint64(last_digit, &index);
-  --index;
-  DCHECK_GE(index, 0u);
+  bool result = base::StringToSizeT(last_digit, &index);
   DCHECK(result);
+  DCHECK_GE(index, 1u);
+  --index;
   return index;
 }
 
 }  // namespace
 
-uint64_t GetIndexByCompareOrderStartFrom(const bookmarks::BookmarkNode* parent,
-                                         const bookmarks::BookmarkNode* src,
-                                         int index) {
+size_t GetIndexByCompareOrderStartFrom(const bookmarks::BookmarkNode* parent,
+                                       const bookmarks::BookmarkNode* src,
+                                       size_t index) {
   std::string src_order;
   src->GetMetaInfo("order", &src_order);
   DCHECK(!src_order.empty());
-  DCHECK_GE(index, 0);
   bool use_order = true;  // If false use object_id
   std::string src_object_id;
-  while (index < parent->child_count()) {
-    const bookmarks::BookmarkNode* node = parent->GetChild(index);
+  while (index < parent->children().size()) {
+    const bookmarks::BookmarkNode* node = parent->children()[index].get();
     if (src->id() == node->id()) {
       // We reached ourselves, no sense to go further, because we know all
       // unsorted elements are in the end
@@ -128,17 +127,17 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
   DCHECK(!sync_timestamp.empty());
 }
 
-uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
-                  const bookmarks::BookmarkNode* src) {
+size_t GetIndex(const bookmarks::BookmarkNode* parent,
+                const bookmarks::BookmarkNode* src) {
   DCHECK(parent);
   DCHECK(src);
-  int index = 0;
+  size_t index = 0;
   std::string src_order;
   src->GetMetaInfo("order", &src_order);
   DCHECK(!src_order.empty());
   index = GetIndexByOrder(src_order);
-  if (index < parent->child_count()) {
-    const bookmarks::BookmarkNode* node = parent->GetChild(index);
+  if (index < parent->children().size()) {
+    const bookmarks::BookmarkNode* node = parent->children()[index].get();
     if (node) {
       std::string node_order;
       node->GetMetaInfo("order", &node_order);

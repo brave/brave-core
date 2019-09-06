@@ -49,8 +49,8 @@
   <message name="IDS_APP_MANAGEMENT_PERMISSIONS" desc="Label for permissions section in the app settings page.">
     Permissions
   </message>
-  <message name="IDS_APP_MANAGEMENT_MORE_PERMISSIONS" desc="Label for a link to more permissions for an app.">
-    More permissions
+  <message name="IDS_APP_MANAGEMENT_MORE_SETTINGS" desc="Label for a link to more settings and permissions for an app.">
+    More settings and permissions
   </message>
   <message name="IDS_APP_MANAGEMENT_THIS_APP_CAN" desc="Label for permissions that a Brave app can use.">
     This app can:
@@ -75,5 +75,14 @@
   </message>
   <message name="IDS_APP_MANAGEMENT_VERSION" desc="Label for version of an app in the app settings page.">
     Version: <ph name="VERSION">$1<ex>4.0</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PIN_ENFORCED_BY_POLICY" desc="Short text for the pin/unpin context menu to tell user the setting is enforced by policy of an app.">
+    Pinned by administrator
+  </message>
+  <message name="IDS_APP_MANAGEMENT_CONTACTS" desc="Label for the Android contacts (address book) permission toggle.">
+    Contacts
+  </message>
+  <message name="IDS_APP_MANAGEMENT_STORAGE" desc="Label for the Android storage permission toggle.">
+    Storage
   </message>
 </grit-part>

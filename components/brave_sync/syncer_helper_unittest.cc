@@ -406,22 +406,22 @@ TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
 
   //  0  1  2  3       4        5        6
   // A1 A2 B1 B2  A3(1,2,3)  B3(@@@)  C3(...)
-  auto title_at_4 = model()->bookmark_bar_node()->GetChild(4)->GetTitle();
+  auto title_at_4 = model()->bookmark_bar_node()->children()[4]->GetTitle();
   EXPECT_EQ(title_at_4, base::ASCIIToUTF16("A3.com"));
-  auto title_at_5 = model()->bookmark_bar_node()->GetChild(5)->GetTitle();
+  auto title_at_5 = model()->bookmark_bar_node()->children()[5]->GetTitle();
   EXPECT_EQ(title_at_5, base::ASCIIToUTF16("B3.com"));
-  auto title_at_6 = model()->bookmark_bar_node()->GetChild(6)->GetTitle();
+  auto title_at_6 = model()->bookmark_bar_node()->children()[6]->GetTitle();
   EXPECT_EQ(title_at_6, base::ASCIIToUTF16("C3.com"));
 
   RepositionRespectOrder(model(), node_b3);
   //  0  1  2  3       4        5        6
   // A1 A2 B1 B2  A3(1,2,3)  B3(@@@)  C3(...)
   // node B3 hadn't moved because it reached itself
-  title_at_4 = model()->bookmark_bar_node()->GetChild(4)->GetTitle();
+  title_at_4 = model()->bookmark_bar_node()->children()[4]->GetTitle();
   EXPECT_EQ(title_at_4, base::ASCIIToUTF16("A3.com"));
-  title_at_5 = model()->bookmark_bar_node()->GetChild(5)->GetTitle();
+  title_at_5 = model()->bookmark_bar_node()->children()[5]->GetTitle();
   EXPECT_EQ(title_at_5, base::ASCIIToUTF16("B3.com"));
-  title_at_6 = model()->bookmark_bar_node()->GetChild(6)->GetTitle();
+  title_at_6 = model()->bookmark_bar_node()->children()[6]->GetTitle();
   EXPECT_EQ(title_at_6, base::ASCIIToUTF16("C3.com"));
 
   RepositionRespectOrder(model(), node_c3);
@@ -429,11 +429,11 @@ TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
   // A1 A2 B1 B2  C3(...) A3(1,2,3) B3(@@@)
   // node C3 moved to the correct position, so B3 is on the right place now
 
-  title_at_4 = model()->bookmark_bar_node()->GetChild(4)->GetTitle();
+  title_at_4 = model()->bookmark_bar_node()->children()[4]->GetTitle();
   EXPECT_EQ(title_at_4, base::ASCIIToUTF16("C3.com"));
-  title_at_5 = model()->bookmark_bar_node()->GetChild(5)->GetTitle();
+  title_at_5 = model()->bookmark_bar_node()->children()[5]->GetTitle();
   EXPECT_EQ(title_at_5, base::ASCIIToUTF16("A3.com"));
-  title_at_6 = model()->bookmark_bar_node()->GetChild(6)->GetTitle();
+  title_at_6 = model()->bookmark_bar_node()->children()[6]->GetTitle();
   EXPECT_EQ(title_at_6, base::ASCIIToUTF16("B3.com"));
 }
 

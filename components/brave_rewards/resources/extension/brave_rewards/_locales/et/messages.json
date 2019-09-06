@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Ärge muretsege. See võib juhtuda erinevatel turvalisusega seotud põhjustel. Probleemi lahendamiseks looge lihtsalt rahakotiga uuesti ühendus.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "See looja pole veel registreerunud, et saada Brave'i kasutajatelt sissemakseid. Kõik teie saadetud raha jääb kuni kinnitamiseni teie rahakotti.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

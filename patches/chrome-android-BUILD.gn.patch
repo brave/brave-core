@@ -1,13 +1,13 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 17311184c47823594b49ad07d41bd870efa7af17..611376d4d7c3bac30ecfbab8a786dc2fffd52fce 100644
+index 0c5467af2bce341e0b3f0835899c820f60adbc87..fa406bae2b98570995ba1331d2145723e13a9866 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -42,7 +42,7 @@ if (dfmify_devtools) {
-   import("//chrome/android/features/devtools/devtools_module_tmpl.gni")
- }
+@@ -31,7 +31,7 @@ import("java_sources.gni")
+ import("static_initializers.gni")
+ import("trichrome.gni")
  
--manifest_package = "org.chromium.chrome"
-+declare_args() { manifest_package = "org.chromium.chrome" }
- test_manifest_package = "org.chromium.chrome.tests"
+-chrome_public_manifest_package = "org.chromium.chrome"
++declare_args() { chrome_public_manifest_package = "org.chromium.chrome" }
+ chrome_public_test_manifest_package = "org.chromium.chrome.tests"
  
- chrome_public_jinja_variables = default_chrome_public_jinja_variables +
+ chrome_public_jinja_variables =

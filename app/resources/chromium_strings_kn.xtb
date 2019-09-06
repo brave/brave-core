@@ -102,7 +102,6 @@
 <translation id="1421502046520299169">&amp;Brave OS ಕುರಿತು</translation>
 <translation id="2534623228451928732">&amp;Brave OS ಅನ್ನು ಅಪ್‌ಡೇಟ್‌ ಮಾಡಿ</translation>
 <translation id="8447483940522230788">Brave ಸಹಾಯಕ</translation>
-<translation id="3360368475735266712">ನಿಮ್ಮ ಸಾಧನಗಳಲ್ಲಿ Brave ಅನ್ನು ಸಿಂಕ್ ಮಾಡಲು ಮತ್ತು ವೈಯಕ್ತೀಕರಿಸಲು ಸೈನ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="5477319665405831211">ನಿಮ್ಮ ಎಲ್ಲಾ ಸಾಧನಗಳಲ್ಲಿ Brave ಅನ್ನು ಸಿಂಕ್ ಮಾಡಿ ಮತ್ತು ವೈಯಕ್ತೀಕರಿಸಿ</translation>
 <translation id="4934157190377700991">ಇದೀಗ ನೀವು Brave ಗೆ ಸೈನ್‌ ಇನ್‌ ಆಗಿರುವಿರಿ</translation>
 <translation id="4100716194836114130">ಇದು ನಿಮ್ಮ Brave</translation>
@@ -133,6 +132,8 @@
 <translation id="6746636977031158624">ನಿಮ್ಮ ಖಾತೆಯ ಸೈನ್ ಇನ್ ವಿವರಗಳು ತೀರಾ ಹಳೆಯದಾಗಿರುವ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</translation>
 <translation id="2999152167963026588">ನಿಮ್ಮ ಡೊಮೇನ್‌ನಲ್ಲಿ ಸಿಂಕ್ ಮಾಡುವ ಸೌಲಭ್ಯವಿಲ್ಲದ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
 <translation id="1459786048951724030">ಸೈನ್ ಇನ್ ಮಾಡುವಲ್ಲಿ ದೋಷವಿರುವ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
+<translation id="6813094029720377619">Brave ನಿಂದ ನಿರ್ಗಮಿಸಿದಾಗ ಕುಕೀಗಳನ್ನು ನೀವು ತೆರವುಗೊಳಿಸುತ್ತೀರಿ. ಸಿಂಕ್ ಮಾಡುವುದನ್ನು ಮುಂದುವರಿಸಲು, ಈ <ph name="COOKIE_SETTINGS_LINK"/> ಅನ್ನು ಬದಲಾಯಿಸಿ.</translation>
+<translation id="3340978935015468852">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="663059986967017181">Brave ಗೆ ನಕಲಿಸಲಾಗಿದೆ</translation>
 <translation id="1457432835062259213">Brave ಅಪ್ಲಿಕೇಶನ್‌ ಲಾಂಚರ್‌</translation>
 <translation id="82609232232243542">Brave ಗೆ ಸೈನ್ ಇನ್ ಮಾಡಿ</translation>
@@ -152,7 +153,7 @@
 
 ಹೆಚ್ಚಿನ ಸೂಚನೆಗಳಿಗಾಗಿ ದಯವಿಟ್ಟು <ph name="ACCOUNT_EMAIL"/> ಗೆ ಬಂದಿರುವ ಇಮೇಲ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ.</translation>
 <translation id="1820843143331379651">Brave 70 ರಿಂದ ಆರಂಭಗೊಂಡು, ಮೇಲ್ವಿಚಾರಣಾ ಬಳಕೆದಾರರ ಪ್ರೊಫೈಲ್‌ಗಳು ಇನ್ನು ಮುಂದೆ ಲಭ್ಯವಿರುವುದಿಲ್ಲ.</translation>
-<translation id="3066805437003400520">ಈ ವ್ಯಕ್ತಿಯ ಬ್ರೌಸಿಂಗ್ ಡೇಟಾವನ್ನು ಈ ಸಾಧನದಿಂದ ಅಳಿಸಲಾಗುತ್ತದೆ. ಡೇಟಾವನ್ನು ಪುನಃ ಪಡೆದುಕೊಳ್ಳಲು, Brave ನಲ್ಲಿ <ph name="USER_EMAIL"/> ಎಂದು ಸೈನ್ ಇನ್ ಮಾಡಿ.</translation>
+<translation id="669092380621816981">ಈ ವ್ಯಕ್ತಿಯ ಬ್ರೌಸಿಂಗ್ ಡೇಟಾವನ್ನು ಈ ಸಾಧನದಿಂದ ಅಳಿಸಲಾಗುತ್ತದೆ. ಡೇಟಾವನ್ನು ಪುನಃ ಪಡೆದುಕೊಳ್ಳಲು, Brave ನಲ್ಲಿ <ph name="USER_EMAIL"/> ಎಂದು ಸೈನ್ ಇನ್ ಮಾಡಿ.</translation>
 <translation id="2827121003398607864">Brave ಇದೀಗ ಉತ್ತಮಗೊಂಡಿದೆ</translation>
 <translation id="7192666605334070839">ನಿಮ್ಮ Brave Software ಖಾತೆಯ ಮೂಲಕ ಮತ್ತು ಹಂಚಿದ ಕಂಪ್ಯೂಟರ್‌ಗಳಲ್ಲಿ Brave ಬಳಕೆಯು ಇದೀಗ ತುಂಬಾ ಸುಲಭವಾಗಿದೆ.</translation>
 <translation id="3511996232906761537">ನಿಮ್ಮ ವೆಬ್, ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು ಮತ್ತು ಇತರ Brave ಸಂಗತಿಗಳು ಇಲ್ಲಿ ಲೈವ್ ಆಗುತ್ತವೆ.</translation>
@@ -218,14 +219,6 @@
 <translation id="7808415789955822133">Brave OS ನಿಯಮಗಳು</translation>
 <translation id="7207456302801184289">Brave ಗೆ ಸುಸ್ವಾಗತ</translation>
 <translation id="5688839044908745927">Brave ಬಹುತೇಕ ಸಿದ್ಧಗೊಂಡಿದೆ.</translation>
-<translation id="7758342895140862711">ಎಲ್ಲೆಡೆ Brave ಅನ್ನು ಕೊಂಡೊಯ್ಯಿರಿ</translation>
-<translation id="3610173904388112975">Brave Software ಸ್ಮಾರ್ಟ್‌ಗಳ ಮೂಲಕ ವೆಬ್‌ ಬ್ರೌಸ್‌ ಮಾಡುವಿಕೆ</translation>
-<translation id="3479552764303398839">ಈಗ ಬೇಡ</translation>
-<translation id="8013374903356993822">ವೇಗವಾಗಿ Brave ಗೆ ತೆರಳಿ</translation>
-<translation id="7625138338483121345">Brave ಅನ್ನು ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿಸಿ</translation>
-<translation id="5927044791090834489">ನಿಮ್ಮ ಕಾರ್ಯಪಟ್ಟಿಗೆ Brave ಅನ್ನು ಪಿನ್ ಮಾಡಿ</translation>
-<translation id="8933981935877469796"><ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/> ಆಯ್ಕೆಮಾಡಿ</translation>
-<translation id="1585657529869845941">ಇದು ಕಂಡುಬಂದಲ್ಲಿ, <ph name="BEGIN_BOLD"/>ಹೇಗಾದರೂ ಬದಲಿಸಿ<ph name="END_BOLD"/> ಅನ್ನು ಕ್ಲಿಕ್‌ ಮಾಡಿ</translation>
 <translation id="3507835409099344374">Brave ಅಧಿಸೂಚನೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ ಹೋಗಿ</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ}=1{Brave ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ}one{# ದಿನಗಳ ಮಟ್ಟಿಗೆ Brave ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ}other{# ದಿನಗಳ ಮಟ್ಟಿಗೆ Brave ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ}}</translation>
 <translation id="720532315408041257">ಈ ಅಪ್‌ಡೇಟ್‌ ಅನ್ವಯಿಸಲು ನೀವು Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಬೇಕೆಂದು ನಿಮ್ಮ ನಿರ್ವಾಹಕರು ಕೋರುತ್ತಿದ್ದಾರೆ</translation>
@@ -245,6 +238,7 @@
 <translation id="8208853227947884571">Brave ಅಪ್‌ ಟು ಡೇಟ್‌ ಆಗಿದೆ</translation>
 <translation id="6686872257969654608">Brave OS ಕುರಿತು</translation>
 <translation id="2280363356796735201">Brave OS ಕುರಿತಾಗಿ ಸಹಾಯ ಪಡೆಯಿರಿ</translation>
+<translation id="38898988211673781">ನೀವು Brave ನಿಂದ ನಿರ್ಗಮಿಸಿದಾಗ ಕುಕೀಗಳು ಮತ್ತು ಸೈಟ್ ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="5253815230176279256">Brave Software Pay (Brave ಗೆ ನಕಲಿಸಲಾಗಿದೆ)</translation>
 <translation id="5468853758063275923">Brave ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿದೆ.</translation>
 <translation id="1775322105159056176">ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಅನ್ನು ನಿರ್ಧರಿಸಲು ಅಥವಾ ಹೊಂದಿಸಲು Brave ಗೆ ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ</translation>
@@ -261,6 +255,7 @@
 <translation id="8372880274820509128">ಹೆಚ್ಚುವರಿ ಭದ್ರತೆಗಾಗಿ, Brave ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡುತ್ತದೆ.</translation>
 <translation id="7445061995866044926">Brave ನಿಂದ ಸೈನ್‌ ಔಟ್‌ ಮಾಡುವುದೇ?</translation>
 <translation id="7453070689008684791">ವಿಳಾಸಪಟ್ಟಿಯಲ್ಲಿ ಸಲಹೆ ನೀಡಲು, Brave ನಿಮ್ಮ ಡ್ರೈವ್‌ಗೆ ಪ್ರವೇಶಿಸುತ್ತದೆ</translation>
+<translation id="3360368475735266712">ನಿಮ್ಮ ಸಾಧನಗಳಲ್ಲಿ Brave ಅನ್ನು ಸಿಂಕ್ ಮಾಡಲು ಮತ್ತು ವೈಯಕ್ತೀಕರಿಸಲು ಸೈನ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="9221712274065451529">Brave OS UI ತೋರಿಸಲು ಈ ಭಾಷೆಯನ್ನು ಬಳಸಲಾಗುತ್ತದೆ</translation>
 <translation id="3518788198614984730">ಈ ಭಾಷೆಯಲ್ಲಿ Brave OS ಪ್ರದರ್ಶಿಸು</translation>
 <translation id="5757460455745382269">Brave UI ತೋರಿಸಲು ಈ ಭಾಷೆಯನ್ನು ಬಳಸಲಾಗುತ್ತದೆ</translation>

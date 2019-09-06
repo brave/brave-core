@@ -40,6 +40,7 @@
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="6123134130710658846">Brave Rewardsボタンを非表示にする</translation>
 <translation id="7635711399568194460">Brave Rewardsが有効になっていない場合は、ロケーションバーのBrave Rewardsボタンを非表示にします</translation>
+<translation id="4262166817826183486">新しいタブ ページに常にブックマーク バーを表示する</translation>
 <translation id="7965178729203412357">新しいTorのID</translation>
 <translation id="8511502469534942133">このサイトの新たなTor接続</translation>
 <translation id="8784924142044142231">Torからログアウト</translation>
@@ -69,7 +70,6 @@
 <translation id="9075744464571452108">デバイス認識</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="4824468494729001999">スクリプトをブロックする</translation>
-<translation id="7498695072878479744">第三者サイトでGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedIn ポストの埋め込みを許可する</translation>
@@ -93,12 +93,14 @@
 <translation id="8721331068159819483">Mac OS と同様</translation>
 <translation id="6786747875388722282">拡張機能</translation>
 <translation id="2896916411183256228">WebTorrent を使用して、ブラウザに直接トレントファイルを表示しています。トレントファイルとマグネットリンクに対応しています。</translation>
+<translation id="5554028991651120544">Braveが内蔵するイーサリアムウォレットとDAppブラウザが利用可能となります。</translation>
 <translation id="6554397389149987360">ハングアウトコンポーネントを使用して、スクリーン共有やその他の機能を有効にしてください。</translation>
 <translation id="1765684547504191670">ブラウザでChromecastを有効にするには、「Media Router component」をご利用ください。</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="4154389611571860454">IPFSコンパニオンエクステンションを使用してブラウザーでIPFSをサポートします。</translation>
 <translation id="8137559199583651773">拡張機能を管理</translation>
+<translation id="7013485839273047434">機能拡張をさらに取得</translation>
 <translation id="4928988318462976765">ウェブ拡張ストア</translation>
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
 <translation id="4846154056248462491">終了時に</translation>
@@ -111,4 +113,19 @@
 <translation id="8303432794159193481">Brave Dev</translation>
 <translation id="8292967014767479012">Brave</translation>
 <translation id="4743468424889072281">Brave Development</translation>
+<translation id="4568409039725976900">ブレイブオレンジ</translation>
+<translation id="7216062233533864908">オレンジピール</translation>
+<translation id="8285320948587819446">ナナ</translation>
+<translation id="2016467614790224371">エンヴィー</translation>
+<translation id="8111795220552176635">クリアスカイ</translation>
+<translation id="8323875061602721187">ボンダイブルー</translation>
+<translation id="8267711815380227275">ブラープル</translation>
+<translation id="831132225871108758">ダークナイト</translation>
+<translation id="1473185169764311478">オレンジピール シェイプ</translation>
+<translation id="8658537263568841491">ナナ シェイプ</translation>
+<translation id="8967241601928387177">エンヴィー シェイプ</translation>
+<translation id="7232547941405761864">クリアスカイ シェイプ</translation>
+<translation id="5500050460919597479">ボンダイブルー シェイプ</translation>
+<translation id="5359364898094115985">ブラープル シェイプ</translation>
+<translation id="3385506478125681119">ダークナイト シェイプ</translation>
 </translationbundle>

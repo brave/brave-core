@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "別擔心。這有可能出於各種安全因素而發生。只需重新連線即可解決此問題。",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "這位建立者尚未登記接受 Brave 使用者的提撥金。您寄發的任何小費在他們驗證之前都會留在您的錢包中。",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

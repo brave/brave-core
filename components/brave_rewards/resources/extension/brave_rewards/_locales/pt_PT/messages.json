@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Não se preocupe. Isto pode acontecer por várias razões de segurança. Voltar a ligar pode resolver o problema.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Este criador ainda não efetuou o registo para receber contribuições dos utilizadores do Brave. As gratificações que enviar irão permanecer na sua carteira até que seja verificado.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

@@ -6,5 +6,4 @@
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
-  "../../brave/android/java/org/chromium/chrome/browser/search_engines/BraveTemplateUrlService.java",
 ]

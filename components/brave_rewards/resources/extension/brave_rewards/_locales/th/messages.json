@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "ไม่ต้องห่วง นี่อาจมีสาเหตุมาจากเหตุผลด้านความปลอดภัยหลายประการ การเชื่อมต่อใหม่อีกครั้งจะช่วยแก้ไขปัญหานี้",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "ผู้สร้างคนนี้ยังไม่ได้ลงทะเบียนรับเงินสนับสนุนจากผู้ใช้ Brave ทิปทั้งหมดที่คุณส่งให้จะยังคงอยู่ในวอลเล็ทของคุณจนกว่าผู้สร้างจะยืนยัน",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

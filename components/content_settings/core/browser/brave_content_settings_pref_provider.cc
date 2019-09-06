@@ -100,9 +100,9 @@ bool IsActive(const Rule& cookie_rule,
 }  // namespace
 
 BravePrefProvider::BravePrefProvider(PrefService* prefs,
-                                     bool incognito,
+                                     bool off_the_record,
                                      bool store_last_modified)
-    : PrefProvider(prefs, incognito, store_last_modified),
+    : PrefProvider(prefs, off_the_record, store_last_modified),
       weak_factory_(this) {
   brave_pref_change_registrar_.Init(prefs_);
 
@@ -115,8 +115,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
           info->type(),
           std::make_unique<ContentSettingsPref>(
               info->type(), prefs_, &brave_pref_change_registrar_,
-              info->pref_name(),
-              is_incognito_,
+              info->pref_name(), off_the_record_,
               base::Bind(&PrefProvider::Notify, base::Unretained(this)))));
       break;
     }
@@ -153,14 +152,14 @@ bool BravePrefProvider::SetWebsiteSetting(
   if (content_type == CONTENT_SETTINGS_TYPE_COOKIES) {
     auto* value = in_value.get();
     auto match = std::find_if(
-        brave_cookie_rules_[is_incognito_].begin(),
-        brave_cookie_rules_[is_incognito_].end(),
+        brave_cookie_rules_[off_the_record_].begin(),
+        brave_cookie_rules_[off_the_record_].end(),
         [primary_pattern, secondary_pattern, value](const auto& rule) {
           return rule.primary_pattern == primary_pattern &&
                  rule.secondary_pattern == secondary_pattern &&
                  ValueToContentSetting(&rule.value) !=
                     ValueToContentSetting(value); });
-    if (match != brave_cookie_rules_[is_incognito_].end()) {
+    if (match != brave_cookie_rules_[off_the_record_].end()) {
       // swap primary/secondary pattern - see CloneRule
       auto plugin_primary_pattern = secondary_pattern;
       auto plugin_secondary_pattern = primary_pattern;

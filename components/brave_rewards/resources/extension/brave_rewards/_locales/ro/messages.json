@@ -564,5 +564,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Nu vă faceți griji. Aceasta se poate întâmpla dintr-o varietate de motive de securitate. Reconectarea va rezolva această problemă.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Acest creator nu s-a înregistrat încă pentru a primi contribuții de la utilizatorii Brave. Orice plăți ați efectua acestea vor rămâne în portofelul dumneavoastră până când aceștia sunt verificați.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

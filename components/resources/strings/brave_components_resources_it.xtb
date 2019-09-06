@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Consenti mance su</translation>
 <translation id="3671566813999349838">Importo</translation>
 <translation id="3819257035322786455">Backup</translation>
-<translation id="4989542687859782284">Non disponibile</translation>
 <translation id="1312977698678162065">Fatti pagare per visualizzare pubblicità pertinente che rispetta la tua privacy.</translation>
 <translation id="7655723274266132226">Ora puoi guadagnare visualizzando gli annunci pubblicitari.</translation>
 <translation id="2975780980638932742">Gli Annunci Brave sono arrivati!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Pronto per iniziare?</translation>
 <translation id="913775524828049259">Sì, sono pronto</translation>
 <translation id="108052542935515756">Puoi iniziare con il</translation>
-<translation id="2678666039642976470">Riconnetti il portafoglio</translation>
 <translation id="194625454574835815">Chiave di ripristino</translation>
 <translation id="6354568176665589146">Periodico</translation>
 <translation id="7577100371127227294">Donazioni mensili</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Visualizza dettagli</translation>
 <translation id="1988679729106502285">NOTA:</translation>
 <translation id="5815103311506128988">Questo creatore non si è ancora iscritto per ricevere i contributi dagli utenti Brave. Il tuo browser continuerà a provare a contribuire fino a quando non si sarà verificato o fino a quando non saranno passati 90 giorni.</translation>
+<translation id="603411408512957306">Questo creatore non si è ancora iscritto per ricevere i contributi dagli utenti Brave. Il tuo browser continuerà a provare a contribuire fino a quando non si sarà verificato o fino a quando non saranno passati 90 giorni.</translation>
 <translation id="4292832015778676417">guadagnati dagli annunci pubblicitari</translation>
 <translation id="3197752845651180812">Contributi in attesa</translation>
 <translation id="3164105678355419142">Mance ricorrenti</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">verifica</translation>
 <translation id="8030169304546394654">Disconnesso</translation>
 <translation id="8267327690882073581">Verifica il Portafoglio</translation>
-<translation id="4569155249847375786">Verificato</translation>
+<translation id="543510923939676996">Verificato</translation>
 <translation id="7591798679868259510">Vai al mio account Uphold</translation>
 <translation id="9200453331904391567">Scollegati da Brave Rewards</translation>
 <translation id="46988480989545156">Verifica il portafoglio</translation>
@@ -425,6 +424,7 @@
 <translation id="5275978662119683162">Vantaggi della verifica</translation>
 <translation id="5166793288622772189">Pronto a verificare il tuo portafoglio?</translation>
 <translation id="8766217572332535979">La verifica non è necessaria per guadagnare ricompense per i contributi del creatore</translation>
+<translation id="4569155249847375786">Verificato</translation>
 <translation id="8465442795593991224">Uphold potrebbe richiedere di verificare la tua identità in base ai servizi richiesti.</translation>
 <translation id="723054503945711909">Brave Software Inc. non elabora, conserva oppure accede a nessun dato personale che fornisci a Uphold quando crei un account con loro.</translation>
 <translation id="1181037720776840403">Rimuovi</translation>

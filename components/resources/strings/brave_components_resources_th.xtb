@@ -197,7 +197,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2827387977307390755">อนุญาตเปิดทิป</translation>
 <translation id="3671566813999349838">จำนวน</translation>
 <translation id="3819257035322786455">การสำรองข้อมูล</translation>
-<translation id="4989542687859782284">ไม่พร้อมใช้งาน</translation>
 <translation id="1312977698678162065">รับเงินจากการดูโฆษณาที่เกี่ยวข้องที่เคารพความเป็นส่วนตัวของคุณ</translation>
 <translation id="7655723274266132226">รับรางวัลด้วยการดูโฆษณาได้แล้วตอนนี้</translation>
 <translation id="2975780980638932742">Brave Ads มาแล้ว!</translation>
@@ -301,7 +300,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3173528272490482456">พร้อมที่จะเริ่มหรือยัง?</translation>
 <translation id="913775524828049259">ใช่ ฉันพร้อมแล้ว</translation>
 <translation id="108052542935515756">คุณสามารถเริ่มด้วย</translation>
-<translation id="2678666039642976470">เชื่อมต่อวอลเล็ทใหม่</translation>
 <translation id="194625454574835815">กุญแจกู้คืน</translation>
 <translation id="6354568176665589146">เกิดขึ้นซ้ำ ๆ</translation>
 <translation id="7577100371127227294">การให้ทิปรายเดือน</translation>
@@ -386,6 +384,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6727483290601442544">ดูรายละเอียด</translation>
 <translation id="1988679729106502285">หมายเหตุ:</translation>
 <translation id="5815103311506128988">ผู้สร้างคนนี้ยังไม่ได้ลงทะเบียนรับเงินสนับสนุนจากผู้ใช้ Brave เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนไปเรื่อย ๆ จนกว่าผู้สร้างจะยืนยัน หรือจนกระทั่งเวลาผ่านไป 90 วัน</translation>
+<translation id="603411408512957306">ผู้สร้างคนนี้ยังไม่ได้ลงทะเบียนรับเงินสนับสนุนจากผู้ใช้ Brave เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนไปเรื่อย ๆ จนกว่าผู้สร้างจะยืนยัน หรือจนกระทั่งเวลาผ่านไป 90 วัน</translation>
 <translation id="4292832015778676417">ได้รับจากโฆษณาแล้ว</translation>
 <translation id="3197752845651180812">การบริจาคทรอพิจารณาความร่วมมือ</translation>
 <translation id="3164105678355419142">ทิปที่ให้ประจำ</translation>
@@ -408,7 +407,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7512440811010447157">ยืนยัน</translation>
 <translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
 <translation id="8267327690882073581">ยืนยันวอลเล็ท</translation>
-<translation id="4569155249847375786">ยืนยันแล้ว</translation>
+<translation id="543510923939676996">ยืนยันแล้ว</translation>
 <translation id="7591798679868259510">ไปที่บัญชี Uphold ของฉัน</translation>
 <translation id="9200453331904391567">ยกเลิกการเชื่อมต่อกับ Brave Rewards</translation>
 <translation id="46988480989545156">ยืนยันวอลเล็ท</translation>
@@ -426,6 +425,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5275978662119683162">ประโยชน์ของการยืนยันตัวตน</translation>
 <translation id="5166793288622772189">พร้อมที่จะยืนยันกระเป๋าเงินของคุณหรือยัง</translation>
 <translation id="8766217572332535979">การยืนยันตัวตนนั้นไม่จำเป็นสำหรับการได้รับรางวัลตอบแทนสำหรับการสนับสนุนของผู้สร้าง</translation>
+<translation id="4569155249847375786">ยืนยันแล้ว</translation>
 <translation id="8465442795593991224">Uphold อาจกำหนดให้คุณยืนยันตัวตนของคุณตามบริการที่ร้องขอ</translation>
 <translation id="723054503945711909">Brave Software Inc. จะไม่ประมวลผล เก็บบันทึก หรือเข้าถึงข้อมูลส่วนบุคคลใด ๆ ที่คุณให้ไว้กับ Uphold เมื่อคุณสร้างบัญชีกับทางนั้น</translation>
 <translation id="1181037720776840403">ลบออก</translation>
