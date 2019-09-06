@@ -20,8 +20,6 @@ extension OnboardingSearchEnginesViewController {
             static let rowHeight: CGFloat = 54
             static let imageSize: CGFloat = 32
             static let cornerRadius: CGFloat = 8
-            static let selectedBackgroundColor = #colorLiteral(red: 0.9411764706, green: 0.9450980392, blue: 1, alpha: 1)
-            static let deselectedBackgroundColor: UIColor = .white
         }
     }
     
@@ -74,7 +72,6 @@ extension OnboardingSearchEnginesViewController {
         
         init() {
             super.init(frame: .zero)
-            backgroundColor = .white
             
             addSubview(braveLogo)
             
@@ -186,25 +183,25 @@ extension OnboardingSearchEnginesViewController {
             get { return imageView?.image }
         }
         
+        var selectedBackgroundColor: UIColor? {
+            didSet {
+                selectedBackgroundView?.backgroundColor = selectedBackgroundColor
+            }
+        }
+        
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             super.init(style: style, reuseIdentifier: reuseIdentifier)
             
             imageView?.contentMode = .scaleAspectFit
             layer.cornerRadius = UX.SearchEngineCell.cornerRadius
-            selectionStyle = .none
+            
+            selectedBackgroundView = UIView().then {
+                $0.layer.cornerRadius = UX.SearchEngineCell.cornerRadius
+            }
         }
         
         @available(*, unavailable)
         required init(coder: NSCoder) { fatalError() }
-        
-        override func setSelected(_ selected: Bool, animated: Bool) {
-            super.setSelected(selected, animated: animated)
-            
-            backgroundColor = selected ?
-                UX.SearchEngineCell.selectedBackgroundColor : UX.SearchEngineCell.deselectedBackgroundColor
-            
-            textLabel?.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
-        }
         
         override func layoutSubviews() {
             super.layoutSubviews()

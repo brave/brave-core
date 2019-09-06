@@ -86,8 +86,6 @@ class SettingsViewController: TableViewController {
         self.tabManager = tabManager
         
         super.init(style: .grouped)
-        
-        UITableViewCell.appearance().tintColor = BraveUX.BraveOrange
     }
     
     @available(*, unavailable)
@@ -96,14 +94,15 @@ class SettingsViewController: TableViewController {
     }
     
     override func viewDidLoad() {
-        
         navigationItem.title = Strings.Settings
-        
         tableView.accessibilityIdentifier = "SettingsViewController.tableView"
-        tableView.separatorColor = UIConstants.TableViewSeparatorColor
-        tableView.backgroundColor = UIConstants.TableViewHeaderBackgroundColor
-
         dataSource.sections = sections
+        
+        applyTheme(theme)
+    }
+    
+    private var theme: Theme {
+        Theme.of(tabManager.selectedTab)
     }
     
     private var sections: [Section] {
@@ -142,6 +141,12 @@ class SettingsViewController: TableViewController {
             ]
         )
         
+        let reloadCell = { (row: Row, displayString: String) in
+            if let indexPath = self.dataSource.indexPath(rowUUID: row.uuid, sectionUUID: general.uuid) {
+                self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = displayString
+            }
+        }
+        
         if UIDevice.current.userInterfaceIdiom == .pad {
             general.rows.append(
                 Row(text: Strings.Show_Tabs_Bar, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
@@ -155,10 +160,7 @@ class SettingsViewController: TableViewController {
                     selectedOption: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value),
                     optionChanged: { [unowned self] _, option in
                         Preferences.General.tabBarVisibility.value = option.rawValue
-                        
-                        if let indexPath = self.dataSource.indexPath(rowUUID: row.uuid, sectionUUID: general.uuid) {
-                            self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = option.displayString
-                        }
+                        reloadCell(row, option.displayString)
                     }
                 )
                 optionsViewController.headerText = Strings.Show_Tabs_Bar
@@ -166,6 +168,24 @@ class SettingsViewController: TableViewController {
             }
             general.rows.append(row)
         }
+        
+        let themeSubtitle = Theme.DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.displayString
+        var row = Row(text: Strings.ThemesDisplayBrightness, detailText: themeSubtitle, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+        row.selection = { [unowned self] in
+            let optionsViewController = OptionSelectionViewController<Theme.DefaultTheme>(
+                options: Theme.DefaultTheme.normalThemesOptions,
+                selectedOption: Theme.DefaultTheme(rawValue: Preferences.General.themeNormalMode.value),
+                optionChanged: { [unowned self] _, option in
+                    Preferences.General.themeNormalMode.value = option.rawValue
+                    reloadCell(row, option.displayString)
+                    self.applyTheme(self.theme)
+                }
+            )
+            optionsViewController.headerText = Strings.ThemesDisplayBrightness
+            optionsViewController.footerText = Strings.ThemesDisplayBrightnessFooter
+            self.navigationController?.pushViewController(optionsViewController, animated: true)
+        }
+        general.rows.append(row)
         
         general.rows.append(
             BoolRow(title: Strings.Show_Bookmark_Button_In_Top_Toolbar, option: Preferences.General.showBookmarkToolbarShortcut)
@@ -270,7 +290,24 @@ class SettingsViewController: TableViewController {
                 }
             })
         ]
-        privacy.rows.append(BoolRow(title: Strings.Private_Browsing_Only, option: Preferences.Privacy.privateBrowsingOnly))
+        privacy.rows.append(
+            BoolRow(
+                title: Strings.Private_Browsing_Only,
+                option: Preferences.Privacy.privateBrowsingOnly,
+                onValueChange: {
+                    Preferences.Privacy.privateBrowsingOnly.value = $0
+                    
+                    // Need to flush the table, hacky, but works consistenly and well
+                    let superView = self.tableView.superview
+                    self.tableView.removeFromSuperview()
+                    DispatchQueue.main.async {
+                        // Let shield toggle change propagate, otherwise theme may not be set properly
+                        superView?.addSubview(self.tableView)
+                        self.applyTheme(self.theme)
+                    }
+                }
+            )
+        )
         return privacy
     }()
     
@@ -418,6 +455,18 @@ class SettingsViewController: TableViewController {
                 switchView.setOn(on, animated: true)
             }
         }
+    }
+}
+
+extension TableViewController: Themeable {
+    func applyTheme(_ theme: Theme) {
+        styleChildren(theme: theme)
+        tableView.reloadData()
+
+        //  View manipulations done via `apperance()` do not impact existing UI, so need to adjust manually
+        // exiting menus, so setting explicitly.
+        navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
+        navigationController?.navigationBar.barTintColor = UINavigationBar.appearance().appearanceBarTintColor
     }
 }
 

@@ -35,7 +35,6 @@ private let KVOs: [KVOConstants] = [
 ]
 
 private struct BrowserViewControllerUX {
-    fileprivate static let BackgroundColor = UIConstants.AppBackgroundColor
     fileprivate static let ShowHeaderTapAreaHeight: CGFloat = 32
     fileprivate static let BookmarkStarAnimationDuration: Double = 0.5
     fileprivate static let BookmarkStarAnimationOffset: CGFloat = 80
@@ -207,6 +206,7 @@ class BrowserViewController: UIViewController {
         // Observe some user preferences
         Preferences.Privacy.privateBrowsingOnly.observe(from: self)
         Preferences.General.tabBarVisibility.observe(from: self)
+        Preferences.General.themeNormalMode.observe(from: self)
         Preferences.General.alwaysRequestDesktopSite.observe(from: self)
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         Preferences.Privacy.blockAllCookies.observe(from: self)
@@ -245,12 +245,18 @@ class BrowserViewController: UIViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        switch Theme.of(tabManager.selectedTab) {
-        case .regular:
-            return .default
-        case .private:
+        let isDark = Theme.of(tabManager.selectedTab).isDark
+        if isDark {
             return .lightContent
         }
+        
+        // Light content, so using other status bar options
+        
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        }
+        
+        return .default
     }
 
     func shouldShowFooterForTraitCollection(_ previousTraitCollection: UITraitCollection) -> Bool {
@@ -634,8 +640,12 @@ class BrowserViewController: UIViewController {
     
     func presentOnboardingIntro() {
         if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
-            guard let onboarding = OnboardingNavigationController(profile: profile,
-                                                              onboardingType: .newUser) else { return }
+            guard let onboarding = OnboardingNavigationController(
+                profile: profile,
+                onboardingType: .newUser,
+                theme: Theme.of(tabManager.selectedTab)
+                ) else { return }
+            
             onboarding.onboardingDelegate = self
             present(onboarding, animated: true)
         } else {
@@ -752,6 +762,7 @@ class BrowserViewController: UIViewController {
             let homePanelController = FavoritesViewController(profile: profile)
             homePanelController.delegate = self
             homePanelController.view.alpha = 0
+            homePanelController.applyTheme(Theme.of(tabManager.selectedTab))
 
             self.favoritesViewController = homePanelController
 
@@ -1612,7 +1623,6 @@ extension BrowserViewController: TopToolbarDelegate {
     }
     
     func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView) {
-        // BRAVE TODO: Use actual instance
         guard let selectedTab = tabManager.selectedTab else { return }
         let shields = ShieldsViewController(tab: selectedTab)
         shields.shieldsSettingsChanged = { [unowned self] _ in
@@ -1647,9 +1657,7 @@ extension BrowserViewController: TopToolbarDelegate {
     }
     
     func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView) {
-        let homePanel = MenuViewController(bvc: self, tab: tabManager.selectedTab)
-        let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
-        popover.present(from: topToolbar.menuButton, on: self)
+        tabToolbarDidPressMenu(topToolbar)
     }
 }
 
@@ -1696,9 +1704,11 @@ extension BrowserViewController: ToolbarDelegate {
         }
     }
     
-    func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol, button: UIButton) {
+    func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol) {
         let homePanel = MenuViewController(bvc: self, tab: tabManager.selectedTab)
         let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
+        // Not dynamic, but trivial at this point, given how UI is currently setup
+        popover.color = Theme.of(tabManager.selectedTab).colors.home
         popover.present(from: tabToolbar.menuButton, on: self)
     }
     
@@ -1995,9 +2005,9 @@ extension BrowserViewController: TabManagerDelegate {
                 topToolbar.hideProgressBar()
             }
 
-            if tab.type != previous?.type {
-                let theme = Theme.of(tab)
-                applyTheme(theme)
+            let newTheme = Theme.of(tab)
+            if previous == nil || newTheme != Theme.of(previous) {
+                applyTheme(newTheme)
             }
 
             readerModeCache = ReaderMode.cache(for: tab)
@@ -2841,10 +2851,16 @@ extension BrowserViewController: TabTrayDelegate {
 
 // MARK: Browser Chrome Theming
 extension BrowserViewController: Themeable {
-
+    
+    var themeableChildren: [Themeable?]? {
+        return [topToolbar, toolbar, readerModeBar, tabsBar, favoritesViewController]
+    }
+    
     func applyTheme(_ theme: Theme) {
-        let ui: [Themeable?] = [topToolbar, toolbar, readerModeBar, tabsBar, favoritesViewController]
-        ui.forEach { $0?.applyTheme(theme) }
+        styleChildren(theme: theme)
+        
+        theme.applyAppearanceProperties()
+
         statusBarOverlay.backgroundColor = topToolbar.backgroundColor
         setNeedsStatusBarAppearanceUpdate()
     }
@@ -2972,6 +2988,8 @@ extension BrowserViewController: PreferencesObserver {
         switch key {
         case Preferences.General.tabBarVisibility.key:
             updateTabsBarVisibility()
+        case Preferences.General.themeNormalMode.key:
+            applyTheme(Theme.of(tabManager.selectedTab))
         case Preferences.Privacy.privateBrowsingOnly.key:
             let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
             switchToPrivacyMode(isPrivate: isPrivate)

@@ -22,8 +22,6 @@ class AddEditHeaderView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        backgroundColor = .white
         addSubview(mainStackView)
         
         mainStackView.snp.makeConstraints {

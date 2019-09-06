@@ -10,14 +10,21 @@ import Shared
 class OnboardingViewController: UIViewController {
     weak var delegate: Onboardable?
     var profile: Profile
+    let theme: Theme
     
-    init(profile: Profile) {
+    init(profile: Profile, theme: Theme) {
         self.profile = profile
+        self.theme = theme
         super.init(nibName: nil, bundle: nil)
     }
     
     @available(*, unavailable)
     required init(coder: NSCoder) { fatalError() }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = theme.colors.home
+    }
     
     /// Default behavior to present next onboarding screen.
     /// Override it to add custom behavior.

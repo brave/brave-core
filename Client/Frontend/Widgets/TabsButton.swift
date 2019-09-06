@@ -7,8 +7,6 @@ import SnapKit
 import Shared
 
 private struct TabsButtonUX {
-    static let TitleColor: UIColor = UIColor.Photon.Grey80
-    static let TitleBackgroundColor: UIColor = UIColor.Photon.White100
     static let CornerRadius: CGFloat = 2
     static let TitleFont: UIFont = UIConstants.DefaultChromeSmallFontBold
     static let BorderStrokeWidth: CGFloat = 1.5
@@ -18,32 +16,26 @@ class TabsButton: UIButton {
 
     var textColor = UIColor.Photon.White100 {
         didSet {
-            countLabel.textColor = textColor
-            borderView.color = textColor
+            updateButtonVisuals()
         }
     }
-    var titleBackgroundColor  = UIColor.Photon.White100 {
-        didSet {
-            labelBackground.backgroundColor = titleBackgroundColor
-        }
-    }
-    var highlightTextColor: UIColor?
-    var highlightBackgroundColor: UIColor?
+    
+    // Explicit, should crash if not setup properly
+    var highlightTextColor: UIColor!
     
     private var currentCount: Int?
+    private var top: Bool
 
     override var isHighlighted: Bool {
         didSet {
-            if isHighlighted {
-                countLabel.textColor = textColor
-                borderView.color = titleBackgroundColor
-                labelBackground.backgroundColor = titleBackgroundColor
-            } else {
-                countLabel.textColor = textColor
-                borderView.color = textColor
-                labelBackground.backgroundColor = titleBackgroundColor
-            }
+            updateButtonVisuals()
         }
+    }
+    
+    private func updateButtonVisuals() {
+        let foregroundColor: UIColor = isHighlighted ? highlightTextColor : textColor
+        countLabel.textColor = foregroundColor
+        borderView.color = foregroundColor
     }
 
     lazy var countLabel: UILabel = {
@@ -66,6 +58,7 @@ class TabsButton: UIButton {
         let background = UIView()
         background.layer.cornerRadius = TabsButtonUX.CornerRadius
         background.isUserInteractionEnabled = false
+        background.backgroundColor = .clear
         return background
     }()
 
@@ -76,28 +69,27 @@ class TabsButton: UIButton {
         border.isUserInteractionEnabled = false
         return border
     }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        insideButton.addSubview(labelBackground)
-        insideButton.addSubview(borderView)
-        insideButton.addSubview(countLabel)
+    
+    required init(top: Bool) {
+        self.top = top
+        super.init(frame: .zero)
+        [labelBackground, borderView, countLabel].forEach(insideButton.addSubview)
         addSubview(insideButton)
         isAccessibilityElement = true
-        accessibilityTraits.insert(.button) 
+        accessibilityTraits.insert(.button)
         self.accessibilityLabel = Strings.Show_Tabs
+    }
+    
+    override init(frame: CGRect) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func updateConstraints() {
         super.updateConstraints()
-        labelBackground.snp.remakeConstraints { (make) -> Void in
-            make.edges.equalTo(insideButton)
-        }
-        borderView.snp.remakeConstraints { (make) -> Void in
-            make.edges.equalTo(insideButton)
-        }
-        countLabel.snp.remakeConstraints { (make) -> Void in
-            make.edges.equalTo(insideButton)
+        [labelBackground, borderView, countLabel].forEach {
+            $0.snp.remakeConstraints { make in
+                make.edges.equalTo(insideButton)
+            }
         }
         insideButton.snp.remakeConstraints { (make) -> Void in
             make.size.equalTo(19)
@@ -122,11 +114,10 @@ class TabsButton: UIButton {
 
 extension TabsButton: Themeable {
     func applyTheme(_ theme: Theme) {
-        titleBackgroundColor = UIColor.Browser.Background.colorFor(theme)
-        textColor = UIColor.Browser.Tint.colorFor(theme)
-        countLabel.textColor = UIColor.Browser.Tint.colorFor(theme)
-        borderView.color = UIColor.Browser.Tint.colorFor(theme)
-        labelBackground.backgroundColor = UIColor.Browser.Background.colorFor(theme)
+        styleChildren(theme: theme)
+        
+        textColor = top ? theme.colors.tints.header : theme.colors.tints.footer
+        highlightTextColor = theme.colors.accent
     }
 }
 

@@ -44,7 +44,7 @@ protocol ToolbarDelegate: class {
     func tabToolbarDidLongPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton)
-    func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol, button: UIButton)
+    func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol)
     func tabToolbarDidLongPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidPressShare()
     func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton)

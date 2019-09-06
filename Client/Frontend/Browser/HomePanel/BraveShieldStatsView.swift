@@ -8,7 +8,13 @@ import BraveShared
 
 class BraveShieldStatsView: UIView, Themeable {
     func applyTheme(_ theme: Theme) {
-        // BRAVE TODO:
+        styleChildren(theme: theme)
+        
+        let colors = theme.colors.stats
+        adsStatView.color = colors.ads
+        httpsStatView.color = colors.httpse
+        timeStatView.color = colors.timeSaved
+        
     }
     
     fileprivate let millisecondsPerItem: Int = 50
@@ -16,21 +22,18 @@ class BraveShieldStatsView: UIView, Themeable {
     lazy var adsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
         statView.title = Strings.ShieldsAdAndTrackerStats
-        statView.color = UX.BraveOrange
         return statView
     }()
 
     lazy var httpsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
         statView.title = Strings.ShieldsHttpsStats
-        statView.color = UX.Green
         return statView
     }()
     
     lazy var timeStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
         statView.title = Strings.ShieldsTimeStats
-        statView.color = PrivateBrowsingManager.shared.isPrivateBrowsing ? UX.GreyA : UX.GreyJ
         return statView
     }()
     

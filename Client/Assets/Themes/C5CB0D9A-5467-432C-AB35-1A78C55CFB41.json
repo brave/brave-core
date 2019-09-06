@@ -1,0 +1,39 @@
+{
+    "uuid": "C5CB0D9A-5467-432C-AB35-1A78C55CFB41",
+    "title": "Default private",
+    "url": "www.brave.com",
+    "description": "The standard default private theme",
+    "thumbnail": "https://www.google.com",
+    "isDark": true,
+    "enabled": true,
+    
+    "colors": {
+        "header": "0x1B0C32",
+        "footer": "0x1B0C32",
+        "home": "0x301B5A",
+        "addressBar": "0x3D2742",
+        "border": "0xffffff",
+        "accent": "0xcf68ff",
+        "tints": {
+            "home": "0xE7E6E9",
+            "header": "0xE7E6E9",
+            "footer": "0xE7E6E9",
+            "addressBar": "0xE7E6E9"
+        },
+        "transparencies": {
+            "addressBarAlpha": 1.0,
+            "borderAlpha": 0.2,
+        },
+        "stats": {
+            "ads": "0xFA4214",
+            "trackers": "0x1bc760",
+            "httpse": "0x9339D4",
+            "timeSaved": "0xffffff"
+        }
+    },
+    "images": {
+        "header": "https://www.google.com",
+        "footer": "https://www.google.com",
+        "home": "https://www.google.com",
+    }
+}

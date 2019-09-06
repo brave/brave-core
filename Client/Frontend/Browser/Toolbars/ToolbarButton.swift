@@ -5,17 +5,21 @@
 import UIKit
 
 class ToolbarButton: UIButton {
-    var selectedTintColor: UIColor!
-    var unselectedTintColor: UIColor!
-    var disabledTintColor: UIColor!
+    fileprivate var selectedTintColor: UIColor?
+    fileprivate var primaryTintColor: UIColor?
+    fileprivate var disabledTintColor: UIColor?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    let top: Bool
+    
+    required init(top: Bool) {
+        self.top = top
+        super.init(frame: .zero)
         adjustsImageWhenHighlighted = false
-        selectedTintColor = tintColor
-        unselectedTintColor = tintColor
-        disabledTintColor = UIColor.Photon.Grey50
-        imageView?.contentMode = .scaleAspectFit //exc bad access
+        imageView?.contentMode = .scaleAspectFit
+    }
+
+    override init(frame: CGRect) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -24,13 +28,13 @@ class ToolbarButton: UIButton {
     
     override open var isHighlighted: Bool {
         didSet {
-            self.tintColor = isHighlighted ? selectedTintColor : unselectedTintColor
+            self.tintColor = isHighlighted ? selectedTintColor : primaryTintColor
         }
     }
     
     override open var isEnabled: Bool {
         didSet {
-            self.tintColor = isEnabled ? unselectedTintColor : disabledTintColor
+            self.tintColor = isEnabled ? primaryTintColor : disabledTintColor
         }
     }
     
@@ -44,10 +48,13 @@ class ToolbarButton: UIButton {
 
 extension ToolbarButton: Themeable {
     func applyTheme(_ theme: Theme) {
-        selectedTintColor = UIColor.ToolbarButton.SelectedTint.colorFor(theme)
-        disabledTintColor = UIColor.ToolbarButton.DisabledTint.colorFor(theme)
-        unselectedTintColor = UIColor.Browser.Tint.colorFor(theme)
-        tintColor = isEnabled ? unselectedTintColor : disabledTintColor
-        imageView?.tintColor = tintColor
+        styleChildren(theme: theme)
+        
+        selectedTintColor = theme.colors.accent
+        primaryTintColor = top ? theme.colors.tints.header : theme.colors.tints.footer
+        disabledTintColor = primaryTintColor?.withAlphaComponent(0.4)
+        
+        // Logic is slightly weird, but necessary for proper styling at launch
+        tintColor = isEnabled ? primaryTintColor : disabledTintColor
     }
 }

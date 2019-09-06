@@ -21,13 +21,13 @@ class ReaderModeButton: UIButton {
     
     override var isSelected: Bool {
         didSet {
-            self.tintColor = (isHighlighted || isSelected) ? selectedTintColor : unselectedTintColor
+            updateAppearance()
         }
     }
     
     override open var isHighlighted: Bool {
         didSet {
-            self.tintColor = (isHighlighted || isSelected) ? selectedTintColor : unselectedTintColor
+            updateAppearance()
         }
     }
     
@@ -35,6 +35,10 @@ class ReaderModeButton: UIButton {
         didSet {
             self.imageView?.tintColor = self.tintColor
         }
+    }
+    
+    private func updateAppearance() {
+        self.tintColor = (isHighlighted || isSelected) ? selectedTintColor : unselectedTintColor
     }
     
     private var _readerModeState: ReaderModeState = .unavailable

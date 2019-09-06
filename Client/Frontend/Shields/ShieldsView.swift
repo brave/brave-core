@@ -8,7 +8,7 @@ import BraveShared
 
 extension ShieldsViewController {
     /// The custom loaded view for the `ShieldsViewController`
-    class View: UIView {
+    class View: UIView, Themeable {
         private let scrollView = UIScrollView()
         
         let stackView: UIStackView = {
@@ -23,7 +23,6 @@ extension ShieldsViewController {
         // Global Shields Override
         let shieldOverrideControl: ToggleView = {
             let toggleView = ToggleView(title: Strings.Site_shield_settings, toggleSide: .right)
-            toggleView.titleLabel.textColor = BraveUX.GreyJ
             toggleView.titleLabel.font = .systemFont(ofSize: 17.0, weight: .medium)
             return toggleView
         }()
@@ -63,6 +62,19 @@ extension ShieldsViewController {
         required init?(coder aDecoder: NSCoder) {
             fatalError()
         }
+        
+        // MARK: - Themeable
+        func applyTheme(_ theme: Theme) {
+            styleChildren(theme: theme)
+            
+            backgroundColor = theme.colors.home
+            
+            // Overview
+            overviewStackView.overviewFooterLabel.textColor = overviewStackView.overviewLabel.textColor.withAlphaComponent(0.6)
+            
+            // Normal shields panel
+            shieldsContainerStackView.set(theme: theme)
+        }
     }
     
     class OverviewContainerStackView: UIStackView {
@@ -79,7 +91,6 @@ extension ShieldsViewController {
             let label = UILabel()
             label.numberOfLines = 0
             label.font = .systemFont(ofSize: 15.0)
-            label.textColor = .lightGray
             label.text = Strings.Shields_Overview_Footer
             return label
         }()
@@ -103,7 +114,6 @@ extension ShieldsViewController {
         /// Create a header label
         private class func headerLabel(title: String) -> UILabel {
             let label = UILabel()
-            label.textColor = UIColor(white: 0.4, alpha: 1.0)
             label.font = .systemFont(ofSize: 15.0)
             label.text = title
             return label
@@ -128,10 +138,10 @@ extension ShieldsViewController {
         
         // Stats
         let statsHeaderLabel = headerLabel(title: Strings.Blocking_Monitor)
-        let adsTrackersStatView = StatView(title: Strings.Ads_and_Trackers, valueColor: BraveUX.BraveOrange)
-        let httpsUpgradesStatView = StatView(title: Strings.HTTPS_Upgrades, valueColor: BraveUX.Green)
-        let scriptsBlockedStatView = StatView(title: Strings.Scripts_Blocked, valueColor: BraveUX.Purple)
-        let fingerprintingStatView = StatView(title: Strings.Fingerprinting_Methods, valueColor: BraveUX.GreyG)
+        let adsTrackersStatView = StatView(title: Strings.Ads_and_Trackers)
+        let httpsUpgradesStatView = StatView(title: Strings.HTTPS_Upgrades)
+        let scriptsBlockedStatView = StatView(title: Strings.Scripts_Blocked)
+        let fingerprintingStatView = StatView(title: Strings.Fingerprinting_Methods)
         
         // Settings
         let settingsDivider = dividerView()
@@ -173,6 +183,21 @@ extension ShieldsViewController {
         required init(coder: NSCoder) {
             fatalError()
         }
+        
+        func set(theme: Theme) {
+            let stats = theme.colors.stats
+            [
+                adsTrackersStatView: stats.ads,
+                httpsUpgradesStatView: stats.httpse,
+                scriptsBlockedStatView: stats.trackers
+            ].forEach {
+                $0.0.valueLabel.textColor = $0.1
+            }
+            
+            let faddedColor = hostLabel.textColor.withAlphaComponent(0.8)
+            statsHeaderLabel.textColor = faddedColor
+            settingsHeaderLabel.textColor = faddedColor
+        }
     }
     
     /// Displays some UI that displays the block count of a stat. Set `valueLabel.text` to the stat
@@ -194,11 +219,9 @@ extension ShieldsViewController {
             l.numberOfLines = 0
             return l
         }()
-        /// Create the stat view with a given title and color
-        init(title: String, valueColor: UIColor) {
+        /// Create the stat view with a given title
+        init(title: String) {
             super.init(frame: .zero)
-            
-            valueLabel.textColor = valueColor
             titleLabel.text = title
             
             addSubview(valueLabel)

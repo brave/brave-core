@@ -67,7 +67,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
         }
     }
     
-    fileprivate var currentTheme: Theme = .regular
+    fileprivate var currentTheme: Theme?
     
     var toolbarIsShowing = false
     
@@ -111,11 +111,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     
     let line = UIView()
     
-    lazy var tabsButton: TabsButton = {
-        let tabsButton = TabsButton.tabTrayButton()
-        tabsButton.accessibilityIdentifier = "TopToolbarView.tabsButton"
-        return tabsButton
-    }()
+    let tabsButton = TabsButton(top: true)
     
     fileprivate lazy var progressBar: GradientProgressBar = {
         let progressBar = GradientProgressBar()
@@ -140,22 +136,22 @@ class TopToolbarView: UIView, ToolbarProtocol {
         return button
     }()
 
-    lazy var bookmarkButton = ToolbarButton().then {
+    lazy var bookmarkButton = ToolbarButton(top: true).then {
         $0.setImage(#imageLiteral(resourceName: "menu_bookmarks").template, for: .normal)
         $0.accessibilityLabel = Strings.BookmarksMenuItem
         $0.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
     }
     
-    var forwardButton = ToolbarButton()
-    var shareButton = ToolbarButton()
-    var addTabButton = ToolbarButton()
-    lazy var menuButton = ToolbarButton().then {
+    var forwardButton = ToolbarButton(top: true)
+    var shareButton = ToolbarButton(top: true)
+    var addTabButton = ToolbarButton(top: true)
+    lazy var menuButton = ToolbarButton(top: true).then {
         $0.contentMode = .center
         $0.accessibilityIdentifier = "topToolbarView-menuButton"
     }
 
     var backButton: ToolbarButton = {
-        let backButton = ToolbarButton()
+        let backButton = ToolbarButton(top: true)
         backButton.accessibilityIdentifier = "TopToolbarView.backButton"
         return backButton
     }()
@@ -283,6 +279,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
         }
     }
     
+    /// Created whenever the location bar on top is selected
+    ///     it is "converted" from static to actual TextField
     private func createLocationTextField() {
         guard locationTextField == nil else { return }
         
@@ -310,7 +308,10 @@ class TopToolbarView: UIView, ToolbarProtocol {
             make.edges.equalTo(self.locationView).inset(insets)
         }
         
-        locationTextField.applyTheme(currentTheme)
+        if let theme = currentTheme {
+            // If no theme exists here, then this will be styled after parent calls `applyTheme` at a later point
+            locationTextField.applyTheme(theme)
+        }
     }
     
     override func becomeFirstResponder() -> Bool {
@@ -577,23 +578,21 @@ extension TopToolbarView: AutocompleteTextFieldDelegate {
 // MARK: - Themeable
 
 extension TopToolbarView: Themeable {
+    var themeableChildren: [Themeable?]? {
+        return [locationView, locationTextField] + actionButtons
+    }
     
     func applyTheme(_ theme: Theme) {
-        locationView.applyTheme(theme)
-        locationTextField?.applyTheme(theme)
-        actionButtons.forEach { $0.applyTheme(theme) }
-        tabsButton.applyTheme(theme)
+        styleChildren(theme: theme)
         
-        progressBar.setGradientColors(startColor: UIColor.LoadingBar.Start.colorFor(theme), endColor: UIColor.LoadingBar.End.colorFor(theme))
+        // Currently do not use gradient, hence same start/end color
+        progressBar.setGradientColors(startColor: theme.colors.accent, endColor: theme.colors.accent)
         currentTheme = theme
-        cancelButton.setTitleColor(UIColor.Browser.Tint.colorFor(theme), for: .normal)
-        switch theme {
-        case .regular:
-            backgroundColor = BraveUX.ToolbarsBackgroundSolidColor
-        case .private:
-            backgroundColor = BraveUX.DarkToolbarsBackgroundSolidColor
-        }
-        line.backgroundColor = UIColor.Browser.URLBarDivider.colorFor(theme)
+        cancelButton.setTitleColor(theme.colors.tints.header, for: .normal)
+        
+        backgroundColor = theme.colors.header
+        line.backgroundColor = theme.colors.border
+        line.alpha = theme.colors.transparencies.borderAlpha
     }
 }
 

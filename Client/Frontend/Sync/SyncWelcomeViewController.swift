@@ -43,7 +43,6 @@ class SyncWelcomeViewController: SyncViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
-        label.textColor = BraveUX.GreyJ
         label.text = Strings.BraveSync
         label.textAlignment = .center
         return label
@@ -53,7 +52,6 @@ class SyncWelcomeViewController: SyncViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
-        label.textColor = BraveUX.GreyH
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center

@@ -47,12 +47,12 @@ class OnboardingNavigationController: UINavigationController {
         case shieldsInfo
         
         /// Returns new ViewController associated with the screen type
-        func viewController(with profile: Profile) -> OnboardingViewController {
+        func viewController(with profile: Profile, theme: Theme) -> OnboardingViewController {
             switch self {
             case .searchEnginePicker:
-                return OnboardingSearchEnginesViewController(profile: profile)
+                return OnboardingSearchEnginesViewController(profile: profile, theme: theme)
             case .shieldsInfo:
-                return OnboardingShieldsViewController(profile: profile)
+                return OnboardingShieldsViewController(profile: profile, theme: theme)
             }
         }
         
@@ -66,10 +66,10 @@ class OnboardingNavigationController: UINavigationController {
     
     private(set) var onboardingType: OnboardingType?
     
-    convenience init?(profile: Profile, onboardingType: OnboardingType) {
+    convenience init?(profile: Profile, onboardingType: OnboardingType, theme: Theme) {
         guard let firstScreen = onboardingType.screens.first else { return nil }
         
-        let firstViewController = firstScreen.viewController(with: profile)
+        let firstViewController = firstScreen.viewController(with: profile, theme: theme)
         self.init(rootViewController: firstViewController)
         self.onboardingType = onboardingType
         firstViewController.delegate = self
@@ -93,7 +93,7 @@ extension OnboardingNavigationController: Onboardable {
         let index = allScreens.firstIndex { $0.type == type(of: current) }
         
         guard let nextIndex = index?.advanced(by: 1),
-            let nextScreen = allScreens[safe: nextIndex]?.viewController(with: current.profile) else {
+            let nextScreen = allScreens[safe: nextIndex]?.viewController(with: current.profile, theme: current.theme) else {
                 log.info("Last screen reached, onboarding is complete")
                 onboardingDelegate?.onboardingCompleted(self)
                 return

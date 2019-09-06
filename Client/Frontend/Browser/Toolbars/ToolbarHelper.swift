@@ -9,10 +9,6 @@ import Shared
 class ToolbarHelper: NSObject {
     let toolbar: ToolbarProtocol
     
-    func setTheme(theme: Theme, forButtons buttons: [Themeable]) {
-        buttons.forEach { $0.applyTheme(theme) }
-    }
-    
     init(toolbar: ToolbarProtocol) {
         self.toolbar = toolbar
         super.init()
@@ -45,12 +41,10 @@ class ToolbarHelper: NSObject {
         let longPressGestureForwardButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressForward))
         toolbar.forwardButton.addGestureRecognizer(longPressGestureForwardButton)
         toolbar.forwardButton.addTarget(self, action: #selector(didClickForward), for: .touchUpInside)
-        
-        setTheme(theme: .regular, forButtons: toolbar.actionButtons)
     }
     
     func didClickMenu() {
-        toolbar.tabToolbarDelegate?.tabToolbarDidPressMenu(toolbar, button: toolbar.backButton)
+        toolbar.tabToolbarDelegate?.tabToolbarDidPressMenu(toolbar)
     }
     
     func didClickBack() {

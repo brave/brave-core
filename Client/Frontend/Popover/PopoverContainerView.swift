@@ -47,6 +47,14 @@ extension PopoverController {
             }
         }
         
+        /// Color of menu
+        var color: UIColor? {
+            didSet {
+                contentView.backgroundColor = color
+                shadowView.backgroundColor = color
+            }
+        }
+        
         /// The view where you will place the content controller's view
         let contentView = UIView().then {
             $0.backgroundColor = PopoverUX.backgroundColor

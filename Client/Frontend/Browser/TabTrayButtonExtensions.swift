@@ -6,11 +6,18 @@ import UIKit
 import Shared
 
 class PrivateModeButton: InsetButton, Themeable {
-    var light: Bool = false
-    
     override var isSelected: Bool {
         didSet {
-            backgroundColor = isSelected ? UIColor.Photon.Purple60 : .clear
+            accessibilityValue = isSelected ? Strings.TabPrivateModeToggleAccessibilityValueOn : Strings.TabPrivateModeToggleAccessibilityValueOff
+            backgroundColor = isSelected ? selectedBackgroundColor : .clear
+        }
+    }
+    
+    var selectedBackgroundColor: UIColor? {
+        didSet {
+            if isSelected {
+                backgroundColor = selectedBackgroundColor
+            }
         }
     }
     
@@ -28,10 +35,11 @@ class PrivateModeButton: InsetButton, Themeable {
     }
     
     func applyTheme(_ theme: Theme) {
-        setTitleColor(UIColor.TabTray.ToolbarButtonTint.colorFor(theme), for: .normal)
+        styleChildren(theme: theme)
+        
+        setTitleColor(theme.colors.tints.footer, for: .normal)
         imageView?.tintColor = tintColor
-        isSelected = theme.isPrivate
-        accessibilityValue = isSelected ? Strings.TabPrivateModeToggleAccessibilityValueOn : Strings.TabPrivateModeToggleAccessibilityValueOff
+        selectedBackgroundColor = theme.colors.accent
     }
 }
 
@@ -41,14 +49,5 @@ extension UIButton {
         newTab.setImage(#imageLiteral(resourceName: "quick_action_new_tab").template, for: .normal)
         newTab.accessibilityLabel = Strings.TabTrayNewTabButtonAccessibilityLabel
         return newTab
-    }
-}
-
-extension TabsButton {
-    static func tabTrayButton() -> TabsButton {
-        let tabsButton = TabsButton()
-        tabsButton.countLabel.text = "0"
-        tabsButton.accessibilityLabel = Strings.Show_Tabs
-        return tabsButton
     }
 }

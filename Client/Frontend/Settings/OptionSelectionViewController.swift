@@ -93,14 +93,7 @@ class OptionSelectionViewController<OptionType: RepresentableOptionType>: TableV
     required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
-        tableView.separatorColor = UIConstants.TableViewSeparatorColor
-        tableView.backgroundColor = UIConstants.TableViewHeaderBackgroundColor
-    }
-    
     private func updateRowsForSelectedOption() {
         for (idx, option) in options.enumerated() {
             if option.key == selectedOption.key {

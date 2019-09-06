@@ -67,9 +67,6 @@ class ClearPrivateDataTableViewController: UITableViewController {
         title = Strings.ClearPrivateData
         
         tableView.register(SettingsTableSectionHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: SectionHeaderFooterIdentifier)
-        
-        tableView.separatorColor = UIConstants.TableViewSeparatorColor
-        tableView.backgroundColor = UIConstants.TableViewHeaderBackgroundColor
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -78,7 +75,6 @@ class ClearPrivateDataTableViewController: UITableViewController {
         if indexPath.section == SectionToggles {
             cell.textLabel?.text = clearables[indexPath.item].clearable.label
             let control = UISwitch()
-            control.onTintColor = UIConstants.ControlTintColor
             control.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
             control.isOn = toggles[indexPath.item]
             cell.accessoryView = control
