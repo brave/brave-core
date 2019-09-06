@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import BraveShared
 
 extension Theme {
     func applyAppearanceProperties() {
@@ -64,6 +65,15 @@ extension Theme {
         } else {
             // iOS 12 fixes, many styling items do not work properly in iOS 12
             UILabel.appearance().appearanceTextColor = colors.tints.home
+            
+            // iOS 12 does not allow in-line color overrides :/
+            // These UI components are currently non-themed
+            // AlertPopupView
+            UILabel.appearance(whenContainedInInstancesOf: [AlertPopupView.self]).appearanceTextColor = BraveUX.GreyJ
+            UIButton.appearance(whenContainedInInstancesOf: [AlertPopupView.self]).tintColor = .white
+            
+            // EmptyPrivateTabsView
+            UILabel.appearance(whenContainedInInstancesOf: [EmptyPrivateTabsView.self]).appearanceTextColor = UIColor.Photon.Grey10
         }
     }
 }

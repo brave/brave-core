@@ -963,7 +963,8 @@ private struct EmptyPrivateTabsViewUX {
 }
 
 // View we display when there are no private tabs created
-fileprivate class EmptyPrivateTabsView: UIView {
+// Need access for iOS 12 appearance adjustments
+/*fileprivate*/ class EmptyPrivateTabsView: UIView {
     
     let scrollView = UIScrollView().then {
         $0.alwaysBounceVertical = true

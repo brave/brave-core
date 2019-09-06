@@ -98,7 +98,8 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
         
         cell.searchEngineName = searchEngine.shortName
         cell.searchEngineImage = searchEngine.image
-        cell.selectedBackgroundColor = theme.colors.accent
+        cell.selectedBackgroundColor = dark ? UIColor(rgb: 0x495057) : UIColor(rgb: 0xF0F2FF)
+        cell.backgroundColor = .clear
         
         if searchEngine == defaultEngine {
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
