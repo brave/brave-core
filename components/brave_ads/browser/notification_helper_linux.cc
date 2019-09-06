@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/notification_helper_linux.h"
 
+#include "chrome/browser/fullscreen.h"
+
 namespace brave_ads {
 
 NotificationHelperLinux::NotificationHelperLinux() = default;
@@ -12,9 +14,7 @@ NotificationHelperLinux::NotificationHelperLinux() = default;
 NotificationHelperLinux::~NotificationHelperLinux() = default;
 
 bool NotificationHelperLinux::ShouldShowNotifications() const {
-  // Unable to find a way of detecting if notifications are enabled within the
-  // operating system so always return true
-  return true;
+  return !IsFullScreenMode();
 }
 
 bool NotificationHelperLinux::ShowMyFirstAdNotification() const {
