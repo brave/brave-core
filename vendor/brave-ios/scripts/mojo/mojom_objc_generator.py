@@ -57,7 +57,7 @@ class Generator(generator.Generator):
   def _GetObjCPropertyModifiers(self, kind):
     modifiers = ['nonatomic']
     if (mojom.IsArrayKind(kind) or mojom.IsStringKind(kind) or
-       mojom.IsMapKind(kind)):
+       mojom.IsMapKind(kind) or self._IsMojomStruct(kind)):
       modifiers.append('copy')
     if mojom.IsNullableKind(kind):
       modifiers.append('nullable')
@@ -69,7 +69,7 @@ class Generator(generator.Generator):
       # If there's no specified default, only make defaults for required types
       return (not mojom.IsNullableKind(kind) and
              (mojom.IsStringKind(kind) or mojom.IsArrayKind(kind) or
-              mojom.IsMapKind(kind) or kind in self.module.structs))
+              mojom.IsMapKind(kind) or self._IsMojomStruct(kind)))
 
     if self._IsObjCNumberKind(kind) and field.default == 0:
       # 0 by default anyways
@@ -92,12 +92,18 @@ class Generator(generator.Generator):
       return '@[]'
     if mojom.IsMapKind(kind):
       return '@{}'
-    if kind in self.module.structs:
+    if self._IsMojomStruct(kind):
       return "[[%s%s alloc] init]" % (self.class_prefix, kind.name)
     raise Exception("Unrecognized kind %s" % kind.spec)
 
+  def _IsMojomStruct(self, kind):
+    """ Whether or not a kind is a struct that has an Obj-C++ counterpart generated """
+    if not mojom.IsStructKind(kind):
+      return False
+    return kind.mojom_name in map(lambda s: s.mojom_name, self.module.structs)
+
   def _GetObjCWrapperType(self, kind, objectType = False):
-    if kind in self.module.structs:
+    if self._IsMojomStruct(kind):
       return "%s%s *" % (self.class_prefix, kind.name)
     if mojom.IsEnumKind(kind):
       return "%s%s" % (self.class_prefix, kind.name)
@@ -116,7 +122,7 @@ class Generator(generator.Generator):
         return "NSNumber *"
       else:
         return _kind_to_objc_type[kind]
-    raise Exception("Unrecognized kind %s" % kind.spec)
+    raise Exception("Unrecognized kind %s" % kind)
 
   def _ObjCPropertyFormatter(self, str):
     """ snake case to camel case, and replaces reserved names """
@@ -155,7 +161,7 @@ class Generator(generator.Generator):
 
     if self._IsObjCNumberKind(kind):
       return accessor
-    if kind in self.module.structs:
+    if self._IsMojomStruct(kind):
       return "%s.cppObjPtr" % accessor
     if mojom.IsEnumKind(kind):
       return "static_cast<%s::%s>(%s)" % (self._CppNamespace(), kind.name, accessor)
@@ -182,7 +188,7 @@ class Generator(generator.Generator):
           }
           return array;
         }()""" % accessor
-      elif array_kind in self.module.structs:
+      elif self._IsMojomStruct(array_kind):
         return """^{
             std::vector<%s::%sPtr> array;
             for (%s%s *obj in %s) {
@@ -214,7 +220,7 @@ class Generator(generator.Generator):
             }
             return map;
           }()""" % (accessor, accessor)
-        elif val_kind in self.module.structs:
+        elif self._IsMojomStruct(val_kind):
           return """^{
             base::flat_map<std::string, %s::%sPtr> map;
             for (NSString *key in %s) {
@@ -233,7 +239,7 @@ class Generator(generator.Generator):
     accessor = "%s.%s" % (obj, field.name)
     if self._IsObjCNumberKind(kind):
       return accessor
-    if kind in self.module.structs:
+    if self._IsMojomStruct(kind):
       args = (self.class_prefix, kind.name, kind.name, accessor)
       return "[[%s%s alloc] initWith%s:*%s]" % args
     if mojom.IsEnumKind(kind):
@@ -245,7 +251,7 @@ class Generator(generator.Generator):
       array_kind = kind.kind
       if mojom.IsStringKind(array_kind) or self._IsObjCNumberKind(array_kind):
         return "NSArrayFromVector(%s)" % accessor
-      elif array_kind in self.module.structs:
+      elif self._IsMojomStruct(array_kind):
         # Mojo IDL array<struct> actually creates a
         # `std::vector<mojom::StructPtr<struct>>``, instead of just a plain
         # vector of `struct`, which needs to be handled appropriately as
@@ -267,7 +273,7 @@ class Generator(generator.Generator):
       if mojom.IsStringKind(key_kind):
         if mojom.IsStringKind(val_kind) or self._IsObjCNumberKind(val_kind):
           return "NSDictionaryFromMap(%s)" % accessor
-        elif val_kind in self.module.structs:
+        elif self._IsMojomStruct(val_kind):
           # Mojo IDL map<*, struct> actually creates a
           # `base::flat_map<*, mojom::StructPtr<struct>>``, instead of just a
           # plain std::map of `struct`, which needs to be handled appropriately
