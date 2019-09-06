@@ -128,11 +128,11 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Verifieringsbeviset ger",
+    "message": "Tilldelning av token",
     "description": "Title for grant notification"
   },
   "tokenGrantClaimed": {
-    "message": "Medgivandebevis hämtat",
+    "message": "Tilldelning av token utnyttjades",
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
@@ -254,7 +254,7 @@
     "description": "Claim text"
   },
   "newTokenGrant": {
-    "message": "Gratis tillståndsbevis",
+    "message": "Tilldelning av gratis token",
     "description": "Token grant label"
   },
   "grantExpire": {
@@ -452,11 +452,11 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Ditt tillståndsbevis är på väg.",
+    "message": "Din tilldelning av token är på väg.",
     "description": "Cosmetic text indicating grant funds are on the way"
   },
   "grantFinishTokenTitleUGP": {
-    "message": "Gratis tillståndsbevis",
+    "message": "Tilldelning av gratis token",
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
@@ -528,5 +528,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Inga problem. Detta kan hända av flera olika säkerhetsskäl. Att helt enkelt ansluta igen löser problemet.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Denna skapare har ännu in registrerat sig för att ta emot bidrag från Brave-användare. All dricks du skickar kommer att finnas kvar i din plånbok tills skaparen verifierar sig.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

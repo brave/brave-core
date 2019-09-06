@@ -1,0 +1,12 @@
+diff --git a/ui/native_theme/native_theme_win.cc b/ui/native_theme/native_theme_win.cc
+index c6a0c1b9775f9d7e7a9be15d6f15ce84acf68b68..b45ac3b51627589931e4adce0cea3b320c0c804e 100644
+--- a/ui/native_theme/native_theme_win.cc
++++ b/ui/native_theme/native_theme_win.cc
+@@ -1964,6 +1964,7 @@ void NativeThemeWin::UpdateDarkModeStatus() {
+                                     &apps_use_light_theme);
+     fDarkModeEnabled = (apps_use_light_theme == 0);
+   }
++  BRAVE_NATIVETHEMEWIN_UPDATEDARKMODESTATUS
+   set_dark_mode(fDarkModeEnabled);
+   set_preferred_color_scheme(CalculatePreferredColorScheme());
+   NotifyObservers();

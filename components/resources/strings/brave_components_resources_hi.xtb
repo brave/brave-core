@@ -197,7 +197,6 @@
 <translation id="2827387977307390755">पर सुझावों की अनुमति दें</translation>
 <translation id="3671566813999349838">राशि</translation>
 <translation id="3819257035322786455">बैकअप</translation>
-<translation id="4989542687859782284">अनुपलब्ध है</translation>
 <translation id="1312977698678162065">प्रासंगिक विज्ञापनों को देखने के लिए भुगतान करें जो आपकी निजता का सम्मान करते हैं।</translation>
 <translation id="7655723274266132226">अब आप विज्ञापनों को देखकर कमा सकते हैं।</translation>
 <translation id="2975780980638932742">Brave विज्ञापन आ गए हैं!</translation>
@@ -301,7 +300,6 @@
 <translation id="3173528272490482456">शुरू करने के लिए तैयार?</translation>
 <translation id="913775524828049259">हाँ मैं तैयार हूँ</translation>
 <translation id="108052542935515756">के साथ आप शुरू कर सकते हैं</translation>
-<translation id="2678666039642976470">वॉलेट पुनः कनेक्ट करें</translation>
 <translation id="194625454574835815">रिकवरी कुंजी</translation>
 <translation id="6354568176665589146">आवर्ती</translation>
 <translation id="7577100371127227294">मासिक टिप्स</translation>
@@ -386,6 +384,7 @@
 <translation id="6727483290601442544">जानकारी देखें</translation>
 <translation id="1988679729106502285">नोट:</translation>
 <translation id="5815103311506128988">इस निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक साइन अप नहीं किया है। उनके सत्यापित होने तक, या 90 दिनों के बीतने तक आपके द्वारा भेजी गयी कोई भी बख्शीश आपके ही बटुए में रहेगी।</translation>
+<translation id="603411408512957306">इस निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक साइन अप नहीं किया है। उनके सत्यापित होने तक, या 90 दिनों के बीतने तक आपके द्वारा भेजी गयी कोई भी बख्शीश आपके ही बटुए में रहेगी।</translation>
 <translation id="4292832015778676417">विज्ञापनों द्वारा कमाया हुआ</translation>
 <translation id="3197752845651180812">लंबित योगदान</translation>
 <translation id="3164105678355419142">आवर्ती बख्शीश</translation>
@@ -408,7 +407,7 @@
 <translation id="7512440811010447157">सत्यापित करें</translation>
 <translation id="8030169304546394654">डिसकनेक्ट करें</translation>
 <translation id="8267327690882073581">वॉलेट सत्यापित करें</translation>
-<translation id="4569155249847375786">सत्यापित है</translation>
+<translation id="543510923939676996">सत्यापित है</translation>
 <translation id="7591798679868259510">मेरे मान्य खाते पर जाएँ</translation>
 <translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
 <translation id="46988480989545156">वॉलेट सत्यापित करें</translation>
@@ -420,6 +419,7 @@
 <translation id="5275978662119683162">सत्यापन करने के लाभ</translation>
 <translation id="5166793288622772189">अपने बटुए को सत्यापित करने के लिए तैयार हैं?</translation>
 <translation id="8766217572332535979">निर्माता के योगदान के लिए पुरस्कार अर्जित करने के लिए सत्यापन आवश्यक नहीं है</translation>
+<translation id="4569155249847375786">सत्यापित है</translation>
 <translation id="8465442795593991224">अनुरोध की गई सेवाओं के आधार पर आपको अपनी पहचान सत्यापित करने के लिए Uphold की आवश्यकता हो सकती है।</translation>
 <translation id="723054503945711909">Brave Software Inc. एसे किसी भी व्यक्तिगत जानकारी को प्रोसेस, स्टोर या एक्सेस नहीं करता है, जिसे आप उनके साथ एक खाता स्थापित करते समय Uphold को प्रदान करते हैं।</translation>
 <translation id="1181037720776840403">निकालें</translation>

@@ -57,11 +57,18 @@ class BraveMockRenderViewContextMenu : public ui::SimpleMenuModel::Delegate,
 
   // RenderViewContextMenuProxy implementation.
   void AddMenuItem(int command_id, const base::string16& title) override;
+  void AddMenuItemWithIcon(int command_id,
+                           const base::string16& title,
+                           const gfx::ImageSkia& image) override;
   void AddCheckItem(int command_id, const base::string16& title) override;
   void AddSeparator() override;
   void AddSubMenu(int command_id,
                   const base::string16& label,
                   ui::MenuModel* model) override;
+  void AddSubMenuWithStringIdAndIcon(int command_id,
+                                     int message_id,
+                                     ui::MenuModel* model,
+                                     const gfx::ImageSkia& image) override;
   void UpdateMenuItem(int command_id,
                       bool enabled,
                       bool hidden,
@@ -72,8 +79,8 @@ class BraveMockRenderViewContextMenu : public ui::SimpleMenuModel::Delegate,
   void AddSpellCheckServiceItem(bool is_checked) override;
   void AddAccessibilityLabelsServiceItem(bool is_checked) override;
   content::RenderViewHost* GetRenderViewHost() const override;
-  content::BrowserContext* GetBrowserContext() const override;
   content::WebContents* GetWebContents() const override;
+  content::BrowserContext* GetBrowserContext() const override;
 
   // Attaches a RenderViewContextMenuObserver to be tested.
   void SetObserver(RenderViewContextMenuObserver* observer);

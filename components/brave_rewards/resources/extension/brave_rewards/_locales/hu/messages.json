@@ -528,5 +528,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Semmi gond. Ez többféle biztonsági okból is történhet. A probléma megoldásához egyszerűen csatlakozzon rá újból.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a Brave felhasználóktól. Minden borravaló, amit küldesz, a pénztárcádban marad, amíg nem igazolnak. ",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

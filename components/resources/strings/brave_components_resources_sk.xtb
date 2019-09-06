@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Povoliť tipy na</translation>
 <translation id="3671566813999349838">Množstvo</translation>
 <translation id="3819257035322786455">Zálohovať</translation>
-<translation id="4989542687859782284">Nedostupná</translation>
 <translation id="1312977698678162065">Dostaňte zaplatené za pozeranie dôležitých reklám, ktoré rešpektujú vaše súkromie.</translation>
 <translation id="7655723274266132226">Teraz môžete zarobiť na prehliadaných reklamách.</translation>
 <translation id="2975780980638932742">Reklamy Brave sú už tu!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Pripravený začať?</translation>
 <translation id="913775524828049259">Áno, som pripravený</translation>
 <translation id="108052542935515756">Môžete začať s</translation>
-<translation id="2678666039642976470">Pripojiť sa k peňaženke</translation>
 <translation id="194625454574835815">Kľúč pre obnovu</translation>
 <translation id="6354568176665589146">Opakujúci sa</translation>
 <translation id="7577100371127227294">Mesačné príspevky</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Zobraziť podrobnosti</translation>
 <translation id="1988679729106502285">POZNÁMKA:</translation>
 <translation id="5815103311506128988">Tento tvorca sa ešte nezaregistroval, aby dostával príspevky od používateľov Brave. Váš prehliadač sa bude snažiť prispievať, kým nedôjde k overeniu alebo kým neprejde 90 dní.</translation>
+<translation id="603411408512957306">Tento tvorca sa ešte nezaregistroval, aby dostával príspevky od používateľov Brave. Váš prehliadač sa bude snažiť prispievať, kým nedôjde k overeniu alebo kým neprejde 90 dní.</translation>
 <translation id="4292832015778676417">zarobené na reklamách</translation>
 <translation id="3197752845651180812">Čakajúce dary</translation>
 <translation id="3164105678355419142">Opakujúci sa príspevok</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">overiť</translation>
 <translation id="8030169304546394654">Prerušené spojenie</translation>
 <translation id="8267327690882073581">Overiť peňaženku</translation>
-<translation id="4569155249847375786">Overené</translation>
+<translation id="543510923939676996">Overené</translation>
 <translation id="7591798679868259510">Prejsť na účet Uphold</translation>
 <translation id="9200453331904391567">Odpojiť od Brave Rewards</translation>
 <translation id="46988480989545156">Overiť peňaženku</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">Výhody overenia</translation>
 <translation id="5166793288622772189">Ste pripravení overiť svoju peňaženku?</translation>
 <translation id="8766217572332535979">Zisk odmeny za príspevky tvorcu si nevyžaduje overenie</translation>
+<translation id="4569155249847375786">Overené</translation>
 <translation id="8465442795593991224">Ak požiadate o nejaké služby, Uphold vás môže požiadať o potvrdenie identity.</translation>
 <translation id="723054503945711909">Brave Software Inc. nespracováva, neukladá a nesnaží sa dostať k žiadnym osobným údajom, ktoré Upholdu poskytujete pri zakladaní účtu.</translation>
 <translation id="1181037720776840403">Odstrániť</translation>

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -23,18 +24,18 @@ class BraveRewardsSource : public content::URLDataSource {
   ~BraveRewardsSource() override;
 
   // content::URLDataSource implementation.
-  std::string GetSource() const override;
+  std::string GetSource() override;
   void StartDataRequest(
       const std::string& path,
       const content::ResourceRequestInfo::WebContentsGetter& wc_getter,
       const content::URLDataSource::GotDataCallback& got_data_callback)
       override;
-  std::string GetMimeType(const std::string&) const override;
-  bool AllowCaching() const override;
-  bool ShouldReplaceExistingSource() const override;
+  std::string GetMimeType(const std::string&) override;
+  bool AllowCaching() override;
+  bool ShouldReplaceExistingSource() override;
   bool ShouldServiceRequest(const GURL& url,
                             content::ResourceContext* resource_context,
-                            int render_process_id) const override;
+                            int render_process_id) override;
 
  private:
   void OnBitmapFetched(

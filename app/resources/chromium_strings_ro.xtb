@@ -108,7 +108,6 @@ Brave nu poate recupera setările.</translation>
 <translation id="1421502046520299169">Despre sistemul de operare &amp;Brave</translation>
 <translation id="2534623228451928732">Actualizați sistemul de operare &amp;Brave</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="3360368475735266712">Conectează-te pentru a sincroniza și a personaliza Brave pe toate dispozitivele</translation>
 <translation id="5477319665405831211">Sincronizează și personalizează Brave pe toate dispozitivele</translation>
 <translation id="4934157190377700991">Acum te-ai conectat la Brave</translation>
 <translation id="4100716194836114130">Acesta este browserul dvs. Brave</translation>
@@ -139,6 +138,8 @@ Dacă totuși vă conectați, informațiile Brave cum ar fi marcajele, istoricul
 <translation id="6746636977031158624">Sistemul de operare Brave nu a putut sincroniza datele, deoarece detaliile de conectare pentru contul dvs. nu sunt actualizate.</translation>
 <translation id="2999152167963026588">Sistemul de operare Brave nu a putut sincroniza datele, deoarece sincronizarea nu este disponibilă pentru domeniul dvs.</translation>
 <translation id="1459786048951724030">Sistemul de operare Brave nu a putut sincroniza datele din cauza unei erori la conectare.</translation>
+<translation id="6813094029720377619">Când închizi Brave, cookie-urile sunt șterse. Modifică <ph name="COOKIE_SETTINGS_LINK"/> pentru a continua sincronizarea.</translation>
+<translation id="3340978935015468852">setări</translation>
 <translation id="663059986967017181">Copiat în Brave</translation>
 <translation id="1457432835062259213">Lansatorul de aplicații Brave</translation>
 <translation id="82609232232243542">Conectați-vă la Brave</translation>
@@ -158,7 +159,7 @@ Pentru a împiedica utilizatorul <ph name="NEW_PROFILE_NAME"/> să îți accesez
 
 Verifică e-mailul la <ph name="ACCOUNT_EMAIL"/> pentru instrucțiuni suplimentare.</translation>
 <translation id="1820843143331379651">Profilurile de utilizator monitorizat nu vor mai fi disponibile începând cu versiunea Brave 70.</translation>
-<translation id="3066805437003400520">Datele de navigare ale acestei persoane vor fi șterse de pe dispozitiv. Pentru a recupera datele, conectează-te la Brave ca <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Datele de navigare ale acestei persoane vor fi șterse de pe dispozitiv. Pentru a recupera datele, conectează-te la Brave ca <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave a devenit și mai bun</translation>
 <translation id="7192666605334070839">Acum este mai ușor să folosiți Brave cu Contul Brave Software și pe computerele utilizate în comun.</translation>
 <translation id="3511996232906761537">Experiența web personalizată, marcajele și celelalte date Brave chiar aici.</translation>
@@ -224,14 +225,6 @@ Verifică e-mailul la <ph name="ACCOUNT_EMAIL"/> pentru instrucțiuni suplimenta
 <translation id="7808415789955822133">Termeni pentru sistemul de operare Brave</translation>
 <translation id="7207456302801184289">Bun venit la Brave</translation>
 <translation id="5688839044908745927">Brave este aproape configurat.</translation>
-<translation id="7758342895140862711">Ia Brave pretutindeni</translation>
-<translation id="3610173904388112975">Navigare pe web cu ingeniozitatea Brave Software</translation>
-<translation id="3479552764303398839">Nu acum</translation>
-<translation id="8013374903356993822">Accesează Brave mai rapid</translation>
-<translation id="7625138338483121345">Setează Brave ca browser prestabilit</translation>
-<translation id="5927044791090834489">Fixează Brave pe bara de activități</translation>
-<translation id="8933981935877469796">Selectează <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">Dă clic pe <ph name="BEGIN_BOLD"/>Comută oricum<ph name="END_BOLD"/>, dacă apare</translation>
 <translation id="3507835409099344374">Accesează setările pentru notificări Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Este disponibilă o actualizare Brave}=1{Este disponibilă o actualizare Brave}few{O actualizare Brave este disponibilă de # zile}other{O actualizare Brave este disponibilă de # de zile}}</translation>
 <translation id="720532315408041257">Administratorul solicită să relansezi Brave pentru a aplica această actualizare</translation>
@@ -251,6 +244,7 @@ Verifică e-mailul la <ph name="ACCOUNT_EMAIL"/> pentru instrucțiuni suplimenta
 <translation id="8208853227947884571">Brave este actualizat</translation>
 <translation id="6686872257969654608">Despre sistemul de operare Brave</translation>
 <translation id="2280363356796735201">Obține ajutor privind sistemul de operare Brave</translation>
+<translation id="38898988211673781">Șterge cookie-urile și datele privind site-urile când închizi Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (copiat în Brave)</translation>
 <translation id="5468853758063275923">Brave este browserul prestabilit</translation>
 <translation id="1775322105159056176">Brave nu poate determina sau seta browserul prestabilit</translation>
@@ -267,6 +261,7 @@ Verifică e-mailul la <ph name="ACCOUNT_EMAIL"/> pentru instrucțiuni suplimenta
 <translation id="8372880274820509128">Pentru un plus de securitate, Brave îți va cripta datele.</translation>
 <translation id="7445061995866044926">Te deconectezi de la Brave?</translation>
 <translation id="7453070689008684791">Brave îți va accesa spațiul de stocare Drive pentru a face sugestii în bara de adrese</translation>
+<translation id="3360368475735266712">Conectează-te pentru a sincroniza și a personaliza Brave pe toate dispozitivele</translation>
 <translation id="9221712274065451529">Această limbă este folosită pentru a afișa IU din sistemul de operare Brave</translation>
 <translation id="3518788198614984730">Afișează sistemul de operare Brave în această limbă</translation>
 <translation id="5757460455745382269">Această limbă este folosită pentru a afișa IU Brave</translation>

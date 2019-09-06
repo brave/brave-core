@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index a7c3702b019d8aaee39a9419ff109d9eb01b9874..e1777c7707ff92b233dbdf7b3f63b559572416c1 100644
+index f41b3198ffa02cd4d92bfe5d123f0de011396599..f4fcbb53069b9900ffc8be3cdefecbd05ab1527c 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
-@@ -117,6 +117,7 @@ class LocationBarView : public LocationBar,
+@@ -113,6 +113,7 @@ class LocationBarView : public LocationBar,
    int GetBorderRadius() const;
  
    // Initializes the LocationBarView.
@@ -10,7 +10,7 @@ index a7c3702b019d8aaee39a9419ff109d9eb01b9874..e1777c7707ff92b233dbdf7b3f63b559
    void Init();
  
    // True if this instance has been initialized by calling Init, which can only
-@@ -192,6 +193,7 @@ class LocationBarView : public LocationBar,
+@@ -182,6 +183,7 @@ class LocationBarView : public LocationBar,
  
    // Updates the controller, and, if |contents| is non-null, restores saved
    // state that the tab holds.
@@ -18,7 +18,7 @@ index a7c3702b019d8aaee39a9419ff109d9eb01b9874..e1777c7707ff92b233dbdf7b3f63b559
    void Update(const content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-@@ -211,6 +213,7 @@ class LocationBarView : public LocationBar,
+@@ -201,6 +203,7 @@ class LocationBarView : public LocationBar,
    void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
    gfx::Size GetMinimumSize() const override;
    gfx::Size CalculatePreferredSize() const override;
@@ -26,7 +26,7 @@ index a7c3702b019d8aaee39a9419ff109d9eb01b9874..e1777c7707ff92b233dbdf7b3f63b559
    void Layout() override;
    void OnThemeChanged() override;
    void ChildPreferredSizeChanged(views::View* child) override;
-@@ -258,9 +261,11 @@ class LocationBarView : public LocationBar,
+@@ -248,9 +251,11 @@ class LocationBarView : public LocationBar,
    SkColor GetLocationIconInkDropColor() const override;
  
    // Gets the theme color tint for the location bar and results.

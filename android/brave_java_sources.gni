@@ -13,7 +13,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettingsObserver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/search_engines/BraveTemplateUrlService.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
 ]

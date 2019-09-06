@@ -39,19 +39,6 @@
 #include "sql/statement.h"
 #include "url/gurl.h"
 
-#if defined(OS_LINUX)
-#include "components/os_crypt/key_storage_config_linux.h"
-#endif
-
-#if defined(USE_X11)
-#if defined(USE_LIBSECRET)
-#include "chrome/browser/password_manager/native_backend_libsecret.h"
-#endif
-#include "chrome/browser/password_manager/native_backend_kwallet_x.h"
-#include "chrome/browser/password_manager/password_store_x.h"
-#include "components/os_crypt/key_storage_util_linux.h"
-#endif
-
 using base::Time;
 
 BraveImporter::BraveImporter() {

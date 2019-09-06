@@ -196,7 +196,6 @@
 <translation id="2827387977307390755">Omogući napojnice na</translation>
 <translation id="3671566813999349838">Iznos</translation>
 <translation id="3819257035322786455">Sigurnosna kopija</translation>
-<translation id="4989542687859782284">Nedostupno</translation>
 <translation id="1312977698678162065">Budite plaćeni za gledanje relevantnih oglasa kojima se poštuje vaša privatnost.</translation>
 <translation id="7655723274266132226">Sada možete zarađivati pregledavanjem oglasa.</translation>
 <translation id="2975780980638932742">Oglasi su Brave stigli!</translation>
@@ -300,7 +299,6 @@
 <translation id="3173528272490482456">Jeste li spremni za početak?</translation>
 <translation id="913775524828049259">Da, spreman/spremna sam</translation>
 <translation id="108052542935515756">Možete početi s</translation>
-<translation id="2678666039642976470">Ponovno poveži novčanik</translation>
 <translation id="194625454574835815">Ključ za oporavak</translation>
 <translation id="6354568176665589146">Ponavljajuće</translation>
 <translation id="7577100371127227294">Mjesečne napojnice</translation>
@@ -385,6 +383,7 @@
 <translation id="6727483290601442544">Pregledaj pojedinosti</translation>
 <translation id="1988679729106502285">NAPOMENA:</translation>
 <translation id="5815103311506128988">Ovaj autor nije se još prijavio za primanje doprinosa od korisnika preglednika Brave. Vaš preglednik pokušavat će mu ustupiti doprinose dok se ne provjere ili do isteka 90 dana.</translation>
+<translation id="603411408512957306">Ovaj autor nije se još prijavio za primanje doprinosa od korisnika preglednika Brave. Vaš preglednik pokušavat će mu ustupiti doprinose dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="4292832015778676417">zarađeno od oglasa</translation>
 <translation id="3197752845651180812">Doprinosi na čekanju</translation>
 <translation id="3164105678355419142">Ponavljajuća napojnica</translation>
@@ -407,7 +406,7 @@
 <translation id="7512440811010447157">provjeri</translation>
 <translation id="8030169304546394654">Prekinuta veza</translation>
 <translation id="8267327690882073581">Provjeri Novčanik</translation>
-<translation id="4569155249847375786">Provjereno</translation>
+<translation id="543510923939676996">Provjereno</translation>
 <translation id="7591798679868259510">Idi na moj račun Uphold</translation>
 <translation id="9200453331904391567">Poništi vezu s nagradama Brave</translation>
 <translation id="46988480989545156">Provjeri novčanik</translation>
@@ -419,6 +418,7 @@
 <translation id="5275978662119683162">Prednosti provjere</translation>
 <translation id="5166793288622772189">Spremni ste provjeriti svoj novčanik?</translation>
 <translation id="8766217572332535979">Provjera nije potrebna za osvajanje nagrada za doprinose stvaratelja</translation>
+<translation id="4569155249847375786">Provjereno</translation>
 <translation id="8465442795593991224">Uslugom se Uphold može zahtijevati provjera vašeg identiteta na temelju traženih usluga.</translation>
 <translation id="723054503945711909">Poduzeće Brave Software Inc. ne obrađuje, ne pohranjuje niti pristupa nijednom osobnom podatku koji ste ustupili usluzi Uphold prilikom stvaranja računa na navedenoj usluzi.</translation>
 <translation id="1181037720776840403">Ukloni</translation>

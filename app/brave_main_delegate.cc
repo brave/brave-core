@@ -29,6 +29,7 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/unified_consent/feature.h"
+#include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -149,17 +150,17 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       extensions_features::kNewExtensionUpdaterService.name,
 #endif
-#if defined(OS_LINUX)
-      // Enable webui dark on linux.
+    // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated on
+    // this feature.
       features::kWebUIDarkMode.name,
-#endif
       omnibox::kSimplifyHttpsIndicator.name,
   };
 
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
       autofill::features::kAutofillServerCommunication.name,
-      network::features::kNetworkService.name,
+      features::kAudioServiceOutOfProcess.name,
+      features::kLookalikeUrlNavigationSuggestionsUI.name,
       unified_consent::kUnifiedConsent.name,
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
