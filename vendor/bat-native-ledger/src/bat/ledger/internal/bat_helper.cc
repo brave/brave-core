@@ -975,33 +975,6 @@ bool GRANTS_PROPERTIES_ST::loadFromJson(const std::string & json) {
   return !error;
 }
 
-void saveToJson(JsonWriter* writer, const GRANTS_PROPERTIES_ST& properties) {
-  writer->StartObject();
-
-  writer->String("grants");
-  writer->StartArray();
-  for (const auto& grant : properties.grants_) {
-    writer->StartObject();
-
-    writer->String("promotionId");
-    writer->String(grant.promotionId.c_str());
-
-    writer->String("minimumReconcileTimestamp");
-    writer->Uint64(grant.minimumReconcileTimestamp);
-
-    writer->String("protocolVersion");
-    writer->Uint64(grant.protocolVersion);
-
-    writer->String("type");
-    writer->String(grant.type.c_str());
-
-    writer->EndObject();
-  }
-  writer->EndArray();
-
-  writer->EndObject();
-}
-
 /////////////////////////////////////////////////////////////////////////////
 GRANT::GRANT() : expiryTime(0) {}
 
@@ -1151,27 +1124,6 @@ bool SURVEYOR_ST::loadFromJson(const std::string & json) {
   }
 
   return !error;
-}
-
-void saveToJson(JsonWriter* writer, const SURVEYOR_ST& data) {
-  writer->StartObject();
-
-  writer->String("signature");
-  writer->String(data.signature_.c_str());
-
-  writer->String("surveyorId");
-  writer->String(data.surveyorId_.c_str());
-
-  writer->String("surveyVK");
-  writer->String(data.surveyVK_.c_str());
-
-  writer->String("registrarVK");
-  writer->String(data.registrarVK_.c_str());
-
-  writer->String("surveySK");
-  writer->String(data.surveySK_.c_str());
-
-  writer->EndObject();
 }
 
 /////////////////////////////////////////////////////////////////////////////
