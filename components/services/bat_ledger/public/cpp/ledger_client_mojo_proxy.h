@@ -188,6 +188,18 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& publisher_key,
       GetServerPublisherInfoCallback callback) override;
 
+  void SetTransferFee(
+      const std::string& wallet_type,
+      ledger::TransferFeePtr transfer_fee) override;
+
+  void GetTransferFees(
+      const std::string& wallet_type,
+      GetTransferFeesCallback callback) override;
+
+  void RemoveTransferFee(
+      const std::string& wallet_type,
+      const std::string& id) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*

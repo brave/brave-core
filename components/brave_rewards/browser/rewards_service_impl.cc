@@ -3314,22 +3314,27 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
 
 void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
                                             ledger::ExternalWalletPtr wallet) {
-  auto* perfs =
+  auto* wallets =
       profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
 
-  base::Value new_perfs(perfs->Clone());
+  base::Value new_wallets(wallets->Clone());
 
-  base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("token", wallet->token);
-  dict.SetStringKey("address", wallet->address);
-  dict.SetIntKey("status", static_cast<int>(wallet->status));
-  dict.SetStringKey("one_time_string", wallet->one_time_string);
-  dict.SetStringKey("user_name", wallet->user_name);
-  dict.SetBoolKey("transferred", wallet->transferred);
+  auto* old_wallet = new_wallets.FindDictKey(wallet_type);
+  base::Value new_wallet(base::Value::Type::DICTIONARY);
+  if (old_wallet) {
+    new_wallet = old_wallet->Clone();
+  }
 
-  new_perfs.SetKey(wallet_type, std::move(dict));
+  new_wallet.SetStringKey("token", wallet->token);
+  new_wallet.SetStringKey("address", wallet->address);
+  new_wallet.SetIntKey("status", static_cast<int>(wallet->status));
+  new_wallet.SetStringKey("one_time_string", wallet->one_time_string);
+  new_wallet.SetStringKey("user_name", wallet->user_name);
+  new_wallet.SetBoolKey("transferred", wallet->transferred);
 
-  profile_->GetPrefs()->Set(prefs::kRewardsExternalWallets, new_perfs);
+  new_wallets.SetKey(wallet_type, std::move(new_wallet));
+
+  profile_->GetPrefs()->Set(prefs::kRewardsExternalWallets, new_wallets);
 }
 
 void RewardsServiceImpl::GetExternalWallets(
@@ -3587,6 +3592,126 @@ void RewardsServiceImpl::OnGetServerPublisherInfo(
     ledger::GetServerPublisherInfoCallback callback,
     ledger::ServerPublisherInfoPtr info) {
   callback(std::move(info));
+}
+
+void RewardsServiceImpl::SetTransferFee(
+    const std::string& wallet_type,
+    ledger::TransferFeePtr transfer_fee) {
+  if (!transfer_fee) {
+    return;
+  }
+
+  base::Value fee(base::Value::Type::DICTIONARY);
+  fee.SetStringKey("id", transfer_fee->id);
+  fee.SetDoubleKey("amount", transfer_fee->amount);
+  fee.SetIntKey("execution_timestamp", transfer_fee->execution_timestamp);
+  fee.SetIntKey("execution_id", transfer_fee->execution_id);
+
+  auto* external_wallets =
+      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+
+  base::Value new_external_wallets(external_wallets->Clone());
+
+  auto* wallet = new_external_wallets.FindDictKey(wallet_type);
+  base::Value new_wallet(base::Value::Type::DICTIONARY);
+  if (wallet) {
+    new_wallet = wallet->Clone();
+  }
+
+  auto* fees = wallet->FindListKey("transfer_fees");
+  base::Value new_fees(base::Value::Type::DICTIONARY);
+  if (fees) {
+    new_fees = fees->Clone();
+  }
+  new_fees.SetKey(transfer_fee->id, std::move(fee));
+
+  new_wallet.SetKey("transfer_fees", std::move(new_fees));
+  new_external_wallets.SetKey(wallet_type, std::move(new_wallet));
+
+  profile_->GetPrefs()->Set(
+      prefs::kRewardsExternalWallets,
+      new_external_wallets);
+}
+
+ledger::TransferFeeList RewardsServiceImpl::GetTransferFees(
+    const std::string& wallet_type) {
+  ledger::TransferFeeList fees;
+
+  auto* external_wallets =
+      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+
+  auto* wallet_key = external_wallets->FindKey(wallet_type);
+
+  const base::DictionaryValue* wallet;
+  if (!wallet_key || !wallet_key->GetAsDictionary(&wallet)) {
+    return fees;
+  }
+
+  auto* fees_key = wallet->FindKey("transfer_fees");
+  const base::DictionaryValue* fee_dict;
+  if (!fees_key || !fees_key->GetAsDictionary(&fee_dict)) {
+    return fees;
+  }
+
+  for (auto& item : *fee_dict) {
+    const base::DictionaryValue* fee_dict;
+    if (!item.second || !item.second->GetAsDictionary(&fee_dict)) {
+      continue;
+    }
+
+    auto fee = ledger::TransferFee::New();
+
+    auto *id = fee_dict->FindKey("id");
+    if (!id || !id->is_string()) {
+      continue;
+    }
+    fee->id = id->GetString();
+
+    auto* amount = fee_dict->FindKey("amount");
+    if (!amount || !amount->is_double()) {
+      continue;
+    }
+    fee->amount = amount->GetDouble();
+
+    auto *timestamp = fee_dict->FindKey("execution_timestamp");
+    if (!timestamp || !timestamp->is_int()) {
+      continue;
+    }
+    fee->execution_timestamp = timestamp->GetInt();
+
+    auto *execution_id = fee_dict->FindKey("execution_id");
+    if (!execution_id || !execution_id->is_int()) {
+      continue;
+    }
+    fee->execution_id = execution_id->GetInt();
+
+    fees.insert(std::make_pair(fee->id, std::move(fee)));
+  }
+
+  return fees;
+}
+
+void RewardsServiceImpl::RemoveTransferFee(
+    const std::string& wallet_type,
+    const std::string& id) {
+  auto* external_wallets =
+      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+
+  base::Value new_external_wallets(external_wallets->Clone());
+
+  const auto path = base::StringPrintf(
+      "%s.transfer_fees.%s",
+      wallet_type.c_str(),
+      id.c_str());
+
+  bool success = new_external_wallets.RemovePath(path);
+  if (!success) {
+    return;
+  }
+
+  profile_->GetPrefs()->Set(
+      prefs::kRewardsExternalWallets,
+      new_external_wallets);
 }
 
 bool RewardsServiceImpl::OnlyAnonWallet() {
