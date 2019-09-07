@@ -10,6 +10,7 @@
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
@@ -23,6 +24,7 @@
 #include "chrome/browser/profiles/profiles_state.h"
 #include "chrome/browser/net/proxy_config_monitor.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
@@ -65,6 +67,7 @@ class BraveProfileManagerTest : public testing::Test {
   void SetUp() override {
     // Create a new temporary directory, and store the path
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    base::PathService::Override(chrome::DIR_USER_DATA, temp_dir_.GetPath());
     TestingBrowserProcess::GetGlobal()->SetProfileManager(
         new TorUnittestProfileManager(temp_dir_.GetPath()));
   }
