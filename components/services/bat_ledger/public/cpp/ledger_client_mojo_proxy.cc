@@ -945,4 +945,23 @@ void LedgerClientMojoProxy::GetServerPublisherInfo(
                 _1));
 }
 
+void LedgerClientMojoProxy::GetTransferFees(
+    const std::string& wallet_type,
+    GetTransferFeesCallback callback) {
+  auto list = ledger_client_->GetTransferFees(wallet_type);
+  std::move(callback).Run(mojo::MapToFlatMap(std::move(list)));
+}
+
+void LedgerClientMojoProxy::SetTransferFee(
+    const std::string& wallet_type,
+    ledger::TransferFeePtr transfer_fee) {
+  ledger_client_->SetTransferFee(wallet_type, std::move(transfer_fee));
+}
+
+void LedgerClientMojoProxy::RemoveTransferFee(
+    const std::string& wallet_type,
+    const std::string& id) {
+  ledger_client_->RemoveTransferFee(wallet_type, id);
+}
+
 }  // namespace bat_ledger

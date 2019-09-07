@@ -395,6 +395,7 @@ void Contribution::InitReconcile(
 void Contribution::OnTimer(uint32_t timer_id) {
   phase_two_->OnTimer(timer_id);
   unverified_->OnTimer(timer_id);
+  uphold_->OnTimer(timer_id);
 
   if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;

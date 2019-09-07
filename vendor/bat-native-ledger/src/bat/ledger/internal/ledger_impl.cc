@@ -1521,4 +1521,21 @@ void LedgerImpl::ClearState(const std::string& name) {
   ledger_client_->ClearState(name);
 }
 
+void LedgerImpl::SetTransferFee(
+    const std::string& wallet_type,
+    ledger::TransferFeePtr transfer_fee) {
+  ledger_client_->SetTransferFee(wallet_type, std::move(transfer_fee));
+}
+
+ledger::TransferFeeList LedgerImpl::GetTransferFees(
+    const std::string& wallet_type) const {
+  return ledger_client_->GetTransferFees(wallet_type);
+}
+
+void LedgerImpl::RemoveTransferFee(
+    const std::string& wallet_type,
+    const std::string& id) {
+  ledger_client_->RemoveTransferFee(wallet_type, id);
+}
+
 }  // namespace bat_ledger
