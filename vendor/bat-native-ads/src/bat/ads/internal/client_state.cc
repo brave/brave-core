@@ -53,7 +53,8 @@ ClientState::ClientState(const ClientState& state) :
   search_activity(state.search_activity),
   search_url(state.search_url),
   shop_activity(state.shop_activity),
-  shop_url(state.shop_url) {}
+  shop_url(state.shop_url),
+  version_code (state.version_code) {}
 
 ClientState::~ClientState() = default;
 
@@ -206,6 +207,10 @@ Result ClientState::FromJson(
     shop_url = client["shopUrl"].GetString();
   }
 
+  if (client.HasMember("version_code")) {
+    version_code = client["version_code"].GetString();
+  }
+
   return SUCCESS;
 }
 
@@ -310,6 +315,9 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
 
   writer->String("shopUrl");
   writer->String(state.shop_url.c_str());
+
+  writer->String("version_code");
+  writer->String(state.version_code.c_str());
 
   writer->EndObject();
 }

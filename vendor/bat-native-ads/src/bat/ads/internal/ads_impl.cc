@@ -33,6 +33,7 @@
 
 #if defined(OS_ANDROID)
 #include "base/system/sys_info.h"
+#include "base/android/build_info.h"
 #endif
 
 #include "url/gurl.h"
@@ -132,6 +133,7 @@ void AdsImpl::InitializeStep4(const Result result) {
 
 #if defined(OS_ANDROID)
     RemoveAllNotificationsAfterReboot();
+    RemoveAllNotificationsAfterUpdate();
 #endif
 
   client_->UpdateAdUUID();
@@ -156,6 +158,19 @@ void AdsImpl::RemoveAllNotificationsAfterReboot() {
     if (ad_shown_timestamp <= boot_timestamp) {
       notifications_->RemoveAll(false);
     }
+  }
+}
+
+void AdsImpl::RemoveAllNotificationsAfterUpdate() {
+  std::string current_version_code (base::android::BuildInfo::GetInstance()->package_version_code());
+  std::string last_version_code = client_->GetVersionCode();
+  if (last_version_code.empty()) {
+    //initial update of version_code
+    client_->SetVersionCode(current_version_code);
+  }
+  else if (last_version_code != current_version_code){
+    //ads notifications don't sustain app update, so remove them
+    notifications_->RemoveAll(false);
   }
 }
 #endif
