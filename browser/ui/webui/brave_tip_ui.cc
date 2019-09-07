@@ -175,12 +175,6 @@ void RewardsTipDOMHandler::OnWalletProperties(
     }
     walletInfo->SetList("choices", std::move(choices));
 
-    auto range = std::make_unique<base::ListValue>();
-    for (double const& value : wallet_properties->parameters_range) {
-      range->AppendDouble(value);
-    }
-    walletInfo->SetList("range", std::move(range));
-
     auto grants = std::make_unique<base::ListValue>();
     for (auto const& item : wallet_properties->grants) {
       auto grant = std::make_unique<base::DictionaryValue>();

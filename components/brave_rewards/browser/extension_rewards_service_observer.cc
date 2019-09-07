@@ -98,12 +98,10 @@ void ExtensionRewardsServiceObserver::OnGetCurrentBalanceReport(
     extensions::api::brave_rewards::OnCurrentReport::Properties properties;
 
     properties.ads = balance_report.earning_from_ads;
-    properties.closing = balance_report.closing_balance;
     properties.contribute = balance_report.auto_contribute;
     properties.deposit = balance_report.deposits;
     properties.grant = balance_report.grants;
     properties.tips = balance_report.one_time_donation;
-    properties.opening = balance_report.opening_balance;
     properties.total = balance_report.total;
     properties.donation = balance_report.recurring_donation;
 

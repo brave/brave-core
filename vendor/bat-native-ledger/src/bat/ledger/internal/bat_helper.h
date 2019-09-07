@@ -91,14 +91,9 @@ struct TRANSACTION_ST {
 
   std::string viewingId_;
   std::string surveyorId_;
-  std::string contribution_fiat_amount_;
-  std::string contribution_fiat_currency_;
   std::map<std::string, double> contribution_rates_;
-  std::string contribution_altcurrency_;
   std::string contribution_probi_;
-  std::string contribution_fee_;
   std::string submissionStamp_;
-  std::string submissionId_;
   std::string anonizeViewingId_;
   std::string registrarVK_;
   std::string masterUserToken_;
@@ -187,8 +182,6 @@ struct WALLET_PROPERTIES_ST {
 
   double fee_amount_;
   std::vector<double> parameters_choices_;
-  std::vector<double> parameters_range_;
-  unsigned int parameters_days_;
   std::vector<GRANT> grants_;
 };
 

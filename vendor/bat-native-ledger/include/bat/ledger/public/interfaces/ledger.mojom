@@ -85,8 +85,6 @@ struct Grant {
 struct WalletProperties {
   double fee_amount;
   array<double> parameters_choices;
-  array<double> parameters_range;
-  uint32 parameters_days;
   array<Grant> grants;
 };
 

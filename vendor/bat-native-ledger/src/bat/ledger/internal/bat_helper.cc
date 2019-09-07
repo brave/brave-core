@@ -171,14 +171,9 @@ TRANSACTION_ST::TRANSACTION_ST():
 TRANSACTION_ST::TRANSACTION_ST(const TRANSACTION_ST& transaction) {
   viewingId_ = transaction.viewingId_;
   surveyorId_ = transaction.surveyorId_;
-  contribution_fiat_amount_ = transaction.contribution_fiat_amount_;
-  contribution_fiat_currency_ = transaction.contribution_fiat_currency_;
   contribution_rates_ = transaction.contribution_rates_;
-  contribution_altcurrency_ = transaction.contribution_altcurrency_;
   contribution_probi_ = transaction.contribution_probi_;
-  contribution_fee_ = transaction.contribution_fee_;
   submissionStamp_ = transaction.submissionStamp_;
-  submissionId_ = transaction.submissionId_;
   contribution_rates_ = transaction.contribution_rates_;
   anonizeViewingId_ = transaction.anonizeViewingId_;
   registrarVK_ = transaction.registrarVK_;
@@ -226,13 +221,8 @@ bool TRANSACTION_ST::loadFromJson(const std::string & json) {
   if (!error) {
     viewingId_ = d["viewingId"].GetString();
     surveyorId_ = d["surveyorId"].GetString();
-    contribution_fiat_amount_ = d["contribution_fiat_amount"].GetString();
-    contribution_fiat_currency_ = d["contribution_fiat_currency"].GetString();
-    contribution_altcurrency_ = d["contribution_altcurrency"].GetString();
     contribution_probi_ = d["contribution_probi"].GetString();
-    contribution_fee_ = d["contribution_fee"].GetString();
     submissionStamp_ = d["submissionStamp"].GetString();
-    submissionId_ = d["submissionId"].GetString();
     anonizeViewingId_ = d["anonizeViewingId"].GetString();
     registrarVK_ = d["registrarVK"].GetString();
     masterUserToken_ = d["masterUserToken"].GetString();
@@ -271,12 +261,6 @@ void saveToJson(JsonWriter* writer, const TRANSACTION_ST& data) {
   writer->String("surveyorId");
   writer->String(data.surveyorId_.c_str());
 
-  writer->String("contribution_fiat_amount");
-  writer->String(data.contribution_fiat_amount_.c_str());
-
-  writer->String("contribution_fiat_currency");
-  writer->String(data.contribution_fiat_currency_.c_str());
-
   writer->String("rates");
   writer->StartObject();
   for (auto & p : data.contribution_rates_) {
@@ -285,20 +269,11 @@ void saveToJson(JsonWriter* writer, const TRANSACTION_ST& data) {
   }
   writer->EndObject();
 
-  writer->String("contribution_altcurrency");
-  writer->String(data.contribution_altcurrency_.c_str());
-
   writer->String("contribution_probi");
   writer->String(data.contribution_probi_.c_str());
 
-  writer->String("contribution_fee");
-  writer->String(data.contribution_fee_.c_str());
-
   writer->String("submissionStamp");
   writer->String(data.submissionStamp_.c_str());
-
-  writer->String("submissionId");
-  writer->String(data.submissionId_.c_str());
 
   writer->String("anonizeViewingId");
   writer->String(data.anonizeViewingId_.c_str());
@@ -806,8 +781,7 @@ WINNERS_ST::WINNERS_ST() :
 WINNERS_ST::~WINNERS_ST() {}
 
 /////////////////////////////////////////////////////////////////////////////
-WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST() :
-  parameters_days_(0) {}
+WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST() {}
 
 WALLET_PROPERTIES_ST::~WALLET_PROPERTIES_ST() {}
 
@@ -815,8 +789,6 @@ WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST(
     const WALLET_PROPERTIES_ST &properties) {
   fee_amount_ = properties.fee_amount_;
   parameters_choices_ = properties.parameters_choices_;
-  parameters_range_ = properties.parameters_range_;
-  parameters_days_ = properties.parameters_days_;
   grants_ = properties.grants_;
 }
 
@@ -835,11 +807,6 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
       parameters_choices_.push_back(i.GetDouble());
     }
 
-    for (auto & i : d["parameters"]["adFree"]["range"]["BAT"].GetArray()) {
-      parameters_range_.push_back(i.GetDouble());
-    }
-
-    parameters_days_ = d["parameters"]["adFree"]["days"].GetUint();
     fee_amount_ = d["parameters"]["adFree"]["fee"]["BAT"].GetDouble();
 
     if (d.HasMember("grants") && d["grants"].IsArray()) {
@@ -899,20 +866,6 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
   writer->EndArray();
   writer->EndObject();
 
-
-  writer->String("range");
-  writer->StartObject();
-  writer->String("BAT");
-
-  writer->StartArray();
-  for (const auto & range : data.parameters_range_) {
-    writer->Double(range);
-  }
-  writer->EndArray();
-  writer->EndObject();
-
-  writer->String("days");
-  writer->Int(data.parameters_days_);
   writer->EndObject();
   writer->EndObject();
 
@@ -976,6 +929,7 @@ bool GRANTS_PROPERTIES_ST::loadFromJson(const std::string & json) {
 }
 
 /////////////////////////////////////////////////////////////////////////////
+
 GRANT::GRANT() : expiryTime(0) {}
 
 GRANT::~GRANT() {}
@@ -1783,7 +1737,6 @@ bool getJSONTransaction(const std::string& json, TRANSACTION_ST* transaction) {
     uint64_t stamp = d["paymentStamp"].GetUint64();
     transaction->submissionStamp_ = std::to_string(stamp);
     transaction->contribution_probi_ = d["probi"].GetString();
-    transaction->contribution_altcurrency_ = d["altcurrency"].GetString();
   }
   return !error;
 }

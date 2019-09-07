@@ -202,10 +202,6 @@
                 "type": "string",
                 "description": "balance defined in probi"
               },
-              "closing": {
-                "type": "string",
-                "description": "balance defined in probi"
-              },
               "contribute": {
                 "type": "string",
                 "description": "balance defined in probi"
@@ -215,10 +211,6 @@
                 "description": "balance defined in probi"
               },
               "grant": {
-                "type": "string",
-                "description": "balance defined in probi"
-              },
-              "opening": {
                 "type": "string",
                 "description": "balance defined in probi"
               },

@@ -7,16 +7,12 @@
 
 namespace brave_rewards {
 
-  WalletProperties::WalletProperties() :
-      parameters_days(0) {
-  }
+  WalletProperties::WalletProperties() = default;
 
-  WalletProperties::~WalletProperties() { }
+  WalletProperties::~WalletProperties() = default;
 
   WalletProperties::WalletProperties(const WalletProperties &properties) {
     parameters_choices = properties.parameters_choices;
-    parameters_range = properties.parameters_range;
-    parameters_days = properties.parameters_days;
     grants = properties.grants;
   }
 
