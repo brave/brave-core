@@ -328,6 +328,15 @@ class BrowserViewController: UIViewController {
             }
         })
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                // Reload UI
+                applyTheme(Theme.of(tabManager.selectedTab))
+            }
+        }
+    }
 
     func dismissVisibleMenus() {
         displayedPopoverController?.dismiss(animated: true)
