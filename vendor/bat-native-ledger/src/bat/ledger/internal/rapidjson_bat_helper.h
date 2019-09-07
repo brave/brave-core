@@ -18,14 +18,12 @@ namespace braveledger_bat_helper {
 struct BALLOT_ST;
 struct PUBLISHER_ST;
 struct PUBLISHER_STATE_ST;
-struct SURVEYOR_ST;
 struct RECONCILE_DIRECTION;
 struct CURRENT_RECONCILE;
 struct CLIENT_STATE_ST;
 struct TRANSACTION_BALLOT_ST;
 struct TRANSACTION_ST;
 struct WALLET_INFO_ST;
-struct GRANTS_PROPERTIES_ST;
 struct WALLET_PROPERTIES_ST;
 struct GRANT;
 
@@ -34,7 +32,6 @@ using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 void saveToJson(JsonWriter* writer, const BALLOT_ST&);
 void saveToJson(JsonWriter* writer, const PUBLISHER_ST&);
 void saveToJson(JsonWriter* writer, const PUBLISHER_STATE_ST&);
-void saveToJson(JsonWriter* writer, const SURVEYOR_ST&);
 void saveToJson(JsonWriter* writer, const RECONCILE_DIRECTION&);
 void saveToJson(JsonWriter* writer, const CURRENT_RECONCILE&);
 void saveToJson(JsonWriter* writer, const CLIENT_STATE_ST&);
