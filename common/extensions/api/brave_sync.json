@@ -200,10 +200,6 @@
           {
             "$ref": "Config",
             "name": "config"
-          },
-          {
-            "type": "string",
-            "name": "sync_words"
           }
         ]
       },
@@ -268,17 +264,6 @@
           {
             "type": "string",
             "name": "platform"
-          }
-        ]
-      },
-      {
-        "name": "onNeedSyncWords",
-        "type": "function",
-        "description": "Browser informs js sync library it wants to receive sync words from the seed.",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "seed"
           }
         ]
       },
@@ -409,17 +394,6 @@
           {
             "type": "string",
             "name": "order"
-          }
-        ]
-      },
-      {
-        "name": "syncWordsPrepared",
-        "type": "function",
-        "description": "Browser gets notified the sync words are ready",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "words"
           }
         ]
       }

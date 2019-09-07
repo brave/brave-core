@@ -64,13 +64,11 @@ SyncMessageHandler* BraveSyncClientImpl::sync_message_handler() {
 
 void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,
                                           const Uint8Array& device_id,
-                                          const client_data::Config& config,
-                                          const std::string& sync_words) {
+                                          const client_data::Config& config) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   extensions::api::brave_sync::Config config_extension;
   ConvertConfig(config, &config_extension);
-  brave_sync_event_router_->GotInitData(seed, device_id, config_extension,
-                                        sync_words);
+  brave_sync_event_router_->GotInitData(seed, device_id, config_extension);
 }
 
 void BraveSyncClientImpl::SendFetchSyncRecords(
@@ -119,11 +117,6 @@ void BraveSyncClientImpl::SendGetBookmarksBaseOrder(
     const std::string& platform) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_event_router_->SendGetBookmarksBaseOrder(device_id, platform);
-}
-
-void BraveSyncClientImpl::NeedSyncWords(const std::string &seed) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  brave_sync_event_router_->NeedSyncWords(seed);
 }
 
 void BraveSyncClientImpl::OnExtensionInitialized() {

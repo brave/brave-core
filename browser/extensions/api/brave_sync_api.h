@@ -60,12 +60,6 @@ class BraveSyncSaveBookmarksBaseOrderFunction
   ResponseAction Run() override;
 };
 
-class BraveSyncSyncWordsPreparedFunction : public UIThreadExtensionFunction {
-  ~BraveSyncSyncWordsPreparedFunction() override {}
-  DECLARE_EXTENSION_FUNCTION("braveSync.syncWordsPrepared", UNKNOWN)
-  ResponseAction Run() override;
-};
-
 class BraveSyncExtensionInitializedFunction
     : public UIThreadExtensionFunction {
   ~BraveSyncExtensionInitializedFunction() override {}

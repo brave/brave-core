@@ -6,8 +6,7 @@
    "manifest_version":2,
    "background": {
      "scripts": [
-        "extension/background.js",
-        "extension/brave-crypto/browser/crypto.js"
+        "extension/background.js"
       ],
      "persistent": true
    },

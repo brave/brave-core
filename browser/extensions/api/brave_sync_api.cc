@@ -153,20 +153,6 @@ BraveSyncSaveBookmarksBaseOrderFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
-  std::unique_ptr<brave_sync::SyncWordsPrepared::Params> params(
-      brave_sync::SyncWordsPrepared::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  BraveSyncService* sync_service = GetSyncService(browser_context());
-  DCHECK(sync_service);
-  sync_service->GetBraveSyncClient()
-      ->sync_message_handler()
-      ->OnSyncWordsPrepared(params->words);
-
-  return RespondNow(NoArguments());
-}
-
 ExtensionFunction::ResponseAction BraveSyncExtensionInitializedFunction::Run() {
   // Also inform sync client extension started
   BraveSyncService* sync_service = GetSyncService(browser_context());
