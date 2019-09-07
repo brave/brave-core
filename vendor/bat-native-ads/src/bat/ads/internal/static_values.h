@@ -24,18 +24,18 @@ const uint64_t kMaximumEntriesInAdsShownHistory = 99;
 
 const uint64_t kDebugOneHourInSeconds = 25;
 
-char kEasterEggUrl[] = "https://iab.com";
+const char kEasterEggUrl[] = "https://iab.com";
 const uint64_t kNextEasterEggStartsInSeconds = 30;
 
-char kShoppingStateUrl[] = "https://amazon.com";
+const char kShoppingStateUrl[] = "https://amazon.com";
 
 const uint64_t kSustainAdInteractionAfterSeconds = 10;
 
 const uint64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
 const uint64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
 
-char kDefaultLanguageCode[] = "en";
-char kDefaultCountryCode[] = "US";
+const char kDefaultLanguageCode[] = "en";
+const char kDefaultCountryCode[] = "US";
 
 const int kMaximumAdNotifications = 3;
 
