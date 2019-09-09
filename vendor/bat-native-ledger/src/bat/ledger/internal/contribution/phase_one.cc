@@ -278,8 +278,6 @@ void PhaseOne::ReconcilePayloadCallback(
   transaction.viewingId_ = reconcile.viewingId_;
   transaction.surveyorId_ = reconcile.surveyorInfo_.surveyorId_;
   transaction.contribution_rates_ = reconcile.rates_;
-  transaction.contribution_fiat_amount_ = reconcile.amount_;
-  transaction.contribution_fiat_currency_ = reconcile.currency_;
 
   if (ledger::is_testing) {
     transaction.contribution_probi_ = reconcile.amount_ + "000000000000000000";

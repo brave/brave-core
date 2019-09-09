@@ -20,8 +20,6 @@ struct WalletProperties {
 
   double monthly_amount;
   std::vector<double> parameters_choices;
-  std::vector<double> parameters_range;
-  unsigned int parameters_days;
   std::vector<Grant> grants;
 };
 

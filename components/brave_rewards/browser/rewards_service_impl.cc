@@ -852,8 +852,6 @@ void RewardsServiceImpl::OnWalletProperties(
     if (properties) {
       wallet_properties.reset(new brave_rewards::WalletProperties);
       wallet_properties->parameters_choices = properties->parameters_choices;
-      wallet_properties->parameters_range = properties->parameters_range;
-      wallet_properties->parameters_days = properties->parameters_days;
       wallet_properties->monthly_amount = properties->fee_amount;
 
       for (size_t i = 0; i < properties->grants.size(); i ++) {
@@ -1895,8 +1893,6 @@ void RewardsServiceImpl::OnGetAllBalanceReports(
   std::map<std::string, brave_rewards::BalanceReport> newReports;
   for (auto const& report : reports) {
     brave_rewards::BalanceReport newReport;
-    newReport.opening_balance = report.second->opening_balance;
-    newReport.closing_balance = report.second->closing_balance;
     newReport.grants = report.second->grants;
     newReport.earning_from_ads = report.second->earning_from_ads;
     newReport.auto_contribute = report.second->auto_contribute;
@@ -2452,8 +2448,6 @@ void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(
     ledger::BalanceReportInfoPtr report) {
   for (auto& observer : private_observers_) {
     brave_rewards::BalanceReport balance_report;
-    balance_report.opening_balance = report->opening_balance;
-    balance_report.closing_balance = report->closing_balance;
     balance_report.grants = report->grants;
     balance_report.earning_from_ads = report->earning_from_ads;
     balance_report.auto_contribute = report->auto_contribute;

@@ -69,7 +69,6 @@ declare namespace RewardsTip {
 
   export interface WalletProperties {
     choices: number[]
-    range?: number[]
     grants?: Grant[]
   }
 

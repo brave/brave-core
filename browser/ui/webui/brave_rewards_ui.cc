@@ -412,8 +412,6 @@ void RewardsDOMHandler::OnGetAllBalanceReports(
       for (auto const& report : reports) {
         const brave_rewards::BalanceReport oldReport = report.second;
         auto newReport = std::make_unique<base::DictionaryValue>();
-        newReport->SetString("opening", oldReport.opening_balance);
-        newReport->SetString("closing", oldReport.closing_balance);
         newReport->SetString("grant", oldReport.grants);
         newReport->SetString("deposit", oldReport.deposits);
         newReport->SetString("ads", oldReport.earning_from_ads);
@@ -497,12 +495,6 @@ void RewardsDOMHandler::OnGetAutoContributeProps(
         choices->AppendDouble(choice);
       }
       walletInfo->SetList("choices", std::move(choices));
-
-      auto range = std::make_unique<base::ListValue>();
-      for (double const& value : wallet_properties->parameters_range) {
-        range->AppendDouble(value);
-      }
-      walletInfo->SetList("range", std::move(range));
 
       auto grants = std::make_unique<base::ListValue>();
       for (auto const& item : wallet_properties->grants) {
