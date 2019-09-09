@@ -86,6 +86,8 @@ class Client {
       const std::string& campaign_id);
   const std::map<std::string, std::deque<uint64_t>>
       GetCampaignHistory() const;
+  std::string GetVersionCode() const;
+  void SetVersionCode(const std::string& value);
 
   void RemoveAllHistory();
 
