@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/version_info.h"
 #include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 
 #include <stdint.h>
