@@ -66,9 +66,6 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
 
   void SetUpOnMainThread() override {
     ExtensionBrowserTest::SetUpOnMainThread();
-    base::PostTaskWithTraits(
-        FROM_HERE, {BrowserThread::IO},
-        base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
