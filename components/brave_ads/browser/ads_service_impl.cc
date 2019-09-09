@@ -1364,9 +1364,12 @@ bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
   // |prefs::kEnabled| is set to |true|, |prefs::kIdleThreshold| does not exist,
   // |prefs::kVersion| does not exist and it is not the first time the browser
   // has run for this user
-
+#if !defined(OS_ANDROID)
   return GetBooleanPref(prefs::kEnabled) && !PrefExists(prefs::kIdleThreshold)
       && !PrefExists(prefs::kVersion) && !first_run::IsChromeFirstRun();
+#else
+  return false;
+#endif
 }
 
 void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
@@ -1634,7 +1637,7 @@ std::string AdsServiceImpl::GetStringPref(
 
 void AdsServiceImpl::ResetTheWholeState(
     const base::Callback<void(bool)>& callback) {
-  SetAdsEnabled(false);
+  SetEnabled(false);
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&ResetOnFileTaskRunner,
