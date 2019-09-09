@@ -154,7 +154,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kAudioServiceOutOfProcess.name,
       features::kLookalikeUrlNavigationSuggestionsUI.name,
       unified_consent::kUnifiedConsent.name,
-#if !defined(CHROME_MULTIPLE_DLL_CHILD) && !BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+#if !defined(CHROME_MULTIPLE_DLL_CHILD) && !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
       translate::kTranslateUI.name,  // only available in browser process
 #endif
   };

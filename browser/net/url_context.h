@@ -130,12 +130,12 @@ using OnBeforeURLRequestCallback =
     base::Callback<int(const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnBeforeStartTransactionCallback =
-    base::Callback<int(
+    base::Callback<int(net::URLRequest* request,
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnHeadersReceivedCallback =
-    base::Callback<int(
+    base::Callback<int(net::URLRequest* request,
         const net::HttpResponseHeaders* original_response_headers,
         scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
         GURL* allowed_unsafe_redirect_url,

@@ -72,7 +72,7 @@ source_set("net") {
     ]
   }
 
-  if (enable_brave_translate) {
+  if (enable_brave_translate_go) {
     sources += [
       "brave_translate_redirect_network_delegate_helper.cc",
       "brave_translate_redirect_network_delegate_helper.h",

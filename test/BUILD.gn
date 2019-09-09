@@ -149,7 +149,7 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (enable_brave_translate) {
+  if (enable_brave_translate_go) {
     sources += [
       "//brave/browser/net/brave_translate_redirect_network_delegate_helper_unittest.cc",
     ]

@@ -7,7 +7,7 @@
 
 namespace {
 bool IsBraveTranslateEnabled() {
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return true;
 #endif
   return false;

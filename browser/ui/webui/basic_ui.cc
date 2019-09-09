@@ -13,10 +13,6 @@
 #include "content/public/common/bindings_policy.h"
 #include "ui/resources/grit/webui_resources_map.h"
 
-#if !defined(OS_ANDROID)
-#include "chrome/browser/ui/webui/dark_mode_handler.h"
-#endif
-
 content::WebUIDataSource* CreateBasicUIHTMLSource(
     Profile* profile,
     const std::string& name,
@@ -70,9 +66,6 @@ BasicUI::BasicUI(content::WebUI* web_ui,
   Profile* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
       resource_map, resource_map_size, html_resource_id);
-#if !defined(OS_ANDROID)
-  DarkModeHandler::Initialize(web_ui, source);
-#endif
   content::WebUIDataSource::Add(profile, source);
 }
 

@@ -57,8 +57,6 @@ bool GetDefaultFromResourceIdentifier(const std::string& resource_identifier,
   return false;
 }
 
-}  // namespace
-
 ContentSetting GetDefaultAllowFromControlType(ControlType type) {
   if (type == ControlType::DEFAULT)
     return CONTENT_SETTING_DEFAULT;
