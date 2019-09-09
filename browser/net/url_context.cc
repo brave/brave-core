@@ -16,15 +16,16 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/resource_request_info.h"
-#include "chrome/browser/profiles/profile.h"
 #include "net/base/upload_bytes_element_reader.h"
 #include "net/base/upload_data_stream.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#include "extensions/browser/extension_registry.h"
 #include "extensions/browser/info_map.h"
 #endif
 
@@ -32,8 +33,27 @@ namespace brave {
 
 namespace {
 
+bool IsWebTorrentDisabled(content::BrowserContext* browser_context) {
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(browser_context);
+  auto* extension_registry =
+      extensions::ExtensionRegistry::Get(browser_context);
+
+  if (!extension_registry)
+    return true;
+
+  if (extension_registry->enabled_extensions().Contains(
+          brave_webtorrent_extension_id))
+    return false;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+
+  return true;
+}
+
 bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
   DCHECK(resource_context);
 
   const ProfileIOData* io_data =
@@ -79,6 +99,21 @@ std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
   return upload_data;
 }
 
+std::string GetUploadData(const network::ResourceRequest& request) {
+  std::string upload_data;
+  if (!request.request_body) {
+    return {};
+  }
+  const auto* elements = request.request_body->elements();
+  for (const network::DataElement& element : *elements) {
+    if (element.type() == network::mojom::DataElementType::kBytes) {
+      upload_data.append(element.bytes(), element.length());
+    }
+  }
+
+  return upload_data;
+}
+
 }  // namespace
 
 BraveRequestInfo::BraveRequestInfo() = default;
@@ -114,10 +149,13 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
   } else {
     // We can not always use site_for_cookies since it can be empty in certain
     // cases. See the comments in url_request.h
-    ctx->tab_url = brave_shields::BraveShieldsWebContentsObserver::
-        GetTabURLFromRenderFrameInfo(ctx->render_process_id,
-                                     ctx->render_frame_id,
-                                     ctx->frame_tree_node_id).GetOrigin();
+    ctx->tab_url = GURL(request->network_isolation_key().ToString());
+    if (ctx->tab_url.is_empty()) {
+      ctx->tab_url = brave_shields::BraveShieldsWebContentsObserver::
+          GetTabURLFromRenderFrameInfo(ctx->render_process_id,
+                                       ctx->render_frame_id,
+                                       ctx->frame_tree_node_id).GetOrigin();
+    }
   }
   ctx->tab_origin = ctx->tab_url.GetOrigin();
   ctx->allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
@@ -131,12 +169,6 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
       brave_shields::IsAllowContentSettingFromIO(request, ctx->tab_origin,
           ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kHTTPUpgradableResources);
-  ctx->allow_1p_cookies = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, GURL("https://firstParty/"),
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
-  ctx->allow_3p_cookies = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies);
   ctx->allow_referrers = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers);

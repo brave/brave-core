@@ -9,6 +9,7 @@
 
 #include "base/mac/sdk_forward_declarations.h"
 #include "brave/browser/themes/brave_theme_utils_internal.h"
+#include "ui/native_theme/native_theme.h"
 
 void SetSystemTheme(BraveThemeType type) {
   if (type == BRAVE_THEME_TYPE_DEFAULT) {

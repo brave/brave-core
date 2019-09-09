@@ -70,10 +70,7 @@ struct BraveRequestInfo {
   bool allow_brave_shields = true;
   bool allow_ads = false;
   bool allow_http_upgradable_resource = false;
-  bool allow_1p_cookies = true;
-  bool allow_3p_cookies = false;
   bool allow_referrers = false;
-  bool allow_google_auth = true;
   bool is_webtorrent_disabled = false;
   int render_process_id = 0;
   int render_frame_id = 0;
@@ -105,7 +102,7 @@ struct BraveRequestInfo {
   std::string upload_data;
 
   static void FillCTXFromRequest(const net::URLRequest* request,
-    std::shared_ptr<brave::BraveRequestInfo> ctx);
+                                 std::shared_ptr<brave::BraveRequestInfo> ctx);
 
   static void FillCTX(
       const network::ResourceRequest& request,
@@ -130,12 +127,12 @@ using OnBeforeURLRequestCallback =
     base::Callback<int(const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnBeforeStartTransactionCallback =
-    base::Callback<int(net::URLRequest* request,
+    base::Callback<int(
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnHeadersReceivedCallback =
-    base::Callback<int(net::URLRequest* request,
+    base::Callback<int(
         const net::HttpResponseHeaders* original_response_headers,
         scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
         GURL* allowed_unsafe_redirect_url,

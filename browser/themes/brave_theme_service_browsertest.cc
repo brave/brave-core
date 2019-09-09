@@ -128,11 +128,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ThemeObserverTest) {
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
 }
 
-#if defined(OS_MACOSX) || defined(OS_WIN)
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
-  if (!BraveThemeService::SystemThemeModeEnabled())
-    return;
-
   const bool initial_mode =
       ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled();
   Profile* profile = browser()->profile();
@@ -150,9 +146,12 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
   EXPECT_FALSE(
       ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
 
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
-  EXPECT_EQ(initial_mode,
-            ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+  if (BraveThemeService::SystemThemeModeEnabled()) {
+    SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
+    EXPECT_EQ(
+        initial_mode,
+        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+  }
 }
 
 #if defined(OS_WIN)
