@@ -362,6 +362,23 @@ void AdsImpl::NotificationEventTimedOut(
       NotificationResultInfoResultType::TIMEOUT);
 }
 
+bool AdsImpl::IsDoNotDisturb() const {
+  if (!IsMobile()) {
+    return false;
+  }
+
+  auto now = base::Time::Now();
+  base::Time::Exploded now_exploded;
+  now.LocalExplode(&now_exploded);
+
+  if (now_exploded.hour >= kDoNotDisturbToHour &&
+      now_exploded.hour <= kDoNotDisturbFromHour) {
+    return false;
+  }
+
+  return true;
+}
+
 void AdsImpl::OnTabUpdated(
     const int32_t tab_id,
     const std::string& url,
@@ -690,7 +707,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
       return;
     }
 
-    if (!IsForeground()) {
+    if (!IsMobile() && !IsForeground()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'not in foreground' }
 
@@ -704,6 +721,17 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
       // 'Notification not made', { reason: 'media playing in browser' }
 
       BLOG(INFO) << "Notification not made: Media playing in browser";
+
+      return;
+    }
+
+    if (IsDoNotDisturb() && !IsForeground()) {
+      // TODO(Terry Mancey): Implement Log (#44)
+      // 'Notification not made', { reason: 'do not disturb while not in
+      // foreground' }
+
+      BLOG(INFO)
+          << "Notification not made: Do not disturb while not in foreground";
 
       return;
     }

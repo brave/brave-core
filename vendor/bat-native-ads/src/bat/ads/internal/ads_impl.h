@@ -92,6 +92,8 @@ class AdsImpl : public Ads {
       const std::string& id,
       const NotificationInfo& notification);
 
+  bool IsDoNotDisturb() const;
+
   int32_t last_shown_tab_id_;
   std::string last_shown_tab_url_;
   std::string previous_tab_url_;
