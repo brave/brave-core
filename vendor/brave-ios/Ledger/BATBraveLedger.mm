@@ -72,6 +72,8 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
 @property (nonatomic) NSHashTable<BATBraveLedgerObserver *> *observers;
 
+@property (nonatomic, getter=isLoadingPublisherList) BOOL loadingPublisherList;
+
 /// Notifications
 
 @property (nonatomic) NSMutableArray<BATRewardsNotification *> *mNotifications;
@@ -441,6 +443,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)refreshPublisherWithId:(NSString *)publisherId completion:(void (^)(BATPublisherStatus status))completion
 {
+  if (self.loadingPublisherList) {
+    completion(BATPublisherStatusNotVerified);
+    return;
+  }
   ledger->RefreshPublisher(std::string(publisherId.UTF8String), ^(ledger::PublisherStatus status) {
     completion(static_cast<BATPublisherStatus>(status));
   });
@@ -1733,11 +1739,22 @@ BATLedgerBridge(BOOL,
 
 - (void)clearAndInsertServerPublisherList:(ledger::ServerPublisherInfoList)list callback:(ledger::ClearAndInsertServerPublisherListCallback)callback
 {
+  if (self.loadingPublisherList) {
+    return;
+  }
   const auto list_ = NSArrayFromVector(&list, ^BATServerPublisherInfo *(const ledger::ServerPublisherInfoPtr& info) {
     return [[BATServerPublisherInfo alloc] initWithServerPublisherInfo:*info];
   });
+  self.loadingPublisherList = YES;
   [BATLedgerDatabase clearAndInsertList:list_ completion:^(BOOL success) {
+    self.loadingPublisherList = NO;
     callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+    
+    for (BATBraveLedgerObserver *observer in self.observers) {
+      if (observer.publisherListUpdated) {
+        observer.publisherListUpdated();
+      }
+    }
   }];
 }
 

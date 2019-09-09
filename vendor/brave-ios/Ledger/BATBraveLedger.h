@@ -92,6 +92,8 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Publishers
 
+@property (nonatomic, readonly, getter=isLoadingPublisherList) BOOL loadingPublisherList;
+
 /// Get publisher info & its activity based on its publisher key
 ///
 /// This key is _not_ always the URL's host. Use `publisherActivityFromURL`
