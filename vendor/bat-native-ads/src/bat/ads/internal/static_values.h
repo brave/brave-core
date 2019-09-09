@@ -37,7 +37,10 @@ const uint64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
 const char kDefaultLanguageCode[] = "en";
 const char kDefaultCountryCode[] = "US";
 
+
+#if defined(OS_ANDROID)
 const int kMaximumAdNotifications = 3;
+#endif
 
 }  // namespace ads
 

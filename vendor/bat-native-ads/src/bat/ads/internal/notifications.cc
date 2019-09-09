@@ -50,7 +50,7 @@ bool Notifications::Get(const std::string& id, NotificationInfo* info) const {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(notifications_.begin(), notifications_.end(),
-      [&id](const auto & v){return v.id == id;});
+      [&id](const auto& notification){return notification.id == id;});
   if (iter == notifications_.end()) {
     return false;
   }
@@ -83,7 +83,7 @@ bool Notifications::Remove(const std::string& id, bool should_dismiss) {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(notifications_.begin(), notifications_.end(),
-      [&id](const auto & v){return v.id == id;});
+      [&id](const auto& notification){return notification.id == id;});
   if (iter == notifications_.end()) {
     return false;
   }
@@ -115,7 +115,7 @@ bool Notifications::Exists(const std::string& id) const {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(notifications_.begin(), notifications_.end(),
-      [&id](const auto & v){return v.id == id;});
+      [&id](const auto& notification){return notification.id == id;});
   if (iter == notifications_.end()) {
     return false;
   }

@@ -970,9 +970,12 @@ bool AdsImpl::ShowAd(
       << std::endl << "  uuid: " << notification_info->uuid;
 
   notifications_->PushBack(*notification_info);
+
+#if defined(OS_ANDROID)
   if (notifications_->Count() > kMaximumAdNotifications) {
     notifications_->PopFront(true);
   }
+#endif
 
 
   client_->AppendCurrentTimeToAdsShownHistory();
