@@ -258,6 +258,11 @@ class AdsImpl : public Ads {
   bool IsCatalogOlderThanOneDay();
   void NotificationAllowedCheck(
       const bool serve);
+	  
+  #if defined(OS_ANDROID)
+  void RemoveAllNotificationsAfterReboot();
+  void RemoveAllNotificationsAfterUpdate();
+  #endif
 
   void BundleUpdated();
 
