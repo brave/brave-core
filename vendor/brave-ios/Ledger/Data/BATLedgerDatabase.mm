@@ -655,7 +655,29 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   info.status = static_cast<BATPublisherStatus>(serverInfo.status);
   info.excluded = serverInfo.excluded;
   info.address = serverInfo.address;
-  info.banner = [self bannerForPublisherID:publisherID];
+  
+  const auto banner = [[BATPublisherBanner alloc] init];
+  banner.publisherKey = publisherID;
+  banner.title = serverInfo.banner.title;
+  banner.desc = serverInfo.banner.desc;
+  banner.background = serverInfo.banner.background;
+  banner.logo = serverInfo.banner.logo;
+  banner.links = ^NSDictionary *{
+    NSMutableDictionary *links = [[NSMutableDictionary alloc] init];
+    for (ServerPublisherLink *link in serverInfo.links) {
+      links[link.provider] = link.link;
+    }
+    return [links copy];
+  }();
+  banner.amounts = ^NSArray *{
+    NSMutableArray *amounts = [[NSMutableArray alloc] init];
+    for (ServerPublisherAmount *amount in serverInfo.amounts) {
+      [amounts addObject:@(amount.amount)];
+    }
+    return [amounts copy];
+  }();
+  info.banner = banner;
+  
   return info;
 }
 

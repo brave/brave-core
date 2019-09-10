@@ -1143,7 +1143,7 @@
   const auto amounts = queriedInfo.banner.amounts;
   const auto links =  queriedInfo.banner.links;
   XCTAssertEqual(amounts.count, info.banner.amounts.count);
-  XCTAssert([amounts isEqualToArray:info.banner.amounts]);
+  XCTAssert([[NSSet setWithArray:amounts] isEqualToSet:[NSSet setWithArray:info.banner.amounts]]);
   XCTAssertEqual(links.count, info.banner.links.count);
   for (NSString *key in links) {
     XCTAssert([info.banner.links[key] isEqualToString:links[key]]);
