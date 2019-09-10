@@ -42,13 +42,13 @@ const char kCRLSetPrefix4[] =
     "*://storage.googleapis.com/update-delta/hfnkpimlhhgieaddgfemjhofmfblmnib"
     "/*crxd";
 const char kGoogleAnalyticsPattern[] =
-    "https://www.google-analytics.com/analytics.js";
+    "https://www.google-analytics.com/analytics.js*";
 const char kChromeCastPrefix[] =
     "*://*.gvt1.com/edgedl/chromewebstore/*pkedcjkdefgpdelpbcmbmeomcjbeemfm*";
 const char kGoogleTagManagerPattern[] =
-    "https://www.googletagmanager.com/gtm.js";
+    "https://www.googletagmanager.com/gtm.js*";
 const char kGoogleTagServicesPattern[] =
-    "https://www.googletagservices.com/tag/js/gpt.js";
+    "https://www.googletagservices.com/tag/js/gpt.js*";
 const char kForbesPattern[] = "https://www.forbes.com/*";
 const char kForbesExtraCookies[] =
     "forbes_ab=true; welcomeAd=true; adblock_session=Off; "
