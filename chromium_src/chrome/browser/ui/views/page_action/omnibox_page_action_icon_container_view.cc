@@ -4,13 +4,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
+#include "brave/browser/ui/views/reader_mode/brave_reader_mode_icon_view.h"
 
 #include "brave/browser/translate/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #define TranslateIconView BraveTranslateIconView
 #endif
+#define ReaderModeIconView BraveReaderModeIconView
 #include "../../../../../../../chrome/browser/ui/views/page_action/omnibox_page_action_icon_container_view.cc"
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #undef TranslateIconView
 #endif
+#undef ReaderModeIconView
