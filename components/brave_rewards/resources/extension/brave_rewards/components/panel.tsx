@@ -564,6 +564,29 @@ export class Panel extends React.Component<Props, State> {
     chrome.braveRewards.disconnectWallet('uphold')
   }
 
+  shouldShowConnectedMessage = () => {
+    const { externalWallet, balance } = this.props.rewardsPanelData
+    const { wallets } = balance
+    const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+    const notVerified = publisher && utils.isPublisherNotVerified(publisher.status)
+    const connected = publisher && utils.isPublisherConnected(publisher.status)
+    const status = utils.getWalletStatus(externalWallet)
+
+    if (notVerified) {
+      return true
+    }
+
+    if (connected && (status === 'unverified' ||
+      status === 'disconnected_unverified' ||
+      status === 'disconnected_verified')) {
+      return false
+    }
+
+    const hasAnonBalance = wallets['anonymous'] && wallets['anonymous'] > 0
+
+    return connected && !hasAnonBalance
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC, externalWallet } = this.props.rewardsPanelData
     const { total, rates } = this.props.rewardsPanelData.balance
@@ -577,8 +600,6 @@ export class Panel extends React.Component<Props, State> {
     let { currentGrant } = this.props.rewardsPanelData
     const defaultContribution = this.getContribution(publisher)
     const checkmark = publisher && utils.isPublisherConnectedOrVerified(publisher.status)
-    const connected = publisher && utils.isPublisherConnected(publisher.status)
-    const notVerified = publisher && utils.isPublisherNotVerified(publisher.status)
     const tipAmounts = defaultContribution !== '0.0'
       ? this.generateAmounts(publisher)
       : undefined
@@ -657,7 +678,7 @@ export class Panel extends React.Component<Props, State> {
               donationAction={this.showTipSiteDetail}
               onAmountChange={this.onContributionAmountChange}
               onIncludeInAuto={this.switchAutoContribute}
-              showUnVerified={connected || notVerified}
+              showUnVerified={this.shouldShowConnectedMessage()}
               acEnabled={enabledAC}
               donationAmounts={tipAmounts}
               moreLink={'https://brave.com/faq/#unclaimed-funds'}
