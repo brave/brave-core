@@ -85,8 +85,10 @@ class SearchEngines {
     /// Whether or not we should show DuckDuckGo related promotions based on the users current region
     static var shouldShowDuckDuckGoPromo: Bool {
         // We want to show ddg promo in most cases so guard returns true.
-        guard let region = Locale.current.regionCode else { return true }
-        return !defaultRegionSearchEngines.keys.contains(region)
+        guard let region = Locale.current.regionCode,
+            let searchEngine = defaultRegionSearchEngines[region] else { return true }
+        
+        return searchEngine == OpenSearchEngine.EngineNames.duckDuckGo
     }
 
     func setDefaultEngine(_ engine: String, forType type: DefaultEngineType) {
