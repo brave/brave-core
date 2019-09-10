@@ -1,0 +1,15 @@
+import("//build/config/features.gni")
+
+source_set("webcompat_reporter") {
+  sources = [
+    "webcompat_reporter_dialog.cc",
+    "webcompat_reporter_dialog.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//content/public/browser",
+    "//ui/web_dialogs",
+  ]
+}

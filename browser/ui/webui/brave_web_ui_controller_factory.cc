@@ -9,6 +9,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
+#include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
@@ -61,6 +62,8 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
+  } else if (host == kWebcompatReporterHost) {
+    return new WebcompatReporterUI(web_ui, url.host());
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   } else if (host == kWalletHost) {
     return new BraveWalletUI(web_ui, url.host());
@@ -98,6 +101,7 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
+      url.host_piece() == kWebcompatReporterHost ||
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
       url.host_piece() == kWalletHost ||
 #endif

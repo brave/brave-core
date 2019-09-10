@@ -3,19 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export {
-  SideBySideButtons,
-  ModalLayout,
-  PaddedButton,
-  TextSection,
-  IconTitle
-} from './structure'
+import { combineReducers } from 'redux'
 
-export {
-  RectangularCard,
-  ModalTitle,
-  InfoText,
-  DisclaimerText,
-  NonInteractiveURL,
-  SuccessIcon
-} from './display'
+// Utils
+import webcompatReporterReducer from './webcompatreporter_reducer'
+
+export default combineReducers<WebcompatReporter.ApplicationState>({
+  reporterState: webcompatReporterReducer
+})

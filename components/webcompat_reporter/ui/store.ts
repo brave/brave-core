@@ -3,19 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export {
-  SideBySideButtons,
-  ModalLayout,
-  PaddedButton,
-  TextSection,
-  IconTitle
-} from './structure'
+import { createStore } from 'redux'
 
-export {
-  RectangularCard,
-  ModalTitle,
-  InfoText,
-  DisclaimerText,
-  NonInteractiveURL,
-  SuccessIcon
-} from './display'
+// Utils
+import reducers from './reducers'
+
+export default createStore(reducers)

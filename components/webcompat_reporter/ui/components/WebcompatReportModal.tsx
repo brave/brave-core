@@ -6,9 +6,9 @@
 import * as React from 'react'
 
 // Components group
-import ReportView from './screens/ReportView'
-import ConfirmationView from './screens/ConfirmationView'
-import { RectangularCard } from '../../components/basic/display'
+import ReportView from './ReportView'
+import ConfirmationView from './ConfirmationView'
+import { RectangularCard } from './basic'
 
 interface Props {
   siteUrl: string

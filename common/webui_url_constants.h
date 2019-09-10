@@ -8,6 +8,7 @@
 
 extern const char kAdblockHost[];
 extern const char kAdblockJS[];
+extern const char kWebcompatReporterHost[];
 extern const char kRewardsPageHost[];
 extern const char kRewardsInternalsHost[];
 extern const char kWelcomeHost[];
@@ -18,6 +19,7 @@ extern const char kBraveUISyncHost[];
 extern const char kBraveSyncJS[];
 extern const char kBraveUIRewardsURL[];
 extern const char kBraveUIAdblockURL[];
+extern const char kBraveUIWebcompatReporterURL[];
 extern const char kBraveUITipHost[];
 extern const char kBraveUITipURL[];
 extern const char kBraveUISyncURL[];
