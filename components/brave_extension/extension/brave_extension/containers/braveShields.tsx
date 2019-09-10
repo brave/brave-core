@@ -2,31 +2,111 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import * as shieldsPanelActions from '../actions/shieldsPanelActions'
-import * as shieldsPanelState from '../state/shieldsPanelState'
-import BraveShields from '../components/braveShields'
-import { State } from '../types/state/mainState'
+import * as React from 'react'
 
-const mapStateToProps = (
-  state: State,
-  ownProps: {
-    settings: chrome.braveShields.BraveShieldsViewPreferences
+// CSS normalizer
+import 'emptykit.css'
+
+// Components group
+import AdvancedView from './advancedView'
+import SimpleView from './simpleView'
+import ReadOnlyView from './readOnlyView'
+
+// API
+import * as shieldsAPI from '../background/api/shieldsAPI'
+
+// Types
+import { Tab, PersistentData } from '../types/state/shieldsPannelState'
+import {
+  ShieldsToggled,
+  BlockAdsTrackers,
+  HttpsEverywhereToggled,
+  BlockJavaScript,
+  BlockFingerprinting,
+  BlockCookies,
+  AllowScriptOriginsOnce,
+  SetScriptBlockedCurrentState,
+  SetGroupedScriptsBlockedCurrentState,
+  SetAllScriptsBlockedCurrentState,
+  SetFinalScriptsBlockedState,
+  SetAdvancedViewFirstAccess
+} from '../types/actions/shieldsPanelActions'
+
+interface Props {
+  actions: {
+    shieldsToggled: ShieldsToggled
+    blockAdsTrackers: BlockAdsTrackers
+    httpsEverywhereToggled: HttpsEverywhereToggled
+    blockJavaScript: BlockJavaScript
+    blockFingerprinting: BlockFingerprinting
+    blockCookies: BlockCookies
+    allowScriptOriginsOnce: AllowScriptOriginsOnce
+    setScriptBlockedCurrentState: SetScriptBlockedCurrentState
+    setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
+    setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
+    setFinalScriptsBlockedState: SetFinalScriptsBlockedState
+    setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
   }
-) => {
-  return ({
-    shieldsPanelTabData: shieldsPanelState.getActiveTabData(state.shieldsPanel),
-    persistentData: shieldsPanelState.getPersistentData(state.shieldsPanel),
-    settings: ownProps.settings
-  })
+  shieldsPanelTabData: Tab
+  persistentData: PersistentData
+  settings: any
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  actions: bindActionCreators(shieldsPanelActions, dispatch)
-})
+interface State {
+  showReadOnlyView: boolean
+  showAdvancedView: boolean
+}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BraveShields as any) // TODO remove any
+export default class Shields extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      showReadOnlyView: false,
+      showAdvancedView: props.settings.showAdvancedView
+    }
+  }
+
+  toggleReadOnlyView = () => {
+    this.setState({ showReadOnlyView: !this.state.showReadOnlyView })
+  }
+
+  toggleAdvancedView = () => {
+    const { showAdvancedView } = this.state
+    shieldsAPI.setViewPreferences({ showAdvancedView: !showAdvancedView })
+      // change local state so the component can trigger an update
+      // otherwise change will be visible only after shields closes
+      .then(() => this.setState({ showAdvancedView: !showAdvancedView }))
+      .catch((err) => console.log('[Shields] Unable to toggle advanced view interface:', err))
+  }
+
+  render () {
+    const { shieldsPanelTabData, persistentData, actions } = this.props
+    const { showAdvancedView, showReadOnlyView } = this.state
+    if (!shieldsPanelTabData) {
+      return null
+    }
+    return showAdvancedView
+      ? (
+        <AdvancedView
+          shieldsPanelTabData={shieldsPanelTabData}
+          persistentData={persistentData}
+          toggleAdvancedView={this.toggleAdvancedView}
+          actions={actions}
+        />
+      ) : showReadOnlyView
+      ? (
+        <ReadOnlyView
+          shieldsPanelTabData={shieldsPanelTabData}
+          toggleReadOnlyView={this.toggleReadOnlyView}
+        />
+      ) : (
+        <SimpleView
+          shieldsPanelTabData={shieldsPanelTabData}
+          persistentData={persistentData}
+          actions={actions}
+          toggleAdvancedView={this.toggleAdvancedView}
+          toggleReadOnlyView={this.toggleReadOnlyView}
+        />
+      )
+  }
+}
