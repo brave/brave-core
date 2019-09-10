@@ -87,8 +87,15 @@ class ContextMenuHelper: NSObject, UIGestureRecognizerDelegate {
         guard sender.state == .began else {
             return
         }
-        
-        if #available(iOS 13, *) {} else {
+
+        if #available(iOS 13, *) {
+            tab?.webView?.scrollView.subviews.compactMap({ $0.gestureRecognizers }).joined().forEach { recognizer in
+                if recognizer.isEnabled {
+                    recognizer.isEnabled = false
+                    recognizer.isEnabled = true
+                }
+            }
+        } else {
             // To prevent the tapped link from proceeding with navigation, "cancel" the native WKWebView
             // `_highlightLongPressRecognizer`. This preserves the original behavior as seen here:
             // https://github.com/WebKit/webkit/blob/d591647baf54b4b300ca5501c21a68455429e182/Source/WebKit/UIProcess/ios/WKContentViewInteraction.mm#L1600-L1614
