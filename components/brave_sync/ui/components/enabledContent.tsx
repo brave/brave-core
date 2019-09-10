@@ -8,7 +8,10 @@ import * as React from 'react'
 import { Button, AlertBox } from 'brave-ui'
 import { CloseCircleIcon } from 'brave-ui/components/icons'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
-import { Toggle } from 'brave-ui/features/shields'
+// TODO(petemill): Do not use a component (Toggle) from another app.
+// Instead copy it local to this app, or create the component in a central location,
+// either in this repo or in brave-ui.
+import { Toggle } from '../../../brave_extension/extension/brave_extension/components/toggle'
 
 // Feature-specific components
 import {
