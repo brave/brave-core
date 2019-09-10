@@ -90,6 +90,12 @@ source_set("crypto") {
     "//crypto",
     "//third_party/boringssl",
   ]
+
+  if (is_android) {
+    deps += [
+      "//third_party/android_sdk:cpu_features",
+    ]
+  }
 }
 
 source_set("public") {
