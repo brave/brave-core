@@ -56,6 +56,8 @@ extension Theme {
         UIView.appearance(whenContainedInInstancesOf: [SearchViewController.self]).appearanceBackgroundColor = colors.home
         InsetButton.appearance(whenContainedInInstancesOf: [SearchViewController.self]).appearanceBackgroundColor = .clear
         
+        InsetButton.appearance(whenContainedInInstancesOf: [SearchSuggestionPromptView.self]).appearanceTextColor = colors.tints.home
+        
         if #available(iOS 13.0, *) {
             // Overrides all views inside of itself
             // According to docs, UIWindow override should be enough, but some labels on iOS 13 are still messed up without UIView override as well
@@ -82,6 +84,13 @@ extension UILabel {
     @objc dynamic var appearanceTextColor: UIColor! {
         get { return self.textColor }
         set { self.textColor = newValue }
+    }
+}
+
+extension InsetButton {
+    @objc dynamic var appearanceTextColor: UIColor! {
+        get { return self.titleColor(for: .normal) }
+        set { self.setTitleColor(newValue, for: .normal) }
     }
 }
 
