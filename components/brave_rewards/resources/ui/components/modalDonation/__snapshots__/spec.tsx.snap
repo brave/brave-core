@@ -35,9 +35,7 @@ exports[`ModalDonation tests basic tests matches the snapshot 1`] = `
       >
         <div
           className="sc-bwzfXH kNyJHx"
-        >
-          MISSING: donationTips
-        </div>
+        />
         <div>
           <div>
             <table
@@ -53,7 +51,7 @@ exports[`ModalDonation tests basic tests matches the snapshot 1`] = `
                   <th
                     className="sc-krDsej iCWhZz"
                   >
-                    MISSING: type
+                    MISSING: date
                   </th>
                   <th
                     className="sc-krDsej csFqvd"

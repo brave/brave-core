@@ -15,8 +15,7 @@ import {
   TableDonation,
   List,
   Tokens,
-  ModalDonation,
-  NextContribution
+  ModalDonation
 } from '../../ui/components'
 import { Provider } from '../../ui/components/profile'
 
@@ -58,83 +57,40 @@ class TipBox extends React.Component<Props, State> {
     )
   }
 
-  getTotal = () => {
-    const { reports } = this.props.rewardsData
-
-    const currentTime = new Date()
-    const reportKey = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
-    const report: Rewards.Report = reports[reportKey]
-
-    if (report) {
-      return utils.tipsTotal(report)
-    }
-
-    return '0.0'
-  }
-
   getTipsRows = () => {
-    const { balance, recurringList, tipsList } = this.props.rewardsData
-
-    // Recurring
-    let recurring: DetailRow[] = []
-    if (recurringList) {
-      recurring = recurringList.map((item: Rewards.Publisher) => {
-        let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-        const verified = utils.isPublisherConnectedOrVerified(item.status)
-        if (item.favIcon && verified) {
-          faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
-        }
-
-        return {
-          profile: {
-            name: item.name,
-            verified,
-            provider: (item.provider ? item.provider : undefined) as Provider,
-            src: faviconUrl
-          },
-          contribute: {
-            tokens: item.percentage.toFixed(1),
-            converted: utils.convertBalance(item.percentage.toString(), balance.rates)
-          },
-          url: item.url,
-          type: 'recurring' as any,
-          onRemove: () => { this.actions.removeRecurringTip(item.id) }
-        }
-      })
-    }
-
-    // Tips
+    const { balance, tipsList } = this.props.rewardsData
     let tips: DetailRow[] = []
-    if (tipsList) {
-      tips = tipsList.map((item: Rewards.Publisher) => {
-        let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-        const verified = utils.isPublisherConnectedOrVerified(item.status)
-        if (item.favIcon && verified) {
-          faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
-        }
 
-        const token = utils.convertProbiToFixed(item.percentage.toString())
-
-        return {
-          profile: {
-            name: item.name,
-            verified,
-            provider: (item.provider ? item.provider : undefined) as Provider,
-            src: faviconUrl
-          },
-          contribute: {
-            tokens: token,
-            converted: utils.convertBalance(token, balance.rates)
-          },
-          url: item.url,
-          text: item.tipDate ? new Date(item.tipDate * 1000).toLocaleDateString() : undefined,
-          type: 'donation' as any,
-          onRemove: () => { this.actions.removeRecurringTip(item.id) }
-        }
-      })
+    if (!tipsList) {
+      return tips
     }
 
-    return recurring.concat(tips)
+    return tipsList.map((item: Rewards.Publisher) => {
+      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      const verified = utils.isPublisherConnectedOrVerified(item.status)
+      if (item.favIcon && verified) {
+        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+      }
+
+      const token = utils.convertProbiToFixed(item.percentage.toString())
+
+      return {
+        profile: {
+          name: item.name,
+          verified,
+          provider: (item.provider ? item.provider : undefined) as Provider,
+          src: faviconUrl
+        },
+        contribute: {
+          tokens: token,
+          converted: utils.convertBalance(token, balance.rates)
+        },
+        url: item.url,
+        text: item.tipDate ? new Date(item.tipDate * 1000).toLocaleDateString() : undefined,
+        type: 'donation' as any,
+        onRemove: () => { this.actions.removeRecurringTip(item.id) }
+      }
+    })
   }
 
   onModalToggle = () => {
@@ -219,8 +175,7 @@ class TipBox extends React.Component<Props, State> {
       firstLoad,
       enabledMain,
       ui,
-      recurringList,
-      reconcileStamp
+      tipsList
     } = this.props.rewardsData
     const { walletImported } = ui
     const showDisabled = firstLoad !== false || !enabledMain
@@ -228,7 +183,7 @@ class TipBox extends React.Component<Props, State> {
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
     const allSites = !(numRows > 5)
-    const total = this.getTotal()
+    const total = utils.tipsListTotal(tipsList, true)
     const converted = utils.convertBalance(total, balance.rates)
 
     return (
@@ -247,22 +202,13 @@ class TipBox extends React.Component<Props, State> {
           ? <ModalDonation
             rows={tipRows}
             onClose={this.onModalToggle}
+            title={getLocale('donationTips')}
           />
           : null
         }
         <List title={getLocale('donationTotalDonations')}>
           <Tokens value={total} converted={converted} />
         </List>
-        {
-          recurringList && recurringList.length > 0
-          ? <List title={getLocale('donationNextDate')}>
-            <NextContribution>
-              {new Intl.DateTimeFormat('default', { month: 'short', day: 'numeric' }).format(reconcileStamp * 1000)}
-            </NextContribution>
-          </List>
-          : null
-        }
-
         <TableDonation
           rows={topRows}
           allItems={allSites}

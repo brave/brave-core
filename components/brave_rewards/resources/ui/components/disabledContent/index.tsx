@@ -9,12 +9,13 @@ import {
   StyledIcon
 } from './style'
 import {
-  AdsMegaphoneIcon,
-  RewardsActivateIcon,
-  RewardsSendTipsIcon
+  AdsTokensIcon,
+  AutoContributeIcon,
+  MonthlyContributionsIcon,
+  TipsIcon
 } from 'brave-ui/components/icons'
 
-export type Type = 'ads' | 'contribute' | 'donation'
+export type Type = 'ads' | 'contribute' | 'donation' | 'monthly'
 
 export interface Props {
   children: React.ReactNode
@@ -28,13 +29,16 @@ export default class DisabledContent extends React.PureComponent<Props, {}> {
 
     switch (type) {
       case 'ads':
-        icon = <AdsMegaphoneIcon />
+        icon = <AdsTokensIcon />
         break
       case 'contribute':
-        icon = <RewardsActivateIcon />
+        icon = <AutoContributeIcon />
         break
       case 'donation':
-        icon = <RewardsSendTipsIcon />
+        icon = <TipsIcon />
+        break
+      case 'monthly':
+        icon = <MonthlyContributionsIcon />
         break
     }
 
