@@ -1277,6 +1277,7 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
   // hasn't finished yet (e.g. we don't have both a request and a response)
   // (second condition).
   if (!record->is_first_reply || !request->IsComplete()) {
+    Log("Not (yet) writing request id: " + to_string(request->GetRequestId()));
     return;
   }
 
