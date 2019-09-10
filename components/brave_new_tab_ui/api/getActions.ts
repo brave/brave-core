@@ -10,19 +10,10 @@ import store from '../store'
  * Get actions from the C++ back-end down to front-end components
  */
 let actions: typeof newTabActions
-export const getActions = () => {
+export default function getActions () {
   if (actions) {
     return actions
   }
   actions = bindActionCreators(newTabActions, store.dispatch.bind(store))
   return actions
-}
-
-/**
- * Obtains the top sites and submits an action with the results
- */
-export const fetchTopSites = () => {
-  chrome.topSites.get((topSites: NewTab.Site[]) => {
-    return getActions().topSitesDataUpdated(topSites || [])
-  })
 }
