@@ -503,10 +503,6 @@ class Tab: NSObject {
         guard let url = self.webView?.url else {
             return
         }
-        
-        if let helper = contentScriptManager.getContentScript(ContextMenuHelper.name()) as? ContextMenuHelper {
-            helper.replaceWebViewLongPress()
-        }
 
         self.urlDidChangeDelegate?.tab(self, urlDidChangeTo: url)
     }

@@ -88,7 +88,7 @@ class ContextMenuHelper: NSObject, UIGestureRecognizerDelegate {
             return
         }
 
-        if #available(iOS 13, *) {
+        if #available(iOS 13, *), elements != nil {
             tab?.webView?.scrollView.subviews.compactMap({ $0.gestureRecognizers }).joined().forEach { recognizer in
                 if recognizer.isEnabled {
                     recognizer.isEnabled = false
@@ -107,7 +107,6 @@ class ContextMenuHelper: NSObject, UIGestureRecognizerDelegate {
         }
         if let elements = self.elements {
             delegate?.contextMenuHelper(self, didLongPressElements: elements, gestureRecognizer: sender)
-            
             self.elements = nil
         }
     }
@@ -126,6 +125,9 @@ extension ContextMenuHelper: TabContentScript {
         guard let data = message.body as? [String: AnyObject] else {
             return
         }
+        
+        // No image or link was pressed, we are clearing `elements` so no accidental link tap occurs.
+        if data.isEmpty { elements = nil }
 
         var linkURL: URL?
         if let urlString = data["link"] as? String,
