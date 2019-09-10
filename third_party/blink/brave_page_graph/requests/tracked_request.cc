@@ -53,7 +53,6 @@ bool TrackedRequest::IsComplete() const {
   }
 
   if (requesters_.size() == 0 ||
-      request_type_ == RequestType::kRequestTypeUnknown ||
       resource_ == nullptr ||
       request_status_ == RequestStatus::kUnknown) {
     return false;
