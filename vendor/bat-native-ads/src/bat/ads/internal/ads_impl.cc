@@ -179,7 +179,7 @@ void AdsImpl::RemoveAllNotificationsAfterReboot() {
   //ads notifications don't sustain reboot, so remove all
   auto ads_shown_history = client_->GetAdsShownHistory();
   if (!ads_shown_history.empty()) {
-    uint64_t ad_shown_timestamp = ads_shown_history.front();
+    uint64_t ad_shown_timestamp = ads_shown_history.front().timestamp_in_seconds;
     uint64_t boot_timestamp = Time::NowInSeconds() -
         static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds());
     if (ad_shown_timestamp <= boot_timestamp) {
