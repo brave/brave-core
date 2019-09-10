@@ -1,0 +1,19 @@
+diff --git a/chrome/android/java/res/layout/new_tab_page_layout.xml b/chrome/android/java/res/layout/new_tab_page_layout.xml
+index 9a138cd6276691c4b1343d3701a76859bb99a9a0..21e9f0018b7e5446b6d92d0e5953ce674ab02c16 100644
+--- a/chrome/android/java/res/layout/new_tab_page_layout.xml
++++ b/chrome/android/java/res/layout/new_tab_page_layout.xml
+@@ -2,7 +2,7 @@
+ <!-- Copyright 2016 The Chromium Authors. All rights reserved.
+      Use of this source code is governed by a BSD-style license that can be
+      found in the LICENSE file. -->
+-<org.chromium.chrome.browser.ntp.NewTabPageLayout
++<org.chromium.chrome.browser.ntp.BraveNewTabPageLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+@@ -104,4 +104,4 @@
+         android:layout_height="0dp"
+         android:layout_weight="1"
+         android:visibility="gone" />
+-</org.chromium.chrome.browser.ntp.NewTabPageLayout>
++</org.chromium.chrome.browser.ntp.BraveNewTabPageLayout>

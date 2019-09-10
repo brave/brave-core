@@ -123,6 +123,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_FINGERPRINTING_PROTECTION_SUMMARY" desc="Summary for fingerprinting protection.">
         Prevents browser from fingerprinting
       </message>
+      <message name="IDS_BRAVE_STATS_TEXT_ADS" desc="Title for the number of blocked ads and trackers">Ads and Trackers
+Blocked</message>
+    <message name="IDS_BRAVE_STATS_TEXT_HTTPS" desc="Title for the number of https upgrades">HTTPS
+Upgrades</message>
+    <message name="IDS_BRAVE_STATS_TEXT_TIME" desc="Title for the estimated saved time">Est. Time
+Saved</message>
     </messages>
   </release>
 </grit>
