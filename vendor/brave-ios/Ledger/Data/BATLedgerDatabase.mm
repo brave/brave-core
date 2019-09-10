@@ -107,19 +107,9 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   return [self firstOfClass:ServerPublisherInfo.class withPublisherID:publisherID additionalPredicate:nil context:context];
 }
 
-+ (nullable ServerPublisherAmount *)getServerPublisherAmountWithPublisherID:(NSString *)publisherID amount:(double)amount context:(NSManagedObjectContext *)context
-{
-  return [self firstOfClass:ServerPublisherAmount.class withPublisherID:publisherID additionalPredicate:[NSPredicate predicateWithFormat:@"amount == %lf", amount] context:context];
-}
-
 + (nullable ServerPublisherBanner *)getServerPublisherBannerWithPublisherID:(NSString *)publisherID context:(NSManagedObjectContext *)context
 {
   return [self firstOfClass:ServerPublisherBanner.class withPublisherID:publisherID additionalPredicate:nil context:context];
-}
-
-+ (nullable ServerPublisherLink *)getServerPublisherLinkWithPublisherID:(NSString *)publisherID provider:(NSString *)provider context:(NSManagedObjectContext *)context
-{
-  return [self firstOfClass:ServerPublisherLink.class withPublisherID:publisherID additionalPredicate:[NSPredicate predicateWithFormat:@"provider == %@", provider] context:context];
 }
 
 #pragma mark - Publisher Info
