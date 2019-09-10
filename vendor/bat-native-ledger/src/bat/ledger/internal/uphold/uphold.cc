@@ -37,6 +37,17 @@ Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
 Uphold::~Uphold() {
 }
 
+void Uphold::Initialize() {
+  auto fees = ledger_->GetTransferFees(ledger::kWalletUphold);
+  for (auto const& value : fees) {
+    if (!value.second) {
+      continue;
+    }
+
+    SaveTransferFee(value.second->Clone());
+  }
+}
+
 void Uphold::StartContribution(
     const std::string& viewing_id,
     const std::string& address,
@@ -353,7 +364,5 @@ void Uphold::SetTimer(uint32_t* timer_id, uint64_t start_timer_in) {
 
   ledger_->SetTimer(start_timer_in, timer_id);
 }
-
-// TODO on load we should load all transferFees into the timer
 
 }  // namespace braveledger_uphold

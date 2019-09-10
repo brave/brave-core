@@ -3654,7 +3654,7 @@ ledger::TransferFeeList RewardsServiceImpl::GetTransferFees(
 
     auto fee = ledger::TransferFee::New();
 
-    auto *id = fee_dict->FindKey("id");
+    auto* id = fee_dict->FindKey("id");
     if (!id || !id->is_string()) {
       continue;
     }
@@ -3666,13 +3666,13 @@ ledger::TransferFeeList RewardsServiceImpl::GetTransferFees(
     }
     fee->amount = amount->GetDouble();
 
-    auto *timestamp = fee_dict->FindKey("execution_timestamp");
+    auto* timestamp = fee_dict->FindKey("execution_timestamp");
     if (!timestamp || !timestamp->is_int()) {
       continue;
     }
     fee->execution_timestamp = timestamp->GetInt();
 
-    auto *execution_id = fee_dict->FindKey("execution_id");
+    auto* execution_id = fee_dict->FindKey("execution_id");
     if (!execution_id || !execution_id->is_int()) {
       continue;
     }

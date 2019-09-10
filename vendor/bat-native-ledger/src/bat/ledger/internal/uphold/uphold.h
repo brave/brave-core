@@ -39,6 +39,8 @@ class Uphold {
 
   ~Uphold();
 
+  void Initialize();
+
   void StartContribution(
       const std::string& viewing_id,
       const std::string& address,

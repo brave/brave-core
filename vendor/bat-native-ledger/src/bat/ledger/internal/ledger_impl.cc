@@ -262,7 +262,6 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
       auto callback = std::bind(
           &LedgerImpl::OnPublisherStateLoaded, this, _1, _2);
       LoadPublisherState(std::move(callback));
-      bat_contribution_->OnStartUp();
     }
   } else {
     if (result != ledger::Result::NO_LEDGER_STATE) {
@@ -343,6 +342,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
     bat_publisher_->SetPublisherServerListTimer();
     bat_contribution_->SetReconcileTimer();
     RefreshGrant(false);
+    bat_contribution_->Initialize();
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize wallet";
   }
