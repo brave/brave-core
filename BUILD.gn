@@ -43,7 +43,7 @@ if (!is_ios) {
       ":unpacked_resources",
     ]
 
-    if (!is_android && !is_ios) {
+    if (!is_ios) {
       deps += [
         ":packed_resources",
       ]
@@ -69,6 +69,18 @@ group("resources") {
     # "//brave/renderer:resources",
     "//brave/components/resources",
   ]
+}
+
+if (is_android) {
+  android_assets("brave_pak_assets") {
+    sources = [
+      "$root_build_dir/brave_resources.pak",
+    ]
+    deps = [
+      "//brave:browser_dependencies",
+    ]
+    disable_compression = true
+  }
 }
 
 config("rust_link") {
@@ -122,7 +134,7 @@ group("brave_tests") {
 }
 }
 
-if (!is_android && !is_ios) {
+if (!is_ios) {
   brave_paks("packed_resources") {
     if (is_mac) {
       output_dir = "$root_gen_dir/repack"

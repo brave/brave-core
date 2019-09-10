@@ -2,7 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
@@ -56,27 +58,61 @@ template("brave_extra_paks") {
                            ])
     output = "${invoker.output_dir}/brave_resources.pak"
     sources = [
-      "$root_gen_dir/brave/brave_generated_resources.pak",
-      "$root_gen_dir/brave/brave_unscaled_resources.pak",
-      "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
       "$root_gen_dir/components/brave_components_resources.pak",
-      "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak",
-      "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
-      "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak",
       "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
     ]
 
+    if (!is_android) {
+      sources += [
+        "$root_gen_dir/brave/brave_generated_resources.pak",
+        "$root_gen_dir/brave/brave_unscaled_resources.pak",
+        "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
+      ]
+    }
+
     deps = [
-      "//brave/app:brave_generated_resources_grit",
-      "//brave/app/theme:brave_unscaled_resources",
-      "//brave/components/brave_ads/resources",
-      "//brave/components/brave_rewards/resources",
       "//brave/components/resources",
-      "//brave/components/resources:strings",
-      "//brave/browser/resources/settings:resources",
-      "//brave/components/brave_sync:resources",
       "//brave/ui/webui/resources",
     ]
+
+    if (!is_android) {
+      deps += [
+        "//brave/app:brave_generated_resources_grit",
+        "//brave/app/theme:brave_unscaled_resources",
+        "//brave/components/resources:strings",
+        "//brave/browser/resources/settings:resources",
+      ]
+    }
+
+    if (brave_ads_enabled) {
+      sources += [
+        "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak",
+      ]
+
+      deps += [
+        "//brave/components/brave_ads/resources",
+      ]
+    }
+
+    if (brave_rewards_enabled) {
+      sources += [
+        "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
+      ]
+
+      deps += [
+        "//brave/components/brave_rewards/resources",
+      ]
+    }
+
+    if (enable_brave_sync) {
+      sources += [
+        "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak",
+      ]
+
+      deps += [
+        "//brave/components/brave_sync:resources",
+      ]
+    }
 
     if (enable_brave_webtorrent) {
       sources += [
