@@ -13,20 +13,25 @@ window.__firefox__.includeOnce("ContextMenu", function() {
 
     var targetLink = target.closest("a");
     var targetImage = target.closest("img");
+                          
+    var data = {};
 
     if (!targetLink && !targetImage) {
+      // No link or image was tapped, sending empty callback so the ContextMenu will know that it
+      // should not show the menu(only text selection menu if applicable).
+      webkit.messageHandlers.contextMenuMessageHandler.postMessage(data);
       return;
     }
 
-    var data = {};
-
     if (targetLink) {
       data.link = targetLink.href;
+      data.title = targetLink.textContent;
     }
 
     if (targetImage) {
       data.image = targetImage.src;
-      data.title = targetImage.title;
+      data.title = data.title || targetImage.title;
+      data.alt = targetImage.alt;
     }
 
     if (data.link || data.image) {
