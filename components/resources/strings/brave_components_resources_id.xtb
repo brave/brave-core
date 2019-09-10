@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Diklik</translation>
 <translation id="7119308337584989771">Diabaikan</translation>
 <translation id="6805660603861526473">Dilihat</translation>
+<translation id="2852258589816753010">Saat ini BAT tidak didukung di wilayah Anda. Silakan merujuk <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>ke sini<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> untuk info terkini.</translation>
+<translation id="2564425876266960486">Eror saat membuat kartu BAT Brave Browser</translation>
 <translation id="7422678632904904341">Jumlah:</translation>
 <translation id="5923611424721173182">Rekonsiliasi Saat Ini</translation>
 <translation id="5457113250005438886">Tidak valid</translation>
@@ -383,7 +385,7 @@
 <translation id="6727483290601442544">Lihat Rincian</translation>
 <translation id="1988679729106502285">CATATAN:</translation>
 <translation id="5815103311506128988">Pembuat ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
-<translation id="603411408512957306">Pembuat ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
+<translation id="603411408512957306">Kreator terverifikasi ini belum memverifikasi (KYC)  akun mereka untuk menerima tips dari dompet terverifikasi Anda. Tips akan tetap ada di dompet Anda sampai mereka menyelesaikan proses verifikasi.</translation>
 <translation id="4292832015778676417">diperoleh dari iklan</translation>
 <translation id="3197752845651180812">Kontribusi tertunda</translation>
 <translation id="3164105678355419142">Tip berulang</translation>
@@ -406,8 +408,9 @@
 <translation id="7512440811010447157">verifikasi</translation>
 <translation id="8030169304546394654">Terputus</translation>
 <translation id="8267327690882073581">Verifikasi Dompet</translation>
-<translation id="543510923939676996">Terverifikasi</translation>
+<translation id="543510923939676996">Dompet Terverifikasi</translation>
 <translation id="7591798679868259510">Ke akun Uphold saya</translation>
+<translation id="3699674790322420653">Selesaikan verifikasi dompet</translation>
 <translation id="9200453331904391567">Putuskan dari Brave Reward</translation>
 <translation id="46988480989545156">Verifikasi dompet</translation>
 <translation id="1554282356558968486">Layanan dompet kami disediakan oleh</translation>

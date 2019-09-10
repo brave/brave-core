@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "যাচাইকৃত",
+    "message": "ওয়ালেট যাচাই করা হয়েছে",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "যাচাইকৃত",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "লভ্য নেই",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "ওয়ালেট পুনরায় সংযোগ করুন",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "আপনার ওয়লেট যাচাইকরণ করা হয়েছে!",
@@ -526,11 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "চিন্তা করবেন না। এটি বিভিন্ন সুরক্ষা সম্পর্কিত বিষয় থেকে হতে পারে। শুধুমাত্র এর সাথে আবার সংযোগ করলেই এই সমস্যাটির সমাধান হয়ে যাবে।",
+    "message": "চিন্তা করবেন না। এটি বিভিন্ন সুরক্ষা সম্পর্কিত বিষয় থেকে হতে পারে। আপনার ওয়ালেট আবার সংযোগ করলে এই সমস্যাটির সমাধান হয়ে যাবে।",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "এই নির্মাতাটি Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও সাইন আপ করেনি। আপনার পাঠানো যে কোনও টিপস যাচাই না হওয়া অবধি আপনার ওয়ালেটে থেকে যাবে।",
+    "message": "এই যাচাইকৃত নির্মাতাকে এখনও তাদের অ্যাকাউন্টটি আপনার যাচাইকৃত ওয়ালেট থেকে টিপস পেতে যাচাই (KYC) করতে হবে। আপনার ওয়ালেট যাচাই না হওয়া অবধি তা টিপস তাতে থেকে যাবে।",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "সম্পূর্ণ ওয়ালেট যাচাইকরণ",
+    "description": "CTA for completing wallet verification"
   }
 }

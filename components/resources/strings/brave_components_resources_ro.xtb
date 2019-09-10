@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Dat clic</translation>
 <translation id="7119308337584989771">Respins</translation>
 <translation id="6805660603861526473">Vizualizat</translation>
+<translation id="2852258589816753010">BAT nu este disponibil în regiunea dvs. în acest moment. Vă rugăm să faceți clic <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>aici<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> pentru vedea cele mai recente informații.</translation>
+<translation id="2564425876266960486">A avut loc o eroare la crearea cardului BAT Brave Browser</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="5923611424721173182">Reconciliere actuală</translation>
 <translation id="5457113250005438886">Invalid</translation>
@@ -383,7 +385,7 @@
 <translation id="6727483290601442544">Vizualizați detalii</translation>
 <translation id="1988679729106502285">NOTĂ:</translation>
 <translation id="5815103311506128988">Acest creator nu s-a înregistrat încă pentru a primi contribuții de la utilizatorii Brave. Browserul dumneavoastră va continua să încerce să contribuie până când aceștia sunt verificați sau până la trecerea a 90 de zile.</translation>
-<translation id="603411408512957306">Acest creator nu s-a înregistrat încă pentru a primi contribuții de la utilizatorii Brave. Browserul dumneavoastră va continua să încerce să contribuie până când aceștia sunt verificați sau până la trecerea a 90 de zile.</translation>
+<translation id="603411408512957306">Acest creator verificat încă nu și-a verificat (KYC) contul pentru a primi bacșiș din portofelul dvs. verificat. Bacșișurile vor rămâne în portofelul dvs. până când creatorul își finalizează procesul de verificare.</translation>
 <translation id="4292832015778676417">câștigați din reclame</translation>
 <translation id="3197752845651180812">Contribuții în așteptare</translation>
 <translation id="3164105678355419142">Bacșiș periodic</translation>
@@ -406,8 +408,9 @@
 <translation id="7512440811010447157">verifică</translation>
 <translation id="8030169304546394654">Deconectat</translation>
 <translation id="8267327690882073581">Verificare portofel</translation>
-<translation id="543510923939676996">Verificat</translation>
+<translation id="543510923939676996">Portofelul a fost verificat</translation>
 <translation id="7591798679868259510">Mergi la contul meu Uphold</translation>
+<translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
 <translation id="46988480989545156">Verificare portofel</translation>
 <translation id="1554282356558968486">Serviciul nostru de portofel este furnizat de</translation>
