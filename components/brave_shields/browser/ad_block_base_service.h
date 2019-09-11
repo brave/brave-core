@@ -62,7 +62,6 @@ class AdBlockBaseService : public BaseBraveShieldsService {
       std::unique_ptr<adblock::Engine> ad_block_client,
       brave_component_updater::DATFileDataBuffer buffer);
   void OnGetDATFileData(GetDATFileDataResult result);
-  void EnableTagOnIOThread(const std::string& tag, bool enabled);
   void OnPreferenceChanges(const std::string& pref_name);
 
   brave_component_updater::DATFileDataBuffer buffer_;

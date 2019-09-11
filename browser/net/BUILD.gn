@@ -40,7 +40,7 @@ source_set("net") {
     "//brave/common",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_shields/browser",
-    "//brave/components/brave_webtorrent/browser/buildflags",
+    "//brave/components/brave_webtorrent/browser/",
     "//brave/extensions:common",
     "//components/prefs",
     "//content/public/browser",

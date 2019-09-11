@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/base64url.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
@@ -105,7 +106,8 @@ bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
 
 void OnBeforeURLRequestAdBlockTP(
     std::shared_ptr<BraveRequestInfo> ctx) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  SCOPED_UMA_HISTOGRAM_TIMER("Brave.AdblockHandler");
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
   if (ctx->tab_origin.is_empty() || !ctx->tab_origin.has_host() ||
@@ -135,7 +137,8 @@ void OnBeforeURLRequestAdBlockTP(
   }
 
   if (ctx->blocked_by == kAdBlocked) {
-    brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
+    brave_shields::DispatchBlockedEvent(
+        ctx->request_url,
         ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
         brave_shields::kAds);
   }

@@ -629,7 +629,8 @@ bool BraveProxyingURLLoaderFactory::MaybeProxyRequest(
   *factory_receiver = mojo::MakeRequest(&target_factory_info);
 
 
-  ResourceContextData::StartProxying(browser_context,
+  ResourceContextData::StartProxying(
+      browser_context,
       render_process_id,
       render_frame_host ? render_frame_host->GetFrameTreeNodeId() : 0,
       std::move(proxied_receiver), std::move(target_factory_info));

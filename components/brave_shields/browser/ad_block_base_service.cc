@@ -116,14 +116,13 @@ AdBlockBaseService::~AdBlockBaseService() {
 }
 
 void AdBlockBaseService::Cleanup() {
-  BrowserThread::DeleteSoon(
-      BrowserThread::IO, FROM_HERE, ad_block_client_.release());
+  ad_block_client_.release();
 }
 
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type, const std::string& tab_host,
     bool* did_match_exception, bool* cancel_request_explicitly) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
@@ -160,17 +159,7 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
 }
 
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
-      base::BindOnce(&AdBlockBaseService::EnableTagOnIOThread,
-                     weak_factory_io_thread_.GetWeakPtr(),
-                     tag,
-                     enabled));
-}
-
-void AdBlockBaseService::EnableTagOnIOThread(
-    const std::string& tag, bool enabled) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (enabled) {
     ad_block_client_->addTag(tag);
     tags_.push_back(tag);
@@ -207,19 +196,13 @@ void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
     LOG(ERROR) << "Failed to deserialize ad block data";
     return;
   }
-
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
-      base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
-                     weak_factory_io_thread_.GetWeakPtr(),
-                     std::move(result.first),
-                     std::move(result.second)));
+  UpdateAdBlockClient(std::move(result.first), std::move(result.second));
 }
 
 void AdBlockBaseService::UpdateAdBlockClient(
     std::unique_ptr<adblock::Engine> ad_block_client,
     brave_component_updater::DATFileDataBuffer buffer) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   ad_block_client_ = std::move(ad_block_client);
   buffer_ = std::move(buffer);
   AddKnownTagsToAdBlockInstance();
