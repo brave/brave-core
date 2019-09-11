@@ -77,7 +77,7 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       url_ = embedded_test_server()->GetURL("a.com", "/iframe.html");
       iframe_url_ = embedded_test_server()->GetURL("b.com", "/simple.html");
       image_url_ = embedded_test_server()->GetURL("b.com", "/logo.png");
-      top_level_page_url_ = GURL("http://a.com/");
+      top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
       top_level_page_pattern_ =
           ContentSettingsPattern::FromString("http://a.com/*");
       iframe_pattern_ = ContentSettingsPattern::FromString("http://b.com/*");
