@@ -562,12 +562,12 @@ void RewardsServiceImpl::RemovePrivateObserver(RewardsServicePrivateObserver* ob
 
 void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
   if (ready().is_signaled()) {
-    auto on_create = base::BindOnce(
-        &RewardsServiceImpl::OnCreateWallet,
-        AsWeakPtr(),
-        std::move(callback));
     if (Connected()) {
 #if !defined(OS_ANDROID)
+      auto on_create = base::BindOnce(
+          &RewardsServiceImpl::OnCreateWallet,
+          AsWeakPtr(),
+          std::move(callback));
       bat_ledger_->CreateWallet("", std::move(on_create));
 #else
       safetynet_check::ClientAttestationCallback attest_callback =
