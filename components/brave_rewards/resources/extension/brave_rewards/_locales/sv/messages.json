@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verifierad",
+    "message": "Plånbok verifierad",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verifierad",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Ej tillgängligt",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Återanslut plånbok",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Plånboken har verifierats!",
@@ -526,11 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Inga problem. Detta kan hända av flera olika säkerhetsskäl. Att helt enkelt ansluta igen löser problemet.",
+    "message": "Ingen fara. Många olika säkerhetsmekanismer kan medföra detta. Du löser problemet genom att ansluta din plånbok på nytt. ",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Denna skapare har ännu in registrerat sig för att ta emot bidrag från Brave-användare. All dricks du skickar kommer att finnas kvar i din plånbok tills skaparen verifierar sig.",
+    "message": "Denna verifierade skapare måste fortfarande verifiera (KYC) sitt konto för att ta emot pengar från din verifierade plånbok. Pengarna blir kvar i din plånbok i väntan på skaparens verifiering. ",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Slutför verifiering av plånbok",
+    "description": "CTA for completing wallet verification"
   }
 }

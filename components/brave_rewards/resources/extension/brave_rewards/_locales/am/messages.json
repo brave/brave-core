@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "ተረጋግጧል",
+    "message": "የኪስ ቦርሳዎት ተረጋግጧል",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "ተረጋግጧል",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "አይገኝም",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "ዋሌትን እንደገና አገናኝ",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "ዋሌትዎ ተረጋግጧል!",
@@ -526,11 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "ኣይጨነቁ። ይህ ለተለያዩ የደህንነት ምክንያቶች ሊከሰት ይችላል። ከሱ ጋር እንደገና በመገናኘት ይህንን ችግር ይፈታል።",
+    "message": "ምንም አይደለም፡፡ ይህ ለተለያዩ የደህንንነት ምክንያቶች ሊከሰት ይችላል፡፡ የኪስ ቦርሳዎን እንደገና ማገናኘት ይህንን ችግር ይፈታዋል፡፡",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "ይህ ፈጣር ከ Brave ተጠቃሚዎች መዋጮዎችን ለመቀበል ገና አልተመዘገበም። እስከሚያረጋግጥ ድረስ ምንም አይነት መወጮ በእርሶ ዋሌት ውስጥ ይቆያል።",
+    "message": "ይህ የተረጋገጠ ፈጣሪ ከእርሶ የተረጋገጠ የኪስ ቦርሳ ጠቃሚ ምክሮችን ለመቀበል የእነሱን (KYC) መለያ ገና ማረጋገጥ አለበት፡፡ ጠቃሚ ምክሮቹ እነሱ ማረጋገጫውን እስኪያጠናቅቁ ድረስ በእርሶ የኪስ ቦርሳ ውስጥ ይቆያል፡፡",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "የኪስ ቦርሳ ማረጋገጥ ተጠናቋል",
+    "description": "CTA for completing wallet verification"
   }
 }

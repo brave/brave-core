@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Geklickt</translation>
 <translation id="7119308337584989771">Abgelehnt</translation>
 <translation id="6805660603861526473">Angesehen</translation>
+<translation id="2852258589816753010">BAT wird in Ihrer Region derzeit nicht unterstützt. Bitte sehen Sie <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>hier<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> nach, um weitere Informationen zu erhalten.</translation>
+<translation id="2564425876266960486">Fehler beim Erstellen der BAT-Karte des Brave-Browsers</translation>
 <translation id="7422678632904904341">Betrag:</translation>
 <translation id="5923611424721173182">Aktueller Abgleich</translation>
 <translation id="5457113250005438886">Ungültig</translation>
@@ -383,7 +385,7 @@
 <translation id="6727483290601442544">Detaillierte Informationen anzeigen</translation>
 <translation id="1988679729106502285">HINWEIS:</translation>
 <translation id="5815103311506128988">Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Ihr Browser wird weiterhin versuchen, ihm Beiträge zukommen zu lassen, bis er sich verifiziert hat oder bis 90 Tage verstrichen sind.</translation>
-<translation id="603411408512957306">Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Ihr Browser wird weiterhin versuchen, ihm Beiträge zukommen zu lassen, bis er sich verifiziert hat oder bis 90 Tage verstrichen sind.</translation>
+<translation id="603411408512957306">Dieser verifizierte Creator muss sein Konto noch über das KYC-Verfahren verifizieren lassen, um ein Trinkgeld aus Ihrer verifizierten Wallet zu erhalten. Trinkgelder werden in Ihrer Wallet verbleiben, bis die Verifizierung abgeschlossen wurde.</translation>
 <translation id="4292832015778676417">verdient aus Werbeanzeigen</translation>
 <translation id="3197752845651180812">Ausstehende Beiträge</translation>
 <translation id="3164105678355419142">Wiederkehrendes Trinkgeld</translation>
@@ -406,8 +408,9 @@
 <translation id="7512440811010447157">verifiziert</translation>
 <translation id="8030169304546394654">Verbindung getrennt</translation>
 <translation id="8267327690882073581">Wallet verifizieren</translation>
-<translation id="543510923939676996">Verifiziert</translation>
+<translation id="543510923939676996">Wallet verifiziert</translation>
 <translation id="7591798679868259510">Zu meinem Uphold-Account gehen</translation>
+<translation id="3699674790322420653">Wallet-Verifizierung abschließen</translation>
 <translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
 <translation id="46988480989545156">Wallet verifizieren</translation>
 <translation id="1554282356558968486">Unser Wallet-Service wird bereitgestellt von</translation>

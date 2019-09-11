@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Geverifieerd",
+    "message": "Wallet geverifieerd",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Geverifieerd",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Niet beschikbaar",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Wallet opnieuw verbinden",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Je wallet is geverifieerd!",
@@ -526,11 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Maak je geen zorgen. Dit kan om verschillende veiligheidsredenen gebeuren. Je kunt dit probleem oplossen door eenvoudigweg opnieuw verbinding te maken.",
+    "message": "Geen zorgen. Dit kan zich vanwege verschillende veiligheidsredenen voordoen. Uw wallet opnieuw verbinden zal het probleem verhelpen.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Deze maker heeft zich nog niet aangemeld voor het ontvangen van bijdragen van Brave-gebruikers. Fooien die je stuurt, blijven in je wallet tot hij of zij verifieert.",
+    "message": "Deze geverifieerde maker moet zijn of haar account nog verifiëren (KYC) om fooien uit uw geverifieerde wallet te ontvangen. Fooien blijven in uw wallet totdat ze zijn geverifieerd.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Rond walletverificatie af",
+    "description": "CTA for completing wallet verification"
   }
 }
