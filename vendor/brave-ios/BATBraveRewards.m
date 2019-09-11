@@ -125,9 +125,8 @@
 {
   if (isSelected) {
     self.ledger.selectedTabId = (UInt32)tabId;
+    [self onTabRetrieved:tabId url:url faviconURL:faviconURL html:nil];
   }
-
-  [self onTabRetrieved:tabId url:url faviconURL:faviconURL html:nil];
   [self.ads reportTabUpdated:tabId url:url isSelected:isSelected isPrivate:isPrivate];
 }
 
