@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "確認済み",
+    "message": "ウォレットが検証済み",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "確認済み",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "利用できません",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "ウォレットを再接続",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "ウォレットの確認が完了しました！",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "心配はありません。これはさまざまなセキュリティー上の理由で発生することがあります。再接続すればこの問題は解決します。",
+    "message": "心配ありません。これはさまざまなセキュリティー上の理由により発生することです。ウォレットの再接続によりこの問題は解決されます。",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "このクリエイターは、Braveユーザーから支援を受け取る登録をまだ行っていません。彼らが認証するまでは、贈ったチップはあなたのウォレットに保留されます。",
+    "message": "この検証済みクリエイターは、お客様の検証済みウォレットからチップを受け取るためのアカウントの検証（KYC）をまだ行っていません。チップは、検証が完了するまで、お客様のウォレット内にとどまります。",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "ウォレットの検証を完了",
+    "description": "CTA for completing wallet verification"
   }
 }

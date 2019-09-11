@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Vérifié",
+    "message": "Portefeuille vérifié",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Vérifié",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Indisponible",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Reconnecter le portefeuille",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Votre portefeuille est vérifié !",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Ne vous inquiétez pas. Cela peut se produire pour diverses raisons de sécurité. Reconnectez-vous simplement pour résoudre ce problème.\n",
+    "message": "Ne vous inquiétez pas. Cela peut se produire pour diverses raisons de sécurité. Reconnecter votre portefeuille résoudra ce problème.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Tous les pourboires que vous envoyez resteront dans votre portefeuille jusqu'à ce qu'ils soient vérifiés.\n\n",
+    "message": "Ce créateur vérifié n'a pas encore vérifié (KYC) son compte pour recevoir des pourboires de votre portefeuille vérifié. Les pourboires resteront dans votre portefeuille jusqu'à ce qu'il ait terminé la vérification.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Terminer la vérification du portefeuille",
+    "description": "CTA for completing wallet verification"
   }
 }

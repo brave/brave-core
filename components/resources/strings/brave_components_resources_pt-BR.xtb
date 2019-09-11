@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Clicado</translation>
 <translation id="7119308337584989771">Dispensado</translation>
 <translation id="6805660603861526473">Visualizado</translation>
+<translation id="2852258589816753010">BAT atualmente não possui suporte para a sua região. Favor consultar <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para receber atualizações.</translation>
+<translation id="2564425876266960486">Erro ao criar o cartão BAT para Navegador Brave</translation>
 <translation id="7422678632904904341">Quantia:</translation>
 <translation id="5923611424721173182">Reconciliação Atual</translation>
 <translation id="5457113250005438886">Inválido</translation>
@@ -383,7 +385,7 @@
 <translation id="6727483290601442544">Ver Detalhes</translation>
 <translation id="1988679729106502285">OBSERVAÇÃO:</translation>
 <translation id="5815103311506128988">Esse criador ainda não se inscreveu para receber contribuições dos usuários do Brave. Seu navegador vai tentar realizar a contribuição até que eles sejam verificados ou até que 90 dias tenham se passado.</translation>
-<translation id="603411408512957306">Esse criador ainda não se inscreveu para receber contribuições dos usuários do Brave. Seu navegador vai tentar realizar a contribuição até que eles sejam verificados ou até que 90 dias tenham se passado.</translation>
+<translation id="603411408512957306">Esse criador verificado ainda precisa confirmar (KYC) a conta para receber dicas da sua carteira verificada. As dicas permanecerão na sua carteira até que a verificação seja concluída.</translation>
 <translation id="4292832015778676417">ganhou de anúncios</translation>
 <translation id="3197752845651180812">Contribuições pendentes</translation>
 <translation id="3164105678355419142">Gorjeta recorrente</translation>
@@ -406,8 +408,9 @@
 <translation id="7512440811010447157">verificar</translation>
 <translation id="8030169304546394654">Desconectado</translation>
 <translation id="8267327690882073581">Verificar Carteira</translation>
-<translation id="543510923939676996">Verificado</translation>
+<translation id="543510923939676996">Carteira verificada</translation>
 <translation id="7591798679868259510">Ir para a minha conta Uphold</translation>
+<translation id="3699674790322420653">Concluir verificação de carteira</translation>
 <translation id="9200453331904391567">Desconectar-se de Brave Rewards</translation>
 <translation id="46988480989545156">Verificar carteira</translation>
 <translation id="1554282356558968486">Nosso serviço de carteira é fornecido por</translation>

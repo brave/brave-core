@@ -152,6 +152,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3082557070674409251">คลิกแล้ว</translation>
 <translation id="7119308337584989771">ปิด</translation>
 <translation id="6805660603861526473">ดูแล้ว</translation>
+<translation id="2852258589816753010">ภูมิภาคของคุณยังไม่รองรับ BAT ในขณะนี้ โปรดดูข่าวสารจาก<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>ที่นี่<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
+<translation id="2564425876266960486">เกิดข้อผิดพลาดขณะสร้างบัตร BAT ของ Brave Browser</translation>
 <translation id="7422678632904904341">จำนวน:</translation>
 <translation id="5923611424721173182">งบกระทบยอดปัจจุบัน</translation>
 <translation id="5457113250005438886">ไม่ถูกต้อง</translation>
@@ -384,7 +386,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6727483290601442544">ดูรายละเอียด</translation>
 <translation id="1988679729106502285">หมายเหตุ:</translation>
 <translation id="5815103311506128988">ผู้สร้างคนนี้ยังไม่ได้ลงทะเบียนรับเงินสนับสนุนจากผู้ใช้ Brave เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนไปเรื่อย ๆ จนกว่าผู้สร้างจะยืนยัน หรือจนกระทั่งเวลาผ่านไป 90 วัน</translation>
-<translation id="603411408512957306">ผู้สร้างคนนี้ยังไม่ได้ลงทะเบียนรับเงินสนับสนุนจากผู้ใช้ Brave เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนไปเรื่อย ๆ จนกว่าผู้สร้างจะยืนยัน หรือจนกระทั่งเวลาผ่านไป 90 วัน</translation>
+<translation id="603411408512957306">ผู้สร้างที่ยืนยันแล้วนี้ยังไม่ได้ยืนยัน (KYC) บัญชีของตนเองเพื่อรับทิปจากวอลเล็ตที่ยืนยันแล้วของคุณ ทิปจะอยู่ในวอลเล็ตของคุณจะกว่าเขาจะยืนยันเสร็จสิ้น</translation>
 <translation id="4292832015778676417">ได้รับจากโฆษณาแล้ว</translation>
 <translation id="3197752845651180812">การบริจาคทรอพิจารณาความร่วมมือ</translation>
 <translation id="3164105678355419142">ทิปที่ให้ประจำ</translation>
@@ -407,8 +409,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7512440811010447157">ยืนยัน</translation>
 <translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
 <translation id="8267327690882073581">ยืนยันวอลเล็ท</translation>
-<translation id="543510923939676996">ยืนยันแล้ว</translation>
+<translation id="543510923939676996">ยืนยันวอลเล็ตแล้ว</translation>
 <translation id="7591798679868259510">ไปที่บัญชี Uphold ของฉัน</translation>
+<translation id="3699674790322420653">ยืนยันวอลเล็ตให้เสร็จสิ้น</translation>
 <translation id="9200453331904391567">ยกเลิกการเชื่อมต่อกับ Brave Rewards</translation>
 <translation id="46988480989545156">ยืนยันวอลเล็ท</translation>
 <translation id="1554282356558968486">บริการวอลเล็ทของเราให้บริการโดย</translation>

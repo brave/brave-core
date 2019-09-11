@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Patvirtinta",
+    "message": "Piniginė patvirtinta",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Jūsų piniginė patvirtinta",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Nepasiekiama",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Iš naujo prijungti piniginę",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Jūsų piniginė patvirtinta!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Nesirūpinkite. Taip gali atsitikti dėl įvairių saugumo priežasčių. Tiesiog iš naujo prisijunkite ir taip problema bus išspręsta.",
+    "message": "Nesirūpinkite. Taip gali nutikti dėl įvairių saugumo priežasčių. Iš naujo prijunkite piniginę ir problema bus išspręsta.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Šis kūrėjas dar neužsiregistravo, kad gautų „Brave“ naudotojų aukas. Visi jūsų išsiųsti arbatpinigiai liks jūsų piniginėje, kol galiausiai jie patvirtins.",
+    "message": "Šis patvirtintas kūrėjas dar turi patvirtinti (KYC) savo paskyrą, kad galėtų gauti arbatpinigius iš patvirtintos piniginės. Arbatpinigiai liks jūsų piniginėje, kol bus užbaigtas patvirtinimas.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Baigti piniginės patvirtinimą",
+    "description": "CTA for completing wallet verification"
   }
 }

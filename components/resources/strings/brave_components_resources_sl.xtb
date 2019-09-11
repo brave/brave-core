@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Kliknjeno</translation>
 <translation id="7119308337584989771">Opuščeno</translation>
 <translation id="6805660603861526473">Ogledano</translation>
+<translation id="2852258589816753010">Trenutno BAT ni podprt v vaši regiji. Za posodobitve se obrnite se na <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2564425876266960486">Napaka pri ustvarjanju kartice BAT brskalnika Brave</translation>
 <translation id="7422678632904904341">Znesek:</translation>
 <translation id="5923611424721173182">Uskladi trenutno</translation>
 <translation id="5457113250005438886">Neveljaven</translation>
@@ -383,7 +385,7 @@
 <translation id="6727483290601442544">Ogled podrobnosti</translation>
 <translation id="1988679729106502285">OPOMBA:</translation>
 <translation id="5815103311506128988">Ta ustvarjalec še ni podpisal za prejem prispevkov od uporabnikov Brave. Vaš brskalnik bo nadaljeval s poskušanjem dodelitve prispevkov, dokler se ne potrdijo ali preteče 90 dni.</translation>
-<translation id="603411408512957306">Ta ustvarjalec še ni podpisal za prejem prispevkov od uporabnikov Brave. Vaš brskalnik bo nadaljeval s poskušanjem dodelitve prispevkov, dokler se ne potrdijo ali preteče 90 dni.</translation>
+<translation id="603411408512957306">Ta preverjeni ustvarjalec še ni potrdil (KYC) svojega računa, da bi prejel nasvete iz preverjene denarnice. Nasveti ostanejo v vaši denarnici, dokler preverjanje ni končano.</translation>
 <translation id="4292832015778676417">zasluženo z ogledom oglasov</translation>
 <translation id="3197752845651180812">Donacije na čakanju</translation>
 <translation id="3164105678355419142">Ponavljajoča se donacija</translation>
@@ -406,8 +408,9 @@
 <translation id="7512440811010447157">preveri</translation>
 <translation id="8030169304546394654">Prekinjeno</translation>
 <translation id="8267327690882073581">Preveri denarnico</translation>
-<translation id="543510923939676996">Preverjeno</translation>
+<translation id="543510923939676996">Denarnica preverjena</translation>
 <translation id="7591798679868259510">Pojdi na moj račun Uphold</translation>
+<translation id="3699674790322420653">Zaključi preverjanje denarnice</translation>
 <translation id="9200453331904391567">Prekinite povezavo z Brave Rewards</translation>
 <translation id="46988480989545156">Preveri denarnico</translation>
 <translation id="1554282356558968486">Našo denarno storitev zagotovi</translation>

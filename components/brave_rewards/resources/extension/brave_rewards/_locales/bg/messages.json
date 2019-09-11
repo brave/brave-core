@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Потвърдено",
+    "message": "Портфейлът е проверен",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Потвърдено",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Не е налично",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Повторно свързване на портфейла",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Вашият портфейл е потвърден!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Няма проблем. Това може да се случи поради различни причини за сигурност. Повторното свързване ще реши този проблем.",
+    "message": "Няма проблем. Това може да се случи поради различни причини за сигурност. Повторното свързване на портфейла ви ще реши този проблем.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Този създател все още не се е регистрирал да получава вноски от Brave потребители. Всеки бакшиш който изпратите ще остава във вашия портфейл докато той потвърди.",
+    "message": "Този проверен създател все още не е потвърдил (KYC) акаунта си, за да получава бакшиши от вашия проверен портфейл. Бакшишите ще останат в портфейла ви, докато той не завърши проверката.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Завършете проверката на портфейла",
+    "description": "CTA for completing wallet verification"
   }
 }

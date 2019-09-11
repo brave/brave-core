@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Vahvistettu",
+    "message": "Lompakko vahvistettu",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Vahvistettu",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Ei saatavilla",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Yhdistä kukkaro uudestaan",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Kukkarosi on vahvistettu!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Ei huolta. Tämä voi johtua useista turvallisuussyistä. Uuden yhteyden muodostamisen pitäisi ratkaista tämän ongelman.",
+    "message": "Ei huolta. Tämä voi johtua useista yleiseen turvallisuuteen liittyvistä syistä. Uuden yhteyden muodostaminen lompakkoosi ratkaisee tämän ongelman.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Tämä kehittäjä ei ole vielä rekisteröitynyt vastaanottamaan Brave-käyttäjien avustuksia. Kaikki lähettämäsi tipit pysyvät lompakossasi heidän vahvistukseensa saakka.",
+    "message": "Tämän vahvistetun tekijän on vielä vahvistettava (KYC) tilinsä voidakseen vastaanottaa tippejä vahvistetusta lompakostasi. Tipit pysyvät lompakossasi vahvistuksen suorittamiseen asti.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Viimeistele lompakon vahvistus",
+    "description": "CTA for completing wallet verification"
   }
 }

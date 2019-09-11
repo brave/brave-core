@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Provjereno",
+    "message": "Provjeren novčanik",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Provjereno",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Nedostupno",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Ponovno poveži novčanik",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Vaš je novčanik provjeren!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Ne brinite se. Ovo se može dogoditi zbog različitih sigurnosnih razloga. Jednostavno se ponovno povežite kako biste riješili ovaj problem.",
+    "message": "Ne brinite se. Ovo se može dogoditi zbog različitih sigurnosnih razloga. Ponovnim se povezivanjem vašeg novčanika rješava ovaj problem.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Ovaj stvaratelj nije se još prijavio za primanje doprinosa korisnika Brave. Bilo kakve napojnice koje pošaljete ostaju u vašem novčaniku dok se ne provjere.",
+    "message": "Ovaj provjereni stvaratelj mora provjeriti (KYC) svoj račun kako bi primio napojnice iz vašeg provjerenog novčanika. Bilo kakve napojnice koje pošaljete ostaju u vašem novčaniku dok se ne provjere.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Završi provjeru novčanika",
+    "description": "CTA for completing wallet verification"
   }
 }

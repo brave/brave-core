@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "تأیید شد",
+    "message": "کیف پول تأیید شد!‍",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "تأیید شد",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "ناموجود",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "اتصال مجدد کیف پول",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "کیف پول شما تأیید شد!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "نگران نباشید. این مشکل بنا به دلایل امنیتی اتفاق می‌افتد. با اتصال مجدد به آن، مشکل را برطرف خواهد کرد.",
+    "message": "نگران نباشید. این مورد ممکن است به دلایل امنیتی مختلف روی دهد. اتصال دوباره کیف پولتان این مشکل را حل می کند.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "این پدیدآورنده هنوز برای دریافت کمک از کاربران Brave ثبت‌نام نکرده است. تا زمانی که پدیدآورنده کمک را تأیید نکند، انعام‌هایی که ارسال می‌کنید در کیف پولتان باقی می‌مانند.",
+    "message": "این پدیدآورنده هنوز حساب خود را برای دریافت انعام از کیف پول تأییدشده شما تأیید نکرده است. تا زمانی که پدیدآورنده کمک را تأیید نکند، انعام‌هایی که ارسال می‌کنید در کیف پولتان باقی می‌مانند.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "تکمیل تأیید کیف پول",
+    "description": "CTA for completing wallet verification"
   }
 }

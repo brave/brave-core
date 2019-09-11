@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Kinnitatud",
+    "message": "Rahakott on kinnitatud",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Kinnitatud",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Pole saadaval",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Ühenda rahakott uuesti",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Teie rahakott on kinnitatud!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Ärge muretsege. See võib juhtuda erinevatel turvalisusega seotud põhjustel. Probleemi lahendamiseks looge lihtsalt rahakotiga uuesti ühendus.",
+    "message": "Ärge heitke meelt. Selle põhjuseks võib olla mistahes turvalisuse tõrge. Rahakoti uuesti ühendamine lahendab selle probleemi.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "See looja pole veel registreerunud, et saada Brave'i kasutajatelt sissemakseid. Kõik teie saadetud raha jääb kuni kinnitamiseni teie rahakotti.",
+    "message": "See kinnitatud looja pole veel kinnitanud (KYC) oma konto, et saada kinnitatud rahakotist preemiaid. Preemiad jäävad rahakotti kuni kinnitamise lõpuni.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Lõpetage rahakoti kinnitamine",
+    "description": "CTA for completing wallet verification"
   }
 }

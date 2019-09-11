@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Верифіковано",
+    "message": "Гаманець підтверджено",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Верифіковано",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Недоступний",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Під'єднати гаманець знову",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Ваш гаманець верифіковано!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Не хвилюйтесь. Таке могло статись з цілої низки причин, пов'язаних з безпекою. Просте повторне під'єднання має вирішити проблему.",
+    "message": "Не хвилюйтесь. Це може статися з різних причин безпеки. Повторне підключення гаманця вирішить цю проблему.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Цей творець ще не зареєструвався на отримання внесків від користувачів Brave. Всі кошти, які ви надсилатимете, залишатимуться у вашому гаманці, доки вони не верифіковані. ",
+    "message": "Цей перевірений автор ще не підтвердив (KYC) свій обліковий запис, щоб отримувати чайові з вашого підтвердженого гаманця. Чайові залишатимуться у вашому гаманці, поки вони завершать підтвердження.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Завершити підтвердження гаманця",
+    "description": "CTA for completing wallet verification"
   }
 }

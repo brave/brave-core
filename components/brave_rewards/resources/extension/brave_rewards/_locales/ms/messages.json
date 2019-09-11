@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Disahkan",
+    "message": "Dompet Disahkan",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Disahkan",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Tidak tersedia",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Sambung semula dompet",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Dompet anda telah disahkan!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Jangan risau. Ini boleh berlaku atas pelbagai sebab keselamatan. Anda cuma perlu menyambungkan semula dengannya untuk menyelesaikan isu ini.",
+    "message": "Jangan bimbang. Ini boleh berlaku atas pelbagai sebab keselamatan. Menghubungkan semula dompet anda akan menyelesaikan isu ini.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Pencipta ini belum lagi mendaftar untuk menerima sumbangan daripada pengguna Brave. Sebarang tip yang anda hantar akan kekal di dalam dompet anda sehingga mereka mengesahkan.",
+    "message": "Pencipta disahkan ini belum mengesahkan (KYC) akaun mereka untuk menerima tip daripada dompet disahkan anda. Tip akan kekal di dalam dompet anda selagi mereka belum melengkapkan pengesahan.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Lengkapkan pengesahan dompet",
+    "description": "CTA for completing wallet verification"
   }
 }

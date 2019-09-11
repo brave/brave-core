@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Ellenőrizve",
+    "message": "Pénztárca ellenőrizve",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Ellenőrizve",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Nem érhető el",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Csatlakoztasd újra a pénztárcát",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Pénztárcád ellenőrizve lett!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,11 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Semmi gond. Ez többféle biztonsági okból is történhet. A probléma megoldásához egyszerűen csatlakozzon rá újból.",
+    "message": "Semmi gond. Ez előfordulhat különféle biztonsági okokból. A pénztárca újbóli csatlakoztatása megoldja ezt a problémát.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a Brave felhasználóktól. Minden borravaló, amit küldesz, a pénztárcádban marad, amíg nem igazolnak. ",
+    "message": "Ennek az ellenőrzött létrehozónak még ellenőriznie kell (KYC) a fiókját, hogy tippeket kapjon az ön ellenőrzött pénztárcájából. A tippek a pénztárcájában maradnak, amíg az ellenőrzés be nem fejeződik.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Komplett pénztárca ellenőrzés",
+    "description": "CTA for completing wallet verification"
   }
 }
