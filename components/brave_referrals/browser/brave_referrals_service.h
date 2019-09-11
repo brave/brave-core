@@ -26,6 +26,8 @@ class SimpleURLLoader;
 
 namespace brave {
 
+std::string GetAPIKey();
+
 class BraveReferralsService {
  public:
   explicit BraveReferralsService(PrefService* pref_service);

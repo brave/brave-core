@@ -10,10 +10,13 @@
 #include "brave/browser/ui/webui/basic_ui.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+
+#include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 
 namespace {
 
@@ -27,11 +30,14 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 
  private:
   void HandleSubmitReport(const base::ListValue* args);
+  std::unique_ptr<brave::WebcompatReportUploader> uploader_;
 
   DISALLOW_COPY_AND_ASSIGN(WebcompatReporterDOMHandler);
 };
 
-WebcompatReporterDOMHandler::WebcompatReporterDOMHandler() {}
+WebcompatReporterDOMHandler::WebcompatReporterDOMHandler()
+    : uploader_(std::make_unique<brave::WebcompatReportUploader>(
+          g_browser_process->shared_url_loader_factory())) {}
 
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() {}
 
@@ -48,8 +54,8 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   std::string site_url;
   if (!args->GetString(0, &site_url))
     return;
-  LOG(INFO) << "Submitting webcompat report for " << site_url << std::endl;
-  // TODO actually submit the report
+
+  uploader_->SubmitReport(site_url);
 }
 
 }  // namespace
