@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -26,8 +27,8 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
   void GetCookieControlType(const base::ListValue* args);
   void SetFingerprintingControlType(const base::ListValue* args);
   void GetFingerprintingControlType(const base::ListValue* args);
-  void SetHTTPSEverywhereControlType(const base::ListValue* args);
-  void GetHTTPSEverywhereControlType(const base::ListValue* args);
+  void SetHTTPSEverywhereEnabled(const base::ListValue* args);
+  void GetHTTPSEverywhereEnabled(const base::ListValue* args);
   void SetNoScriptControlType(const base::ListValue* args);
   void GetNoScriptControlType(const base::ListValue* args);
 

@@ -1,4 +1,4 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -12,9 +12,6 @@
 #include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "chrome/browser/profiles/profile_io_data.h"
-#include "content/public/browser/resource_request_info.h"
-#include "extensions/browser/info_map.h"
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
 #include "net/http/http_response_headers.h"
@@ -39,13 +36,12 @@ bool FileNameMatched(const net::HttpResponseHeaders* headers) {
   return false;
 }
 
-bool URLMatched(net::URLRequest* request) {
-  return base::EndsWith(request->url().spec(), ".torrent",
+bool URLMatched(const GURL& url) {
+  return base::EndsWith(url.spec(), ".torrent",
       base::CompareCase::INSENSITIVE_ASCII);
 }
 
-bool IsTorrentFile(net::URLRequest* request,
-    const net::HttpResponseHeaders* headers) {
+bool IsTorrentFile(const GURL& url, const net::HttpResponseHeaders* headers) {
   std::string mimeType;
   if (!headers->GetMimeType(&mimeType)) {
     return false;
@@ -56,40 +52,16 @@ bool IsTorrentFile(net::URLRequest* request,
   }
 
   if (mimeType == kOctetStreamMimeType &&
-      (URLMatched(request) || FileNameMatched(headers))) {
+      (URLMatched(url) || FileNameMatched(headers))) {
     return true;
   }
 
   return false;
 }
 
-bool IsWebtorrentInitiated(net::URLRequest* request) {
-  return request->initiator().has_value() &&
-    request->initiator()->GetURL().spec() ==
-      base::StrCat({extensions::kExtensionScheme, "://",
-      brave_webtorrent_extension_id, "/"});
-}
-
-bool IsWebTorrentDisabled(net::URLRequest* request) {
-  content::ResourceRequestInfo* resource_info =
-    content::ResourceRequestInfo::ForRequest(request);
-  if (!resource_info || !resource_info->GetContext()) {
-    return false;
-  }
-
-  const ProfileIOData* io_data =
-    ProfileIOData::FromResourceContext(resource_info->GetContext());
-  if (!io_data) {
-    return false;
-  }
-
-  const extensions::InfoMap* infoMap = io_data->GetExtensionInfoMap();
-  if (!infoMap) {
-    return false;
-  }
-
-  return !infoMap->extensions().Contains(brave_webtorrent_extension_id) ||
-    infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
+bool IsWebtorrentInitiated(std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  return ctx->initiator_url.scheme() == extensions::kExtensionScheme &&
+      ctx->initiator_url.host() == brave_webtorrent_extension_id;
 }
 
 }  // namespace
@@ -97,17 +69,15 @@ bool IsWebTorrentDisabled(net::URLRequest* request) {
 namespace webtorrent {
 
 int OnHeadersReceived_TorrentRedirectWork(
-    net::URLRequest* request,
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-
-  if (!request || !original_response_headers ||
-      IsWebTorrentDisabled(request) ||
-      IsWebtorrentInitiated(request) ||  // download .torrent, do not redirect
-      !IsTorrentFile(request, original_response_headers)) {
+  if (!original_response_headers ||
+      ctx->is_webtorrent_disabled ||
+      IsWebtorrentInitiated(ctx) ||  // download .torrent, do not redirect
+      !IsTorrentFile(ctx->request_url, original_response_headers)) {
     return net::OK;
   }
 
@@ -120,9 +90,8 @@ int OnHeadersReceived_TorrentRedirectWork(
       base::StrCat({extensions::kExtensionScheme, "://",
       brave_webtorrent_extension_id,
       "/extension/brave_webtorrent.html?",
-      request->url().spec()}));
-  (*override_response_headers)->AddHeader(
-      "Location: " + url.spec());
+      ctx->request_url.spec()}));
+  (*override_response_headers)->AddHeader("Location: " + url.spec());
   *allowed_unsafe_redirect_url = url;
   return net::OK;
 }

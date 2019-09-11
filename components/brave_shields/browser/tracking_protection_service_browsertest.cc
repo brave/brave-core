@@ -14,7 +14,6 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
-#include "chrome/browser/net/url_request_mock_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
@@ -67,9 +66,6 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
 
   void SetUpOnMainThread() override {
     ExtensionBrowserTest::SetUpOnMainThread();
-    base::PostTaskWithTraits(
-        FROM_HERE, {BrowserThread::IO},
-        base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 

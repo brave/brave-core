@@ -8,16 +8,13 @@
 #import <Cocoa/Cocoa.h>
 
 #include "base/mac/sdk_forward_declarations.h"
-
-bool SystemThemeSupportDarkMode() {
-  // Dark mode is supported since Mojave.
-  if (@available(macOS 10.14, *))
-    return true;
-  return false;
-}
+#include "brave/browser/themes/brave_theme_utils_internal.h"
+#include "ui/native_theme/native_theme.h"
 
 void SetSystemTheme(BraveThemeType type) {
   if (type == BRAVE_THEME_TYPE_DEFAULT) {
+    DCHECK(
+        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported());
     [NSApp setAppearance:nil];
     return;
   }
@@ -27,5 +24,7 @@ void SetSystemTheme(BraveThemeType type) {
         type == BRAVE_THEME_TYPE_DARK ? NSAppearanceNameDarkAqua
                                       : NSAppearanceNameAqua;
     [NSApp setAppearance:[NSAppearance appearanceNamed:new_appearance_name]];
+  } else {
+    internal::SetSystemThemeForNonDarkModePlatform(type);
   }
 }

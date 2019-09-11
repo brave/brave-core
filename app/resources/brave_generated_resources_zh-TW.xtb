@@ -35,6 +35,7 @@
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
 <translation id="7635711399568194460">當 Brave Rewards 未啟用時，在網址列隱藏 Brave Rewards 按鈕</translation>
+<translation id="4262166817826183486">一律在「新索引標籤」頁上顯示書籤列</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
 <translation id="8511502469534942133">為此網站建立的新 Tor 連線</translation>
 <translation id="8784924142044142231">退出 Tor</translation>
@@ -61,7 +62,6 @@
 <translation id="9075744464571452108">裝置識別</translation>
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="4824468494729001999">封鎖指令碼</translation>
-<translation id="7498695072878479744">允許在第三方網頁上的 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
@@ -85,12 +85,14 @@
 <translation id="8721331068159819483">與 macOS 相同</translation>
 <translation id="6786747875388722282">擴充功能</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
+<translation id="5554028991651120544">在 Brave 內提供以太坊錢包和 Dapp 瀏覽器。</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
 <translation id="1765684547504191670">使用媒體路由器元件以在瀏覽器中啟用 Chromecast。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="4154389611571860454">使用 IPFS 配對擴充套件以在瀏覽器中支援 IPFS。</translation>
 <translation id="8137559199583651773">管理擴充功能</translation>
+<translation id="7013485839273047434">取得更多擴充功能</translation>
 <translation id="4928988318462976765">網路擴充功能商店</translation>
 <translation id="9181207987584064303">在「網路擴充功能商店」檢視</translation>
 <translation id="4846154056248462491">離開</translation>
@@ -100,4 +102,19 @@
 <translation id="8303432794159193481">Brave 瀏覽器 Dev 應用程式</translation>
 <translation id="8292967014767479012">Brave 瀏覽器應用程式</translation>
 <translation id="4743468424889072281">Brave 瀏覽器 Development 應用程式</translation>
+<translation id="4568409039725976900">Brave 橘</translation>
+<translation id="7216062233533864908">橘皮</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">羨慕</translation>
+<translation id="8111795220552176635">晴空</translation>
+<translation id="8323875061602721187">Bondy 藍</translation>
+<translation id="8267711815380227275">藍紫</translation>
+<translation id="831132225871108758">黑暗騎士</translation>
+<translation id="1473185169764311478">橘皮圖形</translation>
+<translation id="8658537263568841491">Nana 圖形</translation>
+<translation id="8967241601928387177">羨慕圖形</translation>
+<translation id="7232547941405761864">晴空圖形</translation>
+<translation id="5500050460919597479">Bondy 藍圖形</translation>
+<translation id="5359364898094115985">藍紫圖形</translation>
+<translation id="3385506478125681119">黑暗騎士圖形</translation>
 </translationbundle>

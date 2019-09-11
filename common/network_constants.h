@@ -31,8 +31,6 @@ extern const char kCRLSetPrefix2[];
 extern const char kCRLSetPrefix3[];
 extern const char kCRLSetPrefix4[];
 extern const char kTwitterPattern[];
-extern const char kTwitterReferrer[];
-extern const char kTwitterRedirectURL[];
 
 extern const char kCookieHeader[];
 extern const char kRefererHeader[];

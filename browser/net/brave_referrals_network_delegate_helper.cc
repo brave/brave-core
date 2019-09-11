@@ -16,7 +16,6 @@
 namespace brave {
 
 int OnBeforeStartTransaction_ReferralsWork(
-    net::URLRequest* request,
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
@@ -26,11 +25,12 @@ int OnBeforeStartTransaction_ReferralsWork(
   // set the associated custom headers.
   const base::DictionaryValue* request_headers_dict = nullptr;
   if (!BraveReferralsService::GetMatchingReferralHeaders(
-          *ctx->referral_headers_list, &request_headers_dict, request->url()))
+          *ctx->referral_headers_list, &request_headers_dict, ctx->request_url))
     return net::OK;
   for (const auto& it : request_headers_dict->DictItems()) {
     if (it.first == kBravePartnerHeader) {
       headers->SetHeader(it.first, it.second.GetString());
+      ctx->set_headers.insert(it.first);
     }
   }
   return net::OK;

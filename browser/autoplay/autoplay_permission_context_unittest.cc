@@ -11,7 +11,6 @@
 
 #include "base/bind.h"
 #include "base/macros.h"
-#include "brave/common/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_request_id.h"
 #include "chrome/browser/permissions/permission_request_manager.h"
@@ -77,8 +76,6 @@ class AutoplayPermissionContextTests : public ChromeRenderViewHostTestHarness {
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
     RegisterUserProfilePrefs(prefs->registry());
-    prefs->registry()->
-      RegisterBooleanPref(kGoogleLoginControlType, true);
     builder.SetPrefService(std::move(prefs));
     return builder.Build().release();
   }

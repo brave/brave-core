@@ -34,13 +34,9 @@ chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, record
     if ('localRecord' in cur_rec) {
       fixupSyncRecordBrowserToExt(cur_rec.serverRecord);
       fixupSyncRecordBrowserToExt(cur_rec.localRecord);
-      getOrder(cur_rec.localRecord);
-      removeLocalMeta(cur_rec.serverRecord);
-      removeLocalMeta(cur_rec.localRecord);
       recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, cur_rec.localRecord]);
     } else {
       fixupSyncRecordBrowserToExt(cur_rec.serverRecord);
-      removeLocalMeta(cur_rec.serverRecord);
       recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, null]);
     }
   }
@@ -51,10 +47,13 @@ chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, record
 chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) {
   // Fixup ids
   for (var i = 0; i < records.length; ++i) {
-    // getOrder requires objectIdStr to send back order
-    getOrder(records[i]);
     fixupSyncRecordBrowserToExt(records[i]);
-    removeLocalMeta(records[i]);
+    // delete meta info for now until all platforms can support
+    // "Version" and "UniquePosition" of chromium sync proto
+    if ('bookmark' in records[i]) {
+      if ('metaInfo' in records[i].bookmark)
+        delete records[i].bookmark.metaInfo;
+    }
   }
   console.log(`"send-sync-records" category_name=${JSON.stringify(category_name)} records=${JSON.stringify(records)}`);
   callbackList["send-sync-records"](null, category_name, records);
@@ -78,60 +77,12 @@ chrome.braveSync.onLoadClient.addListener(function() {
   LoadJsLibScript();
 });
 
-chrome.braveSync.onClearOrderMap.addListener(function() {
-  orderMap = {};
-});
-
 chrome.braveSync.extensionInitialized();
 console.log("chrome.braveSync.extensionInitialized");
 
 //-------------------------------------------------------------
 
-function getOrder(record) {
-  if ('bookmark' in record) {
-    if (!record.bookmark.order) {
-      getBookmarkOrderCallback = (order) => {
-        record.bookmark.order = order;
-        if (record.objectId)
-          orderMap[record.objectId] = order;
-        if (record.objectIdStr)
-          chrome.braveSync.saveBookmarkOrder(record.objectIdStr, order);
-        getBookmarkOrderCallback = null;
-      }
-
-      var prevOrder = record.bookmark.prevOrder;
-      var parentOrder = record.bookmark.parentOrder;
-      if (!prevOrder && orderMap[record.bookmark.prevObjectId])
-        prevOrder = orderMap[record.bookmark.prevObjectId];
-      if (!parentOrder && orderMap[record.bookmark.parentFolderObjectId])
-        parentOrder = orderMap[record.bookmark.parentFolderObjectId];
-      console.log(`"get-bookmark-order" prevOrder=${prevOrder}` +
-        ` nextOrder=${record.bookmark.nextOrder} parentOrder=${parentOrder}`);
-      callbackList["get-bookmark-order"](null, prevOrder,
-        record.bookmark.nextOrder, parentOrder);
-      while(getBookmarkOrderCallback);
-    }
-  }
-}
-
-function removeLocalMeta(record) {
-  if ('bookmark' in record) {
-    if ('prevObjectId' in record.bookmark) {
-      delete record.bookmark.prevObjectId;
-    }
-    if ('prevOrder' in record.bookmark) {
-      delete record.bookmark.prevOrder;
-    }
-    if ('nextOrder' in record.bookmark) {
-      delete record.bookmark.nextOrder;
-    }
-    if ('parentOrder' in record.bookmark) {
-      delete record.bookmark.parentOrder;
-    }
-  }
-}
-
-function fixupBookmarkFields(category_name, records) {
+function fixupBookmarkParentFolderObjectId(category_name, records) {
   // records[0].bookmark.parentFolderObjectId can be either Uint8Array or Array[]
   // Uint8Array is expanded to "binary",
   // Array[] is expanded to "array" of "integer" in schema
@@ -139,9 +90,6 @@ function fixupBookmarkFields(category_name, records) {
   if (category_name == "BOOKMARKS") {
     for(var i = 0; i < records.length; ++i) {
       fixupSyncRecordExtToBrowser(records[i]);
-      // Until brave-sync cannot deal with metaInfo field, this field causes
-      // "Error at property 'bookmark': Unexpected property: 'metaInfo'"
-      delete records[i].bookmark.metaInfo;
     }
   }
 }
@@ -203,21 +151,6 @@ function fixupSyncRecordExtToBrowser(sync_record) {
       }
       delete sync_record.bookmark.parentFolderObjectIdStr;
     }
-    if ('prevObjectId' in sync_record.bookmark) {
-      if (Array.isArray(sync_record.bookmark.prevObjectId)) {
-        sync_record.bookmark.prevObjectId = new Uint8Array(sync_record.bookmark.prevObjectId);
-      } else if (sync_record.bookmark.prevObjectId == null || sync_record.bookmark.prevObjectId.length == 0) {
-        sync_record.bookmark.prevObjectId = new Uint8Array();
-      }
-    } else {
-      sync_record.bookmark.prevObjectId = new Uint8Array();
-    }
-    if ('prevObjectIdStr' in sync_record.bookmark) {
-      if (sync_record.bookmark.prevObjectIdStr) {
-        sync_record.bookmark.prevObjectId = new Uint8Array(IntArrayFromString(sync_record.bookmark.prevObjectIdStr));
-      }
-      delete sync_record.bookmark.prevObjectIdStr;
-    }
   }
 
 }
@@ -261,7 +194,7 @@ class InjectedObject {
         chrome.braveSync.syncReady();
         break;
       case "get-existing-objects":
-        fixupBookmarkFields(arg1, arg2);
+        fixupBookmarkParentFolderObjectId(arg1, arg2);
         console.log(`"get-existing-objects" category_name=${JSON.stringify(arg1)} records=${JSON.stringify(arg2)} lastRecordTimeStamp=${arg3 ? arg3 : 0} isTruncated=${arg4 != undefined ? arg4 : false} `);
         chrome.braveSync.getExistingObjects(arg1/*category_name*/,
           arg2/*records*/, arg3 ? arg3 : 0/*lastRecordTimeStamp*/, arg4 != undefined ? arg4 : false/*isTruncated*/);
@@ -274,12 +207,6 @@ class InjectedObject {
       case "save-bookmarks-base-order":
         console.log(`"save-bookmarks-base-order" order=${JSON.stringify(arg1)} `);
         chrome.braveSync.saveBookmarksBaseOrder(arg1/*order*/);
-        break;
-      case "save-bookmark-order":
-        console.log(`"save-bookmark-order" order=${JSON.stringify(arg1)} prevOrder=${JSON.stringify(arg2)} nextOrder=${JSON.stringify(arg3)} parentOrder=${JSON.stringify(arg4)}`);
-        if (getBookmarkOrderCallback) {
-          getBookmarkOrderCallback(arg1);
-        }
         break;
       default:
         console.log('background.js TAGAB InjectedObject.handleMessage unknown message', message, arg1, arg2, arg3, arg4);
@@ -311,7 +238,6 @@ function LoadJsLibScript() {
 var callbackList = {}; /* message name to callback function */
 
 var getBookmarkOrderCallback = null;
-var orderMap = {}
 
 if (!self.chrome) {
   self.chrome = {};

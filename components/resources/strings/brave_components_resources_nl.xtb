@@ -181,7 +181,6 @@
 <translation id="2827387977307390755">Sta fooi toe op</translation>
 <translation id="3671566813999349838">Bedrag</translation>
 <translation id="3819257035322786455">Back-up maken</translation>
-<translation id="4989542687859782284">Niet beschikbaar</translation>
 <translation id="1312977698678162065">Word betaald door het kijken van relevante advertenties die je privacy respecteren</translation>
 <translation id="7655723274266132226">U kunt nu verdienen door advertenties te bekijken.</translation>
 <translation id="2975780980638932742">Brave Ads is gearriveerd!</translation>
@@ -284,7 +283,6 @@
 <translation id="3173528272490482456">Klaar om te beginnen?</translation>
 <translation id="913775524828049259">Ja ik ben klaar</translation>
 <translation id="108052542935515756">Je kan beginnen met de</translation>
-<translation id="2678666039642976470">Wallet opnieuw verbinden</translation>
 <translation id="194625454574835815">Herstelsleutel</translation>
 <translation id="6354568176665589146">Terugkerend</translation>
 <translation id="7577100371127227294">Maandelijkse Tips</translation>
@@ -367,6 +365,7 @@
 <translation id="6727483290601442544">Bekijk de Details</translation>
 <translation id="1988679729106502285">OPMERKING:</translation>
 <translation id="5815103311506128988">Deze maker heeft zich nog niet aangemeld voor het ontvangen van bijdragen van Brave-gebruikers. Je browser blijft proberen bij te dragen tot hij of zij verifieert of tot er 90 dagen zijn verstreken.</translation>
+<translation id="603411408512957306">Deze maker heeft zich nog niet aangemeld voor het ontvangen van bijdragen van Brave-gebruikers. Je browser blijft proberen bij te dragen tot hij of zij verifieert of tot er 90 dagen zijn verstreken.</translation>
 <translation id="4292832015778676417">verdiend met advertenties</translation>
 <translation id="3197752845651180812">Openstaande bijdragen</translation>
 <translation id="3164105678355419142">Terugkerende fooi</translation>
@@ -389,7 +388,7 @@
 <translation id="7512440811010447157">Verifiëren</translation>
 <translation id="8030169304546394654">Verbinding verbroken</translation>
 <translation id="8267327690882073581">Verifieer Wallet</translation>
-<translation id="4569155249847375786">Geverifieerd</translation>
+<translation id="543510923939676996">Geverifieerd</translation>
 <translation id="7591798679868259510">Ga naar mijn Uphold-account</translation>
 <translation id="9200453331904391567">Verbreek de verbinding met Brave Rewards</translation>
 <translation id="46988480989545156">Verifieer wallet</translation>
@@ -401,6 +400,15 @@
 <translation id="2610007079772760276">Met een geverifieerde wallet kun je:</translation>
 <translation id="7565794512491053578">Verifieer Je Wallet</translation>
 <translation id="698531289520577961">En beheer je geld gemakkelijk!</translation>
+<translation id="8697510149346635496">Neem BAT op die je verdient door het bekijken van advertenties die privacy respecteren</translation>
+<translation id="1481480653609649134">Koop extra BAT met creditcards en andere bronnen</translation>
+<translation id="9096003370755878766">Neem BAT op die je mogelijk eerder aan je Brave Rewards-portemonnee hebt toegevoegd</translation>
+<translation id="5275978662119683162">Voordelen van verificatie</translation>
+<translation id="5166793288622772189">Ben je klaar om je portemonnee te verifiëren?</translation>
+<translation id="8766217572332535979">Verificatie is niet nodig om beloningen te verdienen voor bijdragen als maker</translation>
+<translation id="4569155249847375786">Geverifieerd</translation>
+<translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
+<translation id="723054503945711909">Brave Software Inc. verwerkt, bewaart of heeft geen toegang tot de persoonlijke informatie die je verstrekt aan Uphold wanneer je een account bij hen aanmaakt.</translation>
 <translation id="1181037720776840403">Verwijderen</translation>
 <translation id="7885157704277298658">Gekopieerd.</translation>
 <translation id="5379640681913450928">Aantal woorden:</translation>

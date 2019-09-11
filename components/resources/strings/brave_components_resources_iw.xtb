@@ -183,7 +183,6 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="2827387977307390755">לאפשר טיפים ב-</translation>
 <translation id="3671566813999349838">כמות</translation>
 <translation id="3819257035322786455">גיבוי</translation>
-<translation id="4989542687859782284">לא זמין</translation>
 <translation id="1312977698678162065">קבלו תשלום כדי להציג מודעות רלוונטיות שמכבדות את פרטיותכם.</translation>
 <translation id="7655723274266132226">כעת באפשרותך להרוויח כסף מצפייה בפרסומות.</translation>
 <translation id="2975780980638932742">פרסומות Brave הגיעו!</translation>
@@ -286,7 +285,6 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="3173528272490482456">מוכנים להתחיל?</translation>
 <translation id="913775524828049259">כן, אני מוכן</translation>
 <translation id="108052542935515756">אתם יכולים להתחיל עם</translation>
-<translation id="2678666039642976470">התחברות מחדש לארנק</translation>
 <translation id="194625454574835815">מפתח שחזור</translation>
 <translation id="6354568176665589146">חוזרים</translation>
 <translation id="7577100371127227294">טיפים חודשיים</translation>
@@ -369,6 +367,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="6727483290601442544">הצג פרטים</translation>
 <translation id="1988679729106502285">הערה:</translation>
 <translation id="5815103311506128988">יוצר זה עדיין לא נרשם לקבלת תרומות ממשתמשי Brave. הדפדפן ימשיך לנסות לתרום עד אשר יאומת או עד שיחלפו 90 יום.</translation>
+<translation id="603411408512957306">יוצר זה עדיין לא נרשם לקבלת תרומות ממשתמשי Brave. הדפדפן ימשיך לנסות לתרום עד אשר יאומת או עד שיחלפו 90 יום.</translation>
 <translation id="4292832015778676417">סכום שהתקבל מפרסומות</translation>
 <translation id="3197752845651180812">תרומות ממתינות</translation>
 <translation id="3164105678355419142">טיפ חוזר</translation>
@@ -391,7 +390,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="7512440811010447157">אימות</translation>
 <translation id="8030169304546394654">מנותק</translation>
 <translation id="8267327690882073581">אימות ארנק</translation>
-<translation id="4569155249847375786">מאומת</translation>
+<translation id="543510923939676996">מאומת</translation>
 <translation id="7591798679868259510">עבור לחשבון Uphold שלי</translation>
 <translation id="9200453331904391567">התנתקות מתגמולי Brave</translation>
 <translation id="46988480989545156">אימות ארנק</translation>
@@ -403,6 +402,15 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="2610007079772760276">ארנק מאומת מאפשר לך:</translation>
 <translation id="7565794512491053578">אימות הארנק שלך</translation>
 <translation id="698531289520577961">ונהל/י את הכספים שלך בקלות!</translation>
+<translation id="8697510149346635496">משיכת BAT שאת/ה מרוויח/ה מצפייה במודעות שמכבדות פרטיות</translation>
+<translation id="1481480653609649134">רכישת BAT נוספים באמצעות כרטיסי אשראי ומקורות אחרים</translation>
+<translation id="9096003370755878766">משיכת BAT שייתכן שהוספת בעבר לארנק Brave Rewards שלך</translation>
+<translation id="5275978662119683162">היתרונות באימות</translation>
+<translation id="5166793288622772189">מוכנ/ה לאמת את הארנק שלך?</translation>
+<translation id="8766217572332535979">אימות אינו הכרחי כדי לקבל תגמולים עבור תרומות יוצרים</translation>
+<translation id="4569155249847375786">מאומת</translation>
+<translation id="8465442795593991224">Uphold עשויה לדרוש ממך לאמת את זהותך על בסיס השירותים המבוקשים.</translation>
+<translation id="723054503945711909">חברת .Brave Software Inc אינה מעבדת, מאחסנת או ניגשת לשום מידע אישי שהנך מוסר/ת ל-Uphold בעת פתיחת חשבון אצלם.</translation>
 <translation id="1181037720776840403">הסר</translation>
 <translation id="7885157704277298658">הועתק!</translation>
 <translation id="5379640681913450928">ספירת מילים:</translation>

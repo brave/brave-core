@@ -168,7 +168,7 @@
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Las publicidades de Brave ya están aquí",
+    "message": "Los anuncios de Brave ya están aquí",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -202,11 +202,11 @@
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Haga una copia de seguridad de su billetera de Brave.",
+    "message": "Haz una copia de seguridad de tu billetera de Brave.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Su cuenta de Recompensas Brave está esperando un depósito.",
+    "message": "Tu cuenta de Recompensas Brave está esperando un depósito.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -226,7 +226,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "No se pudo enviar su propina. Vuelva a intentarlo más tarde.",
+    "message": "No se pudo enviar tu propina. Vuelve a intentarlo más tarde.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -234,11 +234,11 @@
     "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
   },
   "captchaDrag": {
-    "message": "Arrastre el ícono de BAT hacia la",
+    "message": "Arrastra el ícono de BAT hacia la",
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaProveHuman": {
-    "message": "¡Demuestre que es humano!",
+    "message": "¡Demuestra que eres humano!",
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
@@ -246,7 +246,7 @@
     "description": "Captcha Target"
   },
   "captchaMissedTarget": {
-    "message": "Mmmm, no salió del todo bien. Inténtelo de nuevo.",
+    "message": "Mmmm, no salió del todo bien. Vuelve a intentarlo",
     "description": "Message upon failing captcha"
   },
   "claim": {
@@ -270,11 +270,11 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "Ha ocurrido un error en Brave Rewards. Vuelva a intentarlo más tarde.",
+    "message": "Ha ocurrido un error en Brave Rewards. Vuelve a intentarlo más tarde.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
-    "message": "Ups, ha ocurrido un error. Vuelva a intentarlo más tarde.",
+    "message": "Ups, ha ocurrido un error. Vuelve a intentarlo más tarde.",
     "description": "Error title when user is having problems claiming a grant."
   },
   "grantGoneButton": {
@@ -298,7 +298,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Este creador todavía no se ha registrado para recibir contribuciones de usuarios de Brave. Cualquier propina que envíe quedará en su billetera hasta que el creador confirme la titularidad.",
+    "message": "Este creador todavía no se ha registrado para recibir contribuciones de usuarios de Brave. Cualquier propina que envíes quedará en tu billetera hasta que el creador confirme la titularidad.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -306,7 +306,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Ha designado {{reservedAmount}} BAT para creadores que todavía no se han registrado para recibir contribuciones. Su navegador seguirá contribuyendo hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 días.",
+    "message": "Has designado {{reservedAmount}} BAT para creadores que todavía no se han registrado para recibir contribuciones. Tu navegador seguirá contribuyendo hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 días.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -322,7 +322,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Actualmente no está acumulando ninguna recompensa mientras navega. Vuelva a activar las recompensas en",
+    "message": "Actualmente no estás acumulando ninguna recompensa mientras navegas. Vuelve a activar las recompensas en",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -358,7 +358,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
-    "message": "Gane mirando publicidades que respetan la privacidad y pague para apoyar a los creadores que le encantan.",
+    "message": "Gana mirando anuncios que respetan la privacidad y colabora para apoyar a los creadores que te encantan.",
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
@@ -370,7 +370,7 @@
     "description": "Privacy Policy"
   },
   "serviceText": {
-    "message": "Al hacer clic en \"Habilitar Recompensas Brave\", indica que ha leído y aceptado las",
+    "message": "Al hacer clic en \"Habilitar Recompensas Brave\", indicas que has leído y aceptado las",
     "description": "Terms of service main text"
   },
   "termsOfService": {
@@ -382,7 +382,7 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Sus propinas mensuales se han procesado.",
+    "message": "Tus propinas mensuales se han procesado.",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
@@ -390,7 +390,7 @@
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "Al hacer clic en \"Unirme a Recompensas\", indica que ha leído y aceptado las",
+    "message": "Al hacer clic en \"Unirme a Recompensas\", indicas que has leído y aceptado las",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -440,11 +440,11 @@
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
-    "message": "¡Es su día de suerte!",
+    "message": "¡Es tu día de suerte!",
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Su donación de tokens está en camino.",
+    "message": "Tu donación de tokens está en camino.",
     "description": "Cosmetic text indicating grant funds are on the way"
   },
   "grantFinishTokenTitleUGP": {
@@ -456,11 +456,11 @@
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Su donación de recompensas de los anuncios de Brave están en camino.",
+    "message": "Tu donación de recompensas de los anuncios de Brave está en camino.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Su donación de tokens de anuncios de Brave",
+    "message": "Tu donación de tokens de anuncios de Brave",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "No te preocupes. Esto puede suceder por diferentes motivos de seguridad. Conectarla de nuevo solucionará el problema.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Este creador todavía no se ha registrado para recibir contribuciones de usuarios de Brave. Cualquier propina que envíes quedará en tu billetera hasta que el creador confirme la titularidad.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

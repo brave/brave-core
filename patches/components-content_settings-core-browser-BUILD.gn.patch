@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index bfabd7986d3859247ac628ec55c6768803a343c9..08494cbc88006cbf8ca73e47a8d73f482f10a9b0 100644
+index 90aa5e8f31a8fab945b8db229367257abc26cc80..27943e115fa662b7ea58c027e8fbc35d24eb7242 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -51,6 +51,7 @@ jumbo_static_library("browser") {
+@@ -61,6 +61,7 @@ jumbo_static_library("browser") {
+     "//services/preferences/public/cpp",
+     "//url",
+   ]
++  deps += [ "//brave/components/content_settings/core/browser" ]
  
-   deps = [
-     "//base",
-+    "//brave/components/content_settings/core/browser",
-     "//components/content_settings/core/common",
-     "//components/keyed_service/core",
-     "//components/pref_registry:pref_registry",
+   if (is_android) {
+     deps += [ "//media" ]

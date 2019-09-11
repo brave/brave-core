@@ -43,7 +43,7 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
     onExitPage.prefs = this.prefs;
     Polymer.dom(this.$.tabs).appendChild(onExitPage);
     // Append Save button.
-    let saveButton = document.createElement('paper-button');
+    let saveButton = document.createElement('cr-button');
     saveButton.id = 'saveOnExitSettingsConfirm';
     saveButton.disabled = true;
     saveButton.hidden = true;

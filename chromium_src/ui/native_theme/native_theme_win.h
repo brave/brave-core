@@ -1,21 +1,25 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "../../../../ui/native_theme/native_theme_win.h"
+#ifndef BRAVE_CHROMIUM_SRC_UI_NATIVE_THEME_NATIVE_THEME_WIN_H_
+#define BRAVE_CHROMIUM_SRC_UI_NATIVE_THEME_NATIVE_THEME_WIN_H_
 
-// Custom header guard is used to avoid including function declaration multiple
-// times.
-#ifndef UI_NATIVE_THEME_NATIVE_THEME_WIN_H_BRAVE_  // NOLINT
-#define UI_NATIVE_THEME_NATIVE_THEME_WIN_H_BRAVE_  // NOLINT
+#define BRAVE_UI_NATIVE_THEME_NATIVE_THEME_WIN_H_ \
+ private: \
+  friend void UpdateDarkModeStatus();
+
+#include "../../../../ui/native_theme/native_theme_win.h"  // NOLINT
+#undef BRAVE_UI_NATIVE_THEME_NATIVE_THEME_WIN_H_
 
 namespace ui {
 
-// If |override| is true, system dark mode is overridden by |enable_dark_mode|.
-// If |override| is false, |enable_dark_mode| is ignored.
-void NATIVE_THEME_EXPORT SetOverrideSystemDarkMode(bool override,
-                                                   bool enable_dark_mode);
+// Set true when browser should not response to system theme change.
+// If user set dark or light explicitly, browser should ignore system dark mode
+// setting.
+void NATIVE_THEME_EXPORT IgnoreSystemDarkModeChange(bool ignore);
+
 }  // namespace ui
 
-#endif  // UI_NATIVE_THEME_NATIVE_THEME_WIN_H_BRAVE_  // NOLINT
+#endif  // BRAVE_CHROMIUM_SRC_UI_NATIVE_THEME_NATIVE_THEME_WIN_H_

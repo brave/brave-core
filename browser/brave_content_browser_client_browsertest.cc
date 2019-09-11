@@ -13,6 +13,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -151,9 +152,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
   std::vector<std::string> pages {
     "adblock",
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-    "rewards",
+        "rewards",
 #endif
-    chrome::kChromeUISyncHost,
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+        chrome::kChromeUISyncHost,
+#endif
   };
 
   std::vector<std::string> schemes {
@@ -205,6 +208,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadAboutHost) {
   }
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
     RewriteChromeSyncInternals) {
   std::vector<std::string> schemes {
@@ -230,58 +234,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
                  "chrome://sync/");
   }
 }
-
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    RewriteWelcomeWin10Host) {
-  std::vector<std::string> schemes {
-    "brave://",
-    "chrome://",
-  };
-
-  for (const std::string& scheme : schemes) {
-    content::WebContents* contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    ui_test_utils::NavigateToURL(
-        browser(),
-        GURL(scheme + chrome::kChromeUIWelcomeWin10Host));
-    ASSERT_TRUE(WaitForLoadStop(contents));
-
-    EXPECT_STREQ(base::UTF16ToUTF8(browser()->location_bar_model()
-                    ->GetFormattedFullURL()).c_str(),
-                 "brave://welcome");
-    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetVirtualURL().spec().c_str(),
-                 "chrome://welcome/");
-    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetURL().spec().c_str(),
-                 "chrome://welcome/");
-  }
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-    RewriteChromeWelcomeWin10) {
-  std::vector<std::string> schemes {
-    "brave://",
-    "chrome://",
-  };
-
-  for (const std::string& scheme : schemes) {
-    content::WebContents* contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    ui_test_utils::NavigateToURL(browser(), GURL(scheme + "welcome-win10/"));
-    ASSERT_TRUE(WaitForLoadStop(contents));
-
-    EXPECT_STREQ(base::UTF16ToUTF8(browser()->location_bar_model()
-                    ->GetFormattedFullURL()).c_str(),
-                 "brave://welcome");
-    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetVirtualURL().spec().c_str(),
-                 "chrome://welcome/");
-    EXPECT_STREQ(contents->GetController().GetLastCommittedEntry()
-                     ->GetURL().spec().c_str(),
-                 "chrome://welcome/");
-  }
-}
+#endif
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
   content::WebContents* contents =
@@ -322,8 +275,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, TypedMagnetURL) {
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   content::TestNavigationObserver observer(web_contents);
-  LocationBar* location_bar = browser()->window()->GetLocationBar();
-  ui_test_utils::SendToOmniboxAndSubmit(location_bar, magnet_url().spec());
+  ui_test_utils::SendToOmniboxAndSubmit(browser(), magnet_url().spec());
   observer.Wait();
   EXPECT_EQ(magnet_url(), web_contents->GetLastCommittedURL().spec());
 }

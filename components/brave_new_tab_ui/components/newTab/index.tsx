@@ -80,12 +80,12 @@ class NewTabPage extends React.Component<Props, {}> {
   render () {
     const { newTabData, actions } = this.props
 
-    if (!newTabData || !newTabData.backgroundImage) {
+    if (!newTabData) {
       return null
     }
 
     return (
-      <DynamicBackground showBackgroundImage={newTabData.showBackgroundImage} background={newTabData.backgroundImage.source}>
+      <DynamicBackground showBackgroundImage={newTabData.showBackgroundImage} background={newTabData.backgroundImage ? newTabData.backgroundImage.source : ''}>
         {newTabData.showBackgroundImage && <Gradient />}
         <Page>
           <Header>

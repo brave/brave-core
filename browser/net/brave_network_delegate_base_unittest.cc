@@ -3,17 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/net/brave_network_delegate_base.h"
-
 #include <string>
 
 #include "brave/browser/net/url_context.h"
+#include "brave/browser/net/brave_stp_util.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
 #include "url/gurl.h"
 
+using brave::RemoveTrackableSecurityHeadersForThirdParty;
+using brave::TrackableSecurityHeaders;
 using net::HttpResponseHeaders;
+
 
 namespace {
 
@@ -44,7 +46,6 @@ class BraveNetworkDelegateBaseTest : public testing::Test {
         context_(new net::TestURLRequestContext(true)) {}
   ~BraveNetworkDelegateBaseTest() override {}
   void SetUp() override { context_->Init(); }
-  net::TestURLRequestContext* context() { return context_.get(); }
 
  private:
   content::TestBrowserThreadBundle thread_bundle_;
@@ -55,15 +56,13 @@ TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeaders) {
   net::TestDelegate test_delegate;
   GURL request_url(kThirdPartyDomain);
   GURL tab_url(kFirstPartyDomain);
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      request_url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-
-  request->set_top_frame_origin(url::Origin::Create(tab_url));
 
   scoped_refptr<HttpResponseHeaders> headers(
       new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(kRawHeaders)));
 
-  RemoveTrackableSecurityHeadersForThirdParty(request.get(), nullptr, &headers);
+  RemoveTrackableSecurityHeadersForThirdParty(request_url,
+                                              url::Origin::Create(tab_url),
+                                              nullptr, &headers);
   for (auto header : *TrackableSecurityHeaders()) {
     EXPECT_FALSE(headers->HasHeader(header.as_string()));
   }
@@ -75,15 +74,13 @@ TEST_F(BraveNetworkDelegateBaseTest, RemoveTrackableSecurityHeadersMixedCase) {
   net::TestDelegate test_delegate;
   GURL request_url(kThirdPartyDomain);
   GURL tab_url(kFirstPartyDomain);
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      request_url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-
-  request->set_top_frame_origin(url::Origin::Create(tab_url));
 
   scoped_refptr<HttpResponseHeaders> headers(
       new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(kRawHeaders)));
 
-  RemoveTrackableSecurityHeadersForThirdParty(request.get(), nullptr, &headers);
+  RemoveTrackableSecurityHeadersForThirdParty(request_url,
+                                              url::Origin::Create(tab_url),
+                                              nullptr, &headers);
   for (auto header : *TrackableSecurityHeaders()) {
     EXPECT_FALSE(headers->HasHeader(header.as_string()));
   }
@@ -95,15 +92,13 @@ TEST_F(BraveNetworkDelegateBaseTest, RetainTrackableSecurityHeaders) {
   net::TestDelegate test_delegate;
   GURL request_url(kFirstPartyDomain);
   GURL tab_url(kFirstPartyDomain);
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      request_url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-
-  request->set_top_frame_origin(url::Origin::Create(tab_url));
 
   scoped_refptr<HttpResponseHeaders> headers(
       new HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(kRawHeaders)));
 
-  RemoveTrackableSecurityHeadersForThirdParty(request.get(), nullptr, &headers);
+  RemoveTrackableSecurityHeadersForThirdParty(request_url,
+                                              url::Origin::Create(tab_url),
+                                              nullptr, &headers);
   for (auto header : *TrackableSecurityHeaders()) {
     EXPECT_TRUE(headers->HasHeader(header.as_string()));
   }

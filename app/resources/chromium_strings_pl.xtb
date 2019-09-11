@@ -111,7 +111,6 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="1421502046520299169">System operacyjny &amp;Brave – informacje</translation>
 <translation id="2534623228451928732">Aktualizuj system operacyjny &amp;Brave</translation>
 <translation id="8447483940522230788">Pomoc Brave</translation>
-<translation id="3360368475735266712">Zaloguj się, by synchronizować dane Brave i korzystać z własnych ustawień przeglądarki na wielu urządzeniach</translation>
 <translation id="5477319665405831211">Synchronizuj dane Brave i korzystaj z własnych ustawień przeglądarki na wielu urządzeniach</translation>
 <translation id="4934157190377700991">Jesteś teraz zalogowany w Brave</translation>
 <translation id="4100716194836114130">Oto Twoja przeglądarka Brave</translation>
@@ -142,6 +141,8 @@ Jeśli jednak zalogujesz się teraz, informacje Brave, takie jak zakładki, hist
 <translation id="6746636977031158624">System operacyjny Brave nie może zsynchronizować danych, ponieważ dane logowania na Twoje konto są nieaktualne.</translation>
 <translation id="2999152167963026588">System operacyjny Brave nie może zsynchronizować danych, ponieważ synchronizacja jest niedostępna w Twojej domenie.</translation>
 <translation id="1459786048951724030">System operacyjny Brave nie może zsynchronizować danych z powodu błędu logowania.</translation>
+<translation id="6813094029720377619">Pliki cookie są usuwane, gdy zamykasz Brave. Aby dalej korzystać z synchronizacji, zmień <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">ustawienia</translation>
 <translation id="663059986967017181">Skopiowana do Brave</translation>
 <translation id="1457432835062259213">Menu z aplikacjami Brave</translation>
 <translation id="82609232232243542">Zaloguj się w Brave</translation>
@@ -161,7 +162,7 @@ Aby uniemożliwić użytkownikowi <ph name="NEW_PROFILE_NAME"/> korzystanie z T
 
 Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Profile nadzorowanych użytkowników nie będą dostępne począwszy od Brave 70.</translation>
-<translation id="3066805437003400520">Dane przeglądania tej osoby zostaną usunięte z tego urządzenia. Aby je odzyskać, zaloguj się w Brave jako <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Dane przeglądania tej osoby zostaną usunięte z tego urządzenia. Aby je odzyskać, zaloguj się w Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Przeglądarka Brave jest jeszcze lepsza</translation>
 <translation id="7192666605334070839">Korzystanie z Brave na wspólnych komputerach i przy użyciu konta Brave Software jest teraz jeszcze łatwiejsze.</translation>
 <translation id="3511996232906761537">Tu są Twoje strony, zakładki i inne dane z Brave.</translation>
@@ -233,14 +234,6 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="7808415789955822133">Warunki korzystania z systemu operacyjnego Brave</translation>
 <translation id="7207456302801184289">Brave – witamy!</translation>
 <translation id="5688839044908745927">Brave jest prawie gotowy.</translation>
-<translation id="7758342895140862711">Zabierz Brave ze sobą</translation>
-<translation id="3610173904388112975">Przeglądanie stron internetowych za pomocą inteligentnych rozwiązań Brave Software</translation>
-<translation id="3479552764303398839">Nie teraz</translation>
-<translation id="8013374903356993822">Szybciej uruchamiaj Brave</translation>
-<translation id="7625138338483121345">Ustawianie Brave jako przeglądarki domyślnej</translation>
-<translation id="5927044791090834489">Przypinanie Brave na pasku zadań</translation>
-<translation id="8933981935877469796">Wybierz <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">Kliknij przycisk <ph name="BEGIN_BOLD"/>Przełącz mimo to<ph name="END_BOLD"/>, jeśli jest widoczny</translation>
 <translation id="3507835409099344374">Otwórz ustawienia powiadomień Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Dostępna jest aktualizacja Brave}=1{Dostępna jest aktualizacja Brave}few{Aktualizacja Brave jest dostępna od # dni}many{Aktualizacja Brave jest dostępna od # dni}other{Aktualizacja Brave jest dostępna od # dnia}}</translation>
 <translation id="720532315408041257">Administrator prosi Cię o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację</translation>
@@ -253,6 +246,7 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="1197672524850678392">Nie udało się uruchomić Brave. Spróbuj ponownie.</translation>
 <translation id="6040143037577758943">Zamknij</translation>
 <translation id="5147525139567260139">Udostępnij kartę Brave</translation>
+<translation id="2076319850279844250">Pomóż nam ulepszyć Brave</translation>
 <translation id="8541922081612557424">Brave – informacje</translation>
 <translation id="3262506503470845422">Pomoc do Brave</translation>
 <translation id="1864557848095568223">Aktualizuję Brave</translation>
@@ -260,6 +254,7 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="8208853227947884571">Masz aktualną wersję Brave</translation>
 <translation id="6686872257969654608">System operacyjny Brave – informacje</translation>
 <translation id="2280363356796735201">Skorzystaj z pomocy dotyczącej systemu operacyjnego Brave</translation>
+<translation id="38898988211673781">Wyczyść pliki cookie i dane witryn w momencie zamknięcia Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (skopiowana do Brave)</translation>
 <translation id="5468853758063275923">Brave jest domyślną przeglądarką</translation>
 <translation id="1775322105159056176">Brave nie może określić ani ustawić domyślnej przeglądarki</translation>
@@ -276,6 +271,7 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="8372880274820509128">Dla większego bezpieczeństwa Brave szyfruje dane.</translation>
 <translation id="7445061995866044926">Wylogować z Brave?</translation>
 <translation id="7453070689008684791">Brave będzie mieć dostęp do Dysku, by wyświetlać podpowiedzi na pasku adresu</translation>
+<translation id="3360368475735266712">Zaloguj się, by synchronizować dane Brave i korzystać z własnych ustawień przeglądarki na wielu urządzeniach</translation>
 <translation id="9221712274065451529">Ten język jest używany do wyświetlania UI Brave OS</translation>
 <translation id="3518788198614984730">Wyświetlaj system operacyjny Brave w tym języku</translation>
 <translation id="5757460455745382269">Ten język jest używany do wyświetlania UI Brave</translation>

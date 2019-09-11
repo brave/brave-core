@@ -7,6 +7,9 @@
     "scripts": ["extension/out/brave_webtorrent_background.bundle.js"],
     "persistent": true
   },
+  "web_accessible_resources": [
+    "extension/brave_webtorrent.html"
+  ],
   "permissions": ["dns", "tabs", "windows", "<all_urls>"],
   "sockets": {
     "udp": {

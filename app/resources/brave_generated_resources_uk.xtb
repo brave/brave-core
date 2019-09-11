@@ -34,6 +34,7 @@
 <translation id="2814998458708016836">Використовувати широкий адресний рядок</translation>
 <translation id="6123134130710658846">Сховати кнопку Brave Rewards</translation>
 <translation id="7635711399568194460">Приховує кнопку Brave Rewards в адресному рядку, коли Brave Rewards вимкнено</translation>
+<translation id="4262166817826183486">Завжди показувати панель закладок на сторінці Нової вкладки</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
 <translation id="8511502469534942133">Нове з'єднання Tor для цього сайту</translation>
 <translation id="8784924142044142231">Вийти з Tor</translation>
@@ -60,7 +61,6 @@
 <translation id="9075744464571452108">Визначення пристрою</translation>
 <translation id="3570081523466826008">Оновити зв’язки до HTTPS</translation>
 <translation id="4824468494729001999">Блокувати скрипти</translation>
-<translation id="7498695072878479744">Дозволити кнопки входу Google на сайтах третьої сторони</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
 <translation id="5165042248369837294">Дозволити вбудовані твіти Twitter</translation>
 <translation id="958971637207126733">Дозволити вбудовані пости LinkedIn</translation>
@@ -84,12 +84,14 @@
 <translation id="8721331068159819483">Як і в macOS</translation>
 <translation id="6786747875388722282">Розширення</translation>
 <translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
+<translation id="5554028991651120544">Надає гаманець Ethereum та браузер Dapp всередині Brave.</translation>
 <translation id="6554397389149987360">Використовує компоненти Hangouts, щоб увімкнути поширення екрану та інші функції у браузері.</translation>
 <translation id="1765684547504191670">Використовує компонент Media Router для увімкнення Chromecast у браузері.</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
 <translation id="4154389611571860454">Використовує супутнє розширення IPFS для підтримки IPFS у браузері.</translation>
 <translation id="8137559199583651773">Керувати розширеннями</translation>
+<translation id="7013485839273047434">Отримайте більше розширень</translation>
 <translation id="4928988318462976765">Веб Магазин Розширень</translation>
 <translation id="9181207987584064303">Переглянути у Веб Магазині Розширень</translation>
 <translation id="4846154056248462491">На вихід</translation>
@@ -99,4 +101,19 @@
 <translation id="8303432794159193481">Додатки браузера Brave</translation>
 <translation id="8292967014767479012">Програми браузера Brave</translation>
 <translation id="4743468424889072281">Розробницькі програми браузера Brave</translation>
+<translation id="4568409039725976900">Помаранчевий Brave</translation>
+<translation id="7216062233533864908">Помаранчева шкірка</translation>
+<translation id="8285320948587819446">Нана</translation>
+<translation id="2016467614790224371">Заздрість</translation>
+<translation id="8111795220552176635">Чисте небо</translation>
+<translation id="8323875061602721187">Бонді-синій</translation>
+<translation id="8267711815380227275">Синьо-пурпурний</translation>
+<translation id="831132225871108758">Темний лицар</translation>
+<translation id="1473185169764311478">У формі помаранчевої шкірки</translation>
+<translation id="8658537263568841491">У формі нани</translation>
+<translation id="8967241601928387177">У формі заздрощів</translation>
+<translation id="7232547941405761864">У формі чистого неба</translation>
+<translation id="5500050460919597479">У формі бонді-синього</translation>
+<translation id="5359364898094115985">У формі синьо-пурпурного</translation>
+<translation id="3385506478125681119">У формі Темного лицаря</translation>
 </translationbundle>

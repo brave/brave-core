@@ -73,11 +73,6 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
       std::make_unique<settings::SearchEnginesHandler>(profile));
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
-#if defined(OS_WIN)
-  g_brave_browser_process->local_state()->SetBoolean(
-      prefs::kHasSeenWin10PromoPage,
-      true);
-#endif
 }
 
 BraveWelcomeUI::~BraveWelcomeUI() {

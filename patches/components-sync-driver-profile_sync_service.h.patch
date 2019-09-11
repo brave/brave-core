@@ -1,0 +1,12 @@
+diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
+index 49e29d75c21ab2a93859cbeb610244229ac29951..a365dbb0223f928c8a261241af2197caaf5b02ed 100644
+--- a/components/sync/driver/profile_sync_service.h
++++ b/components/sync/driver/profile_sync_service.h
+@@ -492,6 +492,7 @@ class ProfileSyncService : public SyncService,
+ 
+   base::WeakPtrFactory<ProfileSyncService> weak_factory_{this};
+ 
++  BRAVE_PROFILE_SYNC_SERVICE_H
+   DISALLOW_COPY_AND_ASSIGN(ProfileSyncService);
+ };
+ 

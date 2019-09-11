@@ -181,7 +181,6 @@
 <translation id="2827387977307390755">Omogoči donacije za</translation>
 <translation id="3671566813999349838">Znesek</translation>
 <translation id="3819257035322786455">Varnostno kopiranje</translation>
-<translation id="4989542687859782284">Ni na voljo</translation>
 <translation id="1312977698678162065">Zaslužite z ogledom relevantnih oglasov, ki spoštujejo vašo zasebnost.</translation>
 <translation id="7655723274266132226">Zdaj lahko zaslužite z ogledom oglasov.</translation>
 <translation id="2975780980638932742">Prišli so oglasi Brave!</translation>
@@ -284,7 +283,6 @@
 <translation id="3173528272490482456">Ste pripravljeni?</translation>
 <translation id="913775524828049259">Da, pripravljen/-a sem</translation>
 <translation id="108052542935515756">Lahko pričnete s/z</translation>
-<translation id="2678666039642976470">Ponovno povežite denarnico</translation>
 <translation id="194625454574835815">Obnovitveni ključ</translation>
 <translation id="6354568176665589146">Ponavljajoče</translation>
 <translation id="7577100371127227294">Mesečne donacije</translation>
@@ -367,6 +365,7 @@
 <translation id="6727483290601442544">Ogled podrobnosti</translation>
 <translation id="1988679729106502285">OPOMBA:</translation>
 <translation id="5815103311506128988">Ta ustvarjalec še ni podpisal za prejem prispevkov od uporabnikov Brave. Vaš brskalnik bo nadaljeval s poskušanjem dodelitve prispevkov, dokler se ne potrdijo ali preteče 90 dni.</translation>
+<translation id="603411408512957306">Ta ustvarjalec še ni podpisal za prejem prispevkov od uporabnikov Brave. Vaš brskalnik bo nadaljeval s poskušanjem dodelitve prispevkov, dokler se ne potrdijo ali preteče 90 dni.</translation>
 <translation id="4292832015778676417">zasluženo z ogledom oglasov</translation>
 <translation id="3197752845651180812">Donacije na čakanju</translation>
 <translation id="3164105678355419142">Ponavljajoča se donacija</translation>
@@ -389,7 +388,7 @@
 <translation id="7512440811010447157">preveri</translation>
 <translation id="8030169304546394654">Prekinjeno</translation>
 <translation id="8267327690882073581">Preveri denarnico</translation>
-<translation id="4569155249847375786">Preverjeno</translation>
+<translation id="543510923939676996">Preverjeno</translation>
 <translation id="7591798679868259510">Pojdi na moj račun Uphold</translation>
 <translation id="9200453331904391567">Prekinite povezavo z Brave Rewards</translation>
 <translation id="46988480989545156">Preveri denarnico</translation>
@@ -401,6 +400,15 @@
 <translation id="2610007079772760276">Preverjena denarnica vam omogoča:</translation>
 <translation id="7565794512491053578">Preverite denarnico</translation>
 <translation id="698531289520577961">In enostavno upravljajte s svojimi sredstvi!</translation>
+<translation id="8697510149346635496">Umaknite BAT, ki ste ga zaslužili z ogledom oglasov, ki spoštujejo zasebnost</translation>
+<translation id="1481480653609649134">Nakup dodatnih BAT s kreditnimi karticami in drugimi viri</translation>
+<translation id="9096003370755878766">Umaknite BAT, ki ste ga morda že dodali v svojo denarnico Brave Rewards</translation>
+<translation id="5275978662119683162">Prednosti preverjanja</translation>
+<translation id="5166793288622772189">Ste pripravljeni na preverjanje denarnice?</translation>
+<translation id="8766217572332535979">Za preverjanje prispevkov ustvarjalcev nagrade niso potrebne</translation>
+<translation id="4569155249847375786">Preverjeno</translation>
+<translation id="8465442795593991224">Platforma Uphold lahko zahteva, da preverite svojo identiteto na podlagi zahtevanih storitev.</translation>
+<translation id="723054503945711909">Družba Brave Software Inc. ne obdeluje, hrani ali dostopa do nobenih osebnih podatkov, ki jih posredujete prek platforme Uphold, ko z njimi vzpostavite račun.</translation>
 <translation id="1181037720776840403">Odstrani</translation>
 <translation id="7885157704277298658">Kopirano!</translation>
 <translation id="5379640681913450928">Število besed:</translation>

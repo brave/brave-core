@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/resources/extensions/toolbar.html b/chrome/browser/resources/extensions/toolbar.html
-index 77ee1f84a66d142b39d34c65bfdc5206061e8c8e..393bea8e5be687d710e11ca7199ecf5d1816ab29 100644
+index 7e08974284adad472b8691ace100770ebd64475c..da03ebaf3c24caf1a227448fada709604bc6cddd 100644
 --- a/chrome/browser/resources/extensions/toolbar.html
 +++ b/chrome/browser/resources/extensions/toolbar.html
-@@ -2,7 +2,7 @@
- 
+@@ -3,7 +3,7 @@
+ <link rel="import" href="chrome://resources/cr_elements/cr_button/cr_button.html">
  <link rel="import" href="chrome://resources/cr_elements/cr_toast/cr_toast.html">
  <link rel="import" href="chrome://resources/cr_elements/cr_toggle/cr_toggle.html">
 -<link rel="import" href="chrome://resources/cr_elements/cr_toolbar/cr_toolbar.html">
 +<link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
  <link rel="import" href="chrome://resources/cr_elements/hidden_style_css.html">
- <link rel="import" href="chrome://resources/cr_elements/paper_button_style_css.html">
  <link rel="import" href="chrome://resources/cr_elements/policy/cr_tooltip_icon.html">
+ <link rel="import" href="chrome://resources/cr_elements/shared_vars_css.html">

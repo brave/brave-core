@@ -35,6 +35,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="2814998458708016836">Utilizați bara de adrese lată</translation>
 <translation id="6123134130710658846">Ascunde butonul Brave Rewards</translation>
 <translation id="7635711399568194460">Ascunde butonul Brave Rewards în bara locației când Brave Rewards nu este activat</translation>
+<translation id="4262166817826183486">Afișează întotdeauna bara bookmark pe pagina Tab Nou</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
 <translation id="8511502469534942133">Conexiune Tor nouă pentru acest site</translation>
 <translation id="8784924142044142231">Ieșire din Tor</translation>
@@ -61,7 +62,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="9075744464571452108">Recunoașterea dispozitivului</translation>
 <translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
 <translation id="4824468494729001999">Blocare scripturi</translation>
-<translation id="7498695072878479744">Permite butoanele de conectare Google pe siteurile terțe</translation>
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
 <translation id="5165042248369837294">Permite tweet-uri încorporate Twitter</translation>
 <translation id="958971637207126733">Permite postări LinkedIn încorporate</translation>
@@ -85,12 +85,14 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8721331068159819483">La fel ca macOS</translation>
 <translation id="6786747875388722282">Extensii</translation>
 <translation id="2896916411183256228">Utilizează WebTorrent pentru afișarea torrent-elor direct în browser. Acceptă fișiere torrent și linkuri magnet.</translation>
+<translation id="5554028991651120544">Furnizează un portofel Ethereum și browserul Dapp în interiorul Brave.</translation>
 <translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
 <translation id="1765684547504191670">Folosește componenta Media Router pentru a activa Chromecast în browser.</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="7179921470347911571">Relansare acum</translation>
 <translation id="4154389611571860454">Folosește extensia companion IPFS pentru a accepta IPFS în browser.</translation>
 <translation id="8137559199583651773">Gestionați extensiile</translation>
+<translation id="7013485839273047434">Obține mai multe extensii</translation>
 <translation id="4928988318462976765">Magazin Extensii Web</translation>
 <translation id="9181207987584064303">Vizualizare în Magazinul Extensii Web</translation>
 <translation id="4846154056248462491">La ieșire</translation>
@@ -100,4 +102,19 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8303432794159193481">Aplicații dezv browser Brave</translation>
 <translation id="8292967014767479012">Aplicații browser Brave</translation>
 <translation id="4743468424889072281">Aplicații dezvoltare browser Brave</translation>
+<translation id="4568409039725976900">Brave Orange</translation>
+<translation id="7216062233533864908">Orange Peel</translation>
+<translation id="8285320948587819446">Nana</translation>
+<translation id="2016467614790224371">Envy</translation>
+<translation id="8111795220552176635">Clear Skies</translation>
+<translation id="8323875061602721187">Bondy Blue</translation>
+<translation id="8267711815380227275">Blurple</translation>
+<translation id="831132225871108758">Dark Knight</translation>
+<translation id="1473185169764311478">Orange Peel Shape</translation>
+<translation id="8658537263568841491">Nana Shape</translation>
+<translation id="8967241601928387177">Envy Shape</translation>
+<translation id="7232547941405761864">Clear Skies Shape</translation>
+<translation id="5500050460919597479">Bondy Blue Shape</translation>
+<translation id="5359364898094115985">Blurple Shape</translation>
+<translation id="3385506478125681119">Dark Knight Shape</translation>
 </translationbundle>

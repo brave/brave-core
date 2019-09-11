@@ -87,9 +87,11 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest,
   brave::ResponseCallback callback;
   std::shared_ptr<brave::BraveRequestInfo> brave_request_info(
       new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave_request_info->referral_headers_list = referral_headers_list;
   int ret = brave::OnBeforeStartTransaction_ReferralsWork(
-      request.get(), &headers, callback, brave_request_info);
+      &headers, callback, brave_request_info);
 
   std::string partner_header;
   headers.GetHeader("X-Brave-Partner", &partner_header);
@@ -123,7 +125,7 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest,
       new brave::BraveRequestInfo());
   brave_request_info->referral_headers_list = referral_headers_list;
   int ret = brave::OnBeforeStartTransaction_ReferralsWork(
-      request.get(), &headers, callback, brave_request_info);
+      &headers, callback, brave_request_info);
 
   EXPECT_FALSE(headers.HasHeader("X-Brave-Partner"));
 

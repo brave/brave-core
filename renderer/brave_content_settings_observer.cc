@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/bind_helpers.h"
+#include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
 #include "brave/content/common/frame_messages.h"
@@ -64,9 +65,12 @@ void BraveContentSettingsObserver::DidCommitProvisionalLoad(
 
 bool BraveContentSettingsObserver::IsScriptTemporilyAllowed(
     const GURL& script_url) {
-  // check if scripts from this origin are temporily allowed or not
-  return base::ContainsKey(temporarily_allowed_scripts_,
-      script_url.GetOrigin().spec());
+  // Check if scripts from this origin are temporily allowed or not.
+  // Also matches the full script URL to support data URL cases which we use
+  // the full URL to allow it.
+  return base::Contains(
+      temporarily_allowed_scripts_, script_url.GetOrigin().spec()) ||
+    base::Contains(temporarily_allowed_scripts_, script_url.spec());
 }
 
 void BraveContentSettingsObserver::BraveSpecificDidBlockJavaScript(

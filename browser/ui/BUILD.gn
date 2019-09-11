@@ -1,6 +1,7 @@
 import("//brave/build/config.gni")
-import("//build/config/features.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_sync/buildflags/buildflags.gni")
+import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 
 source_set("ui") {
@@ -17,9 +18,14 @@ source_set("ui") {
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
-    "webui/sync/sync_ui.cc",
-    "webui/sync/sync_ui.h",
   ]
+
+  if (enable_brave_sync) {
+    sources += [
+      "webui/sync/sync_ui.cc",
+      "webui/sync/sync_ui.h",
+    ]
+  }
 
   if (!is_android) {
     sources += [
@@ -57,8 +63,8 @@ source_set("ui") {
 
     if (enable_sparkle) {
       sources += [
-        "webui/settings/brave_relaunch_handler_mac.mm",
         "webui/settings/brave_relaunch_handler_mac.h",
+        "webui/settings/brave_relaunch_handler_mac.mm",
       ]
     }
   }
@@ -73,6 +79,8 @@ source_set("ui") {
       "views/frame/brave_browser_view.h",
       "views/importer/brave_import_lock_dialog_view.cc",
       "views/importer/brave_import_lock_dialog_view.h",
+      "views/reader_mode/brave_reader_mode_icon_view.cc",
+      "views/reader_mode/brave_reader_mode_icon_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
       "views/toolbar/bookmark_button.cc",
@@ -81,8 +89,8 @@ source_set("ui") {
 
     if (enable_sparkle) {
       sources += [
-        "views/update_recommended_message_box_mac.mm",
         "views/update_recommended_message_box_mac.h",
+        "views/update_recommended_message_box_mac.mm",
       ]
     }
   }
@@ -112,22 +120,19 @@ source_set("ui") {
   deps = [
     "//base",
     "//brave/app:command_ids",
-    "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/theme:brave_theme_resources",
+    "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/vector_icons:vector_icons",
+    "//brave/browser:sparkle_buildflags",
+    "//brave/browser/devtools",
+    "//brave/browser/resources/settings:resources",
+    "//brave/browser/tor",
     "//brave/common",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_new_tab_ui:generated_resources",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
-    "//brave/components/brave_sync",
-    "//brave/components/brave_sync:static_resources",
-    "//brave/components/brave_sync:generated_resources",
     "//brave/components/brave_welcome_ui:generated_resources",
-    "//brave/browser:sparkle_buildflags",
-    "//brave/browser/devtools",
-    "//brave/browser/tor",
-    "//brave/browser/resources/settings:resources",
     "//chrome/app:command_ids",
     "//chrome/common",
     "//components/prefs",
@@ -136,14 +141,20 @@ source_set("ui") {
     "//skia",
     "//ui/accessibility",
     "//ui/base",
-    "//ui/resources",
     "//ui/gfx",
+    "//ui/resources",
   ]
 
-  if (!is_android) {
+  if (enable_brave_sync) {
     deps += [
-      "//brave/app:brave_generated_resources_grit",
+      "//brave/components/brave_sync",
+      "//brave/components/brave_sync:generated_resources",
+      "//brave/components/brave_sync:static_resources",
     ]
+  }
+
+  if (!is_android) {
+    deps += [ "//brave/app:brave_generated_resources_grit" ]
   }
 
   if (enable_extensions) {
@@ -174,8 +185,8 @@ source_set("ui") {
 
     deps += [
       "//brave/browser/resources/extensions:resources",
-      "//brave/components/brave_extension:static_resources",
       "//brave/components/brave_extension:generated_resources",
+      "//brave/components/brave_extension:static_resources",
       "//chrome/browser/extensions",
       "//extensions/browser",
     ]
@@ -191,14 +202,14 @@ source_set("ui") {
 
   if (brave_rewards_enabled) {
     sources += [
-      "webui/brave_tip_ui.cc",
-      "webui/brave_tip_ui.h",
-      "webui/brave_rewards_source.cc",
-      "webui/brave_rewards_source.h",
       "webui/brave_rewards_internals_ui.cc",
       "webui/brave_rewards_internals_ui.h",
+      "webui/brave_rewards_source.cc",
+      "webui/brave_rewards_source.h",
       "webui/brave_rewards_ui.cc",
       "webui/brave_rewards_ui.h",
+      "webui/brave_tip_ui.cc",
+      "webui/brave_tip_ui.h",
     ]
 
     deps += [

@@ -1,0 +1,13 @@
+diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
+index 97190831c600d897def6198ac793e54f17d99102..64890ace04f59fe17f04e293a2a8089f1162156e 100644
+--- a/components/sync_device_info/device_info_sync_bridge.cc
++++ b/components/sync_device_info/device_info_sync_bridge.cc
+@@ -259,7 +259,7 @@ std::string DeviceInfoSyncBridge::GetStorageKey(const EntityData& entity_data) {
+ void DeviceInfoSyncBridge::ApplyStopSyncChanges(
+     std::unique_ptr<MetadataChangeList> delete_metadata_change_list) {
+   if (!delete_metadata_change_list) {
+-    return;
++    // return;
+   }
+ 
+   // Sync is being disabled, so the local DeviceInfo is no longer valid and

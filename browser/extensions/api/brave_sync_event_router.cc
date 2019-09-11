@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/api/brave_sync_event_router.h"
+
+#include <memory>
+#include <utility>
 
 #include "brave/common/extensions/api/brave_sync.h"
 #include "chrome/browser/profiles/profile.h"
@@ -142,13 +146,4 @@ void BraveSyncEventRouter::LoadClient() {
   event_router_->BroadcastEvent(std::move(event));
 }
 
-void BraveSyncEventRouter::ClearOrderMap() {
-  auto args = std::make_unique<base::ListValue>();
-  std::unique_ptr<Event> event(
-     new Event(extensions::events::FOR_TEST,
-       extensions::api::brave_sync::OnClearOrderMap::kEventName,
-       std::move(args)));
-  event_router_->BroadcastEvent(std::move(event));
-}
-
-} // namespace extensions
+}  // namespace extensions

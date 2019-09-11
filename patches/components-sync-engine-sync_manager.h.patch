@@ -1,0 +1,12 @@
+diff --git a/components/sync/engine/sync_manager.h b/components/sync/engine/sync_manager.h
+index 4fe4dbbc21d587652ffc8e8a804e7374373a4cf4..8f1f9e84af910be41c580419fbaefb257ec11594 100644
+--- a/components/sync/engine/sync_manager.h
++++ b/components/sync/engine/sync_manager.h
+@@ -248,6 +248,7 @@ class SyncManager {
+     std::string cache_guid;
+     std::string birthday;
+     std::string bag_of_chips;
++    BRAVE_SYNC_MANAGER_INIT_ARGS_H
+   };
+ 
+   // The state of sync the feature. If the user turned on sync explicitly, it

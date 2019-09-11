@@ -29,14 +29,10 @@ export default class FooterInfo extends React.Component<Props, {}> {
       showPhotoInfo
     } = this.props
 
-    if (!backgroundImageInfo) {
-      return null
-    }
-
     return (
       <>
       <div>
-        {showPhotoInfo &&
+        {showPhotoInfo && backgroundImageInfo &&
         <PhotoName>
           {`${getLocale('photoBy')} `}
           <Link href={backgroundImageInfo.link} rel='noreferrer noopener' target='_blank'>

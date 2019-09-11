@@ -21,12 +21,10 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
-#include "brave/components/brave_shields/browser/extension_whitelist_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
-#include "chrome/browser/io_thread.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
@@ -38,6 +36,11 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/common/extensions/whitelist.h"
+#include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
 #endif
 
 #if defined(OS_ANDROID)
@@ -86,37 +89,14 @@ BraveBrowserProcessImpl::brave_component_updater_delegate() {
   return brave_component_updater_delegate_.get();
 }
 
-component_updater::ComponentUpdateService*
-BraveBrowserProcessImpl::component_updater() {
-  if (component_updater_)
-    return component_updater_.get();
-
-  if (!BrowserThread::CurrentlyOn(BrowserThread::UI))
-    return nullptr;
-
-  std::unique_ptr<component_updater::UpdateScheduler> scheduler;
-#if defined(OS_ANDROID)
-  if (base::FeatureList::IsEnabled(
-          chrome::android::kBackgroundTaskComponentUpdate) &&
-      component_updater::BackgroundTaskUpdateScheduler::IsAvailable()) {
-    scheduler =
-        std::make_unique<component_updater::BackgroundTaskUpdateScheduler>();
-  }
-#endif
-  if (!scheduler)
-    scheduler = std::make_unique<component_updater::TimerUpdateScheduler>();
-
-  component_updater_ = component_updater::ComponentUpdateServiceFactory(
-      component_updater::MakeBraveComponentUpdaterConfigurator(
-          base::CommandLine::ForCurrentProcess(),
-          g_browser_process->local_state()),
-      std::move(scheduler));
-
-  return component_updater_.get();
+ProfileManager* BraveBrowserProcessImpl::profile_manager() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!created_profile_manager_)
+    CreateProfileManager();
+  return profile_manager_.get();
 }
 
-void BraveBrowserProcessImpl::ResourceDispatcherHostCreated() {
-  BrowserProcessImpl::ResourceDispatcherHostCreated();
+void BraveBrowserProcessImpl::StartBraveServices() {
   ad_block_service()->Start();
   ad_block_custom_filters_service()->Start();
   ad_block_regional_service_manager()->Start();
@@ -130,13 +110,6 @@ void BraveBrowserProcessImpl::ResourceDispatcherHostCreated() {
   tracking_protection_service();
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
-}
-
-ProfileManager* BraveBrowserProcessImpl::profile_manager() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!created_profile_manager_)
-    CreateProfileManager();
-  return profile_manager_.get();
 }
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
@@ -177,12 +150,12 @@ BraveBrowserProcessImpl::autoplay_whitelist_service() {
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-brave_shields::ExtensionWhitelistService*
+brave_component_updater::ExtensionWhitelistService*
 BraveBrowserProcessImpl::extension_whitelist_service() {
   if (!extension_whitelist_service_) {
     extension_whitelist_service_ =
-        brave_shields::ExtensionWhitelistServiceFactory(
-            local_data_files_service());
+        brave_component_updater::ExtensionWhitelistServiceFactory(
+            local_data_files_service(), kVettedExtensions);
   }
   return extension_whitelist_service_.get();
 }

@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <string>
 
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "services/network/public/mojom/referrer_policy.mojom.h"
 
@@ -22,16 +23,55 @@ struct Referrer;
 
 class GURL;
 class HostContentSettingsMap;
+class PrefService;
 class Profile;
 class ProfileIOData;
 
 namespace brave_shields {
 
-bool IsAllowContentSetting(HostContentSettingsMap* content_settings,
-                           const GURL& primary_url,
-                           const GURL& secondary_url,
-                           ContentSettingsType setting_type,
-                           const std::string& resource_identifier);
+enum ControlType { ALLOW = 0, BLOCK, BLOCK_THIRD_PARTY, DEFAULT, INVALID };
+
+ContentSettingsPattern GetPatternFromURL(const GURL& url,
+                                         bool scheme_wildcard = false);
+std::string ControlTypeToString(ControlType type);
+ControlType ControlTypeFromString(const std::string& string);
+
+void SetBraveShieldsEnabled(Profile* profile, bool enable, const GURL& url);
+// reset to the default value
+void ResetBraveShieldsEnabled(Profile* profile, const GURL& url);
+bool GetBraveShieldsEnabled(Profile* profile, const GURL& url);
+bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
+
+void SetAdControlType(Profile* profile, ControlType type, const GURL& url);
+ControlType GetAdControlType(Profile* profile, const GURL& url);
+
+void SetCookieControlType(Profile* profile, ControlType type, const GURL& url);
+void SetCookieControlType(HostContentSettingsMap* map,
+                          ControlType type,
+                          const GURL& url);
+ControlType GetCookieControlType(Profile* profile, const GURL& url);
+ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url);
+
+// Referrers is always set along with cookies so there is no setter and
+// these is just included for backwards compat.
+bool AllowReferrers(Profile* profile, const GURL& url);
+bool AllowReferrers(HostContentSettingsMap* map, const GURL& url);
+
+void SetFingerprintingControlType(Profile* profile,
+                                  ControlType type,
+                                  const GURL& url);
+ControlType GetFingerprintingControlType(Profile* profile, const GURL& url);
+
+void SetHTTPSEverywhereEnabled(Profile* profile, bool enable, const GURL& url);
+// reset to the default value
+void SetHTTPSEverywhereEnabled(Profile* profile, bool enable, const GURL& url);
+void ResetHTTPSEverywhereEnabled(Profile* profile, const GURL& url);
+bool GetHTTPSEverywhereEnabled(Profile* profile, const GURL& url);
+
+void SetNoScriptControlType(Profile* profile,
+                            ControlType type,
+                            const GURL& url);
+ControlType GetNoScriptControlType(Profile* profile, const GURL& url);
 
 bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
                                      const GURL& primary_url,

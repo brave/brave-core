@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Đừng lo. Điều này có thể xảy ra vì rất nhiều lý do về bảo mật. Chỉ cần đơn giản ngắt kết nối là sẽ giải quyết vấn đề này.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Người sáng tạo này vẫn chưa đăng ký để nhận đóng góp từ người dùng Brave. Bất kỳ khoản tiền tip nào mà bạn gửi sẽ vẫn còn trong ví của bạn cho đến khi họ xác minh.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

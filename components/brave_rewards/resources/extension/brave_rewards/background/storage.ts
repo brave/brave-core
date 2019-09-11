@@ -47,7 +47,8 @@ const cleanData = (state: RewardsExtension.State) => {
   state = { ...state }
   state.publishers = {}
 
-  if (!state.balance) {
+  const balance = state.balance as any
+  if (!balance || balance.total == null) {
     state.balance = defaultState.balance
   }
 

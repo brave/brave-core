@@ -44,15 +44,31 @@ bool IsUpdaterURL(const GURL& gurl) {
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
+  GURL new_url;
+  int rc = OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(ctx->request_url,
+                                                              &new_url);
+  if (!new_url.is_empty()) {
+    ctx->new_url_spec = new_url.spec();
+  }
+  return rc;
+}
+
+int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
+    const GURL& request_url,
+    GURL* new_url) {
+  DCHECK(new_url);
+
   GURL::Replacements replacements;
-  if (IsUpdaterURL(ctx->request_url)) {
-    replacements.SetQueryStr(ctx->request_url.query_piece());
-    ctx->new_url_spec = GURL(kBraveUpdatesExtensionsEndpoint)
-                            .ReplaceComponents(replacements)
-                            .spec();
+
+  if (IsUpdaterURL(request_url)) {
+    replacements.SetQueryStr(request_url.query_piece());
+    *new_url = GURL(kBraveUpdatesExtensionsEndpoint)
+                            .ReplaceComponents(replacements);
     return net::OK;
   }
+
   return net::OK;
 }
+
 
 }  // namespace brave

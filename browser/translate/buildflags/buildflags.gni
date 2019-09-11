@@ -2,5 +2,5 @@ import("//brave/build/config.gni")
 import("//build/config/features.gni")
 
 declare_args() {
-  enable_brave_translate = !is_release_channel
+  enable_brave_translate_go = !is_release_channel
 }

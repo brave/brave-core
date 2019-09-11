@@ -23,6 +23,8 @@ source_set("brave_shields") {
     "ad_block_service_helper.h",
     "adblock_interceptor.cc",
     "adblock_interceptor.h",
+    "adblock_stub_response.cc",
+    "adblock_stub_response.h",
     "autoplay_whitelist_service.cc",
     "autoplay_whitelist_service.h",
     "base_brave_shields_service.cc",
@@ -31,6 +33,8 @@ source_set("brave_shields") {
     "brave_shields_util.h",
     "brave_shields_web_contents_observer.cc",
     "brave_shields_web_contents_observer.h",
+    "cookie_pref_service.cc",
+    "cookie_pref_service.h",
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
@@ -53,22 +57,15 @@ source_set("brave_shields") {
     "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//brave/vendor/autoplay-whitelist/brave:autoplay-whitelist",
     "//chrome/common",
+    "//components/content_settings/core/common",
+    "//components/content_settings/core/browser",
+    "//components/keyed_service/core",
     "//components/prefs",
     "//content/public/browser",
     "//net",
     "//third_party/leveldatabase",
+    "//url",
   ]
-
-  if (enable_extensions) {
-    sources += [
-      "extension_whitelist_service.cc",
-      "extension_whitelist_service.h",
-    ]
-
-    deps += [
-      "//brave/vendor/extension-whitelist/brave:extension-whitelist",
-    ]
-  }
 }
 
 if (is_mac) {

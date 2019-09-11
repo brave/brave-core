@@ -18,7 +18,6 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/pref_names.h"
 #include "components/component_updater/component_updater_command_line_config_policy.h"
-#include "components/component_updater/configurator_impl.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/activity_data_service.h"
@@ -40,57 +39,6 @@
 
 namespace component_updater {
 
-namespace {
-
-class BraveConfigurator : public update_client::Configurator {
- public:
-  BraveConfigurator(const base::CommandLine* cmdline,
-                    PrefService* pref_service);
-
-  // update_client::Configurator overrides.
-  int InitialDelay() const override;
-  int NextCheckDelay() const override;
-  int OnDemandDelay() const override;
-  int UpdateDelay() const override;
-  std::vector<GURL> UpdateUrl() const override;
-  std::vector<GURL> PingUrl() const override;
-  std::string GetProdId() const override;
-  base::Version GetBrowserVersion() const override;
-  std::string GetChannel() const override;
-  std::string GetBrand() const override;
-  std::string GetLang() const override;
-  std::string GetOSLongName() const override;
-  base::flat_map<std::string, std::string> ExtraRequestParams() const override;
-  std::string GetDownloadPreference() const override;
-  scoped_refptr<update_client::NetworkFetcherFactory> GetNetworkFetcherFactory()
-      override;
-  scoped_refptr<update_client::UnzipperFactory> GetUnzipperFactory() override;
-  scoped_refptr<update_client::PatcherFactory> GetPatcherFactory() override;
-  bool EnabledDeltas() const override;
-  bool EnabledComponentUpdates() const override;
-  bool EnabledBackgroundDownloader() const override;
-  bool EnabledCupSigning() const override;
-  PrefService* GetPrefService() const override;
-  update_client::ActivityDataService* GetActivityDataService() const override;
-  bool IsPerUserInstall() const override;
-  std::vector<uint8_t> GetRunActionKeyHash() const override;
-  std::string GetAppGuid() const override;
-  std::unique_ptr<update_client::ProtocolHandlerFactory>
-      GetProtocolHandlerFactory() const override;
-  update_client::RecoveryCRXElevator GetRecoveryCRXElevator() const override;
-
- private:
-  friend class base::RefCountedThreadSafe<BraveConfigurator>;
-
-  ConfiguratorImpl configurator_impl_;
-  PrefService* pref_service_;  // This member is not owned by this class.
-  scoped_refptr<update_client::NetworkFetcherFactory> network_fetcher_factory_;
-  scoped_refptr<update_client::UnzipperFactory> unzip_factory_;
-  scoped_refptr<update_client::PatcherFactory> patch_factory_;
-
-  ~BraveConfigurator() override {}
-};
-
 // Allows the component updater to use non-encrypted communication with the
 // update backend. The security of the update checks is enforced using
 // a custom message signing protocol and it does not depend on using HTTPS.
@@ -102,6 +50,8 @@ BraveConfigurator::BraveConfigurator(
       pref_service_(pref_service) {
   DCHECK(pref_service_);
 }
+
+BraveConfigurator::~BraveConfigurator() {}
 
 int BraveConfigurator::InitialDelay() const {
   return configurator_impl_.InitialDelay();
@@ -244,21 +194,6 @@ update_client::RecoveryCRXElevator BraveConfigurator::GetRecoveryCRXElevator()
 #else
   return {};
 #endif
-}
-
-}  // namespace
-
-void RegisterPrefsForBraveComponentUpdaterConfigurator(
-    PrefRegistrySimple* registry) {
-  // The component updates are enabled by default, if the preference is not set.
-  registry->RegisterBooleanPref(prefs::kComponentUpdatesEnabled, true);
-}
-
-scoped_refptr<update_client::Configurator>
-MakeBraveComponentUpdaterConfigurator(
-    const base::CommandLine* cmdline,
-    PrefService* pref_service) {
-  return base::MakeRefCounted<BraveConfigurator>(cmdline, pref_service);
 }
 
 }  // namespace component_updater

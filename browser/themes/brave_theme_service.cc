@@ -61,6 +61,19 @@ std::string BraveThemeService::GetStringFromBraveThemeType(
 }
 
 // static
+void BraveThemeService::SetBraveThemeType(Profile* profile, std::string type) {
+  BraveThemeType parsedType = BraveThemeType::BRAVE_THEME_TYPE_DEFAULT;
+
+  if (type == "Light") {
+    parsedType = BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
+  } else if (type == "Dark") {
+    parsedType = BraveThemeType::BRAVE_THEME_TYPE_DARK;
+  }
+
+  profile->GetPrefs()->SetInteger(kBraveThemeType, parsedType);
+}
+
+// static
 base::Value BraveThemeService::GetBraveThemeList() {
   base::Value list(base::Value::Type::LIST);
 
@@ -151,19 +164,31 @@ BraveThemeService::~BraveThemeService() {
 }
 
 void BraveThemeService::Init(Profile* profile) {
+  ThemeService::Init(profile);
+
   // In test, kBraveThemeType isn't registered.
   if (profile->GetPrefs()->FindPreference(kBraveThemeType)) {
     RecoverPrefStates(profile);
     OverrideDefaultThemeIfNeeded(profile);
+
+    // Prevent to overwrite system theme type by using tor/guest profile's one.
+    // System theme type is global value not the profile specific.
+    // So, SetSystemTheme() should not be called by tor/guest profile.
+    // If not, system theme is changed when tor/guest profile is created.
+    // Also, brave theme type could not be changed by tor/guest window.
+    // So, we don't need to care about pref change of their profile.
+    if (brave::IsTorProfile(profile) || brave::IsGuestProfile(profile))
+      return;
+
 #if defined(OS_WIN)
-    OverrideSystemDarkModeIfNeeded(profile);
+    ui::IgnoreSystemDarkModeChange(
+        profile->GetPrefs()->GetInteger(kBraveThemeType) !=
+            BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
 #endif
-    if (SystemThemeModeEnabled()) {
-      // Start with proper system theme to make brave theme and
-      // base ui components theme use same theme.
-      SetSystemTheme(static_cast<BraveThemeType>(
-          profile->GetPrefs()->GetInteger(kBraveThemeType)));
-    }
+    // Start with proper system theme to make brave theme and
+    // base ui components theme use same theme.
+    SetSystemTheme(static_cast<BraveThemeType>(
+        profile->GetPrefs()->GetInteger(kBraveThemeType)));
 
     brave_theme_type_pref_.Init(
       kBraveThemeType,
@@ -174,13 +199,18 @@ void BraveThemeService::Init(Profile* profile) {
     brave_theme_event_router_.reset(
         new extensions::BraveThemeEventRouter(profile));
   }
-
-  ThemeService::Init(profile);
 }
 
 SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
+#if defined(OS_LINUX)
+  // IF gtk theme is selected, respect it.
+  if (UsingSystemTheme())
+    return ThemeService::GetDefaultColor(id, incognito);
+#endif
+
   // Brave Tor profiles are always 'incognito' (for now)
-  if (!incognito && brave::IsTorProfile(profile()))
+  if (!incognito &&
+      (brave::IsTorProfile(profile()) || brave::IsGuestProfile(profile())))
     incognito = true;
   const BraveThemeType theme = GetActiveBraveThemeType(profile());
   const base::Optional<SkColor> braveColor =
@@ -199,23 +229,14 @@ void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
   // Changing theme type means default theme is not overridden anymore.
   profile()->GetPrefs()->SetBoolean(kUseOverriddenBraveThemeType, false);
 
-  bool notify_theme_observer_here = true;
-#if defined(OS_MACOSX)
-  if (SystemThemeModeEnabled()) {
-    // When system theme is changed, system theme changing observer notifies
-    // proper native theme observers.
-    // So, we don't need to notify again. See |appearance_observer_| in
-    // in ui/native_theme/native_theme_mac.mm.
-    notify_theme_observer_here = false;
-    SetSystemTheme(static_cast<BraveThemeType>(
-        profile()->GetPrefs()->GetInteger(kBraveThemeType)));
-  }
-#elif defined(OS_WIN)
-  OverrideSystemDarkModeIfNeeded(profile());
+#if defined(OS_WIN)
+    ui::IgnoreSystemDarkModeChange(
+        profile()->GetPrefs()->GetInteger(kBraveThemeType) !=
+            BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
 #endif
 
-  if (notify_theme_observer_here)
-    ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
+  SetSystemTheme(static_cast<BraveThemeType>(
+      profile()->GetPrefs()->GetInteger(kBraveThemeType)));
 }
 
 void BraveThemeService::RecoverPrefStates(Profile* profile) {
@@ -238,21 +259,6 @@ void BraveThemeService::OverrideDefaultThemeIfNeeded(Profile* profile) {
   }
 }
 
-#if defined(OS_WIN)
-void BraveThemeService::OverrideSystemDarkModeIfNeeded(Profile* profile) {
-  if (SystemThemeModeEnabled()) {
-    BraveThemeType type = static_cast<BraveThemeType>(
-        profile->GetPrefs()->GetInteger(kBraveThemeType));
-    // Overrides system dark mode only when brave theme type is not
-    // "Same as Windows". In this case, follow os theme.
-    // Otherwise, use brave theme as a native theme regardless of os theme.
-    ui::SetOverrideSystemDarkMode(
-        type != BraveThemeType::BRAVE_THEME_TYPE_DEFAULT,
-        type == BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  }
-}
-#endif
-
 void BraveThemeService::SetBraveThemeEventRouterForTesting(
     extensions::BraveThemeEventRouter* mock_router) {
   brave_theme_event_router_.reset(mock_router);
@@ -271,5 +277,5 @@ bool BraveThemeService::SystemThemeModeEnabled() {
       switches::kForceDarkMode))
     return true;
 
-  return SystemThemeSupportDarkMode();
+  return ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported();
 }

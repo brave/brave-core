@@ -38,6 +38,7 @@ class BraveThemeService : public ThemeService {
   static BraveThemeType GetActiveBraveThemeType(Profile* profile);
   static base::Value GetBraveThemeList();
   static std::string GetStringFromBraveThemeType(BraveThemeType type);
+  static void SetBraveThemeType(Profile* profile, std::string type);
 
   BraveThemeService();
   ~BraveThemeService() override;
@@ -64,9 +65,6 @@ class BraveThemeService : public ThemeService {
 
   void RecoverPrefStates(Profile* profile);
   void OverrideDefaultThemeIfNeeded(Profile* profile);
-#if defined(OS_WIN)
-  void OverrideSystemDarkModeIfNeeded(Profile* profile);
-#endif
 
   static bool SystemThemeModeEnabled();
 

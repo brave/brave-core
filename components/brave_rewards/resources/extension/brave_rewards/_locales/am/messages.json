@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "ችግር የለም። ይህ በተለያዩ የደህንነት ምክንያቶች ሊከሰት ይችላል። በድጋሚ ትስስር መፍጠር ብቻ ችግሩን ይፈታዋል።",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "ይህ ፈጣር ከ Brave ተጠቃሚዎች መዋጮዎችን ለመቀበል ገና አልተመዘገበም። እስከሚያረጋግጥ ድረስ ምንም አይነት መወጮ በእርሶ ዋሌት ውስጥ ይቆያል።",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

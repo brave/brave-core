@@ -7,16 +7,13 @@ source_set("browser") {
       "brave_content_settings_ephemeral_provider.h",
       "brave_content_settings_pref_provider.cc",
       "brave_content_settings_pref_provider.h",
-      "brave_cookie_settings.cc",
-      "brave_cookie_settings.h"
     ]
 
     deps = [
       "//base",
-      "//brave/common:brave_cookie_blocking",
       "//brave/common:pref_names",
       "//brave/common:shield_exceptions",
-      "//brave/common/tor:pref_names",
+      "//brave/components/content_settings/core/common",
       "//components/content_settings/core/common",
       "//components/prefs",
       "//net",

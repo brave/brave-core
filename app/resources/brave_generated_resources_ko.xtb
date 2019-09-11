@@ -35,6 +35,7 @@
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="6123134130710658846">Brave Rewards 버튼 감추기</translation>
 <translation id="7635711399568194460">Brave Rewards가 비활성화되었을 시 로케이션 바에서 Brave Rewards를 감춥니다</translation>
+<translation id="4262166817826183486">새로운 탭 페이지에서 항상 북마크 바 표시</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
 <translation id="8511502469534942133">이 사이트 대상 새 Tor 연결</translation>
 <translation id="8784924142044142231">Tor 나가기</translation>
@@ -61,7 +62,6 @@
 <translation id="9075744464571452108">기기 인식</translation>
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="4824468494729001999">스크립트 차단</translation>
-<translation id="7498695072878479744">써드파티 사이트에서 Google 로그인 버튼 활성화합니다</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
@@ -85,12 +85,14 @@
 <translation id="8721331068159819483">macOS와 동일</translation>
 <translation id="6786747875388722282">익스텐션들</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
+<translation id="5554028991651120544">Brave 안에서 이더리움 월렛과 Dapp 브라우저를 제공합니다.</translation>
 <translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
 <translation id="1765684547504191670">브라우저에서 Chromecast를 활성화하기 위해 Media Router 콤포넌트를 사용합니다.</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="4154389611571860454">IPFS 컴패니언 익스텐션을 사용해, 브라우저에서 IPFS를 지원하세요.</translation>
 <translation id="8137559199583651773">확장 프로그램 관리</translation>
+<translation id="7013485839273047434">더 많은 확장 프로그램 받기</translation>
 <translation id="4928988318462976765">웹 익스텐션 스토어</translation>
 <translation id="9181207987584064303">웹 익스텐션 스토어에서 보기</translation>
 <translation id="4846154056248462491">나갈 때</translation>
@@ -100,4 +102,19 @@
 <translation id="8303432794159193481">Brave 브라우저 개발 앱</translation>
 <translation id="8292967014767479012">Brave 브라우저 앱</translation>
 <translation id="4743468424889072281">Brave 브라우저 개발 앱</translation>
+<translation id="4568409039725976900">Brave 오렌지</translation>
+<translation id="7216062233533864908">오렌지 껍질</translation>
+<translation id="8285320948587819446">나나</translation>
+<translation id="2016467614790224371">엔비</translation>
+<translation id="8111795220552176635">맑은 하늘</translation>
+<translation id="8323875061602721187">본디 블루</translation>
+<translation id="8267711815380227275">블러플</translation>
+<translation id="831132225871108758">다크 나이트</translation>
+<translation id="1473185169764311478">오렌지 껍질 형태</translation>
+<translation id="8658537263568841491">나나 형태</translation>
+<translation id="8967241601928387177">엔비 형태</translation>
+<translation id="7232547941405761864">맑은 하늘 형태</translation>
+<translation id="5500050460919597479">본디 블루 형태</translation>
+<translation id="5359364898094115985">블러플 형태</translation>
+<translation id="3385506478125681119">다크 나이트 형태</translation>
 </translationbundle>

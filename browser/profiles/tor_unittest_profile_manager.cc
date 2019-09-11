@@ -12,8 +12,6 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_profile.h"
@@ -27,13 +25,14 @@ Profile* TorUnittestProfileManager::CreateProfileHelper(
       return nullptr;
   }
   if (path == BraveProfileManager::GetTorProfilePath())
-    return CreateTorProfile(path, nullptr);
+    return CreateTorProfile(path, nullptr).release();
   else
     return new TestingProfile(path, nullptr);
 }
 
-Profile* TorUnittestProfileManager::CreateProfileAsyncHelper(
-    const base::FilePath& path, Delegate* delegate) {
+std::unique_ptr<Profile> TorUnittestProfileManager::CreateProfileAsyncHelper(
+    const base::FilePath& path,
+    Delegate* delegate) {
   // ThreadTaskRunnerHandle::Get() is TestingProfile's "async" IOTaskRunner
   // (ref. TestingProfile::GetIOTaskRunner()).
   base::ThreadTaskRunnerHandle::Get()->PostTask(
@@ -43,7 +42,7 @@ Profile* TorUnittestProfileManager::CreateProfileAsyncHelper(
   if (path == BraveProfileManager::GetTorProfilePath())
     return CreateTorProfile(path, this);
   else
-    return new TestingProfile(path, this);
+    return std::unique_ptr<TestingProfile>(new TestingProfile(path, this));
 }
 
 void TorUnittestProfileManager::InitProfileUserPrefs(Profile* profile) {
@@ -54,7 +53,7 @@ void TorUnittestProfileManager::InitProfileUserPrefs(Profile* profile) {
   }
 }
 
-Profile* TorUnittestProfileManager::CreateTorProfile(
+std::unique_ptr<Profile> TorUnittestProfileManager::CreateTorProfile(
     const base::FilePath& path, Delegate* delegate) {
   TestingProfile::Builder profile_builder;
   sync_preferences::PrefServiceMockFactory factory;
@@ -63,12 +62,8 @@ Profile* TorUnittestProfileManager::CreateTorProfile(
       factory.CreateSyncable(registry.get()));
   RegisterUserProfilePrefs(registry.get());
   tor::TorProfileService::RegisterProfilePrefs(registry.get());
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  webtorrent::RegisterProfilePrefs(registry.get());
-#endif
   profile_builder.SetPrefService(std::move(prefs));
   profile_builder.SetPath(path);
   profile_builder.SetDelegate(delegate);
-  std::unique_ptr<TestingProfile> profile = profile_builder.Build();
-  return profile.release();
+  return profile_builder.Build();
 }

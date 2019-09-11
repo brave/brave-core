@@ -556,5 +556,9 @@
   "walletDisconnectedTextNotification":  {
     "message": "Walang dapat ipag-alala. May iba't ibang dahilang panseguridad kung bakit puwede itong mangyari. Malulutas ang isyung ito sa simpleng pagkonektang muli.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Hindi pa nagsa-sign up ang creator na ito upang makatanggap ng mga ambag mula sa mga user ng Brave. Mananatili sa iyong wallet ang anumang tip na ipapadala mo hanggang sa mag-verify sila.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
   }
 }

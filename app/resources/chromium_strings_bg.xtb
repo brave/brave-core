@@ -102,7 +102,6 @@
 <translation id="1421502046520299169">Всичко за &amp;Brave OS</translation>
 <translation id="2534623228451928732">Актуализиране на &amp;Brave OS</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="3360368475735266712">Влезте в профила си, за да синхронизирате и персонализирате Brave на всичките си устройства</translation>
 <translation id="5477319665405831211">Синхронизирайте и персонализирайте Brave на всичките си устройства</translation>
 <translation id="4934157190377700991">Вече влязохте в Brave</translation>
 <translation id="4100716194836114130">Това е вашият Brave</translation>
@@ -133,6 +132,8 @@
 <translation id="6746636977031158624">Brave OS не можа да синхронизира данните ви, защото потребителското име и паролата за вход в профила ви не са актуални.</translation>
 <translation id="2999152167963026588">Brave OS не можа да синхронизира данните ви, защото тази функция не е налице за домейна ви.</translation>
 <translation id="1459786048951724030">Brave OS не можа да синхронизира данните ви поради грешка при влизане в профила.</translation>
+<translation id="6813094029720377619">„Бисквитките“ ви се изчистват, когато излизате от Brave. За да продължи синхронизирането, променете тази <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">настройки</translation>
 <translation id="663059986967017181">Копирано в Brave</translation>
 <translation id="1457432835062259213">Стартов панел с приложения за Brave</translation>
 <translation id="82609232232243542">Вход в Brave</translation>
@@ -152,7 +153,7 @@
 
 За допълнителни инструкции, моля, проверете електронната си поща на адрес <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">От версия 70 на Brave функцията за контролирани потребителски профили вече няма да е налична.</translation>
-<translation id="3066805437003400520">Данните за сърфирането на този човек ще бъдат изтрити от устройството. За да ги възстановите, влезте в Brave като <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Данните за сърфирането на този човек ще бъдат изтрити от устройството. За да ги възстановите, влезте в Brave като <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave се подобри</translation>
 <translation id="7192666605334070839">Вече е по-лесно да използвате Brave с профила си в Brave Software и на споделени компютри.</translation>
 <translation id="3511996232906761537">Тук ще намерите посещаваните от вас места в мрежата, отметките и другите си неща в Brave.</translation>
@@ -218,14 +219,6 @@
 <translation id="7808415789955822133">Общи условия на Brave OS</translation>
 <translation id="7207456302801184289">Добре дошли в Brave</translation>
 <translation id="5688839044908745927">Brave е почти готов.</translation>
-<translation id="7758342895140862711">Използвайте Brave навсякъде</translation>
-<translation id="3610173904388112975">Интелигентен начин за сърфиране в мрежата, създаден от Brave Software</translation>
-<translation id="3479552764303398839">Не сега</translation>
-<translation id="8013374903356993822">Стартирайте Brave по-бързо</translation>
-<translation id="7625138338483121345">Задаване на Brave като браузър по подразбиране</translation>
-<translation id="5927044791090834489">Закачване на Brave към лентата на задачите</translation>
-<translation id="8933981935877469796">Изберете <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/> <ph name="SMALL_PRODUCT_LOGO"/></translation>
-<translation id="1585657529869845941">Кликнете върху бутона <ph name="BEGIN_BOLD"/>Превключване въпреки това<ph name="END_BOLD"/>, ако се показва</translation>
 <translation id="3507835409099344374">Към настройките за известия в Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Налице е актуализация за Brave}=1{Налице е актуализация за Brave}other{Налице е актуализация за Brave от # дни}}</translation>
 <translation id="720532315408041257">Администраторът ви моли да рестартирате Brave, за да се приложи тази актуализация</translation>
@@ -245,6 +238,7 @@
 <translation id="8208853227947884571">Brave е актуален</translation>
 <translation id="6686872257969654608">Всичко за Brave OS</translation>
 <translation id="2280363356796735201">Получаване на помощ за Brave OS</translation>
+<translation id="38898988211673781">Изчистване на „бисквитките“ и данните за сайтовете при излизане от Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (копирано в Brave)</translation>
 <translation id="5468853758063275923">Brave е браузърът ви по подразбиране</translation>
 <translation id="1775322105159056176">Brave не може да определи или зададе браузъра по подразбиране</translation>
@@ -261,6 +255,7 @@
 <translation id="8372880274820509128">За повишаване на сигурността Brave ще шифрова данните ви.</translation>
 <translation id="7445061995866044926">Искате ли да излезете от Brave?</translation>
 <translation id="7453070689008684791">Brave ще осъществява достъп до хранилището ви в Диск, за да извежда предложения в адресната лента</translation>
+<translation id="3360368475735266712">Влезте в профила си, за да синхронизирате и персонализирате Brave на всичките си устройства</translation>
 <translation id="9221712274065451529">Този език служи за показване на ПИ на Brave OS</translation>
 <translation id="3518788198614984730">Показване на Brave OS на този език</translation>
 <translation id="5757460455745382269">Този език служи за показване на ПИ на Brave</translation>

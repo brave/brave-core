@@ -3,6 +3,7 @@ import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
@@ -85,10 +86,8 @@ test("brave_unit_tests") {
     "//brave/common/shield_exceptions_unittest.cc",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
     "//brave/components/brave_shields/browser/ad_block_regional_service_unittest.cc",
+    "//brave/components/brave_shields/browser/brave_shields_util_unittest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_recently_used_cache_unittest.cpp",
-    "//brave/components/brave_sync/bookmark_order_util_unittest.cc",
-    "//brave/components/brave_sync/brave_sync_service_unittest.cc",
-    "//brave/components/brave_sync/client/bookmark_change_processor_unittest.cc",
     "//brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
     "//brave/components/invalidation/fcm_unittest.cc",
     "//brave/components/gcm_driver/gcm_unittest.cc",
@@ -150,9 +149,17 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (enable_brave_translate) {
+  if (enable_brave_translate_go) {
     sources += [
       "//brave/browser/net/brave_translate_redirect_network_delegate_helper_unittest.cc",
+    ]
+  }
+
+  if (enable_brave_sync) {
+    sources += [
+      "//brave/components/brave_sync/bookmark_order_util_unittest.cc",
+      "//brave/components/brave_sync/brave_sync_service_unittest.cc",
+      "//brave/components/brave_sync/syncer_helper_unittest.cc",
     ]
   }
 
@@ -205,7 +212,6 @@ test("brave_unit_tests") {
   deps = [
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_ads/browser:testutil",
-    "//brave/components/brave_sync:testutil",
     "//brave/vendor/bat-native-rapidjson",
     "//brave/vendor/brave_base",
     "//chrome:browser_dependencies",
@@ -215,10 +221,12 @@ test("brave_unit_tests") {
     "//components/prefs:test_support",
     "//components/version_info",
     "//content/test:test_support",
-    "//components/signin/core/browser",
+    "//components/signin/public/base",
     "//components/sync_preferences",
     "//components/translate/core/browser:test_support",
     "//content/public/common",
+    "//services/network/public/cpp:cpp",
+    "//services/network:test_support",
     "//third_party/cacheinvalidation",
   ]
 
@@ -234,6 +242,12 @@ test("brave_unit_tests") {
     configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
     configs += [ "//brave/vendor/bat-native-ads:internal_config" ]
     configs += [ "//brave/vendor/bat-native-confirmations:internal_config" ]
+  }
+
+  if (enable_brave_sync) {
+    deps += [
+      "//brave/components/brave_sync:testutil",
+    ]
   }
 
   if (bundle_widevine_cdm) {

@@ -25,6 +25,9 @@ class BraveWidevineBundleManager;
 #endif
 
 namespace brave_component_updater {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+class ExtensionWhitelistService;
+#endif
 class LocalDataFilesService;
 }
 
@@ -33,7 +36,6 @@ class AdBlockService;
 class AdBlockCustomFiltersService;
 class AdBlockRegionalServiceManager;
 class AutoplayWhitelistService;
-class ExtensionWhitelistService;
 class HTTPSEverywhereService;
 class ReferrerWhitelistService;
 class TrackingProtectionService;
@@ -55,18 +57,18 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.
-  component_updater::ComponentUpdateService* component_updater() override;
-  void ResourceDispatcherHostCreated() override;
 
   ProfileManager* profile_manager() override;
 
+  void StartBraveServices();
   brave_shields::AdBlockService* ad_block_service();
   brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service();
   brave_shields::AdBlockRegionalServiceManager*
   ad_block_regional_service_manager();
   brave_shields::AutoplayWhitelistService* autoplay_whitelist_service();
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  brave_shields::ExtensionWhitelistService* extension_whitelist_service();
+  brave_component_updater::ExtensionWhitelistService*
+  extension_whitelist_service();
 #endif
   brave_shields::ReferrerWhitelistService* referrer_whitelist_service();
   greaselion::GreaselionDownloadService* greaselion_download_service();
@@ -97,8 +99,10 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       ad_block_regional_service_manager_;
   std::unique_ptr<brave_shields::AutoplayWhitelistService>
       autoplay_whitelist_service_;
-  std::unique_ptr<brave_shields::ExtensionWhitelistService>
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  std::unique_ptr<brave_component_updater::ExtensionWhitelistService>
       extension_whitelist_service_;
+#endif
   std::unique_ptr<brave_shields::ReferrerWhitelistService>
       referrer_whitelist_service_;
   std::unique_ptr<greaselion::GreaselionDownloadService>

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/devtools_ui.cc b/chrome/browser/ui/webui/devtools_ui.cc
-index 0643144e2acff725269c6baa6e4cb2bf1c1773fe..9e65f908092948cfb7b5e1c1b26590790312647d 100644
+index a9cc1d845e7173fefc494599a0728da0faac2e54..16f883f08a5f3ab02b79206a53f67c2e23834191 100644
 --- a/chrome/browser/ui/webui/devtools_ui.cc
 +++ b/chrome/browser/ui/webui/devtools_ui.cc
 @@ -269,6 +269,7 @@ void DevToolsDataSource::StartBundledDataRequest(
