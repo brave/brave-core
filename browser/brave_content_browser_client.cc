@@ -227,17 +227,17 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client,
     bool* bypass_redirect_checks) {
   bool use_proxy = false;
-
-  use_proxy = ChromeContentBrowserClient::WillCreateURLLoaderFactory(
-      browser_context,
-        frame, render_process_id, is_navigation, is_download, request_initiator,
-        factory_receiver, header_client, bypass_redirect_checks);
-
   // TODO(iefremov): Skip proxying for certain requests?
-  use_proxy |= BraveProxyingURLLoaderFactory::MaybeProxyRequest(
+  use_proxy = BraveProxyingURLLoaderFactory::MaybeProxyRequest(
       browser_context,
       frame, is_navigation ? -1 : render_process_id,
       factory_receiver);
+
+  use_proxy |= ChromeContentBrowserClient::WillCreateURLLoaderFactory(
+      browser_context,
+      frame, render_process_id, is_navigation, is_download, request_initiator,
+      factory_receiver, header_client, bypass_redirect_checks);
+
   return use_proxy;
 }
 
