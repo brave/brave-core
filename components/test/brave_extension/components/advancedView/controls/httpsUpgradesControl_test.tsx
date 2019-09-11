@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import HttpsUpgradesControl, { Props } from '../../../../../brave_extension/extension/brave_extension/components/advancedView/controls/httpsUpgradesControl'
+import HttpsUpgradesControl, { Props } from '../../../../../brave_extension/extension/brave_extension/containers/advancedView/controls/httpsUpgradesControl'
 import { BlockOptions } from '../../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
 import * as actionTypes from '../../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { shallow } from 'enzyme'

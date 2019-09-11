@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import ScriptsControl, { Props } from '../../../../../brave_extension/extension/brave_extension/components/advancedView/controls/scriptsControl'
+import ScriptsControl, { Props } from '../../../../../brave_extension/extension/brave_extension/containers/advancedView/controls/scriptsControl'
 import * as actionTypes from '../../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { BlockJSOptions } from '../../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
 

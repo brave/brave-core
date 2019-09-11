@@ -23,7 +23,7 @@ import {
 } from '../../components/private'
 
 // Components
-import { Toggle } from 'brave-ui/features/shields'
+import { Toggle } from '../../components/toggle'
 import TorContent from './torContent'
 
 // Helpers

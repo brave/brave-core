@@ -4,12 +4,12 @@
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import shieldsDarkTheme from 'brave-ui/theme/shields-dark'
-import shieldsLightTheme from 'brave-ui/theme/shields-light'
+import shieldsDarkTheme from './theme/shields-dark'
+import shieldsLightTheme from './theme/shields-light'
 import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
-import BraveShields from './containers/braveShields'
+import BraveShields from './containers/app'
 import { getViewPreferences } from './background/api/shieldsAPI'
 require('../../../fonts/muli.css')
 require('../../../fonts/poppins.css')
