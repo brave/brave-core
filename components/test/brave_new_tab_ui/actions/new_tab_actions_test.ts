@@ -4,7 +4,6 @@
 
 import { types } from '../../../brave_new_tab_ui/constants/new_tab_types'
 import { Stats } from '../../../brave_new_tab_ui/api/stats'
-import { Preferences } from '../../../brave_new_tab_ui/api/preferences'
 import * as actions from '../../../brave_new_tab_ui/actions/new_tab_actions'
 
 describe('newTabActions', () => {

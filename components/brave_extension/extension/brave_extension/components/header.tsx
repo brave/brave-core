@@ -28,7 +28,7 @@ import {
 import { getLocale } from '../background/api/localeAPI'
 import {
   blockedResourcesSize,
-  getTotalBlockedSizeStrings,
+  getTotalBlockedSizeStrings
 } from '../helpers/shieldsUtils'
 
 // Types
