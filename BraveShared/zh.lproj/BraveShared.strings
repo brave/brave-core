@@ -16,22 +16,25 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "添加至收藏";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "添加至...";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "添加书签";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "广告和跟踪器";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "廣告和追蹤器\n封鎖";
+"AdsAndTrackersrBlocked" = "广告和跟踪器被拦截";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "广告 \n已拦截";
+"AdsrBlocked" = "广告被拦截";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "总是请求桌面站点";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "总是发送";
 
-/* tabs bar show/hide option */
+/* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "总是显示";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "设置密码";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "点按即可调出键盘访问权限";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID 和密码";
 
@@ -124,8 +130,8 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "拦截广告和追踪";
 
-/* cookie settings option */
-"BlockAllCookies" = "拦截所有 cookies";
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "拦截所有 Cookie";
 
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "拦截所有";
@@ -181,6 +187,9 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave 默认保护";
 
+/* Sync page title */
+"BraveSync" = "同步";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "首先，您需要在所有计划同步的设备上安装 Brave。要将它们链接在一起，请启动同步链，您将使用该同步链将所有设备安全地链接在一起。";
 
@@ -234,6 +243,12 @@
 
 /* Code words section title */
 "CodeWords" = "密语";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "下载";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "分享";
 
 /* No comment provided by engineer. */
 "Confirm" = "确定";
@@ -316,6 +331,15 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "不发送";
 
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "已下载文件";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "下载";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "下载的文件将显示在此处。";
+
 /* No comment provided by engineer. */
 "Edit" = "编辑";
 
@@ -371,7 +395,7 @@
 "ErrorPagesVisitOnceButton" = "继续访问网站";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Est. 时间 \n已保存";
+"EstTimerSaved" = "预计时间 \n已保存";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "收藏夹位于主屏幕。这些书签未与其他设备同步。";
@@ -401,7 +425,7 @@
 "FingerprintingMethods" = "指纹识别方法";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "指纹识别\n保护";
+"FingerprintingnProtection" = "指纹\n保护";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "指纹识别保护";
@@ -422,7 +446,7 @@
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS \n升级";
+"HTTPSrUpgrades" = "HTTPS \n安全升级";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS 升级";
@@ -437,7 +461,7 @@
 "LastWeek" = "上周";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "使用 DuckDuckGo \n了解有关隐私搜索的内容";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "通过 DuckDuckGo\n了解有关隐私搜索的内容";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "上次修改 %@";
@@ -478,7 +502,7 @@
 /* Bookmark title / Device name */
 "Name" = "名称";
 
-/* tabs bar show/hide option */
+/* Setting preference to always hide the browser tabs bar. */
 "NeverShow" = "从不显示";
 
 /* Default name for creating a new bookmark. */
@@ -643,8 +667,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "移出收藏";
 
-/* Show mail composer to report a bug. */
-"ReportABug" = "报告错误";
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "报告缺陷";
 
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "好";
@@ -766,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "秒";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "新隐私标签页";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "新标签页";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "扫描二维码";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "显示书签快捷方式";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "显示书签";
 
@@ -775,8 +811,8 @@
 /* Button to show the history list */
 "ShowHistory" = "显示历史记录";
 
-/* tabs bar show/hide option */
-"ShowInLandscapeOnly" = "仅显示格局";
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "仅横屏显示";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "显示标签";
@@ -793,6 +829,15 @@
 /* Support section title */
 "Support" = "支持";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "阻止该页面创建其他警报";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "抑制警报";
+
+/* Sync settings section title */
+"Sync" = "同步";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "添加另一台设备";
 
@@ -802,8 +847,14 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "扫描链接二维码";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "在您的第二个移动设备上，导航到设置面板中的“同步”，点击“扫描同步代码”按钮。用您的摄像头扫描下面的二维码。\n 将此代码视作密码。如果有人得到它，他们可以读取和修改您的同步数据。";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "输入新的同步代码";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "在设备上，浏览至“设置面板”的“同步”，然后点击按钮“%@”。输入下方显示的同步链密语。\n将此代码视作密码。如果有人得到它，他们可以读取和修改您的同步数据。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "输入密语";
@@ -822,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "设备&设置";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "同步代理当前处于脱机状态或无法连接。请稍后再试。";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "同步通信错误";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "检查您的网络连接并重试。";
@@ -967,11 +1024,26 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "使用条款";
 
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "自动";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "暗";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "显示和亮度";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "这些设置未应用到私有浏览模式。";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "亮";
+
 /* History tableview section header */
 "Today" = "今天";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "追踪器 \n已拦截";
+"TrackersrBlocked" = "拦截器 \n被拦截";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "无法加入同步组。请检查输入的文字并重试。";

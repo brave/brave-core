@@ -10,22 +10,31 @@
 /* Button to add a bookmark */
 "AddBookmark" = "新增書籤";
 
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "新建資料夾";
+
 /* Add to favorites share action. */
 "AddToFavorites" = "新增至我的最愛";
+
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "新增書籤";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "廣告和追蹤器";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "廣告攔截\n和跟踪保護";
+"AdsAndTrackersrBlocked" = "已封鎖\n廣告和追蹤器";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "已封鎖\n廣告";
 
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "一律請求桌面網站";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "一律傳送";
 
-/* tabs bar show/hide option */
+/* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "一律顯示";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
@@ -79,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "設定密碼";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "輕觸以啟用鍵盤存取";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID 和密碼";
 
@@ -118,7 +130,7 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "封鎖廣告和追蹤";
 
-/* cookie settings option */
+/* Title for setting to block all website cookies. */
 "BlockAllCookies" = "封鎖所有 Cookie";
 
 /* block all cookies settings action title */
@@ -154,14 +166,29 @@
 /* Bookmark Info Section Title */
 "BookmarkInfo" = "書籤資訊";
 
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "書籤";
+
 /* title for bookmarks panel */
 "Bookmarks" = "書籤";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "書籤";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "名稱";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "地址";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave 面板";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shield 預設";
+
+/* Sync page title */
+"BraveSync" = "同步";
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "首先，您需要將 Brave 安裝在您計畫同步的所有裝置中。如要將裝置鏈接一起，請啟用一個同步鏈，用於將所有裝置安全鏈接。";
@@ -211,14 +238,26 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "關閉全部 %i 個分頁";
 
+/* Code words input help */
+"CodeWordInputHelp" = "將提供的同步鏈代碼字組輸入至以下表格。";
+
 /* Code words section title */
 "CodeWords" = "代碼詞";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "下載";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "共享";
 
 /* No comment provided by engineer. */
 "Confirm" = "確認";
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie 控制項";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Cookie 及網站資料";
 
 /* Copied action complete title */
 "Copied" = "已複製！";
@@ -292,14 +331,32 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "不要傳送";
 
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "下載的檔案";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "下載";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "下載的檔案將於此顯示。";
+
 /* No comment provided by engineer. */
 "Edit" = "編輯";
 
 /* Button to edit a bookmark */
 "EditBookmark" = "編輯書籤";
 
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "位置";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "編輯書籤";
+
 /* Button to edit a favorite */
 "EditFavorite" = "編輯我的最愛 ";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "編輯資料夾";
 
 /* Sync enter code words */
 "EnterCodeWords" = "輸入代碼詞";
@@ -340,17 +397,29 @@
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "預計節省\n時間";
 
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "我的最愛位於主畫面。這些書籤與其他裝置不同步。";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "我的最愛";
+
 /* Share action title */
 "FindInPage" = "在頁面中尋找";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "完成";
 
+/* Find %@ text in page. */
+"FindInPageFormat" = "找到「%@」";
+
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "下一個頁面搜尋結果";
 
 /* Accessibility label for previous result button in Find in Page Toolbar. */
 "FindInPagePreviousResultButtonAccessibilityLabel" = "上一個頁面搜尋結果";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "在此頁面";
 
 /* individual blocking statistic title */
 "FingerprintingMethods" = "指紋識別法";
@@ -364,6 +433,12 @@
 /* Grand camera access */
 "GrantCameraAccess" = "啟用相機";
 
+/* Title for history menu item */
+"HistortMenuItem" = "歷史記錄";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "歷史記錄";
+
 /* No comment provided by engineer. */
 "Home" = "主畫面";
 
@@ -371,7 +446,7 @@
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS \n更新";
+"HTTPSrUpgrades" = "HTTPS\n升級";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS 更新";
@@ -386,7 +461,7 @@
 "LastWeek" = "上週";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "深入瞭解 \nDuckDuckGo 隱私搜尋";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "深入瞭解\nDuckDuckGo 隱私搜尋";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "上次修改的時間：%@";
@@ -427,11 +502,23 @@
 /* Bookmark title / Device name */
 "Name" = "名稱";
 
-/* tabs bar show/hide option */
-"NeverShow" = "永不顯示";
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "從不顯示";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "新建書籤";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "新建書籤";
 
 /* Title for new folder popup */
 "NewFolder" = "新增資料夾";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "新建資料夾";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "新建資料夾";
 
 /* New sync code button title */
 "NewSyncCode" = "啟動新的同步鏈接";
@@ -459,6 +546,9 @@
 
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "開啟設定";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "其他設定";
 
 /* Sync pair device settings section title */
 "Pair" = "配對";
@@ -496,6 +586,9 @@
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "僅限隱私瀏覽";
 
+/* Private tab details */
+"PrivateTabBody" = "私密標籤頁不會儲存在 Brave ，但也不會讓您於網站上匿名。 您在私密標籤頁瀏覽的網站不會在歷史記錄中顯示，且當您關閉網站後，cookie 一率會消失，在 Brave 中不會留下任何痕跡。但所有下載將會被儲存。\n您的行動裝置電信業者（或您所連線的 WiFi 或 VPN 的所有人）可以查看您所瀏覽的網站，而透過這些網站將獲悉您的 IP 位址，即使是在私密標籤頁也是如此。";
+
 /* Private tab detail text */
 "PrivateTabDetails" = "使用隱私分頁只會變更 Brave 可在您裝置上執行的作業，無法改變他人行為。\n\n當您造訪網站時，網站能得知您的 IP 位置。根據這項資訊，網站可以大略猜出您的所在位置，通常能知道您所在的城市，有時猜測的位置會更精確。網站也會收集您明確提供的所有內容，像是搜尋內容。當您登入網站時，網站也會知道您是該帳戶的所有人。若關閉隱私分頁，Brave 會捨棄那些協助您保持登入的 Cookie，因此系統依然會將您隨即登出。\n\n提供您網際網路連線的公司 (您的 ISP 業者) 可以查看您在網路上的所有活動。很多時候，這會是您的行動網路業者；如果您使用的是 WiFi 網路，該網路的所有者可以看到您的活動；如果您是使用 VPN 上網，則運作該 VPN 的一方可以看到活動。您的 ISP 業者可以在您造訪網站時，瞭解您瀏覽了哪些網站。如果這些網站使用 HTTPS，ISP 業者只能大略猜測您在網站上的活動；但如果網站僅使用 HTTP，則 ISP 業者可以看到所有活動，包括搜尋內容、讀取的頁面以及追蹤的連結。\n\n如果您的裝置是由雇主所管理，他們可能會追蹤您的裝置使用情形。即使您使用隱私分頁，雇主仍可知道您曾瀏覽過哪些網站。能存取您裝置的其他人士，可能也會安裝軟體以監控您的活動。這類情形下，即使使用隱私分頁，也不會有太大意義。";
 
@@ -510,6 +603,9 @@
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "快速搜尋引擎";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "為 Brave 評分";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "調大字體";
@@ -571,8 +667,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "移除我的最愛";
 
-/* Show mail composer to report a bug. */
-"ReportABug" = "回報錯誤";
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "回報 Bug";
 
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "確定";
@@ -585,6 +681,12 @@
 
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "哎呀，真抱歉。";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "獎勵對象";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "儲存";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "已儲存的登入資訊";
@@ -615,6 +717,9 @@
 
 /* Accessibility hint describing the action performed when a search suggestion is clicked */
 "SearchesForSuggestionButtonAccessibilityText" = "搜尋建議內容";
+
+/* Section header for history and bookmarks option */
+"SearchHistorySectionHeader" = "歷史記錄及書籤";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "清除搜尋";
@@ -658,8 +763,14 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "無法載入頁面。";
 
+/* Title for settings menu item */
+"SettingsMenuItem" = "設定";
+
 /* Context menu item for sharing a link URL */
 "ShareLinkActionTitle" = "分享連結";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "與...共享";
 
 /* shields overview message */
 "ShieldsOverview" = "「網站防護」可控制您在造訪每個網站時，是否直接封鎖網站上的廣告與追踪器。若您希望在特定網站上顯示廣告，可以在這裡啟用廣告。";
@@ -679,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "秒";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "新建私密標籤頁";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "新建標籤頁";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "掃描 QR 碼";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "顯示書籤捷徑";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "顯示書籤";
 
@@ -688,8 +811,8 @@
 /* Button to show the history list */
 "ShowHistory" = "顯示記錄";
 
-/* tabs bar show/hide option */
-"ShowInLandscapeOnly" = "僅以橫向畫面顯示";
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "僅於橫向顯示";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "顯示分頁";
@@ -706,6 +829,15 @@
 /* Support section title */
 "Support" = "支援";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "阻止該網頁建立其他通知";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "隱藏通知";
+
+/* Sync settings section title */
+"Sync" = "同步";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "新增其他裝置";
 
@@ -715,8 +847,17 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "掃瞄鏈接 QR 碼";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "在第二部行動裝置上導向至設定面板中的同步並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n將此代碼視為密碼。如某人取得該密碼，其可讀取並修改您同步的資料。";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "輸入同步代碼";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "在裝置上導向至設定面板中的同步並點選「%@」按鈕。輸入下方顯示的同步鏈代碼字組。\n將此代碼視為密碼。如某人取得該密碼，其可讀取並修改您同步的資料。";
+
+/* Add device to sync with code words navigation title */
+"SyncAddDeviceWordsTitle" = "輸入代碼字組";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "新增平板電腦或電話";
@@ -732,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "裝置與設定";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "同步代理程式目前處於離線狀態或無法存取。請稍後再試。";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "同步通訊錯誤";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "請檢查您的網絡連接並重試。";
@@ -752,7 +899,7 @@
 "SyncRemoveDeviceDefaultName" = "裝置";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "目前同步的資料將予以保留，但 Brave 的同步緩存中的所有資料將被刪除。您需要啟動新的同步鏈以再次同步裝置上的資料。";
+"SyncRemoveLastDeviceMessage" = "目前同步的資料將被保留，但 Brave 同步快取中的所有資料將被刪除。您將需要啟動新的同步鏈以再次同步裝置資料。";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "刪除同步鏈接";
@@ -790,6 +937,9 @@
 /* Sync to existing device */
 "SyncToDevice" = "同步至裝置";
 
+/* Sync to existing device description */
+"SyncToDeviceDescription" = "使用現有同步的裝置開啟 Brave 設定並導向至設定 -> 同步。 選擇「新增裝置」並掃描螢幕上顯示的代碼。";
+
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "無法建立新的同步群組。";
 
@@ -825,6 +975,9 @@
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "安全連線";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "選單";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "閱讀檢視";
@@ -870,6 +1023,21 @@
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "使用條款";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "自動";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "暗";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "顯示及亮度";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "這些設定不適用於私密瀏覽模式。";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "亮";
 
 /* History tableview section header */
 "Today" = "今天";

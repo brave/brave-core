@@ -16,22 +16,25 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "Lägg till i favoriter";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "Lägg till i …";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Lägg till bokmärke";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annonser och spårare";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Blockerad reklam\noch spårare";
+"AdsAndTrackersrBlocked" = "Blockerade annonser \noch spårare";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Blockerade\nannonser";
+"AdsrBlocked" = "Blockerade \nannonser";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Begär alltid skrivbordsplats";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Skicka alltid";
 
-/* tabs bar show/hide option */
+/* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Visa alltid";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "Ställ in lösenord";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "Tryck för att visa hjälpmedelstangentbordet";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID och lösenord";
 
@@ -124,8 +130,8 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Blockera annonser och spårning";
 
-/* cookie settings option */
-"BlockAllCookies" = "Blockera alla cookies";
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "Blockera alla kakor";
 
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Blockera alla";
@@ -181,6 +187,9 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Standardinställningar för Braves sköldar";
 
+/* Sync page title */
+"BraveSync" = "Synkronisera";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Till att börja med måste du ha installerat Brave på alla enheter du vill synkronisera. För att sammanlänka dem kan du starta en synkroniseringskedja som du använder för att koppla ihop alla dina enheter säkert.";
 
@@ -234,6 +243,12 @@
 
 /* Code words section title */
 "CodeWords" = "Kodord";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Hämta hem";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Dela";
 
 /* No comment provided by engineer. */
 "Confirm" = "Bekräfta";
@@ -315,6 +330,15 @@
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Skicka inte";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Hämtade filer";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Hämtade";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "Hämtade filer kommer att visas här.";
 
 /* No comment provided by engineer. */
 "Edit" = "Ändra";
@@ -478,7 +502,7 @@
 /* Bookmark title / Device name */
 "Name" = "Namn";
 
-/* tabs bar show/hide option */
+/* Setting preference to always hide the browser tabs bar. */
 "NeverShow" = "Visa aldrig";
 
 /* Default name for creating a new bookmark. */
@@ -563,7 +587,7 @@
 "PrivateBrowsingOnly" = "Endast privat surfning";
 
 /* Private tab details */
-"PrivateTabBody" = "Privata flikar sparas inte i Brave, men de gör dig inte heller anonym. Webbplatser du besöker i en privat flik kommer inte att visas i din historik och deras cookies försvinner alltid när du stänger dem, så det finns inget spår kvar av dem i Brave. Din mobiloperatör (eller ägaren av det trådlösa nätverk eller den VPN du är ansluten till) kan se vilka webbplatser du besöker och de webbplatserna får därför reda på din offentliga IP-adress, även när du använder privata flikar.";
+"PrivateTabBody" = "Privata flikar sparas inte i Brave, men de gör dig inte anonym online. Webbplatser som du besöker på en privat flik visas inte i din historik och deras cookies försvinner alltid när du stänger dem - det finns inga spår av dem kvar i Brave. Men hämtningar sparas.\nDin mobiloperatör (eller ägaren till WiFi-nätverket eller den VPN som du är ansluten till) kan se vilka webbplatser som du besöker och vilka webbplatser som kommer att lära sig din offentliga IP-adress, även i privata flikar.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "När du använder privata flikar ändras Brave bara på din enhet, ingen annans.\n\nWebbplatser får alltid veta din IP-adress när du besöker dem. Utifrån detta kan de oftast räkna ut ungefär var du befinner dig, till exempel din ort. Ibland kan de gissa mer specifikt. Webbplatser vet också allt som du explicit anger, till exempel sökningar. Om du loggar in på en webbplats vet de att du äger kontot. Du loggas ut när du stänger den privata fliken eftersom Brave raderar den cookie som håller dig inloggad.\n\nDin internetleverantör, alltså den som tillhandahåller din internetanslutning, kan se all din nätverksaktivitet. Beroende på anslutningstyp är leverantören din mobilleverantör (för mobildata), wifi-nätets ägare (för wifi) eller den som tillhandahåller din VPN-anslutning (för VPN). Leverantören kan se vilka webbplatser du besöker. Om webbplatserna har HTTPS kan leverantören inte se mer än vilken platsen är, men om webbplatsen bara har HTTP kan leverantören se allt: vad du söker på, vilka sidor du läser och vilka länkar du följer.\n\nOm ditt företag ansvarar för din enhet kan de också se vad du gör med den. Att använda privata flikar kommer förmodligen inte hindra dem från att ta reda på vilka webbplatser du besökt. Någon annan med tillgång till din enhet kan ha installerat ett program som övervakar din aktivitet, och privata flikar skyddar inte mot det heller.";
@@ -643,8 +667,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Radera favorit";
 
-/* Show mail composer to report a bug. */
-"ReportABug" = "Rapportera en bugg";
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "Rapportera bugg";
 
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Okej";
@@ -766,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "s";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Ny privat flik";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Ny tabb";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Skanna QR kod";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Visa genväg till bokmärken";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Visa bokmärken";
 
@@ -775,8 +811,8 @@
 /* Button to show the history list */
 "ShowHistory" = "Visa historik";
 
-/* tabs bar show/hide option */
-"ShowInLandscapeOnly" = "Visa endast i landskapsläge";
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "Visa endast i Landscape";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "Visa flikar";
@@ -793,6 +829,15 @@
 /* Support section title */
 "Support" = "Support";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Förhindra att denna sida skapar ytterligare varningar";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Undertryck varningar";
+
+/* Sync settings section title */
+"Sync" = "Synkronisera ";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Lägg till fler enheter";
 
@@ -802,8 +847,14 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Skanna kedje-QR-kod";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "På din andra mobila enhet navigerar du till synkronisering på panelen för inställningar och trycker på knappen \"Skanna synkroniseringskod\". Använd din kamera för att skanna QR koden nedan.\nBehandla den här koden som ett lösenord. Om någon får tag i den kan de läsa och ändra dina synkroniserade data.";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Ange synkroniseringskoden";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "Navigera på din enhet till synkronisera på inställningspanelen och tryck på knappen \"%@\". Ange den synkroniserade kedjekoden som visas nedan.\nBehandla den här koden som ett lösenord. Om någon får tag i den kan de läsa och ändra dina synkroniserade data.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Ande kodord";
@@ -822,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheter och inställningar";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Sync Agent är för närvarande offline eller inte tillgängligt. Försök igen senare.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Synkroniserings kommunikationsfel";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Kontrollera din internetanslutning och försök igen.";
@@ -842,7 +899,7 @@
 "SyncRemoveDeviceDefaultName" = "Enhet";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Synkroniserad data kommer sparas, men alla data i Braves synkroniseringscache kommer raderas. Du måste starta en ny synkroniseringskedja för att synkronisera enhetsdata igen.";
+"SyncRemoveLastDeviceMessage" = "Data som för närvarande synkroniseras kommer att behållas, men all data i Braves Sync cache kommer att raderas. Du måste starta en ny synkroniseringskedja för att synkronisera enhetsdata igen.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Radera synkroniseringskedja";
@@ -967,11 +1024,26 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Villkor";
 
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Automatisk";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Mörk";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Skärm och ljusstyrka";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Dessa inställningar tillämpas inte i privat surfläge.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Ljus";
+
 /* History tableview section header */
 "Today" = "Idag";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Blockerade\nspårare";
+"TrackersrBlocked" = "Blockerade \nspårare";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Det gick inte att gå med i synkroniseringsgruppen. Kontrollera de ord du angivit och försök igen.";

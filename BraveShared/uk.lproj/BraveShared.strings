@@ -16,23 +16,26 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "Додати до обраного";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "Додати до…";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Додати закладку";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Реклама і трекери";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Реклам та трекерів\nблоковано";
+"AdsAndTrackersrBlocked" = "Реклами й трекерів\nзаблоковано";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Заблоковано\nреклами";
+"AdsrBlocked" = "Реклами\nзаблоковано";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Завжди запитувати версію для настільного комп’ютера";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Надсилати завжди";
 
-/* tabs bar show/hide option */
-"AlwaysShow" = "Показувати завжди";
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "Завжди показувати";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
 "AuthenticationChangePasscode" = "Змінити код доступу";
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "Установлення коду доступу";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "Торкніться, щоб відобразити спеціальні можливості клавіатури";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID і код доступу";
 
@@ -124,8 +130,8 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Блокування реклами і трекерів";
 
-/* cookie settings option */
-"BlockAllCookies" = "Блокування усіх файлів cookie";
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "Блокувати всі файли cookie";
 
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Блокувати все";
@@ -181,6 +187,9 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Екрани Brave за замовчуванням";
 
+/* Sync page title */
+"BraveSync" = "Синхронізація";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Щоб розпочати, потрібно встановити Brave на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати усі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
 
@@ -234,6 +243,12 @@
 
 /* Code words section title */
 "CodeWords" = "Кодові слова";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Завантажити";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Поділитися";
 
 /* No comment provided by engineer. */
 "Confirm" = "Підтвердити";
@@ -316,6 +331,15 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Не надсилати";
 
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Завантажені файли";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Завантаження";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "Тут будуть відображатись завантажені файли.";
+
 /* No comment provided by engineer. */
 "Edit" = "Редагування";
 
@@ -371,7 +395,7 @@
 "ErrorPagesVisitOnceButton" = "Все одно перейти до сайту";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Заощаджено\nчасу";
+"EstTimerSaved" = "Заощаджено\nчасу (приблизно)";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Розділ обраного розташовано на головному екрані. Ці закладки не синхронізуються з іншими пристроями.";
@@ -422,7 +446,7 @@
 "HTTPSEverywhere" = "HTTPS усюди";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS\nперенаправлень";
+"HTTPSrUpgrades" = "Перенаправлення \nHTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Оновлення HTTPS";
@@ -478,7 +502,7 @@
 /* Bookmark title / Device name */
 "Name" = "Назва";
 
-/* tabs bar show/hide option */
+/* Setting preference to always hide the browser tabs bar. */
 "NeverShow" = "Ніколи не показувати";
 
 /* Default name for creating a new bookmark. */
@@ -563,7 +587,7 @@
 "PrivateBrowsingOnly" = "Перегляд тільки у приватному режимі";
 
 /* Private tab details */
-"PrivateTabBody" = "Приватні вкладки не зберігаються в Brave, але дії, які ви виконуєте на них в Інтернеті, не є анонімними. Сайти, які ви переглядаєте на приватній вкладці, не відображатимуться в історії, а файли cookie буде видалено після закриття вкладки. У Brave не залишиться жодних даних вашого сеансу, проте оператор мобільного зв’язку (або власник мережі Wi-Fi чи VPN, до якої ви підключені) зможе переглянути інформацію про те, які сайти ви відвідали. Сайти отримують інформацію про вашу публічну IP-адресу, навіть коли ви переглядаєте їх у приватних вкладках.";
+"PrivateTabBody" = "Приватні вкладки не зберігаються в Brave, але це не робить ваші дії в Інтернеті анонімними. Сайти, які ви переглядаєте з приватних вкладок, не відображаються в історії, а файли cookie видаляються після закриття вкладки. У Brave не залишиться жодних даних вашого сеансу, окрім завантажень.\nПроте оператор мобільного зв’язку (або власник мережі Wi-Fi чи VPN, до якої ви підключені) може бачити, які сайти ви відвідуєте. Сайти отримують інформацію про вашу публічну IP-адресу, навіть коли ви переглядаєте їх із приватних вкладок.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Використання приватних вкладок впливає лише на роботу Brave на вашому пристрої та не впливає на дії поза вашим пристроєм.\n              \n              Інформація про вашу IP-адресу завжди передається на веб-сайти, завдяки чому можна визначити ваше розташування. Зазвичай це місто, але інколи результати відстеження розташування можуть бути більш точними. Також веб-сайти мають доступ до всієї інформації, яку ви вводите, наприклад до пошукових запитів. Якщо ви ввійдете до системи на веб-сайті, стане відомо, що ви є власником облікового запису. Коли ви закриєте приватну вкладку, буде виконано вихід з облікового запису, оскільки Brave видалить файл cookie, створений під час входу.\n              \n              Компанія, що надає підключення до Інтернету (зазвичай провайдер мережі або власник мереж Wi-Fi чи VPN), може переглядати всю вашу мережеву діяльність і журнал відвідувань сайтів. Якщо на сайті використовується протокол HTTPS, провайдер може лише здогадуватися про ваші дії на сайті. Якщо ж на сайті використовується протокол HTTP, провайдер має інформацію про всі ваші пошукові запити, відвідувані сторінки та посилання.\n              \n              Якщо ваш роботодавець керує вашим пристроєм, то він також може відстежувати ваші дії. Імовірно, використання приватних вкладок не допоможе приховати інформацію про те, які сайти ви відвідували. Крім того, інші люди, що мають доступ до вашого пристрою, можуть також установити програму, що відстежуватиме вашу діяльність. У цьому разі приватні вкладки також вам не допоможуть.";
@@ -643,7 +667,7 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Вилучити зі списку обраного";
 
-/* Show mail composer to report a bug. */
+/* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Повідомити про помилку";
 
 /* Restore Tabs Affirmative Action */
@@ -766,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "с";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Нова приватна вкладка";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Нова вкладка";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Сканувати QR-код";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Показувати ярлик закладок";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Показати закладки";
 
@@ -775,7 +811,7 @@
 /* Button to show the history list */
 "ShowHistory" = "Показати журнал";
 
-/* tabs bar show/hide option */
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "Показувати лише в альбомному режимі";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
@@ -793,6 +829,15 @@
 /* Support section title */
 "Support" = "Підтримка";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Не дозволяти цій сторінці створювати додаткові попередження";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Приховувати попередження";
+
+/* Sync settings section title */
+"Sync" = "Синхронізація";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Додати інший пристрій";
 
@@ -802,8 +847,14 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Сканування QR-коду ланцюжка";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "На другому мобільному пристрої перейдіть до меню «Синхронізація» в панелі налаштувань і торкніться кнопки «Сканувати код синхронізації». Відскануйте наведений нижче QR-код за допомогою камери.\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Введіть код синхронізації";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "На вашому пристрої перейдіть до меню «Синхронізація» в панелі налаштувань і торкніться кнопки «%@». Уведіть наведені нижче кодові слова для ланцюжка синхронізації.\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Уведіть кодові слова";
@@ -822,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Пристрої та налаштування";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Наразі агент синхронізації не підключений до мережі або недоступний. Спробуйте ще раз пізніше.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Помилка зв’язку під час синхронізації";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Перевірте з'єднання з інтернетом і спробуйте знову.";
@@ -967,11 +1024,26 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Умови використання";
 
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Автоматично";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Темна";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Відображення та яскравість";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Ці налаштування не застосовуються в приватному режимі.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Світла";
+
 /* History tableview section header */
 "Today" = "Сьогодні";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Заблоковано\nстеження";
+"TrackersrBlocked" = "Трекерів\nзаблоковано";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Не вдається приєднатися до групи синхронізації. Перевірте правильність введення кодових слів і спробуйте знову.";

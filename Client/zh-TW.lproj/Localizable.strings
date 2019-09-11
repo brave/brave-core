@@ -1,0 +1,21 @@
+/* Button text to confirm PIN */
+"confirmPin" = "驗證";
+
+/* Message for touch key modal. */
+"insertKeyMessage" = "為...插入安全金鑰";
+
+/* Placeholder text for PIN */
+"pinPlaceholder" = "輸入 PIN 碼";
+
+/* Title for the alert modal when a security key with PIN is inserted. */
+"pinTitle" = "需要 PIN 碼驗證";
+
+/* Text for touch key modal button. */
+"touchKeyCancel" = "取消";
+
+/* Message for touch key modal. */
+"touchKeyMessage" = "輕觸金鑰來完成...的請求";
+
+/* Title when PIN code is being verified. */
+"verificationPending" = "為...驗證 PIN 碼";
+

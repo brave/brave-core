@@ -1,0 +1,21 @@
+/* Button text to confirm PIN */
+"confirmPin" = "Verifikasikan";
+
+/* Message for touch key modal. */
+"insertKeyMessage" = "Masukkan kunci keamanan Anda untuk";
+
+/* Placeholder text for PIN */
+"pinPlaceholder" = "Masukkan PIN Anda";
+
+/* Title for the alert modal when a security key with PIN is inserted. */
+"pinTitle" = "Diperlukan autentikasi PIN";
+
+/* Text for touch key modal button. */
+"touchKeyCancel" = "Batal";
+
+/* Message for touch key modal. */
+"touchKeyMessage" = "Sentuh kunci Anda untuk menyelesaikan permintaan untuk";
+
+/* Title when PIN code is being verified. */
+"verificationPending" = "Memverifikasi PIN Anda untuk";
+

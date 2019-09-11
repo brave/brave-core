@@ -16,22 +16,25 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "Добавить в избранное";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "Добавить…";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Добавить закладку";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Реклама и трекеры";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Реклам и трекеров\nблокировано";
+"AdsAndTrackersrBlocked" = "Реклам и трекеров\nзаблокировано";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Заблоки-\nрованная\nреклама";
+"AdsrBlocked" = "Реклам\nзаблокировано";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Всегда открывать полную версию";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Отправлять всегда";
 
-/* tabs bar show/hide option */
+/* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Показывать всегда";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "Установите код доступа";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "Коснитесь, чтобы открыть клавиатуру";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID и код доступа";
 
@@ -124,7 +130,7 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Блокировать рекламу и трекеры";
 
-/* cookie settings option */
+/* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Блокировать все файлы cookie";
 
 /* block all cookies settings action title */
@@ -181,6 +187,9 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Настройки Brave Shield по умолчанию";
 
+/* Sync page title */
+"BraveSync" = "Синхронизация";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Установите Brave на всех устройствах, которые хотите синхронизировать. Чтобы безопасно связать их между собой, создайте цепочку синхронизации.";
 
@@ -234,6 +243,12 @@
 
 /* Code words section title */
 "CodeWords" = "Кодовые слова";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Скачать";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Поделиться";
 
 /* No comment provided by engineer. */
 "Confirm" = "Подтвердить";
@@ -316,6 +331,15 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Не отправлять";
 
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Скачанные файлы";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Загрузки";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "Здесь будут показаны скачанные вами файлы";
+
 /* No comment provided by engineer. */
 "Edit" = "Изменить";
 
@@ -371,7 +395,7 @@
 "ErrorPagesVisitOnceButton" = "Все равно перейти на сайт";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Сэкономлен-\nное время";
+"EstTimerSaved" = "Времени\nсэкономлено";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Избранные закладки сохраняются на домашней странице и не синхронизируются с остальными устройствами.";
@@ -478,7 +502,7 @@
 /* Bookmark title / Device name */
 "Name" = "Название";
 
-/* tabs bar show/hide option */
+/* Setting preference to always hide the browser tabs bar. */
 "NeverShow" = "Никогда не показывать";
 
 /* Default name for creating a new bookmark. */
@@ -563,7 +587,7 @@
 "PrivateBrowsingOnly" = "Только приватный просмотр";
 
 /* Private tab details */
-"PrivateTabBody" = "Использование приватных вкладок не дает вам полной анонимности в Сети. В Brave не остается никаких следов: история браузера в этом режиме не сохраняется, а файлы cookie удаляются после выхода из него. Однако мобильный оператор, владелец сети Wi-Fi или провайдер VPN сможет увидеть, какие сайты вы посещали, а у сайтов будет доступ к вашему внешнему IP-адресу, даже если вы открывали страницы в приватных вкладках.";
+"PrivateTabBody" = "Использование приватных вкладок не дает вам полной анонимности в Интернете. При включении этого режима в Brave не сохраняется история браузера, а файлы cookie удаляются сразу после выхода из него. Если вы скачивали файлы, то они останутся на устройстве.\nМобильный оператор, владелец сети Wi-Fi или провайдер VPN сможет увидеть, какие сайты вы посещали, а у сайтов будет доступ к вашему внешнему IP-адресу, даже если вы открывали страницы в приватных вкладках.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Используя приватные вкладки, вы влияете только на то, какую информацию Brave сохраняет на вашем устройстве.\n\nСайты получают ваш IP-адрес автоматически, как только вы заходите на них. При этом они могут определить ваше примерное местоположение — как правило, на уровне города. Иногда эти данные могут быть точнее. Кроме того, сайты сохраняют всю вводимую вами информацию, например поисковые запросы. Если вы войдете в систему, им будет известно, что вы являетесь владельцем этой учетной записи. При закрытии приватных вкладок вы автоматически выйдете из аккаунта, так как Brave удалит файлы cookie, необходимые для того, чтобы оставаться в системе.\n\nВаши действия в сети может отслеживать интернет-провайдер. Как правило, это оператор мобильной связи либо владелец сети Wi-Fi или VPN, в зависимости от того, кто предоставляет вам доступ к интернету. Ваш интернет-провайдер видит, какие сайты вы посещаете. Если используется протокол HTTPS, интернет-провайдер сможет лишь догадываться о том, что вы делали на сайте. Если же сайт использует только протокол HTTP, интернет-провайдер сможет узнать всё: какие поисковые запросы вы вводили, какие страницы посещали, по каким ссылкам переходили и т. д.\n\nИспользование приватных вкладок вряд ли помешает работодателю узнать, на какие сайты вы заходили, если он управляет вашим устройством. Кроме того, другие люди, у которых есть доступ к вашему устройству, могут установить программу, отслеживающую ваши действия, — приватные вкладки не помогут и в этом случае.";
@@ -643,7 +667,7 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Удалить из избранного";
 
-/* Show mail composer to report a bug. */
+/* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Сообщить об ошибке";
 
 /* Restore Tabs Affirmative Action */
@@ -766,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "сек.";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Новая приватная вкладка";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Новая вкладка";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Сканировать QR-код";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Показывать ярлык «Закладки»";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Показать закладки";
 
@@ -775,8 +811,8 @@
 /* Button to show the history list */
 "ShowHistory" = "Показать историю";
 
-/* tabs bar show/hide option */
-"ShowInLandscapeOnly" = "Только горизонтально";
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "Показывать только в горизонтальном режиме";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "Показать вкладки";
@@ -793,6 +829,15 @@
 /* Support section title */
 "Support" = "Поддержка";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Блокировать создание дополнительных оповещений на этой странице.";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Блокировать оповещения";
+
+/* Sync settings section title */
+"Sync" = "Синхронизация";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Добавить другое устройство";
 
@@ -802,8 +847,14 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Сканируйте QR-код цепочки";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Запустите Brave на втором мобильном устройстве и откройте настройки. Перейдите в раздел «Синхронизация» и нажмите «Сканировать код синхронизации». Сканируйте QR-код ниже с помощью камеры.\nОтноситесь к этому коду как к паролю. Не сообщайте его никому, иначе другие пользователи смогут просматривать и изменять ваши синхронизированные данные.";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Введите код синхронизации";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "Запустите Brave на устройстве и откройте настройки. Перейдите в раздел «Синхронизация» и нажмите кнопку «%@». Введите указанные ниже кодовые слова для создания цепочки синхронизации.\nОтноситесь к кодовым словам как к паролю. Не сообщайте их никому, иначе другие пользователи смогут просматривать и изменять ваши синхронизированные данные.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Введите кодовые слова";
@@ -822,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Устройства и настройки";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Сервер синхронизации не подключен к сети или недоступен. Повторите попытку позже.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Ошибка связи";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Проверьте подключение к интернету и повторите попытку.";
@@ -967,11 +1024,26 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Условия использования";
 
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Автоматически";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Тёмная тема";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Экран и яркость";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Эти настройки не применяются в приватном режиме.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Светлая тема";
+
 /* History tableview section header */
 "Today" = "Сегодня";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Заблоки-\nрованные\nтрекеры";
+"TrackersrBlocked" = "Трекеров\nзаблокировано";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Не удалось добавить устройство в группу синхронизации. Проверьте введенные слова и повторите попытку.";

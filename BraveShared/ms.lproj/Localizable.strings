@@ -1,6 +1,30 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Tidak";
 
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "Mulakan pelayaran";
+
+/* Save button to save current selection */
+"OBSaveButton" = "Simpan";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "Pilih enjin carian lalai anda";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "Selamat datang ke Pelayar Brave";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "Sekat penjejak yang menceroboh privasi agar anda boleh melayari internet dengan tenang tanpa diikuti.";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Perisai Brave";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "Teruskan";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "Langkau";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Hidupkan cadangan carian?";
 

@@ -1,0 +1,21 @@
+/* Button text to confirm PIN */
+"confirmPin" = "認証する";
+
+/* Message for touch key modal. */
+"insertKeyMessage" = "セキュリティーキーを入力する";
+
+/* Placeholder text for PIN */
+"pinPlaceholder" = "PINを入力";
+
+/* Title for the alert modal when a security key with PIN is inserted. */
+"pinTitle" = "PIN認証が必要です";
+
+/* Text for touch key modal button. */
+"touchKeyCancel" = "キャンセル";
+
+/* Message for touch key modal. */
+"touchKeyMessage" = "キーをタップするとリクエストを完了できます";
+
+/* Title when PIN code is being verified. */
+"verificationPending" = "PINを検証しています";
+

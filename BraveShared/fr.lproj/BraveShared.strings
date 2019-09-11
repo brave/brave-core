@@ -8,7 +8,7 @@
 "AccessPhotoDeniedAlertTitle" = "Brave souhaite accéder à vos photos";
 
 /* Button to add a bookmark */
-"AddBookmark" = "Ajouter un signet";
+"AddBookmark" = "Ajouter le favori";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Nouveau dossier";
@@ -16,22 +16,25 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "Ajouter aux favoris";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "Ajouter à…";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Ajouter le favori";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Publicités et traceurs";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Publicités et trackers \nBloqués";
+"AdsAndTrackersrBlocked" = "Publicités et traceurs \nbloqués";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Publicités \nbloquées";
 
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Toujours demander la version pour ordinateur";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Toujours envoyer";
 
-/* tabs bar show/hide option */
+/* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Toujours afficher";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "Définir un code d'accès";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "Appuyez pour afficher le clavier";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID et code d'accès";
 
@@ -124,7 +130,7 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Bloquer les publicités et le suivi";
 
-/* cookie settings option */
+/* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Bloquer tous les cookies";
 
 /* block all cookies settings action title */
@@ -155,19 +161,19 @@
 "BlockScripts" = "Bloquer les scripts";
 
 /* Bookmark Folder Section Title */
-"BookmarkFolder" = "Dossier des signets";
+"BookmarkFolder" = "Dossier Favoris";
 
 /* Bookmark Info Section Title */
-"BookmarkInfo" = "Informations sur le signet";
+"BookmarkInfo" = "Informations sur le favori";
 
 /* Title for root level bookmarks cell */
-"BookmarkRootLevelCellTitle" = "Marque-pages";
+"BookmarkRootLevelCellTitle" = "Favoris";
 
 /* title for bookmarks panel */
-"Bookmarks" = "Signets";
+"Bookmarks" = "Favoris";
 
 /* Title for bookmarks menu item */
-"BookmarksMenuItem" = "Marque-pages";
+"BookmarksMenuItem" = "Favoris";
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkTitlePlaceholderText" = "Nom";
@@ -180,6 +186,9 @@
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Réglages par défaut de Brave Shield";
+
+/* Sync page title */
+"BraveSync" = "Synchronisation";
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Pour pouvoir commencer, vous devez avoir installé Brave sur tous les appareils que vous souhaitez synchroniser. Pour les associer, lancez une chaîne de synchronisation que vous utiliserez pour associer tous vos appareils en toute sécurité.";
@@ -234,6 +243,12 @@
 
 /* Code words section title */
 "CodeWords" = "Mots codés";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Télécharger";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Partager";
 
 /* No comment provided by engineer. */
 "Confirm" = "Confirmer";
@@ -316,17 +331,26 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Ne pas envoyer";
 
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Fichiers téléchargés";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Téléchargements";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "Les fichiers téléchargés s'afficheront ici.";
+
 /* No comment provided by engineer. */
 "Edit" = "Modifier";
 
 /* Button to edit a bookmark */
-"EditBookmark" = "Modifier le signet";
+"EditBookmark" = "Modifier le favori";
 
 /* Header title for bookmark save location */
 "EditBookmarkTableLocationHeader" = "Emplacement";
 
 /* Title for editing a bookmark */
-"EditBookmarkTitle" = "Modifier le marque-page";
+"EditBookmarkTitle" = "Modifier le favori";
 
 /* Button to edit a favorite */
 "EditFavorite" = "Modifier les favoris";
@@ -371,7 +395,7 @@
 "ErrorPagesVisitOnceButton" = "Consulter le site quand même";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Temps gagné \nest.";
+"EstTimerSaved" = "Temps économisé \nest.";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Les favoris se trouvent sur votre écran d'accueil. Ces marque-pages ne sont pas synchronisés avec d'autres appareils.";
@@ -478,14 +502,14 @@
 /* Bookmark title / Device name */
 "Name" = "Nom";
 
-/* tabs bar show/hide option */
+/* Setting preference to always hide the browser tabs bar. */
 "NeverShow" = "Ne jamais afficher";
 
 /* Default name for creating a new bookmark. */
-"NewBookmarkDefaultName" = "Nouveau marque-page";
+"NewBookmarkDefaultName" = "Nouveau favori";
 
 /* Title for adding new bookmark */
-"NewBookmarkTitle" = "Nouveau marque-page";
+"NewBookmarkTitle" = "Nouveau favori";
 
 /* Title for new folder popup */
 "NewFolder" = "Nouveau dossier";
@@ -536,7 +560,7 @@
 "PasscodeMatchOldErrorText" = "Le nouveau code d'accès doit être différent du code actuel.";
 
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "Ajouter aux signets";
+"PreviewActionAddToBookmarksActionTitle" = "Ajouter aux favoris";
 
 /* Label for preview action on Tab Tray Tab to close the current tab */
 "PreviewActionCloseTabActionTitle" = "Fermer l'onglet";
@@ -563,7 +587,7 @@
 "PrivateBrowsingOnly" = "Navigation privée uniquement";
 
 /* Private tab details */
-"PrivateTabBody" = "Les onglets privés ne sont pas enregistrés dans Brave, mais ils ne vous rendent pas anonymes sur Internet. Les sites que vous consultez dans un onglet privé ne s'affichent pas dans votre historique et leurs cookies sont toujours supprimés (ils ne sont pas conservés dans Brave) lorsque vous fermez ces sites. Votre opérateur mobile (ou le propriétaire du réseau Wi-Fi ou du VPN auquel vous êtes connecté) peut voir les sites que vous consultez, et ces sites obtiennent votre adresse IP publique, même dans des onglets privés.";
+"PrivateTabBody" = "Même si les onglets privés ne sont pas enregistrés dans Brave, ces derniers ne vous rendent pas anonymes sur Internet. Les sites que vous consultez dans un onglet privé ne s'affichent pas dans votre historique, et leurs cookies sont toujours supprimés (ils ne sont pas conservés dans Brave) lorsque vous fermez leur onglet. Vos téléchargements sont toutefois enregistrés.\nLes onglets privés n'empêchent pas votre opérateur mobile (ou le propriétaire du réseau Wi-Fi ou du VPN auquel vous êtes connecté) de voir les sites que vous consultez, ni ces sites d'obtenir votre adresse IP publique.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "L'utilisation des onglets privés change seulement les opérations que Brave peut effectuer sur votre appareil, mais pas le comportement des autres.\n\nLes sites obtiennent toujours votre adresse IP lorsque vous les consultez. Grâce à elle, ils peuvent souvent deviner votre position approximative (généralement votre ville). Parfois, cette localisation peut être déterminée de manière beaucoup plus précise. Les sites reçoivent toutes les informations que vous leur communiquez, comme les termes de recherche. Si vous vous connectez à un site, il saura que vous êtes le propriétaire de ce compte. Cependant, vous serez toujours déconnecté lorsque vous fermerez les onglets privés, car Brave supprime le cookie qui permet de vous garder connecté.\n\nQuel que soit votre fournisseur d'accès Internet, il peut voir toutes vos activités sur le réseau. Il s'agit souvent de votre opérateur mobile. Si vous êtes connecté à un réseau Wi-Fi, il s'agit du propriétaire du réseau, et si vous utilisez un VPN, il s'agit du fournisseur de ce VPN. Votre fournisseur d'accès Internet peut voir les sites que vous consultez lorsque vous les consultez. Si ces sites utilisent le protocole HTTPS, votre fournisseur n'aura aucune information concrète concernant vos activités sur ce site. Cependant, si un site utilise seulement le protocole HTTP, alors votre fournisseur d'accès Internet peut tout voir : vos termes de recherche, les pages que vous avez lues et les liens sur lesquels vous avez cliqué.\n\nSi un employeur gère votre appareil, il peut également suivre l'utilisation que vous en faites. L'utilisation des onglets privés ne l'empêchera certainement pas de savoir quels sites vous consultez. De plus, une personne ayant accès à votre appareil a pu installer un logiciel qui surveille votre activité, et les onglets privés ne vous protégeront pas contre cela non plus.";
@@ -643,8 +667,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Supprimer le favori";
 
-/* Show mail composer to report a bug. */
-"ReportABug" = "Signaler un bogue";
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "Signaler un bug";
 
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "OK";
@@ -695,7 +719,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Recherches pour la suggestion";
 
 /* Section header for history and bookmarks option */
-"SearchHistorySectionHeader" = "Historique et marque-pages";
+"SearchHistorySectionHeader" = "Historique et favoris";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Effacer la recherche";
@@ -766,8 +790,20 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "s";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Nouvel onglet privé";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Nouvel onglet";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Scanner le code QR";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Afficher le raccourci vers les favoris";
+
 /* Button to show the bookmarks list */
-"ShowBookmarks" = "Afficher les signets";
+"ShowBookmarks" = "Afficher les favoris";
 
 /* Show code words instead */
 "ShowCodeWords" = "Afficher plutôt les mots codés";
@@ -775,8 +811,8 @@
 /* Button to show the history list */
 "ShowHistory" = "Afficher l'historique";
 
-/* tabs bar show/hide option */
-"ShowInLandscapeOnly" = "Afficher uniquement en mode paysage";
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "Afficher en mode paysage uniquement";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "Afficher les onglets";
@@ -793,6 +829,15 @@
 /* Support section title */
 "Support" = "Assistance";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Empêcher cette page d'afficher des alertes supplémentaires";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Bloquer les alertes";
+
+/* Sync settings section title */
+"Sync" = "Synchronisation";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Ajouter un autre appareil";
 
@@ -802,8 +847,14 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Scanner le code QR de la chaîne";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Sur votre deuxième appareil mobile, sélectionnez Synchronisation dans le volet des paramètres et appuyez sur le bouton « Scanner un code de synchronisation ». Utilisez votre appareil photo pour scanner le code QR ci-dessous.\nCe code fait office de mot de passe. Si quelqu'un réussit à l'obtenir, cela signifie qu'il pourra lire et modifier vos données synchronisées.";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Saisir le code de synchronisation";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "Sur votre appareil, sélectionnez Synchronisation dans le volet des paramètres et appuyez sur le bouton « %@ ». Saisissez les mots codés de la chaîne de synchronisation affichés ci-dessous.\n Ce code fait office de mot de passe. Si quelqu'un réussit à l'obtenir, cela signifie qu'il pourra lire et modifier vos données synchronisées.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Saisir les mots codés";
@@ -822,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Appareils et paramètres";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "L'agent de synchronisation est actuellement hors ligne et injoignable. Réessayez ultérieurement.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Erreur de communication avec la synchronisation";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Vérifiez votre connexion Internet et réessayez.";
@@ -842,7 +899,7 @@
 "SyncRemoveDeviceDefaultName" = "Appareil";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Les données actuellement synchronisées seront conservées, mais toutes les données dans le cache de la synchronisation Brave seront supprimées. Vous devrez lancer une nouvelle chaîne de synchronisation pour synchroniser à nouveau les données de l'appareil.";
+"SyncRemoveLastDeviceMessage" = "Les données actuellement synchronisées seront conservées, mais toutes les données dans le cache de la synchronisation Brave seront supprimées. Vous devrez démarrer une nouvelle chaîne de synchronisation pour synchroniser à nouveau les données de l'appareil.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Supprimer la chaîne de synchronisation";
@@ -966,6 +1023,21 @@
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Conditions d'utilisation";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Automatique";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Sombre";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Présentation et luminosité";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Ces réglages ne seront pas appliqués en navigation privée.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Clair";
 
 /* History tableview section header */
 "Today" = "Aujourd'hui";

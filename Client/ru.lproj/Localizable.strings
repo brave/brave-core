@@ -1,0 +1,21 @@
+/* Button text to confirm PIN */
+"confirmPin" = "Подтвердить";
+
+/* Message for touch key modal. */
+"insertKeyMessage" = "Вставьте ваш электронный ключ для";
+
+/* Placeholder text for PIN */
+"pinPlaceholder" = "Введите PIN-код";
+
+/* Title for the alert modal when a security key with PIN is inserted. */
+"pinTitle" = "Требуется подтверждение PIN-кода";
+
+/* Text for touch key modal button. */
+"touchKeyCancel" = "Отмена";
+
+/* Message for touch key modal. */
+"touchKeyMessage" = "Коснитесь ключа, чтобы завершить запрос для";
+
+/* Title when PIN code is being verified. */
+"verificationPending" = "Подтверждение PIN-кода для";
+

@@ -16,22 +16,25 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "Aggiungi ai preferiti";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "Aggiungi a...";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Aggiungi segnalibro";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Annunci e sistemi di tracciamento";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Annunci e cookies \nbloccati";
+"AdsAndTrackersrBlocked" = "Annunci e tracker\nbloccati";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Annunci \nbloccati";
 
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Richiedi sempre sito desktop";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Invia sempre";
 
-/* tabs bar show/hide option */
+/* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Mostra sempre";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "Imposta codice";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "Tocca per visualizzare la tastiera";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID e codice";
 
@@ -124,7 +130,7 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Blocca annunci e sistemi di tracciamento";
 
-/* cookie settings option */
+/* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blocca tutti i cookie";
 
 /* block all cookies settings action title */
@@ -181,6 +187,9 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Impostazioni predefinite Brave Shield";
 
+/* Sync page title */
+"BraveSync" = "Sincronizza";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Per iniziare, avrai bisogno che Brave sia installato su tutti i dispositivi che prevedi di sincronizzare. Per metterli in collegamento, crea una catena di sincronizzazione che userai per collegare in modo sicuro tutti i tuoi dispositivi.";
 
@@ -234,6 +243,12 @@
 
 /* Code words section title */
 "CodeWords" = "Parole in codice";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Scarica";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Condividi";
 
 /* No comment provided by engineer. */
 "Confirm" = "Conferma";
@@ -316,6 +331,15 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Non inviare";
 
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Scarica file";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Download";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "I file scaricati appariranno qui.";
+
 /* No comment provided by engineer. */
 "Edit" = "Modifica";
 
@@ -371,7 +395,7 @@
 "ErrorPagesVisitOnceButton" = "Visita comunque il sito";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Tempo previsto \nper il salvataggio";
+"EstTimerSaved" = "Tempo \nrisparmiato";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "I preferiti si trovano sulla schermata iniziale. Questi segnalibri non sono sincronizzati con altri dispositivi.";
@@ -437,7 +461,7 @@
 "LastWeek" = "Ultima settimana";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Informazioni sulla ricerca privata \ncon DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Scopri di più sulla ricerca privata \ncon DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Ultima modifica: %@";
@@ -478,7 +502,7 @@
 /* Bookmark title / Device name */
 "Name" = "Nome";
 
-/* tabs bar show/hide option */
+/* Setting preference to always hide the browser tabs bar. */
 "NeverShow" = "Non mostrare mai";
 
 /* Default name for creating a new bookmark. */
@@ -563,7 +587,7 @@
 "PrivateBrowsingOnly" = "Solo navigazione privata";
 
 /* Private tab details */
-"PrivateTabBody" = "Le schede private non vengono salvate su Brave, ma non garantiscono l’anonimato online. I siti che visiti in una scheda privata non saranno visualizzati nella cronologia, e quando chiudi la scheda i loro cookie scompaiono sempre: non ne resterà traccia su Brave. Il tuo gestore di telefonia mobile (o il proprietario della rete Wi-Fi o VPN con cui ti connetti) può vedere quali siti visiti, e questi siti memorizzeranno il tuo indirizzo IP pubblico, anche nelle schede private.";
+"PrivateTabBody" = "Le schede private non vengono salvate su Brave, ma non garantiscono l’anonimato online. I siti che visiti in una scheda privata non appariranno nella cronologia, e quando chiudi la scheda i loro cookie scompaiono sempre: non ne resterà traccia su Brave.\nIl tuo gestore di telefonia mobile (o il proprietario della rete Wi-Fi o VPN con cui ti connetti) può vedere quali siti visiti, e questi siti memorizzeranno il tuo indirizzo IP pubblico, anche nelle schede private.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "L’uso delle schede private cambia soltanto quello che fa Brave sul tuo dispositivo, e non modifica il comportamento di nessun altro.\n\nI siti che visiti continuano a conoscere il tuo indirizzo IP. Partendo da questa informazione, spesso possono risalire alla tua posizione indicativa, in genere alla città in cui ti trovi; e a volte la conoscenza della posizione può essere molto più particolareggiata. Inoltre i siti sanno tutto quello che dici direttamente a loro, per esempio i termini che usi per le ricerche. Se fai il log‑in per accedere a un sito, questo saprà che sei tu il proprietario dell’account. Chiudendo la scheda privata, si continuerà a rimanere disconnessi perché Brave rimuoverà i cookie che servono a mantenere attivo l’accesso.\n\nIl tuo Internet service provider (ISP), cioè chi ti fornisce il collegamento a internet, chiunque esso sia, può vedere la tua attività di rete. Spesso si tratta del tuo operatore di telefonia mobile. Se ti connetti tramite una rete Wi‑Fi è il proprietario della rete, e se usi una VPN è chiunque gestisca la VPN. Il tuo ISP può vedere quali siti visiti mentre li visiti. Se questi siti usano il protocollo HTTPS, può al massimo ipotizzare quello che stai facendo durante la visita. Se però usano solo l’HTTP, allora il tuo ISP è in grado di vedere tutto: i termini di ricerca, le pagine che leggi e i link che apri.\n\nSe a gestire il tuo dispositivo è un datore di lavoro, potrebbe anche tenere traccia di quello che fai con il dispositivo. Usando le schede private, probabilmente non gli impedirai di sapere quali siti hai visitato. Qualcun altro con accesso al tuo dispositivo potrebbe inoltre avere installato del software che monitora la tua attività, e anche da questo le schede private non ti possono proteggere.";
@@ -643,7 +667,7 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Rimuovi preferito";
 
-/* Show mail composer to report a bug. */
+/* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "Segnala un bug";
 
 /* Restore Tabs Affirmative Action */
@@ -766,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "sec";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Nuova scheda privata";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Nuova scheda";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Scansiona codice QR";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Mostra collegamento segnalibri";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Mostra segnalibri";
 
@@ -775,7 +811,7 @@
 /* Button to show the history list */
 "ShowHistory" = "Mostra cronologia";
 
-/* tabs bar show/hide option */
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "Mostra solo in orizzontale";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
@@ -793,6 +829,15 @@
 /* Support section title */
 "Support" = "Assistenza";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Impedisci a questa pagina di creare avvisi aggiuntivi";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Elimina avvisi";
+
+/* Sync settings section title */
+"Sync" = "Sincronizza";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Aggiungi un altro dispositivo";
 
@@ -802,8 +847,14 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Scansiona il codice QR della catena";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Sul tuo secondo dispositivo mobile, vai a Sincronizza nel pannello Impostazioni e premi il pulsante “Scansiona codice di sincronizzazione”. Usa la fotocamera per scansionare il codice QR sottostante. \nTratta questo codice come una password. Se qualcuno ne entra in possesso, può leggere e modificare i tuoi dati sincronizzati.";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Inserisci il codice di sincronizzazione";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "Sul tuo dispositivo, vai a Sincronizza nel pannello Impostazioni e premi il pulsante “%@”. Inserisci le parole mostrate qui sotto per il codice della catena di sincronizzazione. \nTratta questo codice come una password. Se qualcuno ne entra in possesso, può leggere e modificare i tuoi dati sincronizzati.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Inserisci le parole in codice";
@@ -822,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositivi e impostazioni";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "L’agente di sincronizzazione al momento è offline o non è raggiungibile. Riprova più tardi.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Errore di comunicazione nella sincronizzazione";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Controlla la tua connessione Internet e riprova.";
@@ -842,7 +899,7 @@
 "SyncRemoveDeviceDefaultName" = "Dispositivo";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "I dati attualmente sincronizzati verranno mantenuti, ma tutti i dati nella cache di Brave Sync saranno eliminati. Dovrai avviare una nuova catena di sincronizzazione per sincronizzare nuovamente i dati del dispositivo.";
+"SyncRemoveLastDeviceMessage" = "I dati attualmente sincronizzati verranno mantenuti, ma tutti i dati presenti nella cache di sincronizzazione di Brave saranno eliminati. Dovrai avviare una nuova catena di sincronizzazione per sincronizzare nuovamente i dati del dispositivo.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Elimina catena di sincronizzazione";
@@ -966,6 +1023,21 @@
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Termini d’uso";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Automatico";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Scuro";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Display e luminosità";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Queste impostazioni non vengono applicate nella modalità di navigazione privata.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Chiaro";
 
 /* History tableview section header */
 "Today" = "Oggi";
