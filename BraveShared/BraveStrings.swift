@@ -540,12 +540,12 @@ extension Strings {
 
 // MARK: - Onboarding
 extension Strings {
-    public static let OBContinueButton = NSLocalizedString("OnboardingContinueButton", bundle: Bundle.shared, value: "Continue", comment: "Continue button to navigate to next onboarding screen.")
-    public static let OBSkipButton = NSLocalizedString("OnboardingSkipButton", bundle: Bundle.shared, value: "Skip", comment: "Skip button to skip onboarding and start using the app.")
-    public static let OBSaveButton = NSLocalizedString("OBSaveButton", bundle: Bundle.shared, value: "Save", comment: "Save button to save current selection")
-    public static let OBFinishButton = NSLocalizedString("OBFinishButton", bundle: Bundle.shared, value: "Start browsing", comment: "Button to finish onboarding and start using the app.")
-    public static let OBSearchEngineTitle = NSLocalizedString("OBSearchEngineTitle", bundle: Bundle.shared, value: "Welcome to Brave Browser", comment: "Title for search engine onboarding screen")
-    public static let OBSearchEngineDetail = NSLocalizedString("OBSearchEngineDetail", bundle: Bundle.shared, value: "Select your default search engine", comment: "Detail text for search engine onboarding screen")
-    public static let OBShieldsTitle = NSLocalizedString("OBShieldsTitle", bundle: Bundle.shared, value: "Brave Shields", comment: "Title for shields onboarding screen")
-    public static let OBShieldsDetail = NSLocalizedString("OBShieldsDetail", bundle: Bundle.shared, value: "Block privacy-invading trackers so you can browse without being followed around the web", comment: "Detail text for shields onboarding screen")
+    public static let OBContinueButton = NSLocalizedString("OnboardingContinueButton", bundle: Bundle.braveShared, value: "Continue", comment: "Continue button to navigate to next onboarding screen.")
+    public static let OBSkipButton = NSLocalizedString("OnboardingSkipButton", bundle: Bundle.braveShared, value: "Skip", comment: "Skip button to skip onboarding and start using the app.")
+    public static let OBSaveButton = NSLocalizedString("OBSaveButton", bundle: Bundle.braveShared, value: "Save", comment: "Save button to save current selection")
+    public static let OBFinishButton = NSLocalizedString("OBFinishButton", bundle: Bundle.braveShared, value: "Start browsing", comment: "Button to finish onboarding and start using the app.")
+    public static let OBSearchEngineTitle = NSLocalizedString("OBSearchEngineTitle", bundle: Bundle.braveShared, value: "Welcome to Brave Browser", comment: "Title for search engine onboarding screen")
+    public static let OBSearchEngineDetail = NSLocalizedString("OBSearchEngineDetail", bundle: Bundle.braveShared, value: "Select your default search engine", comment: "Detail text for search engine onboarding screen")
+    public static let OBShieldsTitle = NSLocalizedString("OBShieldsTitle", bundle: Bundle.braveShared, value: "Brave Shields", comment: "Title for shields onboarding screen")
+    public static let OBShieldsDetail = NSLocalizedString("OBShieldsDetail", bundle: Bundle.braveShared, value: "Block privacy-invading trackers so you can browse without being followed around the web", comment: "Detail text for shields onboarding screen")
 }
