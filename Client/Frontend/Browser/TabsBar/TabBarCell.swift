@@ -89,11 +89,11 @@ class TabBarCell: UICollectionViewCell {
     }
     
     override var isSelected: Bool {
-        didSet(selected) {
+        didSet {
             let theme = Theme.of(tab)
             closeButton.tintColor = theme.colors.tints.header
             
-            if selected {
+            if isSelected {
                 titleLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)
                 closeButton.isHidden = false
                 titleLabel.textColor = theme.colors.tints.header
