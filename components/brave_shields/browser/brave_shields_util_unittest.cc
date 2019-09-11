@@ -79,6 +79,15 @@ TEST_F(BraveShieldsUtilTest, GetPatternFromURL) {
   EXPECT_FALSE(pattern.Matches(GURL("http://subdomain.brave.com")));
   EXPECT_FALSE(pattern.Matches(GURL("http://brave2.com")));
 
+  // with implied port
+  pattern = GetPatternFromURL(GURL("https://brianbondy.com"));
+  EXPECT_EQ(pattern.ToString(), "https://brianbondy.com:443");
+  pattern = GetPatternFromURL(GURL("http://brianbondy.com"));
+  EXPECT_EQ(pattern.ToString(), "http://brianbondy.com:80");
+  // with specified port
+  pattern = GetPatternFromURL(GURL("http://brianbondy.com:8080"));
+  EXPECT_EQ(pattern.ToString(), "http://brianbondy.com:8080");
+
   // with port and scheme wildcard
   // scheme wildcard with explicit port is not a valid pattern so this is
   // identical to "with port"

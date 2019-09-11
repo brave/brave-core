@@ -36,7 +36,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
     nested_iframe_script_url_ =
         embedded_test_server()->GetURL("a.com", "/nested_iframe_script.html");
 
-    top_level_page_url_ = GURL("http://a.com/");
+    top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("http://a.com/*");
     first_party_pattern_ =
