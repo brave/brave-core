@@ -1,6 +1,30 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "아니요";
 
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "브라우징 시작";
+
+/* Save button to save current selection */
+"OBSaveButton" = "저장";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "기본 검색 엔진 선택";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "Brave 브라우저에 오신 것을 환영합니다.";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "프라이버시를 침해하는 트래커를 차단하여 웹에서 불필요한 사이트 방문 없이 브라우징 가능";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Brave 쉴드";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "계속";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "건너뛰기";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
 

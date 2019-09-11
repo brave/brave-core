@@ -1,0 +1,21 @@
+/* Button text to confirm PIN */
+"confirmPin" = "확인";
+
+/* Message for touch key modal. */
+"insertKeyMessage" = "보안 키 삽입 -";
+
+/* Placeholder text for PIN */
+"pinPlaceholder" = "PIN 입력";
+
+/* Title for the alert modal when a security key with PIN is inserted. */
+"pinTitle" = "PIN 확인 필요";
+
+/* Text for touch key modal button. */
+"touchKeyCancel" = "취소";
+
+/* Message for touch key modal. */
+"touchKeyMessage" = "요청을 완료하려면 키를 터치 -";
+
+/* Title when PIN code is being verified. */
+"verificationPending" = "PIN 확인 중 -";
+

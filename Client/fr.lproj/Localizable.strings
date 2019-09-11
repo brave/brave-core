@@ -1,0 +1,21 @@
+/* Button text to confirm PIN */
+"confirmPin" = "Vérifier";
+
+/* Message for touch key modal. */
+"insertKeyMessage" = "Insérez votre clé de sécurité pour";
+
+/* Placeholder text for PIN */
+"pinPlaceholder" = "Saisissez votre code PIN";
+
+/* Title for the alert modal when a security key with PIN is inserted. */
+"pinTitle" = "Vérification du code PIN requise";
+
+/* Text for touch key modal button. */
+"touchKeyCancel" = "Annuler";
+
+/* Message for touch key modal. */
+"touchKeyMessage" = "Touchez votre clé afin de finaliser la demande pour";
+
+/* Title when PIN code is being verified. */
+"verificationPending" = "Vérification du code PIN pour";
+

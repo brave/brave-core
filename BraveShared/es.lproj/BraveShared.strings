@@ -16,8 +16,8 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "Añadir a favoritos";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "Añadir a…";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Añadir marcador";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Anuncios y rastreadores";
@@ -28,10 +28,13 @@
 /* Shields Ads Stat */
 "AdsrBlocked" = "Anuncios \nbloqueados";
 
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Solicitar siempre la versión de escritorio";
+
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Enviar siempre";
 
-/* tabs bar show/hide option */
+/* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Mostrar siempre";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "Fijar clave de acceso";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "Toca para que aparezca el teclado";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID y clave de acceso";
 
@@ -124,7 +130,7 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Bloquear anuncios y rastreadores";
 
-/* cookie settings option */
+/* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Bloquear todas las cookies";
 
 /* block all cookies settings action title */
@@ -238,6 +244,12 @@
 /* Code words section title */
 "CodeWords" = "Palabras clave";
 
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Descargar";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Compartir";
+
 /* No comment provided by engineer. */
 "Confirm" = "Confirmar";
 
@@ -319,6 +331,15 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "No enviar";
 
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Archivos descargados";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Descargas";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "Aquí se mostrarán los archivos descargados.";
+
 /* No comment provided by engineer. */
 "Edit" = "Editar";
 
@@ -374,7 +395,7 @@
 "ErrorPagesVisitOnceButton" = "Visitar sitio igualmente";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Tiempo estimado\nahorrado";
+"EstTimerSaved" = "Tiempo estimado \nahorrado";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Los favoritos se encuentran en tu pantalla de inicio. Estos marcadores no se sincronizan con otros dispositivos.";
@@ -425,7 +446,7 @@
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "Mejoras\nde HTTPS";
+"HTTPSrUpgrades" = "Mejoras \nde HTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Mejoras de HTTPS";
@@ -440,7 +461,7 @@
 "LastWeek" = "La semana pasada";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Obtener información sobre búsqueda privada con DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Obtén información sobre búsquedas privadas \ncon DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Última modificación %@";
@@ -481,7 +502,7 @@
 /* Bookmark title / Device name */
 "Name" = "Nombre";
 
-/* tabs bar show/hide option */
+/* Setting preference to always hide the browser tabs bar. */
 "NeverShow" = "No mostrar nunca";
 
 /* Default name for creating a new bookmark. */
@@ -566,7 +587,7 @@
 "PrivateBrowsingOnly" = "Solo navegación privada";
 
 /* Private tab details */
-"PrivateTabBody" = "Las pestañas privadas no se guardan en Brave, pero tampoco te hacen guardar el anonimato en línea. Los sitios que visitas con una pestaña privada no constan en el historial y las cookies desaparecen al cerrarla, sin que quede rastro alguno de ellas en Brave. No obstante, tu operador de telefonía móvil (o el propietario de la red wifi o RPV a la que estés conectado) puede ver los sitios que visitas, y esos mismos sitios conocerán tu dirección IP pública aunque utilices pestañas privadas.";
+"PrivateTabBody" = "Las pestañas privadas no se guardan en Brave, pero tampoco te hacen guardar el anonimato en línea. Los sitios que visitas con una pestaña privada no constan en el historial y las cookies desaparecen al cerrarla, sin que quede rastro alguno de ellas en Brave. No obstante, las descargas sí quedarán guardadas.\nTu operador de telefonía móvil (o el propietario de la red wifi o RPV a la que estés conectado) puede ver los sitios que visitas, y esos mismos sitios conocerán tu dirección IP pública aunque utilices pestañas privadas.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Lo único que cambia el uso de pestañas privadas es lo que hace Brave en tu dispositivo, no lo que hacen los demás.\n\nLos sitios web retienen tu dirección IP cada vez que los visitas, lo que significa que suelen tener una idea aproximada sobre tu ubicación (como la ciudad en la que te encuentras). A veces, la localización puede ser mucho más precisa. Los sitios web también retienen todo lo que compartes con ellos, como los términos de búsqueda que utilizas. Si inicias sesión en un sitio web, este sabrá que eres el propietario de esa cuenta. Aun así, tu sesión finalizará en cuanto cierres las pestañas privadas, ya que Brave desechará la cookie que mantiene tu sesión iniciada.\n\nTu proveedor de acceso a Internet, sea quien sea, puede ver toda tu actividad en la red. A menudo, se trata de tu compañía telefónica. Si estás conectado a una red wifi, el proveedor será el propietario de dicha red, mientras que, si usas una VPN, el proveedor será el encargado de gestionar esa VPN. Tu proveedor de acceso a Internet puede ver qué sitios visitas en tiempo real. Si esos sitios utilizan HTTPS, solo podrán obtener una idea aproximada de lo que haces en esos sitios web; sin embargo, si un sitio no utiliza más que HTTP, tu proveedor de acceso a Internet podrá verlo todo: tus términos de búsqueda, las páginas que consultas y los enlaces en los que clicas.\n\nSi el dispositivo lo gestiona tu empresa, puede que esta también supervise lo que haces con él. Es muy probable que el uso de pestañas privadas no logre impedir que la empresa sepa qué sitios visitas. Además, existe la posibilidad de que otra persona con acceso a tu dispositivo haya instalado en él un software para controlar tu actividad, ante lo que las pestañas privadas tampoco pueden protegerte.";
@@ -646,8 +667,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Eliminar favorito";
 
-/* Show mail composer to report a bug. */
-"ReportABug" = "Informar de un problema";
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "Informar de un error";
 
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Aceptar";
@@ -769,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "s";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Nueva pestaña privada";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Nueva pestaña";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Escanear código QR";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Mostrar el acceso directo a los marcadores";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Mostrar marcadores";
 
@@ -778,7 +811,7 @@
 /* Button to show the history list */
 "ShowHistory" = "Mostrar historial";
 
-/* tabs bar show/hide option */
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "Mostrar solo apaisado";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
@@ -795,6 +828,12 @@
 
 /* Support section title */
 "Support" = "Asistencia";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Impedir que esta página cree alertas adicionales";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Suprimir alertas";
 
 /* Sync settings section title */
 "Sync" = "Sincroniza";
@@ -984,6 +1023,21 @@
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Términos de uso";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Automático";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Oscuro";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Pantalla y brillo";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Estos ajustes no se aplican en el modo de navegación privada.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Claro";
 
 /* History tableview section header */
 "Today" = "Hoy";

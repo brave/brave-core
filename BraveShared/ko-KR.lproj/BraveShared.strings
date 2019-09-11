@@ -16,22 +16,25 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "즐겨찾기에 추가";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "다음에 추가...";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "북마크 추가";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "광고 및 개인정보 트래커";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "차단된 광고 및  \n트래커 수";
+"AdsAndTrackersrBlocked" = "차단된 \n광고 및 트래커";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "차단된 \n광고 수";
+"AdsrBlocked" = "차단된 \n광고";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "항상 데스크톱 사이트 요청";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "항상 보내기";
 
-/* tabs bar show/hide option */
+/* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "항상 표시";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "암호 설정";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "스크린 키보드를 띄우려면 탭";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID 및 암호";
 
@@ -124,7 +130,7 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "광고 및 개인정보 추적 차단";
 
-/* cookie settings option */
+/* Title for setting to block all website cookies. */
 "BlockAllCookies" = "모든 쿠키 차단";
 
 /* block all cookies settings action title */
@@ -181,6 +187,9 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shield 기본값";
 
+/* Sync page title */
+"BraveSync" = "동기화";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "시작하려면 동기화하려는 모든 기기에 Brave가 설치되어 있어야 합니다. 모든 기기를 연결하려면 모든 기기를 안전하게 연결하는 데 사용할 동기화 체인을 시작하십시오.";
 
@@ -234,6 +243,12 @@
 
 /* Code words section title */
 "CodeWords" = "코드 단어";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "다운로드";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "공유";
 
 /* No comment provided by engineer. */
 "Confirm" = "확인";
@@ -316,6 +331,15 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "보내지 않음";
 
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "파일 다운로드";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "다운로드";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "다운로드한 파일이 여기에 표시됩니다.";
+
 /* No comment provided by engineer. */
 "Edit" = "편집";
 
@@ -371,7 +395,7 @@
 "ErrorPagesVisitOnceButton" = "사이트 방문";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "절감한 \n시간";
+"EstTimerSaved" = "절약된 \n예상 시간";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "즐겨찾기는 홈 화면에 있습니다. 이 북마크는 다른 기기와 동기화되지 않습니다.";
@@ -401,7 +425,7 @@
 "FingerprintingMethods" = "디지털 지문 방식";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "디지털 지문\n보호";
+"FingerprintingnProtection" = "지문\n보호";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "디지털 지문 보호";
@@ -478,7 +502,7 @@
 /* Bookmark title / Device name */
 "Name" = "이름";
 
-/* tabs bar show/hide option */
+/* Setting preference to always hide the browser tabs bar. */
 "NeverShow" = "표시하지 않음";
 
 /* Default name for creating a new bookmark. */
@@ -563,7 +587,7 @@
 "PrivateBrowsingOnly" = "비공개 브라우징으로만 열기";
 
 /* Private tab details */
-"PrivateTabBody" = "비공개 탭은 Brave에 저장되지 않지만 이를 통해 온라인에서 익명으로 활동할 수 있는 것은 아닙니다. 비공개 탭에서 방문한 사이트는 방문 기록에 표시되지 않으며, 탭을 닫으면 항상 해당 쿠키가 사라집니다. 즉, Brave에는 해당 사이트에 대한 어떤 흔적도 남지 않게 됩니다. 비공개 탭에서 방문했더라도 귀하의 이동통신 사업자(또는 귀하가 접속하고 있는 WiFi 네트워크나 VPN의 소유자)는 귀하가 어느 사이트를 방문했는지 볼 수 있으며, 해당 사이트에서는 귀하의 공용 IP 주소를 확인할 수 있습니다.";
+"PrivateTabBody" = "비공개 탭은 Brave에 저장되지 않지만 이를 통해 온라인에서 익명으로 활동할 수 있는 것은 아닙니다. 비공개 탭에서 방문한 사이트는 방문 기록에 표시되지 않으며, 탭을 닫으면 항상 해당 쿠키가 사라집니다. 즉, Brave에는 해당 사이트에 대한 어떤 흔적도 남지 않게 됩니다. 하지만 다운로드는 저장됩니다.\n비공개 탭에서 방문했더라도 귀하의 이동통신 사업자(또는 귀하가 접속하고 있는 WiFi 네트워크나 VPN의 소유자)는 귀하가 어느 사이트를 방문했는지 볼 수 있으며, 해당 사이트에서는 귀하의 공용 IP 주소를 확인할 수 있습니다.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "비공개 탭을 사용할 경우 귀하의 기기에서 수행된 Brave 작업만이 변경되며, 다른 사용자의 동작은 변경되지 않습니다.\n\n사이트를 방문하면 사이트에서 항상 귀하의 IP 주소를 학습합니다. 즉, 사이트에서 귀하의 위치(주로 도시)를 대략적으로 추측할 수 있습니다. 경우에 따라서는 위치가 훨씬 구체적으로 추측되기도 합니다. 또한 귀하가 사이트에서 수행한 모든 작업(검색어 등)이 해당 사이트에 기록됩니다. 귀하가 사이트에 로그인하면 해당 사이트에서 귀하가 해당 계정의 소유자임을 인식합니다. 비공개 탭을 닫으면 Brave에서 로그인 상태를 유지하는 쿠키를 지우기 때문에 로그아웃 상태가 됩니다.\n\n인터넷 연결을 위해 귀하가 이용하는 ISP에서는 귀하의 네트워크 활동을 모두 확인할 수 있습니다. 대부분의 경우 이러한 ISP는 이동통신 사업자입니다. WiFi 네트워크에 연결한 경우 ISP는 해당 네트워크의 소유자이며, VPN을 사용하는 경우에는 해당 VPN의 운영자입니다. 귀하가 이용하는 ISP에서는 귀하가 사이트를 방문하면 귀하가 방문한 사이트를 알 수 있습니다. 해당 사이트에서 HTTPS를 사용하는 경우 ISP에서는 귀하가 해당 사이트에서 수행하는 작업을 기록에 따라 추측만 할 수 있습니다. 그러나 사이트에서 HTTP만을 사용한다면 ISP에서 귀하가 사용한 검색어, 귀하가 읽은 페이지와 따라 간 링크 등 모든 것을 알 수 있습니다.\n\n고용주가 귀하의 기기를 관리하는 경우 고용주는 귀하가 해당 기기로 무엇을 하는지 추적할 수도 있습니다. 비공개 탭을 사용한다고 해도 귀하가 방문한 사이트를 고용주가 알지 못하도록 차단하지는 못할 것입니다. 귀하의 기기에 액세스할 수 있는 권한을 가진 다른 사람도 귀하의 활동을 모니터링하는 소프트웨어를 설치할 수 있으며, 이것 또한 비공개 탭으로는 차단하지 못합니다.";
@@ -643,7 +667,7 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "즐겨찾기 제거";
 
-/* Show mail composer to report a bug. */
+/* Providers the user an email page where they can submit a but report. */
 "ReportABug" = "버그 신고";
 
 /* Restore Tabs Affirmative Action */
@@ -766,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "초";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "새 비공개 탭";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "새 탭";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "QR 코드 스캔";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "북마크 바로가기 표시";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "북마크 표시";
 
@@ -775,7 +811,7 @@
 /* Button to show the history list */
 "ShowHistory" = "방문 기록 표시";
 
-/* tabs bar show/hide option */
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "항상 가로 모드로 표시";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
@@ -793,6 +829,15 @@
 /* Support section title */
 "Support" = "지원";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "이 페이지에서 추가 경고를 생성하지 않도록 차단";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "억제 경고";
+
+/* Sync settings section title */
+"Sync" = "동기화";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "다른 기기 추가";
 
@@ -802,8 +847,14 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "체인 QR 코드 스캔";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "두 번째 기기에서 설정 패널에 있는 동기화로 이동한 다음 \"동기화 코드 스캔\" 버튼을 탭합니다. 카메라를 사용하여 아래 QR 코드를 스캔합니다.\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "동기화 코드 입력";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "기기에서 설정 패널에 있는 동기화로 이동한 다음 \"%@\" 버튼을 탭하고 아래 표시된 동기화 체인 코드 단어를 입력합니다.\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "코드 단어 입력";
@@ -822,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "기기 및 설정";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "동기화 에이전트가 현재 오프라인 상태이거나 연결되지 않고 있습니다. 나중에 다시 시도하십시오.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "동기화 통신 오류";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "인터넷 연결을 확인한 후 다시 시도하십시오.";
@@ -967,11 +1024,26 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "이용 약관";
 
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "자동";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "어두움";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "디스플레이 및 밝기";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "이 설정은 비공개 브라우징 모드에는 적용되지 않습니다.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "밝음";
+
 /* History tableview section header */
 "Today" = "오늘";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "차단된 \n트래커 수";
+"TrackersrBlocked" = "차단된 \n트래커";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "동기화 그룹에 연결할 수 없습니다. 입력한 단어를 확인한 후 다시 시도하십시오.";

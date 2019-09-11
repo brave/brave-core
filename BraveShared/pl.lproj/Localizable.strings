@@ -1,6 +1,30 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Nie";
 
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "Rozpocznij przeglądanie";
+
+/* Save button to save current selection */
+"OBSaveButton" = "Zapisz";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "Wybierz swoją domyślną wyszukiwarkę";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "Witaj w przeglądarce Brave";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "Blokuj aplikacje śledzące naruszające prywatność podczas przeglądania stron internetowych.";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Tarcze Brave";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "Kontynuuj";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "Pomiń";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Czy włączyć sugestie wyszukiwania?";
 

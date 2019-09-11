@@ -16,23 +16,26 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "Tambahkan ke Favorit";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "Tambahkan ke...";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Tambahkan Markah";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Iklan dan Pelacak";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Iklan & Pelacak\nDiblokir";
+"AdsAndTrackersrBlocked" = "Iklan & Pelacak \nDiblokir";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Iklan\nDiblokir";
+"AdsrBlocked" = "Iklan \nDiblokir";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Selalu Minta Situs Desktop";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Selalu Kirim";
 
-/* tabs bar show/hide option */
-"AlwaysShow" = "Selalu tampilkan";
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "Selalu Tampilkan";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
 "AuthenticationChangePasscode" = "Ubah Kode Akses";
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "Atur Kode Akses";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "Ketuk untuk menampilkan aksesibilitas keyboard";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID & Kode Akses";
 
@@ -124,8 +130,8 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "Blokir Iklan & Pelacakan";
 
-/* cookie settings option */
-"BlockAllCookies" = "Blokir semua cookie";
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "Blokir semua Kuki";
 
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "Blokir Semua";
@@ -181,6 +187,9 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Default Perisai Brave";
 
+/* Sync page title */
+"BraveSync" = "Sinkronisasi";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Untuk memulai, Anda perlu memasang Brave di semua perangkat yang ingin disinkronisasi. Untuk menyinkronkan, mulai rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat dengan aman.";
 
@@ -234,6 +243,12 @@
 
 /* Code words section title */
 "CodeWords" = "Kode Kata";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Unduh";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Bagikan";
 
 /* No comment provided by engineer. */
 "Confirm" = "Konfirmasikan";
@@ -316,6 +331,15 @@
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "Jangan kirim";
 
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "File unduhan";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Unduhan";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = " File yang diunduh akan muncul di sini.";
+
 /* No comment provided by engineer. */
 "Edit" = "Edit";
 
@@ -371,7 +395,7 @@
 "ErrorPagesVisitOnceButton" = "Tetap kunjungi situs ";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "± Waktu\nDihemat";
+"EstTimerSaved" = "Perkiraan Waktu \nDisimpan";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Favorit ada di layar beranda Anda. Markah ini tidak tersinkronisasi dengan perangkat lain.";
@@ -422,7 +446,7 @@
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "Peningkatan\nHTTPS";
+"HTTPSrUpgrades" = "Peningkatan \nHTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Peningkatan HTTPS";
@@ -478,8 +502,8 @@
 /* Bookmark title / Device name */
 "Name" = "Nama";
 
-/* tabs bar show/hide option */
-"NeverShow" = "Jangan pernah tampilkan";
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "Jangan Pernah Tampilkan";
 
 /* Default name for creating a new bookmark. */
 "NewBookmarkDefaultName" = "Markah Buku Baru";
@@ -563,7 +587,7 @@
 "PrivateBrowsingOnly" = "Hanya Penjelajahan Pribadi";
 
 /* Private tab details */
-"PrivateTabBody" = "Tab Pribadi tidak disimpan di Brave, tetapi tab tersebut tidak menjadikan Anda anonim secara online. Situs-situs yang Anda kunjungi di tab pribadi tidak akan muncul di riwayat Anda dan kukinya selalu terhapus saat Anda menutup situs; tidak akan ada jejak situs tersebut yang tertinggal di Brave. Operator seluler Anda (atau pemilik jaringan WiFi atau VPN yang terhubung) dapat melihat situs apa yang Anda kunjungi dan situs tersebut akan mengetahui alamat IP publik Anda, bahkan dalam Tab Pribadi.";
+"PrivateTabBody" = "Tab Pribadi tidak disimpan di Brave, tetapi tab tersebut tidak menjadikan Anda anonim secara online. Situs-situs yang Anda kunjungi di tab pribadi tidak akan muncul di riwayat Anda dan kukinya selalu terhapus saat Anda menutup situs; tidak akan ada jejak situs tersebut yang tertinggal di Brave.\nOperator seluler Anda (atau pemilik jaringan WiFi atau VPN yang terhubung) dapat melihat situs apa yang Anda kunjungi dan situs tersebut akan mengetahui alamat IP publik Anda, bahkan dalam Tab Pribadi.";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "Menggunakan Tab Pribadi hanya akan mengubah fungsi Brave di perangkat Anda, namun tidak mengubah perilaku orang lain.\n\nSitus selalu mengetahui alamat IP Anda saat mengunjunginya. Dari kondisi ini, situs sering kali dapat selalu mengetahui lokasi Anda, terutama kota. Terkadang lokasi yang diketahui dapat lebih spesifik. Situs juga mengetahui semua yang Anda beri tahu secara spesifik seperti istilah pencarian. Jika masuk, situs akan mengetahui bahwa Anda adalah pemilik akun tersebut. Anda tetap akan keluar saat menutup Tab Pribadi karena Brave akan menghapus kuki yang Anda gunakan untuk masuk.\n\nISP mana pun yang menyambungkan Anda ke Internet dapat melihat semua aktivitas jaringan Anda. Sering kali, operator seluler Anda yang melihatnya. Jika Anda tersambung ke jaringan WiFi, maka pemilik jaringan tersebut yang dapat melihat aktivitas jaringan, dan jika Anda menggunakan VPN, maka yang menjalankan VPN tersebut yang dapat melihat aktivitas jaringan. ISP dapat melihat situs yang dikunjungi saat Anda mengunjunginya. Jika situs tersebut menggunakan HTTPS, situs tersebut hanya dapat mengetahui aktivitas Anda di situs tersebut. Namun jika situs hanya menggunakan HTTP, maka ISP dapat melihat semuanya: istilah pencarian Anda, halaman yang dibaca, dan tautan yang diikuti.\n\nJika perusahaan mengelola perangkat Anda, mereka juga dapat melacak aktivitas perangkat Anda. Menggunakan Tab Pribadi mungkin tidak akan menghentikan mereka untuk mengetahui situs yang Anda kunjungi. Orang lain yang memiliki akses ke perangkat Anda juga dapat memasang perangkat lunak yang memantau aktivitas Anda, dan Tab Pribadi tidak akan dapat melindungi Anda dari hal ini.";
@@ -643,8 +667,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "Hapus Favorit";
 
-/* Show mail composer to report a bug. */
-"ReportABug" = "Laporkan masalah";
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "Laporkan Bug";
 
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "Oke";
@@ -766,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "d";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Tab Pribadi Baru";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Tab Baru";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Pindai Kode QR";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "Tampilkan Tombol Pintas Penanda";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Tampilkan Markah";
 
@@ -775,8 +811,8 @@
 /* Button to show the history list */
 "ShowHistory" = "Tampilkan Riwayat";
 
-/* tabs bar show/hide option */
-"ShowInLandscapeOnly" = "Tampilkan hanya dalam lanskap";
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "Tampilkan Hanya dalam Lanskap";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "Tampilkan Tab";
@@ -793,6 +829,15 @@
 /* Support section title */
 "Support" = "Dukungan";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Cegah laman ini dari membuat peringatan tambahan";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Cegah Munculnya Peringatan";
+
+/* Sync settings section title */
+"Sync" = "Sinkronisasi";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Tambahkan perangkat lain";
 
@@ -802,8 +847,14 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "Pindai Kode QR Rantai";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "Pada perangkat Anda, navigasilah ke Sinkronisasi di panel Pengaturan, lalu ketuk tombol \"Pindai Kode Sinkronisasi\". Gunakan kamera Anda untuk memindai Kode QR di bawah ini.\nPerlakukan kode ini layaknya kata sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan mengubah data Anda yang telah disinkronisasi.";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Masukkan kode sinkronisasi";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "Pada perangkat Anda, navigasilah ke Sinkronisasi di panel Pengaturan, lalu ketuk tombol \"%@\". Masukkan kata kode rantai sinkronisasi yang ditampilkan di bawah ini.\nPerlakukan kode ini layaknya kata sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan mengubah data Anda yang telah disinkronisasi.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Masukkan Kata Kode";
@@ -822,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Perangkat & Pengaturan";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Agen Sinkronisasi saat ini sedang luring atau tidak dapat dihubungi. Coba lagi nanti.";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Kesalahan Komunikasi Sinkronisasi";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Periksa sambungan internet Anda, lalu coba lagi.";
@@ -842,7 +899,7 @@
 "SyncRemoveDeviceDefaultName" = "Perangkat";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Data yang saat ini disinkronisasi akan disimpan, namun semua data dalam tembolok Sinkronisasi Brave akan dihapus. Anda harus memulai Rantai Sinkronisasi baru agar dapat menyinkronkan data perangkat lagi.";
+"SyncRemoveLastDeviceMessage" = "Data yang saat ini disinkronisasi akan disimpan, namun semua data dalam tembolok Sinkronisasi Brave akan dihapus. Anda harus memulai rantai sinkronisasi baru agar dapat menyinkronkan data perangkat lagi.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Hapus Rantai Sinkronisasi";
@@ -966,6 +1023,21 @@
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Persyaratan Penggunaan";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Otomatis";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Gelap";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Tampilan & Kecerahan";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Pengaturan ini tidak diterapkan dalam mode penjelajahan pribadi.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Terang";
 
 /* History tableview section header */
 "Today" = "Hari Ini";

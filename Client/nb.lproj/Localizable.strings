@@ -1,0 +1,21 @@
+/* Button text to confirm PIN */
+"confirmPin" = "Bekreft";
+
+/* Message for touch key modal. */
+"insertKeyMessage" = "Skriv inn sikkerhetsnøkkel for";
+
+/* Placeholder text for PIN */
+"pinPlaceholder" = "Skriv inn PIN-kode";
+
+/* Title for the alert modal when a security key with PIN is inserted. */
+"pinTitle" = "PIN-bekreftelse påkrevd";
+
+/* Text for touch key modal button. */
+"touchKeyCancel" = "Avbryt";
+
+/* Message for touch key modal. */
+"touchKeyMessage" = "Berør nøkkelen for å avslutte anmodningen for";
+
+/* Title when PIN code is being verified. */
+"verificationPending" = "Bekrefter PIN-koden din for";
+

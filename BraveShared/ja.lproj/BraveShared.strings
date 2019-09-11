@@ -16,22 +16,25 @@
 /* Add to favorites share action. */
 "AddToFavorites" = "お気に入りに追加";
 
-/* Title for adding new bookmark menu item */
-"AddToMenuItem" = "追加";
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "ブックマークに追加";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "広告とトラッカー";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "ブロック済みの\n広告とトラッカー";
+"AdsAndTrackersrBlocked" = "ブロック済の\n広告・トラッカー";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "ブロック済みの\n広告";
+"AdsrBlocked" = "ブロック済の\n広告";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "常にPCサイトを表示";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "常に送信";
 
-/* tabs bar show/hide option */
+/* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "常に表示";
 
 /* Label used as a setting item and title of the following screen to change the current passcode */
@@ -85,6 +88,9 @@
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "パスコードを設定";
 
+/* When the user taps on the passcode pane, the touch gesture recognizer will bring up the keyboard back on the screen when hidden on iPad. */
+"AuthenticationTouchForKeyboard" = "タップしてキーボードのアクセシビリティを表示する";
+
 /* Label for the Touch ID/Passcode item in Settings */
 "AuthenticationTouchIDPasscodeSetting" = "Touch ID とパスコード";
 
@@ -124,8 +130,8 @@
 /* No comment provided by engineer. */
 "BlockAdsAndTracking" = "広告と追跡をブロック";
 
-/* cookie settings option */
-"BlockAllCookies" = "すべての Cookie をブロック";
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "全てのクッキーをブロック";
 
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "すべてブロック";
@@ -181,6 +187,9 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shieldのデフォルト設定";
 
+/* Sync page title */
+"BraveSync" = "Brave Sync";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全にリンクできます。";
 
@@ -234,6 +243,12 @@
 
 /* Code words section title */
 "CodeWords" = "コード";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "ダウンロード";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "共有";
 
 /* No comment provided by engineer. */
 "Confirm" = "確認";
@@ -315,6 +330,15 @@
 
 /* Used as a button label for crash dialog prompt */
 "DontSendButtonTitle" = "送信しない";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "ダウンロード済みのファイル";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "ダウンロード";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "ダウンロードしたファイルが表示されます。";
 
 /* No comment provided by engineer. */
 "Edit" = "編集";
@@ -401,7 +425,7 @@
 "FingerprintingMethods" = "フィンガープリント";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "フィンガープリント対策";
+"FingerprintingnProtection" = "指紋\n認証";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "フィンガープリント対策";
@@ -437,7 +461,7 @@
 "LastWeek" = "先週";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGoによる\nプライベート検索について";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGoのプライベート\n検索について詳しく";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
@@ -478,8 +502,8 @@
 /* Bookmark title / Device name */
 "Name" = "名前";
 
-/* tabs bar show/hide option */
-"NeverShow" = "常に非表示";
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "今後表示しない";
 
 /* Default name for creating a new bookmark. */
 "NewBookmarkDefaultName" = "新しいブックマーク";
@@ -563,7 +587,7 @@
 "PrivateBrowsingOnly" = "常にプライベートモード";
 
 /* Private tab details */
-"PrivateTabBody" = "プライベートタブは Brave への保存はされませんが、オンライン上で匿名になるわけではありません。プライベートタブで訪問したサイトは履歴には表示されず、サイトを閉じれば Cookie は必ず削除されます。つまりサイトの形跡が Brave に残ることはありません。一方で、プライベートタブを使っても、ご利用の携帯電話会社 (または接続している WiFi ネットワークや VPN の所有者) はあなたが訪問したサイトを確認できるほか、訪問先のサイトもあなたのパブリック IP アドレスを知ることができます。";
+"PrivateTabBody" = "プライベートタブはBraveには保存されませんが、オンラインで匿名化されることはありません。 プライベートタブでアクセスしたサイトは履歴に表示されず、Cookieを閉じると常に消えます。Braveにはそれらの痕跡は残りません。 ただし、ダウンロードしたファイルは保存されます。携帯通信会社（または接続しているWiFiネットワークまたはVPNの所有者）は、アクセスしたサイトを確認できます。プライベートタブを使っていても、パブリックIPアドレスは利用したサイト側で確認可能です。";
 
 /* Private tab detail text */
 "PrivateTabDetails" = "プライベートタブを使うと、Braveのデバイス上での動作は変わりますが、その他の行動は変わりません。\n              \n              あなたのIPアドレスは訪問先のサイトにより追跡され、あなたがいるおよその位置 (都市など) が推測されます。この位置情報の推測は、さらに詳細になる場合もあります。また、サイトはあなたが具体的に伝達したあらゆる内容 (検索語句など) を知ることができます。サイトにログインした場合、サイトにはあなたがそのアカウントの所有者であることが伝わります。プライベートタブを閉じるとことで、Braveはログイン状態を維持するCookieを破棄するため、あなたはログアウトします。\n              \n              あなたをインターネットに接続する者 (ISP) は、あなたのネットワークアクティビティをすべて見ることができます。多くの場合、これはご利用の携帯電話会社になります。WiFiネットワークに接続している場合は、そのネットワークの所有者になります。VPNを使用している場合は、そのVPNの管理者になります。ISPは、あなたがどのサイトを訪問したかを知ることができます。サイトがHTTPSを使っている場合、あなたがそのサイトで何をしたかについてISPの推測能力が限られます。HTTPのみが使用されている場合は、ISPによりあらゆること (検索語句、閲覧したページ、ジャンプしたリンク) がサイトに伝わります。\n              \n              雇用主がデバイスを管理している場合、雇用主もあなたがそのデバイスで行った行動を追跡できる可能性があります。プライベートタブを使ったとしても、訪問先のサイトを隠すことは不可能です。また、そのデバイスにアクセスできる他の人が、あなたのアクティビティをモニタリングするソフトウェアをインストールしている可能性もあります。その場合、プライベートタブを使ってもモニタリングを回避することはできません。";
@@ -643,8 +667,8 @@
 /* Button to remove a favorite */
 "RemoveFavorite" = "お気に入りを削除";
 
-/* Show mail composer to report a bug. */
-"ReportABug" = "バグを報告";
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "問題を報告する";
 
 /* Restore Tabs Affirmative Action */
 "RestoreTabAffirmativeButtonTitle" = "OK";
@@ -766,6 +790,18 @@
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "秒";
 
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "新しいプライベートタブ";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "新しいタブ";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "QRコードをスキャンする";
+
+/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
+"ShowBookmarkButtonInTopToolbar" = "ブックマークへのショートカットを表示";
+
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "ブックマークを表示";
 
@@ -775,8 +811,8 @@
 /* Button to show the history list */
 "ShowHistory" = "履歴を表示";
 
-/* tabs bar show/hide option */
-"ShowInLandscapeOnly" = "画面横向き時のみ表示";
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "横持ちのときだけ表示";
 
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "タブを表示";
@@ -793,6 +829,15 @@
 /* Support section title */
 "Support" = "サポート";
 
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "このページでこれ以降アラートを表示しない";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "アラートを抑える";
+
+/* Sync settings section title */
+"Sync" = "Brave Sync";
+
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "別のデバイスを追加";
 
@@ -802,8 +847,14 @@
 /* Add mobile device to sync with scan */
 "SyncAddDeviceScan" = "チェーンのQRコードをスキャン";
 
+/* Sync add device description */
+"SyncAddDeviceScanDescription" = "他のスマートフォンまたはタブレットでBraveを開き、[設定] > [Brave Sync] > {スキャン} と移動します。\nカメラを使って下のQRコードを読み込んでください。\nこのコードをパスワードのように扱ってください。何者かがコードを手に入れた場合、コードを入手した者はあなたが同期したデータを読んだり、変更を加えたりすることができます。";
+
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "同期コードを入力";
+
+/* Sync add device description */
+"SyncAddDeviceWordsDescription" = "他のスマートフォンまたはタブレットでBraveを開き、[設定] > [Brave Sync] > {スキャン} と移動します。\n下に表示されている同期コードを入力してください。\nこのコードをパスワードのように扱ってください。何者かがコードを手に入れた場合、コードを入手した者はあなたが同期したデータを読んだり、変更を加えたりすることができます。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "コードを入力";
@@ -822,6 +873,12 @@
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "デバイスと設定";
+
+/* Message for sync initialization error alert */
+"SyncInitErrorMessage" = "Syncエージェントは現在オフラインか、見つかりませんでした。時間をおいてもう一度お試しください。";
+
+/* Title for sync initialization error alert */
+"SyncInitErrorTitle" = "Syncの接続エラー";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";
@@ -842,7 +899,7 @@
 "SyncRemoveDeviceDefaultName" = "デバイス";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "現在同期中のデータは維持されますが、Braveの同期キャッシュにあるすべてのデータは削除されます。デバイスのデータをもう一度同期するには、新しい同期チェーンを開始する必要があります。";
+"SyncRemoveLastDeviceMessage" = "現在同期されているデータは残りますが、Brave Syncにキャッシュされた全てのデータは消去されます。もう一度同期をしたい場合は新しいチェーンを開始する必要があります。";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "同期チェーンを削除";
@@ -967,11 +1024,26 @@
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "利用規約";
 
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "自動";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "ダーク";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "ディスプレイと明るさの設定";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "これらの設定はプライベートモードには適用されません。";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "ライト";
+
 /* History tableview section header */
 "Today" = "今日";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "ブロック済みの\nトラッカー";
+"TrackersrBlocked" = "ブロック済の\nトラッカー";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "同期グループに参加できませんでした。入力したワードをチェックして、もう一度やり直してください。";

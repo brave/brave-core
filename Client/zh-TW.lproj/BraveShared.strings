@@ -1,0 +1,9 @@
+/* Suffix for error strings */
+"tryAgain" = "，請再試一次。";
+
+/* Error handling U2F authentication. */
+"U2FAuthenticationError" = "驗證安全金鑰時出錯";
+
+/* Error handling U2F registration. */
+"U2FRegistrationError" = "註冊安全金鑰時出錯";
+
