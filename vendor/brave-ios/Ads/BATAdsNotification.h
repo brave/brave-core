@@ -26,4 +26,10 @@ NS_SWIFT_NAME(AdsNotification)
 @property (nonatomic, readonly) BATAdsConfirmationType confirmationType;
 @end
 
+@interface BATAdsNotification (MyFirstAd)
++ (instancetype)customAdWithTitle:(NSString *)title
+                             body:(NSString *)body
+                              url:(NSURL *)url NS_SWIFT_NAME(customAd(title:body:url:));
+@end
+
 NS_ASSUME_NONNULL_END
