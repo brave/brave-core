@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Cliqué</translation>
 <translation id="7119308337584989771">Rejeté</translation>
 <translation id="6805660603861526473">Visionné</translation>
+<translation id="2852258589816753010">BAT n'est pas pris en charge dans votre région actuellement. Veuillez consulter <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>cette page<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> pour obtenir des mises à jour.</translation>
+<translation id="2564425876266960486">Erreur lors de la création de la carte BAT du navigateur Brave</translation>
 <translation id="7422678632904904341">Montant :</translation>
 <translation id="5923611424721173182">Rapprochement actuel</translation>
 <translation id="5457113250005438886">Invalide</translation>
@@ -383,7 +385,7 @@
 <translation id="6727483290601442544">Voir Détails</translation>
 <translation id="1988679729106502285">REMARQUE :</translation>
 <translation id="5815103311506128988">Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'il vérifie ou jusqu'à ce que 90 jours se soient écoulés.</translation>
-<translation id="603411408512957306">Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'il vérifie ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="603411408512957306">Ce créateur vérifié n'a pas encore vérifié (KYC) son compte pour recevoir des pourboires de votre portefeuille vérifié. Les pourboires resteront dans votre portefeuille jusqu'à ce qu'il ait terminé la vérification.</translation>
 <translation id="4292832015778676417">gagné grâce à la publicité</translation>
 <translation id="3197752845651180812">Contributions en attente</translation>
 <translation id="3164105678355419142">Don récurrent</translation>
@@ -406,8 +408,9 @@
 <translation id="7512440811010447157">vérifier</translation>
 <translation id="8030169304546394654">Déconnecté</translation>
 <translation id="8267327690882073581">Vérifier le portefeuille</translation>
-<translation id="543510923939676996">Vérifié</translation>
+<translation id="543510923939676996">Portefeuille vérifié</translation>
 <translation id="7591798679868259510">Accéder à mon compte Uphold</translation>
+<translation id="3699674790322420653">Terminer la vérification du portefeuille</translation>
 <translation id="9200453331904391567">Déconnexion des primes Brave</translation>
 <translation id="46988480989545156">Vérifier le portefeuille</translation>
 <translation id="1554282356558968486">Notre service de portefeuille est fourni par</translation>

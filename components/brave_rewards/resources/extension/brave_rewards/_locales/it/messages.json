@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verificato",
+    "message": "Portafoglio verificato",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verificato",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Non disponibile",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Riconnetti il portafoglio",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Il tuo portafoglio è verificato!",
@@ -526,11 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Non preoccuparti. Questo può accadere per diversi motivi di sicurezza. Riconnetterti ad esso risolverà il problema.",
+    "message": "Non preoccuparti. Questo può succedere per diverse ragioni di sicurezza. Riconnettendo il tuo portafoglio risolveremo il problema.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Questo creatore non si è ancora iscritto per ricevere i contributi dagli utenti Brave. Ogni mancia che invierai rimarrà nel tuo portafoglio fino a quando non si sarà verificato.",
+    "message": "Questo creatore verificato deve ancora verificare (KYC) il proprio account per ricevere tips dal tuo portafoglio verificato. I tips rimarranno nel tuo portafoglio fino al completamento della verifica.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Completa la verifica del portafoglio",
+    "description": "CTA for completing wallet verification"
   }
 }

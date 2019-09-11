@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verificada",
+    "message": "Billetera verificada",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verificada",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "No disponible",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Volver a conectar billetera",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "¡Tu billetera está verificada!",
@@ -526,11 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "No te preocupes. Esto puede suceder por diferentes motivos de seguridad. Conectarla de nuevo solucionará el problema.",
+    "message": "No te preocupes. Esto puede suceder por diferentes motivos de seguridad. Conectar la billetera de nuevo solucionará el problema.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Este creador todavía no se ha registrado para recibir contribuciones de usuarios de Brave. Cualquier propina que envíes quedará en tu billetera hasta que el creador confirme la titularidad.",
+    "message": "Este creador verificado todavía tiene que verificar (KYC) su cuenta para recibir propinas de tu billetera verificada. Las propinas quedarán en tu billetera hasta que el creador confirme la titularidad.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Completar verificación de billetera",
+    "description": "CTA for completing wallet verification"
   }
 }

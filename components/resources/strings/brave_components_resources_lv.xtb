@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Uzklikšķināts</translation>
 <translation id="7119308337584989771">Noraidīts</translation>
 <translation id="6805660603861526473">Aplūkots</translation>
+<translation id="2852258589816753010">BAT pašlaik netiek atbalstīts jūsu reģionā. Jaunāko informāciju, lūdzu, skatīt <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2564425876266960486">Kļūda, veidojot Brave pārlūka BAT karti</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="5923611424721173182">Pašreizējā saskaņošana</translation>
 <translation id="5457113250005438886">Nederīgs</translation>
@@ -383,7 +385,7 @@
 <translation id="6727483290601442544">Skatīt informāciju</translation>
 <translation id="1988679729106502285">PIEZĪME.</translation>
 <translation id="5815103311506128988">Šis satura veidotājs vēl nav pierakstījies ziedojumu saņemšanai no Brave lietotājiem. Jūsu pārlūkprogramma atkārtoti mēģinās veikt ziedojumu līdz brīdim, kad tas tiks apstiprināts vai būs pagājušas 90 dienas.</translation>
-<translation id="603411408512957306">Šis satura veidotājs vēl nav pierakstījies ziedojumu saņemšanai no Brave lietotājiem. Jūsu pārlūkprogramma atkārtoti mēģinās veikt ziedojumu līdz brīdim, kad tas tiks apstiprināts vai būs pagājušas 90 dienas.</translation>
+<translation id="603411408512957306">Šim pārbaudītajam izveidotājam vēl ir jāverificē (KYC) savs konts, lai saņemtu ieteikumus no jūsu apstiprinātā maka. Ieteikumi atradīsies jūsu makā, līdz verifikācija tiks pabeigta.</translation>
 <translation id="4292832015778676417">nopelnīts no reklāmām</translation>
 <translation id="3197752845651180812">Neapmaksātie ziedojumi</translation>
 <translation id="3164105678355419142">Periodiska dzeramnauda</translation>
@@ -406,8 +408,9 @@
 <translation id="7512440811010447157">pārbaudīt</translation>
 <translation id="8030169304546394654">Atvienots</translation>
 <translation id="8267327690882073581">Verificēt maku</translation>
-<translation id="543510923939676996">Pārbaudīts</translation>
+<translation id="543510923939676996">Maks verificēts</translation>
 <translation id="7591798679868259510">Doties uz manu Uphold kontu</translation>
+<translation id="3699674790322420653">Pabeigt maka verifikāciju</translation>
 <translation id="9200453331904391567">Atspējot Brave balvas</translation>
 <translation id="46988480989545156">Verificēt maku</translation>
 <translation id="1554282356558968486">Mūsu maka pakalpojumu sniedz</translation>

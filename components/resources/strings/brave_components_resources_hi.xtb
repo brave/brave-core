@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">क्लिक किया गया</translation>
 <translation id="7119308337584989771">बरखास्त</translation>
 <translation id="6805660603861526473">देखा गया</translation>
+<translation id="2852258589816753010">वर्तमान में आपके क्षेत्र में BAT समर्थित नहीं है। अपडेट के लिए कृपया <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> को देखें।</translation>
+<translation id="2564425876266960486">Brave ब्राउज़र BAT कार्ड निर्माण में समस्या हुई है</translation>
 <translation id="7422678632904904341">मात्रा</translation>
 <translation id="5923611424721173182">वर्तमान समाधान</translation>
 <translation id="5457113250005438886">अमान्य</translation>
@@ -384,7 +386,7 @@
 <translation id="6727483290601442544">जानकारी देखें</translation>
 <translation id="1988679729106502285">नोट:</translation>
 <translation id="5815103311506128988">इस निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक साइन अप नहीं किया है। उनके सत्यापित होने तक, या 90 दिनों के बीतने तक आपके द्वारा भेजी गयी कोई भी बख्शीश आपके ही बटुए में रहेगी।</translation>
-<translation id="603411408512957306">इस निर्माता ने Brave उपयोगकर्ताओं से योगदान प्राप्त करने के लिए अभी तक साइन अप नहीं किया है। उनके सत्यापित होने तक, या 90 दिनों के बीतने तक आपके द्वारा भेजी गयी कोई भी बख्शीश आपके ही बटुए में रहेगी।</translation>
+<translation id="603411408512957306">अपने सत्यापित वॉलेट से धन प्राप्त करने के लिए इस सत्यापित निर्माता ने अभी तक अपने खाते का सत्यापन (KYC) नहीं किया है। जब तक वे सत्यापन पूरा नहीं करते तब तक धन आपके वॉलेट में ही रहेगा।</translation>
 <translation id="4292832015778676417">विज्ञापनों द्वारा कमाया हुआ</translation>
 <translation id="3197752845651180812">लंबित योगदान</translation>
 <translation id="3164105678355419142">आवर्ती बख्शीश</translation>
@@ -407,8 +409,9 @@
 <translation id="7512440811010447157">सत्यापित करें</translation>
 <translation id="8030169304546394654">डिसकनेक्ट करें</translation>
 <translation id="8267327690882073581">वॉलेट सत्यापित करें</translation>
-<translation id="543510923939676996">सत्यापित है</translation>
+<translation id="543510923939676996">वॉलेट सत्यापन पूरा हुआ</translation>
 <translation id="7591798679868259510">मेरे मान्य खाते पर जाएँ</translation>
+<translation id="3699674790322420653">वॉलेट सत्यापन पूरा करें</translation>
 <translation id="9200453331904391567">Brave Rewards से डिसकनेक्ट करें</translation>
 <translation id="46988480989545156">वॉलेट सत्यापित करें</translation>
 <translation id="1554282356558968486">हमारी वॉलेट सेवा द्वारा प्रदान की जाती है</translation>
