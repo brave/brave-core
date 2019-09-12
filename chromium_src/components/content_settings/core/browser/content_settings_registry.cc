@@ -47,6 +47,18 @@
       ContentSettingsInfo::INHERIT_IN_INCOGNITO, \
       ContentSettingsInfo::PERSISTENT, \
       ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY); \
+  \
+  /* Disable motion sensors by default (brave/brave-browser#4789)*/ \
+  Register( \
+      CONTENT_SETTINGS_TYPE_SENSORS, "sensors", CONTENT_SETTING_BLOCK, \
+      WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(), \
+      ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK), \
+      WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE, \
+      WebsiteSettingsRegistry::DESKTOP | \
+          WebsiteSettingsRegistry::PLATFORM_ANDROID, \
+      ContentSettingsInfo::INHERIT_IN_INCOGNITO, \
+      ContentSettingsInfo::PERSISTENT, \
+      ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS); \
 }
 
 #include "../../../../../../components/content_settings/core/browser/content_settings_registry.cc"
