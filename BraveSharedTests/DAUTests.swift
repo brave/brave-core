@@ -204,7 +204,7 @@ class DAUTests: XCTestCase {
         let format = "yyyy-MM-dd, HH:mm"
         
         pingWithDateAndCompare(dateString: "2019-12-31, 16:00", daily: true, weekly: true, monthly: true, first: true, dateFormat: format)
-        pingWithDateAndCompare(dateString: "2019-12-31, 23:00", daily: false, weekly: false, monthly: false, dateFormat: format)
+        pingWithDateAndCompare(dateString: "2019-12-31, 22:00", daily: false, weekly: false, monthly: false, dateFormat: format)
         pingWithDateAndCompare(dateString: "2020-01-01, 04:00", daily: true, weekly: false, monthly: true, dateFormat: format)
     }
     
@@ -246,6 +246,7 @@ class DAUTests: XCTestCase {
     private func dateFrom(string: String, format: String? = nil) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format ?? "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")!
         
         return dateFormatter.date(from: string)!
     }
