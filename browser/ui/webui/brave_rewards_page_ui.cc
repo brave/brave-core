@@ -28,24 +28,28 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
-#if defined(OS_ANDROID)
+
+#if !defined(OS_ANDROID)
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
+#else
 #include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
-// #include "components/grit/components_resources.h"
+#include "components/grit/components_resources.h"
 #include "components/grit/components_scaled_resources.h"
+
 // TODO(samartnik): they excluded FaviconSource from Android in Chromium.
 // Need to find out how to workaround this.
-// #include "content/public/browser/url_data_source.h"
-// #include "chrome/browser/ui/webui/favicon_source.h"
-// #include "components/favicon_base/favicon_url_parser.h"
+//#include "content/public/browser/url_data_source.h"
+//#include "chrome/browser/ui/webui/favicon_source.h"
+//#include "components/favicon_base/favicon_url_parser.h"
 #endif
+
 
 using content::WebUIMessageHandler;
 
