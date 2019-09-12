@@ -122,7 +122,7 @@ void AdBlockBaseService::Cleanup() {
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type, const std::string& tab_host,
     bool* did_match_exception, bool* cancel_request_explicitly) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
 
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
