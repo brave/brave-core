@@ -13,6 +13,7 @@ import Footer from './footer'
 
 import {
   ShieldsToggled,
+  ReportBrokenSite,
   BlockAdsTrackers,
   HttpsEverywhereToggled,
   BlockJavaScript,
@@ -33,6 +34,7 @@ import { getFavicon, isShieldsEnabled } from '../../helpers/shieldsUtils'
 interface Props {
   actions: {
     shieldsToggled: ShieldsToggled
+    reportBrokenSite: ReportBrokenSite
     blockAdsTrackers: BlockAdsTrackers
     httpsEverywhereToggled: HttpsEverywhereToggled
     blockJavaScript: BlockJavaScript
@@ -77,6 +79,7 @@ export default class ShieldsSimpleView extends React.PureComponent<Props, {}> {
           fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
           shieldsToggled={actions.shieldsToggled}
           toggleReadOnlyView={toggleReadOnlyView}
+          reportBrokenSite={actions.reportBrokenSite}
         />
         <Footer
           enabled={this.isShieldsEnabled}

@@ -19,6 +19,12 @@ export const shieldsToggled: actions.ShieldsToggled = (setting = 'allow') => {
   }
 }
 
+export const reportBrokenSite: actions.ReportBrokenSite = () => {
+  return {
+    type: types.REPORT_BROKEN_SITE
+  }
+}
+
 export const resourceBlocked: actions.ResourceBlocked = (details) => {
   return {
     type: types.RESOURCE_BLOCKED,

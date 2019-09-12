@@ -22,6 +22,7 @@ import { Tab, PersistentData } from '../../types/state/shieldsPannelState'
 import { isShieldsEnabled, getFavicon } from '../../helpers/shieldsUtils'
 import {
   ShieldsToggled,
+  ReportBrokenSite,
   BlockAdsTrackers,
   HttpsEverywhereToggled,
   BlockJavaScript,
@@ -38,6 +39,7 @@ import {
 interface Props {
   actions: {
     shieldsToggled: ShieldsToggled
+    reportBrokenSite: ReportBrokenSite
     blockAdsTrackers: BlockAdsTrackers
     httpsEverywhereToggled: HttpsEverywhereToggled
     blockJavaScript: BlockJavaScript
@@ -104,6 +106,7 @@ export default class Shields extends React.PureComponent<Props, State> {
           scriptsBlocked={shieldsPanelTabData.javascriptBlocked}
           fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
           shieldsToggled={actions.shieldsToggled}
+          reportBrokenSite={actions.reportBrokenSite}
         />
         {
           this.isShieldsEnabled && (

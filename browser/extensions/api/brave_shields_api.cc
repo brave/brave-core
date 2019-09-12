@@ -11,6 +11,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
+#include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
@@ -323,6 +324,30 @@ ExtensionFunction::ResponseAction
 BraveShieldsOnShieldsPanelShownFunction::Run() {
   ::brave_shields::MaybeRecordShieldsUsageP3A(::brave_shields::kClicked,
                                               g_browser_process->local_state());
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction BraveShieldsReportBrokenSiteFunction::Run() {
+  std::unique_ptr<brave_shields::ReportBrokenSite::Params> params(
+      brave_shields::ReportBrokenSite::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  // Get web contents for this tab
+  content::WebContents* contents = nullptr;
+  if (!ExtensionTabUtil::GetTabById(
+        params->tab_id,
+        Profile::FromBrowserContext(browser_context()),
+        false,
+        nullptr,
+        nullptr,
+        &contents,
+        nullptr)) {
+    return RespondNow(Error(tabs_constants::kTabNotFoundError,
+                            base::NumberToString(params->tab_id)));
+  }
+
+  OpenWebcompatReporterDialog(contents);
+
   return RespondNow(NoArguments());
 }
 

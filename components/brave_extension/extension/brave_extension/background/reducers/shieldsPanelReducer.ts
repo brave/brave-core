@@ -29,7 +29,8 @@ import {
   toggleShieldsValue,
   requestShieldPanelData,
   setAllowScriptOriginsOnce,
-  onShieldsPanelShown
+  onShieldsPanelShown,
+  reportBrokenSite
 } from '../api/shieldsAPI'
 import { reloadTab } from '../api/tabsAPI'
 import { applySiteFilters } from '../api/cosmeticFilterAPI'
@@ -125,6 +126,14 @@ export default function shieldsPanelReducer (
         })
       state = shieldsPanelState
         .updateTabShieldsData(state, tabId, { braveShields: action.setting })
+      break
+    }
+    case shieldsPanelTypes.REPORT_BROKEN_SITE: {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs[0] && tabs[0].id) {
+          reportBrokenSite(tabs[0].id)
+        }
+      })
       break
     }
     case shieldsPanelTypes.HTTPS_EVERYWHERE_TOGGLED: {

@@ -191,6 +191,7 @@ export const DisabledContentText = styled<{}, 'div'>('div')`
   font-size: 12px;
   font-weight: normal;
   line-height: 18px;
+  text-align: center;
 `
 
 /**

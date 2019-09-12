@@ -163,6 +163,13 @@ export const setAllowScriptOriginsOnce = (origins: Array<string>, tabId: number)
     })
   })
 
+/**
+ * Open a prompt that allows the user to submit a report telling Brave that the current website is broken by Shields.
+ * @param {number} tabId ID of the tab whose contents are being reported
+ */
+export const reportBrokenSite = (tabId: number) =>
+  chrome.braveShields.reportBrokenSite(tabId)
+
 export type GetViewPreferencesData = {
   showAdvancedView: boolean
 }

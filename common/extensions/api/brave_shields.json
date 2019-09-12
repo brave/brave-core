@@ -325,6 +325,17 @@
             "parameters": []
           }
         ]
+      },
+      {
+        "name": "reportBrokenSite",
+        "type": "function",
+        "description": "Bring up a modal for reporting a site broken by Shields to the Brave developers",
+        "parameters": [
+          {
+            "name": "tabId",
+            "type": "integer"
+          }
+        ]
       }
     ]
   }

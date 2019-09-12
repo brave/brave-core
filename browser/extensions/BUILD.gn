@@ -61,6 +61,7 @@ source_set("extensions") {
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/webcompat_reporter",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/common/extensions/api",
