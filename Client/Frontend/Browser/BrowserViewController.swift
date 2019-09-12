@@ -1202,7 +1202,7 @@ class BrowserViewController: UIViewController {
             activities.append(requestDesktopSiteActivity)
         }
         
-        let controller = helper.createActivityViewController { [unowned self] completed, _ in
+        let controller = helper.createActivityViewController(items: activities) { [unowned self] completed, _ in
             // After dismissing, check to see if there were any prompts we queued up
             self.showQueuedAlertIfAvailable()
 
