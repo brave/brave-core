@@ -40,6 +40,9 @@ const char kDefaultLanguage[] = "en";
 const char kDefaultRegion[] = "US";
 const char kDefaultUserModelLanguage[] = "en";
 
+static const int kDoNotDisturbFromHour = 21;  // 9pm
+static const int kDoNotDisturbToHour = 6;     // 6am
+
 const std::map<std::string, bool> kSupportedRegions = {
   // {{region, targeted}}
 

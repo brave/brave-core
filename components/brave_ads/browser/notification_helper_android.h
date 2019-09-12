@@ -39,6 +39,8 @@ class NotificationHelperAndroid :
 
   bool ShowMyFirstAdNotification() const override;
 
+  bool CanShowBackgroundNotifications() const override;
+
   friend struct base::DefaultSingletonTraits<NotificationHelperAndroid>;
   DISALLOW_COPY_AND_ASSIGN(NotificationHelperAndroid);
 };

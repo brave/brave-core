@@ -65,6 +65,15 @@ void AdsClientMojoBridge::IsForeground(IsForegroundCallback callback) {
   std::move(callback).Run(ads_client_->IsForeground());
 }
 
+bool AdsClientMojoBridge::CanShowBackgroundNotifications(bool* can_show) {
+  *can_show = ads_client_->CanShowBackgroundNotifications();
+  return true;
+}
+
+void AdsClientMojoBridge::CanShowBackgroundNotifications(CanShowBackgroundNotificationsCallback callback) {
+  std::move(callback).Run(ads_client_->CanShowBackgroundNotifications());
+}
+
 bool AdsClientMojoBridge::GetLocale(std::string* out_locale) {
   *out_locale = ads_client_->GetLocale();
   return true;

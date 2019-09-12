@@ -979,6 +979,10 @@ void AdsServiceImpl::OnURLLoaderComplete(
   callback(response_code, response_body ? *response_body : "", headers);
 }
 
+bool AdsServiceImpl::CanShowBackgroundNotifications() const {
+  return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
+}
+
 void AdsServiceImpl::OnGetAdsForCategory(
     const ads::OnGetAdsCallback& callback,
     const std::string& category,

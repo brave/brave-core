@@ -376,6 +376,8 @@ class AdsServiceImpl : public AdsService,
   void KillTimer(
       const uint32_t timer_id) override;
 
+  bool CanShowBackgroundNotifications() const override;
+
   void URLRequest(
       const std::string& url,
       const std::vector<std::string>& headers,
