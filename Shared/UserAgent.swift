@@ -49,10 +49,6 @@ open class UserAgent {
         return nil
     }
 
-    /**
-     * This will typically return quickly, but can require creation of a UIWebView.
-     * As a result, it must be called on the UI thread.
-     */
     public static func defaultUserAgent() -> String {
         assert(Thread.current.isMainThread, "This method must be called on the main thread.")
 
@@ -60,14 +56,12 @@ open class UserAgent {
             return firefoxUA
         }
 
-        let webView = UIWebView()
-
         let currentiOSVersion = UIDevice.current.systemVersion
         defaults.set(currentiOSVersion, forKey: "LastDeviceSystemVersionNumber")
         defaults.set(appVersion, forKey: "LastFirefoxVersionNumber")
         defaults.set(buildNumber, forKey: "LastFirefoxBuildNumber")
 
-        let userAgent = webView.stringByEvaluatingJavaScript(from: "navigator.userAgent")!
+        let userAgent = UserAgentBuilder().build()
 
         // Extract the WebKit version and use it as the Safari version.
         let webKitVersionRegex = try? NSRegularExpression(pattern: "AppleWebKit/([^ ]+) ", options: [])
