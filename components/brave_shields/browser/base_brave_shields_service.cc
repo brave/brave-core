@@ -59,7 +59,8 @@ bool BaseBraveShieldsService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string& tab_host,
     bool* did_match_exception,
-    bool* cancel_request_explicitly) {
+    bool* cancel_request_explicitly,
+    std::string* redirect) {
   if (did_match_exception) {
     *did_match_exception = false;
   }

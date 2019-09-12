@@ -337,7 +337,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     }
     network::ResourceResponseHead response;
     std::string response_data;
-    brave_shields::MakeStubResponse(request_, &response, &response_data);
+    brave_shields::MakeStubResponse(ctx_->redirect, request_, &response,
+        &response_data);
 
     target_client_->OnReceiveResponse(response);
 

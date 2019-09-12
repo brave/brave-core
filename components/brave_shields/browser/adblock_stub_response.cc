@@ -11,6 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_split.h"
+#include "net/base/data_url.h"
 #include "net/http/http_util.h"
 #include "services/network/public/cpp/resource_response.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -74,7 +75,8 @@ std::string GetContentForMimeType(const std::string& mime_type) {
 
 }  // namespace
 
-void MakeStubResponse(const network::ResourceRequest& request,
+void MakeStubResponse(const std::string& redirect,
+                      const network::ResourceRequest& request,
                       network::ResourceResponseHead* response,
                       std::string* data) {
   DCHECK(response);
@@ -96,6 +98,16 @@ void MakeStubResponse(const network::ResourceRequest& request,
       response->mime_type = mime_types.front();
     }
     *data = GetContentForMimeType(response->mime_type);
+  }
+
+  if (!redirect.empty()) {
+    std::string charset;
+    std::string mime_type;
+    if (!net::DataURL::Parse(GURL(redirect), &mime_type, &charset, data)) {
+      LOG(ERROR) << "Could not parse ad-block data URL: " << redirect;
+    } else if (!mime_type.empty()) {
+        response->mime_type = mime_type;
+    }
   }
 
   // Craft response headers.

@@ -41,7 +41,8 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
   bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,
     const std::string& tab_host, bool* did_match_exception,
-    bool* cancel_request_explicitly) override;
+    bool* cancel_request_explicitly, std::string* redirect) override;
+  void AddResources(const std::string& resources);
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
@@ -52,6 +53,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
   void GetDATFileData(const base::FilePath& dat_file_path);
   void AddKnownTagsToAdBlockInstance();
+  void AddKnownResourcesToAdBlockInstance();
   void ResetForTest(const std::string& rules);
 
   std::unique_ptr<adblock::Engine> ad_block_client_;
@@ -65,6 +67,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
   brave_component_updater::DATFileDataBuffer buffer_;
   std::vector<std::string> tags_;
+  std::string resources_;
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
   DISALLOW_COPY_AND_ASSIGN(AdBlockBaseService);
 };

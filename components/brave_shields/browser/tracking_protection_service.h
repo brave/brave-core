@@ -44,7 +44,8 @@ class TrackingProtectionService : public LocalDataFilesObserver {
                           content::ResourceType resource_type,
                           const std::string& tab_host,
                           bool* matching_exception_filter,
-                          bool* cancel_request_explicitly);
+                          bool* cancel_request_explicitly,
+                          std::string* redirect);
 
   // implementation of LocalDataFilesObserver
   void OnComponentReady(const std::string& component_id,

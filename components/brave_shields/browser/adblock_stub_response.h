@@ -17,7 +17,8 @@ namespace brave_shields {
 
 // Intercepts certain requests and blocks them by silently returning 200 OK
 // and not allowing them to hit the network.
-void MakeStubResponse(const network::ResourceRequest& request,
+void MakeStubResponse(const std::string& redirect,
+                      const network::ResourceRequest& request,
                       network::ResourceResponseHead* response,
                       std::string* data);
 

@@ -90,6 +90,8 @@ struct BraveRequestInfo {
   const base::ListValue* referral_headers_list = nullptr;
   BlockedBy blocked_by = kNotBlocked;
   bool cancel_request_explicitly = false;
+  std::string redirect;
+
   // Default to invalid type for resource_type, so delegate helpers
   // can properly detect that the info couldn't be obtained.
   // TODO(iefremov): Replace with something like |WebRequestResourceType| to
