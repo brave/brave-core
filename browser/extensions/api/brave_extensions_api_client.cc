@@ -9,10 +9,15 @@
 
 namespace extensions {
 
+bool IsBraveSecurityUrl(const GURL& url) {
+  return url.DomainIs("sb-ssl.brave.com") ||
+      url.DomainIs("safebrowsing.brave.com");
+}
+
 bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     content::BrowserContext* context,
     const WebRequestInfo& request) const {
-  if (IsBraveProtectedUrl(request.url)) {
+  if (IsBraveProtectedUrl(request.url) || IsBraveSecurityUrl(request.url)) {
     return true;
   }
   return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(context,

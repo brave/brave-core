@@ -11,6 +11,8 @@
 
 namespace extensions {
 
+bool IsBraveSecurityUrl(const GURL& url);
+
 class BraveExtensionsAPIClient : public ChromeExtensionsAPIClient {
   bool ShouldHideBrowserNetworkRequest(
       content::BrowserContext* context,
