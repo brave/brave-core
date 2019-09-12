@@ -191,12 +191,12 @@ extension ShieldsViewController {
                 httpsUpgradesStatView: stats.httpse,
                 scriptsBlockedStatView: stats.trackers
             ].forEach {
-                $0.0.valueLabel.textColor = $0.1
+                $0.0.valueLabel.appearanceTextColor = $0.1
             }
             
             let faddedColor = hostLabel.textColor.withAlphaComponent(0.8)
-            statsHeaderLabel.textColor = faddedColor
-            settingsHeaderLabel.textColor = faddedColor
+            statsHeaderLabel.appearanceTextColor = faddedColor
+            settingsHeaderLabel.appearanceTextColor = faddedColor
         }
     }
     
