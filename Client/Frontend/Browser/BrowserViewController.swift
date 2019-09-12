@@ -243,6 +243,22 @@ class BrowserViewController: UIViewController {
             self.updateRewardsButtonState()
         }
     }
+    
+    // Display first ad when the user gets back to this controller if they havent seen one before
+    func displayMyFirstAdIfAvailable() {
+        guard let rewards = rewards, rewards.ledger.isEnabled && rewards.ads.isEnabled else { return }
+        if Preferences.Rewards.myFirstAdShown.value { return }
+        // Check if ads are eligible
+        if BraveAds.isSupportedRegion(Locale.current.identifier) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                if Preferences.Rewards.myFirstAdShown.value { return }
+                Preferences.Rewards.myFirstAdShown.value = true
+                AdsViewController.displayFirstAd(on: self) { [weak self] url in
+                    self?.openInNewTab(url, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+                }
+            }
+        }
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         let isDark = Theme.of(tabManager.selectedTab).isDark

@@ -75,11 +75,13 @@ extension BrowserViewController {
         let popover = PopoverController(contentController: braveRewardsPanel, contentSizeBehavior: .preferredContentSize)
         popover.addsConvenientDismissalMargins = false
         popover.present(from: topToolbar.locationView.rewardsButton, on: self)
-        popover.popoverDidDismiss = { _ in
+        popover.popoverDidDismiss = { [weak self] _ in
+            guard let self = self else { return }
             if let tabId = self.tabManager.selectedTab?.rewardsId, self.rewards?.ledger.selectedTabId == 0 {
                 // Show the tab currently visible
                 self.rewards?.ledger.selectedTabId = tabId
             }
+            self.displayMyFirstAdIfAvailable()
         }
         // Hide the current tab
         rewards.ledger.selectedTabId = 0
