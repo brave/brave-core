@@ -765,10 +765,10 @@ fileprivate class SuggestionButton: InsetButton {
         super.init(frame: frame)
 
         setTitleColor(UIConstants.HighlightBlue, for: [])
-        setTitleColor(UIColor.Photon.White100, for: .highlighted)
         titleLabel?.font = DynamicFontHelper.defaultHelper.DefaultMediumFont
         layer.borderWidth = SearchViewControllerUX.SuggestionBorderWidth
         layer.cornerRadius = SearchViewControllerUX.SuggestionCornerRadius
+        layer.borderColor = UIConstants.HighlightBlue.cgColor
         contentEdgeInsets = SearchViewControllerUX.SuggestionInsets
 
         accessibilityHint = Strings.SearchesForSuggestionButtonAccessibilityText
@@ -781,7 +781,7 @@ fileprivate class SuggestionButton: InsetButton {
     @objc
     override var isHighlighted: Bool {
         didSet {
-            backgroundColor = isHighlighted ? UIConstants.HighlightBlue : SearchViewControllerUX.SuggestionBackgroundColor
+            alpha = isHighlighted ? 0.6 : 1.0
         }
     }
 }
