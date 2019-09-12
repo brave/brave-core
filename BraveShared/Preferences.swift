@@ -87,6 +87,10 @@ extension Preferences {
         /// Version of downloaded data file for adblock stats.
         public static let adblockStatsDataVersion = Option<Int?>(key: "stats.adblock-data-version", default: nil)
     }
+    
+    public final class Rewards {
+        public static let myFirstAdShown = Option<Bool>(key: "rewards.ads.my-first-ad-shown", default: false)
+    }
 }
 
 extension Preferences {
