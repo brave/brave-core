@@ -157,6 +157,7 @@ storiesOf('Rewards/Wallet/Desktop', module)
             ]
           }
           onToggleTips={doNothing}
+          setMonthlyAction={doNothing}
           donationAction={doNothing}
           onAmountChange={doNothing}
           onIncludeInAuto={doNothing}

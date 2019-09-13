@@ -25,12 +25,9 @@ import {
   StyledScreenName,
   StyledSocialItem,
   StyledSocialIcon,
-  StyledOption,
   StyledLogoText,
   StyledSocialWrapper,
-  StyledEmptyBox,
   StyledLogoImage,
-  StyledCheckbox,
   StyledNoticeWrapper,
   StyledNoticeIcon,
   StyledNoticeText,
@@ -39,7 +36,6 @@ import {
 } from './style'
 
 import Donate from '../donate/index'
-import Checkbox from 'brave-ui/components/formControls/checkbox/index'
 import { getLocale } from 'brave-ui/helpers'
 import {
   CloseCircleOIcon,
@@ -52,6 +48,7 @@ import {
   VerifiedSIcon
 } from 'brave-ui/components/icons'
 
+export type BannerType = 'one-time' | 'monthly'
 export type Social = { type: SocialType, url: string }
 export type SocialType = 'twitter' | 'youtube' | 'twitch' | 'reddit' | 'vimeo' | 'github'
 export type Donation = { tokens: string, converted: string, selected?: boolean }
@@ -70,7 +67,6 @@ export interface Props {
   logo?: string
   social?: Social[]
   provider?: SocialType
-  recurringDonation?: boolean
   children?: React.ReactNode
   onDonate: (amount: string, monthly: boolean) => void
   onClose?: () => void
@@ -79,19 +75,11 @@ export interface Props {
   learnMoreNotice?: string
   addFundsLink?: string
   isVerified?: boolean
+  type: BannerType
+  nextContribution?: string
 }
 
-interface State {
-  monthly: boolean
-}
-
-export default class SiteBanner extends React.PureComponent<Props, State> {
-  constructor (props: Props) {
-    super(props)
-    this.state = {
-      monthly: false
-    }
-  }
+export default class SiteBanner extends React.PureComponent<Props, {}> {
 
   getLogo (logo: string | undefined, domain: string, name: string | undefined) {
     let letter = domain && domain.substring(0, 1) || ''
@@ -202,13 +190,17 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
 
   getText (children?: React.ReactNode) {
     if (!children) {
+      const bannerText = this.props.type === 'one-time'
+        ? 'rewardsBanner'
+        : 'rewardsBannerMonthly'
+
       return (
         <>
           <p>
-            {getLocale('rewardsBannerText1')}
+            {getLocale(`${bannerText}Text1`)}
           </p>
           <p>
-            {getLocale('rewardsBannerText2')}
+            {getLocale(`${bannerText}Text2`)}
           </p>
         </>
       )
@@ -217,13 +209,11 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     return children
   }
 
-  onMonthlyChange = (key: string, selected: boolean) => {
-    this.setState({ monthly: selected })
-  }
-
   onDonate = (amount: string) => {
+    const isMonthly = this.props.type === 'monthly'
+
     if (this.props.onDonate) {
-      this.props.onDonate(amount, this.state.monthly)
+      this.props.onDonate(amount, isMonthly)
     }
   }
 
@@ -243,7 +233,6 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       provider,
       children,
       title,
-      recurringDonation,
       balance,
       donationAmounts,
       domain,
@@ -255,9 +244,12 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       showUnVerifiedNotice,
       learnMoreNotice,
       addFundsLink,
-      isVerified
+      isVerified,
+      type,
+      nextContribution
     } = this.props
 
+    const isMonthly = type === 'monthly'
     const isTwitterTip: boolean = !!(screenName && screenName !== '')
 
     return (
@@ -321,38 +313,23 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 </StyledText>
               </StyledTextWrapper>
             </StyledContent>
-            <StyledDonation>
-              <StyledWallet>
+            <StyledDonation monthly={isMonthly}>
+              <StyledWallet monthly={isMonthly}>
                 {getLocale('walletBalance')} <StyledTokens>{balance} BAT</StyledTokens>
               </StyledWallet>
               <Donate
+                type={type}
+                nextContribution={nextContribution}
                 balance={parseFloat(balance)}
                 donationAmounts={donationAmounts}
-                title={getLocale('donationAmount')}
+                title={!isMonthly ? getLocale('donationAmount') : getLocale('monthlyContribution')}
                 onDonate={this.onDonate}
-                actionText={this.state.monthly ? getLocale('doMonthly') : getLocale('sendDonation')}
+                actionText={!isMonthly ? getLocale('sendDonation') : getLocale('setContribution')}
                 onAmountSelection={onAmountSelection}
                 donateType={'big'}
                 currentAmount={currentAmount}
                 addFundsLink={addFundsLink}
-              >
-                {
-                  !recurringDonation
-                    ? <StyledCheckbox>
-                      <Checkbox
-                        testId={'monthlyCheckbox'}
-                        value={{ make: this.state.monthly }}
-                        onChange={this.onMonthlyChange}
-                        type={'dark'}
-                      >
-                        <div data-key='make'>
-                          <StyledOption>{getLocale('makeMonthly')}</StyledOption>
-                        </div>
-                      </Checkbox>
-                    </StyledCheckbox>
-                    : <StyledEmptyBox />
-                }
-              </Donate>
+              />
             </StyledDonation>
           </StyledContentWrapper>
         </StyledBanner>

@@ -66,6 +66,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
         </StyledClose>
         <StyledTitle>Send my tip to</StyledTitle>
         <Donate
+          type={'one-time'}
           title={title || ''}
           actionText={getLocale('sendTip')}
           balance={parseFloat(balance)}

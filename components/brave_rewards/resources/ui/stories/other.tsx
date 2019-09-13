@@ -125,6 +125,7 @@ storiesOf('Rewards/Other/Desktop', module)
     return (
       <div style={{ background: '#696fdc' }}>
         <Donate
+          type={'one-time'}
           donateType={select<any>('Type', { big: 'big', small: 'small' }, 'small')}
           balance={number('Balance ', 5)}
           donationAmounts={object('Donations', store.state.donationAmounts)}

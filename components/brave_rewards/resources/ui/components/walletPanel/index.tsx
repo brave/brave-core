@@ -26,7 +26,9 @@ import {
   StyledNoticeLink,
   StyledOptionShown,
   StyledProfileWrapper,
-  StyledSelect
+  StyledSelect,
+  StyledSetButtonContainer,
+  StyledSetButton
 } from './style'
 
 // Components
@@ -63,6 +65,7 @@ export interface Props {
   showUnVerified?: boolean
   moreLink?: string
   acEnabled?: boolean
+  setMonthlyAction: () => void
 }
 
 export default class WalletPanel extends React.PureComponent<Props, {}> {
@@ -126,11 +129,14 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
   }
 
   donationControls () {
-    const { donationAmounts, acEnabled } = this.props
+    const { donationAmounts, acEnabled, setMonthlyAction } = this.props
 
     if (!donationAmounts && !acEnabled) {
       return null
     }
+
+    const firstColSpan = donationAmounts ? '5' : '4'
+    const secColSpan = donationAmounts ? '1' : '2'
 
     return (
       <StyledWrapper>
@@ -152,16 +158,24 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           </StyledGrid>
           : null
         }
-        {
-          donationAmounts
-          ? <StyledGrid>
-            <StyledColumn size={'5'}>
-              <StyledDonateText>{getLocale('donateMonthly')}</StyledDonateText>
-            </StyledColumn>
-            <StyledColumn size={'1'}>{this.donationDropDown()}</StyledColumn>
-          </StyledGrid>
-          : null
-        }
+        <StyledGrid>
+          <StyledColumn size={firstColSpan}>
+            <StyledDonateText>
+              {getLocale('donateMonthly')}
+            </StyledDonateText>
+          </StyledColumn>
+          <StyledColumn size={secColSpan}>
+            {
+              donationAmounts
+              ? this.donationDropDown()
+              : <StyledSetButtonContainer>
+                  <StyledSetButton type={'tip-monthly'} onClick={setMonthlyAction}>
+                    {getLocale('set')}
+                  </StyledSetButton>
+                </StyledSetButtonContainer>
+            }
+          </StyledColumn>
+        </StyledGrid>
       </StyledWrapper>
     )
   }

@@ -15,6 +15,7 @@ import * as rewardsActions from '../actions/tip_actions'
 
 interface TipDialogArgs {
   url: string
+  monthly: boolean
   publisherKey: string
   mediaMetaData?: RewardsTip.MediaMetaData
 }
@@ -29,10 +30,13 @@ export class App extends React.Component<Props, {}> {
   }
 
   getTipBanner = (url: string, publisher: RewardsTip.Publisher, mediaMetaData: RewardsTip.MediaMetaData | undefined) => {
+    const monthly = this.props.dialogArgs.monthly
+
     if (!mediaMetaData) {
       return (
         <TipSite
           url={url}
+          monthly={monthly}
           publisher={publisher}
         />
       )
@@ -40,6 +44,7 @@ export class App extends React.Component<Props, {}> {
       return (
         <TipMediaUser
           url={url}
+          monthly={monthly}
           publisher={publisher}
           mediaMetaData={mediaMetaData}
         />

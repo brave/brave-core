@@ -15,6 +15,7 @@ import * as tipActions from '../actions/tip_actions'
 import * as utils from '../utils'
 
 interface Props extends RewardsTip.ComponentProps {
+  monthly: boolean
   publisher: RewardsTip.Publisher
   mediaMetaData?: RewardsTip.MediaMetaData
 }
@@ -106,20 +107,6 @@ class Banner extends React.Component<Props, State> {
     return result
   }
 
-  hasRecurringTip = (publisherKey?: string) => {
-    const { recurringDonations } = this.props.rewardsDonateData
-
-    if (!publisherKey || !recurringDonations) {
-      return false
-    }
-
-    const recurringDonation = recurringDonations.find((donation: RewardsTip.RecurringTips) => {
-      return donation.publisherKey === publisherKey
-    })
-
-    return !!recurringDonation
-  }
-
   getScreenName = (mediaMetaData?: RewardsTip.MediaMetaData) => {
     if (!mediaMetaData) {
       return ''
@@ -179,6 +166,22 @@ class Banner extends React.Component<Props, State> {
       />)
   }
 
+  getNextContribution = () => {
+    const { reconcileStamp } = this.props.rewardsDonateData
+
+    if (!reconcileStamp) {
+      return undefined
+    }
+
+    const fmtArgs = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }
+
+    return new Intl.DateTimeFormat('default', fmtArgs).format(reconcileStamp * 1000)
+  }
+
   render () {
     const { balance } = this.props.rewardsDonateData
     const { total } = balance
@@ -188,6 +191,7 @@ class Banner extends React.Component<Props, State> {
     const checkmark = utils.isPublisherConnectedOrVerified(publisher.status)
     const verified = utils.isPublisherVerified(publisher.status)
     const connected = utils.isPublisherConnected(publisher.status)
+    const bannerType = this.props.monthly ? 'monthly' : 'one-time'
     let logo = publisher.logo
 
     const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
@@ -200,12 +204,12 @@ class Banner extends React.Component<Props, State> {
     }
     return (
       <SiteBanner
+        type={bannerType}
         domain={publisher.publisherKey}
         title={publisher.title}
         name={publisher.name}
         screenName={this.getScreenName(mediaMetaData)}
         provider={publisher.provider as Provider}
-        recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
         balance={total.toString() || '0'}
         bgImage={publisher.background}
         logo={logo}
@@ -220,6 +224,7 @@ class Banner extends React.Component<Props, State> {
         isVerified={checkmark}
         learnMoreNotice={'https://brave.com/faq/#unclaimed-funds'}
         addFundsLink={this.addFundsLink}
+        nextContribution={this.getNextContribution()}
       >
       {
         mediaMetaData
