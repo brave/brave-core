@@ -5,10 +5,12 @@
 
 package org.chromium.chrome.browser.preferences.privacy;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreferenceCompat;
@@ -19,6 +21,7 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
     private static final String PREF_HTTPSE = "httpse";
     private static final String PREF_AD_BLOCK = "ad_block";
     private static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
+    private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -37,6 +40,10 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
         ChromeBaseCheckBoxPreferenceCompat fingerprintingProtectionPref =
                 (ChromeBaseCheckBoxPreferenceCompat) findPreference(PREF_FINGERPRINTING_PROTECTION);
         fingerprintingProtectionPref.setOnPreferenceChangeListener(this);
+
+        ChromeBaseCheckBoxPreferenceCompat closeTabsOnExitPref =
+                (ChromeBaseCheckBoxPreferenceCompat) findPreference(PREF_CLOSE_TABS_ON_EXIT);
+        closeTabsOnExitPref.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -51,6 +58,11 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
         } else if (PREF_FINGERPRINTING_PROTECTION.equals(key)) {
             BravePrefServiceBridge.getInstance().setFingerprintingProtectionEnabled(
                     (boolean) newValue);
+        } else if (PREF_CLOSE_TABS_ON_EXIT.equals(key)) {
+            SharedPreferences.Editor sharedPreferencesEditor =
+                    ContextUtils.getAppSharedPreferences().edit();
+            sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
+            sharedPreferencesEditor.apply();
         }
 
         return true;
