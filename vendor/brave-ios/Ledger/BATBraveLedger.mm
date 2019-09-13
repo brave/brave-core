@@ -260,6 +260,11 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       strongSelf.balance = [[BATBalance alloc] initWithBalancePtr:std::move(balance)];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
+      for (BATBraveLedgerObserver *observer in self.observers) {
+        if (observer.fetchedBalance) {
+          observer.fetchedBalance();
+        }
+      }
       if (completion) {
         completion(strongSelf.balance);
       }
@@ -596,6 +601,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
   if (result == ledger::Result::LEDGER_OK) {
     ledger::ReportType report_type = grant->type == "ads" ? ledger::ADS : ledger::GRANT;
+    [self fetchBalance:nil];
     ledger->SetBalanceReportItem(BATGetPublisherMonth(now),
                                  BATGetPublisherYear(now),
                                  report_type,
@@ -603,7 +609,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   }
 
   [self clearNotificationWithID:[self notificationIDForGrant:std::move(grant)]];
-
   for (BATBraveLedgerObserver *observer in self.observers) {
     if (observer.balanceReportUpdated) {
       observer.balanceReportUpdated();
@@ -653,6 +658,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     if (category == ledger::RewardsCategory::RECURRING_TIP) {
       [self showTipsProcessedNotificationIfNeccessary];
     }
+    [self fetchBalance:nil];
 
     ledger->OnReconcileCompleteSuccess(viewing_id,
                                        category,

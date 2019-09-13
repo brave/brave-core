@@ -78,6 +78,9 @@ NS_SWIFT_NAME(LedgerObserver)
 /// A notification was removed from the wallet
 @property (nonatomic, copy, nullable) void (^notificationsRemoved)(NSArray<BATRewardsNotification *> *notification);
 
+/// Wallet balance was fetched and updated
+@property (nonatomic, copy, nullable) void (^fetchedBalance)();
+
 @end
 
 NS_ASSUME_NONNULL_END
