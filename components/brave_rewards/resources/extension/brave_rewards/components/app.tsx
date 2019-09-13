@@ -230,7 +230,8 @@ export class RewardsPanel extends React.Component<Props, State> {
       externalWallet
     } = this.props.rewardsPanelData
 
-    const converted = utils.convertBalance(balance.total.toString(), balance.rates)
+    const total = balance.total || 0
+    const converted = utils.convertBalance(total.toString(), balance.rates)
 
     if (!walletCreated || walletCorrupted) {
       return (
@@ -257,7 +258,7 @@ export class RewardsPanel extends React.Component<Props, State> {
                 compact={true}
                 contentPadding={false}
                 gradientTop={'249,251,252'}
-                balance={balance.total.toFixed(1)}
+                balance={total.toFixed(1)}
                 showSecActions={false}
                 showCopy={false}
                 grants={utils.getGrants(walletProperties.grants)}
