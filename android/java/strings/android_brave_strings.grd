@@ -105,6 +105,24 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_ABOUT_CHROME" desc="Title for the About Chrome page. [CHAR-LIMIT=32]">
         About Brave
       </message>
+      <message name="IDS_HTTPSE_TITLE" desc="Title for HTTPS Everywhere.">
+        HTTPS Everywhere
+      </message>
+      <message name="IDS_HTTPSE_SUMMARY" desc="Summary for HTTPS Everywhere.">
+        Opens supported sites using HTTPS instead of HTTP when possible
+      </message>
+      <message name="IDS_AD_BLOCK_TITLE" desc="Title for ad block.">
+        Ad Block
+      </message>
+      <message name="IDS_AD_BLOCK_SUMMARY" desc="Summary for ad block.">
+        Prevents ads from loading
+      </message>
+      <message name="IDS_FINGERPRINTING_PROTECTION_TITLE" desc="Title for fingerprinting protection.">
+        Fingerprinting Protection
+      </message>
+      <message name="IDS_FINGERPRINTING_PROTECTION_SUMMARY" desc="Summary for fingerprinting protection.">
+        Prevents browser from fingerprinting
+      </message>
     </messages>
   </release>
 </grit>
