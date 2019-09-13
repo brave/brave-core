@@ -270,6 +270,7 @@ class RewardsServiceImpl : public RewardsService,
                           bool success);
   void OnLedgerStateLoaded(ledger::LedgerCallbackHandler* handler,
                               const std::string& data);
+  void TriggerOnLedgerStateLoaded();
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void OnPublisherStateSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);

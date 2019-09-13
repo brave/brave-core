@@ -15,6 +15,7 @@
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/extensions/extension_action_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -58,9 +59,15 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
   extensions::ExtensionSystem::Get(profile)->ready().Post(
       FROM_HERE, base::Bind(&BraveActionsContainer::OnExtensionSystemReady,
                             weak_ptr_factory_.GetWeakPtr()));
+  rewards_service_ =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_)
+    rewards_service_->AddObserver(this);
 }
 
 BraveActionsContainer::~BraveActionsContainer() {
+  if (rewards_service_)
+    rewards_service_->RemoveObserver(this);
   actions_.clear();
 }
 
@@ -119,7 +126,10 @@ bool BraveActionsContainer::ShouldAddAction(const std::string& id) const {
 
 bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
   const PrefService* prefs = browser_->profile()->GetPrefs();
-  return prefs->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled) ||
+  return rewards_service_ready_ &&
+         // Doesn't seem like we want to depend on this state any more since we
+         // have a "Welcome back/Turn rewards on" look in the extension.
+         // prefs->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled) &&
          !prefs->GetBoolean(kHideBraveRewardsButton);
 }
 
@@ -314,4 +324,10 @@ void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
 // Brave Rewards preferences change observers callback
 void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
   ShowAction(brave_rewards_extension_id, ShouldAddBraveRewardsAction());
+}
+
+void BraveActionsContainer::OnLedgerStateLoaded(
+    brave_rewards::RewardsService* rewards_service) {
+  rewards_service_ready_ = true;
+  ShowAction(brave_rewards_extension_id, /*show*/true);
 }

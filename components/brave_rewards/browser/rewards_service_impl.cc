@@ -995,6 +995,13 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
   bat_ledger_->GetRewardsMainEnabled(
       base::BindOnce(&RewardsServiceImpl::StartNotificationTimers,
         AsWeakPtr()));
+
+  TriggerOnLedgerStateLoaded();
+}
+
+void RewardsServiceImpl::TriggerOnLedgerStateLoaded() {
+  for (auto& observer : observers_)
+    observer.OnLedgerStateLoaded(this);
 }
 
 void RewardsServiceImpl::LoadPublisherState(

@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
 #include "chrome/browser/ui/browser.h"
@@ -33,6 +34,7 @@ class ExtensionRegistry;
 class BraveActionsContainer : public views::View,
                               public extensions::ExtensionActionAPI::Observer,
                               public extensions::ExtensionRegistryObserver,
+                              public brave_rewards::RewardsServiceObserver,
                               public ToolbarActionView::Delegate {
  public:
   BraveActionsContainer(Browser* browser, Profile* profile);
@@ -85,6 +87,10 @@ class BraveActionsContainer : public views::View,
 
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override;
+
+  // RewardsServiceObserver overrides.
+  void OnLedgerStateLoaded(
+      brave_rewards::RewardsService* rewards_service) override;
 
  private:
   friend class ::BraveActionsContainerTest;
@@ -147,6 +153,10 @@ class BraveActionsContainer : public views::View,
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember brave_rewards_enabled_;
   BooleanPrefMember hide_brave_rewards_button_;
+
+  // Listen to when rewards service is ready
+  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+  bool rewards_service_ready_ = false;
 
   base::WeakPtrFactory<BraveActionsContainer> weak_ptr_factory_;
 

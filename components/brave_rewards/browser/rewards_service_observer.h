@@ -25,6 +25,8 @@ class RewardsServiceObserver : public base::CheckedObserver {
  public:
   ~RewardsServiceObserver() override {}
 
+  virtual void OnLedgerStateLoaded(
+      RewardsService* rewards_service) {}
   virtual void OnWalletInitialized(
       RewardsService* rewards_service,
       uint32_t error_code) {}
