@@ -1,0 +1,11 @@
+diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
+index dbbeb27ea037ae1046c38f4006ddccabfeea9e18..fa51c4947d0261bb0138d54f1e807715bba0d345 100755
+--- a/chrome/installer/linux/common/wrapper
++++ b/chrome/installer/linux/common/wrapper
+@@ -45,5 +45,4 @@ exec < /dev/null
+ exec > >(exec cat)
+ exec 2> >(exec cat >&2)
+ 
+-# Note: exec -a below is a bashism.
+-exec -a "$0" "$HERE/@@PROGNAME@@" "$@"
++"$HERE/@@PROGNAME@@" "$@" || true
