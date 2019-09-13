@@ -7,7 +7,6 @@
 
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/common/brave_switches.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -51,12 +50,6 @@ void ModifyRenderFrameKey(int old_render_process_id,
 }  // namespace
 
 namespace brave_shields {
-
-bool TrackingProtectionHelper::IsSmartTrackingProtectionEnabled() {
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  return command_line.HasSwitch(switches::kEnableSmartTrackingProtection);
-}
 
 TrackingProtectionHelper::TrackingProtectionHelper(WebContents* web_contents)
     : WebContentsObserver(web_contents) {}
