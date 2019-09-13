@@ -106,9 +106,7 @@ namespace brave_shields {
 AdBlockBaseService::AdBlockBaseService(BraveComponent::Delegate* delegate)
     : BaseBraveShieldsService(delegate),
       ad_block_client_(new adblock::Engine()),
-      weak_factory_(this),
-      weak_factory_io_thread_(this) {
-  DETACH_FROM_SEQUENCE(sequence_checker_);
+      weak_factory_(this) {
 }
 
 AdBlockBaseService::~AdBlockBaseService() {
@@ -116,7 +114,7 @@ AdBlockBaseService::~AdBlockBaseService() {
 }
 
 void AdBlockBaseService::Cleanup() {
-  ad_block_client_.release();
+  GetTaskRunner()->DeleteSoon(FROM_HERE, ad_block_client_.release());
 }
 
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
@@ -159,7 +157,14 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
 }
 
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  if (BrowserThread::CurrentlyOn(BrowserThread::UI)) {
+    GetTaskRunner()->PostTask(FROM_HERE,
+                              base::BindOnce(&AdBlockBaseService::EnableTag,
+                                             base::Unretained(this),
+                                             tag, enabled));
+    return;
+  }
+
   if (enabled) {
     ad_block_client_->addTag(tag);
     tags_.push_back(tag);
@@ -196,13 +201,17 @@ void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
     LOG(ERROR) << "Failed to deserialize ad block data";
     return;
   }
-  UpdateAdBlockClient(std::move(result.first), std::move(result.second));
+  GetTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
+                                base::Unretained(this),
+                                std::move(result.first),
+                                std::move(result.second)));
 }
 
 void AdBlockBaseService::UpdateAdBlockClient(
     std::unique_ptr<adblock::Engine> ad_block_client,
     brave_component_updater::DATFileDataBuffer buffer) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   ad_block_client_ = std::move(ad_block_client);
   buffer_ = std::move(buffer);
   AddKnownTagsToAdBlockInstance();
@@ -223,7 +232,6 @@ void AdBlockBaseService::ResetForTest(const std::string& rules) {
   // This is temporary until adblock-rust supports incrementally adding
   // filter rules to an existing instance. At which point the hack below
   // will dissapear.
-  DETACH_FROM_SEQUENCE(sequence_checker_);
   ad_block_client_.reset(new adblock::Engine(rules));
   AddKnownTagsToAdBlockInstance();
 }

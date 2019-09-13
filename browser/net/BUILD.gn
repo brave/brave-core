@@ -68,6 +68,7 @@ source_set("net") {
 
   if (enable_brave_webtorrent) {
     deps += [
+      "//brave/components/brave_webtorrent/browser/buildflags",
       "//brave/components/brave_webtorrent/browser/net",
       "//extensions/browser",
     ]

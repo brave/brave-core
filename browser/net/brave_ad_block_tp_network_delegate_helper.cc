@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/base64url.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
@@ -128,6 +127,7 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {
 
 void OnShouldBlockAdResult(const ResponseCallback& next_callback,
                            std::shared_ptr<BraveRequestInfo> ctx) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx->blocked_by == kAdBlocked) {
     brave_shields::DispatchBlockedEvent(
         ctx->request_url,
@@ -141,7 +141,6 @@ void OnBeforeURLRequestAdBlockTP(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  SCOPED_UMA_HISTOGRAM_TIMER("Brave.AdblockHandler");
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
   if (ctx->tab_origin.is_empty() || !ctx->tab_origin.has_host() ||
@@ -152,9 +151,9 @@ void OnBeforeURLRequestAdBlockTP(
 
   g_brave_browser_process->ad_block_service()->GetTaskRunner()
       ->PostTaskAndReply(FROM_HERE,
-                         base::Bind(&ShouldBlockAdOnTaskRunner, ctx),
-                         base::Bind(&OnShouldBlockAdResult, next_callback,
-                                    ctx));
+                         base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx),
+                         base::BindOnce(&OnShouldBlockAdResult, next_callback,
+                                        ctx));
 }
 
 int OnBeforeURLRequest_AdBlockTPPreWork(
