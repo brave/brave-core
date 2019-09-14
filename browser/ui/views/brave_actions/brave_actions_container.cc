@@ -61,8 +61,10 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
                             weak_ptr_factory_.GetWeakPtr()));
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service_)
+  if (rewards_service_) {
+    rewards_service_ready_ = rewards_service_->IsLedgerStateLoaded();
     rewards_service_->AddObserver(this);
+  }
 }
 
 BraveActionsContainer::~BraveActionsContainer() {

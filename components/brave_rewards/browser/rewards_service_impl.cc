@@ -996,6 +996,7 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
       base::BindOnce(&RewardsServiceImpl::StartNotificationTimers,
         AsWeakPtr()));
 
+  ledger_state_loaded_ = true;
   TriggerOnLedgerStateLoaded();
 }
 
@@ -3284,6 +3285,10 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
       base::BindOnce(&RewardsServiceImpl::OnFetchBalance,
                      AsWeakPtr(),
                      std::move(callback)));
+}
+
+bool RewardsServiceImpl::IsLedgerStateLoaded() {
+  return ledger_state_loaded_;
 }
 
 }  // namespace brave_rewards

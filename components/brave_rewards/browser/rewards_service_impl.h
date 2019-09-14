@@ -254,6 +254,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
+  bool IsLedgerStateLoaded() override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -587,6 +589,7 @@ class RewardsServiceImpl : public RewardsService,
       bat_ledger_client_binding_;
   bat_ledger::mojom::BatLedgerAssociatedPtr bat_ledger_;
   bat_ledger::mojom::BatLedgerServicePtr bat_ledger_service_;
+  bool ledger_state_loaded_ = false;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<ExtensionRewardsServiceObserver>

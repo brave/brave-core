@@ -245,6 +245,8 @@ class RewardsService : public KeyedService {
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
+  virtual bool IsLedgerStateLoaded() = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 
