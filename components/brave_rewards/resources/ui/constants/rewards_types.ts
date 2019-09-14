@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const enum types {
+  IS_LEDGER_STATE_LOADED = '@@rewards/IS_LEDGER_STATE_LOADED',
+  LEDGER_STATE_LOADED = '@@rewards/LEDGER_STATE_LOADED',
   CREATE_WALLET = '@@rewards/CREATE_WALLET',
   WALLET_CREATED = '@@rewards/WALLET_CREATED',
   WALLET_CREATE_FAILED = '@@rewards/WALLET_CREATE_FAILED',

@@ -49,6 +49,10 @@ window.cr.define('brave_rewards', function () {
     return newActions
   }
 
+  function ledgerStateLoaded(loaded: boolean) {
+    getActions().onLedgerStateLoaded(loaded)
+  }
+
   function walletCreated () {
     getActions().onWalletCreated()
   }
@@ -191,6 +195,7 @@ window.cr.define('brave_rewards', function () {
 
   return {
     initialize,
+    ledgerStateLoaded,
     walletCreated,
     walletCreateFailed,
     walletProperties,

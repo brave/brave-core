@@ -254,7 +254,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
-  bool IsLedgerStateLoaded() override;
+  bool IsLedgerStateLoaded() const override;
 
   // Testing methods
   void SetLedgerEnvForTesting();

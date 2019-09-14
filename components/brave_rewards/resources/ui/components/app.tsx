@@ -29,6 +29,10 @@ export class App extends React.Component<Props, State> {
   }
 
   componentDidMount () {
+    if (!this.props.rewardsData.ledgerStateLoaded) {
+      this.actions.isLedgerStateLoaded()
+    }
+
     if (!this.props.rewardsData.walletCreated) {
       this.actions.checkWalletExistence()
     }
@@ -75,7 +79,7 @@ export class App extends React.Component<Props, State> {
   }
 
   render () {
-    const { walletCreated, walletCreateFailed } = this.props.rewardsData
+    const { ledgerStateLoaded, walletCreated, walletCreateFailed } = this.props.rewardsData
 
     let props: {onReTry?: () => void} = {}
 
@@ -88,7 +92,7 @@ export class App extends React.Component<Props, State> {
     return (
       <div id='rewardsPage'>
         {
-          !walletCreated
+          ledgerStateLoaded && !walletCreated
           ? <WelcomePage
             onTOSClick={this.openTOS}
             onPrivacyClick={this.openPrivacyPolicy}
@@ -99,7 +103,7 @@ export class App extends React.Component<Props, State> {
           : null
         }
         {
-          walletCreated
+          ledgerStateLoaded && walletCreated
           ? <SettingsPage />
           : null
         }

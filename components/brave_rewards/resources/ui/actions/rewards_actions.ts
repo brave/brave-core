@@ -7,6 +7,12 @@ import { action } from 'typesafe-actions'
 // Constant
 import { types } from '../constants/rewards_types'
 
+export const isLedgerStateLoaded = () => action(types.IS_LEDGER_STATE_LOADED)
+
+export const onLedgerStateLoaded = (loaded: boolean) => action(types.LEDGER_STATE_LOADED, {
+  loaded
+})
+
 export const createWallet = () => action(types.CREATE_WALLET)
 
 export const onWalletCreated = () => action(types.WALLET_CREATED)

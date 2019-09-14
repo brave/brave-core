@@ -143,6 +143,15 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
+    case types.IS_LEDGER_STATE_LOADED: {
+      chrome.send('brave_rewards.isLedgerStateLoaded')
+      break
+    }
+    case types.LEDGER_STATE_LOADED: {
+      state = { ...state }
+      state.ledgerStateLoaded = action.payload.loaded
+      break
+    }
     case types.ON_REWARDS_ENABLED: {
       state = { ...state }
       state.enabledMain = action.payload.enabled

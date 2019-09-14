@@ -14,6 +14,7 @@ export const defaultState: Rewards.State = {
   enabledAdsMigrated: false,
   enabledContribute: true,
   firstLoad: null,
+  ledgerStateLoaded: false,
   walletCreated: false,
   walletCreateFailed: false,
   contributionMinTime: 8,
@@ -75,7 +76,7 @@ const cleanData = (state: Rewards.State) => {
   if (!state.balance) {
     state.balance = defaultState.balance
   }
-
+  state.ledgerStateLoaded = false
   return state
 }
 

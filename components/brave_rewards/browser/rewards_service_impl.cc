@@ -3287,7 +3287,7 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
                      std::move(callback)));
 }
 
-bool RewardsServiceImpl::IsLedgerStateLoaded() {
+bool RewardsServiceImpl::IsLedgerStateLoaded() const {
   return ledger_state_loaded_;
 }
 

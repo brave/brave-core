@@ -56,6 +56,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RegisterMessages() override;
 
  private:
+  void IsLedgerStateLoaded(const base::ListValue* args);
   void GetAllBalanceReports();
   void HandleCreateWalletRequested(const base::ListValue* args);
   void GetWalletProperties(const base::ListValue* args);
@@ -138,6 +139,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
     std::unique_ptr<brave_rewards::Balance> balance);
 
   // RewardsServiceObserver implementation
+  void OnLedgerStateLoaded(
+      brave_rewards::RewardsService* rewards_service) override;
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                        uint32_t result) override;
   void OnWalletProperties(
@@ -230,6 +233,9 @@ RewardsDOMHandler::~RewardsDOMHandler() {
 }
 
 void RewardsDOMHandler::RegisterMessages() {
+  web_ui()->RegisterMessageCallback("brave_rewards.isLedgerStateLoaded",
+      base::BindRepeating(&RewardsDOMHandler::IsLedgerStateLoaded,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
       base::BindRepeating(&RewardsDOMHandler::HandleCreateWalletRequested,
       base::Unretained(this)));
@@ -352,6 +358,14 @@ void RewardsDOMHandler::Init() {
     rewards_service_->AddObserver(this);
 }
 
+void RewardsDOMHandler::OnLedgerStateLoaded(
+    brave_rewards::RewardsService* rewards_service) {
+  if (!web_ui()->CanCallJavascript())
+    return;
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.ledgerStateLoaded",
+                                         base::Value(true));
+}
+
 void RewardsDOMHandler::OnGetAllBalanceReports(
     const std::map<std::string, brave_rewards::BalanceReport>& reports) {
   if (web_ui()->CanCallJavascript()) {
@@ -376,6 +390,14 @@ void RewardsDOMHandler::OnGetAllBalanceReports(
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.balanceReports",
         newReports);
   }
+}
+
+void RewardsDOMHandler::IsLedgerStateLoaded(const base::ListValue* args) {
+  if (!rewards_service_ || !web_ui()->CanCallJavascript())
+    return;
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.ledgerStateLoaded",
+      base::Value(rewards_service_->IsLedgerStateLoaded()));
 }
 
 void RewardsDOMHandler::GetAllBalanceReports() {

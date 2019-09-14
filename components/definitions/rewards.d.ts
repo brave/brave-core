@@ -56,6 +56,7 @@ declare namespace Rewards {
     excludedList: ExcludedPublisher[]
     firstLoad: boolean | null
     grants?: Grant[]
+    ledgerStateLoaded : boolean
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
     reconcileStamp: number
