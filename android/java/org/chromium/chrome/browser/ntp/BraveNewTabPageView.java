@@ -6,11 +6,13 @@
 package org.chromium.chrome.browser.ntp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
@@ -18,9 +20,15 @@ import org.chromium.chrome.browser.ntp.NewTabPageView;
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
 
-    TextView mAdsBlockedCountTextView;
-    TextView mHttpsUpgradesCountTextView;
-    TextView mEstTimeSavedTextView;
+    private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
+    private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
+    private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
+    private static final short MILLISECONDS_PER_ITEM = 50;
+
+    private TextView mAdsBlockedCountTextView;
+    private TextView mHttpsUpgradesCountTextView;
+    private TextView mEstTimeSavedTextView;
+    private SharedPreferences mSharedPreferences;
 
     public BraveNewTabPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,6 +42,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         mAdsBlockedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads_count);
         mHttpsUpgradesCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_https_count);
         mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time_count);
+        mSharedPreferences = ContextUtils.getAppSharedPreferences();
     }
 
     @Override
@@ -49,13 +58,15 @@ public class BraveNewTabPageView extends NewTabPageView {
      */
     private void updateBraveStats() {
         TraceEvent.begin(TAG + ".updateBraveStats()");
-        long adsBlockedCount = 0;
-        long httpsUpgradesCount = 0;
-        long estimatedMillisecondsSaved = 0;
+
+        long trackersBlockedCount = mSharedPreferences.getLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
+        long adsBlockedCount = mSharedPreferences.getLong(PREF_ADS_BLOCKED_COUNT, 0);
+        long httpsUpgradesCount = mSharedPreferences.getLong(PREF_HTTPS_UPGRADES_COUNT, 0);
+        long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * MILLISECONDS_PER_ITEM;
 
         mAdsBlockedCountTextView.setText(getBraveStatsStringFormNumber(adsBlockedCount));
         mHttpsUpgradesCountTextView.setText(getBraveStatsStringFormNumber(httpsUpgradesCount));
-        mEstTimeSavedTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved));
+        mEstTimeSavedTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
         TraceEvent.end(TAG + ".updateBraveStats()");
     }
 
