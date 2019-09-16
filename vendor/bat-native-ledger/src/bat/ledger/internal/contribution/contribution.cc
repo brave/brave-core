@@ -227,7 +227,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
       continue;
     }
 
-    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
+    if (publisher->status != ledger::PublisherStatus::NOT_VERIFIED) {
       verified.push_back(publisher->Clone());
       *budget += publisher->weight;
     } else {
@@ -692,6 +692,24 @@ void Contribution::DoDirectTip(
   ledger_->GetServerPublisherInfo(publisher_key, server_callback);
 }
 
+void Contribution::SavePendingContribution(
+    const std::string& publisher_key,
+    double amount,
+    ledger::REWARDS_CATEGORY category,
+    ledger::SavePendingContributionCallback callback) {
+  auto contribution = ledger::PendingContribution::New();
+  contribution->publisher_key = publisher_key;
+  contribution->amount = amount;
+  contribution->category = category;
+
+  ledger::PendingContributionList list;
+  list.push_back(std::move(contribution));
+
+  ledger_->SaveUnverifiedContribution(
+      std::move(list),
+      callback);
+}
+
 void Contribution::OnDoDirectTipServerPublisher(
     ledger::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
@@ -704,17 +722,11 @@ void Contribution::OnDoDirectTipServerPublisher(
   }
 
   // Save to the pending list if not verified
-  if (status != ledger::PublisherStatus::VERIFIED) {
-    auto contribution = ledger::PendingContribution::New();
-    contribution->publisher_key = publisher_key;
-    contribution->amount = amount;
-    contribution->category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
-
-    ledger::PendingContributionList list;
-    list.push_back(std::move(contribution));
-
-    ledger_->SaveUnverifiedContribution(
-        std::move(list),
+  if (status == ledger::PublisherStatus::NOT_VERIFIED) {
+    SavePendingContribution(
+        publisher_key,
+        static_cast<double>(amount),
+        ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
         callback);
     return;
   }
@@ -1001,7 +1013,54 @@ void Contribution::OnExternalWallets(
     return;
   }
 
-  uphold_->StartContribution(viewing_id, std::move(wallet));
+  for (const auto& item : reconcile.directions_) {
+    auto callback =
+        std::bind(&Contribution::OnExternalWalletServerPublisherInfo,
+          this,
+          _1,
+          viewing_id,
+          item.amount_,
+          *wallet);
+
+    ledger_->GetServerPublisherInfo(item.publisher_key_, callback);
+  }
+}
+
+void Contribution::OnExternalWalletServerPublisherInfo(
+    ledger::ServerPublisherInfoPtr info,
+    const std::string& viewing_id,
+    int amount,
+    const ledger::ExternalWallet& wallet) {
+  const auto reconcile = ledger_->GetReconcileById(viewing_id);
+  if (!info) {
+    const auto probi =
+        braveledger_uphold::ConvertToProbi(std::to_string(amount));
+    ledger_->OnReconcileComplete(
+        ledger::Result::LEDGER_ERROR,
+        viewing_id,
+        probi,
+        reconcile.category_);
+
+    if (!viewing_id.empty()) {
+      ledger_->RemoveReconcileById(viewing_id);
+    }
+    return;
+  }
+
+  if (info->status != ledger::PublisherStatus::VERIFIED) {
+    SavePendingContribution(
+        info->publisher_key,
+        static_cast<double>(amount),
+        static_cast<ledger::REWARDS_CATEGORY>(reconcile.category_),
+        [](const ledger::Result _){});
+    return;
+  }
+
+  uphold_->StartContribution(
+      viewing_id,
+      info->address,
+      static_cast<double>(amount),
+      ledger::ExternalWallet::New(wallet));
 }
 
 void Contribution::OnUpholdAC(ledger::Result result,

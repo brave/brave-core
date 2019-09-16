@@ -522,7 +522,7 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "This verified creator has yet to verify (KYC) their account to receive tips from your verified wallet. Tips will remain in your wallet until they complete verification.",
+    "message": "This Brave Verified Creator has not yet configured their account to receive contributions from Brave Users. Any tips you send will remain in your wallet until they complete this process.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
