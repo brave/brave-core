@@ -105,6 +105,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_ABOUT_CHROME" desc="Title for the About Chrome page. [CHAR-LIMIT=32]">
         About Brave
       </message>
+      <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
+        Exit
+      </message>
       <message name="IDS_HTTPSE_TITLE" desc="Title for HTTPS Everywhere.">
         HTTPS Everywhere
       </message>

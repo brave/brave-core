@@ -9,6 +9,7 @@ import android.content.Context;
 
 import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 
@@ -30,6 +31,23 @@ public abstract class BraveActivity extends ChromeActivity {
         // Disable NTP suggestions
         PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_SECTION_ENABLED, false);
         PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_LIST_VISIBLE, false);
+    }
+
+    @Override
+    public boolean onMenuOrKeyboardAction(int id, boolean fromMenu) {
+        if (super.onMenuOrKeyboardAction(id, fromMenu)) {
+            return true;
+        }
+
+        if (getActivityTab() == null) {
+            return false;
+        } else if (id == R.id.exit_id) {
+            ApplicationLifetime.terminate(false);
+        } else {
+            return false;
+        }
+
+        return true;
     }
 
     private native void nativeRestartStatsUpdater();
