@@ -50,6 +50,7 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_proxy.h"
@@ -3586,6 +3587,26 @@ void RewardsServiceImpl::OnGetServerPublisherInfo(
     ledger::GetServerPublisherInfoCallback callback,
     ledger::ServerPublisherInfoPtr info) {
   callback(std::move(info));
+}
+
+bool RewardsServiceImpl::OnlyAnonWallet() {
+  const int32_t current_country =
+      country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
+
+  for (const auto& country : kOnlyAnonWalletCountries) {
+    if (country.length() != 2) {
+      continue;
+    }
+
+    const int id = country_codes::CountryCharsToCountryID(
+        country.at(0), country.at(1));
+
+    if (id == current_country) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 }  // namespace brave_rewards
