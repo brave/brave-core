@@ -69,7 +69,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
       mBraveShieldsButton = (ImageView) findViewById(R.id.brave_shields_button);
       if (mBraveShieldsButton != null) {
-          mBraveShieldsButton.setEnabled(false);
           mBraveShieldsButton.setClickable(true);
           mBraveShieldsButton.setOnClickListener(this);
           mBraveShieldsButton.setOnLongClickListener(this);
@@ -87,11 +86,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                   return;
               }
               if (isTopShield) {
-                  if (isOn) {
-                      enableBraveShieldsButton();
-                  } else {
-                      disableBraveShieldsButton();
-                  }
+                  updateBraveShieldsButtonState(currentTab);
               }
               if (currentTab.isLoading()) {
                   currentTab.stopLoading();
@@ -114,10 +109,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               mBraveShieldsMenuHandler.updateValues(tabId);
           }
       };
-      // Initially disabled. Shields button state will be updated when tab is
+      // Initially show shields off image. Shields button state will be updated when tab is
       // shown and loading state is changed.
-      // Otherwise, button can be clicked when displayed tab is not ready.
-      disableBraveShieldsButton();
+      updateBraveShieldsButtonState(null);
   }
 
   @Override
@@ -131,24 +125,14 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
             @Override
             public void onShown(Tab tab, @TabSelectionType int type) {
-                try {
-                    // Update shields button state when visible tab is changed.
-                    URL url = new URL(tab.getUrl());
-                    updateBraveShieldsButtonState(tab.getProfile(), url.toString());
-                } catch (Exception e) {
-                    disableBraveShieldsButton();
-                }
+                // Update shields button state when visible tab is changed.
+                updateBraveShieldsButtonState(tab);
             }
 
             @Override
             public void onPageLoadStarted(Tab tab, String url) {
                 if (mMainActivity.getActivityTab() == tab) {
-                    try {
-                        URL urlCheck = new URL(url);
-                        updateBraveShieldsButtonState(tab.getProfile(), urlCheck.toString());
-                    } catch (Exception e) {
-                        disableBraveShieldsButton();
-                    }
+                    updateBraveShieldsButtonState(tab);
                 }
                 mBraveShieldsMenuHandler.clearBraveShieldsCount(tab.getId());
             }
@@ -156,13 +140,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
             @Override
             public void onPageLoadFinished(final Tab tab, String url) {
                 if (mMainActivity.getActivityTab() == tab) {
-                    try {
-                        URL urlCheck = new URL(url);
-                        mBraveShieldsMenuHandler.updateHost(urlCheck.toString());
-                        updateBraveShieldsButtonState(tab.getProfile(), urlCheck.toString());
-                    } catch (Exception e) {
-                        disableBraveShieldsButton();
-                    }
+                    mBraveShieldsMenuHandler.updateHost(url);
+                    updateBraveShieldsButtonState(tab);
                 }
             }
 
@@ -186,33 +165,23 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           }
           Tab currentTab = mMainActivity.getActivityTab();
           if (currentTab == null) {
-              assert false;
               return;
           }
           try {
               URL url = new URL(currentTab.getUrl());
-              updateBraveShieldsButtonState(currentTab.getProfile(), url.toString());
-              mBraveShieldsMenuHandler.show(mBraveShieldsButton, url.toString(),
+              // Don't show shields popup if protocol is not valid for shields.
+              if (!isValidProtocolForShields(url.getProtocol())) {
+                  return;
+              }
+              mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.getUrl(),
                   url.getHost(), currentTab.getId(), currentTab.getProfile());
           } catch (Exception e) {
-              disableBraveShieldsButton();
+              // Do nothing if url is invalid.
+              // Just return w/o showing shields popup.
+              return;
           }
       }
   }
-
-  private void disableBraveShieldsButton() {
-      if (null != mBraveShieldsButton) {
-          mBraveShieldsButton.setEnabled(false);
-          mBraveShieldsButton.setImageResource(R.drawable.btn_brave_off);
-      }
-  }
-
-  protected void enableBraveShieldsButton() {
-      if (null != mBraveShieldsButton) {
-          mBraveShieldsButton.setEnabled(true);
-          mBraveShieldsButton.setImageResource(R.drawable.btn_brave);
-      }
-    }
 
   @Override
   public boolean onLongClick(View v) {
@@ -285,12 +254,39 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
             params.getMarginEnd();
   }
 
-  private void updateBraveShieldsButtonState(Profile profile, String url) {
-      if (BraveShieldsContentSettings.getShields(profile, url, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
-          // Set Brave Shields button in color if we have a valid URL
-          enableBraveShieldsButton();
-      } else {
-          disableBraveShieldsButton();
+  /**
+    * If |tab| is null, set disabled image to shields button and |urlString| is
+    * ignored.
+    * If |urlString| is null, url is fetched from |tab|.
+    */
+  private void updateBraveShieldsButtonState(Tab tab) {
+      if (mBraveShieldsButton == null) {
+          assert false;
+          return;
       }
+
+      if (tab == null) {
+          mBraveShieldsButton.setImageResource(R.drawable.btn_brave_off);
+          return;
+      }
+      mBraveShieldsButton.setImageResource(
+          isShieldsOnForTab(tab) ? R.drawable.btn_brave : R.drawable.btn_brave_off);
+  }
+
+  private boolean isShieldsOnForTab(Tab tab) {
+      if (tab == null) {
+          assert false;
+          return false;
+      }
+      return BraveShieldsContentSettings.getShields(tab.getProfile(), tab.getUrl(),
+          BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
+  }
+
+  private boolean isValidProtocolForShields(String protocol) {
+      if (protocol.equals("http") || protocol.equals("https")) {
+          return true;
+      }
+
+      return false;
   }
 }
