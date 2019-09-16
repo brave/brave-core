@@ -84,6 +84,7 @@ test("brave_unit_tests") {
     "//brave/chromium_src/extensions/browser/sandboxed_unpacker_unittest.cc",
     "//brave/chromium_src/extensions/common/permissions/permissions_data_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
+    "//brave/chromium_src/services/network/public/cpp/cors/cors_unittest.cc",
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/common/importer/brave_mock_importer_bridge.cc",
     "//brave/common/importer/brave_mock_importer_bridge.h",
