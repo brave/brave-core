@@ -926,5 +926,22 @@ BraveRewardsDisconnectWalletFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsOnlyAnonWalletFunction::
+~BraveRewardsOnlyAnonWalletFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsOnlyAnonWalletFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(OneArgument(std::make_unique<base::Value>(false)));
+  }
+
+  const auto only = rewards_service->OnlyAnonWallet();
+  return RespondNow(OneArgument(std::make_unique<base::Value>(only)));
+}
+
 }  // namespace api
 }  // namespace extensions

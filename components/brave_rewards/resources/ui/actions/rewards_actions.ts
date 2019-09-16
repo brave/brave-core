@@ -300,3 +300,9 @@ export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
 export const disconnectWallet = (walletType: string) => action(types.DISCONNECT_WALLET, {
   walletType
 })
+
+export const onlyAnonWallet = () => action(types.ONLY_ANON_WALLET)
+
+export const onOnlyAnonWallet = (only: boolean) => action(types.ON_ONLY_ANON_WALLET, {
+  only
+})
