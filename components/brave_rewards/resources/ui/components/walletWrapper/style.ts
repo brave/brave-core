@@ -317,7 +317,7 @@ export const StyledPipe = styled<StyledProps, 'span'>('span')`
   font-weight: 300;
 `
 
-export const StyledVerifiedButton = styled<{active: boolean}, 'button'>('button')`
+export const StyledVerifiedButton = styled<{}, 'button'>('button')`
   box-sizing: border-box;
   outline-color: transparent;
   display: flex;
@@ -332,11 +332,8 @@ export const StyledVerifiedButton = styled<{active: boolean}, 'button'>('button'
   min-width: 88px;
   padding: 7px 10px;
   color: #fff;
-  background: ${palette.green600};
-  border: 1px solid ${p => p.theme.color[p.active ? 'brandBatActive' : 'brandBat']};
-  :active:enabled {
-    border-color: ${p => p.theme.color.brandBatActive};
-  }
+  background: inherit;
+  border: none;
 `
 
 export const StyledVerifiedButtonText = styled<{}, 'div'>('div')`

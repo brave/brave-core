@@ -372,7 +372,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         return (
           <StyledVerifiedButton
             onClick={this.toggleVerificationDetails}
-            active={this.state.verificationDetails}
             id={'verified-wallet-button'}
           >
             <StyledVerifiedButtonIcon position={'before'}>
