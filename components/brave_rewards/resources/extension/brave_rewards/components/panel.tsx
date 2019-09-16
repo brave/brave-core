@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
 import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
-import { NotificationType } from 'brave-ui/features/rewards/walletWrapper'
+import { NotificationType, WalletState } from 'brave-ui/features/rewards/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from 'brave-ui/features/rewards/alert'
 
@@ -19,7 +19,8 @@ import * as utils from '../utils'
 import { getMessage } from '../background/api/locale_api'
 
 interface Props extends RewardsExtension.ComponentProps {
-  windowId: number
+  windowId: number,
+  onlyAnonWallet: boolean
 }
 
 interface State {
@@ -587,6 +588,28 @@ export class Panel extends React.Component<Props, State> {
     return connected && !hasAnonBalance
   }
 
+  getActions = () => {
+    let actions = [
+      {
+        name:  getMessage('rewardsSettings'),
+        action: this.openRewardsPage,
+        icon: <BatColorIcon />
+      }
+    ]
+
+    if (this.props.onlyAnonWallet) {
+      return actions
+    }
+
+    return actions.concat([
+      {
+        name: getMessage('addFunds'),
+        action: this.onAddFunds,
+        icon: <WalletAddIcon />
+      }
+    ])
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC, externalWallet, balance } = this.props.rewardsPanelData
     const { rates } = this.props.rewardsPanelData.balance
@@ -624,6 +647,13 @@ export class Panel extends React.Component<Props, State> {
 
     currentGrant = utils.getGrant(currentGrant)
 
+    let walletStatus: WalletState | undefined = undefined
+    let onVerifyClick = undefined
+    if (!this.props.onlyAnonWallet) {
+      walletStatus = utils.getWalletStatus(externalWallet)
+      onVerifyClick = utils.onVerifyClick.bind(this, this.actions)
+    }
+
     return (
       <WalletWrapper
         compact={true}
@@ -631,18 +661,7 @@ export class Panel extends React.Component<Props, State> {
         gradientTop={this.gradientColor}
         balance={total.toFixed(1)}
         converted={utils.formatConverted(converted)}
-        actions={[
-          {
-            name: getMessage('addFunds'),
-            action: this.onAddFunds,
-            icon: <WalletAddIcon />
-          },
-          {
-            name:  getMessage('rewardsSettings'),
-            action: this.openRewardsPage,
-            icon: <BatColorIcon />
-          }
-        ]}
+        actions={this.getActions()}
         showCopy={false}
         showSecActions={false}
         grant={currentGrant}
@@ -652,8 +671,8 @@ export class Panel extends React.Component<Props, State> {
         onFinish={this.onFinish}
         convertProbiToFixed={utils.convertProbiToFixed}
         grants={utils.getGrants(grants)}
-        walletState={utils.getWalletStatus(externalWallet)}
-        onVerifyClick={utils.onVerifyClick.bind(this, this.actions)}
+        walletState={walletStatus}
+        onVerifyClick={onVerifyClick}
         onDisconnectClick={this.onDisconnectClick}
         goToUphold={this.goToUphold}
         userName={utils.getUserName(externalWallet)}
