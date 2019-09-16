@@ -19,7 +19,8 @@ import * as utils from '../utils'
 import { getMessage } from '../background/api/locale_api'
 
 interface Props extends RewardsExtension.ComponentProps {
-  windowId: number
+  windowId: number,
+  onlyAnonWallet: boolean
 }
 
 interface State {
@@ -659,6 +660,28 @@ export class Panel extends React.Component<Props, State> {
     return connected && !hasAnonBalance
   }
 
+  getActions = () => {
+    let actions = [
+      {
+        name:  getMessage('rewardsSettings'),
+        action: this.openRewardsPage,
+        icon: <BatColorIcon />
+      }
+    ]
+
+    if (this.props.onlyAnonWallet) {
+      return actions
+    }
+
+    return actions.concat([
+      {
+        name: getMessage('addFunds'),
+        action: this.onAddFunds,
+        icon: <WalletAddIcon />
+      }
+    ])
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
     const { total, rates } = this.props.rewardsPanelData.balance
@@ -695,6 +718,13 @@ export class Panel extends React.Component<Props, State> {
 
     currentGrant = utils.getGrant(currentGrant)
 
+    let walletStatus: WalletState | undefined = undefined
+    let onVerifyClick = undefined
+    if (!this.props.onlyAnonWallet) {
+      walletStatus = this.getWalletStatus()
+      onVerifyClick = this.onVerifyClick
+    }
+
     return (
       <WalletWrapper
         compact={true}
@@ -702,18 +732,7 @@ export class Panel extends React.Component<Props, State> {
         gradientTop={this.gradientColor}
         balance={total.toFixed(1)}
         converted={utils.formatConverted(converted)}
-        actions={[
-          {
-            name: getMessage('addFunds'),
-            action: this.onAddFunds,
-            icon: <WalletAddIcon />
-          },
-          {
-            name:  getMessage('rewardsSettings'),
-            action: this.openRewardsPage,
-            icon: <BatColorIcon />
-          }
-        ]}
+        actions={this.getActions()}
         showCopy={false}
         showSecActions={false}
         grant={currentGrant}
@@ -723,8 +742,8 @@ export class Panel extends React.Component<Props, State> {
         onFinish={this.onFinish}
         convertProbiToFixed={utils.convertProbiToFixed}
         grants={utils.getGrants(grants)}
-        walletState={this.getWalletStatus()}
-        onVerifyClick={this.onVerifyClick}
+        walletState={walletStatus}
+        onVerifyClick={onVerifyClick}
         onDisconnectClick={this.onDisconnectClick}
         goToUphold={this.goToUphold}
         userName={this.getUserName()}

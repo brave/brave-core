@@ -183,6 +183,8 @@ class MockRewardsService : public RewardsService {
            brave_rewards::ProcessRewardsPageUrlCallback callback));
 
   MOCK_METHOD1(DisconnectWallet, void(const std::string& wallet_type));
+
+  MOCK_METHOD0(OnlyAnonWallet, bool());
 };
 
 class AdsServiceTest : public testing::Test {

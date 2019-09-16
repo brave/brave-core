@@ -259,6 +259,8 @@ class RewardsService : public KeyedService {
 
   virtual void DisconnectWallet(const std::string& wallet_type) = 0;
 
+  virtual bool OnlyAnonWallet() = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 

@@ -160,6 +160,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void DisconnectWallet(const base::ListValue* args);
 
+  void OnlyAnonWallet(const base::ListValue* args);
+
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                        uint32_t result) override;
@@ -390,6 +392,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.disconnectWallet",
       base::BindRepeating(&RewardsDOMHandler::DisconnectWallet,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.onlyAnonWallet",
+      base::BindRepeating(&RewardsDOMHandler::OnlyAnonWallet,
       base::Unretained(this)));
 }
 
@@ -1595,6 +1600,18 @@ void RewardsDOMHandler::OnDisconnectWallet(
 
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.disconnectWallet",
                                          data);
+}
+
+void RewardsDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  const bool allow = rewards_service_->OnlyAnonWallet();
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.onlyAnonWallet",
+      base::Value(allow));
 }
 
 }  // namespace

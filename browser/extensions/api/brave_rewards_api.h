@@ -357,6 +357,17 @@ class BraveRewardsDisconnectWalletFunction :
   ResponseAction Run() override;
 };
 
+class BraveRewardsOnlyAnonWalletFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.onlyAnonWallet", UNKNOWN)
+
+ protected:
+  ~BraveRewardsOnlyAnonWalletFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
