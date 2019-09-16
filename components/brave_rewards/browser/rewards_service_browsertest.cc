@@ -780,14 +780,12 @@ class BraveRewardsBrowserTest :
 
   void TipPublisher(
       const std::string& publisher,
-      ledger::PublisherStatus status = ledger::PublisherStatus::NOT_VERIFIED,
+      bool should_contribute = false,
       bool monthly = false,
       int32_t selection = 0) {
     // we shouldn't be adding publisher to AC list,
     // so that we can focus only on tipping part
     rewards_service_->SetPublisherMinVisitTime(8);
-
-    const bool should_contribute = status == ledger::PublisherStatus::VERIFIED;
 
     // Navigate to a site in a new tab
     GURL url = https_server()->GetURL(publisher, "/index.html");
@@ -1719,7 +1717,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
   ClaimGrant(use_panel);
 
   // Tip verified publisher
-  TipPublisher("duckduckgo.com", ledger::PublisherStatus::VERIFIED);
+  TipPublisher("duckduckgo.com", true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -1759,7 +1757,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Tip verified publisher
   const bool monthly = true;
-  TipPublisher("duckduckgo.com", ledger::PublisherStatus::VERIFIED, monthly);
+  TipPublisher("duckduckgo.com", true, monthly);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -1780,7 +1778,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Tip verified publisher
   const bool monthly = true;
-  TipPublisher("brave.com", ledger::PublisherStatus::NOT_VERIFIED, monthly);
+  TipPublisher("brave.com", false, monthly);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2225,26 +2223,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   TipPublisher("brave.com");
   rewards_service_->OnTip("brave.com", 5.0, false);
   UpdateContributionBalance(5.0, false);  // update pending balance
-  TipPublisher(
-      "3zsistemi.si",
-      ledger::PublisherStatus::NOT_VERIFIED,
-      false,
-      2);
-  TipPublisher(
-      "3zsistemi.si",
-      ledger::PublisherStatus::NOT_VERIFIED,
-      false,
-      1);
-  TipPublisher(
-      "3zsistemi.si",
-      ledger::PublisherStatus::NOT_VERIFIED,
-      false,
-      2);
-  TipPublisher(
-      "3zsistemi.si",
-      ledger::PublisherStatus::NOT_VERIFIED,
-      false,
-      2);
+  TipPublisher("3zsistemi.si", false, false, 2);
+  TipPublisher("3zsistemi.si", false, false, 1);
+  TipPublisher("3zsistemi.si", false, false, 2);
+  TipPublisher("3zsistemi.si", false, false, 2);
 
   // Make sure that pending contribution box shows the correct
   // amount
@@ -2454,13 +2436,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EnableRewards();
 
   // Tip verified publisher
-  TipPublisher("duckduckgo.com", ledger::PublisherStatus::VERIFIED);
+  TipPublisher("duckduckgo.com", true);
 
   // Stop observing the Rewards service
   rewards_service()->RemoveObserver(this);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisher) {
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
   // Observe the Rewards service
   rewards_service_->AddObserver(this);
 
@@ -2472,7 +2454,92 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisher) {
   ClaimGrant(use_panel);
 
   // Tip verified publisher
-  TipPublisher("bumpsmack.com", ledger::PublisherStatus::CONNECTED);
+  TipPublisher("bumpsmack.com", true);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsBrowserTest,
+    TipConnectedPublisherAnonAndConnected) {
+  // Observe the Rewards service
+  rewards_service()->AddObserver(this);
+  verified_wallet_ = true;
+  external_balance_ = 50.0;
+
+  auto wallet = ledger::ExternalWallet::New();
+  wallet->token = "token";
+  wallet->address = external_wallet_address_;
+  wallet->status = 1;
+  wallet->one_time_string = "";
+  wallet->user_name = "Brave Test";
+  wallet->transferred = true;
+  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+
+  // Enable Rewards
+  EnableRewards();
+
+  // Claim grant using settings page
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // Tip verified publisher
+  TipPublisher("bumpsmack.com", true);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsBrowserTest,
+    TipConnectedPublisherConnected) {
+  // Observe the Rewards service
+  rewards_service()->AddObserver(this);
+  verified_wallet_ = true;
+  external_balance_ = 50.0;
+
+  auto wallet = ledger::ExternalWallet::New();
+  wallet->token = "token";
+  wallet->address = external_wallet_address_;
+  wallet->status = 1;
+  wallet->one_time_string = "";
+  wallet->user_name = "Brave Test";
+  wallet->transferred = true;
+  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+
+  // Enable Rewards
+  EnableRewards();
+
+  // Tip verified publisher
+  TipPublisher("bumpsmack.com", false);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsBrowserTest,
+    TipConnectedPublisherVerified) {
+  // Observe the Rewards service
+  rewards_service()->AddObserver(this);
+  verified_wallet_ = true;
+  external_balance_ = 50.0;
+
+  auto wallet = ledger::ExternalWallet::New();
+  wallet->token = "token";
+  wallet->address = external_wallet_address_;
+  wallet->status = 2;
+  wallet->one_time_string = "";
+  wallet->user_name = "Brave Test";
+  wallet->transferred = true;
+  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+
+  // Enable Rewards
+  EnableRewards();
+
+  // Tip verified publisher
+  TipPublisher("bumpsmack.com", false);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
