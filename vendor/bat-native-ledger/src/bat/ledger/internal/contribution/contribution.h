@@ -247,6 +247,12 @@ class Contribution {
       ledger::BalancePtr properties,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
+  void SavePendingContribution(
+      const std::string& publisher_key,
+      double amount,
+      ledger::REWARDS_CATEGORY category,
+      ledger::SavePendingContributionCallback callback);
+
   void OnDoDirectTipServerPublisher(
     ledger::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
@@ -284,6 +290,12 @@ class Contribution {
       const std::string& viewing_id,
       base::flat_map<std::string, double> wallet_balances,
       std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  void OnExternalWalletServerPublisherInfo(
+      ledger::ServerPublisherInfoPtr info,
+      const std::string& viewing_id,
+      int amount,
+      const ledger::ExternalWallet& wallet);
 
   void OnUpholdAC(ledger::Result result,
                   bool created,
