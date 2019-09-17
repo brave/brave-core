@@ -180,7 +180,11 @@ void BraveRequestInfo::FillCTX(
       static_cast<content::ResourceType>(request.resource_type);
 
   ctx->is_webtorrent_disabled =
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
       !webtorrent::IsWebtorrentEnabled(browser_context);
+#else
+      true;
+#endif
 
   ctx->render_frame_id = request.render_frame_id;
   ctx->render_process_id = render_process_id;
