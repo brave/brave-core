@@ -52,7 +52,7 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
                                        g_browser_process->local_state());
 
 #if !defined(OS_ANDROID)
-  brave::BraveWindowsTracker::CreateInstance(g_browser_process->local_state());
+  brave::BraveWindowTracker::CreateInstance(g_browser_process->local_state());
 #endif
   brave::BraveUptimeTracker::CreateInstance(g_browser_process->local_state());
 }

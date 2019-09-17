@@ -52,7 +52,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave::BraveP3AService::RegisterPrefs(registry);
   brave_shields::RegisterShieldsP3APrefs(registry);
 #if !defined(OS_ANDROID)
-  BraveWindowsTracker::RegisterPrefs(registry);
+  BraveWindowTracker::RegisterPrefs(registry);
 #endif
   BraveUptimeTracker::RegisterPrefs(registry);
 }

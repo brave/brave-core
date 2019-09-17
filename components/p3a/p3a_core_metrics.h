@@ -62,10 +62,10 @@ class BraveUptimeTracker {
 // Periodically records P3A stats (extracted from Local State) regarding the
 // time when incognito windows were used.
 // Used as a leaking singletone.
-class BraveWindowsTracker : public BrowserListObserver {
+class BraveWindowTracker : public BrowserListObserver {
  public:
-  explicit BraveWindowsTracker(PrefService* local_state);
-  ~BraveWindowsTracker() override;
+  explicit BraveWindowTracker(PrefService* local_state);
+  ~BraveWindowTracker() override;
 
   static void CreateInstance(PrefService* local_state);
 
@@ -80,7 +80,7 @@ class BraveWindowsTracker : public BrowserListObserver {
 
   base::RepeatingTimer timer_;
   PrefService* local_state_;
-  DISALLOW_COPY_AND_ASSIGN(BraveWindowsTracker);
+  DISALLOW_COPY_AND_ASSIGN(BraveWindowTracker);
 };
 #endif  // !defined(OS_ANDROID)
 

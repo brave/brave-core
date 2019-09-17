@@ -26,7 +26,7 @@ namespace brave {
 
 namespace {
 #if !defined(OS_ANDROID)
-BraveWindowsTracker* g_brave_windows_tracker_instance = nullptr;
+BraveWindowTracker* g_brave_windows_tracker_instance = nullptr;
 
 constexpr char kLastTimeIncognitoUsed[] =
     "core_p3a_metrics.incognito_used_timestamp";
@@ -268,7 +268,7 @@ void BraveUptimeTracker::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 #if !defined(OS_ANDROID)
-BraveWindowsTracker::BraveWindowsTracker(PrefService* local_state)
+BraveWindowTracker::BraveWindowTracker(PrefService* local_state)
     : local_state_(local_state) {
   if (!local_state) {
     // Can happen in tests.
@@ -277,25 +277,25 @@ BraveWindowsTracker::BraveWindowsTracker(PrefService* local_state)
   BrowserList::AddObserver(this);
   timer_.Start(FROM_HERE,
                base::TimeDelta::FromMinutes(kWindowUsageP3AIntervalMinutes),
-               base::Bind(&BraveWindowsTracker::UpdateP3AValues,
+               base::Bind(&BraveWindowTracker::UpdateP3AValues,
                           base::Unretained(this)));
   UpdateP3AValues();
 }
 
-BraveWindowsTracker::~BraveWindowsTracker() {
+BraveWindowTracker::~BraveWindowTracker() {
   BrowserList::RemoveObserver(this);
 }
 
-void BraveWindowsTracker::CreateInstance(PrefService* local_state) {
-  g_brave_windows_tracker_instance = new BraveWindowsTracker(local_state);
+void BraveWindowTracker::CreateInstance(PrefService* local_state) {
+  g_brave_windows_tracker_instance = new BraveWindowTracker(local_state);
 }
 
-void BraveWindowsTracker::RegisterPrefs(PrefRegistrySimple* registry) {
+void BraveWindowTracker::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kLastTimeIncognitoUsed, {});
   registry->RegisterBooleanPref(kTorUsed, false);
 }
 
-void BraveWindowsTracker::OnBrowserAdded(Browser* browser) {
+void BraveWindowTracker::OnBrowserAdded(Browser* browser) {
   if (brave::IsTorProfile(browser->profile())) {
     local_state_->SetBoolean(kTorUsed, true);
     return;
@@ -306,14 +306,14 @@ void BraveWindowsTracker::OnBrowserAdded(Browser* browser) {
   }
 }
 
-void BraveWindowsTracker::OnBrowserSetLastActive(Browser* browser) {
+void BraveWindowTracker::OnBrowserSetLastActive(Browser* browser) {
   const char* pref = GetPrefNameForProfile(browser->profile());
   if (pref) {
     local_state_->SetTime(pref, base::Time::Now());
   }
 }
 
-void BraveWindowsTracker::UpdateP3AValues() const {
+void BraveWindowTracker::UpdateP3AValues() const {
   // Deal with the incognito window.
   WindowUsageStats bucket;
   const base::Time time = local_state_->GetTime(kLastTimeIncognitoUsed);
