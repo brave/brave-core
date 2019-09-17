@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+
 #include "components/search_engines/prepopulated_engines.h"
 #include "components/search_engines/search_engine_type.h"
 
@@ -11,7 +12,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 3;
+const int kBraveCurrentDataVersion = 4;
 
 const PrepopulatedEngine duckduckgo = {
   L"DuckDuckGo",
@@ -33,6 +34,29 @@ const PrepopulatedEngine duckduckgo = {
   SEARCH_ENGINE_OTHER,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
 };
+
+#if defined(OS_ANDROID)
+const PrepopulatedEngine duckduckgo_lite = {
+  L"DuckDuckGo Lite",
+  L":dl",
+  "https://duckduckgo.com/favicon.ico",
+  "https://duckduckgo.com/lite/?q={searchTerms}&t=brave",
+  "UTF-8",
+  "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  0,
+  SEARCH_ENGINE_OTHER,
+  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
+};
+#endif
 
 const PrepopulatedEngine qwant = {
   L"Qwant",
