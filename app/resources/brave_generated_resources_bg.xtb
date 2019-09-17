@@ -40,6 +40,7 @@
 <translation id="2814998458708016836">Използвайте широка адресна лента</translation>
 <translation id="6123134130710658846">Скрий бутона на Brave награди</translation>
 <translation id="7635711399568194460">Скрий бутона за Brave наградите в лентата, ако Brave наградите не са активирани</translation>
+<translation id="4262166817826183486">Винаги показвайте лентата с отметки на страницата Нов раздел</translation>
 <translation id="7965178729203412357">Нова идентичност на Tor</translation>
 <translation id="8511502469534942133">Нова Tor връзка за този сайт</translation>
 <translation id="8784924142044142231">Изход от Tor</translation>
@@ -69,7 +70,6 @@
 <translation id="9075744464571452108">Разпознаване на устройството</translation>
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="4824468494729001999">Блокиране на скриптове</translation>
-<translation id="7498695072878479744">Разрешете бутони на Google вход на страници на трети страни</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
 <translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
 <translation id="958971637207126733">Разреши вградени публикации на LinkedIn</translation>
@@ -93,12 +93,14 @@
 <translation id="8721331068159819483">Също като macOS</translation>
 <translation id="6786747875388722282">Разширения</translation>
 <translation id="2896916411183256228">Използва WebTorrent за да показва торенти директно в браузъра. Поддържа торент файлове и магнет линкове.</translation>
+<translation id="5554028991651120544">Осигурява Ethereum портфейл и Dapp браузър в Brave.</translation>
 <translation id="6554397389149987360">Използвайте "Hangouts" компоненти, за да разрешите споделяне на екрана и други функции в браузъра.</translation>
 <translation id="1765684547504191670">Използва медия рутер компонент, за да разреши Chromecast в браузъра.</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
 <translation id="4154389611571860454">Използва разширение IPFS свързване, за да поддържа  IPFS в браузъра.</translation>
 <translation id="8137559199583651773">Управление на разширенията</translation>
+<translation id="7013485839273047434">Вземете още разширения</translation>
 <translation id="4928988318462976765">Магазин за уеб разширения</translation>
 <translation id="9181207987584064303">Вижте в Магазина за уеб разширения</translation>
 <translation id="4846154056248462491">При излизане</translation>
@@ -111,4 +113,19 @@
 <translation id="8303432794159193481">Разработване на приложения за браузъра Brave</translation>
 <translation id="8292967014767479012">Приложения за браузъра Brave</translation>
 <translation id="4743468424889072281">Приложения за разработка за браузъра Brave</translation>
+<translation id="4568409039725976900">Brave Orange</translation>
+<translation id="1197088940767939838">Обелка от портокал</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Завист</translation>
+<translation id="138218114945450791">Ясни небеса</translation>
+<translation id="1555130319947370107">Bondy Blue</translation>
+<translation id="4159784952369912983">Blurple</translation>
+<translation id="7569983096843329377">Тъмен Рицар</translation>
+<translation id="6287165605525340193">Форма Обелка от портокал</translation>
+<translation id="6301585275578119299">Форма Nana</translation>
+<translation id="2732216714908598537">Форма Завист</translation>
+<translation id="3657793125124583718">Форма Ясни Небеса</translation>
+<translation id="7184617102219850286">Форма Bondy Blue</translation>
+<translation id="5032225845552050824">Форма Blurple</translation>
+<translation id="815851617499295136">Форма Тъмен Рицар</translation>
 </translationbundle>

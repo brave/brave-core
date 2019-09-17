@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/shield_exceptions.h"
@@ -61,10 +62,12 @@ ContentSettingsPattern GetPatternFromURL(const GURL& url,
   DCHECK(url.is_empty() ? url.possibly_invalid_spec() == "" : url.is_valid());
   if (url.is_empty() && url.possibly_invalid_spec() == "")
     return ContentSettingsPattern::Wildcard();
-
+  auto origin = url.GetOrigin();
   return scheme_wildcard && !url.has_port()
-      ? ContentSettingsPattern::FromString("*://" + url.host() + "/*")
-      : ContentSettingsPattern::FromString(url.GetOrigin().spec() + "/*");
+             ? ContentSettingsPattern::FromString("*://" + url.host() + "/*")
+             : ContentSettingsPattern::FromString(
+                   origin.scheme() + "://" + origin.host() + ":" +
+                   base::NumberToString(origin.EffectiveIntPort()) + "/*");
 }
 
 std::string ControlTypeToString(ControlType type) {
@@ -236,6 +239,18 @@ ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url) {
   } else {
     return ControlType::BLOCK;
   }
+}
+
+bool AllowReferrers(Profile* profile, const GURL& url) {
+  return AllowReferrers(
+      HostContentSettingsMapFactory::GetForProfile(profile), url);
+}
+
+bool AllowReferrers(HostContentSettingsMap* map, const GURL& url) {
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, kReferrers);
+
+  return setting == CONTENT_SETTING_ALLOW;
 }
 
 void SetFingerprintingControlType(Profile* profile,

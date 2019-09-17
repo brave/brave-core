@@ -40,6 +40,7 @@
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
 <translation id="6123134130710658846">Brave পুরস্কারের বোতাম লুকান</translation>
 <translation id="7635711399568194460">Brave পুরস্কারগুলি সক্রিয় করা না থাকলে লোকেশন বারে Brave পুরস্কারের বোতামটি লুকায়</translation>
+<translation id="4262166817826183486">সবসময় নতুন ট্যাবের পৃষ্ঠায় বুকমার্ক বার দেখান</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
 <translation id="8511502469534942133">এই সাইটের জন্য নতুন Tor Connection</translation>
 <translation id="8784924142044142231">টর থেকে প্রস্থান করুন</translation>
@@ -69,7 +70,6 @@
 <translation id="9075744464571452108">ডিভাইস শনাক্তকরণ</translation>
 <translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
 <translation id="4824468494729001999">স্ক্রিপ্টগুলি ব্লক করুন</translation>
-<translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে Google লগইন বোতামগুলির অনুমতি দিন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
@@ -93,12 +93,14 @@
 <translation id="8721331068159819483">macOS এর মত একইরকমের</translation>
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
+<translation id="5554028991651120544">Brave এর মধ্যে একটি Ethereum ওয়ালেট এবং Dapp ব্রাউজার প্রদান করে</translation>
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
 <translation id="1765684547504191670">ব্রাউজারে Chromecast সক্ষম করতে মিডিয়া রাউটার উপাদান ব্যবহার করে।</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
 <translation id="4154389611571860454">ব্রাউজারে IPFS সমর্থন করার জন্য IPFS সহযোগী এক্সটেনশন ব্যবহার করে।</translation>
 <translation id="8137559199583651773">এক্সটেনশনগুলি পরিচালনা করুন</translation>
+<translation id="7013485839273047434">আরও এক্সটেনশনগুলি পান</translation>
 <translation id="4928988318462976765">ওয়েব এক্সটেনশন স্টোর</translation>
 <translation id="9181207987584064303">ওয়েব এক্সটেনশন স্টোরে দেখুন</translation>
 <translation id="4846154056248462491">প্রস্থানের সময়</translation>
@@ -111,4 +113,19 @@
 <translation id="8303432794159193481">Brave ব্রাউজার ডেভ অ্যাপস</translation>
 <translation id="8292967014767479012">Brave ব্রাউজার অ্যাপস</translation>
 <translation id="4743468424889072281">Brave ব্রাউজার ডেভেলপমেন্ট অ্যাপস</translation>
+<translation id="4568409039725976900">Brave অরেঞ্জ</translation>
+<translation id="1197088940767939838">অরেঞ্জ পিল</translation>
+<translation id="5901630391730855834">নানা</translation>
+<translation id="6017514345406065928">এনভি</translation>
+<translation id="138218114945450791">পরিষ্কার আকাশ</translation>
+<translation id="1555130319947370107">বন্ডি ব্লু</translation>
+<translation id="4159784952369912983">ব্লার্পেল</translation>
+<translation id="7569983096843329377">ডার্ক নাইট</translation>
+<translation id="6287165605525340193">অরেঞ্জ পিল শেপ</translation>
+<translation id="6301585275578119299">নানা শেপ</translation>
+<translation id="2732216714908598537">এনভি শেপ</translation>
+<translation id="3657793125124583718">পরিষ্কার আকাশের শেপ</translation>
+<translation id="7184617102219850286">বন্ডি ব্লু শেপ</translation>
+<translation id="5032225845552050824">ব্লার্পেল শেপ</translation>
+<translation id="815851617499295136">গভীর রাতের শেপ</translation>
 </translationbundle>

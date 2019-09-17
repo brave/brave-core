@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/res/layout/toolbar_phone.xml b/chrome/android/java/res/layout/toolbar_phone.xml
-index 62a3a3f3dc36d6417519832e987466ff26a18ea2..e4cdbe17da6b3db357992f755aa884b1f026a7a8 100644
+index fe66549d3ac660c12186e0c9c78c7ed525f2015d..9f2fad8590812ececbf1b9d04ec493c2ed7da425 100644
 --- a/chrome/android/java/res/layout/toolbar_phone.xml
 +++ b/chrome/android/java/res/layout/toolbar_phone.xml
 @@ -40,6 +40,7 @@
              style="@style/ToolbarButton"
-             android:paddingStart="8dp"
+             android:paddingStart="12dp"
              android:visibility="gone" />
 +        <include layout="@layout/brave_toolbar_phone" android:layout_height="wrap_content" android:layout_width="match_parent" />
  

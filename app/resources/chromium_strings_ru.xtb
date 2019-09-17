@@ -107,7 +107,6 @@
 <translation id="1421502046520299169">О &amp;Brave OS</translation>
 <translation id="2534623228451928732">Обновить &amp;Brave OS</translation>
 <translation id="8447483940522230788">Помощник по Brave</translation>
-<translation id="3360368475735266712">Войдите, чтобы синхронизировать данные Brave на всех устройствах</translation>
 <translation id="5477319665405831211">Синхронизируйте данные Brave на всех устройствах</translation>
 <translation id="4934157190377700991">Вы вошли в Brave</translation>
 <translation id="4100716194836114130">Ваш персональный Brave</translation>
@@ -138,6 +137,8 @@
 <translation id="6746636977031158624">Не удалось выполнить синхронизацию, так как учетные данные устарели.</translation>
 <translation id="2999152167963026588">Не удалось синхронизировать данные, поскольку сервис Sync недоступен в вашем домене.</translation>
 <translation id="1459786048951724030">Не удалось синхронизировать данные из-за ошибки входа в аккаунт.</translation>
+<translation id="6813094029720377619">Вы удаляете файлы cookie при выходе из Brave. Чтобы продолжить синхронизацию, измените <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">настройках</translation>
 <translation id="663059986967017181">Скопировано в Brave</translation>
 <translation id="1457432835062259213">Панель запуска Brave</translation>
 <translation id="82609232232243542">Войдите в Brave</translation>
@@ -157,7 +158,7 @@
 
 Дальнейшие инструкции отправлены на адрес <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Начиная с версии Brave 70 контролируемые профили станут недоступны.</translation>
-<translation id="3066805437003400520">Данные о работе этого пользователя в браузере будут удалены с устройства. Чтобы восстановить их, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Данные о работе этого пользователя в браузере будут удалены с устройства. Чтобы восстановить их, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave становится все лучше</translation>
 <translation id="7192666605334070839">Теперь с Brave ещё удобнее работать в аккаунте Brave Software, в том числе на общих компьютерах.</translation>
 <translation id="3511996232906761537">Все веб-страницы, закладки и другие данные Brave можно найти здесь.</translation>
@@ -229,14 +230,6 @@
 <translation id="7808415789955822133">Условия использования Brave OS</translation>
 <translation id="7207456302801184289">Добро пожаловать в Brave</translation>
 <translation id="5688839044908745927">Brave почти готов к работе</translation>
-<translation id="7758342895140862711">Brave всегда под рукой</translation>
-<translation id="3610173904388112975">Технологии Brave Software для простого и быстрого поиска в Интернете.</translation>
-<translation id="3479552764303398839">Не сейчас</translation>
-<translation id="8013374903356993822">Открывайте Brave ещё быстрее</translation>
-<translation id="7625138338483121345">Как сделать Brave браузером по умолчанию</translation>
-<translation id="5927044791090834489">Как прикрепить Brave на панель задач</translation>
-<translation id="8933981935877469796">Выберите <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">Если появится кнопка <ph name="BEGIN_BOLD"/>Изменить<ph name="END_BOLD"/>, нажмите ее.</translation>
 <translation id="3507835409099344374">Открыть настройки уведомлений Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Доступно обновление Brave}=1{Доступно обновление Brave}one{Обновление Brave доступно # день}few{Обновление Brave доступно # дня}many{Обновление Brave доступно # дней}other{Обновление Brave доступно # дня}}</translation>
 <translation id="720532315408041257">Администратор просит перезапустить Brave для установки обновления</translation>
@@ -256,6 +249,7 @@
 <translation id="8208853227947884571">Вы используете последнюю версию Brave</translation>
 <translation id="6686872257969654608">О Brave OS</translation>
 <translation id="2280363356796735201">Справка Brave OS</translation>
+<translation id="38898988211673781">Удалять файлы cookie и данные сайтов при выходе из Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (скопирована в Brave)</translation>
 <translation id="5468853758063275923">Brave используется как браузер по умолчанию</translation>
 <translation id="1775322105159056176">Brave не удалось определить или задать браузер по умолчанию</translation>
@@ -272,6 +266,7 @@
 <translation id="8372880274820509128">В целях повышения безопасности Brave шифрует ваши данные.</translation>
 <translation id="7445061995866044926">Выйти из Brave?</translation>
 <translation id="7453070689008684791">Brave получит доступ к вашему Brave Software Диску, чтобы вы могли просматривать рекомендации в адресной строке.</translation>
+<translation id="3360368475735266712">Войдите, чтобы синхронизировать данные Brave на всех устройствах</translation>
 <translation id="9221712274065451529">На этом языке отображается интерфейс Brave OS</translation>
 <translation id="3518788198614984730">Отображать Brave OS на этом языке</translation>
 <translation id="5757460455745382269">На этом языке отображается интерфейс Brave</translation>

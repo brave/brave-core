@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "सत्यापित है",
+    "message": "वॉलेट सत्यापन पूरा हुआ",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "सत्यापित है",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "अनुपलब्ध है",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "वॉलेट पुनः कनेक्ट करें",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "आपका वॉलेट सत्यापित है!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "कोई चिंता नहीं। यह विभिन्न सुरक्षा कारणों से हो सकता है। बस इसे फिर से जोड़ने से इस समस्या का समाधान हो जाएगा।",
+    "message": "चिंता की बात नहीं हैं। यह विभिन्न सुरक्षा कारणों से हो सकता है। आपके वॉलेट को फ़िर से कनेक्ट करने से यह समस्या हल हो जाएगी।",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "अपने सत्यापित वॉलेट से धन प्राप्त करने के लिए इस सत्यापित निर्माता ने अभी तक अपने खाते का सत्यापन (KYC) नहीं किया है। जब तक वे सत्यापन पूरा नहीं करते तब तक धन आपके वॉलेट में ही रहेगा।",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "वॉलेट सत्यापन पूरा करें",
+    "description": "CTA for completing wallet verification"
   }
 }

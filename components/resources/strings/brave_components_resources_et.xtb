@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="et">
-<translation id="4339730410920731698">Blokeeritud reklaamid ja jälitajad</translation>
+<translation id="4339730410920731698">Blokeeritud reklaame ja jälitajaid</translation>
 <translation id="2313532038420432247">HTTPS-täiendusi</translation>
 <translation id="7679428712334662192">Eeldatav säästetud aeg</translation>
 <translation id="5206618227023752085">Tippsait eemaldatud</translation>
@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Klõpsatud</translation>
 <translation id="7119308337584989771">Suletud</translation>
 <translation id="6805660603861526473">Vaadatud</translation>
+<translation id="2852258589816753010">BAT pole teie piirkonnas praegu saadaval. Uuenduste puhul vt <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2564425876266960486">Brave’i veebilehitseja BAT kaardi loomisel ilmnes viga</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="5923611424721173182">Praegune ühitamine</translation>
 <translation id="5457113250005438886">Kehtetu</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">Luba preemiad saidil</translation>
 <translation id="3671566813999349838">Summa</translation>
 <translation id="3819257035322786455">Varunda</translation>
-<translation id="4989542687859782284">Pole saadaval</translation>
 <translation id="1312977698678162065">Saage preemiaid privaatsust austavate reklaamide vaatamise eest.</translation>
 <translation id="7655723274266132226">Nüüd võite teenida reklaamide vaatamisega.</translation>
 <translation id="2975780980638932742">Brave’i reklaamid on lisandunud!</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">Kas oled valmis alustama?</translation>
 <translation id="913775524828049259">Jah, olen valmis</translation>
 <translation id="108052542935515756">Võite alustada siit:</translation>
-<translation id="2678666039642976470">Ühenda rahakott uuesti</translation>
 <translation id="194625454574835815">Taastusvõti</translation>
 <translation id="6354568176665589146">Korduv</translation>
 <translation id="7577100371127227294">Igakuised preemiad</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">Vaata andmeid</translation>
 <translation id="1988679729106502285">MÄRKUS.</translation>
 <translation id="5815103311506128988">Autor ei ole veel registreerunud ega saa vastu võtta Brave'i kasutajatelt toetust. Teie arvuti üritab tasu maksta kuni kinnituse saamiseni või kuni möödub 90 päeva.</translation>
+<translation id="603411408512957306">See kinnitatud looja pole veel kinnitanud (KYC) oma konto, et saada kinnitatud rahakotist preemiaid. Preemiad jäävad rahakotti kuni kinnitamise lõpuni.</translation>
 <translation id="4292832015778676417">reklaamidest saadud</translation>
 <translation id="3197752845651180812">Ootel annetused</translation>
 <translation id="3164105678355419142">Korduv tipp</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">kinnita</translation>
 <translation id="8030169304546394654">Ühendus katkestatud</translation>
 <translation id="8267327690882073581">Kinnita rahakott</translation>
-<translation id="4569155249847375786">Kinnitatud</translation>
+<translation id="543510923939676996">Rahakott on kinnitatud</translation>
 <translation id="7591798679868259510">Ava minu Upholdi konto</translation>
+<translation id="3699674790322420653">Lõpetage rahakoti kinnitamine</translation>
 <translation id="9200453331904391567">Katkesta Brave Rewardsi ühendus</translation>
 <translation id="46988480989545156">Kinnita rahakott</translation>
 <translation id="1554282356558968486">Meie rahakotiteenust pakub</translation>
@@ -425,6 +427,7 @@
 <translation id="5275978662119683162">Kinnitamisega kaasnevad hüved</translation>
 <translation id="5166793288622772189">Kas olete valmis oma rahakotti kinnitama?</translation>
 <translation id="8766217572332535979">Kinnitamine pole looja toetuste eest preemiate saamiseks vajalik</translation>
+<translation id="4569155249847375786">Kinnitatud</translation>
 <translation id="8465442795593991224">Uphold võib olenevalt taotletud teenustest nõuda teie identiteedi kinnitamist</translation>
 <translation id="723054503945711909">Brave Software Inc. ei töötle, talleta ega pääse juurde isikuandmetele, mille annata Upholdile, kui loote selle juures konto.</translation>
 <translation id="1181037720776840403">Eemaldage</translation>

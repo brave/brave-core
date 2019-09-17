@@ -40,6 +40,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2814998458708016836">Utiliser une barre d'adresse large</translation>
 <translation id="6123134130710658846">Masquer le bouton Brave Rewards</translation>
 <translation id="7635711399568194460">Masque le bouton Brave Rewards dans la barre d’emplacement lorsque Brave Rewards n’est pas activé.</translation>
+<translation id="4262166817826183486">Toujours afficher la barre de favoris sur un nouvel onglet</translation>
 <translation id="7965178729203412357">Nouvelle identité Tor</translation>
 <translation id="8511502469534942133">Nouvelle connexion Tor pour ce site</translation>
 <translation id="8784924142044142231">Quitter Tor</translation>
@@ -69,7 +70,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="9075744464571452108">Reconnaissance de périphérique</translation>
 <translation id="3570081523466826008">Mettre à niveau les connexions vers HTTPS</translation>
 <translation id="4824468494729001999">Bloquer les scripts</translation>
-<translation id="7498695072878479744">Autoriser les boutons de connexion Google sur les sites tiers</translation>
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
 <translation id="5165042248369837294">Autoriser les tweets intégrés de Twitter</translation>
 <translation id="958971637207126733">Autoriser les publications LinkedIn intégrées</translation>
@@ -93,12 +93,14 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8721331068159819483">Identique à macOS</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Utilise WebTorrent pour afficher les torrents directement dans le navigateur. Compatible avec les fichiers torrent et les liens magnétiques.</translation>
+<translation id="5554028991651120544">Fournit un portefeuille Ethereum et un navigateur Dapp dans Brave</translation>
 <translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>
 <translation id="1765684547504191670">Utilise le routeur média pour activer Chromecast dans le navigateur.</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
 <translation id="7179921470347911571">Relancer maintenant</translation>
 <translation id="4154389611571860454">Utilise l'extension IPFS companion pour prendre en charge IPFS dans le navigateur.</translation>
 <translation id="8137559199583651773">Gérer les extensions</translation>
+<translation id="7013485839273047434">Obtenir plus d'extensions</translation>
 <translation id="4928988318462976765">Magasin d'extensions Web</translation>
 <translation id="9181207987584064303">Afficher dans le magasin d'extensions Web</translation>
 <translation id="4846154056248462491">À la sortie</translation>
@@ -111,4 +113,19 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8303432794159193481">Applications de développement du navigateur Brave</translation>
 <translation id="8292967014767479012">Applications du navigateur Brave</translation>
 <translation id="4743468424889072281">Applications de développement du navigateur Brave</translation>
+<translation id="4568409039725976900">Orange Brave</translation>
+<translation id="1197088940767939838">Peau d'orange</translation>
+<translation id="5901630391730855834">Mamie</translation>
+<translation id="6017514345406065928">Envie</translation>
+<translation id="138218114945450791">Ciel dégagé</translation>
+<translation id="1555130319947370107">Gars cool bleu</translation>
+<translation id="4159784952369912983">Blauve</translation>
+<translation id="7569983096843329377">Chevalier sombre</translation>
+<translation id="6287165605525340193">Forme Peau d'orange</translation>
+<translation id="6301585275578119299">Forme Mamie</translation>
+<translation id="2732216714908598537">Forme Envie</translation>
+<translation id="3657793125124583718">Forme Ciel dégagé</translation>
+<translation id="7184617102219850286">Forme Gars cool bleu</translation>
+<translation id="5032225845552050824">Forme Blauve</translation>
+<translation id="815851617499295136">Forme Chevalier sombre</translation>
 </translationbundle>

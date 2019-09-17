@@ -94,6 +94,4 @@ generate_jni("jni_headers") {
   sources = [
     "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   ]
-
-  jni_package = "brave"
 }

@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Проверен",
+    "message": "Кошелек проверен",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Проверен",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Недоступен",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Переподключить кошелек",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Ваш кошелек проверен!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Не беспокойтесь.Такое может случиться из-за соображений безопасности. Попробуйте подключиться снова для решения этой проблемы.",
+    "message": "Не волнуйтесь. Это могло произойти по различным причинам, связанным с безопасностью. Повторное подключение кошелька решит эту проблему.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Этому проверенному создателю контента все еще нужно пройти проверку (ЗСК) своей учетной записи, чтобы получать пожертвования с вашего проверенного кошелька. Пожертвования останутся в вашем кошельке до завершения проверки.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Завершить проверку кошелька",
+    "description": "CTA for completing wallet verification"
   }
 }

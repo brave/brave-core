@@ -111,7 +111,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="1421502046520299169">&amp;Brave OS hakkında</translation>
 <translation id="2534623228451928732">&amp;Brave OS'i güncelle</translation>
 <translation id="8447483940522230788">Brave Yardımcısı</translation>
-<translation id="3360368475735266712">Brave'u cihazlarınız arasında senkronize etmek ve kişiselleştirmek için oturum açın</translation>
 <translation id="5477319665405831211">Brave'u cihazlarınız arasında senkronize edin ve kişiselleştirin</translation>
 <translation id="4934157190377700991">Şu anda Brave'da oturum açtınız</translation>
 <translation id="4100716194836114130">Bu sizin Brave'unuz</translation>
@@ -142,6 +141,8 @@ Yine de oturum açarsanız, yer işaretleriniz, geçmişiniz ve diğer ayarları
 <translation id="6746636977031158624">Hesap oturum açma ayrıntılarınız güncel olmadığından Brave OS, verilerinizi senkronize edemedi.</translation>
 <translation id="2999152167963026588">Senkronizasyon alan adınızda kullanılamadığından Brave OS, verilerinizi senkronize edemedi.</translation>
 <translation id="1459786048951724030">Oturum açma sırasındaki bir hata nedeniyle Brave OS, verilerinizi senkronize edemedi.</translation>
+<translation id="6813094029720377619">Brave'dan çıktığınızda çerezleri temizlersiniz. Senkronizasyona devam etmek için çerez ayarlarını şurada değiştirin: <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">ayarlar</translation>
 <translation id="663059986967017181">Brave'a kopyalandı</translation>
 <translation id="1457432835062259213">Brave Uygulama Başlatıcı</translation>
 <translation id="82609232232243542">Brave'da oturum aç</translation>
@@ -161,7 +162,7 @@ Yine de oturum açarsanız, yer işaretleriniz, geçmişiniz ve diğer ayarları
 
 Daha fazla talimat için lütfen e-postanızı (<ph name="ACCOUNT_EMAIL"/>) kontrol edin.</translation>
 <translation id="1820843143331379651">Brave 70 sürümünden itibaren denetlenen kullanıcı profilleri artık kullanılmayacaktır.</translation>
-<translation id="3066805437003400520">Bu kullanıcının tarama verileri bu cihazdan silinecektir. Verileri kurtarmak için Brave'da <ph name="USER_EMAIL"/> olarak oturum açın.</translation>
+<translation id="669092380621816981">Bu kullanıcının tarama verileri bu cihazdan silinecektir. Verileri kurtarmak için Brave'da <ph name="USER_EMAIL"/> olarak oturum açın.</translation>
 <translation id="2827121003398607864">Brave daha da iyi bir hale geldi</translation>
 <translation id="7192666605334070839">Brave'u Brave Software Hesabınızla ve paylaşılan bilgisayarlarda kullanmak artık daha kolay.</translation>
 <translation id="3511996232906761537">Web, yer işaretleri ve diğer Brave bilgileriniz burada bulunur.</translation>
@@ -233,14 +234,6 @@ Daha fazla talimat için lütfen e-postanızı (<ph name="ACCOUNT_EMAIL"/>) kont
 <translation id="7808415789955822133">Brave OS şartları</translation>
 <translation id="7207456302801184289">Brave'a Hoş Geldiniz</translation>
 <translation id="5688839044908745927">Brave neredeyse hazır.</translation>
-<translation id="7758342895140862711">Brave'u her yere götürün</translation>
-<translation id="3610173904388112975">Brave Software Smarts ile web'e göz atma</translation>
-<translation id="3479552764303398839">Şimdi değil</translation>
-<translation id="8013374903356993822">Brave'a daha hızlı ulaşın</translation>
-<translation id="7625138338483121345">Brave'u varsayılan tarayıcı yapma</translation>
-<translation id="5927044791090834489">Brave'u görev çubuğunuza sabitleme</translation>
-<translation id="8933981935877469796"><ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/>'u seçin</translation>
-<translation id="1585657529869845941">Görünürse <ph name="BEGIN_BOLD"/>Yine de değiştir<ph name="END_BOLD"/>'i tıklayın</translation>
 <translation id="3507835409099344374">Brave bildirim ayarlarına git</translation>
 <translation id="1026406809507858026">{0,plural, =0{Bir Brave güncellemesi var}=1{Bir Brave güncellemesi var}other{# gün önce kullanıma sunulmuş bir Brave güncellemesi var}}</translation>
 <translation id="720532315408041257">Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor</translation>
@@ -260,6 +253,7 @@ Daha fazla talimat için lütfen e-postanızı (<ph name="ACCOUNT_EMAIL"/>) kont
 <translation id="8208853227947884571">Brave güncel durumda</translation>
 <translation id="6686872257969654608">Brave OS hakkında</translation>
 <translation id="2280363356796735201">Brave OS ile ilgili yardım alın</translation>
+<translation id="38898988211673781">Brave'dan çıktığımda çerezleri ve site verilerini temizle</translation>
 <translation id="5253815230176279256">Brave Software Pay (Brave'a kopyalandı)</translation>
 <translation id="5468853758063275923">Brave varsayılan tarayıcınız</translation>
 <translation id="1775322105159056176">Brave, varsayılan tarayıcıyı tespit edemiyor veya ayarlayamıyor</translation>
@@ -276,6 +270,7 @@ Daha fazla talimat için lütfen e-postanızı (<ph name="ACCOUNT_EMAIL"/>) kont
 <translation id="8372880274820509128">Brave ek güvenlik için verilerinizi şifreler.</translation>
 <translation id="7445061995866044926">Brave oturumunu kapatıyor musunuz?</translation>
 <translation id="7453070689008684791">Brave, adres çubuğunda öneriler göstermek için Drive'ınıza erişecektir</translation>
+<translation id="3360368475735266712">Brave'u cihazlarınız arasında senkronize etmek ve kişiselleştirmek için oturum açın</translation>
 <translation id="9221712274065451529">Bu dil, Brave OS kullanıcı arayüzünü görüntülemek için kullanılır</translation>
 <translation id="3518788198614984730">Brave OS'yi bu dilde görüntüle</translation>
 <translation id="5757460455745382269">Bu dil, Brave kullanıcı arayüzünü görüntülemek için kullanılır</translation>

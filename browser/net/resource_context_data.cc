@@ -5,36 +5,39 @@
 
 #include "brave/browser/net/resource_context_data.h"
 
+#include <string>
 #include <utility>
 
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/net/brave_request_handler.h"
-#include "content/public/browser/resource_context.h"
+#include "content/public/browser/browser_context.h"
 
 // User data key for ResourceContextData.
 const void* const kResourceContextUserDataKey = &kResourceContextUserDataKey;
 
 ResourceContextData::ResourceContextData()
     : request_id_generator_(base::MakeRefCounted<RequestIDGenerator>()),
-      weak_factory_(this) {}
+      weak_factory_(this) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+}
 
 ResourceContextData::~ResourceContextData() = default;
 
 // static
 void ResourceContextData::StartProxying(
-    content::ResourceContext* resource_context,
+    content::BrowserContext* browser_context,
     int render_process_id,
     int frame_tree_node_id,
     network::mojom::URLLoaderFactoryRequest request,
     network::mojom::URLLoaderFactoryPtrInfo target_factory) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   auto* self = static_cast<ResourceContextData*>(
-      resource_context->GetUserData(kResourceContextUserDataKey));
+      browser_context->GetUserData(kResourceContextUserDataKey));
   if (!self) {
     self = new ResourceContextData();
-    resource_context->SetUserData(kResourceContextUserDataKey,
+    browser_context->SetUserData(kResourceContextUserDataKey,
                                   base::WrapUnique(self));
   }
 
@@ -43,7 +46,7 @@ void ResourceContextData::StartProxying(
   }
 
   auto proxy = std::make_unique<BraveProxyingURLLoaderFactory>(
-      self->request_handler_.get(), resource_context, render_process_id,
+      self->request_handler_.get(), browser_context, render_process_id,
       frame_tree_node_id, std::move(request), std::move(target_factory),
       self->request_id_generator_,
       base::BindOnce(&ResourceContextData::RemoveProxy,
@@ -53,21 +56,24 @@ void ResourceContextData::StartProxying(
 }
 
 // static
-void ResourceContextData::StartProxyingWebSocket(
-    content::ResourceContext* resource_context,
+BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
+    content::ContentBrowserClient::WebSocketFactory factory,
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<std::string>& user_agent,
+    network::mojom::WebSocketHandshakeClientPtrInfo handshake_client,
+    content::BrowserContext* browser_context,
     int render_process_id,
     int frame_id,
     int frame_tree_node_id,
-    const url::Origin& origin,
-    network::mojom::WebSocketPtrInfo proxied_socket_ptr_info,
-    network::mojom::WebSocketRequest proxied_request) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+    const url::Origin& origin) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   auto* self = static_cast<ResourceContextData*>(
-      resource_context->GetUserData(kResourceContextUserDataKey));
+      browser_context->GetUserData(kResourceContextUserDataKey));
   if (!self) {
     self = new ResourceContextData();
-    resource_context->SetUserData(kResourceContextUserDataKey,
+    browser_context->SetUserData(kResourceContextUserDataKey,
                                   base::WrapUnique(self));
   }
 
@@ -75,16 +81,28 @@ void ResourceContextData::StartProxyingWebSocket(
     self->request_handler_.reset(new BraveRequestHandler);
   }
 
-  auto proxy = std::make_unique<BraveProxyingWebSocket>(
-      self->request_handler_.get(), resource_context, render_process_id,
-      frame_id, frame_tree_node_id, origin,
-      self->request_id_generator_,
-      network::mojom::WebSocketPtr(std::move(proxied_socket_ptr_info)),
-      std::move(proxied_request),
-      base::BindOnce(&ResourceContextData::RemoveProxyWebSocket,
-                     self->weak_factory_.GetWeakPtr()));
+  network::ResourceRequest request;
+  request.url = url;
+  // TODO(iefremov): site_for_cookies is not enough, we should find a way
+  // to initialize NetworkIsolationKey.
+  request.site_for_cookies = site_for_cookies;
+  if (user_agent) {
+    request.headers.SetHeader(net::HttpRequestHeaders::kUserAgent, *user_agent);
+  }
+  request.request_initiator = origin;
+  request.render_frame_id = frame_id;
 
+  auto proxy = std::make_unique<BraveProxyingWebSocket>(
+      std::move(factory), request,
+      network::mojom::WebSocketHandshakeClientPtr(std::move(handshake_client)),
+      render_process_id, frame_tree_node_id, browser_context,
+      self->request_id_generator_, self->request_handler_.get(),
+      base::BindOnce(&ResourceContextData::RemoveProxyWebSocket,
+                          self->weak_factory_.GetWeakPtr()));
+
+  auto* raw_proxy = proxy.get();
   self->websocket_proxies_.emplace(std::move(proxy));
+  return raw_proxy;
 }
 
 

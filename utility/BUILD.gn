@@ -35,6 +35,9 @@ source_set("utility") {
     ]
 
     deps += [
+      "//base",
+      "//chrome/app:chromium_strings",
+      "//components/os_crypt",
       "//components/password_manager/core/browser",
     ]
   }
@@ -49,11 +52,5 @@ source_set("utility") {
 
   if (brave_rewards_enabled) {
     deps += [ "//brave/components/services/bat_ledger:lib" ]
-  }
-
-  defines = []
-  if (use_glib) {
-    defines += [ "USE_LIBSECRET" ]
-    deps += [ "//third_party/libsecret" ]
   }
 }

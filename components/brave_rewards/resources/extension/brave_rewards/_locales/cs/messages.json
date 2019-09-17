@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Ověřeno",
+    "message": "Ověřená peněženka",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Ověřeno",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Nedostupné",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Znovu připojit peněženku",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Vaše peněženka je ověřená!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Nemějte obavy. Dochází k tomu z různých bezpečnostních důvodů. K vyřešení problému se stačí pouze opětovně připojit.",
+    "message": "Žádné strachy. Toto se může stát ze všemožných bezpečnostních důvodů. Znovupřipojení vaší peněženky tento problém vyřeší.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Tento ověřený tvůrce musí ještě ověřit (KYC) svůj účet, aby dostával spropitné z vaší ověřené peněženky. Spropitné zůstane ve vaší peněžence, dokud nedokončí proces ověření.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Dokončit ověření peněženky",
+    "description": "CTA for completing wallet verification"
   }
 }

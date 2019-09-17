@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "ยืนยันแล้ว",
+    "message": "ยืนยันวอลเล็ตแล้ว",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "ยืนยันแล้ว",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "ไม่พร้อมใช้งาน",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "เชื่อมต่อวอลเล็ทใหม่",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "วอลเล็ทของคุณได้รับการยืนยันแล้ว!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "ไม่ต้องห่วง นี่อาจมีสาเหตุมาจากเหตุผลด้านความปลอดภัยหลายประการ การเชื่อมต่อใหม่อีกครั้งจะช่วยแก้ไขปัญหานี้",
+    "message": "ไม่ต้องห่วง กรณีนี้อาจมีสาเหตุมาจากเหตุผลด้านความปลอดภัยหลายประการ การเชื่อมต่อวอลเล็ตของคุณใหม่จะแก้ไขปัญหานี้ได้",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "ผู้สร้างที่ยืนยันแล้วนี้ยังไม่ได้ยืนยัน (KYC) บัญชีของตนเองเพื่อรับทิปจากวอลเล็ตที่ยืนยันแล้วของคุณ ทิปจะอยู่ในวอลเล็ตของคุณจะกว่าเขาจะยืนยันเสร็จสิ้น",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "ยืนยันวอลเล็ตให้เสร็จสิ้น",
+    "description": "CTA for completing wallet verification"
   }
 }

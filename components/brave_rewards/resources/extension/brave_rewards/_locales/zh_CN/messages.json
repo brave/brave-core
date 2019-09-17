@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "已验证",
+    "message": "钱包已验证",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "已验证",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "不可用",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "重新连接钱包",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "您的钱包已经过验证！",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "别担心。这可能是由各种安全原因引起的。您只需重新连接，即可解决此问题。",
+    "message": "别担心。这可能是由各种安全原因引起的。重新连接钱包即可解决此问题。",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "经过验证的创作者尚未验证 (KYC) 其帐户，以便从经过验证的钱包中收到消费。在完成验证之前，小费将保留在您的钱包中。",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "完成钱包验证",
+    "description": "CTA for completing wallet verification"
   }
 }

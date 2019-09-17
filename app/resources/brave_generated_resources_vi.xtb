@@ -40,6 +40,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="2814998458708016836">Dùng thanh địa chỉ rộng</translation>
 <translation id="6123134130710658846">Ẩn nút Tiền thưởng Brave</translation>
 <translation id="7635711399568194460">Ẩn nút Tiền thưởng Brave trên thanh địa chỉ khi Tiền thưởng Brave không được bật</translation>
+<translation id="4262166817826183486">Luôn hiển thị thanh đánh dấu trang trên trang New Tab (Tab Mới).</translation>
 <translation id="7965178729203412357">Danh tính Tor mới</translation>
 <translation id="8511502469534942133">Kết nối Tor mới cho Trang này</translation>
 <translation id="8784924142044142231">Thoát khỏi Tor</translation>
@@ -69,7 +70,6 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="9075744464571452108">Nhận diện thiết bị</translation>
 <translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="4824468494729001999">Chặn các tập lệnh script</translation>
-<translation id="7498695072878479744">Cho phép nút đăng nhập Google trên các trang web của bên thứ ba</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
@@ -93,12 +93,14 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8721331068159819483">Giống như macOS</translation>
 <translation id="6786747875388722282">Tiện ích mở rộng</translation>
 <translation id="2896916411183256228">Sử dụng WebTorrent để hiển thị torrent trực tiếp trong trình duyệt. Hỗ trợ các tập tin torrent và liên kết nam châm (magnet).</translation>
+<translation id="5554028991651120544">Cung cấp một ví Ethereum và trình duyệt Dapp bên trong Brave.</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
 <translation id="1765684547504191670">Sử dụng cấu phần Bộ định tuyến Phương tiện để bật Chromecast trong trình duyệt.</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="4154389611571860454">Sử dụng tiện ích mở rộng đi kèm IPFS để hỗ trợ IPFS trong trình duyệt.</translation>
 <translation id="8137559199583651773">Quản lý tiện ích</translation>
+<translation id="7013485839273047434">Tải về thêm phần mở rộng</translation>
 <translation id="4928988318462976765">Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="9181207987584064303">Xem trong Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="4846154056248462491">Khi thoát</translation>
@@ -111,4 +113,19 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8303432794159193481">Các Ứng dụng của Trình duyệt Brave Dev</translation>
 <translation id="8292967014767479012">Các Ứng dụng của Trình duyệt Brave</translation>
 <translation id="4743468424889072281">Các Ứng dụng của Trình duyệt Brave Development</translation>
+<translation id="4568409039725976900">Cam Dũng cảm</translation>
+<translation id="1197088940767939838">Vỏ Cam</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Sự  đố kỵ</translation>
+<translation id="138218114945450791">Bầu trời Trong xanh</translation>
+<translation id="1555130319947370107">Bondy Blue</translation>
+<translation id="4159784952369912983">Màu xanh tím</translation>
+<translation id="7569983096843329377">Hiệp sĩ đen</translation>
+<translation id="6287165605525340193">Hình dạng Vỏ Cam</translation>
+<translation id="6301585275578119299">Hình dạng Nana</translation>
+<translation id="2732216714908598537">Hình dạng Sự đố kỵ</translation>
+<translation id="3657793125124583718">Hình dạng Bầu trời Trong xanh</translation>
+<translation id="7184617102219850286">Hình dạng Bondy Blue</translation>
+<translation id="5032225845552050824">Hình dạng Màu xanh tím</translation>
+<translation id="815851617499295136">Hình dạng Hiệp sĩ đen</translation>
 </translationbundle>

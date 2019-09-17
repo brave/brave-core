@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Na-verify",
+    "message": "Na-verify ang Wallet",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Na-verify",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Hindi available",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Muling ikonekta ang wallet",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Na-verify ang iyong wallet!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Huwag mag-alala. Puwede itong mangyari dahil sa iba't ibang dahilang panseguridad. Malulutas ng pagkonekta lang ulit dito ang isyu.",
+    "message": "Huwag mag-alala. Puwede itong mangyari para sa iba't ibang dahilan. Malulutas ng muling pagkonekta sa iyong wallet ang isyung ito.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Hindi pa nagagawa ng na-verify na creator na ito na i-verify (KYC) ang kanyang account para makatanggap ng mga tip mula sa iyong na-verify na wallet. Mananatili ang mga tip sa iyong wallet hanggang sa makumpleto ng mga ito ang pag-verify.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Kumpletuhin ang pag-verify ng wallet",
+    "description": "CTA for completing wallet verification"
   }
 }

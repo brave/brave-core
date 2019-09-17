@@ -25,7 +25,6 @@
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
-#include "chrome/browser/io_thread.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
@@ -90,8 +89,14 @@ BraveBrowserProcessImpl::brave_component_updater_delegate() {
   return brave_component_updater_delegate_.get();
 }
 
-void BraveBrowserProcessImpl::ResourceDispatcherHostCreated() {
-  BrowserProcessImpl::ResourceDispatcherHostCreated();
+ProfileManager* BraveBrowserProcessImpl::profile_manager() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!created_profile_manager_)
+    CreateProfileManager();
+  return profile_manager_.get();
+}
+
+void BraveBrowserProcessImpl::StartBraveServices() {
   ad_block_service()->Start();
   ad_block_custom_filters_service()->Start();
   ad_block_regional_service_manager()->Start();
@@ -105,13 +110,6 @@ void BraveBrowserProcessImpl::ResourceDispatcherHostCreated() {
   tracking_protection_service();
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
-}
-
-ProfileManager* BraveBrowserProcessImpl::profile_manager() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!created_profile_manager_)
-    CreateProfileManager();
-  return profile_manager_.get();
 }
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {

@@ -40,6 +40,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="2814998458708016836">Gunakan bilah alamat lebar</translation>
 <translation id="6123134130710658846">Sembunyikan tombol Brave Rewards</translation>
 <translation id="7635711399568194460">Sembunyikan tombol Brave Rewards di bilah lokasi saat Brave Rewards tidak diaktifkan.</translation>
+<translation id="4262166817826183486">Batang marka buku selalu tampil di halaman Tab Baru</translation>
 <translation id="7965178729203412357">Identitas Tor Baru</translation>
 <translation id="8511502469534942133">Koneksi Tor Baru Untuk Situs Ini</translation>
 <translation id="8784924142044142231">Keluar dari Tor</translation>
@@ -69,7 +70,6 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="9075744464571452108">Pengenalan perangkat</translation>
 <translation id="3570081523466826008">Tingkatkan koneksi ke HTTPS</translation>
 <translation id="4824468494729001999">Blokir skrip</translation>
-<translation id="7498695072878479744">Izinkan tombol masuk Google pada situs pihak ketiga</translation>
 <translation id="863171915776379000">Izinkan tombol masuk Facebook dan kiriman tersemat</translation>
 <translation id="5165042248369837294">Izinkan tweet tersemat Twitter</translation>
 <translation id="958971637207126733">Izinkan kiriman tersemat LinkedIn</translation>
@@ -93,12 +93,14 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8721331068159819483">Sama seperti macOS</translation>
 <translation id="6786747875388722282">Ekstensi</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk menampilkan torrent langsung di peramban. Mendukung file torrent dan tautan magnet.</translation>
+<translation id="5554028991651120544">Menyediakan dompet Ethereum dan peramban Dapp di dalam Brave.</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mengaktifkan berbagi layar dan fitur lainnya di peramban.</translation>
 <translation id="1765684547504191670">Menggunakan komponen Media Router untuk mengaktifkan Chromecast dalam peramban.</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
 <translation id="7179921470347911571">Luncurkan Ulang Sekarang</translation>
 <translation id="4154389611571860454">Gunakan ekstensi IPFS untuk mendukung IPFS di peramban</translation>
 <translation id="8137559199583651773">Kelola ekstensi</translation>
+<translation id="7013485839273047434">Dapatkan lebih banyak ekstensi</translation>
 <translation id="4928988318462976765">Toko Ekstensi Web</translation>
 <translation id="9181207987584064303">Lihat di Toko Ekstensi Web</translation>
 <translation id="4846154056248462491">Saat keluar</translation>
@@ -111,4 +113,19 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8303432794159193481">Aplikasi Pengembang Peramban Brave</translation>
 <translation id="8292967014767479012">Aplikasi Peramban Brave</translation>
 <translation id="4743468424889072281">Aplikasi Pengembangan Peramban Brave</translation>
+<translation id="4568409039725976900">Oranye Berani</translation>
+<translation id="1197088940767939838">Kulit Jeruk</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Iri</translation>
+<translation id="138218114945450791">Langit Cerah</translation>
+<translation id="1555130319947370107">Biru Bondi</translation>
+<translation id="4159784952369912983">Birungu</translation>
+<translation id="7569983096843329377">Kesatria Kelam</translation>
+<translation id="6287165605525340193">Bentuk Kulit Jeruk</translation>
+<translation id="6301585275578119299">Bentuk Nana</translation>
+<translation id="2732216714908598537">Bentuk Iri</translation>
+<translation id="3657793125124583718">Bentuk Langit Cerah</translation>
+<translation id="7184617102219850286">Bentuk Biru Bondi</translation>
+<translation id="5032225845552050824">Bentuk Birungu</translation>
+<translation id="815851617499295136">Bentuk Kesatria Kelam</translation>
 </translationbundle>

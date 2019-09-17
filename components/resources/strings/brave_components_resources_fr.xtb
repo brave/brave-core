@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Cliqué</translation>
 <translation id="7119308337584989771">Rejeté</translation>
 <translation id="6805660603861526473">Visionné</translation>
+<translation id="2852258589816753010">BAT n'est pas pris en charge dans votre région actuellement. Veuillez consulter <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>cette page<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> pour obtenir des mises à jour.</translation>
+<translation id="2564425876266960486">Erreur lors de la création de la carte BAT du navigateur Brave</translation>
 <translation id="7422678632904904341">Montant :</translation>
 <translation id="5923611424721173182">Rapprochement actuel</translation>
 <translation id="5457113250005438886">Invalide</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">Autoriser les dons sur</translation>
 <translation id="3671566813999349838">Montant</translation>
 <translation id="3819257035322786455">Sauvegarde</translation>
-<translation id="4989542687859782284">Indisponible</translation>
 <translation id="1312977698678162065">Gagnez de l'argent en regardant des annonces respectueuses de votre vie privée.</translation>
 <translation id="7655723274266132226">Vous pouvez à présent gagner de l'argent en regardant de la publicité.</translation>
 <translation id="2975780980638932742">Brave Ads est arrivé !</translation>
@@ -268,7 +269,7 @@
 <translation id="9115913704608474258">novembre</translation>
 <translation id="7828956995407538686">octobre</translation>
 <translation id="5502713021410870035">septembre</translation>
-<translation id="211044356803193224">Astuce du mois!</translation>
+<translation id="211044356803193224">Dons mensuels !</translation>
 <translation id="606865182719489911">Une subvention gratuite en jetons est disponible.</translation>
 <translation id="3453206261112715431">Allocation de jetons gratuits</translation>
 <translation id="5736183007277264868">Il n'y a actuellement pas de subventions en jetons disponible.</translation>
@@ -288,7 +289,7 @@
 <translation id="6104680658798556671">Paiement non effectué.</translation>
 <translation id="4880455302843506325">Quand votre solde ne suffit pas à couvrir le total des Contributions Automatiques et des dons récurrents, nous sautons ces paiements pour cette période.</translation>
 <translation id="3138528956349114724">Les sites épinglés sont maintenant</translation>
-<translation id="7562713189950710660">Voici comment fonctionnent les astuces du mois :</translation>
+<translation id="7562713189950710660">Voici comment fonctionnent les dons mensuels :</translation>
 <translation id="1404790274772315264">Les pourboires mensuels ne font pas partie de votre paiement des Contributions automatiques. Ils sont indépendants.</translation>
 <translation id="9099396904827413228">Chaque site est reçoit un montant fixe mensuel.</translation>
 <translation id="7018976623064894683">Les pourboires mensuels sont tous réglés en même temps, tous les mois. Si vous utilisez la Contribution Automatique, les pourboires sont facturés en même temps que votre paiement mensuel de Contribution Automatique.</translation>
@@ -300,13 +301,12 @@
 <translation id="3173528272490482456">Prêt·e à démarrer ?</translation>
 <translation id="913775524828049259">Oui, allons-y</translation>
 <translation id="108052542935515756">Vous pouvez commencer avec</translation>
-<translation id="2678666039642976470">Reconnecter le portefeuille</translation>
 <translation id="194625454574835815">Clé de Récupération</translation>
 <translation id="6354568176665589146">Récurrent</translation>
 <translation id="7577100371127227294">Dons Mensuels</translation>
 <translation id="2391095793008133394">Donner un pourboire à {{ user }} pour sa publication :</translation>
 <translation id="7557413530932469222">Donner un pourboire à {{ user }} pour sa publication !</translation>
-<translation id="717513177896084801">Astuce {{ user }}</translation>
+<translation id="717513177896084801">Donner un pourboire à {{ user }}</translation>
 <translation id="1110535155349301542">effacer</translation>
 <translation id="8204292894173669182">Retirer de l'enregistrement</translation>
 <translation id="8942997470474842562">Vous avez désigné {{reservedAmount}} BAT pour les créateurs qui ne se sont pas encore inscrits pour recevoir des contributions. Votre navigateur continuera d'essayer de contribuer jusqu'à la vérification, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">Voir Détails</translation>
 <translation id="1988679729106502285">REMARQUE :</translation>
 <translation id="5815103311506128988">Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'il vérifie ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="603411408512957306">Ce créateur vérifié n'a pas encore vérifié (KYC) son compte pour recevoir des pourboires de votre portefeuille vérifié. Les pourboires resteront dans votre portefeuille jusqu'à ce qu'il ait terminé la vérification.</translation>
 <translation id="4292832015778676417">gagné grâce à la publicité</translation>
 <translation id="3197752845651180812">Contributions en attente</translation>
 <translation id="3164105678355419142">Don récurrent</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">vérifier</translation>
 <translation id="8030169304546394654">Déconnecté</translation>
 <translation id="8267327690882073581">Vérifier le portefeuille</translation>
-<translation id="4569155249847375786">Vérifié</translation>
+<translation id="543510923939676996">Portefeuille vérifié</translation>
 <translation id="7591798679868259510">Accéder à mon compte Uphold</translation>
+<translation id="3699674790322420653">Terminer la vérification du portefeuille</translation>
 <translation id="9200453331904391567">Déconnexion des primes Brave</translation>
 <translation id="46988480989545156">Vérifier le portefeuille</translation>
 <translation id="1554282356558968486">Notre service de portefeuille est fourni par</translation>
@@ -425,6 +427,7 @@
 <translation id="5275978662119683162">Avantages de la vérification</translation>
 <translation id="5166793288622772189">Prêt à vérifier votre portefeuille ?</translation>
 <translation id="8766217572332535979">La vérification n'est pas nécessaire pour obtenir des récompenses pour les contributions des créateurs.</translation>
+<translation id="4569155249847375786">Vérifié</translation>
 <translation id="8465442795593991224">Uphold peut vous demander de vérifier votre identité en fonction des services demandés.</translation>
 <translation id="723054503945711909">Brave Software Inc. ne traite, ne stocke et n'accède à aucun des renseignements personnels que vous fournissez à Uphold lorsque vous créez un compte chez eux.</translation>
 <translation id="1181037720776840403">Supprimer</translation>

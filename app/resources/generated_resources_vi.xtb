@@ -175,7 +175,7 @@
 <translation id="5329858601952122676">&amp;Xoá</translation>
 <translation id="4608500690299898628">&amp;Tìm...</translation>
 <translation id="3712897371525859903">Lưu trang &amp;thành...</translation>
-<translation id="6089481419520884864">Lọc trang</translation>
+<translation id="2369105924912929484">Bật/tắt nội dung trang đã lọc</translation>
 <translation id="6607831829715835317">Côn&amp;g cụ khác</translation>
 <translation id="3994878504415702912">Thu &amp;phóng</translation>
 <translation id="4779083564647765204">Thu phóng</translation>
@@ -702,7 +702,7 @@
 <translation id="8276560076771292512">Làm trống bộ nhớ đệm và tải lại cứng</translation>
 <translation id="3164329792803560526">Đang chia sẻ tab này với <ph name="APP_NAME"/></translation>
 <translation id="8864055848767439877">Đang chia sẻ <ph name="TAB_NAME"/> với <ph name="APP_NAME"/></translation>
-<translation id="1337692097987160377">Chia sẻ tab này</translation>
+<translation id="8236917170563564587">Chia sẻ tab này</translation>
 <translation id="1272079795634619415">Dừng</translation>
 <translation id="7564847347806291057">Kết thúc quá trình</translation>
 <translation id="5233231016133573565">ID Tiến trình</translation>
@@ -884,6 +884,7 @@
 <translation id="8284279544186306258">tất cả trang web <ph name="WEBSITE_1"/></translation>
 <translation id="4883436287898674711">Tất cả trang web <ph name="WEBSITE_1"/></translation>
 <translation id="2204034823255629767">Đọc và thay đổi mọi nội dung bạn nhập</translation>
+<translation id="6979044105893951891">Chạy và thoát khỏi các phiên khách được quản lý</translation>
 <translation id="2741912629735277980">Hiển thị giao diện người dùng trên màn hình đăng nhập</translation>
 <translation id="8191230140820435481">Quản lý ứng dụng, tiện ích và chủ đề của bạn</translation>
 <translation id="6259104249628300056">Khám phá các thiết bị trên mạng cục bộ của bạn</translation>
@@ -942,6 +943,7 @@
 <translation id="1205489148908752564">Đọc và thay đổi người dùng trong danh sách trắng</translation>
 <translation id="3432757130254800023">Gửi âm thanh và video tới màn hình trên mạng cục bộ</translation>
 <translation id="5235750401727657667">Thay thế trang bạn sẽ nhìn thấy khi mở tab mới</translation>
+<translation id="1784707308176068866">Chạy trong nền khi một ứng dụng gốc hợp tác yêu cầu</translation>
 <translation id="5527463195266282916">Cố gắng hạ cấp tiện ích.</translation>
 <translation id="8565650234829130278">Đã cố gắng hạ cấp ứng dụng.</translation>
 <translation id="1415990189994829608"><ph name="EXTENSION_NAME"/> (ID tiện ích "<ph name="EXTENSION_ID"/>") không được cho phép trong loại phiên này.</translation>
@@ -1137,9 +1139,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8743864605301774756">Đã cập nhật 1 giờ trước</translation>
 <translation id="7363117941401515667">Đã cập nhật <ph name="HOURS"/> giờ trước</translation>
 <translation id="1329584516321524826">Vừa cập nhật xong</translation>
-<translation id="224940702122312781">Trang này sẽ sử dụng nhiều dữ liệu.</translation>
-<translation id="3861241522664181545">Đã tạm dừng trang.</translation>
-<translation id="6921709132208495314">Ngừng sử dụng dữ liệu trên trang này</translation>
 <translation id="2262332168014443534">Chế độ thu gọn giờ đây giúp duyệt web nhanh hơn trên tất cả các trang, kể cả HTTPS.</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
 <translation id="2724841811573117416">Nhật ký WebRTC</translation>
@@ -1249,7 +1248,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8017679124341497925">Đã chỉnh sửa phím tắt</translation>
 <translation id="1174073918202301297">Đã thêm phím tắt</translation>
 <translation id="2926085873880284723">Khôi phục các phím tắt mặc định</translation>
-<translation id="2942581856830209953">Tùy chỉnh trang này</translation>
 <translation id="5801450813341024983">Nền trong Brave</translation>
 <translation id="2800760947029405028">Tải ảnh lên</translation>
 <translation id="8342861492835240085">Chọn một bộ sưu tập</translation>
@@ -1264,6 +1262,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1564414980088536597">Không thể sử dụng hình ảnh này. Hãy chọn một hình ảnh khác.</translation>
 <translation id="385051799172605136">Quay lại</translation>
 <translation id="8033827949643255796">đã chọn</translation>
+<translation id="2942581856830209953">Tùy chỉnh trang này</translation>
 <translation id="3497560059572256875">Chia sẻ Doodle</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1281,6 +1280,10 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="820568752112382238">Trang web truy cập nhiều nhất</translation>
 <translation id="5857171483910641802">Lối tắt được đề xuất dựa trên các trang web mà bạn thường truy cập</translation>
 <translation id="1211769675100312947">Lối tắt do bạn lựa chọn</translation>
+<translation id="7460045493116006516">Giao diện hiện tại mà bạn đã cài đặt</translation>
+<translation id="9068849894565669697">Chọn màu</translation>
+<translation id="8798099450830957504">Mặc định</translation>
+<translation id="8259556432390118667">Giá trị màu hex</translation>
 <translation id="2858138569776157458">Trang web hàng đầu</translation>
 <translation id="5376169624176189338">Nhấp vào để quay lại, giữ để xem lịch sử</translation>
 <translation id="9103868373786083162">Nhấn để quay lại, nhấn menu ngữ cảnh để xem lịch sử</translation>
@@ -1304,7 +1307,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="833986336429795709">Để mở liên kết này, hãy chọn một ứng dụng</translation>
 <translation id="192494336144674234">Mở bằng</translation>
 <translation id="9053893665344928494">Ghi nhớ lựa chọn của tôi</translation>
-<translation id="5541687815721799001">Sử dụng ứng dụng</translation>
 <translation id="5340857474604400806">Tiếp tục điều hướng trong Brave</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Ẩn danh)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Khách)</translation>
@@ -1362,7 +1364,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7108338896283013870">Ẩn</translation>
 <translation id="1426410128494586442">Có</translation>
 <translation id="4250680216510889253">Không</translation>
-<translation id="7378627244592794276">Không</translation>
 <translation id="5317780077021120954">Lưu</translation>
 <translation id="4285418559658561636">Cập nhật mật khẩu</translation>
 <translation id="9094033019050270033">Cập nhật mật khẩu</translation>
@@ -1604,6 +1605,9 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8249615410597138718">Gửi đến các thiết bị của bạn</translation>
 <translation id="5310281978693206542">Gửi đường dẫn liên kết tới thiết bị của bạn</translation>
 <translation id="2315587498123194634">Gửi đường dẫn liên kết đến <ph name="DEVICE_NAME"/></translation>
+<translation id="7761380698973548146">Gọi từ các thiết bị của bạn</translation>
+<translation id="7427798576651127129">Gọi từ <ph name="DEVICE_NAME"/></translation>
+<translation id="462021874527520979">Gọi từ các thiết bị của bạn</translation>
 <translation id="4520385623207007473">Các cookie đang được sử dụng</translation>
 <translation id="4763408175235639573">Các cookie sau đã được cài đặt khi bạn xem trang này</translation>
 <translation id="2719936478972253983">Các cookie sau đã bị chặn</translation>
@@ -1710,17 +1714,10 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6022526133015258832">Mở chế độ toàn màn hình</translation>
 <translation id="6845038076637626672">Mở ở dạng phóng to</translation>
 <translation id="6860427144121307915">Mở trong một tab</translation>
-<translation id="3074037959626057712">Bạn đã đăng nhập và bật Đồng bộ hóa</translation>
 <translation id="1231733316453485619">Bạn muốn bật tính năng đồng bộ hóa?</translation>
 <translation id="4736292055110123391">Đồng bộ hóa dấu trang, mật khẩu, lịch sử và nhiều nội dung khác trên tất cả các thiết bị của bạn</translation>
 <translation id="5736731321935944068">Brave Software có thể sử dụng lịch sử của bạn để điều chỉnh tính năng Tìm kiếm, quảng cáo và các dịch vụ khác của Brave Software cho phù hợp với bạn</translation>
 <translation id="4201546031411513170">Bạn luôn có thể chọn nội dung muốn đồng bộ hóa trong phần cài đặt.</translation>
-<translation id="3149880132460839085">Đồng bộ Brave</translation>
-<translation id="3796902758602917951">Dấu trang, lịch sử, mật khẩu và các cài đặt khác sẽ được đồng bộ hóa với Tài khoản Brave Software của bạn để bạn có thể sử dụng chúng trên tất cả thiết bị của mình.</translation>
-<translation id="3111958038206230539">Cá nhân hóa dịch vụ của Brave Software</translation>
-<translation id="295992419959320001">Brave Software có thể sử dụng lịch sử duyệt web của bạn để cá nhân hóa Tìm kiếm, quảng cáo và các dịch vụ khác của Brave Software</translation>
-<translation id="3070156078150543526">Brave Software có thể sử dụng lịch sử duyệt web của bạn để cá nhân hóa Tìm kiếm và các dịch vụ khác của Brave Software.</translation>
-<translation id="2709453993673701466">Bạn muốn quản lý tính năng đồng bộ hóa và cá nhân hóa trước khi bật? Hãy truy cập vào <ph name="BEGIN_LINK"/>Cài đặt<ph name="END_LINK"/>.</translation>
 <translation id="2497852260688568942">Đồng bộ hóa bị quản trị viên của bạn tắt</translation>
 <translation id="562935524653278697">Quản trị viên của bạn đã tắt đồng bộ hóa dấu trang, lịch sử, mật khẩu và các cài đặt khác của bạn.</translation>
 <translation id="2169062631698640254">Đăng nhập bằng mọi cách</translation>
@@ -1798,8 +1795,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2126167708562367080">Đồng bộ hóa bị quản trị viên của bạn tắt.</translation>
 <translation id="5462539695964427820">Đã ngừng đồng bộ hóa qua Trang tổng quan của Brave Software.</translation>
 <translation id="8805140816472474147">Hãy xác nhận cài đặt đồng bộ hóa để bắt đầu đồng bộ hóa.</translation>
-<translation id="4835836146030131423">Lỗi khi đăng nhập.</translation>
-<translation id="4365673000813822030">Rất tiếc, Đồng bộ hóa đã ngừng hoạt động.</translation>
+<translation id="5771816112378578655">Đang thiết lập...</translation>
 <translation id="3492788708641132712">Đồng bộ hóa không hoạt động. Thử đăng nhập lại.</translation>
 <translation id="6349170655202535379">Đồng bộ hóa không hoạt động. Thử đăng xuất và đăng nhập lại.</translation>
 <translation id="974555521953189084">Nhập cụm mật khẩu của bạn để bắt đầu đồng bộ hóa</translation>
@@ -1810,9 +1806,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7912080627461681647">Đã thay đổi mật khẩu của bạn trên máy chủ. Vui lòng đăng xuất rồi đăng nhập lại.</translation>
 <translation id="1877520246462554164">Không nhận được mã thông báo xác thực. Vui lòng đăng xuất rồi đăng nhập lại để thử lại.</translation>
 <translation id="9100765901046053179">Cài đặt nâng cao</translation>
-<translation id="5771816112378578655">Đang thiết lập...</translation>
 <translation id="2731700343119398978">Vui lòng chờ...</translation>
-<translation id="4684427112815847243">Đồng bộ hóa mọi thứ</translation>
 <translation id="7218743184834293955">Dữ liệu được mã hóa bằng cụm mật khẩu đồng bộ hóa của bạn. Dữ liệu này không bao gồm địa chỉ và phương thức thanh toán từ Brave Software Pay.</translation>
 <translation id="7158251077901880179">Dữ liệu đã được mã hóa bằng cụm mật khẩu đồng bộ hóa của bạn vào
           <ph name="TIME"/>. Dữ liệu này không bao gồm địa chỉ và phương thức thanh toán từ Brave Software Pay.</translation>
@@ -1826,7 +1820,10 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5990386583461751448">Đã dịch</translation>
 <translation id="5659833766619490117">Không thể dịch trang này</translation>
 <translation id="969096075394517431">Thay đổi ngôn ngữ</translation>
+<translation id="9095388113577226029">Ngôn ngữ khác...</translation>
+<translation id="7027891519253193555">Trang không viết bằng <ph name="LANGUAGE"/>?</translation>
 <translation id="6831043979455480757">Dịch</translation>
+<translation id="7378627244592794276">Không</translation>
 <translation id="1103523840287552314">Luôn dịch <ph name="LANGUAGE"/></translation>
 <translation id="7600965453749440009">Không bao giờ dịch <ph name="LANGUAGE"/></translation>
 <translation id="1285320974508926690">Không bao giờ dịch trang web này</translation>
@@ -1839,7 +1836,11 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5677503058916217575">Ngôn ngữ trang:</translation>
 <translation id="126710816202626562">Ngôn ngữ dịch:</translation>
 <translation id="3668570675727296296">Cài đặt ngôn ngữ</translation>
+<translation id="1803531841600994172">Ngôn ngữ cần dịch sang</translation>
+<translation id="456717285308019641">Ngôn ngữ trang cần dịch</translation>
 <translation id="4297322094678649474">Thay đổi ngôn ngữ</translation>
+<translation id="7731119595976065702">Ngôn ngữ khác...</translation>
+<translation id="2444119669991608829">Trang không viết bằng <ph name="LANGUAGE"/>?</translation>
 <translation id="3937734102568271121">Luôn dịch <ph name="LANGUAGE"/></translation>
 <translation id="4330387663455830245">Không bao giờ dịch <ph name="LANGUAGE"/></translation>
 <translation id="8797459392481275117">Không bao giờ dịch trang web này</translation>
@@ -1851,6 +1852,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3177909033752230686">Ngôn ngữ trang:</translation>
 <translation id="4254813446494774748">Ngôn ngữ dịch:</translation>
 <translation id="6156960295318603523">Cài đặt ngôn ngữ</translation>
+<translation id="545426320101607695">Ngôn ngữ cần dịch sang</translation>
+<translation id="822519928942492333">Ngôn ngữ trang cần dịch</translation>
 <translation id="7931318309563332511">Không xác định</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> muốn gửi thông báo cho bạn</translation>
 <translation id="2482878487686419369">Thông báo</translation>
@@ -1906,6 +1909,11 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4058793769387728514">Kiểm tra Tài liệu Ngay bây giờ</translation>
 <translation id="7339785458027436441">Kiểm tra Chính tả Trong khi Nhập</translation>
 <translation id="2749881179542288782">Kiểm tra Ngữ pháp và Chính tả</translation>
+<translation id="883062543841130884">Ký tự thay thế</translation>
+<translation id="5302932258331363306">Hiển thị ký tự thay thế</translation>
+<translation id="5260334392110301220">Dấu ngoặc kép thông minh</translation>
+<translation id="7121728544325372695">Dấu gạch ngang thông minh</translation>
+<translation id="2653275834716714682">Thay thế văn bản</translation>
 <translation id="2845382757467349449">Luôn Hiển thị Thanh Dấu trang</translation>
 <translation id="8053390638574070785">Tải lại Trang Này</translation>
 <translation id="8651585100578802546">Bắt buộc Tải lại Trang Này</translation>
@@ -2114,16 +2122,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3925842537050977900">Bỏ ghim khỏi giá</translation>
 <translation id="469230890969474295">Thư mục OEM</translation>
 <translation id="6201792273624501289">Ứng dụng Linux</translation>
-<translation id="1477301030751268706">Lưu bộ nhớ đệm mã thông báo API nhận dạng</translation>
-<translation id="8642171459927087831">Mã thông báo truy cập</translation>
-<translation id="8049913480579063185">Tên tiện ích</translation>
-<translation id="1357589289913453911">Id tiện ích</translation>
-<translation id="3898521660513055167">Trạng thái mã thông báo</translation>
-<translation id="2098305189700762159">Không Tìm thấy</translation>
-<translation id="5880247576487732437">Mã thông báo hiện có</translation>
-<translation id="845627346958584683">Thời gian hết hạn</translation>
-<translation id="5238369540257804368">Phạm vi</translation>
-<translation id="2391762656119864333">Thu hồi</translation>
 <translation id="29488703364906173">Trình duyệt web nhanh, đơn giản và an toàn dành cho web hiện đại.</translation>
 <translation id="8910146161325739742">Chia sẻ màn hình của bạn</translation>
 <translation id="8621979332865976405">Chia sẻ toàn bộ màn hình</translation>
@@ -2202,6 +2200,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4130199216115862831">Nhật ký thiết bị</translation>
 <translation id="6231881193380278751">Thêm thông số truy vấn trong URL để tự động làm mới trang: chrome://device-log/?refresh=&lt;sec&gt;</translation>
 <translation id="7180611975245234373">Làm mới</translation>
+<translation id="6643016212128521049">Xóa</translation>
+<translation id="3016381065346027039">Không có mục nhật ký nào</translation>
 <translation id="1260240842868558614">Hiển thị:</translation>
 <translation id="1165039591588034296">Lỗi</translation>
 <translation id="1124772482545689468">Người dùng</translation>
@@ -2230,7 +2230,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7830594666202422257">Kết nối với Linux</translation>
 <translation id="59324397759951282">Thiết bị USB của <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="8763927697961133303">Thiết bị USB</translation>
-<translation id="8798099450830957504">Mặc định</translation>
 <translation id="5734362860645681824">Truyền thông</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> muốn ghép nối</translation>
 <translation id="5331425616433531170">"<ph name="CHROME_EXTENSION_NAME"/>" muốn ghép nối</translation>
@@ -2254,7 +2253,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8480869669560681089">Thiết bị không xác định từ <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">Thiết bị không xác định [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="810875025413331850">Không tìm thấy thiết bị lân cận.</translation>
-<translation id="796416202355062143"><ph name="ORIGIN"/> muốn quét tìm các thiết bị Bluetooth lân cận và đã tìm thấy các thiết bị sau đây:</translation>
+<translation id="4351060348582610152"><ph name="ORIGIN"/> muốn quét tìm các thiết bị Bluetooth ở gần và đã tìm thấy các thiết bị sau đây:</translation>
 <translation id="8368027906805972958">Thiết bị không xác định hoặc không được hỗ trợ (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7003844668372540529">Sản phẩm không xác định <ph name="PRODUCT_ID"/> từ <ph name="VENDOR_NAME"/></translation>
 <translation id="3163201441334626963">Sản phẩm không xác định <ph name="PRODUCT_ID"/> từ nhà cung cấp <ph name="VENDOR_ID"/></translation>
@@ -2275,13 +2274,13 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5398772614898833570">Đã chặn quảng cáo</translation>
 <translation id="2859806420264540918">Trang web này hiển thị quảng cáo xâm nhập hoặc quảng cáo gây hiểu nhầm.</translation>
 <translation id="4077917118009885966">Đã chặn quảng cáo trên trang web này</translation>
+<translation id="6456955391422100996">Đã xóa quảng cáo.</translation>
+<translation id="7533556202636568669">Brave đã xóa quảng cáo này vì sử dụng quá nhiều tài nguyên của thiết bị.</translation>
 <translation id="8497219075884839166">Tiện ích Windows</translation>
 <translation id="897525204902889653">Dịch vụ cách ly</translation>
 <translation id="7055152154916055070">Liên kết chuyển hướng đã chặn:</translation>
 <translation id="6777817260680419853">Đã chặn chuyển hướng</translation>
 <translation id="694592694773692225">Đã chặn chuyển hướng trên trang này.</translation>
-<translation id="8149707863742670433">Trình duyệt web của Brave Software, dành cho bạn</translation>
-<translation id="3541561136058491590">Đăng nhập vào Brave bằng Tài khoản Brave Software để nhận dấu trang, lịch sử, mật khẩu và các cài đặt khác trên tất cả các thiết bị của bạn.</translation>
 <translation id="8945142681652245463">Duyệt web nhanh bằng Brave Software Brave</translation>
 <translation id="2618024864038703735">Duyệt web an toàn bằng Brave Software Brave</translation>
 <translation id="8142180567942285208">Duyệt web thông minh bằng Brave</translation>
@@ -2291,12 +2290,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="683373380308365518">Chuyển sang trình duyệt an toàn và thông minh</translation>
 <translation id="989239400026154074">Brave Software đề xuất Brave</translation>
 <translation id="6676231621615806698">Mở Brave</translation>
-<translation id="7494065396242762445">Mở cài đặt Windows</translation>
-<translation id="2137068468602026500">Nhấp vào <ph name="BEGIN_BOLD"/>Microsoft Edge<ph name="END_BOLD"/> trong Trình duyệt web</translation>
-<translation id="3720996970802414353">Vẫn chuyển</translation>
-<translation id="3389312115541230716">Nhấp chuột phải vào biểu tượng <ph name="SMALL_PRODUCT_LOGO"/> trên thanh tác vụ</translation>
-<translation id="258932246702879617">Chọn <ph name="BEGIN_BOLD"/>Ghim vào thanh tác vụ<ph name="END_BOLD"/></translation>
-<translation id="7537601449003285327">Ghim vào thanh tác vụ</translation>
 <translation id="5250372599208556903"><ph name="SEARCH_ENGINE_NAME"/> sử dụng vị trí của bạn để cung cấp cho bạn nội dung địa phương. Bạn có thể thay đổi cài đặt này trong <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3737536731758327622">Các bản tải xuống của bạn xuất hiện ở đây</translation>
 <translation id="4782664866169793230">Brave đang được phần mềm kiểm tra tự động kiểm soát.</translation>
@@ -2313,6 +2306,30 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="874689135111202667">{0,plural, =1{Bạn muốn tải một tệp lên trang web này?}other{Bạn muốn tải # tệp lên trang web này?}}</translation>
 <translation id="1956390763342388273">Thao tác này sẽ tải tất cả các tệp từ "<ph name="FOLDER_PATH"/>" lên. Chỉ thực hiện thao tác này nếu bạn tin tưởng trang web.</translation>
 <translation id="1243314992276662751">Tải lên</translation>
+<translation id="1574038418461948632">Lưu các thay đổi vào <ph name="FILENAME"/>?</translation>
+<translation id="5181988524012865000">Lưu các thay đổi vào tệp?</translation>
+<translation id="2775188527796017992"><ph name="ORIGIN"/> có thể lưu trực tiếp các thay đổi vào <ph name="FILENAME"/>. Chừng nào tab này còn mở thì trang web vẫn có thể lưu các thay đổi.</translation>
+<translation id="5375793835576008230"><ph name="ORIGIN"/> có thể lưu trực tiếp các thay đổi của bạn vào các tệp trong <ph name="FOLDERNAME"/>. Chừng nào tab này còn mở thì trang web vẫn có thể lưu các thay đổi.</translation>
+<translation id="6532106788206463496">Lưu thay đổi</translation>
+<translation id="5102007300153090427">Trang này được phép lưu vào các tệp.</translation>
+<translation id="197228003527531594">Trang này được phép xem tất cả các tệp trong một thư mục trên thiết bị của bạn.</translation>
+<translation id="766254481392580456"><ph name="ORIGIN"/> có thể lưu trực tiếp các thay đổi vào <ph name="FILENAME"/></translation>
+<translation id="856745937116041450"><ph name="ORIGIN"/> có thể lưu trực tiếp các thay đổi vào các tệp sau đây</translation>
+<translation id="2150212764721500731"><ph name="ORIGIN"/> có thể lưu trực tiếp các thay đổi vào các tệp trong <ph name="FOLDERNAME"/></translation>
+<translation id="7509896576944228744"><ph name="ORIGIN"/> có thể lưu trực tiếp các thay đổi vào các thư mục sau đây</translation>
+<translation id="8152021341839173449"><ph name="ORIGIN"/> có thể lưu trực tiếp các thay đổi vào các tệp và thư mục sau đây</translation>
+<translation id="3343738344138980580"><ph name="ORIGIN"/> có thể xem tất cả các tệp trong <ph name="FOLDERNAME"/></translation>
+<translation id="1507049466468737452"><ph name="ORIGIN"/> có thể xem mọi tệp trong các thư mục sau đây</translation>
+<translation id="6868139415119881457"><ph name="ORIGIN"/> có thể xem và lưu trực tiếp các thay đổi vào các tệp và thư mục sau đây</translation>
+<translation id="5126611267288187364">Xem các thay đổi</translation>
+<translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>, <ph name="FILE2"/>}other{<ph name="FILE1"/>, <ph name="FILE2"/> và # tệp khác}}</translation>
+<translation id="1790976235243700817">Xóa quyền truy cập</translation>
+<translation id="1392975001822614900">Không thể lưu vào thư mục này</translation>
+<translation id="7613156935003315818"><ph name="ORIGIN"/> không thể lưu các thay đổi vào thư mục này vì thư mục này chứa các tệp hệ thống.</translation>
+<translation id="4403775189117163360">Chọn một thư mục khác</translation>
+<translation id="7643932971554933646">Cho phép trang web xem tệp?</translation>
+<translation id="999180493986838144"><ph name="ORIGIN"/> có thể xem tất cả các tệp trong <ph name="FOLDERNAME"/>. Trang web có thể thấy mọi thay đổi đối với thư mục cho đến khi bạn đóng tab này.</translation>
+<translation id="7201420661433230412">Xem tệp</translation>
 <translation id="3015639418649705390">Chạy lại ngay</translation>
 <translation id="8712637175834984815">Bỏ qua</translation>
 <translation id="2783952358106015700">Sử dụng khóa bảo mật cho <ph name="APP_NAME"/></translation>
@@ -2498,27 +2515,19 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5138227688689900538">Ẩn bớt</translation>
 <translation id="5270167208902136840">Hiển thị <ph name="NUMBER_OF_MORE_APPS"/> ứng dụng khác</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> ứng dụng</translation>
-<translation id="8099495042588009598">Các quyền khác</translation>
+<translation id="485480310608090163">Các quyền và tùy chọn cài đặt khác</translation>
 <translation id="8747503242566427664">Ứng dụng này có thể:</translation>
 <translation id="7207631048330366454">Tìm kiếm ứng dụng</translation>
 <translation id="9011424611726486705">Mở cài đặt trang web</translation>
 <translation id="4739098340603978916">Kích thước: <ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">Phiên bản: <ph name="VERSION"/></translation>
-<translation id="6005695835120147974">Bộ định tuyến phương tiện</translation>
+<translation id="1920390473494685033">Danh bạ</translation>
 <translation id="7787308148023287649">Hiển thị trên màn hình khác</translation>
 <translation id="7710568461918838723">&amp;Truyền...</translation>
-<translation id="5537725057119320332">Truyền</translation>
-<translation id="1383876407941801731">Tìm kiếm</translation>
-<translation id="8970203673128054105">Xem danh sách chế độ truyền</translation>
-<translation id="1277908057200820621">Xem danh sách thiết bị</translation>
-<translation id="6685083257944113180">Dừng, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
-<translation id="2847759467426165163">Truyền tới</translation>
 <translation id="6700480081846086223">Truyền <ph name="HOST_NAME"/></translation>
 <translation id="682123305478866682">Truyền màn hình</translation>
 <translation id="2148892889047469596">Truyền tab</translation>
 <translation id="8274332263553132018">Truyền tệp</translation>
-<translation id="8627151598708688654">Chọn nguồn</translation>
-<translation id="3468275649641751422">Truyền trực tuyến tệp âm thanh hoặc video</translation>
 <translation id="781167124805380294">Truyền <ph name="FILE_NAME"/></translation>
 <translation id="8890516388109605451">Nguồn</translation>
 <translation id="1116694919640316211">Giới thiệu về</translation>
@@ -2526,28 +2535,12 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="9011163749350026987">Luôn hiển thị biểu tượng</translation>
 <translation id="1706586824377653884">Do quản trị viên thêm</translation>
 <translation id="6467304607960172345">Tối ưu hóa các video ở chế độ toàn màn hình</translation>
-<translation id="1597210476603167523">Cho phép truyền tới các dịch vụ dựa trên đám mây như Brave Software Hangouts.</translation>
-<translation id="3653941710869291743">Chào mừng bạn đến với trải nghiệm Truyền trong Brave!</translation>
-<translation id="2841638550927239436">Bạn có thể sử dụng tính năng này để hiển thị nội dung từ Brave trên TV hoặc các thiết bị khác.</translation>
-<translation id="5234764350956374838">Loại bỏ</translation>
 <translation id="4579581181964204535">Không thể truyền <ph name="HOST_NAME"/>.</translation>
 <translation id="8757090071857742562">Không thể truyền màn hình nền.  Kiểm tra xem bạn đã xác nhận lời nhắc để bắt đầu chia sẻ màn hình hay chưa.</translation>
 <translation id="8032244173881942855">Không thể truyền tab.</translation>
-<translation id="2279874276457403668">Chỉ có thể tạo một phiên mỗi lần.</translation>
 <translation id="6169666352732958425">Không thể truyền màn hình nền.</translation>
 <translation id="4081242589061676262">Không thể truyền tệp.</translation>
 <translation id="4075639477629295004">Không thể truyền <ph name="FILE_NAME"/>.</translation>
-<translation id="7255220508626648026">Đang truyền: <ph name="ROUTETITLE"/></translation>
-<translation id="7889966925761734854">Tìm kiếm</translation>
-<translation id="4430019312045809116">Âm lượng</translation>
-<translation id="1156488781945104845">Thời gian hiện tại</translation>
-<translation id="6930242544192836755">Thời lượng</translation>
-<translation id="7902874111237641165">Chuyển động mượt mà [beta]</translation>
-<translation id="8343956361364550006">Sử dụng băng thông cao để có hoạt ảnh hoặc video tốt nhất. Những người có kết nối chậm có thể không thấy nội dung của bạn.</translation>
-<translation id="4931132176527519925">Luôn sử dụng tính năng phản chiếu</translation>
-<translation id="3279741024917655738">Hiển thị video ở chế độ toàn màn hình trên</translation>
-<translation id="4772404146526168240">Cả hai màn hình</translation>
-<translation id="3766223500670287046">Màn hình từ xa</translation>
 <translation id="3930737994424905957">Đang tìm thiết bị</translation>
 <translation id="5209320130288484488">Không tìm thấy thiết bị nào</translation>
 <translation id="4415245286584082850">Không tìm thấy thiết bị nào. Hãy mở một bài viết trong trung tâm trợ giúp trên một tab mới.</translation>
@@ -2556,7 +2549,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1536754031901697553">Đang ngắt kết nối...</translation>
 <translation id="1854180393107901205">Dừng truyền</translation>
 <translation id="5307030433605830021">Nguồn không được hỗ trợ</translation>
-<translation id="4271396100647220620">Không có kết quả phù hợp</translation>
 <translation id="6972180789171089114">Âm thanh/video</translation>
 <translation id="2541002089857695151">Bạn muốn tối ưu hóa tính năng truyền toàn màn hình?</translation>
 <translation id="4144218403971135344">Trải nhiệm chất lượng video tốt hơn và tiết kiệm pin. Video sẽ chỉ phát trên màn hình có hỗ trợ tính năng Truyền.</translation>
@@ -2583,8 +2575,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (Tài khoản cho trẻ em)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     Tôi không cho rằng nên chặn trang web này!</translation>
-<translation id="8662795692588422978">Mọi người</translation>
-<translation id="6790820461102226165">Thêm người...</translation>
+<translation id="5832813618714645810">Mọi người</translation>
+<translation id="7171000599584840888">Thêm người...</translation>
 <translation id="1781771911845953849">Tài khoản và đồng bộ hóa</translation>
 <translation id="4974733135013075877">Thoát và khóa chặn trẻ em</translation>
 <translation id="3965965397408324205">Thoát khỏi <ph name="PROFILE_NAME"/></translation>
@@ -2605,23 +2597,23 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1692115862433274081">Sử dụng một tài khoản khác</translation>
 <translation id="5287425679749926365">Tài khoản của bạn</translation>
 <translation id="4801448226354548035">Ẩn tài khoản</translation>
-<translation id="8400146488506985033">Quản lý mọi người</translation>
+<translation id="2935225303485967257">Quản lý mọi người</translation>
 <translation id="7388222713940428051">Mở Cửa sổ khách</translation>
 <translation id="127668050356036882">Đóng tất cả các cửa sổ</translation>
 <translation id="8883847527783433352">Đồng bộ hóa với một tài khoản khác</translation>
 <translation id="2761898608071930085">Sử dụng một tài khoản khác</translation>
 <translation id="1464258312790801189">Tài khoản của bạn</translation>
 <translation id="6655458902729017087">Ẩn tài khoản</translation>
-<translation id="8770507190024617908">Quản lý mọi người</translation>
+<translation id="688280436658139163">Quản lý mọi người</translation>
 <translation id="2666990579225592931">Mở cửa sổ khách</translation>
 <translation id="5869948122057593679">Đóng tất cả các cửa sổ</translation>
-<translation id="7652808307838961528">Chỉnh sửa người, <ph name="PROFILE_NAME"/></translation>
-<translation id="6112952769866305444">Chỉnh sửa người, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Chỉnh sửa người, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Chỉnh sửa người, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Khách</translation>
 <translation id="475088594373173692">Người dùng đầu tiên</translation>
 <translation id="4535127706710932914">Hồ sơ mặc định</translation>
 <translation id="4389091756366370506">Người dùng <ph name="VALUE"/></translation>
-<translation id="749028671485790643">Cá nhân <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Cá nhân <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Bạn</translation>
 <translation id="3031417829280473749">Đặc vụ X</translation>
 <translation id="412730574613779332">Spandex</translation>
@@ -2697,19 +2689,19 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5068919226082848014">Pizza</translation>
 <translation id="6170470584681422115">Sandwich</translation>
 <translation id="1830550083491357902">Chưa đăng nhập</translation>
-<translation id="5941153596444580863">Thêm người...</translation>
+<translation id="5828545842856466741">Thêm người...</translation>
 <translation id="9149866541089851383">Chỉnh sửa...</translation>
 <translation id="2836635946302913370">Đăng nhập bằng tên người dùng này đã bị quản trị viên của bạn vô hiệu hóa.</translation>
 <translation id="2721695630904737430">Quản trị viên của bạn đã vô hiệu hóa người dùng được giám sát.</translation>
 <translation id="1468571364034902819">Không thể dùng hồ sơ này</translation>
 <translation id="2261323523305321874">Quản trị viên của bạn đã thực hiện thay đổi trên toàn bộ hệ thống làm vô hiệu hóa một số hồ sơ cũ.</translation>
-<translation id="2684004000387153598">Để tiếp tục, hãy nhấp vào OK, sau đó nhấp vào Thêm người để tạo hồ sơ mới cho địa chỉ email của bạn.</translation>
-<translation id="7683373461016844951">Để tiếp tục, hãy nhấp vào OK, sau đó nhấp vào Thêm người để tạo hồ sơ mới cho địa chỉ email <ph name="DOMAIN"/> của bạn.</translation>
+<translation id="2254158488150713536">Để tiếp tục, hãy nhấp vào OK, sau đó nhấp vào Thêm người để tạo hồ sơ mới cho địa chỉ email của bạn.</translation>
+<translation id="1725743343613175327">Để tiếp tục, hãy nhấp vào OK, sau đó nhấp vào Thêm người để tạo hồ sơ mới cho địa chỉ email <ph name="DOMAIN"/> của bạn.</translation>
 <translation id="8650543407998814195">Mặc dù không thể truy cập vào hồ sơ cũ của mình nữa, nhưng bạn vẫn có thể xóa hồ sơ đó.</translation>
 <translation id="2871813825302180988">Tài khoản này đã đang được sử dụng trên thiết bị này.</translation>
 <translation id="7654941827281939388">Tài khoản này đã đang được sử dụng trên máy tính này.</translation>
 <translation id="9022847679183471841">Tài khoản này đang được sử dụng trên máy tính này bởi <ph name="AVATAR_NAME"/>.</translation>
-<translation id="7463006580194749499">Thêm người</translation>
+<translation id="6921634551681321094">Thêm người</translation>
 <translation id="5389237414310520250">Không thể tạo người dùng mới. Vui lòng kiểm tra dung lượng ổ đĩa cứng và quyền của bạn rồi thử lại.</translation>
 <translation id="2673589024369449924">Tạo lối tắt trên màn hình cho người dùng này</translation>
 <translation id="2731710757838467317">Tạo người dùng được giám sát của bạn. Quá trình này có thể mất ít phút.</translation>
@@ -2717,13 +2709,13 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6690751852586194791">Chọn người dùng được giám sát để thêm vào thiết bị này.</translation>
 <translation id="5525677322972469346">Tạo người dùng được giám sát mới</translation>
 <translation id="8630903300770275248">Nhập người dùng được giám sát</translation>
-<translation id="5832805196449965646">Thêm người</translation>
-<translation id="8214962590150211830">Xóa người này</translation>
-<translation id="1451917004835509682">Thêm người được giám sát</translation>
+<translation id="4904061654709986277">Thêm người</translation>
+<translation id="6114945161119872228">Xóa người này</translation>
+<translation id="769308100792069196">Thêm người được giám sát</translation>
 <translation id="3470442499439619530">Xóa người dùng này</translation>
 <translation id="4296575653627536209">Thêm người dùng được giám sát</translation>
-<translation id="1701062906490865540">Xóa người này</translation>
-<translation id="2239921694246509981">Thêm người được giám sát</translation>
+<translation id="8006143138282906848">Xóa người này</translation>
+<translation id="6912187023601892621">Thêm người được giám sát</translation>
 <translation id="1608626060424371292">Xóa người dùng này</translation>
 <translation id="493571969993549666">Thêm người dùng được giám sát</translation>
 <translation id="9101691533782776290">Chạy ứng dụng</translation>
@@ -2745,8 +2737,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6164005077879661055">Tất cả các tệp và dữ liệu trên máy được liên kết với người dùng được giám sát sẽ vĩnh viễn bị xóa khi người dùng được giám sát này bị xóa. Các trang web đã truy cập và các cài đặt của người dùng được giám sát này có thể vẫn hiển thị với người quản lý tại <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">Tất cả các tệp và dữ liệu trên máy liên kết với người dùng này sẽ bị xóa vĩnh viễn sau khi xóa người dùng này. <ph name="USER_EMAIL"/> vẫn có thể đăng nhập vào lúc khác.</translation>
 <translation id="672213144943476270">Vui lòng mở khóa hồ sơ của bạn trước khi duyệt với tư cách khách.</translation>
-<translation id="3478685642445675458">Vui lòng mở khóa hồ sơ của bạn trước khi xóa một người.</translation>
-<translation id="4648499713050786492">Vui lòng mở khóa hồ sơ của bạn trước khi thêm một người.</translation>
+<translation id="8086119151297127544">Vui lòng mở khóa hồ sơ của bạn trước khi xóa một người.</translation>
+<translation id="7805701378418968629">Vui lòng mở khóa hồ sơ của bạn trước khi thêm một người.</translation>
 <translation id="8978225823042133615">Để sử dụng Brave, vui lòng đăng nhập</translation>
 <translation id="4893336867552636863">Thao tác này sẽ xóa vĩnh viễn dữ liệu duyệt web của bạn khỏi thiết bị này.</translation>
 <translation id="2496180316473517155">Lịch sử duyệt web</translation>
@@ -2792,9 +2784,33 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5747785204778348146">Nhà phát triển - không chính thức</translation>
 <translation id="5600706100022181951">Bản cập nhật sẽ được tải xuống bằng cách dùng <ph name="UPDATE_SIZE_MB"/> MB dữ liệu di động. Bạn có muốn tiếp tục không?</translation>
 <translation id="5402815541704507626">Tải xuống bản cập nhật bằng cách dùng dữ liệu di động</translation>
+<translation id="3493486281776271508">Cần có kết nối Internet</translation>
+<translation id="672609503628871915">Xem tính năng mới</translation>
 <translation id="5085162214018721575">Đang kiểm tra bản cập nhật</translation>
 <translation id="4570609078116869893">Tự động cập nhật Brave cho tất cả người dùng</translation>
 <translation id="7102687220333134671">Tính năng tự động cập nhật đã được bật</translation>
+<translation id="8284326494547611709">Phụ đề</translation>
+<translation id="1755601632425835748">Cỡ chữ</translation>
+<translation id="3179982752812949580">Phông chữ</translation>
+<translation id="6850286078059909152">Màu văn bản</translation>
+<translation id="8042142357103597104">Độ mờ văn bản</translation>
+<translation id="1656528038316521561">Độ mờ của nền</translation>
+<translation id="5750288053043553775">0</translation>
+<translation id="8689998525144040851">100</translation>
+<translation id="2442916515643169563">Đổ bóng văn bản</translation>
+<translation id="3599221874935822507">Nhô lên</translation>
+<translation id="274029851662193272">Hạ xuống</translation>
+<translation id="8184472985242519288">Đồng nhất</translation>
+<translation id="8619803522055190423">Bóng đổ</translation>
+<translation id="3930968231047618417">Màu nền</translation>
+<translation id="7569983096843329377">Đen</translation>
+<translation id="2713444072780614174">Trắng</translation>
+<translation id="7942349550061667556">Đỏ</translation>
+<translation id="6017514345406065928">Xanh lục</translation>
+<translation id="1555130319947370107">Xanh lam</translation>
+<translation id="5901630391730855834">Vàng</translation>
+<translation id="161042844686301425">Lục lam</translation>
+<translation id="4115378294792113321">Đỏ thẫm</translation>
 <translation id="6981982820502123353">Truy cập</translation>
 <translation id="5840822070878669614">Mở cửa hàng Brave trực tuyến</translation>
 <translation id="6073903501322152803">Thêm tính năng trợ năng</translation>
@@ -2803,6 +2819,15 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2558896001721082624">Luôn hiển thị tùy chọn trợ năng trong menu hệ thống</translation>
 <translation id="7280649757394340890">Các cài đặt giọng nói của tính năng chuyển văn bản sang lời nói</translation>
 <translation id="6635956300022133031">Chọn và tùy chỉnh giọng nói của tính năng chuyển văn bản sang lời nói</translation>
+<translation id="7991296728590311172">Tùy chọn cài đặt Tiếp cận bằng công tắc</translation>
+<translation id="1877860345998737529">Gán công tắc cho hành động</translation>
+<translation id="6129953537138746214">Dấu cách</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="6710213216561001401">Trước đó</translation>
+<translation id="2915873080513663243">Tự động quét</translation>
+<translation id="8912810933860534797">Bật tính năng tự động quét</translation>
+<translation id="6617100836880592260">Tốc độ quét: <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="7919210519031517829"><ph name="DURATION"/> giây</translation>
 <translation id="2981113813906970160">Hiển thị con trỏ chuột lớn</translation>
 <translation id="5072052264945641674">Điều chỉnh kích thước con trỏ</translation>
 <translation id="4209092469652827314">Lớn</translation>
@@ -2879,6 +2904,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="574209121243317957">Cao độ</translation>
 <translation id="3871092408932389764">Thấp nhất</translation>
 <translation id="6352773953037195952">Cao nhất</translation>
+<translation id="4430019312045809116">Âm lượng</translation>
 <translation id="3677657024345889897">Nhỏ nhất</translation>
 <translation id="167160931442925455">To nhất</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (mặc định)</translation>
@@ -2887,7 +2913,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5471768120198416576">Chào bạn! Đây là giọng nói của tính năng chuyển văn bản sang lời nói.</translation>
 <translation id="6902066522699286937">Giọng nói để nghe trước</translation>
 <translation id="304747341537320566">Công cụ chuyển văn bản sang lời nói</translation>
-<translation id="1036348656032585052">Tắt</translation>
 <translation id="1067291318998134776">Linux (Beta)</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1366177842110999534">Chạy các công cụ, trình chỉnh sửa và môi trường phát triển được tích hợp (IDE) của Linux trên <ph name="DEVICE_TYPE"/> của bạn. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Tìm hiểu thêm&lt;/a&gt;</translation>
@@ -2902,17 +2927,19 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3819257035322786455">Sao lưu</translation>
 <translation id="3233271424239923319">Sao lưu các ứng dụng và tệp Linux</translation>
 <translation id="184273675144259287">Thay thế các ứng dụng và tệp Linux của bạn bằng các ứng dụng và tệp sao lưu trước đó</translation>
+<translation id="8774379074441005279">Xác nhận khôi phục</translation>
+<translation id="3328489342742826322">Nếu bạn khôi phục từ một bản sao lưu, các dữ liệu và ứng dụng Linux hiện có trong thư mục tệp Linux của bạn sẽ bị xóa.</translation>
 <translation id="7105390788077117391">Tùy chọn USB</translation>
 <translation id="3201422919974259695">Các thiết bị USB có sẵn sẽ xuất hiện ở đây.</translation>
 <translation id="1343865611738742294">Cấp cho các ứng dụng Linux quyền truy cập vào thiết bị USB. Linux sẽ không nhớ thiết bị USB sau khi bạn rút thiết bị ra.</translation>
 <translation id="3661172646479098821">Hiện chỉ hỗ trợ các thiết bị Android.</translation>
 <translation id="1679806121152819234">Máy chủ ảo plugin</translation>
-<translation id="8343187330304787218">Quản lý các tùy chọn cài đặt để chạy Máy chủ ảo plugin trên <ph name="DEVICE_TYPE"/> của bạn</translation>
+<translation id="1878541307036593717">Thiết lập các quyền</translation>
 <translation id="7508054832109420082">Cấp quyền truy cập vào máy in</translation>
 <translation id="2258855745387252834">Để chia sẻ, hãy nhấp chuột phải vào một thư mục trong ứng dụng Files, sau đó chọn "Chia sẻ với máy chủ ảo plugin".</translation>
 <translation id="2295473777859797944">Cửa hàng Brave Software Play</translation>
 <translation id="572155275267014074">Cài đặt Android</translation>
-<translation id="4767209642168463274">Cài đặt ứng dụng và trò chơi từ Brave Software Play trên Bravebook của bạn. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Tìm hiểu thêm&lt;/a&gt;</translation>
+<translation id="9081422163530430821">Cài đặt ứng dụng và trò chơi từ Brave Software Play trên <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Tìm hiểu thêm&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Quản lý tùy chọn Android</translation>
 <translation id="4074367893748481070">Xóa Cửa hàng Brave Software Play</translation>
 <translation id="2792290659606763004">Xóa ứng dụng Android?</translation>
@@ -2923,6 +2950,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
       Điều này không ảnh hưởng đến ứng dụng hoặc nội dung trên các thiết bị khác.</translation>
 <translation id="492299503953721473">Xóa ứng dụng Android</translation>
 <translation id="7566118625369982896">Quản lý các liên kết ứng dụng Play</translation>
+<translation id="5026688690798028095">Mở trang Quản lý ứng dụng</translation>
 <translation id="2433507940547922241">Hình thức</translation>
 <translation id="1177863135347784049">Tùy chỉnh</translation>
 <translation id="1925021887439448749">Nhập địa chỉ web tùy chỉnh</translation>
@@ -2948,7 +2976,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5860033963881614850">Tắt</translation>
 <translation id="5916664084637901428">Bật</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> đang kiểm soát cài đặt này</translation>
-<translation id="6643016212128521049">Xóa</translation>
 <translation id="8465252176946159372">Không hợp lệ</translation>
 <translation id="8647834505253004544">Không phải địa chỉ web hợp lệ</translation>
 <translation id="7946586320617670168">Nguồn phải bảo mật</translation>
@@ -3019,6 +3046,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1779652936965200207">Vui lòng nhập mã xác nhận này trên "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="9088917181875854783">Vui lòng xác nhận mã xác nhận này được hiển thị trên "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="3368922792935385530">Đã kết nối</translation>
+<translation id="6727969043791803658">Đã kết nối, <ph name="BATTERY_PERCENTAGE"/>% pin</translation>
 <translation id="8874184842967597500">Chưa kết nối</translation>
 <translation id="7617366389578322136">Đang kết nối với "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="2138398485845393913">Vẫn đang kết nối với "<ph name="DEVICE_NAME"/>"</translation>
@@ -3117,7 +3145,11 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6985607387932385770">Máy in</translation>
 <translation id="1815579292149538864">Thiết lập hoặc quản lý máy in CUPS.</translation>
 <translation id="8030656706657716245">Thêm máy in</translation>
+<translation id="8025958612547562988">Lưu các máy in đã phát hiện vào hồ sơ của bạn hoặc thêm một máy in mới.</translation>
+<translation id="6980969641756020642">Các máy in hiện có để lưu</translation>
+<translation id="8151638057146502721">Định cấu hình</translation>
 <translation id="2297705863329999812">Tìm kiếm máy in</translation>
+<translation id="7956373551960864128">Các máy in bạn đã lưu</translation>
 <translation id="168991973552362966">Thêm máy in ở gần</translation>
 <translation id="3038612606416062604">Thêm máy in theo cách thủ công</translation>
 <translation id="8002274832045662704">Cấu hình máy in nâng cao</translation>
@@ -3156,17 +3188,20 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5696679855467848181">Tệp PPD hiện được sử dụng: <ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353">Không thể tự động định cấu hình cho <ph name="PRINTER_NAME"/>. Vui lòng chỉ định các tùy chọn cài đặt nâng cao cho máy in.</translation>
 <translation id="804786196054284061">Thỏa thuận cấp phép người dùng cuối</translation>
+<translation id="6318944945640833942">Không thể phát hiện máy in. Vui lòng nhập lại địa chỉ máy in.</translation>
+<translation id="2434449159125086437">Không thể thiết lập máy in. Vui lòng kiểm tra cấu hình rồi thử lại.</translation>
 <translation id="4733793249294335256">Vị trí</translation>
 <translation id="7754704193130578113">Hỏi vị trí lưu từng tệp trước khi tải xuống</translation>
 <translation id="5713072761819014678">Ngắt kết nối tài khoản Brave Software Drive</translation>
 <translation id="486635084936119914">Tự động mở một số loại tệp nhất định sau khi tải xuống</translation>
 <translation id="3653160965917900914">Chia sẻ tệp trong mạng</translation>
 <translation id="5763315388120433852">Thiết lập hoặc quản lý tính năng chia sẻ tệp trong mạng.</translation>
-<translation id="2367199180085172140">Thêm Chia sẻ tệp</translation>
+<translation id="5734697361979786483">Thêm mục chia sẻ tệp</translation>
 <translation id="247051149076336810">URL chia sẻ tệp</translation>
 <translation id="5247051749037287028">Tên hiển thị (tùy chọn)</translation>
 <translation id="3544879808695557954">Tên người dùng (tùy chọn)</translation>
 <translation id="6949434160682548041">Mật khẩu (tùy chọn)</translation>
+<translation id="8879921471468674457">Ghi nhớ thông tin đăng nhập</translation>
 <translation id="6091761513005122595">Đã kết nối thành công với thư mục chia sẻ.</translation>
 <translation id="9024158959543687197">Lỗi khi kết nối với thư mục chia sẻ. Hãy kiểm tra URL chia sẻ tệp rồi thử lại.</translation>
 <translation id="1954813140452229842">Lỗi khi kết nối với thư mục chia sẻ. Vui lòng kiểm tra thông tin đăng nhập của bạn rồi thử lại.</translation>
@@ -3175,24 +3210,44 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="706626672220389329">Lỗi khi kết nối với thư mục chia sẻ. Đã kết nối với thư mục chia sẻ được chỉ định.</translation>
 <translation id="5985458664595100876">Định dạng URL không hợp lệ. Các định dạng được hỗ trợ là \\server\share và smb://server/share.</translation>
 <translation id="6644513150317163574">Định dạng URL không hợp lệ. Bạn phải chỉ định máy chủ làm tên máy chủ khi sử dụng quy trình xác thực Đăng nhập một lần (SSO).</translation>
-<translation id="9147304170847707004">Phương thức xác thực</translation>
+<translation id="4050225813016893843">Phương thức xác thực</translation>
 <translation id="7740996059027112821">Chuẩn</translation>
 <translation id="5115338116365931134">SSO</translation>
-<translation id="174617397682753897">Tài khoản Kerberos</translation>
-<translation id="2249269794707377949">Bạn có thể quản lý tất cả các Tài khoản Kerberos dùng để đăng nhập một lần vào một số ứng dụng và trang web, cũng như các mục chia sẻ tệp tại đây.</translation>
-<translation id="1987317783729300807">Tài khoản</translation>
-<translation id="7665369617277396874">Thêm tài khoản</translation>
-<translation id="3297951628821704004">Xóa tài khoản khỏi thiết bị này</translation>
-<translation id="757941033127302446">Đã đăng nhập</translation>
-<translation id="1117602883390928720">Thêm Tài khoản Kerberos</translation>
+<translation id="1327272175893960498">Phiếu Kerberos</translation>
+<translation id="1709217939274742847">Chọn một phiếu để dùng cho việc xác thực. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
+<translation id="4739639199548674512">Phiếu</translation>
+<translation id="6112727384379533756">Thêm phiếu</translation>
+<translation id="8251441930213048644">Làm mới ngay</translation>
+<translation id="4820236583224459650">Đặt làm phiếu đang hoạt động</translation>
+<translation id="4502423230170890588">Xóa khỏi thiết bị này</translation>
+<translation id="2507253002925770350">Đã xóa phiếu</translation>
+<translation id="1436390408194692385">Có hiệu lực trong <ph name="TICKET_TIME_LEFT"/></translation>
+<translation id="2665647207431876759">Đã hết hạn</translation>
+<translation id="5565735124758917034">Đang hoạt động</translation>
+<translation id="8608618451198398104">Thêm phiếu Kerberos</translation>
+<translation id="508059534790499809">Làm mới phiếu Kerberos</translation>
+<translation id="245650153866130664">Để tự động làm mới một phiếu, hãy chọn "Ghi nhớ mật khẩu". Mật khẩu của bạn sẽ chỉ được lưu trữ trên thiết bị này.</translation>
+<translation id="3895090224522145010">Tên người dùng Kerberos</translation>
+<translation id="2325444234681128157">Ghi nhớ mật khẩu</translation>
+<translation id="4232375817808480934">Định cấu hình Kerberos</translation>
+<translation id="4392896746540753732">Chỉnh sửa tệp cấu hình này</translation>
 <translation id="6452961788130242735">Vấn đề về mạng hoặc vùng không hợp lệ</translation>
-<translation id="6542184058496424548">Tên người dùng không hợp lệ (phải ở định dạng user@realm.com)</translation>
+<translation id="9094038138851891550">Tên người dùng không hợp lệ</translation>
 <translation id="4345732373643853732">Máy chủ không nhận dạng được tên người dùng</translation>
+<translation id="5184209580557088469">Phiếu có tên người dùng này đã tồn tại</translation>
 <translation id="3975565978598857337">Không kết nối được với máy chủ của vùng</translation>
 <translation id="3841964634449506551">Mật khẩu không hợp lệ</translation>
 <translation id="1629314197035607094">Mật khẩu đã hết hạn</translation>
 <translation id="197989455406964291">KDC không hỗ trợ loại mã hóa</translation>
-<translation id="6957572737510023982">Rất tiếc! Đã xảy ra lỗi (mã lỗi <ph name="ERROR_CODE"/>).</translation>
+<translation id="2584109212074498965">Không tìm thấy phiếu Kerberos. Hãy thử lại hoặc liên hệ với quản trị viên thiết bị của tổ chức bạn. (Mã lỗi <ph name="ERROR_CODE"/>).</translation>
+<translation id="2956070239128776395">Phần lồng trong nhóm: <ph name="ERROR_LINE"/></translation>
+<translation id="8999560016882908256">Lỗi cú pháp trong phần: <ph name="ERROR_LINE"/></translation>
+<translation id="1251366534849411931">Thiếu dấu ngoặc nhọn mở: <ph name="ERROR_LINE"/></translation>
+<translation id="5315738755890845852">Thừa dấu ngoặc nhọn: <ph name="ERROR_LINE"/></translation>
+<translation id="5846200638699387931">Lỗi cú pháp về mối quan hệ: <ph name="ERROR_LINE"/></translation>
+<translation id="8952831374766033534">Không hỗ trợ tùy chọn cấu hình: <ph name="ERROR_LINE"/></translation>
+<translation id="6902336033320348843">Không hỗ trợ phần: <ph name="ERROR_LINE"/></translation>
+<translation id="604388835206766544">Không thể phân tích cú pháp cấu hình</translation>
 <translation id="3101709781009526431">Ngày và giờ</translation>
 <translation id="2059913712424898428">Múi giờ</translation>
 <translation id="4547672827276975204">Tự động đặt</translation>
@@ -3209,6 +3264,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8468750959626135884">Mở khóa <ph name="DEVICE_TYPE"/> của bạn bằng điện thoại Android.</translation>
 <translation id="3571734092741541777">Thiết lập</translation>
 <translation id="3336664756920573711">Mở khóa <ph name="DEVICE_TYPE"/> của bạn bằng điện thoại Android</translation>
+<translation id="1036348656032585052">Tắt</translation>
 <translation id="1164674268730883318">Tắt Smart Lock cho <ph name="DEVICE_TYPE"/>?</translation>
 <translation id="2739030071582769583">Nếu tắt Smart Lock cho <ph name="DEVICE_TYPE"/>, bạn sẽ không thể mở khóa thiết bị Brave bằng điện thoại của mình. Bạn cần phải nhập mật khẩu của mình.</translation>
 <translation id="4737715515457435632">Hãy kết nối với mạng</translation>
@@ -3239,6 +3295,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8426713856918551002">Đang bật</translation>
 <translation id="3652817283076144888">Đang khởi chạy</translation>
 <translation id="6528513914570774834">Cho phép người dùng khác của thiết bị sử dụng mạng này</translation>
+<translation id="2122305276694332719">Việc tự động kết nối vào một mạng ẩn sẽ cho phép những người khác nhìn thấy thiết bị và một số tùy chọn cài đặt mạng của bạn. Bạn không nên bật tùy chọn này.</translation>
 <translation id="9153934054460603056">Lưu nhận dạng và mật khẩu</translation>
 <translation id="8656768832129462377">Không kiểm tra</translation>
 <translation id="1399511500114202393">Không có chứng chỉ người dùng</translation>
@@ -3259,6 +3316,9 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8461914792118322307">Proxy</translation>
 <translation id="5213891612754844763">Hiển thị cài đặt proxy</translation>
 <translation id="4801512016965057443">Cho phép chuyển vùng dữ liệu di động</translation>
+<translation id="5457991019809708398">Bật, không chuyển vùng</translation>
+<translation id="3969092967100188979">Bật, chuyển vùng</translation>
+<translation id="5804175651771201311">Chế độ chuyển vùng đang tắt</translation>
 <translation id="4720185134442950733">Mạng dữ liệu di động</translation>
 <translation id="2517472476991765520">Quét</translation>
 <translation id="8386903983509584791">Đã quét xong</translation>
@@ -3289,7 +3349,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8452135315243592079">Thiếu thẻ SIM</translation>
 <translation id="2617342710774726426">Thẻ SIM bị khóa</translation>
 <translation id="4848518990323155912">Bật khóa thẻ SIM (yêu cầu có mã PIN để sử dụng dữ liệu di động)</translation>
-<translation id="8179976553408161302">Enter</translation>
+<translation id="5463231940765244860">Nhập</translation>
 <translation id="5075131525758602494">Nhập mã PIN của SIM</translation>
 <translation id="8431909052837336408">Thay đổi mã PIN của SIM</translation>
 <translation id="289644616180464099">Thẻ SIM bị khóa</translation>
@@ -3299,6 +3359,11 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5669691691057771421">Nhập mã PIN mới</translation>
 <translation id="5473333559083690127">Nhập lại mã PIN mới</translation>
 <translation id="1164899421101904659">Nhập khóa mở khóa mã PIN</translation>
+<translation id="5713723565110096165">Mã PIN không đúng. Bạn còn <ph name="RETRIES"/> lần thử lại.</translation>
+<translation id="8500234928660943538">PUK không đúng. Bạn còn <ph name="RETRIES"/> lần thử lại.</translation>
+<translation id="834290227245955730">Mã PIN không hợp lệ. Bạn còn <ph name="RETRIES"/> lần thử lại.</translation>
+<translation id="6015266928248016057">PUK không hợp lệ. Bạn còn <ph name="RETRIES"/> lần thử lại.</translation>
+<translation id="1272293450992660632">Giá trị mã PIN không khớp.</translation>
 <translation id="7582582252461552277">Thích mạng này</translation>
 <translation id="7469894403370665791">Tự động kết nối vào mạng này</translation>
 <translation id="4267953847983678297">Tự động kết nối với mạng di động</translation>
@@ -3307,7 +3372,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8986362086234534611">Quên</translation>
 <translation id="7881483672146086348">Xem tài khoản</translation>
 <translation id="2392369802118427583">Kích hoạt</translation>
-<translation id="8151638057146502721">Định cấu hình</translation>
 <translation id="5920543303088087579">Quản trị viên của bạn đã tắt tính năng kết nối với mạng này</translation>
 <translation id="1235458158152011030">Mạng đã biết</translation>
 <translation id="3003144360685731741">Mạng ưa thích</translation>
@@ -3429,7 +3493,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1994173015038366702">URL trang web</translation>
 <translation id="3082374807674020857"><ph name="PAGE_TITLE"/> - <ph name="PAGE_URL"/></translation>
 <translation id="2586672484245266891">Vui lòng nhập URL ngắn hơn</translation>
-<translation id="7788444488075094252">Ngôn ngữ và nhập liệu</translation>
 <translation id="4181841719683918333">Ngôn ngữ</translation>
 <translation id="5302048478445481009">Ngôn ngữ</translation>
 <translation id="6388429472088318283">Ngôn ngữ tìm kiếm</translation>
@@ -3520,6 +3583,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1432581352905426595">Quản lý công cụ tìm kiếm</translation>
 <translation id="2862205630718215619">Trợ lý Brave Software</translation>
 <translation id="6978121630131642226">Công cụ Tìm kiếm</translation>
+<translation id="1383876407941801731">Tìm kiếm</translation>
 <translation id="6410668567036790476">Thêm công cụ tìm kiếm</translation>
 <translation id="1128591060186966949">Chỉnh sửa công cụ tìm kiếm</translation>
 <translation id="5719603411793408026">Công cụ tìm kiếm mặc định</translation>
@@ -3528,15 +3592,12 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1459967076783105826">Công cụ tìm kiếm được thêm bởi tiện ích</translation>
 <translation id="6678717876183468697">URL truy vấn</translation>
 <translation id="7063311912041006059">URL có <ph name="SPECIAL_SYMBOL"/> thay thế truy vấn</translation>
-<translation id="6953878494808481632">Thông tin liên quan</translation>
-<translation id="4145922204387553806">Cho phép Trợ lý hiển thị thông tin liên quan đến nội dung trên màn hình của bạn</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
 <translation id="873163986259711670">Nói "Ok Brave Software" bất cứ lúc nào bạn muốn sử dụng Trợ lý</translation>
 <translation id="7972554217702001243">Kích hoạt Trợ lý khi có người nói “Ok Brave Software”. Để tiết kiệm pin, “Ok Brave Software” chỉ bật khi thiết bị của bạn được kết nối với nguồn điện.</translation>
 <translation id="5825412242012995131">Bật (Đề xuất)</translation>
 <translation id="5067399438976153555">Luôn bật</translation>
 <translation id="5419405654816502573">Voice Match</translation>
-<translation id="3640613767643722554">Hướng dẫn Trợ lý nhận dạng giọng nói của bạn</translation>
 <translation id="1803545009660609783">Đào tạo lại</translation>
 <translation id="5355099869024327351">Cho phép Trợ lý hiển thị thông báo cho bạn</translation>
 <translation id="133535873114485416">Phương thức nhập ưu tiên</translation>
@@ -3556,6 +3617,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5518219166343146486">Hỏi khi một trang web muốn xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm</translation>
 <translation id="2089795179672254991">Hỏi khi có một trang web muốn xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm (được đề xuất)</translation>
 <translation id="16815041330799488">Không cho phép các trang web xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm</translation>
+<translation id="2546283357679194313">Cookie và dữ liệu trang web</translation>
 <translation id="3668823961463113931">Trình xử lý</translation>
 <translation id="5689516760719285838">Vị trí</translation>
 <translation id="9219103736887031265">Hình ảnh</translation>
@@ -3659,7 +3721,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="577624874850706961">Tìm kiếm cookie</translation>
 <translation id="6196640612572343990">Chặn cookie của bên thứ ba</translation>
 <translation id="6782111308708962316">Ngăn các trang web của bên thứ ba lưu và đọc dữ liệu cookie</translation>
-<translation id="3378503599595235699">Chỉ lưu dữ liệu trên máy cho đến khi bạn thoát trình duyệt của mình</translation>
 <translation id="1274977772557788323">Cài đặt bộ nhớ của Adobe Flash Player</translation>
 <translation id="1281501490173223206">Chỉ phiên ẩn danh hiện tại</translation>
 <translation id="3479035826743782247">Phiên ẩn danh hiện tại</translation>
@@ -3691,7 +3752,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8016266267177410919">Bộ nhớ tạm thời</translation>
 <translation id="4175737294868205930">Bộ nhớ liên tục</translation>
 <translation id="1296497012903089238">Loại chứng chỉ</translation>
-<translation id="8553342806078037065">Quản lý những người khác</translation>
+<translation id="3707212204259470604">Quản lý những người khác</translation>
 <translation id="8907706281008466056">Ảnh hồ sơ trên Brave Software</translation>
 <translation id="2408955596600435184">Nhập mã PIN của bạn</translation>
 <translation id="6619990499523117484">Xác nhận mã PIN của bạn</translation>
@@ -3714,17 +3775,27 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4068776064906523561">Vân tay đã lưu</translation>
 <translation id="4562155214028662640">Thêm vân tay</translation>
 <translation id="1719312230114180055">Lưu ý: Vân tay của bạn có thể kém an toàn hơn so với việc dùng mã PIN hoặc mật khẩu mạnh.</translation>
-<translation id="6029292188939175871">xóa [<ph name="FINGERPRINT_NAME"/>], nút</translation>
+<translation id="1582955169539260415">xóa [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Ngón tay <ph name="NEW_FINGER_NUMBER"/></translation>
+<translation id="4461062867270151760">Bật tùy chọn phát nội dung đa phương tiện trên Brave ở màn hình khóa</translation>
+<translation id="7665369617277396874">Thêm tài khoản</translation>
 <translation id="5866136067811459986">Quản lý các Tài khoản Brave Software đã đăng nhập của bạn. Các trang web, ứng dụng và tiện ích trong Brave cũng như Brave Software Play có thể dùng những tài khoản này để tùy chỉnh trải nghiệm của bạn, tùy thuộc vào các quyền.</translation>
+<translation id="1987317783729300807">Tài khoản</translation>
 <translation id="8418661265246754237">Tài khoản Brave Software</translation>
 <translation id="5021750053540820849">Chưa cập nhật</translation>
+<translation id="4637083375689622795">Hành động khác, <ph name="EMAIL"/></translation>
 <translation id="3448492834076427715">Cập nhật tài khoản</translation>
+<translation id="2458379781610688953">Cập nhật tài khoản, <ph name="EMAIL"/></translation>
+<translation id="2701737434167469065">Đăng nhập, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">Xóa tài khoản này</translation>
 <translation id="4659077111144409915">Tài khoản chính</translation>
+<translation id="8864458770072227512">Đã xóa <ph name="EMAIL"/> khỏi thiết bị này</translation>
 <translation id="3158033540161634471">Thiết lập vân tay</translation>
 <translation id="1587907146729660231">Dùng ngón tay chạm vào nút nguồn</translation>
 <translation id="176193854664720708">Cảm biến vân tay nằm trong nút nguồn. Hãy chạm nhẹ vào nút này bằng ngón tay bất kỳ.</translation>
+<translation id="3615073365085224194">Chạm ngón tay của bạn vào cảm biến vân tay</translation>
+<translation id="899676909165543803">Cảm biến vân tay là phím dưới cùng bên phải của bàn phím. Hãy chạm nhẹ ngón tay bất kỳ vào đó.</translation>
+<translation id="4535767533210902251">Cảm biến vân tay là phím trên cùng bên phải của bàn phím. Hãy chạm nhẹ ngón tay bất kỳ vào đó.</translation>
 <translation id="7189965711416741966">Đã thêm vân tay.</translation>
 <translation id="9220820413868316583">Nhấc ngón tay lên rồi thử lại.</translation>
 <translation id="4534661889221639075">Hãy thử lại.</translation>
@@ -3753,7 +3824,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="9125982323641182972">Trải nghiệm Brave Software thông minh trong Brave</translation>
 <translation id="5244474230056479698">Đang đồng bộ hóa với <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Vì tài khoản này do <ph name="DOMAIN"/> quản lý nên dấu trang, lịch sử, mật khẩu và các cài đặt khác của bạn sẽ bị xóa khỏi thiết bị này. Tuy nhiên, dữ liệu của bạn sẽ vẫn được lưu trữ trong Tài khoản Brave Software và có thể được quản lý trên <ph name="BEGIN_LINK"/>Trang tổng quan Brave Software<ph name="END_LINK"/>.</translation>
-<translation id="4037889604535939429">Chỉnh sửa người</translation>
+<translation id="6906406176003824042">Chỉnh sửa người</translation>
 <translation id="6739923123728562974">Hiển thị lối tắt trên màn hình</translation>
 <translation id="2450310832094867474">Bạn muốn tắt tính năng đồng bộ hóa và đăng xuất?</translation>
 <translation id="3699920817649120894">Bạn có muốn tắt tính năng đồng bộ hóa và cá nhân hóa không?</translation>
@@ -3778,6 +3849,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4824958205181053313">Bạn muốn hủy đồng bộ hóa?</translation>
 <translation id="3058498974290601450">Bạn có thể bật tính năng đồng bộ hóa bất cứ lúc nào trong phần cài đặt</translation>
 <translation id="7529411698175791732">Kiểm tra kết nối Internet. Nếu sự cố vẫn tiếp diễn, hãy thử đăng xuất và đăng nhập lại.</translation>
+<translation id="4684427112815847243">Đồng bộ hóa mọi thứ</translation>
 <translation id="1125261911132334651">Quản lý Tài khoản Brave Software của bạn</translation>
 <translation id="4570387585180509432">Địa chỉ, số điện thoại, v.v.</translation>
 <translation id="5117427536932535467">Chủ đề và hình nền</translation>
@@ -3969,21 +4041,23 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">Hệ thống</translation>
 <translation id="2077129598763517140">Sử dụng chế độ tăng tốc phần cứng khi khả dụng</translation>
-<translation id="1889984860246851556">Mở cài đặt proxy</translation>
+<translation id="3817524650114746564">Mở tùy chọn cài đặt proxy trên máy tính của bạn</translation>
+<translation id="809792523045608178"><ph name="IDS_SHORT_PRODUCT_NAME"/> sẽ dùng tùy chọn cài đặt proxy của một tiện ích</translation>
+<translation id="2824942875887026017"><ph name="IDS_SHORT_PRODUCT_NAME"/> sẽ dùng tùy chọn cài đặt proxy từ quản trị viên của bạn</translation>
 <translation id="1940546824932169984">Thiết bị đã kết nối</translation>
 <translation id="3468999815377931311">Điện thoại Android</translation>
-<translation id="2789927670850159391">Kết nối Bravebook với điện thoại. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
+<translation id="5826395379250998812">Hãy kết nối <ph name="DEVICE_TYPE"/> với điện thoại của bạn. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Không có thiết bị nào đủ điều kiện. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Đang chờ xác minh. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
 <translation id="6518133107902771759">Xác minh</translation>
-<translation id="7179187931092694802">Mở khóa Bravebook bằng điện thoại. <ph name="LINK_BEGIN"/>Tìm hiểu thêm.<ph name="LINK_END"/></translation>
+<translation id="4142052906269098341">Mở khóa <ph name="DEVICE_TYPE"/> bằng điện thoại của bạn. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Chia sẻ kết nối tức thì</translation>
 <translation id="6415900369006735853">Kết nối Internet qua điện thoại</translation>
 <translation id="4746351372139058112">Tin nhắn</translation>
-<translation id="2248072377758660530">Gửi và nhận tin nhắn văn bản từ Bravebook. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
+<translation id="965211523698323809">Gửi và nhận tin nhắn văn bản từ <ph name="DEVICE_TYPE"/> của bạn. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
 <translation id="5153234146675181447">Quên điện thoại</translation>
-<translation id="2307631131458143837">Ngắt kết nối điện thoại khỏi Bravebook</translation>
-<translation id="1146102139091738471">Ngắt kết nối điện thoại khỏi Bravebook. Hai thiết bị này sẽ không tự động kết nối nữa.</translation>
+<translation id="4650591383426000695">Ngắt kết nối điện thoại khỏi <ph name="DEVICE_TYPE"/></translation>
+<translation id="5117139026559873716">Ngắt kết nối điện thoại khỏi <ph name="DEVICE_TYPE"/>. Hai thiết bị này sẽ không tự động kết nối nữa.</translation>
 <translation id="7878562273885520351">Mật khẩu của bạn có thể bị xâm phạm</translation>
 <translation id="1089439967362294234">Thay đổi mật khẩu</translation>
 <translation id="6187156085111579405">Các mục không liệt kê ở đây cũng có thể bị xóa, nếu cần. Hãy tìm hiểu thêm về cách &lt;a href="<ph name="URL"/>"&gt;bảo vệ khỏi phần mềm không mong muốn&lt;/a&gt; trong sách trắng về bảo mật của Brave.</translation>
@@ -4048,9 +4122,24 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3341699307020049241">Mã PIN không chính xác. Bạn còn <ph name="RETRIES"/> lần thử.</translation>
 <translation id="2439545803278355377">Nhập mã PIN mới. Mã PIN phải dài ít nhất 4 ký tự và có thể bao gồm chữ cái, số và các ký tự khác.</translation>
 <translation id="1781291988450150470">Mã PIN hiện tại</translation>
+<translation id="4617001782309103936">Quá ngắn</translation>
 <translation id="3732530910372558017">Mã PIN chỉ được dài tối đa 63 ký tự</translation>
 <translation id="1307165550267142340">Mã PIN của bạn đã được tạo</translation>
 <translation id="2699911226086014512">Thao tác mã PIN không thành công với mã <ph name="RETRIES"/>.</translation>
+<translation id="3873423927483480833">Hiển thị mã PIN</translation>
+<translation id="21354425047973905">Ẩn mã PIN</translation>
+<translation id="1901984611178952431">Quản lý dữ liệu đăng nhập</translation>
+<translation id="3286737518123001369">Xem và xóa dữ liệu đăng nhập lưu trữ trên khóa bảo mật của bạn</translation>
+<translation id="2399939490305346086">Dữ liệu đăng nhập trên khóa bảo mật</translation>
+<translation id="6841187140911216178">Để xem dữ liệu đăng nhập, hãy cắm rồi chạm vào khóa bảo mật của bạn</translation>
+<translation id="6013505829696424563">Để xem dữ liệu đăng nhập, hãy nhập mã PIN cho khóa bảo mật của bạn. Bạn sẽ cần đặt lại khóa bảo mật nếu không biết mã PIN này.</translation>
+<translation id="3713047097299026954">Khóa bảo mật này không có bất kỳ dữ liệu đăng nhập nào</translation>
+<translation id="1511997356770098059">Khóa bảo mật này không thể lưu trữ bất kỳ dữ liệu đăng nhập nào</translation>
+<translation id="579915268381781820">Khóa bảo mật của bạn đã bị rút ra.</translation>
+<translation id="117916940443676133">Bạn chưa thiết lập mã PIN để bảo vệ khóa bảo mật. Để quản lý dữ liệu đăng nhập, trước tiên, hãy tạo một mã PIN.</translation>
+<translation id="8705629851992224300">Không thể đọc khóa bảo mật của bạn</translation>
+<translation id="3076977359333237641">Đã xóa dữ liệu đăng nhập của bạn</translation>
+<translation id="3508492320654304609">Không thể xóa dữ liệu đăng nhập của bạn</translation>
 <translation id="3341703758641437857">Cho phép truy cập vào các URL của tệp</translation>
 <translation id="9003647077635673607">Cho phép trên tất cả các trang web</translation>
 <translation id="698524779381350301">Tự động cho phép truy cập trên các trang web sau đây</translation>
@@ -4163,7 +4252,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="720110658997053098">Vĩnh viễn giữ thiết bị này ở chế độ kiosk</translation>
 <translation id="1909880997794698664">Bạn có chắc chắn bạn muốn giữ vĩnh viễn thiết bị này ở chế độ kiosk không?</translation>
 <translation id="1512210426710821809">Cách duy nhất để hoàn tác hành động này là cài đặt lại <ph name="IDS_SHORT_PRODUCT_OS_NAME"/>.</translation>
-<translation id="4472575034687746823">Bắt đầu</translation>
 <translation id="8281886186245836920">Bỏ qua</translation>
 <translation id="2342740338116612727">Đã thêm dấu trang</translation>
 <translation id="7835178595033117206">Đã xóa dấu trang</translation>
@@ -4288,7 +4376,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2202898655984161076">Đã có sự cố khi liệt kê máy in. Một số máy in của bạn có thể chưa được đăng ký thành công với <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Quy trình của trình kết nối <ph name="CLOUD_PRINT_NAME"/> đã xảy ra lỗi. Khởi động lại?</translation>
 <translation id="6904655473976120856">Nhấn vào nút Ứng dụng để thoát</translation>
-<translation id="79766959863778284">Dịch vụ dành cho thiết bị cô lập XR</translation>
 <translation id="8909833622202089127">Trang web đang theo dõi vị trí của bạn</translation>
 <translation id="375636864092143889">Trang web đang sử dụng micrô của bạn</translation>
 <translation id="7256069762010468647">Trang web đang sử dụng máy ảnh của bạn</translation>

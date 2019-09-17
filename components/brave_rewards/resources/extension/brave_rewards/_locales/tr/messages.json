@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Doğrulandı",
+    "message": "Cüzdan Onaylandı",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Doğrulandı",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Kullanılamıyor",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Cüzdana tekrar bağlan",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Cüzdanınız doğrulandı!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Telaşa gerek yok. Bu, çeşitli güvenlik nedenleriyle olabilir. Yeniden bağlanmak basitçe bu sorunu çözecektir.",
+    "message": "Merak etmeyin. Bu durum çeşitli güvenlik gerekçeleriyle gerçekleşebilir. Cüzdanınızı yeniden bağlamak sorunu çözecektir.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Bu onaylı yaratıcı henüz sizin onaylı cüzdanınızdan bahşiş almak için hesabını onaylamadı (KYC). Onay yapılana kadar bahşişler cüzdanınızda kalacaktır.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Tam cüzdan onayı",
+    "description": "CTA for completing wallet verification"
   }
 }

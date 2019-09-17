@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Clicked</translation>
 <translation id="7119308337584989771">Dismissed</translation>
 <translation id="6805660603861526473">Viewed</translation>
+<translation id="2852258589816753010">BAT is not currently supported in your region. Please refer to <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for updates.</translation>
+<translation id="2564425876266960486">Error creating Brave Browser BAT card</translation>
 <translation id="7422678632904904341">Amount:</translation>
 <translation id="5923611424721173182">Current Reconcile</translation>
 <translation id="5457113250005438886">Invalid</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">Allow tips on</translation>
 <translation id="3671566813999349838">Amount</translation>
 <translation id="3819257035322786455">Backup</translation>
-<translation id="4989542687859782284">Unavailable</translation>
 <translation id="1312977698678162065">Get paid to view relevant ads that respect your privacy.</translation>
 <translation id="7655723274266132226">Now you can earn by viewing ads.</translation>
 <translation id="2975780980638932742">Brave Ads has arrived!</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">Ready to get started?</translation>
 <translation id="913775524828049259">Yes I'm Ready</translation>
 <translation id="108052542935515756">You can start with the</translation>
-<translation id="2678666039642976470">Reconnect wallet</translation>
 <translation id="194625454574835815">Recovery Key</translation>
 <translation id="6354568176665589146">Recurring</translation>
 <translation id="7577100371127227294">Monthly Tips</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">View Details</translation>
 <translation id="1988679729106502285">NOTE:</translation>
 <translation id="5815103311506128988">This creator has not yet signed up to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</translation>
+<translation id="603411408512957306">This verified creator has yet to verify (KYC) their account to receive tips from your verified wallet. Tips will remain in your wallet until they complete verification.</translation>
 <translation id="4292832015778676417">earned from ads</translation>
 <translation id="3197752845651180812">Pending contributions</translation>
 <translation id="3164105678355419142">Recurring tip</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">verify</translation>
 <translation id="8030169304546394654">Disconnected</translation>
 <translation id="8267327690882073581">Verify Wallet</translation>
-<translation id="4569155249847375786">Verified</translation>
+<translation id="543510923939676996">Wallet verified</translation>
 <translation id="7591798679868259510">Go to my Uphold account</translation>
+<translation id="3699674790322420653">Complete wallet verification</translation>
 <translation id="9200453331904391567">Disconnect from Brave Rewards</translation>
 <translation id="46988480989545156">Verify wallet</translation>
 <translation id="1554282356558968486">Our wallet service is provided by</translation>
@@ -425,6 +427,7 @@
 <translation id="5275978662119683162">Benefits of verifying</translation>
 <translation id="5166793288622772189">Ready to verify your wallet?</translation>
 <translation id="8766217572332535979">Verification is not necessary to earn rewards for creator contributions</translation>
+<translation id="4569155249847375786">Verified</translation>
 <translation id="8465442795593991224">Uphold may require you to verify your identity based on services requested.</translation>
 <translation id="723054503945711909">Brave Software Inc. does not process, store or access any of the personal information that you provide to Uphold when you create an account with them.</translation>
 <translation id="1181037720776840403">Remove</translation>

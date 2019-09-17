@@ -110,7 +110,6 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="1421502046520299169">About &amp;Brave OS</translation>
 <translation id="2534623228451928732">Update &amp;Brave OS</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="3360368475735266712">Sign in to sync and personalise Brave across your devices</translation>
 <translation id="5477319665405831211">Sync and personalise Brave across your devices</translation>
 <translation id="4934157190377700991">You're now signed in to Brave</translation>
 <translation id="4100716194836114130">This is your Brave</translation>
@@ -141,6 +140,8 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
 <translation id="6746636977031158624">Brave OS could not sync your data because your account sign-in details are out of date.</translation>
 <translation id="2999152167963026588">Brave OS could not sync your data because Sync is not available for your domain.</translation>
 <translation id="1459786048951724030">Brave OS could not sync your data due to an error signing in.</translation>
+<translation id="6813094029720377619">You clear cookies when you quit Brave. To keep syncing, change this <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">settings</translation>
 <translation id="663059986967017181">Copied to Brave</translation>
 <translation id="1457432835062259213">Brave App Launcher</translation>
 <translation id="82609232232243542">Sign in to Brave</translation>
@@ -160,7 +161,7 @@ To prevent <ph name="NEW_PROFILE_NAME"/> from accessing your account, make sure 
 
 Please check your email at <ph name="ACCOUNT_EMAIL"/> for further instructions.</translation>
 <translation id="1820843143331379651">Supervised user profiles will no longer be available starting with Brave 70.</translation>
-<translation id="3066805437003400520">This person's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">This person's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave just got better</translation>
 <translation id="7192666605334070839">Now it's easier to use Brave with your Brave Software Account and on shared computers.</translation>
 <translation id="3511996232906761537">Your web, bookmarks and other Brave stuff live here.</translation>
@@ -226,14 +227,6 @@ Please check your email at <ph name="ACCOUNT_EMAIL"/> for further instructions.<
 <translation id="7808415789955822133">Brave OS terms</translation>
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="5688839044908745927">Brave is almost ready.</translation>
-<translation id="7758342895140862711">Take Brave everywhere</translation>
-<translation id="3610173904388112975">Web browsing with Brave Software smarts</translation>
-<translation id="3479552764303398839">Not now</translation>
-<translation id="8013374903356993822">Get to Brave faster</translation>
-<translation id="7625138338483121345">Make Brave your default browser</translation>
-<translation id="5927044791090834489">Pin Brave to your taskbar</translation>
-<translation id="8933981935877469796">Select <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">Click <ph name="BEGIN_BOLD"/>Switch anyway<ph name="END_BOLD"/>, if it appears</translation>
 <translation id="3507835409099344374">Go to Brave notification settings</translation>
 <translation id="1026406809507858026">{0,plural, =0{A Brave update is available}=1{A Brave update is available}other{A Brave update has been available for # days}}</translation>
 <translation id="720532315408041257">Your administrator asks that you relaunch Brave to apply this update</translation>
@@ -253,6 +246,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL"/> for further instructions.<
 <translation id="8208853227947884571">Brave is up to date</translation>
 <translation id="6686872257969654608">About Brave OS</translation>
 <translation id="2280363356796735201">Get help with Brave OS</translation>
+<translation id="38898988211673781">Clear cookies and site data when you quit Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (copied to Brave)</translation>
 <translation id="5468853758063275923">Brave is your default browser</translation>
 <translation id="1775322105159056176">Brave cannot determine or set the default browser</translation>
@@ -269,6 +263,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL"/> for further instructions.<
 <translation id="8372880274820509128">For added security, Brave will encrypt your data.</translation>
 <translation id="7445061995866044926">Sign out of Brave?</translation>
 <translation id="7453070689008684791">Brave will access your Drive to make suggestions in the address bar</translation>
+<translation id="3360368475735266712">Sign in to sync and personalise Brave across your devices</translation>
 <translation id="9221712274065451529">This language is used to display the Brave OS UI</translation>
 <translation id="3518788198614984730">Display Brave OS in this language</translation>
 <translation id="5757460455745382269">This language is used to display the Brave UI</translation>

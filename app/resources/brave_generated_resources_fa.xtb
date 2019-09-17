@@ -40,6 +40,7 @@
 <translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
 <translation id="6123134130710658846">پنهان کردن دکمه «پاداش‌های Brave»</translation>
 <translation id="7635711399568194460">وقتی «پاداش‌های Brave» فعال نباشد، دکمه «پاداش‌های Brave» را در نوار مکان پنهان می‌کند</translation>
+<translation id="4262166817826183486">همیشه نشانک‌ها در صفحه برگه جدید نشان داده شود</translation>
 <translation id="7965178729203412357">هویت تور جدید</translation>
 <translation id="8511502469534942133">اتصال Tor جدید برای این سایت</translation>
 <translation id="8784924142044142231">خروج از تور</translation>
@@ -69,7 +70,6 @@
 <translation id="9075744464571452108">تشخیص دستگاه</translation>
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="4824468494729001999">مسدود کردن اسکریپت‌ها</translation>
-<translation id="7498695072878479744">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
@@ -93,12 +93,14 @@
 <translation id="8721331068159819483">مشابه macOS</translation>
 <translation id="6786747875388722282">افزونه‌ها</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
+<translation id="5554028991651120544">کیف پول اتریوم و مرورگر Dapp را در Brave ارائه می‌دهد.</translation>
 <translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
 <translation id="1765684547504191670">از مؤلفه «رهیاب رسانه» برای فعال کردن Chromecast در مرورگر استفاده می‌کند.</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="4154389611571860454">برای پشتیبانی از IPFS در مرورگر، از افزونه همراه IPFS استفاده می‌کند.</translation>
 <translation id="8137559199583651773">مدیریت افزونه‌ها</translation>
+<translation id="7013485839273047434">دریافت افزونه‌های بیشتر</translation>
 <translation id="4928988318462976765">فروشگاه افزونه‌های وب</translation>
 <translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
 <translation id="4846154056248462491">در برگه خروج</translation>
@@ -111,4 +113,19 @@
 <translation id="8303432794159193481">برنامه‌های Dev مرورگر Brave</translation>
 <translation id="8292967014767479012">برنامه‌های مرورگر Brave</translation>
 <translation id="4743468424889072281">برنامه‌های Development مرورگر Brave</translation>
+<translation id="4568409039725976900">نارنجی Brave</translation>
+<translation id="1197088940767939838">پوست پرتقال</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Envy</translation>
+<translation id="138218114945450791">آسمان صاف</translation>
+<translation id="1555130319947370107">آبی Bondy</translation>
+<translation id="4159784952369912983">Blurple</translation>
+<translation id="7569983096843329377">شوالیه سیاه</translation>
+<translation id="6287165605525340193">شکل پوست پرتقال</translation>
+<translation id="6301585275578119299">شکل Nana</translation>
+<translation id="2732216714908598537">شکل Envy</translation>
+<translation id="3657793125124583718">شکل آسمان صاف</translation>
+<translation id="7184617102219850286">شکل آبی Bondy</translation>
+<translation id="5032225845552050824">شکل Blurple</translation>
+<translation id="815851617499295136">شکل شوالیه سیاه</translation>
 </translationbundle>

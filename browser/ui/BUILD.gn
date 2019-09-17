@@ -87,6 +87,8 @@ source_set("ui") {
       "views/frame/brave_browser_view.h",
       "views/importer/brave_import_lock_dialog_view.cc",
       "views/importer/brave_import_lock_dialog_view.h",
+      "views/reader_mode/brave_reader_mode_icon_view.cc",
+      "views/reader_mode/brave_reader_mode_icon_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
       "views/toolbar/bookmark_button.cc",

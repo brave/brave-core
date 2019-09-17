@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Terverifikasi",
+    "message": "Dompet Terverifikasi",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Terverifikasi",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Tidak tersedia",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Sambungkan ulang dompet",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Dompet Anda terverifikasi!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Jangan khawatir. Hal ini dapat terjadi untuk berbagai alasan keamanan. Cukup dengan menghubungkan kembali ke sana akan memecahkan masalah ini.",
+    "message": "Tak perlu khawatir. Ini dapat terjadi karena berbagai alasan keamanan. Menghubungkan ulang dompet Anda akan mengatasi masalah ini.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Kreator terverifikasi ini belum memverifikasi (KYC)  akun mereka untuk menerima tips dari dompet terverifikasi Anda. Tips akan tetap ada di dompet Anda sampai mereka menyelesaikan proses verifikasi.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Selesaikan verifikasi dompet",
+    "description": "CTA for completing wallet verification"
   }
 }

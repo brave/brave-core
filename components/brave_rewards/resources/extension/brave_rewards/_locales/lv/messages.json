@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Pārbaudīts",
+    "message": "Maks verificēts",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Pārbaudīts",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Nav pieejams",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Atkārtoti pievienot maku",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Jūsu maks ir verificēts!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Tas nekas. Tā var notikt dažādu drošības apsvērumu dēļ. Vienkārši izveidojot savienojumu ar to no jauna, šis jautājums tiks atrisināts.",
+    "message": "Satraukumam nav pamata. Tas var notikt vairāku ar drošību saistītu iemeslu dēļ. Atkārtoti pievienojot maku, šī problēma tiks atrisināta.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Šim pārbaudītajam izveidotājam vēl ir jāverificē (KYC) savs konts, lai saņemtu ieteikumus no jūsu apstiprinātā maka. Ieteikumi atradīsies jūsu makā, līdz verifikācija tiks pabeigta.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Pabeigt maka verifikāciju",
+    "description": "CTA for completing wallet verification"
   }
 }

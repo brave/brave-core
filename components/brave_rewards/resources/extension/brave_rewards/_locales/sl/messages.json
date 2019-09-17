@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Preverjeno",
+    "message": "Denarnica preverjena",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -535,14 +535,6 @@
     "message": "Preverjeno",
     "description": "Status button that tells user that he is verified"
   },
-  "balanceUnavailable":  {
-    "message": "Ni na voljo",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Ponovno povežite denarnico",
-    "description": "CTA text to connect wallet again"
-  },
   "walletVerifiedNotification":  {
     "message": "Vaša denarnica je preverjena!",
     "description": "Title for notification when wallet becomes verified"
@@ -562,7 +554,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Brez skrbi. To se lahko zgodi iz različnih varnostnih razlogov. Preprosto se znova povežite nanj in težava bo odpravljena.",
+    "message": "Brez skrbi. To se lahko zgodi iz različnih varnostnih razlogov. Ponovno povežite denarnico in težava bo odpravljena.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Ta preverjeni ustvarjalec še ni potrdil (KYC) svojega računa, da bi prejel nasvete iz preverjene denarnice. Nasveti ostanejo v vaši denarnici, dokler preverjanje ni končano.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Zaključi preverjanje denarnice",
+    "description": "CTA for completing wallet verification"
   }
 }

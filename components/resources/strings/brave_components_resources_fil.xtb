@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Na-click</translation>
 <translation id="7119308337584989771">Na-dismiss</translation>
 <translation id="6805660603861526473">Natingnan</translation>
+<translation id="2852258589816753010">Hindi kasalukuyang sinusuportahan sa iyong rehiyon ang BAT. Mangyaring sumangguni <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>dito<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para sa mga update.</translation>
+<translation id="2564425876266960486">Nagka-error sa paggawa ng Brave Browser BAT</translation>
 <translation id="7422678632904904341">Halaga:</translation>
 <translation id="5923611424721173182">Kasalukuyang Pag-reconcile</translation>
 <translation id="5457113250005438886">Hindi wasto</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">Payagan ang mga tip sa</translation>
 <translation id="3671566813999349838">Halaga</translation>
 <translation id="3819257035322786455">Backup</translation>
-<translation id="4989542687859782284">Hindi available</translation>
 <translation id="1312977698678162065">Mabayaran para manood ng mga kaugnay na ad na nagpapahalaga sa iyong privacy.</translation>
 <translation id="7655723274266132226">Maaari ka nang kumita ngayon sa pamamagitan ng panonood ng mga ad.</translation>
 <translation id="2975780980638932742">Dumating na ang Brave Ads!</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">Handa ka na bang magsimula?</translation>
 <translation id="913775524828049259">Oo, Handa na Ako</translation>
 <translation id="108052542935515756">Maaari kang magsimula sa</translation>
-<translation id="2678666039642976470">Muling ikonekta ang wallet</translation>
 <translation id="194625454574835815">Recovery Key</translation>
 <translation id="6354568176665589146">Umuulit</translation>
 <translation id="7577100371127227294">Mga Buwanang Tip</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">Tingnan ang Mga Detalye</translation>
 <translation id="1988679729106502285">TANDAAN:</translation>
 <translation id="5815103311506128988">Hindi pa nagsa-sign up ang creator na ito upang makatanggap ng mga ambag mula sa mga user ng Brave. Patuloy na susubukan ng iyong browser na mag-ambag hanggang sa mag-verify sila, o hanggang sa lumipas ang 90 araw.</translation>
+<translation id="603411408512957306">Hindi pa nagagawa ng na-verify na creator na ito na i-verify (KYC) ang kanyang account para makatanggap ng mga tip mula sa iyong na-verify na wallet. Mananatili ang mga tip sa iyong wallet hanggang sa makumpleto ng mga ito ang pag-verify.</translation>
 <translation id="4292832015778676417">kinita sa ads</translation>
 <translation id="3197752845651180812">Mga nakabinbing kontribusyon</translation>
 <translation id="3164105678355419142">Umuulit na tip</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">i-verify</translation>
 <translation id="8030169304546394654">Nadiskonekta</translation>
 <translation id="8267327690882073581">I-verify ang Wallet</translation>
-<translation id="4569155249847375786">Na-verify</translation>
+<translation id="543510923939676996">Na-verify ang Wallet</translation>
 <translation id="7591798679868259510">Pumunta sa aking Uphold account</translation>
+<translation id="3699674790322420653">Kumpletuhin ang pag-verify ng wallet</translation>
 <translation id="9200453331904391567">Idiskonekta mula sa Mga Reward ng Brave</translation>
 <translation id="46988480989545156">I-verify ang wallet</translation>
 <translation id="1554282356558968486">Ang aming serbisyo ng wallet ay mula sa</translation>
@@ -425,6 +427,7 @@
 <translation id="5275978662119683162">Mga benepisyo ng pag-verify</translation>
 <translation id="5166793288622772189">Handa nang i-verify ang iyong wallet?</translation>
 <translation id="8766217572332535979">Hindi kinakailangan ang pag-verify para makakuha ng mga reward para sa mga kontribusyon ng creator</translation>
+<translation id="4569155249847375786">Na-verify</translation>
 <translation id="8465442795593991224">Puwedeng hilingin sa iyo ng Uphold na i-verify mo ang iyong pagkakakilanlan batay sa mga hiniling na serbisyo.</translation>
 <translation id="723054503945711909">Hindi pinoproseso, sino-store, o ina-access ng Brave Software Inc. ang anuman sa personal na impormasyon na ibinigay mo sa Uphold noong gumawa ka ng account sa kanila.</translation>
 <translation id="1181037720776840403">Alisin</translation>

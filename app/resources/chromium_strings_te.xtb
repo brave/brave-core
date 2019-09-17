@@ -104,7 +104,6 @@
 <translation id="1421502046520299169">&amp;Brave OS గురించి</translation>
 <translation id="2534623228451928732">&amp;Brave OSని అప్‌డేట్ చేయండి</translation>
 <translation id="8447483940522230788">Brave సహాయకం</translation>
-<translation id="3360368475735266712">మీ పరికరాల అంతటా Braveని సమకాలీకరించడం మరియు వ్యక్తిగతీకరించడం కోసం సైన్ ఇన్ చేయండి</translation>
 <translation id="5477319665405831211">మీ పరికరాల అంతటా Braveని సమకాలీకరించండి మరియు వ్యక్తిగతీకరించండి</translation>
 <translation id="4934157190377700991">మీరు ఇప్పుడు Braveకు సైన్ ఇన్ చేసారు</translation>
 <translation id="4100716194836114130">ఇది మీ Brave</translation>
@@ -135,6 +134,8 @@
 <translation id="6746636977031158624">మీ ఖాతా సైన్-ఇన్ వివరాల గడువు ముగిసినందున Brave OS మీ డేటాను సమకాలీకరించలేకపోయింది.</translation>
 <translation id="2999152167963026588">మీ డొమైన్ కోసం సమకాలీకరణ అందుబాటులో లేనందున Brave OS మీ డేటాను సమకాలీకరించలేకపోయింది.</translation>
 <translation id="1459786048951724030">సైన్ ఇన్ చేయడంలో ఎర్రర్ సంభవించినందున Brave OS మీ డేటాను సమకాలీకరించలేకపోయింది.</translation>
+<translation id="6813094029720377619">మీరు Brave నుండి నిష్క్రమించినప్పుడు, కుక్కీలను క్లియర్ చేయండి. సింక్ చేయడం కొనసాగించడానికి, ఈ <ph name="COOKIE_SETTINGS_LINK"/>ను మార్చండి.</translation>
+<translation id="3340978935015468852">సెట్టింగ్‌లు</translation>
 <translation id="663059986967017181">Braveకి కాపీ చేయబడింది</translation>
 <translation id="1457432835062259213">Brave యాప్ లాంచర్</translation>
 <translation id="82609232232243542">Braveకు సైన్ ఇన్ చేయండి</translation>
@@ -154,7 +155,7 @@
 
 దయచేసి తదుపరి సూచనల కోసం <ph name="ACCOUNT_EMAIL"/>లో మీ ఇమెయిల్‌ను చూడండి.</translation>
 <translation id="1820843143331379651">Brave 70తో మొదలు పెట్టి, తర్వాతి వెర్షన్‌లలో పర్యవేక్షించబడే వినియోగదారు ప్రొఫైల్‌లు ఇకపై అందుబాటులో ఉండవు.</translation>
-<translation id="3066805437003400520">ఈ వ్యక్తి బ్రౌజింగ్ డేటా‌ ఈ పరికరం నుండి తొలగించబడుతుంది. డేటాను పునరుద్ధరించడానికి, <ph name="USER_EMAIL"/>గా Braveకు సైన్ ఇన్ చేయండి.</translation>
+<translation id="669092380621816981">ఈ వ్యక్తి బ్రౌజింగ్ డేటా‌ ఈ పరికరం నుండి తొలగించబడుతుంది. డేటాను పునరుద్ధరించడానికి, <ph name="USER_EMAIL"/>గా Braveకు సైన్ ఇన్ చేయండి.</translation>
 <translation id="2827121003398607864">Brave ఇప్పుడు మెరుగైంది</translation>
 <translation id="7192666605334070839">ఇప్పుడు మీ Brave Software ఖాతాతో, షేర్ చేయ‌బ‌డిన కంప్యూట‌ర్‌ల‌లో Braveను సులభంగా ఉపయోగించవచ్చు.</translation>
 <translation id="3511996232906761537">మీ వెబ్, బుక్‌మార్క్‌లు మరియు ఇతర Brave అంశాలు ఇక్కడ చూపబడతాయి.</translation>
@@ -220,14 +221,6 @@
 <translation id="7808415789955822133">Brave OS నిబంధనలు</translation>
 <translation id="7207456302801184289">Braveకు స్వాగతం</translation>
 <translation id="5688839044908745927">Brave దాదాపు సిద్ధంగా ఉంది.</translation>
-<translation id="7758342895140862711">Braveని ప్రతిచోటుకు తీసుకెళ్లండి</translation>
-<translation id="3610173904388112975">Brave Software స్మార్ట్‌లతో వెబ్ బ్రౌజింగ్</translation>
-<translation id="3479552764303398839">ఇప్పుడు కాదు</translation>
-<translation id="8013374903356993822">Braveకి వేగవంతంగా వెళ్లండి</translation>
-<translation id="7625138338483121345">Braveని మీ డిఫాల్ట్ బ్రౌజర్‌గా చేయండి</translation>
-<translation id="5927044791090834489">Braveని మీ విధి పట్టీకి పిన్ చేయండి</translation>
-<translation id="8933981935877469796"><ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/>ని ఎంచుకోండి</translation>
-<translation id="1585657529869845941">ఇది కనిపిస్తే, <ph name="BEGIN_BOLD"/>అయిన కూడా మార్చు<ph name="END_BOLD"/>ను క్లిక్ చేయండి</translation>
 <translation id="3507835409099344374">Brave నోటిఫికేషన్ సెట్టింగ్‌లకు వెళ్లు</translation>
 <translation id="1026406809507858026">{0,plural, =0{ఒక Brave అప్‌డేట్ అందుబాటులో ఉంది}=1{ఒక Brave అప్‌డేట్ అందుబాటులో ఉంది}other{ఒక Brave అప్‌డేట్ # రోజులుగా అందుబాటులో ఉంది}}</translation>
 <translation id="720532315408041257">ఈ అప్‌డేట్‌ని వర్తింపజేయడం కోసం మీరు Braveని పునఃప్రారంభించాలని మీ నిర్వాహకుడు కోరుతున్నారు</translation>
@@ -247,6 +240,7 @@
 <translation id="8208853227947884571">Brave తాజాగా ఉంది</translation>
 <translation id="6686872257969654608">Brave OS గురించి</translation>
 <translation id="2280363356796735201">Brave OSతో సహాయాన్ని పొందండి</translation>
+<translation id="38898988211673781">మీరు Brave నుండి నిష్క్రమించినప్పుడు, కుక్కీలు, సైట్ డేటాను క్లియర్ చేయండి</translation>
 <translation id="5253815230176279256">Brave Software Pay (Braveకి కాపీ చేయబడింది)</translation>
 <translation id="5468853758063275923">మీ డిఫాల్ట్ బ్రౌజర్ Brave</translation>
 <translation id="1775322105159056176">Brave డిఫాల్ట్ బ్రౌజర్‌ను నిశ్చయించలేదు లేదా సెట్ చేయలేదు</translation>
@@ -263,6 +257,7 @@
 <translation id="8372880274820509128">అదనపు భద్రత కోసం, Brave మీ డేటాను గుప్తీకరిస్తుంది.</translation>
 <translation id="7445061995866044926">Brave నుండి సైన్ అవుట్ చేయాలా?</translation>
 <translation id="7453070689008684791">చిరునామా బార్‌లో సూచనలు చేయడానికి Brave మీ డిస్క్‌ను యాక్సెస్ చేస్తుంది</translation>
+<translation id="3360368475735266712">మీ పరికరాల అంతటా Braveని సమకాలీకరించడం మరియు వ్యక్తిగతీకరించడం కోసం సైన్ ఇన్ చేయండి</translation>
 <translation id="9221712274065451529">Brave OS UI చూపడానికి ఈ భాష ఉపయోగించబడింది</translation>
 <translation id="3518788198614984730">Brave OSను ఈ భాషలో ప్రదర్శించు</translation>
 <translation id="5757460455745382269">Brave UI ప్రదర్శించడం కోసం ఈ భాష ఉపయోగించబడింది</translation>

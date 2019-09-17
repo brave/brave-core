@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/google_update_settings.cc b/chrome/installer/util/google_update_settings.cc
-index cd16813d1e1be175cf52c330c2437bfe6288f01a..3b5ca9696b9ebc1e52556316a43c703d3aa20542 100644
+index fb36b01fecc4387a41c981be24611cb1f75db8ff..0b94b0a22c29db3dc2a861ed669412d95ddc7e1e 100644
 --- a/chrome/installer/util/google_update_settings.cc
 +++ b/chrome/installer/util/google_update_settings.cc
 @@ -28,7 +28,11 @@ using base::win::RegKey;
@@ -26,7 +26,7 @@ index cd16813d1e1be175cf52c330c2437bfe6288f01a..3b5ca9696b9ebc1e52556316a43c703d
  const GoogleUpdateSettings::UpdatePolicy
  GoogleUpdateSettings::kDefaultUpdatePolicy =
  #if defined(GOOGLE_CHROME_BUILD)
-@@ -834,3 +843,7 @@ bool GoogleUpdateSettings::ReadExperimentLabels(
+@@ -835,3 +844,7 @@ bool GoogleUpdateSettings::ReadExperimentLabels(
  
    return result == ERROR_SUCCESS;
  }
