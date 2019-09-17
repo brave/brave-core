@@ -148,7 +148,8 @@ class LedgerImpl : public ledger::Ledger,
 
   bool GetAutoContribute() const override;
 
-  void GetBalanceReport(ledger::ACTIVITY_MONTH month,
+  void GetBalanceReport(
+      ledger::ACTIVITY_MONTH month,
       int year,
       ledger::GetBalanceReportCallback callback) const override;
 

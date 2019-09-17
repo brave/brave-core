@@ -182,7 +182,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual std::string GetWalletPassphrase() const = 0;
 
-  virtual void GetBalanceReport(ACTIVITY_MONTH month,
+  virtual void GetBalanceReport(
+      ACTIVITY_MONTH month,
       int year,
       ledger::GetBalanceReportCallback callback) const = 0;
 

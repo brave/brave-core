@@ -712,7 +712,7 @@ void LedgerImpl::GetBalanceReport(
     ledger::ACTIVITY_MONTH month,
     int year,
     ledger::GetBalanceReportCallback callback) const {
-  bat_publisher_->getBalanceReport(month, year, callback);
+  bat_publisher_->GetBalanceReport(month, year, callback);
 }
 
 std::map<std::string, ledger::BalanceReportInfoPtr>

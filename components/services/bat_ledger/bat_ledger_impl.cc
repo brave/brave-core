@@ -354,7 +354,9 @@ void BatLedgerImpl::GetBalanceReport(int32_t month, int32_t year,
     GetBalanceReportCallback callback) {
   auto* holder = new CallbackHolder<GetBalanceReportCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->GetBalanceReport(ToLedgerPublisherMonth(month), year,
+  ledger_->GetBalanceReport(
+      ToLedgerPublisherMonth(month),
+      year,
       std::bind(BatLedgerImpl::OnGetBalanceReport, holder, _1, _2));
 }
 
