@@ -978,13 +978,13 @@ bool GRANT::loadFromJsonInternal(const std::string& json) {
     probi = d["probi"].GetString();
     if (d.HasMember("type") && d["type"].IsString()) {
       type = d["type"].GetString();
-    } else {
-#if defined(OS_ANDROID)
-      type = "android";
-#else
-      type = "ugp";
-#endif
     }
+
+#if defined(OS_ANDROID)
+    if (type == "ugp") {
+      type = "android";
+    }
+#endif
   }
 
   return !error;
