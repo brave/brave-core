@@ -8,6 +8,7 @@
 
 #include <cstddef>
 
+#include "build/build_config.h"
 #include "components/search_engines/prepopulated_engines.h"
 
 namespace TemplateURLPrepopulateData {
@@ -31,6 +32,9 @@ enum BravePrepopulatedEngineID : unsigned int {
   BRAVE_PREPOPULATED_ENGINES_START = 500,
   PREPOPULATED_ENGINE_ID_AMAZON = 500,     // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+#if defined(OS_ANDROID)
+  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
+#endif
   PREPOPULATED_ENGINE_ID_ECOSIA,           // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_FINDX,            // No longer exists (11/2018).
   PREPOPULATED_ENGINE_ID_GITHUB,           // No longer in defaults (2/2019).
@@ -48,6 +52,9 @@ enum BravePrepopulatedEngineID : unsigned int {
 };
 
 extern const PrepopulatedEngine duckduckgo;
+#if defined(OS_ANDROID)
+extern const PrepopulatedEngine duckduckgo_lite;
+#endif
 extern const PrepopulatedEngine qwant;
 extern const PrepopulatedEngine startpage;
 
