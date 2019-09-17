@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">已单击</translation>
 <translation id="7119308337584989771">已放弃</translation>
 <translation id="6805660603861526473">已查看</translation>
+<translation id="2852258589816753010">您所在的地区不支持 BAT。请参考 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> 获取更新。</translation>
+<translation id="2564425876266960486">创建 Brave 浏览器 BAT 卡出错</translation>
 <translation id="7422678632904904341">金额：</translation>
 <translation id="5923611424721173182">当前协调</translation>
 <translation id="5457113250005438886">无效</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">允许打赏</translation>
 <translation id="3671566813999349838">金额</translation>
 <translation id="3819257035322786455">备份</translation>
-<translation id="4989542687859782284">不可用</translation>
 <translation id="1312977698678162065">付费浏览尊重您隐私的相关广告。</translation>
 <translation id="7655723274266132226">现在您可以通过看广告来赚钱。</translation>
 <translation id="2975780980638932742">Brave 广告来啦！</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">准备好开始了吗？</translation>
 <translation id="913775524828049259">准备就绪</translation>
 <translation id="108052542935515756">您可以开始</translation>
-<translation id="2678666039642976470">重新连接钱包</translation>
 <translation id="194625454574835815">恢复密钥</translation>
 <translation id="6354568176665589146">再次发生</translation>
 <translation id="7577100371127227294">每月赏金</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">查看详情</translation>
 <translation id="1988679729106502285">注：</translation>
 <translation id="5815103311506128988">此创建者还未注册为Brave用户捐款的接收者。您的浏览器将会继续尝试捐款，直到该用户通过验证，但不会超过90天。</translation>
+<translation id="603411408512957306">经过验证的创作者尚未验证 (KYC) 其帐户，以便从经过验证的钱包中收到小费。在完成验证之前，小费将保留在您的钱包中。</translation>
 <translation id="4292832015778676417">从广告中赚取</translation>
 <translation id="3197752845651180812">待处理的捐款</translation>
 <translation id="3164105678355419142">重复打赏</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">验证</translation>
 <translation id="8030169304546394654">已断开连接</translation>
 <translation id="8267327690882073581">验证钱包</translation>
-<translation id="4569155249847375786">已验证</translation>
+<translation id="543510923939676996">钱包已验证</translation>
 <translation id="7591798679868259510">转至我的 Uphold 账户</translation>
+<translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
 <translation id="46988480989545156">验证钱包</translation>
 <translation id="1554282356558968486">我们的钱包服务提供商：</translation>
@@ -419,6 +421,7 @@
 <translation id="5275978662119683162">验证优势</translation>
 <translation id="5166793288622772189">准备好验证钱包了吗？</translation>
 <translation id="8766217572332535979">无需验证，即可赚取创作者贡献奖励</translation>
+<translation id="4569155249847375786">已验证</translation>
 <translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
 <translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
 <translation id="1181037720776840403">删除</translation>

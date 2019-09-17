@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Kliknuto</translation>
 <translation id="7119308337584989771">Odbačeno</translation>
 <translation id="6805660603861526473">Prikazano</translation>
+<translation id="2852258589816753010">BAT trenutno nije podržan u vašem regionu. Molimo Vas pogledajte ažuriranja na <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
+<translation id="2564425876266960486">Greška prilikom kreiranja Brave Browser BAT kartice</translation>
 <translation id="7422678632904904341">Iznos:</translation>
 <translation id="5923611424721173182">Trenutno izmirenje</translation>
 <translation id="5457113250005438886">Nevažeće</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">Dozvolite napojnice na</translation>
 <translation id="3671566813999349838">Iznos</translation>
 <translation id="3819257035322786455">Rezervna kopija</translation>
-<translation id="4989542687859782284">Nedostupno</translation>
 <translation id="1312977698678162065">Budite plaćeni za pregledanje relevantnih reklama koje poštuju vašu privatnost.</translation>
 <translation id="7655723274266132226">Sada možete da zarađujete pregleđivanjem reklama.</translation>
 <translation id="2975780980638932742">Brave Ads je stigao!</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">Spremni da krenete?</translation>
 <translation id="913775524828049259">Da, ja sam spreman</translation>
 <translation id="108052542935515756">Možete početi sa</translation>
-<translation id="2678666039642976470">Ponovo povežite novčanik</translation>
 <translation id="194625454574835815">Šifra za oporavak</translation>
 <translation id="6354568176665589146">Ponavljajuće</translation>
 <translation id="7577100371127227294">Mesečne donacije</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">Vidi detalje</translation>
 <translation id="1988679729106502285">BELEŠKA:</translation>
 <translation id="5815103311506128988">Ovaj kreator se još nije prijavio za primanje doprinosa od Brave korisnika. Vaš pretraživač će nastaviti da pokušava da doprinese dok ne potvrde ili dok ne prođe 90 dana.</translation>
+<translation id="603411408512957306">Ovaj verifikovani autor još uvek nije verifikovao (KYC) svoj nalog kako bi primio napojnice iz Vašeg verifikovanog novčanika. Napojnice će ostati u Vašem novčaniku sve dok ne završe verifikaciju.</translation>
 <translation id="4292832015778676417">zarađeno od reklama</translation>
 <translation id="3197752845651180812">Doprinosi na čekanju</translation>
 <translation id="3164105678355419142">Periodična napojnica</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">verifikuj</translation>
 <translation id="8030169304546394654">Veza je prekinuta</translation>
 <translation id="8267327690882073581">Verifikuj novčanik</translation>
-<translation id="4569155249847375786">Verifikovano</translation>
+<translation id="543510923939676996">Novčanik verifikovan</translation>
 <translation id="7591798679868259510">Idi na moj Uphold nalog</translation>
+<translation id="3699674790322420653">Dovršite verifikaciju novčanika</translation>
 <translation id="9200453331904391567">Prekini vezu sa Brave nagradama</translation>
 <translation id="46988480989545156">Verifikuj novčanik</translation>
 <translation id="1554282356558968486">Našu uslugu novčanika pruža</translation>
@@ -419,6 +421,7 @@
 <translation id="5275978662119683162">Pogodnosti usled verifikovanja</translation>
 <translation id="5166793288622772189">Jeste li spremni da verifikujete svoj novčanik?</translation>
 <translation id="8766217572332535979">Nije neophodna verifikacija da biste zaradili nagrade za autorske doprinose</translation>
+<translation id="4569155249847375786">Verifikovano</translation>
 <translation id="8465442795593991224">„Uphold” će možda zahtevati da potvrdite svoj identitet na osnovu traženih usluga.</translation>
 <translation id="723054503945711909">„Brave Software Inc.” ne obrađuje, ne čuva, niti pristupa bilo kojim ličnim podacima koje dajete „Uphold-u” pri otvaranju naloga kod njih.</translation>
 <translation id="1181037720776840403">Ukloni</translation>

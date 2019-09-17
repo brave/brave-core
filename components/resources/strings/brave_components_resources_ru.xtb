@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Нажато</translation>
 <translation id="7119308337584989771">Отклонено</translation>
 <translation id="6805660603861526473">Просмотрено</translation>
+<translation id="2852258589816753010">В настоящее время BAT не поддерживается в вашем регионе. Обратитесь к <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>этой статье<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> для получения последней информации.</translation>
+<translation id="2564425876266960486">Ошибка при создании карты BAT браузера Brave</translation>
 <translation id="7422678632904904341">Сумма:</translation>
 <translation id="5923611424721173182">Текущее согласование</translation>
 <translation id="5457113250005438886">Неверно</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">Разрешить советы по</translation>
 <translation id="3671566813999349838">Сумма</translation>
 <translation id="3819257035322786455">Создать резервную копию</translation>
-<translation id="4989542687859782284">Недоступен</translation>
 <translation id="1312977698678162065">Получайте оплату за просмотр интересной для вас рекламы с сохранением вашей конфиденциальности.</translation>
 <translation id="7655723274266132226">Теперь вы можете зарабатывать, просматривая рекламу.</translation>
 <translation id="2975780980638932742">Brave Ads уже здесь!</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">Готовы начать?</translation>
 <translation id="913775524828049259">Да, я готов</translation>
 <translation id="108052542935515756">Вы можете начать с</translation>
-<translation id="2678666039642976470">Переподключить кошелек</translation>
 <translation id="194625454574835815">Ключ восстановления</translation>
 <translation id="6354568176665589146">Периодический</translation>
 <translation id="7577100371127227294">Ежемесячные рекомендации</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">Показать детали</translation>
 <translation id="1988679729106502285">ВАЖНО:</translation>
 <translation id="5815103311506128988">Не удалось отправить грант в размере BAT {{reservedAmount}}, поскольку его получатель еще не участвует в программе дарения. Браузер будет повторять попытку до успешного результата, но не более 90 дней.</translation>
+<translation id="603411408512957306">Этому проверенному создателю контента все еще нужно пройти проверку (ЗСК) своей учетной записи, чтобы получать пожертвования с вашего проверенного кошелька. Пожертвования останутся в вашем кошельке до завершения проверки.</translation>
 <translation id="4292832015778676417">заработано на рекламе</translation>
 <translation id="3197752845651180812">Отложенные пожертвования</translation>
 <translation id="3164105678355419142">Регулярная поддержка</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">проверить</translation>
 <translation id="8030169304546394654">Отключен</translation>
 <translation id="8267327690882073581">Проверить кошелек</translation>
-<translation id="4569155249847375786">Проверен</translation>
+<translation id="543510923939676996">Кошелек проверен</translation>
 <translation id="7591798679868259510">Перейти к моей учетной записи Uphold</translation>
+<translation id="3699674790322420653">Завершить проверку кошелька</translation>
 <translation id="9200453331904391567">Отключиться от храбрых наград Brave Rewards</translation>
 <translation id="46988480989545156">Проверить кошелек</translation>
 <translation id="1554282356558968486">Услуги нашего кошелька предоставляются</translation>
@@ -419,6 +421,7 @@
 <translation id="5275978662119683162">Преимущества подтверждения</translation>
 <translation id="5166793288622772189">Готовы подтвердить свой кошелек?</translation>
 <translation id="8766217572332535979">Подтверждение не обязательно для получения награды за поддержку авторов</translation>
+<translation id="4569155249847375786">Проверен</translation>
 <translation id="8465442795593991224">Uphold может запросить подтверждение вашей личности на основании запрошенных услуг.</translation>
 <translation id="723054503945711909">Brave Software Inc. не обрабатывает, не хранит и не имеет доступа к вашим персональным данным, которые вы предоставляете Uphold при создании учетной записи.</translation>
 <translation id="1181037720776840403">Удалить</translation>

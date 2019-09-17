@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Clicado</translation>
 <translation id="7119308337584989771">Declinado</translation>
 <translation id="6805660603861526473">Visto</translation>
+<translation id="2852258589816753010">Presentemente, o BAT não é suportado na sua região. Por favor, consulte <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para atualizações.</translation>
+<translation id="2564425876266960486">Erro ao criar o cartão BAT do Brave Browser</translation>
 <translation id="7422678632904904341">Quantia</translation>
 <translation id="5923611424721173182">Reconciliação atual:</translation>
 <translation id="5457113250005438886">Inválido</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">Permitir dicas no</translation>
 <translation id="3671566813999349838">Quantia</translation>
 <translation id="3819257035322786455">Cópia de segurança</translation>
-<translation id="4989542687859782284">Indisponível</translation>
 <translation id="1312977698678162065">Seja pago para ver anúncios relevantes que respeitem a sua privacidade</translation>
 <translation id="7655723274266132226">Agora já pode ganhar ao visualizar anúncios.</translation>
 <translation id="2975780980638932742">Os Brave Ads chegaram!</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">Pronto para começar?</translation>
 <translation id="913775524828049259">Sim estou pronto</translation>
 <translation id="108052542935515756">Pode começar com a</translation>
-<translation id="2678666039642976470">Voltar a conectar a carteira</translation>
 <translation id="194625454574835815">Chave de recuperação</translation>
 <translation id="6354568176665589146">Recorrente</translation>
 <translation id="7577100371127227294">Gratificações Mensais</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">Ver Detalhes</translation>
 <translation id="1988679729106502285">NOTA:</translation>
 <translation id="5815103311506128988">Este criador ainda não se registou para poder receber contribuições de utilizadores Brave. O seu navegador continuará a tentar contribuir até que seja verificado ou até que tenham decorrido 90 dias.</translation>
+<translation id="603411408512957306">Este criador verificado ainda não procedeu à verificação da sua conta (KYC) para a receção de dicas da sua wallet verificada. As dicas permanecerão na sua wallet até à conclusão da sua verificação.</translation>
 <translation id="4292832015778676417">ganhos de anúncios</translation>
 <translation id="3197752845651180812">Contribuições pendentes</translation>
 <translation id="3164105678355419142">Gorjeta recorrente</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">verificar</translation>
 <translation id="8030169304546394654">Desconectada</translation>
 <translation id="8267327690882073581">Verificar Carteira</translation>
-<translation id="4569155249847375786">Verificado</translation>
+<translation id="543510923939676996">Wallet Verificada</translation>
 <translation id="7591798679868259510">Aceder à minha conta Upload</translation>
+<translation id="3699674790322420653">Verificação da wallet concluída</translation>
 <translation id="9200453331904391567">Desconectar-se do Brave Rewards</translation>
 <translation id="46988480989545156">Verificar carteira</translation>
 <translation id="1554282356558968486">O nosso serviço de carteira é fornecido pelo</translation>
@@ -419,6 +421,7 @@
 <translation id="5275978662119683162">Benefícios da Verificação</translation>
 <translation id="5166793288622772189">Preparado para a verificação da sua carteira</translation>
 <translation id="8766217572332535979">A receção de recompensas pelas contribuições dos criadores não implica a verificação.</translation>
+<translation id="4569155249847375786">Verificado</translation>
 <translation id="8465442795593991224">A Uphold pode exiir a verificação da sua identidade com base nos serviços solicitados.</translation>
 <translation id="723054503945711909">Brave Software Inc. não processa, armazena ou acede a qualquer informação pessoal por si fornecida à Uphold aquando da abertura de conta.</translation>
 <translation id="1181037720776840403">Remover</translation>

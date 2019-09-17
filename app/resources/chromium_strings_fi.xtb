@@ -108,7 +108,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="1421502046520299169">Tietoja &amp;Brave-käyttöjärjestelmästä</translation>
 <translation id="2534623228451928732">Päivitä &amp;Brave-käyttöjärjestelmä</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="3360368475735266712">Kirjaudu sisään, niin voit synkronoida Bravein ja tehdä siitä yksilöllisemmän kaikilla laitteilla.</translation>
 <translation id="5477319665405831211">Voit synkronoida Bravein ja tehdä siitä yksilöllisemmän kaikilla laitteilla.</translation>
 <translation id="4934157190377700991">Olet nyt kirjautuneena Braveiin</translation>
 <translation id="4100716194836114130">Tämä on oma Braveisi</translation>
@@ -139,6 +138,8 @@ Jos kirjaudut silti sisään, Brave-tiedot, kuten kirjanmerkit, historia ja aset
 <translation id="6746636977031158624">Brave-käyttöjärjestelmä ei voi synkronoida tietoja, sillä tilin kirjautumistiedot ovat vanhentuneet.</translation>
 <translation id="2999152167963026588">Brave-käyttöjärjestelmä ei voi synkronoida tietoja, koska synkronointi ei ole käytettävissä verkkotunnuksessasi.</translation>
 <translation id="1459786048951724030">Brave-käyttöjärjestelmä ei voi synkronoida tietoja kirjautumisvirheen vuoksi.</translation>
+<translation id="6813094029720377619">Tyhjennät evästeet, kun suljet Bravein. Jos haluat jatkaa synkronointia, vaihda <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">asetuksissa</translation>
 <translation id="663059986967017181">Kopioitiin Braveiin.</translation>
 <translation id="1457432835062259213">Brave-sovellusten käynnistysohjelma</translation>
 <translation id="82609232232243542">Kirjaudu Braveen</translation>
@@ -158,7 +159,7 @@ Jotta <ph name="NEW_PROFILE_NAME"/> ei voi käyttää tiliäsi, lukitse profiili
 
 Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="1820843143331379651">Brave 70:n myötä valvotut käyttäjäprofiilit eivät enää ole saatavilla.</translation>
-<translation id="3066805437003400520">Käyttäjän selaustiedot poistetaan tältä laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Käyttäjän selaustiedot poistetaan tältä laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave on nyt entistä parempi</translation>
 <translation id="7192666605334070839">Nyt voit helpommin käyttää Braveia Brave Software-tililläsi ja jaetuilla tietokoneilla.</translation>
 <translation id="3511996232906761537">Tämä on verkkosi, kirjanmerkkiesi ja muun Brave-sisältösi koti.</translation>
@@ -224,14 +225,6 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="7808415789955822133">Brave-käyttöjärjestelmän käyttöehdot</translation>
 <translation id="7207456302801184289">Tervetuloa Braveiin</translation>
 <translation id="5688839044908745927">Brave on lähes valmis.</translation>
-<translation id="7758342895140862711">Ota Brave mukaan kaikkialle</translation>
-<translation id="3610173904388112975">Verkkoselaaminen Brave Softwaren älykkäillä ratkaisuilla</translation>
-<translation id="3479552764303398839">Ei nyt</translation>
-<translation id="8013374903356993822">Avaa Brave nopeammin</translation>
-<translation id="7625138338483121345">Bravein asettaminen oletusselaimeksi</translation>
-<translation id="5927044791090834489">Bravein kiinnittäminen tehtäväpalkkiin</translation>
-<translation id="8933981935877469796">Valitse <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/>.</translation>
-<translation id="1585657529869845941">Klikkaa <ph name="BEGIN_BOLD"/>Vaihda joka tapauksessa<ph name="END_BOLD"/> ‑painiketta, jos se tulee näkyviin.</translation>
 <translation id="3507835409099344374">Siirry Bravein ilmoitusasetuksiin</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave-päivitys on saatavilla}=1{Brave-päivitys on saatavilla}other{Brave-päivitys on ollut saatavilla # vuorokauden ajan}}</translation>
 <translation id="720532315408041257">Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.</translation>
@@ -251,6 +244,7 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="8208853227947884571">Brave on ajan tasalla.</translation>
 <translation id="6686872257969654608">Tietoja Brave-käyttöjärjestelmästä</translation>
 <translation id="2280363356796735201">Ohjeita Brave-käyttöjärjestelmän käyttöön</translation>
+<translation id="38898988211673781">Tyhjennä evästeet ja sivustodata, kun suljet Bravein</translation>
 <translation id="5253815230176279256">Brave Software Pay (kopioitu Braveiin)</translation>
 <translation id="5468853758063275923">Brave on oletusselaimesi.</translation>
 <translation id="1775322105159056176">Brave ei voi tunnistaa tai asettaa oletusselainta.</translation>
@@ -267,6 +261,7 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="8372880274820509128">Brave lisää suojausta salaamalla tietosi.</translation>
 <translation id="7445061995866044926">Kirjaudutaanko ulos?</translation>
 <translation id="7453070689008684791">Brave käyttää Drivea antaakseen ehdotuksia osoitepalkissa</translation>
+<translation id="3360368475735266712">Kirjaudu sisään, niin voit synkronoida Bravein ja tehdä siitä yksilöllisemmän kaikilla laitteilla.</translation>
 <translation id="9221712274065451529">Brave OS ‑käyttöliittymä näytetään tällä kielellä</translation>
 <translation id="3518788198614984730">Näytä Brave-käyttöjärjestelmä tällä kielellä</translation>
 <translation id="5757460455745382269">Brave-käyttöliittymä näytetään tällä kielellä</translation>

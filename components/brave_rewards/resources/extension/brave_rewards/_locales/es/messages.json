@@ -136,7 +136,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Ganancias de anuncios",
+    "message": "Ganancias de Brave Ads",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
@@ -238,7 +238,7 @@
     "description": "Directs the user to drag the BAT icon"
   },
   "captchaProveHuman": {
-    "message": "Pruebe que es humano.",
+    "message": "¡Prueba que eres humano!",
     "description": "Cosmetic text for captcha prompt"
   },
   "captchaTarget": {
@@ -302,7 +302,7 @@
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
-    "message": "Obtener más información.",
+    "message": "Saber más.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
@@ -310,7 +310,7 @@
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
-    "message": "Obtener más información.",
+    "message": "Saber más.",
     "description": "Text for the link that explains more about reserved amount"
   },
   "disabledPanelOff": {
@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verificada",
+    "message": "Monedero confirmado",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verificada",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "No disponible",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Reconectar cartera",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "¡Se ha verificado tu cartera!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "No te preocupes. Esto se puede deber a diferentes cuestiones de seguridad. Basta con reconectarse para solucionar el problema.",
+    "message": "No pasa nada. Esto puede suceder por varios motivos de seguridad. Si vuelves a conectar tu monedero, se resolverá este problema.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Este creador verificado todavía no ha confirmado (KYC) su cuenta para recibir propinas desde tu monedero confirmado. Las propinas se quedarán en tu monedero hasta que esa persona complete la confirmación.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Finaliza la confirmación de tu monedero",
+    "description": "CTA for completing wallet verification"
   }
 }

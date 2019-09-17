@@ -40,6 +40,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="2814998458708016836">Usar a barra de endereços grande</translation>
 <translation id="6123134130710658846">Ocultar o botão Brave Rewards</translation>
 <translation id="7635711399568194460">Esconde o botão Brave Rewards na barra de localização quando o Brave Rewards não está habilitado</translation>
+<translation id="4262166817826183486">Mostra sempre a bara de favoritos na página Nova Aba.</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
 <translation id="8511502469534942133">Nova Ligação Tor para este Site</translation>
 <translation id="8784924142044142231">Sair de Tor</translation>
@@ -69,7 +70,6 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="9075744464571452108">Reconhecimento de dispositivo</translation>
 <translation id="3570081523466826008">Atualizar ligações para HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
-<translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins e posts incorporados do Facebook</translation>
 <translation id="5165042248369837294">Permitir tweets incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir publicações integradas LinkedIn</translation>
@@ -93,12 +93,14 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8721331068159819483">O mesmo do que em MacOS</translation>
 <translation id="6786747875388722282">Extensões</translation>
 <translation id="2896916411183256228">Utiliza WebTorrent para exibir torrents diretamente no navegador. É compatível com ficheiros de torrents e magnet links.</translation>
+<translation id="5554028991651120544">Providencia uma carteira Ethereum e um navegador Dapp dentro do Brave.</translation>
 <translation id="6554397389149987360">Utiliza um componente de Hangouts para permitir a partilha de ecrã e outras funcionalidades no navegador.</translation>
 <translation id="1765684547504191670">Utilizar o componente do Media Router para ativar o Chromecast no navegador.</translation>
 <translation id="9156965752763025780">As alterações serão aplicadas da próxima vez que reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Relançar Agora</translation>
 <translation id="4154389611571860454">Usa a extensão interligada IPFS para suportar IPFS no navegador.</translation>
 <translation id="8137559199583651773">Gerir extensões</translation>
+<translation id="7013485839273047434">Obter mais extensões</translation>
 <translation id="4928988318462976765">Loja de Extensões Web</translation>
 <translation id="9181207987584064303">Ver na Loja de Extensões Web</translation>
 <translation id="4846154056248462491">Ao sair</translation>
@@ -111,4 +113,19 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8303432794159193481">Aplicações de Dispositivos do Browser Brave</translation>
 <translation id="8292967014767479012">Aplicações do Browser Brave</translation>
 <translation id="4743468424889072281">Aplicações de Desenvolvimento do Browser Brave</translation>
+<translation id="4568409039725976900">Brave Orange</translation>
+<translation id="1197088940767939838">Orange Peel</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Envy</translation>
+<translation id="138218114945450791">Clear Skies</translation>
+<translation id="1555130319947370107">Bondy Blue</translation>
+<translation id="4159784952369912983">Blurple</translation>
+<translation id="7569983096843329377">Dark Knight</translation>
+<translation id="6287165605525340193">Orange Peel Shape</translation>
+<translation id="6301585275578119299">Nana Shape</translation>
+<translation id="2732216714908598537">Envy Shape</translation>
+<translation id="3657793125124583718">Clear Skies Shape</translation>
+<translation id="7184617102219850286">Bondy Blue Shape</translation>
+<translation id="5032225845552050824">Blurple Shape</translation>
+<translation id="815851617499295136">Dark Knight Shape</translation>
 </translationbundle>

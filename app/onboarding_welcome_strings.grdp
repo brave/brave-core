@@ -2,9 +2,6 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <!-- Shared strings -->
-  <message name="IDS_ONBOARDING_WELCOME_GET_STARTED" desc="Label for a confirmation button to finish adding a bookmark and get the user started with using the browser.">
-    Get started
-  </message>
   <message name="IDS_ONBOARDING_WELCOME_NEXT" desc="Label for a button to confirm and continue from the current onboarding step.">
     Next
   </message>
@@ -90,9 +87,6 @@
   </message>
   <message name="IDS_ONBOARDING_WELCOME_NUX_SET_AS_DEFAULT_SUB_HEADER" desc="Sub-header for the page that prompts user to set Brave as their default browser.">
     Get Brave Search and Brave smarts everytime you browse
-  </message>
-  <message name="IDS_ONBOARDING_WELCOME_NUX_SET_AS_DEFAULT_SKIP" desc="The label for a button to skip setting Brave as their default browser.">
-    Skip
   </message>
   <message name="IDS_ONBOARDING_WELCOME_NUX_SET_AS_DEFAULT_SET_AS_DEFAULT" desc="The label for a button to confirm setting Brave as their default browser.">
     Set as default

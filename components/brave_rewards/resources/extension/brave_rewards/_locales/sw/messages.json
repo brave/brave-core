@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Imethibitishwa",
+    "message": "Pochi Imethibitishwa",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Imethibitishwa",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Haipatikani",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Unganisha tena pochi",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Pochi yako imethibitishwa!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Usijali. Hii inaweza kutendeka kwa sababu mbalimbali. Kuunganisha kwayo tu kutatatua tatizo hili.",
+    "message": "Usiwe na wasiwasi. Hii inaweza kutendeka kwa sababu mbalimbali za usalama. Kuunganisha tena pochi yako kutatua tatizo hili.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Muundaji huyu aliyethibitishwa bado hajathibitisha (KYC) akaunti yake ili kupokea vidokezo kutoka kwenye pochi yako iliyothibitishwa. Vidokezo vitasalia katika pochi yako hadi uthibitishaji ukamilike.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Kamilisha uthibitishaji pochi",
+    "description": "CTA for completing wallet verification"
   }
 }

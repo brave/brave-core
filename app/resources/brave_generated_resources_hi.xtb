@@ -41,6 +41,7 @@
 <translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
 <translation id="6123134130710658846">Brave Rewards बटन छिपाएँ</translation>
 <translation id="7635711399568194460">Brave Rewards सक्रिय न हो तो स्थान बार में Brave Rewards बटन छिपाएँ</translation>
+<translation id="4262166817826183486">हमेशा न्यू टैब पेज पर बुकमार्क बार दिखाएं</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
 <translation id="8511502469534942133">इस साइट के लिए नया टो कनेक्शन</translation>
 <translation id="8784924142044142231">टॉर से बहार निकलें</translation>
@@ -70,7 +71,6 @@
 <translation id="9075744464571452108">उपकरण की पहचान</translation>
 <translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
 <translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
-<translation id="7498695072878479744">अन्य पक्षों की साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
@@ -94,12 +94,14 @@
 <translation id="8721331068159819483">MacOS के जैसे ही</translation>
 <translation id="6786747875388722282">एक्सटेंशन</translation>
 <translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
+<translation id="5554028991651120544">Brave के अंदर एक इथेरियम वॉलेट और Dapp ब्राउज़र प्राप्त होते हैं।</translation>
 <translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
 <translation id="1765684547504191670">ब्राउज़र में क्रोमकास्ट को सक्रीय करने के लिए मीडिया राउटर घटक का उपयोग करता है।</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
 <translation id="4154389611571860454">ब्राउज़र में IPFS की सहायता करने के लिए IPFS सहयोगी एक्सटेंशन का उपयोग करता है।</translation>
 <translation id="8137559199583651773">एक्सटेंशन प्रबंधित करें</translation>
+<translation id="7013485839273047434">और एक्सटेंशन प्राप्त करें</translation>
 <translation id="4928988318462976765">वेब एक्सटेंशन स्टोर</translation>
 <translation id="9181207987584064303">वेब एक्सटेंशन स्टोर में देखें</translation>
 <translation id="4846154056248462491">बाहर निकलने पर</translation>
@@ -112,4 +114,19 @@
 <translation id="8303432794159193481">Brave ब्राउज़र डेवलपमेंट ऐप</translation>
 <translation id="8292967014767479012">Brave  ब्राउज़र ऐप</translation>
 <translation id="4743468424889072281">Brave ब्राउज़र डेवलपमेंट ऐप</translation>
+<translation id="4568409039725976900">ब्रेव ऑरेंज</translation>
+<translation id="1197088940767939838">ऑरेंज पील</translation>
+<translation id="5901630391730855834">नाना</translation>
+<translation id="6017514345406065928">एन्वी</translation>
+<translation id="138218114945450791">क्लिअर स्काइस</translation>
+<translation id="1555130319947370107">बोन्डी ब्लू</translation>
+<translation id="4159784952369912983">ब्लरप्ल</translation>
+<translation id="7569983096843329377">डार्क नाइट</translation>
+<translation id="6287165605525340193">ऑरेंज पील शेप</translation>
+<translation id="6301585275578119299">नाना शेप</translation>
+<translation id="2732216714908598537">एन्वी शेप</translation>
+<translation id="3657793125124583718">क्लिअर स्काइस शेप</translation>
+<translation id="7184617102219850286">बोन्डी बल्लू शेप</translation>
+<translation id="5032225845552050824">ब्लरप्ल शेप</translation>
+<translation id="815851617499295136">डार्क नाइट शेप</translation>
 </translationbundle>

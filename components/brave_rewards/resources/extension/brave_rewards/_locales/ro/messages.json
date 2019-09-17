@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verificat",
+    "message": "Portofelul a fost verificat",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verificat",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Indisponibil",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Reconectare portofel",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Portofelul dvs. este verificat!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Nu vă faceți griji. Aceasta se poate întâmpla dintr-o varietate de motive de securitate. Reconectarea va rezolva această problemă.",
+    "message": "Nu vă faceți griji. Acest lucru se poate întâmpla din diverse motive care țin de securitate. Reconectați-vă portofelul și problema va fi rezolvată.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Acest creator verificat încă nu și-a verificat (KYC) contul pentru a primi bacșiș din portofelul dvs. verificat. Bacșișurile vor rămâne în portofelul dvs. până când creatorul își finalizează procesul de verificare.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Finalizați verificarea portofelului",
+    "description": "CTA for completing wallet verification"
   }
 }

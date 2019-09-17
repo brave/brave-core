@@ -180,6 +180,11 @@ void BraveThemeService::Init(Profile* profile) {
     if (brave::IsTorProfile(profile) || brave::IsGuestProfile(profile))
       return;
 
+#if defined(OS_WIN)
+    ui::IgnoreSystemDarkModeChange(
+        profile->GetPrefs()->GetInteger(kBraveThemeType) !=
+            BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
+#endif
     // Start with proper system theme to make brave theme and
     // base ui components theme use same theme.
     SetSystemTheme(static_cast<BraveThemeType>(
@@ -224,6 +229,12 @@ void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
   // Changing theme type means default theme is not overridden anymore.
   profile()->GetPrefs()->SetBoolean(kUseOverriddenBraveThemeType, false);
 
+#if defined(OS_WIN)
+    ui::IgnoreSystemDarkModeChange(
+        profile()->GetPrefs()->GetInteger(kBraveThemeType) !=
+            BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
+#endif
+
   SetSystemTheme(static_cast<BraveThemeType>(
       profile()->GetPrefs()->GetInteger(kBraveThemeType)));
 }
@@ -266,5 +277,5 @@ bool BraveThemeService::SystemThemeModeEnabled() {
       switches::kForceDarkMode))
     return true;
 
-  return SystemThemeSupportDarkMode();
+  return ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported();
 }

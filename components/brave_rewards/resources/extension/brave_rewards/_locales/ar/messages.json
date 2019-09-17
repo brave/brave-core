@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "محقَّق",
+    "message": "تمَّ التحقق من المحفظة",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "محقَّق",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "غير متاح",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "إعادة وصل المحفظة",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "تم التحقق من محفظتك!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "لا داعى للقلق. يمكن أن يحدث هذا لعديد من الأسباب الأمنية. ببساطة إعادة الاتصال به سوف يحل هذه المشكلة.",
+    "message": "لا داعي للقلق. يمكن أن يحدث هذا لمجموعة متنوعة من الأسباب الأمنية. إعادة توصيل محفظتك سوف يحل هذه المشكلة.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "لم يقم هذا المنشئ الذي تم التحقق منه بالتحقق من (KYC) من حسابه لتلقي نصائح من محفظتك التي تمَّ التحقق منها. سوف تظل النصائح في محفظتك حتى تكتمل عملية التحقق.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "أكمل التحقق من المحفظة",
+    "description": "CTA for completing wallet verification"
   }
 }

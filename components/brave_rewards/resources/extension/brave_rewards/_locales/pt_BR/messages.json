@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verificado",
+    "message": "Carteira verificada",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verificado",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Indisponível",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Reconectar carteira",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Sua carteira foi verificada!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Sem problemas. Isto pode acontecer devido a uma série de razões de segurança. Apenas reconectar-se resolverá o problema.",
+    "message": "Não se preocupe. Isso pode acontecer por várias razões de segurança. Reconectar sua carteira vai resolver esse problema.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Esse criador verificado ainda precisa confirmar (KYC) a conta para receber dicas da sua carteira verificada. As dicas permanecerão na sua carteira até que a verificação seja concluída.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Concluir verificação de carteira",
+    "description": "CTA for completing wallet verification"
   }
 }

@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verifisert",
+    "message": "Lommeboken er verifisert",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verifisert",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Utilgjengelig",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Koble til lommeboken på nytt",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Lommeboken din er verifisert!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Ikke vær redd. Det kan være en rekke sikkerhetsårsaker til at dette skjer. Problemet kan enkelt løses ved å koble til på nytt.",
+    "message": "Ingen grunn til bekymring. Det kan være en rekke sikkerhetsårsaker til at dette skjer. Koble til lommeboken på nytt for å løse problemet.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Denne verifiserte skaperen har ennå ikke verifisert (KYC) kontoen sin for å motta tips fra den verifiserte lommeboken din. Tipsen blir værende i lommeboken din til vedkommende fullfører verifiseringen.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Fullfør lommebokverifiseringen",
+    "description": "CTA for completing wallet verification"
   }
 }

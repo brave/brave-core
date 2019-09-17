@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">ক্লিক করা হয়েছে</translation>
 <translation id="7119308337584989771">খারিজ করা হয়েছে</translation>
 <translation id="6805660603861526473">দেখা হয়েছে</translation>
+<translation id="2852258589816753010">বর্তমানে আপনার অঞ্চলে BAT সমর্থিত নয়। আপডেটগুলির জন্য অনুগ্রহ করে <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>এখানে<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> রেফার করুন।</translation>
+<translation id="2564425876266960486">Brave ব্রাউজার BAT কার্ড তৈরি করতে ত্রুটি</translation>
 <translation id="7422678632904904341">অর্থরাশি:</translation>
 <translation id="5923611424721173182">সাম্প্রতিক রিকনসাইল</translation>
 <translation id="5457113250005438886">অবৈধ</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">এর উপর পরামর্শের অনুমোদন করুন</translation>
 <translation id="3671566813999349838">পরিমান</translation>
 <translation id="3819257035322786455">ব্যাকআপ</translation>
-<translation id="4989542687859782284">লভ্য নেই</translation>
 <translation id="1312977698678162065">যে সব বিজ্ঞাপন আপনার গোপনীয়তাকে সম্মান করে তা দেখার জন্য অর্থ পান|</translation>
 <translation id="7655723274266132226">আপনি ব্রেভ বিজ্ঞাপন থেকে টোকেন উপার্জন করতে পারেন|</translation>
 <translation id="2975780980638932742">এসে গেল Brave বিজ্ঞাপন!</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">শুরু করার জন্য প্রস্তুত?</translation>
 <translation id="913775524828049259">হ্যাঁ, আমি প্রস্তুত</translation>
 <translation id="108052542935515756">আপনি শুরু করতে পারেন</translation>
-<translation id="2678666039642976470">ওয়ালেট পুনরায় সংযোগ করুন</translation>
 <translation id="194625454574835815">রিকভারি কিয়ের সাথে</translation>
 <translation id="6354568176665589146">পুনরাবৃত্তি</translation>
 <translation id="7577100371127227294">মাসিক পরামর্শ</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">বিশদ বিবরণ দেখুন</translation>
 <translation id="1988679729106502285">টীকা:</translation>
 <translation id="5815103311506128988">এই নির্মাতাটি Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও সাইন আপ করেনি। আপনার ব্রাউজারটি যাচাই করা না হলে অথবা 90 দিন পেরিয়ে না গেলে অবদান দেওয়া চালিয়ে যাব।</translation>
+<translation id="603411408512957306">এই যাচাইকৃত নির্মাতাকে এখনও তাদের অ্যাকাউন্টটি আপনার যাচাইকৃত ওয়ালেট থেকে টিপস পেতে যাচাই (KYC) করতে হবে। আপনার ওয়ালেট যাচাই না হওয়া অবধি তা টিপস তাতে থেকে যাবে।</translation>
 <translation id="4292832015778676417">বিজ্ঞাপন থেকে অর্জিত</translation>
 <translation id="3197752845651180812">মুলতুবি অবদান</translation>
 <translation id="3164105678355419142">পুনরাবৃত্তি টিপ</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">যাচাই করুন</translation>
 <translation id="8030169304546394654">সংযোগবিচ্ছিন্ন</translation>
 <translation id="8267327690882073581">ওয়ালেট যাচাই করুন</translation>
-<translation id="4569155249847375786">যাচাইকৃত</translation>
+<translation id="543510923939676996">ওয়ালেট যাচাই করা হয়েছে</translation>
 <translation id="7591798679868259510">আমার আপহোল্ড অ্যাকাউন্টে যান</translation>
+<translation id="3699674790322420653">সম্পূর্ণ ওয়ালেট যাচাইকরণ</translation>
 <translation id="9200453331904391567">Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="46988480989545156">ওয়ালেট যাচাই করুন</translation>
 <translation id="1554282356558968486">আমাদের ওয়ালেট পরিষেবাটির সরবরাহকারী হল</translation>
@@ -419,6 +421,7 @@
 <translation id="5275978662119683162">যাচাই করার সুবিধাসমূহ</translation>
 <translation id="5166793288622772189">আপনার ওয়ালেট যাচাইকরণ করতে প্রস্তুত?</translation>
 <translation id="8766217572332535979">স্রষ্টার অবদানগুলির জন্য পুরস্কার অর্জন করতে যাচাইকরণের প্রয়োজন নেই</translation>
+<translation id="4569155249847375786">যাচাইকৃত</translation>
 <translation id="8465442795593991224">অনুরোধকৃত পরিষেবাগুলির উপর ভিত্তি করে সমর্থনের জন্য আপনার পরিচয় যাচাই করার প্রয়োজন হতে পারে।</translation>
 <translation id="723054503945711909">আপনি যখন Brave Software Inc. এর সাথে একটি অ্যাকাউন্ট স্থাপন করেন তখন সেটিকে সমর্থন করতে আপনি যে ব্যক্তিগত তথ্য প্রদান করেন তা তারা প্রক্রিয়াকরণ, মজুত, বা অ্যাক্সেস করে না।</translation>
 <translation id="1181037720776840403">সরিয়ে দিন</translation>

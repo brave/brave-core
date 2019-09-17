@@ -34,7 +34,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
-#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/prefs/pref_service.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
@@ -138,60 +137,6 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }
 
-bool BraveContentBrowserClient::AllowAccessCookie(
-    const GURL& url,
-    const GURL& first_party,
-    content::ResourceContext* context,
-    int render_process_id,
-    int render_frame_id) {
-  GURL tab_origin = first_party;
-
-  if (tab_origin.is_empty())
-    tab_origin = BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-        render_process_id, render_frame_id, -1).GetOrigin();
-
-  ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
-  return
-      io_data->GetCookieSettings()->IsCookieAccessAllowed(url, tab_origin) &&
-      g_brave_browser_process->tracking_protection_service()->ShouldStoreState(
-          io_data->GetHostContentSettingsMap(),
-          render_process_id,
-          render_frame_id,
-          url,
-          tab_origin);
-}
-
-bool BraveContentBrowserClient::AllowGetCookie(
-    const GURL& url,
-    const GURL& first_party,
-    const net::CookieList& cookie_list,
-    content::ResourceContext* context,
-    int render_process_id,
-    int render_frame_id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
-                                 render_frame_id);
-  OnCookiesRead(render_process_id, render_frame_id, url, first_party,
-                cookie_list, !allow);
-
-  return allow;
-}
-
-bool BraveContentBrowserClient::AllowSetCookie(
-    const GURL& url,
-    const GURL& first_party,
-    const net::CanonicalCookie& cookie,
-    content::ResourceContext* context,
-    int render_process_id,
-    int render_frame_id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
-                                 render_frame_id);
-  OnCookieChange(render_process_id, render_frame_id, url, first_party, cookie,
-                 !allow);
-  return allow;
-}
-
 content::ContentBrowserClient::AllowWebBluetoothResult
 BraveContentBrowserClient::AllowWebBluetooth(
     content::BrowserContext* browser_context,
@@ -208,8 +153,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     bool is_main_frame,
     ui::PageTransition page_transition,
     bool has_user_gesture,
-    network::mojom::URLLoaderFactoryRequest* factory_request,
-    network::mojom::URLLoaderFactory*& out_factory) {  // NOLINT
+    network::mojom::URLLoaderFactoryPtr* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
                                        page_transition, has_user_gesture)) {
@@ -226,7 +170,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, factory_request, out_factory);
+      page_transition, has_user_gesture, out_factory);
 }
 
 base::Optional<service_manager::Manifest>
@@ -279,7 +223,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     bool is_navigation,
     bool is_download,
     const url::Origin& request_initiator,
-    network::mojom::URLLoaderFactoryRequest* factory_request,
+    mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
     network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client,
     bool* bypass_redirect_checks) {
   bool use_proxy = false;
@@ -287,25 +231,47 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
   use_proxy = ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context,
         frame, render_process_id, is_navigation, is_download, request_initiator,
-        factory_request, header_client, bypass_redirect_checks);
+        factory_receiver, header_client, bypass_redirect_checks);
 
   // TODO(iefremov): Skip proxying for certain requests?
   use_proxy |= BraveProxyingURLLoaderFactory::MaybeProxyRequest(
       browser_context,
       frame, is_navigation ? -1 : render_process_id,
-      factory_request);
+      factory_receiver);
   return use_proxy;
 }
 
-void BraveContentBrowserClient::WillCreateWebSocket(
+bool BraveContentBrowserClient::WillInterceptWebSocket(
+    content::RenderFrameHost* frame) {
+  return (frame != nullptr);
+}
+
+void BraveContentBrowserClient::CreateWebSocket(
     content::RenderFrameHost* frame,
-    network::mojom::WebSocketRequest* request,
-    network::mojom::AuthenticationHandlerPtr* auth_handler,
-    network::mojom::TrustedHeaderClientPtr* header_client,
-    uint32_t* options) {
-  ChromeContentBrowserClient::WillCreateWebSocket(frame, request, auth_handler,
-                                                  header_client, options);
-  BraveProxyingWebSocket::ProxyWebSocket(frame, request, auth_handler);
+    content::ContentBrowserClient::WebSocketFactory factory,
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const base::Optional<std::string>& user_agent,
+    network::mojom::WebSocketHandshakeClientPtr handshake_client) {
+  auto* proxy = BraveProxyingWebSocket::ProxyWebSocket(
+      frame,
+      std::move(factory),
+      url,
+      site_for_cookies,
+      user_agent,
+      std::move(handshake_client));
+
+  if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
+    ChromeContentBrowserClient::CreateWebSocket(
+        frame,
+        proxy->web_socket_factory(),
+        url,
+        site_for_cookies,
+        user_agent,
+        network::mojom::WebSocketHandshakeClientPtr(proxy->handshake_client()));
+  } else {
+    proxy->Start();
+  }
 }
 
 void BraveContentBrowserClient::MaybeHideReferrer(
@@ -322,12 +288,10 @@ void BraveContentBrowserClient::MaybeHideReferrer(
 #endif
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
-  const bool allow_referrers = brave_shields::IsAllowContentSettingsForProfile(
-      profile, document_url, document_url, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kReferrers);
-  const bool shields_up = brave_shields::IsAllowContentSettingsForProfile(
-      profile, document_url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields);
+  const bool allow_referrers = brave_shields::AllowReferrers(profile,
+                                                             document_url);
+  const bool shields_up = brave_shields::GetBraveShieldsEnabled(profile,
+                                                                document_url);
   // Top-level navigations get empty referrers (brave/brave-browser#3422).
   GURL replacement_referrer_url;
   if (!is_main_frame) {
@@ -367,8 +331,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
   }
 
   // no special win10 welcome page
-  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
-      url->host() == chrome::kChromeUIWelcomeHost) {
+  if (url->host() == chrome::kChromeUIWelcomeHost) {
     *url = GURL(chrome::kChromeUIWelcomeURL);
     return true;
   }

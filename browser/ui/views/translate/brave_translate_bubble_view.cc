@@ -37,7 +37,7 @@ BraveTranslateBubbleView::~BraveTranslateBubbleView() {
 views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
   views::View* view = new views::View();
   views::GridLayout* layout =
-      view->SetLayoutManager(std::make_unique<views::GridLayout>(view));
+      view->SetLayoutManager(std::make_unique<views::GridLayout>());
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
 
   constexpr int kButtonColumnSetId = 0;
@@ -68,11 +68,11 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
       provider->GetDistanceMetric(views::DISTANCE_UNRELATED_CONTROL_VERTICAL));
 
   if (views::PlatformStyle::kIsOkButtonLeading) {
-    layout->AddView(accept_button.release());
-    layout->AddView(cancel_button.release());
+    layout->AddView(std::move(accept_button));
+    layout->AddView(std::move(cancel_button));
   } else {
-    layout->AddView(cancel_button.release());
-    layout->AddView(accept_button.release());
+    layout->AddView(std::move(cancel_button));
+    layout->AddView(std::move(accept_button));
   }
 
   return view;

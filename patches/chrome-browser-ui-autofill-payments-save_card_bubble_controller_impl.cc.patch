@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc b/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
-index e576d1a0a1f331679c586ef63a17c38063501611..efc02bac3777f2050c2399987c5522422740fa3d 100644
+index aa4d2b780b7f81b9b2442668c2cea96397c53ee0..a2842cab3e70eb95505eb91a96905fbdea56843f 100644
 --- a/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
 +++ b/chrome/browser/ui/autofill/payments/save_card_bubble_controller_impl.cc
-@@ -442,6 +442,7 @@ bool SaveCardBubbleControllerImpl::ShouldShowSignInPromo() const {
+@@ -449,6 +449,7 @@ bool SaveCardBubbleControllerImpl::ShouldShowSignInPromo() const {
  
    const syncer::SyncService* sync_service =
        ProfileSyncServiceFactory::GetForProfile(GetProfile());

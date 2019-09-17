@@ -110,7 +110,6 @@ Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="1421502046520299169">À propos de &amp;Brave OS</translation>
 <translation id="2534623228451928732">Mettre à jour &amp;Brave OS</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="3360368475735266712">Se connecter pour synchroniser et personnaliser Brave sur vos appareils</translation>
 <translation id="5477319665405831211">Synchroniser et personnaliser Brave sur vos appareils</translation>
 <translation id="4934157190377700991">Vous êtes connecté à Brave</translation>
 <translation id="4100716194836114130">Voici votre Brave</translation>
@@ -141,6 +140,8 @@ Si vous vous connectez quand même, toutes les informations Brave, comme les fa
 <translation id="6746636977031158624">Impossible de synchroniser vos données dans Brave OS, car les informations de connexion de votre compte ne sont plus à jour.</translation>
 <translation id="2999152167963026588">Impossible de synchroniser vos données dans Brave OS, car la synchronisation n'est pas disponible pour votre domaine.</translation>
 <translation id="1459786048951724030">Impossible de synchroniser vos données dans Brave OS, car une erreur s'est produite lors de la connexion.</translation>
+<translation id="6813094029720377619">Les cookies sont effacés lorsque vous quittez Brave. Pour reprendre la synchronisation, modifiez l'option correspondante dans les <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">paramètres</translation>
 <translation id="663059986967017181">Copié dans Brave</translation>
 <translation id="1457432835062259213">Lanceur d'applications Brave</translation>
 <translation id="82609232232243542">Connectez-vous à Brave</translation>
@@ -160,7 +161,7 @@ Pour empêcher <ph name="NEW_PROFILE_NAME"/> d'accéder à votre compte, assurez
 
 Pour obtenir plus d'informations, veuillez consulter votre compte de messagerie (<ph name="ACCOUNT_EMAIL"/>).</translation>
 <translation id="1820843143331379651">Les utilisateurs supervisés ne seront plus disponibles à partir de Brave 70.</translation>
-<translation id="3066805437003400520">Les données de navigation de cet utilisateur vont être supprimées de cet appareil. Pour les récupérer, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Les données de navigation de cet utilisateur vont être supprimées de cet appareil. Pour les récupérer, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave s'est amélioré</translation>
 <translation id="7192666605334070839">Il est désormais plus facile d'utiliser Brave avec votre compte Brave Software et sur des ordinateurs partagés.</translation>
 <translation id="3511996232906761537">Votre contenu Web, vos favoris et toutes vos données Brave sont conservés ici.</translation>
@@ -226,14 +227,6 @@ Pour obtenir plus d'informations, veuillez consulter votre compte de messagerie 
 <translation id="7808415789955822133">Conditions d'utilisation de Brave OS</translation>
 <translation id="7207456302801184289">Bienvenue dans Brave</translation>
 <translation id="5688839044908745927">Brave est presque prêt</translation>
-<translation id="7758342895140862711">Brave avec vous n'importe où</translation>
-<translation id="3610173904388112975">Navigation sur le Web avec les fonctionnalités intelligentes de Brave Software</translation>
-<translation id="3479552764303398839">Pas maintenant</translation>
-<translation id="8013374903356993822">Accédez à Brave plus rapidement</translation>
-<translation id="7625138338483121345">Définir Brave en tant que navigateur par défaut</translation>
-<translation id="5927044791090834489">Épingler Brave à votre barre des tâches</translation>
-<translation id="8933981935877469796">Sélectionnez <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/> <ph name="SMALL_PRODUCT_LOGO"/>.</translation>
-<translation id="1585657529869845941">Si le bouton <ph name="BEGIN_BOLD"/>Changer quand même<ph name="END_BOLD"/> s'affiche, cliquez dessus</translation>
 <translation id="3507835409099344374">Accéder aux paramètres de notification Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Une mise à jour de Brave est disponible}=1{Une mise à jour de Brave est disponible}one{Une mise à jour de Brave est disponible depuis # jour}other{Une mise à jour de Brave est disponible depuis # jours}}</translation>
 <translation id="720532315408041257">Votre administrateur vous demande de relancer Brave pour installer cette mise à jour</translation>
@@ -253,6 +246,7 @@ Pour obtenir plus d'informations, veuillez consulter votre compte de messagerie 
 <translation id="8208853227947884571">Brave est à jour</translation>
 <translation id="6686872257969654608">À propos de Brave OS</translation>
 <translation id="2280363356796735201">Obtenir de l'aide avec Brave OS</translation>
+<translation id="38898988211673781">Effacer les cookies et les données de site en quittant Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (copiée dans Brave)</translation>
 <translation id="5468853758063275923">Brave est votre navigateur par défaut</translation>
 <translation id="1775322105159056176">Impossible d'identifier ou de définir le navigateur par défaut avec Brave</translation>
@@ -269,6 +263,7 @@ Pour obtenir plus d'informations, veuillez consulter votre compte de messagerie 
 <translation id="8372880274820509128">Pour plus de sécurité, vos données seront chiffrées dans Brave.</translation>
 <translation id="7445061995866044926">Se déconnecter de Brave ?</translation>
 <translation id="7453070689008684791">Brave va accéder à votre Drive pour proposer des suggestions dans la barre d'adresse</translation>
+<translation id="3360368475735266712">Se connecter pour synchroniser et personnaliser Brave sur vos appareils</translation>
 <translation id="9221712274065451529">Cette langue est utilisée pour l'UI de Brave OS</translation>
 <translation id="3518788198614984730">Afficher Brave OS dans cette langue</translation>
 <translation id="5757460455745382269">Cette langue est utilisée pour l'UI Brave</translation>

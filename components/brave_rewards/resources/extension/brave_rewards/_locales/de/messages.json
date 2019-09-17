@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verifiziert",
+    "message": "Wallet verifiziert",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verifiziert",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Nicht verfügbar",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Wallet erneut verbinden",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Ihr Wallet ist verifiziert!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Keine Sorge. Dies kann aus verschiedenen Sicherheitsgründen geschehen. Durch einfaches Wiederherstellen der Verbindung wird dieses Problem gelöst.",
+    "message": "Keine Sorge. Dies kann aus verschiedenen Sicherheitsgründen geschehen. Ein erneuter Verbindungsaufbau zur Wallet wird dieses Problem lösen.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Dieser verifizierte Creator muss sein Konto noch über das KYC-Verfahren verifizieren lassen, um ein Trinkgeld aus Ihrer verifizierten Wallet zu erhalten. Trinkgelder werden in Ihrer Wallet verbleiben, bis die Verifizierung abgeschlossen wurde.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Wallet-Verifizierung abschließen",
+    "description": "CTA for completing wallet verification"
   }
 }

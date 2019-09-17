@@ -40,6 +40,7 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="2814998458708016836">Använd brett adressfält</translation>
 <translation id="6123134130710658846">Dölj Brave Rewards-knappen</translation>
 <translation id="7635711399568194460">Döljer knappen Brave Rewards i adressfältet när Brave Rewards inte är aktiverat</translation>
+<translation id="4262166817826183486">Visa alltid bokmärksfältet på sidan Ny flik</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-anslutning för den här webbplatsen</translation>
 <translation id="8784924142044142231">Lämna Tor</translation>
@@ -59,7 +60,7 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="6303294677342628402">Sköldar</translation>
 <translation id="7133511168130368997">Blockera spårare och annonser som följer dig på nätet.</translation>
 <translation id="2761825942249694703">Detta är standardinställningarna för Shields. De gäller alla webbplatser om du inte ändrar något i Shields-panelen på en viss webbplats. Att ändra dessa påverkar inte dina befintliga inställningar per webbplats.</translation>
-<translation id="8754605759692119662">Detta blockerar de flesta annonser på webbplatser, inte Brave privata annonser — de kontrolleras från</translation>
+<translation id="8754605759692119662">Detta blockerar de flesta annonser på webbplatser, inte Brave privata annonser — de styrs av</translation>
 <translation id="6388201778088078932">inställningar.</translation>
 <translation id="9185018653595759199">Blockering av sociala media</translation>
 <translation id="7390783310074170337">Standardvy</translation>
@@ -69,7 +70,6 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="9075744464571452108">Enhetsigenkänning</translation>
 <translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
 <translation id="4824468494729001999">Blockera skript</translation>
-<translation id="7498695072878479744">Tillåt Googles inloggningsknappar på sajter från tredje part</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
@@ -93,12 +93,14 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="8721331068159819483">Samma som MacOS</translation>
 <translation id="6786747875388722282">Tillägg</translation>
 <translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
+<translation id="5554028991651120544">Tillhandahåller en Ethereumplånbok och Dappwebbläsare inuti Brave.</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
 <translation id="1765684547504191670">Använder komponenten Media Router för att aktivera Chromecast i webbläsaren.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
 <translation id="4154389611571860454">Använder IPFS-tillägget för att stödja IPFS i webbläsaren.</translation>
 <translation id="8137559199583651773">Hantera tillägg</translation>
+<translation id="7013485839273047434">Skaffa fler tillägg</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Visa i Web Extensions Store</translation>
 <translation id="4846154056248462491">Vid avslut</translation>
@@ -111,4 +113,19 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="8303432794159193481">Brave Browser Dev-appar</translation>
 <translation id="8292967014767479012">Brave Browser-appar</translation>
 <translation id="4743468424889072281">Brave Browser utvecklingsappar</translation>
+<translation id="4568409039725976900">Modig orange</translation>
+<translation id="1197088940767939838">Apelsinskal</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Avund</translation>
+<translation id="138218114945450791">Klar himmel</translation>
+<translation id="1555130319947370107">Blå bondy</translation>
+<translation id="4159784952369912983">Blålila</translation>
+<translation id="7569983096843329377">Mörk riddare</translation>
+<translation id="6287165605525340193">Apelsinskalsform</translation>
+<translation id="6301585275578119299">Nanaform</translation>
+<translation id="2732216714908598537">Avundsform</translation>
+<translation id="3657793125124583718">Klar himmelsform</translation>
+<translation id="7184617102219850286">Blå bondyform</translation>
+<translation id="5032225845552050824">Blålila form</translation>
+<translation id="815851617499295136">Mörk riddarform</translation>
 </translationbundle>

@@ -40,6 +40,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="2814998458708016836">Brug bred adresselinje</translation>
 <translation id="6123134130710658846">Skjul Brave Rewards-knappen</translation>
 <translation id="7635711399568194460">Skjul Brave Rewards-knappen i placeringsbjælken, når Brave Rewards ikke er slået til</translation>
+<translation id="4262166817826183486">Vis altid bogmærke-bjælken på Ny Fane-side</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-forbindelse til dette websted</translation>
 <translation id="8784924142044142231">Afslut Tor</translation>
@@ -70,7 +71,6 @@ vindue med Tor</translation>
 <translation id="9075744464571452108">Enhedsgenkendelse</translation>
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
-<translation id="7498695072878479744">Tillad Google-loginknapper på tredjepartshjemmesider</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
@@ -94,12 +94,14 @@ vindue med Tor</translation>
 <translation id="8721331068159819483">Samme som macOS</translation>
 <translation id="6786747875388722282">Internetadresser</translation>
 <translation id="2896916411183256228">Bruger WebTorrent til at vise torrents direkte i browseren. Understøtter torrent-filer og magnetlinks.</translation>
+<translation id="5554028991651120544">Giver en Ethereum tegnebog og Dapp browser i Brave.</translation>
 <translation id="6554397389149987360">Bruger Hangouts-komponent til at aktivere skærmdeling samt andre browserfunktioner.</translation>
 <translation id="1765684547504191670">Bruger Media Router-komponent til at aktivere Chromecast i browseren.</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="4154389611571860454">Bruger IPFS Companion-udvidelsen for at understøtte IPFS i browseren.</translation>
 <translation id="8137559199583651773">Administrer udvidelser</translation>
+<translation id="7013485839273047434">Hent flere extensions</translation>
 <translation id="4928988318462976765">Internetadresse-Butik</translation>
 <translation id="9181207987584064303">Se i Internetadresse-Butik</translation>
 <translation id="4846154056248462491">Ved udgang</translation>
@@ -112,4 +114,19 @@ vindue med Tor</translation>
 <translation id="8303432794159193481">Brave Browser udvikler-apps</translation>
 <translation id="8292967014767479012">Brave Browser-apps</translation>
 <translation id="4743468424889072281">Brave Browser udviklings-apps</translation>
+<translation id="4568409039725976900">Brave Appelsin</translation>
+<translation id="1197088940767939838">Appelsinskal</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Envy</translation>
+<translation id="138218114945450791">Klar Himmel</translation>
+<translation id="1555130319947370107">Bondi Blå</translation>
+<translation id="4159784952369912983">Blurple</translation>
+<translation id="7569983096843329377">Sort Ridder</translation>
+<translation id="6287165605525340193">Appelsinskal Form</translation>
+<translation id="6301585275578119299">Nana Form</translation>
+<translation id="2732216714908598537">Envy Form</translation>
+<translation id="3657793125124583718">Klar Himmel Form</translation>
+<translation id="7184617102219850286">Bondi-Blå Form</translation>
+<translation id="5032225845552050824">Blurple Form</translation>
+<translation id="815851617499295136">Sort Ridder Form</translation>
 </translationbundle>

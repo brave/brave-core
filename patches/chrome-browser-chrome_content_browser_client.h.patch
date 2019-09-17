@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/chrome_content_browser_client.h b/chrome/browser/chrome_content_browser_client.h
-index 499af0b670a1060f81c2b1dda8812865aac29670..b9d5d5f72fcd3a319472cb226ec83ca4b62f0180 100644
+index 069f597633a2924e0bdacd7cb1d92f5d418e6d87..a40200ffd46ec9deb623906633f4805fb63bf8dd 100644
 --- a/chrome/browser/chrome_content_browser_client.h
 +++ b/chrome/browser/chrome_content_browser_client.h
-@@ -637,6 +637,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
-                                  content::BrowserContext* browser_context);
+@@ -634,6 +634,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
+   virtual const ui::NativeTheme* GetWebTheme() const;  // For testing.
  
   private:
 +  friend class BraveContentBrowserClient;

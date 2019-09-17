@@ -4,7 +4,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Bloqueador de anuncios Brave</translation>
 <translation id="6406506848690869874">Brave Sync</translation>
-<translation id="5655621391922317800">Criptocarteras</translation>
+<translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="2445484935443597917">Crear perfil</translation>
 <translation id="2666990579225592931">Abrir ventana de invitado</translation>
 <translation id="120759863357279975">La extensión <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") no está permitida en Brave.</translation>
@@ -17,7 +17,7 @@
 <translation id="6165477144235978006">Pagos de Brave</translation>
 <translation id="3489524616427966890">Abrir ventanas y pestañas</translation>
 <translation id="3699882589215410581">Instalar y ejecutar Widevine</translation>
-<translation id="3696083746357487900">Instalar criptocarteras</translation>
+<translation id="3696083746357487900">Instalar Crypto Wallets</translation>
 <translation id="8926389886865778422">No preguntar de nuevo</translation>
 <translation id="4726634924419692905">Pregunta cuándo quiere una página instalar Widevine en tu ordenador.</translation>
 <translation id="8053096063396012732">Instalar Widevine</translation>
@@ -40,6 +40,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="2814998458708016836">Usar barra de direcciones ancha</translation>
 <translation id="6123134130710658846">Ocultar el botón de Brave Rewards</translation>
 <translation id="7635711399568194460">Oculta el botón de Brave Rewards en la barra de direcciones cuando Brave Rewards está deshabilitado</translation>
+<translation id="4262166817826183486">Mostrar siempre la barra de marcadores en la página de la pestaña nueva</translation>
 <translation id="7965178729203412357">Nueva identidad Tor</translation>
 <translation id="8511502469534942133">Nueva conexión Tor para esta página</translation>
 <translation id="8784924142044142231">Cerrar Tor</translation>
@@ -69,7 +70,6 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="9075744464571452108">Reconocimiento del dispositivo</translation>
 <translation id="3570081523466826008">Mejorar conexiones a HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
-<translation id="7498695072878479744">Permitir los botones de acceso de Google en sitios web de terceros</translation>
 <translation id="863171915776379000">Permitir los inicios de sesión de Facebook y los mensajes incrustados</translation>
 <translation id="5165042248369837294">Permitir tweets incrustados de Twitter</translation>
 <translation id="958971637207126733">Permitir mensajes incrustados de LinkedIn</translation>
@@ -93,12 +93,14 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="8721331068159819483">Mismo que en MacOS</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="2896916411183256228">Usa WebTorrent para mostrar directamente los torrents en el navegador. Es compatible con archivos torrent y enlaces magnet.</translation>
+<translation id="5554028991651120544">Proporciona una wallet Ethereum y un navegador Dapp dentro de Brave.</translation>
 <translation id="6554397389149987360">Usa el componente de Hangouts para habilitar la compartición de la pantalla y otras funciones en el navegador.</translation>
-<translation id="1765684547504191670">Utiliza el componente enrutador de contenidos para activar Chromecast en el navegador.</translation>
+<translation id="1765684547504191670">Utiliza el componente Enrutador De Contenidos para activar Chromecast en el navegador.</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzar ahora</translation>
 <translation id="4154389611571860454">Utiliza extensiones complementarias IPFS para permitir el uso de IFPS en el navegador.</translation>
 <translation id="8137559199583651773">Administrar extensiones</translation>
+<translation id="7013485839273047434">Obtén más extensiones</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Ver en la Web Extensions Store</translation>
 <translation id="4846154056248462491">Al salir</translation>
@@ -111,4 +113,19 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="8303432794159193481">Brave Apps Dev</translation>
 <translation id="8292967014767479012">Brave Apps</translation>
 <translation id="4743468424889072281">Brave Apps</translation>
+<translation id="4568409039725976900">Naranja valiente</translation>
+<translation id="1197088940767939838">Piel de naranja</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Envidia</translation>
+<translation id="138218114945450791">Cielos despejados</translation>
+<translation id="1555130319947370107">Bondy Blue</translation>
+<translation id="4159784952369912983">Violeta</translation>
+<translation id="7569983096843329377">Caballero oscuro</translation>
+<translation id="6287165605525340193">Forma de piel de naranja</translation>
+<translation id="6301585275578119299">Forma de Nana</translation>
+<translation id="2732216714908598537">Forma de envidia</translation>
+<translation id="3657793125124583718">Forma de cielo despejado</translation>
+<translation id="7184617102219850286">Forma de Bondy Blue</translation>
+<translation id="5032225845552050824">Forma violeta</translation>
+<translation id="815851617499295136">Forma de caballero oscuro</translation>
 </translationbundle>

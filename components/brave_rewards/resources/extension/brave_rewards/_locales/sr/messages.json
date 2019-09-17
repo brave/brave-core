@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verifikovano",
+    "message": "Novčanik verifikovan",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verifikovano",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Nedostupno",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Ponovo poveži novčanik",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Vaš novčanik je verifikovan!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Ne brinite. Ovo se dešava iz niza sigurnosnih razloga. Jednostavno ponovno povezivanje sa njim rešiće ovaj problem.",
+    "message": "Bez brige. To se može dogoditi iz različitih bezbednosnih razloga. Ponovno povezivanje novčanika rešiće ovaj problem.\n",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Ovaj verifikovani autor još uvek nije verifikovao (KYC) svoj nalog kako bi primio napojnice iz Vašeg verifikovanog novčanika. Napojnice će ostati u Vašem novčaniku sve dok ne završe verifikaciju",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Dovršite verifikaciju novčanika",
+    "description": "CTA for completing wallet verification"
   }
 }

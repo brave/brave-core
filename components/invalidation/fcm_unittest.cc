@@ -20,6 +20,8 @@
 #include "components/gcm_driver/instance_id/instance_id_driver.h"
 #include "components/invalidation/impl/status.h"
 #include "google_apis/gcm/engine/account_mapping.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 using base::TestMockTimeTaskRunner;
@@ -73,8 +75,11 @@ class MockInstanceID : public InstanceID {
 class MockGCMDriver : public gcm::GCMDriver {
  public:
   MockGCMDriver()
-      : GCMDriver(/*store_path=*/base::FilePath(),
-                  /*blocking_task_runner=*/nullptr) {}
+      : GCMDriver(
+            /*store_path=*/base::FilePath(),
+            /*blocking_task_runner=*/nullptr,
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &test_url_loader_factory_)) {}
   ~MockGCMDriver() override = default;
 
   MOCK_METHOD4(ValidateRegistration,
@@ -128,6 +133,7 @@ class MockGCMDriver : public gcm::GCMDriver {
                     gcm::GCMDecryptionResult result));
 
  private:
+  network::TestURLLoaderFactory test_url_loader_factory_;
   DISALLOW_COPY_AND_ASSIGN(MockGCMDriver);
 };
 

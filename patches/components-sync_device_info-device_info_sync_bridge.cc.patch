@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index a809fd09ea04d28b7293d1554f29f0c83dd648a3..c0066b8ab45e9956a7d094d9bd9ddd45d5e674c3 100644
+index 97190831c600d897def6198ac793e54f17d99102..64890ace04f59fe17f04e293a2a8089f1162156e 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
-@@ -254,7 +254,7 @@ std::string DeviceInfoSyncBridge::GetStorageKey(const EntityData& entity_data) {
+@@ -259,7 +259,7 @@ std::string DeviceInfoSyncBridge::GetStorageKey(const EntityData& entity_data) {
  void DeviceInfoSyncBridge::ApplyStopSyncChanges(
      std::unique_ptr<MetadataChangeList> delete_metadata_change_list) {
    if (!delete_metadata_change_list) {

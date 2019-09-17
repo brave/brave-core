@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Verificat",
+    "message": "Moneder Verificat",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Verificat",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "No disponible",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Reconnectar el moneder",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "El teu moneder està verificat!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "No et preocupis. Això pot passar per diverses raons de seguretat. Simplement reconnectar-s'hi resoldrà aquest problema.",
+    "message": "No us preocupeu. Això pot ocórrer per diversos motius de seguretat. Resoldreu aquest problema reconnectat el vostre moneder.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Aquest creador verificat encara ha de verificar (KYC) el seu compte per a poder rebre donatius del vostre moneder verificat. Els donatius romandran al vostre moneder fins que es completi la verificació.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Completeu la verificació del moneder",
+    "description": "CTA for completing wallet verification"
   }
 }

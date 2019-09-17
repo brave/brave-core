@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
+    "message": "ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "ಲಭ್ಯವಿಲ್ಲ",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "ವ್ಯಾಲೆಟ್ ಮರುಸಂಪರ್ಕಗೊಳಿಸಿ",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "ಚಿಂತಿಸಬೇಡಿ. ಇದು ವಿವಿಧ ಭದ್ರತೆ ಕಾರಣಗಳಿಂದ ಉಂಟಾಗಬಹುದು. ಸಂಪರ್ಕವನ್ನು ಸರಳವಾಗಿ ಮರುಸ್ಥಾಪಿಸುವುದರಿಂದ ಈ ಸಮಸ್ಯೆಯು ಪರಿಹಾರವಾಗುತ್ತದೆ.",
+    "message": "ಯಾವುದೇ ಚಿಂತೆ ಇಲ್ಲ. ಇದು ಭದ್ರತೆಯ ಹಲವು ಕಾರಣಗಳಿಗೆ ಸಂಭವಿಸಬಹುದು. ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ಗೆ ಮರುಸಂಪರ್ಕಿಸುವ ಮೂಲಕ ಈ ಸಮಸ್ಯೆಯನ್ನು ಪರಿಹರಿಸಬಹುದು.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "ಈ ಪರಿಶೀಲಿಸಿದ ಸೃಷ್ಟಿಕರ್ತ ನಿಮ್ಮ ಪರಿಶೀಲಿಸಿದ ವ್ಯಾಲೆಟ್‌ನಿಂದ ಸುಳಿವುಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಇನ್ನು ಅವರ ಖಾತೆಯನ್ನು ಪರಿಶೀಲಿಸಿಲ್ಲ (KYC). ಸಲಹೆಗಳು ಪರಿಶೀಲನೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುವವರೆಗೆ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿ ಉಳಿಯುತ್ತದೆ.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "ಸಂಪೂರ್ಣ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ",
+    "description": "CTA for completing wallet verification"
   }
 }

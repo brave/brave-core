@@ -110,7 +110,6 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="1421502046520299169">Kuhusu Brave OS</translation>
 <translation id="2534623228451928732">Sasisha Brave OS</translation>
 <translation id="8447483940522230788">Kisaidizi cha Brave</translation>
-<translation id="3360368475735266712">Ingia katika akaunti ili usawazishe na uweke mapendeleo kwenye Brave katika vifaa vyako vyote</translation>
 <translation id="5477319665405831211">Sawazisha na uweke mapendeleo kwenye Brave katika vifaa vyako vyote</translation>
 <translation id="4934157190377700991">Sasa umeingia kwenye Brave</translation>
 <translation id="4100716194836114130">Hii ni Brave yako</translation>
@@ -141,6 +140,8 @@ Kuingia bila kujali kutaunganisha maelezo ya Brave kama vile alamisho, historia,
 <translation id="6746636977031158624">Mfumo wa Uendeshaji wa Brave haukuweza kusawazisha data yako kwa sababu maelezo yako ya kuingia katika akaunti yanahitaji kusasishwa.</translation>
 <translation id="2999152167963026588">Mfumo wa Uendeshaji wa Brave haukuweza kusawazisha data yako kwa sababu Usawazishaji haupatikani kwa kikoa chako.</translation>
 <translation id="1459786048951724030">Mfumo wa Uendeshaji wa Brave haukuweza kusawazisha data yako kutokana na hitilafu wakati wa kuingia katika akaunti.</translation>
+<translation id="6813094029720377619">Utafuta vidakuzi utakapofunga Brave. Ili uendelee kusawazisha, badilisha mipangilio hii ya <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
+<translation id="3340978935015468852">mipangilio</translation>
 <translation id="663059986967017181">Imenakiliwa kwenye Brave</translation>
 <translation id="1457432835062259213">Kizinduzi cha Programu ya Brave</translation>
 <translation id="82609232232243542">Ingia katika Brave</translation>
@@ -159,7 +160,7 @@ Ili umzuie <ph name="NEW_PROFILE_NAME"/> asifikie akaunti yako, hakikisha kuwa u
 <ph name="BEGIN_LINK_2"/>Pata maelezo zaidi<ph name="END_LINK_2"/>
 Tafadhali angalia barua pepe yako katika <ph name="ACCOUNT_EMAIL"/> upate maagizo zaidi.</translation>
 <translation id="1820843143331379651">Wasifu wa watumiaji wanaosimamiwa hautapatikana tena katika toleo la kuanzia Brave 70.</translation>
-<translation id="3066805437003400520">Data ya kuvinjari ya mtu huyu itafutwa kwenye kifaa hiki. Ili kurejesha data, ingia katika Brave ukitumia <ph name="USER_EMAIL"/>.</translation>
+<translation id="669092380621816981">Data ya kuvinjari ya mtu huyu itafutwa kwenye kifaa hiki. Ili kurejesha data, ingia katika Brave ukitumia <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave imeboreshwa</translation>
 <translation id="7192666605334070839">Sasa ni rahisi zaidi kutumia Brave pamoja na Akaunti yako ya Brave Software na kwenye kompyuta zinazoshirikiwa.</translation>
 <translation id="3511996232906761537">Wavuti, alamisho, na mambo yako mengine ya Brave yanapatikana hapa.</translation>
@@ -225,14 +226,6 @@ Tafadhali angalia barua pepe yako katika <ph name="ACCOUNT_EMAIL"/> upate maagiz
 <translation id="7808415789955822133">Masharti ya Brave OS</translation>
 <translation id="7207456302801184289">Karibu kwenye Brave</translation>
 <translation id="5688839044908745927">Brave inakaribia kuwa tayari.</translation>
-<translation id="7758342895140862711">Nenda na Brave kila mahali</translation>
-<translation id="3610173904388112975">Kuvinjari kwenye wavuti kwa kutumia programu mahiri za Brave Software</translation>
-<translation id="3479552764303398839">Sio sasa</translation>
-<translation id="8013374903356993822">Fika kwenye Brave haraka</translation>
-<translation id="7625138338483121345">Fanya Brave iwe kivinjari chako chaguomsingi</translation>
-<translation id="5927044791090834489">Tundika Brave kwenye upau wa kazi wa kompyuta yako</translation>
-<translation id="8933981935877469796">Chagua <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
-<translation id="1585657529869845941">Bofya kitufe cha <ph name="BEGIN_BOLD"/>Badilisha tu<ph name="END_BOLD"/>, kama kinaonekana</translation>
 <translation id="3507835409099344374">Nenda kwenye mipangilio ya arifa ya Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Sasisho la Brave linapatikana}=1{Sasisho la Brave linapatikana}other{Sasisho la Brave limekuwepo kwa siku #}}</translation>
 <translation id="720532315408041257">Msimamizi wako anakuomba uwashe Brave upya ili utumie sasisho</translation>
@@ -252,6 +245,7 @@ Tafadhali angalia barua pepe yako katika <ph name="ACCOUNT_EMAIL"/> upate maagiz
 <translation id="8208853227947884571">Brave imesasishwa</translation>
 <translation id="6686872257969654608">Kuhusu Brave OS</translation>
 <translation id="2280363356796735201">Pata usaidizi wa kutumia mfumo wa uendeshaji wa Brave</translation>
+<translation id="38898988211673781">Futa vidakuzi na data ya tovuti unapofunga Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (imenakiliwa kwenye Brave)</translation>
 <translation id="5468853758063275923">Brave ni kivinjari chako chaguomsingi</translation>
 <translation id="1775322105159056176">Brave haijafaulu kubainisha wala kuweka kivinjari chaguomsingi</translation>
@@ -268,6 +262,7 @@ Tafadhali angalia barua pepe yako katika <ph name="ACCOUNT_EMAIL"/> upate maagiz
 <translation id="8372880274820509128">Kwa usalama ulioongezwa, Brave itasimba data yako kwa njia fiche.</translation>
 <translation id="7445061995866044926">Ungependa kuondoka kwenye Brave?</translation>
 <translation id="7453070689008684791">Brave itafikia Hifadhi yako ili itoe mapendekezo kwenye sehemu ya anwani</translation>
+<translation id="3360368475735266712">Ingia katika akaunti ili usawazishe na uweke mapendeleo kwenye Brave katika vifaa vyako vyote</translation>
 <translation id="9221712274065451529">Lugha hii inatumika kuonyesha Kiolesura cha Mfumo wa Uendeshaji wa Brave</translation>
 <translation id="3518788198614984730">Onyesha Mfumo wa Uendeshaji wa Brave katika lugha hii</translation>
 <translation id="5757460455745382269">Lugha hii inatumiwa kuonyesha Kiolesura cha Brave</translation>

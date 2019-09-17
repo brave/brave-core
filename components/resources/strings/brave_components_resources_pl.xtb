@@ -4,7 +4,7 @@
 <translation id="4339730410920731698">Zablokowane reklamy i skrypty śledzące</translation>
 <translation id="2313532038420432247">Aktualizacje HTTPS</translation>
 <translation id="7679428712334662192">Szacowany zaoszczędzony czas</translation>
-<translation id="5206618227023752085">Usunięto topową stronę.</translation>
+<translation id="5206618227023752085">Usunięto popularną stronę.</translation>
 <translation id="2079545284768500474">Cofnij</translation>
 <translation id="6040143037577758943">Zamknij</translation>
 <translation id="8529752221839395787">Przywróć wszystko</translation>
@@ -24,9 +24,9 @@
 <translation id="8320281346741574991">Pokaż zdjęcie w tle</translation>
 <translation id="7275773481201277457">Pokaż statystyki Brave</translation>
 <translation id="6836061097810262923">Pokaż godzinę</translation>
-<translation id="8643377320501056697">Pokaż najczęściej otwierane strony</translation>
+<translation id="8643377320501056697">Pokaż popularne strony</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
-<translation id="8730621377337864115">Zrobione</translation>
+<translation id="8730621377337864115">Gotowe</translation>
 <translation id="6248988683584659830">Przeszukaj ustawienia</translation>
 <translation id="730042046912793465">To jest</translation>
 <translation id="2055363275850890030">Okno prywatne</translation>
@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Kliknięte</translation>
 <translation id="7119308337584989771">Odrzucone</translation>
 <translation id="6805660603861526473">Wyświetlone</translation>
+<translation id="2852258589816753010">Token BAT nie jest obecnie obsługiwany w Twoim regionie. Informacje o aktualizacjach znajdziesz <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>tutaj<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph>.</translation>
+<translation id="2564425876266960486">Błąd przy tworzeniu karty BAT w przeglądarce Brave.</translation>
 <translation id="7422678632904904341">Kwota:</translation>
 <translation id="5923611424721173182">Obecne uzgodnienie</translation>
 <translation id="5457113250005438886">Nieprawidlowy</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">Zezwól na napiwki w</translation>
 <translation id="3671566813999349838">Kwota</translation>
 <translation id="3819257035322786455">Kopia zapasowa</translation>
-<translation id="4989542687859782284">Niedostępny</translation>
 <translation id="1312977698678162065">Otrzymuj zapłatę za oglądanie odpowiednich reklam, z poszanowaniem Twojej prywatności</translation>
 <translation id="7655723274266132226">Możesz zarabiać oglądając reklamy.</translation>
 <translation id="2975780980638932742">Reklamy Brave są już dostępne!</translation>
@@ -206,8 +207,8 @@
 <translation id="8804164990146287819">Polityka prywatności</translation>
 <translation id="4281844954008187215">Warunki świadczenia usługi</translation>
 <translation id="4405997465645469914">Włączając Nagrody Brave zaznaczasz, że przeczytałeś i zgadzasz się na</translation>
-<translation id="8819542691525488940">Klikając zaznaczasz, że przeczytałeś i zgadzasz się na</translation>
-<translation id="8071424789698327147">Klikając ‘Tak, mogę zaczynać!’, oświadczasz, że znasz i akceptujesz</translation>
+<translation id="8819542691525488940">Klikając ‘Tak, wchodzę w to!’ oświadczasz, że przeczytałeś i zgadzasz się na</translation>
+<translation id="8071424789698327147">Klikając ‘Tak, mogę zaczynać!’ oświadczasz, że przeczytałeś i zgadzasz się na</translation>
 <translation id="7530570094705720669">Tworzenie portfela</translation>
 <translation id="2105596359439030979">Twoja uwaga jest cenna. Zarabiaj, oglądając szanujące prywatność reklamy i przekazuj, to co zarobisz twórcom treści, które lubisz.</translation>
 <translation id="516395624550019162">Tak, wchodzę w to!</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">Możemy zaczynać?</translation>
 <translation id="913775524828049259">Tak, mogę zaczynać</translation>
 <translation id="108052542935515756">Możesz rozpocząć z</translation>
-<translation id="2678666039642976470">Połącz ponownie portfel</translation>
 <translation id="194625454574835815">Klucz odzyskiwania</translation>
 <translation id="6354568176665589146">Cykliczne</translation>
 <translation id="7577100371127227294">Miesięczne napiwki</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">Zobacz Szczegóły</translation>
 <translation id="1988679729106502285">UWAGA:</translation>
 <translation id="5815103311506128988">Ten twórca nie zarejestrował się jeszcze w celu otrzymywania wsparcia od użytkowników przeglądarki Brave. Przeglądarka będzie usiłowała wnieść wsparcie do chwili, gdy dokonają weryfikacji, lub gdy minie 90 dni.</translation>
+<translation id="603411408512957306">Ten zweryfikowany twórca musi jeszcze zweryfikować swoje konto (procedura KYC), aby otrzymać napiwki z Twojego zweryfikowanego portfela. Napiwki pozostaną w Twoim portfelu do czasu zakończenia przez niego weryfikacji.</translation>
 <translation id="4292832015778676417">zarobione z reklam</translation>
 <translation id="3197752845651180812">Oczekujące wpłaty</translation>
 <translation id="3164105678355419142">Powtarzający się napiwek</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">weryfikuj</translation>
 <translation id="8030169304546394654">Rozłączony</translation>
 <translation id="8267327690882073581">Weryfikuj portfel</translation>
-<translation id="4569155249847375786">Zweryfikowany</translation>
+<translation id="543510923939676996">Portfel zweryfikowany</translation>
 <translation id="7591798679868259510">Przejdź do mojego konta Uphold</translation>
+<translation id="3699674790322420653">Zakończ weryfikację portfela</translation>
 <translation id="9200453331904391567">Rozłącz Nagrody Brave</translation>
 <translation id="46988480989545156">Weryfikuj portfel</translation>
 <translation id="1554282356558968486">Nasza usługa portfela jest świadczona przez</translation>
@@ -419,6 +421,7 @@
 <translation id="5275978662119683162">Korzyści z weryfikacji</translation>
 <translation id="5166793288622772189">Gotowy do weryfikacji portfela?</translation>
 <translation id="8766217572332535979">Weryfikacja nie jest konieczna, aby zarobić nagrody dla wspierania twórców</translation>
+<translation id="4569155249847375786">Zweryfikowany</translation>
 <translation id="8465442795593991224">Uphold może wymagać weryfikacji Twojej tożsamości w zależności od żądanych usług.</translation>
 <translation id="723054503945711909">Brave Software Inc. nie przetwarza, nie przechowuje ani nie uzyskuje dostępu do żadnych danych osobowych, które podajesz Uphold, zakładając konto w tym serwisie.</translation>
 <translation id="1181037720776840403">Usuń</translation>

@@ -151,6 +151,8 @@
 <translation id="3082557070674409251">Már kattintott</translation>
 <translation id="7119308337584989771">Elutasítva</translation>
 <translation id="6805660603861526473">Megtekintett</translation>
+<translation id="2852258589816753010">A BAT jelenleg nem támogatott az ön régiójában. Kérjük hivatkozzon <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> a frissítésekhez.</translation>
+<translation id="2564425876266960486">Hiba a Brave böngésző BAT-kártya létrehozásakor</translation>
 <translation id="7422678632904904341">Összeg:</translation>
 <translation id="5923611424721173182">Aktuális egyeztetés</translation>
 <translation id="5457113250005438886">Érvénytelen</translation>
@@ -196,7 +198,6 @@
 <translation id="2827387977307390755">Borravalók engedélyezése az alábbi helyen:</translation>
 <translation id="3671566813999349838">Összeg</translation>
 <translation id="3819257035322786455">Biztonsági mentés</translation>
-<translation id="4989542687859782284">Nem érhető el</translation>
 <translation id="1312977698678162065">Szerezzen pénzt releváns, személyes adatai védelmét tiszteletben tartó hirdetések megtekintésével.</translation>
 <translation id="7655723274266132226">Most már pontokat szerezhetsz reklámok megtekintésével.</translation>
 <translation id="2975780980638932742">A Brave Ads megérkezett!</translation>
@@ -300,7 +301,6 @@
 <translation id="3173528272490482456">Készen áll a kezdésre?</translation>
 <translation id="913775524828049259">Igen, kész vagyok</translation>
 <translation id="108052542935515756">Elkezdheti a következővel:</translation>
-<translation id="2678666039642976470">Pénztárca újracsatlakoztatása</translation>
 <translation id="194625454574835815">Helyreállító kód</translation>
 <translation id="6354568176665589146">Ismétlődő</translation>
 <translation id="7577100371127227294">Havi juttatások</translation>
@@ -385,6 +385,7 @@
 <translation id="6727483290601442544">Részletek megtekintése</translation>
 <translation id="1988679729106502285">MEGJEGYZÉS:</translation>
 <translation id="5815103311506128988">Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a Brave felhasználóktól. Böngésződ próbálkozni fog a folyósítással, amíg igazolnak, vagy eltelik 90 nap.</translation>
+<translation id="603411408512957306">Ennek az ellenőrzött létrehozónak még ellenőriznie kell (KYC) a fiókját, hogy tippeket kapjon az ön ellenőrzött pénztárcájából. A tippek a pénztárcájában maradnak, amíg az ellenőrzés be nem fejeződik.</translation>
 <translation id="4292832015778676417">reklámokból begyűjtve:</translation>
 <translation id="3197752845651180812">Függőben lévő hozzájárulások</translation>
 <translation id="3164105678355419142">Ismétlődő jattküldés</translation>
@@ -407,8 +408,9 @@
 <translation id="7512440811010447157">ellenőrzés</translation>
 <translation id="8030169304546394654">Nincs kapcsolat</translation>
 <translation id="8267327690882073581">Pénztárca ellenőrzése</translation>
-<translation id="4569155249847375786">Ellenőrizve</translation>
+<translation id="543510923939676996">Pénztárca ellenőrizve</translation>
 <translation id="7591798679868259510">Ugrás Uphold fiókomba</translation>
+<translation id="3699674790322420653">Komplett pénztárca ellenőrzés</translation>
 <translation id="9200453331904391567">Brave Jutalmak kapcsolat megszakítása</translation>
 <translation id="46988480989545156">Pénztárca ellenőrzése</translation>
 <translation id="1554282356558968486">Pénztárca-szolgáltatásunk biztosítója a(z)</translation>
@@ -419,6 +421,7 @@
 <translation id="5275978662119683162">A hitelesítés előnyei</translation>
 <translation id="5166793288622772189">Indulhat a pénztárca hitelesítése?</translation>
 <translation id="8766217572332535979">Nem szükséges hitelesítés ahhoz, hogy az alkotói munkáért díjazásban részesüljön.</translation>
+<translation id="4569155249847375786">Ellenőrzött</translation>
 <translation id="8465442795593991224">A kért szolgáltatások alapján szükség lehet rá, hogy az Uphold felé igazolja személyazonosságát .</translation>
 <translation id="723054503945711909">A Brave Software Inc. nem kezeli, nem  tárolja, valamint nem nem fér hozzá az Uphold számára a fiók létesítésekor megadott személyes adatai egyikéhez sem.</translation>
 <translation id="1181037720776840403">Eltávolítás</translation>

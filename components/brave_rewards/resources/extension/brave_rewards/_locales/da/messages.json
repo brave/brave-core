@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Bekræftet",
+    "message": "Tegnebog verificeret",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Godkendt",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Ikke tilgængelig",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Tilslut tegnebogen igen",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Din tegnebog er bekræftet!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Bare rolig. Dette kan ske grundet en række sikkerhedsmæssige årsager. Tilslut dig blot igen, og problemet vil være løst.",
+    "message": "Ingen problem. Dette kan ske af forskellige sikkerhedsmæssige grunde. Genopret forbindelsen til din tegnebog for at løse dette problem.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Denne verificerede skaber har endnu ikke verificeret (KYC) sin konto for at modtage donationer fra din verificerede tegnebog. Donationen forbliver i din tegnebog, indtil de gennemfører verificeringen.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Gennemfør tegnebogsverificering",
+    "description": "CTA for completing wallet verification"
   }
 }

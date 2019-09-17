@@ -40,6 +40,7 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="2814998458708016836">Gebruik brede adresbalk</translation>
 <translation id="6123134130710658846">Verberg Brave Rewards-knop</translation>
 <translation id="7635711399568194460">Verbergt de Brave Rewards-knop in de locatiebalk wanneer Brave Rewards niet is ingeschakeld</translation>
+<translation id="4262166817826183486">Toon bladwijzerbalk altijd op nieuw tabblad</translation>
 <translation id="7965178729203412357">Nieuwe Tor-identiteit</translation>
 <translation id="8511502469534942133">Nieuwe Tor-verbinding voor deze site</translation>
 <translation id="8784924142044142231">Sluit Tor af</translation>
@@ -69,7 +70,6 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="9075744464571452108">Apparaatherkenning</translation>
 <translation id="3570081523466826008">Upgrade verbindingen naar HTTPS</translation>
 <translation id="4824468494729001999">Blokkeer scripts</translation>
-<translation id="7498695072878479744">Google-aanmeldingsknoppen toestaan op sites van derden</translation>
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
 <translation id="5165042248369837294">Embedded tweets van Twitter toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
@@ -93,12 +93,14 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="8721331068159819483">Zelfde als macOS</translation>
 <translation id="6786747875388722282">Extensies</translation>
 <translation id="2896916411183256228">Gebruikt WebTorrent om torrents rechtstreeks in je browser weer te geven. Ondersteunt torrentbestanden en magnetlinks.</translation>
+<translation id="5554028991651120544">Wordt geleverd met Ethereum beurs en Dapp browser in Brave.</translation>
 <translation id="6554397389149987360">Gebruikt een Hangouts-component om het delen van het scherm en andere functies in de browser mogelijk te maken.</translation>
 <translation id="1765684547504191670">Gebruikt Media Router-component om Chromecast in de browser in te schakelen.</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="7179921470347911571">Nu Opnieuw Opstarten</translation>
 <translation id="4154389611571860454">Maakt gebruik van de IPFS companion-extensie om IPFS in de browser te ondersteunen.</translation>
 <translation id="8137559199583651773">Extensies beheren</translation>
+<translation id="7013485839273047434">Krijg meer uitbreidingspakketten</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Bekijken in Web Extensions Store</translation>
 <translation id="4846154056248462491">Bij het verlaten</translation>
@@ -111,4 +113,19 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="8303432794159193481">Brave Browser Dev-apps</translation>
 <translation id="8292967014767479012">Brave Browser-apps</translation>
 <translation id="4743468424889072281">Brave Browser-ontwikkelingsapps</translation>
+<translation id="4568409039725976900">Dapper Oranje</translation>
+<translation id="1197088940767939838">Sinaasappelschil</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Envy</translation>
+<translation id="138218114945450791">Blauwe Luchten</translation>
+<translation id="1555130319947370107">Bondy Blauw</translation>
+<translation id="4159784952369912983">Blurple</translation>
+<translation id="7569983096843329377">Dark Knight</translation>
+<translation id="6287165605525340193">Sinaasappelschil Vorm</translation>
+<translation id="6301585275578119299">Nana Vorm</translation>
+<translation id="2732216714908598537">Envy Vorm</translation>
+<translation id="3657793125124583718">Blauwe Luchten Vorm</translation>
+<translation id="7184617102219850286">Bondy Blauw Vorm</translation>
+<translation id="5032225845552050824">Blurple Vorm</translation>
+<translation id="815851617499295136">Dark Knight Vorm</translation>
 </translationbundle>

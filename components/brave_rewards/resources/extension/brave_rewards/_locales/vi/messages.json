@@ -484,7 +484,7 @@
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Đã xác thực",
+    "message": "Ví đã được xác thực",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -498,14 +498,6 @@
   "walletVerified":  {
     "message": "Đã xác thực",
     "description": "Status button that tells user that he is verified"
-  },
-  "balanceUnavailable":  {
-    "message": "Không khả dụng",
-    "description": "Shown when wallet is disconnected and balance is not available"
-  },
-  "reconnectWallet":  {
-    "message": "Kết nối lại ví",
-    "description": "CTA text to connect wallet again"
   },
   "walletVerifiedNotification":  {
     "message": "Ví của bạn đã được xác thực!",
@@ -526,7 +518,15 @@
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "Đừng lo. Vấn đề này có thể xảy ra do nhiều lý do bảo mật khác nhau. Bạn chỉ cần kết nối lại là sẽ giải quyết được vấn đề.",
+    "message": "Đừng lo. Điều này có thể xảy ra vì nhiều lý an ninh. Kết nối lại ví của bạn để xử lý vấn đề này.",
     "description": "Title for notification when wallet is disconnected"
+  },
+  "connectedText":  {
+    "message": "Người sáng tạo đã được xác thực này chưa xác thực (KYC) tài khoản của họ để nhận tiền thưởng từ ví đã xác thực của bạn. Tiền thưởng sẽ được giữ lại trong ví của bạn cho đến khi họ hoàn thành việc xác thực.",
+    "description": "Text shown for connected publishers that are not fully verified in the panel"
+  },
+  "walletGoToVerifyPage":  {
+    "message": "Hoàn thành xác thực ví",
+    "description": "CTA for completing wallet verification"
   }
 }

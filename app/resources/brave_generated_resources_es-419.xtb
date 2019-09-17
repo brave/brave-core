@@ -34,12 +34,13 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="3218385319396786393">La reproducción automática está bloqueada en esta página</translation>
 <translation id="4988333904713528597">Siempre permitir la reproducción automática en <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar bloqueando la reproducción automática</translation>
-<translation id="5883458389055721080">Brave no ha comprobado que esta extensión sea segura. Instálela solo si confía en el desarrollador.</translation>
+<translation id="5883458389055721080">Brave no ha comprobado que esta extensión sea segura. Instálala solo si confías en el desarrollador.</translation>
 <translation id="8081858229109418493">Ícono y nombre de perfil</translation>
 <translation id="2044383478723007273">Colores de Brave</translation>
 <translation id="2814998458708016836">Usar la barra de direcciones amplia</translation>
 <translation id="6123134130710658846">Ocultar botón de Recompensas Brave</translation>
 <translation id="7635711399568194460">Oculta el botón de Recompensas Brave en la barra de ubicación cuando las Recompensas Brave no están habilitadas</translation>
+<translation id="4262166817826183486">Mostrar siempre la barra de favoritos en la página Nueva pestaña</translation>
 <translation id="7965178729203412357">Nueva identidad de Tor</translation>
 <translation id="8511502469534942133">Nueva conexión de Tor para este sitio</translation>
 <translation id="8784924142044142231">Salir de Tor</translation>
@@ -57,8 +58,8 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="4472575034687746823">Comenzar</translation>
 <translation id="3400357268283240774">Configuración adicional</translation>
 <translation id="6303294677342628402">Escudos</translation>
-<translation id="7133511168130368997">Bloquee los rastreadores y anuncios que lo siguen en la web.</translation>
-<translation id="2761825942249694703">Esta es la configuración predeterminada de los escudos. Se aplica a todos los sitios web, a menos que modifique algo en el panel de escudos de un sitio particular. Estos cambios no afectarán la configuración de los demás sitios.</translation>
+<translation id="7133511168130368997">Bloquea los rastreadores y anuncios que te siguen en la Web.</translation>
+<translation id="2761825942249694703">Esta es la configuración predeterminada de los escudos. Se aplica a todos los sitios web, a menos que modifiques algo en el panel de escudos de un sitio particular. Estos cambios no afectarán la configuración de los demás sitios.</translation>
 <translation id="8754605759692119662">Esto bloqueará la mayoría de los anuncios en los sitios web, pero no los de Brave. Puede controlar los anuncios privados de Brave en la</translation>
 <translation id="6388201778088078932">configuración.</translation>
 <translation id="9185018653595759199">Bloqueo en redes sociales</translation>
@@ -69,7 +70,6 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="9075744464571452108">Reconocimiento de dispositivos</translation>
 <translation id="3570081523466826008">Actualizar las conexiones a HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
-<translation id="7498695072878479744">Permitir botones de inicio de sesión de Google en sitios externos</translation>
 <translation id="863171915776379000">Permitir publicaciones integradas e inicios de sesión de Facebook</translation>
 <translation id="5165042248369837294">Permitir tuits integrados de Twitter</translation>
 <translation id="958971637207126733">Permitir publicaciones integradas de LinkedIn</translation>
@@ -93,12 +93,14 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="8721331068159819483">Igual a macOS</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="2896916411183256228">Usa WebTorrnet para mostrar torrents directamente en el navegador. Admite archivos torrent y enlaces magnéticos.</translation>
+<translation id="5554028991651120544">Incorpora una billetera de Ethereum y un navegador de aplicaciones descentralizadas (dapps) en Brave.</translation>
 <translation id="6554397389149987360">Usa el componente Hangouts para compartir la pantalla y habilitar otras funciones en el navegador.</translation>
 <translation id="1765684547504191670">Usa el componente Router multimedia para habilitar Chromecast en el navegador.</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
 <translation id="7179921470347911571">Reiniciar ahora</translation>
 <translation id="4154389611571860454">Use la extensión complementaria de IPFS para apoyar a IPFS en el navegador.</translation>
 <translation id="8137559199583651773">Administrar extensiones</translation>
+<translation id="7013485839273047434">Conseguir más extensiones</translation>
 <translation id="4928988318462976765">Tienda virtual de extensiones</translation>
 <translation id="9181207987584064303">Ver en la Tienda virtual de extensiones</translation>
 <translation id="4846154056248462491">Al salir</translation>
@@ -111,4 +113,19 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="8303432794159193481">Aplicaciones del navegador Brave Dev</translation>
 <translation id="8292967014767479012">Aplicaciones del navegador Brave</translation>
 <translation id="4743468424889072281">aplicaciones de desarrollo del navegador de Brave</translation>
+<translation id="4568409039725976900">Brave Orange</translation>
+<translation id="1197088940767939838">Orange Peel</translation>
+<translation id="5901630391730855834">Nana</translation>
+<translation id="6017514345406065928">Envy</translation>
+<translation id="138218114945450791">Clear Skies</translation>
+<translation id="1555130319947370107">Bondy Blue</translation>
+<translation id="4159784952369912983">Blurple</translation>
+<translation id="7569983096843329377">Dark Knight</translation>
+<translation id="6287165605525340193">Orange Peel Shape</translation>
+<translation id="6301585275578119299">Nana Shape</translation>
+<translation id="2732216714908598537">Envy Shape</translation>
+<translation id="3657793125124583718">Clear Skies Shape</translation>
+<translation id="7184617102219850286">Bondy Blue Shape</translation>
+<translation id="5032225845552050824">Blurple Shape</translation>
+<translation id="815851617499295136">Dark Knight Shape</translation>
 </translationbundle>
