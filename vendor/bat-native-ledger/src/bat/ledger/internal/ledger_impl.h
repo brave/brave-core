@@ -201,8 +201,9 @@ class LedgerImpl : public ledger::Ledger,
 
   std::string GetWalletPassphrase() const override;
 
-  void RecoverWallet(const std::string& passPhrase,
-                     ledger::RecoverWalletCallback callback) override;
+  void RecoverWallet(
+      const std::string& pass_phrase,
+      ledger::RecoverWalletCallback callback) override;
 
   void OnRecoverWallet(
       const ledger::Result result,

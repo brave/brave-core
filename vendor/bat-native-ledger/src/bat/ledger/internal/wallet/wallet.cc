@@ -162,7 +162,8 @@ std::string Wallet::GetWalletPassphrase() const {
   return passPhrase;
 }
 
-void Wallet::RecoverWallet(const std::string& pass_phrase,
+void Wallet::RecoverWallet(
+    const std::string& pass_phrase,
     ledger::RecoverWalletCallback callback) {
   recover_->Start(pass_phrase, std::move(callback));
 }

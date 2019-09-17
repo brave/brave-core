@@ -81,7 +81,8 @@ class BatLedgerImpl : public mojom::BatLedger,
   void GetGrantCaptcha(const std::vector<std::string>& headers,
       GetGrantCaptchaCallback callback) override;
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
-  void RecoverWallet(const std::string& passPhrase,
+  void RecoverWallet(
+      const std::string& pass_phrase,
       RecoverWalletCallback callback) override;
   void SolveGrantCaptcha(
       const std::string& solution,

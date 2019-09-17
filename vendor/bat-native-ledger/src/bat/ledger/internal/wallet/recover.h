@@ -28,19 +28,22 @@ class Recover {
 
   ~Recover();
 
-  void Start(const std::string& passPhrase,
-            ledger::RecoverWalletCallback callback);
+  void Start(
+      const std::string& pass_phrase,
+      ledger::RecoverWalletCallback callback);
 
  private:
-  void OnNicewareListLoaded(const std::string& pass_phrase,
-                            ledger::Result result,
-                            const std::string& data,
-                           ledger::RecoverWalletCallback callback);
+  void OnNicewareListLoaded(
+      const std::string& pass_phrase,
+      ledger::Result result,
+      const std::string& data,
+      ledger::RecoverWalletCallback callback);
 
-  void ContinueRecover(int result,
-                       size_t* written,
-                       const std::vector<uint8_t>& newSeed,
-                       ledger::RecoverWalletCallback callback);
+  void ContinueRecover(
+      int result,
+      size_t* written,
+      const std::vector<uint8_t>& newSeed,
+      ledger::RecoverWalletCallback callback);
 
 
   void RecoverWalletPublicKeyCallback(

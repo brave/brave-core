@@ -938,12 +938,32 @@ void RewardsServiceImpl::OnGrantCaptcha(const std::string& image,
   TriggerOnGrantCaptcha(image, hint);
 }
 
-void RewardsServiceImpl::OnRecoverWallet(ledger::Result result,
-                                    double balance,
-                                    std::vector<ledger::GrantPtr> grants) {
-  TriggerOnRecoverWallet(static_cast<ledger::Result>(result),
+void RewardsServiceImpl::OnRecoverWallet(
+    ledger::Result result,
+    double balance,
+    std::vector<ledger::GrantPtr> grants) {
+  std::vector<brave_rewards::Grant> new_grants;
+  for (size_t i = 0; i < grants.size(); i ++) {
+    if (!grants[i]) {
+      continue;
+    }
+
+    brave_rewards::Grant grant;
+    grant.altcurrency = grants[i]->altcurrency;
+    grant.probi = grants[i]->probi;
+    grant.expiryTime = grants[i]->expiry_time;
+    grant.type = grants[i]->type;
+
+    new_grants.push_back(grant);
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnRecoverWallet(
+      this,
+      static_cast<int>(result),
       balance,
-      std::move(grants));
+      new_grants);
+  }
 }
 
 void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
@@ -1476,34 +1496,6 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
   bat_ledger_->RecoverWallet(passPhrase, base::BindOnce(
       &RewardsServiceImpl::OnRecoverWallet,
       AsWeakPtr()));
-}
-
-void RewardsServiceImpl::TriggerOnRecoverWallet(
-    ledger::Result result,
-    double balance,
-    std::vector<ledger::GrantPtr> grants) {
-  std::vector<brave_rewards::Grant> newGrants;
-  for (size_t i = 0; i < grants.size(); i ++) {
-    if (!grants[i]) {
-      continue;
-    }
-
-    brave_rewards::Grant grant;
-
-    grant.altcurrency = grants[i]->altcurrency;
-    grant.probi = grants[i]->probi;
-    grant.expiryTime = grants[i]->expiry_time;
-    grant.type = grants[i]->type;
-
-    newGrants.push_back(grant);
-  }
-
-  for (auto& observer : observers_)
-    observer.OnRecoverWallet(
-      this,
-      static_cast<int>(result),
-      balance,
-      newGrants);
 }
 
 void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution,

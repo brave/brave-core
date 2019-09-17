@@ -20,41 +20,45 @@ using std::placeholders::_3;
 
 namespace braveledger_wallet {
 
-Recover::Recover(bat_ledger::LedgerImpl* ledger) :
-    ledger_(ledger) {
+Recover::Recover(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
   initAnonize();
 }
 
 Recover::~Recover() {
 }
 
-void Recover::Start(const std::string& pass_phrase,
+void Recover::Start(
+    const std::string& pass_phrase,
     ledger::RecoverWalletCallback callback) {
   size_t written = 0;
   if (braveledger_bat_helper::split(pass_phrase,
-    WALLET_PASSPHRASE_DELIM).size() == 16) {
+      WALLET_PASSPHRASE_DELIM).size() == 16) {
     // use niceware for legacy wallet passphrases
-    ledger_->LoadNicewareList(
-      std::bind(&Recover::OnNicewareListLoaded,
-          this,
-          pass_phrase,
-          _1,
-          _2,
-          std::move(callback)));
-  } else {
-    std::vector<unsigned char> newSeed;
-    newSeed.resize(32);
-    int result = bip39_mnemonic_to_bytes
-      (nullptr, pass_phrase.c_str(), &newSeed.front(),
-      newSeed.size(), &written);
-    ContinueRecover(result, &written, newSeed, std::move(callback));
+    ledger_->LoadNicewareList(std::bind(&Recover::OnNicewareListLoaded,
+        this,
+        pass_phrase,
+        _1,
+        _2,
+        std::move(callback)));
+    return;
   }
+
+  std::vector<unsigned char> newSeed;
+  newSeed.resize(32);
+  const int result = bip39_mnemonic_to_bytes(
+      nullptr,
+      pass_phrase.c_str(),
+      &newSeed.front(),
+      newSeed.size(),
+      &written);
+  ContinueRecover(result, &written, newSeed, std::move(callback));
 }
 
-void Recover::OnNicewareListLoaded(const std::string& pass_phrase,
-                                   ledger::Result result,
-                                   const std::string& data,
-                                   ledger::RecoverWalletCallback callback) {
+void Recover::OnNicewareListLoaded(
+    const std::string& pass_phrase,
+    ledger::Result result,
+    const std::string& data,
+    ledger::RecoverWalletCallback callback) {
   if (result == ledger::Result::LEDGER_OK &&
     braveledger_bat_helper::split(pass_phrase,
     WALLET_PASSPHRASE_DELIM).size() == 16) {
@@ -62,24 +66,26 @@ void Recover::OnNicewareListLoaded(const std::string& pass_phrase,
     seed.resize(32);
     size_t written = 0;
     uint8_t nwResult = braveledger_bat_helper::niceware_mnemonic_to_bytes(
-      pass_phrase,
-      &seed,
-      &written,
-      braveledger_bat_helper::split(data, DICTIONARY_DELIMITER));
+        pass_phrase,
+        &seed,
+        &written,
+        braveledger_bat_helper::split(data, DICTIONARY_DELIMITER));
     ContinueRecover(nwResult, &written, seed, std::move(callback));
-  } else {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Failed to load niceware list";
-    std::vector<ledger::GrantPtr> empty;
-    callback(result, 0, std::move(empty));
     return;
   }
+
+  BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+    << "Failed to load niceware list";
+  std::vector<ledger::GrantPtr> empty;
+  callback(result, 0, std::move(empty));
+  return;
 }
 
-void Recover::ContinueRecover(int result,
-                              size_t* written,
-                              const std::vector<uint8_t>& newSeed,
-                              ledger::RecoverWalletCallback callback) {
+void Recover::ContinueRecover(
+    int result,
+    size_t* written,
+    const std::vector<uint8_t>& newSeed,
+    ledger::RecoverWalletCallback callback) {
   if (result != 0 || *written == 0) {
     BLOG(ledger_, ledger::LogLevel::LOG_INFO)
       << "Result: "
@@ -106,10 +112,16 @@ void Recover::ContinueRecover(int result,
                             _3,
                             newSeed,
                             std::move(callback));
-  ledger_->LoadURL(braveledger_bat_helper::buildURL(
-        (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex, PREFIX_V2),
-    std::vector<std::string>(), "", "",
-    ledger::URL_METHOD::GET, std::move(on_load));
+  const auto url = braveledger_bat_helper::buildURL(
+        (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex,
+        PREFIX_V2);
+  ledger_->LoadURL(
+      url,
+      std::vector<std::string>(),
+      "",
+      "",
+      ledger::URL_METHOD::GET,
+      std::move(on_load));
 }
 
 void Recover::RecoverWalletPublicKeyCallback(
@@ -162,14 +174,16 @@ void Recover::RecoverWalletCallback(
   double fee_amount = .0;
   double balance = .0;
   std::string currency;
-  braveledger_bat_helper::getJSONWalletInfo(response,
-                                            &wallet_info,
-                                            &currency,
-                                            &fee_amount,
-                                            &days);
-  braveledger_bat_helper::getJSONRecoverWallet(response,
-                                               &balance,
-                                               &properties.grants_);
+  braveledger_bat_helper::getJSONWalletInfo(
+      response,
+      &wallet_info,
+      &currency,
+      &fee_amount,
+      &days);
+  braveledger_bat_helper::getJSONRecoverWallet(
+      response,
+      &balance,
+      &properties.grants_);
   ledger_->SetCurrency(currency);
   if (!ledger_->GetUserChangedContribution()) {
     ledger_->SetContributionAmount(fee_amount);
@@ -194,9 +208,11 @@ void Recover::RecoverWalletCallback(
 
     ledgerGrants.push_back(std::move(tempGrant));
   }
-  callback(ledger::Result::LEDGER_OK,
-           balance,
-           std::move(ledgerGrants));
+
+  callback(
+      ledger::Result::LEDGER_OK,
+      balance,
+      std::move(ledgerGrants));
 }
 
 }  // namespace braveledger_wallet

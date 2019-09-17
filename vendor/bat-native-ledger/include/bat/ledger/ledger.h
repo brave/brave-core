@@ -197,7 +197,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual ledger::AutoContributePropsPtr GetAutoContributeProps() = 0;
 
-  virtual void RecoverWallet(const std::string& passPhrase,
+  virtual void RecoverWallet(
+      const std::string& pass_phrase,
       RecoverWalletCallback callback)  = 0;
 
   virtual void SetPublisherExclude(

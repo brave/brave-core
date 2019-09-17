@@ -295,12 +295,13 @@ void BatLedgerImpl::OnRecoverWallet(
   delete holder;
 }
 
-void BatLedgerImpl::RecoverWallet(const std::string& passPhrase,
+void BatLedgerImpl::RecoverWallet(
+    const std::string& pass_phrase,
     RecoverWalletCallback callback) {
   // deleted in OnRecoverWallet
   auto* holder = new CallbackHolder<RecoverWalletCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->RecoverWallet(passPhrase, std::bind(
+  ledger_->RecoverWallet(pass_phrase, std::bind(
       BatLedgerImpl::OnRecoverWallet,
       holder,
       _1,

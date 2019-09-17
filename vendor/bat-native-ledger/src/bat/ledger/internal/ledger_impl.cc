@@ -652,27 +652,31 @@ std::string LedgerImpl::GetWalletPassphrase() const {
   return bat_wallet_->GetWalletPassphrase();
 }
 
-void LedgerImpl::RecoverWallet(const std::string& passPhrase,
+void LedgerImpl::RecoverWallet(
+    const std::string& pass_phrase,
     ledger::RecoverWalletCallback callback) {
   auto on_recover = std::bind(&LedgerImpl::OnRecoverWallet,
-                              this,
-                              _1,
-                              _2,
-                              _3,
-                              std::move(callback));
-  bat_wallet_->RecoverWallet(passPhrase, std::move(on_recover));
+      this,
+      _1,
+      _2,
+      _3,
+      std::move(callback));
+  bat_wallet_->RecoverWallet(pass_phrase, std::move(on_recover));
 }
 
-void LedgerImpl::OnRecoverWallet(const ledger::Result result,
-                                 const double balance,
-                                 std::vector<ledger::GrantPtr> grants,
-                                 ledger::RecoverWalletCallback callback) {
+void LedgerImpl::OnRecoverWallet(
+    const ledger::Result result,
+    const double balance,
+    std::vector<ledger::GrantPtr> grants,
+    ledger::RecoverWalletCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to recover wallet";
   }
+
   if (result == ledger::Result::LEDGER_OK) {
     bat_publisher_->clearAllBalanceReports();
   }
+
   callback(result, balance, std::move(grants));
 }
 

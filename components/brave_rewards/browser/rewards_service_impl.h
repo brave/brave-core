@@ -310,9 +310,6 @@ class RewardsServiceImpl : public RewardsService,
     std::vector<ledger::GrantPtr> grants);
   void TriggerOnGrant(const ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
-  void TriggerOnRecoverWallet(ledger::Result result,
-                              double balance,
-                              std::vector<ledger::GrantPtr> grants);
   void TriggerOnGrantFinish(ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
