@@ -565,10 +565,11 @@ export class Panel extends React.Component<Props, State> {
   }
 
   render () {
-    const { pendingContributionTotal, enabledAC, externalWallet } = this.props.rewardsPanelData
-    const { total, rates } = this.props.rewardsPanelData.balance
+    const { pendingContributionTotal, enabledAC, externalWallet, balance } = this.props.rewardsPanelData
+    const { rates } = this.props.rewardsPanelData.balance
     const { grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+    const total = balance.total || 0
     const converted = utils.convertBalance(total.toString(), rates)
     const notification = this.getNotification()
     const notificationId = this.getNotificationProp('id', notification)
