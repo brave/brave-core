@@ -40,28 +40,32 @@ bool IsBlockedResource(const GURL& gurl) {
 
 bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
     const GURL& subresourceUrl) {
-  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns = {
+  static std::map<URLPattern, std::vector<URLPattern> > whitelist_patterns = {
     {
-      GURL("https://uphold.com/"),
+      URLPattern(URLPattern::SCHEME_ALL, "https://uphold.com/"),
       std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
             "https://uphold.netverify.com/*")})
     },
     {
-      GURL("https://sandbox.uphold.com/"),
+      URLPattern(URLPattern::SCHEME_ALL, "https://sandbox.uphold.com/"),
       std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
             "https://*.netverify.com/*")})
+    },
+    {
+      URLPattern(URLPattern::SCHEME_ALL, "https://*.1password.com/*"),
+      std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
+            "https://map.1passwordservices.com/*")})
     }
   };
-  std::map<GURL, std::vector<URLPattern> >::iterator i =
-      whitelist_patterns.find(firstPartyOrigin);
-  if (i == whitelist_patterns.end()) {
-    return false;
+  for (const auto whitelist : whitelist_patterns) {
+      if (whitelist.first.MatchesURL(firstPartyOrigin)) {
+          return std::any_of(whitelist.second.begin(), whitelist.second.end(),
+            [&subresourceUrl](const URLPattern& pattern) {
+              return pattern.MatchesURL(subresourceUrl);
+          });
+      }
   }
-  std::vector<URLPattern> &exceptions = i->second;
-  return std::any_of(exceptions.begin(), exceptions.end(),
-      [&subresourceUrl](const URLPattern& pattern) {
-        return pattern.MatchesURL(subresourceUrl);
-      });
+  return false;
 }
 
 }  // namespace brave
