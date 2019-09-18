@@ -17,9 +17,13 @@
     "256": "assets/img/icon-256.png"
   },
   "web_accessible_resources": [
+    "out/*.html"
   ],
   "background": {
-    "scripts": ["out/brave_extension_background.bundle.js"]
+    "scripts": [
+      "out/brave_extension_background.bundle.js",
+      "out/batsense/background.bundle.js"
+    ]
   },
   "content_scripts": [
     {
@@ -85,6 +89,34 @@
       "matches": ["https://www.glennbeck.com/*"],
       "js": [
         "assets/siteHack-glennbeck.com.js"
+      ]
+    }, {
+      "run_at": "document_start",
+      "all_frames": false,
+      "matches": ["https://*.washingtonpost.com/*"],
+      "js": [
+        "out/batsense/content/washingtonpost.bundle.js"
+      ]
+    }, {
+      "run_at": "document_start",
+      "all_frames": false,
+      "matches": ["https://*.marketwatch.com/*"],
+      "js": [
+        "out/batsense/content/marketwatch.bundle.js"
+      ]
+    }, {
+      "run_at": "document_start",
+      "all_frames": false,
+      "matches": ["https://*.barrons.com/*"],
+      "js": [
+        "out/batsense/content/wsjgroup.bundle.js"
+      ]
+    }, {
+      "run_at": "document_start",
+      "all_frames": false,
+      "matches": ["https://*.wsj.com/*"],
+      "js": [
+        "out/batsense/content/wsjgroup.bundle.js"
       ]
     }
   ],
