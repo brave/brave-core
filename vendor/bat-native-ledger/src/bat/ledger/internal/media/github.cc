@@ -30,6 +30,10 @@ GitHub::~GitHub() {
 
 // static
 std::string GitHub::GetLinkType(const std::string& url) {
+  if (url.empty()) {
+    return "";
+  }
+
   return url.find(GITHUB_TLD) != std::string::npos ? GITHUB_MEDIA_TYPE : "";
 }
 
@@ -221,22 +225,28 @@ void GitHub::ProcessActivityFromUrl(uint64_t window_id,
 }
 
 
-void GitHub::ProcessMedia(const std::map<std::string, std::string> parts,
+void GitHub::ProcessMedia(
+    const std::map<std::string, std::string> parts,
     const ledger::VisitData& visit_data) {
   const std::string user_name = GetUserNameFromURL(visit_data.path);
   const std::string url = GetProfileAPIURL(user_name);
   auto iter = parts.find("duration");
   uint64_t duration = iter != parts.end() ? std::stoull(iter->second) : 0U;
 
-  FetchDataFromUrl(url,
-                   std::bind(&GitHub::OnUserPage,
-                             this,
-                             duration,
-                             0,
-                             visit_data,
-                             _1,
-                             _2,
-                             _3));
+  if (duration == 0) {
+    return;
+  }
+
+  const auto callback = std::bind(&GitHub::OnUserPage,
+      this,
+      duration,
+      0,
+      visit_data,
+      _1,
+      _2,
+      _3);
+
+  FetchDataFromUrl(url, callback);
 }
 
 void GitHub::OnMediaPublisherActivity(

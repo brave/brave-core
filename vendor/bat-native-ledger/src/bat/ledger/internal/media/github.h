@@ -35,8 +35,9 @@ class GitHub : public ledger::LedgerCallbackHandler {
   void ProcessActivityFromUrl(uint64_t window_id,
                               const ledger::VisitData& visit_data);
 
-  void ProcessMedia(const std::map<std::string, std::string> parts,
-      const ledger::VisitData& vist_data);
+  void ProcessMedia(
+      const std::map<std::string, std::string> parts,
+      const ledger::VisitData& visit_data);
 
   ~GitHub() override;
 

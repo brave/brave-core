@@ -28,20 +28,24 @@ Media::Media(bat_ledger::LedgerImpl* ledger):
 Media::~Media() {}
 
 // static
-std::string Media::GetLinkType(const std::string& url,
-                                     const std::string& first_party_url,
-                                     const std::string& referrer) {
+std::string Media::GetLinkType(
+    const std::string& url,
+    const std::string& first_party_url,
+    const std::string& referrer) {
   std::string type;
   type = braveledger_media::YouTube::GetLinkType(url);
 
   if (type.empty()) {
-    type = braveledger_media::Twitch::GetLinkType(url,
-                                                       first_party_url,
-                                                       referrer);
+    type = braveledger_media::Twitch::GetLinkType(
+        url,
+        first_party_url,
+        referrer);
   }
+
   if (type.empty()) {
     type = braveledger_media::Vimeo::GetLinkType(url);
   }
+
   if (type.empty()) {
     type = braveledger_media::GitHub::GetLinkType(url);
   }
