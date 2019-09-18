@@ -222,6 +222,11 @@ class BatLedgerImpl : public mojom::BatLedger,
       Callback callback_;
     };
 
+  static void OnGetBalanceReport(
+      CallbackHolder<GetBalanceReportCallback>* holder,
+      const bool result,
+      ledger::BalanceReportInfoPtr report_info);
+
   static void OnGetGrantCaptcha(
       CallbackHolder<GetGrantCaptchaCallback>* holder,
       const std::string& image,

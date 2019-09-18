@@ -128,10 +128,6 @@ class LedgerImpl : public ledger::Ledger,
 
   void UpdateAdsRewards() override;
 
-  void SetBalanceReport(ledger::ACTIVITY_MONTH month,
-                        int year,
-                        const ledger::BalanceReportInfo& report_info);
-
   void SaveUnverifiedContribution(
       ledger::PendingContributionList list,
       ledger::SavePendingContributionCallback callback);
@@ -152,9 +148,10 @@ class LedgerImpl : public ledger::Ledger,
 
   bool GetAutoContribute() const override;
 
-  bool GetBalanceReport(ledger::ACTIVITY_MONTH month,
-                        int year,
-                        ledger::BalanceReportInfo* report_info) const override;
+  void GetBalanceReport(
+      ledger::ACTIVITY_MONTH month,
+      int year,
+      ledger::GetBalanceReportCallback callback) const override;
 
   std::map<std::string, ledger::BalanceReportInfoPtr>
   GetAllBalanceReports() const override;

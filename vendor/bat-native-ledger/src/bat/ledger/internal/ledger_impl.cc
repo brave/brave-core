@@ -708,23 +708,16 @@ void LedgerImpl::OnGrantFinish(ledger::Result result,
   ledger_client_->OnGrantFinish(result, std::move(newGrant));
 }
 
-bool LedgerImpl::GetBalanceReport(
+void LedgerImpl::GetBalanceReport(
     ledger::ACTIVITY_MONTH month,
     int year,
-    ledger::BalanceReportInfo* report_info) const {
-  return bat_publisher_->getBalanceReport(month, year, report_info);
+    ledger::GetBalanceReportCallback callback) const {
+  bat_publisher_->GetBalanceReport(month, year, callback);
 }
 
 std::map<std::string, ledger::BalanceReportInfoPtr>
 LedgerImpl::GetAllBalanceReports() const {
   return bat_publisher_->GetAllBalanceReports();
-}
-
-void LedgerImpl::SetBalanceReport(
-    ledger::ACTIVITY_MONTH month,
-    int year,
-    const ledger::BalanceReportInfo& report_info) {
-  bat_publisher_->setBalanceReport(month, year, report_info);
 }
 
 void LedgerImpl::SaveUnverifiedContribution(
