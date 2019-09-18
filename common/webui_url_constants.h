@@ -13,7 +13,6 @@ extern const char kRewardsInternalsHost[];
 extern const char kWelcomeHost[];
 extern const char kWelcomeJS[];
 extern const char kTipHost[];
-extern const char kTipJS[];
 extern const char kBraveNewTabJS[];
 extern const char kBraveUISyncHost[];
 extern const char kBraveSyncJS[];

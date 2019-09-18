@@ -94,8 +94,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("tip"), {
-        { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_TIP_BG_1 },
-        { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_TIP_BG_2 },
+        { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_REWARDS_TIP_BG_1 },
+        { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_REWARDS_TIP_BG_2 },
       }
 #endif
     }, {
