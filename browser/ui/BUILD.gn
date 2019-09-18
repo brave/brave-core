@@ -241,6 +241,7 @@ source_set("ui") {
 
     deps += [
       "//brave/components/brave_rewards/resources:page_generated_resources",
+      "//brave/components/brave_rewards/resources:internals_generated_resources",
       "//brave/components/brave_rewards/resources:tip_generated_resources",
     ]
   }

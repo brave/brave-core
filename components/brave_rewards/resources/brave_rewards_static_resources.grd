@@ -17,7 +17,7 @@
       <include name="IDR_BRAVE_REWARDS_NICEWARE_LIST" file="../../../vendor/bat-native-ledger/niceware/wordlist" type="BINDATA" />
 
       <!-- WebUI Brave Rewards Internals resources -->
-      <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="page/internals/brave_rewards_internals.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="internals/brave_rewards_internals.html" type="BINDATA" />
 
       <!-- WebUI tip resources -->
       <include name="IDR_BRAVE_TIP_BG_1" file="img/tip_bg_1.svg" type="BINDATA" />

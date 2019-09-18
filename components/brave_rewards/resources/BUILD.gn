@@ -13,6 +13,15 @@ pack_web_resources("page_generated_resources") {
   ]
 }
 
+pack_web_resources("internals_generated_resources") {
+  resource_name = "brave_rewards_internals"
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
+  # need webpack and GRD generation first
+  deps = [
+    "internals"
+  ]
+}
+
 pack_web_resources("tip_generated_resources") {
   resource_name = "brave_tip"
   output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
@@ -46,12 +55,14 @@ grit("static_resources") {
 repack("resources") {
   public_deps = [
     ":page_generated_resources",
+    ":internals_generated_resources",
     ":tip_generated_resources",
     ":static_resources",
   ]
 
   sources = [
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_page_generated.pak",
+    "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_internals_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_tip_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_static.pak",
   ]

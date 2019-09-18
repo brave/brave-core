@@ -19,7 +19,7 @@
 #include "content/public/browser/web_ui_message_handler.h"
 
 #if !defined(OS_ANDROID)
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #else
 #include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
@@ -148,8 +148,8 @@ BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
     : BasicUI(web_ui,
               name,
 #if !defined(OS_ANDROID)
-              kBraveRewardsGenerated,
-              kBraveRewardsGeneratedSize,
+              kBraveRewardsInternalsGenerated,
+              kBraveRewardsInternalsGeneratedSize,
 #else
               kBraveRewardsSettingsGenerated,
               kBraveRewardsSettingsGeneratedSize,

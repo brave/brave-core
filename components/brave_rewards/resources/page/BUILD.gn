@@ -3,8 +3,7 @@ import("//brave/components/common/typescript.gni")
 transpile_web_ui("page") {
   # what is the output bundle called and what is the entry point file
   entry_points = [
-    ["brave_rewards_page", rebase_path("brave_rewards_page.tsx")],
-    ["brave_rewards_internals", rebase_path("internals/brave_rewards_internals.tsx")]
+    ["brave_rewards_page", rebase_path("brave_rewards_page.tsx")]
   ]
 
   # what is the directory / pack name
