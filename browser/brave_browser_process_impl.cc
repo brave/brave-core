@@ -99,6 +99,8 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
 }
 
 void BraveBrowserProcessImpl::StartBraveServices() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
   ad_block_service()->Start();
   ad_block_custom_filters_service()->Start();
   ad_block_regional_service_manager()->Start();

@@ -20,6 +20,7 @@
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
+#include "base/time/time.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
 #include "mojo/public/cpp/bindings/binding.h"
@@ -104,6 +105,8 @@ class BraveProxyingURLLoaderFactory
         net::CompletionOnceCallback continuation);
     void OnRequestError(const network::URLLoaderCompletionStatus& status);
     void HandleBeforeRequestRedirect();
+
+    base::TimeTicks start_time_;
 
     // TODO(iefremov): Get rid of shared_ptr, we should clearly own the pointer.
     std::shared_ptr<brave::BraveRequestInfo> ctx_;
