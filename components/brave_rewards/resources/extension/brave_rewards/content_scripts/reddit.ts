@@ -146,6 +146,11 @@ const createRedditTipButton = () => {
   braveTipButton.style.borderRadius = '2px'
   braveTipButton.style.outline = 'none'
   braveTipButton.type = 'button'
+
+  const style = document.createElement('style')
+  style.innerHTML = '.reddit-actionButton :hover { color: #FB542B }'
+  braveTipButton.appendChild(style)
+
   return braveTipButton
 }
 
