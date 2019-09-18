@@ -50,25 +50,18 @@
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_panel/brave_rewards_panel.grd": {
-    "includes": [38020],
+    "includes": [38160],
   },
   "brave/components/brave_rewards/resources/brave_rewards_static_resources.grd": {
-    "includes": [38500]
-  },
-  "brave/components/brave_extension/extension/resources.grd": {
-    "includes": [38600],
-  },
-  # This file is generated during the build.
-  "<(ROOT_GEN_DIR)/brave/web-ui-brave_extension/brave_extension.grd": {
-    "includes": [37650],
+    "includes": [38320]
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_page/brave_rewards_page.grd": {
-    "includes": [38700],
+    "includes": [38480],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_internals/brave_rewards_internals.grd": {
-    "includes": [38750],
+    "includes": [38640],
   },
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_tip/brave_rewards_tip.grd": {
@@ -91,5 +84,12 @@
   # This file is generated during the build.
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet/brave_wallet.grd": {
     "includes": [43600],
+  },
+  "brave/components/brave_extension/extension/resources.grd": {
+    "includes": [44000],
+  },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_extension/brave_extension.grd": {
+    "includes": [44500],
   },
 }
