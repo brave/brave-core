@@ -61,6 +61,7 @@ test("brave_unit_tests") {
     "//brave/browser/download/brave_download_item_model_unittest.cc",
     "//brave/browser/metrics/metrics_reporting_util_unittest_linux.cc",
     "//brave/browser/net/brave_ad_block_tp_network_delegate_helper_unittest.cc",
+    "//brave/browser/net/brave_block_safebrowsing_urls_unittest.cc",
     "//brave/browser/net/brave_common_static_redirect_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_httpse_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_network_delegate_base_unittest.cc",

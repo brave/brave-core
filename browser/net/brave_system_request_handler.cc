@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/brave_system_request_handler.h"
 
+#include "brave/browser/net/brave_block_safebrowsing_urls.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -15,6 +16,8 @@ namespace brave {
 network::ResourceRequest OnBeforeSystemRequest(
     const network::ResourceRequest& url_request) {
   GURL new_url;
+  brave::OnBeforeURLRequest_BlockSafeBrowsingReportingURLs(url_request.url,
+                                                           &new_url);
   brave::OnBeforeURLRequest_StaticRedirectWorkForGURL(url_request.url,
                                                       &new_url);
   brave::OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(url_request.url,
