@@ -53,7 +53,8 @@ platform :ios do
         "ClientTests/UIImageViewExtensionsTests/testAsyncSetIcon",
         "ClientTests/UIImageViewExtensionsTests/testAsyncSetIconFail",
         "ClientTests/FingerprintProtectionTest/testFingerprintProtection",
-        "ClientTests/TabSessionTests"
+        "ClientTests/TabSessionTests",
+        "ClientTests/ContentBlockerTests"
       ]
     )
   end
