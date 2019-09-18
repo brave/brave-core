@@ -125,13 +125,13 @@ def main():
             'Error: could not change directory to {}: {}'.format(repo_dir, ose))
         exit(message)
 
-    # remove files older than 120 days from dist_dir
-    delete_age = 120 * 86400
+    # remove files older than 60 days from dist_dir
+    delete_age = 60 * 86400
     # do not remove files that match this pattern
     global exclude_patterns
     exclude_patterns = ['.*keyring.*']
 
-    logging.info("Performing removal of files older than 120 days in directory: {}".format(dist_dir))
+    logging.info("Performing removal of files older than 60 days in directory: {}".format(dist_dir))
 
     remove_files_older_x_days(dist_dir, delete_age, act=True)
 
