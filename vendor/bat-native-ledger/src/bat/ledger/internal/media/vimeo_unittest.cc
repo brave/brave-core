@@ -143,8 +143,9 @@ TEST(VimeoTest, GenerateFaviconUrl) {
   ASSERT_EQ(result, "");
 
   // all good
-  result = Vimeo::GenerateFaviconUrl("234123423");
-  ASSERT_EQ(result, "https://i.vimeocdn.com/portrait/234123423_300x300.webp");
+  std::string responseData = "{\"src_2x\":\"https:\\/\\/i.vimeocdn.com\\/portrait\\/6040298_32x32.jpg\"}";
+  result = Vimeo::GenerateFaviconUrl(responseData);
+  ASSERT_EQ(result, "https://i.vimeocdn.com/portrait/6040298_300x300.webp");
 }
 
 TEST(VimeoTest, GetNameFromVideoPage) {

@@ -45,7 +45,7 @@ class Vimeo : public ledger::LedgerCallbackHandler {
 
   static std::string GetIdFromVideoPage(const std::string& data);
 
-  static std::string GenerateFaviconUrl(const std::string& id);
+  static std::string GenerateFaviconUrl(const std::string& data);
 
   static std::string GetNameFromVideoPage(const std::string& data);
 
@@ -81,6 +81,7 @@ class Vimeo : public ledger::LedgerCallbackHandler {
     const std::string& media_key,
     const std::string& publisher_url,
     const std::string& publisher_name,
+    const std::string& publisher_favicon,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     int response_status_code,
@@ -99,6 +100,7 @@ class Vimeo : public ledger::LedgerCallbackHandler {
     uint64_t window_id,
     const std::string& publisher_url,
     const std::string& publisher_name,
+    const std::string& publisher_favicon,
     const std::string& user_id,
     ledger::Result result,
     ledger::PublisherInfoPtr info);
@@ -109,6 +111,7 @@ class Vimeo : public ledger::LedgerCallbackHandler {
     const std::string& publisher_url,
     const std::string& publisher_key,
     const std::string& publisher_name,
+    const std::string& publisher_favicon,
     const std::string& user_id);
 
   void OnMediaPublisherInfo(

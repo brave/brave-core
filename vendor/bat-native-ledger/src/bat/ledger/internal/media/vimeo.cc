@@ -83,13 +83,22 @@ std::string Vimeo::GetIdFromVideoPage(const std::string& data) {
 }
 
 // static
-std::string Vimeo::GenerateFaviconUrl(const std::string& id) {
-  if (id.empty()) {
+std::string Vimeo::GenerateFaviconUrl(const std::string& data) {
+  if (data.empty()) {
     return "";
   }
 
-  return base::StringPrintf("https://i.vimeocdn.com/portrait/%s_300x300.webp",
-                            id.c_str());
+  std::string portraitUrlID = braveledger_media::ExtractData(data,
+      "src_2x\":\"https:\\/\\/i.vimeocdn.com\\/portrait\\/", "_");
+
+  if (portraitUrlID.empty()) {
+    return "";
+  }
+
+  std::string favIconUrl = base::StringPrintf("https://i.vimeocdn.com/portrait/%s_300x300.webp",
+      portraitUrlID.c_str());
+
+  return favIconUrl;
 }
 
 // static
@@ -425,6 +434,8 @@ void Vimeo::OnEmbedResponse(
     publisher_name = *data->FindStringKey("author_name");
   }
 
+  const std::string publisher_favicon = GenerateFaviconUrl(response);
+
   const std::string media_key = GetMediaKey(std::to_string(video_id),
                                             "vimeo-vod");
 
@@ -433,6 +444,7 @@ void Vimeo::OnEmbedResponse(
                             media_key,
                             publisher_url,
                             publisher_name,
+                            publisher_favicon,
                             visit_data,
                             window_id,
                             _1,
@@ -446,6 +458,7 @@ void Vimeo::OnPublisherPage(
     const std::string& media_key,
     const std::string& publisher_url,
     const std::string& publisher_name,
+    const std::string& publisher_favicon,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     int response_status_code,
@@ -470,6 +483,7 @@ void Vimeo::OnPublisherPage(
                         publisher_url,
                         publisher_key,
                         publisher_name,
+                        publisher_favicon,
                         user_id);
 }
 
@@ -492,6 +506,7 @@ void Vimeo::OnUnknownPage(
 
   std::string user_id = GetIdFromPublisherPage(response);
   std::string publisher_name;
+  const std::string publisher_favicon = GenerateFaviconUrl(response);
   std::string media_key;
   if (!user_id.empty()) {
     // we are on publisher page
@@ -521,6 +536,7 @@ void Vimeo::OnUnknownPage(
                         visit_data.url,
                         publisher_key,
                         publisher_name,
+                        publisher_favicon,
                         user_id);
 }
 
@@ -529,16 +545,19 @@ void Vimeo::OnPublisherPanleInfo(
     uint64_t window_id,
     const std::string& publisher_url,
     const std::string& publisher_name,
+    const std::string& publisher_favicon,
     const std::string& user_id,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
     SavePublisherInfo(media_key,
-                      0,
-                      user_id,
-                      publisher_name,
-                      publisher_url,
-                      window_id);
+        0,
+        user_id,
+        publisher_name,
+        publisher_url,
+        window_id,
+        "",
+        publisher_favicon);
   } else {
     ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
   }
@@ -550,6 +569,7 @@ void Vimeo::GetPublisherPanleInfo(
     const std::string& publisher_url,
     const std::string& publisher_key,
     const std::string& publisher_name,
+    const std::string& publisher_favicon,
     const std::string& user_id) {
   auto filter = ledger_->CreateActivityFilter(
     publisher_key,
@@ -565,6 +585,7 @@ void Vimeo::GetPublisherPanleInfo(
               window_id,
               publisher_url,
               publisher_name,
+              publisher_favicon,
               user_id,
               _1,
               _2));
@@ -607,13 +628,13 @@ void Vimeo::OnMediaPublisherInfo(
   events[media_key] = event_info;
 
   SavePublisherInfo("",
-                    duration,
-                    "",
-                    publisher_info->name,
-                    publisher_info->url,
-                    0,
-                    publisher_info->id,
-                    publisher_info->favicon_url);
+      duration,
+      "",
+      publisher_info->name,
+      publisher_info->url,
+      0,
+      publisher_info->id,
+      publisher_info->favicon_url);
 }
 
 void Vimeo::OnPublisherVideoPage(
@@ -649,12 +670,16 @@ void Vimeo::OnPublisherVideoPage(
   const uint64_t duration = GetDuration(old_event, event_info);
   events[media_key] = event_info;
 
+  const std::string publisher_favicon = GenerateFaviconUrl(response);
+
   SavePublisherInfo(media_key,
-                    duration,
-                    user_id,
-                    GetNameFromVideoPage(response),
-                    GetUrlFromVideoPage(response),
-                    0);
+      duration,
+      user_id,
+      GetNameFromVideoPage(response),
+      GetUrlFromVideoPage(response),
+      0,
+      "",
+      publisher_favicon);
 }
 
 void Vimeo::OnSaveMediaVisit(
@@ -695,15 +720,10 @@ void Vimeo::SavePublisherInfo(
     return;
   }
 
-  std::string icon = publisher_favicon;
-  if (icon.empty()) {
-    icon = GenerateFaviconUrl(user_id);
-  }
-
   ledger::VisitData visit_data;
   visit_data.provider = VIMEO_MEDIA_TYPE;
   visit_data.url = publisher_url;
-  visit_data.favicon_url = icon;
+  visit_data.favicon_url = publisher_favicon;
   visit_data.name = publisher_name;
 
   ledger_->SaveMediaVisit(key,
