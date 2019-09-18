@@ -54,7 +54,6 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   void AddKnownTagsToAdBlockInstance();
   void ResetForTest(const std::string& rules);
 
-  SEQUENCE_CHECKER(sequence_checker_);
   std::unique_ptr<adblock::Engine> ad_block_client_;
 
  private:
@@ -62,13 +61,11 @@ class AdBlockBaseService : public BaseBraveShieldsService {
       std::unique_ptr<adblock::Engine> ad_block_client,
       brave_component_updater::DATFileDataBuffer buffer);
   void OnGetDATFileData(GetDATFileDataResult result);
-  void EnableTagOnIOThread(const std::string& tag, bool enabled);
   void OnPreferenceChanges(const std::string& pref_name);
 
   brave_component_updater::DATFileDataBuffer buffer_;
   std::vector<std::string> tags_;
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
-  base::WeakPtrFactory<AdBlockBaseService> weak_factory_io_thread_;
   DISALLOW_COPY_AND_ASSIGN(AdBlockBaseService);
 };
 
