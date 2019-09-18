@@ -6,17 +6,19 @@
 package org.chromium.chrome.browser.ntp;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.base.TraceEvent;
+import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
+import org.chromium.chrome.browser.profiles.Profile;
 
+@JNINamespace("chrome::android")
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
 
@@ -28,10 +30,11 @@ public class BraveNewTabPageView extends NewTabPageView {
     private TextView mAdsBlockedCountTextView;
     private TextView mHttpsUpgradesCountTextView;
     private TextView mEstTimeSavedTextView;
-    private SharedPreferences mSharedPreferences;
+    private Profile mProfile;
 
     public BraveNewTabPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mProfile = Profile.getLastUsedProfile();
     }
 
     @Override
@@ -42,7 +45,6 @@ public class BraveNewTabPageView extends NewTabPageView {
         mAdsBlockedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads_count);
         mHttpsUpgradesCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_https_count);
         mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time_count);
-        mSharedPreferences = ContextUtils.getAppSharedPreferences();
     }
 
     @Override
@@ -58,10 +60,9 @@ public class BraveNewTabPageView extends NewTabPageView {
      */
     private void updateBraveStats() {
         TraceEvent.begin(TAG + ".updateBraveStats()");
-
-        long trackersBlockedCount = mSharedPreferences.getLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
-        long adsBlockedCount = mSharedPreferences.getLong(PREF_ADS_BLOCKED_COUNT, 0);
-        long httpsUpgradesCount = mSharedPreferences.getLong(PREF_HTTPS_UPGRADES_COUNT, 0);
+        long trackersBlockedCount = BraveNewTabPageViewJni.get().getTrackersBlockedCount(mProfile);
+        long adsBlockedCount = BraveNewTabPageViewJni.get().getAdsBlockedCount(mProfile);
+        long httpsUpgradesCount = BraveNewTabPageViewJni.get().getHttpsUpgradesCount(mProfile);
         long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * MILLISECONDS_PER_ITEM;
 
         mAdsBlockedCountTextView.setText(getBraveStatsStringFormNumber(adsBlockedCount));
@@ -127,5 +128,12 @@ public class BraveNewTabPageView extends NewTabPageView {
             result = result + seconds + "s";
         }
         return result;
+    }
+
+    @NativeMethods
+    interface Natives {
+        int getTrackersBlockedCount(Profile profile);
+        int getAdsBlockedCount(Profile profile);
+        int getHttpsUpgradesCount(Profile profile);
     }
 }

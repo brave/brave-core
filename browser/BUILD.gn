@@ -164,7 +164,9 @@ source_set("browser_process") {
   } else {
     sources += [
       "android/brave_shields_content_settings.cc",
+      "android/brave_shields_content_settings.h",
       "android/brave_stats_updater_android.cc",
+      "android/ntp/brave_new_tab_page_view_android.cc",
       "android/preferences/brave_pref_service_bridge.cc"
     ]
 
