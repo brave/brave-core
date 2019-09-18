@@ -11,6 +11,7 @@ import {
   WalletWrapper
 } from 'brave-ui/features/rewards'
 import { BatColorIcon, WalletAddIcon } from 'brave-ui/components/icons'
+import { WalletState } from 'brave-ui/features/rewards/walletWrapper'
 
 // Components
 import Panel from './panel'
@@ -25,17 +26,25 @@ interface Props extends RewardsExtension.ComponentProps {
 
 interface State {
   windowId: number
+  onlyAnonWallet: boolean
 }
 
 export class RewardsPanel extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      windowId: -1
+      windowId: -1,
+      onlyAnonWallet: false
     }
   }
 
   componentDidMount () {
+    chrome.braveRewards.onlyAnonWallet((only: boolean) => {
+      this.setState({
+        onlyAnonWallet: !!only
+      })
+    })
+
     chrome.windows.getCurrent({}, this.onWindowCallback)
     chrome.braveRewards.getRewardsMainEnabled(((enabled: boolean) => {
       this.props.actions.onEnabledMain(enabled)
@@ -218,6 +227,28 @@ export class RewardsPanel extends React.Component<Props, State> {
     this.actions.createWallet()
   }
 
+  getActions = () => {
+    let actions = [
+      {
+        name:  getMessage('rewardsSettings'),
+        action: this.openRewardsAddFunds,
+        icon: <BatColorIcon />
+      }
+    ]
+
+    if (this.state.onlyAnonWallet) {
+      return actions
+    }
+
+    return actions.concat([
+      {
+        name: getMessage('addFunds'),
+        action: this.openRewards,
+        icon: <WalletAddIcon />
+      }
+    ])
+  }
+
   render () {
     const {
       enabledMain,
@@ -248,11 +279,21 @@ export class RewardsPanel extends React.Component<Props, State> {
       )
     }
 
+    let walletStatus: WalletState | undefined = undefined
+    let onVerifyClick = undefined
+    if (!this.state.onlyAnonWallet) {
+      walletStatus = utils.getWalletStatus(externalWallet)
+      onVerifyClick = utils.onVerifyClick.bind(this, this.actions)
+    }
+
     return (
       <>
         {
           enabledMain
-          ? <Panel windowId={this.state.windowId} />
+          ? <Panel
+              windowId={this.state.windowId}
+              onlyAnonWallet={this.state.onlyAnonWallet}
+          />
           : <>
               <WalletWrapper
                 compact={true}
@@ -264,23 +305,12 @@ export class RewardsPanel extends React.Component<Props, State> {
                 grants={utils.getGrants(walletProperties.grants)}
                 converted={utils.formatConverted(converted)}
                 convertProbiToFixed={utils.convertProbiToFixed}
-                walletState={utils.getWalletStatus(externalWallet)}
-                onVerifyClick={utils.onVerifyClick.bind(this, this.actions)}
+                walletState={walletStatus}
+                onVerifyClick={onVerifyClick}
                 onDisconnectClick={this.onDisconnectClick}
                 goToUphold={this.goToUphold}
                 userName={utils.getUserName(externalWallet)}
-                actions={[
-                  {
-                    name: getMessage('addFunds'),
-                    action: this.openRewardsAddFunds,
-                    icon: <WalletAddIcon />
-                  },
-                  {
-                    name:  getMessage('rewardsSettings'),
-                    action: this.openRewards,
-                    icon: <BatColorIcon />
-                  }
-                ]}
+                actions={this.getActions()}
               >
                 <WalletPanelDisabled
                   onTOSClick={this.openTOS}
