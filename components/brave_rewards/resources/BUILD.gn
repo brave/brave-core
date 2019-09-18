@@ -4,12 +4,12 @@ import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
-pack_web_resources("ui_generated_resources") {
-  resource_name = "brave_rewards"
+pack_web_resources("page_generated_resources") {
+  resource_name = "brave_rewards_page"
   output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
   # need webpack and GRD generation first
   deps = [
-    "ui"
+    "page"
   ]
 }
 
@@ -45,13 +45,13 @@ grit("static_resources") {
 
 repack("resources") {
   public_deps = [
-    ":ui_generated_resources",
+    ":page_generated_resources",
     ":tip_generated_resources",
     ":static_resources",
   ]
 
   sources = [
-    "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_generated.pak",
+    "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_page_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_tip_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_static.pak",
   ]

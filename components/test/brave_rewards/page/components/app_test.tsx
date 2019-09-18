@@ -4,13 +4,13 @@
 
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_types'
+import { types } from '../../../../brave_rewards/resources/page/constants/rewards_types'
 import { rewardsInitialState } from '../../../testData'
 import {
   App,
   mapStateToProps,
   mapDispatchToProps
-} from '../../../../brave_rewards/resources/ui/components/app'
+} from '../../../../brave_rewards/resources/page/components/app'
 
 describe('rewardsPage component', () => {
   describe('mapStateToProps', () => {

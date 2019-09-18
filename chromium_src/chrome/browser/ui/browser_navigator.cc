@@ -19,7 +19,7 @@ void AdjustNavigateParamsForURLBraveImpl(NavigateParams* params) {
 }
 
 bool IsHostAllowedInIncognitoBraveImpl(const base::StringPiece& host) {
-  if (host == kRewardsHost ||
+  if (host == kRewardsPageHost ||
       host == kBraveUISyncHost ||
       host == chrome::kChromeUISyncInternalsHost) {
     return false;

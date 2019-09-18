@@ -8,9 +8,8 @@
 
 extern const char kAdblockHost[];
 extern const char kAdblockJS[];
-extern const char kRewardsHost[];
+extern const char kRewardsPageHost[];
 extern const char kRewardsInternalsHost[];
-extern const char kRewardsJS[];
 extern const char kWelcomeHost[];
 extern const char kWelcomeJS[];
 extern const char kTipHost[];
