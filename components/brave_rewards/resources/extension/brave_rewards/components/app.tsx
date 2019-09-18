@@ -11,7 +11,6 @@ import {
   WalletWrapper
 } from 'brave-ui/features/rewards'
 import { BatColorIcon, WalletAddIcon } from 'brave-ui/components/icons'
-import { WalletState } from 'brave-ui/features/rewards/walletWrapper'
 
 // Components
 import Panel from './panel'
@@ -194,25 +193,21 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   getActions = () => {
-    let actions = [
-      {
-        name:  getMessage('rewardsSettings'),
-        action: this.openRewardsAddFunds,
-        icon: <BatColorIcon />
-      }
-    ]
+    let actions = []
 
-    if (this.state.onlyAnonWallet) {
-      return actions
-    }
-
-    return actions.concat([
-      {
+    if (!this.state.onlyAnonWallet) {
+      actions.push({
         name: getMessage('addFunds'),
         action: this.openRewards,
         icon: <WalletAddIcon />
-      }
-    ])
+      })
+    }
+
+    return actions.concat([{
+      name:  getMessage('rewardsSettings'),
+      action: this.openRewardsAddFunds,
+      icon: <BatColorIcon />
+    }])
   }
 
   render () {
