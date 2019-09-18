@@ -11,7 +11,7 @@ import { Content, Title, Paragraph } from '../../components'
 import { getLocale } from '../../../common/locale'
 
 // Images
-import { WelcomeP3AImage } from '../../components/images'
+import { WelcomeShieldsImage } from '../../components/images'
 
 interface Props {
   index: number
@@ -28,7 +28,7 @@ export default class ShieldsBox extends React.PureComponent<Props> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <WelcomeP3AImage />
+        <WelcomeShieldsImage />
         <Title>{getLocale('privacyTitle')}</Title>
         <Paragraph
           dangerouslySetInnerHTML={{ __html: getLocale('privacyDesc') }}

@@ -11,7 +11,7 @@ import { Content, Title, Paragraph, Link } from '../../../components'
 import locale from '../fakeLocale'
 
 // Images
-import { WelcomeP3AImage } from '../../../components/images'
+import { WelcomeShieldsImage } from '../../../components/images'
 
 interface Props {
   index: number
@@ -28,7 +28,7 @@ export default class ShieldsBox extends React.PureComponent<Props> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <WelcomeP3AImage />
+        <WelcomeShieldsImage />
         <Title>{locale.p3aHead}</Title>
         <Paragraph>{locale.p3aBody}<Link>{locale.p3aSettings}</Link>.</Paragraph>
       </Content>
