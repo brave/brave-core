@@ -589,25 +589,21 @@ export class Panel extends React.Component<Props, State> {
   }
 
   getActions = () => {
-    let actions = [
-      {
-        name:  getMessage('rewardsSettings'),
-        action: this.openRewardsPage,
-        icon: <BatColorIcon />
-      }
-    ]
+    let actions = []
 
-    if (this.props.onlyAnonWallet) {
-      return actions
-    }
-
-    return actions.concat([
-      {
+    if (!this.props.onlyAnonWallet) {
+      actions.push({
         name: getMessage('addFunds'),
         action: this.onAddFunds,
         icon: <WalletAddIcon />
-      }
-    ])
+      })
+    }
+
+    return actions.concat([{
+      name:  getMessage('rewardsSettings'),
+      action: this.openRewardsPage,
+      icon: <BatColorIcon />
+    }])
   }
 
   render () {

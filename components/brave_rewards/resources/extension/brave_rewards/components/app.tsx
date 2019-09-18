@@ -228,25 +228,21 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   getActions = () => {
-    let actions = [
-      {
-        name:  getMessage('rewardsSettings'),
-        action: this.openRewardsAddFunds,
-        icon: <BatColorIcon />
-      }
-    ]
+    let actions = []
 
-    if (this.state.onlyAnonWallet) {
-      return actions
-    }
-
-    return actions.concat([
-      {
+    if (!this.state.onlyAnonWallet) {
+      actions.push({
         name: getMessage('addFunds'),
         action: this.openRewards,
         icon: <WalletAddIcon />
-      }
-    ])
+      })
+    }
+
+    return actions.concat([{
+      name:  getMessage('rewardsSettings'),
+      action: this.openRewardsAddFunds,
+      icon: <BatColorIcon />
+    }])
   }
 
   render () {
