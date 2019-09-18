@@ -26,3 +26,8 @@ declare module '*.css' {
   const url: any
   export default url
 }
+
+declare module '*.html' {
+  const url: any
+  export default url
+}
