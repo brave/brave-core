@@ -15,7 +15,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeSwitches;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
-
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.DesktopModeTabHelper;
 /**
  * Brave's extension for ChromeActivity
  */
@@ -41,6 +42,12 @@ public abstract class BraveActivity extends ChromeActivity {
     @Override
     public boolean onMenuOrKeyboardAction(int id, boolean fromMenu) {
         if (super.onMenuOrKeyboardAction(id, fromMenu)) {
+            if (id == R.id.request_desktop_site_id || id == R.id.request_desktop_site_check_id) {
+                // If user selects desktop site opiton explicitly vi app menu, respect it.
+                // Current tab will ignore global desktop mode.
+                ignoreDesktopModeForTab(getActivityTab());
+            }
+
             return true;
         }
 
@@ -61,6 +68,13 @@ public abstract class BraveActivity extends ChromeActivity {
         if (isNoRestoreState()) {
             CommandLine.getInstance().appendSwitch(ChromeSwitches.NO_RESTORE_STATE);
         }
+    }
+
+    private void ignoreDesktopModeForTab(Tab tab) {
+        assert tab != null;
+        DesktopModeTabHelper helper = DesktopModeTabHelper.get(tab);
+        if (helper != null)
+            helper.ignoreDesktopMode();
     }
 
     private boolean isNoRestoreState() {
