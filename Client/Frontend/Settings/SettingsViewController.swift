@@ -108,6 +108,7 @@ class SettingsViewController: TableViewController {
     private var sections: [Section] {
         var list = [Section]()
         list.append(generalSection)
+        list.append(displaySection)
         #if !NO_SYNC
             list.append(syncSection)
         #endif
@@ -141,32 +142,24 @@ class SettingsViewController: TableViewController {
             ]
         )
         
-        let reloadCell = { (row: Row, displayString: String) in
-            if let indexPath = self.dataSource.indexPath(rowUUID: row.uuid, sectionUUID: general.uuid) {
-                self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = displayString
-            }
+        if #available(iOS 13.0, *), UIDevice.isIpad {
+            general.rows.append(BoolRow(title: Strings.AlwaysRequestDesktopSite,
+            option: Preferences.General.alwaysRequestDesktopSite))
         }
         
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            general.rows.append(
-                Row(text: Strings.Show_Tabs_Bar, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
-            )
-        } else {
-            var row = Row(text: Strings.Show_Tabs_Bar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
-            row.selection = { [unowned self] in
-                // Show options for tab bar visibility
-                let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
-                    options: TabBarVisibility.allCases,
-                    selectedOption: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value),
-                    optionChanged: { [unowned self] _, option in
-                        Preferences.General.tabBarVisibility.value = option.rawValue
-                        reloadCell(row, option.displayString)
-                    }
-                )
-                optionsViewController.headerText = Strings.Show_Tabs_Bar
-                self.navigationController?.pushViewController(optionsViewController, animated: true)
+        return general
+    }()
+    
+    private lazy var displaySection: Section = {
+        var display = Section(
+            header: .title(Strings.DisplaySettingsSection),
+            rows: []
+        )
+        
+        let reloadCell = { (row: Row, displayString: String) in
+            if let indexPath = self.dataSource.indexPath(rowUUID: row.uuid, sectionUUID: display.uuid) {
+                self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = displayString
             }
-            general.rows.append(row)
         }
         
         let themeSubtitle = Theme.DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.displayString
@@ -185,18 +178,44 @@ class SettingsViewController: TableViewController {
             optionsViewController.footerText = Strings.ThemesDisplayBrightnessFooter
             self.navigationController?.pushViewController(optionsViewController, animated: true)
         }
-        general.rows.append(row)
+        display.rows.append(row)
         
-        general.rows.append(
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            display.rows.append(
+                Row(text: Strings.Show_Tabs_Bar, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
+            )
+        } else {
+            var row = Row(text: Strings.Show_Tabs_Bar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+            row.selection = { [unowned self] in
+                // Show options for tab bar visibility
+                let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
+                    options: TabBarVisibility.allCases,
+                    selectedOption: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value),
+                    optionChanged: { [unowned self] _, option in
+                        Preferences.General.tabBarVisibility.value = option.rawValue
+                        reloadCell(row, option.displayString)
+                    }
+                )
+                optionsViewController.headerText = Strings.Show_Tabs_Bar
+                self.navigationController?.pushViewController(optionsViewController, animated: true)
+            }
+            display.rows.append(row)
+        }
+        
+        display.rows.append(
             BoolRow(title: Strings.Show_Bookmark_Button_In_Top_Toolbar, option: Preferences.General.showBookmarkToolbarShortcut)
         )
         
-        if #available(iOS 13.0, *), UIDevice.isIpad {
-            general.rows.append(BoolRow(title: Strings.AlwaysRequestDesktopSite,
-            option: Preferences.General.alwaysRequestDesktopSite))
-        }
+        #if !NO_REWARDS
+        display.rows.append({
+            var row = BoolRow(title: Strings.HideRewardsIcon, option: Preferences.Rewards.hideRewardsIcon)
+            row.detailText = Strings.HideRewardsIconSubtitle
+            row.cellClass = MultilineSubtitleCell.self
+            return row
+        }())
+        #endif
         
-        return general
+        return display
     }()
     
     private lazy var syncSection: Section = {
@@ -499,6 +518,7 @@ fileprivate class MultilineSubtitleCell: SubtitleCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         textLabel?.numberOfLines = 0
+        detailTextLabel?.numberOfLines = 0
     }
     
     required init?(coder aDecoder: NSCoder) {
