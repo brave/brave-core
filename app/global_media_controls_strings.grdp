@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Global Media Controls-specific strings (included from generated_resources.grd). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <message name="IDS_GLOBAL_MEDIA_CONTROLS_ICON_TOOLTIP_TEXT" desc="Tooltip for the Global Media Controls icon, which appears in the toolbar. The tooltip appears on mouseover of the icon.">
+   Control your music, videos, and more
+  </message>
+</grit-part>

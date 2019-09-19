@@ -192,6 +192,9 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Media Router specific strings -->
       <part file="media_router_strings.grdp" />
 
+      <!-- Global Media Controls specific strings -->
+      <part file="global_media_controls_strings.grdp" />
+
       <!-- Profiles specific strings -->
       <part file="profiles_strings.grdp" />
 
@@ -211,9 +214,9 @@ are declared in tools/grit/grit_rule.gni.
         <part file="extensions_strings.grdp" />
       </if>
 
-      <!-- NUX Welcome onboarding experience strings -->
+      <!-- Welcome strings -->
       <if expr="not chromeos and not is_android">
-        <part file="onboarding_welcome_strings.grdp" />
+        <part file="welcome_strings.grdp" />
       </if>
 
       <!-- Printing specific strings -->
@@ -229,10 +232,19 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       </if>
 
+      <!-- Supervised user error page -->
+      <if expr="enable_supervised_users">
+        <part file="supervised_user_error_page_strings.grdp" />
+      </if>
+
       <!-- TODO add all of your "string table" messages here.  Remember to
       change nontranslateable parts of the messages into placeholders (using the
       <ph> element).  You can also use the 'grit add' tool to help you identify
       nontranslateable parts and create placeholders for them. -->
+      <message name="IDS_BACK_BUTTON_AUTHENTICATOR_REQUEST_DIALOG" desc="A back button for authenticator request dialog.">
+        Go back
+      </message>
+
       <if expr="is_win">
         <message name="IDS_BACKGROUND_APP_INSTALLED_BALLOON_TITLE" desc="The title of the balloon that is displayed when a background app is installed">
           New background app added
@@ -287,6 +299,12 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_TAB_LOADING_TITLE" desc="The text to be displayed in the title of a tab before a title is discovered.">
         Loading...
+      </message>
+      <message name="IDS_HOVER_CARD_FILE_URL_SOURCE" desc="The text to be displayed in the source line of a hover card when viewing a local file.">
+        local or shared file
+      </message>
+      <message name="IDS_HOVER_CARD_CRASHED_TITLE" desc="The title text to display on a hover card when a tab has crashed without loading.">
+        Crashed.
       </message>
 
       <!-- History Strings -->
@@ -928,7 +946,7 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_ZOOM_MINUS2" desc="The text label of the Make Text Smaller menu item in the merged menu">
             −
           </message>
-          <message name="IDS_COPY_URL" desc="The text label of the Copy URL menu item for the Hosted App app menu">
+          <message name="IDS_COPY_URL" desc="The text label of the Copy URL menu item for the Hosted App app menu and Brave Custom Tab right-click menu">
             Copy &amp;URL
           </message>
           <message name="IDS_OPEN_IN_APP_WINDOW" desc="The text label of the menu item for moving the current tab to a standalone app window">
@@ -999,7 +1017,7 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_ZOOM_MINUS2" desc="The text label of the Make Text Smaller menu item in the merged menu">
             −
           </message>
-          <message name="IDS_COPY_URL" desc="In Title Case: The text label of the Copy URL menu item for the Hosted App app menu">
+          <message name="IDS_COPY_URL" desc="In Title Case: The text label of the Copy URL menu item for the Hosted App app menu and Brave Custom Tab right-click menu">
             Copy &amp;URL
           </message>
           <message name="IDS_OPEN_IN_APP_WINDOW" desc="In Title Case: The text label of the menu item for moving the current tab to a standalone app window">
@@ -1611,7 +1629,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_IN_INCOGNITO" desc="Indicates a download was started in Private mode.">
         Downloaded in Private
       </message>
-      <message name="IDS_DOWNLOAD_UNDO_DESCRIPTION" desc="Shortcut description for undoing an operation, used as a hint for keyboard users">
+      <message name="IDS_UNDO_DESCRIPTION" desc="Shortcut description for undoing an operation, used as a hint for keyboard users">
         Press <ph name="MODIFIER_KEY_DESCRIPTION">$1<ex>Control Z</ex></ph> to undo
       </message>
       <message name="IDS_DOWNLOAD_UNDO" desc="Menu title for undoing an operation">
@@ -1806,6 +1824,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Windows, Brave OS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit private mode anyway?
         </message>
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Windows, Brave OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+          Exit guest mode anyway?
+        </message>
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, Brave OS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit
         </message>
@@ -1813,6 +1834,9 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_macosx">
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
           Quit private mode anyway?
+        </message>
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_GUEST_MESSAGE" desc="Message on a dialog shown when the user closes the last guest window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Exit' to refer to closing a browser.">
+          Exit guest mode anyway?
         </message>
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last private window while one or more downloads are in progress. When clicked, the button will abandon the download and quit. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
           Quit
@@ -2285,6 +2309,41 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_BLOCKED_SOUND_NO_ACTION" desc="Radio button choice to continue blocking a site from playing sound, displayed in bubble when a page tries to play sound.">
         Continue muting sound
+      </message>
+      <message name="IDS_NOTIFICATIONS_OFF_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address bar as part of the less-prominent UX, when a website requests the notification permission.">
+        Notifications blocked
+      </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_TITLE" desc="Title for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox.">
+        Notifications blocked
+      </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox.">
+        Notifications are automatically blocked for all sites except ones you allow
+      </message>
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_ALLOW_BUTTON" desc="Text displayed on a button that enables notifications for a site. This button is part of the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox.">
+        Allow for this site
+      </message>
+
+      <!-- Cookie controls strings. -->
+      <message name="IDS_COOKIE_CONTROLS_DIALOG_TITLE" desc="Title of the dialog that allows users to control cookie blocking.">
+        Third-party cookie blocking is on
+      </message>
+      <message name="IDS_COOKIE_CONTROLS_DIALOG_TITLE_OFF" desc="Text shown in the dialog that allows users to control cookie blocking. Shown when cookie blocking was disabled for this specific site.">
+        Third-party cookie blocking is turned off for this site
+      </message>
+      <message name="IDS_COOKIE_CONTROLS_TURN_ON_BUTTON" desc="Label shown on a button that turns cookie blocking on after it was disabled for a specific site.">
+        Turn on
+      </message>
+      <message name="IDS_COOKIE_CONTROLS_TURN_OFF_BUTTON" desc="Label shown on a button that turns of cookie blocking for a specific site.">
+        Turn off for this site
+      </message>
+      <message name="IDS_COOKIE_CONTROLS_BLOCKED_MESSAGE" desc="Text shown in the dialog that allows users to control cookie blocking. Shows the number of sites for which cookies have been blocked.">
+        {COUNT, plural,
+              =0 {This site doesn't use cookies for cross-site tracking}
+              =1 {Brave is blocking cookies from 1 site}
+              other {Brave is blocking cookies from # sites}}
+      </message>
+      <message name="IDS_COOKIE_CONTROLS_TOOLTIP" desc="Tooltip shown on a page action icon that is shown when cookie blocking is enabled.">
+        Third-party cookie blocking
       </message>
 
       <!-- Win certificate selector dialog strings.  -->
@@ -3166,8 +3225,8 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <if expr="chromeos">
-        <message name="IDS_UTILITY_PROCESS_CUPS_IPP_PARSER_SERVICE_NAME" desc="The name of the utility process used for parsing IPP requests out-of-process.">
-          CUPS IPP Parser
+        <message name="IDS_UTILITY_PROCESS_IPP_PARSER_SERVICE_NAME" desc="The name of the utility process used for parsing IPP requests out-of-process.">
+          IPP Parser
         </message>
       </if>
       <message name="IDS_UTILITY_PROCESS_FILE_UTILITY_NAME" desc="The name of the utility process used for various Brave specific file operations.">
@@ -3516,6 +3575,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_LOGIN_SCREEN_UI" desc="Permission string for access to login screen UI.">
           Display UI on the login screen
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_LOGIN_SCREEN_STORAGE" desc="Permission string for access to login screen storage.">
+          Store persistent data on the login screen and inject credentials into the session.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_MANAGEMENT" desc="Permisson string for access to extension management.">
           Manage your apps, extensions, and themes
@@ -4135,6 +4197,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_CONTEXT_MENU_TOOLTIP" desc="Title of the context menu for individual extensions in the Extensions Menu">
         More actions
       </message>
+      <message name="IDS_EXTENSIONS_MENU_PIN_BUTTON_TOOLTIP" desc="The tooltip for the pinning button for individual extensions in the Extensions Menu">
+        Pin extension
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_UNPIN_BUTTON_TOOLTIP" desc="The tooltip for the pinning button for individual extensions in the Extensions Menu">
+        Unpin extension
+      </message>
       <message name="IDS_EXTENSIONS_MENU_ACCESSING_SITE_DATA" desc="Header for section of extensions that are able to access the current site's data">
         Accessing this site's data
       </message>
@@ -4365,6 +4433,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PASSWORD_MANAGER_SIGNIN_PROMO_LABEL" desc="Promotion text for Brave sign-in appearing in the password bubble after a password is saved.">
         To get your passwords on all your devices, sign in to Brave.
       </message>
+      <!-- Password manager onboarding strings -->
+      <message name="IDS_PASSWORD_MANAGER_ONBOARDING_TITLE_A" desc="The title shown in the password manager onboarding dialog.">
+        Save your passwords?
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_ONBOARDING_TITLE_B" desc="The title shown in the password manager onboarding dialog.">
+        Store once. Use everywhere
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_ONBOARDING_TITLE_C" desc="The title shown in the password manager onboarding dialog.">
+        Never worry about your passwords
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_ONBOARDING_DETAILS_A" desc="The explanation text that is shown below the title in the password manager onboarding dialog.">
+        Save passwords securely in your Brave Account, and you'll never have to type them again
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_ONBOARDING_DETAILS_B" desc="The explanation text that is shown below the title in the password manager onboarding dialog.">
+        Access your passwords whenever you're signed in to your Brave Account
+      </message>
 
       <!-- Begin of Sync Promo strings for Desktop Identity Consistency. -->
       <message name="IDS_PASSWORD_MANAGER_DICE_PROMO_SIGNIN_MESSAGE" desc="Text of the sync promo displayed at the bottom of the save password bubble asking the user to sign in and enable sync.">
@@ -4535,6 +4619,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!-- Bad Feature Flags Infobar-->
       <message name="IDS_BAD_FEATURES_WARNING_MESSAGE" desc="Message shown when an unsupported feature flag is used. [Keep it short so it fits in the infobar.]">
         You are using an unsupported feature flag: <ph name="BAD_FLAG">$1<ex>SignedHTTPExchange</ex></ph>. Stability and security will suffer.
+      </message>
+
+      <!-- Bad Environment Variables Infobar-->
+      <message name="IDS_BAD_ENVIRONMENT_VARIABLES_WARNING_MESSAGE" desc="Message shown when an unsupported environment variable is used [Keep it short so it fits in the infobar.]">
+        You are using an unsupported environment variable: <ph name="BAD_VAR">$1<ex>SSLKEYLOGFILE</ex></ph>. Stability and security will suffer.
       </message>
 
       <!-- Pepper Broker Infobar -->
@@ -4938,8 +5027,71 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_DEFAULT_LABEL" desc="The label for the Default theme in the customization menu on the New Tab Page">
         Default
       </message>
-      <message name="IDS_NTP_CUSTOMIZE_COLOR_LABEL_PREFIX" desc="The label prefix for the color options in the customization menu on the New Tab Page. It is followed by a hex value in #000000 format">
-        Hex color value
+      <message name="IDS_NTP_COLORS_WARM_GREY" desc="A color option in the customization menu on the New Tab Page.">
+        Warm grey
+      </message>
+      <message name="IDS_NTP_COLORS_COOL_GREY" desc="A color option in the customization menu on the New Tab Page.">
+        Cool grey
+      </message>
+      <message name="IDS_NTP_COLORS_MIDNIGHT_BLUE" desc="A color option in the customization menu on the New Tab Page.">
+        Midnight blue
+      </message>
+      <message name="IDS_NTP_COLORS_BLACK" desc="A color option in the customization menu on the New Tab Page.">
+        Black
+      </message>
+      <message name="IDS_NTP_COLORS_BEIGE_AND_WHITE" desc="A color option in the customization menu on the New Tab Page.">
+        Beige and white
+      </message>
+      <message name="IDS_NTP_COLORS_YELLOW_AND_WHITE" desc="A color option in the customization menu on the New Tab Page.">
+        Yellow and white
+      </message>
+      <message name="IDS_NTP_COLORS_GREEN_AND_WHITE" desc="A color option in the customization menu on the New Tab Page.">
+        Green and white
+      </message>
+      <message name="IDS_NTP_COLORS_LIGHT_TEAL_AND_WHITE" desc="A color option in the customization menu on the New Tab Page.">
+        Light teal and white
+      </message>
+      <message name="IDS_NTP_COLORS_LIGHT_PURPLE_AND_WHITE" desc="A color option in the customization menu on the New Tab Page.">
+        Light purple and white
+      </message>
+      <message name="IDS_NTP_COLORS_PINK_AND_WHITE" desc="A color option in the customization menu on the New Tab Page.">
+        Pink and white
+      </message>
+      <message name="IDS_NTP_COLORS_BEIGE" desc="A color option in the customization menu on the New Tab Page.">
+        Beige
+      </message>
+      <message name="IDS_NTP_COLORS_ORANGE" desc="A color option in the customization menu on the New Tab Page.">
+        Orange
+      </message>
+      <message name="IDS_NTP_COLORS_LIGHT_GREEN" desc="A color option in the customization menu on the New Tab Page.">
+        Light green
+      </message>
+      <message name="IDS_NTP_COLORS_LIGHT_TEAL" desc="A color option in the customization menu on the New Tab Page.">
+        Light teal
+      </message>
+      <message name="IDS_NTP_COLORS_LIGHT_BLUE" desc="A color option in the customization menu on the New Tab Page.">
+        Light blue
+      </message>
+      <message name="IDS_NTP_COLORS_PINK" desc="A color option in the customization menu on the New Tab Page.">
+        Pink
+      </message>
+      <message name="IDS_NTP_COLORS_DARK_PINK_AND_RED" desc="A color option in the customization menu on the New Tab Page.">
+        Dark pink and red
+      </message>
+      <message name="IDS_NTP_COLORS_DARK_RED_AND_ORANGE" desc="A color option in the customization menu on the New Tab Page.">
+        Dark red and orange
+      </message>
+      <message name="IDS_NTP_COLORS_DARK_GREEN" desc="A color option in the customization menu on the New Tab Page.">
+        Dark green
+      </message>
+      <message name="IDS_NTP_COLORS_DARK_TEAL" desc="A color option in the customization menu on the New Tab Page.">
+        Dark teal
+      </message>
+      <message name="IDS_NTP_COLORS_DARK_BLUE" desc="A color option in the customization menu on the New Tab Page.">
+        Dark blue
+      </message>
+      <message name="IDS_NTP_COLORS_DARK_PURPLE" desc="A color option in the customization menu on the New Tab Page.">
+        Dark purple
       </message>
 
       <if expr="is_android">
@@ -5159,10 +5311,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Bookmark this page to easily find it later
       </message>
       <message name="IDS_BOOKMARK_PROMO_1" desc="Text shown on promotional UI appearing next to the Bookmarks button, which encourages users to use it.">
-        You can click the star to bookmark a page
+        You can click the star to bookmark a tab
       </message>
       <message name="IDS_BOOKMARK_PROMO_2" desc="Text shown on promotional UI appearing next to the Bookmarks button, which encourages users to use it.">
-        Get back here fast by bookmarking this page
+        Get back here fast by bookmarking this tab
+      </message>
+      <message name="IDS_GLOBAL_MEDIA_CONTROLS_PROMO" desc="Text shown on promotional UI appearing next to the global media controls toolbar button.">
+        New! Control your music, videos, and more.
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
         You can browse privately using a private window
@@ -5266,9 +5421,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Password Manager -->
-      <message name="IDS_PASSWORD_MANAGER_CANCEL_BUTTON" desc="Label for the 'dismiss' button in the Manage Password bubble/Update Password infobar. These UIs ask the user if they wish to perform some action with saved passwords, e.g. updating or deleting them; the button dismisses the UI without taking the suggested action.">
-        No thanks
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_PASSWORD_MANAGER_CANCEL_BUTTON" desc="Label for the 'dismiss' button in the Manage Password bubble/Update Password infobar. These UIs ask the user if they wish to perform some action with saved passwords, e.g. updating or deleting them; the button dismisses the UI without taking the suggested action.">
+          No Thanks
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_PASSWORD_MANAGER_CANCEL_BUTTON" desc="Label for the 'dismiss' button in the Manage Password bubble/Update Password infobar. These UIs ask the user if they wish to perform some action with saved passwords, e.g. updating or deleting them; the button dismisses the UI without taking the suggested action.">
+          No thanks
+        </message>
+      </if>
       <if expr="not is_android">
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Save button text for password manager">
           Save
@@ -5687,9 +5849,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PICTURE_IN_PICTURE_PLAY_PAUSE_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button toggles between play and pause controls.">
         Toggle video to play or pause
       </message>
-      <message name="IDS_PICTURE_IN_PICTURE_MUTE_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button toggles mute state.">
-        Toggle mute
-      </message>
       <message name="IDS_PICTURE_IN_PICTURE_NEXT_TRACK_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button invokes next track action.">
         Next track
       </message>
@@ -5764,8 +5923,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Tab Context Menu -->
       <if expr="not use_titlecase">
-        <message name="IDS_TAB_CXMENU_NEWTAB" desc="The label of the 'New Tab' Tab context menu item.">
-          New tab
+        <message name="IDS_TAB_CXMENU_NEWTABTORIGHT" desc="The label of the 'New Tab to the Right' Tab context menu item.">
+          New tab to the right
         </message>
         <message name="IDS_TAB_CXMENU_RELOAD" desc="The label of the 'Reload' Tab context menu item.">
           Reload
@@ -5773,11 +5932,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_DUPLICATE" desc="The label of the 'Duplicate' Tab context menu item.">
           Duplicate
         </message>
-        <message name="IDS_TAB_CXMENU_CLOSETAB" desc="The label of the 'Close Tab' Tab context menu item. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Close tab} other {Close tabs}}
-        </message>
-        <message name="IDS_TAB_CXMENU_CLOSEOTHERTABS" desc="The label of the 'Close Other Tabs' Tab context menu item.">
-          Close other tabs
+        <message name="IDS_TAB_CXMENU_CLOSETAB" desc="The label of the tab context menu item for closing one or more tabs.">
+          Close
         </message>
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT" desc="The label of the 'Close Tabs to the Right' Tab context menu item.">
           Close tabs to the right
@@ -5785,26 +5941,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_FOCUS_THIS_TAB" desc="The label of the 'Focus this tab' Tab context menu item.">
           Focus this tab
         </message>
-        <message name="IDS_TAB_CXMENU_PIN_TAB" desc="The label of the tab context menu item for pinning one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Pin tab} other {Pin tabs}}
+        <message name="IDS_TAB_CXMENU_PIN_TAB" desc="The label of the tab context menu item for pinning one or more tabs.">
+          Pin
         </message>
-        <message name="IDS_TAB_CXMENU_UNPIN_TAB" desc="The label of the tab context menu item for unpinning one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Unpin tab} other {Unpin tabs}}
-        </message>
-        <message name="IDS_TAB_CXMENU_AUDIO_MUTE_TAB" desc="The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Mute tab} other {Mute tabs}}
-        </message>
-        <message name="IDS_TAB_CXMENU_AUDIO_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}
+        <message name="IDS_TAB_CXMENU_UNPIN_TAB" desc="The label of the tab context menu item for unpinning one or more tabs.">
+          Unpin
         </message>
         <message name="IDS_TAB_CXMENU_SOUND_MUTE_SITE" desc="The label of the tab context menu item for muting one or more sites. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Mute site} other {Mute sites}}
         </message>
         <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_SITE" desc="The label of the tab context menu item for unmuting one or more sites. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Unmute site} other {Unmute sites}}
-        </message>
-        <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
-          Bookmark all tabs...
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_GROUP" desc="The label of the tab context menu item for creating a new tab group and adding one or more tabs to it.">
           Add to new group
@@ -5815,10 +5962,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_REMOVE_TAB_FROM_GROUP" desc="The label of the tab context menu item for removing one or more tabs from the groups that contain them.">
           Remove from group
         </message>
+        <message name="IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE" desc="The descriptive placeholder title of a group used when the user has not explicitly named a group. The plural value refers to the number of tabs in the group other than the one explicitly named. [ICU Syntax]">
+          {NUM_OTHER_TABS, plural, =0 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>"} =1 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and 1 other tab} other {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and # other tabs}}
+        </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_TAB_CXMENU_NEWTAB" desc="In Title Case: The label of the 'New Tab' Tab context menu item.">
-          New Tab
+        <message name="IDS_TAB_CXMENU_NEWTABTORIGHT" desc="In Title Case: The label of the 'New Tab to the Right' Tab context menu item.">
+          New Tab to the Right
         </message>
         <message name="IDS_TAB_CXMENU_RELOAD" desc="In Title Case: The label of the 'Reload' Tab context menu item.">
           Reload
@@ -5826,11 +5976,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_DUPLICATE" desc="In Title Case: The label of the 'Duplicate' Tab context menu item.">
           Duplicate
         </message>
-        <message name="IDS_TAB_CXMENU_CLOSETAB" desc="In Title Case: The label of the 'Close Tab' Tab context menu item. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Close Tab} other {Close Tabs}}
-        </message>
-        <message name="IDS_TAB_CXMENU_CLOSEOTHERTABS" desc="In Title Case: The label of the 'Close Other Tabs' Tab context menu item.">
-          Close Other Tabs
+        <message name="IDS_TAB_CXMENU_CLOSETAB" desc="In Title Case: The label of the tab context menu item for closing one or more tabs.">
+          Close
         </message>
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT" desc="In Title Case: The label of the 'Close Tabs to the Right' Tab context menu item.">
           Close Tabs to the Right
@@ -5838,26 +5985,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_FOCUS_THIS_TAB" desc="In Title Case: The label of the 'Focus This Tab' Tab context menu item.">
           Focus This Tab
         </message>
-        <message name="IDS_TAB_CXMENU_PIN_TAB" desc="In Title Case: The label of the tab context menu item for pinning one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Pin Tab} other {Pin Tabs}}
+        <message name="IDS_TAB_CXMENU_PIN_TAB" desc="In Title Case: The label of the tab context menu item for pinning one or more tabs.">
+          Pin
         </message>
-        <message name="IDS_TAB_CXMENU_UNPIN_TAB" desc="In Title Case: The label of the tab context menu item for unpinning one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Unpin Tab} other {Unpin Tabs}}
-        </message>
-        <message name="IDS_TAB_CXMENU_AUDIO_MUTE_TAB" desc="In Title Case: The label of the tab context menu item for muting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Mute Tab} other {Mute Tabs}}
-        </message>
-        <message name="IDS_TAB_CXMENU_AUDIO_UNMUTE_TAB" desc="In Title Case: The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
-          {NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}
+        <message name="IDS_TAB_CXMENU_UNPIN_TAB" desc="In Title Case: The label of the tab context menu item for unpinning one or more tabs.">
+          Unpin
         </message>
         <message name="IDS_TAB_CXMENU_SOUND_MUTE_SITE" desc="In Title Case: The label of the tab context menu item for muting one or more sites. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Mute Site} other {Mute Sites}}
         </message>
         <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_SITE" desc="In Title Case: The label of the tab context menu item for unmuting one or more sites. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Unmute Site} other {Unmute Sites}}
-        </message>
-        <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
-          Bookmark All Tabs...
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_GROUP" desc="In Title Case: The label of the tab context menu item for creating a new tab group and adding one or more tabs to it.">
           Add to New Group
@@ -5867,6 +6005,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_CXMENU_REMOVE_TAB_FROM_GROUP" desc="In Title Case: The label of the tab context menu item for removing one or more tabs from the groups that contain them.">
           Remove From Group
+        </message>
+        <message name="IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE" desc="The descriptive placeholder title of a group used when the user has not explicitly named a group. The plural value refers to the number of tabs in the group other than the one explicitly named. [ICU Syntax]">
+          {NUM_OTHER_TABS, plural, =0 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>"} =1 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and 1 Other Tab} other {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and # Other Tabs}}
         </message>
       </if>
 
@@ -6261,8 +6402,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_MULTIPLE_DEVICES" desc="The label of item for click to call in context menu when multiple devices are available.">
           Call from your devices
         </message>
-        <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="The label of item for click to call in context menu for showing device name when multiple devices are available.">
+        <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="The label of item for click to call in context menu for showing device name when one device is available.">
           Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_MULTIPLE_DEVICES" desc="The label of item for shared clipboard in context menu when multiple devices are available.">
+          Send text to your devices
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_SINGLE_DEVICE" desc="The label of item for shared clipboard in context menu for showing device name when one device is available.">
+          Send text to <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE" desc="The title of the notification shown when a clipboard was shared.">
+          Text shared from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_DESCRIPTION" desc="The description of the notification shown when a clipboard was shared.">
+          Copied to your clipboard
         </message>
       </if>
 
@@ -6272,6 +6425,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_CONTENT_CONTEXT_SHARING_CLICK_TO_CALL_SINGLE_DEVICE" desc="In Title Case: The label of item for click to call in context menu when single device is available.">
           Call from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_MULTIPLE_DEVICES" desc="In Title Case: The label of item for shared clipboard in context menu when multiple devices are available.">
+          Send text to Your Devices
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_SINGLE_DEVICE" desc="In Title Case: The label of item for shared clipboard in context menu when single device is available.">
+          Send text to <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_TITLE" desc="In Title Case: The title of the notification shown when a clipboard was shared.">
+          Text shared from <ph name="DEVICE_NAME">$1<ex>Jimmy's Pixel</ex></ph>
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SHARING_SHARED_CLIPBOARD_NOTIFICATION_DESCRIPTION" desc="In Title Case: The description of the notification shown when a clipboard was shared.">
+          Copied to Your Clipboard
         </message>
       </if>
 
@@ -6411,21 +6576,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!-- Managed UI on pages like chrome://settings and chrome://downloads -->
       <if expr="not is_android">
         <if expr="chromeos">
-          <message name="IDS_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
+          <message name="IDS_DEVICE_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
+            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
           </message>
-          <message name="IDS_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$3<ex>example.com</ex></ph>
-          </message>
-        </if>
-        <if expr="not chromeos">
-          <message name="IDS_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
-          </message>
-          <message name="IDS_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$2<ex>example.com</ex></ph>
+          <message name="IDS_DEVICE_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
+            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$3<ex>example.com</ex></ph>
           </message>
         </if>
+        <message name="IDS_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
+          Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
+        </message>
+        <message name="IDS_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
+          Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$2<ex>example.com</ex></ph>
+        </message>
       </if>
 
       <!-- Cookies Window -->
@@ -6542,12 +6705,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_COOKIES_LAST_ACCESSED_LABEL" desc="The last access date label">
         Last accessed:
-      </message>
-      <message name="IDS_COOKIES_CHANNEL_ID" desc="The text shown when there is a channel id in the Cookies table">
-        Channel ID
-      </message>
-      <message name="IDS_COOKIES_CHANNEL_IDS" desc="Label for the folder under which a list of TLS Channel IDs (name of an internet standard) are displayed">
-        Channel IDs
       </message>
       <message name="IDS_COOKIES_SERVICE_WORKER" desc="The text shown when there is data for Service Workers within an origin (name of a Web standard) in the Cookies table">
         Service Workers
@@ -6697,6 +6854,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_APP_CONTEXT_MENU_INSTALL_ARC" desc="Text for the button that installs the Android app. (In sentence case.)">
             Install
           </message>
+          <message name="IDS_APP_TERMINAL_SPLIT_HORIZONTAL" desc="Text for the menu item to create a horizontal split in terminal app">
+            Split horizontal
+          </message>
+          <message name="IDS_APP_TERMINAL_SPLIT_VERTICAL" desc="Text for the menu item to create a vertical split in terminal app">
+            Split vertical
+          </message>
         </if>
       </if>
 
@@ -6747,6 +6910,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
           </message>
           <message name="IDS_APP_CONTEXT_MENU_INSTALL_ARC" desc="Text for the button that installs the Android app. (In title case.)">
             Install
+          </message>
+          <message name="IDS_APP_TERMINAL_SPLIT_HORIZONTAL" desc="Text for the menu item to create a horizontal split in terminal app">
+            Split Horizontal
+          </message>
+          <message name="IDS_APP_TERMINAL_SPLIT_VERTICAL" desc="Text for the menu item to create a vertical split in terminal app">
+            Split Vertical
           </message>
         </if>
       </if>
@@ -7155,7 +7324,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Sync isn’t working. Try signing out and back in again.
         </message>
         <message name="IDS_SYNC_STATUS_NEEDS_PASSWORD" desc="Message indicating user must re-enter their sync password.">
-          Enter your passphrase to start sync
+          Enter your passphrase to sync your data
         </message>
         <message name="IDS_SYNC_STATUS_NEEDS_PASSWORD_LINK_LABEL" desc="Hyperlink text indicating user must re-enter their sync password.">
           Enter passphrase
@@ -7422,6 +7591,26 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NOTIFICATION_REPLY_PLACEHOLDER" desc="Placeholder text shown in the text box before any text is entered when replying directly to a notification.">
         Send message
       </message>
+      <if expr="is_android">
+        <message name="IDS_NOTIFICATION_BUTTON_MANAGE" desc="Text of a button shown on notification permission requests, that opens the Brave notifications settings page. This allows users to edit notification settings when a site asks them to allow notifications.">
+          Manage
+        </message>
+        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_MINI_INFOBAR_DETAILS_LINK" desc="Blue text on a notification infobar that when clicked expands the infobar to show more details.">
+          Details
+        </message>
+        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_MINI_INFOBAR_MESSAGE" desc="Text on an infobar that informs the user that notifications are blocked, in a very short form. [CHAR_LIMIT=20]">
+          Notifications blocked.
+        </message>
+        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_TITLE" desc="Title of an infobar that informs the user that notifications are blocked. [CHAR_LIMIT=32]">
+          Notifications blocked
+        </message>
+        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_PROMPT_TITLE" desc="Text used as notification title when requesting permission for Web Notifications via a notification.">
+          Notifications for <ph name="ORIGIN">$1<ex>example.com</ex></ph> are blocked
+        </message>
+        <message name="IDS_NOTIFICATION_QUIET_PERMISSION_PROMPT_MESSAGE" desc="Text used as notification message when requesting permission for Web Notifications via a notification.">
+          Notifications are automatically blocked for all sites except ones you allow
+        </message>
+      </if>
 
       <!-- Mac AppleScript -->
       <if expr="is_macosx">
@@ -7482,6 +7671,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_WINDOW_MENU_MAC" desc="The menu title of the Mac window menu.">
           Window
+        </message>
+        <message name="IDS_TAB_MENU_MAC" desc="The menu title of the Mac tab menu.">
+          Tab
         </message>
         <message name="IDS_HELP_MENU_MAC" desc="The menu title of the Mac help menu.">
           Help
@@ -7701,10 +7893,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed window.">
           Restore All Tabs
-        </message>
-        <!-- Bookmarks menu -->
-        <message name="IDS_BOOKMARK_ALL_TABS_MAC" desc="The Mac menu item for bookmarking all tabs in the current window.">
-          Bookmark All Tabs...
         </message>
         <!-- Window menu -->
         <message name="IDS_MINIMIZE_WINDOW_MAC" desc="The Mac menu item for minimize the window menu." meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
@@ -8056,6 +8244,21 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MANAGE_PASSWORDS_AUTO_SIGNIN_TITLE_MD" desc="The title of the auto-signin toast in Material Design mode.">
         Signing in as
       </message>
+      <message name="IDS_CREDENTIAL_LEAK_TITLE" desc="The title of the credential leak dialog.">
+        Data breach reported
+      </message>
+      <message name="IDS_CREDENTIAL_LEAK_CHECK_PASSWORDS_MESSAGE" desc="The text that is used in credential leak detection dialog when saved credentials were used on multiple sites.">
+        A data breach on a site or app you use exposed your password. Brave recommends checking your saved passwords now.
+      </message>
+      <message name="IDS_CREDENTIAL_LEAK_CHANGE_PASSWORD_MESSAGE" desc="The text that is used in credential leak detection dialog when credentials were leaked on current site only.">
+        A data breach on a site or app you use exposed your password. Brave recommends <ph name="BOLD">$1<ex>changing your password</ex></ph> on <ph name="ORIGIN">$2<ex>example.com</ex></ph> now.
+      </message>
+      <message name="IDS_CREDENTIAL_LEAK_CHANGE_PASSWORD_BOLD_MESSAGE" desc="The text that is written in bold in leak dialog message when credentials were leaked on current site only.">
+        changing your password
+      </message>
+      <message name="IDS_CREDENTIAL_LEAK_CHANGE_AND_CHECK_PASSWORDS_MESSAGE" desc="The text that is used in credential leak detection dialog when credentials were not saved in chrome, but used on multiple sites.">
+        A data breach on a site or app you use exposed your password. Brave recommends checking your saved passwords and changing your password on <ph name="ORIGIN">$1<ex>example.com</ex></ph>.
+      </message>
       <message name="IDS_AUTO_SIGNIN_FIRST_RUN_TITLE_MANY_DEVICES" desc="The title of the dialog during the autosign-in first run experience for the Brave syncing users.">
         Sign in easily across devices
       </message>
@@ -8073,6 +8276,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <if expr="not use_titlecase">
         <message name="IDS_AUTO_SIGNIN_FIRST_RUN_OK" desc="The text of the OK button in the dialog during the autosign-in first run experience.">
           OK, got it
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_LEAK_CHECK_CREDENTIALS" desc="The text of the OK button in the dialog for credentials leaked on multiple sites.">
+          Check Passwords
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_LEAK_CHECK_CREDENTIALS" desc="The text of the OK button in the dialog for credentials leaked on multiple sites.">
+          Check passwords
         </message>
       </if>
 
@@ -8339,16 +8552,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DARK_THEME" desc="The title of a link that will open the Web Store with a dark theme the user might want to install, if they prefer light text on a dark background.">
         Dark Theme
       </message>
-
-      <!-- Windows 8 Metro mode. -->
-      <if expr="is_win">
-        <message name="IDS_METRO_FLOW_DESCRIPTION" desc="Wordy description of what the set-Brave-as-Metro flow is all about.">
-          Click next to choose your default browser.
-        </message>
-        <message name="IDS_METRO_FLOW_SET_DEFAULT" desc="The label of the button invoking Windows8 default app settings window.">
-          Next
-        </message>
-      </if>
 
       <!-- Media Galleries. -->
       <if expr="not is_android">
@@ -8755,7 +8958,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Command unavailable. Press control-N to open a new window.
         </message>
         <message name="IDS_A11Y_ALERT_WINDOW_OVERVIEW_MODE_ENTERED" desc="The accessible text read when the user enters window overview mode in Ash.">
-          Entered window overview mode
+          Entered window overview mode. Press tab to navigate.
         </message>
         <message name="IDS_A11Y_ALERT_WORKSPACE_FULLSCREEN_STATE_ENTERED" desc="The accessible text read when the current workspace state changes to fullscreen, which means the window in current workspace is fullcreen.">
           Entered full screen
@@ -9221,57 +9424,54 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Native File System permission dialog -->
-    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_FILE_TITLE" desc="Title of dialog for confirming write access to a file using the Native File System API">
-      Save changes to <ph name="FILENAME">$1<ex>README.md</ex></ph>?
-    </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_DIRECTORY_TITLE" desc="Title of dialog for confirming write access to a directory and the files it contains using the Native File System API">
-      Save changes to files?
+    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_TITLE" desc="Title of dialog for confirming write access to a file, or a directory and the files it contains, using the Native File System API">
+      Save changes to <ph name="FILE_OR_FOLDER_NAME">$1<ex>README.md</ex></ph>?
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_FILE_TEXT" desc="Text of the dialog for confirming write access to files using the Native File System API">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to save your changes directly to <ph name="FILENAME">$2<ex>README.md</ex></ph>. The site can save changes until you close this tab.
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit <ph name="FILENAME">$2<ex>README.md</ex></ph> until you close this tab
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_DIRECTORY_TEXT" desc="Text of the dialog for confirming write access to a directory using the Native File System API">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to save your changes directly to the files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>. The site can save changes until you close this tab.
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to edit files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph> until you close this tab
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_PERMISSION_ALLOW_TEXT" desc="Text of the 'allow' button in the dialog for confirming write access to files or directories using the Native File System API">
       Save changes
     </message>
 
     <!-- Native File System usage indicator -->
-    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_USAGE_TOOLTIP" desc="Tooltip for native file system omnibox usage indicator.">
-      This page is allowed to save to files.
+    <message name="IDS_NATIVE_FILE_SYSTEM_WRITE_USAGE_TOOLTIP" desc="Tooltip for the omnibox Native File System API file write access usage indicator.">
+      This page is allowed to edit files
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_USAGE_TOOLTIP" desc="Tooltip for native file system omnibox usage indicator.">
-      This page is allowed to view all the files in a folder on your device.
+    <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_USAGE_TOOLTIP" desc="Tooltip for the omnibox Native File System API directory read access usage indicator.">
+      This page is allowed to view files
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_WRITABLE_FILE_TEXT" desc="Text of the bubble showing what file an origin can currently write to">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to <ph name="FILENAME">$2<ex>README.md</ex></ph>
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit <ph name="FILENAME">$2<ex>README.md</ex></ph>
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_FILES_TEXT" desc="Text of the bubble showing what files an origin can currently write to">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to the following files
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit the following files
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_WRITABLE_DIRECTORY_TEXT" desc="Text of the bubble showing what file an origin can currently write to">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to the files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_DIRECTORIES_TEXT" desc="Text of the bubble showing what files an origin can currently write to">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to the following folders
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit files in the following folders
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_WRITABLE_FILES_AND_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently write to">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can save your changes directly to the following files and folders
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can edit the following files and folders
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SINGLE_READABLE_DIRECTORY_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view all the files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READABLE_DIRECTORIES_TEXT" desc="Text of the bubble showing what files and directories an origin can currently access">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view all the files in the following folders
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view files in the following folders
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_READ_AND_WRITE" desc="Text of the bubble showing what files and directories an origin can currently read and write to">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view and save your changes directly to the following files and folders
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can view and edit the following files and folders
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SAVE_CHANGES" desc="">
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_SAVE_CHANGES" desc="Sub-heading for the files and directories with write access in the bubble showing what files and directories an origin can currently read and write to">
       Save changes
     </message>
-    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_VIEW_CHANGES" desc="">
+    <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_VIEW_CHANGES" desc="Sub-heading for the files and directories with read access in the bubble showing what files and directories an origin can currently read and write to">
       View changes
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_USAGE_BUBBLE_FILES_TEXT" desc="Text to display a list of files in the native file system usage bubble">
@@ -9291,16 +9491,24 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Remove access
     </message>
 
-
-    <!-- Native File System restricted directory dialog. -->
+    <!-- Native File System restricted directory and file dialogs. -->
     <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_DIRECTORY_TITLE" desc="Title of dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
-      Can't save to this folder
+      Can't open this folder
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_DIRECTORY_TEXT" desc="Text of dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can't save your changes to this folder because it contains system files.
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can’t open this folder because it contains system files
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_DIRECTORY_BUTTON" desc="Text of the button in dialog explaining that the user selected a directory that chrome doesn't want to expose to the web">
       Choose a different folder
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_FILE_TITLE" desc="Title of dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
+      Can't open this file
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_FILE_TEXT" desc="Text of dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> can’t open files in this folder because it contains system files
+    </message>
+    <message name="IDS_NATIVE_FILE_SYSTEM_RESTRICTED_FILE_BUTTON" desc="Text of the button in dialog explaining that the user selected a file in a directory that chrome doesn't want to expose to the web">
+      Choose a different file
     </message>
 
     <!-- Native File System directory access confirmation dialog. -->
@@ -9308,7 +9516,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Let site view files?
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_ACCESS_CONFIRMATION_TEXT" desc="Text of dialog asking user if they intended to share a particular directory">
-      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view all files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph>. The site can see any changes to the folder until you close this tab.
+      <ph name="ORIGIN">$1<ex>example.com</ex></ph> will be able to view files in <ph name="FOLDERNAME">$2<ex>My Project</ex></ph> until you close this tab
     </message>
     <message name="IDS_NATIVE_FILE_SYSTEM_DIRECTORY_ACCESS_ALLOW_BUTTON" desc="'allow' button in the dialog asking user if they intended to share a particular directory">
       View files
@@ -9608,13 +9816,40 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- User happiness tracking survey UI -->
     <if expr="not is_android">
-      <message name="IDS_HATS_BUBBLE_OK_LABEL" translateable="false" desc="Button label on Happiness Tracking Survey's invitation banner, clicking the button gives the user's consent on taking the survey.">
-        Take Survey
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_HATS_BUBBLE_OK_LABEL" translateable="false" desc="Button label on Happiness Tracking Survey's invitation banner, clicking the button gives the user's consent on taking the survey.">
+          Take Survey
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_HATS_BUBBLE_OK_LABEL" translateable="false" desc="Button label on Happiness Tracking Survey's invitation banner, clicking the button gives the user's consent on taking the survey.">
+          Take survey
+        </message>
+      </if>
       <message name="IDS_HATS_BUBBLE_TEXT" translateable="false" desc="The text in Happiness Tracking Survey's invitation banner, it explains why users should take our survey.">
         Your feedback is important to us.
       </message>
     </if>
+    <message name="IDS_NOTIFICATION_DEFAULT_HELPFUL_BUTTON_TEXT" desc="Text body for the helpful button in notifications sent from notification scheduler.">
+      Helpful
+    </message>
+    <message name="IDS_NOTIFICATION_DEFAULT_UNHELPFUL_BUTTON_TEXT" desc="Text body for the unhelpful button in notifications sent from notification scheduler.">
+      Not Helpful
+    </message>
+
+    <!-- SMS strings -->
+    <message name="IDS_SMS_INFOBAR_TITLE" desc="Title shown when Brave is waiting for an SMS on the user's behalf">
+      Verify your phone number
+    </message>
+
+    <message name="IDS_SMS_INFOBAR_STATUS_SMS_RECEIVED" desc="Message shown when Brave has received an SMS on the user's behalf">
+      <ph name="ONE_TIME_CODE">$1<ex>123</ex></ph> is your code for <ph name="ORIGIN">$2<ex>example.com</ex></ph>
+    </message>
+
+    <message name="IDS_SMS_INFOBAR_BUTTON_OK" desc="Text for the button shown when Brave has received an SMS on the user's behalf">
+      Verify
+    </message>
+
   </messages>
 </release>
 </grit>
