@@ -72,7 +72,8 @@ static const std::map<std::string, bool> kSupportedRegions = {
   { "SE", false },  // Sweden
   { "SG", false },  // Singapore
   { "VE", false },  // Venezuela
-  { "ZA", false }   // South Africa
+  { "ZA", false },  // South Africa
+  { "KY", true  }   // Cayman Islands
 };
 
 static char kUntargetedPageClassification[] = "untargeted";
