@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/profiles/brave_profile_chooser_view.h"
+#include "brave/browser/ui/views/profiles/brave_profile_menu_view.h"
 
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
@@ -14,13 +14,13 @@
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/button.h"
 
-class BraveProfileChooserViewTest : public InProcessBrowserTest {
+class BraveProfileMenuViewTest : public InProcessBrowserTest {
  public:
-  BraveProfileChooserViewTest() = default;
-  ~BraveProfileChooserViewTest() override = default;
+  BraveProfileMenuViewTest() = default;
+  ~BraveProfileMenuViewTest() override = default;
 
  protected:
-  void OpenProfileChooserView(Browser* browser) {
+  void OpenProfileMenuView(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     AvatarToolbarButton* button =
         browser_view->toolbar()->GetAvatarToolbarButton();
@@ -32,24 +32,24 @@ class BraveProfileChooserViewTest : public InProcessBrowserTest {
   }
 
   AvatarMenu* avatar_menu() {
-    ProfileChooserView* bubble = static_cast<ProfileChooserView*>(
+    ProfileMenuView* bubble = static_cast<ProfileMenuView*>(
         ProfileMenuViewBase::GetBubbleForTesting());
     DCHECK(bubble);
     return bubble->avatar_menu_.get();
   }
 
   const base::string16& profile_button_name() const {
-    ProfileChooserView* bubble = static_cast<ProfileChooserView*>(
+    ProfileMenuView* bubble = static_cast<ProfileMenuView*>(
         ProfileMenuViewBase::GetBubbleForTesting());
     return bubble->current_profile_card_->GetAccessibleName();
   }
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileChooserViewTest);
+  DISALLOW_COPY_AND_ASSIGN(BraveProfileMenuViewTest);
 };
 
-IN_PROC_BROWSER_TEST_F(BraveProfileChooserViewTest, TestCurrentProfileView) {
-  OpenProfileChooserView(browser());
+IN_PROC_BROWSER_TEST_F(BraveProfileMenuViewTest, TestCurrentProfileView) {
+  OpenProfileMenuView(browser());
 
   EXPECT_EQ(1u, avatar_menu()->GetNumberOfItems());
   const AvatarMenu::Item& item = avatar_menu()->GetItemAt(0);
