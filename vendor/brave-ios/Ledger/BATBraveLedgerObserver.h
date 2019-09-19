@@ -31,6 +31,8 @@ NS_SWIFT_NAME(LedgerObserver)
 /// A publisher was fetched by its URL for a specific tab identified by tabId
 @property (nonatomic, copy, nullable) void (^fetchedPanelPublisher)(BATPublisherInfo *info, uint64_t tabId);
 
+@property (nonatomic, copy, nullable) void (^publisherListUpdated)();
+
 /// Eligable grants were added to the wallet
 @property (nonatomic, copy, nullable) void (^grantsAdded)(NSArray<BATGrant *> *grants);
 

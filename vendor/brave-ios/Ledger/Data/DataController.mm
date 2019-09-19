@@ -28,7 +28,7 @@ static DataController *_dataController = nil;
 
 - (NSURL *)storeDirectoryURL
 {
-  const auto urls = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  const auto urls = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
   const auto documentURL = urls.lastObject;
   if (!documentURL) {
     return nil;

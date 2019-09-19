@@ -6,9 +6,6 @@
 #import "Records.h"
 #import "ledger.mojom.objc.h"
 
-// FIXME: Remove this later
-#import "BATBraveLedger.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
@@ -121,6 +118,19 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 
 /// Get the amount of BAT allocated for pending contributions
 + (double)reservedAmountForPendingContributions;
+
+#pragma mark - Publisher List
+
++ (nullable BATServerPublisherInfo *)serverPublisherInfoWithPublisherID:(NSString *)publisherID;
+
++ (void)clearAndInsertList:(NSArray<BATServerPublisherInfo *> *)list
+                completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
+
+#pragma mark - Publisher List / Test Helpers
+
++ (nullable BATPublisherBanner *)bannerForPublisherID:(NSString *)publisherID;
++ (nullable NSArray<NSNumber *> *)bannerAmountsForPublisherWithPublisherID:(NSString *)publisherID;
++ (nullable NSDictionary<NSString *, NSString *> *)publisherLinksWithPublisherID:(NSString *)publisherID;
 
 #pragma mark -
 
