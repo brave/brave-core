@@ -23,7 +23,6 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/resource_request_info.h"
 #include "content/public/browser/websocket_handshake_request_info.h"
 #include "content/public/common/referrer.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
