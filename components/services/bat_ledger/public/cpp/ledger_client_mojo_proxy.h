@@ -30,10 +30,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void OnWalletProperties(
       const ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
-  void OnRecoverWallet(
-      const ledger::Result result,
-      double balance,
-      std::vector<ledger::GrantPtr> grants) override;
   void OnReconcileComplete(
       const ledger::Result result,
       const std::string& viewing_id,

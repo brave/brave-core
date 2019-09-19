@@ -50,7 +50,7 @@ class MockRewardsService : public RewardsService {
                                              const std::string&));
   MOCK_METHOD1(GetWalletPassphrase,
       void(const brave_rewards::GetWalletPassphraseCallback&));
-  MOCK_CONST_METHOD1(RecoverWallet, void(const std::string&));
+  MOCK_METHOD1(RecoverWallet, void(const std::string&));
   MOCK_METHOD0(RestorePublishersUI, void());
   MOCK_METHOD2(OnLoad, void(SessionID, const GURL&));
   MOCK_METHOD1(OnUnload, void(SessionID));

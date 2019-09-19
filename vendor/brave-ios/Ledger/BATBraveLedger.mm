@@ -80,8 +80,6 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
 /// Temporary blocks
 
-@property (nonatomic, copy, nullable) void (^walletRecoveredBlock)(const ledger::Result result, const double balance, std::vector<ledger::GrantPtr> grants);
-
 @end
 
 @implementation BATBraveLedger
@@ -278,37 +276,30 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 - (void)recoverWalletUsingPassphrase:(NSString *)passphrase completion:(void (^)(NSError *_Nullable))completion
 {
   const auto __weak weakSelf = self;
-  self.walletRecoveredBlock = ^(const ledger::Result result, const double balance, std::vector<ledger::GrantPtr> grants) {
-    const auto strongSelf = weakSelf;
-    if (!strongSelf) { return; }
-    NSError *error = nil;
-    if (result != ledger::Result::LEDGER_OK) {
-      std::map<ledger::Result, std::string> errorDescriptions {
-        { ledger::Result::LEDGER_ERROR, "The recovery failed" },
-      };
-      NSDictionary *userInfo = @{};
-      const auto description = errorDescriptions[result];
-      if (description.length() > 0) {
-        userInfo = @{ NSLocalizedDescriptionKey: [NSString stringWithUTF8String:description.c_str()] };
-      }
-      error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:static_cast<NSInteger>(result) userInfo:userInfo];
-    }
-    if (completion) {
-      completion(error);
-    }
-    strongSelf.walletRecoveredBlock = nil;
-  };
   // Results that can come from CreateWallet():
   //   - LEDGER_OK: Good to go
   //   - LEDGER_ERROR: Recovery failed
-  ledger->RecoverWallet(std::string(passphrase.UTF8String));
-}
-
-- (void)onRecoverWallet:(ledger::Result)result balance:(double)balance grants:(std::vector<ledger::GrantPtr>)grants
-{
-  if (self.walletRecoveredBlock) {
-    self.walletRecoveredBlock(result, balance, std::move(grants));
-  }
+  ledger->RecoverWallet(std::string(passphrase.UTF8String),
+    ^(const ledger::Result result, const double balance, std::vector<ledger::GrantPtr> grants) {
+      const auto strongSelf = weakSelf;
+      if (!strongSelf) { return; }
+      NSError *error = nil;
+      if (result != ledger::Result::LEDGER_OK) {
+        std::map<ledger::Result, std::string> errorDescriptions {
+          { ledger::Result::LEDGER_ERROR, "The recovery failed" },
+        };
+        NSDictionary *userInfo = @{};
+        const auto description = errorDescriptions[result];
+        if (description.length() > 0) {
+          userInfo = @{ NSLocalizedDescriptionKey: [NSString stringWithUTF8String:description.c_str()] };
+        }
+        error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:static_cast<NSInteger>(result) userInfo:userInfo];
+      }
+      if (completion) {
+        completion(error);
+      }
+    }
+  );
 }
 
 - (double)reservedAmount {

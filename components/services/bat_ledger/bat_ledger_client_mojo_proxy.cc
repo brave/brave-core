@@ -138,19 +138,6 @@ void BatLedgerClientMojoProxy::OnWalletProperties(
                                          std::move(properties));
 }
 
-void BatLedgerClientMojoProxy::OnRecoverWallet(
-    ledger::Result result,
-    double balance,
-    std::vector<ledger::GrantPtr> grants) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_client_->OnRecoverWallet(result,
-                                      balance,
-                                      std::move(grants));
-}
-
 void BatLedgerClientMojoProxy::OnReconcileComplete(ledger::Result result,
     const std::string& viewing_id,
     ledger::REWARDS_CATEGORY category,
