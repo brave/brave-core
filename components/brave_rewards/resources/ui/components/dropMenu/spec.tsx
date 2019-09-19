@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import { TestThemeProvider } from 'brave-ui/theme'
-import DropMenu from './index';
+import DropMenu from './index'
 
 describe('Drop Menu tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><DropMenu id={'dropMenu'} /></TestThemeProvider>

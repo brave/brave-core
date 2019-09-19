@@ -6,10 +6,11 @@ import Alert, { Props } from './index'
 import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('Alert tests', () => {
-  const baseComponent = (props: Props) =>
+  const baseComponent = (props: Props) => (
     <TestThemeProvider>
       <Alert id='alert' {...props} />
     </TestThemeProvider>
+  )
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

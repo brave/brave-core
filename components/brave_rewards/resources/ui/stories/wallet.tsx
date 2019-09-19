@@ -40,6 +40,13 @@ storiesOf('Rewards/Wallet/Desktop', module)
     const showAlert = boolean('Show alert', false)
     const showGrant = boolean('Show grants', false)
 
+    const state: WalletState = select('wallet status', {
+      unverified: 'unverified',
+      verified: 'verified',
+      'disconnected unverified': 'disconnected_unverified',
+      'disconnected verified': 'disconnected_verified'
+    }, 'unverified') as WalletState
+
     return (
       <WalletWrapper
         compact={false}
@@ -80,13 +87,7 @@ storiesOf('Rewards/Wallet/Desktop', module)
           }
         ] : []}
         alert={showAlert ? alert : undefined}
-        walletState={select('wallet status', {
-          unverified: 'unverified',
-          connected: 'connected',
-          verified: 'verified',
-          'disconnected unverified': 'disconnected_unverified',
-          'disconnected verified': 'disconnected_verified'
-        }, 'unverified') as WalletState}
+        walletState={state}
         onDisconnectClick={doNothing}
         userName={'Brave Software'}
       >

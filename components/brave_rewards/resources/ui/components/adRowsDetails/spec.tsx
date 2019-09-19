@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import { TestThemeProvider } from 'brave-ui/theme'
-import AdRowsDetails from './index';
+import AdRowsDetails from './index'
 
 describe('Ad Rows Details tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><AdRowsDetails id={'adRowsDetails'} /></TestThemeProvider>

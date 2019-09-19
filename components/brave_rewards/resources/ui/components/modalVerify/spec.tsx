@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import PanelVerify  from './index'
+import PanelVerify from './index'
 import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('PanelVerify tests', () => {

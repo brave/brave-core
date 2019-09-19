@@ -6,19 +6,20 @@ import ModalBackupRestore from './index'
 import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('ModalBackupRestore tests', () => {
+  const doNothing = () => { console.log('nothing') }
   const baseComponent = (props?: object) => (
     <TestThemeProvider>
       <ModalBackupRestore
         id='modal'
-        activeTabId={'backup'}
+        activeTabId={0}
         recoveryKey={''}
-        onClose={() => {}}
-        onCopy={() => {}}
-        onPrint={() => {}}
-        onSaveFile={() => {}}
-        onRestore={() => {}}
-        onImport={() => {}}
-        onTabChange={() => {}}
+        onClose={doNothing}
+        onCopy={doNothing}
+        onPrint={doNothing}
+        onSaveFile={doNothing}
+        onRestore={doNothing}
+        onImport={doNothing}
+        onTabChange={doNothing}
         {...props}
       />
     </TestThemeProvider>

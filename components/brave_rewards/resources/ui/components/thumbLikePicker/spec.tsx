@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import { TestThemeProvider } from 'brave-ui/theme'
-import ThumbLikePicker from './index';
+import ThumbLikePicker from './index'
 
 describe('Amount tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><ThumbLikePicker id={'thumbLikePicker'} likeAction={0} /></TestThemeProvider>

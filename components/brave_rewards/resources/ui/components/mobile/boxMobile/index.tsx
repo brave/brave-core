@@ -181,7 +181,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
         <StyledLeft>
           {
             isDetailView
-              ? <StyledBackArrow onClick={this.setView.bind(this, 'index') as any}>
+              ? <StyledBackArrow onClick={this.setView.bind(this, 'index')}>
                 <ArrowLeftIcon />
               </StyledBackArrow>
               : null
@@ -219,7 +219,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
 
     return (
       <StyledContent detailView={this.state.detailView}>
-        <StyleDetailsLink onClick={this.setView.bind(this, 'detailView') as any}>
+        <StyleDetailsLink onClick={this.setView.bind(this, 'detailView')}>
           {getLocale('viewDetails')}
           <StyledArrow>
             <CaratRightIcon />
@@ -232,7 +232,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
   getSettingsListTitle = () => {
     return (
       <StyledMobileListWrapper>
-        <StyledSettingsListTitle onClick={this.setView.bind(this, 'settings') as any}>
+        <StyledSettingsListTitle onClick={this.setView.bind(this, 'settings')}>
           <StyledSettingsText>
             {getLocale('settings')}
           </StyledSettingsText>
@@ -253,14 +253,14 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
 
     return (
       <StyledFullSizeWrapper>
-        <StyledSettingsClose onClick={this.setView.bind(this, 'detailView') as any}>
+        <StyledSettingsClose onClick={this.setView.bind(this, 'detailView')}>
           <CloseStrokeIcon />
         </StyledSettingsClose>
         <StyledSettingsHeader>
           <StyledSettingsTitle>
             {this.getSettingsTitle(title)}
           </StyledSettingsTitle>
-          <StyledSettingsClose onClick={this.setView.bind(this, 'detailView') as any}>
+          <StyledSettingsClose onClick={this.setView.bind(this, 'detailView')}>
             <CloseStrokeIcon />
           </StyledSettingsClose>
         </StyledSettingsHeader>

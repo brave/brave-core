@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import WelcomePage  from './index'
+import WelcomePage from './index'
 import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('WelcomePage tests', () => {

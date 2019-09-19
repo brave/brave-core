@@ -7,16 +7,17 @@ import { TestThemeProvider } from 'brave-ui/theme'
 
 const props = {
   onClose: () => null,
-  userName: 'tester',
+  userName: 'tester'
 }
 
 describe('WalletSummary tests', () => {
-  const baseComponent = (props: Props) =>
+  const baseComponent = (props: Props) => (
     <TestThemeProvider>
       <WalletPopup id='wallet-popup' {...props} >
         <p>hi</p>
       </WalletPopup>
     </TestThemeProvider>
+  )
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

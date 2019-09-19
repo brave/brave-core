@@ -6,7 +6,12 @@ import Amount from './index'
 import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('Amount tests', () => {
-  const baseComponent = (props?: object) => <TestThemeProvider><Amount id='amount' amount={1} converted={0.4} onSelect={() => {}} {...props}  /></TestThemeProvider>
+  const doNothing = () => { console.log('nothing') }
+  const baseComponent = (props?: object) => (
+    <TestThemeProvider>
+      <Amount id='amount' amount={'1'} converted={'0.4'} onSelect={doNothing} {...props} />
+    </TestThemeProvider>
+  )
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

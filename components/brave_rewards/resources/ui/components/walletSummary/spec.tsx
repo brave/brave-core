@@ -12,16 +12,17 @@ const props = {
     contribute: { tokens: '10.0', converted: '0.25' },
     donation: { tokens: '2.0', converted: '0.25' },
     tips: { tokens: '19.0', converted: '5.25' },
-    total: { tokens: '19.0', converted: '5.25' },
+    total: { tokens: '19.0', converted: '5.25' }
   },
-  onActivity: () => { }
+  onActivity: () => { console.log('nothing') }
 }
 
 describe('WalletSummary tests', () => {
-  const baseComponent = (props: Props) =>
+  const baseComponent = (props: Props) => (
     <TestThemeProvider>
       <WalletSummary id='empty' {...props} />
     </TestThemeProvider>
+  )
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

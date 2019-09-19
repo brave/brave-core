@@ -72,6 +72,20 @@ const dummyOptInAction = () => {
 storiesOf('Rewards/Concepts/Desktop', module)
   .addDecorator(withKnobs)
   .add('Settings Page', () => {
+    const walletState: WalletState = select('wallet status', {
+      unverified: 'unverified',
+      verified: 'verified',
+      'disconnected unverified': 'disconnected_unverified',
+      'disconnected verified': 'disconnected_verified'
+    }, 'unverified') as WalletState
+
+    type walletContent = 'empty' | 'summary' | 'off'
+    const content: walletContent = select('Content', {
+      empty: 'empty',
+      summary: 'summary',
+      off: 'off'
+    }, 'empty') as any
+
     const walletProps = {
       grants: object('Claimed grants', [
         {
@@ -90,17 +104,8 @@ storiesOf('Rewards/Concepts/Desktop', module)
           type: 'ads'
         }
       ]),
-      content: select('Content', {
-        empty: 'empty',
-        summary: 'summary',
-        off: 'off'
-      }, 'empty') as 'empty' | 'summary' | 'off',
-      walletState: select('wallet status', {
-        unverified: 'unverified',
-        verified: 'verified',
-        'disconnected unverified': 'disconnected_unverified',
-        'disconnected verified': 'disconnected_verified'
-      }, 'unverified') as WalletState
+      content,
+      walletState
     }
     return (<Settings {...{ walletProps }}/>)
   })
