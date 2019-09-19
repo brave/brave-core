@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.cc b/chrome/browser/ui/views/profiles/profile_menu_view.cc
+index 36d797f70d38783003cc6ea782af1ff86fd3ba7f..903d20326927324b7644920440422b68c35fe7b7 100644
+--- a/chrome/browser/ui/views/profiles/profile_menu_view.cc
++++ b/chrome/browser/ui/views/profiles/profile_menu_view.cc
+@@ -757,6 +757,7 @@ void ProfileMenuView::AddOptionsView(bool display_lock,
+         base::BindRepeating(&ProfileMenuView::OnManageProfilesButtonClicked,
+                             base::Unretained(this)));
+   }
++  ADD_TOR_EXIT_BUTTON_
+ 
+   if (display_lock) {
+     lock_button_ = CreateAndAddButton(

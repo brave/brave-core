@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/accelerator_table.cc b/chrome/browser/ui/views/accelerator_table.cc
-index 53f1e63d0851d4d5ad7692ddd5ac940021d3ac22..3383aec61e1f1360e2e856c65f6196c48b574ddd 100644
+index ba35bf0533de83db8133a939f0ad3675546a30bb..51af475d446d52c1cc6f0615c586492286a84349 100644
 --- a/chrome/browser/ui/views/accelerator_table.cc
 +++ b/chrome/browser/ui/views/accelerator_table.cc
 @@ -164,6 +164,15 @@ const AcceleratorMapping kAcceleratorMap[] = {

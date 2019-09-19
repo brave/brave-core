@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/url_data_source.cc b/content/public/browser/url_data_source.cc
-index 14a367a5007895be1496108914d1bf079f6a1b76..7acfe731bdd90512fc5b7a3ccc63749c0e46fda8 100644
+index 35a916f948721124a5aa00bd28f0f8667302fbe3..43d1bf23de37da54788d3a67cd09668c80d1de25 100644
 --- a/content/public/browser/url_data_source.cc
 +++ b/content/public/browser/url_data_source.cc
 @@ -72,7 +72,7 @@ bool URLDataSource::ShouldAddContentSecurityPolicy() {

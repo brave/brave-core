@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index b500be915e03acf7a21f302c9538791f2980d606..7b3c3193392a25211d0c93bc1775d9e23d9d3015 100644
+index eb3a28fa52cf9357efd547134e9e087d797f70df..ff3707ac6ea1b049975d66b76f1c62e990a03087 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
 @@ -11,6 +11,7 @@
@@ -10,7 +10,7 @@ index b500be915e03acf7a21f302c9538791f2980d606..7b3c3193392a25211d0c93bc1775d9e2
  #include "build/build_config.h"
  #include "chrome/browser/bookmarks/bookmark_model_factory.h"
  #include "chrome/browser/browser_process.h"
-@@ -196,6 +197,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -198,6 +199,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
        autofill::ChromeAutofillClient::FromWebContents(web_contents),
        g_browser_process->GetApplicationLocale(),
        autofill::AutofillManager::ENABLE_AUTOFILL_DOWNLOAD_MANAGER);

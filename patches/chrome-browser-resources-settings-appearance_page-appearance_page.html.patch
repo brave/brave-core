@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-index df9863a3a64cec001f2d4a40663b0fe8512e9a25..782529ff189b082467619b1f74de65dc963d56ea 100644
+index 3a619511bedf031b8a600d27a14a8fb9c53d055d..16f0a60679f94cf9dedb2cae8318a52d3ffa0324 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-@@ -18,6 +18,12 @@
- <link rel="import" href="appearance_fonts_page.html">
- <link rel="import" href="home_url_input.html">
+@@ -22,6 +22,12 @@
+ <link rel="import" href="../appearance_page/wallpaper_browser_proxy.html">
+ </if>
  
 +<if expr="not _google_chrome">
 +<link rel="import" href="../brave_appearance_page/brave_appearance_page.html">
@@ -15,7 +15,7 @@ index df9863a3a64cec001f2d4a40663b0fe8512e9a25..782529ff189b082467619b1f74de65dc
  <dom-module id="settings-appearance-page">
    <template>
      <style include="settings-shared md-select iron-flex">
-@@ -57,6 +63,9 @@
+@@ -61,6 +67,9 @@
            </template>
          </cr-link-row>
          <div class="hr"></div>
@@ -25,7 +25,7 @@ index df9863a3a64cec001f2d4a40663b0fe8512e9a25..782529ff189b082467619b1f74de65dc
  </if>
          <div class="settings-row continuation" id="themeRow"
              hidden="[[!pageVisibility.setTheme]]">
-@@ -130,6 +139,9 @@
+@@ -134,6 +143,9 @@
              </settings-radio-group>
            </div>
          </template>

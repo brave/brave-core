@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java b/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
-index e269ba6c0436afc362804823e557dfe38c600c3b..fc3699b450c22a9731ccce0723e69dfcf813cf3c 100644
+index 9b7768fdb9a8dd52a412b1e4900478114a6ff2cd..c47b1911f140ffb953d888e7d501ac7e32f6066c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
 @@ -21,7 +21,7 @@ import java.util.Set;

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/media/webrtc/webrtc_log_uploader.cc b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
-index a89794d69357b7bd24853c7a7bb978cec265eb59..65546bb06a1876912fc39f1135c4b6f58c9170bc 100644
+index 118028e5511c8ea5df8b67cdb4ed85e6381d0e6d..89538623f3382d660a439f1a32de05fe3d6f3f68 100644
 --- a/chrome/browser/media/webrtc/webrtc_log_uploader.cc
 +++ b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
-@@ -445,6 +445,7 @@ std::string WebRtcLogUploader::CompressLog(WebRtcLogBuffer* buffer) {
+@@ -442,6 +442,7 @@ std::string WebRtcLogUploader::CompressLog(WebRtcLogBuffer* buffer) {
  void WebRtcLogUploader::UploadCompressedLog(
-     const WebRtcLogUploadDoneData& upload_done_data,
+     const WebRtcLogUploader::UploadDoneData& upload_done_data,
      std::unique_ptr<std::string> post_data) {
 +  return; // feature disabled in Brave
    DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);

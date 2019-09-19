@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/site_details.html b/chrome/browser/resources/settings/site_settings/site_details.html
-index 5b373ff071c1ba125f4aaa226f8730be48cd375a..d485b66c88ff8c66e7fd1191a047c6ae560604d2 100644
+index 1472652cc9e2a95704e93b947c6457fe490facac..478a7d0461691eb964f9c31224c9fc0ffb7b9422 100644
 --- a/chrome/browser/resources/settings/site_settings/site_details.html
 +++ b/chrome/browser/resources/settings/site_settings/site_details.html
-@@ -183,6 +183,11 @@
+@@ -190,6 +190,11 @@
            icon="cr:extension" id="unsandboxedPlugins"
            label="$i18n{siteSettingsUnsandboxedPlugins}">
        </site-details-permission>

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/analyser_node.cc b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
-index 7208af48597fce4e04d8cbdf119ac8c5d42dd05f..4cd958755241cf10deabdd2b4b457536cd48d67e 100644
+index 4df218da56b5f4db4bf40d5ca19c1ab24d9e50fd..faa82c862f0c83815c149049f25049eff9930932 100644
 --- a/third_party/blink/renderer/modules/webaudio/analyser_node.cc
 +++ b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
 @@ -25,6 +25,7 @@
