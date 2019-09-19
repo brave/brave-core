@@ -37,8 +37,11 @@ class Uphold {
 
   ~Uphold();
 
-  void StartContribution(const std::string &viewing_id,
-                         ledger::ExternalWalletPtr wallet);
+  void StartContribution(
+      const std::string& viewing_id,
+      const std::string& address,
+      double amount,
+      ledger::ExternalWalletPtr wallet);
 
   void FetchBalance(std::map<std::string, ledger::ExternalWalletPtr> wallets,
                     FetchBalanceCallback callback);
@@ -77,12 +80,6 @@ class Uphold {
       CreateAnonAddressCallback callback);
 
  private:
-  void OnServerPublisherInfo(
-    ledger::ServerPublisherInfoPtr info,
-    const std::string& viewing_id,
-    int amount,
-    const ledger::ExternalWallet& wallet);
-
   void ContributionCompleted(
       const ledger::Result result,
       const bool created,
