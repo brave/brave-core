@@ -11,7 +11,7 @@
 namespace extensions {
 namespace api {
 
-class BraveThemeGetBraveThemeListFunction : public UIThreadExtensionFunction {
+class BraveThemeGetBraveThemeListFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveTheme.getBraveThemeList", UNKNOWN)
 
@@ -21,7 +21,7 @@ class BraveThemeGetBraveThemeListFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveThemeGetBraveThemeTypeFunction : public UIThreadExtensionFunction {
+class BraveThemeGetBraveThemeTypeFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveTheme.getBraveThemeType", UNKNOWN)
 
@@ -31,7 +31,7 @@ class BraveThemeGetBraveThemeTypeFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveThemeSetBraveThemeTypeFunction : public UIThreadExtensionFunction {
+class BraveThemeSetBraveThemeTypeFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveTheme.setBraveThemeType", UNKNOWN)
 
