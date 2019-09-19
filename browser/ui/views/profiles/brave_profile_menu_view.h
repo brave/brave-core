@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_PROFILE_CHOOSER_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_PROFILE_CHOOSER_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_PROFILE_MENU_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_PROFILE_MENU_VIEW_H_
 
-#include "chrome/browser/ui/views/profiles/profile_chooser_view.h"
+#include "chrome/browser/ui/views/profiles/profile_menu_view.h"
 
-class BraveProfileChooserView : public ProfileChooserView {
+class BraveProfileMenuView : public ProfileMenuView {
  private:
-  friend class ProfileChooserView;
+  friend class ProfileMenuView;
 
-  using ProfileChooserView::ProfileChooserView;
-  ~BraveProfileChooserView() override = default;
+  using ProfileMenuView::ProfileMenuView;
+  ~BraveProfileMenuView() override = default;
 
   // views::ButtonListener:
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
@@ -23,7 +23,7 @@ class BraveProfileChooserView : public ProfileChooserView {
                             sync_ui_util::AvatarSyncErrorType error,
                             int button_string_id) override;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileChooserView);
+  DISALLOW_COPY_AND_ASSIGN(BraveProfileMenuView);
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_PROFILE_CHOOSER_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_PROFILE_MENU_VIEW_H_
