@@ -180,6 +180,18 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) override;
 
+
+  ledger::TransferFeeList GetTransferFees(
+      const std::string& wallet_type) override;
+
+  void SetTransferFee(
+      const std::string& wallet_type,
+      ledger::TransferFeePtr transfer_fee) override;
+
+  void RemoveTransferFee(
+      const std::string& wallet_type,
+      const std::string& id) override;
+
  private:
   bool Connected() const;
 

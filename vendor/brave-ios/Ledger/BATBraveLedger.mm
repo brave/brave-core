@@ -1758,4 +1758,21 @@ BATLedgerBridge(BOOL,
   }];
 }
 
+- (void)setTransferFee:(const std::string &)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee
+{
+  // FIXME: Add implementation
+}
+
+- (ledger::TransferFeeList)getTransferFees:(const std::string &)wallet_type
+{
+  // FIXME: Add implementation
+  ledger::TransferFeeList list;
+  return list;
+}
+
+- (void)removeTransferFee:(const std::string &)wallet_type id:(const std::string &)id
+{
+  // FIXME: Add implementation
+}
+
 @end

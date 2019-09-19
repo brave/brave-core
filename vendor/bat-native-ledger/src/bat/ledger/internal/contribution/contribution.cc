@@ -41,10 +41,9 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
 Contribution::~Contribution() {
 }
 
-
-void Contribution::OnStartUp() {
-  // Check if we have some more pending ballots to go out
-  phase_two_->PrepareBallots();
+void Contribution::Initialize() {
+  phase_two_->Initialize();
+  uphold_->Initialize();
 
   // Resume in progress contributions
   braveledger_bat_helper::CurrentReconciles currentReconciles =
@@ -395,6 +394,7 @@ void Contribution::InitReconcile(
 void Contribution::OnTimer(uint32_t timer_id) {
   phase_two_->OnTimer(timer_id);
   unverified_->OnTimer(timer_id);
+  uphold_->OnTimer(timer_id);
 
   if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;

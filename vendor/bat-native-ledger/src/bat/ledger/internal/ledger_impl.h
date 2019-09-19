@@ -545,6 +545,15 @@ class LedgerImpl : public ledger::Ledger,
 
   void ClearState(const std::string& name);
 
+  void SetTransferFee(
+      const std::string& wallet_type,
+      ledger::TransferFeePtr transfer_fee);
+
+  ledger::TransferFeeList GetTransferFees(const std::string& wallet_type) const;
+
+  void RemoveTransferFee(
+    const std::string& wallet_type,
+    const std::string& id);
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
@@ -590,8 +599,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnGetPendingContributions(
     const ledger::PendingContributionInfoList& list,
     ledger::PendingContributionInfoListCallback callback);
-
-  void OnWalletInitialized(ledger::Result result);
 
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,
