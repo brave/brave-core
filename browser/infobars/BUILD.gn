@@ -1,0 +1,21 @@
+import("//build/config/features.gni")
+
+source_set("infobars") {
+  sources = [
+    "brave_infobar_delegate.h",
+    "brave_confirm_p3a_infobar_delegate.h",
+    "brave_confirm_p3a_infobar_delegate.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//brave/components/p3a",
+    "//components/infobars/core",
+    "//components/prefs",
+    "//components/strings",
+    "//ui/base",
+    "//ui/views",
+    "//url",
+  ]
+}
