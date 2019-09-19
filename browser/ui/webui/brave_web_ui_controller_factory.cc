@@ -26,7 +26,7 @@
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
-#include "brave/browser/ui/webui/brave_rewards_ui.h"
+#include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -69,8 +69,8 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new SyncUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  } else if (host == kRewardsHost) {
-    return new BraveRewardsUI(web_ui, url.host());
+  } else if (host == kRewardsPageHost) {
+    return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
   } else if (host == kTipHost) {
@@ -100,7 +100,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kWalletHost ||
 #endif
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-      url.host_piece() == kRewardsHost ||
+      url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||
       url.host_piece() == kTipHost ||
 #endif

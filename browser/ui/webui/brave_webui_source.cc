@@ -88,19 +88,14 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     }, {
       std::string("rewards"), {
         { "favicon.ico", IDR_BRAVE_REWARDS_FAVICON },
-        { "4fcfa7f92c5fc22c2b6f34701bfdcd0a.jpeg", IDR_BRAVE_REWARDS_IMG_BART_TEMP },            // NOLINT
         { "6dd79d472f9c73429b26dae4ef14575e.svg", IDR_BRAVE_REWARDS_IMG_WALLET_BG },             // NOLINT
         { "c9255cc2aa3d81ca6328e82d25a95766.png", IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT },           // NOLINT
         { "1bb9aa85741c6d1c077f043324aae835.svg", IDR_BRAVE_REWARDS_IMG_WELCOME_BG },            // NOLINT
-        { "88eeadb981d67d5e096afb9b8fe26df7.svg", IDR_BRAVE_REWARDS_IMG_BAT },
-        { "87186eec176189163ce037bcc7676f2a.svg", IDR_BRAVE_REWARDS_IMG_BTC },
-        { "7d9f0ededf215a4702ae5c457f7779ae.svg", IDR_BRAVE_REWARDS_IMG_ETH },
-        { "2c6f798a519beabb327149c349912f5f.svg", IDR_BRAVE_REWARDS_IMG_LTC },
       }
     }, {
       std::string("tip"), {
-        { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_TIP_BG_1 },
-        { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_TIP_BG_2 },
+        { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_REWARDS_TIP_BG_1 },
+        { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_REWARDS_TIP_BG_2 },
       }
 #endif
     }, {

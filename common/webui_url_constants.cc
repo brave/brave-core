@@ -7,13 +7,11 @@
 
 const char kAdblockHost[] = "adblock";
 const char kAdblockJS[] = "brave_adblock.js";
-const char kRewardsHost[] = "rewards";
+const char kRewardsPageHost[] = "rewards";
 const char kRewardsInternalsHost[] = "rewards-internals";
-const char kRewardsJS[] = "brave_rewards.js";
 const char kWelcomeHost[] = "welcome";
 const char kWelcomeJS[] = "brave_welcome.js";
 const char kTipHost[] = "tip";
-const char kTipJS[] = "brave_tip.js";
 const char kBraveNewTabJS[] = "brave_new_tab.js";
 const char kBraveUISyncHost[] = "sync";
 const char kBraveSyncJS[] = "brave_sync.js";

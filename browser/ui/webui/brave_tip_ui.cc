@@ -21,7 +21,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#include "brave/components/brave_rewards/resources/grit/brave_tip_generated_map.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_tip_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
@@ -295,9 +295,9 @@ BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
   }
   content::WebUIDataSource* data_source = CreateBasicUIHTMLSource(profile,
                                               name,
-                                              kBraveTipGenerated,
-                                              kBraveTipGeneratedSize,
-                                              IDR_BRAVE_TIP_HTML);
+                                              kBraveRewardsTipGenerated,
+                                              kBraveRewardsTipGeneratedSize,
+                                              IDR_BRAVE_REWARDS_TIP_HTML);
   content::WebUIDataSource::Add(profile, data_source);
 
   auto handler_owner = std::make_unique<RewardsTipDOMHandler>();

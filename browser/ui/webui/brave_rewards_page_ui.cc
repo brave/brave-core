@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/brave_rewards_ui.h"
+#include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 
 #include <stdint.h>
 
@@ -28,7 +28,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/render_view_host.h"
@@ -1611,18 +1611,21 @@ void RewardsDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
 
 }  // namespace
 
-BraveRewardsUI::BraveRewardsUI(content::WebUI* web_ui, const std::string& name)
+BraveRewardsPageUI::BraveRewardsPageUI(
+    content::WebUI* web_ui,
+    const std::string& name)
     : BasicUI(web_ui, name,
 #if !defined(OS_ANDROID)
-    kBraveRewardsGenerated, kBraveRewardsGeneratedSize,
+    kBraveRewardsPageGenerated,
+    kBraveRewardsPageGeneratedSize,
 #else
     kBraveRewardsSettingsGenerated, kBraveRewardsSettingsGeneratedSize,
 #endif
-    IDR_BRAVE_REWARDS_HTML) {
+    IDR_BRAVE_REWARDS_PAGE_HTML) {
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler * handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));
   handler->Init();
 }
 
-BraveRewardsUI::~BraveRewardsUI() {}
+BraveRewardsPageUI::~BraveRewardsPageUI() {}
