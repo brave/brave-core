@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "base/task/post_task.h"
-#include "base/task/thread_pool/thread_pool.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
