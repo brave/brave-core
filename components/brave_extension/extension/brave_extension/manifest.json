@@ -107,14 +107,10 @@
     }, {
       "run_at": "document_start",
       "all_frames": false,
-      "matches": ["https://*.barrons.com/*"],
-      "js": [
-        "out/batsense/content/wsjgroup.bundle.js"
-      ]
-    }, {
-      "run_at": "document_start",
-      "all_frames": false,
-      "matches": ["https://*.wsj.com/*"],
+      "matches": [
+        "https://*.wsj.com/*",
+        "https://*.barrons.com/*"
+      ],
       "js": [
         "out/batsense/content/wsjgroup.bundle.js"
       ]
