@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
+.c0 {
+  display: block;
+}
+
+.c2 {
+  margin-bottom: 15px;
+}
+
+.c1 {
+  min-height: 250px;
+  padding: 15px 30px 20px 30px;
+}
+
+.c9 {
+  text-align: center;
+  padding: 15px 0 0;
+  margin: 0 auto;
+}
+
+.c12 {
+  display: none;
+}
+
+.c3 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Muli,sans-serif;
+}
+
+.c4 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 32px;
+  width: 32px;
+}
+
+.c5 {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.c6 {
+  padding: 0 0 0 12px;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 14px;
+  font-weight: 700;
+  color: #3b3e4f;
+}
+
+.c8 {
+  font-size: 18px;
+}
+
+.c10 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: white;
+  font-size: 14px;
+  border-radius: 28px;
+  background: inherit;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+  color: #4C54D2;
+  border-radius: 20px;
+  font-size: 12px;
+  border: 1px solid #A1A8F2;
+}
+
+.c10:focus {
+  outline: 0;
+}
+
+.c11 {
+  font-family: Poppins,sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.39px;
+  -moz-letter-spacing: 0.39px;
+  -ms-letter-spacing: 0.39px;
+  letter-spacing: 0.39px;
+  margin: 0 auto;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+    id="wallet-panel"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+          type="big"
+        >
+          <img
+            className="c5"
+            src=""
+          />
+        </div>
+        <div
+          className="c6"
+        >
+          <div
+            className="c7"
+          >
+            <span
+              className="c8"
+              type="big"
+            >
+              
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c9"
+    >
+      <button
+        className="c10"
+        type="tip"
+      >
+        <span
+          className="c11"
+        >
+          MISSING: donateNow
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    className="c12"
+  />
+</div>
+`;

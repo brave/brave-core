@@ -1,0 +1,545 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List tests basic tests matches the snapshot 1`] = `
+.c0 {
+  overflow-y: scroll;
+  height: auto;
+  padding: 0px;
+  font-family: Poppins,sans-serif;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.c7 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: calc(100% - 336px);
+  -ms-flex-preferred-size: calc(100% - 336px);
+  flex-basis: calc(100% - 336px);
+  background: #e9f0ff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  -webkit-align-content: space-between;
+  -ms-flex-line-pack: space-between;
+  align-content: space-between;
+}
+
+.c15 {
+  -webkit-flex-basis: 336px;
+  -ms-flex-preferred-size: 336px;
+  flex-basis: 336px;
+  background: #696fdc;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c1 {
+  position: relative;
+  min-width: 900px;
+  background: #DBE3F3;
+}
+
+.c4 {
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 0.74;
+  color: #d1d1db;
+  min-height: 176px;
+  overflow: hidden;
+  background: url(test-file-stub) no-repeat top left,url(test-file-stub) no-repeat top right,#9e9fab;
+}
+
+.c2 {
+  top: 16px;
+  right: 16px;
+  position: absolute;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  color: #FFF;
+  -webkit-filter: drop-shadow(0px 0px 2px rgba(0,0,0,.4));
+  filter: drop-shadow(0px 0px 2px rgba(0,0,0,.4));
+}
+
+.c8 {
+  padding-left: 45px;
+  -webkit-flex-basis: 217px;
+  -ms-flex-preferred-size: 217px;
+  flex-basis: 217px;
+  position: relative;
+}
+
+.c10 {
+  background: inherit;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-filter: invert(1) grayscale(1) contrast(9);
+  filter: invert(1) grayscale(1) contrast(9);
+  font-size: 80px;
+  font-weight: 600;
+  text-align: center;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-top: 0px;
+}
+
+.c9 {
+  border: 6px solid #fff;
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  background: #DE4D26;
+  padding-top: 35px;
+  margin: -66px 0 25px;
+  overflow: hidden;
+}
+
+.c11 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: calc(100% - 217px);
+  -ms-flex-preferred-size: calc(100% - 217px);
+  flex-basis: calc(100% - 217px);
+}
+
+.c13 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  color: #4b4c5c;
+  margin: 10px 0 0;
+  padding-left: 0px;
+}
+
+.c14 {
+  font-family: Muli,sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #686978;
+  padding-right: 37px;
+  padding-left: 0px;
+}
+
+.c16 {
+  font-size: 12px;
+  color: #afb2f1;
+  text-align: right;
+  margin: 8px 0 10px;
+  padding: 0 19px 0 55px;
+}
+
+.c17 {
+  color: #fff;
+}
+
+.c26 {
+  color: rgba(255,255,255,0.65);
+}
+
+.c5 {
+  max-width: 1024px;
+  padding: 126px 0 0 238px;
+  margin: 0 auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c12 {
+  text-align: right;
+  padding-right: 40px;
+  margin-top: 15px;
+}
+
+.c22 {
+  width: 180px;
+  padding-left: 0px;
+  margin: 15px 0 5px;
+}
+
+.c18 {
+  position: relative;
+  font-family: Muli,sans-serif;
+  margin: 0px;
+  --donate-content-padding: 0 19px 0 55px;
+  --donate-send-bg: #4c54d2;
+  --donate-send-color: #fff;
+  --donate-send-padding: 14px 0px 13px 0px;
+  --donate-funds-padding: 13px 12px 13px 24px;
+}
+
+.c19 {
+  margin-top: 0px;
+  padding: var(--donate-content-padding);
+}
+
+.c20 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: #fff;
+  margin-bottom: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 167px;
+  padding-left: 0px;
+}
+
+.c27 {
+  background: var(--donate-send-bg);
+  font-size: 13px;
+  font-weight: 600;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  color: var(--donate-send-color);
+  padding: var(--donate-send-padding);
+  text-transform: uppercase;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.c29 {
+  display: block;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--donate-send-bg);
+  cursor: pointer;
+}
+
+.c28 {
+  display: block;
+  width: 245px;
+  margin: 0 auto;
+}
+
+.c30 {
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 15px;
+  color: #a1a8f2;
+  width: 27px;
+  height: 27px;
+}
+
+.c21 {
+  width: 100%;
+  display: block;
+}
+
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c31 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c23 {
+  font-family: Muli,sans-serif;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-bottom: 4px;
+  --checkbox-label-color: #B8B9C4;
+  --checkbox-label-size: 14px;
+  color: var(--checkbox-label-color);
+  font-size: var(--checkbox-label-size);
+  cursor: pointer;
+}
+
+.c24 {
+  border-radius: 2px;
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding: 2px;
+  --checkbox-box-size: 18px;
+  --checkbox-box-borderColor: #D1D1DB;
+  --checkbox-box-color: #A1A8F2;
+  --checkbox-box-spacing: 12px;
+  -webkit-flex-basis: var(--checkbox-box-size);
+  -ms-flex-preferred-size: var(--checkbox-box-size);
+  flex-basis: var(--checkbox-box-size);
+  width: var(--checkbox-box-size);
+  height: var(--checkbox-box-size);
+  color: var(--checkbox-box-color);
+  border: 1px solid var(--checkbox-box-borderColor);
+  margin: 8px;
+}
+
+.c25 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-top: 1px;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+<div
+  className="c0"
+  id="list"
+  onKeyUp={[Function]}
+  tabIndex={0}
+>
+  <div
+    className="c1"
+  >
+    <button
+      className="c2"
+    >
+      <svg
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <path
+          d="M16 3a13 13 0 1 0 13 13A13 13 0 0 0 16 3zm0 24a11 11 0 1 1 11-11 11 11 0 0 1-11 11z"
+        />
+        <path
+          d="M20.71 11.29a1 1 0 0 0-1.42 0L16 14.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l3.3 3.29-3.3 3.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.29-3.3 3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L17.41 16l3.3-3.29a1 1 0 0 0 0-1.42z"
+        />
+      </svg>
+    </button>
+    <div
+      className="c4"
+    >
+      <div
+        className="c5"
+      />
+    </div>
+    <div
+      className="c6"
+    >
+      <div
+        className="c7"
+      >
+        <div
+          className="c8"
+        >
+          <div
+            className="c9"
+          >
+            <div
+              className="c10"
+            >
+              
+            </div>
+          </div>
+        </div>
+        <div
+          className="c11"
+        >
+          <div
+            className="c12"
+          />
+          <div
+            className="c13"
+          >
+            MISSING: welcome
+          </div>
+          <div
+            className="c14"
+          >
+            <p>
+              MISSING: rewardsBannerText1
+            </p>
+            <p>
+              MISSING: rewardsBannerText2
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c15"
+      >
+        <div
+          className="c16"
+        >
+          MISSING: walletBalance
+           
+          <span
+            className="c17"
+          >
+             BAT
+          </span>
+        </div>
+        <div
+          className="c18"
+          disabled={false}
+        >
+          <div
+            className="c19"
+          >
+            <div
+              className="c20"
+            >
+              MISSING: donationAmount
+            </div>
+            <div
+              className="c21"
+            />
+            <div
+              className="c22"
+            >
+              <div
+                data-test-id="monthlyCheckbox"
+              >
+                <div
+                  className="c23"
+                  onClick={[Function]}
+                  size="small"
+                  type="dark"
+                >
+                  <span
+                    className="c24"
+                    disabled={false}
+                    selected={false}
+                    size="small"
+                    type="dark"
+                  />
+                  <span
+                    className="c25"
+                    disabled={false}
+                    size="small"
+                  >
+                    <span
+                      className="c26"
+                    >
+                      MISSING: makeMonthly
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c27"
+            data-test-id="send-tip-button"
+            onClick={[Function]}
+          >
+            <div
+              className="c28"
+            >
+              <button
+                className="c29"
+              >
+                <span
+                  className="c30"
+                  disabled={false}
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="c31"
+                    focusable="false"
+                    viewBox="0 0 32 32"
+                  >
+                    <path
+                      d="M29 4v-.07a1 1 0 0 0 0-.24.42.42 0 0 0 0-.1.84.84 0 0 0-.18-.28.84.84 0 0 0-.29-.2h-.1a1 1 0 0 0-.37-.11H28a.87.87 0 0 0-.28.05h-.07L3.6 13.66a1 1 0 0 0-.12 1.77l8.17 4.94 5.14 8.16a1 1 0 0 0 .84.47h.08a1 1 0 0 0 .84-.6l10.37-24A1 1 0 0 0 29 4zm-5.47 3L12.21 18.38l-6.05-3.67zm-6.06 18.86l-3.83-6.08L25 8.41z"
+                    />
+                  </svg>
+                </span>
+                MISSING: sendDonation
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

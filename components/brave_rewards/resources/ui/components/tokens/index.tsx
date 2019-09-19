@@ -1,0 +1,55 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+import { StyledWrapper, StyledTokens, StyledContent, StyledTokenValue, StyledTokenCurrency } from './style'
+
+export type Size = 'mini' | 'small' | 'normal'
+export type Type = 'contribute' | 'donation' | 'earnings' | 'default' | 'notPaid'
+
+export interface Props {
+  value: string
+  id?: string
+  converted?: string
+  currency?: string
+  hideText?: boolean
+  isNegative?: boolean
+  size?: Size
+  color?: Type
+}
+
+export default class Tokens extends React.PureComponent<Props, {}> {
+  static defaultProps = {
+    size: 'normal',
+    color: 'default',
+    currency: 'USD',
+    toFixed: 'true'
+  }
+
+  render () {
+    const { id, converted, value, hideText, isNegative, size, color, currency } = this.props
+
+    return (
+      <StyledWrapper id={id} size={size} color={color}>
+        <StyledTokens>
+          <StyledTokenValue>
+            {isNegative ? '-' : ''}{value}
+          </StyledTokenValue>
+          {
+            !hideText
+            ? <StyledTokenCurrency>BAT</StyledTokenCurrency>
+            : null
+          }
+        </StyledTokens>
+        {
+          converted !== undefined
+          ? <StyledContent>
+            {converted} {currency}
+          </StyledContent>
+          : null
+        }
+      </StyledWrapper>
+    )
+  }
+}

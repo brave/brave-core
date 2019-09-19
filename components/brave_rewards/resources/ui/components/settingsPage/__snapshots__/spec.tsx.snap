@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SettingsPage tests basic tests matches the snapshot 1`] = `
+.c0 {
+  background: #f2f4f7;
+  min-height: 100vh;
+  min-width: 1024px;
+  font-family: Muli,sans-serif;
+}
+
+.c1 {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 48px 0;
+}
+
+<div
+  className="c0"
+  id="page"
+>
+  <div
+    className="c1"
+  />
+</div>
+`;

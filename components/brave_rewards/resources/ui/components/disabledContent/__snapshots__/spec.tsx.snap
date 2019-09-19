@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Disabled Content tests basic tests matches the snapshot 1`] = `
+.c2 {
+  font-size: 16px;
+  line-height: 1.7;
+  padding: 8px;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0 48px;
+  margin: 0 0 8px;
+}
+
+.c1 {
+  width: 180px;
+  padding: 4px;
+}
+
+<div
+  id="disabled"
+>
+  <div
+    className="c0"
+  >
+    <div
+      className="c1"
+    />
+    <div
+      className="c2"
+    />
+  </div>
+</div>
+`;

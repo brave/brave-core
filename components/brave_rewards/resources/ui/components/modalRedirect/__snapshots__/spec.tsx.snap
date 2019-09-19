@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalRedirect tests basic tests matches the snapshot 1`] = `
+.c3 {
+  font-family: Poppins,sans-serif;
+}
+
+.c4 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 2;
+  color: #3b3e4f;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.c5 {
+  margin: 0 auto;
+  width: 30px;
+  height: 30px;
+}
+
+.c0 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(12,13,33,0.85);
+  z-index: 99;
+  padding: 0 20px;
+  overflow: hidden;
+}
+
+.c1 {
+  max-width: 920px;
+  margin: 52px auto;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.c2 {
+  padding: 48px 48px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
+.c6 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+<div
+  className="c0"
+  id="modal"
+  onClick={[Function]}
+>
+  <div
+    className="c1"
+    size="normal"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        <div
+          className="c4"
+        />
+        <div
+          className="c5"
+        >
+          <svg
+            aria-hidden="true"
+            className="c6"
+            focusable="false"
+            viewBox="0 0 32 32"
+          >
+            <path
+              d="M6.5 23.5c-.7 0-1.4-.4-1.7-1C3.6 20.5 3 18.3 3 16 3 8.8 8.8 3 16 3s13 5.8 13 13c0 1.1-.9 2-2 2s-2-.9-2-2c0-5-4-9-9-9s-9 4-9 9c0 1.6.4 3.1 1.2 4.5.6 1 .2 2.2-.7 2.7-.4.2-.7.3-1 .3z"
+            >
+               
+              <animateTransform
+                attributeName="transform"
+                attributeType="xml"
+                dur=".5s"
+                from="0 16 16"
+                repeatCount="indefinite"
+                to="360 16 16"
+                type="rotate"
+              />
+            </path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Grant complete tests basic tests matches the snapshot 1`] = `
+.c0 {
+  text-align: center;
+  width: 100%;
+  margin: 40px 0 0;
+}
+
+.c1 {
+  border-radius: 6px;
+  background-color: #f1f1f5;
+  padding: 5px 10px 20px;
+}
+
+.c2 {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.57;
+  color: #838391;
+  margin: 11px 0 5px;
+}
+
+.c3 {
+  font-size: 18px;
+  line-height: 1.22;
+  text-align: center;
+  color: #c12d7c;
+}
+
+.c4 {
+  margin-top: 32px;
+}
+
+.c6 {
+  --button-main-color: #FB542B;
+  --button-main-color-hover: #FB542B;
+  --button-main-color-active: #ffb8a6;
+  --button-state-color: var(--button-main-color);
+  --icon-size: 18px;
+  --icon-spacing: 6px;
+  --webkit-appearance: none;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  outline-color: transparent;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Poppins,sans-serif;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 14px;
+  border-radius: 28px;
+  width: 100%;
+  min-width: 235px;
+  padding: 19px 15px;
+}
+
+.c6:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c6:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c5 {
+  color: #fff;
+  background: var(--button-state-color);
+  border: 1px solid var(--button-state-color);
+}
+
+.c7 {
+  min-height: var(--icon-size);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+<div
+  className="c0"
+  id="complete"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    />
+    <div
+      className="c3"
+    >
+       BAT
+    </div>
+  </div>
+  <div
+    className="c4"
+  >
+    <button
+      className="c5 c6"
+      id="grant-completed-ok"
+      size="call-to-action"
+      type="accent"
+    >
+      <div
+        className="c7"
+        size="call-to-action"
+        type="accent"
+      >
+        MISSING: ok
+      </div>
+    </button>
+  </div>
+</div>
+`;

@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import DonationOverlay from 'brave-ui/features/rewards/donationOverlay'
+import DonationOverlay from '../../ui/components/donationOverlay'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
