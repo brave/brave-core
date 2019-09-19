@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/profiles/brave_profile_chooser_view.h"
+#include "brave/browser/ui/views/profiles/brave_profile_menu_view.h"
 
 #include <memory>
 #include <utility>
@@ -18,7 +18,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
-void BraveProfileChooserView::ButtonPressed(views::Button* sender,
+void BraveProfileMenuView::ButtonPressed(views::Button* sender,
                                             const ui::Event& event) {
   if (sender == users_button_ &&
              browser()->profile()->IsGuestSession()) {
@@ -27,13 +27,13 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
     else
       profiles::CloseGuestProfileWindows();
   } else {
-    ProfileChooserView::ButtonPressed(sender, event);
+    ProfileMenuView::ButtonPressed(sender, event);
   }
 }
 
-void BraveProfileChooserView::AddAutofillHomeView() { }
+void BraveProfileMenuView::AddAutofillHomeView() { }
 
-void BraveProfileChooserView::AddDiceSyncErrorView(
+void BraveProfileMenuView::AddDiceSyncErrorView(
     const AvatarMenu::Item& avatar_item,
     sync_ui_util::AvatarSyncErrorType error,
     int button_string_id) {
