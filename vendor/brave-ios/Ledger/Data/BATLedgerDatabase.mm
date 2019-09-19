@@ -780,7 +780,11 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   }
   
   auto spb = [[ServerPublisherBanner alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherBanner.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-  spb.serverPublisherInfo = info;
+  if (info.managedObjectContext == context) {
+    spb.serverPublisherInfo = info;
+  } else {
+    spb.serverPublisherInfo = [context objectWithID:info.objectID];
+  }
   spb.publisherID = info.publisherID;
   spb.title = banner.title;
   spb.desc = banner.desc;
@@ -831,7 +835,11 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   for (NSNumber *amountObj in banner.amounts) {
     double amount = [amountObj doubleValue];
     auto spa = [[ServerPublisherAmount alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherAmount.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-    spa.serverPublisherInfo = info;
+    if (info.managedObjectContext == context) {
+      spa.serverPublisherInfo = info;
+    } else {
+      spa.serverPublisherInfo = [context objectWithID:info.objectID];
+    }
     spa.amount = amount;
     spa.publisherID = info.publisherID;
   }
@@ -875,7 +883,11 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
       continue;
     }
     auto spl = [[ServerPublisherLink alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ServerPublisherLink.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-    spl.serverPublisherInfo = info;
+    if (info.managedObjectContext == context) {
+      spl.serverPublisherInfo = info;
+    } else {
+      spl.serverPublisherInfo = [context objectWithID:info.objectID];
+    }
     spl.publisherID = info.publisherID;
     spl.provider = provider;
     spl.link = banner.links[provider];
