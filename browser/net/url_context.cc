@@ -16,6 +16,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -25,31 +26,12 @@
 #include "net/base/upload_data_stream.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-#include "extensions/browser/extension_registry.h"
 #include "extensions/browser/info_map.h"
 #endif
 
 namespace brave {
 
 namespace {
-
-bool IsWebTorrentDisabled(content::BrowserContext* browser_context) {
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(browser_context);
-  auto* extension_registry =
-      extensions::ExtensionRegistry::Get(browser_context);
-
-  if (!extension_registry)
-    return true;
-
-  if (extension_registry->enabled_extensions().Contains(
-          brave_webtorrent_extension_id))
-    return false;
-#endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-
-  return true;
-}
 
 bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -197,7 +179,12 @@ void BraveRequestInfo::FillCTX(
   ctx->resource_type =
       static_cast<content::ResourceType>(request.resource_type);
 
-  ctx->is_webtorrent_disabled = IsWebTorrentDisabled(browser_context);
+  ctx->is_webtorrent_disabled =
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+      !webtorrent::IsWebtorrentEnabled(browser_context);
+#else
+      true;
+#endif
 
   ctx->render_frame_id = request.render_frame_id;
   ctx->render_process_id = render_process_id;
@@ -205,19 +192,9 @@ void BraveRequestInfo::FillCTX(
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->tab_url = request.top_frame_origin;
-  // TODO(iefremov): Replace with NetworkIsolationKey when it is available
-  // in ResourceRequest
-  // TODO(iefremov): c77 - navigation doesn't populate top_frame_origin any more
-  // and uses NetworkIsolationKey instead. According to
-  // services/network/public/mojom/url_loader.mojom, this field "will most
-  // likely be removed at some point".
-  if (base::nullopt != request.top_frame_origin) {
-    ctx->tab_origin = request.top_frame_origin->GetURL();
-  } else {
-    ctx->tab_origin = request.trusted_network_isolation_key.GetTopFrameOrigin()
-                          .value_or(url::Origin())
-                          .GetURL();
-  }
+  ctx->tab_origin = request.trusted_network_isolation_key.GetTopFrameOrigin()
+                        .value_or(url::Origin())
+                        .GetURL();
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
   // (See |BraveProxyingWebSocket|).

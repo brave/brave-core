@@ -97,6 +97,12 @@ void DispatchBlockedEventFromIO(const GURL& request_url,
                                 int frame_tree_node_id,
                                 const std::string& block_type);
 
+void DispatchBlockedEvent(const GURL& request_url,
+                          int render_frame_id,
+                          int render_process_id,
+                          int frame_tree_node_id,
+                          const std::string& block_type);
+
 void GetRenderFrameInfo(const net::URLRequest* request,
                         int* render_frame_id,
                         int* render_process_id,
