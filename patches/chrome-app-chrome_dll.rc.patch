@@ -1,5 +1,5 @@
 diff --git a/chrome/app/chrome_dll.rc b/chrome/app/chrome_dll.rc
-index 80a15b55d54f55ca13d6d79b3fd75d28ae0d647f..a0aa8fa83a4e93f7689a0ece2e6dbf9d10a4c175 100644
+index 5eed8f6f40c6977d4fbe256250c5b243c5069004..a815ead9cd3a09568001500cb1a59f743e27287c 100644
 --- a/chrome/app/chrome_dll.rc
 +++ b/chrome/app/chrome_dll.rc
 @@ -164,6 +164,16 @@ END

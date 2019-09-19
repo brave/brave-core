@@ -1,7 +1,7 @@
-diff --git a/components/content_settings/core/common/content_settings_struct_traits.cc b/components/content_settings/core/common/content_settings_struct_traits.cc
-index 74291e690bcdd786bb0ba3339cd24bd487b6106d..598bea5a64909ea70069677da7ab84154dd368f5 100644
---- a/components/content_settings/core/common/content_settings_struct_traits.cc
-+++ b/components/content_settings/core/common/content_settings_struct_traits.cc
+diff --git a/components/content_settings/core/common/content_settings_mojom_traits.cc b/components/content_settings/core/common/content_settings_mojom_traits.cc
+index e4faf6a2a5c451e4f8bf561d762a7f44d6f811d5..7e238dea36f562770068b460bc4a99b70b48a123 100644
+--- a/components/content_settings/core/common/content_settings_mojom_traits.cc
++++ b/components/content_settings/core/common/content_settings_mojom_traits.cc
 @@ -101,6 +101,8 @@ bool StructTraits<content_settings::mojom::RendererContentSettingRulesDataView,
           data.ReadScriptRules(&out->script_rules) &&
           data.ReadAutoplayRules(&out->autoplay_rules) &&

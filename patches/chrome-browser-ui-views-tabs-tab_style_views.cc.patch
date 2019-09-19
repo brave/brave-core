@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index c77952dac2cea04d748268bd6cfe1a014bef8912..b455cd3d683fa98702cf5e3d8a31adeb3aa50eed 100644
+index 444f4a6a1319d8fb3878e91c8ab0831cb9cd8b94..88ad562f8ca07004b85aa41429a1212881c718ec 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -227,6 +227,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
-   // When the radius shrinks, it leaves a gap between the bottom corners and the
-   // edge of the tab. Make sure we account for this - and for any adjustment we
-   // may have made to the location of the tab!
+@@ -240,6 +240,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
+   const ShapeModifier shape_modifier = GetShapeModifier(path_type);
+   const bool extend_left_to_bottom = shape_modifier & kNoLowerLeftArc;
+   const bool extend_right_to_bottom = shape_modifier & kNoLowerRightArc;
 +  bottom_radius = 0;
-   const float corner_gap = (right - tab_right) - bottom_radius;
  
    SkPath path;
-@@ -497,7 +498,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
+ 
+@@ -474,7 +475,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
    separator_bounds.leading =
        gfx::RectF(aligned_bounds.x() + corner_radius,
                   aligned_bounds.y() +
@@ -19,7 +19,7 @@ index c77952dac2cea04d748268bd6cfe1a014bef8912..b455cd3d683fa98702cf5e3d8a31adeb
                   separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -785,12 +786,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -772,12 +773,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  

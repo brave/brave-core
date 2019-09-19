@@ -1,8 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 1d56a1949724f2546968c25c294918d1d03488ba..06f115d0f497291f41e87eedbdb1a4c7199a09eb 100644
+index 82682ddc6aa21da81af8cacac591e32365c4c526..f758432ba2cfcb8262cfc485d0a4f89495b2fa1a 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -78,6 +78,7 @@ source_set("channel_info") {
+@@ -77,6 +77,7 @@ source_set("channel_info") {
    if (is_android) {
      public_deps += [ "//components/version_info/android:channel_getter" ]
    }
@@ -10,7 +10,7 @@ index 1d56a1949724f2546968c25c294918d1d03488ba..06f115d0f497291f41e87eedbdb1a4c7
  }
  
  source_set("ini_parser") {
-@@ -207,6 +208,7 @@ static_library("common") {
+@@ -198,6 +199,7 @@ static_library("common") {
    ]
  
    public_deps = [
@@ -18,7 +18,7 @@ index 1d56a1949724f2546968c25c294918d1d03488ba..06f115d0f497291f41e87eedbdb1a4c7
      ":available_offline_content_mojom",
      ":buildflags",
      ":channel_info",
-@@ -551,6 +553,7 @@ static_library("non_code_constants") {
+@@ -553,6 +555,7 @@ static_library("non_code_constants") {
      "//printing/buildflags",
      "//ui/base:buildflags",
    ]

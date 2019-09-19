@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/preferences/website/SiteSettingsPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/preferences/website/SiteSettingsPreferences.java
-index 3e7407bf3f1a3a2d1184a24e66ebe42d08a1c9aa..944dc35602400dcf18c915594546f78cd327bb0e 100644
+index e0a926bfd9b4cb231f29cfe87bc1ddf9624ac06f..e0890411ee87bb3ae5ad74fc4699c1c12e36905c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/preferences/website/SiteSettingsPreferences.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/preferences/website/SiteSettingsPreferences.java
-@@ -32,7 +32,7 @@ import java.util.List;
+@@ -31,7 +31,7 @@ import java.util.List;
   * Media to its own dedicated PreferenceFragment rather than sharing this one.
   */
  public class SiteSettingsPreferences

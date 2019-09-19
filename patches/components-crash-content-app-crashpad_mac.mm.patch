@@ -1,8 +1,8 @@
 diff --git a/components/crash/content/app/crashpad_mac.mm b/components/crash/content/app/crashpad_mac.mm
-index a76d264648d23e7e228dd54f00a01035a29a76ad..ee7d94be5982353fced6174afef990713228af37 100644
+index c2de9fe867c5e9fc2cf75f12ee136ad529474243..bff59bd4bf740c4be841dcee532654247f2b226c 100644
 --- a/components/crash/content/app/crashpad_mac.mm
 +++ b/components/crash/content/app/crashpad_mac.mm
-@@ -136,6 +136,8 @@ base::FilePath PlatformCrashpadInitialization(
+@@ -137,6 +137,8 @@ base::FilePath PlatformCrashpadInitialization(
        // Only allow the possibility of report upload in official builds. This
        // crash server won't have symbols for any other build types.
        std::string url = "https://clients2.google.com/cr/report";

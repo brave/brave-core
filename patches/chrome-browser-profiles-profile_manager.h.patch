@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index 985c64458bdf2c547a5b9286b448aaa2513b2109..a677df807effba3589b6a067ffc940432b064839 100644
+index 87ecf1fc998b01569fa10a886e7116299da449c1..40016aeadd02bb2ca2a252070c946d4a3dde0be4 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
-@@ -141,7 +141,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -146,7 +146,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Get the name of the last used profile, or if that's undefined, the default
    // profile.
@@ -11,7 +11,7 @@ index 985c64458bdf2c547a5b9286b448aaa2513b2109..a677df807effba3589b6a067ffc94043
  
    // Get the Profiles which are currently open, i.e. have open browsers or were
    // open the last time Chrome was running. Profiles that fail to initialize are
-@@ -222,7 +222,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -227,7 +227,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Initializes user prefs of |profile|. This includes profile name and
    // avatar values.
@@ -20,7 +20,7 @@ index 985c64458bdf2c547a5b9286b448aaa2513b2109..a677df807effba3589b6a067ffc94043
  
    // Register and add testing profile to the ProfileManager. Use ONLY in tests.
    // This allows the creation of Profiles outside of the standard creation path
-@@ -349,7 +349,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -355,7 +355,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Apply settings for profiles created by the system rather than users: The
    // (desktop) Guest User profile and (desktop) System Profile.

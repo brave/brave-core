@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/permissions/permission_manager.h b/chrome/browser/permissions/permission_manager.h
-index 39ab85753ec587df0f432f1339c80256dc25edf0..20d742069b154bab4b01462ff625fcb11a9555e7 100644
+index a3b90b9be6638a91769d7a5337174f51f437b4cd..ac731656479c40e12a00e883f7954c85c1e78d6a 100644
 --- a/chrome/browser/permissions/permission_manager.h
 +++ b/chrome/browser/permissions/permission_manager.h
-@@ -124,6 +124,7 @@ class PermissionManager : public KeyedService,
-   void ResetPermissionOverridesForDevTools();
+@@ -130,6 +130,7 @@ class PermissionManager : public KeyedService,
+   void Shutdown() override;
  
   private:
 +  friend class BravePermissionManager;
