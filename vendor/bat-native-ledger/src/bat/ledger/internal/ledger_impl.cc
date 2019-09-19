@@ -180,29 +180,37 @@ void LedgerImpl::OnSaveVisit(
 }
 
 void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
-  if (tab_id != last_shown_tab_id_) {
+  if (tab_id != last_shown_tab_id_ || last_tab_active_time_ == 0) {
     return;
   }
 
   visit_data_iter iter = current_pages_.find(tab_id);
-  if (iter == current_pages_.end() || last_tab_active_time_ == 0) {
+  if (iter == current_pages_.end()) {
     return;
   }
 
-  DCHECK(last_tab_active_time_);
+  const std::string type = bat_media_->GetLinkType(iter->second.tld, "", "");
+  const auto duration = current_time - last_tab_active_time_;
+  last_tab_active_time_ = 0;
+
+  if (type == GITHUB_MEDIA_TYPE) {
+      std::map<std::string, std::string> parts;
+      parts["duration"] = std::to_string(duration);
+      bat_media_->ProcessMedia(parts, type, iter->second.Clone());
+    return;
+  }
 
   auto callback = std::bind(&LedgerImpl::OnSaveVisit,
-                            this,
-                            _1,
-                            _2);
+      this,
+      _1,
+      _2);
 
   bat_publisher_->SaveVisit(
-    iter->second.tld,
-    iter->second,
-    current_time - last_tab_active_time_,
-    0,
-    callback);
-  last_tab_active_time_ = 0;
+      iter->second.tld,
+      iter->second,
+      duration,
+      0,
+      callback);
 }
 
 void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {

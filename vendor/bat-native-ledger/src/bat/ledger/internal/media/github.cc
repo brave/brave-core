@@ -29,6 +29,15 @@ GitHub::~GitHub() {
 }
 
 // static
+std::string GitHub::GetLinkType(const std::string& url) {
+  if (url.empty()) {
+    return "";
+  }
+
+  return url.find(GITHUB_TLD) != std::string::npos ? GITHUB_MEDIA_TYPE : "";
+}
+
+// static
 bool GitHub::GetJSONIntValue(const std::string& key,
       const std::string& json_string,
       int64_t* result) {
@@ -215,6 +224,31 @@ void GitHub::ProcessActivityFromUrl(uint64_t window_id,
                 media_key));
 }
 
+
+void GitHub::ProcessMedia(
+    const std::map<std::string, std::string> parts,
+    const ledger::VisitData& visit_data) {
+  const std::string user_name = GetUserNameFromURL(visit_data.path);
+  const std::string url = GetProfileAPIURL(user_name);
+  auto iter = parts.find("duration");
+  uint64_t duration = iter != parts.end() ? std::stoull(iter->second) : 0U;
+
+  if (duration == 0) {
+    return;
+  }
+
+  const auto callback = std::bind(&GitHub::OnUserPage,
+      this,
+      duration,
+      0,
+      visit_data,
+      _1,
+      _2,
+      _3);
+
+  FetchDataFromUrl(url, callback);
+}
+
 void GitHub::OnMediaPublisherActivity(
     ledger::Result result,
     ledger::PublisherInfoPtr info,
@@ -234,6 +268,7 @@ void GitHub::OnMediaPublisherActivity(
     FetchDataFromUrl(url,
                      std::bind(&GitHub::OnUserPage,
                                this,
+                               0,
                                window_id,
                                visit_data,
                                _1,
@@ -296,6 +331,7 @@ void GitHub::OnPublisherPanelInfo(
     FetchDataFromUrl(url,
                      std::bind(&GitHub::OnUserPage,
                                this,
+                               0,
                                window_id,
                                visit_data,
                                _1,
@@ -318,6 +354,7 @@ void GitHub::FetchDataFromUrl(
 }
 
 void GitHub::OnUserPage(
+    const uint64_t duration,
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     int response_status_code,
@@ -338,7 +375,8 @@ void GitHub::OnUserPage(
                             _1,
                             _2);
 
-  SavePublisherInfo(user_id,
+  SavePublisherInfo(duration,
+                    user_id,
                     user_name,
                     publisher_name,
                     profile_picture,
@@ -352,6 +390,7 @@ void GitHub::OnSaveMediaVisit(
 }
 
 void GitHub::SavePublisherInfo(
+    const uint64_t duration,
     const std::string& user_id,
     const std::string& screen_name,
     const std::string& publisher_name,
@@ -375,10 +414,9 @@ void GitHub::SavePublisherInfo(
   visit_data.url = url;
   visit_data.favicon_url = profile_picture;
   visit_data.name = publisher_name;
-
   ledger_->SaveMediaVisit(publisher_key,
                           visit_data,
-                          0,
+                          duration,
                           window_id,
                           callback);
 
@@ -403,7 +441,8 @@ void GitHub::OnMediaPublisherInfo(
   }
 
   if (!publisher_info || result == ledger::Result::NOT_FOUND) {
-    SavePublisherInfo(user_id,
+    SavePublisherInfo(0,
+                      user_id,
                       screen_name,
                       publisher_name,
                       profile_picture,

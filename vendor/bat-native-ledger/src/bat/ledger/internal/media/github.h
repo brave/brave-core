@@ -26,12 +26,19 @@ class GitHub : public ledger::LedgerCallbackHandler {
  public:
   explicit GitHub(bat_ledger::LedgerImpl* ledger);
 
+  static std::string GetLinkType(const std::string& url);
+
   void SaveMediaInfo(
       const std::map<std::string, std::string>& data,
       ledger::PublisherInfoCallback callback);
 
   void ProcessActivityFromUrl(uint64_t window_id,
                               const ledger::VisitData& visit_data);
+
+  void ProcessMedia(
+      const std::map<std::string, std::string> parts,
+      const ledger::VisitData& visit_data);
+
   ~GitHub() override;
 
  private:
@@ -47,6 +54,7 @@ class GitHub : public ledger::LedgerCallbackHandler {
       braveledger_media::FetchDataFromUrlCallback callback);
 
   void OnUserPage(
+      const uint64_t duration,
       uint64_t window_id,
       const ledger::VisitData& visit_data,
       int response_status_code,
@@ -58,6 +66,7 @@ class GitHub : public ledger::LedgerCallbackHandler {
       ledger::PublisherInfoPtr info);
 
   void SavePublisherInfo(
+      const uint64_t duration,
       const std::string& user_id,
       const std::string& user_name,
       const std::string& publisher_name,
@@ -126,6 +135,7 @@ void OnMediaPublisherInfo(
 
   // For testing purposes
   friend class MediaGitHubTest;
+  FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetLinkType);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetProfileURL);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetProfileAPIURL);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetProfileImageURL);
