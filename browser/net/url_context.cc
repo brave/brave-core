@@ -21,7 +21,6 @@
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/testing_pref_service.h"
-#include "content/public/browser/resource_request_info.h"
 #include "net/base/upload_bytes_element_reader.h"
 #include "net/base/upload_data_stream.h"
 

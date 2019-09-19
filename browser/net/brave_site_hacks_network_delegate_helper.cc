@@ -21,7 +21,6 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/resource_request_info.h"
 #include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
