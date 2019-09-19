@@ -26,8 +26,7 @@ static const int kMaximumUnblindedTokens = 50;
 static const uint64_t kRetryGettingRefillSignedTokensAfterSeconds = 15;
 
 static const uint64_t kNextTokenRedemptionAfterSeconds =
-    base::Time::kMicrosecondsPerWeek / base::Time::kMicrosecondsPerSecond;
-
+    24 * base::Time::kSecondsPerHour;
 static const uint64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
 
