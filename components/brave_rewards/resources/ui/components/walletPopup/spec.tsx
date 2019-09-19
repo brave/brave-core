@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import WalletPopup, { Props } from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 const props = {
   onClose: () => null,

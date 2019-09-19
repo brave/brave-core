@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { DisabledContent, Box, BoxAlert } from '../../../../src/features/rewards'
+import { DisabledContent, Box, BoxAlert } from '../../components'
 
 // Utils
 import locale from './fakeLocale'

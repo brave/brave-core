@@ -15,11 +15,7 @@ import {
   MainToggleMobile,
   SettingsPageMobile,
   WalletInfoHeader
-} from '../../../../src/features/rewards/mobile'
-
-// Assets
-import '../../../assets/fonts/muli.css'
-import '../../../assets/fonts/poppins.css'
+} from '../../components/mobile'
 
 // Utils
 import locale from './fakeLocale'

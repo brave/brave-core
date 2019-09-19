@@ -12,7 +12,7 @@ import {
   AdsMegaphoneIcon,
   RewardsActivateIcon,
   RewardsSendTipsIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 
 export type Type = 'ads' | 'contribute' | 'donation'
 

@@ -21,10 +21,10 @@ import {
   StyledQRButton,
   StyledText
 } from './style'
-import Modal from '../../../components/popupModals/modal/index'
-import { getLocale } from '../../../helpers'
-import Input from '../../../components/formControls/input'
-import { BatColorIcon, BitcoinColorIcon, EthereumColorIcon, LitecoinColorIcon } from '../../../components/icons'
+import Modal from 'brave-ui/components/popupModals/modal/index'
+import { getLocale } from 'brave-ui/helpers'
+import Input from 'brave-ui/components/formControls/input'
+import { BatColorIcon, BitcoinColorIcon, EthereumColorIcon, LitecoinColorIcon } from 'brave-ui/components/icons'
 
 export type Type = 'BAT' | 'ETH' | 'BTC' | 'LTC'
 

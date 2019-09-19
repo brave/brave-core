@@ -10,9 +10,9 @@ import {
   StyledError,
   StyledButton
 } from './style'
-import Modal from '../../../components/popupModals/modal/index'
-import { LoaderIcon } from '../../../components/icons'
-import { Button } from '../../../components'
+import Modal from 'brave-ui/components/popupModals/modal/index'
+import { LoaderIcon } from 'brave-ui/components/icons'
+import { Button } from 'brave-ui/components'
 
 export interface Props {
   id?: string

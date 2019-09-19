@@ -4,7 +4,7 @@
 */
 
 import { Type } from './index'
-import styled from '../../../theme'
+import styled from 'brave-ui/theme'
 
 interface StyleProps {
   modal?: boolean

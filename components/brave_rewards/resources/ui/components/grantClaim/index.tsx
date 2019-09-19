@@ -4,8 +4,8 @@
 
 import * as React from 'react'
 import { StyledWrapper, StyledIcon, StyledText, StyledClaim, StyledLoader } from './style'
-import { getLocale } from '../../../helpers'
-import { GiftIcon, LoaderIcon, MegaphoneIcon } from '../../../components/icons'
+import { getLocale } from 'brave-ui/helpers'
+import { GiftIcon, LoaderIcon, MegaphoneIcon } from 'brave-ui/components/icons'
 
 export type Type = 'ads' | 'ugp'
 

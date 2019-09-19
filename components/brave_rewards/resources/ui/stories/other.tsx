@@ -25,17 +25,17 @@ import {
   DonationOverlay,
   MediaBox,
   Tab
-} from '../../../src/features/rewards'
+} from '../components'
 import {
   BoxMobile,
   MainToggleMobile
-} from '../../../src/features/rewards/mobile'
-import { BatColorIcon, SettingsIcon, UpholdColorIcon } from '../../../src/components/icons'
-import GrantClaim from '../../../src/features/rewards/grantClaim'
+} from '../components/mobile'
+import { BatColorIcon, SettingsIcon, UpholdColorIcon } from 'brave-ui/components/icons'
+import GrantClaim from '../components/grantClaim'
 
-const favicon = require('../../assets/img/brave-favicon.png')
-const tipScreen = require('../../assets/img/tip_site.jpg')
-const siteBgLogo = require('../../assets/img/ddgo_siteBanner.svg')
+const favicon = require('./img/brave-favicon.png')
+const tipScreen = require('./img/tip_site.jpg')
+const siteBgLogo = require('./img/ddgo_siteBanner.svg')
 
 const dummyClick = () => {
   console.log(dummyClick)
@@ -47,7 +47,7 @@ const donationAmounts = [
   { tokens: '10.0', converted: '3.00', selected: false }
 ]
 
-storiesOf('Feature Components/Rewards/Other/Desktop', module)
+storiesOf('Rewards/Other/Desktop', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
   .add('Box', withState({ checked: false, toggle: true, settings: false }, (store) => {
@@ -334,7 +334,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
       </div>
     )
   }))
-storiesOf('Feature Components/Rewards/Other/Mobile', module)
+storiesOf('Rewards/Other/Mobile', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
   .add('Box', withState({ checked: true, toggle: true }, (store) => {

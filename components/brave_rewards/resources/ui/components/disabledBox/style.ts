@@ -4,9 +4,9 @@
 */
 
 import { ComponentType } from 'react'
-import styled from '../../../theme'
-import Card, { CardProps } from '../../../components/layout/card'
-import palette from '../../../theme/colors'
+import styled from 'brave-ui/theme'
+import Card, { CardProps } from 'brave-ui/components/layout/card'
+import palette from 'brave-ui/theme/colors'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   display: block;

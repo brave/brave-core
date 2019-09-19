@@ -39,8 +39,8 @@ import {
 } from './style'
 
 import Donate from '../donate/index'
-import Checkbox from '../../../components/formControls/checkbox/index'
-import { getLocale } from '../../../helpers'
+import Checkbox from 'brave-ui/components/formControls/checkbox/index'
+import { getLocale } from 'brave-ui/helpers'
 import {
   CloseCircleOIcon,
   TwitterColorIcon,
@@ -50,7 +50,7 @@ import {
   GitHubColorIcon,
   AlertCircleIcon,
   VerifiedSIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 
 export type Social = { type: SocialType, url: string }
 export type SocialType = 'twitter' | 'youtube' | 'twitch' | 'reddit' | 'vimeo' | 'github'

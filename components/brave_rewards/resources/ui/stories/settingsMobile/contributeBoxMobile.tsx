@@ -10,7 +10,7 @@ import {
   NextContribution,
   TableContribute,
   Tokens
-} from '../../../../src/features/rewards'
+} from '../../components'
 import {
   StyledListContent,
   StyledSitesNum,
@@ -18,19 +18,19 @@ import {
   StyledSitesLink,
   StyledMobileSettingsContainer
 } from './style'
-import { ControlWrapper, Checkbox } from '../../../../src/components'
-import { BoxMobile, SelectMobile } from '../../../../src/features/rewards/mobile'
-import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
+import { ControlWrapper, Checkbox } from 'brave-ui/components'
+import { BoxMobile, SelectMobile } from '../../components/mobile'
+import { DetailRow as ContributeDetailRow } from '../../components/tableContribute'
 
 // Utils
 import locale from './fakeLocale'
 
 // Assets
-const favicon = require('../../../assets/img/brave-favicon.png')
-const buzz = require('../../../assets/img/buzz.jpg')
-const ddgo = require('../../../assets/img/ddgo.jpg')
-const guardian = require('../../../assets/img/guardian.jpg')
-const wiki = require('../../../assets/img/wiki.jpg')
+const favicon = require('../img/brave-favicon.png')
+const buzz = require('../img/buzz.jpg')
+const ddgo = require('../img/ddgo.jpg')
+const guardian = require('../img/guardian.jpg')
+const wiki = require('../img/wiki.jpg')
 
 interface Props {
   rewardsEnabled: boolean

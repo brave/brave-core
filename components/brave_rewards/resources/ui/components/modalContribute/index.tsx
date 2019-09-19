@@ -14,9 +14,9 @@ import {
 } from './style'
 import RestoreSites from '../restoreSites'
 import { Tab } from '../'
-import Modal from '../../../components/popupModals/modal/index'
+import Modal from 'brave-ui/components/popupModals/modal/index'
 import TableContribute, { DetailRow } from '../tableContribute/index'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   rows: DetailRow[]

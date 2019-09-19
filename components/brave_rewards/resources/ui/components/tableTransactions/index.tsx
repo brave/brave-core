@@ -8,8 +8,8 @@ import {
   StyledType,
   StyledProvider
 } from './style'
-import Table, { Row } from '../../../components/dataTables/table/index'
-import { getLocale } from '../../../helpers'
+import Table, { Row } from 'brave-ui/components/dataTables/table/index'
+import { getLocale } from 'brave-ui/helpers'
 import Tokens, { Type as TokenType } from '../tokens'
 
 export type TransactionType = 'deposit' | 'tipOnLike' | 'donation' | 'contribute' | 'recurringDonation'

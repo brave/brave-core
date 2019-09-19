@@ -5,17 +5,17 @@
 import * as React from 'react'
 
 // Components
-import { Box, BoxAlert, TableDonation, Tokens, List } from '../../../../src/features/rewards'
-import { DetailRow as DonationDetailRow } from '../../../../src/features/rewards/tableDonation'
-import { Column, Grid, Checkbox, ControlWrapper } from '../../../../src/components'
+import { Box, BoxAlert, TableDonation, Tokens, List } from '../../components'
+import { DetailRow as DonationDetailRow } from '../../components/tableDonation'
+import { Column, Grid, Checkbox, ControlWrapper } from 'brave-ui/components'
 
 // Utils
 import locale from './fakeLocale'
 
 // Assets
-const favicon = require('../../../assets/img/brave-favicon.png')
-const eich = require('../../../assets/img/eich.jpg')
-const guardian = require('../../../assets/img/guardian.jpg')
+const favicon = require('../img/brave-favicon.png')
+const eich = require('../img/eich.jpg')
+const guardian = require('../img/guardian.jpg')
 
 const doNothing = () => {
   console.log('nothing')

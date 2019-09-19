@@ -6,7 +6,7 @@ import * as React from 'react'
 
 // Components
 import Hero from '../hero'
-import Button from '../../../components/buttonsIndicators/button'
+import Button from 'brave-ui/components/buttonsIndicators/button'
 import InfoCard, { CardProps } from '../infoCard'
 import {
   AdsMegaphoneIcon,
@@ -15,11 +15,11 @@ import {
   LoaderIcon,
   RewardsActivateIcon,
   RewardsSendTipsIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 import { Alert, RewardsButton, SettingsPage } from '../'
 
 // Utils
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 // Styles
 import {

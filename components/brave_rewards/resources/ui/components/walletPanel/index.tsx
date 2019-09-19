@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Helpers
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 // Styled Components
 import {
@@ -30,7 +30,7 @@ import {
 } from './style'
 
 // Components
-import { Toggle } from '../../../components'
+import { Toggle } from 'brave-ui/components'
 
 import { RewardsButton } from '../'
 import ToggleTips from '../toggleTips/index'

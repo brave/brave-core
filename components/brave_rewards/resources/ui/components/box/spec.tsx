@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import Box from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('Box tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><Box id='box' title={'test'} {...props} /></TestThemeProvider>

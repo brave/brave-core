@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 import {
   StyledWrapper,
@@ -18,7 +18,7 @@ import {
 import {
   CaratCircleOUpIcon,
   CaratCircleODownIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 
 export interface Props {
   id?: string

@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Helpers
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 // Styled Components
 import {
@@ -18,7 +18,7 @@ import {
 } from './style'
 import {
   UpholdColorIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 
 export interface Props {
   children: React.ReactNode

@@ -33,13 +33,13 @@ import {
 } from './style'
 import TableContribute, { DetailRow as ContributeRow } from '../tableContribute'
 import TableTransactions, { DetailRow as TransactionRow } from '../tableTransactions'
-import { Select, ControlWrapper, Modal } from '../../../components'
-import { AlertCircleIcon, DownloadIcon, PrintIcon, VerifiedSIcon } from '../../../components/icons'
+import { Select, ControlWrapper, Modal } from 'brave-ui/components'
+import { AlertCircleIcon, DownloadIcon, PrintIcon, VerifiedSIcon } from 'brave-ui/components/icons'
 import ListToken from '../listToken'
 import { Type as TokenType } from '../tokens'
 
 // Utils
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export interface Token {
   value: string

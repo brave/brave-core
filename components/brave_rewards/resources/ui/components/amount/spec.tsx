@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import Amount from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('Amount tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><Amount id='amount' amount={1} converted={0.4} onSelect={() => {}} {...props}  /></TestThemeProvider>

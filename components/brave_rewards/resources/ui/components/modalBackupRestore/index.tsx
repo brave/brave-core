@@ -20,10 +20,10 @@ import {
   StyledText,
   StyledTextWrapper
 } from './style'
-import { TextArea, Modal, Button } from '../../../components'
-import { getLocale } from '../../../helpers'
+import { TextArea, Modal, Button } from 'brave-ui/components'
+import { getLocale } from 'brave-ui/helpers'
 import { Alert, Tab } from '../'
-import ControlWrapper from '../../../components/formControls/controlWrapper'
+import ControlWrapper from 'brave-ui/components/formControls/controlWrapper'
 
 export interface Props {
   backupKey: string

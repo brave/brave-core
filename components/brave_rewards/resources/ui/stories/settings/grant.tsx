@@ -10,11 +10,11 @@ import {
   GrantClaim,
   GrantComplete,
   GrantWrapper
-} from '../../../../src/features/rewards'
-import { Type } from '../../../../src/features/rewards/grantClaim'
+} from '../../components'
+import { Type } from '../../components/grantClaim'
 
 // Assets
-const captchaDrop = require('../../../assets/img/captchaDrop.png')
+const captchaDrop = require('../img/captchaDrop.png')
 
 type Step = '' | 'captcha' | 'complete'
 

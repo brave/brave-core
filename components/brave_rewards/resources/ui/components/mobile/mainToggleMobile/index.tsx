@@ -10,9 +10,9 @@ import {
   StyledRight,
   StyledLogoWrapper
 } from './style'
-import Toggle from '../../../../components/formControls/toggle/index'
-import { getLocale } from '../../../../helpers'
-import { BatColorIcon } from '../../../../components/icons'
+import Toggle from 'brave-ui/components/formControls/toggle/index'
+import { getLocale } from 'brave-ui/helpers'
+import { BatColorIcon } from 'brave-ui/components/icons'
 
 export interface Props {
   enabled: boolean

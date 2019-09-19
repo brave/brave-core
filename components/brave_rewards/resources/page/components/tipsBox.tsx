@@ -17,14 +17,14 @@ import {
   Tokens,
   ModalDonation,
   NextContribution
-} from 'brave-ui/features/rewards'
-import { Provider } from 'brave-ui/features/rewards/profile'
+} from '../../ui/components'
+import { Provider } from '../../ui/components/profile'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
-import { DetailRow } from 'brave-ui/features/rewards/tableDonation'
+import { DetailRow } from '../../ui/components/tableDonation'
 
 interface Props extends Rewards.ComponentProps {
 }

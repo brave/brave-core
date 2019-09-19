@@ -8,11 +8,11 @@ import { storiesOf } from '@storybook/react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 
 // Components
-import { DetailRow as AdsHistoryRow } from '../../../src/features/rewards/tableAdsHistory'
-import { DetailRow as ContributeRow } from '../../../src/features/rewards/tableContribute'
-import { DetailRow as DonationDetailRow } from '../../../src/features/rewards/tableDonation'
-import { DetailRow as TransactionsRow } from '../../../src/features/rewards/tableTransactions'
-import { DetailRow as PendingDetailRow } from '../../../src/features/rewards/tablePending'
+import { DetailRow as AdsHistoryRow } from '../components/tableAdsHistory'
+import { DetailRow as ContributeRow } from '../components/tableContribute'
+import { DetailRow as DonationDetailRow } from '../components/tableDonation'
+import { DetailRow as TransactionsRow } from '../components/tableTransactions'
+import { DetailRow as PendingDetailRow } from '../components/tablePending'
 import {
   ModalContribute,
   ModalBackupRestore,
@@ -22,22 +22,22 @@ import {
   ModalRedirect,
   ModalShowAdsHistory,
   ModalVerify
-} from '../../../src/features/rewards'
-import ModalAddFunds, { Address } from '../../../src/features/rewards/modalAddFunds'
+} from '../components'
+import ModalAddFunds, { Address } from '../components/modalAddFunds'
 
-const favicon = require('../../assets/img/brave-favicon.png')
-const ddgo = require('../../assets/img/ddgo.jpg')
-const wiki = require('../../assets/img/wiki.jpg')
-const buzz = require('../../assets/img/buzz.jpg')
-const guardian = require('../../assets/img/guardian.jpg')
-const eich = require('../../assets/img/eich.jpg')
-const tesla = require('../../assets/img/tesla.jpg')
+const favicon = require('./img/brave-favicon.png')
+const ddgo = require('./img/ddgo.jpg')
+const wiki = require('./img/wiki.jpg')
+const buzz = require('./img/buzz.jpg')
+const guardian = require('./img/guardian.jpg')
+const eich = require('./img/eich.jpg')
+const tesla = require('./img/tesla.jpg')
 
 const doNothing = () => {
   console.log('nothing')
 }
 
-storiesOf('Feature Components/Rewards/Modal', module)
+storiesOf('Rewards/Modal', module)
   .addDecorator(withKnobs)
   .add('Backup/Restore', withState({ activeTabId: 0 }, (store) => {
     const onTabChange = () => {

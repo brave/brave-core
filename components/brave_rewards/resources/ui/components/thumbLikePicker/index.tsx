@@ -15,7 +15,7 @@ import {
   ThumbsdownLIcon,
   ThumbsupSIcon,
   ThumbsdownSIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 
 interface State {
   itemSelected: number

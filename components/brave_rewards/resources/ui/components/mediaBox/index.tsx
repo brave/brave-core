@@ -13,7 +13,7 @@ import {
 import {
   TwitterColorIcon,
   RedditColorIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 
 export interface Props {
   mediaType: 'twitter' | 'reddit'

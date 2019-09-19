@@ -35,8 +35,8 @@ import {
   StyledButtonWrapper,
   StyledTwitterShareButton
 } from './style'
-import { getLocale } from '../../../helpers'
-import { CloseCircleOIcon, LogoTwitterIcon, PaperAirplaneIcon } from '../../../components/icons'
+import { getLocale } from 'brave-ui/helpers'
+import { CloseCircleOIcon, LogoTwitterIcon, PaperAirplaneIcon } from 'brave-ui/components/icons'
 
 export interface Props {
   id?: string

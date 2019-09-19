@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import GrantComplete from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('Grant complete tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><GrantComplete id='complete' {...props} /></TestThemeProvider>

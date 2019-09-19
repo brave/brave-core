@@ -4,7 +4,7 @@
 */
 
 import * as React from 'react'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 import {
   StyledExcludedText,
   StyledRestore

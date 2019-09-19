@@ -20,9 +20,9 @@ import {
   StyledSettingsToggleContainer
 } from './style'
 import { Tooltip } from '../'
-import Toggle from '../../../components/formControls/toggle/index'
-import { getLocale } from '../../../helpers'
-import { CloseCircleOIcon, SettingsIcon } from '../../../components/icons'
+import Toggle from 'brave-ui/components/formControls/toggle/index'
+import { getLocale } from 'brave-ui/helpers'
+import { CloseCircleOIcon, SettingsIcon } from 'brave-ui/components/icons'
 
 export type Type = 'ads' | 'contribute' | 'donation'
 

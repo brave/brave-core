@@ -42,10 +42,10 @@ import {
   StyledDialogList,
   StyledLink
 } from './style'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 import { GrantCaptcha, GrantComplete, GrantError, GrantWrapper, WalletPopup } from '../'
 import Alert, { Type as AlertType } from '../alert'
-import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
+import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 import {
   CaratDownIcon,
   CaratUpIcon,
@@ -54,7 +54,7 @@ import {
   UpholdColorIcon,
   UpholdSystemIcon,
   CaratCircleRightIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 
 import giftIconUrl from './assets/gift.svg'
 import loveIconUrl from './assets/love.svg'

@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { StyledWrapper, StyledTitle, StyledContent } from './style'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 interface Props {
   id?: string

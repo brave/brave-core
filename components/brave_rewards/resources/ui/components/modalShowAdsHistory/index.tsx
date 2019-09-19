@@ -19,10 +19,10 @@ import {
   StyledThumbDownNotSelectedFilter,
   StyledWrapper
 } from './style'
-import Modal from '../../../components/popupModals/modal/index'
-import { getLocale } from '../../../helpers'
+import Modal from 'brave-ui/components/popupModals/modal/index'
+import { getLocale } from 'brave-ui/helpers'
 import TableAdsHistory, { DetailRow } from '../tableAdsHistory/index'
-import { ThumbsupSIcon } from '../../../components/icons'
+import { ThumbsupSIcon } from 'brave-ui/components/icons'
 
 export interface Props {
   rows?: DetailRow[]

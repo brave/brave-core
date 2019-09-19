@@ -11,7 +11,7 @@ import {
   StyledImageWrap,
   StyledImage
 } from './style'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 import batUrl from './assets/bat.png'
 

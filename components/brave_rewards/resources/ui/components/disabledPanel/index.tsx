@@ -13,7 +13,7 @@ import {
   StyledTitleWrapper
 } from './style'
 
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   testId?: string

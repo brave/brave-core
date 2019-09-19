@@ -7,8 +7,8 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Provider } from 'brave-ui/features/rewards/profile'
-import { SiteBanner, MediaBox } from 'brave-ui/features/rewards'
+import { Provider } from '../../ui/components/profile'
+import { SiteBanner, MediaBox } from '../../ui/components'
 
 // Utils
 import * as tipActions from '../actions/tip_actions'

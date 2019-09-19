@@ -7,9 +7,9 @@ import {
   StyledWrapper,
   StyledTitle
 } from './style'
-import Modal from '../../../components/popupModals/modal/index'
+import Modal from 'brave-ui/components/popupModals/modal/index'
 import TableDonation, { DetailRow } from '../tableDonation/index'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   rows: DetailRow[]

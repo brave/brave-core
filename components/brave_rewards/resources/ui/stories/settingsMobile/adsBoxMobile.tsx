@@ -6,9 +6,9 @@ import * as React from 'react'
 
 // Components
 import { StyledListContent } from './style'
-import { Select } from '../../../../src/components'
-import { Tokens, List } from '../../../../src/features/rewards'
-import { BoxMobile } from '../../../../src/features/rewards/mobile'
+import { Select } from 'brave-ui/components'
+import { Tokens, List } from '../../components'
+import { BoxMobile } from '../../components/mobile'
 
 // Utils
 import locale from './fakeLocale'

@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 import CategoryLikePicker from './index';
 
 describe('Category Like Picker tests', () => {

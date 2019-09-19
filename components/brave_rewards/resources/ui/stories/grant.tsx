@@ -8,19 +8,19 @@ import { withKnobs, text, select } from '@storybook/addon-knobs'
 import centered from '@storybook/addon-centered'
 
 // Components
-import GrantClaim from '../../../src/features/rewards/grantClaim'
-import GrantError from '../../../src/features/rewards/grantError'
-import GrantWrapper from '../../../src/features/rewards/grantWrapper'
-import GrantCaptcha from '../../../src/features/rewards/grantCaptcha'
-import GrantComplete from '../../../src/features/rewards/grantComplete'
+import GrantClaim from '../components/grantClaim'
+import GrantError from '../components/grantError'
+import GrantWrapper from '../components/grantWrapper'
+import GrantCaptcha from '../components/grantCaptcha'
+import GrantComplete from '../components/grantComplete'
 
-const captchaDrop = require('../../assets/img/captchaDrop.png')
+const captchaDrop = require('./img/captchaDrop.png')
 
 const dummyClick = () => {
   console.log(dummyClick)
 }
 
-storiesOf('Feature Components/Rewards/Grant', module)
+storiesOf('Rewards/Grant', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
   .add('Grant claim', () => {

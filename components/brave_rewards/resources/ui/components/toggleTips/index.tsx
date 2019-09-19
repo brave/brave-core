@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 import {
   StyledEnableTipsSection,
@@ -24,8 +24,8 @@ import {
   TwitterColorIcon,
   VimeoColorIcon,
   YoutubeColorIcon
-} from '../../../components/icons'
-import { Toggle } from '../../../components'
+} from 'brave-ui/components/icons'
+import { Toggle } from 'brave-ui/components'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch' | 'reddit' | 'vimeo' | 'github'
 

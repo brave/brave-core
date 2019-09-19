@@ -16,7 +16,7 @@ import {
   ModalShowAdsHistory,
   ShowAdsHistory,
   Tokens
-} from 'brave-ui/features/rewards'
+} from '../../ui/components'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 
 // Utils

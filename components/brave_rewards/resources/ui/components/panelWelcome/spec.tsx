@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import PanelWelcome  from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('PanelWelcome tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><PanelWelcome id='panel-welcome' {...props} /></TestThemeProvider>

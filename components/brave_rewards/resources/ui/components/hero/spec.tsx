@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import Hero from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('Hero tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><Hero id='test-hero' {...props} /></TestThemeProvider>

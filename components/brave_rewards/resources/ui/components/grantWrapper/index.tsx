@@ -4,8 +4,8 @@
 
 import * as React from 'react'
 import { StyledWrapper, StyledHeader, StyledTitle, StyledClose, StyledText, StyledGrantIcon, StyledPanelText, StyledHint } from './style'
-import { CloseCircleOIcon } from '../../../components/icons'
-import { getLocale } from '../../../helpers'
+import { CloseCircleOIcon } from 'brave-ui/components/icons'
+import { getLocale } from 'brave-ui/helpers'
 
 import header from './assets/header'
 import giftIconUrl from './assets/gift.svg'

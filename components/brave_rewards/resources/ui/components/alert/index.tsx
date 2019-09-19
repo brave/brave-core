@@ -16,7 +16,7 @@ import {
   AlertCircleIcon,
   CheckCircleIcon,
   CloseStrokeIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 
 export type Type = 'error' | 'success' | 'warning'
 

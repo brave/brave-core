@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import Heading from '../../../components/text/heading'
+import Heading from 'brave-ui/components/text/heading'
 import centerBackgroundUrl from './assets/centerTextBackground.svg'
-import palette from '../../../theme/colors'
+import palette from 'brave-ui/theme/colors'
 
 interface StyleProps {
   header?: boolean

@@ -2,8 +2,8 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 import { ComponentType } from 'react'
-import styled from '../../../theme'
-import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
+import styled from 'brave-ui/theme'
+import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 
 interface StyleProps {
   isError?: boolean

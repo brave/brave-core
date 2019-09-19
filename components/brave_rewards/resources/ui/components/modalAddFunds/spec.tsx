@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import ModalAddFunds from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('ModalAddFunds tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><ModalAddFunds id='modal' {...props} /></TestThemeProvider>

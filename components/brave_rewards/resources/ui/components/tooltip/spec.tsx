@@ -7,7 +7,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import Tooltip from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('Tooltip tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><Tooltip id='tooltip' {...props} /></TestThemeProvider>

@@ -16,9 +16,9 @@ import {
   HeartSIcon,
   BlockLIcon,
   BlockSIcon
-} from '../../../components/icons'
+} from 'brave-ui/components/icons'
 import { Tooltip } from '..'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 interface State {
   itemSelected: number

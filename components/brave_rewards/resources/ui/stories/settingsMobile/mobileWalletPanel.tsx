@@ -5,10 +5,10 @@
 import * as React from 'react'
 import { object } from '@storybook/addon-knobs'
 
-import { WalletEmpty, WalletWrapper } from '../../../../src/features/rewards'
+import { WalletEmpty, WalletWrapper } from '../../components'
 import { StyledWalletClose, StyledWalletOverlay, StyledWalletWrapper } from './style'
-import { CloseStrokeIcon, WalletAddIcon } from '../../../../src/components/icons'
-import ModalAddFunds, { Address } from '../../../../src/features/rewards/modalAddFunds'
+import { CloseStrokeIcon, WalletAddIcon } from 'brave-ui/components/icons'
+import ModalAddFunds, { Address } from '../../components/modalAddFunds'
 
 interface State {
   addFundsShown?: boolean

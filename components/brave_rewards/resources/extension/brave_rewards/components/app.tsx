@@ -9,9 +9,9 @@ import {
   PanelWelcome,
   WalletPanelDisabled,
   WalletWrapper
-} from 'brave-ui/features/rewards'
+} from '../../../ui/components'
 import { BatColorIcon, WalletAddIcon } from 'brave-ui/components/icons'
-import { WalletState } from 'brave-ui/features/rewards/walletWrapper'
+import { WalletState } from '../../../ui/components/walletWrapper'
 
 // Components
 import Panel from './panel'

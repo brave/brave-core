@@ -8,9 +8,9 @@ import {
   StyledTitle,
   StyledRemoveAll
 } from './style'
-import Modal from '../../../components/popupModals/modal/index'
+import Modal from 'brave-ui/components/popupModals/modal/index'
 import TablePending, { DetailRow } from '../tablePending/index'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   rows: DetailRow[]

@@ -17,9 +17,9 @@ import {
   StyledServiceLink
 } from './style'
 import { RewardsButton } from '../'
-import { ArrowRightIcon, BatColorIcon } from '../../../components/icons'
+import { ArrowRightIcon, BatColorIcon } from 'brave-ui/components/icons'
 
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   onEnable: () => void

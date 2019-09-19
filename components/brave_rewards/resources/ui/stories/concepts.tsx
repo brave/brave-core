@@ -21,17 +21,17 @@ import {
   WalletSummary,
   WalletSummarySlider,
   WalletWrapper
-} from '../../../src/features/rewards'
-import { BatColorIcon, WalletAddIcon } from '../../../src/components/icons'
-import WelcomePage from '../../../src/features/rewards/welcomePage'
-import { Notification, WalletState } from '../../../src/features/rewards/walletWrapper'
+} from '../components'
+import { BatColorIcon, WalletAddIcon } from 'brave-ui/components/icons'
+import WelcomePage from '../components/welcomePage'
+import { Notification, WalletState } from '../components/walletWrapper'
 
-const favicon = require('../../assets/img/brave-favicon.png')
-const siteBgImage = require('../../assets/img/bg_siteBanner.jpg')
-const siteBgLogo = require('../../assets/img/ddgo_siteBanner.svg')
-const siteScreen = require('../../assets/img/ddgo_site.png')
+const favicon = require('./img/brave-favicon.png')
+const siteBgImage = require('./img/bg_siteBanner.jpg')
+const siteBgLogo = require('./img/ddgo_siteBanner.svg')
+const siteScreen = require('./img/ddgo_site.png')
 
-const captchaDrop = require('../../assets/img/captchaDrop.png')
+const captchaDrop = require('./img/captchaDrop.png')
 
 const doNothing = (id: string) => {
   console.log('nothing')
@@ -69,7 +69,7 @@ const dummyOptInAction = () => {
   console.log(dummyOptInAction)
 }
 
-storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
+storiesOf('Rewards/Concepts/Desktop', module)
   .addDecorator(withKnobs)
   .add('Settings Page', () => {
     const walletProps = {
@@ -529,7 +529,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       </div>
     )
   }))
-storiesOf('Feature Components/Rewards/Concepts/Mobile', module)
+storiesOf('Rewards/Concepts/Mobile', module)
   .add('Welcome Page', () => (
     <WelcomePage
       id={'welcome-page'}

@@ -10,12 +10,8 @@ import ContributeBox from './contributeBox'
 import DonationsBox from './donationsBox'
 import Grant from './grant'
 import PageWallet, { Props as WalletProps } from './pageWallet'
-import { Grid, Column } from '../../../../src/components'
-import { DisabledBox, MainToggle, SettingsPage } from '../../../../src/features/rewards'
-
-// Assets
-import '../../../assets/fonts/muli.css'
-import '../../../assets/fonts/poppins.css'
+import { Grid, Column } from 'brave-ui/components'
+import { DisabledBox, MainToggle, SettingsPage } from '../../components'
 
 export interface Props {
   walletProps: WalletProps

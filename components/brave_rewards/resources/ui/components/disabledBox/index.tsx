@@ -10,7 +10,7 @@ import {
   StyledTitle,
   StyledText
 } from './style'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export default class DisabledBox extends React.PureComponent<{}, {}> {
   render () {

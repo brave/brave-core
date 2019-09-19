@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import GrantWrapper from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('Grant wrapper tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><GrantWrapper id='wrapper' {...props} /></TestThemeProvider>

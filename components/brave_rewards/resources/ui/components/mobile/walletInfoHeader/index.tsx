@@ -12,7 +12,7 @@ import {
   StyledBalanceCurrency,
   StyledBalanceConverted
 } from './style'
-import { getLocale } from '../../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   id?: string

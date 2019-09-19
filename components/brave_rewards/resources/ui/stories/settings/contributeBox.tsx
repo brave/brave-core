@@ -12,20 +12,20 @@ import {
   ModalContribute,
   TableContribute,
   Tokens
-} from '../../../../src/features/rewards'
-import { Column, Grid, Select, ControlWrapper, Checkbox } from '../../../../src/components'
-import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
-import NextContribution from '../../../../src/features/rewards/nextContribution'
+} from '../../components'
+import { Column, Grid, Select, ControlWrapper, Checkbox } from 'brave-ui/components'
+import { DetailRow as ContributeDetailRow } from '../../components/tableContribute'
+import NextContribution from '../../components/nextContribution'
 
 // Utils
 import locale from './fakeLocale'
 
 // Assets
-const favicon = require('../../../assets/img/brave-favicon.png')
-const buzz = require('../../../assets/img/buzz.jpg')
-const ddgo = require('../../../assets/img/ddgo.jpg')
-const guardian = require('../../../assets/img/guardian.jpg')
-const wiki = require('../../../assets/img/wiki.jpg')
+const favicon = require('../img/brave-favicon.png')
+const buzz = require('../img/buzz.jpg')
+const ddgo = require('../img/ddgo.jpg')
+const guardian = require('../img/guardian.jpg')
+const wiki = require('../img/wiki.jpg')
 
 const doNothing = () => {
   console.log('nothing')

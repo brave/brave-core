@@ -8,18 +8,18 @@ import { withKnobs, object, text, select, boolean, number } from '@storybook/add
 import centered from '@storybook/addon-centered'
 
 // Components
-import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
-import { AlertWallet, Notification, WalletState } from '../../../src/features/rewards/walletWrapper'
-import { WalletAddIcon, WalletImportIcon } from '../../../src/components/icons'
-import { WalletInfoHeader } from '../../../src/features/rewards/mobile'
+import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../components'
+import { AlertWallet, Notification, WalletState } from '../components/walletWrapper'
+import { WalletAddIcon, WalletImportIcon } from 'brave-ui/components/icons'
+import { WalletInfoHeader } from '../components/mobile'
 
-const favicon = require('../../assets/img/brave-favicon.png')
+const favicon = require('./img/brave-favicon.png')
 
 const doNothing = () => {
   console.log('nothing')
 }
 
-storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
+storiesOf('Rewards/Wallet/Desktop', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
   .add('Wrapper', () => {
@@ -181,7 +181,7 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
       </div>
     )
   })
-storiesOf('Feature Components/Rewards/Wallet/Mobile', module)
+storiesOf('Rewards/Wallet/Mobile', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
   .add('Wallet Info Header', () => {

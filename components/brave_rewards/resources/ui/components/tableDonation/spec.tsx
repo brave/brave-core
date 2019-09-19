@@ -3,7 +3,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import TableDonation from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('TableDonation tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><TableDonation id='table' {...props} /></TestThemeProvider>

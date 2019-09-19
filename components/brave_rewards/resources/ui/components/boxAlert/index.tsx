@@ -5,7 +5,7 @@
 
 // Utils
 import * as React from 'react'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 // Components
 import {
@@ -25,9 +25,9 @@ import {
   StyledButton,
   StyledButtonContainer
 } from './style'
-import { Modal } from '../../../components'
-import { AlertCircleIcon, RewardsSendTipsIcon } from '../../../components/icons'
-import Button from '../../../components/buttonsIndicators/button'
+import { Modal } from 'brave-ui/components'
+import { AlertCircleIcon, RewardsSendTipsIcon } from 'brave-ui/components/icons'
+import Button from 'brave-ui/components/buttonsIndicators/button'
 
 export type Type = 'tips' | 'ads'
 

@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 import {
   StyledWrapper,
@@ -21,7 +21,7 @@ import {
   StyledServiceLink
 } from './style'
 
-import { BatColorIcon, LoaderIcon } from '../../../components/icons'
+import { BatColorIcon, LoaderIcon } from 'brave-ui/components/icons'
 
 export type Variant = 'one' | 'two'
 

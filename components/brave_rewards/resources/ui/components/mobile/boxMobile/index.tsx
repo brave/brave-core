@@ -36,10 +36,10 @@ import {
   CaratRightIcon,
   CloseStrokeIcon,
   SettingsIcon
-} from '../../../../components/icons'
+} from 'brave-ui/components/icons'
 import { List } from '../../'
-import { getLocale } from '../../../../helpers'
-import Toggle from '../../../../components/formControls/toggle/index'
+import { getLocale } from 'brave-ui/helpers'
+import Toggle from 'brave-ui/components/formControls/toggle/index'
 
 export type Type = 'ads' | 'contribute' | 'donation'
 

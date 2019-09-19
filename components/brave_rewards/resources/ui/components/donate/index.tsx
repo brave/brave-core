@@ -18,8 +18,8 @@ import {
 } from './style'
 
 import Amount from '../amount/index'
-import { getLocale } from '../../../helpers'
-import { EmoteSadIcon, SendIcon } from '../../../components/icons'
+import { getLocale } from 'brave-ui/helpers'
+import { EmoteSadIcon, SendIcon } from 'brave-ui/components/icons'
 
 export type DonateType = 'big' | 'small'
 

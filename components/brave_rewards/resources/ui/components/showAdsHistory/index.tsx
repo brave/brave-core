@@ -9,7 +9,7 @@ import {
   StyledDisabledLink
 } from './style'
 
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   onAdsHistoryOpen?: () => void

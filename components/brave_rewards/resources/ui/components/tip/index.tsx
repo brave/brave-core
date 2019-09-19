@@ -12,9 +12,9 @@ import {
   StyledTipWrapper
 } from './style'
 import Donate from '../donate'
-import Toggle from '../../../components/formControls/toggle'
-import { getLocale } from '../../../helpers'
-import { CloseCircleOIcon } from '../../../components/icons'
+import Toggle from 'brave-ui/components/formControls/toggle'
+import { getLocale } from 'brave-ui/helpers'
+import { CloseCircleOIcon } from 'brave-ui/components/icons'
 
 type Donation = { tokens: string, converted: string, selected?: boolean }
 

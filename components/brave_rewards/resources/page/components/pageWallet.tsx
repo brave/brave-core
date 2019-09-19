@@ -14,16 +14,16 @@ import {
   WalletEmpty,
   WalletSummary,
   WalletWrapper
-} from 'brave-ui/features/rewards'
+} from '../../ui/components'
 import { WalletAddIcon, WalletWithdrawIcon } from 'brave-ui/components/icons'
-import { AlertWallet, WalletState } from 'brave-ui/features/rewards/walletWrapper'
-import { Provider } from 'brave-ui/features/rewards/profile'
-import { DetailRow as PendingDetailRow, PendingType } from 'brave-ui/features/rewards/tablePending'
+import { AlertWallet, WalletState } from '../../ui/components/walletWrapper'
+import { Provider } from '../../ui/components/profile'
+import { DetailRow as PendingDetailRow, PendingType } from '../../ui/components/tablePending'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
-import WalletOff from 'brave-ui/features/rewards/walletOff'
+import WalletOff from '../../ui/components/walletOff'
 
 const clipboardCopy = require('clipboard-copy')
 

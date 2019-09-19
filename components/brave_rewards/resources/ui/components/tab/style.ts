@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 import { Type, Props } from './index'
-import palette from '../../../theme/colors'
+import palette from 'brave-ui/theme/colors'
 
 interface StyleProps {
   left?: boolean

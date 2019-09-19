@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Notification } from './'
-import styled from '../../../theme'
-import palette from '../../../theme/colors'
-import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
+import styled from 'brave-ui/theme'
+import palette from 'brave-ui/theme/colors'
+import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 import { ComponentType } from 'react'
 
 interface StyledProps {

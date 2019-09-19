@@ -8,23 +8,23 @@ import { withKnobs, boolean, object, number } from '@storybook/addon-knobs'
 import centered from '@storybook/addon-centered'
 
 // Components
-import TableContribute, { DetailRow as ContributeDetailRow } from '../../../src/features/rewards/tableContribute'
-import TableDonation, { DetailRow as DonationDetailRow } from '../../../src/features/rewards/tableDonation'
-import TableTransactions, { DetailRow as TransactionsRow } from '../../../src/features/rewards/tableTransactions'
-import TablePending, { DetailRow as PendingDetailRow } from '../../../src/features/rewards/tablePending'
+import TableContribute, { DetailRow as ContributeDetailRow } from '../components/tableContribute'
+import TableDonation, { DetailRow as DonationDetailRow } from '../components/tableDonation'
+import TableTransactions, { DetailRow as TransactionsRow } from '../components/tableTransactions'
+import TablePending, { DetailRow as PendingDetailRow } from '../components/tablePending'
 
-const favicon = require('../../assets/img/brave-favicon.png')
-const ddgo = require('../../assets/img/ddgo.jpg')
-const wiki = require('../../assets/img/wiki.jpg')
-const buzz = require('../../assets/img/buzz.jpg')
-const guardian = require('../../assets/img/guardian.jpg')
-const eich = require('../../assets/img/eich.jpg')
+const favicon = require('./img/brave-favicon.png')
+const ddgo = require('./img/ddgo.jpg')
+const wiki = require('./img/wiki.jpg')
+const buzz = require('./img/buzz.jpg')
+const guardian = require('./img/guardian.jpg')
+const eich = require('./img/eich.jpg')
 
 const doNothing = () => {
   console.log('nothing')
 }
 
-storiesOf('Feature Components/Rewards/Table', module)
+storiesOf('Rewards/Table', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
   .add('Contribution', () => {

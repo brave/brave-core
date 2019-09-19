@@ -9,8 +9,8 @@ import {
   GrantClaim,
   GrantComplete,
   GrantWrapper
-} from '../../../../src/features/rewards'
-import { Type } from '../../../../src/features/rewards/grantClaim'
+} from '../../components'
+import { Type } from '../../components/grantClaim'
 
 type Step = '' | 'complete'
 

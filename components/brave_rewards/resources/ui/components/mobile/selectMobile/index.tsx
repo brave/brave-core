@@ -6,7 +6,7 @@ import * as React from 'react'
 import {
   StyledSelect
 } from './style'
-import { getLocale } from '../../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 
 export type Amount = {
   value: string

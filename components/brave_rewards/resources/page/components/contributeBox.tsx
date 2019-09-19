@@ -8,8 +8,8 @@ import { connect } from 'react-redux'
 
 // Components
 import { Checkbox, Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
-import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, NextContribution } from 'brave-ui/features/rewards'
-import { Provider } from 'brave-ui/features/rewards/profile'
+import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, NextContribution } from '../../ui/components'
+import { Provider } from '../../ui/components/profile'
 
 // Utils
 import { getLocale } from '../../../../common/locale'

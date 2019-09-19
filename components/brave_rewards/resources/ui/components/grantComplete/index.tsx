@@ -11,8 +11,8 @@ import {
   StyledText,
   StyledButtonWrapper
 } from './style'
-import { getLocale } from '../../../helpers'
-import Button from '../../../components/buttonsIndicators/button'
+import { getLocale } from 'brave-ui/helpers'
+import Button from 'brave-ui/components/buttonsIndicators/button'
 
 export interface Props {
   id?: string

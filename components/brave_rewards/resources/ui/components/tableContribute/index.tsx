@@ -12,11 +12,11 @@ import {
   StyledToggleWrap,
   StyledLink
 } from './style'
-import Table, { Row } from '../../../components/dataTables/table'
+import Table, { Row } from 'brave-ui/components/dataTables/table'
 import Profile, { Provider } from '../profile'
-import { getLocale } from '../../../helpers'
+import { getLocale } from 'brave-ui/helpers'
 import { Tokens, Tooltip } from '../'
-import { CloseStrokeIcon, TrashOIcon } from '../../../components/icons'
+import { CloseStrokeIcon, TrashOIcon } from 'brave-ui/components/icons'
 
 interface ProfileCell {
   verified: boolean

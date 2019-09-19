@@ -7,7 +7,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'
 import RestoreSites from './index'
-import { TestThemeProvider } from '../../../theme'
+import { TestThemeProvider } from 'brave-ui/theme'
 
 describe('RestoreSites tests', () => {
   const baseComponent = (props?: object) => <TestThemeProvider><RestoreSites id='restoresites' {...props} /></TestThemeProvider>

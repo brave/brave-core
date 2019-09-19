@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styled, { css } from '../../../../theme'
+import styled, { css } from 'brave-ui/theme'
 import { Type } from './index'
-import Card, { CardProps } from '../../../../components/layout/card'
+import Card, { CardProps } from 'brave-ui/components/layout/card'
 
 interface StyleProps {
   open?: boolean

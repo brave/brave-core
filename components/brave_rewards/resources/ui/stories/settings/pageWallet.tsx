@@ -5,8 +5,8 @@
 import * as React from 'react'
 
 // Components
-import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
-import { DetailRow as TransactionsRow } from '../../../../src/features/rewards/tableTransactions'
+import { DetailRow as ContributeDetailRow } from '../../components/tableContribute'
+import { DetailRow as TransactionsRow } from '../../components/tableTransactions'
 
 import {
   ModalActivity,
@@ -15,16 +15,16 @@ import {
   WalletOff,
   WalletSummary,
   WalletWrapper
-} from '../../../../src/features/rewards'
-import { WalletState } from '../../../../src/features/rewards/walletWrapper'
-import { WalletAddIcon, WalletWithdrawIcon } from '../../../../src/components/icons'
+} from '../../components'
+import { WalletState } from '../../components/walletWrapper'
+import { WalletAddIcon, WalletWithdrawIcon } from 'brave-ui/components/icons'
 
 // Assets
-const favicon = require('../../../assets/img/brave-favicon.png')
-const buzz = require('../../../assets/img/buzz.jpg')
-const ddgo = require('../../../assets/img/ddgo.jpg')
-const guardian = require('../../../assets/img/guardian.jpg')
-const wiki = require('../../../assets/img/wiki.jpg')
+const favicon = require('../img/brave-favicon.png')
+const buzz = require('../img/buzz.jpg')
+const ddgo = require('../img/ddgo.jpg')
+const guardian = require('../img/guardian.jpg')
+const wiki = require('../img/wiki.jpg')
 
 export interface Props {
   grants: {
