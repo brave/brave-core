@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/feature_list.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "brave/browser/net/brave_request_handler.h"
@@ -106,6 +107,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::UpdateRequestInfo() {
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
   request_completed_ = false;
+  start_time_ = base::TimeTicks::Now();
 
   base::RepeatingCallback<void(int)> continuation =
       base::BindRepeating(&InProgressRequest::ContinueToBeforeSendHeaders,
@@ -232,6 +234,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnComplete(
     const network::URLLoaderCompletionStatus& status) {
+  UMA_HISTOGRAM_TIMES("Brave.ProxyingURLLoader.TotalRequestTime",
+                      base::TimeTicks::Now() - start_time_);
   if (status.error_code != net::OK) {
     OnRequestError(status);
     return;
@@ -627,7 +631,8 @@ bool BraveProxyingURLLoaderFactory::MaybeProxyRequest(
   *factory_receiver = mojo::MakeRequest(&target_factory_info);
 
 
-  ResourceContextData::StartProxying(browser_context,
+  ResourceContextData::StartProxying(
+      browser_context,
       render_process_id,
       render_frame_host ? render_frame_host->GetFrameTreeNodeId() : 0,
       std::move(proxied_receiver), std::move(target_factory_info));

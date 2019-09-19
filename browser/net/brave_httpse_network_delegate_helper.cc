@@ -33,11 +33,11 @@ void OnBeforeURLRequest_HttpseFileWork(
 void OnBeforeURLRequest_HttpsePostFileWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   if (!ctx->new_url_spec.empty() &&
     ctx->new_url_spec != ctx->request_url.spec()) {
-    brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
+    brave_shields::DispatchBlockedEvent(ctx->request_url,
         ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
         brave_shields::kHTTPUpgradableResources);
   }
@@ -48,7 +48,7 @@ void OnBeforeURLRequest_HttpsePostFileWork(
 int OnBeforeURLRequest_HttpsePreFileWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   // Don't try to overwrite an already set URL by another delegate (adblock/tp)
   if (!ctx->new_url_spec.empty()) {
@@ -84,7 +84,7 @@ int OnBeforeURLRequest_HttpsePreFileWork(
       return net::ERR_IO_PENDING;
     } else {
       if (!ctx->new_url_spec.empty()) {
-        brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
+        brave_shields::DispatchBlockedEvent(ctx->request_url,
             ctx->render_frame_id, ctx->render_process_id,
             ctx->frame_tree_node_id,
             brave_shields::kHTTPUpgradableResources);
