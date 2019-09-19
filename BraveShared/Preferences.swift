@@ -90,6 +90,7 @@ extension Preferences {
     
     public final class Rewards {
         public static let myFirstAdShown = Option<Bool>(key: "rewards.ads.my-first-ad-shown", default: false)
+        public static let hideRewardsIcon = Option<Bool>(key: "rewards.hide-rewards-icon", default: false)
     }
 }
 

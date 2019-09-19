@@ -210,6 +210,7 @@ class BrowserViewController: UIViewController {
         Preferences.General.alwaysRequestDesktopSite.observe(from: self)
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         Preferences.Privacy.blockAllCookies.observe(from: self)
+        Preferences.Rewards.hideRewardsIcon.observe(from: self)
         // Lists need to be compiled before attempting tab restoration
         contentBlockListDeferred = ContentBlockerHelper.compileBundledLists()
         
@@ -3058,6 +3059,8 @@ extension BrowserViewController: PreferencesObserver {
             } else {
                 tabManager.reloadSelectedTab()
             }
+        case Preferences.Rewards.hideRewardsIcon.key:
+            updateRewardsButtonState()
         default:
             log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
             break
