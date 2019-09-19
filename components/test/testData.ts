@@ -4,7 +4,7 @@
 
 // Initial state
 import { defaultState as welcomeData } from '../../components/brave_welcome_ui/storage'
-import { defaultState as rewardsData } from '../../components/brave_rewards/resources/ui/storage'
+import { defaultState as rewardsData } from '../../components/brave_rewards/resources/page/storage'
 import { defaultState as adblockData } from '../../components/brave_adblock_ui/storage'
 import { defaultState as syncData } from '../../components/brave_sync/ui/storage'
 
