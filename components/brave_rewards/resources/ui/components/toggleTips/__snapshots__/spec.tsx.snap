@@ -1,0 +1,246 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
+.c0 {
+  background: #F5F5F9;
+  display: block;
+  width: 100%;
+  padding: 10px 30px;
+}
+
+.c1 {
+  color: #838391;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 28px;
+  position: relative;
+}
+
+.c2 {
+  color: #4C54D2;
+  font-size: 14px;
+  font-weight: 500;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 28px;
+  margin-right: 5px;
+}
+
+.c3 {
+  margin-right: 5px;
+}
+
+.c4 {
+  margin-right: 5px;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  margin-top: -3px;
+  display: inline-block;
+}
+
+.c6 {
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.c9 {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 3px;
+  text-align: right;
+  position: absolute;
+  right: 0px;
+}
+
+.c10 {
+  float: right;
+  margin-top: 2px;
+}
+
+.c7 {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-top: 3px;
+  vertical-align: top;
+}
+
+.c8 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c5 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c13 {
+  position: relative;
+  display: block;
+  height: 16px;
+  width: 28px;
+}
+
+.c14 {
+  background: #A7ACB2;
+  height: 6px;
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.c15 {
+  position: relative;
+  border-radius: 50%;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  --toggle-bullet-size: 16px;
+  --toggle-bullet-transform: translate(-1px,calc(-50% - 3px));
+  --toggle-bullet-background: #CDD1D5;
+  width: var(--toggle-bullet-size);
+  height: var(--toggle-bullet-size);
+  -webkit-transform: var(--toggle-bullet-transform);
+  -ms-transform: var(--toggle-bullet-transform);
+  transform: var(--toggle-bullet-transform);
+  background-color: var(--toggle-bullet-background);
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
+}
+
+.c12 {
+  color: #838391;
+  font-size: 12px;
+  font-family: Muli,sans-serif;
+  text-align: right;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin: 0px 8px 0 0;
+  opacity: 1;
+  -webkit-transition: 100ms ease-out;
+  transition: 100ms ease-out;
+}
+
+<section
+  className="c0"
+  id="toggle-tips"
+>
+  <div
+    className="c1"
+  >
+    <span
+      className="c2"
+    >
+      MISSING: enableTips
+    </span>
+    <span
+      className="c3"
+    >
+      MISSING: on
+    </span>
+    <span
+      className="c4"
+    >
+      <svg
+        aria-hidden="true"
+        className="c5"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <path
+          d="M29 16a20.83 20.83 0 0 0-1-7.43 3.74 3.74 0 0 0-2.41-2A56.35 56.35 0 0 0 16 6a56.35 56.35 0 0 0-9.55.58A3.74 3.74 0 0 0 4 8.57 20.83 20.83 0 0 0 3 16a20.83 20.83 0 0 0 1 7.43 3.74 3.74 0 0 0 2.41 2A56.35 56.35 0 0 0 16 26a56.35 56.35 0 0 0 9.55-.58 3.74 3.74 0 0 0 2.41-2A20.83 20.83 0 0 0 29 16"
+          fill="#ff0100"
+        />
+        <path
+          d="M13 20v-8l7.02 3.96L13 20z"
+          fill="#fff"
+        />
+      </svg>
+    </span>
+    <span
+      className="c6"
+    >
+      YOUTUBE
+    </span>
+    <span
+      className="c3"
+    >
+      MISSING: for
+    </span>
+    <span
+      className="c7"
+    >
+      <svg
+        aria-hidden="true"
+        className="c8"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <path
+          d="M9.6 26.4H4a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1h5.6a1 1 0 0 1 1 1v14.4a1 1 0 0 1-1 1zm-4.6-2h3.6V12H5z"
+        />
+        <path
+          d="M24.8 28H16a6.08 6.08 0 0 1-3.47-1.26L9 23.77a1 1 0 1 1 1.28-1.54l3.57 3A4.22 4.22 0 0 0 16 26h8.8a.83.83 0 0 0 .78-.7L27 14.06a.44.44 0 0 0-.1-.33.45.45 0 0 0-.33-.13H19.2a1 1 0 0 1 0-2h7.37A2.4 2.4 0 0 1 29 14.3l-1.43 11.24A2.81 2.81 0 0 1 24.8 28z"
+        />
+        <path
+          d="M19.2 13.6a1 1 0 0 1-1-1V5.4a1 1 0 0 1 2 0v7.2a1 1 0 0 1-1 1z"
+        />
+        <path
+          d="M12.8 13.6H9.6a1 1 0 0 1 0-2H12c.4-1.95 1.37-6.59 1.61-7.34A3.4 3.4 0 0 1 20.2 5.4a1 1 0 1 1-2 0A1.4 1.4 0 0 0 16.8 4a1.38 1.38 0 0 0-1.29.86c-.2.61-1.14 5.09-1.73 7.94a1 1 0 0 1-.98.8z"
+        />
+      </svg>
+    </span>
+    <div
+      className="c9"
+    >
+      <div
+        className="c10"
+      >
+        <div
+          className="c11"
+        >
+          <div
+            className="c12"
+            size="small"
+          >
+            MISSING: off
+          </div>
+          <div
+            className="c13"
+            data-test-id="toggle"
+            size="small"
+          >
+            <div
+              className="c14"
+              size="small"
+            />
+            <div
+              className="c15"
+              size="small"
+              type="dark"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+`;

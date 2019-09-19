@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Grant claim tests basic tests matches the snapshot 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  border-radius: 8px;
+  background-color: #fff;
+  overflow: hidden;
+  padding-left: 20px;
+  margin-bottom: 19px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.c1 {
+  -webkit-flex-basis: 42px;
+  -ms-flex-preferred-size: 42px;
+  flex-basis: 42px;
+  height: 42px;
+  width: 52px;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  color: #FF9868;
+}
+
+.c2 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: 70%;
+  -ms-flex-preferred-size: 70%;
+  flex-basis: 70%;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #686978;
+  padding: 0 10px;
+}
+
+.c3 {
+  -webkit-flex-basis: 90px;
+  -ms-flex-preferred-size: 90px;
+  flex-basis: 90px;
+  height: 64px;
+  background-color: #fb542b;
+  font-size: 12px;
+  line-height: 1.83;
+  -webkit-letter-spacing: 0.8px;
+  -moz-letter-spacing: 0.8px;
+  -ms-letter-spacing: 0.8px;
+  letter-spacing: 0.8px;
+  color: #fff;
+  border: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.c3:focus {
+  outline: none;
+}
+
+<div
+  className="c0"
+  id="claim"
+>
+  <div
+    className="c1"
+  />
+  <div
+    className="c2"
+  >
+    MISSING: earningsClaimDefault
+  </div>
+  <button
+    className="c3"
+  >
+    MISSING: claim
+  </button>
+</div>
+`;

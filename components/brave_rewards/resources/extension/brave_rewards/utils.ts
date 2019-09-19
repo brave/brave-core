@@ -4,7 +4,7 @@
 
 import BigNumber from 'bignumber.js'
 import { getMessage } from './background/api/locale_api'
-import { WalletState } from 'brave-ui/features/rewards/walletWrapper'
+import { WalletState } from '../../ui/components/walletWrapper'
 
 export const convertBalance = (tokens: string, rates: Record<string, number> | undefined, currency: string = 'USD'): string => {
   const tokensNum = parseFloat(tokens)

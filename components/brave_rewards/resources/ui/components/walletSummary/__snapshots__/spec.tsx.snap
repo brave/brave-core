@@ -1,0 +1,429 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
+.c0 {
+  min-height: 305px;
+  padding: 0px;
+  background: inherit;
+}
+
+.c1 {
+  padding: 25px 14px 14px;
+  font-family: Poppins,sans-serif;
+}
+
+.c2 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.57;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  color: #a1a8f2;
+  text-transform: uppercase;
+}
+
+.c3 {
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 0.79;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  color: #4C54D2;
+  margin: 4px 0 26px;
+  text-transform: uppercase;
+}
+
+.c14 {
+  font-size: 12px;
+  color: #686978;
+  margin-top: 26px;
+  text-align: center;
+  padding: 0;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+}
+
+.c15 {
+  vertical-align: middle;
+  margin-right: 11px;
+  width: 22px;
+  height: 24px;
+  color: #A1A8F2;
+  display: inline-block;
+}
+
+.c4 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #d0d6dc;
+  border-top: none;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: baseline;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  font-family: Muli,sans-serif;
+}
+
+.c5 {
+  font-size: 14px;
+  line-height: 2.79;
+  color: #4b4c5c;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: 60%;
+  -ms-flex-preferred-size: 60%;
+  flex-basis: 60%;
+}
+
+.c6 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: 40%;
+  -ms-flex-preferred-size: 40%;
+  flex-basis: 40%;
+  text-align: right;
+}
+
+.c7 {
+  --tokens-value-color: #c12d7c;
+  --tokens-text-size: 14px;
+  --tokens-token-size: 14px;
+  --tokens-tokenNum-size: 14px;
+}
+
+.c12 {
+  --tokens-value-color: #9752cb;
+  --tokens-text-size: 14px;
+  --tokens-token-size: 14px;
+  --tokens-tokenNum-size: 14px;
+}
+
+.c13 {
+  --tokens-value-color: #696fdc;
+  --tokens-text-size: 14px;
+  --tokens-token-size: 14px;
+  --tokens-tokenNum-size: 14px;
+}
+
+.c8 {
+  display: inline-block;
+}
+
+.c9 {
+  color: var(--tokens-value-color);
+  font-size: var(--tokens-tokenNum-size);
+}
+
+.c11 {
+  color: #9E9FAB;
+  font-size: var(--tokens-text-size);
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.c10 {
+  font-size: var(--tokens-token-size);
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.c16 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+@media (max-width:385px) {
+  .c6 {
+    -webkit-flex-basis: 55%;
+    -ms-flex-preferred-size: 55%;
+    flex-basis: 55%;
+  }
+}
+
+<div
+  className="c0"
+  id="empty"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      MISSING: rewardsSummary
+    </div>
+    <div
+      className="c3"
+    >
+      MISSING: monthJun
+       
+      2019
+    </div>
+    <div>
+      <div
+        className="c4"
+        data-test-id="summary-grant"
+      >
+        <div
+          className="c5"
+        >
+          MISSING: tokenGrantClaimed
+        </div>
+        <div
+          className="c6"
+        >
+          <span
+            className="c7"
+            color="earnings"
+            size="normal"
+          >
+            <span
+              className="c8"
+            >
+              <span
+                className="c9"
+              >
+                
+                10.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
+            </span>
+            <span
+              className="c11"
+            >
+              0.25
+               
+              USD
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        className="c4"
+        data-test-id="summary-ads"
+      >
+        <div
+          className="c5"
+        >
+          MISSING: earningsAds
+        </div>
+        <div
+          className="c6"
+        >
+          <span
+            className="c7"
+            color="earnings"
+            size="normal"
+          >
+            <span
+              className="c8"
+            >
+              <span
+                className="c9"
+              >
+                
+                10.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
+            </span>
+            <span
+              className="c11"
+            >
+              0.25
+               
+              USD
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        className="c4"
+        data-test-id="summary-contribute"
+      >
+        <div
+          className="c5"
+        >
+          MISSING: rewardsContribute
+        </div>
+        <div
+          className="c6"
+        >
+          <span
+            className="c12"
+            color="contribute"
+            size="normal"
+          >
+            <span
+              className="c8"
+            >
+              <span
+                className="c9"
+              >
+                -
+                10.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
+            </span>
+            <span
+              className="c11"
+            >
+              0.25
+               
+              USD
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        className="c4"
+        data-test-id="summary-donation"
+      >
+        <div
+          className="c5"
+        >
+          MISSING: recurringDonations
+        </div>
+        <div
+          className="c6"
+        >
+          <span
+            className="c13"
+            color="donation"
+            size="normal"
+          >
+            <span
+              className="c8"
+            >
+              <span
+                className="c9"
+              >
+                -
+                2.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
+            </span>
+            <span
+              className="c11"
+            >
+              0.25
+               
+              USD
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        className="c4"
+        data-test-id="summary-tips"
+      >
+        <div
+          className="c5"
+        >
+          MISSING: oneTimeDonation
+        </div>
+        <div
+          className="c6"
+        >
+          <span
+            className="c13"
+            color="donation"
+            size="normal"
+          >
+            <span
+              className="c8"
+            >
+              <span
+                className="c9"
+              >
+                -
+                19.0
+              </span>
+              <span
+                className="c10"
+              >
+                BAT
+              </span>
+            </span>
+            <span
+              className="c11"
+            >
+              5.25
+               
+              USD
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <button
+      className="c14"
+      onClick={[Function]}
+    >
+      <span
+        className="c15"
+      >
+        <svg
+          aria-hidden="true"
+          className="c16"
+          focusable="false"
+          viewBox="0 0 32 32"
+        >
+          <path
+            d="M26.43 6H7.57A2.6 2.6 0 0 0 5 8.64V12H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1v3.36A2.6 2.6 0 0 0 7.57 26H16a1 1 0 0 0 0-2H7.57a.61.61 0 0 1-.57-.64V20h5a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H7V8.64A.61.61 0 0 1 7.57 8h18.86a.61.61 0 0 1 .57.64V16a1 1 0 0 0 2 0V8.64A2.6 2.6 0 0 0 26.43 6zM11 18H5v-4h6z"
+          />
+          <path
+            d="M8.92 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM23 21a1 1 0 0 0-1 1v3a1 1 0 0 0 2 0v-3a1 1 0 0 0-1-1zM23.56 18.17a.76.76 0 0 0-.18-.09L23.2 18a1 1 0 0 0-.58.06 1.15 1.15 0 0 0-.33.21A1.05 1.05 0 0 0 22 19a1 1 0 0 0 .08.38 1 1 0 0 0 .21.33 1.15 1.15 0 0 0 .33.21A1 1 0 0 0 23 20h.2l.18-.06a.76.76 0 0 0 .18-.09 1.58 1.58 0 0 0 .15-.12 1 1 0 0 0 .21-.33A1 1 0 0 0 24 19a1.05 1.05 0 0 0-.29-.71z"
+          />
+        </svg>
+      </span>
+      MISSING: viewMonthly
+    </button>
+  </div>
+</div>
+`;

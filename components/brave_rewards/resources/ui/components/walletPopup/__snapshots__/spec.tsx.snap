@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
+.c0 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0,0,0,0);
+  z-index: 99;
+  padding: 0 20px;
+  overflow: hidden;
+}
+
+.c1 {
+  margin: 52px auto;
+  background: #FFFFFF;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 12px 0 rgba(12,13,33,0.44);
+}
+
+.c2 {
+  padding: 20px;
+}
+
+.c3 {
+  font-weight: bold;
+  border-bottom: 1px solid #c2c4cf;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.c4 {
+  vertical-align: middle;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-left: -5px;
+}
+
+.c5 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+<div
+  className="c0"
+  id="wallet-popup"
+  onClick={[Function]}
+>
+  <div
+    className="c1"
+    onClick={[Function]}
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+      >
+        <span
+          className="c4"
+        >
+          <svg
+            aria-hidden="true"
+            className="c5"
+            focusable="false"
+            viewBox="0 0 32 32"
+          >
+            <defs>
+              <linearGradient
+                gradientTransform="matrix(18 0 0 -22 6834 12848)"
+                gradientUnits="userSpaceOnUse"
+                id="a"
+                x1="-378.78"
+                x2="-378.78"
+                y1="583.86"
+                y2="582.86"
+              >
+                <stop
+                  offset="0"
+                  stopColor="#78be06"
+                />
+                <stop
+                  offset="1"
+                  stopColor="#ff523c"
+                />
+              </linearGradient>
+              <linearGradient
+                gradientTransform="matrix(14 0 0 -19 5226 11171)"
+                gradientUnits="userSpaceOnUse"
+                id="b"
+                x1="-372.29"
+                x2="-372.29"
+                y1="587.63"
+                y2="586.66"
+              >
+                <stop
+                  offset="0"
+                  stopColor="#fab406"
+                />
+                <stop
+                  offset="1"
+                  stopColor="#fa5235"
+                />
+              </linearGradient>
+              <linearGradient
+                gradientTransform="matrix(-14 0 0 -19 -6012 11171)"
+                gradientUnits="userSpaceOnUse"
+                id="c"
+                x1="-430.71"
+                x2="-430.71"
+                y1="587.63"
+                y2="586.66"
+              >
+                <stop
+                  offset="0"
+                  stopColor="#3d58d0"
+                />
+                <stop
+                  offset="1"
+                  stopColor="#78b81b"
+                />
+              </linearGradient>
+            </defs>
+            <path
+              d="M13.21 28.51a1 1 0 0 1 .67-1.89 6.1 6.1 0 0 0 4.24 0 1 1 0 0 1 .67 1.89 8.19 8.19 0 0 1-5.58 0z"
+              fill="#ff523c"
+            />
+            <path
+              d="M16 25c-5 0-9-5-9-11s4-11 9-11 9 5 9 11-4 11-9 11zm0-2c3.81 0 7-4 7-9s-3.19-9-7-9-7 4-7 9 3.19 9 7 9z"
+              fill="url(#a)"
+            />
+            <path
+              d="M16 25c-5 0-9-5-9-11 0-.25 0-.66.07-1.19a13.81 13.81 0 0 1 .47-2.58C8.27 7.66 9.69 6 12 6c4.74 0 9 5.14 9 11 0 5.13-2.2 8-5 8zm0-2c1.56 0 3-1.88 3-6 0-4.83-3.45-9-7-9-1.19 0-2 1-2.54 2.77a12.53 12.53 0 0 0-.4 2.23A9.51 9.51 0 0 0 9 14c0 5 3.19 9 7 9z"
+              fill="url(#b)"
+            />
+             
+            <path
+              d="M16 25c5 0 9-5 9-11 0-.25 0-.66-.07-1.19a13.81 13.81 0 0 0-.47-2.58C23.73 7.66 22.31 6 20 6c-4.74 0-9 5.14-9 11 0 5.13 2.2 8 5 8zm0-2c-1.56 0-3-1.88-3-6 0-4.83 3.45-9 7-9 1.19 0 2 1 2.54 2.77a12.53 12.53 0 0 1 .4 2.23 9.51 9.51 0 0 1 .06 1c0 5-3.19 9-7 9z"
+              fill="url(#c)"
+            />
+          </svg>
+        </span>
+        tester
+      </div>
+      <p>
+        hi
+      </p>
+    </div>
+  </div>
+</div>
+`;

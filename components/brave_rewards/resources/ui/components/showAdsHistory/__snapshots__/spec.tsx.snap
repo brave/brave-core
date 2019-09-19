@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShowAdsHistory tests basic tests matches the snapshot 1`] = `
+.c0 {
+  padding-top: 10px;
+  text-align: right;
+}
+
+.c1 {
+  display: inline-block;
+  color: #ced0db;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+}
+
+<div
+  className="c0"
+>
+  <span
+    className="c1"
+  >
+    MISSING: openAdsHistory
+  </span>
+</div>
+`;

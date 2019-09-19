@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ad Rows Details tests basic tests matches the snapshot 1`] = `
+.c4 {
+  font-family: Muli,sans-serif;
+  font-size: 14px;
+  color: #5e6175;
+  display: inline-block;
+}
+
+.c1 {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.c0 {
+  text-align: left;
+  padding-top: 15px;
+}
+
+.c5 {
+  width: 94.5%;
+  padding-left: 10px;
+  display: inline-block;
+}
+
+.c6 {
+  color: #c2c4cf;
+  background-color: #c2c4cf;
+  height: 2px;
+  border: none;
+}
+
+.c2 {
+  margin: 0;
+  background: none;
+  border: none;
+  width: 16px;
+  height: 16px;
+  color: #c2c4cf;
+  padding: 1px;
+  outline: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+<tr>
+  <td
+    colSpan={3}
+  >
+    <div
+      className="c0"
+    >
+      <div
+        className="c1"
+        onClick={[Function]}
+      >
+        <div
+          className="c2"
+        >
+          <svg
+            aria-hidden="true"
+            className="c3"
+            focusable="false"
+            viewBox="0 0 32 32"
+          >
+            <path
+              d="M3.36242 7h17.26845c1.19463 0 1.79195 1.3994.94631 2.21953l-8.63087 8.37692c-.5235.5077-1.37584.5077-1.89933 0L2.41611 9.21953C1.57047 8.3994 2.16779 7 3.3624 7z"
+            />
+          </svg>
+        </div>
+        <div
+          className="c4"
+        >
+          
+        </div>
+        <div
+          className="c5"
+        >
+          <hr
+            className="c6"
+          />
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>
+`;
