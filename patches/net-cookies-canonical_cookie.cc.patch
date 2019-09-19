@@ -1,18 +1,17 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index c63b2d836db8cba9ca7fe72ffd86e0be149e6370..ee2e0cd8bcc7a9f4698051d4222fffc267dbb5be 100644
+index 584caa6eb0c592b1cdd3e047070faf5c7954dce5..e478afd7def7582a83d209dc79f7f8fe71ebd858 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
-@@ -238,9 +238,10 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
-     server_time = options.server_time();
+@@ -272,8 +272,10 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
+     cookie_server_time = server_time.value();
  
    DCHECK(!creation_time.is_null());
--  Time cookie_expires = CanonicalCookie::CanonExpiration(parsed_cookie,
--                                                         creation_time,
--                                                         server_time);
+-  Time cookie_expires = CanonicalCookie::CanonExpiration(
+-      parsed_cookie, creation_time, cookie_server_time);
 +  Time cookie_expires = BraveCanonExpiration(parsed_cookie,
 +                                             creation_time,
-+                                             server_time,
++                                             cookie_server_time,
 +                                             !options.exclude_httponly());
  
    CookiePrefix prefix = GetCookiePrefix(parsed_cookie.Name());
-   bool is_cookie_valid = IsCookiePrefixValid(prefix, url, parsed_cookie);
+   bool is_cookie_prefix_valid = IsCookiePrefixValid(prefix, url, parsed_cookie);

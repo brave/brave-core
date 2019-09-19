@@ -1,7 +1,7 @@
-diff --git a/components/content_settings/core/common/content_settings_struct_traits.h b/components/content_settings/core/common/content_settings_struct_traits.h
-index 55d50d612b0308ce6a877b7430a6d0eb86603d53..aa35e5146fa4b43437223e1175b0504b7f617e85 100644
---- a/components/content_settings/core/common/content_settings_struct_traits.h
-+++ b/components/content_settings/core/common/content_settings_struct_traits.h
+diff --git a/components/content_settings/core/common/content_settings_mojom_traits.h b/components/content_settings/core/common/content_settings_mojom_traits.h
+index c8b57f679adf9b72c9ee73af3a73d1de2a8ee609..1c71d35f336e56f3e3b9f14cd948517b5711142f 100644
+--- a/components/content_settings/core/common/content_settings_mojom_traits.h
++++ b/components/content_settings/core/common/content_settings_mojom_traits.h
 @@ -145,6 +145,16 @@ struct StructTraits<
      return r.popup_redirect_rules;
    }

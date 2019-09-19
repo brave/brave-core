@@ -1,74 +1,12 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index e4909a9b80ed30510843b72f0ede108d500f6ac3..1502a691191a482789c001b14c162d638ca35731 100644
+index afbff0630db7d705d381f059b8bfa08145fbe9a2..c6b6274bc39b52aa560dcfb8eafeaf2fd34e7928 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
-@@ -3,10 +3,23 @@
- // found in the LICENSE file.
- 
- #include "components/content_settings/core/common/cookie_settings_base.h"
-+#include "base/debug/stack_trace.h"
-+#include "base/debug/task_trace.h"
-+#include "base/feature_list.h"
-+#include "components/content_settings/core/common/features.h"
-+#include "net/base/net_errors.h"
-+#include "net/base/static_cookie_policy.h"
- #include "net/cookies/cookie_util.h"
- #include "url/gurl.h"
- 
- namespace content_settings {
-+namespace {
-+bool IsThirdPartyRequest(const GURL& url, const GURL& site_for_cookies) {
-+  net::StaticCookiePolicy policy(
-+      net::StaticCookiePolicy::BLOCK_ALL_THIRD_PARTY_COOKIES);
-+  return policy.CanAccessCookies(url, site_for_cookies) != net::OK;
-+}
-+}  // namespace
- 
- bool CookieSettingsBase::ShouldDeleteCookieOnExit(
-     const ContentSettingsForOneType& cookie_settings,
-@@ -38,14 +51,45 @@ bool CookieSettingsBase::ShouldDeleteCookieOnExit(
-   return setting == CONTENT_SETTING_SESSION_ONLY || matches_session_only_rule;
- }
- 
-+void CookieSettingsBase::GetCookieSetting(
-+    const GURL& url,
-+    const GURL& first_party_url,
-+    content_settings::SettingSource* source,
-+    ContentSetting* cookie_setting) const {
-+  GetCookieSettingInternal(url, first_party_url,
-+                           IsThirdPartyRequest(url, first_party_url), source,
-+                           cookie_setting);
-+}
-+
- bool CookieSettingsBase::IsCookieAccessAllowed(
+@@ -78,6 +78,7 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
      const GURL& url,
-     const GURL& first_party_url) const {
-+  DCHECK(!base::FeatureList::IsEnabled(kImprovedCookieControls) ||
-+         !first_party_url.is_empty() || url.is_empty());
-   ContentSetting setting;
-   GetCookieSetting(url, first_party_url, nullptr, &setting);
-   return IsAllowed(setting);
- }
- 
-+bool CookieSettingsBase::IsCookieAccessAllowed(
-+    const GURL& url,
-+    const GURL& site_for_cookies,
-+    const base::Optional<url::Origin>& top_frame_origin) const {
+     const GURL& site_for_cookies,
+     const base::Optional<url::Origin>& top_frame_origin) const {
 +  BRAVE_IS_COOKIE_ACCESS_ALLOWED
-+  // TODO(crbug.com/988398): top_frame_origin is not yet always available.
-+  // Ensure that the DCHECK always passes and remove the FeatureList check.
-+  if (!base::FeatureList::IsEnabled(kImprovedCookieControls))
-+    return IsCookieAccessAllowed(url, site_for_cookies);
-+  DCHECK(top_frame_origin || site_for_cookies.is_empty())
-+      << url << " " << site_for_cookies;
-+
-+  ContentSetting setting;
-+  GetCookieSettingInternal(
-+      url, top_frame_origin ? top_frame_origin->GetURL() : GURL(),
-+      IsThirdPartyRequest(url, site_for_cookies), nullptr, &setting);
-+  return IsAllowed(setting);
-+}
-+
- bool CookieSettingsBase::IsCookieSessionOnly(const GURL& origin) const {
-   ContentSetting setting;
-   GetCookieSetting(origin, origin, nullptr, &setting);
+   // TODO(crbug.com/988398): top_frame_origin is not yet always available.
+   // Ensure that the DCHECK always passes and remove the FeatureList check.
+   if (!base::FeatureList::IsEnabled(kImprovedCookieControls))

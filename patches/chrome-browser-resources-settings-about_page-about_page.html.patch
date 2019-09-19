@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/about_page/about_page.html b/chrome/browser/resources/settings/about_page/about_page.html
-index 18c371cdbbe94c2b995988994408543ed9dccbcb..d971ad5e836246fa51edbe0d380a7defd5d155c9 100644
+index 4571c6eea39c5c279c89f1621a6596e9676501e5..69bc8263a7626c62f4c8840e1bb40b544b3979ff 100644
 --- a/chrome/browser/resources/settings/about_page/about_page.html
 +++ b/chrome/browser/resources/settings/about_page/about_page.html
-@@ -136,7 +136,7 @@
+@@ -160,7 +160,7 @@
                  </div>
                  <a hidden$="[[!shouldShowLearnMoreLink_(
                      currentUpdateStatusEvent_)]]" target="_blank"

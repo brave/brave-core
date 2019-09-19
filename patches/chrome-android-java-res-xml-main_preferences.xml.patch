@@ -1,11 +1,11 @@
 diff --git a/chrome/android/java/res/xml/main_preferences.xml b/chrome/android/java/res/xml/main_preferences.xml
-index 64ab2b255953d47c8e63082148e08f08c63a34fd..9c0db6db63ccdd6c97d84f5e828d8b40dbfd1bbb 100644
+index a5c50e6987dd700c7b9985223d54156c84fdc225..ffad3787b6add5d77523ee250f73af237567f67b 100644
 --- a/chrome/android/java/res/xml/main_preferences.xml
 +++ b/chrome/android/java/res/xml/main_preferences.xml
 @@ -71,7 +71,7 @@
          android:order="12"
          android:title="@string/prefs_section_advanced"/>
-     <android.support.v7.preference.Preference
+     <Preference
 -        android:fragment="org.chromium.chrome.browser.preferences.privacy.PrivacyPreferences"
 +        android:fragment="org.chromium.chrome.browser.preferences.privacy.BravePrivacyPreferences"
          android:key="privacy"

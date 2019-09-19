@@ -1,8 +1,8 @@
 diff --git a/net/proxy_resolution/proxy_resolution_service.cc b/net/proxy_resolution/proxy_resolution_service.cc
-index fc422b4390cc4aa66034596b4343326c66c85ff7..4c62b9f0ea1d08ef71c205923cccbadd09ffb44d 100644
+index bea9e508fcf56547fba8ad6482a2b8e32c56fb31..e105516c678b86c2ab892f0c688d8d0ae14a8b78 100644
 --- a/net/proxy_resolution/proxy_resolution_service.cc
 +++ b/net/proxy_resolution/proxy_resolution_service.cc
-@@ -1218,6 +1218,7 @@ int ProxyResolutionService::TryToCompleteSynchronously(
+@@ -1220,6 +1220,7 @@ int ProxyResolutionService::TryToCompleteSynchronously(
    config_->value().proxy_rules().Apply(url, result);
    result->set_traffic_annotation(
        MutableNetworkTrafficAnnotationTag(config_->traffic_annotation()));

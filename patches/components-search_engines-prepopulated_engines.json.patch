@@ -1,8 +1,8 @@
 diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
-index 3dedb8cc630a6a3ced291d64bdea5a8c638787cf..3aac89e71ea0013c7c864e7acd1f88489e453cc8 100644
+index b0474152926497b556a1c61aa63c42dc7e496470..e32677d29ca7053fb18386e1150b2239a31b3dca 100644
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
-@@ -95,17 +95,6 @@
+@@ -91,17 +91,6 @@
        "id": 68
      },
  
@@ -20,7 +20,7 @@ index 3dedb8cc630a6a3ced291d64bdea5a8c638787cf..3aac89e71ea0013c7c864e7acd1f8848
      "google": {
        "name": "Google",
        "keyword": "google.com",
-@@ -150,16 +139,6 @@
+@@ -146,16 +135,6 @@
        "id": 67
      },
  

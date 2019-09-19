@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/sandboxed_unpacker.cc b/extensions/browser/sandboxed_unpacker.cc
-index 5e60ac96251f22aa8b380ea573827b50513b82cd..6152b84d8864bad64e061e4ffab2e205dba019f0 100644
+index 17f70a1e7d4c85e0dbe9df697b2b2be3f72329c0..9dd9dceac497fe6e00fdf82c331f521bf014968e 100644
 --- a/extensions/browser/sandboxed_unpacker.cc
 +++ b/extensions/browser/sandboxed_unpacker.cc
-@@ -967,6 +967,7 @@ base::DictionaryValue* SandboxedUnpacker::RewriteManifestFile(
+@@ -965,6 +965,7 @@ base::DictionaryValue* SandboxedUnpacker::RewriteManifestFile(
    DCHECK(!public_key_.empty());
    std::unique_ptr<base::DictionaryValue> final_manifest =
        manifest.CreateDeepCopy();
