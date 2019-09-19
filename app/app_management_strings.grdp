@@ -70,7 +70,7 @@
   <message name="IDS_APP_MANAGEMENT_SIZE" desc="Label for the size of an app in the app settings page.">
     Size: <ph name="APP_SIZE">$1<ex>8.0MB</ex></ph>
   </message>
-  <message name="IDS_APP_MANAGEMENT_UNINSTALL" desc="Label for the uninstall button in the app settings page.">
+  <message name="IDS_APP_MANAGEMENT_UNINSTALL_APP" desc="Label for the uninstall button in the app settings page.">
     Uninstall
   </message>
   <message name="IDS_APP_MANAGEMENT_VERSION" desc="Label for version of an app in the app settings page.">
@@ -84,5 +84,11 @@
   </message>
   <message name="IDS_APP_MANAGEMENT_STORAGE" desc="Label for the Android storage permission toggle.">
     Storage
+  </message>
+  <message name="IDS_APP_MANAGEMENT_SYSTEM_APP_POLICY_STRING" desc="Tooltip label explaining that an app cannot be uninstalled as it is a part of Brave OS (the operating system).">
+    This app cannot be uninstalled as it is part of Brave OS.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_POLICY_APP_POLICY_STRING" desc="Tooltip label explaining that an app cannot be uninstalled as it has been installed by an adminstrator.">
+    This app has been installed by your administrator.
   </message>
 </grit-part>
