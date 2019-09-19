@@ -11,57 +11,55 @@
 namespace extensions {
 namespace api {
 
-class BraveSyncGetInitDataFunction : public UIThreadExtensionFunction {
+class BraveSyncGetInitDataFunction : public ExtensionFunction {
   ~BraveSyncGetInitDataFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.getInitData", UNKNOWN)
   ResponseAction Run() override;
 };
 
-class BraveSyncSyncSetupErrorFunction : public UIThreadExtensionFunction {
+class BraveSyncSyncSetupErrorFunction : public ExtensionFunction {
   ~BraveSyncSyncSetupErrorFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.syncSetupError", UNKNOWN)
   ResponseAction Run() override;
 };
 
-class BraveSyncSyncDebugFunction : public UIThreadExtensionFunction {
+class BraveSyncSyncDebugFunction : public ExtensionFunction {
   ~BraveSyncSyncDebugFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.syncDebug", UNKNOWN)
   ResponseAction Run() override;
 };
 
-class BraveSyncSaveInitDataFunction : public UIThreadExtensionFunction {
+class BraveSyncSaveInitDataFunction : public ExtensionFunction {
   ~BraveSyncSaveInitDataFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.saveInitData", UNKNOWN)
   ResponseAction Run() override;
 };
 
-class BraveSyncSyncReadyFunction : public UIThreadExtensionFunction {
+class BraveSyncSyncReadyFunction : public ExtensionFunction {
   ~BraveSyncSyncReadyFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.syncReady", UNKNOWN)
   ResponseAction Run() override;
 };
 
-class BraveSyncGetExistingObjectsFunction : public UIThreadExtensionFunction {
+class BraveSyncGetExistingObjectsFunction : public ExtensionFunction {
   ~BraveSyncGetExistingObjectsFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.getExistingObjects", UNKNOWN)
   ResponseAction Run() override;
 };
 
-class BraveSyncResolvedSyncRecordsFunction : public UIThreadExtensionFunction {
+class BraveSyncResolvedSyncRecordsFunction : public ExtensionFunction {
   ~BraveSyncResolvedSyncRecordsFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.resolvedSyncRecords", UNKNOWN)
   ResponseAction Run() override;
 };
 
-class BraveSyncSaveBookmarksBaseOrderFunction
-    : public UIThreadExtensionFunction {
+class BraveSyncSaveBookmarksBaseOrderFunction : public ExtensionFunction {
   ~BraveSyncSaveBookmarksBaseOrderFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.saveBookmarksBaseOrder", UNKNOWN)
   ResponseAction Run() override;
 };
 
-class BraveSyncExtensionInitializedFunction
-    : public UIThreadExtensionFunction {
+class BraveSyncExtensionInitializedFunction : public ExtensionFunction {
   ~BraveSyncExtensionInitializedFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.extensionInitialized", UNKNOWN)
   ResponseAction Run() override;

@@ -10,7 +10,7 @@
 namespace extensions {
 namespace api {
 
-class RewardsNotificationsAddNotificationFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsAddNotificationFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("rewardsNotifications.addNotification", UNKNOWN)
 
@@ -20,7 +20,8 @@ class RewardsNotificationsAddNotificationFunction : public UIThreadExtensionFunc
   ResponseAction Run() override;
 };
 
-class RewardsNotificationsDeleteNotificationFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsDeleteNotificationFunction
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("rewardsNotifications.deleteNotification", UNKNOWN)
 
@@ -30,7 +31,8 @@ class RewardsNotificationsDeleteNotificationFunction : public UIThreadExtensionF
   ResponseAction Run() override;
 };
 
-class RewardsNotificationsDeleteAllNotificationsFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsDeleteAllNotificationsFunction
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("rewardsNotifications.deleteAllNotifications", UNKNOWN)
 
@@ -40,7 +42,7 @@ class RewardsNotificationsDeleteAllNotificationsFunction : public UIThreadExtens
   ResponseAction Run() override;
 };
 
-class RewardsNotificationsGetNotificationFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsGetNotificationFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("rewardsNotifications.getNotification", UNKNOWN)
 
@@ -50,7 +52,8 @@ class RewardsNotificationsGetNotificationFunction : public UIThreadExtensionFunc
   ResponseAction Run() override;
 };
 
-class RewardsNotificationsGetAllNotificationsFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsGetAllNotificationsFunction
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("rewardsNotifications.getAllNotifications", UNKNOWN)
 
