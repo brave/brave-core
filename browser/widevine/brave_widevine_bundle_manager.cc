@@ -362,9 +362,8 @@ scoped_refptr<base::SequencedTaskRunner>
 BraveWidevineBundleManager::file_task_runner() {
   if (!file_task_runner_) {
     file_task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
-                            { base::MayBlock(),
-                              base::TaskPriority::BEST_EFFORT,
-                              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN });
+        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return file_task_runner_;
 }

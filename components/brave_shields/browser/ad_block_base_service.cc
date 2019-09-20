@@ -184,7 +184,7 @@ bool AdBlockBaseService::TagExists(const std::string& tag) {
 
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
   base::PostTaskWithTraitsAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
+      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(
           &brave_component_updater::LoadDATFileData<adblock::Engine>,
           dat_file_path),
