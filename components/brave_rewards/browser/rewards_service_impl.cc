@@ -432,7 +432,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
       file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
-          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+          {base::ThreadPool(), base::MayBlock(),
+           base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),

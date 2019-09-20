@@ -60,10 +60,9 @@ std::string BraveTorClientUpdater::g_tor_client_component_base64_public_key_(
 
 BraveTorClientUpdater::BraveTorClientUpdater(BraveComponent::Delegate* delegate)
     : BraveComponent(delegate),
-      task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
-      registered_(false) {
-}
+      task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock()})),
+      registered_(false) {}
 
 BraveTorClientUpdater::~BraveTorClientUpdater() {
 }

@@ -55,10 +55,10 @@
 
 BraveProfileWriter::BraveProfileWriter(Profile* profile)
     : ProfileWriter(profile),
-      task_runner_(base::CreateSequencedTaskRunnerWithTraits({
-          base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
-}
+      task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock(),
+           base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {}
 
 BraveProfileWriter::~BraveProfileWriter() {
   DCHECK(!IsInObserverList());
