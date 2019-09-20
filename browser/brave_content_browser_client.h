@@ -13,6 +13,7 @@
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
+#include "third_party/blink/public/mojom/referrer.mojom.h"
 
 class PrefChangeRegistrar;
 
@@ -77,7 +78,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                          const GURL& request_url,
                          const GURL& document_url,
                          bool is_main_frame,
-                         content::Referrer* referrer) override;
+                         blink::mojom::ReferrerPtr* referrer) override;
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;

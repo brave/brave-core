@@ -281,8 +281,8 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     const GURL& request_url,
     const GURL& document_url,
     bool is_main_frame,
-    content::Referrer* referrer) {
-  DCHECK(referrer);
+    blink::mojom::ReferrerPtr* referrer) {
+  DCHECK(referrer && !referrer->is_null());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (document_url.SchemeIs(kChromeExtensionScheme)) {
     return;
@@ -300,9 +300,13 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     // But iframe navigations get spoofed instead (brave/brave-browser#3988).
     replacement_referrer_url = request_url.GetOrigin();
   }
-  brave_shields::ShouldSetReferrer(
-      allow_referrers, shields_up, referrer->url, document_url, request_url,
-      replacement_referrer_url, referrer->policy, referrer);
+  content::Referrer new_referrer;
+  if (brave_shields::ShouldSetReferrer(
+      allow_referrers, shields_up, (*referrer)->url, document_url, request_url,
+          replacement_referrer_url, (*referrer)->policy, &new_referrer)) {
+    (*referrer)->url = new_referrer.url;
+    (*referrer)->policy = new_referrer.policy;
+  }
 }
 
 GURL BraveContentBrowserClient::GetEffectiveURL(
