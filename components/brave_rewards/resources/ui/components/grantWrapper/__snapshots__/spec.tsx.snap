@@ -1,92 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
-.c0 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 6;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-  -webkit-align-content: flex-start;
-  -ms-flex-line-pack: start;
-  align-content: flex-start;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  overflow: hidden;
-  width: 100%;
-  padding: 0 52px 20px;
-  border-radius: 6px;
-  height: auto;
-  overflow-y: hidden;
-  background: rgba(255,255,255,0.95);
-}
-
-.c3 {
-  text-align: center;
-  width: 100%;
-  margin: 59px 0;
-}
-
-.c4 {
-  width: 100%;
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 1.29;
-  -webkit-letter-spacing: -0.2px;
-  -moz-letter-spacing: -0.2px;
-  -ms-letter-spacing: -0.2px;
-  letter-spacing: -0.2px;
-  text-align: center;
-  color: #fb542b;
-}
-
-.c1 {
-  top: 16px;
-  right: 16px;
-  position: absolute;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: #9E9FAB;
-  width: 20px;
-  height: 20px;
-}
-
-.c5 {
-  width: 100%;
-  font-family: Muli,sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.63;
-  text-align: center;
-  color: #4b4c5c;
-}
-
-.c2 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa eWNXzA"
   id="wrapper"
 >
   <button
-    className="c1"
+    className="sc-bxivhb dvKsfe"
   >
     <svg
       aria-hidden="true"
-      className="c2"
+      className="sc-Rmtcm iAmJSQ"
       focusable="false"
       viewBox="0 0 32 32"
     >
@@ -99,7 +23,7 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
     </svg>
   </button>
   <div
-    className="c3"
+    className="sc-bwzfXH jiUoSN"
   >
     <svg
       height="113"
@@ -349,10 +273,10 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
     </svg>
   </div>
   <div
-    className="c4"
+    className="sc-htpNat fgLoip"
   />
   <div
-    className="c5"
+    className="sc-ifAKCX jyPgYP"
   />
 </div>
 `;

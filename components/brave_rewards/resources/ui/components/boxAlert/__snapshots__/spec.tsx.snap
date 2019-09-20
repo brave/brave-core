@@ -1,73 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BoxAlert tests basic tests matches the snapshot 1`] = `
-.c0 {
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  background: #f0f8ff;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  border-radius: 4px;
-}
-
-.c1 {
-  width: 24px;
-  height: 24px;
-  margin: 8px;
-  color: #339af0;
-}
-
-.c3 {
-  font-size: 16px;
-  font-family: Muli,sans-serif;
-  color: #5e6175;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c2 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa fvbaov"
 >
   <div
-    className="c1"
+    className="sc-bwzfXH ciNgcV"
   >
     <svg
       aria-hidden="true"
-      className="c2"
+      className="sc-kkGfuU ktzHgS"
       focusable="false"
       viewBox="0 0 32 32"
     >
@@ -77,10 +19,10 @@ exports[`BoxAlert tests basic tests matches the snapshot 1`] = `
     </svg>
   </div>
   <div
-    className="c3"
+    className="sc-htpNat gVIChY"
   >
     <span
-      className="c4"
+      className="sc-bxivhb gepbvZ"
     >
       MISSING: adsNotSupported
     </span>

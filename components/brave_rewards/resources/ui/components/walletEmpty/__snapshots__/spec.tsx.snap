@@ -1,38 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WalletEmpty tests basic tests matches the snapshot 1`] = `
-.c0 {
-  padding-top: 32px;
-  text-align: center;
-  font-family: Poppins,sans-serif;
-}
-
-.c1 {
-  font-size: 22px;
-  font-weight: 300;
-  line-height: 1.05;
-  color: #999ea2;
-  margin-top: 32px;
-}
-
-.c2 {
-  font-family: Muli,sans-serif;
-  font-size: 14px;
-  line-height: 1.57;
-  color: #999ea2;
-  margin: 36px auto 31px;
-  text-align: left;
-  max-width: 250px;
-  width: 100%;
-}
-
-.c2 b {
-  font-weight: 600;
-  color: #686978;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa dVIGAC"
   id="empty"
 >
   <svg
@@ -202,12 +172,12 @@ exports[`WalletEmpty tests basic tests matches the snapshot 1`] = `
     </g>
   </svg>
   <div
-    className="c1"
+    className="sc-bwzfXH bbPSBb"
   >
     MISSING: rewardsPanelEmptyText1
   </div>
   <div
-    className="c2"
+    className="sc-htpNat dlsyEp"
   >
     <b>
       MISSING: rewardsPanelEmptyText2

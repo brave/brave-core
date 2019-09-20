@@ -1,142 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalPending tests basic tests matches the snapshot 1`] = `
-.c5 {
-  font-family: Poppins,sans-serif;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 2;
-  color: #4b4c5c;
-  margin-bottom: 20px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.c0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(12,13,33,0.85);
-  z-index: 99;
-  padding: 0 20px;
-  overflow: hidden;
-}
-
-.c1 {
-  max-width: 920px;
-  margin: 52px auto;
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.c2 {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  color: #9E9FAB;
-}
-
-.c4 {
-  padding: 48px 48px;
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
-}
-
-.c3 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c11 {
-  text-align: center;
-  padding: 30px 0;
-  color: #999ea2;
-  font-size: 14px;
-}
-
-.c7 {
-  min-width: 100%;
-  margin: 24px 0;
-}
-
-.c8 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 12px 0;
-  border: none;
-  border-bottom: 1px solid #696FDC;
-  padding: 0;
-  color: #696FDC;
-}
-
-.c9 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 12px 0;
-  border: none;
-  border-bottom: 1px solid #696FDC;
-  padding: 0;
-  color: #696FDC;
-  text-align: right;
-}
-
-.c10 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 12px 0;
-  border: none;
-  border-bottom: 1px solid #696FDC;
-  padding: 0 10px;
-  color: #696FDC;
-  text-align: center;
-}
-
 <div
-  className="c0"
+  className="sc-bxivhb gajzlG"
   id="modal"
   onClick={[Function]}
 >
   <div
-    className="c1"
+    className="sc-ifAKCX bIZhmi"
     size="normal"
   >
     <div
-      className="c2"
+      className="sc-EHOje ePPINe"
     >
       <svg
         aria-hidden="true"
-        className="c3"
+        className="sc-csuQGl kKIZdW"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -149,13 +28,13 @@ exports[`ModalPending tests basic tests matches the snapshot 1`] = `
       </svg>
     </div>
     <div
-      className="c4"
+      className="sc-bZQynM lhztOZ"
     >
       <div
-        className="c5"
+        className="sc-bdVaJa bJpVkp"
       >
         <div
-          className="c6"
+          className="sc-bwzfXH gjsiUo"
         >
           MISSING: pendingContributions
         </div>
@@ -164,32 +43,32 @@ exports[`ModalPending tests basic tests matches the snapshot 1`] = `
         >
           <div>
             <table
-              className="c7"
+              className="sc-hGoxap SwLTZ"
             >
               <thead>
                 <tr>
                   <th
-                    className="c8"
+                    className="sc-fjmCvl iMsGUp"
                   >
                     MISSING: site
                   </th>
                   <th
-                    className="c8"
+                    className="sc-fjmCvl iMsGUp"
                   >
                     MISSING: type
                   </th>
                   <th
-                    className="c8"
+                    className="sc-fjmCvl iMsGUp"
                   >
                     MISSING: pendingUntil
                   </th>
                   <th
-                    className="c9"
+                    className="sc-fjmCvl jvpaNM"
                   >
                     MISSING: amount
                   </th>
                   <th
-                    className="c10"
+                    className="sc-fjmCvl dTTzxF"
                   >
                     MISSING: remove
                   </th>
@@ -197,7 +76,7 @@ exports[`ModalPending tests basic tests matches the snapshot 1`] = `
               </thead>
             </table>
             <div
-              className="c11"
+              className="sc-laTMn eMHaUs"
             >
               MISSING: pendingContributionEmpty
             </div>

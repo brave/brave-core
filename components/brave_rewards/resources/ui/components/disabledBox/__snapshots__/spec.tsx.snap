@@ -1,90 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DisabledBox tests basic tests matches the snapshot 1`] = `
-.c2 {
-  max-width: 100%;
-  width: 100%;
-  min-height: auto;
-  margin: 0;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.15);
-  font-size: inherit;
-  font-family: Muli,sans-serif;
-  box-sizing: border-box;
-  position: relative;
-}
-
-.c3 {
-  padding: 32px;
-}
-
-.c0 {
-  display: block;
-  width: 100%;
-  margin-bottom: 28px;
-}
-
-.c1 {
-  font-family: Poppins,sans-serif;
-}
-
-.c4 {
-  width: 541px;
-  color: #4C54D2;
-  font-size: 22px;
-  font-weight: 600;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 28px;
-  padding-bottom: 5px;
-}
-
-.c5 {
-  color: #84889c;
-  font-size: 16px;
-  font-weight: normal;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 26px;
-  padding-bottom: 0px;
-  font-family: Muli,sans-serif;
-}
-
-.c5:first-of-type {
-  padding-bottom: 10px;
-}
-
 <div
-  className="c0"
+  className="sc-htpNat kYtFoj"
 >
   <div
-    className="c1 c2"
+    className="sc-bxivhb dzitEo sc-bdVaJa ckHBAc"
   >
     <div
-      className="c1 c3"
+      className="sc-bxivhb dzitEo sc-bwzfXH JXQVG"
     >
       <span
-        className="c4"
+        className="sc-ifAKCX kAJeqS"
       >
         MISSING: whyBraveRewards
       </span>
       <p
-        className="c5"
+        className="sc-EHOje bTkuBk"
       >
         MISSING: rewardsOffText5
       </p>
       <span
-        className="c4"
+        className="sc-ifAKCX kAJeqS"
       >
         MISSING: rewardsOffText3
       </span>
       <p
-        className="c5"
+        className="sc-EHOje bTkuBk"
       >
         MISSING: rewardsOffText4
       </p>

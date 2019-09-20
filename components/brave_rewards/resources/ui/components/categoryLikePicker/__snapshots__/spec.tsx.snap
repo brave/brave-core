@@ -2,35 +2,15 @@
 
 exports[`Category Like Picker tests basic tests matches the snapshot 1`] = `
 Array [
-  .c0 {
-  display: inline-block;
-}
-
-.c1 {
-  margin: auto;
-  border: none;
-  height: 32px;
-  width: 32px;
-  outline: none;
-  cursor: pointer;
-  object-fit: cover;
-}
-
-.c2 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-<div
-    className="c0"
+  <div
+    className="sc-bdVaJa bSrzPW"
   >
     <div
-      className="c1"
+      className="sc-htpNat lhkAeX"
     >
       <svg
         aria-hidden="true"
-        className="c2"
+        className="sc-RefOD EQJWu"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -40,98 +20,35 @@ Array [
       </svg>
     </div>
   </div>,
-  .c0 {
-  display: inline-block;
-}
-
-.c6 {
-  border: none;
-  height: 31px;
-  width: 31px;
-  outline: none;
-  cursor: pointer;
-}
-
-.c7 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c1 {
-  display: inline-block;
-  position: relative;
-}
-
-.c2 {
-  left: 50%;
-  top: calc(100% + 10px);
-  -webkit-transform: translateX(-80%);
-  -ms-transform: translateX(-80%);
-  transform: translateX(-80%);
-  white-space: nowrap;
-  position: absolute;
-  background: #0C0D21;
-  text-align: center;
-  padding: 10px;
-  z-index: 2;
-  border-radius: 3px;
-  box-shadow: 1px 1px 5px 0 rgba(34,35,38,0.43);
-  display: none;
-}
-
-.c4 {
-  color: #FFFFFF;
-  font-family: Muli,sans-serif;
-  font-weight: 300;
-  font-size: 14px;
-}
-
-.c3 {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  position: absolute;
-  top: -7px;
-  left: calc(80% - 10px);
-  border-width: 0 7px 8px 7px;
-  border-color: transparent transparent #0C0D21 transparent;
-}
-
-.c5 {
-  cursor: pointer;
-  height: 24px;
-}
-
-<div
-    className="c0"
+  <div
+    className="sc-bwzfXH kfvjYX"
   >
     <div
-      className="c1"
+      className="sc-bWkBrx BDgzH"
     >
       <div
-        className="c2"
+        className="sc-cxZfpC ldVFwd"
       >
         <div
-          className="c3"
+          className="sc-fVHxE hcDWyc"
         />
         <div
-          className="c4"
+          className="sc-jIyBzM irrUSQ"
         >
           MISSING: optOutTooltip
         </div>
       </div>
       <div
-        className="c5"
+        className="sc-jvjHmY TCaxu"
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
       >
         <div
-          className="c6"
+          className="sc-bxivhb iPuzmj"
         >
           <svg
             aria-hidden="true"
-            className="c7"
+            className="sc-elJkPf iDnOOK"
             focusable="false"
             viewBox="0 0 32 32"
           >

@@ -1,81 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
-.c0 {
-  text-align: center;
-  margin: 15px 0 0 -32px;
-  width: 333px;
-}
-
-.c5 {
-  width: 333px;
-  height: 296px;
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c2 {
-  -webkit-flex-basis: 80px;
-  -ms-flex-preferred-size: 80px;
-  flex-basis: 80px;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c4 {
-  -webkit-flex-basis: 130px;
-  -ms-flex-preferred-size: 130px;
-  flex-basis: 130px;
-  font-family: Muli,sans-serif;
-  font-size: 14px;
-  line-height: 1.29;
-  color: #686978;
-  text-align: left;
-  padding-left: 13px;
-}
-
-.c3 {
-  width: 60px;
-  height: 52px;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa glUVRO"
   id="captcha"
 >
   <div
-    className="c1"
+    className="sc-htpNat gXzayw"
   >
     <div
-      className="c2"
+      className="sc-bxivhb erCrFP"
     >
       <img
-        className="c3"
+        className="sc-EHOje jkqEc"
         draggable={true}
         onDragStart={[Function]}
-        src="test-file-stub"
       />
     </div>
     <div
-      className="c4"
+      className="sc-ifAKCX eDHzGh"
     >
       MISSING: dndCaptchaText1
        
@@ -85,7 +28,7 @@ exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
     </div>
   </div>
   <img
-    className="c5"
+    className="sc-bwzfXH dzGrHy"
     draggable={false}
     onDragOver={[Function]}
     onDrop={[Function]}

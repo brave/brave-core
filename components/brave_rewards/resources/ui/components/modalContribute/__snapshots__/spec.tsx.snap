@@ -1,216 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
-.c5 {
-  font-family: Poppins,sans-serif;
-}
-
-.c7 {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 2;
-  color: #4b4c5c;
-  margin-bottom: 20px;
-}
-
-.c17 {
-  font-size: 16px;
-  color: #4b4c5c;
-  margin: 30px 0px 20px;
-}
-
-.c18 {
-  font-weight: 500;
-  color: #0c0d21;
-}
-
-.c8 {
-  margin: 0 auto 30px;
-}
-
-.c6 {
-  width: 100%;
-  margin-bottom: 30px;
-}
-
-.c3 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(12,13,33,0.85);
-  z-index: 99;
-  padding: 0 20px;
-  overflow: hidden;
-}
-
-.c1 {
-  max-width: 666px;
-  margin: 52px auto;
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.c2 {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  color: #9E9FAB;
-}
-
-.c4 {
-  padding: 48px 48px;
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
-}
-
-.c23 {
-  text-align: center;
-  padding: 30px 0;
-  color: #999ea2;
-  font-size: 14px;
-}
-
-.c19 {
-  min-width: 100%;
-  margin: 24px 0;
-}
-
-.c20 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 12px 0;
-}
-
-.c22 {
-  text-align: right;
-}
-
-.c21 {
-  padding-right: 10px;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  font-family: Poppins,sans-serif;
-}
-
-.c10 {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 43px;
-  cursor: pointer;
-}
-
-.c11 {
-  width: 100%;
-  height: 100%;
-  background: #DFDFE8;
-  border-radius: 21.5px 21.5px 21.5px 21.5px;
-}
-
-.c16 {
-  top: -17px;
-  width: 50%;
-  height: 37px;
-  background: #FFFFFF;
-  border-radius: 21.5px 21.5px 21.5px 21.5px;
-  position: relative;
-  -webkit-transition: all .4s ease;
-  transition: all .4s ease;
-  -webkit-transform: translate(calc(2%),calc(-50% - 4px));
-  -ms-transform: translate(calc(2%),calc(-50% - 4px));
-  transform: translate(calc(2%),calc(-50% - 4px));
-  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
-}
-
-.c12 {
-  width: 50%;
-  display: block;
-  height: 100%;
-  float: left;
-}
-
-.c14 {
-  width: 50%;
-  display: block;
-  height: 100%;
-  float: right;
-}
-
-.c13 {
-  z-index: 9;
-  position: relative;
-  font-size: 14px;
-  width: 70%;
-  margin: 13px auto 0 auto;
-  text-overflow: ellipsis;
-  display: block;
-  overflow: hidden;
-  text-align: center;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  color: #4C54D2;
-  font-weight: 500;
-}
-
-.c15 {
-  z-index: 9;
-  position: relative;
-  font-size: 14px;
-  width: 70%;
-  margin: 13px auto 0 auto;
-  text-overflow: ellipsis;
-  display: block;
-  overflow: hidden;
-  text-align: center;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  color: #84889c;
-  font-weight: normal;
-}
-
 <div
-  className="c0"
+  className="sc-hjRWVT cKRpjy"
   id="modal"
   onClick={[Function]}
 >
   <div
-    className="c1"
+    className="sc-iybRtq biQMQZ"
     size="small"
   >
     <div
-      className="c2"
+      className="sc-iQtOjA fiRMpu"
     >
       <svg
         aria-hidden="true"
-        className="c3"
+        className="sc-gisBJw hMoqWV"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -223,37 +28,37 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
       </svg>
     </div>
     <div
-      className="c4"
+      className="sc-fHxwqH jHeRKY"
     >
       <div
-        className="c5"
+        className="sc-bdVaJa bJpVkp"
       >
         <div
-          className="c6"
+          className="sc-EHOje gsLpAZ"
         >
           <div
-            className="c7"
+            className="sc-bwzfXH jhStld"
           >
             MISSING: rewardsContribute
           </div>
           <div
-            className="c8"
+            className="sc-ifAKCX csScrx"
           >
             <div
-              className="c9"
+              className="sc-fxmata iwrIdh"
             >
               <div
-                className="c10"
+                className="sc-boCWhm gPpBhW"
               >
                 <div
-                  className="c11"
+                  className="sc-cIsjWt ibtXuY"
                 >
                   <div
-                    className="c12"
+                    className="sc-OnmeF gQhETW"
                     onClick={[Function]}
                   >
                     <div
-                      className="c13"
+                      className="sc-fxMfqs fTveKp"
                       selected={true}
                       type="contribute"
                     >
@@ -261,11 +66,11 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
                     </div>
                   </div>
                   <div
-                    className="c14"
+                    className="sc-OnmeF fsLRjJ"
                     onClick={[Function]}
                   >
                     <div
-                      className="c15"
+                      className="sc-fxMfqs gwNGqr"
                       selected={false}
                       type="contribute"
                     >
@@ -274,19 +79,19 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
                   </div>
                 </div>
                 <div
-                  className="c16"
+                  className="sc-hQfrgq eDFSyR"
                 />
               </div>
             </div>
           </div>
         </div>
         <div
-          className="c17"
+          className="sc-htpNat btvFfC"
         >
           MISSING: rewardsExcludedText1
            
           <span
-            className="c18"
+            className="sc-bxivhb emZtCS"
           >
             0
           </span>
@@ -296,22 +101,22 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
         <div>
           <div>
             <table
-              className="c19"
+              className="sc-iYUSvU fhaXCl"
             >
               <thead>
                 <tr>
                   <th
-                    className="c20"
+                    className="sc-cHSUfg ieJtXP"
                   >
                     <div>
                       MISSING: site
                     </div>
                   </th>
                   <th
-                    className="c20"
+                    className="sc-cHSUfg ieJtXP"
                   >
                     <div
-                      className="c21 c22"
+                      className="sc-hAnkBK jbTvEX sc-imDfJI ijSMla"
                     >
                       
                     </div>
@@ -320,7 +125,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
               </thead>
             </table>
             <div
-              className="c23"
+              className="sc-sdtwF jgELHO"
             />
           </div>
         </div>

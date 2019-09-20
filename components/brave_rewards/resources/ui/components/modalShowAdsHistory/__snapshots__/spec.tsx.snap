@@ -1,127 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalShowAdsHistory tests basic tests matches the snapshot 1`] = `
-.c5 {
-  font-family: Poppins,sans-serif;
-  padding-top: 10px;
-  white-space: nowrap;
-}
-
-.c6 {
-  font-size: 22px;
-  font-weight: 600;
-  color: #a3278f;
-  margin-bottom: 10px;
-  line-height: 1.3;
-}
-
-.c7 {
-  font-size: 30px;
-  line-height: 1.2;
-  margin-bottom: 10px;
-  font-weight: 300;
-}
-
-.c10 {
-  font-size: 18px;
-  color: #a3278f;
-  margin-right: 5px;
-}
-
-.c9 {
-  line-height: 1.5;
-}
-
-.c11 {
-  font-size: 18px;
-  color: #a3278f;
-  font-weight: 600;
-}
-
-.c8 {
-  line-height: 1.5;
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: baseline;
-  -webkit-box-align: baseline;
-  -ms-flex-align: baseline;
-  align-items: baseline;
-}
-
-.c0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(12,13,33,0.85);
-  z-index: 99;
-  padding: 0 20px;
-  overflow: hidden;
-}
-
-.c1 {
-  max-width: 920px;
-  margin: 52px auto;
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.c2 {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  color: #9E9FAB;
-}
-
-.c4 {
-  padding: 48px 48px;
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
-}
-
-.c3 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c12 {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 400;
-  padding-top: 24px;
-}
-
 <div
-  className="c0"
+  className="sc-jTzLTM fgwyzW"
   data-test-id="show-ads-history-modal"
   id="modal"
   onClick={[Function]}
 >
   <div
-    className="c1"
+    className="sc-fjdhpX jtwgyt"
     size="normal"
   >
     <div
-      className="c2"
+      className="sc-jzJRlG cDVRvb"
     >
       <svg
         aria-hidden="true"
-        className="c3"
+        className="sc-gisBJw hMoqWV"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -134,34 +29,34 @@ exports[`ModalShowAdsHistory tests basic tests matches the snapshot 1`] = `
       </svg>
     </div>
     <div
-      className="c4"
+      className="sc-cSHVUG gKpcEV"
     >
       <div
-        className="c5"
+        className="sc-bdVaJa fZvvsg"
       >
         <div
-          className="c6"
+          className="sc-ifAKCX dNSuqi"
         >
           MISSING: adsHistoryTitle
         </div>
         <div
-          className="c7"
+          className="sc-bZQynM lkrzlw"
         >
           MISSING: adsHistorySubTitle
         </div>
         <div
-          className="c8"
+          className="sc-iwsKbI hZjfRO"
         >
           <div
-            className="c9"
+            className="sc-htoDjs foPVDS"
           >
             <span
-              className="c10"
+              className="sc-gzVnrw bTjDid"
             >
               MISSING: adsCurrentlyViewing
             </span>
             <span
-              className="c11"
+              className="sc-dnqmqq fiCWbI"
             >
               0
             </span>
@@ -169,7 +64,7 @@ exports[`ModalShowAdsHistory tests basic tests matches the snapshot 1`] = `
         </div>
         <div>
           <div
-            className="c12"
+            className="sc-ebFjAB PvjpZ"
           >
             MISSING: noAdsHistory
           </div>

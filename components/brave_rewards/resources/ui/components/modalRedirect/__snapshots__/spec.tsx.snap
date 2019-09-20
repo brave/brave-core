@@ -1,82 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalRedirect tests basic tests matches the snapshot 1`] = `
-.c3 {
-  font-family: Poppins,sans-serif;
-}
-
-.c4 {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 2;
-  color: #3b3e4f;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.c5 {
-  margin: 0 auto;
-  width: 30px;
-  height: 30px;
-}
-
-.c0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(12,13,33,0.85);
-  z-index: 99;
-  padding: 0 20px;
-  overflow: hidden;
-}
-
-.c1 {
-  max-width: 920px;
-  margin: 52px auto;
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.c2 {
-  padding: 48px 48px;
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
-}
-
-.c6 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
 <div
-  className="c0"
+  className="sc-EHOje jYrcgb"
   id="modal"
   onClick={[Function]}
 >
   <div
-    className="c1"
+    className="sc-bZQynM dfdEgB"
     size="normal"
   >
     <div
-      className="c2"
+      className="sc-htoDjs iaYxYR"
     >
       <div
-        className="c3"
+        className="sc-bdVaJa bJpVkp"
       >
         <div
-          className="c4"
+          className="sc-bwzfXH liiAcN"
         />
         <div
-          className="c5"
+          className="sc-htpNat ciOYKS"
         >
           <svg
             aria-hidden="true"
-            className="c6"
+            className="sc-hMFtBS zStsa"
             focusable="false"
             viewBox="0 0 32 32"
           >

@@ -1,281 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
-.c5 {
-  font-family: Muli,sans-serif;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 100%;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.c7 {
-  -webkit-flex-basis: 40%;
-  -ms-flex-preferred-size: 40%;
-  flex-basis: 40%;
-}
-
-.c8 {
-  -webkit-flex-basis: 378px;
-  -ms-flex-preferred-size: 378px;
-  flex-basis: 378px;
-  -webkit-box-flex: 0;
-  -webkit-flex-grow: 0;
-  -ms-flex-positive: 0;
-  flex-grow: 0;
-  -webkit-flex-shrink: 1;
-  -ms-flex-negative: 1;
-  flex-shrink: 1;
-  margin-bottom: 45px;
-}
-
-.c9 {
-  margin-bottom: 103px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.c10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-right: 35px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c13 {
-  font-size: 14px;
-  line-height: 1.43;
-  color: #838391;
-  margin-left: 13px;
-}
-
-.c15 {
-  background-color: #f9f9fd;
-  margin: 0 -50px;
-  padding: 0 50px;
-}
-
-.c29 {
-  max-width: 508px;
-  margin-top: 46px;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 1.5;
-  color: #686978;
-}
-
-.c16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 2.79;
-  -webkit-letter-spacing: 0.2px;
-  -moz-letter-spacing: 0.2px;
-  -ms-letter-spacing: 0.2px;
-  letter-spacing: 0.2px;
-  color: #4b4c5c;
-  text-transform: uppercase;
-  padding-top: 14px;
-  margin-top: 28px;
-}
-
-.c21 {
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 2.79;
-  -webkit-letter-spacing: 0.2px;
-  -moz-letter-spacing: 0.2px;
-  -ms-letter-spacing: 0.2px;
-  letter-spacing: 0.2px;
-  color: #4b4c5c;
-  text-transform: none;
-}
-
-.c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  font-size: 12px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  line-height: 2;
-  color: #9e9fab;
-  padding: 11px 0 32px;
-}
-
-.c28 {
-  margin-left: 5px;
-}
-
-.c11 {
-  color: #A1A8F2;
-  width: 27px;
-}
-
-.c26 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  color: #392DD1;
-  width: 24px;
-  height: 24px;
-}
-
-.c23 {
-  text-align: right;
-}
-
-.c24 {
-  padding-right: 10px;
-}
-
-.c20 {
-  text-align: center;
-  padding: 30px 0;
-  color: #999ea2;
-  font-size: 14px;
-}
-
-.c17 {
-  min-width: 100%;
-  margin: 24px 0;
-}
-
-.c18 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 12px 0;
-}
-
-.c22 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 12px 0;
-}
-
-.c3 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c14 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c12 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c27 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(12,13,33,0.85);
-  z-index: 99;
-  padding: 0 20px;
-  overflow: hidden;
-}
-
-.c1 {
-  max-width: 920px;
-  margin: 52px auto;
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.c2 {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  color: #9E9FAB;
-}
-
-.c4 {
-  padding: 48px 48px;
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
-}
-
-.c19 {
-  text-align: right;
-  padding-right: 14px;
-}
-
 <div
-  className="c0"
+  className="sc-hgRTRy givGwc"
   id="activity"
   onClick={[Function]}
 >
   <div
-    className="c1"
+    className="sc-iIHSe bNqIcf"
     size="normal"
   >
     <div
-      className="c2"
+      className="sc-gldTML eZNMaP"
     >
       <svg
         aria-hidden="true"
-        className="c3"
+        className="sc-esjQYD jNYUXi"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -288,32 +28,32 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
       </svg>
     </div>
     <div
-      className="c4"
+      className="sc-feryYK gWYMke"
     >
       <div
-        className="c5"
+        className="sc-bdVaJa hvhqOZ"
       >
         <div
-          className="c6"
+          className="sc-bxivhb gavmrP"
         >
           <div
-            className="c7"
+            className="sc-ifAKCX kpDxHx"
           />
           <div
-            className="c8"
+            className="sc-EHOje ineGwH"
           >
             <div
-              className="c9"
+              className="sc-gzVnrw cxugKJ"
             >
               <button
-                className="c10"
+                className="sc-htoDjs deOFJA"
               >
                 <span
-                  className="c11"
+                  className="sc-kgoBCf gjhdBJ"
                 >
                   <svg
                     aria-hidden="true"
-                    className="c12"
+                    className="sc-esOvli fxYuto"
                     focusable="false"
                     viewBox="0 0 32 32"
                   >
@@ -324,20 +64,20 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                   </svg>
                 </span>
                 <div
-                  className="c13"
+                  className="sc-dnqmqq eGkjGo"
                 >
                   MISSING: print
                 </div>
               </button>
               <button
-                className="c10"
+                className="sc-htoDjs deOFJA"
               >
                 <span
-                  className="c11"
+                  className="sc-kgoBCf gjhdBJ"
                 >
                   <svg
                     aria-hidden="true"
-                    className="c14"
+                    className="sc-ibxdXY ePqUhM"
                     focusable="false"
                     viewBox="0 0 32 32"
                   >
@@ -350,7 +90,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                   </svg>
                 </span>
                 <div
-                  className="c13"
+                  className="sc-dnqmqq eGkjGo"
                 >
                   MISSING: downloadPDF
                 </div>
@@ -359,40 +99,40 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
           </div>
         </div>
         <div
-          className="c15"
+          className="sc-gZMcBi fvjoQF"
         >
           <div
-            className="c16"
+            className="sc-fjdhpX kgZjXl"
           >
             MISSING: transactions
           </div>
           <div>
             <div>
               <table
-                className="c17"
+                className="sc-eHgmQL cTSami"
               >
                 <thead>
                   <tr>
                     <th
-                      className="c18"
+                      className="sc-cvbbAY boIDpm"
                     >
                       MISSING: date
                     </th>
                     <th
-                      className="c18"
+                      className="sc-cvbbAY boIDpm"
                     >
                       MISSING: type
                     </th>
                     <th
-                      className="c18"
+                      className="sc-cvbbAY boIDpm"
                     >
                       MISSING: description
                     </th>
                     <th
-                      className="c18"
+                      className="sc-cvbbAY boIDpm"
                     >
                       <div
-                        className="c19"
+                        className="sc-hQfrgq bsfMin"
                       >
                         MISSING: amount
                       </div>
@@ -401,18 +141,18 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                 </thead>
               </table>
               <div
-                className="c20"
+                className="sc-hSdWYo bnVzmx"
               />
             </div>
           </div>
           <div
-            className="c16"
+            className="sc-fjdhpX kgZjXl"
           >
             <span>
               MISSING: contributeAllocation
             </span>
             <div
-              className="c21"
+              className="sc-jzJRlG jYsrDu"
             >
               MISSING: paymentMonthly
             </div>
@@ -420,31 +160,31 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
           <div>
             <div>
               <table
-                className="c17"
+                className="sc-eHgmQL cTSami"
               >
                 <thead>
                   <tr>
                     <th
-                      className="c22"
+                      className="sc-cvbbAY fTZMnm"
                     >
                       <div>
                         MISSING: rewardsContributeVisited
                       </div>
                     </th>
                     <th
-                      className="c22"
+                      className="sc-cvbbAY fTZMnm"
                     >
                       <div
-                        className="c23"
+                        className="sc-eNQAEJ llJHoY"
                       >
                         MISSING: rewardsContributeAttention
                       </div>
                     </th>
                     <th
-                      className="c22"
+                      className="sc-cvbbAY fTZMnm"
                     >
                       <div
-                        className="c24 c23"
+                        className="sc-hMqMXs fEsWKP sc-eNQAEJ llJHoY"
                       >
                         MISSING: payment
                       </div>
@@ -453,19 +193,19 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
                 </thead>
               </table>
               <div
-                className="c20"
+                className="sc-hSdWYo bnVzmx"
               />
             </div>
           </div>
           <div
-            className="c25"
+            className="sc-cSHVUG dnMHEO"
           >
             <div
-              className="c26"
+              className="sc-dxgOiQ Efzjo"
             >
               <svg
                 aria-hidden="true"
-                className="c27"
+                className="sc-gojNiO dEgTxv"
                 focusable="false"
                 viewBox="0 0 32 32"
               >
@@ -475,14 +215,14 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
               </svg>
             </div>
             <div
-              className="c28"
+              className="sc-kAzzGY kMRFgA"
             >
               MISSING: braveVerified
             </div>
           </div>
         </div>
         <div
-          className="c29"
+          className="sc-jTzLTM cfegPr"
         >
           <b>
             MISSING: pleaseNote

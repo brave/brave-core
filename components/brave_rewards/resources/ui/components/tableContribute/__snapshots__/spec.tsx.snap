@@ -1,19 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TableContribute tests basic tests matches the snapshot 1`] = `
-.c0 {
-  text-align: center;
-  padding: 30px 0;
-  color: #999ea2;
-  font-size: 14px;
-}
-
 <div
   id="table"
 >
   <div>
     <div
-      className="c0"
+      className="sc-gzVnrw beRiAf"
     />
   </div>
 </div>

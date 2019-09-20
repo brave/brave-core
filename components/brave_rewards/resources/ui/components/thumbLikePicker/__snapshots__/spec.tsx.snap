@@ -2,26 +2,12 @@
 
 exports[`Amount tests basic tests matches the snapshot 1`] = `
 Array [
-  .c0 {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  padding: 4px;
-  cursor: pointer;
-}
-
-.c1 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-<div
-    className="c0"
+  <div
+    className="sc-bdVaJa fOiChZ"
   >
     <svg
       aria-hidden="true"
-      className="c1"
+      className="sc-epnACN fFxYpC"
       focusable="false"
       viewBox="0 0 32 32"
     >
@@ -30,27 +16,12 @@ Array [
       />
     </svg>
   </div>,
-  .c0 {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  margin-top: auto;
-  padding: 4px;
-  cursor: pointer;
-}
-
-.c1 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-<div
-    className="c0"
+  <div
+    className="sc-htpNat cXGUcq"
   >
     <svg
       aria-hidden="true"
-      className="c1"
+      className="sc-eTuwsz dWwJTn"
       focusable="false"
       viewBox="0 0 32 32"
     >

@@ -1,43 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WalletOff tests basic tests matches the snapshot 1`] = `
-.c0 {
-  padding: 32px 20px 46px;
-  text-align: center;
-  font-family: Poppins,sans-serif;
-}
-
-.c1 {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.75;
-  -webkit-letter-spacing: 0.1px;
-  -moz-letter-spacing: 0.1px;
-  -ms-letter-spacing: 0.1px;
-  letter-spacing: 0.1px;
-  text-align: center;
-  color: #5bc4fe;
-}
-
-.c2 {
-  font-family: Muli,sans-serif;
-  font-size: 16px;
-  line-height: 1.75;
-  text-align: center;
-  color: #686978;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa gOxpf"
   id="off"
 >
   <div
-    className="c1"
+    className="sc-bwzfXH bmjdvk"
   >
     MISSING: rewardsPanelOffText1
   </div>
   <div
-    className="c2"
+    className="sc-htpNat HUgyh"
   >
     MISSING: rewardsPanelOffText2
   </div>
