@@ -1,6 +1,5 @@
 import targetAdSlotsBySelector from './slotTargeting/by-selector'
-import startListeningCustomAdSlotReadyEvents from './creativeFetch/custom-event-receive'
-import sendCustomEventForAdSlotReady from './creativeFetch/custom-event-send'
+import fetchAdCreatives from './creativeFetch/same-context'
 import runOnPageLoaded from './pageLifecycle/run-on-loaded'
 
 runOnPageLoaded(function () {
@@ -19,6 +18,5 @@ runOnPageLoaded(function () {
     return null
   }
 
-  startListeningCustomAdSlotReadyEvents()
-  targetAdSlotsBySelector('.ad', getSizeForMarketWatchAdSlot, sendCustomEventForAdSlotReady)
+  targetAdSlotsBySelector('.ad', getSizeForMarketWatchAdSlot, fetchAdCreatives)
 })
