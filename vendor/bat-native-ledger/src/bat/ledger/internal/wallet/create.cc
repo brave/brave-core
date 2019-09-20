@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/json/json_writer.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
@@ -68,6 +69,38 @@ std::string Create::GetAnonizeProof(const std::string& registrarVK,
   return proof;
 }
 
+std::string Create::StringifyRequestCredentials(
+    const std::string& proof,
+    const std::string& label,
+    const std::string& public_key,
+    const std::string& digest,
+    const std::string& signature,
+    const std::string& octets) {
+  base::Value headers(base::Value::Type::DICTIONARY);
+  headers.SetStringKey("digest", digest);
+  headers.SetStringKey("signature", signature);
+
+  base::Value body(base::Value::Type::DICTIONARY);
+  body.SetStringKey("currency", LEDGER_CURRENCY);
+  body.SetStringKey("label", label);
+  body.SetStringKey("publicKey", public_key);
+
+  base::Value request(base::Value::Type::DICTIONARY);
+  request.SetKey("headers", std::move(headers));
+  request.SetKey("body", std::move(body));
+  request.SetStringKey("octets", octets);
+
+  base::Value payload(base::Value::Type::DICTIONARY);
+  payload.SetStringKey("requestType", "httpSignature");
+  payload.SetStringKey("proof", proof);
+  payload.SetKey("request", std::move(request));
+
+  std::string json;
+  base::JSONWriter::Write(payload, &json);
+
+  return json;
+}
+
 void Create::RequestCredentialsCallback(
       int response_status_code,
       const std::string& response,
@@ -125,32 +158,29 @@ void Create::RequestCredentialsCallback(
                                                &publicKey,
                                                &newSecretKey);
   std::string label = ledger_->GenerateGUID();
-  std::string publicKeyHex = braveledger_bat_helper::uint8ToHex(publicKey);
+  std::string public_key_hex = braveledger_bat_helper::uint8ToHex(publicKey);
   std::string keys[3] = {"currency", "label", "publicKey"};
-  std::string values[3] = {LEDGER_CURRENCY, label, publicKeyHex};
+  std::string values[3] = {LEDGER_CURRENCY, label, public_key_hex};
   std::string octets = braveledger_bat_helper::stringify(keys, values, 3);
-  std::string headerDigest = "SHA-256=" +
+  std::string digest = "SHA-256=" +
       braveledger_bat_helper::getBase64(
           braveledger_bat_helper::getSHA256(octets));
   std::string headerKeys[1] = {"digest"};
-  std::string headerValues[1] = {headerDigest};
-  std::string headerSignature = braveledger_bat_helper::sign(headerKeys,
-                                                             headerValues,
-                                                             1,
-                                                             "primary",
-                                                             newSecretKey);
+  std::string headerValues[1] = {digest};
+  std::string signature = braveledger_bat_helper::sign(
+      headerKeys,
+      headerValues,
+      1,
+      "primary",
+      newSecretKey);
 
-  braveledger_bat_helper::REQUEST_CREDENTIALS_ST requestCredentials;
-  requestCredentials.requestType_ = "httpSignature";
-  requestCredentials.proof_ = proof;
-  requestCredentials.request_body_currency_ = LEDGER_CURRENCY;
-  requestCredentials.request_body_label_ = label;
-  requestCredentials.request_body_publicKey_ = publicKeyHex;
-  requestCredentials.request_headers_digest_ = headerDigest;
-  requestCredentials.request_headers_signature_ = headerSignature;
-  requestCredentials.request_body_octets_ = octets;
-  std::string payloadStringify =
-      braveledger_bat_helper::stringifyRequestCredentialsSt(requestCredentials);
+  std::string payload = StringifyRequestCredentials(
+      proof,
+      label,
+      public_key_hex,
+      digest,
+      signature,
+      octets);
   std::vector<std::string> registerHeaders;
   registerHeaders.push_back("Content-Type: application/json; charset=UTF-8");
 
@@ -164,9 +194,12 @@ void Create::RequestCredentialsCallback(
                             _3,
                             std::move(callback));
   ledger_->LoadURL(
-    url,
-    registerHeaders, payloadStringify, "application/json; charset=utf-8",
-    ledger::URL_METHOD::POST, on_register);
+      url,
+      registerHeaders,
+      payload,
+      "application/json; charset=utf-8",
+      ledger::URL_METHOD::POST,
+      on_register);
 }
 
 void Create::RegisterPersonaCallback(

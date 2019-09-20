@@ -17,20 +17,6 @@
 namespace braveledger_bat_helper {
 bool isProbiValid(const std::string& number);
 
-struct REQUEST_CREDENTIALS_ST {
-  REQUEST_CREDENTIALS_ST();
-  ~REQUEST_CREDENTIALS_ST();
-
-  std::string proof_;
-  std::string requestType_;
-  std::string request_body_currency_;
-  std::string request_body_label_;
-  std::string request_body_publicKey_;
-  std::string request_body_octets_;
-  std::string request_headers_digest_;
-  std::string request_headers_signature_;
-};
-
 struct UNSIGNED_TX {
   UNSIGNED_TX();
   ~UNSIGNED_TX();
@@ -444,9 +430,6 @@ std::string uint8ToHex(const std::vector<uint8_t>& in);
 std::string stringify(std::string* keys,
                       std::string* values,
                       const unsigned int size);
-
-std::string stringifyRequestCredentialsSt(
-    const REQUEST_CREDENTIALS_ST& request_credentials);
 
 std::string stringifyReconcilePayloadSt(
     const RECONCILE_PAYLOAD_ST& reconcile_payload);

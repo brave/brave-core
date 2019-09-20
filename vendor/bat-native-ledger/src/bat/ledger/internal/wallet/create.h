@@ -31,6 +31,14 @@ class Create {
   void Start(ledger::CreateWalletCallback callback);
 
  private:
+  std::string StringifyRequestCredentials(
+    const std::string& proof,
+    const std::string& label,
+    const std::string& public_key,
+    const std::string& digest,
+    const std::string& signature,
+    const std::string& octets);
+
   void RequestCredentialsCallback(
       int response_status_code,
       const std::string& response,
