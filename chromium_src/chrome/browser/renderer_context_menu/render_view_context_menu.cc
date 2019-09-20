@@ -82,7 +82,7 @@ void BraveRenderViewContextMenu::InitMenu() {
   int index = -1;
   if (!params_.link_url.is_empty()) {
     const Browser* browser = GetBrowser();
-    const bool is_app = browser && browser->is_app();
+    const bool is_app = browser && browser->is_type_app();
 
     index = menu_model_.GetIndexOfCommandId(
         IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
