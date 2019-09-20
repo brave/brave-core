@@ -130,6 +130,7 @@ source_set("browser_process") {
     "//components/prefs",
     "//components/safe_browsing/common:safe_browsing_prefs",
     "//components/search_engines",
+    "//components/services/unzip/content",
     "//components/spellcheck/browser",
     "//components/unified_consent",
     "//components/update_client:patch_impl",

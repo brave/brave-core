@@ -14,6 +14,7 @@
 #include "chrome/browser/update_client/chrome_update_query_params_delegate.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
+#include "components/services/unzip/content/unzip_service.h"
 #include "components/update_client/activity_data_service.h"
 #include "components/update_client/net/network_chromium.h"
 #include "components/update_client/patch/patch_impl.h"
@@ -183,9 +184,7 @@ scoped_refptr<update_client::UnzipperFactory>
 BraveUpdateClientConfig::GetUnzipperFactory() {
   if (!unzip_factory_) {
     unzip_factory_ = base::MakeRefCounted<update_client::UnzipChromiumFactory>(
-        content::ServiceManagerConnection::GetForProcess()
-            ->GetConnector()
-            ->Clone());
+        base::BindRepeating(&unzip::LaunchUnzipper));
   }
   return unzip_factory_;
 }
