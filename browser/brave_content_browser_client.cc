@@ -251,7 +251,8 @@ void BraveContentBrowserClient::CreateWebSocket(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<std::string>& user_agent,
-    network::mojom::WebSocketHandshakeClientPtr handshake_client) {
+    mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+        handshake_client) {
   auto* proxy = BraveProxyingWebSocket::ProxyWebSocket(
       frame,
       std::move(factory),
