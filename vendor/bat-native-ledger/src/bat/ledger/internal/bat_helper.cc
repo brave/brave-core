@@ -33,10 +33,6 @@ bool isProbiValid(const std::string& probi) {
   return re2::RE2::FullMatch(probi, "^-?[0-9]*$");
 }
 
-REQUEST_CREDENTIALS_ST::REQUEST_CREDENTIALS_ST() {}
-
-REQUEST_CREDENTIALS_ST::~REQUEST_CREDENTIALS_ST() {}
-
 /////////////////////////////////////////////////////////////////////////////
 RECONCILE_PAYLOAD_ST::RECONCILE_PAYLOAD_ST() {}
 
@@ -2035,54 +2031,6 @@ std::string stringifyUnsignedTx(const UNSIGNED_TX& unsignedTx) {
   writer.String(unsignedTx.destination_.c_str());
 
   writer.EndObject();
-  return buffer.GetString();
-}
-
-std::string stringifyRequestCredentialsSt(
-    const REQUEST_CREDENTIALS_ST& request_credentials) {
-  rapidjson::StringBuffer buffer;
-  JsonWriter writer(buffer);
-  writer.StartObject();  // root
-
-  writer.String("requestType");
-  writer.String(request_credentials.requestType_.c_str());
-
-  writer.String("request");
-  writer.StartObject();  // request
-
-  writer.String("headers");
-  writer.StartObject();  // headers
-
-  writer.String("digest");
-  writer.String(request_credentials.request_headers_digest_.c_str());
-
-  writer.String("signature");
-  writer.String(request_credentials.request_headers_signature_.c_str());
-
-  writer.EndObject();  // headers
-
-  writer.String("body");
-  writer.StartObject();  // body
-
-  writer.String("currency");
-  writer.String(request_credentials.request_body_currency_.c_str());
-
-  writer.String("label");
-  writer.String(request_credentials.request_body_label_.c_str());
-
-  writer.String("publicKey");
-  writer.String(request_credentials.request_body_publicKey_.c_str());
-
-  writer.EndObject();  // body
-
-  writer.String("octets");
-  writer.String(request_credentials.request_body_octets_.c_str());
-
-  writer.EndObject();  // request
-
-  writer.String("proof");
-  writer.String(request_credentials.proof_.c_str());
-  writer.EndObject();  // root
   return buffer.GetString();
 }
 
