@@ -77,7 +77,21 @@ export default class BATAd {
     }
     if (name === 'creative-url') {
       this.shadowRoot.querySelector('.creative').setAttribute('src', newValue)
+      this.ensureVisible()
     }
+  }
+
+  ensureVisible() {
+    // Override cosmetic filters
+    window.requestAnimationFrame(() => {
+      let element = this.element
+      while (element) {
+        if (element.computedStyleMap().get('display').value === 'none') {
+          element.style.setProperty('display', 'block', 'important')
+        }
+        element = element.parentElement
+      }
+    })
   }
 
   fetchCreative() {
