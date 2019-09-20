@@ -1376,9 +1376,9 @@ void RewardsServiceImpl::LoadURL(
 
   // Loading Twitter requires credentials
   if (request->url.DomainIs("twitter.com")) {
-    request->allow_credentials = true;
+    request->credentials_mode = network::mojom::CredentialsMode::kInclude;
   } else {
-    request->allow_credentials = false;
+    request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   }
 
   for (size_t i = 0; i < headers.size(); i++)

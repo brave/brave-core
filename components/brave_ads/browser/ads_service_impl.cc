@@ -1861,7 +1861,7 @@ void AdsServiceImpl::URLRequest(
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(url);
   request->method = URLMethodToRequestType(method);
-  request->allow_credentials = false;
+  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   for (const auto& header : headers) {
     request->headers.AddHeaderFromString(header);
   }
