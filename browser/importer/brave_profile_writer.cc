@@ -374,7 +374,7 @@ void BraveProfileWriter::UpdateReferral(const BraveReferral& referral) {
 Browser* OpenImportedBrowserWindow(
     const ImportedBrowserWindow& window,
     Profile* profile) {
-  Browser::CreateParams params(Browser::TYPE_TABBED, profile, false);
+  Browser::CreateParams params(Browser::TYPE_NORMAL, profile, false);
 
   params.initial_bounds = gfx::Rect(window.top, window.left,
       window.width, window.height);
