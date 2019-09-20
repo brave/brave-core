@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index 87ecf1fc998b01569fa10a886e7116299da449c1..40016aeadd02bb2ca2a252070c946d4a3dde0be4 100644
+index 87ecf1fc998b01569fa10a886e7116299da449c1..0f53395bdaba34528b4c6821aa4e0ab1485e0af0 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
 @@ -146,7 +146,7 @@ class ProfileManager : public content::NotificationObserver,
@@ -20,7 +20,23 @@ index 87ecf1fc998b01569fa10a886e7116299da449c1..40016aeadd02bb2ca2a252070c946d4a
  
    // Register and add testing profile to the ProfileManager. Use ONLY in tests.
    // This allows the creation of Profiles outside of the standard creation path
-@@ -355,7 +355,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -268,6 +268,7 @@ class ProfileManager : public content::NotificationObserver,
+   }
+ 
+  private:
++  friend class BraveProfileManager;
+   friend class TestingProfileManager;
+   FRIEND_TEST_ALL_PREFIXES(ProfileManagerBrowserTest, DeleteAllProfiles);
+   FRIEND_TEST_ALL_PREFIXES(ProfileManagerBrowserTest, SwitchToProfile);
+@@ -292,6 +293,7 @@ class ProfileManager : public content::NotificationObserver,
+ 
+   // Does final initial actions.
+   void DoFinalInit(ProfileInfo* profile_info, bool go_off_the_record);
++  virtual
+   void DoFinalInitForServices(Profile* profile, bool go_off_the_record);
+   void DoFinalInitLogging(Profile* profile);
+ 
+@@ -355,7 +357,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Apply settings for profiles created by the system rather than users: The
    // (desktop) Guest User profile and (desktop) System Profile.
