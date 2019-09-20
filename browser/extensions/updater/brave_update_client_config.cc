@@ -14,6 +14,7 @@
 #include "chrome/browser/update_client/chrome_update_query_params_delegate.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
+#include "components/services/patch/content/patch_service.h"
 #include "components/services/unzip/content/unzip_service.h"
 #include "components/update_client/activity_data_service.h"
 #include "components/update_client/net/network_chromium.h"
@@ -23,12 +24,10 @@
 #include "components/update_client/unzip/unzip_impl.h"
 #include "components/update_client/unzipper.h"
 #include "components/update_client/update_query_params.h"
-#include "content/public/common/service_manager_connection.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
 #include "extensions/browser/extension_prefs.h"
-#include "services/service_manager/public/cpp/connector.h"
 
 namespace extensions {
 
@@ -194,9 +193,7 @@ BraveUpdateClientConfig::GetPatcherFactory() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!patch_factory_) {
     patch_factory_ = base::MakeRefCounted<update_client::PatchChromiumFactory>(
-        content::ServiceManagerConnection::GetForProcess()
-            ->GetConnector()
-            ->Clone());
+        base::BindRepeating(&patch::LaunchFilePatcher));
   }
   return patch_factory_;
 }

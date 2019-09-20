@@ -20,6 +20,7 @@
 #include "components/component_updater/component_updater_command_line_config_policy.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/services/patch/content/patch_service.h"
 #include "components/services/unzip/content/unzip_service.h"
 #include "components/update_client/activity_data_service.h"
 #include "components/update_client/net/network_chromium.h"
@@ -29,9 +30,7 @@
 #include "components/update_client/unzipper.h"
 #include "components/update_client/update_query_params.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/common/service_manager_connection.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/service_manager/public/cpp/connector.h"
 
 #if defined(OS_WIN)
 #include "base/win/win_util.h"
@@ -137,9 +136,7 @@ BraveConfigurator::GetPatcherFactory() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!patch_factory_) {
     patch_factory_ = base::MakeRefCounted<update_client::PatchChromiumFactory>(
-        content::ServiceManagerConnection::GetForProcess()
-            ->GetConnector()
-            ->Clone());
+        base::BindRepeating(&patch::LaunchFilePatcher));
   }
   return patch_factory_;
 }
