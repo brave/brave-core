@@ -1,6 +1,5 @@
 import BATAd from './bat-ad'
-import startListeningCustomAdSlotReadyEvents from './creativeFetch/custom-event-receive'
-import sendCustomEventForAdSlotReady from './creativeFetch/custom-event-send'
+import fetchAdCreatives from './creativeFetch/same-context'
 import waitForWindowVar from './slotTargeting/wait-for-window-var'
 import runOnPageLoaded from './pageLifecycle/run-on-loaded'
 
@@ -71,14 +70,12 @@ class WPAd extends BATAd {
 }
 
 runOnPageLoaded(function () {
-  startListeningCustomAdSlotReadyEvents()
-
   function ChooseAdSizesForWP() {
     const adElements = document.querySelectorAll('wp-ad')
     // We can't parse ad size data until we have window.wpAds, so store
     // refs to WPAd elements until that is defined.
     for (const element of adElements) {
-      new WPAd(element, sendCustomEventForAdSlotReady).setMatchingInventory()
+      new WPAd(element, fetchAdCreatives).setMatchingInventory()
     }
   }
 
