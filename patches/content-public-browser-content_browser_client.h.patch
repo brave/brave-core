@@ -1,19 +1,12 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index dcb77c78114699a0017a305f140f4322d271ff83..c10b371d911db50fe0c544fdc64fe53c954f3c75 100644
+index dcb77c78114699a0017a305f140f4322d271ff83..d2863e63fc2fa4783e67d5f85485ef6163815b9b 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -1604,6 +1604,14 @@ class CONTENT_EXPORT ContentBrowserClient {
+@@ -1604,6 +1604,7 @@ class CONTENT_EXPORT ContentBrowserClient {
    virtual ui::AXMode GetAXModeForBrowserContext(
        BrowserContext* browser_context);
  
-+  // Brave-specific: allows the embedder to modify the referrer string
-+  // according to user preferences.
-+  virtual void MaybeHideReferrer(BrowserContext* browser_context,
-+                                 const GURL& request_url,
-+                                 const GURL& document_url,
-+                                 bool is_main_frame,
-+                                 Referrer* referrer) {}
-+
++  BRAVE_CONTENT_BROWSER_CLIENT_H
  #if defined(OS_ANDROID)
    // Defines the heuristics we can use to enable wide color gamut (WCG).
    enum class WideColorGamutHeuristic {
