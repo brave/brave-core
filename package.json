@@ -248,7 +248,8 @@
     ],
     "testURL": "http://localhost/",
     "testMatch": [
-      "<rootDir>/components/test/**/**/?(*_)(test).{ts,tsx}"
+      "<rootDir>/components/test/**/**/?(*_)(test).{ts,tsx}",
+      "<rootDir>/components/brave_rewards/**/**/spec.tsx"
     ],
     "transformIgnorePatterns": [
       "<rootDir>/node_modules/(?!(brave-ui)/)"
