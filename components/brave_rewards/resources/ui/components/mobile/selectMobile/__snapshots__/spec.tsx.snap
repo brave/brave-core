@@ -1,21 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectMobile tests basic tests matches the snapshot 1`] = `
-.c0 {
-  width: 100%;
-  background: #fff;
-  height: 34px;
-  font-size: 14px;
-  border: 1px solid #DFDFE8;
-  text-align-last: left;
-}
-
-.c0:focus {
-  outline: 0;
-}
-
 <select
-  className="c0"
+  className="sc-bdVaJa hvrdRr"
   onChange={[Function]}
 />
 `;

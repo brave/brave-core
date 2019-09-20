@@ -1,14 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WalletSummarySlider tests basic tests matches the snapshot 1`] = `
-.c0 {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa gdncmD"
   id="wallet-slider"
 />
 `;

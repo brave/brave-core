@@ -1,147 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
-.c0 {
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
-  font-family: Muli,sans-serif;
-  width: 373px;
-  background: url(test-file-stub) no-repeat top left, linear-gradient(172deg,#392dd1,rgba(255,26,26,0.53)), linear-gradient(#7d7bdc,#7d7bdc);
-  min-height: 715px;
-  border-radius: 6px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  max-width: 415px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.c1 {
-  padding: 16px 21px 0 19px;
-  position: relative;
-  z-index: 2;
-}
-
-.c2 {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.38;
-  -webkit-letter-spacing: -0.2px;
-  -moz-letter-spacing: -0.2px;
-  -ms-letter-spacing: -0.2px;
-  letter-spacing: -0.2px;
-  color: rgba(255,255,255,0.65);
-}
-
-.c3 {
-  text-align: center;
-}
-
-.c4 {
-  font-size: 36px;
-  line-height: 0.61;
-  -webkit-letter-spacing: -0.4px;
-  -moz-letter-spacing: -0.4px;
-  -ms-letter-spacing: -0.4px;
-  letter-spacing: -0.4px;
-  color: #fff;
-  margin-top: 10px;
-  font-weight: 300;
-}
-
-.c8 {
-  padding: 0px;
-  background: #fff;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.c6 {
-  text-align: center;
-  font-size: 12px;
-  color: #fff;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: space-evenly;
-  -webkit-justify-content: space-evenly;
-  -ms-flex-pack: space-evenly;
-  justify-content: space-evenly;
-  margin: 15px 0 5px 0;
-  padding-bottom: 3px;
-}
-
-.c5 {
-  text-transform: uppercase;
-  opacity: 0.66;
-  font-family: Muli,sans-serif;
-  font-size: 16px;
-  line-height: 0.88;
-  color: #fff;
-}
-
-.c7 {
-  padding: 10px 0;
-  position: relative;
-  overflow: hidden;
-  margin: 0 -21px 0 -19px;
-  z-index: 5;
-}
-
-.c7:before {
-  content: "";
-  position: absolute;
-  bottom: -16px;
-  margin-left: -50%;
-  height: 240px;
-  width: 200%;
-  border-radius: 100%;
-  border: 20px solid #fff;
-}
-
 <div
-  className="c0"
+  className="sc-bZQynM HSWqN"
   id="panel"
 >
   <div
-    className="c1"
+    className="sc-gzVnrw jMcLnN"
   >
     <div
-      className="c2"
+      className="sc-htoDjs fWSQxJ"
     >
       MISSING: yourWallet
     </div>
     <div
-      className="c3"
+      className="sc-dnqmqq fXmtAI"
     >
       <div
-        className="c4"
+        className="sc-gZMcBi fihUKb"
         data-test-id="balance"
       >
          
         <span
-          className="c5"
+          className="sc-dxgOiQ gHjlEg"
         >
           BAT
         </span>
       </div>
     </div>
     <div
-      className="c6"
+      className="sc-kpOJdX iXMJUq"
     />
     <div
-      className="c7"
+      className="sc-ckVGcZ guCBTa"
     />
   </div>
   <div
-    className="c8"
+    className="sc-gqjmRU cGvwly"
   />
 </div>
 `;

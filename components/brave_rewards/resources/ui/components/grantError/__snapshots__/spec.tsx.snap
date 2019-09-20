@@ -1,92 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Grant error tests basic tests matches the snapshot 1`] = `
-.c4 {
-  --button-main-color: #FB542B;
-  --button-main-color-hover: #FB542B;
-  --button-main-color-active: #ffb8a6;
-  --button-state-color: var(--button-main-color);
-  --icon-size: 18px;
-  --icon-spacing: 6px;
-  --webkit-appearance: none;
-  box-sizing: border-box;
-  background: none;
-  border: none;
-  outline-color: transparent;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row-reverse;
-  -ms-flex-direction: row-reverse;
-  flex-direction: row-reverse;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Poppins,sans-serif;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-size: 14px;
-  border-radius: 28px;
-  width: 100%;
-  min-width: 235px;
-  padding: 19px 15px;
-}
-
-.c4:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c4:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c3 {
-  color: #fff;
-  background: var(--button-state-color);
-  border: 1px solid var(--button-state-color);
-}
-
-.c0 {
-  text-align: center;
-  width: 100%;
-  padding: 20px 10px;
-  min-height: 350px;
-}
-
-.c1 {
-  font-family: Muli,sans-serif;
-  font-size: 14px;
-  line-height: 1.29;
-  color: #838391;
-  margin: 44px 0 32px;
-}
-
-.c2 {
-  display: block;
-  margin: 0 auto;
-}
-
 <div
-  className="c0"
+  className="sc-bZQynM cUbCpP"
   id="error"
 >
   <div
-    className="c1"
+    className="sc-gzVnrw dRfhpB"
   />
   <div
-    className="c2"
+    className="sc-htoDjs jLDCBf"
   >
     <button
-      className="c3 c4"
+      className="sc-bwzfXH kdRIEH sc-bdVaJa jNEFhh"
       size="call-to-action"
       type="accent"
     />

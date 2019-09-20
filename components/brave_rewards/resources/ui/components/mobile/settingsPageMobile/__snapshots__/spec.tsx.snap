@@ -1,26 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SettingsPageMobile tests basic tests matches the snapshot 1`] = `
-.c0 {
-  background: #e6e8f5;
-  min-height: 100vh;
-  width: 100%;
-  padding-top: 35px;
-  font-family: Muli,sans-serif;
-}
-
-.c1 {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 40px 10px 0 10px;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa czstDi"
   id="page"
 >
   <div
-    className="c1"
+    className="sc-bwzfXH czmUXT"
   />
 </div>
 `;

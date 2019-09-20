@@ -1,85 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DisabledPanel tests basic tests matches the snapshot 1`] = `
-.c0 {
-  width: 100%;
-  padding: 30px 25px 25px;
-  font-family: Poppins,sans-serif;
-  background-image: linear-gradient(140deg,#392DD1 0%,#8E2995 100%);
-}
-
-.c2 {
-  font-size: 16px;
-  color: #F1F1F9;
-  font-weight: 500;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-}
-
-.c3 {
-  font-size: 16px;
-  color: #FFFFFF;
-  font-weight: 600;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  margin-left: 3px;
-}
-
-.c4 {
-  color: #F1F1F9;
-  font-size: 14px;
-  font-family: Muli,sans-serif;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 400;
-  line-height: 20px;
-  max-width: 276px;
-  margin-top: 7px;
-}
-
-.c5 {
-  cursor: pointer;
-  margin-left: 4px;
-  display: inline-block;
-  color: #8D92E2;
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa hTqUu"
 >
   <div
-    className="c1"
+    className="sc-EHOje fhxHOS"
   >
     <div
-      className="c2"
+      className="sc-bwzfXH bGlxtG"
     >
       MISSING: disabledPanelTitle
     </div>
     <div
-      className="c3"
+      className="sc-htpNat hSmVOt"
     >
       MISSING: disabledPanelOff
     </div>
   </div>
   <div
-    className="c4"
+    className="sc-bxivhb gTKsns"
   >
     MISSING: disabledPanelText
     <a
-      className="c5"
+      className="sc-ifAKCX iHBwJd"
     >
       MISSING: disabledPanelSettings
     </a>

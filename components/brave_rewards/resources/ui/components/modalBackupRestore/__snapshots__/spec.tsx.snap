@@ -1,319 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
-.c26 {
-  --button-main-color: #FB542B;
-  --button-main-color-hover: #FB542B;
-  --button-main-color-active: #ffb8a6;
-  --button-state-color: var(--button-main-color);
-  --icon-size: 16px;
-  --icon-spacing: 6px;
-  --webkit-appearance: none;
-  box-sizing: border-box;
-  background: none;
-  border: none;
-  outline-color: transparent;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row-reverse;
-  -ms-flex-direction: row-reverse;
-  flex-direction: row-reverse;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Poppins,sans-serif;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-size: 13px;
-  border-radius: 20px;
-  width: auto;
-  min-width: 104px;
-  padding: 11px 15px;
-}
-
-.c26:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c26:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c28 {
-  color: #fff;
-  background: var(--button-state-color);
-  border: 1px solid var(--button-state-color);
-}
-
-.c25 {
-  border: 1px solid;
-  color: var(--button-state-color);
-}
-
-.c27 {
-  min-height: var(--icon-size);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  text-align: center;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 500;
-  text-transform: none;
-  line-height: 1;
-}
-
-.c18 {
-  color: #4c54d2;
-  cursor: pointer;
-}
-
-.c23 {
-  margin-top: 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c24 {
-  margin: 0 8px;
-}
-
-.c5 {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.c6 {
-  font-size: 22px;
-  font-weight: normal;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 40px;
-  font-family: Poppins,sans-serif;
-}
-
-.c8 {
-  margin: 0 auto;
-  max-width: 400px;
-}
-
-.c7 {
-  width: 100%;
-  margin-bottom: 30px;
-}
-
-.c22 {
-  font-size: 16px;
-  font-weight: 200;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 26px;
-  font-family: Muli,sans-serif;
-}
-
-.c21 {
-  margin-bottom: 25px;
-}
-
-.c3 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c16 {
-  width: 100%;
-  margin-bottom: 24px;
-}
-
-.c17 {
-  width: 100%;
-  font-family: Muli,sans-serif;
-  line-height: normal;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  --controlWrapper-label-color: #686978;
-  color: var(--controlWrapper-label-color);
-}
-
-.c0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(12,13,33,0.85);
-  z-index: 99;
-  padding: 0 20px;
-  overflow: hidden;
-}
-
-.c1 {
-  max-width: 666px;
-  margin: 52px auto;
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.c2 {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  color: #9E9FAB;
-}
-
-.c4 {
-  padding: 48px 48px;
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
-}
-
-.c19 {
-  width: 100%;
-}
-
-.c20 {
-  min-height: 140px;
-  box-sizing: border-box;
-  width: 100%;
-  font-family: Muli,sans-serif;
-  border: 1px solid #DFDFE8;
-  color: #686978;
-  border-radius: 6px;
-  padding: 15px 20px;
-  font-size: 16px;
-  line-height: 26px;
-}
-
-.c20:disabled {
-  background: #fff;
-}
-
-.c20:focus {
-  border-color: #A1A8F2;
-  outline: none;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  font-family: Poppins,sans-serif;
-}
-
-.c10 {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 43px;
-  cursor: pointer;
-}
-
-.c11 {
-  width: 100%;
-  height: 100%;
-  background: #DFDFE8;
-  border-radius: 21.5px 21.5px 21.5px 21.5px;
-}
-
-.c15 {
-  top: -17px;
-  width: 50%;
-  height: 37px;
-  background: #FFFFFF;
-  border-radius: 21.5px 21.5px 21.5px 21.5px;
-  position: relative;
-  -webkit-transition: all .4s ease;
-  transition: all .4s ease;
-  -webkit-transform: translate(calc(97%),calc(-50% - 4px));
-  -ms-transform: translate(calc(97%),calc(-50% - 4px));
-  transform: translate(calc(97%),calc(-50% - 4px));
-  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
-}
-
-.c12 {
-  width: 50%;
-  display: block;
-  height: 100%;
-  float: left;
-}
-
-.c14 {
-  width: 50%;
-  display: block;
-  height: 100%;
-  float: right;
-}
-
-.c13 {
-  z-index: 9;
-  position: relative;
-  font-size: 14px;
-  width: 70%;
-  margin: 13px auto 0 auto;
-  text-overflow: ellipsis;
-  display: block;
-  overflow: hidden;
-  text-align: center;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  color: #84889c;
-  font-weight: normal;
-}
-
 <div
-  className="c0"
+  className="sc-dliRfk gLWpoT"
   id="modal"
   onClick={[Function]}
 >
   <div
-    className="c1"
+    className="sc-kLIISr hErQVG"
     size="small"
   >
     <div
-      className="c2"
+      className="sc-qrIAp cisNde"
       onClick={[Function]}
     >
       <svg
         aria-hidden="true"
-        className="c3"
+        className="sc-ksYbfQ gAtYxm"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -326,49 +29,49 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
       </svg>
     </div>
     <div
-      className="c4"
+      className="sc-iqzUVk jWvkBw"
     >
       <div
-        className="c5"
+        className="sc-jTzLTM hVnMft"
       >
         <span
-          className="c6"
+          className="sc-fjdhpX itrNPn"
         >
           MISSING: manageWallet
         </span>
       </div>
       <div
-        className="c7"
+        className="sc-kAzzGY bKcMZn"
       >
         <div
-          className="c8"
+          className="sc-cSHVUG hYZwci"
         >
           <div
-            className="c9"
+            className="sc-fxmata iwrIdh"
           >
             <div
-              className="c10"
+              className="sc-boCWhm gPpBhW"
             >
               <div
-                className="c11"
+                className="sc-cIsjWt ibtXuY"
               >
                 <div
-                  className="c12"
+                  className="sc-OnmeF gQhETW"
                   onClick={[Function]}
                 >
                   <div
-                    className="c13"
-                    selected={false}
+                    className="sc-fxMfqs cIybic"
+                    selected={true}
                   >
                     MISSING: backup
                   </div>
                 </div>
                 <div
-                  className="c14"
+                  className="sc-OnmeF fsLRjJ"
                   onClick={[Function]}
                 >
                   <div
-                    className="c13"
+                    className="sc-fxMfqs gwNGqr"
                     selected={false}
                   >
                     MISSING: restore
@@ -376,88 +79,102 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
                 </div>
               </div>
               <div
-                className="c15"
+                className="sc-hQfrgq eDFSyR"
               />
             </div>
           </div>
         </div>
       </div>
       <div
-        className="c16"
+        className="sc-fONwsr RtqQQ"
       >
         <div
-          className="c17"
+          className="sc-VJcYb fyXZmJ"
           disabled={false}
           type="light"
         >
-          MISSING: rewardsRestoreText4
-           
-          <label
-            className="c18"
-            htmlFor="recoverFile"
-          >
-            MISSING: import
-          </label>
-          <input
-            id="recoverFile"
-            name="recoverFile"
-            onChange={[Function]}
-            style={
-              Object {
-                "display": "none",
-              }
-            }
-            type="file"
-          />
+          MISSING: recoveryKeys
         </div>
         <div
-          className="c19"
+          className="sc-bGbJRg KPVVf"
         >
           <textarea
-            className="c20"
-            onChange={[Function]}
-            value=""
+            className="sc-bEjcJn enyJAU"
+            disabled={true}
           />
         </div>
       </div>
       <div
-        className="c21"
-      >
-        <p
-          className="c22"
-        >
-          MISSING: rewardsRestoreText3
-        </p>
-      </div>
-      <div
-        className="c23"
+        className="sc-htoDjs eXfEak"
       >
         <button
-          className="c24 c25 c26"
+          className="sc-dnqmqq iwhhqf sc-htpNat dupObH sc-bdVaJa kouSbH"
           onClick={[Function]}
-          size="medium"
-          type="accent"
+          size="small"
+          type="subtle"
         >
           <div
-            className="c27"
-            size="medium"
-            type="accent"
+            className="sc-ifAKCX gVLYon"
+            size="small"
+            type="subtle"
           >
-            MISSING: cancel
+            MISSING: copy
           </div>
         </button>
         <button
-          className="c24 c28 c26"
+          className="sc-dnqmqq iwhhqf sc-htpNat dupObH sc-bdVaJa kouSbH"
+          onClick={[Function]}
+          size="small"
+          type="subtle"
+        >
+          <div
+            className="sc-ifAKCX gVLYon"
+            size="small"
+            type="subtle"
+          >
+            MISSING: print
+          </div>
+        </button>
+        <button
+          className="sc-dnqmqq iwhhqf sc-htpNat dupObH sc-bdVaJa kouSbH"
+          onClick={[Function]}
+          size="small"
+          type="subtle"
+        >
+          <div
+            className="sc-ifAKCX gVLYon"
+            size="small"
+            type="subtle"
+          >
+            MISSING: saveAsFile
+          </div>
+        </button>
+      </div>
+      <div
+        className="sc-bZQynM jpTLXm"
+      >
+        <span
+          className="sc-jzJRlG fXEDZo"
+        >
+          MISSING: rewardsBackupText2
+        </span>
+        MISSING: rewardsBackupText3
+      </div>
+      <div
+        className="sc-iwsKbI lcqftr"
+      >
+        <button
+          className="sc-bwzfXH kdRIEH sc-bdVaJa eBKAvE"
           onClick={[Function]}
           size="medium"
           type="accent"
         >
           <div
-            className="c27"
+            className="sc-ifAKCX gVLYon"
             size="medium"
             type="accent"
           >
-            MISSING: restore
+            MISSING: done
           </div>
         </button>
       </div>

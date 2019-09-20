@@ -1,141 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Box tests basic tests matches the snapshot 1`] = `
-.c1 {
-  max-width: 100%;
-  width: 100%;
-  min-height: auto;
-  margin: 0;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.15);
-  font-size: inherit;
-  font-family: Muli,sans-serif;
-  box-sizing: border-box;
-  position: relative;
-}
-
-.c0 {
-  margin-bottom: 12px;
-}
-
-.c2 {
-  display: block;
-}
-
-.c3 {
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 0 0 0 24px;
-}
-
-.c7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 0 24px 0 0;
-}
-
-.c6 {
-  font-family: Poppins,sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: #4b4c5c;
-}
-
-.c8 {
-  width: 100%;
-  display: block;
-}
-
-.c10 {
-  width: 100%;
-  font-size: 14px;
-  line-height: 1.7;
-  padding: 16px 0;
-  color: #5e6175;
-}
-
-.c9 {
-  width: 100%;
-  padding: 0px 24px;
-  display: block;
-}
-
-.c4 {
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  z-index: 1;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding: 16px 0;
-  border-bottom: 1px solid #E5E5EA;
-}
-
 <div
-  className="c0 c1"
+  className="sc-htpNat kUoBRW sc-bdVaJa ckHBAc"
   data-test-id="box"
 >
   <div
-    className="c0 "
+    className="sc-htpNat kUoBRW sc-bwzfXH dkDPEG"
   >
     <div
-      className="c2"
+      className="sc-bxivhb imCjfa"
     >
       <div
-        className="c3"
+        className="sc-ifAKCX cwPYdI"
         open={true}
       >
         <div
-          className="c4"
+          className="sc-dxgOiQ jyDakT"
         >
           <div
-            className="c5"
+            className="sc-EHOje cYKJPg"
           >
             <div
-              className="c6"
+              className="sc-gzVnrw lgDJWD"
             >
               test
             </div>
           </div>
           <div
-            className="c7"
+            className="sc-bZQynM iUofbQ"
           />
         </div>
         <div
-          className="c8"
+          className="sc-htoDjs kuAiJg"
         />
         <div
-          className="c9"
+          className="sc-jzJRlG htrcie"
         >
           <div
-            className="c10"
+            className="sc-dnqmqq hUVTEh"
           />
         </div>
       </div>

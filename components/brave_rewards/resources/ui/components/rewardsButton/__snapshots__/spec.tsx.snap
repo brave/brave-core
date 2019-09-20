@@ -1,40 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TipButton tests basic tests matches the snapshot 1`] = `
-.c0 {
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  color: white;
-  font-size: 14px;
-  border-radius: 28px;
-  background: inherit;
-  border: none;
-  cursor: pointer;
-}
-
-.c0:focus {
-  outline: 0;
-}
-
-.c1 {
-  font-family: Poppins,sans-serif;
-  font-weight: 600;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 0.39px;
-  -moz-letter-spacing: 0.39px;
-  -ms-letter-spacing: 0.39px;
-  letter-spacing: 0.39px;
-  margin: 0 auto;
-}
-
 <button
-  className="c0"
+  className="sc-bdVaJa iZQigR"
 >
   <span
-    className="c1"
+    className="sc-bwzfXH eERNBL"
   />
 </button>
 `;

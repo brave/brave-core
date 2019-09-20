@@ -1,91 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Alert tests basic tests matches the snapshot 1`] = `
-.c0 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  -webkit-align-content: flex-start;
-  -ms-flex-line-pack: start;
-  align-content: flex-start;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-wrap: nowrap;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  padding: 15px 38px 15px 19px;
-  font-family: Muli,sans-serif;
-  width: 100%;
-  --alert-wrapper-color: #fff;
-  background: var(--alert-wrapper-color);
-}
-
-.c1 {
-  width: 40px;
-  height: 40px;
-  -webkit-flex-basis: 40px;
-  -ms-flex-preferred-size: 40px;
-  flex-basis: 40px;
-}
-
-.c4 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-flex-basis: 50%;
-  -ms-flex-preferred-size: 50%;
-  flex-basis: 50%;
-  padding-left: 19px;
-  font-family: Muli,sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  -webkit-letter-spacing: -0.3px;
-  -moz-letter-spacing: -0.3px;
-  -ms-letter-spacing: -0.3px;
-  letter-spacing: -0.3px;
-  --alert-content-color: #838391;
-  --alert-content-bold: #4b4c5c;
-  color: var(--alert-content-color);
-}
-
-.c4 b {
-  font-weight: 600;
-  color: var(--alert-content-bold);
-}
-
-.c2 {
-  color: #1BBA6A;
-}
-
-.c3 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa eSIAYE"
   id="alert"
   type="success"
 >
   <span
-    className="c1"
+    className="sc-bwzfXH eRyycM"
   >
     <div
-      className="c2"
+      className="sc-EHOje kSeTMO"
     >
       <svg
         aria-hidden="true"
-        className="c3"
+        className="sc-jAaTju euHiHR"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -99,7 +28,7 @@ exports[`Alert tests basic tests matches the snapshot 1`] = `
     </div>
   </span>
   <div
-    className="c4"
+    className="sc-htpNat hJMDHc"
     type="success"
   />
 </div>

@@ -1,165 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MainToggle tests basic tests matches the snapshot 1`] = `
-.c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-radius: 4px;
-  background-color: #FFF;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding: 20px 32px;
-  margin-bottom: 24px;
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 100%;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.c5 {
-  font-size: 28px;
-  font-weight: 600;
-  font-family: Poppins,sans-serif;
-}
-
-.c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c11 {
-  display: block;
-  margin-top: 20px;
-  font-family: Muli,sans-serif;
-}
-
-.c12 {
-  color: #3b3e4f;
-  font-size: 14px;
-  font-weight: normal;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 18px;
-}
-
-.c13 {
-  cursor: pointer;
-  color: #4C54D2;
-  font-weight: 600;
-}
-
-.c3 {
-  width: 48px;
-  height: 48px;
-  margin: 8px;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.c8 {
-  position: relative;
-  display: block;
-  height: 24px;
-  width: 40px;
-}
-
-.c9 {
-  background: #A7ACB2;
-  height: 8px;
-  margin-top: 8px;
-  width: 100%;
-  border-radius: 3px;
-}
-
-.c10 {
-  position: relative;
-  border-radius: 50%;
-  -webkit-transition: all .4s ease;
-  transition: all .4s ease;
-  --toggle-bullet-size: 20px;
-  --toggle-bullet-transform: translate(-1px,calc(-50% - 4px));
-  --toggle-bullet-background: #CDD1D5;
-  width: var(--toggle-bullet-size);
-  height: var(--toggle-bullet-size);
-  -webkit-transform: var(--toggle-bullet-transform);
-  -ms-transform: var(--toggle-bullet-transform);
-  transform: var(--toggle-bullet-transform);
-  background-color: var(--toggle-bullet-background);
-  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
-}
-
-.c7 {
-  color: #838391;
-  font-size: 14px;
-  font-family: Muli,sans-serif;
-  text-align: right;
-  -webkit-letter-spacing: 0.4px;
-  -moz-letter-spacing: 0.4px;
-  -ms-letter-spacing: 0.4px;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  margin: 4px 8px 0 0;
-  opacity: 1;
-  -webkit-transition: 100ms ease-out;
-  transition: 100ms ease-out;
-}
-
-.c4 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
 <div
-  className="c0"
+  className="sc-bdVaJa fTVVDk"
   id="mainToggle"
 >
   <div
-    className="c1"
+    className="sc-bwzfXH fosQZX"
   >
     <div
-      className="c2"
+      className="sc-bxivhb gepbvZ"
     >
       <div
-        className="c3"
+        className="sc-gzVnrw bXtelh"
       >
         <svg
           aria-hidden="true"
-          className="c4"
+          className="sc-bXGyLb wWrXG"
           focusable="false"
           viewBox="0 0 32 32"
         >
@@ -186,31 +43,31 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
         </svg>
       </div>
       <div
-        className="c5"
+        className="sc-htpNat imeFUU"
       >
         MISSING: braveRewards
       </div>
     </div>
     <div
-      className="c6"
+      className="sc-htoDjs juvQWM"
     >
       <div
-        className="c7"
+        className="sc-gqjmRU eGoNRt"
         size="large"
       >
         MISSING: off
       </div>
       <div
-        className="c8"
+        className="sc-dnqmqq jrioFj"
         data-test-id="toggle"
         size="large"
       >
         <div
-          className="c9"
+          className="sc-iwsKbI ReMKB"
           size="large"
         />
         <div
-          className="c10"
+          className="sc-gZMcBi fTrUVY"
           size="large"
           type="dark"
         />
@@ -218,15 +75,15 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
     </div>
   </div>
   <div
-    className="c11"
+    className="sc-ifAKCX isBYeA"
   >
     <span
-      className="c12"
+      className="sc-EHOje iObMmT"
     >
       MISSING: serviceTextToggle
        
       <a
-        className="c13"
+        className="sc-bZQynM hfcwBh"
       >
         MISSING: termsOfService
       </a>
@@ -234,7 +91,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
       MISSING: and
        
       <a
-        className="c13"
+        className="sc-bZQynM hfcwBh"
       >
         MISSING: privacyPolicy
       </a>

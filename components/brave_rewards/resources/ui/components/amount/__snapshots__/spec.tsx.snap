@@ -1,100 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Amount tests basic tests matches the snapshot 1`] = `
-.c0 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-family: Muli,sans-serif;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  margin: 0 0 8px 0;
-}
-
-.c1 {
-  opacity: 1;
-  border-radius: 20px;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.35);
-  background: transparent;
-  vertical-align: baseline;
-  padding: 0 12px;
-  min-height: 32px;
-  min-width: 82px;
-  margin-right: 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  margin-bottom: 0px;
-}
-
-.c5 {
-  margin-left: 5px;
-}
-
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.c2 {
-  margin-right: 6px;
-  width: 23px;
-}
-
-.c6 {
-  vertical-align: baseline;
-  opacity: 0.4;
-  font-size: 10px;
-  color: #ffffff;
-  display: inline-block;
-  font-weight: 500;
-}
-
-.c3 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
 <button
-  className="c0"
+  className="sc-bdVaJa eqkOmY"
   data-test-id="amount-wrapper"
   id="amount"
   onClick={[Function]}
 >
   <div
-    className="c1"
+    className="sc-bwzfXH kusHlF"
     type="small"
   >
     <div
-      className="c2"
+      className="sc-ifAKCX kDLBtx"
     >
       <svg
         aria-hidden="true"
-        className="c3"
+        className="sc-bAeIUo iUNCsN"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -121,17 +43,17 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
       </svg>
     </div>
     <span
-      className="c4"
+      className="sc-bxivhb cDFCAd"
     >
       1
     </span>
      
     <div
-      className="c5"
+      className="sc-htpNat eWCEFP"
     />
   </div>
   <div
-    className="c6"
+    className="sc-EHOje kKXsJW"
     type="small"
   >
     MISSING: about

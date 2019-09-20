@@ -1,305 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
-.c12 {
-  box-sizing: border-box;
-  font-family: Poppins,sans-serif;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  margin: 0;
-}
-
-.c11 {
-  font-size: 48px;
-}
-
-.c15 {
-  box-sizing: border-box;
-  font-family: Poppins,sans-serif;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  margin: 0;
-}
-
-.c14 {
-  font-size: 40px;
-}
-
-.c26 {
-  --button-main-color: #FB542B;
-  --button-main-color-hover: #FB542B;
-  --button-main-color-active: #ffb8a6;
-  --button-state-color: var(--button-main-color);
-  --icon-size: 18px;
-  --icon-spacing: 6px;
-  --webkit-appearance: none;
-  box-sizing: border-box;
-  background: none;
-  border: none;
-  outline-color: transparent;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row-reverse;
-  -ms-flex-direction: row-reverse;
-  flex-direction: row-reverse;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Poppins,sans-serif;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-size: 14px;
-  border-radius: 28px;
-  width: 100%;
-  min-width: 235px;
-  padding: 19px 15px;
-}
-
-.c26:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c26:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c25 {
-  color: #fff;
-  background: var(--button-state-color);
-  border: 1px solid var(--button-state-color);
-}
-
-.c27 {
-  min-height: var(--icon-size);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  text-align: center;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 500;
-  text-transform: uppercase;
-  line-height: 1;
-}
-
-.c3 {
-  font-family: Poppins,sans-serif;
-  background-image: linear-gradient(180deg,#4C54D2 0%,#563195 100%);
-  padding: 42px 42px 30px;
-  margin: -48px;
-  position: relative;
-}
-
-.c4 {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  width: 15px;
-  height: 15px;
-  color: #FFFFFF;
-}
-
-.c6 {
-  margin-bottom: 40px;
-  padding-left: 26px;
-}
-
-.c7 {
-  display: inline-block;
-  vertical-align: middle;
-  width: 50px;
-  height: 50px;
-}
-
-.c9 {
-  vertical-align: middle;
-  display: inline-block;
-  padding-left: 22px;
-}
-
-.c10 {
-  color: #FFFFFF;
-  font-size: 22px;
-  line-height: 24px;
-  font-weight: 600;
-}
-
-.c13 {
-  color: #FFFFFF;
-  font-family: Muli,sans-serif;
-  font-size: 14px;
-  line-height: 24px;
-}
-
-.c16 {
-  font-weight: 600;
-  font-size: 17px;
-  line-height: 25px;
-  padding: 0 0 0 36px;
-  color: #FFFFFF;
-  margin-bottom: -7px;
-}
-
-.c19 {
-  color: hsla(0,0%,100%,0.85);
-  margin: 17px 0;
-}
-
-.c20 {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  vertical-align: top;
-}
-
-.c22 {
-  vertical-align: middle;
-  font-family: Muli,sans-serif;
-  font-size: 15px;
-  line-height: 20px;
-  display: inline-block;
-  width: calc(100% - 30px);
-  padding-left: 12px;
-}
-
-.c24 {
-  padding: 11px 40px;
-  width: auto;
-  min-height: auto;
-  margin-top: -20px;
-}
-
-.c28 {
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  color: hsla(0,0%,100%,0.7);
-  margin-top: 32px;
-}
-
-.c29 {
-  display: inline-block;
-  vertical-align: middle;
-  width: 20px;
-  height: 20px;
-}
-
-.c17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.c18 {
-  width: 50%;
-  padding-right: 10px;
-}
-
-.c23 {
-  width: 50%;
-  padding-left: 40px;
-}
-
-.c31 {
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  line-height: 20px;
-  color: hsla(0,0%,100%,0.7);
-  margin-top: 15px;
-}
-
-.c5 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c21 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c8 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c30 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(12,13,33,0.85);
-  z-index: 99;
-  padding: 0 20px;
-  overflow: hidden;
-}
-
-.c1 {
-  max-width: 666px;
-  margin: 52px auto;
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.c2 {
-  padding: 48px 48px;
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
-}
-
 <div
-  className="c0"
+  className="sc-kxynE lkjYuP"
   id="panel-verify"
   onClick={[Function]}
 >
   <div
-    className="c1"
+    className="sc-cooIXK hiIIWL"
     size="small"
   >
     <div
-      className="c2"
+      className="sc-gmeYpB cpHCod"
     >
       <div
-        className="c3"
+        className="sc-chPdSV eaFjmb"
         id="panel-verify"
       >
         <div
-          className="c4"
+          className="sc-kgoBCf hTipRj"
         >
           <svg
             aria-hidden="true"
-            className="c5"
+            className="sc-ktHwxA dGfSmA"
             focusable="false"
             viewBox="0 0 32 32"
           >
@@ -309,14 +32,14 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
           </svg>
         </div>
         <div
-          className="c6"
+          className="sc-kGXeez jktXSx"
         >
           <div
-            className="c7"
+            className="sc-kpOJdX bvxOSq"
           >
             <svg
               aria-hidden="true"
-              className="c8"
+              className="sc-CtfFt jvAZOy"
               focusable="false"
               viewBox="0 0 32 32"
             >
@@ -370,40 +93,40 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
             </svg>
           </div>
           <div
-            className="c9"
+            className="sc-dxgOiQ gUVnKj"
           >
             <h1
-              className="c10 c11 c12"
+              className="sc-ckVGcZ jxMEaM sc-htpNat gMpIXU sc-bwzfXH fYPHla"
             >
               MISSING: walletVerificationTitle1
             </h1>
             <h2
-              className="c13 c14 c15"
+              className="sc-jKJlTe eRgNpf sc-ifAKCX bWuOYq sc-bxivhb gycNlz"
             >
               MISSING: walletVerificationTitle2
             </h2>
           </div>
         </div>
         <h1
-          className="c16 c11 c12"
+          className="sc-eNQAEJ DPpYL sc-htpNat gMpIXU sc-bwzfXH fYPHla"
         >
           MISSING: walletVerificationListHeader
         </h1>
         <div
-          className="c17"
+          className="sc-cvbbAY dZpbKN"
         >
           <div
-            className="c18"
+            className="sc-jWBwVP iObYtR"
           >
             <div
-              className="c19"
+              className="sc-hMqMXs fteRZz"
             >
               <div
-                className="c20"
+                className="sc-kEYyzF jvSIwV"
               >
                 <svg
                   aria-hidden="true"
-                  className="c21"
+                  className="sc-rBLzX gepCvW"
                   focusable="false"
                   viewBox="0 0 32 32"
                 >
@@ -426,20 +149,20 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
                 </svg>
               </div>
               <div
-                className="c22"
+                className="sc-kkGfuU cgtoYx"
               >
                 MISSING: walletVerificationList1
               </div>
             </div>
             <div
-              className="c19"
+              className="sc-hMqMXs fteRZz"
             >
               <div
-                className="c20"
+                className="sc-kEYyzF jvSIwV"
               >
                 <svg
                   aria-hidden="true"
-                  className="c21"
+                  className="sc-rBLzX gepCvW"
                   focusable="false"
                   viewBox="0 0 32 32"
                 >
@@ -462,20 +185,20 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
                 </svg>
               </div>
               <div
-                className="c22"
+                className="sc-kkGfuU cgtoYx"
               >
                 MISSING: walletVerificationList2
               </div>
             </div>
             <div
-              className="c19"
+              className="sc-hMqMXs fteRZz"
             >
               <div
-                className="c20"
+                className="sc-kEYyzF jvSIwV"
               >
                 <svg
                   aria-hidden="true"
-                  className="c21"
+                  className="sc-rBLzX gepCvW"
                   focusable="false"
                   viewBox="0 0 32 32"
                 >
@@ -498,23 +221,23 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
                 </svg>
               </div>
               <div
-                className="c22"
+                className="sc-kkGfuU cgtoYx"
               >
                 MISSING: walletVerificationList3
               </div>
             </div>
           </div>
           <div
-            className="c23"
+            className="sc-brqgnP gEfbbI"
           >
             <button
-              className="c24 c25 c26"
+              className="sc-iAyFgw fxlfDk sc-jTzLTM msywM sc-VigVT iFaqXL"
               id="on-boarding-verify-button"
               size="call-to-action"
               type="accent"
             >
               <div
-                className="c27"
+                className="sc-cSHVUG ckJrzp"
                 size="call-to-action"
                 type="accent"
               >
@@ -522,7 +245,7 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
               </div>
             </button>
             <div
-              className="c28"
+              className="sc-hSdWYo bhJSll"
             >
               MISSING: walletVerificationFooter
                
@@ -530,92 +253,23 @@ exports[`PanelVerify tests basic tests matches the snapshot 1`] = `
                 Uphold
               </b>
               <div
-                className="c29"
+                className="sc-eHgmQL gDMUwd"
               >
                 <svg
                   aria-hidden="true"
-                  className="c30"
+                  className="sc-dliRfk jiqQOG"
                   focusable="false"
                   viewBox="0 0 32 32"
                 >
-                  <defs>
-                    <linearGradient
-                      gradientTransform="matrix(18 0 0 -22 6834 12848)"
-                      gradientUnits="userSpaceOnUse"
-                      id="a"
-                      x1="-378.78"
-                      x2="-378.78"
-                      y1="583.86"
-                      y2="582.86"
-                    >
-                      <stop
-                        offset="0"
-                        stopColor="#78be06"
-                      />
-                      <stop
-                        offset="1"
-                        stopColor="#ff523c"
-                      />
-                    </linearGradient>
-                    <linearGradient
-                      gradientTransform="matrix(14 0 0 -19 5226 11171)"
-                      gradientUnits="userSpaceOnUse"
-                      id="b"
-                      x1="-372.29"
-                      x2="-372.29"
-                      y1="587.63"
-                      y2="586.66"
-                    >
-                      <stop
-                        offset="0"
-                        stopColor="#fab406"
-                      />
-                      <stop
-                        offset="1"
-                        stopColor="#fa5235"
-                      />
-                    </linearGradient>
-                    <linearGradient
-                      gradientTransform="matrix(-14 0 0 -19 -6012 11171)"
-                      gradientUnits="userSpaceOnUse"
-                      id="c"
-                      x1="-430.71"
-                      x2="-430.71"
-                      y1="587.63"
-                      y2="586.66"
-                    >
-                      <stop
-                        offset="0"
-                        stopColor="#3d58d0"
-                      />
-                      <stop
-                        offset="1"
-                        stopColor="#78b81b"
-                      />
-                    </linearGradient>
-                  </defs>
                   <path
-                    d="M13.21 28.51a1 1 0 0 1 .67-1.89 6.1 6.1 0 0 0 4.24 0 1 1 0 0 1 .67 1.89 8.19 8.19 0 0 1-5.58 0z"
-                    fill="#ff523c"
-                  />
-                  <path
-                    d="M16 25c-5 0-9-5-9-11s4-11 9-11 9 5 9 11-4 11-9 11zm0-2c3.81 0 7-4 7-9s-3.19-9-7-9-7 4-7 9 3.19 9 7 9z"
-                    fill="url(#a)"
-                  />
-                  <path
-                    d="M16 25c-5 0-9-5-9-11 0-.25 0-.66.07-1.19a13.81 13.81 0 0 1 .47-2.58C8.27 7.66 9.69 6 12 6c4.74 0 9 5.14 9 11 0 5.13-2.2 8-5 8zm0-2c1.56 0 3-1.88 3-6 0-4.83-3.45-9-7-9-1.19 0-2 1-2.54 2.77a12.53 12.53 0 0 0-.4 2.23A9.51 9.51 0 0 0 9 14c0 5 3.19 9 7 9z"
-                    fill="url(#b)"
-                  />
-                   
-                  <path
-                    d="M16 25c5 0 9-5 9-11 0-.25 0-.66-.07-1.19a13.81 13.81 0 0 0-.47-2.58C23.73 7.66 22.31 6 20 6c-4.74 0-9 5.14-9 11 0 5.13 2.2 8 5 8zm0-2c-1.56 0-3-1.88-3-6 0-4.83 3.45-9 7-9 1.19 0 2 1 2.54 2.77a12.53 12.53 0 0 1 .4 2.23 9.51 9.51 0 0 1 .06 1c0 5-3.19 9-7 9z"
-                    fill="url(#c)"
+                    d="M18.6,27.4c-0.8,0.2-1.6,0.4-2.4,0.4h-0.1c-0.8,0-1.6-0.1-2.4-0.4c-0.4-0.1-0.8,0.1-0.9,0.5s0.1,0.8,0.5,0.9 c0.9,0.3,1.9,0.4,2.8,0.4h0.1c1,0,1.9-0.1,2.8-0.4c0.4-0.1,0.6-0.5,0.5-0.9C19.4,27.5,19,27.2,18.6,27.4z M24.9,9.6L24.9,9.6 L24.9,9.6C23.3,4.7,18.1,2,13.3,3.6c-2.8,0.9-5,3.1-5.9,5.9l0,0c-0.8,2.4-0.5,5.6,0.8,8.6c1.8,4.1,5.1,6.9,8,6.9h0.1 c2.9,0,6.2-2.8,8-6.9C25.4,15.2,25.7,12,24.9,9.6z M20.7,6c-1.7,0-3.3,0.6-4.5,1.8c-1.2-1.1-2.9-1.8-4.5-1.8 C14.3,4.1,17.9,4.1,20.7,6z M17.3,23.4c-0.8,0.4-1.6,0.4-2.4,0c-2.4-1.1-3-5.7-1.1-10c0.6-1.3,1.3-2.5,2.3-3.6 c1,1.1,1.7,2.3,2.3,3.6C20.3,17.7,19.8,22.3,17.3,23.4z M9.4,17.6C8.3,14.9,8,12.1,8.7,10C9,9,9.7,8.2,10.5,7.8 c1.3-0.6,2.9-0.2,4.5,1.1c-1.1,1.2-1.9,2.5-2.6,4c-1.2,2.5-1.5,5.4-1,8.1C10.7,20,10,18.8,9.4,17.6z M22.8,17.6 c-0.5,1.2-1.2,2.4-2.1,3.4c0.6-2.7,0.2-5.6-1-8.1c-0.6-1.5-1.5-2.8-2.6-4c1.6-1.3,3.3-1.7,4.5-1.1c0.9,0.5,1.6,1.3,1.8,2.2 C24.3,12.1,24,14.9,22.8,17.6z"
+                    fill="#49cc68"
                   />
                 </svg>
               </div>
             </div>
             <div
-              className="c31"
+              className="sc-cMljjf bWWeVK"
             >
               MISSING: walletVerificationNote1
               <br />

@@ -1,122 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalDonation tests basic tests matches the snapshot 1`] = `
-.c5 {
-  font-family: Poppins,sans-serif;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 2;
-  color: #4b4c5c;
-  margin-bottom: 20px;
-}
-
-.c0 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(12,13,33,0.85);
-  z-index: 99;
-  padding: 0 20px;
-  overflow: hidden;
-}
-
-.c1 {
-  max-width: 920px;
-  margin: 52px auto;
-  background: #fff;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-
-.c2 {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  color: #9E9FAB;
-}
-
-.c4 {
-  padding: 48px 48px;
-  overflow-y: auto;
-  max-height: calc(100vh - 100px);
-}
-
-.c3 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c10 {
-  text-align: center;
-  padding: 30px 0;
-  color: #999ea2;
-  font-size: 14px;
-}
-
-.c7 {
-  min-width: 100%;
-  margin: 24px 0;
-}
-
-.c8 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 12px 0;
-  border: none;
-  border-bottom: 1px solid #696FDC;
-  padding: 8px 0;
-  color: #696FDC;
-}
-
-.c9 {
-  text-transform: uppercase;
-  text-align: left;
-  font-family: Muli,sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  border-bottom: 2px solid #dedfe4;
-  border-top: 2px solid #dedfe4;
-  color: #4B4C5C;
-  padding: 12px 0;
-  text-align: right;
-  padding-right: 7px;
-  border: none;
-  border-bottom: 1px solid #696FDC;
-  padding: 8px 0;
-  color: #696FDC;
-}
-
 <div
-  className="c0"
+  className="sc-htpNat jEQWaJ"
   id="modal"
   onClick={[Function]}
 >
   <div
-    className="c1"
+    className="sc-bxivhb jUOUoN"
     size="normal"
   >
     <div
-      className="c2"
+      className="sc-ifAKCX dDcLej"
     >
       <svg
         aria-hidden="true"
-        className="c3"
+        className="sc-gipzik lmcWzx"
         focusable="false"
         viewBox="0 0 32 32"
       >
@@ -129,35 +28,35 @@ exports[`ModalDonation tests basic tests matches the snapshot 1`] = `
       </svg>
     </div>
     <div
-      className="c4"
+      className="sc-EHOje fWqojI"
     >
       <div
-        className="c5"
+        className="sc-bdVaJa bJpVkp"
       >
         <div
-          className="c6"
+          className="sc-bwzfXH kNyJHx"
         >
           MISSING: donationTips
         </div>
         <div>
           <div>
             <table
-              className="c7"
+              className="sc-bHwgHz ivzSCr"
             >
               <thead>
                 <tr>
                   <th
-                    className="c8"
+                    className="sc-krDsej iCWhZz"
                   >
                     MISSING: site
                   </th>
                   <th
-                    className="c8"
+                    className="sc-krDsej iCWhZz"
                   >
                     MISSING: type
                   </th>
                   <th
-                    className="c9"
+                    className="sc-krDsej csFqvd"
                   >
                     MISSING: tokens
                   </th>
@@ -165,7 +64,7 @@ exports[`ModalDonation tests basic tests matches the snapshot 1`] = `
               </thead>
             </table>
             <div
-              className="c10"
+              className="sc-TFwJa dfqlUq"
             />
           </div>
         </div>
