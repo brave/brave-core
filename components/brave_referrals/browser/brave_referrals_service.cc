@@ -95,8 +95,8 @@ namespace brave {
 
 BraveReferralsService::BraveReferralsService(PrefService* pref_service)
     : initialized_(false),
-      task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
+      task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock()})),
       pref_service_(pref_service),
       weak_factory_(this) {
 }
