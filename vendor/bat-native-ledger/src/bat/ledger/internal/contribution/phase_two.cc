@@ -381,7 +381,8 @@ void PhaseTwo::Proof() {
   }
 
 #if defined(OS_IOS)
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,
+                                           0), ^{
     const auto result = this->ProofBatch(batch_proofs);
     dispatch_async(dispatch_get_main_queue(), ^{
       this->ProofBatchCallback(batch_proofs, result);
