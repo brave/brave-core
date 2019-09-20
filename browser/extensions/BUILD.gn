@@ -63,6 +63,7 @@ source_set("extensions") {
     "//brave/components/brave_extension:generated_resources",
     "//brave/components/brave_extension:static_resources",
     "//components/prefs",
+    "//components/services/patch/content",
     "//components/services/unzip/content",
     "//components/update_client:patch_impl",
     "//components/update_client:unzip_impl",
