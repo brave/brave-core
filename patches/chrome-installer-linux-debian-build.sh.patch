@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 306b59c138b7cb5df21ad6e9d502bb7a46a104c6..a8ff37b5a7d31b442e3fe812a0d9d091d7eda66d 100755
+index 306b59c138b7cb5df21ad6e9d502bb7a46a104c6..9e6da48138b26754e9e5b000451e65db2f317728 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -38,21 +38,26 @@ index 306b59c138b7cb5df21ad6e9d502bb7a46a104c6..a8ff37b5a7d31b442e3fe812a0d9d091
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -156,9 +156,13 @@ verify_channel() {
-       RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Stable%20updates"
+@@ -157,8 +157,11 @@ verify_channel() {
        ;;
      unstable|dev|alpha )
--      CHANNEL=unstable
+       CHANNEL=unstable
 +      CHANNEL=dev
        RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Dev%20updates"
        ;;
 +    nightly )
-+      CHANNEL=nightly
-+      RELEASENOTES="https://community.brave.com"
 +      ;;
      testing|beta )
        CHANNEL=beta
        RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Beta%20updates"
+@@ -170,6 +173,7 @@ verify_channel() {
+       exit 1
+       ;;
+   esac
++  RELEASENOTES="https://brave.com/latest/"
+ }
+ 
+ process_opts() {
 @@ -259,6 +263,17 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${BUILDDIR}/installer/theme/BRANDING")
