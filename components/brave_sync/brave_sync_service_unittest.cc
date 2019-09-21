@@ -146,19 +146,16 @@ MATCHER_P2(ContainsDeviceRecord,
   return false;
 }
 
-size_t g_overridden_minutes = 0;
+base::TimeDelta g_overridden_time_delta;
 base::Time g_overridden_now;
-std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForMinutes(
-    int overridden_minutes,
+std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForTimeDelta(
+    base::TimeDelta overridden_time_delta,
     const base::Time& now = base::subtle::TimeNowIgnoringOverride()) {
-  g_overridden_minutes = overridden_minutes;
+  g_overridden_time_delta = overridden_time_delta;
   g_overridden_now = now;
   return std::make_unique<base::subtle::ScopedTimeClockOverrides>(
-      []() {
-        return g_overridden_now +
-               base::TimeDelta::FromMinutes(g_overridden_minutes);
-      },
-      nullptr, nullptr);
+      []() { return g_overridden_now + g_overridden_time_delta; }, nullptr,
+      nullptr);
 }
 
 }  // namespace
@@ -849,15 +846,26 @@ TEST_F(BraveSyncServiceTest, ExponentialResend) {
       brave_sync::BraveProfileSyncServiceImpl::GetExponentialWaitsForTests();
   const int max_send_retries = exponential_waits.size() - 1;
   std::set<int> should_sent_at;
+  size_t current_sum = 0;
   for (size_t j = 0; j < exponential_waits.size(); ++j) {
-    should_sent_at.insert(exponential_waits[j]);
+    current_sum += exponential_waits[j];
+    should_sent_at.insert(current_sum);
   }
+  should_sent_at.insert(current_sum + exponential_waits.back());
   auto contains = [](const std::set<int>& set, int val) {
     return set.find(val) != set.end();
   };
-  for (size_t i = 0; i <= exponential_waits.back(); ++i) {
+  // Following statemets are correct only if
+  // kExponentialWaits is {10, 20, 40, 80}
+  EXPECT_TRUE(contains(should_sent_at, 10));
+  EXPECT_TRUE(contains(should_sent_at, 30));
+  EXPECT_TRUE(contains(should_sent_at, 70));
+  EXPECT_TRUE(contains(should_sent_at, 150));
+  // emulate the wait time after reaching maximum retry
+  EXPECT_TRUE(contains(should_sent_at, 230));
+  for (size_t i = 0; i <= 231 + 1; ++i) {
     auto time_override =
-        OverrideForMinutes(i, base::Time::FromJsTime(sync_timestamp));
+        OverrideForTimeDelta(base::TimeDelta::FromMinutes(i));
     bool is_send_expected = contains(should_sent_at, i);
     int expect_call_times = is_send_expected ? 1 : 0;
     EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _))
