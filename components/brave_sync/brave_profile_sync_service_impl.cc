@@ -1046,6 +1046,7 @@ void BraveProfileSyncServiceImpl::ResendSyncRecords(
           base::DictionaryValue::From(
               std::make_unique<base::Value>(meta->Clone()));
       new_meta->SetInteger("send_retry_number", current_retry_number);
+      new_meta->SetDouble("sync_timestamp", base::Time::Now().ToJsTime());
       brave_sync_prefs_->SetRecordToResendMeta(object_id, std::move(new_meta));
 
       if (node) {
