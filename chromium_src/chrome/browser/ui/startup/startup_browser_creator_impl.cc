@@ -16,7 +16,7 @@ class BraveGoogleKeysInfoBarDelegate {
 };
 
 #define BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINEURLSANDLAUNCH \
-  onboarding_enabled = true;
+  welcome_enabled = true;
 
 #include "../../../../../../chrome/browser/ui/startup/startup_browser_creator_impl.cc"  // NOLINT
 
