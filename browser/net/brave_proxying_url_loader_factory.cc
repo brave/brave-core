@@ -167,11 +167,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect(
   RestartInternal();
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::ProceedWithResponse() {
-  if (target_loader_.is_bound())
-    target_loader_->ProceedWithResponse();
-}
-
 void BraveProxyingURLLoaderFactory::InProgressRequest::SetPriority(
     net::RequestPriority priority,
     int32_t intra_priority_value) {
