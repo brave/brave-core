@@ -17,7 +17,8 @@
     "256": "assets/img/icon-256.png"
   },
   "web_accessible_resources": [
-    "out/*.html"
+    "out/*.html",
+    "out/*.jpg"
   ],
   "background": {
     "scripts": [
