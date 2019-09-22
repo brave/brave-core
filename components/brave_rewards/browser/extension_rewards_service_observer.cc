@@ -375,8 +375,8 @@ void ExtensionRewardsServiceObserver::OnReconcileComplete(
     RewardsService* rewards_service,
     unsigned int result,
     const std::string& viewing_id,
-    int32_t category,
-    const std::string& probi) {
+    const std::string& probi,
+    const int32_t category) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;

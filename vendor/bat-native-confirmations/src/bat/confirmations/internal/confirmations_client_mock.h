@@ -67,8 +67,8 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD4(OnReconcileComplete, void(
       Result result,
       const std::string& viewing_id,
-      ledger::REWARDS_CATEGORY category,
-      const std::string& probi));
+      const std::string& probi,
+      const ledger::RewardsCategory category));
 
   MOCK_METHOD1(LoadLedgerState, void(
       ledger::OnLoadCallback callback));
@@ -162,7 +162,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const int year,
       const uint32_t date,
       const std::string& publisher_key,
-      const ledger::REWARDS_CATEGORY category));
+      const ledger::RewardsCategory category));
 
   MOCK_METHOD2(SaveRecurringTip, void(
       ledger::ContributionInfoPtr info,

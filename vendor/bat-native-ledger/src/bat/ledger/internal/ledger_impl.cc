@@ -584,18 +584,12 @@ uint64_t LedgerImpl::GetReconcileStamp() const {
 void LedgerImpl::OnReconcileComplete(ledger::Result result,
                                      const std::string& viewing_id,
                                      const std::string& probi,
-                                     int32_t category) {
-  auto reconcile = GetReconcileById(viewing_id);
-
-  if (category == 0) {
-    category = reconcile.category_;
-  }
-
+                                     const ledger::RewardsCategory category) {
   ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
-      static_cast<ledger::REWARDS_CATEGORY>(category),
-      probi);
+      probi,
+      category);
 }
 
 void LedgerImpl::OnWalletProperties(
@@ -846,7 +840,7 @@ void LedgerImpl::GetPublisherBanner(const std::string& publisher_id,
 
 void LedgerImpl::OnReconcileCompleteSuccess(
     const std::string& viewing_id,
-    const ledger::REWARDS_CATEGORY category,
+    const ledger::RewardsCategory category,
     const std::string& probi,
     const ledger::ACTIVITY_MONTH month,
     const int year,
@@ -1163,7 +1157,7 @@ void LedgerImpl::SaveContributionInfo(
     const int year,
     const uint32_t date,
     const std::string& publisher_key,
-    const ledger::REWARDS_CATEGORY category) {
+    const ledger::RewardsCategory category) {
   ledger_client_->SaveContributionInfo(probi,
                                        month,
                                        year,

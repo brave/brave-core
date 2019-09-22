@@ -43,8 +43,8 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
   MOCK_METHOD5(OnReconcileComplete, void(RewardsService*,
                                          unsigned int,
                                          const std::string&,
-                                         int32_t,
-                                         const std::string&));
+                                         const std::string&,
+                                         const int32_t));
   MOCK_METHOD2(OnGetRecurringTips,
       void(RewardsService*, const brave_rewards::ContentSiteList&));
   MOCK_METHOD2(OnPublisherBanner,

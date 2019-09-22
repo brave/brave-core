@@ -556,7 +556,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     info.amount = pc.amount;
     info.addedDate = pc.addedDate;
     info.viewingId = pc.viewingID;
-    info.category = pc.category;
+    info.category = static_cast<BATRewardsCategory>(pc.category);
     [publishers addObject:info];
   }
   return publishers;

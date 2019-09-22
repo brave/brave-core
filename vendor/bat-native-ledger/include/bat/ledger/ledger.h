@@ -227,7 +227,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void OnReconcileCompleteSuccess(
       const std::string& viewing_id,
-      const ledger::REWARDS_CATEGORY category,
+      const ledger::RewardsCategory category,
       const std::string& probi,
       const ledger::ACTIVITY_MONTH month,
       const int year,

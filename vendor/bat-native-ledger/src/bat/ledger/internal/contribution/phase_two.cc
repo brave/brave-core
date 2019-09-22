@@ -46,17 +46,17 @@ void PhaseTwo::Start(const std::string& viewing_id) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   switch (reconcile.category_) {
-    case ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE: {
+    case ledger::RewardsCategory::AUTO_CONTRIBUTE: {
       GetContributeWinners(ballots_count, viewing_id, reconcile.list_);
       break;
     }
 
-    case ledger::REWARDS_CATEGORY::RECURRING_TIP: {
+    case ledger::RewardsCategory::RECURRING_TIP: {
       GetTipsWinners(ballots_count, viewing_id);
       break;
     }
 
-    case ledger::REWARDS_CATEGORY::ONE_TIME_TIP: {
+    case ledger::RewardsCategory::ONE_TIME_TIP: {
       // Direct one-time contribution
       braveledger_bat_helper::WINNERS_ST winner;
       winner.votes_ = ballots_count;
