@@ -31,7 +31,7 @@ function accumulationDone () {
   batAds = filterUnsuitableSizes(batAds)
   console.log(`BATSense: got ${batAds.length} slots with useable size`)
   batAds = slotFilterStrategy(batAds)
-  console.log(`BATSense: filter strategy done, got ${batAds.length} slots`)
+  console.log(`BATSense: filter strategy done, got ${batAds.length} slots`, batAds)
   for (const batAd of batAds) {
     fetchCreativeFromBackend(batAd)
     .then(adDetail => {
