@@ -1,4 +1,4 @@
-
+import injectToDocument from '../util/inject-to-document'
 
 export default function waitForWindowVar(varName, onValue) {
 
@@ -42,26 +42,5 @@ export default function waitForWindowVar(varName, onValue) {
     })
   }
 
-  const inPageToEval = `(
-    ${fnPageInjectionCode.toString()}
-  )(
-    '${varName}',
-    '${customEventName}')
-  `
-
-  function inject () {
-    const scriptEl = document.createElement('script')
-    scriptEl.async = true
-    scriptEl.textContent = inPageToEval
-    ;(document.body || document.documentElement).appendChild(scriptEl)
-    requestAnimationFrame(() => {
-      scriptEl.remove()
-    })
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inject)
-  } else {
-    inject()
-  }
+  injectToDocument(fnPageInjectionCode, varName, customEventName)
 }
