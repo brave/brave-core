@@ -12,6 +12,8 @@
 #include "base/containers/flat_map.h"
 #include "base/strings/string_piece.h"
 
+class PrefService;
+
 namespace base {
 class DictionaryValue;
 }
@@ -42,6 +44,9 @@ enum class AdsP3AState {
 };
 
 void RecordAdsState(AdsP3AState state);
+
+void UpdateAdsP3AOnPreferenceChange(PrefService* prefs,
+                                    const std::string& pref);
 
 void RecordNoWalletCreatedForAllMetrics();
 

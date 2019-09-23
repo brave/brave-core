@@ -1699,30 +1699,7 @@ void AdsServiceImpl::OnPrefsChanged(
     }
 
     // Record P3A.
-    using brave_rewards::AdsP3AState;
-    const bool rewards_enabled =
-        profile_->GetPrefs()->GetBoolean(
-            brave_rewards::prefs::kBraveRewardsEnabled);
-    if (pref == prefs::kEnabled) {
-      if (profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
-        brave_rewards::RecordAdsState(AdsP3AState::kAdsEnabled);
-        profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsWereDisabled, false);
-      } else {
-        // Apparently, the pref was disabled.
-        brave_rewards::RecordAdsState(
-            rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
-                              AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
-        profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsWereDisabled, true);
-      }
-    } else {
-      // Rewards pref was changed
-      if (profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsWereDisabled)) {
-        brave_rewards::RecordAdsState(
-            rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
-                              AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
-      }
-      // Otherwise do nothing, the needed value should be already recorded.
-    }
+    brave_rewards::UpdateAdsP3AOnPreferenceChange(profile_->GetPrefs(), pref);
   } else if (pref == prefs::kIdleThreshold) {
     StartCheckIdleStateTimer();
   }

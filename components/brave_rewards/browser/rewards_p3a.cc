@@ -8,6 +8,9 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_rewards {
 
@@ -75,6 +78,33 @@ void RecordTipsState(bool wallet_created,
 
 void RecordAdsState(AdsP3AState state) {
   UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsState", state);
+}
+
+void UpdateAdsP3AOnPreferenceChange(PrefService *prefs,
+                                    const std::string& pref) {
+  using brave_rewards::AdsP3AState;
+  const bool rewards_enabled =
+      prefs->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
+  if (pref == brave_ads::prefs::kEnabled) {
+    if (prefs->GetBoolean(brave_ads::prefs::kEnabled)) {
+      brave_rewards::RecordAdsState(AdsP3AState::kAdsEnabled);
+      prefs->SetBoolean(brave_ads::prefs::kBraveAdsWereDisabled, false);
+    } else {
+      // Apparently, the pref was disabled.
+      brave_rewards::RecordAdsState(
+          rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
+                            AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
+      prefs->SetBoolean(brave_ads::prefs::kBraveAdsWereDisabled, true);
+    }
+  } else if (pref == brave_rewards::prefs::kBraveRewardsEnabled) {
+    // Rewards pref was changed
+    if (prefs->GetBoolean(brave_ads::prefs::kBraveAdsWereDisabled)) {
+      brave_rewards::RecordAdsState(
+          rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
+                            AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
+    }
+    // Otherwise do nothing, the needed value should be already recorded.
+  }
 }
 
 void RecordNoWalletCreatedForAllMetrics() {
