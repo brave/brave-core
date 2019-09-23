@@ -23,40 +23,22 @@ class WebUI;
 
 class Profile;
 
-#if !defined(OS_ANDROID)
-struct GzippedGritResourceMap;
-#else
 struct GritResourceMap;
-#endif
 
-#if !defined(OS_ANDROID)
 content::WebUIDataSource* CreateBasicUIHTMLSource(
     Profile* profile,
     const std::string& name,
     const GritResourceMap* resource_map,
     size_t resouece_map_size,
     int html_resource_id);
-#else
-content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
-                                                  const std::string& name,
-                                                  const GritResourceMap* resource_map,
-                                                  size_t resouece_map_size,
-                                                  int html_resource_id);
-#endif
 
 class BasicUI : public content::WebUIController {
  public:
-#if !defined(OS_ANDROID)
   BasicUI(content::WebUI* web_ui,
           const std::string& host,
           const GritResourceMap* resource_map,
           size_t resouece_map_size,
           int html_resource_id);
-#else
-  BasicUI(content::WebUI* web_ui, const std::string& host,
-      const GritResourceMap* resource_map, size_t resouece_map_size,
-      int html_resource_id);
-#endif
   ~BasicUI() override;
 
   // Called when subclass can set its webui properties.
