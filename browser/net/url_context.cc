@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 #include "brave/browser/net/url_context.h"
 
 #include <memory>
@@ -38,7 +37,7 @@ bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
   DCHECK(resource_context);
 
   const ProfileIOData* io_data =
-    ProfileIOData::FromResourceContext(resource_context);
+      ProfileIOData::FromResourceContext(resource_context);
   if (!io_data) {
     return false;
   }
@@ -49,7 +48,7 @@ bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
   }
 
   return !infoMap->extensions().Contains(brave_webtorrent_extension_id) ||
-    infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
+         infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
 #else
   return true;
 #endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -101,7 +100,8 @@ BraveRequestInfo::BraveRequestInfo() = default;
 
 BraveRequestInfo::~BraveRequestInfo() = default;
 
-void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
+void BraveRequestInfo::FillCTXFromRequest(
+    const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
   ctx->request_identifier = request->identifier();
@@ -121,8 +121,7 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     }
   }
 
-  brave_shields::GetRenderFrameInfo(request,
-                                    &ctx->render_frame_id,
+  brave_shields::GetRenderFrameInfo(request, &ctx->render_frame_id,
                                     &ctx->render_process_id,
                                     &ctx->frame_tree_node_id);
   if (!request->site_for_cookies().is_empty()) {
@@ -133,23 +132,26 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     ctx->tab_url = GURL(request->network_isolation_key().ToString());
     if (ctx->tab_url.is_empty()) {
       ctx->tab_url = brave_shields::BraveShieldsWebContentsObserver::
-          GetTabURLFromRenderFrameInfo(ctx->render_process_id,
-                                       ctx->render_frame_id,
-                                       ctx->frame_tree_node_id).GetOrigin();
+                         GetTabURLFromRenderFrameInfo(ctx->render_process_id,
+                                                      ctx->render_frame_id,
+                                                      ctx->frame_tree_node_id)
+                             .GetOrigin();
     }
   }
   ctx->tab_origin = ctx->tab_url.GetOrigin();
-  ctx->allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields) &&
-    !request->site_for_cookies().SchemeIs(kChromeExtensionScheme);
+  ctx->allow_brave_shields =
+      brave_shields::IsAllowContentSettingFromIO(
+          request, ctx->tab_origin, ctx->tab_origin,
+          CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kBraveShields) &&
+      !request->site_for_cookies().SchemeIs(kChromeExtensionScheme);
   ctx->allow_ads = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kAds);
   ctx->allow_http_upgradable_resource =
-      brave_shields::IsAllowContentSettingFromIO(request, ctx->tab_origin,
-          ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kHTTPUpgradableResources);
+      brave_shields::IsAllowContentSettingFromIO(
+          request, ctx->tab_origin, ctx->tab_origin,
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kHTTPUpgradableResources);
   ctx->allow_referrers = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers);
@@ -158,13 +160,12 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
 }
 
 // static
-void BraveRequestInfo::FillCTX(
-    const network::ResourceRequest& request,
-    int render_process_id,
-    int frame_tree_node_id,
-    uint64_t request_identifier,
-    content::BrowserContext* browser_context,
-    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
+                               int render_process_id,
+                               int frame_tree_node_id,
+                               uint64_t request_identifier,
+                               content::BrowserContext* browser_context,
+                               std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ctx->request_identifier = request_identifier;
   ctx->request_url = request.url;
@@ -191,31 +192,33 @@ void BraveRequestInfo::FillCTX(
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->tab_url = request.top_frame_origin;
-  ctx->tab_origin = request.trusted_network_isolation_key.GetTopFrameOrigin()
-                        .value_or(url::Origin())
-                        .GetURL();
+  if (request.trusted_params) {
+    ctx->tab_origin =
+        request.trusted_params->network_isolation_key.GetTopFrameOrigin()
+            .value_or(url::Origin())
+            .GetURL();
+  }
   // TODO(iefremov): We still need this for WebSockets, currently
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
   // (See |BraveProxyingWebSocket|).
   if (ctx->tab_origin.is_empty()) {
     ctx->tab_origin = brave_shields::BraveShieldsWebContentsObserver::
-        GetTabURLFromRenderFrameInfo(ctx->render_process_id,
-                                     ctx->render_frame_id,
-                                     ctx->frame_tree_node_id).GetOrigin();
+                          GetTabURLFromRenderFrameInfo(ctx->render_process_id,
+                                                       ctx->render_frame_id,
+                                                       ctx->frame_tree_node_id)
+                              .GetOrigin();
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   ctx->allow_brave_shields =
       brave_shields::GetBraveShieldsEnabled(profile, ctx->tab_origin);
-  ctx->allow_ads =
-      brave_shields::GetAdControlType(profile, ctx->tab_origin) ==
-          brave_shields::ControlType::ALLOW;
+  ctx->allow_ads = brave_shields::GetAdControlType(profile, ctx->tab_origin) ==
+                   brave_shields::ControlType::ALLOW;
   ctx->allow_http_upgradable_resource =
       !brave_shields::GetHTTPSEverywhereEnabled(profile, ctx->tab_origin);
   ctx->allow_referrers =
       brave_shields::AllowReferrers(profile, ctx->tab_origin);
   ctx->upload_data = GetUploadData(request);
 }
-
 
 }  // namespace brave
