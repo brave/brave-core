@@ -11,6 +11,7 @@
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/shield_exceptions.h"
+#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -38,6 +39,19 @@ using net::URLRequest;
 namespace brave_shields {
 
 namespace {
+
+void RecordShieldsToggled() {
+  PrefService* local_state = g_browser_process->local_state();
+  ::brave_shields::RecordShieldsUsageP3A(::brave_shields::kShutOffShields,
+                                         local_state);
+}
+
+void RecordShieldsSettingChanged() {
+  PrefService* local_state = g_browser_process->local_state();
+  ::brave_shields::RecordShieldsUsageP3A(
+      ::brave_shields::kChangedPerSiteShields, local_state);
+}
+
 
 ContentSetting GetDefaultAllowFromControlType(ControlType type) {
   if (type == ControlType::DEFAULT)
@@ -118,6 +132,8 @@ void SetBraveShieldsEnabled(Profile* profile,
           CONTENT_SETTINGS_TYPE_PLUGINS, kBraveShields,
           // this is 'allow_brave_shields' so 'enable' == 'allow'
           enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
+
+  RecordShieldsToggled();
 }
 
 void ResetBraveShieldsEnabled(Profile* profile,
@@ -172,6 +188,7 @@ void SetAdControlType(Profile* profile, ControlType type, const GURL& url) {
                                      ContentSettingsPattern::Wildcard(),
                                      CONTENT_SETTINGS_TYPE_PLUGINS, kTrackers,
                                      GetDefaultBlockFromControlType(type));
+  RecordShieldsSettingChanged();
 }
 
 ControlType GetAdControlType(Profile* profile, const GURL& url) {
@@ -220,6 +237,7 @@ void SetCookieControlType(HostContentSettingsMap* map,
       ContentSettingsPattern::FromString("https://firstParty/*"),
       CONTENT_SETTINGS_TYPE_PLUGINS, kCookies,
       GetDefaultAllowFromControlType(type));
+  RecordShieldsSettingChanged();
 }
 
 ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url) {
@@ -272,6 +290,8 @@ void SetFingerprintingControlType(Profile* profile,
       ContentSettingsPattern::FromString("https://firstParty/*"),
       CONTENT_SETTINGS_TYPE_PLUGINS, kFingerprinting,
       GetDefaultAllowFromControlType(type));
+
+  RecordShieldsSettingChanged();
 }
 
 ControlType GetFingerprintingControlType(Profile* profile, const GURL& url) {
@@ -306,6 +326,7 @@ void SetHTTPSEverywhereEnabled(Profile* profile,
           // this is 'allow_http_upgradeable_resources' so enabling
           // httpse will set the value to 'BLOCK'
           enable ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+  RecordShieldsSettingChanged();
 }
 
 void ResetHTTPSEverywhereEnabled(Profile* profile,
@@ -346,6 +367,7 @@ void SetNoScriptControlType(Profile* profile,
           CONTENT_SETTINGS_TYPE_JAVASCRIPT, "",
           type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
                                      : CONTENT_SETTING_BLOCK);
+  RecordShieldsSettingChanged();
 }
 
 ControlType GetNoScriptControlType(Profile* profile, const GURL& url) {
