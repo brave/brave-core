@@ -15,8 +15,8 @@
 namespace ui {
 // static
 void BraveThemeUtils::SetDarkMode(bool dark_mode) {
-  NativeTheme::GetInstanceForNativeUi()->set_dark_mode(dark_mode);
-  NativeTheme::GetInstanceForWeb()->set_dark_mode(dark_mode);
+  NativeTheme::GetInstanceForNativeUi()->set_use_dark_colors(dark_mode);
+  NativeTheme::GetInstanceForWeb()->set_use_dark_colors(dark_mode);
 }
 
 // static
