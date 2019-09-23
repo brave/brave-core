@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/res/xml/site_settings_preferences.xml b/chrome/android/java/res/xml/site_settings_preferences.xml
+index ef75b04c99418feec946cebb427e69175c05e6f3..bb21711f4e57efd7fbde263c09b1482ae58d699c 100644
+--- a/chrome/android/java/res/xml/site_settings_preferences.xml
++++ b/chrome/android/java/res/xml/site_settings_preferences.xml
+@@ -67,7 +67,7 @@
+         android:key="autoplay" />
+     <!-- Media -->
+     <org.chromium.chrome.browser.preferences.website.SiteSettingsPreference
+-        android:fragment="org.chromium.chrome.browser.preferences.website.SiteSettingsPreferences"
++        android:fragment="org.chromium.chrome.browser.preferences.website.BraveSiteSettingsPreferences"
+         android:key="media"
+         android:title="@string/media_permission_title"
+         android:icon="@drawable/settings_media"

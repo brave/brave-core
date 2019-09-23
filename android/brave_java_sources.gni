@@ -10,6 +10,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/externalnav/BraveEnternalNavigationHandlerHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceManager.java",
@@ -19,6 +20,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettingsObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveSiteSettingsPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/DesktopModePreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/preferences/website/PlayYTVideoInBrowserPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
 ]

@@ -156,6 +156,18 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SETTINGS_DESKTOP_MODE_ENABLED_SUMMARY" desc="Summary for desktop mode in site settings">
         Prefer desktop version of sites
       </message>
+      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_TITLE" desc="Title for desktop mode in site settings">
+        Video playback in Brave
+      </message>
+      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
+        If enabled, videos will be played in Brave instead of corresponding app
+      </message>
+      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_OFF" desc="Desc for desktop mode in site settings">
+        Disabled
+      </message>
+      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ENABLED_SUMMARY" desc="Summary for play youtube video in brave  in site settings">
+        Enabled
+      </message>
     </messages>
   </release>
 </grit>
