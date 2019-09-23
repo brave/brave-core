@@ -130,27 +130,25 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ThemeObserverTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
   const bool initial_mode =
-      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled();
+      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
   Profile* profile = browser()->profile();
 
   // Change to light.
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
   EXPECT_FALSE(
-      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
 
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  EXPECT_TRUE(
-      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+  EXPECT_TRUE(ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
 
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
   EXPECT_FALSE(
-      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
 
   if (BraveThemeService::SystemThemeModeEnabled()) {
     SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
-    EXPECT_EQ(
-        initial_mode,
-        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+    EXPECT_EQ(initial_mode,
+              ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
   }
 }
 
