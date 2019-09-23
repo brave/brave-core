@@ -9,6 +9,9 @@ group("brave_rewards") {
 transpile_web_ui("brave_rewards_panel") {
   entry_points = [
     ["brave_rewards_panel", rebase_path("brave_rewards_panel.tsx")],
+    ["offer_paywall_bypass", rebase_path("wallbreaker/popup-offer-paywall-bypass/offer_paywall_bypass.tsx")],
+    ["wallbreaker/background", rebase_path("wallbreaker/background/index.js")],
+    ["wallbreaker/content/barrons", rebase_path("wallbreaker/content/barrons.js")],
     ["brave_rewards_panel_background", rebase_path("background.ts")],
     ["brave_rewards_panel_content_twitter", rebase_path("content_scripts/twitter.ts")],
     ["brave_rewards_panel_content_reddit", rebase_path("content_scripts/reddit.ts")],

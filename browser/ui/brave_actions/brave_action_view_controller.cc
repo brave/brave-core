@@ -27,6 +27,14 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
 
+bool BraveRewardsActionViewController::ExecuteOfferPaywallAction(
+    std::string publisher_id) {
+  return TriggerPopupWithUrl(PopupShowAction::SHOW_POPUP,
+      extension()->GetResourceURL(
+          "wallbreaker/popup-offer-paywall-bypass/offer_paywall_bypass.html?" + publisher_id),
+      true);
+}
+
 bool BraveActionViewController::IsEnabled(
     content::WebContents* web_contents) const {
   bool is_enabled = ExtensionActionViewController::IsEnabled(web_contents);
@@ -55,6 +63,7 @@ bool BraveActionViewController::TriggerPopupWithUrl(
     PopupShowAction show_action,
     const GURL& popup_url,
     bool grant_tab_permissions) {
+  LOG(ERROR) << "show popup url: " << popup_url.spec();
   std::unique_ptr<extensions::ExtensionViewHost> host =
       extensions::ExtensionViewHostFactory::CreatePopupHost(popup_url,
                                                             browser_);

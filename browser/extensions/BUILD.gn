@@ -13,6 +13,7 @@ source_set("extensions") {
     "api/brave_extensions_api_client.cc",
     "api/brave_extensions_api_client.h",
     "api/brave_rewards_api.cc",
+    "api/brave_rewards_api_paywall.cc",
     "api/brave_rewards_api.h",
     "api/brave_shields_api.cc",
     "api/brave_shields_api.h",

@@ -105,6 +105,8 @@ void BraveActionsContainer::Init() {
                  base::Unretained(this)));
 }
 
+
+
 bool BraveActionsContainer::IsContainerAction(const std::string& id) const {
   return (actions_.find(id) != actions_.end());
 }
@@ -123,6 +125,13 @@ bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
          !prefs->GetBoolean(kHideBraveRewardsButton);
 }
 
+BraveActionViewController* BraveActionsContainer::GetExtensionViewController(
+    const std::string& extension_id) {
+  DCHECK(IsContainerAction(extension_id));
+  return static_cast<BraveActionViewController*>(
+      actions_[extension_id].view_controller_.get());
+}
+
 void BraveActionsContainer::AddAction(const extensions::Extension* extension,
                                       int pos) {
   DCHECK(extension);
@@ -137,10 +146,19 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension,
     // do not require that logic.
     // If we do require notifications when popups are open or closed,
     // then we should inherit and pass |this| through.
-    actions_[id].view_controller_ = std::make_unique<BraveActionViewController>(
+    if (id == brave_rewards_extension_id) {
+      actions_[id].view_controller_ =
+          std::make_unique<BraveRewardsActionViewController>(
         extension, browser_,
         extension_action_manager_->GetExtensionAction(*extension), nullptr,
         /*in_overflow_mode*/false);
+    } else {
+      actions_[id].view_controller_ =
+          std::make_unique<BraveActionViewController>(
+        extension, browser_,
+        extension_action_manager_->GetExtensionAction(*extension), nullptr,
+        /*in_overflow_mode*/false);
+    }
     // The button view
     actions_[id].view_ = std::make_unique<BraveActionView>(
         actions_[id].view_controller_.get(), this);

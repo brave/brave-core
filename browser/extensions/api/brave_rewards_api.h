@@ -43,6 +43,28 @@ class BraveRewardsTipSiteFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsOfferPaywallBypassFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.offerPaywallBypass", UNKNOWN)
+
+ protected:
+  ~BraveRewardsOfferPaywallBypassFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsSendTipForPaywallBypassFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.sendTipForPaywallBypass", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSendTipForPaywallBypassFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsTipTwitterUserFunction
     : public UIThreadExtensionFunction {
  public:
