@@ -31,6 +31,7 @@ ClientState::ClientState() :
     page_score_history({}),
     creative_set_history({}),
     campaign_history({}),
+    segment_history({}),
     score(0.0),
     search_activity(false),
     search_url(""),
@@ -55,6 +56,7 @@ ClientState::ClientState(const ClientState& state) :
   page_score_history(state.page_score_history),
   creative_set_history(state.creative_set_history),
   campaign_history(state.campaign_history),
+  segment_history(state.segment_history),
   score(state.score),
   search_activity(state.search_activity),
   search_url(state.search_url),
@@ -211,6 +213,18 @@ Result ClientState::FromJson(
     }
   }
 
+  if (client.HasMember("segmentHistory")) {
+    for (const auto& history : client["segmentHistory"].GetObject()) {
+      std::deque<uint64_t> timestamps_in_seconds = {};
+      for (const auto& timestamp_in_seconds : history.value.GetArray()) {
+        timestamps_in_seconds.push_back(timestamp_in_seconds.GetUint64());
+      }
+
+      std::string segment_id = history.name.GetString();
+      segment_history.insert({segment_id, timestamps_in_seconds});
+    }
+  }
+
   if (client.HasMember("score")) {
     score = client["score"].GetDouble();
   }
@@ -318,6 +332,18 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
     writer->String(campaign_id.first.c_str());
     writer->StartArray();
     for (const auto& timestamp_in_seconds : campaign_id.second) {
+      writer->Uint64(timestamp_in_seconds);
+    }
+    writer->EndArray();
+  }
+  writer->EndObject();
+
+  writer->String("segmentHistory");
+  writer->StartObject();
+  for (const auto& segment_id : state.segment_history) {
+    writer->String(segment_id.first.c_str());
+    writer->StartArray();
+    for (const auto& timestamp_in_seconds : segment_id.second) {
       writer->Uint64(timestamp_in_seconds);
     }
     writer->EndArray();

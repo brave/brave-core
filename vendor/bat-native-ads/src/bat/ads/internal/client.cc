@@ -410,6 +410,10 @@ bool Client::GetShoppingState() {
   return client_state_->shop_activity;
 }
 
+std::string Client::GetShoppingStateUrl() {
+  return client_state_->shop_url;
+}
+
 void Client::FlagSearchState(
     const std::string& url,
     const uint64_t score) {
@@ -534,6 +538,28 @@ void Client::AppendCurrentTimeToCampaignHistory(
 const std::map<std::string, std::deque<uint64_t>>
     Client::GetCampaignHistory() const {
   return client_state_->campaign_history;
+}
+
+void Client::AppendCurrentTimeToSegmentHistory(
+    const std::string& segment_id) {
+  if (client_state_->segment_history.find(segment_id) ==
+      client_state_->segment_history.end()) {
+    client_state_->segment_history.insert({segment_id, {}});
+  }
+
+  auto now_in_seconds = helper::Time::NowInSeconds();
+  client_state_->segment_history.at(segment_id).push_back(now_in_seconds);
+
+  SaveState();
+}
+
+const std::map<std::string, std::deque<uint64_t>>
+    Client::GetSegmentHistory() const {
+  return client_state_->segment_history;
+}
+
+void Client::ClearSegmentHistory() {
+  client_state_->segment_history.clear();
 }
 
 void Client::RemoveAllHistory() {

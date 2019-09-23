@@ -169,6 +169,19 @@ class AdsImpl : public Ads {
       const std::string& url,
       const std::vector<double>& page_score);
 
+  bool ShoppingSitesMatch(
+    const std::string& url,
+    std::map<std::string, std::vector<std::string>> custom_category_urls);
+  std::string ExtractSearchQueryString(std::string qstring);
+  std::string MatchSegmentKeywordsToText(
+      const std::string& html,
+      std::map<std::string, std::string> segment_keywords);
+
+  void TestCheckoutStateAndAdHistory(
+      const std::string& url,
+      std::map<std::string, std::string> campaign_checkout_urls);
+  void ServeSegmentAdIfPurchaseIntent();
+
   void TestShoppingData(
       const std::string& url);
   bool TestSearchState(
