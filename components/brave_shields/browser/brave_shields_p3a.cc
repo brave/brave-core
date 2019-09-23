@@ -17,7 +17,8 @@ namespace {
 constexpr char kPrefName[] = "brave_shields.p3a_usage";
 }  // namespace
 
-void RecordShieldsUsageP3A(ShieldsIconUsage usage, PrefService* local_state) {
+void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
+                                PrefService* local_state) {
   DCHECK(local_state);
   int last_value = local_state->GetInteger(kPrefName);
 

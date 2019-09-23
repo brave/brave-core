@@ -26,7 +26,8 @@ enum ShieldsIconUsage {
 // not interested in |kClicked| event if the user already turned off shields.
 // Sine P3A sends only latest written values, these is enough for our current
 // goals.
-void RecordShieldsUsageP3A(ShieldsIconUsage usage, PrefService* local_state);
+void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
+                                PrefService* local_state);
 
 void RegisterShieldsP3APrefs(PrefRegistrySimple* local_state);
 

@@ -48,8 +48,8 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   if (first_run::IsChromeFirstRun()) {
     RecordImporterP3A(importer::ImporterType::TYPE_UNKNOWN);
   }
-  brave_shields::RecordShieldsUsageP3A(brave_shields::kNeverClicked,
-                                       g_browser_process->local_state());
+  brave_shields::MaybeRecordShieldsUsageP3A(brave_shields::kNeverClicked,
+                                            g_browser_process->local_state());
 
 #if !defined(OS_ANDROID)
   brave::BraveWindowTracker::CreateInstance(g_browser_process->local_state());

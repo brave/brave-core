@@ -300,8 +300,8 @@ BraveShieldsGetNoScriptControlTypeFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveShieldsOnShieldsPanelShownFunction::Run() {
-  ::brave_shields::RecordShieldsUsageP3A(::brave_shields::kClicked,
-                                         g_browser_process->local_state());
+  ::brave_shields::MaybeRecordShieldsUsageP3A(::brave_shields::kClicked,
+                                              g_browser_process->local_state());
   return RespondNow(NoArguments());
 }
 

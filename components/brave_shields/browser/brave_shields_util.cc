@@ -42,13 +42,13 @@ namespace {
 
 void RecordShieldsToggled() {
   PrefService* local_state = g_browser_process->local_state();
-  ::brave_shields::RecordShieldsUsageP3A(::brave_shields::kShutOffShields,
-                                         local_state);
+  ::brave_shields::MaybeRecordShieldsUsageP3A(::brave_shields::kShutOffShields,
+                                              local_state);
 }
 
 void RecordShieldsSettingChanged() {
   PrefService* local_state = g_browser_process->local_state();
-  ::brave_shields::RecordShieldsUsageP3A(
+  ::brave_shields::MaybeRecordShieldsUsageP3A(
       ::brave_shields::kChangedPerSiteShields, local_state);
 }
 
