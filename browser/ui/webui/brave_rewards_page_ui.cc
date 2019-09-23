@@ -37,7 +37,7 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
 #else
 #include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
 #include "components/grit/components_resources.h"

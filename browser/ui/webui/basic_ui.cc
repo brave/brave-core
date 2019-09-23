@@ -13,20 +13,12 @@
 #include "content/public/common/bindings_policy.h"
 #include "ui/resources/grit/webui_resources_map.h"
 
-#if !defined(OS_ANDROID)
 content::WebUIDataSource* CreateBasicUIHTMLSource(
     Profile* profile,
     const std::string& name,
     const GritResourceMap* resource_map,
     size_t resource_map_size,
     int html_resource_id)
-#else
-content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
-                                                  const std::string& name,
-                                                  const GritResourceMap* resource_map,
-                                                  size_t resource_map_size,
-                                                  int html_resource_id)
-#endif 
 {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
@@ -64,19 +56,11 @@ class BasicUI::BasicUIWebContentsObserver
   DISALLOW_COPY_AND_ASSIGN(BasicUIWebContentsObserver);
 };
 
-#if !defined(OS_ANDROID)
 BasicUI::BasicUI(content::WebUI* web_ui,
                  const std::string& name,
                  const GritResourceMap* resource_map,
                  size_t resource_map_size,
                  int html_resource_id)
-#else
-BasicUI::BasicUI(content::WebUI* web_ui,
-    const std::string& name,
-    const GritResourceMap* resource_map,
-    size_t resource_map_size,
-    int html_resource_id)
-#endif
     : WebUIController(web_ui) {
   observer_.reset(
       new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
