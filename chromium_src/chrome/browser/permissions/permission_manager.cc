@@ -7,12 +7,14 @@ using content::PermissionType;
 
 namespace {
 
-ContentSettingsType PermissionTypeToContentSetting_ChromiumImpl(PermissionType permission);
+ContentSettingsType PermissionTypeToContentSettingSafe_ChromiumImpl(
+    PermissionType permission);
 
-ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
+ContentSettingsType PermissionTypeToContentSettingSafe(
+    PermissionType permission) {
   if (permission == PermissionType::AUTOPLAY)
     return CONTENT_SETTINGS_TYPE_AUTOPLAY;
-  return PermissionTypeToContentSetting_ChromiumImpl(permission);
+  return PermissionTypeToContentSettingSafe_ChromiumImpl(permission);
 }
 
 } // namespace
