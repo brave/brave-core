@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+    <ImageView android:id="@+id/ddg_logo"
+        android:scaleType="fitCenter"
+        android:src="@drawable/duckduckgo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="15dip"
+        android:paddingStart="15dip"
+        android:paddingEnd="15dip" />
+
+    <TextView android:id="@+id/ddg_offer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ddg_offer_title"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="15dip"
+        android:paddingStart="15dip"
+        android:paddingEnd="15dip"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView android:id="@+id/ddg_offer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ddg_offer_text"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="15dip"
+        android:paddingStart="15dip"
+        android:paddingEnd="15dip" />
+
+</LinearLayout>
