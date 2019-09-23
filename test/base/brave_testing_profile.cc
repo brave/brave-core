@@ -23,5 +23,7 @@ BraveTestingProfile::BraveTestingProfile(const base::FilePath& path,
 
 BraveTestingProfile::BraveTestingProfile()
     : TestingProfile() {
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   GetPrefs()->SetBoolean(gcm::prefs::kGCMChannelStatus, true);
+#endif
 }
