@@ -22,6 +22,7 @@ class BraveLocationBarView : public LocationBarView {
   void Layout() override;
   void Update(const content::WebContents* contents) override;
   void OnChanged() override;
+  BraveActionsContainer* GetBraveActionsContainer() { return brave_actions_; }
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;

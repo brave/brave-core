@@ -376,9 +376,46 @@
             }
           }
         ]
+      },
+      {
+        "name" :"onPaywallBypassRequested",
+        "type": "function",
+        "description": "Fired when user has used tokens intended to bypass the current site's paywall",
+        "parameters": [
+          {
+            "name": "publisherId",
+            "type": "string"
+          }
+        ]
       }
     ],
     "functions": [
+      {
+        "name": "offerPaywallBypass",
+        "type": "function",
+        "description": "Prompts the user to use tokens to bypass a site paywall",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "name": "publisherId",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "sendTipForPaywallBypass",
+        "type": "function",
+        "description": "User has requested to send a tip meant to increase duration or page count for which a paywall can be bypassed",
+        "parameters": [
+          {
+            "name": "publisherId",
+            "type": "string"
+          }
+        ]
+      },
       {
         "name": "createWallet",
         "type": "function",

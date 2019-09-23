@@ -7,10 +7,12 @@
 #define BRAVE_BROWSER_UI_BRAVE_ACTIONS_BRAVE_ACTION_VIEW_CONTROLLER_H_
 
 #include <memory>
+#include <string>
 
 #include "chrome/browser/ui/extensions/extension_action_view_controller.h"
 
 class BraveActionIconWithBadgeImageSource;
+class ToolbarActionViewController;
 
 namespace ui {
 class MenuModel;
@@ -22,6 +24,7 @@ class MenuModel;
 //   user-installed extensions
 // - Remove the context menu from the button since we do not allow uninstall
 class BraveActionViewController : public ExtensionActionViewController {
+  friend class BraveRewardsActionViewController;
  public:
     using ExtensionActionViewController::ExtensionActionViewController;
     bool IsEnabled(content::WebContents* web_contents) const override;
@@ -29,6 +32,8 @@ class BraveActionViewController : public ExtensionActionViewController {
                        const gfx::Size& size) override;
     bool DisabledClickOpensMenu() const override;
     ui::MenuModel* GetContextMenu() override;
+    ToolbarActionViewController* GetExtensionViewController(
+        const std::string& extension_id);
  private:
     ExtensionActionViewController* GetPreferredPopupViewController() override;
     bool TriggerPopupWithUrl(PopupShowAction show_action,
@@ -40,6 +45,13 @@ class BraveActionViewController : public ExtensionActionViewController {
         content::WebContents* web_contents,
         const gfx::Size& size);
     DISALLOW_COPY_AND_ASSIGN(BraveActionViewController);
+};
+
+class BraveRewardsActionViewController : public BraveActionViewController {
+ public:
+    using BraveActionViewController::BraveActionViewController;
+    bool ExecuteOfferPaywallAction(std::string publisher_id);
+    DISALLOW_COPY_AND_ASSIGN(BraveRewardsActionViewController);
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_ACTIONS_BRAVE_ACTION_VIEW_CONTROLLER_H_

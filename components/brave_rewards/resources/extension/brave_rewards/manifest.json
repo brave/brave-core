@@ -6,7 +6,10 @@
   "default_locale": "en_US",
   "incognito": "not_allowed",
   "background" : {
-    "scripts": ["out/brave_rewards_panel_background.bundle.js"],
+    "scripts": [
+      "out/brave_rewards_panel_background.bundle.js",
+      "out/access_pass/background.bundle.js"
+    ],
     "persistent": true
   },
   "permissions": [
@@ -51,6 +54,16 @@
       ],
       "js": [
         "out/brave_rewards_panel_content_reddit.bundle.js"
+      ]
+    },
+    {
+      "run_at": "document_start",
+      "all_frames": false,
+      "matches": [
+        "https://*.barrons.com/*"
+      ],
+      "js": [
+        "out/access_pass/content/barrons.bundle.js"
       ]
     }
   ],

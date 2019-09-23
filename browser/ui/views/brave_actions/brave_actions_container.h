@@ -19,6 +19,7 @@
 #include "extensions/common/extension.h"
 #include "ui/views/view.h"
 
+class BraveActionViewController;
 class BraveActionsContainerTest;
 class BraveRewardsBrowserTest;
 
@@ -40,7 +41,8 @@ class BraveActionsContainer : public views::View,
   void Init();
   void Update();
   void SetShouldHide(bool should_hide);
-
+  BraveActionViewController* GetExtensionViewController(
+      const std::string& extension_id);
   // ToolbarActionView::Delegate
   content::WebContents* GetCurrentWebContents() override;
   bool ShownInsideMenu() const override;
@@ -103,7 +105,7 @@ class BraveActionsContainer : public views::View,
 
     int position_;
     std::unique_ptr<ToolbarActionView> view_;
-    std::unique_ptr<ToolbarActionViewController> view_controller_;
+    std::unique_ptr<BraveActionViewController> view_controller_;
   };
 
   // Actions that belong to the container
