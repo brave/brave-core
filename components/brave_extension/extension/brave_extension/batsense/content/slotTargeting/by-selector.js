@@ -1,5 +1,5 @@
 import BATAd from '../bat-ad'
-import runOnUrlChange from '../pageLifecycle/run-on-url-change'
+import runOnUrlChange from '../../../../../../common/pageLifecycle/run-on-url-change'
 
 export default function targetAdSlotsBySelector(selector, fnGetAdSizes, onAdPositionReady) {
   const slotsSeen = new WeakMap()

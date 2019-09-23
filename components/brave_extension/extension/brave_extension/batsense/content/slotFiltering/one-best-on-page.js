@@ -1,4 +1,4 @@
-import generateRandomId from '../../util/generate-random-id'
+import generateRandomId from '../../../../../../common/generate-random-id'
 
 let hasInit = false
 let currentPageId
