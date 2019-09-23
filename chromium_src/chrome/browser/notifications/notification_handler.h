@@ -12,15 +12,25 @@
 
 class NotificationHandler : public NotificationHandler_ChromiumImpl {
  public:
+  // If you add to the enum make sure the DCHECK in the constructor below is
+  // updated.
   enum class Type {
     WEB_PERSISTENT = 0,
     WEB_NON_PERSISTENT = 1,
     EXTENSION = 2,
     SEND_TAB_TO_SELF = 3,
     TRANSIENT = 4,
-    BRAVE_ADS = 5,
+    PERMISSION_REQUEST = 5,
+    SHARING = 6,
+    BRAVE_ADS = 7,
     MAX = BRAVE_ADS,
   };
+
+  // Make sure we know if the original enum gets changed.
+  NotificationHandler() {
+    DCHECK(static_cast<int>(NotificationHandler_ChromiumImpl::Type::MAX) + 1 ==
+           static_cast<int>(Type::MAX));
+  }
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_NOTIFICATIONS_NOTIFICATION_HANDLER_H_
