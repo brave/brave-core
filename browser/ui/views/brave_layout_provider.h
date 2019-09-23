@@ -6,11 +6,9 @@
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_LAYOUT_PROVIDER_H_
 
 #include "base/macros.h"
-#include "chrome/browser/ui/views/material_refresh_layout_provider.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 
-// Subclasses MaterialRefresh layout though if this class start to override most
-// members, then it should directly subclass ChromeLayoutProvider.
-class BraveLayoutProvider : public MaterialRefreshLayoutProvider {
+class BraveLayoutProvider : public ChromeLayoutProvider {
   public:
     BraveLayoutProvider() = default;
     ~BraveLayoutProvider() override = default;
