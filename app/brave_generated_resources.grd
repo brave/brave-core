@@ -425,6 +425,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
           Same as macOS
         </message>
       </if>
+      <!-- Mac Menubar Menus -->
+      <if expr="is_macosx">
+        <message name="IDS_REPORT_BROKEN_SITE_MAC" desc="The Mac menu item to report a broken site in the Help menu.">
+          Report a Broken Site
+        </message>
+      </if>
       <!-- Brave Default Extensions -->
       <message name="IDS_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_TITLE" desc="The title for Brave default extensions in settings">
         Extensions
