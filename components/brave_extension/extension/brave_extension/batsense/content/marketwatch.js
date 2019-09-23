@@ -1,6 +1,6 @@
 import targetAdSlotsBySelector from './slotTargeting/by-selector'
 import fetchAdCreatives from './creativeFetch/same-context'
-import runOnPageLoaded from './pageLifecycle/run-on-loaded'
+import runOnPageLoaded from '../../../../../common/pageLifecycle/run-on-loaded'
 
 runOnPageLoaded(function () {
   function getSizeForMarketWatchAdSlot (element) {

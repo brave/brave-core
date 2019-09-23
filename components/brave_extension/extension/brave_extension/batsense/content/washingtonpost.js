@@ -1,7 +1,7 @@
 import BATAd from './bat-ad'
 import fetchAdCreatives from './creativeFetch/same-context'
-import waitForWindowVar from './slotTargeting/wait-for-window-var'
-import runOnPageLoaded from './pageLifecycle/run-on-loaded'
+import waitForWindowVar from '../../../../../common/pageLifecycle/wait-for-window-var'
+import runOnPageLoaded from '../../../../../common/pageLifecycle/run-on-loaded'
 
 
 // WPAd is specific to washingtonpost.com (WP)
