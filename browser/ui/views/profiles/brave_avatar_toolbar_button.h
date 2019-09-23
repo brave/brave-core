@@ -11,7 +11,7 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
   public:
     using AvatarToolbarButton::AvatarToolbarButton;
   private:
-    gfx::ImageSkia GetAvatarIcon() const override;
+    gfx::ImageSkia GetAvatarIcon(const gfx::Image& gaia_image) const override;
     DISALLOW_COPY_AND_ASSIGN(BraveAvatarToolbarButton);
 };
 
