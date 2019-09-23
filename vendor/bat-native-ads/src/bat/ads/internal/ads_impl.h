@@ -201,8 +201,13 @@ class AdsImpl : public Ads {
   void ServeAd(
       const std::string& category,
       const std::vector<AdInfo>& ads);
+
   std::vector<AdInfo> GetEligibleAds(
       const std::vector<AdInfo>& ads);
+  std::vector<AdInfo> GetUnseenAdsAndRoundRobinIfNeeded(
+      const std::vector<AdInfo>& ads) const;
+  std::vector<AdInfo> GetUnseenAds(
+      const std::vector<AdInfo>& ads) const;
 
   bool AdRespectsTotalMaxFrequencyCapping(
       const AdInfo& ad);
