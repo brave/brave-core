@@ -18,8 +18,8 @@
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
 #include "content/public/browser/content_browser_client.h"
-#include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/binding_set.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/resource_response.h"
 #include "services/network/public/mojom/network_context.mojom.h"
@@ -73,10 +73,12 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
       network::mojom::WebSocketHandshakeRequestPtr request) override;
   void OnResponseReceived(
       network::mojom::WebSocketHandshakeResponsePtr response) override;
-  void OnConnectionEstablished(network::mojom::WebSocketPtr websocket,
-                               const std::string& selected_protocol,
-                               const std::string& extensions,
-                               uint64_t receive_quota_threshold) override;
+  void OnConnectionEstablished(
+      mojo::PendingRemote<network::mojom::WebSocket> websocket,
+      mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver,
+      const std::string& selected_protocol,
+      const std::string& extensions,
+      mojo::ScopedDataPipeConsumerHandle readable) override;
 
   // network::mojom::AuthenticationHandler method:
   void OnAuthRequired(const net::AuthChallengeInfo& auth_info,
