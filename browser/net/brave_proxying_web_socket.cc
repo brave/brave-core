@@ -204,15 +204,16 @@ void BraveProxyingWebSocket::ContinueToHeadersReceived() {
 }
 
 void BraveProxyingWebSocket::OnConnectionEstablished(
-    network::mojom::WebSocketPtr websocket,
+    mojo::PendingRemote<network::mojom::WebSocket> websocket,
+    mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver,
     const std::string& selected_protocol,
     const std::string& extensions,
-    uint64_t receive_quota_threshold) {
+    mojo::ScopedDataPipeConsumerHandle readable) {
   DCHECK(forwarding_handshake_client_);
   DCHECK(!is_done_);
   forwarding_handshake_client_->OnConnectionEstablished(
-      std::move(websocket), selected_protocol, extensions,
-      receive_quota_threshold);
+      std::move(websocket), std::move(client_receiver), selected_protocol,
+      extensions, std::move(readable));
 
   OnError(net::ERR_FAILED);
 }
