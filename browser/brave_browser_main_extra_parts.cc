@@ -17,6 +17,21 @@
 #include "brave/browser/widevine/brave_widevine_bundle_manager.h"
 #endif
 
+namespace {
+
+// Records default values for some histograms because we want these stats to be
+// uploaded anyways. Corresponding components will write new values according
+// to their usage scenarios.
+void RecordInitialP3AValues() {
+  if (first_run::IsChromeFirstRun()) {
+    RecordImporterP3A(importer::ImporterType::TYPE_UNKNOWN);
+  }
+  brave_shields::MaybeRecordShieldsUsageP3A(brave_shields::kNeverClicked,
+                                            g_browser_process->local_state());
+}
+
+}  // namespace
+
 BraveBrowserMainExtraParts::BraveBrowserMainExtraParts() {
 }
 
@@ -42,14 +57,7 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   // TODO(iefremov): Maybe find a better place for this initialization.
   g_brave_browser_process->brave_p3a_service()->Init();
 
-  // Record default values for some histograms because we want these stats to be
-  // uploaded anyways. Corresponding components will write new values according
-  // to their usage scenarios.
-  if (first_run::IsChromeFirstRun()) {
-    RecordImporterP3A(importer::ImporterType::TYPE_UNKNOWN);
-  }
-  brave_shields::MaybeRecordShieldsUsageP3A(brave_shields::kNeverClicked,
-                                            g_browser_process->local_state());
+  RecordInitialP3AValues();
 
 #if !defined(OS_ANDROID)
   brave::BraveWindowTracker::CreateInstance(g_browser_process->local_state());

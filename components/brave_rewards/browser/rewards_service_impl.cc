@@ -870,9 +870,10 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
 
     // Record P3A:
     RecordWalletBalanceP3A(true, 0);
-    const bool ads =
+    const bool ads_enabled =
         profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
-    RecordAdsState(ads ? AdsP3AState::kAdsEnabled : AdsP3AState::kAdsDisabled);
+    RecordAdsState(ads_enabled ? AdsP3AState::kAdsEnabled
+                               : AdsP3AState::kAdsDisabled);
   }
 
   for (auto& observer : observers_) {
