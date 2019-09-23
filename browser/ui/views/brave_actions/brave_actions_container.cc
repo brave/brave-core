@@ -231,7 +231,7 @@ bool BraveActionsContainer::ShownInsideMenu() const {
 void BraveActionsContainer::OnToolbarActionViewDragDone() {
 }
 
-views::MenuButton* BraveActionsContainer::GetOverflowReferenceView() {
+views::LabelButton* BraveActionsContainer::GetOverflowReferenceView() const {
   // Our action views should always be visible,
   // so we should not need another view.
   NOTREACHED();
