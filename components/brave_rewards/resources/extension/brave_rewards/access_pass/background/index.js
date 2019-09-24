@@ -47,16 +47,19 @@ function notifyBypassStatusEnabledForPublisher (publisherId) {
   });
 }
 
-function performUnblockForSite ({ cookiesToDelete, cookiesToExtend, domain }) {
+function performUnblockForSite ({ cookiesToDelete, cookiesToExtend, domain, url }) {
+
   if (cookiesToDelete) {
-    // chrome.cookies.remove ...
     chrome.cookies.getAll({ domain }, cookies => {
       for (var i = cookies.length - 1; i >= 0; i--) {
+
         if (cookiesToDelete.includes(cookies[i].name)) {
-          alert(cookies[i])
+          let name = cookies[i].name;
+          chrome.cookies.remove({ url, name }, res => {})
         }
       }
     })
   }
+
   if (cookiesToExtend) {}
 }

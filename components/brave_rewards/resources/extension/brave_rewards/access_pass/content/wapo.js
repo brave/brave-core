@@ -5,19 +5,18 @@ function detectBypassablePaywall() {
   console.log('Wallbreaker [wapo]: detecting if page has a bypassable paywall')
 
   let rplmct = getCookie("rplmct");
-  let rplm2 = getCookie("rplm2");
   let where = document.location.href;
   
   // skip landing page
   if (where == "https://www.washingtonpost.com/") {
-  	return Promise.resolve({where: "", bypass: false, rplmct: rplmct, rplm2: rplm2})	
+  	return Promise.resolve({where: "", bypass: false, rplmct: rplmct})	
   }
   // is bypassable if `rplmct` is == 3
   if (rplmct == "3") {
-	  return Promise.resolve({where: where, bypass: true, rplmct: rplmct, rplm2: rplm2})
+	  return Promise.resolve({where: where, bypass: true, rplmct: rplmct})
   }
 
-  return Promise.resolve({where: where, bypass: false, rplmct: rplmct, rplm2: rplm2})
+  return Promise.resolve({where: where, bypass: false, rplmct: rplmct})
 }
 
 function bypassPaywall() {
@@ -27,7 +26,8 @@ function bypassPaywall() {
     bypassArgs: {
       cookiesToDelete: [ 'rplm2', 'rplmct' ],
       cookiesToExtend: [],
-      domain: ".washingtonpost.com"
+      domain: ".washingtonpost.com",
+      url: "https://washingtonpost.com",
     }
   })
 }
