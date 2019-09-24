@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/brave_ads/browser/test_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/test/test_browser_thread_bundle.h"
@@ -23,6 +24,7 @@
 
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
+using brave_rewards::RewardsServicePrivateObserver;
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;
 
@@ -51,6 +53,7 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(GetWalletPassphrase,
       void(const brave_rewards::GetWalletPassphraseCallback&));
   MOCK_METHOD1(RecoverWallet, void(const std::string&));
+  MOCK_CONST_METHOD1(GetGrantViaSafetynetCheck, void(const std::string&));
   MOCK_METHOD0(RestorePublishersUI, void());
   MOCK_METHOD2(OnLoad, void(SessionID, const GURL&));
   MOCK_METHOD1(OnUnload, void(SessionID));
@@ -185,6 +188,10 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(DisconnectWallet, void(const std::string& wallet_type));
 
   MOCK_METHOD0(OnlyAnonWallet, bool());
+
+  MOCK_METHOD1(AddPrivateObserver, void(RewardsServicePrivateObserver* observer));
+  MOCK_METHOD1(RemovePrivateObserver, void(RewardsServicePrivateObserver* observer));
+  MOCK_METHOD1(ResetTheWholeState, void(const base::Callback<void(bool)>& callback));
 };
 
 class AdsServiceTest : public testing::Test {
