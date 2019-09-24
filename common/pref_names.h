@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMMON_PREF_NAMES_H_
 #define BRAVE_COMMON_PREF_NAMES_H_
 
+#include "build/build_config.h"
+
 extern const char kAdsBlocked[];
 extern const char kTrackersBlocked[];
 extern const char kJavascriptBlocked[];
@@ -56,5 +58,9 @@ extern const char kBraveWalletAES256GCMSivNonce[];
 extern const char kBraveWalletEncryptedSeed[];
 extern const char kBraveWalletEnabled[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
+
+#if defined(OS_ANDROID)
+extern const char kDesktopModeEnabled[];
+#endif
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

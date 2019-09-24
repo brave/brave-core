@@ -5,19 +5,22 @@
 
 package org.chromium.chrome.browser.preferences.website;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
-import org.chromium.base.ContextUtils;
+import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat;
 import org.chromium.chrome.browser.preferences.PreferenceUtils;
+import org.chromium.chrome.browser.profiles.Profile;
 
+@JNINamespace("chrome::android")
 public class DesktopModePreferences
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     public static final String DESKTOP_MODE_KEY = "desktop_mode";
+    private Profile mProfile;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -26,17 +29,25 @@ public class DesktopModePreferences
 
         ChromeSwitchPreferenceCompat desktopModePref =
                 (ChromeSwitchPreferenceCompat) findPreference(DESKTOP_MODE_KEY);
-        desktopModePref.setChecked(
-            ContextUtils.getAppSharedPreferences().getBoolean(DESKTOP_MODE_KEY, false));
+        desktopModePref.setChecked(DesktopModePreferencesJni.get().getDesktopModeEnabled(getProfile()));
         desktopModePref.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-            ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(DESKTOP_MODE_KEY, (boolean) newValue);
-        sharedPreferencesEditor.apply();
+        DesktopModePreferencesJni.get().setDesktopModeEnabled((boolean) newValue, getProfile());
         return true;
+    }
+
+    private Profile getProfile() {
+        if (mProfile == null)
+            mProfile = Profile.getLastUsedProfile();
+        return mProfile;
+    }
+
+    @NativeMethods
+    interface Natives {
+        void setDesktopModeEnabled(boolean enabled, Profile profile);
+        boolean getDesktopModeEnabled(Profile profile);
     }
 }

@@ -75,6 +75,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   webtorrent::RegisterProfilePrefs(registry);
 #endif
 
+#if defined(OS_ANDROID)
+  registry->RegisterBooleanPref(kDesktopModeEnabled, false);
+#endif
+
   // Hangouts
   registry->RegisterBooleanPref(kHangoutsEnabled, true);
 
