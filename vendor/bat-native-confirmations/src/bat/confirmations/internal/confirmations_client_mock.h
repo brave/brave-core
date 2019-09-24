@@ -178,6 +178,10 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& publisher_key,
       ledger::RemoveRecurringTipCallback callback));
 
+  MOCK_METHOD2(OnGrantViaSafetynetCheck, void(
+      const std::string& promotion_id,
+      const std::string& nonce));
+
   MOCK_METHOD2(SetTimer, void(
       uint64_t time_offset,
       uint32_t* timer_id));
