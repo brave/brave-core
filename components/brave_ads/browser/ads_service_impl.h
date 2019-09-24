@@ -328,6 +328,9 @@ class AdsServiceImpl : public AdsService,
 
   uint32_t next_timer_id();
 
+  std::string LoadDataResourceAndDecompressIfNeeded(
+      const int id) const;
+
   bool connected();
 
   // AdsClient implementation
