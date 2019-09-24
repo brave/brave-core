@@ -12,6 +12,7 @@ transpile_web_ui("brave_rewards_panel") {
     ["offer_paywall_bypass", rebase_path("access_pass/popup-offer-paywall-bypass/offer_paywall_bypass.tsx")],
     ["access_pass/background", rebase_path("access_pass/background/index.js")],
     ["access_pass/content/barrons", rebase_path("access_pass/content/barrons.js")],
+    ["access_pass/content/wapo", rebase_path("access_pass/content/wapo.js")],
     ["brave_rewards_panel_background", rebase_path("background.ts")],
     ["brave_rewards_panel_content_twitter", rebase_path("content_scripts/twitter.ts")],
     ["brave_rewards_panel_content_reddit", rebase_path("content_scripts/reddit.ts")],

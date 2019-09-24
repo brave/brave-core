@@ -14,11 +14,14 @@
   },
   "permissions": [
     "storage",
+    "cookies",
     "tabs",
     "webRequest",
     "chrome://favicon/*",
     "https://www.twitch.tv/*",
-    "https://*.twitter.com/*"
+    "https://*.twitter.com/*",
+    "*://*.barrons.com/*",
+    "*://*.washingtonpost.com/*"
   ],
   "browser_action": {
     "default_popup": "brave_rewards_panel.html",
@@ -64,6 +67,16 @@
       ],
       "js": [
         "out/access_pass/content/barrons.bundle.js"
+      ]
+    },
+    {
+      "run_at": "document_start",
+      "all_frames": false,
+      "matches": [
+        "https://*.washingtonpost.com/*"
+      ],
+      "js": [
+        "out/access_pass/content/wapo.bundle.js"
       ]
     }
   ],
