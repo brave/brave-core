@@ -36,3 +36,14 @@
 }
 
 @end
+
+@implementation BATAdsNotification (MyFirstAd)
++ (instancetype)customAdWithTitle:(NSString *)title body:(NSString *)body url:(NSURL *)url
+{
+  BATAdsNotification *notification = [[BATAdsNotification alloc] init];
+  notification.advertiser = title;
+  notification.text = body;
+  notification.url = url;
+  return notification;
+}
+@end
