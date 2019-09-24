@@ -268,7 +268,7 @@ void BraveContentBrowserClient::CreateWebSocket(
         url,
         site_for_cookies,
         user_agent,
-        network::mojom::WebSocketHandshakeClientPtr(proxy->handshake_client()));
+        std::move(proxy->handshake_client().Unbind()));
   } else {
     proxy->Start();
   }
