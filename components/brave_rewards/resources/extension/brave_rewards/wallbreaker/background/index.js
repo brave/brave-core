@@ -1,14 +1,20 @@
 // Demo in-memory store of which publishers (sites) have how many
 // unlocked articles remaining.
-const demoPaywallCountStore = new Map();
+// const demoPaywallCountStore = new Map();
 
 function getCanBypassForPublisher (tabId, publisherId) {
-  const count = demoPaywallCountStore.get(publisherId)
-  if (count) {
-    // reduce for demo
-    demoPaywallCountStore.set(publisherId, count - 1)
-    return true
-  }
+  // const count = demoPaywallCountStore.get(publisherId)
+  // if (count) {
+  //   // reduce for demo
+  //   demoPaywallCountStore.set(publisherId, count - 1)
+  //   return true
+  // }
+  // For now, we only allow looking at existing publisher paywall
+  // strategy.
+  // Therefore, we never unblock a new paywall until the user
+  // has seen the popup, even if they have seen the same paywall before.
+  // In other words, if the paywall re-appears, do not bypass it
+  // until the user has sent the tip to bypass.
   chrome.braveRewards.offerPaywallBypass(tabId, publisherId)
   return false
 }
@@ -31,7 +37,7 @@ chrome.runtime.onMessage.addListener(
 
 chrome.braveRewards.onPaywallBypassRequested.addListener(
   function (publisherId) {
-    demoPaywallCountStore.set(publisherId, 5)
+    // demoPaywallCountStore.set(publisherId, 5)
     notifyBypassStatusEnabledForPublisher(publisherId)
   }
 )
