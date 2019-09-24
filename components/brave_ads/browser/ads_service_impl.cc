@@ -1762,10 +1762,11 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
     const int id) const {
   std::string data_resource;
 
-  if (ui::ResourceBundle::GetSharedInstance().IsGzipped(id)) {
-    data_resource = ui::ResourceBundle::GetSharedInstance().DecompressDataResource(id);
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  if (resource_bundle.IsGzipped(id)) {
+    data_resource = resource_bundle.DecompressDataResource(id);
   } else {
-    data_resource = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(id).as_string();
+    data_resource = resource_bundle.GetRawDataResource(id).as_string();
   }
 
   return data_resource;
