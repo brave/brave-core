@@ -1745,14 +1745,24 @@ const std::vector<std::string> AdsServiceImpl::GetUserModelLanguages() const {
   return languages;
 }
 
+std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
+    const int id) const {
+  std::string data_resource;
+
+  if (ui::ResourceBundle::GetSharedInstance().IsGzipped(id)) {
+    data_resource = ui::ResourceBundle::GetSharedInstance().DecompressDataResource(id);
+  } else {
+    data_resource = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(id).as_string();
+  }
+
+  return data_resource;
+}
+
 void AdsServiceImpl::LoadUserModelForLanguage(
     const std::string& language,
     ads::OnLoadCallback callback) const {
-  auto raw_data = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
-      GetUserModelResourceId(language));
-
-  std::string user_model;
-  raw_data.CopyToString(&user_model);
+  const auto resource_id = GetUserModelResourceId(language);
+  const auto user_model = LoadDataResourceAndDecompressIfNeeded(resource_id);
   callback(ads::Result::SUCCESS, user_model);
 }
 
@@ -1899,23 +1909,18 @@ void AdsServiceImpl::Reset(
 
 const std::string AdsServiceImpl::LoadJsonSchema(
     const std::string& name) {
-  base::StringPiece schema_raw =
-      ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
-          GetSchemaResourceId(name));
-
-  std::string schema;
-  schema_raw.CopyToString(&schema);
-  return schema;
+  const auto resource_id = GetSchemaResourceId(name);
+  return LoadDataResourceAndDecompressIfNeeded(resource_id);
 }
 
 void AdsServiceImpl::LoadSampleBundle(
     ads::OnLoadSampleBundleCallback callback) {
-  base::StringPiece sample_bundle_raw =
-      ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
-          IDR_ADS_SAMPLE_BUNDLE);
+  const auto resource_id =
+      GetSchemaResourceId(ads::_bundle_schema_resource_name);
 
-  std::string sample_bundle;
-  sample_bundle_raw.CopyToString(&sample_bundle);
+  const auto sample_bundle =
+      LoadDataResourceAndDecompressIfNeeded(resource_id);
+
   callback(ads::Result::SUCCESS, sample_bundle);
 }
 
