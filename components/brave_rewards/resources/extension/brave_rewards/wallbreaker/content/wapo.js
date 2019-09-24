@@ -1,4 +1,5 @@
 import WallbreakerController from './controller/wallbreaker-controller'
+import PerformBypassInBackgroundScript from './controller/perform-bypass-in-background'
 
 // true if cookies indicating that paywall is on are set
 function detectBypassablePaywall() {
@@ -21,14 +22,11 @@ function detectBypassablePaywall() {
 
 function bypassPaywall() {
   console.log('Wallbreaker [barrons]: bypassing paywall...')
-  chrome.runtime.sendMessage({
-    type: 'perform-bypass',
-    bypassArgs: {
-      cookiesToDelete: [ 'rplm2', 'rplmct' ],
-      cookiesToExtend: [],
-      domain: ".washingtonpost.com",
-      url: "https://washingtonpost.com",
-    }
+  return PerformBypassInBackgroundScript({
+    cookiesToDelete: [ 'rplm2', 'rplmct' ],
+    cookiesToExtend: [],
+    domain: ".washingtonpost.com",
+    url: "https://washingtonpost.com",
   })
 }
 

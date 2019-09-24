@@ -30,7 +30,11 @@ chrome.runtime.onMessage.addListener(
       // user unlock.
       sendResponse({ canBypass })
     } else if (request.type === 'perform-bypass') {
-      performUnblockForSite(request.bypassArgs)
+      sendResponse(performUnblockForSite(tabId, request.bypassArgs))
+    } else if (request.type === 'did-bypass-paywall') {
+      const publisherId = request.publisherHost
+      const url = request.urlToShow
+      performPostUnblockActions(tabId, publisherId, url)
     }
   }
 )
@@ -43,8 +47,9 @@ chrome.braveRewards.onPaywallBypassRequested.addListener(
 )
 
 function notifyBypassStatusEnabledForPublisher (publisherId) {
-  // TODO: send message to all tab content scripts which have
-  // this publisher Id
+  // TODO: consider sending message to all tab content scripts which have
+  // this publisher Id. However, we may not want to do this as could
+  // quickly get past publisher's free-article count.
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {
       type: 'bypass-status-changed',
@@ -53,19 +58,40 @@ function notifyBypassStatusEnabledForPublisher (publisherId) {
   });
 }
 
-function performUnblockForSite ({ cookiesToDelete, cookiesToExtend, domain, url }) {
+const getAllCookies = (arg) => new Promise(resolve => chrome.cookies.getAll(arg, resolve))
+const removeCookie = (arg) => new Promise(resolve => chrome.cookies.remove(arg, resolve))
 
+async function performUnblockForSite (tabId, bypassArgs) {
+  const {
+    cookiesToDelete,
+    cookiesToExtend,
+    domain,
+    url
+  } = bypassArgs
+  let success = false
   if (cookiesToDelete) {
-    chrome.cookies.getAll({ domain }, cookies => {
-      for (var i = cookies.length - 1; i >= 0; i--) {
-
-        if (cookiesToDelete.includes(cookies[i].name)) {
-          let name = cookies[i].name;
-          chrome.cookies.remove({ url, name }, res => {})
-        }
+    const cookies = await getAllCookies({ domain })
+    const deleteOps = []
+    for (var i = cookies.length - 1; i >= 0; i--) {
+      if (cookiesToDelete.includes(cookies[i].name)) {
+        let name = cookies[i].name;
+        deleteOps.push(removeCookie({ url, name }))
+        // Guess that we succeeded if we got any cookie match.
+        success = true
       }
-    })
+    }
   }
-
   if (cookiesToExtend) {}
+  await Promise.all(deleteOps)
+  return success
+}
+
+function performPostUnblockActions (activePublisherTabId, publisherId, url) {
+  // TODO: consider sending message to all tab content scripts which have
+  // this publisher Id. However, we may not want to do this as could
+  // quickly get past publisher's free-article count.
+  // TODO: if paywall was removed via DOM then we may not need to refresh,
+  // but all paywalls are currently using cookie technique.
+  console.log('performPostUnblockActions', activePublisherTabId, publisherId)
+  chrome.tabs.update(activePublisherTabId, { url })
 }

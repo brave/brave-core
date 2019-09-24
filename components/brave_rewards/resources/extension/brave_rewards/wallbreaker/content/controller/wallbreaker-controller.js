@@ -1,18 +1,35 @@
 import runOnFirstVisible from '../../../../../../../common/pageLifecycle/run-on-first-visible'
 import runOnLoaded from '../../../../../../../common/pageLifecycle/run-on-loaded'
-
-function sendBackgroundMessage (message) {
-  return new Promise (resolve => chrome.runtime.sendMessage(message, resolve))
-}
+import sendBackgroundMessage from './send-background-message'
 
 export default class WallbreakerController {
   constructor({ fnDetectBypassablePaywall, fnBypassPaywall }) {
-    this.bypassPaywall = fnBypassPaywall
-    this.detectBypassablePaywall = fnDetectBypassablePaywall
+    this.fnBypassPaywall = fnBypassPaywall
+    this.fnDetectBypassablePaywall = fnDetectBypassablePaywall
     this.publisherHost = window.location.host
   }
 
+  detectBypassablePaywall() {
+    // Detect site-specific paywall
+    return this.fnDetectBypassablePaywall()
+  }
+
+  async bypassPaywall() {
+    // Perform site-specific bypass
+    const didBypass = await this.fnBypassPaywall()
+    // Return status to background so can
+    // report on bypass or reload this and relevant tabs
+    if (didBypass) {
+      sendBackgroundMessage({
+        type: 'did-bypass-paywall',
+        publisherHost: this.publisherId,
+        urlToShow: this.currentPageUrl
+      })
+    }
+  }
+
   runForCurrentPage() {
+    this.currentPageUrl = window.location.href
     runOnLoaded(async () => {
       // TODO: first, communicate with braveRewards to check we have this feature on
       console.log('Wallbreaker: detecting if page has a bypassable paywall')
