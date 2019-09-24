@@ -6,10 +6,10 @@ function detectBypassablePaywall() {
 
   let rplmct = getCookie("rplmct");
   let where = document.location.href;
-  
+
   // skip landing page
   if (where == "https://www.washingtonpost.com/") {
-  	return Promise.resolve({where: "", bypass: false, rplmct: rplmct})	
+  	return Promise.resolve({where: "", bypass: false, rplmct: rplmct})
   }
   // is bypassable if `rplmct` is == 3
   if (rplmct == "3") {
