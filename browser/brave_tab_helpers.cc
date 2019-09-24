@@ -18,7 +18,9 @@
 #include "brave/browser/greaselion/greaselion_tab_helper.h"
 #endif
 
-#if !defined(OS_ANDROID)
+#if defined(OS_ANDROID)
+#include "brave/browser/android/preferences/website/desktop_mode_tab_helper.h"
+#else
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
@@ -38,7 +40,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
-#if !defined(OS_ANDROID)
+
+#if defined(OS_ANDROID)
+  DesktopModeTabHelper::CreateForWebContents(web_contents);
+#else
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 #endif
