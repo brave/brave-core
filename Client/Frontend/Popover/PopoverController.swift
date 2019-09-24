@@ -502,6 +502,8 @@ extension PopoverController: BasicAnimationControllerDelegate {
         }
         
         let oldTransform = containerView.transform
+        let rotationAngle = atan2(oldTransform.b, oldTransform.a)
+        
         containerView.transform = .identity // Reset to get unaltered frame
         let translationDelta = anchorPointDelta(from: popoverContext, popoverRect: containerView.frame)
         containerView.transform = oldTransform // Make sure to animate transform from a possibly altered transform
@@ -509,6 +511,7 @@ extension PopoverController: BasicAnimationControllerDelegate {
         UIView.animate(withDuration: 0.15, delay: 0, options: [.beginFromCurrentState, .allowUserInteraction], animations: {
             self.containerView.transform = CGAffineTransform(translationX: translationDelta.x, y: translationDelta.y)
                 .scaledBy(x: 0.001, y: 0.001)
+                .rotated(by: rotationAngle)
                 .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
         }) { finished in
             context.completeTransition(finished)
