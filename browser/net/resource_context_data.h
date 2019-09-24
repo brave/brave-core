@@ -67,7 +67,8 @@ class ResourceContextData : public base::SupportsUserData::Data {
       const GURL& url,
       const GURL& site_for_cookies,
       const base::Optional<std::string>& user_agent,
-      network::mojom::WebSocketHandshakeClientPtrInfo handshake_client,
+      mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+          handshake_client,
       content::BrowserContext* browser_context,
       int render_process_id,
       int frame_id,
