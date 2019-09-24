@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/browser/content_settings_registry.h b/components/content_settings/core/browser/content_settings_registry.h
+index 20c43a7ee297e2ddea849d903f5e12608e303095..4cc4e4b2bfff6231d80027c32a9d9598eb03a434 100644
+--- a/components/content_settings/core/browser/content_settings_registry.h
++++ b/components/content_settings/core/browser/content_settings_registry.h
+@@ -53,6 +53,7 @@ class ContentSettingsRegistry {
+   ~ContentSettingsRegistry();
+ 
+   void Init();
++  void BraveInit();
+ 
+   typedef uint32_t Platforms;
+ 
