@@ -176,10 +176,11 @@ void AdsImpl::InitializeStep4(
 
 #if defined(OS_ANDROID)
 void AdsImpl::RemoveAllNotificationsAfterReboot() {
-  //ads notifications don't sustain reboot, so remove all
+  // ads notifications don't sustain reboot, so remove all
   auto ads_shown_history = client_->GetAdsShownHistory();
   if (!ads_shown_history.empty()) {
-    uint64_t ad_shown_timestamp = ads_shown_history.front().timestamp_in_seconds;
+    uint64_t ad_shown_timestamp =
+        ads_shown_history.front().timestamp_in_seconds;
     uint64_t boot_timestamp = Time::NowInSeconds() -
         static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds());
     if (ad_shown_timestamp <= boot_timestamp) {
@@ -189,14 +190,14 @@ void AdsImpl::RemoveAllNotificationsAfterReboot() {
 }
 
 void AdsImpl::RemoveAllNotificationsAfterUpdate() {
-  std::string current_version_code (base::android::BuildInfo::GetInstance()->package_version_code());
+  std::string current_version_code(
+      base::android::BuildInfo::GetInstance()->package_version_code());
   std::string last_version_code = client_->GetVersionCode();
   if (last_version_code.empty()) {
-    //initial update of version_code
+    // initial update of version_code
     client_->SetVersionCode(current_version_code);
-  }
-  else if (last_version_code != current_version_code){
-    //ads notifications don't sustain app update, so remove them
+  } else if (last_version_code != current_version_code) {
+    // ads notifications don't sustain app update, so remove them
     notifications_->RemoveAll(false);
   }
 }

@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+#include <vector>
 #include "brave/components/brave_ads/browser/locale_helper_android.h"
 #include "base/android/locale_utils.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_split.h"
-#include <algorithm>
-#include <vector>
 
 namespace brave_ads {
 
@@ -24,7 +24,8 @@ LocaleHelper* LocaleHelper::GetInstance() {
   return LocaleHelperAndroid::GetInstance();
 }
 
-const std::string LocaleHelperAndroid::GetCountryCode(const std::string& locale) {
+const std::string LocaleHelperAndroid::GetCountryCode(
+    const std::string& locale) {
   std::vector<std::string> locale_components = base::SplitString(locale, ".",
       base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 

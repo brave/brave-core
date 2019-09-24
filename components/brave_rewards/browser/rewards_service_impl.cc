@@ -552,11 +552,13 @@ void RewardsServiceImpl::OnCreateWallet(
   std::move(callback).Run(static_cast<int32_t>(result));
 }
 
-void RewardsServiceImpl::AddPrivateObserver(RewardsServicePrivateObserver* observer) {
+void RewardsServiceImpl::AddPrivateObserver(
+    RewardsServicePrivateObserver* observer) {
   private_observers_.AddObserver(observer);
 }
 
-void RewardsServiceImpl::RemovePrivateObserver(RewardsServicePrivateObserver* observer) {
+void RewardsServiceImpl::RemovePrivateObserver(
+    RewardsServicePrivateObserver* observer) {
   private_observers_.RemoveObserver(observer);
 }
 
@@ -588,9 +590,10 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
 }
 
 #if defined(OS_ANDROID)
-void RewardsServiceImpl::CreateWalletAttestationResult(CreateWalletCallback callback,
-  bool result,
-  const std::string& result_string) {
+void RewardsServiceImpl::CreateWalletAttestationResult(
+    CreateWalletCallback callback,
+    bool result,
+    const std::string& result_string) {
   if (result) {
     auto on_create = base::BindOnce(
         &RewardsServiceImpl::OnCreateWallet,
@@ -1738,7 +1741,8 @@ void RewardsServiceImpl::ResetState(
                      AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::ResetTheWholeState(const base::Callback<void(bool)>& callback) {
+void RewardsServiceImpl::ResetTheWholeState(
+    const base::Callback<void(bool)>& callback) {
   reset_states_ = true;
   notification_service_->DeleteAllNotifications();
   std::vector<base::FilePath> paths;
@@ -1756,8 +1760,9 @@ void RewardsServiceImpl::ResetTheWholeState(const base::Callback<void(bool)>& ca
                      AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::OnResetTheWholeState(base::Callback<void(bool)> callback,
-                                 bool success) {
+void RewardsServiceImpl::OnResetTheWholeState(
+    base::Callback<void(bool)> callback,
+    bool success) {
   callback.Run(success);
 }
 
@@ -3831,11 +3836,13 @@ bool RewardsServiceImpl::OnlyAnonWallet() {
   return false;
 }
 
-void RewardsServiceImpl::GetGrantViaSafetynetCheck(const std::string& promotion_id) const {
+void RewardsServiceImpl::GetGrantViaSafetynetCheck(
+    const std::string& promotion_id) const {
   bat_ledger_->GetGrantViaSafetynetCheck(promotion_id);
 }
 
-void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& promotion_id, const std::string& nonce) {
+void RewardsServiceImpl::OnGrantViaSafetynetCheck(
+    const std::string& promotion_id, const std::string& nonce) {
 // This is used on Android only
 #if defined(OS_ANDROID)
   safetynet_check::ClientAttestationCallback attest_callback =
@@ -3844,10 +3851,11 @@ void RewardsServiceImpl::OnGrantViaSafetynetCheck(const std::string& promotion_i
   safetynet_check_runner_.performSafetynetCheck(nonce,
       std::move(attest_callback));
 #endif
- }
+}
 
 #if defined(OS_ANDROID)
-void RewardsServiceImpl::GrantAttestationResult(const std::string& promotion_id, bool result,
+void RewardsServiceImpl::GrantAttestationResult(
+    const std::string& promotion_id, bool result,
     const std::string& result_string) {
   if (result) {
     return bat_ledger_->ApplySafetynetToken(promotion_id, result_string);

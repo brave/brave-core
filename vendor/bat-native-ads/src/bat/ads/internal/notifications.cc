@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <utility>
 
 #include "bat/ads/internal/notifications.h"
@@ -71,7 +72,7 @@ void Notifications::PushBack(const NotificationInfo& info) {
 
 void Notifications::PopFront(bool should_dismiss) {
   if (!notifications_.empty()) {
-    if (should_dismiss){
+    if (should_dismiss) {
       ads_client_->CloseNotification(notifications_.front().id);
     }
     notifications_.pop_front();
@@ -88,7 +89,7 @@ bool Notifications::Remove(const std::string& id, bool should_dismiss) {
     return false;
   }
 
-  if (should_dismiss){
+  if (should_dismiss) {
     ads_client_->CloseNotification(id);
   }
   notifications_.erase(iter);
@@ -101,7 +102,7 @@ bool Notifications::Remove(const std::string& id, bool should_dismiss) {
 void Notifications::RemoveAll(bool should_dismiss) {
   DCHECK(is_initialized_);
 
-  if (should_dismiss){
+  if (should_dismiss) {
     for (const auto& notification : notifications_) {
       ads_client_->CloseNotification(notification.id);
     }
@@ -361,7 +362,6 @@ base::Value Notifications::GetAsList() {
   base::Value list(base::Value::Type::LIST);
 
   for (const auto& notification : notifications_) {
-
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
     dictionary.SetKey(kNotificationIdKey,

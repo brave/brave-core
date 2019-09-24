@@ -26,18 +26,19 @@ BackgroundHelperAndroid::~BackgroundHelperAndroid() {
 
 bool BackgroundHelperAndroid::IsForeground() const {
   auto state = base::android::ApplicationStatusListener::GetState();
-  if (state != base::android::ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
+  if (state != base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     return false;
   }
 
   return true;
 }
 
-void BackgroundHelperAndroid::OnApplicationStateChange(base::android::ApplicationState state) {
-  if (state == base::android::ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
+void BackgroundHelperAndroid::OnApplicationStateChange(
+    base::android::ApplicationState state) {
+  if (state == base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     TriggerOnForeground();
   } else if (last_state_ != state && last_state_ ==
-      base::android::ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
+      base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     TriggerOnBackground();
   }
 

@@ -960,7 +960,7 @@ bool GRANT::loadFromJsonInternal(const std::string& json) {
   if (!error) {
     promotionId = d["promotionId"].GetString();
 
-    if (d.HasMember("type") && d["type"].IsString()){
+    if (d.HasMember("type") && d["type"].IsString()) {
       type = d["type"].GetString();
     }
     return !error;
@@ -1935,12 +1935,13 @@ bool getJSONAddresses(const std::string& json,
 }
 
 bool getJSONMessage(const std::string& json,
-                     std::string& message) {
+                     std::string* message) {
+  DCHECK(message);
   rapidjson::Document d;
   d.Parse(json.c_str());
 
-  if (d.HasMember("message")) {
-    message = d["message"].GetString();
+  if (message && d.HasMember("message")) {
+    *message = d["message"].GetString();
     return true;
   }
 

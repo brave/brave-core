@@ -18,8 +18,7 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(
     const std::string& name,
     const GritResourceMap* resource_map,
     size_t resource_map_size,
-    int html_resource_id)
-{
+    int html_resource_id) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
   source->SetJsonPath("strings.js");

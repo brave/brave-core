@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
 
-#include "brave/browser/version_info.h"
-
 #include <memory>
 #include <string>
+
+#include "brave/browser/version_info.h"
 
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"

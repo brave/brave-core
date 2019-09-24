@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_APP_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_APP_H_
 
-#include "brave/browser/version_info.h"
-
 #include <memory>
 #include <string>
+
+#include "brave/browser/version_info.h"
 
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "services/service_manager/public/cpp/service.h"

@@ -141,7 +141,7 @@ struct GRANT {
   uint64_t expiryTime;
   std::string promotionId;
   std::string type;
-private:
+ private:
   bool loadFromJsonInternal(const std::string& json);
 };
 
@@ -419,7 +419,7 @@ bool getJSONAddresses(const std::string& json,
                       std::map<std::string, std::string>* addresses);
 
 bool getJSONMessage(const std::string& json,
-                     std::string& message);
+                     std::string* message);
 
 std::vector<uint8_t> generateSeed();
 

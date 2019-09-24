@@ -126,7 +126,8 @@ class RewardsService : public KeyedService {
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void RecoverWallet(const std::string& passPhrase) = 0;
   virtual void RestorePublishersUI() = 0;
-  virtual void GetGrantViaSafetynetCheck(const std::string& promotion_id) const = 0;
+  virtual void GetGrantViaSafetynetCheck(
+      const std::string& promotion_id) const = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
   virtual void OnShow(SessionID tab_id) = 0;
@@ -207,8 +208,10 @@ class RewardsService : public KeyedService {
                              const std::string& type) = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
-  virtual void AddPrivateObserver(RewardsServicePrivateObserver* observer) = 0;
-  virtual void RemovePrivateObserver(RewardsServicePrivateObserver* observer) = 0;
+  virtual void AddPrivateObserver(
+      RewardsServicePrivateObserver* observer) = 0;
+  virtual void RemovePrivateObserver(
+      RewardsServicePrivateObserver* observer) = 0;
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;
 
@@ -223,7 +226,8 @@ class RewardsService : public KeyedService {
                                          const std::string& viewing_id,
                                          uint64_t added_date) = 0;
   virtual void RemoveAllPendingContributionsUI() = 0;
-  virtual void ResetTheWholeState(const base::Callback<void(bool)>& callback) = 0;
+  virtual void ResetTheWholeState(
+      const base::Callback<void(bool)>& callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

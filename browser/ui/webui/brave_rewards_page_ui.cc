@@ -272,11 +272,11 @@ RewardsDOMHandler::~RewardsDOMHandler() {
 
 void RewardsDOMHandler::RegisterMessages() {
 #if defined(OS_ANDROID)
-   // Create our favicon data source.
-   Profile* profile = Profile::FromWebUI(web_ui());
-   content::URLDataSource::Add(profile,
-                               std::make_unique<FaviconSource>(profile,
-                                 chrome::FaviconUrlFormat::kFaviconLegacy));
+  // Create our favicon data source.
+  Profile* profile = Profile::FromWebUI(web_ui());
+  content::URLDataSource::Add(profile,
+                              std::make_unique<FaviconSource>(profile,
+                              chrome::FaviconUrlFormat::kFaviconLegacy));
 #endif
 
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
@@ -769,8 +769,9 @@ void RewardsDOMHandler::OnNotificationDeleted(
     brave_rewards::RewardsNotificationService* rewards_notification_service,
     const brave_rewards::RewardsNotificationService::RewardsNotification&
         notification) {
-  if (notification.type_ == brave_rewards::RewardsNotificationService::RewardsNotificationType::REWARDS_NOTIFICATION_GRANT &&
-    web_ui()->CanCallJavascript()) {
+  if (notification.type_ ==
+      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
+      && web_ui()->CanCallJavascript()) {
     base::DictionaryValue finish;
     finish.SetInteger("status", false);
     finish.SetInteger("expiryTime", 0);

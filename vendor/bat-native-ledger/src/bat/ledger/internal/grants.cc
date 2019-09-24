@@ -67,7 +67,8 @@ void Grants::FetchGrants(const std::string& lang,
     headers.push_back("safetynet-token:" + safetynet_token);
   }
   std::string safetynet_prefix = PREFIX_V5;
-#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
+#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY)\
+    && defined(OFFICIAL_BUILD)
     safetynet_prefix = PREFIX_V3;
 #endif
   auto internal_callback = std::bind(
@@ -78,7 +79,8 @@ void Grants::FetchGrants(const std::string& lang,
       std::move(callback));
   ledger_->LoadURL(
       braveledger_bat_helper::buildURL(
-          (std::string)GET_SET_PROMOTION + arguments, safetynet_token.empty() ? PREFIX_V4 : safetynet_prefix),
+          (std::string)GET_SET_PROMOTION + arguments,
+          safetynet_token.empty() ? PREFIX_V4 : safetynet_prefix),
       headers,
       "",
       "",
@@ -156,14 +158,16 @@ void Grants::SetGrant(const std::string& captchaResponse,
 
   std::string keys[2] = {"promotionId", "captchaResponse"};
   std::string values[2] = {promotionId, captchaResponse};
-  std::string payload = braveledger_bat_helper::stringify(keys, values, safetynet_token.empty() ? 2 : 1);
+  std::string payload = braveledger_bat_helper::stringify(keys, values,
+      safetynet_token.empty() ? 2 : 1);
 
   std::vector<std::string> headers;
   if (!safetynet_token.empty()) {
     headers.push_back("safetynet-token:" + safetynet_token);
   }
 
-  auto callback = std::bind(&Grants::SetGrantCallback, this, _1, _2, _3, !safetynet_token.empty());
+  auto callback = std::bind(&Grants::SetGrantCallback, this, _1, _2, _3,
+                                !safetynet_token.empty());
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
         safetynet_token.empty() ? PREFIX_V2 : PREFIX_V3),
@@ -185,7 +189,9 @@ void Grants::SetGrantCallback(
 
   if (!error.empty()) {
     if (statusCode == net::HTTP_FORBIDDEN) {
-      ledger_->OnGrantFinish(is_safetynet_check ? ledger::Result::SAFETYNET_ATTESTATION_FAILED : ledger::Result::CAPTCHA_FAILED, grant);
+      ledger_->OnGrantFinish(is_safetynet_check ?
+          ledger::Result::SAFETYNET_ATTESTATION_FAILED :
+          ledger::Result::CAPTCHA_FAILED, grant);
     } else if (statusCode == net::HTTP_NOT_FOUND ||
                statusCode == net::HTTP_GONE) {
       ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);
