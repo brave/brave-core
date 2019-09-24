@@ -7,6 +7,13 @@ function detectBypassablePaywall() {
 
 function bypassPaywall() {
   console.log('Wallbreaker [barrons]: bypassing paywall...')
+  chrome.runtime.sendMessage({
+    type: 'perform-bypass',
+    bypassArgs: {
+      cookiesToDelete: [ 'cookie1, cookie2' ],
+      cookiesToExtend: [ 'cookie3' ]
+    }
+  })
 }
 
 new WallbreakerController({
