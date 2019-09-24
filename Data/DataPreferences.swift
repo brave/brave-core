@@ -5,7 +5,7 @@
 import Foundation
 import BraveShared
 
-extension Preferences {
+public extension Preferences {
     final class Sync {
         /// First two digits of special order for Sync, unified across all platforms.
         /// The first two digits are a platform number and device id.
@@ -21,5 +21,20 @@ extension Preferences {
         /// Real Sync seed is stored in a keychain, although preference name of this option is used for both.
         /// See Sync.syncSeed for more details.
         static let seedName = Option<Bool>(key: "sync.is-sync-seed-set", default: false)
+    }
+    
+    final class Database {
+        
+        public final class DocumentToSupportDirectoryMigration {
+            /// This indicates whether the associated Document -> Support directory migration was / is considered
+            ///     successful or not. Once it is `true`, it should never be set to `false` again.
+            public static let completed
+                = Option<Bool>(key: "database.document-to-support-directory-migration.completed", default: false)
+            
+            /// Since the migration may need to be re-attempted on each Brave version update this is used to store
+            ///   the past version attempt, so it can be determined if another migration attempt is due.
+            public static let previousAttemptedVersion
+                = Option<String?>(key: "database.document-to-support-directory-migration.previous-attempted-version", default: nil)
+        }
     }
 }
