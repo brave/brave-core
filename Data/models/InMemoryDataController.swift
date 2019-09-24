@@ -8,7 +8,7 @@ import Shared
 import XCGLogger
 
 public class InMemoryDataController: DataController {
-    override func addPersistentStore(for container: NSPersistentContainer) {
+    override func addPersistentStore(for container: NSPersistentContainer, store: URL) {
         let description = NSPersistentStoreDescription()
         description.type = NSInMemoryStoreType
         

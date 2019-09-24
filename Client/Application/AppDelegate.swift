@@ -61,12 +61,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         self.window!.backgroundColor = UIColor.Photon.White100
 
         AdBlockStats.shared.startLoading()
-        
         HttpsEverywhereStats.shared.startLoading()
         
         updateShortcutItems(application)
         
+        // Must happen before passcode check, otherwise may unnecessarily reset keychain
         Migration.moveDatabaseToApplicationDirectory()
+        
         // Passcode checking, must happen on immediate launch
         if !DataController.shared.storeExists() {
             // Since passcode is stored in keychain it persists between installations.
