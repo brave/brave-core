@@ -2,11 +2,6 @@
 // unlocked articles remaining.
 const demoPaywallCountStore = new Map();
 
-// TODO: If we want to perform wallbreaking for some sites just from background
-// script, then intercept page or cookie load
-// and call `getCanBypassForPublisher`.
-
-
 function getCanBypassForPublisher (tabId, publisherId) {
   const count = demoPaywallCountStore.get(publisherId)
   if (count) {
@@ -28,6 +23,8 @@ chrome.runtime.onMessage.addListener(
       // if it's false, it can change to true in the future after
       // user unlock.
       sendResponse({ canBypass })
+    } else if (request.type === 'perform-bypass') {
+      performUnblockForSite(request.bypassArgs)
     }
   }
 )
@@ -48,4 +45,13 @@ function notifyBypassStatusEnabledForPublisher (publisherId) {
       canBypass: true
     });
   });
+}
+
+function performUnblockForSite ({ cookiesToDelete, cookiesToExtend }) {
+  if (cookiesToDelete) {
+    // chrome.cookies.remove ...
+  }
+  if (cookiesToExtend) {
+    // chrome.cookies.set ...
+  }
 }
