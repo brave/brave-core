@@ -1550,15 +1550,18 @@ void LedgerImpl::RemoveTransferFee(
   ledger_client_->RemoveTransferFee(wallet_type, id);
 }
 
-void LedgerImpl::GetGrantViaSafetynetCheck(const std::string& promotion_id) const {
+void LedgerImpl::GetGrantViaSafetynetCheck(
+    const std::string& promotion_id) const {
   bat_wallet_->GetGrantViaSafetynetCheck(promotion_id);
 }
 
-void LedgerImpl::OnGrantViaSafetynetCheck(const std::string& promotion_id, const std::string& nonce) {
+void LedgerImpl::OnGrantViaSafetynetCheck(
+    const std::string& promotion_id, const std::string& nonce) {
   ledger_client_->OnGrantViaSafetynetCheck(promotion_id, nonce);
 }
 
-void LedgerImpl::ApplySafetynetToken(const std::string& promotion_id, const std::string& token) const {
+void LedgerImpl::ApplySafetynetToken(
+    const std::string& promotion_id, const std::string& token) const {
   bat_grants_->SetGrant("", promotion_id, token);
 }
 

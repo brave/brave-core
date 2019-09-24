@@ -33,7 +33,8 @@ void Create::Start(const std::string& safetynet_token,
       ledger::CreateWalletCallback callback) {
   if (!safetynet_token.empty()) {
     std::string safetynet_prefix = PREFIX_V5;
-#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
+#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY)\
+    && defined(OFFICIAL_BUILD)
     safetynet_prefix = PREFIX_V3;
 #endif
     std::vector<std::string> headers;
@@ -76,7 +77,7 @@ void Create::StartSafetyNetCallback(
   std::string message;
   if (statusCode == SAFETYNET_ERROR_CODE || (hasResponseError &&
       statusCode == net::HTTP_NOT_FOUND &&
-      braveledger_bat_helper::getJSONMessage(response, message) &&
+      braveledger_bat_helper::getJSONMessage(response, &message) &&
       message == SAFETYNET_ERROR_MESSAGE)) {
     callback(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
     return;

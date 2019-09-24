@@ -60,7 +60,7 @@ ClientState::ClientState(const ClientState& state) :
   search_url(state.search_url),
   shop_activity(state.shop_activity),
   shop_url(state.shop_url),
-  version_code (state.version_code) {}
+  version_code(state.version_code) {}
 
 ClientState::~ClientState() = default;
 

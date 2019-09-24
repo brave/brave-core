@@ -23,7 +23,6 @@
 #include "base/base64.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
-#include "base/base64.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

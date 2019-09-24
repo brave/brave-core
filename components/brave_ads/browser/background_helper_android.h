@@ -26,7 +26,8 @@ class BackgroundHelperAndroid :
   static BackgroundHelperAndroid* GetInstance();
 
  private:
-  std::unique_ptr<base::android::ApplicationStatusListener> app_status_listener_;
+  std::unique_ptr<base::android::ApplicationStatusListener>
+    app_status_listener_;
 
   base::android::ApplicationState last_state_;
 

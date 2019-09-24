@@ -603,8 +603,7 @@ void AdsServiceImpl::OnInitialize(
   if (result != ads::Result::SUCCESS) {
     LOG(ERROR) << "Failed to initialize ads";
     is_initialized_ = false;
-  }
-  else {
+  } else {
     is_initialized_ = true;
 
     // OnBraveAdsServiceReady is implemented for Android for now
@@ -1837,10 +1836,10 @@ bool AdsServiceImpl::ShouldShowNotifications() const {
 
 void AdsServiceImpl::CloseNotification(
     const std::string& id) {
-  //we might want to close Brave ads notification
-  //between browser sessions and
-  //NotificationPlatformBridgeAndroid::regenerated_notification_infos_
-  //possibly was purged already, so we need a way to identify a Brave ad.
+  // we might want to close Brave ads notification
+  // between browser sessions and
+  // NotificationPlatformBridgeAndroid::regenerated_notification_infos_
+  // possibly was purged already, so we need a way to identify a Brave ad.
   std::string prefixed_id(kBraveAdsUrlPrefix);
   prefixed_id += id;
   display_service_->Close(NotificationHandler::Type::BRAVE_ADS, prefixed_id);
