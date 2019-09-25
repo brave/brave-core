@@ -11,20 +11,30 @@ require('../../../../../../fonts/poppins.css')
 
 const AppComponent = styled('div')`
   font-family: 'Muli';
-  width: 370px;
+  width: 375px;
   background: linear-gradient(-45deg, rgb(42, 31, 173) 0%, rgb(169, 27, 120) 100%) 0% 0% / 150% 150%;
-  padding: 20px;
+  padding: 40px 73px 20px 73px;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 16px;
+  line-height: 1.5;
   color: white;
   text-align: center;
 `
 
 const DialogTitleComponent = styled('h2')`
+  margin: 0;
   font-size: 18px;
   font-weight: bold;
+`
+
+const SmallPrint = styled('p')`
+  font-size: 11px;
+`
+
+const MainActions = styled('div')`
+  margin: 10px 0;
 `
 
 function handleTipAction (publisherId: string) {
@@ -41,15 +51,19 @@ function App ({ publisherId }: AppProps) {
   return (
     <ThemeProvider theme={Theme}>
       <AppComponent>
-        <DialogTitleComponent>Want to keep reading?</DialogTitleComponent>
-        <p>Get a temporary access pass to 5 articles on {publisherId}.</p>
-        <p>No registration required.</p>
-        <Button
-          type="accent"
-          brand="rewards"
-          text="Tip 5 BAT"
-          onClick={handleTipAction.bind(null, publisherId)}
+        <DialogTitleComponent>Reset your access</DialogTitleComponent>
+        <p>Use Brave Rewards to get your favorite content from {publisherId}.</p>
+        <MainActions>
+          <Button
+            type="accent"
+            brand="rewards"
+            text="Buy Access Pass for 5 BAT"
+            onClick={handleTipAction.bind(null, publisherId)}
           />
+        </MainActions>
+        <SmallPrint>
+          The Brave Access Pass restarts your session and access to content from this publisher. Your BAT payment is remitted directly to the publsiher.
+        </SmallPrint>
       </AppComponent>
     </ThemeProvider>
   )
