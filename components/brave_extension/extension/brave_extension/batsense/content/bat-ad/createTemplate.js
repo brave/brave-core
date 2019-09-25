@@ -122,7 +122,7 @@ const templateInnerHTML = /*html*/`
       z-index: 1;
     }
 
-    :host(:not([creative-url])) > * {
+    :host(:not([creative-url])) {
       display: none;
     }
   </style>
