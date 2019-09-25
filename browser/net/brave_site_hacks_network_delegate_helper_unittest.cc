@@ -34,6 +34,70 @@ class BraveSiteHacksNetworkDelegateHelperTest: public testing::Test {
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ForbesWithCookieHeader) {
+  GURL url("https://www.forbes.com");
+  net::TestDelegate test_delegate;
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+  net::HttpRequestHeaders headers;
+  headers.SetHeader(kCookieHeader, "name=value; name2=value2; name3=value3");
+  std::shared_ptr<brave::BraveRequestInfo>
+      brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+      brave_request_info);
+  brave::ResponseCallback callback;
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
+      &headers, callback, brave_request_info);
+  std::string cookies;
+  headers.GetHeader(kCookieHeader, &cookies);
+  EXPECT_TRUE(cookies.find(std::string("; ") + kForbesExtraCookies)
+      != std::string::npos);
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ForbesWithoutCookieHeader) {
+  GURL url("https://www.forbes.com/prime_numbers/573259391");
+  net::TestDelegate test_delegate;
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+  net::HttpRequestHeaders headers;
+  std::shared_ptr<brave::BraveRequestInfo>
+      brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+      brave_request_info);
+  brave::ResponseCallback callback;
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
+      &headers, callback, brave_request_info);
+  std::string cookies;
+  headers.GetHeader(kCookieHeader, &cookies);
+  EXPECT_TRUE(cookies.find(kForbesExtraCookies) != std::string::npos);
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NotForbesNoCookieChange) {
+  GURL url("https://www.brave.com/prime_numbers/573259391");
+  net::TestDelegate test_delegate;
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+  net::HttpRequestHeaders headers;
+  std::string expected_cookies = "name=value; name2=value2; name3=value3";
+  headers.SetHeader(kCookieHeader, "name=value; name2=value2; name3=value3");
+  std::shared_ptr<brave::BraveRequestInfo>
+      brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+      brave_request_info);
+  brave::ResponseCallback callback;
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(
+      &headers, callback, brave_request_info);
+  std::string cookies;
+  headers.GetHeader(kCookieHeader, &cookies);
+  EXPECT_STREQ(cookies.c_str(), expected_cookies.c_str());
+  EXPECT_EQ(ret, net::OK);
+}
+
 TEST_F(BraveSiteHacksNetworkDelegateHelperTest, UAWhitelistedTest) {
   std::vector<GURL> urls({
     GURL("https://adobe.com"),
