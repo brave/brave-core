@@ -35,11 +35,9 @@ class BraveSyncEventRouter {
   explicit BraveSyncEventRouter(Profile* profile);
   ~BraveSyncEventRouter();
 
-  void GotInitData(
-    const brave_sync::Uint8Array& seed,
-    const brave_sync::Uint8Array& device_id,
-    const extensions::api::brave_sync::Config& config,
-    const std::string& sync_words);
+  void GotInitData(const brave_sync::Uint8Array& seed,
+                   const brave_sync::Uint8Array& device_id,
+                   const extensions::api::brave_sync::Config& config);
 
   void FetchSyncRecords(
     const std::vector<std::string>& category_names,
@@ -54,8 +52,6 @@ class BraveSyncEventRouter {
 
   void SendGetBookmarksBaseOrder(const std::string& device_id,
                                  const std::string& platform);
-
-  void NeedSyncWords(const std::string& seed);
 
   void LoadClient();
 

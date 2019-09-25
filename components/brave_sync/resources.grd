@@ -16,7 +16,6 @@
       <include name="IDR_BRAVE_SYNC_EXTENSION" file="brave_sync/extension/manifest.json" type="BINDATA" />
       <include name="IDR_BRAVE_SYNC_EXTENSION_BACKGROUND_JS" file="brave_sync/extension/background.js" type="BINDATA"/>
       <include name="IDR_BRAVE_SYNC_EXTENSION_BUNDLE_JS" file="brave_sync/extension/brave-sync/bundles/bundle.js" type="BINDATA" />
-      <include name="IDR_BRAVE_SYNC_EXTENSION_CRYPTO_JS" file="brave_sync/extension/brave-crypto/browser/crypto.js" type="BINDATA" />
       <include name="IDR_BRAVE_SYNC_HTML" file="brave_sync/ui/brave_sync.html" type="BINDATA" />
       <include name="IDR_BRAVE_SYNC_DISABLED_HTML" file="brave_sync/ui/brave_sync_disabled.html" type="BINDATA" />
     </includes>

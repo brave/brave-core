@@ -93,7 +93,6 @@ class BraveProfileSyncServiceImpl
   void OnDeletedSyncUser() override;
   void OnDeleteSyncSiteSettings() override;
   void OnSaveBookmarksBaseOrder(const std::string& order) override;
-  void OnSyncWordsPrepared(const std::string& words) override;
 
   // syncer::SyncService implementation
   int GetDisableReasons() const override;

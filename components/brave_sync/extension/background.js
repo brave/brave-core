@@ -4,15 +4,6 @@ chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config, syn
   if ((seed instanceof Array && seed.length == 0) || (seed instanceof Uint8Array && seed.length == 0)) {
     seed = null;
   }
-  if (sync_words) {
-    try {
-      seed = module.exports.passphrase.toBytes32(sync_words)
-    } catch(err) {
-      console.log(`"onGotInitData" sync_words=${JSON.stringify(sync_words)} err.message=${err.message}`);
-      chrome.braveSync.syncSetupError('ERR_SYNC_WRONG_WORDS')
-      return;
-    }
-  }
   console.log(`"got-init-data" seed=${JSON.stringify(seed)} device_id=${JSON.stringify(device_id)} config=${JSON.stringify(config)}`);
   callbackList["got-init-data"](null, seed, device_id, config);
 });
@@ -57,14 +48,6 @@ chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) 
 chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, platform) {
   console.log(`"get-bookmarks-base-order" deviceId=${JSON.stringify(deviceId)} platform=${JSON.stringify(platform)}`);
   callbackList["get-bookmarks-base-order"](null, deviceId, platform);
-});
-
-chrome.braveSync.onNeedSyncWords.addListener(function(seed) {
-  var arr_int = seed.split(',').map(Number);
-  var buffer = new Uint8Array(arr_int);
-  var words = module.exports.passphrase.fromBytesOrHex(buffer, /*useNiceware=*/ false /* use bip39 */);
-  console.log(`"NeedSyncWords" seed=${JSON.stringify(seed)} words=${JSON.stringify(words)}`);
-  chrome.braveSync.syncWordsPrepared(words);
 });
 
 chrome.braveSync.onLoadClient.addListener(function() {

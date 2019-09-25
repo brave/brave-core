@@ -14,6 +14,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
+#include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/settings.h"
@@ -331,9 +332,8 @@ void BraveProfileSyncServiceImpl::GetSettingsAndDevices(
 
 void BraveProfileSyncServiceImpl::GetSyncWords() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  // Ask sync client
-  std::string seed = brave_sync_prefs_->GetSeed();
-  brave_sync_client_->NeedSyncWords(seed);
+  Uint8Array seed = Uint8ArrayFromString(brave_sync_prefs_->GetSeed());
+  NotifyHaveSyncWords(crypto::PassphraseFromBytes32(seed));
 }
 
 std::string BraveProfileSyncServiceImpl::GetSeed() {
@@ -393,6 +393,10 @@ void BraveProfileSyncServiceImpl::OnGetInitData(
   Uint8Array seed;
   if (!brave_sync_words_.empty()) {
     VLOG(1) << "[Brave Sync] Init from sync words";
+    if (!crypto::PassphraseToBytes32(brave_sync_words_, &seed)) {
+      OnSyncSetupError("ERR_SYNC_WRONG_WORDS");
+      return;
+    }
   } else if (!brave_sync_prefs_->GetSeed().empty()) {
     seed = Uint8ArrayFromString(brave_sync_prefs_->GetSeed());
     VLOG(1) << "[Brave Sync] Init from prefs";
@@ -419,8 +423,7 @@ void BraveProfileSyncServiceImpl::OnGetInitData(
   config.api_version = brave_sync_prefs_->GetApiVersion();
   config.server_url = "https://sync.brave.com";
   config.debug = true;
-  brave_sync_client_->SendGotInitData(seed, device_id, config,
-                                      brave_sync_words_);
+  brave_sync_client_->SendGotInitData(seed, device_id, config);
 }
 
 void BraveProfileSyncServiceImpl::OnSaveInitData(const Uint8Array& seed,
@@ -584,11 +587,6 @@ void BraveProfileSyncServiceImpl::OnSaveBookmarksBaseOrder(
   DCHECK(!order.empty());
   brave_sync_prefs_->SetBookmarksBaseOrder(order);
   OnSyncReady();
-}
-
-void BraveProfileSyncServiceImpl::OnSyncWordsPrepared(
-    const std::string& words) {
-  NotifyHaveSyncWords(words);
 }
 
 int BraveProfileSyncServiceImpl::GetDisableReasons() const {

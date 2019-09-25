@@ -25,17 +25,14 @@ BraveSyncEventRouter::~BraveSyncEventRouter() {}
 void BraveSyncEventRouter::GotInitData(
     const brave_sync::Uint8Array& seed,
     const brave_sync::Uint8Array& device_id,
-    const extensions::api::brave_sync::Config& config,
-    const std::string& sync_words) {
+    const extensions::api::brave_sync::Config& config) {
   const std::vector<int> arg_seed(seed.begin(), seed.end());
   const std::vector<int> arg_device_id(device_id.begin(), device_id.end());
 
   std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnGotInitData::Create(arg_seed,
-                                                        arg_device_id,
-                                                        config,
-                                                        sync_words)
-       .release());
+      extensions::api::brave_sync::OnGotInitData::Create(arg_seed,
+                                                         arg_device_id, config)
+          .release());
   std::unique_ptr<Event> event(
      new Event(extensions::events::FOR_TEST,
        extensions::api::brave_sync::OnGotInitData::kEventName,
@@ -108,17 +105,6 @@ void BraveSyncEventRouter::SendGetBookmarksBaseOrder(
        extensions::api::brave_sync::OnSendGetBookmarksBaseOrder::kEventName,
        std::move(args)));
 
-  event_router_->BroadcastEvent(std::move(event));
-}
-
-void BraveSyncEventRouter::NeedSyncWords(const std::string& seed) {
-  std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnNeedSyncWords::Create(seed)
-       .release());
-  std::unique_ptr<Event> event(
-     new Event(extensions::events::FOR_TEST,
-       extensions::api::brave_sync::OnNeedSyncWords::kEventName,
-       std::move(args)));
   event_router_->BroadcastEvent(std::move(event));
 }
 

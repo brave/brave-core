@@ -16,7 +16,6 @@ deps = {
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@e3742ba3e8942eea9e4755d91532491871bd3116",
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@1b4362968c8f22720bfb75af6f506d4ecc0f3116",
   "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@16a888f180d3ce38fbec9aa1a5215e8f11692601",
-  "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@0231e65ba211b152d742278319c545a83cb13fc0",
   "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@a82acda22d8cb255d86ee28734efb8ad886e9a49",
   "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@f88d942ddfaf61a4a6703355a77c4ef71bc95c35",
 }
@@ -46,11 +45,5 @@ hooks = [
     'name': 'build_brave_sync',
     'pattern': '.',
     'action': ['python', 'src/brave/script/build-simple-js-bundle.py', '--repo_dir_path', 'src/brave/components/brave_sync/extension/brave-sync'],
-  },
-  {
-    # Build brave-crypto
-    'name': 'build_brave_crypto',
-    'pattern': '.',
-    'action': ['python', 'src/brave/script/build-simple-js-bundle.py', '--repo_dir_path', 'src/brave/components/brave_sync/extension/brave-crypto'],
   }
 ]
