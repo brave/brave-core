@@ -55,7 +55,7 @@ bool AdBlockCustomFiltersService::UpdateCustomFilters(
 
 void AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner(
     const std::string& custom_filters) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ad_block_client_.reset(new adblock::Engine(custom_filters.c_str()));
 }
 

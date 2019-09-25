@@ -106,7 +106,9 @@ namespace brave_shields {
 AdBlockBaseService::AdBlockBaseService(BraveComponent::Delegate* delegate)
     : BaseBraveShieldsService(delegate),
       ad_block_client_(new adblock::Engine()),
-      weak_factory_(this) {
+      weak_factory_(this),
+      weak_factory_io_thread_(this) {
+  DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 AdBlockBaseService::~AdBlockBaseService() {
@@ -114,13 +116,14 @@ AdBlockBaseService::~AdBlockBaseService() {
 }
 
 void AdBlockBaseService::Cleanup() {
-  GetTaskRunner()->DeleteSoon(FROM_HERE, ad_block_client_.release());
+  BrowserThread::DeleteSoon(
+      BrowserThread::IO, FROM_HERE, ad_block_client_.release());
 }
 
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type, const std::string& tab_host,
     bool* did_match_exception, bool* cancel_request_explicitly) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
@@ -157,14 +160,17 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
 }
 
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
-  if (BrowserThread::CurrentlyOn(BrowserThread::UI)) {
-    GetTaskRunner()->PostTask(FROM_HERE,
-                              base::BindOnce(&AdBlockBaseService::EnableTag,
-                                             base::Unretained(this),
-                                             tag, enabled));
-    return;
-  }
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::IO},
+      base::BindOnce(&AdBlockBaseService::EnableTagOnIOThread,
+                     weak_factory_io_thread_.GetWeakPtr(),
+                     tag,
+                     enabled));
+}
 
+void AdBlockBaseService::EnableTagOnIOThread(
+    const std::string& tag, bool enabled) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   if (enabled) {
     ad_block_client_->addTag(tag);
     tags_.push_back(tag);
@@ -201,17 +207,19 @@ void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
     LOG(ERROR) << "Failed to deserialize ad block data";
     return;
   }
-  GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
-                                base::Unretained(this),
-                                std::move(result.first),
-                                std::move(result.second)));
+
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::IO},
+      base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
+                     weak_factory_io_thread_.GetWeakPtr(),
+                     std::move(result.first),
+                     std::move(result.second)));
 }
 
 void AdBlockBaseService::UpdateAdBlockClient(
     std::unique_ptr<adblock::Engine> ad_block_client,
     brave_component_updater::DATFileDataBuffer buffer) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   ad_block_client_ = std::move(ad_block_client);
   buffer_ = std::move(buffer);
   AddKnownTagsToAdBlockInstance();
@@ -232,6 +240,7 @@ void AdBlockBaseService::ResetForTest(const std::string& rules) {
   // This is temporary until adblock-rust supports incrementally adding
   // filter rules to an existing instance. At which point the hack below
   // will dissapear.
+  DETACH_FROM_SEQUENCE(sequence_checker_);
   ad_block_client_.reset(new adblock::Engine(rules));
   AddKnownTagsToAdBlockInstance();
 }
