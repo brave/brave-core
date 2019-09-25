@@ -98,16 +98,48 @@ const templateInnerHTML = /*html*/`
       pointer-events: auto;
     }
 
+
     .controls__data p
     {
       max-width: 500px;
-      margin: 0 auto 8px auto;
-      line-height: 1.2;
+      margin: 0 auto 12px auto;
+      font-weight: bold;
+      line-height: 1.35;
+      font-size: 14px;
     }
 
     .controls__data p:first-of-type
     {
       font-weight: bold;
+      font-size: 15px;
+    }
+
+    .voting
+    {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
+    .voting__button
+    {
+      width: 96px;
+      height: 96px;
+      outline: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border: solid 1px transparent;
+      transition: border .125s ease-in-out;
+    }
+    .voting__button:hover
+    {
+      border-color: white;
+    }
+
+    .voting__button:nth-of-type(2)
+    {
+      transform: rotate(180deg);
     }
 
     .creative {
@@ -140,6 +172,16 @@ const templateInnerHTML = /*html*/`
       <p>
         Brave Rewards protects your privacy by making it impossible for this advertiser to track your activity or gain any personal data from your web browser or the websites you visit.
       </p>
+      <p>Advertiser: Audi</p>
+      <p>You are viewing this because your browsing activity indicates interest in the Automotive category.</p>
+      <div class="voting">
+        <button class="voting__button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 32 32"><path fill="white" d="M6.0625 10.75h-3.125c-.51777 0-.9375.41973-.9375.9375v9.375c0 .51777.41973.9375.9375.9375h3.125C6.58027 22 7 21.58027 7 21.0625v-9.375c0-.51777-.41973-.9375-.9375-.9375zM4.5 20.4375c-.51777 0-.9375-.41973-.9375-.9375 0-.51777.41973-.9375.9375-.9375.51777 0 .9375.41973.9375.9375 0 .51777-.41973.9375-.9375.9375zM17 5.18172c0 1.65687-1.01445 2.58625-1.29988 3.69328h3.97355c1.30457 0 2.3202 1.08383 2.3263 2.26945.00327.7007-.29477 1.45504-.75934 1.92176l-.0043.0043c.38422.9116.32176 2.18894-.3636 3.10426.3391 1.01152-.0027 2.25406-.63992 2.9202.1679.68741.08766 1.27245-.24015 1.74343C19.19539 21.98387 17.21937 22 15.5484 22l-.11113-.00004c-1.88622-.00066-3.42993-.68742-4.67032-1.23926-.62332-.2773-1.43832-.62058-2.05668-.63195-.25547-.00469-.46027-.21316-.46027-.46867v-8.3504c0-.125.05008-.24495.13898-.33284 1.54743-1.52907 2.21282-3.14793 3.48114-4.4184.57828-.57938.7886-1.45453.99191-2.30086C13.03574 3.53488 13.3991 2 14.1875 2 15.125 2 17 2.3125 17 5.18172z"></path></svg>
+        </button>
+        <button class="voting__button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 32 32"><path fill="white" d="M6.0625 10.75h-3.125c-.51777 0-.9375.41973-.9375.9375v9.375c0 .51777.41973.9375.9375.9375h3.125C6.58027 22 7 21.58027 7 21.0625v-9.375c0-.51777-.41973-.9375-.9375-.9375zM4.5 20.4375c-.51777 0-.9375-.41973-.9375-.9375 0-.51777.41973-.9375.9375-.9375.51777 0 .9375.41973.9375.9375 0 .51777-.41973.9375-.9375.9375zM17 5.18172c0 1.65687-1.01445 2.58625-1.29988 3.69328h3.97355c1.30457 0 2.3202 1.08383 2.3263 2.26945.00327.7007-.29477 1.45504-.75934 1.92176l-.0043.0043c.38422.9116.32176 2.18894-.3636 3.10426.3391 1.01152-.0027 2.25406-.63992 2.9202.1679.68741.08766 1.27245-.24015 1.74343C19.19539 21.98387 17.21937 22 15.5484 22l-.11113-.00004c-1.88622-.00066-3.42993-.68742-4.67032-1.23926-.62332-.2773-1.43832-.62058-2.05668-.63195-.25547-.00469-.46027-.21316-.46027-.46867v-8.3504c0-.125.05008-.24495.13898-.33284 1.54743-1.52907 2.21282-3.14793 3.48114-4.4184.57828-.57938.7886-1.45453.99191-2.30086C13.03574 3.53488 13.3991 2 14.1875 2 15.125 2 17 2.3125 17 5.18172z"></path></svg>
+        </button>
+      </div>
     </div>
   </label>
 `
