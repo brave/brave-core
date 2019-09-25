@@ -1217,7 +1217,8 @@ bool AdsServiceImpl::MigratePrefs(
     // {{from version, to version}, function}
     {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
     {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
-    {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
+    {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
+    {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5}
   };
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
@@ -1326,6 +1327,18 @@ void AdsServiceImpl::MigratePrefsVersion3To4() {
     "SG",  // Singapore
     "VE",  // Venezuela
     "ZA"   // South Africa
+  };
+
+  MayBeShowOnboardingForSupportedRegion(region, new_regions);
+}
+
+void AdsServiceImpl::MigratePrefsVersion4To5() {
+  auto locale = GetLocale();
+  auto region = ads::Ads::GetRegion(locale);
+
+  // On-board users for newly supported regions
+  std::vector<std::string> new_regions = {
+    "KY"   // Cayman Islands
   };
 
   MayBeShowOnboardingForSupportedRegion(region, new_regions);
@@ -1749,10 +1762,11 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
     const int id) const {
   std::string data_resource;
 
-  if (ui::ResourceBundle::GetSharedInstance().IsGzipped(id)) {
-    data_resource = ui::ResourceBundle::GetSharedInstance().DecompressDataResource(id);
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  if (resource_bundle.IsGzipped(id)) {
+    data_resource = resource_bundle.DecompressDataResource(id);
   } else {
-    data_resource = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(id).as_string();
+    data_resource = resource_bundle.GetRawDataResource(id).as_string();
   }
 
   return data_resource;
