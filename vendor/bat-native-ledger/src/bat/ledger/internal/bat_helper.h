@@ -141,8 +141,6 @@ struct GRANT {
   uint64_t expiryTime;
   std::string promotionId;
   std::string type;
- private:
-  bool loadFromJsonInternal(const std::string& json);
 };
 
 struct GRANT_RESPONSE {

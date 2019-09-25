@@ -859,7 +859,6 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
   for (auto & choice : data.parameters_choices_) {
     writer->Double(choice);
   }
-
   writer->EndArray();
   writer->EndObject();
 
@@ -940,10 +939,6 @@ GRANT::GRANT(const GRANT &properties) {
 }
 
 bool GRANT::loadFromJson(const std::string & json) {
-  return loadFromJsonInternal(json);
-}
-
-bool GRANT::loadFromJsonInternal(const std::string& json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 

@@ -9,8 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "brave/browser/version_info.h"
-
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "services/service_manager/public/cpp/service.h"
 #include "services/service_manager/public/cpp/service_binding.h"
@@ -20,9 +18,8 @@ namespace bat_ledger {
 
 class BatLedgerApp : public service_manager::Service {
  public:
-  ~BatLedgerApp() override;
-
   explicit BatLedgerApp(service_manager::mojom::ServiceRequest request);
+  ~BatLedgerApp() override;
 
   // Lifescycle events that occur after the service has started to spinup.
   void OnStart() override;
