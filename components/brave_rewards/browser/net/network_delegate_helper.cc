@@ -75,17 +75,19 @@ void DispatchOnUI(
 int OnBeforeURLRequest(
   const brave::ResponseCallback& next_callback,
   std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
 
   if (IsMediaLink(ctx->request_url, ctx->tab_origin, ctx->referrer)) {
     if (!ctx->upload_data.empty()) {
-      DispatchOnUI(ctx->upload_data,
-                   ctx->request_url,
-                   ctx->tab_url,
-                   ctx->referrer.spec(),
-                   ctx->render_process_id,
-                   ctx->render_frame_id,
-                   ctx->frame_tree_node_id);
+      base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
+          base::BindOnce(&DispatchOnUI,
+                         ctx->upload_data,
+                         ctx->request_url,
+                         ctx->tab_url,
+                         ctx->referrer.spec(),
+                         ctx->render_process_id,
+                         ctx->render_frame_id,
+                         ctx->frame_tree_node_id));
     }
   }
 
