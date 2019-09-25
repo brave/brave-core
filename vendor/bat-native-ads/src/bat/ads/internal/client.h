@@ -62,7 +62,7 @@ class Client {
   void FlagShoppingState(const std::string& url, const uint64_t score);
   void UnflagShoppingState();
   bool GetShoppingState();
-  std::string GetShoppingStateUrl();
+  const std::string GetShoppingStateUrl();
   void FlagSearchState(const std::string& url, const uint64_t score);
   void UnflagSearchState(const std::string& url);
   bool GetSearchState();

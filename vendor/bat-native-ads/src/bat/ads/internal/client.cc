@@ -410,7 +410,7 @@ bool Client::GetShoppingState() {
   return client_state_->shop_activity;
 }
 
-std::string Client::GetShoppingStateUrl() {
+const std::string Client::GetShoppingStateUrl() {
   return client_state_->shop_url;
 }
 
@@ -547,7 +547,7 @@ void Client::AppendCurrentTimeToSegmentHistory(
     client_state_->segment_history.insert({segment_id, {}});
   }
 
-  auto now_in_seconds = helper::Time::NowInSeconds();
+  auto now_in_seconds = Time::NowInSeconds();
   client_state_->segment_history.at(segment_id).push_back(now_in_seconds);
 
   SaveState();

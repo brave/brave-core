@@ -31,7 +31,8 @@ static const uint64_t kNextEasterEggStartsInSeconds = 30;
 
 static char kShoppingStateUrl[] = "https://amazon.com";
 
-static std::map<std::string, std::vector<std::string>> kShoppingSiteCategories = {
+static const std::map<std::string, std::vector<std::string>>
+    kShoppingSiteCategories = {
   {"cars", {
     "https://www.carmax.com", "https://www.cargurus.com",
     "https://www.edmunds.com", "https://www.cars.com",
@@ -42,12 +43,12 @@ static std::map<std::string, std::vector<std::string>> kShoppingSiteCategories =
   }}
 };
 
-static std::map<std::string, std::string> kSegmentKeywords = {
+static const std::map<std::string, std::string> kSegmentKeywords = {
   {"affinity for a new audi", "audi"},
   {"affinity for a new iphone", "iphone x"}
 };
 
-static std::map<std::string, std::string> kCampaignCheckoutUrls = {
+static const std::map<std::string, std::string> kCampaignCheckoutUrls = {
   {"1e0603fa-2319-4e14-adca-274e60767f39",
     "https://www.apple.com/shop/buy-iphone/iphone-xr?cppart=ATT/US&product="
     "MT3T2LL/A&purchaseOption=fullPrice&step=warranty#"}

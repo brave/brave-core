@@ -159,6 +159,11 @@ class AdsImpl : public Ads {
   std::string ClassifyPage(
       const std::string& url,
       const std::string& html);
+  bool CheckShoppingIntentPoc(
+      const std::string& url,
+      const std::string& html);
+  std::string GetShoppingSegment(
+      std::string text);
 
   std::string GetWinnerOverTimeCategory();
   std::string GetWinningCategory(
@@ -171,16 +176,17 @@ class AdsImpl : public Ads {
 
   bool ShoppingSitesMatch(
     const std::string& url,
-    std::map<std::string, std::vector<std::string>> custom_category_urls);
+    const std::map<std::string, std::vector<std::string>>&
+        custom_category_urls);
   std::string ExtractSearchQueryString(std::string qstring);
   std::string MatchSegmentKeywordsToText(
       const std::string& html,
-      std::map<std::string, std::string> segment_keywords);
+      const std::map<std::string, std::string> segment_keywords);
 
   void TestCheckoutStateAndAdHistory(
       const std::string& url,
-      std::map<std::string, std::string> campaign_checkout_urls);
-  void ServeSegmentAdIfPurchaseIntent();
+      const std::map<std::string, std::string> campaign_checkout_urls);
+  void ServeSegmentAdIfNeeded();
 
   void TestShoppingData(
       const std::string& url);

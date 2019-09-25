@@ -225,7 +225,7 @@ void AdsImpl::InitializeUserModel(
   BLOG(INFO) << "Initializing user model for \"" << language << "\" language";
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
-  user_model_->InitializePageClassifier(json);
+  user_model_->InitializePageClassifier(json, "en");
 
   BLOG(INFO) << "Initialized user model for \"" << language << "\" language";
 }
@@ -580,6 +580,9 @@ void AdsImpl::OnPageLoaded(
     return;
   }
 
+  TestCheckoutStateAndAdHistory(url, kCampaignCheckoutUrls);
+  CheckShoppingIntentPoc(url, html);
+
   if (UrlHostsMatch(url, last_shown_notification_info_.url)) {
     BLOG(INFO) << "Site visited " << url
         << ", URL is from last shown notification";
@@ -642,51 +645,6 @@ bool AdsImpl::ShouldClassifyPages() const {
 std::string AdsImpl::ClassifyPage(
     const std::string& url,
     const std::string& html) {
-
-  // Must run before UrlHostsMatch otherwise checkout URL won't be
-  // recognised for attribution
-  TestCheckoutStateAndAdHistory(url, kCampaignCheckoutUrls); // return type
-
-  TestShoppingData(url);
-  TestSearchState(url);
-
-  // TODO(Moritz Haller):
-  // Move search and shopping branch into its own function and return bool
-
-  // TODO(Moritz Haller):
-  // Abstract out single entry point for purchase intent or keep it specific
-  // to search and shopping state?
-  if (client_->GetSearchState()){
-    BLOG(INFO) << "Client in search state at " << url;
-    // Match segment from query string text
-    auto query = ExtractSearchQueryString(url);
-    auto matched_segment = MatchSegmentKeywordsToText(query, kSegmentKeywords);
-
-    if (matched_segment != "") {
-      BLOG(INFO) << "Matched segment " << matched_segment;
-      client_->AppendCurrentTimeToSegmentHistory(matched_segment);
-    }
-
-    ServeSegmentAdIfPurchaseIntent(); // TODO: refactor to "shopping"
-
-    return;
-  }
-
-  if (client_->GetShoppingState()) {
-    BLOG(INFO) << "Client in shopping state at " << url;
-    // Match segment from HTML text
-    auto matched_segment = MatchSegmentKeywordsToText(html, kSegmentKeywords);
-
-    if (matched_segment != "") {
-      BLOG(INFO) << "Matched segment " << matched_segment;
-      client_->AppendCurrentTimeToSegmentHistory(matched_segment);
-    }
-
-    ServeSegmentAdIfPurchaseIntent();
-
-    return;
-  }
-
   auto page_score = user_model_->ClassifyPage(html);
 
   auto winning_category = GetWinningCategory(page_score);
@@ -707,6 +665,47 @@ std::string AdsImpl::ClassifyPage(
       << GetWinnerOverTimeCategory();
 
   return winning_category;
+}
+
+bool AdsImpl::CheckShoppingIntentPoc(
+    const std::string& url,
+    const std::string& html) {
+  BLOG(INFO) << "Ads in shopping intent poc";
+
+  TestShoppingData(url);
+  TestSearchState(url);
+
+  if (client_->GetSearchState()){
+    BLOG(INFO) << "Ads in search state at " << url;
+
+    auto query = ExtractSearchQueryString(url);
+    auto matched_segment = GetShoppingSegment(query);
+
+    return true;
+  }
+
+  if (client_->GetShoppingState()) {
+    BLOG(INFO) << "Ads in shopping state at " << url;
+
+    auto matched_segment = GetShoppingSegment(html);
+
+    return true;
+  }
+
+  return false;
+}
+
+std::string AdsImpl::GetShoppingSegment(std::string text) {
+    auto matched_segment = user_model_->GetShoppingSegment(text, kSegmentKeywords);
+
+    if (!matched_segment.empty()) {
+      BLOG(INFO) << "Matched segment " << matched_segment;
+      client_->AppendCurrentTimeToSegmentHistory(matched_segment);
+    }
+
+    ServeSegmentAdIfNeeded();
+
+    return matched_segment;
 }
 
 std::string AdsImpl::GetWinnerOverTimeCategory() {
@@ -759,11 +758,10 @@ void AdsImpl::CachePageScore(
 
 bool AdsImpl::ShoppingSitesMatch(
     const std::string& url,
-    std::map<std::string, std::vector<std::string>> shopping_site_categories) {
-  // Iterate over categories
-  for (auto const& x : shopping_site_categories) {
-    auto urls = x.second;
-    // Iterate over shopping sites
+    const std::map<std::string, std::vector<std::string>>&
+        shopping_site_categories) {
+  for (auto const& category : shopping_site_categories) {
+    auto urls = category.second;
     for (size_t i = 0; i < urls.size(); i++) {
       if (UrlHostsMatch(url, urls[i])) {
         // Return true on first match
@@ -793,39 +791,6 @@ std::string AdsImpl::ExtractSearchQueryString(std::string qstring) {
     }
 
     return "";
-}
-
-// TODO(Moritz Haller): Move to user_model
-std::string AdsImpl::MatchSegmentKeywordsToText(
-    const std::string& text,
-    std::map<std::string, std::string> segment_keywords) {
-  auto bag_of_words = user_model_->GetBigrams(text);
-
-  // TODO(Moritz Haller): Remove logging
-  // for (auto x : bag_of_words) {
-  //   BLOG(INFO) << "" << x.first << ": " << x.second << std::endl ;
-  // }
-
-  std::string winning_category = "";
-  std::string winning_keyword = "";
-  double winning_word_count = 0; // TODO int
-
-  for(auto elem : segment_keywords) {
-      auto category = elem.first;
-      auto keyword = elem.second;
-
-      // Lookup word count
-      auto word_count = bag_of_words[keyword];
-
-      // Keep current category as winning in case of equal word count
-      if (word_count > winning_word_count) {
-          winning_category = category;
-          winning_keyword = keyword;
-          winning_word_count = word_count;
-      }
-  }
-
-  return winning_category;
 }
 
 void AdsImpl::TestShoppingData(
@@ -861,26 +826,25 @@ bool AdsImpl::TestSearchState(
 
 void AdsImpl::TestCheckoutStateAndAdHistory(const std::string& url,
     std::map<std::string, std::string> campaign_checkout_urls) {
-  // Iterate over checkout URLs
-  for (auto elem : campaign_checkout_urls) {
-    std::string campaign_id = elem.first;
-    std::string checkout_url = elem.second;
+  for (auto campaign_checkout_url : campaign_checkout_urls) {
+    std::string campaign_id = campaign_checkout_url.first;
+    std::string checkout_url = campaign_checkout_url.second;
 
     // If checkout URL matches and campaign found in ad history
     // consider test successful
     if (url == checkout_url) {
-      BLOG(INFO) << "Client in checkout state at " << url;
+      BLOG(INFO) << "Ads in checkout state at " << url;
       auto campaign_history = client_->GetCampaignHistory();
 
       if (campaign_history.find(campaign_id) !=
           campaign_history.end()) {
-        BLOG(INFO) << "Attribute conversion to campaign " << campaign_id;
+        BLOG(WARNING) << "Attribute conversion to campaign " << campaign_id;
       }
     }
   }
 }
 
-void AdsImpl::ServeSegmentAdIfPurchaseIntent() {
+void AdsImpl::ServeSegmentAdIfNeeded() {
   // TODO(Moritz Haller): Have checks from AdsImpl::CheckAdReady
 
   auto segment_history = client_->GetSegmentHistory();
@@ -889,9 +853,9 @@ void AdsImpl::ServeSegmentAdIfPurchaseIntent() {
   size_t max_oci_signals = 0;
   std::string winning_segment;
 
-  for (auto x : segment_history) {
-      std::string segment = x.first;
-      size_t oci_signals = x.second.size();
+  for (auto history : segment_history) {
+      std::string segment = history.first;
+      size_t oci_signals = history.second.size();
 
       if (oci_signals > max_oci_signals) {
           max_oci_signals = oci_signals;
@@ -901,7 +865,7 @@ void AdsImpl::ServeSegmentAdIfPurchaseIntent() {
       total_oci_signal_count += oci_signals;
   }
 
-  BLOG(INFO) << "OCI Signals received: " << total_oci_signal_count
+  BLOG(WARNING) << "OCI Signals received: " << total_oci_signal_count
     << "; Winning segment: " << winning_segment << std::endl;
 
   // Consider n actions in either shopping or search state as having
