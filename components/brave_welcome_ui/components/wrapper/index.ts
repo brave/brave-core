@@ -3,6 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled, { css, keyframes } from 'styled-components'
+import { backgroundHeight } from '../images'
+
+const slideContentHeight = 540
+const footerHeight = 52
 
 const fadeIn = keyframes`
   from {
@@ -35,7 +39,7 @@ export const SelectGrid = styled(BaseGrid)`
 
 export const Footer = styled(BaseGrid.withComponent('footer'))`
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 52px;
+  grid-template-rows: ${footerHeight}px;
   max-width: 540px;
   margin: 24px 0 0 0;
 `
@@ -83,16 +87,21 @@ export const Content = styled<ContentProps, 'section'>('section')`
   `}
 `
 
-export const Page = styled<{}, 'div'>('div')`
-  position: absolute;
+interface PageProps {
+  shouldUpdateElementOverflow: boolean
+}
+
+export const Page = styled<PageProps, 'div'>('div')`
   width: inherit;
   height: inherit;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   background: ${p => p.theme.color.panelBackground};
-  overflow: hidden;
-  transition: background 0.3s linear;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: ${p => p.shouldUpdateElementOverflow ? 'initial' : 'hidden' };
 `
 
 export const Panel = styled('div')`
@@ -108,21 +117,22 @@ export const Panel = styled('div')`
   /* end of animation stuff */
   box-sizing: border-box;
   position: relative;
-  overflow: visible;
   max-width: 800px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0;
-  margin: 0;
+  padding-top: 64px;
+  margin: 0 auto;
   font-size: inherit;
   align-items: center;
+  min-height: ${slideContentHeight + footerHeight}px;
+  height: calc(100vh - ${backgroundHeight}px);
 `
 
 export const SlideContent = styled<{}, 'div'>('div')`
   max-width: inherit;
   width: inherit;
-  min-height: 540px;
+  min-height: ${slideContentHeight}px;
   display: flex;
   justify-content: center;
   align-items: center;
