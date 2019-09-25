@@ -1,5 +1,3 @@
-import { isModuleDeclaration } from "@babel/types"
-
 const templateInnerHTML = /*html*/`
   <style>
     :host {
