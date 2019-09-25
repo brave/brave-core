@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.cc b/chrome/browser/ui/views/profiles/profile_menu_view.cc
-index 36d797f70d38783003cc6ea782af1ff86fd3ba7f..903d20326927324b7644920440422b68c35fe7b7 100644
+index 36d797f70d38783003cc6ea782af1ff86fd3ba7f..253aa3f326bbc2fc6bd85e895202b90ad6e186ca 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view.cc
-@@ -757,6 +757,7 @@ void ProfileMenuView::AddOptionsView(bool display_lock,
-         base::BindRepeating(&ProfileMenuView::OnManageProfilesButtonClicked,
+@@ -747,6 +747,7 @@ void ProfileMenuView::AddOptionsView(bool display_lock,
+   if (is_guest) {
+     CreateAndAddButton(
+         CreateVectorIcon(kCloseAllIcon),
++        BRAVE_ADDOPTIONSVIEW_ADD_TOR_EXIT_BUTTON_
+         l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_GUEST),
+         base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
                              base::Unretained(this)));
-   }
-+  ADD_TOR_EXIT_BUTTON_
- 
-   if (display_lock) {
-     lock_button_ = CreateAndAddButton(

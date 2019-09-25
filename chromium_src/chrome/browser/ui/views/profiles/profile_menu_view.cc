@@ -5,8 +5,10 @@
 
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/profiles/brave_profile_menu_view.h"
-#define ADD_TOR_EXIT_BUTTON_ \
-  if (brave::IsTorProfile(browser()->profile())) \
-    text = l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR);
+
+#define BRAVE_ADDOPTIONSVIEW_ADD_TOR_EXIT_BUTTON_ \
+  brave::IsTorProfile(browser()->profile()) ?     \
+    l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR) :
+
 #include "../../../../../../../chrome/browser/ui/views/profiles/profile_menu_view.cc"  // NOLINT
-#undef ADD_TOR_EXIT_BUTTON_
+#undef BRAVE_ADDOPTIONSVIEW_ADD_TOR_EXIT_BUTTON_

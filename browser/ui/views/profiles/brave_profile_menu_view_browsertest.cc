@@ -41,7 +41,8 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
   const base::string16& profile_button_name() const {
     ProfileMenuView* bubble = static_cast<ProfileMenuView*>(
         ProfileMenuViewBase::GetBubbleForTesting());
-    return bubble->current_profile_card_->GetAccessibleName();
+    return static_cast<BraveProfileMenuView*>(bubble)
+        ->current_profile_card_->GetAccessibleName();
   }
 
  private:
