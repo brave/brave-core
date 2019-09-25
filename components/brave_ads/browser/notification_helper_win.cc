@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/notification_helper_win.h"
 
+#include "chrome/browser/fullscreen.h"
+
 namespace brave_ads {
 
 NotificationHelperWin::NotificationHelperWin() = default;
@@ -12,7 +14,7 @@ NotificationHelperWin::NotificationHelperWin() = default;
 NotificationHelperWin::~NotificationHelperWin() = default;
 
 bool NotificationHelperWin::ShouldShowNotifications() const {
-  return true;
+  return !IsFullScreenMode();
 }
 
 bool NotificationHelperWin::ShowMyFirstAdNotification() const {

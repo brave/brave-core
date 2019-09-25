@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/notification_helper_mac.h"
 
+#include "chrome/browser/fullscreen.h"
+
 namespace brave_ads {
 
 NotificationHelperMac::NotificationHelperMac() = default;
@@ -12,7 +14,7 @@ NotificationHelperMac::NotificationHelperMac() = default;
 NotificationHelperMac::~NotificationHelperMac() = default;
 
 bool NotificationHelperMac::ShouldShowNotifications() const {
-  return true;
+  return !IsFullScreenMode();
 }
 
 bool NotificationHelperMac::ShowMyFirstAdNotification() const {
