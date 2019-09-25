@@ -18,17 +18,47 @@ export interface Props {
 }
 
 export default class Amount extends React.PureComponent<Props, {}> {
+  private selectedAmount: HTMLDivElement | null
+
   static defaultProps = {
     type: 'small',
     currency: 'USD',
     converted: 0
   }
 
+  constructor (props: Props) {
+    super(props)
+    this.selectedAmount = null
+  }
+
+  componentDidMount () {
+    if (this.selectedAmount) {
+      this.selectedAmount.click()
+    }
+  }
+
+  selectedNodeRef = (node: HTMLDivElement) => {
+    const { selected } = this.props
+
+    if (selected) {
+      this.selectedAmount = node
+    }
+  }
+
+  getAboutText = (isMobile?: boolean) => {
+    return isMobile ? '' : getLocale('about')
+  }
+
   render () {
     const { id, onSelect, amount, selected, type, converted, currency } = this.props
 
     return (
-      <StyledWrapper id={id} onClick={onSelect.bind(this, amount)} data-test-id={'amount-wrapper'}>
+      <StyledWrapper
+        id={id}
+        onClick={onSelect.bind(this, amount)}
+        data-test-id={'amount-wrapper'}
+        innerRef={this.selectedNodeRef}
+      >
         <StyledAmount selected={selected} type={type}>
           <StyledLogo><BatColorIcon /></StyledLogo><StyledNumber>{amount}</StyledNumber> <StyledTokens>{type === 'big' ? 'BAT' : null}</StyledTokens>
         </StyledAmount>
