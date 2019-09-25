@@ -968,7 +968,9 @@ std::vector<AdInfo> AdsImpl::GetEligibleAds(
     const std::vector<AdInfo>& ads) {
   std::vector<AdInfo> eligible_ads = {};
 
-  for (const auto& ad : ads) {
+  auto unseen_ads = GetUnseenAdsAndRoundRobinIfNeeded(ads);
+
+  for (const auto& ad : unseen_ads) {
     if (!AdRespectsTotalMaxFrequencyCapping(ad)) {
       BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
           << " has exceeded the frequency capping for totalMax";
@@ -1015,6 +1017,33 @@ std::vector<AdInfo> AdsImpl::GetEligibleAds(
   }
 
   return eligible_ads;
+}
+
+std::vector<AdInfo> AdsImpl::GetUnseenAdsAndRoundRobinIfNeeded(
+    const std::vector<AdInfo>& ads) const {
+  auto unseen_ads = GetUnseenAds(ads);
+  if (unseen_ads.empty()) {
+    client_->ResetAdsUUIDSeen(ads);
+
+    unseen_ads = GetUnseenAds(ads);
+  }
+
+  return unseen_ads;
+}
+
+std::vector<AdInfo> AdsImpl::GetUnseenAds(
+    const std::vector<AdInfo>& ads) const {
+  auto unseen_ads = ads;
+  const auto seen_ads = client_->GetAdsUUIDSeen();
+
+  const auto it = std::remove_if(unseen_ads.begin(), unseen_ads.end(),
+      [&](AdInfo& ad) {
+    return seen_ads.find(ad.uuid) != seen_ads.end();
+  });
+
+  unseen_ads.erase(it, unseen_ads.end());
+
+  return unseen_ads;
 }
 
 bool AdsImpl::AdRespectsTotalMaxFrequencyCapping(
@@ -1116,20 +1145,20 @@ bool AdsImpl::IsAdValid(
 }
 
 bool AdsImpl::ShowAd(
-    const AdInfo& ad_info,
+    const AdInfo& ad,
     const std::string& category) {
-  if (!IsAdValid(ad_info)) {
+  if (!IsAdValid(ad)) {
     return false;
   }
 
   auto notification_info = std::make_unique<NotificationInfo>();
   notification_info->id = base::GenerateGUID();
-  notification_info->advertiser = ad_info.advertiser;
+  notification_info->advertiser = ad.advertiser;
   notification_info->category = category;
-  notification_info->text = ad_info.notification_text;
-  notification_info->url = helper::Uri::GetUri(ad_info.notification_url);
-  notification_info->creative_set_id = ad_info.creative_set_id;
-  notification_info->uuid = ad_info.uuid;
+  notification_info->text = ad.notification_text;
+  notification_info->url = helper::Uri::GetUri(ad.notification_url);
+  notification_info->creative_set_id = ad.creative_set_id;
+  notification_info->uuid = ad.uuid;
 
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Notification shown', {category, winnerOverTime, arbitraryKey,
@@ -1137,7 +1166,7 @@ bool AdsImpl::ShowAd(
 
   BLOG(INFO) << "Notification shown:"
       << std::endl << "  id: " << notification_info->id
-      << std::endl << "  campaign_id: " << ad_info.campaign_id
+      << std::endl << "  campaign_id: " << ad.campaign_id
       << std::endl << "  winnerOverTime: " << GetWinnerOverTimeCategory()
       << std::endl << "  advertiser: " << notification_info->advertiser
       << std::endl << "  category: " << notification_info->category
@@ -1148,8 +1177,10 @@ bool AdsImpl::ShowAd(
   notifications_->Add(*notification_info);
   ads_client_->ShowNotification(std::move(notification_info));
 
-  client_->AppendCurrentTimeToCreativeSetHistory(ad_info.creative_set_id);
-  client_->AppendCurrentTimeToCampaignHistory(ad_info.campaign_id);
+  client_->AppendCurrentTimeToCreativeSetHistory(ad.creative_set_id);
+  client_->AppendCurrentTimeToCampaignHistory(ad.campaign_id);
+
+  client_->UpdateAdsUUIDSeen(ad.uuid, 1);
 
   return true;
 }
@@ -1622,7 +1653,6 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
   switch (type) {
     case NotificationResultInfoResultType::CLICKED: {
       writer.String("clicked");
-      client_->UpdateAdsUUIDSeen(info.uuid, 1);
 
       last_shown_notification_info_ = NotificationInfo(info);
 
@@ -1631,7 +1661,6 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
     case NotificationResultInfoResultType::DISMISSED: {
       writer.String("dismissed");
-      client_->UpdateAdsUUIDSeen(info.uuid, 1);
 
       break;
     }
