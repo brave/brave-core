@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/incognito_menu_view.cc b/chrome/browser/ui/views/profiles/incognito_menu_view.cc
-index f291bf51e41c597f4ce11dcde57f2f437d94350a..3f2b723c1d3aa42c6ecadb6758bf1b9ea7f7c27e 100644
+index f291bf51e41c597f4ce11dcde57f2f437d94350a..49898b8985306cc4fbdef52e5f1b5dd267c34d6e 100644
 --- a/chrome/browser/ui/views/profiles/incognito_menu_view.cc
 +++ b/chrome/browser/ui/views/profiles/incognito_menu_view.cc
 @@ -63,6 +63,7 @@ void IncognitoMenuView::BuildMenu() {
                    IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, incognito_window_count)
              : base::string16(),
          base::RepeatingClosure());
-+  static_cast<BraveIncognitoMenuView*>(this)->AddTorButton();
++    BRAVE_BUILDMENU_ADD_TOR_BUTTON
  
      AddMenuGroup();
      exit_button_ = CreateAndAddButton(
