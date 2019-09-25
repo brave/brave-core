@@ -103,7 +103,17 @@ bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
   return false;
 }
 
-void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {
+void OnBeforeURLRequestAdBlockTP(
+    std::shared_ptr<BraveRequestInfo> ctx) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  // If the following info isn't available, then proper content settings can't
+  // be looked up, so do nothing.
+  if (ctx->tab_origin.is_empty() || !ctx->tab_origin.has_host() ||
+      ctx->request_url.is_empty()) {
+    return;
+  }
+  DCHECK_NE(ctx->request_identifier, 0UL);
+
   bool did_match_exception = false;
   std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
@@ -123,37 +133,12 @@ void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {
                                        &ctx->cancel_request_explicitly)) {
     ctx->blocked_by = kAdBlocked;
   }
-}
 
-void OnShouldBlockAdResult(const ResponseCallback& next_callback,
-                           std::shared_ptr<BraveRequestInfo> ctx) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (ctx->blocked_by == kAdBlocked) {
-    brave_shields::DispatchBlockedEvent(
-        ctx->request_url,
+    brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
         ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
         brave_shields::kAds);
   }
-  next_callback.Run();
-}
-
-void OnBeforeURLRequestAdBlockTP(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  // If the following info isn't available, then proper content settings can't
-  // be looked up, so do nothing.
-  if (ctx->tab_origin.is_empty() || !ctx->tab_origin.has_host() ||
-      ctx->request_url.is_empty()) {
-    return;
-  }
-  DCHECK_NE(ctx->request_identifier, 0UL);
-
-  g_brave_browser_process->ad_block_service()->GetTaskRunner()
-      ->PostTaskAndReply(FROM_HERE,
-                         base::BindOnce(&ShouldBlockAdOnTaskRunner, ctx),
-                         base::BindOnce(&OnShouldBlockAdResult, next_callback,
-                                        ctx));
 }
 
 int OnBeforeURLRequest_AdBlockTPPreWork(
@@ -186,9 +171,9 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
     return net::OK;
   }
 
-  OnBeforeURLRequestAdBlockTP(next_callback, ctx);
+  OnBeforeURLRequestAdBlockTP(ctx);
 
-  return net::ERR_IO_PENDING;
+  return net::OK;
 }
 
 }  // namespace brave
