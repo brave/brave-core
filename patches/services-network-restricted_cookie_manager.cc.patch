@@ -1,0 +1,14 @@
+diff --git a/services/network/restricted_cookie_manager.cc b/services/network/restricted_cookie_manager.cc
+index b0f1b08bea2c9b118af8e617f9a741369ed67cc5..3a65145200499c9c903437d20b7ffb4ff185524c 100644
+--- a/services/network/restricted_cookie_manager.cc
++++ b/services/network/restricted_cookie_manager.cc
+@@ -418,7 +418,8 @@ void RestrictedCookieManager::SetCookieFromString(
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+ 
+   std::unique_ptr<net::CanonicalCookie> parsed_cookie =
+-      net::CanonicalCookie::Create(url, cookie, base::Time::Now(),
++      net::CanonicalCookie::Create(BRAVE_SETCOOKIEFROMSTRING
++                                   url, cookie, base::Time::Now(),
+                                    base::nullopt /* server_time */);
+   if (!parsed_cookie) {
+     std::move(callback).Run();
