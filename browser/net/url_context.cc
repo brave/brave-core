@@ -31,28 +31,28 @@ namespace brave {
 
 namespace {
 
-bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
-  DCHECK(resource_context);
-
-  const ProfileIOData* io_data =
-      ProfileIOData::FromResourceContext(resource_context);
-  if (!io_data) {
-    return false;
-  }
-
-  const extensions::InfoMap* infoMap = io_data->GetExtensionInfoMap();
-  if (!infoMap) {
-    return false;
-  }
-
-  return !infoMap->extensions().Contains(brave_webtorrent_extension_id) ||
-         infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
-#else
-  return true;
-#endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-}
+//bool IsWebTorrentDisabled(content::ResourceContext* resource_context) {
+//#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+//  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+//  DCHECK(resource_context);
+//
+//  const ProfileIOData* io_data =
+//      ProfileIOData::FromResourceContext(resource_context);
+//  if (!io_data) {
+//    return false;
+//  }
+//
+//  const extensions::InfoMap* infoMap = io_data->GetExtensionInfoMap();
+//  if (!infoMap) {
+//    return false;
+//  }
+//
+//  return !infoMap->extensions().Contains(brave_webtorrent_extension_id) ||
+//         infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
+//#else
+//  return true;
+//#endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+//}
 
 std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
@@ -113,13 +113,13 @@ void BraveRequestInfo::FillCTXFromRequest(
   ctx->referrer = GURL(request->referrer());
   ctx->referrer_policy = request->referrer_policy();
 
-  auto* request_info = content::ResourceRequestInfo::ForRequest(request);
-  if (request_info) {
-    ctx->resource_type = request_info->GetResourceType();
-    if (auto* context = request_info->GetContext()) {
-      ctx->is_webtorrent_disabled = IsWebTorrentDisabled(context);
-    }
-  }
+  //auto* request_info = content::ResourceRequestInfo::ForRequest(request);
+  //if (request_info) {
+  //  ctx->resource_type = request_info->GetResourceType();
+  //  if (auto* context = request_info->GetContext()) {
+  //    ctx->is_webtorrent_disabled = IsWebTorrentDisabled(context);
+  //  }
+  //}
 
   brave_shields::GetRenderFrameInfo(request, &ctx->render_frame_id,
                                     &ctx->render_process_id,

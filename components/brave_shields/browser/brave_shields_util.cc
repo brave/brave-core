@@ -32,7 +32,7 @@
 using content::BrowserThread;
 using content::Referrer;
 using content::ResourceContext;
-using content::ResourceRequestInfo;
+//using content::ResourceRequestInfo;
 using net::URLRequest;
 
 namespace brave_shields {
@@ -385,17 +385,17 @@ bool IsAllowContentSettingFromIO(const net::URLRequest* request,
                                  const std::string& resource_identifier) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
-  content::ResourceRequestInfo* resource_info =
-      content::ResourceRequestInfo::ForRequest(request);
-  if (!resource_info) {
+  //content::ResourceRequestInfo* resource_info =
+  //    content::ResourceRequestInfo::ForRequest(request);
+  //if (!resource_info) {
     return content_settings::GetDefaultFromResourceIdentifier(
         resource_identifier, primary_url, secondary_url) ==
             CONTENT_SETTING_ALLOW;
-  }
-  ProfileIOData* io_data =
-      ProfileIOData::FromResourceContext(resource_info->GetContext());
-  return IsAllowContentSettingWithIOData(io_data, primary_url, secondary_url,
-                                         setting_type, resource_identifier);
+  //}
+  //ProfileIOData* io_data =
+  //    ProfileIOData::FromResourceContext(resource_info->GetContext());
+  //return IsAllowContentSettingWithIOData(io_data, primary_url, secondary_url,
+  //                                       setting_type, resource_identifier);
 }
 
 bool IsAllowContentSettingsForProfile(Profile* profile,
@@ -446,19 +446,19 @@ void GetRenderFrameInfo(const URLRequest* request,
   *frame_tree_node_id = -1;
 
   // PlzNavigate requests have a frame_tree_node_id, but no render_process_id
-  auto* request_info = content::ResourceRequestInfo::ForRequest(request);
-  if (request_info) {
-    *frame_tree_node_id = request_info->GetFrameTreeNodeId();
-  }
-  if (!content::ResourceRequestInfo::GetRenderFrameForRequest(
-          request, render_process_id, render_frame_id)) {
+  //auto* request_info = content::ResourceRequestInfo::ForRequest(request);
+  //if (request_info) {
+  //  *frame_tree_node_id = request_info->GetFrameTreeNodeId();
+  //}
+  //if (!content::ResourceRequestInfo::GetRenderFrameForRequest(
+  //        request, render_process_id, render_frame_id)) {
     content::WebSocketHandshakeRequestInfo* websocket_info =
         content::WebSocketHandshakeRequestInfo::ForRequest(request);
     if (websocket_info) {
       *render_frame_id = websocket_info->GetRenderFrameId();
       *render_process_id = websocket_info->GetChildId();
     }
-  }
+  //}
 }
 
 void DispatchBlockedEventFromIO(const GURL& request_url,
