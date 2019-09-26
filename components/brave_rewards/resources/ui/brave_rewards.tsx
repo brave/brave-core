@@ -229,6 +229,10 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
+  function onlyAnonWallet (only: boolean) {
+    getActions().onOnlyAnonWallet(only)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -271,7 +275,8 @@ window.cr.define('brave_rewards', function () {
     reconcileComplete,
     externalWallet,
     processRewardsPageUrl,
-    disconnectWallet
+    disconnectWallet,
+    onlyAnonWallet
   }
 })
 
