@@ -11,24 +11,6 @@ class CoreDataTestCase: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        // HACK: For some reason switching to in-memory database at launch causes problems with tests,
-        // because some operations are still pending in the app like creating a Domain for localhost
-        // attempting to restore tabs and some shields work.
-        // The workaround is to detect if sqlite database is still used(which means it's first launch of the test suite)
-        // wait a few seconds for it to finish its initialization, then switch the database to in-memory and run
-        // all the tests.
-        //
-        // In the future we should make Data tests more independent of the app state.
-        
-        let storeType = DataController.viewContext.persistentStoreCoordinator!.persistentStores.first!.type
-        if storeType == NSSQLiteStoreType {
-            let waitTimeForAppInitialization: TimeInterval = 5
-            
-            let expectation = self.expectation(description: "App initialization wait")
-            DispatchQueue.main.asyncAfter(deadline: .now() + waitTimeForAppInitialization, execute: { expectation.fulfill() })
-            waitForExpectations(timeout: waitTimeForAppInitialization + 1, handler: nil)
-        }
-        
         NotificationCenter.default.addObserver(self, selector: #selector(contextSaved),
                                                name: NSNotification.Name.NSManagedObjectContextDidSave,
                                                object: nil)
@@ -52,21 +34,26 @@ class CoreDataTestCase: XCTestCase {
         contextSaveCompletion?()
     }
     
-    /// Waits for core data context save notification. Use this for single background context saves if you want to wait
-    /// for view context to update itself. Unfortunately there is no notification after changes are merged into context.
-    func backgroundSaveAndWaitForExpectation(name: String? = nil, code: () -> Void) {
-        var saveExpectation: XCTestExpectation? = expectation(description: name ?? UUID().uuidString)
+    /// Waits for core data context save notification. Use this for single background context saves
+    /// if you want to wait for view context to update itself. Unfortunately there is no notification
+    // after changes are merged into context.
+    /// Use `inverted` property if you want to verify that DB save did not happen.
+    /// This is useful for early return database checks.
+    func backgroundSaveAndWaitForExpectation(name: String? = nil, inverted: Bool = false, code: () -> Void) {
+        let saveExpectation: XCTestExpectation? = expectation(description: name ?? UUID().uuidString)
+        saveExpectation?.isInverted = inverted
         
         contextSaveCompletion = {
             saveExpectation?.fulfill()
-            // Removing reference to save expectation in case it's going to be called twice.
-            saveExpectation = nil
         }
         
         code()
         
+        // Long timeouts for inverted expectation increases test duration significantly, reducing it to 1 second.
+        let timeout: TimeInterval = inverted ? 1 : 5
+        
         if let saveExpectation = saveExpectation {
-            wait(for: [saveExpectation], timeout: 5)
+            wait(for: [saveExpectation], timeout: timeout)
         }
     }
 }

@@ -21,6 +21,37 @@ enum WriteContext {
 
 public class DataController: NSObject {
     private static let databaseName = "Brave.sqlite"
+    private static let modelName = "Model"
+    private let container: NSPersistentContainer
+    
+    // MARK: - Initialization
+    
+    /// Managed Object Model of the database stack.
+    /// Must be created only once, this is to prevent a bug when testing with in-memory store.
+    /// More info here https://stackoverflow.com/a/51857486.
+    /// Note: this might be not needed in Swift 5.1 or newer.
+    private static let model: NSManagedObjectModel = {
+        guard let modelURL = Bundle(for: DataController.self).url(forResource: modelName, withExtension: "momd") else {
+            fatalError("Error loading model from bundle")
+        }
+        guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {
+            fatalError("Error initializing managed object model from: \(modelURL)")
+        }
+        
+        return mom
+    }()
+    
+    // Internal scope so unit tests can recreate the DB stack as needed.
+    override init() {
+        container = NSPersistentContainer(name: DataController.modelName,
+                                          managedObjectModel: DataController.model)
+        
+        super.init()
+        storeSetup()
+        
+        // We need this so the `viewContext` gets updated on changes from background tasks.
+        container.viewContext.automaticallyMergesChangesFromParent = true
+    }
     
     // MARK: - Public interface
     
@@ -182,10 +213,6 @@ public class DataController: NSObject {
         return createContainer(store: oldDocumentStoreURL)
     }()
     
-    private lazy var container: NSPersistentContainer = {
-        return createContainer(store: storeURL)
-    }()
-    
     private lazy var operationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -239,6 +266,17 @@ public class DataController: NSObject {
         }
         
         return docURL.appendingPathComponent(DataController.databaseName)
+    }
+    
+    private func storeSetup() {
+        self.addPersistentStore(for: container, store: storeURL)
+        
+        // Dev note: This completion handler might be misleading: the persistent store is loaded synchronously by default.
+        container.loadPersistentStores(completionHandler: { _, error in
+            if let error = error {
+                fatalError("Load persistent store error: \(error)")
+            }
+        })
     }
     
     private static func newBackgroundContext() -> NSManagedObjectContext {

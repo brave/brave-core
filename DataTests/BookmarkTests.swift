@@ -10,8 +10,10 @@ import Shared
 class BookmarkTests: CoreDataTestCase {
     let fetchRequest = NSFetchRequest<Bookmark>(entityName: "Bookmark")
     
-    private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
-        return NSEntityDescription.entity(forEntityName: String(describing: Bookmark.self), in: context)!
+    override func setUp() {
+        super.setUp()
+        // Initialize sync so it will not fire on wrong thread.
+        _ = Sync.shared
     }
     
     // MARK: - Getters/properties
@@ -261,8 +263,9 @@ class BookmarkTests: CoreDataTestCase {
         let object = createAndWait(url: URL(string: url), title: "title", customTitle: customTitle)
         XCTAssertEqual(Bookmark.getAllBookmarks().count, 1)
         
-        object.update(customTitle: customTitle, url: object.url)
-        sleep(UInt32(1))
+        backgroundSaveAndWaitForExpectation(inverted: true) {
+            object.update(customTitle: customTitle, url: object.url)
+        }
         
         // Make sure not any new record was added to DB
         XCTAssertEqual(Bookmark.getAllBookmarks().count, 1)
@@ -453,7 +456,7 @@ class BookmarkTests: CoreDataTestCase {
         let syncBookmark = SyncBookmark()
         syncBookmark.site = site
         
-        var object = createAndWait(url: url, title: title)
+        let object = createAndWait(url: url, title: title)
         
         let oldCreated = object.created
         let oldLastVisited = object.lastVisited
@@ -462,10 +465,10 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNotEqual(object.url, newUrl)
         
         backgroundSaveAndWaitForExpectation {
-            object.updateResolvedRecord(syncBookmark)
+            object.updateResolvedRecord(syncBookmark, context: .new(inMemory: false))
         }
         
-        object = try! DataController.viewContext.fetch(fetchRequest).first!
+        DataController.viewContext.refreshAllObjects()
         
         XCTAssertEqual(object.title, newTitle)
         XCTAssertEqual(object.url, newUrl)
@@ -569,6 +572,7 @@ class BookmarkTests: CoreDataTestCase {
             Bookmark.reorderBookmarks(frc: frc, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
         }
         
+        DataController.viewContext.refresh(sourceObject, mergeChanges: false)
         
         // Test order has changed, won't work when swapping bookmarks with order = 0
         if !skipOrderChangeTests {

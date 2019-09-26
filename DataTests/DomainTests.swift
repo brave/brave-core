@@ -87,6 +87,7 @@ class DomainTests: CoreDataTestCase {
             Domain.setBraveShield(forUrl: url2HTTPS, shield: .AdblockAndTp, isOn: true, isPrivateBrowsing: false)
         }
         
+        domain.managedObjectContext?.refreshAllObjects()
         XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing))
         XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp))
     }

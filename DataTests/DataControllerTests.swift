@@ -18,10 +18,6 @@ class DataControllerTests: CoreDataTestCase {
         let viewContext = DataController.viewContext
         XCTAssertEqual(try! viewContext.count(for: fetchRequest), 0)
         
-        DataController.perform { context in
-            XCTAssertEqual(try! context.count(for: self.fetchRequest), 0)
-        }
-        
         // Checking rest of entities
         let bookmarkFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Bookmark.self))
         XCTAssertEqual(try! viewContext.count(for: bookmarkFR), 0)
