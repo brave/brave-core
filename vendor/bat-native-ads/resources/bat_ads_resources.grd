@@ -8,9 +8,9 @@
   </outputs>
   <release seq="1">
     <includes>
-      <include name="IDR_ADS_CATALOG_SCHEMA" file="catalog-schema.json" type="BINDATA" />
-      <include name="IDR_ADS_BUNDLE_SCHEMA" file="bundle-schema.json" type="BINDATA" />
-      <include name="IDR_ADS_SAMPLE_BUNDLE" file="sample_bundle.json" type="BINDATA" />
+      <include name="IDR_ADS_CATALOG_SCHEMA" file="catalog-schema.json" type="BINDATA" compress="gzip" />
+      <include name="IDR_ADS_BUNDLE_SCHEMA" file="bundle-schema.json" type="BINDATA" compress="gzip" />
+      <include name="IDR_ADS_SAMPLE_BUNDLE" file="sample_bundle.json" type="BINDATA" compress="gzip" />
       <include name="IDR_ADS_USER_MODEL_EN" file="user_models/languages/en/user_model.json" type="BINDATA" compress="gzip" />
       <include name="IDR_ADS_USER_MODEL_DE" file="user_models/languages/de/user_model.json" type="BINDATA" compress="gzip" />
       <include name="IDR_ADS_USER_MODEL_FR" file="user_models/languages/fr/user_model.json" type="BINDATA" compress="gzip" />
