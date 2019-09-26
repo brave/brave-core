@@ -68,10 +68,8 @@ class HistoryTests: CoreDataTestCase {
         
         _ = createAndWait(title: title, url: url)
         
-        DataController.perform { context in
-            XCTAssertNil(History.getExisting(wrongUrl, context: context))
-            XCTAssertNotNil(History.getExisting(url, context: context))
-        }
+        XCTAssertNil(History.getExisting(wrongUrl, context: DataController.viewContext))
+        XCTAssertNotNil(History.getExisting(url, context: DataController.viewContext))
     }
     
     func testRemove() {

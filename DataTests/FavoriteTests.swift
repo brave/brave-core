@@ -9,6 +9,12 @@ import XCTest
 
 class FavoriteTests: CoreDataTestCase {
     
+    override func setUp() {
+        super.setUp()
+        // Initialize sync so it will not fire on wrong thread.
+        _ = Sync.shared
+    }
+    
     private let fetchRequest: NSFetchRequest<Bookmark> = {
         let fetchRequest = NSFetchRequest<Bookmark>(entityName: String(describing: Bookmark.self))
         // We always want favorites folder to be on top, in the first section.
@@ -54,6 +60,8 @@ class FavoriteTests: CoreDataTestCase {
         backgroundSaveAndWaitForExpectation {
             object.update(customTitle: newTitle, url: newUrl)
         }
+        
+        DataController.viewContext.refreshAllObjects()
         // Make sure only one record was added to DB
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
@@ -74,6 +82,8 @@ class FavoriteTests: CoreDataTestCase {
         backgroundSaveAndWaitForExpectation {
             object.update(customTitle: newTitle, url: nil)
         }
+        
+        DataController.viewContext.refreshAllObjects()
         // Make sure only one record was added to DB
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
@@ -122,6 +132,7 @@ class FavoriteTests: CoreDataTestCase {
         
         // Upon re-order, each now has a given order
         reorder(0, toIndex: 2)
+        fetchController.managedObjectContext.refreshAllObjects()
         // Check to see if an order (2) has been given to fetchedObjects index 0
         XCTAssertEqual(fetchController.fetchedObjects![0].order, 2)
         
@@ -140,6 +151,7 @@ class FavoriteTests: CoreDataTestCase {
         let second = fetchController.fetchedObjects![1]
         
         reorder(0, toIndex: 2)
+        fetchController.managedObjectContext.refreshAllObjects()
         // Check to see if an order (2) has been given to fetchedObjects index 0
         XCTAssertEqual(first.order, 2)
         // The second favorite should have been pushed backwards to 0 since we moved the original 0 to 2
@@ -186,6 +198,7 @@ class FavoriteTests: CoreDataTestCase {
         let endIndex = fetchController.fetchedObjects!.endIndex - 1
         
         reorder(0, toIndex: endIndex)
+        fetchController.managedObjectContext.refreshAllObjects()
         XCTAssertEqual(first.order, 4)
         
         // Order is now taken into account by refetching

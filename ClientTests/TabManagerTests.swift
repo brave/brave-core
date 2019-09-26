@@ -3,12 +3,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 @testable import Client
+@testable import Data
 import Shared
 import Storage
 import UIKit
 import WebKit
 import Deferred
-import Data
 import XCTest
 
 open class MockTabManagerStateDelegate: TabManagerStateDelegate {
