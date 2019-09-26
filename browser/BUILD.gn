@@ -94,7 +94,6 @@ source_set("browser_process") {
     ":version_info",
     "autoplay",
     "download",
-    "infobars",
     "net",
     "permissions",
     "profiles",
@@ -163,6 +162,7 @@ source_set("browser_process") {
 
     deps += [
       "importer",
+      "infobars",
       "//brave/app:brave_generated_resources_grit",
     ]
   } else {

@@ -1145,13 +1145,13 @@ void PublisherInfoDatabase::RecordP3AStats(bool auto_contributions_on) {
   while (sql.Step()) {
     const int count = sql.ColumnInt(1);
     switch (sql.ColumnInt(0)) {
-    case ledger::AUTO_CONTRIBUTE:
+    case static_cast<int>(ledger::RewardsCategory::AUTO_CONTRIBUTE):
       auto_contributions = count;
       break;
-    case ledger::ONE_TIME_TIP:
+    case static_cast<int>(ledger::RewardsCategory::ONE_TIME_TIP):
       tips += count;
       break;
-    case ledger::RECURRING_TIP:
+    case static_cast<int>(ledger::RewardsCategory::RECURRING_TIP):
       queued_recurring = count;
       break;
     default:

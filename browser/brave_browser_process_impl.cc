@@ -82,10 +82,13 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
                        stats_updater->Start();
                      },
                      base::Unretained(brave_stats_updater())));
+  // Disabled on mobile platforms, see for instance issues/6176
+#if !defined(OS_ANDROID)
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   brave_p3a_service();
   brave::SetupHistogramsBraveization();
+#endif  // !defined(OS_ANDROID)
 }
 
 brave_component_updater::BraveComponent::Delegate*

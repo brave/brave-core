@@ -54,8 +54,11 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   // So, call it after browser threads are created.
   g_brave_browser_process->brave_widevine_bundle_manager()->StartupCheck();
 #endif
+  // Disabled on mobile platforms, see for instance issues/6176
+#if !defined(OS_ANDROID)
   // TODO(iefremov): Maybe find a better place for this initialization.
   g_brave_browser_process->brave_p3a_service()->Init();
+#endif  // !defined(OS_ANDROID)
 
   RecordInitialP3AValues();
 
