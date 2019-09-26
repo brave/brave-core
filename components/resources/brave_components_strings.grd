@@ -208,7 +208,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Ads</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave Verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Estimated pending rewards</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next payment date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED" desc="">Ad notifications received this month</message>
@@ -240,7 +240,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME" desc="">Minimum page time before logging a visit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS" desc="">Minimum visits for publisher relevancy</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOWED" desc="">What should be allowed?</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_NON_VERIFIED" desc="">Allow contribution to non-verified sites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SHOW_NON_VERIFIED" desc="">Only show verified sites in Auto-Contribute list</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_VIDEOS" desc="">Allow contribution to videos</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1" desc="">1 visit</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5" desc="">5 visits</message>
@@ -248,6 +248,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_5" desc="">5 seconds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_8" desc="">8 seconds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60" desc="">1 minute</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_UP_TO" desc="">Up to</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Enable content-level tips on these sites</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_YT" desc="">YouTube</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_REDT" desc="">Reddit</message>
@@ -469,7 +470,6 @@
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE" desc="">Attention</message>
-      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_TEXT1" desc="">You’re currently supporting</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT2" desc="">without your consent.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT3" desc="">Today, Brave welcomes you to the new internet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT4" desc="">One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</message>
@@ -556,12 +556,12 @@
       <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_EMPTY" desc="Text for empty pending table">No pending contributions…</message>
       <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_REMOVE_ALL" desc="Text for remove all button">Remove All</message>
 
-      <message name="IDS_BRAVE_UI_EXCLUDED_SITES_TEXT" desc="">Excluded Sites</message>
+      <message name="IDS_BRAVE_UI_EXCLUDED_SITES_TEXT" desc="">Sites Excluded</message>
       <message name="IDS_BRAVE_UI_RESTORE_SITE" desc="">Restore this site</message>
       <message name="IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_1" desc="">You've excluded</message>
       <message name="IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_2" desc="">sites from Auto-Contribute.</message>
       <message name="IDS_BRAVE_UI_SHOW_ALL" desc="">Show All</message>
-      <message name="IDS_BRAVE_UI_SUPPORTED_SITES" desc="">Supported Sites</message>
+      <message name="IDS_BRAVE_UI_SUPPORTED_SITES" desc="">Sites viewed</message>
 
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TITLE_ADS" desc="Title on final grant screen for Ads">Brave Ads Rewards!</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_ADS" desc="Text on final grant screen for UGP">Your rewards grant from Brave Ads is on its way.</message>

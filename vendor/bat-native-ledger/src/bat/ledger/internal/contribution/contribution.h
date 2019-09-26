@@ -188,12 +188,6 @@ class Contribution {
       ledger::DoDirectTipCallback callback);
 
  private:
-  // AUTO CONTRIBUTE: from the list gets only verified publishers and
-  // save unverified to the db
-  ledger::PublisherInfoList GetVerifiedListAuto(
-      const ledger::PublisherInfoList& all,
-      double* budget);
-
   // RECURRING TIPS: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListRecurring(
@@ -222,24 +216,13 @@ class Contribution {
 
   void DoRetry(const std::string& viewing_id);
 
-  void GetVerifiedAutoAmount(
+  void OnHasSufficientBalance(
       const ledger::PublisherInfoList& publisher_list,
-      uint32_t record,
-      double balance,
+      const uint32_t record,
+      const double balance,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
-  void GetVerifiedRecurringAmount(
-      const ledger::PublisherInfoList& publisher_list,
-      uint32_t record,
-      double balance,
-      double budget,
-      ledger::HasSufficientBalanceToReconcileCallback callback);
-
-  double GetAmountFromVerifiedAuto(
-      const ledger::PublisherInfoList& publisher_list,
-      double ac_amount);
-
-  static double GetAmountFromVerifiedRecurring(
+  static double GetTotalFromRecurringVerified(
       const ledger::PublisherInfoList& publisher_list);
 
   void OnSufficientBalanceWallet(
@@ -264,7 +247,7 @@ class Contribution {
       const ledger::REWARDS_CATEGORY category,
       double* fee,
       double budget,
-      double balance,
+      const double balance,
       const braveledger_bat_helper::Directions& directions);
 
   bool IsListEmpty(
@@ -313,7 +296,7 @@ class Contribution {
   // For testing purposes
   friend class ContributionTest;
   FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetAmountFromVerifiedAuto);
-  FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetAmountFromVerifiedRecurring);
+  FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetTotalFromRecurringVerified);
 };
 
 }  // namespace braveledger_contribution
