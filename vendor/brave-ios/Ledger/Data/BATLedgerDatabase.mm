@@ -658,10 +658,12 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   
   const auto banner = [[BATPublisherBanner alloc] init];
   banner.publisherKey = publisherID;
-  banner.title = serverInfo.banner.title;
-  banner.desc = serverInfo.banner.desc;
-  banner.background = serverInfo.banner.background;
-  banner.logo = serverInfo.banner.logo;
+  if (serverInfo.banner) {
+    banner.title = serverInfo.banner.title;
+    banner.desc = serverInfo.banner.desc;
+    banner.background = serverInfo.banner.background;
+    banner.logo = serverInfo.banner.logo;
+  }
   banner.links = ^NSDictionary *{
     NSMutableDictionary *links = [[NSMutableDictionary alloc] init];
     for (ServerPublisherLink *link in serverInfo.links) {
