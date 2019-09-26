@@ -15,7 +15,6 @@
 #include "chrome/browser/permissions/permission_request_id.h"
 #include "chrome/browser/permissions/permission_request_manager.h"
 #include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -24,6 +23,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/mock_render_process_host.h"
+#include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -56,28 +56,29 @@ class AutoplayPermissionContextTest : public AutoplayPermissionContext {
 
 }  // anonymous namespace
 
-class AutoplayPermissionContextTests : public ChromeRenderViewHostTestHarness {
+class AutoplayPermissionContextTests
+    : public content::RenderViewHostTestHarness {
  protected:
   AutoplayPermissionContextTests() = default;
 
+  TestingProfile* profile() {
+    return static_cast<TestingProfile*>(browser_context());
+  }
+
  private:
-  // ChromeRenderViewHostTestHarness:
+  // content::RenderViewHostTestHarness:
   void SetUp() override {
-    ChromeRenderViewHostTestHarness::SetUp();
+    content::RenderViewHostTestHarness::SetUp();
     PermissionRequestManager::CreateForWebContents(web_contents());
   }
 
-  void TearDown() override {
-    ChromeRenderViewHostTestHarness::TearDown();
-  }
-
-  content::BrowserContext* CreateBrowserContext() override {
+  std::unique_ptr<content::BrowserContext> CreateBrowserContext() override {
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
-    return builder.Build().release();
+    return builder.Build();
   }
 
   DISALLOW_COPY_AND_ASSIGN(AutoplayPermissionContextTests);
