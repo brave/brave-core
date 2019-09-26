@@ -97,6 +97,13 @@ const getRedditMetaData = (redditPost: Element): RewardsTip.MediaMetaData | null
     userName = anchor.textContent.startsWith('u/') ? anchor.textContent.split('/')[1] : anchor.textContent
   }
 
+  if (userName.length == 0) {
+    const spanUsername = redditPost.getElementsByClassName("lizQBHVukyun2S2babj-l _2tbHP6ZydRpjI44J3syuqC")[0]
+    if (spanUsername && spanUsername.textContent) {
+      userName = spanUsername.textContent.startsWith('u/') ? spanUsername.textContent.split('/')[1] : spanUsername.textContent
+    }
+  }
+
   let postRelDate = ''
   let postDateElement = redditPost.querySelector('a[data-click-id="timestamp"]')
   if (postDateElement) {
