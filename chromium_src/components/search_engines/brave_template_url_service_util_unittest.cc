@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
@@ -45,15 +46,47 @@ class BraveTemplateURLServiceUtilTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 
-TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
+void TestDefaultOrder(TemplateURL::OwnedTemplateURLVector& template_urls,
+                      std::vector<std::string> keywords) {
+  EXPECT_EQ(template_urls.size(), keywords.size());
+
+  for (int i = 0; i < (int)template_urls.size(); i++) {
+    EXPECT_EQ(template_urls[i]->keyword(), base::ASCIIToUTF16(keywords[i]));
+  }
+}
+
+std::vector<TemplateURLData> GetSampleTemplateData() {
   std::vector<TemplateURLData> local_turls;
+
   // Create a sets of TURLs in order different from prepopulated TURLs.
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(511, ":sp", 1));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE, ":sp", 1));
   local_turls.push_back(*CreatePrepopulateTemplateURLData(15, ":ya", 2));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(3, ":b", 3));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(507, ":q", 4));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(501, ":d", 5));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(1, ":g", 6));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING, ":b", 3));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT, ":q", 4));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO, ":d", 5));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE, ":g", 6));
+
+  return local_turls;
+}
+
+WDKeywordsResult GetKeywordResult(
+    sync_preferences::TestingPrefServiceSyncable* prefs,
+    std::vector<TemplateURLData> local_turls) {
+  WDKeywordsResult kwResult;
+  kwResult.builtin_keyword_version =
+      TemplateURLPrepopulateData::GetDataVersion(prefs);
+  kwResult.default_search_provider_id = 2;
+  kwResult.keywords = local_turls;
+  return kwResult;
+}
+
+TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
+  std::vector<TemplateURLData> local_turls = GetSampleTemplateData();
   std::unique_ptr<TemplateURL> default_turl =
       std::make_unique<TemplateURL>(local_turls.back());
 
@@ -62,12 +95,8 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   local_turls.push_back(*CreatePrepopulateTemplateURLData(1004, "random2", 8));
 
   // Prepare call arguments
-  WDKeywordsResult kwResult;
-  kwResult.builtin_keyword_version =
-      TemplateURLPrepopulateData::GetDataVersion(&prefs_);
-  kwResult.default_search_provider_id = 2;
-  kwResult.keywords = local_turls;
-  WDResult<WDKeywordsResult> result(KEYWORDS_RESULT, kwResult);
+  WDResult<WDKeywordsResult> result(KEYWORDS_RESULT,
+                                    GetKeywordResult(&prefs_, local_turls));
 
   TemplateURL::OwnedTemplateURLVector template_urls;
   int new_resource_keyword_version = 0;
@@ -76,38 +105,35 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
                                        default_turl.get(), SearchTermsData(),
                                        &new_resource_keyword_version, nullptr);
 
-  // Verify count.
+  // Verify count and order.
   EXPECT_EQ(local_turls.size(), template_urls.size());
-  // Verify order.
-  EXPECT_EQ(template_urls[0]->keyword(), base::ASCIIToUTF16(":g"));
-  EXPECT_EQ(template_urls[1]->keyword(), base::ASCIIToUTF16(":d"));
-  EXPECT_EQ(template_urls[2]->keyword(), base::ASCIIToUTF16(":q"));
-  EXPECT_EQ(template_urls[3]->keyword(), base::ASCIIToUTF16(":b"));
-  EXPECT_EQ(template_urls[4]->keyword(), base::ASCIIToUTF16(":sp"));
-  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":ya"));
-  EXPECT_EQ(template_urls[6]->keyword(), base::ASCIIToUTF16("random1"));
-  EXPECT_EQ(template_urls[7]->keyword(), base::ASCIIToUTF16("random2"));
+  TestDefaultOrder(template_urls, {":g", ":d", ":q", ":b", ":sp", ":ya",
+                                   "random1", "random2"});
+}
 
-  // Reset
-  template_urls.clear();
-  new_resource_keyword_version = 0;
+TEST_F(BraveTemplateURLServiceUtilTest,
+       GetSearchProvidersUsingKeywordResultGermany) {
+  std::vector<TemplateURLData> local_turls = GetSampleTemplateData();
+  std::unique_ptr<TemplateURL> default_turl =
+      std::make_unique<TemplateURL>(local_turls.back());
+
+  // Germany specific query param
+  local_turls[4].prepopulate_id =
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE;
+
+  // Prepare call arguments
+  WDResult<WDKeywordsResult> result(KEYWORDS_RESULT,
+                                    GetKeywordResult(&prefs_, local_turls));
+  TemplateURL::OwnedTemplateURLVector template_urls;
+  int new_resource_keyword_version = 0;
 
   // Check Germany.
   prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
-
   GetSearchProvidersUsingKeywordResult(result, nullptr, &prefs_, &template_urls,
                                        default_turl.get(), SearchTermsData(),
                                        &new_resource_keyword_version, nullptr);
 
-  // Verify count.
+  // Verify count and order.
   EXPECT_EQ(local_turls.size(), template_urls.size());
-  // Verify order.
-  EXPECT_EQ(template_urls[0]->keyword(), base::ASCIIToUTF16(":q"));
-  EXPECT_EQ(template_urls[1]->keyword(), base::ASCIIToUTF16(":g"));
-  EXPECT_EQ(template_urls[2]->keyword(), base::ASCIIToUTF16(":d"));
-  EXPECT_EQ(template_urls[3]->keyword(), base::ASCIIToUTF16(":b"));
-  EXPECT_EQ(template_urls[4]->keyword(), base::ASCIIToUTF16(":sp"));
-  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":ya"));
-  EXPECT_EQ(template_urls[6]->keyword(), base::ASCIIToUTF16("random1"));
-  EXPECT_EQ(template_urls[7]->keyword(), base::ASCIIToUTF16("random2"));
+  TestDefaultOrder(template_urls, {":d", ":q", ":g", ":b", ":sp", ":ya"});
 }

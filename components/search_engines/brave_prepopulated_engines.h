@@ -49,6 +49,8 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_WIKIPEDIA,        // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_WOLFRAMALPHA,     // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_YOUTUBE,          // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
+  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
 };
 
 extern const PrepopulatedEngine duckduckgo;
