@@ -259,7 +259,9 @@ void Publisher::SaveVisitInternal(
         publisher_info->favicon_url = fav_icon;
     }
   } else {
-    publisher_info->favicon_url = ledger::kClearFavicon;
+    if (publisher_info->favicon_url.empty()) {
+      publisher_info->favicon_url = ledger::kClearFavicon;
+    }
   }
 
   publisher_info->name = visit_data.name;
