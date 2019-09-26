@@ -58,6 +58,12 @@ extension Theme {
         
         InsetButton.appearance(whenContainedInInstancesOf: [SearchSuggestionPromptView.self]).appearanceTextColor = colors.tints.home
         
+        // Downloads
+        UIView.appearance(whenContainedInInstancesOf: [DownloadsPanel.self]).appearanceBackgroundColor = colors.home
+        
+        UIImageView.appearance(whenContainedInInstancesOf: [DownloadsPanel.self]).tintColor = colors.tints.home
+        UILabel.appearance(whenContainedInInstancesOf: [DownloadsPanel.self]).appearanceTextColor = colors.tints.home
+        
         if #available(iOS 13.0, *) {
             // Overrides all views inside of itself
             // According to docs, UIWindow override should be enough, but some labels on iOS 13 are still messed up without UIView override as well

@@ -250,8 +250,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
         let overlayView = UIView()
         overlayView.backgroundColor = UIColor.Photon.White100
         
-        let logoImageView = UIImageView(image: #imageLiteral(resourceName: "emptyDownloads"))
-        logoImageView.tintColor = UIColor.Photon.Grey60
+        let logoImageView = UIImageView(image: #imageLiteral(resourceName: "emptyDownloads").template)
         overlayView.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
             make.centerX.equalTo(overlayView)
