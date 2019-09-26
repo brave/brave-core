@@ -31,7 +31,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/pref_names.h"
 #include "content/public/browser/network_service_instance.h"
-#include "content/public/test/test_browser_thread_bundle.h"
+#include "content/public/test/browser_task_environment.h"
 #include "net/base/network_interfaces.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
