@@ -67,7 +67,7 @@ class ButtonToast: Toast {
 
         let label = UILabel()
         label.textAlignment = textAlignment
-        label.textColor = UIColor.Photon.White100
+        label.appearanceTextColor = UIColor.Photon.White100
         label.font = ButtonToastUX.ToastLabelFont
         label.text = labelText
         label.lineBreakMode = .byWordWrapping
@@ -82,7 +82,7 @@ class ButtonToast: Toast {
 
             descriptionLabel = UILabel()
             descriptionLabel?.textAlignment = textAlignment
-            descriptionLabel?.textColor = UIColor.Photon.White100
+            descriptionLabel?.appearanceTextColor = UIColor.Photon.White100
             descriptionLabel?.font = ButtonToastUX.ToastDescriptionFont
             descriptionLabel?.text = descriptionText
             descriptionLabel?.lineBreakMode = .byTruncatingTail
