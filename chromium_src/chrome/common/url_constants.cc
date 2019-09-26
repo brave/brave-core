@@ -5,6 +5,8 @@
 
 #include "chrome/common/url_constants.h"
 
+#include "build/branding_buildflags.h"
+
 namespace chrome {
 
 const char kAccessibilityLabelsLearnMoreURL[] =
@@ -38,6 +40,9 @@ const char kChooserUsbOverviewURL[] =
 
 const char kChromeBetaForumURL[] =
     "https://community.brave.com/c/beta-builds";
+// TODO: replace w/link after marketing provides it.
+const char kChromeReleaseNotesURL[] =
+    "https://support.brave.com/";
 
 const char kChromeHelpViaKeyboardURL[] =
 #if defined(OS_CHROMEOS)
@@ -62,14 +67,14 @@ const char kChromeHelpViaMenuURL[] =
 #endif  // defined(OS_CHROMEOS)
 
 const char kChromeHelpViaWebUIURL[] =
+    "https://support.brave.com/";
 #if defined(OS_CHROMEOS)
-#if defined(GOOGLE_CHROME_BUILD)
+const char kChromeOsHelpViaWebUIURL[] =
+#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
     "https://support.brave.com/";
 #else
     "https://support.brave.com/";
-#endif  // defined(GOOGLE_CHROME_BUILD)
-#else
-    "https://support.brave.com/";
+#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 #endif  // defined(OS_CHROMEOS)
 
 const char kChromeNativeScheme[] = "chrome-native";
@@ -162,12 +167,13 @@ const char kExtensionInvalidRequestURL[] = "chrome-extension://invalid/";
 
 const char kGoogleAccountActivityControlsURL[] =
     "https://support.brave.com/";
-
 const char kGoogleAccountURL[] = "https://support.brave.com/";
 
-const char kGoogleAccountChooserURL[] = "https://support.brave.com";
+const char kGoogleAccountChooserURL[] = "https://support.brave.com/";
 
-const char kGooglePasswordManagerURL[] = "https://support.brave.com/";
+const char kGooglePasswordManagerURL[] = "https://support.brave.com";
+
+const char kPasswordCheckupURL[] = "https://support.brave.com/";
 
 const char kLearnMoreReportingURL[] =
     "https://support.brave.com/hc/en-us/articles/"
@@ -283,6 +289,8 @@ const char kEnhancedPlaybackNotificationLearnMoreURL[] =
 #endif
 
 #if defined(OS_CHROMEOS)
+const char kAccountManagerLearnMoreURL[] =
+    "https://community.brave.com";
 const char kAndroidAppsLearnMoreURL[] =
     "https://community.brave.com";
 
@@ -303,10 +311,17 @@ const char kCrosScheme[] = "cros";
 const char kCupsPrintLearnMoreURL[] =
     "https://community.brave.com";
 
+const char kCupsPrintPPDLearnMoreURL[] =
+    "https://community.brave.com";
+
 const char kEasyUnlockLearnMoreUrl[] =
     "https://community.brave.com";
 
 const char kEULAPathFormat[] = "/usr/share/chromeos-assets/eula/%s/eula.html";
+
+const char kArcTermsPathFormat[] = "arc_tos/%s/terms.html";
+
+const char kArcPrivacyPolicyPathFormat[] = "arc_tos/%s/privacy_policy.pdf";
 
 const char kEolNotificationURL[] = "https://community.brave.com";
 
@@ -314,6 +329,9 @@ const char kGoogleNameserversLearnMoreURL[] =
     "https://community.brave.com";
 
 const char kInstantTetheringLearnMoreURL[] =
+    "https://community.brave.com";
+
+const char kKerberosAccountsLearnMoreURL[] =
     "https://community.brave.com";
 
 const char kMultiDeviceLearnMoreURL[] =
@@ -331,6 +349,9 @@ const char kLearnMoreEnterpriseURL[] =
 const char kLinuxAppsLearnMoreURL[] =
     "https://community.brave.com";
 
+const char kLinuxExportImportHelpURL[] =
+    "https://community.brave.com";
+
 const char kLinuxCreditsPath[] =
     "/opt/google/chrome/resources/linux_credits.html";
 
@@ -339,6 +360,10 @@ const char kNaturalScrollHelpURL[] =
 
 const char kOemEulaURLPath[] = "oem";
 
+const char kArcTermsURLPath[] = "arc/terms";
+
+const char kArcPrivacyPolicyURLPath[] = "arc/privacy_policy";
+
 const char kOnlineEulaURLPath[] =
     "https://community.brave.com";
 
@@ -346,6 +371,9 @@ const char kTPMFirmwareUpdateLearnMoreURL[] =
     "https://community.brave.com";
 
 const char kTimeZoneSettingsLearnMoreURL[] =
+    "https://community.brave.com";
+
+const char kSmbSharesLearnMoreURL[] =
     "https://community.brave.com";
 #endif  // defined(OS_CHROMEOS)
 
