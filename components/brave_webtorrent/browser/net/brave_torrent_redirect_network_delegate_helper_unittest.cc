@@ -18,7 +18,7 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "content/public/common/resource_type.h"
 #include "content/public/test/mock_resource_context.h"
-#include "content/public/test/test_browser_thread_bundle.h"
+#include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
