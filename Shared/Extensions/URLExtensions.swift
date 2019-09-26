@@ -101,7 +101,7 @@ extension URL {
 }
 
 // The list of permanent URI schemes has been taken from http://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml 
-private let permanentURISchemes = ["aaa", "aaas", "about", "acap", "acct", "cap", "cid", "coap", "coaps", "crid", "data", "dav", "dict", "dns", "example", "file", "ftp", "geo", "go", "gopher", "h323", "http", "https", "iax", "icap", "im", "imap", "info", "ipp", "ipps", "iris", "iris.beep", "iris.lwz", "iris.xpc", "iris.xpcs", "jabber", "ldap", "mailto", "mid", "msrp", "msrps", "mtqp", "mupdate", "news", "nfs", "ni", "nih", "nntp", "opaquelocktoken", "pkcs11", "pop", "pres", "reload", "rtsp", "rtsps", "rtspu", "service", "session", "shttp", "sieve", "sip", "sips", "sms", "snmp", "soap.beep", "soap.beeps", "stun", "stuns", "tag", "tel", "telnet", "tftp", "thismessage", "tip", "tn3270", "turn", "turns", "tv", "urn", "vemmi", "vnc", "ws", "wss", "xcon", "xcon-userid", "xmlrpc.beep", "xmlrpc.beeps", "xmpp", "z39.50r", "z39.50s"]
+private let permanentURISchemes = ["aaa", "aaas", "about", "acap", "acct", "cap", "cid", "coap", "coaps", "crid", "data", "dav", "dict", "dns", "example", "file", "ftp", "geo", "go", "gopher", "h323", "http", "https", "iax", "icap", "im", "imap", "info", "ipp", "ipps", "iris", "iris.beep", "iris.lwz", "iris.xpc", "iris.xpcs", "jabber", "javascript", "ldap", "mailto", "mid", "msrp", "msrps", "mtqp", "mupdate", "news", "nfs", "ni", "nih", "nntp", "opaquelocktoken", "pkcs11", "pop", "pres", "reload", "rtsp", "rtsps", "rtspu", "service", "session", "shttp", "sieve", "sip", "sips", "sms", "snmp", "soap.beep", "soap.beeps", "stun", "stuns", "tag", "tel", "telnet", "tftp", "thismessage", "tip", "tn3270", "turn", "turns", "tv", "urn", "vemmi", "vnc", "ws", "wss", "xcon", "xcon-userid", "xmlrpc.beep", "xmlrpc.beeps", "xmpp", "z39.50r", "z39.50s"]
 
 private let ignoredSchemes = ["data"]
 private let supportedSchemes = permanentURISchemes.filter { !ignoredSchemes.contains($0) }
@@ -418,6 +418,89 @@ extension URL {
         return nil
     }
 
+}
+
+// Helpers to deal with Peek and Pop
+extension URL {
+    public var eligibleForPeekAndPop: Bool {
+        let ignoredSchemes = ["about"]
+        
+        guard let scheme = self.scheme else { return false }
+        
+        if let _ = ignoredSchemes.firstIndex(of: scheme) {
+            return false
+        }
+        
+        if self.host == "localhost" {
+            return false
+        }
+        
+        return true
+    }
+    
+    public var isImageResource: Bool {
+        return ["jpg", "jpeg", "png", "gif"].contains(pathExtension)
+    }
+    
+    public var imageSize: CGSize? {
+        let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+        guard let imageSource = CGImageSourceCreateWithURL(self as CFURL, imageSourceOptions),
+            let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, imageSourceOptions) as? [AnyHashable: Any],
+            let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as String],
+            let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as String] else {
+                return nil
+        }
+        
+        var width: CGFloat = 0
+        var height: CGFloat = 0
+        
+        // swiftlint:disable force_cast
+        CFNumberGetValue((pixelWidth as! CFNumber), .cgFloatType, &width)
+        
+        // swiftlint:disable force_cast
+        CFNumberGetValue((pixelHeight as! CFNumber), .cgFloatType, &height)
+        
+        guard width > 0, height > 0 else {
+            return nil
+        }
+        
+        return CGSize(width: width, height: height)
+    }
+}
+
+extension URL {
+    public var isBookmarklet: Bool {
+        return self.absoluteString.isBookmarklet
+    }
+    
+    public var bookmarkletCodeComponent: String? {
+        return self.absoluteString.bookmarkletCodeComponent
+    }
+}
+
+extension String {
+    public var isBookmarklet: Bool {
+        let url = self.lowercased()
+        return url.hasPrefix("javascript:") &&
+            !url.hasPrefix("javascript:/") &&
+            !url.dropFirst("javascript:".count).isEmpty
+    }
+    
+    public var bookmarkletCodeComponent: String? {
+        if self.isBookmarklet {
+            if let result = String(self.dropFirst("javascript:".count)).removingPercentEncoding {
+                return result.isEmpty ? nil : result
+            }
+        }
+        return nil
+    }
+    
+    public var bookmarkletURL: URL? {
+        if self.isBookmarklet, let escaped = self.addingPercentEncoding(withAllowedCharacters: .URLAllowed) {
+            return URL(string: escaped)
+        }
+        return nil
+    }
 }
 
 //MARK: Private Helpers

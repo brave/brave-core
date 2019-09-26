@@ -4,6 +4,7 @@
 
 import XCTest
 import CoreData
+import Shared
 @testable import Data
 
 class BookmarkTests: CoreDataTestCase {
@@ -124,6 +125,21 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNil(result.url)
         XCTAssertNil(result.title)
         assertDefaultValues(for: result)
+    }
+    
+    func testValidateBookmarklet() {
+        let validate = BookmarkValidation.validateBookmarklet
+        XCTAssertTrue(validate("Brave", "javascript:void(window.close(self))"))
+        XCTAssertTrue(validate("Brave", "javascript:window.open('https://brave.com')"))
+        XCTAssertTrue(validate("Brave", nil))
+        XCTAssertFalse(validate("Brave", "javascript:function(){}"))
+        XCTAssertTrue(validate("Brave", "javascript:(function(){})()"))
+        XCTAssertTrue(validate("Brave", "javascript:(function(){})"))
+        
+        XCTAssertFalse(validate(nil, "javascript:window.open('https://brave.com')"))
+        XCTAssertFalse(validate("Brave", "javascript:"))
+        XCTAssertFalse(validate("Brave", "javascript:%20function(){}"))
+        XCTAssertFalse(validate("Brave", "javascript:(function(){)"))
     }
     
     func testCreateFolder() {

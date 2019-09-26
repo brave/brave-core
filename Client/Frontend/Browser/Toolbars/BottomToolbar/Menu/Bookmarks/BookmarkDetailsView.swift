@@ -24,6 +24,8 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
         $0.autocorrectionType = .no
         $0.autocapitalizationType = .none
         $0.smartDashesType = .no
+        $0.smartQuotesType = .no
+        $0.smartInsertDeleteType = .no
         $0.clearButtonMode = .whileEditing
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -69,7 +71,10 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
         [emptySpacer, faviconImageView, textFieldsStackView]
             .forEach(contentStackView.addArrangedSubview)
         
-        if let url = url, let favUrl = URL(string: url) {
+        var url = url
+        if url?.isBookmarklet == true {
+            url = url?.removingPercentEncoding
+        } else if let url = url, let favUrl = URL(string: url) {
             faviconImageView.setIcon(nil, forURL: favUrl)
         }
         
@@ -88,6 +93,19 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
     // MARK: - Delegate actions
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        delegate?.correctValues(validationPassed: validateFields())
+        if textField.text?.isBookmarklet == true {
+            delegate?.correctValues(validationPassed: validateCodeFields() && validateFields())
+        } else {
+            delegate?.correctValues(validationPassed: validateCodeFields())
+        }
+    }
+    
+    private func validateTitle(_ title: String?) -> Bool {
+        guard let title = title else { return false }
+        return !title.isEmpty
+    }
+    
+    private func validateCodeFields() -> Bool {
+        return BookmarkValidation.validateBookmarklet(title: titleTextField.text, url: urlTextField?.text)
     }
 }
