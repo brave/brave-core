@@ -40,9 +40,7 @@ const doNothing = (id: string) => {
 const donationAmounts = [
   { tokens: '1.0', converted: '0.30', selected: false },
   { tokens: '5.0', converted: '1.50', selected: false },
-  { tokens: '10.0', converted: '3.00', selected: false },
-  { tokens: '50.0', converted: '15.00', selected: false },
-  { tokens: '100.0', converted: '30.00', selected: false }
+  { tokens: '10.0', converted: '3.00', selected: false }
 ]
 
 const defaultGrant = {
@@ -153,11 +151,14 @@ storiesOf('Rewards/Concepts/Desktop', module)
           store.state.showBanner
             ? <div style={{ position: 'fixed', top: 0, left: 0, height: '100vh', width: '100%', backgroundColor: 'rgba(12,13,33,0.85)' }}>
               <SiteBanner
+                type={select('Banner Type', {
+                  'one-time': 'one-time',
+                  monthly: 'monthly'
+                }, 'one-time')}
                 domain={text('Domain', 'duckduckgo.com')}
                 name={text('Name', 'duckduckgo.com')}
                 screenName={screenName}
                 title={text('Title', '')}
-                recurringDonation={boolean('Current recurring donation', true)}
                 balance={text('Balance ', '5.0')}
                 bgImage={boolean('Show bg image', false) ? siteBgImage : null}
                 logo={boolean('Show logo', false) ? siteBgLogo : null}
@@ -168,6 +169,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
                 currentAmount={store.state.currentAmount}
                 onClose={onClose}
                 provider={mediaProvider}
+                nextContribution={'07/08/2019'}
                 social={[
                   {
                     type: 'twitter',
@@ -518,6 +520,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
               refreshingPublisher={store.state.refreshingPublisher}
               publisherRefreshed={store.state.publisherRefreshed}
               onRefreshPublisher={onRefreshPublisher}
+              setMonthlyAction={doNothing}
             />
             <WalletSummary
               compact={true}

@@ -16,6 +16,7 @@ import { getLocale } from '../../../../common/locale'
 
 interface Props extends RewardsTip.ComponentProps {
   url: string
+  monthly: boolean
   publisher: RewardsTip.Publisher
   mediaMetaData: RewardsTip.MediaMetaData
 }
@@ -50,6 +51,7 @@ class TipMediaUser extends React.Component<Props, {}> {
     const { finished, error } = this.props.rewardsDonateData
 
     const publisher = this.props.publisher
+    const monthly = this.props.monthly
     const mediaMetaData = this.props.mediaMetaData
     if (!mediaMetaData) {
       return
@@ -78,7 +80,11 @@ class TipMediaUser extends React.Component<Props, {}> {
       <>
         {
           !finished && !error
-          ? <Banner publisher={publisher} mediaMetaData={mediaMetaData} />
+          ? <Banner
+              monthly={monthly}
+              publisher={publisher}
+              mediaMetaData={mediaMetaData}
+          />
           : null
         }
         {

@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Tip this site monthly",
+    "message": "Monthly Contribution",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -528,5 +528,9 @@
   "walletGoToVerifyPage":  {
     "message": "Complete wallet verification",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Set...",
+    "description": "Button text for setting monthly contribution"
   }
 }

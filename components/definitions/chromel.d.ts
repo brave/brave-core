@@ -60,7 +60,7 @@ declare namespace chrome.settingsPrivate {
 
 declare namespace chrome.braveRewards {
   const createWallet: () => {}
-  const tipSite: (tabId: number, publisherKey: string) => {}
+  const tipSite: (tabId: number, publisherKey: string, monthly: boolean) => {}
   const tipTwitterUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipGitHubUser: (tabId: number, githubMetaData: RewardsTip.MediaMetaData) => {}

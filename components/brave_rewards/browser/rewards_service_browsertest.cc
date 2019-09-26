@@ -802,9 +802,14 @@ class BraveRewardsBrowserTest :
         content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
         content::NotificationService::AllSources());
 
+    const std::string buttonSelector = monthly
+        ? "[type='tip-monthly']"
+        : "[type='tip']";
+
     // Click button to initiate sending a tip
     content::EvalJsResult js_result = EvalJs(
       popup_contents,
+      content::JsReplace(
       "new Promise((resolve) => {"
       "let count = 10;"
       "var interval = setInterval(function() {"
@@ -814,13 +819,14 @@ class BraveRewardsBrowserTest :
       "  } else {"
       "    count -= 1;"
       "  }"
-      "  const tipButton = document.querySelector(\"[type='tip']\");"
+      "  const tipButton = document.querySelector($1);"
       "  if (tipButton) {"
       "    clearInterval(interval);"
       "    tipButton.click();"
       "    resolve(true);"
       "  }"
       "}, 500);});",
+      buttonSelector),
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
       content::ISOLATED_WORLD_ID_CONTENT_END);
 
@@ -849,18 +855,6 @@ class BraveRewardsBrowserTest :
         selection),
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END));
-
-    // Make this tip monthly, if requested
-    if (monthly) {
-      ASSERT_TRUE(ExecJs(
-          site_banner_contents,
-          "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-          "delay(0).then(() => "
-          "  document.querySelector(\"[data-test-id='monthlyCheckbox']\")"
-          "    .children[0].click());",
-          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-          content::ISOLATED_WORLD_ID_CONTENT_END));
-    }
 
     // Send the tip
     ASSERT_TRUE(ExecJs(

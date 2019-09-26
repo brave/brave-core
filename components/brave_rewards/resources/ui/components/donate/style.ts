@@ -5,6 +5,7 @@
 import styled, { css } from 'brave-ui/theme'
 import * as CSS from 'csstype'
 import { DonateType } from './index'
+import palette from 'brave-ui/theme/colors'
 
 interface Theme {
   paddingBox: CSS.PaddingProperty<1>
@@ -18,6 +19,7 @@ interface StyleProps {
   disabled?: boolean
   donateType?: DonateType
   isMobile?: boolean
+  monthly?: boolean
 }
 
 const customStyle: Record<DonateType, Theme> = {
@@ -64,6 +66,18 @@ const getAmountStyle = (isMobile?: boolean) => {
   `
 }
 
+const getIconColor = (p: StyleProps) => {
+  if (p.monthly) {
+    return palette.orange500
+  }
+
+  if (p.disabled) {
+    return palette.purple300
+  }
+
+  return palette.blurple600
+}
+
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   position: relative;
   font-family: ${p => p.theme.fontFamily.body};
@@ -89,9 +103,12 @@ export const StyledDonationTitle = styled<StyleProps, 'div'>('div')`
   padding-left: ${p => p.isMobile ? 20 : 0}px;
 `
 
-export const StyledSend = styled<{}, 'div'>('div')`
-  background: var(--donate-send-bg);
-  font-size: 13px;
+export const StyledSend = styled<StyleProps, 'div'>('div')`
+  background: ${p => p.monthly
+    ? `inherit`
+    : `var(--donate-send-bg)`
+  };
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.2px;
   color: var(--donate-send-color);
@@ -100,17 +117,28 @@ export const StyledSend = styled<{}, 'div'>('div')`
   border: none;
   width: 100%;
   text-align: left;
-  cursor: pointer;
+  padding-bottom: ${p => p.monthly ? 20 : 13}px;
 `
 
 export const StyledSendButton = styled<{}, 'button'>('button')`
   display: block;
   border: none;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   background: var(--donate-send-bg);
   cursor: pointer;
+`
+
+export const StyledMonthlySendButton = styled(StyledSendButton)`
+  color: ${palette.orange500};
+  background: ${palette.white};
+  border-radius: 20px;
+  font-size: 12px;
+  padding: 6px 15px;
+  text-transform: none;
+  width: 180px;
+  font-weight: bold;
 `
 
 export const StyledButtonWrapper = styled<StyleProps, 'div'>('div')`
@@ -123,14 +151,14 @@ export const StyledIconSend = styled<StyleProps, 'span'>('span')`
   vertical-align: middle;
   display: inline-block;
   margin-right: 15px;
-  color: ${p => p.disabled ? p.donateType === 'small' ? '#1A22A8' : '#3e45b2' : '#a1a8f2'};
+  color: ${p => getIconColor(p)};
   width: 27px;
   height: 27px;
 `
 
 export const StyledFunds = styled<{}, 'div'>('div')`
   font-family: Muli, sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 300;
   line-height: 1.69;
   color: #fff;
@@ -142,7 +170,6 @@ export const StyledFunds = styled<{}, 'div'>('div')`
   left: 0;
   z-index: 10;
   width: 100%;
-
   a {
     color: #6cc7fd;
     text-decoration: none;
@@ -163,4 +190,19 @@ export const StyledAmountsWrapper = styled<StyleProps, 'div'>('div')`
   width: 100%;
   display: block;
   ${p => getAmountStyle(p.isMobile)}
+`
+
+export const StyledContributionWrapper = styled<{}, 'div'>('div')`
+  float: right;
+  color: ${palette.white};
+  margin: -33px -35px 0px;
+`
+
+export const StyledContributionText = styled<{}, 'span'>('span')`
+  font-size: 10px;
+  font-weight: 300;
+  text-align: right;
+  display: block;
+  line-height: 12px;
+  text-transform: none;
 `

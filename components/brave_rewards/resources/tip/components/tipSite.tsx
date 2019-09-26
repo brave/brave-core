@@ -15,6 +15,7 @@ import * as rewardsActions from '../actions/tip_actions'
 
 interface Props extends RewardsTip.ComponentProps {
   url: string
+  monthly: boolean
   publisher: RewardsTip.Publisher
 }
 
@@ -43,7 +44,10 @@ class TipSite extends React.Component<Props, {}> {
       <>
         {
           !finished && !error
-          ? <Banner publisher={this.props.publisher} />
+          ? <Banner
+              monthly={this.props.monthly}
+              publisher={this.props.publisher}
+          />
           : null
         }
         {

@@ -127,3 +127,18 @@ export const StyledSelect = styled<StyleProps, 'select'>('select')`
 export const StyledOptionShown = styled<{}, 'option'>('option')`
   display: none;
 `
+
+export const StyledSetButtonContainer = styled<{}, 'div'>('div')`
+  text-align: center;
+`
+
+export const StyledSetButton = styled<{}, 'button'>('button')`
+  color: ${palette.blurple500};
+  font-size: 13px;
+  border: 1px solid ${palette.blurple500};
+  width: 85%;
+  border-radius: 20px;
+  padding: 4px 5px;
+  margin-right: -16px;
+  cursor: pointer;
+`
