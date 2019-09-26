@@ -279,6 +279,17 @@ class LEDGER_EXPORT LedgerClient {
   virtual void GetServerPublisherInfo(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) = 0;
+
+  virtual void SetTransferFee(
+      const std::string& wallet_type,
+      ledger::TransferFeePtr transfer_fee) = 0;
+
+  virtual ledger::TransferFeeList GetTransferFees(
+      const std::string& wallet_type) = 0;
+
+  virtual void RemoveTransferFee(
+    const std::string& wallet_type,
+    const std::string& id) = 0;
 };
 
 }  // namespace ledger

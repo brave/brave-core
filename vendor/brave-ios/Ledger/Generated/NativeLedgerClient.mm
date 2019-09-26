@@ -200,3 +200,12 @@ void NativeLedgerClient::ClearAndInsertServerPublisherList(ledger::ServerPublish
 void NativeLedgerClient::GetServerPublisherInfo(const std::string& publisher_key, ledger::GetServerPublisherInfoCallback callback) {
   [bridge_ getServerPublisherInfo:publisher_key callback:callback];
 }
+void NativeLedgerClient::SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) {
+  [bridge_ setTransferFee:wallet_type transfer_fee:std::move(transfer_fee)];
+}
+ledger::TransferFeeList NativeLedgerClient::GetTransferFees(const std::string& wallet_type) {
+  return [bridge_ getTransferFees:wallet_type];
+}
+void NativeLedgerClient::RemoveTransferFee(const std::string& wallet_type, const std::string& id) {
+  [bridge_ removeTransferFee:wallet_type id:id];
+}
