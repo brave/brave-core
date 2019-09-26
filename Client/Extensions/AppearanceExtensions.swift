@@ -82,6 +82,10 @@ extension Theme {
             
             // EmptyPrivateTabsView
             UILabel.appearance(whenContainedInInstancesOf: [EmptyPrivateTabsView.self]).appearanceTextColor = UIColor.Photon.Grey10
+            
+            // See #1548.
+            // Using tint color of iOS 13 UISwitch to match better with our light theme
+            UISwitch.appearance().tintColor = #colorLiteral(red: 0.8392156863, green: 0.8392156863, blue: 0.8431372549, alpha: 1)
         }
         
         (UIApplication.shared.delegate as? AppDelegate)?.window?.backgroundColor = colors.home
