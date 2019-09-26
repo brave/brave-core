@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/payments/PaymentRequestImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/payments/PaymentRequestImpl.java
+index 56bf08a51b2082ba3111ea1d88208c6f0c33e112..2c3f3a28216ab904d54e03b81cd5db9dc4ccfb48 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/payments/PaymentRequestImpl.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/payments/PaymentRequestImpl.java
+@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.payments.ui.PaymentRequestSection.OptionSecti
+ import org.chromium.chrome.browser.payments.ui.PaymentRequestUI;
+ import org.chromium.chrome.browser.payments.ui.SectionInformation;
+ import org.chromium.chrome.browser.payments.ui.ShoppingCart;
++import org.chromium.chrome.browser.preferences.BraveMainPreferences;
+ import org.chromium.chrome.browser.preferences.MainPreferences;
+ import org.chromium.chrome.browser.preferences.PreferencesLauncher;
+ import org.chromium.chrome.browser.profiles.Profile;
+@@ -1847,7 +1848,7 @@ public class PaymentRequestImpl
+             return;
+         }
+ 
+-        PreferencesLauncher.launchSettingsPageCompat(context, MainPreferences.class);
++        PreferencesLauncher.launchSettingsPageCompat(context, BraveMainPreferences.class);
+     }
+ 
+     @Override

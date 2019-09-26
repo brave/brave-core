@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/signin/SigninManager.java b/chrome/android/java/src/org/chromium/chrome/browser/signin/SigninManager.java
+index 1d63693d5979aabd516d8037e060b8ccf2f59c82..74751acd72886a894ba6e84c1e2e9e78c84fbb74 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/signin/SigninManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/signin/SigninManager.java
+@@ -226,7 +226,7 @@ public class SigninManager implements AccountTrackerService.OnSystemAccountsSeed
+         assert nativeSigninManagerAndroid != 0;
+         assert delegate != null;
+         assert accountTrackerService != null;
+-        return new SigninManager(ContextUtils.getApplicationContext(), nativeSigninManagerAndroid,
++        return new BraveSigninManager(ContextUtils.getApplicationContext(), nativeSigninManagerAndroid,
+                 delegate, accountTrackerService);
+     }
+ 
