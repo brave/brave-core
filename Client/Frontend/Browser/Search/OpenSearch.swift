@@ -42,10 +42,10 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
         // this catches the cases where bool encoded in Swift 2 needs to be decoded with decodeObject, but a Bool encoded in swift 3 needs
         // to be decoded using decodeBool. This catches the upgrade case to ensure that we are always able to fetch a keyed valye for isCustomEngine
         // http://stackoverflow.com/a/40034694
-        let isCustomEngine = aDecoder.decodeAsBool(forKey: "isCustomEngine")
-        guard let searchTemplate = aDecoder.decodeObject(forKey: "searchTemplate") as? String,
-              let shortName = aDecoder.decodeObject(forKey: "shortName") as? String,
-              let image = aDecoder.decodeObject(forKey: "image") as? UIImage else {
+        let isCustomEngine = aDecoder.decodeBool(forKey: "isCustomEngine")
+        guard let searchTemplate = aDecoder.decodeObject(of: NSString.self, forKey: "searchTemplate") as String?,
+            let shortName = aDecoder.decodeObject(of: NSString.self, forKey: "shortName") as String?,
+            let image = aDecoder.decodeObject(of: UIImage.self, forKey: "image") else {
                 assertionFailure()
                 return nil
         }
@@ -54,7 +54,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
         self.shortName = shortName
         self.isCustomEngine = isCustomEngine
         self.image = image
-        self.engineID = aDecoder.decodeObject(forKey: "engineID") as? String
+        self.engineID = aDecoder.decodeObject(of: NSString.self, forKey: "engineID") as String?
         self.suggestTemplate = nil
     }
 

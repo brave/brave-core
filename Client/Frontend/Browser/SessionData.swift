@@ -7,7 +7,7 @@ import Foundation
 import Shared
 import Data
 
-class SessionData: NSObject, NSCoding {
+class SessionData: NSObject, NSSecureCoding {
     let currentPage: Int
     let urls: [URL]
     let lastUsedTime: Timestamp
@@ -45,9 +45,9 @@ class SessionData: NSObject, NSCoding {
     }
 
     required init?(coder: NSCoder) {
-        self.currentPage = coder.decodeAsInt(forKey: SessionData.Keys.currentPage)
-        self.urls = coder.decodeObject(forKey: "urls") as? [URL] ?? []
-        self.lastUsedTime = coder.decodeAsUInt64(forKey: SessionData.Keys.lastUsedTime)
+        self.currentPage = coder.decodeInteger(forKey: SessionData.Keys.currentPage)
+        self.urls = coder.decodeObject(of: [NSURL.self], forKey: "urls") as? [URL] ?? []
+        self.lastUsedTime = UInt64(coder.decodeInt64(forKey: SessionData.Keys.lastUsedTime))
     }
 
     func encode(with coder: NSCoder) {
@@ -62,5 +62,9 @@ class SessionData: NSObject, NSCoding {
         let currentURL = urlStrings[(currentPage < 0 ? max(urlStrings.count-1, 0) : currentPage)]
         
         return SavedTab(id: "InvalidId", title: nil, url: currentURL, isSelected: false, order: -1, screenshot: nil, history: urlStrings, historyIndex: Int16(currentPage))
+    }
+    
+    static var supportsSecureCoding: Bool {
+        return true
     }
 }
