@@ -360,8 +360,12 @@ class PageWallet extends React.Component<Props, State> {
     this.handleUpholdLink(externalWallet.verifyUrl)
   }
 
-  getWalletStatus = (): WalletState => {
-    const { externalWallet } = this.props.rewardsData
+  getWalletStatus = (): WalletState | undefined => {
+    const { externalWallet, ui } = this.props.rewardsData
+
+    if (ui.onlyAnonWallet) {
+      return undefined
+    }
 
     if (!externalWallet) {
       return 'unverified'
@@ -439,6 +443,29 @@ class PageWallet extends React.Component<Props, State> {
     this.actions.disconnectWallet('uphold')
   }
 
+  getActions = () => {
+    const { ui } = this.props.rewardsData
+
+    if (ui.onlyAnonWallet) {
+      return []
+    }
+
+    return [
+      {
+        name: getLocale('panelAddFunds'),
+        action: this.onFundsAction.bind(this, 'add'),
+        icon: <WalletAddIcon />,
+        testId: 'panel-add-funds'
+      },
+      {
+        name: getLocale('panelWithdrawFunds'),
+        action: this.onFundsAction.bind(this, 'withdraw'),
+        icon: <WalletWithdrawIcon />,
+        testId: 'panel-withdraw-funds'
+      }
+    ]
+  }
+
   render () {
     const {
       recoveryKey,
@@ -448,37 +475,31 @@ class PageWallet extends React.Component<Props, State> {
       pendingContributionTotal
     } = this.props.rewardsData
     const { total } = balance
-    const { walletRecoverySuccess, emptyWallet, modalBackup } = ui
+    const { walletRecoverySuccess, emptyWallet, modalBackup, onlyAnonWallet } = ui
 
     const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(1))
+
+    let onVerifyClick = undefined
+    let showCopy = false
+    if (!onlyAnonWallet) {
+      onVerifyClick = this.onVerifyClick.bind(this, false)
+      showCopy = true
+    }
 
     return (
       <>
         <WalletWrapper
           balance={total.toFixed(1)}
           converted={utils.formatConverted(this.getConversion())}
-          actions={[
-            {
-              name: getLocale('panelAddFunds'),
-              action: this.onFundsAction.bind(this, 'add'),
-              icon: <WalletAddIcon />,
-              testId: 'panel-add-funds'
-            },
-            {
-              name: getLocale('panelWithdrawFunds'),
-              action: this.onFundsAction.bind(this, 'withdraw'),
-              icon: <WalletWithdrawIcon />,
-              testId: 'panel-withdraw-funds'
-            }
-          ]}
+          actions={this.getActions()}
           onSettingsClick={this.onModalBackupOpen}
           onActivityClick={this.onModalActivityToggle}
-          showCopy={true}
+          showCopy={showCopy}
           showSecActions={true}
           grants={this.getGrants()}
           alert={this.walletAlerts()}
           walletState={this.getWalletStatus()}
-          onVerifyClick={this.onVerifyClick.bind(this, false)}
+          onVerifyClick={onVerifyClick}
           onDisconnectClick={this.onDisconnectClick}
           goToUphold={this.goToUphold}
           userName={this.getUserName()}
@@ -520,7 +541,7 @@ class PageWallet extends React.Component<Props, State> {
             : null
         }
         {
-          this.state.modalVerify
+          !onlyAnonWallet && this.state.modalVerify
             ? <ModalVerify
               onVerifyClick={this.onVerifyClick.bind(this, true)}
               onClose={this.toggleVerifyModal}
