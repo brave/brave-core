@@ -1,11 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/common/resource_bundle_helper.h"
 
+#include <string>
+
 #include "base/command_line.h"
 #include "base/path_service.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/nacl/common/nacl_switches.h"
 #include "content/public/common/content_switches.h"
 #include "services/service_manager/embedder/switches.h"
@@ -16,8 +20,13 @@
 #include "base/strings/sys_string_conversions.h"
 #endif
 
+#if defined(OS_ANDROID)
+#include "ui/base/resource/resource_bundle_android.h"
+#endif
+
 namespace {
 
+#if !defined(OS_ANDROID)
 base::FilePath GetResourcesPakFilePath() {
 #if defined(OS_MACOSX)
   return base::mac::PathForFrameworkBundleResource(
@@ -29,6 +38,7 @@ base::FilePath GetResourcesPakFilePath() {
   return pak_path;
 #endif  // OS_MACOSX
 }
+#endif  // OS_ANDROID
 
 base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
   DCHECK(scale_factor == ui::SCALE_FACTOR_100P ||
@@ -49,13 +59,18 @@ base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
 #endif  // OS_MACOSX
 }
 
-}
+}  // namespace
 
 namespace brave {
 
 void InitializeResourceBundle() {
   auto& rb = ui::ResourceBundle::GetSharedInstance();
+#if defined(OS_ANDROID)
+  ui::BraveLoadMainAndroidPackFile("assets/brave_resources.pak",
+                                   base::FilePath());
+#else
   rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::SCALE_FACTOR_NONE);
+#endif  // OS_ANDROID
 
   rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_100P),
                          ui::SCALE_FACTOR_100P);
@@ -90,4 +105,4 @@ bool SubprocessNeedsResourceBundle() {
       process_type == switches::kUtilityProcess;
 }
 
-}
+}  // namespace brave
