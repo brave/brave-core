@@ -83,6 +83,8 @@ extension Theme {
             // EmptyPrivateTabsView
             UILabel.appearance(whenContainedInInstancesOf: [EmptyPrivateTabsView.self]).appearanceTextColor = UIColor.Photon.Grey10
         }
+        
+        (UIApplication.shared.delegate as? AppDelegate)?.window?.backgroundColor = colors.home
     }
 }
 
