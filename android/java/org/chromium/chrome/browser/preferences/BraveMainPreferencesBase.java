@@ -25,14 +25,14 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        updateBravePreferences();
-    }
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
 
     @Override
     public void onResume() {
         super.onResume();
-        updateBravePreferences();
+        // Run updateBravePreferences() after fininshing MainPreferences::updatePreferences().
+        // Otherwise, some prefs could be added after finishing updateBravePreferences().
+        new Handler().post(() -> updateBravePreferences());
     }
 
     private void updateBravePreferences() {
