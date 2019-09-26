@@ -15,11 +15,12 @@ import java.util.HashMap;
 // This exculdes some settings in main settings screen.
 public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     // Below prefs are removed from main settings.
-    public static final String PREF_ACCOUNT_SECTION = "account_section";
-    public static final String PREF_SIGN_IN = "sign_in";
-    public static final String PREF_DATA_REDUCTION = "data_reduction";
-    public static final String PREF_AUTOFILL_ASSISTANT = "autofill_assistant";
-    public static final String PREF_SYNC_AND_SERVICES = "sync_and_services";
+    private static final String PREF_ACCOUNT_SECTION = "account_section";
+    private static final String PREF_SIGN_IN = "sign_in";
+    private static final String PREF_DATA_REDUCTION = "data_reduction";
+    private static final String PREF_AUTOFILL_ASSISTANT = "autofill_assistant";
+    private static final String PREF_SYNC_AND_SERVICES = "sync_and_services";
+    private static final String PREF_DEVELOPER = "developer";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -40,6 +41,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         removePreferenceIfPresent(PREF_DATA_REDUCTION);
         removePreferenceIfPresent(PREF_AUTOFILL_ASSISTANT);
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES);
+        removePreferenceIfPresent(PREF_DEVELOPER);
     }
 
     /**
