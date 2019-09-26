@@ -34,14 +34,6 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
         super.init()
     }
 
-    fileprivate lazy var topDomains: [String] = {
-        guard let filePath = Bundle.main.path(forResource: "topdomains", ofType: "txt"),
-            let domains = try? String(contentsOfFile: filePath).components(separatedBy: "\n") else {
-                return []
-        }
-        return domains
-    }()
-
     // `weak` usage here allows deferred queue to be the owner. The deferred is always filled and this set to nil,
     // this is defensive against any changes to queue (or cancellation) behaviour in future.
     private weak var currentDbQuery: Cancellable?
@@ -82,14 +74,6 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
                 
                 for site in result {
                     if let completion = self.completionForURL(site.url) {
-                        self.topToolbar.setAutocompleteSuggestion(completion)
-                        return
-                    }
-                }
-                
-                // If there are no search history matches, try matching one of the Alexa top domains.
-                for domain in self.topDomains {
-                    if let completion = self.completionForDomain(domain) {
                         self.topToolbar.setAutocompleteSuggestion(completion)
                         return
                     }
