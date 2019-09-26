@@ -4,6 +4,7 @@
 
 import UIKit
 import Shared
+import BraveShared
 
 class RewardsButton: UIButton {
     
@@ -18,6 +19,12 @@ class RewardsButton: UIButton {
     /// Disabled state shows grayscale icon but still allows interaction.
     var isDisabled: Bool = false {
         didSet { updateView() }
+    }
+    
+    private let notificationsBadgeView = UIView().then {
+        $0.backgroundColor = BraveUX.BraveOrange
+        $0.frame = CGRect(x: 19, y: 5, width: 12, height: 12)
+        $0.layer.cornerRadius = 6
     }
     
     private var checkmarkView = UIImageView().then {
@@ -37,12 +44,13 @@ class RewardsButton: UIButton {
         accessibilityIdentifier = "urlBar-rewardsButton"
         
         addSubview(checkmarkView)
+        addSubview(notificationsBadgeView)
         updateView()
     }
     
     private func updateView() {
         checkmarkView.isHidden = true
-        // notificationView.isHidden = true
+        notificationsBadgeView.isHidden = true
         
         if isDisabled {
             setImage(#imageLiteral(resourceName: "brave_rewards_button_disabled"), for: .normal)
@@ -51,9 +59,9 @@ class RewardsButton: UIButton {
         
         setImage(#imageLiteral(resourceName: "brave_rewards_button_enabled"), for: .normal)
         
-        // if notificationCount > 0 { show badge with number }
-        
-        if isVerified {
+        if notificationCount > 0 {
+            notificationsBadgeView.isHidden = false
+        } else if isVerified {
             checkmarkView.isHidden = false
         }
     }
