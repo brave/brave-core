@@ -339,10 +339,16 @@ void RewardsNotificationServiceImpl::OnGrant(RewardsService* rewards_service,
       : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS;
 
   RewardsNotificationService::RewardsNotificationArgs args;
+
+  bool only_once = true;
+#if defined(OS_ANDROID)
+  only_once = false;
+#endif
+
   AddNotification(notification_type,
                   args,
                   prefix + properties.promotionId,
-                  false);
+                  only_once);
 }
 
 void RewardsNotificationServiceImpl::OnGrantFinish(
