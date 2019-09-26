@@ -194,6 +194,8 @@ class TabCell: UICollectionViewCell, Themeable {
     func applyTheme(_ theme: Theme) {
         styleChildren(theme: theme)
         
+        // TabCell doesn't use much theming atm, using non-themable values for some views here.
+        titleText.appearanceTextColor = .black
         backgroundHolder.backgroundColor = theme.colors.home
         screenshotView.backgroundColor = backgroundHolder.backgroundColor
         favicon.tintColor = theme.colors.tints.home
