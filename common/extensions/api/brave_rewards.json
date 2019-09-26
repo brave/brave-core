@@ -921,6 +921,23 @@
             "type": "string"
           }
         ]
+      },
+      {
+        "name": "onlyAnonWallet",
+        "type": "function",
+        "description": "Get information if we should only allow anonymous wallet",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "only",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ]
   }
