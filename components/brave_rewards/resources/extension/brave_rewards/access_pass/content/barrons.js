@@ -18,12 +18,15 @@ function detectBypassablePaywall() {
 
 function bypassPaywall() {
   console.log('Wallbreaker [barrons]: bypassing paywall in background script...')
-  return PerformBypassInBackgroundScript({
+  // removes URL param `mod=hp_BRIEFLIST` if it exists
+  const urlReload = document.location.href.split("mod=hp_BRIEFLIST").join();
+  const didBypass = PerformBypassInBackgroundScript({
     cookiesToDelete: [ 'cX_P' ],
     cookiesToExtend: [],
     domain: ".barrons.com",
-    url: "https://barrons.com",
+    url: "https://www.barrons.com/",
   })
+  return { didBypass, urlReload }
 }
 
 new WallbreakerController({

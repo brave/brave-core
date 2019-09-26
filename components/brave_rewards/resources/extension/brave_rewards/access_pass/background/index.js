@@ -69,9 +69,9 @@ async function performUnblockForSite (tabId, bypassArgs) {
     url
   } = bypassArgs
   let success = false
+  const deleteOps = []
   if (cookiesToDelete) {
     const cookies = await getAllCookies({ domain })
-    const deleteOps = []
     for (var i = cookies.length - 1; i >= 0; i--) {
       if (cookiesToDelete.includes(cookies[i].name)) {
         let name = cookies[i].name;

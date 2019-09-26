@@ -22,12 +22,13 @@ function detectBypassablePaywall() {
 
 function bypassPaywall() {
   console.log('Wallbreaker [barrons]: bypassing paywall...')
-  return PerformBypassInBackgroundScript({
+  const didBypass = PerformBypassInBackgroundScript({
     cookiesToDelete: [ 'rplm2', 'rplmct' ],
     cookiesToExtend: [],
     domain: ".washingtonpost.com",
     url: "https://washingtonpost.com",
   })
+  return { didBypass }
 }
 
 new WallbreakerController({

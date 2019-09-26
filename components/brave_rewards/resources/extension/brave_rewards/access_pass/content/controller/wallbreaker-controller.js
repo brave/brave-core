@@ -16,14 +16,14 @@ export default class WallbreakerController {
 
   async bypassPaywall() {
     // Perform site-specific bypass
-    const didBypass = await this.fnBypassPaywall()
+    const bypass = await this.fnBypassPaywall()
     // Return status to background so can
     // report on bypass or reload this and relevant tabs
-    if (didBypass) {
+    if (bypass.didBypass) {
       sendBackgroundMessage({
         type: 'did-bypass-paywall',
         publisherHost: this.publisherId,
-        urlToShow: this.currentPageUrl
+        urlToShow: bypass.urlReload ? bypass.urlReload : this.currentPageUrl
       })
     }
   }
