@@ -8,11 +8,12 @@ package org.chromium.chrome.browser.preferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 import java.util.HashMap;
 
 // This exculdes some settings in main settings screen.
-public class BraveMainPreferences extends MainPreferences {
+public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     // Below prefs are removed from main settings.
     public static final String PREF_ACCOUNT_SECTION = "account_section";
     public static final String PREF_SIGN_IN = "sign_in";
@@ -24,7 +25,6 @@ public class BraveMainPreferences extends MainPreferences {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        super.onCreatePreferences(savedInstanceState, rootKey);
         updateBravePreferences();
     }
 

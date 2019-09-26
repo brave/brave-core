@@ -12,7 +12,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageView.java",
-  "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveMainPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveMainPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/privacy/BravePrivacyPreferences.java",
