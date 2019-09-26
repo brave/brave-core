@@ -12,11 +12,9 @@ BraveContentClient::BraveContentClient() {}
 BraveContentClient::~BraveContentClient() {}
 
 void BraveContentClient::AddAdditionalSchemes(Schemes* schemes) {
-#if !defined(OS_ANDROID)
   ChromeContentClient::AddAdditionalSchemes(schemes);
   schemes->standard_schemes.push_back(content::kBraveUIScheme);
   schemes->secure_schemes.push_back(content::kBraveUIScheme);
   schemes->cors_enabled_schemes.push_back(content::kBraveUIScheme);
   schemes->savable_schemes.push_back(content::kBraveUIScheme);
-#endif
 }

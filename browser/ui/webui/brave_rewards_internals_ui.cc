@@ -12,6 +12,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -19,10 +20,8 @@
 #include "content/public/browser/web_ui_message_handler.h"
 
 #if !defined(OS_ANDROID)
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #else
-#include "components/brave_rewards/settings/resources/grit/brave_rewards_internals_generated_map.h"
 #include "components/grit/components_resources.h"
 #include "components/grit/components_scaled_resources.h"
 #endif
@@ -147,13 +146,8 @@ BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
                                                  const std::string& name)
     : BasicUI(web_ui,
               name,
-#if !defined(OS_ANDROID)
               kBraveRewardsInternalsGenerated,
               kBraveRewardsInternalsGeneratedSize,
-#else
-              kBraveRewardsInternalsGenerated,
-              kBraveRewardsInternalsGeneratedSize,
-#endif
               IDR_BRAVE_REWARDS_INTERNALS_HTML) {
   auto handler_owner = std::make_unique<RewardsInternalsDOMHandler>();
   RewardsInternalsDOMHandler* handler = handler_owner.get();

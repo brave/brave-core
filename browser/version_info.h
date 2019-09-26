@@ -8,10 +8,8 @@
 
 #include <string>
 
-#define MESSAGE_NOTIFIER_TYPE message_center::NotifierType::SYSTEM_COMPONENT
 #define BASE_TIME_KSECONDSPERHOUR base::Time::kSecondsPerHour
 #define TRIM_PUBLISHERS_DB_MEMORY db_.TrimMemory();
-#define URL_DECODE_URL_MODE url::DecodeURLMode::kUTF8OrIsomorphic,
 
 namespace version_info {
 std::string GetBraveVersionWithoutChromiumMajorVersion();

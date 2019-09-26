@@ -572,10 +572,8 @@ void RewardsDOMHandler::OnGrant(
 void RewardsDOMHandler::GetGrants(const base::ListValue* args) {
   CHECK_EQ(2U, args->GetSize());
   if (rewards_service_) {
-    std::string lang;
-    std::string paymentId;
-    args->GetString(0, &lang);
-    args->GetString(1, &paymentId);
+    const std::string lang = args->GetList()[0].GetString();
+    const std::string paymentId = args->GetList()[1].GetString();
     rewards_service_->FetchGrants(lang, paymentId);
   }
 }
@@ -680,7 +678,6 @@ void RewardsDOMHandler::OnGrantFinish(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
     brave_rewards::Grant grant) {
-  LOG(ERROR) << "!!!OnGrantFinish";
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue finish;
     finish.SetInteger("status", result);
