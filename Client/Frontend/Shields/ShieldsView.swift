@@ -194,7 +194,7 @@ extension ShieldsViewController {
                 $0.0.valueLabel.appearanceTextColor = $0.1
             }
             
-            let faddedColor = hostLabel.textColor.withAlphaComponent(0.8)
+            let faddedColor = theme.colors.tints.home.withAlphaComponent(0.8)
             statsHeaderLabel.appearanceTextColor = faddedColor
             settingsHeaderLabel.appearanceTextColor = faddedColor
         }
