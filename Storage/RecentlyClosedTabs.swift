@@ -64,12 +64,12 @@ open class ClosedTab: NSObject, NSSecureCoding {
     }
 
     required convenience public init?(coder: NSCoder) {
-        guard let url = coder.decodeObject(forKey: "url") as? URL else { return nil }
+        guard let url = coder.decodeObject(of: NSURL.self, forKey: "url") as URL? else { return nil }
 
         self.init(
             url: url,
-            title: coder.decodeObject(forKey: "title") as? String,
-            faviconURL: coder.decodeObject(forKey: "faviconURL") as? String
+            title: coder.decodeObject(of: NSString.self, forKey: "title") as String?,
+            faviconURL: coder.decodeObject(of: NSString.self, forKey: "faviconURL") as String?
         )
     }
 

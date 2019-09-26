@@ -18,9 +18,10 @@ class CustomHeaderData: NSObject {
 
     // Initializer can't be placed in extension.
     required init?(coder aDecoder: NSCoder) {
-        guard let domainList = aDecoder.decodeObject(forKey: CodingKeys.domain) as? [String],
-            let headerKey = aDecoder.decodeObject(forKey: CodingKeys.headerKey) as? String,
-            let headerValue = aDecoder.decodeObject(forKey: CodingKeys.headerValue) as? String
+        guard let domainList = aDecoder.decodeObject(of: [NSString.self], forKey: CodingKeys.domain) as? [String],
+            let headerKey = aDecoder.decodeObject(of: NSString.self, forKey: CodingKeys.headerKey) as String?,
+            let headerValue = aDecoder.decodeObject(of: NSString.self, forKey: CodingKeys.headerValue) as String?
+            
             else { return nil }
 
         self.domainList = domainList
@@ -68,7 +69,7 @@ class CustomHeaderData: NSObject {
     }
 }
 
-extension CustomHeaderData: NSCoding {
+extension CustomHeaderData: NSSecureCoding {
     struct CodingKeys {
         static let domain = "customHeaderDataDomain"
         static let headerKey = "customHeaderDataHeaderKey"
@@ -79,5 +80,9 @@ extension CustomHeaderData: NSCoding {
         aCoder.encode(domainList, forKey: CodingKeys.domain)
         aCoder.encode(headerField, forKey: CodingKeys.headerKey)
         aCoder.encode(headerValue, forKey: CodingKeys.headerValue)
+    }
+    
+    static var supportsSecureCoding: Bool {
+        return true
     }
 }
