@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/guid.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/syncer_helper.h"
@@ -274,7 +275,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeMovedReordered) {
 }
 
 TEST_F(SyncerHelperTest, GetIndexInPermanentNodes) {
-  BookmarkNode node(GURL("https://brave.com"));
+  BookmarkNode node(/*id=*/0, base::GenerateGUID(), GURL("https://brave.com"));
   node.SetMetaInfo("order", "1.0.1.1");
   EXPECT_EQ(GetIndex(model()->bookmark_bar_node(), &node), 0u);
 
@@ -310,7 +311,7 @@ TEST_F(SyncerHelperTest, GetIndexMoreChildren) {
     model()->SetNodeMetaInfo(node_a, "order", order);
   }
   // inserted as 10th child
-  BookmarkNode node(GURL("https://brave.com"));
+  BookmarkNode node(/*id=*/9, base::GenerateGUID(), GURL("https://brave.com"));
   node.SetMetaInfo("order", "1.0.1.10");
   EXPECT_EQ(GetIndex(model()->bookmark_bar_node(), &node), 9u);
   node.SetMetaInfo("order", "1.1.1.10");
@@ -321,7 +322,7 @@ TEST_F(SyncerHelperTest, GetIndexInFolder) {
   const auto* folder1 = model()->AddFolder(model()->bookmark_bar_node(), 0,
                                            base::ASCIIToUTF16("Folder1"));
   model()->SetNodeMetaInfo(folder1, "order", "1.0.1.1");
-  BookmarkNode node(GURL("https://brave.com"));
+  BookmarkNode node(/*id=*/1, base::GenerateGUID(), GURL("https://brave.com"));
   node.SetMetaInfo("order", "1.0.1.1.1");
   EXPECT_EQ(GetIndex(folder1, &node), 0u);
 
