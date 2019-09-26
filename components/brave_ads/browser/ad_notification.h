@@ -21,7 +21,6 @@ namespace ads {
 struct NotificationInfo;
 }
 
-
 namespace brave_ads {
 
 const char* const kBraveAdsUrlPrefix ="chrome://brave_ads/?";
