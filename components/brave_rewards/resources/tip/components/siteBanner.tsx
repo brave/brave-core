@@ -37,6 +37,7 @@ class Banner extends React.Component<Props, State> {
     this.actions.getBalance()
     this.actions.getRecurringTips()
     this.actions.getReconcileStamp()
+    this.actions.getExternalWallet()
   }
 
   get actions () {
@@ -182,6 +183,29 @@ class Banner extends React.Component<Props, State> {
     return new Intl.DateTimeFormat('default', fmtArgs).format(reconcileStamp * 1000)
   }
 
+  shouldShowConnectedMessage = () => {
+    const publisher = this.props.publisher
+    const { externalWallet, balance } = this.props.rewardsDonateData
+    const { wallets } = balance
+    const notVerified = publisher && utils.isPublisherNotVerified(publisher.status)
+    const connected = publisher && utils.isPublisherConnected(publisher.status)
+    const status = utils.getWalletStatus(externalWallet)
+
+    if (notVerified) {
+      return true
+    }
+
+    if (connected && (status === 'unverified' ||
+      status === 'disconnected_unverified' ||
+      status === 'disconnected_verified')) {
+      return false
+    }
+
+    const hasAnonBalance = wallets['anonymous'] && wallets['anonymous'] > 0
+
+    return connected && !hasAnonBalance
+  }
+
   render () {
     const { balance } = this.props.rewardsDonateData
     const { total } = balance
@@ -189,8 +213,6 @@ class Banner extends React.Component<Props, State> {
     const mediaMetaData = this.props.mediaMetaData
     const publisher = this.props.publisher
     const checkmark = utils.isPublisherConnectedOrVerified(publisher.status)
-    const verified = utils.isPublisherVerified(publisher.status)
-    const connected = utils.isPublisherConnected(publisher.status)
     const bannerType = this.props.monthly ? 'monthly' : 'one-time'
     let logo = publisher.logo
 
@@ -220,7 +242,7 @@ class Banner extends React.Component<Props, State> {
         currentAmount={this.state.currentAmount || '0'}
         onClose={this.onClose}
         social={this.generateSocialLinks()}
-        showUnVerifiedNotice={!verified || connected}
+        showUnVerifiedNotice={this.shouldShowConnectedMessage()}
         isVerified={checkmark}
         learnMoreNotice={'https://brave.com/faq/#unclaimed-funds'}
         addFundsLink={this.addFundsLink}

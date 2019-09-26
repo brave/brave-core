@@ -57,3 +57,9 @@ export const onBalance = (status: number, balance: RewardsTip.Balance) => action
   status,
   balance
 })
+
+export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
+
+export const onExternalWallet = (wallet: RewardsTip.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+  wallet
+})
