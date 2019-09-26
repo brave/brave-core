@@ -290,7 +290,6 @@ class RewardsServiceImpl : public RewardsService,
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
-  void CheckInsufficientFundsForTesting();
   void MaybeShowNotificationAddFundsForTesting(
       base::OnceCallback<void(bool)> callback);
 
@@ -431,6 +430,10 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationAddFunds();
   bool ShouldShowNotificationAddFunds() const;
   void ShowNotificationAddFunds(bool sufficient);
+
+  void OnMaybeShowNotificationAddFundsForTesting(
+      base::OnceCallback<void(bool)> callback,
+      const bool result);
 
   void MaybeShowNotificationTipsPaid();
   void ShowNotificationTipsPaid(bool ac_enabled);

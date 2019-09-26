@@ -205,7 +205,7 @@ class ContributeBox extends React.Component<Props, State> {
               multiple={true}
               onChange={this.onCheckSettingChange}
             >
-              <div data-key='contributionNonVerified'>{getLocale('contributionNonVerified')}</div>
+              <div data-key='contributionNonVerified'>{getLocale('contributionShowNonVerified')}</div>
               <div data-key='contributionVideos'>{getLocale('contributionVideos')}</div>
             </Checkbox>
           </ControlWrapper>
@@ -270,15 +270,15 @@ class ContributeBox extends React.Component<Props, State> {
             floating={true}
             onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
             value={parseFloat((contributionMonthly.toString() || '0')).toFixed(1)}
+            showAllContents={true}
           >
             {
               monthlyList.map((choice: MonthlyChoice) => {
-                return <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                  <Tokens
-                    value={choice.tokens}
-                    converted={choice.converted}
-                  />
-                </div>
+                return (
+                  <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
+                    {getLocale('contributionUpTo')} <Tokens value={choice.tokens} converted={choice.converted} />
+                  </div>
+                )
               })
             }
           </Select>
@@ -289,10 +289,7 @@ class ContributeBox extends React.Component<Props, State> {
           </NextContribution>
         </List>
         <List title={getLocale('contributionSites')}>
-          {getLocale('total')} &nbsp;<Tokens
-            value={numRows.toString()}
-            hideText={true}
-          />
+          <Tokens value={numRows.toString()} hideText={true} />
         </List>
         <TableContribute
           header={[

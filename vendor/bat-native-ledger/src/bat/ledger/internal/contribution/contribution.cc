@@ -71,147 +71,52 @@ void Contribution::HasSufficientBalance(
 }
 
 void Contribution::OnSufficientBalanceWallet(
-    ledger::Result result,
+    const ledger::Result result,
     ledger::BalancePtr properties,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
-  if (result == ledger::Result::LEDGER_OK && properties) {
-    auto filter = ledger_->CreateActivityFilter(
-      std::string(),
-      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
-      true,
-      ledger_->GetReconcileStamp(),
-      ledger_->GetPublisherAllowNonVerified(),
-      ledger_->GetPublisherMinVisits());
-  ledger_->GetActivityInfoList(
-      0,
-      0,
-      std::move(filter),
-      std::bind(&Contribution::GetVerifiedAutoAmount,
-                this,
-                _1,
-                _2,
-                properties->total,
-                callback));
-  }
-}
-
-void Contribution::GetVerifiedAutoAmount(
-    const ledger::PublisherInfoList& publisher_list,
-    uint32_t record,
-    double balance,
-    ledger::HasSufficientBalanceToReconcileCallback callback) {
-  double ac_amount = ledger_->GetContributionAmount();
-  double total_reconcile_amount(GetAmountFromVerifiedAuto(
-      publisher_list, ac_amount));
-  if (balance < total_reconcile_amount && !publisher_list.empty()) {
-    callback(false);
+  if (result != ledger::Result::LEDGER_OK || !properties) {
     return;
   }
-  ledger_->GetRecurringTips(
-      std::bind(&Contribution::GetVerifiedRecurringAmount,
-                this,
-                _1,
-                _2,
-                balance,
-                total_reconcile_amount,
-                callback));
+
+  auto tips_callback =
+      std::bind(&Contribution::OnHasSufficientBalance,
+          this,
+          _1,
+          _2,
+          properties->total,
+          callback);
+
+  ledger_->GetRecurringTips(tips_callback);
 }
 
-double Contribution::GetAmountFromVerifiedAuto(
+void Contribution::OnHasSufficientBalance(
     const ledger::PublisherInfoList& publisher_list,
-    double ac_amount) {
-  double verified_bat = 0.0;
-  for (const auto& publisher : publisher_list) {
-    const auto add = ledger_->IsPublisherConnectedOrVerified(publisher->status);
-    if (add) {
-      verified_bat += (publisher->weight / 100.0) * ac_amount;
-    }
-  }
-  return verified_bat;
-}
-
-void Contribution::GetVerifiedRecurringAmount(
-    const ledger::PublisherInfoList& publisher_list,
-    uint32_t record,
-    double balance,
-    double total_reconcile_amount,
+    const uint32_t record,
+    const double balance,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (publisher_list.empty()) {
     callback(true);
     return;
   }
-  total_reconcile_amount += GetAmountFromVerifiedRecurring(publisher_list);
-  callback(balance >= total_reconcile_amount);
+
+  const auto total = GetTotalFromRecurringVerified(publisher_list);
+  callback(balance >= total);
 }
 
 // static
-double Contribution::GetAmountFromVerifiedRecurring(
+double Contribution::GetTotalFromRecurringVerified(
     const ledger::PublisherInfoList& publisher_list) {
   double total_recurring_amount = 0.0;
   for (const auto& publisher : publisher_list) {
     if (publisher->id.empty()) {
       continue;
     }
+
     if (publisher->status == ledger::PublisherStatus::VERIFIED) {
       total_recurring_amount += publisher->weight;
     }
   }
   return total_recurring_amount;
-}
-
-
-
-ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
-    const ledger::PublisherInfoList& list,
-    double* budget) {
-  ledger::PublisherInfoList verified;
-  ledger::PublisherInfoList non_verified_temp;
-  ledger::PendingContributionList non_verified;
-
-  double verified_total = 0.0;
-  double ac_amount = ledger_->GetContributionAmount();
-
-  for (const auto& publisher : list) {
-    if (publisher->percent == 0) {
-      continue;
-    }
-
-    const auto add = ledger_->IsPublisherConnectedOrVerified(publisher->status);
-    if (add) {
-      verified.push_back(publisher->Clone());
-      verified_total += publisher->weight;
-    } else {
-      non_verified_temp.push_back(publisher->Clone());
-    }
-  }
-
-  // verified budget
-  *budget += (verified_total / 100) * ac_amount;
-
-  // verified publishers
-  for (auto& publisher : verified) {
-    publisher->weight = (publisher->weight / verified_total) * 100;
-    publisher->percent = static_cast<uint32_t>(publisher->weight);
-  }
-
-  // non-verified publishers
-  for (const auto& publisher : non_verified_temp) {
-    auto contribution = ledger::PendingContribution::New();
-    contribution->amount = (publisher->weight / 100) * ac_amount;
-    contribution->publisher_key = publisher->id;
-    contribution->viewing_id = "";
-    contribution->type = ledger::RewardsType::AUTO_CONTRIBUTE;
-
-    non_verified.push_back(std::move(contribution));
-  }
-
-  if (non_verified.size() > 0) {
-    ledger_->SaveUnverifiedContribution(
-      std::move(non_verified),
-      [](const ledger::Result _){});
-  }
-
-  return verified;
 }
 
 ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
@@ -251,14 +156,15 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
 void Contribution::PrepareACList(
     ledger::PublisherInfoList list,
     uint32_t next_record) {
-  double budget = 0.0;
   ledger::PublisherInfoList normalized_list;
   braveledger_bat_helper::PublisherList new_list;
 
   ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);
-  auto verified_list = GetVerifiedListAuto(normalized_list, &budget);
+  for (const auto &publisher : normalized_list) {
+    if (publisher->percent == 0) {
+      continue;
+    }
 
-  for (const auto &publisher : verified_list) {
     braveledger_bat_helper::PUBLISHER_ST new_publisher;
     new_publisher.id_ = publisher->id;
     new_publisher.percent_ = publisher->percent;
@@ -273,13 +179,20 @@ void Contribution::PrepareACList(
   InitReconcile(ledger::RewardsType::AUTO_CONTRIBUTE,
                 new_list,
                 {},
-                budget);
+                ledger_->GetContributionAmount());
 }
 
 void Contribution::PrepareRecurringList(
     ledger::PublisherInfoList list,
     uint32_t next_record) {
   double budget = 0.0;
+
+  if (list.empty()) {
+    StartAutoContribute();
+    return;
+  } else {
+    SetTimer(&delay_ac_timer_id, 30);
+  }
 
   auto verified_list = GetVerifiedListRecurring(list, &budget);
   braveledger_bat_helper::Directions directions;
@@ -315,8 +228,6 @@ void Contribution::StartMonthlyContribution() {
                 this,
                 _1,
                 _2));
-
-  SetTimer(&delay_ac_timer_id, 10);
 }
 
 bool Contribution::ShouldStartAutoContribute() {
@@ -339,7 +250,7 @@ void Contribution::StartAutoContribute() {
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       current_reconcile_stamp,
-      ledger_->GetPublisherAllowNonVerified(),
+      false,
       ledger_->GetPublisherMinVisits());
   ledger_->GetActivityInfoList(
       0,
@@ -747,10 +658,10 @@ bool Contribution::HaveReconcileEnoughFunds(
     const ledger::RewardsType type,
     double* fee,
     double budget,
-    double balance,
+    const double balance,
     const braveledger_bat_helper::Directions& directions) {
   if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    if (budget > balance) {
+    if (balance == 0) {
       BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
           "You do not have enough funds for auto contribution";
        phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
@@ -759,21 +670,18 @@ bool Contribution::HaveReconcileEnoughFunds(
       return false;
     }
 
+    if (budget > balance) {
+      budget = balance;
+    }
+
     *fee = budget;
     return true;
   }
 
   if (type == ledger::RewardsType::RECURRING_TIP) {
-    double ac_amount = ledger_->GetContributionAmount();
-
-    // don't use ac amount if ac is disabled
-    if (!ShouldStartAutoContribute()) {
-      ac_amount = 0;
-    }
-
-    if (budget + ac_amount > balance) {
+    if (budget > balance) {
       BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-        "You do not have enough funds to do recurring and auto contribution";
+        "You do not have enough funds to do monthly contribution";
         phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
                              "",
                              ledger::RewardsType::AUTO_CONTRIBUTE);
