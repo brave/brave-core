@@ -9,6 +9,8 @@
 #include <stddef.h>
 #include <ctype.h>
 
+#include <string>
+
 #include "base/containers/flat_map.h"
 #include "base/strings/string_piece.h"
 
