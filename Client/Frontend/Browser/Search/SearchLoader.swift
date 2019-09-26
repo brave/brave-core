@@ -73,6 +73,13 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
                 
                 // First, see if the query matches any URLs from the user's search history.
                 self.load(result)
+                
+                // If the new search string is not longer than the previous
+                // we don't need to find an autocomplete suggestion.
+                if oldValue.count > self.query.count {
+                    return
+                }
+                
                 for site in result {
                     if let completion = self.completionForURL(site.url) {
                         self.topToolbar.setAutocompleteSuggestion(completion)
