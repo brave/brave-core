@@ -930,18 +930,35 @@ class BrowserViewController: UIViewController {
     }
 
     func finishEditingAndSubmit(_ url: URL, visitType: VisitType) {
-        topToolbar.currentURL = url
-        topToolbar.leaveOverlayMode()
+        if url.isBookmarklet {
+            topToolbar.leaveOverlayMode()
+            
+            guard let tab = tabManager.selectedTab else {
+                return
+            }
+            
+            if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
+                resetSpoofedUserAgentIfRequired(webView, newURL: url)
+                webView.evaluateJavaScript(code, completionHandler: { _, error in
+                    if let error = error {
+                        log.error(error)
+                    }
+                })
+            }
+        } else {
+            topToolbar.currentURL = url
+            topToolbar.leaveOverlayMode()
 
-        guard let tab = tabManager.selectedTab else {
-            return
+            guard let tab = tabManager.selectedTab else {
+                return
+            }
+
+            if let webView = tab.webView {
+                resetSpoofedUserAgentIfRequired(webView, newURL: url)
+            }
+
+            tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
         }
-
-        if let webView = tab.webView {
-            resetSpoofedUserAgentIfRequired(webView, newURL: url)
-        }
-
-        tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
     }
 
     override func accessibilityPerformEscape() -> Bool {

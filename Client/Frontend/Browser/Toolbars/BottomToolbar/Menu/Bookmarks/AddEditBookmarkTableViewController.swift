@@ -236,8 +236,8 @@ class AddEditBookmarkTableViewController: UITableViewController {
         switch mode {
         case .addBookmark(_, _):
             guard let urlString = bookmarkDetailsView.urlTextField?.text,
-                let url = URL(string: urlString) else {
-                    return earlyReturn()
+                  let url = URL(string: urlString) ?? urlString.bookmarkletURL else {
+                return earlyReturn()
             }
             
             switch saveLocation {
@@ -259,7 +259,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
             }
         case .editBookmark(let bookmark):
             guard let urlString = bookmarkDetailsView.urlTextField?.text,
-                let url = URL(string: urlString) else {
+                let url = URL(string: urlString) ?? urlString.bookmarkletURL else {
                     return earlyReturn()
             }
             
@@ -267,7 +267,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
             
             switch saveLocation {
             case .rootLevel:
-                bookmark.updateWithNewLocation(customTitle: title, url: urlString, location: nil)
+                bookmark.updateWithNewLocation(customTitle: title, url: url.absoluteString, location: nil)
             case .favorites:
                 bookmark.delete()
                 Bookmark.addFavorite(url: url, title: title)

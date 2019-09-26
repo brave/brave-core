@@ -18,24 +18,6 @@ extension BookmarkFormFieldsProtocol {
     var urlTextField: UITextField? { return nil }
     
     func validateFields() -> Bool {
-        let title = titleTextField.text
-
-        // Only title field is implemented
-        if urlTextField == nil {
-            return validateTitle(title)
-        }
-        
-        guard let url = urlTextField?.text else { return false }
-        
-        return validateTitle(title) && validateUrl(url)
-    }
-    
-    private func validateTitle(_ title: String?) -> Bool {
-        guard let title = title else { return false }
-        return !title.isEmpty
-    }
-    
-    private func validateUrl(_ urlString: String) -> Bool {
-        return URL(string: urlString)?.schemeIsValid == true
+        return BookmarkValidation.validateBookmark(title: titleTextField.text, url: urlTextField?.text)
     }
 }

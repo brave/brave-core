@@ -88,6 +88,15 @@ extension BrowserViewController: WKNavigationDelegate {
             decisionHandler(.allow)
             return
         }
+        
+        if url.isBookmarklet && navigationAction.isAllowed {
+            decisionHandler(.cancel)
+            
+            if let code = url.bookmarkletCodeComponent {
+                webView.evaluateJavaScript(code)
+            }
+            return
+        }
 
         if !navigationAction.isAllowed && navigationAction.navigationType != .backForward {
             log.warning("Denying unprivileged request: \(navigationAction.request)")
