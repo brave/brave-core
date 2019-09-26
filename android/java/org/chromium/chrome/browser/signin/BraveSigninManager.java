@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.signin;
 
 import android.content.Context;
 
+import org.chromium.base.ContextUtils;
+import org.chromium.base.annotations.CalledByNative;
 import org.chromium.components.signin.AccountTrackerService;
 
 public class BraveSigninManager extends SigninManager {
@@ -14,6 +16,7 @@ public class BraveSigninManager extends SigninManager {
             AccountTrackerService accountTrackerService) {
         super(context, nativeSigninManagerAndroid, delegate, accountTrackerService);
     }
+
     @Override
     public boolean isSignInAllowed() {
         return false;
@@ -22,5 +25,15 @@ public class BraveSigninManager extends SigninManager {
     @Override
     public boolean isSigninSupported() {
         return false;
+    }
+
+    @CalledByNative
+    private static SigninManager create(long nativeSigninManagerAndroid,
+            SigninManagerDelegate delegate, AccountTrackerService accountTrackerService) {
+        assert nativeSigninManagerAndroid != 0;
+        assert delegate != null;
+        assert accountTrackerService != null;
+        return new BraveSigninManager(ContextUtils.getApplicationContext(), nativeSigninManagerAndroid,
+                delegate, accountTrackerService);
     }
 }

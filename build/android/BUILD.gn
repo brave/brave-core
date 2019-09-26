@@ -96,5 +96,6 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageView.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
+    "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
   ]
 }
