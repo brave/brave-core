@@ -326,6 +326,17 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD2(GetServerPublisherInfo, void(
       const std::string& publisher_key,
       ledger::GetServerPublisherInfoCallback callback));
+
+  MOCK_METHOD2(SetTransferFee, void(
+      const std::string& wallet_type,
+      ledger::TransferFeePtr transfer_fee));
+
+  MOCK_METHOD1(GetTransferFees, ledger::TransferFeeList(
+      const std::string& wallet_type));
+
+  MOCK_METHOD2(RemoveTransferFee, void(
+    const std::string& wallet_type,
+    const std::string& id));
 };
 
 }  // namespace confirmations

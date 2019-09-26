@@ -6,6 +6,8 @@
 #ifndef BRAVELEDGER_UPHOLD_UPHOLD_H_
 #define BRAVELEDGER_UPHOLD_UPHOLD_H_
 
+#include <stdint.h>
+
 #include <string>
 #include <map>
 #include <memory>
@@ -36,6 +38,8 @@ class Uphold {
   explicit Uphold(bat_ledger::LedgerImpl* ledger);
 
   ~Uphold();
+
+  void Initialize();
 
   void StartContribution(
       const std::string& viewing_id,
@@ -79,6 +83,8 @@ class Uphold {
       ledger::ExternalWalletPtr wallet,
       CreateAnonAddressCallback callback);
 
+  void OnTimer(uint32_t timer_id);
+
  private:
   void ContributionCompleted(
       const ledger::Result result,
@@ -105,6 +111,22 @@ class Uphold {
   void OnDisconectWallet(
     ledger::Result result,
     ledger::ExternalWalletPtr wallet);
+
+  void SaveTransferFee(ledger::TransferFeePtr transfer_fee);
+
+  void OnTransferFeeCompleted(
+    const ledger::Result result,
+    const bool created,
+    const ledger::TransferFee& transfer_fee);
+
+  void TransferFee(
+    const ledger::Result result,
+    ledger::ExternalWalletPtr wallet,
+    const ledger::TransferFee& transfer_fee);
+
+  void TransferFeeOnTimer(const uint32_t timer_id);
+
+  void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
 
   std::unique_ptr<UpholdTransfer> transfer_;
   std::unique_ptr<UpholdCard> card_;
