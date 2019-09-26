@@ -1,0 +1,12 @@
+diff --git a/components/sync/engine_impl/process_updates_util.cc b/components/sync/engine_impl/process_updates_util.cc
+index 938f9a5ca2d2dd1602c80e6e032e6e5299a0f01f..78cfcaab4fd983cbbec63904fe765d1464f1b612 100644
+--- a/components/sync/engine_impl/process_updates_util.cc
++++ b/components/sync/engine_impl/process_updates_util.cc
+@@ -202,6 +202,7 @@ void ProcessUpdate(const sync_pb::SyncEntity& update,
+   // change the ID now, after we're sure that the update can succeed.
+   if (local_id != server_id) {
+     DCHECK(!update.deleted());
++    BRAVE_PROCESS_UPDATE
+     ChangeEntryIDAndUpdateChildren(trans, &target_entry, server_id);
+     // When IDs change, versions become irrelevant.  Forcing BASE_VERSION
+     // to zero would ensure that this update gets applied, but would indicate
