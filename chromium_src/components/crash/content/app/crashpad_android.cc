@@ -89,7 +89,7 @@ crashpad::BraveCrashpadClient& GetBraveCrashpadClient() {
 
 #define COMPONENTS_CRASH_CONTENT_APP_CRASHPAD_H_
 #define GetCrashpadClient GetBraveCrashpadClient
-#include "../../../../../../components/crash/content/app/crashpad_linux.cc"
+#include "../../../../../../components/crash/content/app/crashpad_android.cc"
 #undef GetCrashpadClient
 
 namespace crash_reporter {
