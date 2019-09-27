@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#if !defined(OS_ANDROID)
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 
 #include "base/no_destructor.h"
@@ -41,4 +40,3 @@ const service_manager::Manifest& GetBraveContentBrowserOverlayManifest() {
           .Build()};
   return *manifest;
 }
-#endif
