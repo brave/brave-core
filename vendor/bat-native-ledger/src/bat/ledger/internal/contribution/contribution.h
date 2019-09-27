@@ -130,7 +130,7 @@ class Contribution {
 
   ~Contribution();
 
-  void OnStartUp();
+  void Initialize();
 
   // Initial point for contribution
   // In this step we get balance from the server

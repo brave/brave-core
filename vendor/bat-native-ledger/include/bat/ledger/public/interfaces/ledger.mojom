@@ -237,3 +237,10 @@ struct ServerPublisherInfo {
   string address;
   PublisherBanner? banner;
 };
+
+struct TransferFee {
+  string id;
+  double amount;
+  uint64 execution_timestamp;
+  uint32 execution_id;
+};

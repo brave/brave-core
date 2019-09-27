@@ -6,6 +6,8 @@
 #ifndef BAT_LEDGER_WALLET_PROPERTIES_HANDLER_
 #define BAT_LEDGER_WALLET_PROPERTIES_HANDLER_
 
+#include <map>
+#include <string>
 
 #include "bat/ledger/public/interfaces/ledger.mojom.h"
 
@@ -16,6 +18,10 @@ using WalletPropertiesPtr = ledger::mojom::WalletPropertiesPtr;
 
 using ExternalWallet = ledger::mojom::ExternalWallet;
 using ExternalWalletPtr = ledger::mojom::ExternalWalletPtr;
+
+using TransferFee = ledger::mojom::TransferFee;
+using TransferFeePtr = ledger::mojom::TransferFeePtr;
+using TransferFeeList = std::map<std::string, TransferFeePtr>;
 
 const char kWalletAnonymous[] = "anonymous";
 const char kWalletUphold[] = "uphold";
