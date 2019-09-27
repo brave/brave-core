@@ -383,7 +383,6 @@ test("brave_browser_tests") {
     "//brave/app/brave_main_delegate_browsertest.cc",
     "//brave/browser/autocomplete/brave_autocomplete_provider_client_browsertest.cc",
     "//brave/browser/brave_scheme_load_browsertest.cc",
-    "//brave/chromium_src/chrome/browser/google/chrome_google_url_tracker_client_browsertest.cc",
     "//brave/chromium_src/chrome/browser/profiles/profile_window_browsertest.cc",
     "//brave/chromium_src/chrome/browser/ui/views/location_bar/location_bar_view_browsertest.cc",
     "//brave/chromium_src/components/content_settings/core/browser/brave_content_settings_registry_browsertest.cc",
