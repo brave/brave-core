@@ -45,6 +45,15 @@ class TestNativeThemeObserver : public ui::NativeThemeObserver {
   MOCK_METHOD1(OnNativeThemeUpdated, void(ui::NativeTheme*));
 };
 
+#if defined(OS_WIN)
+void RunLoopRunWithTimeout(base::TimeDelta timeout) {
+  base::RunLoop run_loop;
+  base::RunLoop::ScopedRunTimeoutForTest run_timeout(timeout,
+                                                     run_loop.QuitClosure());
+  run_loop.Run();
+}
+#endif
+
 }  // namespace
 
 class BraveThemeServiceTestWithoutSystemTheme : public InProcessBrowserTest {
@@ -204,7 +213,6 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, DarkModeChangeByRegTest) {
   hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
 
   // Timeout is used because we can't get notifiication with light theme.
-  base::RunLoop run_loop;
-  run_loop.RunWithTimeout(base::TimeDelta::FromMilliseconds(500));;
+  RunLoopRunWithTimeout(base::TimeDelta::FromMilliseconds(500));
 }
 #endif
