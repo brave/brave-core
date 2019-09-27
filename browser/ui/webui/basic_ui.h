@@ -13,7 +13,6 @@
 #include "base/compiler_specific.h"
 #include "base/macros.h"
 #include "content/public/browser/web_ui_controller.h"
-#include "brave/browser/version_info.h"
 
 namespace content {
 class RenderViewHost;
