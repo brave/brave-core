@@ -6,5 +6,5 @@
 
 #undef ThemeService
 #define ThemeService BraveThemeService
-#include "../../../../../chrome/browser/themes/theme_service_aurax11.h"
+#include "../../../../../chrome/browser/themes/theme_service_aura_linux.h"
 #undef ThemeService
