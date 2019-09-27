@@ -210,9 +210,8 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
   // Open a new browser window with the provided |profile|.
   Browser* NewBrowserWindow(Profile* profile) {
     DCHECK(profile);
-    ui_test_utils::BrowserAddedObserver browser_added_observer;
     chrome::NewEmptyWindow(profile);
-    Browser* browser = browser_added_observer.WaitForSingleNewBrowser();
+    Browser* browser = ui_test_utils::WaitForBrowserToOpen();
     DCHECK(browser);
     content::WaitForLoadStopWithoutSuccessCheck(
         browser->tab_strip_model()->GetActiveWebContents());
@@ -221,9 +220,8 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
   // Open a new browser window with a guest session.
   Browser* NewGuestBrowserWindow() {
-    ui_test_utils::BrowserAddedObserver browser_added_observer;
     profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
-    Browser* browser = browser_added_observer.WaitForSingleNewBrowser();
+    Browser* browser = ui_test_utils::WaitForBrowserToOpen();
     DCHECK(browser);
     // When a guest |browser| closes a BrowsingDataRemover will be created and
     // executed. It needs a loaded TemplateUrlService or else it hangs on to a
