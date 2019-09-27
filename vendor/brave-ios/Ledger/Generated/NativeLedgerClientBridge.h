@@ -71,5 +71,8 @@
 - (void)deleteActivityInfo:(const std::string&)publisher_key callback:(ledger::DeleteActivityInfoCallback)callback;
 - (void)clearAndInsertServerPublisherList:(ledger::ServerPublisherInfoList)list callback:(ledger::ClearAndInsertServerPublisherListCallback)callback;
 - (void)getServerPublisherInfo:(const std::string&)publisher_key callback:(ledger::GetServerPublisherInfoCallback) callback;
+- (void)setTransferFee:(const std::string&)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee;
+- (void)removeTransferFee:(const std::string&)wallet_type id:(const std::string&)id;
+- (ledger::TransferFeeList)getTransferFees:(const std::string&)wallet_type;
 
 @end

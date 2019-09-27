@@ -154,7 +154,6 @@ void UpholdTransfer::OnCommitTransaction(
   }
 
   if (response_status_code != net::HTTP_OK) {
-    // TODO(nejczdovc): add retry logic to all errors in this function
     callback(ledger::Result::LEDGER_ERROR, true);
     return;
   }

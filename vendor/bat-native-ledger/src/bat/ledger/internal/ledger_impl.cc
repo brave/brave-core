@@ -86,7 +86,8 @@ LedgerImpl::~LedgerImpl() {
   }
 }
 
-void LedgerImpl::OnWalletInitializedInternal(ledger::Result result,
+void LedgerImpl::OnWalletInitializedInternal(
+    ledger::Result result,
     ledger::InitializeCallback callback) {
   initializing_ = false;
   callback(result);
@@ -96,6 +97,7 @@ void LedgerImpl::OnWalletInitializedInternal(ledger::Result result,
     bat_publisher_->SetPublisherServerListTimer();
     bat_contribution_->SetReconcileTimer();
     RefreshGrant(false);
+    bat_contribution_->Initialize();
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize wallet";
   }
@@ -273,9 +275,10 @@ void LedgerImpl::LoadLedgerState(ledger::OnLoadCallback callback) {
   ledger_client_->LoadLedgerState(std::move(callback));
 }
 
-void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
-                                     const std::string& data,
-                                     ledger::InitializeCallback callback) {
+void LedgerImpl::OnLedgerStateLoaded(
+    ledger::Result result,
+    const std::string& data,
+    ledger::InitializeCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_state_->LoadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -294,7 +297,6 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
           _2,
           std::move(callback));
       LoadPublisherState(std::move(on_pub_load));
-      bat_contribution_->OnStartUp();
     }
     return;
   }
@@ -327,9 +329,10 @@ void LedgerImpl::LoadPublisherState(ledger::OnLoadCallback callback) {
   ledger_client_->LoadPublisherState(std::move(callback));
 }
 
-void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
-                                        const std::string& data,
-                                        ledger::InitializeCallback callback) {
+void LedgerImpl::OnPublisherStateLoaded(
+    ledger::Result result,
+    const std::string& data,
+    ledger::InitializeCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_publisher_->loadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -349,7 +352,6 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
     callback(ledger::Result::CORRUPTED_WALLET);
   } else {
     callback(result);
-    OnWalletInitialized(result);
   }
 }
 
@@ -364,20 +366,6 @@ void LedgerImpl::SavePublisherState(const std::string& data,
 
 std::string LedgerImpl::GenerateGUID() const {
   return ledger_client_->GenerateGUID();
-}
-
-void LedgerImpl::OnWalletInitialized(ledger::Result result) {
-  initializing_ = false;
-
-  if (result == ledger::Result::LEDGER_OK ||
-      result == ledger::Result::WALLET_CREATED) {
-    initialized_ = true;
-    bat_publisher_->SetPublisherServerListTimer();
-    bat_contribution_->SetReconcileTimer();
-    RefreshGrant(false);
-  } else {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize wallet";
-  }
 }
 
 void LedgerImpl::LoadURL(const std::string& url,
@@ -1551,6 +1539,23 @@ uint64_t LedgerImpl::GetUint64State(const std::string& name) const {
 
 void LedgerImpl::ClearState(const std::string& name) {
   ledger_client_->ClearState(name);
+}
+
+void LedgerImpl::SetTransferFee(
+    const std::string& wallet_type,
+    ledger::TransferFeePtr transfer_fee) {
+  ledger_client_->SetTransferFee(wallet_type, std::move(transfer_fee));
+}
+
+ledger::TransferFeeList LedgerImpl::GetTransferFees(
+    const std::string& wallet_type) const {
+  return ledger_client_->GetTransferFees(wallet_type);
+}
+
+void LedgerImpl::RemoveTransferFee(
+    const std::string& wallet_type,
+    const std::string& id) {
+  ledger_client_->RemoveTransferFee(wallet_type, id);
 }
 
 }  // namespace bat_ledger

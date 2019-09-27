@@ -30,6 +30,8 @@ class PhaseTwo {
 
   ~PhaseTwo();
 
+  void Initialize();
+
   void Start(const std::string& viewing_id);
 
   void PrepareBallots();
