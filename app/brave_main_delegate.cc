@@ -134,7 +134,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kEnableDomDistiller);
 #endif
   command_line.AppendSwitch(switches::kDisableDomainReliability);
-  command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
 
   // Setting these to default values in Chromium to maintain parity
