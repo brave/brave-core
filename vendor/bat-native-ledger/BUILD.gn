@@ -25,6 +25,11 @@ config("internal_config") {
     "//brave/test:*",
   ]
   include_dirs = [ "src" ]
+  if (is_ios) {
+    include_dirs += [ "src/bat/ledger/internal/prefs/ios" ]
+  } else {
+    include_dirs += [ "src/bat/ledger/internal/prefs" ]
+  }
 }
 
 group("bat-native-ledger") {
@@ -130,6 +135,7 @@ source_set("ledger") {
     "src/bat/ledger/internal/publisher/publisher_server_list.cc",
     "src/bat/ledger/internal/publisher/publisher_server_list.h",
     "src/bat/ledger/internal/state_keys.h",
+    "src/bat/ledger/internal/static_values.h",
     "src/bat/ledger/internal/uphold/uphold.h",
     "src/bat/ledger/internal/uphold/uphold.cc",
     "src/bat/ledger/internal/uphold/uphold_authorization.h",
@@ -160,6 +166,12 @@ source_set("ledger") {
     "src/bat/ledger/transaction_info.cc",
     "src/bat/ledger/transactions_info.cc",
   ]
+
+  if (is_ios) {
+    sources += [ "src/bat/ledger/internal/prefs/ios/static_prefs.h", ]
+  } else {
+    sources += [ "src/bat/ledger/internal/prefs/static_prefs.h" ]
+  }
 
   deps = [
     "//base",

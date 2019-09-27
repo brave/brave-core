@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include "static_prefs.h"
 
 #define LEDGER_STAGING_SERVER               \
 "https://ledger-staging.mercury.basicattentiontoken.org"
@@ -114,9 +115,6 @@ static const uint64_t _milliseconds_hour = 60 * 60 * 1000;
 static const uint64_t _milliseconds_minute = 60 * 1000;
 
 static const uint64_t _milliseconds_second = 1000;
-
-// 24 hours in seconds
-static const uint64_t _publishers_list_load_interval = 24 * 60 * 60;
 
 // 30 days in seconds
 static const uint64_t _reconcile_default_interval = 30 * 24 * 60 * 60;
