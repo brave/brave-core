@@ -977,7 +977,7 @@ void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
 
 void BraveProfileSyncServiceImpl::SignalWaitableEvent() {
   std::move(get_record_cb_);
-  if (wevent_) {
+  if (wevent_ && !wevent_->IsSignaled()) {
     wevent_->Signal();
     wevent_ = nullptr;
   }
