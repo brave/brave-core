@@ -103,6 +103,13 @@ void BraveMockRenderViewContextMenu::AddMenuItemWithIcon(
   AddMenuItem(command_id, title);
 }
 
+void BraveMockRenderViewContextMenu::AddMenuItemWithIcon(
+    int command_id,
+  const base::string16& title,
+  const gfx::VectorIcon& image) {
+  AddMenuItem(command_id, title);
+}
+
 void BraveMockRenderViewContextMenu::AddCheckItem(int command_id,
                                                   const base::string16& title) {
   MockMenuItem item;
@@ -160,6 +167,14 @@ void BraveMockRenderViewContextMenu::AddSubMenuWithStringIdAndIcon(
     int message_id,
     ui::MenuModel* model,
     const gfx::ImageSkia& image) {
+  AddSubMenu(command_id, base::NumberToString16(message_id), model);
+}
+
+void BraveMockRenderViewContextMenu::AddSubMenuWithStringIdAndIcon(
+    int command_id,
+    int message_id,
+    ui::MenuModel* model,
+    const gfx::VectorIcon& image) {
   AddSubMenu(command_id, base::NumberToString16(message_id), model);
 }
 
