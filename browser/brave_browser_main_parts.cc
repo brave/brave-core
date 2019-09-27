@@ -15,6 +15,7 @@
 #endif
 
 void BraveBrowserMainParts::PostBrowserStart() {
+  ChromeBrowserMainParts::PostBrowserStart();
 #if !defined(OS_ANDROID)
   Browser* browser = chrome::FindLastActive();
   content::WebContents* active_web_contents = nullptr;
