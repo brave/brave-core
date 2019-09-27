@@ -631,6 +631,17 @@ class RewardsServiceImpl : public RewardsService,
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) override;
 
+  void SetTransferFee(
+      const std::string& wallet_type,
+      ledger::TransferFeePtr transfer_fee) override;
+
+  ledger::TransferFeeList GetTransferFees(
+      const std::string& wallet_type) override;
+
+  void RemoveTransferFee(
+      const std::string& wallet_type,
+      const std::string& id) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods

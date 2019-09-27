@@ -5,8 +5,10 @@
 
 #include <utility>
 
+#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
@@ -14,6 +16,7 @@
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -32,6 +35,17 @@ Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
 }
 
 Uphold::~Uphold() {
+}
+
+void Uphold::Initialize() {
+  auto fees = ledger_->GetTransferFees(ledger::kWalletUphold);
+  for (auto const& value : fees) {
+    if (!value.second) {
+      continue;
+    }
+
+    SaveTransferFee(value.second->Clone());
+  }
 }
 
 void Uphold::StartContribution(
@@ -71,17 +85,13 @@ void Uphold::ContributionCompleted(
   const auto amount = ConvertToProbi(std::to_string(reconcile.fee_));
 
   if (result == ledger::Result::LEDGER_OK) {
-    // 5% fee
-    auto fee_callback = std::bind(&Uphold::OnFeeCompleted,
-                              this,
-                              _1,
-                              _2,
-                              viewing_id);
-
-    transfer_->Start(fee,
-                     GetFeeAddress(),
-                     ledger::ExternalWallet::New(wallet),
-                     fee_callback);
+    const auto current_time_seconds = base::Time::Now().ToDoubleT();
+    auto transfer_fee = ledger::TransferFee::New();
+    transfer_fee->id = viewing_id;
+    transfer_fee->amount = fee;
+    transfer_fee->execution_timestamp =
+        current_time_seconds + brave_base::random::Geometric(60);
+    SaveTransferFee(std::move(transfer_fee));
   }
 
   ledger_->OnReconcileComplete(result,
@@ -95,11 +105,6 @@ void Uphold::ContributionCompleted(
     }
     return;
   }
-}
-
-void Uphold::OnFeeCompleted(ledger::Result result,
-                          bool created,
-                          const std::string &viewing_id) {
 }
 
 void Uphold::FetchBalance(
@@ -274,6 +279,90 @@ void Uphold::CreateAnonAddressIfNecessary(
     ledger::ExternalWalletPtr wallet,
     CreateAnonAddressCallback callback) {
   card_->CreateAnonAddressIfNecessary(std::move(wallet), callback);
+}
+
+void Uphold::SaveTransferFee(ledger::TransferFeePtr transfer_fee) {
+  if (!transfer_fee) {
+    return;
+  }
+
+  auto timer_id = 0u;
+  SetTimer(&timer_id);
+  transfer_fee->execution_id = timer_id;
+  ledger_->SetTransferFee(ledger::kWalletUphold, std::move(transfer_fee));
+}
+
+void Uphold::OnTransferFeeCompleted(
+    const ledger::Result result,
+    const bool created,
+    const ledger::TransferFee& transfer_fee) {
+  if (result == ledger::Result::LEDGER_OK) {
+    ledger_->RemoveTransferFee(ledger::kWalletUphold, transfer_fee.id);
+    return;
+  }
+
+  SaveTransferFee(ledger::TransferFee::New(transfer_fee));
+}
+
+void Uphold::TransferFee(
+    const ledger::Result result,
+    ledger::ExternalWalletPtr wallet,
+    const ledger::TransferFee& transfer_fee) {
+
+  if (result != ledger::Result::LEDGER_OK) {
+    SaveTransferFee(ledger::TransferFee::New(transfer_fee));
+    return;
+  }
+
+  auto callback = std::bind(&Uphold::OnTransferFeeCompleted,
+          this,
+          _1,
+          _2,
+          transfer_fee);
+
+      transfer_->Start(
+          transfer_fee.amount,
+          GetFeeAddress(),
+          std::move(wallet),
+          callback);
+}
+
+void Uphold::TransferFeeOnTimer(const uint32_t timer_id) {
+  const auto fees = ledger_->GetTransferFees(ledger::kWalletUphold);
+
+  for (auto const& value : fees) {
+    const auto fee = *value.second;
+    if (fee.execution_id == timer_id) {
+      auto callback = std::bind(&Uphold::TransferFee,
+          this,
+          _1,
+          _2,
+          fee);
+
+      ledger_->GetExternalWallet(ledger::kWalletUphold, callback);
+      return;
+    }
+  }
+}
+
+void Uphold::OnTimer(uint32_t timer_id) {
+  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
+    << "OnTimer Uphold: "
+    << timer_id;
+
+  TransferFeeOnTimer(timer_id);
+}
+
+void Uphold::SetTimer(uint32_t* timer_id, uint64_t start_timer_in) {
+  if (start_timer_in == 0) {
+    start_timer_in = brave_base::random::Geometric(45);
+  }
+
+  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
+    << "Starts Uphold timer in "
+    << start_timer_in;
+
+  ledger_->SetTimer(start_timer_in, timer_id);
 }
 
 }  // namespace braveledger_uphold

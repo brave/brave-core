@@ -273,4 +273,9 @@ interface BatLedgerClient {
   ClearAndInsertServerPublisherList(array<ledger.mojom.ServerPublisherInfo> list) => (ledger.mojom.Result result);
 
   GetServerPublisherInfo(string publisher_key) => (ledger.mojom.ServerPublisherInfo? info);
+
+  [Sync]
+  GetTransferFees(string wallet_type) => (map<string, ledger.mojom.TransferFee> list);
+  SetTransferFee(string wallet_type, ledger.mojom.TransferFee transfer_fee);
+  RemoveTransferFee(string wallet_type, string id);
 };
