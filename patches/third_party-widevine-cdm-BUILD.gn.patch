@@ -1,0 +1,19 @@
+diff --git a/third_party/widevine/cdm/BUILD.gn b/third_party/widevine/cdm/BUILD.gn
+index ed0e2f5208b0f29f80e16055b6bbd2f52c1d9b3d..a256938c551b27c7ee393e338709342e8fc21d6f 100644
+--- a/third_party/widevine/cdm/BUILD.gn
++++ b/third_party/widevine/cdm/BUILD.gn
+@@ -37,10 +37,10 @@ if (bundle_widevine_cdm) {
+   } else if (is_desktop_linux) {
+     widevine_cdm_version_h_file = "linux/$widevine_arch/widevine_cdm_version.h"
+     widevine_cdm_binary_files = [ "linux/$widevine_arch/libwidevinecdm.so" ]
+-    widevine_cdm_manifest_and_license_files = [
+-      "linux/$widevine_arch/manifest.json",
+-      "../LICENSE",
+-    ]
++#    widevine_cdm_manifest_and_license_files = [
++#      "linux/$widevine_arch/manifest.json",
++#      "../LICENSE",
++#    ]
+   } else if (is_win) {
+     widevine_cdm_version_h_file = "win/$widevine_arch/widevine_cdm_version.h"
+     widevine_cdm_binary_files = [ "win/$widevine_arch/widevinecdm.dll" ]
