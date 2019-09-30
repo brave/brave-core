@@ -8,6 +8,7 @@
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+#include "extensions/buildflags/buildflags.h"
 
 namespace {
 // Refered IsLitePageRedirectPreviewDomain() to make sample lite page url.
@@ -33,4 +34,8 @@ TEST(HistoryUtilsTest, VariousURLTest) {
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-search://test")));
   EXPECT_FALSE(CanAddURLToHistory(GURL("chrome-distiller://test")));
   EXPECT_FALSE(CanAddURLToHistory(GetSampleLitePageUrl()));
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  EXPECT_FALSE(CanAddURLToHistory(
+      GURL("chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/home.html")));
+#endif
 }
