@@ -19,7 +19,6 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
 #if defined(BRAVE_CHROMIUM_BUILD)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #else
