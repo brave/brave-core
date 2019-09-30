@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <!-- Attention % row-->
+    <RelativeLayout
+        android:id="@+id/attention_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_toStartOf="@+id/publisher_attention"
+            android:layout_marginStart="10dp"
+            android:text="@string/brave_ui_rewards_contribute_attention"
+            android:textColor="@color/modern_grey_700"
+            android:fontFamily="sans-serif"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/publisher_attention"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text=""
+            android:textColor="@color/modern_grey_700"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentEnd="true"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/brave_ui_auto_contribute_separator_top"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="#c0c0c0"
+        android:visibility="gone"/>
+
+
+    <!-- Include in AC list row-->
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/include_in_ac_layout"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/brave_ui_auto_contribute_text"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_toStartOf="@+id/brave_ui_auto_contribute"
+            android:layout_marginStart="10dp"
+            android:text="@string/brave_ui_include_in_auto"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/modern_grey_700"
+            android:textSize="14sp"
+            android:layout_alignBaseline="@+id/brave_ui_auto_contribute"/>
+
+        <Switch
+            android:id="@+id/brave_ui_auto_contribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:switchMinWidth="56dp"
+            android:layout_marginEnd="10dp"
+            android:theme="@style/BraveRewardsSwitchTheme"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/auto_tip_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone">
+
+        <Spinner
+            android:id="@+id/auto_tip_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:dropDownWidth="wrap_content"
+            android:fontFamily="sans-serif"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:spinnerMode="dropdown"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_toStartOf="@+id/auto_tip_amount"
+            android:layout_alignParentStart="true"
+            android:layout_alignBaseline="@+id/auto_tip_amount"
+            android:text="@string/brave_ui_donate_monthly"
+            android:fontFamily="sans-serif"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/brave_ui_auto_contribute_separator_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="#c0c0c0"
+        android:visibility="gone"/>
+
+</LinearLayout>

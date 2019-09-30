@@ -1661,7 +1661,7 @@ BraveRewardsPageUI::BraveRewardsPageUI(
     content::WebUI* web_ui,
     const std::string& name)
     : BasicUI(web_ui, name,
-#if !defined(OS_ANDROID)
+#if defined(BRAVE_CHROMIUM_BUILD)
     kBraveRewardsPageGenerated,
     kBraveRewardsPageGeneratedSize,
 #else

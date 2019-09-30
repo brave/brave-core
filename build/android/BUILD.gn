@@ -94,6 +94,7 @@ generate_jni("jni_headers") {
   sources = [
     "//brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
+    "//brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",

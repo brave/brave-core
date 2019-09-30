@@ -73,8 +73,10 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
+#if !defined(OS_ANDROID)
   } else if (host == kTipHost) {
     return new BraveTipUI(web_ui, url.host());
+#endif
 #endif
 #if !defined(OS_ANDROID)
   } else if (host == kWelcomeHost) {

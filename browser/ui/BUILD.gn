@@ -240,9 +240,14 @@ source_set("ui") {
       "webui/brave_rewards_source.h",
       "webui/brave_rewards_page_ui.cc",
       "webui/brave_rewards_page_ui.h",
-      "webui/brave_tip_ui.cc",
-      "webui/brave_tip_ui.h",
     ]
+
+    if (!is_android) {
+      sources += [
+        "webui/brave_tip_ui.cc",
+        "webui/brave_tip_ui.h",
+      ]
+    }
 
     deps += [
       "//brave/components/brave_rewards/resources:page_generated_resources",

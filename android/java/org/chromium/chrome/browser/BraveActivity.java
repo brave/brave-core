@@ -39,6 +39,10 @@ import org.chromium.ui.widget.Toast;
  */
 @JNINamespace("chrome::android")
 public abstract class BraveActivity extends ChromeActivity {
+    public static final String ADD_FUNDS_URL = "chrome://rewards/#add-funds";
+    public static final String REWARDS_SETTINGS_URL = "chrome://rewards/";
+    public static final String REWARDS_AC_SETTINGS_URL = "chrome://rewards/contribute";
+    public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
 
     /**

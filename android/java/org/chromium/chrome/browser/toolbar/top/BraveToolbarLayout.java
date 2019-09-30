@@ -17,13 +17,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureList;
+import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuHandler;
@@ -46,12 +47,14 @@ import java.util.List;
 
 public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClickListener,
                                                            View.OnLongClickListener {
-  private ImageView mBraveShieldsButton;
+  private ImageButton mBraveShieldsButton;
+  private ImageButton mBraveRewardsButton;
   private FrameLayout mShieldsLayout;
   private FrameLayout mRewardsLayout;
   private ChromeActivity mMainActivity;
   private BraveShieldsMenuHandler mBraveShieldsMenuHandler;
   private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
+  private BraveRewardsPanelPopup mRewardsPopup;
   private BraveShieldsContentSettings mBraveShieldsContentSettings;
   private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
 
@@ -72,11 +75,17 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       super.onFinishInflate();
       mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
       mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
-      mBraveShieldsButton = (ImageView) findViewById(R.id.brave_shields_button);
+      mBraveShieldsButton = (ImageButton) findViewById(R.id.brave_shields_button);
+      mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
       if (mBraveShieldsButton != null) {
           mBraveShieldsButton.setClickable(true);
           mBraveShieldsButton.setOnClickListener(this);
           mBraveShieldsButton.setOnLongClickListener(this);
+      }
+      if (mBraveRewardsButton != null) {
+          mBraveRewardsButton.setClickable(true);
+          mBraveRewardsButton.setOnClickListener(this);
+          mBraveRewardsButton.setOnLongClickListener(this);
       }
       for (Activity ref : ApplicationStatus.getRunningActivities()) {
           if (!(ref instanceof ChromeActivity)) continue;
@@ -194,6 +203,22 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               // Just return w/o showing shields popup.
               return;
           }
+      } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
+          if (null != mRewardsPopup) {
+              return;
+          }
+          mRewardsPopup = new BraveRewardsPanelPopup(v);
+          mRewardsPopup.showLikePopDownMenu();
+          // TODO
+          // if (mBraveRewardsNotificationsCount.isShown()) {
+              SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+              SharedPreferences.Editor editor = sharedPref.edit();
+              editor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
+              editor.apply();
+              // TODO
+              // mBraveRewardsNotificationsCount.setVisibility(View.GONE);
+          // TODO
+          // }
       }
   }
 

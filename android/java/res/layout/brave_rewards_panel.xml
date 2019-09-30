@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end|top">
+
+    <!--Join Rewards screen-->
+    <ScrollView
+        android:id="@+id/activity_brave_rewards_panel"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bat_panel_gradient">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@drawable/bat_outline"
+                tools:ignore="ContentDescription"/>
+
+            <GridLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="35dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="25dp"
+                android:columnCount="1">
+
+                <TextView
+                    android:id="@+id/get_ready_id"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/brave_ui_welcome_header_two"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    android:alpha=".5"
+                    android:layout_row="0"/>
+
+                <ImageView
+                    android:layout_height="80dp"
+                    android:layout_width="110dp"
+                    android:src="@drawable/bat_icon"
+                    android:layout_row="1"
+                    android:layout_gravity="center"
+                    tools:ignore="ContentDescription"/>
+
+                <TextView
+                    android:id="@+id/brave_rewards_id"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/brave_ui_brave_rewards"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="28sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_row="2"/>
+
+                <TextView
+                    android:id="@+id/get_paid_id"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="@string/brave_ui_welcome_desc_two"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    android:alpha=".5"
+                    android:layout_row="3"/>
+
+
+
+                <!-- The 'progress_join_rewards' substitutes 'join_rewards_id' when not initialized-->
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:layout_row="4"
+                    android:layout_marginBottom="19dp">
+
+                <ProgressBar
+                    android:id="@+id/progress_join_rewards"
+                    android:indeterminateDrawable="@drawable/progress_indeterminate"
+                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:alpha=".5"
+                    android:visibility="visible"/>
+
+                <Button
+                    android:id="@+id/join_rewards_id"
+                    android:layout_height="50dp"
+                    android:layout_width="fill_parent"
+                    android:background="@drawable/rewards_button"
+                    android:text="@string/brave_ui_welcome_button_text_two"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:alpha=".5"
+                    android:enabled="false"
+                    android:visibility="gone"/>
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/learn_more_id"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/brave_ui_welcome_footer_text_two"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="12sp"
+                    android:textColor="#73CBFF"
+                    android:clickable="true"
+                    android:layout_row="5"/>
+            </GridLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+
+    <!--Your wallet screen-->
+    <ScrollView
+        android:id="@+id/sv_no_website"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/br_central_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="530dp"
+            android:orientation="vertical"
+            android:background="#e9ebff">
+
+            <LinearLayout
+                android:id="@+id/header_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/header">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="top|center"
+                    tools:ignore="UselessParent">
+
+                    <GridLayout
+                        android:id="@+id/wallet_info_gridlayout"
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:columnCount="2">
+
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="start|top"
+                            android:text="@string/brave_ui_your_wallet"
+                            android:fontFamily="sans-serif"
+                            android:gravity="start"
+                            android:textSize="16sp"
+                            android:textColor="#FFFFFF"
+                            android:alpha=".5"
+                            android:layout_row="0"
+                            android:layout_columnSpan="2"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_row="1"
+                            android:layout_columnSpan="2">
+
+                            <GridLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="fill_parent"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:columnCount="2"
+                                tools:ignore="UselessParent">
+
+                                <!-- The 'progress_wallet_update' substitutes 'br_bat_wallet' when not initialized-->
+                                <ProgressBar
+                                    android:id="@+id/progress_wallet_update"
+                                    android:indeterminateDrawable="@drawable/progress_indeterminate"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_gravity="center"
+                                    android:layout_row="0"
+                                    android:layout_column="0"
+                                    android:visibility="visible"/>
+
+                                <TextView
+                                    android:id="@+id/br_bat_wallet"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="fill_parent"
+                                    android:text=""
+                                    android:layout_gravity="end"
+                                    android:fontFamily="sans-serif"
+                                    android:textSize="28sp"
+                                    android:textColor="#FFFFFF"
+                                    android:layout_row="0"
+                                    android:layout_column="0"
+                                    android:visibility="gone"/>
+
+                                <TextView
+                                    android:id="@+id/br_bat"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="fill_parent"
+                                    android:text="@string/brave_ui_bat_text"
+                                    android:layout_gravity="start"
+                                    android:textSize="18sp"
+                                    android:layout_marginStart="5dp"
+                                    android:textColor="#FFFFFF"
+                                    android:alpha=".5"
+                                    android:layout_row="0"
+                                    android:layout_column="1"/>
+
+                            </GridLayout>
+                        </LinearLayout>
+
+                        <!-- The 'br_usd_wallet' is invisible when not initialized-->
+                        <TextView
+                            android:id="@+id/br_usd_wallet"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="@string/brave_ui_usd"
+                            android:layout_gravity="top|center"
+                            android:fontFamily="sans-serif"
+                            android:textSize="14sp"
+                            android:textColor="#FFFFFF"
+                            android:alpha=".5"
+                            android:layout_row="2"
+                            android:layout_columnSpan="2"
+                            android:visibility="invisible"/>
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:layout_gravity="top|center"
+                            android:orientation="vertical"
+                            android:layout_row="3"
+                            android:layout_columnSpan="2">
+
+                            <Button
+                                android:id="@+id/grants_dropdown"
+                                android:layout_height="25dp"
+                                android:layout_width="wrap_content"
+                                android:background="@drawable/rewards_button"
+                                android:text="@string/brave_ui_grants"
+                                android:fontFamily="sans-serif"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                android:textSize="8sp"
+                                android:textColor="#FFFFFF"
+                                android:visibility="gone"
+                                android:alpha=".5"
+                                tools:ignore="SmallSp"/>
+
+                            <ListView 
+                                 android:id="@+id/grants_listview" 
+                                 android:layout_height="wrap_content"
+                                 android:layout_width="fill_parent"
+                                 android:layout_marginBottom="-15dp"
+                                 android:divider="@null"
+                                 android:dividerHeight="0dp"
+                                 android:visibility="gone"
+                                 tools:ignore="NestedScrolling" />
+                            <LinearLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="fill_parent"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center"
+                                android:layout_gravity="center">
+
+                                <Button
+                                    android:id="@+id/br_add_funds"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:background="@drawable/rewards_image_button"
+                                    android:text="@string/brave_rewards_local_panel_add_funds"
+                                    android:gravity="center"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="15dp"
+                                    android:fontFamily="sans-serif"
+                                    android:textSize="12sp"
+                                    android:textColor="#FFFFFF"
+                                    android:drawableStart="@drawable/add_funds"
+                                    android:enabled="false"
+                                    android:clickable="false"
+                                    android:drawablePadding="5sp"
+                                    android:visibility="gone"
+                                    tools:ignore="ButtonStyle"/>
+
+                                <Button
+                                    android:id="@+id/br_rewards_settings"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:background="@drawable/rewards_image_button"
+                                    android:text="@string/brave_ui_settings"
+                                    android:gravity="center"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="sans-serif"
+                                    android:textSize="12sp"
+                                    android:textColor="#FFFFFF"
+                                    android:drawableStart="@drawable/rewards_settings"
+                                    android:drawablePadding="5sp"
+                                    tools:ignore="ButtonStyle"/>
+                                </LinearLayout>
+
+                        </LinearLayout>
+
+                    </GridLayout>
+
+                    <!--Grant notification layout-->
+                    <include
+                        android:id="@+id/notification_info_layout"
+                        layout="@layout/brave_rewards_panel_grant"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!--Layout when we turned off rewards-->
+            <LinearLayout
+                android:id="@+id/rewards_welcome_back"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/bat_rewards_summary_gradient"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:layout_height="80dp"
+                    android:layout_width="110dp"
+                    android:src="@drawable/bat_icon"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    tools:ignore="ContentDescription"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/brave_ui_welcome_back_message"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="28sp"
+                    android:textColor="#000000"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/brave_ui_get_rewarded"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="18sp"
+                    android:textColor="#4D58CF"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/brave_ui_brave_rewards_desc"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:alpha=".7"/>
+
+                <Button
+                    android:id="@+id/enable_rewards_id"
+                    android:layout_height="50dp"
+                    android:layout_width="fill_parent"
+                    android:background="@drawable/enable_rewards_button"
+                    android:text="@string/brave_welcome_page_rewards_title"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    android:textColor="#4D58CF"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:drawableEnd="@drawable/arrow_forward"/>
+
+            </LinearLayout>
+
+            <!--Layout when we are on a valid webpage-->
+            <LinearLayout
+                android:id="@+id/website_summary"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#FFFFFF"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <GridLayout
+                    android:id="@+id/website_summary_grid"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="25dp"
+                    android:columnCount="2"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_row="0"
+                        android:layout_columnSpan="2"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent">
+
+                                <!-- The 'publisher_favicon_update' substitutes 'publisher_favicon' when not available-->
+                                <ProgressBar
+                                    android:id="@+id/publisher_favicon_update"
+                                    android:indeterminateDrawable="@drawable/progress_indeterminate"
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:visibility="visible"/>
+
+                                <ImageView
+                                    android:id="@+id/publisher_favicon"
+                                    android:layout_height="60dp"
+                                    android:layout_width="60dp"
+                                    android:contentDescription="@null"
+                                    android:visibility="gone"/>
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/publisher_name"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="start|center"
+                                    android:text=""
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="start"
+                                    android:ellipsize="end" 
+                                    android:maxLines="2"
+                                    android:textColor="@color/modern_grey_700"
+                                    android:textSize="16sp"/>
+
+                                <TextView
+                                    android:id="@+id/publisher_verified"
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_gravity="start|center"
+                                    android:text="@string/brave_ui_verified_publisher"
+                                    android:drawableStart="@drawable/bat_verified"
+                                    android:drawablePadding="4dp"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="start"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/modern_grey_700"
+                                    android:visibility="gone"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/publisher_not_verified"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginTop="2dp"
+                            android:padding="5dp"
+                            android:text="@string/brave_ui_not_verified_publisher_description"
+                            android:fontFamily="sans-serif"
+                            android:gravity="start"
+                            android:textSize="12sp"
+                            android:textColor="@color/modern_grey_700"
+                            android:background="@drawable/brave_rewards_not_verified_rectangle"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+
+                    <!--AC set of controls-->
+                    <include
+                        android:id="@+id/ac_enabled_controls"
+                        layout="@layout/brave_rewards_auto_contrib"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_row="1"
+                        android:layout_column="0"
+                        android:layout_columnSpan="2"
+                        android:orientation="vertical"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/send_a_tip"
+                        android:layout_height="50dp"
+                        android:layout_width="fill_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/rewards_button_purple_border"
+                        android:text="@string/brave_ui_donate_now"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:fontFamily="sans-serif"
+                        android:textSize="14sp"
+                        android:textColor="#392DD1"
+                        android:layout_row="2"
+                        android:layout_columnSpan="2"
+                        android:alpha=".5"/>
+
+                </GridLayout>
+
+                <Button
+                    android:id="@+id/rewards_summary"
+                    android:layout_height="50dp"
+                    android:layout_width="fill_parent"
+                    android:background="@drawable/rewards_button_summary"
+                    android:text="@string/brave_ui_rewards_summary"
+                    android:gravity="start|center"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textSize="14sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="#4c54d2"/>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/bat_rewards_summary_gradient"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/br_no_activities_yet"
+                        android:layout_height="100dp"
+                        android:layout_width="wrap_content"
+                        android:text="@string/brave_ui_no_activity"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:fontFamily="sans-serif"
+                        android:textSize="18sp"
+                        android:textColor="#000000"
+                        android:alpha=".5"/>
+
+                    <GridLayout
+                        android:id="@+id/br_activities"
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="25dp"
+                        android:columnCount="3"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/br_grants_claimed_title"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/brave_ui_token_grant_claimed"
+                            android:fontFamily="sans-serif"
+                            android:gravity="start"
+                            android:textSize="14sp"
+                            android:layout_row="0"
+                            android:layout_column="0"/>
+
+                        <TextView
+                            android:id="@+id/br_grants_claimed_bat"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginStart="20dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="14sp"
+                            android:layout_row="0"
+                            android:layout_column="1"/>
+
+                        <TextView
+                            android:id="@+id/br_grants_claimed_usd"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginStart="10dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:layout_row="0"
+                            android:layout_column="2"/>
+
+
+                        <TextView
+                            android:id="@+id/br_earnings_ads_title"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/brave_ui_earnings_ads"
+                            android:fontFamily="sans-serif"
+                            android:gravity="start"
+                            android:textSize="14sp"
+                            android:layout_row="1"
+                            android:layout_column="0"/>
+
+                        <TextView
+                            android:id="@+id/br_earnings_ads_bat"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="20dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="14sp"
+                            android:layout_row="1"
+                            android:layout_column="1"/>
+
+                        <TextView
+                            android:id="@+id/br_earnings_ads_usd"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:layout_row="1"
+                            android:layout_column="2"/>
+
+                        <TextView
+                            android:id="@+id/br_auto_contribute_title"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/brave_ui_rewards_contribute"
+                            android:fontFamily="sans-serif"
+                            android:gravity="start"
+                            android:textSize="14sp"
+                            android:layout_row="2"
+                            android:layout_column="0"/>
+
+                        <TextView
+                            android:id="@+id/br_auto_contribute_bat"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="20dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="14sp"
+                            android:layout_row="2"
+                            android:layout_column="1"/>
+
+                        <TextView
+                            android:id="@+id/br_auto_contribute_usd"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:layout_row="2"
+                            android:layout_column="2"/>
+
+                        <!--One-Time Tips-->
+                        <TextView
+                            android:id="@+id/br_one_time_donation_title"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/brave_ui_one_time_donation"
+                            android:fontFamily="sans-serif"
+                            android:gravity="start"
+                            android:textSize="14sp"
+                            android:layout_row="3"
+                            android:layout_column="0"/>
+
+                        <TextView
+                            android:id="@+id/br_one_time_donation_bat"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="20dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="14sp"
+                            android:layout_row="3"
+                            android:layout_column="1"/>
+
+                        <TextView
+                            android:id="@+id/br_one_time_donation_usd"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:layout_row="3"
+                            android:layout_column="2"/>
+
+                        <!--Monthly Tips-->
+                        <TextView
+                            android:id="@+id/br_recurring_donation_title"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/brave_ui_recurring_donation"
+                            android:fontFamily="sans-serif"
+                            android:gravity="start"
+                            android:textSize="14sp"
+                            android:layout_row="4"
+                            android:layout_column="0"/>
+
+                        <TextView
+                            android:id="@+id/br_recurring_donation_bat"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="20dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="14sp"
+                            android:layout_row="4"
+                            android:layout_column="1"/>
+
+                        <TextView
+                            android:id="@+id/br_recurring_donation_usd"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:layout_row="4"
+                            android:layout_column="2"/>
+
+                        <TextView
+                            android:id="@+id/publisher_not_verified_summary"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginTop="14dp"
+                            android:layout_marginStart="10dp"
+                            android:padding="5dp"
+                            android:text=""
+                            android:fontFamily="sans-serif"
+                            android:gravity="start"
+                            android:textSize="12sp"
+                            android:background="@drawable/brave_rewards_not_verified_rectangle"
+                            android:visibility="gone"
+                            android:layout_row="5"
+                            android:layout_columnSpan="3"/>
+
+                    </GridLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

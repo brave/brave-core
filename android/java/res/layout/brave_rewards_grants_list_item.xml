@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item_type1_text_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="sans-serif"
+    android:layout_gravity="top|center"
+    android:gravity="center"
+    android:textSize="10sp"
+    android:textColor="#FFFFFF"
+    android:alpha=".5"
+    android:text=""
+    tools:ignore="SmallSp" />

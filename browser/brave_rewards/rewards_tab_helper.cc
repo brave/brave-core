@@ -9,9 +9,11 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
+#if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#endif
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -42,7 +44,9 @@ RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
   if (!tab_id_.is_valid())
     return;
 
+#if !defined(OS_ANDROID)
   BrowserList::AddObserver(this);
+#endif
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
@@ -53,7 +57,9 @@ RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
 RewardsTabHelper::~RewardsTabHelper() {
   if (rewards_service_)
     rewards_service_->RemoveObserver(this);
+#if !defined(OS_ANDROID)
   BrowserList::RemoveObserver(this);
+#endif
 }
 
 void RewardsTabHelper::DidFinishLoad(
@@ -115,6 +121,7 @@ void RewardsTabHelper::WebContentsDestroyed() {
 }
 
 void RewardsTabHelper::OnBrowserSetLastActive(Browser* browser) {
+#if !defined(OS_ANDROID)
   if (!rewards_service_)
     return;
 
@@ -122,9 +129,11 @@ void RewardsTabHelper::OnBrowserSetLastActive(Browser* browser) {
       TabStripModel::kNoTab) {
     rewards_service_->OnForeground(tab_id_);
   }
+#endif
 }
 
 void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
+#if !defined(OS_ANDROID)
   if (!rewards_service_)
     return;
 
@@ -132,6 +141,7 @@ void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
       TabStripModel::kNoTab) {
     rewards_service_->OnBackground(tab_id_);
   }
+#endif
 }
 
 #if BUILDFLAG(ENABLE_GREASELION)

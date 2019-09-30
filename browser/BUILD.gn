@@ -27,6 +27,8 @@ source_set("browser_process") {
     "autocomplete/brave_autocomplete_scheme_classifier.h",
     "bookmarks/brave_bookmark_client.cc",
     "bookmarks/brave_bookmark_client.h",
+    "brave_rewards/rewards_tab_helper.cc",
+    "brave_rewards/rewards_tab_helper.h",
     "brave_shields/ad_block_pref_service_factory.cc",
     "brave_shields/ad_block_pref_service_factory.h",
     "brave_shields/cookie_pref_service_factory.cc",
@@ -168,8 +170,6 @@ source_set("browser_process") {
 
   if (!is_android) {
     sources += [
-      "brave_rewards/rewards_tab_helper.cc",
-      "brave_rewards/rewards_tab_helper.h",
       "brave_rewards/tip_dialog.cc",
       "brave_rewards/tip_dialog.h",
     ]
@@ -191,6 +191,22 @@ source_set("browser_process") {
       "android/preferences/website/desktop_mode_tab_helper.cc",
       "android/preferences/website/desktop_mode_tab_helper.h",
     ]
+
+    if (brave_rewards_enabled) {
+      sources += [
+        "android/rewards/brave_rewards_native_worker.cc",
+        "android/rewards/brave_rewards_native_worker.h",
+      ]
+
+      deps += [
+        "//brave/vendor/bat-native-ledger",
+      ]
+    }
+    if (brave_ads_enabled) {
+      sources += [
+        "android/rewards/brave_ads_native_helper.cc",
+      ]
+    }
 
     deps += [
       "//chrome/android:jni_headers",

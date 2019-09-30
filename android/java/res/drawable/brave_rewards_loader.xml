@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list 
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/brave_rewards_loader_selected" android:oneshot="false">
+  <item android:drawable="@drawable/loader0" android:duration="30" />
+  <item android:drawable="@drawable/loader1" android:duration="30" />
+  <item android:drawable="@drawable/loader2" android:duration="30" />
+  <item android:drawable="@drawable/loader3" android:duration="30" />
+  <item android:drawable="@drawable/loader4" android:duration="30" />
+  <item android:drawable="@drawable/loader5" android:duration="30" />
+  <item android:drawable="@drawable/loader6" android:duration="30" />
+  <item android:drawable="@drawable/loader7" android:duration="30" />
+  <item android:drawable="@drawable/loader8" android:duration="30" />
+  <item android:drawable="@drawable/loader9" android:duration="30" />
+  <item android:drawable="@drawable/loader10" android:duration="30" />
+  <item android:drawable="@drawable/loader11" android:duration="30" />
+  <item android:drawable="@drawable/loader12" android:duration="30" />
+  <item android:drawable="@drawable/loader13" android:duration="30" />
+  <item android:drawable="@drawable/loader14" android:duration="30" />
+  <item android:drawable="@drawable/loader15" android:duration="30" />
+  <item android:drawable="@drawable/loader16" android:duration="30" />
+  <item android:drawable="@drawable/loader17" android:duration="30" />
+  <item android:drawable="@drawable/loader18" android:duration="30" />
+  <item android:drawable="@drawable/loader19" android:duration="30" />
+  <item android:drawable="@drawable/loader20" android:duration="30" />
+  <item android:drawable="@drawable/loader21" android:duration="30" />
+  <item android:drawable="@drawable/loader22" android:duration="30" />
+  <item android:drawable="@drawable/loader23" android:duration="30" />
+  <item android:drawable="@drawable/loader24" android:duration="30" />
+  <item android:drawable="@drawable/loader25" android:duration="30" />
+  <item android:drawable="@drawable/loader26" android:duration="30" />
+  <item android:drawable="@drawable/loader27" android:duration="30" />
+  <item android:drawable="@drawable/loader28" android:duration="30" />
+</animation-list>
