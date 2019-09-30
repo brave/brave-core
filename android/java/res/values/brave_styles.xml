@@ -10,4 +10,7 @@
     <style name="BraveDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="BraveRewardsSwitchTheme">
+        <item name="colorControlActivated">#392DD1</item>
+    </style>
 </resources>
