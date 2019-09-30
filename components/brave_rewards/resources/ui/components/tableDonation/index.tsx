@@ -10,7 +10,8 @@ import {
   StyledRemoveIcon,
   StyledToggle,
   StyledToggleWrap,
-  StyledLink
+  StyledLink,
+  StyledTipDate
 } from './style'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
@@ -67,8 +68,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
         return {
           content: (
             <>
-              <StyledType>{getLocale('oneTime')}</StyledType>
-              <StyledDate>{row.text}</StyledDate>
+              <StyledTipDate>{row.text}</StyledTipDate>
             </>
           )
         }
@@ -142,7 +142,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
         customStyle
       },
       {
-        content: getLocale('type'),
+        content: getLocale('date'),
         customStyle
       },
       {

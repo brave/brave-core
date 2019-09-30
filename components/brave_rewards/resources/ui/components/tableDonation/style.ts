@@ -41,6 +41,10 @@ export const StyledDate = styled<{}, 'div'>('div')`
   color: #b8b9c4;
 `
 
+export const StyledTipDate = styled(StyledDate)`
+  margin-top: 0px;
+`
+
 export const StyledToggle = styled<{}, 'button'>('button')`
   font-family: Poppins, sans-serif;
   font-size: 13px;

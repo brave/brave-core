@@ -9,23 +9,23 @@ import {
 } from './style'
 import Modal from 'brave-ui/components/popupModals/modal/index'
 import TableDonation, { DetailRow } from '../tableDonation/index'
-import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   rows: DetailRow[]
   onClose: () => void
   id?: string
+  title: string
 }
 
 export default class ModalDonation extends React.PureComponent<Props, {}> {
   render () {
-    const { id, onClose, rows } = this.props
+    const { id, onClose, rows, title } = this.props
     const numRows = rows && rows.length || 0
 
     return (
       <Modal id={id} onClose={onClose}>
         <StyledWrapper>
-          <StyledTitle>{getLocale('donationTips')}</StyledTitle>
+          <StyledTitle>{title}</StyledTitle>
           <TableDonation
             rows={rows}
             allItems={true}

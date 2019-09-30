@@ -60,6 +60,24 @@ export const tipsTotal = (report: Rewards.Report) => {
   return new BigNumber(report.donation).plus(tips).dividedBy('1e18').toFixed(1, BigNumber.ROUND_DOWN)
 }
 
+export const tipsListTotal = (list: Rewards.Publisher[], convertProbi = false) => {
+  if (list.length === 0) {
+    return '0.0'
+  }
+
+  let tipsTotal: number = 0
+
+  list.map((item: Rewards.Publisher) => {
+    if (convertProbi) {
+      tipsTotal += parseFloat(convertProbiToFixed(item.percentage.toString()))
+    } else {
+      tipsTotal += item.percentage
+    }
+  })
+
+  return tipsTotal.toFixed(1)
+}
+
 export const constructBackupString = (backupKey: string) => {
   return `Brave Wallet Recovery Key\nDate created: ${new Date(Date.now()).toLocaleDateString()} \n\nRecovery Key: ${backupKey}` +
     '\n\nNote: This key is not stored on Brave servers. ' +

@@ -227,12 +227,17 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES" desc="">Supported sites</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Tips</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Tip content creators directly as you browse. You can also set up recurring monthly tips so you can support sites continuously.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_TITLE" desc="">Monthly Contributions</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_DESC" desc="">Set up recurring monthly contributions so you can support sites continuously.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_EMPTY" desc="">No monthly contributions set up yet.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_DISABLED_TEXT" desc="">Support your favorite sites with recurring monthly contributions. You can set this up from the tipping banner.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE" desc="">Earnings are paid every month.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO" desc="">Set your desired frequency to increase or decrease earnings.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1" desc="">Reward creators for the content you love.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT2" desc="">Your monthly payment gets distributed across the sites you visit.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Sites will appear as you browse</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total tips this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_MONTHLY_CONTRIBUTION" desc="">Total contributions this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Have you tipped your favorite content creator today?</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="">Add Funds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS" desc="">Withdraw Funds</message>

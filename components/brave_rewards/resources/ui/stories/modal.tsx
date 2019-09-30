@@ -472,6 +472,7 @@ storiesOf('Rewards/Modal', module)
     return (
       <ModalDonation
         rows={rows}
+        title={'Tips'}
         onClose={doNothing}
       />
     )

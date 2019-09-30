@@ -993,7 +993,7 @@ class BraveRewardsBrowserTest :
             contents(),
             "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
             "delay(0).then(() => "
-            "  document.querySelector(\"[type='donation']\")"
+            "  document.querySelectorAll(\"[type='donation']\")[1]"
             "    .parentElement.parentElement.innerText);",
             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
             content::ISOLATED_WORLD_ID_CONTENT_END);

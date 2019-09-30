@@ -13,6 +13,7 @@ import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
+import MonthlyContributionBox from './monthlyContributionBox'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
@@ -244,6 +245,7 @@ class SettingsPage extends React.Component<Props, State> {
             }
             <AdsBox />
             <ContributeBox />
+            <MonthlyContributionBox />
             <TipBox />
           </Column>
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
