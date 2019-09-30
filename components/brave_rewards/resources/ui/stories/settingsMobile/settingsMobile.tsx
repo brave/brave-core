@@ -9,7 +9,6 @@ import GrantMobile from './grantMobile'
 import AdsBoxMobile from './adsBoxMobile'
 import ContributeBoxMobile from './contributeBoxMobile'
 import DonationsBoxMobile from './donationsBoxMobile'
-import MobileWalletPanel from './mobileWalletPanel'
 import { StyledDisabledContent, StyledHeading, StyledText } from './style'
 import {
   MainToggleMobile,
@@ -80,10 +79,6 @@ class SettingsMobile extends React.PureComponent<{}, State> {
         />
         <DonationsBoxMobile
           rewardsEnabled={this.state.mainToggle}
-        />
-        <MobileWalletPanel
-          toggleAction={this.onToggleWallet}
-          visible={this.state.walletShown}
         />
       </SettingsPageMobile>
     )
