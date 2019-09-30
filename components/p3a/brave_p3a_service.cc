@@ -104,9 +104,13 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kLastRotationTimeStampPref, {});
   registry->RegisterBooleanPref(kP3AEnabled, true);
 
+  // first_run::IsChromeFirstRun() is not available on Android and also
+  // we don't have infobars on android.
+#if !defined(OS_ANDROID)
   // New users are shown the P3A notice via the welcome page.
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged,
                                 first_run::IsChromeFirstRun());
+#endif  // !defined(OS_ANDROID)
 }
 
 void BraveP3AService::InitCallbacks() {
