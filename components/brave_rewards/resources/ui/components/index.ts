@@ -24,7 +24,6 @@ import ListToken from './listToken'
 import MainToggle from './mainToggle'
 import MediaBox from './mediaBox'
 import ModalActivity from './modalActivity'
-import ModalAddFunds from './modalAddFunds'
 import ModalBackupRestore from './modalBackupRestore'
 import ModalContribute from './modalContribute'
 import ModalDonation from './modalDonation'
@@ -84,7 +83,6 @@ export {
   MainToggle,
   MediaBox,
   ModalActivity,
-  ModalAddFunds,
   ModalBackupRestore,
   ModalContribute,
   ModalDonation,

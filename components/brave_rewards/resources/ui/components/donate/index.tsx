@@ -43,7 +43,6 @@ export interface Props {
   id?: string
   donateType: DonateType
   children?: React.ReactNode
-  isMobile?: boolean
   addFundsLink?: string
   type: BannerType
   nextContribution?: string
@@ -108,7 +107,6 @@ export default class Donate extends React.PureComponent<Props, State> {
       title,
       currentAmount,
       donateType,
-      isMobile,
       addFundsLink,
       type,
       nextContribution
@@ -119,15 +117,14 @@ export default class Donate extends React.PureComponent<Props, State> {
     const SendButton = isMonthly ? StyledMonthlySendButton : StyledSendButton
 
     return (
-      <StyledWrapper donateType={donateType} disabled={disabled} isMobile={isMobile}>
-        <StyledContent id={id} isMobile={isMobile}>
-          <StyledDonationTitle isMobile={isMobile}>{title}</StyledDonationTitle>
-            <StyledAmountsWrapper isMobile={isMobile}>
+      <StyledWrapper donateType={donateType} disabled={disabled}>
+        <StyledContent id={id}>
+          <StyledDonationTitle>{title}</StyledDonationTitle>
+            <StyledAmountsWrapper>
               {
                 donationAmounts && donationAmounts.map((donation: Donation) => {
                   return <div key={`${id}-tip-${donation.tokens}`}>
                     <Amount
-                      isMobile={isMobile}
                       amount={donation.tokens}
                       selected={donation.tokens === currentAmount.toString()}
                       onSelect={this.onAmountChange}
@@ -142,7 +139,7 @@ export default class Donate extends React.PureComponent<Props, State> {
         </StyledContent>
 
         <StyledSend onClick={this.validateDonation} data-test-id={'send-tip-button'} monthly={isMonthly}>
-          <StyledButtonWrapper isMobile={isMobile}>
+          <StyledButtonWrapper>
             <SendButton>
               <StyledIconSend disabled={disabled} donateType={donateType} monthly={isMonthly}>
                 <SendIcon />
