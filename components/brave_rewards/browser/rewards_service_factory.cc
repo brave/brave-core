@@ -30,7 +30,7 @@
 #endif
 
 namespace {
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OS_ANDROID)
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 void OverridePrefsForPrivateProfileUserPrefs(Profile* profile) {
   if (profile->IsRegularProfile())
     return;
@@ -71,7 +71,7 @@ RewardsServiceFactory::RewardsServiceFactory()
   DependsOn(extensions::EventRouterFactory::GetInstance());
 #endif
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OS_ANDROID)
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   registrar_.Add(this, chrome::NOTIFICATION_PROFILE_CREATED,
                  content::NotificationService::AllSources());
 #endif
@@ -105,7 +105,7 @@ void RewardsServiceFactory::Observe(
     int type,
     const content::NotificationSource& source,
     const content::NotificationDetails& details) {
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OS_ANDROID)
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   switch (type) {
     case chrome::NOTIFICATION_PROFILE_CREATED: {
       auto* profile = content::Source<Profile>(source).ptr();
