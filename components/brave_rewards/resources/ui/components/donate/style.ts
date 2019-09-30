@@ -18,7 +18,6 @@ interface Theme {
 interface StyleProps {
   disabled?: boolean
   donateType?: DonateType
-  isMobile?: boolean
   monthly?: boolean
 }
 
@@ -51,21 +50,6 @@ const getStyle = (p: StyleProps) => {
   `
 }
 
-const getAmountStyle = (isMobile?: boolean) => {
-  if (!isMobile) {
-    return null
-  }
-
-  return css`
-    display: grid;
-    grid-gap: 0px;
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
-    justify-content: center;
-    padding: 0px 10px;
-  `
-}
-
 const getIconColor = (p: StyleProps) => {
   if (p.monthly) {
     return palette.orange500
@@ -81,13 +65,11 @@ const getIconColor = (p: StyleProps) => {
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   position: relative;
   font-family: ${p => p.theme.fontFamily.body};
-  margin: ${p => p.isMobile ? '0 auto 8px auto' : 0}px
   ${getStyle}
 `
 
 export const StyledContent = styled<StyleProps, 'div'>('div')`
-  margin-top: ${p => p.isMobile ? -30 : 0}px;
-  padding: ${p => p.isMobile ? '0px' : 'var(--donate-content-padding)'};
+  padding: var(--donate-content-padding);
 `
 
 export const StyledDonationTitle = styled<StyleProps, 'div'>('div')`
@@ -95,12 +77,11 @@ export const StyledDonationTitle = styled<StyleProps, 'div'>('div')`
   font-weight: 600;
   line-height: 1.75;
   color: #fff;
-  margin-bottom: ${p => p.isMobile ? 20 : 14}px;
+  margin-bottom: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 167px;
-  padding-left: ${p => p.isMobile ? 20 : 0}px;
 `
 
 export const StyledSend = styled<StyleProps, 'div'>('div')`
@@ -143,7 +124,7 @@ export const StyledMonthlySendButton = styled(StyledSendButton)`
 
 export const StyledButtonWrapper = styled<StyleProps, 'div'>('div')`
   display: block;
-  width: ${p => p.isMobile ? 190 : 245}px;
+  width: 245px;
   margin: 0 auto;
 `
 
@@ -189,7 +170,6 @@ export const StyledFundsText = styled<{}, 'div'>('div')`
 export const StyledAmountsWrapper = styled<StyleProps, 'div'>('div')`
   width: 100%;
   display: block;
-  ${p => getAmountStyle(p.isMobile)}
 `
 
 export const StyledContributionWrapper = styled<{}, 'div'>('div')`

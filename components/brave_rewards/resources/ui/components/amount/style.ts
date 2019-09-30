@@ -12,9 +12,9 @@ export const StyledWrapper = styled<Partial<Props>, 'button'>('button')`
   background: none;
   padding: 0;
   cursor: pointer;
-  display: ${p => p.isMobile ? 'block' : 'flex'};
+  display: flex;
   align-items: center;
-  margin: ${p => p.isMobile ? '0 auto 8px auto' : '0 0 8px 0'};
+  margin: 0 0 8px 0;
 `
 
 export const StyledAmount = styled<Partial<Props>, 'div'>('div')`
@@ -26,12 +26,11 @@ export const StyledAmount = styled<Partial<Props>, 'div'>('div')`
   vertical-align: baseline;
   padding: ${p => p.type === 'big' ? '0 16px' : '0 12px'};
   min-height: ${p => p.type === 'big' ? 40 : 32}px;
-  min-width: ${p => p.isMobile ? '100px' : p.type === 'big' ? '118px' : '82px'};
-  margin-right: ${p => p.isMobile ? 0 : 12}px;
+  min-width: ${p => p.type === 'big' ? '118px' : '82px'};
+  margin-right: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: ${p => p.isMobile ? 5 : 0}px;
 `
 
 export const StyledTokens = styled<{}, 'div'>('div')`
@@ -44,7 +43,7 @@ export const StyledNumber = styled.span`
 
 export const StyledLogo = styled<Partial<Props>, 'div'>('div')`
   margin-right: 6px;
-  width: ${p => p.isMobile ? 20 : 23}px;
+  width: 23px;
 `
 
 export const StyledConverted = styled<Partial<Props>, 'div'>('div')`
@@ -52,6 +51,6 @@ export const StyledConverted = styled<Partial<Props>, 'div'>('div')`
   opacity: ${p => p.selected ? 1 : 0.4};
   font-size: ${p => p.type === 'big' ? '12px' : '10px'};
   color: #ffffff;
-  display: ${p => p.isMobile ? 'block' : 'inline-block'};
+  display: inline-block;
   font-weight: 500;
 `
