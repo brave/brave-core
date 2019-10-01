@@ -20,13 +20,13 @@
 #include "base/strings/sys_string_conversions.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
 #include "ui/base/resource/resource_bundle_android.h"
 #endif
 
 namespace {
 
-#if !defined(OS_ANDROID)
+#if !defined(BRAVE_CHROMIUM_BUILD) || !defined(OS_ANDROID)
 base::FilePath GetResourcesPakFilePath() {
 #if defined(OS_MACOSX)
   return base::mac::PathForFrameworkBundleResource(
@@ -65,12 +65,12 @@ namespace brave {
 
 void InitializeResourceBundle() {
   auto& rb = ui::ResourceBundle::GetSharedInstance();
-#if defined(OS_ANDROID)
+#if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
   ui::BraveLoadMainAndroidPackFile("assets/brave_resources.pak",
                                    base::FilePath());
 #else
   rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::SCALE_FACTOR_NONE);
-#endif  // OS_ANDROID
+#endif  // OS_ANDROID && defined(BRAVE_CHROMIUM_BUILD)
 
   rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_100P),
                          ui::SCALE_FACTOR_100P);
