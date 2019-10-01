@@ -86,6 +86,10 @@ window.cr.define('brave_rewards_tip', function () {
     getActions().onBalance(properties.status, properties.balance)
   }
 
+  function externalWallet (wallet: RewardsTip.ExternalWallet) {
+    getActions().onExternalWallet(wallet)
+  }
+
   return {
     initialize,
     publisherBanner,
@@ -94,7 +98,8 @@ window.cr.define('brave_rewards_tip', function () {
     reconcileStamp,
     recurringTipRemoved,
     recurringTipSaved,
-    balance
+    balance,
+    externalWallet
   }
 })
 
