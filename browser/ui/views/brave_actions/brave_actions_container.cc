@@ -119,8 +119,7 @@ bool BraveActionsContainer::ShouldAddAction(const std::string& id) const {
 
 bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
   const PrefService* prefs = browser_->profile()->GetPrefs();
-  return prefs->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled) ||
-         !prefs->GetBoolean(kHideBraveRewardsButton);
+  return !prefs->GetBoolean(kHideBraveRewardsButton);
 }
 
 void BraveActionsContainer::AddAction(const extensions::Extension* extension,
