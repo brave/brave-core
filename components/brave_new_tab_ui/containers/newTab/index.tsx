@@ -174,7 +174,7 @@ class NewTabPage extends React.Component<Props, State> {
               hideWidget={this.toggleShowClock}
               menuPosition={'left'}
             />
-            {this.props.newTabData.gridSites.length && <List
+            {this.props.newTabData.gridSites.length ? <List
               blockNumber={this.props.newTabData.gridSites.length}
               textDirection={newTabData.textDirection}
               showWidget={newTabData.showTopSites}
@@ -200,7 +200,7 @@ class NewTabPage extends React.Component<Props, State> {
                   />
                 )
               }
-            </List>}
+            </List> : null}
             {
               this.props.newTabData.showSiteRemovalNotification
               ? <SiteRemovalNotification actions={actions} />
