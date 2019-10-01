@@ -52,3 +52,22 @@ export const isPublisherConnectedOrVerified = (status: Rewards.PublisherStatus) 
 export const isPublisherNotVerified = (status: Rewards.PublisherStatus) => {
   return status === 0
 }
+
+export const getWalletStatus = (externalWallet?: RewardsTip.ExternalWallet) => {
+  if (!externalWallet) {
+    return 'unverified'
+  }
+
+  switch (externalWallet.status) {
+    case 1:
+      return 'connected'
+    case 2:
+      return 'verified'
+    case 3:
+      return 'disconnected_unverified'
+    case 4:
+      return 'disconnected_verified'
+    default:
+      return 'unverified'
+  }
+}

@@ -9,6 +9,7 @@ declare namespace RewardsTip {
     recurringDonations?: RecurringTips[]  // TODO(nejczdovc): migrate to tips
     reconcileStamp: number
     balance: Balance
+    externalWallet?: ExternalWallet
   }
 
   interface ApplicationState {
@@ -91,5 +92,27 @@ declare namespace RewardsTip {
     total: number
     rates: Record<string, number>
     wallets: Record<string, number>
+  }
+
+  export type WalletType = 'anonymous' | 'uphold'
+
+  export enum ExternalWalletStatus {
+    NOT_CONNECTED = 0,
+    CONNECTED = 1,
+    VERIFIED = 2,
+    DISCONNECTED_NOT_VERIFIED = 3,
+    DISCONNECTED_VERIFIED = 4
+  }
+
+  export interface ExternalWallet {
+    token: string
+    address: string
+    status: ExternalWalletStatus
+    type: WalletType
+    verifyUrl: string
+    addUrl: string
+    withdrawUrl: string
+    userName: string
+    accountUrl: string
   }
 }
