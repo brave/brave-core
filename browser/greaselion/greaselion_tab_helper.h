@@ -16,8 +16,6 @@ class WebContents;
 
 namespace greaselion {
 
-class GreaselionService;
-
 class GreaselionTabHelper
     : public greaselion::GreaselionDownloadService::Observer,
       public content::WebContentsObserver,
@@ -33,7 +31,6 @@ class GreaselionTabHelper
   void OnRulesReady(GreaselionDownloadService* download_service) override;
 
   GreaselionDownloadService* download_service_;  // NOT OWNED
-  GreaselionService* greaselion_service_;        // NOT OWNED
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(GreaselionTabHelper);

@@ -22,8 +22,6 @@ namespace greaselion {
 
 GreaselionTabHelper::GreaselionTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents) {
-  greaselion_service_ = GreaselionServiceFactory::GetForBrowserContext(
-      web_contents->GetBrowserContext());
   download_service_ = g_brave_browser_process->greaselion_download_service();
   download_service_->AddObserver(this);
 }
@@ -34,7 +32,10 @@ GreaselionTabHelper::~GreaselionTabHelper() {
 
 void GreaselionTabHelper::OnRulesReady(
     GreaselionDownloadService* download_service) {
-  greaselion_service_->UpdateInstalledExtensions();
+  auto* greaselion_service = GreaselionServiceFactory::GetForBrowserContext(
+      web_contents()->GetBrowserContext());
+  if (greaselion_service)
+    greaselion_service->UpdateInstalledExtensions();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(GreaselionTabHelper)
