@@ -40,7 +40,13 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
+#include "extensions/buildflags/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/extension_service.h"
+#include "extensions/browser/extension_system.h"
+#endif
 
 using content::BrowserThread;
 
@@ -141,6 +147,12 @@ void BraveProfileManager::OnProfileCreated(Profile* profile,
       profile->GetPrefs()->SetBoolean(prefs::kForceEphemeralProfiles, true);
       entry->SetIsEphemeral(true);
     }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    extensions::ExtensionService* extension_service =
+      extensions::ExtensionSystem::Get(profile)->extension_service();
+    extension_service->BlockAllExtensions();
+#endif
 
     // We need to wait until OnProfileCreated to
     // ensure that the request context is available.
