@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/profiles/profile_impl.cc b/chrome/browser/profiles/profile_impl.cc
-index 084648e9606f9847ff722901fb95626677a17c1e..0bcb822c794146ceec8c52c01da8c973fa25b808 100644
+index 084648e9606f9847ff722901fb95626677a17c1e..80e5b28e1df1076b18ded2bed182a13e1092d47c 100644
 --- a/chrome/browser/profiles/profile_impl.cc
 +++ b/chrome/browser/profiles/profile_impl.cc
-@@ -34,6 +34,7 @@
- #include "base/threading/scoped_blocking_call.h"
- #include "base/trace_event/trace_event.h"
- #include "base/version.h"
-+#include "brave/browser/brave_profile_prefs.h"
- #include "build/build_config.h"
- #include "chrome/browser/background/background_contents_service_factory.h"
- #include "chrome/browser/background_fetch/background_fetch_delegate_factory.h"
+@@ -365,7 +365,7 @@ std::unique_ptr<Profile> Profile::CreateProfile(const base::FilePath& path,
+   }
+ 
+   std::unique_ptr<Profile> profile = base::WrapUnique(
+-      new ProfileImpl(path, delegate, create_mode, io_task_runner));
++      new BraveProfileImpl(path, delegate, create_mode, io_task_runner));
+ #if BUILDFLAG(ENABLE_SUPERVISED_USERS) && !defined(OS_ANDROID) && \
+     !defined(OS_CHROMEOS)
+   if (create_mode == CREATE_MODE_SYNCHRONOUS && profile->IsLegacySupervised())

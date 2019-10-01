@@ -1,5 +1,7 @@
 source_set("profiles") {
   sources = [
+    "brave_profile_impl.cc",
+    "brave_profile_impl.h",
     "brave_profile_manager.cc",
     "brave_profile_manager.h",
     "profile_util.cc",
