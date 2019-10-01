@@ -21,7 +21,7 @@ bool NotificationHelperMac::ShowMyFirstAdNotification() const {
   return false;
 }
 
-bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
+bool NotificationHelperMac::CanShowBackgroundNotifications() const {
   return true;
 }
 
