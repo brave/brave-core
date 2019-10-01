@@ -127,6 +127,8 @@ class MockAdsClient : public AdsClient {
   MOCK_CONST_METHOD1(EventLog, void(
       const std::string& json));
 
+  MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
+
   std::unique_ptr<LogStream> Log(
       const char* file,
       const int line,
