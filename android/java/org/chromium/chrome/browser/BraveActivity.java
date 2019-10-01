@@ -13,8 +13,10 @@ import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeSwitches;
+import org.chromium.chrome.browser.preferences.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.chrome.browser.tab.Tab;
 
 /**
  * Brave's extension for ChromeActivity
@@ -60,6 +62,36 @@ public abstract class BraveActivity extends ChromeActivity {
         super.initializeState();
         if (isNoRestoreState()) {
             CommandLine.getInstance().appendSwitch(ChromeSwitches.NO_RESTORE_STATE);
+        }
+
+        BraveSearchEngineUtils.initializeBraveSearchEngineStates(getTabModelSelector());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Tab tab = getActivityTab();
+        if (tab == null)
+            return;
+
+        // Set proper active DSE whenever brave returns to foreground.
+        // If active tab is private, set private DSE as an active DSE.
+        BraveSearchEngineUtils.updateActiveDSE(tab.isIncognito());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        Tab tab = getActivityTab();
+        if (tab == null)
+            return;
+
+        // Set normal DSE as an active DSE when brave goes in background
+        // because currently set DSE is used by outside of brave(ex, brave search widget).
+        if (tab.isIncognito()) {
+            BraveSearchEngineUtils.updateActiveDSE(false);
         }
     }
 
