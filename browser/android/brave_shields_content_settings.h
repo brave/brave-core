@@ -19,8 +19,7 @@ class BraveShieldsContentSettings {
       const base::android::JavaRef<jobject>& obj);
     ~BraveShieldsContentSettings();
 
-    void Destroy(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller);
+    void Destroy(JNIEnv* env);
     void DispatchBlockedEventToJava(int tab_id, const std::string& block_type,
         const std::string& subresource);
 
