@@ -41,8 +41,7 @@ BraveShieldsContentSettings::BraveShieldsContentSettings(JNIEnv* env,
 BraveShieldsContentSettings::~BraveShieldsContentSettings() {
 }
 
-void BraveShieldsContentSettings::Destroy(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& jcaller) {
+void BraveShieldsContentSettings::Destroy(JNIEnv* env) {
   g_brave_shields_content_settings = nullptr;
   delete this;
 }
