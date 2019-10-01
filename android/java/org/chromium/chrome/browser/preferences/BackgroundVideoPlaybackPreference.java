@@ -11,7 +11,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat;
+import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
 
 public class BackgroundVideoPlaybackPreference
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
@@ -22,8 +22,8 @@ public class BackgroundVideoPlaybackPreference
         getActivity().setTitle(R.string.prefs_background_video_playback);
         PreferenceUtils.addPreferencesFromResource(this, R.xml.background_video_playback_preference);
 
-        ChromeSwitchPreferenceCompat playbackPref =
-                (ChromeSwitchPreferenceCompat) findPreference(BACKGROUND_VIDEO_PLAYBACK_KEY);
+        ChromeSwitchPreference playbackPref =
+                (ChromeSwitchPreference) findPreference(BACKGROUND_VIDEO_PLAYBACK_KEY);
         playbackPref.setChecked(BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled());
         playbackPref.setOnPreferenceChangeListener(this);
     }

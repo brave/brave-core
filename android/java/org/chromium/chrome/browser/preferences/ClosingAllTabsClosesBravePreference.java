@@ -10,7 +10,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat;
+import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 
 public class ClosingAllTabsClosesBravePreference
@@ -26,8 +26,8 @@ public class ClosingAllTabsClosesBravePreference
         getActivity().setTitle(R.string.prefs_closing_all_tabs_closes_brave);
         PreferenceUtils.addPreferencesFromResource(this, R.xml.closing_all_tabs_closes_brave_preference);
 
-        ChromeSwitchPreferenceCompat pref =
-                (ChromeSwitchPreferenceCompat) findPreference(CLOSING_ALL_TABS_CLOSES_BRAVE_KEY);
+        ChromeSwitchPreference pref =
+                (ChromeSwitchPreference) findPreference(CLOSING_ALL_TABS_CLOSES_BRAVE_KEY);
         pref.setChecked(CloseBraveManager.getClosingAllTabsClosesBraveEnabled());
         pref.setOnPreferenceChangeListener(this);
     }

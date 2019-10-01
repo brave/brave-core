@@ -13,7 +13,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreferenceCompat;
+import org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreference;
 import org.chromium.chrome.browser.preferences.PreferenceUtils;
 import org.chromium.chrome.browser.preferences.privacy.PrivacyPreferences;
 
@@ -29,20 +29,20 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
 
         super.onCreatePreferences(savedInstanceState, rootKey);
 
-        ChromeBaseCheckBoxPreferenceCompat httpsePref =
-                (ChromeBaseCheckBoxPreferenceCompat) findPreference(PREF_HTTPSE);
+        ChromeBaseCheckBoxPreference httpsePref =
+                (ChromeBaseCheckBoxPreference) findPreference(PREF_HTTPSE);
         httpsePref.setOnPreferenceChangeListener(this);
 
-        ChromeBaseCheckBoxPreferenceCompat adBlockPref =
-                (ChromeBaseCheckBoxPreferenceCompat) findPreference(PREF_AD_BLOCK);
+        ChromeBaseCheckBoxPreference adBlockPref =
+                (ChromeBaseCheckBoxPreference) findPreference(PREF_AD_BLOCK);
         adBlockPref.setOnPreferenceChangeListener(this);
 
-        ChromeBaseCheckBoxPreferenceCompat fingerprintingProtectionPref =
-                (ChromeBaseCheckBoxPreferenceCompat) findPreference(PREF_FINGERPRINTING_PROTECTION);
+        ChromeBaseCheckBoxPreference fingerprintingProtectionPref =
+                (ChromeBaseCheckBoxPreference) findPreference(PREF_FINGERPRINTING_PROTECTION);
         fingerprintingProtectionPref.setOnPreferenceChangeListener(this);
 
-        ChromeBaseCheckBoxPreferenceCompat closeTabsOnExitPref =
-                (ChromeBaseCheckBoxPreferenceCompat) findPreference(PREF_CLOSE_TABS_ON_EXIT);
+        ChromeBaseCheckBoxPreference closeTabsOnExitPref =
+                (ChromeBaseCheckBoxPreference) findPreference(PREF_CLOSE_TABS_ON_EXIT);
         closeTabsOnExitPref.setOnPreferenceChangeListener(this);
     }
 

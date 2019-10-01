@@ -14,7 +14,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.preferences.ChromePreferenceManager;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat;
+import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class AppearancePreferences
@@ -48,10 +48,10 @@ public class AppearancePreferences
         if (enableBottomToolbar == null) return;
 
         enableBottomToolbar.setOnPreferenceChangeListener(this);
-        if (enableBottomToolbar instanceof ChromeSwitchPreferenceCompat) {
+        if (enableBottomToolbar instanceof ChromeSwitchPreference) {
             boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                     ContextUtils.getApplicationContext());
-            ((ChromeSwitchPreferenceCompat) enableBottomToolbar)
+            ((ChromeSwitchPreference) enableBottomToolbar)
                     .setChecked(!isTablet
                             && ChromePreferenceManager.getInstance().isBottomToolbarEnabled());
         }
