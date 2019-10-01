@@ -1024,6 +1024,10 @@ void PublisherInfoDatabase::GetPendingContributions(
   bool initialized = Init();
   DCHECK(initialized);
 
+  if (!initialized) {
+    return;
+  }
+
   sql::Statement info_sql(db_.GetUniqueStatement(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
       "spi.status, pi.provider, pc.amount, pc.added_date, "
