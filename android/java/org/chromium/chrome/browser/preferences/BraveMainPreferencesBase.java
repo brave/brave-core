@@ -114,8 +114,8 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
 
     private void updateSearchEnginePreference() {
         if (!TemplateUrlServiceFactory.get().isLoaded()) {
-            ChromeBasePreferenceCompat searchEnginePref =
-                    (ChromeBasePreferenceCompat) findPreference(PREF_SEARCH_ENGINE_SECTION);
+            ChromeBasePreference searchEnginePref =
+                    (ChromeBasePreference) findPreference(PREF_SEARCH_ENGINE_SECTION);
             searchEnginePref.setEnabled(false);
             return;
         }
