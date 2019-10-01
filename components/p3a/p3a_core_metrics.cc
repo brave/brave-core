@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/metrics/histogram_macros.h"
-#include "base/metrics/statistics_recorder.h"
 #include "base/time/time.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -25,7 +24,7 @@
 namespace brave {
 
 namespace {
-#if !defined(OS_ANDROID)
+
 BraveWindowTracker* g_brave_windows_tracker_instance = nullptr;
 
 constexpr char kLastTimeIncognitoUsed[] =
@@ -53,80 +52,6 @@ const char* GetPrefNameForProfile(Profile* profile) {
     return kLastTimeIncognitoUsed;
   }
   return nullptr;
-}
-#endif  // !defined(OS_ANDROID)
-
-// Please keep this list sorted and synced with |DoHistogramBravezation|.
-constexpr const char* kBravezationHistograms[] = {
-    "Bookmarks.Count.OnProfileLoad",
-    "Extensions.LoadExtension",
-    "Tabs.TabCount",
-    "Tabs.WindowCount",
-};
-
-// Records the given sample using the proper Brave way.
-void DoHistogramBravezation(base::StringPiece histogram_name,
-                            base::HistogramBase::Sample sample) {
-  if ("Bookmarks.Count.OnProfileLoad" == histogram_name) {
-    int answer = 0;
-    if (0 <= sample && sample < 5)
-      answer = 0;
-    if (5 <= sample && sample < 20)
-      answer = 1;
-    if (20 <= sample && sample < 100)
-      answer = 2;
-    if (sample >= 100)
-      answer = 3;
-
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.BookmarksCountOnProfileLoad", answer,
-                               3);
-    return;
-  }
-
-  if ("Extensions.LoadExtension" == histogram_name) {
-    int answer = 0;
-    if (sample == 1)
-      answer = 1;
-    else if (2 <= sample && sample <= 4)
-      answer = 2;
-    else if (sample >= 5)
-      answer = 3;
-
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.NumberOfExtensions", answer, 3);
-    return;
-  }
-
-  if ("Tabs.TabCount" == histogram_name) {
-    int answer = 0;
-    if (0 <= sample && sample <= 1) {
-      answer = 0;
-    } else if (2 <= sample && sample <= 5) {
-      answer = 1;
-    } else if (6 <= sample && sample <= 10) {
-      answer = 2;
-    } else if (11 <= sample && sample <= 50) {
-      answer = 3;
-    } else {
-      answer = 4;
-    }
-
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.TabCount", answer, 4);
-    return;
-  }
-
-  if ("Tabs.WindowCount" == histogram_name) {
-    int answer = 0;
-    if (0 <= sample && sample <= 1) {
-      answer = 0;
-    } else if (2 <= sample && sample <= 5) {
-      answer = 1;
-    } else {
-      answer = 2;
-    }
-
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount", answer, 2);
-    return;
-  }
 }
 
 BraveUptimeTracker* g_brave_uptime_tracker_instance = nullptr;
@@ -267,7 +192,6 @@ void BraveUptimeTracker::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kDailyUptimesListPrefName);
 }
 
-#if !defined(OS_ANDROID)
 BraveWindowTracker::BraveWindowTracker(PrefService* local_state)
     : local_state_(local_state) {
   if (!local_state) {
@@ -337,15 +261,6 @@ void BraveWindowTracker::UpdateP3AValues() const {
   // 0 -> Yes; 1 -> No.
   const int tor_used = !local_state_->GetBoolean(kTorUsed);
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.TorEverUsed", tor_used, 1);
-}
-#endif  // !defined(OS_ANDROID)
-
-void SetupHistogramsBraveization() {
-  for (const char* histogram_name : kBravezationHistograms) {
-    base::StatisticsRecorder::SetCallback(
-        histogram_name,
-        base::BindRepeating(&DoHistogramBravezation, histogram_name));
-  }
 }
 
 }  // namespace brave

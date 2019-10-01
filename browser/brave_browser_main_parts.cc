@@ -6,12 +6,13 @@
 #include "brave/browser/brave_browser_main_parts.h"
 
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
-#include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/infobars/infobar_service.h"
 
 #if !defined(OS_ANDROID)
+#include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/infobars/infobar_service.h"
+#include "content/public/browser/web_contents.h"
 #endif
 
 void BraveBrowserMainParts::PostBrowserStart() {

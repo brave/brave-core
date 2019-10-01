@@ -1,5 +1,17 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/p3a/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "BRAVE_P3A_ENABLED=$brave_p3a_enabled",
+  ]
+}
+
 source_set("p3a") {
   sources = [
+    "brave_histogram_rewrite.cc",
+    "brave_histogram_rewrite.h",
     "brave_p3a_log_store.cc",
     "brave_p3a_log_store.h",
     "brave_p3a_service.cc",
@@ -9,13 +21,12 @@ source_set("p3a") {
     "brave_p3a_switches.h",
     "brave_p3a_uploader.cc",
     "brave_p3a_uploader.h",
-    "p3a_core_metrics.cc",
-    "p3a_core_metrics.h",
     "pref_names.cc",
     "pref_names.h",
   ]
 
   deps = [
+    "//brave/components/p3a:buildflags",
     "//brave/components/brave_prochlo",
     "//brave/components/brave_prochlo:prochlo_proto",
     "//components/metrics",
@@ -26,5 +37,12 @@ source_set("p3a") {
     "//services/network/public/mojom",
     "//url",
   ]
+
+  if (!is_android) {
+    sources += [
+      "p3a_core_metrics.cc",
+      "p3a_core_metrics.h",
+    ]
+  }
 }
 

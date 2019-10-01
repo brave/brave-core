@@ -58,7 +58,6 @@ class BraveUptimeTracker {
   DISALLOW_COPY_AND_ASSIGN(BraveUptimeTracker);
 };
 
-#if !defined(OS_ANDROID)
 // Periodically records P3A stats (extracted from Local State) regarding the
 // time when incognito windows were used.
 // Used as a leaking singletone.
@@ -82,12 +81,6 @@ class BraveWindowTracker : public BrowserListObserver {
   PrefService* local_state_;
   DISALLOW_COPY_AND_ASSIGN(BraveWindowTracker);
 };
-#endif  // !defined(OS_ANDROID)
-
-// TODO(iefremov): Move to separate *.h/*.cc
-// Set callbacks for existing Chromium histograms that will be braveized,
-// i.e. reemitted using a different name and custom buckets.
-void SetupHistogramsBraveization();
 
 }  // namespace brave
 
