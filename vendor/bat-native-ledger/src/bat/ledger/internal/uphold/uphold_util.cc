@@ -122,14 +122,6 @@ std::string GetSecondStepVerify() {
       id.c_str());
 }
 
-std::string GetSecondStepRegistration() {
-  const std::string url = GetUrl();
-
-  return base::StringPrintf(
-      "%s/signup/step2",
-      url.c_str());
-}
-
 ledger::ExternalWalletPtr GetWallet(
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   for (auto& wallet : wallets) {
@@ -188,8 +180,8 @@ ledger::ExternalWalletPtr GenerateLinks(ledger::ExternalWalletPtr wallet) {
 
   switch (wallet->status) {
     case ledger::WalletStatus::PENDING: {
-      wallet->add_url = GetSecondStepRegistration();
-      wallet->withdraw_url = GetSecondStepRegistration();
+      wallet->add_url = GetSecondStepVerify();
+      wallet->withdraw_url = GetSecondStepVerify();
       break;
     }
     case ledger::WalletStatus::CONNECTED: {
@@ -225,7 +217,7 @@ std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet) {
 
   switch (wallet->status) {
     case ledger::WalletStatus::PENDING: {
-      url = GetSecondStepRegistration();
+      url = GetSecondStepVerify();
       break;
     }
     case ledger::WalletStatus::CONNECTED: {

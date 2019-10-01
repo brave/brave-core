@@ -162,20 +162,6 @@ TEST(UpholdUtilTest, GetSecondStepVerify) {
       "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&intention=kyc");
 }
 
-TEST(UpholdUtilTest, GetSecondStepRegistration) {
-  // production
-  ledger::is_production = true;
-  std::string result = braveledger_uphold::GetSecondStepRegistration();
-  ASSERT_EQ(result,
-      "https://uphold.com/signup/step2");
-
-  // staging
-  ledger::is_production = false;
-  result = braveledger_uphold::GetSecondStepRegistration();
-  ASSERT_EQ(result,
-      "https://sandbox.uphold.com/signup/step2");
-}
-
 TEST(UpholdUtilTest, GetWallet) {
   // no wallets
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
@@ -292,9 +278,18 @@ TEST(UpholdUtilTest, GenerateLinks) {
   // Pending
   wallet->status = ledger::WalletStatus::PENDING;
   result = braveledger_uphold::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "https://sandbox.uphold.com/signup/step2");
-  ASSERT_EQ(result->withdraw_url, "https://sandbox.uphold.com/signup/step2");
-  ASSERT_EQ(result->verify_url, "https://sandbox.uphold.com/signup/step2");
+  ASSERT_EQ(result->add_url,
+          "https://sandbox.uphold.com/signup/step2?"
+          "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
+          "intention=kyc");
+  ASSERT_EQ(result->withdraw_url,
+          "https://sandbox.uphold.com/signup/step2?"
+          "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
+          "intention=kyc");
+  ASSERT_EQ(result->verify_url,
+          "https://sandbox.uphold.com/signup/step2?"
+          "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
+          "intention=kyc");
   ASSERT_EQ(result->account_url, "https://sandbox.uphold.com/dashboard");
 }
 
@@ -346,7 +341,10 @@ TEST(UpholdUtilTest, GenerateVerifyLink) {
   // Pending
   wallet->status = ledger::WalletStatus::PENDING;
   result = braveledger_uphold::GenerateVerifyLink(wallet->Clone());
-  ASSERT_EQ(result, "https://sandbox.uphold.com/signup/step2");
+  ASSERT_EQ(result,
+          "https://sandbox.uphold.com/signup/step2?"
+          "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
+          "intention=kyc");
 }
 
 }  // namespace braveledger_uphold
