@@ -280,11 +280,8 @@ class AdsBox extends React.Component<Props, State> {
     const toggle = !(!enabledMain || !adsUIEnabled || !adsIsSupported)
     const showDisabled = firstLoad !== false || !toggle || !adsEnabled || !adsIsSupported
 
-    if (!adsHistory) {
-      return null
-    }
-
-    const rows = this.getAdHistoryData(adsHistory, savedOnly)
+    const historyEntries = adsHistory || []
+    const rows = this.getAdHistoryData(historyEntries, savedOnly)
     const notEmpty = rows && rows.length !== 0
 
     return (
