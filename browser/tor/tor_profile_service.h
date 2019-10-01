@@ -41,11 +41,7 @@ class TorProfileService : public KeyedService {
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
-  virtual void LaunchTor(const TorConfig&) = 0;
-  virtual void ReLaunchTor(const TorConfig&) = 0;
   virtual void SetNewTorCircuit(content::WebContents* web_contents) = 0;
-  virtual const TorConfig& GetTorConfig() = 0;
-  virtual int64_t GetTorPid() = 0;
   virtual std::unique_ptr<net::ProxyConfigService>
       CreateProxyConfigService() = 0;
   void AddObserver(TorLauncherServiceObserver* observer);

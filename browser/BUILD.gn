@@ -6,6 +6,7 @@ import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
+import("//chrome/common/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 import("//third_party/protobuf/proto_library.gni")
@@ -81,6 +82,13 @@ source_set("browser_process") {
     "update_util.h",
   ]
 
+  if (enable_tor) {
+    sources += [
+      # TODO(bridiver) - change the directory for these
+      "extensions/brave_tor_client_updater.cc",
+      "extensions/brave_tor_client_updater.h",
+    ]
+  }
   if (enable_sparkle) {
     sources += [
       "mac/sparkle_glue.mm",

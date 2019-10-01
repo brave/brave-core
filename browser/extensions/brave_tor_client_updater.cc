@@ -12,11 +12,53 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/task/post_task.h"
+#include "base/task_runner.h"
+#include "base/task_runner_util.h"
 #include "third_party/re2/src/re2/re2.h"
 
 using brave_component_updater::BraveComponent;
 
 namespace extensions {
+
+namespace {
+
+base::FilePath InitExecutablePath(
+    const base::FilePath& install_dir) {
+  base::FilePath executable_path;
+  base::FileEnumerator traversal(install_dir, false,
+                                 base::FileEnumerator::FILES,
+                                 FILE_PATH_LITERAL("tor-*"));
+  for (base::FilePath current = traversal.Next(); !current.empty();
+       current = traversal.Next()) {
+    base::FileEnumerator::FileInfo file_info = traversal.GetInfo();
+    if (!RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
+                        "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+-brave-\\d+"))
+      continue;
+    executable_path = current;
+    break;
+  }
+
+  if (executable_path.empty()) {
+    LOG(ERROR) << "Failed to locate Tor client executable in "
+               << install_dir.value().c_str();
+    return base::FilePath();
+  }
+
+#if defined(OS_POSIX)
+  // Ensure that Tor client executable has appropriate file
+  // permissions, as CRX unzipping does not preserve them.
+  // See https://crbug.com/555011
+  if (!base::SetPosixFilePermissions(executable_path, 0755)) {
+    LOG(ERROR) << "Failed to set executable permission on "
+               << executable_path.value().c_str();
+    return base::FilePath();
+  }
+#endif  // defined(OS_POSIX)
+
+  return executable_path;
+}
+
+}  // namespace
 
 #if defined(OS_WIN)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Windows)";
@@ -62,7 +104,8 @@ BraveTorClientUpdater::BraveTorClientUpdater(BraveComponent::Delegate* delegate)
     : BraveComponent(delegate),
       task_runner_(
           base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
-      registered_(false) {
+      registered_(false),
+      weak_ptr_factory_(this) {
 }
 
 BraveTorClientUpdater::~BraveTorClientUpdater() {
@@ -78,53 +121,32 @@ void BraveTorClientUpdater::Register() {
   registered_ = true;
 }
 
-base::FilePath BraveTorClientUpdater::GetExecutablePath() const {
-  return executable_path_;
+void BraveTorClientUpdater::SetExecutablePath(const base::FilePath& path) {
+  executable_path_ = path;
+  for (Observer& observer : observers_)
+    observer.OnExecutableReady(path);
 }
 
-void BraveTorClientUpdater::InitExecutablePath(
-    const base::FilePath& install_dir) {
-  base::FilePath executable_path;
-  base::FileEnumerator traversal(install_dir, false,
-                                 base::FileEnumerator::FILES,
-                                 FILE_PATH_LITERAL("tor-*"));
-  for (base::FilePath current = traversal.Next(); !current.empty();
-       current = traversal.Next()) {
-    base::FileEnumerator::FileInfo file_info = traversal.GetInfo();
-    if (!RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
-                        "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+-brave-\\d+"))
-      continue;
-    executable_path = current;
-    break;
-  }
-
-  if (executable_path.empty()) {
-    LOG(ERROR) << "Failed to locate Tor client executable in "
-               << install_dir.value().c_str();
-    return;
-  }
-
-#if defined(OS_POSIX)
-  // Ensure that Tor client executable has appropriate file
-  // permissions, as CRX unzipping does not preserve them.
-  // See https://crbug.com/555011
-  if (!base::SetPosixFilePermissions(executable_path, 0755)) {
-    LOG(ERROR) << "Failed to set executable permission on "
-               << executable_path.value().c_str();
-    return;
-  }
-#endif  // defined(OS_POSIX)
-
-  executable_path_ = executable_path;
+base::FilePath BraveTorClientUpdater::GetExecutablePath() const {
+  return executable_path_;
 }
 
 void BraveTorClientUpdater::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  GetTaskRunner()->PostTask(
-      FROM_HERE, base::Bind(&BraveTorClientUpdater::InitExecutablePath,
-                            base::Unretained(this), install_dir));
+  base::PostTaskAndReplyWithResult(GetTaskRunner().get(), FROM_HERE,
+      base::BindOnce(&InitExecutablePath, install_dir),
+      base::BindOnce(&BraveTorClientUpdater::SetExecutablePath,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveTorClientUpdater::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void BraveTorClientUpdater::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 // static

@@ -10,6 +10,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "net/proxy_resolution/proxy_info.h"
@@ -21,23 +22,21 @@ class ProxyConfigService;
 class ProxyConfigServiceTor;
 }
 
+using extensions::BraveTorClientUpdater;
+
 namespace tor {
 
 using NewTorCircuitCallback = base::OnceCallback<void(
     const base::Optional<net::ProxyInfo>& proxy_info)>;
 
 class TorProfileServiceImpl : public TorProfileService,
-                              public base::CheckedObserver {
+                              public BraveTorClientUpdater::Observer {
  public:
   explicit TorProfileServiceImpl(Profile* profile);
   ~TorProfileServiceImpl() override;
 
   // TorProfileService:
-  void LaunchTor(const TorConfig&) override;
-  void ReLaunchTor(const TorConfig&) override;
   void SetNewTorCircuit(content::WebContents* web_contents) override;
-  const TorConfig& GetTorConfig() override;
-  int64_t GetTorPid() override;
   std::unique_ptr<net::ProxyConfigService> CreateProxyConfigService() override;
 
   void KillTor();
@@ -48,6 +47,11 @@ class TorProfileServiceImpl : public TorProfileService,
   void NotifyTorLaunched(bool result, int64_t pid);
 
  private:
+  void LaunchTor();
+
+  // BraveTorClientUpdater::Observer
+  void OnExecutableReady(const base::FilePath& path) override;
+
   Profile* profile_;  // NOT OWNED
   TorLauncherFactory* tor_launcher_factory_;  // Singleton
   net::ProxyConfigServiceTor* proxy_config_service_;  // NOT OWNED

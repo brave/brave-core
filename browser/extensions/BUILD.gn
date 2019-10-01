@@ -38,8 +38,6 @@ source_set("extensions") {
     "brave_extensions_browser_api_provider.h",
     "brave_theme_event_router.cc",
     "brave_theme_event_router.h",
-    "brave_tor_client_updater.cc",
-    "brave_tor_client_updater.h",
     "updater/brave_update_client_config.cc",
     "updater/brave_update_client_config.h",
   ]

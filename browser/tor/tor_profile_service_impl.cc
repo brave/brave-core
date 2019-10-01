@@ -11,6 +11,7 @@
 
 #include "base/bind.h"
 #include "base/task/post_task.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
@@ -120,25 +121,33 @@ void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
 TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
     : profile_(profile),
       weak_ptr_factory_(this) {
-  tor_launcher_factory_ = TorLauncherFactory::GetInstance();
-  tor_launcher_factory_->AddObserver(this);
 
-  if (GetTorPid() < 0) {
-    tor::TorConfig config(GetTorExecutablePath(), GetTorProxyURI());
-    LaunchTor(config);
-  }
+  g_brave_browser_process->tor_client_updater()->AddObserver(this);
+  OnExecutableReady(GetTorExecutablePath());
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
-  tor_launcher_factory_->RemoveObserver(this);
+  if (tor_launcher_factory_)
+    tor_launcher_factory_->RemoveObserver(this);
 }
 
-void TorProfileServiceImpl::LaunchTor(const TorConfig& config) {
+void TorProfileServiceImpl::OnExecutableReady(const base::FilePath& path) {
+  if (path.empty())
+    return;
+
+  g_brave_browser_process->tor_client_updater()->RemoveObserver(this);
+
+  tor_launcher_factory_ = TorLauncherFactory::GetInstance();
+  tor_launcher_factory_->AddObserver(this);
+
+  if (tor_launcher_factory_->GetTorPid() < 0) {
+    LaunchTor();
+  }
+}
+
+void TorProfileServiceImpl::LaunchTor() {
+  tor::TorConfig config(GetTorExecutablePath(), GetTorProxyURI());
   tor_launcher_factory_->LaunchTorProcess(config);
-}
-
-void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
-  tor_launcher_factory_->ReLaunchTorProcess(config);
 }
 
 void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
@@ -166,16 +175,9 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
       url, std::move(proxy_lookup_client_ptr));
 }
 
-const TorConfig& TorProfileServiceImpl::GetTorConfig() {
-  return tor_launcher_factory_->GetTorConfig();
-}
-
-int64_t TorProfileServiceImpl::GetTorPid() {
-  return tor_launcher_factory_->GetTorPid();
-}
-
 void TorProfileServiceImpl::KillTor() {
-  tor_launcher_factory_->KillTorProcess();
+  if (tor_launcher_factory_)
+    tor_launcher_factory_->KillTorProcess();
 }
 
 void TorProfileServiceImpl::NotifyTorLauncherCrashed() {

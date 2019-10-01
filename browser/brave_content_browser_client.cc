@@ -209,9 +209,10 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
   if (identity.name() == tor::mojom::kServiceName) {
     base::FilePath path =
         g_brave_browser_process->tor_client_updater()->GetExecutablePath();
-    DCHECK(!path.empty());
-    command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
+    if (!path.empty()) {
+      command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
                                    path.BaseName());
+    }
   }
 #endif
 }
