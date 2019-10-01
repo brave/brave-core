@@ -111,6 +111,15 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
       }
       break
     }
+    case types.GET_EXTERNAL_WALLET: {
+      chrome.send('brave_rewards_tip.getExternalWallet', ['uphold'])
+      break
+    }
+    case types.ON_EXTERNAL_WALLET: {
+      state = { ...state }
+      state.externalWallet = payload.wallet
+      break
+    }
   }
 
   return state
