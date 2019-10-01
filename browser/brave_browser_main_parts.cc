@@ -6,6 +6,16 @@
 #include "brave/browser/brave_browser_main_parts.h"
 
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
+#include "brave/browser/tor/buildflags.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "base/files/file_util.h"
+#include "brave/common/tor/tor_constants.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/browser_process_impl.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_metrics.h"
+#endif
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
@@ -39,4 +49,22 @@ void BraveBrowserMainParts::PostBrowserStart() {
 
 void BraveBrowserMainParts::PreShutdown() {
   content::BraveClearBrowsingData::ClearOnExit();
+}
+
+void BraveBrowserMainParts::PostBrowserStart() {
+  ChromeBrowserMainParts::PostBrowserStart();
+
+#if BUILDFLAG(ENABLE_TOR)
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath tor_legacy_path =
+      profile_manager->user_data_dir().Append(tor::kTorProfileDir);
+
+  // Delete Tor legacy profile if exists.
+  if (base::PathExists(tor_legacy_path)) {
+    profile_manager->MaybeScheduleProfileForDeletion(
+        tor_legacy_path,
+        base::DoNothing(),
+        ProfileMetrics::DELETE_PROFILE_SETTINGS);
+  }
+#endif
 }
