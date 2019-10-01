@@ -52,7 +52,8 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   bool IsNetworkConnectionAvailable(
       bool* out_available) override;
   bool CanShowBackgroundNotifications(bool* out_can_show) override;
-  void CanShowBackgroundNotifications(CanShowBackgroundNotificationsCallback callback) override;
+  void CanShowBackgroundNotifications(
+      CanShowBackgroundNotificationsCallback callback) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
   bool ShouldShowNotifications(

@@ -37,9 +37,12 @@ bool NotificationHelperAndroid::ShouldShowNotifications() const {
   bool is_notification_channel_enabled = IsBraveAdsNotificationChannelEnabled();
 
   auto is_foreground = BackgroundHelper::GetInstance()->IsForeground();
-  auto should_show_notifications = CanShowBackgroundNotifications() || is_foreground;
+  auto should_show_notifications =
+      CanShowBackgroundNotifications() || is_foreground;
 
-  return is_notifications_enabled && is_notification_channel_enabled && should_show_notifications;
+  return is_notifications_enabled &&
+         is_notification_channel_enabled &&
+         should_show_notifications;
 }
 
 bool NotificationHelperAndroid::ShowMyFirstAdNotification() const {

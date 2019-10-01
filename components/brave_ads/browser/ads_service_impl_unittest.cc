@@ -189,9 +189,12 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD0(OnlyAnonWallet, bool());
 
-  MOCK_METHOD1(AddPrivateObserver, void(RewardsServicePrivateObserver* observer));
-  MOCK_METHOD1(RemovePrivateObserver, void(RewardsServicePrivateObserver* observer));
-  MOCK_METHOD1(ResetTheWholeState, void(const base::Callback<void(bool)>& callback));
+  MOCK_METHOD1(AddPrivateObserver,
+      void(RewardsServicePrivateObserver* observer));
+  MOCK_METHOD1(RemovePrivateObserver,
+      void(RewardsServicePrivateObserver* observer));
+  MOCK_METHOD1(ResetTheWholeState,
+      void(const base::Callback<void(bool)>& callback));
 };
 
 class AdsServiceTest : public testing::Test {

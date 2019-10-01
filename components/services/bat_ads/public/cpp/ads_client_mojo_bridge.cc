@@ -70,7 +70,8 @@ bool AdsClientMojoBridge::CanShowBackgroundNotifications(bool* can_show) {
   return true;
 }
 
-void AdsClientMojoBridge::CanShowBackgroundNotifications(CanShowBackgroundNotificationsCallback callback) {
+void AdsClientMojoBridge::CanShowBackgroundNotifications(
+    CanShowBackgroundNotificationsCallback callback) {
   std::move(callback).Run(ads_client_->CanShowBackgroundNotifications());
 }
 
