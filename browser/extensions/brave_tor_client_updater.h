@@ -16,7 +16,9 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 
 class BraveProfileManagerTest;
+class BraveProfileManagerExtensionTest;
 class BraveTorClientUpdaterTest;
+class SearchEngineProviderServiceTest;
 
 using brave_component_updater::BraveComponent;
 
@@ -65,7 +67,10 @@ class BraveTorClientUpdater : public BraveComponent {
 
  private:
   friend class ::BraveProfileManagerTest;
+  friend class ::BraveProfileManagerExtensionTest;
   friend class ::BraveTorClientUpdaterTest;
+  friend class ::SearchEngineProviderServiceTest;
+
   static std::string g_tor_client_component_name_;
   static std::string g_tor_client_component_id_;
   static std::string g_tor_client_component_base64_public_key_;

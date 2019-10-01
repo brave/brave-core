@@ -7,7 +7,6 @@
 namespace tor {
 namespace prefs {
 
-extern const char kProfileUsingTor[] = "tor.profile_using_tor";
 extern const char kTorProxyString[] = "tor.tor_proxy_string";
 
 }  // namespace prefs

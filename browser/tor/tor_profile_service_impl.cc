@@ -121,6 +121,11 @@ void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
 TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
     : profile_(profile),
       weak_ptr_factory_(this) {
+  // Return early since g_brave_browser_process and tor_client_updater are not
+  // available in unit tests.
+  if (profile_->AsTestingProfile()) {
+    return;
+  }
 
   g_brave_browser_process->tor_client_updater()->AddObserver(this);
   OnExecutableReady(GetTorExecutablePath());

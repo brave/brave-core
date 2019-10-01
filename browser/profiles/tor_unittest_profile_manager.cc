@@ -18,6 +18,8 @@
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 
+#include "brave/test/base/brave_testing_profile.h"
+
 Profile* TorUnittestProfileManager::CreateProfileHelper(
     const base::FilePath& path) {
   if (!base::PathExists(path)) {
@@ -49,15 +51,6 @@ void TorUnittestProfileManager::InitProfileUserPrefs(Profile* profile) {
 
 std::unique_ptr<Profile> TorUnittestProfileManager::CreateProfile(
     const base::FilePath& path, Delegate* delegate) {
-  TestingProfile::Builder profile_builder;
-  sync_preferences::PrefServiceMockFactory factory;
-  auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
-  std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs(
-      factory.CreateSyncable(registry.get()));
-  RegisterUserProfilePrefs(registry.get());
-  tor::TorProfileService::RegisterProfilePrefs(registry.get());
-  profile_builder.SetPrefService(std::move(prefs));
-  profile_builder.SetPath(path);
-  profile_builder.SetDelegate(delegate);
-  return profile_builder.Build();
+  return std::unique_ptr<TestingProfile>(new BraveTestingProfile(
+      path, delegate));
 }

@@ -38,7 +38,6 @@ class TorProfileService : public KeyedService {
   TorProfileService();
   ~TorProfileService() override;
 
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
   virtual void SetNewTorCircuit(content::WebContents* web_contents) = 0;

@@ -12,6 +12,7 @@
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "content/public/test/test_utils.h"
 
 using extensions::ExtensionBrowserTest;
 
@@ -109,6 +110,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientInstalls) {
       kTorClientUpdaterComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallTorClientUpdater());
 
+  content::RunAllTasksUntilIdle();
   base::FilePath executable_path =
       g_brave_browser_process->tor_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));
@@ -122,6 +124,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientLaunches) {
       kTorClientUpdaterComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallTorClientUpdater());
 
+  content::RunAllTasksUntilIdle();
   base::FilePath executable_path =
       g_brave_browser_process->tor_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));

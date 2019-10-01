@@ -1,0 +1,12 @@
+diff --git a/chrome/test/base/testing_profile.cc b/chrome/test/base/testing_profile.cc
+index 08fc569a34ee4f25182ae58e97dd1bede9ae6b72..44333edf897f55ee69d3895e01eca498b791e4be 100644
+--- a/chrome/test/base/testing_profile.cc
++++ b/chrome/test/base/testing_profile.cc
+@@ -417,6 +417,7 @@ void TestingProfile::Init() {
+       EnsureBrowserContextKeyedServiceFactoriesBuilt();
+ 
+ #if BUILDFLAG(ENABLE_SUPERVISED_USERS)
++  BRAVE_INIT
+   if (!IsOffTheRecord()) {
+     SupervisedUserSettingsService* settings_service =
+         SupervisedUserSettingsServiceFactory::GetForKey(key_.get());

@@ -34,12 +34,6 @@ TorProfileService::~TorProfileService() {
 }
 
 // static
-void TorProfileService::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(prefs::kProfileUsingTor, false);
-}
-
-// static
 void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   std::string port;
   switch (chrome::GetChannel()) {
