@@ -3801,16 +3801,20 @@ bool RewardsServiceImpl::OnlyAnonWallet() {
   return false;
 }
 
-void RewardsServiceImpl::RecordBackendP3AStats() const {
-  // TODO(iefremov): It is not safe to use Unretained here, as well as
-  // it is not safe to use raw pointer to db backend in this whole file.
-  if (publisher_info_backend_) {
-    file_task_runner_->PostTask(
-        FROM_HERE,
-        base::Bind(&PublisherInfoDatabase::RecordP3AStats,
-                   base::Unretained(publisher_info_backend_.get()),
-                   auto_contributions_enabled_));
+void RecordBackendP3AStatsOnFileTaskRunner(PublisherInfoDatabase* backend,
+                                           bool auto_contributions_enabled) {
+  if (!backend) {
+    return;
   }
+  backend->RecordP3AStats(auto_contributions_enabled);
+}
+
+void RewardsServiceImpl::RecordBackendP3AStats() const {
+  file_task_runner_->PostTask(
+      FROM_HERE,
+      base::Bind(&RecordBackendP3AStatsOnFileTaskRunner,
+                 base::Unretained(publisher_info_backend_.get()),
+                 auto_contributions_enabled_));
 }
 
 }  // namespace brave_rewards
