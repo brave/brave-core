@@ -1,0 +1,12 @@
+source_set("browser") {
+  visibility = [ "//extensions/browser:browser_sources" ]
+
+  sources = [
+    "brave_extensions_browser_client.cc",
+    "brave_extensions_browser_client.h",
+  ]
+
+  deps = [
+    "//base",
+  ]
+}
