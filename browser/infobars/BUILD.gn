@@ -11,6 +11,8 @@ source_set("infobars") {
     "//base",
     "//brave/common",
     "//brave/components/p3a",
+    "//brave/app:brave_generated_resources_grit",
+    "//chrome/app:chromium_strings",
     "//components/infobars/core",
     "//components/prefs",
     "//components/strings",
