@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/bind_helpers.h"
 #include "base/environment.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -19,28 +20,38 @@
 #include "base/system/sys_info.h"
 #include "base/task/post_task.h"
 #include "base/values.h"
-#include "brave_base/random.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave_base/random.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/page_navigator.h"
+#include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/load_flags.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
+#if defined(OS_ANDROID)
+#include "chrome/browser/android/service_tab_launcher.h"
+#else
+#include "chrome/browser/ui/browser.h"
+#endif
+
 // Fetch headers from the referral server once a day.
 const int kFetchReferralHeadersFrequency = 60 * 60 * 24;
+
+// Perform finalization checks once a day.
+const int kFinalizationChecksFrequency = 60 * 60 * 24;
 
 // Maximum size of the referral server response in bytes.
 const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
@@ -59,6 +70,8 @@ std::string GetPlatformIdentifier() {
     return "winx64";
 #elif defined(OS_MACOSX)
   return "osx";
+#elif defined(OS_ANDROID)
+  return "android";
 #elif defined(OS_LINUX)
   return "linux";
 #else
@@ -95,10 +108,18 @@ void BraveReferralsService::Start() {
   if (initialized_)
     return;
 
-  // Retrieve first run sentinel creation time.
-  task_runner_->PostTask(FROM_HERE,
-                         base::Bind(&BraveReferralsService::GetFirstRunTime,
-                                    base::Unretained(this)));
+  // Retrieve first run time.
+  GetFirstRunTime();
+
+  // Periodically perform finalization checks.
+  DCHECK(!finalization_checks_timer_);
+  finalization_checks_timer_ = std::make_unique<base::RepeatingTimer>();
+  finalization_checks_timer_->Start(
+      FROM_HERE,
+      base::TimeDelta::FromSeconds(
+          brave_base::random::Geometric(kFinalizationChecksFrequency)),
+      this, &BraveReferralsService::OnFinalizationChecksTimerFired);
+  DCHECK(finalization_checks_timer_->IsRunning());
 
   // Fetch the referral headers on startup.
   FetchReferralHeaders();
@@ -130,6 +151,7 @@ void BraveReferralsService::Start() {
 }
 
 void BraveReferralsService::Stop() {
+  finalization_checks_timer_.reset();
   fetch_referral_headers_timer_.reset();
   initialized_ = false;
 }
@@ -167,6 +189,10 @@ bool BraveReferralsService::GetMatchingReferralHeaders(
     }
   }
   return false;
+}
+
+void BraveReferralsService::OnFinalizationChecksTimerFired() {
+  PerformFinalizationChecks();
 }
 
 void BraveReferralsService::OnFetchReferralHeadersTimerFired() {
@@ -243,14 +269,21 @@ void BraveReferralsService::OnReferralInitLoadComplete(
 
   const base::Value* offer_page_url = root->FindKey("offer_page_url");
   if (offer_page_url) {
+    Profile* last_used_profile = ProfileManager::GetLastUsedProfile();
     GURL gurl(offer_page_url->GetString());
-    chrome::ScopedTabbedBrowserDisplayer browser_displayer(
-        ProfileManager::GetLastUsedProfile());
-              content::OpenURLParams open_url_params(gurl, content::Referrer(),
-        WindowOpenDisposition::NEW_FOREGROUND_TAB,
+    content::OpenURLParams open_url_params(
+        gurl, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
     open_url_params.extra_headers = FormatExtraHeaders(headers, gurl);
+#if defined(OS_ANDROID)
+    base::Callback<void(content::WebContents*)> callback =
+        base::Bind([](content::WebContents*) {});
+    ServiceTabLauncher::GetInstance()->LaunchTab(
+        last_used_profile, open_url_params, callback);
+#else
+    chrome::ScopedTabbedBrowserDisplayer browser_displayer(last_used_profile);
     browser_displayer.browser()->OpenURL(open_url_params);
+#endif
   }
 
   task_runner_->PostTask(FROM_HERE,
@@ -305,10 +338,34 @@ void BraveReferralsService::OnReadPromoCodeComplete() {
 }
 
 void BraveReferralsService::GetFirstRunTime() {
+#if defined(OS_ANDROID)
+  // Android doesn't use a sentinel to track first run, so we use a
+  // preference instead.
+  first_run_timestamp_ =
+      pref_service_->GetTime(kReferralAndroidFirstRunTimestamp);
+  if (first_run_timestamp_.is_null()) {
+    first_run_timestamp_ = base::Time::Now();
+    pref_service_->SetTime(kReferralAndroidFirstRunTimestamp,
+                           first_run_timestamp_);
+  }
+  PerformFinalizationChecks();
+#else
+  task_runner_->PostTask(
+      FROM_HERE, base::Bind(&BraveReferralsService::GetFirstRunTimeDesktop,
+                            base::Unretained(this)));
+#endif
+}
+
+void BraveReferralsService::GetFirstRunTimeDesktop() {
+#if !defined(OS_ANDROID)
   first_run_timestamp_ = first_run::GetFirstRunSentinelCreationTime();
   if (first_run_timestamp_.is_null())
     return;
+#endif
+  PerformFinalizationChecks();
+}
 
+void BraveReferralsService::PerformFinalizationChecks() {
   // Delete the promo code preference, if appropriate.
   base::PostTaskWithTraits(
       FROM_HERE, {content::BrowserThread::UI},
@@ -613,10 +670,13 @@ void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kReferralCheckedForPromoCodeFile, false);
   registry->RegisterStringPref(kReferralPromoCode, std::string());
   registry->RegisterStringPref(kReferralDownloadID, std::string());
-  registry->RegisterStringPref(kReferralTimestamp, std::string());
+  registry->RegisterTimePref(kReferralTimestamp, base::Time());
   registry->RegisterTimePref(kReferralAttemptTimestamp, base::Time());
   registry->RegisterIntegerPref(kReferralAttemptCount, 0);
   registry->RegisterListPref(kReferralHeaders);
+#if defined(OS_ANDROID)
+  registry->RegisterTimePref(kReferralAndroidFirstRunTimestamp, base::Time());
+#endif
 }
 
 }  // namespace brave

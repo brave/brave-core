@@ -41,6 +41,8 @@ const char kReferralAttemptCount[] = "brave.referral.referral_attempt_count";
 const char kReferralHeaders[] = "brave.referral.headers";
 const char kReferralCheckedForPromoCodeFile[] =
     "brave.referral.checked_for_promo_code_file";
+const char kReferralAndroidFirstRunTimestamp[] =
+    "brave.referral_android_first_run_timestamp";
 const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
 const char kShieldsAdvancedViewEnabled[] =

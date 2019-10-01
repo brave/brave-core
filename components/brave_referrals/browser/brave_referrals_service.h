@@ -41,6 +41,8 @@ class BraveReferralsService {
 
  private:
   void GetFirstRunTime();
+  void GetFirstRunTimeDesktop();
+  void PerformFinalizationChecks();
   base::FilePath GetPromoCodeFileName() const;
   void ReadPromoCode();
   void DeletePromoCodeFile() const;
@@ -53,6 +55,10 @@ class BraveReferralsService {
   void CheckForReferralFinalization();
   std::string FormatExtraHeaders(const base::Value* referral_headers,
                                  const GURL& url);
+
+  // Invoked from RepeatingTimer when finalization checks timer
+  // fires.
+  void OnFinalizationChecksTimerFired();
 
   // Invoked from RepeatingTimer when referral headers timer fires.
   void OnFetchReferralHeadersTimerFired();
@@ -81,6 +87,7 @@ class BraveReferralsService {
   std::unique_ptr<network::SimpleURLLoader> referral_init_loader_;
   std::unique_ptr<network::SimpleURLLoader> referral_finalization_check_loader_;
   std::unique_ptr<base::RepeatingTimer> fetch_referral_headers_timer_;
+  std::unique_ptr<base::RepeatingTimer> finalization_checks_timer_;
   PrefService* pref_service_;
   std::string promo_code_;
 
