@@ -15,11 +15,14 @@ import org.chromium.chrome.browser.preferences.PreferenceUtils;
 
 public class BraveSiteSettingsPreferences extends SiteSettingsPreferences {
     private static final String DESKTOP_MODE_CATEGORY_KEY = "desktop_mode_category";
+    private static final String PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY = "play_yt_video_in_browser_category";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
+
         PreferenceUtils.addPreferencesFromResource(this, R.xml.brave_site_settings_preferences);
+        configureBravePreferences();
         updateBravePreferenceStates();
     }
 
@@ -29,11 +32,29 @@ public class BraveSiteSettingsPreferences extends SiteSettingsPreferences {
         updateBravePreferenceStates();
     }
 
+    private void configureBravePreferences() {
+        Preference play_yt_video_pref = findPreference(PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY);
+        Preference desktop_mode_pref = findPreference(DESKTOP_MODE_CATEGORY_KEY);
+        if (mMediaSubMenu) {
+            getPreferenceScreen().removePreference(desktop_mode_pref);
+        } else {
+            getPreferenceScreen().removePreference(play_yt_video_pref);
+        }
+    }
+
     private void updateBravePreferenceStates() {
-        Preference p = findPreference(DESKTOP_MODE_CATEGORY_KEY);
-        boolean enabled = ContextUtils.getAppSharedPreferences().getBoolean(
-             DesktopModePreferences.DESKTOP_MODE_KEY, false);
-        p.setSummary(enabled ? R.string.settings_desktop_mode_enabled_summary
-                             : R.string.settings_desktop_mode_disabled_summary);
+        if (mMediaSubMenu) {
+            Preference p = findPreference(PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY);
+            boolean enabled = ContextUtils.getAppSharedPreferences().getBoolean(
+                PlayYTVideoInBrowserPreferences.PLAY_YT_VIDEO_IN_BROWSER_KEY, true);
+            p.setSummary(enabled ? R.string.settings_play_yt_video_in_browser_enabled_summary
+                                 : R.string.settings_play_yt_video_in_browser_off);
+        } else {
+            Preference p = findPreference(DESKTOP_MODE_CATEGORY_KEY);
+            boolean enabled = ContextUtils.getAppSharedPreferences().getBoolean(
+                 DesktopModePreferences.DESKTOP_MODE_KEY, false);
+            p.setSummary(enabled ? R.string.settings_desktop_mode_enabled_summary
+                                 : R.string.settings_desktop_mode_disabled_summary);
+        }
     }
 }
