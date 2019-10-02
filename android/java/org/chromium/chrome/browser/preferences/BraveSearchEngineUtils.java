@@ -11,6 +11,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.search_engines.TemplateUrl;
 
 public class BraveSearchEngineUtils {
@@ -58,9 +59,21 @@ public class BraveSearchEngineUtils {
     static public void initializeBraveSearchEngineStates(TabModelSelector tabModelSelector) {
         tabModelSelector.addObserver(new SearchEngineTabModelSelectorObserver(tabModelSelector));
 
-        initializeDSEPrefs();
-        // Initially set standard dse as a active DSE.
-        updateActiveDSE(false);
+        // For first-run initialization, it needs default TemplateUrl.
+        // So, doing it after TemplateUrlService is loaded to get it if it isn't loaded yet.
+        if (TemplateUrlServiceFactory.get().isLoaded())  {
+            doInitializeBraveSearchEngineStates();
+            return;
+        }
+
+        TemplateUrlServiceFactory.get().registerLoadListener(
+            new TemplateUrlService.LoadListener() {
+                @Override
+                public void onTemplateUrlServiceLoaded() {
+                    TemplateUrlServiceFactory.get().unregisterLoadListener(this);
+                    doInitializeBraveSearchEngineStates();
+                }
+            });
     }
 
     static private void initializeDSEPrefs() {
@@ -79,5 +92,13 @@ public class BraveSearchEngineUtils {
             sharedPreferencesEditor.putString(PRIVATE_DSE_SHORTNAME, templateUrl.getShortName());
             sharedPreferencesEditor.apply();
         }
+    }
+
+    static private void doInitializeBraveSearchEngineStates() {
+        assert TemplateUrlServiceFactory.get().isLoaded();
+
+        initializeDSEPrefs();
+        // Initially set standard dse as an active DSE.
+        updateActiveDSE(false);
     }
 }
