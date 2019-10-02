@@ -12,6 +12,7 @@ const code =
 `
 (function() {
   let alreadyInsertedMetaTag = false
+
   function __insertDappDetected() {
     if (!alreadyInsertedMetaTag) {
       const meta = document.createElement('meta')
@@ -22,6 +23,15 @@ const code =
   }
 
   if (window.hasOwnProperty('web3')) {
+    // Note a closure can't be used for this var because some sites like
+    // www.wnyc.org do a second script execution via eval for some reason.
+    window.__disableDappDetectionInsertion = true
+    // Likely oldWeb3 is undefined and it has a property only because
+    // we defined it. Some sites like wnyc.org are evaling all scripts
+    // that exist again, so this is protection against multiple calls.
+    if (window.web3 === undefined) {
+      return
+    }
     if (!window.web3.currentProvider ||
         !window.web3.currentProvider.isMetaMask) {
       __insertDappDetected()
@@ -31,11 +41,13 @@ const code =
     Object.defineProperty(window, 'web3', {
       configurable: true,
       set: function (val) {
-        __insertDappDetected()
+        if (!window.__disableDappDetectionInsertion)
+          __insertDappDetected()
         oldWeb3 = val
       },
       get: function () {
-        __insertDappDetected()
+        if (!window.__disableDappDetectionInsertion)
+          __insertDappDetected()
         return oldWeb3
       }
     })

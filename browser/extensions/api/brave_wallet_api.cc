@@ -63,11 +63,19 @@ BraveWalletPromptToEnableWalletFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BraveWalletIsEnabledFunction::Run() {
+BraveWalletIsInstalledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* registry = extensions::ExtensionRegistry::Get(profile);
   bool enabled = !brave::IsTorProfile(profile) &&
     registry->ready_extensions().GetByID(ethereum_remote_client_extension_id);
+  return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
+}
+
+ExtensionFunction::ResponseAction
+BraveWalletIsEnabledFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  bool enabled = !brave::IsTorProfile(profile) &&
+    profile->GetPrefs()->GetBoolean(kBraveWalletEnabled);
   return RespondNow(OneArgument(std::make_unique<base::Value>(enabled)));
 }
 

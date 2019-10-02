@@ -36,6 +36,16 @@ class BraveWalletIsEnabledFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveWalletIsInstalledFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.isInstalled", UNKNOWN)
+
+ protected:
+  ~BraveWalletIsInstalledFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 class BraveWalletGetWalletSeedFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.getWalletSeed", UNKNOWN)
