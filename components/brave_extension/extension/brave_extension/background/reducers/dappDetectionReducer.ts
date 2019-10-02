@@ -10,14 +10,16 @@ export default function dappDetectionReducer (state = {}, action: Actions) {
     case webNavigationTypes.ON_COMMITTED: {
       if (chrome.braveWallet && action.isMainFrame) {
         chrome.braveWallet.isEnabled((enabled) => {
-          if (enabled) {
-            return
-          }
-          chrome.tabs.executeScript(action.tabId, {
-            file: 'out/content_dapps.bundle.js',
-            allFrames: false,
-            runAt: 'document_start',
-            frameId: 0
+          chrome.braveWallet.isInstalled((installed) => {
+            if (installed || !enabled) {
+              return
+            }
+            chrome.tabs.executeScript(action.tabId, {
+              file: 'out/content_dapps.bundle.js',
+              allFrames: false,
+              runAt: 'document_start',
+              frameId: 0
+            })
           })
         })
       }
