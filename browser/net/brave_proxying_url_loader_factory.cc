@@ -29,14 +29,13 @@ namespace {
 
 // Helper struct for crafting responses.
 struct WriteData {
-  // Wek ref. |client| destroys itself in |OnComplete()|.
-  network::mojom::URLLoaderClient* client;
+  base::WeakPtr<network::mojom::URLLoaderClient> client;
   std::string data;
   std::unique_ptr<mojo::DataPipeProducer> producer;
 };
 
 void OnWrite(std::unique_ptr<WriteData> write_data, MojoResult result) {
-  if (result != MOJO_RESULT_OK) {
+  if (result != MOJO_RESULT_OK || !write_data->client) {
     return;
   }
 
@@ -355,7 +354,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     target_client_->OnStartLoadingResponseBody(std::move(consumer));
 
     auto write_data = std::make_unique<WriteData>();
-    write_data->client = this;
+    write_data->client = weak_factory_.GetWeakPtr();
     write_data->data = response_data;
     write_data->producer =
         std::make_unique<mojo::DataPipeProducer>(std::move(producer));
