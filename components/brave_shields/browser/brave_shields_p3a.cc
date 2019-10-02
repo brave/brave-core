@@ -19,7 +19,10 @@ constexpr char kPrefName[] = "brave_shields.p3a_usage";
 
 void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
                                 PrefService* local_state) {
-  DCHECK(local_state);
+  // May be null in tests.
+  if (!local_state) {
+    return;
+  }
   int last_value = local_state->GetInteger(kPrefName);
 
   if (last_value < usage) {
