@@ -333,7 +333,7 @@ class BraveProfileManagerExtensionTest
 };
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
-                       PRE_SwitchToTorProfileBlockExtensions) {
+                       PRE_SwitchToTorProfileDisableExtensions) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
@@ -350,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
-                       SwitchToTorProfileBlockExtensions) {
+                       SwitchToTorProfileDisableExtensions) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
@@ -365,12 +365,12 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
   const extensions::Extension* extension = GetExtension(parent_profile);
   const std::string id = extension->id();
 
-  // Extension should be blocked in Tor
+  // The installed extension should not be accessible in Tor.
   EXPECT_TRUE(extensions::util::IsIncognitoEnabled(id, parent_profile));
   extensions::ExtensionRegistry* tor_registry =
       extensions::ExtensionRegistry::Get(tor_profile);
-  EXPECT_TRUE(tor_registry->GetExtensionById(
-      id, extensions::ExtensionRegistry::BLOCKED));
+  EXPECT_FALSE(tor_registry->GetExtensionById(
+      id, extensions::ExtensionRegistry::EVERYTHING));
 }
 #endif
 #endif
