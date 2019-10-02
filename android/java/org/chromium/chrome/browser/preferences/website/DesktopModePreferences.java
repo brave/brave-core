@@ -9,18 +9,14 @@ import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat;
 import org.chromium.chrome.browser.preferences.PreferenceUtils;
-import org.chromium.chrome.browser.profiles.Profile;
 
-@JNINamespace("chrome::android")
 public class DesktopModePreferences
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     public static final String DESKTOP_MODE_KEY = "desktop_mode";
-    private Profile mProfile;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -29,25 +25,13 @@ public class DesktopModePreferences
 
         ChromeSwitchPreferenceCompat desktopModePref =
                 (ChromeSwitchPreferenceCompat) findPreference(DESKTOP_MODE_KEY);
-        desktopModePref.setChecked(DesktopModePreferencesJni.get().getDesktopModeEnabled(getProfile()));
+        desktopModePref.setChecked(BravePrefServiceBridge.getInstance().getDesktopModeEnabled());
         desktopModePref.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        DesktopModePreferencesJni.get().setDesktopModeEnabled((boolean) newValue, getProfile());
+        BravePrefServiceBridge.getInstance().setDesktopModeEnabled((boolean) newValue);
         return true;
-    }
-
-    private Profile getProfile() {
-        if (mProfile == null)
-            mProfile = Profile.getLastUsedProfile();
-        return mProfile;
-    }
-
-    @NativeMethods
-    interface Natives {
-        void setDesktopModeEnabled(boolean enabled, Profile profile);
-        boolean getDesktopModeEnabled(Profile profile);
     }
 }

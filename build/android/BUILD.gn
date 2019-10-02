@@ -93,11 +93,8 @@ java_strings_grd("android_brave_strings_grd") {
 generate_jni("jni_headers") {
   sources = [
     "//brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
-    "//brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageView.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
-    "//brave/android/java/org/chromium/chrome/browser/preferences/website/DesktopModePreferences.java",
-    "//brave/android/java/org/chromium/chrome/browser/preferences/website/PlayYTVideoInBrowserPreferences.java",
   ]
 }

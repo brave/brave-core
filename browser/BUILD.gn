@@ -169,12 +169,9 @@ source_set("browser_process") {
       "android/brave_shields_content_settings.cc",
       "android/brave_shields_content_settings.h",
       "android/brave_stats_updater_android.cc",
-      "android/ntp/brave_new_tab_page_view_android.cc",
       "android/preferences/brave_pref_service_bridge.cc",
-      "android/preferences/website/desktop_mode_preferences_android.cc",
       "android/preferences/website/desktop_mode_tab_helper.cc",
       "android/preferences/website/desktop_mode_tab_helper.h",
-      "android/preferences/website/play_yt_video_in_browser_preferences_android.cc",
     ]
 
     deps += [

@@ -6,10 +6,13 @@
 package org.chromium.chrome.browser.preferences;
 
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.annotations.JNINamespace;
+import org.chromium.base.annotations.NativeMethods;
+import org.chromium.chrome.browser.profiles.Profile;
 
-public class BravePrefServiceBridge extends PrefServiceBridge {
+@JNINamespace("chrome::android")
+public class BravePrefServiceBridge {
     private BravePrefServiceBridge() {
-        super();
     }
 
     private static BravePrefServiceBridge sInstance;
@@ -26,24 +29,65 @@ public class BravePrefServiceBridge extends PrefServiceBridge {
      * @param whether HTTPSE should be enabled.
      */
     public void setHTTPSEEnabled(boolean enabled) {
-        nativeSetHTTPSEEnabled(enabled);
+        BravePrefServiceBridgeJni.get().setHTTPSEEnabled(enabled);
     }
 
     /**
      * @param whether AdBlock should be enabled.
      */
     public void setAdBlockEnabled(boolean enabled) {
-        nativeSetAdBlockEnabled(enabled);
+        BravePrefServiceBridgeJni.get().setAdBlockEnabled(enabled);
     }
 
     /**
      * @param whether Fingerprinting Protection should be enabled.
      */
     public void setFingerprintingProtectionEnabled(boolean enabled) {
-        nativeSetFingerprintingProtectionEnabled(enabled);
+        BravePrefServiceBridgeJni.get().setFingerprintingProtectionEnabled(enabled);
     }
 
-    private native void nativeSetHTTPSEEnabled(boolean enabled);
-    private native void nativeSetAdBlockEnabled(boolean enabled);
-    private native void nativeSetFingerprintingProtectionEnabled(boolean enabled);
+    public void setPlayYTVideoInBrowserEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setPlayYTVideoInBrowserEnabled(enabled);
+    }
+
+    public boolean getPlayYTVideoInBrowserEnabled() {
+        return BravePrefServiceBridgeJni.get().getPlayYTVideoInBrowserEnabled();
+    }
+
+    public void setDesktopModeEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setDesktopModeEnabled(enabled);
+    }
+
+    public boolean getDesktopModeEnabled() {
+        return BravePrefServiceBridgeJni.get().getDesktopModeEnabled();
+    }
+
+    public int getTrackersBlockedCount(Profile profile) {
+        return BravePrefServiceBridgeJni.get().getTrackersBlockedCount(profile);
+    }
+
+    public int getAdsBlockedCount(Profile profile) {
+        return BravePrefServiceBridgeJni.get().getAdsBlockedCount(profile);
+    }
+
+    public int getHttpsUpgradesCount(Profile profile) {
+        return BravePrefServiceBridgeJni.get().getHttpsUpgradesCount(profile);
+    }
+
+    @NativeMethods
+    interface Natives {
+        void setHTTPSEEnabled(boolean enabled);
+        void setAdBlockEnabled(boolean enabled);
+        void setFingerprintingProtectionEnabled(boolean enabled);
+
+        void setPlayYTVideoInBrowserEnabled(boolean enabled);
+        boolean getPlayYTVideoInBrowserEnabled();
+
+        void setDesktopModeEnabled(boolean enabled);
+        boolean getDesktopModeEnabled();
+
+        int getTrackersBlockedCount(Profile profile);
+        int getAdsBlockedCount(Profile profile);
+        int getHttpsUpgradesCount(Profile profile);
+    }
 }

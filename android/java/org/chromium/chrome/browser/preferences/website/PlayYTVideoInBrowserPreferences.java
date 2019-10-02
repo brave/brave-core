@@ -11,18 +11,14 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat;
 import org.chromium.chrome.browser.preferences.PreferenceUtils;
-import org.chromium.chrome.browser.profiles.Profile;
 
-@JNINamespace("chrome::android")
 public class PlayYTVideoInBrowserPreferences
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     public static final String PLAY_YT_VIDEO_IN_BROWSER_KEY = "play_yt_video_in_browser";
-    private Profile mProfile;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -33,25 +29,13 @@ public class PlayYTVideoInBrowserPreferences
                 (ChromeSwitchPreferenceCompat) findPreference(PLAY_YT_VIDEO_IN_BROWSER_KEY);
         // Initially enabled.
         pref.setChecked(
-            PlayYTVideoInBrowserPreferencesJni.get().getPlayYTVideoInBrowserEnabled(getProfile()));
+            BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled());
         pref.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        PlayYTVideoInBrowserPreferencesJni.get().setPlayYTVideoInBrowserEnabled((boolean) newValue, getProfile());
+        BravePrefServiceBridge.getInstance().setPlayYTVideoInBrowserEnabled((boolean) newValue);
         return true;
-    }
-
-    private Profile getProfile() {
-        if (mProfile == null)
-            mProfile = Profile.getLastUsedProfile();
-        return mProfile;
-    }
-
-    @NativeMethods
-    interface Natives {
-        void setPlayYTVideoInBrowserEnabled(boolean enabled, Profile profile);
-        boolean getPlayYTVideoInBrowserEnabled(Profile profile);
     }
 }

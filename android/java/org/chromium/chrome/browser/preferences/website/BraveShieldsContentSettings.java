@@ -12,7 +12,6 @@ import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.ContentSettingsType;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.preferences.website.WebsitePreferenceBridge;
 
@@ -89,7 +88,7 @@ public class BraveShieldsContentSettings {
             settings = BraveShieldsContentSettingsJni.get().getNoScriptControlType(host, profile);
         }
 
-        return !settings.equals(allowResource); 
+        return !settings.equals(allowResource);
     }
 
     @CalledByNative
