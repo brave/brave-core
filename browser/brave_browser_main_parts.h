@@ -16,7 +16,6 @@ class BraveBrowserMainParts : public ChromeBrowserMainParts {
 
   void PostBrowserStart() override;
   void PreShutdown() override;
-  void PostBrowserStart() override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainParts);

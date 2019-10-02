@@ -11,7 +11,6 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "base/files/file_util.h"
 #include "brave/common/tor/tor_constants.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
@@ -20,13 +19,30 @@
 #if !defined(OS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "content/public/browser/web_contents.h"
 #endif
 
+#if BUILDFLAG(ENABLE_TOR) || !defined(OS_ANDROID)
+#include "chrome/browser/browser_process.h"
+#endif
+
 void BraveBrowserMainParts::PostBrowserStart() {
   ChromeBrowserMainParts::PostBrowserStart();
+
+#if BUILDFLAG(ENABLE_TOR)
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath tor_legacy_path =
+      profile_manager->user_data_dir().Append(tor::kTorProfileDir);
+
+  // Delete Tor legacy profile if exists.
+  if (base::PathExists(tor_legacy_path)) {
+    profile_manager->MaybeScheduleProfileForDeletion(
+        tor_legacy_path, base::DoNothing(),
+        ProfileMetrics::DELETE_PROFILE_SETTINGS);
+  }
+#endif
+
 #if !defined(OS_ANDROID)
   Browser* browser = chrome::FindLastActive();
   content::WebContents* active_web_contents = nullptr;
@@ -49,21 +65,4 @@ void BraveBrowserMainParts::PostBrowserStart() {
 
 void BraveBrowserMainParts::PreShutdown() {
   content::BraveClearBrowsingData::ClearOnExit();
-}
-
-void BraveBrowserMainParts::PostBrowserStart() {
-  ChromeBrowserMainParts::PostBrowserStart();
-
-#if BUILDFLAG(ENABLE_TOR)
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  base::FilePath tor_legacy_path =
-      profile_manager->user_data_dir().Append(tor::kTorProfileDir);
-
-  // Delete Tor legacy profile if exists.
-  if (base::PathExists(tor_legacy_path)) {
-    profile_manager->MaybeScheduleProfileForDeletion(
-        tor_legacy_path, base::DoNothing(),
-        ProfileMetrics::DELETE_PROFILE_SETTINGS);
-  }
-#endif
 }
