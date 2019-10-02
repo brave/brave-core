@@ -24,7 +24,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/preferences/privacy/BravePrivacyPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettingsObserver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveSiteSettingsPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveSiteSettingsPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/DesktopModePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/PlayYTVideoInBrowserPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",

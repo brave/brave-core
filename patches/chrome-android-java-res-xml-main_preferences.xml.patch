@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/xml/main_preferences.xml b/chrome/android/java/res/xml/main_preferences.xml
-index 64ab2b255953d47c8e63082148e08f08c63a34fd..f1e3ed505fd5ae7564a27664555cd79b83978024 100644
+index 64ab2b255953d47c8e63082148e08f08c63a34fd..9c0db6db63ccdd6c97d84f5e828d8b40dbfd1bbb 100644
 --- a/chrome/android/java/res/xml/main_preferences.xml
 +++ b/chrome/android/java/res/xml/main_preferences.xml
 @@ -71,7 +71,7 @@
@@ -11,12 +11,3 @@ index 64ab2b255953d47c8e63082148e08f08c63a34fd..f1e3ed505fd5ae7564a27664555cd79b
          android:key="privacy"
          android:order="13"
          android:title="@string/prefs_privacy"/>
-@@ -81,7 +81,7 @@
-         android:order="14"
-         android:title="@string/prefs_accessibility"/>
-     <android.support.v7.preference.Preference
--        android:fragment="org.chromium.chrome.browser.preferences.website.SiteSettingsPreferences"
-+        android:fragment="org.chromium.chrome.browser.preferences.website.BraveSiteSettingsPreferences"
-         android:key="content_settings"
-         android:order="15"
-         android:title="@string/prefs_site_settings"/>
