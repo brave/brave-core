@@ -211,7 +211,7 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
         g_brave_browser_process->tor_client_updater()->GetExecutablePath();
     if (!path.empty()) {
       command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
-                                   path.BaseName());
+                                     path.BaseName());
     }
   }
 #endif

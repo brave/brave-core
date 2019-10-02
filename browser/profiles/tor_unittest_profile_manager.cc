@@ -51,6 +51,6 @@ void TorUnittestProfileManager::InitProfileUserPrefs(Profile* profile) {
 
 std::unique_ptr<Profile> TorUnittestProfileManager::CreateProfile(
     const base::FilePath& path, Delegate* delegate) {
-  return std::unique_ptr<TestingProfile>(new BraveTestingProfile(
-      path, delegate));
+  return std::unique_ptr<TestingProfile>(
+      new BraveTestingProfile(path, delegate));
 }

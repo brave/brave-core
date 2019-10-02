@@ -41,13 +41,13 @@ void MaybeHandleInParent(NavigateParams* params, bool allow_in_incognito) {
   auto* profile = params->initiating_profile;
   if (brave::IsSessionProfile(profile)) {
     if (!allow_in_incognito) {
-      params->initiating_profile = profile->IsOffTheRecord()
-          ? brave::GetParentProfile(profile)->GetOffTheRecordProfile()
-          : brave::GetParentProfile(profile);
+      params->initiating_profile =
+          profile->IsOffTheRecord()
+              ? brave::GetParentProfile(profile)->GetOffTheRecordProfile()
+              : brave::GetParentProfile(profile);
     } else if (HandleURLInParent(params, profile)) {
       params->browser = BraveGetOrCreateBrowser(
-          brave::GetParentProfile(profile),
-          params->user_gesture);
+          brave::GetParentProfile(profile), params->user_gesture);
     }
   }
 }
@@ -64,10 +64,10 @@ bool IsHostAllowedInIncognitoBraveImpl(const base::StringPiece& host) {
 
 }  // namespace
 
-#define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL \
-  UpdateBraveScheme(params); \
-  MaybeHandleInParent(params, \
-      IsURLAllowedInIncognito(params->url, params->initiating_profile));
+#define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL           \
+  UpdateBraveScheme(params);                           \
+  MaybeHandleInParent(params, IsURLAllowedInIncognito( \
+                                  params->url, params->initiating_profile));
 
 #include "../../../../../chrome/browser/ui/browser_navigator.cc"
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL

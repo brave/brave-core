@@ -62,8 +62,7 @@ void BraveBrowserMainParts::PostBrowserStart() {
   // Delete Tor legacy profile if exists.
   if (base::PathExists(tor_legacy_path)) {
     profile_manager->MaybeScheduleProfileForDeletion(
-        tor_legacy_path,
-        base::DoNothing(),
+        tor_legacy_path, base::DoNothing(),
         ProfileMetrics::DELETE_PROFILE_SETTINGS);
   }
 #endif

@@ -26,4 +26,4 @@ void BraveExtensionsBrowserClient::Set(BraveExtensionsBrowserClient* client) {
   g_brave_extension_browser_client = client;
 }
 
-}  // namespace exceptions
+}  // namespace extensions

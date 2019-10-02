@@ -22,8 +22,7 @@ namespace extensions {
 
 namespace {
 
-base::FilePath InitExecutablePath(
-    const base::FilePath& install_dir) {
+base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
   base::FilePath executable_path;
   base::FileEnumerator traversal(install_dir, false,
                                  base::FileEnumerator::FILES,
@@ -105,8 +104,7 @@ BraveTorClientUpdater::BraveTorClientUpdater(BraveComponent::Delegate* delegate)
       task_runner_(
           base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
       registered_(false),
-      weak_ptr_factory_(this) {
-}
+      weak_ptr_factory_(this) {}
 
 BraveTorClientUpdater::~BraveTorClientUpdater() {
 }
@@ -135,7 +133,8 @@ void BraveTorClientUpdater::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  base::PostTaskAndReplyWithResult(GetTaskRunner().get(), FROM_HERE,
+  base::PostTaskAndReplyWithResult(
+      GetTaskRunner().get(), FROM_HERE,
       base::BindOnce(&InitExecutablePath, install_dir),
       base::BindOnce(&BraveTorClientUpdater::SetExecutablePath,
                      weak_ptr_factory_.GetWeakPtr()));

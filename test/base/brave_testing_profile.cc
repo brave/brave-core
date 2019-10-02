@@ -7,10 +7,10 @@
 
 #include "brave/browser/profiles/profile_util.h"
 
-BraveTestingProfile::BraveTestingProfile(
-    const base::FilePath& path, Delegate* delegate)
-  : TestingProfile(path, delegate) {
+BraveTestingProfile::BraveTestingProfile(const base::FilePath& path,
+                                         Delegate* delegate)
+    : TestingProfile(path, delegate) {
   if (brave::IsSessionProfilePath(path)) {
-     brave::CreateParentProfileData(this);
+    brave::CreateParentProfileData(this);
   }
 }

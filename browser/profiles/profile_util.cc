@@ -5,6 +5,10 @@
 
 #include "brave/browser/profiles/profile_util.h"
 
+#include <map>
+#include <memory>
+#include <utility>
+
 #include "base/files/file_path.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
@@ -41,21 +45,20 @@ class ParentProfileData : public base::SupportsUserData::Data {
  public:
   ~ParentProfileData() override;
   static void CreateForProfile(content::BrowserContext* context);
-  static ParentProfileData* FromProfile(
-      content::BrowserContext* context);
+  static ParentProfileData* FromProfile(content::BrowserContext* context);
   static const ParentProfileData* FromProfile(
       const content::BrowserContext* context);
-  static const ParentProfileData* FromPath(
-      const base::FilePath& path);
+  static const ParentProfileData* FromPath(const base::FilePath& path);
 
   Profile* profile() const;
 
   std::unique_ptr<Data> Clone() override;
+
  private:
   static const void* const kUserDataKey;
   static const void* UserDataKey();
 
-  ParentProfileData(Profile* profile);
+  explicit ParentProfileData(Profile* profile);
 
   Profile* profile_;
   base::FilePath path_;
@@ -68,20 +71,20 @@ const void* const ParentProfileData::kUserDataKey = &kUserDataKey;
 // static
 void ParentProfileData::CreateForProfile(content::BrowserContext* context) {
   DCHECK(context);
-  if (FromProfile(context)) return;
+  if (FromProfile(context))
+    return;
 
   auto* profile = Profile::FromBrowserContext(context);
   auto* profile_manager = g_browser_process->profile_manager();
   DCHECK(profile_manager);
 
   auto* parent_profile =
-    profile_manager->GetProfileByPath(GetParentProfilePath(profile));
+      profile_manager->GetProfileByPath(GetParentProfilePath(profile));
   DCHECK(parent_profile);
   DCHECK(parent_profile != profile);
 
-  profile->SetUserData(
-      UserDataKey(),
-      base::WrapUnique(new ParentProfileData(parent_profile)));
+  profile->SetUserData(UserDataKey(),
+                       base::WrapUnique(new ParentProfileData(parent_profile)));
 
   GetPathMap()->insert(
       std::pair<const base::FilePath, Profile*>(profile->GetPath(), profile));
@@ -92,9 +95,8 @@ ParentProfileData* ParentProfileData::FromProfile(
     content::BrowserContext* context) {
   DCHECK(context);
   auto* profile = Profile::FromBrowserContext(context);
-  return
-      static_cast<ParentProfileData*>(
-          profile->GetOriginalProfile()->GetUserData(UserDataKey()));
+  return static_cast<ParentProfileData*>(
+      profile->GetOriginalProfile()->GetUserData(UserDataKey()));
 }
 
 // static
@@ -108,7 +110,7 @@ const ParentProfileData* ParentProfileData::FromProfile(
 
 // static
 const ParentProfileData* ParentProfileData::FromPath(
-      const base::FilePath& path) {
+    const base::FilePath& path) {
   auto* profile = GetFromPath(path);
   DCHECK(profile);
   return FromProfile(profile);
@@ -118,8 +120,7 @@ Profile* ParentProfileData::profile() const {
   return profile_;
 }
 
-std::unique_ptr<base::SupportsUserData::Data>
-ParentProfileData::Clone() {
+std::unique_ptr<base::SupportsUserData::Data> ParentProfileData::Clone() {
   return base::WrapUnique(new ParentProfileData(profile_));
 }
 
@@ -128,9 +129,7 @@ const void* ParentProfileData::UserDataKey() {
 }
 
 ParentProfileData::ParentProfileData(Profile* profile)
-    : profile_(profile),
-      path_(profile->GetPath()) {
-}
+    : profile_(profile), path_(profile->GetPath()) {}
 
 ParentProfileData::~ParentProfileData() {
   GetPathMap()->erase(path_);
@@ -191,7 +190,9 @@ Profile* GetParentProfile(const base::FilePath& path) {
 
 bool IsGuestProfile(content::BrowserContext* context) {
   DCHECK(context);
-  return Profile::FromBrowserContext(context)->GetOriginalProfile()->IsGuestSession();
+  return Profile::FromBrowserContext(context)
+      ->GetOriginalProfile()
+      ->IsGuestSession();
 }
 
 }  // namespace brave
@@ -202,7 +203,7 @@ namespace chrome {
 // GetBrowserContextRedirectedInIncognito or equivalent
 content::BrowserContext* GetBrowserContextRedirectedInIncognitoOverride(
     content::BrowserContext* context) {
-  if (brave::IsSessionProfile(context)) \
+  if (brave::IsSessionProfile(context))
     context = brave::GetParentProfile(context);
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

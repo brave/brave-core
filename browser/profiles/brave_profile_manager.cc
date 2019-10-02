@@ -26,8 +26,8 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profiles_state.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
@@ -115,7 +115,7 @@ std::string BraveProfileManager::GetLastUsedProfileName() {
   PrefService* local_state = g_browser_process->local_state();
   DCHECK(local_state);
   const std::string last_used_profile_name =
-    local_state->GetString(prefs::kProfileLastUsed);
+      local_state->GetString(prefs::kProfileLastUsed);
   if (last_used_profile_name ==
       base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
     return chrome::kInitialProfile;
@@ -150,7 +150,7 @@ void BraveProfileManager::OnProfileCreated(Profile* profile,
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
     extensions::ExtensionService* extension_service =
-      extensions::ExtensionSystem::Get(profile)->extension_service();
+        extensions::ExtensionSystem::Get(profile)->extension_service();
     extension_service->BlockAllExtensions();
 #endif
 

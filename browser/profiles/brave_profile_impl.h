@@ -29,7 +29,6 @@ class BraveProfileImpl : public ProfileImpl,
                const content::NotificationDetails& details) override;
 
  private:
-
   // Listens for parent profile destruction.
   content::NotificationRegistrar notification_registrar_;
 

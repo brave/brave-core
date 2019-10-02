@@ -8,8 +8,8 @@
 // Use the same SupervisedUserSettingsService, which handles a part of
 // preferences, as its parent profile. Chromium's incognito profile also shares
 // it with its original profile.
-#define BRAVE_GET_KEY_TO_USE \
-  if (brave::IsSessionProfilePath(key->GetPath())) { \
+#define BRAVE_GET_KEY_TO_USE                                         \
+  if (brave::IsSessionProfilePath(key->GetPath())) {                 \
     return brave::GetParentProfile(key->GetPath())->GetProfileKey(); \
   }
 

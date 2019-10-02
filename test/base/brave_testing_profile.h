@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_TEST_BASE_TESTING_PROFILE_H_
-#define BRAVE_TEST_BASE_TESTING_PROFILE_H_
+#ifndef BRAVE_TEST_BASE_BRAVE_TESTING_PROFILE_H_
+#define BRAVE_TEST_BASE_BRAVE_TESTING_PROFILE_H_
 
 #include "chrome/test/base/testing_profile.h"
 
@@ -14,4 +14,4 @@ class BraveTestingProfile : public TestingProfile {
   ~BraveTestingProfile() override = default;
 };
 
-#endif  // BRAVE_TEST_BASE_TESTING_PROFILE_H_
+#endif  // BRAVE_TEST_BASE_BRAVE_TESTING_PROFILE_H_

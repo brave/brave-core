@@ -8,7 +8,8 @@
 #include "brave/browser/extensions/updater/brave_update_client_config.h"
 #include "chrome/browser/extensions/updater/chrome_update_client_config.h"
 
-#define ChromeComponentExtensionResourceManager BraveComponentExtensionResourceManager  // NOLINT
+#define ChromeComponentExtensionResourceManager \
+  BraveComponentExtensionResourceManager  // NOLINT
 #define ChromeExtensionsAPIClient BraveExtensionsAPIClient
 #define ChromeUpdateClientConfig BraveUpdateClientConfig
 #include "../../../../../chrome/browser/extensions/chrome_extensions_browser_client.cc"  // NOLINT

@@ -6,10 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_IMPL_H_
 
-#define BRAVE_PROFILE_IMPL_H_         \
- private:                             \
-  friend class BraveProfileImpl;      \
-                                      \
+#define BRAVE_PROFILE_IMPL_H_    \
+ private:                        \
+  friend class BraveProfileImpl; \
+                                 \
  public:
 // define BRAVE_PROFILE_IMPL_H_
 

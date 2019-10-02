@@ -110,21 +110,17 @@ class BraveProfileManagerTest : public InProcessBrowserTest {
   }
 
   void SetScriptSetting(HostContentSettingsMap* content_settings,
-      const ContentSettingsPattern& primary_pattern,
-      ContentSetting setting) {
+                        const ContentSettingsPattern& primary_pattern,
+                        ContentSetting setting) {
     content_settings->SetContentSettingCustomScope(
         primary_pattern, ContentSettingsPattern::Wildcard(),
         CONTENT_SETTINGS_TYPE_JAVASCRIPT, "", setting);
   }
 
-  ContentSetting GetScriptSetting(
-      HostContentSettingsMap* content_settings,
-      const GURL& primary_url) {
+  ContentSetting GetScriptSetting(HostContentSettingsMap* content_settings,
+                                  const GURL& primary_url) {
     return content_settings->GetContentSetting(
-        primary_url,
-        GURL(),
-        CONTENT_SETTINGS_TYPE_JAVASCRIPT,
-        "");
+        primary_url, GURL(), CONTENT_SETTINGS_TYPE_JAVASCRIPT, "");
   }
 };
 
@@ -190,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest, MigrateProfileNames) {
 
 #if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
-    SwitchToTorProfileShareBookmarks) {
+                       SwitchToTorProfileShareBookmarks) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
@@ -240,7 +236,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
-    SwitchToTorProfileInheritPrefs) {
+                       SwitchToTorProfileInheritPrefs) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
 
   ProfileManager* profile_manager = g_browser_process->profile_manager();
@@ -267,7 +263,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
-    SwitchToTorProfileInheritContentSettings) {
+                       SwitchToTorProfileInheritContentSettings) {
   const GURL brave_url("https://www.brave.com");
   ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
@@ -276,9 +272,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
 
   HostContentSettingsMap* parent_content_settings =
-    HostContentSettingsMapFactory::GetForProfile(parent_profile);
-  SetScriptSetting(parent_content_settings,
-      ContentSettingsPattern::Wildcard(), CONTENT_SETTING_BLOCK);
+      HostContentSettingsMapFactory::GetForProfile(parent_profile);
+  SetScriptSetting(parent_content_settings, ContentSettingsPattern::Wildcard(),
+                   CONTENT_SETTING_BLOCK);
 
   Profile* tor_profile = SwitchToTorProfile();
   ASSERT_TRUE(brave::IsTorProfile(tor_profile));
@@ -287,22 +283,22 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 
   // Check Tor profile's content settings are inherited from its parent.
   HostContentSettingsMap* tor_content_settings =
-    HostContentSettingsMapFactory::GetForProfile(tor_profile);
+      HostContentSettingsMapFactory::GetForProfile(tor_profile);
   ContentSetting setting = GetScriptSetting(tor_content_settings, brave_url);
   EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
 
   // Check changes of content settings from the parent profile will reflected
   // in Tor profile when the setting is not set directly in Tor profile.
-  SetScriptSetting(parent_content_settings,
-      ContentSettingsPattern::Wildcard(), CONTENT_SETTING_ALLOW);
+  SetScriptSetting(parent_content_settings, ContentSettingsPattern::Wildcard(),
+                   CONTENT_SETTING_ALLOW);
   setting = GetScriptSetting(tor_content_settings, brave_url);
   EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
 
   // Check changes of content settings from the parent profile will not
   // overwrite the one in Tor profile when it is set directly in Tor profile.
   SetScriptSetting(tor_content_settings,
-      ContentSettingsPattern::FromURL(brave_url),
-      CONTENT_SETTING_BLOCK);
+                   ContentSettingsPattern::FromURL(brave_url),
+                   CONTENT_SETTING_BLOCK);
   setting = GetScriptSetting(parent_content_settings, brave_url);
   EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
   setting = GetScriptSetting(tor_content_settings, brave_url);
@@ -311,7 +307,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 class BraveProfileManagerExtensionTest
-  : public extensions::ExtensionBrowserTest {
+    : public extensions::ExtensionBrowserTest {
  public:
   void SetUpOnMainThread() override {
     extensions::ExtensionBrowserTest::SetUpOnMainThread();
@@ -325,9 +321,9 @@ class BraveProfileManagerExtensionTest
 
   const extensions::Extension* GetExtension(Profile* profile) {
     extensions::ExtensionRegistry* registry =
-      extensions::ExtensionRegistry::Get(profile);
+        extensions::ExtensionRegistry::Get(profile);
     for (const scoped_refptr<const extensions::Extension>& extension :
-        registry->enabled_extensions()) {
+         registry->enabled_extensions()) {
       if (extension->name() == "Trivial Test Extension")
         return extension.get();
     }
@@ -337,7 +333,7 @@ class BraveProfileManagerExtensionTest
 };
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
-    PRE_SwitchToTorProfileBlockExtensions) {
+                       PRE_SwitchToTorProfileBlockExtensions) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
@@ -345,8 +341,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
   ASSERT_TRUE(parent_profile);
 
   // Install an extension in parent profile and enable in incognito.
-  const extensions::Extension* extension = InstallExtension(
-      test_data_dir_.AppendASCII("trivial_extension"), 1);
+  const extensions::Extension* extension =
+      InstallExtension(test_data_dir_.AppendASCII("trivial_extension"), 1);
   const std::string id = extension->id();
   extensions::ExtensionPrefs* parent_extension_prefs =
       extensions::ExtensionPrefs::Get(parent_profile);
@@ -354,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
-    SwitchToTorProfileBlockExtensions) {
+                       SwitchToTorProfileBlockExtensions) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
@@ -374,7 +370,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
   extensions::ExtensionRegistry* tor_registry =
       extensions::ExtensionRegistry::Get(tor_profile);
   EXPECT_TRUE(tor_registry->GetExtensionById(
-        id, extensions::ExtensionRegistry::BLOCKED));
+      id, extensions::ExtensionRegistry::BLOCKED));
 }
 #endif
 #endif

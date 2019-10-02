@@ -84,8 +84,7 @@ std::unique_ptr<sync_preferences::PrefServiceSyncable> CreatePrefService(
         true);
 #endif
     return CreateIncognitoPrefServiceSyncable(
-        PrefServiceSyncableFromProfile(original_profile),
-        extension_pref_store,
+        PrefServiceSyncableFromProfile(original_profile), extension_pref_store,
         InProcessPrefServiceFactoryFactory::GetInstanceForKey(key)
             ->CreateDelegate());
   }

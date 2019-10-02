@@ -5,10 +5,10 @@
 
 #include "brave/browser/profiles/profile_util.h"
 
-#define BRAVE_INIT \
-  if (brave::IsSessionProfilePath(GetPath())) { \
-    brave::CreateParentProfileData(this); \
-  } else
+#define BRAVE_INIT                            \
+  if (brave::IsSessionProfilePath(GetPath())) \
+    brave::CreateParentProfileData(this);     \
+  else
 
 #include "../../../../../chrome/test/base/testing_profile.cc"
 #undef BRAVE_INIT

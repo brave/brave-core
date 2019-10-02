@@ -18,11 +18,11 @@
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#include "chrome/browser/net/proxy_config_monitor.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profiles_state.h"
-#include "chrome/browser/net/proxy_config_monitor.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
@@ -35,10 +35,10 @@
 #include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "content/public/test/test_utils.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -115,10 +115,10 @@ class BraveProfileManagerTest : public testing::Test {
 TEST_F(BraveProfileManagerTest, GetTorProfilePath) {
   base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
   base::FilePath user_data_dir = temp_dir_.GetPath();
-  base::FilePath last_used_path = g_browser_process->profile_manager()
-      ->GetLastUsedProfileDir(user_data_dir);
-  base::FilePath expected_path =
-      last_used_path.AppendASCII("session_profiles");
+  base::FilePath last_used_path =
+      g_browser_process->profile_manager()->GetLastUsedProfileDir(
+          user_data_dir);
+  base::FilePath expected_path = last_used_path.AppendASCII("session_profiles");
   expected_path = expected_path.Append(tor::kTorProfileDir);
   EXPECT_EQ(expected_path, tor_path);
 }
@@ -168,7 +168,7 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
 // Dummy regular Tor profile should not show up as last profile.
 TEST_F(BraveProfileManagerTest, TorProfileDontEndUpAsLastProfile) {
   base::FilePath parent_path =
-    temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
+      temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
 
   ProfileManager* profile_manager = g_browser_process->profile_manager();
 
@@ -178,8 +178,8 @@ TEST_F(BraveProfileManagerTest, TorProfileDontEndUpAsLastProfile) {
   EXPECT_EQ(parent_profile, last_used_profile);
 
   // Create dummy Tor regular profile.
-  Profile* tor_profile = profile_manager->GetProfile(
-      BraveProfileManager::GetTorProfilePath());
+  Profile* tor_profile =
+      profile_manager->GetProfile(BraveProfileManager::GetTorProfilePath());
 
   // Here the last used profile is still the parent profile.
   last_used_profile = profile_manager->GetLastUsedProfile();
@@ -241,12 +241,13 @@ TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   base::FilePath dest_path =
-    temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
+      temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
 
   // Successfully create test profile and tor profile
   Profile* parent_profile = profile_manager->GetProfile(dest_path);
   base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
-  Profile* profile = profile_manager->GetProfile(tor_path)->GetOffTheRecordProfile();
+  Profile* profile =
+      profile_manager->GetProfile(tor_path)->GetOffTheRecordProfile();
   ASSERT_TRUE(profile);
   EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
 

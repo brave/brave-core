@@ -5,5 +5,6 @@
 
 #include "brave/browser/profiles/profile_util.h"
 
-#define GetBrowserContextRedirectedInIncognito GetBrowserContextRedirectedInIncognitoOverride
+#define GetBrowserContextRedirectedInIncognito \
+  GetBrowserContextRedirectedInIncognitoOverride
 #include "../../../../../chrome/browser/bookmarks/bookmark_model_factory.cc"
