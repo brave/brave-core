@@ -34,6 +34,7 @@ extern const char kReferralAttemptTimestamp[];
 extern const char kReferralAttemptCount[];
 extern const char kReferralHeaders[];
 extern const char kReferralCheckedForPromoCodeFile[];
+extern const char kReferralAndroidFirstRunTimestamp[];
 extern const char kHTTPSEVerywhereControlType[];
 extern const char kNoScriptControlType[];
 extern const char kShieldsAdvancedViewEnabled[];
