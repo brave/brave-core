@@ -149,6 +149,10 @@ void BraveProfileManager::OnProfileCreated(Profile* profile,
     }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+    // This is added in addition to our AreExtensionsDisabled override in
+    // brave_extensions_browser_client_impl because there were extension
+    // icons briefly showing up when opening Tor windows with that override
+    // only.
     extensions::ExtensionService* extension_service =
         extensions::ExtensionSystem::Get(profile)->extension_service();
     extension_service->BlockAllExtensions();

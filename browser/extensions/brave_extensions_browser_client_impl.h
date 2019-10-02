@@ -17,6 +17,9 @@ class BraveExtensionsBrowserClientImpl : public ChromeExtensionsBrowserClient,
   BraveExtensionsBrowserClientImpl();
   ~BraveExtensionsBrowserClientImpl() override = default;
 
+  bool AreExtensionsDisabled(const base::CommandLine& command_line,
+                             content::BrowserContext* context) override;
+
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionsBrowserClientImpl);
 };
 

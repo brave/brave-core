@@ -18,4 +18,14 @@ BraveExtensionsBrowserClientImpl::BraveExtensionsBrowserClientImpl() {
   AddAPIProvider(std::make_unique<BraveExtensionsBrowserAPIProvider>());
 }
 
+bool BraveExtensionsBrowserClientImpl::AreExtensionsDisabled(
+    const base::CommandLine& command_line,
+    content::BrowserContext* context) {
+  if (brave::IsTorProfile(context))
+    return true;
+
+  return ChromeExtensionsBrowserClient::AreExtensionsDisabled(command_line,
+                                                              context);
+}
+
 }  // namespace extensions
