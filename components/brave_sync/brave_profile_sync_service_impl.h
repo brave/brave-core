@@ -190,6 +190,8 @@ class BraveProfileSyncServiceImpl
                        RecordsListPtr records);
   void ResendSyncRecords(const std::string& category_name);
 
+  void RecordSyncStateP3A() const;
+
   static base::TimeDelta GetRetryExponentialWaitAmount(int retry_number);
   static std::vector<unsigned> GetExponentialWaitsForTests();
   static const std::vector<unsigned> kExponentialWaits;

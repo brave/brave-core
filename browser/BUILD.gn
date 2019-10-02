@@ -8,6 +8,7 @@ import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
+import("//third_party/protobuf/proto_library.gni")
 
 source_set("browser_process") {
   visibility = [
@@ -115,6 +116,7 @@ source_set("browser_process") {
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ntp_tiles",
+    "//brave/components/p3a",
     "//brave/components/resources",
     "//brave/components/services:brave_content_manifest_overlays",
     "//chrome/common",
@@ -159,6 +161,7 @@ source_set("browser_process") {
 
     deps += [
       "importer",
+      "infobars",
       "//brave/app:brave_generated_resources_grit",
     ]
   } else {

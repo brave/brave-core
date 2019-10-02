@@ -31,9 +31,14 @@ const locale = {
   themeOption2: 'Dark',
   themeOption3: 'System theme (default)',
   // fifth screen
-  protectYourPrivacy: 'Manage your shields',
-  adjustProtectionLevel: 'Protect against privacy-invading ads and trackers while browsing with Brave Shields. Set Shields to "down" if a site doesn’t seem to be working properly.',
-  showMeWhere: 'Show Shields',
+  // protectYourPrivacy: 'Manage your shields',
+  // adjustProtectionLevel: 'Protect against privacy-invading ads and trackers while browsing with Brave Shields. Set Shields to "down" if a site doesn’t seem to be working properly.',
+  // showMeWhere: 'Show Shields',
+  p3aHead: 'Browse safe and sound',
+  p3aBody: 'Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Brave uses completely private product analytics to estimate the overall usage of certain features. Turn this off in ',
+  p3aSettings: 'Settings',
+  p3aLink1: '#',
+  p3aLink2: '#',
   // sixth screen
   enableBraveRewards: 'Enable Brave Rewards',
   setupBraveRewards: 'Your attention is valuable. Earn by viewing privacy-respecting ads while you browse, and pay it forward to support content creators you love.',

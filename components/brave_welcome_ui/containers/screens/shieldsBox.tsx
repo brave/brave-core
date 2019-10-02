@@ -29,8 +29,10 @@ export default class ShieldsBox extends React.PureComponent<Props> {
         isPrevious={index <= currentScreen}
       >
         <WelcomeShieldsImage />
-        <Title>{getLocale('manageShields')}</Title>
-        <Paragraph>{getLocale('adjustProtectionLevel')}</Paragraph>
+        <Title>{getLocale('privacyTitle')}</Title>
+        <Paragraph
+          dangerouslySetInnerHTML={{ __html: getLocale('privacyDesc') }}
+        />
       </Content>
     )
   }

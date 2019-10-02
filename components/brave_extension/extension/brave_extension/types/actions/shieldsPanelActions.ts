@@ -156,6 +156,14 @@ export interface SetAdvancedViewFirstAccess {
   (): SetAdvancedViewFirstAccessReturn
 }
 
+interface ShieldsReadyReturn {
+  type: types.SHIELDS_READY
+}
+
+export interface ShieldsReady {
+  (): ShieldsReadyReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -171,4 +179,5 @@ export type shieldPanelActions =
   SetGroupedScriptsBlockedCurrentStateReturn |
   SetAllScriptsBlockedCurrentStateReturn |
   SetFinalScriptsBlockedStateReturn |
-  SetAdvancedViewFirstAccessReturn
+  SetAdvancedViewFirstAccessReturn |
+  ShieldsReadyReturn

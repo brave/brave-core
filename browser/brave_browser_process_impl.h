@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/ref_counted.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
@@ -19,6 +20,7 @@
 namespace brave {
 class BraveReferralsService;
 class BraveStatsUpdater;
+class BraveP3AService;
 }  // namespace brave
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
@@ -83,6 +85,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #if BUILDFLAG(ENABLE_TOR)
   extensions::BraveTorClientUpdater* tor_client_updater();
 #endif
+  brave::BraveP3AService* brave_p3a_service();
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
@@ -129,6 +132,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
 #endif
+  scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph } from '../../../components'
+import { Content, Title, Paragraph, Link } from '../../../components'
 
 // Utils
 import locale from '../fakeLocale'
@@ -29,8 +29,8 @@ export default class ShieldsBox extends React.PureComponent<Props> {
         isPrevious={index <= currentScreen}
       >
         <WelcomeShieldsImage />
-        <Title>{locale.protectYourPrivacy}</Title>
-        <Paragraph>{locale.adjustProtectionLevel}</Paragraph>
+        <Title>{locale.p3aHead}</Title>
+        <Paragraph>{locale.p3aBody}<Link>{locale.p3aSettings}</Link>.</Paragraph>
       </Content>
     )
   }

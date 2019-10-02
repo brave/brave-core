@@ -1,18 +1,19 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/importer/brave_external_process_importer_client.h"
 #include "brave/browser/importer/brave_external_process_importer_host.h"
+#include "brave/browser/importer/brave_external_process_importer_client.h"
+#include "brave/browser/importer/brave_importer_p3a.h"
+#include "brave/browser/importer/brave_in_process_importer_bridge.h"
 #include "brave/browser/importer/brave_profile_lock.h"
 #include "brave/browser/importer/chrome_profile_lock.h"
-#include "brave/browser/importer/brave_in_process_importer_bridge.h"
 
 #include "brave/browser/importer/brave_importer_lock_dialog.h"
 
 BraveExternalProcessImporterHost::BraveExternalProcessImporterHost()
-  : ExternalProcessImporterHost(),
-    weak_ptr_factory_(this) {}
+    : ExternalProcessImporterHost(), weak_ptr_factory_(this) {}
 
 BraveExternalProcessImporterHost::~BraveExternalProcessImporterHost() {}
 
@@ -55,19 +56,19 @@ void BraveExternalProcessImporterHost::LaunchImportIfReady() {
   // bridge lives in the external process (see ProfileImportThread).
   // The ExternalProcessImporterClient created in the next line owns the bridge,
   // and will delete it.
-  BraveInProcessImporterBridge* bridge =
-      new BraveInProcessImporterBridge(writer_.get(),
-                                       weak_ptr_factory_.GetWeakPtr());
+  BraveInProcessImporterBridge* bridge = new BraveInProcessImporterBridge(
+      writer_.get(), weak_ptr_factory_.GetWeakPtr());
   client_ = new BraveExternalProcessImporterClient(
       weak_ptr_factory_.GetWeakPtr(), source_profile_, items_, bridge);
   client_->Start();
+
+  RecordImporterP3A(source_profile_.importer_type);
 }
 
 void BraveExternalProcessImporterHost::ShowWarningDialog() {
   DCHECK(!headless_);
   brave::importer::ShowImportLockDialog(
-      parent_window_,
-      source_profile_,
+      parent_window_, source_profile_,
       base::Bind(&BraveExternalProcessImporterHost::OnImportLockDialogEnd,
                  weak_ptr_factory_.GetWeakPtr()));
 }

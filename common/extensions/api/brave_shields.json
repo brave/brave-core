@@ -50,6 +50,12 @@
         ]
       },
       {
+        "name": "onShieldsPanelShown",
+        "type": "function",
+        "description": "Notifies the browser about the fact of showing the panel",
+        "parameters": []
+      },
+      {
         "name": "getBraveShieldsEnabled",
         "type": "function",
         "description": "Get brave shields control type for a url",

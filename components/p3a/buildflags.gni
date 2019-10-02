@@ -1,0 +1,5 @@
+import("//build/config/features.gni")
+
+declare_args() {
+  brave_p3a_enabled = !is_ios && !is_android
+}

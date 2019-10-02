@@ -114,7 +114,7 @@ export const Panel = styled('div')`
   display: flex;
   flex-direction: column;
   padding: 0;
-  margin: 64px 0 0 0;
+  margin: 0;
   font-size: inherit;
   align-items: center;
 `

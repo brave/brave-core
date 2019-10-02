@@ -7,6 +7,8 @@ source_set("importer") {
     "brave_external_process_importer_host.cc",
     "brave_external_process_importer_host.h",
     "brave_importer_lock_dialog.h",
+    "brave_importer_p3a.cc",
+    "brave_importer_p3a.h",
     "brave_in_process_importer_bridge.cc",
     "brave_in_process_importer_bridge.h",
     "brave_profile_writer.cc",

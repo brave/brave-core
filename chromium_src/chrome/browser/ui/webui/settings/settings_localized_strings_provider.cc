@@ -28,18 +28,18 @@ namespace settings {
 
 void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
   LocalizedString localized_strings[] = {
-    {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
-    {"importStats", IDS_SETTINGS_IMPORT_STATS_CHECKBOX},
-    {"importLedger", IDS_SETTINGS_IMPORT_LEDGER_CHECKBOX},
-    {"importWindows", IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX},
+      {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
+      {"importStats", IDS_SETTINGS_IMPORT_STATS_CHECKBOX},
+      {"importLedger", IDS_SETTINGS_IMPORT_LEDGER_CHECKBOX},
+      {"importWindows", IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX},
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           base::size(localized_strings));
 }
 
 const char kWebRTCLearnMoreURL[] =
-  "https://support.brave.com/hc/en-us/articles/"
-  "360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
+    "https://support.brave.com/hc/en-us/articles/"
+    "360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -153,18 +153,23 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"getMoreExtensionsLabel",
       IDS_BRAVE_SETTINGS_GET_MORE_EXTENSIONS_LABEL},
     {"getMoreExtensionsSubLabel",
-      IDS_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE}
+      IDS_EXTENSIONS_SIDEBAR_OPEN_CHROME_WEB_STORE},
+    {"p3aEnableTitle",
+      IDS_BRAVE_P3A_ENABLE_SETTING},
+    {"p3aEnabledDesc",
+      IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM}
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           base::size(localized_strings));
   html_source->AddString("webRTCLearnMoreURL",
-      base::ASCIIToUTF16(kWebRTCLearnMoreURL));
-  html_source->AddString("getMoreExtensionsUrl",
-    base::ASCIIToUTF16(
-      google_util::AppendGoogleLocaleParam(
-                GURL(extension_urls::GetWebstoreExtensionsCategoryURL()),
-                g_browser_process->GetApplicationLocale())
-                .spec()));
+                         base::ASCIIToUTF16(kWebRTCLearnMoreURL));
+  html_source->AddString(
+      "getMoreExtensionsUrl",
+      base::ASCIIToUTF16(
+          google_util::AppendGoogleLocaleParam(
+              GURL(extension_urls::GetWebstoreExtensionsCategoryURL()),
+              g_browser_process->GetApplicationLocale())
+              .spec()));
 }
 
 void BraveAddResources(content::WebUIDataSource* html_source,

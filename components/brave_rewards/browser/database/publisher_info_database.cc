@@ -22,6 +22,7 @@
 #include "sql/transaction.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 
 namespace brave_rewards {
 
@@ -1131,6 +1132,52 @@ ledger::ServerPublisherInfoPtr PublisherInfoDatabase::GetServerPublisherInfo(
 }
 
 // Other -------------------------------------------------------------------
+
+void PublisherInfoDatabase::RecordP3AStats(bool auto_contributions_on) {
+  if (!initialized_) {
+    return;
+  }
+
+  sql::Statement sql(
+      db_.GetCachedStatement(SQL_FROM_HERE,
+                             "SELECT category, COUNT(*) FROM contribution_info "
+                             "GROUP BY 1"));
+  int auto_contributions = 0;
+  int tips = 0;
+  int queued_recurring = 0;
+
+  while (sql.Step()) {
+    const int count = sql.ColumnInt(1);
+    switch (sql.ColumnInt(0)) {
+    case static_cast<int>(ledger::RewardsCategory::AUTO_CONTRIBUTE):
+      auto_contributions = count;
+      break;
+    case static_cast<int>(ledger::RewardsCategory::ONE_TIME_TIP):
+      tips += count;
+      break;
+    case static_cast<int>(ledger::RewardsCategory::RECURRING_TIP):
+      queued_recurring = count;
+      break;
+    default:
+      NOTREACHED();
+    }
+  }
+
+  if (queued_recurring == 0) {
+    // Check for queued recurring donations.
+    sql::Statement sql(
+        db_.GetUniqueStatement("SELECT COUNT(*) FROM recurring_donation"));
+    if (sql.Step()) {
+      queued_recurring = sql.ColumnInt(0);
+    }
+  }
+
+  const auto auto_contributions_state = auto_contributions_on ?
+        AutoContributionsP3AState::kAutoContributeOn :
+        AutoContributionsP3AState::kWalletCreatedAutoContributeOff;
+  RecordAutoContributionsState(auto_contributions_state, auto_contributions);
+  RecordTipsState(true, tips, queued_recurring);
+}
 
 int PublisherInfoDatabase::GetCurrentVersion() {
   if (testing_current_version_ != -1) {

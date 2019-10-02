@@ -20,6 +20,7 @@
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
 #include "base/i18n/time_formatting.h"
+#include "base/json/json_string_value_serializer.h"
 #include "base/time/time.h"
 #include "base/logging.h"
 #include "base/sequenced_task_runner.h"
@@ -40,6 +41,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
@@ -48,6 +50,7 @@
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
@@ -187,7 +190,10 @@ std::string URLMethodToRequestType(ledger::URL_METHOD method) {
   }
 }
 
-std::string LoadStateOnFileTaskRunner(
+// Returns pair of string and its parsed counterpart. We parse it on the file
+// thread for the performance sake. It's should be better to remove the string
+// representation in the [far] future.
+std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
     const base::FilePath& path) {
   std::string data;
   bool success = base::ReadFileToString(path, &data);
@@ -195,9 +201,32 @@ std::string LoadStateOnFileTaskRunner(
   // Make sure the file isn't empty.
   if (!success || data.empty()) {
     LOG(ERROR) << "Failed to read file: " << path.MaybeAsASCII();
-    return std::string();
+    return {};
   }
-  return data;
+  std::pair<std::string, base::Value> result;
+  result.first = data;
+
+  // Save deserialized version for recording P3A and future use.
+  JSONStringValueDeserializer deserializer(data);
+  int error_code = 0;
+  std::string error_message;
+  auto value = deserializer.Deserialize(&error_code, &error_message);
+  if (!value) {
+    LOG(ERROR) << "Cannot deserialize ledger state, error code: " << error_code
+               << " message: " << error_message;
+    return result;
+  }
+
+  const auto dict = base::DictionaryValue::From(std::move(value));
+  if (!dict) {
+    LOG(ERROR) << "Corrupted ledger state.";
+    return result;
+  }
+
+  ExtractAndLogP3AStats(*dict);
+  result.second = std::move(*dict);
+
+  return result;
 }
 
 bool SaveMediaPublisherInfoOnFileTaskRunner(
@@ -838,6 +867,13 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
     SetRewardsMainEnabled(true);
     SetAutoContribute(true);
     StartNotificationTimers(true);
+
+    // Record P3A:
+    RecordWalletBalanceP3A(true, 0);
+    const bool ads_enabled =
+        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
+    RecordAdsState(ads_enabled ? AdsP3AState::kAdsEnabled
+                               : AdsP3AState::kAdsDisabled);
   }
 
   for (auto& observer : observers_) {
@@ -866,7 +902,6 @@ void RewardsServiceImpl::OnWalletProperties(
         wallet_properties->grants.push_back(grant);
       }
     }
-
     // webui
     observer.OnWalletProperties(this,
                                 static_cast<int>(result),
@@ -1029,10 +1064,25 @@ void RewardsServiceImpl::LoadLedgerState(
 
 void RewardsServiceImpl::OnLedgerStateLoaded(
     ledger::OnLoadCallback callback,
-    const std::string& data) {
+    std::pair<std::string, base::Value> state) {
   if (!Connected())
     return;
 
+  if (state.second.is_dict()) {
+    // Extract some properties from the parsed json.
+    base::Value* auto_contribute = state.second.FindKey("auto_contribute");
+    if (auto_contribute && auto_contribute->is_bool()) {
+      auto_contributions_enabled_ = auto_contribute->GetBool();
+    }
+    // Record stats.
+    RecordBackendP3AStats();
+  }
+  if (state.first.empty()) {
+    RecordNoWalletCreatedForAllMetrics();
+  }
+
+  // Run callbacks.
+  const std::string& data = state.first;
   callback(data.empty() ? ledger::Result::NO_LEDGER_STATE
                         : ledger::Result::LEDGER_OK,
                         data);
@@ -1050,7 +1100,7 @@ void RewardsServiceImpl::LoadPublisherState(
           AsWeakPtr()));
   }
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&LoadStateOnFileTaskRunner, publisher_state_path_),
+      base::BindOnce(&LoadOnFileTaskRunner, publisher_state_path_),
       base::BindOnce(&RewardsServiceImpl::OnPublisherStateLoaded,
                      AsWeakPtr(),
                      std::move(callback)));
@@ -1673,10 +1723,12 @@ void RewardsServiceImpl::OnLoadedState(
     const std::string& value) {
   if (!Connected())
     return;
-  if (value.empty())
+  if (value.empty()) {
+    RecordNoWalletCreatedForAllMetrics();
     callback(ledger::Result::LEDGER_ERROR, value);
-  else
+  } else {
     callback(ledger::Result::LEDGER_OK, value);
+  }
 }
 
 void RewardsServiceImpl::SetBooleanState(const std::string& name, bool value) {
@@ -1846,12 +1898,24 @@ void RewardsServiceImpl::GetAutoContribute(
   bat_ledger_->GetAutoContribute(std::move(callback));
 }
 
-void RewardsServiceImpl::SetAutoContribute(bool enabled) const {
+void RewardsServiceImpl::SetAutoContribute(bool enabled) {
   if (!Connected()) {
     return;
   }
 
   bat_ledger_->SetAutoContribute(enabled);
+  auto_contributions_enabled_ = enabled;
+
+  // Record stats.
+  DCHECK(profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabled));
+  if (!enabled) {
+    // Just record the disabled state.
+    RecordAutoContributionsState(
+        AutoContributionsP3AState::kWalletCreatedAutoContributeOff, 0);
+  } else {
+    // Need to query the DB for actual counts.
+    RecordBackendP3AStats();
+  }
 }
 
 void RewardsServiceImpl::TriggerOnRewardsMainEnabled(
@@ -3297,6 +3361,12 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
     if (balance->total > 0) {
       profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
     }
+
+    // Record stats.
+    double balance_minus_grant = CalcWalletBalanceForP3A(balance->wallets,
+                                                         balance->user_funds);
+    RecordWalletBalanceP3A(true, static_cast<size_t>(balance_minus_grant));
+    RecordBackendP3AStats();
   }
 
   std::move(callback).Run(static_cast<int>(result), std::move(new_balance));
@@ -3729,6 +3799,22 @@ bool RewardsServiceImpl::OnlyAnonWallet() {
   }
 
   return false;
+}
+
+void RecordBackendP3AStatsOnFileTaskRunner(PublisherInfoDatabase* backend,
+                                           bool auto_contributions_enabled) {
+  if (!backend) {
+    return;
+  }
+  backend->RecordP3AStats(auto_contributions_enabled);
+}
+
+void RewardsServiceImpl::RecordBackendP3AStats() const {
+  file_task_runner_->PostTask(
+      FROM_HERE,
+      base::Bind(&RecordBackendP3AStatsOnFileTaskRunner,
+                 base::Unretained(publisher_info_backend_.get()),
+                 auto_contributions_enabled_));
 }
 
 }  // namespace brave_rewards

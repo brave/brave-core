@@ -9,7 +9,6 @@ import ImportImage from './welcome_import.svg'
 import RewardsImage from './welcome_rewards.svg'
 import SearchImage from './welcome_search.svg'
 import ShieldsImage from './welcome_shields.svg'
-import ThemeImage from './welcome_theme.svg'
 import WelcomeImage from './welcome_bg.svg'
 
 const BaseImage = styled<{}, 'img'>('img')`
@@ -35,11 +34,7 @@ export const WelcomeSearchImage = styled(BaseImage).attrs({ src: SearchImage })`
 `
 
 export const WelcomeShieldsImage = styled(BaseImage).attrs({ src: ShieldsImage })`
-  height: 210px;
-`
-
-export const WelcomeThemeImage = styled(BaseImage).attrs({ src: ThemeImage })`
-  height: 190px;
+  height: 140px;
 `
 
 export const topToBottom = keyframes`

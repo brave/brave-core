@@ -28,7 +28,8 @@ import {
   setAllowCookies,
   toggleShieldsValue,
   requestShieldPanelData,
-  setAllowScriptOriginsOnce
+  setAllowScriptOriginsOnce,
+  onShieldsPanelShown
 } from '../api/shieldsAPI'
 import { reloadTab } from '../api/tabsAPI'
 
@@ -319,6 +320,12 @@ export default function shieldsPanelReducer (
     // Advanced/simple view functionality
     case shieldsPanelTypes.SET_ADVANCED_VIEW_FIRST_ACCESS: {
       state = shieldsPanelState.updatePersistentData(state, { isFirstAccess: false })
+      break
+    }
+    case shieldsPanelTypes.SHIELDS_READY: {
+      onShieldsPanelShown().catch(() => {
+        console.error('error calling `chrome.braveShields.onShieldsPanelShown()`')
+      })
       break
     }
   }

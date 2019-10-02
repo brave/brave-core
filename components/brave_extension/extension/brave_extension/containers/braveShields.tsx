@@ -29,7 +29,8 @@ import {
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess
+  SetAdvancedViewFirstAccess,
+  ShieldsReady
 } from '../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -46,6 +47,7 @@ interface Props {
     setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
     setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
+    shieldsReady: ShieldsReady
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData
@@ -77,6 +79,10 @@ export default class Shields extends React.PureComponent<Props, State> {
       // otherwise change will be visible only after shields closes
       .then(() => this.setState({ showAdvancedView: !showAdvancedView }))
       .catch((err) => console.log('[Shields] Unable to toggle advanced view interface:', err))
+  }
+
+  componentDidMount () {
+    this.props.actions.shieldsReady()
   }
 
   render () {

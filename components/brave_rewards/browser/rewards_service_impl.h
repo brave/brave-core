@@ -297,7 +297,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
                           bool success);
   void OnLedgerStateLoaded(ledger::OnLoadCallback callback,
-                              const std::string& data);
+                              std::pair<std::string, base::Value> data);
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void OnPublisherStateSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
@@ -334,7 +334,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnTimer(uint32_t timer_id);
   void OnSavedState(ledger::OnSaveCallback callback, bool success);
   void OnLoadedState(ledger::OnLoadCallback callback,
-                                  const std::string& value);
+                     const std::string& value);
   void OnResetState(ledger::OnResetCallback callback,
                                  bool success);
   void OnTipPublisherInfoSaved(const ledger::Result result,
@@ -511,7 +511,7 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
   void SetUserChangedContribution() const override;
-  void SetAutoContribute(bool enabled) const override;
+  void SetAutoContribute(bool enabled) override;
   void UpdateAdsRewards() const override;
   void SetCatalogIssuers(const std::string& json) override;
   void ConfirmAd(const std::string& json) override;
@@ -685,6 +685,8 @@ class RewardsServiceImpl : public RewardsService,
   bool Connected() const;
   void ConnectionClosed();
 
+  void RecordBackendP3AStats() const;
+
   Profile* profile_;  // NOT OWNED
   mojo::AssociatedBinding<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_binding_;
@@ -719,6 +721,10 @@ class RewardsServiceImpl : public RewardsService,
   uint32_t next_timer_id_;
 
   GetTestResponseCallback test_response_callback_;
+
+  // At the moment we keep it only for the purpose of sending P3A stats.
+  // Used only on UI thread.
+  bool auto_contributions_enabled_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };

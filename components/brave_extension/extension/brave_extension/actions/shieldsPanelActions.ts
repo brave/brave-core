@@ -125,3 +125,9 @@ export const setAdvancedViewFirstAccess: actions.SetAdvancedViewFirstAccess = ()
     type: types.SET_ADVANCED_VIEW_FIRST_ACCESS
   }
 }
+
+export const shieldsReady: actions.ShieldsReady = () => {
+  return {
+    type: types.SHIELDS_READY
+  }
+}

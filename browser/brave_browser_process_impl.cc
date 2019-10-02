@@ -24,6 +24,9 @@
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
+#include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/brave_histogram_rewrite.h"
+#include "brave/components/p3a/brave_p3a_service.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
@@ -80,6 +83,13 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
                        stats_updater->Start();
                      },
                      base::Unretained(brave_stats_updater())));
+  // Disabled on mobile platforms, see for instance issues/6176
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+  // Create P3A Service early to catch more histograms. The full initialization
+  // should be started once browser process impl is ready.
+  brave_p3a_service();
+  brave::SetupHistogramsBraveization();
+#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 }
 
 brave_component_updater::BraveComponent::Delegate*
@@ -228,13 +238,13 @@ BraveBrowserProcessImpl::tor_client_updater() {
 }
 #endif
 
-void BraveBrowserProcessImpl::CreateProfileManager() {
-  DCHECK(!created_profile_manager_ && !profile_manager_);
-  created_profile_manager_ = true;
-
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-  profile_manager_ = std::make_unique<BraveProfileManager>(user_data_dir);
+brave::BraveP3AService* BraveBrowserProcessImpl::brave_p3a_service() {
+  if (brave_p3a_service_) {
+    return brave_p3a_service_.get();
+  }
+  brave_p3a_service_ = new brave::BraveP3AService(local_state());
+  brave_p3a_service()->InitCallbacks();
+  return brave_p3a_service_.get();
 }
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
@@ -250,4 +260,13 @@ brave::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_)
     brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
   return brave_stats_updater_.get();
+}
+
+void BraveBrowserProcessImpl::CreateProfileManager() {
+  DCHECK(!created_profile_manager_ && !profile_manager_);
+  created_profile_manager_ = true;
+
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+  profile_manager_ = std::make_unique<BraveProfileManager>(user_data_dir);
 }
