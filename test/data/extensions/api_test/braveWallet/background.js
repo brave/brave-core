@@ -52,6 +52,7 @@ function testBasics() {
   chrome.test.runTests([
     function braveWalletExtensionHasAccess() {
       if (chrome.braveWallet && chrome.braveWallet.isEnabled &&
+          chrome.braveWallet && chrome.braveWallet.isInstalled &&
           chrome.braveWallet.promptToEnableWallet) {
         chrome.test.succeed();
       } else {
