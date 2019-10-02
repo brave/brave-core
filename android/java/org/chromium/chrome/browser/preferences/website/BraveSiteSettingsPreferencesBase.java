@@ -13,14 +13,21 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.PreferenceUtils;
+import org.chromium.chrome.browser.preferences.website.SiteSettingsCategory.Type;
+
+import java.util.HashMap;
 
 public class BraveSiteSettingsPreferencesBase extends PreferenceFragmentCompat {
     private static final String DESKTOP_MODE_CATEGORY_KEY = "desktop_mode_category";
     private static final String PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY = "play_yt_video_in_browser_category";
-
+    private static final String ADS_KEY = "ads";
+    private static final String BACKGROUND_SYNC_KEY = "background_sync";
     private static final String MEDIA_KEY = "media";
+
     // Whether this class is handling showing the Media sub-menu (and not the main menu).
     private boolean mMediaSubMenu;
+
+    private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,13 +55,33 @@ public class BraveSiteSettingsPreferencesBase extends PreferenceFragmentCompat {
         updateBravePreferenceStates();
     }
 
+    /**
+     *  We need to override it to avoid NullPointerException in Chromium's child classes
+     */
+    @Override
+    public Preference findPreference(CharSequence key) {
+        Preference result = super.findPreference(key);
+        if (result == null) {
+            result = mRemovedPreferences.get(key);
+        }
+        return result;
+    }
+
+    private void removePreferenceIfPresent(String key) {
+        Preference preference = getPreferenceScreen().findPreference(key);
+        if (preference != null) {
+            getPreferenceScreen().removePreference(preference);
+            mRemovedPreferences.put(preference.getKey(), preference);
+        }
+    }
+
     private void configureBravePreferences() {
-        Preference play_yt_video_pref = findPreference(PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY);
-        Preference desktop_mode_pref = findPreference(DESKTOP_MODE_CATEGORY_KEY);
         if (mMediaSubMenu) {
-            getPreferenceScreen().removePreference(desktop_mode_pref);
+            getPreferenceScreen().removePreference(findPreference(DESKTOP_MODE_CATEGORY_KEY));
         } else {
-            getPreferenceScreen().removePreference(play_yt_video_pref);
+            getPreferenceScreen().removePreference(findPreference(PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY));
+            removePreferenceIfPresent(ADS_KEY);
+            removePreferenceIfPresent(BACKGROUND_SYNC_KEY);
         }
     }
 
