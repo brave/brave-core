@@ -40,7 +40,8 @@ function getMenuElement (templateContent, href) {
 }
 
 function getSectionElement (templateContent, sectionName) {
-  const sectionEl = templateContent.querySelector(`template[if="[[showPage_(pageVisibility.${sectionName})]]"]`)
+  const sectionEl = templateContent.querySelector(`template[if="[[showPage_(pageVisibility.${sectionName})]]"]`) ||
+    templateContent.querySelector(`settings-section[section="${sectionName}"]`)
   if (!sectionEl) {
     console.error(`[Brave Settings Overrides] Could not find section '${sectionName}'`)
   }
