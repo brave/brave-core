@@ -46,8 +46,6 @@ std::string GetWithdrawUrl(const std::string& address);
 
 std::string GetSecondStepVerify();
 
-std::string GetSecondStepRegistration();
-
 ledger::ExternalWalletPtr GetWallet(
       std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
