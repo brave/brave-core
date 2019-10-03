@@ -13,7 +13,6 @@ import ImportBox from './screens/importBox'
 import ShieldsBox from './screens/shieldsBox'
 import SearchBox from './screens/searchBox'
 import RewardsBox from './screens/rewardsBox'
-import ThemeBox from './screens/themeBox'
 import FooterBox from './screens/footerBox'
 
 // Images
@@ -44,7 +43,7 @@ export default class WelcomePage extends React.PureComponent<Props, State> {
   }
 
   get totalScreensSize () {
-    return 6
+    return 5
   }
 
   onClickLetsGo = () => {
@@ -128,9 +127,8 @@ export default class WelcomePage extends React.PureComponent<Props, State> {
               <WelcomeBox index={1} currentScreen={currentScreen} onClick={this.onClickLetsGo} />
               <ImportBox index={2} currentScreen={currentScreen} onClick={this.onClickImport} />
               <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} fakeOnChange={this.onChangeDefaultSearchEngine} isDefaultSearchGoogle={isDefaultSearchGoogle}/>
-              <ThemeBox index={4} currentScreen={currentScreen} />
-              <ShieldsBox index={5} currentScreen={currentScreen} />
-              <RewardsBox index={6} currentScreen={currentScreen} onClick={this.onClickRewardsGetStarted} />
+              <ShieldsBox index={4} currentScreen={currentScreen} />
+              <RewardsBox index={5} currentScreen={currentScreen} onClick={this.onClickRewardsGetStarted} />
             </SlideContent>
             <FooterBox
               totalScreensSize={this.totalScreensSize}
