@@ -204,8 +204,10 @@ void BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved(
       "postText", params->media_meta_data.post_text);
   media_meta_data_dict.SetStringKey(
       "postRelDate", params->media_meta_data.post_rel_date);
+  media_meta_data_dict.SetStringKey(
+      "mediaType", params->media_meta_data.media_type);
   params_dict->SetPath(
-        "mediaMetaData", std::move(media_meta_data_dict));
+      "mediaMetaData", std::move(media_meta_data_dict));
 
   ::brave_rewards::OpenTipDialog(
       contents, std::move(params_dict));
