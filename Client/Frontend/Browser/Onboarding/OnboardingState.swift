@@ -12,4 +12,17 @@ enum OnboardingState: Int {
     case unseen
     /// The user has completed this onboarding.
     case completed
+    /// The user has skipped the onboarding.
+    case skipped
+}
+
+enum OnboardingProgress: Int {
+    /// The user has never started any onboarding.
+    case none
+    /// The user has completed the search engine onboarding.
+    case searchEngine
+    /// The user has completed the rewards onboarding.
+    case rewards
+    /// The user has completed the ads onboarding.
+    case ads
 }

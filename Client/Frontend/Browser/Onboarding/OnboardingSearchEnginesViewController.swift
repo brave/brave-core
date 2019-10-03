@@ -23,7 +23,7 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
     }
     
     override func loadView() {
-        view = View()
+        view = View(theme: theme)
     }
 
     override func viewDidLoad() {
@@ -32,13 +32,13 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         contentView.searchEnginesTable.dataSource = self
         contentView.searchEnginesTable.delegate = self
         
-        contentView.continueButton.addTarget(self, action: #selector(continueTapped), for: .touchDown)
-        contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchDown)
+        contentView.continueButton.addTarget(self, action: #selector(continueTapped), for: .touchUpInside)
+        contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
         
-        // This is kind of stupid, but for some reason the table's background color will not
-        // go away or be forced to .clear, so just mimicing
+        contentView.searchEnginesTable.register(SearchEngineCell.self, forCellReuseIdentifier: String(describing: SearchEngineCell.self))
+        
         let tablebackground = UIView()
-        tablebackground.backgroundColor = contentView.backgroundColor
+        tablebackground.backgroundColor = OnboardingViewController.colorForTheme(theme)
         contentView.searchEnginesTable.backgroundView = tablebackground
     }
     
@@ -55,6 +55,10 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         delegate?.presentNextScreen(current: self)
     }
     
+    override func applyTheme(_ theme: Theme) {
+        styleChildren(theme: theme)
+        contentView.applyTheme(theme)
+    }
 }
 
 extension OnboardingSearchEnginesViewController: UITableViewDelegate {
@@ -86,7 +90,9 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = SearchEngineCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SearchEngineCell.self), for: indexPath) as? SearchEngineCell else {
+            return SearchEngineCell()
+        }
         
         guard let searchEngine = searchEngines.orderedEngines[safe: indexPath.section] else {
             log.error("Can't find search engine at index: \(indexPath.section)")
@@ -99,6 +105,7 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
         cell.searchEngineName = searchEngine.shortName
         cell.searchEngineImage = searchEngine.image
         cell.selectedBackgroundColor = dark ? UIColor(rgb: 0x495057) : UIColor(rgb: 0xF0F2FF)
+        cell.textLabel?.textColor = dark ? UIColor.lightText : UIColor.darkText
         cell.backgroundColor = .clear
         
         if searchEngine == defaultEngine {

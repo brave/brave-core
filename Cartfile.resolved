@@ -4,7 +4,7 @@ github "Sidetalker/onepassword-app-extension" "68a9d932a6373ca045984fbf4fb9a25ae
 github "SnapKit/SnapKit" "5.0.1"
 github "SwiftyJSON/SwiftyJSON" "5.0.0"
 github "airbnb/lottie-ios" "531eb22d47a9439a2344fdaf96832189f2c6e925"
-github "brave/brave-rewards-ios" "092cd4e52d9d821c7186de941adc6be8126baf23"
+github "brave/brave-rewards-ios" "b86a6e9b66277bc64c8f628e2a85317b31a155d4"
 github "cezheng/Fuzi" "3.1.0"
 github "facebook/pop" "1.0.12"
 github "garvankeeley/Deferred" "9.9.2"

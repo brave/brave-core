@@ -5,9 +5,10 @@
 import Foundation
 import Shared
 import BraveShared
+import BraveRewards
 import Lottie
 
-extension OnboardingShieldsViewController {
+extension OnboardingRewardsViewController {
     
     private struct UX {
         /// A negative spacing is needed to make rounded corners for details view visible.
@@ -18,18 +19,12 @@ extension OnboardingShieldsViewController {
     
     class View: UIView {
         
-        #if NO_REWARDS
-        let continueButton = CommonViews.primaryButton(text: Strings.OBFinishButton).then {
-            $0.accessibilityIdentifier = "OnboardingShieldsViewController.FinishButton"
+        let joinButton = CommonViews.primaryButton(text: Strings.OBJoinButton).then {
+            $0.accessibilityIdentifier = "OnboardingRewardsViewController.JoinButton"
         }
-        #else
-        let continueButton = CommonViews.primaryButton(text: Strings.OBContinueButton).then {
-            $0.accessibilityIdentifier = "OnboardingShieldsViewController.ContinueButton"
-        }
-        #endif
         
         let skipButton = CommonViews.secondaryButton().then {
-            $0.accessibilityIdentifier = "OnboardingShieldsViewController.SkipButton"
+            $0.accessibilityIdentifier = "OnboardingRewardsViewController.SkipButton"
         }
         
         private let mainStackView = UIStackView().then {
@@ -37,11 +32,12 @@ extension OnboardingShieldsViewController {
             $0.spacing = UX.negativeSpacing
         }
         
-        let imageView = AnimationView(name: "onboarding-shields").then {
+        let imageView = AnimationView(name: "onboarding-rewards").then {
             $0.contentMode = .scaleAspectFit
             $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-            $0.play()
+            $0.backgroundBehavior = .pauseAndRestore
             $0.loopMode = .loop
+            $0.play()
         }
         
         private let descriptionView = UIView().then {
@@ -54,15 +50,15 @@ extension OnboardingShieldsViewController {
             $0.spacing = 32
         }
         
-        private let textStackView = UIStackView().then { stackView in
+        private let titleLabel = CommonViews.primaryText(Strings.OBRewardsTitle)
+        
+        private let descriptionLabel = CommonViews.secondaryText("").then {
+            $0.attributedText = BraveAds.isSupportedRegion(Locale.current.identifier) ?  Strings.OBRewardsDetailInAdRegion.boldWords(with: $0.font, amount: 2) : Strings.OBRewardsDetailOutsideAdRegion.boldWords(with: $0.font, amount: 1)
+        }
+        
+        private lazy var textStackView = UIStackView().then { stackView in
             stackView.axis = .vertical
             stackView.spacing = 8
-            
-            let titleLabel = CommonViews.primaryText(Strings.OBShieldsTitle)
-            
-            let descriptionLabel = CommonViews.secondaryText("").then {
-                $0.attributedText = Strings.OBShieldsDetail.boldFirstWord(with: $0.font)
-            }
             
             [titleLabel, descriptionLabel].forEach {
                 stackView.addArrangedSubview($0)
@@ -95,20 +91,21 @@ extension OnboardingShieldsViewController {
             }
             
             mainStackView.addArrangedSubview(descriptionView)
-            
-            [skipButton, continueButton, UIView.spacer(.horizontal, amount: 0)]
-            .forEach(buttonsStackView.addArrangedSubview(_:))
+
+            [skipButton, joinButton, UIView.spacer(.horizontal, amount: 0)]
+                .forEach(buttonsStackView.addArrangedSubview(_:))
             
             [textStackView, buttonsStackView].forEach(descriptionStackView.addArrangedSubview(_:))
         }
         
+        func updateDetailsText(_ text: String, boldWords: Int) {
+            self.descriptionLabel.attributedText = text.boldWords(with: self.descriptionLabel.font, amount: boldWords)
+        }
+        
         func applyTheme(_ theme: Theme) {
             descriptionView.backgroundColor = OnboardingViewController.colorForTheme(theme)
-            textStackView.arrangedSubviews.forEach({
-                if let label = $0 as? UILabel {
-                    label.appearanceTextColor = theme.colors.tints.home
-                }
-            })
+            titleLabel.appearanceTextColor = theme.colors.tints.home
+            descriptionLabel.appearanceTextColor = theme.colors.tints.home
         }
         
         override func layoutSubviews() {
@@ -127,11 +124,12 @@ extension OnboardingShieldsViewController {
 }
 
 private extension String {
-    func boldFirstWord(with font: UIFont) -> NSMutableAttributedString {
+    func boldWords(with font: UIFont, amount: Int) -> NSMutableAttributedString {
         let mutableDescriptionText = NSMutableAttributedString(string: self)
         
-        if let firstWord = self.components(separatedBy: " ").first {
-            if let range = self.range(of: firstWord) {
+        let components = self.components(separatedBy: " ")
+        for i in 0..<min(amount, components.count) {
+            if let range = self.range(of: components[i]) {
                 let nsRange = NSRange(range, in: self)
                 let font = UIFont.systemFont(ofSize: font.pointSize, weight: UIFont.Weight.bold)
                 
