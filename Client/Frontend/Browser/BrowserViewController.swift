@@ -221,7 +221,8 @@ class BrowserViewController: UIViewController {
             notificationsHandler?.actionOccured = { [weak self] notification, action in
                 guard let self = self else { return }
                 if action == .opened {
-                    self.openInNewTab(notification.url, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+                    let request = URLRequest(url: notification.url)
+                    self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
                 }
             }
         }
@@ -255,7 +256,8 @@ class BrowserViewController: UIViewController {
                 if Preferences.Rewards.myFirstAdShown.value { return }
                 Preferences.Rewards.myFirstAdShown.value = true
                 AdsViewController.displayFirstAd(on: self) { [weak self] url in
-                    self?.openInNewTab(url, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+                    let request = URLRequest(url: url)
+                    self?.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
                 }
             }
         }
