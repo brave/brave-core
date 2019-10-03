@@ -63,6 +63,15 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
   }
 
+  void CheckForCountry(char digit1, char digit2, std::string expected) {
+    prefs_.SetInteger(kCountryIDAtInstall, digit1 << 8 | digit2);
+    size_t default_index;
+    std::vector<std::unique_ptr<TemplateURLData>> t_urls =
+        TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
+                                                           &default_index);
+    EXPECT_EQ(ASCIIToUTF16(expected), t_urls[default_index]->short_name());
+  }
+
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
@@ -140,63 +149,28 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
 
 // Verifies default search provider for locale
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForUSA) {
-  prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
-  size_t default_index;
-  std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                         &default_index);
-  EXPECT_EQ(ASCIIToUTF16("Google"), t_urls[default_index]->short_name());
+  CheckForCountry('U', 'S', "Google");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForGermany) {
-  prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
-  size_t default_index;
-
-  std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                         &default_index);
-  EXPECT_EQ(ASCIIToUTF16("DuckDuckGo"), t_urls[default_index]->short_name());
+  CheckForCountry('D', 'E', "DuckDuckGo");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForFrance) {
-  prefs_.SetInteger(kCountryIDAtInstall, 'F' << 8 | 'R');
-  size_t default_index;
-
-  std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                         &default_index);
-  EXPECT_EQ(ASCIIToUTF16("Qwant"), t_urls[default_index]->short_name());
+  CheckForCountry('F', 'R', "Qwant");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForAustralia) {
-  prefs_.SetInteger(kCountryIDAtInstall, 'A' << 8 | 'U');
-  size_t default_index;
-
-  std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                         &default_index);
-  EXPECT_EQ(ASCIIToUTF16("DuckDuckGo"), t_urls[default_index]->short_name());
+  CheckForCountry('A', 'U', "DuckDuckGo");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForNewZealand) {
-  prefs_.SetInteger(kCountryIDAtInstall, 'N' << 8 | 'Z');
-  size_t default_index;
-
-  std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                         &default_index);
-  EXPECT_EQ(ASCIIToUTF16("DuckDuckGo"), t_urls[default_index]->short_name());
+  CheckForCountry('N', 'Z', "DuckDuckGo");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForIreland) {
-  prefs_.SetInteger(kCountryIDAtInstall, 'I' << 8 | 'E');
-  size_t default_index;
-
-  std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                         &default_index);
-  EXPECT_EQ(ASCIIToUTF16("DuckDuckGo"), t_urls[default_index]->short_name());
+  CheckForCountry('I', 'E', "DuckDuckGo");
 }

@@ -46,11 +46,11 @@ class BraveTemplateURLServiceUtilTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 
-void TestDefaultOrder(TemplateURL::OwnedTemplateURLVector& template_urls,
+void TestDefaultOrder(const TemplateURL::OwnedTemplateURLVector& template_urls,
                       std::vector<std::string> keywords) {
   EXPECT_EQ(template_urls.size(), keywords.size());
 
-  for (int i = 0; i < (int)template_urls.size(); i++) {
+  for (size_t i = 0; i < template_urls.size(); i++) {
     EXPECT_EQ(template_urls[i]->keyword(), base::ASCIIToUTF16(keywords[i]));
   }
 }
@@ -74,7 +74,7 @@ std::vector<TemplateURLData> GetSampleTemplateData() {
   return local_turls;
 }
 
-WDKeywordsResult GetKeywordResult(
+WDKeywordsResult InitKeywordResult(
     sync_preferences::TestingPrefServiceSyncable* prefs,
     std::vector<TemplateURLData> local_turls) {
   WDKeywordsResult kwResult;
@@ -96,7 +96,7 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
 
   // Prepare call arguments
   WDResult<WDKeywordsResult> result(KEYWORDS_RESULT,
-                                    GetKeywordResult(&prefs_, local_turls));
+                                    InitKeywordResult(&prefs_, local_turls));
 
   TemplateURL::OwnedTemplateURLVector template_urls;
   int new_resource_keyword_version = 0;
@@ -123,7 +123,7 @@ TEST_F(BraveTemplateURLServiceUtilTest,
 
   // Prepare call arguments
   WDResult<WDKeywordsResult> result(KEYWORDS_RESULT,
-                                    GetKeywordResult(&prefs_, local_turls));
+                                    InitKeywordResult(&prefs_, local_turls));
   TemplateURL::OwnedTemplateURLVector template_urls;
   int new_resource_keyword_version = 0;
 

@@ -111,7 +111,7 @@ const std::map<int, std::vector<BravePrepopulatedEngineID>>
 // |engine_ids|. Fills in the default engine index for the given |country_id|,
 // if asked.
 std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
-    std::vector<BravePrepopulatedEngineID> engine_ids,
+    const std::vector<BravePrepopulatedEngineID> engine_ids,
     int country_id,
     BravePrepopulatedEngineID default_engine_id,
     size_t* default_search_provider_index = nullptr) {
