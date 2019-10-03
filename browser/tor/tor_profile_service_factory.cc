@@ -56,10 +56,6 @@ KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
 
 content::BrowserContext* TorProfileServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  if (context->IsOffTheRecord())
-    return chrome::GetBrowserContextOwnInstanceInIncognito(context);
-
-  // use original profile for session profiles
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 
