@@ -16,8 +16,8 @@ import WelcomePage from './page/index'
 const themes = [welcomeLightTheme, welcomeDarkTheme]
 
 const fullPageStoryStyles: object = {
-  width: '-webkit-fill-available',
-  height: '-webkit-fill-available'
+  width: '100%',
+  height: '100%'
 }
 
 export const FullPageStory = (storyFn: any) =>
