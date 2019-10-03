@@ -50,9 +50,6 @@ RewardsService* testing_service_;
 // static
 RewardsService* RewardsServiceFactory::GetForProfile(
     Profile* profile) {
-  if (profile->IsOffTheRecord())
-    return NULL;
-
   if (testing_service_) {
     return testing_service_;
   }
@@ -98,15 +95,6 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
 // static
 void RewardsServiceFactory::SetServiceForTesting(RewardsService* service) {
   testing_service_ = service;
-}
-
-content::BrowserContext* RewardsServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  if (context->IsOffTheRecord())
-    return chrome::GetBrowserContextOwnInstanceInIncognito(context);
-
-  // use original profile for session profiles
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 
 bool RewardsServiceFactory::ServiceIsNULLWhileTesting() const {
