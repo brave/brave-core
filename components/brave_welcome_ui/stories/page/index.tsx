@@ -13,7 +13,6 @@ import ImportBox from './screens/importBox'
 import ShieldsBox from './screens/shieldsBox'
 import SearchBox from './screens/searchBox'
 import RewardsBox from './screens/rewardsBox'
-import ThemeBox from './screens/themeBox'
 import FooterBox from './screens/footerBox'
 
 // Images
@@ -21,6 +20,7 @@ import { Background, BackgroundContainer } from '../../components/images'
 
 export interface State {
   currentScreen: number
+  shouldUpdateElementOverflow: boolean
   fakeChangedSearchEngine: boolean
   fakeBookmarksImported: boolean
   fakeChangedDefaultTheme: boolean
@@ -35,6 +35,7 @@ export default class WelcomePage extends React.PureComponent<Props, State> {
     super(props)
     this.state = {
       currentScreen: 1,
+      shouldUpdateElementOverflow: false,
       fakeChangedSearchEngine: false,
       fakeBookmarksImported: false,
       fakeChangedDefaultTheme: false
@@ -42,7 +43,7 @@ export default class WelcomePage extends React.PureComponent<Props, State> {
   }
 
   get totalScreensSize () {
-    return 6
+    return 5
   }
 
   onClickLetsGo = () => {
@@ -108,23 +109,26 @@ export default class WelcomePage extends React.PureComponent<Props, State> {
     }
   }
 
+  resetStyleOverflow = () => {
+    this.setState({ shouldUpdateElementOverflow: true })
+  }
+
   render () {
-    const { currentScreen } = this.state
+    const { currentScreen, shouldUpdateElementOverflow } = this.state
     const { isDefaultSearchGoogle } = this.props
     return (
       <>
-        <Page>
-          <BackgroundContainer>
-            <Background />
-          </BackgroundContainer>
+        <Page
+          onAnimationEnd={this.resetStyleOverflow}
+          shouldUpdateElementOverflow={shouldUpdateElementOverflow}
+        >
           <Panel>
             <SlideContent>
               <WelcomeBox index={1} currentScreen={currentScreen} onClick={this.onClickLetsGo} />
               <ImportBox index={2} currentScreen={currentScreen} onClick={this.onClickImport} />
               <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} fakeOnChange={this.onChangeDefaultSearchEngine} isDefaultSearchGoogle={isDefaultSearchGoogle}/>
-              <ThemeBox index={4} currentScreen={currentScreen} />
-              <ShieldsBox index={5} currentScreen={currentScreen} />
-              <RewardsBox index={6} currentScreen={currentScreen} onClick={this.onClickRewardsGetStarted} />
+              <ShieldsBox index={4} currentScreen={currentScreen} />
+              <RewardsBox index={5} currentScreen={currentScreen} onClick={this.onClickRewardsGetStarted} />
             </SlideContent>
             <FooterBox
               totalScreensSize={this.totalScreensSize}
@@ -135,6 +139,9 @@ export default class WelcomePage extends React.PureComponent<Props, State> {
               onClickDone={this.onClickDone}
             />
           </Panel>
+          <BackgroundContainer>
+            <Background />
+          </BackgroundContainer>
         </Page>
       </>
     )
