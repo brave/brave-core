@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
@@ -23,10 +24,21 @@
 #include "content/public/test/test_utils.h"
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
 #endif
 
-using SearchEngineProviderServiceTest = InProcessBrowserTest;
+// using SearchEngineProviderServiceTest = InProcessBrowserTest;
+class SearchEngineProviderServiceTest : public InProcessBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+#if BUILDFLAG(ENABLE_TOR)
+    g_brave_browser_process->tor_client_updater()->SetExecutablePath(
+        base::FilePath(FILE_PATH_LITERAL("test")));
+#endif
+  }
+};
 
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
@@ -162,7 +174,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   service->SetUserSelectedDefaultSearchProvider(&other_url);
 }
 
-// Check changed provider in tor profile is retained across the sessions.
+// Check changed provider in tor profile should not be retained across the
+// sessions.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        CheckDefaultTorProfileSearchProviderTest) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
@@ -173,11 +186,13 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
   EXPECT_TRUE(brave::IsTorProfile(tor_profile));
 
-  int expected_provider_id =
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING;
+  int default_provider_id =
+      brave::IsRegionForQwant(tor_profile)
+          ? TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT
+          : TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
-            expected_provider_id);
+            default_provider_id);
 }
 #endif
 

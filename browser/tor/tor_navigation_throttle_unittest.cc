@@ -9,6 +9,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -42,6 +43,7 @@ class TorNavigationThrottleUnitTest : public testing::Test {
         temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir));
     Profile* tor_profile = profile_manager->GetProfile(
         BraveProfileManager::GetTorProfilePath());
+    ASSERT_EQ(brave::GetParentProfile(tor_profile), profile);
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile, nullptr);
     tor_web_contents_ =

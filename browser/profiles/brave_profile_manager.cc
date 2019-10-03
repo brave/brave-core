@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -18,16 +18,17 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
-#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "chrome/browser/profiles/profiles_state.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
@@ -39,22 +40,43 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
+#include "extensions/buildflags/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/extension_service.h"
+#include "extensions/browser/extension_system.h"
+#endif
 
 using content::BrowserThread;
 
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
-  : ProfileManager(user_data_dir) {
+    : ProfileManager(user_data_dir) {
   MigrateProfileNames();
 }
 
+BraveProfileManager::~BraveProfileManager() {
+  std::vector<Profile*> profiles = GetLoadedProfiles();
+  for (Profile* profile : profiles) {
+    if (brave::IsSessionProfile(profile)) {
+      // passing false for `success` removes the profile from the info cache
+      OnProfileCreated(profile, false, false);
+    }
+  }
+}
+
 // static
+// TODO(bridiver) - this should take the last used profile dir as an argument
 base::FilePath BraveProfileManager::GetTorProfilePath() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath parent_path =
+      profile_manager->GetLastUsedProfileDir(profile_manager->user_data_dir());
 
-  base::FilePath tor_path = profile_manager->user_data_dir();
+  DCHECK(!brave::IsTorProfilePath(parent_path));
+
+  base::FilePath tor_path = parent_path.AppendASCII("session_profiles");
   return tor_path.Append(tor::kTorProfileDir);
 }
 
@@ -66,7 +88,6 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   pref_service
     ->SetString(prefs::kProfileName,
                 l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
-  pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
   pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
                           content::kWebRTCIPHandlingDisableNonProxiedUdp);
   pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
@@ -83,7 +104,7 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
-  if (profile->GetPath() == GetTorProfilePath()) {
+  if (brave::IsTorProfile(profile)) {
     InitTorProfileUserPrefs(profile);
   } else {
     ProfileManager::InitProfileUserPrefs(profile);
@@ -96,7 +117,7 @@ std::string BraveProfileManager::GetLastUsedProfileName() {
   const std::string last_used_profile_name =
       local_state->GetString(prefs::kProfileLastUsed);
   if (last_used_profile_name ==
-          base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
+      base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
     return chrome::kInitialProfile;
   return ProfileManager::GetLastUsedProfileName();
 }
@@ -115,11 +136,32 @@ void BraveProfileManager::OnProfileCreated(Profile* profile,
                                            bool is_new_profile) {
   ProfileManager::OnProfileCreated(profile, success, is_new_profile);
 
+  if (!success)
+    return;
+
 #if BUILDFLAG(ENABLE_TOR)
-  // we need to wait until OnProfileCreated to
-  // ensure that the request context is available
-  if (profile->GetPath() == GetTorProfilePath())
+  if (brave::IsTorProfile(profile)) {
+    ProfileAttributesEntry* entry;
+    ProfileAttributesStorage& storage = GetProfileAttributesStorage();
+    if (storage.GetProfileAttributesWithPath(profile->GetPath(), &entry)) {
+      profile->GetPrefs()->SetBoolean(prefs::kForceEphemeralProfiles, true);
+      entry->SetIsEphemeral(true);
+    }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    // This is added in addition to our AreExtensionsDisabled override in
+    // brave_extensions_browser_client_impl because there were extension
+    // icons briefly showing up when opening Tor windows with that override
+    // only.
+    extensions::ExtensionService* extension_service =
+        extensions::ExtensionSystem::Get(profile)->extension_service();
+    extension_service->BlockAllExtensions();
+#endif
+
+    // We need to wait until OnProfileCreated to
+    // ensure that the request context is available.
     TorProfileServiceFactory::GetForProfile(profile);
+  }
 #endif
 }
 

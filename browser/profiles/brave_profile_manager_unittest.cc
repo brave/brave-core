@@ -11,17 +11,18 @@
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#include "chrome/browser/net/proxy_config_monitor.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profiles_state.h"
-#include "chrome/browser/net/proxy_config_monitor.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
@@ -34,10 +35,10 @@
 #include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "content/public/test/test_utils.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -76,16 +77,15 @@ class BraveProfileManagerTest : public testing::Test {
 
   // Helper function to create a profile with |name| for a profile |manager|.
   void CreateProfileAsync(ProfileManager* manager,
-                          const std::string& name,
+                          const base::FilePath& path,
                           MockObserver* mock_observer) {
-    if (temp_dir_.GetPath().AppendASCII(name) ==
-        BraveProfileManager::GetTorProfilePath())
+    if (brave::IsTorProfilePath(path))
       mock_observer->DidLaunchTorProcess();
-    manager->CreateProfileAsync(temp_dir_.GetPath().AppendASCII(name),
+
+    manager->CreateProfileAsync(path,
                                 base::Bind(&MockObserver::OnProfileCreated,
                                            base::Unretained(mock_observer)),
-                                base::UTF8ToUTF16(name),
-                                profiles::GetDefaultAvatarIconUrl(0));
+                                base::string16(), std::string());
   }
 
   // Helper function to set profile ephemeral at prefs and attributes storage.
@@ -114,24 +114,29 @@ class BraveProfileManagerTest : public testing::Test {
 
 TEST_F(BraveProfileManagerTest, GetTorProfilePath) {
   base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
-  base::FilePath expected_path = temp_dir_.GetPath();
+  base::FilePath user_data_dir = temp_dir_.GetPath();
+  base::FilePath last_used_path =
+      g_browser_process->profile_manager()->GetLastUsedProfileDir(
+          user_data_dir);
+  base::FilePath expected_path = last_used_path.AppendASCII("session_profiles");
   expected_path = expected_path.Append(tor::kTorProfileDir);
   EXPECT_EQ(expected_path, tor_path);
 }
 
 TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
   base::FilePath dest_path =
     temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
-  base::FilePath tor_dest_path =
-    temp_dir_.GetPath().Append(tor::kTorProfileDir);
-
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath tor_dest_path = BraveProfileManager::GetTorProfilePath();
 
   // Successfully create test profile and tor profile
   Profile* profile = profile_manager->GetProfile(dest_path);
   Profile* tor_profile = profile_manager->GetProfile(tor_dest_path);
   ASSERT_TRUE(profile);
   ASSERT_TRUE(tor_profile);
+  EXPECT_EQ(brave::GetParentProfile(tor_profile), profile);
+
+  tor_profile = tor_profile->GetOffTheRecordProfile();
 
   // Check that the tor_profile name is non empty
   std::string profile_name =
@@ -145,9 +150,6 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
   EXPECT_EQ(avatar_index, size_t(0));
   EXPECT_FALSE(
       tor_profile->GetPrefs()->GetBoolean(prefs::kProfileUsingDefaultName));
-  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
-  EXPECT_TRUE(
-      tor_profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
 
   // Check WebRTC IP handling policy.
   EXPECT_EQ(
@@ -163,57 +165,74 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
       tor_profile->GetPrefs()->GetBoolean(prefs::kOfferTranslateEnabled));
 }
 
-// This is for tor guest window, remove it when we have persistent tor profiles
-// support
+// Dummy regular Tor profile should not show up as last profile.
 TEST_F(BraveProfileManagerTest, TorProfileDontEndUpAsLastProfile) {
-  base::FilePath dest_path = temp_dir_.GetPath();
-  dest_path = dest_path.Append(tor::kTorProfileDir);
+  base::FilePath parent_path =
+      temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
 
   ProfileManager* profile_manager = g_browser_process->profile_manager();
 
-  TestingProfile* profile =
-      static_cast<TestingProfile*>(profile_manager->GetProfile(dest_path));
-  ASSERT_TRUE(profile);
-
-  // Here the last used profile is still the "Default" profile.
+  // Create Tor parent profile.
+  Profile* parent_profile = profile_manager->GetProfile(parent_path);
   Profile* last_used_profile = profile_manager->GetLastUsedProfile();
-  EXPECT_NE(profile, last_used_profile);
+  EXPECT_EQ(parent_profile, last_used_profile);
+
+  // Create dummy Tor regular profile.
+  Profile* tor_profile =
+      profile_manager->GetProfile(BraveProfileManager::GetTorProfilePath());
+
+  // Here the last used profile is still the parent profile.
+  last_used_profile = profile_manager->GetLastUsedProfile();
+  EXPECT_EQ(parent_profile, last_used_profile);
 
   // Create a browser for the profile.
-  Browser::CreateParams profile_params(profile, true);
+  Browser::CreateParams profile_params(tor_profile, true);
   std::unique_ptr<Browser> browser(
       CreateBrowserWithTestWindowForParams(&profile_params));
   last_used_profile = profile_manager->GetLastUsedProfile();
-  EXPECT_NE(profile, last_used_profile);
+  EXPECT_EQ(parent_profile, last_used_profile);
 
   // Close the browser.
   browser.reset();
   last_used_profile = profile_manager->GetLastUsedProfile();
-  EXPECT_NE(profile, last_used_profile);
+  EXPECT_EQ(parent_profile, last_used_profile);
 }
 
 TEST_F(BraveProfileManagerTest, CreateProfilesAsync) {
-  const std::string profile_name1 = "New Profile 1";
-  const std::string profile_name2 = "Tor Profile";
-
   MockObserver mock_observer;
   EXPECT_CALL(mock_observer, OnProfileCreated(
       testing::NotNull(), NotFail())).Times(testing::AtLeast(3));
   EXPECT_CALL(mock_observer, DidLaunchTorProcess()).Times(1);
 
+  // Create Tor parent profile.
+  base::FilePath tor_parent_profile_path =
+      temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
   ProfileManager* profile_manager = g_browser_process->profile_manager();
+  Profile* parent_profile =
+      profile_manager->GetProfile(tor_parent_profile_path);
 
-  CreateProfileAsync(profile_manager, profile_name1, &mock_observer);
-  CreateProfileAsync(profile_manager, profile_name2, &mock_observer);
+  base::FilePath new_profile_path =
+      temp_dir_.GetPath().AppendASCII("New Profile 1");
+  base::FilePath tor_profile_path = BraveProfileManager::GetTorProfilePath();
+
+  CreateProfileAsync(profile_manager, new_profile_path, &mock_observer);
+  CreateProfileAsync(profile_manager, tor_profile_path, &mock_observer);
 
   content::RunAllTasksUntilIdle();
+  Profile* tor_profile = profile_manager->GetProfile(tor_profile_path);
+  EXPECT_EQ(brave::GetParentProfile(tor_profile), parent_profile);
 }
 
 TEST_F(BraveProfileManagerTest, NoWebtorrentInTorProfile) {
+  base::FilePath tor_parent_profile_path =
+      temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
+  Profile* parent_profile =
+      profile_manager->GetProfile(tor_parent_profile_path);
   Profile* profile = profile_manager->GetProfile(tor_path);
   ASSERT_TRUE(profile);
+  EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
 
   EXPECT_FALSE(webtorrent::IsWebtorrentEnabled(profile));
 }
@@ -221,9 +240,16 @@ TEST_F(BraveProfileManagerTest, NoWebtorrentInTorProfile) {
 TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
   ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath dest_path =
+      temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
+
+  // Successfully create test profile and tor profile
+  Profile* parent_profile = profile_manager->GetProfile(dest_path);
   base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
-  Profile* profile = profile_manager->GetProfile(tor_path);
+  Profile* profile =
+      profile_manager->GetProfile(tor_path)->GetOffTheRecordProfile();
   ASSERT_TRUE(profile);
+  EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
 
   std::unique_ptr<ProxyConfigMonitor> monitor(new ProxyConfigMonitor(profile));
   auto* proxy_config_service = monitor->GetProxyConfigServiceForTesting();

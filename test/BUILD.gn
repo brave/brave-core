@@ -26,6 +26,8 @@ group("fix_brave_test_install_name_adblock") {
 static_library("brave_test_support_unit") {
   testonly = true
   sources = [
+    "base/brave_testing_profile.cc",
+    "base/brave_testing_profile.h",
     "base/brave_unit_test_suite.cc",
     "base/brave_unit_test_suite.h",
     "base/run_all_unittests.cc",

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -12,11 +13,13 @@
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "content/public/test/test_utils.h"
 
 using extensions::ExtensionBrowserTest;
 
-const std::string kTorClientUpdaterComponentTestId("ngicbhhaldfdgmjhilmnleppfpmkgbbk");
-const std::string kTorClientUpdaterComponentTestBase64PublicKey =
+const char kTorClientUpdaterComponentTestId[] =
+    "ngicbhhaldfdgmjhilmnleppfpmkgbbk";
+const char kTorClientUpdaterComponentTestBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAncFKJWCX6RqCRYOR0t5a"
     "js7HWIVP3Ne272HZs3MqiaNvo9IikbPd4JnUMeQjLhkXTwxg6Up9Tmrgo3M8T91D"
     "dggzpAG4OlhKj3l3N5kZnj/CxQ73YVd41jHAF97lZVoD5VTCGtEelzA5eHI4N4Hd"
@@ -26,7 +29,7 @@ const std::string kTorClientUpdaterComponentTestBase64PublicKey =
     "QQIDAQAB";
 
 class BraveTorClientUpdaterTest : public ExtensionBrowserTest {
-public:
+ public:
   BraveTorClientUpdaterTest() {}
 
   void SetUp() override {
@@ -109,6 +112,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientInstalls) {
       kTorClientUpdaterComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallTorClientUpdater());
 
+  content::RunAllTasksUntilIdle();
   base::FilePath executable_path =
       g_brave_browser_process->tor_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));
@@ -122,6 +126,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientLaunches) {
       kTorClientUpdaterComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallTorClientUpdater());
 
+  content::RunAllTasksUntilIdle();
   base::FilePath executable_path =
       g_brave_browser_process->tor_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));

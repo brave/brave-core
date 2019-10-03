@@ -4,4 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/profiles/profile_util.h"
-#include "../../../../../../chrome/browser/profiles/profile.cc"  // NOLINT
+
+#define BRAVE_BUILD_SERVICE_INSTANCE_FOR brave::IsSessionProfile(profile) ||
+#include "../../../../../chrome/browser/content_settings/host_content_settings_map_factory.cc"

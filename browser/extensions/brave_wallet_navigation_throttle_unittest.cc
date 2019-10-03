@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/extensions/extension_constants.h"
@@ -85,9 +86,6 @@ class BraveWalletNavigationThrottleUnitTest
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-#if BUILDFLAG(ENABLE_TOR)
-    prefs->registry()->RegisterBooleanPref(tor::prefs::kProfileUsingTor, false);
-#endif
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     return builder.Build().release();
@@ -209,8 +207,10 @@ TEST_F(BraveWalletNavigationThrottleUnitTest, ChromeWalletDisabledByPref) {
 TEST_F(BraveWalletNavigationThrottleUnitTest,
     ChromeWalletNotAvailInTorProfile) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
+  Profile* profile = ProfileManager::GetLastUsedProfile();
   Profile* tor_profile = profile_manager->GetProfile(
       BraveProfileManager::GetTorProfilePath());
+  ASSERT_EQ(brave::GetParentProfile(tor_profile), profile);
   std::unique_ptr<content::WebContents> tor_web_contents =
       content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
 
