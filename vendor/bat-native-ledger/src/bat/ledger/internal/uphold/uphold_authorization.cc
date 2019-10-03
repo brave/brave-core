@@ -202,7 +202,7 @@ void UpholdAuthorization::OnGetUser(
     }
   } else {
     wallet_ptr->status = ledger::WalletStatus::PENDING;
-    args["redirect_url"] = GetSecondStepRegistration();
+    args["redirect_url"] = GetSecondStepVerify();
   }
 
   ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet_ptr));
