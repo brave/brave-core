@@ -41,41 +41,49 @@ using content::WebContents;
 
 namespace {
 
-class BrowserRemovedObserver : public BrowserListObserver {
+class BrowserChangeObserver : public BrowserListObserver {
  public:
-  BrowserRemovedObserver() : removed_browser_(nullptr) {
+  enum class ChangeType {
+    kAdded,
+    kRemoved,
+  };
+
+  BrowserChangeObserver(Browser* browser, ChangeType type)
+      : browser_(browser), type_(type) {
     BrowserList::AddObserver(this);
-    original_browsers_count_ = BrowserList::GetInstance()->size();
   }
 
-  ~BrowserRemovedObserver() override { BrowserList::RemoveObserver(this); }
+  ~BrowserChangeObserver() override { BrowserList::RemoveObserver(this); }
 
-  Browser* CheckReturn() const {
-    EXPECT_EQ(original_browsers_count_ - 1, chrome::GetTotalBrowserCount());
-    return removed_browser_;
-  }
-
-  // Wait for a new browser to be removed.
-  Browser* WaitForBrowserRemoval() {
-    if (removed_browser_)
-      return CheckReturn();
+  Browser* Wait() {
     run_loop_.Run();
-    EXPECT_NE(removed_browser_, nullptr);
-    return CheckReturn();
+    return browser_;
+  }
+
+  // BrowserListObserver:
+  void OnBrowserAdded(Browser* browser) override {
+    if (type_ == ChangeType::kAdded) {
+      browser_ = browser;
+      run_loop_.Quit();
+    }
+  }
+
+  void OnBrowserRemoved(Browser* browser) override {
+    if (browser_ && browser_ != browser)
+      return;
+
+    if (type_ == ChangeType::kRemoved) {
+      browser_ = browser;
+      run_loop_.Quit();
+    }
   }
 
  private:
-  // BrowserListObserver
-  void OnBrowserRemoved(Browser* browser) override {
-    removed_browser_ = browser;
-    run_loop_.Quit();
-  }
-
-  size_t original_browsers_count_;
-  Browser* removed_browser_;
+  Browser* browser_;
+  ChangeType type_;
   base::RunLoop run_loop_;
 
-  DISALLOW_COPY_AND_ASSIGN(BrowserRemovedObserver);
+  DISALLOW_COPY_AND_ASSIGN(BrowserChangeObserver);
 };
 
 }  // namespace
@@ -210,8 +218,10 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
   // Open a new browser window with the provided |profile|.
   Browser* NewBrowserWindow(Profile* profile) {
     DCHECK(profile);
+    BrowserChangeObserver bco(nullptr,
+                              BrowserChangeObserver::ChangeType::kAdded);
     chrome::NewEmptyWindow(profile);
-    Browser* browser = ui_test_utils::WaitForBrowserToOpen();
+    Browser* browser = bco.Wait();
     DCHECK(browser);
     content::WaitForLoadStopWithoutSuccessCheck(
         browser->tab_strip_model()->GetActiveWebContents());
@@ -220,8 +230,10 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
   // Open a new browser window with a guest session.
   Browser* NewGuestBrowserWindow() {
+    BrowserChangeObserver bco(nullptr,
+                              BrowserChangeObserver::ChangeType::kAdded);
     profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
-    Browser* browser = ui_test_utils::WaitForBrowserToOpen();
+    Browser* browser = bco.Wait();
     DCHECK(browser);
     // When a guest |browser| closes a BrowsingDataRemover will be created and
     // executed. It needs a loaded TemplateUrlService or else it hangs on to a
@@ -258,9 +270,10 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
   // Close the provided |browser| window and wait until done.
   void CloseBrowserWindow(Browser* browser) {
-    BrowserRemovedObserver bro;
+    BrowserChangeObserver bco(browser,
+                              BrowserChangeObserver::ChangeType::kRemoved);
     chrome::ExecuteCommand(browser, IDC_CLOSE_WINDOW);
-    EXPECT_EQ(bro.WaitForBrowserRemoval(), browser);
+    EXPECT_EQ(bco.Wait(), browser);
   }
 
   // Enable deletion of browsing history on exit.
