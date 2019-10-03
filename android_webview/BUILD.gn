@@ -1,0 +1,7 @@
+group("common") {
+  deps = [
+    "//brave/browser/net",
+    "//brave/browser",
+    "//components/translate/core/language_detection",
+  ]
+}

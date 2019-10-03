@@ -1,0 +1,12 @@
+diff --git a/android_webview/BUILD.gn b/android_webview/BUILD.gn
+index 9b758420dc4cf53c998274592e6e4d018280e1de..443932c1e8ed8f8d71465f7ed83f2ba1a282aafc 100644
+--- a/android_webview/BUILD.gn
++++ b/android_webview/BUILD.gn
+@@ -706,6 +706,7 @@ source_set("common") {
+     "//android_webview/common",
+     "//android_webview/common:common_mojom",
+     "//base/third_party/dynamic_annotations:dynamic_annotations",
++    "//brave/android_webview:common",
+     "//components/about_ui",
+     "//components/autofill/android:provider",
+     "//components/autofill/content/browser",
