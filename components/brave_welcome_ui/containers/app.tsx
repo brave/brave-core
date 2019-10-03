@@ -37,6 +37,7 @@ export interface State {
   currentScreen: number,
   finished: boolean,
   skipped: boolean
+  shouldUpdateElementOverflow: boolean
 }
 
 const totalScreensSize = 5
@@ -47,7 +48,8 @@ export class WelcomePage extends React.Component<Props, State> {
     this.state = {
       currentScreen: 1,
       finished: false,
-      skipped: false
+      skipped: false,
+      shouldUpdateElementOverflow: false
     }
   }
 
@@ -102,14 +104,20 @@ export class WelcomePage extends React.Component<Props, State> {
     this.props.actions.goToTabRequested('chrome://newtab', '_self')
   }
 
+  resetStyleOverflow = () => {
+    this.setState({ shouldUpdateElementOverflow: true })
+  }
+
   render () {
     const { welcomeData, actions } = this.props
+    const { shouldUpdateElementOverflow } = this.state
     return (
       <>
-        <Page id='welcomePage'>
-          <BackgroundContainer>
-            <Background/>
-          </BackgroundContainer>
+        <Page
+          id='welcomePage'
+          onAnimationEnd={this.resetStyleOverflow}
+          shouldUpdateElementOverflow={shouldUpdateElementOverflow}
+        >
           <Panel>
             <SlideContent>
               <WelcomeBox index={1} currentScreen={this.currentScreen} onClick={this.onClickLetsGo} />
@@ -138,6 +146,9 @@ export class WelcomePage extends React.Component<Props, State> {
               onClickDone={this.onClickDone}
             />
           </Panel>
+          <BackgroundContainer>
+            <Background/>
+          </BackgroundContainer>
         </Page>
       </>
     )

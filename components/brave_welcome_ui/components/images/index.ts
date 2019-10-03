@@ -47,28 +47,26 @@ export const topToBottom = keyframes`
   }
 `
 
+export const backgroundHeight = 136
+
 export const BackgroundContainer = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   width: inherit;
-  height: inherit;
-  position: absolute;
+  height: ${backgroundHeight}px;
+  position: relative;
   animation-delay: 0s;
   animation-name: ${topToBottom};
   animation-duration: 2000ms;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
-  overflow: hidden;
 `
 
 export const Background = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   background: url('${WelcomeImage}');
   width: 100%;
-  height: 136px;
+  height: ${backgroundHeight}px;
   background-size: cover;
   background-position-x: center;
-  position: absolute;
-  bottom: 0;
-  overflow: hidden;
 `
