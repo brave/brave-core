@@ -7,6 +7,7 @@ import { backgroundHeight } from '../images'
 
 const slideContentHeight = 540
 const footerHeight = 52
+const footerTopMargin = 24
 
 const fadeIn = keyframes`
   from {
@@ -41,7 +42,7 @@ export const Footer = styled(BaseGrid.withComponent('footer'))`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: ${footerHeight}px;
   max-width: 540px;
-  margin: 24px 0 0 0;
+  margin: ${footerTopMargin}px 0 0 0;
 `
 
 export const FooterLeftColumn = styled(BaseColumn)`
@@ -121,11 +122,10 @@ export const Panel = styled('div')`
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 64px;
   margin: 0 auto;
   font-size: inherit;
   align-items: center;
-  min-height: ${slideContentHeight + footerHeight}px;
+  min-height: ${slideContentHeight + footerTopMargin + footerHeight}px;
   height: calc(100vh - ${backgroundHeight}px);
 `
 
