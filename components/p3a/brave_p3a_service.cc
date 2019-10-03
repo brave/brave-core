@@ -156,11 +156,15 @@ void BraveP3AService::Init() {
   // Do rotation if needed.
   const base::Time last_rotation =
       local_state_->GetTime(kLastRotationTimeStampPref);
-  const base::TimeDelta last_rotation_interval =
-      rotation_interval_.is_zero() ? TimeDeltaTillMonday(last_rotation)
-                                   : rotation_interval_;
-  if (base::Time::Now() - last_rotation > last_rotation_interval) {
+  if (last_rotation.is_null()) {
     DoRotation();
+  } else {
+    const base::TimeDelta last_rotation_interval =
+        rotation_interval_.is_zero() ? TimeDeltaTillMonday(last_rotation)
+                                     : rotation_interval_;
+    if (base::Time::Now() - last_rotation > last_rotation_interval) {
+      DoRotation();
+    }
   }
 
   // Init other components.
