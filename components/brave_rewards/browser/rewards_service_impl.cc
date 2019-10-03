@@ -36,7 +36,6 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_properties.h"
 #include "bat/ledger/transactions_info.h"
-#include "brave/browser/version_info.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/common/pref_names.h"

@@ -8,9 +8,6 @@
 
 #include <string>
 
-#define BASE_TIME_KSECONDSPERHOUR base::Time::kSecondsPerHour
-#define TRIM_PUBLISHERS_DB_MEMORY db_.TrimMemory();
-
 namespace version_info {
 std::string GetBraveVersionWithoutChromiumMajorVersion();
 std::string GetBraveVersionNumberForDisplay();

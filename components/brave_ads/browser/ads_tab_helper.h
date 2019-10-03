@@ -9,8 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "brave/browser/version_info.h"
-
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
 #include "build/build_config.h"

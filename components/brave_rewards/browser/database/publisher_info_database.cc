@@ -8,7 +8,6 @@
 #include <string>
 #include <utility>
 
-#include "brave/browser/version_info.h"
 #include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 
 #include "base/bind.h"
@@ -1202,7 +1201,7 @@ void PublisherInfoDatabase::Vacuum() {
 void PublisherInfoDatabase::OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  TRIM_PUBLISHERS_DB_MEMORY
+  db_.TrimMemory();
 }
 
 std::string PublisherInfoDatabase::GetDiagnosticInfo(int extended_error,
