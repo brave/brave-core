@@ -12,13 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.chromium.base.TraceEvent;
-import org.chromium.base.annotations.JNINamespace;
-import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 
-@JNINamespace("chrome::android")
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
 
@@ -60,9 +58,9 @@ public class BraveNewTabPageView extends NewTabPageView {
      */
     private void updateBraveStats() {
         TraceEvent.begin(TAG + ".updateBraveStats()");
-        long trackersBlockedCount = BraveNewTabPageViewJni.get().getTrackersBlockedCount(mProfile);
-        long adsBlockedCount = BraveNewTabPageViewJni.get().getAdsBlockedCount(mProfile);
-        long httpsUpgradesCount = BraveNewTabPageViewJni.get().getHttpsUpgradesCount(mProfile);
+        long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
+        long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
+        long httpsUpgradesCount = BravePrefServiceBridge.getInstance().getHttpsUpgradesCount(mProfile);
         long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * MILLISECONDS_PER_ITEM;
 
         mAdsBlockedCountTextView.setText(getBraveStatsStringFormNumber(adsBlockedCount));
@@ -128,12 +126,5 @@ public class BraveNewTabPageView extends NewTabPageView {
             result = result + seconds + "s";
         }
         return result;
-    }
-
-    @NativeMethods
-    interface Natives {
-        int getTrackersBlockedCount(Profile profile);
-        int getAdsBlockedCount(Profile profile);
-        int getHttpsUpgradesCount(Profile profile);
     }
 }

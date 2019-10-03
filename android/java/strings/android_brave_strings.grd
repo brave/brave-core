@@ -150,6 +150,57 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_STATS_TEXT_TIME" desc="Title for the estimated saved time">
         Est. Time Saved
       </message>
+      <message name="IDS_SETTINGS_DESKTOP_MODE_TITLE" desc="Title for desktop mode in site settings">
+        Desktop Mode
+      </message>
+      <message name="IDS_SETTINGS_DESKTOP_MODE_ON" desc="Desc for desktop mode in site settings">
+        Enable Desktop View for new tabs
+      </message>
+      <message name="IDS_SETTINGS_DESKTOP_MODE_OFF" desc="Desc for desktop mode in site settings">
+       Use mobile versions of sites for new tabs (recommended)
+      </message>
+      <message name="IDS_SETTINGS_DESKTOP_MODE_DISABLED_SUMMARY" desc="Summary for desktop mode in site settings">
+        Prefer mobile version of sites
+      </message>
+      <message name="IDS_SETTINGS_DESKTOP_MODE_ENABLED_SUMMARY" desc="Summary for desktop mode in site settings">
+        Prefer desktop version of sites
+      </message>
+      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_TITLE" desc="Title for desktop mode in site settings">
+        Video playback in Brave
+      </message>
+      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
+        If enabled, videos will be played in Brave instead of corresponding app
+      </message>
+      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_OFF" desc="Desc for desktop mode in site settings">
+        Disabled
+      </message>
+      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ENABLED_SUMMARY" desc="Summary for play youtube video in brave  in site settings">
+        Enabled
+      </message>
+      <message name="IDS_PREFS_SECTION_CONTROLS" desc="Title for controls section in main preferences screen">
+        Controls
+      </message>
+      <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK" desc="Title for background video playback preference in controls section">
+        Background video playback
+      </message>
+      <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE" desc="Title for closing all tabs closes brave in controls section">
+        Closing all tabs closes Brave
+      </message>
+      <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
+        Experimental. Enables play audio from video in background when tab is not active or device screen is turned off. Try to switch to desktop mode if this feature is not working.
+      </message>
+      <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_SUMMARY_ENABLED" desc="Summary for background video playback is enabled">
+        Enabled
+      </message>
+      <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_SUMMARY_DISABLED" desc="Summary for background video playback is disabled">
+        Disabled
+      </message>
+      <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE_SUMMARY_ENABLED" desc="Sumamry for closing all tabs closes brave is enabled">
+        On
+      </message>
+      <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE_SUMMARY_DISABLED" desc="Sumamry for closing all tabs closes brave is disabled">
+        Off
+      </message>
     </messages>
   </release>
 </grit>
