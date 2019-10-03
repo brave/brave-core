@@ -83,6 +83,11 @@ void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::s
 void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {
   [bridge_ removeRecurringTip:publisher_key callback:callback];
 }
+
+void NativeLedgerClient::OnGrantViaSafetynetCheck(const std::string & promotion_id, const std::string & nonce) {
+  //Android specific callback, should be refactored and removed from here
+}
+
 void NativeLedgerClient::RestorePublishers(ledger::RestorePublishersCallback callback) {
   [bridge_ restorePublishers:callback];
 }

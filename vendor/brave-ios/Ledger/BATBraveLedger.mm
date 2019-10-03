@@ -192,7 +192,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   //   - LEDGER_ERROR: Already initialized
   //   - BAD_REGISTRATION_RESPONSE: Request credentials call failure or malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
-  ledger->CreateWallet(^(ledger::Result result) {
+  ledger->CreateWallet(std::string(), ^(ledger::Result result) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; }
     NSError *error = nil;
@@ -544,7 +544,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId completion:(nullable void (^)(NSArray<BATGrant *> *grants))completion
 {
-  ledger->FetchGrants(std::string(language.UTF8String), std::string(paymentId.UTF8String), ^(ledger::Result result, std::vector<ledger::GrantPtr> grants) {
+  ledger->FetchGrants(std::string(language.UTF8String), std::string(paymentId.UTF8String), std::string(), ^(ledger::Result result, std::vector<ledger::GrantPtr> grants) {
     if (result != ledger::Result::LEDGER_OK) {
       return;
     }

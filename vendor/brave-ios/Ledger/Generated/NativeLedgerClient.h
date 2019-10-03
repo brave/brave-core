@@ -39,6 +39,7 @@ private:
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const std::string & probi, const ledger::RewardsCategory category) override;
   void RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) override;
+  void OnGrantViaSafetynetCheck(const std::string & promotion_id, const std::string & nonce) override;
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;

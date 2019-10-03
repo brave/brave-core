@@ -47,6 +47,10 @@ bool NativeAdsClient::IsForeground() const {
   return [bridge_ isForeground];
 }
 
+bool NativeAdsClient::CanShowBackgroundNotifications() const {
+    return [bridge_ canShowBackgroundNotifications];
+}
+
 const std::vector<std::string> NativeAdsClient::GetUserModelLanguages() const {
   return [bridge_ getUserModelLanguages];
 }

@@ -21,6 +21,7 @@
 - (const std::vector<std::string>)getUserModelLanguages;
 - (bool)isAdsEnabled;
 - (bool)isForeground;
+- (bool)canShowBackgroundNotifications;
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;
 - (void)killTimer:(uint32_t)timer_id;
