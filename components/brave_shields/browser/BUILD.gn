@@ -68,6 +68,7 @@ source_set("browser") {
     "//content/public/browser",
     "//net",
     "//third_party/leveldatabase",
+    "//third_party/re2",
     "//url",
   ]
 }
