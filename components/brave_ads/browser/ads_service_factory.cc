@@ -31,9 +31,6 @@ namespace brave_ads {
 // static
 AdsService* AdsServiceFactory::GetForProfile(
     Profile* profile) {
-  if (profile->IsOffTheRecord())
-    return NULL;
-
   return static_cast<AdsService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
@@ -66,15 +63,6 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
 #else
   return NULL;
 #endif
-}
-
-content::BrowserContext* AdsServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  if (context->IsOffTheRecord())
-    return chrome::GetBrowserContextOwnInstanceInIncognito(context);
-
-  // use original profile for session profiles
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {

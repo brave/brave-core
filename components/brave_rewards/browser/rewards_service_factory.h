@@ -37,8 +37,6 @@ class RewardsServiceFactory : public BrowserContextKeyedServiceFactory,
   // BrowserContextKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
 
   // content::NotificationObserver:
