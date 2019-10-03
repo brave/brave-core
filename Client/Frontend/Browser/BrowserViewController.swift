@@ -255,9 +255,11 @@ class BrowserViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 if Preferences.Rewards.myFirstAdShown.value { return }
                 Preferences.Rewards.myFirstAdShown.value = true
-                AdsViewController.displayFirstAd(on: self) { [weak self] url in
-                    let request = URLRequest(url: url)
-                    self?.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+                 AdsViewController.displayFirstAd(on: self) { [weak self] action, url in
+                    if action == .opened {
+                        let request = URLRequest(url: url)
+                        self?.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+                    }
                 }
             }
         }
@@ -669,17 +671,87 @@ class BrowserViewController: UIViewController {
     }
     
     func presentOnboardingIntro() {
-        if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+        let isRewardsEnabled = rewards?.ledger.isEnabled == true
+        
+        // 1. Existing user.
+        // 2. The user skipped onboarding before.
+        // 3. 60 days have passed since they last saw onboarding.
+        if Preferences.General.basicOnboardingCompleted.value == OnboardingState.skipped.rawValue {
+
+            guard let daysUntilNextPrompt = Preferences.General.basicOnboardingNextOnboardingPrompt.value else {
+                return
+            }
+            
+            // 60 days has passed since the user last saw the onboarding.. it's time to show the onboarding again..
+            if daysUntilNextPrompt <= Date() {
+                guard let onboarding = OnboardingNavigationController(
+                    profile: profile,
+                    onboardingType: isRewardsEnabled ? .existingUserRewardsOn : .existingUserRewardsOff,
+                    rewards: rewards,
+                    theme: Theme.of(tabManager.selectedTab)
+                    ) else { return }
+                
+                onboarding.onboardingDelegate = self
+                present(onboarding, animated: true)
+                
+                Preferences.General.basicOnboardingNextOnboardingPrompt.value = Date(timeIntervalSinceNow: BrowserViewController.onboardingDaysInterval)
+            }
+            
+            return
+        }
+        
+        // 1. Rewards are on/off (existing user)
+        // 2. User hasn't seen the rewards part of the onboarding yet.
+        if (Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue)
+            &&
+            (Preferences.General.basicOnboardingProgress.value == OnboardingProgress.searchEngine.rawValue) {
+            
             guard let onboarding = OnboardingNavigationController(
                 profile: profile,
-                onboardingType: .newUser,
+                onboardingType: isRewardsEnabled ? .existingUserRewardsOn : .existingUserRewardsOff,
+                rewards: rewards,
                 theme: Theme.of(tabManager.selectedTab)
                 ) else { return }
             
             onboarding.onboardingDelegate = self
             present(onboarding, animated: true)
-        } else {
-            // Existing users onboarding TBD
+        }
+        
+        // 1. Rewards are on/off (existing user)
+        // 2. Ads are now available
+        // 3. User hasn't seen the ads part of onboarding yet
+        if BraveAds.isSupportedRegion(Locale.current.identifier)
+            &&
+            (Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue)
+            &&
+            (Preferences.General.basicOnboardingProgress.value != OnboardingProgress.ads.rawValue) {
+            
+            guard let onboarding = OnboardingNavigationController(
+                profile: profile,
+                onboardingType: isRewardsEnabled ? .existingUserRewardsOn : .existingUserRewardsOff,
+                rewards: rewards,
+                theme: Theme.of(tabManager.selectedTab)
+                ) else { return }
+            
+            onboarding.onboardingDelegate = self
+            present(onboarding, animated: true)
+        }
+        
+        // 1. User is brand new
+        // 2. User hasn't completed onboarding
+        // 3. We don't care how much progress they made. Onboarding is only complete when ALL of it is complete.
+        if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+            // The user has never completed the onboarding..
+            
+            guard let onboarding = OnboardingNavigationController(
+                profile: profile,
+                onboardingType: .newUser,
+                rewards: rewards,
+                theme: Theme.of(tabManager.selectedTab)
+                ) else { return }
+            
+            onboarding.onboardingDelegate = self
+            present(onboarding, animated: true)
         }
     }
 
@@ -3106,9 +3178,19 @@ extension BrowserViewController: OnboardingControllerDelegate {
         switch onboardingController.onboardingType {
         case .newUser:
             Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+            Preferences.General.basicOnboardingNextOnboardingPrompt.value = nil
         default: break
         }
         
         onboardingController.dismiss(animated: true)
     }
+    
+    func onboardingSkipped(_ onboardingController: OnboardingNavigationController) {
+        Preferences.General.basicOnboardingCompleted.value = OnboardingState.skipped.rawValue
+        Preferences.General.basicOnboardingNextOnboardingPrompt.value = Date(timeIntervalSinceNow: BrowserViewController.onboardingDaysInterval)
+        onboardingController.dismiss(animated: true)
+    }
+    
+    // 60 days until the next time the user sees the onboarding..
+    static let onboardingDaysInterval = TimeInterval(60.days)
 }

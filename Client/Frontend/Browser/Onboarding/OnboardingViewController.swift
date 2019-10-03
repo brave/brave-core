@@ -5,12 +5,14 @@
 import UIKit
 import BraveShared
 import Shared
+import BraveRewards
 
 /// A base class to provide common implementations needed for user onboarding screens.
-class OnboardingViewController: UIViewController {
+class OnboardingViewController: UIViewController, Themeable {
     weak var delegate: Onboardable?
     var profile: Profile
-    let theme: Theme
+    var rewards: BraveRewards?
+    var theme: Theme
     
     /// Whether the on-boarding is dark or not, based solely on passed in theme
     ///  Added explicitly to make removal easier in the future if just `theme` is used
@@ -18,8 +20,18 @@ class OnboardingViewController: UIViewController {
         return theme.isDark
     }
     
-    init(profile: Profile, theme: Theme) {
+    static func colorForTheme(_ theme: Theme) -> UIColor {
+        return theme.isDark ? UIColor(rgb: 0x343A40) : UIColor(rgb: 0xFFFFFF)
+    }
+    
+    static func getUpdatedTheme() -> Theme {
+        let tabManager = (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.tabManager
+        return Theme.of(tabManager?.selectedTab)
+    }
+    
+    init(profile: Profile, rewards: BraveRewards?, theme: Theme) {
         self.profile = profile
+        self.rewards = rewards
         self.theme = theme
         super.init(nibName: nil, bundle: nil)
     }
@@ -29,13 +41,18 @@ class OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = dark ? UIColor(rgb: 0x212529) : UIColor(rgb: 0xFFFFFF)
     }
     
     /// Default behavior to present next onboarding screen.
     /// Override it to add custom behavior.
     @objc func continueTapped() {
         delegate?.presentNextScreen(current: self)
+    }
+    
+    /// Default behavior to present previous onboarding screen.
+    /// Override it to add custom behavior.
+    @objc func backTapped() {
+        delegate?.presentPreviousScreen(current: self)
     }
     
     /// Default behavior if skip onboarding is tapped.
@@ -86,5 +103,18 @@ class OnboardingViewController: UIViewController {
             
             return label
         }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 13.0, *) {
+            if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                theme = OnboardingViewController.getUpdatedTheme()
+                applyTheme(theme)
+            }
+        }
+    }
+    
+    func applyTheme(_ theme: Theme) {
+        styleChildren(theme: theme)
     }
 }
