@@ -20,7 +20,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-#include "components/gcm_driver/gcm_channel_status_syncer.h"
+#include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
 void BravePrivacyHandler::RegisterMessages() {
@@ -45,9 +45,16 @@ void BravePrivacyHandler::RegisterMessages() {
 // static
 void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
                                           Profile* profile) {
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#if BUILDFLAG(USE_GCM_FROM_PLATFORM)
   data_source->AddBoolean("pushMessagingEnabledAtStartup",
-      profile->GetPrefs()->GetBoolean(kGCMChannelStatusAtStartup));
+                          true);
+#else
+  gcm::BraveGCMChannelStatus* gcm_channel_status =
+      gcm::BraveGCMChannelStatus::GetForProfile(profile);
+
+  DCHECK(gcm_channel_status);
+  data_source->AddBoolean("pushMessagingEnabledAtStartup",
+                          gcm_channel_status->IsGCMEnabled());
 #endif
 }
 

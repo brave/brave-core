@@ -6,6 +6,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//components/gcm_driver/config.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
@@ -42,8 +43,13 @@ static_library("brave_test_support_unit") {
     "//chrome/common",
   ]
 
+  deps = [
+    "//components/gcm_driver:gcm_driver",
+    "//components/gcm_driver:gcm_buildflags",
+  ]
+
   if (is_win) {
-    deps = [
+    deps += [
       "//chrome/install_static/test:test_support",
     ]
   }
@@ -108,6 +114,9 @@ test("brave_unit_tests") {
     "//brave/components/translate/core/browser/translate_language_list_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
     "//brave/vendor/brave_base/random_unittest.cc",
+    "//chrome/browser/push_messaging/push_messaging_app_identifier_unittest.cc",
+    "//chrome/browser/push_messaging/push_messaging_notification_manager_unittest.cc",
+    "//chrome/browser/push_messaging/push_messaging_service_unittest.cc",
     "//chrome/common/importer/mock_importer_bridge.cc",
     "//chrome/common/importer/mock_importer_bridge.h",
     "//components/gcm_driver/account_tracker_unittest.cc",

@@ -10,6 +10,7 @@
 
 class BraveTestingProfile : public TestingProfile {
  public:
+  BraveTestingProfile();
   BraveTestingProfile(const base::FilePath& path, Delegate* delegate);
   ~BraveTestingProfile() override = default;
 };

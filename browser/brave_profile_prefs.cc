@@ -73,7 +73,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // PushMessaging
   registry->SetDefaultPrefValue(gcm::prefs::kGCMChannelStatus,
                                 base::Value(false));
-  registry->RegisterBooleanPref(kGCMChannelStatusAtStartup, false);
 #endif
 
   registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled,

@@ -49,11 +49,11 @@
 #include "extensions/browser/extension_system.h"
 #endif
 
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-#include "components/gcm_driver/gcm_channel_status_syncer.h"
-#endif
-
 using content::BrowserThread;
+
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
+#endif
 
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
@@ -132,6 +132,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+  gcm::BraveGCMChannelStatus::GetForProfile(profile);
+#endif
   content::URLDataSource::Add(profile,
       std::make_unique<brave_content::BraveSharedResourcesDataSource>());
 }
