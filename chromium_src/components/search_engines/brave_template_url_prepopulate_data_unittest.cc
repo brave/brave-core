@@ -63,7 +63,7 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
   }
 
-  void CheckForCountry(char digit1, char digit2, std::string expected) {
+  void CheckForCountry(char digit1, char digit2, const std::string& expected) {
     prefs_.SetInteger(kCountryIDAtInstall, digit1 << 8 | digit2);
     size_t default_index;
     std::vector<std::unique_ptr<TemplateURLData>> t_urls =

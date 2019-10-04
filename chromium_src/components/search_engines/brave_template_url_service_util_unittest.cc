@@ -47,7 +47,7 @@ class BraveTemplateURLServiceUtilTest : public testing::Test {
 };
 
 void TestDefaultOrder(const TemplateURL::OwnedTemplateURLVector& template_urls,
-                      std::vector<std::string> keywords) {
+                      const std::vector<std::string>& keywords) {
   EXPECT_EQ(template_urls.size(), keywords.size());
 
   for (size_t i = 0; i < template_urls.size(); i++) {
@@ -76,7 +76,7 @@ std::vector<TemplateURLData> GetSampleTemplateData() {
 
 WDKeywordsResult InitKeywordResult(
     sync_preferences::TestingPrefServiceSyncable* prefs,
-    std::vector<TemplateURLData> local_turls) {
+    const std::vector<TemplateURLData>& local_turls) {
   WDKeywordsResult kwResult;
   kwResult.builtin_keyword_version =
       TemplateURLPrepopulateData::GetDataVersion(prefs);
