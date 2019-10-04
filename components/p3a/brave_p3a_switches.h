@@ -9,9 +9,6 @@
 namespace brave {
 namespace switches {
 
-// Enables data uploading.
-constexpr char kP3AUploadEnabled[] = "p3a-upload-enabled";
-
 // Interval between sending two values.
 constexpr char kP3AUploadIntervalSeconds[] = "p3a-upload-interval-seconds";
 
