@@ -99,8 +99,10 @@ void RewardsNotificationServiceImpl::DeleteNotification(
 
 void RewardsNotificationServiceImpl::DeleteAllNotifications() {
   rewards_notifications_.clear();
+#if defined(OS_ANDROID)
   rewards_notifications_displayed_.clear();
   StoreRewardsNotifications();
+#endif
   OnAllNotificationsDeleted();
 }
 
