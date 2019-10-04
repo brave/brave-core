@@ -82,8 +82,7 @@ base::Time GetYMDAsDate(base::StringPiece ymd) {
   const auto pieces = base::SplitStringPiece(ymd, "-", base::TRIM_WHITESPACE,
                                              base::SPLIT_WANT_NONEMPTY);
   DCHECK_EQ(pieces.size(), 3ull);
-  base::Time::Exploded time;
-  base::Time().LocalExplode(&time);
+  base::Time::Exploded time = {};
 
   bool ok = base::StringToInt(pieces[0], &time.year);
   DCHECK(ok);
