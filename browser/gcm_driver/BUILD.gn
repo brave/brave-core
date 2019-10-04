@@ -1,0 +1,19 @@
+import("//build/buildflag_header.gni")
+import("//components/gcm_driver/config.gni")
+
+source_set("gcm_driver") {
+  if (!use_gcm_from_platform) {
+    sources = [
+      "brave_gcm_channel_status.cc",
+      "brave_gcm_channel_status.h",
+    ]
+
+    deps = [
+      "//components/gcm_driver:gcm_driver",
+      "//components/prefs",
+      # For profile.h
+      "//content/public/browser",
+      "//net",
+    ]
+  }
+}

@@ -13,9 +13,15 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
+#include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
+#include "content/public/browser/web_ui_data_source.h"
+
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
+#endif
 
 void BravePrivacyHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -34,6 +40,22 @@ void BravePrivacyHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getP3AEnabled", base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
                                            base::Unretained(this)));
+}
+
+// static
+void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
+                                          Profile* profile) {
+#if BUILDFLAG(USE_GCM_FROM_PLATFORM)
+  data_source->AddBoolean("pushMessagingEnabledAtStartup",
+                          true);
+#else
+  gcm::BraveGCMChannelStatus* gcm_channel_status =
+      gcm::BraveGCMChannelStatus::GetForProfile(profile);
+
+  DCHECK(gcm_channel_status);
+  data_source->AddBoolean("pushMessagingEnabledAtStartup",
+                          gcm_channel_status->IsGCMEnabled());
+#endif
 }
 
 void BravePrivacyHandler::SetWebRTCPolicy(const base::ListValue* args) {

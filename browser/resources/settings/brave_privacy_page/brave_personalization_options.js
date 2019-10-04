@@ -65,5 +65,14 @@ Polymer({
   onP3AEnabledChange_: function() {
     this.browserProxy_.setP3AEnabled(this.$.p3aEnabled.checked);
   },
+  
+  shouldShowRestart_: function(enabled) {
+    return enabled != this.browserProxy_.wasPushMessagingEnabledAtStartup();
+  },
+
+  restartBrowser_: function() {
+    window.open("chrome://restart", "_self");
+  },
+
 });
 })();

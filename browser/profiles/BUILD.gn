@@ -1,3 +1,5 @@
+import("//components/gcm_driver/config.gni")
+
 source_set("profiles") {
   sources = [
     "brave_profile_impl.cc",
@@ -9,6 +11,7 @@ source_set("profiles") {
   ]
   deps = [
     "//base",
+    "//brave/browser/gcm_driver",
     "//brave/browser/tor",
     "//brave/browser/translate/buildflags",
     "//brave/common/tor",
@@ -16,6 +19,7 @@ source_set("profiles") {
     "//brave/components/brave_rewards/browser",
     "//brave/content:browser",
     "//chrome/common",
+    "//components/gcm_driver:gcm_buildflags",
     "//components/translate/core/browser",
     "//content/public/common",
     "//ui/base",

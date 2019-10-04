@@ -4,6 +4,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
+import("//components/gcm_driver/config.gni")
 import("//chrome/common/features.gni")
 
 source_set("ui") {
@@ -149,6 +150,7 @@ source_set("ui") {
     "//brave/app/vector_icons:vector_icons",
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/devtools",
+    "//brave/browser/gcm_driver",
     "//brave/browser/resources/settings:resources",
     "//brave/browser/tor",
     "//brave/common",
@@ -160,6 +162,7 @@ source_set("ui") {
     "//brave/components/brave_welcome_ui:generated_resources",
     "//chrome/app:command_ids",
     "//chrome/common",
+    "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
     "//content/public/browser",
     "//content/public/common",

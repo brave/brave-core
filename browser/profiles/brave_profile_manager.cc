@@ -33,6 +33,7 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "components/signin/public/base/signin_pref_names.h"
@@ -49,6 +50,10 @@
 #endif
 
 using content::BrowserThread;
+
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
+#endif
 
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
@@ -127,6 +132,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+  gcm::BraveGCMChannelStatus::GetForProfile(profile);
+#endif
   content::URLDataSource::Add(profile,
       std::make_unique<brave_content::BraveSharedResourcesDataSource>());
 }

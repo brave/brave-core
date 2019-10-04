@@ -21,6 +21,10 @@ cr.define('settings', function() {
      * @param {boolean} enabled (true/false).
      */
     setP3AEnabled(value) {}
+    /**
+     * @return {boolean}
+     */
+    wasPushMessagingEnabledAtStartup() {}
   }
 
   /**
@@ -45,6 +49,10 @@ cr.define('settings', function() {
     /** @override */
     setP3AEnabled(value) {
       chrome.send('setP3AEnabled', [value])
+    }
+
+    wasPushMessagingEnabledAtStartup() {
+      return loadTimeData.getBoolean('pushMessagingEnabledAtStartup');
     }
   }
 

@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/webui/settings/settings_localized_strings_provider.h"
 #include "base/stl_util.h"
+#include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -120,6 +121,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL},
     {"webRTCDefault",
       IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
+    {"pushMessagingLabel",
+      IDS_SETTINGS_PUSH_MESSAGING},
     {"defaultPublicAndPrivateInterfaces",
       IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES},
     {"defaultPublicInterfaceOnly",
@@ -182,6 +185,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   BraveAddImportDataStrings(html_source);
   BraveAddCommonStrings(html_source, profile);
   BraveAddResources(html_source, profile);
+  BravePrivacyHandler::AddLoadTimeData(html_source, profile);
 }
 
 }  // namespace settings

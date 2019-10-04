@@ -389,6 +389,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP" desc="Select value">
         Disable non-proxied UDP
       </message>
+      <!-- Push Messaging -->
+      <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
+        Use Google Services for Push Messaging
+      </message>
       <!-- Brave Sync Settings -->
       <message name="IDS_SETTINGS_BRAVE_SYNC_TITLE" desc="The title for Brave Sync in settings">
         Sync
