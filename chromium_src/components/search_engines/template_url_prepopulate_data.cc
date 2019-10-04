@@ -121,7 +121,8 @@ std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
     DCHECK(engine);
     if (engine) {
       engines.push_back(engine);
-      if (default_search_provider_index && default_engine_id == engine_ids.at(i))
+      if (default_search_provider_index &&
+          default_engine_id == engine_ids.at(i))
         *default_search_provider_index = i;
     }
   }
