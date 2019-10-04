@@ -37,6 +37,15 @@
         label="$i18n{p3aEnableTitle}"
         sub-label="$i18n{p3aEnabledDesc}"
         on-settings-boolean-control-change="onP3AEnabledChange_">
+    <settings-toggle-button id="pushMessagingEnabled"
+        pref="{{prefs.gcm.channel_status}}"
+        label="$i18n{pushMessagingLabel}">
+        <template is="dom-if" if="[[shouldShowRestart_(
+          prefs.gcm.channel_status.value)]]">
+        <cr-button on-click="restartBrowser_" slot="more-actions">
+          $i18n{restart}
+        </cr-button>
+      </template>
     </settings-toggle-button>
   </template>
   <script src="brave_personalization_options.js"></script>

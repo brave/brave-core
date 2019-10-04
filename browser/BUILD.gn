@@ -7,6 +7,7 @@ import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
+import("//components/gcm_driver/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 import("//third_party/protobuf/proto_library.gni")
@@ -134,6 +135,8 @@ source_set("browser_process") {
     "//components/content_settings/core/common",
     "//components/content_settings/core/browser",
     "//components/keyed_service/content",
+    "//components/gcm_driver:gcm_driver",
+    "//components/gcm_driver:gcm_buildflags",
     "//components/password_manager/core/common",
     "//components/prefs",
     "//components/safe_browsing/common:safe_browsing_prefs",

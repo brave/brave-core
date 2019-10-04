@@ -8,12 +8,18 @@
 
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 
+namespace content {
+class WebUIDataSource;
+}
+
 class Profile;
 
 class BravePrivacyHandler : public settings::SettingsPageUIHandler {
  public:
   BravePrivacyHandler() = default;
   ~BravePrivacyHandler() override = default;
+  static void AddLoadTimeData(content::WebUIDataSource* data_source,
+                              Profile* profile);
 
  private:
   // SettingsPageUIHandler overrides:

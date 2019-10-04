@@ -13,6 +13,7 @@
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
+#include "components/gcm_driver/gcm_buildflags.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "components/signin/public/base/signin_pref_names.h"
@@ -31,6 +32,10 @@
 
 #if !defined(OS_ANDROID)
 #include "chrome/browser/first_run/first_run.h"
+#endif
+
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#include "components/gcm_driver/gcm_channel_status_syncer.h"
 #endif
 
 using extensions::FeatureSwitch;
@@ -63,6 +68,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   #if !defined(OS_ANDROID)
   is_new_user = first_run::IsChromeFirstRun();
   #endif
+
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+  // PushMessaging
+  registry->SetDefaultPrefValue(gcm::prefs::kGCMChannelStatus,
+                                base::Value(false));
+  registry->RegisterBooleanPref(kGCMChannelStatusAtStartup, false);
+#endif
 
   registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled,
                                 is_new_user == false);

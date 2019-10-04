@@ -18,6 +18,7 @@ class BraveProfileManager : public ProfileManager {
   // Returns the full path to be used for tor profiles.
   static base::FilePath GetTorProfilePath();
 
+  static void InitGCMPrefs(Profile* profile);
   static void InitTorProfileUserPrefs(Profile* profile);
 
   void InitProfileUserPrefs(Profile* profile) override;

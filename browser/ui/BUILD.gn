@@ -4,6 +4,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
+import("//components/gcm_driver/config.gni")
 import("//chrome/common/features.gni")
 
 source_set("ui") {
@@ -161,6 +162,8 @@ source_set("ui") {
     "//chrome/app:command_ids",
     "//chrome/common",
     "//components/prefs",
+    "//components/gcm_driver:gcm_driver",
+    "//components/gcm_driver:gcm_buildflags",
     "//content/public/browser",
     "//content/public/common",
     "//skia",

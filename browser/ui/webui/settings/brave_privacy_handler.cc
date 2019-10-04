@@ -13,9 +13,15 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
+#include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
+#include "content/public/browser/web_ui_data_source.h"
+
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#include "components/gcm_driver/gcm_channel_status_syncer.h"
+#endif
 
 void BravePrivacyHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -34,6 +40,15 @@ void BravePrivacyHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getP3AEnabled", base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
                                            base::Unretained(this)));
+}
+
+// static
+void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
+                                          Profile* profile) {
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+  data_source->AddBoolean("pushMessagingEnabledAtStartup",
+      profile->GetPrefs()->GetBoolean(kGCMChannelStatusAtStartup));
+#endif
 }
 
 void BravePrivacyHandler::SetWebRTCPolicy(const base::ListValue* args) {
