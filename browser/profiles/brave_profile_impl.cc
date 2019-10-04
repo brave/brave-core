@@ -16,8 +16,9 @@ BraveProfileImpl::BraveProfileImpl(
     const base::FilePath& path,
     Delegate* delegate,
     CreateMode create_mode,
+    base::Time creation_time,
     scoped_refptr<base::SequencedTaskRunner> io_task_runner)
-    : ProfileImpl(path, delegate, create_mode, io_task_runner),
+    : ProfileImpl(path, delegate, create_mode, creation_time, io_task_runner),
       weak_ptr_factory_(this) {
   // In sessions profiles, prefs are created from the original profile like how
   // incognito profile works. By the time chromium start to observe prefs

@@ -20,6 +20,7 @@ class BraveProfileImpl : public ProfileImpl,
   BraveProfileImpl(const base::FilePath& path,
                    Delegate* delegate,
                    CreateMode create_mode,
+                   base::Time creation_time,
                    scoped_refptr<base::SequencedTaskRunner> io_task_runner);
   ~BraveProfileImpl() override;
 
