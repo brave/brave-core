@@ -1,6 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_CONTENT_BROWSER_CLIENT_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_CONTENT_BROWSER_CLIENT_HELPER_H_
+
+#include <string>
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -34,8 +40,8 @@ static GURL TranslateMagnetURL(const GURL& url) {
 
 static GURL TranslateTorrentUIURLReversed(const GURL& url) {
   GURL translatedURL(net::UnescapeURLComponent(
-        url.query(), net::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
-        net::UnescapeRule::PATH_SEPARATORS));
+      url.query(), net::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
+                       net::UnescapeRule::PATH_SEPARATORS));
   GURL::Replacements replacements;
   replacements.SetRefStr(url.ref_piece());
   return translatedURL.ReplaceComponents(replacements);
@@ -117,4 +123,6 @@ static bool HandleMagnetProtocol(
   return false;
 }
 
-}
+}  // namespace webtorrent
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_CONTENT_BROWSER_CLIENT_HELPER_H_

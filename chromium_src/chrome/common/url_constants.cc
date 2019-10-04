@@ -40,7 +40,7 @@ const char kChooserUsbOverviewURL[] =
 
 const char kChromeBetaForumURL[] =
     "https://community.brave.com/c/beta-builds";
-// TODO: replace w/link after marketing provides it.
+// TODO(anyone): replace w/link after marketing provides it.
 const char kChromeReleaseNotesURL[] =
     "https://support.brave.com/";
 

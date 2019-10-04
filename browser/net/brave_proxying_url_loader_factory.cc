@@ -519,7 +519,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
   if (proxied_client_binding_.is_bound())
     proxied_client_binding_.ResumeIncomingMethodCallProcessing();
 
-  target_client_->OnReceiveRedirect(redirect_info, std::move(current_response_));
+  target_client_->OnReceiveRedirect(redirect_info,
+                                    std::move(current_response_));
   request_.url = redirect_info.new_url;
   request_.method = redirect_info.new_method;
   request_.site_for_cookies = redirect_info.new_site_for_cookies;

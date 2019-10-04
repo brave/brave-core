@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -60,22 +61,24 @@ class BraveCrashpadClient {
 
 #endif  // defined(OS_ANDROID)
 
-  bool StartHandlerAtCrash(const base::FilePath& handler,
-                           const base::FilePath& database,
-                           const base::FilePath& metrics_dir,
-                           const std::string& url,
-                           const std::map<std::string, std::string>& annotations,
-                           const std::vector<std::string>& arguments);
-  static bool StartHandlerForClient(const base::FilePath& handler,
-                                    const base::FilePath& database,
-                                    const base::FilePath& metrics_dir,
-                                    const std::string& url,
-                                    const std::map<std::string, std::string>& annotations,
-                                    const std::vector<std::string>& arguments,
-                                    int socket);
+  bool StartHandlerAtCrash(
+      const base::FilePath& handler,
+      const base::FilePath& database,
+      const base::FilePath& metrics_dir,
+      const std::string& url,
+      const std::map<std::string, std::string>& annotations,
+      const std::vector<std::string>& arguments);
+  static bool StartHandlerForClient(
+      const base::FilePath& handler,
+      const base::FilePath& database,
+      const base::FilePath& metrics_dir,
+      const std::string& url,
+      const std::map<std::string, std::string>& annotations,
+      const std::vector<std::string>& arguments,
+      int socket);
 };
 
-} // namespace crashpad
+}  // namespace crashpad
 
 namespace crash_reporter {
 
@@ -85,7 +88,7 @@ crashpad::BraveCrashpadClient& GetBraveCrashpadClient() {
   return *client;
 }
 
-} // namespace crash_reporter
+}  // namespace crash_reporter
 
 #define COMPONENTS_CRASH_CONTENT_APP_CRASHPAD_H_
 #define GetCrashpadClient GetBraveCrashpadClient
@@ -190,4 +193,4 @@ bool BraveCrashpadClient::StartHandlerForClient(
     annotations, arguments, socket);
 }
 
-} // namespace crashpad
+}  // namespace crashpad

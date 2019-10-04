@@ -10,15 +10,15 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-static const std::string cookie_line1 =
+static const char cookie_line1[] =
     "test1=yes; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-static const std::string cookie_line2 =
+static const char cookie_line2[] =
     "test2=yes; max-age=630720000";  // 20 years
-static const std::string cookie_line3 =
+static const char cookie_line3[] =
     "test3=yes; max-age=630720000; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-static const std::string cookie_line4 =
+static const char cookie_line4[] =
     "test4=yes; max-age=172800";  // 2 days
-static const std::string cookie_line5 =
+static const char cookie_line5[] =
     "test5=yes; httponly; expires=Fri, 31 Dec 9999 23:59:59 GMT";
 
 namespace net {
@@ -113,4 +113,4 @@ TEST(BraveCanonicalCookieTest, ServerSide) {
   EXPECT_GT(cookie->ExpiryDate(), creation_time + TimeDelta::FromDays(30*5));
 }
 
-}  // namespace
+}  // namespace net
