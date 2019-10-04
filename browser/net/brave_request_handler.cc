@@ -173,10 +173,7 @@ int BraveRequestHandler::OnHeadersReceived(
   ctx->override_response_headers = override_response_headers;
   ctx->allowed_unsafe_redirect_url = allowed_unsafe_redirect_url;
 
-  base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
-                           base::Bind(&BraveRequestHandler::RunNextCallback,
-                                      weak_factory_.GetWeakPtr(),
-                                      ctx));
+  RunNextCallback(ctx);
   return net::ERR_IO_PENDING;
 }
 
