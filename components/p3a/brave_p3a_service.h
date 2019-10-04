@@ -76,8 +76,6 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   bool initialized_ = false;
   PrefService* local_state_ = nullptr;
 
-  // Enable by command line during the beta test.
-  bool upload_enabled_ = false;
   // The average interval between uploading different values.
   base::TimeDelta average_upload_interval_;
   bool randomize_upload_interval_ = true;

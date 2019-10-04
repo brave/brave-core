@@ -136,7 +136,6 @@ void BraveP3AService::Init() {
 
   VLOG(2) << "BraveP3AService::Init() Done!";
   VLOG(2) << "BraveP3AService parameters are:"
-          << " upload_enabled_ = " << upload_enabled_
           << ", average_upload_interval_ = " << average_upload_interval_
           << ", randomize_upload_interval_ = " << randomize_upload_interval_
           << ", upload_server_url_ = " << upload_server_url_.spec()
@@ -180,12 +179,9 @@ void BraveP3AService::Init() {
            : base::BindRepeating([](base::TimeDelta x) { return x; },
                                  average_upload_interval_))));
 
-  // Start the engine if we are enabled.
-  if (upload_enabled_) {
-    upload_scheduler_->Start();
-    if (!rotation_timer_.IsRunning()) {
-      UpdateRotationTimer();
-    }
+  upload_scheduler_->Start();
+  if (!rotation_timer_.IsRunning()) {
+    UpdateRotationTimer();
   }
 }
 
@@ -211,10 +207,6 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
 
 void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
-
-  if (cmdline->HasSwitch(switches::kP3AUploadEnabled)) {
-    upload_enabled_ = true;
-  }
 
   if (cmdline->HasSwitch(switches::kP3AUploadIntervalSeconds)) {
     std::string seconds_str =
