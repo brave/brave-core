@@ -612,6 +612,7 @@ void AdsServiceImpl::OnInitialize(
           static_cast<NotificationDisplayServiceImpl*>(display_service_);
       display_service_impl->OnBraveAdsServiceReady(is_initialized_);
     #endif
+
     MaybeViewAd();
 
     StartCheckIdleStateTimer();

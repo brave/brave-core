@@ -766,6 +766,7 @@ void RewardsDOMHandler::OnNotificationDeleted(
     brave_rewards::RewardsNotificationService* rewards_notification_service,
     const brave_rewards::RewardsNotificationService::RewardsNotification&
         notification) {
+#if defined(OS_ANDROID)
   if (notification.type_ ==
       brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
       && web_ui()->CanCallJavascript()) {
@@ -776,6 +777,7 @@ void RewardsDOMHandler::OnNotificationDeleted(
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", finish);
   }
+#endif
 }
 
 void RewardsDOMHandler::OnAllNotificationsDeleted(
