@@ -596,17 +596,17 @@ void RewardsServiceImpl::RemovePrivateObserver(
 void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
   if (ready().is_signaled()) {
     if (Connected()) {
-#if !defined(OS_ANDROID)
       auto on_create = base::BindOnce(
           &RewardsServiceImpl::OnCreateWallet,
           AsWeakPtr(),
           std::move(callback));
+#if !defined(OS_ANDROID)
       bat_ledger_->CreateWallet("", std::move(on_create));
 #else
       safetynet_check::ClientAttestationCallback attest_callback =
           base::BindOnce(&RewardsServiceImpl::CreateWalletAttestationResult,
               AsWeakPtr(),
-              std::move(callback));
+              std::move(on_create));
       safetynet_check_runner_.performSafetynetCheck("",
           std::move(attest_callback));
 #endif
@@ -622,15 +622,11 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
 
 #if defined(OS_ANDROID)
 void RewardsServiceImpl::CreateWalletAttestationResult(
-    CreateWalletCallback callback,
+    bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
     bool result,
     const std::string& result_string) {
   if (result) {
-    auto on_create = base::BindOnce(
-        &RewardsServiceImpl::OnCreateWallet,
-        AsWeakPtr(),
-        std::move(callback));
-    bat_ledger_->CreateWallet(result_string, std::move(on_create));
+    bat_ledger_->CreateWallet(result_string, std::move(callback));
   } else {
     OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
   }
