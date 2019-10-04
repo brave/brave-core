@@ -1,0 +1,20 @@
+diff --git a/android_webview/browser/aw_permission_manager.cc b/android_webview/browser/aw_permission_manager.cc
+index f1979fdcc078f31d8caad5da6cd68906b138f263..4d0f05ae1f14f7e6533398456bdebac7d04ba5ba 100644
+--- a/android_webview/browser/aw_permission_manager.cc
++++ b/android_webview/browser/aw_permission_manager.cc
+@@ -335,6 +335,7 @@ int AwPermissionManager::RequestPermissions(
+       case PermissionType::BACKGROUND_FETCH:
+       case PermissionType::IDLE_DETECTION:
+       case PermissionType::PERIODIC_BACKGROUND_SYNC:
++      BRAVE_PERMISSION_TYPES
+         NOTIMPLEMENTED() << "RequestPermissions is not implemented for "
+                          << static_cast<int>(permissions[i]);
+         pending_request_raw->SetPermissionStatus(permissions[i],
+@@ -536,6 +537,7 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
+       case PermissionType::BACKGROUND_FETCH:
+       case PermissionType::IDLE_DETECTION:
+       case PermissionType::PERIODIC_BACKGROUND_SYNC:
++      BRAVE_PERMISSION_TYPES
+         NOTIMPLEMENTED() << "CancelPermission not implemented for "
+                          << static_cast<int>(permission);
+         break;
