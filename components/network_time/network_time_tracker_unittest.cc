@@ -1,3 +1,8 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "components/network_time/network_time_tracker.h"
 
 #include <memory>
@@ -28,21 +33,21 @@ class NetworkTimeTrackerTest : public ::testing::Test {
   ~NetworkTimeTrackerTest() override {}
 
   NetworkTimeTrackerTest()
-    : task_environment_(
-          base::test::ScopedTaskEnvironment::MainThreadType::IO),
-      clock_(new base::SimpleTestClock),
-      tick_clock_(new base::SimpleTestTickClock),
-      test_shared_loader_factory_(
-          base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-              &test_url_loader_factory_)) {
+      : task_environment_(
+            base::test::ScopedTaskEnvironment::MainThreadType::IO),
+        clock_(new base::SimpleTestClock),
+        tick_clock_(new base::SimpleTestTickClock),
+        test_shared_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &test_url_loader_factory_)) {
     NetworkTimeTracker::RegisterPrefs(pref_service_.registry());
     tracker_.reset(new NetworkTimeTracker(
-                       std::unique_ptr<base::Clock>(clock_),
-                       std::unique_ptr<const base::TickClock>(tick_clock_), &pref_service_,
-                       shared_url_loader_factory()));
+        std::unique_ptr<base::Clock>(clock_),
+        std::unique_ptr<const base::TickClock>(tick_clock_), &pref_service_,
+        shared_url_loader_factory()));
   }
 
-protected:
+ protected:
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
       return test_shared_loader_factory_;
   }

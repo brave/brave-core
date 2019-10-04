@@ -1,3 +1,8 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "chrome/browser/profile_resetter/brandcode_config_fetcher.h"
 
 #include "base/run_loop.h"
@@ -32,16 +37,13 @@ TEST_F(BrandcodeConfigFetcherTest, NoFetch) {
   bool network_access_occurred = false;
   bool callback_called = false;
   test_url_loader_factory()->SetInterceptor(
-    base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-                                   network_access_occurred = true;
-                               }));
-  BrandcodeConfigFetcher* uploader =
-      new BrandcodeConfigFetcher(test_url_loader_factory(),
-                                 base::BindLambdaForTesting([&]() {
-                                                                callback_called = true;
-                                                            }),
-                                 GURL("https://www.brave.com/"),
-                                 "BRAV");
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        network_access_occurred = true;
+      }));
+  BrandcodeConfigFetcher* uploader = new BrandcodeConfigFetcher(
+      test_url_loader_factory(),
+      base::BindLambdaForTesting([&]() { callback_called = true; }),
+      GURL("https://www.brave.com/"), "BRAV");
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(uploader->IsActive());
   EXPECT_FALSE(network_access_occurred);
