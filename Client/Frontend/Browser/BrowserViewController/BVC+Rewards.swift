@@ -54,7 +54,8 @@ extension BrowserViewController {
     func updateRewardsButtonState() {
         if !isViewLoaded { return }
         self.topToolbar.locationView.rewardsButton.isHidden = self.rewards?.ledger.isEnabled == false && Preferences.Rewards.hideRewardsIcon.value
-        self.topToolbar.locationView.rewardsButton.isVerified = self.publisher?.verified ?? false
+        let isVerifiedBadgeVisible = self.publisher?.status == .verified || self.publisher?.status == .connected
+        self.topToolbar.locationView.rewardsButton.isVerified = isVerifiedBadgeVisible
         self.topToolbar.locationView.rewardsButton.notificationCount = self.rewards?.ledger.notifications.count ?? 0
     }
 
