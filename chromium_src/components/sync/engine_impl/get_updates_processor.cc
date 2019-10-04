@@ -106,6 +106,7 @@ void ExtractBookmarkMeta(sync_pb::SyncEntity* entity,
       entity->set_position_in_parent(position_in_parent);
     }
   }
+  DCHECK(entity->has_version());
 }
 
 void MigrateFromLegacySync(sync_pb::SyncEntity* entity) {
@@ -114,9 +115,6 @@ void MigrateFromLegacySync(sync_pb::SyncEntity* entity) {
   }
   if (!entity->has_originator_client_item_id()) {
     entity->set_originator_client_item_id(base::GenerateGUID());
-  }
-  if (!entity->has_version()) {
-    entity->set_version(1);
   }
   if (!entity->has_position_in_parent()) {
     entity->set_position_in_parent(0);
