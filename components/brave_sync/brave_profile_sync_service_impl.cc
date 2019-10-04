@@ -750,33 +750,35 @@ void BraveProfileSyncServiceImpl::SaveSyncEntityInfo(
   if (node) {
     auto& bookmark = record->GetBookmark();
     for (auto& meta_info : bookmark.metaInfo) {
-      model_->SetNodeMetaInfo(node, meta_info.key, meta_info.value);
+      if (meta_info.key == "version") {
+        // Synchronize version meta info with CommitResponse
+        int64_t version;
+        bool result = base::StringToInt64(meta_info.value, &version);
+        DCHECK(result);
+        model_->SetNodeMetaInfo(node, meta_info.key, std::to_string(++version));
+      } else {
+        model_->SetNodeMetaInfo(node, meta_info.key, meta_info.value);
+      }
     }
   }
 }
 
 void BraveProfileSyncServiceImpl::LoadSyncEntityInfo(
     jslib::SyncRecord* record) {
+  auto* bookmark = record->mutable_bookmark();
+  if (!bookmark->metaInfo.empty())
+    return;
   auto* node = FindByObjectId(model_, record->objectId);
   if (node) {
-    auto* bookmark = record->mutable_bookmark();
-    if (!bookmark->metaInfo.empty())
-      return;
     AddSyncEntityInfo(bookmark, node, "originator_cache_guid");
     AddSyncEntityInfo(bookmark, node, "originator_client_item_id");
     AddSyncEntityInfo(bookmark, node, "position_in_parent");
-    std::string s_version;
-    // Version needs to be incremented by 1 for legacy sync to emulate
-    // GetUpdateProcessor behavior
-    if (node->GetMetaInfo("version", &s_version)) {
-      int64_t version;
-      bool result = base::StringToInt64(s_version, &version);
-      DCHECK(result);
-      MetaInfo metaInfo;
-      metaInfo.key = "version";
-      metaInfo.value = std::to_string(++version);
-      bookmark->metaInfo.push_back(metaInfo);
-    }
+    AddSyncEntityInfo(bookmark, node, "version");
+  } else {  // Assign base version metainfo for remotely created record
+    MetaInfo metaInfo;
+    metaInfo.key = "version";
+    metaInfo.value = "0";
+    bookmark->metaInfo.push_back(metaInfo);
   }
 }
 
@@ -1085,7 +1087,7 @@ BraveProfileSyncServiceImpl::GetExponentialWaitsForTests() {
 void BraveProfileSyncServiceImpl::RecordSyncStateP3A() const {
   int result = 0;
   if (brave_sync_prefs_->GetSyncEnabled()) {
-    unsigned long device_count =  // NOLINT
+    unsigned long device_count =     // NOLINT
         static_cast<unsigned long>(  // NOLINT
             brave_sync_prefs_->GetSyncDevices()->size());
     // Answers are zero-based.
