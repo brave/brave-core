@@ -189,10 +189,15 @@ class SyncSettingsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        configureCell(cell, atIndexPath: indexPath)
         
+        return cell
+    }
+    
+    private func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         guard let frc = frc else {
             log.error("FetchedResultsController is nil.")
-            return UITableViewCell()
+            return
         }
         
         switch indexPath.section {
@@ -210,8 +215,6 @@ class SyncSettingsTableViewController: UITableViewController {
         default:
             log.error("Section index out of bounds.")
         }
-        
-        return cell
     }
     
     private func setFullWidthSeparator(for cell: UITableViewCell) {
@@ -265,6 +268,14 @@ extension SyncSettingsTableViewController: NSFetchedResultsControllerDelegate {
         case .delete:
             guard let indexPath = indexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .fade)
+        case .update:
+            if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) {
+              configureCell(cell, atIndexPath: indexPath)
+            }
+            
+            if let newIndexPath = newIndexPath, let cell = tableView.cellForRow(at: newIndexPath) {
+              configureCell(cell, atIndexPath: newIndexPath)
+            }
         default:
             log.info("Operation type: \(type) is not handled.")
         }
