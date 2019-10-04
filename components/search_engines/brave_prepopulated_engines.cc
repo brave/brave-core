@@ -11,7 +11,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 3;
+const int kBraveCurrentDataVersion = 5;
 
 const PrepopulatedEngine duckduckgo = {
   L"DuckDuckGo",
@@ -32,6 +32,48 @@ const PrepopulatedEngine duckduckgo = {
   0,
   SEARCH_ENGINE_OTHER,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+};
+
+const PrepopulatedEngine duckduckgo_de = {
+  L"DuckDuckGo",
+  L":d",
+  "https://duckduckgo.com/favicon.ico",
+  "https://duckduckgo.com/?q={searchTerms}&t=bravened",
+  "UTF-8",
+  "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  0,
+  SEARCH_ENGINE_OTHER,
+  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
+};
+
+const PrepopulatedEngine duckduckgo_au_nz_ie = {
+  L"DuckDuckGo",
+  L":d",
+  "https://duckduckgo.com/favicon.ico",
+  "https://duckduckgo.com/?q={searchTerms}&t=braveed",
+  "UTF-8",
+  "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  0,
+  SEARCH_ENGINE_OTHER,
+  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
 };
 
 const PrepopulatedEngine qwant = {
