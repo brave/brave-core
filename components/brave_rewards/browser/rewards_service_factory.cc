@@ -71,7 +71,7 @@ RewardsServiceFactory::RewardsServiceFactory()
   DependsOn(extensions::EventRouterFactory::GetInstance());
 #endif
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OS_ANDROID)
   registrar_.Add(this, chrome::NOTIFICATION_PROFILE_CREATED,
                  content::NotificationService::AllSources());
 #endif
