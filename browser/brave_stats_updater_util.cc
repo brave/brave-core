@@ -83,7 +83,7 @@ base::Time GetYMDAsDate(base::StringPiece ymd) {
                                              base::SPLIT_WANT_NONEMPTY);
   DCHECK_EQ(pieces.size(), 3ull);
   base::Time::Exploded time;
-  base::Time().LocalExplode(&time);
+  base::Time::Now().LocalExplode(&time);
 
   bool ok = base::StringToInt(pieces[0], &time.year);
   DCHECK(ok);
