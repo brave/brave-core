@@ -5,8 +5,13 @@
 
 #include "brave/browser/brave_browser_main_parts.h"
 
+#include "base/command_line.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/browser/tor/buildflags.h"
+#include "brave/common/pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/render_frame_host.h"
+#include "media/base/media_switches.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "base/files/file_util.h"
@@ -65,4 +70,16 @@ void BraveBrowserMainParts::PostBrowserStart() {
 
 void BraveBrowserMainParts::PreShutdown() {
   content::BraveClearBrowsingData::ClearOnExit();
+}
+
+void BraveBrowserMainParts::PostProfileInit() {
+  ChromeBrowserMainParts::PostProfileInit();
+
+#if defined(OS_ANDROID)
+  if (profile()->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
+    content::RenderFrameHost::AllowInjectingJavaScript();
+    auto* command_line = base::CommandLine::ForCurrentProcess();
+    command_line->AppendSwitch(switches::kDisableMediaSuspend);
+  }
+#endif
 }

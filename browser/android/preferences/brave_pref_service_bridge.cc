@@ -64,6 +64,20 @@ jboolean JNI_BravePrefServiceBridge_GetPlayYTVideoInBrowserEnabled(
       kPlayYTVideoInBrowserEnabled);
 }
 
+void JNI_BravePrefServiceBridge_SetBackgroundVideoPlaybackEnabled(
+    JNIEnv* env,
+    jboolean enabled) {
+  return GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kBackgroundVideoPlaybackEnabled,
+      enabled);
+}
+
+jboolean JNI_BravePrefServiceBridge_GetBackgroundVideoPlaybackEnabled(
+    JNIEnv* env) {
+  return GetOriginalProfile()->GetPrefs()->GetBoolean(
+      kBackgroundVideoPlaybackEnabled);
+}
+
 void JNI_BravePrefServiceBridge_SetDesktopModeEnabled(
     JNIEnv* env,
     jboolean enabled) {
