@@ -12,7 +12,7 @@ namespace {
 class UnusedClass {
  private:
   void test() {
-    Java_SigninManager_create(nullptr, 0ll, nullptr, nullptr);
+    Java_SigninManager_create(nullptr, 0ll, nullptr);
   }
 };
 }  // namespace
