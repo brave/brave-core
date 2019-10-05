@@ -62,6 +62,10 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void OnGetRecurringTips(
       std::unique_ptr<brave_rewards::ContentSiteList> list);
   void TweetTip(const base::ListValue *args);
+  void GetExternalWallet(const base::ListValue* args);
+  void OnExternalWallet(
+      const int32_t result,
+      std::unique_ptr<brave_rewards::ExternalWallet> wallet);
 
   void OnPublisherBanner(
       std::unique_ptr<brave_rewards::PublisherBanner> banner);
@@ -136,6 +140,11 @@ void RewardsTipDOMHandler::RegisterMessages() {
       "brave_rewards_tip.fetchBalance",
       base::BindRepeating(&RewardsTipDOMHandler::FetchBalance,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_tip.getExternalWallet",
+      base::BindRepeating(
+          &RewardsTipDOMHandler::GetExternalWallet,
+          base::Unretained(this)));
 }
 
 void RewardsTipDOMHandler::GetPublisherTipData(
@@ -426,4 +435,43 @@ void RewardsTipDOMHandler::FetchBalance(const base::ListValue* args) {
           &RewardsTipDOMHandler::OnFetchBalance,
           weak_factory_.GetWeakPtr()));
   }
+}
+
+void RewardsTipDOMHandler::GetExternalWallet(
+    const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  const std::string type = args->GetList()[0].GetString();
+
+  rewards_service_->GetExternalWallet(type,
+     base::BindOnce(
+         &RewardsTipDOMHandler::OnExternalWallet,
+         weak_factory_.GetWeakPtr()));
+}
+
+void RewardsTipDOMHandler::OnExternalWallet(
+    const int32_t result,
+    std::unique_ptr<brave_rewards::ExternalWallet> wallet) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::DictionaryValue data;
+
+  if (wallet) {
+    data.SetString("token", wallet->token);
+    data.SetString("address", wallet->address);
+    data.SetString("type", wallet->type);
+    data.SetString("verifyUrl", wallet->verify_url);
+    data.SetString("addUrl", wallet->add_url);
+    data.SetString("withdrawUrl", wallet->withdraw_url);
+    data.SetString("userName", wallet->user_name);
+    data.SetString("accountUrl", wallet->account_url);
+    data.SetInteger("status", static_cast<int>(wallet->status));
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_tip.externalWallet", data);
 }
