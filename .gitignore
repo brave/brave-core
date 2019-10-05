@@ -4,6 +4,7 @@
 /components/brave_webtorrent/extension/out/
 /components/brave_rewards/resources/extension/brave_rewards/out/
 /components/brave_sync/extension/brave-sync/
+/components/brave_sync/extension/brave-crypto/
 /dist/
 /out/
 /vendor/*
