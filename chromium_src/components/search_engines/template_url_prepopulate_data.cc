@@ -159,7 +159,7 @@ GetBravePrepopulatedEnginesForCountryID(
   } else {
     brave_engines = brave_engines_default;
   }
-  DCHECK_GT(brave_engines.size(), 0);
+  DCHECK_GT(brave_engines.size(), 0ul);
 
   // Default engine is the first in the list
   BravePrepopulatedEngineID default_id = brave_engines.front();
