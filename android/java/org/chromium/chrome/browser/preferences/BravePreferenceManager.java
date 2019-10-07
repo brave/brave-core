@@ -16,21 +16,24 @@ import org.chromium.base.Log;
 import org.chromium.chrome.browser.ChromeActivity;
 
 public class BravePreferenceManager {
-    public static final String BRAVE_BOTTOM_TOOLBAR_SET_KEY = "brave_bottom_toolbar_enabled";
+    public static final String BRAVE_BOTTOM_TOOLBAR_SET_KEY = "brave_bottom_toolbar_set";
+    public static final String BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY = "brave_bottom_toolbar_enabled";
+
     private static final int SMALL_SCREEN_WIDTH = 360;
     private static final int SMALL_SCREEN_HEIGHT = 640;
 
     public boolean isBottomToolbarEnabled() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         if (sharedPreferences.getBoolean(BRAVE_BOTTOM_TOOLBAR_SET_KEY, false)) {
-            return true;
+            return sharedPreferences.getBoolean(BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true);
         } else {
             ChromePreferenceManager.getInstance().writeBoolean(BRAVE_BOTTOM_TOOLBAR_SET_KEY, true);
             boolean enable = true;
             if (isSmallScreen()) {
                 enable = false;
             }
-            ChromePreferenceManager.getInstance().writeBoolean(ChromePreferenceManager.BOTTOM_TOOLBAR_ENABLED_KEY, enable);
+            ChromePreferenceManager.getInstance().writeBoolean(
+                    BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, enable);
 
             return enable;
         }
