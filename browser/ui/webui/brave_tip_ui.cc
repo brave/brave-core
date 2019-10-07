@@ -209,7 +209,7 @@ void RewardsTipDOMHandler::OnTip(const base::ListValue* args) {
   CHECK_EQ(3U, args->GetSize());
 
   const std::string publisher_key = args->GetList()[0].GetString();
-  const int amount = args->GetList()[1].GetInt();
+  const double amount = args->GetList()[1].GetDouble();
   const bool recurring = args->GetList()[2].GetBool();
 
   if (publisher_key.empty() || amount < 1) {

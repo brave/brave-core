@@ -1129,7 +1129,8 @@ class BraveRewardsBrowserTest :
     const size_t size = probi.size();
     std::string amount = "0";
     if (size > 18) {
-      amount = probi.substr(0, size - 18);
+      amount = probi;
+      amount.insert(size - 18, ".");
     }
 
     double amount_double = std::stod(amount);

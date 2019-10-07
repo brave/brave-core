@@ -63,7 +63,7 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
     }
     case types.ON_TIP: {
       if (payload.publisherKey && payload.amount > 0) {
-        let amount = parseInt(payload.amount, 10)
+        let amount = parseFloat(payload.amount)
         chrome.send('brave_rewards_tip.onTip', [
           payload.publisherKey,
           amount,

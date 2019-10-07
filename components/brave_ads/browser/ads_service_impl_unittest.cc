@@ -107,10 +107,10 @@ class MockRewardsService : public RewardsService {
       void(const std::string&,
            brave_rewards::GetPublisherBannerCallback));
   MOCK_METHOD3(OnTip, void(const std::string&,
-                           int,
+                           double,
                            bool));
   MOCK_METHOD4(OnTip, void(const std::string&,
-                           int,
+                           double,
                            bool,
                            std::unique_ptr<brave_rewards::ContentSite>));
   MOCK_METHOD1(RemoveRecurringTipUI, void(const std::string&));
@@ -140,7 +140,7 @@ class MockRewardsService : public RewardsService {
       void(brave_rewards::GetTransactionHistoryCallback));
   MOCK_METHOD3(SaveRecurringTipUI,
       void(const std::string&,
-           const int,
+           const double,
            brave_rewards::SaveRecurringTipCallback));
   MOCK_METHOD2(RefreshPublisher, void(const std::string&,
                                       brave_rewards::RefreshPublisherCallback));

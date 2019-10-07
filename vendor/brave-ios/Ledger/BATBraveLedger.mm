@@ -532,7 +532,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-- (void)tipPublisherDirectly:(BATPublisherInfo *)publisher amount:(int)amount currency:(NSString *)currency completion:(void (^)(BATResult result))completion
+- (void)tipPublisherDirectly:(BATPublisherInfo *)publisher amount:(double)amount currency:(NSString *)currency completion:(void (^)(BATResult result))completion
 {
   ledger->DoDirectTip(std::string(publisher.id.UTF8String), amount, std::string(currency.UTF8String), ^(ledger::Result result) {
     completion(static_cast<BATResult>(result));

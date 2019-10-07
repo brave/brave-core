@@ -77,7 +77,7 @@ class Banner extends React.Component<Props, State> {
     const { total } = balance
     const publisher = this.props.publisher
 
-    if (publisher.publisherKey && total >= parseInt(amount, 10)) {
+    if (publisher.publisherKey && total >= parseFloat(amount)) {
       this.actions.onTip(publisher.publisherKey, amount, recurring)
     } else {
       // TODO return error

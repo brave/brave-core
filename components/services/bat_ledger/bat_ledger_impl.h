@@ -125,7 +125,7 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetPublisherBannerCallback callback) override;
 
   void DoDirectTip(const std::string& publisher_id,
-                   int32_t amount,
+                   double amount,
                    const std::string& currency,
                    DoDirectTipCallback callback) override;
 

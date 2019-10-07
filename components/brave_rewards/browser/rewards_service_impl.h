@@ -220,7 +220,7 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::Result result);
   void SaveRecurringTipUI(
       const std::string& publisher_key,
-      const int amount,
+      const double amount,
       SaveRecurringTipCallback callback) override;
 
   const RewardsNotificationService::RewardsNotificationsMap&
@@ -255,12 +255,12 @@ class RewardsServiceImpl : public RewardsService,
   void RemoveAllPendingContributionsUI() override;
 
   void OnTip(const std::string& publisher_key,
-             int amount,
+             double amount,
              bool recurring) override;
 
   void OnTip(
       const std::string& publisher_key,
-      const int amount,
+      const double amount,
       const bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
 
@@ -354,7 +354,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnTipPublisherInfoSaved(const ledger::Result result,
                                ledger::PublisherInfoPtr info);
   void OnTip(const std::string& publisher_key,
-             int amount,
+             double amount,
              bool recurring,
              ledger::PublisherInfoPtr publisher_info);
   void OnResetTheWholeState(base::Callback<void(bool)> callback,

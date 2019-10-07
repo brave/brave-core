@@ -86,7 +86,7 @@ class LEDGER_EXPORT Ledger {
                             CreateWalletCallback callback) = 0;
 
   virtual void DoDirectTip(const std::string& publisher_key,
-                           int amount,
+                           double amount,
                            const std::string& currency,
                            ledger::DoDirectTipCallback callback) = 0;
 

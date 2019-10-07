@@ -161,7 +161,7 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)listOneTimeTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
 
 - (void)tipPublisherDirectly:(BATPublisherInfo *)publisher
-                      amount:(int)amount
+                      amount:(double)amount
                     currency:(NSString *)currency
                   completion:(void (^)(BATResult result))completion;
 
