@@ -229,6 +229,14 @@ class LEDGER_EXPORT LedgerClient {
   virtual uint64_t GetUint64State(const std::string& name) const = 0;
   virtual void ClearState(const std::string& name) = 0;
 
+  // Use option getter to get client specific static value
+  virtual bool GetBooleanOption(const std::string& name) const = 0;
+  virtual int GetIntegerOption(const std::string& name) const = 0;
+  virtual double GetDoubleOption(const std::string& name) const = 0;
+  virtual std::string GetStringOption(const std::string& name) const = 0;
+  virtual int64_t GetInt64Option(const std::string& name) const = 0;
+  virtual uint64_t GetUint64Option(const std::string& name) const = 0;
+
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
   virtual void ConfirmationsTransactionHistoryDidChange() = 0;

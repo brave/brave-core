@@ -1531,6 +1531,30 @@ void LedgerImpl::ClearState(const std::string& name) {
   ledger_client_->ClearState(name);
 }
 
+bool LedgerImpl::GetBooleanOption(const std::string& name) const {
+  return ledger_client_->GetBooleanOption(name);
+}
+
+int LedgerImpl::GetIntegerOption(const std::string& name) const {
+  return ledger_client_->GetIntegerOption(name);
+}
+
+double LedgerImpl::GetDoubleOption(const std::string& name) const {
+  return ledger_client_->GetDoubleOption(name);
+}
+
+std::string LedgerImpl::GetStringOption(const std::string& name) const {
+  return ledger_client_->GetStringOption(name);
+}
+
+int64_t LedgerImpl::GetInt64Option(const std::string& name) const {
+  return ledger_client_->GetInt64Option(name);
+}
+
+uint64_t LedgerImpl::GetUint64Option(const std::string& name) const {
+  return ledger_client_->GetUint64Option(name);
+}
+
 void LedgerImpl::SetTransferFee(
     const std::string& wallet_type,
     ledger::TransferFeePtr transfer_fee) {

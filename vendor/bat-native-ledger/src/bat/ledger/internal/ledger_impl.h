@@ -545,6 +545,18 @@ class LedgerImpl : public ledger::Ledger,
 
   void ClearState(const std::string& name);
 
+  bool GetBooleanOption(const std::string& name) const;
+
+  int GetIntegerOption(const std::string& name) const;
+
+  double GetDoubleOption(const std::string& name) const;
+
+  std::string GetStringOption(const std::string& name) const;
+
+  int64_t GetInt64Option(const std::string& name) const;
+
+  uint64_t GetUint64Option(const std::string& name) const;
+
   void SetTransferFee(
       const std::string& wallet_type,
       ledger::TransferFeePtr transfer_fee);

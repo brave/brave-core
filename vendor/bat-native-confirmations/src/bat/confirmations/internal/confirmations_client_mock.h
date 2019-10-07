@@ -303,6 +303,24 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD1(ClearState, void(
       const std::string& name));
 
+  MOCK_CONST_METHOD1(GetBooleanOption, bool(
+      const std::string& name));
+
+  MOCK_CONST_METHOD1(GetIntegerOption, int(
+      const std::string& name));
+
+  MOCK_CONST_METHOD1(GetDoubleOption, double(
+      const std::string& name));
+
+  MOCK_CONST_METHOD1(GetStringOption, std::string(
+      const std::string& name));
+
+  MOCK_CONST_METHOD1(GetInt64Option, int64_t(
+      const std::string& name));
+
+  MOCK_CONST_METHOD1(GetUint64Option, uint64_t(
+      const std::string& name));
+
   MOCK_METHOD1(GetExternalWallets, void(
       ledger::GetExternalWalletsCallback callback));
 

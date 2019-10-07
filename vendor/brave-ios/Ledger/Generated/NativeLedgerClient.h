@@ -80,4 +80,10 @@ private:
   void SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) override;
   ledger::TransferFeeList GetTransferFees(const std::string& wallet_type) override;
   void RemoveTransferFee(const std::string& wallet_type, const std::string& id) override;
+  bool GetBooleanOption(const std::string& name) const override;
+  int GetIntegerOption(const std::string& name) const override;
+  double GetDoubleOption(const std::string& name) const override;
+  std::string GetStringOption(const std::string& name) const override;
+  int64_t GetInt64Option(const std::string& name) const override;
+  uint64_t GetUint64Option(const std::string& name) const override;
 };

@@ -6,14 +6,29 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_STATIC_VALUES_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_STATIC_VALUES_H_
 
+#include <stdint.h>
+
+#include <map>
 #include <string>
 #include <vector>
 
 namespace brave_rewards {
 
-const std::vector<std::string> kOnlyAnonWalletCountries ={
-      "JP"  // ID: 19024
-    };
+const std::vector<std::string> kOnlyAnonWalletCountries = {
+  "JP"  // ID: 19024
+};
+
+const std::map<std::string, bool> kBoolOptions = {};
+
+const std::map<std::string, int> kIntegerOptions = {};
+
+const std::map<std::string, double> kDoubleOptions = {};
+
+const std::map<std::string, std::string> kStringOptions = {};
+
+const std::map<std::string, int64_t> kInt64Options = {};
+
+const std::map<std::string, uint64_t> kUInt64Options = {};
 
 }  // namespace brave_rewards
 

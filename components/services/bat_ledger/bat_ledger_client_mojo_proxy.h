@@ -133,6 +133,12 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   uint64_t GetUint64State(const std::string& name) const override;
   void ClearState(const std::string& name) override;
 
+  bool GetBooleanOption(const std::string& name) const override;
+  int GetIntegerOption(const std::string& name) const override;
+  double GetDoubleOption(const std::string& name) const override;
+  std::string GetStringOption(const std::string& name) const override;
+  int64_t GetInt64Option(const std::string& name) const override;
+  uint64_t GetUint64Option(const std::string& name) const override;
 
   void SetConfirmationsIsReady(const bool is_ready) override;
 

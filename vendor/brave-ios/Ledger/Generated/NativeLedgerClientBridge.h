@@ -73,5 +73,11 @@
 - (void)setTransferFee:(const std::string&)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee;
 - (void)removeTransferFee:(const std::string&)wallet_type id:(const std::string&)id;
 - (ledger::TransferFeeList)getTransferFees:(const std::string&)wallet_type;
+- (bool)getBooleanOption:(const std::string&)name;
+- (int)getIntegerOption:(const std::string&)name;
+- (double)getDoubleOption:(const std::string&)name;
+- (std::string)getStringOption:(const std::string&)name;
+- (int64_t)getInt64Option:(const std::string&)name;
+- (uint64_t)getUint64Option:(const std::string&)name;
 
 @end

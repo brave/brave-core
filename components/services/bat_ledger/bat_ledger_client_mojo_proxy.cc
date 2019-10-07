@@ -704,6 +704,46 @@ void BatLedgerClientMojoProxy::ClearState(const std::string& name) {
   bat_ledger_client_->ClearState(name);
 }
 
+bool BatLedgerClientMojoProxy::GetBooleanOption(const std::string& name) const {
+  bool value;
+  bat_ledger_client_->GetBooleanOption(name, &value);
+  return value;
+}
+
+int BatLedgerClientMojoProxy::GetIntegerOption(const std::string& name) const {
+  int value;
+  bat_ledger_client_->GetIntegerOption(name, &value);
+  return value;
+}
+
+double BatLedgerClientMojoProxy::GetDoubleOption(
+    const std::string& name) const {
+  double value;
+  bat_ledger_client_->GetDoubleOption(name, &value);
+  return value;
+}
+
+std::string BatLedgerClientMojoProxy::GetStringOption(
+    const std::string& name) const {
+  std::string value;
+  bat_ledger_client_->GetStringOption(name, &value);
+  return value;
+}
+
+int64_t BatLedgerClientMojoProxy::GetInt64Option(
+    const std::string& name) const {
+  int64_t value;
+  bat_ledger_client_->GetInt64Option(name, &value);
+  return value;
+}
+
+uint64_t BatLedgerClientMojoProxy::GetUint64Option(
+    const std::string& name) const {
+  uint64_t value;
+  bat_ledger_client_->GetUint64Option(name, &value);
+  return value;
+}
+
 void BatLedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
   if (!Connected())
     return;
