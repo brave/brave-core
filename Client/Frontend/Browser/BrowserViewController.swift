@@ -1852,7 +1852,8 @@ extension BrowserViewController: ToolbarDelegate {
             })
             actions.append(newPrivateTabAction)
         }
-        actions.append(UIAlertAction(title: Strings.NewTabTitle, style: .default, handler: { [unowned self] _ in
+        let bottomActionTitle = PrivateBrowsingManager.shared.isPrivateBrowsing ? Strings.NewPrivateTabTitle : Strings.NewTabTitle
+        actions.append(UIAlertAction(title: bottomActionTitle, style: .default, handler: { [unowned self] _ in
             self.openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
         }))
         return actions
