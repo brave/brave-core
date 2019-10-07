@@ -242,7 +242,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Hides the Brave Rewards button in the location bar when Brave Rewards is not enabled
       </message>
       <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
-        Always show bookmarks bar on New Tab page
+        Always show bookmarks on New Tab page
       </message>
       <!-- Tor -->
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">

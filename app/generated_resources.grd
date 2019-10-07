@@ -7824,7 +7824,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <!-- View menu -->
         <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
-          Always Show Bookmarks Bar
+          Always Show Bookmarks
         </message>
         <message name="IDS_STOP_MENU_MAC" desc="The Mac menu item stop in the view menu.">
           Stop
