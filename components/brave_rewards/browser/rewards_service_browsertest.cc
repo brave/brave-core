@@ -460,7 +460,7 @@ class BraveRewardsBrowserTest :
           base::Unretained(this)));
   }
 
-  content::WebContents* OpenRewardsPopup() {
+  content::WebContents* OpenRewardsPopup() const {
     // Construct an observer to wait for the popup to load
     content::WindowedNotificationObserver popup_observer(
         content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
@@ -563,15 +563,15 @@ class BraveRewardsBrowserTest :
     pending_balance_ += amount;
   }
 
-  std::string BalanceDoubleToString(double amount) {
+  static std::string BalanceDoubleToString(double amount) {
     return base::StringPrintf("%.1f", amount);
   }
 
-  std::string GetBalance() {
+  std::string GetBalance() const {
     return BalanceDoubleToString(balance_ + external_balance_);
   }
 
-  std::string GetPendingBalance() {
+  std::string GetPendingBalance() const {
     return BalanceDoubleToString(pending_balance_);
   }
 
@@ -594,7 +594,7 @@ class BraveRewardsBrowserTest :
     return url;
   }
 
-  content::WebContents* contents() {
+  content::WebContents* contents() const {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
@@ -776,6 +776,94 @@ class BraveRewardsBrowserTest :
     if (last_add) {
       last_publisher_added_ = true;
     }
+  }
+
+  std::string ElementInnerText(const std::string& selector,
+                               int delay_ms = 0) const {
+    auto script = content::JsReplace(
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay($1).then(() => document.querySelector($2).innerText);",
+        delay_ms,
+        selector);
+
+    auto js_result = EvalJs(
+        contents(),
+        script,
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+
+    return js_result.ExtractString();
+  }
+
+  std::string RewardsPageBalance() const {
+    return ElementInnerText("[data-test-id='balance']", 1000);
+  }
+
+  std::string RewardsPagePendingContributions() const {
+    std::string pending_text = ElementInnerText(
+        "[data-test-id='pending-contribution-box']",
+        500);
+
+    // The pending text is of the form "You’ve designated 1.0 BAT for..."
+    size_t start = pending_text.find("designated ");
+    assert(start != std::string::npos);
+    start += 11;
+
+    size_t end = pending_text.find(" for");
+    assert(start != std::string::npos);
+
+    return pending_text.substr(start, end - start);
+  }
+
+  std::string RewardsPageTipSummaryAmount() const {
+    std::string amount = ElementInnerText(
+        "[data-test-id=summary-tips] [color=donation] span span");
+    return amount + " BAT";
+  }
+
+  std::string ExpectedPendingBalanceString() const {
+    return GetPendingBalance() + " BAT";
+  }
+
+  std::string ExpectedBalanceString() const {
+    return GetBalance() + " BAT";
+  }
+
+  std::string ExpectedTipSummaryAmountString() const {
+    // The tip summary page formats 2.4999 as 2.4, so we do the same here.
+    double truncated_amount = floor(reconciled_tip_total_ * 10) / 10;
+    return BalanceDoubleToString(-truncated_amount) + " BAT";
+  }
+
+  void ActivateTabAtIndex(int index) const {
+    browser()->tab_strip_model()->ActivateTabAt(
+        index,
+        TabStripModel::UserGestureDetails(TabStripModel::GestureType::kOther));
+  }
+
+  void RefreshPublisherListUsingRewardsPopup() const {
+    content::EvalJsResult js_result = EvalJs(
+        OpenRewardsPopup(),
+        "new Promise((resolve) => {"
+        "let count = 10;"
+        "let interval = setInterval(function() {"
+        "  if (count == 0) {"
+        "    clearInterval(interval);"
+        "    resolve(false);"
+        "  } else {"
+        "    count -= 1;"
+        "  }"
+        "  const button = "
+        "document.querySelector(\"[data-test-id='unverified-check-button']\");"
+        "  if (button) {"
+        "    clearInterval(interval);"
+        "    button.click();"
+        "    resolve(true);"
+        "  }"
+        "}, 500);});",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+      ASSERT_TRUE(js_result.ExtractBool());
   }
 
   void TipPublisher(
@@ -1083,10 +1171,12 @@ class BraveRewardsBrowserTest :
     const size_t size = probi.size();
     std::string amount = "0";
     if (size > 18) {
-      amount = probi.substr(0, size - 18);
+      amount = probi;
+      amount.insert(size - 18, ".");
     }
 
-    UpdateContributionBalance(std::stod(amount), true);
+    double amount_double = std::stod(amount);
+    UpdateContributionBalance(amount_double, true);
 
     const auto converted_result = static_cast<ledger::Result>(result);
     const auto converted_type =
@@ -1102,6 +1192,8 @@ class BraveRewardsBrowserTest :
 
     if (converted_type == ledger::RewardsType::ONE_TIME_TIP ||
         converted_type == ledger::RewardsType::RECURRING_TIP) {
+      reconciled_tip_total_ += amount_double;
+
       // Single tip tracking
       tip_reconcile_completed_ = true;
       tip_reconcile_status_ = converted_result;
@@ -1213,6 +1305,7 @@ class BraveRewardsBrowserTest :
   bool last_publisher_added_ = false;
   bool alter_publisher_list_ = false;
   double balance_ = 0;
+  double reconciled_tip_total_ = 0;
   double pending_balance_ = 0;
   double external_balance_ = 0;
   double verified_wallet_ = false;
@@ -1777,6 +1870,63 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   TipPublisher("brave.com", false, monthly);
 
   // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
+// Test that pending contributions to unverified publishers are not rounded down
+// to an integer when the publisher becomes verified.
+// <https://github.com/brave/brave-browser/issues/4886>
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       AutoContributionNonIntegralAmount) {
+  rewards_service_->AddObserver(this);
+
+  // Enable Rewards with the 'alter publisher list' flag set so that
+  // "3zsistemi.si" will show as unverified.
+  alter_publisher_list_ = true;
+  EnableRewards();
+
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  rewards_service()->SetContributionAmount(5);
+
+  // Visit a verified and an unverified publisher.
+  const bool verified = true;
+  VisitPublisher("duckduckgo.com", verified);
+  VisitPublisher("3zsistemi.si", !verified);
+
+  rewards_service()->StartMonthlyContributionForTest();
+
+  // Wait for reconciliation to complete successfully.
+  WaitForACReconcileCompleted();
+  ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
+
+  // Update pending contribution balance.
+  UpdateContributionBalance(2.5, false);
+
+  // Balance will drop by the 2.5 BAT sent to the verified publisher.
+  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+
+  // Pending contributions will show 2.5 BAT going to the unverified publisher.
+  ASSERT_EQ(RewardsPagePendingContributions(), ExpectedPendingBalanceString());
+
+  // Unset the "alter publisher list" flag so that "3zsistemi.si" will show as
+  // verified, then select that tab, and update the publisher list.
+  alter_publisher_list_ = false;
+  ActivateTabAtIndex(2);
+  RefreshPublisherListUsingRewardsPopup();
+
+  // Activate the Rewards settings page tab.
+  ActivateTabAtIndex(0);
+
+  WaitForTipReconcileCompleted();
+
+  // Balance will drop by the 2.5 BAT sent to the newly-verified publisher.
+  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+
+  // The pending contribution will have been sent as a tip.
+  ASSERT_EQ(RewardsPageTipSummaryAmount(), ExpectedTipSummaryAmountString());
+
   rewards_service_->RemoveObserver(this);
 }
 

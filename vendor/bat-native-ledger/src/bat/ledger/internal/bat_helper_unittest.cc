@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -34,6 +35,71 @@ TEST(BatHelperTest, isProbiValid) {
   result = braveledger_bat_helper::isProbiValid(
       "100000000000000000010000000000000000001000000000000000000");
   ASSERT_EQ(result, false);
+}
+
+TEST(BatHelperTest, ReconcileDirectionSerialization) {
+  braveledger_bat_helper::RECONCILE_DIRECTION direction("duck.com", 2.5, "BAT");
+  std::string json;
+  braveledger_bat_helper::saveToJsonString(direction, &json);
+  ASSERT_FALSE(json.empty());
+
+  braveledger_bat_helper::RECONCILE_DIRECTION direction_from_json;
+  ASSERT_TRUE(direction_from_json.loadFromJson(json));
+
+  ASSERT_EQ(direction_from_json.publisher_key_, "duck.com");
+  ASSERT_EQ(direction_from_json.amount_, 2.5);
+  ASSERT_EQ(direction_from_json.currency_, "BAT");
+}
+
+TEST(BatHelperTest, ReconcileDirectionDeserializationOfIntAmount) {
+  // An older serialization of RECONCILE_DIRECTION stored the amount as an int.
+  // Ensure that the older format can still be deserialized.
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+  writer.StartObject();
+
+  writer.String("publisher_key");
+  writer.String("duckduckgo.com");
+
+  writer.String("amount");
+  writer.Int(10);
+
+  writer.String("currency");
+  writer.String("BAT");
+
+  writer.EndObject();
+
+  std::string json = buffer.GetString();
+
+  braveledger_bat_helper::RECONCILE_DIRECTION direction_from_json;
+  ASSERT_TRUE(direction_from_json.loadFromJson(json));
+
+  ASSERT_EQ(direction_from_json.publisher_key_, "duckduckgo.com");
+  ASSERT_EQ(direction_from_json.amount_, 10);
+  ASSERT_EQ(direction_from_json.currency_, "BAT");
+}
+
+TEST(BatHelperTest, CurrentReconcileDirectionsSerialization) {
+  braveledger_bat_helper::CURRENT_RECONCILE reconcile;
+  reconcile.directions_ = {
+    { "duckduckgo.com", 2.5, "BAT" },
+    { "3zsistemi.si", 3.75, "BAT" },
+  };
+  std::string json;
+  braveledger_bat_helper::saveToJsonString(reconcile, &json);
+  ASSERT_FALSE(json.empty());
+
+  braveledger_bat_helper::CURRENT_RECONCILE reconcile_from_json;
+  ASSERT_TRUE(reconcile_from_json.loadFromJson(json));
+
+  const auto& directions_from_json = reconcile_from_json.directions_;
+  ASSERT_EQ(directions_from_json[0].publisher_key_, "duckduckgo.com");
+  ASSERT_EQ(directions_from_json[0].amount_, 2.5);
+  ASSERT_EQ(directions_from_json[0].currency_, "BAT");
+
+  ASSERT_EQ(directions_from_json[1].publisher_key_, "3zsistemi.si");
+  ASSERT_EQ(directions_from_json[1].amount_, 3.75);
+  ASSERT_EQ(directions_from_json[1].currency_, "BAT");
 }
 
 TEST(BatHelperTest, HasSameDomainAndPath) {
