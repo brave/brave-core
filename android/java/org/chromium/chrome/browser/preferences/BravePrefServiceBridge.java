@@ -62,6 +62,14 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getDesktopModeEnabled();
     }
 
+    public void setBackgroundVideoPlaybackEnabled(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setBackgroundVideoPlaybackEnabled(enabled);
+    }
+
+    public boolean getBackgroundVideoPlaybackEnabled() {
+        return BravePrefServiceBridgeJni.get().getBackgroundVideoPlaybackEnabled();
+    }
+
     public int getTrackersBlockedCount(Profile profile) {
         return BravePrefServiceBridgeJni.get().getTrackersBlockedCount(profile);
     }
@@ -85,6 +93,9 @@ public class BravePrefServiceBridge {
 
         void setDesktopModeEnabled(boolean enabled);
         boolean getDesktopModeEnabled();
+
+        void setBackgroundVideoPlaybackEnabled(boolean enabled);
+        boolean getBackgroundVideoPlaybackEnabled();
 
         int getTrackersBlockedCount(Profile profile);
         int getAdsBlockedCount(Profile profile);

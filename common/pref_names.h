@@ -63,6 +63,7 @@ extern const char kAlwaysShowBookmarkBarOnNTP[];
 #if defined(OS_ANDROID)
 extern const char kDesktopModeEnabled[];
 extern const char kPlayYTVideoInBrowserEnabled[];
+extern const char kBackgroundVideoPlaybackEnabled[];
 #endif
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

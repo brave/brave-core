@@ -89,6 +89,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if defined(OS_ANDROID)
   registry->RegisterBooleanPref(kDesktopModeEnabled, false);
   registry->RegisterBooleanPref(kPlayYTVideoInBrowserEnabled, true);
+  registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, false);
 #endif
 
   // Hangouts

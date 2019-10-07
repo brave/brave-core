@@ -201,6 +201,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE_SUMMARY_DISABLED" desc="Sumamry for closing all tabs closes brave is disabled">
         Off
       </message>
+      <message name="IDS_SETTINGS_REQUIRE_RELAUNCH_NOTICE" desc="Text for message asked about browser relaunch to apply new settings">
+        Your changes will take effect the next time you relaunch Brave
+      </message>
+      <message name="IDS_SETTINGS_REQUIRE_RELAUNCH_NOW" desc="Text on the button causes relaunch browser now">
+        RELAUNCH NOW
+      </message>
+      <message name="IDS_SETTINGS_REQUIRE_RELAUNCH_LATER" desc="Text on the button allows to relaunch browser later">
+        LATER
+      </message>
     </messages>
   </release>
 </grit>

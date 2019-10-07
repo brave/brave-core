@@ -75,4 +75,6 @@ const char kAlwaysShowBookmarkBarOnNTP[] =
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
 const char kPlayYTVideoInBrowserEnabled[] =
     "brave.play_yt_video_in_browser_enabled";
+const char kBackgroundVideoPlaybackEnabled[] =
+    "brave.background_video_playback";
 #endif

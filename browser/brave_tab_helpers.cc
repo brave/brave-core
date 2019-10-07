@@ -19,6 +19,7 @@
 #endif
 
 #if defined(OS_ANDROID)
+#include "brave/browser/android/preferences/background_video_playback_tab_helper.h"
 #include "brave/browser/android/preferences/website/desktop_mode_tab_helper.h"
 #else
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -43,6 +44,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if defined(OS_ANDROID)
   DesktopModeTabHelper::CreateForWebContents(web_contents);
+  BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
 #else
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
