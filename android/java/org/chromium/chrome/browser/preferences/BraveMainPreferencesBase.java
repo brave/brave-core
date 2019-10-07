@@ -131,6 +131,6 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         Preference p = findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
         p.setSummary(BackgroundVideoPlaybackPreference.getPreferenceSummary());
         p = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
-        p.setSummary(R.string.prefs_closing_all_tabs_closes_brave_summary_enabled);
+        p.setSummary(ClosingAllTabsClosesBravePreference.getPreferenceSummary());
     }
 }
