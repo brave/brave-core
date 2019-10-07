@@ -264,14 +264,14 @@ struct SURVEYOR_ST {
 struct RECONCILE_DIRECTION {
   RECONCILE_DIRECTION();
   RECONCILE_DIRECTION(const std::string& publisher_key,
-                      int amount,
+                      double amount,
                       const std::string& currency);
   ~RECONCILE_DIRECTION();
 
   bool loadFromJson(const std::string &json);
 
   std::string publisher_key_;
-  int amount_;
+  double amount_;
   std::string currency_;
 };
 

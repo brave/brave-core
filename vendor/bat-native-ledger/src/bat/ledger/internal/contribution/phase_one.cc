@@ -281,7 +281,8 @@ void PhaseOne::ReconcilePayloadCallback(
   transaction.contribution_rates_ = reconcile.rates_;
 
   if (ledger::is_testing) {
-    transaction.contribution_probi_ = reconcile.amount_ + "000000000000000000";
+    transaction.contribution_probi_ =
+        braveledger_bat_util::ConvertToProbi(reconcile.amount_);
   }
 
   braveledger_bat_helper::Transactions transactions =

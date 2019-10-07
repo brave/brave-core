@@ -105,7 +105,7 @@ class LedgerImpl : public ledger::Ledger,
                            ledger::PublisherInfoListCallback callback) override;
 
   void DoDirectTip(const std::string& publisher_key,
-                   int amount,
+                   double amount,
                    const std::string& currency,
                    ledger::DoDirectTipCallback callback) override;
 

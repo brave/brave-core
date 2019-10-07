@@ -1090,7 +1090,7 @@ bool SURVEYOR_ST::loadFromJson(const std::string & json) {
 /////////////////////////////////////////////////////////////////////////////
 RECONCILE_DIRECTION::RECONCILE_DIRECTION() {}
 RECONCILE_DIRECTION::RECONCILE_DIRECTION(const std::string& publisher_key,
-                                         const int amount,
+                                         const double amount,
                                          const std::string& currency) :
   publisher_key_(publisher_key),
   amount_(amount),
@@ -1104,13 +1104,16 @@ bool RECONCILE_DIRECTION::loadFromJson(const std::string & json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
   if (!error) {
-    error = !(d.HasMember("amount") && d["amount"].IsInt() &&
+    // An older serialization format stored the amount as an int, so to retain
+    // backward compatibility, allow int or double.
+    error = !(d.HasMember("amount") &&
+      (d["amount"].IsInt() || d["amount"].IsDouble()) &&
       d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
       d.HasMember("currency") && d["currency"].IsString());
   }
 
   if (!error) {
-    amount_ = d["amount"].GetInt();
+    amount_ = d["amount"].GetDouble();
     publisher_key_ = d["publisher_key"].GetString();
     currency_ = d["currency"].GetString();
   }
@@ -1122,7 +1125,7 @@ void saveToJson(JsonWriter* writer, const RECONCILE_DIRECTION& data) {
   writer->StartObject();
 
   writer->String("amount");
-  writer->Int(data.amount_);
+  writer->Double(data.amount_);
 
   writer->String("publisher_key");
   writer->String(data.publisher_key_.c_str());
@@ -1205,12 +1208,13 @@ bool CURRENT_RECONCILE::loadFromJson(const std::string & json) {
     }
 
     if (d.HasMember("directions") && d["directions"].IsArray()) {
-      for (auto & i : d["directions"].GetArray()) {
-        auto obj = i.GetObject();
+      for (const auto& i : d["directions"].GetArray()) {
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+
         RECONCILE_DIRECTION direction;
-        direction.amount_ = obj["amount"].GetInt();
-        direction.publisher_key_ = obj["publisher_key"].GetString();
-        direction.currency_ = obj["currency"].GetString();
+        direction.loadFromJson(sb.GetString());
         directions_.push_back(direction);
       }
     }

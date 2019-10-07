@@ -714,7 +714,7 @@ void LedgerImpl::SaveUnverifiedContribution(
 }
 
 void LedgerImpl::DoDirectTip(const std::string& publisher_key,
-                             int amount,
+                             double amount,
                              const std::string& currency,
                              ledger::DoDirectTipCallback callback) {
   bat_contribution_->DoDirectTip(publisher_key, amount, currency, callback);
