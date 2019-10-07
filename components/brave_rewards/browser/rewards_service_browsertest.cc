@@ -2509,6 +2509,47 @@ IN_PROC_BROWSER_TEST_F(
   rewards_service_->RemoveObserver(this);
 }
 
+// Ensure that we can make a one-time tip of a non-integral amount.
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
+  rewards_service()->AddObserver(this);
+
+  EnableRewards();
+
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // TODO(jhoneycutt): Test that this works through the tipping UI.
+  rewards_service()->OnTip("duckduckgo.com", 2.5, false);
+  WaitForTipReconcileCompleted();
+  ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
+
+  ASSERT_EQ(reconciled_tip_total_, 2.5);
+
+  rewards_service_->RemoveObserver(this);
+}
+
+// Ensure that we can make a recurring tip of a non-integral amount.
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RecurringTipNonIntegralAmount) {
+  rewards_service()->AddObserver(this);
+
+  EnableRewards();
+
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  const bool verified = true;
+  VisitPublisher("duckduckgo.com", verified);
+
+  rewards_service()->OnTip("duckduckgo.com", 2.5, true);
+  rewards_service()->StartMonthlyContributionForTest();
+  WaitForTipReconcileCompleted();
+  ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
+
+  ASSERT_EQ(reconciled_tip_total_, 2.5);
+
+  rewards_service_->RemoveObserver(this);
+}
+
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     RecurringAndPartialAutoContribution) {
   // Observe the Rewards service
