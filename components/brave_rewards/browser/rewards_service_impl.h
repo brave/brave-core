@@ -702,9 +702,9 @@ class RewardsServiceImpl : public RewardsService,
 
 #if defined(OS_ANDROID)
   bool ShouldUseStagingServerForAndroid();
-  void CreateWalletAttestationResult(bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
-      bool result,
-      const std::string& result_string);
+  void CreateWalletAttestationResult(
+      bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
+      bool result, const std::string& result_string);
   void FetchGrantAttestationResult(const std::string& lang,
                                 const std::string& payment_id,
                                 bool result, const std::string& result_string);

@@ -3953,7 +3953,8 @@ void RewardsServiceImpl::GrantAttestationResult(
 bool RewardsServiceImpl::ShouldUseStagingServerForAndroid() {
   bool use_staging = false;
   if (profile_ && profile_->GetPrefs()) {
-    use_staging = profile_->GetPrefs()->GetBoolean(prefs::kUseRewardsStagingServer);
+    use_staging = profile_->GetPrefs()->
+        GetBoolean(prefs::kUseRewardsStagingServer);
   }
   return use_staging;
 }
