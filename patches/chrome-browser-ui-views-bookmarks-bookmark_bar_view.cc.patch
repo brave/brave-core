@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
+index f3206b75be59befccdc372126ef498f839cbbd53..c48892c0999e78b2255c730e31170de14fdb276b 100644
+--- a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
++++ b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
+@@ -1449,6 +1449,7 @@ void BookmarkBarView::Init() {
+   other_bookmarks_button_ = CreateOtherBookmarksButton();
+   // We'll re-enable when the model is loaded.
+   other_bookmarks_button_->SetEnabled(false);
++  BRAVE_INIT
+   AddChildView(other_bookmarks_button_);
+ 
+   profile_pref_registrar_.Init(browser_->profile()->GetPrefs());
+@@ -1938,6 +1939,7 @@ bool BookmarkBarView::UpdateOtherAndManagedButtonsVisibility() {
+   bool has_other_children = !model_->other_node()->children().empty();
+   bool update_other =
+       has_other_children != other_bookmarks_button_->GetVisible();
++  BRAVE_UPDATE_OTHER_AND_MANAGED_BUTTONS_VISIBILITY
+   if (update_other) {
+     other_bookmarks_button_->SetVisible(has_other_children);
+     UpdateBookmarksSeparatorVisibility();

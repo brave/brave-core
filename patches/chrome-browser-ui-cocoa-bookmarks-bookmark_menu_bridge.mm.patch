@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/cocoa/bookmarks/bookmark_menu_bridge.mm b/chrome/browser/ui/cocoa/bookmarks/bookmark_menu_bridge.mm
+index eed94ff1c8ef21522eadc73b4e976f53ed94dedd..acc16976767968dfd549006748c2713b6cbde995 100644
+--- a/chrome/browser/ui/cocoa/bookmarks/bookmark_menu_bridge.mm
++++ b/chrome/browser/ui/cocoa/bookmarks/bookmark_menu_bridge.mm
+@@ -126,7 +126,7 @@ void BookmarkMenuBridge::BuildRootMenu() {
+ 
+   // If the "Other Bookmarks" folder has any content, make a submenu for it and
+   // fill it in.
+-  if (!model->other_node()->children().empty()) {
++  BRAVE_BUILD_ROOT_MENU
+     [menu_root_ addItem:[NSMenuItem separatorItem]];
+     AddNodeAsSubmenu(menu_root_, model->other_node(), folder_image_);
+   }

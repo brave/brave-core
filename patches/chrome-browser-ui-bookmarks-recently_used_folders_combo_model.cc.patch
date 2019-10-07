@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/bookmarks/recently_used_folders_combo_model.cc b/chrome/browser/ui/bookmarks/recently_used_folders_combo_model.cc
+index 369c1c2874ecb8dc5f589282f341c882f24329d5..c8e2eabd66a2d646b0a26347003e15a746dbcf5c 100644
+--- a/chrome/browser/ui/bookmarks/recently_used_folders_combo_model.cc
++++ b/chrome/browser/ui/bookmarks/recently_used_folders_combo_model.cc
+@@ -82,6 +82,7 @@ RecentlyUsedFoldersComboModel::RecentlyUsedFoldersComboModel(
+ 
+   // And put the bookmark bar and other nodes at the end of the list.
+   items_.push_back(Item(model->bookmark_bar_node(), Item::TYPE_NODE));
++  BRAVE_RECENTLY_USED_FOLDERS_COMBO_MODEL
+   items_.push_back(Item(model->other_node(), Item::TYPE_NODE));
+   if (model->mobile_node()->IsVisible())
+     items_.push_back(Item(model->mobile_node(), Item::TYPE_NODE));

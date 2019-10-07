@@ -1,0 +1,12 @@
+diff --git a/components/bookmarks/browser/bookmark_node.cc b/components/bookmarks/browser/bookmark_node.cc
+index 4e1ab88ef79da47845a8b00ab5d64edb1d0a04aa..b673ccabcbe981e57ecad6a9a13a89d151a5ad3b 100644
+--- a/components/bookmarks/browser/bookmark_node.cc
++++ b/components/bookmarks/browser/bookmark_node.cc
+@@ -138,6 +138,7 @@ BookmarkPermanentNode::BookmarkPermanentNode(int64_t id, Type type)
+ BookmarkPermanentNode::~BookmarkPermanentNode() = default;
+ 
+ bool BookmarkPermanentNode::IsVisible() const {
++  BRAVE_IS_VISIBLE
+   return visible_ || !children().empty();
+ }
+ 
