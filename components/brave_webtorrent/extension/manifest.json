@@ -8,7 +8,8 @@
     "persistent": true
   },
   "web_accessible_resources": [
-    "extension/brave_webtorrent.html"
+    "extension/brave_webtorrent.html",
+    "extension/brave_webtorrent2.html"
   ],
   "permissions": ["downloads", "dns", "tabs", "windows", "<all_urls>"],
   "sockets": {

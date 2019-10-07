@@ -12,6 +12,7 @@
     <includes first_id="37500">
       <include name="IDR_BRAVE_WEBTORRENT" file="brave_webtorrent/extension/manifest.json" type="BINDATA" />
       <include name="IDR_BRAVE_WEBTORRENT_HTML" file="brave_webtorrent/extension/brave_webtorrent.html" type="BINDATA" />
+      <include name="IDR_BRAVE_WEBTORRENT2_HTML" file="brave_webtorrent/extension/brave_webtorrent2.html" type="BINDATA" />
     </includes>
   </release>
 </grit>

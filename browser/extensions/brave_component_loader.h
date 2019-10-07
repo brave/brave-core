@@ -32,6 +32,7 @@ class BraveComponentLoader : public ComponentLoader {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   void AddEthereumRemoteClientExtension();
 #endif
+  void AddWebTorrentExtension();
   void OnComponentReady(std::string extension_id,
     bool allow_file_access,
     const base::FilePath& install_dir,

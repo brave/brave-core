@@ -71,6 +71,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
+#include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -364,6 +365,11 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   throttles.push_back(
       std::make_unique<extensions::BraveWalletNavigationThrottle>(handle));
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+  throttles.push_back(
+      std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
