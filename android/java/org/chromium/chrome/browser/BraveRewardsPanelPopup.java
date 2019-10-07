@@ -128,6 +128,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private final PopupWindow window;
     private final BraveRewardsPanelPopup thisObject;
     private final ChromeTabbedActivity mActivity;
+    private final BraveActivity mBraveActivity;
     private View root;
     private Button btJoinRewards;
     private Button btAddFunds;
@@ -214,17 +215,19 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 }
 
                 if (mBraveRewardsNativeWorker != null) {
-                  mBraveRewardsNativeWorker.RemoveObserver(thisObject);
+                    mBraveRewardsNativeWorker.RemoveObserver(thisObject);
                 }
 
                 if (currentTabId != -1 && mBraveRewardsNativeWorker != null) {
-                  mBraveRewardsNativeWorker.RemovePublisherFromMap(currentTabId);
+                    mBraveRewardsNativeWorker.RemovePublisherFromMap(currentTabId);
                 }
 
-                // TODO
-                // mActivity.OnRewardsPanelDismiss();
+                if (mBraveActivity != null) {
+                    mBraveActivity.OnRewardsPanelDismiss();
+                }
             }
         });
+        mBraveActivity = BraveRewardsHelper.getBraveActivity();
         mActivity = BraveRewardsHelper.getChromeTabbedActivity();
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (mBraveRewardsNativeWorker != null) {
@@ -267,8 +270,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
                     String learn_more = BraveRewardsPanelPopup.this.root.getResources().getString(R.string.learn_more);
                     if (BraveRewardsHelper.subtextAtOffset(tvPublisherNotVerifiedSummary.getText().toString(), learn_more, offset) ){
-                        // TODO
-                        // mActivity.openNewOrSelectExistingTab (BraveActivity.REWARDS_LEARN_MORE_URL);
+                        mBraveActivity.openNewOrSelectExistingTab (BraveActivity.REWARDS_LEARN_MORE_URL);
                         dismiss();
                     }
                 }
@@ -311,8 +313,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
           tvLearnMore.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
-                //mActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_SETTINGS_URL);
+                mBraveActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_SETTINGS_URL);
                 dismiss();
             }
           }));
@@ -323,8 +324,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
           btAddFunds.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
-                //mActivity.openNewOrSelectExistingTab(BraveActivity.ADD_FUNDS_URL);
+                mBraveActivity.openNewOrSelectExistingTab(BraveActivity.ADD_FUNDS_URL);
                 dismiss();
             }
           }));
@@ -334,8 +334,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             btRewardsSettings.setOnClickListener((new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-                  // TODO
-                  // mActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_SETTINGS_URL);
+                  mBraveActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_SETTINGS_URL);
                   dismiss();
               }
             }));
@@ -433,8 +432,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
                 Intent intent = new Intent(ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
                 intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, currentTabId);
-                // TODO
-                // mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
+                mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
 
                 //BraveRewardsPanelPopup is not an Activity and onActivityResult is not available
                 //to dismiss mTippingInProgress. Post a delayed task to flip a mTippingInProgress flag.
@@ -457,8 +455,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
                     String learn_more = BraveRewardsPanelPopup.this.root.getResources().getString(R.string.learn_more);
                     if (BraveRewardsHelper.subtextAtOffset(tvPublisherNotVerified.getText().toString(), learn_more, offset) ){
-                        // TODO
-                        // mActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_LEARN_MORE_URL);
+                        mBraveActivity.openNewOrSelectExistingTab(BraveActivity.REWARDS_LEARN_MORE_URL);
                         dismiss();
                     }
                 }

@@ -328,4 +328,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
       return false;
   }
+
+  public  void onRewardsPanelDismiss() {
+      mRewardsPopup = null;
+  }
 }

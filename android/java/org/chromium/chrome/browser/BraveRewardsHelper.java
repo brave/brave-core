@@ -29,13 +29,14 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
-import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.favicon.IconType;
 import org.chromium.chrome.browser.favicon.LargeIconBridge;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelImpl;
 import org.chromium.chrome.browser.widget.RoundedIconGenerator;
+import org.chromium.chrome.R;
 
 
 import java.io.IOException;
@@ -190,12 +191,21 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         return output;
     }
 
-
     static public ChromeTabbedActivity getChromeTabbedActivity() {
       for (Activity ref : ApplicationStatus.getRunningActivities()) {
           if (!(ref instanceof ChromeTabbedActivity)) continue;
 
           return (ChromeTabbedActivity)ref;
+      }
+
+      return null;
+    }
+
+    static public BraveActivity getBraveActivity() {
+      for (Activity ref : ApplicationStatus.getRunningActivities()) {
+          if (!(ref instanceof BraveActivity)) continue;
+
+          return (BraveActivity)ref;
       }
 
       return null;
