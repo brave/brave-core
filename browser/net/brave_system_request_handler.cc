@@ -29,4 +29,13 @@ network::ResourceRequest OnBeforeSystemRequest(
   return patched_request;
 }
 
+void OnBeforeSystemRequest(
+    std::unique_ptr<network::ResourceRequest> resource_request) {
+  network::ResourceRequest* request = resource_request.get();
+  network::ResourceRequest patched_request = OnBeforeSystemRequest(*request);
+  resource_request->url = patched_request.url;
+  resource_request->headers = patched_request.headers;
+}
+
+
 }  // namespace brave

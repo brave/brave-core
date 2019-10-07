@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_SYSTEM_REQUEST_HANDLER_H_
 #define BRAVE_BROWSER_NET_BRAVE_SYSTEM_REQUEST_HANDLER_H_
 
+#include <memory>
+
 namespace network {
 struct ResourceRequest;
 }
@@ -14,6 +16,9 @@ namespace brave {
 
 network::ResourceRequest OnBeforeSystemRequest(
     const network::ResourceRequest& url_request);
+
+void OnBeforeSystemRequest(
+    std::unique_ptr<network::ResourceRequest> url_request);
 
 }  // namespace brave
 
