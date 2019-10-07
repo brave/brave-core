@@ -503,13 +503,12 @@ void RewardsServiceImpl::StartLedger() {
   bat_ledger_service_.set_connection_error_handler(
       base::Bind(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
 
-  #if defined(OS_ANDROID)
-  bool is_production = !ShouldUseStagingServerForAndroid();
-  #endif
-
+  bool is_production = true;
   // Environment
-  #if defined(OFFICIAL_BUILD)
+  #if defined(OFFICIAL_BUILD) && defined(OS_ANDROID)
     is_production = !ShouldUseStagingServerForAndroid();
+  #elif defined(OFFICIAL_BUILD)
+    is_production = true;
   #else
     is_production = false;
   #endif
