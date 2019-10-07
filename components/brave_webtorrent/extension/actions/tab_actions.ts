@@ -7,21 +7,14 @@ import { action } from 'typesafe-actions'
 // Constants
 import { types } from '../constants/tab_types'
 
-export const tabCreated = (tab: chrome.tabs.Tab) => action(types.TAB_CREATED, {
-  tab
-})
-
-export const tabUpdated = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) =>
+export const tabUpdated = (tabId: number,
+    changeInfo: chrome.webNavigation.WebNavigationFramedCallbackDetails) =>
   action(types.TAB_UPDATED, {
-    tabId, changeInfo, tab
+    tabId, changeInfo
   })
 
 export const tabRemoved = (tabId: number) => action(types.TAB_REMOVED, {
   tabId
-})
-
-export const activeTabChanged = (tabId: number, windowId: number) => action(types.ACTIVE_TAB_CHANGED, {
-  tabId, windowId
 })
 
 export const tabRetrieved = (tab: chrome.tabs.Tab) => action(types.TAB_RETRIEVED, {

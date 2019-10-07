@@ -5,12 +5,18 @@
   "description": "WebTorrent extension",
   "background" : {
     "scripts": ["extension/out/brave_webtorrent_background.bundle.js"],
-    "persistent": true
+    "persistent": false
   },
   "web_accessible_resources": [
     "extension/brave_webtorrent.html"
   ],
-  "permissions": ["downloads", "dns", "tabs", "windows", "<all_urls>"],
+  "permissions": [
+    "downloads",
+    "dns",
+    "tabs",
+    "webNavigation",
+    "<all_urls>"      // without '<all_urls>' sometimes get CORS issues when fetching the torrent file
+  ],
   "sockets": {
     "udp": {
       "send": "*",

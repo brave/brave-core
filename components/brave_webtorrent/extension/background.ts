@@ -5,5 +5,4 @@
 import './background/events/webtorrentEvents'
 import './background/events/torrentEvents'
 import './background/events/tabsEvents'
-import './background/events/windowsEvents'
 import './background/store'

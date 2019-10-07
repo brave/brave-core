@@ -23,22 +23,14 @@ const changeInfo: chrome.tabs.TabChangeInfo = {
 }
 
 const tabId: number = 1
-const windowId: number = 2
 
 describe('tab_actions', () => {
-  it('tabCreated', () => {
-    expect(actions.tabCreated(tab)).toEqual({
-      type: types.TAB_CREATED,
-      meta: undefined,
-      payload: { tab }
-    })
-  })
 
   it('tabUpdated', () => {
-    expect(actions.tabUpdated(tabId, changeInfo, tab)).toEqual({
+    expect(actions.tabUpdated(tabId, changeInfo)).toEqual({
       type: types.TAB_UPDATED,
       meta: undefined,
-      payload: { tabId, changeInfo, tab }
+      payload: { tabId, changeInfo }
     })
   })
 
@@ -50,11 +42,11 @@ describe('tab_actions', () => {
     })
   })
 
-  it('activeTabChanged', () => {
-    expect(actions.activeTabChanged(tabId, windowId)).toEqual({
-      type: types.ACTIVE_TAB_CHANGED,
+  it('tabRetrieved', () => {
+    expect(actions.tabRetrieved(tab)).toEqual({
+      type: types.TAB_RETRIEVED,
       meta: undefined,
-      payload: { tabId, windowId }
+      payload: { tab }
     })
   })
 })
