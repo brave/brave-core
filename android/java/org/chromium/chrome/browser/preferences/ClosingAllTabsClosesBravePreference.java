@@ -1,3 +1,8 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser.preferences;
 
 import android.os.Bundle;
@@ -6,10 +11,17 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat;
+import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 
 public class ClosingAllTabsClosesBravePreference
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     private static final String CLOSING_ALL_TABS_CLOSES_BRAVE_KEY = "closing_all_tabs_closes_brave";
+
+    public static int getPreferenceSummary() {
+        return CloseBraveManager.getClosingAllTabsClosesBraveEnabled()
+                ? R.string.prefs_closing_all_tabs_closes_brave_summary_enabled
+                : R.string.prefs_closing_all_tabs_closes_brave_summary_disabled;
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -18,12 +30,13 @@ public class ClosingAllTabsClosesBravePreference
 
         ChromeSwitchPreferenceCompat pref =
                 (ChromeSwitchPreferenceCompat) findPreference(CLOSING_ALL_TABS_CLOSES_BRAVE_KEY);
-        pref.setChecked(true);
+        pref.setChecked(CloseBraveManager.getClosingAllTabsClosesBraveEnabled());
         pref.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        CloseBraveManager.setClosingAllTabsClosesBraveEnabled((boolean) newValue);
         return true;
     }
 }

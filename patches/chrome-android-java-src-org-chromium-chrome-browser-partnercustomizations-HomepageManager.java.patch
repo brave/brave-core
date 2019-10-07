@@ -1,0 +1,16 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/HomepageManager.java b/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/HomepageManager.java
+index deb4b5594e41ed3f5f1d2ffb7b2df012d1e522d2..da829ac6616bc1e99a69c4ada39e173e8f5812e2 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/HomepageManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/HomepageManager.java
+@@ -94,8 +94,9 @@ public class HomepageManager {
+      * @return Whether to close the app when the user has zero tabs.
+      */
+     public static boolean shouldCloseAppWithZeroTabs() {
+-        return HomepageManager.isHomepageEnabled()
+-                && !NewTabPage.isNTPUrl(HomepageManager.getHomepageUri());
++        return CloseBraveManager.shouldCloseAppWithZeroTabs();
++        // return HomepageManager.isHomepageEnabled()
++        //         && !NewTabPage.isNTPUrl(HomepageManager.getHomepageUri());
+     }
+ 
+     /**
