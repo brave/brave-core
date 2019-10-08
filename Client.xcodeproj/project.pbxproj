@@ -91,7 +91,6 @@
 		0AC0D389233BD7DA0091EFA5 /* SwiftyJSON.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3B4988CD1E42B01800A12FDA /* SwiftyJSON.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AC0D38A233BD7DA0091EFA5 /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604F851C494983006EEEC3 /* Alamofire.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AC0D39A233E7CAF0091EFA5 /* ObjcExceptionBridging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */; };
-		0AC0D39C233E7CC60091EFA5 /* BraveRewards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC0D39B233E7CC60091EFA5 /* BraveRewards.framework */; };
 		0AC0D3BB233E872C0091EFA5 /* libsqlcipher.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC0D3B2233E86E50091EFA5 /* libsqlcipher.a */; };
 		0AC0D3C2233E889D0091EFA5 /* Storage.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0AC0D3BE233E889D0091EFA5 /* Storage.strings */; };
 		0AC0D3C3233E889D0091EFA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0AC0D3C0233E889D0091EFA5 /* InfoPlist.strings */; };
@@ -151,6 +150,116 @@
 		0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
+		271DEC2B234CC760009DAC37 /* BraveRewardsUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		271DEC2E234CC760009DAC37 /* BraveRewardsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */; };
+		271DEC2F234CC760009DAC37 /* BraveRewardsUI.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		271DECC2234CC7EF009DAC37 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC3C234CC7ED009DAC37 /* WelcomeViewController.swift */; };
+		271DECC3234CC7EF009DAC37 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC3D234CC7ED009DAC37 /* WelcomeView.swift */; };
+		271DECC4234CC7EF009DAC37 /* PublisherAttentionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC3F234CC7ED009DAC37 /* PublisherAttentionView.swift */; };
+		271DECC5234CC7EF009DAC37 /* PublisherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC40234CC7ED009DAC37 /* PublisherView.swift */; };
+		271DECC6234CC7EF009DAC37 /* PublisherSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC41234CC7ED009DAC37 /* PublisherSummaryView.swift */; };
+		271DECC7234CC7EF009DAC37 /* RewardsDisabledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC43234CC7ED009DAC37 /* RewardsDisabledView.swift */; };
+		271DECC8234CC7EF009DAC37 /* AddFundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC45234CC7ED009DAC37 /* AddFundsView.swift */; };
+		271DECC9234CC7EF009DAC37 /* AddFundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC46234CC7ED009DAC37 /* AddFundsViewController.swift */; };
+		271DECCA234CC7EF009DAC37 /* TokenAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC47234CC7ED009DAC37 /* TokenAddressView.swift */; };
+		271DECCB234CC7EF009DAC37 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC49234CC7ED009DAC37 /* CreateWalletViewController.swift */; };
+		271DECCC234CC7EF009DAC37 /* CreateWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC4A234CC7ED009DAC37 /* CreateWalletView.swift */; };
+		271DECCD234CC7EF009DAC37 /* RewardsUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC4B234CC7ED009DAC37 /* RewardsUIDelegate.swift */; };
+		271DECCE234CC7EF009DAC37 /* RewardsUX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC4C234CC7ED009DAC37 /* RewardsUX.swift */; };
+		271DECCF234CC7EF009DAC37 /* AdsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC4E234CC7EE009DAC37 /* AdsViewController.swift */; };
+		271DECD0234CC7EF009DAC37 /* AdSwipeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC4F234CC7EE009DAC37 /* AdSwipeButton.swift */; };
+		271DECD1234CC7EF009DAC37 /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC50234CC7EE009DAC37 /* AdView.swift */; };
+		271DECD2234CC7EF009DAC37 /* AdsNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC51234CC7EE009DAC37 /* AdsNotificationHandler.swift */; };
+		271DECD3234CC7EF009DAC37 /* AdContentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC52234CC7EE009DAC37 /* AdContentButton.swift */; };
+		271DECD4234CC7EF009DAC37 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC54234CC7EE009DAC37 /* Strings.swift */; };
+		271DECD5234CC7EF009DAC37 /* RewardsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC55234CC7EE009DAC37 /* RewardsDataSource.swift */; };
+		271DECD6234CC7EF009DAC37 /* QASettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC57234CC7EE009DAC37 /* QASettingsViewController.swift */; };
+		271DECD7234CC7EF009DAC37 /* TippingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC59234CC7EE009DAC37 /* TippingViewController.swift */; };
+		271DECD8234CC7EF009DAC37 /* TippingConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC5A234CC7EE009DAC37 /* TippingConfirmationView.swift */; };
+		271DECD9234CC7EF009DAC37 /* InsufficientFundsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC5B234CC7EE009DAC37 /* InsufficientFundsButton.swift */; };
+		271DECDA234CC7EF009DAC37 /* TippingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC5C234CC7EE009DAC37 /* TippingView.swift */; };
+		271DECDB234CC7EF009DAC37 /* TippingOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC5D234CC7EE009DAC37 /* TippingOverviewView.swift */; };
+		271DECDC234CC7EF009DAC37 /* TippingSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC5E234CC7EE009DAC37 /* TippingSelectionView.swift */; };
+		271DECDD234CC7EF009DAC37 /* TippingSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC5F234CC7EE009DAC37 /* TippingSelectionViewController.swift */; };
+		271DECDE234CC7EF009DAC37 /* TippingOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC60234CC7EE009DAC37 /* TippingOptionView.swift */; };
+		271DECDF234CC7EF009DAC37 /* SendTipButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC61234CC7EE009DAC37 /* SendTipButton.swift */; };
+		271DECE0234CC7EF009DAC37 /* WalletHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC63234CC7EE009DAC37 /* WalletHeaderView.swift */; };
+		271DECE1234CC7EF009DAC37 /* RewardsSummaryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC64234CC7EE009DAC37 /* RewardsSummaryProtocol.swift */; };
+		271DECE2234CC7EF009DAC37 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC65234CC7EE009DAC37 /* WalletViewController.swift */; };
+		271DECE3234CC7EF009DAC37 /* EmptyWalletSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC66234CC7EE009DAC37 /* EmptyWalletSummaryView.swift */; };
+		271DECE4234CC7EF009DAC37 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC67234CC7EE009DAC37 /* WalletView.swift */; };
+		271DECE5234CC7EF009DAC37 /* WalletActionNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC69234CC7EE009DAC37 /* WalletActionNotificationView.swift */; };
+		271DECE6234CC7EF009DAC37 /* WalletAlertNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC6A234CC7EE009DAC37 /* WalletAlertNotificationView.swift */; };
+		271DECE7234CC7EF009DAC37 /* WalletNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC6B234CC7EE009DAC37 /* WalletNotificationView.swift */; };
+		271DECE8234CC7EF009DAC37 /* RewardsNotificationViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC6C234CC7EE009DAC37 /* RewardsNotificationViewBuilder.swift */; };
+		271DECE9234CC7EF009DAC37 /* BATValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC6D234CC7EE009DAC37 /* BATValue.swift */; };
+		271DECEA234CC7EF009DAC37 /* GrantsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC6F234CC7EE009DAC37 /* GrantsItemView.swift */; };
+		271DECEB234CC7EF009DAC37 /* GrantsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC70234CC7EE009DAC37 /* GrantsListViewController.swift */; };
+		271DECEC234CC7EF009DAC37 /* RewardsSummaryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC72234CC7EE009DAC37 /* RewardsSummaryRowView.swift */; };
+		271DECED234CC7EF009DAC37 /* RewardsSummaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC73234CC7EE009DAC37 /* RewardsSummaryButton.swift */; };
+		271DECEE234CC7EF009DAC37 /* RewardsSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC74234CC7EE009DAC37 /* RewardsSummaryView.swift */; };
+		271DECEF234CC7EF009DAC37 /* RewardsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC75234CC7EE009DAC37 /* RewardsState.swift */; };
+		271DECF0234CC7EF009DAC37 /* SettingsAdSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC78234CC7EF009DAC37 /* SettingsAdSectionView.swift */; };
+		271DECF1234CC7EF009DAC37 /* AdsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC7A234CC7EF009DAC37 /* AdsDetailsViewController.swift */; };
+		271DECF2234CC7EF009DAC37 /* AdsUnsupportedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC7B234CC7EF009DAC37 /* AdsUnsupportedView.swift */; };
+		271DECF3234CC7EF009DAC37 /* OptionsSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC7D234CC7EF009DAC37 /* OptionsSelectionViewController.swift */; };
+		271DECF4234CC7EF009DAC37 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC7E234CC7EF009DAC37 /* SettingsView.swift */; };
+		271DECF5234CC7EF009DAC37 /* SettingsGrantSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC80234CC7EF009DAC37 /* SettingsGrantSectionView.swift */; };
+		271DECF6234CC7EF009DAC37 /* GrantClaimedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC81234CC7EF009DAC37 /* GrantClaimedViewController.swift */; };
+		271DECF7234CC7EF009DAC37 /* SettingsViewDetailsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC82234CC7EF009DAC37 /* SettingsViewDetailsButton.swift */; };
+		271DECF8234CC7EF009DAC37 /* SettingsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC83234CC7EF009DAC37 /* SettingsSectionView.swift */; };
+		271DECF9234CC7EF009DAC37 /* TipsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC86234CC7EF009DAC37 /* TipsDetailViewController.swift */; };
+		271DECFA234CC7EF009DAC37 /* TipsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC87234CC7EF009DAC37 /* TipsTableCell.swift */; };
+		271DECFB234CC7EF009DAC37 /* TipsSummaryTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC88234CC7EF009DAC37 /* TipsSummaryTableCell.swift */; };
+		271DECFC234CC7EF009DAC37 /* SettingsTipsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC89234CC7EF009DAC37 /* SettingsTipsSectionView.swift */; };
+		271DECFD234CC7EF009DAC37 /* WalletDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8B234CC7EF009DAC37 /* WalletDetailsViewController.swift */; };
+		271DECFE234CC7EF009DAC37 /* WalletDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8C234CC7EF009DAC37 /* WalletDetailsView.swift */; };
+		271DECFF234CC7EF009DAC37 /* WalletActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8D234CC7EF009DAC37 /* WalletActivityView.swift */; };
+		271DED00234CC7EF009DAC37 /* WalletSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8E234CC7EF009DAC37 /* WalletSummaryView.swift */; };
+		271DED01234CC7EF009DAC37 /* SettingsUX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8F234CC7EF009DAC37 /* SettingsUX.swift */; };
+		271DED02234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC92234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift */; };
+		271DED03234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC94234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift */; };
+		271DED04234CC7EF009DAC37 /* AutoContributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC95234CC7EF009DAC37 /* AutoContributeCell.swift */; };
+		271DED05234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC96234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift */; };
+		271DED06234CC7EF009DAC37 /* SettingsRewardsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC98234CC7EF009DAC37 /* SettingsRewardsSectionView.swift */; };
+		271DED07234CC7EF009DAC37 /* BraveRewardsToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC99234CC7EF009DAC37 /* BraveRewardsToggleView.swift */; };
+		271DED08234CC7EF009DAC37 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC9A234CC7EF009DAC37 /* SettingsViewController.swift */; };
+		271DED09234CC7EF009DAC37 /* RewardsPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC9B234CC7EF009DAC37 /* RewardsPanelController.swift */; };
+		271DED0A234CC7EF009DAC37 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 271DEC9C234CC7EF009DAC37 /* Images.xcassets */; };
+		271DED0B234CC7EF009DAC37 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC9F234CC7EF009DAC37 /* TableViewCell.swift */; };
+		271DED0C234CC7EF009DAC37 /* EmptyTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA0234CC7EF009DAC37 /* EmptyTableCell.swift */; };
+		271DED0D234CC7EF009DAC37 /* LabelAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA1234CC7EF009DAC37 /* LabelAccessoryView.swift */; };
+		271DED0E234CC7EF009DAC37 /* TableHeaderRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA2234CC7EF009DAC37 /* TableHeaderRowView.swift */; };
+		271DED0F234CC7EF009DAC37 /* DetailActionableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA3234CC7EF009DAC37 /* DetailActionableRow.swift */; };
+		271DED10234CC7EF009DAC37 /* CurrencyContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA4234CC7EF009DAC37 /* CurrencyContainerView.swift */; };
+		271DED11234CC7EF009DAC37 /* PopoverNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA5234CC7EF009DAC37 /* PopoverNavigationController.swift */; };
+		271DED12234CC7EF009DAC37 /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA6234CC7EF009DAC37 /* SeparatorView.swift */; };
+		271DED13234CC7EF009DAC37 /* LinkLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA7234CC7EF009DAC37 /* LinkLabel.swift */; };
+		271DED14234CC7EF009DAC37 /* CreateWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA8234CC7EF009DAC37 /* CreateWalletButton.swift */; };
+		271DED15234CC7EF009DAC37 /* PublisherIconCircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECA9234CC7EF009DAC37 /* PublisherIconCircleImageView.swift */; };
+		271DED16234CC7EF009DAC37 /* BATUSDPairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECAA234CC7EF009DAC37 /* BATUSDPairView.swift */; };
+		271DED17234CC7EF009DAC37 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECAB234CC7EF009DAC37 /* Then.swift */; };
+		271DED18234CC7EF009DAC37 /* GrabberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECAC234CC7EF009DAC37 /* GrabberView.swift */; };
+		271DED19234CC7EF009DAC37 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECAD234CC7EF009DAC37 /* LoaderView.swift */; };
+		271DED1A234CC7EF009DAC37 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECAE234CC7EF009DAC37 /* ActionButton.swift */; };
+		271DED1B234CC7EF009DAC37 /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECAF234CC7EF009DAC37 /* QRCode.swift */; };
+		271DED1C234CC7EF009DAC37 /* SwitchRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB0234CC7EF009DAC37 /* SwitchRow.swift */; };
+		271DED1D234CC7EF009DAC37 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB1234CC7EF009DAC37 /* Colors.swift */; };
+		271DED1E234CC7EF009DAC37 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB2234CC7EF009DAC37 /* GradientView.swift */; };
+		271DED1F234CC7EF009DAC37 /* FaviconData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB3234CC7EF009DAC37 /* FaviconData.swift */; };
+		271DED20234CC7EF009DAC37 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB4234CC7EF009DAC37 /* Button.swift */; };
+		271DED21234CC7EF009DAC37 /* BasicAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB5234CC7EF009DAC37 /* BasicAnimationController.swift */; };
+		271DED22234CC7EF009DAC37 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB6234CC7EF009DAC37 /* DismissButton.swift */; };
+		271DED23234CC7EF009DAC37 /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */; };
+		271DED24234CC7EF009DAC37 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB9234CC7EF009DAC37 /* ArrayExtensions.swift */; };
+		271DED25234CC7EF009DAC37 /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBA234CC7EF009DAC37 /* UIStackViewExtensions.swift */; };
+		271DED26234CC7EF009DAC37 /* BraveLedgerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBB234CC7EF009DAC37 /* BraveLedgerExtensions.swift */; };
+		271DED27234CC7EF009DAC37 /* BraveRewardsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBC234CC7EF009DAC37 /* BraveRewardsExtensions.swift */; };
+		271DED28234CC7EF009DAC37 /* POPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBD234CC7EF009DAC37 /* POPExtensions.swift */; };
+		271DED29234CC7EF009DAC37 /* PublisherInfoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBE234CC7EF009DAC37 /* PublisherInfoExtensions.swift */; };
+		271DED2A234CC7EF009DAC37 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBF234CC7EF009DAC37 /* UIImageExtensions.swift */; };
+		271DED2B234CC7EF009DAC37 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECC0234CC7EF009DAC37 /* BundleExtensions.swift */; };
+		271DED2C234CC7EF009DAC37 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECC1234CC7EF009DAC37 /* DateExtensions.swift */; };
 		272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */; };
 		2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */ = {isa = PBXBuildFile; fileRef = 2755AB7C23107BC600F0721F /* AdsReporting.js */; };
 		2755AB8623107DBD00F0721F /* AdsMediaReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */; };
@@ -179,6 +288,10 @@
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
 		27F443F42138843400296C58 /* BraveShareToInfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27F443F22138843400296C58 /* BraveShareToInfoPlist.strings */; };
 		27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */; };
+		27FA2D4A234CC95A004D5D2D /* BATValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA2D47234CC959004D5D2D /* BATValueTests.swift */; };
+		27FA2D4B234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA2D48234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift */; };
+		27FA2D4C234CC95A004D5D2D /* DateExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA2D49234CC95A004D5D2D /* DateExtensionsTests.swift */; };
+		27FA2D58234CDCEA004D5D2D /* BraveRewards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FA2D4F234CC9FB004D5D2D /* BraveRewards.framework */; };
 		27FD2CAB2146C31C00A5A779 /* RequestDesktopSiteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */; };
 		27FD2CAC2146C31C00A5A779 /* FindInPageActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */; };
 		27FD2CAD2146C31C00A5A779 /* AddToFavoritesActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */; };
@@ -803,6 +916,27 @@
 			remoteGlobalIDString = D2AAC046055464E500DB518D;
 			remoteInfo = sqlcipher;
 		};
+		271DEC23234CC760009DAC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 271DEC18234CC75F009DAC37;
+			remoteInfo = BraveRewardsUI;
+		};
+		271DEC25234CC760009DAC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F84B21BD1A090F8100AAB793;
+			remoteInfo = Client;
+		};
+		271DEC2C234CC760009DAC37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 271DEC18234CC75F009DAC37;
+			remoteInfo = BraveRewardsUI;
+		};
 		27F4439D2135E11200296C58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
@@ -969,6 +1103,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		27FA2D4E234CC9E9004D5D2D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2F3444EC1AB2378200FD9731 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -988,6 +1131,7 @@
 				5D1DC52920AC9AFB00905E5A /* Data.framework in Copy Frameworks */,
 				E60138661C89EB7D00DF9756 /* Storage.framework in Copy Frameworks */,
 				5DE7689A20B3456E00FF5533 /* BraveShared.framework in Copy Frameworks */,
+				271DEC2F234CC760009DAC37 /* BraveRewardsUI.framework in Copy Frameworks */,
 				E60138651C89EB7600DF9756 /* Shared.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -1110,7 +1254,6 @@
 		0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveShieldStatsView.swift; sourceTree = "<group>"; };
 		0AB2442B22AA789B00B4D9DD /* ReaderModeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderModeButton.swift; sourceTree = "<group>"; };
 		0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjcExceptionBridging.framework; path = Carthage/Build/iOS/ObjcExceptionBridging.framework; sourceTree = "<group>"; };
-		0AC0D39B233E7CC60091EFA5 /* BraveRewards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BraveRewards.framework; path = "Carthage/Checkouts/brave-rewards-ios/lib/BraveRewards.framework"; sourceTree = "<group>"; };
 		0AC0D3A9233E86E50091EFA5 /* sqlcipher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = sqlcipher.xcodeproj; sourceTree = "<group>"; };
 		0AC0D3BF233E889D0091EFA5 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Storage.strings; sourceTree = "<group>"; };
 		0AC0D3C1233E889D0091EFA5 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1162,6 +1305,118 @@
 		0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFavicons.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
+		271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraveRewardsUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraveRewardsUI.h; sourceTree = "<group>"; };
+		271DEC1C234CC75F009DAC37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		271DEC21234CC75F009DAC37 /* BraveRewardsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraveRewardsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		271DEC2A234CC760009DAC37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		271DEC3C234CC7ED009DAC37 /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		271DEC3D234CC7ED009DAC37 /* WelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		271DEC3F234CC7ED009DAC37 /* PublisherAttentionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublisherAttentionView.swift; sourceTree = "<group>"; };
+		271DEC40234CC7ED009DAC37 /* PublisherView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublisherView.swift; sourceTree = "<group>"; };
+		271DEC41234CC7ED009DAC37 /* PublisherSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublisherSummaryView.swift; sourceTree = "<group>"; };
+		271DEC43234CC7ED009DAC37 /* RewardsDisabledView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsDisabledView.swift; sourceTree = "<group>"; };
+		271DEC45234CC7ED009DAC37 /* AddFundsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFundsView.swift; sourceTree = "<group>"; };
+		271DEC46234CC7ED009DAC37 /* AddFundsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFundsViewController.swift; sourceTree = "<group>"; };
+		271DEC47234CC7ED009DAC37 /* TokenAddressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenAddressView.swift; sourceTree = "<group>"; };
+		271DEC49234CC7ED009DAC37 /* CreateWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
+		271DEC4A234CC7ED009DAC37 /* CreateWalletView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateWalletView.swift; sourceTree = "<group>"; };
+		271DEC4B234CC7ED009DAC37 /* RewardsUIDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsUIDelegate.swift; sourceTree = "<group>"; };
+		271DEC4C234CC7ED009DAC37 /* RewardsUX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsUX.swift; sourceTree = "<group>"; };
+		271DEC4E234CC7EE009DAC37 /* AdsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsViewController.swift; sourceTree = "<group>"; };
+		271DEC4F234CC7EE009DAC37 /* AdSwipeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdSwipeButton.swift; sourceTree = "<group>"; };
+		271DEC50234CC7EE009DAC37 /* AdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
+		271DEC51234CC7EE009DAC37 /* AdsNotificationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsNotificationHandler.swift; sourceTree = "<group>"; };
+		271DEC52234CC7EE009DAC37 /* AdContentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdContentButton.swift; sourceTree = "<group>"; };
+		271DEC54234CC7EE009DAC37 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		271DEC55234CC7EE009DAC37 /* RewardsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsDataSource.swift; sourceTree = "<group>"; };
+		271DEC57234CC7EE009DAC37 /* QASettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QASettingsViewController.swift; sourceTree = "<group>"; };
+		271DEC59234CC7EE009DAC37 /* TippingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TippingViewController.swift; sourceTree = "<group>"; };
+		271DEC5A234CC7EE009DAC37 /* TippingConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TippingConfirmationView.swift; sourceTree = "<group>"; };
+		271DEC5B234CC7EE009DAC37 /* InsufficientFundsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsufficientFundsButton.swift; sourceTree = "<group>"; };
+		271DEC5C234CC7EE009DAC37 /* TippingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TippingView.swift; sourceTree = "<group>"; };
+		271DEC5D234CC7EE009DAC37 /* TippingOverviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TippingOverviewView.swift; sourceTree = "<group>"; };
+		271DEC5E234CC7EE009DAC37 /* TippingSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TippingSelectionView.swift; sourceTree = "<group>"; };
+		271DEC5F234CC7EE009DAC37 /* TippingSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TippingSelectionViewController.swift; sourceTree = "<group>"; };
+		271DEC60234CC7EE009DAC37 /* TippingOptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TippingOptionView.swift; sourceTree = "<group>"; };
+		271DEC61234CC7EE009DAC37 /* SendTipButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendTipButton.swift; sourceTree = "<group>"; };
+		271DEC63234CC7EE009DAC37 /* WalletHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletHeaderView.swift; sourceTree = "<group>"; };
+		271DEC64234CC7EE009DAC37 /* RewardsSummaryProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsSummaryProtocol.swift; sourceTree = "<group>"; };
+		271DEC65234CC7EE009DAC37 /* WalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
+		271DEC66234CC7EE009DAC37 /* EmptyWalletSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyWalletSummaryView.swift; sourceTree = "<group>"; };
+		271DEC67234CC7EE009DAC37 /* WalletView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
+		271DEC69234CC7EE009DAC37 /* WalletActionNotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletActionNotificationView.swift; sourceTree = "<group>"; };
+		271DEC6A234CC7EE009DAC37 /* WalletAlertNotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletAlertNotificationView.swift; sourceTree = "<group>"; };
+		271DEC6B234CC7EE009DAC37 /* WalletNotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletNotificationView.swift; sourceTree = "<group>"; };
+		271DEC6C234CC7EE009DAC37 /* RewardsNotificationViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsNotificationViewBuilder.swift; sourceTree = "<group>"; };
+		271DEC6D234CC7EE009DAC37 /* BATValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BATValue.swift; sourceTree = "<group>"; };
+		271DEC6F234CC7EE009DAC37 /* GrantsItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrantsItemView.swift; sourceTree = "<group>"; };
+		271DEC70234CC7EE009DAC37 /* GrantsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrantsListViewController.swift; sourceTree = "<group>"; };
+		271DEC72234CC7EE009DAC37 /* RewardsSummaryRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsSummaryRowView.swift; sourceTree = "<group>"; };
+		271DEC73234CC7EE009DAC37 /* RewardsSummaryButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsSummaryButton.swift; sourceTree = "<group>"; };
+		271DEC74234CC7EE009DAC37 /* RewardsSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsSummaryView.swift; sourceTree = "<group>"; };
+		271DEC75234CC7EE009DAC37 /* RewardsState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsState.swift; sourceTree = "<group>"; };
+		271DEC78234CC7EF009DAC37 /* SettingsAdSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAdSectionView.swift; sourceTree = "<group>"; };
+		271DEC7A234CC7EF009DAC37 /* AdsDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsDetailsViewController.swift; sourceTree = "<group>"; };
+		271DEC7B234CC7EF009DAC37 /* AdsUnsupportedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdsUnsupportedView.swift; sourceTree = "<group>"; };
+		271DEC7D234CC7EF009DAC37 /* OptionsSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsSelectionViewController.swift; sourceTree = "<group>"; };
+		271DEC7E234CC7EF009DAC37 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		271DEC80234CC7EF009DAC37 /* SettingsGrantSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsGrantSectionView.swift; sourceTree = "<group>"; };
+		271DEC81234CC7EF009DAC37 /* GrantClaimedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrantClaimedViewController.swift; sourceTree = "<group>"; };
+		271DEC82234CC7EF009DAC37 /* SettingsViewDetailsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewDetailsButton.swift; sourceTree = "<group>"; };
+		271DEC83234CC7EF009DAC37 /* SettingsSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSectionView.swift; sourceTree = "<group>"; };
+		271DEC86234CC7EF009DAC37 /* TipsDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsDetailViewController.swift; sourceTree = "<group>"; };
+		271DEC87234CC7EF009DAC37 /* TipsTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsTableCell.swift; sourceTree = "<group>"; };
+		271DEC88234CC7EF009DAC37 /* TipsSummaryTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsSummaryTableCell.swift; sourceTree = "<group>"; };
+		271DEC89234CC7EF009DAC37 /* SettingsTipsSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTipsSectionView.swift; sourceTree = "<group>"; };
+		271DEC8B234CC7EF009DAC37 /* WalletDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletDetailsViewController.swift; sourceTree = "<group>"; };
+		271DEC8C234CC7EF009DAC37 /* WalletDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletDetailsView.swift; sourceTree = "<group>"; };
+		271DEC8D234CC7EF009DAC37 /* WalletActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletActivityView.swift; sourceTree = "<group>"; };
+		271DEC8E234CC7EF009DAC37 /* WalletSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletSummaryView.swift; sourceTree = "<group>"; };
+		271DEC8F234CC7EF009DAC37 /* SettingsUX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsUX.swift; sourceTree = "<group>"; };
+		271DEC92234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoContributeSettingsViewController.swift; sourceTree = "<group>"; };
+		271DEC94234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoContributeDetailsViewController.swift; sourceTree = "<group>"; };
+		271DEC95234CC7EF009DAC37 /* AutoContributeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoContributeCell.swift; sourceTree = "<group>"; };
+		271DEC96234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAutoContributeSectionView.swift; sourceTree = "<group>"; };
+		271DEC98234CC7EF009DAC37 /* SettingsRewardsSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsRewardsSectionView.swift; sourceTree = "<group>"; };
+		271DEC99234CC7EF009DAC37 /* BraveRewardsToggleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveRewardsToggleView.swift; sourceTree = "<group>"; };
+		271DEC9A234CC7EF009DAC37 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		271DEC9B234CC7EF009DAC37 /* RewardsPanelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsPanelController.swift; sourceTree = "<group>"; };
+		271DEC9C234CC7EF009DAC37 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		271DEC9F234CC7EF009DAC37 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		271DECA0234CC7EF009DAC37 /* EmptyTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyTableCell.swift; sourceTree = "<group>"; };
+		271DECA1234CC7EF009DAC37 /* LabelAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAccessoryView.swift; sourceTree = "<group>"; };
+		271DECA2234CC7EF009DAC37 /* TableHeaderRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableHeaderRowView.swift; sourceTree = "<group>"; };
+		271DECA3234CC7EF009DAC37 /* DetailActionableRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailActionableRow.swift; sourceTree = "<group>"; };
+		271DECA4234CC7EF009DAC37 /* CurrencyContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyContainerView.swift; sourceTree = "<group>"; };
+		271DECA5234CC7EF009DAC37 /* PopoverNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverNavigationController.swift; sourceTree = "<group>"; };
+		271DECA6234CC7EF009DAC37 /* SeparatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
+		271DECA7234CC7EF009DAC37 /* LinkLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkLabel.swift; sourceTree = "<group>"; };
+		271DECA8234CC7EF009DAC37 /* CreateWalletButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateWalletButton.swift; sourceTree = "<group>"; };
+		271DECA9234CC7EF009DAC37 /* PublisherIconCircleImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublisherIconCircleImageView.swift; sourceTree = "<group>"; };
+		271DECAA234CC7EF009DAC37 /* BATUSDPairView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BATUSDPairView.swift; sourceTree = "<group>"; };
+		271DECAB234CC7EF009DAC37 /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
+		271DECAC234CC7EF009DAC37 /* GrabberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrabberView.swift; sourceTree = "<group>"; };
+		271DECAD234CC7EF009DAC37 /* LoaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
+		271DECAE234CC7EF009DAC37 /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		271DECAF234CC7EF009DAC37 /* QRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
+		271DECB0234CC7EF009DAC37 /* SwitchRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchRow.swift; sourceTree = "<group>"; };
+		271DECB1234CC7EF009DAC37 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		271DECB2234CC7EF009DAC37 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		271DECB3234CC7EF009DAC37 /* FaviconData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaviconData.swift; sourceTree = "<group>"; };
+		271DECB4234CC7EF009DAC37 /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		271DECB5234CC7EF009DAC37 /* BasicAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicAnimationController.swift; sourceTree = "<group>"; };
+		271DECB6234CC7EF009DAC37 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
+		271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewExtensions.swift; sourceTree = "<group>"; };
+		271DECB9234CC7EF009DAC37 /* ArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
+		271DECBA234CC7EF009DAC37 /* UIStackViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackViewExtensions.swift; sourceTree = "<group>"; };
+		271DECBB234CC7EF009DAC37 /* BraveLedgerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveLedgerExtensions.swift; sourceTree = "<group>"; };
+		271DECBC234CC7EF009DAC37 /* BraveRewardsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveRewardsExtensions.swift; sourceTree = "<group>"; };
+		271DECBD234CC7EF009DAC37 /* POPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPExtensions.swift; sourceTree = "<group>"; };
+		271DECBE234CC7EF009DAC37 /* PublisherInfoExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublisherInfoExtensions.swift; sourceTree = "<group>"; };
+		271DECBF234CC7EF009DAC37 /* UIImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
+		271DECC0234CC7EF009DAC37 /* BundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
+		271DECC1234CC7EF009DAC37 /* DateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OnePasswordExtension.framework; path = Carthage/Build/iOS/OnePasswordExtension.framework; sourceTree = "<group>"; };
 		2755AB7C23107BC600F0721F /* AdsReporting.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = AdsReporting.js; sourceTree = "<group>"; };
 		2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsMediaReporting.swift; sourceTree = "<group>"; };
@@ -1191,6 +1446,10 @@
 		27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareToBraveViewController.swift; sourceTree = "<group>"; };
 		27F443F32138843400296C58 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizations/en.lproj/BraveShareToInfoPlist.strings; sourceTree = "<group>"; };
 		27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsPromptView.swift; sourceTree = "<group>"; };
+		27FA2D47234CC959004D5D2D /* BATValueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BATValueTests.swift; sourceTree = "<group>"; };
+		27FA2D48234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsNotificationViewBuilderTests.swift; sourceTree = "<group>"; };
+		27FA2D49234CC95A004D5D2D /* DateExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtensionsTests.swift; sourceTree = "<group>"; };
+		27FA2D4F234CC9FB004D5D2D /* BraveRewards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BraveRewards.framework; sourceTree = "<group>"; };
 		27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDesktopSiteActivity.swift; sourceTree = "<group>"; };
 		27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindInPageActivity.swift; sourceTree = "<group>"; };
 		27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToFavoritesActivity.swift; sourceTree = "<group>"; };
@@ -1717,7 +1976,6 @@
 		5EC594EC232C2C8F00922111 /* OnboardingWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWebViewController.swift; sourceTree = "<group>"; };
 		5EC594EE232C68FC00922111 /* OnboardingAdsCountdownViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdsCountdownViewController.swift; sourceTree = "<group>"; };
 		5EC594F0232C697200922111 /* OnboardingAdsCountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdsCountdownView.swift; sourceTree = "<group>"; };
-		744B0FFD1B4F172E00100422 /* ToolbarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarTests.swift; sourceTree = "<group>"; };
 		744ED5601DBFEB8D00A2B5BE /* MailtoLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailtoLinkHandler.swift; sourceTree = "<group>"; };
 		7479B4ED1C5306A200DF000B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		74821FFD1DB6D3AC00EEEA72 /* MailSchemes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MailSchemes.plist; sourceTree = "<group>"; };
@@ -2024,6 +2282,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		271DEC16234CC75F009DAC37 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27FA2D58234CDCEA004D5D2D /* BraveRewards.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		271DEC1E234CC75F009DAC37 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27F443922135E11200296C58 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2049,6 +2322,7 @@
 				0AC0D39A233E7CAF0091EFA5 /* ObjcExceptionBridging.framework in Frameworks */,
 				0AD9F87D22F0421B008B4D95 /* libadblock.a in Frameworks */,
 				F98E1EA122B6D70E0018AF29 /* libYubiKit.a in Frameworks */,
+				271DEC2E234CC760009DAC37 /* BraveRewardsUI.framework in Frameworks */,
 				A1AD4BD120BF3F4D007A6EA1 /* Eureka.framework in Frameworks */,
 				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
 				E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */,
@@ -2061,7 +2335,6 @@
 				A1F66A8020DD87CA00303328 /* Static.framework in Frameworks */,
 				5D1DC52820AC9AFB00905E5A /* Data.framework in Frameworks */,
 				7BA4A9471C4CED900091D032 /* GCDWebServers.framework in Frameworks */,
-				0AC0D39C233E7CC60091EFA5 /* BraveRewards.framework in Frameworks */,
 				A1AD4BD720BF4772007A6EA1 /* FastImageCache.framework in Frameworks */,
 				272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */,
 				7B604F9B1C4950F2006EEEC3 /* SDWebImage.framework in Frameworks */,
@@ -2455,6 +2728,363 @@
 				27187807216526090006036E /* AlertPopupView.swift */,
 			);
 			path = Popup;
+			sourceTree = "<group>";
+		};
+		271DEC1A234CC75F009DAC37 /* BraveRewardsUI */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC44234CC7ED009DAC37 /* Add Funds */,
+				271DEC4D234CC7EE009DAC37 /* Ads */,
+				271DEC6D234CC7EE009DAC37 /* BATValue.swift */,
+				271DEC9D234CC7EF009DAC37 /* Common */,
+				271DEC48234CC7ED009DAC37 /* Create Wallet */,
+				271DEC42234CC7ED009DAC37 /* Disabled Brave Rewards */,
+				271DECB7234CC7EF009DAC37 /* Extensions */,
+				271DEC6E234CC7EE009DAC37 /* Grants */,
+				271DEC9C234CC7EF009DAC37 /* Images.xcassets */,
+				271DEC53234CC7EE009DAC37 /* Localized Strings */,
+				271DEC3E234CC7ED009DAC37 /* Publisher */,
+				271DEC56234CC7EE009DAC37 /* QA Settings */,
+				271DEC71234CC7EE009DAC37 /* Rewards Summary */,
+				271DEC55234CC7EE009DAC37 /* RewardsDataSource.swift */,
+				271DEC9B234CC7EF009DAC37 /* RewardsPanelController.swift */,
+				271DEC75234CC7EE009DAC37 /* RewardsState.swift */,
+				271DEC4B234CC7ED009DAC37 /* RewardsUIDelegate.swift */,
+				271DEC4C234CC7ED009DAC37 /* RewardsUX.swift */,
+				271DEC76234CC7EF009DAC37 /* Settings */,
+				271DEC58234CC7EE009DAC37 /* Tipping */,
+				271DEC62234CC7EE009DAC37 /* Wallet */,
+				271DEC3B234CC7ED009DAC37 /* Welcome */,
+				271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */,
+				271DEC1C234CC75F009DAC37 /* Info.plist */,
+			);
+			indentWidth = 2;
+			path = BraveRewardsUI;
+			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
+		};
+		271DEC27234CC760009DAC37 /* BraveRewardsUITests */ = {
+			isa = PBXGroup;
+			children = (
+				27FA2D47234CC959004D5D2D /* BATValueTests.swift */,
+				27FA2D49234CC95A004D5D2D /* DateExtensionsTests.swift */,
+				27FA2D48234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift */,
+				271DEC2A234CC760009DAC37 /* Info.plist */,
+			);
+			indentWidth = 2;
+			path = BraveRewardsUITests;
+			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
+		};
+		271DEC3B234CC7ED009DAC37 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC3C234CC7ED009DAC37 /* WelcomeViewController.swift */,
+				271DEC3D234CC7ED009DAC37 /* WelcomeView.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
+		271DEC3E234CC7ED009DAC37 /* Publisher */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC3F234CC7ED009DAC37 /* PublisherAttentionView.swift */,
+				271DEC40234CC7ED009DAC37 /* PublisherView.swift */,
+				271DEC41234CC7ED009DAC37 /* PublisherSummaryView.swift */,
+			);
+			path = Publisher;
+			sourceTree = "<group>";
+		};
+		271DEC42234CC7ED009DAC37 /* Disabled Brave Rewards */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC43234CC7ED009DAC37 /* RewardsDisabledView.swift */,
+			);
+			path = "Disabled Brave Rewards";
+			sourceTree = "<group>";
+		};
+		271DEC44234CC7ED009DAC37 /* Add Funds */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC45234CC7ED009DAC37 /* AddFundsView.swift */,
+				271DEC46234CC7ED009DAC37 /* AddFundsViewController.swift */,
+				271DEC47234CC7ED009DAC37 /* TokenAddressView.swift */,
+			);
+			path = "Add Funds";
+			sourceTree = "<group>";
+		};
+		271DEC48234CC7ED009DAC37 /* Create Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC49234CC7ED009DAC37 /* CreateWalletViewController.swift */,
+				271DEC4A234CC7ED009DAC37 /* CreateWalletView.swift */,
+			);
+			path = "Create Wallet";
+			sourceTree = "<group>";
+		};
+		271DEC4D234CC7EE009DAC37 /* Ads */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC4E234CC7EE009DAC37 /* AdsViewController.swift */,
+				271DEC4F234CC7EE009DAC37 /* AdSwipeButton.swift */,
+				271DEC50234CC7EE009DAC37 /* AdView.swift */,
+				271DEC51234CC7EE009DAC37 /* AdsNotificationHandler.swift */,
+				271DEC52234CC7EE009DAC37 /* AdContentButton.swift */,
+			);
+			path = Ads;
+			sourceTree = "<group>";
+		};
+		271DEC53234CC7EE009DAC37 /* Localized Strings */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC54234CC7EE009DAC37 /* Strings.swift */,
+			);
+			path = "Localized Strings";
+			sourceTree = "<group>";
+		};
+		271DEC56234CC7EE009DAC37 /* QA Settings */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC57234CC7EE009DAC37 /* QASettingsViewController.swift */,
+			);
+			path = "QA Settings";
+			sourceTree = "<group>";
+		};
+		271DEC58234CC7EE009DAC37 /* Tipping */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC59234CC7EE009DAC37 /* TippingViewController.swift */,
+				271DEC5A234CC7EE009DAC37 /* TippingConfirmationView.swift */,
+				271DEC5B234CC7EE009DAC37 /* InsufficientFundsButton.swift */,
+				271DEC5C234CC7EE009DAC37 /* TippingView.swift */,
+				271DEC5D234CC7EE009DAC37 /* TippingOverviewView.swift */,
+				271DEC5E234CC7EE009DAC37 /* TippingSelectionView.swift */,
+				271DEC5F234CC7EE009DAC37 /* TippingSelectionViewController.swift */,
+				271DEC60234CC7EE009DAC37 /* TippingOptionView.swift */,
+				271DEC61234CC7EE009DAC37 /* SendTipButton.swift */,
+			);
+			path = Tipping;
+			sourceTree = "<group>";
+		};
+		271DEC62234CC7EE009DAC37 /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC63234CC7EE009DAC37 /* WalletHeaderView.swift */,
+				271DEC64234CC7EE009DAC37 /* RewardsSummaryProtocol.swift */,
+				271DEC65234CC7EE009DAC37 /* WalletViewController.swift */,
+				271DEC66234CC7EE009DAC37 /* EmptyWalletSummaryView.swift */,
+				271DEC67234CC7EE009DAC37 /* WalletView.swift */,
+				271DEC68234CC7EE009DAC37 /* Notifications */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		271DEC68234CC7EE009DAC37 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC69234CC7EE009DAC37 /* WalletActionNotificationView.swift */,
+				271DEC6A234CC7EE009DAC37 /* WalletAlertNotificationView.swift */,
+				271DEC6B234CC7EE009DAC37 /* WalletNotificationView.swift */,
+				271DEC6C234CC7EE009DAC37 /* RewardsNotificationViewBuilder.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		271DEC6E234CC7EE009DAC37 /* Grants */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC6F234CC7EE009DAC37 /* GrantsItemView.swift */,
+				271DEC70234CC7EE009DAC37 /* GrantsListViewController.swift */,
+			);
+			path = Grants;
+			sourceTree = "<group>";
+		};
+		271DEC71234CC7EE009DAC37 /* Rewards Summary */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC72234CC7EE009DAC37 /* RewardsSummaryRowView.swift */,
+				271DEC73234CC7EE009DAC37 /* RewardsSummaryButton.swift */,
+				271DEC74234CC7EE009DAC37 /* RewardsSummaryView.swift */,
+			);
+			path = "Rewards Summary";
+			sourceTree = "<group>";
+		};
+		271DEC76234CC7EF009DAC37 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC77234CC7EF009DAC37 /* Ads */,
+				271DEC7C234CC7EF009DAC37 /* Options */,
+				271DEC7E234CC7EF009DAC37 /* SettingsView.swift */,
+				271DEC7F234CC7EF009DAC37 /* Grants */,
+				271DEC82234CC7EF009DAC37 /* SettingsViewDetailsButton.swift */,
+				271DEC83234CC7EF009DAC37 /* SettingsSectionView.swift */,
+				271DEC84234CC7EF009DAC37 /* Tips */,
+				271DEC8A234CC7EF009DAC37 /* Wallet */,
+				271DEC8F234CC7EF009DAC37 /* SettingsUX.swift */,
+				271DEC90234CC7EF009DAC37 /* Auto-Contribute */,
+				271DEC97234CC7EF009DAC37 /* Rewards Toggle */,
+				271DEC9A234CC7EF009DAC37 /* SettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		271DEC77234CC7EF009DAC37 /* Ads */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC78234CC7EF009DAC37 /* SettingsAdSectionView.swift */,
+				271DEC79234CC7EF009DAC37 /* Details */,
+				271DEC7B234CC7EF009DAC37 /* AdsUnsupportedView.swift */,
+			);
+			path = Ads;
+			sourceTree = "<group>";
+		};
+		271DEC79234CC7EF009DAC37 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC7A234CC7EF009DAC37 /* AdsDetailsViewController.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		271DEC7C234CC7EF009DAC37 /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC7D234CC7EF009DAC37 /* OptionsSelectionViewController.swift */,
+			);
+			path = Options;
+			sourceTree = "<group>";
+		};
+		271DEC7F234CC7EF009DAC37 /* Grants */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC80234CC7EF009DAC37 /* SettingsGrantSectionView.swift */,
+				271DEC81234CC7EF009DAC37 /* GrantClaimedViewController.swift */,
+			);
+			path = Grants;
+			sourceTree = "<group>";
+		};
+		271DEC84234CC7EF009DAC37 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC85234CC7EF009DAC37 /* Details */,
+				271DEC89234CC7EF009DAC37 /* SettingsTipsSectionView.swift */,
+			);
+			path = Tips;
+			sourceTree = "<group>";
+		};
+		271DEC85234CC7EF009DAC37 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC86234CC7EF009DAC37 /* TipsDetailViewController.swift */,
+				271DEC87234CC7EF009DAC37 /* TipsTableCell.swift */,
+				271DEC88234CC7EF009DAC37 /* TipsSummaryTableCell.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		271DEC8A234CC7EF009DAC37 /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC8B234CC7EF009DAC37 /* WalletDetailsViewController.swift */,
+				271DEC8C234CC7EF009DAC37 /* WalletDetailsView.swift */,
+				271DEC8D234CC7EF009DAC37 /* WalletActivityView.swift */,
+				271DEC8E234CC7EF009DAC37 /* WalletSummaryView.swift */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		271DEC90234CC7EF009DAC37 /* Auto-Contribute */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC91234CC7EF009DAC37 /* Settings */,
+				271DEC93234CC7EF009DAC37 /* Details */,
+				271DEC96234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift */,
+			);
+			path = "Auto-Contribute";
+			sourceTree = "<group>";
+		};
+		271DEC91234CC7EF009DAC37 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC92234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		271DEC93234CC7EF009DAC37 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC94234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift */,
+				271DEC95234CC7EF009DAC37 /* AutoContributeCell.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		271DEC97234CC7EF009DAC37 /* Rewards Toggle */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC98234CC7EF009DAC37 /* SettingsRewardsSectionView.swift */,
+				271DEC99234CC7EF009DAC37 /* BraveRewardsToggleView.swift */,
+			);
+			path = "Rewards Toggle";
+			sourceTree = "<group>";
+		};
+		271DEC9D234CC7EF009DAC37 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC9E234CC7EF009DAC37 /* Tables */,
+				271DECA3234CC7EF009DAC37 /* DetailActionableRow.swift */,
+				271DECA4234CC7EF009DAC37 /* CurrencyContainerView.swift */,
+				271DECA5234CC7EF009DAC37 /* PopoverNavigationController.swift */,
+				271DECA6234CC7EF009DAC37 /* SeparatorView.swift */,
+				271DECA7234CC7EF009DAC37 /* LinkLabel.swift */,
+				271DECA8234CC7EF009DAC37 /* CreateWalletButton.swift */,
+				271DECA9234CC7EF009DAC37 /* PublisherIconCircleImageView.swift */,
+				271DECAA234CC7EF009DAC37 /* BATUSDPairView.swift */,
+				271DECAB234CC7EF009DAC37 /* Then.swift */,
+				271DECAC234CC7EF009DAC37 /* GrabberView.swift */,
+				271DECAD234CC7EF009DAC37 /* LoaderView.swift */,
+				271DECAE234CC7EF009DAC37 /* ActionButton.swift */,
+				271DECAF234CC7EF009DAC37 /* QRCode.swift */,
+				271DECB0234CC7EF009DAC37 /* SwitchRow.swift */,
+				271DECB1234CC7EF009DAC37 /* Colors.swift */,
+				271DECB2234CC7EF009DAC37 /* GradientView.swift */,
+				271DECB3234CC7EF009DAC37 /* FaviconData.swift */,
+				271DECB4234CC7EF009DAC37 /* Button.swift */,
+				271DECB5234CC7EF009DAC37 /* BasicAnimationController.swift */,
+				271DECB6234CC7EF009DAC37 /* DismissButton.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		271DEC9E234CC7EF009DAC37 /* Tables */ = {
+			isa = PBXGroup;
+			children = (
+				271DEC9F234CC7EF009DAC37 /* TableViewCell.swift */,
+				271DECA0234CC7EF009DAC37 /* EmptyTableCell.swift */,
+				271DECA1234CC7EF009DAC37 /* LabelAccessoryView.swift */,
+				271DECA2234CC7EF009DAC37 /* TableHeaderRowView.swift */,
+			);
+			path = Tables;
+			sourceTree = "<group>";
+		};
+		271DECB7234CC7EF009DAC37 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */,
+				271DECB9234CC7EF009DAC37 /* ArrayExtensions.swift */,
+				271DECBA234CC7EF009DAC37 /* UIStackViewExtensions.swift */,
+				271DECBB234CC7EF009DAC37 /* BraveLedgerExtensions.swift */,
+				271DECBC234CC7EF009DAC37 /* BraveRewardsExtensions.swift */,
+				271DECBD234CC7EF009DAC37 /* POPExtensions.swift */,
+				271DECBE234CC7EF009DAC37 /* PublisherInfoExtensions.swift */,
+				271DECBF234CC7EF009DAC37 /* UIImageExtensions.swift */,
+				271DECC0234CC7EF009DAC37 /* BundleExtensions.swift */,
+				271DECC1234CC7EF009DAC37 /* DateExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		2765826D217130B700754B2F /* Certificates */ = {
@@ -3157,7 +3787,7 @@
 		7B604FC11C496005006EEEC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0AC0D39B233E7CC60091EFA5 /* BraveRewards.framework */,
+				27FA2D4F234CC9FB004D5D2D /* BraveRewards.framework */,
 				0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */,
 				272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */,
 				0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */,
@@ -3677,6 +4307,8 @@
 				5D1DC52120AC9AFB00905E5A /* DataTests */,
 				5DE7688520B3456D00FF5533 /* BraveShared */,
 				27F443962135E11200296C58 /* BraveShareTo */,
+				271DEC1A234CC75F009DAC37 /* BraveRewardsUI */,
+				271DEC27234CC760009DAC37 /* BraveRewardsUITests */,
 				7B604FC11C496005006EEEC3 /* Frameworks */,
 				F84B21BF1A090F8100AAB793 /* Products */,
 				D34DC84C1A16C40C00D49B7B /* Providers */,
@@ -3706,6 +4338,8 @@
 				5DE7688420B3456C00FF5533 /* BraveShared.framework */,
 				5DE7688C20B3456E00FF5533 /* BraveSharedTests.xctest */,
 				27F443952135E11200296C58 /* BraveShareTo.appex */,
+				271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */,
+				271DEC21234CC75F009DAC37 /* BraveRewardsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3988,6 +4622,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		271DEC14234CC75F009DAC37 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				271DEC2B234CC760009DAC37 /* BraveRewardsUI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		288A2D831AB8B3260023ABC3 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -4024,6 +4666,44 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		271DEC18234CC75F009DAC37 /* BraveRewardsUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 271DEC39234CC760009DAC37 /* Build configuration list for PBXNativeTarget "BraveRewardsUI" */;
+			buildPhases = (
+				271DEC14234CC75F009DAC37 /* Headers */,
+				271DEC15234CC75F009DAC37 /* Sources */,
+				271DEC16234CC75F009DAC37 /* Frameworks */,
+				271DEC17234CC75F009DAC37 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BraveRewardsUI;
+			productName = BraveRewardsUI;
+			productReference = 271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		271DEC20234CC75F009DAC37 /* BraveRewardsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 271DEC3A234CC760009DAC37 /* Build configuration list for PBXNativeTarget "BraveRewardsUITests" */;
+			buildPhases = (
+				271DEC1D234CC75F009DAC37 /* Sources */,
+				271DEC1E234CC75F009DAC37 /* Frameworks */,
+				271DEC1F234CC75F009DAC37 /* Resources */,
+				27FA2D4E234CC9E9004D5D2D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				271DEC24234CC760009DAC37 /* PBXTargetDependency */,
+				271DEC26234CC760009DAC37 /* PBXTargetDependency */,
+			);
+			name = BraveRewardsUITests;
+			productName = BraveRewardsUITests;
+			productReference = 271DEC21234CC75F009DAC37 /* BraveRewardsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		27F443942135E11200296C58 /* BraveShareTo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "BraveShareTo" */;
@@ -4217,6 +4897,7 @@
 				5D1DC52720AC9AFB00905E5A /* PBXTargetDependency */,
 				5DE7689820B3456E00FF5533 /* PBXTargetDependency */,
 				27F4439E2135E11200296C58 /* PBXTargetDependency */,
+				271DEC2D234CC760009DAC37 /* PBXTargetDependency */,
 			);
 			name = Client;
 			productName = Client;
@@ -4251,10 +4932,18 @@
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Latest;
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 1000;
+				LastSwiftUpdateCheck = 1110;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Mozilla;
 				TargetAttributes = {
+					271DEC18234CC75F009DAC37 = {
+						CreatedOnToolsVersion = 11.1;
+						LastSwiftMigration = 1110;
+					};
+					271DEC20234CC75F009DAC37 = {
+						CreatedOnToolsVersion = 11.1;
+						TestTargetID = F84B21BD1A090F8100AAB793;
+					};
 					27F443942135E11200296C58 = {
 						CreatedOnToolsVersion = 10.0;
 						LastSwiftMigration = 1010;
@@ -4363,11 +5052,13 @@
 				288A2D851AB8B3260023ABC3 /* Shared */,
 				2FCAE2191ABB51F800877008 /* Storage */,
 				5D1DC51220AC9AF900905E5A /* Data */,
+				271DEC18234CC75F009DAC37 /* BraveRewardsUI */,
 				F84B21D21A090F8100AAB793 /* ClientTests */,
 				2FCAE2231ABB51F800877008 /* StorageTests */,
 				E6F9650B1B2F1CF20034B023 /* SharedTests */,
 				5D1DC51A20AC9AFA00905E5A /* DataTests */,
 				5DE7688B20B3456E00FF5533 /* BraveSharedTests */,
+				271DEC20234CC75F009DAC37 /* BraveRewardsUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -4383,6 +5074,21 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		271DEC17234CC75F009DAC37 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				271DED0A234CC7EF009DAC37 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		271DEC1F234CC75F009DAC37 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27F443932135E11200296C58 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4610,8 +5316,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/FastImageCache.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Static.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/OnePasswordExtension.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/BraveRewardsUI.framework",
-				"$(SRCROOT)/Carthage/Checkouts/brave-rewards-ios/lib/BraveRewards.framework",
+				"$(SRCROOT)/BraveRewards/BraveRewards.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Lottie.framework",
 			);
 			name = "Copy Carthage Dependencies";
@@ -4624,6 +5329,129 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		271DEC15234CC75F009DAC37 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				271DECCA234CC7EF009DAC37 /* TokenAddressView.swift in Sources */,
+				271DECC2234CC7EF009DAC37 /* WelcomeViewController.swift in Sources */,
+				271DECCE234CC7EF009DAC37 /* RewardsUX.swift in Sources */,
+				271DED13234CC7EF009DAC37 /* LinkLabel.swift in Sources */,
+				271DED21234CC7EF009DAC37 /* BasicAnimationController.swift in Sources */,
+				271DED26234CC7EF009DAC37 /* BraveLedgerExtensions.swift in Sources */,
+				271DECD8234CC7EF009DAC37 /* TippingConfirmationView.swift in Sources */,
+				271DED22234CC7EF009DAC37 /* DismissButton.swift in Sources */,
+				271DED29234CC7EF009DAC37 /* PublisherInfoExtensions.swift in Sources */,
+				271DED27234CC7EF009DAC37 /* BraveRewardsExtensions.swift in Sources */,
+				271DED07234CC7EF009DAC37 /* BraveRewardsToggleView.swift in Sources */,
+				271DECF8234CC7EF009DAC37 /* SettingsSectionView.swift in Sources */,
+				271DECE3234CC7EF009DAC37 /* EmptyWalletSummaryView.swift in Sources */,
+				271DED0E234CC7EF009DAC37 /* TableHeaderRowView.swift in Sources */,
+				271DECFD234CC7EF009DAC37 /* WalletDetailsViewController.swift in Sources */,
+				271DECFA234CC7EF009DAC37 /* TipsTableCell.swift in Sources */,
+				271DECC6234CC7EF009DAC37 /* PublisherSummaryView.swift in Sources */,
+				271DECE5234CC7EF009DAC37 /* WalletActionNotificationView.swift in Sources */,
+				271DED09234CC7EF009DAC37 /* RewardsPanelController.swift in Sources */,
+				271DECDE234CC7EF009DAC37 /* TippingOptionView.swift in Sources */,
+				271DED20234CC7EF009DAC37 /* Button.swift in Sources */,
+				271DECD0234CC7EF009DAC37 /* AdSwipeButton.swift in Sources */,
+				271DECD4234CC7EF009DAC37 /* Strings.swift in Sources */,
+				271DECEF234CC7EF009DAC37 /* RewardsState.swift in Sources */,
+				271DECFF234CC7EF009DAC37 /* WalletActivityView.swift in Sources */,
+				271DED05234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift in Sources */,
+				271DED04234CC7EF009DAC37 /* AutoContributeCell.swift in Sources */,
+				271DECCC234CC7EF009DAC37 /* CreateWalletView.swift in Sources */,
+				271DED0D234CC7EF009DAC37 /* LabelAccessoryView.swift in Sources */,
+				271DED2B234CC7EF009DAC37 /* BundleExtensions.swift in Sources */,
+				271DED08234CC7EF009DAC37 /* SettingsViewController.swift in Sources */,
+				271DECC4234CC7EF009DAC37 /* PublisherAttentionView.swift in Sources */,
+				271DED23234CC7EF009DAC37 /* UITableViewExtensions.swift in Sources */,
+				271DED02234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift in Sources */,
+				271DECD1234CC7EF009DAC37 /* AdView.swift in Sources */,
+				271DECE9234CC7EF009DAC37 /* BATValue.swift in Sources */,
+				271DECCB234CC7EF009DAC37 /* CreateWalletViewController.swift in Sources */,
+				271DECD9234CC7EF009DAC37 /* InsufficientFundsButton.swift in Sources */,
+				271DECEC234CC7EF009DAC37 /* RewardsSummaryRowView.swift in Sources */,
+				271DECF9234CC7EF009DAC37 /* TipsDetailViewController.swift in Sources */,
+				271DECC3234CC7EF009DAC37 /* WelcomeView.swift in Sources */,
+				271DED2C234CC7EF009DAC37 /* DateExtensions.swift in Sources */,
+				271DED0F234CC7EF009DAC37 /* DetailActionableRow.swift in Sources */,
+				271DED0B234CC7EF009DAC37 /* TableViewCell.swift in Sources */,
+				271DECEA234CC7EF009DAC37 /* GrantsItemView.swift in Sources */,
+				271DECED234CC7EF009DAC37 /* RewardsSummaryButton.swift in Sources */,
+				271DECF2234CC7EF009DAC37 /* AdsUnsupportedView.swift in Sources */,
+				271DECDA234CC7EF009DAC37 /* TippingView.swift in Sources */,
+				271DECF1234CC7EF009DAC37 /* AdsDetailsViewController.swift in Sources */,
+				271DED0C234CC7EF009DAC37 /* EmptyTableCell.swift in Sources */,
+				271DECF3234CC7EF009DAC37 /* OptionsSelectionViewController.swift in Sources */,
+				271DED10234CC7EF009DAC37 /* CurrencyContainerView.swift in Sources */,
+				271DED12234CC7EF009DAC37 /* SeparatorView.swift in Sources */,
+				271DECE1234CC7EF009DAC37 /* RewardsSummaryProtocol.swift in Sources */,
+				271DECF0234CC7EF009DAC37 /* SettingsAdSectionView.swift in Sources */,
+				271DECD3234CC7EF009DAC37 /* AdContentButton.swift in Sources */,
+				271DED1A234CC7EF009DAC37 /* ActionButton.swift in Sources */,
+				271DECC5234CC7EF009DAC37 /* PublisherView.swift in Sources */,
+				271DED03234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift in Sources */,
+				271DED16234CC7EF009DAC37 /* BATUSDPairView.swift in Sources */,
+				271DECD5234CC7EF009DAC37 /* RewardsDataSource.swift in Sources */,
+				271DECE6234CC7EF009DAC37 /* WalletAlertNotificationView.swift in Sources */,
+				271DECD6234CC7EF009DAC37 /* QASettingsViewController.swift in Sources */,
+				271DED17234CC7EF009DAC37 /* Then.swift in Sources */,
+				271DED14234CC7EF009DAC37 /* CreateWalletButton.swift in Sources */,
+				271DECF6234CC7EF009DAC37 /* GrantClaimedViewController.swift in Sources */,
+				271DECCF234CC7EF009DAC37 /* AdsViewController.swift in Sources */,
+				271DED25234CC7EF009DAC37 /* UIStackViewExtensions.swift in Sources */,
+				271DECFC234CC7EF009DAC37 /* SettingsTipsSectionView.swift in Sources */,
+				271DECDD234CC7EF009DAC37 /* TippingSelectionViewController.swift in Sources */,
+				271DED1C234CC7EF009DAC37 /* SwitchRow.swift in Sources */,
+				271DED06234CC7EF009DAC37 /* SettingsRewardsSectionView.swift in Sources */,
+				271DED01234CC7EF009DAC37 /* SettingsUX.swift in Sources */,
+				271DECD2234CC7EF009DAC37 /* AdsNotificationHandler.swift in Sources */,
+				271DED28234CC7EF009DAC37 /* POPExtensions.swift in Sources */,
+				271DED19234CC7EF009DAC37 /* LoaderView.swift in Sources */,
+				271DED1B234CC7EF009DAC37 /* QRCode.swift in Sources */,
+				271DED11234CC7EF009DAC37 /* PopoverNavigationController.swift in Sources */,
+				271DECFE234CC7EF009DAC37 /* WalletDetailsView.swift in Sources */,
+				271DECFB234CC7EF009DAC37 /* TipsSummaryTableCell.swift in Sources */,
+				271DECC8234CC7EF009DAC37 /* AddFundsView.swift in Sources */,
+				271DED1E234CC7EF009DAC37 /* GradientView.swift in Sources */,
+				271DECDF234CC7EF009DAC37 /* SendTipButton.swift in Sources */,
+				271DECF7234CC7EF009DAC37 /* SettingsViewDetailsButton.swift in Sources */,
+				271DED18234CC7EF009DAC37 /* GrabberView.swift in Sources */,
+				271DED2A234CC7EF009DAC37 /* UIImageExtensions.swift in Sources */,
+				271DED1D234CC7EF009DAC37 /* Colors.swift in Sources */,
+				271DED24234CC7EF009DAC37 /* ArrayExtensions.swift in Sources */,
+				271DECD7234CC7EF009DAC37 /* TippingViewController.swift in Sources */,
+				271DECF5234CC7EF009DAC37 /* SettingsGrantSectionView.swift in Sources */,
+				271DED00234CC7EF009DAC37 /* WalletSummaryView.swift in Sources */,
+				271DECE2234CC7EF009DAC37 /* WalletViewController.swift in Sources */,
+				271DED1F234CC7EF009DAC37 /* FaviconData.swift in Sources */,
+				271DECF4234CC7EF009DAC37 /* SettingsView.swift in Sources */,
+				271DECE7234CC7EF009DAC37 /* WalletNotificationView.swift in Sources */,
+				271DECE0234CC7EF009DAC37 /* WalletHeaderView.swift in Sources */,
+				271DECEE234CC7EF009DAC37 /* RewardsSummaryView.swift in Sources */,
+				271DECC7234CC7EF009DAC37 /* RewardsDisabledView.swift in Sources */,
+				271DECE8234CC7EF009DAC37 /* RewardsNotificationViewBuilder.swift in Sources */,
+				271DECC9234CC7EF009DAC37 /* AddFundsViewController.swift in Sources */,
+				271DECEB234CC7EF009DAC37 /* GrantsListViewController.swift in Sources */,
+				271DECE4234CC7EF009DAC37 /* WalletView.swift in Sources */,
+				271DECCD234CC7EF009DAC37 /* RewardsUIDelegate.swift in Sources */,
+				271DECDB234CC7EF009DAC37 /* TippingOverviewView.swift in Sources */,
+				271DECDC234CC7EF009DAC37 /* TippingSelectionView.swift in Sources */,
+				271DED15234CC7EF009DAC37 /* PublisherIconCircleImageView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		271DEC1D234CC75F009DAC37 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27FA2D4C234CC95A004D5D2D /* DateExtensionsTests.swift in Sources */,
+				27FA2D4B234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift in Sources */,
+				27FA2D4A234CC95A004D5D2D /* BATValueTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27F443912135E11200296C58 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5254,6 +6082,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		271DEC24234CC760009DAC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 271DEC18234CC75F009DAC37 /* BraveRewardsUI */;
+			targetProxy = 271DEC23234CC760009DAC37 /* PBXContainerItemProxy */;
+		};
+		271DEC26234CC760009DAC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F84B21BD1A090F8100AAB793 /* Client */;
+			targetProxy = 271DEC25234CC760009DAC37 /* PBXContainerItemProxy */;
+		};
+		271DEC2D234CC760009DAC37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 271DEC18234CC75F009DAC37 /* BraveRewardsUI */;
+			targetProxy = 271DEC2C234CC760009DAC37 /* PBXContainerItemProxy */;
+		};
 		27F4439E2135E11200296C58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 27F443942135E11200296C58 /* BraveShareTo */;
@@ -5657,6 +6500,618 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		271DEC30234CC760009DAC37 /* Fennec */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraveRewards",
+					"$(PROJECT_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BraveRewardsUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveRewardsUI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Fennec;
+		};
+		271DEC31234CC760009DAC37 /* Fennec_Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraveRewards",
+					"$(PROJECT_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BraveRewardsUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveRewardsUI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Fennec_Enterprise;
+		};
+		271DEC32234CC760009DAC37 /* Firefox */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraveRewards",
+					"$(PROJECT_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BraveRewardsUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveRewardsUI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Firefox;
+		};
+		271DEC33234CC760009DAC37 /* FirefoxBeta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraveRewards",
+					"$(PROJECT_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BraveRewardsUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveRewardsUI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = FirefoxBeta;
+		};
+		271DEC34234CC760009DAC37 /* Fennec */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraveRewards",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BraveRewardsUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kylehickinson.BraveRewardsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Client.app/Client";
+			};
+			name = Fennec;
+		};
+		271DEC35234CC760009DAC37 /* Fennec_Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraveRewards",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BraveRewardsUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kylehickinson.BraveRewardsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Client.app/Client";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Fennec_Enterprise;
+		};
+		271DEC36234CC760009DAC37 /* Firefox */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraveRewards",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BraveRewardsUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kylehickinson.BraveRewardsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Client.app/Client";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Firefox;
+		};
+		271DEC37234CC760009DAC37 /* FirefoxBeta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraveRewards",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = BraveRewardsUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kylehickinson.BraveRewardsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Client.app/Client";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = FirefoxBeta;
+		};
 		27F443A02135E11200296C58 /* Fennec */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7212,7 +8667,7 @@
 					"$(inherited)",
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Checkouts/brave-rewards-ios/lib",
+					"$(PROJECT_DIR)/BraveRewards",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7427,7 +8882,7 @@
 					"$(inherited)",
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Checkouts/brave-rewards-ios/lib",
+					"$(PROJECT_DIR)/BraveRewards",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7706,7 +9161,7 @@
 					"$(inherited)",
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Checkouts/brave-rewards-ios/lib",
+					"$(PROJECT_DIR)/BraveRewards",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7939,7 +9394,7 @@
 					"$(inherited)",
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Checkouts/brave-rewards-ios/lib",
+					"$(PROJECT_DIR)/BraveRewards",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8009,6 +9464,28 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		271DEC39234CC760009DAC37 /* Build configuration list for PBXNativeTarget "BraveRewardsUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				271DEC30234CC760009DAC37 /* Fennec */,
+				271DEC31234CC760009DAC37 /* Fennec_Enterprise */,
+				271DEC32234CC760009DAC37 /* Firefox */,
+				271DEC33234CC760009DAC37 /* FirefoxBeta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Fennec;
+		};
+		271DEC3A234CC760009DAC37 /* Build configuration list for PBXNativeTarget "BraveRewardsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				271DEC34234CC760009DAC37 /* Fennec */,
+				271DEC35234CC760009DAC37 /* Fennec_Enterprise */,
+				271DEC36234CC760009DAC37 /* Firefox */,
+				271DEC37234CC760009DAC37 /* FirefoxBeta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Fennec;
+		};
 		27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "BraveShareTo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
