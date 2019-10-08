@@ -182,17 +182,22 @@ int BraveRequestHandler::OnHeadersReceived(
     return net::OK;
   }
 
-  callbacks_[ctx->request_identifier] = std::move(callback);
+  // callbacks_[ctx->request_identifier] = std::move(callback);
   ctx->event_type = brave::kOnHeadersReceived;
   ctx->original_response_headers = original_response_headers;
   ctx->override_response_headers = override_response_headers;
   ctx->allowed_unsafe_redirect_url = allowed_unsafe_redirect_url;
 
-  base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::IO},
-                           base::Bind(&BraveRequestHandler::RunNextCallback,
-                                      weak_factory_.GetWeakPtr(),
-                                      ctx));
-  return net::ERR_IO_PENDING;
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+  // Workaround for beta/stable branches to fix a race condition and a crash
+  // (issues/6193).
+  webtorrent::OnHeadersReceived_TorrentRedirectWork(original_response_headers,
+                                                    override_response_headers,
+                                                    allowed_unsafe_redirect_url,
+                                                    base::Closure(),
+                                                    ctx);
+#endif  // BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+  return net::OK;
 }
 
 void BraveRequestHandler::OnURLRequestDestroyed(
