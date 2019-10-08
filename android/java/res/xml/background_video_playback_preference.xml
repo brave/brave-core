@@ -10,5 +10,5 @@
         android:key="background_video_playback"
         android:title="@string/prefs_background_video_playback"
         android:summaryOn="@string/prefs_background_video_playback_on"
-        android:summaryOff="@string/prefs_background_video_playback_summary_disabled" />
+        android:summaryOff="@string/text_disabled" />
 </android.support.v7.preference.PreferenceScreen>

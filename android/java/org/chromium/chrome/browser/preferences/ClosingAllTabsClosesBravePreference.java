@@ -18,9 +18,7 @@ public class ClosingAllTabsClosesBravePreference
     private static final String CLOSING_ALL_TABS_CLOSES_BRAVE_KEY = "closing_all_tabs_closes_brave";
 
     public static int getPreferenceSummary() {
-        return CloseBraveManager.getClosingAllTabsClosesBraveEnabled()
-                ? R.string.prefs_closing_all_tabs_closes_brave_summary_enabled
-                : R.string.prefs_closing_all_tabs_closes_brave_summary_disabled;
+        return CloseBraveManager.getClosingAllTabsClosesBraveEnabled() ? R.string.text_on : R.string.text_off;
     }
 
     @Override

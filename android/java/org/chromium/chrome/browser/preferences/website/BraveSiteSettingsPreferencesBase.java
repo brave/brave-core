@@ -90,8 +90,7 @@ public class BraveSiteSettingsPreferencesBase extends PreferenceFragmentCompat {
             Preference p = findPreference(PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY);
             boolean enabled = ContextUtils.getAppSharedPreferences().getBoolean(
                 PlayYTVideoInBrowserPreferences.PLAY_YT_VIDEO_IN_BROWSER_KEY, true);
-            p.setSummary(enabled ? R.string.settings_play_yt_video_in_browser_enabled_summary
-                                 : R.string.settings_play_yt_video_in_browser_off);
+            p.setSummary(enabled ? R.string.text_enabled : R.string.text_disabled);
         } else {
             Preference p = findPreference(DESKTOP_MODE_CATEGORY_KEY);
             boolean enabled = ContextUtils.getAppSharedPreferences().getBoolean(

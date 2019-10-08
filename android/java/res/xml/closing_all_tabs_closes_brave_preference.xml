@@ -9,6 +9,6 @@
     <org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat
         android:key="closing_all_tabs_closes_brave"
         android:title="@string/prefs_closing_all_tabs_closes_brave"
-        android:summaryOn="@string/prefs_closing_all_tabs_closes_brave_summary_enabled"
-        android:summaryOff="@string/prefs_closing_all_tabs_closes_brave_summary_disabled" />
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
 </android.support.v7.preference.PreferenceScreen>

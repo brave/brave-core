@@ -171,12 +171,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
         If enabled, videos will be played in Brave instead of corresponding app
       </message>
-      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_OFF" desc="Desc for desktop mode in site settings">
-        Disabled
-      </message>
-      <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ENABLED_SUMMARY" desc="Summary for play youtube video in brave  in site settings">
-        Enabled
-      </message>
       <message name="IDS_PREFS_SECTION_CONTROLS" desc="Title for controls section in main preferences screen">
         Controls
       </message>
@@ -189,17 +183,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
         Experimental. Enables play audio from video in background when tab is not active or device screen is turned off. Try to switch to desktop mode if this feature is not working.
       </message>
-      <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_SUMMARY_ENABLED" desc="Summary for background video playback is enabled">
+      <message name="IDS_TEXT_ENABLED" desc="Text indicating that an option is enabled">
         Enabled
       </message>
-      <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_SUMMARY_DISABLED" desc="Summary for background video playback is disabled">
+      <message name="IDS_TEXT_DISABLED" desc="Text indicating that an option is disabled">
         Disabled
-      </message>
-      <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE_SUMMARY_ENABLED" desc="Sumamry for closing all tabs closes brave is enabled">
-        On
-      </message>
-      <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE_SUMMARY_DISABLED" desc="Sumamry for closing all tabs closes brave is disabled">
-        Off
       </message>
       <message name="IDS_PREFS_SECTION_DISPLAY" desc='Title of "Display" section of preferences. [CHAR-LIMIT=32]'>
         Display
