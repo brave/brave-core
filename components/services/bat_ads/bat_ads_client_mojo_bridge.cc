@@ -96,6 +96,15 @@ bool BatAdsClientMojoBridge::IsEnabled() const {
   return is_enabled;
 }
 
+bool BatAdsClientMojoBridge::CanShowBackgroundNotifications() const {
+  if (!connected())
+    return false;
+
+  bool can_show;
+  bat_ads_client_->CanShowBackgroundNotifications(&can_show);
+  return can_show;
+}
+
 const std::string BatAdsClientMojoBridge::GetLocale() const {
   if (!connected()) {
     return "en-US";

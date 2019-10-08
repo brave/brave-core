@@ -67,6 +67,7 @@ void RewardsNotificationServiceImpl::AddNotification(
   RewardsNotification rewards_notification(
       id, type, GenerateRewardsNotificationTimestamp(), std::move(args));
   rewards_notifications_[id] = rewards_notification;
+  StoreRewardsNotifications();
   OnNotificationAdded(rewards_notification);
 
   if (only_once) {
@@ -91,11 +92,17 @@ void RewardsNotificationServiceImpl::DeleteNotification(
     rewards_notification = rewards_notifications_[id];
     rewards_notifications_.erase(id);
   }
+  StoreRewardsNotifications();
+
   OnNotificationDeleted(rewards_notification);
 }
 
 void RewardsNotificationServiceImpl::DeleteAllNotifications() {
   rewards_notifications_.clear();
+#if defined(OS_ANDROID)
+  rewards_notifications_displayed_.clear();
+  StoreRewardsNotifications();
+#endif
   OnAllNotificationsDeleted();
 }
 
@@ -304,7 +311,11 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
 }
 
 bool RewardsNotificationServiceImpl::IsUGPGrant(const std::string& grant_type) {
-  return (grant_type == "ugp");
+#if defined(OS_ANDROID)
+      return (grant_type == "android");
+#else
+      return (grant_type == "ugp");
+#endif
 }
 
 std::string RewardsNotificationServiceImpl::GetGrantIdPrefix(
@@ -330,10 +341,16 @@ void RewardsNotificationServiceImpl::OnGrant(RewardsService* rewards_service,
       : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS;
 
   RewardsNotificationService::RewardsNotificationArgs args;
+
+  bool only_once = true;
+#if defined(OS_ANDROID)
+  only_once = false;
+#endif
+
   AddNotification(notification_type,
                   args,
                   prefix + properties.promotionId,
-                  true);
+                  only_once);
 }
 
 void RewardsNotificationServiceImpl::OnGrantFinish(

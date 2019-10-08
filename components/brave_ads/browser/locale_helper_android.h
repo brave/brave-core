@@ -12,12 +12,16 @@
 
 namespace brave_ads {
 
+  static char kDefaultCountryCode[] = "US";
+
 class LocaleHelperAndroid : public LocaleHelper {
  public:
+  static LocaleHelperAndroid* GetInstance();
+  static const std::string GetCountryCode(const std::string& locale);
+
+ protected:
   LocaleHelperAndroid() = default;
   ~LocaleHelperAndroid() override = default;
-
-  static LocaleHelperAndroid* GetInstance();
 
  private:
   // LocaleHelper impl

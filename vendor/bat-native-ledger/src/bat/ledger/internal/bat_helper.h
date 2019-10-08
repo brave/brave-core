@@ -136,7 +136,6 @@ struct GRANT {
 
   // load from json string
   bool loadFromJson(const std::string & json);
-
   std::string altcurrency;
   std::string probi;
   uint64_t expiryTime;
@@ -416,6 +415,9 @@ bool getJSONResponse(const std::string& json,
 
 bool getJSONAddresses(const std::string& json,
                       std::map<std::string, std::string>* addresses);
+
+bool getJSONMessage(const std::string& json,
+                     std::string* message);
 
 std::vector<uint8_t> generateSeed();
 

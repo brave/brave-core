@@ -25,3 +25,4 @@ static_library("lib") {
     "//services/service_manager/public/cpp",
   ]
 }
+

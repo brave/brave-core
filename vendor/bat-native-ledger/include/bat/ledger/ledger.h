@@ -90,7 +90,8 @@ class LEDGER_EXPORT Ledger {
   virtual void Initialize(InitializeCallback) = 0;
 
   // returns false if wallet initialization is already in progress
-  virtual void CreateWallet(CreateWalletCallback callback) = 0;
+  virtual void CreateWallet(const std::string& safetynet_token,
+                            CreateWalletCallback callback) = 0;
 
   virtual void DoDirectTip(const std::string& publisher_key,
                            int amount,
@@ -176,6 +177,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void FetchGrants(const std::string& lang,
                            const std::string& paymentId,
+                           const std::string& safetynet_token,
                            ledger::FetchGrantsCallback callback) const = 0;
 
   virtual void SolveGrantCaptcha(const std::string& solution,
@@ -184,6 +186,12 @@ class LEDGER_EXPORT Ledger {
   virtual void GetGrantCaptcha(
       const std::vector<std::string>& headers,
       GetGrantCaptchaCallback callback) const = 0;
+
+  virtual void ApplySafetynetToken(const std::string& promotion_id,
+      const std::string& token) const = 0;
+
+  virtual void GetGrantViaSafetynetCheck(
+      const std::string& promotion_id) const = 0;
 
   virtual std::string GetWalletPassphrase() const = 0;
 

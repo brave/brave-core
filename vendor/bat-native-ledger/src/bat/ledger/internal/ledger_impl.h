@@ -75,7 +75,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void Initialize(ledger::InitializeCallback callback) override;
 
-  void CreateWallet(ledger::CreateWalletCallback callback) override;
+  void CreateWallet(const std::string& safetynet_token,
+                    ledger::CreateWalletCallback callback) override;
 
   void SetPublisherInfo(
       ledger::PublisherInfoPtr publisher_info);
@@ -183,6 +184,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void FetchGrants(const std::string& lang,
                    const std::string& paymentId,
+                   const std::string& safetynet_token,
                    ledger::FetchGrantsCallback callback) const override;
 
   void OnGrants(ledger::Result result,
@@ -196,8 +198,17 @@ class LedgerImpl : public ledger::Ledger,
   void SolveGrantCaptcha(const std::string& solution,
                          const std::string& promotionId) const override;
 
+  void ApplySafetynetToken(
+      const std::string& promotion_id,
+      const std::string& token) const override;
+
   void OnGrantFinish(ledger::Result result,
                      const braveledger_bat_helper::GRANT& grant);
+
+  void GetGrantViaSafetynetCheck(
+      const std::string& promotion_id) const override;
+  void OnGrantViaSafetynetCheck(
+      const std::string& promotion_id, const std::string& nonce);
 
   std::string GetWalletPassphrase() const override;
 

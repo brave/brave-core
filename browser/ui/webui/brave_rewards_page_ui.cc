@@ -28,14 +28,25 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
+
+#if !defined(OS_ANDROID)
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
+#else
+#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
+#include "components/grit/components_resources.h"
+#include "components/grit/components_scaled_resources.h"
+#include "content/public/browser/url_data_source.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
+#include "components/favicon_base/favicon_url_parser.h"
+#endif
+
 
 using content::WebUIMessageHandler;
 
@@ -260,6 +271,14 @@ RewardsDOMHandler::~RewardsDOMHandler() {
 }
 
 void RewardsDOMHandler::RegisterMessages() {
+#if defined(OS_ANDROID)
+  // Create our favicon data source.
+  Profile* profile = Profile::FromWebUI(web_ui());
+  content::URLDataSource::Add(profile,
+                              std::make_unique<FaviconSource>(profile,
+                              chrome::FaviconUrlFormat::kFaviconLegacy));
+#endif
+
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
       base::BindRepeating(&RewardsDOMHandler::HandleCreateWalletRequested,
       base::Unretained(this)));
@@ -579,9 +598,21 @@ void RewardsDOMHandler::OnGrantCaptcha(
 void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
   CHECK_EQ(2U, args->GetSize());
   if (rewards_service_) {
+#if defined(OS_ANDROID)
+    std::string promotion_id;
+    args->GetString(0, &promotion_id);
+    // TODO(samartnik): we need different call from JS,
+    // currently using this one to make sure it all work
+    // As soon as @ryanml adds separate action for safetynet,
+    // we will move that code
+    rewards_service_->GetGrantViaSafetynetCheck(promotion_id);
+#else
+  if (rewards_service_) {
     const std::string promotion_id = args->GetList()[0].GetString();
     const std::string promotion_type = args->GetList()[1].GetString();
     rewards_service_->GetGrantCaptcha(promotion_id, promotion_type);
+  }
+#endif
   }
 }
 
@@ -734,7 +765,20 @@ void RewardsDOMHandler::OnNotificationAdded(
 void RewardsDOMHandler::OnNotificationDeleted(
     brave_rewards::RewardsNotificationService* rewards_notification_service,
     const brave_rewards::RewardsNotificationService::RewardsNotification&
-        notification) {}
+        notification) {
+#if defined(OS_ANDROID)
+  if (notification.type_ ==
+      brave_rewards::RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
+      && web_ui()->CanCallJavascript()) {
+    base::DictionaryValue finish;
+    finish.SetInteger("status", false);
+    finish.SetInteger("expiryTime", 0);
+    finish.SetString("probi", "0");
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", finish);
+  }
+#endif
+}
 
 void RewardsDOMHandler::OnAllNotificationsDeleted(
     brave_rewards::RewardsNotificationService* rewards_notification_service) {}

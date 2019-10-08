@@ -50,6 +50,7 @@ struct ClientState {
   std::string search_url;
   bool shop_activity;
   std::string shop_url;
+  std::string version_code;
 };
 
 }  // namespace ads

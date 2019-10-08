@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/ad_notification.h"
+#include "bat/ads/notification_info.h"
 
 #include "base/strings/utf_string_conversions.h"
 #include "ui/message_center/public/cpp/notification.h"
@@ -45,7 +46,7 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
       text,
       gfx::Image(),
       base::string16(),
-      GURL("chrome://brave_ads/?" + notification_info.id),
+      GURL(kBraveAdsUrlPrefix + notification_info.id),
       message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
           kNotifierId),
       notification_data,

@@ -42,8 +42,10 @@
 #include "chrome/browser/notifications/notification_display_service_impl.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "chrome/browser/profiles/profile.h"
+#if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#endif
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/common/buildflags.h"
@@ -67,6 +69,7 @@
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/android/service_tab_launcher.h"
+#include "content/public/browser/page_navigator.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;
@@ -599,16 +602,22 @@ void AdsServiceImpl::OnInitialize(
     const int32_t result) {
   if (result != ads::Result::SUCCESS) {
     LOG(ERROR) << "Failed to initialize ads";
-    return;
+    is_initialized_ = false;
+  } else {
+    is_initialized_ = true;
+
+    // OnBraveAdsServiceReady is implemented for Android for now
+    #if defined(OS_ANDROID)
+      auto* display_service_impl =
+          static_cast<NotificationDisplayServiceImpl*>(display_service_);
+      display_service_impl->OnBraveAdsServiceReady(is_initialized_);
+    #endif
+
+    MaybeViewAd();
+
+    StartCheckIdleStateTimer();
   }
-
-  is_initialized_ = true;
-
-  MaybeViewAd();
-
-  StartCheckIdleStateTimer();
 }
-
 
 void AdsServiceImpl::ShutdownBatAds() {
   LOG(INFO) << "Shutting down ads";
@@ -969,6 +978,10 @@ void AdsServiceImpl::OnURLLoaderComplete(
   }
 
   callback(response_code, response_body ? *response_body : "", headers);
+}
+
+bool AdsServiceImpl::CanShowBackgroundNotifications() const {
+  return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
 }
 
 void AdsServiceImpl::OnGetAdsForCategory(
@@ -1361,9 +1374,12 @@ bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
   // |prefs::kEnabled| is set to |true|, |prefs::kIdleThreshold| does not exist,
   // |prefs::kVersion| does not exist and it is not the first time the browser
   // has run for this user
-
+#if !defined(OS_ANDROID)
   return GetBooleanPref(prefs::kEnabled) && !PrefExists(prefs::kIdleThreshold)
       && !PrefExists(prefs::kVersion) && !first_run::IsChromeFirstRun();
+#else
+  return false;
+#endif
 }
 
 void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
@@ -1629,6 +1645,23 @@ std::string AdsServiceImpl::GetStringPref(
   return value;
 }
 
+void AdsServiceImpl::ResetTheWholeState(
+    const base::Callback<void(bool)>& callback) {
+  SetEnabled(false);
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ResetOnFileTaskRunner,
+                     base_path_),
+      base::BindOnce(&AdsServiceImpl::OnResetTheWholeState,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnResetTheWholeState(
+    base::Callback<void(bool)> callback,
+    bool success) {
+  callback.Run(success);
+}
+
 void AdsServiceImpl::SetStringPref(
     const std::string& path,
     const std::string& value) {
@@ -1808,7 +1841,13 @@ bool AdsServiceImpl::ShouldShowNotifications() const {
 
 void AdsServiceImpl::CloseNotification(
     const std::string& id) {
-  display_service_->Close(NotificationHandler::Type::BRAVE_ADS, id);
+  // we might want to close Brave ads notification
+  // between browser sessions and
+  // NotificationPlatformBridgeAndroid::regenerated_notification_infos_
+  // possibly was purged already, so we need a way to identify a Brave ad.
+  std::string prefixed_id(kBraveAdsUrlPrefix);
+  prefixed_id += id;
+  display_service_->Close(NotificationHandler::Type::BRAVE_ADS, prefixed_id);
 }
 
 void AdsServiceImpl::SetCatalogIssuers(

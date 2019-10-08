@@ -120,7 +120,8 @@ void LedgerImpl::Initialize(ledger::InitializeCallback callback) {
   LoadLedgerState(std::move(on_load));
 }
 
-void LedgerImpl::CreateWallet(ledger::CreateWalletCallback callback) {
+void LedgerImpl::CreateWallet(const std::string& safetynet_token,
+    ledger::CreateWalletCallback callback) {
   if (initializing_) {
     return;
   }
@@ -130,7 +131,7 @@ void LedgerImpl::CreateWallet(ledger::CreateWalletCallback callback) {
       this,
       _1,
       std::move(callback));
-  bat_wallet_->CreateWalletIfNecessary(std::move(on_wallet));
+  bat_wallet_->CreateWalletIfNecessary(safetynet_token, std::move(on_wallet));
 }
 
 braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(
@@ -611,8 +612,9 @@ void LedgerImpl::FetchWalletProperties(
 
 void LedgerImpl::FetchGrants(const std::string& lang,
                              const std::string& payment_id,
+                             const std::string& safetynet_token,
                              ledger::FetchGrantsCallback callback) const {
-  bat_grants_->FetchGrants(lang, payment_id, callback);
+  bat_grants_->FetchGrants(lang, payment_id, safetynet_token, callback);
 }
 
 void LedgerImpl::OnGrants(ledger::Result result,
@@ -673,7 +675,7 @@ void LedgerImpl::OnRecoverWallet(
 void LedgerImpl::SolveGrantCaptcha(
     const std::string& solution,
     const std::string& promotionId) const {
-  bat_grants_->SetGrant(solution, promotionId);
+  bat_grants_->SetGrant(solution, promotionId, "");
 }
 
 void LedgerImpl::OnGrantFinish(ledger::Result result,
@@ -724,7 +726,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
   if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
-    FetchGrants(std::string(), std::string(),
+    FetchGrants(std::string(), std::string(), std::string(),
                 [](ledger::Result _, std::vector<ledger::GrantPtr> __){});
   }
 
@@ -1546,6 +1548,21 @@ void LedgerImpl::RemoveTransferFee(
     const std::string& wallet_type,
     const std::string& id) {
   ledger_client_->RemoveTransferFee(wallet_type, id);
+}
+
+void LedgerImpl::GetGrantViaSafetynetCheck(
+    const std::string& promotion_id) const {
+  bat_wallet_->GetGrantViaSafetynetCheck(promotion_id);
+}
+
+void LedgerImpl::OnGrantViaSafetynetCheck(
+    const std::string& promotion_id, const std::string& nonce) {
+  ledger_client_->OnGrantViaSafetynetCheck(promotion_id, nonce);
+}
+
+void LedgerImpl::ApplySafetynetToken(
+    const std::string& promotion_id, const std::string& token) const {
+  bat_grants_->SetGrant("", promotion_id, token);
 }
 
 }  // namespace bat_ledger

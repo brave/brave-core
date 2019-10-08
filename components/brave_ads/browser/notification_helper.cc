@@ -19,6 +19,10 @@ bool NotificationHelper::ShowMyFirstAdNotification() const {
   return false;
 }
 
+bool NotificationHelper::CanShowBackgroundNotifications() const {
+  return true;
+}
+
 #if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)  // NOLINT
 NotificationHelper* NotificationHelper::GetInstance() {
   // just return a dummy notification helper for all other platforms

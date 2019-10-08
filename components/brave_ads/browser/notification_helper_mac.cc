@@ -21,6 +21,10 @@ bool NotificationHelperMac::ShowMyFirstAdNotification() const {
   return false;
 }
 
+bool NotificationHelperMac::CanShowBackgroundNotifications() const {
+  return true;
+}
+
 NotificationHelperMac* NotificationHelperMac::GetInstance() {
   return base::Singleton<NotificationHelperMac>::get();
 }

@@ -29,6 +29,8 @@ class NotificationHelperWin :
 
   bool ShowMyFirstAdNotification() const override;
 
+  bool CanShowBackgroundNotifications() const override;
+
   friend struct base::DefaultSingletonTraits<NotificationHelperWin>;
   DISALLOW_COPY_AND_ASSIGN(NotificationHelperWin);
 };

@@ -110,6 +110,9 @@ class AdsService : public KeyedService {
       const bool flagged,
       OnToggleFlagAdCallback callback) = 0;
 
+  virtual void ResetTheWholeState(
+      const base::Callback<void(bool)>& callback) = 0;
+
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);
 };

@@ -6,13 +6,12 @@
 #include <string>
 
 #include "brave/components/brave_ads/browser/notification_helper_android.h"
-#include "jni/NotificationSystemStatusUtil_jni.h"
-#include "jni/BraveAds_jni.h"
-#include "jni/BraveAdsSignupDialog_jni.h"
+#include "chrome/android/chrome_jni_headers/NotificationSystemStatusUtil_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveAds_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveAdsSignupDialog_jni.h"
+#include "brave/components/brave_ads/browser/background_helper.h"
 #include "base/android/jni_string.h"
 #include "base/system/sys_info.h"
-
-using base::Android;
 
 namespace brave_ads {
 
@@ -30,14 +29,20 @@ NotificationHelperAndroid::NotificationHelperAndroid() = default;
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
 bool NotificationHelperAndroid::ShouldShowNotifications() const {
-  JNIEnv* env = AttachCurrentThread();
+  JNIEnv* env = base::android::AttachCurrentThread();
   int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
   bool is_notifications_enabled = (status == kAppNotificationsStatusEnabled ||
       status == kAppNotificationStatusUndeterminable);
 
   bool is_notification_channel_enabled = IsBraveAdsNotificationChannelEnabled();
 
-  return is_notifications_enabled && is_notification_channel_enabled;
+  auto is_foreground = BackgroundHelper::GetInstance()->IsForeground();
+  auto should_show_notifications =
+      CanShowBackgroundNotifications() || is_foreground;
+
+  return is_notifications_enabled &&
+         is_notification_channel_enabled &&
+         should_show_notifications;
 }
 
 bool NotificationHelperAndroid::ShowMyFirstAdNotification() const {
@@ -45,10 +50,15 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() const {
     return false;
   }
 
-  JNIEnv* env = AttachCurrentThread();
+  JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveAdsSignupDialog_enqueueOobeNotificationNative(env);
 
   return true;
+}
+
+bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  return Java_BraveAdsSignupDialog_showAdsInBackground(env);
 }
 
 bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled() const {
@@ -56,7 +66,7 @@ bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled() const {
     return true;
   }
 
-  JNIEnv* env = AttachCurrentThread();
+  JNIEnv* env = base::android::AttachCurrentThread();
   auto j_channel_id = Java_BraveAds_getBraveAdsChannelId(env);
   std::string channel_id = ConvertJavaStringToUTF8(env, j_channel_id);
 

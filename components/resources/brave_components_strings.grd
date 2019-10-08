@@ -216,6 +216,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next payment date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED" desc="">Ad notifications received this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED" desc="">Sorry! Ads are not yet available in your region.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE" desc="">Brave Rewards and Ads are not available on your device at this time.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAGES_VIEWED" desc="">Ad pages viewed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR" desc="">Maximum number of ads displayed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1" desc="">1 ad per hour</message>
@@ -234,6 +235,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_DESC" desc="">Set up recurring monthly contributions so you can support sites continuously.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_EMPTY" desc="">No monthly contributions set up yet.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_DISABLED_TEXT" desc="">Support your favorite sites with recurring monthly contributions. You can set this up from the tipping banner.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT" desc="">Coming soon.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE" desc="">Earnings are paid every month.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO" desc="">Set your desired frequency to increase or decrease earnings.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1" desc="">Reward creators for the content you love.</message>
@@ -425,6 +427,14 @@
       <message name="IDS_BRAVE_UI_MONTH_SEP" desc="">September</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Tips!</message>
       <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">A free token grant is available.</message>
+      <message name="IDS_BRAVE_UI_GRANT_TITLE_UGP" desc="Title for a reward grant when it has been claimed">It's your lucky day!</message>
+      <message name="IDS_BRAVE_UI_GRANT_SUBTITLE_UGP" desc="Subtitle for a reward grant when it has been claimed">Your token grant is on its way.</message>
+      <message name="IDS_BRAVE_UI_GRANT_AMOUNT_TITLE_UGP" desc="">Free Token Grant</message>
+      <message name="IDS_BRAVE_UI_GRANT_DATE_TITLE_UGP" desc="">Grant Expiration Date</message>
+      <message name="IDS_BRAVE_UI_GRANT_TITLE_ADS" desc="Title for an ads reward when it has been claimed">Congrats!</message>
+      <message name="IDS_BRAVE_UI_GRANT_SUBTITLE_ADS" desc="Subtitle for an ads reward when it has been claimed">You've successfully claimed ads rewards.</message>
+      <message name="IDS_BRAVE_UI_GRANT_AMOUNT_TITLE_ADS" desc="">Ads Rewards</message>
+      <message name="IDS_BRAVE_UI_GRANT_DATE_TITLE_ADS" desc="">Rewards Period</message>
       <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">Free Token Grant</message>
       <message name="IDS_BRAVE_UI_MONTHLY_CONTRIBUTION" desc="">Monthly Contribution</message>
       <message name="IDS_BRAVE_UI_NEXT_CONTRIBUTION" desc="">Next Contribution</message>
@@ -500,6 +510,7 @@
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Use your recovery key to restore your wallet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3" desc="">Restoring with a recovery key will replace your current wallet. So make sure you empty or back up your current wallet before restoring.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT4" desc="">Enter your recovery key or</message>
+      <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
       <message name="IDS_BRAVE_UI_REWARDS_WHY" desc="">Why Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_SAVE_AS_FILE" desc="">Save as File</message>

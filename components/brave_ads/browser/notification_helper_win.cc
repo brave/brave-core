@@ -21,6 +21,10 @@ bool NotificationHelperWin::ShowMyFirstAdNotification() const {
   return false;
 }
 
+bool NotificationHelperWin::CanShowBackgroundNotifications() const {
+  return true;
+}
+
 NotificationHelperWin* NotificationHelperWin::GetInstance() {
   return base::Singleton<NotificationHelperWin>::get();
 }

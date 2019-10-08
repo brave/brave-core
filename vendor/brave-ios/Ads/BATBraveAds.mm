@@ -318,6 +318,11 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   return UIApplication.sharedApplication.applicationState == UIApplicationStateActive;
 }
 
+- (bool)canShowBackgroundNotifications
+{
+    return false;
+}
+
 - (bool)isNetworkConnectionAvailable
 {
   return self.networkConnectivityAvailable;

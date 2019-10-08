@@ -35,6 +35,11 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 
+#if defined(OS_ANDROID)
+#include "base/system/sys_info.h"
+#include "base/android/build_info.h"
+#endif
+
 #include "url/gurl.h"
 
 using std::placeholders::_1;
@@ -149,6 +154,11 @@ void AdsImpl::InitializeStep4(
 
   NotificationAllowedCheck(false);
 
+#if defined(OS_ANDROID)
+    RemoveAllNotificationsAfterReboot();
+    RemoveAllNotificationsAfterUpdate();
+#endif
+
   client_->UpdateAdUUID();
 
   if (IsMobile()) {
@@ -163,6 +173,35 @@ void AdsImpl::InitializeStep4(
 
   ads_serve_->DownloadCatalog();
 }
+
+#if defined(OS_ANDROID)
+void AdsImpl::RemoveAllNotificationsAfterReboot() {
+  // ads notifications don't sustain reboot, so remove all
+  auto ads_shown_history = client_->GetAdsShownHistory();
+  if (!ads_shown_history.empty()) {
+    uint64_t ad_shown_timestamp =
+        ads_shown_history.front().timestamp_in_seconds;
+    uint64_t boot_timestamp = Time::NowInSeconds() -
+        static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds());
+    if (ad_shown_timestamp <= boot_timestamp) {
+      notifications_->RemoveAll(false);
+    }
+  }
+}
+
+void AdsImpl::RemoveAllNotificationsAfterUpdate() {
+  std::string current_version_code(
+      base::android::BuildInfo::GetInstance()->package_version_code());
+  std::string last_version_code = client_->GetVersionCode();
+  if (last_version_code.empty()) {
+    // initial update of version_code
+    client_->SetVersionCode(current_version_code);
+  } else if (last_version_code != current_version_code) {
+    // ads notifications don't sustain app update, so remove them
+    notifications_->RemoveAll(false);
+  }
+}
+#endif
 
 bool AdsImpl::IsInitialized() {
   if (!is_initialized_ || !ads_client_->IsEnabled()) {
@@ -185,7 +224,7 @@ void AdsImpl::Shutdown(
     return;
   }
 
-  notifications_->CloseAll();
+  notifications_->RemoveAll(true);
 
   callback(SUCCESS);
 }
@@ -255,7 +294,7 @@ void AdsImpl::OnForeground() {
   is_foreground_ = true;
   GenerateAdReportingForegroundEvent();
 
-  if (IsMobile()) {
+  if (IsMobile() && !ads_client_->CanShowBackgroundNotifications()) {
     StartDeliveringNotifications();
   }
 }
@@ -268,7 +307,7 @@ void AdsImpl::OnBackground() {
   is_foreground_ = false;
   GenerateAdReportingBackgroundEvent();
 
-  if (IsMobile()) {
+  if (IsMobile() && !ads_client_->CanShowBackgroundNotifications()) {
     StopDeliveringNotifications();
   }
 }
@@ -378,7 +417,7 @@ void AdsImpl::NotificationEventViewed(
 void AdsImpl::NotificationEventClicked(
     const std::string& id,
     const NotificationInfo& notification) {
-  notifications_->Remove(id);
+  notifications_->Remove(id, true);
 
   GenerateAdReportingNotificationResultEvent(notification,
       NotificationResultInfoResultType::CLICKED);
@@ -390,7 +429,7 @@ void AdsImpl::NotificationEventClicked(
 void AdsImpl::NotificationEventDismissed(
     const std::string& id,
     const NotificationInfo& notification) {
-  notifications_->Remove(id);
+  notifications_->Remove(id, false);
 
   GenerateAdReportingNotificationResultEvent(notification,
       NotificationResultInfoResultType::DISMISSED);
@@ -402,10 +441,38 @@ void AdsImpl::NotificationEventDismissed(
 void AdsImpl::NotificationEventTimedOut(
     const std::string& id,
     const NotificationInfo& notification) {
-  notifications_->Remove(id);
+  notifications_->Remove(id, false);
 
   GenerateAdReportingNotificationResultEvent(notification,
       NotificationResultInfoResultType::TIMEOUT);
+}
+
+bool AdsImpl::IsDoNotDisturb() const {
+  if (!IsAndroid()) {
+    return false;
+  }
+
+  auto now = base::Time::Now();
+  base::Time::Exploded now_exploded;
+  now.LocalExplode(&now_exploded);
+
+  if (now_exploded.hour >= kDoNotDisturbToHour &&
+      now_exploded.hour <= kDoNotDisturbFromHour) {
+    return false;
+  }
+
+  return true;
+}
+
+bool AdsImpl::IsAndroid() const {
+  ClientInfo client_info;
+  ads_client_->GetClientInfo(&client_info);
+
+  if (client_info.platform != ANDROID_OS) {
+    return false;
+  }
+
+  return true;
 }
 
 void AdsImpl::OnTabUpdated(
@@ -850,13 +917,24 @@ void AdsImpl::CheckReadyAdServe(
       return;
     }
 
-    if (!IsForeground()) {
+    if (!IsAndroid() && !IsForeground()) {
       BLOG(INFO) << "Notification not made: Not in foreground";
       return;
     }
 
     if (IsMediaPlaying()) {
       BLOG(INFO) << "Notification not made: Media playing in browser";
+      return;
+    }
+
+    if (IsDoNotDisturb() && !IsForeground()) {
+      // TODO(Terry Mancey): Implement Log (#44)
+      // 'Notification not made', { reason: 'do not disturb while not in
+      // foreground' }
+
+      BLOG(INFO)
+          << "Notification not made: Do not disturb while not in foreground";
+
       return;
     }
 
@@ -1174,8 +1252,14 @@ bool AdsImpl::ShowAd(
       << std::endl << "  url: " << notification_info->url
       << std::endl << "  uuid: " << notification_info->uuid;
 
-  notifications_->Add(*notification_info);
-  ads_client_->ShowNotification(std::move(notification_info));
+  notifications_->PushBack(*notification_info);
+
+#if defined(OS_ANDROID)
+  if (notifications_->Count() > kMaximumAdNotifications) {
+    notifications_->PopFront(true);
+  }
+#endif
+
 
   client_->AppendCurrentTimeToCreativeSetHistory(ad.creative_set_id);
   client_->AppendCurrentTimeToCampaignHistory(ad.campaign_id);

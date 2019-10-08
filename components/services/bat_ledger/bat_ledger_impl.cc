@@ -74,11 +74,12 @@ void BatLedgerImpl::OnCreateWallet(
   delete holder;
 }
 
-void BatLedgerImpl::CreateWallet(CreateWalletCallback callback) {
+void BatLedgerImpl::CreateWallet(const std::string& safetynet_token,
+    CreateWalletCallback callback) {
   // deleted in OnCreateWallet
   auto* holder = new CallbackHolder<CreateWalletCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->CreateWallet(
+  ledger_->CreateWallet(safetynet_token,
       std::bind(BatLedgerImpl::OnCreateWallet, holder, _1));
 }
 
@@ -256,13 +257,24 @@ void BatLedgerImpl::OnFetchGrants(
 
 void BatLedgerImpl::FetchGrants(const std::string& lang,
     const std::string& payment_id,
+    const std::string& result_string,
     FetchGrantsCallback callback) {
   // deleted in OnFetchGrants
   auto* holder = new CallbackHolder<FetchGrantsCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->FetchGrants(lang, payment_id,
+  ledger_->FetchGrants(lang, payment_id, result_string,
       std::bind(BatLedgerImpl::OnFetchGrants, holder, _1, _2));
 }
+
+void BatLedgerImpl::GetGrantViaSafetynetCheck(const std::string& promotion_id) {
+  ledger_->GetGrantViaSafetynetCheck(promotion_id);
+}
+
+void BatLedgerImpl::ApplySafetynetToken(
+    const std::string& promotion_id, const std::string& result_string) {
+  ledger_->ApplySafetynetToken(promotion_id, result_string);
+}
+
 
 // static
 void BatLedgerImpl::OnGetGrantCaptcha(

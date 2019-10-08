@@ -25,6 +25,7 @@ class NativeAdsClient : public ads::AdsClient {
   bool IsNetworkConnectionAvailable() const override;
   void SetIdleThreshold(const int threshold) override;
   bool IsForeground() const override;
+  bool CanShowBackgroundNotifications() const override;
   const std::vector<std::string> GetUserModelLanguages() const override;
   void LoadUserModelForLanguage(const std::string & language, ads::OnLoadCallback callback) const override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;

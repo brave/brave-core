@@ -954,6 +954,10 @@ bool GRANT::loadFromJson(const std::string & json) {
 
   if (!error) {
     promotionId = d["promotionId"].GetString();
+
+    if (d.HasMember("type") && d["type"].IsString()) {
+      type = d["type"].GetString();
+    }
     return !error;
   }
 
@@ -961,14 +965,21 @@ bool GRANT::loadFromJson(const std::string & json) {
   error = !(
       d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
       d.HasMember("expiryTime") && d["expiryTime"].IsNumber() &&
-      d.HasMember("probi") && d["probi"].IsString() &&
-      d.HasMember("type") && d["type"].IsString());
+      d.HasMember("probi") && d["probi"].IsString());
 
   if (!error) {
     altcurrency = d["altcurrency"].GetString();
     expiryTime = d["expiryTime"].GetUint64();
     probi = d["probi"].GetString();
-    type = d["type"].GetString();
+    if (d.HasMember("type") && d["type"].IsString()) {
+      type = d["type"].GetString();
+    }
+
+#if defined(OS_ANDROID)
+    if (type == "ugp") {
+      type = "android";
+    }
+#endif
   }
 
   return !error;
@@ -1353,6 +1364,7 @@ CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
   rewards_enabled_ = other.rewards_enabled_;
   current_reconciles_ = other.current_reconciles_;
   inline_tip_ = other.inline_tip_;
+  grants_ = other.grants_;
 }
 
 CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
@@ -1915,6 +1927,20 @@ bool getJSONAddresses(const std::string& json,
   }
 
   return !error;
+}
+
+bool getJSONMessage(const std::string& json,
+                     std::string* message) {
+  DCHECK(message);
+  rapidjson::Document d;
+  d.Parse(json.c_str());
+
+  if (message && d.HasMember("message")) {
+    *message = d["message"].GetString();
+    return true;
+  }
+
+  return false;
 }
 
 std::vector<uint8_t> generateSeed() {

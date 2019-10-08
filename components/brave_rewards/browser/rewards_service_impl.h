@@ -38,6 +38,10 @@
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 #endif
 
+#if defined(OS_ANDROID)
+#include "chrome/browser/android/brave/safetynet_check.h"
+#endif
+
 namespace base {
 class OneShotTimer;
 class RepeatingTimer;
@@ -108,6 +112,8 @@ class RewardsServiceImpl : public RewardsService,
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
+  void GetGrantViaSafetynetCheck(
+      const std::string& promotion_id) const override;
   void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
@@ -219,7 +225,8 @@ class RewardsServiceImpl : public RewardsService,
       SaveRecurringTipCallback callback) override;
 
   const RewardsNotificationService::RewardsNotificationsMap&
-  GetAllNotifications() override;
+    GetAllNotifications() override;
+  void ResetTheWholeState(const base::Callback<void(bool)>& callback) override;
 
   void SetContributionAmount(const double amount) const override;
 
@@ -343,6 +350,8 @@ class RewardsServiceImpl : public RewardsService,
              int amount,
              bool recurring,
              ledger::PublisherInfoPtr publisher_info);
+  void OnResetTheWholeState(base::Callback<void(bool)> callback,
+                                 bool success);
   void OnContributionInfoSaved(const ledger::RewardsCategory category,
                                bool success);
   void OnRecurringTipSaved(
@@ -482,6 +491,8 @@ class RewardsServiceImpl : public RewardsService,
                      ledger::GrantPtr grant) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
+  void OnGrantViaSafetynetCheck(const std::string& promotion_id,
+                    const std::string& nonce) override;
   void SaveLedgerState(const std::string& ledger_state,
                        ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherState(const std::string& publisher_state,
@@ -684,8 +695,24 @@ class RewardsServiceImpl : public RewardsService,
 
   bool Connected() const;
   void ConnectionClosed();
+  void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;
+  void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
 
   void RecordBackendP3AStats() const;
+
+#if defined(OS_ANDROID)
+  bool ShouldUseStagingServerForAndroid();
+  void CreateWalletAttestationResult(
+      bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
+      bool result, const std::string& result_string);
+  void FetchGrantAttestationResult(const std::string& lang,
+                                const std::string& payment_id,
+                                bool result, const std::string& result_string);
+  void GrantAttestationResult(
+      const std::string& promotion_id, bool result,
+      const std::string& result_string);
+  safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
+#endif
 
   Profile* profile_;  // NOT OWNED
   mojo::AssociatedBinding<bat_ledger::mojom::BatLedgerClient>
@@ -719,6 +746,7 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
 
   uint32_t next_timer_id_;
+  bool reset_states_;
 
   GetTestResponseCallback test_response_callback_;
 

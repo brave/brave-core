@@ -30,7 +30,8 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   // bat_ledger::mojom::BatLedger
   void Initialize(InitializeCallback callback) override;
-  void CreateWallet(CreateWalletCallback callback) override;
+  void CreateWallet(const std::string& safetynet_token,
+      CreateWalletCallback callback) override;
   void FetchWalletProperties(FetchWalletPropertiesCallback callback) override;
 
   void GetAutoContributeProps(
@@ -81,6 +82,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void FetchGrants(
       const std::string& lang,
       const std::string& payment_id,
+      const std::string& result_string,
       FetchGrantsCallback callback) override;
   void GetGrantCaptcha(const std::vector<std::string>& headers,
       GetGrantCaptchaCallback callback) override;
@@ -133,6 +135,12 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetRewardsMainEnabledCallback callback) override;
   void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) override;
+
+  void GetGrantViaSafetynetCheck(const std::string& promotion_id) override;
+  void ApplySafetynetToken(
+      const std::string& promotion_id,
+      const std::string& result_string) override;
+
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;
   void GetRewardsInternalsInfo(

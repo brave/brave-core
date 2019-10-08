@@ -343,6 +343,17 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
   return base::DeleteFile(path, false);
 }
 
+bool ResetOnFilesTaskRunner(const std::vector<base::FilePath>& paths) {
+  bool res = true;
+  for (size_t i = 0; i < paths.size(); i++) {
+    if (!base::DeleteFile(paths[i], false)) {
+      res = false;
+    }
+  }
+
+  return res;
+}
+
 void EnsureRewardsBaseDirectoryExists(const base::FilePath& path) {
   if (!DirectoryExists(path))
     base::CreateDirectory(path);
@@ -446,7 +457,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       private_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
-      next_timer_id_(0) {
+      next_timer_id_(0),
+      reset_states_(false) {
   file_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&EnsureRewardsBaseDirectoryExists,
                                 rewards_base_path_));
@@ -491,14 +503,16 @@ void RewardsServiceImpl::StartLedger() {
   bat_ledger_service_.set_connection_error_handler(
       base::Bind(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
 
-  bool isProduction = true;
+  bool is_production = true;
   // Environment
-  #if defined(OFFICIAL_BUILD)
-    isProduction = true;
+  #if defined(OFFICIAL_BUILD) && defined(OS_ANDROID)
+    is_production = !ShouldUseStagingServerForAndroid();
+  #elif defined(OFFICIAL_BUILD)
+    is_production = true;
   #else
-    isProduction = false;
+    is_production = false;
   #endif
-  SetProduction(isProduction);
+  SetProduction(is_production);
 
   SetDebug(false);
 
@@ -568,14 +582,33 @@ void RewardsServiceImpl::OnCreateWallet(
   std::move(callback).Run(static_cast<int32_t>(result));
 }
 
+void RewardsServiceImpl::AddPrivateObserver(
+    RewardsServicePrivateObserver* observer) {
+  private_observers_.AddObserver(observer);
+}
+
+void RewardsServiceImpl::RemovePrivateObserver(
+    RewardsServicePrivateObserver* observer) {
+  private_observers_.RemoveObserver(observer);
+}
+
 void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
   if (ready().is_signaled()) {
-    auto on_create = base::BindOnce(
-        &RewardsServiceImpl::OnCreateWallet,
-        AsWeakPtr(),
-        std::move(callback));
     if (Connected()) {
-      bat_ledger_->CreateWallet(std::move(on_create));
+      auto on_create = base::BindOnce(
+          &RewardsServiceImpl::OnCreateWallet,
+          AsWeakPtr(),
+          std::move(callback));
+#if !defined(OS_ANDROID)
+      bat_ledger_->CreateWallet("", std::move(on_create));
+#else
+      safetynet_check::ClientAttestationCallback attest_callback =
+          base::BindOnce(&RewardsServiceImpl::CreateWalletAttestationResult,
+              AsWeakPtr(),
+              std::move(on_create));
+      safetynet_check_runner_.performSafetynetCheck("",
+          std::move(attest_callback));
+#endif
     }
   } else {
     ready().Post(FROM_HERE,
@@ -585,6 +618,19 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
             std::move(callback)));
   }
 }
+
+#if defined(OS_ANDROID)
+void RewardsServiceImpl::CreateWalletAttestationResult(
+    bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
+    bool result,
+    const std::string& result_string) {
+  if (result) {
+    bat_ledger_->CreateWallet(result_string, std::move(callback));
+  } else {
+    OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
+  }
+}
+#endif
 
 void RewardsServiceImpl::GetContentSiteList(
     uint32_t start,
@@ -1120,6 +1166,9 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
 
 void RewardsServiceImpl::SaveLedgerState(const std::string& ledger_state,
                                       ledger::LedgerCallbackHandler* handler) {
+  if (reset_states_) {
+    return;
+  }
   base::ImportantFileWriter writer(
       ledger_state_path_, file_task_runner_);
 
@@ -1146,6 +1195,9 @@ void RewardsServiceImpl::OnLedgerStateSaved(
 
 void RewardsServiceImpl::SavePublisherState(const std::string& publisher_state,
                                       ledger::LedgerCallbackHandler* handler) {
+  if (reset_states_) {
+    return;
+  }
   base::ImportantFileWriter writer(publisher_state_path_, file_task_runner_);
 
   writer.RegisterOnNextWriteCallbacks(
@@ -1488,11 +1540,33 @@ void RewardsServiceImpl::FetchGrants(const std::string& lang,
   if (!Connected()) {
     return;
   }
-
-  bat_ledger_->FetchGrants(lang, payment_id, base::BindOnce(
+#if !defined(OS_ANDROID)
+  bat_ledger_->FetchGrants(lang, payment_id, "", base::BindOnce(
       &RewardsServiceImpl::OnFetchGrants,
       AsWeakPtr()));
+#else
+  safetynet_check::ClientAttestationCallback attest_callback =
+      base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult,
+          AsWeakPtr(), lang, payment_id);
+  safetynet_check_runner_.performSafetynetCheck("",
+      std::move(attest_callback));
+#endif
 }
+
+#if defined(OS_ANDROID)
+void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
+    const std::string& payment_id,
+    bool result, const std::string& result_string) {
+  if (result) {
+    bat_ledger_->FetchGrants(lang, payment_id, result_string, base::BindOnce(
+      &RewardsServiceImpl::OnFetchGrants,
+      AsWeakPtr()));
+  } else {
+    LOG(ERROR) << "FetchGrantAttestationResult error: " << result_string;
+    TriggerOnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, nullptr);
+  }
+}
+#endif
 
 void RewardsServiceImpl::TriggerOnGrant(const ledger::Result result,
                                         ledger::GrantPtr grant) {
@@ -1675,6 +1749,9 @@ void RewardsServiceImpl::OnGetTransactionHistory(
 void RewardsServiceImpl::SaveState(const std::string& name,
                                    const std::string& value,
                                    ledger::OnSaveCallback callback) {
+  if (reset_states_) {
+    return;
+  }
   base::ImportantFileWriter writer(
       rewards_base_path_.AppendASCII(name), file_task_runner_);
 
@@ -1709,6 +1786,31 @@ void RewardsServiceImpl::ResetState(
                      rewards_base_path_.AppendASCII(name)),
       base::BindOnce(&RewardsServiceImpl::OnResetState,
                      AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::ResetTheWholeState(
+    const base::Callback<void(bool)>& callback) {
+  reset_states_ = true;
+  notification_service_->DeleteAllNotifications();
+  std::vector<base::FilePath> paths;
+  paths.push_back(ledger_state_path_);
+  paths.push_back(publisher_state_path_);
+  paths.push_back(publisher_info_db_path_);
+  paths.push_back(publisher_list_path_);
+  paths.push_back(rewards_base_path_);
+
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ResetOnFilesTaskRunner,
+                     paths),
+      base::BindOnce(&RewardsServiceImpl::OnResetTheWholeState,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnResetTheWholeState(
+    base::Callback<void(bool)> callback,
+    bool success) {
+  callback.Run(success);
 }
 
 void RewardsServiceImpl::OnSavedState(
@@ -3816,5 +3918,46 @@ void RewardsServiceImpl::RecordBackendP3AStats() const {
                  base::Unretained(publisher_info_backend_.get()),
                  auto_contributions_enabled_));
 }
+
+void RewardsServiceImpl::GetGrantViaSafetynetCheck(
+    const std::string& promotion_id) const {
+  bat_ledger_->GetGrantViaSafetynetCheck(promotion_id);
+}
+
+void RewardsServiceImpl::OnGrantViaSafetynetCheck(
+    const std::string& promotion_id, const std::string& nonce) {
+// This is used on Android only
+#if defined(OS_ANDROID)
+  safetynet_check::ClientAttestationCallback attest_callback =
+      base::BindOnce(&RewardsServiceImpl::GrantAttestationResult,
+          AsWeakPtr(), promotion_id);
+  safetynet_check_runner_.performSafetynetCheck(nonce,
+      std::move(attest_callback));
+#endif
+}
+
+#if defined(OS_ANDROID)
+void RewardsServiceImpl::GrantAttestationResult(
+    const std::string& promotion_id, bool result,
+    const std::string& result_string) {
+  if (result) {
+    return bat_ledger_->ApplySafetynetToken(promotion_id, result_string);
+  } else {
+    LOG(ERROR) << "GrantAttestationResult error: " << result_string;
+    TriggerOnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, nullptr);
+  }
+}
+#endif
+
+#if defined(OS_ANDROID)
+bool RewardsServiceImpl::ShouldUseStagingServerForAndroid() {
+  bool use_staging = false;
+  if (profile_ && profile_->GetPrefs()) {
+    use_staging = profile_->GetPrefs()->
+        GetBoolean(prefs::kUseRewardsStagingServer);
+  }
+  return use_staging;
+}
+#endif
 
 }  // namespace brave_rewards

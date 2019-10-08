@@ -190,6 +190,7 @@ class AdsServiceImpl : public AdsService,
       const std::string& json);
   void RetryViewingAdWithId(
       const std::string& id);
+  void ResetTheWholeState(const base::Callback<void(bool)>& callback) override;
 
   void OpenNewTabWithUrl(
       const std::string& url);
@@ -255,6 +256,8 @@ class AdsServiceImpl : public AdsService,
 
   void OnTimer(
       const uint32_t timer_id);
+  void OnResetTheWholeState(base::Callback<void(bool)> callback,
+                                 bool success);
 
   void MigratePrefs();
   bool MigratePrefs(
@@ -372,6 +375,8 @@ class AdsServiceImpl : public AdsService,
       const uint64_t time_offset) override;
   void KillTimer(
       const uint32_t timer_id) override;
+
+  bool CanShowBackgroundNotifications() const override;
 
   void URLRequest(
       const std::string& url,
