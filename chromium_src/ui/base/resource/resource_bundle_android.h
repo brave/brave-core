@@ -13,6 +13,9 @@ namespace ui {
 UI_BASE_EXPORT void BraveLoadMainAndroidPackFile(
     const char* path_within_apk,
     const base::FilePath& disk_file_path);
+UI_BASE_EXPORT void BraveLoadBrave100PercentPackFile(
+    const char* path_within_apk,
+    const base::FilePath& disk_file_path);
 
 }
 

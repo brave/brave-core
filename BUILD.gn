@@ -75,6 +75,7 @@ if (is_android) {
   android_assets("brave_pak_assets") {
     sources = [
       "$root_build_dir/brave_resources.pak",
+      "$root_build_dir/brave_100_percent.pak",
     ]
     deps = [
       "//brave:browser_dependencies",
