@@ -135,7 +135,7 @@ class Contribution {
   // Initial point for contribution
   // In this step we get balance from the server
   void InitReconcile(
-      const ledger::REWARDS_CATEGORY category,
+      const ledger::RewardsType type,
       const braveledger_bat_helper::PublisherList& list,
       const braveledger_bat_helper::Directions& directions = {},
       double budget = 0);
@@ -148,12 +148,13 @@ class Contribution {
 
   // Does final stage in contribution
   // Sets reports and contribution info
-  void OnReconcileCompleteSuccess(const std::string& viewing_id,
-                                  ledger::REWARDS_CATEGORY category,
-                                  const std::string& probi,
-                                  ledger::ACTIVITY_MONTH month,
-                                  int year,
-                                  uint32_t date);
+  void OnReconcileCompleteSuccess(
+      const std::string& viewing_id,
+      const ledger::RewardsType type,
+      const std::string& probi,
+      ledger::ACTIVITY_MONTH month,
+      int year,
+      uint32_t date);
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);
 
@@ -201,7 +202,7 @@ class Contribution {
                             uint32_t next_record);
 
   void OnBalanceForReconcile(
-      const ledger::REWARDS_CATEGORY category,
+      const ledger::RewardsType type,
       const braveledger_bat_helper::PublisherList& list,
       const braveledger_bat_helper::Directions& directions,
       double budget,
@@ -233,7 +234,7 @@ class Contribution {
   void SavePendingContribution(
       const std::string& publisher_key,
       double amount,
-      ledger::REWARDS_CATEGORY category,
+      const ledger::RewardsType type,
       ledger::SavePendingContributionCallback callback);
 
   void OnDoDirectTipServerPublisher(
@@ -244,20 +245,20 @@ class Contribution {
     ledger::DoDirectTipCallback callback);
 
   bool HaveReconcileEnoughFunds(
-      const ledger::REWARDS_CATEGORY category,
+      const ledger::RewardsType type,
       double* fee,
       double budget,
       const double balance,
       const braveledger_bat_helper::Directions& directions);
 
   bool IsListEmpty(
-    const ledger::REWARDS_CATEGORY category,
+    const ledger::RewardsType type,
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions,
     double budget);
 
   void ProcessReconcile(
-    const ledger::REWARDS_CATEGORY category,
+    const ledger::RewardsType type,
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions,
     double budget,

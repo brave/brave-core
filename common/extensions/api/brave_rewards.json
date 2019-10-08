@@ -347,9 +347,9 @@
                 "type": "integer",
                 "description": "result for this contribution"
               },
-              "category": {
+              "type": {
                 "type": "integer",
-                "description": "category of this contribution"
+                "description": "type of this contribution"
               }
             }
           }

@@ -25,7 +25,7 @@ PendingContributionInfo::PendingContributionInfo(
   amount = data.amount;
   added_date = data.added_date;
   viewing_id = data.viewing_id;
-  category = data.category;
+  type = data.type;
   expiration_date = data.expiration_date;
 }
 
