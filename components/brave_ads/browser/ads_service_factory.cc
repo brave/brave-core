@@ -76,12 +76,7 @@ void AdsServiceFactory::RegisterProfilePrefs(
   registry->RegisterBooleanPref(prefs::kEnabled, false);
 
   registry->RegisterUint64Pref(prefs::kAdsPerHour, 2);
-
-  #if defined(OS_ANDROID)
-    registry->RegisterUint64Pref(prefs::kAdsPerDay, 12);
-  #else
-    registry->RegisterUint64Pref(prefs::kAdsPerDay, 20);
-  #endif
+  registry->RegisterUint64Pref(prefs::kAdsPerDay, 20);
 
   registry->RegisterIntegerPref(prefs::kIdleThreshold, 15);
   registry->RegisterBooleanPref(prefs::kBraveAdsWereDisabled, false);
