@@ -5,10 +5,17 @@
 
 package org.chromium.chrome.browser.preferences;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.DisplayMetrics;
+import android.widget.TextView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.privacy.BravePrivacyPreferences;
@@ -30,6 +37,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private static final String PREF_ACCESSIBILITY = "accessibility";
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
+    private static final String PREF_WELCOME_TOUR = "welcome_tour";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -43,6 +51,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         PreferenceUtils.addPreferencesFromResource(this, R.xml.brave_main_preferences);
 
         overrideChromiumPreferences();
+        initWelcomeTourPreference();
     }
 
     @Override
@@ -139,5 +148,42 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private void overrideChromiumPreferences() {
         // Replace fragment.
         findPreference(PREF_PRIVACY).setFragment(BravePrivacyPreferences.class.getName());
+    }
+
+    private void initWelcomeTourPreference() {
+        findPreference(PREF_WELCOME_TOUR).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                final Context context = preference.getContext();
+                final TextView titleTextView = new TextView (context);
+                titleTextView.setText(context.getResources().getString(R.string.welcome_tour_dialog_text));
+                int padding = dp2px(20);
+                titleTextView.setPadding(padding, padding, padding, padding);
+                titleTextView.setTextSize(18);
+                titleTextView.setTextColor(context.getResources().getColor(R.color.standard_mode_tint));
+                titleTextView.setTypeface(null, Typeface.BOLD);
+
+                AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.Theme_Chromium_AlertDialog)
+                    .setView(titleTextView)
+                    .setPositiveButton(R.string.continue_button, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO(simonhong):show onboarding
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create();
+                alertDialog.show();
+                return true;
+            }
+        });
+    }
+
+    // TODO(simonhong): Make this static public with proper class.
+    private int dp2px(int dp) {
+        final float DP_PER_INCH_MDPI = 160f;
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / DP_PER_INCH_MDPI);
+        return Math.round(px);
     }
 }
