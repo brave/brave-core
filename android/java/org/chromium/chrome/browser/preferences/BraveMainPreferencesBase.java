@@ -127,7 +127,6 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     }
 
     void updateControlSectionPreferences() {
-        // TODO(simonhong): Update summary properly.
         Preference p = findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
         p.setSummary(BackgroundVideoPlaybackPreference.getPreferenceSummary());
         p = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);

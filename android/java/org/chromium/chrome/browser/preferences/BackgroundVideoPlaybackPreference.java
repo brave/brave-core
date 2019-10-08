@@ -36,8 +36,6 @@ public class BackgroundVideoPlaybackPreference
     }
 
     public static int getPreferenceSummary() {
-        return BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled()
-            ? R.string.prefs_background_video_playback_summary_enabled
-            : R.string.prefs_background_video_playback_summary_disabled;
+        return BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled() ? R.string.text_enabled : R.string.text_disabled;
     }
 }
