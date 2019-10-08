@@ -13,25 +13,31 @@ export const Header = styled<{}, 'header'>('header')`
   grid-template-areas:
     "stats . clock"
     ". . clock"
-    "topsites topsites topsites"
+    "topsites . rewards"
+    ". . ."
     "notification notification notification";
 
   > *:nth-child(1) {
     grid-area: stats;
     margin: 0 46px 0 46px;
   }
+
   > *:nth-child(2) {
     grid-area: clock;
     margin: 0 46px 0 46px;
   }
 
   > *:nth-child(3) {
+    grid-area: rewards;
+  }
+
+  > *:nth-child(4) {
     grid-area: topsites;
     margin: 0 46px 0 46px;
     justify-self: start;
   }
 
-  > *:nth-child(4) {
+  > *:nth-child(5) {
     grid-area: notification;
     justify-self: center;
   }
@@ -42,6 +48,7 @@ export const Header = styled<{}, 'header'>('header')`
     "clock clock clock"
     "stats stats stats"
     "topsites topsites topsites"
+    "rewards rewards rewards"
     "notification notification notification";
 
 
@@ -56,6 +63,11 @@ export const Header = styled<{}, 'header'>('header')`
     }
 
     > *:nth-child(3) {
+      margin: auto;
+      justify-content: center;
+    }
+
+    > *:nth-child(4) {
       margin: auto;
       justify-content: center;
     }

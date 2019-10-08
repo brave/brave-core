@@ -15,8 +15,20 @@ export type InitialData = {
   topSites: topSitesAPI.TopSitesData
 }
 
+export type PreInitialRewardsData = {
+  enabledAds: boolean
+  enabledMain: boolean
+}
+
+export type InitialRewardsData = {
+  onlyAnonWallet: boolean
+  adsEstimatedEarnings: boolean
+  reports: Record<string, NewTab.RewardsReport>
+  balance: NewTab.RewardsBalance
+}
+
 // Gets all data required for the first render of the page
-export default async function getInitialData (): Promise<InitialData> {
+export async function getInitialData (): Promise<InitialData> {
   try {
     console.timeStamp('Getting initial data...')
     const [preferences, stats, privateTabData, topSites] = await Promise.all([
@@ -35,5 +47,63 @@ export default async function getInitialData (): Promise<InitialData> {
   } catch (e) {
     console.error(e)
     throw Error('Error getting initial data')
+  }
+}
+
+export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData> {
+  try {
+    const [
+      enabledAds,
+      enabledMain
+    ] = await Promise.all([
+      new Promise(resolve => chrome.braveRewards.getAdsEnabled((enabledAds: boolean) => {
+        resolve(enabledAds)
+      })),
+      new Promise(resolve => chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
+        resolve(enabledMain)
+      }))
+    ])
+    return {
+      enabledAds,
+      enabledMain
+    } as PreInitialRewardsData
+  } catch (err) {
+    throw Error(err)
+  }
+}
+
+export async function getRewardsInitialData (): Promise<InitialRewardsData> {
+  try {
+    const [
+      onlyAnonWallet,
+      adsEstimatedEarnings,
+      reports,
+      balance
+    ] = await Promise.all([
+      new Promise(resolve => chrome.braveRewards.onlyAnonWallet((onlyAnonWallet: boolean) => {
+        resolve(!!onlyAnonWallet)
+      })),
+      new Promise(resolve => chrome.braveRewards.getAdsEstimatedEarnings((adsEstimatedEarnings: number) => {
+        resolve(adsEstimatedEarnings)
+      })),
+      new Promise(resolve => chrome.braveRewards.getBalanceReports((reports: Record<string, NewTab.RewardsReport>) => {
+        resolve(reports)
+      })),
+      new Promise(resolve => chrome.braveRewards.fetchBalance((balance: NewTab.RewardsBalance) => {
+        resolve(balance)
+      })),
+      new Promise(resolve => {
+        chrome.braveRewards.getGrants()
+        resolve(true)
+      })
+    ])
+    return {
+      onlyAnonWallet,
+      adsEstimatedEarnings,
+      reports,
+      balance
+    } as InitialRewardsData
+  } catch (err) {
+    throw Error(err)
   }
 }

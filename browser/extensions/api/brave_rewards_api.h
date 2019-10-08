@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -14,6 +15,7 @@
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "brave/components/brave_rewards/browser/balance_report.h"
 #include "extensions/browser/extension_function.h"
 
 namespace extensions {
@@ -369,6 +371,63 @@ class BraveRewardsOnlyAnonWalletFunction : public ExtensionFunction {
   ~BraveRewardsOnlyAnonWalletFunction() override;
 
   ResponseAction Run() override;
+};
+
+class BraveRewardsGetAdsEnabledFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsEnabled", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetAdsEnabledFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsGetAdsEstimatedEarningsFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsEstimatedEarnings", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetAdsEstimatedEarningsFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnAdsEstimatedEarnings(
+      const double estimated_pending_rewards,
+      const uint64_t next_payment_date_in_seconds,
+      const uint64_t ad_notifications_received_this_month);
+};
+
+class BraveRewardsGetBalanceReportsFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getBalanceReports", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetBalanceReportsFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnGetBalanceReports(
+      const std::map<std::string,
+      ::brave_rewards::BalanceReport>& reports);
+};
+
+class BraveRewardsGetWalletExistsFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getWalletExists", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetWalletExistsFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnGetWalletExists(const bool exists);
 };
 
 }  // namespace api

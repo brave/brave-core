@@ -61,6 +61,9 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const std::string& viewing_id,
       const std::string& probi,
       const int32_t type) {}
+  virtual void OnAdsEnabled(
+      brave_rewards::RewardsService* rewards_service,
+      bool ads_enabled) {}
   virtual void OnRewardsMainEnabled(
       brave_rewards::RewardsService* rewards_service,
       bool rewards_main_enabled) {}

@@ -142,6 +142,7 @@
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS" desc="Text for settings show stats option">Show Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CLOCK" desc="Text for settings show clock option">Show Clock</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES" desc="Text for settings show top sites option">Show Top Sites</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Rewards</message>
 
       <!-- WebUI private tab resources -->
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="">Learn more</message>
@@ -537,7 +538,7 @@
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
-      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Ads</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Brave Ads</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>
       <message name="IDS_BRAVE_UI_TWEET_NOW" desc="">Tweet</message>
@@ -615,6 +616,22 @@
       <message name="IDS_BRAVE_UI_WALLET_VERIFIED" desc="">Verified</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE1" desc="">Uphold may require you to verify your identity based on services requested.</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2" desc="">Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.</message>
+
+      <!-- Rewards New Tab Widget resources -->
+      <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">about Brave Rewards</message>
+      <message name="IDS_REWARDS_WIDGET_SERVICE_TEXT" desc="">By clicking 'Turn on Rewards', you indicate that you have read and agree to the</message>
+      <message name="IDS_REWARDS_WIDGET_ESTIMATED_EARNINGS" desc="">Estimated earnings so far this month</message>
+      <message name="IDS_REWARDS_WIDGET_MONTHLY_TIPS" desc="">Tips and contributions this month</message>
+      <message name="IDS_REWARDS_WIDGET_CLAIM_MY_REWARDS" desc="">Claim my Rewards</message>
+      <message name="IDS_REWARDS_WIDGET_TURNING_ON" desc="">Turning on...</message>
+      <message name="IDS_REWARDS_WIDGET_TURN_ON_REWARDS" desc="">Turn on Rewards</message>
+      <message name="IDS_REWARDS_WIDGET_REENABLE_TITLE" desc="">Feeling Generous?</message>
+      <message name="IDS_REWARDS_WIDGET_ENABLE_TITLE" desc="">Ready to start earning?</message>
+      <message name="IDS_REWARDS_WIDGET_REENABLE_SUBTITLE" desc="">Try Brave Rewards again and pay it forward as you earn!</message>
+      <message name="IDS_REWARDS_WIDGET_ENABLE_SUBTITLE" desc="">Turn on Brave Rewards and get paid to view privacy respecting ads.</message>
+      <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TITLE" desc="">Way to Go!</message>
+      <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS" desc="">Your rewards from Ads are here</message>
+      <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_UGP" desc="">You have a UGP grant from Brave.</message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->

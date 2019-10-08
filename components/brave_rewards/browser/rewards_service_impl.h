@@ -216,6 +216,7 @@ class RewardsServiceImpl : public RewardsService,
   void RefreshPublisher(
       const std::string& publisher_key,
       RefreshPublisherCallback callback) override;
+  void TriggerOnAdsEnabled(bool ads_enabled) override;
 
   void OnSaveRecurringTipUI(
       SaveRecurringTipCallback callback,
