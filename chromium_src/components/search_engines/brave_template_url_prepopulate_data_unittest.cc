@@ -63,6 +63,15 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
   }
 
+  void CheckForCountry(char digit1, char digit2, const std::string& expected) {
+    prefs_.SetInteger(kCountryIDAtInstall, digit1 << 8 | digit2);
+    size_t default_index;
+    std::vector<std::unique_ptr<TemplateURLData>> t_urls =
+        TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
+                                                           &default_index);
+    EXPECT_EQ(ASCIIToUTF16(expected), t_urls[default_index]->short_name());
+  }
+
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
@@ -139,28 +148,29 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
 }
 
 // Verifies default search provider for locale
-TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForLocale) {
-  // Use United States.
-  prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
-  size_t default_index;
-  std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-      TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                         &default_index);
-  EXPECT_EQ(ASCIIToUTF16("Google"), t_urls[default_index]->short_name());
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForUSA) {
+  CheckForCountry('U', 'S', "Google");
+}
 
-  t_urls.clear();
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForGermany) {
+  CheckForCountry('D', 'E', "DuckDuckGo");
+}
 
-  // Use Germany.
-  prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
-  t_urls = TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                              &default_index);
-  EXPECT_EQ(ASCIIToUTF16("Qwant"), t_urls[default_index]->short_name());
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForFrance) {
+  CheckForCountry('F', 'R', "Qwant");
+}
 
-  t_urls.clear();
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForAustralia) {
+  CheckForCountry('A', 'U', "DuckDuckGo");
+}
 
-  // Use France.
-  prefs_.SetInteger(kCountryIDAtInstall, 'F' << 8 | 'R');
-  t_urls = TemplateURLPrepopulateData::GetPrepopulatedEngines(&prefs_,
-                                                              &default_index);
-  EXPECT_EQ(ASCIIToUTF16("Qwant"), t_urls[default_index]->short_name());
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForNewZealand) {
+  CheckForCountry('N', 'Z', "DuckDuckGo");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForIreland) {
+  CheckForCountry('I', 'E', "DuckDuckGo");
 }
