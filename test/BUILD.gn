@@ -70,6 +70,13 @@ test("brave_unit_tests") {
     "//brave/browser/brave_resources_util_unittest.cc",
     "//brave/browser/download/brave_download_item_model_unittest.cc",
     "//brave/browser/metrics/metrics_reporting_util_unittest_linux.cc",
+    "//brave/browser/net/brave_ad_block_tp_network_delegate_helper_unittest.cc",
+    "//brave/browser/net/brave_block_safebrowsing_urls_unittest.cc",
+    "//brave/browser/net/brave_common_static_redirect_network_delegate_helper_unittest.cc",
+    "//brave/browser/net/brave_httpse_network_delegate_helper_unittest.cc",
+    "//brave/browser/net/brave_network_delegate_base_unittest.cc",
+    "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
+    "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
     "//brave/chromium_src/chrome/browser/history/history_utils_unittest.cc",
     "//brave/chromium_src/chrome/browser/shell_integration_unittest_mac.cc",
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
@@ -80,7 +87,6 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/version_info/brave_version_info_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
     "//brave/chromium_src/services/network/public/cpp/cors/cors_unittest.cc",
-
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/common/shield_exceptions_unittest.cc",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
@@ -134,13 +140,6 @@ test("brave_unit_tests") {
       # These tests should probably work on Android and compile, but don't pass currently
       "//brave/browser/autocomplete/brave_autocomplete_provider_client_unittest.cc",
       "//brave/browser/autoplay/autoplay_permission_context_unittest.cc",
-      "//brave/browser/net/brave_ad_block_tp_network_delegate_helper_unittest.cc",
-      "//brave/browser/net/brave_block_safebrowsing_urls_unittest.cc",
-      "//brave/browser/net/brave_common_static_redirect_network_delegate_helper_unittest.cc",
-      "//brave/browser/net/brave_httpse_network_delegate_helper_unittest.cc",
-      "//brave/browser/net/brave_network_delegate_base_unittest.cc",
-      "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
-      "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
       "//brave/components/brave_shields/browser/brave_shields_util_unittest.cc",
       "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
@@ -309,13 +308,17 @@ test("brave_unit_tests") {
 
   if (is_android) {
     deps += [
+      "//brave:brave_pak_assets",
       "//chrome:chrome_android_core",
+      "//chrome/android:chrome_apk_paks",
       "//v8:v8_external_startup_data_assets",
     ]
     data += [
       "$root_gen_dir/chrome/android/chrome_apk_paks/chrome_100_percent.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/locales/en-US.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/resources.pak",
+      "$root_out_dir/brave/brave_100_percent.pak",
+      "$root_out_dir/brave/brave_resources.pak",
     ]
   }
 
