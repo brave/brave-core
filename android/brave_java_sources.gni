@@ -14,6 +14,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/CloseBraveManager.java",
+  "../../brave/android/java/org/chromium/chrome/browser/preferences/AppearancePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BackgroundVideoPlaybackPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveMainPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceManager.java",
