@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
 #include "bat/ledger/internal/state_keys.h"
+#include "bat/ledger/option_keys.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
@@ -155,7 +156,8 @@ uint64_t PublisherServerList::GetTimerTime(
       ? 0ull
       : now_seconds - last_download;
 
-  uint64_t interval = braveledger_ledger::_publishers_list_load_interval;
+  uint64_t interval =
+      ledger_->GetUint64Option(ledger::kOptionPublisherListRefreshInterval);
 
   if (now_seconds == last_download) {
     start_timer_in = interval;
