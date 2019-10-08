@@ -40,6 +40,7 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
  private:
   friend class BraveTranslateBubbleViewTest;
   views::View* BraveCreateViewBeforeTranslate();
+  void DisableOfferTranslatePref();
 
   DISALLOW_COPY_AND_ASSIGN(BraveTranslateBubbleView);
 };
