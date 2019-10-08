@@ -11,6 +11,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.preferences.privacy.BravePrivacyPreferences;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -40,6 +41,8 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         // by subclass (MainPreference::onCreatePreferences()).
         // But, calling here has same effect because |onCreatePreferences()| is called by onCreate().
         PreferenceUtils.addPreferencesFromResource(this, R.xml.brave_main_preferences);
+
+        overrideChromiumPreferences();
     }
 
     @Override
@@ -126,10 +129,15 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         searchEnginePreference.setSummary(BraveSearchEngineUtils.getDSEShortName(true));
     }
 
-    void updateControlSectionPreferences() {
+    private void updateControlSectionPreferences() {
         Preference p = findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
         p.setSummary(BackgroundVideoPlaybackPreference.getPreferenceSummary());
         p = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
         p.setSummary(ClosingAllTabsClosesBravePreference.getPreferenceSummary());
+    }
+
+    private void overrideChromiumPreferences() {
+        // Replace fragment.
+        findPreference(PREF_PRIVACY).setFragment(BravePrivacyPreferences.class.getName());
     }
 }
