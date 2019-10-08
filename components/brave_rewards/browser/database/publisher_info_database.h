@@ -6,9 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_PUBLISHER_INFO_DATABASE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_PUBLISHER_INFO_DATABASE_H_
 
+#include <stddef.h>
+#include <stdint.h>
+#include <map>
 #include <memory>
 #include <string>
-#include <stddef.h>  // NOLINT
+#include <vector>
 
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
@@ -158,7 +161,33 @@ class PublisherInfoDatabase {
 
   bool MigrateV6toV7();
 
+  bool MigrateV7toV8();
+  bool MigrateToV8ContributionInfoTable();
+  bool CreateV8ContributionInfoTable();
+  bool CreateV8ContributionInfoIndex();
+  bool MigrateToV8PendingContributionsTable();
+  bool CreateV8PendingContributionsTable();
+  bool CreateV8PendingContributionsIndex();
+
   bool Migrate(int version);
+
+  bool MigrateDBTable(
+      const std::string& from,
+      const std::string& to,
+      const std::vector<std::string>& columns,
+      const bool should_drop);
+  bool MigrateDBTable(
+      const std::string& from,
+      const std::string& to,
+      const std::map<std::string, std::string>& columns,
+      const bool should_drop);
+  bool RenameDBTable(
+      const std::string& from,
+      const std::string& to);
+  std::string GenerateDBInsertQuery(
+      const std::string& from,
+      const std::string& to,
+      const std::map<std::string, std::string>& columns);
 
   sql::InitStatus EnsureCurrentVersion();
 

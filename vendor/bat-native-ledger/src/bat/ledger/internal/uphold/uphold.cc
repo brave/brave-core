@@ -97,7 +97,7 @@ void Uphold::ContributionCompleted(
   ledger_->OnReconcileComplete(result,
                                viewing_id,
                                amount,
-                               reconcile.category_);
+                               reconcile.type_);
 
   if (result != ledger::Result::LEDGER_OK) {
     if (!viewing_id.empty()) {

@@ -14,11 +14,11 @@
         </fetchIndex>
     </entity>
     <entity name="ContributionInfo" representedClassName="ContributionInfo" syncable="YES">
-        <attribute name="category" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="date" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="month" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="probi" attributeType="String" syncable="YES"/>
         <attribute name="publisherID" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="year" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="contributions" inverseEntity="PublisherInfo" syncable="YES"/>
         <fetchIndex name="byPublisherIDIndex">
@@ -32,8 +32,8 @@
     <entity name="PendingContribution" representedClassName="PendingContribution" syncable="YES">
         <attribute name="addedDate" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="category" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="publisherID" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="viewingID" attributeType="String" syncable="YES"/>
         <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="pendingContributions" inverseEntity="PublisherInfo" syncable="YES"/>
         <fetchIndex name="byPublisherIDIndex">

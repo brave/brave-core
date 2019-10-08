@@ -10,7 +10,7 @@
   return [NSFetchRequest fetchRequestWithEntityName:@"ContributionInfo"];
 }
 
-@dynamic category;
+@dynamic type;
 @dynamic date;
 @dynamic month;
 @dynamic probi;

@@ -37,8 +37,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void OnReconcileComplete(
       const ledger::Result result,
       const std::string& viewing_id,
-      int32_t category,
-      const std::string& probi) override;
+      const std::string& probi,
+      const ledger::RewardsType type) override;
   void OnGrantFinish(
     const ledger::Result result,
     ledger::GrantPtr grant) override;
@@ -78,9 +78,13 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const ledger::Result result,
       ledger::PublisherInfoPtr info,
       uint64_t window_id) override;
-  void SaveContributionInfo(const std::string& probi, int32_t month,
-      int32_t year, uint32_t date, const std::string& publisher_key,
-      int32_t category) override;
+  void SaveContributionInfo(
+      const std::string& probi,
+      int32_t month,
+      int32_t year,
+      uint32_t date,
+      const std::string& publisher_key,
+      const ledger::RewardsType type) override;
   void SaveMediaPublisherInfo(const std::string& media_key,
       const std::string& publisher_id) override;
 

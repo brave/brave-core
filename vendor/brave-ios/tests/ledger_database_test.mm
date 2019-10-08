@@ -316,9 +316,9 @@
   // Tip with different year
   [self makeOneTimeTip:publisherId month:month year:2020];
 
-  // Tip with different category
+  // Tip with different type
   [self makeOneTimeTip:publisherId month:month year:year
-                 probi:@"20000000000000000" category:BATRewardsCategoryAutoContribute];
+                 probi:@"20000000000000000" type:BATRewardsTypeAutoContribute];
 
   const auto tips = [BATLedgerDatabase oneTimeTipsPublishersForMonth:month year:year];
   XCTAssert([self countMustBeEqualTo:4 forEntityName:@"ContributionInfo"]);
@@ -340,13 +340,13 @@
 - (void)makeOneTimeTip:(NSString *)publisherId month:(const int)month year:(const int)year
 {
   const auto probi = @"1500000000000000000";
-  const BATRewardsCategory category = BATRewardsCategoryOneTimeTip;
+  const BATRewardsType type = BATRewardsTypeOneTimeTip;
 
-  [self makeOneTimeTip:publisherId month:month year:year probi:probi category:category];
+  [self makeOneTimeTip:publisherId month:month year:year probi:probi type:type];
 }
 
 - (void)makeOneTimeTip:(NSString *)publisherId month:(const int)month year:(const int)year
-                 probi:(NSString *)probi category:(BATRewardsCategory)category
+                 probi:(NSString *)probi type:(BATRewardsType)type
 {
   const auto now = [[NSDate date] timeIntervalSince1970];
 
@@ -354,7 +354,7 @@
 
   [self backgroundSaveAndWaitForExpectation:^{
     [BATLedgerDatabase insertContributionInfo:probi month:month year:year date:now
-                                 publisherKey:publisherId category:category completion:nil];
+                                 publisherKey:publisherId type:type completion:nil];
   }];
 }
 
@@ -887,14 +887,14 @@
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = @"brave.com";
   one.amount = 20.0;
-  one.category = BATRewardsCategoryAutoContribute;
+  one.type = BATRewardsTypeAutoContribute;
   one.addedDate = now;
   one.viewingId = @"";
 
   const auto two = [[BATPendingContribution alloc] init];
   two.publisherKey = @"duckduckgo.com";
   two.amount = 10.0;
-  two.category = BATRewardsCategoryAutoContribute;
+  two.type = BATRewardsTypeAutoContribute;
   two.addedDate = now;
   two.viewingId = @"";
 
@@ -921,14 +921,14 @@
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = removedPublisherKey;
   one.amount = 20.0;
-  one.category = BATRewardsCategoryAutoContribute;
+  one.type = BATRewardsTypeAutoContribute;
   one.addedDate = now;
   one.viewingId = removedViewingId;
 
   const auto two = [[BATPendingContribution alloc] init];
   two.publisherKey = keptPublisherKey;
   two.amount = 10.0;
-  two.category = BATRewardsCategoryAutoContribute;
+  two.type = BATRewardsTypeAutoContribute;
   two.addedDate = now;
   two.viewingId = @"";
 
@@ -962,14 +962,14 @@
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = @"brave.com";
   one.amount = 20.0;
-  one.category = BATRewardsCategoryAutoContribute;
+  one.type = BATRewardsTypeAutoContribute;
   one.addedDate = now;
   one.viewingId = @"";
 
   const auto two = [[BATPendingContribution alloc] init];
   two.publisherKey = @"duckduckgo.com";
   two.amount = 10.0;
-  two.category = BATRewardsCategoryAutoContribute;
+  two.type = BATRewardsTypeAutoContribute;
   two.addedDate = now;
   two.viewingId = @"";
 
@@ -996,14 +996,14 @@
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = @"brave.com";
   one.amount = 20.0;
-  one.category = BATRewardsCategoryAutoContribute;
+  one.type = BATRewardsTypeAutoContribute;
   one.addedDate = now;
   one.viewingId = @"";
 
   const auto two = [[BATPendingContribution alloc] init];
   two.publisherKey = @"duckduckgo.com";
   two.amount = 10.0;
-  two.category = BATRewardsCategoryAutoContribute;
+  two.type = BATRewardsTypeAutoContribute;
   two.addedDate = now;
   two.viewingId = @"";
 

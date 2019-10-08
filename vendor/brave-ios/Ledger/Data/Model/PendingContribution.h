@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) int64_t addedDate;
 @property (nonatomic) double amount;
-@property (nonatomic) int32_t category;
+@property (nonatomic) int32_t type;
 @property (nonatomic, copy) NSString *publisherID;
 @property (nonatomic, copy) NSString *viewingID;
 @property (nonatomic, retain) PublisherInfo *publisher;

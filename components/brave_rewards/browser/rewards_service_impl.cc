@@ -968,21 +968,22 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
   TriggerOnGrantFinish(result, std::move(grant));
 }
 
-void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
-  const std::string& viewing_id,
-  ledger::REWARDS_CATEGORY category,
-  const std::string& probi) {
+void RewardsServiceImpl::OnReconcileComplete(
+    ledger::Result result,
+    const std::string& viewing_id,
+    const std::string& probi,
+    const ledger::RewardsType type) {
   if (result == ledger::Result::LEDGER_OK) {
     auto now = base::Time::Now();
     if (!Connected())
       return;
 
-    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+    if (type == ledger::RewardsType::RECURRING_TIP) {
       MaybeShowNotificationTipsPaid();
     }
 
     bat_ledger_->OnReconcileCompleteSuccess(viewing_id,
-        category,
+        type,
         probi,
         GetPublisherMonth(now),
         GetPublisherYear(now),
@@ -994,8 +995,8 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
     observer.OnReconcileComplete(this,
                                  static_cast<int>(result),
                                  viewing_id,
-                                 category,
-                                 probi);
+                                 probi,
+                                 static_cast<int>(type));
 }
 
 void RewardsServiceImpl::LoadLedgerState(
@@ -2159,10 +2160,10 @@ bool SaveContributionInfoOnFileTaskRunner(
 }
 
 void RewardsServiceImpl::OnContributionInfoSaved(
-    const ledger::REWARDS_CATEGORY category,
+    const ledger::RewardsType type,
     bool success) {
   for (auto& observer : observers_) {
-    observer.OnContributionSaved(this, success, category);
+    observer.OnContributionSaved(this, success, static_cast<int>(type));
   }
 }
 
@@ -2171,14 +2172,14 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
   const int year,
   const uint32_t date,
   const std::string& publisher_key,
-  const ledger::REWARDS_CATEGORY category) {
+  const ledger::RewardsType type) {
   brave_rewards::ContributionInfo info;
   info.probi = probi;
   info.month = month;
   info.year = year;
   info.date = date;
   info.publisher_key = publisher_key;
-  info.category = category;
+  info.type = static_cast<int>(type);
 
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&SaveContributionInfoOnFileTaskRunner,
@@ -2186,7 +2187,7 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnContributionInfoSaved,
                      AsWeakPtr(),
-                     category));
+                     type));
 }
 
 bool SaveRecurringTipOnFileTaskRunner(
@@ -3101,7 +3102,7 @@ PendingContributionInfo PendingContributionLedgerToRewards(
     const ledger::PendingContributionInfoPtr contribution) {
   PendingContributionInfo info;
   info.publisher_key = contribution->publisher_key;
-  info.category = contribution->category;
+  info.type = static_cast<int>(contribution->type);
   info.status = static_cast<uint32_t>(contribution->status);
   info.name = contribution->name;
   info.url = contribution->url;

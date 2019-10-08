@@ -306,9 +306,9 @@ class PageWallet extends React.Component<Props, State> {
 
       let type: PendingType = 'ac'
 
-      if (item.category === 8) { // one time tip
+      if (item.type === 8) { // one time tip
         type = 'tip'
-      } else if (item.category === 16) { // recurring tip
+      } else if (item.type === 16) { // recurring tip
         type = 'recurring'
       }
 
