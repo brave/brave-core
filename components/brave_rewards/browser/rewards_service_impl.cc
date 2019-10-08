@@ -1887,6 +1887,60 @@ void RewardsServiceImpl::ClearState(const std::string& name) {
   profile_->GetPrefs()->ClearPref(pref_prefix + name);
 }
 
+bool RewardsServiceImpl::GetBooleanOption(const std::string& name) const {
+  DCHECK(!name.empty());
+
+  const auto it = kBoolOptions.find(name);
+  DCHECK(it != kBoolOptions.end());
+
+  return kBoolOptions.at(name);
+}
+
+int RewardsServiceImpl::GetIntegerOption(const std::string& name) const {
+  DCHECK(!name.empty());
+
+  const auto it = kIntegerOptions.find(name);
+  DCHECK(it != kIntegerOptions.end());
+
+  return kIntegerOptions.at(name);
+}
+
+double RewardsServiceImpl::GetDoubleOption(const std::string& name) const {
+  DCHECK(!name.empty());
+
+  const auto it = kDoubleOptions.find(name);
+  DCHECK(it != kDoubleOptions.end());
+
+  return kDoubleOptions.at(name);
+}
+
+std::string RewardsServiceImpl::GetStringOption(const std::string& name) const {
+  DCHECK(!name.empty());
+
+  const auto it = kStringOptions.find(name);
+  DCHECK(it != kStringOptions.end());
+
+  return kStringOptions.at(name);
+}
+
+int64_t RewardsServiceImpl::GetInt64Option(const std::string& name) const {
+  DCHECK(!name.empty());
+
+  const auto it = kInt64Options.find(name);
+  DCHECK(it != kInt64Options.end());
+
+  return kInt64Options.at(name);
+}
+
+uint64_t RewardsServiceImpl::GetUint64Option(const std::string& name) const {
+  DCHECK(!name.empty());
+
+  const auto it = kUInt64Options.find(name);
+  DCHECK(it != kUInt64Options.end());
+
+  return kUInt64Options.at(name);
+}
+
 void RewardsServiceImpl::KillTimer(uint32_t timer_id) {
   if (timers_.find(timer_id) == timers_.end())
     return;

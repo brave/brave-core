@@ -965,6 +965,37 @@ BATLedgerBridge(BOOL,
   [self savePrefs];
 }
 
+- (bool)getBooleanOption:(const std::string&)name
+{
+  // TODO implement
+  return true;
+}
+- (int)getIntegerOption:(const std::string&)name
+{
+  // TODO implement
+  return 0;
+}
+- (double)getDoubleOption:(const std::string&)name
+{
+  // TODO implement
+  return 0.0;
+}
+- (std::string)getStringOption:(const std::string&)name
+{
+  // TODO implement
+  return "";
+}
+- (int64_t)getInt64Option:(const std::string&)name
+{
+  // TODO implement
+  return 0;
+}
+- (uint64_t)getUint64Option:(const std::string&)name
+{
+  // TODO implement
+  return 0;
+}
+
 #pragma mark - Ads & Confirmations
 
 - (void)confirmAd:(NSString *)info

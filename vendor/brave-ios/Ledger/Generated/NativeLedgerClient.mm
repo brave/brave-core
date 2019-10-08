@@ -211,3 +211,21 @@ ledger::TransferFeeList NativeLedgerClient::GetTransferFees(const std::string& w
 void NativeLedgerClient::RemoveTransferFee(const std::string& wallet_type, const std::string& id) {
   [bridge_ removeTransferFee:wallet_type id:id];
 }
+bool NativeLedgerClient::GetBooleanOption(const std::string& name) const {
+  return [bridge_ getBooleanOption:name];
+}
+int NativeLedgerClient::GetIntegerOption(const std::string& name) const {
+  return [bridge_ getIntegerOption:name];
+}
+double NativeLedgerClient::GetDoubleOption(const std::string& name) const {
+  return [bridge_ getDoubleOption:name];
+}
+std::string NativeLedgerClient::GetStringOption(const std::string& name) const {
+  return [bridge_ getStringOption:name];
+}
+int64_t NativeLedgerClient::GetInt64Option(const std::string& name) const {
+  return [bridge_ getInt64Option:name];
+}
+uint64_t NativeLedgerClient::GetUint64Option(const std::string& name) const {
+  return [bridge_ getUint64Option:name];
+}

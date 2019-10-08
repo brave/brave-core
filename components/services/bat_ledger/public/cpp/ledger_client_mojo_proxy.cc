@@ -675,6 +675,42 @@ void LedgerClientMojoProxy::ClearState(const std::string& name) {
   ledger_client_->ClearState(name);
 }
 
+void LedgerClientMojoProxy::GetBooleanOption(
+    const std::string& name,
+    GetBooleanOptionCallback callback) {
+  std::move(callback).Run(ledger_client_->GetBooleanOption(name));
+}
+
+void LedgerClientMojoProxy::GetIntegerOption(
+    const std::string& name,
+    GetIntegerOptionCallback callback) {
+  std::move(callback).Run(ledger_client_->GetIntegerOption(name));
+}
+
+void LedgerClientMojoProxy::GetDoubleOption(
+    const std::string& name,
+    GetDoubleOptionCallback callback) {
+  std::move(callback).Run(ledger_client_->GetDoubleOption(name));
+}
+
+void LedgerClientMojoProxy::GetStringOption(
+    const std::string& name,
+    GetStringOptionCallback callback) {
+  std::move(callback).Run(ledger_client_->GetStringOption(name));
+}
+
+void LedgerClientMojoProxy::GetInt64Option(
+    const std::string& name,
+    GetInt64OptionCallback callback) {
+  std::move(callback).Run(ledger_client_->GetInt64Option(name));
+}
+
+void LedgerClientMojoProxy::GetUint64Option(
+    const std::string& name,
+    GetUint64OptionCallback callback) {
+  std::move(callback).Run(ledger_client_->GetUint64Option(name));
+}
+
 void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
   ledger_client_->SetConfirmationsIsReady(is_ready);
 }
