@@ -24,7 +24,7 @@ This pull request fixes issue #<number>
   - `QA/(Yes|No)`
   - `release-notes/(include|exclude)`
   - `bug` / `enhancement`
-- [ ] Necessary [security reviews](https://github.com/brave/internal/issues/new?assignees=&labels=security%2C+security-reviews&template=security-review.md&title=iOS:%20Security+Review+for) have taken place.
+- [ ] Necessary [security reviews](https://github.com/brave/security/issues/new/choose) have taken place.
 - [ ] Adequate unit test coverage exists to prevent regressions.
 - [ ] Adequate test plan exists for QA to validate (if applicable).
 - [ ] Issue is assigned to a milestone (should happen at merge time).
