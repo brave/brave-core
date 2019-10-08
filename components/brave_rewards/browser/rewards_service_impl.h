@@ -352,7 +352,7 @@ class RewardsServiceImpl : public RewardsService,
              ledger::PublisherInfoPtr publisher_info);
   void OnResetTheWholeState(base::Callback<void(bool)> callback,
                                  bool success);
-  void OnContributionInfoSaved(const ledger::RewardsCategory category,
+  void OnContributionInfoSaved(const ledger::RewardsType type,
                                bool success);
   void OnRecurringTipSaved(
       ledger::SaveRecurringTipCallback callback,
@@ -486,7 +486,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
                            const std::string& probi,
-                           const ledger::RewardsCategory category) override;
+                           const ledger::RewardsType type) override;
   void OnGrantFinish(ledger::Result result,
                      ledger::GrantPtr grant) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
@@ -553,7 +553,7 @@ class RewardsServiceImpl : public RewardsService,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,
-                            const ledger::RewardsCategory category) override;
+                            const ledger::RewardsType type) override;
   void SaveRecurringTip(
       ledger::ContributionInfoPtr info,
       ledger::SaveRecurringTipCallback callback) override;

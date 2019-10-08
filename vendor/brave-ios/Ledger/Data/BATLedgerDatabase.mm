@@ -240,7 +240,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 
 #pragma mark - Contribution Info
 
-+ (void)insertContributionInfo:(NSString *)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(NSString *)publisherKey category:(BATRewardsCategory)category completion:(nullable BATLedgerDatabaseWriteCompletion)completion
++ (void)insertContributionInfo:(NSString *)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(NSString *)publisherKey type:(BATRewardsType)type completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     auto ci = [[ContributionInfo alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ContributionInfo.class) inManagedObjectContext:context]
@@ -250,7 +250,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     ci.year = year;
     ci.date = date;
     ci.publisherID = publisherKey;
-    ci.category = category;
+    ci.type = type;
     ci.publisher = [self getPublisherInfoWithID:publisherKey context:context];
   } completion:WriteToDataControllerCompletion(completion)];
 }
@@ -261,8 +261,8 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   const auto fetchRequest = ContributionInfo.fetchRequest;
   fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ContributionInfo.class)
                                     inManagedObjectContext:context];
-  fetchRequest.predicate = [NSPredicate predicateWithFormat:@"month = %d AND year = %d AND category = %d",
-                            month, year, BATRewardsCategoryOneTimeTip];
+  fetchRequest.predicate = [NSPredicate predicateWithFormat:@"month = %d AND year = %d AND type = %d",
+                            month, year, BATRewardsTypeOneTimeTip];
 
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
@@ -556,7 +556,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     info.amount = pc.amount;
     info.addedDate = pc.addedDate;
     info.viewingId = pc.viewingID;
-    info.category = static_cast<BATRewardsCategory>(pc.category);
+    info.type = static_cast<BATRewardsType>(pc.type);
     [publishers addObject:info];
   }
   return publishers;
@@ -574,7 +574,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
       pc.amount = contribution.amount;
       pc.addedDate = now;
       pc.viewingID = contribution.viewingId;
-      pc.category = contribution.category;
+      pc.type = contribution.type;
     }
   } completion:WriteToDataControllerCompletion(completion)];
 }

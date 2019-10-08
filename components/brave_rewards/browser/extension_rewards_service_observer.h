@@ -53,7 +53,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
                            unsigned int result,
                            const std::string& viewing_id,
                            const std::string& probi,
-                           const int32_t category) override;
+                           const int32_t type) override;
 
   void OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,

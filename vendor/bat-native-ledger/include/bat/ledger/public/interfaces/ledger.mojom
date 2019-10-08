@@ -46,12 +46,12 @@ struct PendingContribution {
   double amount;
   uint64 added_date;
   string viewing_id;
-  RewardsCategory category;
+  RewardsType type;
 };
 
 struct PendingContributionInfo {
   string publisher_key;
-  RewardsCategory category;
+  RewardsType type;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;
   string name;
   string url;
@@ -246,7 +246,7 @@ struct TransferFee {
   uint32 execution_id;
 };
 
-enum RewardsCategory {
+enum RewardsType {
   AUTO_CONTRIBUTE = 2,
   ONE_TIME_TIP = 8,
   RECURRING_TIP = 16,

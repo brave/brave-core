@@ -376,7 +376,7 @@ void ExtensionRewardsServiceObserver::OnReconcileComplete(
     unsigned int result,
     const std::string& viewing_id,
     const std::string& probi,
-    const int32_t category) {
+    const int32_t type) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -384,7 +384,7 @@ void ExtensionRewardsServiceObserver::OnReconcileComplete(
 
   extensions::api::brave_rewards::OnReconcileComplete::Properties properties;
   properties.result = result;
-  properties.category = category;
+  properties.type = type;
 
   std::unique_ptr<base::ListValue> args(
       extensions::api::brave_rewards::OnReconcileComplete::Create(properties)

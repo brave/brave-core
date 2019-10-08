@@ -98,7 +98,7 @@ chrome.braveRewards.onPendingContributionSaved.addListener((result: number) => {
   }
 })
 
-chrome.braveRewards.onReconcileComplete.addListener((result: number, category: number) => {
+chrome.braveRewards.onReconcileComplete.addListener((result: number, type: number) => {
   if (result === 0) {
     chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
       rewardsPanelActions.onBalance(balance)

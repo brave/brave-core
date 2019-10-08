@@ -34,7 +34,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
                            const std::string& probi,
-                           const ledger::RewardsCategory category) override;
+                           const ledger::RewardsType type) override;
   void OnGrantFinish(ledger::Result result,
                      ledger::GrantPtr grant) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
@@ -71,7 +71,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,
-                            const ledger::RewardsCategory category) override;
+                            const ledger::RewardsType type) override;
   void SaveRecurringTip(
       ledger::ContributionInfoPtr info,
       ledger::SaveRecurringTipCallback callback) override;

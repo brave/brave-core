@@ -43,7 +43,7 @@ NS_SWIFT_NAME(LedgerObserver)
 /// and likely an updated balance report
 @property (nonatomic, copy, nullable) void (^reconcileCompleted)(BATResult result,
                                                                  NSString *viewingId,
-                                                                 BATRewardsCategory category,
+                                                                 BATRewardsType type,
                                                                  NSString *probi);
 
 /// The users balance report has been updated
@@ -70,7 +70,7 @@ NS_SWIFT_NAME(LedgerObserver)
 @property (nonatomic, copy, nullable) void (^recurringTipRemoved)(NSString *publisherKey);
 
 // A users contribution was added
-@property (nonatomic, copy, nullable) void (^contributionAdded)(BOOL successful, BATRewardsCategory category);
+@property (nonatomic, copy, nullable) void (^contributionAdded)(BOOL successful, BATRewardsType type);
 
 /// A notification was added to the wallet
 @property (nonatomic, copy, nullable) void (^notificationAdded)(BATRewardsNotification *notification);

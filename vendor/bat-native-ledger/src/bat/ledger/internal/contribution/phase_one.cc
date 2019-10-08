@@ -76,7 +76,7 @@ void PhaseOne::ReconcileCallback(
   if (!success) {
     Complete(ledger::Result::LEDGER_ERROR,
              viewing_id,
-             reconcile.category_);
+             reconcile.type_);
     return;
   }
 
@@ -170,7 +170,7 @@ void PhaseOne::CurrentReconcileCallback(
   if (!success) {
     Complete(ledger::Result::LEDGER_ERROR,
              viewing_id,
-             reconcile.category_);
+             reconcile.type_);
     return;
   }
 
@@ -258,7 +258,7 @@ void PhaseOne::ReconcilePayloadCallback(
     if (response_status_code == net::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE) {
       Complete(ledger::Result::CONTRIBUTION_AMOUNT_TOO_LOW,
                viewing_id,
-               reconcile.category_);
+               reconcile.type_);
     } else {
       contribution_->AddRetry(ledger::ContributionRetry::STEP_PAYLOAD,
                               viewing_id);
@@ -349,7 +349,7 @@ void PhaseOne::RegisterViewingCallback(
   if (!success) {
     Complete(ledger::Result::LEDGER_ERROR,
              viewing_id,
-             reconcile.category_);
+             reconcile.type_);
     return;
   }
 
@@ -457,7 +457,7 @@ void PhaseOne::ViewingCredentialsCallback(
   if (!success) {
     Complete(ledger::Result::LEDGER_ERROR,
              viewing_id,
-             reconcile.category_);
+             reconcile.type_);
     return;
   }
 
@@ -491,20 +491,20 @@ void PhaseOne::ViewingCredentialsCallback(
   ledger_->SetTransactions(transactions);
   Complete(ledger::Result::LEDGER_OK,
            reconcile.viewingId_,
-           reconcile.category_,
+           reconcile.type_,
            probi);
 }
 
 void PhaseOne::Complete(ledger::Result result,
                         const std::string& viewing_id,
-                        const ledger::RewardsCategory category,
+                        const ledger::RewardsType type,
                         const std::string& probi) {
   // Set timer to the next month when AC is complete
-  if (category == ledger::RewardsCategory::AUTO_CONTRIBUTE) {
+  if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {
     contribution_->ResetReconcileStamp();
   }
 
-  ledger_->OnReconcileComplete(result, viewing_id, probi, category);
+  ledger_->OnReconcileComplete(result, viewing_id, probi, type);
 
   if (result != ledger::Result::LEDGER_OK) {
     if (!viewing_id.empty()) {

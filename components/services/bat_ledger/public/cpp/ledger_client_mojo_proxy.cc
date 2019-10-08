@@ -144,12 +144,12 @@ void LedgerClientMojoProxy::OnReconcileComplete(
     const ledger::Result result,
     const std::string& viewing_id,
     const std::string& probi,
-    const ledger::RewardsCategory category) {
+    const ledger::RewardsType type) {
   ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
       probi,
-      category);
+      type);
 }
 
 void LedgerClientMojoProxy::OnGrantFinish(
@@ -376,14 +376,14 @@ void LedgerClientMojoProxy::SaveContributionInfo(
     int32_t year,
     uint32_t date,
     const std::string& publisher_key,
-    const ledger::RewardsCategory category) {
+    const ledger::RewardsType type) {
   ledger_client_->SaveContributionInfo(
     probi,
     month,
     year,
     date,
     publisher_key,
-    category);
+    type);
 }
 
 void LedgerClientMojoProxy::SaveMediaPublisherInfo(

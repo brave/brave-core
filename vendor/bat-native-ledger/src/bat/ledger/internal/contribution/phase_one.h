@@ -41,7 +41,7 @@ class PhaseOne {
 
   void Complete(ledger::Result result,
                 const std::string& viewing_id,
-                const ledger::RewardsCategory category,
+                const ledger::RewardsType type,
                 const std::string& probi = "0");
 
  private:

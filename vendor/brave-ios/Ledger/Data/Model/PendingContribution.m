@@ -12,7 +12,7 @@
 
 @dynamic addedDate;
 @dynamic amount;
-@dynamic category;
+@dynamic type;
 @dynamic publisherID;
 @dynamic viewingID;
 @dynamic publisher;
