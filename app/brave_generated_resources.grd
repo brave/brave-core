@@ -473,6 +473,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_TRANSLATE_BUBBLE_CANCEL" desc="Text to show for the translate bubble's cancel button to dismiss the bubble.">
         Cancel
       </message>
+      <message name="IDS_BRAVE_TRANSLATE_BUBBLE_DONT_ASK_AGAIN" desc="Text to show for the don't ask again button.">
+        Don't ask me again
+      </message>
       <!-- App shortcuts -->
       <if expr="not is_win">
         <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_NIGHTLY" desc="Name for the Brave Apps Start Menu folder name.">
