@@ -256,4 +256,10 @@ source_set("ui") {
     ]
     deps += [ "//brave/components/brave_wallet_ui:generated_resources" ]
   }
+
+  if (toolkit_views) {
+    if (enable_brave_translate_extension) {
+      deps += [ "//components/translate/core/browser" ]
+    }
+  }
 }

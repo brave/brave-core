@@ -8,14 +8,18 @@
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/page_action/page_action_icon_container.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/page_action/omnibox_page_action_icon_container_view.h"
-#include "chrome/browser/ui/page_action/page_action_icon_container.h"
+#include "components/prefs/pref_service.h"
+#include "components/translate/core/browser/translate_pref_names.h"
 #include "extensions/browser/extension_registry.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/style/platform_style.h"
@@ -42,6 +46,9 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
 
   constexpr int kButtonColumnSetId = 0;
   views::ColumnSet* cs = layout->AddColumnSet(kButtonColumnSetId);
+  cs->AddColumn(views::GridLayout::LEADING, views::GridLayout::CENTER,
+                views::GridLayout::kFixedSize, views::GridLayout::USE_PREF, 0,
+                0);
   cs->AddPaddingColumn(1.0, 0);
   cs->AddColumn(views::GridLayout::LEADING, views::GridLayout::CENTER,
                 views::GridLayout::kFixedSize, views::GridLayout::USE_PREF, 0,
@@ -52,6 +59,17 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
   cs->AddColumn(views::GridLayout::LEADING, views::GridLayout::CENTER,
                 views::GridLayout::kFixedSize, views::GridLayout::USE_PREF, 0,
                 0);
+
+  auto dont_ask_button = std::make_unique<views::LabelButton>(
+      this,
+      l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_DONT_ASK_AGAIN));
+  dont_ask_button->SetID(BUTTON_ID_ALWAYS_TRANSLATE);
+
+  // Use the same text color as the cancel button.
+  const auto color =
+      views::style::GetColor(*dont_ask_button, views::style::CONTEXT_BUTTON_MD,
+                             views::style::STYLE_PRIMARY);
+  dont_ask_button->SetTextColor(views::Button::STATE_NORMAL, color);
 
   auto accept_button = views::MdTextButton::CreateSecondaryUiButton(
       this, l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_INSTALL));
@@ -66,6 +84,8 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
       views::GridLayout::kFixedSize, kButtonColumnSetId,
       views::GridLayout::kFixedSize,
       provider->GetDistanceMetric(views::DISTANCE_UNRELATED_CONTROL_VERTICAL));
+
+  layout->AddView(std::move(dont_ask_button));
 
   if (views::PlatformStyle::kIsOkButtonLeading) {
     layout->AddView(std::move(accept_button));
@@ -96,6 +116,18 @@ void BraveTranslateBubbleView::InstallGoogleTranslate() {
   translate_icon->InstallGoogleTranslate();
 }
 
+void BraveTranslateBubbleView::DisableOfferTranslatePref() {
+  if (!web_contents())
+    return;
+
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  PrefService* const prefs = profile->GetPrefs();
+  DCHECK(prefs);
+
+  prefs->SetBoolean(prefs::kOfferTranslateEnabled, false);
+}
+
 void BraveTranslateBubbleView::ButtonPressed(views::Button* sender,
                                              const ui::Event& event) {
   switch (static_cast<ButtonID>(sender->GetID())) {
@@ -104,6 +136,11 @@ void BraveTranslateBubbleView::ButtonPressed(views::Button* sender,
       break;
     }
     case BUTTON_ID_CANCEL: {
+      CloseBubble();
+      break;
+    }
+    case BUTTON_ID_ALWAYS_TRANSLATE: {
+      DisableOfferTranslatePref();
       CloseBubble();
       break;
     }
