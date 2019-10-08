@@ -12,10 +12,10 @@
 
 namespace network {
 
-std::unique_ptr<SimpleURLLoader> BraveSimpleURLLoader::Create(
+std::unique_ptr<BraveSimpleURLLoader> BraveSimpleURLLoader::Create(
     std::unique_ptr<ResourceRequest> resource_request,
     const net::NetworkTrafficAnnotationTag& annotation_tag) {
   return SimpleURLLoader::Create(std::move(resource_request), annotation_tag);
 }
 
-} // namespace network
+}  // namespace network
