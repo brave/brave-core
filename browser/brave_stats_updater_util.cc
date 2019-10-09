@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <ctime>
+
 #include "brave/browser/brave_stats_updater_util.h"
 
 #include "base/strings/string_number_conversions.h"
@@ -44,41 +46,20 @@ std::string GetPlatformIdentifier() {
 #endif
 }
 
-int GetIsoWeekNumber(base::Time time) {
-  base::Time::Exploded now_exploded;
-  time.LocalExplode(&now_exploded);
-  now_exploded.hour = 0;
-  now_exploded.minute = 0;
-  now_exploded.second = 0;
-  now_exploded.millisecond = 0;
-  now_exploded.day_of_month =
-      now_exploded.day_of_month + 3 - ((now_exploded.day_of_week + 6) % 7);
+int GetIsoWeekNumber(const base::Time& time) {
+  char buffer[24];
+  time_t rawtime = time.ToTimeT();
+  struct tm* timeinfo = std::localtime(&rawtime);
+  strftime(buffer, 24, "%V", timeinfo);
 
-  base::Time now_adjusted;
-  if (!base::Time::FromLocalExploded(now_exploded, &now_adjusted))
+  int week_number = 0;
+  if (!base::StringToInt(buffer, &week_number))
     return 0;
 
-  base::Time::Exploded jan4_exploded = {0};
-  jan4_exploded.year = now_exploded.year;
-  jan4_exploded.month = 1;
-  jan4_exploded.day_of_week = 0;
-  jan4_exploded.day_of_month = 4;
-  jan4_exploded.hour = 0;
-  jan4_exploded.minute = 0;
-  jan4_exploded.second = 0;
-  jan4_exploded.millisecond = 0;
-
-  base::Time jan4_time;
-  if (!base::Time::FromLocalExploded(jan4_exploded, &jan4_time))
-    return 0;
-
-  return 1 + std::round(
-                 ((now_adjusted.ToJsTime() - jan4_time.ToJsTime()) / 86400000 -
-                  3 + (jan4_exploded.day_of_month + 6) % 7) /
-                 7);
+  return week_number;
 }
 
-base::Time GetYMDAsDate(base::StringPiece ymd) {
+base::Time GetYMDAsDate(const base::StringPiece& ymd) {
   const auto pieces = base::SplitStringPiece(ymd, "-", base::TRIM_WHITESPACE,
                                              base::SPLIT_WANT_NONEMPTY);
   DCHECK_EQ(pieces.size(), 3ull);
