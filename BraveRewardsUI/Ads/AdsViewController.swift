@@ -4,6 +4,8 @@
 
 import UIKit
 import BraveRewards
+import BraveShared
+import Shared
 import pop
 
 public class AdsViewController: UIViewController {
@@ -91,7 +93,11 @@ public class AdsViewController: UIViewController {
       // Invalidate and reschedule
       timer.invalidate()
     }
-    dismissTimers[adView] = Timer.scheduledTimer(withTimeInterval: automaticDismissalInterval, repeats: false, block: { [weak self] _ in
+    var dismissInterval = automaticDismissalInterval
+    if !AppConstants.BuildChannel.isRelease, let override = Preferences.Rewards.adsDurationOverride.value, override > 0 {
+      dismissInterval = TimeInterval(override)
+    }
+    dismissTimers[adView] = Timer.scheduledTimer(withTimeInterval: dismissInterval, repeats: false, block: { [weak self] _ in
       guard let self = self, let handler = self.displayedAds[adView] else { return }
       self.hide(adView: adView)
       handler.handler(handler.ad, .timedOut)

@@ -11,7 +11,7 @@ import Static
 private typealias EnvironmentOverride = Preferences.Rewards.EnvironmentOverride
 
 /// A special QA settings menu that allows them to adjust debug rewards features
-public class QASettingsViewController: TableViewController, UITextFieldDelegate {
+public class QASettingsViewController: TableViewController {
   
   public let rewards: BraveRewards
   
@@ -42,6 +42,7 @@ public class QASettingsViewController: TableViewController, UITextFieldDelegate 
     $0.spellCheckingType = .no
     $0.returnKeyType = .done
     $0.textAlignment = .right
+    $0.keyboardType = .numberPad
     $0.text = "\(BraveLedger.reconcileTime)"
     $0.placeholder = "0"
   }
@@ -58,9 +59,34 @@ public class QASettingsViewController: TableViewController, UITextFieldDelegate 
     BraveLedger.reconcileTime = value
   }
   
-  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
-    return true
+  private let adsDismissalTextField = UITextField().then {
+    $0.borderStyle = .roundedRect
+    $0.autocorrectionType = .no
+    $0.autocapitalizationType = .none
+    $0.spellCheckingType = .no
+    $0.keyboardType = .numberPad
+    $0.returnKeyType = .done
+    $0.textAlignment = .right
+    $0.placeholder = "0"
+  }
+  
+  @objc private func adsDismissalEditingEnded() {
+    let value = Int(adsDismissalTextField.text ?? "") ?? 0
+    Preferences.Rewards.adsDurationOverride.value = value > 0 ? value : nil
+  }
+  
+  private var numpadDismissalToolbar: UIToolbar {
+    return UIToolbar().then {
+      $0.items = [
+        UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+        UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(textFieldDismissed))
+      ]
+      $0.frame = CGRect(width: self.view.bounds.width, height: 44)
+    }
+  }
+  
+  @objc private func textFieldDismissed() {
+    view.endEditing(true)
   }
   
   public override func viewDidLoad() {
@@ -75,8 +101,15 @@ public class QASettingsViewController: TableViewController, UITextFieldDelegate 
     segmentedControl.selectedSegmentIndex = Preferences.Rewards.environmentOverride.value
     segmentedControl.addTarget(self, action: #selector(environmentChanged), for: .valueChanged)
     reconcileTimeTextField.addTarget(self, action: #selector(reconcileTimeEditingEnded), for: .editingDidEnd)
-    reconcileTimeTextField.delegate = self
     reconcileTimeTextField.frame = CGRect(x: 0, y: 0, width: 50, height: 32)
+    reconcileTimeTextField.inputAccessoryView = numpadDismissalToolbar
+    
+    adsDismissalTextField.addTarget(self, action: #selector(adsDismissalEditingEnded), for: .editingDidEnd)
+    adsDismissalTextField.frame = CGRect(x: 0, y: 0, width: 50, height: 32)
+    adsDismissalTextField.inputAccessoryView = numpadDismissalToolbar
+    adsDismissalTextField.text = "\(Preferences.Rewards.adsDurationOverride.value ?? 0)"
+    
+    KeyboardHelper.defaultHelper.addDelegate(self)
     
     dataSource.sections = [
       Section(
@@ -88,6 +121,7 @@ public class QASettingsViewController: TableViewController, UITextFieldDelegate 
         footer: .title("Changing the environment automatically resets Brave Rewards.\n\nThe app must be force-quit after rewards is reset")
       ),
       Section(
+        header: .title("Ledger"),
         rows: [
           Row(text: "Is Debug", accessory: .switchToggle(value: BraveLedger.isDebug, { value in
             BraveLedger.isDebug = value
@@ -97,6 +131,12 @@ public class QASettingsViewController: TableViewController, UITextFieldDelegate 
             BraveLedger.useShortRetries = value
           })),
           Row(text: "Reconcile Time", detailText: "Number of minutes between reconciles. 0 = No Override", accessory: .view(reconcileTimeTextField), cellClass: MultilineSubtitleCell.self)
+        ]
+      ),
+      Section(
+        header: .title("Ads"),
+        rows: [
+          Row(text: "Dismissal Timer", detailText: "Number of seconds before an ad is automatically dismissed. 0 = Default", accessory: .view(adsDismissalTextField), cellClass: MultilineSubtitleCell.self)
         ]
       ),
       Section(
@@ -125,6 +165,17 @@ public class QASettingsViewController: TableViewController, UITextFieldDelegate 
     }))
     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
     present(alert, animated: true)
+  }
+}
+
+extension QASettingsViewController: KeyboardHelperDelegate {
+  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
+    self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: state.intersectionHeightForView(view), right: 0)
+  }
+  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
+    self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+  }
+  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardDidShowWithState state: KeyboardState) {
   }
 }
 
