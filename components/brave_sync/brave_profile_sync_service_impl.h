@@ -16,7 +16,6 @@
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 #include "brave/components/brave_sync/public/brave_profile_sync_service.h"
 #include "components/bookmarks/browser/bookmark_model.h"
-#include "components/bookmarks/browser/bookmark_model_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/profile_sync_service.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
@@ -51,8 +50,7 @@ class Prefs;
 }  // namespace prefs
 
 class BraveProfileSyncServiceImpl
-    : public bookmarks::BookmarkModelObserver,
-      public BraveProfileSyncService,
+    : public BraveProfileSyncService,
       public BraveSyncService,
       public network::NetworkConnectionTracker::NetworkConnectionObserver,
       public SyncMessageHandler {
@@ -125,34 +123,6 @@ class BraveProfileSyncServiceImpl
 
   BraveSyncService* GetSyncService() const override;
 
-  // BookmarkModelObserver implementation
-  void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
-                           bool ids_reassigned) override;
-  void BookmarkNodeMoved(bookmarks::BookmarkModel* model,
-                         const bookmarks::BookmarkNode* old_parent,
-                         size_t old_index,
-                         const bookmarks::BookmarkNode* new_parent,
-                         size_t new_index) override {}
-  void BookmarkNodeAdded(bookmarks::BookmarkModel* model,
-                         const bookmarks::BookmarkNode* parent,
-                         size_t index) override {}
-  void BookmarkNodeRemoved(bookmarks::BookmarkModel* model,
-                           const bookmarks::BookmarkNode* parent,
-                           size_t old_index,
-                           const bookmarks::BookmarkNode* node,
-                           const std::set<GURL>& removed_urls) override {}
-  void BookmarkAllUserNodesRemoved(
-      bookmarks::BookmarkModel* model,
-      const std::set<GURL>& removed_urls) override {}
-  void BookmarkNodeChanged(bookmarks::BookmarkModel* model,
-                           const bookmarks::BookmarkNode* node) override {}
-  void BookmarkNodeFaviconChanged(
-      bookmarks::BookmarkModel* model,
-      const bookmarks::BookmarkNode* node) override {}
-  void BookmarkNodeChildrenReordered(
-      bookmarks::BookmarkModel* model,
-      const bookmarks::BookmarkNode* node) override {}
-
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkDeleted);
@@ -222,10 +192,6 @@ class BraveProfileSyncServiceImpl
   void ResendSyncRecords(const std::string& category_name);
 
   void RecordSyncStateP3A() const;
-
-  // Move bookmarks under "Other Bookmarks" permanent node to a same name folder
-  // at the end of "Bookmark Bar" permanent node
-  void MigrateOtherBookmarks();
 
   static base::TimeDelta GetRetryExponentialWaitAmount(int retry_number);
   static std::vector<unsigned> GetExponentialWaitsForTests();

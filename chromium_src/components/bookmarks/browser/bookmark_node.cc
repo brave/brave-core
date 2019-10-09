@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// other_node should remain hidden
 #define BRAVE_IS_VISIBLE    \
   if (type() == OTHER_NODE) \
-    return visible_;
+    return false;
 #include "../../../../../components/bookmarks/browser/bookmark_node.cc"
 #undef BRAVE_IS_VISIBLE

@@ -1,0 +1,13 @@
+diff --git a/components/bookmarks/browser/bookmark_model.h b/components/bookmarks/browser/bookmark_model.h
+index f4b6c8770e01c40992c2b6d5ee78dcbdc1429a53..9186e036bdd9d32420f6bbbe895dfcae444608ab 100644
+--- a/components/bookmarks/browser/bookmark_model.h
++++ b/components/bookmarks/browser/bookmark_model.h
+@@ -308,7 +308,7 @@ class BookmarkModel : public BookmarkUndoProvider,
+   BookmarkClient* client() const { return client_.get(); }
+ 
+   void SetUndoDelegate(BookmarkUndoDelegate* undo_delegate);
+-
++  BRAVE_BOOKMARK_MODEL_H_
+  private:
+   friend class BookmarkCodecTest;
+   friend class BookmarkModelFaviconTest;

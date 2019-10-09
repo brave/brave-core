@@ -2,6 +2,8 @@ import("//components/gcm_driver/config.gni")
 
 source_set("profiles") {
   sources = [
+    "brave_bookmark_model_loaded_observer.cc",
+    "brave_bookmark_model_loaded_observer.h",
     "brave_profile_impl.cc",
     "brave_profile_impl.h",
     "brave_profile_manager.cc",

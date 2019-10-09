@@ -24,6 +24,8 @@
 #include "brave/components/brave_sync/syncer_helper.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/chrome_sync_client.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/signin/public/identity_manager/account_info.h"
@@ -195,16 +197,13 @@ BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
       prefs::kSyncHistoryEnabled,
       base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
-  // TODO(darkdh): find another way to obtain bookmark model
-  // change introduced in 83b9663e3814ef7e53af5009d10033b89955db44
-  model_ =
-      static_cast<ChromeSyncClient*>(sync_client_.get())->GetBookmarkModel();
+
+  model_ = BookmarkModelFactory::GetForBrowserContext(profile);
 
   if (!brave_sync_prefs_->GetSeed().empty() &&
       !brave_sync_prefs_->GetThisDeviceName().empty()) {
     brave_sync_configured_ = true;
   }
-  model_->AddObserver(this);
   network_connection_tracker_->AddNetworkConnectionObserver(this);
   RecordSyncStateP3A();
 }
@@ -231,7 +230,6 @@ void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(RecordsListPtr records) {
 
 BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {
   network_connection_tracker_->RemoveNetworkConnectionObserver(this);
-  model_->RemoveObserver(this);
 }
 
 void BraveProfileSyncServiceImpl::OnSetupSyncHaveCode(
@@ -501,7 +499,7 @@ void BraveProfileSyncServiceImpl::OnSyncReady() {
     ProfileSyncService::GetUserSettings()->SetSyncRequested(true);
   }
 
-  MigrateOtherBookmarks();
+  model_->MigrateOtherNode();
 }
 
 syncer::ModelTypeSet BraveProfileSyncServiceImpl::GetPreferredDataTypes()
@@ -1006,16 +1004,6 @@ void BraveProfileSyncServiceImpl::SendAndPurgePendingRecords() {
   pending_send_records_.clear();
 }
 
-void BraveProfileSyncServiceImpl::BookmarkModelLoaded(
-    bookmarks::BookmarkModel* model,
-    bool ids_reassigned) {
-  // When sync is enabled, we need to send migration records to other devices so
-  // it is handled in OnSyncReady
-  if (!IsBraveSyncEnabled()) {
-    MigrateOtherBookmarks();
-  }
-}
-
 void BraveProfileSyncServiceImpl::SendSyncRecords(
     const std::string& category_name,
     RecordsListPtr records) {
@@ -1078,20 +1066,6 @@ void BraveProfileSyncServiceImpl::ResendSyncRecords(
     }
     if (!records->empty())
       brave_sync_client_->SendSyncRecords(category_name, *records);
-  }
-}
-
-void BraveProfileSyncServiceImpl::MigrateOtherBookmarks() {
-  if (!model_->other_node()->children().empty()) {
-    const bookmarks::BookmarkNode* new_folder =
-        model_->AddFolder(model_->bookmark_bar_node(),
-                          model_->bookmark_bar_node()->children().size(),
-                          model_->other_node()->GetTitledUrlNodeTitle());
-    size_t children_size = model_->other_node()->children().size();
-    for (size_t i = 0; i < children_size; ++i) {
-      model_->Move(model_->other_node()->children().front().get(), new_folder,
-                   i);
-    }
   }
 }
 
