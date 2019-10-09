@@ -572,4 +572,32 @@ class NSURLExtensionsTests: XCTestCase {
             XCTAssertNil($0.bookmarkletCodeComponent)
         }
     }
+    
+    func testMediaSiteURL() {
+        let goodURLs = [
+            "https://www.youtube.com",
+            "https://www.vimeo.com",
+            "https://m.youtube.com",
+            "https://m.twitch.tv",
+            "https://www.twitch.tv"
+        ]
+        
+        let badURLs = [
+            "https://youtube.xyz.com",
+            "https://www.google.com",
+            "https://www.you.tube.com"
+        ]
+        
+        func getURL(url: String) -> URL? {
+            return URL(string: url)
+        }
+        
+        goodURLs.forEach {
+            XCTAssertTrue(getURL(url: $0)?.isMediaSiteURL ?? true, "failed for \($0)")
+        }
+        
+        badURLs.forEach {
+            XCTAssertFalse((getURL(url: $0)?.isMediaSiteURL) ?? false, "failed for \($0)")
+        }
+    }
 }
