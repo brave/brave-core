@@ -276,9 +276,9 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       let cell = row.dequeuedCell(from: tableView, indexPath: indexPath)
       cell.manualSeparators = []
       cell.label.font = SettingsUX.bodyFont
-      cell.label.textColor = .black
+      cell.label.appearanceTextColor = .black
       cell.label.numberOfLines = 0
-      cell.accessoryLabel?.textColor = Colors.grey100
+      cell.accessoryLabel?.appearanceTextColor = Colors.grey100
       cell.accessoryLabel?.font = SettingsUX.bodyFont
       cell.accessoryType = .none
       cell.selectionStyle = .none
@@ -305,7 +305,7 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       case .excludedSites:
         let numberOfExcludedSites = state.ledger.numberOfExcludedPublishers
         cell.label.text = String(format: Strings.AutoContributeRestoreExcludedSites, numberOfExcludedSites)
-        cell.label.textColor = Colors.blurple400
+        cell.label.appearanceTextColor = Colors.blurple400
         cell.selectionStyle = .default
       }
       return cell
@@ -373,6 +373,7 @@ extension AutoContributeDetailViewController {
       tableView.register(Value1TableViewCell.self)
       tableView.register(EmptyTableCell.self)
       tableView.layoutMargins = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 15.0, right: 15.0)
+      tableView.appearanceSeparatorColor = UIColor(white: 0.85, alpha: 1.0)
       
       addSubview(tableView)
       tableView.snp.makeConstraints {

@@ -44,7 +44,7 @@ class TableHeaderRowView: UIView {
     for c in columns {
       let label = UILabel().then {
         $0.text = c.title
-        $0.textColor = tintColor
+        $0.appearanceTextColor = tintColor
         $0.font = .systemFont(ofSize: 13.0, weight: .medium)
         $0.textAlignment = c.align
         $0.isAccessibilityElement = !c.title.isEmpty

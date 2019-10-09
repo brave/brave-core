@@ -76,9 +76,11 @@ class OptionsSelectionViewController<OptionType: DisplayableOption>: UIViewContr
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "OptionCell", for: indexPath)
+    cell.backgroundColor = .white
+    cell.textLabel?.appearanceTextColor = .black
     cell.textLabel?.text = options[indexPath.row].displayString
     cell.textLabel?.font = .systemFont(ofSize: 14.0)
-    cell.textLabel?.textColor = Colors.grey100
+    cell.textLabel?.appearanceTextColor = Colors.grey100
     cell.textLabel?.numberOfLines = 0
     cell.accessoryType = selectedOptionIndex == indexPath.row ? .checkmark : .none
     return cell
@@ -94,7 +96,7 @@ extension OptionsSelectionViewController {
       
       tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
       tableView.backgroundView = UIView().then { $0.backgroundColor = SettingsUX.backgroundColor }
-      tableView.separatorColor = UIColor(white: 0.85, alpha: 1.0)
+      tableView.appearanceSeparatorColor = UIColor(white: 0.85, alpha: 1.0)
       tableView.register(UITableViewCell.self, forCellReuseIdentifier: "OptionCell")
       
       addSubview(tableView)

@@ -102,7 +102,7 @@ class TippingSelectionView: UIView {
   // MARK: - Private UI
   
   private let titleLabel = UILabel().then {
-    $0.textColor = .white
+    $0.appearanceTextColor = .white
     $0.font = .systemFont(ofSize: 18.0, weight: .bold)
     $0.text = Strings.TippingAmountTitle
   }
@@ -210,16 +210,16 @@ extension TippingSelectionView {
   // "wallet balance X BAT"
   fileprivate class WalletBalanceView: UIStackView {
     let titleLabel = UILabel().then {
-      $0.textColor = Colors.blurple700
+      $0.appearanceTextColor = Colors.blurple700
       $0.font = .systemFont(ofSize: 12.0)
       $0.text = Strings.TippingWalletBalanceTitle
     }
     let valueLabel = UILabel().then {
-      $0.textColor = .white
+      $0.appearanceTextColor = .white
       $0.font = .systemFont(ofSize: 12.0, weight: .medium)
     }
     let cryptoLabel = UILabel().then {
-      $0.textColor = .white
+      $0.appearanceTextColor = .white
       $0.font = .systemFont(ofSize: 12.0, weight: .medium)
     }
     

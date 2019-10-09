@@ -15,7 +15,7 @@ extension WelcomeViewController {
     
     let termsOfServiceLabel = LinkLabel().then {
       $0.font = .systemFont(ofSize: 12.0)
-      $0.textColor = Colors.grey900
+      $0.appearanceTextColor = Colors.grey900
       $0.textAlignment = .center
       $0.text = Strings.WelcomeDisclaimerInformation
       $0.setURLInfo([Strings.TermsOfServiceURL: "terms", Strings.PrivacyPolicyURL: "policy"])
@@ -39,7 +39,7 @@ extension WelcomeViewController {
         .view(UIImageView(image: UIImage(frameworkResourceNamed: "bat-dragable"))),
         .customSpace(20.0),
         .view(UILabel().then {
-          $0.textColor = .white
+          $0.appearanceTextColor = .white
           $0.font = .systemFont(ofSize: 28.0, weight: .medium)
           $0.textAlignment = .center
           $0.attributedText = {
@@ -57,7 +57,7 @@ extension WelcomeViewController {
           }()
         }),
         .view(UILabel().then {
-          $0.textColor = Colors.blue500
+          $0.appearanceTextColor = Colors.blue500
           $0.font = .systemFont(ofSize: 22.0)
           $0.textAlignment = .center
           $0.numberOfLines = 0
@@ -65,7 +65,7 @@ extension WelcomeViewController {
         }),
         .customSpace(15.0),
         .view(UILabel().then {
-          $0.textColor = .white
+          $0.appearanceTextColor = .white
           $0.font = .systemFont(ofSize: 16.0)
           $0.textAlignment = .center
           $0.numberOfLines = 0
@@ -78,7 +78,7 @@ extension WelcomeViewController {
         .customSpace(25.0),
         .view(UILabel().then {
           $0.text = Strings.LearnMoreHowItWorks
-          $0.textColor = UIColor(white: 1.0, alpha: 0.5)
+          $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.5)
           $0.textAlignment = .center
           $0.font = .systemFont(ofSize: 16.0)
         }),
@@ -147,14 +147,14 @@ extension WelcomeViewController {
       stackView.addArrangedSubview(UIImageView(image: icon))
       stackView.addArrangedSubview(UILabel().then {
         $0.text = title
-        $0.textColor = .black
+        $0.appearanceTextColor = .black
         $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.font = .systemFont(ofSize: 18, weight: .medium)
       })
       stackView.addArrangedSubview(UILabel().then {
         $0.text = body
-        $0.textColor = Colors.grey200
+        $0.appearanceTextColor = Colors.grey200
         $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.font = .systemFont(ofSize: 16)
@@ -188,7 +188,7 @@ extension WelcomeViewController {
     
     let termsOfServiceLabel = LinkLabel().then {
       $0.font = .systemFont(ofSize: 12.0)
-      $0.textColor = Colors.grey200
+      $0.appearanceTextColor = Colors.grey200
       $0.linkColor = .black
       $0.textAlignment = .center
       $0.text = Strings.WelcomeDisclaimerInformation
@@ -239,14 +239,14 @@ extension WelcomeViewController {
         .view(UILabel().then {
           $0.text = Strings.LearnMoreWhyTitle
           $0.font = .systemFont(ofSize: 24.0)
-          $0.textColor = .black
+          $0.appearanceTextColor = .black
           $0.numberOfLines = 0
         }),
         .customSpace(10.0),
         .view(UILabel().then {
           $0.text = Strings.LearnMoreWhyBody
           $0.font = .systemFont(ofSize: 16.0)
-          $0.textColor = Colors.grey200
+          $0.appearanceTextColor = Colors.grey200
           $0.numberOfLines = 0
         }),
         .customSpace(20.0),
@@ -270,7 +270,7 @@ extension WelcomeViewController {
           $0.text = Strings.LearnMoreReady
           $0.font = .systemFont(ofSize: 20.0)
           $0.textAlignment = .center
-          $0.textColor = Colors.blurple400
+          $0.appearanceTextColor = Colors.blurple400
           $0.numberOfLines = 0
         }),
         .customSpace(20.0),

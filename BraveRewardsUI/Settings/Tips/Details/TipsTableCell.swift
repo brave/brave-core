@@ -16,13 +16,13 @@ class TipsTableCell: UITableViewCell, TableViewReusable {
   }
   
   let tokenView = BATUSDPairView(batAmountConfig: {
-    $0.textColor = Colors.grey100
+    $0.appearanceTextColor = Colors.grey100
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
   }, batKindConfig: {
-    $0.textColor = Colors.grey100
+    $0.appearanceTextColor = Colors.grey100
     $0.font = .systemFont(ofSize: 12.0)
   }, usdConfig: {
-    $0.textColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey200
     $0.font = .systemFont(ofSize: 10.0)
   }).then {
     $0.axis = .vertical
@@ -46,13 +46,13 @@ class TipsTableCell: UITableViewCell, TableViewReusable {
     $0.alignment = .leading
   }
   let siteNameLabel = UILabel().then {
-    $0.textColor = Colors.grey100
+    $0.appearanceTextColor = Colors.grey100
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.numberOfLines = 0
   }
   let typeNameLabel = UILabel().then {
-    $0.textColor = SettingsUX.bodyTextColor
+    $0.appearanceTextColor = SettingsUX.bodyTextColor
     $0.font = .systemFont(ofSize: 13.0, weight: .medium)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.numberOfLines = 0
@@ -60,6 +60,8 @@ class TipsTableCell: UITableViewCell, TableViewReusable {
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: nil)
+    
+    backgroundColor = .white
     
     insertSubview(attentionBackgroundFillView, belowSubview: contentView)
     contentView.addSubview(siteStackView)

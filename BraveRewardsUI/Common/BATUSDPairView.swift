@@ -38,13 +38,13 @@ class BATUSDPairView: UIStackView {
                    usdFontSize: CGFloat = 13.0) {
     self.init(batAmountConfig: {
       $0.font = .systemFont(ofSize: amountFontSize, weight: .medium)
-      $0.textColor = Colors.grey100
+      $0.appearanceTextColor = Colors.grey100
     }, batKindConfig: {
       $0.font = .systemFont(ofSize: kindFontSize)
-      $0.textColor = Colors.grey100
+      $0.appearanceTextColor = Colors.grey100
     }, usdConfig: {
       $0.font = .systemFont(ofSize: usdFontSize)
-      $0.textColor = Colors.grey200
+      $0.appearanceTextColor = Colors.grey200
     })
   }
   

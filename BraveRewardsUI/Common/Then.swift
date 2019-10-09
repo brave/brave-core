@@ -61,7 +61,7 @@ extension Then where Self: AnyObject {
   ///
   ///     let label = UILabel().then {
   ///       $0.textAlignment = .Center
-  ///       $0.textColor = UIColor.blackColor()
+  ///       $0.appearanceTextColor = UIColor.blackColor()
   ///       $0.text = "Hello, World!"
   ///     }
   func then(_ block: (Self) throws -> Void) rethrows -> Self {

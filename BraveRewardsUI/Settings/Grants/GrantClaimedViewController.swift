@@ -78,14 +78,14 @@ extension GrantClaimedViewController {
       let imageView = UIImageView(image: UIImage(frameworkResourceNamed: "bat-reward-graphic"))
       let titleLabel = UILabel().then {
         $0.numberOfLines = 0
-        $0.textColor = BraveUX.braveOrange
+        $0.appearanceTextColor = BraveUX.braveOrange
         $0.text = Strings.GrantsClaimedTitle
         $0.font = .systemFont(ofSize: 20.0)
         $0.textAlignment = .center
       }
       let subtitleLabel = UILabel().then {
         $0.numberOfLines = 0
-        $0.textColor = SettingsUX.subtitleTextColor
+        $0.appearanceTextColor = SettingsUX.subtitleTextColor
         $0.text = Strings.GrantsClaimedSubtitle
         $0.font = .systemFont(ofSize: 12.0)
         $0.textAlignment = .center
@@ -138,7 +138,7 @@ extension GrantClaimedViewController {
     
     override init(frame: CGRect) {
       let infoLabelConfig: (UILabel) -> Void = {
-        $0.textColor = UX.infoAccentTextColor
+        $0.appearanceTextColor = UX.infoAccentTextColor
         $0.font = .systemFont(ofSize: 14.0)
       }
       
@@ -158,12 +158,12 @@ extension GrantClaimedViewController {
       }
       let amountTitleLabel = UILabel().then {
         $0.text = Strings.GrantsClaimedAmountTitle
-        $0.textColor = SettingsUX.subtitleTextColor
+        $0.appearanceTextColor = SettingsUX.subtitleTextColor
         $0.font = .systemFont(ofSize: 13.0)
       }
       let expirdationDateTitleLabel = UILabel().then {
         $0.text = Strings.GrantsClaimedExpirationDateTitle
-        $0.textColor = SettingsUX.subtitleTextColor
+        $0.appearanceTextColor = SettingsUX.subtitleTextColor
         $0.font = .systemFont(ofSize: 13.0)
       }
       

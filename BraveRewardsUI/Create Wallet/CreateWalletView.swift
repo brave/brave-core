@@ -29,7 +29,7 @@ extension CreateWalletViewController {
     private let watermarkImageView = UIImageView(image: UIImage(frameworkResourceNamed: "bat-watermark"))
     
     private let prefixLabel = UILabel().then {
-      $0.textColor = UX.prefixTextColor
+      $0.appearanceTextColor = UX.prefixTextColor
       $0.font = .systemFont(ofSize: 16.0)
       $0.textAlignment = .center
       $0.text = Strings.RewardsOptInPrefix
@@ -39,7 +39,7 @@ extension CreateWalletViewController {
     private let batLogoImageView = UIImageView(image: UIImage(frameworkResourceNamed: "bat-logo"))
     
     private let titleLabel = UILabel().then {
-      $0.textColor = UX.titleTextColor
+      $0.appearanceTextColor = UX.titleTextColor
       $0.font = .systemFont(ofSize: 28.0, weight: .medium)
       $0.textAlignment = .center
       $0.attributedText = {
@@ -58,7 +58,7 @@ extension CreateWalletViewController {
     }
     
     private let descriptionLabel = UILabel().then {
-      $0.textColor = UX.bodyTextColor
+      $0.appearanceTextColor = UX.bodyTextColor
       $0.font = .systemFont(ofSize: 16.0)
       $0.textAlignment = .center
       $0.text = Strings.RewardsOptInDescription
@@ -67,7 +67,7 @@ extension CreateWalletViewController {
     
     let termsOfServiceLabel = LinkLabel().then {
       $0.font = .systemFont(ofSize: 12.0)
-      $0.textColor = Colors.grey900
+      $0.appearanceTextColor = Colors.grey900
       $0.textAlignment = .center
       $0.text = Strings.DisclaimerInformation
       $0.setURLInfo([Strings.TermsOfServiceURL: "terms", Strings.PrivacyPolicyURL: "policy"])

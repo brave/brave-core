@@ -48,7 +48,7 @@ class PublisherView: UIStackView {
   let faviconImageView = PublisherIconCircleImageView(size: UX.faviconSize)
   
   private let publisherNameLabel = UILabel().then {
-    $0.textColor = UX.publisherNameColor
+    $0.appearanceTextColor = UX.publisherNameColor
     $0.font = .systemFont(ofSize: 18.0, weight: .medium)
     $0.numberOfLines = 2
   }
@@ -102,13 +102,13 @@ class PublisherView: UIStackView {
   
   // "Brave Verified Publisher" / "Not yet verified"
   private let verifiedLabel = UILabel().then {
-    $0.textColor = UX.verifiedStatusColor
+    $0.appearanceTextColor = UX.verifiedStatusColor
     $0.font = .systemFont(ofSize: 12.0)
     $0.adjustsFontSizeToFitWidth = true
   }
   
   let checkAgainButton = Button(type: .system).then {
-    $0.setTitleColor(Colors.blue500, for: .normal)
+    $0.appearanceTextColor = Colors.blue500
     $0.titleLabel?.font = .systemFont(ofSize: 12.0)
     $0.setTitle(Strings.CheckAgain, for: .normal)
     $0.setContentHuggingPriority(.required, for: .horizontal)
@@ -120,7 +120,7 @@ class PublisherView: UIStackView {
   
   // Only shown when unverified
   private let unverifiedDisclaimerView = LinkLabel().then {
-    $0.textColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey200
     $0.font = UIFont.systemFont(ofSize: 12.0)
     $0.textContainerInset = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
     $0.text = "\(Strings.UnverifiedPublisherDisclaimer) \(Strings.DisclaimerLearnMore)"

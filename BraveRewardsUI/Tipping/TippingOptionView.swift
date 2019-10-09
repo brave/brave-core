@@ -37,17 +37,17 @@ class TippingOptionView: UIControl {
   }
   
   let valueLabel = UILabel().then {
-    $0.textColor = UX.textColor
+    $0.appearanceTextColor = UX.textColor
     $0.font = .systemFont(ofSize: 13.0, weight: .bold)
   }
   
   let cryptoLabel = UILabel().then {
-    $0.textColor = UX.textColor
+    $0.appearanceTextColor = UX.textColor
     $0.font = .systemFont(ofSize: 12.0)
   }
   
   let dollarLabel = UILabel().then {
-    $0.textColor = UX.unselectedDollarTextColor
+    $0.appearanceTextColor = UX.unselectedDollarTextColor
     $0.font = .systemFont(ofSize: 12.0)
     $0.textAlignment = .center
   }
@@ -90,7 +90,7 @@ class TippingOptionView: UIControl {
       amountView.layer.borderWidth = isSelected ? 0 : 1
       UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1000, initialSpringVelocity: 0, options: [], animations: {
         self.amountView.backgroundColor = self.isSelected ? UX.borderColor : .clear
-        self.dollarLabel.textColor = self.isSelected ? UX.selectedDollarTextColor : UX.unselectedDollarTextColor
+        self.dollarLabel.appearanceTextColor = self.isSelected ? UX.selectedDollarTextColor : UX.unselectedDollarTextColor
       }, completion: nil)
     }
   }

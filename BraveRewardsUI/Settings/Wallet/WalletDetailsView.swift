@@ -65,7 +65,7 @@ extension WalletDetailsViewController.View {
       let imageView = UIImageView(image: UIImage(frameworkResourceNamed: "icn-blankslate-statement"))
       let titleLabel = UILabel().then {
         $0.text = Strings.EmptyWalletTitle
-        $0.textColor = SettingsUX.bodyTextColor
+        $0.appearanceTextColor = SettingsUX.bodyTextColor
         $0.font = .systemFont(ofSize: 22.0)
         $0.textAlignment = .center
         $0.numberOfLines = 0
@@ -81,12 +81,12 @@ extension WalletDetailsViewController.View {
           
           addArrangedSubview(UILabel().then {
             $0.font = .systemFont(ofSize: 15.0, weight: .medium)
-            $0.textColor = SettingsUX.subtitleTextColor
+            $0.appearanceTextColor = SettingsUX.subtitleTextColor
             $0.text = Strings.EmptyWalletBulletHeader
           })
           addArrangedSubview(UILabel().then {
             $0.font = .systemFont(ofSize: 15.0)
-            $0.textColor = SettingsUX.bodyTextColor
+            $0.appearanceTextColor = SettingsUX.bodyTextColor
             $0.text = Strings.EmptyWalletBulletPoints
             $0.numberOfLines = 0
           })
@@ -134,7 +134,7 @@ extension WalletDetailsViewController.View {
       })
       stackView.addArrangedSubview(UILabel().then {
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)
-        $0.textColor = Colors.grey300
+        $0.appearanceTextColor = Colors.grey300
         $0.font = .systemFont(ofSize: 14.0)
         $0.textAlignment = .center
         $0.numberOfLines = 0

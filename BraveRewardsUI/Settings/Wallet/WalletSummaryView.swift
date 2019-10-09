@@ -17,11 +17,11 @@ class SettingsWalletSectionView: SettingsSectionView {
   
   private(set) lazy var viewDetailsButton = SettingsViewDetailsButton(type: .system).then {
     $0.tintColor = .white
-    $0.setTitleColor(.white, for: .normal)
+    $0.appearanceTextColor = .white
   }
   
   private(set) lazy var addFundsButton = Button(type: .system).then {
-    $0.setTitleColor(.white, for: .normal)
+    $0.appearanceTextColor = .white
     $0.setTitle(Strings.AddFunds, for: .normal)
     $0.setImage(UIImage(frameworkResourceNamed: "wallet-icon").alwaysOriginal, for: .normal)
     $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8.0)
@@ -48,7 +48,7 @@ class SettingsWalletSectionView: SettingsSectionView {
   
   private let titleLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
-    $0.textColor = UIColor(white: 1.0, alpha: 0.65)
+    $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.65)
     $0.text = Strings.WalletHeaderTitle
   }
   
@@ -58,18 +58,18 @@ class SettingsWalletSectionView: SettingsSectionView {
   }
   
   let balanceLabel = UILabel().then {
-    $0.textColor = .white
+    $0.appearanceTextColor = .white
     $0.font = .systemFont(ofSize: 30.0)
   }
   
   let altcurrencyTypeLabel = UILabel().then {
-    $0.textColor = UIColor(white: 1.0, alpha: 0.65)
+    $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.65)
     $0.font = .systemFont(ofSize: 16.0)
   }
   
   let usdBalanceLabel = UILabel().then {
     $0.textAlignment = .center
-    $0.textColor = UIColor(white: 1.0, alpha: 0.65)
+    $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.65)
     $0.font = .systemFont(ofSize: 12.0)
   }
   

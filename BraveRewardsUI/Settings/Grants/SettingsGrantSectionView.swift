@@ -83,7 +83,7 @@ class SettingsGrantSectionView: SettingsSectionView {
   }
   
   private let textLabel = UILabel().then {
-    $0.textColor = SettingsUX.bodyTextColor
+    $0.appearanceTextColor = SettingsUX.bodyTextColor
     $0.font = SettingsUX.bodyFont
     $0.numberOfLines = 0
   }

@@ -19,11 +19,11 @@ class GrantsItemView: SettingsSectionView {
       $0.spacing = 5.0
     }
     let amountView = CurrencyContainerView(amountLabelConfig: {
-      $0.textColor = Colors.grey100
+      $0.appearanceTextColor = Colors.grey100
       $0.font = .systemFont(ofSize: 16.0, weight: .medium)
       $0.text = amount
     }, kindLabelConfig: {
-      $0.textColor = Colors.grey200
+      $0.appearanceTextColor = Colors.grey200
       $0.font = .systemFont(ofSize: 13.0)
       $0.text = "BAT"
     })
@@ -33,7 +33,7 @@ class GrantsItemView: SettingsSectionView {
     
     if let date = expirationDate {
       let expirationLabel = UILabel().then {
-        $0.textColor = Colors.grey300
+        $0.appearanceTextColor = Colors.grey300
         $0.font = .systemFont(ofSize: 14.0)
         $0.numberOfLines = 0
         $0.text = String(

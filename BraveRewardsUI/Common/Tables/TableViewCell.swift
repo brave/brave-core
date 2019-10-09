@@ -45,6 +45,9 @@ class TableViewCell: UITableViewCell, TableViewReusable {
     
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+    label.appearanceTextColor = .black
+    backgroundColor = .white
+    
     contentView.addSubview(label)
     if let accessoryLabel = accessoryLabel {
       contentView.addSubview(accessoryLabel)

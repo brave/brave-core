@@ -34,14 +34,14 @@ extension AddFundsViewController {
       }
       
       let titleLabel = UILabel().then {
-        $0.textColor = SettingsUX.headerTextColor
+        $0.appearanceTextColor = SettingsUX.headerTextColor
         $0.font = .systemFont(ofSize: 22.0, weight: .medium)
         $0.text = Strings.AddFundsTitle
         $0.numberOfLines = 0
       }
       
       let bodyLabel = UILabel().then {
-        $0.textColor = SettingsUX.bodyTextColor
+        $0.appearanceTextColor = SettingsUX.bodyTextColor
         $0.font = .systemFont(ofSize: 14.0)
         $0.text = Strings.AddFundsBody
         $0.numberOfLines = 0

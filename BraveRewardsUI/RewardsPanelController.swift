@@ -24,7 +24,10 @@ public class RewardsPanelController: PopoverNavigationController {
   public override func viewDidLoad() {
     super.viewDidLoad()
     
+    navigationBar.appearanceBarTintColor = navigationBar.barTintColor
     navigationBar.tintColor = Colors.blurple400
+    navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+    
     if #available(iOS 13.0, *) {
       overrideUserInterfaceStyle = .light
     }

@@ -19,7 +19,7 @@ import UIKit
     }
     
     let titleLabel = UILabel().then {
-      $0.textColor = UX.titleColor
+      $0.appearanceTextColor = UX.titleColor
       $0.font = .systemFont(ofSize: 15.0)
       $0.numberOfLines = 0
       $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -31,13 +31,13 @@ import UIKit
     }
     
     let cryptoCurrencyLabel = UILabel().then {
-      $0.textColor = UX.cryptoCurrencyColor
+      $0.appearanceTextColor = UX.cryptoCurrencyColor
       $0.font = .systemFont(ofSize: 12.0)
       $0.setContentHuggingPriority(.required, for: .horizontal)
     }
     
     let dollarValueLabel = UILabel().then {
-      $0.textColor = UX.dollarValueColor
+      $0.appearanceTextColor = UX.dollarValueColor
       $0.font = .systemFont(ofSize: 10.0)
       $0.textAlignment = .right
       $0.setContentHuggingPriority(.required, for: .horizontal)
@@ -74,7 +74,7 @@ import UIKit
       titleLabel.text = title
       cryptoCurrencyLabel.text = "BAT"
       cryptoValueLabel.text = batValue
-      cryptoValueLabel.textColor = cryptoValueColor
+      cryptoValueLabel.appearanceTextColor = cryptoValueColor
       dollarValueLabel.text = usdDollarValue
     }
     

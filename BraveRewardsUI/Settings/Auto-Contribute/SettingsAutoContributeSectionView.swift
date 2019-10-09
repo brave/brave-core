@@ -59,13 +59,13 @@ class SettingsAutoContributeSectionView: SettingsSectionView {
   
   private let titleLabel = UILabel().then {
     $0.text = Strings.SettingsAutoContributeTitle
-    $0.textColor = BraveUX.autoContributeTintColor
+    $0.appearanceTextColor = BraveUX.autoContributeTintColor
     $0.font = SettingsUX.titleFont
   }
   
   private let bodyLabel = UILabel().then {
     $0.text = Strings.SettingsAutoContributeBody
-    $0.textColor = SettingsUX.bodyTextColor
+    $0.appearanceTextColor = SettingsUX.bodyTextColor
     $0.numberOfLines = 0
     $0.font = SettingsUX.bodyFont
   }

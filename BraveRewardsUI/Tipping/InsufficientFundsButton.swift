@@ -22,7 +22,7 @@ class InsufficientFundsButton: UIControl {
   }
   
   private let textLabel = UILabel().then {
-    $0.textColor = .white
+    $0.appearanceTextColor = .white
     $0.font = .systemFont(ofSize: 13.0)
     $0.numberOfLines = 0
     $0.text = Strings.TippingNotEnoughTokens

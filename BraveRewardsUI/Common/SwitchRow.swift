@@ -14,7 +14,7 @@ class SwitchRow: UIStackView {
   
   let textLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 14.0)
-    $0.textColor = UX.textColor
+    $0.appearanceTextColor = UX.textColor
     $0.numberOfLines = 0
   }
   

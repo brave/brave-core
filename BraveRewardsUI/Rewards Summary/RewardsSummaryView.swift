@@ -14,7 +14,7 @@ class RewardsSummaryView: UIView {
   
   let rewardsSummaryButton = RewardsSummaryViewButton()
   let monthYearLabel = UILabel().then {
-    $0.textColor = UX.monthYearColor
+    $0.appearanceTextColor = UX.monthYearColor
     $0.font = .systemFont(ofSize: 22.0)
   }
   let scrollView = UIScrollView()

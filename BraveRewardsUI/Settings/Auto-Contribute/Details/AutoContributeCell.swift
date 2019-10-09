@@ -25,13 +25,13 @@ class AutoContributeCell: UITableViewCell, TableViewReusable {
     $0.isHidden = true
   }
   let siteNameLabel = UILabel().then {
-    $0.textColor = SettingsUX.bodyTextColor
+    $0.appearanceTextColor = SettingsUX.bodyTextColor
     $0.font = SettingsUX.bodyFont
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.numberOfLines = 0
   }
   private let attentionLabel = UILabel().then {
-    $0.textColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey200
     $0.font = SettingsUX.bodyFont
     $0.textAlignment = .right
   }
@@ -40,6 +40,8 @@ class AutoContributeCell: UITableViewCell, TableViewReusable {
     super.init(style: style, reuseIdentifier: nil)
     
     siteStackView.spacing = verifiedStatusImageView.image?.size.width ?? 10.0
+    
+    backgroundColor = .white
     
     insertSubview(attentionBackgroundFillView, belowSubview: contentView)
     contentView.addSubview(siteStackView)
