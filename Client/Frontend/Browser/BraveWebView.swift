@@ -7,6 +7,9 @@ import WebKit
 
 class BraveWebView: WKWebView {
     
+    /// Stores last position when the webview was touched on.
+    private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
+    
     private static var nonPersistentDataStore: WKWebsiteDataStore?
     private static func sharedNonPersistentStore() -> WKWebsiteDataStore {
         if let dataStore = nonPersistentDataStore {
@@ -36,5 +39,10 @@ class BraveWebView: WKWebView {
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError()
+    }
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        lastHitPoint = point
+        return super.hitTest(point, with: event)
     }
 }
