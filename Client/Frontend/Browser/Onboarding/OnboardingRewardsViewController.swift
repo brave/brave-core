@@ -30,7 +30,12 @@ class OnboardingRewardsViewController: OnboardingViewController {
             contentView.updateDetailsText(isAdsRegionSupported ? Strings.OBRewardsDetailInAdRegion : Strings.OBRewardsDetailOutsideAdRegion, boldWords: isAdsRegionSupported ? 2 : 1)
         }
         
-        contentView.joinButton.addTarget(self, action: #selector(continueTapped), for: .touchUpInside)
+        // Last flow has been modified to show "Show Me" instead of "Join"
+        if isRewardsEnabled && isAdsRegionSupported {
+            contentView.continueButton.setTitle(Strings.OBShowMeButton, for: .normal)
+        }
+        
+        contentView.continueButton.addTarget(self, action: #selector(continueTapped), for: .touchUpInside)
         contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
     }
     
