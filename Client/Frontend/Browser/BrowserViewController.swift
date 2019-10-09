@@ -227,6 +227,9 @@ class BrowserViewController: UIViewController {
         
         if let rewards = rewards {
             notificationsHandler = AdsNotificationHandler(ads: rewards.ads, presentingController: self)
+            notificationsHandler?.canShowNotifications = {
+                return !PrivateBrowsingManager.shared.isPrivateBrowsing
+            }
             notificationsHandler?.actionOccured = { [weak self] notification, action in
                 guard let self = self else { return }
                 if action == .opened {
