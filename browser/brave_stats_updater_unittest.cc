@@ -7,6 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/browser/brave_stats_updater_params.h"
+#include "brave/browser/brave_stats_updater_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "chrome/browser/browser_process.h"
@@ -284,4 +285,33 @@ TEST_F(BraveStatsUpdaterTest, HasCorrectWeekOfInstallation) {
     ASSERT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
               "2019-03-25");
   }
+}
+
+TEST_F(BraveStatsUpdaterTest, GetIsoWeekNumber) {
+  base::Time::Exploded exploded;
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+  exploded.millisecond = 0;
+  exploded.day_of_week = 1;
+  exploded.day_of_month = 29;
+  exploded.month = 7;
+  exploded.year = 2019;
+
+  base::Time time;
+  ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &time));
+  EXPECT_EQ(brave::GetIsoWeekNumber(time), 31);
+
+  exploded.day_of_month = 30;
+  exploded.month = 9;
+
+  ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &time));
+  EXPECT_EQ(brave::GetIsoWeekNumber(time), 40);
+
+  exploded.day_of_month = 1;
+  exploded.month = 9;
+  exploded.day_of_week = 0;
+
+  ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &time));
+  EXPECT_EQ(brave::GetIsoWeekNumber(time), 35);
 }
