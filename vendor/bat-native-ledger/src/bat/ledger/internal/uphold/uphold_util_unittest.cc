@@ -71,28 +71,6 @@ TEST(UpholdUtilTest, GetFeeAddress) {
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
-TEST(UpholdUtilTest, ConvertToProbi) {
-  // empty string
-  std::string result = braveledger_uphold::ConvertToProbi("");
-  ASSERT_EQ(result, "0");
-
-  // single dig int
-  result = braveledger_uphold::ConvertToProbi("5");
-  ASSERT_EQ(result, "5000000000000000000");
-
-  // two dig int
-  result = braveledger_uphold::ConvertToProbi("15");
-  ASSERT_EQ(result, "15000000000000000000");
-
-  // single dig decimal
-  result = braveledger_uphold::ConvertToProbi("5.4");
-  ASSERT_EQ(result, "5400000000000000000");
-
-  // two dig decimal
-  result = braveledger_uphold::ConvertToProbi("5.45");
-  ASSERT_EQ(result, "5450000000000000000");
-}
-
 TEST(UpholdUtilTest, GetVerifyUrl) {
   // production
   ledger::is_production = true;

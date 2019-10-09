@@ -8,6 +8,7 @@
 #include "anon/anon.h"
 #include "bat/ledger/internal/contribution/phase_one.h"
 #include "bat/ledger/internal/contribution/phase_two.h"
+#include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 

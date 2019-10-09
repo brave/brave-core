@@ -10,6 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
@@ -83,7 +84,8 @@ void Uphold::ContributionCompleted(
     const double fee,
     const ledger::ExternalWallet& wallet) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
-  const auto amount = ConvertToProbi(std::to_string(reconcile.fee_));
+  const auto amount =
+      braveledger_bat_util::ConvertToProbi(std::to_string(reconcile.fee_));
 
   if (result == ledger::Result::LEDGER_OK) {
     const auto current_time_seconds = base::Time::Now().ToDoubleT();
