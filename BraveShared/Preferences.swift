@@ -108,6 +108,9 @@ extension Preferences {
         /// In debug/beta, this is the overriden environment.
         public static let environmentOverride = Option<Int>(key: "rewards.environment-override",
                                                             default: EnvironmentOverride.none.rawValue)
+        
+        /// In debut/beta, the number of seconds before an ad should automatically dismiss
+        public static let adsDurationOverride = Option<Int?>(key: "rewards.ads.dismissal-override", default: nil)
     }
 }
 
