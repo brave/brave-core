@@ -284,6 +284,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
                        ReverseRewriteTorrentURL) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
+
+  // Used to add the extension
+  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
   ui_test_utils::NavigateToURL(browser(), torrent_extension_url());
   ASSERT_TRUE(WaitForLoadStop(contents));
 
@@ -298,10 +303,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-                       WebTorrentExtensionEnabledByDefault) {
+                       WebTorrentExtensionEnabledAfterLoad) {
   ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_FALSE(
+      registry->enabled_extensions().Contains(brave_webtorrent_extension_id));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  WaitForLoadStop(contents);
+
   ASSERT_TRUE(
       registry->enabled_extensions().Contains(brave_webtorrent_extension_id));
 }

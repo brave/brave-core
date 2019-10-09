@@ -44,14 +44,14 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
 
     torrent_extension_url_ = GURL(
         "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
-        "brave_webtorrent.html?https://webtorrent.io/torrents/sintel.torrent");
+        "brave_webtorrent2.html?https://webtorrent.io/torrents/sintel.torrent");
     torrent_viewer_extension_url_ = GURL(
         "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
-        "brave_webtorrent.html?https://webtorrent.io/torrents/sintel.torrent"
+        "brave_webtorrent2.html?https://webtorrent.io/torrents/sintel.torrent"
         "#ix=0");
     non_torrent_extension_url_ = GURL(
         "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
-        "brave_webtorrent.html?https://webtorrent.io/torrents/sintel");
+        "brave_webtorrent2.html?https://webtorrent.io/torrents/sintel");
   }
 
   void TearDown() override {

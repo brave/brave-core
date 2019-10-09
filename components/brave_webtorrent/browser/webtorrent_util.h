@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_WEBTORRENT_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_WEBTORRENT_UTIL_H_
 
+class GURL;
+
 namespace content {
 class BrowserContext;
 }
@@ -14,10 +16,17 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }
 
+namespace net {
+class HttpResponseHeaders;
+}
+
 namespace webtorrent {
 
 bool IsWebtorrentEnabled(content::BrowserContext* browser_context);
+bool IsWebtorrentPrefEnabled(content::BrowserContext* browser_context);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+bool IsTorrentFile(const GURL& url, const net::HttpResponseHeaders* headers);
+bool TorrentURLMatched(const GURL& url);
 
 }  // webtorrent
 

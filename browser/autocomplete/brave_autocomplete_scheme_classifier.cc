@@ -43,7 +43,7 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (base::IsStringASCII(scheme) &&
-      webtorrent::IsWebtorrentEnabled(profile_) &&
+      webtorrent::IsWebtorrentPrefEnabled(profile_) &&
       base::LowerCaseEqualsASCII(scheme, kMagnetScheme)) {
     return metrics::OmniboxInputType::URL;
   }
