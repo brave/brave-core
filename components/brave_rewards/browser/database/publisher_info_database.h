@@ -21,7 +21,9 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
+#include "brave/components/brave_rewards/browser/database/database_promotion.h"
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
+#include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "build/build_config.h"
@@ -109,6 +111,14 @@ class PublisherInfoDatabase {
 
   bool DeleteContributionQueue(const uint64_t id);
 
+  bool InsertOrUpdatePromotion(ledger::PromotionPtr info);
+
+  ledger::PromotionPtr GetPromotion(const std::string& id);
+
+  bool InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr info);
+
+  ledger::UnblindedTokenList GetAllUnblindedTokens();
+
   void RecordP3AStats(bool auto_contributions_on);
 
   // Returns the current version of the publisher info database
@@ -179,6 +189,8 @@ class PublisherInfoDatabase {
 
   bool MigrateV8toV9();
 
+  bool MigrateV9toV10();
+
   bool Migrate(int version);
 
   bool MigrateDBTable(
@@ -210,6 +222,8 @@ class PublisherInfoDatabase {
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
+  std::unique_ptr<DatabasePromotion> promotion_;
+  std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);

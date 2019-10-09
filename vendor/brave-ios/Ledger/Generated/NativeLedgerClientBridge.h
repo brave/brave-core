@@ -82,5 +82,9 @@
 - (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback;
 - (void)deleteContributionQueue:(const uint64_t) id callback:(ledger::ResultCallback)callback;
 - (void)getFirstContributionQueue:(ledger::GetFirstContributionQueueCallback)callback;
+- (void)insertOrUpdatePromotion:(ledger::PromotionPtr)info callback:(ledger::ResultCallback)callback;
+- (void)getPromotion:(const std::string&) id callback:(ledger::GetPromotionCallback)callback;
+- (void)insertOrUpdateUnblindedToken:(ledger::UnblindedTokenPtr)info callback:(ledger::ResultCallback)callback;
+- (void)getAllUnblindedTokens:(ledger::GetAllUnblindedTokensCallback)callback;
 
 @end

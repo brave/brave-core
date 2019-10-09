@@ -1606,4 +1606,27 @@ void LedgerImpl::GetFirstContributionQueue(
   ledger_client_->GetFirstContributionQueue(callback);
 }
 
+void LedgerImpl::InsertOrUpdatePromotion(
+    ledger::PromotionPtr info,
+    ledger::ResultCallback callback) {
+  ledger_client_->InsertOrUpdatePromotion(std::move(info), callback);
+}
+
+void LedgerImpl::GetPromotion(
+    const std::string& id,
+    ledger::GetPromotionCallback callback) {
+  ledger_client_->GetPromotion(id, callback);
+}
+
+void LedgerImpl::InsertOrUpdateUnblindedToken(
+    ledger::UnblindedTokenPtr info,
+    ledger::ResultCallback callback) {
+  ledger_client_->InsertOrUpdateUnblindedToken(std::move(info), callback);
+}
+
+void LedgerImpl::GetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback) {
+  ledger_client_->GetAllUnblindedTokens(callback);
+}
+
 }  // namespace bat_ledger

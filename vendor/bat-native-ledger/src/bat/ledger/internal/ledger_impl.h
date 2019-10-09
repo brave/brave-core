@@ -589,6 +589,21 @@ class LedgerImpl : public ledger::Ledger,
   void GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback);
 
+  void InsertOrUpdatePromotion(
+    ledger::PromotionPtr info,
+    ledger::ResultCallback callback);
+
+  void GetPromotion(
+    const std::string& id,
+    ledger::GetPromotionCallback callback);
+
+  void InsertOrUpdateUnblindedToken(
+    ledger::UnblindedTokenPtr info,
+    ledger::ResultCallback callback);
+
+  void GetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback);
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

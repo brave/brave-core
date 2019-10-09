@@ -238,3 +238,15 @@ void NativeLedgerClient::DeleteContributionQueue(const uint64_t id, ledger::Resu
 void NativeLedgerClient::GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) {
   return [bridge_ getFirstContributionQueue:callback];
 }
+void NativeLedgerClient::InsertOrUpdatePromotion(ledger::PromotionPtr info, ledger::ResultCallback callback) {
+  return [bridge_ insertOrUpdatePromotion:std::move(info) callback:callback];
+}
+void NativeLedgerClient::GetPromotion(const std::string& id, ledger::GetPromotionCallback callback) {
+  return [bridge_ getPromotion:id callback:callback];
+}
+void NativeLedgerClient::InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr info, ledger::ResultCallback callback) {
+  return [bridge_ insertOrUpdateUnblindedToken:std::move(info) callback:callback];
+}
+void NativeLedgerClient::GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) {
+  return [bridge_ getAllUnblindedTokens:callback];
+}

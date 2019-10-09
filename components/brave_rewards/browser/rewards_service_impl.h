@@ -684,6 +684,21 @@ class RewardsServiceImpl : public RewardsService,
   void GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback) override;
 
+  void InsertOrUpdatePromotion(
+      ledger::PromotionPtr info,
+      ledger::ResultCallback callback) override;
+
+  void GetPromotion(
+      const std::string& id,
+      ledger::GetPromotionCallback callback) override;
+
+  void InsertOrUpdateUnblindedToken(
+      ledger::UnblindedTokenPtr info,
+      ledger::ResultCallback callback) override;
+
+  void GetAllUnblindedTokens(
+      ledger::GetAllUnblindedTokensCallback callback) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -734,6 +749,14 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback,
     ledger::ContributionQueuePtr info);
+
+  void OnGetPromotion(
+      ledger::GetPromotionCallback callback,
+      ledger::PromotionPtr info);
+
+  void OnGetAllUnblindedTokens(
+      ledger::GetAllUnblindedTokensCallback callback,
+      ledger::UnblindedTokenList list);
 
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();

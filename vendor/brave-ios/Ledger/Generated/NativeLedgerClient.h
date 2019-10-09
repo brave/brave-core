@@ -90,4 +90,8 @@ private:
   void InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info, ledger::ResultCallback callback) override;
   void DeleteContributionQueue(const uint64_t id, ledger::ResultCallback callback) override;
   void GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) override;
+  void InsertOrUpdatePromotion(ledger::PromotionPtr info, ledger::ResultCallback callback) override;
+  void GetPromotion(const std::string& id, ledger::GetPromotionCallback callback) override;
+  void InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr info, ledger::ResultCallback callback) override;
+  void GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) override;
 };

@@ -1904,5 +1904,24 @@ BATLedgerBridge(BOOL,
   callback(queue != nil ? queue.cppObjPtr : nullptr);
 }
 
+- (void)insertOrUpdatePromotion:(ledger::PromotionPtr)info callback:(ledger::ResultCallback)callback
+{
+  // FIXME: Add implementation
+}
+
+- (void)getPromotion:(const std::string&) id callback:(ledger::GetPromotionCallback)callback
+{
+  // FIXME: Add implementation
+}
+
+- (void)insertOrUpdateUnblindedToken:(ledger::UnblindedTokenPtr)info callback:(ledger::ResultCallback)callback
+{
+  // FIXME: Add implementation
+}
+
+- (void)getAllUnblindedTokens:(ledger::GetAllUnblindedTokensCallback)callback
+{
+  // FIXME: Add implementation
+}
 
 @end

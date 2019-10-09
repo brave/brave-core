@@ -4137,4 +4137,116 @@ void RewardsServiceImpl::OnGetFirstContributionQueue(
   callback(std::move(info));
 }
 
+ledger::Result InsertOrUpdatePromotionFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    ledger::PromotionPtr info) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->InsertOrUpdatePromotion(std::move(info));
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::InsertOrUpdatePromotion(
+    ledger::PromotionPtr info,
+    ledger::ResultCallback callback) {
+  auto info_clone = info->Clone();
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&InsertOrUpdatePromotionFileTaskRunner,
+        publisher_info_backend_.get(),
+        std::move(info_clone)),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
+ledger::PromotionPtr GetPromotionOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& id) {
+  if (!backend) {
+    return nullptr;
+  }
+
+  return backend->GetPromotion(id);
+}
+
+void RewardsServiceImpl::GetPromotion(
+    const std::string& id,
+    ledger::GetPromotionCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetPromotionOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        id),
+    base::BindOnce(&RewardsServiceImpl::OnGetPromotion,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetPromotion(
+    ledger::GetPromotionCallback callback,
+    ledger::PromotionPtr info) {
+  callback(std::move(info));
+}
+
+ledger::Result InsertOrUpdateUnblindedTokenFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    ledger::UnblindedTokenPtr info) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->InsertOrUpdateUnblindedToken(std::move(info));
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::InsertOrUpdateUnblindedToken(
+    ledger::UnblindedTokenPtr info,
+    ledger::ResultCallback callback) {
+  auto info_clone = info->Clone();
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&InsertOrUpdateUnblindedTokenFileTaskRunner,
+        publisher_info_backend_.get(),
+        std::move(info_clone)),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
+ledger::UnblindedTokenList GetAllUnblindedTokensOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  if (!backend) {
+    ledger::UnblindedTokenList empty_list;
+    return empty_list;
+  }
+
+  return backend->GetAllUnblindedTokens();
+}
+
+void RewardsServiceImpl::GetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetAllUnblindedTokensOnFileTaskRunner,
+        publisher_info_backend_.get()),
+    base::BindOnce(&RewardsServiceImpl::OnGetAllUnblindedTokens,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback,
+    ledger::UnblindedTokenList list) {
+  callback(std::move(list));
+}
+
 }  // namespace brave_rewards

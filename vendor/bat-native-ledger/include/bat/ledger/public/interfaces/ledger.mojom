@@ -319,3 +319,36 @@ enum Environment {
   PRODUCTION = 1,
   DEVELOPMENT = 2
 };
+
+enum PromotionType {
+  UGP = 0,
+  ADS = 1
+};
+
+struct Promotion {
+  string id;
+  uint32 version;
+  PromotionType type;
+  string public_keys; // JSONStringArray
+  uint32 suggestions;
+  double approximate_value;
+  bool claimed;
+  bool active;
+  uint64 expires_at;
+  PromotionCreds credentials;
+};
+
+struct PromotionCreds {
+  string blinded_creds; // JSONStringArray
+  string signed_creds; // JSONStringArray
+  string public_key;
+  string batch_proof;
+  string claim_id;
+};
+
+struct UnblindedToken {
+  uint64 id;
+  string public_key;
+  double value;
+  string promotion_id;
+};

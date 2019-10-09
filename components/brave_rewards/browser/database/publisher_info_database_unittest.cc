@@ -1170,6 +1170,18 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv8tov9) {
   EXPECT_EQ(schema, GetSchemaString(9));
 }
 
+TEST_F(PublisherInfoDatabaseTest, Migrationv9tov10) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 9, 10);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 10);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(10));
+}
+
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
