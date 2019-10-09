@@ -7,25 +7,18 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
-#include "base/files/file_path.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
-#include "chrome/test/base/testing_browser_process.h"
 #include "content/public/common/resource_type.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using brave::ResponseCallback;
+
 class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
  public:
-  BraveTorrentRedirectNetworkDelegateHelperTest()
-      : local_state_(TestingBrowserProcess::GetGlobal()) {
-  }
-
-  void SetUp() override {
+  BraveTorrentRedirectNetworkDelegateHelperTest() {
     torrent_url_ = GURL("https://webtorrent.io/torrents/sintel.torrent");
     torrent_viewer_url_ =
       GURL("https://webtorrent.io/torrents/sintel.torrent#ix=0");
@@ -41,10 +34,6 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
     non_torrent_extension_url_ = GURL(
         "chrome-extension://lgjmpdmojkpocjcopdikifhejkkjglho/extension/"
         "brave_webtorrent2.html?https://webtorrent.io/torrents/sintel");
-  }
-
-  void TearDown() override {
-    TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
   }
 
   const GURL& torrent_url() {
@@ -71,9 +60,6 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
     return non_torrent_extension_url_;
   }
 
- protected:
-  ScopedTestingLocalState local_state_;
-
  private:
   GURL torrent_url_;
   GURL torrent_viewer_url_;
@@ -90,22 +76,21 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
     new net::HttpResponseHeaders(std::string());
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  auto brave_request_info =
+  GURL allowed_unsafe_redirect_url;
+  auto request_info =
       std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  brave_request_info->resource_type = content::ResourceType::kMainFrame;
-  brave::ResponseCallback callback;
+  request_info->resource_type = content::ResourceType::kMainFrame;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
   std::string location;
   EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                            &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -120,15 +105,13 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  auto brave_request_info =
-      std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  brave_request_info->resource_type = content::ResourceType::kMainFrame;
-  brave::ResponseCallback callback;
+  GURL allowed_unsafe_redirect_url;
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
+  request_info->resource_type = content::ResourceType::kMainFrame;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(),
             "HTTP/1.1 307 Temporary Redirect");
@@ -137,7 +120,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                                           &location));
   EXPECT_EQ(location, torrent_extension_url().spec());
   EXPECT_EQ(allowed_unsafe_redirect_url.spec(), torrent_extension_url().spec());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -152,15 +135,14 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  auto brave_request_info =
+  GURL allowed_unsafe_redirect_url;
+  auto request_info =
       std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  brave_request_info->resource_type = content::ResourceType::kMainFrame;
-  brave::ResponseCallback callback;
+  request_info->resource_type = content::ResourceType::kMainFrame;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(),
             "HTTP/1.1 307 Temporary Redirect");
@@ -169,7 +151,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                                           &location));
   EXPECT_EQ(location, torrent_extension_url().spec());
   EXPECT_EQ(allowed_unsafe_redirect_url.spec(), torrent_extension_url().spec());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -189,15 +171,14 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  auto brave_request_info =
+  GURL allowed_unsafe_redirect_url;
+  auto request_info =
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
-  brave_request_info->resource_type = content::ResourceType::kMainFrame;
-  brave::ResponseCallback callback;
+  request_info->resource_type = content::ResourceType::kMainFrame;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(),
             "HTTP/1.1 307 Temporary Redirect");
@@ -207,7 +188,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(location, non_torrent_extension_url().spec());
   EXPECT_EQ(allowed_unsafe_redirect_url.spec(),
             non_torrent_extension_url().spec());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -222,22 +203,21 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  auto brave_request_info =
+  GURL allowed_unsafe_redirect_url;
+  auto request_info =
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
-  brave_request_info->resource_type = content::ResourceType::kMainFrame;
-  brave::ResponseCallback callback;
+  request_info->resource_type = content::ResourceType::kMainFrame;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
   std::string location;
   EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                            &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
@@ -250,22 +230,21 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  auto brave_request_info =
+  GURL allowed_unsafe_redirect_url;
+  auto request_info =
       std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  brave_request_info->resource_type = content::ResourceType::kMainFrame;
-  brave::ResponseCallback callback;
+  request_info->resource_type = content::ResourceType::kMainFrame;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
   std::string location;
   EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                            &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -280,23 +259,21 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  auto brave_request_info =
-      std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  brave_request_info->initiator_url = torrent_extension_url();
-  brave_request_info->resource_type = content::ResourceType::kMainFrame;
-  brave::ResponseCallback callback;
+  GURL allowed_unsafe_redirect_url;
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
+  request_info->initiator_url = torrent_extension_url();
+  request_info->resource_type = content::ResourceType::kMainFrame;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
   std::string location;
   EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                            &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -311,16 +288,15 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  auto brave_request_info =
+  GURL allowed_unsafe_redirect_url;
+  auto request_info =
       std::make_shared<brave::BraveRequestInfo>(torrent_viewer_url());
-  brave_request_info->initiator_url = torrent_extension_url();
-  brave_request_info->resource_type = content::ResourceType::kMainFrame;
-  brave::ResponseCallback callback;
+  request_info->initiator_url = torrent_extension_url();
+  request_info->resource_type = content::ResourceType::kMainFrame;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(),
             "HTTP/1.1 307 Temporary Redirect");
@@ -330,7 +306,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(location, torrent_viewer_extension_url().spec());
   EXPECT_EQ(allowed_unsafe_redirect_url.spec(),
             torrent_viewer_extension_url().spec());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
@@ -345,32 +321,31 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
-  GURL allowed_unsafe_redirect_url = GURL::EmptyGURL();
-  auto brave_request_info =
+  GURL allowed_unsafe_redirect_url;
+  auto request_info =
       std::make_shared<brave::BraveRequestInfo>(torrent_url());
-  brave_request_info->resource_type = content::ResourceType::kXhr;
-  brave::ResponseCallback callback;
+  request_info->resource_type = content::ResourceType::kXhr;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
   std::string location;
   EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                            &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
+  EXPECT_EQ(rc, net::OK);
 
-  brave_request_info->resource_type = content::ResourceType::kSubFrame;
+  request_info->resource_type = content::ResourceType::kSubFrame;
 
-  ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
+  rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
-      &allowed_unsafe_redirect_url, callback, brave_request_info);
+      &allowed_unsafe_redirect_url, ResponseCallback(), request_info);
 
   EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.0 200 OK");
   EXPECT_FALSE(overwrite_response_headers->EnumerateHeader(nullptr, "Location",
                                                            &location));
-  EXPECT_EQ(allowed_unsafe_redirect_url, GURL::EmptyGURL());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(allowed_unsafe_redirect_url, GURL());
+  EXPECT_EQ(rc, net::OK);
 }

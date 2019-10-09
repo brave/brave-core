@@ -13,63 +13,61 @@
 #include "brave/common/network_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using brave::GetPolyfillForAdBlock;
-
-namespace {
+using brave::ResponseCallback;
 
 TEST(BraveAdBlockTPNetworkDelegateHelperTest, NoChangeURL) {
-  GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
-  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave::ResponseCallback callback;
-  int ret = OnBeforeURLRequest_AdBlockTPPreWork(callback, brave_request_info);
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-  EXPECT_EQ(ret, net::OK);
+  const GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  int rc = OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(),
+                                               request_info);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
-  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
-  brave::ResponseCallback callback;
-  int ret = OnBeforeURLRequest_AdBlockTPPreWork(callback,
-      brave_request_info);
-  EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-  EXPECT_EQ(ret, net::OK);
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
+  int rc = OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(),
+                                               request_info);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
+  EXPECT_EQ(rc, net::OK);
 }
 
-
 TEST(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToStubs) {
-  std::vector<GURL> urls({
+  const std::vector<const GURL> urls({
     GURL(kGoogleTagManagerPattern),
     GURL(kGoogleTagServicesPattern)
   });
-  for(const auto& url : urls) {
-    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-    brave::ResponseCallback callback;
-    int ret = OnBeforeURLRequest_AdBlockTPPreWork(callback,
-        brave_request_info);
-    EXPECT_EQ(ret, net::OK);
-    EXPECT_TRUE(GURL(brave_request_info->new_url_spec).SchemeIs("data"));
+  for (const auto& url : urls) {
+    auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    int rc = OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(),
+                                                 request_info);
+    EXPECT_EQ(rc, net::OK);
+    EXPECT_TRUE(GURL(request_info->new_url_spec).SchemeIs("data"));
   }
 }
 
 TEST(BraveAdBlockTPNetworkDelegateHelperTest, Blocking) {
-  std::vector<GURL> urls({
+  const std::vector<const GURL> urls({
       GURL("https://pdfjs.robwu.nl/ping"),
     });
-  for(const auto& url : urls) {
-    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-    brave::ResponseCallback callback;
-    int ret = OnBeforeURLRequest_AdBlockTPPreWork(callback, brave_request_info);
-    EXPECT_STREQ(brave_request_info->new_url_spec.c_str(), kEmptyDataURI);
-    EXPECT_EQ(ret, net::OK);
+  for (const auto& url : urls) {
+    auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+    int rc = OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(),
+                                                 request_info);
+    EXPECT_EQ(request_info->new_url_spec, kEmptyDataURI);
+    EXPECT_EQ(rc, net::OK);
   }
 }
 
 TEST(BraveAdBlockTPNetworkDelegateHelperTest, GetPolyfill) {
-  GURL tab_origin("https://test.com");
-  GURL google_analytics_url(kGoogleAnalyticsPattern);
-  GURL tag_manager_url(kGoogleTagManagerPattern);
-  GURL tag_services_url(kGoogleTagServicesPattern);
-  GURL normal_url("https://a.com");
+  using brave::GetPolyfillForAdBlock;
+
+  const GURL tab_origin("https://test.com");
+  const GURL google_analytics_url(kGoogleAnalyticsPattern);
+  const GURL tag_manager_url(kGoogleTagManagerPattern);
+  const GURL tag_services_url(kGoogleTagServicesPattern);
+  const GURL normal_url("https://a.com");
+
   std::string out_url_spec;
   // Shields up, block ads, google analytics should get polyfill
   ASSERT_TRUE(GetPolyfillForAdBlock(true, false, tab_origin,
@@ -123,5 +121,3 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, GetPolyfill) {
   ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin, normal_url,
       &out_url_spec));
 }
-
-}  // namespace

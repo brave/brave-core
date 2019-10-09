@@ -14,6 +14,8 @@
 #include "net/url_request/url_request.h"
 #include "url/gurl.h"
 
+class BraveRequestHandler;
+
 namespace content {
 class BrowserContext;
 }
@@ -21,13 +23,10 @@ class BrowserContext;
 namespace network {
 struct ResourceRequest;
 }
-class BraveRequestHandler;
 
 namespace brave {
-
 struct BraveRequestInfo;
 using ResponseCallback = base::Callback<void()>;
-
 }  // namespace brave
 
 namespace brave_rewards {
@@ -57,7 +56,7 @@ struct BraveRequestInfo {
   BraveRequestInfo();
 
   // For tests, should not be used directly.
-  BraveRequestInfo(const GURL& url);
+  explicit BraveRequestInfo(const GURL& url);
 
   ~BraveRequestInfo();
   GURL request_url;
@@ -138,10 +137,6 @@ using OnHeadersReceivedCallback =
         GURL* allowed_unsafe_redirect_url,
         const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
-using OnCanGetCookiesCallback =
-    base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
-using OnCanSetCookiesCallback =
-    base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
 
 }  // namespace brave
 

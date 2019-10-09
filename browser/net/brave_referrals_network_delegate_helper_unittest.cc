@@ -15,6 +15,9 @@
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
+using brave::ResponseCallback;
+
+namespace {
 const char kTestReferralHeaders[] = R"(
   [  
     {  
@@ -46,26 +49,25 @@ const char kTestReferralHeaders[] = R"(
       "expiration":31536000000
     }
   ])";
-
-namespace {
+}  // namespace
 
 TEST(BraveReferralsNetworkDelegateHelperTest,
      ReplaceHeadersForMatchingDomain) {
-  GURL url("https://www.marketwatch.com");
+  const GURL url("https://www.marketwatch.com");
   base::Optional<base::Value> referral_headers =
       base::JSONReader().ReadToValue(kTestReferralHeaders);
   ASSERT_TRUE(referral_headers);
   ASSERT_TRUE(referral_headers->is_list());
 
-  base::ListValue* referral_headers_list = nullptr;
+  const base::ListValue* referral_headers_list = nullptr;
   referral_headers->GetAsList(&referral_headers_list);
 
   net::HttpRequestHeaders headers;
-  brave::ResponseCallback callback;
-  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  brave_request_info->referral_headers_list = referral_headers_list;
-  int ret = brave::OnBeforeStartTransaction_ReferralsWork(
-      &headers, callback, brave_request_info);
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  request_info->referral_headers_list = referral_headers_list;
+
+  int rc = brave::OnBeforeStartTransaction_ReferralsWork(
+      &headers, brave::ResponseCallback(), request_info);
 
   std::string partner_header;
   headers.GetHeader("X-Brave-Partner", &partner_header);
@@ -75,30 +77,26 @@ TEST(BraveReferralsNetworkDelegateHelperTest,
   EXPECT_EQ(headers.GetHeader("X-Invalid", &invalid_partner_header), false);
   EXPECT_EQ(invalid_partner_header, "");
 
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(rc, net::OK);
 }
 
 TEST(BraveReferralsNetworkDelegateHelperTest,
      NoReplaceHeadersForNonMatchingDomain) {
-  GURL url("https://www.google.com");
+  const GURL url("https://www.google.com");
   base::Optional<base::Value> referral_headers =
       base::JSONReader().ReadToValue(kTestReferralHeaders);
   ASSERT_TRUE(referral_headers);
   ASSERT_TRUE(referral_headers->is_list());
 
-  base::ListValue* referral_headers_list = nullptr;
+  const base::ListValue* referral_headers_list = nullptr;
   referral_headers->GetAsList(&referral_headers_list);
 
   net::HttpRequestHeaders headers;
-  brave::ResponseCallback callback;
-  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
-  brave_request_info->referral_headers_list = referral_headers_list;
-  int ret = brave::OnBeforeStartTransaction_ReferralsWork(
-      &headers, callback, brave_request_info);
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
+  request_info->referral_headers_list = referral_headers_list;
+  int rc = brave::OnBeforeStartTransaction_ReferralsWork(
+      &headers, brave::ResponseCallback(), request_info);
 
   EXPECT_FALSE(headers.HasHeader("X-Brave-Partner"));
-
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(rc, net::OK);
 }
-
-}  // namespace
