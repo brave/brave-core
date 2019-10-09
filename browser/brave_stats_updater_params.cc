@@ -112,38 +112,7 @@ int BraveStatsUpdaterParams::GetCurrentMonth() const {
 }
 
 int BraveStatsUpdaterParams::GetCurrentISOWeekNumber() const {
-  base::Time now = GetCurrentTimeNow();
-  base::Time::Exploded now_exploded;
-  now.LocalExplode(&now_exploded);
-  now_exploded.hour = 0;
-  now_exploded.minute = 0;
-  now_exploded.second = 0;
-  now_exploded.millisecond = 0;
-  now_exploded.day_of_month =
-      now_exploded.day_of_month + 3 - ((now_exploded.day_of_week + 6) % 7);
-
-  base::Time now_adjusted;
-  if (!base::Time::FromLocalExploded(now_exploded, &now_adjusted))
-    return 0;
-
-  base::Time::Exploded jan4_exploded = {0};
-  jan4_exploded.year = now_exploded.year;
-  jan4_exploded.month = 1;
-  jan4_exploded.day_of_week = 0;
-  jan4_exploded.day_of_month = 4;
-  jan4_exploded.hour = 0;
-  jan4_exploded.minute = 0;
-  jan4_exploded.second = 0;
-  jan4_exploded.millisecond = 0;
-
-  base::Time jan4_time;
-  if (!base::Time::FromLocalExploded(jan4_exploded, &jan4_time))
-    return 0;
-
-  return 1 + std::round(
-                 ((now_adjusted.ToJsTime() - jan4_time.ToJsTime()) / 86400000 -
-                  3 + (jan4_exploded.day_of_week + 6) % 7) /
-                 7);
+  return GetIsoWeekNumber(GetCurrentTimeNow());
 }
 
 base::Time BraveStatsUpdaterParams::GetCurrentTimeNow() const {
