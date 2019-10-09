@@ -153,7 +153,15 @@ class BrowserViewController: UIViewController {
         rewardsObserver = nil
         #else
         RewardsHelper.configureRewardsLogs()
-        rewards = BraveRewards(configuration: .default)
+        if AppConstants.BuildChannel.isRelease {
+            rewards = BraveRewards(configuration: .production)
+        } else {
+            if let override = Preferences.Rewards.EnvironmentOverride(rawValue: Preferences.Rewards.environmentOverride.value), override != .none {
+                rewards = BraveRewards(configuration: override == .prod ? .production : .default)
+            } else {
+                rewards = BraveRewards(configuration: .default)
+            }
+        }
         rewardsObserver = LedgerObserver(ledger: rewards!.ledger)
         #endif
 

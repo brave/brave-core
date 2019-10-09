@@ -292,6 +292,8 @@
 		27FA2D4B234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA2D48234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift */; };
 		27FA2D4C234CC95A004D5D2D /* DateExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA2D49234CC95A004D5D2D /* DateExtensionsTests.swift */; };
 		27FA2D58234CDCEA004D5D2D /* BraveRewards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FA2D4F234CC9FB004D5D2D /* BraveRewards.framework */; };
+		27FA2D65234E3222004D5D2D /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; };
+		27FA2D69234E3222004D5D2D /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; };
 		27FD2CAB2146C31C00A5A779 /* RequestDesktopSiteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */; };
 		27FD2CAC2146C31C00A5A779 /* FindInPageActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */; };
 		27FD2CAD2146C31C00A5A779 /* AddToFavoritesActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */; };
@@ -943,6 +945,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 27F443942135E11200296C58;
 			remoteInfo = BraveShareTo;
+		};
+		27FA2D67234E3222004D5D2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5DE7688320B3456C00FF5533;
+			remoteInfo = BraveShared;
+		};
+		27FA2D6B234E3222004D5D2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 288A2D851AB8B3260023ABC3;
+			remoteInfo = Shared;
 		};
 		288A2D9B1AB8B3260023ABC3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2286,6 +2302,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27FA2D65234E3222004D5D2D /* BraveShared.framework in Frameworks */,
+				27FA2D69234E3222004D5D2D /* Shared.framework in Frameworks */,
 				27FA2D58234CDCEA004D5D2D /* BraveRewards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4678,6 +4696,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				27FA2D68234E3222004D5D2D /* PBXTargetDependency */,
+				27FA2D6C234E3222004D5D2D /* PBXTargetDependency */,
 			);
 			name = BraveRewardsUI;
 			productName = BraveRewardsUI;
@@ -6101,6 +6121,16 @@
 			isa = PBXTargetDependency;
 			target = 27F443942135E11200296C58 /* BraveShareTo */;
 			targetProxy = 27F4439D2135E11200296C58 /* PBXContainerItemProxy */;
+		};
+		27FA2D68234E3222004D5D2D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5DE7688320B3456C00FF5533 /* BraveShared */;
+			targetProxy = 27FA2D67234E3222004D5D2D /* PBXContainerItemProxy */;
+		};
+		27FA2D6C234E3222004D5D2D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 288A2D851AB8B3260023ABC3 /* Shared */;
+			targetProxy = 27FA2D6B234E3222004D5D2D /* PBXContainerItemProxy */;
 		};
 		288A2D9C1AB8B3260023ABC3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

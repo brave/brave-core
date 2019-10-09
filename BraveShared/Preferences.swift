@@ -91,6 +91,23 @@ extension Preferences {
     public final class Rewards {
         public static let myFirstAdShown = Option<Bool>(key: "rewards.ads.my-first-ad-shown", default: false)
         public static let hideRewardsIcon = Option<Bool>(key: "rewards.hide-rewards-icon", default: false)
+        
+        public enum EnvironmentOverride: Int, CaseIterable {
+            case none
+            case staging
+            case prod
+            
+            public var name: String {
+                switch self {
+                case .none: return "None"
+                case .staging: return "Staging"
+                case .prod: return "Prod"
+                }
+            }
+        }
+        /// In debug/beta, this is the overriden environment.
+        public static let environmentOverride = Option<Int>(key: "rewards.environment-override",
+                                                            default: EnvironmentOverride.none.rawValue)
     }
 }
 

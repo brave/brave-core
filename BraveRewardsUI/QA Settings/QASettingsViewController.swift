@@ -4,20 +4,63 @@
 
 import UIKit
 import BraveRewards
+import BraveShared
+import Shared
+import Static
+
+private typealias EnvironmentOverride = Preferences.Rewards.EnvironmentOverride
 
 /// A special QA settings menu that allows them to adjust debug rewards features
-public class QASettingsViewController: UIViewController {
+public class QASettingsViewController: TableViewController, UITextFieldDelegate {
   
   public let rewards: BraveRewards
   
   public init(rewards: BraveRewards) {
     self.rewards = rewards
-    super.init(nibName: nil, bundle: nil)
+    super.init(style: .grouped)
   }
   
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
+  }
+  
+  private let segmentedControl = UISegmentedControl(items: EnvironmentOverride.allCases.map { $0.name })
+  
+  @objc private func environmentChanged() {
+    let value = segmentedControl.selectedSegmentIndex
+    guard let _ = EnvironmentOverride(rawValue: value) else { return }
+    Preferences.Rewards.environmentOverride.value = value
+    self.rewards.reset()
+    self.showResetRewardsAlert()
+  }
+  
+  private let reconcileTimeTextField = UITextField().then {
+    $0.borderStyle = .roundedRect
+    $0.autocorrectionType = .no
+    $0.autocapitalizationType = .none
+    $0.spellCheckingType = .no
+    $0.returnKeyType = .done
+    $0.textAlignment = .right
+    $0.text = "\(BraveLedger.reconcileTime)"
+    $0.placeholder = "0"
+  }
+  
+  @objc private func reconcileTimeEditingEnded() {
+    guard let value = Int32(reconcileTimeTextField.text ?? "") else {
+      let alert = UIAlertController(title: "Invalid value", message: "Time has been reset to 0 (no override)", preferredStyle: .alert)
+      alert.addAction(.init(title: "OK", style: .default, handler: nil))
+      self.present(alert, animated: true)
+      reconcileTimeTextField.text = "0"
+      BraveLedger.reconcileTime = 0
+      return
+    }
+    BraveLedger.reconcileTime = value
+  }
+  
+  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
   }
   
   public override func viewDidLoad() {
@@ -27,184 +70,73 @@ public class QASettingsViewController: UIViewController {
     
     title = "Rewards QA Settings"
     
-    let scrollView = UIScrollView()
+    let isDefaultEnvironmentProd = AppConstants.BuildChannel != .developer
     
-    let stackView = UIStackView().then {
-      $0.axis = .vertical
-      $0.spacing = 12
-    }
+    segmentedControl.selectedSegmentIndex = Preferences.Rewards.environmentOverride.value
+    segmentedControl.addTarget(self, action: #selector(environmentChanged), for: .valueChanged)
+    reconcileTimeTextField.addTarget(self, action: #selector(reconcileTimeEditingEnded), for: .editingDidEnd)
+    reconcileTimeTextField.delegate = self
+    reconcileTimeTextField.frame = CGRect(x: 0, y: 0, width: 50, height: 32)
     
-    view.addSubview(scrollView)
-    scrollView.addSubview(stackView)
-    
-    scrollView.snp.makeConstraints {
-      $0.edges.equalTo(view)
-    }
-    
-    scrollView.contentLayoutGuide.snp.makeConstraints {
-      $0.width.equalTo(view)
-    }
-    
-    stackView.snp.makeConstraints {
-      $0.top.equalTo(scrollView.contentLayoutGuide.snp.top).offset(20)
-      $0.leading.trailing.equalTo(view).inset(12)
-      $0.bottom.equalTo(scrollView.contentLayoutGuide.snp.bottom).offset(-20)
-    }
-    
-    stackView.addStackViewItems(
-      .view(SwitchRow().then {
-        $0.textLabel.text = "Is Debug"
-        $0.toggleSwitch.isOn = BraveLedger.isDebug
-        $0.valueChanged = { value in
-          BraveLedger.isDebug = value
-          BraveAds.isDebug = value
-        }
-      }),
-      .view(EnvironmentRow().then {
-        $0.segmentedControl.selectedSegmentIndex = BraveLedger.isProduction ? 1 : 0
-        $0.valueChanged = { value in
-          let isProd = value == 1
-          if BraveLedger.isProduction != isProd {
-            BraveLedger.isProduction = isProd
-            BraveAds.isProduction = isProd
-            self.rewards.reset()
-          }
-        }
-      }),
-      .view(SwitchRow().then {
-        $0.textLabel.text = "Use Short Retries"
-        $0.toggleSwitch.isOn = BraveLedger.useShortRetries
-        $0.valueChanged = { value in
-          BraveLedger.useShortRetries = value
-        }
-      }),
-      .view(ValueRow().then {
-        $0.textLabel.text = "Reconcile Time\n(0 = no override)"
-        $0.textField.text = "\(BraveLedger.reconcileTime)"
-        $0.textField.placeholder = "0"
-        let textField = $0.textField
-        $0.valueChanged = { value in
-          guard let value = Int32(value) else {
-            let alert = UIAlertController(title: "Invalid value", message: "Time has been reset to 0 (no override)", preferredStyle: .alert)
-            alert.addAction(.init(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true)
-            textField.text = "0"
-            BraveLedger.reconcileTime = 0
-            return
-          }
-          BraveLedger.reconcileTime = value
-        }
-      }),
-      .customSpace(40),
-      .view(UILabel().then {
-        $0.text = "Changing the environment automatically resets Brave Rewards.\n\nIt is recommended you force-quit the app after Brave Rewards is reset"
-        $0.numberOfLines = 0
-        $0.textAlignment = .center
-        $0.font = .systemFont(ofSize: 14)
-      }),
-      .customSpace(40),
-      .view(UIButton(type: .roundedRect).then {
-        $0.setTitle("Reset Rewards", for: .normal)
-        $0.setTitleColor(.red, for: .normal)
-        $0.layer.cornerRadius = 8
-        $0.layer.borderWidth = 1.0 / UIScreen.main.scale
-        $0.layer.borderColor = UIColor.lightGray.cgColor
-        $0.snp.makeConstraints { $0.height.equalTo(44) }
-        $0.addTarget(self, action: #selector(tappedReset), for: .touchUpInside)
-      })
-    )
+    dataSource.sections = [
+      Section(
+        header: .title("Environment"),
+        rows: [
+          Row(text: "Default", detailText: isDefaultEnvironmentProd ? "Prod" : "Staging"),
+          Row(text: "Override", accessory: .view(segmentedControl)),
+        ],
+        footer: .title("Changing the environment automatically resets Brave Rewards.\n\nThe app must be force-quit after rewards is reset")
+      ),
+      Section(
+        rows: [
+          Row(text: "Is Debug", accessory: .switchToggle(value: BraveLedger.isDebug, { value in
+            BraveLedger.isDebug = value
+            BraveAds.isDebug = value
+          })),
+          Row(text: "Use Short Retries", accessory: .switchToggle(value: BraveLedger.useShortRetries, { value in
+            BraveLedger.useShortRetries = value
+          })),
+          Row(text: "Reconcile Time", detailText: "Number of minutes between reconciles. 0 = No Override", accessory: .view(reconcileTimeTextField), cellClass: MultilineSubtitleCell.self)
+        ]
+      ),
+      Section(
+        rows: [
+          Row(text: "Reset Rewards", selection: {
+            self.tappedReset()
+          }, cellClass: ButtonCell.self)
+        ]
+      )
+    ]
   }
   
   @objc private func tappedReset() {
     rewards.reset()
+    showResetRewardsAlert()
+  }
+  
+  private func showResetRewardsAlert() {
+    let alert = UIAlertController(
+      title: "Rewards Reset",
+      message: "Brave must be restarted to ensure expected Rewards behavior",
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(title: "Exit Now", style: .destructive, handler: { _ in
+      fatalError()
+    }))
+    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    present(alert, animated: true)
   }
 }
 
-private class EnvironmentRow: UIStackView {
-  var valueChanged: ((Int) -> Void)?
+fileprivate class MultilineSubtitleCell: SubtitleCell {
   
-  private struct UX {
-    static let textColor = Colors.grey200
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    textLabel?.numberOfLines = 0
+    detailTextLabel?.numberOfLines = 0
   }
   
-  let textLabel = UILabel().then {
-    $0.text = "Environment"
-    $0.font = .systemFont(ofSize: 14.0)
-    $0.textColor = UX.textColor
-    $0.numberOfLines = 0
-  }
-  
-  let segmentedControl = UISegmentedControl(items: ["Staging", "Prod"])
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    
-    addArrangedSubview(textLabel)
-    addArrangedSubview(segmentedControl)
-    
-    segmentedControl.addTarget(self, action: #selector(selectedItemChanged), for: .valueChanged)
-  }
-  
-  @objc func selectedItemChanged() {
-    valueChanged?(segmentedControl.selectedSegmentIndex)
-  }
-  
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
-    return true
-  }
-  
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 }
-
-private class ValueRow: UIStackView, UITextFieldDelegate {
-  
-  var valueChanged: ((String) -> Void)?
-  
-  private struct UX {
-    static let textColor = Colors.grey200
-  }
-  
-  let textLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 14.0)
-    $0.textColor = UX.textColor
-    $0.numberOfLines = 0
-  }
-  
-  let textField = UITextField().then {
-    $0.borderStyle = .roundedRect
-    $0.autocorrectionType = .no
-    $0.autocapitalizationType = .none
-    $0.spellCheckingType = .no
-    $0.returnKeyType = .done
-    $0.textAlignment = .right
-  }
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    
-    addArrangedSubview(textLabel)
-    addArrangedSubview(textField)
-    
-    textField.addTarget(self, action: #selector(editingEnded), for: .editingDidEnd)
-    textField.delegate = self
-  }
-  
-  @objc func editingEnded() {
-    valueChanged?(textField.text ?? "")
-  }
-  
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
-    return true
-  }
-  
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
-  }
-}
-
