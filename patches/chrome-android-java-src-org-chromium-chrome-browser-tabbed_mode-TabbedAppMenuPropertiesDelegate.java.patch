@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
+index 5b779acafdd394e31331ba3e0b6665ee42e277b2..03a69d0316c2398288112dfe79d04fa849cd7355 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
+@@ -14,6 +14,7 @@ import org.chromium.chrome.browser.appmenu.AppMenuDelegate;
+ import org.chromium.chrome.browser.appmenu.AppMenuHandler;
+ import org.chromium.chrome.browser.appmenu.AppMenuIconRowFooter;
+ import org.chromium.chrome.browser.appmenu.AppMenuPropertiesDelegateImpl;
++import org.chromium.chrome.browser.appmenu.BraveAppMenuPropertiesDelegateImpl;
+ import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
+ import org.chromium.chrome.browser.datareduction.DataReductionMainMenuItem;
+ import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+@@ -24,7 +25,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarManager;
+ /**
+  * An {@link AppMenuPropertiesDelegateImpl} for ChromeTabbedActivity.
+  */
+-public class TabbedAppMenuPropertiesDelegate extends AppMenuPropertiesDelegateImpl {
++public class TabbedAppMenuPropertiesDelegate extends BraveAppMenuPropertiesDelegateImpl {
+     AppMenuDelegate mAppMenuDelegate;
+ 
+     public TabbedAppMenuPropertiesDelegate(Context context, ActivityTabProvider activityTabProvider,
