@@ -124,6 +124,10 @@ extension Tab {
             rewards.reportLoadedPage(url: url, faviconUrl: faviconURL, tabId: self.rewardsId, html: htmlString, shouldClassifyForAds: shouldClassify)
         })
     }
+    
+    func reportPageNaviagtion(to rewards: BraveRewards) {
+        rewards.reportTabNavigation(tabId: self.rewardsId)
+    }
 }
 
 extension BrowserViewController: RewardsDataSource {

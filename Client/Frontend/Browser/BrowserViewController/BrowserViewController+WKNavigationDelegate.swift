@@ -379,6 +379,8 @@ extension BrowserViewController: WKNavigationDelegate {
             if webView.url?.isLocal == false {
                 // Reset should classify
                 tab.shouldClassifyLoadsForAds = true
+                // Set rewards inter site url as new page load url.
+                rewardsXHRLoadURL = webView.url
             }
             
             if tab === tabManager.selectedTab {
