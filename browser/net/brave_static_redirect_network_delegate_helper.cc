@@ -46,6 +46,9 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix4);
   static URLPattern crxDownload_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
+  static URLPattern autofill_pattern(
+      URLPattern::SCHEME_HTTPS, kAutofillPrefix);
+
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   static URLPattern translate_pattern(URLPattern::SCHEME_HTTPS,
       kTranslateElementJSPattern);
@@ -76,6 +79,13 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
   if (crxDownload_pattern.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("crxdownload.brave.com");
+    *new_url = request_url.ReplaceComponents(replacements);
+    return net::OK;
+  }
+
+  if (autofill_pattern.MatchesURL(request_url)) {
+    replacements.SetSchemeStr("https");
+    replacements.SetHostStr(kBraveStaticProxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
