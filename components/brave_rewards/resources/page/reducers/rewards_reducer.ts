@@ -249,7 +249,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_CONTRIBUTION_SAVED: {
       const properties = action.payload.properties
       console.log(properties)
-      if (properties && properties.success && properties.category === 8) {
+      if (properties && properties.success && properties.type === 8) {
         chrome.send('brave_rewards.getOneTimeTips')
       }
       break

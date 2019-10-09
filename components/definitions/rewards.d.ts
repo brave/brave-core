@@ -20,12 +20,6 @@ declare namespace Rewards {
     GRANT_NOT_FOUND = 13
   }
 
-  export enum RewardsCategory {
-    AUTO_CONTRIBUTE = 2,
-    ONE_TIME_TIP = 8,
-    RECURRING_TIP = 16
-  }
-
   export interface State {
     adsData: AdsData
     adsHistory: AdsHistoryData[]
@@ -182,7 +176,7 @@ declare namespace Rewards {
     adsAdNotificationsReceivedThisMonth: number
   }
 
-  export enum Category {
+  export enum RewardsType {
     AUTO_CONTRIBUTE = 2,
     ONE_TIME_TIP = 8,
     RECURRING_TIP = 21
@@ -190,7 +184,7 @@ declare namespace Rewards {
 
   export interface ContributionSaved {
     success: boolean
-    category: Category
+    type: RewardsType
   }
 
   export interface PendingContribution {
@@ -203,7 +197,7 @@ declare namespace Rewards {
     favIcon: string
     amount: number
     addedDate: string
-    category: RewardsCategory
+    type: RewardsType
     viewingId: string
     expirationDate: string
   }

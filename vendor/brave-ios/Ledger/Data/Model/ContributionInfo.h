@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<ContributionInfo *> *)fetchRequest;
 
-@property (nonatomic) int32_t category;
+@property (nonatomic) int32_t type;
 @property (nonatomic) int64_t date;
 @property (nonatomic) int32_t month;
 @property (nonatomic, copy) NSString *probi;

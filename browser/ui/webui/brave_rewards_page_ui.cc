@@ -200,7 +200,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                            unsigned int result,
                            const std::string& viewing_id,
                            const std::string& probi,
-                           const int32_t category) override;
+                           const int32_t type) override;
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
       int result) override;
@@ -225,7 +225,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnContributionSaved(
     brave_rewards::RewardsService* rewards_service,
     bool success,
-    int category) override;
+    int type) override;
 
   void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
@@ -948,11 +948,11 @@ void RewardsDOMHandler::OnReconcileComplete(
     unsigned int result,
     const std::string& viewing_id,
     const std::string& probi,
-    const int32_t category) {
+    const int32_t type) {
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue complete;
     complete.SetKey("result", base::Value(static_cast<int>(result)));
-    complete.SetKey("category", base::Value(category));
+    complete.SetKey("type", base::Value(type));
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.reconcileComplete",
                                            complete);
@@ -1403,14 +1403,14 @@ void RewardsDOMHandler::OnRecurringTipRemoved(
 void RewardsDOMHandler::OnContributionSaved(
     brave_rewards::RewardsService* rewards_service,
     bool success,
-    int category) {
+    int type) {
   if (!web_ui()->CanCallJavascript()) {
      return;
   }
 
   base::DictionaryValue result;
   result.SetBoolean("success", success);
-  result.SetInteger("category", category);
+  result.SetInteger("type", type);
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.onContributionSaved", result);
@@ -1454,7 +1454,7 @@ void RewardsDOMHandler::OnGetPendingContributions(
       contribution->SetKey("amount", base::Value(item.amount));
       contribution->SetKey("addedDate",
           base::Value(std::to_string(item.added_date)));
-      contribution->SetKey("category", base::Value(item.category));
+      contribution->SetKey("type", base::Value(item.type));
       contribution->SetKey("viewingId", base::Value(item.viewing_id));
       contribution->SetKey("expirationDate",
           base::Value(std::to_string(item.expiration_date)));

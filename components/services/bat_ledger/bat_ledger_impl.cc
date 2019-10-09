@@ -230,14 +230,14 @@ void BatLedgerImpl::SetBalanceReportItem(int32_t month,
 
 void BatLedgerImpl::OnReconcileCompleteSuccess(
     const std::string& viewing_id,
-    const ledger::RewardsCategory category,
+    const ledger::RewardsType type,
     const std::string& probi,
     int32_t month,
     int32_t year,
     uint32_t data) {
   ledger_->OnReconcileCompleteSuccess(
       viewing_id,
-      category,
+      type,
       probi,
       ToLedgerPublisherMonth(month),
       year,

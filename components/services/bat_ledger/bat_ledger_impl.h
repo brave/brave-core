@@ -73,7 +73,7 @@ class BatLedgerImpl : public mojom::BatLedger,
       const std::string& probi) override;
   void OnReconcileCompleteSuccess(
       const std::string& viewing_id,
-      const ledger::RewardsCategory category,
+      const ledger::RewardsType type,
       const std::string& probi,
       int32_t month,
       int32_t year,

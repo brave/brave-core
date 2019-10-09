@@ -137,7 +137,7 @@ void BatLedgerClientMojoProxy::OnReconcileComplete(
     ledger::Result result,
     const std::string& viewing_id,
     const std::string& probi,
-    const ledger::RewardsCategory category) {
+    const ledger::RewardsType type) {
   if (!Connected())
     return;
 
@@ -145,7 +145,7 @@ void BatLedgerClientMojoProxy::OnReconcileComplete(
       result,
       viewing_id,
       probi,
-      category);
+      type);
 }
 
 std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::Log(
@@ -460,7 +460,7 @@ void BatLedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
     const int year,
     const uint32_t date,
     const std::string& publisher_key,
-    const ledger::RewardsCategory category) {
+    const ledger::RewardsType type) {
   if (!Connected())
     return;
 
@@ -470,7 +470,7 @@ void BatLedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
       year,
       date,
       publisher_key,
-      category);
+      type);
 }
 
 void BatLedgerClientMojoProxy::SaveMediaPublisherInfo(
