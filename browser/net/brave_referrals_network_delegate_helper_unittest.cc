@@ -11,9 +11,7 @@
 #include "base/json/json_reader.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
-#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
-#include "net/url_request/url_request_test_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -51,30 +49,9 @@ const char kTestReferralHeaders[] = R"(
 
 namespace {
 
-class BraveReferralsNetworkDelegateHelperTest : public testing::Test {
- public:
-  BraveReferralsNetworkDelegateHelperTest()
-      : thread_bundle_(content::TestBrowserThreadBundle::IO_MAINLOOP),
-        context_(new net::TestURLRequestContext(true)) {
-  }
-  ~BraveReferralsNetworkDelegateHelperTest() override {}
-  void SetUp() override {
-    context_->Init();
-  }
-  net::TestURLRequestContext* context() { return context_.get(); }
-
- private:
-  content::TestBrowserThreadBundle thread_bundle_;
-  std::unique_ptr<net::TestURLRequestContext> context_;
-};
-
-TEST_F(BraveReferralsNetworkDelegateHelperTest,
-       ReplaceHeadersForMatchingDomain) {
+TEST(BraveReferralsNetworkDelegateHelperTest,
+     ReplaceHeadersForMatchingDomain) {
   GURL url("https://www.marketwatch.com");
-  net::TestDelegate test_delegate;
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-
   base::Optional<base::Value> referral_headers =
       base::JSONReader().ReadToValue(kTestReferralHeaders);
   ASSERT_TRUE(referral_headers);
@@ -85,10 +62,7 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest,
 
   net::HttpRequestHeaders headers;
   brave::ResponseCallback callback;
-  std::shared_ptr<brave::BraveRequestInfo> brave_request_info(
-      new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-                                              brave_request_info);
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->referral_headers_list = referral_headers_list;
   int ret = brave::OnBeforeStartTransaction_ReferralsWork(
       &headers, callback, brave_request_info);
@@ -104,13 +78,9 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest,
   EXPECT_EQ(ret, net::OK);
 }
 
-TEST_F(BraveReferralsNetworkDelegateHelperTest,
-       NoReplaceHeadersForNonMatchingDomain) {
+TEST(BraveReferralsNetworkDelegateHelperTest,
+     NoReplaceHeadersForNonMatchingDomain) {
   GURL url("https://www.google.com");
-  net::TestDelegate test_delegate;
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-
   base::Optional<base::Value> referral_headers =
       base::JSONReader().ReadToValue(kTestReferralHeaders);
   ASSERT_TRUE(referral_headers);
@@ -121,8 +91,7 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest,
 
   net::HttpRequestHeaders headers;
   brave::ResponseCallback callback;
-  std::shared_ptr<brave::BraveRequestInfo> brave_request_info(
-      new brave::BraveRequestInfo());
+  auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(GURL());
   brave_request_info->referral_headers_list = referral_headers_list;
   int ret = brave::OnBeforeStartTransaction_ReferralsWork(
       &headers, callback, brave_request_info);

@@ -10,7 +10,6 @@
 #include <set>
 #include <string>
 
-#include "chrome/browser/net/chrome_network_delegate.h"
 #include "content/public/common/resource_type.h"
 #include "net/url_request/url_request.h"
 #include "url/gurl.h"
@@ -56,6 +55,10 @@ enum BlockedBy {
 
 struct BraveRequestInfo {
   BraveRequestInfo();
+
+  // For tests, should not be used directly.
+  BraveRequestInfo(const GURL& url);
+
   ~BraveRequestInfo();
   GURL request_url;
   GURL tab_origin;
@@ -100,9 +103,6 @@ struct BraveRequestInfo {
   content::ResourceType resource_type = kInvalidResourceType;
 
   std::string upload_data;
-
-  static void FillCTXFromRequest(const net::URLRequest* request,
-                                 std::shared_ptr<brave::BraveRequestInfo> ctx);
 
   static void FillCTX(
       const network::ResourceRequest& request,
