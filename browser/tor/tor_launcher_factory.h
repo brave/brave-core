@@ -21,6 +21,7 @@ class TorLauncherFactory {
  public:
   static TorLauncherFactory* GetInstance();
 
+  void Init();
   void LaunchTorProcess(const tor::TorConfig& config);
   void ReLaunchTorProcess(const tor::TorConfig& config);
   void KillTorProcess();
