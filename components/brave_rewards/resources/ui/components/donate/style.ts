@@ -55,11 +55,7 @@ const getIconColor = (p: StyleProps) => {
     return palette.orange500
   }
 
-  if (p.disabled) {
-    return palette.purple300
-  }
-
-  return palette.blurple600
+  return palette.white
 }
 
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
@@ -85,10 +81,6 @@ export const StyledDonationTitle = styled<StyleProps, 'div'>('div')`
 `
 
 export const StyledSend = styled<StyleProps, 'div'>('div')`
-  background: ${p => p.monthly
-    ? `inherit`
-    : `var(--donate-send-bg)`
-  };
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.2px;
@@ -101,14 +93,22 @@ export const StyledSend = styled<StyleProps, 'div'>('div')`
   padding-bottom: ${p => p.monthly ? 20 : 13}px;
 `
 
-export const StyledSendButton = styled<{}, 'button'>('button')`
+export const StyledSendButton = styled<StyleProps, 'button'>('button')`
   display: block;
   border: none;
   font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
   background: var(--donate-send-bg);
   cursor: pointer;
+  margin: 0 auto;
+  border-radius: 20px;
+  padding: 6px 60px;
+  ${(p) => {
+    if (!p.monthly) {
+      return null
+    }
+    return 'margin-left: 0px;'
+  }}
 `
 
 export const StyledMonthlySendButton = styled(StyledSendButton)`
@@ -135,6 +135,7 @@ export const StyledIconSend = styled<StyleProps, 'span'>('span')`
   color: ${p => getIconColor(p)};
   width: 27px;
   height: 27px;
+  margin-left: -20px;
 `
 
 export const StyledFunds = styled<{}, 'div'>('div')`

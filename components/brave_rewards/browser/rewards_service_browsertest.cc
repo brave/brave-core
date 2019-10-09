@@ -861,7 +861,7 @@ class BraveRewardsBrowserTest :
         site_banner_contents,
         "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
         "delay(0).then(() => "
-        "  document.querySelector(\"[data-test-id='send-tip-button'] button\")"
+        "  document.querySelector(\"[data-test-id='send-tip-button']\")"
         "  .click());",
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END));

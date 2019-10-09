@@ -50,13 +50,24 @@ export interface Props {
 
 interface State {
   missingFunds: boolean
+  amountChanged: boolean
 }
 
 export default class Donate extends React.PureComponent<Props, State> {
+  private sendButton: HTMLButtonElement | null
+
   constructor (props: Props) {
     super(props)
     this.state = {
-      missingFunds: false
+      missingFunds: false,
+      amountChanged: false
+    }
+    this.sendButton = null
+  }
+
+  componentDidMount () {
+    if (this.sendButton) {
+      this.sendButton.focus()
     }
   }
 
@@ -68,6 +79,10 @@ export default class Donate extends React.PureComponent<Props, State> {
     ) {
       this.validateAmount(this.props.balance)
     }
+  }
+
+  sendNodeRef = (node: HTMLButtonElement) => {
+    this.sendButton = node
   }
 
   validateDonation = () => {
@@ -96,6 +111,14 @@ export default class Donate extends React.PureComponent<Props, State> {
     if (this.props.onAmountSelection) {
       this.props.onAmountSelection(tokens)
     }
+
+    this.setState({ amountChanged: true })
+  }
+
+  onKeyUp = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter') {
+      this.validateDonation()
+    }
   }
 
   render () {
@@ -122,11 +145,14 @@ export default class Donate extends React.PureComponent<Props, State> {
           <StyledDonationTitle>{title}</StyledDonationTitle>
             <StyledAmountsWrapper>
               {
-                donationAmounts && donationAmounts.map((donation: Donation) => {
+                donationAmounts && donationAmounts.map((donation: Donation, index: number) => {
+                  const isCurrentAmount = donation.tokens === currentAmount.toString()
+                  const isDefaultAmount = index === 1 && !this.state.amountChanged
+
                   return <div key={`${id}-tip-${donation.tokens}`}>
                     <Amount
                       amount={donation.tokens}
-                      selected={donation.tokens === currentAmount.toString()}
+                      selected={isCurrentAmount || isDefaultAmount}
                       onSelect={this.onAmountChange}
                       converted={donation.converted}
                       type={donateType}
@@ -138,9 +164,15 @@ export default class Donate extends React.PureComponent<Props, State> {
           {children}
         </StyledContent>
 
-        <StyledSend onClick={this.validateDonation} data-test-id={'send-tip-button'} monthly={isMonthly}>
+        <StyledSend monthly={isMonthly}>
           <StyledButtonWrapper>
-            <SendButton>
+            <SendButton
+              monthly={isMonthly}
+              onKeyUp={this.onKeyUp}
+              innerRef={this.sendNodeRef}
+              onClick={this.validateDonation}
+              data-test-id={'send-tip-button'}
+            >
               <StyledIconSend disabled={disabled} donateType={donateType} monthly={isMonthly}>
                 <SendIcon />
               </StyledIconSend>{actionText}
