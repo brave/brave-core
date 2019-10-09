@@ -75,14 +75,14 @@ extension RewardsDisabledView {
     
     let titleLabel = UILabel().then {
       $0.font = .systemFont(ofSize: 28.0)
-      $0.textColor = UX.titleColor
+      $0.appearanceTextColor = UX.titleColor
       $0.textAlignment = .center
       $0.text = Strings.DisabledTitle
     }
     
     let subtitleLabel = UILabel().then {
       $0.font = .systemFont(ofSize: 18.0, weight: .semibold)
-      $0.textColor = UX.subtitleColor
+      $0.appearanceTextColor = UX.subtitleColor
       $0.textAlignment = .center
       $0.numberOfLines = 0
       $0.text = Strings.DisabledSubtitle
@@ -90,7 +90,7 @@ extension RewardsDisabledView {
     
     let bodyLabel = UILabel().then {
       $0.font = .systemFont(ofSize: 16.0)
-      $0.textColor = UX.bodyColor
+      $0.appearanceTextColor = UX.bodyColor
       $0.textAlignment = .center
       $0.numberOfLines = 0
       $0.text = Strings.DisabledBody
@@ -108,7 +108,7 @@ extension RewardsDisabledView {
     
     let termsOfServiceLabel = LinkLabel().then {
       $0.font = .systemFont(ofSize: 12.0)
-      $0.textColor = Colors.grey100
+      $0.appearanceTextColor = Colors.grey100
       $0.textAlignment = .center
       $0.text = Strings.DisclaimerInformation
       $0.setURLInfo([Strings.TermsOfServiceURL: "terms", Strings.PrivacyPolicyURL: "policy"])

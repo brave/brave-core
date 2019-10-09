@@ -7,13 +7,13 @@ import UIKit
 class PublisherAttentionView: UIView {
   
   let titleLabel = UILabel().then {
-    $0.textColor = Colors.grey000
+    $0.appearanceTextColor = Colors.grey000
     $0.text = Strings.Attention
     $0.font = .systemFont(ofSize: 14.0)
   }
   /// Either "X%" or "–"
   let valueLabel = UILabel().then {
-    $0.textColor = Colors.grey000
+    $0.appearanceTextColor = Colors.grey000
     $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
     $0.textAlignment = .right
     $0.setContentHuggingPriority(.required, for: .horizontal)

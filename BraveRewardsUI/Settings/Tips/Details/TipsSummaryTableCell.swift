@@ -7,16 +7,16 @@ import UIKit
 class TipsSummaryTableCell: UITableViewCell, TableViewReusable {
   
   let batValueView = CurrencyContainerView(amountLabelConfig: {
-    $0.textColor = Colors.neutral200
+    $0.appearanceTextColor = Colors.neutral200
     $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
   }, kindLabelConfig: {
-    $0.textColor = Colors.neutral200
+    $0.appearanceTextColor = Colors.neutral200
     $0.text = "BAT"
     $0.font = .systemFont(ofSize: 13.0)
   })
   
   let usdValueView = CurrencyContainerView(uniformLabelConfig: {
-    $0.textColor = SettingsUX.bodyTextColor
+    $0.appearanceTextColor = SettingsUX.bodyTextColor
     $0.font = .systemFont(ofSize: 13.0)
   }).then {
     $0.kindLabel.text = "USD"
@@ -25,9 +25,11 @@ class TipsSummaryTableCell: UITableViewCell, TableViewReusable {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+    backgroundColor = .white
+    
     let totalTipsThisMonthLabel = UILabel().then {
       $0.text = Strings.TipsTotalThisMonth
-      $0.textColor = Colors.neutral200
+      $0.appearanceTextColor = Colors.neutral200
       $0.font = .systemFont(ofSize: 14.0, weight: .medium)
       $0.numberOfLines = 0
       $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)

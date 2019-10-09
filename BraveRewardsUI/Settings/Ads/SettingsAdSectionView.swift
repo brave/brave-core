@@ -65,7 +65,7 @@ class SettingsAdSectionView: SettingsSectionView {
       bodyLabel.alpha = alpha
       titleLabel.alpha = alpha
       
-      titleLabel.textColor = isSupported ? BraveUX.adsTintColor : Colors.grey200
+      titleLabel.appearanceTextColor = isSupported ? BraveUX.adsTintColor : Colors.grey200
     }
   }
   
@@ -119,13 +119,13 @@ class SettingsAdSectionView: SettingsSectionView {
   
   private let titleLabel = UILabel().then {
     $0.text = Strings.SettingsAdsTitle
-    $0.textColor = BraveUX.adsTintColor
+    $0.appearanceTextColor = BraveUX.adsTintColor
     $0.font = SettingsUX.titleFont
   }
 
   private let bodyLabel = UILabel().then {
     $0.text = Strings.SettingsAdsBody
-    $0.textColor = SettingsUX.bodyTextColor
+    $0.appearanceTextColor = SettingsUX.bodyTextColor
     $0.numberOfLines = 0
     $0.font = SettingsUX.bodyFont
   }

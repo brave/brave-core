@@ -153,7 +153,7 @@ extension AutoContributeSettingsViewController: UITableViewDelegate, UITableView
     cell.label.font = SettingsUX.bodyFont
     cell.label.numberOfLines = 0
     cell.label.lineBreakMode = .byWordWrapping
-    cell.accessoryLabel?.textColor = Colors.grey100
+    cell.accessoryLabel?.appearanceTextColor = Colors.grey100
     cell.accessoryLabel?.font = SettingsUX.bodyFont
     cell.accessoryType = row.accessoryType
     switch row {

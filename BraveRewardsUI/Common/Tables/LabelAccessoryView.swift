@@ -7,7 +7,7 @@ import Foundation
 /// A view with a label in it with a rounded colored background
 class LabelAccessoryView: UIView {
   let label = UILabel().then {
-    $0.textColor = Colors.grey100
+    $0.appearanceTextColor = Colors.grey100
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
   }
   override init(frame: CGRect) {

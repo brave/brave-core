@@ -13,7 +13,7 @@ class EmptyWalletSummaryView: UIView {
     let label = UILabel().then {
       $0.text = Strings.NoActivitiesYet
       $0.textAlignment = .center
-      $0.textColor = Colors.grey400
+      $0.appearanceTextColor = Colors.grey400
       $0.font = .systemFont(ofSize: 20.0)
       $0.numberOfLines = 0
     }

@@ -42,7 +42,7 @@ class AdSwipeButton: UIControl {
     case .text(let text, let textColor):
       let label = UILabel()
       label.text = text
-      label.textColor = textColor
+      label.appearanceTextColor = textColor
       label.textAlignment = .center
       label.font = .systemFont(ofSize: 14.0, weight: .semibold)
       clippedView.addSubview(label)

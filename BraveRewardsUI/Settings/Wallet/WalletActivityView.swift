@@ -15,7 +15,7 @@ class WalletActivityView: SettingsSectionView {
   }
   
   let monthYearLabel = UILabel().then {
-    $0.textColor = UX.monthYearColor
+    $0.appearanceTextColor = UX.monthYearColor
     $0.font = .systemFont(ofSize: 22.0, weight: .medium)
   }
   

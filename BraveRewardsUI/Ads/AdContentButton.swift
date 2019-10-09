@@ -9,17 +9,17 @@ import pop
 /// The main ads view. Mimics a system notification in that it shows an icon, "app name" (always will be "Brave Rewards"), title and body.
 class AdContentButton: UIControl {
   let titleLabel = UILabel().then {
-    $0.textColor = .black
+    $0.appearanceTextColor = .black
     $0.font = .systemFont(ofSize: 15.0, weight: .semibold)
     $0.numberOfLines = 2
   }
   let bodyLabel = UILabel().then {
-    $0.textColor = UIColor(white: 0.0, alpha: 0.5)
+    $0.appearanceTextColor = UIColor(white: 0.0, alpha: 0.5)
     $0.font = .systemFont(ofSize: 15.0)
     $0.numberOfLines = 3
   }
   private let appNameLabel = UILabel().then {
-    $0.textColor = .black
+    $0.appearanceTextColor = .black
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
     $0.text = Strings.AdNotificationTitle
   }
@@ -112,9 +112,9 @@ class AdContentButton: UIControl {
   }
   
   func applyTheme() {
-    appNameLabel.textColor = isDarkMode ? .white : .black
-    titleLabel.textColor = isDarkMode ? .white : .black
-    bodyLabel.textColor = UIColor(white: isDarkMode ? 1.0 : 0.0, alpha: 0.5)
+    appNameLabel.appearanceTextColor = isDarkMode ? .white : .black
+    titleLabel.appearanceTextColor = isDarkMode ? .white : .black
+    bodyLabel.appearanceTextColor = UIColor(white: isDarkMode ? 1.0 : 0.0, alpha: 0.5)
     backgroundView.contentView.backgroundColor = isDarkMode ? UIColor.black.withAlphaComponent(0.3) : UIColor.white.withAlphaComponent(0.7)
   }
   

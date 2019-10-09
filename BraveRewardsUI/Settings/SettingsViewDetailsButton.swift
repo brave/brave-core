@@ -11,7 +11,7 @@ class SettingsViewDetailsButton: Button {
     
     tintColor = Colors.purple300
     setTitle(Strings.SettingsViewDetails, for: .normal)
-    setTitleColor(Colors.purple300, for: .normal)
+    appearanceTextColor = Colors.purple300
     setImage(UIImage(frameworkResourceNamed: "right-arrow").alwaysTemplate, for: .normal)
     titleLabel?.font = .systemFont(ofSize: 14.0, weight: .medium)
     titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3)

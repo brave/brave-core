@@ -79,7 +79,7 @@ extension RewardsSummaryProtocol {
     let text = String(format: Strings.ContributingToUnverifiedSites, reservedAmount.displayString)
     
     return LinkLabel().then {
-      $0.textColor = Colors.grey200
+      $0.appearanceTextColor = Colors.grey200
       $0.font = UIFont.systemFont(ofSize: 12.0)
       $0.textContainerInset = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
       $0.text = "\(text) \(Strings.DisclaimerLearnMore)"

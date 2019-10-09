@@ -28,28 +28,28 @@ class TippingConfirmationView: UIView {
   
   let titleLabel = UILabel().then {
     $0.text = Strings.TippingConfirmation
-    $0.textColor = UX.confirmationTextColor
+    $0.appearanceTextColor = UX.confirmationTextColor
     $0.font = .systemFont(ofSize: 28.0, weight: .bold)
     $0.textAlignment = .center
     $0.numberOfLines = 0
   }
   
   let subtitleLabel = UILabel().then {
-    $0.textColor = UX.confirmationTextColor
+    $0.appearanceTextColor = UX.confirmationTextColor
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
     $0.textAlignment = .center
     $0.numberOfLines = 0
   }
   
   let infoLabel = UILabel().then {
-    $0.textColor = UX.confirmationTextColor
+    $0.appearanceTextColor = UX.confirmationTextColor
     $0.font = .systemFont(ofSize: 20.0, weight: .medium)
     $0.textAlignment = .center
     $0.numberOfLines = 0
   }
   
   let monthlyTipLabel = UILabel().then {
-    $0.textColor = UX.confirmationTextColor
+    $0.appearanceTextColor = UX.confirmationTextColor
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
     $0.textAlignment = .center
     $0.numberOfLines = 0

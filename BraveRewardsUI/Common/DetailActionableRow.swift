@@ -9,15 +9,15 @@ class DetailActionableRow: Button {
   
   let textLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 14.0)
-    $0.textColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey200
     $0.numberOfLines = 0
   }
   
   let batValueView = CurrencyContainerView(amountLabelConfig: {
-    $0.textColor = Colors.purple300
+    $0.appearanceTextColor = Colors.purple300
     $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
   }, kindLabelConfig: {
-    $0.textColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey200
     $0.text = "BAT"
     $0.font = .systemFont(ofSize: 13.0)
   })

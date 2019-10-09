@@ -19,7 +19,7 @@ class AdsUnsupportedView: UIView {
     $0.numberOfLines = 0
     $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     $0.font = .systemFont(ofSize: 13.0, weight: .medium)
-    $0.textColor = Colors.neutral200
+    $0.appearanceTextColor = Colors.neutral200
   }
   
   override init(frame: CGRect) {

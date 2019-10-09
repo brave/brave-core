@@ -4,6 +4,7 @@
 
 import UIKit
 import CoreImage
+import BraveShared
 
 class TokenAddressView: UIView {
   
@@ -63,7 +64,7 @@ class TokenAddressView: UIView {
     $0.layer.borderWidth = 1.0 / UIScreen.main.scale
     $0.textContainerInset = UIEdgeInsets(top: 8, left: 4, bottom: 8, right: 4)
     $0.layer.cornerRadius = 4.0
-    $0.textColor = Colors.grey100
+    $0.appearanceTextColor = Colors.grey100
     $0.font = UIFont(name: "Menlo-Regular", size: 13.0)
   }
   
@@ -107,7 +108,7 @@ class TokenAddressView: UIView {
       .view(UILabel().then {
         $0.text = Strings.AddFundsTokenWalletAddress
         $0.font = .systemFont(ofSize: 12.0, weight: .medium)
-        $0.textColor = Colors.grey100
+        $0.appearanceTextColor = Colors.grey100
       }),
       .customSpace(4.0),
       .view(addressTextView),
