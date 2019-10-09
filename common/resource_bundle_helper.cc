@@ -40,6 +40,7 @@ base::FilePath GetResourcesPakFilePath() {
 }
 #endif  // OS_ANDROID
 
+#if !defined(OS_ANDROID)
 base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
   DCHECK(scale_factor == ui::SCALE_FACTOR_100P ||
          scale_factor == ui::SCALE_FACTOR_200P);
@@ -58,27 +59,28 @@ base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
   return pak_path;
 #endif  // OS_MACOSX
 }
+#endif  // !defined(OS_ANDROID)
 
 }  // namespace
 
 namespace brave {
 
 void InitializeResourceBundle() {
-  auto& rb = ui::ResourceBundle::GetSharedInstance();
 #if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
   ui::BraveLoadMainAndroidPackFile("assets/brave_resources.pak",
                                    base::FilePath());
+  ui::BraveLoadBrave100PercentPackFile("assets/brave_100_percent.pak",
+                                       base::FilePath());
 #else
+  auto& rb = ui::ResourceBundle::GetSharedInstance();
   rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::SCALE_FACTOR_NONE);
-#endif  // OS_ANDROID && defined(BRAVE_CHROMIUM_BUILD)
-
   rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_100P),
                          ui::SCALE_FACTOR_100P);
-
   if (ui::ResourceBundle::IsScaleFactorSupported(ui::SCALE_FACTOR_200P)) {
     rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_200P),
                            ui::SCALE_FACTOR_200P);
   }
+#endif  // OS_ANDROID && defined(BRAVE_CHROMIUM_BUILD)
 }
 
 // Returns true if this subprocess type needs the ResourceBundle initialized

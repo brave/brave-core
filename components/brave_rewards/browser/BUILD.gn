@@ -120,8 +120,6 @@ source_set("browser") {
   }
 }
 
-# TODO(bridiver) - fix tests on android
-if (!is_android) {
 source_set("testutil") {
   testonly = true
 
@@ -138,5 +136,4 @@ source_set("testutil") {
     "test_util.cc",
     "test_util.h",
   ]
-}
 }

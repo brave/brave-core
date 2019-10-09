@@ -75,6 +75,7 @@ if (is_android) {
   android_assets("brave_pak_assets") {
     sources = [
       "$root_build_dir/brave_resources.pak",
+      "$root_build_dir/brave_100_percent.pak",
     ]
     deps = [
       "//brave:browser_dependencies",
@@ -123,14 +124,19 @@ group("unpacked_resources") {
 }
 
 #TODO(bridiver) - what to do
-if (!is_android && !is_ios) {
+if (!is_ios) {
 group("brave_tests") {
   testonly = true
 
   deps = [
     "test:brave_unit_tests",
-    "test:brave_browser_tests",
   ]
+
+  if (!is_android) {
+    deps += [
+      "test:brave_browser_tests",
+    ]
+  }
 }
 }
 
