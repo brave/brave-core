@@ -67,6 +67,14 @@ using PendingContributionInfo = mojom::PendingContributionInfo;
 using PendingContributionInfoPtr = mojom::PendingContributionInfoPtr;
 using PendingContributionInfoList = std::vector<PendingContributionInfoPtr>;
 
+using Promotion = mojom::Promotion;
+using PromotionPtr = mojom::PromotionPtr;
+
+using PromotionType = mojom::PromotionType;
+
+using PromotionCreds = mojom::PromotionCreds;
+using PromotionCredsPtr = mojom::PromotionCredsPtr;
+
 using PublisherBanner = mojom::PublisherBanner;
 using PublisherBannerPtr = mojom::PublisherBannerPtr;
 
@@ -96,6 +104,10 @@ using ServerPublisherInfoList = std::vector<ServerPublisherInfoPtr>;
 using TransferFee = mojom::TransferFee;
 using TransferFeePtr = mojom::TransferFeePtr;
 using TransferFeeList = std::map<std::string, TransferFeePtr>;
+
+using UnblindedToken = mojom::UnblindedToken;
+using UnblindedTokenPtr = mojom::UnblindedTokenPtr;
+using UnblindedTokenList = std::vector<UnblindedTokenPtr>;
 
 using UrlMethod = mojom::UrlMethod;
 

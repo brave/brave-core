@@ -72,6 +72,8 @@ using GetServerPublisherInfoCallback =
 using ResultCallback = std::function<void(const Result)>;
 using GetFirstContributionQueueCallback =
     std::function<void(ContributionQueuePtr)>;
+using GetPromotionCallback = std::function<void(PromotionPtr)>;
+using GetAllUnblindedTokensCallback = std::function<void(UnblindedTokenList)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -297,6 +299,21 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback) = 0;
+
+  virtual void InsertOrUpdatePromotion(
+    ledger::PromotionPtr info,
+    ledger::ResultCallback callback) = 0;
+
+  virtual void GetPromotion(
+    const std::string& id,
+    ledger::GetPromotionCallback callback) = 0;
+
+  virtual void InsertOrUpdateUnblindedToken(
+    ledger::UnblindedTokenPtr info,
+    ledger::ResultCallback callback) = 0;
+
+  virtual void GetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback) = 0;
 };
 
 }  // namespace ledger
