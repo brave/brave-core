@@ -16,10 +16,6 @@
 		0A0D3D5221A565C300BEE65B /* SafeBrowsingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0D3D5121A565C300BEE65B /* SafeBrowsingHandler.swift */; };
 		0A0D3D6121A596BE00BEE65B /* MalwareList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0D3D6021A596BE00BEE65B /* MalwareList.swift */; };
 		0A19362F234D44DB002E2B81 /* AppearanceAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A19362E234D44DB002E2B81 /* AppearanceAttributes.swift */; };
-		0A193631234D4C4C002E2B81 /* BraveShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; platformFilter = ios; };
-		0A193632234D4C4C002E2B81 /* BraveShared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0A193635234D4C4C002E2B81 /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; platformFilter = ios; };
-		0A193636234D4C4C002E2B81 /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A1E842D21909CA70042F782 /* crypto.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E842C21909CA70042F782 /* crypto.js */; };
 		0A1E842F21909CBC0042F782 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E842E21909CBB0042F782 /* bundle.js */; };
 		0A1E843121909CC40042F782 /* fetch.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E843021909CC30042F782 /* fetch.js */; };
@@ -916,20 +912,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0A193633234D4C4C002E2B81 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5DE7688320B3456C00FF5533;
-			remoteInfo = BraveShared;
-		};
-		0A193637234D4C4C002E2B81 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 288A2D851AB8B3260023ABC3;
-			remoteInfo = Shared;
-		};
 		0AC0D3B1233E86E50091EFA5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0AC0D3A9233E86E50091EFA5 /* sqlcipher.xcodeproj */;
@@ -1108,18 +1090,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		0A193639234D4C4D002E2B81 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				0A193632234D4C4C002E2B81 /* BraveShared.framework in Embed Frameworks */,
-				0A193636234D4C4C002E2B81 /* Shared.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		0AC0D387233BD77B0091EFA5 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4725,7 +4695,6 @@
 				271DEC15234CC75F009DAC37 /* Sources */,
 				271DEC16234CC75F009DAC37 /* Frameworks */,
 				271DEC17234CC75F009DAC37 /* Resources */,
-				0A193639234D4C4D002E2B81 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -6137,18 +6106,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0A193634234D4C4C002E2B81 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 5DE7688320B3456C00FF5533 /* BraveShared */;
-			targetProxy = 0A193633234D4C4C002E2B81 /* PBXContainerItemProxy */;
-		};
-		0A193638234D4C4C002E2B81 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 288A2D851AB8B3260023ABC3 /* Shared */;
-			targetProxy = 0A193637234D4C4C002E2B81 /* PBXContainerItemProxy */;
-		};
 		271DEC24234CC760009DAC37 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 271DEC18234CC75F009DAC37 /* BraveRewardsUI */;
