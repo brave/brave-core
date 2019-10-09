@@ -47,7 +47,12 @@ KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
   Profile* profile = Profile::FromBrowserContext(context);
   std::unique_ptr<tor::TorProfileService> tor_profile_service(
       new tor::TorProfileServiceImpl(profile));
-  g_profile_set.emplace(profile);
+
+  // We only care about Tor incognito profiles for deciding whether to KillTor.
+  if (context->IsOffTheRecord()) {
+    g_profile_set.emplace(profile);
+  }
+
   return tor_profile_service.release();
 #else
   return nullptr;
@@ -56,7 +61,9 @@ KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
 
 content::BrowserContext* TorProfileServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
+  // Not shared with our dummy regular Tor profile because we want to trigger
+  // LaunchTor when a new Tor window is created.
+  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
 }
 
 bool TorProfileServiceFactory::ServiceIsNULLWhileTesting() const {
@@ -66,6 +73,7 @@ bool TorProfileServiceFactory::ServiceIsNULLWhileTesting() const {
 void TorProfileServiceFactory::BrowserContextShutdown(
     content::BrowserContext* context) {
 #if BUILDFLAG(ENABLE_TOR)
+  // KillTor when the last Tor incognito profile is shutting down.
   if (g_profile_set.size() == 1) {
     auto* service = static_cast<tor::TorProfileServiceImpl*>(
       TorProfileServiceFactory::GetForProfile(
