@@ -36,8 +36,6 @@ std::string GetAPIUrl(const std::string& path);
 
 std::string GetFeeAddress();
 
-std::string ConvertToProbi(const std::string& amount);
-
 std::string GetVerifyUrl(const std::string& state);
 
 std::string GetAddUrl(const std::string& address);

@@ -87,6 +87,8 @@ source_set("ledger") {
   output_name = "bat_native_ledger"
 
   sources = [
+    "src/bat/ledger/internal/bat_util.cc",
+    "src/bat/ledger/internal/bat_util.h",
     "src/bat/ledger/internal/bat_helper.cc",
     "src/bat/ledger/internal/bat_helper.h",
     "src/bat/ledger/internal/bat_state.cc",

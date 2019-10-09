@@ -13,6 +13,7 @@
 
 #include "base/time/time.h"
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
@@ -901,7 +902,7 @@ void Contribution::OnExternalWalletServerPublisherInfo(
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
   if (!info) {
     const auto probi =
-        braveledger_uphold::ConvertToProbi(std::to_string(amount));
+        braveledger_bat_util::ConvertToProbi(std::to_string(amount));
     ledger_->OnReconcileComplete(
         ledger::Result::LEDGER_ERROR,
         viewing_id,
