@@ -96,6 +96,7 @@ test("brave_unit_tests") {
     "//brave/components/translate/core/browser/translate_language_list_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
     "//brave/vendor/brave_base/random_unittest.cc",
+    "//components/bookmarks/browser/bookmark_model_unittest.cc",
     "../../components/domain_reliability/test_util.cc",
     "../../components/domain_reliability/test_util.h",
   ]
