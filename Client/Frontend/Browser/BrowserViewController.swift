@@ -20,6 +20,7 @@ import SwiftKeychainWrapper
 import BraveRewardsUI
 import BraveRewards
 import StoreKit
+import SafariServices
 
 private let log = Logger.browserLogger
 
@@ -1972,9 +1973,13 @@ extension BrowserViewController: TabDelegate {
             tab.addContentScript(logins, name: LoginsHelper.name())
         }
 
-        let contextMenuHelper = ContextMenuHelper(tab: tab)
-        contextMenuHelper.delegate = self
-        tab.addContentScript(contextMenuHelper, name: ContextMenuHelper.name())
+        if #available(iOS 13, *) {
+            // Do nothing, native API is used.
+        } else {
+            let contextMenuHelper = ContextMenuHelper(tab: tab)
+            contextMenuHelper.delegate = self
+            tab.addContentScript(contextMenuHelper, name: ContextMenuHelper.name())
+        }
 
         let errorHelper = ErrorPageHelper()
         tab.addContentScript(errorHelper, name: ErrorPageHelper.name())
@@ -2428,6 +2433,87 @@ extension BrowserViewController: WKUIDelegate {
             self.tabManager.removeTab(tab)
         }
     }
+    
+    @available(iOS 13.0, *)
+    func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+        
+        guard let url = elementInfo.linkURL else { return completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)) }
+        
+        let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
+            var actions = [UIAction]()
+            
+            if let currentTab = self.tabManager.selectedTab {
+                let tabType = currentTab.type
+                
+                if !tabType.isPrivate {
+                    let openNewTabAction = UIAction(title: Strings.OpenNewTabButtonTitle,
+                                                    image: UIImage(systemName: "plus")) { _ in
+                        self.addTab(url: url, inPrivateMode: false, currentTab: currentTab)
+                    }
+                    
+                    openNewTabAction.accessibilityLabel = "linkContextMenu.openInNewTab"
+                    
+                    actions.append(openNewTabAction)
+                }
+                
+                let openNewPrivateTabAction = UIAction(title: Strings.OpenNewPrivateTabButtonTitle,
+                                                       image: #imageLiteral(resourceName: "private_glasses").template) { _ in
+                    self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
+                }
+                openNewPrivateTabAction.accessibilityLabel = "linkContextMenu.openInNewPrivateTab"
+                
+                actions.append(openNewPrivateTabAction)
+                
+                let copyAction = UIAction(title: Strings.CopyLinkActionTitle,
+                                          image: UIImage(systemName: "doc.on.doc")) { _ in
+                    UIPasteboard.general.url = url
+                }
+                copyAction.accessibilityLabel = "linkContextMenu.copyLink"
+                
+                actions.append(copyAction)
+                
+                if let braveWebView = webView as? BraveWebView {
+                    let shareAction = UIAction(title: Strings.ShareLinkActionTitle,
+                                               image: UIImage(systemName: "square.and.arrow.up")) { _ in
+                        let touchPoint = braveWebView.lastHitPoint
+                        let touchSize = CGSize(width: 0, height: 16)
+                        let touchRect = CGRect(origin: touchPoint, size: touchSize)
+                        
+                        self.presentActivityViewController(url, sourceView: self.view,
+                                                           sourceRect: touchRect,
+                                                           arrowDirection: .any)
+                    }
+                    
+                    shareAction.accessibilityLabel = "linkContextMenu.share"
+                    
+                    actions.append(shareAction)
+                }
+            
+            }
+            
+            return UIMenu(title: url.absoluteString, children: actions)
+        }
+        
+        let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: actionProvider)
+        
+        completionHandler(config)
+    }
+    
+    fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: Tab) {
+        let tab = self.tabManager.addTab(URLRequest(url: url), afterTab: currentTab, isPrivate: inPrivateMode)
+        if inPrivateMode && !PrivateBrowsingManager.shared.isPrivateBrowsing {
+            self.tabManager.selectTab(tab)
+        } else {
+            // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
+            let toast = ButtonToast(labelText: Strings.ContextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.ContextMenuButtonToastNewTabOpenedButtonText, completion: { buttonPressed in
+                if buttonPressed {
+                    self.tabManager.selectTab(tab)
+                }
+            })
+            self.show(toast: toast)
+        }
+        self.scrollController.showToolbars(animated: true)
+    }
 }
 
 extension BrowserViewController: ReaderModeDelegate {
@@ -2642,31 +2728,15 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             dialogTitle = url.absoluteString
             let tabType = currentTab.type
 
-            let addTab = { (rURL: URL, isPrivate: Bool) in
-                let tab = self.tabManager.addTab(URLRequest(url: rURL as URL), afterTab: currentTab, isPrivate: isPrivate)
-                if isPrivate && !PrivateBrowsingManager.shared.isPrivateBrowsing {
-                    self.tabManager.selectTab(tab)
-                } else {
-                    // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
-                    let toast = ButtonToast(labelText: Strings.ContextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.ContextMenuButtonToastNewTabOpenedButtonText, completion: { buttonPressed in
-                        if buttonPressed {
-                            self.tabManager.selectTab(tab)
-                        }
-                    })
-                    self.show(toast: toast)
-                }
-                self.scrollController.showToolbars(animated: true)
-            }
-
             if !tabType.isPrivate {
                 let openNewTabAction =  UIAlertAction(title: Strings.OpenNewTabButtonTitle, style: .default) { _ in
-                    addTab(url, false)
+                    self.addTab(url: url, inPrivateMode: false, currentTab: currentTab)
                 }
                 actionSheetController.addAction(openNewTabAction, accessibilityIdentifier: "linkContextMenu.openInNewTab")
             }
            
             let openNewPrivateTabAction =  UIAlertAction(title: Strings.OpenNewPrivateTabButtonTitle, style: .default) { _ in
-                addTab(url, true)
+                self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
             }
             actionSheetController.addAction(openNewPrivateTabAction, accessibilityIdentifier: "linkContextMenu.openInNewPrivateTab")
 
