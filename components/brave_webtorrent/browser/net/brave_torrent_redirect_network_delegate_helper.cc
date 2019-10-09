@@ -12,6 +12,7 @@
 #include "base/strings/string_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/network_constants.h"
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "content/public/common/resource_type.h"
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
@@ -20,29 +21,6 @@
 
 namespace {
 
-bool FileNameMatched(const net::HttpResponseHeaders* headers) {
-  std::string disposition;
-  if (!headers->GetNormalizedHeader("Content-Disposition", &disposition)) {
-    return false;
-  }
-
-  net::HttpContentDisposition cd_headers(disposition, std::string());
-  if (base::EndsWith(cd_headers.filename(), ".torrent",
-        base::CompareCase::INSENSITIVE_ASCII) ||
-      base::EndsWith(cd_headers.filename(), ".torrent\"",
-        base::CompareCase::INSENSITIVE_ASCII)) {
-    return true;
-  }
-
-  return false;
-}
-
-bool URLMatched(const GURL& url) {
-  return base::EndsWith(url.spec(), ".torrent",
-      base::CompareCase::INSENSITIVE_ASCII);
-}
-
-
 // Returns true if the URL contains a URL fragment that starts with "ix=". For
 // example, https://webtorrent.io/torrents/big-buck-bunny.torrent#ix=1.
 bool IsViewerURL(const GURL& url) {
@@ -50,23 +28,6 @@ bool IsViewerURL(const GURL& url) {
       base::CompareCase::INSENSITIVE_ASCII);
 }
 
-bool IsTorrentFile(const GURL& url, const net::HttpResponseHeaders* headers) {
-  std::string mimeType;
-  if (!headers->GetMimeType(&mimeType)) {
-    return false;
-  }
-
-  if (mimeType == kBittorrentMimeType) {
-    return true;
-  }
-
-  if (mimeType == kOctetStreamMimeType &&
-      (URLMatched(url) || FileNameMatched(headers))) {
-    return true;
-  }
-
-  return false;
-}
 
 bool IsWebtorrentInitiated(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   return ctx->initiator_url.scheme() == extensions::kExtensionScheme &&
@@ -90,6 +51,7 @@ int OnHeadersReceived_TorrentRedirectWork(
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
+
   if (!original_response_headers ||
       !IsMainFrameResource(ctx) ||
       ctx->is_webtorrent_disabled ||
@@ -107,7 +69,7 @@ int OnHeadersReceived_TorrentRedirectWork(
   GURL url(
       base::StrCat({extensions::kExtensionScheme, "://",
       brave_webtorrent_extension_id,
-      "/extension/brave_webtorrent.html?",
+      "/extension/brave_webtorrent2.html?",
       ctx->request_url.spec()}));
   (*override_response_headers)->AddHeader("Location: " + url.spec());
   *allowed_unsafe_redirect_url = url;

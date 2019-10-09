@@ -96,8 +96,13 @@ source_set("extensions") {
   }
   if (enable_brave_webtorrent) {
     deps += [
+      "//brave/components/brave_webtorrent/browser",
       "//brave/components/brave_webtorrent:generated_resources",
       "//brave/components/brave_webtorrent:static_resources",
+    ]
+    sources += [
+      "brave_webtorrent_navigation_throttle.cc",
+      "brave_webtorrent_navigation_throttle.h",
     ]
   }
 }

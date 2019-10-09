@@ -9,6 +9,7 @@ source_set("browser") {
     "//base",
     "//brave/common",
     "//components/pref_registry",
+    "//components/prefs",
     "//content/public/browser",
     "//extensions/browser",
     "//extensions/common",

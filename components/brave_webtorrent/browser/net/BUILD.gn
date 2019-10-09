@@ -7,6 +7,7 @@ source_set("net") {
   deps = [
     "//base",
     "//brave/common",
+    "//brave/components/brave_webtorrent/browser",
     "//extensions/browser",
     "//net",
   ]
