@@ -50,6 +50,10 @@ public abstract class BraveActivity extends ChromeActivity {
             return false;
         } else if (id == R.id.exit_id) {
             ApplicationLifetime.terminate(false);
+        } else if (id == R.id.set_default_browser) {
+            // Implement handler.
+        } else if (id == R.id.brave_rewards_id) {
+            // Implement handler.
         } else {
             return false;
         }

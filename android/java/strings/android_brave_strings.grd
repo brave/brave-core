@@ -225,6 +225,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CANCEL" desc="Label for a cancel button. Used in multiple contexts. [CHAR-LIMIT=20]">
         Cancel
       </message>
+      <message name="IDS_MENU_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
+        Set as default browser
+      </message>
+      <message name="IDS_MENU_BRAVE_REWARDS" desc="Title for brave rewards menu item">
+        Brave Rewards
+      </message>
     </messages>
   </release>
 </grit>
